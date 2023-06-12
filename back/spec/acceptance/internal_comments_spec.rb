@@ -53,7 +53,7 @@ resource 'InternalComments' do
         let(:id) { internal_comment.id }
 
         example_request 'Get one comment by id' do
-          expect(status).to eq 200
+          assert_status 200
           json_response = json_parse(response_body)
 
           expect(json_response.dig(:data, :id)).to eq id
@@ -108,7 +108,7 @@ resource 'InternalComments' do
           let(:size) { 3 }
 
           example_request 'List the top-level internal comments of an idea' do
-            expect(status).to eq(200)
+            assert_status 200
             json_response = json_parse(response_body)
             expect(json_response[:data].size).to eq 10
             expect(json_response[:data].pluck(:id)).to eq([
@@ -139,7 +139,7 @@ resource 'InternalComments' do
           end
 
           example_request 'List the top-level internal comments of an idea sorted by age, with oldest first' do
-            expect(status).to eq(200)
+            assert_status 200
             json_response = json_parse(response_body)
             expect(json_response[:data].size).to eq 5
             expect(json_response[:data].pluck(:id)).to eq([
@@ -175,7 +175,7 @@ resource 'InternalComments' do
           let(:internal_comment_id) { @c.id }
 
           example_request 'List the direct child internal comments of am internal comment on an idea' do
-            expect(status).to eq(200)
+            assert_status 200
             json_response = json_parse(response_body)
             expect(json_response[:data].size).to eq 6
             expect(json_response[:data].pluck(:id)).to eq([
@@ -260,46 +260,36 @@ resource 'InternalComments' do
         let(:body_text) { "His hair is not blond, it's orange. Get your facts straight!" }
 
         example_request "Update author's own an internal comment on an idea" do
-          expect(response_status).to eq 200
+          assert_status 200
           json_response = json_parse(response_body)
           expect(json_response.dig(:data, :attributes, :body_text)).to match body_text
           expect(@idea.reload.internal_comments_count).to eq 1
         end
-      end
 
-      patch 'web_api/v1/internal_comments/:id' do
-        with_options scope: :internal_comment do
-          parameter :body_text, 'Text field with the comment body'
-          parameter :parent_id, 'The id of the internal comment this internal comment is a response to'
-        end
+        example "[Unauthorized] Update other admin's internal comment on an idea" do
+          internal_comment.update!(author: create(:admin))
 
-        let(:internal_comment) { create(:internal_comment, author: create(:admin), post: @idea) }
-        let(:id) { internal_comment.id }
-        let(:body_text) { "His hair is not blond, it's orange. Get your facts straight!" }
-
-        example_request "Update other admin's internal comment on an idea" do
-          expect(response_status).to eq 401
+          do_request
+          assert_status 401
           expect(@idea.reload.internal_comments_count).to eq 1
         end
       end
 
-      post 'web_api/v1/internal_comments/:id/mark_as_deleted' do
+      delete 'web_api/v1/internal_comments/:id/' do
         let(:internal_comment) { create(:internal_comment, author: @user, post: @idea) }
         let(:id) { internal_comment.id }
 
-        example_request 'Author marks an internal comment on an idea as deleted' do
-          expect(response_status).to eq 204
-          expect(internal_comment.reload.publication_status).to eq('deleted')
+        example_request 'Author deletes their own internal comment' do
+          assert_status 200
+          expect { InternalComment.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
         end
-      end
 
-      post 'web_api/v1/internal_comments/:id/mark_as_deleted' do
-        let(:internal_comment) { create(:internal_comment, author: create(:admin), post: @idea) }
-        let(:id) { internal_comment.id }
+        example '[Unauthorized] Admin (not author) deletes an internal comment' do
+          internal_comment.update!(author: create(:admin))
 
-        example_request '[Unauthorized] Admin (not author) marks an internal comment on an idea as deleted' do
-          expect(response_status).to eq 401
-          expect(internal_comment.reload.publication_status).to eq('published')
+          do_request
+          assert_status 401
+          expect(InternalComment.find(id)).to be_present
         end
       end
     end
@@ -347,7 +337,7 @@ resource 'InternalComments' do
         let(:id) { internal_comment.id }
 
         example_request 'Get one internal comment by id' do
-          expect(status).to eq 200
+          assert_status 200
           json_response = json_parse(response_body)
 
           expect(json_response.dig(:data, :id)).to eq id
@@ -402,7 +392,7 @@ resource 'InternalComments' do
           let(:size) { 3 }
 
           example_request 'List the top-level internal comments of an initiative' do
-            expect(status).to eq(200)
+            assert_status 200
             json_response = json_parse(response_body)
             expect(json_response[:data].size).to eq 10
             expect(json_response[:data].pluck(:id)).to eq([
@@ -433,7 +423,7 @@ resource 'InternalComments' do
           end
 
           example_request 'List the top-level internal comments of an initiative sorted by age, with oldest first' do
-            expect(status).to eq(200)
+            assert_status 200
             json_response = json_parse(response_body)
             expect(json_response[:data].size).to eq 5
             expect(json_response[:data].pluck(:id)).to eq([
@@ -469,7 +459,7 @@ resource 'InternalComments' do
           let(:internal_comment_id) { @c.id }
 
           example_request 'List the direct child internal comments of am internal comment on an initiative' do
-            expect(status).to eq(200)
+            assert_status 200
             json_response = json_parse(response_body)
             expect(json_response[:data].size).to eq 6
             expect(json_response[:data].pluck(:id)).to eq([
@@ -542,46 +532,36 @@ resource 'InternalComments' do
         let(:body_text) { "His hair is not blond, it's orange. Get your facts straight!" }
 
         example_request "Update author's own internal comment on an initiative" do
-          expect(response_status).to eq 200
+          assert_status 200
           json_response = json_parse(response_body)
           expect(json_response.dig(:data, :attributes, :body_text)).to match body_text
           expect(@initiative.reload.internal_comments_count).to eq 1
         end
-      end
 
-      patch 'web_api/v1/internal_comments/:id' do
-        with_options scope: :internal_comment do
-          parameter :body_text, 'Text field with the comment body'
-          parameter :parent_id, 'The id of the internal comment this internal comment is a response to'
-        end
+        example "[Unauthorized] Update other admin's internal comment on an initiative" do
+          internal_comment.update!(author: create(:admin))
 
-        let(:internal_comment) { create(:internal_comment, author: create(:admin), post: @initiative) }
-        let(:id) { internal_comment.id }
-        let(:body_text) { "His hair is not blond, it's orange. Get your facts straight!" }
-
-        example_request "Update other admin's internal comment on an initiative" do
-          expect(response_status).to eq 401
+          do_request
+          assert_status 401
           expect(@initiative.reload.internal_comments_count).to eq 1
         end
       end
 
-      post 'web_api/v1/internal_comments/:id/mark_as_deleted' do
+      delete 'web_api/v1/internal_comments/:id' do
         let(:internal_comment) { create(:internal_comment, author: @user, post: @initiative) }
         let(:id) { internal_comment.id }
 
-        example_request 'Author marks an internal comment on an initiative as deleted' do
-          expect(response_status).to eq 204
-          expect(internal_comment.reload.publication_status).to eq('deleted')
+        example_request 'Author deletes their own internal comment' do
+          assert_status 200
+          expect { InternalComment.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
         end
-      end
 
-      post 'web_api/v1/internal_comments/:id/mark_as_deleted' do
-        let(:internal_comment) { create(:internal_comment, author: create(:admin), post: @initiative) }
-        let(:id) { internal_comment.id }
+        example '[Unauthorized] Admin (not author) deletes an internal comment' do
+          internal_comment.update!(author: create(:admin))
 
-        example_request '[Unauthorized] Admin (not author) marks an internal comment on an initiative as deleted' do
-          expect(response_status).to eq 401
-          expect(internal_comment.reload.publication_status).to eq('published')
+          do_request
+          assert_status 401
+          expect(InternalComment.find(id)).to be_present
         end
       end
     end

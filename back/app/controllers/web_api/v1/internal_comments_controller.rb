@@ -2,7 +2,7 @@
 
 class WebApi::V1::InternalCommentsController < ApplicationController
   before_action :set_post_type_and_id, only: %i[index create]
-  before_action :set_comment, only: %i[children show update mark_as_deleted destroy]
+  before_action :set_comment, only: %i[children show update destroy]
 
   FULLY_EXPAND_THRESHOLD = 5
   MINIMAL_SUBCOMMENTS = 2
@@ -98,16 +98,6 @@ class WebApi::V1::InternalCommentsController < ApplicationController
         params: jsonapi_serializer_params,
         include: [:author]
       ).serializable_hash, status: :ok
-    else
-      render json: { errors: @comment.errors.details }, status: :unprocessable_entity
-    end
-  end
-
-  def mark_as_deleted
-    @comment.publication_status = 'deleted'
-    if @comment.save
-      SideFxInternalCommentService.new.after_mark_as_deleted(@comment, current_user)
-      head :no_content
     else
       render json: { errors: @comment.errors.details }, status: :unprocessable_entity
     end
