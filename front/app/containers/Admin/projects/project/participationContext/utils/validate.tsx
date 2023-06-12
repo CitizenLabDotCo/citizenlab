@@ -12,8 +12,8 @@ export default (state: State, formatMessage: FormatMessage) => {
     upvoting_limited_max,
     downvoting_limited_max,
     participation_method,
-    min_budget,
-    max_budget,
+    voting_min_total,
+    voting_max_total,
   } = state;
 
   let isValidated = true;
@@ -47,22 +47,22 @@ export default (state: State, formatMessage: FormatMessage) => {
   }
 
   if (participation_method === 'voting') {
-    if (isNaN(min_budget)) {
+    if (isNaN(voting_min_total)) {
       minBudgetError = formatMessage(messages.minBudgetRequired);
       isValidated = false;
     }
 
-    if (isNaN(max_budget)) {
+    if (isNaN(voting_max_total)) {
       maxBudgetError = formatMessage(messages.maxBudgetRequired);
       isValidated = false;
     }
 
     if (
-      // need to check for typeof, because if min_budget
-      // is 0, just checking min_budget will coerce to false
-      typeof min_budget === 'number' &&
-      typeof max_budget === 'number' &&
-      min_budget > max_budget
+      // need to check for typeof, because if voting_min_total
+      // is 0, just checking voting_min_total will coerce to false
+      typeof voting_min_total === 'number' &&
+      typeof voting_max_total === 'number' &&
+      voting_min_total > voting_max_total
     ) {
       minBudgetError = formatMessage(messages.minBudgetLargerThanMaxError);
       isValidated = false;

@@ -14,8 +14,8 @@ export default ({
   downvoting_enabled,
   presentation_mode,
   voting_method,
-  min_budget,
-  max_budget,
+  voting_min_total,
+  voting_max_total,
   survey_embed_url,
   survey_service,
   poll_anonymous,
@@ -75,8 +75,8 @@ export default ({
     output = omitBy(
       {
         participation_method,
-        min_budget,
-        max_budget,
+        voting_min_total,
+        voting_max_total,
         commenting_enabled,
         presentation_mode,
         ideas_order,

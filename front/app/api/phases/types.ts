@@ -50,8 +50,8 @@ export interface IPhaseAttributes {
   downvoting_enabled: boolean;
   downvoting_limited_max: number;
   presentation_mode: PresentationMode;
-  min_budget?: number;
-  max_budget?: number;
+  voting_min_total?: number | null;
+  voting_max_total?: number | null;
   survey_service?: TSurveyService;
   survey_embed_url?: string;
   poll_anonymous?: boolean;
@@ -86,8 +86,8 @@ export interface IUpdatedPhaseProperties {
   downvoting_enabled?: boolean | null;
   downvoting_limited_max?: number | null;
   presentation_mode?: 'card' | 'map' | null;
-  min_budget?: number | null;
-  max_budget?: number | null;
+  voting_min_total?: number | null;
+  voting_max_total?: number | null;
   survey_service?: TSurveyService | null;
   survey_embed_url?: string | null;
   poll_anonymous?: boolean;

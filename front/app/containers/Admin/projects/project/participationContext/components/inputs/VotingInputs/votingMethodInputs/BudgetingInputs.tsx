@@ -20,8 +20,8 @@ import { ApiErrors } from '../../../..';
 import { IOption } from 'typings';
 
 interface Props {
-  min_budget?: number | null;
-  max_budget?: number | null;
+  voting_min_total?: number | null;
+  voting_max_total?: number | null;
   input_term?: InputTerm;
   isCustomInputTermEnabled: boolean;
   minBudgetError: string | null;
@@ -33,8 +33,8 @@ interface Props {
 }
 
 const BudgetingInputs = ({
-  min_budget,
-  max_budget,
+  voting_min_total,
+  voting_max_total,
   input_term,
   isCustomInputTermEnabled,
   minBudgetError,
@@ -45,14 +45,14 @@ const BudgetingInputs = ({
   handleMaxBudgetingAmountChange,
 }: Props) => {
   const minBudgetInputValue =
-    // need to check the type because if min_budget is 0,
+    // need to check the type because if voting_min_total is 0,
     // it'll evaluate to null
-    typeof min_budget === 'number' ? min_budget.toString() : null;
+    typeof voting_min_total === 'number' ? voting_min_total.toString() : null;
 
   const maxBudgetInputValue =
     // maxBudget can't be lower than 1, but it's still a good practice
     // to check for type instead of relying on JS type coercion
-    typeof max_budget === 'number' ? max_budget.toString() : null;
+    typeof voting_max_total === 'number' ? voting_max_total.toString() : null;
 
   return (
     <>
@@ -80,7 +80,7 @@ const BudgetingInputs = ({
         />
         <BudgetingAmountInputError text={minBudgetError} />
         <BudgetingAmountInputError
-          apiErrors={apiErrors && apiErrors.min_budget}
+          apiErrors={apiErrors && apiErrors.voting_min_total}
         />
       </SectionField>
       <SectionField>
@@ -95,7 +95,7 @@ const BudgetingInputs = ({
         />
         <BudgetingAmountInputError text={maxBudgetError} />
         <BudgetingAmountInputError
-          apiErrors={apiErrors && apiErrors.max_budget}
+          apiErrors={apiErrors && apiErrors.voting_max_total}
         />
       </SectionField>
     </>

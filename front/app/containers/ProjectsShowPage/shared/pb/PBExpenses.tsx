@@ -337,18 +337,18 @@ const PBExpenses = ({
     let progressBarColor: 'green' | 'red' | '' = '';
 
     if (participationContextType === 'project' && project) {
-      if (typeof project.data.attributes.min_budget === 'number') {
-        minBudget = project.data.attributes.min_budget;
+      if (typeof project.data.attributes.voting_min_total === 'number') {
+        minBudget = project.data.attributes.voting_min_total;
       }
-      if (typeof project.data.attributes.max_budget === 'number') {
-        maxBudget = project.data.attributes.max_budget;
+      if (typeof project.data.attributes.voting_max_total === 'number') {
+        maxBudget = project.data.attributes.voting_max_total;
       }
     } else if (participationContextType === 'phase' && phase) {
-      if (typeof phase.data.attributes.min_budget === 'number') {
-        minBudget = phase.data.attributes.min_budget;
+      if (typeof phase.data.attributes.voting_min_total === 'number') {
+        minBudget = phase.data.attributes.voting_min_total;
       }
-      if (typeof phase.data.attributes.max_budget === 'number') {
-        maxBudget = phase.data.attributes.max_budget;
+      if (typeof phase.data.attributes.voting_max_total === 'number') {
+        maxBudget = phase.data.attributes.voting_max_total;
       }
     }
 

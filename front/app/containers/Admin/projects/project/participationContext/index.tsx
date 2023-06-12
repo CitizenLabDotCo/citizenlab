@@ -67,8 +67,8 @@ export interface IParticipationContextConfig {
   presentation_mode?: 'map' | 'card' | null;
   ideas_order?: IdeaDefaultSortMethod;
   input_term?: InputTerm;
-  min_budget?: number | null;
-  max_budget?: number | null;
+  voting_min_total?: number | null;
+  voting_max_total?: number | null;
   survey_service?: TSurveyService | null;
   survey_embed_url?: string | null;
   poll_anonymous?: boolean;
@@ -132,8 +132,8 @@ class ParticipationContext extends PureComponent<
       downvoting_method: 'unlimited',
       downvoting_limited_max: null,
       presentation_mode: 'card',
-      min_budget: null,
-      max_budget: null,
+      voting_min_total: null,
+      voting_max_total: null,
       survey_service: null,
       survey_embed_url: null,
       loaded: false,
@@ -171,8 +171,8 @@ class ParticipationContext extends PureComponent<
           allow_anonymous_participation: newData.allow_anonymous_participation,
           voting_method: newData.voting_method,
           presentation_mode: newData.presentation_mode,
-          min_budget: newData.min_budget,
-          max_budget: newData.max_budget,
+          voting_min_total: newData.voting_min_total,
+          voting_max_total: newData.voting_max_total,
           survey_embed_url: newData.survey_embed_url,
           survey_service: newData.survey_service,
           poll_anonymous: newData.poll_anonymous,
@@ -243,8 +243,8 @@ class ParticipationContext extends PureComponent<
       survey_embed_url: null,
       survey_service: survey ? 'typeform' : null,
       document_annotation_embed_url: null,
-      min_budget: voting ? 0 : null,
-      max_budget: voting ? 1000 : null,
+      voting_min_total: voting ? 0 : null,
+      voting_max_total: voting ? 1000 : null,
       ideas_order: ideation ? getDefaultSortMethodFallback(ideation) : null,
     });
   };
@@ -331,19 +331,19 @@ class ParticipationContext extends PureComponent<
     this.setState({ ideas_order });
   };
 
-  handleMaxBudgetingAmountChange = (newMaxBudget: string) => {
-    const max_budget = parseInt(newMaxBudget, 10);
+  handleMinBudgetingAmountChange = (newMinBudget: string) => {
+    const voting_min_total = parseInt(newMinBudget, 10);
     this.setState({
-      max_budget,
-      maxBudgetError: null,
+      voting_min_total,
+      minBudgetError: null,
     });
   };
 
-  handleMinBudgetingAmountChange = (newMinBudget: string) => {
-    const min_budget = parseInt(newMinBudget, 10);
+  handleMaxBudgetingAmountChange = (newMaxBudget: string) => {
+    const voting_max_total = parseInt(newMaxBudget, 10);
     this.setState({
-      min_budget,
-      minBudgetError: null,
+      voting_max_total,
+      maxBudgetError: null,
     });
   };
 
@@ -412,8 +412,8 @@ class ParticipationContext extends PureComponent<
       downvoting_enabled,
       allow_anonymous_participation,
       voting_method,
-      min_budget,
-      max_budget,
+      voting_min_total,
+      voting_max_total,
       survey_embed_url,
       document_annotation_embed_url,
       survey_service,
@@ -464,8 +464,8 @@ class ParticipationContext extends PureComponent<
                 input_term={input_term}
                 handleInputTermChange={this.handleInputTermChange}
                 voting_method={voting_method}
-                min_budget={min_budget}
-                max_budget={max_budget}
+                voting_min_total={voting_min_total}
+                voting_max_total={voting_max_total}
                 commenting_enabled={commenting_enabled}
                 minBudgetError={minBudgetError}
                 maxBudgetError={maxBudgetError}

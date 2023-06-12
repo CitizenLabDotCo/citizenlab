@@ -822,7 +822,7 @@ export function apiCreateProject({
   assigneeId,
   surveyUrl,
   surveyService,
-  maxBudget,
+  votingMaxTotal,
   postingEnabled,
   allow_anonymous_participation,
 }: {
@@ -834,7 +834,7 @@ export function apiCreateProject({
   participationMethod?: ParticipationMethod;
   assigneeId?: string;
   surveyUrl?: string;
-  maxBudget?: number;
+  votingMaxTotal?: number;
   surveyService?: 'typeform' | 'survey_monkey' | 'google_forms';
   postingEnabled?: boolean;
   allow_anonymous_participation?: boolean;
@@ -876,7 +876,7 @@ export function apiCreateProject({
               : participationMethod,
           survey_embed_url: surveyUrl,
           survey_service: surveyService,
-          max_budget: maxBudget,
+          voting_max_total: votingMaxTotal,
           posting_enabled: postingEnabled,
           allow_anonymous_participation: allow_anonymous_participation,
         },
@@ -895,7 +895,7 @@ export function apiEditProject({
   assigneeId,
   surveyUrl,
   surveyService,
-  maxBudget,
+  votingMaxTotal,
 }: {
   projectId: string;
   type?: 'timeline' | 'continuous';
@@ -905,7 +905,7 @@ export function apiEditProject({
   publicationStatus?: 'draft' | 'published' | 'archived';
   assigneeId?: string;
   surveyUrl?: string;
-  maxBudget?: number;
+  votingMaxTotal?: number;
   surveyService?: 'typeform' | 'survey_monkey' | 'google_forms';
 }) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
@@ -947,7 +947,7 @@ export function apiEditProject({
           ...(assigneeId && { default_assignee_id: assigneeId }),
           ...(surveyUrl && { survey_embed_url: surveyUrl }),
           ...(surveyService && { survey_service: surveyService }),
-          ...(maxBudget && { max_budget: maxBudget }),
+          ...(votingMaxTotal && { voting_max_total: votingMaxTotal }),
         },
       },
     });
@@ -1119,7 +1119,7 @@ export function apiCreatePhase(
   description?: string,
   surveyUrl?: string,
   surveyService?: 'typeform' | 'survey_monkey' | 'google_forms',
-  maxBudget?: number,
+  votingMaxTotal?: number,
   allow_anonymous_participation?: boolean
 ) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
@@ -1147,7 +1147,7 @@ export function apiCreatePhase(
           description_multiloc: { en: description },
           survey_embed_url: surveyUrl,
           survey_service: surveyService,
-          max_budget: maxBudget,
+          voting_max_total: votingMaxTotal,
           allow_anonymous_participation: allow_anonymous_participation,
         },
       },

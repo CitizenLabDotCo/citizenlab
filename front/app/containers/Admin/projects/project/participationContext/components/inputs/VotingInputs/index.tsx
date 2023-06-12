@@ -23,8 +23,8 @@ export interface VotingInputsProps {
   input_term: InputTerm | undefined;
   handleInputTermChange: (option: IOption) => void;
   voting_method: VotingMethod | null | undefined;
-  min_budget: number | null | undefined;
-  max_budget: number | null | undefined;
+  voting_min_total: number | null | undefined;
+  voting_max_total: number | null | undefined;
   commenting_enabled: boolean | null | undefined;
   minBudgetError: string | null;
   maxBudgetError: string | null;
@@ -42,8 +42,8 @@ export default ({
   input_term,
   handleInputTermChange,
   voting_method,
-  min_budget,
-  max_budget,
+  voting_min_total,
+  voting_max_total,
   commenting_enabled,
   minBudgetError,
   maxBudgetError,
@@ -63,8 +63,8 @@ export default ({
       />
       {voting_method === 'budgeting' && (
         <BudgetingInputs
-          min_budget={min_budget}
-          max_budget={max_budget}
+          voting_min_total={voting_min_total}
+          voting_max_total={voting_max_total}
           input_term={input_term}
           isCustomInputTermEnabled={isCustomInputTermEnabled}
           minBudgetError={minBudgetError}

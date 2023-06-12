@@ -187,8 +187,8 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
     const projectType = project.data.attributes.process_type;
     const projectParticipantsCount = project.data.attributes.participants_count;
     const maxBudget =
-      currentPhase?.attributes?.max_budget ||
-      project.data.attributes?.max_budget ||
+      currentPhase?.attributes?.voting_max_total ||
+      project.data.attributes?.voting_max_total ||
       null;
     const hasProjectEnded = currentPhase
       ? pastPresentOrFuture([
