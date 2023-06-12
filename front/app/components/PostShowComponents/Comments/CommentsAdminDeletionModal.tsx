@@ -19,8 +19,8 @@ import Feedback from 'components/HookForm/Feedback';
 import RadioGroup, { Radio } from 'components/HookForm/RadioGroup';
 
 // i18n
-import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { MessageDescriptor } from 'react-intl';
+import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // animation
@@ -82,7 +82,7 @@ type FormValues = {
 type Props = {
   onDeleteComment: (values: FormValues) => Promise<void>;
   onCloseDeleteModal: () => void;
-} & WrappedComponentProps;
+};
 
 const deleteReasonCodes = keys(DeleteReasonCode);
 
@@ -95,8 +95,8 @@ const DELETE_REASON_MESSAGES: Record<ReasonCode, MessageDescriptor> = {
 const CommentsAdminDeletionForm = ({
   onDeleteComment,
   onCloseDeleteModal,
-  intl: { formatMessage },
 }: Props) => {
+  const { formatMessage } = useIntl();
   const schema = object({
     reason_code: string().required(formatMessage(messages.deleteReasonError)),
     other_reason: string().when('reason_code', {
@@ -175,4 +175,4 @@ const CommentsAdminDeletionForm = ({
   );
 };
 
-export default injectIntl(CommentsAdminDeletionForm);
+export default CommentsAdminDeletionForm;
