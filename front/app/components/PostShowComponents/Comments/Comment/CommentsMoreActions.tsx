@@ -176,10 +176,6 @@ const CommentsMoreActions = ({
     setModalVisible_spam(false);
   };
 
-  if (!comment || !actions) {
-    return null;
-  }
-
   return (
     <>
       <Container className={className || ''}>
