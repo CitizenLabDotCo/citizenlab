@@ -1,6 +1,9 @@
 import 'cypress-file-upload';
 import './dnd';
-import { ParticipationMethod } from '../../app/services/participationContexts';
+import {
+  ParticipationMethod,
+  VotingMethod,
+} from '../../app/services/participationContexts';
 import { IUserUpdate } from '../../app/api/users/types';
 import jwtDecode from 'jwt-decode';
 
@@ -819,6 +822,7 @@ export function apiCreateProject({
   description,
   publicationStatus = 'published',
   participationMethod,
+  votingMethod,
   assigneeId,
   surveyUrl,
   surveyService,
@@ -832,6 +836,7 @@ export function apiCreateProject({
   description: string;
   publicationStatus?: 'draft' | 'published' | 'archived';
   participationMethod?: ParticipationMethod;
+  votingMethod?: VotingMethod;
   assigneeId?: string;
   surveyUrl?: string;
   votingMaxTotal?: number;
@@ -874,6 +879,7 @@ export function apiCreateProject({
             type === 'continuous' && !participationMethod
               ? 'ideation'
               : participationMethod,
+          voting_method: votingMethod,
           survey_embed_url: surveyUrl,
           survey_service: surveyService,
           voting_max_total: votingMaxTotal,
@@ -1120,7 +1126,8 @@ export function apiCreatePhase(
   surveyUrl?: string,
   surveyService?: 'typeform' | 'survey_monkey' | 'google_forms',
   votingMaxTotal?: number,
-  allow_anonymous_participation?: boolean
+  allow_anonymous_participation?: boolean,
+  votingMethod?: VotingMethod
 ) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -1141,6 +1148,7 @@ export function apiCreatePhase(
             'nl-BE': title,
           },
           participation_method: participationMethod,
+          voting_method: votingMethod,
           posting_enabled: canPost,
           voting_enabled: canVote,
           commenting_enabled: canComment,
