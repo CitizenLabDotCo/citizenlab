@@ -463,7 +463,6 @@ class ParticipationContext extends PureComponent<
                 isCustomInputTermEnabled={isCustomInputTermEnabled}
                 input_term={input_term}
                 handleInputTermChange={this.handleInputTermChange}
-                allow_anonymous_participation={allow_anonymous_participation}
                 voting_method={voting_method}
                 min_budget={min_budget}
                 max_budget={max_budget}
@@ -480,9 +479,6 @@ class ParticipationContext extends PureComponent<
                 apiErrors={apiErrors}
                 presentation_mode={presentation_mode}
                 handleIdeasDisplayChange={this.handleIdeasDisplayChange}
-                handleAllowAnonymousParticipationOnChange={
-                  this.handleAllowAnonymousParticipationOnChange
-                }
                 handleVotingMethodOnChange={this.handleVotingMethodOnChange}
               />
             )}

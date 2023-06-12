@@ -1,8 +1,5 @@
 import React from 'react';
 
-// api
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 // components
 import { Toggle, IconTooltip } from '@citizenlab/cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
@@ -19,14 +16,12 @@ import messages from '../../../../messages';
 // typings
 import { InputTerm, VotingMethod } from 'services/participationContexts';
 import { ApiErrors } from '../../../';
-import { AnonymousPostingToggle } from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
 import { IOption } from 'typings';
 
 export interface VotingInputsProps {
   isCustomInputTermEnabled: boolean;
   input_term: InputTerm | undefined;
   handleInputTermChange: (option: IOption) => void;
-  allow_anonymous_participation: boolean | null | undefined;
   voting_method: VotingMethod | null | undefined;
   min_budget: number | null | undefined;
   max_budget: number | null | undefined;
@@ -39,9 +34,6 @@ export interface VotingInputsProps {
   apiErrors: ApiErrors;
   presentation_mode: 'card' | 'map' | null | undefined;
   handleIdeasDisplayChange: (presentation_mode: 'map' | 'card') => void;
-  handleAllowAnonymousParticipationOnChange: (
-    allow_anonymous_participation: boolean
-  ) => void;
   handleVotingMethodOnChange: (voting_method: VotingMethod) => void;
 }
 
@@ -49,7 +41,6 @@ export default ({
   isCustomInputTermEnabled,
   input_term,
   handleInputTermChange,
-  allow_anonymous_participation,
   voting_method,
   min_budget,
   max_budget,
@@ -62,27 +53,14 @@ export default ({
   apiErrors,
   presentation_mode,
   handleIdeasDisplayChange,
-  handleAllowAnonymousParticipationOnChange,
   handleVotingMethodOnChange,
 }: VotingInputsProps) => {
-  const hasAnonymousParticipationEnabled = useFeatureFlag({
-    name: 'anonymous_participation',
-  });
-
   return (
     <>
       <VotingMethodSelector
         voting_method={voting_method}
         handleVotingMethodOnChange={handleVotingMethodOnChange}
       />
-      {hasAnonymousParticipationEnabled && (
-        <AnonymousPostingToggle
-          allow_anonymous_participation={allow_anonymous_participation}
-          handleAllowAnonymousParticipationOnChange={
-            handleAllowAnonymousParticipationOnChange
-          }
-        />
-      )}
       {voting_method === 'budgeting' && (
         <BudgetingInputs
           min_budget={min_budget}
