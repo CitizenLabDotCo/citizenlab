@@ -7,7 +7,6 @@ import UpvoteButton from './UpvoteButton';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 // hooks
-import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useAuthUser from 'api/me/useAuthUser';
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
@@ -17,7 +16,6 @@ import useCommentVote from 'api/comment_votes/useCommentVote';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { postIsIdea, postIsInitiative } from '../utils';
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 import { trackUpvote, trackCancelUpvote } from './trackVote';
 
@@ -26,7 +24,7 @@ import { ICommentData } from 'api/comments/types';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
 interface Props {
-  postId: string;
+  ideaId?: string;
   postType: 'idea' | 'initiative';
   commentType: 'parent' | 'child' | undefined;
   comment: ICommentData;
@@ -34,7 +32,7 @@ interface Props {
 }
 
 const CommentVote = ({
-  postId,
+  ideaId,
   postType,
   comment,
   commentType,
@@ -42,11 +40,6 @@ const CommentVote = ({
 }: Props) => {
   const [voted, setVoted] = useState(false);
   const [upvoteCount, setUpvoteCount] = useState(0);
-
-  const initiativeId = postType === 'initiative' ? postId : undefined;
-  const ideaId = postType === 'idea' ? postId : undefined;
-
-  const { data: initiative } = useInitiativeById(initiativeId);
   const { data: idea } = useIdeaById(ideaId);
   const { data: authUser } = useAuthUser();
 
@@ -95,8 +88,6 @@ const CommentVote = ({
     }
   };
 
-  const post = postType === 'idea' ? idea?.data : initiative?.data;
-
   useEffect(() => {
     setVoted(!isNilOrError(commentVote));
   }, [commentVote]);
@@ -126,13 +117,11 @@ const CommentVote = ({
       },
     };
 
-    if (!post) return;
-
-    if (postIsIdea(post)) {
+    if (ideaId && idea) {
       // Wondering why 'comment_voting_idea' and not 'commenting_idea'?
       // See app/api/ideas/types.ts
       const actionDescriptor =
-        post.attributes.action_descriptor.comment_voting_idea;
+        idea.data.attributes.action_descriptor.comment_voting_idea;
 
       if (actionDescriptor.enabled) {
         vote();
@@ -145,7 +134,7 @@ const CommentVote = ({
         const context = {
           type: 'idea',
           action: 'commenting_idea',
-          id: postId,
+          id: ideaId,
         } as const;
 
         triggerAuthenticationFlow({
@@ -155,7 +144,7 @@ const CommentVote = ({
       }
     }
 
-    if (postIsInitiative(post)) {
+    if (postType === 'initiative') {
       const authenticationRequirements =
         commentVotingPermissionInitiative?.authenticationRequirements;
 
@@ -177,14 +166,14 @@ const CommentVote = ({
     }
   };
 
-  if (!isNilOrError(comment) && post) {
+  if (!isNilOrError(comment)) {
     let disabled: boolean;
 
-    if (postIsIdea(post)) {
+    if (idea) {
       // Wondering why 'comment_voting_idea' and not 'commenting_idea'?
       // See app/api/ideas/types.ts
       const { enabled, disabled_reason } =
-        post.attributes.action_descriptor.comment_voting_idea;
+        idea.data.attributes.action_descriptor.comment_voting_idea;
       disabled = !enabled && !isFixableByAuthentication(disabled_reason);
     } else {
       disabled = !!commentVotingPermissionInitiative?.enabled;

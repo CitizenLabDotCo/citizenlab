@@ -120,7 +120,7 @@ const CommentFooter = ({
     <Container className={className || ''}>
       <Left>
         <StyledCommentVote
-          postId={postId}
+          ideaId={ideaId}
           postType={postType}
           comment={comment.data}
           commentType={commentType}
