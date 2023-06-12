@@ -40,6 +40,7 @@
   "app.components.Comments.commentingMaybeNotPermitted": "Brug venligst {signInLink} for at se hvilke handlinger der kan udføres",
   "app.components.Comments.inputsAssociatedWithProfile": "Som standard vil dine indlæg være knyttet til din profil, medmindre du vælger denne mulighed.",
   "app.components.Comments.invisibleTitleComments": "Kommentarer",
+  "app.components.Comments.leastRecent": "Mindst nyere",
   "app.components.Comments.mostRecent": "Seneste",
   "app.components.Comments.mostUpvoted": "Flest stemmer",
   "app.components.Comments.official": "Officiel",
