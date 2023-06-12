@@ -1,6 +1,6 @@
 import React from 'react';
 import FilterSelector from 'components/FilterSelector';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import messages from './messages';
 import { CommentsSort } from 'api/comments/types';
 import { Box } from '@citizenlab/cl2-component-library';
@@ -16,24 +16,29 @@ const CommentSorting = ({
   selectedCommentSort,
   className,
 }: Props) => {
-  // 'new' = most recent (date posted, ascending)
-  // '-upvotes_count' = most votes (votes, descending)
   const handleOnChange = (selectedValue: ['new'] | ['-upvotes_count']) => {
     onChange(selectedValue[0]);
   };
 
-  const sortOptions: {
-    text: JSX.Element;
-    value: CommentsSort;
-  }[] = [
-    // '-new' is the default value we get from the parent
-    { text: <FormattedMessage {...messages.leastRecent} />, value: '-new' },
-    { text: <FormattedMessage {...messages.mostRecent} />, value: 'new' },
-    {
-      text: <FormattedMessage {...messages.mostUpvoted} />,
-      value: '-upvotes_count',
-    },
-  ];
+  const sortOptionsMessages: { [key in CommentsSort]: MessageDescriptor } = {
+    // '-new' = least recent (date posted, descending)
+    // is the default value we get from the parent
+    '-new': messages.leastRecent,
+    // 'new' = most recent (date posted, ascending)
+    new: messages.mostRecent,
+    // '-upvotes_count' = most votes (votes, descending)
+    '-upvotes_count': messages.mostUpvoted,
+  };
+
+  const getSortOptions = () => {
+    const sortOptions: CommentsSort[] = ['-new', 'new', '-upvotes_count'];
+    return sortOptions.map((sortOption) => {
+      return {
+        text: <FormattedMessage {...sortOptionsMessages[sortOption]} />,
+        value: sortOption,
+      };
+    });
+  };
 
   return (
     <Box className={className}>
@@ -42,7 +47,7 @@ const CommentSorting = ({
         title={<FormattedMessage {...messages.commentsSortTitle} />}
         name="sort"
         selected={[selectedCommentSort]}
-        values={sortOptions}
+        values={getSortOptions()}
         onChange={handleOnChange}
         multipleSelectionAllowed={false}
         width="180px"
