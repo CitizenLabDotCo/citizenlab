@@ -57,6 +57,8 @@ export const ParticipationCTAContent = ({
 }: Props) => {
   const theme = useTheme();
   const isSmallerThanPhone = useBreakpoint('phone');
+  const isSurveyPostingEnabled = currentPhase?.attributes.posting_enabled;
+
   let timeLeft = currentPhase
     ? getPeriodRemainingUntil(currentPhase.attributes.end_at, 'weeks')
     : undefined;
@@ -67,13 +69,18 @@ export const ParticipationCTAContent = ({
     timeLeftMessage = messages.xDayLeft;
   }
 
-  let userParticipationMessage = hasUserParticipated
-    ? messages.userHasParticipated
-    : messages.projectOpenForSubmission;
-
-  if (isSmallerThanPhone && !hasUserParticipated) {
-    userParticipationMessage = messages.mobileProjectOpenForSubmission;
-  }
+  const getUserParticipationMessage = () => {
+    if (!isSurveyPostingEnabled) {
+      return messages.projectClosedForSubmission;
+    }
+    if (hasUserParticipated) {
+      return messages.userHasParticipated;
+    }
+    if (isSmallerThanPhone && !hasUserParticipated) {
+      return messages.mobileProjectOpenForSubmission;
+    }
+    return messages.projectOpenForSubmission;
+  };
 
   if (isSmallerThanPhone) {
     return (
@@ -89,14 +96,16 @@ export const ParticipationCTAContent = ({
       >
         <Box display="flex" flexDirection="row" alignItems="center">
           <Box>
-            <BlickingIcon
-              name={hasUserParticipated ? 'check-circle' : 'dot'}
-              width="16px"
-              height="16px"
-              fill={colors.white}
-              mr="8px"
-              showAnimation={!hasUserParticipated}
-            />
+            {isSurveyPostingEnabled && (
+              <BlickingIcon
+                name={hasUserParticipated ? 'check-circle' : 'dot'}
+                width="16px"
+                height="16px"
+                fill={colors.white}
+                mr="8px"
+                showAnimation={!hasUserParticipated}
+              />
+            )}
           </Box>
           <Box
             display="flex"
@@ -110,7 +119,7 @@ export const ParticipationCTAContent = ({
                   ...(isSmallerThanPhone ? { fontWeight: '600' } : {}),
                 }}
               >
-                <FormattedMessage {...userParticipationMessage} />
+                <FormattedMessage {...getUserParticipationMessage()} />
               </div>
             </Text>
             {timeLeft !== undefined && (
@@ -159,16 +168,19 @@ export const ParticipationCTAContent = ({
         maxWidth={`${maxPageWidth}px`}
       >
         <Box display="flex" justifyContent="center" alignItems="center">
-          <BlickingIcon
-            name={hasUserParticipated ? 'check-circle' : 'dot'}
-            width="16px"
-            height="16px"
-            fill={colors.white}
-            mr="8px"
-            showAnimation={!hasUserParticipated}
-          />
+          {isSurveyPostingEnabled && (
+            <BlickingIcon
+              name={hasUserParticipated ? 'check-circle' : 'dot'}
+              width="16px"
+              height="16px"
+              fill={colors.white}
+              mr="8px"
+              showAnimation={!hasUserParticipated}
+            />
+          )}
+
           <Text color="white" fontSize="s" my="0px">
-            <FormattedMessage {...userParticipationMessage} />
+            <FormattedMessage {...getUserParticipationMessage()} />
           </Text>
         </Box>
         <Box display="flex" alignItems="center">

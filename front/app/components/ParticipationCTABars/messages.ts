@@ -17,6 +17,10 @@ export default defineMessages({
     id: 'app.components.ParticipationCTABars.mobileProjectOpenForSubmission',
     defaultMessage: 'Open for participation',
   },
+  projectClosedForSubmission: {
+    id: 'app.components.ParticipationCTABars.projectClosedForSubmission',
+    defaultMessage: 'New submissions are not currently being accepted',
+  },
   userHasParticipated: {
     id: 'app.components.ParticipationCTABars.userHasParticipated',
     defaultMessage: 'You have participated in this project.',
