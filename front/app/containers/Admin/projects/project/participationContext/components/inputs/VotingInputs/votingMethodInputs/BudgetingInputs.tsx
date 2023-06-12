@@ -24,8 +24,8 @@ interface Props {
   voting_max_total?: number | null;
   input_term?: InputTerm;
   isCustomInputTermEnabled: boolean;
-  minBudgetError: string | null;
-  maxBudgetError: string | null;
+  minTotalVotesError: string | null;
+  maxTotalVotesError: string | null;
   apiErrors: ApiErrors;
   handleInputTermChange: (option: IOption) => void;
   handleMinBudgetingAmountChange: (newMinBudget: string) => void;
@@ -37,8 +37,8 @@ const BudgetingInputs = ({
   voting_max_total,
   input_term,
   isCustomInputTermEnabled,
-  minBudgetError,
-  maxBudgetError,
+  minTotalVotesError,
+  maxTotalVotesError,
   apiErrors,
   handleInputTermChange,
   handleMinBudgetingAmountChange,
@@ -78,7 +78,7 @@ const BudgetingInputs = ({
             <LabelBudgetingInput header="minimum" tooltip="minimumTooltip" />
           }
         />
-        <BudgetingAmountInputError text={minBudgetError} />
+        <BudgetingAmountInputError text={minTotalVotesError} />
         <BudgetingAmountInputError
           apiErrors={apiErrors && apiErrors.voting_min_total}
         />
@@ -93,7 +93,7 @@ const BudgetingInputs = ({
             <LabelBudgetingInput header="maximum" tooltip="maximumTooltip" />
           }
         />
-        <BudgetingAmountInputError text={maxBudgetError} />
+        <BudgetingAmountInputError text={maxTotalVotesError} />
         <BudgetingAmountInputError
           apiErrors={apiErrors && apiErrors.voting_max_total}
         />

@@ -457,14 +457,27 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel',
     defaultMessage: 'What should an input be called?',
   },
+  minTotalVotesLargerThanMaxError: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.minTotalVotesLargerThanMaxError',
+    defaultMessage:
+      "The minimum number of votes can't be larger than the maximum number",
+  },
   minBudgetLargerThanMaxError: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.minBudgetLargerThanMaxError',
     defaultMessage:
       "The minimum budget can't be larger than the maximum budget",
   },
+  minVotesRequired: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.minVotesRequired',
+    defaultMessage: 'A minimum number of votes is required',
+  },
   minBudgetRequired: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.minBudgetRequired',
     defaultMessage: 'A minimum budget is required',
+  },
+  maxVotesRequired: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.maxVotesRequired',
+    defaultMessage: 'A maximum number of votes is required',
   },
   maxBudgetRequired: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.maxBudgetRequired',

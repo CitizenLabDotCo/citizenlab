@@ -12,6 +12,7 @@ export default (state: State, formatMessage: FormatMessage) => {
     upvoting_limited_max,
     downvoting_limited_max,
     participation_method,
+    voting_method,
     voting_min_total,
     voting_max_total,
   } = state;
@@ -19,8 +20,8 @@ export default (state: State, formatMessage: FormatMessage) => {
   let isValidated = true;
   let noUpvotingLimitError: JSX.Element | null = null;
   let noDownvotingLimitError: JSX.Element | null = null;
-  let minBudgetError: string | null = null;
-  let maxBudgetError: string | null = null;
+  let minTotalVotesError: string | null = null;
+  let maxTotalVotesError: string | null = null;
 
   if (
     upvoting_method === 'limited' &&
@@ -48,12 +49,20 @@ export default (state: State, formatMessage: FormatMessage) => {
 
   if (participation_method === 'voting') {
     if (isNaN(voting_min_total)) {
-      minBudgetError = formatMessage(messages.minBudgetRequired);
+      minTotalVotesError =
+        voting_method === 'budgeting'
+          ? formatMessage(messages.minBudgetRequired)
+          : formatMessage(messages.minVotesRequired);
+
       isValidated = false;
     }
 
     if (isNaN(voting_max_total)) {
-      maxBudgetError = formatMessage(messages.maxBudgetRequired);
+      maxTotalVotesError =
+        voting_method === 'budgeting'
+          ? formatMessage(messages.maxBudgetRequired)
+          : formatMessage(messages.maxVotesRequired);
+
       isValidated = false;
     }
 
@@ -64,7 +73,11 @@ export default (state: State, formatMessage: FormatMessage) => {
       typeof voting_max_total === 'number' &&
       voting_min_total > voting_max_total
     ) {
-      minBudgetError = formatMessage(messages.minBudgetLargerThanMaxError);
+      minTotalVotesError =
+        voting_method === 'budgeting'
+          ? formatMessage(messages.minBudgetLargerThanMaxError)
+          : formatMessage(messages.minTotalVotesLargerThanMaxError);
+
       isValidated = false;
     }
   }
@@ -72,8 +85,8 @@ export default (state: State, formatMessage: FormatMessage) => {
   return {
     noUpvotingLimitError,
     noDownvotingLimitError,
-    minBudgetError,
-    maxBudgetError,
+    minTotalVotesError,
+    maxTotalVotesError,
     isValidated,
   };
 };

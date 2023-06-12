@@ -26,10 +26,10 @@ export interface VotingInputsProps {
   voting_min_total: number | null | undefined;
   voting_max_total: number | null | undefined;
   commenting_enabled: boolean | null | undefined;
-  minBudgetError: string | null;
-  maxBudgetError: string | null;
-  handleMinBudgetingAmountChange: (newMinBudget: string) => void;
-  handleMaxBudgetingAmountChange: (newMaxBudget: string) => void;
+  minTotalVotesError: string | null;
+  maxTotalVotesError: string | null;
+  handleVotingMinTotalChange: (newVotingMinTotal: string) => void;
+  handleVotingMaxTotalChange: (newVotingMaxTotal: string) => void;
   toggleCommentingEnabled: () => void;
   apiErrors: ApiErrors;
   presentation_mode: 'card' | 'map' | null | undefined;
@@ -45,10 +45,10 @@ export default ({
   voting_min_total,
   voting_max_total,
   commenting_enabled,
-  minBudgetError,
-  maxBudgetError,
-  handleMinBudgetingAmountChange,
-  handleMaxBudgetingAmountChange,
+  minTotalVotesError,
+  maxTotalVotesError,
+  handleVotingMinTotalChange,
+  handleVotingMaxTotalChange,
   toggleCommentingEnabled,
   apiErrors,
   presentation_mode,
@@ -67,12 +67,12 @@ export default ({
           voting_max_total={voting_max_total}
           input_term={input_term}
           isCustomInputTermEnabled={isCustomInputTermEnabled}
-          minBudgetError={minBudgetError}
-          maxBudgetError={maxBudgetError}
+          minTotalVotesError={minTotalVotesError}
+          maxTotalVotesError={maxTotalVotesError}
           apiErrors={apiErrors}
           handleInputTermChange={handleInputTermChange}
-          handleMinBudgetingAmountChange={handleMinBudgetingAmountChange}
-          handleMaxBudgetingAmountChange={handleMaxBudgetingAmountChange}
+          handleMinBudgetingAmountChange={handleVotingMinTotalChange}
+          handleMaxBudgetingAmountChange={handleVotingMaxTotalChange}
         />
       )}
       <SectionField>

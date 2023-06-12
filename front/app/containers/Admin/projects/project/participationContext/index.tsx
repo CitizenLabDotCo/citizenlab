@@ -105,8 +105,8 @@ interface Props extends DataProps, InputProps {}
 export interface State extends IParticipationContextConfig {
   noUpvotingLimitError: JSX.Element | null;
   noDownvotingLimitError: JSX.Element | null;
-  minBudgetError: string | null;
-  maxBudgetError: string | null;
+  minTotalVotesError: string | null;
+  maxTotalVotesError: string | null;
   loaded: boolean;
 }
 
@@ -139,8 +139,8 @@ class ParticipationContext extends PureComponent<
       loaded: false,
       noUpvotingLimitError: null,
       noDownvotingLimitError: null,
-      minBudgetError: null,
-      maxBudgetError: null,
+      minTotalVotesError: null,
+      maxTotalVotesError: null,
       poll_anonymous: false,
       ideas_order: 'trending',
       input_term: 'idea',
@@ -331,19 +331,19 @@ class ParticipationContext extends PureComponent<
     this.setState({ ideas_order });
   };
 
-  handleMinBudgetingAmountChange = (newMinBudget: string) => {
-    const voting_min_total = parseInt(newMinBudget, 10);
+  handleVotingMinTotalChange = (newVotingMinTotal: string) => {
+    const voting_min_total = parseInt(newVotingMinTotal, 10);
     this.setState({
       voting_min_total,
-      minBudgetError: null,
+      minTotalVotesError: null,
     });
   };
 
-  handleMaxBudgetingAmountChange = (newMaxBudget: string) => {
-    const voting_max_total = parseInt(newMaxBudget, 10);
+  handleVotingMaxTotalChange = (newVotingMaxTotal: string) => {
+    const voting_max_total = parseInt(newVotingMaxTotal, 10);
     this.setState({
       voting_max_total,
-      maxBudgetError: null,
+      maxTotalVotesError: null,
     });
   };
 
@@ -367,16 +367,16 @@ class ParticipationContext extends PureComponent<
     const {
       noUpvotingLimitError,
       noDownvotingLimitError,
-      minBudgetError,
-      maxBudgetError,
+      minTotalVotesError,
+      maxTotalVotesError,
       isValidated,
     } = validate(this.state, formatMessage);
 
     this.setState({
       noUpvotingLimitError,
       noDownvotingLimitError,
-      minBudgetError,
-      maxBudgetError,
+      minTotalVotesError,
+      maxTotalVotesError,
     });
 
     return isValidated;
@@ -420,8 +420,8 @@ class ParticipationContext extends PureComponent<
       loaded,
       noUpvotingLimitError,
       noDownvotingLimitError,
-      minBudgetError,
-      maxBudgetError,
+      minTotalVotesError,
+      maxTotalVotesError,
       poll_anonymous,
       presentation_mode,
       ideas_order,
@@ -467,14 +467,10 @@ class ParticipationContext extends PureComponent<
                 voting_min_total={voting_min_total}
                 voting_max_total={voting_max_total}
                 commenting_enabled={commenting_enabled}
-                minBudgetError={minBudgetError}
-                maxBudgetError={maxBudgetError}
-                handleMinBudgetingAmountChange={
-                  this.handleMinBudgetingAmountChange
-                }
-                handleMaxBudgetingAmountChange={
-                  this.handleMaxBudgetingAmountChange
-                }
+                minTotalVotesError={minTotalVotesError}
+                maxTotalVotesError={maxTotalVotesError}
+                handleVotingMinTotalChange={this.handleVotingMinTotalChange}
+                handleVotingMaxTotalChange={this.handleVotingMaxTotalChange}
                 toggleCommentingEnabled={this.toggleCommentingEnabled}
                 apiErrors={apiErrors}
                 presentation_mode={presentation_mode}
