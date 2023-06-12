@@ -8,13 +8,11 @@ git_source(:github) do |repo_name|
 end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.1.7.3'
+gem 'rails', '~> 7.0'
 # Use postgresql as the database for Active Record
 gem 'pg' # , '~> 0.18'
 # Use Puma as the app server
 gem 'puma', '~> 6.2.2'
-# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-# gem 'jbuilder', '~> 2.5'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
@@ -69,7 +67,7 @@ group :development do
   gem 'redcarpet'
   gem 'spring'
   gem 'spring-commands-rspec'
-  gem 'spring-watcher-listen', '~> 2.0.0'
+  gem 'spring-watcher-listen', '~> 2.1'
   gem 'annotate'
 end
 
@@ -91,7 +89,7 @@ gem 'que-web', '~> 0.10.0'
 
 gem 'activerecord-import', '~> 1.4'
 gem 'json-schema', '~> 4.0'
-gem 'activerecord-postgis-adapter', '~> 7.1.1'
+gem 'activerecord-postgis-adapter', '~> 8.0'
 
 gem 'carrierwave', '~> 3.0.0.beta'
 gem 'carrierwave-base64', '~> 2.10'
