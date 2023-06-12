@@ -233,6 +233,7 @@
   "app.components.ParticipationCTABars.allocateBudget": "Διαθέστε τον προϋπολογισμό σας",
   "app.components.ParticipationCTABars.mobileProjectOpenForSubmission": "Ανοιχτό για συμμετοχή",
   "app.components.ParticipationCTABars.poll": "Πάρτε μέρος στη δημοσκόπηση",
+  "app.components.ParticipationCTABars.projectClosedForSubmission": "Προς το παρόν δεν γίνονται δεκτές νέες υποβολές",
   "app.components.ParticipationCTABars.projectOpenForSubmission": "Το έργο αυτό είναι επί του παρόντος ανοικτό για συμμετοχή.",
   "app.components.ParticipationCTABars.reviewDocument": "Επανεξέταση του εγγράφου",
   "app.components.ParticipationCTABars.seeIdeas": "Δείτε ιδέες",
