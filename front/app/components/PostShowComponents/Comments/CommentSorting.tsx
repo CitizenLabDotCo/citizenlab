@@ -1,30 +1,24 @@
-import React, { PureComponent } from 'react';
-import FilterSelector from 'components/FilterSelector';
+import React from 'react';
+import FilterSelector, {
+  IFilterSelectorValue,
+} from 'components/FilterSelector';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import styled from 'styled-components';
 import { CommentsSort } from 'api/comments/types';
-
-const Container = styled.div``;
+import { Box } from '@citizenlab/cl2-component-library';
 
 interface Props {
-  id?: string | undefined;
   onChange: (value: CommentsSort) => void;
   selectedValue: CommentsSort[];
   className?: string;
 }
 
-interface State {}
-
-export default class CommentSorting extends PureComponent<Props, State> {
-  handleOnChange = (selectedValue: [CommentsSort]) => {
-    this.setState({ selectedValue });
-    this.props.onChange(selectedValue[0]);
+const CommentSorting = ({ onChange, selectedValue, className }: Props) => {
+  const handleOnChange = (selectedValue: [CommentsSort]) => {
+    onChange(selectedValue[0]);
   };
 
-  title = (<FormattedMessage {...messages.commentsSortTitle} />);
-
-  sortOptions = [
+  const sortOptions: IFilterSelectorValue[] = [
     { text: <FormattedMessage {...messages.mostRecent} />, value: 'new' },
     {
       text: <FormattedMessage {...messages.mostUpvoted} />,
@@ -32,24 +26,22 @@ export default class CommentSorting extends PureComponent<Props, State> {
     },
   ];
 
-  render() {
-    const { className, selectedValue } = this.props;
+  return (
+    <Box className={className}>
+      <FilterSelector
+        id="e2e-comments-sort-filter"
+        title={<FormattedMessage {...messages.commentsSortTitle} />}
+        name="sort"
+        selected={selectedValue}
+        values={sortOptions}
+        onChange={handleOnChange}
+        multipleSelectionAllowed={false}
+        width="180px"
+        right="-10px"
+        mobileLeft="-5px"
+      />
+    </Box>
+  );
+};
 
-    return (
-      <Container className={className}>
-        <FilterSelector
-          id="e2e-comments-sort-filter"
-          title={this.title}
-          name="sort"
-          selected={selectedValue}
-          values={this.sortOptions}
-          onChange={this.handleOnChange}
-          multipleSelectionAllowed={false}
-          width="180px"
-          right="-10px"
-          mobileLeft="-5px"
-        />
-      </Container>
-    );
-  }
-}
+export default CommentSorting;
