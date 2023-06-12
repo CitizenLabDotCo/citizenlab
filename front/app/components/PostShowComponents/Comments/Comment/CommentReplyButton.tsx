@@ -18,12 +18,10 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 // utils
-import { postIsIdea, postIsInitiative } from './utils';
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 
 // types
 import { GetInitiativesPermissionsChildProps } from 'resources/GetInitiativesPermissions';
-import { IInitiativeData } from 'api/initiatives/types';
 import { IIdeaData } from 'api/ideas/types';
 import { ICommentData } from 'api/comments/types';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
