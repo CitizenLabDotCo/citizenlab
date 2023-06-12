@@ -233,6 +233,7 @@
   "app.components.ParticipationCTABars.allocateBudget": "Fördela din budget",
   "app.components.ParticipationCTABars.mobileProjectOpenForSubmission": "Öppet för deltagande",
   "app.components.ParticipationCTABars.poll": "Svara på enkäten",
+  "app.components.ParticipationCTABars.projectClosedForSubmission": "Nya ansökningar tas för närvarande inte emot",
   "app.components.ParticipationCTABars.projectOpenForSubmission": "Det här projektet är för närvarande öppet för deltagande.",
   "app.components.ParticipationCTABars.reviewDocument": "Granska dokumentet",
   "app.components.ParticipationCTABars.seeIdeas": "Se idéer",
