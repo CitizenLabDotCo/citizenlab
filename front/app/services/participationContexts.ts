@@ -3,6 +3,7 @@ import { getProjectInputTerm } from 'api/projects/utils';
 import { IProjectData, ProcessType } from 'api/projects/types';
 import { getPhaseInputTerm } from 'api/phases/utils';
 import { IPhaseData } from 'api/phases/types';
+import { Multiloc } from 'typings';
 
 export type TSurveyService =
   | 'typeform'
@@ -52,6 +53,34 @@ export type InputTerm =
   | 'contribution';
 
 export type PresentationMode = 'card' | 'map';
+
+export interface ParticipationContext {
+  title_multiloc: Multiloc;
+  description_multiloc: Multiloc;
+  input_term: InputTerm;
+  created_at: string;
+  updated_at: string;
+  participation_method: ParticipationMethod;
+  posting_enabled: boolean;
+  commenting_enabled: boolean;
+  voting_enabled: boolean;
+  upvoting_method: 'limited' | 'unlimited';
+  upvoting_limited_max: number;
+  downvoting_method: 'limited' | 'unlimited';
+  allow_anonymous_participation: boolean;
+  downvoting_enabled: boolean;
+  downvoting_limited_max: number;
+  presentation_mode: PresentationMode;
+  voting_min_total?: number | null;
+  voting_max_total?: number | null;
+  survey_service?: TSurveyService | null;
+  survey_embed_url?: string | null;
+  poll_anonymous?: boolean;
+  ideas_count: number;
+  ideas_order?: IdeaDefaultSortMethod;
+  voting_method?: VotingMethod | null;
+  document_annotation_embed_url?: string | null;
+}
 
 export function getInputTerm(
   processType: ProcessType,

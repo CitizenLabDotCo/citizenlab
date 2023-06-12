@@ -12,7 +12,7 @@ import {
   ParticipationMethod,
   IdeaDefaultSortMethod,
   InputTerm,
-  VotingMethod,
+  ParticipationContext,
 } from 'services/participationContexts';
 import { Keys } from 'utils/cl-react-query/types';
 import { ISubmitState } from 'components/admin/SubmitWrapper';
@@ -62,52 +62,18 @@ export interface IProject {
   data: IProjectData;
 }
 
-export interface IProjectAttributes {
-  title_multiloc: Multiloc;
-  description_multiloc: Multiloc;
+export interface IProjectAttributes extends ParticipationContext {
   description_preview_multiloc: Multiloc;
   slug: string;
   header_bg: ProjectHeaderBgImageSizes;
-  ideas_count: number;
   comments_count: number;
   avatars_count: number;
-  created_at: string;
-  updated_at: string;
   visible_to: Visibility;
   process_type: ProcessType;
   timeline_active?: 'past' | 'present' | 'future' | null;
   participants_count: number;
-  participation_method: ParticipationMethod;
-  posting_enabled: boolean;
-  commenting_enabled: boolean;
-  // voting_enabled should be used to update the project setting
-  // and as a read value if we don't know if the user is doing an up/down vote
-  // (although the action_descriptor might be better for that too, to be checked).
-  //
-  // voting_enabled doesn't take downvoting_enabled into account
-  // or upvoting_limited_max/downvoting_limited_max.
-  // For more specific values, see the voting_idea action_descriptor
-  voting_enabled: boolean;
-  upvoting_method: 'limited' | 'unlimited';
-  upvoting_limited_max: number;
-  downvoting_enabled: boolean;
-  allow_anonymous_participation: boolean;
-  downvoting_method: 'limited' | 'unlimited';
-  downvoting_limited_max: number;
-  presentation_mode: PresentationMode;
   internal_role: 'open_idea_box' | null;
   publication_status: PublicationStatus;
-  voting_min_total?: number | null;
-  voting_max_total?: number | null;
-  survey_service?: TSurveyService | null;
-  survey_embed_url?: string | null;
-  voting_method?: VotingMethod | null;
-  document_annotation_embed_url?: string | null;
-  // MISMATCH: ordering doesn't seem to exist on real response
-  // ordering: number;
-  poll_anonymous?: boolean;
-  ideas_order?: IdeaDefaultSortMethod;
-  input_term: InputTerm;
   include_all_areas: boolean;
   folder_id?: string | null;
   action_descriptor: {
