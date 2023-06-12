@@ -172,9 +172,7 @@ const CommentFooter = ({
         />
         <Outlet
           id="app.components.PostShowComponents.CommentFooter.left"
-          comment={comment}
-          locale={locale}
-          tenantLocales={tenantLocales}
+          commentId={commentId}
         />
       </Left>
       <Right>
