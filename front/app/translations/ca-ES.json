@@ -233,6 +233,7 @@
   "app.components.ParticipationCTABars.allocateBudget": "Assigneu el vostre pressupost",
   "app.components.ParticipationCTABars.mobileProjectOpenForSubmission": "Obert a la participació",
   "app.components.ParticipationCTABars.poll": "Feu l'enquesta",
+  "app.components.ParticipationCTABars.projectClosedForSubmission": "Actualment no s'accepten noves presentacions",
   "app.components.ParticipationCTABars.projectOpenForSubmission": "Actualment aquest projecte està obert a la participació.",
   "app.components.ParticipationCTABars.reviewDocument": "Revisa el document",
   "app.components.ParticipationCTABars.seeIdeas": "Veure idees",
