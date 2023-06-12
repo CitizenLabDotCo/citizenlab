@@ -21,13 +21,20 @@ export type VoteSubmissionState =
   | 'hasSubmitted'
   | 'submissionEnded';
 
+export type GetStatusDescriptionProps = {
+  project: IProjectData;
+  SubmissionState: VoteSubmissionState;
+  phase?: IPhaseData;
+};
+
 export type VotingMethodConfig = {
   getStatusTitle: (submissionState: VoteSubmissionState) => MessageDescriptor;
   getStatusSubmissionCountCopy?: () => MessageDescriptor;
-  getStatusDescription?: (
-    project: IProjectData,
-    phase?: IPhaseData
-  ) => JSX.Element;
+  getStatusDescription?: ({
+    project,
+    phase,
+    SubmissionState,
+  }: GetStatusDescriptionProps) => JSX.Element | null;
   getSubmissionTerm?: () => MessageDescriptor;
 };
 
@@ -42,23 +49,36 @@ const budgetingConfig: VotingMethodConfig = {
         return messages.finalResults;
     }
   },
-  getStatusDescription: (project: IProjectData, phase?: IPhaseData) => {
-    return (
-      <FormattedMessage
-        values={{
-          b: (chunks) => (
-            <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
-          ),
-          optionCount: phase
-            ? phase.attributes.ideas_count
-            : project.attributes.ideas_count,
-          maxBudget: phase
-            ? phase.attributes.max_budget
-            : project.attributes.max_budget,
-        }}
-        {...messages.budgetingSubmissionInstructions}
-      />
-    );
+  getStatusDescription: ({
+    project,
+    phase,
+    SubmissionState,
+  }: GetStatusDescriptionProps) => {
+    if (SubmissionState === 'hasNotSubmitted') {
+      return (
+        <FormattedMessage
+          values={{
+            b: (chunks) => (
+              <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+            ),
+            optionCount: phase
+              ? phase.attributes.ideas_count
+              : project.attributes.ideas_count,
+            maxBudget: phase
+              ? phase.attributes.max_budget
+              : project.attributes.max_budget,
+          }}
+          {...messages.budgetingSubmissionInstructions}
+        />
+      );
+    }
+    if (
+      SubmissionState === 'hasSubmitted' ||
+      SubmissionState === 'submissionEnded'
+    ) {
+      return <FormattedMessage {...messages.budgetingSubmittedInstructions} />;
+    }
+    return null;
   },
   getStatusSubmissionCountCopy: () => {
     return messages.submittedBudgetsCountText;

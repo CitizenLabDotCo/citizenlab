@@ -4,7 +4,7 @@ import { VotingMethod } from 'services/participationContexts';
 import { useTheme } from 'styled-components';
 import messages from './messages';
 import { getVotingMethodConfig } from 'utils/votingMethodUtils/votingMethodUtils';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 import useBasket from 'hooks/useBasket';
@@ -15,11 +15,6 @@ type StatusModuleProps = {
   phase?: IPhaseData;
   project: IProjectData;
 };
-
-// const getStatusDescription = (
-//   submissionState: VoteSubmissionState,
-//   votingMethod: VotingMethod | null
-// ) => {};
 
 const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
   const theme = useTheme();
@@ -53,7 +48,11 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
       <>
         <Text>
           {config?.getStatusDescription &&
-            config.getStatusDescription(project, phase)}
+            config.getStatusDescription({
+              project,
+              phase,
+              SubmissionState: basketStatus,
+            })}
         </Text>
         {phase && (
           <Text>
@@ -65,8 +64,8 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
         )}
       </>
       <Text m="0px" fontSize="xxxxl">
+        {/* TODO: Get submission count from BE once endpoint implemented*/}
         127
-        {/* TODO: Get submission count from BE*/}
       </Text>
       <Text m="0px">
         {config?.getStatusSubmissionCountCopy &&

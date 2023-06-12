@@ -30,4 +30,9 @@ export default defineMessages({
     defaultMessage:
       'You have a total of <b>{maxBudget} USD to distribute between {optionCount} options</b>. Select your preferred options by tapping on "Add". Once you are done, click "Submit" to submit your budget.',
   },
+  budgetingSubmittedInstructions: {
+    id: 'app.utils.votingMethodUtils.budgetingSubmittedInstructions',
+    defaultMessage:
+      'Your budget has been submitted. You can check your options below at any point or modify them before the deadline.',
+  },
 });
