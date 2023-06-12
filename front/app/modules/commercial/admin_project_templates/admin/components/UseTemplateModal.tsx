@@ -1,8 +1,6 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
 import { get, isEmpty, transform } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import streams from 'utils/streams';
-import { API_PATH } from 'containers/App/constants';
 import { convertToGraphqlLocale, isNilOrError } from 'utils/helperUtils';
 import bowser from 'bowser';
 import moment from 'moment';
@@ -55,6 +53,7 @@ import { queryClient } from 'utils/cl-react-query/queryClient';
 
 // typings
 import { Locale, Multiloc, IOption } from 'typings';
+import adminPublicationsKeys from 'api/admin_publications/keys';
 import meKeys from 'api/me/keys';
 
 const Content = styled.div`
@@ -250,10 +249,10 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
             },
           });
           queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
-          queryClient.invalidateQueries({ queryKey: meKeys.all() });
-          await streams.fetchAllWith({
-            apiEndpoint: [`${API_PATH}/admin_publications`],
+          queryClient.invalidateQueries({
+            queryKey: adminPublicationsKeys.lists(),
           });
+          queryClient.invalidateQueries({ queryKey: meKeys.all() });
 
           if (emitSuccessEvent) {
             eventEmitter.emit('NewProjectCreated');

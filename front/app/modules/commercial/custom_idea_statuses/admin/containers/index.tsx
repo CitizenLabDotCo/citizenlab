@@ -1,6 +1,5 @@
 // libraries
 import React, { useMemo } from 'react';
-import Link from 'utils/cl-router/Link';
 import styled from 'styled-components';
 import Tippy from '@tippyjs/react';
 import { isNilOrError } from 'utils/helperUtils';
@@ -118,25 +117,16 @@ const IdeaStatuses = () => {
     return (
       <Section>
         <SectionTitle>
-          <FormattedMessage {...messages.titleIdeaStatuses} />
+          <FormattedMessage {...messages.titleIdeaStatuses1} />
         </SectionTitle>
         <SectionDescription>
-          <FormattedMessage
-            {...messages.subtitleInputStatuses}
-            values={{
-              linkToManageTab: (
-                <Link to="/admin/ideas">
-                  <FormattedMessage {...messages.manage} />
-                </Link>
-              ),
-            }}
-          />
+          <FormattedMessage {...messages.subtitleInputStatuses1} />
         </SectionDescription>
         <ButtonWrapper>
           <Button
             buttonStyle="cl-blue"
             icon="plus-circle"
-            linkTo="/admin/ideas/statuses/new"
+            linkTo="/admin/settings/statuses/new"
           >
             <FormattedMessage {...messages.addIdeaStatus} />
           </Button>
@@ -173,7 +163,7 @@ const IdeaStatuses = () => {
             </Tippy>
 
             <Button
-              linkTo={`/admin/ideas/statuses/${defaultStatus.id}`}
+              linkTo={`/admin/settings/statuses/${defaultStatus.id}`}
               buttonStyle="secondary"
               icon="edit"
             >
@@ -231,7 +221,7 @@ const IdeaStatuses = () => {
                       </div>
                     </Tippy>
                     <Button
-                      linkTo={`/admin/ideas/statuses/${ideaStatus.id}`}
+                      linkTo={`/admin/settings/statuses/${ideaStatus.id}`}
                       buttonStyle="secondary"
                       icon="edit"
                     >

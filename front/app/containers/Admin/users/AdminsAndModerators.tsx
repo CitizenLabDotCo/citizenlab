@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { isString, isEmpty } from 'lodash-es';
+import React from 'react';
 
 import UserManager from './UserManager';
 import UsersHeader from './UsersHeader';
@@ -14,32 +13,18 @@ const StyledBox = styled(Box)`
   grid-auto-rows: 1fr;
 `;
 
-const AdminsAndModerators = () => {
-  const [search, setSearch] = useState<string | undefined>(undefined);
-
-  const searchUser = (searchTerm: string) => {
-    setSearch(isString(searchTerm) && !isEmpty(searchTerm) ? searchTerm : '');
-  };
-
-  return (
-    <>
-      <UsersHeader
-        onSearch={searchUser}
-        title={messages.adminsAndManagers}
-        subtitle={messages.adminsAndManagersSubtitle}
-      />
-      <UserManager
-        search={search}
-        canModerate
-        notCitizenlabMember
-        includeInactive
-      />
-      <StyledBox mt="20px">
-        <SeatInfo seatType="admin" />
-        <SeatInfo seatType="moderator" />
-      </StyledBox>
-    </>
-  );
-};
+const AdminsAndModerators = () => (
+  <>
+    <UsersHeader
+      title={messages.adminsAndManagers}
+      subtitle={messages.adminsAndManagersSubtitle}
+    />
+    <UserManager canModerate notCitizenlabMember includeInactive />
+    <StyledBox mt="20px">
+      <SeatInfo seatType="admin" />
+      <SeatInfo seatType="moderator" />
+    </StyledBox>
+  </>
+);
 
 export default AdminsAndModerators;

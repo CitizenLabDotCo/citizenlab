@@ -1,17 +1,14 @@
 import React from 'react';
 import NonSortableFolderRow, { Props } from './NonSortableFolderRow';
 import { render, screen } from 'utils/testUtils/rtl';
-import {
-  IAdminPublicationContent,
-  IUseAdminPublicationsOutput,
-} from 'hooks/useAdminPublications';
+
 import { IUserData } from 'api/users/types';
+import { IAdminPublicationData } from 'api/admin_publications/types';
 
 const folderId = 'folderId';
-const folderPublication: IAdminPublicationContent = {
+const folderPublication: IAdminPublicationData = {
   id: '1',
-  publicationType: 'folder' as const,
-  publicationId: folderId,
+  type: 'admin_publication',
   attributes: {
     ordering: 0,
     depth: 0,
@@ -35,11 +32,10 @@ const folderPublication: IAdminPublicationContent = {
 };
 
 const projectId = 'projectId';
-const mockFolderChildAdminPublicationsList: IAdminPublicationContent[] = [
+const mockFolderChildAdminPublicationsList: IAdminPublicationData[] = [
   {
     id: '2',
-    publicationType: 'project' as const,
-    publicationId: projectId,
+    type: 'admin_publication',
     attributes: {
       ordering: 0,
       depth: 0,
@@ -67,17 +63,6 @@ const mockFolderChildAdminPublicationsList: IAdminPublicationContent[] = [
     },
   },
 ];
-const mockFolderChildAdminPublications: IUseAdminPublicationsOutput = {
-  hasMore: false,
-  loadingInitial: false,
-  loadingMore: false,
-  list: mockFolderChildAdminPublicationsList,
-  onLoadMore: jest.fn,
-  onChangeTopics: jest.fn,
-  onChangeSearch: jest.fn,
-  onChangeAreas: jest.fn,
-  onChangePublicationStatus: jest.fn,
-};
 
 const mockUserData: IUserData = {
   id: 'userId',
@@ -98,9 +83,18 @@ const mockUserData: IUserData = {
     confirmation_required: false,
   },
 };
+
 jest.mock('api/me/useAuthUser', () => () => ({ data: { data: mockUserData } }));
+
+const mockFolderChildAdminPublications = {
+  hasNextPage: false,
+  isLoadingInitial: false,
+  isFetchingNextPage: false,
+  data: { pages: [{ data: mockFolderChildAdminPublicationsList }] },
+};
+
 // Needed to render folder with project inside
-jest.mock('hooks/useAdminPublications', () => {
+jest.mock('api/admin_publications/useAdminPublications', () => {
   return () => mockFolderChildAdminPublications;
 });
 

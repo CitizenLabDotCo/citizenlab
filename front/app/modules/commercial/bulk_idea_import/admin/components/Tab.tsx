@@ -22,7 +22,7 @@ const Tab: FC<Props & WrappedComponentProps> = ({
           label: formatMessage(messages.import),
           url: '/admin/ideas/import',
         },
-        insertAfterName: 'statuses',
+        insertAfterName: 'manage',
       }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []

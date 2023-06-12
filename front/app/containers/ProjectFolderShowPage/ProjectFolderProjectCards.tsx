@@ -6,7 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import ProjectCard from 'components/ProjectCard';
 
 // hooks
-import useAdminPublications from 'hooks/useAdminPublications';
+import useAdminPublications from 'api/admin_publications/useAdminPublications';
 
 // style
 import styled from 'styled-components';
@@ -45,10 +45,12 @@ interface Props {
 const publicationStatuses: PublicationStatus[] = ['published', 'archived'];
 
 const ProjectFolderProjectCards = ({ folderId, className }: Props) => {
-  const { list: adminPublications } = useAdminPublications({
+  const { data } = useAdminPublications({
     childrenOfId: folderId,
     publicationStatusFilter: publicationStatuses,
   });
+
+  const adminPublications = data?.pages.map((page) => page.data).flat();
 
   if (!isNilOrError(adminPublications)) {
     const hasNoDescriptionPreviews = adminPublications.every((item) =>
@@ -61,8 +63,8 @@ const ProjectFolderProjectCards = ({ folderId, className }: Props) => {
         <Container className={className}>
           {adminPublications.map((item, index) => (
             <StyledProjectCard
-              key={item.publicationId}
-              projectId={item.publicationId}
+              key={item.id}
+              projectId={item.relationships.publication.data.id}
               size="small"
               isEven={index % 2 !== 1}
               hideDescriptionPreview={hideDescriptionPreview}
