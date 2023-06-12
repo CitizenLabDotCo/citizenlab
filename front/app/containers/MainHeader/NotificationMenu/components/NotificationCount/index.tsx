@@ -1,5 +1,5 @@
 import React from 'react';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
@@ -18,7 +18,7 @@ const Container = styled.div`
   position: relative;
 `;
 
-export const NewNotificationsIndicator = styled.div`
+const NewNotificationsIndicator = styled.div`
   color: #fff;
   font-size: ${fontSizes.xs}px;
   line-height: ${fontSizes.xs}px;
@@ -46,12 +46,13 @@ type Props = {
 };
 
 const NotificationCount = ({ dropdownOpened, onClick }: Props) => {
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const theme = useTheme();
   const { formatMessage } = useIntl();
 
   if (!isNilOrError(authUser)) {
-    const unreadNotificationsCount = authUser.attributes.unread_notifications;
+    const unreadNotificationsCount =
+      authUser.data.attributes.unread_notifications;
 
     return (
       <Container>

@@ -23,7 +23,7 @@ import { getIdeaPostingRules } from 'services/actionTakingRules';
 import useProjectById from 'api/projects/useProjectById';
 import usePhase from 'api/phases/usePhase';
 import usePhases from 'api/phases/usePhases';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useProjectImages, {
   CARD_IMAGE_ASPECT_RATIO,
 } from 'api/project_images/useProjectImages';
@@ -465,7 +465,7 @@ const ProjectCard = memo<Props>(
     intl: { formatMessage },
   }) => {
     const { data: project } = useProjectById(projectId);
-    const authUser = useAuthUser();
+    const { data: authUser } = useAuthUser();
     const { data: projectImages } = useProjectImages(projectId);
     const currentPhaseId =
       project?.data?.relationships?.current_phase?.data?.id ?? null;
@@ -504,7 +504,7 @@ const ProjectCard = memo<Props>(
       const postingPermission = getIdeaPostingRules({
         project: project?.data,
         phase: phase?.data,
-        authUser: !isNilOrError(authUser) ? authUser : null,
+        authUser: !isNilOrError(authUser) ? authUser.data : null,
       });
       const participationMethod = phase
         ? phase.data.attributes.participation_method
@@ -605,6 +605,8 @@ const ProjectCard = memo<Props>(
         participationMethod === 'native_survey'
       ) {
         ctaMessage = <FormattedMessage {...messages.takeTheSurvey} />;
+      } else if (participationMethod === 'document_annotation') {
+        ctaMessage = <FormattedMessage {...messages.reviewDocument} />;
       } else if (participationMethod === 'poll') {
         ctaMessage = <FormattedMessage {...messages.takeThePoll} />;
       } else if (participationMethod === 'ideation' && canPost) {

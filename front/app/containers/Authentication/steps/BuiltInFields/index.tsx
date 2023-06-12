@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 // hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useLocale from 'hooks/useLocale';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useAuthenticationRequirements from 'api/authentication/authentication_requirements/useAuthenticationRequirements';
 
 // components
@@ -62,7 +62,7 @@ const BuiltInFields = ({
   const { data: appConfiguration } = useAppConfiguration();
   const locale = useLocale();
   const { formatMessage } = useIntl();
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
 
   const appConfigSettings = appConfiguration?.data.attributes.settings;
   const minimumPasswordLength =
@@ -93,7 +93,7 @@ const BuiltInFields = ({
     password,
   }: BuiltInFieldsUpdate) => {
     try {
-      await onSubmit(authUser.id, {
+      await onSubmit(authUser.data.id, {
         first_name,
         last_name,
         password,

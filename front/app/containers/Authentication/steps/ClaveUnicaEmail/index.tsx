@@ -9,21 +9,27 @@ import { isCLErrorsIsh, handleCLErrorsIsh } from 'utils/errorUtils';
 import { SetError } from 'containers/Authentication/typings';
 import { yupResolver } from '@hookform/resolvers/yup';
 import sharedMessages from '../messages';
-import useAuthUser from 'hooks/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
 import signOut from 'api/authentication/sign_in_out/signOut';
 import TextButton from '../_components/TextButton';
 import useMenuMessages from 'containers/MainHeader/UserMenu/messages';
+import useAuthUser from 'api/me/useAuthUser';
 
 interface Props {
   loading: boolean;
   setError: SetError;
-  onSubmit: (email: string) => void;
+  onSubmit: ({
+    email,
+    userId,
+  }: {
+    email: string;
+    userId: string;
+  }) => Promise<void>;
 }
 
 const ClaveUnicaEmail = ({ loading, setError, onSubmit }: Props) => {
   const { formatMessage } = useIntl();
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
 
   const schema = getSchema(formatMessage);
 
@@ -37,7 +43,7 @@ const ClaveUnicaEmail = ({ loading, setError, onSubmit }: Props) => {
 
   const handleSubmit = async ({ email }: FormValues) => {
     try {
-      await onSubmit(email);
+      await onSubmit({ email, userId: authUser.data.id });
     } catch (e) {
       if (isCLErrorsIsh(e)) {
         handleCLErrorsIsh(e, methods.setError);

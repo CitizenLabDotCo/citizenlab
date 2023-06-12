@@ -6,16 +6,22 @@ import { insertConfiguration } from 'utils/moduleUtils';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';
-import TabbedResource from 'components/admin/TabbedResource';
 import Outlet from 'components/Outlet';
-import { Outlet as RouterOutlet } from 'react-router-dom';
+import { Outlet as RouterOutlet, useLocation } from 'react-router-dom';
+import NavigationTabs, {
+  Tab,
+  TabsPageLayout,
+} from 'components/admin/NavigationTabs';
+import Link from 'utils/cl-router/Link';
+import { isTopBarNavActive } from 'utils/helperUtils';
+import { useIntl } from 'utils/cl-intl';
 
 // i18n
 import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
 
-const IdeasPage = ({ intl: { formatMessage } }: WrappedComponentProps) => {
+const IdeasPage = () => {
+  const { formatMessage } = useIntl();
+  const { pathname } = useLocation();
   const [tabs, setTabs] = useState<ITab[]>([
     {
       label: formatMessage(messages.tabManage),
@@ -23,11 +29,6 @@ const IdeasPage = ({ intl: { formatMessage } }: WrappedComponentProps) => {
       url: '/admin/ideas',
     },
   ]);
-
-  const resource = {
-    title: formatMessage(messages.inputManagerPageTitle),
-    subtitle: formatMessage(messages.inputManagerPageSubtitle),
-  };
 
   const handleData = (data: InsertConfigurationOptions<ITab>) => {
     setTabs((tabs) => insertConfiguration(data)(tabs));
@@ -40,17 +41,31 @@ const IdeasPage = ({ intl: { formatMessage } }: WrappedComponentProps) => {
         formatMessage={formatMessage}
         onData={handleData}
       />
-      <TabbedResource resource={resource} tabs={tabs}>
+      <NavigationTabs>
+        {tabs.map(({ url, label }) => (
+          <Tab
+            label={label}
+            url={url}
+            key={url}
+            active={isTopBarNavActive('/admin/ideas', pathname, url)}
+          >
+            <Link to={url}>{label}</Link>
+          </Tab>
+        ))}
+      </NavigationTabs>
+
+      <TabsPageLayout>
         <HelmetIntl
           title={messages.inputManagerMetaTitle}
           description={messages.inputManagerMetaDescription}
         />
+
         <div id="e2e-input-manager-container">
           <RouterOutlet />
         </div>
-      </TabbedResource>
+      </TabsPageLayout>
     </>
   );
 };
 
-export default injectIntl(IdeasPage);
+export default IdeasPage;

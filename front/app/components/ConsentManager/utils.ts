@@ -13,7 +13,7 @@ import { IConsentCookie } from './consent';
 // typings
 import { IAppConfigurationData } from 'api/app_configuration/types';
 import { CategorizedDestinations, IPreferences } from './typings';
-import { TAuthUser } from 'hooks/useAuthUser';
+import { IUserData } from 'api/users/types';
 
 export const getCategory = (
   tenant: IAppConfigurationData,
@@ -48,7 +48,7 @@ export const categorizeDestinations = (
 
 export const getActiveDestinations = (
   appConfiguration: IAppConfigurationData | NilOrError,
-  authUser: TAuthUser
+  authUser: IUserData | undefined | null
 ): IDestinationConfig[] => {
   if (isNilOrError(appConfiguration)) return [];
 
@@ -63,7 +63,7 @@ export const getActiveDestinations = (
 
 export const getCurrentPreferences = (
   appConfiguration: IAppConfigurationData | NilOrError,
-  authUser: TAuthUser,
+  authUser: IUserData | undefined,
   cookieConsent: IConsentCookie | null
 ) => {
   const newDestinations = getActiveDestinations(

@@ -1,8 +1,8 @@
-import { authUserStream } from 'services/auth';
+import authUserStream from 'api/me/authUserStream';
 import { IUser } from 'api/users/types';
 import { isObject } from 'lodash-es';
 import { map } from 'rxjs/operators';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
 
 import {
@@ -81,7 +81,7 @@ const hasPermission = ({
   action: string;
   context?: any;
 }) => {
-  return authUserStream().observable.pipe(
+  return authUserStream.pipe(
     map((user) => {
       if (!item) {
         return false;
@@ -91,7 +91,7 @@ const hasPermission = ({
       const rule = getPermissionRule(resourceType, action);
 
       if (rule && appConfiguration) {
-        return rule(item, user, appConfiguration.data, context);
+        return rule(item, user || null, appConfiguration.data, context);
       } else {
         throw `No permission rule is specified on resource '${resourceType}' for action '${action}'`;
       }
@@ -108,7 +108,7 @@ const usePermission = ({
   action: string;
   context?: any;
 }) => {
-  const user = useAuthUser();
+  const { data: user } = useAuthUser();
   const { data: appConfig } = useAppConfiguration();
 
   if (!item) {
@@ -122,7 +122,7 @@ const usePermission = ({
     return (
       !isNilOrError(user) &&
       !isNilOrError(appConfig) &&
-      rule(item, { data: user }, appConfig?.data, context)
+      rule(item, user, appConfig?.data, context)
     );
   } else {
     throw `No permission rule is specified on resource '${resourceType}' for action '${action}'`;

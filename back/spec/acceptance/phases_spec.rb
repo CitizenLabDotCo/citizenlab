@@ -259,6 +259,8 @@ resource 'Phases' do
         end
       end
 
+      # ?
+
       describe do
         let(:participation_method) { 'budgeting' }
         let(:max_budget) { 420_000 }
