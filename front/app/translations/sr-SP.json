@@ -233,6 +233,7 @@
   "app.components.ParticipationCTABars.allocateBudget": "Одредите свој буџет",
   "app.components.ParticipationCTABars.mobileProjectOpenForSubmission": "Отворено за учешће",
   "app.components.ParticipationCTABars.poll": "Учествујте у анкети",
+  "app.components.ParticipationCTABars.projectClosedForSubmission": "New submissions are not currently being accepted",
   "app.components.ParticipationCTABars.projectOpenForSubmission": "Овај пројекат је тренутно отворен за учешће.",
   "app.components.ParticipationCTABars.reviewDocument": "Review the document",
   "app.components.ParticipationCTABars.seeIdeas": "Погледајте идеје",
