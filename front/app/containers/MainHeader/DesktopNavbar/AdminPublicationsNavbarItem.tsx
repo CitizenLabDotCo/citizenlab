@@ -8,9 +8,7 @@ import ProjectsListItem from '../ProjectsListItem';
 import T from 'components/T';
 
 // hooks
-import useAdminPublications, {
-  IAdminPublicationContent,
-} from 'hooks/useAdminPublications';
+import useAdminPublications from 'api/admin_publications/useAdminPublications';
 import useLocalize from 'hooks/useLocalize';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -151,11 +149,15 @@ const AdminPublicationsNavbarItem = ({
   const [projectsDropdownOpened, setProjectsDropdownOpened] = useState(false);
   const localize = useLocalize();
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
-  const { list: adminPublications } = useAdminPublications({
+
+  const { data } = useAdminPublications({
     publicationStatusFilter: ['published', 'archived'],
     rootLevelOnly: true,
     removeNotAllowedParents: true,
   });
+
+  const adminPublications = data?.pages.map((page) => page.data).flat();
+
   const urlSegments = location.pathname.replace(/^\/+/g, '').split('/');
   const secondUrlSegment = urlSegments[1];
   const totalProjectsListLength = !isNilOrError(adminPublications)
@@ -202,9 +204,9 @@ const AdminPublicationsNavbarItem = ({
           zIndex="500"
           content={
             <ProjectsList id="e2e-projects-dropdown-content">
-              {adminPublications.map((item: IAdminPublicationContent) => (
-                <React.Fragment key={item.publicationId}>
-                  {item.publicationType === 'project' && (
+              {adminPublications.map((item) => (
+                <React.Fragment key={item.id}>
+                  {item.relationships.publication.data.type === 'project' && (
                     <ProjectsListItem
                       to={`${linkTo}/${item.attributes.publication_slug}`}
                     >
@@ -212,7 +214,7 @@ const AdminPublicationsNavbarItem = ({
                     </ProjectsListItem>
                   )}
                   {isProjectFoldersEnabled &&
-                    item.publicationType === 'folder' && (
+                    item.relationships.publication.data.type === 'folder' && (
                       <ProjectsListItem
                         to={`/folders/${item.attributes.publication_slug}`}
                       >

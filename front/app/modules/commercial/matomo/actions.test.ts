@@ -3,8 +3,6 @@ import { mockRoutes } from './mockRoutes.mock';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import ideasKeys from 'api/ideas/keys';
 
-jest.mock('services/auth');
-
 jest.mock('routes', () => ({
   __esModule: true,
   default: jest.fn(() => [mockRoutes]),

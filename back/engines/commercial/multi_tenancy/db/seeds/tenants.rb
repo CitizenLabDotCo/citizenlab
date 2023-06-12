@@ -124,6 +124,10 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            anonymous_participation: {
+              enabled: true,
+              allowed: true
+            },
             representativeness: {
               enabled: true,
               allowed: true
@@ -270,7 +274,7 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            konveio_surveys: {
+            konveio_document_annotation: {
               enabled: true,
               allowed: true
             },

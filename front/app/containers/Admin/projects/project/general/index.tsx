@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Multiloc, UploadFile } from 'typings';
-import { isEmpty, get, isString } from 'lodash-es';
+import { Multiloc, UploadFile, CLErrors } from 'typings';
+import { isEmpty, isString } from 'lodash-es';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import { INewProjectCreatedEvent } from 'containers/Admin/projects/all/CreateProject';
 
@@ -74,6 +74,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import eventEmitter from 'utils/eventEmitter';
 import { convertUrlToUploadFile, isUploadFile } from 'utils/fileUtils';
 import useUpdateProject from 'api/projects/useUpdateProject';
+import projectsKeys from 'api/projects/keys';
 
 export const TIMEOUT = 350;
 
@@ -102,7 +103,7 @@ const AdminProjectsProjectGeneral = () => {
 
   const [processing, setProcessing] =
     useState<IProjectFormState['processing']>(false);
-  const [apiErrors, setApiErrors] = useState({});
+  const [apiErrors, setApiErrors] = useState<CLErrors>({});
   const [projectAttributesDiff, setProjectAttributesDiff] = useState<
     IProjectFormState['projectAttributesDiff']
   >({});
@@ -388,14 +389,12 @@ const AdminProjectsProjectGeneral = () => {
         queryClient.invalidateQueries({
           queryKey: projectPermissionKeys.list({ projectId: latestProjectId }),
         });
+        queryClient.invalidateQueries({
+          queryKey: projectsKeys.item({ slug: project?.data.attributes.slug }),
+        });
       } catch (errors) {
-        const apiErrors = get(
-          errors,
-          'json.errors',
-          formatMessage(messages.saveErrorMessage)
-        );
         setSubmitState('error');
-        setApiErrors(apiErrors);
+        setApiErrors(errors.errors);
         setProcessing(false);
       }
     }

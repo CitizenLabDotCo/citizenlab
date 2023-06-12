@@ -1,11 +1,4 @@
-import React, {
-  memo,
-  useCallback,
-  useEffect,
-  useState,
-  FormEvent,
-  MouseEvent,
-} from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { isNumber } from 'lodash-es';
 
@@ -27,7 +20,6 @@ import IdeaButton from 'components/IdeaButton';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
-import { scrollToElement } from 'utils/scroll';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -36,13 +28,12 @@ import { getInputTermMessage } from 'utils/i18n';
 
 // style
 import styled from 'styled-components';
-import { selectPhase } from 'containers/ProjectsShowPage/timeline/events';
 
 // router
-import clHistory from 'utils/cl-router/history';
 import { useLocation } from 'react-router-dom';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import { scrollTo } from 'containers/Authentication/SuccessActions/actions/scrollTo';
 
 const Container = styled.div``;
 
@@ -74,48 +65,40 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     }
   }, [divId]);
 
-  const scrollTo = useCallback(
-    (id: string) => {
-      if (project) {
-        const isOnProjectPage = pathname.endsWith(
-          `/projects/${project.data.attributes.slug}`
-        );
-
-        currentPhase && selectPhase(currentPhase);
-
-        if (isOnProjectPage) {
-          scrollToElement({ id, shouldFocus: true });
-        } else {
-          clHistory.push(`/projects/${project.data.attributes.slug}#${id}`);
-        }
-      }
-    },
-    [currentPhase, project, pathname]
-  );
-
   if (isNilOrError(project)) {
     return null;
   }
 
-  const handleTakeSurveyClick = (event: FormEvent) => {
-    event.preventDefault();
+  const scrollToElementWithId = (elementId: string) => {
+    const scrollParams = {
+      elementId,
+      pathname,
+      projectSlug: project.data.attributes.slug,
+      currentPhase,
+    };
 
+    scrollTo(scrollParams)();
+  };
+
+  const handleTakeSurveyClick = () => {
     const { enabled, disabled_reason } =
       project.data.attributes.action_descriptor.taking_survey;
 
-    if (enabled === true) {
-      scrollTo('project-survey');
+    if (enabled) {
+      scrollToElementWithId('project-survey');
       return;
     }
 
     if (isFixableByAuthentication(disabled_reason)) {
+      const scrollParams = {
+        elementId: 'project-survey',
+        pathname,
+        projectSlug: project.data.attributes.slug,
+        currentPhase,
+      };
       const successAction: SuccessAction = {
-        name: 'scrollToSurvey',
-        params: {
-          pathname,
-          projectSlug: project.data.attributes.slug,
-          currentPhase,
-        },
+        name: 'scrollTo',
+        params: scrollParams,
       };
 
       triggerAuthenticationFlow({
@@ -124,6 +107,39 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
           type: currentPhase ? 'phase' : 'project',
           id: currentPhase?.id ?? project.data.id,
           action: 'taking_survey',
+        },
+        successAction,
+      });
+    }
+  };
+
+  const handleReviewDocumentClick = () => {
+    const { enabled, disabled_reason } =
+      project.data.attributes.action_descriptor.annotating_document;
+
+    if (enabled) {
+      scrollToElementWithId('document-annotation');
+      return;
+    }
+
+    if (isFixableByAuthentication(disabled_reason)) {
+      const scrollParams = {
+        elementId: 'document-annotation',
+        pathname,
+        projectSlug: project.data.attributes.slug,
+        currentPhase,
+      };
+      const successAction: SuccessAction = {
+        name: 'scrollTo',
+        params: scrollParams,
+      };
+
+      triggerAuthenticationFlow({
+        flow: 'signup',
+        context: {
+          type: currentPhase ? 'phase' : 'project',
+          id: currentPhase?.id ?? project.data.id,
+          action: 'annotating_document',
         },
         successAction,
       });
@@ -151,6 +167,8 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
   const isParticipationMethodNativeSurvey =
     participationMethod === 'native_survey';
   const isParticipationMethodIdeation = participationMethod === 'ideation';
+  const isParticipationMethodDocumentAnnotation =
+    participationMethod === 'document_annotation';
 
   const showSeeIdeasButton =
     isParticipationMethodIdeation && isNumber(ideas_count) && ideas_count > 0;
@@ -175,15 +193,19 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
   const isPhaseNativeSurvey =
     currentPhase?.attributes.participation_method === 'native_survey';
 
+  const showDocumentAnnotationCTAButton =
+    !isProjectArchived &&
+    isParticipationMethodDocumentAnnotation &&
+    !hasCurrentPhaseEnded;
+
   return (
     <Container className={className || ''}>
       {showSeeIdeasButton && (
         <SeeIdeasButton
           id="e2e-project-see-ideas-button"
           buttonStyle="secondary"
-          onClick={(e: MouseEvent) => {
-            e.preventDefault();
-            scrollTo('project-ideas');
+          onClick={() => {
+            scrollToElementWithId('project-ideas');
           }}
           fontWeight="500"
         >
@@ -222,7 +244,6 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
       )}
       {showTakeSurveyButton && (
         <Button
-          buttonStyle="primary"
           onClick={handleTakeSurveyClick}
           fontWeight="500"
           data-testid="take-survey-button"
@@ -232,14 +253,17 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
       )}
       {showTakePollButton && (
         <Button
-          buttonStyle="primary"
-          onClick={(e: MouseEvent) => {
-            e.preventDefault();
-            scrollTo('project-poll');
+          onClick={() => {
+            scrollToElementWithId('project-poll');
           }}
           fontWeight="500"
         >
           <FormattedMessage {...messages.takeThePoll} />
+        </Button>
+      )}
+      {showDocumentAnnotationCTAButton && (
+        <Button onClick={handleReviewDocumentClick} fontWeight="500">
+          <FormattedMessage {...messages.reviewDocument} />
         </Button>
       )}
     </Container>

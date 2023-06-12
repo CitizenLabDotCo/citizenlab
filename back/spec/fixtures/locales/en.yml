@@ -61,3 +61,5 @@ en:
           title: What is your option?
   user:
     anon_first_name: "User"
+  xlsx_export:
+    anonymous: "Anonymous"

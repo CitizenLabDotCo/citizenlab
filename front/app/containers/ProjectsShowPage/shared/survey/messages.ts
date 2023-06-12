@@ -25,10 +25,6 @@ export default defineMessages({
     id: 'app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActiveUser',
     defaultMessage: 'Please {completeRegistrationLink} to take the survey.',
   },
-  surveyDisabledNotPossible: {
-    id: 'app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPossible',
-    defaultMessage: 'It is currently impossible to take this survey.',
-  },
   surveyDisabledNotActivePhase: {
     id: 'app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActivePhase',
     defaultMessage:

@@ -8,6 +8,7 @@ export default ({
   voting_enabled,
   upvoting_method,
   downvoting_method,
+  allow_anonymous_participation,
   upvoting_limited_max,
   downvoting_limited_max,
   downvoting_enabled,
@@ -19,6 +20,7 @@ export default ({
   poll_anonymous,
   ideas_order,
   input_term,
+  document_annotation_embed_url,
 }: State) => {
   let output: IParticipationContextConfig = {} as any;
 
@@ -39,6 +41,7 @@ export default ({
         upvoting_method,
         upvoting_limited_max,
         downvoting_enabled,
+        allow_anonymous_participation,
         downvoting_method,
         downvoting_limited_max,
         presentation_mode,
@@ -52,6 +55,11 @@ export default ({
       participation_method,
       survey_embed_url,
       survey_service,
+    };
+  } else if (participation_method === 'document_annotation') {
+    output = {
+      participation_method,
+      document_annotation_embed_url,
     };
   } else if (participation_method === 'poll') {
     output = {

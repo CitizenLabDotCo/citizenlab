@@ -1,6 +1,6 @@
 import React from 'react';
 
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import { createCampaign } from 'services/campaigns';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
@@ -13,7 +13,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 
 const New = () => {
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const handleSubmit = async (values: FormValues) => {
     const response = await createCampaign({
       campaign_name: 'manual',
@@ -37,7 +37,7 @@ const New = () => {
         defaultValues={{
           sender: 'author',
           reply_to:
-            (!isNilOrError(authUser) && authUser.attributes.email) || '',
+            (!isNilOrError(authUser) && authUser.data.attributes.email) || '',
         }}
         onSubmit={handleSubmit}
       />

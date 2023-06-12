@@ -207,6 +207,7 @@ sr-Cyrl:
       status: 'Статус'
       assignee_fullname: 'Асигнее'
       assignee_email: 'Имејл примаоца'
+    anonymous: 'Anonymous'
   form_builder:
     default_select_field:
       title: 'Ваше питање'

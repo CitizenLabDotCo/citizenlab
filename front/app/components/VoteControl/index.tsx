@@ -21,7 +21,7 @@ import { isRtl } from 'utils/styleUtils';
 
 // typings
 import useIdeaById from 'api/ideas/useIdeaById';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useProjectById from 'api/projects/useProjectById';
 import useIdeaVote from 'api/idea_votes/useIdeaVote';
 import usePhases from 'api/phases/usePhases';
@@ -73,7 +73,7 @@ const VoteControl = ({
   const { mutate: addVote, isLoading: addVoteIsLoading } = useAddIdeaVote();
   const { mutate: deleteVote, isLoading: deleteVoteIsLoading } =
     useDeleteIdeaVote();
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(
     idea?.data.relationships.project.data.id
   );
@@ -96,7 +96,7 @@ const VoteControl = ({
           {
             onSuccess: () => {
               addVote(
-                { ideaId, userId: authUser.id, mode: voteMode },
+                { ideaId, userId: authUser.data.id, mode: voteMode },
                 {
                   onSuccess: () => {
                     setVotingAnimation(null);
@@ -123,7 +123,7 @@ const VoteControl = ({
       // Add vote
       if (!voteId) {
         addVote(
-          { ideaId, userId: authUser.id, mode: voteMode },
+          { ideaId, userId: authUser.data.id, mode: voteMode },
           {
             onSuccess: () => {
               setVotingAnimation(null);

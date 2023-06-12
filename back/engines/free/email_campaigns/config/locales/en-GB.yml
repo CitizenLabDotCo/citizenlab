@@ -48,55 +48,6 @@ en-GB:
       "assignee_digest": Weekly overview of assigned ideas
       "user_digest": Weekly overview
       "your_proposed_initiatives_digest": Weekly overview of your proposals
-    admin_campaign_type_description:
-      "manual": Official message - all users
-      "admin_rights_received": Admin rights received - admins
-      "comment_deleted_by_admin": Deletion of your comment - all users
-      "comment_marked_as_spam": Comment spam report - admins and project managers
-      "comment_on_your_comment": Reply on your comment - all users
-      "comment_on_your_idea": Comment on your idea - all users
-      "comment_on_your_initiative": Comment on your proposal - all users
-      "first_idea_published": Publication of your first idea - all users
-      "idea_marked_as_spam": Idea spam report - admins and project managers
-      "idea_published": Publication of your idea - all users
-      "initiative_assigned_to_you": Assignment of a proposal - admins
-      "initiative_marked_as_spam": Proposal spam report - admins
-      "initiative_published": Publication of your proposal - all users
-      "invite_received": Invitation - all users
-      "invite_reminder": Invitation reminder - all users
-      "mention_in_comment": Mention in a comment - all users
-      "mention_in_official_feedback": Mention in an update - all users
-      "new_comment_for_admin": New comment - admins and project managers
-      "new_comment_on_commented_idea": New comment on an idea you commented on - all users
-      "new_comment_on_commented_initiative": New comment on a proposal you commented on - all users
-      "new_comment_on_voted_idea": New comment on an idea you voted for - all users
-      "new_comment_on_voted_initiative": New comment on a proposal you voted for - all users
-      "new_idea_for_admin": New idea - admins and project managers
-      "new_initiative_for_admin": New proposal - admins
-      "official_feedback_on_commented_idea": Update on an idea you commented on - all users
-      "official_feedback_on_commented_initiative": Update on a proposal you commented on - all users
-      "official_feedback_on_voted_idea": Update on an idea you voted on - all users
-      "official_feedback_on_voted_initiative": Update on a proposal you voted on - all users
-      "official_feedback_on_your_idea": Update on your idea - all users
-      "official_feedback_on_your_initiative": Update on your proposal - all users
-      "password_reset": Password reset - all users
-      "project_moderation_rights_received": Project moderation rights received - project managers
-      "project_folder_moderation_rights_received": Folder manager rights received
-      "project_phase_started": New project phase - project participants
-      "project_phase_upcoming": Upcoming new project phase - admins and project managers
-      "status_change_of_commented_idea": Status change of an idea you commented on - all users
-      "status_change_of_commented_initiative": Status change of a proposal you commented on - all users
-      "status_change_of_voted_idea": Status change of an idea you voted on - all users
-      "status_change_of_voted_initiative": Status change of a proposal you voted on - all users
-      "status_change_of_your_idea": Status change of your idea - all users
-      "status_change_of_your_initiative": Status change of your proposal - all users
-      "threshold_reached_for_admin": Proposal reached the voting threshold - admins
-      "welcome": Welcome email to new users - all users
-      "admin_digest": Weekly overview - admins
-      "moderator_digest": Weekly overview - project managers
-      "assignee_digest": Weekly overview of assigned ideas - admins and project managers
-      "user_digest": Weekly overview - all users
-      "your_proposed_initiatives_digest": Weekly overview of your own proposals - all users
     schedules:
       weekly:
         "0": "Weekly, on Sundays at %{hourOfDay}"
@@ -135,8 +86,8 @@ en-GB:
       new_comments: 'New comments'
       title_activity_past_week: 'Activity of the past week'
       title_no_activity_past_week: 'There was no activity in the past week'
-      title_initiatives_past_week: 'New initiatives of the past week'
-      title_successful_initiatives_past_week: 'Initiatives that reached the threshold in the past week'
+      title_initiatives_past_week: 'New proposals of the past week'
+      title_successful_initiatives_past_week: 'Proposals that reached the threshold in the past week'
       yesterday_by_author: 'Yesterday by %{author}'
       today_by_author: 'Today by %{author}'
       x_days_ago_by_author: '%{x} days ago by %{author}'
@@ -170,10 +121,10 @@ en-GB:
     comment_on_your_initiative:
       commented: '%{authorFirstName} wrote:'
       cta_reply_to: 'Reply to %{commentAuthor}'
-      event_description: '%{authorNameFull} placed a reaction on your petition ''%{initiativeTitle}''. Click the button below to continue the conversation with %{authorName}.'
-      main_header: '%{commentAuthor} commented on your petition'
+      event_description: '%{authorNameFull} placed a reaction on your proposal ''%{initiativeTitle}''. Click the button below to continue the conversation with %{authorName}.'
+      main_header: '%{commentAuthor} commented on your proposal'
       subject: 'You''ve received a comment on %{organizationName}''s platform'
-      preheader: '%{authorName} left a comment on your petition for %{organizationName}'
+      preheader: '%{authorName} left a comment on your proposal for %{organizationName}'
     assignee_digest:
       subject: 'Ideas requiring your feedback: %{numberIdeas}'
       preheader: 'Assignee digest of %{organizationName}'
@@ -200,7 +151,7 @@ en-GB:
       title_spam_report: '%{firstName} %{lastName} reported spam'
     initiative_marked_as_spam:
       by_author: 'by %{authorName}'
-      cta_review_initiative: 'Review petition'
+      cta_review_initiative: 'Review proposal'
       report_inappropriate_offensive_content: 'I find this content inappropriate or offensive.'
       report_not_an_initiative: 'This content is not a proposal and does not belong here.'
       subject: 'You have a spam report on the platform of %{organizationName}'
@@ -210,10 +161,10 @@ en-GB:
     initiative_assigned_to_you:
       by_author: 'by %{authorName}'
       cta_reply_to: 'Give feedback to %{authorName}'
-      event_description_initiative: 'A petition has been assigned to you. Give feedback by writing an official update or by changing its status.'
+      event_description_initiative: 'A proposal has been assigned to you. Give feedback by writing an official update or by changing its status.'
       main_header: '%{firstName}, you have a new assignment'
       subject: 'You have an assignment on the platform of %{organizationName}'
-      preheader_initiative: 'The petition of %{authorName} has been assigned to you'
+      preheader_initiative: 'The proposal of %{authorName} has been assigned to you'
     invite_reminder:
       cta_accept_invitation: 'Accept your invitation'
       invitation_header: 'Your invitation is pending'
@@ -228,19 +179,19 @@ en-GB:
       subject: 'You are invited to join the platform of %{organizationName}'
     initiative_published:
       action_add_image: '%{addImageLink} to increase visibility'
-      action_published_initiative: 'Published petition'
+      action_published_initiative: 'Published proposal'
       action_send_email: 'Send your contacts an %{sendEmailLink}'
       action_share_fb: 'Let your friends know on %{fbLink}'
       action_share_link: 'Share it via any channel by copying the %{link}'
       action_share_twitter: 'Inform your followers on %{twitterLink}'
-      cta_view_initiative: 'Go to your petition'
+      cta_view_initiative: 'Go to your proposal'
       link: link
-      main_header: 'You posted a petition! Let''s gather support for it.'
-      message_next_steps: '%{userFirstName}, your petition has successfully been published on the participation platform of %{organizationName}. You will be notified when people interact with your petition. Find out what next steps you can take below.'
+      main_header: 'You posted a proposal! Let''s gather support for it.'
+      message_next_steps: '%{userFirstName}, your proposal has successfully been published on the participation platform of %{organizationName}. You will be notified when people interact with your petition. Find out what next steps you can take below.'
       message_get_votes: 'Reach the voting threshold:'
-      preheader: 'Thank you for sharing your petition %{initiativeTitle} with %{organizationName}. The next step is to get support for your petition by sharing it across your network.'
+      preheader: 'Thank you for sharing your proposal %{initiativeTitle} with %{organizationName}. The next step is to get support for your proposal by sharing it across your network.'
       send_email: email
-      subject: 'Your petition was published on the platform of %{organizationName}'
+      subject: 'Your proposal was published on the platform of %{organizationName}'
     mention_in_official_feedback:
       by_author: 'by %{authorName}'
       commented: '%{organizationName} wrote:'
@@ -325,10 +276,10 @@ en-GB:
       by_author: 'by %{authorName}'
       commented: '%{authorFirstName} wrote:'
       cta_reply_to: 'Give feedback to %{authorName}'
-      event_description: '%{authorName} has published a new petition on your platform. Discover it now, give some feedback or change its status!'
-      main_header: '%{firstName}, a new petition has been published on your platform'
-      subject: 'Someone published a new petition on the platform of %{organizationName}'
-      preheader: '%{authorName} published a new petition on your platform'
+      event_description: '%{authorName} has published a new proposal on your platform. Discover it now, give some feedback or change its status!'
+      main_header: '%{firstName}, a new proposal has been published on your platform'
+      subject: 'Someone published a new proposal on the platform of %{organizationName}'
+      preheader: '%{authorName} published a new proposal on your platform'
     new_idea_for_admin:
       by_author: 'by %{authorName}'
       commented: '%{authorFirstName} commented:'
@@ -389,11 +340,11 @@ en-GB:
       preheader: '%{officialName} left an official update on an initiative you voted on'
     official_feedback_on_your_initiative:
       updated: '%{officialName} wrote:'
-      cta_view: 'Go to your petition'
-      event_description: '%{officialName} gave an update on your petition ''%{initiativeTitle}''. Click the button below to enter the conversation with %{organizationName}.'
+      cta_view: 'Go to your proposal'
+      event_description: '%{officialName} gave an update on your proposal ''%{initiativeTitle}''. Click the button below to enter the conversation with %{organizationName}.'
       main_header: 'You received an update from %{officialName}'
       subject: 'You''ve received an official update on the platform of %{organizationName}'
-      preheader: '%{officialName} left an official update on your petition'
+      preheader: '%{officialName} left an official update on your proposal'
     project_moderation_rights_received:
       cta_manage_project: 'Manage this project'
       message_you_became_moderator: 'An adminstrator of the participation platform of %{organizationName} just made you project manager of the following project:'
@@ -445,21 +396,21 @@ en-GB:
       cta_view_idea: 'Go to this idea'
       event_description: '%{organizationName} updated the status of the idea ''%{ideaTitle}'' on their digital participation platform.'
       main_header: 'An idea you commented on has a new status'
-      subject: 'The status of an idea you commented on has been changed'
+      subject: 'The status of an idea you commented on has changed'
       preheader: '%{organizationName} changed the status of an idea you commented on'
     status_change_of_your_idea:
       status_change: 'The new status of your idea is ''%{ideaStatus}'''
       cta_view_idea: 'Go to your idea'
       event_description: '%{organizationName} updated the status of your idea ''%{ideaTitle}'' on their digital participation platform.'
       main_header: 'Your idea has a new status'
-      subject: 'The status of your idea has been changed'
+      subject: 'The status of your idea has changed'
       preheader: '%{organizationName} changed the status of your idea'
     status_change_of_voted_idea:
       status_change: 'The new status of this idea is ''%{ideaStatus}'''
       cta_view_idea: 'Go to this idea'
       event_description: '%{organizationName} updated the status of the idea ''%{ideaTitle}'' on their digital participation platform.'
       main_header: 'An idea you voted on has a new status'
-      subject: 'The status of an idea you voted on has been changed'
+      subject: 'The status of an idea you voted on has changed'
       preheader: '%{organizationName} changed the status of an idea you voted on'
     status_change_of_voted_initiative:
       status_change: 'The new status of this initiative is ''%{initiativeStatus}'''
@@ -476,12 +427,12 @@ en-GB:
       subject: 'The status of an initiative you commented on has changed'
       preheader: 'The status of an initiative you commented on has changed'
     status_change_of_your_initiative:
-      status_change: 'The new status of your petition is ''%{initiativeStatus}'''
-      cta_view_initiative: 'Go to your petition'
-      event_description: 'The status of the petition ''%{initiativeTitle}'' has been updated on the digital participation platform of %{organizationName}.'
-      main_header: 'Your petition has a new status'
-      subject: 'The status of your petition has changed'
-      preheader: 'The status of your petition has changed'
+      status_change: 'The new status of your proposal is ''%{initiativeStatus}'''
+      cta_view_initiative: 'Go to your proposal'
+      event_description: 'The status of the proposal ''%{initiativeTitle}'' has been updated on the digital participation platform of %{organizationName}.'
+      main_header: 'Your proposal has a new status'
+      subject: 'The status of your proposal has changed'
+      preheader: 'The status of your proposal has changed'
     user_digest:
       subject: "Your activity on the participation platform of %{organizationName}"
       commented: "%{authorFirstName} commented:"
@@ -554,10 +505,10 @@ en-GB:
       subject: 'Your idea on the platform of %{organizationName}'
       message_next_steps: ""
     your_proposed_initiatives_digest:
-      subject: 'Weekly update of your petition'
-      preheader: 'What happened to your petition in the past week?'
-      title_your_weekly_report: 'How has your petition been doing?'
-      text_introduction: 'Find the key numbers below and go to your petition''s page to take action and gather enough support in time.'
+      subject: 'Weekly update of your proposal'
+      preheader: 'What happened to your proposal in the past week?'
+      title_your_weekly_report: 'How has your proposal been doing?'
+      text_introduction: 'Find the key numbers below and go to your proposal''s page to take action and gather enough support in time.'
       cta_see_your_initiative: 'Go to your petition'
       total_votes: 'Total votes'
       new_votes: 'New votes'
@@ -565,9 +516,7 @@ en-GB:
       remaining_days: 'Days remaining'
     admin_labels:
       recipient_role:
-        admins: 'To admins'
         admins_and_managers: 'To admins & managers'
-        managers: 'To managers'
         registered_users: 'To registered users'
       recipient_segment:
         admins: 'Admins'
@@ -578,18 +527,18 @@ en-GB:
         managers: 'Managers'
         admins_assigned_to_a_proposal: 'Admins assigned to a proposal'
         admins_and_managers_assigned_to_the_input: 'Admins & managers assigned to the input'
-        user_receiving_admin_rights: 'User receiving admin rights'
-        user_receiving_folder_moderator_rights: 'User receiving folder moderator rights'
-        user_receiving_project_moderator_rights: 'User receiving project moderator rights'
+        user_who_is_receiving_admin_rights: 'User who is receiving admin rights'
+        user_who_is_receiving_folder_moderator_rights: 'User who is receiving folder moderator rights'
+        user_who_is_receiving_project_moderator_rights: 'User who is receiving project moderator rights'
         user_who_commented: 'User who commented'
         user_who_is_mentioned: 'User who is mentioned'
         user_who_published_the_proposal: 'User who published the proposal'
         user_who_published_the_input: 'User who published the input'
         user_who_registers: 'User who registers'
         user_who_was_invited: 'User who was invited'
-        users_engaged_with_the_input: 'Users engaged with the input'
-        users_engaged_with_the_project: 'Users engaged with the project'
-        users_engaged_with_the_proposal: 'Users engaged with the proposal'
+        users_who_engaged_with_the_input: 'Users who engaged with the input'
+        users_who_engaged_with_the_project: 'Users who engaged with the project'
+        users_who_engaged_with_the_proposal: 'Users who engaged with the proposal'
       content_type:
         comments: 'Comments'
         content_moderation: 'Content moderation'
@@ -606,15 +555,15 @@ en-GB:
         input_is_assigned: 'Input is assigned'
         input_is_flagged_as_spam: 'Input is flagged as spam'
         input_is_updated: 'Input is updated'
-        input_status_is_changed: 'Input status is changed'
+        input_status_changes: 'Input status changes'
         new_input_is_published: 'New input is published'
-        new_proposal_is_published: 'New proposal is published'
-        project_changes_phase: 'Project changes phase'
+        new_proposal_is_posted: 'New proposal is posted'
+        project_phase_changes: 'Project phase changes'
         proposal_gets_reported_as_spam: 'Proposal gets reported as spam'
         proposal_is_assigned_to_admin: 'Proposal is assigned to admin'
         proposal_is_updated: 'Proposal is updated'
         proposal_is_upvoted_above_threshold: 'Proposal is upvoted above threshold'
-        proposal_status_is_changed: 'Proposal status is changed'
+        proposal_status_changes: 'Proposal status changes'
         user_comments: 'User comments'
         user_comments_on_input: 'User comments on input'
         user_comments_on_proposal: 'User comments on proposal'
@@ -622,8 +571,8 @@ en-GB:
         user_is_given_folder_moderator_rights: 'User is given folder moderator rights'
         user_is_given_project_moderator_rights: 'User is given project moderator rights'
         user_is_mentioned: 'User is mentioned'
-        user_publishes_an_input: 'User publishes an input'
-        user_publishes_a_proposal: 'User publishes a proposal'
+        input_is_published: 'Input is published'
+        proposal_is_published: 'Proposal is published'
         user_registers_for_the_first_time: 'User registers for the first time'
         user_replies_to_comment: 'User replies to comment'
         7_days_after_invite_is_sent: '7 days after invite is sent'

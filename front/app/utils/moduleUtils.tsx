@@ -33,7 +33,7 @@ import { GetLocaleChildProps } from 'resources/GetLocale';
 import { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 import { ICommentData } from 'api/comments/types';
 import { IGroupDataAttributes, MembershipType } from 'api/groups/types';
-import { TNotificationData } from 'services/notifications';
+import { TNotificationData } from 'api/notifications/types';
 import { IPhaseData } from 'api/phases/types';
 import { TVerificationMethod } from 'services/verificationMethods';
 import { SignUpInFlow } from 'containers/Authentication/typings';
@@ -310,6 +310,7 @@ interface Routes {
   'admin.dashboards': RouteConfiguration[];
   'admin.project_templates': RouteConfiguration[];
   'admin.settings': RouteConfiguration[];
+  'admin.tools': RouteConfiguration[];
   'admin.reporting': RouteConfiguration[];
 }
 
@@ -433,6 +434,10 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
       ),
       'admin.settings': parseModuleRoutes(
         mergedRoutes?.['admin.settings'],
+        RouteTypes.ADMIN
+      ),
+      'admin.tools': parseModuleRoutes(
+        mergedRoutes?.['admin.tools'],
         RouteTypes.ADMIN
       ),
       'admin.reporting': parseModuleRoutes(

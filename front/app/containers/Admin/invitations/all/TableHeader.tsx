@@ -11,7 +11,7 @@ import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // typings
-import { SortAttribute } from 'resources/GetInvites';
+import { SortAttribute } from 'api/invites/types';
 import { SortDirection } from 'utils/paginationUtils';
 
 interface ClickableCellProps {

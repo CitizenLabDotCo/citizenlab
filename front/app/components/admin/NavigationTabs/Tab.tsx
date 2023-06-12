@@ -1,3 +1,8 @@
+import React from 'react';
+
+import { Box, StatusLabel } from '@citizenlab/cl2-component-library';
+import Link from 'utils/cl-router/Link';
+
 // style
 import styled, { css } from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
@@ -8,10 +13,13 @@ import {
   activeBorderSize,
 } from './tabsStyleConstants';
 
-export const darkSkyBlue = '#7FBBCA'; // TODO: Use color from component library.
+type ContainerProps = {
+  active: boolean;
+};
 
-const Tab = styled.div`
-  ${({ active }: TabProps) => css`
+// very similar to front/app/components/admin/TabbedResource/Tab.tsx
+const Container = styled.div`
+  ${({ active }: ContainerProps) => css`
     list-style: none;
     cursor: pointer;
     display: flex;
@@ -27,7 +35,7 @@ const Tab = styled.div`
       margin-right: 40px;
     }
 
-    > * {
+    a {
       color: ${colors.textSecondary};
       font-size: ${fontSizes.base}px;
       font-weight: 400;
@@ -38,7 +46,7 @@ const Tab = styled.div`
       transition: all 100ms ease-out;
     }
 
-    &:hover > * {
+    &:hover a {
       color: ${colors.primary};
     }
 
@@ -48,15 +56,37 @@ const Tab = styled.div`
     }`}
 
     ${active &&
-    `border-color: ${darkSkyBlue};
+    `border-color: ${colors.teal500};
     // border-color: ${colors.primary}; TODO : set accent color in component library
 
-    > * {
+    a {
         color: ${colors.primary};
     }`}
   `}
 `;
 
-type TabProps = { active: boolean } & React.HTMLAttributes<HTMLDivElement>;
+type TabProps = {
+  label: string;
+  url: string;
+  active: boolean;
+  statusLabel?: string;
+} & React.HTMLAttributes<HTMLDivElement>;
+
+const Tab = ({ label, url, active, statusLabel, ...props }: TabProps) => (
+  <Container active={active} {...props}>
+    <Link to={url}>
+      {label}
+      {statusLabel && (
+        <Box ml="12px" display="inline">
+          <StatusLabel
+            text={statusLabel}
+            backgroundColor={colors.background}
+            variant="outlined"
+          />
+        </Box>
+      )}
+    </Link>
+  </Container>
+);
 
 export default Tab;

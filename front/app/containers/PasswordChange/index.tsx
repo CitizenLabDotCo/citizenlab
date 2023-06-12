@@ -34,11 +34,11 @@ import GetAppConfiguration, {
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import GoBackButton from 'components/UI/GoBackButton';
 import clHistory from 'utils/cl-router/history';
-import streams from 'utils/streams';
-import { API_PATH } from 'containers/App/constants';
+import { queryClient } from 'utils/cl-react-query/queryClient';
+import meKeys from 'api/me/keys';
 import useChangePassword from 'api/users/useChangePassword';
 import { handleCLErrorsIsh } from 'utils/errorUtils';
 
@@ -52,12 +52,12 @@ type Props = {
 };
 
 const ChangePassword = ({ tenant }: Props) => {
+  const { data: authUser } = useAuthUser();
   const { mutateAsync: changePassword } = useChangePassword();
-  const authUser = useAuthUser();
   const { formatMessage } = useIntl();
   const [success, setSuccess] = useState(false);
   const userHasPreviousPassword =
-    !isNilOrError(authUser) && !authUser.attributes?.no_password;
+    !isNilOrError(authUser) && !authUser.data.attributes?.no_password;
   const pageTitle = userHasPreviousPassword
     ? messages.titleChangePassword
     : messages.titleAddPassword;
@@ -113,9 +113,7 @@ const ChangePassword = ({ tenant }: Props) => {
     try {
       await changePassword(formValues);
       setSuccess(true);
-      await streams.fetchAllWith({
-        apiEndpoint: [`${API_PATH}/users/me`],
-      });
+      queryClient.invalidateQueries({ queryKey: meKeys.all() });
     } catch (error) {
       handleCLErrorsIsh(error, methods.setError);
     }

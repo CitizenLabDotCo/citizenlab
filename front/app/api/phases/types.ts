@@ -46,6 +46,7 @@ export interface IPhaseAttributes {
   upvoting_method: VotingMethod;
   upvoting_limited_max: number;
   downvoting_method: VotingMethod;
+  allow_anonymous_participation: boolean;
   downvoting_enabled: boolean;
   downvoting_limited_max: number;
   presentation_mode: PresentationMode;
@@ -56,6 +57,7 @@ export interface IPhaseAttributes {
   poll_anonymous?: boolean;
   ideas_count: number;
   ideas_order?: IdeaDefaultSortMethod;
+  document_annotation_embed_url?: string;
 }
 
 export interface IPhases {
@@ -89,6 +91,7 @@ export interface IUpdatedPhaseProperties {
   survey_embed_url?: string | null;
   poll_anonymous?: boolean;
   ideas_order?: IdeaDefaultSortMethod;
+  document_annotation_embed_url?: string | null;
 }
 export interface AddPhaseObject extends IUpdatedPhaseProperties {
   projectId: string;

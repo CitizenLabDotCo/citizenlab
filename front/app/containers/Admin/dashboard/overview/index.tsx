@@ -11,7 +11,7 @@ import {
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 
 // hooks
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 
 // components
 import { Title } from '@citizenlab/cl2-component-library';

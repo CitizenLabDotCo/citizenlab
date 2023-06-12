@@ -9,7 +9,7 @@ import { Icon, IconNames } from '@citizenlab/cl2-component-library';
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import { IdeaVotingDisabledReason } from 'api/ideas/types';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useIdeaById from 'api/ideas/useIdeaById';
 import { FormattedDate } from 'react-intl';
 import useLocalize from 'hooks/useLocalize';
@@ -326,7 +326,7 @@ const VoteButton = ({
   ideaId,
   userVoteMode,
 }: Props) => {
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const { data: idea } = useIdeaById(ideaId);
   const projectId = !isNilOrError(idea)
     ? idea.data.relationships.project.data.id

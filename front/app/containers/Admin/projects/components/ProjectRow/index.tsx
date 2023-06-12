@@ -25,13 +25,13 @@ import ManageButton from './ManageButton';
 
 // resources
 import { canModerateProject } from 'services/permissions/rules/projectPermissions';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useProjectById from 'api/projects/useProjectById';
 import { userModeratesFolder } from 'services/permissions/rules/projectFolderPermissions';
 
 // types
-import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 import ProjectMoreActionsMenu, { ActionType } from './ProjectMoreActionsMenu';
+import { IAdminPublicationData } from 'api/admin_publications/types';
 
 export const StyledStatusLabel = styled(StatusLabel)`
   margin-right: 5px;
@@ -54,7 +54,7 @@ type CustomButtonAction = {
 type ButtonAction = CustomButtonAction | 'manage';
 
 export interface Props {
-  publication: IAdminPublicationContent;
+  publication: IAdminPublicationData;
   actions: ButtonAction[];
   hidePublicationStatusLabel?: boolean;
   className?: string;
@@ -71,8 +71,8 @@ const ProjectRow = ({
   const [isBeingDeleted, setIsBeingDeleted] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [isBeingCopyied, setIsBeingCopyied] = useState(false);
-  const authUser = useAuthUser();
-  const projectId = publication.publicationId;
+  const { data: authUser } = useAuthUser();
+  const projectId = publication.relationships.publication.data.id;
   const { data: project } = useProjectById(projectId);
   const publicationStatus = publication.attributes.publication_status;
   const folderId = project?.data.attributes.folder_id;
@@ -82,9 +82,10 @@ const ProjectRow = ({
   }
   const userCanModerateProject =
     // This means project is in a folder
-    (typeof folderId === 'string' && userModeratesFolder(authUser, folderId)) ||
-    canModerateProject(publication.publicationId, {
-      data: authUser,
+    (typeof folderId === 'string' &&
+      userModeratesFolder(authUser.data, folderId)) ||
+    canModerateProject(publication.relationships.publication.data.id, {
+      data: authUser.data,
     });
 
   const handleActionLoading = (actionType: ActionType, isRunning: boolean) => {
@@ -127,14 +128,14 @@ const ProjectRow = ({
               return (
                 <ManageButton
                   isDisabled={!userCanModerateProject}
-                  publicationId={publication.publicationId}
+                  publicationId={publication.relationships.publication.data.id}
                   key="manage"
                 />
               );
             } else {
               return (
                 <RowButton
-                  data-cy={`e2e-manage-button-${publication.publicationId}`}
+                  data-cy={`e2e-manage-button-${publication.relationships.publication.data.id}`}
                   key={action.icon}
                   type="button"
                   className={[
@@ -145,7 +146,9 @@ const ProjectRow = ({
                   ]
                     .filter((item) => item)
                     .join(' ')}
-                  onClick={action.handler(publication.publicationId)}
+                  onClick={action.handler(
+                    publication.relationships.publication.data.id
+                  )}
                   buttonStyle="secondary"
                   icon={action.icon}
                   processing={action.processing}

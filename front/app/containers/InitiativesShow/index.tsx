@@ -532,7 +532,11 @@ const InitiativesShow = ({
               )}
 
               {isDesktop && (
-                <PostedBy authorId={authorId} showAboutInitiatives />
+                <PostedBy
+                  anonymous={initiative.data.attributes.anonymous}
+                  authorId={authorId}
+                  showAboutInitiatives
+                />
               )}
 
               {initiativeImageLarge && (

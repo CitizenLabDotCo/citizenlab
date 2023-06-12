@@ -48,55 +48,6 @@ es:
       "assignee_digest": Resumen semanal de ideas asignadas
       "user_digest": Resumen semanal
       "your_proposed_initiatives_digest": Resumen semanal de tus propuestas
-    admin_campaign_type_description:
-      "manual": 'Mensaje oficial: todos los usuarios'
-      "admin_rights_received": 'Derechos de administrador recibidos: administradores'
-      "comment_deleted_by_admin": 'Eliminación de tu comentario: todos los usuarios'
-      "comment_marked_as_spam": Informar de spam de comentarios - administradores y administradores de proyecto
-      "comment_on_your_comment": 'Responder a tu comentario: todos los usuarios'
-      "comment_on_your_idea": 'Comentar en tu idea: todos los usuarios'
-      "comment_on_your_initiative": 'Comentar en tu propuesta: todos los usuarios'
-      "first_idea_published": 'Publicación de tu primera idea: todos los usuarios'
-      "idea_marked_as_spam": Informar de spam de ideas - administradores y administradores de proyecto
-      "idea_published": 'Publicación de tu idea: todos los usuarios'
-      "initiative_assigned_to_you": 'Asignación de una propuesta: administradores'
-      "initiative_marked_as_spam": 'Informar de spam de propuesta: administradores'
-      "initiative_published": 'Publicación de tu propuesta: todos los usuarios'
-      "invite_received": 'Invitación: todos los usuarios'
-      "invite_reminder": 'Recordatorio de invitación: todos los usuarios'
-      "mention_in_comment": 'Mencionar en un comentario: todos los usuarios'
-      "mention_in_official_feedback": 'Mencionar en una actualización: todos los usuarios'
-      "new_comment_for_admin": Nuevo comentario - administradores y administradores de proyecto
-      "new_comment_on_commented_idea": 'Nuevo comentario sobre una idea que has comentado: todos los usuarios'
-      "new_comment_on_commented_initiative": 'Nuevo comentario sobre una propuesta que has comentado: todos los usuarios'
-      "new_comment_on_voted_idea": 'Nuevo comentario sobre una idea por la que has votado: todos los usuarios'
-      "new_comment_on_voted_initiative": 'Nuevo comentario sobre una propuesta por la que has votado: todos los usuarios'
-      "new_idea_for_admin": Nueva idea - administradores y administradores de proyecto
-      "new_initiative_for_admin": 'Nueva propuesta: administradores'
-      "official_feedback_on_commented_idea": 'Actualización en una idea que has comentado: todos los usuarios'
-      "official_feedback_on_commented_initiative": 'Actualización en una propuesta que has comentado: todos los usuarios'
-      "official_feedback_on_voted_idea": 'Actualización en una idea que has votado: todos los usuarios'
-      "official_feedback_on_voted_initiative": 'Actualización en una propuesta que has votado: todos los usuarios'
-      "official_feedback_on_your_idea": 'Actualización sobre tu idea: todos los usuarios'
-      "official_feedback_on_your_initiative": 'Actualización sobre tu propuesta: todos los usuarios'
-      "password_reset": 'Restablecimiento de contraseña: todos los usuarios'
-      "project_moderation_rights_received": Derechos de administrador de proyecto recibidos - administradores de proyecto
-      "project_folder_moderation_rights_received": Derechos de administrador de carpetas recibidos
-      "project_phase_started": 'Nueva fase del proyecto: participantes del proyecto'
-      "project_phase_upcoming": Próxima nueva fase del proyecto - administradores y administradores de proyecto
-      "status_change_of_commented_idea": 'Cambio de estado de una idea que has comentado: todos los usuarios'
-      "status_change_of_commented_initiative": 'Cambio de estado de una propuesta que has comentado: todos los usuarios'
-      "status_change_of_voted_idea": 'Cambio de estado de una idea que has votado: todos los usuarios'
-      "status_change_of_voted_initiative": 'Cambio de estado de una propuesta que has votado: todos los usuarios'
-      "status_change_of_your_idea": 'Cambio de estado de tu idea: todos los usuarios'
-      "status_change_of_your_initiative": 'Cambio de estado de tu propuesta: todos los usuarios'
-      "threshold_reached_for_admin": 'La propuesta ha alcanzado el umbral de votación: administradores'
-      "welcome": 'Nuevo usuario: administradores'
-      "admin_digest": 'Resumen semanal: administradores'
-      "moderator_digest": Resumen semanal - administradores de proyecto
-      "assignee_digest": Resumen semanal de ideas asignadas - administradores y administradores de proyecto
-      "user_digest": 'Resumen semanal: todos los usuarios'
-      "your_proposed_initiatives_digest": 'Resumen semanal de tus propias propuestas: todos los usuarios'
     schedules:
       weekly:
         "0": "Semanalmente, los domingos a las %{hourOfDay}"
@@ -170,7 +121,7 @@ es:
     comment_on_your_initiative:
       commented: '%{authorFirstName} escribió:'
       cta_reply_to: 'Responder a %{commentAuthor}'
-      event_description: '%{authorNameFull} ha puesto una reacción a su propuesta ''%{initiativeTitle}''. Haga clic en el botón de abajo para continuar la conversación con %{authorName}.'
+      event_description: '%{authorNameFull} ha comentado tu propuesta ''%{initiativeTitle}''. Haga clic en el botón de abajo para continuar la conversación con %{authorName}.'
       main_header: '%{commentAuthor} comentó tu propuesta'
       subject: 'Has recibido un comentario en la plataforma de %{organizationName}'
       preheader: '%{authorName} dejó un comentario sobre tu propuesta para %{organizationName}'
@@ -230,8 +181,8 @@ es:
       action_add_image: '%{addImageLink} para aumentar visibilidad'
       action_published_initiative: 'Propuesta publicada'
       action_send_email: 'Envía a sus contactos un %{sendEmailLink}'
-      action_share_fb: 'Deja a tus amigos ahora en %{fbLink}'
-      action_share_link: 'Compártalo a través de cualquier canal copiando el %{link}'
+      action_share_fb: 'Compártelo con tus amigos en %{fbLink}'
+      action_share_link: 'Compártelo con tus contactos por correo electrónico %{link}'
       action_share_twitter: 'Informa a tus seguidores sobre %{twitterLink}'
       cta_view_initiative: 'Ir a tu propuesta'
       link: enlace
@@ -300,7 +251,7 @@ es:
       by_author: 'por %{authorName}'
       commented: '%{authorFirstName} escribió:'
       cta_reply_to: 'Responder a%{commentAuthor}'
-      event_description: '%{authorNameFull} ha puesto una reacción a tu idea ''%{ideaTitle}''. Haga clic en el botón de abajo para continuar la conversación con %{authorName}.'
+      event_description: '%{authorNameFull} ha comentado tu idea ''%{ideaTitle}''. Haga clic en el botón de abajo para continuar la conversación con %{authorName}.'
       main_header: '%{authorName} comentó tu idea'
       subject: 'Has recibido un comentario en la plataforma de %{organizationName}'
       preheader: '%{authorName} dejó un comentario sobre tu idea para %{organizationName}'
@@ -351,7 +302,7 @@ es:
       by_author: 'por %{authorName}'
       updated: '%{officialName} escribió:'
       cta_view: 'Ir a esta propuesta'
-      event_description: '%{officialName} ha puesto una reacción a tu propuesta ''%{initiativeTitle}''. Haga clic en el botón de abajo para continuar la conversación con %{organizationName}.'
+      event_description: '%{officialName} ha commentado tu propuesta ''%{initiativeTitle}''. Haga clic en el botón de abajo para continuar la conversación con %{organizationName}.'
       main_header: 'Hay una actualización sobre la propuesta que comentaste antes'
       subject: 'Una propuesta que comentaste ha recibido una actualización oficial en la plataforma %{organizationName}'
       preheader: '%{officialName} dejó una actualización sobre una propuesta que usted comentó'
@@ -359,7 +310,7 @@ es:
       by_author: 'por %{authorName}'
       updated: '%{officialName} escribió:'
       cta_view: 'Ir a esta idea'
-      event_description: '%{officialName} ha puesto una reacción a tu idea ''%{ideaTitle}''. Haga clic en el botón de abajo para continuar la conversación con %{officialName}.'
+      event_description: '%{officialName} ha commentado tu idea ''%{ideaTitle}''. Haga clic en el botón de abajo para continuar la conversación con %{officialName}.'
       subject: 'Una idea sobre la que votastes ha recibido una actualización en la plataforma de %{organizationName}'
       preheader: '%{officialName} dejó una actualización en una idea sobre la que votaste'
       main_header: ""
@@ -367,7 +318,7 @@ es:
       by_author: 'por %{authorName}'
       updated: '%{officialName} escribió:'
       cta_view: 'Ir a esta idea'
-      event_description: '%{officialName} ha puesto una reacción a tu idea ''%{ideaTitle}''. Haga clic en el botón de abajo para continuar la conversación con %{officialName}.'
+      event_description: '%{officialName} ha commentado tu idea ''%{ideaTitle}''. Haga clic en el botón de abajo para continuar la conversación con %{officialName}.'
       main_header: 'Hay una actualización sobre la idea que comentaste antes'
       subject: 'Una idea que comentaste ha recibido una actualización oficial en la plataforma %{organizationName}'
       preheader: '%{officialName} dejó una actualización oficial sobre una idea que usted comentó'
@@ -375,7 +326,7 @@ es:
       by_author: 'por %{authorName}'
       updated: '%{officialName} escribió:'
       cta_view: 'Ir a tu idea'
-      event_description: '%{officialName} ha puesto una reacción a tu idea ''%{ideaTitle}''. Haga clic en el botón de abajo para continuar la conversación con %{officialName}.'
+      event_description: '%{officialName} ha commentado tu idea ''%{ideaTitle}''. Haga clic en el botón de abajo para continuar la conversación con %{officialName}.'
       main_header: 'Has recibido una actualización de %{organizationName}'
       subject: 'Has recibido una actualización de %{organizationName}'
       preheader: '%{officialName} dejó una actualización oficial de tu idea'
@@ -383,14 +334,14 @@ es:
       by_author: 'por %{authorName}'
       updated: '%{officialName} escribió:'
       cta_view: 'Ir a esta propuesta'
-      event_description: '%{officialName} ha puesto una reacción a tu propuesta ''%{initiativeTitle}''. Haga clic en el botón de abajo para continuar la conversación con %{organizationName}.'
+      event_description: '%{officialName} ha commentado tu propuesta ''%{initiativeTitle}''. Haga clic en el botón de abajo para continuar la conversación con %{organizationName}.'
       main_header: 'Hay una actualización sobre la propuesta por la que votaste'
       subject: 'Una propuesta sobre la que votastes ha recibido una actualización en la plataforma de %{organizationName}'
       preheader: '%{officialName} dejó una actualización sobre una propuesta sobre la que votaste'
     official_feedback_on_your_initiative:
       updated: '%{officialName} escribió:'
       cta_view: 'Ir a tu propuesta'
-      event_description: '%{officialName} ha puesto una reacción a tu propuesta ''%{initiativeTitle}''. Haga clic en el botón de abajo para continuar la conversación con %{organizationName}.'
+      event_description: '%{officialName} ha commentado tu propuesta ''%{initiativeTitle}''. Haga clic en el botón de abajo para continuar la conversación con %{organizationName}.'
       main_header: 'Has recibido una actualización de %{officialName}'
       subject: 'Has recibido una actualización oficial en la plataforma %{organizationName}'
       preheader: '%{officialName} dejó una actualización oficial de tu propuesta'
@@ -487,7 +438,7 @@ es:
       commented: "%{authorFirstName} comentó:"
       preheader: "Reporte semanal de %{organizationName}"
       title_your_weekly_report: "Descubre lo que pasó la semana pasada"
-      intro_text: "Aquí hay un resumen de lo que ha estado sucediendo en la plataforma de participación de %{organizationName}."
+      intro_text: "Aquí tienes un resumen de lo que ha estado sucediendo en la plataforma de participación de %{organizationName}."
       cta_go_to_the_platform: "Ir a la plataforma"
       title_no_activity_past_week: "Sin actividad en la última semana"
       title_proposals: "Propuestas iniciadas"
@@ -497,7 +448,7 @@ es:
       today_by_author: "Hoy por %{author}"
       yesterday_by_author: "Ayer por %{author}"
       x_days_ago_by_author: "%{x} días atrás por %{author}"
-      trending_ideas: "Ideas tendencia"
+      trending_ideas: "Ideas populares"
       trending_ideas_text: "¿Interesado en lo que ha estado sucediendo en la plataforma? Echa un vistazo a las tres ideas más modernas, mira lo que la gente está diciendo de ellas y únete a la conversación."
       no_notifications: "No hay notificaciones"
       one_notification: "1 notificación"
@@ -516,8 +467,8 @@ es:
       action_comment: '%{textComment} en ideas existentes'
       action_published_idea: 'Idea publicada'
       action_send_email: 'Envía a sus contactos un %{sendEmailLink}'
-      action_share_fb: 'Deja a tus amigos ahora en %{fbLink}'
-      action_share_link: 'Compártalo a través de cualquier canal copiando el %{link}'
+      action_share_fb: 'Compártelo con tus amigos en %{fbLink}'
+      action_share_link: 'Compártelo con tus contactos por correo electrónico %{link}'
       action_share_twitter: 'Informa a tus seguidores sobre %{twitterLink}'
       add_image: 'Añade una imagen'
       cta_view_idea: 'Ir a tu idea'
@@ -539,8 +490,8 @@ es:
       action_add_image: '%{addImageLink} para aumentar la visibilidad'
       action_published_idea: 'Idea publicada'
       action_send_email: 'Envía a sus contactos un %{sendEmailLink}'
-      action_share_fb: 'Deja a tus amigos ahora en %{fbLink}'
-      action_share_link: 'Compártalo a través de cualquier canal copiando el %{link}'
+      action_share_fb: 'Compártelo con tus amigos en %{fbLink}'
+      action_share_link: 'Compártelo con tus contactos por correo electrónico %{link}'
       action_share_twitter: 'Informa a tus seguidores sobre %{twitterLink}'
       add_image: 'Añade una imagen'
       cta_view_idea: 'Ir a tu idea'
@@ -565,9 +516,7 @@ es:
       remaining_days: 'Días restantes'
     admin_labels:
       recipient_role:
-        admins: 'A los administradores'
         admins_and_managers: 'A los administradores y gestores'
-        managers: 'A los gestores'
         registered_users: 'A los usuarios registrados'
       recipient_segment:
         admins: 'Administradores'
@@ -578,18 +527,18 @@ es:
         managers: 'Gestores'
         admins_assigned_to_a_proposal: 'Administratodres asignados a una propuesta'
         admins_and_managers_assigned_to_the_input: 'Administradores y gestores asignados al aporte'
-        user_receiving_admin_rights: 'Usuario que recibe derechos de administrador'
-        user_receiving_folder_moderator_rights: 'Usuario que recibe derechos de moderador de carpeta'
-        user_receiving_project_moderator_rights: 'Usuario que recibe derechos de moderador de proyecto'
+        user_who_is_receiving_admin_rights: 'Usuario que recibe derechos de administrador'
+        user_who_is_receiving_folder_moderator_rights: 'Usuario que recibe derechos de moderador de carpeta'
+        user_who_is_receiving_project_moderator_rights: 'Usuario que recibe derechos de moderador del proyecto'
         user_who_commented: 'Usuario que comentó'
         user_who_is_mentioned: 'Usuario al que se menciona'
         user_who_published_the_proposal: 'Usuario que publicó la propuesta'
         user_who_published_the_input: 'Usuario que publicó el aporte'
         user_who_registers: 'Usuario que se registra'
         user_who_was_invited: 'Usuario invitado'
-        users_engaged_with_the_input: 'Usuarios que interactuaron con el aporte'
-        users_engaged_with_the_project: 'Usuarios comprometidos con el proyecto'
-        users_engaged_with_the_proposal: 'Usuarios comprometidos con la propuesta'
+        users_who_engaged_with_the_input: 'Usuarios que se comprometieron con la aportación'
+        users_who_engaged_with_the_project: 'Usuarios que participaron en el proyecto'
+        users_who_engaged_with_the_proposal: 'Usuarios que se comprometieron con la propuesta'
       content_type:
         comments: 'Comentarios'
         content_moderation: 'Moderación de contenidos'
@@ -606,15 +555,15 @@ es:
         input_is_assigned: 'El aporte ha sido asignado'
         input_is_flagged_as_spam: 'El aporte ha sido marcado como spam'
         input_is_updated: 'El aporte ha sido actualizado'
-        input_status_is_changed: 'El estado del aporte ha cambiado'
+        input_status_changes: 'Cambios en el estado de la entrada'
         new_input_is_published: 'Un nuevo aporte ha sido publicado'
-        new_proposal_is_published: 'Una nueva propuesta ha sido publicada'
-        project_changes_phase: 'Fase de cambios del proyecto'
+        new_proposal_is_posted: 'Una nueva propuesta ha sido publicada'
+        project_phase_changes: 'Cambios de fase del proyecto'
         proposal_gets_reported_as_spam: 'La propuesta es denunciada como spam'
         proposal_is_assigned_to_admin: 'La propuesta está asignada al administrador'
         proposal_is_updated: 'La propuesta ha sido actualizada'
         proposal_is_upvoted_above_threshold: 'La propuesta ha recibido votos por encima del umbral'
-        proposal_status_is_changed: ' El estado de la propuesta ha cambiado'
+        proposal_status_changes: 'Cambios en el estado de la propuesta'
         user_comments: 'Comentarios de los usuarios'
         user_comments_on_input: 'Comentarios de los usuarios sobre el aporte'
         user_comments_on_proposal: 'Comentarios de los usuarios sobre la propuesta'
@@ -622,8 +571,8 @@ es:
         user_is_given_folder_moderator_rights: 'El usuario tiene derechos de moderador de carpeta'
         user_is_given_project_moderator_rights: 'El usuario tiene derechos de moderador del proyecto'
         user_is_mentioned: 'El usuario ha sido mencionado'
-        user_publishes_an_input: 'El usuario publica un aporte'
-        user_publishes_a_proposal: 'El usuario publica una propuesta'
+        input_is_published: 'Se publican las aportaciones'
+        proposal_is_published: 'Se publica la propuesta'
         user_registers_for_the_first_time: 'El usuario se registra por primera vez'
         user_replies_to_comment: 'El usuario responde al comentario'
         7_days_after_invite_is_sent: '7 días después del envío de la invitación'

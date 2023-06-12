@@ -3,7 +3,7 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // permissions
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import { usePermission } from 'services/permissions';
 import HasPermission from 'components/HasPermission';
 
@@ -14,7 +14,6 @@ import { colors, media } from 'utils/styleUtils';
 
 // utils
 import clHistory from 'utils/cl-router/history';
-import { endsWith } from 'utils/helperUtils';
 
 // stlying
 import 'assets/semantic/semantic.min.css';
@@ -90,7 +89,7 @@ type Props = {
 
 const AdminPage = memo<Props & WithRouterProps>(
   ({ className, location: { pathname } }) => {
-    const authUser = useAuthUser();
+    const { data: authUser } = useAuthUser();
 
     // The check in front/app/containers/Admin/routes.tsx already should do the same.
     // TODO: double check it and remove `userCanViewAdmin`
@@ -116,14 +115,15 @@ const AdminPage = memo<Props & WithRouterProps>(
       pathname.includes('admin/initiatives') ||
       pathname.includes('admin/messaging') ||
       pathname.includes('admin/settings') ||
+      pathname.includes('admin/ideas') ||
       pathname.includes('admin/reporting');
 
     const fullWidth =
-      endsWith(pathname, 'admin/dashboard/moderation') ||
       pathname.includes('admin/dashboard') ||
       pathname.includes('admin/initiatives') ||
       pathname.includes('admin/messaging') ||
       pathname.includes('admin/settings') ||
+      pathname.includes('admin/ideas') ||
       pathname.includes('admin/reporting');
 
     return (

@@ -88,108 +88,115 @@ export interface Props {
   postId: string;
   postType: 'idea' | 'initiative';
   className?: string;
+  allowAnonymousParticipation?: boolean;
 }
 
-const CommentsSection = memo<Props>(({ postId, postType, className }) => {
-  const initiativeId = postType === 'initiative' ? postId : undefined;
-  const ideaId = postType === 'idea' ? postId : undefined;
-  const { data: initiative } = useInitiativeById(initiativeId);
-  const { data: idea } = useIdeaById(ideaId);
-  const [sortOrder, setSortOrder] = useState<CommentsSort>('-new');
-  const {
-    data: comments,
-    isFetchingNextPage,
-    fetchNextPage,
-    hasNextPage,
-    isLoading,
-  } = useComments({
-    initiativeId: postType === 'initiative' ? postId : undefined,
-    ideaId: postType === 'idea' ? postId : undefined,
-    sort: sortOrder,
-  });
+const CommentsSection = memo<Props>(
+  ({ postId, postType, className, allowAnonymousParticipation }) => {
+    const initiativeId = postType === 'initiative' ? postId : undefined;
+    const ideaId = postType === 'idea' ? postId : undefined;
+    const { data: initiative } = useInitiativeById(initiativeId);
+    const { data: idea } = useIdeaById(ideaId);
+    const [sortOrder, setSortOrder] = useState<CommentsSort>('-new');
+    const {
+      data: comments,
+      isFetchingNextPage,
+      fetchNextPage,
+      hasNextPage,
+      isLoading,
+    } = useComments({
+      initiativeId: postType === 'initiative' ? postId : undefined,
+      ideaId: postType === 'idea' ? postId : undefined,
+      sort: sortOrder,
+    });
 
-  const commentsList = comments?.pages.flatMap((page) => page.data);
+    const commentsList = comments?.pages.flatMap((page) => page.data);
 
-  const post = initiative || idea;
-  const projectId = idea?.data.relationships?.project.data.id;
-  const { data: project } = useProjectById(projectId);
+    const post = initiative || idea;
+    const projectId = idea?.data.relationships?.project.data.id;
+    const { data: project } = useProjectById(projectId);
 
-  const [posting, setPosting] = useState(false);
+    const [posting, setPosting] = useState(false);
 
-  const handleSortOrderChange = useCallback((sortOrder: CommentsSort) => {
-    trackEventByName(tracks.clickCommentsSortOrder);
-    setSortOrder(sortOrder);
-  }, []);
+    const handleSortOrderChange = useCallback((sortOrder: CommentsSort) => {
+      trackEventByName(tracks.clickCommentsSortOrder);
+      setSortOrder(sortOrder);
+    }, []);
 
-  const handleIntersection = useCallback(
-    (event: IntersectionObserverEntry, unobserve: () => void) => {
-      if (event.isIntersecting && hasNextPage) {
-        fetchNextPage();
-        unobserve();
-      }
-    },
-    [fetchNextPage, hasNextPage]
-  );
-
-  const handleCommentPosting = useCallback((isPosting: boolean) => {
-    setPosting(isPosting);
-  }, []);
-
-  if (!isNilOrError(post) && !isNilOrError(commentsList)) {
-    const phaseId = project?.data.relationships?.current_phase?.data?.id;
-    const commentCount = post.data.attributes.comments_count;
-
-    return (
-      <Container className={className || ''}>
-        <Header>
-          <Title color="tenantText" variant="h2" id="comments-main-title">
-            <FormattedMessage {...messages.invisibleTitleComments} />
-            {commentCount > 0 && <CommentCount>({commentCount})</CommentCount>}
-          </Title>
-          <StyledCommentSorting
-            onChange={handleSortOrderChange}
-            selectedValue={[sortOrder]}
-          />
-        </Header>
-
-        {postType === 'idea' && idea ? (
-          <CommentingIdeaDisabled idea={idea} phaseId={phaseId} />
-        ) : (
-          <CommentingInitiativeDisabled />
-        )}
-
-        <StyledParentCommentForm
-          postId={postId}
-          postType={postType}
-          postingComment={handleCommentPosting}
-        />
-
-        <Comments
-          postId={postId}
-          postType={postType}
-          allComments={commentsList}
-          loading={isLoading}
-        />
-
-        {hasNextPage && !isFetchingNextPage && (
-          <Observer onChange={handleIntersection} rootMargin="3000px">
-            <LoadMore />
-          </Observer>
-        )}
-
-        {isFetchingNextPage && !posting && (
-          <LoadingMore>
-            <LoadingMoreMessage>
-              <FormattedMessage {...messages.loadingMoreComments} />
-            </LoadingMoreMessage>
-          </LoadingMore>
-        )}
-      </Container>
+    const handleIntersection = useCallback(
+      (event: IntersectionObserverEntry, unobserve: () => void) => {
+        if (event.isIntersecting && hasNextPage) {
+          fetchNextPage();
+          unobserve();
+        }
+      },
+      [fetchNextPage, hasNextPage]
     );
-  }
 
-  return null;
-});
+    const handleCommentPosting = useCallback((isPosting: boolean) => {
+      setPosting(isPosting);
+    }, []);
+
+    if (!isNilOrError(post) && !isNilOrError(commentsList)) {
+      const phaseId = project?.data.relationships?.current_phase?.data?.id;
+      const commentCount = post.data.attributes.comments_count;
+
+      return (
+        <Container className={className || ''}>
+          <Header>
+            <Title color="tenantText" variant="h2" id="comments-main-title">
+              <FormattedMessage {...messages.invisibleTitleComments} />
+              {commentCount > 0 && (
+                <CommentCount>({commentCount})</CommentCount>
+              )}
+            </Title>
+            <StyledCommentSorting
+              onChange={handleSortOrderChange}
+              selectedValue={[sortOrder]}
+            />
+          </Header>
+
+          {postType === 'idea' && idea ? (
+            <CommentingIdeaDisabled idea={idea} phaseId={phaseId} />
+          ) : (
+            <CommentingInitiativeDisabled />
+          )}
+
+          <StyledParentCommentForm
+            postId={postId}
+            postType={postType}
+            postingComment={handleCommentPosting}
+            allowAnonymousParticipation={allowAnonymousParticipation}
+          />
+
+          <Comments
+            postId={postId}
+            postType={postType}
+            allComments={commentsList}
+            loading={isLoading}
+            allowAnonymousParticipation={allowAnonymousParticipation}
+          />
+
+          {hasNextPage && !isFetchingNextPage && (
+            <Observer onChange={handleIntersection} rootMargin="3000px">
+              <LoadMore />
+            </Observer>
+          )}
+
+          {isFetchingNextPage && !posting && (
+            <LoadingMore>
+              <LoadingMoreMessage>
+                <FormattedMessage {...messages.loadingMoreComments} />
+              </LoadingMoreMessage>
+            </LoadingMore>
+          )}
+        </Container>
+      );
+    }
+
+    return null;
+  }
+);
 
 const CommentingIdeaDisabled = ({
   idea,

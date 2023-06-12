@@ -55,6 +55,7 @@ export interface IInitiativeData {
     published_at: string;
     header_bg: ImageSizes;
     expires_at: string;
+    anonymous: boolean;
   };
   relationships: {
     topics: {
@@ -88,6 +89,7 @@ export interface IInitiatives {
 }
 
 export interface IInitiativeAdd {
+  anonymous?: boolean;
   author_id?: string | null;
   assignee_id?: string | null;
   initiative_status_id?: string | null;

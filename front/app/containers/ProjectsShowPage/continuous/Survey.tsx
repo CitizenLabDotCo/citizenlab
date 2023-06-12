@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 
 // components
 import ContentContainer from 'components/ContentContainer';
@@ -7,17 +7,14 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 import SectionContainer from 'components/SectionContainer';
 
-// hooks
-import useProjectById from 'api/projects/useProjectById';
-
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import injectIntl from 'utils/cl-intl/injectIntl';
+import { useIntl } from 'utils/cl-intl';
 import messages from 'containers/ProjectsShowPage/messages';
 
 // styling
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
+import { IProjectData } from 'api/projects/types';
 
 const Container = styled.div``;
 
@@ -26,45 +23,39 @@ const StyledContentContainer = styled(ContentContainer)`
 `;
 
 interface Props {
-  projectId: string;
+  project: IProjectData;
   className?: string;
 }
 
-const SurveyContainer = memo<Props & WrappedComponentProps>(
-  ({ projectId, className, intl: { formatMessage } }) => {
-    const { data: project } = useProjectById(projectId);
+const SurveyContainer = ({ project, className }: Props) => {
+  const { formatMessage } = useIntl();
 
-    if (
-      project &&
-      project.data.attributes.process_type === 'continuous' &&
-      project.data.attributes.participation_method === 'survey' &&
-      project.data.attributes.survey_embed_url &&
-      project.data.attributes.survey_service
-    ) {
-      return (
-        <Container
-          className={`e2e-continuous-project-survey-container ${
-            className || ''
-          }`}
-        >
-          <StyledContentContainer maxWidth={maxPageWidth}>
-            <SectionContainer>
-              <ScreenReaderOnly>
-                <h2>{formatMessage(messages.invisibleTitleSurvey)}</h2>
-              </ScreenReaderOnly>
-              <Survey
-                projectId={project.data.id}
-                surveyService={project.data.attributes.survey_service}
-                surveyEmbedUrl={project.data.attributes.survey_embed_url}
-              />
-            </SectionContainer>
-          </StyledContentContainer>
-        </Container>
-      );
-    }
-
-    return null;
+  if (
+    project.attributes.survey_embed_url &&
+    project.attributes.survey_service
+  ) {
+    return (
+      <Container
+        className={`e2e-continuous-project-survey-container ${className || ''}`}
+      >
+        <StyledContentContainer maxWidth={maxPageWidth}>
+          <SectionContainer>
+            <ScreenReaderOnly>
+              <h2>{formatMessage(messages.invisibleTitleSurvey)}</h2>
+            </ScreenReaderOnly>
+            <Survey
+              project={project}
+              phaseId={null}
+              surveyService={project.attributes.survey_service}
+              surveyEmbedUrl={project.attributes.survey_embed_url}
+            />
+          </SectionContainer>
+        </StyledContentContainer>
+      </Container>
+    );
   }
-);
 
-export default injectIntl(SurveyContainer);
+  return null;
+};
+
+export default SurveyContainer;

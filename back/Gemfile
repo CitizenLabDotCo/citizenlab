@@ -93,7 +93,7 @@ gem 'activerecord-postgis-adapter', '~> 8.0'
 
 gem 'carrierwave', '~> 3.0.0.beta'
 gem 'carrierwave-base64', '~> 2.10'
-gem 'fog-aws', '~> 3.18'
+gem 'fog-aws', '~> 3.19'
 
 gem 'api-pagination', '~> 5.0.0'
 gem 'kaminari', '~> 1.2'
@@ -104,7 +104,7 @@ gem 'counter_culture', '~> 3.3'
 gem 'groupdate', '~> 4.1'
 gem 'interactor'
 gem 'interactor-rails'
-gem 'liquid', '~> 4.0'
+gem 'liquid', '~> 5.4'
 gem 'mini_magick', '~> 4.12'
 gem 'pg_search', '~> 2.3.5'
 gem 'premailer-rails', '~> 1.12.0'
@@ -149,7 +149,7 @@ gem 'rack-attack', '~> 6'
 # through the emails engine and is therefore specified
 # in the main app.
 gem 'intercom', '~> 4.2'
-gem 'mjml-rails', '~> 4.8'
+gem 'mjml-rails', '~> 4.9'
 gem 'cloudfront-rails', '~> 0.4'
 
 Dir.children('engines/free').each do |engine_name|
