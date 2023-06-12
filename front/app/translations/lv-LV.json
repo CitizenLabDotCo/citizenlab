@@ -233,6 +233,7 @@
   "app.components.ParticipationCTABars.allocateBudget": "Piešķiriet savu budžetu",
   "app.components.ParticipationCTABars.mobileProjectOpenForSubmission": "Atvērts dalībai",
   "app.components.ParticipationCTABars.poll": "Piedalieties aptaujā",
+  "app.components.ParticipationCTABars.projectClosedForSubmission": "Jaunu pieteikumu iesniegšana pašlaik netiek pieņemta",
   "app.components.ParticipationCTABars.projectOpenForSubmission": "Pašlaik šajā projektā var piedalīties.",
   "app.components.ParticipationCTABars.reviewDocument": "Dokumenta pārskatīšana",
   "app.components.ParticipationCTABars.seeIdeas": "Skatīt idejas",
