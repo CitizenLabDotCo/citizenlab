@@ -25,6 +25,12 @@ const Container = styled(Link)`
   align-items: center;
   padding: ${cardPadding};
   ${defaultCardStyle};
+  cursor: pointer;
+
+  &.desktop {
+    ${defaultCardHoverStyle};
+    transform: translate(0px, -2px);
+  }
 
   @media (max-width: 1220px) and (min-width: 1023px) {
     min-height: calc(
@@ -45,16 +51,10 @@ const IdeaCardImageWrapper = styled.div<{ hasImage: boolean }>`
   height: ${cardInnerHeight};
   display: flex;
   align-items: center;
-  cursor: pointer;
   justify-content: center;
   margin-right: 18px;
   overflow: hidden;
   border-radius: ${(props) => props.theme.borderRadius};
-
-  &.desktop {
-    ${defaultCardHoverStyle};
-    transform: translate(0px, -2px);
-  }
 
   @media (max-width: 1220px) and (min-width: 1023px) {
     height: ${cardInnerHeightExtended};
