@@ -21,6 +21,7 @@ import useInitiativesPermissions, {
   IInitiativeDisabledReason,
 } from 'hooks/useInitiativesPermissions';
 import useAddInitiativeReaction from 'api/initiative_reactions/useAddInitiativeReaction';
+import useDeleteInitiativeReaction from 'api/initiative_reactions/useDeleteInitiativeReaction';
 
 // styling
 import styled from 'styled-components';
@@ -43,7 +44,6 @@ import {
 } from 'api/initiative_statuses/types';
 import { IAppConfigurationSettings } from 'api/app_configuration/types';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
-import useDeleteInitiativeReaction from '../../../api/initiative_reactions/useDeleteInitiativeReaction';
 
 const Container = styled.div`
   ${media.desktop`

@@ -62,7 +62,7 @@ const ReactedText = styled.p`
   width: 100%;
 `;
 
-const UnreactionButton = styled.button`
+const UnreactButton = styled.button`
   color: ${(props) => props.theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   text-decoration: underline;
@@ -146,12 +146,12 @@ class ProposedReacted extends PureComponent<Props & { theme: any }> {
             }}
           />
         </ReactedText>
-        <UnreactionButton
+        <UnreactButton
           id="e2e-initiative-cancel-like-button"
           onClick={this.handleOnCancelReaction}
         >
           <FormattedMessage {...messages.unvoteLink} />
-        </UnreactionButton>
+        </UnreactButton>
         <ReactionCounter>
           <ReactionText aria-hidden={true}>
             <ReactionTextLeft id="e2e-initiative-reacted-reaction-count">

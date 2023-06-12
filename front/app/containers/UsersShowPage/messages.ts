@@ -87,6 +87,6 @@ export default defineMessages({
   a11y_upvotesCount: {
     id: 'app.containers.UsersShowPage.a11y_upvotesCount',
     defaultMessage:
-      '{likesCount, plural, =0 {no likes} one {1 upvote} other {# likes}}',
+      '{upvotesCount, plural, =0 {no upvotes} one {1 upvote} other {# upvotes}}',
   },
 });
