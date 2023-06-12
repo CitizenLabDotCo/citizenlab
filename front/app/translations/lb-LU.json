@@ -233,6 +233,7 @@
   "app.components.ParticipationCTABars.allocateBudget": "Verdeelt Äre Budget",
   "app.components.ParticipationCTABars.mobileProjectOpenForSubmission": "Op fir Bedeelegung",
   "app.components.ParticipationCTABars.poll": "Huelt d'Ëmfro",
+  "app.components.ParticipationCTABars.projectClosedForSubmission": "Nei Soumissioun ginn am Moment net ugeholl",
   "app.components.ParticipationCTABars.projectOpenForSubmission": "Dëse Projet ass aktuell op fir Bedeelegung.",
   "app.components.ParticipationCTABars.reviewDocument": "Iwwerpréift d'Dokument",
   "app.components.ParticipationCTABars.seeIdeas": "Iddien ukucken",
