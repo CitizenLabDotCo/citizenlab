@@ -1,6 +1,5 @@
 // Libraries
 import React, { FormEvent, useEffect, useState } from 'react';
-import { get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // Services
@@ -186,10 +185,12 @@ const CommentBody = ({
         },
       };
 
-      const authorId = get(comment, 'relationships.author.data.id', false);
+      const authorId = comment.data.relationships.author.data?.id || null;
+
       if (authorId) {
         updatedComment.author_id = authorId;
       }
+
       setApiErrors(null);
 
       updateComment(
