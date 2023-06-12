@@ -8,7 +8,6 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import ParentCommentForm from './ParentCommentForm';
 import Comments from './Comments';
-import CommentingDisabled from './CommentingDisabled';
 import CommentSorting from './CommentSorting';
 
 // i18n
@@ -23,7 +22,6 @@ import { Title } from '@citizenlab/cl2-component-library';
 // typings
 import { CommentsSort } from 'api/comments/types';
 import CommentingInitiativeDisabled from './CommentingInitiativeDisabled';
-import { IIdea } from 'api/ideas/types';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
@@ -34,6 +32,7 @@ import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useProjectById from 'api/projects/useProjectById';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useComments from 'api/comments/useComments';
+import CommentingIdeaDisabled from './CommetingIdeaDisabled';
 
 const Container = styled.div``;
 
@@ -197,28 +196,5 @@ const CommentsSection = memo<Props>(
     return null;
   }
 );
-
-const CommentingIdeaDisabled = ({
-  idea,
-  phaseId,
-}: {
-  idea: IIdea;
-  phaseId?: string;
-}) => {
-  const actionDescriptor =
-    idea.data.attributes.action_descriptor.commenting_idea;
-
-  const commentingEnabled = actionDescriptor.enabled;
-  const commentingDisabledReason = actionDescriptor.disabled_reason;
-
-  return (
-    <CommentingDisabled
-      commentingEnabled={!!commentingEnabled}
-      commentingDisabledReason={commentingDisabledReason}
-      projectId={idea?.data.relationships.project.data.id || null}
-      phaseId={phaseId}
-    />
-  );
-};
 
 export default CommentsSection;
