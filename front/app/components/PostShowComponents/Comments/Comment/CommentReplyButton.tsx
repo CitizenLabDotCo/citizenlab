@@ -53,7 +53,6 @@ const ReplyButton = styled.button`
 `;
 
 interface Props {
-  postId: string;
   postType: 'idea' | 'initiative';
   commentId: string;
   commentType: 'parent' | 'child' | undefined;

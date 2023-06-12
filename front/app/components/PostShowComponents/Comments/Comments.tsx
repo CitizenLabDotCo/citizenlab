@@ -15,8 +15,7 @@ import { commentAdded$, commentDeleted$ } from './events';
 import styled from 'styled-components';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // a11y
@@ -33,7 +32,8 @@ const StyledParentComment = styled(ParentComment)`
 `;
 
 interface Props {
-  postId: string;
+  ideaId?: string;
+  initiativeId?: string;
   postType: 'idea' | 'initiative';
   allComments: ICommentData[];
   loading: boolean;
@@ -41,16 +41,17 @@ interface Props {
   allowAnonymousParticipation?: boolean;
 }
 
-const CommentsSection = memo<Props & WrappedComponentProps>(
+const CommentsSection = memo<Props>(
   ({
-    postId,
+    ideaId,
+    initiativeId,
     postType,
     allComments,
     loading,
     className,
     allowAnonymousParticipation,
-    intl: { formatMessage },
   }) => {
+    const { formatMessage } = useIntl();
     const [commentPostedMessage, setCommentPostedMessage] = useState('');
     const [commentDeletedMessage, setCommentDeletedMessage] = useState('');
 
@@ -113,7 +114,8 @@ const CommentsSection = memo<Props & WrappedComponentProps>(
           return (
             <StyledParentComment
               key={parentComment.id}
-              postId={postId}
+              ideaId={ideaId}
+              initiativeId={initiativeId}
               postType={postType}
               commentId={parentComment.id}
               childCommentIds={childCommentIds}
@@ -127,4 +129,4 @@ const CommentsSection = memo<Props & WrappedComponentProps>(
   }
 );
 
-export default injectIntl(CommentsSection);
+export default CommentsSection;

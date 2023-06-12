@@ -92,7 +92,8 @@ const CancelButton = styled(Button)`
 `;
 
 interface Props {
-  postId: string;
+  ideaId?: string;
+  initiativeId?: string;
   postType: 'idea' | 'initiative';
   projectId?: string | null;
   parentId: string;
@@ -102,7 +103,8 @@ interface Props {
 
 const ChildCommentForm = ({
   parentId,
-  postId,
+  ideaId,
+  initiativeId,
   postType,
   projectId,
   className,
@@ -178,7 +180,7 @@ const ChildCommentForm = ({
   const onFocus = () => {
     trackEventByName(tracks.focusChildCommentEditor, {
       extra: {
-        postId,
+        postId: ideaId || initiativeId,
         postType,
         parentId,
       },
@@ -210,7 +212,7 @@ const ChildCommentForm = ({
 
       trackEventByName(tracks.clickChildCommentPublish, {
         extra: {
-          postId,
+          postId: ideaId || initiativeId,
           postType,
           parentId,
           content: inputValue,
@@ -220,7 +222,7 @@ const ChildCommentForm = ({
       if (postType === 'idea' && projectId) {
         addCommentToIdeaComment(
           {
-            ideaId: postId,
+            ideaId,
             author_id: authUser.data.id,
             parent_id: parentId,
             body_multiloc: commentBodyMultiloc,
@@ -243,7 +245,7 @@ const ChildCommentForm = ({
               if (profanityApiError) {
                 trackEventByName(tracks.childCommentProfanityError.name, {
                   locale,
-                  postId,
+                  ideaId,
                   postType,
                   projectId,
                   profaneMessage: commentBodyMultiloc[locale],
@@ -264,7 +266,7 @@ const ChildCommentForm = ({
       if (postType === 'initiative') {
         addCommentToInitiativeComment(
           {
-            initiativeId: postId,
+            initiativeId,
             author_id: authUser.data.id,
             parent_id: parentId,
             body_multiloc: commentBodyMultiloc,
@@ -287,7 +289,7 @@ const ChildCommentForm = ({
               if (profanityApiError) {
                 trackEventByName(tracks.childCommentProfanityError.name, {
                   locale,
-                  postId,
+                  initiativeId,
                   postType,
                   projectId,
                   profaneMessage: commentBodyMultiloc[locale],
@@ -357,7 +359,7 @@ const ChildCommentForm = ({
 
   if (!isNilOrError(authUser) && focused) {
     const isModerator =
-      !isNilOrError(authUser) && canModerateProject(postId, authUser);
+      !isNilOrError(authUser) && canModerateProject(projectId, authUser);
 
     return (
       <Container className={`${className || ''} e2e-childcomment-form`}>
@@ -381,7 +383,7 @@ const ChildCommentForm = ({
                 name="comment"
                 placeholder={placeholder}
                 rows={3}
-                postId={postId}
+                postId={ideaId || initiativeId}
                 postType={postType}
                 value={inputValue}
                 error={getErrorMessage()}

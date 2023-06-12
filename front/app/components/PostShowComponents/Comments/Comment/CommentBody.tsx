@@ -55,14 +55,14 @@ const ButtonsWrapper = styled.div`
 `;
 
 interface Props {
+  ideaId?: string;
+  initiativeId?: string;
   commentId: string;
   commentType: 'parent' | 'child';
   editing: boolean;
   onCommentSaved: () => void;
   onCancelEditing: () => void;
   className?: string;
-  postId: string;
-  postType: 'idea' | 'initiative';
 }
 
 const CommentBody = ({
@@ -72,14 +72,14 @@ const CommentBody = ({
   onCancelEditing,
   onCommentSaved,
   className,
-  postId,
-  postType,
+  ideaId,
+  initiativeId,
 }: Props) => {
   const theme = useTheme();
   const { data: comment } = useComment(commentId);
   const { mutate: updateComment, isLoading: processing } = useUpdateComment({
-    ideaId: postType === 'idea' ? postId : undefined,
-    initiativeId: postType === 'initiative' ? postId : undefined,
+    ideaId,
+    initiativeId,
   });
   const localize = useLocalize();
   const locale = useLocale();

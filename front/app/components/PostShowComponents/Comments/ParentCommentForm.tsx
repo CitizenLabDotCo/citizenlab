@@ -109,7 +109,8 @@ const CancelButton = styled(Button)`
 `;
 
 interface Props {
-  postId: string;
+  ideaId?: string;
+  initiativeId?: string;
   postType: 'idea' | 'initiative';
   postingComment: (arg: boolean) => void;
   className?: string;
@@ -117,7 +118,8 @@ interface Props {
 }
 
 const ParentCommentForm = ({
-  postId,
+  ideaId,
+  initiativeId,
   postType,
   className,
   allowAnonymousParticipation,
@@ -145,7 +147,6 @@ const ParentCommentForm = ({
   const [postAnonymously, setPostAnonymously] = useState(false);
   const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
     useState(false);
-  const ideaId = postType === 'idea' ? postId : undefined;
   const { data: idea } = useIdeaById(ideaId);
   const projectId = idea ? idea.data.relationships.project.data.id : null;
 
@@ -167,7 +168,7 @@ const ParentCommentForm = ({
   const onFocus = () => {
     trackEventByName(tracks.focusParentCommentEditor, {
       extra: {
-        postId,
+        postId: ideaId || initiativeId,
         postType,
       },
     });
@@ -202,7 +203,7 @@ const ParentCommentForm = ({
 
       trackEventByName(tracks.clickParentCommentPublish, {
         extra: {
-          postId,
+          postId: ideaId || initiativeId,
           postType,
           content: inputValue,
         },
@@ -211,7 +212,7 @@ const ParentCommentForm = ({
       if (postType === 'idea' && projectId) {
         addCommentToIdea(
           {
-            ideaId: postId,
+            ideaId,
             author_id: authUser.data.id,
             body_multiloc: commentBodyMultiloc,
             anonymous: postAnonymously,
@@ -238,7 +239,7 @@ const ParentCommentForm = ({
               if (profanityApiError) {
                 trackEventByName(tracks.parentCommentProfanityError.name, {
                   locale,
-                  postId,
+                  ideaId,
                   postType,
                   projectId,
                   profaneMessage: commentBodyMultiloc[locale],
@@ -261,7 +262,7 @@ const ParentCommentForm = ({
       if (postType === 'initiative') {
         addCommentToInitiative(
           {
-            initiativeId: postId,
+            initiativeId,
             author_id: authUser.data.id,
             body_multiloc: commentBodyMultiloc,
             anonymous: postAnonymously,
@@ -288,7 +289,7 @@ const ParentCommentForm = ({
               if (profanityApiError) {
                 trackEventByName(tracks.parentCommentProfanityError.name, {
                   locale,
-                  postId,
+                  initiativeId,
                   postType,
                   projectId,
                   profaneMessage: commentBodyMultiloc[locale],
@@ -378,7 +379,7 @@ const ParentCommentForm = ({
                 name="comment"
                 placeholder={placeholder}
                 rows={focused || processing ? 4 : 1}
-                postId={postId}
+                postId={ideaId || initiativeId}
                 postType={postType}
                 value={inputValue}
                 error={getErrorMessage()}
