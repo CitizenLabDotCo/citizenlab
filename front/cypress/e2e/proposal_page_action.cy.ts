@@ -25,7 +25,7 @@ describe('Initiative show page actions', () => {
       cy.apiRemoveInitiative(initiativeId);
     });
 
-    it('asks unauthorised users to log in or sign up before they reaction', () => {
+    it('asks unauthorised users to log in or sign up before they react', () => {
       cy.get('#e2e-initiative-like-button').should('exist');
       cy.wait(2000);
       cy.get('#e2e-initiative-like-button').click();
@@ -116,14 +116,10 @@ describe('Initiative show page actions', () => {
           .as('reactionButton');
 
         // get initial reaction count
-        cy.get('#e2e-initiative-not-reacted-reaction-count').contains(
-          '1 reaction'
-        );
+        cy.get('#e2e-initiative-not-reacted-reaction-count').contains('1 vote');
         // like initiative
         cy.get('@reactionButton').click({ force: true });
-        cy.get('#e2e-initiative-reacted-reaction-count').contains(
-          '2 reactions'
-        );
+        cy.get('#e2e-initiative-reacted-reaction-count').contains('2 votes');
 
         // get cancel reaction button
         cy.get('#e2e-initiative-reaction-control')
@@ -131,9 +127,7 @@ describe('Initiative show page actions', () => {
           .as('cancelReactionButton');
 
         // current reaction count
-        cy.get('#e2e-initiative-reacted-reaction-count').contains(
-          '2 reactions'
-        );
+        cy.get('#e2e-initiative-reacted-reaction-count').contains('2 votes');
 
         cy.get('#e2e-initiative-reaction-control')
           .find('#e2e-initiative-cancel-like-button')
@@ -142,9 +136,7 @@ describe('Initiative show page actions', () => {
 
         // confirm reaction count went down
         cy.get('#e2e-initiative-not-reacted-reaction-count').should('exist');
-        cy.get('#e2e-initiative-not-reacted-reaction-count').contains(
-          '1 reaction'
-        );
+        cy.get('#e2e-initiative-not-reacted-reaction-count').contains('1 vote');
       });
     });
 
