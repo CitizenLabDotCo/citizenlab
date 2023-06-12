@@ -104,8 +104,6 @@ class WebApi::V1::InternalCommentsController < ApplicationController
   end
 
   def mark_as_deleted
-    authorize @comment
-
     @comment.publication_status = 'deleted'
     if @comment.save
       SideFxInternalCommentService.new.after_mark_as_deleted(@comment, current_user)
