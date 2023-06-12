@@ -233,6 +233,7 @@
   "app.components.ParticipationCTABars.allocateBudget": "خصّص ميزانيتك",
   "app.components.ParticipationCTABars.mobileProjectOpenForSubmission": "مفتوح للمشاركة",
   "app.components.ParticipationCTABars.poll": "خذ الاستطلاع",
+  "app.components.ParticipationCTABars.projectClosedForSubmission": "الطلبات الجديدة لا يتم قبولها حاليا",
   "app.components.ParticipationCTABars.projectOpenForSubmission": "هذا المشروع مفتوح للمشاركة حاليًا.",
   "app.components.ParticipationCTABars.reviewDocument": "راجع المستند",
   "app.components.ParticipationCTABars.seeIdeas": "راجع الأفكار",
