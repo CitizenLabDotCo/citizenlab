@@ -12,7 +12,6 @@ import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 import Outlet from 'components/Outlet';
 
 // hooks
-import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useUserById from 'api/users/useUserById';
 import useComment from 'api/comments/useComment';
@@ -113,16 +112,13 @@ const CommentFooter = ({
 }: Props) => {
   const { data: comment } = useComment(commentId);
   const { data: author } = useUserById(authorId);
-  const initiativeId = postType === 'initiative' ? postId : undefined;
   const ideaId = postType === 'idea' ? postId : undefined;
-  const { data: initiative } = useInitiativeById(initiativeId);
   const { data: idea } = useIdeaById(ideaId);
-  const post = postType === 'idea' ? idea?.data : initiative?.data;
   const commentingPermissionInitiative = useInitiativesPermissions(
     'commenting_initiative'
   );
 
-  if (isNilOrError(post) || isNilOrError(comment)) {
+  if (isNilOrError(comment)) {
     return null;
   }
 
@@ -141,7 +137,7 @@ const CommentFooter = ({
           commentId={commentId}
           commentType={commentType}
           author={author?.data}
-          post={post}
+          idea={idea?.data}
           comment={comment.data}
           commentingPermissionInitiative={commentingPermissionInitiative}
         />
