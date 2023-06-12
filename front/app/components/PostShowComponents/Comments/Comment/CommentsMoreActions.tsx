@@ -1,6 +1,5 @@
 // Libraries
 import React, { FormEvent, useState } from 'react';
-import { get } from 'lodash-es';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -23,7 +22,7 @@ import styled from 'styled-components';
 import { isRtl } from 'utils/styleUtils';
 
 import useMarkCommentForDeletion from 'api/comments/useMarkForDeletion';
-import { ICommentData } from 'api/comments/types';
+import { DeleteReason, ICommentData } from 'api/comments/types';
 
 const Container = styled.div`
   display: flex;
@@ -142,10 +141,10 @@ const CommentsMoreActions = ({
     deleteCommentModalClosed();
   };
 
-  const deleteComment = async (reason) => {
+  const deleteComment = async (reason: DeleteReason) => {
     const commentId = comment.id;
-    const authorId = get(comment, 'relationships.author.data.id', undefined);
-    const reasonObj = get(reason, 'reason_code') ? reason : undefined;
+    const authorId = comment.relationships.author.data?.id;
+    const reasonObj = reason.reason_code ? reason : undefined;
 
     markForDeletion(
       {
