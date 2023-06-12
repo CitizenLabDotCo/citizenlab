@@ -67,7 +67,7 @@ class WebApi::V1::InternalCommentsController < ApplicationController
   end
 
   def create
-    @comment = InternalComment.new comment_create_params
+    @comment = InternalComment.new permitted_attributes(InternalComment)
     @comment.post_type = @post_type
     @comment.post_id = @post_id
     @comment.author ||= current_user
@@ -87,9 +87,7 @@ class WebApi::V1::InternalCommentsController < ApplicationController
   end
 
   def update
-    @comment.attributes = comment_update_params
-    # We cannot pass policy class to permitted_attributes
-    # @comment.attributes = pundit_params_for(@comment).permit(@policy_class.new(current_user, @comment).permitted_attributes_for_update)
+    @comment.assign_attributes permitted_attributes(@comment)
     authorize @comment
 
     SideFxInternalCommentService.new.before_update @comment, current_user
@@ -150,19 +148,6 @@ class WebApi::V1::InternalCommentsController < ApplicationController
   def set_post_type_and_id
     @post_type = params[:post]
     @post_id = params[:"#{@post_type.underscore}_id"]
-  end
-
-  def comment_create_params
-    params.require(:internal_comment).permit(
-      :parent_id,
-      :body_text
-    )
-  end
-
-  def comment_update_params
-    attrs = []
-    attrs = [:body_text] if @comment.author_id == current_user&.id
-    params.require(:internal_comment).permit(attrs)
   end
 
   # Merge both arrays in such a way that the order of both is preserved, but

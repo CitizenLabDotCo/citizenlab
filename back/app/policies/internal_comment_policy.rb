@@ -44,6 +44,14 @@ class InternalCommentPolicy < ApplicationPolicy
     false
   end
 
+  def permitted_attributes_for_create
+    %i[parent_id body_text]
+  end
+
+  def permitted_attributes_for_update
+    record.author_id == user&.id ? [:body_text] : []
+  end
+
   private
 
   def internal_commenter?
