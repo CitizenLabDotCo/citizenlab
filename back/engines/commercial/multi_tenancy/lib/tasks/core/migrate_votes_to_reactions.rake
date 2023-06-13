@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# NOTE: Only to be used for release that migrates Votes -> Reactions
 namespace :fix_existing_tenants do
   desc 'Migrate permitted_by values to new users value for some existing permissions'
   task migrate_votes_to_reactions: [:environment] do |_t, _args|
@@ -7,9 +8,10 @@ namespace :fix_existing_tenants do
       puts "Processing tenant #{tenant.host}..."
       Apartment::Tenant.switch(tenant.schema_name) do
         migrator = VotesToReactionMigrator.new(tenant)
-        migrator.update_smart_groups
-        migrator.update_initiatives_voting_threshold
+
         migrator.update_downvoting_feature_flag
+        # migrator.update_initiatives_voting_threshold
+        # migrator.update_smart_groups
       end
     end
   end
@@ -29,6 +31,21 @@ class VotesToReactionMigrator
     @tenant = tenant
   end
 
+  def update_downvoting_feature_flag
+    Rails.logger.info("SETTING: Disliking feature flag for #{@tenant.host}")
+    settings = AppConfiguration.instance.settings
+    settings['disable_disliking'] = settings['disable_downvoting']
+    AppConfiguration.instance.update! settings: settings
+  end
+
+  def update_initiatives_voting_threshold
+    Rails.logger.info("SETTING: initiatives->reacting_threshold for #{@tenant.host}")
+    settings = AppConfiguration.instance.settings
+    settings['initiatives']['reacting_threshold'] = settings['initiatives']['voting_threshold']
+    AppConfiguration.instance.update! settings: settings
+    Rails.logger.info("SAVED: initiatives->reacting_threshold for #{@tenant.host}")
+  end
+
   def update_smart_groups
     Rails.logger.info("UPDATING: Smart groups for #{@tenant.host}")
 
@@ -45,7 +62,12 @@ class VotesToReactionMigrator
     Rails.logger.info("SAVED: #{count} groups")
   end
 
-  # Can be done later - this is a large update
+  def update_notifications
+    Rails.logger.info("UPDATING: Activities for #{@tenant.host}")
+    # TODO: What do we need to do with notifications?
+  end
+
+  # Done as separate rake task - this is a large update and less important
   def update_activities
     Rails.logger.info("UPDATING: Activities for #{@tenant.host}")
 
@@ -78,26 +100,6 @@ class VotesToReactionMigrator
       count += 1
     end
     Rails.logger.info("SAVED: #{count} 'Notifications::' & 'EmailCampaigns::'  activities")
-  end
-
-  def update_initiatives_voting_threshold
-    Rails.logger.info("SETTING: initiatives->reacting_threshold for #{@tenant.host}")
-    settings = AppConfiguration.instance.settings
-    settings['initiatives']['reacting_threshold'] = settings['initiatives']['voting_threshold']
-    AppConfiguration.instance.update! settings: settings
-    Rails.logger.info("SAVED: Downvoting feature flag for #{@tenant.host}")
-  end
-
-  def update_downvoting_feature_flag
-    Rails.logger.info("SETTING: Disliking feature flag for #{@tenant.host}")
-    settings = AppConfiguration.instance.settings
-    settings['disliking'] = settings['downvoting']
-    AppConfiguration.instance.update! settings: settings
-  end
-
-  def update_notifications
-    Rails.logger.info("UPDATING: Activities for #{@tenant.host}")
-    # TODO: What do we need to do with notifications?
   end
 
 end
