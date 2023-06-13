@@ -101,5 +101,4 @@ class VotesToReactionMigrator
     end
     Rails.logger.info("SAVED: #{count} 'Notifications::' & 'EmailCampaigns::'  activities")
   end
-
 end
