@@ -1700,6 +1700,7 @@
   "app.utils.votingMethodUtils.budget": "budget",
   "app.utils.votingMethodUtils.budgetParticipationEnded": "<b>Der blev lukket for indsendelse af budgetter på {endDate}.</b> Deltagerne havde i alt <b>{maxBudget} {currency} hver til at fordele mellem {optionCount} muligheder.</b>",
   "app.utils.votingMethodUtils.budgetSubmitted": "Indsendt budget",
+  "app.utils.votingMethodUtils.budgetSubmittedWithIcon": "Budget indsendt 🎉",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructions": "Du har i alt <b>{maxBudget} USD at fordele mellem {optionCount} muligheder</b>. Vælg dine foretrukne muligheder ved at trykke på \"Tilføj\". Når du er færdig, skal du klikke på \"Submit\" for at indsende dit budget.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>Tillykke, dit budget er blevet indsendt!</b> Du kan til enhver tid tjekke dine valg nedenfor eller ændre dem før <b>{endDate}</b>.",
   "app.utils.votingMethodUtils.budgets": "Budgetter",
