@@ -21,7 +21,7 @@ import { Title } from '@citizenlab/cl2-component-library';
 
 // typings
 import { CommentsSort } from 'api/comments/types';
-import CommentingInitiativeDisabled from './CommentingProposalDisabled';
+import CommentingProposalDisabled from './CommentingProposalDisabled';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
@@ -160,7 +160,7 @@ const CommentsSection = ({
         {postType === 'idea' && idea ? (
           <CommentingIdeaDisabled idea={idea} phaseId={phaseId} />
         ) : (
-          <CommentingInitiativeDisabled />
+          <CommentingProposalDisabled />
         )}
 
         <StyledParentCommentForm
