@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
-
+ActiveRecord::Schema[7.0].define(version: 2023_06_01_085753) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -24,8 +23,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.string "action", null: false
     t.jsonb "payload", default: {}, null: false
     t.uuid "user_id"
-    t.datetime "acted_at", null: false
-    t.datetime "created_at", null: false
+    t.datetime "acted_at", precision: nil, null: false
+    t.datetime "created_at", precision: nil, null: false
     t.uuid "project_id"
     t.index ["acted_at"], name: "index_activities_on_acted_at"
     t.index ["action"], name: "index_activities_on_action"
@@ -42,8 +41,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.string "publication_status", default: "published", null: false
     t.uuid "publication_id"
     t.string "publication_type"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "depth", default: 0, null: false
     t.boolean "children_allowed", default: true, null: false
     t.integer "children_count", default: 0, null: false
@@ -106,7 +105,7 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.string "referrer_name"
     t.string "referrer_url"
     t.integer "matomo_visit_id", null: false
-    t.datetime "matomo_last_action_time", null: false
+    t.datetime "matomo_last_action_time", precision: nil, null: false
     t.index ["dimension_date_first_action_id"], name: "i_v_first_action"
     t.index ["dimension_date_last_action_id"], name: "i_v_last_action"
     t.index ["dimension_referrer_type_id"], name: "i_v_referrer_type"
@@ -121,16 +120,16 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.string "logo"
     t.string "favicon"
     t.jsonb "settings", default: {}
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.jsonb "style", default: {}
   end
 
   create_table "areas", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.jsonb "title_multiloc", default: {}
     t.jsonb "description_multiloc", default: {}
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.integer "ordering"
     t.uuid "custom_field_option_id"
     t.index ["custom_field_option_id"], name: "index_areas_on_custom_field_option_id"
@@ -162,27 +161,27 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
   create_table "areas_static_pages", force: :cascade do |t|
     t.uuid "area_id", null: false
     t.uuid "static_page_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["area_id"], name: "index_areas_static_pages_on_area_id"
     t.index ["static_page_id"], name: "index_areas_static_pages_on_static_page_id"
   end
 
   create_table "baskets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.datetime "submitted_at"
+    t.datetime "submitted_at", precision: nil
     t.uuid "user_id"
     t.uuid "participation_context_id"
     t.string "participation_context_type"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["user_id"], name: "index_baskets_on_user_id"
   end
 
   create_table "baskets_ideas", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "basket_id"
     t.uuid "idea_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["basket_id"], name: "index_baskets_ideas_on_basket_id"
     t.index ["idea_id"], name: "index_baskets_ideas_on_idea_id"
   end
@@ -194,12 +193,12 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.integer "lft", null: false
     t.integer "rgt", null: false
     t.jsonb "body_multiloc", default: {}
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.integer "upvotes_count", default: 0, null: false
     t.integer "downvotes_count", default: 0, null: false
     t.string "publication_status", default: "published", null: false
-    t.datetime "body_updated_at"
+    t.datetime "body_updated_at", precision: nil
     t.integer "children_count", default: 0, null: false
     t.string "post_type"
     t.string "author_hash"
@@ -221,8 +220,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
   create_table "content_builder_layout_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "image"
     t.string "code"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "content_builder_layouts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -231,8 +230,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.uuid "content_buildable_id", null: false
     t.string "code", null: false
     t.boolean "enabled", default: false, null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["content_buildable_type", "content_buildable_id", "code"], name: "index_content_builder_layouts_content_buidable_type_id_code", unique: true
   end
 
@@ -241,8 +240,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.string "key"
     t.jsonb "title_multiloc", default: {}
     t.integer "ordering"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["custom_field_id", "key"], name: "index_custom_field_options_on_custom_field_id_and_key", unique: true
     t.index ["custom_field_id"], name: "index_custom_field_options_on_custom_field_id"
   end
@@ -255,8 +254,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.jsonb "description_multiloc", default: {}
     t.boolean "required", default: false
     t.integer "ordering"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.boolean "enabled", default: true, null: false
     t.string "code"
     t.uuid "resource_id"
@@ -270,8 +269,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
   end
 
   create_table "custom_forms", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.uuid "participation_context_id", null: false
     t.string "participation_context_type", null: false
     t.index ["participation_context_id", "participation_context_type"], name: "index_custom_forms_on_participation_context", unique: true
@@ -280,10 +279,10 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
   create_table "email_campaigns_campaign_email_commands", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "campaign"
     t.uuid "recipient_id"
-    t.datetime "commanded_at"
+    t.datetime "commanded_at", precision: nil
     t.jsonb "tracked_content"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["recipient_id"], name: "index_email_campaigns_campaign_email_commands_on_recipient_id"
   end
 
@@ -296,8 +295,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.jsonb "schedule", default: {}
     t.jsonb "subject_multiloc", default: {}
     t.jsonb "body_multiloc", default: {}
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.integer "deliveries_count", default: 0, null: false
     t.index ["author_id"], name: "index_email_campaigns_campaigns_on_author_id"
     t.index ["type"], name: "index_email_campaigns_campaigns_on_type"
@@ -306,8 +305,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
   create_table "email_campaigns_campaigns_groups", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "campaign_id"
     t.uuid "group_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["campaign_id", "group_id"], name: "index_campaigns_groups", unique: true
     t.index ["campaign_id"], name: "index_email_campaigns_campaigns_groups_on_campaign_id"
     t.index ["group_id"], name: "index_email_campaigns_campaigns_groups_on_group_id"
@@ -317,8 +316,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.string "campaign_type", null: false
     t.uuid "user_id", null: false
     t.boolean "consented", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["campaign_type", "user_id"], name: "index_email_campaigns_consents_on_campaign_type_and_user_id", unique: true
     t.index ["user_id"], name: "index_email_campaigns_consents_on_user_id"
   end
@@ -328,9 +327,9 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.uuid "user_id", null: false
     t.string "delivery_status", null: false
     t.jsonb "tracked_content", default: {}
-    t.datetime "sent_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "sent_at", precision: nil
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["campaign_id", "user_id"], name: "index_email_campaigns_deliveries_on_campaign_id_and_user_id"
     t.index ["campaign_id"], name: "index_email_campaigns_deliveries_on_campaign_id"
     t.index ["sent_at"], name: "index_email_campaigns_deliveries_on_sent_at"
@@ -342,8 +341,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.string "locale", null: false
     t.string "subject", null: false
     t.uuid "recipient_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.uuid "campaign_id"
     t.index ["campaign_id"], name: "index_email_campaigns_examples_on_campaign_id"
     t.index ["recipient_id"], name: "index_email_campaigns_examples_on_recipient_id"
@@ -361,8 +360,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.string "snippet"
     t.string "locale"
     t.text "body"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["email", "snippet", "locale"], name: "index_email_snippets_on_email_and_snippet_and_locale"
   end
 
@@ -370,8 +369,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.uuid "event_id"
     t.string "file"
     t.integer "ordering"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "name"
     t.index ["event_id"], name: "index_event_files_on_event_id"
   end
@@ -381,20 +380,20 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.jsonb "title_multiloc", default: {}
     t.jsonb "description_multiloc", default: {}
     t.jsonb "location_multiloc", default: {}
-    t.datetime "start_at"
-    t.datetime "end_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "start_at", precision: nil
+    t.datetime "end_at", precision: nil
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["project_id"], name: "index_events_on_project_id"
   end
 
   create_table "flag_inappropriate_content_inappropriate_content_flags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "flaggable_id", null: false
     t.string "flaggable_type", null: false
-    t.datetime "deleted_at"
+    t.datetime "deleted_at", precision: nil
     t.string "toxicity_label"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["flaggable_id", "flaggable_type"], name: "inappropriate_content_flags_flaggable"
   end
 
@@ -402,8 +401,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.jsonb "title_multiloc", default: {}
     t.string "slug"
     t.integer "memberships_count", default: 0, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "membership_type"
     t.jsonb "rules", default: []
     t.index ["slug"], name: "index_groups_on_slug"
@@ -412,8 +411,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
   create_table "groups_permissions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "permission_id", null: false
     t.uuid "group_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["group_id"], name: "index_groups_permissions_on_group_id"
     t.index ["permission_id"], name: "index_groups_permissions_on_permission_id"
   end
@@ -421,8 +420,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
   create_table "groups_projects", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "group_id"
     t.uuid "project_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["group_id", "project_id"], name: "index_groups_projects_on_group_id_and_project_id", unique: true
     t.index ["group_id"], name: "index_groups_projects_on_group_id"
     t.index ["project_id"], name: "index_groups_projects_on_project_id"
@@ -449,8 +448,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.jsonb "banner_cta_signed_out_text_multiloc", default: {}, null: false
     t.string "banner_cta_signed_out_type", default: "sign_up_button", null: false
     t.string "banner_cta_signed_out_url"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "header_bg"
   end
 
@@ -463,8 +462,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.uuid "idea_id"
     t.string "file"
     t.integer "ordering"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "name"
     t.index ["idea_id"], name: "index_idea_files_on_idea_id"
   end
@@ -473,8 +472,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.uuid "idea_id"
     t.string "image"
     t.integer "ordering"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["idea_id"], name: "index_idea_images_on_idea_id"
   end
 
@@ -483,8 +482,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.integer "ordering"
     t.string "code"
     t.string "color"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.jsonb "description_multiloc", default: {}
     t.integer "ideas_count", default: 0
   end
@@ -493,11 +492,11 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.jsonb "title_multiloc", default: {}
     t.jsonb "body_multiloc", default: {}
     t.string "publication_status"
-    t.datetime "published_at"
+    t.datetime "published_at", precision: nil
     t.uuid "project_id"
     t.uuid "author_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.integer "upvotes_count", default: 0, null: false
     t.integer "downvotes_count", default: 0, null: false
     t.geography "location_point", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}
@@ -509,7 +508,7 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.integer "baskets_count", default: 0, null: false
     t.integer "official_feedbacks_count", default: 0, null: false
     t.uuid "assignee_id"
-    t.datetime "assigned_at"
+    t.datetime "assigned_at", precision: nil
     t.integer "proposed_budget"
     t.jsonb "custom_field_values", default: {}, null: false
     t.uuid "creation_phase_id"
@@ -527,8 +526,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
   create_table "ideas_phases", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "idea_id"
     t.uuid "phase_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["idea_id", "phase_id"], name: "index_ideas_phases_on_idea_id_and_phase_id", unique: true
     t.index ["idea_id"], name: "index_ideas_phases_on_idea_id"
     t.index ["phase_id"], name: "index_ideas_phases_on_phase_id"
@@ -547,22 +546,22 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.string "uid"
     t.jsonb "auth_hash", default: {}
     t.uuid "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["user_id"], name: "index_identities_on_user_id"
   end
 
   create_table "impact_tracking_salts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "salt"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "impact_tracking_sessions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "monthly_user_hash", null: false
     t.string "highest_role"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.uuid "user_id"
     t.index ["monthly_user_hash"], name: "index_impact_tracking_sessions_on_monthly_user_hash"
   end
@@ -572,8 +571,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.string "file"
     t.string "name"
     t.integer "ordering"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["initiative_id"], name: "index_initiative_files_on_initiative_id"
   end
 
@@ -581,8 +580,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.uuid "initiative_id"
     t.string "image"
     t.integer "ordering"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["initiative_id"], name: "index_initiative_images_on_initiative_id"
   end
 
@@ -591,8 +590,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.uuid "initiative_id"
     t.uuid "initiative_status_id"
     t.uuid "official_feedback_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["initiative_id"], name: "index_initiative_status_changes_on_initiative_id"
     t.index ["initiative_status_id"], name: "index_initiative_status_changes_on_initiative_status_id"
     t.index ["official_feedback_id"], name: "index_initiative_status_changes_on_official_feedback_id"
@@ -605,15 +604,15 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.integer "ordering"
     t.string "code"
     t.string "color"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "initiatives", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.jsonb "title_multiloc", default: {}
     t.jsonb "body_multiloc", default: {}
     t.string "publication_status"
-    t.datetime "published_at"
+    t.datetime "published_at", precision: nil
     t.uuid "author_id"
     t.integer "upvotes_count", default: 0, null: false
     t.integer "downvotes_count", default: 0, null: false
@@ -621,12 +620,12 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.string "location_description"
     t.string "slug"
     t.integer "comments_count", default: 0, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "header_bg"
     t.uuid "assignee_id"
     t.integer "official_feedbacks_count", default: 0, null: false
-    t.datetime "assigned_at"
+    t.datetime "assigned_at", precision: nil
     t.string "author_hash"
     t.boolean "anonymous", default: false, null: false
     t.index "((to_tsvector('simple'::regconfig, COALESCE((title_multiloc)::text, ''::text)) || to_tsvector('simple'::regconfig, COALESCE((body_multiloc)::text, ''::text))))", name: "index_initiatives_search", using: :gin
@@ -647,8 +646,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.string "name", null: false
     t.uuid "view_id", null: false
     t.integer "position"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "inputs_count", default: 0, null: false
     t.string "source_type"
     t.uuid "source_id"
@@ -663,8 +662,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.string "input_type", null: false
     t.uuid "input_id", null: false
     t.boolean "approved", default: true, null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["approved"], name: "index_insights_category_assignments_on_approved"
     t.index ["category_id", "input_id", "input_type"], name: "index_single_category_assignment", unique: true
     t.index ["category_id"], name: "index_insights_category_assignments_on_category_id"
@@ -675,8 +674,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.uuid "view_id", null: false
     t.string "origin_type", null: false
     t.uuid "origin_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["origin_type", "origin_id"], name: "index_insights_data_sources_on_origin"
     t.index ["view_id", "origin_type", "origin_id"], name: "index_insights_data_sources_on_view_and_origin", unique: true
     t.index ["view_id"], name: "index_insights_data_sources_on_view_id"
@@ -686,8 +685,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.string "input_type", null: false
     t.uuid "input_id", null: false
     t.uuid "view_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["input_id", "input_type", "view_id"], name: "index_single_processed_flags", unique: true
     t.index ["input_type", "input_id"], name: "index_processed_flags_on_input"
     t.index ["view_id"], name: "index_insights_processed_flags_on_view_id"
@@ -697,8 +696,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.uuid "task_id", null: false
     t.uuid "view_id", null: false
     t.string "language", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["task_id"], name: "index_insights_text_network_analysis_tasks_views_on_task_id"
     t.index ["view_id"], name: "index_insights_text_network_analysis_tasks_views_on_view_id"
   end
@@ -707,8 +706,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.uuid "view_id", null: false
     t.string "language", null: false
     t.jsonb "json_network", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["language"], name: "index_insights_text_networks_on_language"
     t.index ["view_id", "language"], name: "index_insights_text_networks_on_view_id_and_language", unique: true
     t.index ["view_id"], name: "index_insights_text_networks_on_view_id"
@@ -716,15 +715,15 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
 
   create_table "insights_views", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["name"], name: "index_insights_views_on_name"
   end
 
   create_table "insights_zeroshot_classification_tasks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "task_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["task_id"], name: "index_insights_zeroshot_classification_tasks_on_task_id", unique: true
   end
 
@@ -750,9 +749,9 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.uuid "inviter_id"
     t.uuid "invitee_id", null: false
     t.string "invite_text"
-    t.datetime "accepted_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "accepted_at", precision: nil
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.boolean "send_invite_email", default: true, null: false
     t.index ["invitee_id"], name: "index_invites_on_invitee_id"
     t.index ["inviter_id"], name: "index_invites_on_inviter_id"
@@ -765,8 +764,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.string "attribute_name", null: false
     t.string "locale_to", null: false
     t.string "translation", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["translatable_id", "translatable_type", "attribute_name", "locale_to"], name: "machine_translations_lookup", unique: true
     t.index ["translatable_id", "translatable_type"], name: "machine_translations_translatable"
   end
@@ -778,8 +777,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.jsonb "geojson", null: false
     t.boolean "default_enabled", default: true, null: false
     t.string "marker_svg_url"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["map_config_id"], name: "index_maps_layers_on_map_config_id"
   end
 
@@ -788,8 +787,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.jsonb "title_multiloc", default: {}, null: false
     t.string "color", null: false
     t.integer "ordering", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["map_config_id"], name: "index_maps_legend_items_on_map_config_id"
   end
 
@@ -798,16 +797,16 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.geography "center", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}
     t.decimal "zoom_level", precision: 4, scale: 2
     t.string "tile_provider"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["project_id"], name: "index_maps_map_configs_on_project_id", unique: true
   end
 
   create_table "memberships", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "group_id"
     t.uuid "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["group_id", "user_id"], name: "index_memberships_on_group_id_and_user_id", unique: true
     t.index ["group_id"], name: "index_memberships_on_group_id"
     t.index ["user_id"], name: "index_memberships_on_user_id"
@@ -817,8 +816,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.uuid "moderatable_id"
     t.string "moderatable_type"
     t.string "status"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["moderatable_type", "moderatable_id"], name: "moderation_statuses_moderatable", unique: true
   end
 
@@ -827,8 +826,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.integer "ordering"
     t.jsonb "title_multiloc"
     t.uuid "static_page_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["code"], name: "index_nav_bar_items_on_code"
     t.index ["ordering"], name: "index_nav_bar_items_on_ordering"
     t.index ["static_page_id"], name: "index_nav_bar_items_on_static_page_id"
@@ -837,20 +836,20 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
   create_table "nlp_text_network_analysis_tasks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "task_id", null: false
     t.string "handler_class", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["task_id"], name: "index_nlp_text_network_analysis_tasks_on_task_id", unique: true
   end
 
   create_table "notifications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "type"
-    t.datetime "read_at"
+    t.datetime "read_at", precision: nil
     t.uuid "recipient_id"
     t.uuid "post_id"
     t.uuid "comment_id"
     t.uuid "project_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.uuid "initiating_user_id"
     t.uuid "spam_report_id"
     t.uuid "invite_id"
@@ -882,8 +881,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.jsonb "author_multiloc", default: {}
     t.uuid "user_id"
     t.uuid "post_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "post_type"
     t.index ["post_id", "post_type"], name: "index_official_feedbacks_on_post"
     t.index ["post_id"], name: "index_official_feedbacks_on_post_id"
@@ -893,8 +892,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
   create_table "onboarding_campaign_dismissals", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "user_id"
     t.string "campaign_name", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["campaign_name", "user_id"], name: "index_dismissals_on_campaign_name_and_user_id", unique: true
     t.index ["user_id"], name: "index_onboarding_campaign_dismissals_on_user_id"
   end
@@ -904,8 +903,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.string "permitted_by", null: false
     t.uuid "permission_scope_id"
     t.string "permission_scope_type"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.boolean "global_custom_fields", default: false, null: false
     t.index ["action"], name: "index_permissions_on_action"
     t.index ["permission_scope_id"], name: "index_permissions_on_permission_scope_id"
@@ -915,8 +914,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.uuid "permission_id", null: false
     t.uuid "custom_field_id", null: false
     t.boolean "required", default: true, null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["custom_field_id"], name: "index_permissions_custom_fields_on_custom_field_id"
     t.index ["permission_id", "custom_field_id"], name: "index_permission_field", unique: true
     t.index ["permission_id"], name: "index_permissions_custom_fields_on_permission_id"
@@ -926,8 +925,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.uuid "phase_id"
     t.string "file"
     t.integer "ordering"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "name"
     t.index ["phase_id"], name: "index_phase_files_on_phase_id"
   end
@@ -938,8 +937,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.jsonb "description_multiloc", default: {}
     t.date "start_at"
     t.date "end_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "participation_method", default: "ideation", null: false
     t.boolean "posting_enabled", default: true
     t.boolean "commenting_enabled", default: true
@@ -969,8 +968,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.uuid "admin_publication_id", null: false
     t.string "page_type", null: false
     t.uuid "page_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["admin_publication_id"], name: "index_pins_on_admin_publication_id"
     t.index ["page_id", "admin_publication_id"], name: "index_pins_on_page_id_and_admin_publication_id", unique: true
   end
@@ -979,8 +978,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.uuid "question_id"
     t.jsonb "title_multiloc", default: {}, null: false
     t.integer "ordering"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["question_id"], name: "index_polls_options_on_question_id"
   end
 
@@ -989,8 +988,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.string "participation_context_type", null: false
     t.jsonb "title_multiloc", default: {}, null: false
     t.integer "ordering"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "question_type", default: "single_option", null: false
     t.integer "max_options"
     t.index ["participation_context_type", "participation_context_id"], name: "index_poll_questions_on_participation_context"
@@ -999,8 +998,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
   create_table "polls_response_options", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "response_id"
     t.uuid "option_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["option_id"], name: "index_polls_response_options_on_option_id"
     t.index ["response_id"], name: "index_polls_response_options_on_response_id"
   end
@@ -1009,8 +1008,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.uuid "participation_context_id", null: false
     t.string "participation_context_type", null: false
     t.uuid "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["participation_context_id", "participation_context_type", "user_id"], name: "index_polls_responses_on_participation_context_and_user_id", unique: true
     t.index ["participation_context_type", "participation_context_id"], name: "index_poll_responses_on_participation_context"
     t.index ["user_id"], name: "index_polls_responses_on_user_id"
@@ -1020,8 +1019,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.uuid "project_id"
     t.string "file"
     t.integer "ordering"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "name"
     t.index ["project_id"], name: "index_project_files_on_project_id"
   end
@@ -1031,8 +1030,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.string "file"
     t.string "name"
     t.integer "ordering"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["project_folder_id"], name: "index_project_folders_files_on_project_folder_id"
   end
 
@@ -1042,8 +1041,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.jsonb "description_preview_multiloc"
     t.string "header_bg"
     t.string "slug"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["slug"], name: "index_project_folders_folders_on_slug"
   end
 
@@ -1051,8 +1050,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.uuid "project_folder_id"
     t.string "image"
     t.integer "ordering"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["project_folder_id"], name: "index_project_folders_images_on_project_folder_id"
   end
 
@@ -1060,8 +1059,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.uuid "project_id"
     t.string "image"
     t.integer "ordering"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["project_id"], name: "index_project_images_on_project_id"
   end
 
@@ -1069,8 +1068,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.jsonb "title_multiloc", default: {}
     t.jsonb "description_multiloc", default: {}
     t.string "slug"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "header_bg"
     t.integer "ideas_count", default: 0, null: false
     t.string "visible_to", default: "public", null: false
@@ -1107,8 +1106,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
   create_table "projects_allowed_input_topics", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid "project_id"
     t.uuid "topic_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "ordering"
     t.index ["project_id"], name: "index_projects_allowed_input_topics_on_project_id"
     t.index ["topic_id", "project_id"], name: "index_projects_allowed_input_topics_on_topic_id_and_project_id", unique: true
@@ -1117,8 +1116,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
   create_table "projects_topics", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "topic_id", null: false
     t.uuid "project_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["project_id"], name: "index_projects_topics_on_project_id"
     t.index ["topic_id"], name: "index_projects_topics_on_topic_id"
   end
@@ -1127,21 +1126,21 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.string "name"
     t.string "secret"
     t.uuid "tenant_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["tenant_id"], name: "index_public_api_api_clients_on_tenant_id"
   end
 
   create_table "que_jobs", comment: "4", force: :cascade do |t|
     t.integer "priority", limit: 2, default: 100, null: false
-    t.datetime "run_at", default: -> { "now()" }, null: false
+    t.datetime "run_at", precision: nil, default: -> { "now()" }, null: false
     t.text "job_class", null: false
     t.integer "error_count", default: 0, null: false
     t.text "last_error_message"
     t.text "queue", default: "default", null: false
     t.text "last_error_backtrace"
-    t.datetime "finished_at"
-    t.datetime "expired_at"
+    t.datetime "finished_at", precision: nil
+    t.datetime "expired_at", precision: nil
     t.jsonb "args", default: [], null: false
     t.jsonb "data", default: {}, null: false
     t.integer "job_schema_version", default: 1
@@ -1168,8 +1167,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
   create_table "report_builder_reports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
     t.uuid "owner_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["name"], name: "index_report_builder_reports_on_name", unique: true
     t.index ["owner_id"], name: "index_report_builder_reports_on_owner_id"
   end
@@ -1177,12 +1176,12 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
   create_table "spam_reports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "spam_reportable_id", null: false
     t.string "spam_reportable_type", null: false
-    t.datetime "reported_at", null: false
+    t.datetime "reported_at", precision: nil, null: false
     t.string "reason_code"
     t.string "other_reason"
     t.uuid "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["reported_at"], name: "index_spam_reports_on_reported_at"
     t.index ["spam_reportable_type", "spam_reportable_id"], name: "spam_reportable_index"
     t.index ["user_id"], name: "index_spam_reports_on_user_id"
@@ -1193,16 +1192,16 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.string "file"
     t.integer "ordering"
     t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["static_page_id"], name: "index_static_page_files_on_static_page_id"
   end
 
   create_table "static_pages", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.jsonb "title_multiloc", default: {}
     t.string "slug"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "code", null: false
     t.jsonb "top_info_section_multiloc", default: {}, null: false
     t.boolean "banner_enabled", default: false, null: false
@@ -1229,8 +1228,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
   create_table "static_pages_topics", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "topic_id", null: false
     t.uuid "static_page_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["static_page_id"], name: "index_static_pages_topics_on_static_page_id"
     t.index ["topic_id"], name: "index_static_pages_topics_on_topic_id"
   end
@@ -1242,11 +1241,11 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.string "external_survey_id", null: false
     t.string "external_response_id", null: false
     t.uuid "user_id"
-    t.datetime "started_at"
-    t.datetime "submitted_at", null: false
+    t.datetime "started_at", precision: nil
+    t.datetime "submitted_at", precision: nil, null: false
     t.jsonb "answers", default: {}
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["participation_context_type", "participation_context_id"], name: "index_surveys_responses_on_participation_context"
     t.index ["user_id"], name: "index_surveys_responses_on_user_id"
   end
@@ -1255,13 +1254,13 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.string "name"
     t.string "host"
     t.jsonb "settings", default: {}
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "logo"
     t.string "favicon"
     t.jsonb "style", default: {}
-    t.datetime "deleted_at"
-    t.datetime "creation_finalized_at"
+    t.datetime "deleted_at", precision: nil
+    t.datetime "creation_finalized_at", precision: nil
     t.index ["creation_finalized_at"], name: "index_tenants_on_creation_finalized_at"
     t.index ["deleted_at"], name: "index_tenants_on_deleted_at"
     t.index ["host"], name: "index_tenants_on_host"
@@ -1272,26 +1271,26 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.uuid "imageable_id", null: false
     t.string "imageable_field"
     t.string "image"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "text_reference", null: false
   end
 
   create_table "texting_campaigns", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "phone_numbers", default: [], null: false, array: true
     t.text "message", null: false
-    t.datetime "sent_at"
+    t.datetime "sent_at", precision: nil
     t.string "status", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "topics", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.jsonb "title_multiloc", default: {}
     t.jsonb "description_multiloc", default: {}
     t.string "icon"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.integer "ordering"
     t.string "code", default: "custom", null: false
   end
@@ -1299,8 +1298,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
   create_table "user_custom_fields_representativeness_ref_distributions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "custom_field_id", null: false
     t.jsonb "distribution", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "type"
     t.index ["custom_field_id"], name: "index_ucf_representativeness_ref_distributions_on_custom_field"
   end
@@ -1311,8 +1310,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.string "slug"
     t.jsonb "roles", default: []
     t.string "reset_password_token"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "avatar"
     t.string "first_name"
     t.string "last_name"
@@ -1321,17 +1320,17 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.boolean "cl1_migrated", default: false
     t.string "invite_status"
     t.jsonb "custom_field_values", default: {}
-    t.datetime "registration_completed_at"
+    t.datetime "registration_completed_at", precision: nil
     t.boolean "verified", default: false, null: false
-    t.datetime "email_confirmed_at"
+    t.datetime "email_confirmed_at", precision: nil
     t.string "email_confirmation_code"
     t.integer "email_confirmation_retry_count", default: 0, null: false
     t.integer "email_confirmation_code_reset_count", default: 0, null: false
-    t.datetime "email_confirmation_code_sent_at"
+    t.datetime "email_confirmation_code_sent_at", precision: nil
     t.boolean "confirmation_required", default: true, null: false
-    t.datetime "block_start_at"
+    t.datetime "block_start_at", precision: nil
     t.string "block_reason"
-    t.datetime "block_end_at"
+    t.datetime "block_end_at", precision: nil
     t.string "new_email"
     t.index "lower((email)::text)", name: "users_unique_lower_email_idx", unique: true
     t.index ["email"], name: "index_users_on_email"
@@ -1344,8 +1343,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.string "method_name", null: false
     t.string "hashed_uid", null: false
     t.boolean "active", default: true, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["hashed_uid"], name: "index_verification_verifications_on_hashed_uid"
     t.index ["user_id"], name: "index_verification_verifications_on_user_id"
   end
@@ -1358,8 +1357,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.integer "volunteers_count", default: 0, null: false
     t.string "image"
     t.integer "ordering", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["ordering"], name: "index_volunteering_causes_on_ordering"
     t.index ["participation_context_type", "participation_context_id"], name: "index_volunteering_causes_on_participation_context"
   end
@@ -1367,8 +1366,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
   create_table "volunteering_volunteers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "cause_id", null: false
     t.uuid "user_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["cause_id", "user_id"], name: "index_volunteering_volunteers_on_cause_id_and_user_id", unique: true
     t.index ["user_id"], name: "index_volunteering_volunteers_on_user_id"
   end
@@ -1378,8 +1377,8 @@ ActiveRecord::Schema[6.1].define(version: 2023_06_01_085753) do
     t.string "votable_type"
     t.uuid "user_id"
     t.string "mode", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["user_id"], name: "index_votes_on_user_id"
     t.index ["votable_type", "votable_id", "user_id"], name: "index_votes_on_votable_type_and_votable_id_and_user_id", unique: true
     t.index ["votable_type", "votable_id"], name: "index_votes_on_votable_type_and_votable_id"
