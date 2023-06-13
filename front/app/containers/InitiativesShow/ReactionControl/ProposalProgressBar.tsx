@@ -39,7 +39,7 @@ const ProposalProgressBar = ({
         <FormattedMessage
           {...messages.a11y_xVotesOfRequiredY}
           values={{
-            xReactions: (
+            xVotes: (
               <FormattedMessage
                 {...messages.xVotes}
                 values={{ count: reactionCount }}

@@ -145,7 +145,7 @@ const LikeButton = ({
       </ButtonWrapper>
       <ScreenReaderOnly aria-live="polite">
         {formatMessage(messages.a11y_upvoteCount, {
-          likeCount,
+          upvoteCount: likeCount,
         })}
       </ScreenReaderOnly>
     </Container>

@@ -56,7 +56,7 @@ const InitiativeInfoContent = memo<InjectedLocalized & Props>(
                   <FormattedMessage
                     {...messages.constraints}
                     values={{
-                      reactionThreshold,
+                      voteThreshold: reactionThreshold,
                       daysLimit,
                     }}
                   />
