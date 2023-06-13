@@ -9,13 +9,14 @@ import { toFullMonth } from 'utils/dateUtils';
 import { IAppConfiguration } from 'api/app_configuration/types';
 
 /*
-  Configuration Specification
+  Configuration Specifications
   
   StatusModule:
+  - getStatusHeader: Returns header which appears directly above status module
   - getStatusTitle: Returns title for the status module
   - getStatusDescription: Returns description for the status module
   - getStatusSubmissionCountCopy: Returns copy related to the submission count
-  - getSubmissionTerm: Returns the submission type in plural form (e.g. 'budgets')
+  - getSubmissionTerm: Returns the submission type in specified form (i.e. singular vs plural)
   */
 
 export type VoteSubmissionState =
@@ -80,8 +81,8 @@ const budgetingConfig: VotingMethodConfig = {
               ? phase.attributes.ideas_count
               : project.attributes.ideas_count,
             maxBudget: phase
-              ? phase.attributes.max_budget
-              : project.attributes.max_budget,
+              ? phase.attributes.voting_max_total
+              : project.attributes.voting_max_total,
           }}
           {...messages.budgetingSubmissionInstructions}
         />
@@ -107,7 +108,7 @@ const budgetingConfig: VotingMethodConfig = {
               <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
             ),
             endDate: phase && toFullMonth(phase.attributes.end_at, 'day'),
-            maxBudget: phase && phase.attributes.max_budget,
+            maxBudget: phase && phase.attributes.voting_max_total,
             currency:
               appConfig?.data.attributes.settings.core.currency.toString(),
             optionCount: phase && phase.attributes.ideas_count,

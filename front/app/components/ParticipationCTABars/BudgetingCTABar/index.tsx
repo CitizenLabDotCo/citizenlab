@@ -60,15 +60,15 @@ export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
     ? (basket.attributes['budget_exceeds_limit?'] as boolean)
     : false;
   if (currentPhase) {
-    if (typeof currentPhase.attributes.min_budget === 'number') {
-      minBudget = currentPhase.attributes.min_budget;
+    if (typeof currentPhase.attributes.voting_min_total === 'number') {
+      minBudget = currentPhase.attributes.voting_min_total;
     }
-    if (typeof currentPhase.attributes.max_budget === 'number') {
-      maxBudget = currentPhase.attributes.max_budget;
+    if (typeof currentPhase.attributes.voting_max_total === 'number') {
+      maxBudget = currentPhase.attributes.voting_max_total;
     }
   } else if (project) {
-    if (typeof project.attributes.min_budget === 'number') {
-      minBudget = project.attributes.min_budget;
+    if (typeof project.attributes.voting_min_total === 'number') {
+      minBudget = project.attributes.voting_min_total;
     }
   }
 
