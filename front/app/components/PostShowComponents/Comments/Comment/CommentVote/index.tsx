@@ -25,7 +25,6 @@ import { SuccessAction } from 'containers/Authentication/SuccessActions/actions'
 
 interface Props {
   ideaId?: string;
-  initiativeId?: string;
   postType: 'idea' | 'initiative';
   commentType: 'parent' | 'child' | undefined;
   comment: ICommentData;
@@ -34,7 +33,6 @@ interface Props {
 
 const CommentVote = ({
   ideaId,
-  initiativeId,
   postType,
   comment,
   commentType,
