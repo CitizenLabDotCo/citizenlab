@@ -2,7 +2,7 @@
 
 # NOTE: Only to be used for release that migrates Votes -> Reactions
 namespace :fix_existing_tenants do
-  desc 'Migrate all data relating to votes to reactions'
+  desc 'Transform all data relating to votes into reactions'
   task migrate_votes_to_reactions: [:environment] do |_t, _args|
     Tenant.all.each do |tenant|
       puts "Processing tenant #{tenant.host}..."
@@ -11,6 +11,9 @@ namespace :fix_existing_tenants do
         migrator.update_downvoting_feature_flag
         migrator.update_initiatives_voting_threshold
         migrator.update_smart_groups
+        migrator.update_permissions
+        migrator.update_notifications
+        migrator.update_email_campaigns
       end
     end
   end
@@ -48,7 +51,6 @@ class VotesToReactionMigrator
 
   def update_smart_groups
     Rails.logger.info("UPDATING: Smart groups for #{@tenant.host}")
-
     count = 0
     Group.where(membership_type: 'rules').each do |group|
       next unless group.rules.to_s.include? 'voted'
@@ -62,9 +64,28 @@ class VotesToReactionMigrator
     Rails.logger.info("SAVED: #{count} groups")
   end
 
+  # update action for voting_idea, voting_initiative etc
+  def update_permissions
+    Rails.logger.info("UPDATING: Permissions for #{@tenant.host}")
+    count = Permission.where('action like ?', 'voting%')
+      .update_all("action = regexp_replace(action, 'voting', 'reacting','g')")
+    Rails.logger.info("SAVED: #{count} permissions")
+  end
+
+  # update type for OfficialFeedbackOnReactedIdea etc
   def update_notifications
-    Rails.logger.info("UPDATING: Activities for #{@tenant.host}")
-    # TODO: What do we need to do with notifications?
+    Rails.logger.info("UPDATING: Notifications for #{@tenant.host}")
+    count = Notification.where('type like ?', '%Voted%')
+      .update_all("type = regexp_replace(type, 'Voted', 'Reacted','g')")
+    Rails.logger.info("SAVED: #{count} notifications")
+  end
+
+  # update EmailCampaigns::Campaigns::StatusChangeOfVotedIdea etc
+  def update_email_campaigns
+    Rails.logger.info("UPDATING: Email Campaigns for #{@tenant.host}")
+    count = EmailCampaigns::Campaign.where('type like ?', '%Voted%')
+      .update_all("type = regexp_replace(type, 'Voted', 'Reacted','g')")
+    Rails.logger.info("SAVED: #{count} email campaigns")
   end
 
   # Done as separate rake task - this is a large update and less important
