@@ -1700,6 +1700,7 @@
   "app.utils.votingMethodUtils.budget": "BÜTÇE",
   "app.utils.votingMethodUtils.budgetParticipationEnded": "<b>Bütçe gönderimi {endDate}tarihinde sona ermiştir.</b> Katılımcıların her biri {optionCount} seçenekleri arasında dağıtmak üzere toplam <b>{maxBudget} {currency} bütçesine sahipti.</b>",
   "app.utils.votingMethodUtils.budgetSubmitted": "Sunulan bütçe",
+  "app.utils.votingMethodUtils.budgetSubmittedWithIcon": "Bütçe sunuldu 🎉",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructions": "{optionCount} seçenekleri</b>arasında dağıtmak için toplam <b>{maxBudget} USD'niz var. \"Ekle \"ye dokunarak tercih ettiğiniz seçenekleri seçin. İşiniz bittiğinde, bütçenizi göndermek için \"Gönder \"e tıklayın.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>Tebrikler, bütçeniz gönderildi!</b> Aşağıdaki seçeneklerinizi istediğiniz zaman kontrol edebilir veya <b>{endDate}</b>adresinden önce değiştirebilirsiniz.",
   "app.utils.votingMethodUtils.budgets": "Bütçeler",
