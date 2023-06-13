@@ -19,6 +19,7 @@ import { pastPresentOrFuture, toFullMonth } from 'utils/dateUtils';
 import { updateBasket } from 'services/baskets';
 import streams from 'utils/streams';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import ConfettiSvg from './ConfettiSvg';
 
 type StatusModuleProps = {
   votingMethod?: VotingMethod | null;
@@ -71,6 +72,11 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
         borderLeft={`4px solid ${theme.colors.tenantPrimary}`}
         background="white"
       >
+        {basketStatus === 'hasSubmitted' && !phaseHasEnded && (
+          <Box m="-12px" display="flex" justifyContent="flex-end">
+            <ConfettiSvg />
+          </Box>
+        )}
         <Title mt="4px" color="tenantPrimary" variant="h4">
           {config?.getStatusTitle &&
             formatMessage(config.getStatusTitle(basketStatus))}

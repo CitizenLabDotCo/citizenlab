@@ -59,7 +59,7 @@ const budgetingConfig: VotingMethodConfig = {
       case 'hasNotSubmitted':
         return messages.howToParticipate;
       case 'hasSubmitted':
-        return messages.budgetSubmitted;
+        return messages.budgetSubmittedWithIcon;
       case 'submissionEnded':
         return messages.finalResults;
     }
@@ -81,8 +81,8 @@ const budgetingConfig: VotingMethodConfig = {
               ? phase.attributes.ideas_count
               : project.attributes.ideas_count,
             maxBudget: phase
-              ? phase.attributes.voting_max_total
-              : project.attributes.voting_max_total,
+              ? phase.attributes.voting_max_total?.toLocaleString()
+              : project.attributes.voting_max_total?.toLocaleString(),
           }}
           {...messages.budgetingSubmissionInstructions}
         />
@@ -108,7 +108,8 @@ const budgetingConfig: VotingMethodConfig = {
               <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
             ),
             endDate: phase && toFullMonth(phase.attributes.end_at, 'day'),
-            maxBudget: phase && phase.attributes.voting_max_total,
+            maxBudget:
+              phase && phase.attributes.voting_max_total?.toLocaleString(),
             currency:
               appConfig?.data.attributes.settings.core.currency.toString(),
             optionCount: phase && phase.attributes.ideas_count,

@@ -48,16 +48,18 @@ type Props = {
   hasUserParticipated?: boolean;
   CTAButton?: React.ReactNode;
   currentPhase: IPhaseData | undefined;
-  hideParticipationMessage?: boolean;
+  hideDefaultParticipationMessage?: boolean;
   participationState?: JSX.Element;
+  timeLocation?: 'left' | 'right';
 };
 
 export const ParticipationCTAContent = ({
   currentPhase,
   CTAButton,
   hasUserParticipated = false,
-  hideParticipationMessage = false,
+  hideDefaultParticipationMessage = false,
   participationState,
+  timeLocation = 'right',
 }: Props) => {
   const theme = useTheme();
   const { formatMessage } = useIntl();
@@ -124,13 +126,15 @@ export const ParticipationCTAContent = ({
                   ...(isSmallerThanPhone ? { fontWeight: '600' } : {}),
                 }}
               >
-                {!hideParticipationMessage && (
+                {!hideDefaultParticipationMessage && (
                   <FormattedMessage {...userParticipationMessage} />
                 )}
-                {hideParticipationMessage && timeLeftTranslated?.toUpperCase()}
+                {hideDefaultParticipationMessage &&
+                  timeLocation === 'left' &&
+                  timeLeftTranslated?.toUpperCase()}
               </div>
             </Text>
-            {timeLeft !== undefined && !hideParticipationMessage && (
+            {timeLeft !== undefined && timeLocation === 'right' && (
               <Text
                 color="white"
                 style={{ textTransform: 'uppercase' }}
@@ -193,15 +197,15 @@ export const ParticipationCTAContent = ({
             showAnimation={!hasUserParticipated}
           />
           <Text width="90%" color="white" fontSize="s" my="0px">
-            {!hideParticipationMessage && (
+            {!hideDefaultParticipationMessage && (
               <FormattedMessage {...userParticipationMessage} />
             )}
-            {hideParticipationMessage && timeLeftTranslated?.toUpperCase()}{' '}
+            {timeLocation === 'left' && timeLeftTranslated?.toUpperCase()}{' '}
           </Text>
           <Box display="flex">{participationState && participationState}</Box>
         </Box>
         <Box display="flex" alignItems="center">
-          {timeLeft !== undefined && (
+          {timeLeft !== undefined && timeLocation === 'right' && (
             <Text
               color="white"
               style={{ textTransform: 'uppercase' }}

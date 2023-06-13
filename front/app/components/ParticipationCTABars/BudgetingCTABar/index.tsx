@@ -131,7 +131,8 @@ export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
           {formatMessage(messages.left)}
         </Text>
       }
-      hideParticipationMessage={true}
+      hideDefaultParticipationMessage={true}
+      timeLocation="left"
     />
   );
 };

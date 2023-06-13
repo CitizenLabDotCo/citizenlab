@@ -52,4 +52,8 @@ export default defineMessages({
     id: 'app.utils.votingMethodUtils.results',
     defaultMessage: 'Results',
   },
+  budgetSubmittedWithIcon: {
+    id: 'app.utils.votingMethodUtils.budgetSubmittedWithIcon',
+    defaultMessage: 'Budget submitted 🎉',
+  },
 });
