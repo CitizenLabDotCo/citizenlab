@@ -207,40 +207,13 @@ const CommentBody = ({
     onCancelEditing();
   };
 
-  let content: JSX.Element | null = null;
+  if (isNilOrError(locale)) {
+    return null;
+  }
 
-  if (!isNilOrError(locale)) {
-    if (!editing) {
-      content = (
-        <CommentWrapper className={`e2e-comment-body ${commentType}`}>
-          <QuillEditedContent
-            fontWeight={400}
-            textColor={theme.colors.tenantText}
-          >
-            <div aria-live="polite">
-              <Outlet
-                id="app.components.PostShowComponents.CommentBody.translation"
-                translateButtonClicked={translateButtonClicked}
-                commentContent={commentContent}
-                locale={locale}
-                commentId={commentId}
-              >
-                {(outletComponents) =>
-                  outletComponents.length > 0 ? (
-                    <>{outletComponents}</>
-                  ) : (
-                    <CommentText
-                      dangerouslySetInnerHTML={{ __html: commentContent }}
-                    />
-                  )
-                }
-              </Outlet>
-            </div>
-          </QuillEditedContent>
-        </CommentWrapper>
-      );
-    } else {
-      content = (
+  return (
+    <Container className={className}>
+      {editing ? (
         <StyledForm onSubmit={onSubmit}>
           <QuillEditedContent
             fontWeight={400}
@@ -274,13 +247,36 @@ const CommentBody = ({
             </Button>
           </ButtonsWrapper>
         </StyledForm>
-      );
-    }
-
-    return <Container className={className}>{content}</Container>;
-  }
-
-  return null;
+      ) : (
+        <CommentWrapper className={`e2e-comment-body ${commentType}`}>
+          <QuillEditedContent
+            fontWeight={400}
+            textColor={theme.colors.tenantText}
+          >
+            <div aria-live="polite">
+              <Outlet
+                id="app.components.PostShowComponents.CommentBody.translation"
+                translateButtonClicked={translateButtonClicked}
+                commentContent={commentContent}
+                locale={locale}
+                commentId={commentId}
+              >
+                {(outletComponents) =>
+                  outletComponents.length > 0 ? (
+                    <>{outletComponents}</>
+                  ) : (
+                    <CommentText
+                      dangerouslySetInnerHTML={{ __html: commentContent }}
+                    />
+                  )
+                }
+              </Outlet>
+            </div>
+          </QuillEditedContent>
+        </CommentWrapper>
+      )}
+    </Container>
+  );
 };
 
 export default CommentBody;
