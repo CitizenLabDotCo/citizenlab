@@ -293,7 +293,7 @@ PATH
       httparty
       kaminari (~> 1.2)
       pundit (~> 2.0)
-      rails (~> 6.1)
+      rails (~> 7.0)
 
 PATH
   remote: engines/free/email_campaigns

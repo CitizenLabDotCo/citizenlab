@@ -864,7 +864,7 @@ RSpec.describe User do
         reg_date = Time.now
         u = create(:user)
         u.update!(registration_completed_at: reg_date)
-        expect(u.registration_completed_at).to eq reg_date
+        expect(u.registration_completed_at.to_i).to eq reg_date.to_i
       end
     end
 

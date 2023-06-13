@@ -6,7 +6,7 @@
 #
 #  idea_id          :uuid
 #  last_activity_at :datetime
-#  mean_activity_at :datetime
+#  mean_activity_at :timestamptz
 #
 class IdeaTrendingInfo < ApplicationRecord
   TREND_SINCE_ACTIVITY = 30 * 24 * 60 * 60 # 30 days

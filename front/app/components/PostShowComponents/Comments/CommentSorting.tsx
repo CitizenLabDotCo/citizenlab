@@ -1,55 +1,61 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import FilterSelector from 'components/FilterSelector';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import messages from './messages';
-import styled from 'styled-components';
 import { CommentsSort } from 'api/comments/types';
-
-const Container = styled.div``;
+import { Box } from '@citizenlab/cl2-component-library';
 
 interface Props {
-  id?: string | undefined;
   onChange: (value: CommentsSort) => void;
-  selectedValue: CommentsSort[];
+  selectedCommentSort: CommentsSort;
   className?: string;
 }
 
-interface State {}
-
-export default class CommentSorting extends PureComponent<Props, State> {
-  handleOnChange = (selectedValue: [CommentsSort]) => {
-    this.setState({ selectedValue });
-    this.props.onChange(selectedValue[0]);
+const CommentSorting = ({
+  onChange,
+  selectedCommentSort,
+  className,
+}: Props) => {
+  const handleOnChange = (selectedValue: [CommentsSort]) => {
+    onChange(selectedValue[0]);
   };
 
-  title = (<FormattedMessage {...messages.commentsSortTitle} />);
+  const sortOptionsMessages: { [key in CommentsSort]: MessageDescriptor } = {
+    // '-new' = least recent (date posted, descending)
+    // is the default value we get from the parent
+    '-new': messages.leastRecent,
+    // 'new' = most recent (date posted, ascending)
+    new: messages.mostRecent,
+    // '-upvotes_count' = most votes (votes, descending)
+    '-upvotes_count': messages.mostUpvoted,
+  };
 
-  sortOptions = [
-    { text: <FormattedMessage {...messages.mostRecent} />, value: 'new' },
-    {
-      text: <FormattedMessage {...messages.mostUpvoted} />,
-      value: '-likes_count',
-    },
-  ];
+  const getSortOptions = () => {
+    const sortOptions: CommentsSort[] = ['-new', 'new', '-upvotes_count'];
+    return sortOptions.map((sortOption) => {
+      return {
+        text: <FormattedMessage {...sortOptionsMessages[sortOption]} />,
+        value: sortOption,
+      };
+    });
+  };
 
-  render() {
-    const { className, selectedValue } = this.props;
+  return (
+    <Box className={className}>
+      <FilterSelector
+        id="e2e-comments-sort-filter"
+        title={<FormattedMessage {...messages.commentsSortTitle} />}
+        name="sort"
+        selected={[selectedCommentSort]}
+        values={getSortOptions()}
+        onChange={handleOnChange}
+        multipleSelectionAllowed={false}
+        width="180px"
+        right="-10px"
+        mobileLeft="-5px"
+      />
+    </Box>
+  );
+};
 
-    return (
-      <Container className={className}>
-        <FilterSelector
-          id="e2e-comments-sort-filter"
-          title={this.title}
-          name="sort"
-          selected={selectedValue}
-          values={this.sortOptions}
-          onChange={this.handleOnChange}
-          multipleSelectionAllowed={false}
-          width="180px"
-          right="-10px"
-          mobileLeft="-5px"
-        />
-      </Container>
-    );
-  }
-}
+export default CommentSorting;

@@ -40,6 +40,7 @@
   "app.components.Comments.commentingMaybeNotPermitted": "Wgl {signInLink} fir ze gesinn, wat fir Aktiounen ausgeféiert kënne ginn.",
   "app.components.Comments.inputsAssociatedWithProfile": "Par défaut ginn Är Soumissioun mat Ärem Profil verbonnen, ausser Dir wielt dës Optioun.",
   "app.components.Comments.invisibleTitleComments": "Kommentaren",
+  "app.components.Comments.leastRecent": "Am mannsten rezent",
   "app.components.Comments.mostRecent": "Déi lescht",
   "app.components.Comments.mostUpvoted": "Meescht Stëmmen",
   "app.components.Comments.official": "Offiziell",

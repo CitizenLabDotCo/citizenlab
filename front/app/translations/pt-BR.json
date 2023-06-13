@@ -40,6 +40,7 @@
   "app.components.Comments.commentingMaybeNotPermitted": "Por favor {signInLink} para ver que ações você pode tomar.",
   "app.components.Comments.inputsAssociatedWithProfile": "Por padrão, seus envios serão associados ao seu perfil, a menos que você selecione esta opção.",
   "app.components.Comments.invisibleTitleComments": "Comentários",
+  "app.components.Comments.leastRecent": "Menos recente",
   "app.components.Comments.mostRecent": "Mais recente",
   "app.components.Comments.mostUpvoted": "Mais votados",
   "app.components.Comments.official": "Oficial",

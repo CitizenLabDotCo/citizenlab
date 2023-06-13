@@ -155,6 +155,10 @@ export default defineMessages({
     id: 'app.containers.Comments.commentsSortTitle',
     defaultMessage: 'Sort comments by',
   },
+  leastRecent: {
+    id: 'app.components.Comments.leastRecent',
+    defaultMessage: 'Least recent',
+  },
   mostRecent: {
     id: 'app.components.Comments.mostRecent',
     defaultMessage: 'Most recent',
