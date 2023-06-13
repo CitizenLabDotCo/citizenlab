@@ -16,7 +16,7 @@ const CommentSorting = ({
   selectedCommentSort,
   className,
 }: Props) => {
-  const handleOnChange = (selectedValue: ['new'] | ['-upvotes_count']) => {
+  const handleOnChange = (selectedValue: [CommentsSort]) => {
     onChange(selectedValue[0]);
   };
 
