@@ -11,6 +11,7 @@ const NotificationsDropdown = ({ onClickOutside, dropdownOpened }: Props) => {
   return (
     <Dropdown
       id="notifications-dropdown"
+      data-testid="notifications-dropdown"
       width="300px"
       mobileWidth="220px"
       top="42px"
