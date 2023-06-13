@@ -25,9 +25,6 @@ import tracks from './tracks';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-// services
-import { canModerateProject } from 'services/permissions/rules/projectPermissions';
-
 // events
 import { commentReplyButtonClicked$, commentAdded } from './events';
 
@@ -358,16 +355,12 @@ const ChildCommentForm = ({
   };
 
   if (!isNilOrError(authUser) && focused) {
-    const isModerator =
-      !isNilOrError(authUser) && canModerateProject(projectId, authUser);
-
     return (
       <Container className={`${className || ''} e2e-childcomment-form`}>
         <StyledAvatar
           userId={authUser?.data.id}
           size={30}
           isLinkToProfile={!!authUser?.data.id}
-          moderator={isModerator}
         />
         <FormContainer
           onClickOutside={onCancel}
