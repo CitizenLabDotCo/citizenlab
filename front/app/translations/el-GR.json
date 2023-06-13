@@ -1700,6 +1700,7 @@
   "app.utils.votingMethodUtils.budget": "προϋπολογισμός",
   "app.utils.votingMethodUtils.budgetParticipationEnded": "<b>Η υποβολή προϋπολογισμών έκλεισε στη διεύθυνση {endDate}.</b> Οι συμμετέχοντες είχαν στη διάθεσή τους συνολικά <b>{maxBudget} {currency} για να τα κατανείμουν μεταξύ {optionCount} επιλογών.</b>",
   "app.utils.votingMethodUtils.budgetSubmitted": "Υποβληθείς προϋπολογισμός",
+  "app.utils.votingMethodUtils.budgetSubmittedWithIcon": "Υποβληθείς προϋπολογισμός 🎉",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructions": "Έχετε συνολικά <b>{maxBudget} USD για να διανείμετε μεταξύ των επιλογών {optionCount}</b>. Επιλέξτε τις προτιμώμενες επιλογές σας πατώντας το κουμπί \"Προσθήκη\". Μόλις τελειώσετε, πατήστε \"Υποβολή\" για να υποβάλετε τον προϋπολογισμό σας.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>Συγχαρητήρια, ο προϋπολογισμός σας υποβλήθηκε!</b> Μπορείτε να ελέγξετε τις επιλογές σας παρακάτω ανά πάσα στιγμή ή να τις τροποποιήσετε πριν από τη διεύθυνση <b>{endDate}</b>.",
   "app.utils.votingMethodUtils.budgets": "Προϋπολογισμοί",
