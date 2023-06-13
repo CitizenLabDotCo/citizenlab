@@ -77,13 +77,10 @@ const CommentReplyButton = ({
   const commentingPermissionInitiative = useInitiativesPermissions(
     'commenting_initiative'
   );
-  const authorFirstName = !isNilOrError(author)
-    ? author.data.attributes.first_name ?? null
-    : null;
-  const authorLastName = !isNilOrError(author)
-    ? author.data.attributes.last_name ?? null
-    : null;
-  const authorSlug = !isNilOrError(author) ? author.data.attributes.slug : null;
+
+  const authorFirstName = author?.data.attributes.first_name;
+  const authorLastName = author?.data.attributes.last_name;
+  const authorSlug = author?.data.attributes.slug;
 
   const reply = useCallback(() => {
     commentReplyButtonClicked({
@@ -170,29 +167,26 @@ const CommentReplyButton = ({
     authorSlug,
   ]);
 
-  if (!isNilOrError(comment)) {
-    const commentingDisabledReason =
-      idea?.attributes.action_descriptor.commenting_idea.disabled_reason;
+  const commentingDisabledReason =
+    idea?.attributes.action_descriptor.commenting_idea.disabled_reason;
 
-    const isCommentDeleted =
-      comment.attributes.publication_status === 'deleted';
-    const isSignedIn = !isNilOrError(authUser);
-    const disabled =
-      postType === 'initiative'
-        ? !commentingPermissionInitiative?.enabled
-        : isSignedIn &&
-          commentingDisabledReason &&
-          !isFixableByAuthentication(commentingDisabledReason);
+  const isCommentDeleted = comment.attributes.publication_status === 'deleted';
+  const isSignedIn = !isNilOrError(authUser);
+  const disabled =
+    postType === 'initiative'
+      ? !commentingPermissionInitiative?.enabled
+      : isSignedIn &&
+        commentingDisabledReason &&
+        !isFixableByAuthentication(commentingDisabledReason);
 
-    if (!isCommentDeleted && !disabled) {
-      return (
-        <Container className={`reply ${className || ''}`}>
-          <ReplyButton onClick={onReply} className="e2e-comment-reply-button">
-            <FormattedMessage {...messages.commentReplyButton} />
-          </ReplyButton>
-        </Container>
-      );
-    }
+  if (!isCommentDeleted && !disabled) {
+    return (
+      <Container className={`reply ${className || ''}`}>
+        <ReplyButton onClick={onReply} className="e2e-comment-reply-button">
+          <FormattedMessage {...messages.commentReplyButton} />
+        </ReplyButton>
+      </Container>
+    );
   }
 
   return null;
