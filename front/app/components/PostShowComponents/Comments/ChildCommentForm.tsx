@@ -92,8 +92,8 @@ const CancelButton = styled(Button)`
 `;
 
 interface Props {
-  ideaId?: string;
-  initiativeId?: string;
+  ideaId: string | null;
+  initiativeId: string | null;
   postType: 'idea' | 'initiative';
   projectId?: string | null;
   parentId: string;
@@ -219,7 +219,7 @@ const ChildCommentForm = ({
         },
       });
 
-      if (postType === 'idea' && projectId) {
+      if (postType === 'idea' && projectId && ideaId) {
         addCommentToIdeaComment(
           {
             ideaId,
@@ -263,7 +263,7 @@ const ChildCommentForm = ({
         );
       }
 
-      if (postType === 'initiative') {
+      if (postType === 'initiative' && initiativeId) {
         addCommentToInitiativeComment(
           {
             initiativeId,
@@ -360,6 +360,10 @@ const ChildCommentForm = ({
   if (!isNilOrError(authUser) && focused) {
     const isModerator =
       !isNilOrError(authUser) && canModerateProject(projectId, authUser);
+    const postId = {
+      idea: ideaId || undefined,
+      initiative: initiativeId || undefined,
+    }[postType];
 
     return (
       <Container className={`${className || ''} e2e-childcomment-form`}>
@@ -383,7 +387,7 @@ const ChildCommentForm = ({
                 name="comment"
                 placeholder={placeholder}
                 rows={3}
-                postId={ideaId || initiativeId}
+                postId={postId}
                 postType={postType}
                 value={inputValue}
                 error={getErrorMessage()}

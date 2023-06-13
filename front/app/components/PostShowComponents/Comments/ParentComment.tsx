@@ -156,8 +156,8 @@ const ParentComment = ({
 
         {showCommentForm && (
           <StyledChildCommentForm
-            ideaId={ideaId}
-            initiativeId={initiativeId}
+            ideaId={ideaId || null}
+            initiativeId={initiativeId || null}
             postType={postType}
             projectId={projectId}
             parentId={commentId}
