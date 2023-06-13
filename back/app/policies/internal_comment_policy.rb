@@ -36,8 +36,12 @@ class InternalCommentPolicy < ApplicationPolicy
     internal_commenter? && internal_comment_author?
   end
 
-  def destroy?
+  def mark_as_deleted?
     update?
+  end
+
+  def destroy?
+    false
   end
 
   def permitted_attributes_for_create

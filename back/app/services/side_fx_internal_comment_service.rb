@@ -34,6 +34,15 @@ class SideFxInternalCommentService
     notify_updated_mentioned_users(comment, user)
   end
 
+  def after_mark_as_deleted(comment, user)
+    LogActivityJob.perform_later(
+      comment,
+      'marked_as_deleted',
+      user,
+      comment.updated_at.to_i
+    )
+  end
+
   def before_destroy(comment, user); end
 
   def after_destroy(frozen_comment, user)

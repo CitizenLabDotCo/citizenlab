@@ -174,7 +174,7 @@ resource 'InternalComments' do
 
           let(:internal_comment_id) { @c.id }
 
-          example_request 'List the direct child internal comments of am internal comment on an idea' do
+          example_request 'List the direct child internal comments of an internal comment on an idea' do
             assert_status 200
             json_response = json_parse(response_body)
             expect(json_response[:data].size).to eq 6
@@ -275,21 +275,21 @@ resource 'InternalComments' do
         end
       end
 
-      delete 'web_api/v1/internal_comments/:id/' do
+      post 'web_api/v1/internal_comments/:id/mark_as_deleted' do
         let(:internal_comment) { create(:internal_comment, author: @user, post: @idea) }
         let(:id) { internal_comment.id }
 
-        example_request 'Author deletes their own internal comment' do
-          assert_status 200
-          expect { InternalComment.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+        example_request "Author marks their own internal comment as 'deleted'" do
+          assert_status 204
+          expect(internal_comment.reload.publication_status).to eq('deleted')
         end
 
-        example '[Unauthorized] Admin (not author) deletes an internal comment' do
+        example "[Unauthorized] Admin (not author) marks an internal comment on an initiative as 'deleted'" do
           internal_comment.update!(author: create(:admin))
 
           do_request
           assert_status 401
-          expect(InternalComment.find(id)).to be_present
+          expect(internal_comment.reload.publication_status).to eq('published')
         end
       end
     end
@@ -458,7 +458,7 @@ resource 'InternalComments' do
 
           let(:internal_comment_id) { @c.id }
 
-          example_request 'List the direct child internal comments of am internal comment on an initiative' do
+          example_request 'List the direct child internal comments of an internal comment on an initiative' do
             assert_status 200
             json_response = json_parse(response_body)
             expect(json_response[:data].size).to eq 6
@@ -547,21 +547,21 @@ resource 'InternalComments' do
         end
       end
 
-      delete 'web_api/v1/internal_comments/:id' do
+      post 'web_api/v1/internal_comments/:id/mark_as_deleted' do
         let(:internal_comment) { create(:internal_comment, author: @user, post: @initiative) }
         let(:id) { internal_comment.id }
 
-        example_request 'Author deletes their own internal comment' do
-          assert_status 200
-          expect { InternalComment.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+        example_request "Author marks their own internal comment as 'deleted'" do
+          assert_status 204
+          expect(internal_comment.reload.publication_status).to eq('deleted')
         end
 
-        example '[Unauthorized] Admin (not author) deletes an internal comment' do
+        example "[Unauthorized] Admin (not author) marks an internal comment on an initiative as 'deleted'" do
           internal_comment.update!(author: create(:admin))
 
           do_request
           assert_status 401
-          expect(InternalComment.find(id)).to be_present
+          expect(internal_comment.reload.publication_status).to eq('published')
         end
       end
     end
