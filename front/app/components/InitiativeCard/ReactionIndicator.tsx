@@ -151,8 +151,8 @@ const ReactionIndicator = ({ initiativeId }: Props) => {
             <FormattedMessage
               {...messages.xVotesOfY}
               values={{
-                xReactions: reactionCount,
-                reactingThreshold: reactionLimit,
+                xVotes: reactionCount,
+                votingThreshold: reactionLimit,
               }}
             />
           </ScreenReaderOnly>
