@@ -127,6 +127,7 @@ const MentionsTextArea = ({
           border: 'none',
           appearance: 'none',
           WebkitAppearance: 'none',
+          minHeight: `${rows * parseInt(lineHeight as string, 10)}px`,
         },
         input: {
           margin: 0,
