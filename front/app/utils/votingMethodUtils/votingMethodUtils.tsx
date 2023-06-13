@@ -5,6 +5,8 @@ import React from 'react';
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 import { FormattedMessage } from 'utils/cl-intl';
+import { toFullMonth } from 'utils/dateUtils';
+import { IAppConfiguration } from 'api/app_configuration/types';
 
 /*
   Configuration Specification
@@ -25,9 +27,11 @@ export type GetStatusDescriptionProps = {
   project: IProjectData;
   SubmissionState: VoteSubmissionState;
   phase?: IPhaseData;
+  appConfig?: IAppConfiguration;
 };
 
 export type VotingMethodConfig = {
+  getStatusHeader: (submissionState: VoteSubmissionState) => MessageDescriptor;
   getStatusTitle: (submissionState: VoteSubmissionState) => MessageDescriptor;
   getStatusSubmissionCountCopy?: () => MessageDescriptor;
   getStatusDescription?: ({
@@ -35,10 +39,20 @@ export type VotingMethodConfig = {
     phase,
     SubmissionState,
   }: GetStatusDescriptionProps) => JSX.Element | null;
-  getSubmissionTerm?: () => MessageDescriptor;
+  getSubmissionTerm?: (form: 'singular' | 'plural') => MessageDescriptor;
 };
 
 const budgetingConfig: VotingMethodConfig = {
+  getStatusHeader: (submissionState: VoteSubmissionState) => {
+    switch (submissionState) {
+      case 'hasNotSubmitted':
+        return messages.submitYourBudget;
+      case 'hasSubmitted':
+        return messages.budgetSubmitted;
+      case 'submissionEnded':
+        return messages.results;
+    }
+  },
   getStatusTitle: (submissionState: VoteSubmissionState) => {
     switch (submissionState) {
       case 'hasNotSubmitted':
@@ -53,6 +67,7 @@ const budgetingConfig: VotingMethodConfig = {
     project,
     phase,
     SubmissionState,
+    appConfig,
   }: GetStatusDescriptionProps) => {
     if (SubmissionState === 'hasNotSubmitted') {
       return (
@@ -72,18 +87,44 @@ const budgetingConfig: VotingMethodConfig = {
         />
       );
     }
-    if (
-      SubmissionState === 'hasSubmitted' ||
-      SubmissionState === 'submissionEnded'
-    ) {
-      return <FormattedMessage {...messages.budgetingSubmittedInstructions} />;
+    if (SubmissionState === 'hasSubmitted') {
+      return (
+        <FormattedMessage
+          values={{
+            b: (chunks) => (
+              <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+            ),
+            endDate: phase && toFullMonth(phase.attributes.end_at, 'day'),
+          }}
+          {...messages.budgetingSubmittedInstructions}
+        />
+      );
+    } else if (SubmissionState === 'submissionEnded') {
+      return (
+        <FormattedMessage
+          values={{
+            b: (chunks) => (
+              <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+            ),
+            endDate: phase && toFullMonth(phase.attributes.end_at, 'day'),
+            maxBudget: phase && phase.attributes.max_budget,
+            currency:
+              appConfig?.data.attributes.settings.core.currency.toString(),
+            optionCount: phase && phase.attributes.ideas_count,
+          }}
+          {...messages.budgetParticipationEnded}
+        />
+      );
     }
     return null;
   },
   getStatusSubmissionCountCopy: () => {
     return messages.submittedBudgetsCountText;
   },
-  getSubmissionTerm: () => {
+  getSubmissionTerm: (form) => {
+    if (form === 'singular') {
+      return messages.budget;
+    }
     return messages.budgets;
   },
 };

@@ -3,7 +3,6 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Timeline from './Timeline';
-import PBExpenses from '../shared/pb/PBExpenses';
 import PhaseSurvey from './Survey';
 import PhasePoll from './Poll';
 import PhaseVolunteering from './Volunteering';
@@ -28,7 +27,6 @@ import { selectedPhase$, selectPhase } from './events';
 // hooks
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
-import { useWindowSize } from '@citizenlab/cl2-component-library';
 import useLocale from 'hooks/useLocale';
 
 // i18n
@@ -37,7 +35,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
-import { colors, viewportWidths, isRtl } from 'utils/styleUtils';
+import { colors, isRtl } from 'utils/styleUtils';
 
 // other
 import { isValidPhase } from '../phaseParam';
@@ -74,12 +72,6 @@ const StyledProjectPageSectionTitle = styled(ProjectPageSectionTitle)`
 const StyledTimeline = styled(Timeline)`
   margin-bottom: 22px;
 `;
-
-const StyledPBExpenses = styled(PBExpenses)`
-  padding: 20px;
-  margin-bottom: 50px;
-`;
-
 interface Props {
   projectId: string;
   className?: string;
@@ -92,7 +84,6 @@ const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
   const locale = useLocale();
-  const windowSize = useWindowSize();
 
   const [selectedPhase, setSelectedPhase] = useState<IPhaseData | null>(null);
   const currentPhase = getCurrentPhase(phases?.data);
@@ -164,9 +155,6 @@ const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
     const isPBPhase =
       selectedPhase.attributes.participation_method === 'budgeting';
     const participationMethod = selectedPhase.attributes.participation_method;
-    const smallerThanSmallTablet = windowSize
-      ? windowSize.windowWidth <= viewportWidths.tablet
-      : false;
 
     return (
       <Container className={`${className || ''} e2e-project-process-page`}>
@@ -191,11 +179,6 @@ const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
                     project={project.data}
                     // votingMethod={project?.data.attributes.voting_method}
                     votingMethod={'budgeting'} // TODO: Get from data once implemented
-                  />
-                  <StyledPBExpenses
-                    participationContextId={selectedPhaseId}
-                    participationContextType="phase"
-                    viewMode={smallerThanSmallTablet ? 'column' : 'row'}
                   />
                 </>
               )}

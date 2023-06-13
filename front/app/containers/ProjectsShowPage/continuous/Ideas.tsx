@@ -3,7 +3,6 @@ import React, { memo, useCallback, useState } from 'react';
 // components
 import ContentContainer from 'components/ContentContainer';
 import { IdeaCardsWithoutFiltersSidebar } from 'components/IdeaCards';
-import PBExpenses from '../shared/pb/PBExpenses';
 import {
   ProjectPageSectionTitle,
   maxPageWidth,
@@ -13,7 +12,6 @@ import StatusModule from 'components/StatusModule';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
-import { useWindowSize } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -22,7 +20,7 @@ import { getInputTermMessage } from 'utils/i18n';
 
 // style
 import styled from 'styled-components';
-import { viewportWidths, colors } from 'utils/styleUtils';
+import { colors } from 'utils/styleUtils';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -42,18 +40,12 @@ const StyledProjectPageSectionTitle = styled(ProjectPageSectionTitle)`
   margin-bottom: 20px;
 `;
 
-const StyledPBExpenses = styled(PBExpenses)`
-  padding: 20px;
-  margin-bottom: 50px;
-`;
-
 interface InnerProps {
   className?: string;
   project: IProjectData;
 }
 
 const IdeasContainer = memo<InnerProps>(({ project, className }) => {
-  const windowSize = useWindowSize();
   const [ideaQueryParameters, setIdeaQueryParameters] =
     useState<IQueryParameters>({
       projects: [project.id],
@@ -75,9 +67,6 @@ const IdeasContainer = memo<InnerProps>(({ project, className }) => {
 
   if (!isNilOrError(project) && showIdeas) {
     const inputTerm = project.attributes.input_term;
-    const smallerThanBigTablet = windowSize?.windowWidth
-      ? windowSize?.windowWidth <= viewportWidths.tablet
-      : false;
     const isPBProject = project.attributes.participation_method === 'budgeting';
 
     return (
@@ -94,25 +83,22 @@ const IdeasContainer = memo<InnerProps>(({ project, className }) => {
                   votingMethod={'budgeting'} // TODO: Get from data once implemented
                   project={project}
                 />
-                <StyledPBExpenses
-                  participationContextId={project.id}
-                  participationContextType="project"
-                  viewMode={smallerThanBigTablet ? 'column' : 'row'}
-                />
               </>
             )}
-            <StyledProjectPageSectionTitle>
-              <FormattedMessage
-                {...getInputTermMessage(inputTerm, {
-                  idea: messages.ideas,
-                  option: messages.options,
-                  project: messages.projects,
-                  question: messages.questions,
-                  issue: messages.issues,
-                  contribution: messages.contributions,
-                })}
-              />
-            </StyledProjectPageSectionTitle>
+            {!isPBProject && (
+              <StyledProjectPageSectionTitle>
+                <FormattedMessage
+                  {...getInputTermMessage(inputTerm, {
+                    idea: messages.ideas,
+                    option: messages.options,
+                    project: messages.projects,
+                    question: messages.questions,
+                    issue: messages.issues,
+                    contribution: messages.contributions,
+                  })}
+                />
+              </StyledProjectPageSectionTitle>
+            )}
 
             <IdeaCardsWithoutFiltersSidebar
               ideaQueryParameters={ideaQueryParameters}
@@ -125,6 +111,8 @@ const IdeasContainer = memo<InnerProps>(({ project, className }) => {
               showViewToggle={true}
               defaultView={project.attributes.presentation_mode || null}
               invisibleTitleMessage={messages.a11y_titleInputs}
+              showDropdownFilters={isPBProject ? false : true}
+              showSearchbar={isPBProject ? false : true}
             />
           </SectionContainer>
         </StyledContentContainer>

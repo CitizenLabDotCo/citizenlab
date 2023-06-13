@@ -44,12 +44,11 @@ const Container = styled.div`
 
 const FiltersArea = styled.div`
   width: 100%;
-  min-height: 54px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 15px;
+  margin-bottom: 12px;
   ${isRtl`
     flex-direction: row-reverse;
   `}
@@ -68,7 +67,7 @@ const FiltersArea = styled.div`
   ${media.tablet`
     flex-direction: column;
     align-items: stretch;
-    margin-bottom: 30px;
+    margin-bottom: 8px;
   `}
 `;
 
@@ -146,6 +145,8 @@ export interface Props {
   participationContextType?: IParticipationContextType | null;
   className?: string;
   allowProjectsFilter?: boolean;
+  showSearchbar: boolean;
+  showDropdownFilters: boolean;
 }
 
 const IdeasWithoutFiltersSidebar = ({
@@ -161,6 +162,8 @@ const IdeasWithoutFiltersSidebar = ({
   participationMethod,
   participationContextId,
   participationContextType,
+  showDropdownFilters,
+  showSearchbar,
 }: Props) => {
   const locale = useLocale();
   const { windowWidth } = useWindowSize();
@@ -265,7 +268,7 @@ const IdeasWithoutFiltersSidebar = ({
                 onClick={selectView}
               />
             )}
-            {!showMapView && (
+            {!showMapView && showSearchbar && (
               <StyledSearchInput
                 className="e2e-search-ideas-input"
                 onChange={handleSearchOnChange}
@@ -275,32 +278,36 @@ const IdeasWithoutFiltersSidebar = ({
           </LeftFilterArea>
 
           <RightFilterArea>
-            <DropdownFilters
-              className={`${showMapView ? 'hidden' : 'visible'} ${
-                showViewButtons ? 'hasViewButtons' : ''
-              }`}
-            >
-              <SelectSort
-                phase={phase?.data}
-                project={project?.data}
-                onChange={handleSortOnChange}
-                alignment={biggerThanLargeTablet ? 'right' : 'left'}
-                defaultSortingMethod={defaultSortingMethod || null}
-              />
-              {allowProjectsFilter && (
-                <ProjectFilterDropdown
-                  title={<FormattedMessage {...messages.projectFilterTitle} />}
-                  onChange={handleProjectsOnChange}
-                />
-              )}
-              {topicsEnabled && !isNilOrError(project) && (
-                <TopicFilterDropdown
-                  onChange={handleTopicsOnChange}
+            {showDropdownFilters && (
+              <DropdownFilters
+                className={`${showMapView ? 'hidden' : 'visible'} ${
+                  showViewButtons ? 'hasViewButtons' : ''
+                }`}
+              >
+                <SelectSort
+                  phase={phase?.data}
+                  project={project?.data}
+                  onChange={handleSortOnChange}
                   alignment={biggerThanLargeTablet ? 'right' : 'left'}
-                  projectId={project.data.id}
+                  defaultSortingMethod={defaultSortingMethod || null}
                 />
-              )}
-            </DropdownFilters>
+                {allowProjectsFilter && (
+                  <ProjectFilterDropdown
+                    title={
+                      <FormattedMessage {...messages.projectFilterTitle} />
+                    }
+                    onChange={handleProjectsOnChange}
+                  />
+                )}
+                {topicsEnabled && !isNilOrError(project) && (
+                  <TopicFilterDropdown
+                    onChange={handleTopicsOnChange}
+                    alignment={biggerThanLargeTablet ? 'right' : 'left'}
+                    projectId={project.data.id}
+                  />
+                )}
+              </DropdownFilters>
+            )}
 
             {showViewButtons && !smallerThanSmallTablet && (
               <DesktopViewButtons

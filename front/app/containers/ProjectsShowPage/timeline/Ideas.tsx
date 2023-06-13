@@ -56,6 +56,7 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
     setIdeaQueryParameters((current) => ({ ...current, ...newParams }));
   }, []);
 
+  const isPBProject = phase.attributes.participation_method === 'budgeting';
   const participationMethod = phase.attributes.participation_method;
   if (
     !(participationMethod === 'ideation' || participationMethod === 'budgeting')
@@ -70,18 +71,20 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
       id="project-ideas"
       className={`e2e-timeline-project-idea-cards ${className || ''}`}
     >
-      <StyledProjectPageSectionTitle>
-        <FormattedMessage
-          {...getInputTermMessage(inputTerm, {
-            idea: messages.ideas,
-            option: messages.options,
-            project: messages.projects,
-            question: messages.questions,
-            issue: messages.issues,
-            contribution: messages.contributions,
-          })}
-        />
-      </StyledProjectPageSectionTitle>
+      {!isPBProject && (
+        <StyledProjectPageSectionTitle>
+          <FormattedMessage
+            {...getInputTermMessage(inputTerm, {
+              idea: messages.ideas,
+              option: messages.options,
+              project: messages.projects,
+              question: messages.questions,
+              issue: messages.issues,
+              contribution: messages.contributions,
+            })}
+          />
+        </StyledProjectPageSectionTitle>
+      )}
       <IdeaCardsWithoutFiltersSidebar
         ideaQueryParameters={ideaQueryParameters}
         onUpdateQuery={updateQuery}
@@ -95,6 +98,8 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
         participationContextType="phase"
         invisibleTitleMessage={messages.a11y_titleInputsPhase}
         phaseId={phase.id}
+        showDropdownFilters={isPBProject ? false : true}
+        showSearchbar={isPBProject ? false : true}
       />
     </Container>
   );

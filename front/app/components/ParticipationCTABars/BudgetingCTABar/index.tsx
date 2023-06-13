@@ -1,7 +1,7 @@
-import React, { useEffect, useState, FormEvent } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // Components
-import { Button } from '@citizenlab/cl2-component-library';
+import { Button, Icon, Box, Text } from '@citizenlab/cl2-component-library';
 import { ParticipationCTAContent } from 'components/ParticipationCTABars/ParticipationCTAContent';
 
 // hooks
@@ -13,19 +13,23 @@ import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
 import { IPhaseData } from 'api/phases/types';
 
 // utils
-import { scrollToElement } from 'utils/scroll';
 import {
   CTABarProps,
   hasProjectEndedOrIsArchived,
 } from 'components/ParticipationCTABars/utils';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import { isNilOrError } from 'utils/helperUtils';
+import moment from 'moment';
+import { updateBasket } from 'services/baskets';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
+  const { formatMessage } = useIntl();
+  const { data: appConfig } = useAppConfiguration();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
   let basketId: string | null = null;
   if (currentPhase) {
@@ -34,6 +38,16 @@ export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
     basketId = project.relationships.user_basket?.data?.id || null;
   }
   const basket = useBasket(basketId);
+
+  useEffect(() => {
+    setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
+  }, [phases]);
+  if (hasProjectEndedOrIsArchived(project, currentPhase)) {
+    return null;
+  }
+
+  let minBudget = 0;
+  let maxBudget = 0;
   const submittedAt = !isNilOrError(basket)
     ? basket.attributes.submitted_at
     : null;
@@ -42,23 +56,50 @@ export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
     : 0;
   const hasUserParticipated = !!submittedAt && spentBudget > 0;
 
-  useEffect(() => {
-    setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
-  }, [phases]);
-
-  if (hasProjectEndedOrIsArchived(project, currentPhase)) {
-    return null;
+  const budgetExceedsLimit = !isNilOrError(basket)
+    ? (basket.attributes['budget_exceeds_limit?'] as boolean)
+    : false;
+  if (currentPhase) {
+    if (typeof currentPhase.attributes.min_budget === 'number') {
+      minBudget = currentPhase.attributes.min_budget;
+    }
+    if (typeof currentPhase.attributes.max_budget === 'number') {
+      maxBudget = currentPhase.attributes.max_budget;
+    }
+  } else if (project) {
+    if (typeof project.attributes.min_budget === 'number') {
+      minBudget = project.attributes.min_budget;
+    }
   }
 
-  const handleAllocateBudgetClick = (event: FormEvent) => {
-    event.preventDefault();
+  const minBudgetRequired = minBudget > 0;
+  const minBudgetReached = spentBudget >= minBudget;
+  const minBudgetRequiredNotReached = minBudgetRequired && !minBudgetReached;
 
-    scrollToElement({ id: 'pb-expenses', shouldFocus: true });
+  const handleSubmitExpensesOnClick = async () => {
+    if (!isNilOrError(basket)) {
+      const now = moment().format();
+      try {
+        await updateBasket(basket.id, { submitted_at: now });
+      } catch {
+        // Do nothing
+      }
+    }
   };
 
-  const CTAButton = hasUserParticipated ? null : (
+  const CTAButton = hasUserParticipated ? (
+    <Box display="flex">
+      <Icon my="auto" mr="8px" name="check" fill="white" />
+      <Text m="0px" color="white">
+        <FormattedMessage {...messages.submitted} />
+      </Text>
+    </Box>
+  ) : (
     <Button
-      onClick={handleAllocateBudgetClick}
+      icon={hasUserParticipated ? 'check' : 'inbox'}
+      buttonStyle="secondary"
+      iconColor={theme.colors.tenantText}
+      onClick={handleSubmitExpensesOnClick}
       fontWeight="500"
       bgColor={theme.colors.white}
       textColor={theme.colors.tenantText}
@@ -66,8 +107,12 @@ export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
       textHoverColor={theme.colors.black}
       padding="6px 12px"
       fontSize="14px"
+      disabled={
+        budgetExceedsLimit || spentBudget === 0 || minBudgetRequiredNotReached
+      }
     >
-      <FormattedMessage {...messages.allocateBudget} />
+      {hasUserParticipated && <FormattedMessage {...messages.submitted} />}
+      {!hasUserParticipated && <FormattedMessage {...messages.submit} />}
     </Button>
   );
 
@@ -76,6 +121,17 @@ export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
       currentPhase={currentPhase}
       CTAButton={CTAButton}
       hasUserParticipated={hasUserParticipated}
+      participationState={
+        <Text color="white" m="0px" fontSize="s" my="0px" textAlign="left">
+          {(
+            maxBudget - (basket?.attributes.total_budget || 0)
+          ).toLocaleString()}{' '}
+          / {maxBudget.toLocaleString()}{' '}
+          {appConfig?.data.attributes.settings.core.currency}{' '}
+          {formatMessage(messages.left)}
+        </Text>
+      }
+      hideParticipationMessage={true}
     />
   );
 };

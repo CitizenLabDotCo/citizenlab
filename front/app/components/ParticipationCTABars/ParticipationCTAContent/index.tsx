@@ -16,7 +16,7 @@ import { IPhaseData } from 'api/phases/types';
 import { getPeriodRemainingUntil } from 'utils/dateUtils';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 // styling
@@ -48,14 +48,19 @@ type Props = {
   hasUserParticipated?: boolean;
   CTAButton?: React.ReactNode;
   currentPhase: IPhaseData | undefined;
+  hideParticipationMessage?: boolean;
+  participationState?: JSX.Element;
 };
 
 export const ParticipationCTAContent = ({
   currentPhase,
   CTAButton,
   hasUserParticipated = false,
+  hideParticipationMessage = false,
+  participationState,
 }: Props) => {
   const theme = useTheme();
+  const { formatMessage } = useIntl();
   const isSmallerThanPhone = useBreakpoint('phone');
   let timeLeft = currentPhase
     ? getPeriodRemainingUntil(currentPhase.attributes.end_at, 'weeks')
@@ -75,6 +80,10 @@ export const ParticipationCTAContent = ({
     userParticipationMessage = messages.mobileProjectOpenForSubmission;
   }
 
+  const timeLeftTranslated = timeLeft
+    ? formatMessage(timeLeftMessage, { timeLeft })
+    : null;
+
   if (isSmallerThanPhone) {
     return (
       <Box
@@ -87,7 +96,12 @@ export const ParticipationCTAContent = ({
         px="20px"
         py="8px"
       >
-        <Box display="flex" flexDirection="row" alignItems="center">
+        <Box
+          display="flex"
+          flexWrap="wrap"
+          flexDirection="row"
+          alignItems="center"
+        >
           <Box>
             <BlickingIcon
               name={hasUserParticipated ? 'check-circle' : 'dot'}
@@ -110,10 +124,13 @@ export const ParticipationCTAContent = ({
                   ...(isSmallerThanPhone ? { fontWeight: '600' } : {}),
                 }}
               >
-                <FormattedMessage {...userParticipationMessage} />
+                {!hideParticipationMessage && (
+                  <FormattedMessage {...userParticipationMessage} />
+                )}
+                {hideParticipationMessage && timeLeftTranslated?.toUpperCase()}
               </div>
             </Text>
-            {timeLeft !== undefined && (
+            {timeLeft !== undefined && !hideParticipationMessage && (
               <Text
                 color="white"
                 style={{ textTransform: 'uppercase' }}
@@ -130,6 +147,14 @@ export const ParticipationCTAContent = ({
                 />
               </Text>
             )}
+          </Box>
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            flexDirection="column"
+          >
+            {participationState && participationState}
           </Box>
         </Box>
         <Box display="flex" alignItems="center">
@@ -158,7 +183,7 @@ export const ParticipationCTAContent = ({
         width="100%"
         maxWidth={`${maxPageWidth}px`}
       >
-        <Box display="flex" justifyContent="center" alignItems="center">
+        <Box display="flex" flexWrap="wrap" alignItems="center">
           <BlickingIcon
             name={hasUserParticipated ? 'check-circle' : 'dot'}
             width="16px"
@@ -167,9 +192,13 @@ export const ParticipationCTAContent = ({
             mr="8px"
             showAnimation={!hasUserParticipated}
           />
-          <Text color="white" fontSize="s" my="0px">
-            <FormattedMessage {...userParticipationMessage} />
+          <Text width="90%" color="white" fontSize="s" my="0px">
+            {!hideParticipationMessage && (
+              <FormattedMessage {...userParticipationMessage} />
+            )}
+            {hideParticipationMessage && timeLeftTranslated?.toUpperCase()}{' '}
           </Text>
+          <Box display="flex">{participationState && participationState}</Box>
         </Box>
         <Box display="flex" alignItems="center">
           {timeLeft !== undefined && (

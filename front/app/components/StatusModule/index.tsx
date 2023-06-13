@@ -1,4 +1,11 @@
-import { Box, Text, Title } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Button,
+  Text,
+  Title,
+  colors,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 import React from 'react';
 import { VotingMethod } from 'services/participationContexts';
 import { useTheme } from 'styled-components';
@@ -9,6 +16,9 @@ import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 import useBasket from 'hooks/useBasket';
 import { pastPresentOrFuture, toFullMonth } from 'utils/dateUtils';
+import { updateBasket } from 'services/baskets';
+import streams from 'utils/streams';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 type StatusModuleProps = {
   votingMethod?: VotingMethod | null;
@@ -16,8 +26,22 @@ type StatusModuleProps = {
   project: IProjectData;
 };
 
+const unsubmitBasket = async (basketId?: string) => {
+  if (basketId) {
+    try {
+      await updateBasket(basketId, {
+        submitted_at: null,
+      });
+    } catch (error) {
+      streams.fetchAllWith({ dataId: [basketId] });
+    }
+  }
+};
+
 const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
   const theme = useTheme();
+  const { data: appConfig } = useAppConfiguration();
+  const isSmallerThanPhone = useBreakpoint('phone');
   const { formatMessage } = useIntl();
   const config = getVotingMethodConfig(votingMethod);
   const basket = useBasket(
@@ -33,44 +57,73 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
     : basket?.attributes?.submitted_at
     ? 'hasSubmitted'
     : 'hasNotSubmitted';
+  const showDate = !phaseHasEnded && basketStatus === 'hasNotSubmitted';
 
   return (
-    <Box
-      mb="16px"
-      p="20px"
-      borderLeft={`4px solid ${theme.colors.tenantPrimary}`}
-      background="white"
-    >
-      <Title mt="4px" color="tenantPrimary" variant="h4">
+    <Box>
+      <Title variant="h2" style={{ fontWeight: 600 }}>
         {config?.getStatusTitle &&
-          formatMessage(config.getStatusTitle(basketStatus))}
+          formatMessage(config.getStatusHeader(basketStatus))}
       </Title>
-      <>
-        <Text>
-          {config?.getStatusDescription &&
-            config.getStatusDescription({
-              project,
-              phase,
-              SubmissionState: basketStatus,
-            })}
-        </Text>
-        {phase && (
+      <Box
+        mb="16px"
+        p="20px"
+        borderLeft={`4px solid ${theme.colors.tenantPrimary}`}
+        background="white"
+      >
+        <Title mt="4px" color="tenantPrimary" variant="h4">
+          {config?.getStatusTitle &&
+            formatMessage(config.getStatusTitle(basketStatus))}
+        </Title>
+        <>
           <Text>
-            {config?.getSubmissionTerm &&
-              formatMessage(config.getSubmissionTerm())}{' '}
-            {formatMessage(messages.submittedUntil)}{' '}
-            <b>{toFullMonth(phase.attributes.end_at, 'day')}</b>.
+            {config?.getStatusDescription &&
+              config.getStatusDescription({
+                project,
+                phase,
+                SubmissionState: basketStatus,
+                appConfig,
+              })}
           </Text>
+          {phase && showDate && (
+            <Text>
+              {config?.getSubmissionTerm &&
+                formatMessage(config.getSubmissionTerm('plural'))}{' '}
+              {formatMessage(messages.submittedUntil)}{' '}
+              <b>{toFullMonth(phase.attributes.end_at, 'day')}</b>.
+            </Text>
+          )}
+        </>
+        <Text m="0px" fontSize="xxxxl" style={{ fontWeight: '700' }}>
+          {/* TODO: Get submission count from BE once endpoint implemented*/}
+          127
+        </Text>
+        <Text m="0px">
+          {config?.getStatusSubmissionCountCopy &&
+            formatMessage(config?.getStatusSubmissionCountCopy())}
+        </Text>
+        {basketStatus === 'hasSubmitted' && (
+          <Box display={isSmallerThanPhone ? 'block' : 'flex'}>
+            <Button
+              buttonStyle="secondary"
+              bgColor="white"
+              bgHoverColor="white"
+              borderColor={colors.grey400}
+              icon="edit"
+              mt="16px"
+              onClick={() => {
+                unsubmitBasket(basket?.id);
+              }}
+            >
+              {formatMessage(messages.modifyYour)}{' '}
+              {config?.getSubmissionTerm &&
+                formatMessage(
+                  config.getSubmissionTerm('singular')
+                ).toLowerCase()}
+            </Button>
+          </Box>
         )}
-      </>
-      <Text m="0px" fontSize="xxxxl">
-        {/* TODO: Get submission count from BE once endpoint implemented*/}
-        127
-      </Text>
-      <Text m="0px">
-        {config?.getStatusSubmissionCountCopy &&
-          formatMessage(config?.getStatusSubmissionCountCopy())}
-      </Text>
+      </Box>
     </Box>
   );
 };
