@@ -56,7 +56,9 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
     setIdeaQueryParameters((current) => ({ ...current, ...newParams }));
   }, []);
 
-  const isPBProject = phase.attributes.participation_method === 'budgeting';
+  const isPBProject =
+    phase.attributes.participation_method === 'voting' &&
+    phase.attributes.voting_method === 'budgeting';
   const participationMethod = phase.attributes.participation_method;
   if (
     !(participationMethod === 'ideation' || participationMethod === 'voting')
