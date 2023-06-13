@@ -84,7 +84,7 @@ const ParentComment = ({
     const commentingEnabled =
       postType === 'initiative'
         ? commentingPermissionInitiative?.enabled === true
-        : idea?.data.attributes.action_descriptor.commenting_idea.enabled ||
+        : idea?.data.attributes.action_descriptor.commenting_idea.enabled ===
           true;
     const showCommentForm = authUser && commentingEnabled && !commentDeleted;
     const hasChildComments = childCommentIds && childCommentIds.length > 0;

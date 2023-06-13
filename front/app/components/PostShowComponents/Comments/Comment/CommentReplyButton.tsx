@@ -96,30 +96,30 @@ const CommentReplyButton = ({
   }, [commentId, parentCommentId, authorFirstName, authorLastName, authorSlug]);
 
   const onReply = useCallback(() => {
-    if (!isNilOrError(idea)) {
-      const successAction: SuccessAction = {
-        name: 'replyToComment',
-        params: {
-          commentId,
-          parentCommentId,
-          authorFirstName,
-          authorLastName,
-          authorSlug,
-        },
-      };
+    const successAction: SuccessAction = {
+      name: 'replyToComment',
+      params: {
+        commentId,
+        parentCommentId,
+        authorFirstName,
+        authorLastName,
+        authorSlug,
+      },
+    };
 
-      const { clickChildCommentReplyButton, clickParentCommentReplyButton } =
-        tracks;
+    const { clickChildCommentReplyButton, clickParentCommentReplyButton } =
+      tracks;
 
-      trackEventByName(
-        commentType === 'child'
-          ? clickChildCommentReplyButton
-          : clickParentCommentReplyButton,
-        {
-          loggedIn: !!authUser,
-        }
-      );
+    trackEventByName(
+      commentType === 'child'
+        ? clickChildCommentReplyButton
+        : clickParentCommentReplyButton,
+      {
+        loggedIn: !!authUser,
+      }
+    );
 
+    if (idea) {
       const actionDescriptor =
         idea.attributes.action_descriptor.commenting_idea;
 
@@ -129,29 +129,31 @@ const CommentReplyButton = ({
       }
 
       if (isFixableByAuthentication(actionDescriptor.disabled_reason)) {
-        const context = {
-          type: 'idea',
-          action: 'commenting_idea',
-          id: idea.id,
-        } as const;
-
-        triggerAuthenticationFlow({ context, successAction });
+        triggerAuthenticationFlow({
+          context: {
+            type: 'idea',
+            action: 'commenting_idea',
+            id: idea.id,
+          },
+          successAction,
+        });
       }
+    }
 
-      if (postType === 'initiative') {
-        const authenticationRequirements =
-          commentingPermissionInitiative?.authenticationRequirements;
+    if (postType === 'initiative') {
+      const authenticationRequirements =
+        commentingPermissionInitiative?.authenticationRequirements;
 
-        const context = {
-          type: 'initiative',
-          action: 'commenting_initiative',
-        } as const;
-
-        if (authenticationRequirements) {
-          triggerAuthenticationFlow({ context, successAction });
-        } else if (commentingPermissionInitiative?.enabled === true) {
-          reply();
-        }
+      if (authenticationRequirements) {
+        triggerAuthenticationFlow({
+          context: {
+            type: 'initiative',
+            action: 'commenting_initiative',
+          },
+          successAction,
+        });
+      } else if (commentingPermissionInitiative?.enabled === true) {
+        reply();
       }
     }
   }, [
