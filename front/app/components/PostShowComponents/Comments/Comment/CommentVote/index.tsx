@@ -178,7 +178,7 @@ const CommentVote = ({
         idea.data.attributes.action_descriptor.comment_voting_idea;
       disabled = !enabled && !isFixableByAuthentication(disabled_reason);
     } else {
-      disabled = !!commentVotingPermissionInitiative?.enabled;
+      disabled = !commentVotingPermissionInitiative?.enabled;
     }
 
     if (!disabled || upvoteCount > 0) {
