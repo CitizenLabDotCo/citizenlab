@@ -56,7 +56,8 @@ const DeletedIcon = styled(Icon)`
 `;
 
 interface Props {
-  postId: string;
+  ideaId: string | undefined;
+  initiativeId: string | undefined;
   postType: 'idea' | 'initiative';
   projectId?: string | null;
   commentId: string;
@@ -67,7 +68,8 @@ interface Props {
 }
 
 const Comment = ({
-  postId,
+  ideaId,
+  initiativeId,
   postType,
   projectId,
   commentType,
@@ -137,12 +139,13 @@ const Comment = ({
                     editing={editing}
                     onCommentSaved={onCommentSaved}
                     onCancelEditing={onCancelEditing}
-                    postId={postId}
-                    postType={postType}
+                    ideaId={ideaId}
+                    initiativeId={initiativeId}
                   />
                   <CommentFooter
                     className={commentType}
-                    postId={postId}
+                    ideaId={ideaId}
+                    initiativeId={initiativeId}
                     postType={postType}
                     projectId={projectId}
                     commentId={commentId}

@@ -164,14 +164,16 @@ const CommentsSection = ({
         )}
 
         <StyledParentCommentForm
-          postId={postId}
+          ideaId={ideaId}
+          initiativeId={initiativeId}
           postType={postType}
           postingComment={handleCommentPosting}
           allowAnonymousParticipation={allowAnonymousParticipation}
         />
 
         <Comments
-          postId={postId}
+          ideaId={ideaId}
+          initiativeId={initiativeId}
           postType={postType}
           allComments={commentsList}
           loading={isLoading}

@@ -61,8 +61,8 @@ export interface Props {
   comment: ICommentData;
   onCommentEdit: () => void;
   className?: string;
-  postId: string;
-  postType: 'idea' | 'initiative';
+  ideaId: string | undefined;
+  initiativeId: string | undefined;
 }
 
 const CommentsMoreActions = ({
@@ -70,12 +70,12 @@ const CommentsMoreActions = ({
   onCommentEdit,
   comment,
   className,
-  postType,
-  postId,
+  ideaId,
+  initiativeId,
 }: Props) => {
   const { mutate: markForDeletion, isLoading } = useMarkCommentForDeletion({
-    ideaId: postType === 'idea' ? postId : undefined,
-    initiativeId: postType === 'initiative' ? postId : undefined,
+    ideaId,
+    initiativeId,
   });
 
   const [modalVisible_spam, setModalVisible_spam] = useState(false);

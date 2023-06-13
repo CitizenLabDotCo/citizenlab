@@ -42,7 +42,8 @@ const LoadMoreButton = styled(Button)`
 `;
 
 interface Props {
-  postId: string;
+  ideaId: string | undefined;
+  initiativeId: string | undefined;
   postType: 'idea' | 'initiative';
   commentId: string;
   childCommentIds: string[] | false;
@@ -52,7 +53,8 @@ interface Props {
 
 const ParentComment = ({
   commentId,
-  postId,
+  ideaId,
+  initiativeId,
   postType,
   className,
   childCommentIds,
@@ -73,7 +75,6 @@ const ParentComment = ({
   const childComments = childCommentsData?.pages
     .map((page) => page.data)
     .flat();
-  const ideaId = postType === 'idea' ? postId : undefined;
   const { data: idea } = useIdeaById(ideaId);
 
   if (!isNilOrError(comment)) {
@@ -107,7 +108,8 @@ const ParentComment = ({
       <Container className={`${className || ''} e2e-parent-and-childcomments`}>
         <ParentCommentContainer className={commentDeleted ? 'deleted' : ''}>
           <Comment
-            postId={postId}
+            ideaId={ideaId}
+            initiativeId={initiativeId}
             postType={postType}
             projectId={projectId}
             commentId={commentId}
@@ -141,7 +143,8 @@ const ParentComment = ({
           modifiedChildCommentIds.length > 0 &&
           modifiedChildCommentIds.map((childCommentId, index) => (
             <Comment
-              postId={postId}
+              ideaId={ideaId}
+              initiativeId={initiativeId}
               postType={postType}
               projectId={projectId}
               key={childCommentId}
@@ -153,7 +156,8 @@ const ParentComment = ({
 
         {showCommentForm && (
           <StyledChildCommentForm
-            postId={postId}
+            ideaId={ideaId}
+            initiativeId={initiativeId}
             postType={postType}
             projectId={projectId}
             parentId={commentId}

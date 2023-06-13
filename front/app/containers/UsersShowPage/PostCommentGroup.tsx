@@ -203,8 +203,8 @@ const PostCommentGroup = ({ postType, comments, userId, postId }: Props) => {
               editing={false}
               onCommentSaved={nothingHappens}
               onCancelEditing={nothingHappens}
-              postId={postId}
-              postType={postType}
+              ideaId={ideaId}
+              initiativeId={initiativeId}
             />
             <VotesContainer>
               <VoteIcon ariaHidden name="vote-up" />
