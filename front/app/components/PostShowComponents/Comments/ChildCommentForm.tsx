@@ -38,6 +38,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import useAddCommentToIdea from 'api/comments/useAddCommentToIdea';
 import useAddCommentToInitiative from 'api/comments/useAddCommentToInitiative';
 import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
+import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 
 const Container = styled.div`
   display: flex;
@@ -355,12 +356,16 @@ const ChildCommentForm = ({
   };
 
   if (!isNilOrError(authUser) && focused) {
+    const isModerator =
+      !isNilOrError(authUser) && canModerateProject(projectId, authUser);
+
     return (
       <Container className={`${className || ''} e2e-childcomment-form`}>
         <StyledAvatar
           userId={authUser?.data.id}
           size={30}
           isLinkToProfile={!!authUser?.data.id}
+          moderator={isModerator}
         />
         <FormContainer
           onClickOutside={onCancel}
