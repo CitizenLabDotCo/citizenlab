@@ -15,7 +15,7 @@ const ScreenReaderContent = ({ likesCount, dislikesCount }: Props) => {
     <ScreenReaderOnly>
       <FormattedMessage
         {...messages.a11y_upvotesDownvotes}
-        values={{ likesCount, dislikesCount }}
+        values={{ upvotesCount: likesCount, downvotesCount: dislikesCount }}
       />
     </ScreenReaderOnly>
   );

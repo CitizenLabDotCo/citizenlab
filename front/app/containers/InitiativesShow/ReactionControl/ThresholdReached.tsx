@@ -105,7 +105,7 @@ class ThresholdReached extends PureComponent<Props & { theme: any }, State> {
             {...messages.a11y_xVotesOfRequiredY}
             values={{
               votingThreshold: reactionLimit,
-              xReactions: (
+              xVotes: (
                 <b>
                   <FormattedMessage
                     {...messages.xVotes}
