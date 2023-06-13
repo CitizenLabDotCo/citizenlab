@@ -879,6 +879,18 @@
         }
       },
 
+      "disable_disliking": {
+        "type": "object",
+        "title": "Disliking Toggle",
+        "description": "Display toggle in Project settings or Project’s timeline phase settings, that permits the disabling and re-enabling of dislike reactions. By default, disliking is enabled. (previously called disable_downvoting",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
       "ideaflow_social_sharing": {
         "type": "object",
         "title": "Share Proposals on Social Media",
