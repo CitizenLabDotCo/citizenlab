@@ -2,19 +2,19 @@
 
 # NOTE: Only to be used for release that migrates Votes -> Reactions
 namespace :fix_existing_tenants do
-  desc 'Migrate permitted_by values to new users value for some existing permissions'
+  desc 'Migrate all data relating to votes to reactions'
   task migrate_votes_to_reactions: [:environment] do |_t, _args|
     Tenant.all.each do |tenant|
       puts "Processing tenant #{tenant.host}..."
       Apartment::Tenant.switch(tenant.schema_name) do
         migrator = VotesToReactionMigrator.new(tenant)
-
         migrator.update_downvoting_feature_flag
-        # migrator.update_initiatives_voting_threshold
-        # migrator.update_smart_groups
+        migrator.update_initiatives_voting_threshold
+        migrator.update_smart_groups
       end
     end
   end
+
   task migrate_votes_activities: [:environment] do |_t, _args|
     Tenant.all.each do |tenant|
       puts "Processing tenant #{tenant.host}..."
