@@ -355,7 +355,7 @@ const ChildCommentForm = ({
     return null;
   };
 
-  if (!isNilOrError(authUser)) {
+  if (!isNilOrError(authUser) && focused) {
     const isModerator =
       !isNilOrError(authUser) && canModerateProject(postId, authUser);
 
