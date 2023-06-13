@@ -5,6 +5,9 @@ import styled from 'styled-components';
 import { media, colors, fontSizes, isRtl } from 'utils/styleUtils';
 import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
+import { IPresentComment } from 'api/comments/types';
+import useUserById from 'api/users/useUserById';
+import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 
 const Container = styled.div`
   display: flex;
@@ -54,50 +57,47 @@ const AdminBadge = styled.span`
 interface Props {
   className?: string;
   projectId?: string | null;
-  authorId: string | null;
-  authorHash?: string;
-  commentId: string;
   commentType: 'parent' | 'child';
-  commentCreatedAt: string;
-  moderator: boolean;
-  anonymous?: boolean;
+  commentAttributes: IPresentComment;
+  authorId: string | null;
 }
 
 const CommentHeader = ({
   projectId,
-  authorId,
-  authorHash,
   commentType,
-  commentCreatedAt,
-  moderator,
   className,
-  anonymous,
+  commentAttributes,
+  authorId,
 }: Props) => {
-  const hasAuthorId = !!authorId;
   const { formatMessage } = useIntl();
+  const { data: author } = useUserById(authorId);
+
+  if (!author) return null;
+
+  const isModerator = canModerateProject(projectId, { data: author.data });
 
   return (
     <Container className={className || ''}>
       <Left>
         <StyledAuthor
           authorId={authorId}
-          authorHash={authorHash}
-          isLinkToProfile={hasAuthorId}
+          authorHash={commentAttributes.author_hash}
+          isLinkToProfile={typeof authorId === 'string'}
           size={30}
           projectId={projectId}
-          showModeration={moderator}
-          createdAt={commentCreatedAt}
+          showModeration={isModerator}
+          createdAt={commentAttributes.created_at}
           avatarBadgeBgColor={commentType === 'child' ? '#fbfbfb' : '#fff'}
           horizontalLayout={true}
           color={colors.textSecondary}
           fontSize={fontSizes.base}
           fontWeight={400}
           underline={true}
-          anonymous={anonymous}
+          anonymous={commentAttributes.anonymous}
         />
       </Left>
       <Right>
-        {moderator && (
+        {isModerator && (
           <AdminBadge>{formatMessage(messages.official)}</AdminBadge>
         )}
       </Right>
