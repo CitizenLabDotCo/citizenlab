@@ -1700,6 +1700,7 @@
   "app.utils.votingMethodUtils.budget": "budžets",
   "app.utils.votingMethodUtils.budgetParticipationEnded": "<b>Budžeta iesniegšana tika slēgta {endDate}.</b> Katram dalībniekam bija pieejams <b>{maxBudget} {currency} , ko sadalīt starp {optionCount} iespējām.</b>",
   "app.utils.votingMethodUtils.budgetSubmitted": "Iesniegtais budžets",
+  "app.utils.votingMethodUtils.budgetSubmittedWithIcon": "Iesniegtais budžets 🎉",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructions": "Jūsu rīcībā ir kopsumma <b>{maxBudget} USD, ko sadalīt starp {optionCount} iespējām</b>. Izvēlieties vēlamās iespējas, piesitot \"Pievienot\". Kad esat pabeidzis, noklikšķiniet uz \"Iesniegt\", lai iesniegtu savu budžetu.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>Apsveicam, jūsu budžets ir iesniegts!</b> Jebkurā brīdī varat pārbaudīt turpmāk norādītās iespējas vai mainīt tās pirms <b>{endDate}</b>.",
   "app.utils.votingMethodUtils.budgets": "Budžets",
