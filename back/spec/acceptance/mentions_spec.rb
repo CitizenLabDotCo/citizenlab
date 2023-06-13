@@ -21,7 +21,7 @@ resource 'Mentions' do
     let(:mention) { users.first.first_name[0..3] }
 
     example_request 'Find user by (partial) mention' do
-      expect(response_status).to eq 200
+      assert_status 200
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to be >= 1
       expect(json_response[:data].all? { |u| u[:attributes][:first_name][0..3] == mention }).to be true
@@ -44,6 +44,24 @@ resource 'Mentions' do
       expect(json_response[:data].size).to eq idea_related.size
       expect(json_response[:data].pluck(:id)).to match_array idea_related.map(&:id)
       expect(json_response[:data].all? { |u| u[:attributes][:first_name][0..(first_name.size)] == first_name }).to be true
+    end
+
+    example 'Does not return unregistered user by (partial) mention', document: false do
+      users.first.update!(registration_completed_at: nil)
+
+      do_request
+      assert_status 200
+      json_response = json_parse(response_body)
+      expect(json_response[:data].pluck(:id)).not_to include users.first.id
+    end
+
+    example 'Does not return blocked user by (partial) mention', document: false do
+      users.first.update!(block_start_at: 1.week.ago, block_end_at: 1.week.from_now)
+
+      do_request
+      assert_status 200
+      json_response = json_parse(response_body)
+      expect(json_response[:data].pluck(:id)).not_to include users.first.id
     end
   end
 end

@@ -77,7 +77,13 @@ const CustomEmails = () => {
   } else {
     return (
       <>
-        <Box mb="28px" display="flex" w="100%" justifyContent="space-between">
+        <Box
+          mb="28px"
+          display="flex"
+          w="100%"
+          justifyContent="space-between"
+          pb="28px"
+        >
           <Box>
             <Title color="primary">
               <FormattedMessage {...messages.customEmails} />
@@ -101,11 +107,15 @@ const CustomEmails = () => {
               )
             )}
           </List>
-          <Pagination
-            currentPage={currentPage}
-            totalPages={lastPage}
-            loadPage={goToPage}
-          />
+          {lastPage > 1 && (
+            <Box pb="42px" pt="5px">
+              <Pagination
+                currentPage={currentPage}
+                totalPages={lastPage}
+                loadPage={goToPage}
+              />
+            </Box>
+          )}
         </Box>
       </>
     );

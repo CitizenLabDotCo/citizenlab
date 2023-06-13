@@ -1,6 +1,6 @@
 // Libraries
 import React, { useEffect, useState } from 'react';
-import { isArray, includes } from 'lodash-es';
+import { isArray, includes, isString, isEmpty } from 'lodash-es';
 import { Subscription } from 'rxjs';
 
 // Components
@@ -21,9 +21,11 @@ import { MembershipType } from 'api/groups/types';
 import useUsers from 'api/users/useUsers';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
+// utils
+import { isNil } from 'utils/helperUtils';
+
 // Typings
 interface Props {
-  search: IQueryParameters['search'];
   groupId?: IQueryParameters['group'];
   groupType?: MembershipType;
   onlyBlocked?: IQueryParameters['only_blocked'];
@@ -43,7 +45,6 @@ type SelectedUsersType = string[] | 'none' | 'all';
 const UserManager = ({
   groupId,
   groupType,
-  search,
   notCitizenlabMember,
   deleteUsersFromGroup,
   includeInactive,
@@ -55,6 +56,11 @@ const UserManager = ({
     useState<IQueryParameters['pageNumber']>(1);
   const [selectedUsers, setSelectedUsers] = useState<SelectedUsersType>('none');
   const [errors, setErrors] = useState<error[]>([]);
+  const [search, setSearch] = useState<string | undefined>(undefined);
+  const searchUser = (searchTerm: string) => {
+    setSearch(isString(searchTerm) && !isEmpty(searchTerm) ? searchTerm : '');
+  };
+
   const { data: users } = useUsers({
     include_inactive: includeInactive,
     search,
@@ -146,39 +152,41 @@ const UserManager = ({
       });
     };
 
-  if (users?.data && users.data.length === 0) {
+  if (isNil(users)) {
+    return null;
+  }
+
+  if (!search && users.data.length === 0) {
     return (
       <Box mb="40px">
-        {search ? (
-          <NoUsers noSuchSearchResult={true} />
-        ) : (
-          <NoUsers groupType={groupType} />
-        )}
+        <NoUsers groupType={groupType} />
       </Box>
     );
   }
 
-  if (users?.data && users.data.length > 0) {
-    const allUsersIds = users.data.map((user) => user.id);
+  const allUsersIds = users.data.map((user) => user.id);
 
-    return (
-      <>
-        <UserTableActions
-          groupType={groupType}
-          groupId={groupId}
-          selectedUsers={selectedUsers}
-          allUsersIds={allUsersIds}
-          toggleSelectAll={toggleAllUsers}
-          unselectAll={unselectAllUsers}
-          deleteUsersFromGroup={deleteUsersFromGroup}
-        />
+  return (
+    <>
+      <UserTableActions
+        groupType={groupType}
+        groupId={groupId}
+        selectedUsers={selectedUsers}
+        allUsersIds={allUsersIds}
+        toggleSelectAll={toggleAllUsers}
+        unselectAll={unselectAllUsers}
+        deleteUsersFromGroup={deleteUsersFromGroup}
+        onSearch={searchUser}
+        usersDataLength={users.data.length}
+      />
 
-        {errors &&
-          errors.length > 0 &&
-          errors.map((err) => (
-            <Error text={err.errorElement} key={err.errorName} />
-          ))}
+      {errors &&
+        errors.length > 0 &&
+        errors.map((err) => (
+          <Error text={err.errorElement} key={err.errorName} />
+        ))}
 
+      {users?.data && users.data.length > 0 ? (
         <UserTable
           selectedUsers={selectedUsers}
           handleSelect={handleUserSelectedOnChange(allUsersIds)}
@@ -190,11 +198,13 @@ const UserManager = ({
           sort={sort}
           onChangePage={setPageNumber}
         />
-      </>
-    );
-  }
-
-  return null;
+      ) : (
+        <Box mb="40px">
+          <NoUsers noSuchSearchResult={true} />
+        </Box>
+      )}
+    </>
+  );
 };
 
 export default UserManager;
