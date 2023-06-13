@@ -109,8 +109,8 @@ const CancelButton = styled(Button)`
 `;
 
 interface Props {
-  ideaId?: string;
-  initiativeId?: string;
+  ideaId: string | undefined;
+  initiativeId: string | undefined;
   postType: 'idea' | 'initiative';
   postingComment: (arg: boolean) => void;
   className?: string;

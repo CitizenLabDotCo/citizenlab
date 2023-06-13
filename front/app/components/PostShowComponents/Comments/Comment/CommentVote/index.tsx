@@ -24,7 +24,7 @@ import { ICommentData } from 'api/comments/types';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
 interface Props {
-  ideaId?: string;
+  ideaId: string | undefined;
   postType: 'idea' | 'initiative';
   commentType: 'parent' | 'child' | undefined;
   comment: ICommentData;

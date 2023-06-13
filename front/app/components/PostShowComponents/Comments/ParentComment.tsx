@@ -42,8 +42,8 @@ const LoadMoreButton = styled(Button)`
 `;
 
 interface Props {
-  ideaId?: string;
-  initiativeId?: string;
+  ideaId: string | undefined;
+  initiativeId: string | undefined;
   postType: 'idea' | 'initiative';
   commentId: string;
   childCommentIds: string[] | false;
@@ -156,8 +156,8 @@ const ParentComment = ({
 
         {showCommentForm && (
           <StyledChildCommentForm
-            ideaId={ideaId || null}
-            initiativeId={initiativeId || null}
+            ideaId={ideaId}
+            initiativeId={initiativeId}
             postType={postType}
             projectId={projectId}
             parentId={commentId}

@@ -88,8 +88,8 @@ const Right = styled.div`
 `;
 
 interface Props {
-  ideaId?: string;
-  initiativeId?: string;
+  ideaId: string | undefined;
+  initiativeId: string | undefined;
   postType: 'idea' | 'initiative';
   projectId?: string | null;
   commentId: string;

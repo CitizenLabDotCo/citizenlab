@@ -61,8 +61,8 @@ export interface Props {
   comment: ICommentData;
   onCommentEdit: () => void;
   className?: string;
-  ideaId?: string;
-  initiativeId?: string;
+  ideaId: string | undefined;
+  initiativeId: string | undefined;
 }
 
 const CommentsMoreActions = ({

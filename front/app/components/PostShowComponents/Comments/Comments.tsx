@@ -32,8 +32,8 @@ const StyledParentComment = styled(ParentComment)`
 `;
 
 interface Props {
-  ideaId?: string;
-  initiativeId?: string;
+  ideaId: string | undefined;
+  initiativeId: string | undefined;
   postType: 'idea' | 'initiative';
   allComments: ICommentData[];
   loading: boolean;
