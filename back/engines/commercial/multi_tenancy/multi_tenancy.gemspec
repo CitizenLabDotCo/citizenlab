@@ -23,7 +23,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'rails', '~> 7.0'
   spec.add_dependency 'ros-apartment', '>=2.9.0'
 
-  spec.add_development_dependency 'rubocop', '1.50.2'
+  spec.add_development_dependency 'rubocop', '1.52.1'
   spec.add_development_dependency 'rubocop-performance', '1.18.0'
   spec.add_development_dependency 'rubocop-rails', '2.19.1'
   spec.add_development_dependency 'rubocop-rspec', '2.12.1'
