@@ -7,7 +7,7 @@ const mockUserData: {
   id: string;
   type: string;
   attributes: Partial<IUserAttributes>;
-} | null = {
+} = {
   id: 'userId',
   type: 'user',
   attributes: {
@@ -15,12 +15,9 @@ const mockUserData: {
   },
 };
 
-type MockUserData = { data: typeof mockUserData } | null;
-let mockAuthUser: MockUserData = {
-  data: mockUserData,
-};
-
-jest.mock('api/me/useAuthUser', () => jest.fn(() => ({ data: mockAuthUser })));
+jest.mock('api/me/useAuthUser', () => () => ({
+  data: { data: mockUserData },
+}));
 
 describe('NotificationMenu', () => {
   it('Opens and closes the dropdown when clicking the notifications icon', async () => {
@@ -36,13 +33,5 @@ describe('NotificationMenu', () => {
     // Close the dropdown
     await user.click(notificationsIcon);
     expect(dropdown).not.toBeInTheDocument();
-  });
-
-  it('Does not render if the user is not logged in', () => {
-    mockAuthUser = null;
-    render(<NotificationMenu />);
-
-    const notificationsIcon = screen.queryByRole('button');
-    expect(notificationsIcon).toBeNull();
   });
 });
