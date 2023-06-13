@@ -118,10 +118,10 @@ const CommentsSection = memo<Props>(
 
     const [posting, setPosting] = useState(false);
 
-    const handleSortOrderChange = useCallback((sortOrder: CommentsSort) => {
+    const handleSortOrderChange = (sortOrder: CommentsSort) => {
       trackEventByName(tracks.clickCommentsSortOrder);
       setSortOrder(sortOrder);
-    }, []);
+    };
 
     const handleIntersection = useCallback(
       (event: IntersectionObserverEntry, unobserve: () => void) => {
@@ -152,7 +152,7 @@ const CommentsSection = memo<Props>(
             </Title>
             <StyledCommentSorting
               onChange={handleSortOrderChange}
-              selectedValue={[sortOrder]}
+              selectedCommentSort={sortOrder}
             />
           </Header>
 
