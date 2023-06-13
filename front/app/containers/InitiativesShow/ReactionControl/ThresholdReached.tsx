@@ -61,13 +61,13 @@ class ThresholdReached extends PureComponent<Props & { theme: any }, State> {
   render() {
     const {
       initiative,
-      initiativeSettings: { voting_threshold, threshold_reached_message },
+      initiativeSettings: { reacting_threshold, threshold_reached_message },
       initiativeStatus,
       userReacted,
     } = this.props;
 
     const reactionCount = initiative.attributes.likes_count;
-    const reactionLimit = voting_threshold;
+    const reactionLimit = reacting_threshold;
 
     return (
       <Container>

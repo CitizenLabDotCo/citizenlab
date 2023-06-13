@@ -118,10 +118,10 @@ class ProposedReacted extends PureComponent<Props & { theme: any }> {
   render() {
     const {
       initiative,
-      initiativeSettings: { voting_threshold },
+      initiativeSettings: { reacting_threshold },
     } = this.props;
     const reactionCount = initiative.attributes.likes_count;
-    const reactionLimit = voting_threshold;
+    const reactionLimit = reacting_threshold;
     const daysLeft = getPeriodRemainingUntil(initiative.attributes.expires_at);
 
     return (

@@ -135,8 +135,8 @@ const InitiativesSettingsPage = () => {
       validated = true;
 
       if (
-        isNaN(localProposalsSettings.voting_threshold) ||
-        localProposalsSettings.voting_threshold < 2 ||
+        isNaN(localProposalsSettings.reacting_threshold) ||
+        localProposalsSettings.reacting_threshold < 2 ||
         isNaN(localProposalsSettings.days_limit) ||
         localProposalsSettings.days_limit < 1
       ) {
@@ -252,8 +252,8 @@ const InitiativesSettingsPage = () => {
             />
           )}
           <ReactingThreshold
-            value={localProposalsSettings.voting_threshold}
-            onChange={updateProposalsSetting('voting_threshold')}
+            value={localProposalsSettings.reacting_threshold}
+            onChange={updateProposalsSetting('reacting_threshold')}
           />
 
           <ReactingLimit

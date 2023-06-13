@@ -65,13 +65,13 @@ class Expired extends PureComponent<Props, State> {
   render() {
     const {
       initiative,
-      initiativeSettings: { voting_threshold },
+      initiativeSettings: { reacting_threshold },
       initiativeStatus,
       userReacted,
     } = this.props;
 
     const reactionCount = initiative.attributes.likes_count;
-    const reactionLimit = voting_threshold;
+    const reactionLimit = reacting_threshold;
 
     return (
       <Container>
@@ -87,7 +87,7 @@ class Expired extends PureComponent<Props, State> {
                 <b>
                   <FormattedMessage
                     {...messages.expiredStatusExplanationBold}
-                    values={{ votingThreshold: voting_threshold }}
+                    values={{ votingThreshold: reacting_threshold }}
                   />
                 </b>
               ),

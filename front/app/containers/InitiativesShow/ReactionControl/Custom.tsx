@@ -72,11 +72,11 @@ class Custom extends PureComponent<Props & { theme: any }> {
     const {
       initiative,
       initiativeStatus,
-      initiativeSettings: { voting_threshold },
+      initiativeSettings: { reacting_threshold },
       userReacted,
     } = this.props;
     const reactionCount = initiative.attributes.likes_count;
-    const reactionLimit = voting_threshold;
+    const reactionLimit = reacting_threshold;
 
     return (
       <Container>

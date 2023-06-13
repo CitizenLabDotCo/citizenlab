@@ -42,7 +42,7 @@ const InitiativeInfoContent = memo<InjectedLocalized & Props>(
 
     if (!isNilOrError(appConfig)) {
       const reactionThreshold =
-        appConfig.data.attributes.settings.initiatives?.voting_threshold;
+        appConfig.data.attributes.settings.initiatives?.reacting_threshold;
       const daysLimit =
         appConfig.data.attributes.settings.initiatives?.days_limit;
 

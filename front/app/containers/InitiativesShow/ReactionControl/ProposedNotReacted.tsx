@@ -157,12 +157,12 @@ const disabledMessages: {
 const ProposedNotReacted = ({
   onReaction,
   initiative,
-  initiativeSettings: { voting_threshold, threshold_reached_message },
+  initiativeSettings: { reacting_threshold, threshold_reached_message },
   disabledReason,
 }: Props) => {
   const theme = useTheme();
   const reactionCount = initiative.attributes.likes_count;
-  const reactionLimit = voting_threshold;
+  const reactionLimit = reacting_threshold;
   const daysLeft = getPeriodRemainingUntil(initiative.attributes.expires_at);
 
   const thresholdReachedTooltip = threshold_reached_message ? (
@@ -197,7 +197,7 @@ const ProposedNotReacted = ({
           <FormattedMessage
             {...messages.proposedStatusExplanation}
             values={{
-              votingThreshold: voting_threshold,
+              votingThreshold: reacting_threshold,
               proposedStatusExplanationBold: (
                 <b>
                   <FormattedMessage
@@ -214,7 +214,7 @@ const ProposedNotReacted = ({
             {...messages.proposedStatusExplanationMobile}
             values={{
               daysLeft,
-              votingThreshold: voting_threshold,
+              votingThreshold: reacting_threshold,
               proposedStatusExplanationMobileBold: (
                 <b>
                   <FormattedMessage

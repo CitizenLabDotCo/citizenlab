@@ -413,7 +413,7 @@ const InitiativesShow = ({
     ? tenant.attributes.settings.initiatives
     : null;
   const votingThreshold = initiativeSettings
-    ? initiativeSettings.voting_threshold
+    ? initiativeSettings.reacting_threshold
     : null;
   const daysLimit = initiativeSettings ? initiativeSettings.days_limit : null;
   let content: JSX.Element | null = null;

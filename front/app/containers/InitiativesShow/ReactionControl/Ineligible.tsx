@@ -73,11 +73,11 @@ class Ineligible extends PureComponent<Props, State> {
   render() {
     const {
       initiative,
-      initiativeSettings: { eligibility_criteria, voting_threshold },
+      initiativeSettings: { eligibility_criteria, reacting_threshold },
       initiativeStatus,
     } = this.props;
     const reactionCount = initiative.attributes.likes_count;
-    const reactionLimit = voting_threshold;
+    const reactionLimit = reacting_threshold;
 
     return (
       <Container>
