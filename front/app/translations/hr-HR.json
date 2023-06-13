@@ -1700,6 +1700,7 @@
   "app.utils.votingMethodUtils.budget": "proračun",
   "app.utils.votingMethodUtils.budgetParticipationEnded": "<b>Predaja proračuna zatvorena je {endDate}.</b> Sudionika je svaki imao ukupno <b>{maxBudget} {currency} za raspodjelu između {optionCount} opcija.</b>",
   "app.utils.votingMethodUtils.budgetSubmitted": "Predan proračun",
+  "app.utils.votingMethodUtils.budgetSubmittedWithIcon": "Predan proračun 🎉",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructions": "Imate ukupno <b>{maxBudget} USD za raspodjelu između {optionCount} opcije</b>. Odaberite željene opcije dodirom na \"Dodaj\". Kada ste gotovi, kliknite \"Pošalji\" da pošaljete svoj proračun.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>Čestitamo, vaš proračun je predan!</b> Možete provjeriti svoje opcije ispod u bilo kojem trenutku ili ih izmijeniti prije <b>{endDate}</b>.",
   "app.utils.votingMethodUtils.budgets": "Proračuni",
