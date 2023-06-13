@@ -10,7 +10,7 @@ import { requestBlob } from 'utils/request';
 import FileUploader from 'components/UI/FileUploader';
 import { SectionField } from 'components/admin/Section';
 import Button from 'components/UI/Button';
-import { Box, Text, Title } from '@citizenlab/cl2-component-library';
+import { Box, Text, Title, colors } from '@citizenlab/cl2-component-library';
 
 // resources
 import useImportIdeas from '../../api/import_ideas/useImportIdeas';
@@ -49,7 +49,7 @@ const Import = () => {
   };
 
   return (
-    <>
+    <Box background={colors.white} p="40px">
       <Title>
         <FormattedMessage {...messages.importInputs} />
       </Title>
@@ -98,7 +98,7 @@ const Import = () => {
           </Text>
         )}
       </SectionField>
-    </>
+    </Box>
   );
 };
 

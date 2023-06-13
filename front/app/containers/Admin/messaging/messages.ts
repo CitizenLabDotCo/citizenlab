@@ -280,10 +280,15 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.viewExample',
     defaultMessage: 'View',
   },
-  noExampleYet: {
-    id: 'app.containers.Admin.emails.noExampleYet',
+  clickOnButtonForExamples: {
+    id: 'app.containers.Admin.emails.clickOnButtonForExamples',
     defaultMessage:
-      "We can't show you an example email as no email of this type has been sent yet. As soon as one is sent you'll be able to view it here.",
+      'Click on the button below to check examples of this email on our support page. ',
+  },
+  seeEmailHereText: {
+    id: 'app.containers.Admin.emails.seeEmailHereText',
+    defaultMessage:
+      "As soon as an email of this type is sent you'll be able to check it here.",
   },
   supportButtonLabel: {
     id: 'app.containers.Admin.emails.supportButtonLabel',
