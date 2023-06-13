@@ -49,7 +49,7 @@
   "dependencies": {
     "@apollo/client": "^3.5.6",
     "@babel/runtime": "7.x",
-    "@citizenlab/cl2-component-library": "^0.10.42",
+    "@citizenlab/cl2-component-library": "^0.10.39",
     "@craftjs/core": "^0.2.0-beta.5",
     "@hookform/resolvers": "^3.1.0",
     "@jsonforms/core": "3.0.0-beta.0",
@@ -118,7 +118,7 @@
     "react-infinite-scroller": "1.2.6",
     "react-intl": "6.0.5",
     "react-jsonschema-form": "1.8.1",
-    "react-mentions": "^4.4.9",
+    "react-mentions": "2.x",
     "react-password-strength-bar": "0.4.1",
     "react-places-autocomplete": "7.x",
     "react-range": "1.8.14",
