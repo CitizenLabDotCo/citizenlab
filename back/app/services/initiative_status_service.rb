@@ -44,7 +44,7 @@ class InitiativeStatusService
         scope_contition: lambda { |initiative_scope|
           initiative_scope.where(
             'initiatives.likes_count >= ?',
-            AppConfiguration.instance.settings('initiatives', 'voting_threshold')
+            AppConfiguration.instance.settings('initiatives', 'reacting_threshold')
           )
         }
       },

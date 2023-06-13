@@ -124,7 +124,7 @@ class Initiative < ApplicationRecord
   }
 
   def reactions_needed(configuration = AppConfiguration.instance)
-    [configuration.settings('initiatives', 'voting_threshold') - likes_count, 0].max
+    [configuration.settings('initiatives', 'reacting_threshold') - likes_count, 0].max
   end
 
   def expires_at(configuration = AppConfiguration.instance)

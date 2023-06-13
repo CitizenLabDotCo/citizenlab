@@ -68,7 +68,7 @@ resource 'Reactions' do
 
     example 'Reaching the voting threshold immediately triggers status change', document: false do
       settings = AppConfiguration.instance.settings
-      settings['initiatives']['voting_threshold'] = 3
+      settings['initiatives']['reacting_threshold'] = 3
       AppConfiguration.instance.update! settings: settings
 
       do_request

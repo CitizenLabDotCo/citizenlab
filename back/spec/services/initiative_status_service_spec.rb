@@ -12,7 +12,7 @@ describe InitiativeStatusService do
       configuration.settings['initiatives'] = {
         enabled: true,
         allowed: true,
-        voting_threshold: 2,
+        reacting_threshold: 2,
         days_limit: 20,
         threshold_reached_message: { 'en' => 'Threshold reached' },
         eligibility_criteria: { 'en' => 'Eligibility criteria' }
