@@ -40,6 +40,7 @@
   "app.components.Comments.commentingMaybeNotPermitted": "Inuit tamarmik oqaaseqaateqarnissaminnut akuersissuteqanngillat. {signInLink} atulaaruk takuniarlugu akuersissutaateqarnersutit.",
   "app.components.Comments.inputsAssociatedWithProfile": "By default your submissions will be associated with your profile, unless you select this option.",
   "app.components.Comments.invisibleTitleComments": "Oqaaseqaatit",
+  "app.components.Comments.leastRecent": "Least recent",
   "app.components.Comments.mostRecent": "Most recent",
   "app.components.Comments.mostUpvoted": "Amerlanernik taaneqartut",
   "app.components.Comments.official": "Pisortatigoortoq",
