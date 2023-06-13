@@ -85,7 +85,7 @@ export default ({
 
         <ToggleRow>
           <Toggle
-            checked={commenting_enabled as boolean}
+            checked={!!commenting_enabled}
             onChange={toggleCommentingEnabled}
             label={FormattedMessage(messages.inputCommentingEnabled)}
           />

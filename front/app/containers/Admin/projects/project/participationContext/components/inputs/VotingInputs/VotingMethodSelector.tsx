@@ -27,7 +27,7 @@ const VotingMethodSelector = ({
   handleVotingMethodOnChange,
 }: VotingMethodSelectorProps) => {
   const { formatMessage } = useIntl();
-  const selected = voting_method === 'budgeting';
+  const budgetingSelected = voting_method === 'budgeting';
 
   return (
     <Box mb="35px">
@@ -39,12 +39,12 @@ const VotingMethodSelector = ({
           mt="-1px"
         />
       </SubSectionTitle>
-      <Text mt="0px" mb="23px" color="textSecondary">
+      <Text mt="0px" mb="24px" color="textSecondary">
         {formatMessage(messages.votingMethodSelectorSubtitle)}
       </Text>
       <CardButton
-        selected={selected}
-        icon={<BudgetingIcon selected={selected} />}
+        selected={budgetingSelected}
+        icon={<BudgetingIcon selected={budgetingSelected} />}
         onClick={(e) => {
           e.preventDefault();
           handleVotingMethodOnChange('budgeting');
