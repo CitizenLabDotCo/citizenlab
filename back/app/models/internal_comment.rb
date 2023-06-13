@@ -80,7 +80,7 @@ class InternalComment < ApplicationRecord
 
   PUBLICATION_STATUSES = %w[published deleted]
 
-  validates :body_text, presence: true # html: true ?
+  validates :body_text, presence: true
   validates :publication_status, presence: true, inclusion: { in: PUBLICATION_STATUSES }
 
   scope :published, -> { where publication_status: 'published' }

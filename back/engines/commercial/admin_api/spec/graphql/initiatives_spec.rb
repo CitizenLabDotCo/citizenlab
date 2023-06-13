@@ -41,6 +41,7 @@ RSpec.describe AdminApi::Schema do
                 }
                 upvotesCount
                 commentsCount
+                internalCommentsCount
               }
             }
           }
@@ -59,6 +60,7 @@ RSpec.describe AdminApi::Schema do
       expect(edges&.first&.dig('node', 'titleMultiloc')&.values&.compact&.size).to be >= 1
       expect(edges&.first&.dig('node', 'upvotesCount')).to be_present
       expect(edges&.first&.dig('node', 'commentsCount')).to be_present
+      expect(edges&.first&.dig('node', 'internalCommentsCount')).to be_present
     end
   end
 end
