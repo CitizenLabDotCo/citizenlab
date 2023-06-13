@@ -127,7 +127,7 @@ const MentionsTextArea = ({
           border: 'none',
           appearance: 'none',
           WebkitAppearance: 'none',
-          minHeight: `${rows * parseInt(lineHeight as string, 10)}px`,
+          minHeight: `${rows * parseInt(lineHeight, 10)}px`,
         },
         input: {
           margin: 0,
@@ -136,7 +136,7 @@ const MentionsTextArea = ({
           fontSize,
           fontWeight,
           lineHeight,
-          minHeight: `${rows * parseInt(lineHeight as string, 10)}px`,
+          minHeight: `${rows * parseInt(lineHeight, 10)}px`,
           outline: 'none',
           border,
           borderRadius,
