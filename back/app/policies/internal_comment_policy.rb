@@ -45,14 +45,14 @@ class InternalCommentPolicy < ApplicationPolicy
   end
 
   def permitted_attributes_for_update
-    record.author_id == user&.id ? [:body_text] : []
+    internal_comment_author? ? [:body_text] : []
   end
 
   private
 
   def internal_commenter?
     if record.post_type == 'Idea'
-      active_admin_or_moderator?
+      active? && (admin? || UserRoleService.new.can_moderate?(record.post, user))
     elsif record.post_type == 'Initiative'
       active? && admin?
     else
@@ -60,11 +60,7 @@ class InternalCommentPolicy < ApplicationPolicy
     end
   end
 
-  def active_admin_or_moderator?
-    active? && (admin? || UserRoleService.new.can_moderate?(record.post, user))
-  end
-
   def internal_comment_author?
-    record.author_id == user.id
+    record.author_id == user&.id
   end
 end
