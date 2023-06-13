@@ -2,7 +2,7 @@
 
 class ApplicationController < ActionController::API
   include AuthToken::Authenticable
-  include Pundit
+  include Pundit::Authorization
 
   before_action :authenticate_user
 

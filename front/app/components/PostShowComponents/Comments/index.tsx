@@ -121,10 +121,10 @@ const CommentsSection = ({
 
   const [posting, setPosting] = useState(false);
 
-  const handleSortOrderChange = useCallback((sortOrder: CommentsSort) => {
+  const handleSortOrderChange = (sortOrder: CommentsSort) => {
     trackEventByName(tracks.clickCommentsSortOrder);
     setSortOrder(sortOrder);
-  }, []);
+  };
 
   const handleIntersection = useCallback(
     (event: IntersectionObserverEntry, unobserve: () => void) => {
@@ -153,7 +153,7 @@ const CommentsSection = ({
           </Title>
           <StyledCommentSorting
             onChange={handleSortOrderChange}
-            selectedValue={[sortOrder]}
+            selectedCommentSort={sortOrder}
           />
         </Header>
 
