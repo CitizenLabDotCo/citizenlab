@@ -151,6 +151,8 @@ const CompactIdeaCard = memo<IdeaCardProps>(
       .replaceAll('&amp;', '&')
       .trim();
 
+    const votingMethod = project?.data.attributes.voting_method;
+
     const getFooter = () => {
       if (project) {
         const commentingEnabled =
@@ -162,7 +164,7 @@ const CompactIdeaCard = memo<IdeaCardProps>(
         // e.g. /ideas index page because there's no participationMethod
         // passed through to the IdeaCards from there.
         // Should probably have better solution in future.
-        if (participationMethod === 'budgeting') {
+        if (participationMethod === 'voting' && votingMethod === 'budgeting') {
           return (
             <FooterWithBudgetControl
               idea={idea}
@@ -213,7 +215,11 @@ const CompactIdeaCard = memo<IdeaCardProps>(
         imagePlaceholder={
           <ImagePlaceholderContainer>
             <ImagePlaceholderIcon
-              name={participationMethod === 'budgeting' ? 'money-bag' : 'idea'}
+              name={
+                participationMethod === 'voting' && votingMethod === 'budgeting'
+                  ? 'money-bag'
+                  : 'idea'
+              }
             />
           </ImagePlaceholderContainer>
         }

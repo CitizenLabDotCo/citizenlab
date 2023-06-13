@@ -13,8 +13,9 @@ export default ({
   downvoting_limited_max,
   downvoting_enabled,
   presentation_mode,
-  min_budget,
-  max_budget,
+  voting_method,
+  voting_min_total,
+  voting_max_total,
   survey_embed_url,
   survey_service,
   poll_anonymous,
@@ -70,16 +71,17 @@ export default ({
     output = {
       participation_method,
     };
-  } else if (participation_method === 'budgeting') {
+  } else if (participation_method === 'voting') {
     output = omitBy(
       {
         participation_method,
-        min_budget,
-        max_budget,
+        voting_min_total,
+        voting_max_total,
         commenting_enabled,
         presentation_mode,
         ideas_order,
         input_term,
+        voting_method,
       },
       isNil
     ) as IParticipationContextConfig;

@@ -5,7 +5,7 @@ import { IPhaseData } from './types';
 
 export function canContainIdeas(phase: IPhaseData) {
   const pm = phase.attributes.participation_method;
-  return pm === 'ideation' || pm === 'budgeting';
+  return pm === 'ideation' || pm === 'voting';
 }
 
 export function getCurrentPhase(phases: IPhaseData[] | undefined) {

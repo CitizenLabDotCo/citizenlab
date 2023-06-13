@@ -239,7 +239,7 @@ const documentAnnotationConfig: ParticipationMethodConfig = {
   },
 };
 
-const budgetingConfig: ParticipationMethodConfig = {
+const votingConfig: ParticipationMethodConfig = {
   showInputCount: false,
   formEditor: 'simpleFormEditor',
   getMethodPickerMessage: () => {
@@ -340,7 +340,7 @@ const methodToConfig: {
   native_survey: nativeSurveyConfig,
   information: informationConfig,
   survey: surveyConfig,
-  budgeting: budgetingConfig,
+  voting: votingConfig,
   poll: pollConfig,
   volunteering: volunteeringConfig,
   document_annotation: documentAnnotationConfig,

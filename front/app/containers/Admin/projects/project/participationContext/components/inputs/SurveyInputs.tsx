@@ -4,15 +4,15 @@ import React from 'react';
 import { Input, IconTooltip, Box } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import { StyledA, StyledWarning, SurveyServiceRadio } from './styling';
+import { StyledA, StyledWarning, SurveyServiceRadio } from '../shared/styling';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../../messages';
+import messages from '../../../messages';
 
 // typings
 import { TSurveyService } from 'services/participationContexts';
-import { ApiErrors } from '..';
+import { ApiErrors } from '../..';
 
 interface Props {
   survey_service: TSurveyService | null | undefined;

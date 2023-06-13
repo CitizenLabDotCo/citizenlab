@@ -39,7 +39,7 @@ class IdeasFinder < ApplicationFinder
   def only_idea_inputs_scope(scope)
     phase_ideas = scope.where(project: Project.where(process_type: 'timeline'), creation_phase: nil)
     project_ideas = scope.where(
-      project: Project.where(process_type: 'continuous', participation_method: %w[ideation budgeting])
+      project: Project.where(process_type: 'continuous', participation_method: %w[ideation voting])
     )
     phase_ideas.or(project_ideas)
   end

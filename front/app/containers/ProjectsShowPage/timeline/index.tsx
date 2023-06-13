@@ -160,9 +160,12 @@ const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
 
   if (!isNilOrError(project) && selectedPhase) {
     const selectedPhaseId = selectedPhase.id;
-    const isPBPhase =
-      selectedPhase.attributes.participation_method === 'budgeting';
     const participationMethod = selectedPhase.attributes.participation_method;
+
+    const isPBPhase =
+      participationMethod === 'voting' &&
+      selectedPhase.attributes.voting_method === 'budgeting';
+
     const smallerThanSmallTablet = windowSize
       ? windowSize.windowWidth <= viewportWidths.tablet
       : false;
@@ -207,7 +210,7 @@ const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
                 phaseId={selectedPhaseId}
               />
               {(participationMethod === 'ideation' ||
-                participationMethod === 'budgeting') &&
+                participationMethod === 'voting') &&
                 selectedPhaseId && (
                   <PhaseIdeas projectId={projectId} phaseId={selectedPhaseId} />
                 )}
