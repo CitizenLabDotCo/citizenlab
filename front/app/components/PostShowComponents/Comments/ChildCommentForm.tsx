@@ -4,6 +4,9 @@ import { Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
 
+// services
+import { canModerateProject } from 'services/permissions/rules/projectPermissions';
+
 // components
 import Button from 'components/UI/Button';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
@@ -38,7 +41,6 @@ import useAuthUser from 'api/me/useAuthUser';
 import useAddCommentToIdea from 'api/comments/useAddCommentToIdea';
 import useAddCommentToInitiative from 'api/comments/useAddCommentToInitiative';
 import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
-import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 
 const Container = styled.div`
   display: flex;
