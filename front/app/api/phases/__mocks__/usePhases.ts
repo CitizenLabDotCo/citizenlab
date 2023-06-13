@@ -58,7 +58,7 @@ export const phasesData: IPhaseData[] = [
       upvoting_method: 'limited',
       upvoting_limited_max: 0,
       presentation_mode: 'card',
-      max_budget: 3,
+      voting_max_total: 3,
       downvoting_method: 'limited',
       input_term: 'idea',
       downvoting_enabled: false,

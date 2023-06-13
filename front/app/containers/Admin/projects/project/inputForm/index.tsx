@@ -16,6 +16,7 @@ import { useParams } from 'react-router-dom';
 import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
 import { IPhaseData } from 'api/phases/types';
+import { ParticipationMethod } from 'services/participationContexts';
 
 export const IdeaForm = () => {
   const { projectId } = useParams() as {
@@ -58,9 +59,11 @@ export const IdeaForm = () => {
   );
 };
 
-const isIdeationContext = (participationContext: string | undefined) => {
+const isIdeationContext = (
+  participationContext: ParticipationMethod | undefined
+) => {
   return (
-    participationContext === 'ideation' || participationContext === 'budgeting'
+    participationContext === 'ideation' || participationContext === 'voting'
   );
 };
 

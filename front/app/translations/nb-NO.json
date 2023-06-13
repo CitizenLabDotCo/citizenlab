@@ -39,6 +39,7 @@
   "app.components.Comments.commentingMaybeNotPermitted": "Ikke alle har adgang til å kommentere. Du kan {signInLink} for å se om du har adgang.",
   "app.components.Comments.inputsAssociatedWithProfile": "Som standard vil bidragene dine være knyttet til profilen din, med mindre du velger dette alternativet.",
   "app.components.Comments.invisibleTitleComments": "Kommentarer",
+  "app.components.Comments.leastRecent": "Minst nyere",
   "app.components.Comments.mostRecent": "Senest",
   "app.components.Comments.mostUpvoted": "Populært",
   "app.components.Comments.official": "Offisiell",

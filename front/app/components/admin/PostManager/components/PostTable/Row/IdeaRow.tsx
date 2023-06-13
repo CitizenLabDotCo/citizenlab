@@ -149,7 +149,6 @@ const IdeaRow = ({
     {
       name: 'picks',
       cellProps: { singleLine: true },
-      featureFlag: 'participatory_budgeting',
       Component: ({ idea }: IdeaCellComponentProps) => {
         return <>{idea.attributes.baskets_count}</>;
       },

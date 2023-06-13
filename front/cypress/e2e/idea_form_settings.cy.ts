@@ -85,14 +85,16 @@ describe('Idea form settings', () => {
           'phaseTitle',
           moment().add(5, 'month').format('DD/MM/YYYY'),
           moment().add(7, 'month').format('DD/MM/YYYY'),
-          'budgeting',
+          'voting',
           true,
           true,
           true,
           description,
           'https://lifeship.typeform.com/to/YWeOlPu7?typeform-source=clickydrip.com',
           'typeform',
-          400
+          400,
+          undefined,
+          'budgeting'
         );
       });
 
@@ -141,8 +143,9 @@ describe('Idea form settings', () => {
         descriptionPreview: description,
         description,
         publicationStatus: 'draft',
-        participationMethod: 'budgeting',
-        maxBudget: 100,
+        participationMethod: 'voting',
+        votingMethod: 'budgeting',
+        votingMaxTotal: 100,
       }).then((project) => {
         continuousBudgetProjectId = project.body.data.id;
         projectIds.push(continuousBudgetProjectId);

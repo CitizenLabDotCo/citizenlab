@@ -39,6 +39,7 @@
   "app.components.Comments.commentingMaybeNotPermitted": "Hangi işlemlerin yapılabileceğini görmek için lütfen {signInLink}.",
   "app.components.Comments.inputsAssociatedWithProfile": "Bu seçeneği seçmediğiniz sürece varsayılan olarak gönderimleriniz profilinizle ilişkilendirilecektir.",
   "app.components.Comments.invisibleTitleComments": "Yorumlar",
+  "app.components.Comments.leastRecent": "En son",
   "app.components.Comments.mostRecent": "En son",
   "app.components.Comments.mostUpvoted": "En çok oylanan",
   "app.components.Comments.official": "Resmi",

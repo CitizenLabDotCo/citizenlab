@@ -10,22 +10,21 @@ import {
 import FeatureFlag from 'components/FeatureFlag';
 import Error from 'components/UI/Error';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import CustomFieldPicker from './CustomFieldPicker';
-import DefaultViewPicker from './DefaultViewPicker';
+import CustomFieldPicker from '../../shared/CustomFieldPicker';
+import DefaultViewPicker from '../../shared/DefaultViewPicker';
 import SortingPicker from './SortingPicker';
 import {
   StyledSectionField,
   ToggleRow,
-  ToggleLabel,
   VotingLimitInput,
-} from './styling';
+} from '../../shared/styling';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../messages';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
+import messages from '../../../../messages';
 
 // typings
-import { ApiErrors } from '..';
+import { ApiErrors } from '../../..';
 import {
   IdeaDefaultSortMethod,
   InputTerm,
@@ -39,7 +38,6 @@ interface Props {
   isCustomInputTermEnabled: boolean;
   input_term: InputTerm | undefined;
   handleInputTermChange: (option: IOption) => void;
-  inputTermOptions: IOption[];
   posting_enabled: boolean;
   commenting_enabled: boolean;
   voting_enabled: boolean;
@@ -79,7 +77,6 @@ export default ({
   isCustomInputTermEnabled,
   input_term,
   handleInputTermChange,
-  inputTermOptions,
   posting_enabled,
   commenting_enabled,
   voting_enabled,
@@ -106,6 +103,8 @@ export default ({
   ideas_order,
   handleIdeaDefaultSortMethodChange,
 }: Props) => {
+  const { formatMessage } = useIntl();
+
   const hasAnonymousParticipationEnabled = useFeatureFlag({
     name: 'anonymous_participation',
   });
@@ -124,41 +123,40 @@ export default ({
         <CustomFieldPicker
           input_term={input_term}
           handleInputTermChange={handleInputTermChange}
-          inputTermOptions={inputTermOptions}
         />
       )}
       <StyledSectionField>
         <SubSectionTitle>
-          <FormattedMessage {...messages.phasePermissions} />
+          <FormattedMessage {...messages.enabledActionsForResidents} />
           <IconTooltip
-            content={<FormattedMessage {...messages.phasePermissionsTooltip} />}
+            content={<FormattedMessage {...messages.enabledActionsTooltip} />}
           />
         </SubSectionTitle>
 
         <ToggleRow>
-          <ToggleLabel>
-            <FormattedMessage {...messages.inputPostingEnabled} />
-          </ToggleLabel>
-          <Toggle checked={posting_enabled} onChange={togglePostingEnabled} />
+          <Toggle
+            checked={posting_enabled}
+            onChange={togglePostingEnabled}
+            label={formatMessage(messages.inputPostingEnabled)}
+          />
           <Error apiErrors={apiErrors && apiErrors.posting_enabled} />
         </ToggleRow>
 
         <ToggleRow>
-          <ToggleLabel>
-            <FormattedMessage {...messages.inputCommentingEnabled} />
-          </ToggleLabel>
           <Toggle
             checked={commenting_enabled}
             onChange={toggleCommentingEnabled}
+            label={formatMessage(messages.inputCommentingEnabled)}
           />
           <Error apiErrors={apiErrors && apiErrors.commenting_enabled} />
         </ToggleRow>
 
         <ToggleRow className="last">
-          <ToggleLabel>
-            <FormattedMessage {...messages.inputVotingEnabled} />
-          </ToggleLabel>
-          <Toggle checked={voting_enabled} onChange={toggleVotingEnabled} />
+          <Toggle
+            checked={voting_enabled}
+            onChange={toggleVotingEnabled}
+            label={formatMessage(messages.inputVotingEnabled)}
+          />
           <Error apiErrors={apiErrors && apiErrors.voting_enabled} />
         </ToggleRow>
       </StyledSectionField>

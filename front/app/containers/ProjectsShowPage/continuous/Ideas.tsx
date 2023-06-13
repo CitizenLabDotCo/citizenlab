@@ -62,12 +62,14 @@ const IdeasContainer = memo<InnerProps>(({ project, className }) => {
   const participationMethod = project.attributes.participation_method;
   const showIdeas = !!(
     projectType === 'continuous' &&
-    (participationMethod === 'budgeting' || participationMethod === 'ideation')
+    (participationMethod === 'voting' || participationMethod === 'ideation')
   );
 
   if (!isNilOrError(project) && showIdeas) {
     const inputTerm = project.attributes.input_term;
-    const isPBProject = project.attributes.participation_method === 'budgeting';
+    const isPBProject =
+      project.attributes.participation_method === 'voting' &&
+      project.attributes.voting_method === 'budgeting';
 
     return (
       <Container

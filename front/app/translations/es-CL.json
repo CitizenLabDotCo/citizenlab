@@ -39,6 +39,7 @@
   "app.components.Comments.commentingMaybeNotPermitted": "No todo el mundo puede comentar. Por favor {signInLink} para verificar si puedes hacerlo.",
   "app.components.Comments.inputsAssociatedWithProfile": "Por defecto, tus aportes se asociarán a tu perfil, a menos que selecciones esta opción.",
   "app.components.Comments.invisibleTitleComments": "Respuestas",
+  "app.components.Comments.leastRecent": "Menos reciente",
   "app.components.Comments.mostRecent": "Más recientes",
   "app.components.Comments.mostUpvoted": "Más votados",
   "app.components.Comments.official": "Oficial",

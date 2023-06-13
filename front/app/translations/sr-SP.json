@@ -39,6 +39,7 @@
   "app.components.Comments.commentingMaybeNotPermitted": "Молимо {signInLink} да видите које радње се могу предузети.",
   "app.components.Comments.inputsAssociatedWithProfile": "By default your submissions will be associated with your profile, unless you select this option.",
   "app.components.Comments.invisibleTitleComments": "Коментари",
+  "app.components.Comments.leastRecent": "Least recent",
   "app.components.Comments.mostRecent": "Најновијe",
   "app.components.Comments.mostUpvoted": "Највише гласано",
   "app.components.Comments.official": "званичник",

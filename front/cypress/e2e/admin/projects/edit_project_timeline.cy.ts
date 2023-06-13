@@ -47,7 +47,7 @@ describe('Project timeline page', () => {
           phaseTwoTitle,
           '2025-01-02',
           '2025-01-25',
-          'budgeting',
+          'voting',
           true,
           true,
           true,

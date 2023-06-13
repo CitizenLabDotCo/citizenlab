@@ -158,7 +158,7 @@ const CompactIdeaCard = memo<IdeaCardProps>(
       if (project) {
         const projectId = idea.data.relationships.project.data.id;
         const ideaBudget = idea.data.attributes.budget;
-        if (participationMethod === 'budgeting' && ideaBudget) {
+        if (participationMethod === 'voting' && ideaBudget) {
           return (
             <Box display="flex" alignItems="center">
               <AssignBudgetControl
@@ -172,6 +172,7 @@ const CompactIdeaCard = memo<IdeaCardProps>(
       }
       return null;
     };
+    const votingMethod = project?.data.attributes.voting_method;
 
     const getFooter = () => {
       if (project) {
@@ -184,7 +185,7 @@ const CompactIdeaCard = memo<IdeaCardProps>(
         // e.g. /ideas index page because there's no participationMethod
         // passed through to the IdeaCards from there.
         // Should probably have better solution in future.
-        if (participationMethod === 'budgeting') {
+        if (participationMethod === 'voting' && votingMethod === 'budgeting') {
           return (
             <IdeaCardFooter idea={idea} showCommentCount={showCommentCount} />
           );
@@ -230,7 +231,11 @@ const CompactIdeaCard = memo<IdeaCardProps>(
         imagePlaceholder={
           <ImagePlaceholderContainer>
             <ImagePlaceholderIcon
-              name={participationMethod === 'budgeting' ? 'money-bag' : 'idea'}
+              name={
+                participationMethod === 'voting' && votingMethod === 'budgeting'
+                  ? 'money-bag'
+                  : 'idea'
+              }
             />
           </ImagePlaceholderContainer>
         }

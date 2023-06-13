@@ -7,10 +7,10 @@ import Error from 'components/UI/Error';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../messages';
+import messages from '../../../messages';
 
 // typings
-import { ApiErrors } from '..';
+import { ApiErrors } from '../..';
 
 interface Props {
   poll_anonymous: boolean | undefined;

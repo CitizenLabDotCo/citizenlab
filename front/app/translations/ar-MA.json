@@ -39,6 +39,7 @@
   "app.components.Comments.commentingMaybeNotPermitted": "لا يُسمح للجميع بالتعليق. يُرجى {signInLink} لتعرف إن كنت تمتثل للشروط أم لا.",
   "app.components.Comments.inputsAssociatedWithProfile": "بشكل افتراضي ، سيتم ربط عمليات الإرسال الخاصة بك بملف التعريف الخاص بك ، ما لم تحدد هذا الخيار.",
   "app.components.Comments.invisibleTitleComments": "التعليقات ممكنة",
+  "app.components.Comments.leastRecent": "الأقل حداثة",
   "app.components.Comments.mostRecent": "الأحدث",
   "app.components.Comments.mostUpvoted": "الأكثر تصويتًا محليا",
   "app.components.Comments.official": "رسمي",

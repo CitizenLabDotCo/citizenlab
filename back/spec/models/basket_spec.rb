@@ -28,7 +28,7 @@ RSpec.describe Basket do
 
   context 'when a basket exceeding the maximum budget' do
     before do
-      project = create(:continuous_budgeting_project, max_budget: 1000)
+      project = create(:continuous_budgeting_project, voting_max_total: 1000)
       ideas = create_list(:idea, 11, budget: 100, project: project)
       @basket = create(:basket, ideas: ideas, participation_context: project)
     end
@@ -46,7 +46,7 @@ RSpec.describe Basket do
 
   context 'when a basket less than the minimum budget' do
     let(:basket) { create(:basket, ideas: [idea], participation_context: project, submitted_at: Time.now) }
-    let(:project) { create(:continuous_budgeting_project, min_budget: 200) }
+    let(:project) { create(:continuous_budgeting_project, voting_min_total: 200) }
     let(:idea) { create(:idea, budget: 100, project: project) }
 
     it 'is valid in normal context' do
@@ -75,7 +75,7 @@ RSpec.describe Basket do
 
   context "when the basket's project is updated to non-budgeting participation method" do
     let!(:basket) { create(:basket, ideas: [idea], participation_context: project, submitted_at: Time.now) }
-    let(:project) { create(:continuous_budgeting_project, min_budget: 200) }
+    let(:project) { create(:continuous_budgeting_project, voting_min_total: 200) }
     let(:idea) { create(:idea, budget: 100, project: project) }
 
     # Check the basket remains valid and thus won't fail data consistency checks, as would be the case,

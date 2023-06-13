@@ -509,6 +509,10 @@ const ProjectCard = memo<Props>(
       const participationMethod = phase
         ? phase.data.attributes.participation_method
         : project.data.attributes.participation_method;
+      const votingMethod = phase
+        ? phase.data.attributes.voting_method
+        : project.data.attributes.voting_method;
+
       const canPost = !!postingPermission.enabled;
       const canVote =
         project.data.attributes.action_descriptor.voting_idea.enabled;
@@ -596,7 +600,7 @@ const ProjectCard = memo<Props>(
           ) : null;
       }
 
-      if (participationMethod === 'budgeting') {
+      if (participationMethod === 'voting' && votingMethod === 'budgeting') {
         ctaMessage = <FormattedMessage {...messages.allocateYourBudget} />;
       } else if (participationMethod === 'information') {
         ctaMessage = <FormattedMessage {...messages.learnMore} />;

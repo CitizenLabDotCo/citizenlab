@@ -7,10 +7,10 @@ import { SectionField, SubSectionTitle } from 'components/admin/Section';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../messages';
+import messages from '../../../messages';
 
 // typings
-import { ApiErrors } from '..';
+import { ApiErrors } from '../..';
 
 interface Props {
   presentation_mode: 'card' | 'map' | null | undefined;

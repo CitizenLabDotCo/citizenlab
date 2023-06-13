@@ -39,6 +39,7 @@
   "app.components.Comments.commentingMaybeNotPermitted": "Παρακαλούμε {signInLink} για να δείτε τι ενέργειες μπορούν να γίνουν.",
   "app.components.Comments.inputsAssociatedWithProfile": "Από προεπιλογή, οι υποβολές σας θα συσχετίζονται με το προφίλ σας, εκτός αν επιλέξετε αυτή την επιλογή.",
   "app.components.Comments.invisibleTitleComments": "Σχόλια",
+  "app.components.Comments.leastRecent": "Λιγότερο πρόσφατη",
   "app.components.Comments.mostRecent": "Το πιο πρόσφατο",
   "app.components.Comments.mostUpvoted": "Με τις περισσότερες ψήφους",
   "app.components.Comments.official": "Επίσημα",

@@ -39,6 +39,7 @@
   "app.components.Comments.commentingMaybeNotPermitted": "Nie każdy ma prawo do komentowania. Proszę {signInLink}, aby sprawdzić, czy spełniasz wymagania.",
   "app.components.Comments.inputsAssociatedWithProfile": "Domyślnie Twoje zgłoszenia będą powiązane z Twoim profilem, chyba że wybierzesz tę opcję.",
   "app.components.Comments.invisibleTitleComments": "Komentarze",
+  "app.components.Comments.leastRecent": "Najświeższe",
   "app.components.Comments.mostRecent": "Najnowszy",
   "app.components.Comments.mostUpvoted": "Najwięcej głosów",
   "app.components.Comments.official": "Oficjalny",
