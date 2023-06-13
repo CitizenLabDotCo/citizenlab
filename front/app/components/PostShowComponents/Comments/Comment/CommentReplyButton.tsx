@@ -167,7 +167,7 @@ const CommentReplyButton = ({
     authorSlug,
   ]);
 
-  const commentingDisabledReason =
+  const ideaCommentingDisabledReason =
     idea?.attributes.action_descriptor.commenting_idea.disabled_reason;
 
   const isCommentDeleted = comment.attributes.publication_status === 'deleted';
@@ -176,8 +176,8 @@ const CommentReplyButton = ({
     postType === 'initiative'
       ? !commentingPermissionInitiative?.enabled
       : isSignedIn &&
-        commentingDisabledReason &&
-        !isFixableByAuthentication(commentingDisabledReason);
+        ideaCommentingDisabledReason &&
+        !isFixableByAuthentication(ideaCommentingDisabledReason);
 
   if (!isCommentDeleted && !disabled) {
     return (
