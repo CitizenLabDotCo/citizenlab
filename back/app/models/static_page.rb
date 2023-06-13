@@ -71,9 +71,7 @@ class StaticPage < ApplicationRecord
   validates :banner_enabled, inclusion: [true, false]
   validates :banner_layout, inclusion: %w[full_width_banner_layout two_column_layout two_row_layout fixed_ratio_layout]
   validates :banner_overlay_color, css_color: true
-  validates :banner_overlay_opacity, numericality: { only_integer: true,
-                                                     in: [0..100],
-                                                     allow_nil: true }
+  validates :banner_overlay_opacity, numericality: { only_integer: true, in: 0..100, allow_nil: true }
   validates :banner_header_multiloc, multiloc: true
   validates :banner_subheader_multiloc, multiloc: true
   validates :banner_cta_button_type, inclusion: %w[customized_button no_button]

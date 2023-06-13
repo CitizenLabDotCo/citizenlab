@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { isString, trim, get } from 'lodash-es';
+import { isString, trim } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -37,7 +37,6 @@ import { hideVisually } from 'polished';
 import { colors, defaultStyles } from 'utils/styleUtils';
 
 // hooks
-import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useAddCommentToIdea from 'api/comments/useAddCommentToIdea';
 import useAddCommentToInitiative from 'api/comments/useAddCommentToInitiative';
@@ -146,11 +145,9 @@ const ParentCommentForm = ({
   const [postAnonymously, setPostAnonymously] = useState(false);
   const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
     useState(false);
-  const initiativeId = postType === 'initiative' ? postId : undefined;
   const ideaId = postType === 'idea' ? postId : undefined;
-  const { data: initiative } = useInitiativeById(initiativeId);
   const { data: idea } = useIdeaById(ideaId);
-  const post = initiative || idea;
+  const projectId = idea ? idea.data.relationships.project.data.id : null;
 
   const processing =
     addCommentToIdeaIsLoading || addCommentToInitiativeIsLoading;
@@ -196,9 +193,6 @@ const ParentCommentForm = ({
   };
 
   const continueSubmission = async () => {
-    const projectId: string | null =
-      idea?.data.relationships.project.data.id || null;
-
     setFocused(false);
 
     if (locale && authUser && isString(inputValue) && trim(inputValue) !== '') {
@@ -351,11 +345,6 @@ const ParentCommentForm = ({
       ? commentingPermissionInitiative?.enabled === true
       : idea?.data.attributes?.action_descriptor.commenting_idea.enabled ===
         true;
-  const projectId: string | null = get(
-    post,
-    'relationships.project.data.id',
-    null
-  );
   const isModerator =
     !isNilOrError(authUser) && canModerateProject(projectId, authUser);
   const canComment = authUser && commentingEnabled;

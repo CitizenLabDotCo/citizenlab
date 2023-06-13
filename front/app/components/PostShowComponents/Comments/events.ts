@@ -42,11 +42,8 @@ export const commentAdded$ = eventEmitter.observeEvent(events.commentAdded);
 
 // -----------
 
-export const commentDeleted = () => eventEmitter.emit(events.commentDeleted);
 export const commentDeleted$ = eventEmitter.observeEvent(events.commentDeleted);
 
 // -----------
 
 export const deleteCommentModalClosed = () => eventEmitter.emit('modalClosed');
-
-// -----------

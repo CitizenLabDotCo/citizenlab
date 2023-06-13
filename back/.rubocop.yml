@@ -29,6 +29,9 @@ Style/Documentation:
   # Most classes are not documented, so turn off this Cop.
   Enabled: false
 
+Style/GuardClause:
+  Enabled: false
+
 Style/SymbolProc:
   Enabled: true
   AllowedMethods:

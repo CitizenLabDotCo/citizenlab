@@ -84,10 +84,12 @@ export const DeleteReasonCode = {
 
 export interface DeleteReason {
   reason_code: keyof typeof DeleteReasonCode;
-  other_reason: string | null;
+  // Only here if reason_code is 'other'
+  other_reason?: string;
 }
 
-export type CommentsSort = '-new' | 'upvotes_count' | 'new' | '-upvotes_count';
+// back-end also offers 'upvotes_count' if needed
+export type CommentsSort = '-new' | 'new' | '-upvotes_count';
 
 export type ICommentQueryParameters = {
   sort?: CommentsSort;

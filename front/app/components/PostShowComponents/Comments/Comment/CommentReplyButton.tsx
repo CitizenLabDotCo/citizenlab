@@ -18,17 +18,15 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 // utils
-import { postIsIdea, postIsInitiative } from './utils';
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 
 // types
-import { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import { GetInitiativesPermissionsChildProps } from 'resources/GetInitiativesPermissions';
-import { IInitiativeData } from 'api/initiatives/types';
 import { IIdeaData } from 'api/ideas/types';
 import { ICommentData } from 'api/comments/types';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import { IUserData } from 'api/users/types';
+import useAuthUser from 'api/me/useAuthUser';
 
 const Container = styled.li`
   display: flex;
@@ -59,9 +57,8 @@ interface Props {
   postType: 'idea' | 'initiative';
   commentId: string;
   commentType: 'parent' | 'child' | undefined;
-  authUser: GetAuthUserChildProps;
   author?: IUserData;
-  post: IIdeaData | IInitiativeData;
+  idea?: IIdeaData;
   comment: ICommentData;
   commentingPermissionInitiative: GetInitiativesPermissionsChildProps;
   className?: string;
@@ -71,13 +68,13 @@ const CommentReplyButton = memo<Props>(
   ({
     postType,
     commentType,
-    authUser,
     author,
-    post,
+    idea,
     comment,
     commentingPermissionInitiative,
     className,
   }) => {
+    const { data: authUser } = useAuthUser();
     const commentId = comment.id;
     const parentCommentId = comment.relationships.parent.data?.id ?? null;
     const authorFirstName = !isNilOrError(author)
@@ -105,70 +102,67 @@ const CommentReplyButton = memo<Props>(
     ]);
 
     const onReply = useCallback(() => {
-      if (!isNilOrError(post)) {
-        const successAction: SuccessAction = {
-          name: 'replyToComment',
-          params: {
-            commentId,
-            parentCommentId,
-            authorFirstName,
-            authorLastName,
-            authorSlug,
-          },
-        };
+      const successAction: SuccessAction = {
+        name: 'replyToComment',
+        params: {
+          commentId,
+          parentCommentId,
+          authorFirstName,
+          authorLastName,
+          authorSlug,
+        },
+      };
 
-        if (postIsIdea(post)) {
-          const {
-            clickChildCommentReplyButton,
-            clickParentCommentReplyButton,
-          } = tracks;
+      const { clickChildCommentReplyButton, clickParentCommentReplyButton } =
+        tracks;
 
-          trackEventByName(
-            commentType === 'child'
-              ? clickChildCommentReplyButton
-              : clickParentCommentReplyButton,
-            {
-              loggedIn: !!authUser,
-            }
-          );
+      trackEventByName(
+        commentType === 'child'
+          ? clickChildCommentReplyButton
+          : clickParentCommentReplyButton,
+        {
+          loggedIn: !!authUser,
+        }
+      );
 
-          const actionDescriptor =
-            post.attributes.action_descriptor.commenting_idea;
+      if (idea) {
+        const actionDescriptor =
+          idea.attributes.action_descriptor.commenting_idea;
 
-          if (actionDescriptor.enabled) {
-            reply();
-            return;
-          }
-
-          if (isFixableByAuthentication(actionDescriptor.disabled_reason)) {
-            const context = {
-              type: 'idea',
-              action: 'commenting_idea',
-              id: post.id,
-            } as const;
-
-            triggerAuthenticationFlow({ context, successAction });
-          }
+        if (actionDescriptor.enabled) {
+          reply();
+          return;
         }
 
-        if (postIsInitiative(post)) {
-          const authenticationRequirements =
-            commentingPermissionInitiative?.authenticationRequirements;
-
+        if (isFixableByAuthentication(actionDescriptor.disabled_reason)) {
           const context = {
-            type: 'initiative',
-            action: 'commenting_initiative',
+            type: 'idea',
+            action: 'commenting_idea',
+            id: idea.id,
           } as const;
 
-          if (authenticationRequirements) {
-            triggerAuthenticationFlow({ context, successAction });
-          } else if (commentingPermissionInitiative?.enabled === true) {
-            reply();
-          }
+          triggerAuthenticationFlow({ context, successAction });
+        }
+      }
+
+      if (postType === 'initiative') {
+        const authenticationRequirements =
+          commentingPermissionInitiative?.authenticationRequirements;
+
+        const context = {
+          type: 'initiative',
+          action: 'commenting_initiative',
+        } as const;
+
+        if (authenticationRequirements) {
+          triggerAuthenticationFlow({ context, successAction });
+        } else if (commentingPermissionInitiative?.enabled === true) {
+          reply();
         }
       }
     }, [
-      post,
+      idea,
+      postType,
       authUser,
       commentType,
       commentingPermissionInitiative,
@@ -182,8 +176,7 @@ const CommentReplyButton = memo<Props>(
 
     if (!isNilOrError(comment)) {
       const commentingDisabledReason =
-        'action_descriptor' in post.attributes &&
-        post.attributes.action_descriptor.commenting_idea.disabled_reason;
+        idea?.attributes.action_descriptor.commenting_idea.disabled_reason;
 
       const isCommentDeleted =
         comment.attributes.publication_status === 'deleted';

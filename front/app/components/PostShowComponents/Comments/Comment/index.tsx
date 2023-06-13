@@ -148,6 +148,7 @@ const Comment = ({
                     commentId={commentId}
                     commentType={commentType}
                     onEditing={onEditing}
+                    authorId={authorId}
                   />
                 </BodyAndFooter>
               </Content>
