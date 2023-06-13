@@ -1700,6 +1700,7 @@
   "app.utils.votingMethodUtils.budget": "буџета",
   "app.utils.votingMethodUtils.budgetParticipationEnded": "<b>Подношење буџета завршено {endDate}.</b> учесника су имала укупно <b>{maxBudget} {currency} сваки за дистрибуцију између {optionCount} опција.</b>",
   "app.utils.votingMethodUtils.budgetSubmitted": "Буџет је поднет",
+  "app.utils.votingMethodUtils.budgetSubmittedWithIcon": "Буџет је поднет 🎉",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructions": "Имате укупно <b>{maxBudget} УСД за расподелу између {optionCount} опције</b>. Изаберите жељене опције додиром на „Додај“. Када завршите, кликните на „Пошаљи“ да бисте послали свој буџет.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>Честитамо, ваш буџет је достављен!</b> Можете да проверите своје опције испод у било ком тренутку или да их измените пре <b>{endDate}</b>.",
   "app.utils.votingMethodUtils.budgets": "Буџети",
