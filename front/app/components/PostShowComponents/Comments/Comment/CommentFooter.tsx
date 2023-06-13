@@ -1,5 +1,4 @@
 import React from 'react';
-import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -7,26 +6,16 @@ import CommentVote from './CommentVote';
 import CommentReplyButton from './CommentReplyButton';
 import CommentsMoreActions from './CommentsMoreActions';
 
-// resources
-import GetAppConfigurationLocales, {
-  GetAppConfigurationLocalesChildProps,
-} from 'resources/GetAppConfigurationLocales';
-import GetComment, { GetCommentChildProps } from 'resources/GetComment';
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetInitiativesPermissions, {
-  GetInitiativesPermissionsChildProps,
-} from 'resources/GetInitiativesPermissions';
-
 // style
 import styled from 'styled-components';
 import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 import Outlet from 'components/Outlet';
 
 // hooks
-import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useUserById from 'api/users/useUserById';
+import useComment from 'api/comments/useComment';
+import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 
 const footerHeight = '30px';
 const footerTopMargin = '6px';
@@ -100,7 +89,7 @@ const Right = styled.div`
   align-items: center;
 `;
 
-interface InputProps {
+interface Props {
   postId: string;
   postType: 'idea' | 'initiative';
   projectId?: string | null;
@@ -108,45 +97,28 @@ interface InputProps {
   commentType: 'parent' | 'child';
   onEditing: () => void;
   className?: string;
+  authorId: string | null;
 }
-
-interface DataProps {
-  tenantLocales: GetAppConfigurationLocalesChildProps;
-  locale: GetLocaleChildProps;
-  authUser: GetAuthUserChildProps;
-  comment: GetCommentChildProps;
-  commentingPermissionInitiative: GetInitiativesPermissionsChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
 
 const CommentFooter = ({
   onEditing,
-  authUser,
   commentType,
   postId,
   postType,
   projectId,
   commentId,
   className,
-  comment,
-  tenantLocales,
-  locale,
-  commentingPermissionInitiative,
+  authorId,
 }: Props) => {
-  const { data: author } = useUserById(comment?.relationships.author.data?.id);
-  const initiativeId = postType === 'initiative' ? postId : undefined;
+  const { data: comment } = useComment(commentId);
+  const { data: author } = useUserById(authorId);
   const ideaId = postType === 'idea' ? postId : undefined;
-  const { data: initiative } = useInitiativeById(initiativeId);
   const { data: idea } = useIdeaById(ideaId);
-  const post = postType === 'idea' ? idea?.data : initiative?.data;
+  const commentingPermissionInitiative = useInitiativesPermissions(
+    'commenting_initiative'
+  );
 
-  if (
-    isNilOrError(post) ||
-    isNilOrError(comment) ||
-    isNilOrError(locale) ||
-    isNilOrError(tenantLocales)
-  ) {
+  if (isNilOrError(comment)) {
     return null;
   }
 
@@ -156,7 +128,7 @@ const CommentFooter = ({
         <StyledCommentVote
           postId={postId}
           postType={postType}
-          comment={comment}
+          comment={comment.data}
           commentType={commentType}
         />
         <StyledCommentReplyButton
@@ -164,23 +136,20 @@ const CommentFooter = ({
           postType={postType}
           commentId={commentId}
           commentType={commentType}
-          authUser={authUser}
           author={author?.data}
-          post={post}
-          comment={comment}
+          idea={idea?.data}
+          comment={comment.data}
           commentingPermissionInitiative={commentingPermissionInitiative}
         />
         <Outlet
           id="app.components.PostShowComponents.CommentFooter.left"
-          comment={comment}
-          locale={locale}
-          tenantLocales={tenantLocales}
+          commentId={commentId}
         />
       </Left>
       <Right>
         <StyledCommentsMoreActions
           projectId={projectId}
-          comment={comment}
+          comment={comment.data}
           onCommentEdit={onEditing}
           postId={postId}
           postType={postType}
@@ -190,20 +159,4 @@ const CommentFooter = ({
   );
 };
 
-const Data = adopt<DataProps, InputProps>({
-  tenantLocales: <GetAppConfigurationLocales />,
-  locale: <GetLocale />,
-  authUser: <GetAuthUser />,
-  comment: ({ commentId, render }) => (
-    <GetComment id={commentId}>{render}</GetComment>
-  ),
-  commentingPermissionInitiative: (
-    <GetInitiativesPermissions action="commenting_initiative" />
-  ),
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps: DataProps) => <CommentFooter {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default CommentFooter;

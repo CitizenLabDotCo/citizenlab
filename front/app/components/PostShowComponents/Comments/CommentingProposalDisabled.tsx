@@ -52,7 +52,7 @@ const calculateMessageDescriptor = (
   return;
 };
 
-const CommentingInitiativesDisabled = () => {
+const CommentingProposalDisabled = () => {
   const { data: authUser } = useAuthUser();
   const commentingPermissions = useInitiativesPermissions(
     'commenting_initiative'
@@ -120,4 +120,4 @@ const CommentingInitiativesDisabled = () => {
   );
 };
 
-export default CommentingInitiativesDisabled;
+export default CommentingProposalDisabled;
