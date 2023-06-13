@@ -165,7 +165,7 @@ const CommentBody = ({
   const onSubmit = async (event: FormEvent<any>) => {
     event.preventDefault();
 
-    if (!isNilOrError(locale) && !isNilOrError(comment)) {
+    if (!isNilOrError(locale)) {
       const updatedComment: Omit<IUpdatedComment, 'commentId'> = {
         body_multiloc: {
           [locale]: editableCommentContent.replace(
@@ -174,12 +174,6 @@ const CommentBody = ({
           ),
         },
       };
-
-      const authorId = comment.data.relationships.author.data?.id || null;
-
-      if (authorId) {
-        updatedComment.author_id = authorId;
-      }
 
       setApiErrors(null);
 
