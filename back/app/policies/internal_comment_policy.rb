@@ -40,10 +40,6 @@ class InternalCommentPolicy < ApplicationPolicy
     update?
   end
 
-  def destroy?
-    false
-  end
-
   def permitted_attributes_for_create
     %i[parent_id body_text]
   end

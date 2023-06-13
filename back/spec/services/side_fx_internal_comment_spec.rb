@@ -95,14 +95,4 @@ describe SideFxInternalCommentService do
         )
     end
   end
-
-  describe 'after_destroy' do
-    it "logs a 'deleted' action job when the internal comment is destroyed" do
-      freeze_time do
-        frozen_comment = internal_comment.destroy
-        expect { service.after_destroy(frozen_comment, user) }
-          .to enqueue_job(LogActivityJob)
-      end
-    end
-  end
 end

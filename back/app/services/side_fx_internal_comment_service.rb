@@ -43,18 +43,6 @@ class SideFxInternalCommentService
     )
   end
 
-  def before_destroy(comment, user); end
-
-  def after_destroy(frozen_comment, user)
-    serialized_comment = clean_time_attributes(frozen_comment.attributes)
-    LogActivityJob.perform_later(
-      encode_frozen_resource(frozen_comment),
-      'deleted',
-      user, Time.now.to_i,
-      payload: { comment: serialized_comment }
-    )
-  end
-
   private
 
   def process_mentions(comment)

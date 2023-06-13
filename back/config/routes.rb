@@ -31,7 +31,7 @@ Rails.application.routes.draw do
           get :children, on: :member
           post :mark_as_deleted, on: :member
         end
-        resources :internal_comments, shallow: true do
+        resources :internal_comments, except: [:destroy], shallow: true do
           get :children, on: :member
           post :mark_as_deleted, on: :member
         end

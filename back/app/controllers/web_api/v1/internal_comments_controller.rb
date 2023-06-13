@@ -2,7 +2,7 @@
 
 class WebApi::V1::InternalCommentsController < ApplicationController
   before_action :set_post_type_and_id, only: %i[index create]
-  before_action :set_comment, only: %i[children show update mark_as_deleted destroy]
+  before_action :set_comment, only: %i[children show update mark_as_deleted]
 
   FULLY_EXPAND_THRESHOLD = 5
   MINIMAL_SUBCOMMENTS = 2
@@ -110,17 +110,6 @@ class WebApi::V1::InternalCommentsController < ApplicationController
       head :no_content
     else
       render json: { errors: @comment.errors.details }, status: :unprocessable_entity
-    end
-  end
-
-  def destroy
-    SideFxInternalCommentService.new.before_destroy(@comment, current_user)
-    comment = @comment.destroy
-    if comment.destroyed?
-      SideFxInternalCommentService.new.after_destroy(comment, current_user)
-      head :ok
-    else
-      head :internal_server_error
     end
   end
 

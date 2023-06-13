@@ -20,7 +20,6 @@ describe InternalCommentPolicy do
         it { is_expected.not_to permit(:show)    }
         it { is_expected.not_to permit(:create)  }
         it { is_expected.not_to permit(:update)  }
-        it { is_expected.not_to permit(:destroy) }
 
         it '[error] indexes the internal comment' do
           expect { scope.resolve }.to raise_error(Pundit::NotAuthorizedError, 'not allowed to view this action')
@@ -33,7 +32,6 @@ describe InternalCommentPolicy do
         it { is_expected.not_to permit(:show)    }
         it { is_expected.not_to permit(:create)  }
         it { is_expected.not_to permit(:update)  }
-        it { is_expected.not_to permit(:destroy) }
 
         it '[error] indexes the internal comment' do
           expect { scope.resolve }.to raise_error(Pundit::NotAuthorizedError, 'not allowed to view this action')
@@ -43,10 +41,9 @@ describe InternalCommentPolicy do
       context 'for the admin who is the author of the internal comment' do
         let(:user) { author }
 
-        it { is_expected.to     permit(:show)    }
-        it { is_expected.to     permit(:create)  }
-        it { is_expected.to     permit(:update)  }
-        it { is_expected.not_to permit(:destroy) }
+        it { is_expected.to permit(:show)    }
+        it { is_expected.to permit(:create)  }
+        it { is_expected.to permit(:update)  }
 
         it 'indexes the internal comment' do
           expect(scope.resolve.size).to eq 1
@@ -59,7 +56,6 @@ describe InternalCommentPolicy do
         it { is_expected.to     permit(:show)    }
         it { is_expected.to     permit(:create)  }
         it { is_expected.not_to permit(:update)  }
-        it { is_expected.not_to permit(:destroy) }
 
         it 'indexes the internal comment' do
           expect(scope.resolve.size).to eq 1
@@ -76,10 +72,9 @@ describe InternalCommentPolicy do
       context 'for a moderator who is author of the internal comment' do
         let(:user) { author }
 
-        it { is_expected.to     permit(:show)    }
-        it { is_expected.to     permit(:create)  }
-        it { is_expected.to     permit(:update)  }
-        it { is_expected.not_to permit(:destroy) }
+        it { is_expected.to permit(:show)    }
+        it { is_expected.to permit(:create)  }
+        it { is_expected.to permit(:update)  }
 
         it 'indexes the internal comment' do
           expect(scope.resolve.size).to eq 1
@@ -92,7 +87,6 @@ describe InternalCommentPolicy do
         it { is_expected.to     permit(:show)    }
         it { is_expected.to     permit(:create)  }
         it { is_expected.not_to permit(:update)  }
-        it { is_expected.not_to permit(:destroy) }
 
         it 'indexes the internal comment' do
           expect(scope.resolve.size).to eq 1
@@ -105,7 +99,6 @@ describe InternalCommentPolicy do
         it { is_expected.not_to permit(:show)    }
         it { is_expected.not_to permit(:create)  }
         it { is_expected.not_to permit(:update)  }
-        it { is_expected.not_to permit(:destroy) }
 
         it 'does not include comment when indexing internal comments' do
           expect(scope.resolve.size).to eq 0
@@ -128,7 +121,6 @@ describe InternalCommentPolicy do
         it { is_expected.not_to permit(:show)    }
         it { is_expected.not_to permit(:create)  }
         it { is_expected.not_to permit(:update)  }
-        it { is_expected.not_to permit(:destroy) }
 
         it '[error] indexes the internal comment' do
           expect { scope.resolve }.to raise_error(Pundit::NotAuthorizedError, 'not allowed to view this action')
@@ -141,7 +133,6 @@ describe InternalCommentPolicy do
         it { is_expected.not_to permit(:show)    }
         it { is_expected.not_to permit(:create)  }
         it { is_expected.not_to permit(:update)  }
-        it { is_expected.not_to permit(:destroy) }
 
         it '[error] indexes the internal comment' do
           expect { scope.resolve }.to raise_error(Pundit::NotAuthorizedError, 'not allowed to view this action')
@@ -154,7 +145,6 @@ describe InternalCommentPolicy do
         it { is_expected.to     permit(:show)    }
         it { is_expected.to     permit(:create)  }
         it { is_expected.not_to permit(:update)  }
-        it { is_expected.not_to permit(:destroy) }
 
         it 'indexes the internal comment' do
           expect(scope.resolve.size).to eq 1
@@ -164,10 +154,9 @@ describe InternalCommentPolicy do
       context 'for an admin who is the author of the internal comment' do
         let(:user) { author }
 
-        it { is_expected.to     permit(:show)    }
-        it { is_expected.to     permit(:create)  }
-        it { is_expected.to     permit(:update)  }
-        it { is_expected.not_to permit(:destroy) }
+        it { is_expected.to permit(:show)    }
+        it { is_expected.to permit(:create)  }
+        it { is_expected.to permit(:update)  }
 
         it 'indexes the internal comment' do
           expect(scope.resolve.size).to eq 1
