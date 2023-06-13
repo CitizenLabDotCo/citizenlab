@@ -10,16 +10,13 @@ const CommentingIdeaDisabled = ({
   idea: IIdea;
   phaseId?: string;
 }) => {
-  const actionDescriptor =
+  const { enabled, disabled_reason: disabledReason } =
     idea.data.attributes.action_descriptor.commenting_idea;
-
-  const commentingEnabled = actionDescriptor.enabled;
-  const commentingDisabledReason = actionDescriptor.disabled_reason;
 
   return (
     <CommentingDisabled
-      commentingEnabled={!!commentingEnabled}
-      commentingDisabledReason={commentingDisabledReason}
+      commentingEnabled={enabled}
+      commentingDisabledReason={disabledReason}
       projectId={idea?.data.relationships.project.data.id || null}
       phaseId={phaseId}
     />
