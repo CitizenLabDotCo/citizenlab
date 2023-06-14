@@ -90,7 +90,6 @@ const CommentHeader = ({
           fontSize={fontSizes.base}
           fontWeight={400}
           underline={true}
-          anonymous={commentAttributes.anonymous}
         />
       </Left>
       <Right>

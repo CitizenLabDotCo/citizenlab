@@ -81,15 +81,9 @@ export interface Props {
   postId: string;
   postType: 'idea' | 'initiative';
   className?: string;
-  allowAnonymousParticipation?: boolean;
 }
 
-const CommentsSection = ({
-  postId,
-  postType,
-  className,
-  allowAnonymousParticipation,
-}: Props) => {
+const CommentsSection = ({ postId, postType, className }: Props) => {
   const initiativeId = postType === 'initiative' ? postId : undefined;
   const ideaId = postType === 'idea' ? postId : undefined;
   const { data: initiative } = useInitiativeById(initiativeId);
@@ -152,7 +146,6 @@ const CommentsSection = ({
         initiativeId={initiativeId}
         postType={postType}
         postingComment={handleCommentPosting}
-        allowAnonymousParticipation={allowAnonymousParticipation}
       />
 
       <Comments
