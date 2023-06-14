@@ -45,7 +45,6 @@ const IdeaCardFooter = ({ idea, showCommentCount }: Props) => {
     });
   };
 
-  console.log({ isSmallerThanTablet });
   return (
     <Footer>
       {isSmallerThanTablet && (

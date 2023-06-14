@@ -6,7 +6,7 @@ import { ParticipationCTAContent } from 'components/ParticipationCTABars/Partici
 import Error from 'components/UI/Error';
 
 // hooks
-import { useTheme } from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import useBasket from 'hooks/useBasket';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { updateBasket } from 'services/baskets';
@@ -26,12 +26,25 @@ import { isNilOrError } from 'utils/helperUtils';
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
+import eventEmitter from 'utils/eventEmitter';
+import { BUDGET_EXCEEDED_ERROR_EVENT } from 'components/AssignBudgetControl/constants';
 
+const StyledBox = styled(Box)`
+  transform: translateY(-100%);
+  opacity: 0;
+  transition: all 1s ease-in-out;
+
+  &.visible {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+`;
 export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
   const { formatMessage } = useIntl();
   const { data: appConfig } = useAppConfiguration();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
+  const [showBudgetExceededError, setShowBudgetExceededError] = useState(false);
   let basketId: string | null = null;
   if (currentPhase) {
     basketId = currentPhase.relationships.user_basket?.data?.id || null;
@@ -39,6 +52,21 @@ export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
     basketId = project.relationships.user_basket?.data?.id || null;
   }
   const basket = useBasket(basketId);
+
+  // Listen for budgeting exceeded error
+  useEffect(() => {
+    const subscription = eventEmitter
+      .observeEvent(BUDGET_EXCEEDED_ERROR_EVENT)
+      .subscribe(() => {
+        setShowBudgetExceededError(true);
+        setTimeout(() => {
+          setShowBudgetExceededError(false);
+        }, 3000);
+      });
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [setShowBudgetExceededError]);
 
   useEffect(() => {
     setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
@@ -91,8 +119,6 @@ export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
     }
   };
 
-  const showBudgetExceededError = budgetExceedsLimit && !hasUserParticipated;
-
   const CTAButton = hasUserParticipated ? (
     <Box display="flex">
       <Icon my="auto" mr="8px" name="check" fill="white" />
@@ -141,18 +167,18 @@ export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
         hideDefaultParticipationMessage={currentPhase ? true : false}
         timeLeftPosition="left"
       />
-      {showBudgetExceededError && (
-        <Box
-          position="absolute"
-          mx="auto"
-          left="0"
-          right="0"
-          display="flex"
-          justifyContent="center"
-        >
-          <Error text={'You dont have enough budget'} />
-        </Box>
-      )}
+      <StyledBox
+        position="absolute"
+        zIndex="-1"
+        mx="auto"
+        left="0"
+        right="0"
+        display="flex"
+        justifyContent="center"
+        className={showBudgetExceededError ? 'visible' : 'hidden'}
+      >
+        <Error text={'You dont have enough budget'} />
+      </StyledBox>
     </>
   );
 };

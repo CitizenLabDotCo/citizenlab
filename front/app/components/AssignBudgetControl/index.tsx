@@ -13,6 +13,7 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import useBasket from 'hooks/useBasket';
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -25,9 +26,11 @@ import {
 } from 'utils/helperUtils';
 import streams from 'utils/streams';
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import eventEmitter from 'utils/eventEmitter';
 
 // events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+import { BUDGET_EXCEEDED_ERROR_EVENT } from './constants';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -42,7 +45,6 @@ import { fontSizes, colors, defaultCardStyle, media } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import PBExpenses from 'containers/ProjectsShowPage/shared/pb/PBExpenses';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 const IdeaPageContainer = styled.div`
   display: flex;
@@ -126,7 +128,9 @@ const AssignBudgetControl = memo(
     const basket = useBasket(
       participationContext?.relationships?.user_basket?.data?.id
     );
-
+    const maxBudget = participationContext?.attributes.voting_max_total;
+    const ideaBudget = idea?.data.attributes.budget;
+    const basketTotal = basket?.attributes.total_budget;
     const [processing, setProcessing] = useState(false);
 
     if (
@@ -161,7 +165,7 @@ const AssignBudgetControl = memo(
           (idea) => idea.id
         );
         const isInBasket = basketIdeaIds.includes(ideaId);
-
+        let isPermitted = true;
         let newIdeas: string[] = [];
 
         if (isInBasket) {
@@ -169,6 +173,17 @@ const AssignBudgetControl = memo(
             .filter((basketIdea) => basketIdea.id !== idea.data.id)
             .map((basketIdea) => basketIdea.id);
         } else {
+          // If new idea causes exceeded budget, emit an error
+          if (
+            basketTotal &&
+            maxBudget &&
+            ideaBudget &&
+            basketTotal + ideaBudget > maxBudget
+          ) {
+            eventEmitter.emit(BUDGET_EXCEEDED_ERROR_EVENT);
+            isPermitted = false;
+          }
+
           newIdeas = [
             ...basket.relationships.ideas.data.map(
               (basketIdea) => basketIdea.id
@@ -177,36 +192,38 @@ const AssignBudgetControl = memo(
           ];
         }
 
-        try {
-          await updateBasket(basket.id, {
-            user_id: authUser.data.id,
-            participation_context_id: participationContextId,
-            participation_context_type: capitalizeParticipationContextType(
-              participationContextType
-            ),
-            idea_ids: newIdeas,
-            submitted_at: null,
-          });
-          done();
-          trackEventByName(tracks.ideaAddedToBasket);
-        } catch (error) {
-          done();
-          streams.fetchAllWith({ dataId: [basket.id] });
-        }
-      } else {
-        try {
-          await addBasket({
-            user_id: authUser.data.id,
-            participation_context_id: participationContextId,
-            participation_context_type: capitalizeParticipationContextType(
-              participationContextType
-            ),
-            idea_ids: [idea.data.id],
-          });
-          done();
-          trackEventByName(tracks.basketCreated);
-        } catch (error) {
-          done();
+        if (isPermitted) {
+          try {
+            await updateBasket(basket.id, {
+              user_id: authUser.data.id,
+              participation_context_id: participationContextId,
+              participation_context_type: capitalizeParticipationContextType(
+                participationContextType
+              ),
+              idea_ids: newIdeas,
+              submitted_at: null,
+            });
+            done();
+            trackEventByName(tracks.ideaAddedToBasket);
+          } catch (error) {
+            done();
+            streams.fetchAllWith({ dataId: [basket.id] });
+          }
+        } else {
+          try {
+            await addBasket({
+              user_id: authUser.data.id,
+              participation_context_id: participationContextId,
+              participation_context_type: capitalizeParticipationContextType(
+                participationContextType
+              ),
+              idea_ids: [idea.data.id],
+            });
+            done();
+            trackEventByName(tracks.basketCreated);
+          } catch (error) {
+            done();
+          }
         }
       }
     };
