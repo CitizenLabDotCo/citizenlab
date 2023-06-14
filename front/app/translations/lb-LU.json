@@ -232,6 +232,7 @@
   "app.components.PagesForm.saveSuccess": "Säit erfollegräich gespäichert.",
   "app.components.PagesForm.titleMissingOneLanguageError": "Stellt en Titel fir mindestems eng Sprooch bereet",
   "app.components.ParticipationCTABars.allocateBudget": "Verdeelt Äre Budget",
+  "app.components.ParticipationCTABars.budgetExceededError": "Dir hutt net genuch Budget",
   "app.components.ParticipationCTABars.left": "lénks",
   "app.components.ParticipationCTABars.mobileProjectOpenForSubmission": "Op fir Bedeelegung",
   "app.components.ParticipationCTABars.poll": "Huelt d'Ëmfro",
