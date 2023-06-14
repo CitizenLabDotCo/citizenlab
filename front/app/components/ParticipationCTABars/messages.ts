@@ -58,4 +58,8 @@ export default defineMessages({
     id: 'app.components.ParticipationCTABars.left',
     defaultMessage: 'left',
   },
+  budgetExceededError: {
+    id: 'app.components.ParticipationCTABars.budgetExceededError',
+    defaultMessage: "You don't have enough budget",
+  },
 });

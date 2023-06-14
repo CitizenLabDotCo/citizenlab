@@ -32,7 +32,7 @@ import { BUDGET_EXCEEDED_ERROR_EVENT } from 'components/AssignBudgetControl/cons
 const StyledBox = styled(Box)`
   transform: translateY(-100%);
   opacity: 0;
-  transition: all 1s ease-in-out;
+  transition: all 0.8s ease-in-out;
 
   &.visible {
     transform: translateY(0%);
@@ -177,7 +177,7 @@ export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
         justifyContent="center"
         className={showBudgetExceededError ? 'visible' : 'hidden'}
       >
-        <Error text={'You dont have enough budget'} />
+        <Error text={formatMessage(messages.budgetExceededError)} />
       </StyledBox>
     </>
   );
