@@ -298,7 +298,7 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        disable_downvoting: {
+        disable_disliking: {
           enabled: true,
           allowed: true
         },

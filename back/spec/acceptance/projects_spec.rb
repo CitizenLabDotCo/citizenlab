@@ -651,13 +651,13 @@ resource 'Projects' do
       end
 
       example 'Disable downvoting', document: false do
-        SettingsService.new.activate_feature! 'disable_downvoting'
+        SettingsService.new.activate_feature! 'disable_disliking'
         do_request(project: { reacting_dislike_enabled: false })
         expect(json_response.dig(:data, :attributes, :reacting_dislike_enabled)).to be false
       end
 
       example 'Disable downvoting when feature is not enabled', document: false do
-        SettingsService.new.deactivate_feature! 'disable_downvoting'
+        SettingsService.new.deactivate_feature! 'disable_disliking'
         do_request(project: { reacting_dislike_enabled: false })
         expect(@project.reload.reacting_dislike_enabled).to be true
       end
