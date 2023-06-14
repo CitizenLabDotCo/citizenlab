@@ -1703,6 +1703,7 @@
   "app.utils.votingMethodUtils.budgetSubmittedWithIcon": "Budget soumis 🎉",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructions": "Tu as un total de <b>{maxBudget} USD à répartir entre les options {optionCount}</b>. Sélectionne les options que tu préfères en tapant sur \"Ajouter\". Une fois que tu as terminé, clique sur \"Soumettre\" pour soumettre ton budget.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>Félicitations, ton budget a été soumis !</b> Tu peux vérifier tes options ci-dessous à tout moment ou les modifier avant <b>{endDate}</b>.",
+  "app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous": "<b>Félicitations, ton budget a été soumis !</b> Tu peux vérifier tes options ci-dessous à tout moment ou les modifier.",
   "app.utils.votingMethodUtils.budgets": "Budgets",
   "app.utils.votingMethodUtils.finalResults": "Résultats finaux",
   "app.utils.votingMethodUtils.howToParticipate": "Comment participer",
