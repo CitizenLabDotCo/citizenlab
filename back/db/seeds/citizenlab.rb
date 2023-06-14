@@ -125,7 +125,7 @@ AppConfiguration.create!(
       enabled: false,
       allowed: false
     },
-    disable_downvoting: {
+    disable_disliking: {
       enabled: false,
       allowed: true
     },
