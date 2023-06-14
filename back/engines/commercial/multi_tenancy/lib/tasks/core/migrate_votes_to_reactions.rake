@@ -4,8 +4,13 @@
 namespace :fix_existing_tenants do
   desc 'Transform all core data relating to votes into reactions'
   task migrate_votes_core: [:environment] do |_t, _args|
-    # Order by active first - to reduce downtime
-    tenants = Tenant.creation_finalized.with_lifecycle('active') + Tenant.creation_finalized.with_lifecycle('demo')
+    # In priority order - active first
+    tenants = Tenant.creation_finalized.with_lifecycle('active') +
+              Tenant.creation_finalized.with_lifecycle('trial') +
+              Tenant.creation_finalized.with_lifecycle('demo') +
+              Tenant.creation_finalized.with_lifecycle('expired_trial') +
+              Tenant.creation_finalized.with_lifecycle('churned')
+
     tenants.each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
         VotesToReactionMigrator.new(tenant).run_core
