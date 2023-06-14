@@ -133,7 +133,7 @@ const ParentCommentForm = ({
   const processing =
     addCommentToIdeaIsLoading || addCommentToInitiativeIsLoading;
 
-  if (isNilOrError(locale) || isNilOrError(authUser)) {
+  if (isNilOrError(locale) || !authUser) {
     return null;
   }
 
@@ -311,17 +311,13 @@ const ParentCommentForm = ({
     return null;
   };
 
-  const placeholder = formatMessage(
-    commentsMessages[`${postType}CommentBodyPlaceholder`]
-  );
-
   return (
     <Container className={className || ''}>
       <StyledAvatar
-        userId={authUser?.data.id}
+        userId={authUser.data.id}
         size={30}
         isLinkToProfile={!!authUser?.data.id}
-        moderator={true}
+        moderator
       />
       <FormContainer
         className="ideaCommentForm"
@@ -338,7 +334,9 @@ const ParentCommentForm = ({
               id="submit-comment"
               className="e2e-parent-comment-form"
               name="comment"
-              placeholder={placeholder}
+              placeholder={formatMessage(
+                commentsMessages[`${postType}CommentBodyPlaceholder`]
+              )}
               rows={focused || processing ? 4 : 1}
               postId={ideaId || initiativeId}
               postType={postType}

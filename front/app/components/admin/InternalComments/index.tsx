@@ -5,7 +5,7 @@ import Observer from '@researchgate/react-intersection-observer';
 // components
 import ParentCommentForm from './ParentCommentForm';
 import Comments from './Comments';
-import CommentSorting from './CommentSorting';
+import CommentSorting, { InternalCommentSort } from './CommentSorting';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -15,9 +15,6 @@ import commentsMessages from 'components/PostShowComponents/Comments/messages';
 import styled from 'styled-components';
 import { colors, fontSizes, media, isRtl } from 'utils/styleUtils';
 import { Title } from '@citizenlab/cl2-component-library';
-
-// typings
-import { CommentsSort } from 'api/comments/types';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
@@ -88,7 +85,7 @@ const CommentsSection = ({ postId, postType, className }: Props) => {
   const ideaId = postType === 'idea' ? postId : undefined;
   const { data: initiative } = useInitiativeById(initiativeId);
   const { data: idea } = useIdeaById(ideaId);
-  const [sortOrder, setSortOrder] = useState<CommentsSort>('-new');
+  const [sortOrder, setSortOrder] = useState<InternalCommentSort>('-new');
   const {
     data: comments,
     isFetchingNextPage,
@@ -117,7 +114,7 @@ const CommentsSection = ({ postId, postType, className }: Props) => {
 
   if (!post || !commentsList) return null;
 
-  const handleSortOrderChange = (sortOrder: CommentsSort) => {
+  const handleSortOrderChange = (sortOrder: InternalCommentSort) => {
     trackEventByName(tracks.clickCommentsSortOrder);
     setSortOrder(sortOrder);
   };

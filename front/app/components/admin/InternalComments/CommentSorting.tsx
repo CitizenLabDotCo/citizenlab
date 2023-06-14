@@ -6,32 +6,34 @@ import { CommentsSort } from 'api/comments/types';
 import { Box } from '@citizenlab/cl2-component-library';
 
 interface Props {
-  onChange: (value: CommentsSort) => void;
-  selectedCommentSort: CommentsSort;
+  onChange: (value: InternalCommentSort) => void;
+  selectedCommentSort: InternalCommentSort;
   className?: string;
 }
+
+export type InternalCommentSort = '-new' | 'new';
 
 const CommentSorting = ({
   onChange,
   selectedCommentSort,
   className,
 }: Props) => {
-  const handleOnChange = (selectedValue: [CommentsSort]) => {
+  const handleOnChange = (selectedValue: [InternalCommentSort]) => {
     onChange(selectedValue[0]);
   };
 
-  const sortOptionsMessages: { [key in CommentsSort]: MessageDescriptor } = {
+  const sortOptionsMessages: {
+    [key in InternalCommentSort]: MessageDescriptor;
+  } = {
     // '-new' = least recent (date posted, descending)
     // is the default value we get from the parent
     '-new': commentsMessages.leastRecent,
     // 'new' = most recent (date posted, ascending)
     new: commentsMessages.mostRecent,
-    // '-upvotes_count' = most votes (votes, descending)
-    '-upvotes_count': commentsMessages.mostUpvoted,
   };
 
   const getSortOptions = () => {
-    const sortOptions: CommentsSort[] = ['-new', 'new', '-upvotes_count'];
+    const sortOptions: CommentsSort[] = ['-new', 'new'];
     return sortOptions.map((sortOption) => {
       return {
         text: <FormattedMessage {...sortOptionsMessages[sortOption]} />,
