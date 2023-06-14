@@ -19,7 +19,7 @@ interface CommentAttributes {
   children_count: number;
 }
 
-interface IPresentComment extends CommentAttributes {
+export interface IPresentComment extends CommentAttributes {
   body_multiloc: Multiloc;
   publication_status: 'published';
   anonymous?: boolean;
