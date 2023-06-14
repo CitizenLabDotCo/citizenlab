@@ -236,8 +236,6 @@ const VoteControl = ({
         disabledVoteClick?.(votingDisabledReason);
       }
     }
-
-    return;
   };
 
   if (idea && showVoteControl) {

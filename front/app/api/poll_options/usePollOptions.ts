@@ -10,11 +10,11 @@ const fetchOptions = ({ questionId }: { questionId: string }) =>
     action: 'get',
   });
 
-const usePhases = (questionId: string) => {
+const usePollOptions = (questionId: string) => {
   return useQuery<IPollOptions, CLErrors, IPollOptions, PollOptionsKeys>({
     queryKey: pollOptionsKeys.list({ questionId }),
     queryFn: () => fetchOptions({ questionId }),
   });
 };
 
-export default usePhases;
+export default usePollOptions;
