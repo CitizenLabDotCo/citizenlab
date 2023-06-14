@@ -57,7 +57,6 @@ export const Heading = ({
     setShowLeaveModal(false);
   };
   const isSurveyOnMobile = isSmallerThanPhone && isSurvey;
-  const projectTitle = localize(project.attributes.title_multiloc);
 
   const goBackToProject = useCallback(() => {
     clHistory.push(`/projects/${project.attributes.slug}`);
@@ -99,8 +98,7 @@ export const Heading = ({
         >
           {!isSurvey && (
             <GoBackButtonSolid
-              text={isSmallerThanPhone ? undefined : projectTitle}
-              screenReaderText={projectTitle}
+              text={localize(project.attributes.title_multiloc)}
               onClick={goBackToProject}
             />
           )}

@@ -1,16 +1,17 @@
 import React, { useCallback } from 'react';
 
 // components
-import { Button, Box } from '@citizenlab/cl2-component-library';
+import { Button, Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { ScreenReaderOnly } from 'utils/a11y';
 
 interface Props {
-  text?: string;
-  screenReaderText: string;
+  text: string;
   onClick: (event: React.MouseEvent) => void;
 }
 
-const GoBackButtonSolid = ({ text, screenReaderText, onClick }: Props) => {
+const GoBackButtonSolid = ({ text, onClick }: Props) => {
+  const isSmallerThanPhone = useBreakpoint('phone');
+
   const handleClick = useCallback(
     (event: React.MouseEvent) => {
       event.preventDefault();
@@ -23,17 +24,21 @@ const GoBackButtonSolid = ({ text, screenReaderText, onClick }: Props) => {
     <Button
       id="e2e-idea-other-link"
       icon="arrow-left-circle"
-      onClick={handleClick}
       buttonStyle="text"
       iconSize="26px"
       padding="0"
       textDecorationHover="underline"
       whiteSpace="normal"
+      onClick={handleClick}
     >
-      <Box as="span" display={text ? 'block' : 'none'} aria-hidden>
+      <Box
+        as="span"
+        display={isSmallerThanPhone ? 'none' : 'block'}
+        aria-hidden
+      >
         {text}
       </Box>
-      <ScreenReaderOnly>{screenReaderText}</ScreenReaderOnly>
+      <ScreenReaderOnly>{text}</ScreenReaderOnly>
     </Button>
   );
 };

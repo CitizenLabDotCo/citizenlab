@@ -4,14 +4,12 @@ import { isNilOrError } from 'utils/helperUtils';
 // hooks
 import useProjectById from 'api/projects/useProjectById';
 import useAuthUser from 'api/me/useAuthUser';
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // i18n
 import useLocalize from 'hooks/useLocalize';
 
 // components
 import VoteControl from 'components/VoteControl';
-// import GoBackButton from 'containers/IdeasShow/GoBackButton';
 import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
 
 // events
@@ -80,7 +78,6 @@ const IdeaShowPageTopBar = ({
   const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
 
-  const isSmallerThanPhone = useBreakpoint('phone');
   const localize = useLocalize();
 
   const onDisabledVoteClick = (disabled_reason: IdeaVotingDisabledReason) => {
@@ -123,17 +120,14 @@ const IdeaShowPageTopBar = ({
     clHistory.push(`/projects/${project.data.attributes.slug}`);
   }, [insideModal, deselectIdeaOnMap, project]);
 
-  if (!project) return null;
-
-  const projectTitle = localize(project?.data.attributes.title_multiloc);
-
   return (
     <Container className={className || ''}>
       <TopBarInner>
         <Left>
           <GoBackButtonSolid
-            text={isSmallerThanPhone ? undefined : projectTitle}
-            screenReaderText={projectTitle}
+            text={
+              project ? localize(project.data.attributes.title_multiloc) : ''
+            }
             onClick={handleGoBack}
           />
         </Left>

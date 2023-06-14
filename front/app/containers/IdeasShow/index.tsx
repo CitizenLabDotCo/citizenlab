@@ -192,7 +192,6 @@ export const IdeasShow = ({
   const ideaIdParameter = queryParams.get('new_idea_id');
   const timeout = useRef<NodeJS.Timeout>();
 
-  const isSmallerThanPhone = useBreakpoint('phone');
   const isSmallerThanTablet = useBreakpoint('tablet');
 
   useEffect(() => {
@@ -291,12 +290,7 @@ export const IdeasShow = ({
           <TopBar>
             <Box mb="40px">
               <GoBackButtonSolid
-                text={
-                  isSmallerThanPhone
-                    ? undefined
-                    : localize(project.attributes.title_multiloc)
-                }
-                screenReaderText={localize(project.attributes.title_multiloc)}
+                text={localize(project.attributes.title_multiloc)}
                 onClick={handleGoBack}
               />
             </Box>
