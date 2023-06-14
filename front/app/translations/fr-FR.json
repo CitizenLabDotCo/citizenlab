@@ -232,7 +232,7 @@
   "app.components.PagesForm.saveSuccess": "Page sauvegardée avec succès.",
   "app.components.PagesForm.titleMissingOneLanguageError": "Fournir un titre pour au moins une langue",
   "app.components.ParticipationCTABars.allocateBudget": "Allouez votre budget",
-  "app.components.ParticipationCTABars.budgetExceededError": "Tu n'as pas assez de budget",
+  "app.components.ParticipationCTABars.budgetExceededError": "Vous n'avez plus assez de budget",
   "app.components.ParticipationCTABars.left": "gauche",
   "app.components.ParticipationCTABars.mobileProjectOpenForSubmission": "Ouvert à la participation",
   "app.components.ParticipationCTABars.poll": "Participez au sondage",
