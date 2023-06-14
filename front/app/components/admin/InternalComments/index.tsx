@@ -9,7 +9,7 @@ import CommentSorting from './CommentSorting';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import commentsMessages from 'components/PostShowComponents/Comments/messages';
 
 // style
 import styled from 'styled-components';
@@ -138,7 +138,7 @@ const CommentsSection = ({
     <Container className={className || ''}>
       <Header>
         <Title color="tenantText" variant="h2" id="comments-main-title">
-          <FormattedMessage {...messages.invisibleTitleComments} />
+          <FormattedMessage {...commentsMessages.invisibleTitleComments} />
           {commentCount > 0 && <CommentCount>({commentCount})</CommentCount>}
         </Title>
         <StyledCommentSorting
@@ -172,7 +172,7 @@ const CommentsSection = ({
       {isFetchingNextPage && !posting && (
         <LoadingMore>
           <LoadingMoreMessage>
-            <FormattedMessage {...messages.loadingMoreComments} />
+            <FormattedMessage {...commentsMessages.loadingMoreComments} />
           </LoadingMoreMessage>
         </LoadingMore>
       )}

@@ -9,7 +9,7 @@ import { Icon } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import commentsMessages from 'components/PostShowComponents/Comments/messages';
 
 // style
 import styled from 'styled-components';
@@ -153,7 +153,9 @@ const Comment = ({
           {comment.data.attributes.publication_status === 'deleted' && (
             <DeletedComment>
               <DeletedIcon name="delete" />
-              <FormattedMessage {...messages.commentDeletedPlaceholder} />
+              <FormattedMessage
+                {...commentsMessages.commentDeletedPlaceholder}
+              />
             </DeletedComment>
           )}
         </ContainerInner>

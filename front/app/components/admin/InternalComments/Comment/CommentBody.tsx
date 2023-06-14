@@ -8,7 +8,7 @@ import { IUpdatedComment } from 'api/comments/types';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import commentsMessages from 'components/PostShowComponents/Comments/messages';
 
 // Components
 import MentionsTextArea from 'components/UI/MentionsTextArea';
@@ -230,14 +230,14 @@ const CommentBody = ({
                 <Error apiErrors={apiErrors.body_multiloc[locale]} />
               )}
             <Button buttonStyle="secondary" onClick={cancelEditing}>
-              <FormattedMessage {...messages.cancelCommentEdit} />
+              <FormattedMessage {...commentsMessages.cancelCommentEdit} />
             </Button>
             <Button
               buttonStyle="primary"
               processing={processing}
               onClick={onSubmit}
             >
-              <FormattedMessage {...messages.saveCommentEdit} />
+              <FormattedMessage {...commentsMessages.saveCommentEdit} />
             </Button>
           </ButtonsWrapper>
         </StyledForm>

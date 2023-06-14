@@ -21,7 +21,7 @@ import tracks from './tracks';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from './messages';
+import commentsMessages from 'components/PostShowComponents/Comments/messages';
 
 // events
 import { commentAdded } from './events';
@@ -314,11 +314,11 @@ const ParentCommentForm = ({
       if (profanityApiError) {
         return (
           <FormattedMessage
-            {...messages.profanityError}
+            {...commentsMessages.profanityError}
             values={{
               guidelinesLink: (
                 <Link to="/pages/faq" target="_blank">
-                  {formatMessage(messages.guidelinesLinkText)}
+                  {formatMessage(commentsMessages.guidelinesLinkText)}
                 </Link>
               ),
             }}
@@ -326,14 +326,14 @@ const ParentCommentForm = ({
         );
       }
 
-      return <FormattedMessage {...messages.addCommentError} />;
+      return <FormattedMessage {...commentsMessages.addCommentError} />;
     }
 
     return null;
   };
 
   const placeholder = formatMessage(
-    messages[`${postType}CommentBodyPlaceholder`]
+    commentsMessages[`${postType}CommentBodyPlaceholder`]
   );
 
   return (
@@ -353,7 +353,7 @@ const ParentCommentForm = ({
         <Form className={focused ? 'focused' : ''}>
           <label htmlFor="submit-comment">
             <HiddenLabel>
-              <FormattedMessage {...messages.yourComment} />
+              <FormattedMessage {...commentsMessages.yourComment} />
             </HiddenLabel>
             <MentionsTextArea
               id="submit-comment"
@@ -382,12 +382,12 @@ const ParentCommentForm = ({
                   checked={postAnonymously}
                   label={
                     <Text mb="12px" fontSize="s" color="coolGrey600">
-                      {formatMessage(messages.postAnonymously)}
+                      {formatMessage(commentsMessages.postAnonymously)}
                       <IconTooltip
                         content={
                           <Text color="white" fontSize="s" m="0">
                             {formatMessage(
-                              messages.inputsAssociatedWithProfile
+                              commentsMessages.inputsAssociatedWithProfile
                             )}
                           </Text>
                         }
@@ -408,7 +408,7 @@ const ParentCommentForm = ({
                 buttonStyle="secondary"
                 padding={smallerThanTablet ? '6px 12px' : undefined}
               >
-                <FormattedMessage {...messages.cancel} />
+                <FormattedMessage {...commentsMessages.cancel} />
               </CancelButton>
               <Button
                 className="e2e-submit-parentcomment"
@@ -417,7 +417,7 @@ const ParentCommentForm = ({
                 disabled={hasEmptyError}
                 padding={smallerThanTablet ? '6px 12px' : undefined}
               >
-                <FormattedMessage {...messages.publishComment} />
+                <FormattedMessage {...commentsMessages.publishComment} />
               </Button>
             </ButtonWrapper>
           </label>

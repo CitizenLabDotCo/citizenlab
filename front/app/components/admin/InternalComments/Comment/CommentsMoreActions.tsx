@@ -3,7 +3,7 @@ import React, { FormEvent, useState } from 'react';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import commentsMessages from 'components/PostShowComponents/Comments/messages';
 
 // Components
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
@@ -119,7 +119,7 @@ const CommentsMoreActions = ({
     ...(canReport
       ? [
           {
-            label: <FormattedMessage {...messages.reportAsSpam} />,
+            label: <FormattedMessage {...commentsMessages.reportAsSpam} />,
             handler: openSpamModal,
           },
         ]
@@ -127,7 +127,7 @@ const CommentsMoreActions = ({
     ...(canDelete
       ? [
           {
-            label: <FormattedMessage {...messages.deleteComment} />,
+            label: <FormattedMessage {...commentsMessages.deleteComment} />,
             handler: openDeleteModal,
           },
         ]
@@ -135,7 +135,7 @@ const CommentsMoreActions = ({
     ...(canEdit
       ? [
           {
-            label: <FormattedMessage {...messages.editComment} />,
+            label: <FormattedMessage {...commentsMessages.editComment} />,
             handler: onCommentEdit,
           },
         ]
@@ -186,7 +186,9 @@ const CommentsMoreActions = ({
         opened={modalVisible_delete}
         close={closeDeleteModal}
         className="e2e-comment-deletion-modal"
-        header={<FormattedMessage {...messages.confirmCommentDeletion} />}
+        header={
+          <FormattedMessage {...commentsMessages.confirmCommentDeletion} />
+        }
       >
         {needsToJustifyDeletion ? (
           <CommentsAdminDeletionModal
@@ -196,7 +198,9 @@ const CommentsMoreActions = ({
         ) : (
           <ButtonsWrapper>
             <CancelButton buttonStyle="secondary" onClick={closeDeleteModal}>
-              <FormattedMessage {...messages.commentDeletionCancelButton} />
+              <FormattedMessage
+                {...commentsMessages.commentDeletionCancelButton}
+              />
             </CancelButton>
             <AcceptButton
               buttonStyle="primary"
@@ -204,7 +208,9 @@ const CommentsMoreActions = ({
               className="e2e-confirm-deletion"
               onClick={handleDeleteClick}
             >
-              <FormattedMessage {...messages.commentDeletionConfirmButton} />
+              <FormattedMessage
+                {...commentsMessages.commentDeletionConfirmButton}
+              />
             </AcceptButton>
           </ButtonsWrapper>
         )}
@@ -213,7 +219,9 @@ const CommentsMoreActions = ({
       <Modal
         opened={modalVisible_spam}
         close={closeSpamModal}
-        header={<FormattedMessage {...messages.reportAsSpamModalTitle} />}
+        header={
+          <FormattedMessage {...commentsMessages.reportAsSpamModalTitle} />
+        }
       >
         <SpamReportForm resourceId={comment.id} resourceType="comments" />
       </Modal>

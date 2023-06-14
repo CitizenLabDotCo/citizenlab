@@ -21,7 +21,7 @@ import tracks from './tracks';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from './messages';
+import commentsMessages from 'components/PostShowComponents/Comments/messages';
 
 // events
 import { commentReplyButtonClicked$, commentAdded } from './events';
@@ -320,11 +320,11 @@ const ChildCommentForm = ({
       if (profanityApiError) {
         return (
           <FormattedMessage
-            {...messages.profanityError}
+            {...commentsMessages.profanityError}
             values={{
               guidelinesLink: (
                 <Link to="/pages/faq" target="_blank">
-                  {formatMessage(messages.guidelinesLinkText)}
+                  {formatMessage(commentsMessages.guidelinesLinkText)}
                 </Link>
               ),
             }}
@@ -332,7 +332,7 @@ const ChildCommentForm = ({
         );
       }
 
-      return <FormattedMessage {...messages.addCommentError} />;
+      return <FormattedMessage {...commentsMessages.addCommentError} />;
     }
 
     return null;
@@ -356,13 +356,13 @@ const ChildCommentForm = ({
           <Form className={focused ? 'focused' : ''}>
             <label>
               <HiddenLabel>
-                <FormattedMessage {...messages.replyToComment} />
+                <FormattedMessage {...commentsMessages.replyToComment} />
               </HiddenLabel>
               <MentionsTextArea
                 className={`childcommentform-${parentId}`}
                 name="comment"
                 placeholder={formatMessage(
-                  messages.childCommentBodyPlaceholder
+                  commentsMessages.childCommentBodyPlaceholder
                 )}
                 rows={3}
                 postId={ideaId || initiativeId}
@@ -385,7 +385,7 @@ const ChildCommentForm = ({
                   buttonStyle="secondary"
                   padding={smallerThanTablet ? '6px 12px' : undefined}
                 >
-                  <FormattedMessage {...messages.cancel} />
+                  <FormattedMessage {...commentsMessages.cancel} />
                 </CancelButton>
                 <Button
                   className="e2e-submit-childcomment"
@@ -394,7 +394,7 @@ const ChildCommentForm = ({
                   disabled={!canSubmit}
                   padding={smallerThanTablet ? '6px 12px' : undefined}
                 >
-                  <FormattedMessage {...messages.publishComment} />
+                  <FormattedMessage {...commentsMessages.publishComment} />
                 </Button>
               </ButtonWrapper>
             </label>

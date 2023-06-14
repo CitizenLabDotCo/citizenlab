@@ -4,7 +4,7 @@ import { lighten } from 'polished';
 import styled from 'styled-components';
 import { media, colors, fontSizes, isRtl } from 'utils/styleUtils';
 import { useIntl } from 'utils/cl-intl';
-import messages from '../messages';
+import commentsMessages from 'components/PostShowComponents/Comments/messages';
 import { IPresentComment } from 'api/comments/types';
 import useUserById from 'api/users/useUserById';
 import { canModerateProject } from 'services/permissions/rules/projectPermissions';
@@ -102,7 +102,7 @@ const CommentHeader = ({
       </Left>
       <Right>
         {isModerator && (
-          <AdminBadge>{formatMessage(messages.official)}</AdminBadge>
+          <AdminBadge>{formatMessage(commentsMessages.official)}</AdminBadge>
         )}
       </Right>
     </Container>

@@ -21,7 +21,7 @@ import RadioGroup, { Radio } from 'components/HookForm/RadioGroup';
 // i18n
 import { MessageDescriptor } from 'react-intl';
 import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
+import commentsMessages from 'components/PostShowComponents/Comments/messages';
 
 // animation
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -87,9 +87,9 @@ type Props = {
 const deleteReasonCodes = keys(DeleteReasonCode);
 
 const DELETE_REASON_MESSAGES: Record<ReasonCode, MessageDescriptor> = {
-  irrelevant: messages.deleteReason_irrelevant,
-  inappropriate: messages.deleteReason_inappropriate,
-  other: messages.deleteReason_other,
+  irrelevant: commentsMessages.deleteReason_irrelevant,
+  inappropriate: commentsMessages.deleteReason_inappropriate,
+  other: commentsMessages.deleteReason_other,
 };
 
 const CommentsAdminDeletionForm = ({
@@ -98,11 +98,13 @@ const CommentsAdminDeletionForm = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const schema = object({
-    reason_code: string().required(formatMessage(messages.deleteReasonError)),
+    reason_code: string().required(
+      formatMessage(commentsMessages.deleteReasonError)
+    ),
     other_reason: string().when('reason_code', {
       is: 'other',
       then: string().required(
-        formatMessage(messages.deleteReasonDescriptionError)
+        formatMessage(commentsMessages.deleteReasonDescriptionError)
       ),
     }),
   });
@@ -159,14 +161,16 @@ const CommentsAdminDeletionForm = ({
 
           <ButtonsWrapper>
             <Button buttonStyle="secondary" onClick={onCloseDeleteModal}>
-              {formatMessage(messages.adminCommentDeletionCancelButton)}
+              {formatMessage(commentsMessages.adminCommentDeletionCancelButton)}
             </Button>
             <Button
               type="submit"
               buttonStyle="primary"
               processing={methods.formState.isSubmitting}
             >
-              {formatMessage(messages.adminCommentDeletionConfirmButton)}
+              {formatMessage(
+                commentsMessages.adminCommentDeletionConfirmButton
+              )}
             </Button>
           </ButtonsWrapper>
         </form>

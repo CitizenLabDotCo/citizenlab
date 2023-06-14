@@ -1,7 +1,7 @@
 import React from 'react';
 import FilterSelector from 'components/FilterSelector';
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
-import messages from './messages';
+import commentsMessages from 'components/PostShowComponents/Comments/messages';
 import { CommentsSort } from 'api/comments/types';
 import { Box } from '@citizenlab/cl2-component-library';
 
@@ -23,11 +23,11 @@ const CommentSorting = ({
   const sortOptionsMessages: { [key in CommentsSort]: MessageDescriptor } = {
     // '-new' = least recent (date posted, descending)
     // is the default value we get from the parent
-    '-new': messages.leastRecent,
+    '-new': commentsMessages.leastRecent,
     // 'new' = most recent (date posted, ascending)
-    new: messages.mostRecent,
+    new: commentsMessages.mostRecent,
     // '-upvotes_count' = most votes (votes, descending)
-    '-upvotes_count': messages.mostUpvoted,
+    '-upvotes_count': commentsMessages.mostUpvoted,
   };
 
   const getSortOptions = () => {
@@ -44,7 +44,7 @@ const CommentSorting = ({
     <Box className={className}>
       <FilterSelector
         id="e2e-comments-sort-filter"
-        title={<FormattedMessage {...messages.commentsSortTitle} />}
+        title={<FormattedMessage {...commentsMessages.commentsSortTitle} />}
         name="sort"
         selected={[selectedCommentSort]}
         values={getSortOptions()}

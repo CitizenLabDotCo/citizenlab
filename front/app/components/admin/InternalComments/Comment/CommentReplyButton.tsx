@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import commentsMessages from 'components/PostShowComponents/Comments/messages';
 
 // events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
@@ -180,7 +180,7 @@ const CommentReplyButton = ({
     return (
       <Container className={`reply ${className || ''}`}>
         <ReplyButton onClick={onReply} className="e2e-comment-reply-button">
-          <FormattedMessage {...messages.commentReplyButton} />
+          <FormattedMessage {...commentsMessages.commentReplyButton} />
         </ReplyButton>
       </Container>
     );
