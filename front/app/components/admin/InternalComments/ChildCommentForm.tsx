@@ -4,9 +4,6 @@ import { Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
 
-// services
-import { canModerateProject } from 'services/permissions/rules/projectPermissions';
-
 // components
 import Button from 'components/UI/Button';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
@@ -272,15 +269,13 @@ const ChildCommentForm = ({
   };
 
   if (focused) {
-    const isModerator = canModerateProject(projectId, authUser);
-
     return (
       <Container className={`${className || ''} e2e-childcomment-form`}>
         <StyledAvatar
           userId={authUser?.data.id}
           size={30}
           isLinkToProfile={!!authUser?.data.id}
-          moderator={isModerator}
+          moderator
         />
         <FormContainer
           onClickOutside={onCancel}

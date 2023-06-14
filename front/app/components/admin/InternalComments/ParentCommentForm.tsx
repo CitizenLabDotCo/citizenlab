@@ -249,7 +249,7 @@ const ParentCommentForm = ({
       <StyledAvatar
         userId={authUser.data.id}
         size={30}
-        isLinkToProfile={!!authUser?.data.id}
+        isLinkToProfile={!!authUser.data.id}
         moderator
       />
       <FormContainer
