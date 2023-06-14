@@ -160,6 +160,10 @@ const ChildCommentForm = ({
     };
   }, [parentId]);
 
+  if (!authUser || isNilOrError(locale)) {
+    return null;
+  }
+
   const setCaretAtEnd = (element: HTMLTextAreaElement) => {
     if (element.setSelectionRange && element.textContent) {
       element.setSelectionRange(
@@ -203,7 +207,7 @@ const ChildCommentForm = ({
   };
 
   const continueSubmission = async () => {
-    if (!isNilOrError(locale) && !isNilOrError(authUser) && canSubmit) {
+    if (canSubmit) {
       const commentBodyMultiloc = {
         [locale]: inputValue.replace(/@\[(.*?)\]\((.*?)\)/gi, '@$2'),
       };
@@ -251,7 +255,7 @@ const ChildCommentForm = ({
                   profaneMessage: commentBodyMultiloc[locale],
                   location: 'Idea Child Comment Form (citizen side)',
                   userId: authUser.data.id,
-                  host: !isNilOrError(appConfiguration)
+                  host: appConfiguration
                     ? appConfiguration.data.attributes.host
                     : null,
                 });
@@ -295,7 +299,7 @@ const ChildCommentForm = ({
                   profaneMessage: commentBodyMultiloc[locale],
                   location: 'Initiative Child Comment Form (citizen side)',
                   userId: authUser.data.id,
-                  host: !isNilOrError(appConfiguration)
+                  host: appConfiguration
                     ? appConfiguration.data.attributes.host
                     : null,
                 });
@@ -329,8 +333,6 @@ const ChildCommentForm = ({
     }
   };
 
-  const placeholder = formatMessage(messages.childCommentBodyPlaceholder);
-
   const getErrorMessage = () => {
     if (hasApiError) {
       // Profanity error is the only error we're checking specifically
@@ -357,9 +359,8 @@ const ChildCommentForm = ({
     return null;
   };
 
-  if (!isNilOrError(authUser) && focused) {
-    const isModerator =
-      !isNilOrError(authUser) && canModerateProject(projectId, authUser);
+  if (focused) {
+    const isModerator = canModerateProject(projectId, authUser);
 
     return (
       <Container className={`${className || ''} e2e-childcomment-form`}>
@@ -381,7 +382,9 @@ const ChildCommentForm = ({
               <MentionsTextArea
                 className={`childcommentform-${parentId}`}
                 name="comment"
-                placeholder={placeholder}
+                placeholder={formatMessage(
+                  messages.childCommentBodyPlaceholder
+                )}
                 rows={3}
                 postId={ideaId || initiativeId}
                 postType={postType}
