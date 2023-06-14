@@ -16,7 +16,7 @@ class WebApi::V1::MentionsController < ApplicationController
     @users = MentionService.new.users_from_post(query, post, limit) if post && params[:roles].nil?
 
     nb_missing_users = limit - @users.size
-    @users += find_users_by_query(query, post, nb_missing_users) if nb_missing_users > 0
+    @users += find_users_by_query(query, post).limit(nb_missing_users) if nb_missing_users.positive?
 
     render json: WebApi::V1::UserSerializer.new(
       @users,
@@ -49,26 +49,22 @@ class WebApi::V1::MentionsController < ApplicationController
   # @return [Idea, Initiative, nil]
   def get_post(post_type, post_id)
     post_class = post_type_to_class(post_type) if post_type
-
     post_class.find(post_id) if post_class && post_id
   end
 
   # @param [String] query
   # @param [Idea, Initiative, nil] post
-  # @param [Integer] limit
   # @return [ActiveRecord::Relation]
-  def find_users_by_query(query, post, limit)
+  def find_users_by_query(query, post)
     case params[:roles]
     when %w[admin moderator]
-      query_scope(query).admin
-        .or(query_scope(query).project_moderator(post&.project_id))
-        .limit(limit)
+      query_scope(query).admin.or(query_scope(query).project_moderator(post&.project_id))
     when ['admin']
-      query_scope(query).admin.limit(limit)
+      query_scope(query).admin
     when ['moderator']
-      query_scope(query).project_moderator(post&.project_id).limit(limit)
+      query_scope(query).project_moderator(post&.project_id)
     else
-      query_scope(query).limit(limit)
+      query_scope(query)
     end
   end
 
