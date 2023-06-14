@@ -13,9 +13,6 @@ interface MarkForDeletion {
 }
 
 const markForDeletion = async ({ commentId, reason }: MarkForDeletion) => {
-  if (reason && reason.reason_code !== 'other') {
-    reason.other_reason = null;
-  }
   return fetcher<IComment>({
     path: `/comments/${commentId}/mark_as_deleted`,
     action: 'post',

@@ -1,5 +1,4 @@
 import React from 'react';
-import { get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -17,7 +16,6 @@ import styled, { useTheme } from 'styled-components';
 import { darken } from 'polished';
 
 // hooks
-import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useComment from 'api/comments/useComment';
 import useComments from 'api/comments/useComments';
@@ -44,7 +42,8 @@ const LoadMoreButton = styled(Button)`
 `;
 
 interface Props {
-  postId: string;
+  ideaId: string | undefined;
+  initiativeId: string | undefined;
   postType: 'idea' | 'initiative';
   commentId: string;
   childCommentIds: string[] | false;
@@ -54,7 +53,8 @@ interface Props {
 
 const ParentComment = ({
   commentId,
-  postId,
+  ideaId,
+  initiativeId,
   postType,
   className,
   childCommentIds,
@@ -75,25 +75,17 @@ const ParentComment = ({
   const childComments = childCommentsData?.pages
     .map((page) => page.data)
     .flat();
-  const initiativeId = postType === 'initiative' ? postId : undefined;
-  const ideaId = postType === 'idea' ? postId : undefined;
-  const { data: initiative } = useInitiativeById(initiativeId);
   const { data: idea } = useIdeaById(ideaId);
-  const post = initiative || idea;
 
-  if (!isNilOrError(comment) && !isNilOrError(post)) {
-    const projectId: string | null =
-      idea?.data.relationships.project.data.id || null;
+  if (!isNilOrError(comment)) {
+    const projectId = idea?.data.relationships.project.data.id || null;
     const commentDeleted =
       comment.data.attributes.publication_status === 'deleted';
     const commentingEnabled =
       postType === 'initiative'
         ? commentingPermissionInitiative?.enabled === true
-        : get(
-            post,
-            'attributes.action_descriptor.commenting_idea.enabled',
-            true
-          );
+        : idea?.data.attributes.action_descriptor.commenting_idea.enabled ===
+          true;
     const showCommentForm = authUser && commentingEnabled && !commentDeleted;
     const hasChildComments = childCommentIds && childCommentIds.length > 0;
     const modifiedChildCommentIds = !isNilOrError(childComments)
@@ -116,7 +108,8 @@ const ParentComment = ({
       <Container className={`${className || ''} e2e-parent-and-childcomments`}>
         <ParentCommentContainer className={commentDeleted ? 'deleted' : ''}>
           <Comment
-            postId={postId}
+            ideaId={ideaId}
+            initiativeId={initiativeId}
             postType={postType}
             projectId={projectId}
             commentId={commentId}
@@ -150,7 +143,8 @@ const ParentComment = ({
           modifiedChildCommentIds.length > 0 &&
           modifiedChildCommentIds.map((childCommentId, index) => (
             <Comment
-              postId={postId}
+              ideaId={ideaId}
+              initiativeId={initiativeId}
               postType={postType}
               projectId={projectId}
               key={childCommentId}
@@ -162,7 +156,8 @@ const ParentComment = ({
 
         {showCommentForm && (
           <StyledChildCommentForm
-            postId={postId}
+            ideaId={ideaId}
+            initiativeId={initiativeId}
             postType={postType}
             projectId={projectId}
             parentId={commentId}
