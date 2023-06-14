@@ -232,6 +232,7 @@
   "app.components.PagesForm.saveSuccess": "Sidan har sparats.",
   "app.components.PagesForm.titleMissingOneLanguageError": "Ange titel för minst ett språk",
   "app.components.ParticipationCTABars.allocateBudget": "Fördela din budget",
+  "app.components.ParticipationCTABars.budgetExceededError": "Du har inte tillräckligt med budget",
   "app.components.ParticipationCTABars.left": "vänster",
   "app.components.ParticipationCTABars.mobileProjectOpenForSubmission": "Öppet för deltagande",
   "app.components.ParticipationCTABars.poll": "Svara på enkäten",
