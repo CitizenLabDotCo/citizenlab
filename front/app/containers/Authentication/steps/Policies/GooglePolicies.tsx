@@ -3,16 +3,13 @@ import React from 'react';
 // components
 import PoliciesForm from './PoliciesForm';
 
-// typings
-import { Status } from '../../typings';
-
 interface Props {
-  status: Status;
+  loading: boolean;
   onAccept: () => void;
 }
 
-const GooglePolicies = ({ status, onAccept }: Props) => {
-  return <PoliciesForm status={status} onSubmit={onAccept} />;
+const GooglePolicies = ({ loading, onAccept }: Props) => {
+  return <PoliciesForm loading={loading} onSubmit={onAccept} />;
 };
 
 export default GooglePolicies;

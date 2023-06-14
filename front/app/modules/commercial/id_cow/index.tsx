@@ -5,8 +5,10 @@ const CowButton = React.lazy(() => import('./components/CowButton'));
 const VerificationFormCOW = React.lazy(
   () => import('./components/VerificationFormCOW')
 );
-import { isLastVerificationMethod } from 'services/verificationMethods';
-import { TVerificationMethodName } from 'services/verificationMethods';
+import {
+  isLastVerificationMethod,
+  TVerificationMethodName,
+} from 'services/verificationMethods';
 
 const verificationMethodName: TVerificationMethodName = 'cow';
 const configuration: ModuleConfiguration = {

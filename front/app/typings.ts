@@ -9,8 +9,6 @@ import {
   TAppConfigurationSetting,
   TAppConfigurationSettingWithEnabled,
 } from 'api/app_configuration/types';
-import { IIdeaAction } from 'api/ideas/types';
-import { IProjectAction } from 'services/projects';
 import { WrappedComponentProps } from 'react-intl';
 
 declare global {
@@ -57,17 +55,6 @@ export type ILocationInfo =
 
 export type IParticipationContextType = 'project' | 'phase';
 
-export type IPCAction = IProjectAction | IIdeaAction;
-
-export type IPCPermissionAction =
-  | 'posting_idea'
-  | 'voting_idea'
-  | 'commenting_idea'
-  | 'commenting_idea'
-  | 'taking_survey'
-  | 'taking_poll'
-  | 'budgeting';
-
 export interface ITab {
   name: string;
   label: string;
@@ -95,8 +82,8 @@ export interface InsertConfigurationOptions<T extends { name: string }> {
 export interface ILinks {
   self: string;
   first: string;
-  prev: string;
-  next: string;
+  prev: string | null;
+  next: string | null;
   last: string;
 }
 

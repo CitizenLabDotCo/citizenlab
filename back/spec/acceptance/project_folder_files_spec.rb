@@ -8,9 +8,7 @@ resource 'ProjectFolderFile' do
 
   before do
     header 'Content-Type', 'application/json'
-    @user = create(:admin)
-    token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-    header 'Authorization', "Bearer #{token}"
+    admin_header_token
     @folder = create(:project_folder)
     create_list(:project_folder_file, 2, project_folder: @folder)
   end

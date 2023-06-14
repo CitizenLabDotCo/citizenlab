@@ -1,5 +1,4 @@
 import React, { memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import ContentContainer from 'components/ContentContainer';
@@ -8,7 +7,7 @@ import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 import SectionContainer from 'components/SectionContainer';
 
 // hooks
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 
 // styling
 import styled from 'styled-components';
@@ -26,12 +25,12 @@ interface Props {
 }
 
 const VolunteeringContainer = memo<Props>(({ projectId, className }) => {
-  const project = useProject({ projectId });
+  const { data: project } = useProjectById(projectId);
 
   if (
-    !isNilOrError(project) &&
-    project.attributes.process_type === 'continuous' &&
-    project.attributes.participation_method === 'volunteering'
+    project &&
+    project.data.attributes.process_type === 'continuous' &&
+    project.data.attributes.participation_method === 'volunteering'
   ) {
     return (
       <Container
@@ -42,7 +41,7 @@ const VolunteeringContainer = memo<Props>(({ projectId, className }) => {
           <SectionContainer>
             <Volunteering
               type="project"
-              projectId={project.id}
+              projectId={project.data.id}
               phaseId={null}
             />
           </SectionContainer>

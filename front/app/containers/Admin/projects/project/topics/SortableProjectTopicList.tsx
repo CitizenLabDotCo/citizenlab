@@ -23,20 +23,16 @@ import VerticalCenterer from 'components/VerticalCenterer';
 import { Spinner, Box } from '@citizenlab/cl2-component-library';
 import T from 'components/T';
 
-// services
-import {
-  deleteProjectAllowedInputTopic,
-  reorderProjectAllowedInputTopic,
-  getTopicIds,
-  IProjectAllowedInputTopic,
-} from 'services/projectAllowedInputTopics';
-
 // hooks
-import useProjectAllowedInputTopics from 'hooks/useProjectAllowedInputTopics';
-import useTopics from 'hooks/useTopics';
+import useProjectAllowedInputTopics from 'api/project_allowed_input_topics/useProjectAllowedInputTopics';
+import useTopics from 'api/topics/useTopics';
+import useDeleteAllowedProjectInputTopic from 'api/project_allowed_input_topics/useDeleteProjectAllowedInputTopic';
 
 // styles
 import { fontSizes } from 'utils/styleUtils';
+import { getTopicIds } from 'api/project_allowed_input_topics/util/getProjectTopicsIds';
+import useReorderProjectAllowedInputTopics from 'api/project_allowed_input_topics/useReorderProjectAllowedInputTopics';
+import { IProjectAllowedInputTopicData } from 'api/project_allowed_input_topics/types';
 
 export const RowTitle = styled(T)`
   font-size: ${fontSizes.base}px;
@@ -52,22 +48,32 @@ const StyledWarning = styled(Warning)`
 const SortableProjectTopicList = memo(
   ({ params: { projectId } }: WithRouterProps) => {
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
-    const [processingDeletion, setProcessingDeletion] = useState(false);
+
     const [
       projectAllowedInputTopicIdToDelete,
       setProjectAllowedInputTopicIdToDelete,
     ] = useState<string | null>(null);
-    const allowedInputTopics = useProjectAllowedInputTopics(projectId);
+    const { data: allowedInputTopics } = useProjectAllowedInputTopics({
+      projectId,
+    });
+    const { mutate: deleteProjectAllowedInputTopic, isLoading } =
+      useDeleteAllowedProjectInputTopic({ projectId });
+
+    const { mutate: reorderProjectAllowedInputTopic } =
+      useReorderProjectAllowedInputTopics({ projectId });
 
     const topicIds = useMemo(
-      () => getTopicIds(allowedInputTopics),
+      () => getTopicIds(allowedInputTopics?.data),
       [allowedInputTopics]
     );
 
-    const topics = useTopics({ topicIds });
+    const { data: topics } = useTopics();
+
     const topicsById = useMemo(() => {
-      return isNilOrError(topics) ? null : byId(topics);
-    }, [topics]);
+      const filteredTopics =
+        topics?.data.filter((topic) => topicIds.includes(topic.id)) || [];
+      return !topics ? null : byId(filteredTopics);
+    }, [topics, topicIds]);
 
     const handleProjectTopicDelete =
       (projectAllowedInputTopicId: string) => (event: FormEvent) => {
@@ -79,14 +85,11 @@ const SortableProjectTopicList = memo(
 
     const handleProjectTopicDeletionConfirm = () => {
       if (projectAllowedInputTopicIdToDelete) {
-        setProcessingDeletion(true);
-        deleteProjectAllowedInputTopic(
-          projectId,
-          projectAllowedInputTopicIdToDelete
-        ).then(() => {
-          setProcessingDeletion(false);
-          setShowConfirmationModal(false);
-          setProjectAllowedInputTopicIdToDelete(null);
+        deleteProjectAllowedInputTopic(projectAllowedInputTopicIdToDelete, {
+          onSuccess: () => {
+            setShowConfirmationModal(false);
+            setProjectAllowedInputTopicIdToDelete(null);
+          },
         });
       }
     };
@@ -95,11 +98,10 @@ const SortableProjectTopicList = memo(
       projectAllowedInputTopicId: string,
       newOrder: number
     ) => {
-      reorderProjectAllowedInputTopic(
-        projectAllowedInputTopicId,
-        newOrder,
-        projectId
-      );
+      reorderProjectAllowedInputTopic({
+        id: projectAllowedInputTopicId,
+        ordering: newOrder,
+      });
     };
 
     const closeSendConfirmationModal = () => {
@@ -108,14 +110,14 @@ const SortableProjectTopicList = memo(
     };
 
     if (
-      !isNilOrError(allowedInputTopics) &&
+      allowedInputTopics &&
       !isNilOrError(topicsById) &&
-      allowedInputTopics.length > 0 &&
-      allowedInputTopics.length === Object.keys(topicsById).length
+      allowedInputTopics.data.length > 0 &&
+      allowedInputTopics.data.length === Object.keys(topicsById).length
     ) {
-      const isLastSelectedTopic = allowedInputTopics.length === 1;
+      const isLastSelectedTopic = allowedInputTopics.data.length === 1;
 
-      const getTitle = ({ relationships }: IProjectAllowedInputTopic) => {
+      const getTitle = ({ relationships }: IProjectAllowedInputTopicData) => {
         return topicsById[relationships.topic.data.id].attributes
           .title_multiloc;
       };
@@ -137,17 +139,17 @@ const SortableProjectTopicList = memo(
             </StyledWarning>
           )}
           <SortableList
-            items={allowedInputTopics}
+            items={allowedInputTopics.data}
             onReorder={handleReorderTopicProject}
             className="projects-list e2e-admin-projects-list"
             id="e2e-admin-published-projects-list"
-            key={allowedInputTopics.length}
+            key={allowedInputTopics.data.length}
           >
             {({ itemsList, handleDragRow, handleDropRow }) => (
               <>
                 {itemsList.map(
                   (
-                    projectAllowedInputTopic: IProjectAllowedInputTopic,
+                    projectAllowedInputTopic: IProjectAllowedInputTopicData,
                     index: number
                   ) => (
                     <SortableRow
@@ -156,7 +158,7 @@ const SortableProjectTopicList = memo(
                       index={index}
                       moveRow={handleDragRow}
                       dropRow={handleDropRow}
-                      isLastItem={index === allowedInputTopics.length - 1}
+                      isLastItem={index === allowedInputTopics.data.length - 1}
                     >
                       <Box
                         className="expand primary"
@@ -203,7 +205,7 @@ const SortableProjectTopicList = memo(
                 <Button
                   buttonStyle="delete"
                   onClick={handleProjectTopicDeletionConfirm}
-                  processing={processingDeletion}
+                  processing={isLoading}
                   id="e2e-project-topic-delete-confirm-button"
                 >
                   <FormattedMessage {...messages.delete} />

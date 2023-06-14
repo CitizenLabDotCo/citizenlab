@@ -10,8 +10,7 @@ import Button from 'components/UI/Button';
 import CloseIconButton from 'components/UI/CloseIconButton';
 
 // craft
-import { useEditor } from '@craftjs/core';
-import { ROOT_NODE } from '@craftjs/utils';
+import { useEditor, ROOT_NODE } from '@craftjs/core';
 
 // intl
 import messages from '../messages';

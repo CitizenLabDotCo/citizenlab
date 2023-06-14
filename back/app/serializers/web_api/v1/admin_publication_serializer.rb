@@ -34,7 +34,7 @@ class WebApi::V1::AdminPublicationSerializer < WebApi::V1::BaseSerializer
   end
 
   belongs_to :publication, polymorphic: true
-  belongs_to :parent, record_type: :admin_publication
+  belongs_to :parent, record_type: :admin_publication, serializer: :admin_publication
 
-  has_many :children, record_type: :admin_publication
+  has_many :children, record_type: :admin_publication, serializer: :admin_publication
 end

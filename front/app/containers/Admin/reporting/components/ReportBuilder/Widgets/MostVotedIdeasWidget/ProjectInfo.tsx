@@ -1,8 +1,8 @@
 import React from 'react';
 
 // hooks
-import useProject from 'hooks/useProject';
-import usePhase from 'hooks/usePhase';
+import useProjectById from 'api/projects/useProjectById';
+import usePhase from 'api/phases/usePhase';
 
 // components
 import { Box, Text } from '@citizenlab/cl2-component-library';
@@ -12,9 +12,6 @@ import messages from './messages';
 import useLocalize from 'hooks/useLocalize';
 import { useIntl } from 'utils/cl-intl';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
 interface Props {
   projectId?: string;
   phaseId?: string;
@@ -23,36 +20,35 @@ interface Props {
 const ProjectInfo = ({ projectId, phaseId }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
-  const project = useProject({ projectId });
-  const phase = usePhase(phaseId ?? null);
+  const { data: project } = useProjectById(projectId);
+  const { data: phase } = usePhase(phaseId);
 
-  if (isNilOrError(project)) return null;
+  if (!project) return null;
 
   if (
-    project.attributes.process_type === 'continuous' &&
-    project.attributes.participation_method !== 'ideation'
+    project.data.attributes.process_type === 'continuous' &&
+    project.data.attributes.participation_method !== 'ideation'
   ) {
     return null;
   }
 
-  if (project.attributes.process_type === 'timeline' && isNilOrError(phase)) {
+  if (project.data.attributes.process_type === 'timeline' && !phase) {
     return null;
   }
 
-  const projectTitle = localize(project.attributes.title_multiloc);
+  const projectTitle = localize(project.data.attributes.title_multiloc);
 
-  const hasPhase =
-    project.attributes.process_type === 'timeline' && !isNilOrError(phase);
+  const hasPhase = project.data.attributes.process_type === 'timeline' && phase;
   const ideasCount = hasPhase
-    ? phase.attributes.ideas_count
-    : project.attributes.ideas_count;
+    ? phase.data.attributes.ideas_count
+    : project.data.attributes.ideas_count;
 
   return (
     <Box ml="16px">
       <Text mt="4px" mb="4px" color="primary">
         {'| '}
         {projectTitle}
-        {hasPhase ? ` (${localize(phase.attributes.title_multiloc)})` : ''}
+        {hasPhase ? ` (${localize(phase.data.attributes.title_multiloc)})` : ''}
       </Text>
       <Text mt="4px" mb="4px" color="textSecondary" fontSize="s">
         {formatMessage(messages.totalIdeas, { numberOfIdeas: ideasCount })}

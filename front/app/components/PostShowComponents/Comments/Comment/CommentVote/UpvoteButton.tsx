@@ -11,7 +11,6 @@ import messages from '../../messages';
 // styling
 import styled from 'styled-components';
 import { colors, fontSizes, isRtl } from 'utils/styleUtils';
-import { lighten } from 'polished';
 
 const Container = styled.li`
   display: flex;
@@ -42,19 +41,8 @@ const ButtonWrapper = styled.button`
   border: none;
   cursor: pointer;
 
-  &.disabled {
-    cursor: auto;
-  }
-
-  &.enabled:not(.voted):hover {
-    color: #000;
-
-    ${UpvoteIcon} {
-      fill: #000;
-    }
-  }
-
-  &.enabled.voted {
+  &.enabled.voted,
+  &.disabled.voted {
     color: ${colors.success};
 
     ${UpvoteIcon} {
@@ -62,20 +50,25 @@ const ButtonWrapper = styled.button`
     }
   }
 
+  &.enabled:not(.voted),
   &.disabled:not(.voted) {
-    color: ${lighten(0.25, colors.textSecondary)};
+    color: ${colors.textSecondary};
 
     ${UpvoteIcon} {
-      fill: ${lighten(0.25, colors.textSecondary)};
+      fill: ${colors.textSecondary};
     }
   }
 
-  &.disabled.voted {
-    color: ${lighten(0.25, colors.success)};
+  &.enabled:not(.voted):hover {
+    color: ${colors.black};
 
     ${UpvoteIcon} {
-      fill: ${lighten(0.25, colors.success)};
+      fill: ${colors.black};
     }
+  }
+
+  &.disabled {
+    cursor: auto;
   }
 `;
 

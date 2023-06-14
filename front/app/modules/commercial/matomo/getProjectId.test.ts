@@ -1,6 +1,4 @@
 import ideasKeys from 'api/ideas/keys';
-import { Observable } from 'rxjs';
-import { delay } from 'rxjs/operators';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 
 import {
@@ -8,8 +6,6 @@ import {
   getProjectId,
   isOnAdminProjectPage,
 } from './getProjectId';
-
-jest.mock('services/auth');
 
 describe('extractIdeaSlug', () => {
   it('works for /ideas/:slug', () => {
@@ -36,14 +32,10 @@ describe('isOnAdminProjectPage', () => {
 const mockProject = {
   data: { id: 'project-id' },
 };
-const mockProjectObservable = new Observable((subscriber) => {
-  subscriber.next(mockProject);
-}).pipe(delay(1));
 
-jest.mock('services/projects', () => ({
-  projectBySlugStream: jest.fn(() => ({
-    observable: mockProjectObservable,
-  })),
+jest.mock('api/projects/getProjectBySlug', () => ({
+  __esModule: true,
+  default: jest.fn(() => mockProject),
 }));
 
 const mockIdea = {

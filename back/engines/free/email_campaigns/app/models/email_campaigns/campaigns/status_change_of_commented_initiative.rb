@@ -52,24 +52,20 @@ module EmailCampaigns
         .where.not(id: activity.item.author_id)
     end
 
-    def self.category
-      'commented'
-    end
-
     def self.recipient_role_multiloc_key
       'email_campaigns.admin_labels.recipient_role.registered_users'
     end
 
     def self.recipient_segment_multiloc_key
-      'email_campaigns.admin_labels.recipient_segment.users_engaged_with_the_proposal'
+      'email_campaigns.admin_labels.recipient_segment.user_who_commented'
     end
 
     def self.content_type_multiloc_key
-      'email_campaigns.admin_labels.content_type.comments'
+      'email_campaigns.admin_labels.content_type.proposals'
     end
 
     def self.trigger_multiloc_key
-      'email_campaigns.admin_labels.trigger.proposal_status_is_changed'
+      'email_campaigns.admin_labels.trigger.proposal_status_changes'
     end
 
     def generate_commands(recipient:, activity:)

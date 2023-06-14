@@ -1,5 +1,5 @@
 import React from 'react';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
@@ -7,7 +7,7 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 
 // components
-import { IconButton } from '@citizenlab/cl2-component-library';
+import { IconButton, Box } from '@citizenlab/cl2-component-library';
 
 // style
 import styled, { useTheme } from 'styled-components';
@@ -33,9 +33,6 @@ const NewNotificationsIndicator = styled.div`
       theme.invertedNavbarColors && theme.navbarBackgroundColor
         ? theme.navbarBackgroundColor
         : '#fff'};
-  position: absolute;
-  top: -9px;
-  left: 15px;
   min-width: 18px;
   min-height: 18px;
   display: flex;
@@ -49,12 +46,13 @@ type Props = {
 };
 
 const NotificationCount = ({ dropdownOpened, onClick }: Props) => {
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const theme = useTheme();
   const { formatMessage } = useIntl();
 
   if (!isNilOrError(authUser)) {
-    const unreadNotificationsCount = authUser.attributes.unread_notifications;
+    const unreadNotificationsCount =
+      authUser.data.attributes.unread_notifications;
 
     return (
       <Container>
@@ -75,9 +73,11 @@ const NotificationCount = ({ dropdownOpened, onClick }: Props) => {
           ariaControls="notifications-dropdown"
         />
         {unreadNotificationsCount > 0 ? (
-          <NewNotificationsIndicator>
-            {unreadNotificationsCount}
-          </NewNotificationsIndicator>
+          <Box position="absolute" top="-9px" left="15px">
+            <NewNotificationsIndicator>
+              {unreadNotificationsCount}
+            </NewNotificationsIndicator>
+          </Box>
         ) : null}
       </Container>
     );

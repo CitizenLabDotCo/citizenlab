@@ -22,9 +22,7 @@ module.exports = {
     'eslint-plugin-react',
     'jsx-a11y',
     '@typescript-eslint',
-    '@typescript-eslint/tslint',
     'unused-imports',
-    'import',
   ],
   rules: {
     '@typescript-eslint/member-delimiter-style': ['warn'],
@@ -74,7 +72,7 @@ module.exports = {
     'newline-per-chained-call': 'off',
     'no-array-constructor': 'error',
     'no-console': ['warn', { allow: ['warn', 'error'] }],
-    'no-duplicate-imports': 'off',
+    'no-duplicate-imports': 'error',
     'no-eval': 'error',
     'no-extra-semi': 'off',
     'no-irregular-whitespace': 'error',
@@ -137,7 +135,6 @@ module.exports = {
       { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
     ],
     'unused-imports/no-unused-imports': 'warn',
-    'import/no-duplicates': 'error',
     'quote-props': ['error', 'as-needed'],
     quotes: 'off',
     radix: 'error',
@@ -164,16 +161,6 @@ module.exports = {
       'always',
       {
         markers: ['/'],
-      },
-    ],
-    '@typescript-eslint/tslint/config': [
-      'error',
-      {
-        lintFile: './tslint.json',
-        rulesDirectory: ['node_modules/tslint-react/rules'],
-        rules: {
-          'no-module-references': true,
-        },
       },
     ],
   },

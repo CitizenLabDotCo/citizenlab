@@ -10,7 +10,7 @@ RSpec.describe ContentBuilder::WebApi::V1::ContentBuilderLayoutsController do
   let(:user) { create(:admin) }
 
   before do
-    token = Knock::AuthToken.new(payload: user.to_token_payload).token
+    token = AuthToken::AuthToken.new(payload: user.to_token_payload).token
     request.headers['Authorization'] = "Bearer #{token}"
     request.headers['Content-Type'] = 'application/json'
   end

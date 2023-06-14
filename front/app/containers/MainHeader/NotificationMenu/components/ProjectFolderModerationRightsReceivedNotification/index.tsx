@@ -1,5 +1,5 @@
 import React from 'react';
-import { IProjectFolderModerationRightsReceivedNotificationData } from 'services/notifications';
+import { IProjectFolderModerationRightsReceivedNotificationData } from 'api/notifications/types';
 import NotificationWrapper from 'containers/MainHeader/NotificationMenu/components/NotificationWrapper';
 import messages from './messages';
 

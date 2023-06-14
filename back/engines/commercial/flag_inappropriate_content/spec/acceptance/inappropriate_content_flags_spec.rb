@@ -6,9 +6,7 @@ require 'rspec_api_documentation/dsl'
 resource 'Inappropriate content flags' do
   before do
     header 'Content-Type', 'application/json'
-    @admin = create(:admin)
-    token = Knock::AuthToken.new(payload: @admin.to_token_payload).token
-    header 'Authorization', "Bearer #{token}"
+    admin_header_token
   end
 
   get 'web_api/v1/inappropriate_content_flags/:id' do

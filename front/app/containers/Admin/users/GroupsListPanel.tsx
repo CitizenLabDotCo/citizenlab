@@ -1,14 +1,11 @@
 // Libraries
 import React, { useState, useEffect } from 'react';
-import { adopt } from 'react-adopt';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
 import { Subscription } from 'rxjs';
 
 // Resources
-import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
-import GetUserCount, { GetUserCountChildProps } from 'resources/GetUserCount';
-import { IGroupData } from 'services/groups';
+import { IGroupData } from 'api/groups/types';
 
 // hooks
 import useBlockedUsercount from 'api/blocked_users/useBlockedUsersCount';
@@ -21,6 +18,7 @@ import events, { MembershipAdd } from './events';
 // Components
 import Button from 'components/UI/Button';
 import T from 'components/T';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // i18n
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
@@ -35,6 +33,8 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { rgba } from 'polished';
 import Outlet from 'components/Outlet';
+import useGroups from 'api/groups/useGroups';
+import useUsersCount from 'api/users_count/useUsersCount';
 
 const Container = styled.div`
   flex: 1;
@@ -152,24 +152,14 @@ const MembersCount = styled.span`
 `;
 
 // Typings
-export interface InputProps {
+export interface Props {
   className?: string;
   onCreateGroup: () => void;
 }
 
-interface DataProps {
-  groups: GetGroupsChildProps;
-  usercount: GetUserCountChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-export const GroupsListPanel = ({
-  onCreateGroup,
-  className,
-  usercount,
-  groups: { groupsList },
-}: Props) => {
+export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
+  const { data: groups } = useGroups({});
+  const { data: usersCount } = useUsersCount();
   const [highlightedGroups, setHighlightedGroups] = useState(
     new Set<IGroupData['id']>()
   );
@@ -208,18 +198,18 @@ export const GroupsListPanel = ({
         <GroupName>
           <FormattedMessage {...messages.allUsers} />
         </GroupName>
-        <MembersCount>{usercount.count}</MembersCount>
+        <MembersCount>{usersCount?.data.attributes.count}</MembersCount>
       </MenuLink>
       <MenuLink to="/admin/users/admins-managers">
         <GroupName>
           <FormattedMessage {...messages.adminsAndManagers} />
         </GroupName>
-        {usercount.administrators_count !== null &&
-          usercount.moderators_count !== null && (
-            <MembersCount data-cy="e2e-admin-and-moderator-count">
-              {usercount.administrators_count + usercount.moderators_count}
-            </MembersCount>
-          )}
+        {usersCount && (
+          <MembersCount data-cy="e2e-admin-and-moderator-count">
+            {usersCount.data.attributes.administrators_count +
+              usersCount.data.attributes.moderators_count}
+          </MembersCount>
+        )}
       </MenuLink>
       {isUserBlockingEnabled && (
         <MenuLink
@@ -256,8 +246,8 @@ export const GroupsListPanel = ({
         </ButtonWrapper>
       </MenuTitle>
       <GroupsList className="e2e-groups-list">
-        {!isNilOrError(groupsList) &&
-          groupsList.map((group) => (
+        {groups &&
+          groups.data.map((group) => (
             <MenuLink
               key={group.id}
               to={`/admin/users/${group.id}`}
@@ -278,17 +268,12 @@ export const GroupsListPanel = ({
             </MenuLink>
           ))}
       </GroupsList>
+      <Box display="flex" flexGrow={1} />
+      <Button linkTo="/admin/users/invitations" icon="email">
+        <FormattedMessage {...messages.inviteUsers} />
+      </Button>
     </Container>
   );
 };
 
-const Data = adopt<DataProps, InputProps>({
-  groups: <GetGroups />,
-  usercount: <GetUserCount />,
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <GroupsListPanel {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default GroupsListPanel;

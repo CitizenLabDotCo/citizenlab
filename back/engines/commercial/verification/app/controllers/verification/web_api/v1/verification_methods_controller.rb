@@ -16,7 +16,7 @@ module Verification
           render json: linked_json(
             @verification_methods,
             WebApi::V1::VerificationMethodSerializer,
-            params: fastjson_params
+            params: jsonapi_serializer_params
           )
         end
       end

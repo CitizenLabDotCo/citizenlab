@@ -9,8 +9,7 @@ resource 'Poll Responses' do
   before do
     header 'Content-Type', 'application/json'
     @user = create(:admin, locale: 'en')
-    token = Knock::AuthToken.new(payload: { sub: @user.id }).token
-    header 'Authorization', "Bearer #{token}"
+    header_token_for @user
   end
 
   get 'web_api/v1/projects/:participation_context_id/poll_responses/as_xlsx' do
@@ -66,14 +65,10 @@ resource 'Poll Responses' do
         end
       end
 
-      describe do
-        before do
-          @user = create(:user)
-          token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-          header 'Authorization', "Bearer #{token}"
-        end
+      describe 'when resident' do
+        before { resident_header_token }
 
-        example '[error] XLSX export by a normal user', document: false do
+        example '[error] XLSX export', document: false do
           do_request
           expect(status).to eq 401
         end
@@ -99,7 +94,7 @@ resource 'Poll Responses' do
         expect(status).to eq 200
         json_response = json_parse(response_body)
 
-        expect(json_response[:series][:options][@q1.options.first.id.to_sym]).to eq 1
+        expect(json_response[:data][:attributes][:series][:options][@q1.options.first.id.to_sym]).to eq 1
       end
     end
   end

@@ -4,9 +4,9 @@ import { IRelationship, Multiloc } from 'typings';
 import { saveAs } from 'file-saver';
 import moment from 'moment';
 import { requestBlob } from 'utils/request';
-import { IProjectData } from 'services/projects';
+import { IProjectData } from 'api/projects/types';
 import { isNilOrError } from 'utils/helperUtils';
-import { TPhase } from 'hooks/usePhase';
+import { IPhaseData } from 'api/phases/types';
 import { snakeCase } from 'lodash-es';
 
 // We can add more input types here when we support them
@@ -247,7 +247,7 @@ export function formCustomFieldsResultsStream(
 export const downloadSurveyResults = async (
   project: IProjectData,
   locale: string,
-  phase?: TPhase
+  phase?: IPhaseData
 ) => {
   const apiEndpoint = !isNilOrError(phase)
     ? `${API_PATH}/phases/${phase.id}/as_xlsx`

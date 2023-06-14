@@ -10,16 +10,22 @@ import GoBackButton from 'components/UI/GoBackButton';
 import { Section, SectionTitle } from 'components/admin/Section';
 import TopicForm from '../TopicForm';
 
-// services
-import { addTopic, ITopicUpdate } from 'services/topics';
+import { ITopicAdd } from 'api/topics/types';
+import useAddTopic from 'api/topics/useAddTopic';
 
 const New = () => {
-  const handleSubmit = async (values: ITopicUpdate) => {
-    await addTopic({
-      ...values,
-    });
-
-    clHistory.push('/admin/settings/topics');
+  const { mutate: addTopic } = useAddTopic();
+  const handleSubmit = async (values: ITopicAdd) => {
+    addTopic(
+      {
+        ...values,
+      },
+      {
+        onSuccess: () => {
+          clHistory.push('/admin/settings/topics');
+        },
+      }
+    );
   };
 
   const goBack = () => {

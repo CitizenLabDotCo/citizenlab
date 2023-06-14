@@ -1,6 +1,5 @@
 // Libraries
-import React, { useState } from 'react';
-import { isString, isEmpty } from 'lodash-es';
+import React from 'react';
 
 // Components
 import UserManager from './UserManager';
@@ -13,14 +12,9 @@ import messages from './messages';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 export default () => {
-  const [search, setSearch] = useState<string>('');
   const isUserBlockingEnabled = useFeatureFlag({
     name: 'user_blocking',
   });
-
-  const searchUser = (searchTerm: string) => {
-    setSearch(isString(searchTerm) && !isEmpty(searchTerm) ? searchTerm : '');
-  };
 
   if (!isUserBlockingEnabled) return null;
 
@@ -29,9 +23,8 @@ export default () => {
       <UsersHeader
         title={messages.blockedUsers}
         subtitle={messages.blockedUsersSubtitle}
-        onSearch={searchUser}
       />
-      <UserManager onlyBlocked={true} search={search} />
+      <UserManager onlyBlocked />
     </>
   );
 };

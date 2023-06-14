@@ -5,10 +5,11 @@ import InitiativeForm, {
   FormValues,
   SimpleFormValues,
 } from 'components/InitiativeForm';
+import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
 
+// types
 import { Locale, Multiloc, UploadFile } from 'typings';
-
-import { ITopicData } from 'services/topics';
+import { ITopicData } from 'api/topics/types';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -23,18 +24,17 @@ import { geocode } from 'utils/locationTools';
 import { isEqual, pick, get, omitBy, isEmpty, debounce } from 'lodash-es';
 import { Point } from 'geojson';
 
-import { reportError } from 'utils/loggingUtils';
-
 // tracks
 import tracks from './tracks';
 import { trackEventByName } from 'utils/analytics';
 
+// api
 import useAddInitiative from 'api/initiatives/useAddInitiative';
 import { IInitiativeAdd } from 'api/initiatives/types';
 import useAddInitiativeImage from 'api/initiative_images/useAddInitiativeImage';
 import useDeleteInitiativeImage from 'api/initiative_images/useDeleteInitiativeImage';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useUpdateInitiative from 'api/initiatives/useUpdateInitiative';
 import useAddInitiativeFile from 'api/initiative_files/useAddInitiativeFile';
 import useDeleteInitiativeFile from 'api/initiative_files/useDeleteInitiativeFile';
@@ -61,13 +61,14 @@ const InitiativesNewFormWrapper = ({
 }: Props) => {
   const { data: appConfiguration } = useAppConfiguration();
   const { mutate: addInitiative } = useAddInitiative();
-  const authUser = useAuthUser();
-  const { mutate: addInitiativeImage, isLoading: isAdding } =
+  const { data: authUser } = useAuthUser();
+  const { mutateAsync: addInitiativeImage, isLoading: isAdding } =
     useAddInitiativeImage();
-  const { mutate: deleteInitiativeImage } = useDeleteInitiativeImage();
+  const { mutateAsync: deleteInitiativeImage, isLoading: isDeleting } =
+    useDeleteInitiativeImage();
   const { mutate: addInitiativeFile } = useAddInitiativeFile();
   const { mutate: deleteInitiativeFile } = useDeleteInitiativeFile();
-  const { mutate: updateInitiative, isLoading: isUpdating } =
+  const { mutateAsync: updateInitiative, isLoading: isUpdating } =
     useUpdateInitiative();
 
   const initialValues = {
@@ -76,7 +77,7 @@ const InitiativesNewFormWrapper = ({
     topic_ids: [],
     position: location_description,
   };
-
+  const [postAnonymously, setPostAnonymously] = useState(false);
   const [formValues, setFormValues] = useState<SimpleFormValues>(initialValues);
   const [image, setImage] = useState<UploadFile | null>(null);
   const [imageId, setImageId] = useState<string | null>(null);
@@ -92,6 +93,12 @@ const InitiativesNewFormWrapper = ({
   const [initiativeId, setInitiativeId] = useState<string | null>(null);
   const [saving, setSaving] = useState<boolean>(false);
   const [hasImageChanged, setHasImageChanged] = useState<boolean>(false);
+  const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
+    useState<boolean>(false);
+
+  const allowAnonymousParticipation =
+    appConfiguration?.data.attributes.settings.initiatives
+      ?.allow_anonymous_participation;
 
   useEffect(() => {
     addInitiative(
@@ -132,7 +139,6 @@ const InitiativesNewFormWrapper = ({
 
   const getValuesToSend = async (
     changedValues: Partial<FormValues>,
-    hasBannerChanged: boolean,
     banner: UploadFile | undefined | null
   ) => {
     // build API readable object
@@ -151,41 +157,37 @@ const InitiativesNewFormWrapper = ({
       (entry) => entry === undefined
     );
 
-    if (hasBannerChanged) {
-      formAPIValues.header_bg = banner ? banner.base64 : null;
-    }
+    formAPIValues.header_bg = banner ? banner.base64 : null;
+
     return formAPIValues as Partial<IInitiativeAdd>;
   };
 
   const handleSave = async () => {
     const changedValues = getChangedValues();
+
+    // if we're already publishing, do nothing.
+    if (isUpdating || isAdding || isDeleting || saving) return;
+
     // if nothing has changed, do noting.
     if (isEmpty(changedValues) && !hasBannerChanged && !hasImageChanged) return;
 
-    // if we're already publishing, do nothing.
-    if (saving) return;
-
     // setting flags for user feedback and avoiding double sends.
-
     setSaving(true);
 
     try {
-      const formAPIValues = await getValuesToSend(
-        changedValues,
-        hasBannerChanged,
-        banner
-      );
+      const formAPIValues = await getValuesToSend(changedValues, banner);
       // save any changes to the initiative data.
       if (!isEmpty(formAPIValues)) {
         if (initiativeId) {
           updateInitiative({
             initiativeId,
-            requestBody: formAPIValues,
+            requestBody: { ...formAPIValues },
           });
         } else {
           addInitiative(
             {
               ...formAPIValues,
+              anonymous: postAnonymously,
               publication_status: 'draft',
             },
             { onSuccess: (initiative) => setInitiativeId(initiative.data.id) }
@@ -194,41 +196,7 @@ const InitiativesNewFormWrapper = ({
         // feed back what was saved to the api into the initialValues object
         // so that we can determine with certainty what has changed since last
         // successful save.
-
         setHasBannerChanged(false);
-      }
-
-      // save any changes to initiative image.
-      if (hasImageChanged && initiativeId) {
-        if (image && image.base64) {
-          addInitiativeImage(
-            {
-              initiativeId,
-              image: { image: image.base64 },
-            },
-            {
-              onSuccess: (data) => {
-                setImageId(data.data.id);
-              },
-            }
-          );
-        } else if (!image && imageId) {
-          deleteInitiativeImage(
-            { initiativeId, imageId },
-            {
-              onSuccess: () => {
-                setImageId(null);
-              },
-            }
-          );
-        } else {
-          // Image saving mechanism works on the hypothesis that any defined
-          // image will have a base64 key, and when you need to remove an image
-          // it was previously saved. If not, let's report it so it gets fixed.
-          reportError('There was an error with an initiative image');
-        }
-
-        setHasImageChanged(false);
       }
       setSaving(false);
     } catch (errorResponse) {
@@ -239,25 +207,37 @@ const InitiativesNewFormWrapper = ({
     }
   };
 
-  const debouncedSave = debounce(handleSave, 500);
+  const debouncedSave = debounce(handleSave, 1000);
 
   const handlePublish = async () => {
+    // // if we're already saving, do nothing.
+    if (saving) return;
+
+    // setting flags for user feedback and avoiding double sends.
+    setSaving(true);
+
+    if (allowAnonymousParticipation && postAnonymously) {
+      setShowAnonymousConfirmationModal(true);
+    } else {
+      continuePublish();
+    }
+  };
+
+  const continuePublish = async () => {
     const changedValues = getChangedValues();
 
-    try {
-      const formAPIValues = await getValuesToSend(
-        changedValues,
-        hasBannerChanged,
-        banner
-      );
+    if (saving) return;
 
+    try {
+      const formAPIValues = await getValuesToSend(changedValues, banner);
       // save any changes to the initiative data.
       if (initiativeId) {
-        updateInitiative(
+        await updateInitiative(
           {
             initiativeId,
             requestBody: {
               ...formAPIValues,
+              anonymous: postAnonymously,
               publication_status: 'published',
             },
           },
@@ -275,45 +255,12 @@ const InitiativesNewFormWrapper = ({
           {
             ...formAPIValues,
             publication_status: 'published',
+            anonymous: postAnonymously,
           },
           { onSuccess: (initiative) => setInitiativeId(initiative.data.id) }
         );
       }
-
-      setHasBannerChanged(false);
-      // save any changes to initiative image.
-      if (hasImageChanged && initiativeId) {
-        if (image && image.base64) {
-          addInitiativeImage(
-            {
-              initiativeId,
-              image: { image: image.base64 },
-            },
-            {
-              onSuccess: (data) => {
-                setImageId(data.data.id);
-              },
-            }
-          );
-
-          // remove image from remote if it was saved
-        } else if (!image && imageId) {
-          deleteInitiativeImage(
-            { initiativeId, imageId },
-            {
-              onSuccess: () => {
-                setImageId(null);
-              },
-            }
-          );
-        } else if (image) {
-          // Image saving mechanism works on the hypothesis that any defined
-          // image will have a base64 key, if not, something wrong has happened.
-          reportError('Unexpected state of initiative image');
-        }
-
-        setHasImageChanged(false);
-      }
+      setSaving(false);
     } catch (errorResponse) {
       const apiErrors = get(errorResponse, 'json.errors');
 
@@ -335,7 +282,7 @@ const InitiativesNewFormWrapper = ({
             profaneMessage: changedValues.title_multiloc?.[locale],
             proposalId: initiativeId,
             location: 'InitiativesNewFormWrapper (citizen side)',
-            userId: !isNilOrError(authUser) ? authUser.id : null,
+            userId: !isNilOrError(authUser) ? authUser.data.id : null,
             host: !isNilOrError(appConfiguration)
               ? appConfiguration.data.attributes.host
               : null,
@@ -350,7 +297,7 @@ const InitiativesNewFormWrapper = ({
             profaneMessage: changedValues.body_multiloc?.[locale],
             proposalId: initiativeId,
             location: 'InitiativesNewFormWrapper (citizen side)',
-            userId: !isNilOrError(authUser) ? authUser.id : null,
+            userId: !isNilOrError(authUser) ? authUser.data.id : null,
             host: !isNilOrError(appConfiguration)
               ? appConfiguration.data.attributes.host
               : null,
@@ -401,27 +348,67 @@ const InitiativesNewFormWrapper = ({
   const onChangeBanner = (newValue: UploadFile | null) => {
     setBanner(newValue);
     setHasBannerChanged(true);
+    handleSave();
   };
 
-  const onChangeImage = (newValue: UploadFile | null) => {
-    if (newValue) {
-      setImage(newValue);
-      setHasImageChanged(true);
+  const onChangeImage = async (newValue: UploadFile | null) => {
+    setSaving(true);
+
+    if (initiativeId && newValue && newValue.base64) {
+      await addInitiativeImage(
+        {
+          initiativeId,
+          image: { image: newValue.base64 },
+        },
+        {
+          onSuccess: (data) => {
+            setImageId(data.data.id);
+            const newImage = newValue;
+            newImage.id = data.data.id;
+            setImage(newImage);
+            setSaving(false);
+          },
+          onError: () => {
+            setSaving(false);
+          },
+        }
+      );
+    } else {
+      const currentImageId = image?.id;
+      if (currentImageId && initiativeId && imageId) {
+        await deleteInitiativeImage(
+          { initiativeId, imageId: currentImageId },
+          {
+            onSuccess: () => {
+              setImageId(null);
+              setSaving(false);
+            },
+            onError: () => {
+              setSaving(false);
+            },
+          }
+        );
+        setImage(newValue);
+      } else {
+        setImage(newValue);
+      }
     }
+    setHasImageChanged(true);
   };
 
   const onAddFile = (file: UploadFile) => {
     if (initiativeId) {
       setSaving(true);
-
       addInitiativeFile(
         {
           initiativeId,
           file: { file: file.base64, name: file.name },
         },
         {
-          onSuccess: () => {
+          onSuccess: (_data) => {
             setSaving(false);
+            const fileToAdd = file;
+            fileToAdd.id = _data.data.id;
             setFiles((files) => [...files, file]);
           },
           onError: (errorResponse) => {
@@ -459,32 +446,46 @@ const InitiativesNewFormWrapper = ({
         }
       );
     }
+    setFiles((files) =>
+      [...files].filter((file) => file.base64 !== fileToRemove.base64)
+    );
   };
 
   return (
-    <StyledInitiativeForm
-      onPublish={handlePublish}
-      onSave={debouncedSave}
-      locale={locale}
-      {...formValues}
-      image={image}
-      banner={banner}
-      files={files}
-      apiErrors={apiErrors}
-      publishError={publishError}
-      publishing={isAdding && isUpdating}
-      onChangeTitle={onChangeTitle}
-      onChangeBody={onChangeBody}
-      onChangeTopics={onChangeTopics}
-      onChangePosition={onChangePosition}
-      onChangeBanner={onChangeBanner}
-      onChangeImage={onChangeImage}
-      onAddFile={onAddFile}
-      onRemoveFile={onRemoveFile}
-      topics={topics}
-      titleProfanityError={titleProfanityError}
-      descriptionProfanityError={descriptionProfanityError}
-    />
+    <>
+      <StyledInitiativeForm
+        onPublish={handlePublish}
+        onSave={debouncedSave}
+        locale={locale}
+        {...formValues}
+        image={image}
+        banner={banner}
+        files={files}
+        apiErrors={apiErrors}
+        publishError={publishError}
+        publishing={isAdding || isUpdating || isDeleting}
+        onChangeTitle={onChangeTitle}
+        onChangeBody={onChangeBody}
+        onChangeTopics={onChangeTopics}
+        onChangePosition={onChangePosition}
+        onChangeBanner={onChangeBanner}
+        onChangeImage={onChangeImage}
+        onAddFile={onAddFile}
+        onRemoveFile={onRemoveFile}
+        topics={topics}
+        titleProfanityError={titleProfanityError}
+        descriptionProfanityError={descriptionProfanityError}
+        postAnonymously={postAnonymously}
+        setPostAnonymously={setPostAnonymously}
+      />
+      <AnonymousParticipationConfirmationModal
+        onConfirmAnonymousParticipation={() => {
+          continuePublish();
+        }}
+        showAnonymousConfirmationModal={showAnonymousConfirmationModal}
+        setShowAnonymousConfirmationModal={setShowAnonymousConfirmationModal}
+      />
+    </>
   );
 };
 

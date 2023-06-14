@@ -4,10 +4,14 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import PostManager, { TFilterMenu } from 'components/admin/PostManager';
+import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 
 // resources
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
-import { PublicationStatus } from 'services/projects';
+import { PublicationStatus } from 'api/projects/types';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from '../messages';
 
 interface DataProps {
   projects: GetProjectsChildProps;
@@ -23,14 +27,23 @@ const IdeasTab = memo(({ projects }: Props) => {
     'statuses',
   ];
 
-  if (!isNilOrError(projects) && projects.projectsList !== undefined) {
+  if (!isNilOrError(projects)) {
     return (
-      <PostManager
-        type="AllIdeas"
-        defaultFilterMenu={defaultFilterMenu}
-        visibleFilterMenus={visibleFilterMenus}
-        projects={projects.projectsList}
-      />
+      <>
+        <Box mb="28px">
+          <Text color="coolGrey600">
+            <FormattedMessage {...messages.inputManagerPageSubtitle} />
+          </Text>
+        </Box>
+        <Box background={colors.white} p="40px">
+          <PostManager
+            type="AllIdeas"
+            defaultFilterMenu={defaultFilterMenu}
+            visibleFilterMenus={visibleFilterMenus}
+            projects={projects}
+          />
+        </Box>
+      </>
     );
   }
 
@@ -49,7 +62,7 @@ const Data = adopt<Props>({
       pageSize={250}
       sort="new"
       publicationStatuses={publicationStatuses}
-      filterCanModerate={true}
+      canModerate={true}
     />
   ),
 });

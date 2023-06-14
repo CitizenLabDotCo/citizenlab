@@ -18,11 +18,7 @@ resource 'InitiativeStatusChange' do
       parameter :size, 'Number of status changes per page'
     end
 
-    before do
-      @user = create(:admin)
-      token = Knock::AuthToken.new(payload: { sub: @user.id }).token
-      header 'Authorization', "Bearer #{token}"
-    end
+    before { admin_header_token }
 
     let(:initiative_id) { @initiative.id }
 
@@ -35,11 +31,7 @@ resource 'InitiativeStatusChange' do
   end
 
   get 'web_api/v1/initiative_status_changes/:id' do
-    before do
-      @user = create(:admin)
-      token = Knock::AuthToken.new(payload: { sub: @user.id }).token
-      header 'Authorization', "Bearer #{token}"
-    end
+    before { admin_header_token }
 
     let(:id) { @changes.first.id }
 
@@ -53,8 +45,7 @@ resource 'InitiativeStatusChange' do
   context 'when authenticated' do
     before do
       @user = create(:admin)
-      token = Knock::AuthToken.new(payload: { sub: @user.id }).token
-      header 'Authorization', "Bearer #{token}"
+      header_token_for @user
 
       @status_proposed = create(:initiative_status_proposed)
       @status_expired = create(:initiative_status_expired)
@@ -135,11 +126,9 @@ resource 'InitiativeStatusChange' do
     end
   end
 
-  context 'when authenticated as normal user' do
+  context 'when resident' do
     before do
-      @user = create(:user)
-      token = Knock::AuthToken.new(payload: { sub: @user.id }).token
-      header 'Authorization', "Bearer #{token}"
+      resident_header_token
 
       @status_proposed = create(:initiative_status_proposed)
       @status_expired = create(:initiative_status_expired)

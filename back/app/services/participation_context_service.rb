@@ -31,6 +31,11 @@ class ParticipationContextService
     idea_not_in_current_phase: 'idea_not_in_current_phase'
   }.freeze
 
+  ANNOTATING_DOCUMENT_DISABLED_REASONS = {
+    project_inactive: 'project_inactive',
+    not_document_annotation: 'not_document_annotation'
+  }.freeze
+
   TAKING_SURVEY_DISABLED_REASONS = {
     project_inactive: 'project_inactive',
     not_survey: 'not_survey'
@@ -72,6 +77,7 @@ class ParticipationContextService
     !(posting_idea_disabled_reason_for_context(context, user) \
     && commenting_idea_disabled_reason_for_context(context, user) \
     && idea_voting_disabled_reason_for(context, user) \
+    && annotating_document_disabled_reason_for_context(context, user) \
     && taking_survey_disabled_reason_for_context(context, user) \
     && taking_poll_disabled_reason_for_context(context, user) \
     && budgeting_disabled_reason_for_context(context, user))
@@ -198,6 +204,21 @@ class ParticipationContextService
     end
   end
 
+  def annotating_document_disabled_reason_for_project(project, user)
+    context = get_participation_context project
+    annotating_document_disabled_reason_for_context context, user
+  end
+
+  def annotating_document_disabled_reason_for_context(context, user)
+    if !context
+      ANNOTATING_DOCUMENT_DISABLED_REASONS[:project_inactive]
+    elsif !context.document_annotation?
+      ANNOTATING_DOCUMENT_DISABLED_REASONS[:not_document_annotation]
+    else
+      permission_denied_reason(user, 'annotating_document', context)
+    end
+  end
+
   def taking_poll_disabled_reason_for_project(project, user)
     context = get_participation_context project
     taking_poll_disabled_reason_for_context context, user
@@ -306,7 +327,14 @@ class ParticipationContextService
   end
 
   def posting_limit_reached?(context, user)
-    context.posting_limited? && context.ideas.where(author: user).size >= context.posting_limited_max
+    return true if context.posting_limited? && context.ideas.where(author: user).size >= context.posting_limited_max
+
+    if context.posting_limited? && context.allow_anonymous_participation?
+      author_hash = Idea.create_author_hash user.id, context.id, true
+      return context.ideas.where(author_hash: author_hash).or(context.ideas.where(author: user)).size >= context.posting_limited_max
+    end
+
+    false
   end
 
   def upvoting_limit_reached?(context, user)

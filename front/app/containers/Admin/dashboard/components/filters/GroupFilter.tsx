@@ -1,8 +1,5 @@
 import React from 'react';
 
-// resources
-import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
-
 // components
 import { Select } from '@citizenlab/cl2-component-library';
 
@@ -11,23 +8,16 @@ import messages from './messages';
 import useLocalize, { Localize } from 'hooks/useLocalize';
 import { useIntl } from 'utils/cl-intl';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
 // typings
 import { FormatMessage, IOption } from 'typings';
-import { IGroupData } from 'services/groups';
 
-interface DataProps {
-  groups: GetGroupsChildProps;
-}
+import useGroups from 'api/groups/useGroups';
+import { IGroupData } from 'api/groups/types';
 
-interface InputProps {
+interface Props {
   currentGroupFilter?: string | null;
   onGroupFilter: (filter: IOption) => void;
 }
-
-interface Props extends DataProps, InputProps {}
 
 const generateGroupOptions = (
   groupsList: IGroupData[],
@@ -45,18 +35,13 @@ const generateGroupOptions = (
   ];
 };
 
-const GroupFilter = ({
-  groups: { groupsList },
-  currentGroupFilter,
-  onGroupFilter,
-}: Props) => {
+const GroupFilter = ({ currentGroupFilter, onGroupFilter }: Props) => {
+  const { data: groups } = useGroups({});
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
-  if (isNilOrError(groupsList)) return null;
-
   const groupFilterOptions = generateGroupOptions(
-    groupsList,
+    groups?.data || [],
     localize,
     formatMessage
   );
@@ -72,8 +57,4 @@ const GroupFilter = ({
   );
 };
 
-export default (props: InputProps) => (
-  <GetGroups>
-    {(groups) => <GroupFilter groups={groups} {...props} />}
-  </GetGroups>
-);
+export default GroupFilter;

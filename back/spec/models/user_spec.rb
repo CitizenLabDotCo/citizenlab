@@ -864,7 +864,7 @@ RSpec.describe User do
         reg_date = Time.now
         u = create(:user)
         u.update!(registration_completed_at: reg_date)
-        expect(u.registration_completed_at).to eq reg_date
+        expect(u.registration_completed_at.to_i).to eq reg_date.to_i
       end
     end
 
@@ -1203,6 +1203,11 @@ RSpec.describe User do
 
           it 'cannot update the email column directly' do
             expect { user.update!(email: email) }.to raise_error(ActiveRecord::RecordInvalid)
+          end
+
+          it 'can update the email column if it was blank' do
+            user.update_columns(email: nil)
+            expect { user.update!(email: email) }.not_to raise_error(ActiveRecord::RecordInvalid)
           end
 
           it 'can change the email if the user is passwordless' do

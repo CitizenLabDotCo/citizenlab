@@ -5,7 +5,7 @@ module PublicApi
     before_action :set_idea, only: [:show]
 
     def index
-      ideas = PublicApi::IdeaPolicy::Scope.new(current_publicapi_apiclient, Idea).resolve
+      ideas = PublicApi::IdeaPolicy::Scope.new(current_public_api_api_client, Idea).resolve
       ideas = IdeasFinder.new({}, scope: ideas, includes: %i[idea_trending_info]).find_records
       ideas = ideas
         .page(params[:page_number])

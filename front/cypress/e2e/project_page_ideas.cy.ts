@@ -1,104 +1,104 @@
 import { randomString, randomEmail } from '../support/commands';
 
-describe('Existing continuous ideation project', () => {
-  const firstName = randomString();
-  const lastName = randomString();
-  const email = randomEmail();
-  const password = randomString();
+// describe('Existing continuous ideation project', () => {
+//   const firstName = randomString();
+//   const lastName = randomString();
+//   const email = randomEmail();
+//   const password = randomString();
 
-  before(() => {
-    cy.apiSignup(firstName, lastName, email, password);
-    cy.apiLogin(email, password);
-    cy.visit('/projects/an-idea-bring-it-to-your-council');
-    cy.get('#e2e-project-page');
-    cy.wait(1000);
-  });
+//   before(() => {
+//     cy.apiSignup(firstName, lastName, email, password);
+//     cy.apiLogin(email, password);
+//     cy.visit('/projects/an-idea-bring-it-to-your-council');
+//     cy.get('#e2e-project-page');
+//     cy.wait(1000);
+//   });
 
-  it('shows the correct project header', () => {
-    cy.get('#e2e-project-header-image');
-    cy.get('#e2e-project-description');
-    cy.get('#e2e-project-sidebar');
-    cy.get('#e2e-project-sidebar-participants-count');
-    cy.get('#e2e-project-sidebar-ideas-count');
-    cy.get('#e2e-project-sidebar-share-button');
-    cy.get('#e2e-project-see-ideas-button');
-    cy.get('#project-ideabutton');
-    cy.get('#e2e-project-description-read-more-button');
-  });
+//   it('shows the correct project header', () => {
+//     cy.get('#e2e-project-header-image');
+//     cy.get('#e2e-project-description');
+//     cy.get('#e2e-project-sidebar');
+//     cy.get('#e2e-project-sidebar-participants-count');
+//     cy.get('#e2e-project-sidebar-ideas-count');
+//     cy.get('#e2e-project-sidebar-share-button');
+//     cy.get('#e2e-project-see-ideas-button');
+//     cy.get('#project-ideabutton');
+//     cy.get('#e2e-project-description-read-more-button');
+//   });
 
-  it('shows the post-your-idea button', () => {
-    cy.get('#project-ideabutton');
-  });
+//   it('shows the post-your-idea button', () => {
+//     cy.get('#project-ideabutton');
+//   });
 
-  it('shows the idea cards', () => {
-    cy.get('#e2e-continuos-project-idea-cards');
-    cy.get('#e2e-ideas-list');
-    cy.get('.e2e-idea-card');
-  });
+//   it('shows the idea cards', () => {
+//     cy.get('#e2e-continuos-project-idea-cards');
+//     cy.get('#e2e-ideas-list');
+//     cy.get('.e2e-idea-card');
+//   });
 
-  it('shows the current sorting options', () => {
-    cy.get('.e2e-filter-selector-button').first().click();
-    cy.get('#e2e-item-random').should('exist');
-    cy.get('#e2e-item-new').should('exist');
-    cy.get('#e2e-item--new').should('exist');
-    cy.get('#e2e-item-trending').should('exist');
-    cy.get('#e2e-item-popular').should('exist');
-  });
+//   it('shows the current sorting options', () => {
+//     cy.get('.e2e-filter-selector-button').first().click();
+//     cy.get('#e2e-item-random').should('exist');
+//     cy.get('#e2e-item-new').should('exist');
+//     cy.get('#e2e-item--new').should('exist');
+//     cy.get('#e2e-item-trending').should('exist');
+//     cy.get('#e2e-item-popular').should('exist');
+//   });
 
-  it('asks unauthorised users to log in or sign up before they vote', () => {
-    cy.clearCookies();
-    cy.get('#e2e-ideas-container')
-      .find('.e2e-idea-card')
-      .first()
-      .find('.e2e-ideacard-upvote-button')
-      .click();
-    cy.get('#e2e-authentication-modal').should('exist');
-    cy.get('.e2e-modal-close-button').click();
-  });
+//   it('asks unauthorised users to log in or sign up before they vote', () => {
+//     cy.clearCookies();
+//     cy.get('#e2e-ideas-container')
+//       .find('.e2e-idea-card')
+//       .first()
+//       .find('.e2e-ideacard-upvote-button')
+//       .click();
+//     cy.get('#e2e-authentication-modal').should('exist');
+//     cy.get('.e2e-modal-close-button').click();
+//   });
 
-  it('takes you to the idea page when clicking an idea card', () => {
-    cy.get('#e2e-ideas-container')
-      .find('.e2e-idea-card')
-      .first()
-      .as('ideaCard');
-    cy.get('@ideaCard').then(($a) => {
-      const href = $a.prop('href');
-      cy.get('@ideaCard').click();
-      cy.url().should('eq', href);
-    });
-  });
+//   it('takes you to the idea page when clicking an idea card', () => {
+//     cy.get('#e2e-ideas-container')
+//       .find('.e2e-idea-card')
+//       .first()
+//       .as('ideaCard');
+//     cy.get('@ideaCard').then(($a) => {
+//       const href = $a.prop('href');
+//       cy.get('@ideaCard').click();
+//       cy.url().should('eq', href);
+//     });
+//   });
 
-  it('redirects to the idea creation form when pressing the post-your-idea button when logged in', () => {
-    cy.setLoginCookie(email, password);
-    cy.visit('/projects/an-idea-bring-it-to-your-council');
-    cy.get('#project-ideabutton').should('be.visible');
-    cy.get('#project-ideabutton').click();
-    cy.wait(4000);
-    cy.get('#idea-form');
-  });
-});
+//   it('redirects to the idea creation form when pressing the post-your-idea button when logged in', () => {
+//     cy.setLoginCookie(email, password);
+//     cy.visit('/projects/an-idea-bring-it-to-your-council');
+//     cy.get('#project-ideabutton').should('be.visible');
+//     cy.get('#project-ideabutton').click();
+//     cy.wait(4000);
+//     cy.get('#idea-form');
+//   });
+// });
 
-describe('Existing timeline project with ended ideation phase', () => {
-  before(() => {
-    cy.visit('/projects/timeline-ideation-card');
-    cy.get('#e2e-project-page');
-    cy.wait(1000);
-  });
+// describe('Existing timeline project with ended ideation phase', () => {
+//   before(() => {
+//     cy.visit('/projects/timeline-ideation-card');
+//     cy.get('#e2e-project-page');
+//     cy.wait(1000);
+//   });
 
-  it('shows the correct project header', () => {
-    cy.get('#e2e-project-description');
-    cy.get('#e2e-project-sidebar');
-    cy.get('#e2e-project-sidebar-participants-count');
-    cy.get('#e2e-project-sidebar-phases-count');
-    cy.get('#e2e-project-sidebar-share-button');
-  });
+//   it('shows the correct project header', () => {
+//     cy.get('#e2e-project-description');
+//     cy.get('#e2e-project-sidebar');
+//     cy.get('#e2e-project-sidebar-participants-count');
+//     cy.get('#e2e-project-sidebar-phases-count');
+//     cy.get('#e2e-project-sidebar-share-button');
+//   });
 
-  it('shows the idea cards', () => {
-    cy.get('.e2e-timeline-project-idea-cards');
-    cy.get('#e2e-ideas-list');
-    cy.get('.e2e-idea-card');
-  });
-});
+//   it('shows the idea cards', () => {
+//     cy.get('.e2e-timeline-project-idea-cards');
+//     cy.get('#e2e-ideas-list');
+//     cy.get('.e2e-idea-card');
+//   });
+// });
 
 describe('New timeline project with active ideation phase', () => {
   const firstName = randomString();

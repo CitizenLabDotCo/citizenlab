@@ -7,6 +7,7 @@ import PageNotFound from 'components/PageNotFound';
 import ProjectHeader from './shared/header/ProjectHeader';
 import ContinuousIdeas from './continuous/Ideas';
 import ContinuousSurvey from './continuous/Survey';
+import ContinuousDocumentAnnotation from './continuous/DocumentAnnotation';
 import ContinuousPoll from './continuous/Poll';
 import ContinuousVolunteering from './continuous/Volunteering';
 import TimelineContainer from './timeline';
@@ -16,15 +17,16 @@ import SuccessModal from './SucessModal';
 import { ProjectCTABar } from './ProjectCTABar';
 import EventsViewer from 'containers/EventsPage/EventsViewer';
 import Centerer from 'components/UI/Centerer';
+import ErrorBoundary from 'components/ErrorBoundary';
 
 // hooks
 import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 import useLocale from 'hooks/useLocale';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useProject from 'hooks/useProject';
-import usePhases from 'hooks/usePhases';
+import useProjectBySlug from 'api/projects/useProjectBySlug';
+import usePhases from 'api/phases/usePhases';
 import useEvents from 'api/events/useEvents';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import { useIntl } from 'utils/cl-intl';
 
 // i18n
@@ -35,15 +37,12 @@ import styled from 'styled-components';
 import { media, colors } from 'utils/styleUtils';
 
 // typings
-import { IProjectData } from 'services/projects';
+import { IProjectData } from 'api/projects/types';
 
 // utils
 import { isValidPhase } from './phaseParam';
-import {
-  anyIsUndefined,
-  isNilOrError,
-  isUnauthorizedError,
-} from 'utils/helperUtils';
+import { anyIsUndefined, isNilOrError } from 'utils/helperUtils';
+import { isUnauthorizedRQ } from 'utils/errorUtils';
 import { scrollToElement } from 'utils/scroll';
 import { isError } from 'lodash-es';
 
@@ -76,32 +75,30 @@ const ContentWrapper = styled.div`
 `;
 
 interface Props {
-  project: IProjectData | Error | null;
+  project: IProjectData;
 }
 
 const ProjectsShowPage = ({ project }: Props) => {
-  const projectId = !isNilOrError(project) ? project.id : undefined;
-  const processType = !isNilOrError(project)
-    ? project.attributes.process_type
-    : undefined;
+  const projectId = project.id;
+  const processType = project.attributes.process_type;
 
   const isSmallerThanTablet = useBreakpoint('tablet');
   const { formatMessage } = useIntl();
   const [mounted, setMounted] = useState(false);
   const locale = useLocale();
   const { data: appConfig } = useAppConfiguration();
-  const phases = usePhases(projectId);
+  const { data: phases } = usePhases(projectId);
 
   const [search] = useSearchParams();
   const scrollToEventId = search.get('scrollToEventId');
 
   const { data: events } = useEvents({
-    projectIds: projectId ? [projectId] : undefined,
+    projectIds: [projectId],
     sort: '-start_at',
   });
 
   const loading = useMemo(() => {
-    return anyIsUndefined(locale, appConfig, project, phases, events);
+    return anyIsUndefined(locale, appConfig, project, phases?.data, events);
   }, [locale, appConfig, project, phases, events]);
 
   // Check that all child components are mounted
@@ -126,16 +123,23 @@ const ProjectsShowPage = ({ project }: Props) => {
         <Spinner />
       </Centerer>
     );
-  } else if (projectId && processType) {
+  } else {
     content = (
       <ContentWrapper id="e2e-project-page">
         <ProjectHeader projectId={projectId} />
         <ProjectCTABar projectId={projectId} />
+
         <div id="participation-detail">
           {processType === 'continuous' ? (
             <>
               <ContinuousIdeas projectId={projectId} />
-              <ContinuousSurvey projectId={projectId} />
+              {project.attributes.participation_method === 'survey' && (
+                <ContinuousSurvey project={project} />
+              )}
+              {project.attributes.participation_method ===
+                'document_annotation' && (
+                <ContinuousDocumentAnnotation project={project} />
+              )}
               <ContinuousPoll projectId={projectId} />
               <ContinuousVolunteering projectId={projectId} />
             </>
@@ -185,7 +189,7 @@ const ProjectsShowPage = ({ project }: Props) => {
 
   return (
     <Container background={bgColor}>
-      {!isNilOrError(project) && <ProjectHelmet project={project} />}
+      <ProjectHelmet project={project} />
       {content}
     </Container>
   );
@@ -196,26 +200,26 @@ const ProjectsShowPageWrapper = () => {
 
   const { pathname } = useLocation();
   const { slug, phaseNumber } = useParams();
-  const project = useProject({ projectSlug: slug });
-  const phases = usePhases(project?.id);
+  const { data: project, status, error } = useProjectBySlug(slug);
+  const { data: phases } = usePhases(project?.data.id);
   const user = useAuthUser();
 
-  const processType = project?.attributes?.process_type;
+  const processType = project?.data.attributes?.process_type;
   const urlSegments = pathname
     .replace(/^\/|\/$/g, '')
     .split('/')
     .filter((segment) => segment !== '');
 
-  const projectPending = project === undefined;
+  const projectPending = status === 'loading';
   const userPending = user === undefined;
   const pending = projectPending || userPending;
 
   useEffect(() => {
-    if (userPending) return;
+    if (pending) return;
     if (isError(user)) return;
 
     if (user !== null) setUserWasLoggedIn(true);
-  }, [userPending, user]);
+  }, [pending, user]);
 
   if (pending) {
     return (
@@ -226,7 +230,7 @@ const ProjectsShowPageWrapper = () => {
   }
 
   const userJustLoggedOut = userWasLoggedIn && user === null;
-  const unauthorized = isUnauthorizedError(project);
+  const unauthorized = status === 'error' && isUnauthorizedRQ(error);
 
   if (userJustLoggedOut && unauthorized) {
     return <Navigate to="/" replace />;
@@ -236,15 +240,15 @@ const ProjectsShowPageWrapper = () => {
     return <Unauthorized />;
   }
 
-  if (isError(project)) {
+  if (status === 'error' || project === null) {
     return <PageNotFound />;
   }
 
   const isTimelineProjectAndHasValidPhaseParam =
     processType === 'timeline' &&
-    !isNilOrError(phases) &&
+    phases &&
     urlSegments.length === 4 &&
-    isValidPhase(phaseNumber, phases);
+    isValidPhase(phaseNumber, phases.data);
 
   if (
     urlSegments[1] === 'projects' &&
@@ -257,7 +261,13 @@ const ProjectsShowPageWrapper = () => {
     return <Navigate to={projectRoot} replace />;
   }
 
-  return <ProjectsShowPage project={project} />;
+  if (!project) return null;
+
+  return <ProjectsShowPage project={project.data} />;
 };
 
-export default ProjectsShowPageWrapper;
+export default () => (
+  <ErrorBoundary>
+    <ProjectsShowPageWrapper />
+  </ErrorBoundary>
+);

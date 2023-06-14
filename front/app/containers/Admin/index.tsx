@@ -3,7 +3,7 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // permissions
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import { usePermission } from 'services/permissions';
 import HasPermission from 'components/HasPermission';
 
@@ -14,7 +14,6 @@ import { colors, media } from 'utils/styleUtils';
 
 // utils
 import clHistory from 'utils/cl-router/history';
-import { endsWith } from 'utils/helperUtils';
 
 // stlying
 import 'assets/semantic/semantic.min.css';
@@ -59,7 +58,7 @@ export const RightColumn = styled.div`
   display: flex;
   flex-direction: column;
   max-width: 1400px;
-  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px);
+  min-height: 100vh;
   padding-top: 45px;
   padding-right: 51px;
   padding-bottom: 45px;
@@ -90,7 +89,7 @@ type Props = {
 
 const AdminPage = memo<Props & WithRouterProps>(
   ({ className, location: { pathname } }) => {
-    const authUser = useAuthUser();
+    const { data: authUser } = useAuthUser();
 
     // The check in front/app/containers/Admin/routes.tsx already should do the same.
     // TODO: double check it and remove `userCanViewAdmin`
@@ -113,21 +112,26 @@ const AdminPage = memo<Props & WithRouterProps>(
 
     const noPadding =
       pathname.includes('admin/dashboard') ||
+      pathname.includes('admin/initiatives') ||
+      pathname.includes('admin/messaging') ||
+      pathname.includes('admin/settings') ||
+      pathname.includes('admin/ideas') ||
       pathname.includes('admin/reporting');
 
     const fullWidth =
-      endsWith(pathname, 'admin/moderation') ||
       pathname.includes('admin/dashboard') ||
+      pathname.includes('admin/initiatives') ||
+      pathname.includes('admin/messaging') ||
+      pathname.includes('admin/settings') ||
+      pathname.includes('admin/ideas') ||
       pathname.includes('admin/reporting');
-
-    const whiteBg = endsWith(pathname, 'admin/moderation');
 
     return (
       <HasPermission
         item={{ type: 'route', path: '/admin/dashboard' }}
         action="access"
       >
-        <Container className={`${className} ${whiteBg ? 'whiteBg' : ''}`}>
+        <Container className={className}>
           <Sidebar />
           <RightColumn
             className={`${fullWidth && 'fullWidth'} ${

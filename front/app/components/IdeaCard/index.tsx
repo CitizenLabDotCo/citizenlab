@@ -16,7 +16,7 @@ import { IParticipationContextType } from 'typings';
 // hooks
 import useIdeaById from 'api/ideas/useIdeaById';
 import useIdeaImage from 'api/idea_images/useIdeaImage';
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 import useLocalize from 'hooks/useLocalize';
 
 // utils
@@ -135,14 +135,15 @@ const CompactIdeaCard = memo<IdeaCardProps>(
   }) => {
     const locale = useLocale();
     const localize = useLocalize();
-    const project = useProject({
-      projectId: idea.data.relationships.project.data.id,
-    });
+    const { data: project } = useProjectById(
+      idea.data.relationships.project.data.id
+    );
     const { data: ideaImage } = useIdeaImage(
       idea.data.id,
       idea.data.relationships.idea_images.data?.[0]?.id
     );
-    const authorId = idea.data.relationships.author.data?.id;
+    const authorId = idea.data.relationships?.author?.data?.id || null;
+    const authorHash = idea.data.attributes.author_hash;
     const ideaTitle = localize(idea.data.attributes.title_multiloc);
     // remove html tags from wysiwyg output
     const bodyText = localize(idea.data.attributes.body_multiloc)
@@ -151,10 +152,10 @@ const CompactIdeaCard = memo<IdeaCardProps>(
       .trim();
 
     const getFooter = () => {
-      if (!isNilOrError(project)) {
+      if (project) {
         const commentingEnabled =
-          project.attributes.action_descriptor.commenting_idea.enabled;
-        const projectHasComments = project.attributes.comments_count > 0;
+          project.data.attributes.action_descriptor.commenting_idea.enabled;
+        const projectHasComments = project.data.attributes.comments_count > 0;
         const showCommentCount = commentingEnabled || projectHasComments;
 
         // the participationMethod checks ensure that the footer is not shown on
@@ -220,16 +221,17 @@ const CompactIdeaCard = memo<IdeaCardProps>(
         hideImagePlaceholder={hideImagePlaceholder}
         body={
           <BodyWrapper>
-            {authorId && (
-              <StyledAvatar
-                size={36}
-                userId={authorId}
-                hideIfNoAvatar={true}
-                fillColor={transparentize(0.6, colors.textSecondary)}
-              />
-            )}
+            <StyledAvatar
+              size={36}
+              userId={authorId}
+              fillColor={transparentize(0.6, colors.textSecondary)}
+              authorHash={authorHash}
+            />
             <Body>
-              <StyledUserName userId={authorId || null} />
+              <StyledUserName
+                userId={authorId || null}
+                anonymous={idea.data.attributes.anonymous}
+              />
               <Separator aria-hidden>&bull;</Separator>
               {!isNilOrError(locale) && (
                 <TimeAgo>

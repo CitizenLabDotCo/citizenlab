@@ -1,9 +1,6 @@
 import React, { memo, useCallback, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
-// components
-import FeatureFlag from 'components/FeatureFlag';
-
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from 'components/PostShowComponents/Comments/messages';
@@ -20,9 +17,10 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 // types
-import { GetCommentChildProps } from 'resources/GetComment';
-import { GetLocaleChildProps } from 'resources/GetLocale';
-import { GetAppConfigurationLocalesChildProps } from 'resources/GetAppConfigurationLocales';
+import useComment from 'api/comments/useComment';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useLocale from 'hooks/useLocale';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const Container = styled.li`
   display: flex;
@@ -49,63 +47,58 @@ const TranslateButton = styled.button`
 `;
 
 interface Props {
-  comment: GetCommentChildProps;
-  locale: GetLocaleChildProps;
-  tenantLocales: GetAppConfigurationLocalesChildProps;
+  commentId: string;
   className?: string;
 }
 
-const CommentTranslateButton = memo<Props>(
-  ({ comment, locale, tenantLocales, className }) => {
-    const [translateButtonClicked, setTranslateButtonClicked] = useState(false);
+const CommentTranslateButton = memo<Props>(({ commentId, className }) => {
+  const { data: comment } = useComment(commentId);
+  const locales = useAppConfigurationLocales();
+  const locale = useLocale();
+  const machineTranslationsEnabled = useFeatureFlag({
+    name: 'machine_translations',
+  });
 
-    const onTranslate = useCallback(() => {
-      if (!isNilOrError(comment)) {
-        const {
-          clickGoBackToOriginalCommentButton,
-          clickTranslateCommentButton,
-        } = tracks;
-        const eventName = translateButtonClicked
-          ? clickGoBackToOriginalCommentButton
-          : clickTranslateCommentButton;
-        trackEventByName(eventName);
-        setTranslateButtonClicked((value) => !value);
-        commentTranslateButtonClicked(comment.id);
-      }
-    }, [comment, translateButtonClicked]);
+  const [translateButtonClicked, setTranslateButtonClicked] = useState(false);
 
-    if (
-      !isNilOrError(comment) &&
-      !isNilOrError(tenantLocales) &&
-      !isNilOrError(locale)
-    ) {
-      const commentBodyMultiloc = comment.attributes.body_multiloc;
-      const showTranslateButton = !!(
-        commentBodyMultiloc &&
-        !commentBodyMultiloc[locale] &&
-        tenantLocales.length > 1
-      );
+  const onTranslate = useCallback(() => {
+    const { clickGoBackToOriginalCommentButton, clickTranslateCommentButton } =
+      tracks;
+    const eventName = translateButtonClicked
+      ? clickGoBackToOriginalCommentButton
+      : clickTranslateCommentButton;
+    trackEventByName(eventName);
+    setTranslateButtonClicked((value) => !value);
+    commentTranslateButtonClicked(commentId);
+  }, [translateButtonClicked, commentId]);
 
-      if (showTranslateButton) {
-        return (
-          <FeatureFlag name="machine_translations">
-            <Container className={`translate ${className || ''}`}>
-              <TranslateButton onClick={onTranslate}>
-                {!translateButtonClicked ? (
-                  <FormattedMessage {...messages.seeTranslation} />
-                ) : (
-                  <FormattedMessage {...messages.seeOriginal} />
-                )}
-              </TranslateButton>
-            </Container>
-          </FeatureFlag>
-        );
-      }
-    }
-
+  if (isNilOrError(comment) || isNilOrError(locales) || isNilOrError(locale)) {
     return null;
   }
-);
+
+  const commentBodyMultiloc = comment.data.attributes.body_multiloc;
+  const showTranslateButton = !!(
+    commentBodyMultiloc &&
+    !commentBodyMultiloc[locale] &&
+    locales.length > 1
+  );
+
+  if (machineTranslationsEnabled && showTranslateButton) {
+    return (
+      <Container className={`translate ${className || ''}`}>
+        <TranslateButton onClick={onTranslate}>
+          {!translateButtonClicked ? (
+            <FormattedMessage {...messages.seeTranslation} />
+          ) : (
+            <FormattedMessage {...messages.seeOriginal} />
+          )}
+        </TranslateButton>
+      </Container>
+    );
+  }
+
+  return null;
+});
 
 export default styled(CommentTranslateButton)`
   height: 30px;

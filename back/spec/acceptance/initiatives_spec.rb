@@ -11,8 +11,7 @@ resource 'Initiatives' do
     @first_admin = create(:admin)
     @initiatives = %w[published published draft published spam published published].map { |ps| create(:initiative, publication_status: ps) }
     @user = create(:user)
-    token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-    header 'Authorization', "Bearer #{token}"
+    header_token_for @user
   end
 
   get 'web_api/v1/initiatives' do
@@ -195,11 +194,7 @@ resource 'Initiatives' do
   end
 
   get 'web_api/v1/initiatives/as_xlsx' do
-    before do
-      @admin = create(:admin)
-      token = Knock::AuthToken.new(payload: @admin.to_token_payload).token
-      header 'Authorization', "Bearer #{token}"
-    end
+    before { admin_header_token }
 
     parameter :initiatives, 'Filter by a given list of initiative ids', required: false
 
@@ -221,16 +216,12 @@ resource 'Initiatives' do
       end
     end
 
-    describe do
-      before do
-        @user = create(:user)
-        token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-        header 'Authorization', "Bearer #{token}"
-      end
+    describe 'when resident' do
+      before { resident_header_token }
 
-      example '[error] XLSX export by a normal user', document: false do
+      example '[error] XLSX export', document: false do
         do_request
-        expect(status).to eq 401
+        assert_status 401
       end
     end
   end
@@ -296,8 +287,11 @@ resource 'Initiatives' do
 
     example_request 'Get one initiative by id' do
       assert_status 200
-      json_response = json_parse(response_body)
-      expect(json_response.dig(:data, :id)).to eq initiative.id
+      expect(response_data[:id]).to eq initiative.id
+      expect(response_data[:attributes]).to include(
+        anonymous: false,
+        author_hash: initiative.author_hash
+      )
     end
   end
 
@@ -326,7 +320,7 @@ resource 'Initiatives' do
     end
 
     with_options scope: :initiative do
-      parameter :author_id, 'The user id of the user owning the initiative', extra: 'Required if not draft'
+      parameter :author_id, 'The user id of the user owning the initiative. This can only be specified by moderators and is inferred from the JWT token for residents.'
       parameter :publication_status, 'Publication status', required: true, extra: "One of #{Post::PUBLICATION_STATUSES.join(',')}"
       parameter :title_multiloc, 'Multi-locale field with the initiative title', required: true, extra: 'Maximum 100 characters'
       parameter :body_multiloc, 'Multi-locale field with the initiative body', extra: 'Required if not draft'
@@ -336,6 +330,7 @@ resource 'Initiatives' do
       parameter :topic_ids, 'Array of ids of the associated topics'
       parameter :area_ids, 'Array of ids of the associated areas'
       parameter :assignee_id, 'The user id of the admin that takes ownership. Set automatically if not provided. Only allowed for admins.'
+      parameter :anonymous, 'Post this initiative anonymously - true/false'
     end
     ValidationErrorHelper.new.error_fields(self, Initiative)
 
@@ -417,6 +412,38 @@ resource 'Initiatives' do
         expect(blocked_error[:blocked_words].pluck(:attribute).uniq).to eq(['location_description'])
       end
     end
+
+    describe 'anomymous posting of inititatives' do
+      let(:allow_anonymous_participation) { true }
+      let(:anonymous) { true }
+
+      before do
+        config = AppConfiguration.instance
+        config.settings['initiatives']['allow_anonymous_participation'] = allow_anonymous_participation
+        config.save!
+      end
+
+      example_request 'Create an anonymous initiative' do
+        assert_status 201
+        expect(response_data.dig(:relationships, :author, :data, :id)).to be_nil
+        expect(response_data.dig(:attributes, :anonymous)).to be true
+        expect(response_data.dig(:attributes, :author_name)).to be_nil
+      end
+
+      example 'Does not log activities for the author', document: false do
+        expect { do_request }.not_to have_enqueued_job(LogActivityJob).with(anything, anything, @user, anything)
+      end
+
+      describe 'when anonymous posting is not allowed' do
+        let(:allow_anonymous_participation) { false }
+
+        example_request 'Rejects the anonymous parameter' do
+          assert_status 422
+          json_response = json_parse response_body
+          expect(json_response).to include_response_error(:base, 'anonymous_participation_not_allowed')
+        end
+      end
+    end
   end
 
   patch 'web_api/v1/initiatives/:id' do
@@ -426,7 +453,7 @@ resource 'Initiatives' do
     end
 
     with_options scope: :initiative do
-      parameter :author_id, 'The user id of the user owning the initiative', extra: 'Required if not draft'
+      parameter :author_id, 'The user id of the user owning the initiative. This can only be specified by moderators and is inferred from the JWT token for residents.'
       parameter :publication_status, "Either #{Post::PUBLICATION_STATUSES.join(', ')}"
       parameter :title_multiloc, 'Multi-locale field with the initiative title', extra: 'Maximum 100 characters'
       parameter :body_multiloc, 'Multi-locale field with the initiative body', extra: 'Required if not draft'
@@ -436,104 +463,203 @@ resource 'Initiatives' do
       parameter :topic_ids, 'Array of ids of the associated topics'
       parameter :area_ids, 'Array of ids of the associated areas'
       parameter :assignee_id, 'The user id of the admin that takes ownership. Only allowed for admins.'
+      parameter :anonymous, 'Post this initiative anonymously - true/false'
     end
     ValidationErrorHelper.new.error_fields(self, Initiative)
 
-    let(:id) { @initiative.id }
-    let(:location_point_geojson) { { type: 'Point', coordinates: [51.4365635, 3.825930459] } }
-    let(:location_description) { 'Watkins Road 8' }
-    let(:header_bg) { file_as_base64 'header.jpg', 'image/jpeg' }
-    let(:topic_ids) { create_list(:topic, 2).map(&:id) }
-    let(:area_ids) { create_list(:area, 2).map(&:id) }
-
-    describe do
-      let(:title_multiloc) { { 'en' => 'Changed title' } }
-
-      example_request 'Update an initiative' do
-        expect(status).to be 200
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :attributes, :title_multiloc, :en)).to eq 'Changed title'
-        expect(json_response.dig(:data, :attributes, :location_point_geojson)).to eq location_point_geojson
-        expect(json_response.dig(:data, :attributes, :location_description)).to eq location_description
-        expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
-        expect(json_response.dig(:data, :relationships, :areas, :data).pluck(:id)).to match_array area_ids
-      end
-
-      example 'Check for the automatic creation of an upvote by the author when the publication status of an initiative is updated from draft to published', document: false do
-        @initiative.update(publication_status: 'draft')
-        do_request initiative: { publication_status: 'published' }
-        json_response = json_parse(response_body)
-        new_initiative = Initiative.find(json_response.dig(:data, :id))
-        expect(new_initiative.votes.size).to eq 1
-        expect(new_initiative.votes[0].mode).to eq 'up'
-        expect(new_initiative.votes[0].user.id).to eq @user.id
-        expect(json_response.dig(:data, :attributes, :upvotes_count)).to eq 1
-      end
-    end
-
-    describe do
+    describe 'published initiatives' do
       let(:id) { @initiative.id }
+      let(:location_point_geojson) { { type: 'Point', coordinates: [51.4365635, 3.825930459] } }
+      let(:location_description) { 'Watkins Road 8' }
       let(:header_bg) { file_as_base64 'header.jpg', 'image/jpeg' }
+      let(:topic_ids) { create_list(:topic, 2).map(&:id) }
+      let(:area_ids) { create_list(:area, 2).map(&:id) }
 
-      example 'The header image can be updated and the file is present', document: false do
-        do_request
-        expect(@initiative.reload.header_bg_url).to be_present
-        expect(@initiative.reload.header_bg.file).to be_present
+      describe do
+        let(:title_multiloc) { { 'en' => 'Changed title' } }
+
+        example_request 'Update an initiative' do
+          expect(status).to be 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :attributes, :title_multiloc, :en)).to eq 'Changed title'
+          expect(json_response.dig(:data, :attributes, :location_point_geojson)).to eq location_point_geojson
+          expect(json_response.dig(:data, :attributes, :location_description)).to eq location_description
+          expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
+          expect(json_response.dig(:data, :relationships, :areas, :data).pluck(:id)).to match_array area_ids
+        end
+
+        example 'Check for the automatic creation of an upvote by the author when the publication status of an initiative is updated from draft to published', document: false do
+          @initiative.update!(publication_status: 'draft')
+          do_request initiative: { publication_status: 'published' }
+          json_response = json_parse(response_body)
+          new_initiative = Initiative.find(json_response.dig(:data, :id))
+          expect(new_initiative.votes.size).to eq 1
+          expect(new_initiative.votes[0].mode).to eq 'up'
+          expect(new_initiative.votes[0].user.id).to eq @user.id
+          expect(json_response.dig(:data, :attributes, :upvotes_count)).to eq 1
+        end
+      end
+
+      describe do
+        let(:id) { @initiative.id }
+        let(:header_bg) { file_as_base64 'header.jpg', 'image/jpeg' }
+
+        example 'The header image can be updated and the file is present', document: false do
+          do_request
+          expect(@initiative.reload.header_bg_url).to be_present
+          expect(@initiative.reload.header_bg.file).to be_present
+        end
+      end
+
+      describe do
+        let(:id) { @initiative.id }
+
+        example 'The header image can be removed' do
+          @initiative.update!(header_bg: Rails.root.join('spec/fixtures/header.jpg').open)
+          expect(@initiative.reload.header_bg_url).to be_present
+          do_request initiative: { header_bg: nil }
+          expect(@initiative.reload.header_bg_url).to be_nil
+        end
+      end
+
+      describe do
+        let(:topic_ids) { [] }
+        let(:area_ids) { [] }
+
+        example 'Remove the topics/areas', document: false do
+          @initiative.topics = create_list(:topic, 2)
+          @initiative.areas = create_list(:area, 2)
+          do_request
+          expect(status).to be 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
+          expect(json_response.dig(:data, :relationships, :areas, :data).pluck(:id)).to match_array area_ids
+        end
+      end
+
+      describe do
+        let(:assignee_id) { create(:admin).id }
+
+        example 'Changing the assignee as a non-admin does not work', document: false do
+          do_request
+          expect(status).to be 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :relationships, :assignee)).to be_nil
+        end
+      end
+
+      describe 'changing the author of my own initiative' do
+        let(:author_id) { create(:admin).id }
+
+        example '[Error] Cannot change the author from your own id as a non-admin', document: false do
+          do_request
+          expect(@initiative.reload.author_id).not_to eq author_id
+        end
+      end
+
+      describe 'changing the author of another authors initiative' do
+        let(:author_id) { @user.id }
+
+        example '[Error] Cannot update another authors record to your own id as a non-admin', document: false do
+          @initiative.update!(author: create(:user))
+          do_request
+          assert_status 401
+          expect(json_response_body.dig(:errors, :base, 0, :error)).to eq 'Unauthorized!'
+        end
+      end
+
+      describe 'updating anomymous initiatives' do
+        let(:allow_anonymous_participation) { true }
+        let(:anonymous) { true }
+
+        before do
+          config = AppConfiguration.instance
+          config.settings['initiatives']['allow_anonymous_participation'] = allow_anonymous_participation
+          config.save!
+        end
+
+        example_request 'Change a published initiative to anonymous' do
+          assert_status 200
+          expect(response_data.dig(:relationships, :author, :data, :id)).to be_nil
+          expect(response_data.dig(:attributes, :anonymous)).to be true
+          expect(response_data.dig(:attributes, :author_name)).to be_nil
+        end
+
+        example '[Error] Cannot update an anonymous initiative as a non-admin' do
+          @initiative.update!(anonymous: true)
+          do_request
+          assert_status 401
+          expect(json_response_body.dig(:errors, :base, 0, :error)).to eq 'Unauthorized!'
+        end
+
+        example 'Does not log activities for the author and clears the author from past activities', document: false do
+          clear_activity = create(:activity, item: @initiative, user: @user)
+          other_item_activity = create(:activity, item: @initiative, user: create(:user))
+          other_user_activity = create(:activity, user: @user)
+
+          expect { do_request }.not_to have_enqueued_job(LogActivityJob).with(anything, anything, @user, anything)
+          expect(clear_activity.reload.user_id).to be_nil
+          expect(other_item_activity.reload.user_id).to be_present
+          expect(other_user_activity.reload.user_id).to eq @user.id
+        end
+
+        describe 'when anonymous posting is not allowed' do
+          let(:allow_anonymous_participation) { false }
+
+          example_request 'Rejects the anonymous parameter' do
+            assert_status 422
+            json_response = json_parse response_body
+            expect(json_response).to include_response_error(:base, 'anonymous_participation_not_allowed')
+          end
+        end
       end
     end
 
-    describe do
+    describe 'draft initiatives' do
+      before do
+        @initiative = create(:initiative, author: @user, publication_status: 'draft')
+      end
+
+      parameter :publication_status, "Either #{Post::PUBLICATION_STATUSES.join(', ')}", required: true, scope: :initiative
+
       let(:id) { @initiative.id }
 
-      example 'The header image can be removed' do
-        @initiative.update!(header_bg: Rails.root.join('spec/fixtures/header.jpg').open)
-        expect(@initiative.reload.header_bg_url).to be_present
-        do_request initiative: { header_bg: nil }
-        expect(@initiative.reload.header_bg_url).to be_nil
+      describe 'updating anomymous initiatives' do
+        let(:anonymous) { true }
+
+        before do
+          config = AppConfiguration.instance
+          config.settings['initiatives']['allow_anonymous_participation'] = true
+          config.save!
+        end
+
+        example_request 'Change a draft initiative to anonymous' do
+          assert_status 200
+          expect(response_data.dig(:relationships, :author, :data, :id)).to be_nil
+          expect(response_data.dig(:attributes, :anonymous)).to be true
+          expect(response_data.dig(:attributes, :author_name)).to be_nil
+        end
       end
-    end
 
-    describe do
-      let(:topic_ids) { [] }
-      let(:area_ids) { [] }
+      describe 'publishing an initiative' do
+        let(:publication_status) { 'published' }
 
-      example 'Remove the topics/areas', document: false do
-        @initiative.topics = create_list(:topic, 2)
-        @initiative.areas = create_list(:area, 2)
-        do_request
-        expect(status).to be 200
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
-        expect(json_response.dig(:data, :relationships, :areas, :data).pluck(:id)).to match_array area_ids
+        example_request 'Change the publication status' do
+          expect(response_status).to eq 200
+          expect(response_data.dig(:attributes, :publication_status)).to eq 'published'
+        end
       end
-    end
 
-    describe do
-      let(:assignee_id) { create(:admin).id }
+      describe 'changing a draft initiative of another user' do
+        let(:title_multiloc) { { 'en' => 'Changed title' } }
 
-      example 'Changing the assignee as a non-admin does not work', document: false do
-        do_request
-        expect(status).to be 200
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :relationships, :assignee)).to be_nil
+        example '[Error] Cannot update an anonymous initiative as a non-admin' do
+          @initiative.update!(author: create(:user))
+          do_request
+          assert_status 401
+          expect(json_response_body.dig(:errors, :base, 0, :error)).to eq 'Unauthorized!'
+        end
       end
-    end
-  end
-
-  patch 'web_api/v1/initiatives/:id' do
-    before do
-      @initiative = create(:initiative, author: @user, publication_status: 'draft')
-    end
-
-    parameter :publication_status, "Either #{Post::PUBLICATION_STATUSES.join(', ')}", required: true, scope: :initiative
-
-    let(:id) { @initiative.id }
-    let(:publication_status) { 'published' }
-
-    example_request 'Change the publication status' do
-      expect(response_status).to eq 200
-      json_response = json_parse(response_body)
-      expect(json_response.dig(:data, :attributes, :publication_status)).to eq 'published'
     end
   end
 
@@ -552,9 +678,7 @@ resource 'Initiatives' do
 
   get 'web_api/v1/initiatives/:id/allowed_transitions' do
     before do
-      @user = create(:admin)
-      token = Knock::AuthToken.new(payload: { sub: @user.id }).token
-      header 'Authorization', "Bearer #{token}"
+      admin_header_token
 
       @initiative = create(:initiative)
       threshold_reached = create(:initiative_status_threshold_reached)

@@ -1,13 +1,12 @@
 import React from 'react';
 import ProjectRow, { Props } from '.';
 import { render, screen } from 'utils/testUtils/rtl';
-import { IAdminPublicationContent } from 'hooks/useAdminPublications';
-import { IUserData } from 'services/users';
+import { IUserData } from 'api/users/types';
+import { IAdminPublicationData } from 'api/admin_publications/types';
 
-const publication: IAdminPublicationContent = {
+const publication: IAdminPublicationData = {
   id: '1',
-  publicationType: 'project' as const,
-  publicationId: 'publicationId',
+  type: 'admin_publication',
   attributes: {
     ordering: 0,
     depth: 0,
@@ -52,9 +51,7 @@ const mockUserData: IUserData = {
 };
 
 // Needed to render moreActionsMenu
-jest.mock('hooks/useAuthUser', () => {
-  return () => mockUserData;
-});
+jest.mock('api/me/useAuthUser', () => () => ({ data: { data: mockUserData } }));
 
 const props: Props = {
   actions: ['manage' as const],

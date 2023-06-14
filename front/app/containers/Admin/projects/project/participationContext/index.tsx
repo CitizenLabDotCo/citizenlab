@@ -1,18 +1,28 @@
 import React, { PureComponent } from 'react';
-import { Subscription, Observable, of } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { isEqual } from 'lodash-es';
 
 // components
-import { ParticipationMethodPicker } from './components/ParticipationMethodPicker';
+import ParticipationMethodPicker from './components/ParticipationMethodPicker';
 import ParticipatoryBudgetingInputs from './components/ParticipatoryBudgetingInputs';
 import PollInputs from './components/PollInputs';
 import SurveyInputs from './components/SurveyInputs';
 import { Container, StyledSection } from './components/styling';
+import IdeationInputs from './components/IdeationInputs';
+import { SectionField, SubSectionTitle } from 'components/admin/Section';
+import {
+  Box,
+  IconTooltip,
+  Input,
+  IOption,
+} from '@citizenlab/cl2-component-library';
+import Error from 'components/UI/Error';
+import NativeSurveyInputs from './components/NativeSurveyInputs';
 
 // services
-import { projectByIdStream, IProject, IProjectData } from 'services/projects';
-import { phaseStream, IPhase } from 'services/phases';
+import { IProject } from 'api/projects/types';
+import { IPhase } from 'api/phases/types';
 import {
   ParticipationMethod,
   TSurveyService,
@@ -29,20 +39,18 @@ import GetFeatureFlag, {
 } from 'resources/GetFeatureFlag';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
 import messages from '../messages';
 
 // typings
 import { CLErrors } from 'typings';
 import { adopt } from 'react-adopt';
-import { IOption } from '@citizenlab/cl2-component-library';
 
 // utils
 import getOutput from './utils/getOutput';
 import validate from './utils/validate';
 import { anyIsDefined } from 'utils/helperUtils';
-import IdeationInputs from './components/IdeationInputs';
 
 export interface IParticipationContextConfig {
   participation_method: ParticipationMethod;
@@ -52,6 +60,7 @@ export interface IParticipationContextConfig {
   upvoting_method?: 'unlimited' | 'limited' | null;
   upvoting_limited_max?: number | null;
   downvoting_enabled?: boolean | null;
+  allow_anonymous_participation?: boolean | null;
   downvoting_method?: 'unlimited' | 'limited' | null;
   downvoting_limited_max?: number | null;
   presentation_mode?: 'map' | 'card' | null;
@@ -62,6 +71,7 @@ export interface IParticipationContextConfig {
   survey_service?: TSurveyService | null;
   survey_embed_url?: string | null;
   poll_anonymous?: boolean;
+  document_annotation_embed_url?: string | null;
 }
 
 interface DataProps {
@@ -75,19 +85,17 @@ interface DataProps {
   microsoft_forms_enabled: GetFeatureFlagChildProps;
   survey_monkey_enabled: GetFeatureFlagChildProps;
   snap_survey_enabled: GetFeatureFlagChildProps;
-  konveio_enabled: GetFeatureFlagChildProps;
   isCustomInputTermEnabled: GetFeatureFlagChildProps;
 }
 
 export type ApiErrors = CLErrors | null | undefined;
 
 interface InputProps {
+  className?: string;
   onChange: (arg: IParticipationContextConfig) => void;
   onSubmit: (arg: IParticipationContextConfig) => void;
-  projectId?: string | undefined | null;
-  phaseId?: string | undefined | null;
   phase?: IPhase | undefined | null;
-  project?: IProjectData | undefined | null;
+  project?: IProject | undefined | null;
   apiErrors: ApiErrors;
 }
 
@@ -117,6 +125,7 @@ class ParticipationContext extends PureComponent<
       upvoting_method: 'unlimited',
       upvoting_limited_max: null,
       downvoting_enabled: true,
+      allow_anonymous_participation: false,
       downvoting_method: 'unlimited',
       downvoting_limited_max: null,
       presentation_mode: 'card',
@@ -132,51 +141,46 @@ class ParticipationContext extends PureComponent<
       poll_anonymous: false,
       ideas_order: 'trending',
       input_term: 'idea',
+      document_annotation_embed_url: null,
     };
     this.subscriptions = [];
   }
 
   componentDidMount() {
-    const { projectId, phaseId } = this.props;
-    let data$: Observable<IProject | IPhase | null> = of(null);
-
-    if (projectId) {
-      data$ = projectByIdStream(projectId).observable;
-    } else if (phaseId) {
-      data$ = phaseStream(phaseId).observable;
+    const { project, phase } = this.props;
+    const participationContext = project ?? phase;
+    if (participationContext && participationContext.data) {
+      const newData = participationContext.data.attributes;
+      this.setState((prevState) => {
+        return {
+          ...prevState,
+          participation_method: newData.participation_method,
+          posting_enabled: newData.posting_enabled,
+          commenting_enabled: newData.commenting_enabled,
+          voting_enabled: newData.voting_enabled,
+          upvoting_method: newData.upvoting_method,
+          downvoting_method: newData.downvoting_method,
+          upvoting_limited_max: newData.upvoting_limited_max,
+          downvoting_limited_max: newData.downvoting_limited_max,
+          downvoting_enabled: newData.downvoting_enabled,
+          allow_anonymous_participation: newData.allow_anonymous_participation,
+          presentation_mode: newData.presentation_mode,
+          min_budget: newData.min_budget,
+          max_budget: newData.max_budget,
+          survey_embed_url: newData.survey_embed_url,
+          survey_service: newData.survey_service,
+          poll_anonymous: newData.poll_anonymous,
+          ideas_order: newData.ideas_order,
+          input_term: newData.input_term,
+          document_annotation_embed_url: newData.document_annotation_embed_url,
+          loaded: true,
+        };
+      });
+    } else {
+      this.setState({ loaded: true });
     }
-    this.subscriptions = [
-      data$.subscribe((data) => {
-        if (data) {
-          const newData = data.data.attributes;
-          this.setState((prevState) => {
-            return {
-              ...prevState,
-              participation_method: newData.participation_method,
-              posting_enabled: newData.posting_enabled,
-              commenting_enabled: newData.commenting_enabled,
-              voting_enabled: newData.voting_enabled,
-              upvoting_method: newData.upvoting_method,
-              downvoting_method: newData.downvoting_method,
-              upvoting_limited_max: newData.upvoting_limited_max,
-              downvoting_limited_max: newData.downvoting_limited_max,
-              downvoting_enabled: newData.downvoting_enabled,
-              presentation_mode: newData.presentation_mode,
-              min_budget: newData.min_budget,
-              max_budget: newData.max_budget,
-              survey_embed_url: newData.survey_embed_url,
-              survey_service: newData.survey_service,
-              poll_anonymous: newData.poll_anonymous,
-              ideas_order: newData.ideas_order,
-              input_term: newData.input_term,
-              loaded: true,
-            };
-          });
-        } else {
-          this.setState({ loaded: true });
-        }
-      }),
 
+    this.subscriptions = [
       eventEmitter
         .observeEvent('getParticipationContext')
         .pipe(filter(() => this.validate()))
@@ -226,10 +230,12 @@ class ParticipationContext extends PureComponent<
       voting_enabled: ideation ? true : null,
       upvoting_method: ideation ? 'unlimited' : null,
       downvoting_enabled: ideation ? true : null,
+      allow_anonymous_participation: ideationOrBudgeting ? false : null,
       downvoting_method: ideation ? 'unlimited' : null,
       presentation_mode: ideationOrBudgeting ? 'card' : null,
       survey_embed_url: null,
       survey_service: survey ? 'typeform' : null,
+      document_annotation_embed_url: null,
       min_budget: budgeting ? 0 : null,
       max_budget: budgeting ? 1000 : null,
       ideas_order: ideationOrBudgeting
@@ -244,6 +250,12 @@ class ParticipationContext extends PureComponent<
 
   handleSurveyEmbedUrlChange = (survey_embed_url: string) => {
     this.setState({ survey_embed_url });
+  };
+
+  handleDocumentAnnotationEmbedUrlChange = (
+    document_annotation_embed_url: string
+  ) => {
+    this.setState({ document_annotation_embed_url });
   };
 
   togglePostingEnabled = () => {
@@ -276,6 +288,12 @@ class ParticipationContext extends PureComponent<
 
   handleDownvotingEnabledOnChange = (downvoting_enabled: boolean) => {
     this.setState({ downvoting_enabled });
+  };
+
+  handleAllowAnonymousParticipationOnChange = (
+    allow_anonymous_participation: boolean
+  ) => {
+    this.setState({ allow_anonymous_participation });
   };
 
   handleDownvotingMethodOnChange = (
@@ -376,6 +394,7 @@ class ParticipationContext extends PureComponent<
 
   render() {
     const {
+      className,
       apiErrors,
       surveys_enabled,
       typeform_enabled,
@@ -387,11 +406,9 @@ class ParticipationContext extends PureComponent<
       survey_monkey_enabled,
       snap_survey_enabled,
       google_forms_enabled,
-      konveio_enabled,
       isCustomInputTermEnabled,
+      intl: { formatMessage },
     } = this.props;
-
-    const className = this.props['className'];
 
     const {
       participation_method,
@@ -403,9 +420,11 @@ class ParticipationContext extends PureComponent<
       upvoting_limited_max,
       downvoting_limited_max,
       downvoting_enabled,
+      allow_anonymous_participation,
       min_budget,
       max_budget,
       survey_embed_url,
+      document_annotation_embed_url,
       survey_service,
       loaded,
       noUpvotingLimitError,
@@ -429,7 +448,6 @@ class ParticipationContext extends PureComponent<
         survey_monkey: survey_monkey_enabled,
         snap_survey: snap_survey_enabled,
         google_forms: google_forms_enabled,
-        konveio: konveio_enabled,
       };
 
       const showSurveys =
@@ -440,7 +458,7 @@ class ParticipationContext extends PureComponent<
           <StyledSection>
             <ParticipationMethodPicker
               phase={this.props.phase}
-              project={this.props.project}
+              project={this.props.project?.data}
               participation_method={participation_method}
               showSurveys={showSurveys}
               apiErrors={apiErrors}
@@ -455,6 +473,7 @@ class ParticipationContext extends PureComponent<
                 input_term={input_term}
                 handleInputTermChange={this.handleInputTermChange}
                 inputTermOptions={this.getInputTermOptions()}
+                allow_anonymous_participation={allow_anonymous_participation}
                 min_budget={min_budget}
                 max_budget={max_budget}
                 commenting_enabled={commenting_enabled}
@@ -473,6 +492,9 @@ class ParticipationContext extends PureComponent<
                 ideas_order={ideas_order}
                 handleIdeaDefaultSortMethodChange={
                   this.handleIdeaDefaultSortMethodChange
+                }
+                handleAllowAnonymousParticipationOnChange={
+                  this.handleAllowAnonymousParticipationOnChange
                 }
               />
             )}
@@ -497,6 +519,7 @@ class ParticipationContext extends PureComponent<
                   downvoting_enabled={downvoting_enabled}
                   noUpvotingLimitError={noUpvotingLimitError}
                   noDownvotingLimitError={noDownvotingLimitError}
+                  allow_anonymous_participation={allow_anonymous_participation}
                   apiErrors={apiErrors}
                   togglePostingEnabled={this.togglePostingEnabled}
                   toggleCommentingEnabled={this.toggleCommentingEnabled}
@@ -513,6 +536,9 @@ class ParticipationContext extends PureComponent<
                   }
                   handleDownvotingEnabledOnChange={
                     this.handleDownvotingEnabledOnChange
+                  }
+                  handleAllowAnonymousParticipationOnChange={
+                    this.handleAllowAnonymousParticipationOnChange
                   }
                   presentation_mode={presentation_mode}
                   handleIdeasDisplayChange={this.handleIdeasDisplayChange}
@@ -531,6 +557,58 @@ class ParticipationContext extends PureComponent<
               />
             )}
 
+            {participation_method === 'document_annotation' && (
+              <SectionField>
+                <Box display="flex">
+                  <Box mr="8px">
+                    <SubSectionTitle>
+                      {formatMessage(
+                        messages.konveioDocumentAnnotationEmbedUrl
+                      )}
+                    </SubSectionTitle>
+                  </Box>
+                  <IconTooltip
+                    content={
+                      <FormattedMessage
+                        {...messages.konveioSupport}
+                        values={{
+                          supportArticleLink: (
+                            <a
+                              href={formatMessage(
+                                messages.konveioSupportPageURL
+                              )}
+                              target="_blank"
+                              rel="noreferrer"
+                            >
+                              {formatMessage(messages.konveioSupportArticle)}
+                            </a>
+                          ),
+                        }}
+                      />
+                    }
+                  />
+                </Box>
+                <Input
+                  onChange={this.handleDocumentAnnotationEmbedUrlChange}
+                  type="text"
+                  value={document_annotation_embed_url}
+                />
+                <Error
+                  apiErrors={
+                    apiErrors && apiErrors.document_annotation_embed_url
+                  }
+                />
+              </SectionField>
+            )}
+
+            {participation_method === 'native_survey' && (
+              <NativeSurveyInputs
+                allow_anonymous_participation={allow_anonymous_participation}
+                handleAllowAnonymousParticipationOnChange={
+                  this.handleAllowAnonymousParticipationOnChange
+                }
+              />
+            )}
             {participation_method === 'survey' && (
               <SurveyInputs
                 survey_service={survey_service}
@@ -560,7 +638,6 @@ const Data = adopt<DataProps>({
   smartsurvey_enabled: <GetFeatureFlag name="smart_survey_surveys" />,
   snap_survey_enabled: <GetFeatureFlag name="snap_survey_surveys" />,
   microsoft_forms_enabled: <GetFeatureFlag name="microsoft_forms_surveys" />,
-  konveio_enabled: <GetFeatureFlag name="konveio_surveys" />,
   isCustomInputTermEnabled: <GetFeatureFlag name="idea_custom_copy" />,
 });
 

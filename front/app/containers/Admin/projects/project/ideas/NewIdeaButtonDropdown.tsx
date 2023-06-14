@@ -22,8 +22,8 @@ import { getMethodConfig } from 'utils/participationMethodUtils';
 
 // hooks & services
 import useLocalize from 'hooks/useLocalize';
-import { IProjectData } from 'services/projects';
-import { IPhaseData } from 'services/phases';
+import { IProjectData } from 'api/projects/types';
+import { IPhaseData } from 'api/phases/types';
 
 interface Props {
   phases: IPhaseData[] | null;

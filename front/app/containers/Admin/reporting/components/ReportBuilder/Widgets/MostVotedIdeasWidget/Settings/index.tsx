@@ -18,7 +18,7 @@ import { useIntl } from 'utils/cl-intl';
 // typings
 import { Props } from '../typings';
 import { IOption } from 'typings';
-import { IProjectData } from 'services/projects';
+import { IProjectData } from 'api/projects/types';
 
 const isContinuousIdeationOrTimelineProject = ({ attributes }: IProjectData) =>
   attributes.process_type === 'timeline' ||

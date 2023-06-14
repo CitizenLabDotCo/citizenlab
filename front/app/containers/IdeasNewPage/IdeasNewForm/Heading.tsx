@@ -16,7 +16,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // Types
-import { IProjectData } from 'services/projects';
+import { IProjectData } from 'api/projects/types';
 
 // Styles
 import GoBackButton from 'containers/IdeasShow/GoBackButton';
@@ -24,7 +24,7 @@ import { useSearchParams } from 'react-router-dom';
 
 type Props = {
   project: IProjectData;
-  titleText: string;
+  titleText: string | React.ReactNode;
   isSurvey: boolean;
   canUserEditProject: boolean;
 };

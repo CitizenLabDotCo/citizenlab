@@ -10,7 +10,7 @@ class WebApi::V1::NavBarItemsController < ApplicationController
   def index
     @items = policy_scope(NavBarItem).includes(:static_page).order(:ordering)
     @items = @items.only_default if parse_bool(params[:only_default])
-    render json: WebApi::V1::NavBarItemSerializer.new(@items, params: fastjson_params).serialized_json
+    render json: WebApi::V1::NavBarItemSerializer.new(@items, params: jsonapi_serializer_params).serializable_hash
   end
 
   def create
@@ -27,8 +27,8 @@ class WebApi::V1::NavBarItemsController < ApplicationController
       SideFxNavBarItemService.new.after_update @item, current_user
       render json: ::WebApi::V1::NavBarItemSerializer.new(
         @item,
-        params: fastjson_params
-      ).serialized_json, status: :ok
+        params: jsonapi_serializer_params
+      ).serializable_hash, status: :ok
     else
       render json: { errors: @item.errors.details }, status: :unprocessable_entity
     end
@@ -44,7 +44,7 @@ class WebApi::V1::NavBarItemsController < ApplicationController
       # ordering.
       rejected_codes.include? item.code
     end
-    render json: WebApi::V1::NavBarItemSerializer.new(@items, params: fastjson_params).serialized_json
+    render json: WebApi::V1::NavBarItemSerializer.new(@items, params: jsonapi_serializer_params).serializable_hash
   end
 
   def reorder
@@ -54,8 +54,8 @@ class WebApi::V1::NavBarItemsController < ApplicationController
       SideFxNavBarItemService.new.after_update @item, current_user
       render json: ::WebApi::V1::NavBarItemSerializer.new(
         @item.reload,
-        params: fastjson_params
-      ).serialized_json, status: :ok
+        params: jsonapi_serializer_params
+      ).serializable_hash, status: :ok
     else
       render json: { errors: @item.errors.details }, status: :unprocessable_entity
     end

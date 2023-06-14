@@ -1,7 +1,7 @@
 import { Keys } from 'utils/cl-react-query/types';
 import eventsKeys from './keys';
 import { Multiloc, ILinks } from 'typings';
-import { PublicationStatus } from 'services/projects';
+import { PublicationStatus } from 'api/projects/types';
 
 export type EventsKeys = Keys<typeof eventsKeys>;
 export interface IEventData {

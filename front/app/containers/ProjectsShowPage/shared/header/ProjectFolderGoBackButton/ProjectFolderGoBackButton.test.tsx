@@ -17,7 +17,9 @@ const projectFolderData = {
   },
 };
 
-jest.mock('hooks/useProjectFolder', () => jest.fn(() => projectFolderData));
+jest.mock('api/project_folders/useProjectFolderById', () => {
+  return jest.fn(() => ({ data: { data: projectFolderData } }));
+});
 
 describe('ProjectFolderGoBackButton', () => {
   it('should render', () => {

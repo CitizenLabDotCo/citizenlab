@@ -1,11 +1,10 @@
-import appConfigurationKeys from 'api/app_configuration/keys';
-import { fetchAppConfiguration } from 'api/app_configuration/useAppConfiguration';
+import meKeys from 'api/me/keys';
 import { queryClient } from './queryClient';
 
-export const resetQueryCache = async () => {
-  queryClient.clear();
-  await queryClient.prefetchQuery({
-    queryKey: appConfigurationKeys.all(),
-    queryFn: fetchAppConfiguration,
-  });
+export const resetMeQuery = async () => {
+  await queryClient.resetQueries({ queryKey: meKeys.all() });
+};
+
+export const invalidateQueryCache = () => {
+  queryClient.invalidateQueries();
 };

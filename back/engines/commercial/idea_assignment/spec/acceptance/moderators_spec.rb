@@ -9,11 +9,7 @@ resource 'Moderators' do
   before { header 'Content-Type', 'application/json' }
 
   context 'when admin' do
-    before do
-      @user = create(:admin)
-      token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-      header 'Authorization', "Bearer #{token}"
-    end
+    before { admin_header_token }
 
     delete 'web_api/v1/projects/:project_id/moderators/:user_id', if: defined?(ProjectManagement::Engine) do
       ValidationErrorHelper.new.error_fields self, User

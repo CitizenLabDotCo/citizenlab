@@ -69,11 +69,7 @@ resource 'ProjectFolder' do
   end
 
   context 'when admin' do
-    before do
-      @user = create(:admin)
-      token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-      header 'Authorization', "Bearer #{token}"
-    end
+    before { admin_header_token }
 
     post 'web_api/v1/project_folders' do
       with_options scope: :project_folder do

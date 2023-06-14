@@ -14,6 +14,7 @@ import {
   rightColumnWidthTablet,
   postPageContentMaxWidth,
 } from './styleConstants';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 const Container = styled.div`
   flex: 1 1 auto;
@@ -57,12 +58,23 @@ interface Props {
 }
 
 const Footer = memo<Props>(({ postId, postType, className }) => {
+  const { data: appConfiguration } = useAppConfiguration();
+
   return (
     <Container className={className || ''}>
       <Content>
         <ContentInner>
           <Suspense fallback={<LoadingComments />}>
-            <LazyComments postId={postId} postType={postType} />
+            <LazyComments
+              allowAnonymousParticipation={
+                postType === 'initiative'
+                  ? appConfiguration?.data.attributes.settings.initiatives
+                      ?.allow_anonymous_participation
+                  : undefined
+              }
+              postId={postId}
+              postType={postType}
+            />
           </Suspense>
         </ContentInner>
       </Content>

@@ -88,10 +88,7 @@ resource 'Reports' do
     describe 'when authorized' do
       let(:user) { create(:admin) }
 
-      before do
-        token = Knock::AuthToken.new(payload: user.to_token_payload).token
-        header 'Authorization', "Bearer #{token}"
-      end
+      before { header_token_for user }
 
       example 'Create a report' do
         do_request

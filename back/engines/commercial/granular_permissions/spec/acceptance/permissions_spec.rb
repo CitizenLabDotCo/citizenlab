@@ -17,11 +17,7 @@ resource 'Permissions' do
   let(:phase_id) { @phase.id }
 
   context 'when admin' do
-    before do
-      @admin = create(:admin)
-      token = Knock::AuthToken.new(payload: @admin.to_token_payload).token
-      header 'Authorization', "Bearer #{token}"
-    end
+    before { admin_header_token }
 
     get 'web_api/v1/projects/:project_id/permissions' do
       with_options scope: :page do
@@ -251,7 +247,8 @@ resource 'Permissions' do
             special: {
               password: 'satisfied',
               confirmation: 'satisfied',
-              verification: 'dont_ask'
+              verification: 'dont_ask',
+              group_membership: 'dont_ask'
             }
           }
         })
@@ -294,7 +291,8 @@ resource 'Permissions' do
             special: {
               password: 'dont_ask',
               confirmation: 'require',
-              verification: 'dont_ask'
+              verification: 'dont_ask',
+              group_membership: 'dont_ask'
             }
           }
         })
@@ -324,7 +322,8 @@ resource 'Permissions' do
             special: {
               password: 'satisfied',
               confirmation: 'satisfied',
-              verification: 'dont_ask'
+              verification: 'dont_ask',
+              group_membership: 'dont_ask'
             }
           }
         })
@@ -368,7 +367,8 @@ resource 'Permissions' do
             special: {
               password: 'require',
               confirmation: 'satisfied',
-              verification: 'dont_ask'
+              verification: 'dont_ask',
+              group_membership: 'dont_ask'
             }
           }
         })
@@ -400,7 +400,8 @@ resource 'Permissions' do
             special: {
               password: 'satisfied',
               confirmation: 'satisfied',
-              verification: 'dont_ask'
+              verification: 'dont_ask',
+              group_membership: 'dont_ask'
             }
           }
         })

@@ -29,6 +29,7 @@
 module EmailCampaigns
   class Campaign < ApplicationRecord
     belongs_to :author, class_name: 'User', optional: true
+    has_many :examples, class_name: 'EmailCampaigns::Example', dependent: :destroy
 
     # accepts_nested_attributes_for does not work for concerns
     # (see https://github.com/rails/rails/issues/15253). Doing
@@ -105,13 +106,6 @@ module EmailCampaigns
       @multiloc_service ||= MultilocService.new
       @multiloc_service.i18n_to_multiloc(
         "email_campaigns.campaign_type_description.#{campaign_name}"
-      )
-    end
-
-    def self.admin_campaign_description_multiloc
-      @multiloc_service ||= MultilocService.new
-      @multiloc_service.i18n_to_multiloc(
-        "email_campaigns.admin_campaign_type_description.#{campaign_name}"
       )
     end
 

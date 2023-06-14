@@ -25,7 +25,7 @@ class WebApi::V1::InitiativesController < ApplicationController
       current_user: current_user,
       scope: policy_scope(Initiative)
     ).find_records
-    render json: linked_json(initiatives, WebApi::V1::PostMarkerSerializer, params: fastjson_params)
+    render json: linked_json(initiatives, WebApi::V1::PostMarkerSerializer, params: jsonapi_serializer_params)
   end
 
   def index_xlsx
@@ -80,9 +80,9 @@ class WebApi::V1::InitiativesController < ApplicationController
   def show
     render json: WebApi::V1::InitiativeSerializer.new(
       @initiative,
-      params: fastjson_params,
+      params: jsonapi_serializer_params,
       include: %i[author topics areas user_vote initiative_images]
-    ).serialized_json
+    ).serializable_hash
   end
 
   def by_slug
@@ -100,6 +100,10 @@ class WebApi::V1::InitiativesController < ApplicationController
     service.before_create(@initiative, current_user)
 
     authorize @initiative
+    if anonymous_not_allowed?
+      render json: { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }, status: :unprocessable_entity
+      return
+    end
     verify_profanity @initiative
 
     save_options = {}
@@ -109,9 +113,9 @@ class WebApi::V1::InitiativesController < ApplicationController
         service.after_create(@initiative, current_user)
         render json: WebApi::V1::InitiativeSerializer.new(
           @initiative.reload,
-          params: fastjson_params,
+          params: jsonapi_serializer_params,
           include: %i[author topics areas user_vote initiative_images]
-        ).serialized_json, status: :created
+        ).serializable_hash, status: :created
       else
         render json: { errors: @initiative.errors.details }, status: :unprocessable_entity
       end
@@ -126,6 +130,10 @@ class WebApi::V1::InitiativesController < ApplicationController
     remove_image_if_requested!(@initiative, initiative_params, :header_bg)
 
     authorize @initiative
+    if anonymous_not_allowed?
+      render json: { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }, status: :unprocessable_entity
+      return
+    end
     verify_profanity @initiative
 
     service.before_update(@initiative, current_user)
@@ -136,7 +144,6 @@ class WebApi::V1::InitiativesController < ApplicationController
     ActiveRecord::Base.transaction do
       saved = @initiative.save save_options
       if saved
-        authorize @initiative
         service.after_update(@initiative, current_user)
       end
     end
@@ -148,9 +155,9 @@ class WebApi::V1::InitiativesController < ApplicationController
     if saved
       render json: WebApi::V1::InitiativeSerializer.new(
         @initiative.reload,
-        params: fastjson_params,
+        params: jsonapi_serializer_params,
         include: %i[author topics areas user_vote initiative_images]
-      ).serialized_json, status: :ok
+      ).serializable_hash, status: :ok
     else
       render json: { errors: @initiative.errors.details }, status: :unprocessable_entity
     end
@@ -182,7 +189,7 @@ class WebApi::V1::InitiativesController < ApplicationController
   end
 
   def serialization_options_for(initiatives)
-    default_params = fastjson_params(pcs: ParticipationContextService.new)
+    default_params = jsonapi_serializer_params(pcs: ParticipationContextService.new)
 
     if current_user
       votes = current_user.votes.where(
@@ -197,5 +204,9 @@ class WebApi::V1::InitiativesController < ApplicationController
 
   def display_names_restricted?
     UserDisplayNameService.new(Tenant.current, current_user).restricted?
+  end
+
+  def anonymous_not_allowed?
+    params.dig('initiative', 'anonymous') && !AppConfiguration.instance.settings.dig('initiatives', 'allow_anonymous_participation')
   end
 end

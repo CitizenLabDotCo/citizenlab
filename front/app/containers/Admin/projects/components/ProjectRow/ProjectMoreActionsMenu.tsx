@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import messages from '../messages';
-import { copyProject, deleteProject } from 'services/projects';
+import useCopyProject from 'api/projects/useCopyProject';
+import useDeleteProject from 'api/projects/useDeleteProject';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import { useIntl } from 'utils/cl-intl';
 import { isAdmin } from 'services/permissions/roles';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 import { userModeratesFolder } from 'services/permissions/rules/projectFolderPermissions';
 
 export type ActionType = 'deleting' | 'copying';
@@ -24,9 +25,13 @@ const ProjectMoreActionsMenu = ({
   setIsRunningAction,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const project = useProject({ projectId });
-  const folderId = project?.attributes.folder_id;
-  const authUser = useAuthUser();
+  const { data: project } = useProjectById(projectId);
+  const folderId = project?.data.attributes.folder_id;
+  const { data: authUser } = useAuthUser();
+
+  const { mutate: deleteProject } = useDeleteProject();
+  const { mutate: copyProject } = useCopyProject();
+
   const [isCopying, setIsCopying] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -34,23 +39,12 @@ const ProjectMoreActionsMenu = ({
     return null;
   }
 
-  const userCanDeleteProject = isAdmin({ data: authUser });
+  const userCanDeleteProject = isAdmin(authUser);
   const userCanCopyProject =
-    isAdmin({ data: authUser }) ||
+    isAdmin(authUser) ||
     // If folderId is string, it means project is in a folder
-    (typeof folderId === 'string' && userModeratesFolder(authUser, folderId));
-
-  const handleCallbackError = async (
-    callback: () => Promise<any>,
-    error: string
-  ) => {
-    try {
-      await callback();
-      setError(null);
-    } catch {
-      setError(error);
-    }
-  };
+    (typeof folderId === 'string' &&
+      userModeratesFolder(authUser.data, folderId));
 
   const setLoadingState = (
     type: 'deleting' | 'copying',
@@ -72,11 +66,17 @@ const ProjectMoreActionsMenu = ({
       actions.push({
         handler: async () => {
           setLoadingState('copying', true);
-          await handleCallbackError(
-            () => copyProject(projectId),
-            formatMessage(messages.copyProjectError)
-          );
-          setLoadingState('copying', false);
+
+          copyProject(projectId, {
+            onSuccess: () => {
+              setError(null);
+              setLoadingState('deleting', false);
+            },
+            onError: () => {
+              setError(formatMessage(messages.copyProjectError));
+              setLoadingState('deleting', false);
+            },
+          });
         },
         label: formatMessage(messages.copyProjectButton),
         icon: 'copy' as const,
@@ -91,11 +91,17 @@ const ProjectMoreActionsMenu = ({
             window.confirm(formatMessage(messages.deleteProjectConfirmation))
           ) {
             setLoadingState('deleting', true);
-            await handleCallbackError(
-              () => deleteProject(projectId),
-              formatMessage(messages.deleteProjectError)
-            );
-            setLoadingState('deleting', false);
+
+            deleteProject(projectId, {
+              onSuccess: () => {
+                setError(null);
+                setLoadingState('deleting', false);
+              },
+              onError: () => {
+                setError(formatMessage(messages.deleteProjectError));
+                setLoadingState('deleting', false);
+              },
+            });
           }
         },
         label: formatMessage(messages.deleteProjectButtonFull),

@@ -6,11 +6,11 @@ import { Row } from 'components/admin/ResourceList';
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 import { isAdmin } from 'services/permissions/roles';
-import { IUserData } from 'services/users';
+import { IUserData } from 'api/users/types';
 import styled from 'styled-components';
-import { deleteProjectModerator } from 'services/projectModerators';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
+import useDeleteProjectModerator from 'api/project_moderators/useDeleteProjectModerator';
 
 interface Props {
   isLastItem: boolean;
@@ -23,8 +23,10 @@ const PendingInvitation = styled.span`
 `;
 
 const ModeratorListRow = ({ isLastItem, moderator, projectId }: Props) => {
+  const { mutate: deleteProjectModerator, isLoading } =
+    useDeleteProjectModerator();
   const { formatMessage } = useIntl();
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
 
   if (isNilOrError(authUser)) {
     return null;
@@ -44,7 +46,7 @@ const ModeratorListRow = ({ isLastItem, moderator, projectId }: Props) => {
   );
   const handleDeleteClick = () => {
     if (window.confirm(formatMessage(messages.moderatorDeletionConfirmation))) {
-      deleteProjectModerator(projectId, moderatorId);
+      deleteProjectModerator({ projectId, id: moderatorId });
     }
   };
 
@@ -67,7 +69,8 @@ const ModeratorListRow = ({ isLastItem, moderator, projectId }: Props) => {
         icon="delete"
         // Component is on a page that is accessible
         // for both project moderators and admins
-        disabled={!isAdmin({ data: authUser })}
+        disabled={!isAdmin(authUser)}
+        processing={isLoading}
       >
         {formatMessage(messages.deleteModeratorLabel)}
       </Button>

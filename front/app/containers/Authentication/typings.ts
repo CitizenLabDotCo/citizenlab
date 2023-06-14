@@ -6,8 +6,6 @@ import {
 import { SSOProvider } from 'services/singleSignOn';
 import { SuccessAction } from './SuccessActions/actions';
 
-export type Status = 'pending' | 'ok';
-
 export type ErrorCode =
   | 'account_creation_failed'
   | 'wrong_confirmation_code'

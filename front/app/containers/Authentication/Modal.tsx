@@ -26,6 +26,7 @@ import FranceConnectLogin from './steps/Policies/FranceConnectLogin';
 import BuiltInFields from './steps/BuiltInFields';
 import Password from './steps/Password';
 import Success from './steps/Success';
+import ClaveUnicaEmail from './steps/ClaveUnicaEmail';
 import Error from 'components/UI/Error';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
@@ -58,6 +59,8 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   'sign-up:verification': messages.verifyYourIdentity,
   'sign-up:custom-fields': messages.completeYourProfile,
   'sign-up:invite': messages.signUp,
+  'clave-unica:email': messages.signUp,
+  'clave-unica:email-confirmation': messages.confirmYourEmail,
 
   // light flow
   'light-flow:email': messages.beforeYouParticipate,
@@ -108,7 +111,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
   const {
     currentStep,
     state,
-    status,
+    loading,
     error,
     authenticationData,
     transition,
@@ -129,7 +132,10 @@ const AuthModal = ({ setModalOpen }: Props) => {
   });
   const fullscreenModalEnabled = _fullscreenModalEnabled && false;
 
-  const closable = currentStep !== 'closed' && currentStep !== 'success';
+  const closable =
+    currentStep !== 'closed' &&
+    currentStep !== 'success' &&
+    currentStep !== 'clave-unica:email';
 
   const headerMessage = HEADER_MESSAGES[currentStep];
 
@@ -208,7 +214,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
 
         {currentStep === 'success' && (
           <Success
-            status={status}
+            loading={loading}
             onContinue={transition(currentStep, 'CONTINUE')}
           />
         )}
@@ -228,7 +234,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
 
         {currentStep === 'sign-in:email-password' && (
           <EmailAndPassword
-            status={status}
+            loading={loading}
             setError={setError}
             onSwitchFlow={transition(currentStep, 'SWITCH_FLOW')}
             onGoBack={transition(currentStep, 'GO_BACK')}
@@ -252,7 +258,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
         {currentStep === 'sign-up:email-password' && (
           <EmailAndPasswordSignUp
             state={state}
-            status={status}
+            loading={loading}
             setError={setError}
             onSwitchFlow={transition(currentStep, 'SWITCH_FLOW')}
             onGoBack={transition(currentStep, 'GO_BACK')}
@@ -263,7 +269,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
         {currentStep === 'sign-up:email-confirmation' && (
           <EmailConfirmation
             state={state}
-            status={status}
+            loading={loading}
             setError={setError}
             onConfirm={transition(currentStep, 'SUBMIT_CODE')}
             onChangeEmail={transition(currentStep, 'CHANGE_EMAIL')}
@@ -272,7 +278,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
 
         {currentStep === 'sign-up:change-email' && (
           <ChangeEmail
-            status={status}
+            loading={loading}
             setError={setError}
             onGoBack={transition(currentStep, 'GO_BACK')}
             onChangeEmail={transition(currentStep, 'RESEND_CODE')}
@@ -290,7 +296,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
         {currentStep === 'sign-up:custom-fields' && (
           <CustomFields
             authenticationData={authenticationData}
-            status={status}
+            loading={loading}
             setError={setError}
             onSubmit={transition(currentStep, 'SUBMIT')}
             onSkip={transition(currentStep, 'SKIP')}
@@ -299,16 +305,34 @@ const AuthModal = ({ setModalOpen }: Props) => {
 
         {currentStep === 'sign-up:invite' && (
           <Invitation
-            status={status}
+            loading={loading}
             setError={setError}
             onSubmit={transition(currentStep, 'SUBMIT')}
+          />
+        )}
+
+        {currentStep === 'clave-unica:email' && (
+          <ClaveUnicaEmail
+            loading={loading}
+            setError={setError}
+            onSubmit={transition(currentStep, 'SUBMIT_EMAIL')}
+          />
+        )}
+
+        {currentStep === 'clave-unica:email-confirmation' && (
+          <EmailConfirmation
+            state={state}
+            loading={loading}
+            setError={setError}
+            onConfirm={transition(currentStep, 'SUBMIT_CODE')}
+            onChangeEmail={transition(currentStep, 'CHANGE_EMAIL')}
           />
         )}
 
         {/* light flow */}
         {currentStep === 'light-flow:email' && (
           <LightFlowStart
-            status={status}
+            loading={loading}
             setError={setError}
             onSubmit={transition(currentStep, 'SUBMIT_EMAIL')}
             onSwitchToSSO={transition(currentStep, 'CONTINUE_WITH_SSO')}
@@ -318,7 +342,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
         {currentStep === 'light-flow:email-policies' && (
           <EmailPolicies
             state={state}
-            status={status}
+            loading={loading}
             setError={setError}
             onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
           />
@@ -326,21 +350,21 @@ const AuthModal = ({ setModalOpen }: Props) => {
 
         {currentStep === 'light-flow:google-policies' && (
           <GooglePolicies
-            status={status}
+            loading={loading}
             onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
           />
         )}
 
         {currentStep === 'light-flow:facebook-policies' && (
           <FacebookPolicies
-            status={status}
+            loading={loading}
             onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
           />
         )}
 
         {currentStep === 'light-flow:azure-ad-policies' && (
           <AzureAdPolicies
-            status={status}
+            loading={loading}
             onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
           />
         )}
@@ -352,7 +376,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
         {currentStep === 'light-flow:email-confirmation' && (
           <EmailConfirmation
             state={state}
-            status={status}
+            loading={loading}
             setError={setError}
             onConfirm={transition(currentStep, 'SUBMIT_CODE')}
             onChangeEmail={transition(currentStep, 'CHANGE_EMAIL')}
@@ -362,7 +386,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
         {currentStep === 'light-flow:password' && (
           <Password
             state={state}
-            status={status}
+            loading={loading}
             setError={setError}
             onSubmit={transition(currentStep, 'SUBMIT_PASSWORD')}
           />
@@ -371,7 +395,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
         {/* missing data flow */}
         {currentStep === 'missing-data:built-in' && (
           <BuiltInFields
-            status={status}
+            loading={loading}
             authenticationData={authenticationData}
             setError={setError}
             onSubmit={transition(currentStep, 'SUBMIT')}
@@ -381,7 +405,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
         {currentStep === 'missing-data:email-confirmation' && (
           <EmailConfirmation
             state={state}
-            status={status}
+            loading={loading}
             setError={setError}
             onConfirm={transition(currentStep, 'SUBMIT_CODE')}
             onChangeEmail={transition(currentStep, 'CHANGE_EMAIL')}
@@ -390,7 +414,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
 
         {currentStep === 'missing-data:change-email' && (
           <ChangeEmail
-            status={status}
+            loading={loading}
             setError={setError}
             onGoBack={transition(currentStep, 'GO_BACK')}
             onChangeEmail={transition(currentStep, 'RESEND_CODE')}
@@ -408,7 +432,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
         {currentStep === 'missing-data:custom-fields' && (
           <CustomFields
             authenticationData={authenticationData}
-            status={status}
+            loading={loading}
             setError={setError}
             onSubmit={transition(currentStep, 'SUBMIT')}
             onSkip={transition(currentStep, 'SKIP')}

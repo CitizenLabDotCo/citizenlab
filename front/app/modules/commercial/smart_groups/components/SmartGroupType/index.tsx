@@ -19,7 +19,7 @@ import {
   GroupName,
 } from 'containers/Admin/users/GroupCreationStep1';
 
-import { MembershipType } from 'services/groups';
+import { MembershipType } from 'api/groups/types';
 
 const GroupType = styled(BaseGroupType)`
   background: ${colors.background};

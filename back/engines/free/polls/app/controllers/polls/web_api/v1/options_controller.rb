@@ -17,15 +17,15 @@ module Polls
           render json: linked_json(
             @options,
             Polls::WebApi::V1::OptionSerializer,
-            params: fastjson_params
+            params: jsonapi_serializer_params
           )
         end
 
         def show
           render json: WebApi::V1::OptionSerializer.new(
             @option,
-            params: fastjson_params
-          ).serialized_json
+            params: jsonapi_serializer_params
+          ).serializable_hash
         end
 
         def create
@@ -39,8 +39,8 @@ module Polls
             SideFxOptionService.new.after_create(@option, current_user)
             render json: WebApi::V1::OptionSerializer.new(
               @option,
-              params: fastjson_params
-            ).serialized_json, status: :created
+              params: jsonapi_serializer_params
+            ).serializable_hash, status: :created
           else
             render json: { errors: @option.errors.details }, status: :unprocessable_entity
           end
@@ -54,8 +54,8 @@ module Polls
             SideFxOptionService.new.after_update(@option, current_user)
             render json: WebApi::V1::OptionSerializer.new(
               @option,
-              params: fastjson_params
-            ).serialized_json, status: :ok
+              params: jsonapi_serializer_params
+            ).serializable_hash, status: :ok
           else
             render json: { errors: @option.errors.details }, status: :unprocessable_entity
           end
@@ -67,8 +67,8 @@ module Polls
             SideFxOptionService.new.after_update(@option, current_user)
             render json: WebApi::V1::OptionSerializer.new(
               @option,
-              params: fastjson_params
-            ).serialized_json, status: :ok
+              params: jsonapi_serializer_params
+            ).serializable_hash, status: :ok
           else
             render json: { errors: @option.errors.details }, status: :unprocessable_entity
           end

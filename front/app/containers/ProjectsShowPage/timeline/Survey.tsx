@@ -1,11 +1,10 @@
 import React, { memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Survey from '../shared/survey';
 
 // hooks
-import usePhase from 'hooks/usePhase';
+import usePhase from 'api/phases/usePhase';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -14,25 +13,26 @@ import messages from 'containers/ProjectsShowPage/messages';
 // styling
 import styled from 'styled-components';
 import { ScreenReaderOnly } from 'utils/a11y';
+import { IProjectData } from 'api/projects/types';
 
 const Container = styled.div`
   position: relative;
 `;
 
 interface Props {
-  projectId: string;
+  project: IProjectData;
   phaseId: string | null;
   className?: string;
 }
 
-const SurveyContainer = memo<Props>(({ projectId, phaseId, className }) => {
-  const phase = usePhase(phaseId);
+const SurveyContainer = memo<Props>(({ project, phaseId, className }) => {
+  const { data: phase } = usePhase(phaseId);
 
   if (
-    !isNilOrError(phase) &&
-    phase.attributes.participation_method === 'survey' &&
-    phase.attributes.survey_embed_url &&
-    phase.attributes.survey_service
+    phase &&
+    phase.data.attributes.participation_method === 'survey' &&
+    phase.data.attributes.survey_embed_url &&
+    phase.data.attributes.survey_service
   ) {
     return (
       <Container className={className || ''}>
@@ -41,10 +41,10 @@ const SurveyContainer = memo<Props>(({ projectId, phaseId, className }) => {
         </ScreenReaderOnly>
         <Survey
           className={className}
-          projectId={projectId}
-          phaseId={phase.id}
-          surveyEmbedUrl={phase.attributes.survey_embed_url}
-          surveyService={phase.attributes.survey_service}
+          project={project}
+          phaseId={phase.data.id}
+          surveyEmbedUrl={phase.data.attributes.survey_embed_url}
+          surveyService={phase.data.attributes.survey_service}
         />
       </Container>
     );

@@ -199,10 +199,10 @@ resource 'AdminPublication' do
 
         json_response = json_parse(response_body)
 
-        expect(json_response[:status_counts][:draft]).to eq 2
-        expect(json_response[:status_counts][:archived]).to eq 2
+        expect(json_response[:data][:attributes][:status_counts][:draft]).to eq 2
+        expect(json_response[:data][:attributes][:status_counts][:archived]).to eq 2
 
-        expect(json_response[:status_counts][:published]).to eq 3
+        expect(json_response[:data][:attributes][:status_counts][:published]).to eq 3
       end
     end
   end
@@ -412,10 +412,10 @@ resource 'AdminPublication' do
         expect(status).to eq 200
 
         json_response = json_parse(response_body)
-        expect(json_response[:status_counts][:draft]).to be_nil
-        expect(json_response[:status_counts][:published]).to eq 2
+        expect(json_response[:data][:attributes][:status_counts][:draft]).to be_nil
+        expect(json_response[:data][:attributes][:status_counts][:published]).to eq 2
 
-        expect(json_response[:status_counts][:archived]).to eq 1
+        expect(json_response[:data][:attributes][:status_counts][:archived]).to eq 1
       end
     end
   end
@@ -424,9 +424,7 @@ resource 'AdminPublication' do
     let(:folder) { create(:project_folder) }
 
     before do
-      @user = create(:project_folder_moderator, project_folders: [folder])
-      token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-      header 'Authorization', "Bearer #{token}"
+      header_token_for create(:project_folder_moderator, project_folders: [folder])
 
       @projects = %w[published published draft draft published archived archived published]
         .map { |ps| create(:project, admin_publication_attributes: { publication_status: ps, parent_id: folder.admin_publication.id }) }

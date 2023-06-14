@@ -73,10 +73,12 @@ jest.mock('modules/commercial/insights/api/views/useDeleteView', () =>
   })
 );
 
-jest.mock('hooks/useProject', () => {
-  return jest.fn(({ projectId }) =>
-    projectId === '2' ? mockProjectData2 : mockProjectData3
-  );
+jest.mock('api/projects/useProjectById', () => {
+  return jest.fn((projectId) => ({
+    data: {
+      data: projectId === '2' ? mockProjectData2 : mockProjectData3,
+    },
+  }));
 });
 
 jest.mock('utils/cl-router/withRouter', () => {

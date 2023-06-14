@@ -11,7 +11,7 @@ import {
 import SectionContainer from 'components/SectionContainer';
 
 // hooks
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 import { useWindowSize } from '@citizenlab/cl2-component-library';
 
 // i18n
@@ -28,7 +28,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
 
 // typings
-import { IProjectData } from 'services/projects';
+import { IProjectData } from 'api/projects/types';
 import { IQueryParameters } from 'api/ideas/types';
 
 const Container = styled.div``;
@@ -133,10 +133,10 @@ interface Props {
 }
 
 const IdeasContainerWrapper = ({ projectId, className }: Props) => {
-  const project = useProject({ projectId });
-  if (isNilOrError(project)) return null;
+  const { data: project } = useProjectById(projectId);
+  if (!project) return null;
 
-  return <IdeasContainer className={className} project={project} />;
+  return <IdeasContainer className={className} project={project.data} />;
 };
 
 export default IdeasContainerWrapper;

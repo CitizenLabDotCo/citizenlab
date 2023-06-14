@@ -1,7 +1,7 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
-import { IProjectData } from 'services/projects';
+import { IProjectData } from 'api/projects/types';
 import Link from 'utils/cl-router/Link';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import T from 'components/T';

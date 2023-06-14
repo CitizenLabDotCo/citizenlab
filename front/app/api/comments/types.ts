@@ -19,9 +19,11 @@ interface CommentAttributes {
   children_count: number;
 }
 
-interface IPresentComment extends CommentAttributes {
+export interface IPresentComment extends CommentAttributes {
   body_multiloc: Multiloc;
   publication_status: 'published';
+  anonymous?: boolean;
+  author_hash?: string;
 }
 
 interface IDeletedComment extends CommentAttributes {
@@ -64,6 +66,7 @@ export interface INewComment {
   author_id: string;
   parent_id?: string;
   body_multiloc: Multiloc;
+  anonymous?: boolean;
 }
 
 export interface IUpdatedComment {
@@ -81,10 +84,12 @@ export const DeleteReasonCode = {
 
 export interface DeleteReason {
   reason_code: keyof typeof DeleteReasonCode;
-  other_reason: string | null;
+  // Only here if reason_code is 'other'
+  other_reason?: string;
 }
 
-export type CommentsSort = '-new' | 'upvotes_count' | 'new' | '-upvotes_count';
+// back-end also offers 'upvotes_count' if needed
+export type CommentsSort = '-new' | 'new' | '-upvotes_count';
 
 export type ICommentQueryParameters = {
   sort?: CommentsSort;

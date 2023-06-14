@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 // hooks
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 import useLocalize from 'hooks/useLocalize';
 import { useEditor, SerializedNodes } from '@craftjs/core';
 
@@ -13,9 +13,6 @@ import PreviewToggle from 'components/admin/ContentBuilder/TopBar/PreviewToggle'
 import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
 import Button from 'components/UI/Button';
 import { Box, Spinner, Text, Title } from '@citizenlab/cl2-component-library';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import messages from './messages';
@@ -57,7 +54,7 @@ const ProjectDescriptionBuilderTopBar = ({
   const [loading, setLoading] = useState(false);
   const { query } = useEditor();
   const localize = useLocalize();
-  const project = useProject({ projectId });
+  const { data: project } = useProjectById(projectId);
 
   const disableSave = localesWithError.length > 0;
 
@@ -96,12 +93,12 @@ const ProjectDescriptionBuilderTopBar = ({
       <GoBackButton onClick={goBack} />
       <Box display="flex" p="15px" flexGrow={1} alignItems="center">
         <Box flexGrow={2}>
-          {isNilOrError(project) ? (
+          {!project ? (
             <Spinner />
           ) : (
             <>
               <Text mb="0px" color="textSecondary">
-                {localize(project.attributes.title_multiloc)}
+                {localize(project.data.attributes.title_multiloc)}
               </Text>
               <Title variant="h4" as="h1">
                 <FormattedMessage {...messages.descriptionTopicManagerText} />
@@ -125,7 +122,7 @@ const ProjectDescriptionBuilderTopBar = ({
           icon="eye"
           mx="20px"
           disabled={!project}
-          linkTo={`/projects/${project?.attributes.slug}`}
+          linkTo={`/projects/${project?.data.attributes.slug}`}
           openLinkInNewTab
         >
           <FormattedMessage {...messages.viewProject} />

@@ -65,7 +65,7 @@ import {
   IStatusChangeOnVotedInitiativeNotificationData,
   IThresholdReachedForAdminNotificationData,
   IProjectFolderModerationRightsReceivedNotificationData,
-} from 'services/notifications';
+} from 'api/notifications/types';
 import styled from 'styled-components';
 import Outlet from 'components/Outlet';
 

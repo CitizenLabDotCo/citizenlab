@@ -24,13 +24,7 @@ class AppConfiguration < ApplicationRecord
   accepts_nested_attributes_for :text_images
 
   validates :settings, presence: true, json: {
-    schema: -> { AppConfiguration::Settings.json_schema_str },
-    message: lambda { |errors|
-               errors.map do |e|
-                 { fragment: e[:fragment], error: e[:failed_attribute], human_message: e[:message] }
-               end
-             },
-    options: { errors_as_objects: true }
+    schema: -> { AppConfiguration::Settings.json_schema }
   }
 
   validates :host, presence: true
@@ -39,6 +33,7 @@ class AppConfiguration < ApplicationRecord
   validate :validate_singleton, on: :create
 
   before_validation :validate_missing_feature_dependencies
+  before_validation :add_missing_features_and_settings, on: :create
 
   after_update do
     AppConfiguration.instance.reload
@@ -48,14 +43,14 @@ class AppConfiguration < ApplicationRecord
     extend CitizenLab::Mixins::SettingsSpecification
 
     def self.json_schema
-      settings_schema = core_settings_json_schema
+      settings_schema = core_settings_json_schema.deep_dup # deep_dup to avoid modifying core schema
 
       extension_features_specs.each do |spec|
         settings_schema['properties'][spec.feature_name] = spec.json_schema
         settings_schema['dependencies'][spec.feature_name] = spec.dependencies if spec.dependencies.present?
       end
 
-      settings_schema
+      settings_schema.with_indifferent_access
     end
 
     def self.core_settings_json_schema
@@ -116,6 +111,13 @@ class AppConfiguration < ApplicationRecord
     self.settings = ss.add_missing_features(settings, schema)
     self.settings = ss.add_missing_settings(settings, schema)
     self
+  end
+
+  def add_missing_features_and_settings
+    ss = SettingsService.new
+    schema = Settings.json_schema
+    self.settings = ss.add_missing_features(settings, schema)
+    self.settings = ss.add_missing_settings(settings, schema)
   end
 
   def feature_activated?(setting_name)

@@ -12,6 +12,7 @@ export const data: IInitiativeData = {
   id: '1',
   type: 'initiative',
   attributes: {
+    anonymous: false,
     title_multiloc: {
       en: 'Test initiative',
     },

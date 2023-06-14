@@ -5,6 +5,10 @@ export default defineMessages({
     id: 'app.components.ParticipationCTABars.takeTheSurvey',
     defaultMessage: 'Take the survey',
   },
+  reviewDocument: {
+    id: 'app.components.ParticipationCTABars.reviewDocument',
+    defaultMessage: 'Review the document',
+  },
   projectOpenForSubmission: {
     id: 'app.components.ParticipationCTABars.projectOpenForSubmission',
     defaultMessage: 'This project is currently open for participation.',

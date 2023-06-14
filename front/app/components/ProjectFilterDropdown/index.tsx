@@ -46,10 +46,9 @@ class ProjectFilterDropdown extends PureComponent<
   render() {
     const { selectedValues } = this.state;
     const { projects, localize, title, className, textColor } = this.props;
-    const projectsList = projects.projectsList;
 
-    if (projectsList && projectsList.length > 0) {
-      const options = projectsList.map((project) => {
+    if (projects && projects.length > 0) {
+      const options = projects.map((project) => {
         return {
           text: localize(project.attributes.title_multiloc),
           value: project.id,

@@ -1,7 +1,7 @@
 import { definePermissionRule } from 'services/permissions/permissions';
 import { isAdmin, isProjectModerator } from '../roles';
-import { IUser } from 'services/users';
-import { IProjectData } from 'services/projects';
+import { IUser } from 'api/users/types';
+import { IProjectData } from 'api/projects/types';
 
 definePermissionRule(
   'project',

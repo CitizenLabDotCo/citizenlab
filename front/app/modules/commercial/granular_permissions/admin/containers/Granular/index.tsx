@@ -1,5 +1,5 @@
 import React from 'react';
-import { IProjectData } from 'services/projects';
+import { IProjectData } from 'api/projects/types';
 import styled from 'styled-components';
 
 // components
@@ -20,10 +20,10 @@ const Granular = ({ project }: Props) => {
 
   return (
     <StyledSection id="e2e-granular-permissions">
-      {project && project.attributes.process_type === 'timeline' && (
+      {project.attributes.process_type === 'timeline' && (
         <Timeline projectId={projectId} />
       )}
-      {project && project.attributes.process_type === 'continuous' && (
+      {project.attributes.process_type === 'continuous' && (
         <Continuous projectId={projectId} />
       )}
     </StyledSection>

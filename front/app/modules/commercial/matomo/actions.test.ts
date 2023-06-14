@@ -1,11 +1,7 @@
 import { trackPageChange } from './actions';
 import { mockRoutes } from './mockRoutes.mock';
-import { Observable } from 'rxjs';
-import { delay } from 'rxjs/operators';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import ideasKeys from 'api/ideas/keys';
-
-jest.mock('services/auth');
 
 jest.mock('routes', () => ({
   __esModule: true,
@@ -13,14 +9,10 @@ jest.mock('routes', () => ({
 }));
 
 let mockProject;
-const mockProjectObservable = new Observable((subscriber) => {
-  subscriber.next(mockProject);
-}).pipe(delay(1));
 
-jest.mock('services/projects', () => ({
-  projectBySlugStream: jest.fn(() => ({
-    observable: mockProjectObservable,
-  })),
+jest.mock('api/projects/getProjectBySlug', () => ({
+  __esModule: true,
+  default: jest.fn(() => mockProject),
 }));
 
 const mockIdea = {

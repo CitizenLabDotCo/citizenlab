@@ -12,11 +12,11 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from 'containers/SiteMap/messages';
 
 // hooks
-import useAdminPublications from 'hooks/useAdminPublications';
-import useProjectFolder from 'hooks/useProjectFolder';
+import useAdminPublications from 'api/admin_publications/useAdminPublications';
+import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 
 // typings
-import { PublicationStatus } from 'services/projects';
+import { PublicationStatus } from 'api/projects/types';
 
 interface Props {
   hightestTitle: 'h3' | 'h4';
@@ -32,21 +32,25 @@ const publicationStatuses: PublicationStatus[] = [
 const ProjectFolderSitemap = ({ projectFolderId, hightestTitle }: Props) => {
   const TitleComponent = hightestTitle === 'h3' ? H3 : H4;
 
-  const folder = useProjectFolder({ projectFolderId });
-  const { list: childAdminPublications } = useAdminPublications({
+  const { data: folder } = useProjectFolderById(projectFolderId);
+  const { data: adminPublications } = useAdminPublications({
     childrenOfId: projectFolderId,
     publicationStatusFilter: publicationStatuses,
   });
 
-  if (!isNilOrError(folder)) {
+  const childAdminPublications = adminPublications?.pages
+    .map((page) => page.data)
+    .flat();
+
+  if (folder && !isNilOrError(folder.data)) {
     return (
       <>
         <TitleComponent>
-          <T value={folder.attributes.title_multiloc} />
+          <T value={folder.data.attributes.title_multiloc} />
         </TitleComponent>
         <ul>
           <li>
-            <Link to={`/folders/${folder.attributes.slug}`}>
+            <Link to={`/folders/${folder.data.attributes.slug}`}>
               <FormattedMessage {...messages.folderInfo} />
             </Link>
           </li>

@@ -3,25 +3,27 @@ import React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
 import UserHeader from './UserHeader';
 
-jest.mock('hooks/useUser', () => {
-  return () => ({
-    id: 'userId',
-    attributes: {
-      first_name: 'Jane',
-      last_name: 'Doe',
-      bio_multiloc: { en: '<p>My bio</p>' },
-      created_at: '2022-10-22T00:00:00.000Z',
+jest.mock('api/users/useUserBySlug', () =>
+  jest.fn(() => ({
+    data: {
+      data: {
+        id: 'userId',
+        attributes: {
+          first_name: 'Jane',
+          last_name: 'Doe',
+          bio_multiloc: { en: '<p>My bio</p>' },
+          created_at: '2022-10-22T00:00:00.000Z',
+        },
+      },
     },
-  });
-});
+  }))
+);
 
 let mockUserId = 'userId';
 
-jest.mock('hooks/useAuthUser', () => {
-  return () => ({
-    id: mockUserId,
-  });
-});
+jest.mock('api/me/useAuthUser', () => () => ({
+  data: { data: { id: mockUserId } },
+}));
 
 let mockDisableUsersBiosValue = false;
 

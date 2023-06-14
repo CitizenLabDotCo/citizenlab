@@ -1,16 +1,9 @@
 import React, { memo } from 'react';
 import { isBoolean } from 'lodash-es';
 
-// resource hooks
-import useLocale from 'hooks/useLocale';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-
 // components
 import OfficialFeedbackForm from './OfficialFeedbackForm';
 import OfficialFeedbackFeed from './OfficialFeedbackFeed';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
 
 // stylings
 import styled from 'styled-components';
@@ -33,20 +26,11 @@ const OfficialFeedback = memo<Props>(
     a11y_pronounceLatestOfficialFeedbackPost,
     className,
   }) => {
-    const locale = useLocale();
-    const tenantLocales = useAppConfigurationLocales();
-
-    if (
-      isBoolean(permissionToPost) &&
-      !isNilOrError(locale) &&
-      !isNilOrError(tenantLocales)
-    ) {
+    if (isBoolean(permissionToPost)) {
       return (
         <Container className={className || ''}>
           {permissionToPost && (
             <OfficialFeedbackForm
-              locale={locale}
-              tenantLocales={tenantLocales}
               formType="new"
               postId={postId}
               postType={postType}

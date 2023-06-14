@@ -7,7 +7,7 @@ import InitiativeForm, {
 
 // services
 import { Locale, Multiloc, UploadFile } from 'typings';
-import { ITopicData } from 'services/topics';
+import { ITopicData } from 'api/topics/types';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -25,12 +25,13 @@ import { trackEventByName } from 'utils/analytics';
 import { IInitiativeImageData } from 'api/initiative_images/types';
 import useAddInitiativeImage from 'api/initiative_images/useAddInitiativeImage';
 import useDeleteInitiativeImage from 'api/initiative_images/useDeleteInitiativeImage';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAddInitiativeFile from 'api/initiative_files/useAddInitiativeFile';
 import useDeleteInitiativeFile from 'api/initiative_files/useDeleteInitiativeFile';
 import useUpdateInitiative from 'api/initiatives/useUpdateInitiative';
 import { IInitiativeAdd, IInitiativeData } from 'api/initiatives/types';
+import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
 
 interface Props {
   locale: Locale;
@@ -54,7 +55,7 @@ const InitiativesEditFormWrapper = ({
   initiativeFiles,
 }: Props) => {
   const { data: appConfiguration } = useAppConfiguration();
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const { mutate: addInitiativeImage } = useAddInitiativeImage();
   const { mutate: deleteInitiativeImage } = useDeleteInitiativeImage();
   const { mutate: addInitiativeFile } = useAddInitiativeFile();
@@ -69,7 +70,11 @@ const InitiativesEditFormWrapper = ({
   };
 
   const [formValues, setFormValues] = useState<SimpleFormValues>(initialValues);
-
+  const [postAnonymously, setPostAnonymously] = useState(
+    initiative.attributes.anonymous
+  );
+  const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
+    useState(false);
   const [oldImageId, setOldImageId] = useState<string | null>(null);
   const [image, setImage] = useState<UploadFile | null>(null);
   const [publishing, setPublishing] = useState<boolean>(false);
@@ -105,6 +110,10 @@ const InitiativesEditFormWrapper = ({
       });
     }
   }, [initiative, initiativeImage]);
+
+  const allowAnonymousParticipation =
+    appConfiguration?.data.attributes.settings.initiatives
+      ?.allow_anonymous_participation;
 
   const getChangedValues = () => {
     const changedKeys = Object.keys(initialValues).filter((key) => {
@@ -164,6 +173,14 @@ const InitiativesEditFormWrapper = ({
   };
 
   const handlePublish = async () => {
+    if (allowAnonymousParticipation && postAnonymously) {
+      setShowAnonymousConfirmationModal(true);
+    } else {
+      continuePublish();
+    }
+  };
+
+  const continuePublish = async () => {
     const changedValues = getChangedValues();
 
     // if we're already saving, do nothing.
@@ -183,6 +200,7 @@ const InitiativesEditFormWrapper = ({
         initiativeId: initiative.id,
         requestBody: {
           ...formAPIValues,
+          anonymous: postAnonymously,
           publication_status: 'published',
         },
       });
@@ -288,7 +306,7 @@ const InitiativesEditFormWrapper = ({
             profaneMessage: changedValues.title_multiloc?.[locale],
             proposalId: initiative.id,
             location: 'InitiativesEditFormWrapper (citizen side)',
-            userId: !isNilOrError(authUser) ? authUser.id : null,
+            userId: !isNilOrError(authUser) ? authUser.data.id : null,
             host: !isNilOrError(appConfiguration)
               ? appConfiguration.data.attributes.host
               : null,
@@ -303,7 +321,7 @@ const InitiativesEditFormWrapper = ({
             profaneMessage: changedValues.body_multiloc?.[locale],
             proposalId: initiative.id,
             location: 'InitiativesEditFormWrapper (citizen side)',
-            userId: !isNilOrError(authUser) ? authUser.id : null,
+            userId: !isNilOrError(authUser) ? authUser.data.id : null,
             host: !isNilOrError(appConfiguration)
               ? appConfiguration.data.attributes.host
               : null,
@@ -381,29 +399,41 @@ const InitiativesEditFormWrapper = ({
   if (image === undefined && initiativeImage) return null;
 
   return (
-    <InitiativeForm
-      onPublish={handlePublish}
-      onSave={doNothing}
-      locale={locale}
-      {...formValues}
-      image={image}
-      banner={banner}
-      files={files}
-      publishing={publishing}
-      publishError={publishError}
-      apiErrors={apiErrors}
-      onChangeTitle={onChangeTitle}
-      onChangeBody={onChangeBody}
-      onChangeTopics={onChangeTopics}
-      onChangePosition={onChangePosition}
-      onChangeBanner={onChangeBanner}
-      onChangeImage={onChangeImage}
-      onAddFile={onAddFile}
-      onRemoveFile={onRemoveFile}
-      topics={topics}
-      titleProfanityError={titleProfanityError}
-      descriptionProfanityError={descriptionProfanityError}
-    />
+    <>
+      <InitiativeForm
+        onPublish={handlePublish}
+        onSave={doNothing}
+        locale={locale}
+        {...formValues}
+        image={image}
+        banner={banner}
+        files={files}
+        publishing={publishing}
+        publishError={publishError}
+        apiErrors={apiErrors}
+        onChangeTitle={onChangeTitle}
+        onChangeBody={onChangeBody}
+        onChangeTopics={onChangeTopics}
+        onChangePosition={onChangePosition}
+        onChangeBanner={onChangeBanner}
+        onChangeImage={onChangeImage}
+        onAddFile={onAddFile}
+        onRemoveFile={onRemoveFile}
+        topics={topics}
+        titleProfanityError={titleProfanityError}
+        descriptionProfanityError={descriptionProfanityError}
+        postAnonymously={postAnonymously}
+        setPostAnonymously={setPostAnonymously}
+        publishedAnonymously={initiative.attributes?.anonymous}
+      />
+      <AnonymousParticipationConfirmationModal
+        onConfirmAnonymousParticipation={() => {
+          continuePublish();
+        }}
+        showAnonymousConfirmationModal={showAnonymousConfirmationModal}
+        setShowAnonymousConfirmationModal={setShowAnonymousConfirmationModal}
+      />
+    </>
   );
 };
 

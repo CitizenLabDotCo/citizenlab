@@ -1,8 +1,5 @@
 // libraries
-import React, { PureComponent } from 'react';
-import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
-import { get } from 'lodash-es';
+import React, { useState } from 'react';
 
 // components
 import CommentHeader from './CommentHeader';
@@ -10,21 +7,15 @@ import CommentBody from './CommentBody';
 import CommentFooter from './CommentFooter';
 import { Icon } from '@citizenlab/cl2-component-library';
 
-// services
-import { canModerateProject } from 'services/permissions/rules/projectPermissions';
-
-// resources
-import GetComment, { GetCommentChildProps } from 'resources/GetComment';
-import GetUser, { GetUserChildProps } from 'resources/GetUser';
-
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // style
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
+import useComment from 'api/comments/useComment';
+import useUserById from 'api/users/useUserById';
 
 const Container = styled.div``;
 
@@ -60,8 +51,9 @@ const DeletedIcon = styled(Icon)`
   fill: ${colors.textSecondary};
 `;
 
-interface InputProps {
-  postId: string;
+interface Props {
+  ideaId: string | undefined;
+  initiativeId: string | undefined;
   postType: 'idea' | 'initiative';
   projectId?: string | null;
   commentId: string;
@@ -71,142 +63,104 @@ interface InputProps {
   className?: string;
 }
 
-interface DataProps {
-  comment: GetCommentChildProps;
-  author: GetUserChildProps;
-}
+const Comment = ({
+  ideaId,
+  initiativeId,
+  postType,
+  projectId,
+  commentType,
+  commentId,
+  hasChildComments,
+  last,
+  className,
+}: Props) => {
+  const { data: comment } = useComment(commentId);
+  const { data: author } = useUserById(
+    comment?.data.relationships?.author?.data?.id
+  );
 
-interface Props extends InputProps, DataProps {}
+  const [editing, setEditing] = useState(false);
 
-interface State {
-  editing: boolean;
-}
-
-class Comment extends PureComponent<Props & WrappedComponentProps, State> {
-  static defaultProps = {
-    hasChildComment: false,
-    last: false,
+  const onEditing = () => {
+    setEditing(true);
   };
 
-  constructor(props: Props & WrappedComponentProps) {
-    super(props);
-    this.state = {
-      editing: false,
-    };
-  }
-
-  onEditing = () => {
-    this.setState({ editing: true });
+  const onCancelEditing = () => {
+    setEditing(false);
   };
 
-  onCancelEditing = () => {
-    this.setState({ editing: false });
+  const onCommentSaved = () => {
+    setEditing(false);
   };
 
-  onCommentSaved = () => {
-    this.setState({ editing: false });
-  };
+  if (comment) {
+    const commentId = comment.data.id;
+    const authorId = author ? author.data.id : null;
+    const lastComment =
+      (commentType === 'parent' && !hasChildComments) ||
+      (commentType === 'child' && last === true);
 
-  render() {
-    const {
-      postId,
-      postType,
-      projectId,
-      commentType,
-      comment,
-      author,
-      hasChildComments,
-      last,
-      className,
-    } = this.props;
-    const { editing } = this.state;
-    if (!isNilOrError(comment)) {
-      const commentId = comment.id;
-      const authorId = !isNilOrError(author) ? author.id : null;
-      const lastComment =
-        (commentType === 'parent' && !hasChildComments) ||
-        (commentType === 'child' && last === true);
-      const moderator =
-        !isNilOrError(author) &&
-        canModerateProject(projectId, { data: author });
-
-      return (
-        <Container
-          id={commentId}
-          className={`${className || ''} ${commentType} ${
-            commentType === 'parent' ? 'e2e-parentcomment' : 'e2e-childcomment'
-          } e2e-comment`}
+    return (
+      <Container
+        id={commentId}
+        className={`${className || ''} ${commentType} ${
+          commentType === 'parent' ? 'e2e-parentcomment' : 'e2e-childcomment'
+        } e2e-comment`}
+      >
+        <ContainerInner
+          className={`${commentType} ${lastComment ? 'lastComment' : ''}`}
         >
-          <ContainerInner
-            className={`${commentType} ${lastComment ? 'lastComment' : ''}`}
-          >
-            {comment.attributes.publication_status === 'published' && (
-              <>
-                <CommentHeader
-                  projectId={projectId}
-                  authorId={authorId}
-                  commentId={commentId}
-                  commentType={commentType}
-                  commentCreatedAt={comment.attributes.created_at}
-                  moderator={moderator}
-                  className={commentType === 'parent' ? 'marginBottom' : ''}
-                />
+          {
+            // Don't show deleted comments. Better to have a filter in the BE.
+          }
+          {comment.data.attributes.publication_status === 'published' && (
+            <>
+              <CommentHeader
+                projectId={projectId}
+                commentAttributes={comment.data.attributes}
+                commentType={commentType}
+                className={commentType === 'parent' ? 'marginBottom' : ''}
+                authorId={authorId}
+              />
 
-                <Content>
-                  <BodyAndFooter>
-                    <CommentBody
-                      commentId={commentId}
-                      commentType={commentType}
-                      editing={editing}
-                      onCommentSaved={this.onCommentSaved}
-                      onCancelEditing={this.onCancelEditing}
-                      postId={postId}
-                      postType={postType}
-                    />
-                    <CommentFooter
-                      className={commentType}
-                      postId={postId}
-                      postType={postType}
-                      projectId={projectId}
-                      commentId={commentId}
-                      commentType={commentType}
-                      onEditing={this.onEditing}
-                    />
-                  </BodyAndFooter>
-                </Content>
-              </>
-            )}
+              <Content>
+                <BodyAndFooter>
+                  <CommentBody
+                    commentId={commentId}
+                    commentType={commentType}
+                    editing={editing}
+                    onCommentSaved={onCommentSaved}
+                    onCancelEditing={onCancelEditing}
+                    ideaId={ideaId}
+                    initiativeId={initiativeId}
+                  />
+                  <CommentFooter
+                    className={commentType}
+                    ideaId={ideaId}
+                    initiativeId={initiativeId}
+                    postType={postType}
+                    projectId={projectId}
+                    commentId={commentId}
+                    commentType={commentType}
+                    onEditing={onEditing}
+                    authorId={authorId}
+                  />
+                </BodyAndFooter>
+              </Content>
+            </>
+          )}
 
-            {comment.attributes.publication_status === 'deleted' && (
-              <DeletedComment>
-                <DeletedIcon name="delete" />
-                <FormattedMessage {...messages.commentDeletedPlaceholder} />
-              </DeletedComment>
-            )}
-          </ContainerInner>
-        </Container>
-      );
-    }
-
-    return null;
+          {comment.data.attributes.publication_status === 'deleted' && (
+            <DeletedComment>
+              <DeletedIcon name="delete" />
+              <FormattedMessage {...messages.commentDeletedPlaceholder} />
+            </DeletedComment>
+          )}
+        </ContainerInner>
+      </Container>
+    );
   }
-}
+  return null;
+};
 
-const Data = adopt<DataProps, InputProps>({
-  comment: ({ commentId, render }) => (
-    <GetComment id={commentId}>{render}</GetComment>
-  ),
-  author: ({ comment, render }) => (
-    <GetUser id={get(comment, 'relationships.author.data.id')}>
-      {render}
-    </GetUser>
-  ),
-});
-
-const CommentWithHoCs = injectIntl(Comment);
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <CommentWithHoCs {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default Comment;

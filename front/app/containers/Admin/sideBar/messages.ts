@@ -13,10 +13,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SideBar.users',
     defaultMessage: 'Users',
   },
-  invitations: {
-    id: 'app.containers.AdminPage.SideBar.invitations',
-    defaultMessage: 'Invitations',
-  },
   initiatives: {
     id: 'app.containers.AdminPage.SideBar.initiatives',
     defaultMessage: 'Initiatives',
@@ -61,6 +57,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SideBar.menu',
     defaultMessage: 'Pages & menu',
   },
+  tools: {
+    id: 'app.containers.AdminPage.SideBar.tools',
+    defaultMessage: 'Tools',
+  },
   academy: {
     id: 'app.containers.AdminPage.SideBar.academy',
     defaultMessage: 'Academy',
@@ -73,8 +73,56 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SideBar.guide',
     defaultMessage: 'Guide',
   },
-  linkToGuide: {
-    id: 'app.containers.AdminPage.SideBar.linkToGuide',
-    defaultMessage: 'https://community.citizenlab.co/en/folders/guide',
+  linkToSupport: {
+    id: 'app.containers.AdminPage.SideBar.linkToSupport',
+    defaultMessage: 'https://support.citizenlab.co',
+  },
+  toPlatform: {
+    id: 'app.containers.AdminPage.SideBar.toPlatform',
+    defaultMessage: 'To platform',
+  },
+  support: {
+    id: 'app.containers.AdminPage.SideBar.support',
+    defaultMessage: 'Support',
+  },
+  knowledgeBase: {
+    id: 'app.containers.AdminPage.SideBar.knowledgeBase',
+    defaultMessage: 'Knowledge base',
+  },
+  communityPlatform: {
+    id: 'app.containers.AdminPage.SideBar.communityPlatform',
+    defaultMessage: 'Community platform',
+  },
+  linkToCommunityPlatform: {
+    id: 'app.containers.AdminPage.SideBar.linkToCommunityPlatform',
+    defaultMessage: 'https://community.citizenlab.co',
+  },
+  notifications: {
+    id: 'app.containers.AdminPage.SideBar.notifications',
+    defaultMessage: 'Notifications',
+  },
+  language: {
+    id: 'app.containers.AdminPage.SideBar.language',
+    defaultMessage: 'Language',
+  },
+  signOut: {
+    id: 'app.containers.AdminPage.SideBar.signOut',
+    defaultMessage: 'Sign out',
+  },
+  myProfile: {
+    id: 'app.containers.AdminPage.SideBar.user.myProfile',
+    defaultMessage: 'My profile',
+  },
+  administrator: {
+    id: 'app.containers.AdminPage.SideBar.administrator',
+    defaultMessage: 'Administrator',
+  },
+  folderManager: {
+    id: 'app.containers.AdminPage.SideBar.folderManager',
+    defaultMessage: 'Folder manager',
+  },
+  projectManager: {
+    id: 'app.containers.AdminPage.SideBar.projectManager',
+    defaultMessage: 'Project manager',
   },
 });

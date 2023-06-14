@@ -4,10 +4,10 @@ import React, { FormEvent } from 'react';
 import { IBasketData, updateBasket } from 'services/baskets';
 
 // hooks
-import useProject from 'hooks/useProject';
-import usePhase from 'hooks/usePhase';
+import useProjectById from 'api/projects/useProjectById';
+import usePhase from 'api/phases/usePhase';
 import useBasket from 'hooks/useBasket';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useIdeas from 'api/ideas/useIdeas';
 
 // styles
@@ -33,13 +33,12 @@ import FormattedBudget from 'utils/currency/FormattedBudget';
 // utils
 import {
   isNilOrError,
-  NilOrError,
   capitalizeParticipationContextType,
 } from 'utils/helperUtils';
 
 // typings
 import { IParticipationContextType } from 'typings';
-import { IPhaseData } from 'services/phases';
+import { IPhaseData } from 'api/phases/types';
 
 const Container = styled.div`
   padding: 10px;
@@ -126,7 +125,7 @@ interface InputProps {
 
 interface DataProps {
   basket: IBasketData;
-  phase: IPhaseData | NilOrError;
+  phase: IPhaseData | undefined;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -138,7 +137,7 @@ const PBBasket = ({
   phase,
   className,
 }: Props) => {
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
 
   const { data: ideas } = useIdeas({
@@ -166,7 +165,7 @@ const PBBasket = ({
 
         try {
           await updateBasket(basket.id, {
-            user_id: authUser.id,
+            user_id: authUser.data.id,
             participation_context_id: participationContextId,
             participation_context_type: capitalizeParticipationContextType(
               participationContextType
@@ -186,7 +185,7 @@ const PBBasket = ({
 
   if (
     participationContextType === 'phase' &&
-    !isNilOrError(phase) &&
+    phase &&
     pastPresentOrFuture([
       phase.attributes.start_at,
       phase.attributes.end_at,
@@ -285,23 +284,22 @@ const Wrapper = ({
   participationContextId,
   className,
 }: InputProps) => {
-  const project = useProject({
-    projectId:
-      participationContextType === 'project' ? participationContextId : null,
-  });
+  const { data: project } = useProjectById(
+    participationContextType === 'project' ? participationContextId : null
+  );
 
-  const phase = usePhase(
+  const { data: phase } = usePhase(
     participationContextType === 'phase' ? participationContextId : null
   );
 
   let basketId: string | undefined;
 
-  if (!isNilOrError(project)) {
-    basketId = project.relationships.user_basket?.data?.id;
+  if (project) {
+    basketId = project.data.relationships.user_basket?.data?.id;
   }
 
-  if (!isNilOrError(phase)) {
-    basketId = phase.relationships.user_basket?.data?.id;
+  if (phase) {
+    basketId = phase.data.relationships.user_basket?.data?.id;
   }
 
   const basket = useBasket(basketId);
@@ -316,7 +314,7 @@ const Wrapper = ({
       participationContextId={participationContextId}
       participationContextType={participationContextType}
       basket={basket}
-      phase={phase}
+      phase={phase?.data}
     />
   );
 };

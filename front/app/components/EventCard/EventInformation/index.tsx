@@ -9,7 +9,8 @@ import { Icon, Text, Box } from '@citizenlab/cl2-component-library';
 import FileAttachments from 'components/UI/FileAttachments';
 
 // hooks
-import useProject from 'hooks/useProject';
+import useEventFiles from 'api/event_files/useEventFiles';
+import useProjectById from 'api/projects/useProjectById';
 
 // services
 import { IEventData } from 'api/events/types';
@@ -27,9 +28,6 @@ import { colors, fontSizes, media } from 'utils/styleUtils';
 import checkTextOverflow from './checkTextOverflow';
 import { isNilOrError } from 'utils/helperUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
-
-// hooks
-import useEventFiles from 'api/event_files/useEventFiles';
 
 const EventInformationContainer = styled.div`
   flex: 1;
@@ -194,9 +192,10 @@ const EventInformation = ({
       )} - ${endAtMoment.format('LT')}`;
 
   const projectId = event.relationships.project.data.id;
-  const project = useProject({ projectId });
-  const projectTitle = project?.attributes.title_multiloc;
-  const projectSlug = project?.attributes.slug;
+  const { data: project } = useProjectById(projectId);
+
+  const projectTitle = project?.data.attributes.title_multiloc;
+  const projectSlug = project?.data.attributes.slug;
 
   const TElement = useRef(null);
 
@@ -288,7 +287,7 @@ const EventInformation = ({
             <StyledT
               value={event.attributes.description_multiloc}
               supportHtml={true}
-              ref={TElement}
+              innerRef={TElement}
               wrapInDiv={true}
               hideTextOverflow={hideTextOverflow && textOverflow}
             />

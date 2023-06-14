@@ -8,8 +8,7 @@ resource 'Onboarding campaigns' do
 
   before do
     @user = create(:user, verified: true)
-    token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-    header 'Authorization', "Bearer #{token}"
+    header_token_for @user
     header 'Content-Type', 'application/json'
   end
 

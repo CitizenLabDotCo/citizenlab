@@ -6,8 +6,8 @@ const LeafletConfig = React.lazy(
 );
 const Legend = React.lazy(() => import('./shared/components/Map/Legend'));
 import { isNilOrError } from 'utils/helperUtils';
-import { IProjectData } from 'services/projects';
-import { IPhaseData } from 'services/phases';
+import { IProjectData } from 'api/projects/types';
+import { IPhaseData } from 'api/phases/types';
 const FeatureFlag = React.lazy(() => import('components/FeatureFlag'));
 
 const CustomMapConfigComponent = React.lazy(

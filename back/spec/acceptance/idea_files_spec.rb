@@ -9,8 +9,7 @@ resource 'IdeaFile' do
   before do
     header 'Content-Type', 'application/json'
     @user = create(:user)
-    token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-    header 'Authorization', "Bearer #{token}"
+    header_token_for @user
     @project = create(:continuous_project)
     @idea = create(:idea, author: @user, project: @project)
     create_list(:idea_file, 2, idea: @idea)

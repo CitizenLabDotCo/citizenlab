@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 // hooks
 import useProjectDescriptionBuilderLayout from '../../../hooks/useProjectDescriptionBuilderLayout';
 import useLocale from 'hooks/useLocale';
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 import { useParams } from 'react-router-dom';
 
 // components
@@ -21,12 +21,12 @@ export const FullScreenPreview = () => {
   const [selectedLocale, setSelectedLocale] = useState<string | undefined>();
   const { projectId } = useParams() as { projectId: string };
   const platformLocale = useLocale();
-  const project = useProject({ projectId });
+  const { data: project } = useProjectById(projectId);
 
   const projectDescriptionBuilderLayout =
     useProjectDescriptionBuilderLayout(projectId);
 
-  if (isNilOrError(platformLocale) || isNilOrError(project)) {
+  if (isNilOrError(platformLocale) || !project) {
     return null;
   }
 
@@ -48,7 +48,7 @@ export const FullScreenPreview = () => {
       onUpdateLocale={setSelectedLocale}
     >
       <Title color="tenantText" variant="h1">
-        {project.attributes.title_multiloc[locale]}
+        {project.data.attributes.title_multiloc[locale]}
       </Title>
       {isLoadingProjectDescriptionBuilderLayout && <Spinner />}
       {!isLoadingProjectDescriptionBuilderLayout && editorData && (

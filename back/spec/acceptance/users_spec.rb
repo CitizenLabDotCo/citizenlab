@@ -358,8 +358,7 @@ resource 'Users' do
   context 'when authenticated' do
     before do
       @user = create(:user, last_name: 'Smith')
-      token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-      header 'Authorization', "Bearer #{token}"
+      header_token_for @user
     end
 
     context 'when admin' do
@@ -1129,11 +1128,11 @@ resource 'Users' do
       post 'web_api/v1/users/update_password' do
         with_options scope: :user do
           parameter :current_password, required: true
-          parameter :new_password, required: true
+          parameter :password, required: true
         end
         describe do
           let(:current_password) { 'test_current_password' }
-          let(:new_password) { 'test_new_password' }
+          let(:password) { 'test_new_password' }
 
           example_request 'update password with wrong current password' do
             expect(response_status).to eq 422
@@ -1144,7 +1143,7 @@ resource 'Users' do
 
         describe do
           let(:current_password) { 'democracy2.0' }
-          let(:new_password) { 'test_new_password' }
+          let(:password) { 'test_new_password' }
 
           example_request 'update password with correct current password' do
             @user.reload
@@ -1155,7 +1154,7 @@ resource 'Users' do
 
         describe do
           let(:current_password) { '' }
-          let(:new_password) { 'test_new_password' }
+          let(:password) { 'test_new_password' }
 
           example_request 'update password when not providing existing password' do
             expect(response_status).to eq 422
@@ -1166,7 +1165,7 @@ resource 'Users' do
 
         describe do
           let(:current_password) { '' }
-          let(:new_password) { 'test_new_password' }
+          let(:password) { 'test_new_password' }
 
           before do
             @user.update!(password: nil)

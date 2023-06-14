@@ -2,7 +2,7 @@ import React, { memo, useCallback, FormEvent } from 'react';
 import { pull } from 'lodash-es';
 import { Label, Icon } from 'semantic-ui-react';
 import T from 'components/T';
-import useTopics from 'hooks/useTopics';
+import useTopics from 'api/topics/useTopics';
 import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 
@@ -16,8 +16,10 @@ interface Props {
 }
 
 const TopicsSelector = memo<Props>(({ selectedTopics, onUpdateTopics }) => {
-  const topics = useTopics({ topicIds: selectedTopics });
-
+  const { data: topics } = useTopics();
+  const filteredTopics = topics?.data.filter((topic) =>
+    selectedTopics.includes(topic.id)
+  );
   const handleTopicDelete = useCallback(
     (topicId: string) => (event: FormEvent) => {
       event.stopPropagation();
@@ -30,7 +32,7 @@ const TopicsSelector = memo<Props>(({ selectedTopics, onUpdateTopics }) => {
   if (!isNilOrError(topics)) {
     return (
       <>
-        {topics.map((topic) => {
+        {filteredTopics?.map((topic) => {
           return (
             <StyledLabel key={topic.id} color="teal" basic={true}>
               <T value={topic.attributes.title_multiloc} />

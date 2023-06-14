@@ -1,7 +1,5 @@
 import React, { memo, useCallback, useState } from 'react';
 import { get } from 'lodash-es';
-import { API_PATH } from 'containers/App/constants';
-import streams from 'utils/streams';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -19,10 +17,14 @@ import {
 } from 'containers/Authentication/steps/AuthProviders/styles';
 
 // hooks
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 
 // services
 import { verifyBogus } from '../services/verify';
+
+import meKeys from 'api/me/keys';
+import { useQueryClient } from '@tanstack/react-query';
+import usersKeys from 'api/users/keys';
 
 interface Props {
   onCancel: () => void;
@@ -32,8 +34,8 @@ interface Props {
 
 const VerificationFormBogus = memo<Props>(
   ({ onCancel, onVerified, className }) => {
-    const authUser = useAuthUser();
-
+    const { data: authUser } = useAuthUser();
+    const queryClient = useQueryClient();
     const [desiredError, setDesiredError] = useState<string>('');
     const [desiredErrorError, setDesiredErrorError] = useState<string | null>(
       null
@@ -56,23 +58,13 @@ const VerificationFormBogus = memo<Props>(
         try {
           await verifyBogus(desiredError);
 
-          const endpointsToRefetch = [
-            `${API_PATH}/users/me`,
-            `${API_PATH}/projects`,
-          ];
-          const partialEndpointsToRefetch = [
-            `${API_PATH}/projects/`,
-            `${API_PATH}/ideas/`,
-          ];
-
           if (!isNilOrError(authUser)) {
-            endpointsToRefetch.push(`${API_PATH}/users/${authUser.id}`);
+            queryClient.invalidateQueries(
+              usersKeys.item({ id: authUser.data.id })
+            );
           }
 
-          await streams.fetchAllWith({
-            apiEndpoint: endpointsToRefetch,
-            partialApiEndpoint: partialEndpointsToRefetch,
-          });
+          queryClient.invalidateQueries({ queryKey: meKeys.all() });
 
           onVerified();
         } catch (error) {
@@ -91,7 +83,7 @@ const VerificationFormBogus = memo<Props>(
           }
         }
       },
-      [desiredError, authUser, onVerified]
+      [desiredError, authUser, onVerified, queryClient]
     );
 
     const onCancelButtonClicked = useCallback(() => {

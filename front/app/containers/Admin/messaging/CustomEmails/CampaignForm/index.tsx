@@ -29,12 +29,13 @@ import Select from 'components/HookForm/Select';
 import MultipleSelect from 'components/HookForm/MultipleSelect';
 
 // resources
-import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 
 // hooks
 import useLocalize from 'hooks/useLocalize';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { IGroupData } from 'api/groups/types';
+import useGroups from 'api/groups/useGroups';
 
 const StyledSection = styled(Section)`
   margin-bottom: 2.5rem;
@@ -74,7 +75,8 @@ const CampaignForm = ({
   defaultValues,
   intl: { formatMessage },
 }: CampaignFormProps) => {
-  const user = useAuthUser();
+  const { data: user } = useAuthUser();
+  const { data: groups } = useGroups({});
   const { data: appConfig } = useAppConfiguration();
   const localize = useLocalize();
 
@@ -117,7 +119,7 @@ const CampaignForm = ({
       {
         value: 'author',
         label: !isNilOrError(user)
-          ? `${user.attributes.first_name} ${user.attributes.last_name}`
+          ? `${user.data.attributes.first_name} ${user.data.attributes.last_name}`
           : '',
       },
       {
@@ -129,10 +131,10 @@ const CampaignForm = ({
     ];
   };
 
-  const groupsOptions = (groups: GetGroupsChildProps) => {
+  const groupsOptions = (groups: IGroupData[]) => {
     const groupList =
-      !isNilOrError(groups) && !isNilOrError(groups.groupsList)
-        ? groups.groupsList.map((group) => ({
+      !isNilOrError(groups) && !isNilOrError(groups)
+        ? groups.map((group) => ({
             label: localize(group.attributes.title_multiloc),
             value: group.id,
           }))
@@ -169,27 +171,19 @@ const CampaignForm = ({
           </StyledSectionField>
 
           <StyledSectionField>
-            <GetGroups>
-              {(groups) =>
-                isNilOrError(groups) ? null : (
-                  <MultipleSelect
-                    name="group_ids"
-                    placeholder={<FormattedMessage {...messages.allUsers} />}
-                    options={groupsOptions(groups)}
-                    label={
-                      <>
-                        <FormattedMessage {...messages.fieldTo} />
-                        <IconTooltip
-                          content={
-                            <FormattedMessage {...messages.fieldToTooltip} />
-                          }
-                        />
-                      </>
-                    }
+            <MultipleSelect
+              name="group_ids"
+              placeholder={<FormattedMessage {...messages.allUsers} />}
+              options={groupsOptions(groups?.data || [])}
+              label={
+                <>
+                  <FormattedMessage {...messages.fieldTo} />
+                  <IconTooltip
+                    content={<FormattedMessage {...messages.fieldToTooltip} />}
                   />
-                )
+                </>
               }
-            </GetGroups>
+            />
           </StyledSectionField>
 
           <StyledSectionField>

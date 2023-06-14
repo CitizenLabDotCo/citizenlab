@@ -1,4 +1,3 @@
-import { configureScope } from '@sentry/react';
 import 'focus-visible';
 import GlobalStyle from 'global-styles';
 import 'intersection-observer';
@@ -6,10 +5,7 @@ import { includes, uniq } from 'lodash-es';
 import moment from 'moment';
 import 'moment-timezone';
 import React, { lazy, Suspense, useEffect, useState } from 'react';
-import { combineLatest } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import smoothscroll from 'smoothscroll-polyfill';
-import { endsWith, isNilOrError, isPage } from 'utils/helperUtils';
+import { endsWith, isPage } from 'utils/helperUtils';
 
 // constants
 import { appLocalesMomentPairs, locales } from 'containers/App/constants';
@@ -22,6 +18,7 @@ import { trackPage } from 'utils/analytics';
 const ConsentManager = lazy(() => import('components/ConsentManager'));
 
 // components
+import { Box, Spinner, useBreakpoint } from '@citizenlab/cl2-component-library';
 import ErrorBoundary from 'components/ErrorBoundary';
 import Navigate from 'utils/cl-router/Navigate';
 import Authentication from 'containers/Authentication';
@@ -37,14 +34,11 @@ import HasPermission from 'components/HasPermission';
 
 // services
 import { IAppConfigurationStyle } from 'api/app_configuration/types';
-import signOut from 'api/authentication/sign_in_out/signOut';
-import signOutAndDeleteAccount from 'api/authentication/sign_in_out/signOutAndDeleteAccount';
-import { authUserStream } from 'services/auth';
+import useDeleteSelf from 'api/users/useDeleteSelf';
 import { localeStream } from 'services/locale';
 
 // hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import { useLocation } from 'react-router-dom';
 
@@ -53,13 +47,15 @@ import eventEmitter from 'utils/eventEmitter';
 
 // style
 import styled, { ThemeProvider } from 'styled-components';
-import { getTheme, media } from 'utils/styleUtils';
+import { getTheme, stylingConsts } from 'utils/styleUtils';
 
 // typings
 import { Locale } from 'typings';
 
 // utils
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
+import useAuthUser from 'api/me/useAuthUser';
+import { configureScope } from '@sentry/react';
 
 const Container = styled.div<{
   disableScroll?: boolean;
@@ -80,21 +76,6 @@ const Container = styled.div<{
     `};
 `;
 
-const InnerContainer = styled.div`
-  width: 100vw;
-  padding-top: ${(props) => props.theme.menuHeight}px;
-  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px);
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-
-  ${media.tablet`
-    min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - ${(
-    props
-  ) => props.theme.mobileMenuHeight}px);
-  `}
-`;
-
 export interface IOpenPostPageModalEvent {
   id: string;
   slug: string;
@@ -105,14 +86,15 @@ interface Props {
   children: React.ReactNode;
 }
 
-const authUser$ = authUserStream().observable;
 const locale$ = localeStream().observable;
 
 const App = ({ children }: Props) => {
   const location = useLocation();
+  const { mutate: signOutAndDeleteAccount } = useDeleteSelf();
   const [isAppInitialized, setIsAppInitialized] = useState(false);
   const [previousPathname, setPreviousPathname] = useState<string | null>(null);
   const { data: appConfiguration } = useAppConfiguration();
+  const { data: authUser, isLoading } = useAuthUser();
 
   const [modalId, setModalId] = useState<string | null>(null);
   const [modalSlug, setModalSlug] = useState<string | null>(null);
@@ -139,7 +121,6 @@ const App = ({ children }: Props) => {
 
   useEffect(() => {
     if (appConfiguration && !isAppInitialized) {
-      smoothscroll.polyfill();
       moment.tz.setDefault(
         appConfiguration.data.attributes.settings.core.timezone
       );
@@ -248,22 +229,7 @@ const App = ({ children }: Props) => {
     }
 
     const subscriptions = [
-      combineLatest([
-        authUser$.pipe(
-          tap((authUser) => {
-            if (isNilOrError(authUser)) {
-              signOut();
-            } else {
-              configureScope((scope) => {
-                scope.setUser({
-                  id: authUser.data.id,
-                });
-              });
-            }
-          })
-        ),
-        locale$,
-      ]).subscribe(([_, locale]) => {
+      locale$.subscribe((locale) => {
         const momentLoc = appLocalesMomentPairs[locale] || 'en';
         moment.locale(momentLoc);
         setLocale(locale);
@@ -282,14 +248,15 @@ const App = ({ children }: Props) => {
       eventEmitter
         .observeEvent('deleteProfileAndShowSuccessModal')
         .subscribe(() => {
-          signOutAndDeleteAccount().then((success) => {
-            if (success) {
+          signOutAndDeleteAccount(undefined, {
+            onSuccess: () => {
               setUserDeletedSuccessfullyModalOpened(true);
               setUserSuccessfullyDeleted(true);
-            } else {
+            },
+            onError: () => {
               setUserDeletedSuccessfullyModalOpened(true);
               setUserSuccessfullyDeleted(false);
-            }
+            },
           });
         }),
     ];
@@ -303,7 +270,18 @@ const App = ({ children }: Props) => {
     redirectsEnabled,
     appConfiguration,
     location,
+    signOutAndDeleteAccount,
   ]);
+
+  useEffect(() => {
+    if (authUser) {
+      configureScope((scope) => {
+        scope.setUser({
+          id: authUser.data.id,
+        });
+      });
+    }
+  }, [authUser]);
 
   useEffect(() => {
     trackPage(location.pathname);
@@ -330,6 +308,7 @@ const App = ({ children }: Props) => {
   };
 
   const isAdminPage = isPage('admin', location.pathname);
+  const isPagesAndMenuPage = isPage('pages_menu', location.pathname);
   const isInitiativeFormPage = isPage('initiative_form', location.pathname);
   const isIdeaFormPage = isPage('idea_form', location.pathname);
   const isIdeaEditPage = isPage('idea_edit', location.pathname);
@@ -351,6 +330,22 @@ const App = ({ children }: Props) => {
     !isIdeaEditPage &&
     !isInitiativeEditPage;
   const { pathname } = removeLocale(location.pathname);
+  const showFrontOfficeNavbar = !isAdminPage || isPagesAndMenuPage;
+
+  // Ensure authUser is loaded before rendering the app
+  if (!authUser && isLoading) {
+    return (
+      <Box
+        display="flex"
+        w="100%"
+        h="100%"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Spinner />
+      </Box>
+    );
+  }
 
   return (
     <>
@@ -403,10 +398,27 @@ const App = ({ children }: Props) => {
                   <ConsentManager />
                 </Suspense>
               </ErrorBoundary>
-              <ErrorBoundary>
-                <MainHeader setRef={setNavbarRef} />
-              </ErrorBoundary>
-              <InnerContainer>
+              {showFrontOfficeNavbar && (
+                <ErrorBoundary>
+                  <MainHeader setRef={setNavbarRef} />
+                </ErrorBoundary>
+              )}
+              <Box
+                width="100vw"
+                display="flex"
+                flexDirection="column"
+                alignItems="stretch"
+                pt={
+                  showFrontOfficeNavbar
+                    ? `${stylingConsts.menuHeight}px`
+                    : undefined
+                }
+                minHeight={
+                  isSmallerThanTablet
+                    ? `calc(100vh - ${stylingConsts.menuHeight}px - ${stylingConsts.mobileMenuHeight}px)`
+                    : `calc(100vh - ${stylingConsts.menuHeight}px)`
+                }
+              >
                 <HasPermission
                   item={{
                     type: 'route',
@@ -419,7 +431,7 @@ const App = ({ children }: Props) => {
                     <Navigate to="/" />
                   </HasPermission.No>
                 </HasPermission>
-              </InnerContainer>
+              </Box>
               {showFooter && (
                 <Suspense fallback={null}>
                   <PlatformFooter />

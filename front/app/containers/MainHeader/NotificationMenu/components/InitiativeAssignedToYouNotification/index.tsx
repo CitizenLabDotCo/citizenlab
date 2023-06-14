@@ -1,6 +1,6 @@
 import React, { MouseEvent, KeyboardEvent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { IInitiativeAssignedToYouNotificationData } from 'services/notifications';
+import { IInitiativeAssignedToYouNotificationData } from 'api/notifications/types';
 
 // i18n
 import messages from '../../messages';
@@ -56,7 +56,7 @@ const InitiativeAssignedToYouNotification = ({ notification }: Props) => {
 
   return (
     <NotificationWrapper
-      linkTo={'/admin/initiatives/manage'}
+      linkTo={'/admin/initiatives'}
       timing={notification.attributes.created_at}
       icon="initiatives"
       isRead={!!notification.attributes.read_at}

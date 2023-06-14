@@ -63,8 +63,12 @@ describe('Idea creation', () => {
     cy.get('#idea-form');
     cy.contains('Add new idea').should('exist');
 
-    // add a title and description
-    cy.get('#e2e-idea-title-input input').type(newIdeaTitle);
+    // The next line was flaky on CI where the "type" command resulted in skipped letters
+    // Seems to be a known problem, and one solution is to type then clear to "warm up" Cypress
+    // Related: https://github.com/cypress-io/cypress/issues/3817
+    cy.get('#e2e-idea-title-input input').type('x');
+    cy.get('#e2e-idea-title-input input').clear();
+    cy.get('#e2e-idea-title-input input').type(`${newIdeaTitle}`);
     cy.get('#e2e-idea-description-input .ql-editor').type(newIdeaContent);
 
     // add a topic

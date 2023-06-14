@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { isNilOrError, isString } from 'utils/helperUtils';
+import { isString } from 'utils/helperUtils';
 import { IconTooltip, Radio } from '@citizenlab/cl2-component-library';
 import Link from 'utils/cl-router/Link';
 import { SubSectionTitle } from 'components/admin/Section';
@@ -8,7 +8,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import { IOption, isIOption } from 'typings';
 import useAreas from 'api/areas/useAreas';
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 import useLocalize from 'hooks/useLocalize';
 import { IAreaData } from 'api/areas/types';
 import { useParams } from 'react-router-dom';
@@ -35,19 +35,19 @@ const GeographicAreaInputs = ({
 }: Props) => {
   const { projectId } = useParams() as { projectId: string };
   const { data: areas } = useAreas({});
-  const project = useProject({ projectId });
+  const { data: project } = useProjectById(projectId);
   const localize = useLocalize();
   const [areaType, setAreaType] = useState<TProjectAreaType>('none');
 
   useEffect(() => {
-    if (!isNilOrError(project)) {
+    if (project) {
       setAreaType(
         // if we have at least one project area
-        project.relationships.areas.data.length > 0
+        project.data.relationships.areas.data.length > 0
           ? // areaType is 'selection'
             'selection'
           : // else if include_all_areas is true
-          project.attributes.include_all_areas
+          project.data.attributes.include_all_areas
           ? // areaType is 'all'
             'all'
           : // else areaType is 'none'
@@ -102,8 +102,8 @@ const GeographicAreaInputs = ({
         // to the project.
         // After you select/remove areas, projectAttributesDiff will include
         // these and they will already be in areaIds above.
-        (!isNilOrError(project)
-          ? project.relationships.areas.data.map((area) => area.id)
+        (project
+          ? project.data.relationships.areas.data.map((area) => area.id)
           : [])),
     ];
     const selectedAreaValues = mapProjectAreaIdsToAreaOptions(

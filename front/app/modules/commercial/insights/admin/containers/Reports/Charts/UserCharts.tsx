@@ -13,7 +13,7 @@ import useUserCustomFields from 'hooks/useUserCustomFields';
 
 // typings
 import { ParticipationMethod } from 'services/participationContexts';
-import { IProjectData } from 'services/projects';
+import { IProjectData } from 'api/projects/types';
 import {
   IUserCustomFieldData,
   IUserCustomFieldInputType,

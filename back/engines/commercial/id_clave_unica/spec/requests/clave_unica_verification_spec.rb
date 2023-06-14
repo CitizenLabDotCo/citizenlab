@@ -6,40 +6,47 @@ require 'rspec_api_documentation/dsl'
 describe 'clave_unica verification' do
   before do
     @user = create(:user, first_name: 'Rudolphi', last_name: 'Raindeari')
-    @token = Knock::AuthToken.new(payload: @user.to_token_payload).token
+    @token = AuthToken::AuthToken.new(payload: @user.to_token_payload).token
     OmniAuth.config.test_mode = true
     OmniAuth.config.mock_auth[:clave_unica] = OmniAuth::AuthHash.new({
       'provider' => 'clave_unica',
-      'uid' => nil,
-      'info' =>
-        { 'name' => nil,
-          'email' => nil,
-          'nickname' => nil,
-          'first_name' => nil,
-          'last_name' => nil,
-          'gender' => nil,
-          'image' => nil,
-          'phone' => nil,
-          'urls' => { 'website' => nil } },
-      'credentials' =>
-        { 'id_token' =>
-          'eyJ0eXAiOiJKV1QiLCJraWQiOiJHRGVGQlpyY2ZxeFoyQ0lQQllZTWdqUmh3blk9IiwiYWxnIjoiUlMyNTYifQ.eyJhdF9oYXNoIjoiYTVkaHQ2WXZWSUdfUkFVcnExYnEwdyIsInN1YiI6Ijg3MDcwNDE5MzExIiwiYXVkaXRUcmFja2luZ0lkIjoiZjdmM2Q2MDQtN2FkNi00NmExLTk0OGItMTViNjkzNjE5YjJjLTQ0OTk5OSIsImFtciI6WyJ1cm46YmU6ZmVkaWN0OmlhbTpmYXM6TGV2ZWw1MDAiXSwiaXNzIjoiaHR0cDovL2lkcC5pYW1mYXMuaW50LmJlbGdpdW0uYmU6ODAvZmFzL29hdXRoMiIsInRva2VuTmFtZSI6ImlkX3Rva2VuIiwibm9uY2UiOiIxYjI5YmM0NWIxY2I4NmEyZDM0YmYyMDU0MDM0MzliYSIsImF1ZCI6IkNpdGl6ZW5MYWJfUGFydFBsYXRfSGFiYXkiLCJjX2hhc2giOiJHNUwxbGJDcFpIR1ZQY2VkSEZmZXF3IiwiYWNyIjoiMCIsIm9yZy5mb3JnZXJvY2sub3BlbmlkY29ubmVjdC5vcHMiOiJobnNiaGhNbXRQZ1JNNktTYl9Kb1Nmb0tudEUiLCJzX2hhc2giOiJJUjNFUFlHRHVCbTFnc19ac0ppRTd3IiwiYXpwIjoiQ2l0aXplbkxhYl9QYXJ0UGxhdF9IYWJheSIsImF1dGhfdGltZSI6MTU3MzY3MzczNSwicmVhbG0iOiIvIiwiZXhwIjoxNTczNjc3MzQyLCJ0b2tlblR5cGUiOiJKV1RUb2tlbiIsImlhdCI6MTU3MzY3Mzc0Mn0.ak3gaqNmFWERjgNvGDe31v1OMCnP_hIv6vjW-f8awae5xyTZi0X3T5sNLhvrF5y6RYxiAmBa24hYNYaCxAYsJzDkI5sUqcRrhj_4FSuSA9vqa48r0ULCoq2xQmWwLUz-FeCzRHZ0QH3jiKem0UiUYYDG3IcEue9ccQmFSLKTFT617hMH1ag-7bElGhXHantiDVqrbm0Qszak6KlSTUfNooFRY7XO3ctBbTBiBEmYwCRt6JLlB4KCEf9Uv1DUx8spfhJfVxlFFdHmVLBzOVoRbdNjziyLebQfs8AY7dp1JvVPLDSjJSclt1-29PwsjhW8KCsaIIPbfvSMDkGnHfeIRQ',
-          'token' => '2QBbtaIDrrJt8dWSr2bjKP7E6DU',
-          'refresh_token' => 'tygp3Gz_xUUHJKJhxbL4qBJ1nXQ',
-          'expires_in' => 3599,
-          'scope' => 'openid profile egovnrn' },
-      'extra' =>
-        {
-          'raw_info' => {
-            'prefLanguage' => 'en',
-            'mail' => 'hypoliet.verhipperd@gmail.com',
-            'surname' => 'Verhipperd',
-            'givenName' => 'Hypoliet',
-            'iss' => 'http://idp.iamfas.int.belgium.be:80/fas/oauth2',
-            'egovNRN' => '93051822361',
-            'fedid' => 'a8fb031d4ef30757ea70912b2876a4c2878309e0'
-          }
+      'uid' => '44444444',
+      'info' => {
+        'name' => '{"nombres"=>["Maria", "Carmen", "De los angeles"], "apellidos"=>["Del rio", "Gonzalez"]}',
+        'email' => nil,
+        'email_verified' => nil,
+        'nickname' => nil,
+        'first_name' => nil,
+        'last_name' => nil,
+        'gender' => nil,
+        'image' => nil,
+        'phone' => nil,
+        'urls' => { 'website' => nil }
+      },
+      'credentials' => {
+        'id_token' => 'eyJhbGciOiJSUzI1NiIsIxxxZCI6ImM1NjEyODkyNDYxMzYzM2Y3NWEzODMxNzczYjUzNjczIn0.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmNsYXZldW5pY2EuZ29iLmNsL29wZW5pZCIsInN1YiI6IjQ0NDQ0NDQ0IiwiYXVkIjoiYWE1MzA0NmY3YzdkNGVhOTkyODFkMDYyYzQwZGM5ZjYiXXXleHAiOjE2ODI3MDgxMzksImlhdCI6MTY4MjcwNzUzOSwibm9uY2UiOiI5YjE3MjZhNWQwM2JmOGYwMjU4YjMxZTZhMzA5NzY0NSIsImF0X2hhc2giOiJSZDByNmMwSlRkTklqMEl4Yk16bDN3IiwiYXV0aF90aW1lIjoxNjgyNzA3NTM5fQ.QlpvOZwEbN50Vh4NWx-p4rqRClwdxQnR0gERmRxxx32hIQ3cB8jdqKO3Yo4RSYs1xrywQ-CQdPpwnATfoIVL07QbVPb8x1U8o2o3SaTaMH9cMYG4ldNYCGjO1SUZ0RhBHAZeBWpm44LLolk9w8YgxXhs7P1sZhCQuTk--h1TG0-9wRgjmyxuqQieVH2GZfkc4VD9n14L1J6iNyEgrRzNG7byI0VbBvn1MVURf37cbVYuSx9aM0BZUmXUiap8iD2xWhQkvfWttSc1_gOl2Z11ohH5BA5GAAGIiTpfj8TgbYxvK4cKzjAw93-QrlizaXBp2D515cCPtEVOVgC4stwhaw',
+        'token' => 'eb7bd915ab1b455ca17460935e3fe731',
+        'refresh_token' => '0388f428536d411aa2e1cd5e0ea8aff8',
+        'expires_in' => 3600,
+        'scope' => nil
+      },
+      'extra' => {
+        'raw_info' => {
+          'sub' => '44444444',
+          'RolUnico' => { 'numero' => 44_444_444, 'DV' => '4', 'tipo' => 'RUN' },
+          'name' => {
+            'nombres' => ['Maria', 'Carmen', 'De los angeles'],
+            'apellidos' => ['Del rio', 'Gonzalez']
+          },
+          'iss' => 'https://accounts.claveunica.gob.cl/openid',
+          'aud' => 'aa53046f1c7d4ea99281d062c40dc9f6',
+          'exp' => 1_682_708_139,
+          'iat' => 1_682_707_539,
+          'nonce' => '9b1726a1d03bf8f0258b31e6a3097645',
+          'at_hash' => 'Rd0r6c1JTdNIj0IxbMzl3w',
+          'auth_time' => 1_682_707_539
         }
+      }
     })
 
     configuration = AppConfiguration.instance
@@ -47,32 +54,42 @@ describe 'clave_unica verification' do
     settings['verification'] = {
       allowed: true,
       enabled: true,
-      verification_methods: [{ name: 'clave_unica', environment: 'integration', identifier: 'fake', secret: 'fake' }]
+      verification_methods: [{ name: 'clave_unica', client_id: 'fake', client_secret: 'fake' }]
     }
     configuration.save!
     host! 'example.org'
   end
 
-  pending 'successfully verifies a user' do
+  def expect_to_create_verified_user(user)
+    expect(user.reload).to have_attributes({
+      verified: true,
+      first_name: 'Maria Carmen De los angeles',
+      last_name: 'Del rio Gonzalez'
+    })
+    expect(user.verifications.first).to have_attributes({
+      method_name: 'clave_unica',
+      user_id: user.id,
+      active: true,
+      hashed_uid: Verification::VerificationService.new.send(:hashed_uid, '44444444', 'clave_unica')
+    })
+    expect(user.identities.first).to have_attributes({
+      provider: 'clave_unica',
+      user_id: user.id,
+      uid: '44444444',
+      auth_hash: instance_of(Hash)
+    })
+  end
+
+  it 'successfully verifies a user' do
     get "/auth/clave_unica?token=#{@token}&random-passthrough-param=somevalue&pathname=/yipie"
     follow_redirect!
 
     expect(response).to redirect_to('/en/yipie?random-passthrough-param=somevalue&verification_success=true')
 
-    expect(@user.reload).to have_attributes({
-      verified: true,
-      first_name: 'Hypoliet',
-      last_name: 'Verhipperd'
-    })
-    expect(@user.verifications.first).to have_attributes({
-      method_name: 'clave_unica',
-      user_id: @user.id,
-      active: true,
-      hashed_uid: 'b711c606279e1e0ee103a05c6cadc93cd65210f705ccf4b9dcbd1a68af0a33b9'
-    })
+    expect_to_create_verified_user(@user)
   end
 
-  pending "successfully verifies a user that hasn't completed her registration" do
+  it "successfully verifies a user that hasn't completed her registration" do
     @user.update!(registration_completed_at: nil)
 
     get "/auth/clave_unica?token=#{@token}&pathname=/yipie"
@@ -84,17 +101,17 @@ describe 'clave_unica verification' do
     })
   end
 
-  pending 'redirect to a path wpendinghout an ending slash when no pathname is passed' do
+  it 'redirect to a path without an ending slash when no pathname is passed' do
     get "/auth/clave_unica?token=#{@token}"
     follow_redirect!
     expect(response).to redirect_to('/en?verification_success=true')
   end
 
-  pending 'fails when the RRN has already been used' do
+  it 'fails when the RUT has already been used' do
     create(
       :verification,
       method_name: 'clave_unica',
-      hashed_uid: Verification::VerificationService.new.send(:hashed_uid, '93051822361', 'clave_unica')
+      hashed_uid: Verification::VerificationService.new.send(:hashed_uid, '44444444', 'clave_unica')
     )
 
     get "/auth/clave_unica?token=#{@token}&pathname=/some-page"
@@ -108,10 +125,93 @@ describe 'clave_unica verification' do
     })
   end
 
-  pending 'fails when the authentication token is not passed' do
+  it 'creates user when the authentication token is not passed' do
+    expect(User.count).to eq(1)
     get '/auth/clave_unica?pathname=/whatever-page'
     follow_redirect!
 
-    expect(response).to redirect_to('/whatever-page?verification_error=true&error=no_token_passed')
+    expect(User.count).to eq(2)
+
+    user = User.order(created_at: :asc).last
+    expect_to_create_verified_user(user)
+
+    expect(user).not_to eq(@user)
+    expect(user).to have_attributes({
+      email: nil,
+      password_digest: nil
+    })
+
+    expect(response).to redirect_to('/en/complete-signup?pathname=%2Fwhatever-page')
+  end
+
+  context 'when phone registration enabled' do
+    before do
+      configuration = AppConfiguration.instance
+      configuration.settings['password_login'] = {
+        'phone' => true,
+        'allowed' => true,
+        'enabled' => true,
+        'enable_signup' => true,
+        'minimum_length' => 8,
+        'phone_email_pattern' => 'phone+__PHONE__@test.com'
+      }
+      configuration.save!
+    end
+
+    context 'email confirmation enabled' do
+      before do
+        configuration = AppConfiguration.instance
+        configuration.settings['user_confirmation'] = {
+          'enabled' => true,
+          'allowed' => true
+        }
+        configuration.save!
+      end
+
+      it 'creates user that can confirm her email' do
+        get '/auth/clave_unica?pathname=/whatever-page'
+        follow_redirect!
+
+        user = User.order(created_at: :asc).last
+        expect_to_create_verified_user(user)
+
+        token = AuthToken::AuthToken.new(payload: user.to_token_payload).token
+        headers = { 'Authorization' => "Bearer #{token}" }
+        post '/web_api/v1/user/resend_code', params: { new_email: 'newcoolemail@example.org' }, headers: headers
+        expect(response).to have_http_status(:ok)
+        expect(user.reload).to have_attributes({ email: 'newcoolemail@example.org' })
+        expect(user.confirmation_required?).to be(true)
+
+        post '/web_api/v1/user/confirm', params: { confirmation: { code: user.email_confirmation_code } }, headers: headers
+        expect(response).to have_http_status(:ok)
+        expect(user.reload.confirmation_required?).to be(false)
+      end
+    end
+
+    context 'email confirmation disabled' do
+      before do
+        configuration = AppConfiguration.instance
+        configuration.settings['user_confirmation'] = {
+          'enabled' => false,
+          'allowed' => false
+        }
+        configuration.save!
+      end
+
+      it 'creates user that can update her email' do
+        get '/auth/clave_unica?pathname=/whatever-page'
+        follow_redirect!
+
+        user = User.order(created_at: :asc).last
+        expect_to_create_verified_user(user)
+
+        token = AuthToken::AuthToken.new(payload: user.to_token_payload).token
+        headers = { 'Authorization' => "Bearer #{token}" }
+        patch "/web_api/v1/users/#{user.id}", params: { user: { email: 'newcoolemail@example.org' } }, headers: headers
+        expect(response).to have_http_status(:ok)
+        expect(user.reload).to have_attributes({ email: 'newcoolemail@example.org' })
+        expect(user.confirmation_required?).to be(false)
+      end
+    end
   end
 end

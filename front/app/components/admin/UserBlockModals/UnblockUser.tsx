@@ -9,7 +9,7 @@ import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // services
-import { IUserData } from 'services/users';
+import { IUserData } from 'api/users/types';
 import useUnblockUser from 'api/blocked_users/useUnblockUser';
 
 type Props = {

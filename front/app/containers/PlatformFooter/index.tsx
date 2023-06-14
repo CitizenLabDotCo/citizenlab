@@ -10,12 +10,12 @@ import eventEmitter from 'utils/eventEmitter';
 import { Icon } from '@citizenlab/cl2-component-library';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { MessageDescriptor } from 'react-intl';
 import messages from './messages';
 
 // services
-import { FOOTER_PAGES, TFooterPage } from 'services/customPages';
+import { TPolicyPage } from 'services/customPages';
 
 // style
 import styled, { css } from 'styled-components';
@@ -205,20 +205,27 @@ interface Props {
   insideModal?: boolean;
 }
 
-type TMessagesMap = { [key in TFooterPage]: MessageDescriptor };
+// Hard-coded in front-end, not possible to edit
+type THardcodedPage = 'cookie-policy' | 'accessibility-statement';
 
-const MESSAGES_MAP: TMessagesMap = {
+type TFooterPage = TPolicyPage | THardcodedPage;
+
+const FOOTER_PAGES: TFooterPage[] = [
+  'terms-and-conditions',
+  'privacy-policy',
+  'cookie-policy',
+  'accessibility-statement',
+];
+
+const MESSAGES_MAP: { [key in TFooterPage]: MessageDescriptor } = {
   'terms-and-conditions': messages.termsAndConditions,
   'privacy-policy': messages.privacyPolicy,
   'cookie-policy': messages.cookiePolicy,
   'accessibility-statement': messages.accessibilityStatement,
 };
 
-const PlatformFooter = ({
-  className,
-  insideModal,
-  intl: { formatMessage },
-}: Props & WrappedComponentProps) => {
+const PlatformFooter = ({ className, insideModal }: Props) => {
+  const { formatMessage } = useIntl();
   const { data: appConfiguration } = useAppConfiguration();
   const customizedA11yHrefEnabled = useFeatureFlag({
     name: 'custom_accessibility_statement_link',
@@ -315,4 +322,4 @@ const PlatformFooter = ({
   );
 };
 
-export default injectIntl(PlatformFooter);
+export default PlatformFooter;

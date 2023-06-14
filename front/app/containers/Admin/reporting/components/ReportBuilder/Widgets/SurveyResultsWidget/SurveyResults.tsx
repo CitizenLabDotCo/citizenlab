@@ -2,8 +2,8 @@ import React, { useMemo } from 'react';
 
 // hooks
 import useLocale from 'hooks/useLocale';
-import useProject from 'hooks/useProject';
-import usePhase from 'hooks/usePhase';
+import useProjectById from 'api/projects/useProjectById';
+import usePhase from 'api/phases/usePhase';
 import useFormResults from 'hooks/useFormResults';
 
 // components
@@ -33,8 +33,8 @@ const SurveyResults = ({ projectId, phaseId, shownQuestions }: Props) => {
   const { formatMessage } = useIntl();
   const locale = useLocale();
   const localize = useLocalize();
-  const project = useProject({ projectId });
-  const phase = usePhase(phaseId ?? null);
+  const { data: project } = useProjectById(projectId);
+  const { data: phase } = usePhase(phaseId ?? null);
   const formResults = useFormResults({
     projectId,
     phaseId,
@@ -50,7 +50,7 @@ const SurveyResults = ({ projectId, phaseId, shownQuestions }: Props) => {
   if (
     isNilOrError(formResults) ||
     isNilOrError(locale) ||
-    isNilOrError(project) ||
+    !project ||
     formResults.results.length === 0
   ) {
     return <NoData message={messages.surveyNoQuestions} />;
@@ -67,13 +67,13 @@ const SurveyResults = ({ projectId, phaseId, shownQuestions }: Props) => {
       <Box px="20px" width="100%" mb="24px">
         <Text variant="bodyM" color="primary" mt="0px" mb="0px">
           {'| '}
-          {localize(project.attributes.title_multiloc)}
-          {!isNilOrError(phase) && (
+          {localize(project.data.attributes.title_multiloc)}
+          {phase && (
             <>
               {' '}
               (
               {formatMessage(messages.phase, {
-                phaseName: localize(phase.attributes.title_multiloc),
+                phaseName: localize(phase.data.attributes.title_multiloc),
               })}
               )
             </>

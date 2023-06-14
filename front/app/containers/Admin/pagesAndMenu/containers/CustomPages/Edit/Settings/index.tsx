@@ -3,11 +3,24 @@ import CustomPageSettingsForm from '../../CustomPageSettingsForm';
 import useCustomPage from 'hooks/useCustomPage';
 import { useParams } from 'react-router-dom';
 import { isNilOrError } from 'utils/helperUtils';
-import { updateCustomPage } from 'services/customPages';
+import { TCustomPageCode, updateCustomPage } from 'services/customPages';
 import { FormValues } from 'containers/Admin/pagesAndMenu/containers/CustomPages/CustomPageSettingsForm';
 import streams from 'utils/streams';
 import { apiEndpoint as navbarItemsEndpoint } from 'services/navbar';
 import { omit } from 'lodash-es';
+
+// Pages which are not allowed to have their slug edited are linked to internally.
+// Changing them would break these links.
+// E.g. 'faq'. Search for '/pages/faq' in the front codebase to find out.
+// Partly related: HiddenNavbarItemList
+const customPageSlugAllowedToEdit: { [key in TCustomPageCode]: boolean } = {
+  about: true,
+  custom: true,
+  faq: false,
+  proposals: false,
+  'privacy-policy': false,
+  'terms-and-conditions': false,
+};
 
 const EditCustomPageSettings = () => {
   const { customPageId } = useParams() as { customPageId: string };
@@ -58,6 +71,7 @@ const EditCustomPageSettings = () => {
         }}
         showNavBarItemTitle={hasNavbarItem}
         onSubmit={handleOnSubmit}
+        hideSlug={!customPageSlugAllowedToEdit[customPage.attributes.code]}
       />
     );
   }

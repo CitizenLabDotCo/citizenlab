@@ -18,13 +18,12 @@ type Props = {
   wrapInDiv?: boolean;
   /** fallback string if undefined multiloc, missing locale or empty string */
   fallback?: string;
-  ref?: React.RefObject<HTMLDivElement>;
+  innerRef?: React.RefObject<HTMLDivElement>;
 };
 
 const wrapTextInDiv = (text: string) => `<div>${text}</div>`;
 
 const T = (props: Props) => {
-  const innerRef = React.createRef();
   const locale = useLocale();
   const currentTenantLocales = useAppConfigurationLocales();
 
@@ -39,6 +38,7 @@ const T = (props: Props) => {
       onClick,
       wrapInDiv,
       fallback,
+      innerRef,
     } = props;
 
     const localizedText = getLocalizedWithFallback(

@@ -4,15 +4,15 @@ import React, { memo, FormEvent, useState } from 'react';
 import Button from 'components/UI/Button';
 
 // services
-import { getLatestRelevantPhase } from 'services/phases';
+import { getLatestRelevantPhase } from 'api/phases/utils';
 import { addBasket, updateBasket } from 'services/baskets';
 
 // hooks
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useBasket from 'hooks/useBasket';
-import useProject from 'hooks/useProject';
-import usePhases from 'hooks/usePhases';
+import useProjectById from 'api/projects/useProjectById';
+import usePhases from 'api/phases/usePhases';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -96,20 +96,20 @@ interface Props {
 
 const AssignBudgetControl = memo(
   ({ view, ideaId, className, projectId }: Props) => {
-    const authUser = useAuthUser();
+    const { data: authUser } = useAuthUser();
     const { data: idea } = useIdeaById(ideaId);
-    const project = useProject({ projectId });
-    const phases = usePhases(projectId);
+    const { data: project } = useProjectById(projectId);
+    const { data: phases } = usePhases(projectId);
 
     const isContinuousProject =
-      project?.attributes.process_type === 'continuous';
+      project?.data.attributes.process_type === 'continuous';
 
     const ideaPhaseIds = !isNilOrError(idea)
       ? idea.data.relationships?.phases?.data?.map((item) => item.id)
       : null;
 
-    const ideaPhases = !isNilOrError(phases)
-      ? phases?.filter(
+    const ideaPhases = phases
+      ? phases.data.filter(
           (phase) =>
             Array.isArray(ideaPhaseIds) && ideaPhaseIds.includes(phase.id)
         )
@@ -120,7 +120,7 @@ const AssignBudgetControl = memo(
       : null;
 
     const participationContext = isContinuousProject
-      ? project
+      ? project.data
       : latestRelevantIdeaPhase;
 
     const participationContextType = isContinuousProject ? 'project' : 'phase';
@@ -181,7 +181,7 @@ const AssignBudgetControl = memo(
 
         try {
           await updateBasket(basket.id, {
-            user_id: authUser.id,
+            user_id: authUser.data.id,
             participation_context_id: participationContextId,
             participation_context_type: capitalizeParticipationContextType(
               participationContextType
@@ -198,7 +198,7 @@ const AssignBudgetControl = memo(
       } else {
         try {
           await addBasket({
-            user_id: authUser.id,
+            user_id: authUser.data.id,
             participation_context_id: participationContextId,
             participation_context_type: capitalizeParticipationContextType(
               participationContextType

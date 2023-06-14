@@ -4,10 +4,8 @@ import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // Hooks
-import useProject from 'hooks/useProject';
-
-// Services
-import { updateProject } from 'services/projects';
+import useProjectById from 'api/projects/useProjectById';
+import useUpdateProject from 'api/projects/useUpdateProject';
 
 // Components
 import {
@@ -56,25 +54,25 @@ const ProjectDescription = memo<
     intl: { formatMessage },
   } = props;
 
+  const { mutate: updateProject, isLoading, error } = useUpdateProject();
   const [moduleActive, setModuleActive] = useState(false);
   const [touched, setTouched] = useState(false);
-  const [processing, setProcessing] = useState(false);
+
   const [success, setSuccess] = useState(false);
-  const [errors, setErrors] = useState<{ [key: string]: any }>({});
   const [formValues, setFormValues] = useState<IFormValues>({
     description_preview_multiloc: null,
     description_multiloc: null,
   });
 
   const setModuleToActive = () => setModuleActive(true);
-  const project = useProject({ projectId: props.params.projectId });
+  const { data: project } = useProjectById(props.params.projectId);
 
   useEffect(() => {
-    if (!isNilOrError(project)) {
+    if (project) {
       setFormValues({
         description_preview_multiloc:
-          project.attributes.description_preview_multiloc,
-        description_multiloc: project.attributes.description_multiloc,
+          project.data.attributes.description_preview_multiloc,
+        description_multiloc: project.data.attributes.description_multiloc,
       });
     }
   }, [project]);
@@ -106,32 +104,29 @@ const ProjectDescription = memo<
   const handleOnSubmit = useCallback(async () => {
     const { description_preview_multiloc, description_multiloc } = formValues;
 
-    if (
-      !processing &&
-      !isNilOrError(project) &&
-      description_preview_multiloc &&
-      description_multiloc
-    ) {
-      setProcessing(true);
-      setErrors({});
+    if (project && description_preview_multiloc && description_multiloc) {
       setSuccess(false);
 
-      try {
-        await updateProject(project.id, {
+      updateProject(
+        {
+          projectId: project.data.id,
           description_multiloc,
           description_preview_multiloc,
-        });
-        setProcessing(false);
-        setErrors({});
-        setTouched(false);
-        setSuccess(true);
-      } catch (errorResponse) {
-        setProcessing(false);
-        setErrors(errorResponse?.json?.errors || {});
-        setSuccess(false);
-      }
+        },
+        {
+          onSuccess: () => {
+            setTouched(false);
+            setSuccess(true);
+          },
+          onError: () => {
+            setSuccess(false);
+          },
+        }
+      );
     }
-  }, [project, formValues, processing]);
+  }, [project, formValues, updateProject]);
+
+  const apiError = error?.json?.errors || {};
 
   if (!isNilOrError(project)) {
     return (
@@ -158,7 +153,7 @@ const ProjectDescription = memo<
             />
             <Error
               fieldName="description_preview_multiloc"
-              apiErrors={errors?.description_preview_multiloc}
+              apiErrors={apiError?.description_preview_multiloc}
             />
           </SectionField>
 
@@ -183,7 +178,7 @@ const ProjectDescription = memo<
             />
             <Error
               fieldName="description_multiloc"
-              apiErrors={errors?.description_multiloc}
+              apiErrors={apiError?.description_multiloc}
             />
           </SectionField>
         </Section>
@@ -192,7 +187,7 @@ const ProjectDescription = memo<
           <Button
             buttonStyle="admin-dark"
             onClick={handleOnSubmit}
-            processing={processing}
+            processing={isLoading}
             disabled={!touched}
           >
             {success ? (
@@ -210,7 +205,7 @@ const ProjectDescription = memo<
             />
           )}
 
-          {!isEmpty(errors) && (
+          {!isEmpty(apiError) && (
             <Error
               text={formatMessage(messages.errorMessage)}
               showBackground={false}

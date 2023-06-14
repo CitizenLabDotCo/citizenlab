@@ -12,9 +12,8 @@ import { SectionTitle, SectionDescription } from 'components/admin/Section';
 import PostManager, { TFilterMenu } from 'components/admin/PostManager';
 
 // resources
-import { isNilOrError } from 'utils/helperUtils';
-import useProject from 'hooks/useProject';
-import usePhases from 'hooks/usePhases';
+import useProjectById from 'api/projects/useProjectById';
+import usePhases from 'api/phases/usePhases';
 
 const StyledDiv = styled.div`
   margin-bottom: 30px;
@@ -22,8 +21,8 @@ const StyledDiv = styled.div`
 
 const AdminProjectIdeas = () => {
   const { projectId } = useParams() as { projectId: string };
-  const project = useProject({ projectId });
-  const phases = usePhases(projectId);
+  const { data: project } = useProjectById(projectId);
+  const { data: phases } = usePhases(projectId);
 
   const defaultTimelineProjectVisibleFilterMenu = 'phases';
   const defaultContinuousProjectVisibleFilterMenu = 'statuses';
@@ -48,18 +47,18 @@ const AdminProjectIdeas = () => {
         </SectionDescription>
       </StyledDiv>
 
-      {!isNilOrError(project) && (
+      {project && (
         <PostManager
           type="ProjectIdeas"
-          projectId={project.id}
-          phases={phases}
+          projectId={project.data.id}
+          phases={phases?.data}
           visibleFilterMenus={
-            project.attributes.process_type === 'timeline'
+            project.data.attributes.process_type === 'timeline'
               ? timelineProjectVisibleFilterMenus
               : continuousProjectVisibleFilterMenus
           }
           defaultFilterMenu={
-            project.attributes.process_type === 'timeline'
+            project.data.attributes.process_type === 'timeline'
               ? defaultTimelineProjectVisibleFilterMenu
               : defaultContinuousProjectVisibleFilterMenu
           }

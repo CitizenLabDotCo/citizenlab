@@ -1,21 +1,20 @@
 // Libraries
-import React, { PureComponent, FormEvent } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import React, { FormEvent, useState } from 'react';
 import { isArray, isNil, omitBy, includes } from 'lodash-es';
 import { saveAs } from 'file-saver';
 
 // Components
 import Checkbox from 'components/UI/Checkbox';
-import { Icon, Dropdown } from '@citizenlab/cl2-component-library';
+import { Icon, Dropdown, Box } from '@citizenlab/cl2-component-library';
 import T from 'components/T';
 import Button from 'components/UI/Button';
+import SearchInput from 'components/UI/SearchInput';
 
-// Services
-import { IGroupData, MembershipType } from 'services/groups';
-import {
-  addGroupMembership,
-  IGroupMembership,
-} from 'services/groupMemberships';
+// api
+import { MembershipType } from 'api/groups/types';
+import { IGroupMemberships } from 'api/group_memberships/types';
+import useAddMembership from 'api/group_memberships/useAddMembership';
+import useGroups from 'api/groups/useGroups';
 
 // Utils
 import { requestBlob } from 'utils/request';
@@ -30,11 +29,8 @@ import events, { MembershipAdd } from './events';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
-// Resources
-import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
-
 // I18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // Styling
@@ -42,15 +38,12 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { rgba } from 'polished';
 
-const TableOptions = styled.div`
-  min-height: 60px;
-  display: flex;
-  align-items: center;
-  padding-bottom: 15px;
-  padding-left: 5px;
-  padding-right: 5px;
-  margin-bottom: 10px;
-  border-bottom: solid 1px ${colors.primary};
+// Typings
+import { CLErrorsJSON } from 'typings';
+import usersKeys from 'api/users/keys';
+import { useQueryClient } from '@tanstack/react-query';
+
+const StyledBox = styled(Box)`
   user-select: none;
 `;
 
@@ -156,12 +149,7 @@ const DropdownFooterButton = styled(Button)`
   }
 `;
 
-// Typings
-import { CLErrorsJSON } from 'typings';
-import { isCLErrorJSON } from 'utils/errorUtils';
-import { WrappedComponentProps } from 'react-intl';
-
-interface InputProps {
+interface Props {
   groupType?: MembershipType;
   selectedUsers: string[] | 'none' | 'all';
   toggleSelectAll: () => void;
@@ -169,128 +157,95 @@ interface InputProps {
   allUsersIds: string[];
   groupId?: string;
   deleteUsersFromGroup?: (userIds: string[]) => void;
+  onSearch: (newValue: string) => void;
+  usersDataLength: number;
 }
 
-interface DataProps {
-  manualGroups: GetGroupsChildProps;
-}
+const UserTableActions = ({
+  toggleSelectAll,
+  allUsersIds,
+  selectedUsers,
+  groupId,
+  unselectAll,
+  deleteUsersFromGroup,
+  groupType,
+  onSearch,
+  usersDataLength,
+}: Props) => {
+  const queryClient = useQueryClient();
+  const { formatDate, formatMessage } = useIntl();
+  const { data: manualGroups } = useGroups({ membershipType: 'manual' });
+  const { mutateAsync: addGroupMembership } = useAddMembership();
+  const [dropdownOpened, setDropdownOpened] = useState(false);
+  const [selectedGroupIds, setSelectedGroupIds] = useState<string[]>([]);
+  const [processing, setProcessing] = useState(false);
+  const showSelectAndExport = usersDataLength !== 0;
 
-interface Props extends InputProps, DataProps {}
-
-interface State {
-  dropdownOpened: boolean;
-  selectedGroupIds: string[];
-  processing: boolean;
-}
-
-class UserTableActions extends PureComponent<
-  Props & WrappedComponentProps,
-  State
-> {
-  constructor(props: Props & WrappedComponentProps) {
-    super(props);
-    this.state = {
-      dropdownOpened: false,
-      selectedGroupIds: [],
-      processing: false,
-    };
-  }
-
-  toggleAllUsers = () => {
+  const toggleAllUsers = () => {
     trackEventByName(tracks.toggleAllUsers.name);
-    this.props.toggleSelectAll();
+    toggleSelectAll();
   };
 
-  exportUsers = async (event: FormEvent) => {
+  const exportUsers = async (event: FormEvent) => {
     event.preventDefault();
-
-    // eslint-disable-next-line no-useless-catch
-    try {
-      const {
-        allUsersIds,
-        selectedUsers,
-        groupId,
-        intl: { formatDate, formatMessage },
-      } = this.props;
-      const usersIds = selectedUsers === 'all' ? allUsersIds : selectedUsers;
-      const apiPath = `${API_PATH}/users/as_xlsx`;
-      const fileType =
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-      const group = groupId;
-      const users = isArray(usersIds) ? usersIds : null;
-      const queryParameters = omitBy({ group, users }, isNil);
-      const blob = await requestBlob(apiPath, fileType, queryParameters);
-      saveAs(
-        blob,
-        `${formatMessage(messages.userExportFileName)}_${formatDate(
-          Date.now()
-        )}.xlsx`
-      );
-    } catch (error) {
-      throw error;
-    }
+    const usersIds = selectedUsers === 'all' ? allUsersIds : selectedUsers;
+    const apiPath = `${API_PATH}/users/as_xlsx`;
+    const fileType =
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+    const group = groupId;
+    const users = isArray(usersIds) ? usersIds : null;
+    const queryParameters = omitBy({ group, users }, isNil);
+    const blob = await requestBlob(apiPath, fileType, queryParameters);
+    saveAs(
+      blob,
+      `${formatMessage(messages.userExportFileName)}_${formatDate(
+        Date.now()
+      )}.xlsx`
+    );
   };
 
-  getchoices = (groupsList: IGroupData[]) => {
-    return groupsList.map((group) => ({
-      text: group.attributes.title_multiloc,
-      id: group.id,
-    }));
-  };
-
-  toggleDropdown = (event: React.FormEvent) => {
+  const toggleDropdown = (event: React.FormEvent) => {
     event.preventDefault();
     event.stopPropagation();
-    this.setState(({ dropdownOpened }) => ({
-      selectedGroupIds: [],
-      dropdownOpened: !dropdownOpened,
-    }));
+    setSelectedGroupIds([]);
+    setDropdownOpened(!dropdownOpened);
   };
 
-  toggleGroup =
+  const toggleGroup =
     (groupId: string) => (event: React.ChangeEvent | React.MouseEvent) => {
       event.preventDefault();
 
-      const { selectedGroupIds } = this.state;
-
       if (!includes(selectedGroupIds, groupId)) {
-        this.setState({
-          selectedGroupIds: [...this.state.selectedGroupIds, groupId],
-        });
+        setSelectedGroupIds([...selectedGroupIds, groupId]);
       } else {
-        this.setState({
-          selectedGroupIds: selectedGroupIds.filter(
+        setSelectedGroupIds(
+          selectedGroupIds.filter(
             (selectedGroupId) => selectedGroupId !== groupId
-          ),
-        });
+          )
+        );
       }
     };
 
-  addUsersToGroups = async () => {
-    const { selectedGroupIds } = this.state;
-
+  const addUsersToGroups = async () => {
     if (selectedGroupIds && selectedGroupIds.length > 0) {
-      const { allUsersIds, selectedUsers } = this.props;
       const usersIds = selectedUsers === 'all' ? allUsersIds : selectedUsers;
-      const promises: Promise<IGroupMembership | CLErrorsJSON>[] = [];
+      const promises: Promise<IGroupMemberships | CLErrorsJSON>[] = [];
       const timeout = (ms) => new Promise((res) => setTimeout(res, ms));
       const success = () => {
         eventEmitter.emit<MembershipAdd>(events.membershipAdd, {
           groupsIds: selectedGroupIds,
         });
-        this.props.unselectAll();
-        this.setState({
-          selectedGroupIds: [],
-          processing: false,
-          dropdownOpened: false,
-        });
+        unselectAll();
+        setDropdownOpened(false);
+        setSelectedGroupIds([]);
+        setProcessing(false);
       };
       const failed = () => {
         eventEmitter.emit<JSX.Element>(
           events.membershipAddFailed,
           <FormattedMessage {...messages.membershipAddFailed} />
         );
-        this.setState({ processing: false });
+        setProcessing(false);
       };
 
       trackEventByName(tracks.addUsersToGroup.name, {
@@ -303,16 +258,16 @@ class UserTableActions extends PureComponent<
       if (isArray(usersIds)) {
         selectedGroupIds.forEach((groupId) => {
           usersIds.forEach((userId) => {
-            promises.push(addGroupMembership(groupId, userId));
+            promises.push(addGroupMembership({ groupId, userId }));
           });
         });
       }
 
       try {
-        this.setState({ processing: true });
+        setProcessing(true);
         await Promise.all(promises);
+        queryClient.invalidateQueries({ queryKey: usersKeys.lists() });
         await timeout(1000);
-        await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/groups`] });
         success();
         return true;
       } catch (error) {
@@ -324,10 +279,10 @@ class UserTableActions extends PureComponent<
 
         // if error because users already part of group(s)
         if (
-          isCLErrorJSON(error) &&
-          error.json.errors.user.filter((val) => val.error !== 'taken')
-            .length === 0 &&
-          !error.json.errors.group
+          error?.errors?.user &&
+          error.errors.user.filter((val) => val.error !== 'taken').length ===
+            0 &&
+          !error.errors.group
         ) {
           await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/groups`] });
           success();
@@ -342,8 +297,7 @@ class UserTableActions extends PureComponent<
     return;
   };
 
-  handleGroupsDeleteClick = () => {
-    const { deleteUsersFromGroup, selectedUsers, allUsersIds } = this.props;
+  const handleGroupsDeleteClick = () => {
     const usersIds = selectedUsers === 'all' ? allUsersIds : selectedUsers;
 
     if (Array.isArray(usersIds) && deleteUsersFromGroup) {
@@ -351,133 +305,144 @@ class UserTableActions extends PureComponent<
     }
   };
 
-  render() {
-    const { selectedUsers, groupType, groupId, allUsersIds } = this.props;
-    const { dropdownOpened, selectedGroupIds, processing } = this.state;
-    const { groupsList } = this.props.manualGroups;
+  let selectedCount;
 
-    let selectedCount;
+  if (selectedUsers === 'all') {
+    selectedCount = allUsersIds.length;
+  } else if (selectedUsers === 'none') {
+    selectedCount = 0;
+  } else {
+    selectedCount = selectedUsers.length;
+  }
 
-    if (selectedUsers === 'all') {
-      selectedCount = allUsersIds.length;
-    } else if (selectedUsers === 'none') {
-      selectedCount = 0;
-    } else {
-      selectedCount = selectedUsers.length;
-    }
+  const exportType =
+    selectedUsers === 'none' && !groupId
+      ? 'exportAllUsers'
+      : selectedUsers === 'none' && groupId
+      ? 'exportGroup'
+      : 'exportSelectedUsers';
 
-    const exportType =
-      selectedUsers === 'none' && !groupId
-        ? 'exportAllUsers'
-        : selectedUsers === 'none' && groupId
-        ? 'exportGroup'
-        : 'exportSelectedUsers';
+  return (
+    <Box
+      width="100%"
+      display="flex"
+      justifyContent="space-between"
+      borderBottom={`solid 1px ${colors.primary}`}
+      mt="20px"
+    >
+      <StyledBox
+        minHeight="60px"
+        display="flex"
+        alignItems="center"
+        paddingBottom="15px"
+        paddingLeft="5px"
+        paddingRight="5px"
+      >
+        {showSelectAndExport && (
+          <>
+            <SelectAllCheckbox
+              label={
+                <SelectAllCheckboxLabel>
+                  <FormattedMessage {...messages.select} />
+                  {selectedCount > 0 && (
+                    <UserCount className="e2e-selected-count">
+                      ({selectedCount})
+                    </UserCount>
+                  )}
+                </SelectAllCheckboxLabel>
+              }
+              checked={selectedUsers === 'all'}
+              indeterminate={isArray(selectedUsers) && selectedUsers.length > 0}
+              onChange={toggleAllUsers}
+            />
+            <ActionButtons>
+              {selectedUsers !== 'none' && manualGroups && (
+                <ActionButtonWrapper>
+                  <Button
+                    className="e2e-move-users"
+                    onClick={toggleDropdown}
+                    buttonStyle="admin-dark-text"
+                  >
+                    <StyledIcon name="folder-move" />
+                    <FormattedMessage {...messages.moveUsersTableAction} />
+                  </Button>
 
-    return (
-      <TableOptions>
-        <SelectAllCheckbox
-          label={
-            <SelectAllCheckboxLabel>
-              <FormattedMessage {...messages.select} />
-              {selectedCount > 0 && (
-                <UserCount className="e2e-selected-count">
-                  ({selectedCount})
-                </UserCount>
+                  <Dropdown
+                    width="300px"
+                    top="45px"
+                    left="0px"
+                    opened={dropdownOpened}
+                    onClickOutside={toggleDropdown}
+                    content={
+                      <DropdownList>
+                        {manualGroups.data.map((group) => (
+                          <DropdownListItem
+                            key={group.id}
+                            onClick={toggleGroup(group.id)}
+                            className="e2e-dropdown-item"
+                          >
+                            <DropdownListItemText>
+                              <T value={group.attributes.title_multiloc} />
+                            </DropdownListItemText>
+                            <Checkbox
+                              checked={includes(selectedGroupIds, group.id)}
+                              onChange={toggleGroup(group.id)}
+                            />
+                          </DropdownListItem>
+                        ))}
+                      </DropdownList>
+                    }
+                    footer={
+                      <DropdownFooterButton
+                        className="e2e-dropdown-submit"
+                        buttonStyle="cl-blue"
+                        onClick={addUsersToGroups}
+                        processing={processing}
+                        fullWidth={true}
+                        padding="12px"
+                        whiteSpace="normal"
+                        disabled={
+                          !selectedGroupIds || selectedGroupIds.length === 0
+                        }
+                      >
+                        <FormattedMessage {...messages.moveUsersButton} />
+                      </DropdownFooterButton>
+                    }
+                  />
+                </ActionButtonWrapper>
               )}
-            </SelectAllCheckboxLabel>
-          }
-          checked={selectedUsers === 'all'}
-          indeterminate={isArray(selectedUsers) && selectedUsers.length > 0}
-          onChange={this.toggleAllUsers}
-        />
-        <ActionButtons>
-          {selectedUsers !== 'none' && !isNilOrError(groupsList) && (
-            <ActionButtonWrapper>
+
+              {groupType === 'manual' && selectedUsers !== 'none' && (
+                <Button
+                  onClick={handleGroupsDeleteClick}
+                  className="hasLeftMargin"
+                  buttonStyle="admin-dark-text"
+                >
+                  <StyledIcon name="delete" />
+                  <FormattedMessage {...messages.membershipDelete} />
+                </Button>
+              )}
+
               <Button
-                className="e2e-move-users"
-                onClick={this.toggleDropdown}
+                onClick={exportUsers}
+                className={`export e2e-${exportType} hasLeftMargin`}
                 buttonStyle="admin-dark-text"
               >
-                <StyledIcon name="folder-move" />
-                <FormattedMessage {...messages.moveUsersTableAction} />
+                <StyledIcon name="user-data" />
+                <FormattedMessage {...messages[exportType]} />
               </Button>
+            </ActionButtons>
+          </>
+        )}
+      </StyledBox>
+      <Box flex="0 0 250px">
+        <SearchInput
+          onChange={onSearch}
+          a11y_numberOfSearchResults={usersDataLength}
+        />
+      </Box>
+    </Box>
+  );
+};
 
-              <Dropdown
-                width="300px"
-                top="45px"
-                left="0px"
-                opened={dropdownOpened}
-                onClickOutside={this.toggleDropdown}
-                content={
-                  <DropdownList>
-                    {groupsList.map((group) => (
-                      <DropdownListItem
-                        key={group.id}
-                        onClick={this.toggleGroup(group.id)}
-                        className="e2e-dropdown-item"
-                      >
-                        <DropdownListItemText>
-                          <T value={group.attributes.title_multiloc} />
-                        </DropdownListItemText>
-                        <Checkbox
-                          checked={includes(selectedGroupIds, group.id)}
-                          onChange={this.toggleGroup(group.id)}
-                        />
-                      </DropdownListItem>
-                    ))}
-                  </DropdownList>
-                }
-                footer={
-                  <DropdownFooterButton
-                    className="e2e-dropdown-submit"
-                    buttonStyle="cl-blue"
-                    onClick={this.addUsersToGroups}
-                    processing={processing}
-                    fullWidth={true}
-                    padding="12px"
-                    whiteSpace="normal"
-                    disabled={
-                      !selectedGroupIds || selectedGroupIds.length === 0
-                    }
-                  >
-                    <FormattedMessage {...messages.moveUsersButton} />
-                  </DropdownFooterButton>
-                }
-              />
-            </ActionButtonWrapper>
-          )}
-
-          {groupType === 'manual' && selectedUsers !== 'none' && (
-            <Button
-              onClick={this.handleGroupsDeleteClick}
-              className="hasLeftMargin"
-              buttonStyle="admin-dark-text"
-            >
-              <StyledIcon name="delete" />
-              <FormattedMessage {...messages.membershipDelete} />
-            </Button>
-          )}
-
-          <Button
-            onClick={this.exportUsers}
-            className={`export e2e-${exportType} hasLeftMargin`}
-            buttonStyle="admin-dark-text"
-          >
-            <StyledIcon name="user-data" />
-            <FormattedMessage {...messages[exportType]} />
-          </Button>
-        </ActionButtons>
-      </TableOptions>
-    );
-  }
-}
-
-const UserTableActionsWithHocs = injectIntl(UserTableActions);
-
-export default (inputProps: InputProps) => (
-  <GetGroups membershipType="manual">
-    {(manualGroups) => (
-      <UserTableActionsWithHocs {...inputProps} manualGroups={manualGroups} />
-    )}
-  </GetGroups>
-);
+export default UserTableActions;

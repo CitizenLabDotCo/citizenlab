@@ -28,10 +28,7 @@ resource 'Campaign consents' do
     parameter :unsubscription_token, 'A token passed through by e-mail unsubscribe links, giving unauthenticated access', required: false
 
     context 'when authenticated' do
-      before do
-        token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-        header 'Authorization', "Bearer #{token}"
-      end
+      before { header_token_for @user }
 
       example_request 'List all campaign consents' do
         expect(status).to eq 200
@@ -46,33 +43,21 @@ resource 'Campaign consents' do
         expect(json_response[:data].size).to eq EmailCampaigns::DeliveryService.new.consentable_campaign_types_for(@user).size
       end
 
-      example_request 'List all campaigns consents with expected categories' do
-        categories = %w[own admin official mention voted commented scheduled]
-        json_response = json_parse(response_body)
-        expect(json_response[:data]).to all(satisfy { |consent| categories.include?(consent[:attributes][:category]) })
-      end
-
       example 'List all campaigns consents with expected management labels' do
         do_request
 
         json_response = json_parse(response_body)
         multiloc_service ||= MultilocService.new
 
-        campaigns_mgmt_attrs = @campaigns.map do |campaign|
-          [
-            [:recipient_role_multiloc, multiloc_service.i18n_to_multiloc(campaign.class.recipient_role_multiloc_key).transform_keys(&:to_sym)],
-            [:content_type_multiloc, multiloc_service.i18n_to_multiloc(campaign.class.content_type_multiloc_key).transform_keys(&:to_sym)]
-          ].to_h
+        campaigns_content_type_multiloc = @campaigns.map do |campaign|
+          multiloc_service.i18n_to_multiloc(campaign.class.content_type_multiloc_key).transform_keys(&:to_sym)
         end
 
-        response_mgmt_attrs = json_response[:data].map do |consent|
-          [
-            [:recipient_role_multiloc, consent[:attributes][:recipient_role_multiloc]],
-            [:content_type_multiloc, consent[:attributes][:content_type_multiloc]]
-          ].to_h
+        response_content_type_multiloc = json_response[:data].map do |consent|
+          consent[:attributes][:content_type_multiloc]
         end
 
-        expect(response_mgmt_attrs).to eq campaigns_mgmt_attrs
+        expect(response_content_type_multiloc).to eq campaigns_content_type_multiloc
       end
     end
 
@@ -109,10 +94,7 @@ resource 'Campaign consents' do
     let(:consented) { false }
 
     context 'when authenticated' do
-      before do
-        token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-        header 'Authorization', "Bearer #{token}"
-      end
+      before { header_token_for @user }
 
       example_request 'Update a campaign consent' do
         expect(response_status).to eq 200
@@ -145,10 +127,7 @@ resource 'Campaign consents' do
     let(:consented) { false }
 
     context 'when authenticated' do
-      before do
-        token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-        header 'Authorization', "Bearer #{token}"
-      end
+      before { header_token_for @user }
 
       example_request 'Update a campaign consent by campaign id' do
         expect(response_status).to eq 200

@@ -1,8 +1,6 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
 import { get, isEmpty, transform } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import streams from 'utils/streams';
-import { API_PATH } from 'containers/App/constants';
 import { convertToGraphqlLocale, isNilOrError } from 'utils/helperUtils';
 import bowser from 'bowser';
 import moment from 'moment';
@@ -17,8 +15,8 @@ import { client } from '../../utils/apolloUtils';
 // hooks
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
-import useAuthUser from 'hooks/useAuthUser';
-import useProjectFolders from 'hooks/useProjectFolders';
+import useAuthUser from 'api/me/useAuthUser';
+import useProjectFolders from 'api/project_folders/useProjectFolders';
 import {
   userModeratesFolder,
   isProjectFolderModerator,
@@ -49,8 +47,14 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 
+// api
+import projectsKeys from 'api/projects/keys';
+import { queryClient } from 'utils/cl-react-query/queryClient';
+
 // typings
 import { Locale, Multiloc, IOption } from 'typings';
+import adminPublicationsKeys from 'api/admin_publications/keys';
+import meKeys from 'api/me/keys';
 
 const Content = styled.div`
   padding-left: 30px;
@@ -141,8 +145,8 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
 
     const tenantLocales = useAppConfigurationLocales();
     const graphqlTenantLocales = useGraphqlTenantLocales();
-    const { projectFolders } = useProjectFolders({});
-    const authUser = useAuthUser();
+    const { data: projectFolders } = useProjectFolders({});
+    const { data: authUser } = useAuthUser();
     const localize = useLocalize();
     const [titleMultiloc, setTitleMultiloc] = useState<Multiloc | null>(null);
     const [startDate, setStartDate] = useState<string | null>(null);
@@ -244,13 +248,11 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
               folderId: folderId !== noFolderOption ? folderId : null,
             },
           });
-          await streams.fetchAllWith({
-            apiEndpoint: [
-              `${API_PATH}/admin_publications`,
-              `${API_PATH}/projects`,
-              `${API_PATH}/users/me`,
-            ],
+          queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
+          queryClient.invalidateQueries({
+            queryKey: adminPublicationsKeys.lists(),
           });
+          queryClient.invalidateQueries({ queryKey: meKeys.all() });
 
           if (emitSuccessEvent) {
             eventEmitter.emit('NewProjectCreated');
@@ -302,9 +304,11 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
       setResponseError(null);
 
       const folders: IOption[] =
-        !isNilOrError(projectFolders) && !isNilOrError(authUser)
+        projectFolders &&
+        !isNilOrError(projectFolders.data) &&
+        !isNilOrError(authUser)
           ? [
-              ...(isAdmin({ data: authUser })
+              ...(isAdmin(authUser)
                 ? [
                     {
                       value: noFolderOption,
@@ -312,8 +316,10 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
                     },
                   ]
                 : []),
-              ...projectFolders
-                .filter((folder) => userModeratesFolder(authUser, folder.id))
+              ...projectFolders.data
+                .filter((folder) =>
+                  userModeratesFolder(authUser.data, folder.id)
+                )
                 .map((folder) => {
                   return {
                     value: folder.id,
@@ -339,7 +345,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
     );
 
     const isSelectDisabled = !!(
-      isProjectFolderModerator(authUser) &&
+      isProjectFolderModerator(authUser.data) &&
       folderOptions &&
       folderOptions.length === 1
     );

@@ -8,9 +8,7 @@ resource 'EventFile' do
 
   before do
     header 'Content-Type', 'application/json'
-    @user = create(:admin)
-    token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-    header 'Authorization', "Bearer #{token}"
+    admin_header_token
     @project = create(:project)
     @event = create(:event, project: @project)
     create_list(:event_file, 2, event: @event)

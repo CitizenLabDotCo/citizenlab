@@ -11,8 +11,7 @@ import {
   mockPhaseSurveyGoogleFormData,
   mockPhaseInformationData,
 } from 'services/__mocks__/phases';
-import { getProject } from 'services/__mocks__/projects';
-import { shallowWithIntl } from 'utils/testUtils/withIntl';
+import { getProject } from 'api/projects/__mocks__/getProject';
 import { localizeProps } from 'utils/testUtils/localizeProps';
 import { getDummyIntlObject } from 'utils/testUtils/mockedIntl';
 import { WithRouterProps } from 'utils/cl-router/withRouter';
@@ -416,7 +415,7 @@ describe('<AdminProjectEdition />', () => {
     expect(newIdeaButton).toBeInTheDocument();
   });
 
-  it("doesn't let you add an idea when there's no ideation phase", async () => {
+  it("doesn't let you add an idea when there's no ideation phase", () => {
     const surveys_enabled = true;
     const typeform_enabled = true;
 
@@ -428,7 +427,7 @@ describe('<AdminProjectEdition />', () => {
     );
     const routerProps = getRouterProps('continuousInformation', 'general');
 
-    shallowWithIntl(
+    render(
       <AdminProjectsProjectIndex
         surveys_enabled={surveys_enabled}
         typeform_enabled={typeform_enabled}
@@ -443,7 +442,7 @@ describe('<AdminProjectEdition />', () => {
       </AdminProjectsProjectIndex>
     );
 
-    const newIdeaButton = await screen.queryByText('Add an idea');
+    const newIdeaButton = screen.queryByText('Add an idea');
     expect(newIdeaButton).toBeNull();
   });
 });

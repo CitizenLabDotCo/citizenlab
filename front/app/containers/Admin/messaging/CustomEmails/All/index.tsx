@@ -1,14 +1,12 @@
-import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import GetCampaigns, { GetCampaignsChildProps } from 'resources/GetCampaigns';
 import { isDraft } from 'services/campaigns';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
 import { List } from 'components/admin/ResourceList';
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, Box, Title, Text } from '@citizenlab/cl2-component-library';
 import Pagination from 'components/admin/Pagination';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import DraftCampaignRow from './DraftCampaignRow';
@@ -18,6 +16,8 @@ import NewCampaignButton from './NewCampaignButton';
 import messages from '../../messages';
 
 import { fontSizes, colors } from 'utils/styleUtils';
+import useCampaigns from 'api/campaigns/useCampaigns';
+import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
 const NoCampaignsWrapper = styled.div`
   display: flex;
@@ -41,21 +41,27 @@ const NoCampaignsDescription = styled.p`
   max-width: 450px;
 `;
 
-interface DataProps extends GetCampaignsChildProps {}
+const CustomEmails = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const { data: campaigns, fetchNextPage } = useCampaigns({
+    campaignNames: ['manual'],
+    pageSize: 10,
+  });
 
-interface Props extends DataProps {}
+  const campaignsList = campaigns?.pages[currentPage - 1];
 
-const Campaigns = ({
-  campaigns,
-  currentPage,
-  lastPage,
-  onChangePage,
-}: Props) => {
-  if (isNilOrError(campaigns)) return null;
+  if (!campaignsList) return null;
 
-  if (campaigns.length === 0) {
+  const lastPage = getPageNumberFromUrl(campaigns?.pages[0].links.last) || 1;
+
+  const goToPage = (page: number) => {
+    setCurrentPage(page);
+    fetchNextPage({ pageParam: page });
+  };
+
+  if (campaignsList.data.length === 0) {
     return (
-      <>
+      <Box background={colors.white} p="40px">
         <NoCampaignsWrapper>
           <Icon name="email-2" width="80px" height="80px" />
           <NoCampaignsHeader>
@@ -66,35 +72,54 @@ const Campaigns = ({
           </NoCampaignsDescription>
           <NewCampaignButton />
         </NoCampaignsWrapper>
-      </>
+      </Box>
     );
   } else {
     return (
       <>
-        <ButtonWrapper>
-          <NewCampaignButton />
-        </ButtonWrapper>
-        <List key={campaigns.map((c) => c.id).join()}>
-          {campaigns.map((campaign) =>
-            isDraft(campaign) ? (
-              <DraftCampaignRow key={campaign.id} campaign={campaign} />
-            ) : (
-              <SentCampaignRow key={campaign.id} campaign={campaign} />
-            )
+        <Box
+          mb="28px"
+          display="flex"
+          w="100%"
+          justifyContent="space-between"
+          pb="28px"
+        >
+          <Box>
+            <Title color="primary">
+              <FormattedMessage {...messages.customEmails} />
+            </Title>
+            <Text color="coolGrey600">
+              <FormattedMessage {...messages.customEmailsDescription} />
+            </Text>
+          </Box>
+          <ButtonWrapper>
+            <NewCampaignButton />
+          </ButtonWrapper>
+        </Box>
+
+        <Box background={colors.white} p="40px">
+          <List key={campaignsList.data.map((c) => c.id).join()}>
+            {campaignsList.data.map((campaign) =>
+              isDraft(campaign) ? (
+                <DraftCampaignRow key={campaign.id} campaign={campaign} />
+              ) : (
+                <SentCampaignRow key={campaign.id} campaign={campaign} />
+              )
+            )}
+          </List>
+          {lastPage > 1 && (
+            <Box pb="42px" pt="5px">
+              <Pagination
+                currentPage={currentPage}
+                totalPages={lastPage}
+                loadPage={goToPage}
+              />
+            </Box>
           )}
-        </List>
-        <Pagination
-          currentPage={currentPage}
-          totalPages={lastPage}
-          loadPage={onChangePage}
-        />
+        </Box>
       </>
     );
   }
 };
 
-export default () => (
-  <GetCampaigns campaignNames={['manual']} pageSize={10}>
-    {(campaigns) => <Campaigns {...campaigns} />}
-  </GetCampaigns>
-);
+export default CustomEmails;

@@ -39,7 +39,7 @@ import styled from 'styled-components';
 // typings
 import { InsertConfigurationOptions, ITab } from 'typings';
 import { getInputTerm } from 'services/participationContexts';
-import { IProjectData } from 'services/projects';
+import { IProjectData } from 'api/projects/types';
 
 // utils
 import { insertConfiguration } from 'utils/moduleUtils';
@@ -205,7 +205,7 @@ export class AdminProjectsProjectIndex extends PureComponent<
           if (
             (processType === 'continuous' && participationMethod !== 'poll') ||
             (processType === 'timeline' &&
-              !isNilOrError(phases) &&
+              phases &&
               phases.filter((phase) => {
                 return phase.attributes.participation_method === 'poll';
               }).length === 0)
@@ -219,7 +219,7 @@ export class AdminProjectsProjectIndex extends PureComponent<
           const processType = project.attributes.process_type;
           const participationMethod = project.attributes.participation_method;
           const noNativeSurveyInTimeline =
-            !isNilOrError(phases) &&
+            phases &&
             !phases.some(
               (phase) =>
                 phase.attributes.participation_method === 'native_survey'
@@ -229,9 +229,7 @@ export class AdminProjectsProjectIndex extends PureComponent<
           const hideTab =
             (processType === 'continuous' &&
               participationMethod !== 'native_survey') ||
-            (processType === 'timeline' &&
-              !isNilOrError(phases) &&
-              noNativeSurveyInTimeline);
+            (processType === 'timeline' && phases && noNativeSurveyInTimeline);
 
           if (hideTab) {
             return true;
@@ -255,7 +253,7 @@ export class AdminProjectsProjectIndex extends PureComponent<
               participationMethod === 'survey' &&
               project.attributes.survey_service !== 'typeform') ||
             (processType === 'timeline' &&
-              !isNilOrError(phases) &&
+              phases &&
               phases.filter((phase) => {
                 return (
                   phase.attributes.participation_method === 'survey' &&
@@ -276,7 +274,7 @@ export class AdminProjectsProjectIndex extends PureComponent<
               participationMethod !== 'ideation' &&
               participationMethod !== 'budgeting') ||
             (processType === 'timeline' &&
-              !isNilOrError(phases) &&
+              phases &&
               phases.filter((phase) => {
                 return (
                   phase.attributes.participation_method === 'ideation' ||
@@ -306,7 +304,7 @@ export class AdminProjectsProjectIndex extends PureComponent<
             (processType === 'continuous' &&
               participationMethod !== 'volunteering') ||
             (processType === 'timeline' &&
-              !isNilOrError(phases) &&
+              phases &&
               phases.filter((phase) => {
                 return phase.attributes.participation_method === 'volunteering';
               }).length === 0)
@@ -404,7 +402,7 @@ export class AdminProjectsProjectIndex extends PureComponent<
         phases
       );
 
-      if (!isNilOrError(phases)) {
+      if (phases) {
         phases.map((phase) => {
           if (
             getMethodConfig(phase.attributes.participation_method)

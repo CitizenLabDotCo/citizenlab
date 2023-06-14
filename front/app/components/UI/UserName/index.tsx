@@ -1,5 +1,4 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import Link from 'utils/cl-router/Link';
 
 // styles
@@ -8,15 +7,18 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 // hooks
-import useUser from 'hooks/useUser';
+import useUserById from 'api/users/useUserById';
 
 // services
-import { IUserData } from 'services/users';
+import { IUserData } from 'api/users/types';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
+
+// components
+import Tippy from '@tippyjs/react';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 
 const Name = styled.span<{
   color?: string;
@@ -73,22 +75,54 @@ interface Props extends StyleProps {
   className?: string;
   isLinkToProfile?: boolean;
   hideLastName?: boolean;
+  anonymous?: boolean;
 }
 
-const UserName = (props: Props & WrappedComponentProps) => {
-  const {
-    intl: { formatMessage },
-    userId,
-    className,
-    isLinkToProfile,
-    hideLastName,
-    fontWeight,
-    fontSize,
-    underline,
-    color,
-    canModerate,
-  } = props;
-  const user = useUser({ userId });
+const UserName = ({
+  userId,
+  className,
+  isLinkToProfile,
+  hideLastName,
+  fontWeight,
+  fontSize,
+  underline,
+  color,
+  canModerate,
+  anonymous,
+}: Props) => {
+  const { formatMessage } = useIntl();
+  const { data: user } = useUserById(userId);
+
+  if (anonymous) {
+    return (
+      <Tippy
+        placement="top-start"
+        maxWidth={'260px'}
+        theme={'dark'}
+        content={
+          <Box style={{ cursor: 'default' }}>
+            <Text my="8px" color="white" fontSize="s">
+              {formatMessage(messages.anonymousTooltip)}
+            </Text>
+          </Box>
+        }
+      >
+        <Name
+          id="e2e-anonymous-username"
+          fontWeight={fontWeight}
+          fontSize={fontSize}
+          underline={underline}
+          className={`
+          ${className || ''}
+          e2e-username
+        `}
+          color={color}
+        >
+          {formatMessage(messages.anonymous)}
+        </Name>
+      </Tippy>
+    );
+  }
 
   if (userId === null) {
     // Deleted user
@@ -109,14 +143,14 @@ const UserName = (props: Props & WrappedComponentProps) => {
     );
   }
 
-  if (!isNilOrError(user)) {
+  if (user) {
     const getName = (user: IUserData) => {
       const firstName = user.attributes.first_name;
       const lastName = user.attributes.last_name;
       return `${firstName} ${!hideLastName && lastName ? lastName : ''}`;
     };
-    const name = getName(user);
-    const profileLink = `/profile/${user.attributes.slug}`;
+    const name = getName(user.data);
+    const profileLink = `/profile/${user.data.attributes.slug}`;
 
     const classNames = `
       ${className || ''}
@@ -157,4 +191,4 @@ const UserName = (props: Props & WrappedComponentProps) => {
   return null;
 };
 
-export default injectIntl(UserName);
+export default UserName;

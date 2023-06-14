@@ -4,13 +4,12 @@ import { isNilOrError } from 'utils/helperUtils';
 // style
 import styled from 'styled-components';
 import { SortableRow } from 'components/admin/ResourceList';
-import useAdminPublications, {
-  IAdminPublicationContent,
-} from 'hooks/useAdminPublications';
+import useAdminPublications from 'api/admin_publications/useAdminPublications';
 import ProjectFolderRow from '../../projectFolders/components/ProjectFolderRow';
-import { PublicationStatus } from 'services/projects';
-import useAuthUser from 'hooks/useAuthUser';
+import { PublicationStatus } from 'api/projects/types';
+import useAuthUser from 'api/me/useAuthUser';
 import FolderChildProjects from './FolderChildProjects';
+import { IAdminPublicationData } from 'api/admin_publications/types';
 
 const StyledSortableRow = styled(SortableRow)`
   & .sortablerow-draghandle {
@@ -24,7 +23,7 @@ interface Props {
   moveRow: (fromIndex: number, toIndex: number) => void;
   dropRow: (itemId: string, toIndex: number) => void;
   isLastItem: boolean;
-  publication: IAdminPublicationContent;
+  publication: IAdminPublicationData;
 }
 
 const publicationStatuses: PublicationStatus[] = [
@@ -41,11 +40,17 @@ const SortableFolderRow = ({
   publication,
   isLastItem,
 }: Props) => {
-  const authUser = useAuthUser();
-  const { list: folderChildAdminPublications } = useAdminPublications({
+  const { data: authUser } = useAuthUser();
+
+  const { data } = useAdminPublications({
     childrenOfId: publication.relationships.publication.data.id,
     publicationStatusFilter: publicationStatuses,
   });
+
+  const folderChildAdminPublications = data?.pages
+    .map((page) => page.data)
+    .flat();
+
   const [folderOpen, setFolderOpen] = useState(true);
 
   if (isNilOrError(authUser)) {

@@ -149,6 +149,7 @@ const OfficialFeedbackFeed = ({
       <Container
         aria-live="polite"
         className={`${className} ${editingAllowed ? 'hasTopMargin' : ''}`}
+        data-testid="official-feedback-feed"
       >
         <FeedbackHeader>
           <FeedbackTitle>

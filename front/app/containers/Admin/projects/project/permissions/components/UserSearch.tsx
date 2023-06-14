@@ -1,12 +1,12 @@
 import React, { Suspense, memo, useState, lazy } from 'react';
 
 // Services
-import { addProjectModerator } from 'services/projectModerators';
 import { isRegularUser } from 'services/permissions/roles';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useExceedsSeats from 'hooks/useExceedsSeats';
+import useAddProjectModerator from 'api/project_moderators/useAddProjectModerator';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -39,7 +39,8 @@ const UserSearch = memo(({ projectId, label }: Props) => {
   const hasSeatBasedBillingEnabled = useFeatureFlag({
     name: 'seat_based_billing',
   });
-  const [processing, setProcessing] = useState(false);
+  const { mutate: addProjectModerator, isLoading } = useAddProjectModerator();
+
   const [showModal, setShowModal] = useState(false);
   const [moderatorToAdd, setModeratorToAdd] =
     useState<UserOptionTypeBase | null>(null);
@@ -60,12 +61,16 @@ const UserSearch = memo(({ projectId, label }: Props) => {
     setModeratorToAdd(user || null);
   };
 
-  const handleOnAddModeratorsClick = async () => {
+  const handleOnAddModeratorsClick = () => {
     if (moderatorToAdd) {
-      setProcessing(true);
-      await addProjectModerator(projectId, moderatorToAdd.id);
-      setProcessing(false);
-      setModeratorToAdd(null);
+      addProjectModerator(
+        { projectId, moderatorId: moderatorToAdd.id },
+        {
+          onSuccess: () => {
+            setModeratorToAdd(null);
+          },
+        }
+      );
     }
   };
 
@@ -109,7 +114,7 @@ const UserSearch = memo(({ projectId, label }: Props) => {
           padding="10px 16px"
           onClick={handleAddClick}
           disabled={!moderatorToAdd}
-          processing={processing}
+          processing={isLoading}
           data-cy="e2e-add-project-moderator-button"
         />
       </Box>

@@ -75,11 +75,7 @@ resource 'Topics' do
   end
 
   context 'when admin' do
-    before do
-      @admin = create(:admin)
-      token = Knock::AuthToken.new(payload: @admin.to_token_payload).token
-      header 'Authorization', "Bearer #{token}"
-    end
+    before { admin_header_token }
 
     post 'web_api/v1/topics' do
       with_options scope: :topic do

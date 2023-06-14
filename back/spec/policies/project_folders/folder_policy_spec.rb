@@ -257,4 +257,32 @@ describe ProjectFolders::FolderPolicy do
       it { is_expected.to permit(:show) }
     end
   end
+
+  context 'when a published folder is empty' do
+    let(:subject_folder) { create(:project_folder, projects: []) }
+
+    context 'when visitor' do
+      let(:user) { nil }
+
+      it { is_expected.to     permit(:show)    }
+      it { is_expected.not_to permit(:create)  }
+      it { is_expected.not_to permit(:update)  }
+      it { is_expected.not_to permit(:destroy) }
+    end
+  end
+
+  context 'when an archived folder is empty' do
+    let(:subject_folder) { create(:project_folder, projects: []) }
+
+    before { subject_folder.admin_publication.update! publication_status: 'archived' }
+
+    context 'when visitor' do
+      let(:user) { nil }
+
+      it { is_expected.to     permit(:show)    }
+      it { is_expected.not_to permit(:create)  }
+      it { is_expected.not_to permit(:update)  }
+      it { is_expected.not_to permit(:destroy) }
+    end
+  end
 end

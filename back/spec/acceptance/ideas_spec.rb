@@ -13,7 +13,7 @@ resource 'Ideas' do
       with_options scope: :idea do
         parameter :project_id, 'The identifier of the project that hosts the idea', required: true
         parameter :phase_ids, 'The phases the idea is part of, defaults to the current only, only allowed by admins'
-        parameter :author_id, 'The user id of the user owning the idea', extra: 'Required if not draft'
+        parameter :author_id, 'The user id of the user owning the idea. This can only be specified by moderators and is inferred from the JWT token for residents.'
         parameter :idea_status_id, 'The status of the idea, only allowed for admins', extra: "Defaults to status with code 'proposed'"
         parameter :publication_status, 'Publication status', required: true, extra: "One of #{Post::PUBLICATION_STATUSES.join(',')}"
         parameter :title_multiloc, 'Multi-locale field with the idea title', required: true, extra: 'Maximum 100 characters'
@@ -54,8 +54,7 @@ resource 'Ideas' do
     before do
       @user = user
       create(:idea_status_proposed)
-      token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-      header 'Authorization', "Bearer #{token}"
+      header_token_for user
     end
 
     get 'web_api/v1/ideas' do
@@ -350,8 +349,7 @@ resource 'Ideas' do
       describe do
         before do
           @user = create(:admin)
-          token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-          header 'Authorization', "Bearer #{token}"
+          header_token_for @user
 
           @ideas = %w[published published draft published spam published published].map do |ps|
             create(:idea, publication_status: ps)
@@ -437,7 +435,7 @@ resource 'Ideas' do
 
           example 'XLSX export', document: false do
             do_request
-            expect(status).to eq 200
+            assert_status 200
 
             worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
             ideas_ids = worksheet.drop(1).collect { |row| row[0].value }
@@ -447,16 +445,12 @@ resource 'Ideas' do
           end
         end
 
-        describe do
-          before do
-            @user = create(:user)
-            token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-            header 'Authorization', "Bearer #{token}"
-          end
+        describe 'when resident' do
+          before { resident_header_token }
 
-          example '[error] XLSX export by a normal user', document: false do
+          example '[error] XLSX export', document: false do
             do_request
-            expect(status).to eq 401
+            assert_status 401
           end
         end
       end
@@ -635,7 +629,7 @@ resource 'Ideas' do
       with_options scope: :idea do
         parameter :project_id, 'The identifier of the project that hosts the idea', required: true
         parameter :phase_ids, 'The phases the idea is part of, defaults to the current only, only allowed by admins'
-        parameter :author_id, 'The user id of the user owning the idea', extra: 'Required if not draft'
+        parameter :author_id, 'The user id of the user owning the idea. This can only be specified by moderators and is inferred from the JWT token for residents.'
         parameter :idea_status_id, 'The status of the idea, only allowed for admins', extra: "Defaults to status with code 'proposed'"
         parameter :publication_status, 'Publication status', required: true, extra: "One of #{Post::PUBLICATION_STATUSES.join(',')}"
         parameter :title_multiloc, 'Multi-locale field with the idea title', required: true, extra: 'Maximum 100 characters'
@@ -647,6 +641,7 @@ resource 'Ideas' do
         parameter :budget, 'The budget needed to realize the idea, as determined by the city'
         parameter :idea_images_attributes, 'an array of base64 images to create'
         parameter :idea_files_attributes, 'an array of base64 files to create'
+        parameter :anonymous, 'Post this idea anonymously'
       end
       ValidationErrorHelper.new.error_fields(self, Idea)
       response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
@@ -743,6 +738,56 @@ resource 'Ideas' do
             json_response = json_parse response_body
             idea = Idea.find(json_response.dig(:data, :id))
             expect(idea.creation_phase).to be_nil
+          end
+        end
+
+        describe 'Creating an idea anonymously' do
+          let(:allow_anonymous_participation) { true }
+          let(:anonymous) { true }
+
+          before { project.update! allow_anonymous_participation: allow_anonymous_participation }
+
+          example_request 'Posting an idea anonymously does not save an author id' do
+            assert_status 201
+            expect(response_data.dig(:attributes, :anonymous)).to be true
+            expect(response_data.dig(:attributes, :author_name)).to be_nil
+            expect(response_data.dig(:relationships, :author, :data)).to be_nil
+          end
+
+          example 'Does not log activities for the author', document: false do
+            expect { do_request }.not_to have_enqueued_job(LogActivityJob).with(anything, anything, @user, anything, anything)
+          end
+
+          describe 'when anonymous posting is not allowed' do
+            let(:allow_anonymous_participation) { false }
+
+            example_request 'Rejects the anonymous parameter' do
+              assert_status 422
+              json_response = json_parse response_body
+              expect(json_response).to include_response_error(:base, 'anonymous_participation_not_allowed')
+            end
+          end
+        end
+
+        describe 'Creating a native survey response when posting anonymously is enabled' do
+          let(:project) { create(:continuous_native_survey_project, allow_anonymous_participation: true) }
+
+          example_request 'Posting a survey automatically sets anonymous to true' do
+            assert_status 201
+            expect(response_data.dig(:attributes, :anonymous)).to be true
+            expect(response_data.dig(:attributes, :author_name)).to be_nil
+            expect(response_data.dig(:relationships, :author, :data)).to be_nil
+          end
+        end
+
+        describe 'Creating a native survey response when posting anonymously is not enabled' do
+          let(:project) { create(:continuous_native_survey_project, allow_anonymous_participation: false) }
+
+          example_request 'Posting a survey does not set the survey to anonymous' do
+            assert_status 201
+            expect(response_data.dig(:attributes, :anonymous)).to be false
+            expect(response_data.dig(:attributes, :author_name)).not_to be_nil
+            expect(response_data.dig(:relationships, :author, :data)).not_to be_nil
           end
         end
 
@@ -867,8 +912,7 @@ resource 'Ideas' do
         context 'when admin' do
           before do
             @user = create(:admin)
-            token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-            header 'Authorization', "Bearer #{token}"
+            header_token_for @user
           end
 
           describe do
@@ -951,7 +995,7 @@ resource 'Ideas' do
       with_options scope: :idea do
         parameter :project_id, 'The idea of the project that hosts the idea'
         parameter :phase_ids, 'The phases the idea is part of, defaults to the current only, only allowed by admins'
-        parameter :author_id, 'The user id of the user owning the idea', extra: 'Required if not draft'
+        parameter :author_id, 'The user id of the user owning the idea. This can only be specified by moderators and is inferred from the JWT token for residents.'
         parameter :idea_status_id, 'The status of the idea, only allowed for admins'
         parameter :publication_status, "Either #{Post::PUBLICATION_STATUSES.join(', ')}"
         parameter :title_multiloc, 'Multi-locale field with the idea title', extra: 'Maximum 100 characters'
@@ -961,6 +1005,7 @@ resource 'Ideas' do
         parameter :location_description, 'A human readable description of the location the idea applies to'
         parameter :proposed_budget, 'The budget needed to realize the idea, as proposed by the author'
         parameter :budget, 'The budget needed to realize the idea, as determined by the city'
+        parameter :anonymous, 'Post this idea anonymously'
       end
       ValidationErrorHelper.new.error_fields(self, Idea)
       response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
@@ -1061,11 +1106,32 @@ resource 'Ideas' do
           end
         end
 
+        describe 'Changing an idea to anonymous' do
+          let(:anonymous) { true }
+
+          before { @project.update! allow_anonymous_participation: true }
+
+          example 'Change an idea to anonymous as a non-admin', document: false do
+            do_request
+            assert_status 200
+            expect(response_data.dig(:attributes, :anonymous)).to be true
+          end
+        end
+
+        describe 'Changing an author' do
+          let(:author_id) { create(:user).id }
+
+          example 'author_id parameter is ignored as a non-admin', document: false do
+            do_request
+            assert_status 200
+            expect(response_data.dig(:relationships, :author, :data, :id)).not_to eq author_id
+          end
+        end
+
         context 'when admin' do
           before do
             @user = create(:admin)
-            token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-            header 'Authorization', "Bearer #{token}"
+            header_token_for @user
           end
 
           describe do
@@ -1161,31 +1227,80 @@ resource 'Ideas' do
             @idea.update! publication_status: 'published'
             do_request idea: { author_id: nil }
             assert_status 422
-            json_response = json_parse response_body
-            expect(json_response).to include_response_error(:author, 'blank')
+            expect(json_response_body).to include_response_error(:author, 'blank')
           end
 
           example '[error] Publishing an idea without author', document: false do
             @idea.update! publication_status: 'draft', author: nil
             do_request idea: { publication_status: 'published' }
             assert_status 422
-            json_response = json_parse response_body
-            expect(json_response).to include_response_error(:author, 'blank')
+            expect(json_response_body).to include_response_error(:author, 'blank')
+          end
+
+          describe 'Changing an idea to anonymous' do
+            let(:allow_anonymous_participation) { true }
+
+            before { @project.update! allow_anonymous_participation: allow_anonymous_participation }
+
+            example 'Updating values of an anonymously posted idea', document: false do
+              @idea.update! publication_status: 'published', anonymous: true, author: nil
+              do_request idea: { location_description: 'HERE' }
+              assert_status 200
+              expect(response_data.dig(:attributes, :location_description)).to eq 'HERE'
+            end
+
+            example 'Changing an idea to anonymous', document: false do
+              @idea.update! publication_status: 'published', anonymous: false, author: @user
+              do_request idea: { anonymous: true }
+              assert_status 200
+              expect(response_data.dig(:attributes, :anonymous)).to be true
+              expect(response_data.dig(:attributes, :author_name)).to be_nil
+            end
+
+            example 'Updating an anonymously posted idea with an author', document: false do
+              @idea.update! publication_status: 'published', anonymous: true, author: nil
+              do_request idea: { author_id: @user.id, publication_status: 'published' }
+              assert_status 200
+              expect(response_data.dig(:relationships, :author, :data, :id)).to eq @user.id
+              expect(response_data.dig(:attributes, :anonymous)).to be false
+            end
+
+            describe 'when anonymous posting is not allowed' do
+              let(:allow_anonymous_participation) { false }
+
+              example 'Rejects the anonymous parameter' do
+                do_request idea: { anonymous: true }
+                assert_status 422
+                json_response = json_parse response_body
+                expect(json_response).to include_response_error(:base, 'anonymous_participation_not_allowed')
+              end
+            end
+
+            example 'Does not log activities for the author', document: false do
+              expect { do_request(idea: { anonymous: true }) }.not_to have_enqueued_job(LogActivityJob).with(anything, anything, @user, anything, anything)
+            end
+
+            example 'Does not log activities for the author and clears the author from past activities', document: false do
+              clear_activity = create(:activity, item: @idea, user: @user)
+              other_item_activity = create(:activity, item: @idea, user: create(:user))
+              other_user_activity = create(:activity, user: @user)
+
+              expect { do_request(idea: { anonymous: true }) }.not_to have_enqueued_job(LogActivityJob).with(anything, anything, @user, anything, anything)
+              expect(clear_activity.reload.user_id).to be_nil
+              expect(other_item_activity.reload.user_id).to be_present
+              expect(other_user_activity.reload.user_id).to eq @user.id
+            end
           end
         end
 
         context 'when moderator' do
-          before do
-            @moderator = create(:project_moderator, projects: [@project])
-            token = Knock::AuthToken.new(payload: @moderator.to_token_payload).token
-            header 'Authorization', "Bearer #{token}"
-          end
+          before { header_token_for create(:project_moderator, projects: [@project]) }
 
           describe do
             let(:idea_status_id) { create(:idea_status).id }
 
             example_request 'Change the idea status (as a moderator)' do
-              expect(status).to be 200
+              assert_status 200
               json_response = json_parse response_body
               expect(json_response.dig(:data, :relationships, :idea_status, :data, :id)).to eq idea_status_id
             end
@@ -1193,17 +1308,13 @@ resource 'Ideas' do
         end
 
         context 'when unauthorized' do
-          before do
-            @user = create(:user)
-            token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-            header 'Authorization', "Bearer #{token}"
-          end
+          before { resident_header_token }
 
           describe do
             let(:idea_status_id) { create(:idea_status).id }
 
             example_request 'Change the idea status (unauthorized)' do
-              expect(status).to eq 401
+              assert_status 401
             end
           end
         end

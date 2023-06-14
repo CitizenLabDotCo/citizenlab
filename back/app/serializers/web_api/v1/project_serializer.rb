@@ -41,6 +41,7 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     voting_disabled_reason = @participation_context_service.idea_voting_disabled_reason_for object, user
     upvoting_disabled_reason = @participation_context_service.idea_voting_disabled_reason_for object, user, mode: 'up'
     downvoting_disabled_reason = @participation_context_service.idea_voting_disabled_reason_for object, user, mode: 'down'
+    annotating_document_disabled_reason = @participation_context_service.annotating_document_disabled_reason_for_project object, user
     taking_survey_disabled_reason = @participation_context_service.taking_survey_disabled_reason_for_project object, user
     taking_poll_disabled_reason = @participation_context_service.taking_poll_disabled_reason_for_project object, user
     {
@@ -70,6 +71,10 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
         enabled: !commenting_disabled_reason,
         disabled_reason: commenting_disabled_reason
       },
+      annotating_document: {
+        enabled: !annotating_document_disabled_reason,
+        disabled_reason: annotating_document_disabled_reason
+      },
       taking_survey: {
         enabled: !taking_survey_disabled_reason,
         disabled_reason: taking_survey_disabled_reason
@@ -87,7 +92,7 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
 
   attribute :participants_count do |object, _params|
     @participants_service ||= ParticipantsService.new
-    @participants_service.project_participants(object).size
+    @participants_service.project_participants_count(object)
   end
 
   attribute :allocated_budget do |object, params|
@@ -116,6 +121,7 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
   has_many :avatars, serializer: WebApi::V1::AvatarSerializer do |object, params|
     avatars_for_project(object, params)[:users]
   end
+  has_many :permissions
 
   has_one :user_basket, record_type: :basket, if: proc { |object, params|
     signed_in? object, params

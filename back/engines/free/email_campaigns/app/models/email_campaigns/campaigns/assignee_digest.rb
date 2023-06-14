@@ -52,24 +52,16 @@ module EmailCampaigns
       %w[admin project_moderator]
     end
 
-    def self.category
-      'admin'
-    end
-
     def self.recipient_role_multiloc_key
-      'email_campaigns.admin_labels.recipient_role.admins_and_moderators'
+      'email_campaigns.admin_labels.recipient_role.admins_and_managers'
     end
 
     def self.recipient_segment_multiloc_key
-      'email_campaigns.admin_labels.recipient_segment.admins'
+      'email_campaigns.admin_labels.recipient_segment.admins_and_managers_assigned_to_the_input'
     end
 
     def self.content_type_multiloc_key
-      'email_campaigns.admin_labels.content_type.ideas'
-    end
-
-    def self.trigger_multiloc_key
-      'scheduled'
+      'email_campaigns.admin_labels.content_type.inputs'
     end
 
     def mailer_class

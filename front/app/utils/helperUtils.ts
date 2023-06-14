@@ -70,7 +70,8 @@ type pageKeys =
   | 'native_survey'
   | 'sign_in'
   | 'sign_up'
-  | 'email-settings';
+  | 'email-settings'
+  | 'pages_menu';
 
 export function isPage(pageKey: pageKeys, pathName: string) {
   /**
@@ -105,6 +106,8 @@ export function isPage(pageKey: pageKeys, pathName: string) {
       return pathnameWithoutLocale.startsWith('/sign-in');
     case 'sign_up':
       return pathnameWithoutLocale.startsWith('/sign-up');
+    case 'pages_menu':
+      return pathnameWithoutLocale.includes('/admin/pages-menu');
   }
 }
 
@@ -179,9 +182,17 @@ export function isOrReturnsString(s: any, ...args: any[]): s is Function {
   return isString(s) || (isFunction(s) && isString(s(...args)));
 }
 
-export function matchPathToUrl(tabUrl: string) {
-  return new RegExp(`^/([a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?)(${tabUrl})(/)?$`);
-}
+export const isTopBarNavActive = (
+  basePath: string,
+  pathname: string,
+  tabUrl: string
+): boolean => {
+  if (pathname.endsWith(basePath) && tabUrl.endsWith(basePath)) {
+    return true;
+  }
+
+  return !tabUrl.endsWith(basePath) && pathname.includes(tabUrl);
+};
 
 export const anyIsUndefined = (...args) => args.some(isUndefined);
 export const anyIsDefined = (...args) => args.some((arg) => !isUndefined(arg));

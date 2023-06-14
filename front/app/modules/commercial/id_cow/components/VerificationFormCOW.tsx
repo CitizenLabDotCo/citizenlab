@@ -1,8 +1,6 @@
 import React, { memo, useCallback, useState } from 'react';
 import { isEmpty, get } from 'lodash-es';
 import { reportError } from 'utils/loggingUtils';
-import { API_PATH } from 'containers/App/constants';
-import streams from 'utils/streams';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -22,7 +20,7 @@ import {
 } from 'containers/Authentication/steps/AuthProviders/styles';
 
 // hooks
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 
 // services
 import { verifyCOW } from '../services/verify';
@@ -34,6 +32,9 @@ import messages from '../messages';
 
 // images
 import helpImage from './COWHelpImage.png';
+import meKeys from 'api/me/keys';
+import usersKeys from 'api/users/keys';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface Props {
   onCancel: () => void;
@@ -43,8 +44,8 @@ interface Props {
 
 const VerificationFormCOW = memo<Props & WrappedComponentProps>(
   ({ onCancel, onVerified, className, intl }) => {
-    const authUser = useAuthUser();
-
+    const { data: authUser } = useAuthUser();
+    const queryClient = useQueryClient();
     const [run, setRun] = useState('');
     const [idSerial, setIdSerial] = useState('');
     const [runError, setRunError] = useState<string | null>(null);
@@ -88,27 +89,15 @@ const VerificationFormCOW = memo<Props & WrappedComponentProps>(
         if (!hasEmptyFields && !processing) {
           try {
             setProcessing(true);
-
             await verifyCOW(run, idSerial);
 
-            const endpointsToRefetch = [
-              `${API_PATH}/users/me`,
-              `${API_PATH}/projects`,
-            ];
-            const partialEndpointsToRefetch = [
-              `${API_PATH}/projects/`,
-              `${API_PATH}/ideas/`,
-            ];
-
             if (!isNilOrError(authUser)) {
-              endpointsToRefetch.push(`${API_PATH}/users/${authUser.id}`);
+              queryClient.invalidateQueries(
+                usersKeys.item({ id: authUser.data.id })
+              );
             }
 
-            await streams.fetchAllWith({
-              apiEndpoint: endpointsToRefetch,
-              partialApiEndpoint: partialEndpointsToRefetch,
-            });
-
+            queryClient.invalidateQueries({ queryKey: meKeys.all() });
             setProcessing(false);
 
             onVerified();

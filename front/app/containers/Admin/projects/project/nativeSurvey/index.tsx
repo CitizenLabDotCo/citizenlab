@@ -13,8 +13,8 @@ import Button from 'components/UI/Button';
 import messages from './messages';
 
 // hooks
-import useProject from 'hooks/useProject';
-import usePhases from 'hooks/usePhases';
+import useProjectById from 'api/projects/useProjectById';
+import usePhases from 'api/phases/usePhases';
 import useLocale from 'hooks/useLocale';
 
 // Utils
@@ -26,29 +26,35 @@ import { colors } from 'utils/styleUtils';
 
 // Services
 import { downloadSurveyResults } from 'services/formCustomFields';
+import useUpdatePhase from 'api/phases/useUpdatePhase';
 
 const Forms = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   const { projectId } = useParams() as { projectId: string };
   const [isDownloading, setIsDownloading] = useState(false);
-  const project = useProject({ projectId });
-  const phases = usePhases(projectId);
+  const { data: project } = useProjectById(projectId);
+  const { data: phases } = usePhases(projectId);
   const locale = useLocale();
   const { pathname } = useLocation();
+  const { mutate: updatePhase } = useUpdatePhase();
 
-  if (isNilOrError(project) || isNilOrError(locale)) {
+  if (!project || isNilOrError(locale)) {
     return null;
   }
 
   const showResults = pathname.includes(
-    `/admin/projects/${project.id}/native-survey/results`
+    `/admin/projects/${project.data.id}/native-survey/results`
   );
 
-  const formActionsConfigs = getFormActionsConfig(project, phases);
+  const formActionsConfigs = getFormActionsConfig(
+    project.data,
+    updatePhase,
+    phases?.data
+  );
 
   const handleDownloadResults = async () => {
     try {
       setIsDownloading(true);
-      await downloadSurveyResults(project, locale);
+      await downloadSurveyResults(project.data, locale);
     } catch (error) {
       // Not handling errors for now
     } finally {
@@ -72,7 +78,7 @@ const Forms = ({ intl: { formatMessage } }: WrappedComponentProps) => {
             <Title>{formatMessage(messages.survey2)}</Title>
             <Text>{formatMessage(messages.surveyDescription2)}</Text>
           </Box>
-          {project.attributes.process_type === 'timeline' && (
+          {project.data.attributes.process_type === 'timeline' && (
             <Box>
               <Button
                 icon="download"

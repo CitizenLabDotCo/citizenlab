@@ -7,17 +7,17 @@ import useLocale from 'hooks/useLocale';
 import PoliciesForm from './PoliciesForm';
 
 // typings
-import { SetError, State, Status } from '../../typings';
+import { SetError, State } from '../../typings';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   state: State;
-  status: Status;
+  loading: boolean;
   setError: SetError;
   onAccept: (email: string, locale: string) => void;
 }
 
-const EmailPolicies = ({ state, status, setError, onAccept }: Props) => {
+const EmailPolicies = ({ state, loading, setError, onAccept }: Props) => {
   const locale = useLocale();
   const { email } = state;
 
@@ -31,7 +31,7 @@ const EmailPolicies = ({ state, status, setError, onAccept }: Props) => {
     }
   };
 
-  return <PoliciesForm status={status} onSubmit={handleSubmit} />;
+  return <PoliciesForm loading={loading} onSubmit={handleSubmit} />;
 };
 
 export default EmailPolicies;

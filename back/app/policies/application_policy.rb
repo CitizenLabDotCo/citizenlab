@@ -33,7 +33,7 @@ class ApplicationPolicy
   end
 
   def raise_not_authorized(reason)
-    raise Pundit::NotAuthorizedError, reason: reason
+    raise Pundit::NotAuthorizedErrorWithReason, reason: reason
   end
 
   class Scope
@@ -50,6 +50,10 @@ class ApplicationPolicy
   end
 
   private
+
+  def can_moderate?
+    user && UserRoleService.new.can_moderate?(record, user)
+  end
 
   def admin?
     user&.admin?

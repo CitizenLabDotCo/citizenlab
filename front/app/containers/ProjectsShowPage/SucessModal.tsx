@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
 // hooks
-import useProject from 'hooks/useProject';
-import usePhases from 'hooks/usePhases';
+import useProjectById from 'api/projects/useProjectById';
+import usePhases from 'api/phases/usePhases';
 import { useSearchParams } from 'react-router-dom';
 
 // styling
@@ -13,9 +13,8 @@ import { Box, Title, Image } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 import { getMethodConfig, getPhase } from 'utils/participationMethodUtils';
-import { getCurrentPhase } from 'services/phases';
+import { getCurrentPhase } from 'api/phases/utils';
 import { isReady } from './utils';
 
 // typings
@@ -26,8 +25,8 @@ interface Props {
 }
 
 const SuccessModal = ({ projectId }: Props) => {
-  const project = useProject({ projectId });
-  const phases = usePhases(projectId);
+  const { data: project } = useProjectById(projectId);
+  const { data: phases } = usePhases(projectId);
 
   const [queryParams] = useSearchParams();
   const showModalParam = queryParams.get('show_modal');
@@ -36,7 +35,7 @@ const SuccessModal = ({ projectId }: Props) => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [phaseIdUrl, setPhaseIdUrl] = useState<string | null>(null);
 
-  const ready = isReady(project, phases);
+  const ready = isReady(project?.data, phases);
 
   useEffect(() => {
     if (!ready) return;
@@ -64,7 +63,7 @@ const SuccessModal = ({ projectId }: Props) => {
 
     // Clear URL parameters for continuous projects
     // (handled elsewhere for timeline projects)
-    if (project.attributes.process_type === 'continuous') {
+    if (project?.data.attributes.process_type === 'continuous') {
       window.history.replaceState(null, '', window.location.pathname);
     }
   }, [ready, project, phaseIdParam]);
@@ -73,19 +72,19 @@ const SuccessModal = ({ projectId }: Props) => {
 
   let phaseParticipationMethod: ParticipationMethod | undefined;
 
-  if (!isNilOrError(phases)) {
-    const phaseInUrl = phaseIdUrl ? getPhase(phaseIdUrl, phases) : null;
+  if (phases) {
+    const phaseInUrl = phaseIdUrl ? getPhase(phaseIdUrl, phases.data) : null;
     if (phaseInUrl) {
       phaseParticipationMethod = phaseInUrl.attributes.participation_method;
     } else {
-      phaseParticipationMethod =
-        getCurrentPhase(phases)?.attributes.participation_method;
+      phaseParticipationMethod = getCurrentPhase(phases.data)?.attributes
+        .participation_method;
     }
   }
 
   const participationMethod =
     phaseParticipationMethod ??
-    (project.attributes.participation_method as
+    (project?.data.attributes.participation_method as
       | ParticipationMethod
       | undefined);
   if (!participationMethod) return null;

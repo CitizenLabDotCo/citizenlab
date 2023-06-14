@@ -26,10 +26,10 @@ import { CSSTransition } from 'react-transition-group';
 // resources
 import { adopt } from 'react-adopt';
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
-import { PublicationStatus } from 'services/projects';
+import { PublicationStatus } from 'api/projects/types';
 // hooks
 import useLocalize from 'hooks/useLocalize';
-import useProjectFolders from 'hooks/useProjectFolders';
+import useProjectFolders from 'api/project_folders/useProjectFolders';
 
 // services
 import useCreateView from 'modules/commercial/insights/api/views/useCreateView';
@@ -134,7 +134,7 @@ export const CreateInsightsView = ({
 }: DataProps & InputProps) => {
   const { mutate, reset, error, isLoading } = useCreateView();
   const localize = useLocalize();
-  const { projectFolders } = useProjectFolders({});
+  const { data: projectFolders } = useProjectFolders({});
 
   const [name, setName] = useState<string | null>();
 
@@ -142,10 +142,7 @@ export const CreateInsightsView = ({
   const [expandedFoldersIds, setExpandedFoldersIds] = useState<string[]>([]);
 
   const ideationProjects = useMemo(
-    () =>
-      projects.projectsList?.filter(
-        (project) => project.attributes.ideas_count > 0
-      ),
+    () => projects?.filter((project) => project.attributes.ideas_count > 0),
     [projects]
   );
 
@@ -192,8 +189,8 @@ export const CreateInsightsView = ({
   // Transform folders data to include projects
   const foldersIncludingProjects = useMemo(
     () =>
-      !isNilOrError(projectFolders)
-        ? projectFolders
+      projectFolders && !isNilOrError(projectFolders.data)
+        ? projectFolders.data
             .map((folder) => ({
               id: folder.id,
               folderName: localize(folder.attributes.title_multiloc),
@@ -209,7 +206,7 @@ export const CreateInsightsView = ({
   );
 
   const toggleSelectAllProjectsInFolder = (
-    folder: typeof foldersIncludingProjects[number]
+    folder: (typeof foldersIncludingProjects)[number]
   ) => {
     const projectIds = folder?.folderProjects.map((project) => project.id);
 
@@ -228,7 +225,7 @@ export const CreateInsightsView = ({
   };
 
   const isFolderSelected = (
-    folder: typeof foldersIncludingProjects[number]
+    folder: (typeof foldersIncludingProjects)[number]
   ) => {
     if (
       folder.folderProjects?.every((project) =>
@@ -393,10 +390,7 @@ const publicationStatuses: PublicationStatus[] = [
 
 const Data = adopt<DataProps>({
   projects: (
-    <GetProjects
-      publicationStatuses={publicationStatuses}
-      filterCanModerate={true}
-    />
+    <GetProjects publicationStatuses={publicationStatuses} canModerate={true} />
   ),
 });
 

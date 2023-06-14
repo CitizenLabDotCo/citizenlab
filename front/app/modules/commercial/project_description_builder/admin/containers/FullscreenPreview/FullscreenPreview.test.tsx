@@ -37,13 +37,17 @@ jest.mock('react-router-dom', () => {
   };
 });
 
-jest.mock('hooks/useProject', () => {
+jest.mock('api/projects/useProjectById', () => {
   return jest.fn(() => ({
-    id: 'id',
-    type: 'project',
-    attributes: {
-      title_multiloc: { en: 'Test Project', 'fr-FR': 'Test Projet' },
-      slug: 'test',
+    data: {
+      data: {
+        id: 'id',
+        type: 'project',
+        attributes: {
+          title_multiloc: { en: 'Test Project', 'fr-FR': 'Test Projet' },
+          slug: 'test',
+        },
+      },
     },
   }));
 });

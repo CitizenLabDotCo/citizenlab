@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import styled from 'styled-components';
 
 // hooks
-import useProjects from 'hooks/useProjects';
+import useProjects from 'api/projects/useProjects';
 
 // i18n
 import useLocalize, { Localize } from 'hooks/useLocalize';
@@ -17,7 +17,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // typings
 import { IOption, FormatMessage } from 'typings';
-import { IProjectData, PublicationStatus } from 'services/projects';
+import { IProjectData, PublicationStatus } from 'api/projects/types';
 
 const StyledSelect = styled(Select)<{ padding?: string }>`
   ${({ padding }) =>
@@ -70,7 +70,7 @@ const ProjectFilter = ({
 }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
-  const projects = useProjects({
+  const { data: projects } = useProjects({
     publicationStatuses: PUBLICATION_STATUSES,
     canModerate: true,
   });
@@ -78,7 +78,7 @@ const ProjectFilter = ({
   const projectFilterOptions = useMemo(() => {
     if (isNilOrError(projects)) return null;
 
-    return generateProjectOptions(projects, localize, formatMessage);
+    return generateProjectOptions(projects.data, localize, formatMessage);
   }, [projects, localize, formatMessage]);
 
   if (projectFilterOptions === null) return null;

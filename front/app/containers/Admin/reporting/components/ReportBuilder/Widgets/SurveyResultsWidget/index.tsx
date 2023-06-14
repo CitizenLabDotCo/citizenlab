@@ -25,7 +25,7 @@ import { IOption } from 'typings';
 
 // utils
 import { useIntl } from 'utils/cl-intl';
-import { IProjectData } from 'services/projects';
+import { IProjectData } from 'api/projects/types';
 
 type Props = {
   title: string | undefined;

@@ -3,12 +3,12 @@ import styled from 'styled-components';
 import { TOnProjectAttributesDiffChangeFunction } from 'containers/Admin/projects/project/general';
 
 // hooks
-import useProjectFolders from 'hooks/useProjectFolders';
+import useProjectFolders from 'api/project_folders/useProjectFolders';
 import useLocalize from 'hooks/useLocalize';
 import { usePermission } from 'services/permissions';
 
 // services
-import { IUpdatedProjectProperties } from 'services/projects';
+import { IUpdatedProjectProperties } from 'api/projects/types';
 import { userModeratesFolder } from 'services/permissions/rules/projectFolderPermissions';
 
 // components
@@ -30,7 +30,7 @@ import { IOption } from 'typings';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 
 const StyledSectionField = styled(SectionField)`
   max-width: 100%;
@@ -46,8 +46,8 @@ const ProjectFolderSelect = ({
   onProjectAttributesDiffChange,
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
-  const { projectFolders } = useProjectFolders({});
-  const authUser = useAuthUser();
+  const { data: projectFolders } = useProjectFolders({});
+  const { data: authUser } = useAuthUser();
 
   const userCanCreateProjectInFolderOnly = usePermission({
     item: 'project_folder',
@@ -95,22 +95,23 @@ const ProjectFolderSelect = ({
     return null;
   }
 
-  const folderOptions: IOption[] = !isNilOrError(projectFolders)
-    ? [
-        {
-          value: '',
-          label: '',
-        },
-        ...projectFolders
-          .filter((folder) => userModeratesFolder(authUser, folder.id))
-          .map((folder) => {
-            return {
-              value: folder.id,
-              label: localize(folder.attributes.title_multiloc),
-            };
-          }),
-      ]
-    : [];
+  const folderOptions: IOption[] =
+    !isNilOrError(projectFolders) && !isNilOrError(projectFolders?.data)
+      ? [
+          {
+            value: '',
+            label: '',
+          },
+          ...projectFolders.data
+            .filter((folder) => userModeratesFolder(authUser.data, folder.id))
+            .map((folder) => {
+              return {
+                value: folder.id,
+                label: localize(folder.attributes.title_multiloc),
+              };
+            }),
+        ]
+      : [];
 
   const handleSelectFolderChange = ({ value: folderId }) => {
     if (typeof folderId === 'string') {

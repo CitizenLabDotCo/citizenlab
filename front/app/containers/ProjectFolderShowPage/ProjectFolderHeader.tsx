@@ -15,7 +15,7 @@ import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
 // typings
-import { IProjectFolderData } from 'services/projectFolders';
+import { IProjectFolderData } from 'api/project_folders/types';
 
 const StyledProjectFolderShareButton = styled(ProjectFolderShareButton)`
   position: absolute;

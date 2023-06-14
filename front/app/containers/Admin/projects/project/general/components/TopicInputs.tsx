@@ -4,7 +4,7 @@ import React from 'react';
 import { coreSettings } from 'api/app_configuration/utils';
 
 // hooks
-import useTopics from 'hooks/useTopics';
+import useTopics from 'api/topics/useTopics';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useLocalize from 'hooks/useLocalize';
 
@@ -20,7 +20,6 @@ import messages from '../messages';
 import { useIntl } from 'utils/cl-intl';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   selectedTopicIds: string[];
@@ -29,11 +28,11 @@ interface Props {
 
 const TopicInputs = ({ selectedTopicIds, onChange }: Props) => {
   const { formatMessage } = useIntl();
-  const availableTopics = useTopics();
+  const { data: availableTopics } = useTopics({});
   const { data: appConfiguration } = useAppConfiguration();
   const localize = useLocalize();
 
-  if (isNilOrError(availableTopics) || isNilOrError(appConfiguration)) {
+  if (!availableTopics || !appConfiguration) {
     return null;
   }
 
@@ -59,7 +58,7 @@ const TopicInputs = ({ selectedTopicIds, onChange }: Props) => {
         />
       </SubSectionTitle>
       <TopicsPicker
-        availableTopics={availableTopics}
+        availableTopics={availableTopics.data}
         selectedTopicIds={selectedTopicIds}
         onChange={onChange}
       />

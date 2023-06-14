@@ -53,11 +53,7 @@ resource 'Moderations' do
     parameter :search, 'Filter by searching in content title, and content body', required: false
 
     context 'when moderator' do
-      before do
-        @moderator = create(:project_moderator, projects: [@project])
-        token = Knock::AuthToken.new(payload: @moderator.to_token_payload).token
-        header 'Authorization', "Bearer #{token}"
-      end
+      before { header_token_for create(:project_moderator, projects: [@project]) }
 
       example_request 'List only moderations moderator has access to' do
         expect(status).to eq(200)
@@ -72,11 +68,7 @@ resource 'Moderations' do
     end
 
     context 'when admin' do
-      before do
-        @user = create(:admin)
-        token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-        header 'Authorization', "Bearer #{token}"
-      end
+      before { admin_header_token }
 
       example_request 'List all moderations' do
         expect(status).to eq(200)
@@ -174,11 +166,7 @@ resource 'Moderations' do
       parameter :search, 'Filter by searching in content title, and content body', required: false
 
       context 'when admin' do
-        before do
-          @user = create(:admin)
-          token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-          header 'Authorization', "Bearer #{token}"
-        end
+        before { admin_header_token }
 
         describe do
           let(:moderatable_types) { %w[Idea Comment] }
@@ -198,11 +186,7 @@ resource 'Moderations' do
       end
 
       context 'when admin' do
-        before do
-          @user = create(:admin)
-          token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-          header 'Authorization', "Bearer #{token}"
-        end
+        before { admin_header_token }
 
         let(:idea) { create(:idea) }
         let(:moderatable_type) { 'Idea' }

@@ -1,11 +1,13 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
 import { ProjectPermissionsProps } from './useProjectPermissions';
 
+const baseKey = { type: 'permission', variant: 'project' };
+
 const projectPermissionKeys = {
-  all: () => [{ type: 'events' }],
-  lists: () => [{ ...projectPermissionKeys.all()[0], operation: 'list' }],
-  list: ({ projectId }: ProjectPermissionsProps) => [
-    { ...projectPermissionKeys.lists()[0], projectId },
+  all: () => [baseKey],
+  lists: () => [{ ...baseKey, operation: 'list' }],
+  list: (params: ProjectPermissionsProps) => [
+    { ...baseKey, operation: 'list', parameters: params },
   ],
 } satisfies QueryKeys;
 

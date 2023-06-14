@@ -5,7 +5,7 @@ import Button from 'components/UI/Button';
 import HelmetIntl from 'components/HelmetIntl';
 import TextingHeader from '../components/TextingHeader';
 import Modal from 'components/UI/Modal';
-import { Box, Text, Error } from '@citizenlab/cl2-component-library';
+import { Box, Text, Error, colors } from '@citizenlab/cl2-component-library';
 
 // utils
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
@@ -200,7 +200,7 @@ const SMSCampaignPreview = (props: WithRouterProps) => {
     hasTooManySegmentsError || hasMonthlyLimitReachedError;
 
   return (
-    <>
+    <Box background={colors.white} p="40px">
       <HelmetIntl
         title={{ id: 'test', defaultMessage: 'Preview SMS' }}
         description={{
@@ -351,7 +351,7 @@ const SMSCampaignPreview = (props: WithRouterProps) => {
           </Box>
         </Box>
       </Modal>
-    </>
+    </Box>
   );
 };
 

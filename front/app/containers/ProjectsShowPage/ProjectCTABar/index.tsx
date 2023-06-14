@@ -10,8 +10,8 @@ import {
 import MainHeader from 'containers/MainHeader';
 
 // hooks
-import usePhases from 'hooks/usePhases';
-import useProject from 'hooks/useProject';
+import usePhases from 'api/phases/usePhases';
+import useProjectById from 'api/projects/useProjectById';
 
 // styles
 import { viewportWidths } from 'utils/styleUtils';
@@ -32,7 +32,7 @@ export const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
   const smallerThanLargeTablet = windowWidth <= viewportWidths.tablet;
   const [isVisible, setIsVisible] = useState(false);
   const portalElement = document?.getElementById('topbar-portal');
-  const phases = usePhases(projectId);
+  const { data: phases } = usePhases(projectId);
   const isSmallerThanPhone = useBreakpoint('phone');
 
   useEffect(() => {
@@ -64,9 +64,9 @@ export const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
     };
   }, [projectId, smallerThanLargeTablet]);
 
-  const project = useProject({ projectId });
+  const { data: project } = useProjectById(projectId);
   const participationMethod = project
-    ? getParticipationMethod(project, phases)
+    ? getParticipationMethod(project.data, phases?.data)
     : undefined;
 
   if (isNilOrError(project) || !participationMethod) {
@@ -74,8 +74,8 @@ export const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
   }
 
   const BarContents = getMethodConfig(participationMethod).renderCTABar({
-    project,
-    phases,
+    project: project.data,
+    phases: phases?.data,
   });
 
   if (portalElement && isVisible) {

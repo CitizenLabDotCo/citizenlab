@@ -7,8 +7,7 @@ resource 'Spam Reports' do
   before do
     header 'Content-Type', 'application/json'
     @user = create(:user)
-    token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-    header 'Authorization', "Bearer #{token}"
+    header_token_for @user
   end
 
   post 'web_api/v1/ideas/:idea_id/spam_reports' do

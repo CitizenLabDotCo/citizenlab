@@ -50,24 +50,20 @@ module EmailCampaigns
       users_scope.where(id: activity.item.recipient.id)
     end
 
-    def self.category
-      'voted'
-    end
-
     def self.recipient_role_multiloc_key
       'email_campaigns.admin_labels.recipient_role.registered_users'
     end
 
     def self.recipient_segment_multiloc_key
-      'email_campaigns.admin_labels.recipient_segment.user_who_published_the_idea'
+      'email_campaigns.admin_labels.recipient_segment.user_who_published_the_input'
     end
 
     def self.content_type_multiloc_key
-      'email_campaigns.admin_labels.content_type.ideas'
+      'email_campaigns.admin_labels.content_type.inputs'
     end
 
     def self.trigger_multiloc_key
-      'email_campaigns.admin_labels.trigger.idea_is_updated'
+      'email_campaigns.admin_labels.trigger.input_is_updated'
     end
 
     def generate_commands(recipient:, activity:, time: nil)

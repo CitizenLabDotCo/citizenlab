@@ -1,16 +1,16 @@
 import { IGraphPoint } from '@citizenlab/cl2-component-library';
 import useLocalize from 'hooks/useLocalize';
-import usePollOptions from 'hooks/usePollOptions';
-import usePollResponses from 'hooks/usePollResponses';
+import usePollOptions from 'api/poll_options/usePollOptions';
+import usePollResponses from 'api/poll_responses/usePollResponses';
 import React, { memo } from 'react';
 import { WrappedComponentProps } from 'react-intl';
-import { IPollQuestion } from 'services/pollQuestions';
+import { IPollQuestionData } from 'api/poll_questions/types';
 import { injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import ResponseGraph from './Charts/ResponseGraph';
 
 interface Props {
-  question: IPollQuestion;
+  question: IPollQuestionData;
   participationContextId: string;
   participationContextType: 'phase' | 'project';
 }
@@ -23,11 +23,15 @@ const QuestionReport = memo(
   }: Props & WrappedComponentProps) => {
     const localize = useLocalize();
 
-    const pollOptions = usePollOptions(question.id);
+    const { data: pollOptions } = usePollOptions(question.id);
+    const { data: pollResponses } = usePollResponses({
+      participationContextId,
+      participationContextType,
+    });
 
-    const getPollResponsesSerie = (question: IPollQuestion) => {
+    const getPollResponsesSerie = (question: IPollQuestionData) => {
       const serie: IGraphPoint[] | undefined =
-        isNilOrError(pollResponses) || isNilOrError(pollOptions)
+        isNilOrError(pollResponses) || !pollOptions
           ? undefined
           : question.relationships.options.data.map((relOption) => {
               const option = pollOptions.data.find(
@@ -35,17 +39,13 @@ const QuestionReport = memo(
               )?.attributes.title_multiloc;
               return {
                 code: relOption.id,
-                value: pollResponses.series.options[relOption.id],
+                value:
+                  pollResponses.data.attributes.series.options[relOption.id],
                 name: option ? localize(option) : 'TODOfallbacksomehow',
               };
             });
       return serie;
     };
-
-    const pollResponses = usePollResponses({
-      participationContextId,
-      participationContextType,
-    });
 
     return (
       <ResponseGraph

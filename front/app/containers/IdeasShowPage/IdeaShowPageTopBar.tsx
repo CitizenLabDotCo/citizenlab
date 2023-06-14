@@ -2,8 +2,8 @@ import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
-import useProject from 'hooks/useProject';
-import useAuthUser from 'hooks/useAuthUser';
+import useProjectById from 'api/projects/useProjectById';
+import useAuthUser from 'api/me/useAuthUser';
 
 // components
 import VoteControl from 'components/VoteControl';
@@ -16,6 +16,9 @@ import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import styled from 'styled-components';
 import { media, colors } from 'utils/styleUtils';
 import { lighten } from 'polished';
+
+// utils
+import { isFixableByAuthentication } from 'utils/actionDescriptors';
 
 // typings
 import { IdeaVotingDisabledReason } from 'api/ideas/types';
@@ -65,18 +68,21 @@ const IdeaShowPageTopBar = ({
   className,
   deselectIdeaOnMap,
 }: Props) => {
-  const authUser = useAuthUser();
-  const project = useProject({ projectId });
+  const { data: authUser } = useAuthUser();
+  const { data: project } = useProjectById(projectId);
 
   const onDisabledVoteClick = (disabled_reason: IdeaVotingDisabledReason) => {
     if (
       !isNilOrError(authUser) &&
-      !isNilOrError(project) &&
-      disabled_reason === 'not_verified'
+      project &&
+      isFixableByAuthentication(disabled_reason)
     ) {
       const pcType =
-        project.attributes.process_type === 'continuous' ? 'project' : 'phase';
-      const pcId = project.relationships?.current_phase?.data?.id || project.id;
+        project.data.attributes.process_type === 'continuous'
+          ? 'project'
+          : 'phase';
+      const pcId =
+        project.data.relationships?.current_phase?.data?.id || project.data.id;
 
       if (pcId && pcType) {
         triggerAuthenticationFlow({

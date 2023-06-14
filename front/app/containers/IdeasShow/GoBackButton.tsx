@@ -4,7 +4,7 @@ import React, { memo } from 'react';
 import { Button, useBreakpoint, Box } from '@citizenlab/cl2-component-library';
 
 // hooks
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 import useLocalize from 'hooks/useLocalize';
 
 // utils
@@ -22,11 +22,11 @@ interface Props {
 
 const GoBackButton = memo(
   ({ projectId, className, insideModal, deselectIdeaOnMap }: Props) => {
-    const project = useProject({ projectId });
+    const { data: project } = useProjectById(projectId);
     const localize = useLocalize();
     const isSmallerThanPhone = useBreakpoint('phone');
 
-    const projectExists = !isNilOrError(project);
+    const projectExists = !!project;
     const deselectIdeaCallbackExists = !isNilOrError(deselectIdeaOnMap);
 
     const onGoBack = (event: React.MouseEvent) => {
@@ -43,7 +43,7 @@ const GoBackButton = memo(
           return;
         }
         // if deselectIdeaOnMap is not present, link back to main project
-        clHistory.push(`/projects/${project.attributes.slug}`);
+        clHistory.push(`/projects/${project.data.attributes.slug}`);
         return;
       }
 
@@ -68,10 +68,10 @@ const GoBackButton = memo(
             display={isSmallerThanPhone ? 'none' : 'block'}
             aria-hidden
           >
-            {localize(project.attributes.title_multiloc)}
+            {localize(project.data.attributes.title_multiloc)}
           </Box>
           <ScreenReaderOnly>
-            {localize(project.attributes.title_multiloc)}
+            {localize(project.data.attributes.title_multiloc)}
           </ScreenReaderOnly>
         </Button>
       );

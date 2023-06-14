@@ -20,7 +20,7 @@ import styled from 'styled-components';
 // other
 import { isNilOrError } from 'utils/helperUtils';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
-import { PublicationStatus } from 'services/projects';
+import { PublicationStatus } from 'api/projects/types';
 
 interface IStyledEventCard {
   last: boolean;

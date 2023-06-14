@@ -9,11 +9,7 @@ resource 'Ideas' do
   before { header 'Content-Type', 'application/json' }
 
   context 'when admin' do
-    before do
-      @user = create(:admin)
-      token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-      header 'Authorization', "Bearer #{token}"
-    end
+    before { admin_header_token }
 
     get 'web_api/v1/ideas' do
       with_options scope: :page do
@@ -143,10 +139,7 @@ resource 'Ideas' do
     let(:id) { @idea.id }
 
     context 'when idea author' do
-      before do
-        token = Knock::AuthToken.new(payload: @idea.author.to_token_payload).token
-        header 'Authorization', "Bearer #{token}"
-      end
+      before { header_token_for @idea.author }
 
       let(:assignee_id) { create(:admin).id }
 
@@ -159,10 +152,7 @@ resource 'Ideas' do
     end
 
     context 'when admin' do
-      before do
-        token = Knock::AuthToken.new(payload: create(:admin).to_token_payload).token
-        header 'Authorization', "Bearer #{token}"
-      end
+      before { admin_header_token }
 
       example 'Change the assignee' do
         assignee_id = create(:admin).id
@@ -185,11 +175,7 @@ resource 'Ideas' do
     end
 
     context 'when moderator', if: defined?(ProjectManagement::Engine) do
-      before do
-        @moderator = create(:project_moderator, projects: [@project])
-        token = Knock::AuthToken.new(payload: @moderator.to_token_payload).token
-        header 'Authorization', "Bearer #{token}"
-      end
+      before { header_token_for create(:project_moderator, projects: [@project]) }
 
       let(:assignee_id) { create(:admin).id }
 

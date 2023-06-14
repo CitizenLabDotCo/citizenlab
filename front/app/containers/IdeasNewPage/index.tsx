@@ -3,46 +3,56 @@ import { createPortal } from 'react-dom';
 import { parse } from 'qs';
 
 // components
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Box, useBreakpoint, Spinner } from '@citizenlab/cl2-component-library';
 import Unauthorized from 'components/Unauthorized';
 import PageNotFound from 'components/PageNotFound';
+import VerticalCenterer from 'components/VerticalCenterer';
 
 import IdeasNewForm from './IdeasNewForm';
 
 // style
 import { colors } from 'utils/styleUtils';
 
-// tracks
-import useProject from 'hooks/useProject';
-import usePhases from 'hooks/usePhases';
+// hooks
+import useProjectBySlug from 'api/projects/useProjectBySlug';
+import usePhases from 'api/phases/usePhases';
 import { getParticipationMethod } from 'utils/participationMethodUtils';
 
 // utils
-import { isError } from 'lodash-es';
-import { isUnauthorizedError } from 'utils/helperUtils';
+import { isUnauthorizedRQ } from 'utils/errorUtils';
 import { useParams } from 'react-router-dom';
 
-interface InputProps {}
-
-const NewIdeaPage = (inputProps: InputProps) => {
+const NewIdeaPage = () => {
   const { slug } = useParams();
 
   const isSmallerThanPhone = useBreakpoint('phone');
-  const project = useProject({ projectSlug: slug });
-  const phases = usePhases(project?.id);
+  const { data: project, status, error } = useProjectBySlug(slug);
+  const { data: phases } = usePhases(project?.data.id);
   const { phase_id } = parse(location.search, {
     ignoreQueryPrefix: true,
   }) as { [key: string]: string };
 
-  if (isUnauthorizedError(project)) {
-    return <Unauthorized />;
+  if (status === 'loading') {
+    return (
+      <VerticalCenterer>
+        <Spinner />
+      </VerticalCenterer>
+    );
   }
 
-  if (isError(project)) {
+  if (status === 'error') {
+    if (isUnauthorizedRQ(error)) {
+      return <Unauthorized />;
+    }
+
     return <PageNotFound />;
   }
 
-  const participationMethod = getParticipationMethod(project, phases, phase_id);
+  const participationMethod = getParticipationMethod(
+    project?.data,
+    phases?.data,
+    phase_id
+  );
   const portalElement = document?.getElementById('modal-portal');
   const isSurvey = participationMethod === 'native_survey';
 
@@ -58,11 +68,13 @@ const NewIdeaPage = (inputProps: InputProps) => {
         h="100vh"
         overflowY="scroll"
       >
-        <IdeasNewForm {...inputProps} />
+        <IdeasNewForm />
       </Box>,
       portalElement
     );
-  } else return <IdeasNewForm {...inputProps} />;
+  }
+
+  return <IdeasNewForm />;
 };
 
 export default NewIdeaPage;

@@ -6,16 +6,13 @@ import {
 import {
   CommentingDisabledReason,
   PublicationStatus as ProjectPublicationStatus,
-} from 'services/projects';
+} from 'api/projects/types';
 import { Keys } from 'utils/cl-react-query/types';
 import ideasKeys from './keys';
 
 export type IdeasKeys = Keys<typeof ideasKeys>;
 
 export type IdeaPublicationStatus = 'draft' | 'published' | 'archived' | 'spam';
-
-// keys in ideas.attributes.action_descriptor
-export type IIdeaAction = 'voting_idea' | 'commenting_idea' | 'budgeting';
 
 export type IdeaVotingDisabledReason =
   | 'project_inactive'
@@ -80,7 +77,7 @@ export interface IIdeaData {
   attributes: {
     title_multiloc: Multiloc;
     body_multiloc: Multiloc;
-    author_name: string;
+    author_name: string | null;
     slug: string;
     publication_status: IdeaPublicationStatus;
     upvotes_count: number;
@@ -112,6 +109,8 @@ export interface IIdeaData {
       comment_voting_idea: ActionDescriptorFutureEnabled<IdeaCommentingDisabledReason>;
       budgeting?: ActionDescriptorFutureEnabled<IdeaBudgetingDisabledReason>;
     };
+    anonymous: boolean;
+    author_hash: string;
   };
   relationships: {
     topics?: {
@@ -157,6 +156,7 @@ export interface IIdeaAdd {
   location_description?: string | null;
   budget?: number | null;
   proposed_budget?: number | null;
+  anonymous?: boolean;
 }
 
 export interface IIdeaUpdate {
@@ -174,6 +174,8 @@ export interface IIdeaUpdate {
   location_description?: string | null;
   budget?: number | null;
   proposed_budget?: number | null;
+  anonymous?: boolean;
+  idea_images_attributes?: { image: string }[];
 }
 
 export interface IIdeas {

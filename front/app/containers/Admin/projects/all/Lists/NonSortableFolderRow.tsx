@@ -2,19 +2,18 @@ import React, { useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // style
-import useAdminPublications, {
-  IAdminPublicationContent,
-} from 'hooks/useAdminPublications';
+import useAdminPublications from 'api/admin_publications/useAdminPublications';
 import ProjectFolderRow from '../../projectFolders/components/ProjectFolderRow';
-import { PublicationStatus } from 'services/projects';
+import { PublicationStatus } from 'api/projects/types';
 import { Row } from 'components/admin/ResourceList';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import FolderChildProjects from './FolderChildProjects';
+import { IAdminPublicationData } from 'api/admin_publications/types';
 
 export interface Props {
   id: string;
   isLastItem: boolean;
-  publication: IAdminPublicationContent;
+  publication: IAdminPublicationData;
 }
 
 const publicationStatuses: PublicationStatus[] = [
@@ -24,11 +23,17 @@ const publicationStatuses: PublicationStatus[] = [
 ];
 
 const NonSortableFolderRow = ({ id, isLastItem, publication }: Props) => {
-  const authUser = useAuthUser();
-  const { list: folderChildAdminPublications } = useAdminPublications({
+  const { data: authUser } = useAuthUser();
+
+  const { data } = useAdminPublications({
     childrenOfId: publication.relationships.publication.data.id,
     publicationStatusFilter: publicationStatuses,
   });
+
+  const folderChildAdminPublications = data?.pages
+    .map((page) => page.data)
+    .flat();
+
   const [folderOpen, setFolderOpen] = useState(true);
 
   if (isNilOrError(authUser)) {

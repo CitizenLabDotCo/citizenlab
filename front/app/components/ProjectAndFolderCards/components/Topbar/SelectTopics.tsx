@@ -10,13 +10,12 @@ import { colors } from 'utils/styleUtils';
 import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // hooks
 import useLocalize from 'hooks/useLocalize';
-import useTopics from 'hooks/useTopics';
+import useTopics from 'api/topics/useTopics';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // services
@@ -32,18 +31,18 @@ const SelectTopics = ({
   className,
   selectedTopics,
   onChangeTopics,
-  intl: { formatMessage },
-}: SelectTopicsProps & WrappedComponentProps) => {
+}: SelectTopicsProps) => {
   const localize = useLocalize();
-  const topics = useTopics({ forHomepageFilter: true });
+  const { formatMessage } = useIntl();
+  const { data: topics } = useTopics({ forHomepageFilter: true });
   const { data: appConfig } = useAppConfiguration();
   const isSmallerThanTablet = useBreakpoint('tablet');
 
   if (isNilOrError(appConfig)) return null;
 
   const topicsOptions = (): { text: string; value: string }[] => {
-    if (!isNilOrError(topics)) {
-      return topics.map((topic) => ({
+    if (topics) {
+      return topics.data.map((topic) => ({
         text: localize(topic.attributes.title_multiloc),
         value: topic.id,
       }));
@@ -82,4 +81,4 @@ const SelectTopics = ({
   );
 };
 
-export default injectIntl(SelectTopics);
+export default SelectTopics;

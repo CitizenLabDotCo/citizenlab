@@ -10,17 +10,13 @@ import stepMessages from '../messages';
 import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 
-// typings
-import { Status } from '../../typings';
-
 interface Props {
-  status: Status;
+  loading: boolean;
   onContinue: () => void;
 }
 
-const Success = ({ status, onContinue }: Props) => {
+const Success = ({ loading, onContinue }: Props) => {
   const { formatMessage } = useIntl();
-  const loading = status === 'pending';
 
   return (
     <Box

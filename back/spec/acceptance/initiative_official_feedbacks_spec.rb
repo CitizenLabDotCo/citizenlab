@@ -42,8 +42,7 @@ resource 'OfficialFeedback' do
   context 'when authenticated' do
     before do
       @user = create(:admin)
-      token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-      header 'Authorization', "Bearer #{token}"
+      header_token_for @user
     end
 
     post 'web_api/v1/initiatives/:initiative_id/official_feedback' do
@@ -109,12 +108,8 @@ resource 'OfficialFeedback' do
     end
   end
 
-  context 'when authenticated as normal user' do
-    before do
-      @user = create(:user)
-      token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-      header 'Authorization', "Bearer #{token}"
-    end
+  context 'when resident' do
+    before { resident_header_token }
 
     post 'web_api/v1/initiatives/:initiative_id/official_feedback' do
       with_options scope: :official_feedback do

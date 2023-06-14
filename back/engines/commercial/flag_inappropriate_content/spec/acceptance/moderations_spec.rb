@@ -68,8 +68,7 @@ resource 'Moderations' do
   def moderator_scenario
     @project = create(:project)
     @moderator = create(:project_moderator, projects: [@project])
-    token = Knock::AuthToken.new(payload: @moderator.to_token_payload).token
-    header 'Authorization', "Bearer #{token}"
+    header_token_for @moderator
 
     @idea = create(:idea, project: @project)
     @comment = create(:comment, post: @idea)

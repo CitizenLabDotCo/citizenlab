@@ -130,8 +130,7 @@ resource 'Comments' do
 
     before do
       @user = create(:admin)
-      token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-      header 'Authorization', "Bearer #{token}"
+      header_token_for @user
     end
 
     example_request 'XLSX export of comments on ideas' do
@@ -226,14 +225,10 @@ resource 'Comments' do
       end
     end
 
-    describe do
-      before do
-        @user = create(:user)
-        token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-        header 'Authorization', "Bearer #{token}"
-      end
+    describe 'when resident' do
+      before { resident_header_token }
 
-      example '[error] XLSX export by a normal user', document: false do
+      example '[error] XLSX export', document: false do
         do_request
         expect(status).to eq 401
       end
@@ -255,7 +250,9 @@ resource 'Comments' do
       expect(json_response.dig(:data, :attributes)).to include(
         downvotes_count: 0,
         publication_status: 'published',
-        is_admin_comment: false
+        is_admin_comment: false,
+        anonymous: false,
+        author_hash: comment.author_hash
       )
       expect(json_response.dig(:data, :relationships)).to include(
         post: {
@@ -278,8 +275,7 @@ resource 'Comments' do
   context 'when authenticated' do
     before do
       @user = create(:user)
-      token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-      header 'Authorization', "Bearer #{token}"
+      header_token_for @user
     end
 
     get 'web_api/v1/ideas/:idea_id/comments' do
@@ -297,9 +293,9 @@ resource 'Comments' do
 
     post 'web_api/v1/ideas/:idea_id/comments' do
       with_options scope: :comment do
-        parameter :author_id, 'The user id of the user owning the comment. Signed in user by default', required: false
         parameter :body_multiloc, 'Multi-locale field with the comment body', required: true
         parameter :parent_id, 'The id of the comment this comment is a response to', required: false
+        parameter :anonymous, 'Post this comment anonymously - true/false', required: false
       end
       ValidationErrorHelper.new.error_fields(self, Comment)
       response_field :base, "Array containing objects with signature { error: #{ParticipationContextService::COMMENTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
@@ -380,6 +376,34 @@ resource 'Comments' do
           expect(blocked_error[:blocked_words].pluck(:attribute).uniq).to eq(['body_multiloc'])
         end
       end
+
+      describe 'anomymous commenting' do
+        let(:allow_anonymous_participation) { true }
+        let(:anonymous) { true }
+
+        before { @idea.project.update! allow_anonymous_participation: allow_anonymous_participation }
+
+        example_request 'Create an anonymous comment on an idea' do
+          assert_status 201
+          expect(response_data.dig(:relationships, :author, :data, :id)).to be_nil
+          expect(response_data.dig(:attributes, :anonymous)).to be true
+          expect(response_data.dig(:attributes, :author_name)).to be_nil
+        end
+
+        example 'Does not log activities for the author', document: false do
+          expect { do_request }.not_to have_enqueued_job(LogActivityJob).with(anything, anything, @user, anything, anything)
+        end
+
+        describe 'when anonymous posting is not allowed' do
+          let(:allow_anonymous_participation) { false }
+
+          example_request 'Rejects the anonymous parameter' do
+            assert_status 422
+            json_response = json_parse response_body
+            expect(json_response).to include_response_error(:base, 'anonymous_participation_not_allowed')
+          end
+        end
+      end
     end
 
     post 'web_api/v1/comments/:id/mark_as_deleted' do
@@ -397,9 +421,7 @@ resource 'Comments' do
       end
 
       example 'Admins cannot mark a comment as deleted without a reason', document: false do
-        @admin = create(:admin)
-        token = Knock::AuthToken.new(payload: @admin.to_token_payload).token
-        header 'Authorization', "Bearer #{token}"
+        admin_header_token
         do_request
         assert_status 422
       end
@@ -407,9 +429,9 @@ resource 'Comments' do
 
     patch 'web_api/v1/comments/:id' do
       with_options scope: :comment do
-        parameter :author_id, 'The user id of the user owning the comment. Signed in user by default'
         parameter :body_multiloc, 'Multi-locale field with the comment body'
         parameter :parent_id, 'The id of the comment this comment is a response to'
+        parameter :anonymous, 'Change this comment to anonymous - true/false'
       end
       ValidationErrorHelper.new.error_fields(self, Comment)
       response_field :base, "Array containing objects with signature { error: #{ParticipationContextService::COMMENTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
@@ -426,11 +448,51 @@ resource 'Comments' do
       end
 
       example 'Admins cannot modify a comment on an idea', document: false do
-        @admin = create(:admin)
-        token = Knock::AuthToken.new(payload: @admin.to_token_payload).token
-        header 'Authorization', "Bearer #{token}"
+        admin_header_token
         do_request
         expect(comment.reload.body_multiloc).not_to eq body_multiloc
+      end
+
+      describe 'anomymous commenting' do
+        let(:allow_anonymous_participation) { true }
+        let(:anonymous) { true }
+
+        before { @idea.project.update! allow_anonymous_participation: allow_anonymous_participation }
+
+        example_request 'Change an comment on an idea to anonymous' do
+          assert_status 200
+          expect(response_data.dig(:relationships, :author, :data, :id)).to be_nil
+          expect(response_data.dig(:attributes, :anonymous)).to be true
+          expect(response_data.dig(:attributes, :author_name)).to be_nil
+        end
+
+        example '[Error] Cannot update an anonymous comment' do
+          comment.update!(anonymous: true)
+          do_request
+          assert_status 401
+          expect(json_response_body.dig(:errors, :base, 0, :error)).to eq 'Unauthorized!'
+        end
+
+        example 'Does not log activities for the author and clears the author from past activities', document: false do
+          clear_activity = create(:activity, item: comment, user: @user)
+          other_item_activity = create(:activity, item: comment, user: create(:user))
+          other_user_activity = create(:activity, user: @user)
+
+          expect { do_request }.not_to have_enqueued_job(LogActivityJob).with(anything, anything, @user, anything, anything)
+          expect(clear_activity.reload.user_id).to be_nil
+          expect(other_item_activity.reload.user_id).to be_present
+          expect(other_user_activity.reload.user_id).to eq @user.id
+        end
+
+        describe 'when anonymous posting is not allowed' do
+          let(:allow_anonymous_participation) { false }
+
+          example_request 'Rejects the anonymous parameter' do
+            assert_status 422
+            json_response = json_parse response_body
+            expect(json_response).to include_response_error(:base, 'anonymous_participation_not_allowed')
+          end
+        end
       end
     end
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ITopicData } from 'services/topics';
+import { ITopicData } from 'api/topics/types';
 import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 

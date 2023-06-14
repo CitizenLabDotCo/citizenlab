@@ -73,7 +73,7 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def submission_count?
-    survey_results?
+    show?
   end
 
   def delete_inputs?
@@ -136,8 +136,10 @@ class ProjectPolicy < ApplicationPolicy
       :voting_enabled,
       :upvoting_method,
       :upvoting_limited_max,
+      :allow_anonymous_participation,
       :survey_embed_url,
       :survey_service,
+      :document_annotation_embed_url,
       :min_budget,
       :max_budget,
       :presentation_mode,

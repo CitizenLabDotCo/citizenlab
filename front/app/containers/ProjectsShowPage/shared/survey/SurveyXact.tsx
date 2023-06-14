@@ -1,12 +1,11 @@
 import React, { memo, useState } from 'react';
 
 // styling
-import { defaultCardStyle, viewportWidths } from 'utils/styleUtils';
+import { defaultCardStyle } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 // components
-import { Spinner, useWindowSize } from '@citizenlab/cl2-component-library';
-import Iframe from 'react-iframe';
+import { Spinner, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 const surveyHeightDesktop = '600px';
 const surveyHeightMobile = '500px';
@@ -35,13 +34,10 @@ type Props = {
   className?: string;
 };
 
-export default memo<Props>(({ surveyXactUrl, className }) => {
+export default memo(({ surveyXactUrl, className }: Props) => {
   const [isIframeLoaded, setIsIframeLoaded] = useState(false);
   const [hackyWidthThingy, setHackyWidthThingy] = useState<string>('100%');
-  const windowSize = useWindowSize();
-  const smallerThanLargeTablet = windowSize
-    ? windowSize.windowWidth <= viewportWidths.tablet
-    : false;
+  const isSmallerThanTablet = useBreakpoint('tablet');
 
   const handleIframeOnLoad = () => {
     setIsIframeLoaded(true);
@@ -70,14 +66,14 @@ export default memo<Props>(({ surveyXactUrl, className }) => {
           <Spinner />
         </Placeholder>
       )}
-      <Iframe
-        url={surveyXactUrl}
+      <iframe
+        src={surveyXactUrl}
         width={hackyWidthThingy}
-        height={
-          smallerThanLargeTablet ? surveyHeightMobile : surveyHeightDesktop
-        }
-        display={isIframeLoaded ? 'block' : 'none'}
-        overflow="hidden"
+        height={isSmallerThanTablet ? surveyHeightMobile : surveyHeightDesktop}
+        style={{
+          overflow: 'hidden',
+          display: isIframeLoaded ? 'block' : 'none',
+        }}
         onLoad={handleIframeOnLoad}
         id="survey-xact-frame"
       />

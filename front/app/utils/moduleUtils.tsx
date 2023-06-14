@@ -15,7 +15,7 @@ import {
   omitBy,
   cloneDeep,
 } from 'lodash-es';
-import { IProjectData } from 'services/projects';
+import { IProjectData } from 'api/projects/types';
 
 import { ManagerType } from 'components/admin/PostManager';
 import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/header/IdeaHeaderRow';
@@ -25,16 +25,14 @@ import { AuthProvider } from 'containers/Authentication/steps/AuthProviders';
 import { Point } from 'components/UI/LeafletMap/typings';
 import { TVerificationStep } from 'containers/Authentication/steps/Verification/utils';
 import { TTabName } from 'containers/Admin/projects/all/CreateProject';
-import { NavItem } from 'containers/Admin/sideBar';
+import { NavItem } from 'containers/Admin/sideBar/navItems';
 import { LatLngTuple } from 'leaflet';
-import { GetAppConfigurationLocalesChildProps } from 'resources/GetAppConfigurationLocales';
 import { GetIdeaByIdChildProps } from 'resources/GetIdeaById';
 import { GetLocaleChildProps } from 'resources/GetLocale';
 import { GetWindowSizeChildProps } from 'resources/GetWindowSize';
-import { ICommentData } from 'api/comments/types';
-import { IGroupDataAttributes, MembershipType } from 'services/groups';
-import { TNotificationData } from 'services/notifications';
-import { IPhaseData } from 'services/phases';
+import { IGroupDataAttributes, MembershipType } from 'api/groups/types';
+import { TNotificationData } from 'api/notifications/types';
+import { IPhaseData } from 'api/phases/types';
 import { TVerificationMethod } from 'services/verificationMethods';
 import { SignUpInFlow } from 'containers/Authentication/typings';
 import {
@@ -45,8 +43,14 @@ import {
   Multiloc,
 } from 'typings';
 import { IntlFormatters } from 'react-intl';
-import { StatCardProps } from '../modules/commercial/analytics/admin/components/StatCard/useStatCard/typings';
 import { IInitiativeData } from 'api/initiatives/types';
+import {
+  Dates,
+  ProjectId,
+  Resolution,
+} from 'components/admin/GraphCards/typings';
+
+export type StatCardProps = ProjectId & Dates & Resolution;
 
 export type ITabsOutlet = {
   formatMessage: IntlFormatters['formatMessage'];
@@ -146,7 +150,7 @@ export interface OutletsPropertyMap {
   'app.components.admin.PostManager.topActionBar': {
     assignee?: string | null;
     projectId?: string | null;
-    handleAssigneeFilterChange: (value: string) => void;
+    handleAssigneeFilterChange: (value: string | undefined) => void;
     type: ManagerType;
   };
   'app.components.admin.PostManager.components.PostTable.IdeaRow.cells': {
@@ -191,9 +195,7 @@ export interface OutletsPropertyMap {
     locale: GetLocaleChildProps;
   };
   'app.components.PostShowComponents.CommentFooter.left': {
-    comment: ICommentData;
-    locale: GetLocaleChildProps;
-    tenantLocales: GetAppConfigurationLocalesChildProps;
+    commentId: string;
   };
   'app.containers.InitiativesShow.left': {
     windowSize: GetWindowSizeChildProps;
@@ -304,6 +306,7 @@ interface Routes {
   'admin.dashboards': RouteConfiguration[];
   'admin.project_templates': RouteConfiguration[];
   'admin.settings': RouteConfiguration[];
+  'admin.tools': RouteConfiguration[];
   'admin.reporting': RouteConfiguration[];
 }
 
@@ -427,6 +430,10 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
       ),
       'admin.settings': parseModuleRoutes(
         mergedRoutes?.['admin.settings'],
+        RouteTypes.ADMIN
+      ),
+      'admin.tools': parseModuleRoutes(
+        mergedRoutes?.['admin.tools'],
         RouteTypes.ADMIN
       ),
       'admin.reporting': parseModuleRoutes(

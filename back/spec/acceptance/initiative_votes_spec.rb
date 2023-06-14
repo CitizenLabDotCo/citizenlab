@@ -8,8 +8,7 @@ resource 'Votes' do
 
   before do
     @user = create(:admin)
-    token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-    header 'Authorization', "Bearer #{token}"
+    header_token_for @user
     header 'Content-Type', 'application/json'
 
     @status_proposed = create(:initiative_status_proposed)

@@ -18,9 +18,9 @@ import IdeaMapCard from './IdeaMapCard';
 import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
 
 // hooks
-import useAuthUser from 'hooks/useAuthUser';
-import useProject from 'hooks/useProject';
-import usePhase from 'hooks/usePhase';
+import useAuthUser from 'api/me/useAuthUser';
+import useProjectById from 'api/projects/useProjectById';
+import usePhase from 'api/phases/usePhase';
 import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
 
 // services
@@ -221,9 +221,9 @@ const initialInnerContainerLeftMargin = getInnerContainerLeftMargin(
 
 const IdeasMap = memo<Props>((props) => {
   const { projectId, phaseId, className, id, ariaLabelledBy, tabIndex } = props;
-  const authUser = useAuthUser();
-  const project = useProject({ projectId });
-  const phase = usePhase(phaseId || null);
+  const { data: authUser } = useAuthUser();
+  const { data: project } = useProjectById(projectId);
+  const { data: phase } = usePhase(phaseId);
   const { windowWidth } = useWindowSize();
   const tablet = windowWidth <= viewportWidths.tablet;
 
@@ -247,7 +247,7 @@ const IdeasMap = memo<Props>((props) => {
   // ideaMarkers
   const defaultIdeasSearch: string | null = null;
   const defaultIdeasSort: Sort =
-    project?.attributes.ideas_order || ideaDefaultSortMethodFallback;
+    project?.data.attributes.ideas_order || ideaDefaultSortMethodFallback;
   const defaultIdeasTopics: string[] = [];
   const [search, setSearch] = useState<string | null>(defaultIdeasSearch);
   const [topics, setTopics] = useState<string[]>(defaultIdeasTopics);
@@ -259,9 +259,9 @@ const IdeasMap = memo<Props>((props) => {
   });
 
   const ideaPostingRules = getIdeaPostingRules({
-    project,
-    phase,
-    authUser,
+    project: project?.data,
+    phase: phase?.data,
+    authUser: authUser?.data,
   });
 
   const isIdeaPostingEnabled =
@@ -441,7 +441,8 @@ const IdeasMap = memo<Props>((props) => {
             participationContextType={phaseId ? 'phase' : 'project'}
             latLng={selectedLatLng}
             inMap={true}
-            phase={!isNilOrError(phase) ? phase : undefined}
+            phase={phase?.data}
+            participationMethod="ideation"
           />
         </IdeaButtonWrapper>
       </InnerContainer>

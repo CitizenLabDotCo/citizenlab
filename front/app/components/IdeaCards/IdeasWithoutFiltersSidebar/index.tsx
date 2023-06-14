@@ -4,7 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // hooks
 import useLocale from 'hooks/useLocale';
 import { useWindowSize } from '@citizenlab/cl2-component-library';
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 import useIdeaCustomFieldsSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
 import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
 
@@ -36,7 +36,7 @@ import {
 import { IParticipationContextType } from 'typings';
 import { isFieldEnabled } from 'utils/projectUtils';
 import { IQueryParameters, Sort } from 'api/ideas/types';
-import usePhase from 'hooks/usePhase';
+import usePhase from 'api/phases/usePhase';
 
 const Container = styled.div`
   width: 100%;
@@ -164,7 +164,7 @@ const IdeasWithoutFiltersSidebar = ({
 }: Props) => {
   const locale = useLocale();
   const { windowWidth } = useWindowSize();
-  const project = useProject({ projectId });
+  const { data: project } = useProjectById(projectId);
 
   const [selectedView, setSelectedView] = useState<'card' | 'map'>('card');
   const { data: ideaCustomFieldsSchemas } = useIdeaCustomFieldsSchema({
@@ -175,7 +175,7 @@ const IdeasWithoutFiltersSidebar = ({
   const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } =
     useInfiniteIdeas(ideaQueryParameters);
   const list = data?.pages.map((page) => page.data).flat();
-  const phase = usePhase(phaseId ? phaseId : null);
+  const { data: phase } = usePhase(phaseId);
 
   useEffect(() => {
     setSelectedView(defaultView || 'card');
@@ -281,8 +281,8 @@ const IdeasWithoutFiltersSidebar = ({
               }`}
             >
               <SelectSort
-                phase={phase}
-                project={project}
+                phase={phase?.data}
+                project={project?.data}
                 onChange={handleSortOnChange}
                 alignment={biggerThanLargeTablet ? 'right' : 'left'}
                 defaultSortingMethod={defaultSortingMethod || null}
@@ -297,7 +297,7 @@ const IdeasWithoutFiltersSidebar = ({
                 <TopicFilterDropdown
                   onChange={handleTopicsOnChange}
                   alignment={biggerThanLargeTablet ? 'right' : 'left'}
-                  projectId={project.id}
+                  projectId={project.data.id}
                 />
               )}
             </DropdownFilters>

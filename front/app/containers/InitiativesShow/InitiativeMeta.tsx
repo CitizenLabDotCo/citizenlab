@@ -29,7 +29,7 @@ import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 
 // hooks
 import useInitiativeById from 'api/initiatives/useInitiativeById';
-import useUser from 'hooks/useUser';
+import useUserById from 'api/users/useUserById';
 
 interface InputProps {
   initiativeId: string;
@@ -56,7 +56,7 @@ const InitiativeMeta = memo<Props & WrappedComponentProps & InjectedLocalized>(
   }) => {
     const { data: initiative } = useInitiativeById(initiativeId);
     const authorId = get(initiative, 'data.relationships.author.data.id');
-    const author = useUser({ userId: authorId });
+    const { data: author } = useUserById(authorId);
 
     if (isNilOrError(locale) || isNilOrError(tenant) || !initiative) {
       return null;
@@ -77,8 +77,8 @@ const InitiativeMeta = memo<Props & WrappedComponentProps & InjectedLocalized>(
     const initiativeOgTitle = formatMessage(messages.metaOgTitle, {
       initiativeTitle: localizedTitle,
     });
-    const initiativeAuthorName = !isNilOrError(author)
-      ? `${author.attributes.first_name} ${author.attributes.last_name}`
+    const initiativeAuthorName = author
+      ? `${author.data.attributes.first_name} ${author.data.attributes.last_name}`
       : 'anonymous';
 
     const articleJson = {

@@ -9,8 +9,7 @@ resource 'InitiativeImage' do
   before do
     header 'Content-Type', 'application/json'
     @user = create(:user)
-    token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-    header 'Authorization', "Bearer #{token}"
+    header_token_for @user
     @initiative = create(:initiative, author: @user)
     create_list(:initiative_image, 2, initiative: @initiative)
   end

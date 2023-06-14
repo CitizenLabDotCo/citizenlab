@@ -7,7 +7,7 @@ import { Helmet } from 'react-helmet';
 // hooks
 import useLocale from 'hooks/useLocale';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 
 // utils
 import { stripHtml } from 'utils/textUtils';
@@ -22,7 +22,7 @@ import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 
 // typings
-import { IProjectData } from 'services/projects';
+import { IProjectData } from 'api/projects/types';
 
 interface Props {
   project: IProjectData;
@@ -32,7 +32,7 @@ const ProjectHelmet = memo<Props & WrappedComponentProps>(
   ({ project, intl }) => {
     const locale = useLocale();
     const tenantLocales = useAppConfigurationLocales();
-    const authUser = useAuthUser();
+    const { data: authUser } = useAuthUser();
 
     if (
       !isNilOrError(locale) &&
@@ -64,8 +64,8 @@ const ProjectHelmet = memo<Props & WrappedComponentProps>(
           <title>
             {`${
               !isNilOrError(authUser) &&
-              authUser.attributes.unread_notifications
-                ? `(${authUser.attributes.unread_notifications}) `
+              authUser.data.attributes.unread_notifications
+                ? `(${authUser.data.attributes.unread_notifications}) `
                 : ''
             }
             ${metaTitle}`}

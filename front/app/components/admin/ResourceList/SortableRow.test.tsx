@@ -1,9 +1,10 @@
 import React from 'react';
-import { DndProvider } from 'react-dnd-cjs';
-import HTML5Backend from 'react-dnd-html5-backend-cjs';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 import SortableRow from './SortableRow';
 import SortableList from './SortableList';
+import dragAndDrop from 'utils/testUtils/dragAndDrop';
 
 const items = [
   { id: '_1', attributes: { ordering: 0 } },
@@ -74,10 +75,7 @@ describe('<SortableRow />: integration with <SortableList />', () => {
     const lastItem = screen.getByText('ITEM ID: _3');
     const middleItem = screen.getByText('ITEM ID: _2');
 
-    fireEvent.dragStart(lastItem);
-    fireEvent.dragEnter(middleItem);
-    fireEvent.dragOver(middleItem);
-    fireEvent.drop(middleItem);
+    dragAndDrop(middleItem, lastItem);
 
     expect(onReorder).toHaveBeenCalledWith('_3', 1);
   });
@@ -103,15 +101,15 @@ describe('<SortableRow />: integration with <SortableList />', () => {
       </SortableList>
     );
 
-    const lastItem = screen.getByText('ITEM ID: _3');
-    const middleItem = screen.getByText('ITEM ID: _2');
+    // SortableRow can be both a dragged element as well as a dropzone
+    const dragElement = screen.getByText('ITEM ID: _3');
+    const dropZone = screen.getByText('ITEM ID: _2');
 
-    fireEvent.dragStart(lastItem);
-    fireEvent.dragEnter(middleItem);
-    fireEvent.dragOver(middleItem);
-    fireEvent.dragEnter(lastItem);
-    fireEvent.dragOver(lastItem);
-    fireEvent.drop(lastItem);
+    // Similar implementation as dragAndDrop (dragAndDrop.ts)
+    fireEvent.mouseDown(dragElement, { which: 1, button: 0 });
+    fireEvent.dragStart(dragElement);
+    fireEvent.drop(dragElement);
+    fireEvent.mouseUp(dropZone, { which: 1, button: 0 });
 
     expect(onReorder).not.toHaveBeenCalled();
   });

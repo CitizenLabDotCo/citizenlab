@@ -18,43 +18,41 @@ const project1Id = '1aa8a788-3aee-4ada-a581-6d934e49784b';
 
 const project2Id = '4b429681-1744-456f-8550-e89a2c2c74b2';
 
-const mockProjectsData = {
-  projectsList: [
-    {
-      id: project1Id,
-      type: 'project',
-      attributes: {
-        ideas_count: 5,
-        title_multiloc: {
-          en: 'Project 1',
-        },
-        updated_at: '2021-05-18T16:07:27.123Z',
+const mockProjectsData = [
+  {
+    id: project1Id,
+    type: 'project',
+    attributes: {
+      ideas_count: 5,
+      title_multiloc: {
+        en: 'Project 1',
       },
+      updated_at: '2021-05-18T16:07:27.123Z',
     },
-    {
-      id: project2Id,
-      type: 'project',
-      attributes: {
-        ideas_count: 5,
-        title_multiloc: {
-          en: 'Project 2',
-        },
-        updated_at: '2021-05-18T16:07:49.156Z',
+  },
+  {
+    id: project2Id,
+    type: 'project',
+    attributes: {
+      ideas_count: 5,
+      title_multiloc: {
+        en: 'Project 2',
       },
+      updated_at: '2021-05-18T16:07:49.156Z',
     },
-    {
-      id: '1aa8a788-3aee',
-      type: 'project',
-      attributes: {
-        ideas_count: 0,
-        title_multiloc: {
-          en: 'Project 3',
-        },
-        updated_at: '2021-05-18T16:07:49.156Z',
+  },
+  {
+    id: '1aa8a788-3aee',
+    type: 'project',
+    attributes: {
+      ideas_count: 0,
+      title_multiloc: {
+        en: 'Project 3',
       },
+      updated_at: '2021-05-18T16:07:49.156Z',
     },
-  ],
-} as GetProjectsChildProps;
+  },
+] as GetProjectsChildProps;
 
 describe('Create Insights View', () => {
   it('renders Create Insights View', () => {

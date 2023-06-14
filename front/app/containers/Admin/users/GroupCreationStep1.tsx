@@ -86,7 +86,7 @@ export const MoreInfoLink = styled.a`
 export const Step2Button = styled(Button)``;
 
 // Typings
-import { IGroupData, MembershipType } from 'services/groups';
+import { IGroupData, MembershipType } from 'api/groups/types';
 import Outlet from 'components/Outlet';
 
 export interface Props {

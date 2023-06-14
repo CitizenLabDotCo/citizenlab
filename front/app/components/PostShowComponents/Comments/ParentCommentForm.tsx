@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { isString, trim, get } from 'lodash-es';
+import { isString, trim } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -8,7 +8,12 @@ import MentionsTextArea from 'components/UI/MentionsTextArea';
 import Avatar from 'components/Avatar';
 import clickOutside from 'utils/containers/clickOutside';
 import Link from 'utils/cl-router/Link';
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
+import {
+  Checkbox,
+  useBreakpoint,
+  Text,
+  IconTooltip,
+} from '@citizenlab/cl2-component-library';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -32,14 +37,14 @@ import { hideVisually } from 'polished';
 import { colors, defaultStyles } from 'utils/styleUtils';
 
 // hooks
-import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useAddCommentToIdea from 'api/comments/useAddCommentToIdea';
 import useAddCommentToInitiative from 'api/comments/useAddCommentToInitiative';
 import useLocale from 'hooks/useLocale';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
+import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
 
 const Container = styled.div`
   display: flex;
@@ -104,15 +109,23 @@ const CancelButton = styled(Button)`
 `;
 
 interface Props {
-  postId: string;
+  ideaId: string | undefined;
+  initiativeId: string | undefined;
   postType: 'idea' | 'initiative';
   postingComment: (arg: boolean) => void;
   className?: string;
+  allowAnonymousParticipation?: boolean;
 }
 
-const ParentCommentForm = ({ postId, postType, className }: Props) => {
+const ParentCommentForm = ({
+  ideaId,
+  initiativeId,
+  postType,
+  className,
+  allowAnonymousParticipation,
+}: Props) => {
   const locale = useLocale();
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const { data: appConfiguration } = useAppConfiguration();
   const { formatMessage } = useIntl();
   const smallerThanTablet = useBreakpoint('tablet');
@@ -131,12 +144,11 @@ const ParentCommentForm = ({ postId, postType, className }: Props) => {
   const [hasApiError, setHasApiError] = useState(false);
   const [profanityApiError, setProfanityApiError] = useState(false);
   const [hasEmptyError, setHasEmptyError] = useState(true);
-
-  const initiativeId = postType === 'initiative' ? postId : undefined;
-  const ideaId = postType === 'idea' ? postId : undefined;
-  const { data: initiative } = useInitiativeById(initiativeId);
+  const [postAnonymously, setPostAnonymously] = useState(false);
+  const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
+    useState(false);
   const { data: idea } = useIdeaById(ideaId);
-  const post = initiative || idea;
+  const projectId = idea ? idea.data.relationships.project.data.id : null;
 
   const processing =
     addCommentToIdeaIsLoading || addCommentToInitiativeIsLoading;
@@ -156,7 +168,7 @@ const ParentCommentForm = ({ postId, postType, className }: Props) => {
   const onFocus = () => {
     trackEventByName(tracks.focusParentCommentEditor, {
       extra: {
-        postId,
+        postId: ideaId || initiativeId,
         postType,
       },
     });
@@ -174,9 +186,14 @@ const ParentCommentForm = ({ postId, postType, className }: Props) => {
   };
 
   const onSubmit = async () => {
-    const projectId: string | null =
-      idea?.data.relationships.project.data.id || null;
+    if (allowAnonymousParticipation && postAnonymously) {
+      setShowAnonymousConfirmationModal(true);
+    } else {
+      continueSubmission();
+    }
+  };
 
+  const continueSubmission = async () => {
     setFocused(false);
 
     if (locale && authUser && isString(inputValue) && trim(inputValue) !== '') {
@@ -186,7 +203,7 @@ const ParentCommentForm = ({ postId, postType, className }: Props) => {
 
       trackEventByName(tracks.clickParentCommentPublish, {
         extra: {
-          postId,
+          postId: ideaId || initiativeId,
           postType,
           content: inputValue,
         },
@@ -195,9 +212,10 @@ const ParentCommentForm = ({ postId, postType, className }: Props) => {
       if (postType === 'idea' && projectId) {
         addCommentToIdea(
           {
-            ideaId: postId,
-            author_id: authUser.id,
+            ideaId,
+            author_id: authUser.data.id,
             body_multiloc: commentBodyMultiloc,
+            anonymous: postAnonymously,
           },
           {
             onSuccess: (comment) => {
@@ -211,7 +229,7 @@ const ParentCommentForm = ({ postId, postType, className }: Props) => {
               close();
             },
             onError: (error) => {
-              const apiErrors = error.json.errors;
+              const apiErrors = error.errors;
               const profanityApiError = apiErrors.base.find(
                 (apiError) => apiError.error === 'includes_banned_words'
               );
@@ -221,12 +239,12 @@ const ParentCommentForm = ({ postId, postType, className }: Props) => {
               if (profanityApiError) {
                 trackEventByName(tracks.parentCommentProfanityError.name, {
                   locale,
-                  postId,
+                  ideaId,
                   postType,
                   projectId,
                   profaneMessage: commentBodyMultiloc[locale],
                   location: 'InitiativesNewFormWrapper (citizen side)',
-                  userId: authUser.id,
+                  userId: authUser.data.id,
                   host: !isNilOrError(appConfiguration)
                     ? appConfiguration.data.attributes.host
                     : null,
@@ -244,9 +262,10 @@ const ParentCommentForm = ({ postId, postType, className }: Props) => {
       if (postType === 'initiative') {
         addCommentToInitiative(
           {
-            initiativeId: postId,
-            author_id: authUser.id,
+            initiativeId,
+            author_id: authUser.data.id,
             body_multiloc: commentBodyMultiloc,
+            anonymous: postAnonymously,
           },
           {
             onSuccess: (comment) => {
@@ -260,7 +279,7 @@ const ParentCommentForm = ({ postId, postType, className }: Props) => {
               close();
             },
             onError: (error) => {
-              const apiErrors = error.json.errors;
+              const apiErrors = error.errors;
               const profanityApiError = apiErrors.base.find(
                 (apiError) => apiError.error === 'includes_banned_words'
               );
@@ -270,12 +289,12 @@ const ParentCommentForm = ({ postId, postType, className }: Props) => {
               if (profanityApiError) {
                 trackEventByName(tracks.parentCommentProfanityError.name, {
                   locale,
-                  postId,
+                  initiativeId,
                   postType,
                   projectId,
                   profaneMessage: commentBodyMultiloc[locale],
                   location: 'InitiativesNewFormWrapper (citizen side)',
-                  userId: authUser.id,
+                  userId: authUser.data.id,
                   host: !isNilOrError(appConfiguration)
                     ? appConfiguration.data.attributes.host
                     : null,
@@ -327,14 +346,8 @@ const ParentCommentForm = ({ postId, postType, className }: Props) => {
       ? commentingPermissionInitiative?.enabled === true
       : idea?.data.attributes?.action_descriptor.commenting_idea.enabled ===
         true;
-  const projectId: string | null = get(
-    post,
-    'relationships.project.data.id',
-    null
-  );
   const isModerator =
-    !isNilOrError(authUser) &&
-    canModerateProject(projectId, { data: authUser });
+    !isNilOrError(authUser) && canModerateProject(projectId, authUser);
   const canComment = authUser && commentingEnabled;
   const placeholder = formatMessage(
     messages[`${postType}CommentBodyPlaceholder`]
@@ -344,9 +357,9 @@ const ParentCommentForm = ({ postId, postType, className }: Props) => {
     return (
       <Container className={className || ''}>
         <StyledAvatar
-          userId={authUser?.id}
+          userId={authUser?.data.id}
           size={30}
-          isLinkToProfile={!!authUser?.id}
+          isLinkToProfile={!!authUser?.data.id}
           moderator={isModerator}
         />
         <FormContainer
@@ -366,7 +379,7 @@ const ParentCommentForm = ({ postId, postType, className }: Props) => {
                 name="comment"
                 placeholder={placeholder}
                 rows={focused || processing ? 4 : 1}
-                postId={postId}
+                postId={ideaId || initiativeId}
                 postType={postType}
                 value={inputValue}
                 error={getErrorMessage()}
@@ -380,6 +393,33 @@ const ParentCommentForm = ({ postId, postType, className }: Props) => {
                 getTextareaRef={setRef}
               />
               <ButtonWrapper className={focused || processing ? 'visible' : ''}>
+                {allowAnonymousParticipation && (
+                  <Checkbox
+                    id="e2e-anonymous-comment-checkbox"
+                    ml="8px"
+                    checked={postAnonymously}
+                    label={
+                      <Text mb="12px" fontSize="s" color="coolGrey600">
+                        {formatMessage(messages.postAnonymously)}
+                        <IconTooltip
+                          content={
+                            <Text color="white" fontSize="s" m="0">
+                              {formatMessage(
+                                messages.inputsAssociatedWithProfile
+                              )}
+                            </Text>
+                          }
+                          iconSize="16px"
+                          placement="top-start"
+                          display="inline"
+                          ml="4px"
+                          transform="translate(0,-1)"
+                        />
+                      </Text>
+                    }
+                    onChange={() => setPostAnonymously(!postAnonymously)}
+                  />
+                )}
                 <CancelButton
                   disabled={processing}
                   onClick={close}
@@ -401,6 +441,14 @@ const ParentCommentForm = ({ postId, postType, className }: Props) => {
             </label>
           </Form>
         </FormContainer>
+        <AnonymousParticipationConfirmationModal
+          onConfirmAnonymousParticipation={() => {
+            setShowAnonymousConfirmationModal(false);
+            continueSubmission();
+          }}
+          showAnonymousConfirmationModal={showAnonymousConfirmationModal}
+          setShowAnonymousConfirmationModal={setShowAnonymousConfirmationModal}
+        />
       </Container>
     );
   }

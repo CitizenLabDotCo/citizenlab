@@ -16,8 +16,8 @@ export interface Props {
 const ProjectValueSelector = memo(({ value, onChange, projects }: Props) => {
   const localize = useLocalize();
   const generateOptions = (): IOption[] => {
-    if (!isNilOrError(projects) && projects.projectsList) {
-      return projects.projectsList.map((project) => {
+    if (!isNilOrError(projects)) {
+      return projects.map((project) => {
         return {
           value: project.id,
           label: localize(project.attributes.title_multiloc),

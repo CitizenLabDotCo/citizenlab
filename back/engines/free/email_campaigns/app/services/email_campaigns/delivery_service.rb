@@ -112,6 +112,7 @@ module EmailCampaigns
       campaigns_with_recipients = assign_campaigns_recipients(valid_campaigns, options)
       campaigns_with_command    = assign_campaigns_command(campaigns_with_recipients, options)
 
+      ExamplesService.new.save_examples(campaigns_with_command)
       process_send_campaigns(campaigns_with_command)
     end
 

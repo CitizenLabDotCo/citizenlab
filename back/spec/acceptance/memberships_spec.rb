@@ -15,9 +15,7 @@ resource 'Memberships' do
       @group = create(:group)
       @users = create_list(:user, 5)
       @memberships = @users.map { |u| create(:membership, group: @group, user: u) }
-      @admin = create(:admin)
-      token = Knock::AuthToken.new(payload: @admin.to_token_payload).token
-      header 'Authorization', "Bearer #{token}"
+      admin_header_token
     end
 
     get 'web_api/v1/groups/:group_id/memberships' do
@@ -95,8 +93,7 @@ resource 'Memberships' do
   context 'Users search' do
     before do
       @admin = create(:admin, first_name: 'Freddy', last_name: 'Smith', email: 'superadmin@gmail.com')
-      token = Knock::AuthToken.new(payload: @admin.to_token_payload).token
-      header 'Authorization', "Bearer #{token}"
+      header_token_for @admin
     end
 
     get 'web_api/v1/groups/:group_id/memberships/users_search' do
@@ -132,10 +129,7 @@ resource 'Memberships' do
   post 'web_api/v1/groups/:group_id/memberships' do
     context 'when admin' do
       before do
-        @admin = create(:admin)
-        token = Knock::AuthToken.new(payload: @admin.to_token_payload).token
-        header 'Authorization', "Bearer #{token}"
-
+        admin_header_token
         @group = create(:group)
       end
 

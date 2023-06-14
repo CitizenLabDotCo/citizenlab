@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 // hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useLocale from 'hooks/useLocale';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useAuthenticationRequirements from 'api/authentication/authentication_requirements/useAuthenticationRequirements';
 
 // components
@@ -38,14 +38,13 @@ import { DEFAULT_MINIMUM_PASSWORD_LENGTH } from 'components/UI/PasswordInput';
 // typings
 import { BuiltInFieldsUpdate } from '../../useSteps/stepConfig/typings';
 import {
-  Status,
   AuthenticationData,
   SetError,
 } from 'containers/Authentication/typings';
 import { AuthenticationRequirements } from 'api/authentication/authentication_requirements/types';
 
 interface BaseProps {
-  status: Status;
+  loading: boolean;
   setError: SetError;
   onSubmit: (userId: string, update: BuiltInFieldsUpdate) => void;
 }
@@ -55,7 +54,7 @@ interface Props extends BaseProps {
 }
 
 const BuiltInFields = ({
-  status,
+  loading,
   setError,
   authenticationRequirements,
   onSubmit,
@@ -63,9 +62,8 @@ const BuiltInFields = ({
   const { data: appConfiguration } = useAppConfiguration();
   const locale = useLocale();
   const { formatMessage } = useIntl();
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
 
-  const loading = status === 'pending';
   const appConfigSettings = appConfiguration?.data.attributes.settings;
   const minimumPasswordLength =
     appConfigSettings?.password_login?.minimum_length ??
@@ -95,7 +93,7 @@ const BuiltInFields = ({
     password,
   }: BuiltInFieldsUpdate) => {
     try {
-      await onSubmit(authUser.id, {
+      await onSubmit(authUser.data.id, {
         first_name,
         last_name,
         password,

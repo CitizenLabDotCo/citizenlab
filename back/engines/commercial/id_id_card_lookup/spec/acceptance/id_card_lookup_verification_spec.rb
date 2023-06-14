@@ -6,8 +6,7 @@ require 'rspec_api_documentation/dsl'
 resource 'Verifications' do
   before do
     @user = create(:user)
-    token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-    header 'Authorization', "Bearer #{token}"
+    header_token_for @user
     header 'Content-Type', 'application/json'
     configuration = AppConfiguration.instance
     settings = configuration.settings

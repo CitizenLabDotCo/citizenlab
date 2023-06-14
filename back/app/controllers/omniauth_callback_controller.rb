@@ -10,7 +10,9 @@ class OmniauthCallbackController < ApplicationController
     auth_method = AuthenticationService.new.method_by_provider(auth_provider)
     verification_method = get_verification_method(auth_provider)
 
-    if auth_method
+    if auth_method && verification_method
+      auth_or_verification_callback(verify: verification_method, authver_method: auth_method)
+    elsif auth_method
       auth_callback(verify: verification_method, authver_method: auth_method)
     elsif verification_method
       verification_callback(verification_method)
@@ -38,6 +40,21 @@ class OmniauthCallbackController < ApplicationController
 
   private
 
+  # Currently, only FranceConnect and ClaveUnica use this method (support both verification and authentication).
+  def auth_or_verification_callback(verify:, authver_method:)
+    # If token is present, the user is already logged in, which means they try to verify not authenticate.
+    if request.env['omniauth.params']['token'] && authver_method.verification_prioritized?
+      # We need it only for ClaveUnica. For FC, we never verify, only authenticate (even when user clicks "verify").
+      verification_callback(verify)
+      # Apart from verification, we also create an identity to be able to authenticate with this provider.
+      auth = request.env['omniauth.auth']
+      @identity = Identity.find_or_build_with_omniauth(auth, authver_method)
+      @identity.update(user: @user) unless @identity.user
+    else
+      auth_callback(verify: verify, authver_method: authver_method)
+    end
+  end
+
   def auth_callback(verify:, authver_method:)
     auth = request.env['omniauth.auth']
     omniauth_params = request.env['omniauth.params']
@@ -48,7 +65,7 @@ class OmniauthCallbackController < ApplicationController
 
     @user = @identity.user
 
-    if @user.nil?
+    if @user.nil? && user_attrs.key?(:email) # some providers (ClaveUnica) don't return email
       @user = User.find_by_cimail(user_attrs.fetch(:email))
       # https://github.com/CitizenLabDotCo/citizenlab/pull/3055#discussion_r1019061643
       if @user && !authver_method.can_merge?(@user, user_attrs, params[:sso_verification])
@@ -154,7 +171,7 @@ class OmniauthCallbackController < ApplicationController
       { sub: entity.id }
     end
 
-    Knock::AuthToken.new payload: payload.merge({
+    AuthToken::AuthToken.new payload: payload.merge({
       provider: provider,
       logout_supported: AuthenticationService.new.supports_logout?(provider)
     })

@@ -5,7 +5,7 @@ import messages from '../messages';
 import { HeaderContent, Left, Right, Text, Icons, StyledAvatar } from '.';
 import { OnboardingCampaignName } from 'services/onboardingCampaigns';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
 import { triggerVerificationOnly } from 'containers/Authentication/events';
 import { colors } from 'utils/styleUtils';
@@ -36,7 +36,7 @@ const VerificationOnboardingStep = ({
   onSkip,
   currentOnboardingCampaignName,
 }: Props) => {
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
 
   if (!isNilOrError(authUser)) {
@@ -49,7 +49,7 @@ const VerificationOnboardingStep = ({
             <Icons>
               <AvatarAndShield aria-hidden>
                 <StyledAvatar
-                  userId={authUser.id}
+                  userId={authUser.data.id}
                   size={50}
                   fillColor="#fff"
                   padding={0}

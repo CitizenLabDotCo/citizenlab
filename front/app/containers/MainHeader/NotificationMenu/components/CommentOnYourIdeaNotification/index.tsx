@@ -3,7 +3,7 @@ import { isNilOrError, stopPropagation } from 'utils/helperUtils';
 import { DeletedUser } from '../Notification';
 
 // data
-import { ICommentOnYourIdeaNotificationData } from 'services/notifications';
+import { ICommentOnYourIdeaNotificationData } from 'api/notifications/types';
 
 // i18n
 import messages from '../../messages';
@@ -16,8 +16,8 @@ import { getInputTermMessage } from 'utils/i18n';
 
 // hooks
 import useIdeaBySlug from 'api/ideas/useIdeaBySlug';
-import useProject from 'hooks/useProject';
-import usePhases from 'hooks/usePhases';
+import useProjectById from 'api/projects/useProjectById';
+import usePhases from 'api/phases/usePhases';
 
 // services
 import { getInputTerm } from 'services/participationContexts';
@@ -32,14 +32,14 @@ const CommentOnYourIdeaNotification = memo<Props>((props) => {
   const projectId = !isNilOrError(idea)
     ? idea.data.relationships.project.data.id
     : null;
-  const project = useProject({ projectId });
-  const phases = usePhases(projectId);
+  const { data: project } = useProjectById(projectId);
+  const { data: phases } = usePhases(projectId);
 
   if (!isNilOrError(project)) {
     const inputTerm = getInputTerm(
-      project.attributes.process_type,
-      project,
-      phases
+      project.data.attributes.process_type,
+      project.data,
+      phases?.data
     );
     const deletedUser =
       isNilOrError(notification.attributes.initiating_user_first_name) ||

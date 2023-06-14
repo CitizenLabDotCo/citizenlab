@@ -1,8 +1,7 @@
 import React, { memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
-import useTopics from 'hooks/useTopics';
+import useTopics from 'api/topics/useTopics';
 
 // i18n
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
@@ -13,7 +12,7 @@ import { fontSizes, isRtl } from 'utils/styleUtils';
 import { transparentize } from 'polished';
 
 // typings
-import { ITopicData } from 'services/topics';
+import { ITopicData } from 'api/topics/types';
 
 const Container = styled.div`
   display: flex;
@@ -49,12 +48,14 @@ interface Props {
 
 const Topics = memo<Props & InjectedLocalized>(
   ({ topicIds, className, postType, localize }) => {
-    const topics = useTopics({ topicIds });
+    const { data: topics } = useTopics();
+    const filteredTopics =
+      topics?.data.filter((topic) => topicIds.includes(topic.id)) || [];
 
-    if (!isNilOrError(topics) && topics.length > 0) {
+    if (topics && filteredTopics.length > 0) {
       return (
         <Container id={`e2e-${postType}-topics`} className={className}>
-          {topics.map((topic: ITopicData) => {
+          {filteredTopics.map((topic: ITopicData) => {
             return (
               <Topic key={topic.id} className={`e2e-${postType}-topic`}>
                 {localize(topic.attributes.title_multiloc)}

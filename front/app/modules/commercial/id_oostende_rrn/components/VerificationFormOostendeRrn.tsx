@@ -21,7 +21,7 @@ import {
 } from 'containers/Authentication/steps/AuthProviders/styles';
 
 // hooks
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 
 // services
 import { verifyOostendeRrn } from '../services/verify';
@@ -33,6 +33,9 @@ import messages from '../messages';
 
 // images
 import { TVerificationMethod } from 'services/verificationMethods';
+import meKeys from 'api/me/keys';
+import usersKeys from 'api/users/keys';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface Props {
   onCancel: () => void;
@@ -43,8 +46,8 @@ interface Props {
 
 const VerificationFormOostendeRrn = memo<Props & WrappedComponentProps>(
   ({ onCancel, onVerified, className, intl }) => {
-    const authUser = useAuthUser();
-
+    const { data: authUser } = useAuthUser();
+    const queryClient = useQueryClient();
     const [rrn, setRrn] = useState('');
     const [rrnError, setRrnError] = useState<string | null>(null);
     const [formError, setFormError] = useState<string | null>(null);
@@ -79,23 +82,19 @@ const VerificationFormOostendeRrn = memo<Props & WrappedComponentProps>(
             await verifyOostendeRrn(rrn);
 
             const endpointsToRefetch = [
-              `${API_PATH}/users/me`,
               `${API_PATH}/users/me/locked_attributes`,
               `${API_PATH}/users/custom_fields/schema`,
-              `${API_PATH}/projects`,
-            ];
-            const partialEndpointsToRefetch = [
-              `${API_PATH}/projects/`,
-              `${API_PATH}/ideas/`,
             ];
 
             if (!isNilOrError(authUser)) {
-              endpointsToRefetch.push(`${API_PATH}/users/${authUser.id}`);
+              queryClient.invalidateQueries(
+                usersKeys.item({ id: authUser.data.id })
+              );
             }
 
+            queryClient.invalidateQueries({ queryKey: meKeys.all() });
             await streams.fetchAllWith({
               apiEndpoint: endpointsToRefetch,
-              partialApiEndpoint: partialEndpointsToRefetch,
             });
 
             setProcessing(false);

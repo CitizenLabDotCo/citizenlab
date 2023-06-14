@@ -10,7 +10,6 @@ import NavigationTabs, {
   Tab,
   TabsPageLayout,
 } from 'components/admin/NavigationTabs';
-import Link from 'utils/cl-router/Link';
 import Outlet from 'components/Outlet';
 
 // i18n
@@ -18,7 +17,7 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 // utils
-import { matchPathToUrl, isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, isTopBarNavActive } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 
 // typings
@@ -71,9 +70,12 @@ const DashboardTabs = ({ showReportBuilderTab, children }: Props) => {
     <>
       <NavigationTabs>
         {tabs.map(({ url, label }) => (
-          <Tab key={url} active={matchPathToUrl(url).test(pathname)}>
-            <Link to={url}>{label}</Link>
-          </Tab>
+          <Tab
+            label={label}
+            url={url}
+            key={url}
+            active={isTopBarNavActive('/admin/reporting', pathname, url)}
+          />
         ))}
       </NavigationTabs>
       <TabsPageLayout>{children}</TabsPageLayout>

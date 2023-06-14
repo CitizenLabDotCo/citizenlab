@@ -5,7 +5,7 @@ module PublicApi
     before_action :set_project, only: [:show]
 
     def index
-      @projects = PublicApi::ProjectPolicy::Scope.new(current_publicapi_apiclient, Project).resolve
+      @projects = PublicApi::ProjectPolicy::Scope.new(current_public_api_api_client, Project).resolve
       @projects = @projects
         .includes(:project_images)
         .includes(:map_config)

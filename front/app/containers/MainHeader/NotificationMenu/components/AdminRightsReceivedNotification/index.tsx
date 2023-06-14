@@ -1,5 +1,5 @@
-import React, { memo } from 'react';
-import { IAdminRightsReceivedNotificationData } from 'services/notifications';
+import React from 'react';
+import { IAdminRightsReceivedNotificationData } from 'api/notifications/types';
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import NotificationWrapper from '../NotificationWrapper';
@@ -8,9 +8,7 @@ interface Props {
   notification: IAdminRightsReceivedNotificationData;
 }
 
-const AdminRightsReceivedNotification = memo<Props>((props) => {
-  const { notification } = props;
-
+const AdminRightsReceivedNotification = ({ notification }: Props) => {
   return (
     <NotificationWrapper
       linkTo={'/admin'}
@@ -21,6 +19,6 @@ const AdminRightsReceivedNotification = memo<Props>((props) => {
       <FormattedMessage {...messages.adminRightsReceived} />
     </NotificationWrapper>
   );
-});
+};
 
 export default AdminRightsReceivedNotification;

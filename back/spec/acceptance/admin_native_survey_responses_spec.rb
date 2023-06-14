@@ -10,8 +10,7 @@ resource 'Ideas' do
 
   before do
     header 'Content-Type', 'application/json'
-    token = Knock::AuthToken.new(payload: user.to_token_payload).token
-    header 'Authorization', "Bearer #{token}"
+    header_token_for user
     IdeaStatus.create_defaults
   end
 

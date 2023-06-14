@@ -13,7 +13,7 @@ import UpdateEmailForm from './UpdateEmailForm';
 
 // api
 import clHistory from 'utils/cl-router/history';
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
 
 // hook form
@@ -29,7 +29,7 @@ import messages from './messages';
 import { isNilOrError } from 'utils/helperUtils';
 
 // typings
-import { Status, ErrorCode } from 'containers/Authentication/typings';
+import { ErrorCode } from 'containers/Authentication/typings';
 import { ERROR_CODE_MESSAGES } from 'containers/Authentication/Modal';
 
 export type FormValues = {
@@ -38,9 +38,9 @@ export type FormValues = {
 
 const EmailChange = () => {
   const { formatMessage } = useIntl();
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
-  const [confirmationStatus, setConfirmationStatus] = useState<Status>('ok');
+  const [loading, setLoading] = useState(false);
   const [confirmationError, setConfirmationError] = useState<ErrorCode | null>(
     null
   );
@@ -63,15 +63,15 @@ const EmailChange = () => {
 
   // Once auth user is fetched, set the email field to the user's email
   useEffect(() => {
-    if (!isNilOrError(authUser) && authUser.attributes.email) {
+    if (!isNilOrError(authUser) && authUser.data.attributes.email) {
       if (!methods.watch('email')) {
-        methods.setValue('email', authUser.attributes.email);
+        methods.setValue('email', authUser.data.attributes.email);
       }
     }
   }, [authUser, methods]);
 
   const onEmailConfirmation = async (code: string) => {
-    setConfirmationStatus('pending');
+    setLoading(true);
 
     try {
       await confirmEmail({ code });
@@ -85,7 +85,7 @@ const EmailChange = () => {
         setConfirmationError('unknown');
       }
     } finally {
-      setConfirmationStatus('ok');
+      setLoading(false);
     }
   };
 
@@ -119,7 +119,7 @@ const EmailChange = () => {
             setOpenConfirmationModal={setOpenConfirmationModal}
             setUpdateSuccessful={setUpdateSuccessful}
             methods={methods}
-            user={authUser}
+            user={authUser.data}
           />
         )}
       </StyledContentContainer>
@@ -148,7 +148,7 @@ const EmailChange = () => {
               token: null,
               prefilledBuiltInFields: null,
             }}
-            status={confirmationStatus}
+            loading={loading}
             setError={setConfirmationError}
             onConfirm={onEmailConfirmation}
           />

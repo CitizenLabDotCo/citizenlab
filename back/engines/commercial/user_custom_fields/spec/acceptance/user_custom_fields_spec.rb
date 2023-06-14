@@ -146,12 +146,8 @@ resource 'User Custom Fields' do
     end
   end
 
-  context 'when authenticated as admin' do
-    before do
-      @user = create(:admin)
-      token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-      header 'Authorization', "Bearer #{token}"
-    end
+  context 'when admin' do
+    before { admin_header_token }
 
     post 'web_api/v1/users/custom_fields' do
       with_options scope: :custom_field do

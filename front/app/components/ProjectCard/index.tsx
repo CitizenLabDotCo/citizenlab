@@ -15,17 +15,18 @@ import Image from 'components/UI/Image';
 import AvatarBubbles from 'components/AvatarBubbles';
 
 // services
-import { getProjectUrl } from 'services/projects';
-import { CARD_IMAGE_ASPECT_RATIO } from 'services/projectImages';
+import { getProjectUrl } from 'api/projects/utils';
 import { getInputTerm } from 'services/participationContexts';
 import { getIdeaPostingRules } from 'services/actionTakingRules';
 
 // resources
-import useProject from 'hooks/useProject';
-import usePhase from 'hooks/usePhase';
-import usePhases from 'hooks/usePhases';
-import useAuthUser from 'hooks/useAuthUser';
-import useProjectImages from 'hooks/useProjectImages';
+import useProjectById from 'api/projects/useProjectById';
+import usePhase from 'api/phases/usePhase';
+import usePhases from 'api/phases/usePhases';
+import useAuthUser from 'api/me/useAuthUser';
+import useProjectImages, {
+  CARD_IMAGE_ASPECT_RATIO,
+} from 'api/project_images/useProjectImages';
 
 // i18n
 import T from 'components/T';
@@ -51,6 +52,7 @@ import {
 import { ScreenReaderOnly } from 'utils/a11y';
 import { rgba, darken } from 'polished';
 import { getInputTermMessage } from 'utils/i18n';
+import { getMethodConfig } from 'utils/participationMethodUtils';
 
 const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
   width: calc(33% - 12px);
@@ -462,15 +464,13 @@ const ProjectCard = memo<Props>(
     className,
     intl: { formatMessage },
   }) => {
-    const project = useProject({ projectId });
-    const authUser = useAuthUser();
-    const projectImages = useProjectImages({ projectId });
+    const { data: project } = useProjectById(projectId);
+    const { data: authUser } = useAuthUser();
+    const { data: projectImages } = useProjectImages(projectId);
     const currentPhaseId =
-      !isNilOrError(project) && project.relationships.current_phase?.data?.id
-        ? project.relationships.current_phase.data.id
-        : null;
-    const phase = usePhase(currentPhaseId);
-    const phases = usePhases(projectId);
+      project?.data?.relationships?.current_phase?.data?.id ?? null;
+    const { data: phase } = usePhase(currentPhaseId);
+    const { data: phases } = usePhases(projectId);
     const theme = useTheme();
 
     const [visible, setVisible] = useState(false);
@@ -497,53 +497,59 @@ const ProjectCard = memo<Props>(
       trackEventByName(tracks.clickOnProjectTitle, { extra: { projectId } });
     };
 
-    if (!isNilOrError(project)) {
+    if (project) {
+      const methodConfig = getMethodConfig(
+        project.data.attributes.participation_method
+      );
       const postingPermission = getIdeaPostingRules({
-        project,
-        phase: !isNilOrError(phase) ? phase : null,
-        authUser: !isNilOrError(authUser) ? authUser : null,
+        project: project?.data,
+        phase: phase?.data,
+        authUser: !isNilOrError(authUser) ? authUser.data : null,
       });
-      const participationMethod = !isNilOrError(phase)
-        ? phase.attributes.participation_method
-        : project.attributes.participation_method;
+      const participationMethod = phase
+        ? phase.data.attributes.participation_method
+        : project.data.attributes.participation_method;
       const canPost = !!postingPermission.enabled;
-      const canVote = project.attributes.action_descriptor.voting_idea.enabled;
+      const canVote =
+        project.data.attributes.action_descriptor.voting_idea.enabled;
       const canComment =
-        project.attributes.action_descriptor.commenting_idea.enabled;
+        project.data.attributes.action_descriptor.commenting_idea.enabled;
 
-      const imageUrl = isNilOrError(projectImages)
+      const imageUrl = !projectImages
         ? null
-        : projectImages[0]?.attributes.versions?.large;
+        : projectImages.data[0]?.attributes.versions?.large;
 
-      const projectUrl = getProjectUrl(project);
-      const isFinished = project.attributes.timeline_active === 'past';
-      const isArchived = project.attributes.publication_status === 'archived';
-      const ideasCount = project.attributes.ideas_count;
-      const commentsCount = project.attributes.comments_count;
+      const projectUrl = getProjectUrl(project.data);
+      const isFinished = project.data.attributes.timeline_active === 'past';
+      const isArchived =
+        project.data.attributes.publication_status === 'archived';
+      const ideasCount = project.data.attributes.ideas_count;
+      const commentsCount = project.data.attributes.comments_count;
       const hasAvatars =
-        project.relationships.avatars &&
-        project.relationships.avatars.data &&
-        project.relationships.avatars.data.length > 0;
+        project.data.relationships.avatars &&
+        project.data.relationships.avatars.data &&
+        project.data.relationships.avatars.data.length > 0;
       const showIdeasCount =
         !(
-          project.attributes.process_type === 'continuous' &&
-          project.attributes.participation_method !== 'ideation'
+          project.data.attributes.process_type === 'continuous' &&
+          !methodConfig.showInputCount
         ) && ideasCount > 0;
       const showCommentsCount = commentsCount > 0;
       const showFooter = hasAvatars || showIdeasCount || showCommentsCount;
       const avatarIds =
-        project.relationships.avatars && project.relationships.avatars.data
-          ? project.relationships.avatars.data.map((avatar) => avatar.id)
+        project.data.relationships.avatars &&
+        project.data.relationships.avatars.data
+          ? project.data.relationships.avatars.data.map((avatar) => avatar.id)
           : [];
-      const startAt = get(phase, 'attributes.start_at');
-      const endAt = get(phase, 'attributes.end_at');
+      const startAt = get(phase?.data, 'attributes.start_at');
+      const endAt = get(phase?.data, 'attributes.end_at');
       const timeRemaining = endAt
         ? moment.duration(moment(endAt).endOf('day').diff(moment())).humanize()
         : null;
       let countdown: JSX.Element | null = null;
       let ctaMessage: JSX.Element | null = null;
-      const processType = project.attributes.process_type;
-      const inputTerm = getInputTerm(processType, project, phases);
+      const processType = project.data.attributes.process_type;
+      const inputTerm = getInputTerm(processType, project.data, phases?.data);
 
       if (isArchived) {
         countdown = (
@@ -599,6 +605,8 @@ const ProjectCard = memo<Props>(
         participationMethod === 'native_survey'
       ) {
         ctaMessage = <FormattedMessage {...messages.takeTheSurvey} />;
+      } else if (participationMethod === 'document_annotation') {
+        ctaMessage = <FormattedMessage {...messages.reviewDocument} />;
       } else if (participationMethod === 'poll') {
         ctaMessage = <FormattedMessage {...messages.takeThePoll} />;
       } else if (participationMethod === 'ideation' && canPost) {
@@ -650,7 +658,7 @@ const ProjectCard = memo<Props>(
               className={`${size} ${countdown ? 'hasProgressBar' : ''}`}
             >
               <ProjectLabel
-                onClick={handleCTAOnClick(project.id)}
+                onClick={handleCTAOnClick(project.data.id)}
                 className="e2e-project-card-cta"
               >
                 {ctaMessage}
@@ -664,12 +672,12 @@ const ProjectCard = memo<Props>(
         <ScreenReaderOnly>
           <ProjectTitle>
             <FormattedMessage {...messages.a11y_projectTitle} />
-            <T value={project.attributes.title_multiloc} />
+            <T value={project.data.attributes.title_multiloc} />
           </ProjectTitle>
 
           <ProjectDescription>
             <FormattedMessage {...messages.a11y_projectDescription} />
-            <T value={project.attributes.description_preview_multiloc} />
+            <T value={project.data.attributes.description_preview_multiloc} />
           </ProjectDescription>
         </ScreenReaderOnly>
       );
@@ -689,7 +697,7 @@ const ProjectCard = memo<Props>(
             .filter((item) => item)
             .join(' ')}
           to={projectUrl}
-          onClick={handleProjectCardOnClick(project.id)}
+          onClick={handleProjectCardOnClick(project.data.id)}
         >
           {screenReaderContent}
           {size !== 'large' && contentHeader}
@@ -715,13 +723,13 @@ const ProjectCard = memo<Props>(
             <ContentBody className={size} aria-hidden>
               <ProjectTitle
                 className="e2e-project-card-project-title"
-                onClick={handleProjectTitleOnClick(project.id)}
+                onClick={handleProjectTitleOnClick(project.data.id)}
               >
-                <T value={project.attributes.title_multiloc} />
+                <T value={project.data.attributes.title_multiloc} />
               </ProjectTitle>
 
               {!hideDescriptionPreview && (
-                <T value={project.attributes.description_preview_multiloc}>
+                <T value={project.data.attributes.description_preview_multiloc}>
                   {(description) => {
                     if (!isEmpty(description)) {
                       return (
@@ -745,7 +753,7 @@ const ProjectCard = memo<Props>(
                     limit={3}
                     userCountBgColor={theme.colors.tenantPrimary}
                     avatarIds={avatarIds}
-                    userCount={project.attributes.participants_count}
+                    userCount={project.data.attributes.participants_count}
                   />
                 )}
               </ContentFooterLeft>

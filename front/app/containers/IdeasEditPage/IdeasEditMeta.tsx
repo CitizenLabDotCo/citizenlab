@@ -8,10 +8,10 @@ import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 
 // hooks
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useIdeaById from 'api/ideas/useIdeaById';
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 import useLocalize from 'hooks/useLocalize';
 
 // utils
@@ -26,14 +26,14 @@ interface Props {
 const IdeasNewMeta = memo(({ ideaId, projectId }: Props) => {
   const { formatMessage } = useIntl();
   const tenantLocales = useAppConfigurationLocales();
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const { data: idea } = useIdeaById(ideaId);
-  const project = useProject({ projectId });
+  const { data: project } = useProjectById(projectId);
   const localize = useLocalize();
 
-  if (!isNilOrError(idea) && !isNilOrError(project)) {
+  if (idea && project) {
     const postTitle = localize(idea.data.attributes.title_multiloc);
-    const projectName = localize(project.attributes.title_multiloc);
+    const projectName = localize(project.data.attributes.title_multiloc);
 
     const ideasIndexTitle = formatMessage(messages.ideasEditMetaTitle, {
       postTitle,
@@ -49,8 +49,8 @@ const IdeasNewMeta = memo(({ ideaId, projectId }: Props) => {
           {`
             ${
               !isNilOrError(authUser) &&
-              authUser.attributes.unread_notifications
-                ? `(${authUser.attributes.unread_notifications}) `
+              authUser.data.attributes.unread_notifications
+                ? `(${authUser.data.attributes.unread_notifications}) `
                 : ''
             }
             ${ideasIndexTitle}

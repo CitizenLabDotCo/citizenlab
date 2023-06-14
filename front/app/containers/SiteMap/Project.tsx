@@ -10,7 +10,7 @@ import TimelineProject from './TimelineProject';
 
 // hooks
 import useEvents from 'api/events/useEvents';
-import useProject from 'hooks/useProject';
+import useProjectById from 'api/projects/useProjectById';
 
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
@@ -25,7 +25,7 @@ const Project = ({ projectId, hightestTitle }: Props) => {
   const { data: events } = useEvents({
     projectIds: [projectId],
   });
-  const project = useProject({ projectId });
+  const { data: project } = useProjectById(projectId);
 
   const TitleComponent = { h3: H3, h4: H4 }[hightestTitle];
 
@@ -33,22 +33,22 @@ const Project = ({ projectId, hightestTitle }: Props) => {
     return (
       <>
         <TitleComponent>
-          <T value={project.attributes.title_multiloc} />
+          <T value={project.data.attributes.title_multiloc} />
         </TitleComponent>
         <ul>
           <li>
-            <Link to={`/projects/${project.attributes.slug}`}>
+            <Link to={`/projects/${project.data.attributes.slug}`}>
               <FormattedMessage {...messages.projectInfo} />
             </Link>
           </li>
-          {project.attributes.process_type === 'continuous' ? (
-            <ContinuousProject key={project.id} project={project} />
+          {project.data.attributes.process_type === 'continuous' ? (
+            <ContinuousProject key={project.data.id} project={project.data} />
           ) : (
-            <TimelineProject key={project.id} project={project} />
+            <TimelineProject key={project.data.id} project={project.data} />
           )}
           {!isNilOrError(events) && events.data.length > 0 && (
             <li>
-              <Link to={`/projects/${project.attributes.slug}/events`}>
+              <Link to={`/projects/${project.data.attributes.slug}/events`}>
                 <FormattedMessage {...messages.projectEvents} />
               </Link>
             </li>

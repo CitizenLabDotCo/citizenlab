@@ -1,7 +1,7 @@
 import React from 'react';
 import ModeratorListRow from './ModeratorListRow';
 import { render, screen } from 'utils/testUtils/rtl';
-import { IUserData } from 'services/users';
+import { IUserData } from 'api/users/types';
 
 const projectId = 'projectId';
 const projectModeratorRole = {
@@ -49,9 +49,9 @@ const mockAuthUserData: IUserData = {
   },
 };
 
-jest.mock('hooks/useAuthUser', () => {
-  return () => mockAuthUserData;
-});
+jest.mock('api/me/useAuthUser', () => () => ({
+  data: { data: mockAuthUserData },
+}));
 
 describe('<ModeratorListRow />', () => {
   it('shows an enabled delete button when user is an admin', () => {

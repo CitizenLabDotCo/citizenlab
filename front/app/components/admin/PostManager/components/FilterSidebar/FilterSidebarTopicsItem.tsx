@@ -1,5 +1,5 @@
 import React from 'react';
-import { ITopicData } from 'services/topics';
+import { ITopicData } from 'api/topics/types';
 import T from 'components/T';
 import { Menu } from 'semantic-ui-react';
 import { useDrop } from 'react-dnd';

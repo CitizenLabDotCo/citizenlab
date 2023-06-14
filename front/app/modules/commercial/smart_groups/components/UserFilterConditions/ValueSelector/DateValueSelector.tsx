@@ -1,3 +1,6 @@
+import 'react-dates/initialize';
+import 'react-dates/lib/css/_datepicker.css';
+
 import React, { useEffect } from 'react';
 import moment, { Moment } from 'moment';
 

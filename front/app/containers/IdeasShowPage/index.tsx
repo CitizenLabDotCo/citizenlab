@@ -2,11 +2,12 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 
 // components
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Box, useBreakpoint, Spinner } from '@citizenlab/cl2-component-library';
 import IdeasShow from 'containers/IdeasShow';
 import IdeaShowPageTopBar from './IdeaShowPageTopBar';
 import PageNotFound from 'components/PageNotFound';
 import Unauthorized from 'components/Unauthorized';
+import VerticalCenterer from 'components/VerticalCenterer';
 
 // hooks
 import useIdeaBySlug from 'api/ideas/useIdeaBySlug';
@@ -16,8 +17,7 @@ import styled from 'styled-components';
 import { media, colors } from 'utils/styleUtils';
 
 // utils
-import { isError } from 'lodash-es';
-import { isUnauthorizedError } from 'utils/helperUtils';
+import { isUnauthorizedRQ } from 'utils/errorUtils';
 
 const StyledIdeaShowPageTopBar = styled(IdeaShowPageTopBar)`
   position: fixed;
@@ -52,14 +52,22 @@ const StyledIdeasShow = styled(IdeasShow)`
 
 const IdeasShowPage = () => {
   const { slug } = useParams() as { slug: string };
-  const { data: idea } = useIdeaBySlug(slug);
+  const { data: idea, status, error } = useIdeaBySlug(slug);
   const isSmallerThanTablet = useBreakpoint('tablet');
 
-  if (isUnauthorizedError(idea)) {
-    return <Unauthorized />;
+  if (status === 'loading') {
+    return (
+      <VerticalCenterer>
+        <Spinner />
+      </VerticalCenterer>
+    );
   }
 
-  if (isError(idea)) {
+  if (status === 'error') {
+    if (isUnauthorizedRQ(error)) {
+      return <Unauthorized />;
+    }
+
     return <PageNotFound />;
   }
 

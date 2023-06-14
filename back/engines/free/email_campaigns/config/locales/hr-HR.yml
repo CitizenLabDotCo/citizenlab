@@ -48,64 +48,15 @@ hr:
       "assignee_digest": Tjedni pregled dodijeljenih ideja
       "user_digest": Tjedni pregled
       "your_proposed_initiatives_digest": Tjedni pregled vaših prijedloga
-    admin_campaign_type_description:
-      "manual": Službena poruka – svi korisnici
-      "admin_rights_received": Dodijeljena administratorska prava – administratori
-      "comment_deleted_by_admin": Brisanje vašeg komentara – svi korisnici
-      "comment_marked_as_spam": Izvješće o neželjenim komentarima – administratori i voditelji projekta
-      "comment_on_your_comment": Odgovor na vaš komentar – svi korisnici
-      "comment_on_your_idea": Komentar na vašu ideju – svi korisnici
-      "comment_on_your_initiative": Komentar na vaš prijedlog – svi korisnici
-      "first_idea_published": Objava vaše prve ideje – svi korisnici
-      "idea_marked_as_spam": Izvješće o neželjenoj ideji – administratori i voditelji projekta
-      "idea_published": Objava vaše ideje – svi korisnici
-      "initiative_assigned_to_you": Dodjeljivanje prijedloga – administratori
-      "initiative_marked_as_spam": Izvješće o neželjenoj pošti – administratori
-      "initiative_published": Objava vašeg prijedloga – svi korisnici
-      "invite_received": Pozivnica – svi korisnici
-      "invite_reminder": Podsjetnik o pozivnici – svi korisnici
-      "mention_in_comment": Spominjanje u komentaru – svi korisnici
-      "mention_in_official_feedback": Spominjanje u objavi – svi korisnici
-      "new_comment_for_admin": Novi komentar – administratori i voditelji projekata
-      "new_comment_on_commented_idea": Novi komentar na ideju koju ste komentirali – svi korisnici
-      "new_comment_on_commented_initiative": Novi komentar na prijedlog koji ste komentirali – svi korisnici
-      "new_comment_on_voted_idea": Novi komentar na ideju za koju ste glasovali – svi korisnici
-      "new_comment_on_voted_initiative": Novi komentar na prijedlog za koji ste glasovali – svi korisnici
-      "new_idea_for_admin": Nova ideja – administratori i voditelji projekata
-      "new_initiative_for_admin": Novi prijedlog – administratori
-      "official_feedback_on_commented_idea": Nove informacije o ideji koju ste komentirali – svi korisnici
-      "official_feedback_on_commented_initiative": Nove informacije o prijedlogu koji ste komentirali – svi korisnici
-      "official_feedback_on_voted_idea": Nove informacije o ideji za koju ste glasovali – svi korisnici
-      "official_feedback_on_voted_initiative": Nove informacije o prijedlogu za koji ste glasovali – svi korisnici
-      "official_feedback_on_your_idea": Ažuriranje vaše ideje – svi korisnici
-      "official_feedback_on_your_initiative": Ažuriranje vašeg prijedloga – svi korisnici
-      "password_reset": Poništavanje zaporke – svi korisnici
-      "project_moderation_rights_received": Dodijeljena prava za moderiranje projekta – voditelji projekata
-      "project_folder_moderation_rights_received": Primljena prava upravitelja mape
-      "project_phase_started": Nova faza projekta - sudionici projekta
-      "project_phase_upcoming": Buduće faze projekta – administratori i voditelji projekata
-      "status_change_of_commented_idea": Promjena statusa ideje koju ste komentirali – svi korisnici
-      "status_change_of_commented_initiative": Promjena statusa prijedloga koji ste komentirali – svi korisnici
-      "status_change_of_voted_idea": Promjena statusa ideje za koju ste glasovali – svi korisnici
-      "status_change_of_voted_initiative": Promjena statusa prijedloga za koji ste glasovali – svi korisnici
-      "status_change_of_your_idea": Promjena statusa vaše ideje – svi korisnici
-      "status_change_of_your_initiative": Promjena statusa vašeg prijedloga – svi korisnici
-      "threshold_reached_for_admin": Prijedlog je dosegao prag glasovanja – administratori
-      "welcome": Novi korisnik – administratori
-      "admin_digest": Tjedni pregled – administratori
-      "moderator_digest": Tjedni pregled – voditelji projekata
-      "assignee_digest": Tjedni pregled dodijeljenih ideja – administratori i voditelji projekata
-      "user_digest": Tjedni pregled – svi korisnici
-      "your_proposed_initiatives_digest": Tjedni pregled vlastitih prijedloga – svi korisnici
     schedules:
       weekly:
         "0": "Tjedno, nedjeljom u %{hourOfDay}"
-        "1": "Tjedno ponedjeljkom %{atHour}"
-        "2": "Tjedno utorkom %{atHour}"
-        "3": "Tjedno srijedom %{atHour}"
-        "4": "Tjedno četvrtkom %{atHour}"
-        "5": "Tjedno petkom %{atHour}"
-        "6": "Tjedno subotom %{atHour}"
+        "1": "Tjedno, ponedjeljkom u %{hourOfDay}"
+        "2": "Tjedno utorkom %{hourOfDay}"
+        "3": "Tjedno, srijedom u %{hourOfDay}"
+        "4": "Tjedno, četvrtkom u %{hourOfDay}"
+        "5": "Tjedno, petkom u %{hourOfDay}"
+        "6": "Tjedno, subotom u %{hourOfDay}"
     footer:
       "link_privacy_policy": "Pravila o privatnosti"
       "link_terms_conditions": "Uvjeti korištenja"
@@ -565,36 +516,34 @@ hr:
       remaining_days: 'Preostalo dana'
     admin_labels:
       recipient_role:
-        admins: 'Adminima'
-        admins_and_moderators: 'Administratorima i moderatorima'
-        managers: 'Menadžerima'
-        project_participants: 'Sudionicima projekta'
+        admins_and_managers: 'Administratorima i upraviteljima'
         registered_users: 'Registriranim korisnicima'
       recipient_segment:
         admins: 'Administratori'
         admins_and_managers: 'Administratori i upravitelji'
+        admins_and_managers_managing_the_project: 'Administratori i menadžeri koji upravljaju projektom'
         all_users: 'Svi korisnici'
         all_users_who_uploaded_proposals: 'Svi korisnici koji su učitali prijedloge'
         managers: 'Menadžeri'
-        managers_assigned_to_a_proposal: 'Voditelji dodijeljeni prijedlogu'
-        user_assigned_to_the_idea: 'Korisnik dodijeljen ideji'
-        user_receiving_admin_rights: 'Korisnik dobiva administratorska prava'
-        user_receiving_folder_moderator_rights: 'Korisnik dobiva prava moderatora mape'
-        user_receiving_project_moderator_rights: 'Korisnik dobiva prava moderatora projekta'
+        admins_assigned_to_a_proposal: 'Administratori dodijeljeni prijedlogu'
+        admins_and_managers_assigned_to_the_input: 'Administratori i upravitelji dodijeljeni unosu'
+        user_who_is_receiving_admin_rights: 'Korisnik koji dobiva administratorska prava'
+        user_who_is_receiving_folder_moderator_rights: 'Korisnik koji dobiva prava moderatora mape'
+        user_who_is_receiving_project_moderator_rights: 'Korisnik koji dobiva prava moderatora projekta'
         user_who_commented: 'Korisnik koji je komentirao'
         user_who_is_mentioned: 'Korisnik koji se spominje'
-        user_who_published_proposal: 'Korisnik koji je objavio prijedlog'
-        user_who_published_the_idea: 'Korisnik koji je objavio ideju'
+        user_who_published_the_proposal: 'Korisnik koji je objavio prijedlog'
+        user_who_published_the_input: 'Korisnik koji je objavio unos'
         user_who_registers: 'Korisnik koji se registrira'
         user_who_was_invited: 'Korisnik koji je pozvan'
-        users_engaged_with_the_idea: 'Korisnici su uključeni u ideju'
-        users_engaged_with_the_project: 'Korisnici uključeni u projekt'
-        users_engaged_with_the_proposal: 'Korisnici uključeni u prijedlog'
+        users_who_engaged_with_the_input: 'Korisnici koji su se uključili s unosom'
+        users_who_engaged_with_the_project: 'Korisnici koji su sudjelovali u projektu'
+        users_who_engaged_with_the_proposal: 'Korisnici koji su se angažirali s prijedlogom'
       content_type:
         comments: 'Komentari'
         content_moderation: 'Moderiranje sadržaja'
         general: 'Općenito'
-        ideas: 'Ideje'
+        inputs: 'Unosi'
         permissions: 'Dozvole'
         projects: 'Projekti'
         proposals: 'Prijedlozi'
@@ -603,27 +552,28 @@ hr:
         comment_is_deleted: 'Komentar je izbrisan'
         comment_is_flagged_as_spam: 'Komentar je označen kao neželjena pošta'
         content_gets_flagged_as_innapropiate: 'Sadržaj se označava kao neprikladan'
-        idea_is_assigned: 'Ideja je dodijeljena'
-        idea_is_flagged_as_spam: 'Ideja je označena kao spam'
-        idea_is_updated: 'Ideja je ažurirana'
-        idea_status_is_changed: 'Status ideje je promijenjen'
-        new_idea_is_published: 'Nova ideja je objavljena'
+        input_is_assigned: 'Unos je dodijeljen'
+        input_is_flagged_as_spam: 'Unos je označen kao spam'
+        input_is_updated: 'Unos je ažuriran'
+        input_status_changes: 'Promjene statusa ulaza'
+        new_input_is_published: 'Objavljen je novi unos'
         new_proposal_is_posted: 'Novi prijedlog je objavljen'
-        project_changes_phase: 'Faza izmjena projekta'
+        project_phase_changes: 'Promjene faza projekta'
         proposal_gets_reported_as_spam: 'Prijedlog se prijavljuje kao neželjena pošta'
-        proposal_is_assigned_to_user: 'Prijedlog se dodjeljuje korisniku'
+        proposal_is_assigned_to_admin: 'Prijedlog je dodijeljen adminu'
         proposal_is_updated: 'Prijedlog je ažuriran'
         proposal_is_upvoted_above_threshold: 'Za prijedlog se glasa iznad praga'
-        proposal_status_is_changed: 'Status prijedloga je promijenjen'
+        proposal_status_changes: 'Promjene statusa prijedloga'
         user_comments: 'Komentari korisnika'
-        user_comments_on_idea: 'Komentari korisnika na ideju'
+        user_comments_on_input: 'Korisnički komentari na unos'
         user_comments_on_proposal: 'Komentari korisnika na prijedlog'
         user_is_given_admin_rights: 'Korisnik dobiva administratorska prava'
         user_is_given_folder_moderator_rights: 'Korisniku su dana prava moderatora mape'
         user_is_given_project_moderator_rights: 'Korisnik dobiva prava moderatora projekta'
         user_is_mentioned: 'Spominje se korisnik'
-        user_publishes_an_idea: 'Korisnik objavljuje ideju'
-        user_publishes_proposal: 'Korisnik objavljuje prijedlog'
+        input_is_published: 'Unos je objavljen'
+        proposal_is_published: 'Prijedlog je objavljen'
         user_registers_for_the_first_time: 'Korisnik se registrira prvi put'
         user_replies_to_comment: 'Korisnik odgovara na komentar'
         7_days_after_invite_is_sent: '7 dana nakon slanja poziva'
+        7_days_before_the_project_changes_phase: '7 dana prije promjene faze projekta'

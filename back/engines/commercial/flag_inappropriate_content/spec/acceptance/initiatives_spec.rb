@@ -7,8 +7,7 @@ resource 'Initiatives' do
   before do
     header 'Content-Type', 'application/json'
     @user = create(:user)
-    token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-    header 'Authorization', "Bearer #{token}"
+    header_token_for @user
 
     create(:initiative_status, code: 'proposed')
   end

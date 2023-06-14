@@ -5,15 +5,10 @@ import { Multiloc } from 'typings';
 import Button from 'components/UI/Button';
 import T from 'components/T';
 import Outlet from 'components/Outlet';
-import { MembershipType } from 'services/groups';
+import { MembershipType } from 'api/groups/types';
 import { FormattedMessage } from 'utils/cl-intl';
 
-import {
-  FirstRow,
-  Spacer,
-  StyledSearchInput,
-  TextAndButtons,
-} from './UsersHeader';
+import { FirstRow, TextAndButtons } from './UsersHeader';
 import messages from './messages';
 
 const OnlyRow = styled(FirstRow)`
@@ -35,10 +30,9 @@ interface Props {
   groupType?: MembershipType;
   onEdit?: () => void;
   onDelete?: () => void;
-  onSearch: (newValue: string) => void;
 }
 const UsersGroupHeader = memo(
-  ({ title, groupType, onEdit, onDelete, onSearch }: Props) => {
+  ({ title, groupType, onEdit, onDelete }: Props) => {
     return (
       <OnlyRow>
         {groupType && (
@@ -66,17 +60,6 @@ const UsersGroupHeader = memo(
             />
           </Buttons>
         </TextAndButtons>
-        <Spacer />
-        <StyledSearchInput
-          onChange={onSearch}
-          // Not important here. Requires quite some refactoring
-          // to get users here in a nice and consistent manner.
-          // This a11y_... prop needs to be a required one
-          // so we always have it on the citizen side.
-          // Whenever this components is touched,
-          // you can give it the right value (number of users resulting from the search) here.
-          a11y_numberOfSearchResults={0}
-        />
       </OnlyRow>
     );
   }

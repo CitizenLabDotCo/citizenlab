@@ -9,7 +9,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { IUserData } from 'services/users';
+import { IUserData } from 'api/users/types';
 
 type PasswordChangeProps = {
   user: IUserData;

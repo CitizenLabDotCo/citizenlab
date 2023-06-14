@@ -12,8 +12,8 @@ import ContentContainer from 'components/ContentContainer';
 import Centerer from 'components/UI/Centerer';
 
 // hooks
-import useAuthUser from 'hooks/useAuthUser';
-import useProjectFolder from 'hooks/useProjectFolder';
+import useAuthUser from 'api/me/useAuthUser';
+import useProjectFolderBySlug from 'api/project_folders/useProjectFolderBySlug';
 import { useParams } from 'react-router-dom';
 
 // i18n
@@ -31,7 +31,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { userModeratesFolder } from 'services/permissions/rules/projectFolderPermissions';
 
 // typings
-import { IProjectFolderData } from 'services/projectFolders';
+import { IProjectFolderData } from 'api/project_folders/types';
 
 const Container = styled.main`
   flex: 1 0 auto;
@@ -129,14 +129,15 @@ const CardsWrapper = styled.div`
 const ProjectFolderShowPage = memo<{
   projectFolder: IProjectFolderData | null | undefined;
 }>(({ projectFolder }) => {
-  const authUser = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const { windowWidth } = useWindowSize();
   const smallerThan1280px = windowWidth ? windowWidth <= 1280 : false;
 
   const loading = projectFolder === undefined;
 
   const userCanEditFolder = projectFolder
-    ? !isNilOrError(authUser) && userModeratesFolder(authUser, projectFolder.id)
+    ? !isNilOrError(authUser) &&
+      userModeratesFolder(authUser.data, projectFolder.id)
     : undefined;
 
   return (
@@ -197,13 +198,13 @@ const ProjectFolderShowPage = memo<{
 
 const ProjectFolderShowPageWrapper = () => {
   const { slug } = useParams();
-  const projectFolder = useProjectFolder({ projectFolderSlug: slug });
+  const { data: projectFolder } = useProjectFolderBySlug(slug);
 
   if (isError(projectFolder)) {
     return <PageNotFound />;
   }
 
-  return <ProjectFolderShowPage projectFolder={projectFolder} />;
+  return <ProjectFolderShowPage projectFolder={projectFolder?.data} />;
 };
 
 export default ProjectFolderShowPageWrapper;

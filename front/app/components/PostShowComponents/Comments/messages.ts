@@ -1,6 +1,15 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  postAnonymously: {
+    id: 'app.components.Comments.postAnonymously',
+    defaultMessage: 'Post anonymously',
+  },
+  inputsAssociatedWithProfile: {
+    id: 'app.components.Comments.inputsAssociatedWithProfile',
+    defaultMessage:
+      'By default your submissions will be associated with your profile, unless you select this option.',
+  },
   invisibleTitleComments: {
     id: 'app.components.Comments.invisibleTitleComments',
     defaultMessage: 'Comments',
@@ -145,6 +154,10 @@ export default defineMessages({
   commentsSortTitle: {
     id: 'app.containers.Comments.commentsSortTitle',
     defaultMessage: 'Sort comments by',
+  },
+  leastRecent: {
+    id: 'app.components.Comments.leastRecent',
+    defaultMessage: 'Least recent',
   },
   mostRecent: {
     id: 'app.components.Comments.mostRecent',

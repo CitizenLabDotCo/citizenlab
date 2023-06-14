@@ -114,9 +114,9 @@ export default defineMessages({
     defaultMessage: 'Admins & managers',
   },
   adminsAndManagersSubtitle: {
-    id: 'app.containers.Admin.Users.GroupsPanel.adminsAndManagersSubtitle',
+    id: 'app.containers.Admin.Users.GroupsPanel.adminsAndManagersSubtitle1',
     defaultMessage:
-      'View who are selected as admins, folder admins, and project managers.',
+      'View who are selected as admins, folder and project managers.',
   },
   groupsTitle: {
     id: 'app.containers.Admin.Users.GroupsPanel.groupsTitle',
@@ -249,5 +249,13 @@ export default defineMessages({
   blockedUsersSubtitle: {
     id: 'app.containers.Admin.Users.BlockedUsers.blockedUsersSubtitle',
     defaultMessage: 'Manage blocked users.',
+  },
+  inviteUsers: {
+    id: 'app.containers.Admin.Users.inviteUsers',
+    defaultMessage: 'Invite users',
+  },
+  userInsights: {
+    id: 'app.containers.Admin.Users.userInsights',
+    defaultMessage: 'User insights',
   },
 });

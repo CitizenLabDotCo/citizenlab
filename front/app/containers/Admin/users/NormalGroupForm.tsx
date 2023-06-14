@@ -33,7 +33,7 @@ export interface NormalFormValues {
 
 // Style
 import styled from 'styled-components';
-import { MembershipType } from 'services/groups';
+import { MembershipType } from 'api/groups/types';
 
 export const Fill = styled.div`
   padding-top: 40px;
