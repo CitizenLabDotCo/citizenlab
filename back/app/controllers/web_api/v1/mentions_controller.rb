@@ -10,7 +10,7 @@ class WebApi::V1::MentionsController < ApplicationController
   def users
     limit = params[:limit]&.to_i || 5
     query = params[:mention].gsub(/\W/, "\s")
-    post = get_post(params[:post_type], params[:post_id])
+    post = find_post(params[:post_type], params[:post_id])
 
     @users = []
     @users = MentionService.new.users_from_post(query, post, limit) if post && params[:roles].nil?
@@ -34,6 +34,14 @@ class WebApi::V1::MentionsController < ApplicationController
     raise 'Invalid roles query parameter(s)' unless params[:roles].uniq - VALID_ROLES == []
   end
 
+  # @param [String] post_type
+  # @param [Integer] post_id
+  # @return [Idea, Initiative, nil]
+  def find_post(post_type, post_id)
+    post_class = post_type_to_class(post_type) if post_type
+    post_class.find(post_id) if post_class && post_id
+  end
+
   # @param [String] type
   # @@return [Class]
   def post_type_to_class(type)
@@ -42,14 +50,6 @@ class WebApi::V1::MentionsController < ApplicationController
     when 'Initiative' then Initiative
     else raise "#{type} is not a post type"
     end
-  end
-
-  # @param [String] post_type
-  # @param [Integer] post_id
-  # @return [Idea, Initiative, nil]
-  def get_post(post_type, post_id)
-    post_class = post_type_to_class(post_type) if post_type
-    post_class.find(post_id) if post_class && post_id
   end
 
   # @param [String] query
