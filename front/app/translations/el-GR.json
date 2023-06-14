@@ -232,6 +232,7 @@
   "app.components.PagesForm.saveSuccess": "Η σελίδα αποθηκεύτηκε με επιτυχία.",
   "app.components.PagesForm.titleMissingOneLanguageError": "Παροχή τίτλου για μία τουλάχιστον γλώσσα",
   "app.components.ParticipationCTABars.allocateBudget": "Διαθέστε τον προϋπολογισμό σας",
+  "app.components.ParticipationCTABars.budgetExceededError": "Δεν έχετε αρκετό προϋπολογισμό",
   "app.components.ParticipationCTABars.left": "αριστερά",
   "app.components.ParticipationCTABars.mobileProjectOpenForSubmission": "Ανοιχτό για συμμετοχή",
   "app.components.ParticipationCTABars.poll": "Πάρτε μέρος στη δημοσκόπηση",
