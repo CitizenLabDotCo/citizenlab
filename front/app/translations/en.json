@@ -232,6 +232,7 @@
   "app.components.PagesForm.saveSuccess": "Page successfully saved.",
   "app.components.PagesForm.titleMissingOneLanguageError": "Provide title for at least one language",
   "app.components.ParticipationCTABars.allocateBudget": "Allocate your budget",
+  "app.components.ParticipationCTABars.budgetExceededError": "You don't have enough budget",
   "app.components.ParticipationCTABars.left": "left",
   "app.components.ParticipationCTABars.mobileProjectOpenForSubmission": "Open for participation",
   "app.components.ParticipationCTABars.poll": "Take the poll",
