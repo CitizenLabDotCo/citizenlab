@@ -39,6 +39,11 @@ export default defineMessages({
     defaultMessage:
       '<b>Congratulations, your budget has been submitted!</b> You can check your options below at any point or modify them before <b>{endDate}</b>.',
   },
+  budgetingSubmittedInstructionsContinuous: {
+    id: 'app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous',
+    defaultMessage:
+      '<b>Congratulations, your budget has been submitted!</b> You can check your options below at any point or modify them.',
+  },
   budgetParticipationEnded: {
     id: 'app.utils.votingMethodUtils.budgetParticipationEnded',
     defaultMessage:

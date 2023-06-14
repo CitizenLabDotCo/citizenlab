@@ -89,15 +89,27 @@ const budgetingConfig: VotingMethodConfig = {
       );
     }
     if (SubmissionState === 'hasSubmitted') {
+      if (phase) {
+        return (
+          <FormattedMessage
+            values={{
+              b: (chunks) => (
+                <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+              ),
+              endDate: phase && toFullMonth(phase.attributes.end_at, 'day'),
+            }}
+            {...messages.budgetingSubmittedInstructions}
+          />
+        );
+      }
       return (
         <FormattedMessage
           values={{
             b: (chunks) => (
               <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
             ),
-            endDate: phase && toFullMonth(phase.attributes.end_at, 'day'),
           }}
-          {...messages.budgetingSubmittedInstructions}
+          {...messages.budgetingSubmittedInstructionsContinuous}
         />
       );
     } else if (SubmissionState === 'submissionEnded') {
