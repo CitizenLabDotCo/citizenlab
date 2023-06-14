@@ -1703,6 +1703,7 @@
   "app.utils.votingMethodUtils.budgetSubmittedWithIcon": "الميزانية المقدمة 🎉",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructions": "لديك إجمالي <b>{maxBudget} USD للتوزيع بين {optionCount} خيارات</b>. حدد الخيارات المفضلة لديك من خلال النقر على \"إضافة\". بمجرد الانتهاء ، انقر فوق \"إرسال\" لإرسال ميزانيتك.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>تهانينا ، لقد تم تقديم ميزانيتك!</b> يمكنك التحقق من الخيارات أدناه في أي وقت أو تعديلها قبل <b>{endDate}</b>.",
+  "app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous": "<b>تهانينا ، لقد تم تقديم ميزانيتك!</b> يمكنك التحقق من الخيارات أدناه في أي وقت أو تعديلها.",
   "app.utils.votingMethodUtils.budgets": "الميزانيات",
   "app.utils.votingMethodUtils.finalResults": "النتائج النهائية",
   "app.utils.votingMethodUtils.howToParticipate": "كيفية المشاركة",
