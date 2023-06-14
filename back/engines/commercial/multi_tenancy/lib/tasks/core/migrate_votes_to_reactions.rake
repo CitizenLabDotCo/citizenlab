@@ -29,7 +29,7 @@ class VotesToReactionMigrator
   end
 
   def run_core
-    Rails.logger.info("Processing core data for tenant #{@tenant.host}")
+    Rails.logger.info "Processing core data for tenant #{@tenant.host}"
     update_downvoting_feature_flag
     update_initiatives_voting_threshold
     update_smart_groups
@@ -39,29 +39,29 @@ class VotesToReactionMigrator
   end
 
   def run_activities
-    Rails.logger.info("Processing activities for tenant #{@tenant.host}")
+    Rails.logger.info "Processing activities for tenant #{@tenant.host}"
     update_activities
   end
 
   private
 
   def update_downvoting_feature_flag
-    Rails.logger.info("SETTING: Disliking feature flag for #{@tenant.host}")
+    Rails.logger.info "SETTING: Disliking feature flag for #{@tenant.host}"
     settings = AppConfiguration.instance.settings
     settings['disable_disliking'] = settings['disable_downvoting']
     AppConfiguration.instance.update! settings: settings
   end
 
   def update_initiatives_voting_threshold
-    Rails.logger.info("SETTING: initiatives->reacting_threshold for #{@tenant.host}")
+    Rails.logger.info "SETTING: initiatives->reacting_threshold for #{@tenant.host}"
     settings = AppConfiguration.instance.settings
     settings['initiatives']['reacting_threshold'] = settings['initiatives']['voting_threshold']
     AppConfiguration.instance.update! settings: settings
-    Rails.logger.info("SAVED: initiatives->reacting_threshold for #{@tenant.host}")
+    Rails.logger.info "SAVED: initiatives->reacting_threshold for #{@tenant.host}"
   end
 
   def update_smart_groups
-    Rails.logger.info("UPDATING: Smart groups for #{@tenant.host}")
+    Rails.logger.info "UPDATING: Smart groups for #{@tenant.host}"
     count = 0
     Group.where(membership_type: 'rules').each do |group|
       next unless group.rules.to_s.include? 'voted'
@@ -69,26 +69,29 @@ class VotesToReactionMigrator
       group.rules.each do |rule|
         rule['predicate'].sub!('voted', 'reacted')
       end
-      group.save!
-      count += 1
+      if group.save
+        count += 1
+      else
+        Rails.logger.error "SMART_GROUP_ERROR: #{group.errors.errors}"
+      end
     end
     Rails.logger.info("SAVED: #{count} groups")
   end
 
   # update action for voting_idea, voting_initiative etc
   def update_permissions
-    Rails.logger.info("UPDATING: Permissions for #{@tenant.host}")
+    Rails.logger.info "UPDATING: Permissions for #{@tenant.host}"
     count = Permission.where('action like ?', 'voting%')
       .update_all("action = regexp_replace(action, 'voting', 'reacting','g')")
-    Rails.logger.info("SAVED: #{count} permissions")
+    Rails.logger.info "SAVED: #{count} permissions"
   end
 
   # update type for OfficialFeedbackOnReactedIdea etc
   def update_notifications
-    Rails.logger.info("UPDATING: Notifications for #{@tenant.host}")
+    Rails.logger.info "UPDATING: Notifications for #{@tenant.host}"
     count = Notification.where('type like ?', '%Voted%')
       .update_all("type = regexp_replace(type, 'Voted', 'Reacted','g')")
-    Rails.logger.info("SAVED: #{count} notifications")
+    Rails.logger.info "SAVED: #{count} notifications"
   end
 
   # update EmailCampaigns::Campaigns::StatusChangeOfVotedIdea etc
@@ -96,12 +99,12 @@ class VotesToReactionMigrator
     Rails.logger.info("UPDATING: Email Campaigns for #{@tenant.host}")
     count = EmailCampaigns::Campaign.where('type like ?', '%Voted%')
       .update_all("type = regexp_replace(type, 'Voted', 'Reacted','g')")
-    Rails.logger.info("SAVED: #{count} email campaigns")
+    Rails.logger.info "SAVED: #{count} email campaigns"
   end
 
   # Done as separate rake task - this is a large update and less important
   def update_activities
-    Rails.logger.info("UPDATING: Activities for #{@tenant.host}")
+    Rails.logger.info "UPDATING: Activities for #{@tenant.host}"
 
     count = 0
     Activity.where(item_type: 'Vote').each do |activity|
@@ -120,17 +123,16 @@ class VotesToReactionMigrator
           key
         end
       end
-      activity.save!
-      count += 1
+      if activity.save
+        count += 1
+      else
+        Rails.logger.error "ACTIVITY_ERROR: #{activity.errors.errors}"
+      end
     end
     Rails.logger.info("SAVED: #{count} 'Vote' activities")
 
-    count = 0
-    Activity.where('item_type like ?', '%Voted%').each do |activity|
-      activity.item_type = 'Reaction'.sub!('Voted', 'Reacted')
-      activity.save!
-      count += 1
-    end
-    Rails.logger.info("SAVED: #{count} 'Notifications::' & 'EmailCampaigns::'  activities")
+    count = Activity.where('item_type like ?', '%Voted%')
+      .update_all("item_type = regexp_replace(item_type, 'Voted', 'Reacted','g')")
+    Rails.logger.info "SAVED: #{count} 'Notifications::' & 'EmailCampaigns::'  activities"
   end
 end
