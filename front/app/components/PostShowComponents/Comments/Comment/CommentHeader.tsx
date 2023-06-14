@@ -72,9 +72,13 @@ const CommentHeader = ({
   const { formatMessage } = useIntl();
   const { data: author } = useUserById(authorId);
 
-  if (!author) return null;
+  const isModerator = author
+    ? canModerateProject(projectId, { data: author.data })
+    : false;
 
-  const isModerator = canModerateProject(projectId, { data: author.data });
+  // With the current implementation, this needs to always render,
+  // even if author is null/undefined.
+  // Otherwise we won't render CommentHeader in comments of deleted users.
 
   return (
     <Container className={className || ''}>
