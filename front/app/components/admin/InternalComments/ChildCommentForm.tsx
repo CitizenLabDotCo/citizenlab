@@ -12,7 +12,6 @@ import Button from 'components/UI/Button';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 import Avatar from 'components/Avatar';
 import clickOutside from 'utils/containers/clickOutside';
-import Link from 'utils/cl-router/Link';
 import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // tracking
@@ -31,7 +30,6 @@ import styled from 'styled-components';
 import { hideVisually } from 'polished';
 import { colors, defaultStyles } from 'utils/styleUtils';
 import useLocale from 'hooks/useLocale';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
 import useAddCommentToIdea from 'api/comments/useAddCommentToIdea';
 import useAddCommentToInitiative from 'api/comments/useAddCommentToInitiative';
@@ -104,7 +102,6 @@ const ChildCommentForm = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const locale = useLocale();
-  const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser } = useAuthUser();
   const smallerThanTablet = useBreakpoint('tablet');
 
@@ -119,7 +116,6 @@ const ChildCommentForm = ({
   const [inputValue, setInputValue] = useState('');
   const [focused, setFocused] = useState(false);
   const [canSubmit, setCanSubmit] = useState(false);
-  const [profanityApiError, setProfanityApiError] = useState(false);
   const [hasApiError, setHasApiError] = useState(false);
   const textareaElement = useRef<HTMLTextAreaElement | null>(null);
   const processing =
@@ -166,7 +162,6 @@ const ChildCommentForm = ({
     const hasEmptyError = inputValue.trim() === '';
     setInputValue(inputValue);
     setHasApiError(false);
-    setProfanityApiError(false);
     setCanSubmit(focused && !hasEmptyError);
   };
 
@@ -218,30 +213,8 @@ const ChildCommentForm = ({
               setInputValue('');
               setFocused(false);
             },
-            onError: (error) => {
-              const apiErrors = error.errors;
-              const profanityApiError = apiErrors.base.find(
-                (apiError) => apiError.error === 'includes_banned_words'
-              );
-
+            onError: (_error) => {
               setHasApiError(true);
-
-              if (profanityApiError) {
-                trackEventByName(tracks.childCommentProfanityError.name, {
-                  locale,
-                  ideaId,
-                  postType,
-                  projectId,
-                  profaneMessage: commentBodyMultiloc[locale],
-                  location: 'Idea Child Comment Form (citizen side)',
-                  userId: authUser.data.id,
-                  host: appConfiguration
-                    ? appConfiguration.data.attributes.host
-                    : null,
-                });
-
-                setProfanityApiError(true);
-              }
             },
           }
         );
@@ -261,30 +234,8 @@ const ChildCommentForm = ({
               setInputValue('');
               setFocused(false);
             },
-            onError: (error) => {
-              const apiErrors = error.errors;
-              const profanityApiError = apiErrors.base.find(
-                (apiError) => apiError.error === 'includes_banned_words'
-              );
-
+            onError: (_error) => {
               setHasApiError(true);
-
-              if (profanityApiError) {
-                trackEventByName(tracks.childCommentProfanityError.name, {
-                  locale,
-                  initiativeId,
-                  postType,
-                  projectId,
-                  profaneMessage: commentBodyMultiloc[locale],
-                  location: 'Initiative Child Comment Form (citizen side)',
-                  userId: authUser.data.id,
-                  host: appConfiguration
-                    ? appConfiguration.data.attributes.host
-                    : null,
-                });
-
-                setProfanityApiError(true);
-              }
             },
           }
         );
@@ -314,24 +265,6 @@ const ChildCommentForm = ({
 
   const getErrorMessage = () => {
     if (hasApiError) {
-      // Profanity error is the only error we're checking specifically
-      // at the moment to provide a specific error message.
-      // All other api errors are generalized to 1 error message
-      if (profanityApiError) {
-        return (
-          <FormattedMessage
-            {...commentsMessages.profanityError}
-            values={{
-              guidelinesLink: (
-                <Link to="/pages/faq" target="_blank">
-                  {formatMessage(commentsMessages.guidelinesLinkText)}
-                </Link>
-              ),
-            }}
-          />
-        );
-      }
-
       return <FormattedMessage {...commentsMessages.addCommentError} />;
     }
 

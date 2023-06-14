@@ -7,7 +7,6 @@ import Button from 'components/UI/Button';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 import Avatar from 'components/Avatar';
 import clickOutside from 'utils/containers/clickOutside';
-import Link from 'utils/cl-router/Link';
 import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // tracking
@@ -32,7 +31,6 @@ import useAddCommentToIdea from 'api/comments/useAddCommentToIdea';
 import useAddCommentToInitiative from 'api/comments/useAddCommentToInitiative';
 import useLocale from 'hooks/useLocale';
 import useAuthUser from 'api/me/useAuthUser';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 const Container = styled.div`
   display: flex;
@@ -112,7 +110,6 @@ const ParentCommentForm = ({
 }: Props) => {
   const locale = useLocale();
   const { data: authUser } = useAuthUser();
-  const { data: appConfiguration } = useAppConfiguration();
   const { formatMessage } = useIntl();
   const smallerThanTablet = useBreakpoint('tablet');
   const { mutate: addCommentToIdea, isLoading: addCommentToIdeaIsLoading } =
@@ -125,7 +122,6 @@ const ParentCommentForm = ({
   const [inputValue, setInputValue] = useState('');
   const [focused, setFocused] = useState(false);
   const [hasApiError, setHasApiError] = useState(false);
-  const [profanityApiError, setProfanityApiError] = useState(false);
   const [hasEmptyError, setHasEmptyError] = useState(true);
   const { data: idea } = useIdeaById(ideaId);
   const projectId = idea ? idea.data.relationships.project.data.id : null;
@@ -141,7 +137,6 @@ const ParentCommentForm = ({
     setInputValue(inputValue);
     setFocused(true);
     setHasApiError(false);
-    setProfanityApiError(false);
     setHasEmptyError(inputValue.trim().length < 1);
   };
 
@@ -200,29 +195,7 @@ const ParentCommentForm = ({
               close();
             },
             onError: (error) => {
-              const apiErrors = error.errors;
-              const profanityApiError = apiErrors.base.find(
-                (apiError) => apiError.error === 'includes_banned_words'
-              );
-
               setHasApiError(true);
-
-              if (profanityApiError) {
-                trackEventByName(tracks.parentCommentProfanityError.name, {
-                  locale,
-                  ideaId,
-                  postType,
-                  projectId,
-                  profaneMessage: commentBodyMultiloc[locale],
-                  location: 'InitiativesNewFormWrapper (citizen side)',
-                  userId: authUser.data.id,
-                  host: appConfiguration
-                    ? appConfiguration.data.attributes.host
-                    : null,
-                });
-
-                setProfanityApiError(true);
-              }
 
               throw error;
             },
@@ -249,29 +222,7 @@ const ParentCommentForm = ({
               close();
             },
             onError: (error) => {
-              const apiErrors = error.errors;
-              const profanityApiError = apiErrors.base.find(
-                (apiError) => apiError.error === 'includes_banned_words'
-              );
-
               setHasApiError(true);
-
-              if (profanityApiError) {
-                trackEventByName(tracks.parentCommentProfanityError.name, {
-                  locale,
-                  initiativeId,
-                  postType,
-                  projectId,
-                  profaneMessage: commentBodyMultiloc[locale],
-                  location: 'InitiativesNewFormWrapper (citizen side)',
-                  userId: authUser.data.id,
-                  host: appConfiguration
-                    ? appConfiguration.data.attributes.host
-                    : null,
-                });
-
-                setProfanityApiError(true);
-              }
 
               throw error;
             },
@@ -287,24 +238,6 @@ const ParentCommentForm = ({
 
   const getErrorMessage = () => {
     if (hasApiError) {
-      // Profanity error is the only error we're checking specifically
-      // at the moment to provide a specific error message.
-      // All other api errors are generalized to 1 error message
-      if (profanityApiError) {
-        return (
-          <FormattedMessage
-            {...commentsMessages.profanityError}
-            values={{
-              guidelinesLink: (
-                <Link to="/pages/faq" target="_blank">
-                  {formatMessage(commentsMessages.guidelinesLinkText)}
-                </Link>
-              ),
-            }}
-          />
-        );
-      }
-
       return <FormattedMessage {...commentsMessages.addCommentError} />;
     }
 
