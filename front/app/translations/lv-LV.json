@@ -232,6 +232,7 @@
   "app.components.PagesForm.saveSuccess": "Lapa veiksmīgi saglabāta.",
   "app.components.PagesForm.titleMissingOneLanguageError": "Norādiet nosaukumu vismaz vienā valodā",
   "app.components.ParticipationCTABars.allocateBudget": "Piešķiriet savu budžetu",
+  "app.components.ParticipationCTABars.budgetExceededError": "Jums nav pietiekama budžeta",
   "app.components.ParticipationCTABars.left": "pa kreisi",
   "app.components.ParticipationCTABars.mobileProjectOpenForSubmission": "Atvērts dalībai",
   "app.components.ParticipationCTABars.poll": "Piedalieties aptaujā",
