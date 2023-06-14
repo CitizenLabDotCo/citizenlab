@@ -212,7 +212,7 @@ export default ({
               </>
             )}
           </SectionField>
-          <FeatureFlag name="disable_downvoting">
+          <FeatureFlag name="disable_disliking">
             <SectionField>
               <SubSectionTitle>
                 <FormattedMessage {...messages.downvotingPosts} />

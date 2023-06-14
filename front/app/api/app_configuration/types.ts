@@ -169,7 +169,7 @@ export interface IAppConfigurationSettings {
   polls?: AppConfigurationFeature;
   moderation?: AppConfigurationFeature;
   flag_inappropriate_content?: AppConfigurationFeature;
-  disable_downvoting?: AppConfigurationFeature;
+  disable_disliking?: AppConfigurationFeature;
   project_visibility?: AppConfigurationFeature;
   project_management?: AppConfigurationFeature;
   idea_assignment?: AppConfigurationFeature;
