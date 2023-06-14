@@ -63,7 +63,7 @@ const ButtonWrapper = styled.button`
     color: #000;
 
     ${UpvoteIcon} {
-      fill: #000;
+      fill: ${colors.black};
     }
   }
 
