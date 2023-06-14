@@ -169,6 +169,7 @@ class User < ApplicationRecord
   store_accessor :custom_field_values, :gender, :birthyear, :domicile, :education
 
   # TODO: Move email validation into one row
+  # TODO: Get latest logic from master - merge went wrong
   validates :email, presence: true, if: :requires_email?
   validates :locale, presence: true, unless: :invite_pending?
   validates :email, uniqueness: true, allow_nil: true
