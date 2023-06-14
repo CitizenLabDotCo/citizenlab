@@ -75,7 +75,7 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
 import { useSearchParams } from 'react-router-dom';
 import useIdeaImages from 'api/idea_images/useIdeaImages';
-import { getCurrentPhase } from 'api/phases/utils';
+import { getCurrentParticipationContext } from 'api/phases/utils';
 
 const contentFadeInDuration = 250;
 const contentFadeInEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -280,7 +280,10 @@ export const IdeasShow = ({
     );
 
     const anonymous = idea.data.attributes.anonymous;
-    const currentPhase = getCurrentPhase(phases?.data);
+    const participationContext = getCurrentParticipationContext(
+      project,
+      phases?.data
+    );
 
     content = (
       <>
@@ -393,8 +396,8 @@ export const IdeasShow = ({
               <Suspense fallback={<LoadingComments />}>
                 <LazyComments
                   allowAnonymousParticipation={
-                    project.attributes.allow_anonymous_participation ||
-                    currentPhase?.attributes.allow_anonymous_participation
+                    participationContext?.attributes
+                      .allow_anonymous_participation
                   }
                   postId={ideaId}
                   postType="idea"
