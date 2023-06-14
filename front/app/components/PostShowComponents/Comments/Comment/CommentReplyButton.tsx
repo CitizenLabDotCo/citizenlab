@@ -1,5 +1,4 @@
 import React, { useCallback } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -171,12 +170,10 @@ const CommentReplyButton = ({
     idea?.attributes.action_descriptor.commenting_idea.disabled_reason;
 
   const isCommentDeleted = comment.attributes.publication_status === 'deleted';
-  const isSignedIn = !isNilOrError(authUser);
   const disabled =
     postType === 'initiative'
       ? !commentingPermissionInitiative?.enabled
-      : isSignedIn &&
-        ideaCommentingDisabledReason &&
+      : ideaCommentingDisabledReason &&
         !isFixableByAuthentication(ideaCommentingDisabledReason);
 
   if (!isCommentDeleted && !disabled) {
