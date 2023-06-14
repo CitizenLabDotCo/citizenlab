@@ -1703,6 +1703,7 @@
   "app.utils.votingMethodUtils.budgetSubmittedWithIcon": "Ingediende budget 🎉",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructions": "Je hebt in totaal <b>{maxBudget} EUR om te verdelen over {optionCount} opties</b>. Selecteer de opties van je voorkeur door op \"Toevoegen\" te tikken. Als je klaar bent, klik je op \"Verzenden\" om je budget in te dienen.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>Gefeliciteerd, je budget is ingediend!</b> Je kan de onderstaande opties op elk moment bekijken of wijzigen voor <b>{endDate}</b>.",
+  "app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous": "<b>Gefeliciteerd, je budget is ingediend!</b> Je kunt je opties hieronder op elk moment controleren of wijzigen.",
   "app.utils.votingMethodUtils.budgets": "Budgetten",
   "app.utils.votingMethodUtils.finalResults": "Eindresultaten",
   "app.utils.votingMethodUtils.howToParticipate": "Hoe deel te nemen",
