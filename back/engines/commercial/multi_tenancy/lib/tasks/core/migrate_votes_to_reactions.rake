@@ -2,28 +2,22 @@
 
 # NOTE: Only to be used for release that migrates Votes -> Reactions
 namespace :fix_existing_tenants do
-  desc 'Transform all data relating to votes into reactions'
-  task migrate_votes_to_reactions: [:environment] do |_t, _args|
-    Tenant.all.each do |tenant|
-      puts "Processing tenant #{tenant.host}..."
+  desc 'Transform all core data relating to votes into reactions'
+  task migrate_votes_core: [:environment] do |_t, _args|
+    # Order by active first - to reduce downtime
+    tenants = Tenant.creation_finalized.with_lifecycle('active') + Tenant.creation_finalized.with_lifecycle('demo')
+    tenants.each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
-        migrator = VotesToReactionMigrator.new(tenant)
-        migrator.update_downvoting_feature_flag
-        migrator.update_initiatives_voting_threshold
-        migrator.update_smart_groups
-        migrator.update_permissions
-        migrator.update_notifications
-        migrator.update_email_campaigns
+        VotesToReactionMigrator.new(tenant).run_core
       end
     end
   end
 
+  desc 'Transform all activity data relating to votes into reactions'
   task migrate_votes_activities: [:environment] do |_t, _args|
-    Tenant.all.each do |tenant|
-      puts "Processing tenant #{tenant.host}..."
+    Tenant.creation_finalized.each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
-        migrator = VotesToReactionMigrator.new(tenant)
-        migrator.update_activities
+        VotesToReactionMigrator.new(tenant).run_activities
       end
     end
   end
@@ -33,6 +27,23 @@ class VotesToReactionMigrator
   def initialize(tenant)
     @tenant = tenant
   end
+
+  def run_core
+    Rails.logger.info("Processing core data for tenant #{@tenant.host}")
+    update_downvoting_feature_flag
+    update_initiatives_voting_threshold
+    update_smart_groups
+    update_permissions
+    update_notifications
+    update_email_campaigns
+  end
+
+  def run_activities
+    Rails.logger.info("Processing activities for tenant #{@tenant.host}")
+    update_activities
+  end
+
+  private
 
   def update_downvoting_feature_flag
     Rails.logger.info("SETTING: Disliking feature flag for #{@tenant.host}")
