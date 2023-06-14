@@ -232,6 +232,7 @@
   "app.components.PagesForm.saveSuccess": "Siden er lagret.",
   "app.components.PagesForm.titleMissingOneLanguageError": "Oppgi en tittel for minst ett språk",
   "app.components.ParticipationCTABars.allocateBudget": "Fordel budsjettet ditt",
+  "app.components.ParticipationCTABars.budgetExceededError": "Du har ikke nok budsjett",
   "app.components.ParticipationCTABars.left": "venstre",
   "app.components.ParticipationCTABars.mobileProjectOpenForSubmission": "Åpen for deltakelse",
   "app.components.ParticipationCTABars.poll": "Ta avstemningen",
