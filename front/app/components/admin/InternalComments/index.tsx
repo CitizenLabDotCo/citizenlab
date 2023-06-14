@@ -2,9 +2,6 @@
 import React, { useState, useCallback } from 'react';
 import Observer from '@researchgate/react-intersection-observer';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
 // components
 import ParentCommentForm from './ParentCommentForm';
 import Comments from './Comments';
@@ -109,17 +106,10 @@ const CommentsSection = ({
     ideaId: postType === 'idea' ? postId : undefined,
     sort: sortOrder,
   });
-
-  const commentsList = comments?.pages.flatMap((page) => page.data);
-
-  const post = initiative || idea;
-
   const [posting, setPosting] = useState(false);
 
-  const handleSortOrderChange = (sortOrder: CommentsSort) => {
-    trackEventByName(tracks.clickCommentsSortOrder);
-    setSortOrder(sortOrder);
-  };
+  const commentsList = comments?.pages.flatMap((page) => page.data);
+  const post = initiative || idea;
 
   const handleIntersection = useCallback(
     (event: IntersectionObserverEntry, unobserve: () => void) => {
@@ -131,61 +121,63 @@ const CommentsSection = ({
     [fetchNextPage, hasNextPage]
   );
 
-  const handleCommentPosting = useCallback((isPosting: boolean) => {
+  if (!post || !commentsList) return null;
+
+  const handleSortOrderChange = (sortOrder: CommentsSort) => {
+    trackEventByName(tracks.clickCommentsSortOrder);
+    setSortOrder(sortOrder);
+  };
+
+  const handleCommentPosting = (isPosting: boolean) => {
     setPosting(isPosting);
-  }, []);
+  };
 
-  if (!isNilOrError(post) && !isNilOrError(commentsList)) {
-    const commentCount = post.data.attributes.comments_count;
+  const commentCount = post.data.attributes.comments_count;
 
-    return (
-      <Container className={className || ''}>
-        <Header>
-          <Title color="tenantText" variant="h2" id="comments-main-title">
-            <FormattedMessage {...messages.invisibleTitleComments} />
-            {commentCount > 0 && <CommentCount>({commentCount})</CommentCount>}
-          </Title>
-          <StyledCommentSorting
-            onChange={handleSortOrderChange}
-            selectedCommentSort={sortOrder}
-          />
-        </Header>
-
-        <StyledParentCommentForm
-          ideaId={ideaId}
-          initiativeId={initiativeId}
-          postType={postType}
-          postingComment={handleCommentPosting}
-          allowAnonymousParticipation={allowAnonymousParticipation}
+  return (
+    <Container className={className || ''}>
+      <Header>
+        <Title color="tenantText" variant="h2" id="comments-main-title">
+          <FormattedMessage {...messages.invisibleTitleComments} />
+          {commentCount > 0 && <CommentCount>({commentCount})</CommentCount>}
+        </Title>
+        <StyledCommentSorting
+          onChange={handleSortOrderChange}
+          selectedCommentSort={sortOrder}
         />
+      </Header>
 
-        <Comments
-          ideaId={ideaId}
-          initiativeId={initiativeId}
-          postType={postType}
-          allComments={commentsList}
-          loading={isLoading}
-          allowAnonymousParticipation={allowAnonymousParticipation}
-        />
+      <StyledParentCommentForm
+        ideaId={ideaId}
+        initiativeId={initiativeId}
+        postType={postType}
+        postingComment={handleCommentPosting}
+        allowAnonymousParticipation={allowAnonymousParticipation}
+      />
 
-        {hasNextPage && !isFetchingNextPage && (
-          <Observer onChange={handleIntersection} rootMargin="3000px">
-            <LoadMore />
-          </Observer>
-        )}
+      <Comments
+        ideaId={ideaId}
+        initiativeId={initiativeId}
+        postType={postType}
+        allComments={commentsList}
+        loading={isLoading}
+      />
 
-        {isFetchingNextPage && !posting && (
-          <LoadingMore>
-            <LoadingMoreMessage>
-              <FormattedMessage {...messages.loadingMoreComments} />
-            </LoadingMoreMessage>
-          </LoadingMore>
-        )}
-      </Container>
-    );
-  }
+      {hasNextPage && !isFetchingNextPage && (
+        <Observer onChange={handleIntersection} rootMargin="3000px">
+          <LoadMore />
+        </Observer>
+      )}
 
-  return null;
+      {isFetchingNextPage && !posting && (
+        <LoadingMore>
+          <LoadingMoreMessage>
+            <FormattedMessage {...messages.loadingMoreComments} />
+          </LoadingMoreMessage>
+        </LoadingMore>
+      )}
+    </Container>
+  );
 };
 
 export default CommentsSection;
