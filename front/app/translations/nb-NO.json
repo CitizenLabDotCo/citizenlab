@@ -1703,6 +1703,7 @@
   "app.utils.votingMethodUtils.budgetSubmittedWithIcon": "Budsjett sendt inn 🎉",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructions": "Du har totalt <b>{maxBudget} USD å fordele mellom {optionCount} alternativer</b>. Velg dine foretrukne alternativer ved å trykke på \"Legg til\". Når du er ferdig, klikker du på \"Send\" for å sende inn budsjettet.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>Gratulerer, budsjettet ditt er sendt inn!</b> Du kan sjekke alternativene nedenfor når som helst eller endre dem før <b>{endDate}</b>.",
+  "app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous": "<b>Gratulerer, budsjettet ditt er sendt inn!</b> Du kan sjekke alternativene nedenfor når som helst eller endre dem.",
   "app.utils.votingMethodUtils.budgets": "Budsjetter",
   "app.utils.votingMethodUtils.finalResults": "Endelige resultater",
   "app.utils.votingMethodUtils.howToParticipate": "Hvordan delta",
