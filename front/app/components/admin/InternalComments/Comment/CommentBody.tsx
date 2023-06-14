@@ -140,6 +140,10 @@ const CommentBody = ({
     };
   }, [commentId]);
 
+  if (isNilOrError(locale)) {
+    return null;
+  }
+
   const setNewTextAreaRef = (ref: HTMLTextAreaElement) => {
     setTextAreaRef(ref);
     focusEndOfEditingArea();
@@ -165,34 +169,32 @@ const CommentBody = ({
   const onSubmit = async (event: FormEvent<any>) => {
     event.preventDefault();
 
-    if (!isNilOrError(locale)) {
-      const updatedComment: Omit<IUpdatedComment, 'commentId'> = {
-        body_multiloc: {
-          [locale]: editableCommentContent.replace(
-            /@\[(.*?)\]\((.*?)\)/gi,
-            '@$2'
-          ),
+    const updatedComment: Omit<IUpdatedComment, 'commentId'> = {
+      body_multiloc: {
+        [locale]: editableCommentContent.replace(
+          /@\[(.*?)\]\((.*?)\)/gi,
+          '@$2'
+        ),
+      },
+    };
+
+    setApiErrors(null);
+
+    updateComment(
+      { commentId, ...updatedComment },
+      {
+        onSuccess: () => {
+          onCommentSaved();
+          setCommentContent('');
         },
-      };
-
-      setApiErrors(null);
-
-      updateComment(
-        { commentId, ...updatedComment },
-        {
-          onSuccess: () => {
-            onCommentSaved();
-            setCommentContent('');
-          },
-          onError: (error) => {
-            if (isCLErrorJSON(error)) {
-              const apiErrors = (error as CLErrorsJSON).json.errors;
-              setApiErrors(apiErrors);
-            }
-          },
-        }
-      );
-    }
+        onError: (error) => {
+          if (isCLErrorJSON(error)) {
+            const apiErrors = (error as CLErrorsJSON).json.errors;
+            setApiErrors(apiErrors);
+          }
+        },
+      }
+    );
   };
 
   const cancelEditing = (event: React.MouseEvent) => {
@@ -200,10 +202,6 @@ const CommentBody = ({
     setEditableCommentContent('');
     onCancelEditing();
   };
-
-  if (isNilOrError(locale)) {
-    return null;
-  }
 
   return (
     <Container className={className}>

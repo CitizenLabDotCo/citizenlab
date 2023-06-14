@@ -8,7 +8,6 @@ import commentsMessages from 'components/PostShowComponents/Comments/messages';
 // Components
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import Modal from 'components/UI/Modal';
-import SpamReportForm from 'containers/SpamReport';
 import Button from 'components/UI/Button';
 import { usePermission } from 'services/permissions';
 
@@ -77,7 +76,6 @@ const CommentsMoreActions = ({
     initiativeId,
   });
 
-  const [modalVisible_spam, setModalVisible_spam] = useState(false);
   const [modalVisible_delete, setModalVisible_delete] = useState(false);
 
   const canDelete = usePermission({
@@ -145,10 +143,6 @@ const CommentsMoreActions = ({
     );
   };
 
-  const closeSpamModal = () => {
-    setModalVisible_spam(false);
-  };
-
   return (
     <>
       <Container className={className || ''}>
@@ -180,16 +174,6 @@ const CommentsMoreActions = ({
             />
           </AcceptButton>
         </ButtonsWrapper>
-      </Modal>
-
-      <Modal
-        opened={modalVisible_spam}
-        close={closeSpamModal}
-        header={
-          <FormattedMessage {...commentsMessages.reportAsSpamModalTitle} />
-        }
-      >
-        <SpamReportForm resourceId={comment.id} resourceType="comments" />
       </Modal>
     </>
   );
