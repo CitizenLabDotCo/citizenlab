@@ -10,7 +10,6 @@ import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import Modal from 'components/UI/Modal';
 import SpamReportForm from 'containers/SpamReport';
 import Button from 'components/UI/Button';
-import CommentsAdminDeletionModal from '../CommentsAdminDeletionModal';
 import { usePermission } from 'services/permissions';
 
 // events
@@ -99,14 +98,6 @@ const CommentsMoreActions = ({
     context: { projectId },
   });
 
-  /* Justification required for the deletion:
-            when person who deletes the comment is not the author */
-  const needsToJustifyDeletion = usePermission({
-    item: comment,
-    action: 'justifyDeletion',
-    context: { projectId },
-  });
-
   const openDeleteModal = () => {
     setModalVisible_delete(true);
   };
@@ -190,30 +181,23 @@ const CommentsMoreActions = ({
           <FormattedMessage {...commentsMessages.confirmCommentDeletion} />
         }
       >
-        {needsToJustifyDeletion ? (
-          <CommentsAdminDeletionModal
-            onCloseDeleteModal={closeDeleteModal}
-            onDeleteComment={deleteComment}
-          />
-        ) : (
-          <ButtonsWrapper>
-            <CancelButton buttonStyle="secondary" onClick={closeDeleteModal}>
-              <FormattedMessage
-                {...commentsMessages.commentDeletionCancelButton}
-              />
-            </CancelButton>
-            <AcceptButton
-              buttonStyle="primary"
-              processing={isLoading}
-              className="e2e-confirm-deletion"
-              onClick={handleDeleteClick}
-            >
-              <FormattedMessage
-                {...commentsMessages.commentDeletionConfirmButton}
-              />
-            </AcceptButton>
-          </ButtonsWrapper>
-        )}
+        <ButtonsWrapper>
+          <CancelButton buttonStyle="secondary" onClick={closeDeleteModal}>
+            <FormattedMessage
+              {...commentsMessages.commentDeletionCancelButton}
+            />
+          </CancelButton>
+          <AcceptButton
+            buttonStyle="primary"
+            processing={isLoading}
+            className="e2e-confirm-deletion"
+            onClick={handleDeleteClick}
+          >
+            <FormattedMessage
+              {...commentsMessages.commentDeletionConfirmButton}
+            />
+          </AcceptButton>
+        </ButtonsWrapper>
       </Modal>
 
       <Modal
