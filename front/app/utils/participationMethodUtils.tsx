@@ -9,7 +9,7 @@ import {
   ParticipationMethod,
   getInputTerm,
 } from 'services/participationContexts';
-import { getCurrentPhase } from 'api/phases/utils';
+import { getCurrentParticipationContext } from 'api/phases/utils';
 import { IProjectData } from 'api/projects/types';
 import { IPhaseData } from 'api/phases/types';
 
@@ -386,22 +386,12 @@ export const getParticipationMethod = (
   phases: IPhaseData[] | undefined,
   phaseId?: string
 ): ParticipationMethod | undefined => {
-  if (isNilOrError(project)) {
-    return undefined;
-  }
-  const { process_type, participation_method: projectParticipationMethod } =
-    project.attributes;
+  if (!project) return;
 
-  if (process_type === 'continuous') {
-    return projectParticipationMethod;
-  } else if (process_type === 'timeline') {
-    const phase =
-      (!isNilOrError(phases) ? phases : []).find(
-        (phase) => phase.id === phaseId
-      ) || getCurrentPhase(phases);
-    return phase?.attributes.participation_method;
-  }
-  throw `Unknown process_type ${project.attributes.process_type}`;
+  const phaseFromId = phases?.find((phase) => phase.id === phaseId);
+  const participationContext =
+    phaseFromId ?? getCurrentParticipationContext(project, phases);
+  return participationContext?.attributes.participation_method;
 };
 
 /** Returns the phase for a given phaseID */
