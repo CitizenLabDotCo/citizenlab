@@ -232,6 +232,7 @@
   "app.components.PagesForm.saveSuccess": "Pagina opgeslagen.",
   "app.components.PagesForm.titleMissingOneLanguageError": "Geef een titel op voor ten minste één taal",
   "app.components.ParticipationCTABars.allocateBudget": "Maak je keuze",
+  "app.components.ParticipationCTABars.budgetExceededError": "Je hebt niet genoeg budget",
   "app.components.ParticipationCTABars.left": "links",
   "app.components.ParticipationCTABars.mobileProjectOpenForSubmission": "Open voor deelname",
   "app.components.ParticipationCTABars.poll": "Doe de peiling",
