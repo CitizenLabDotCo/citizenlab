@@ -1434,7 +1434,7 @@
   "app.containers.UsersShowPage.tryAgain": "An error has occurred, please try again later.",
   "app.containers.UsersShowPage.user404NotFound": "We couldn't find this user's profile. If it was here before, it may have been deleted.",
   "app.containers.UsersShowPage.userShowPageMetaDescription": "This is the profile page of {firstName} {lastName} on the online participation platform of {orgName}. Here is an overview of all of their input.",
-  "app.containers.VoteControl.a11y_upvotesDownvotes": "Total likes: {likesCount}, total downvotes: {downvotesCount}",
+  "app.containers.VoteControl.a11y_upvotesDownvotes": "Total likes: {upvotesCount}, total downvotes: {downvotesCount}",
   "app.containers.VoteControl.close": "Close",
   "app.containers.VoteControl.voteErrorSubTitle": "Due to an error, your vote could not be registered. Please try again later.",
   "app.containers.VoteControl.voteErrorTitle": "Something went wrong",
