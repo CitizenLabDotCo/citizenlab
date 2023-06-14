@@ -1,16 +1,25 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
 import useAuthUser from 'api/me/useAuthUser';
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
+
+// i18n
+import useLocalize from 'hooks/useLocalize';
 
 // components
 import VoteControl from 'components/VoteControl';
-import GoBackButton from 'containers/IdeasShow/GoBackButton';
+// import GoBackButton from 'containers/IdeasShow/GoBackButton';
+import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
 
 // events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+import eventEmitter from 'utils/eventEmitter';
+
+// routing
+import clHistory from 'utils/cl-router/history';
 
 // styling
 import styled from 'styled-components';
@@ -71,6 +80,9 @@ const IdeaShowPageTopBar = ({
   const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
 
+  const isSmallerThanPhone = useBreakpoint('phone');
+  const localize = useLocalize();
+
   const onDisabledVoteClick = (disabled_reason: IdeaVotingDisabledReason) => {
     if (
       !isNilOrError(authUser) &&
@@ -96,14 +108,33 @@ const IdeaShowPageTopBar = ({
     }
   };
 
+  const handleGoBack = useCallback(() => {
+    if (insideModal) {
+      eventEmitter.emit('closeIdeaModal');
+      return;
+    }
+
+    if (deselectIdeaOnMap) {
+      deselectIdeaOnMap();
+      return;
+    }
+
+    if (!project) return;
+    clHistory.push(`/projects/${project.data.attributes.slug}`);
+  }, [insideModal, deselectIdeaOnMap, project]);
+
+  if (!project) return null;
+
+  const projectTitle = localize(project?.data.attributes.title_multiloc);
+
   return (
     <Container className={className || ''}>
       <TopBarInner>
         <Left>
-          <GoBackButton
-            deselectIdeaOnMap={deselectIdeaOnMap}
-            insideModal={insideModal}
-            projectId={projectId}
+          <GoBackButtonSolid
+            text={isSmallerThanPhone ? undefined : projectTitle}
+            screenReaderText={projectTitle}
+            onClick={handleGoBack}
           />
         </Left>
         <Right>

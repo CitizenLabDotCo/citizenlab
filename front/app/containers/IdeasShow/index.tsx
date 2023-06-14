@@ -1,4 +1,11 @@
-import React, { lazy, Suspense, useState, useRef, useEffect } from 'react';
+import React, {
+  lazy,
+  Suspense,
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+} from 'react';
 import { isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
@@ -22,8 +29,8 @@ import Modal from 'components/UI/Modal';
 import AssignBudgetControl from 'components/AssignBudgetControl';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 import IdeaMoreActions from './IdeaMoreActions';
-import { Box, Spinner } from '@citizenlab/cl2-component-library';
-import GoBackButton from './GoBackButton';
+import { Box, Spinner, useBreakpoint } from '@citizenlab/cl2-component-library';
+import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
 const LazyComments = lazy(
   () => import('components/PostShowComponents/Comments')
 );
@@ -37,15 +44,13 @@ import { isFieldEnabled } from 'utils/projectUtils';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetWindowSize, {
-  GetWindowSizeChildProps,
-} from 'resources/GetWindowSize';
 import GetPermission, {
   GetPermissionChildProps,
 } from 'resources/GetPermission';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import useLocalize from 'hooks/useLocalize';
 import messages from './messages';
 import { getInputTermMessage } from 'utils/i18n';
 
@@ -54,10 +59,11 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // utils
 import clHistory from 'utils/cl-router/history';
+import eventEmitter from 'utils/eventEmitter';
 
 // style
 import styled from 'styled-components';
-import { media, viewportWidths, isRtl } from 'utils/styleUtils';
+import { media, isRtl } from 'utils/styleUtils';
 import { columnsGapDesktop, pageContentMaxWidth } from './styleConstants';
 import Outlet from 'components/Outlet';
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -69,7 +75,6 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
 import { useSearchParams } from 'react-router-dom';
 import useIdeaImages from 'api/idea_images/useIdeaImages';
-import useLocalize from 'hooks/useLocalize';
 import { getCurrentPhase } from 'api/phases/utils';
 
 const contentFadeInDuration = 250;
@@ -152,7 +157,6 @@ const BodySectionTitle = styled.h2`
 
 interface DataProps {
   project: GetProjectChildProps;
-  windowSize: GetWindowSizeChildProps;
   postOfficialFeedbackPermission: GetPermissionChildProps;
 }
 
@@ -168,7 +172,6 @@ interface InputProps {
 interface Props extends DataProps, InputProps {}
 
 export const IdeasShow = ({
-  windowSize,
   className,
   postOfficialFeedbackPermission,
   projectId,
@@ -188,6 +191,9 @@ export const IdeasShow = ({
   const [queryParams] = useSearchParams();
   const ideaIdParameter = queryParams.get('new_idea_id');
   const timeout = useRef<NodeJS.Timeout>();
+
+  const isSmallerThanPhone = useBreakpoint('phone');
+  const isSmallerThanTablet = useBreakpoint('tablet');
 
   useEffect(() => {
     if (isString(ideaIdParameter)) {
@@ -237,6 +243,16 @@ export const IdeasShow = ({
 
   let content: JSX.Element | null = null;
 
+  const handleGoBack = useCallback(() => {
+    if (insideModal) {
+      eventEmitter.emit('closeIdeaModal');
+      return;
+    }
+
+    if (!project) return;
+    clHistory.push(`/projects/${project.attributes.slug}`);
+  }, [project, insideModal]);
+
   if (
     !isNilOrError(project) &&
     !isNilOrError(idea) &&
@@ -254,9 +270,7 @@ export const IdeasShow = ({
     const ideaId = idea.data.id;
     const proposedBudget = idea.data.attributes?.proposed_budget;
     const ideaBody = localize(idea.data.attributes?.body_multiloc);
-    const isCompactView =
-      compact === true ||
-      (windowSize ? windowSize <= viewportWidths.tablet : false);
+    const isCompactView = compact === true || isSmallerThanTablet;
 
     if (isNilOrError(ideaCustomFieldsSchema)) return null;
 
@@ -276,7 +290,15 @@ export const IdeasShow = ({
         {!isCompactView && (
           <TopBar>
             <Box mb="40px">
-              <GoBackButton projectId={projectId} insideModal={insideModal} />
+              <GoBackButtonSolid
+                text={
+                  isSmallerThanPhone
+                    ? undefined
+                    : localize(project.attributes.title_multiloc)
+                }
+                screenReaderText={localize(project.attributes.title_multiloc)}
+                onClick={handleGoBack}
+              />
             </Box>
             <IdeaMoreActions idea={idea.data} projectId={projectId} />
           </TopBar>
@@ -468,7 +490,6 @@ export const IdeasShow = ({
 };
 
 const Data = adopt<DataProps, InputProps>({
-  windowSize: <GetWindowSize />,
   project: ({ projectId, render }) => (
     <GetProject projectId={projectId}>{render}</GetProject>
   ),

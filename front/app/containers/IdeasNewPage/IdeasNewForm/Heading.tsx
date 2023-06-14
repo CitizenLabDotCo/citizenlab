@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 
 // Components
 import {
@@ -9,18 +9,20 @@ import {
 } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import Modal from 'components/UI/Modal';
-import GoBackButtonSurvey from 'components/UI/GoBackButton';
+import GoBackButton from 'components/UI/GoBackButton';
+import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
+
+// routing
+import { useSearchParams } from 'react-router-dom';
+import clHistory from 'utils/cl-router/history';
 
 // i18n
+import useLocalize from 'hooks/useLocalize';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
-// Types
+// typings
 import { IProjectData } from 'api/projects/types';
-
-// Styles
-import GoBackButton from 'containers/IdeasShow/GoBackButton';
-import { useSearchParams } from 'react-router-dom';
 
 type Props = {
   project: IProjectData;
@@ -35,6 +37,7 @@ export const Heading = ({
   canUserEditProject,
   isSurvey,
 }: Props) => {
+  const localize = useLocalize();
   const [searchParams] = useSearchParams();
   const phaseId =
     searchParams.get('phase_id') ||
@@ -54,6 +57,11 @@ export const Heading = ({
     setShowLeaveModal(false);
   };
   const isSurveyOnMobile = isSmallerThanPhone && isSurvey;
+  const projectTitle = localize(project.attributes.title_multiloc);
+
+  const goBackToProject = useCallback(() => {
+    clHistory.push(`/projects/${project.attributes.slug}`);
+  }, [project]);
 
   return (
     <>
@@ -65,7 +73,7 @@ export const Heading = ({
             justifyContent="flex-start"
             width="100%"
           >
-            <GoBackButtonSurvey onClick={openModal} />
+            <GoBackButton onClick={openModal} />
           </Box>
         </>
       )}
@@ -90,7 +98,11 @@ export const Heading = ({
           px="20px"
         >
           {!isSurvey && (
-            <GoBackButton insideModal={false} projectId={project.id} />
+            <GoBackButtonSolid
+              text={isSmallerThanPhone ? undefined : projectTitle}
+              screenReaderText={projectTitle}
+              onClick={goBackToProject}
+            />
           )}
           {isSurvey && !isSmallerThanPhone && (
             <Box
@@ -100,7 +112,7 @@ export const Heading = ({
               alignItems="center"
               justifyContent="space-between"
             >
-              <GoBackButtonSurvey onClick={openModal} />
+              <GoBackButton onClick={openModal} />
               {showEditSurveyButton && (
                 <Button
                   data-cy="e2e-edit-survey-link"
