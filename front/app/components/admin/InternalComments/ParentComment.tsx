@@ -45,7 +45,6 @@ interface Props {
   commentId: string;
   childCommentIds: string[] | false;
   className?: string;
-  allowAnonymousParticipation?: boolean;
 }
 
 const ParentComment = ({
@@ -55,7 +54,6 @@ const ParentComment = ({
   postType,
   className,
   childCommentIds,
-  allowAnonymousParticipation,
 }: Props) => {
   const theme = useTheme();
   const { data: comment } = useComment(commentId);
@@ -149,7 +147,6 @@ const ParentComment = ({
             postType={postType}
             projectId={projectId}
             parentId={commentId}
-            allowAnonymousParticipation={allowAnonymousParticipation}
           />
         )}
       </Container>

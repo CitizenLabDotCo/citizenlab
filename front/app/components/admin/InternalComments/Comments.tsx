@@ -38,19 +38,10 @@ interface Props {
   allComments: ICommentData[];
   loading: boolean;
   className?: string;
-  allowAnonymousParticipation?: boolean;
 }
 
 const CommentsSection = memo<Props>(
-  ({
-    ideaId,
-    initiativeId,
-    postType,
-    allComments,
-    loading,
-    className,
-    allowAnonymousParticipation,
-  }) => {
+  ({ ideaId, initiativeId, postType, allComments, loading, className }) => {
     const { formatMessage } = useIntl();
     const [commentPostedMessage, setCommentPostedMessage] = useState('');
     const [commentDeletedMessage, setCommentDeletedMessage] = useState('');
@@ -120,7 +111,6 @@ const CommentsSection = memo<Props>(
               commentId={parentComment.id}
               childCommentIds={childCommentIds}
               className={loading ? 'loading' : ''}
-              allowAnonymousParticipation={allowAnonymousParticipation}
             />
           );
         })}
