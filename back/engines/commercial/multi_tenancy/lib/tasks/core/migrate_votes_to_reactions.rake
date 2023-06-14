@@ -10,30 +10,34 @@ namespace :fix_existing_tenants do
               Tenant.creation_finalized.with_lifecycle('demo') +
               Tenant.creation_finalized.with_lifecycle('expired_trial') +
               Tenant.creation_finalized.with_lifecycle('churned')
-
+    vote_migrator = VotesToReactionMigrator.new
     tenants.each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
-        VotesToReactionMigrator.new(tenant).run_core
+        vote_migrator.run_core(tenant)
       end
     end
+    vote_migrator.output_errors
   end
 
   desc 'Transform all activity data relating to votes into reactions'
   task migrate_votes_activities: [:environment] do |_t, _args|
+    vote_migrator = VotesToReactionMigrator.new
     Tenant.creation_finalized.each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
-        VotesToReactionMigrator.new(tenant).run_activities
+        vote_migrator.run_activities(tenant)
       end
     end
+    vote_migrator.output_errors
   end
 end
 
 class VotesToReactionMigrator
-  def initialize(tenant)
-    @tenant = tenant
+  def initialize
+    @errors = {}
   end
 
-  def run_core
+  def run_core(tenant)
+    @tenant = tenant
     Rails.logger.info "Processing core data for tenant #{@tenant.host}"
     update_downvoting_feature_flag
     update_initiatives_voting_threshold
@@ -43,9 +47,22 @@ class VotesToReactionMigrator
     update_email_campaigns
   end
 
-  def run_activities
+  def run_activities(tenant)
+    @tenant = tenant
     Rails.logger.info "Processing activities for tenant #{@tenant.host}"
     update_activities
+  end
+
+  def output_errors
+    Rails.logger.info 'COMPLETE'
+    errors_count = 0
+    @errors.each do |host, errors|
+      errors.each do |error|
+        Rails.logger.error "ERROR: [#{host}] #{error}"
+        errors_count += 1
+      end
+    end
+    Rails.logger.info 'NO ERRORS FOUND' if errors_count == 0
   end
 
   private
@@ -77,10 +94,10 @@ class VotesToReactionMigrator
       if group.save
         count += 1
       else
-        Rails.logger.error "SMART_GROUP_ERROR: #{group.errors.errors}"
+        error_handler "SMART_GROUP_ERROR: #{group.errors.errors}"
       end
     end
-    Rails.logger.info("SAVED: #{count} groups")
+    Rails.logger.info "SAVED: #{count} groups"
   end
 
   # update action for voting_idea, voting_initiative etc
@@ -131,13 +148,18 @@ class VotesToReactionMigrator
       if activity.save
         count += 1
       else
-        Rails.logger.error "ACTIVITY_ERROR: #{activity.errors.errors}"
+        error_handler "ACTIVITY_ERROR: #{group.errors.errors}"
       end
     end
-    Rails.logger.info("SAVED: #{count} 'Vote' activities")
+    Rails.logger.info "SAVED: #{count} 'Vote' activities"
 
     count = Activity.where('item_type like ?', '%Voted%')
       .update_all("item_type = regexp_replace(item_type, 'Voted', 'Reacted','g')")
     Rails.logger.info "SAVED: #{count} 'Notifications::' & 'EmailCampaigns::'  activities"
+  end
+
+  def error_handler(error)
+    Rails.logger.error "ERROR: #{error}"
+    @errors[@tenant.host] << error
   end
 end
