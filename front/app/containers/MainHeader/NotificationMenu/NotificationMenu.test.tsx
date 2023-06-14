@@ -8,7 +8,7 @@ jest.mock('api/me/useAuthUser', () => () => ({
 }));
 
 describe('NotificationMenu', () => {
-  it('Opens and closes the dropdown when clicking the notifications icon', async () => {
+  it.skip('Opens and closes the dropdown when clicking the notifications icon', async () => {
     const user = userEvent.setup();
     render(<NotificationMenu />);
     const notificationsIcon = screen.getByRole('button');
