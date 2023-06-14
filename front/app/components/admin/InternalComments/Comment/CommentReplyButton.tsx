@@ -5,7 +5,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import commentsMessages from 'components/PostShowComponents/Comments/messages';
 
 // events
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { commentReplyButtonClicked } from '../events';
 
 // analytics
@@ -16,16 +15,10 @@ import tracks from '../tracks';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
-// utils
-import { isFixableByAuthentication } from 'utils/actionDescriptors';
-
 // types
 import { IIdeaData } from 'api/ideas/types';
 import { ICommentData } from 'api/comments/types';
-import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
-import useAuthUser from 'api/me/useAuthUser';
 import useUserById from 'api/users/useUserById';
-import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 
 const Container = styled.li`
   display: flex;
@@ -62,26 +55,28 @@ interface Props {
 }
 
 const CommentReplyButton = ({
-  postType,
   commentType,
   authorId,
-  idea,
   comment,
   className,
 }: Props) => {
-  const { data: authUser } = useAuthUser();
   const commentId = comment.id;
   const parentCommentId = comment.relationships.parent.data?.id ?? null;
   const { data: author } = useUserById(authorId);
-  const commentingPermissionInitiative = useInitiativesPermissions(
-    'commenting_initiative'
-  );
-
   const authorFirstName = author?.data.attributes.first_name;
   const authorLastName = author?.data.attributes.last_name;
   const authorSlug = author?.data.attributes.slug;
 
-  const reply = useCallback(() => {
+  const onReply = useCallback(() => {
+    const { clickChildCommentReplyButton, clickParentCommentReplyButton } =
+      tracks;
+
+    trackEventByName(
+      commentType === 'child'
+        ? clickChildCommentReplyButton
+        : clickParentCommentReplyButton
+    );
+
     commentReplyButtonClicked({
       commentId,
       parentCommentId,
@@ -89,76 +84,8 @@ const CommentReplyButton = ({
       authorLastName,
       authorSlug,
     });
-  }, [commentId, parentCommentId, authorFirstName, authorLastName, authorSlug]);
-
-  const onReply = useCallback(() => {
-    const successAction: SuccessAction = {
-      name: 'replyToComment',
-      params: {
-        commentId,
-        parentCommentId,
-        authorFirstName,
-        authorLastName,
-        authorSlug,
-      },
-    };
-
-    const { clickChildCommentReplyButton, clickParentCommentReplyButton } =
-      tracks;
-
-    trackEventByName(
-      commentType === 'child'
-        ? clickChildCommentReplyButton
-        : clickParentCommentReplyButton,
-      {
-        loggedIn: !!authUser,
-      }
-    );
-
-    if (idea) {
-      const actionDescriptor =
-        idea.attributes.action_descriptor.commenting_idea;
-
-      if (actionDescriptor.enabled) {
-        reply();
-        return;
-      }
-
-      if (isFixableByAuthentication(actionDescriptor.disabled_reason)) {
-        triggerAuthenticationFlow({
-          context: {
-            type: 'idea',
-            action: 'commenting_idea',
-            id: idea.id,
-          },
-          successAction,
-        });
-      }
-    }
-
-    if (postType === 'initiative') {
-      const authenticationRequirements =
-        commentingPermissionInitiative?.authenticationRequirements;
-
-      if (authenticationRequirements) {
-        triggerAuthenticationFlow({
-          context: {
-            type: 'initiative',
-            action: 'commenting_initiative',
-          },
-          successAction,
-        });
-      } else if (commentingPermissionInitiative?.enabled === true) {
-        reply();
-      }
-    }
   }, [
-    idea,
-    postType,
-    authUser,
     commentType,
-    commentingPermissionInitiative,
-    reply,
     commentId,
     parentCommentId,
     authorFirstName,
@@ -166,17 +93,9 @@ const CommentReplyButton = ({
     authorSlug,
   ]);
 
-  const ideaCommentingDisabledReason =
-    idea?.attributes.action_descriptor.commenting_idea.disabled_reason;
-
   const isCommentDeleted = comment.attributes.publication_status === 'deleted';
-  const disabled =
-    postType === 'initiative'
-      ? !commentingPermissionInitiative?.enabled
-      : ideaCommentingDisabledReason &&
-        !isFixableByAuthentication(ideaCommentingDisabledReason);
 
-  if (!isCommentDeleted && !disabled) {
+  if (!isCommentDeleted) {
     return (
       <Container className={`reply ${className || ''}`}>
         <ReplyButton onClick={onReply} className="e2e-comment-reply-button">

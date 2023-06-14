@@ -1,5 +1,4 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import CommentReplyButton from './CommentReplyButton';
@@ -107,7 +106,7 @@ const CommentFooter = ({
   const { data: comment } = useComment(commentId);
   const { data: idea } = useIdeaById(ideaId);
 
-  if (isNilOrError(comment)) {
+  if (!comment) {
     return null;
   }
 
