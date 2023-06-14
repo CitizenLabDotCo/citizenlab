@@ -1157,7 +1157,7 @@
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.titleVolunteeringTab": "Se porter volontaire",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.xVolunteers": "{x, plural, =0 {pas de volontaires} one {# volontaire} other {# volontaires}}",
   "app.containers.AdminPage.ProjectEdit.Voting.budgetingVotingMethodSubtitle": "Attribue un budget aux options et demande aux participants de sélectionner leurs options préférées qui s'inscrivent dans un budget total.",
-  "app.containers.AdminPage.ProjectEdit.Voting.budgetingVotingMethodTitle2": "Affectation du budget",
+  "app.containers.AdminPage.ProjectEdit.Voting.budgetingVotingMethodTitle2": "Allocation d'un budget",
   "app.containers.AdminPage.ProjectEdit.Voting.enabledActionsForResidents": "Actions activées pour les résidents",
   "app.containers.AdminPage.ProjectEdit.Voting.votingMethodSelectorSubtitle": "Chaque méthode de vote a des préconfigurations différentes",
   "app.containers.AdminPage.ProjectEdit.Voting.votingMethodSelectorTitle": "Méthode de vote",
