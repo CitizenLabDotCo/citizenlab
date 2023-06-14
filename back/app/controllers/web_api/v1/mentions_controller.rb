@@ -39,7 +39,7 @@ class WebApi::V1::MentionsController < ApplicationController
   # @return [Idea, Initiative, nil]
   def find_post(post_type, post_id)
     post_class = post_type_to_class(post_type) if post_type
-    post_class.find(post_id) if post_class && post_id
+    post_class&.find(post_id)
   end
 
   # @param [String] type
