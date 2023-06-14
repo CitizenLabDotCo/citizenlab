@@ -1703,6 +1703,7 @@
   "app.utils.votingMethodUtils.budgetSubmittedWithIcon": "Bilancio presentato 🎉",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructions": "Hai un totale di <b>{maxBudget} USD da distribuire tra le opzioni {optionCount}</b>. Seleziona le opzioni che preferisci toccando \"Aggiungi\". Una volta terminato, clicca su \"Invia\" per inviare il tuo budget.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>Congratulazioni, il tuo budget è stato inviato!</b> Puoi controllare le tue opzioni qui sotto in qualsiasi momento o modificarle prima di <b>{endDate}</b>.",
+  "app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous": "<b>Congratulazioni, il tuo budget è stato inviato!</b> Puoi controllare le tue opzioni qui sotto in qualsiasi momento o modificarle.",
   "app.utils.votingMethodUtils.budgets": "Bilanci",
   "app.utils.votingMethodUtils.finalResults": "Risultati finali",
   "app.utils.votingMethodUtils.howToParticipate": "Come partecipare",
