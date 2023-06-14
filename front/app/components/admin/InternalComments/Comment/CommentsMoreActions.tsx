@@ -80,12 +80,6 @@ const CommentsMoreActions = ({
   const [modalVisible_spam, setModalVisible_spam] = useState(false);
   const [modalVisible_delete, setModalVisible_delete] = useState(false);
 
-  const canReport = usePermission({
-    item: comment,
-    action: 'markAsSpam',
-    context: { projectId },
-  });
-
   const canDelete = usePermission({
     item: comment,
     action: 'delete',
@@ -102,19 +96,7 @@ const CommentsMoreActions = ({
     setModalVisible_delete(true);
   };
 
-  const openSpamModal = () => {
-    setModalVisible_spam(true);
-  };
-
   const actions: IAction[] = [
-    ...(canReport
-      ? [
-          {
-            label: <FormattedMessage {...commentsMessages.reportAsSpam} />,
-            handler: openSpamModal,
-          },
-        ]
-      : []),
     ...(canDelete
       ? [
           {

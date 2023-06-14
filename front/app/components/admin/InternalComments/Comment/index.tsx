@@ -76,7 +76,7 @@ const Comment = ({
 }: Props) => {
   const { data: comment } = useComment(commentId);
   const { data: author } = useUserById(
-    comment?.data.relationships?.author?.data?.id
+    comment?.data.relationships.author.data?.id
   );
 
   const [editing, setEditing] = useState(false);
