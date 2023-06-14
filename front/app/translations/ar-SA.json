@@ -232,6 +232,7 @@
   "app.components.PagesForm.saveSuccess": "تم حفظ الصفحة بنجاح.",
   "app.components.PagesForm.titleMissingOneLanguageError": "أدخل العنوان بلغة واحدة على الأقل",
   "app.components.ParticipationCTABars.allocateBudget": "خصّص ميزانيتك",
+  "app.components.ParticipationCTABars.budgetExceededError": "ليس لديك ميزانية كافية",
   "app.components.ParticipationCTABars.left": "غادر",
   "app.components.ParticipationCTABars.mobileProjectOpenForSubmission": "مفتوح للمشاركة",
   "app.components.ParticipationCTABars.poll": "خذ الاستطلاع",
