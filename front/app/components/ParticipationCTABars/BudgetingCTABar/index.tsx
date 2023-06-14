@@ -49,9 +49,6 @@ export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
       .observeEvent(BUDGET_EXCEEDED_ERROR_EVENT)
       .subscribe(() => {
         setShowBudgetExceededError(true);
-        setTimeout(() => {
-          setShowBudgetExceededError(false);
-        }, 5000);
       });
     return () => {
       subscription.unsubscribe();
@@ -105,7 +102,7 @@ export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
     </Box>
   ) : (
     <Button
-      icon={hasUserParticipated ? 'check' : 'inbox'}
+      icon={hasUserParticipated ? 'check' : 'vote-ballot'}
       buttonStyle="secondary"
       iconColor={theme.colors.tenantText}
       onClick={handleSubmitExpensesOnClick}
@@ -147,6 +144,7 @@ export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
       <ErrorToast
         errorMessage={formatMessage(messages.budgetExceededError)}
         showError={showBudgetExceededError}
+        onClose={() => setShowBudgetExceededError(false)}
       />
     </>
   );

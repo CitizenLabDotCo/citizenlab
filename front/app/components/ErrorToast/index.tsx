@@ -1,7 +1,7 @@
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Icon, colors, Text } from '@citizenlab/cl2-component-library';
 import React from 'react';
 import styled from 'styled-components';
-import Error from 'components/UI/Error';
+import CloseIconButton from 'components/UI/CloseIconButton';
 
 const StyledBox = styled(Box)`
   transform: translateY(-100%);
@@ -17,9 +17,10 @@ const StyledBox = styled(Box)`
 type ErrorToastProps = {
   errorMessage: string;
   showError: boolean;
+  onClose: () => void;
 };
 
-const ErrorToast = ({ errorMessage, showError }: ErrorToastProps) => {
+const ErrorToast = ({ errorMessage, showError, onClose }: ErrorToastProps) => {
   return (
     <StyledBox
       position="absolute"
@@ -31,7 +32,29 @@ const ErrorToast = ({ errorMessage, showError }: ErrorToastProps) => {
       justifyContent="center"
       className={showError ? 'visible' : 'hidden'}
     >
-      <Error text={errorMessage} />
+      <Box
+        bgColor={colors.errorLight}
+        borderRadius="3px"
+        px="12px"
+        py="4px"
+        mb="12px"
+        role="alert"
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        data-testid="feedbackSuccessMessage"
+      >
+        <Box display="flex" gap="16px" alignItems="center">
+          <Icon
+            name="alert-circle"
+            fill={colors.error}
+            width="24px"
+            height="24px"
+          />
+          <Text color="error">{errorMessage}</Text>
+          <CloseIconButton iconColor={colors.error} onClick={onClose} />
+        </Box>
+      </Box>
     </StyledBox>
   );
 };
