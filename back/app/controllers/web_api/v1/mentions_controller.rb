@@ -16,20 +16,7 @@ class WebApi::V1::MentionsController < ApplicationController
     @users = MentionService.new.users_from_post(query, post, limit) if post && params[:roles].nil?
 
     nb_missing_users = limit - @users.size
-    if nb_missing_users > 0
-      @users += case params[:roles]
-      when %w[admin moderator]
-        query_scope(query).admin
-          .or(query_scope(query).project_moderator(post&.project_id))
-          .limit(nb_missing_users)
-      when ['admin']
-        query_scope(query).admin.limit(nb_missing_users)
-      when ['moderator']
-        query_scope(query).project_moderator(post&.project_id).limit(nb_missing_users)
-      else
-        query_scope(query).limit(nb_missing_users)
-      end
-    end
+    @users += find_users_by_query(query, post, nb_missing_users) if nb_missing_users > 0
 
     render json: WebApi::V1::UserSerializer.new(
       @users,
@@ -38,12 +25,6 @@ class WebApi::V1::MentionsController < ApplicationController
   end
 
   private
-
-  # @param [String] query
-  # @return [ActiveRecord::Relation]
-  def query_scope(query)
-    User.active.by_username(query).where.not(id: @users)
-  end
 
   # @param [Array] roles
   def validate_roles_param
@@ -70,5 +51,30 @@ class WebApi::V1::MentionsController < ApplicationController
     post_class = post_type_to_class(post_type) if post_type
 
     post_class.find(post_id) if post_class && post_id
+  end
+
+  # @param [String] query
+  # @param [Idea, Initiative, nil] post
+  # @param [Integer] limit
+  # @return [ActiveRecord::Relation]
+  def find_users_by_query(query, post, limit)
+    case params[:roles]
+    when %w[admin moderator]
+      query_scope(query).admin
+        .or(query_scope(query).project_moderator(post&.project_id))
+        .limit(limit)
+    when ['admin']
+      query_scope(query).admin.limit(limit)
+    when ['moderator']
+      query_scope(query).project_moderator(post&.project_id).limit(limit)
+    else
+      query_scope(query).limit(limit)
+    end
+  end
+
+  # @param [String] query
+  # @return [ActiveRecord::Relation]
+  def query_scope(query)
+    User.active.by_username(query).where.not(id: @users)
   end
 end
