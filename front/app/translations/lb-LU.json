@@ -1703,6 +1703,7 @@
   "app.utils.votingMethodUtils.budgetSubmittedWithIcon": "Budget presentéiert 🎉",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructions": "Dir hutt am Ganzen <b>{maxBudget} USD ze verdeelen tëscht {optionCount} Optiounen</b>. Wielt Är gewënschte Optiounen andeems Dir op \"Add\" tippt. Wann Dir fäerdeg sidd, klickt op \"Submit\" fir Äre Budget ofzeginn.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>Gratulatioun, Äre Budget gouf virgeluecht!</b> Dir kënnt Är Optiounen hei ënnen zu all Moment iwwerpréiwen oder se virum <b>{endDate}</b>änneren.",
+  "app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous": "<b>Gratulatioun, Äre Budget gouf virgeluecht!</b> Dir kënnt Är Optiounen hei ënnen zu all Moment iwwerpréiwen oder se änneren.",
   "app.utils.votingMethodUtils.budgets": "Budgeten",
   "app.utils.votingMethodUtils.finalResults": "Finale Resultater",
   "app.utils.votingMethodUtils.howToParticipate": "Wéi matzemaachen",
