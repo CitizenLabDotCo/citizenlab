@@ -16,7 +16,7 @@ resource 'Mentions' do
     parameter :post_id, 'An post that is used as a context to return related users first', required: false
     parameter :post_type, "The type of post, either 'Idea' or 'Initiative'", required: false
     parameter :limit, 'The number of results to return', required: false
-    parameter :roles, "An array, including 'admin' and or 'moderator' (moderators of post, if specified)." \
+    parameter :roles, "An array, including 'admin' and/or 'moderator' (moderators of post, if post specified)." \
                       'The roles of the users to return, exclusively - response will not include regular users,' \
                       'regardless of whether they are post author, or have commented on post.', required: false
 

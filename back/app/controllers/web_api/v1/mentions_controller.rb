@@ -3,19 +3,21 @@
 class WebApi::V1::MentionsController < ApplicationController
   skip_before_action :authenticate_user
   skip_after_action :verify_authorized, only: :users
+  before_action :validate_roles_param
+
+  VALID_ROLES = %w[admin moderator].freeze
 
   def users
     limit = params[:limit]&.to_i || 5
     query = params[:mention].gsub(/\W/, "\s")
-    roles = set_roles
     post = get_post(params[:post_type], params[:post_id])
 
     @users = []
-    @users = MentionService.new.users_from_post(query, post, limit) if post && roles.empty?
+    @users = MentionService.new.users_from_post(query, post, limit) if post && params[:roles].nil?
 
     nb_missing_users = limit - @users.size
     if nb_missing_users > 0
-      @users += case roles
+      @users += case params[:roles]
       when %w[admin moderator]
         query_scope(query).admin
           .or(query_scope(query).project_moderator(post&.project_id))
@@ -37,21 +39,18 @@ class WebApi::V1::MentionsController < ApplicationController
 
   private
 
+  # @param [String] query
+  # @return [ActiveRecord::Relation]
   def query_scope(query)
     User.active.by_username(query).where.not(id: @users)
   end
 
-  def set_roles
-    roles = []
+  # @param [Array] roles
+  def validate_roles_param
+    return unless params[:roles]
 
-    # Need to move validation stuff to a better place
-    if params[:roles].is_a?(Array)
-      raise 'Invalid roles query parameter(s)' unless params[:roles].uniq - %w[admin moderator] == []
-
-      roles = params[:roles].uniq
-    end
-
-    roles
+    raise 'Roles query parameter should be an array' unless params[:roles].is_a?(Array)
+    raise 'Invalid roles query parameter(s)' unless params[:roles].uniq - VALID_ROLES == []
   end
 
   # @param [String] type
@@ -64,6 +63,9 @@ class WebApi::V1::MentionsController < ApplicationController
     end
   end
 
+  # @param [String] post_type
+  # @param [Integer] post_id
+  # @return [Idea, Initiative, nil]
   def get_post(post_type, post_id)
     post_class = post_type_to_class(post_type) if post_type
 
