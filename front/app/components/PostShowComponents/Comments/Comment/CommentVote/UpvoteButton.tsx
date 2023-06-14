@@ -60,7 +60,7 @@ const ButtonWrapper = styled.button`
   }
 
   &.enabled:not(.voted):hover {
-    color: #000;
+    color: ${colors.black};
 
     ${UpvoteIcon} {
       fill: ${colors.black};
