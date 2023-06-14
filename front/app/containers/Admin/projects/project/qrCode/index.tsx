@@ -56,6 +56,21 @@ const ProjectQRCode = () => {
 
   console.log(isProcessing, showQrCode);
 
+  /*
+  14th June
+
+  QR codes for easy / anonymous voting
+
+  Presents a QR code to admins that they can print or make full screen - React lib generates this
+  Scanning this code opens the site and registers you immediately with a unique code - no email or anything else needed
+  Admin gets to define how many of these unique codes are available and generate more if needed
+  Once users are 'logged_in' with QR code they can add an email - other actions will prompt for this data anyway
+  QR codes can be disabled once the session or voting phase is over
+  QR codes can be changed in case the code has got out when it shouldn't have done
+  If users cannot use a QR code then admins can just give out the unique IDs for users to enter in a modal instead
+  */
+
+  /* 14th May */
   // TODO: Select a list of actions?
   // Does flexible reg allow you to upgrade your account with email etc
   // Add checkbox to voting, allow QR code for voting
