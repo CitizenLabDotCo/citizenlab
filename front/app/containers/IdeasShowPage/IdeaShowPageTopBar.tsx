@@ -29,6 +29,7 @@ import { isFixableByAuthentication } from 'utils/actionDescriptors';
 
 // typings
 import { IdeaVotingDisabledReason } from 'api/ideas/types';
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
 const Container = styled.div`
   flex: 0 0 ${(props) => props.theme.mobileTopBarHeight}px;
@@ -79,6 +80,7 @@ const IdeaShowPageTopBar = ({
   const { data: project } = useProjectById(projectId);
 
   const localize = useLocalize();
+  const isSmallerThanTablet = useBreakpoint('tablet');
 
   const onDisabledVoteClick = (disabled_reason: IdeaVotingDisabledReason) => {
     if (
@@ -128,6 +130,7 @@ const IdeaShowPageTopBar = ({
             text={
               project ? localize(project.data.attributes.title_multiloc) : ''
             }
+            iconSize={isSmallerThanTablet ? '42px' : undefined}
             onClick={handleGoBack}
           />
         </Left>

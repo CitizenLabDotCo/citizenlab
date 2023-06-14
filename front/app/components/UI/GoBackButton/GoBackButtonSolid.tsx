@@ -6,10 +6,11 @@ import { ScreenReaderOnly } from 'utils/a11y';
 
 interface Props {
   text: string;
+  iconSize?: string;
   onClick: (event: React.MouseEvent) => void;
 }
 
-const GoBackButtonSolid = ({ text, onClick }: Props) => {
+const GoBackButtonSolid = ({ text, iconSize = '26px', onClick }: Props) => {
   const isSmallerThanPhone = useBreakpoint('phone');
 
   const handleClick = useCallback(
@@ -25,7 +26,7 @@ const GoBackButtonSolid = ({ text, onClick }: Props) => {
       id="e2e-idea-other-link"
       icon="arrow-left-circle"
       buttonStyle="text"
-      iconSize="26px"
+      iconSize={iconSize}
       padding="0"
       textDecorationHover="underline"
       whiteSpace="normal"
