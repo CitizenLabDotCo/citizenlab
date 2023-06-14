@@ -1,15 +1,11 @@
 // libraries
 import React, { useState } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import CommentHeader from './CommentHeader';
 import CommentBody from './CommentBody';
 import CommentFooter from './CommentFooter';
 import { Icon } from '@citizenlab/cl2-component-library';
-
-// services
-import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -103,9 +99,6 @@ const Comment = ({
     const lastComment =
       (commentType === 'parent' && !hasChildComments) ||
       (commentType === 'child' && last === true);
-    const moderator =
-      !isNilOrError(author) &&
-      canModerateProject(projectId, { data: author.data });
 
     return (
       <Container
@@ -117,18 +110,17 @@ const Comment = ({
         <ContainerInner
           className={`${commentType} ${lastComment ? 'lastComment' : ''}`}
         >
+          {
+            // Don't show deleted comments. Better to have a filter in the BE.
+          }
           {comment.data.attributes.publication_status === 'published' && (
             <>
               <CommentHeader
                 projectId={projectId}
-                authorId={authorId}
-                authorHash={comment.data.attributes.author_hash}
-                commentId={commentId}
+                commentAttributes={comment.data.attributes}
                 commentType={commentType}
-                commentCreatedAt={comment.data.attributes.created_at}
-                moderator={moderator}
                 className={commentType === 'parent' ? 'marginBottom' : ''}
-                anonymous={comment.data.attributes.anonymous}
+                authorId={authorId}
               />
 
               <Content>

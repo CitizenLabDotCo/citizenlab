@@ -1,5 +1,5 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNil, isNilOrError } from 'utils/helperUtils';
 
 // components
 import Comment from './Comment';
@@ -19,7 +19,6 @@ import { darken } from 'polished';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useComment from 'api/comments/useComment';
 import useComments from 'api/comments/useComments';
-import useAuthUser from 'api/me/useAuthUser';
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 
 const Container = styled.div`
@@ -64,7 +63,6 @@ const ParentComment = ({
     'commenting_initiative'
   );
   const theme = useTheme();
-  const { data: authUser } = useAuthUser();
   const { data: comment } = useComment(commentId);
   const {
     data: childCommentsData,
@@ -81,12 +79,12 @@ const ParentComment = ({
     const projectId = idea?.data.relationships.project.data.id || null;
     const commentDeleted =
       comment.data.attributes.publication_status === 'deleted';
-    const commentingEnabled =
+    const commentingDisabledReason =
       postType === 'initiative'
-        ? commentingPermissionInitiative?.enabled === true
-        : idea?.data.attributes.action_descriptor.commenting_idea.enabled ===
-          true;
-    const showCommentForm = authUser && commentingEnabled && !commentDeleted;
+        ? commentingPermissionInitiative?.disabledReason
+        : idea?.data.attributes.action_descriptor.commenting_idea
+            .disabled_reason;
+    const showCommentForm = isNil(commentingDisabledReason) && !commentDeleted;
     const hasChildComments = childCommentIds && childCommentIds.length > 0;
     const modifiedChildCommentIds = !isNilOrError(childComments)
       ? childComments
