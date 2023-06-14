@@ -232,6 +232,7 @@
   "app.components.PagesForm.saveSuccess": "Sayfa başarıyla kaydedildi.",
   "app.components.PagesForm.titleMissingOneLanguageError": "En az bir dil için başlık sağlayın",
   "app.components.ParticipationCTABars.allocateBudget": "Bütçenizi ayırın",
+  "app.components.ParticipationCTABars.budgetExceededError": "Yeterli bütçeniz yok",
   "app.components.ParticipationCTABars.left": "Sol",
   "app.components.ParticipationCTABars.mobileProjectOpenForSubmission": "Katılım için açık",
   "app.components.ParticipationCTABars.poll": "Ankete katılın",
