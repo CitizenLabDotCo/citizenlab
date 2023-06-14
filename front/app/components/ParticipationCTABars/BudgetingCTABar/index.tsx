@@ -3,10 +3,10 @@ import React, { useEffect, useState } from 'react';
 // Components
 import { Button, Icon, Box, Text } from '@citizenlab/cl2-component-library';
 import { ParticipationCTAContent } from 'components/ParticipationCTABars/ParticipationCTAContent';
-import Error from 'components/UI/Error';
+import ErrorToast from 'components/ErrorToast';
 
 // hooks
-import styled, { useTheme } from 'styled-components';
+import { useTheme } from 'styled-components';
 import useBasket from 'hooks/useBasket';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { updateBasket } from 'services/baskets';
@@ -22,23 +22,13 @@ import {
 } from 'components/ParticipationCTABars/utils';
 import moment from 'moment';
 import { isNilOrError } from 'utils/helperUtils';
+import eventEmitter from 'utils/eventEmitter';
+import { BUDGET_EXCEEDED_ERROR_EVENT } from 'components/AssignBudgetControl/constants';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
-import eventEmitter from 'utils/eventEmitter';
-import { BUDGET_EXCEEDED_ERROR_EVENT } from 'components/AssignBudgetControl/constants';
 
-const StyledBox = styled(Box)`
-  transform: translateY(-100%);
-  opacity: 0;
-  transition: all 0.8s ease-in-out;
-
-  &.visible {
-    transform: translateY(0%);
-    opacity: 1;
-  }
-`;
 export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
   const { formatMessage } = useIntl();
@@ -61,7 +51,7 @@ export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
         setShowBudgetExceededError(true);
         setTimeout(() => {
           setShowBudgetExceededError(false);
-        }, 3000);
+        }, 5000);
       });
     return () => {
       subscription.unsubscribe();
@@ -75,34 +65,21 @@ export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
     return null;
   }
 
-  let minBudget = 0;
-  let maxBudget = 0;
-  const submittedAt = !isNilOrError(basket)
-    ? basket.attributes.submitted_at
-    : null;
-  const spentBudget = !isNilOrError(basket)
-    ? basket.attributes.total_budget
-    : 0;
+  const submittedAt = basket?.attributes.submitted_at || null;
+  const spentBudget = basket?.attributes.total_budget || 0;
   const hasUserParticipated = !!submittedAt && spentBudget > 0;
 
-  const budgetExceedsLimit = !isNilOrError(basket)
-    ? (basket.attributes['budget_exceeds_limit?'] as boolean)
-    : false;
-  if (currentPhase) {
-    if (typeof currentPhase.attributes.voting_min_total === 'number') {
-      minBudget = currentPhase.attributes.voting_min_total;
-    }
-    if (typeof currentPhase.attributes.voting_max_total === 'number') {
-      maxBudget = currentPhase.attributes.voting_max_total;
-    }
-  } else if (project) {
-    if (typeof project.attributes.voting_min_total === 'number') {
-      minBudget = project.attributes.voting_min_total;
-    }
-    if (typeof project.attributes.voting_max_total === 'number') {
-      maxBudget = project.attributes.voting_max_total;
-    }
-  }
+  const budgetExceedsLimit =
+    basket?.attributes['budget_exceeds_limit?'] || false;
+
+  const maxBudget =
+    currentPhase?.attributes.voting_max_total ||
+    project.attributes.voting_max_total ||
+    0;
+  const minBudget =
+    currentPhase?.attributes.voting_min_total ||
+    project.attributes.voting_min_total ||
+    0;
 
   const minBudgetRequired = minBudget > 0;
   const minBudgetReached = spentBudget >= minBudget;
@@ -167,18 +144,10 @@ export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
         hideDefaultParticipationMessage={currentPhase ? true : false}
         timeLeftPosition="left"
       />
-      <StyledBox
-        position="absolute"
-        zIndex="-1"
-        mx="auto"
-        left="0"
-        right="0"
-        display="flex"
-        justifyContent="center"
-        className={showBudgetExceededError ? 'visible' : 'hidden'}
-      >
-        <Error text={formatMessage(messages.budgetExceededError)} />
-      </StyledBox>
+      <ErrorToast
+        errorMessage={formatMessage(messages.budgetExceededError)}
+        showError={showBudgetExceededError}
+      />
     </>
   );
 };
