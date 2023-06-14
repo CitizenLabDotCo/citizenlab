@@ -232,6 +232,7 @@
   "app.components.PagesForm.saveSuccess": "Stranica je uspešno sačuvana.",
   "app.components.PagesForm.titleMissingOneLanguageError": "Unesite naslov za najmanje jedan jezik",
   "app.components.ParticipationCTABars.allocateBudget": "Rasporedite svoj budžet",
+  "app.components.ParticipationCTABars.budgetExceededError": "Немате довољно буџета",
   "app.components.ParticipationCTABars.left": "лево",
   "app.components.ParticipationCTABars.mobileProjectOpenForSubmission": "Otvoreno za učešće",
   "app.components.ParticipationCTABars.poll": "Учествујте у анкети",
