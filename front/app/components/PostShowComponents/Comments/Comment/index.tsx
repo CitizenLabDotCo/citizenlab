@@ -110,6 +110,9 @@ const Comment = ({
         <ContainerInner
           className={`${commentType} ${lastComment ? 'lastComment' : ''}`}
         >
+          {
+            // Don't show deleted comments. Better to have a filter in the BE.
+          }
           {comment.data.attributes.publication_status === 'published' && (
             <>
               <CommentHeader

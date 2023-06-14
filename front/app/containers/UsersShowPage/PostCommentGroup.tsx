@@ -184,6 +184,7 @@ const PostCommentGroup = ({ postType, comments, userId, postId }: Props) => {
       </PostLink>
 
       {comments.map((comment) => {
+        // Don't show deleted comments. Better to have a filter in the BE.
         if (comment.attributes.publication_status === 'published') {
           return (
             <CommentContainer key={comment.id}>
