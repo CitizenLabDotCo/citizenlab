@@ -1703,6 +1703,7 @@
   "app.utils.votingMethodUtils.budgetSubmittedWithIcon": "Budget inlämnad 🎉",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructions": "Du har totalt <b>{maxBudget} USD att fördela mellan {optionCount} alternativ</b>. Välj de alternativ du föredrar genom att trycka på \"Lägg till\". När du är klar klickar du på \"Skicka\" för att skicka in din budget.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>Grattis, din budget har skickats in!</b> Du kan när som helst kontrollera dina alternativ nedan eller ändra dem före <b>{endDate}</b>.",
+  "app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous": "<b>Grattis, din budget har skickats in!</b> Du kan när som helst kontrollera dina alternativ nedan eller ändra dem.",
   "app.utils.votingMethodUtils.budgets": "Budgetar",
   "app.utils.votingMethodUtils.finalResults": "Slutliga resultat",
   "app.utils.votingMethodUtils.howToParticipate": "Hur man deltar",
