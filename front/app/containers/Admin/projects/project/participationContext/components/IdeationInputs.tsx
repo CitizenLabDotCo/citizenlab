@@ -158,7 +158,7 @@ export default ({
 
         <ToggleRow className="last">
           <ToggleLabel>
-            <FormattedMessage {...messages.inputVotingEnabled} />
+            <FormattedMessage {...messages.inputReactingEnabled} />
           </ToggleLabel>
           <Toggle checked={reacting_enabled} onChange={toggleReactingEnabled} />
           <Error apiErrors={apiErrors && apiErrors.reacting_enabled} />
@@ -168,7 +168,7 @@ export default ({
         <>
           <SectionField>
             <SubSectionTitle>
-              <FormattedMessage {...messages.upvotingMethodTitle} />
+              <FormattedMessage {...messages.likingMethodTitle} />
             </SubSectionTitle>
             <Radio
               onChange={handleReactingLikeMethodOnChange}
@@ -191,7 +191,7 @@ export default ({
             {reacting_like_method === 'limited' && (
               <>
                 <SubSectionTitle>
-                  <FormattedMessage {...messages.maxUpvotes} />
+                  <FormattedMessage {...messages.maxLikes} />
                 </SubSectionTitle>
                 <ReactingLimitInput
                   id="liking-limit"
@@ -215,10 +215,10 @@ export default ({
           <FeatureFlag name="disable_disliking">
             <SectionField>
               <SubSectionTitle>
-                <FormattedMessage {...messages.downvotingPosts} />
+                <FormattedMessage {...messages.dislikingPosts} />
                 <IconTooltip
                   content={
-                    <FormattedMessage {...messages.disableDownvotingTooltip} />
+                    <FormattedMessage {...messages.disableDislikingTooltip} />
                   }
                 />
               </SubSectionTitle>
@@ -228,7 +228,7 @@ export default ({
                 value={true}
                 name="enableDisliking"
                 id="enableDisliking-true"
-                label={<FormattedMessage {...messages.downvotingEnabled} />}
+                label={<FormattedMessage {...messages.dislikingEnabled} />}
               />
               <Radio
                 onChange={handleReactingDislikeEnabledOnChange}
@@ -236,7 +236,7 @@ export default ({
                 value={false}
                 name="enableDisliking"
                 id="enableDisliking-false"
-                label={<FormattedMessage {...messages.downvotingDisabled} />}
+                label={<FormattedMessage {...messages.dislikingDisabled} />}
               />
               <Error
                 apiErrors={apiErrors && apiErrors.reacting_dislike_enabled}
@@ -245,7 +245,7 @@ export default ({
             {reacting_dislike_enabled && (
               <SectionField>
                 <SubSectionTitle>
-                  <FormattedMessage {...messages.downvotingMethodTitle} />
+                  <FormattedMessage {...messages.dislikingMethodTitle} />
                 </SubSectionTitle>
                 <Radio
                   onChange={handleReactingDislikeMethodOnChange}
@@ -266,7 +266,7 @@ export default ({
                 {reacting_dislike_method === 'limited' && (
                   <>
                     <SubSectionTitle>
-                      <FormattedMessage {...messages.maxDownvotes} />
+                      <FormattedMessage {...messages.maxDislikes} />
                     </SubSectionTitle>
                     <ReactingLimitInput
                       id="disliking-limit"

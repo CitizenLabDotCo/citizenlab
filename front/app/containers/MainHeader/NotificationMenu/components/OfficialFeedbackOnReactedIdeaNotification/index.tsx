@@ -44,12 +44,12 @@ const OfficialFeedbackOnReactedIdeaNotification = memo<Props>((props) => {
       >
         <FormattedMessage
           {...getInputTermMessage(inputTerm, {
-            idea: messages.officialFeedbackOnVotedIdea,
-            option: messages.officialFeedbackOnVotedOption,
-            project: messages.officialFeedbackOnVotedProject,
-            question: messages.officialFeedbackOnVotedQuestion,
-            issue: messages.officialFeedbackOnVotedIssue,
-            contribution: messages.officialFeedbackOnVotedContribution,
+            idea: messages.officialFeedbackOnReactedIdea,
+            option: messages.officialFeedbackOnReactedOption,
+            project: messages.officialFeedbackOnReactedProject,
+            question: messages.officialFeedbackOnReactedQuestion,
+            issue: messages.officialFeedbackOnReactedIssue,
+            contribution: messages.officialFeedbackOnReactedContribution,
           })}
           values={{
             officialName: (

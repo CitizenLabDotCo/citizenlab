@@ -18,17 +18,17 @@ export default defineMessages({
     defaultMessage: 'Add to my basket',
   },
   budgetingNotPossible: {
-    id: 'app.components.VoteControl.budgetingNotPossible',
+    id: 'app.components.ReactionControl.budgetingNotPossible',
     defaultMessage:
       'Making changes to your budget is not possible at this time.',
   },
   budgetingFutureEnabled: {
-    id: 'app.components.VoteControl.budgetingFutureEnabled',
+    id: 'app.components.ReactionControl.budgetingFutureEnabled',
     defaultMessage:
       'You can allocate your budget starting from {enabledFromDate}.',
   },
   budgetingNotPermitted: {
-    id: 'app.components.VoteControl.budgetingNotPermitted',
+    id: 'app.components.ReactionControl.budgetingNotPermitted',
     defaultMessage:
       'Participatory budgeting is only enabled for certain groups.',
   },

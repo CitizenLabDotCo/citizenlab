@@ -279,7 +279,7 @@ const ProjectReport = memo(
                 <HorizontalBarChartWithoutStream
                   serie={mostReactedIdeasSerie}
                   graphTitleString={formatMessage(
-                    messages.fiveInputsWithMostVotes
+                    messages.fiveInputsWithMostReactions
                   )}
                   graphUnit="reactions"
                   className="dynamicHeight fullWidth"

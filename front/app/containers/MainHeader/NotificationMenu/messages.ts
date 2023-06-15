@@ -70,56 +70,58 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.statusChangedOfIdea',
     defaultMessage: '{ideaTitle} status has changed to {status}',
   },
-  statusChangeOnVotedIdea: {
-    id: 'app.containers.NotificationMenu.statusChangeOnVotedIdea',
-    defaultMessage: 'The status of an idea you voted for changed to {status}',
+  statusChangeOnReactedIdea: {
+    id: 'app.containers.NotificationMenu.statusChangeOnReactedIdea',
+    defaultMessage: 'The status of an idea you reacted to changed to {status}',
   },
   statusChangeOnCommentedIdea: {
     id: 'app.containers.NotificationMenu.statusChangeOnCommentedIdea',
     defaultMessage:
       'The status of an idea you commented on changed to {status}',
   },
-  statusChangeOnVotedProject: {
-    id: 'app.containers.NotificationMenu.statusChangeOnVotedProject',
-    defaultMessage: 'The status of a project you voted for changed to {status}',
+  statusChangeOnReactedProject: {
+    id: 'app.containers.NotificationMenu.statusChangeOnReactedProject',
+    defaultMessage:
+      'The status of a project you reacted to changed to {status}',
   },
   statusChangeOnCommentedProject: {
     id: 'app.containers.NotificationMenu.statusChangeOnCommentedProject',
     defaultMessage:
       'The status of a project you commented on changed to {status}',
   },
-  statusChangeOnVotedOption: {
-    id: 'app.containers.NotificationMenu.statusChangeOnVotedOption',
-    defaultMessage: 'The status of an option you voted for changed to {status}',
+  statusChangeOnReactedOption: {
+    id: 'app.containers.NotificationMenu.statusChangeOnReactedOption',
+    defaultMessage:
+      'The status of an option you reacted to changed to {status}',
   },
   statusChangeOnCommentedOption: {
     id: 'app.containers.NotificationMenu.statusChangeOnCommentedOption',
     defaultMessage:
       'The status of an option you commented on changed to {status}',
   },
-  statusChangeOnVotedIssue: {
-    id: 'app.containers.NotificationMenu.statusChangeOnVotedIssue',
-    defaultMessage: 'The status of an issue you voted for changed to {status}',
+  statusChangeOnReactedIssue: {
+    id: 'app.containers.NotificationMenu.statusChangeOnReactedIssue',
+    defaultMessage: 'The status of an issue you reacted to changed to {status}',
   },
   statusChangeOnCommentedIssue: {
     id: 'app.containers.NotificationMenu.statusChangeOnCommentedIssue',
     defaultMessage:
       'The status of an issue you commented on changed to {status}',
   },
-  statusChangeOnVotedQuestion: {
-    id: 'app.containers.NotificationMenu.statusChangeOnVotedQuestion',
+  statusChangeOnReactedQuestion: {
+    id: 'app.containers.NotificationMenu.statusChangeOnReactedQuestion',
     defaultMessage:
-      'The status of a question you voted for changed to {status}',
+      'The status of a question you reacted to changed to {status}',
   },
   statusChangeOnCommentedQuestion: {
     id: 'app.containers.NotificationMenu.statusChangeOnCommentedQuestion',
     defaultMessage:
       'The status of a question you commented on changed to {status}',
   },
-  statusChangeOnVotedContribution: {
-    id: 'app.containers.NotificationMenu.statusChangeOnVotedContribution',
+  statusChangeOnReactedContribution: {
+    id: 'app.containers.NotificationMenu.statusChangeOnReactedContribution',
     defaultMessage:
-      'The status of a contribution you voted for changed to {status}',
+      'The status of a contribution you reacted to changed to {status}',
   },
   statusChangeOnCommentedContribution: {
     id: 'app.containers.NotificationMenu.statusChangeOnCommentedContribution',
@@ -133,7 +135,7 @@ export default defineMessages({
   statusChangeOnVotedInitiative: {
     id: 'app.containers.NotificationMenu.statusChangeOnVotedInitiative',
     defaultMessage:
-      'The status of an initiative you voted for changed to {status}',
+      'The status of an initiative you reacted to changed to {status}',
   },
   statusChangeOnCommentedInitiative: {
     id: 'app.containers.NotificationMenu.statusChangeOnCommentedInitiative',
@@ -183,10 +185,10 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.officialFeedbackOnYourIdea2',
     defaultMessage: '{officialName} gave an official update on your idea',
   },
-  officialFeedbackOnVotedIdea: {
-    id: 'app.containers.NotificationMenu.officialFeedbackOnVotedIdea',
+  officialFeedbackOnReactedIdea: {
+    id: 'app.containers.NotificationMenu.officialFeedbackOnReactedIdea',
     defaultMessage:
-      '{officialName} gave an official update on an idea you voted for',
+      '{officialName} gave an official update on an idea you reacted to',
   },
   officialFeedbackOnCommentedIdea: {
     id: 'app.containers.NotificationMenu.officialFeedbackOnCommentedIdea',
@@ -197,10 +199,10 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.officialFeedbackOnYourProject',
     defaultMessage: '{officialName} gave an official update on your project',
   },
-  officialFeedbackOnVotedProject: {
-    id: 'app.containers.NotificationMenu.officialFeedbackOnVotedProject',
+  officialFeedbackOnReactedProject: {
+    id: 'app.containers.NotificationMenu.officialFeedbackOnReactedProject',
     defaultMessage:
-      '{officialName} gave an official update on a project you voted for',
+      '{officialName} gave an official update on a project you reacted to',
   },
   officialFeedbackOnCommentedProject: {
     id: 'app.containers.NotificationMenu.officialFeedbackOnCommentedProject',
@@ -211,10 +213,10 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.officialFeedbackOnYourOption',
     defaultMessage: '{officialName} gave an official update on your option',
   },
-  officialFeedbackOnVotedOption: {
-    id: 'app.containers.NotificationMenu.officialFeedbackOnVotedOption',
+  officialFeedbackOnReactedOption: {
+    id: 'app.containers.NotificationMenu.officialFeedbackOnReactedOption',
     defaultMessage:
-      '{officialName} gave an official update on an option you voted for',
+      '{officialName} gave an official update on an option you reacted to',
   },
   officialFeedbackOnCommentedOption: {
     id: 'app.containers.NotificationMenu.officialFeedbackOnCommentedOption',
@@ -225,10 +227,10 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.officialFeedbackOnYourIssue',
     defaultMessage: '{officialName} gave an official update on your issue',
   },
-  officialFeedbackOnVotedIssue: {
-    id: 'app.containers.NotificationMenu.officialFeedbackOnVotedIssue',
+  officialFeedbackOnReactedIssue: {
+    id: 'app.containers.NotificationMenu.officialFeedbackOnReactedIssue',
     defaultMessage:
-      '{officialName} gave an official update on an issue you voted for',
+      '{officialName} gave an official update on an issue you reacted to',
   },
   officialFeedbackOnCommentedIssue: {
     id: 'app.containers.NotificationMenu.officialFeedbackOnCommentedIssue',
@@ -239,10 +241,10 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.officialFeedbackOnYourQuestion',
     defaultMessage: '{officialName} gave an official update on your question',
   },
-  officialFeedbackOnVotedQuestion: {
-    id: 'app.containers.NotificationMenu.officialFeedbackOnVotedQuestion',
+  officialFeedbackOnReactedQuestion: {
+    id: 'app.containers.NotificationMenu.officialFeedbackOnReactedQuestion',
     defaultMessage:
-      '{officialName} gave an official update on a question you voted for',
+      '{officialName} gave an official update on a question you reacted to',
   },
   officialFeedbackOnCommentedQuestion: {
     id: 'app.containers.NotificationMenu.officialFeedbackOnCommentedQuestion',
@@ -254,10 +256,10 @@ export default defineMessages({
     defaultMessage:
       '{officialName} gave an official update on your contribution',
   },
-  officialFeedbackOnVotedContribution: {
-    id: 'app.containers.NotificationMenu.officialFeedbackOnVotedContribution',
+  officialFeedbackOnReactedContribution: {
+    id: 'app.containers.NotificationMenu.officialFeedbackOnReactedContribution',
     defaultMessage:
-      '{officialName} gave an official update on a contribution you voted for',
+      '{officialName} gave an official update on a contribution you reacted to',
   },
   officialFeedbackOnCommentedContribution: {
     id: 'app.containers.NotificationMenu.officialFeedbackOnCommentedContribution',

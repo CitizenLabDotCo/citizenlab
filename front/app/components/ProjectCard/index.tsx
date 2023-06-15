@@ -623,7 +623,7 @@ const ProjectCard = memo<Props>(
           />
         );
       } else if (participationMethod === 'ideation' && canReact) {
-        ctaMessage = <FormattedMessage {...messages.vote} />;
+        ctaMessage = <FormattedMessage {...messages.reaction} />;
       } else if (participationMethod === 'ideation' && canComment) {
         ctaMessage = <FormattedMessage {...messages.comment} />;
       } else if (participationMethod === 'ideation') {

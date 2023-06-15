@@ -136,7 +136,7 @@ interface Props extends InputProps, DataProps {}
 const RESOURCE_MESSAGES: Record<IResource, MessageDescriptor> = {
   ideas: messages.inputs,
   comments: messages.comments,
-  reactions: messages.votes,
+  reactions: messages.reactions,
 };
 
 const TITLE_MESSAGES: Record<ByWhat, MessageDescriptor> = {

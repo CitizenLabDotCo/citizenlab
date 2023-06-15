@@ -19,7 +19,7 @@ export default defineMessages({
   },
   twitterMessage: {
     id: 'app.containers.landing.twitterMessage',
-    defaultMessage: 'Vote for {ideaTitle} on',
+    defaultMessage: 'React to {ideaTitle} on',
   },
   completeYourProfile: {
     id: 'app.containers.landing.completeYourProfile',

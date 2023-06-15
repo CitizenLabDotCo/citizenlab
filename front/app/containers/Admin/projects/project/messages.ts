@@ -79,8 +79,8 @@ export default defineMessages({
     defaultMessage: 'View project',
   },
   // edit - participationContext -----------------------------------------------
-  noVotingLimitErrorMessage: {
-    id: 'app.containers.AdminPage.ProjectEdit.noVotingLimitErrorMessage',
+  noReactingLimitErrorMessage: {
+    id: 'app.containers.AdminPage.ProjectEdit.noReactingLimitErrorMessage',
     defaultMessage: 'Not a valid number',
   },
   noBudgetingAmountErrorMessage: {
@@ -120,7 +120,7 @@ export default defineMessages({
   inputAndFeedbackDescription: {
     id: 'app.containers.AdminPage.ProjectEdit.inputAndFeedbackDescription',
     defaultMessage:
-      'Create or collect inputs, votes and/or comments. Pick between different types of inputs: idea collection, option analysis, question and answer, issue identification and more.',
+      'Create or collect inputs, reactions and/or comments. Pick between different types of inputs: idea collection, option analysis, question and answer, issue identification and more.',
   },
   createExternalSurveyText: {
     id: 'app.containers.AdminPage.ProjectEdit.createExternalSurveyText',
@@ -199,41 +199,41 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.inputCommentingEnabled',
     defaultMessage: 'Commenting on inputs',
   },
-  inputVotingEnabled: {
-    id: 'app.containers.AdminPage.ProjectEdit.inputVotingEnabled',
-    defaultMessage: 'Voting on inputs',
+  inputReactingEnabled: {
+    id: 'app.containers.AdminPage.ProjectEdit.inputReactingEnabled',
+    defaultMessage: 'Reacting to inputs',
   },
-  upvotingMethodTitle: {
-    id: 'app.containers.AdminPage.ProjectEdit.upvotingMethodTitle',
-    defaultMessage: 'Number of upvotes per participant',
+  likingMethodTitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.likingMethodTitle',
+    defaultMessage: 'Number of likes per participant',
   },
-  downvotingMethodTitle: {
-    id: 'app.containers.AdminPage.ProjectEdit.downvotingMethodTitle',
-    defaultMessage: 'Number of downvotes per participant',
+  dislikingMethodTitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.dislikingMethodTitle',
+    defaultMessage: 'Number of dislikes per participant',
   },
-  maxUpvotes: {
-    id: 'app.containers.AdminPage.ProjectEdit.maxUpvotes',
-    defaultMessage: 'Maximum upvotes',
+  maxLikes: {
+    id: 'app.containers.AdminPage.ProjectEdit.maxLikes',
+    defaultMessage: 'Maximum likes',
   },
-  maxDownvotes: {
-    id: 'app.containers.AdminPage.ProjectEdit.maxDownvotes',
-    defaultMessage: 'Maximum downvotes',
+  maxDislikes: {
+    id: 'app.containers.AdminPage.ProjectEdit.maxDislikes',
+    defaultMessage: 'Maximum dislikes',
   },
-  downvotingPosts: {
-    id: 'app.containers.AdminPage.ProjectEdit.downvotingPosts',
-    defaultMessage: 'Enable downvoting',
+  dislikingPosts: {
+    id: 'app.containers.AdminPage.ProjectEdit.dislikingPosts',
+    defaultMessage: 'Enable disliking',
   },
-  disableDownvotingTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.disableDownvotingTooltip',
+  disableDislikingTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.disableDislikingTooltip',
     defaultMessage:
-      'This will disable downvoting, but upvoting will still be enabled. You can disable voting completely in the Actions section of this tab.',
+      'This will disable disliking, but liking will still be enabled. You can disable reacting completely in the Actions section of this tab.',
   },
-  downvotingDisabled: {
-    id: 'app.containers.AdminPage.ProjectEdit.downvotingDisabled',
+  dislikingDisabled: {
+    id: 'app.containers.AdminPage.ProjectEdit.dislikingDisabled',
     defaultMessage: 'Disabled',
   },
-  downvotingEnabled: {
-    id: 'app.containers.AdminPage.ProjectEdit.downvotingEnabled',
+  dislikingEnabled: {
+    id: 'app.containers.AdminPage.ProjectEdit.dislikingEnabled',
     defaultMessage: 'Enabled',
   },
   phasePermissions: {
@@ -258,9 +258,9 @@ export default defineMessages({
     defaultMessage: 'Anonymous polling',
   },
   anonymousPollingTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.anonymousPollingTooltip',
+    id: 'app.containers.AdminPage.ProjectEdit.anonymousPollingTooltip2',
     defaultMessage:
-      "When enabled it's impossible to see who voted on what. Users still need an account and can only vote once.",
+      "When enabled it's impossible to see who reacted to what. Users still need an account and can only react once.",
   },
   enabled: {
     id: 'app.containers.AdminPage.ProjectEdit.enabled',
@@ -306,7 +306,7 @@ export default defineMessages({
   },
   popularSortingMethod: {
     id: 'app.containers.AdminPage.ProjectEdit.popularSortingMethod',
-    defaultMessage: 'Most voted',
+    defaultMessage: 'Most reactions',
   },
   newestSortingMethod: {
     id: 'app.containers.AdminPage.ProjectEdit.newestFirstSortingMethod',

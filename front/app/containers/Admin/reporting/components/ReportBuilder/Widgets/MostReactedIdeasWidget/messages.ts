@@ -1,41 +1,41 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  mostVotedIdeas: {
-    id: 'app.containers.admin.ReportBuilder.MostVotedIdeasWidget.mostVotedIeas',
-    defaultMessage: 'Most voted ideas',
+  mostReactedIdeas: {
+    id: 'app.containers.admin.ReportBuilder.MostReactedIdeasWidget.mostReactedIeas',
+    defaultMessage: 'Most reacted ideas',
   },
   totalIdeas: {
-    id: 'app.containers.admin.ReportBuilder.MostVotedIdeasWidget.totalIdeas',
+    id: 'app.containers.admin.ReportBuilder.MostReactedIdeasWidget.totalIdeas',
     defaultMessage: 'Total ideas: {numberOfIdeas}',
   },
   numberOfIdeas: {
-    id: 'app.containers.admin.ReportBuilder.MostVotedIdeasWidget.numberOfIdeas',
+    id: 'app.containers.admin.ReportBuilder.MostReactedIdeasWidget.numberOfIdeas',
     defaultMessage: 'Number of ideas',
   },
   collapseLongText: {
-    id: 'app.containers.admin.ReportBuilder.MostVotedIdeasWidget.collapseLongText',
+    id: 'app.containers.admin.ReportBuilder.MostReactedIdeasWidget.collapseLongText',
     defaultMessage: 'Collapse long text',
   },
   showMore: {
-    id: 'app.containers.admin.ReportBuilder.MostVotedIdeasWidget.showMore',
+    id: 'app.containers.admin.ReportBuilder.MostReactedIdeasWidget.showMore',
     defaultMessage: 'Show more',
   },
   title: {
-    id: 'app.containers.admin.ReportBuilder.MostVotedIdeasWidget.title',
+    id: 'app.containers.admin.ReportBuilder.MostReactedIdeasWidget.title',
     defaultMessage: 'Title',
   },
   ideationPhases: {
-    id: 'app.containers.admin.ReportBuilder.MostVotedIdeasWidget.ideationPhases',
+    id: 'app.containers.admin.ReportBuilder.MostReactedIdeasWidget.ideationPhases',
     defaultMessage: 'Ideation phases',
   },
   noProjectSelected: {
-    id: 'app.containers.admin.ReportBuilder.MostVotedIdeasWidget.noProjectSelected',
+    id: 'app.containers.admin.ReportBuilder.MostReactedIdeasWidget.noProjectSelected',
     defaultMessage:
-      'No project was selected. Please select a project to see the most voted ideas.',
+      'No project was selected. Please select a project to see the most reacted ideas.',
   },
   noIdeasAvailable: {
-    id: 'app.containers.admin.ReportBuilder.MostVotedIdeasWidget.noIdeasAvailable',
+    id: 'app.containers.admin.ReportBuilder.MostReactedIdeasWidget.noIdeasAvailable',
     defaultMessage:
       'There are no questions available for this project or phase.',
   },
