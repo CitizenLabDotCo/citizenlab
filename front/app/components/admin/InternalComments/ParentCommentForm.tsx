@@ -7,13 +7,7 @@ import Button from 'components/UI/Button';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 import Avatar from 'components/Avatar';
 import clickOutside from 'utils/containers/clickOutside';
-import Link from 'utils/cl-router/Link';
-import {
-  Checkbox,
-  useBreakpoint,
-  Text,
-  IconTooltip,
-} from '@citizenlab/cl2-component-library';
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -21,12 +15,7 @@ import tracks from './tracks';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-// services
-import { canModerateProject } from 'services/permissions/rules/projectPermissions';
-
-// resources
+import commentsMessages from 'components/PostShowComponents/Comments/messages';
 
 // events
 import { commentAdded } from './events';
@@ -42,9 +31,6 @@ import useAddCommentToIdea from 'api/comments/useAddCommentToIdea';
 import useAddCommentToInitiative from 'api/comments/useAddCommentToInitiative';
 import useLocale from 'hooks/useLocale';
 import useAuthUser from 'api/me/useAuthUser';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
-import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
 
 const Container = styled.div`
   display: flex;
@@ -114,7 +100,6 @@ interface Props {
   postType: 'idea' | 'initiative';
   postingComment: (arg: boolean) => void;
   className?: string;
-  allowAnonymousParticipation?: boolean;
 }
 
 const ParentCommentForm = ({
@@ -122,11 +107,9 @@ const ParentCommentForm = ({
   initiativeId,
   postType,
   className,
-  allowAnonymousParticipation,
 }: Props) => {
   const locale = useLocale();
   const { data: authUser } = useAuthUser();
-  const { data: appConfiguration } = useAppConfiguration();
   const { formatMessage } = useIntl();
   const smallerThanTablet = useBreakpoint('tablet');
   const { mutate: addCommentToIdea, isLoading: addCommentToIdeaIsLoading } =
@@ -135,25 +118,18 @@ const ParentCommentForm = ({
     mutate: addCommentToInitiative,
     isLoading: addCommentToInitiativeIsLoading,
   } = useAddCommentToInitiative();
-  const commentingPermissionInitiative = useInitiativesPermissions(
-    'commenting_initiative'
-  );
   const textareaElement = useRef<HTMLTextAreaElement | null>(null);
   const [inputValue, setInputValue] = useState('');
   const [focused, setFocused] = useState(false);
   const [hasApiError, setHasApiError] = useState(false);
-  const [profanityApiError, setProfanityApiError] = useState(false);
   const [hasEmptyError, setHasEmptyError] = useState(true);
-  const [postAnonymously, setPostAnonymously] = useState(false);
-  const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
-    useState(false);
   const { data: idea } = useIdeaById(ideaId);
   const projectId = idea ? idea.data.relationships.project.data.id : null;
 
   const processing =
     addCommentToIdeaIsLoading || addCommentToInitiativeIsLoading;
 
-  if (isNilOrError(locale) || isNilOrError(authUser)) {
+  if (isNilOrError(locale) || !authUser) {
     return null;
   }
 
@@ -161,7 +137,6 @@ const ParentCommentForm = ({
     setInputValue(inputValue);
     setFocused(true);
     setHasApiError(false);
-    setProfanityApiError(false);
     setHasEmptyError(inputValue.trim().length < 1);
   };
 
@@ -186,17 +161,9 @@ const ParentCommentForm = ({
   };
 
   const onSubmit = async () => {
-    if (allowAnonymousParticipation && postAnonymously) {
-      setShowAnonymousConfirmationModal(true);
-    } else {
-      continueSubmission();
-    }
-  };
-
-  const continueSubmission = async () => {
     setFocused(false);
 
-    if (locale && authUser && isString(inputValue) && trim(inputValue) !== '') {
+    if (isString(inputValue) && trim(inputValue) !== '') {
       const commentBodyMultiloc = {
         [locale]: inputValue.replace(/@\[(.*?)\]\((.*?)\)/gi, '@$2'),
       };
@@ -215,7 +182,6 @@ const ParentCommentForm = ({
             ideaId,
             author_id: authUser.data.id,
             body_multiloc: commentBodyMultiloc,
-            anonymous: postAnonymously,
           },
           {
             onSuccess: (comment) => {
@@ -229,29 +195,7 @@ const ParentCommentForm = ({
               close();
             },
             onError: (error) => {
-              const apiErrors = error.errors;
-              const profanityApiError = apiErrors.base.find(
-                (apiError) => apiError.error === 'includes_banned_words'
-              );
-
               setHasApiError(true);
-
-              if (profanityApiError) {
-                trackEventByName(tracks.parentCommentProfanityError.name, {
-                  locale,
-                  ideaId,
-                  postType,
-                  projectId,
-                  profaneMessage: commentBodyMultiloc[locale],
-                  location: 'InitiativesNewFormWrapper (citizen side)',
-                  userId: authUser.data.id,
-                  host: !isNilOrError(appConfiguration)
-                    ? appConfiguration.data.attributes.host
-                    : null,
-                });
-
-                setProfanityApiError(true);
-              }
 
               throw error;
             },
@@ -265,7 +209,6 @@ const ParentCommentForm = ({
             initiativeId,
             author_id: authUser.data.id,
             body_multiloc: commentBodyMultiloc,
-            anonymous: postAnonymously,
           },
           {
             onSuccess: (comment) => {
@@ -279,29 +222,7 @@ const ParentCommentForm = ({
               close();
             },
             onError: (error) => {
-              const apiErrors = error.errors;
-              const profanityApiError = apiErrors.base.find(
-                (apiError) => apiError.error === 'includes_banned_words'
-              );
-
               setHasApiError(true);
-
-              if (profanityApiError) {
-                trackEventByName(tracks.parentCommentProfanityError.name, {
-                  locale,
-                  initiativeId,
-                  postType,
-                  projectId,
-                  profaneMessage: commentBodyMultiloc[locale],
-                  location: 'InitiativesNewFormWrapper (citizen side)',
-                  userId: authUser.data.id,
-                  host: !isNilOrError(appConfiguration)
-                    ? appConfiguration.data.attributes.host
-                    : null,
-                });
-
-                setProfanityApiError(true);
-              }
 
               throw error;
             },
@@ -317,143 +238,76 @@ const ParentCommentForm = ({
 
   const getErrorMessage = () => {
     if (hasApiError) {
-      // Profanity error is the only error we're checking specifically
-      // at the moment to provide a specific error message.
-      // All other api errors are generalized to 1 error message
-      if (profanityApiError) {
-        return (
-          <FormattedMessage
-            {...messages.profanityError}
-            values={{
-              guidelinesLink: (
-                <Link to="/pages/faq" target="_blank">
-                  {formatMessage(messages.guidelinesLinkText)}
-                </Link>
-              ),
-            }}
-          />
-        );
-      }
-
-      return <FormattedMessage {...messages.addCommentError} />;
+      return <FormattedMessage {...commentsMessages.addCommentError} />;
     }
 
     return null;
   };
 
-  const commentingEnabled =
-    postType === 'initiative'
-      ? commentingPermissionInitiative?.enabled === true
-      : idea?.data.attributes?.action_descriptor.commenting_idea.enabled ===
-        true;
-  const isModerator =
-    !isNilOrError(authUser) && canModerateProject(projectId, authUser);
-  const canComment = authUser && commentingEnabled;
-  const placeholder = formatMessage(
-    messages[`${postType}CommentBodyPlaceholder`]
+  return (
+    <Container className={className || ''}>
+      <StyledAvatar
+        userId={authUser.data.id}
+        size={30}
+        isLinkToProfile={!!authUser.data.id}
+        moderator
+      />
+      <FormContainer
+        className="ideaCommentForm"
+        onClickOutside={close}
+        closeOnClickOutsideEnabled={false}
+      >
+        <Anchor id="submit-comment-anchor" />
+        <Form className={focused ? 'focused' : ''}>
+          <label htmlFor="submit-comment">
+            <HiddenLabel>
+              <FormattedMessage {...commentsMessages.yourComment} />
+            </HiddenLabel>
+            <MentionsTextArea
+              id="submit-comment"
+              className="e2e-parent-comment-form"
+              name="comment"
+              placeholder={formatMessage(
+                commentsMessages[`${postType}CommentBodyPlaceholder`]
+              )}
+              rows={focused || processing ? 4 : 1}
+              postId={ideaId || initiativeId}
+              postType={postType}
+              value={inputValue}
+              error={getErrorMessage()}
+              onChange={onChange}
+              onFocus={onFocus}
+              fontWeight="300"
+              padding="10px"
+              borderRadius="none"
+              border="none"
+              boxShadow="none"
+              getTextareaRef={setRef}
+            />
+            <ButtonWrapper className={focused || processing ? 'visible' : ''}>
+              <CancelButton
+                disabled={processing}
+                onClick={close}
+                buttonStyle="secondary"
+                padding={smallerThanTablet ? '6px 12px' : undefined}
+              >
+                <FormattedMessage {...commentsMessages.cancel} />
+              </CancelButton>
+              <Button
+                className="e2e-submit-parentcomment"
+                processing={processing}
+                onClick={onSubmit}
+                disabled={hasEmptyError}
+                padding={smallerThanTablet ? '6px 12px' : undefined}
+              >
+                <FormattedMessage {...commentsMessages.publishComment} />
+              </Button>
+            </ButtonWrapper>
+          </label>
+        </Form>
+      </FormContainer>
+    </Container>
   );
-
-  if (!isNilOrError(authUser) && canComment) {
-    return (
-      <Container className={className || ''}>
-        <StyledAvatar
-          userId={authUser?.data.id}
-          size={30}
-          isLinkToProfile={!!authUser?.data.id}
-          moderator={isModerator}
-        />
-        <FormContainer
-          className="ideaCommentForm"
-          onClickOutside={close}
-          closeOnClickOutsideEnabled={false}
-        >
-          <Anchor id="submit-comment-anchor" />
-          <Form className={focused ? 'focused' : ''}>
-            <label htmlFor="submit-comment">
-              <HiddenLabel>
-                <FormattedMessage {...messages.yourComment} />
-              </HiddenLabel>
-              <MentionsTextArea
-                id="submit-comment"
-                className="e2e-parent-comment-form"
-                name="comment"
-                placeholder={placeholder}
-                rows={focused || processing ? 4 : 1}
-                postId={ideaId || initiativeId}
-                postType={postType}
-                value={inputValue}
-                error={getErrorMessage()}
-                onChange={onChange}
-                onFocus={onFocus}
-                fontWeight="300"
-                padding="10px"
-                borderRadius="none"
-                border="none"
-                boxShadow="none"
-                getTextareaRef={setRef}
-              />
-              <ButtonWrapper className={focused || processing ? 'visible' : ''}>
-                {allowAnonymousParticipation && (
-                  <Checkbox
-                    id="e2e-anonymous-comment-checkbox"
-                    ml="8px"
-                    checked={postAnonymously}
-                    label={
-                      <Text mb="12px" fontSize="s" color="coolGrey600">
-                        {formatMessage(messages.postAnonymously)}
-                        <IconTooltip
-                          content={
-                            <Text color="white" fontSize="s" m="0">
-                              {formatMessage(
-                                messages.inputsAssociatedWithProfile
-                              )}
-                            </Text>
-                          }
-                          iconSize="16px"
-                          placement="top-start"
-                          display="inline"
-                          ml="4px"
-                          transform="translate(0,-1)"
-                        />
-                      </Text>
-                    }
-                    onChange={() => setPostAnonymously(!postAnonymously)}
-                  />
-                )}
-                <CancelButton
-                  disabled={processing}
-                  onClick={close}
-                  buttonStyle="secondary"
-                  padding={smallerThanTablet ? '6px 12px' : undefined}
-                >
-                  <FormattedMessage {...messages.cancel} />
-                </CancelButton>
-                <Button
-                  className="e2e-submit-parentcomment"
-                  processing={processing}
-                  onClick={onSubmit}
-                  disabled={hasEmptyError}
-                  padding={smallerThanTablet ? '6px 12px' : undefined}
-                >
-                  <FormattedMessage {...messages.publishComment} />
-                </Button>
-              </ButtonWrapper>
-            </label>
-          </Form>
-        </FormContainer>
-        <AnonymousParticipationConfirmationModal
-          onConfirmAnonymousParticipation={() => {
-            setShowAnonymousConfirmationModal(false);
-            continueSubmission();
-          }}
-          showAnonymousConfirmationModal={showAnonymousConfirmationModal}
-          setShowAnonymousConfirmationModal={setShowAnonymousConfirmationModal}
-        />
-      </Container>
-    );
-  }
-
-  return null;
 };
 
 export default ParentCommentForm;

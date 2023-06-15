@@ -2,9 +2,6 @@
 import React, { useState, useCallback } from 'react';
 import Observer from '@researchgate/react-intersection-observer';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
 // components
 import ParentCommentForm from './ParentCommentForm';
 import Comments from './Comments';
@@ -32,7 +29,7 @@ import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useProjectById from 'api/projects/useProjectById';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useComments from 'api/comments/useComments';
-import CommentingIdeaDisabled from './CommetingIdeaDisabled';
+import CommentingIdeaDisabled from './CommentingIdeaDisabled';
 
 const Container = styled.div``;
 
@@ -121,11 +118,6 @@ const CommentsSection = ({
 
   const [posting, setPosting] = useState(false);
 
-  const handleSortOrderChange = (sortOrder: CommentsSort) => {
-    trackEventByName(tracks.clickCommentsSortOrder);
-    setSortOrder(sortOrder);
-  };
-
   const handleIntersection = useCallback(
     (event: IntersectionObserverEntry, unobserve: () => void) => {
       if (event.isIntersecting && hasNextPage) {
@@ -136,68 +128,71 @@ const CommentsSection = ({
     [fetchNextPage, hasNextPage]
   );
 
-  const handleCommentPosting = useCallback((isPosting: boolean) => {
+  if (!post || !commentsList) return null;
+
+  const handleSortOrderChange = (sortOrder: CommentsSort) => {
+    trackEventByName(tracks.clickCommentsSortOrder);
+    setSortOrder(sortOrder);
+  };
+
+  const handleCommentPosting = (isPosting: boolean) => {
     setPosting(isPosting);
-  }, []);
+  };
 
-  if (!isNilOrError(post) && !isNilOrError(commentsList)) {
-    const phaseId = project?.data.relationships?.current_phase?.data?.id;
-    const commentCount = post.data.attributes.comments_count;
+  const phaseId = project?.data.relationships?.current_phase?.data?.id;
+  const commentCount = post.data.attributes.comments_count;
 
-    return (
-      <Container className={className || ''}>
-        <Header>
-          <Title color="tenantText" variant="h2" id="comments-main-title">
-            <FormattedMessage {...messages.invisibleTitleComments} />
-            {commentCount > 0 && <CommentCount>({commentCount})</CommentCount>}
-          </Title>
-          <StyledCommentSorting
-            onChange={handleSortOrderChange}
-            selectedCommentSort={sortOrder}
-          />
-        </Header>
-
-        {postType === 'idea' && idea ? (
-          <CommentingIdeaDisabled idea={idea} phaseId={phaseId} />
-        ) : (
-          <CommentingProposalDisabled />
-        )}
-
-        <StyledParentCommentForm
-          ideaId={ideaId}
-          initiativeId={initiativeId}
-          postType={postType}
-          postingComment={handleCommentPosting}
-          allowAnonymousParticipation={allowAnonymousParticipation}
+  return (
+    <Container className={className || ''}>
+      <Header>
+        <Title color="tenantText" variant="h2" id="comments-main-title">
+          <FormattedMessage {...messages.invisibleTitleComments} />
+          {commentCount > 0 && <CommentCount>({commentCount})</CommentCount>}
+        </Title>
+        <StyledCommentSorting
+          onChange={handleSortOrderChange}
+          selectedCommentSort={sortOrder}
         />
+      </Header>
 
-        <Comments
-          ideaId={ideaId}
-          initiativeId={initiativeId}
-          postType={postType}
-          allComments={commentsList}
-          loading={isLoading}
-          allowAnonymousParticipation={allowAnonymousParticipation}
-        />
+      {postType === 'idea' && idea ? (
+        <CommentingIdeaDisabled idea={idea} phaseId={phaseId} />
+      ) : (
+        <CommentingProposalDisabled />
+      )}
 
-        {hasNextPage && !isFetchingNextPage && (
-          <Observer onChange={handleIntersection} rootMargin="3000px">
-            <LoadMore />
-          </Observer>
-        )}
+      <StyledParentCommentForm
+        ideaId={ideaId}
+        initiativeId={initiativeId}
+        postType={postType}
+        postingComment={handleCommentPosting}
+        allowAnonymousParticipation={allowAnonymousParticipation}
+      />
 
-        {isFetchingNextPage && !posting && (
-          <LoadingMore>
-            <LoadingMoreMessage>
-              <FormattedMessage {...messages.loadingMoreComments} />
-            </LoadingMoreMessage>
-          </LoadingMore>
-        )}
-      </Container>
-    );
-  }
+      <Comments
+        ideaId={ideaId}
+        initiativeId={initiativeId}
+        postType={postType}
+        allComments={commentsList}
+        loading={isLoading}
+        allowAnonymousParticipation={allowAnonymousParticipation}
+      />
 
-  return null;
+      {hasNextPage && !isFetchingNextPage && (
+        <Observer onChange={handleIntersection} rootMargin="3000px">
+          <LoadMore />
+        </Observer>
+      )}
+
+      {isFetchingNextPage && !posting && (
+        <LoadingMore>
+          <LoadingMoreMessage>
+            <FormattedMessage {...messages.loadingMoreComments} />
+          </LoadingMoreMessage>
+        </LoadingMore>
+      )}
+    </Container>
+  );
 };
 
 export default CommentsSection;

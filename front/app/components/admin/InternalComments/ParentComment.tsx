@@ -1,5 +1,4 @@
 import React from 'react';
-import { isNil, isNilOrError } from 'utils/helperUtils';
 
 // components
 import Comment from './Comment';
@@ -9,7 +8,7 @@ import Button from 'components/UI/Button';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import commentsMessages from 'components/PostShowComponents/Comments/messages';
 
 // style
 import styled, { useTheme } from 'styled-components';
@@ -19,7 +18,6 @@ import { darken } from 'polished';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useComment from 'api/comments/useComment';
 import useComments from 'api/comments/useComments';
-import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 
 const Container = styled.div`
   position: relative;
@@ -45,9 +43,8 @@ interface Props {
   initiativeId: string | undefined;
   postType: 'idea' | 'initiative';
   commentId: string;
-  childCommentIds: string[] | false;
+  childCommentIds: string[];
   className?: string;
-  allowAnonymousParticipation?: boolean;
 }
 
 const ParentComment = ({
@@ -57,11 +54,7 @@ const ParentComment = ({
   postType,
   className,
   childCommentIds,
-  allowAnonymousParticipation,
 }: Props) => {
-  const commentingPermissionInitiative = useInitiativesPermissions(
-    'commenting_initiative'
-  );
   const theme = useTheme();
   const { data: comment } = useComment(commentId);
   const {
@@ -75,18 +68,13 @@ const ParentComment = ({
     .flat();
   const { data: idea } = useIdeaById(ideaId);
 
-  if (!isNilOrError(comment)) {
+  if (comment) {
     const projectId = idea?.data.relationships.project.data.id || null;
     const commentDeleted =
       comment.data.attributes.publication_status === 'deleted';
-    const commentingDisabledReason =
-      postType === 'initiative'
-        ? commentingPermissionInitiative?.disabledReason
-        : idea?.data.attributes.action_descriptor.commenting_idea
-            .disabled_reason;
-    const showCommentForm = isNil(commentingDisabledReason) && !commentDeleted;
+    const showCommentForm = !commentDeleted;
     const hasChildComments = childCommentIds && childCommentIds.length > 0;
-    const modifiedChildCommentIds = !isNilOrError(childComments)
+    const modifiedChildCommentIds = childComments
       ? childComments
           .filter(
             (comment) => comment.attributes.publication_status !== 'deleted'
@@ -108,7 +96,6 @@ const ParentComment = ({
           <Comment
             ideaId={ideaId}
             initiativeId={initiativeId}
-            postType={postType}
             projectId={projectId}
             commentId={commentId}
             commentType="parent"
@@ -130,20 +117,18 @@ const ParentComment = ({
             borderThickness="2px"
           >
             {!isFetchingNextPage ? (
-              <FormattedMessage {...messages.loadMoreComments} />
+              <FormattedMessage {...commentsMessages.loadMoreComments} />
             ) : (
               <Spinner size="25px" />
             )}
           </LoadMoreButton>
         )}
 
-        {modifiedChildCommentIds &&
-          modifiedChildCommentIds.length > 0 &&
+        {modifiedChildCommentIds.length > 0 &&
           modifiedChildCommentIds.map((childCommentId, index) => (
             <Comment
               ideaId={ideaId}
               initiativeId={initiativeId}
-              postType={postType}
               projectId={projectId}
               key={childCommentId}
               commentId={childCommentId}
@@ -159,7 +144,6 @@ const ParentComment = ({
             postType={postType}
             projectId={projectId}
             parentId={commentId}
-            allowAnonymousParticipation={allowAnonymousParticipation}
           />
         )}
       </Container>

@@ -1,18 +1,14 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import CommentVote from './CommentVote';
 import CommentReplyButton from './CommentReplyButton';
 import CommentsMoreActions from './CommentsMoreActions';
 
 // style
 import styled from 'styled-components';
 import { colors, fontSizes, isRtl } from 'utils/styleUtils';
-import Outlet from 'components/Outlet';
 
 // hooks
-import useIdeaById from 'api/ideas/useIdeaById';
 import useComment from 'api/comments/useComment';
 
 const footerHeight = '30px';
@@ -67,11 +63,6 @@ const Left = styled.ul`
   }
 `;
 
-const StyledCommentVote = styled(CommentVote)`
-  height: ${footerHeight};
-  margin-top: ${footerTopMargin};
-`;
-
 const StyledCommentReplyButton = styled(CommentReplyButton)`
   height: ${footerHeight};
   margin-top: ${footerTopMargin};
@@ -90,7 +81,6 @@ const Right = styled.div`
 interface Props {
   ideaId: string | undefined;
   initiativeId: string | undefined;
-  postType: 'idea' | 'initiative';
   projectId?: string | null;
   commentId: string;
   commentType: 'parent' | 'child';
@@ -104,39 +94,24 @@ const CommentFooter = ({
   commentType,
   ideaId,
   initiativeId,
-  postType,
   projectId,
   commentId,
   className,
   authorId,
 }: Props) => {
   const { data: comment } = useComment(commentId);
-  const { data: idea } = useIdeaById(ideaId);
 
-  if (isNilOrError(comment)) {
+  if (!comment) {
     return null;
   }
 
   return (
     <Container className={className || ''}>
       <Left>
-        <StyledCommentVote
-          ideaId={ideaId}
-          postType={postType}
-          comment={comment.data}
-          commentType={commentType}
-        />
         <StyledCommentReplyButton
-          postType={postType}
-          commentId={commentId}
           commentType={commentType}
           authorId={authorId}
-          idea={idea?.data}
           comment={comment.data}
-        />
-        <Outlet
-          id="app.components.PostShowComponents.CommentFooter.left"
-          commentId={commentId}
         />
       </Left>
       <Right>
