@@ -4,7 +4,7 @@ es-CL:
   idea_statuses:
     proposed: propuesta
     proposed_description: Esta idea ha sido propuesta
-    viewed: revisado
+    viewed: revisada
     viewed_description: Esta idea ha sido vista por alguien de la organización
     under_consideration: bajo consideración
     under_consideration_description: Esta idea está siendo considerada
@@ -54,7 +54,7 @@ es-CL:
     inclusion_description: Inclusión social
     community: Desarrollo comunitario
     community_description: Desarrollo comunitario
-    services: Servicio público
+    services: Servicios públicos
     services_description: Servicio público
     other: Otros
     other_description: Otros
@@ -223,11 +223,11 @@ es-CL:
       subject: "Confirma tu correo electrónico para participar en la plataforma de %{organizationName}"
       header: "Tu código de confirmación"
       header_message: "¡Hola %{firstName}!"
-      confirm_email_address: "Confirme su dirección de correo electrónico"
+      confirm_email_address: "Confirmar su dirección de correo electrónico"
       thanks_for_signing_up: "Gracias por inscribirte en la plataforma de participación de %{organizationName}."
-      best_regards: "Saludos cordiales,"
-      ignore_email: "Si no has solicitado un código, puedes ignorar este mensaje."
-      expire_code: "Este código caducará en "
+      best_regards: "Saludos cordiales."
+      ignore_email: "Si no ha solicitado un código, puede ignorar este correo electrónico."
+      expire_code: "Esto código expirará en"
       24_hours: "24 horas."
       copy_paste_the_link_below: "Copia y pega el siguiente código en tu formulario de registro."
       the_link_is_valid_for: "El enlace será valido durante 24 horas. Si el enlace ha caducado puedes <a href=\"%{link}\">solicitar un nuevo código</a>."
