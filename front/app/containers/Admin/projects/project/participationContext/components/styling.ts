@@ -43,7 +43,7 @@ export const ToggleLabel = styled(Label)`
   margin-right: 15px;
 `;
 
-export const VotingLimitInput = styled(Input)`
+export const ReactingLimitInput = styled(Input)`
   width: 100px;
   height: 46px !important;
 `;

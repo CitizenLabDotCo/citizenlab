@@ -2,7 +2,7 @@ import React from 'react';
 
 // components
 import MetaInformation from '../MetaInformation';
-import VoteControl from 'components/VoteControl';
+import ReactionControl from 'components/ReactionControl';
 import Buttons from 'containers/IdeasShow/CTABox/Buttons';
 import AssignBudgetControl from 'components/AssignBudgetControl';
 
@@ -27,7 +27,7 @@ const InnerContainer = styled.div`
   flex-direction: column;
 `;
 
-const StyledVoteControl = styled(VoteControl)`
+const StyledReactionControl = styled(ReactionControl)`
   padding-bottom: 23px;
   margin-bottom: 23px;
 `;
@@ -70,7 +70,7 @@ const RightColumnDesktop = ({
           background={colors.background}
           mb="12px"
         >
-          <StyledVoteControl styleType="shadow" ideaId={ideaId} size="4" />
+          <StyledReactionControl styleType="shadow" ideaId={ideaId} size="4" />
           <StyledAssignBudgetControl
             view="ideaPage"
             ideaId={ideaId}

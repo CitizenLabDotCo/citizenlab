@@ -38,7 +38,7 @@ export const getPermissionActionSectionSubtitle = ({
         postType === 'nativeSurvey'
           ? messages.permissionAction_take_survey_subtitle
           : messages.permissionAction_submit_input_subtitle,
-      voting_idea: messages.permissionAction_vote_input_subtitle,
+      reacting_idea: messages.permissionAction_vote_input_subtitle,
       commenting_idea: messages.permissionAction_comment_input_subtitle,
       taking_survey: messages.permissionAction_take_survey_subtitle,
       taking_poll: messages.permissionAction_take_poll_subtitle,
@@ -52,7 +52,7 @@ export const getPermissionActionSectionSubtitle = ({
     const globalPermissionActionMessages: {
       [key in IGlobalPermissionAction]: MessageDescriptor;
     } = {
-      voting_initiative: messages.permissionAction_vote_proposals_subtitle,
+      reacting_initiative: messages.permissionAction_vote_proposals_subtitle,
       commenting_initiative:
         messages.permissionAction_comment_proposals_subtitle,
       posting_initiative: messages.permissionAction_post_proposal_subtitle,

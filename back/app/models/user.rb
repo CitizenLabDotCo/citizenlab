@@ -133,7 +133,7 @@ class User < ApplicationRecord
   has_many :assigned_initiatives, class_name: 'Initiative', foreign_key: :assignee_id, dependent: :nullify
   has_many :comments, foreign_key: :author_id, dependent: :nullify
   has_many :official_feedbacks, dependent: :nullify
-  has_many :votes, dependent: :nullify
+  has_many :reactions, dependent: :nullify
 
   after_initialize do
     next unless has_attribute?('roles')

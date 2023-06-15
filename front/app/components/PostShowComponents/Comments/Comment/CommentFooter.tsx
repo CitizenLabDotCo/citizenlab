@@ -2,9 +2,9 @@ import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import CommentVote from './CommentVote';
 import CommentReplyButton from './CommentReplyButton';
 import CommentsMoreActions from './CommentsMoreActions';
+import CommentReaction from './CommentReaction';
 
 // style
 import styled from 'styled-components';
@@ -67,7 +67,7 @@ const Left = styled.ul`
   }
 `;
 
-const StyledCommentVote = styled(CommentVote)`
+const StyledCommentReaction = styled(CommentReaction)`
   height: ${footerHeight};
   margin-top: ${footerTopMargin};
 `;
@@ -120,7 +120,7 @@ const CommentFooter = ({
   return (
     <Container className={className || ''}>
       <Left>
-        <StyledCommentVote
+        <StyledCommentReaction
           ideaId={ideaId}
           postType={postType}
           comment={comment.data}

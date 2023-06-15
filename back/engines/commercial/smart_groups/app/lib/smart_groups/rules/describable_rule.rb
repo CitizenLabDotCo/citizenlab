@@ -6,7 +6,9 @@ module SmartGroups::Rules
 
     def description_multiloc
       MultilocService.new.block_to_multiloc do |locale|
-        case predicate
+        # TODO: .sub is a temporary fix until we deploy the copy changes to the front-end
+        predicate_temp = predicate.sub 'reacted', 'voted'
+        case predicate_temp
         when 'is_empty'
           I18n.t!('smart_group_rules.is_empty', property: description_property(locale))
         when 'not_is_empty'
@@ -14,18 +16,18 @@ module SmartGroups::Rules
         else
           begin
             I18n.t!(
-              "smart_group_rules.#{description_rule_type}.#{predicate}_#{value}",
+              "smart_group_rules.#{description_rule_type}.#{predicate_temp}_#{value}",
               property: description_property(locale)
             )
           rescue I18n::MissingTranslationData
             begin
               I18n.t!(
-                "smart_group_rules.#{description_rule_type}.#{predicate}",
+                "smart_group_rules.#{description_rule_type}.#{predicate_temp}",
                 property: description_property(locale),
                 value: description_value(locale)
               )
             rescue I18n::MissingTranslationData
-              raise "Unsupported rule description: smart_group_rules.#{description_rule_type}.#{predicate}{_#{value}}"
+              raise "Unsupported rule description: smart_group_rules.#{description_rule_type}.#{predicate_temp}{_#{value}}"
             end
           end
         end

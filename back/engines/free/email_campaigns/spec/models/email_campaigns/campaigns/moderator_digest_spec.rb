@@ -17,7 +17,7 @@ RSpec.describe 'EmailCampaigns::Campaigns::ModeratorDigest', skip: skip_reason d
     let!(:moderator) { create(:project_moderator, projects: [project]) }
     let!(:old_ideas) { create_list(:idea, 2, project: project, published_at: 20.days.ago) }
     let!(:new_ideas) { create_list(:idea, 3, project: project, published_at: 1.day.ago) }
-    let!(:vote) { create(:vote, mode: 'up', votable: new_ideas.first) }
+    let!(:reaction) { create(:reaction, mode: 'up', reactable: new_ideas.first) }
     let!(:other_idea) { create(:idea, project: create(:project)) }
     let!(:draft) { create(:idea, project: project, publication_status: 'draft') }
 
@@ -28,7 +28,7 @@ RSpec.describe 'EmailCampaigns::Campaigns::ModeratorDigest', skip: skip_reason d
         command.dig(:event_payload, :statistics, :activities, :new_ideas, :increase)
       ).to eq(new_ideas.size)
       expect(
-        command.dig(:event_payload, :statistics, :activities, :new_votes, :increase)
+        command.dig(:event_payload, :statistics, :activities, :new_reactions, :increase)
       ).to eq(1)
       expect(
         command.dig(:event_payload, :top_ideas).pluck(:id)
