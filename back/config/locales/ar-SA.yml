@@ -199,8 +199,8 @@ ar:
       created_at: 'تم التقديم في'
       published_at: 'تم النشر في'
       comments_count: 'التعليقات'
-      upvotes_count: 'أصوات إيجابية'
-      downvotes_count: 'أصوات سلبية'
+      likes_count: 'الإعجابات'
+      dislikes_count: 'يكره'
       baskets_count: 'سلال'
       input_url: 'URL'
       project: 'المشروع'
@@ -241,7 +241,7 @@ ar:
       for_more_information: "لمزيد من المعلومات حول هذا الموضوع ، يمكنك الرجوع إلى %{termsAndConditionsPage}"
       you_can_sign_in_again_from: "يمكنك تسجيل الدخول مرة أخرى من %{date}"
   user:
-    anon_first_name: "مستخدم"
+    anon_first_name: "User"
   time:
     am: أكون
     formats:
