@@ -5,7 +5,7 @@ import Observer from '@researchgate/react-intersection-observer';
 // components
 import ParentCommentForm from './ParentCommentForm';
 import Comments from './Comments';
-import CommentSorting, { InternalCommentSort } from './CommentSorting';
+import CommentSorting from './CommentSorting';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -24,6 +24,7 @@ import tracks from './tracks';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useComments from 'api/comments/useComments';
+import { InternalCommentSort } from 'api/internal_comments/types';
 
 const Container = styled.div``;
 

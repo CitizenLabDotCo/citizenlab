@@ -4,14 +4,13 @@ import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import commentsMessages from 'components/PostShowComponents/Comments/messages';
 import { CommentsSort } from 'api/comments/types';
 import { Box } from '@citizenlab/cl2-component-library';
+import { InternalCommentSort } from 'api/internal_comments/types';
 
 interface Props {
   onChange: (value: InternalCommentSort) => void;
   selectedCommentSort: InternalCommentSort;
   className?: string;
 }
-
-export type InternalCommentSort = '-new' | 'new';
 
 const CommentSorting = ({
   onChange,

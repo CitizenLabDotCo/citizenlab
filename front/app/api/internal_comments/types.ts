@@ -88,11 +88,10 @@ export interface DeleteReason {
   other_reason?: string;
 }
 
-// back-end also offers 'upvotes_count' if needed
-export type CommentsSort = '-new' | 'new' | '-upvotes_count';
+export type InternalCommentSort = '-new' | 'new';
 
 export type ICommentQueryParameters = {
-  sort?: CommentsSort;
+  sort?: InternalCommentSort;
   pageNumber?: number;
   pageSize?: number;
 };
