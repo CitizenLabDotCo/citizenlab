@@ -1,4 +1,11 @@
-import React, { lazy, Suspense, useState, useRef, useEffect } from 'react';
+import React, {
+  lazy,
+  Suspense,
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+} from 'react';
 import { isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
@@ -23,7 +30,7 @@ import AssignBudgetControl from 'components/AssignBudgetControl';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 import IdeaMoreActions from './IdeaMoreActions';
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
-import GoBackButton from './GoBackButton';
+import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
 const LazyComments = lazy(
   () => import('components/PostShowComponents/Comments')
 );
@@ -34,6 +41,7 @@ import RightColumnDesktop from './RightColumnDesktop';
 
 // utils
 import { isFieldEnabled } from 'utils/projectUtils';
+import eventEmitter from 'utils/eventEmitter';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
@@ -237,6 +245,16 @@ export const IdeasShow = ({
 
   let content: JSX.Element | null = null;
 
+  const handleGoBack = useCallback(() => {
+    if (insideModal) {
+      eventEmitter.emit('closeIdeaModal');
+      return;
+    }
+
+    if (!project) return;
+    clHistory.push(`/projects/${project.attributes.slug}`);
+  }, [project, insideModal]);
+
   if (
     !isNilOrError(project) &&
     !isNilOrError(idea) &&
@@ -276,7 +294,10 @@ export const IdeasShow = ({
         {!isCompactView && (
           <TopBar>
             <Box mb="40px">
-              <GoBackButton projectId={projectId} insideModal={insideModal} />
+              <GoBackButtonSolid
+                text={localize(project.attributes.title_multiloc)}
+                onClick={handleGoBack}
+              />
             </Box>
             <IdeaMoreActions idea={idea.data} projectId={projectId} />
           </TopBar>
