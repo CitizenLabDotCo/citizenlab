@@ -62,10 +62,10 @@ describe('Blocked user', () => {
 
   // TODO: This test is flaky and I can't get it passing on CI. Skipping it for now so we can release
   // registration work, but we will come back to this.
-  it.skip('Should not be able to vote comments', () => {
+  it.skip('Should not be able to reaction comments', () => {
     cy.visit('ideas/verified-idea');
-    cy.get('#e2e-comment-upvote-button').should('exist');
-    cy.get('#e2e-comment-upvote-button').click({ force: true });
-    cy.get('.e2e-comment-vote.voted').should('not.exist');
+    cy.get('#e2e-comment-like-button').should('exist');
+    cy.get('#e2e-comment-like-button').click({ force: true });
+    cy.get('.e2e-comment-reaction.reacted').should('not.exist');
   });
 });

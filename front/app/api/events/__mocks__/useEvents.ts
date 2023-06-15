@@ -8,7 +8,7 @@ export const eventsData = [
         en: 'Council Meeting',
       },
       description_multiloc: {
-        en: '<p>During this council meeting, those citizen initiatives that gained 100 votes in less than 3 months, will be presented.</p><p>The council will then share their view on each idea.</p>',
+        en: '<p>During this council meeting, those citizen initiatives that gained 100 reactions in less than 3 months, will be presented.</p><p>The council will then share their view on each idea.</p>',
       },
       location_multiloc: {},
       start_at: '2023-02-03T09:00:00.000Z',
@@ -23,10 +23,10 @@ export const eventsData = [
     attributes: {
       project_id: '2',
       title_multiloc: {
-        en: 'Voting for ideas',
+        en: 'Reacting for ideas',
       },
       description_multiloc: {
-        en: 'We will be voting for the ideas that we want to see implemented in our city.',
+        en: 'We will be reacting for the ideas that we want to see implemented in our city.',
       },
       location_multiloc: {},
       start_at: '2023-03-03T09:00:00.000Z',

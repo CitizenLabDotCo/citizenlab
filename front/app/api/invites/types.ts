@@ -45,7 +45,7 @@ export interface IInviteData {
     invitee: {
       data: {
         id: string;
-        type: 'votable' | 'user';
+        type: 'reactable' | 'user';
       };
     };
     inviter: {
