@@ -199,8 +199,8 @@
       created_at: 'Innsendt'
       published_at: 'Publisert'
       comments_count: 'Kommentarer'
-      upvotes_count: 'Positive stemmer'
-      downvotes_count: 'Negative stemmer'
+      likes_count: 'Liker'
+      dislikes_count: 'Misliker'
       baskets_count: 'Kurver'
       input_url: 'URL-adresse'
       project: 'Prosjekt'
@@ -241,7 +241,7 @@
       for_more_information: "For mer informasjon om dette, kan du konsultere %{termsAndConditionsPage}"
       you_can_sign_in_again_from: "Du kan logge på igjen fra %{date}"
   user:
-    anon_first_name: "Bruker"
+    anon_first_name: "User"
   time:
     am: er
     formats:
