@@ -119,8 +119,7 @@ export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
         budgetExceedsLimit || spentBudget === 0 || minBudgetRequiredNotReached
       }
     >
-      {hasUserParticipated && <FormattedMessage {...messages.submitted} />}
-      {!hasUserParticipated && <FormattedMessage {...messages.submit} />}
+      <FormattedMessage {...messages.submit} />
     </Button>
   );
 
