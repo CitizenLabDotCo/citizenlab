@@ -1,4 +1,4 @@
-import React, { memo, FormEvent, useState } from 'react';
+import React, { FormEvent, useState } from 'react';
 
 // components
 import { Box, Button, Icon } from '@citizenlab/cl2-component-library';
@@ -137,7 +137,6 @@ const AssignBudgetControl = ({ view, ideaId, className, projectId }: Props) => {
   const basketTotal = basket?.attributes.total_budget;
   const [processing, setProcessing] = useState(false);
 
-  console.log({ basket });
   if (
     isNilOrError(idea) ||
     !idea.data.attributes.budget ||
