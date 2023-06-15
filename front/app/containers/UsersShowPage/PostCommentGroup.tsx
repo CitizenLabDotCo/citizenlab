@@ -1,9 +1,6 @@
 import React, { FormEvent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
-// permissions
-import { canModerateProject } from 'services/permissions/rules/projectPermissions';
-
 // typings
 import { ICommentData } from 'api/comments/types';
 import { IOpenPostPageModalEvent } from 'containers/App';
@@ -187,41 +184,44 @@ const PostCommentGroup = ({ postType, comments, userId, postId }: Props) => {
       </PostLink>
 
       {comments.map((comment) => {
-        return (
-          <CommentContainer key={comment.id}>
-            <CommentHeader
-              projectId={projectId}
-              authorId={userId}
-              commentId={comment.id}
-              commentType="parent"
-              commentCreatedAt={comment.attributes.created_at}
-              moderator={canModerateProject(projectId, { data: user.data })}
-            />
-            <CommentBody
-              commentId={comment.id}
-              commentType="parent"
-              editing={false}
-              onCommentSaved={nothingHappens}
-              onCancelEditing={nothingHappens}
-              postId={postId}
-              postType={postType}
-            />
-            <ReactionsContainer>
-              <ReactionIcon ariaHidden name="vote-up" />
-              <ReactionCount aria-hidden>
-                {comment.attributes.likes_count}
-              </ReactionCount>
-              <ScreenReaderOnly>
-                <FormattedMessage
-                  {...messages.a11y_likesCount}
-                  values={{
-                    likesCount: comment.attributes.likes_count,
-                  }}
-                />
-              </ScreenReaderOnly>
-            </ReactionsContainer>
-          </CommentContainer>
-        );
+        // Don't show deleted comments. Better to have a filter in the BE.
+        if (comment.attributes.publication_status === 'published') {
+          return (
+            <CommentContainer key={comment.id}>
+              <CommentHeader
+                projectId={projectId}
+                authorId={userId}
+                commentType="parent"
+                commentAttributes={comment.attributes}
+              />
+              <CommentBody
+                commentId={comment.id}
+                commentType="parent"
+                editing={false}
+                onCommentSaved={nothingHappens}
+                onCancelEditing={nothingHappens}
+                ideaId={ideaId}
+                initiativeId={initiativeId}
+              />
+              <ReactionsContainer>
+                <ReactionIcon ariaHidden name="vote-up" />
+                <ReactionCount aria-hidden>
+                  {comment.attributes.likes_count}
+                </ReactionCount>
+                <ScreenReaderOnly>
+                  <FormattedMessage
+                    {...messages.a11y_likesCount}
+                    values={{
+                      likesCount: comment.attributes.likes_count,
+                    }}
+                  />
+                </ScreenReaderOnly>
+              </ReactionsContainer>
+            </CommentContainer>
+          );
+        }
+
+        return null;
       })}
     </Container>
   );

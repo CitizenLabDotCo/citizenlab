@@ -19,7 +19,7 @@ interface CommentAttributes {
   children_count: number;
 }
 
-interface IPresentComment extends CommentAttributes {
+export interface IPresentComment extends CommentAttributes {
   body_multiloc: Multiloc;
   publication_status: 'published';
   anonymous?: boolean;
@@ -84,7 +84,8 @@ export const DeleteReasonCode = {
 
 export interface DeleteReason {
   reason_code: keyof typeof DeleteReasonCode;
-  other_reason: string | null;
+  // Only here if reason_code is 'other'
+  other_reason?: string;
 }
 
 // back-end also offers 'likes_count' if needed

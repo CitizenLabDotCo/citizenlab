@@ -51,15 +51,15 @@ class SideFxIdeaService
       )
     end
 
-    return unless idea.body_multiloc_previously_changed?
-
-    LogActivityJob.perform_later(
-      idea,
-      'changed_body',
-      user_for_activity_on_anonymizable_item(idea, user),
-      idea.updated_at.to_i,
-      payload: { change: idea.body_multiloc_previous_change }
-    )
+    if idea.body_multiloc_previously_changed?
+      LogActivityJob.perform_later(
+        idea,
+        'changed_body',
+        user_for_activity_on_anonymizable_item(idea, user),
+        idea.updated_at.to_i,
+        payload: { change: idea.body_multiloc_previous_change }
+      )
+    end
   end
 
   def before_destroy(idea, _user); end

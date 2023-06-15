@@ -7,7 +7,6 @@ import LikeButton from './LikeButton';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 // hooks
-import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useAuthUser from 'api/me/useAuthUser';
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
@@ -17,7 +16,6 @@ import useCommentReaction from 'api/comment_reactions/useCommentReaction';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { postIsIdea, postIsInitiative } from '../utils';
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 import { trackLike, trackCancelLike } from './trackReaction';
 
@@ -26,7 +24,7 @@ import { ICommentData } from 'api/comments/types';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
 interface Props {
-  postId: string;
+  ideaId: string | undefined;
   postType: 'idea' | 'initiative';
   commentType: 'parent' | 'child' | undefined;
   comment: ICommentData;
@@ -34,7 +32,7 @@ interface Props {
 }
 
 const CommentReaction = ({
-  postId,
+  ideaId,
   postType,
   comment,
   commentType,
@@ -42,11 +40,6 @@ const CommentReaction = ({
 }: Props) => {
   const [reacted, setReacted] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
-
-  const initiativeId = postType === 'initiative' ? postId : undefined;
-  const ideaId = postType === 'idea' ? postId : undefined;
-
-  const { data: initiative } = useInitiativeById(initiativeId);
   const { data: idea } = useIdeaById(ideaId);
   const { data: authUser } = useAuthUser();
 
@@ -95,8 +88,6 @@ const CommentReaction = ({
     }
   };
 
-  const post = postType === 'idea' ? idea?.data : initiative?.data;
-
   useEffect(() => {
     setReacted(!isNilOrError(commentReaction));
   }, [commentReaction]);
@@ -126,13 +117,11 @@ const CommentReaction = ({
       },
     };
 
-    if (!post) return;
-
-    if (postIsIdea(post)) {
+    if (ideaId && idea) {
       // Wondering why 'comment_reacting_idea' and not 'commenting_idea'?
       // See app/api/ideas/types.ts
       const actionDescriptor =
-        post.attributes.action_descriptor.comment_reacting_idea;
+        idea.data.attributes.action_descriptor.comment_reacting_idea;
 
       if (actionDescriptor.enabled) {
         reaction();
@@ -145,7 +134,7 @@ const CommentReaction = ({
         const context = {
           type: 'idea',
           action: 'commenting_idea',
-          id: postId,
+          id: ideaId,
         } as const;
 
         triggerAuthenticationFlow({
@@ -155,7 +144,7 @@ const CommentReaction = ({
       }
     }
 
-    if (postIsInitiative(post)) {
+    if (postType === 'initiative') {
       const authenticationRequirements =
         commentReactingPermissionInitiative?.authenticationRequirements;
 
@@ -177,17 +166,17 @@ const CommentReaction = ({
     }
   };
 
-  if (!isNilOrError(comment) && post) {
+  if (!isNilOrError(comment)) {
     let disabled: boolean;
 
-    if (postIsIdea(post)) {
+    if (idea) {
       // Wondering why 'comment_reacting_idea' and not 'commenting_idea'?
       // See app/api/ideas/types.ts
       const { enabled, disabled_reason } =
-        post.attributes.action_descriptor.comment_reacting_idea;
+        idea.data.attributes.action_descriptor.comment_reacting_idea;
       disabled = !enabled && !isFixableByAuthentication(disabled_reason);
     } else {
-      disabled = !!commentReactingPermissionInitiative?.enabled;
+      disabled = !commentReactingPermissionInitiative?.enabled;
     }
 
     if (!disabled || likeCount > 0) {

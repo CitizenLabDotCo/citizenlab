@@ -10,7 +10,7 @@ import Body from 'components/PostShowComponents/Body';
 import DropdownMap from 'components/PostShowComponents/DropdownMap';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import PostedBy from 'containers/InitiativesShow/PostedBy';
-import Comments from 'components/PostShowComponents/Comments';
+import CommentsSection from 'components/PostShowComponents/Comments';
 import FileAttachments from 'components/UI/FileAttachments';
 import FeedbackSettings from './FeedbackSettings';
 import Button from 'components/UI/Button';
@@ -75,7 +75,7 @@ const StyledOfficialFeedback = styled(OfficialFeedback)`
   margin-top: 70px;
 `;
 
-const StyledComments = styled(Comments)`
+const StyledComments = styled(CommentsSection)`
   margin-top: 30px;
 `;
 

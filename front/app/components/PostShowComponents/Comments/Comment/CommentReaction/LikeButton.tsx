@@ -11,7 +11,6 @@ import messages from '../../messages';
 // styling
 import styled from 'styled-components';
 import { colors, fontSizes, isRtl } from 'utils/styleUtils';
-import { lighten } from 'polished';
 
 const Container = styled.li`
   display: flex;
@@ -42,19 +41,8 @@ const ButtonWrapper = styled.button`
   border: none;
   cursor: pointer;
 
-  &.disabled {
-    cursor: auto;
-  }
-
-  &.enabled:not(.reacted):hover {
-    color: #000;
-
-    ${LikeIcon} {
-      fill: #000;
-    }
-  }
-
-  &.enabled.reacted {
+  &.enabled.reacted,
+  &.disabled.reacted {
     color: ${colors.success};
 
     ${LikeIcon} {
@@ -62,20 +50,25 @@ const ButtonWrapper = styled.button`
     }
   }
 
+  &.enabled:not(.reacted),
   &.disabled:not(.reacted) {
-    color: ${lighten(0.25, colors.textSecondary)};
+    color: ${colors.textSecondary};
 
     ${LikeIcon} {
-      fill: ${lighten(0.25, colors.textSecondary)};
+      fill: ${colors.textSecondary};
     }
   }
 
-  &.disabled.reacted {
-    color: ${lighten(0.25, colors.success)};
+  &.enabled:not(.reacted):hover {
+    color: ${colors.black};
 
     ${LikeIcon} {
-      fill: ${lighten(0.25, colors.success)};
+      fill: ${colors.black};
     }
+  }
+
+  &.disabled {
+    cursor: auto;
   }
 `;
 
