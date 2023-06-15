@@ -557,7 +557,7 @@ sr-Latn:
         input_is_updated: 'Унос је ажуриран'
         input_status_changes: 'Статус уноса се мења'
         new_input_is_published: 'Нови унос је објављен'
-        new_proposal_is_posted: 'Нови предлог је објављен'
+        new_proposal_is_posted: 'New proposal is posted'
         project_phase_changes: 'Промене фазе пројекта'
         proposal_gets_reported_as_spam: 'Предлог се пријављује као нежељена пошта'
         proposal_is_assigned_to_admin: 'Предлог се додељује администратору'
