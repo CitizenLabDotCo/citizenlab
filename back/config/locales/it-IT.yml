@@ -135,10 +135,10 @@ it:
       section1:
         description:
       section2:
-        title: Immagini e allegati
+        title: Images and attachments
         description:
       section3:
-        title: Dettagli
+        title: Details
         description:
   custom_forms:
     categories:
@@ -160,7 +160,7 @@ it:
       attachements:
         title: Immagini e allegati
       extra:
-        title: Informazioni aggiuntive
+        title: Additional information
   custom_field_options:
     gender:
       male: Maschio
@@ -190,32 +190,32 @@ it:
   xlsx_export:
     column_headers:
       input_id: 'ID'
-      latitude: 'Latitudine'
-      longitude: 'Longitudine'
-      author_fullname: 'Nome dell''autore'
-      author_email: 'Email dell''autore'
-      author_id: 'ID autore'
-      budget: 'Bilancio'
-      created_at: 'Presentato a'
-      published_at: 'Pubblicato presso'
+      latitude: 'Latitude'
+      longitude: 'Longitude'
+      author_fullname: 'Author name'
+      author_email: 'Author email'
+      author_id: 'Author ID'
+      budget: 'Budget'
+      created_at: 'Submitted at'
+      published_at: 'Published at'
       comments_count: 'Commenti'
       upvotes_count: 'Voto positivo'
       downvotes_count: 'Voto negativo'
-      baskets_count: 'Cestini'
+      baskets_count: 'Baskets'
       input_url: 'URL'
       project: 'Progetto'
       status: 'Stato'
       assignee_fullname: 'Assegnatario'
-      assignee_email: 'Email del destinatario'
-    anonymous: 'Anonimo'
+      assignee_email: 'Assignee email'
+    anonymous: 'Anonymous'
   form_builder:
     default_select_field:
-      title: 'La vostra domanda'
-      option1: 'Opzione 1'
-      option2: 'Opzione 2'
+      title: 'Your question'
+      option1: 'Option 1'
+      option2: 'Option 2'
     survey_end_page:
-      title: 'Fine del sondaggio'
-      description: "Inviate le vostre risposte selezionando \"Invia sondaggio\" qui sotto."
+      title: 'Survey end'
+      description: "Please submit your answers by selecting 'Submit survey' below."
   project_copy:
     title_suffix: 'Copia'
   confirmations_mailer:
@@ -223,27 +223,27 @@ it:
       subject: "Conferma il tuo indirizzo email per la piattaforma di partecipazione di %{organizationName}"
       header: "Il tuo codice di conferma"
       header_message: "Ciao %{firstName}!"
-      confirm_email_address: "Confermare l'indirizzo e-mail"
+      confirm_email_address: "Confirm your email address"
       thanks_for_signing_up: "Grazie per esserti iscritto alla piattaforma di partecipazione di %{organizationName}."
-      best_regards: "Cordiali saluti,"
-      ignore_email: "Se non avete richiesto un codice, potete tranquillamente ignorare questa e-mail."
-      expire_code: "Questo codice scadrà tra "
-      24_hours: "24 ore."
+      best_regards: "Best regards,"
+      ignore_email: "If you didn't request a code, you can safely ignore this email."
+      expire_code: "This code will be expired in "
+      24_hours: "24 hours."
       copy_paste_the_link_below: "Copia e incolla il codice qui sotto nel tuo modulo di registrazione."
       the_link_is_valid_for: "Questo link è valido per 24 ore. Se il link è scaduto, puoi <a href=\"%{link}\">richiedere un nuovo codice</a>."
       did_you_receive_this_email_in_error: "Hai ricevuto questa e-mail per errore? <a href=\"%{link}\">Facci sapere</a>."
   user_blocked_mailer:
     send_user_blocked_email:
-      subject: 'Il suo account è stato temporaneamente disabilitato'
-      title_user_blocked: 'Il suo account è stato temporaneamente disabilitato'
-      paragraph_1_without_reason: "Il tuo account sulla piattaforma di partecipazione %{organizationName} è stato temporaneamente disabilitato per una violazione delle linee guida della comunità."
-      paragraph_1_with_reason: "Il vostro account sulla piattaforma di partecipazione di %{organizationName} è stato temporaneamente disabilitato per il seguente motivo:"
-      for_more_information: "Per ulteriori informazioni, è possibile consultare il sito %{termsAndConditionsPage}."
-      you_can_sign_in_again_from: "È possibile accedere nuovamente a %{date}"
+      subject: 'Your account has been temporarily disabled'
+      title_user_blocked: 'Your account has been temporarily disabled'
+      paragraph_1_without_reason: "Your account on the participation platform of %{organizationName} has been temporarily disabled for a violation of the community guidelines."
+      paragraph_1_with_reason: "Your account on the participation platform of %{organizationName} has been temporarily disabled for the following reason:"
+      for_more_information: "For more information on this, you can consult the %{termsAndConditionsPage}"
+      you_can_sign_in_again_from: "You can sign in again from %{date}"
   user:
-    anon_first_name: "Utente"
+    anon_first_name: "User"
   time:
-    am: sono
+    am: am
     formats:
       hour_of_day: "%H:%M"
     pm: pm
