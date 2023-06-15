@@ -29,7 +29,7 @@ import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useProjectById from 'api/projects/useProjectById';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useComments from 'api/comments/useComments';
-import CommentingIdeaDisabled from './CommetingIdeaDisabled';
+import CommentingIdeaDisabled from './CommentingIdeaDisabled';
 
 const Container = styled.div``;
 
