@@ -1,6 +1,6 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 
-import useMarkForDeletion from './useMarkCommentForDeletion';
+import useMarkCommentForDeletion from './useMarkCommentForDeletion';
 
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
@@ -15,13 +15,13 @@ const server = setupServer(
   })
 );
 
-describe('useMarkForDeletion', () => {
+describe('useMarkCommentForDeletion', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
     const { result, waitFor } = renderHook(
-      () => useMarkForDeletion({ ideaId: 'ideaId' }),
+      () => useMarkCommentForDeletion({ ideaId: 'ideaId' }),
       {
         wrapper: createQueryClientWrapper(),
       }
@@ -45,7 +45,7 @@ describe('useMarkForDeletion', () => {
     );
 
     const { result, waitFor } = renderHook(
-      () => useMarkForDeletion({ ideaId: 'ideaId' }),
+      () => useMarkCommentForDeletion({ ideaId: 'ideaId' }),
       {
         wrapper: createQueryClientWrapper(),
       }
