@@ -557,7 +557,7 @@ tr:
         input_is_updated: 'Girdi güncellenir'
         input_status_changes: 'Giriş durumu değişiklikleri'
         new_input_is_published: 'Yeni girdi yayınlandı'
-        new_proposal_is_posted: 'Yeni teklif yayınlandı'
+        new_proposal_is_posted: 'New proposal is posted'
         project_phase_changes: 'Proje aşaması değişiklikleri'
         proposal_gets_reported_as_spam: 'Teklif spam olarak bildiriliyor'
         proposal_is_assigned_to_admin: 'Teklif yöneticiye atanır'
