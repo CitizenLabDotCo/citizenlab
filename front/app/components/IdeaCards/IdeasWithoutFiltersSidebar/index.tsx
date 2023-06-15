@@ -59,11 +59,6 @@ const FiltersArea = styled.div`
       margin-bottom: 0px;
     `}
   }
-  ${media.desktop`
-    &.mapView {
-      margin-top: -65px;
-    }
-  `}
   ${media.tablet`
     flex-direction: column;
     align-items: stretch;
