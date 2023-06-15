@@ -76,10 +76,12 @@ export type ParticipationMethodConfig = {
   postSortingOptions?: PostSortingOptionType[];
   showInputCount: boolean;
   hideAuthorOnIdeas?: boolean; // Hides the author on the idea pages/cards
+  showIdeaFilters?: boolean; // Shows filters on the idea list
 };
 
 const ideationConfig: ParticipationMethodConfig = {
   showInputCount: true,
+  showIdeaFilters: true,
   formEditor: 'simpleFormEditor',
   getMethodPickerMessage: () => {
     return <FormattedMessage {...messages.inputAndFeedback} />;
@@ -244,6 +246,7 @@ const documentAnnotationConfig: ParticipationMethodConfig = {
 const votingConfig: ParticipationMethodConfig = {
   showInputCount: false,
   formEditor: 'simpleFormEditor',
+  showIdeaFilters: false,
   getMethodPickerMessage: () => {
     return <FormattedMessage {...messages.conductParticipatoryBudgetingText} />;
   },

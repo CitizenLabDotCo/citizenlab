@@ -33,7 +33,7 @@ interface Props {
 
 const IdeaCardFooter = ({ idea, showCommentCount }: Props) => {
   const { formatMessage } = useIntl();
-  const isSmallerThanPhone = useBreakpoint('phone');
+  const isSmallerThanTablet = useBreakpoint('tablet');
 
   const onReadMoreClick = (event: FormEvent) => {
     event.preventDefault();
@@ -47,7 +47,7 @@ const IdeaCardFooter = ({ idea, showCommentCount }: Props) => {
 
   return (
     <Footer>
-      {isSmallerThanPhone && (
+      {isSmallerThanTablet && (
         <Button
           size="s"
           textColor={colors.blue400}

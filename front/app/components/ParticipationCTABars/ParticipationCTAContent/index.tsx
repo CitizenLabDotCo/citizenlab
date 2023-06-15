@@ -49,8 +49,8 @@ type Props = {
   CTAButton?: React.ReactNode;
   currentPhase: IPhaseData | undefined;
   hideDefaultParticipationMessage?: boolean;
-  participationState?: JSX.Element;
-  timeLocation?: 'left' | 'right';
+  participationState?: JSX.Element; // Optional element which displays on bottom left
+  timeLeftPosition?: 'left' | 'right';
 };
 
 export const ParticipationCTAContent = ({
@@ -59,7 +59,7 @@ export const ParticipationCTAContent = ({
   hasUserParticipated = false,
   hideDefaultParticipationMessage = false,
   participationState,
-  timeLocation = 'right',
+  timeLeftPosition = 'right',
 }: Props) => {
   const theme = useTheme();
   const { formatMessage } = useIntl();
@@ -130,11 +130,11 @@ export const ParticipationCTAContent = ({
                   <FormattedMessage {...userParticipationMessage} />
                 )}
                 {hideDefaultParticipationMessage &&
-                  timeLocation === 'left' &&
+                  timeLeftPosition === 'left' &&
                   timeLeftTranslated?.toUpperCase()}
               </div>
             </Text>
-            {timeLeft !== undefined && timeLocation === 'right' && (
+            {timeLeft !== undefined && timeLeftPosition === 'right' && (
               <Text
                 color="white"
                 style={{ textTransform: 'uppercase' }}
@@ -152,12 +152,7 @@ export const ParticipationCTAContent = ({
               </Text>
             )}
           </Box>
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            flexDirection="column"
-          >
+          <Box display="flex" alignItems="center" width="100%">
             {participationState && participationState}
           </Box>
         </Box>
@@ -196,16 +191,18 @@ export const ParticipationCTAContent = ({
             mr="8px"
             showAnimation={!hasUserParticipated}
           />
-          <Text width="90%" color="white" fontSize="s" my="0px">
+          <Text color="white" fontSize="s" my="0px">
             {!hideDefaultParticipationMessage && (
               <FormattedMessage {...userParticipationMessage} />
-            )}
-            {timeLocation === 'left' && timeLeftTranslated?.toUpperCase()}{' '}
+            )}{' '}
+            {timeLeftPosition === 'left' && timeLeftTranslated?.toUpperCase()}{' '}
           </Text>
-          <Box display="flex">{participationState && participationState}</Box>
+          <Box display="flex" width="100%">
+            {participationState && participationState}
+          </Box>
         </Box>
         <Box display="flex" alignItems="center">
-          {timeLeft !== undefined && timeLocation === 'right' && (
+          {timeLeft !== undefined && timeLeftPosition === 'right' && (
             <Text
               color="white"
               style={{ textTransform: 'uppercase' }}

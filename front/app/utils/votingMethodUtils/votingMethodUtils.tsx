@@ -1,12 +1,20 @@
-import { VotingMethod } from 'services/participationContexts';
-import messages from './messages';
-import { MessageDescriptor } from 'react-intl';
 import React from 'react';
+
+// types
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
+import { IAppConfiguration } from 'api/app_configuration/types';
+
+// api
+import { VotingMethod } from 'services/participationContexts';
+
+// intl
+import messages from './messages';
+import { MessageDescriptor } from 'react-intl';
+
+// utils
 import { FormattedMessage } from 'utils/cl-intl';
 import { toFullMonth } from 'utils/dateUtils';
-import { IAppConfiguration } from 'api/app_configuration/types';
 
 /*
   Configuration Specifications
@@ -89,15 +97,27 @@ const budgetingConfig: VotingMethodConfig = {
       );
     }
     if (SubmissionState === 'hasSubmitted') {
+      if (phase) {
+        return (
+          <FormattedMessage
+            values={{
+              b: (chunks) => (
+                <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+              ),
+              endDate: phase && toFullMonth(phase.attributes.end_at, 'day'),
+            }}
+            {...messages.budgetingSubmittedInstructions}
+          />
+        );
+      }
       return (
         <FormattedMessage
           values={{
             b: (chunks) => (
               <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
             ),
-            endDate: phase && toFullMonth(phase.attributes.end_at, 'day'),
           }}
-          {...messages.budgetingSubmittedInstructions}
+          {...messages.budgetingSubmittedInstructionsContinuous}
         />
       );
     } else if (SubmissionState === 'submissionEnded') {

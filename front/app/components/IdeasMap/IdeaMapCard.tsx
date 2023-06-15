@@ -160,8 +160,8 @@ const IdeaMapCard = memo<Props>(
       phase?.data.attributes.voting_method === 'budgeting';
 
     const isParticipatoryBudgetIdea = phase
-      ? isParticipatoryBudgetProject
-      : isParticipatoryBudgetPhase;
+      ? isParticipatoryBudgetPhase
+      : isParticipatoryBudgetProject;
 
     useEffect(() => {
       const subscriptions = [

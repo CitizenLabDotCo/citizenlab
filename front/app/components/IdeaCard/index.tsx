@@ -20,6 +20,8 @@ import useLocalize from 'hooks/useLocalize';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import eventEmitter from 'utils/eventEmitter';
+import { IOpenPostPageModalEvent } from 'containers/App';
 
 // styles
 import styled from 'styled-components';
@@ -31,8 +33,8 @@ import { IIdea } from 'api/ideas/types';
 
 // components
 import AssignBudgetControl from 'components/AssignBudgetControl';
-import eventEmitter from 'utils/eventEmitter';
-import { IOpenPostPageModalEvent } from 'containers/App';
+import { getCurrentPhase } from 'api/phases/utils';
+import usePhases from 'api/phases/usePhases';
 
 const BodyWrapper = styled.div`
   display: flex;
@@ -141,10 +143,12 @@ const CompactIdeaCard = memo<IdeaCardProps>(
     const { data: project } = useProjectById(
       idea.data.relationships.project.data.id
     );
+    const { data: phases } = usePhases(project?.data.id);
     const { data: ideaImage } = useIdeaImage(
       idea.data.id,
       idea.data.relationships.idea_images.data?.[0]?.id
     );
+    const currentPhase = phases ? getCurrentPhase(phases?.data) : undefined;
     const authorId = idea.data.relationships?.author?.data?.id || null;
     const authorHash = idea.data.attributes.author_hash;
     const ideaTitle = localize(idea.data.attributes.title_multiloc);
@@ -172,7 +176,9 @@ const CompactIdeaCard = memo<IdeaCardProps>(
       }
       return null;
     };
-    const votingMethod = project?.data.attributes.voting_method;
+    const votingMethod =
+      currentPhase?.attributes.voting_method ||
+      project?.data.attributes.voting_method;
 
     const getFooter = () => {
       if (project) {

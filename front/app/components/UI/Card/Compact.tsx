@@ -188,7 +188,7 @@ export const Card = memo<Props>(
         </Header>
 
         {!hideBody && <Body>{body}</Body>}
-        <Box mt="auto">{interactions && interactions}</Box>
+        <Box mt="auto">{interactions}</Box>
         {footer}
       </ContentWrapper>
     </Container>
