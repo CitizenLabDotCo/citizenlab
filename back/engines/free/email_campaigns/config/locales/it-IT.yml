@@ -557,7 +557,7 @@ it:
         input_is_updated: 'L''input viene aggiornato'
         input_status_changes: 'Cambiamento dello stato dell''ingresso'
         new_input_is_published: 'Viene pubblicato un nuovo input'
-        new_proposal_is_posted: 'La nuova proposta è pubblicata'
+        new_proposal_is_posted: 'New proposal is posted'
         project_phase_changes: 'Cambiamenti di fase del progetto'
         proposal_gets_reported_as_spam: 'La proposta viene segnalata come spam'
         proposal_is_assigned_to_admin: 'La proposta è assegnata all''amministratore'
