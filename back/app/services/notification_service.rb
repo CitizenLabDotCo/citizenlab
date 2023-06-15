@@ -13,6 +13,7 @@ class NotificationService
     Notifications::InitiativeMarkedAsSpam,
     Notifications::InviteAccepted,
     Notifications::MentionInComment,
+    Notifications::MentionInInternalComment,
     Notifications::MentionInOfficialFeedback,
     Notifications::OfficialFeedbackOnCommentedIdea,
     Notifications::OfficialFeedbackOnCommentedInitiative,
