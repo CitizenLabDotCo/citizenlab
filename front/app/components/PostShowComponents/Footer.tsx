@@ -1,8 +1,10 @@
 import React, { memo, Suspense, lazy } from 'react';
 
 // components
-import LoadingComments from './Comments/LoadingComments';
-const LazyComments = lazy(() => import('./Comments'));
+import LoadingComments from 'components/PostShowComponents/Comments/LoadingComments';
+const LazyComments = lazy(
+  () => import('components/PostShowComponents/Comments')
+);
 
 // styling
 import styled from 'styled-components';

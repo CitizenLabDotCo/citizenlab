@@ -312,6 +312,7 @@ const IdeaContent = ({
                 allowAnonymousParticipation={allowAnonymousParticipation}
                 postId={ideaId}
                 postType="idea"
+                showInternalComments
               />
             </Left>
             <Right>

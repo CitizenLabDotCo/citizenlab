@@ -19,7 +19,7 @@ import { isRtl } from 'utils/styleUtils';
 
 import useMarkCommentForDeletion from 'api/comments/useMarkForDeletion';
 import { DeleteReason, ICommentData } from 'api/comments/types';
-import useAuthUser from 'api/me/__mocks__/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 
 const Container = styled.div`
   display: flex;
@@ -78,7 +78,7 @@ const CommentsMoreActions = ({
   });
   const [modalVisible_delete, setModalVisible_delete] = useState(false);
 
-  const authUserId = authUser.data.id;
+  const authUserId = authUser?.data.id;
   // Internal comments can only be deleted by their own author (moderator or admin)
   const authUserIsAuthor = authUserId === comment.relationships.author.data?.id;
   const canDelete = authUserIsAuthor;
