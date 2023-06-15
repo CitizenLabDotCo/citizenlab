@@ -6,7 +6,7 @@ import Observer from '@researchgate/react-intersection-observer';
 import ParentCommentForm from './ParentCommentForm';
 import Comments from './Comments';
 import CommentSorting, { InternalCommentSort } from './CommentSorting';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Title } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -15,7 +15,6 @@ import commentsMessages from 'components/PostShowComponents/Comments/messages';
 // style
 import styled from 'styled-components';
 import { colors, fontSizes, media, isRtl } from 'utils/styleUtils';
-import { Title } from '@citizenlab/cl2-component-library';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
