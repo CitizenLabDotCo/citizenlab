@@ -30,7 +30,6 @@ import eventEmitter from 'utils/eventEmitter';
 
 // events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-import { BUDGET_EXCEEDED_ERROR_EVENT } from './constants';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -82,6 +81,8 @@ const StyledPBExpenses = styled(PBExpenses)`
   margin-top: 25px;
   padding: 20px;
 `;
+
+export const BUDGET_EXCEEDED_ERROR_EVENT = 'budgetExceededError';
 
 type TView = 'ideaCard' | 'ideaPage';
 
@@ -159,7 +160,6 @@ const AssignBudgetControl = memo(
       };
 
       setProcessing(true);
-
       if (!isNilOrError(basket)) {
         const basketIdeaIds = basket.relationships.ideas.data.map(
           (idea) => idea.id
@@ -209,21 +209,21 @@ const AssignBudgetControl = memo(
             done();
             streams.fetchAllWith({ dataId: [basket.id] });
           }
-        } else {
-          try {
-            await addBasket({
-              user_id: authUser.data.id,
-              participation_context_id: participationContextId,
-              participation_context_type: capitalizeParticipationContextType(
-                participationContextType
-              ),
-              idea_ids: [idea.data.id],
-            });
-            done();
-            trackEventByName(tracks.basketCreated);
-          } catch (error) {
-            done();
-          }
+        }
+      } else {
+        try {
+          await addBasket({
+            user_id: authUser.data.id,
+            participation_context_id: participationContextId,
+            participation_context_type: capitalizeParticipationContextType(
+              participationContextType
+            ),
+            idea_ids: [idea.data.id],
+          });
+          done();
+          trackEventByName(tracks.basketCreated);
+        } catch (error) {
+          done();
         }
       }
     };

@@ -15,6 +15,9 @@ import { updateBasket } from 'services/baskets';
 import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
 import { IPhaseData } from 'api/phases/types';
 
+// types
+import { BUDGET_EXCEEDED_ERROR_EVENT } from 'components/AssignBudgetControl';
+
 // utils
 import {
   CTABarProps,
@@ -23,7 +26,6 @@ import {
 import moment from 'moment';
 import { isNilOrError } from 'utils/helperUtils';
 import eventEmitter from 'utils/eventEmitter';
-import { BUDGET_EXCEEDED_ERROR_EVENT } from 'components/AssignBudgetControl/constants';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
