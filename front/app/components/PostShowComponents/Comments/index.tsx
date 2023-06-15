@@ -11,7 +11,7 @@ import messages from './messages';
 
 // style
 import styled, { css } from 'styled-components';
-import { colors, defaultStyles } from 'utils/styleUtils';
+import { colors } from 'utils/styleUtils';
 import { tabBorderSize } from 'components/admin/NavigationTabs/tabsStyleConstants';
 
 // Types
@@ -20,9 +20,7 @@ import { ITab } from 'typings';
 const NavigationTabs = styled.nav`
   ${({ theme }) => css`
     width: 100%;
-    box-shadow: ${defaultStyles.boxShadow};
     border-radius: ${theme.borderRadius} ${theme.borderRadius} 0 0;
-    // padding-left: 44px;
     display: flex;
     border-bottom: ${tabBorderSize}px solid ${colors.grey400};
   `}
@@ -73,7 +71,7 @@ const CommentsSection = ({
               setSelectedTab(name);
             }}
           >
-            <Text p="50px">{label}</Text>
+            <Text>{label}</Text>
           </Tab>
         ))}
       </NavigationTabs>
