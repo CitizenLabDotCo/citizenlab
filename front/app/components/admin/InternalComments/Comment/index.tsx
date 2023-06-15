@@ -9,7 +9,7 @@ import { Icon } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import commentsMessages from 'components/PostShowComponents/Comments/messages';
 
 // style
 import styled from 'styled-components';
@@ -54,7 +54,6 @@ const DeletedIcon = styled(Icon)`
 interface Props {
   ideaId: string | undefined;
   initiativeId: string | undefined;
-  postType: 'idea' | 'initiative';
   projectId?: string | null;
   commentId: string;
   commentType: 'parent' | 'child';
@@ -66,7 +65,6 @@ interface Props {
 const Comment = ({
   ideaId,
   initiativeId,
-  postType,
   projectId,
   commentType,
   commentId,
@@ -76,7 +74,7 @@ const Comment = ({
 }: Props) => {
   const { data: comment } = useComment(commentId);
   const { data: author } = useUserById(
-    comment?.data.relationships?.author?.data?.id
+    comment?.data.relationships.author.data?.id
   );
 
   const [editing, setEditing] = useState(false);
@@ -138,7 +136,6 @@ const Comment = ({
                     className={commentType}
                     ideaId={ideaId}
                     initiativeId={initiativeId}
-                    postType={postType}
                     projectId={projectId}
                     commentId={commentId}
                     commentType={commentType}
@@ -153,7 +150,9 @@ const Comment = ({
           {comment.data.attributes.publication_status === 'deleted' && (
             <DeletedComment>
               <DeletedIcon name="delete" />
-              <FormattedMessage {...messages.commentDeletedPlaceholder} />
+              <FormattedMessage
+                {...commentsMessages.commentDeletedPlaceholder}
+              />
             </DeletedComment>
           )}
         </ContainerInner>

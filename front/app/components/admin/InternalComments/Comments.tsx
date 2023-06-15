@@ -16,7 +16,7 @@ import styled from 'styled-components';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
+import commentsMessages from 'components/PostShowComponents/Comments/messages';
 
 // a11y
 import { ScreenReaderOnly } from 'utils/a11y';
@@ -38,19 +38,10 @@ interface Props {
   allComments: ICommentData[];
   loading: boolean;
   className?: string;
-  allowAnonymousParticipation?: boolean;
 }
 
 const CommentsSection = memo<Props>(
-  ({
-    ideaId,
-    initiativeId,
-    postType,
-    allComments,
-    loading,
-    className,
-    allowAnonymousParticipation,
-  }) => {
+  ({ ideaId, initiativeId, postType, allComments, loading, className }) => {
     const { formatMessage } = useIntl();
     const [commentPostedMessage, setCommentPostedMessage] = useState('');
     const [commentDeletedMessage, setCommentDeletedMessage] = useState('');
@@ -58,11 +49,15 @@ const CommentsSection = memo<Props>(
     useEffect(() => {
       const subscriptions = [
         commentAdded$.subscribe(() => {
-          setCommentPostedMessage(formatMessage(messages.a11y_commentPosted));
+          setCommentPostedMessage(
+            formatMessage(commentsMessages.a11y_commentPosted)
+          );
           setTimeout(() => setCommentPostedMessage(''), 1000);
         }),
         commentDeleted$.subscribe(() => {
-          setCommentDeletedMessage(formatMessage(messages.a11y_commentDeleted));
+          setCommentDeletedMessage(
+            formatMessage(commentsMessages.a11y_commentDeleted)
+          );
           setTimeout(() => setCommentDeletedMessage(''), 1000);
         }),
       ];
@@ -120,7 +115,6 @@ const CommentsSection = memo<Props>(
               commentId={parentComment.id}
               childCommentIds={childCommentIds}
               className={loading ? 'loading' : ''}
-              allowAnonymousParticipation={allowAnonymousParticipation}
             />
           );
         })}

@@ -4,21 +4,12 @@ import { Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
 
-// services
-import { canModerateProject } from 'services/permissions/rules/projectPermissions';
-
 // components
 import Button from 'components/UI/Button';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 import Avatar from 'components/Avatar';
 import clickOutside from 'utils/containers/clickOutside';
-import Link from 'utils/cl-router/Link';
-import {
-  Checkbox,
-  IconTooltip,
-  Text,
-  useBreakpoint,
-} from '@citizenlab/cl2-component-library';
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -26,7 +17,7 @@ import tracks from './tracks';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from './messages';
+import commentsMessages from 'components/PostShowComponents/Comments/messages';
 
 // events
 import { commentReplyButtonClicked$, commentAdded } from './events';
@@ -36,11 +27,9 @@ import styled from 'styled-components';
 import { hideVisually } from 'polished';
 import { colors, defaultStyles } from 'utils/styleUtils';
 import useLocale from 'hooks/useLocale';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
 import useAddCommentToIdea from 'api/comments/useAddCommentToIdea';
 import useAddCommentToInitiative from 'api/comments/useAddCommentToInitiative';
-import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
 
 const Container = styled.div`
   display: flex;
@@ -98,7 +87,6 @@ interface Props {
   projectId?: string | null;
   parentId: string;
   className?: string;
-  allowAnonymousParticipation?: boolean;
 }
 
 const ChildCommentForm = ({
@@ -108,11 +96,9 @@ const ChildCommentForm = ({
   postType,
   projectId,
   className,
-  allowAnonymousParticipation,
 }: Props) => {
   const { formatMessage } = useIntl();
   const locale = useLocale();
-  const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser } = useAuthUser();
   const smallerThanTablet = useBreakpoint('tablet');
 
@@ -127,14 +113,11 @@ const ChildCommentForm = ({
   const [inputValue, setInputValue] = useState('');
   const [focused, setFocused] = useState(false);
   const [canSubmit, setCanSubmit] = useState(false);
-  const [profanityApiError, setProfanityApiError] = useState(false);
   const [hasApiError, setHasApiError] = useState(false);
-  const [postAnonymously, setPostAnonymously] = useState(false);
-  const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
-    useState(false);
   const textareaElement = useRef<HTMLTextAreaElement | null>(null);
   const processing =
     isAddCommentToIdeaLoading || isAddCommentToInitiativeLoading;
+
   useEffect(() => {
     const subscriptions: Subscription[] = [
       commentReplyButtonClicked$
@@ -160,6 +143,10 @@ const ChildCommentForm = ({
     };
   }, [parentId]);
 
+  if (!authUser || isNilOrError(locale)) {
+    return null;
+  }
+
   const setCaretAtEnd = (element: HTMLTextAreaElement) => {
     if (element.setSelectionRange && element.textContent) {
       element.setSelectionRange(
@@ -173,7 +160,6 @@ const ChildCommentForm = ({
     const hasEmptyError = inputValue.trim() === '';
     setInputValue(inputValue);
     setHasApiError(false);
-    setProfanityApiError(false);
     setCanSubmit(focused && !hasEmptyError);
   };
 
@@ -195,15 +181,7 @@ const ChildCommentForm = ({
   };
 
   const onSubmit = async () => {
-    if (allowAnonymousParticipation && postAnonymously) {
-      setShowAnonymousConfirmationModal(true);
-    } else {
-      continueSubmission();
-    }
-  };
-
-  const continueSubmission = async () => {
-    if (!isNilOrError(locale) && !isNilOrError(authUser) && canSubmit) {
+    if (canSubmit) {
       const commentBodyMultiloc = {
         [locale]: inputValue.replace(/@\[(.*?)\]\((.*?)\)/gi, '@$2'),
       };
@@ -226,7 +204,6 @@ const ChildCommentForm = ({
             author_id: authUser.data.id,
             parent_id: parentId,
             body_multiloc: commentBodyMultiloc,
-            anonymous: postAnonymously,
           },
           {
             onSuccess: () => {
@@ -234,30 +211,8 @@ const ChildCommentForm = ({
               setInputValue('');
               setFocused(false);
             },
-            onError: (error) => {
-              const apiErrors = error.errors;
-              const profanityApiError = apiErrors.base.find(
-                (apiError) => apiError.error === 'includes_banned_words'
-              );
-
+            onError: (_error) => {
               setHasApiError(true);
-
-              if (profanityApiError) {
-                trackEventByName(tracks.childCommentProfanityError.name, {
-                  locale,
-                  ideaId,
-                  postType,
-                  projectId,
-                  profaneMessage: commentBodyMultiloc[locale],
-                  location: 'Idea Child Comment Form (citizen side)',
-                  userId: authUser.data.id,
-                  host: !isNilOrError(appConfiguration)
-                    ? appConfiguration.data.attributes.host
-                    : null,
-                });
-
-                setProfanityApiError(true);
-              }
             },
           }
         );
@@ -270,7 +225,6 @@ const ChildCommentForm = ({
             author_id: authUser.data.id,
             parent_id: parentId,
             body_multiloc: commentBodyMultiloc,
-            anonymous: postAnonymously,
           },
           {
             onSuccess: () => {
@@ -278,30 +232,8 @@ const ChildCommentForm = ({
               setInputValue('');
               setFocused(false);
             },
-            onError: (error) => {
-              const apiErrors = error.errors;
-              const profanityApiError = apiErrors.base.find(
-                (apiError) => apiError.error === 'includes_banned_words'
-              );
-
+            onError: (_error) => {
               setHasApiError(true);
-
-              if (profanityApiError) {
-                trackEventByName(tracks.childCommentProfanityError.name, {
-                  locale,
-                  initiativeId,
-                  postType,
-                  projectId,
-                  profaneMessage: commentBodyMultiloc[locale],
-                  location: 'Initiative Child Comment Form (citizen side)',
-                  userId: authUser.data.id,
-                  host: !isNilOrError(appConfiguration)
-                    ? appConfiguration.data.attributes.host
-                    : null,
-                });
-
-                setProfanityApiError(true);
-              }
             },
           }
         );
@@ -329,45 +261,22 @@ const ChildCommentForm = ({
     }
   };
 
-  const placeholder = formatMessage(messages.childCommentBodyPlaceholder);
-
   const getErrorMessage = () => {
     if (hasApiError) {
-      // Profanity error is the only error we're checking specifically
-      // at the moment to provide a specific error message.
-      // All other api errors are generalized to 1 error message
-      if (profanityApiError) {
-        return (
-          <FormattedMessage
-            {...messages.profanityError}
-            values={{
-              guidelinesLink: (
-                <Link to="/pages/faq" target="_blank">
-                  {formatMessage(messages.guidelinesLinkText)}
-                </Link>
-              ),
-            }}
-          />
-        );
-      }
-
-      return <FormattedMessage {...messages.addCommentError} />;
+      return <FormattedMessage {...commentsMessages.addCommentError} />;
     }
 
     return null;
   };
 
-  if (!isNilOrError(authUser) && focused) {
-    const isModerator =
-      !isNilOrError(authUser) && canModerateProject(projectId, authUser);
-
+  if (focused) {
     return (
       <Container className={`${className || ''} e2e-childcomment-form`}>
         <StyledAvatar
           userId={authUser?.data.id}
           size={30}
           isLinkToProfile={!!authUser?.data.id}
-          moderator={isModerator}
+          moderator
         />
         <FormContainer
           onClickOutside={onCancel}
@@ -376,12 +285,14 @@ const ChildCommentForm = ({
           <Form className={focused ? 'focused' : ''}>
             <label>
               <HiddenLabel>
-                <FormattedMessage {...messages.replyToComment} />
+                <FormattedMessage {...commentsMessages.replyToComment} />
               </HiddenLabel>
               <MentionsTextArea
                 className={`childcommentform-${parentId}`}
                 name="comment"
-                placeholder={placeholder}
+                placeholder={formatMessage(
+                  commentsMessages.childCommentBodyPlaceholder
+                )}
                 rows={3}
                 postId={ideaId || initiativeId}
                 postType={postType}
@@ -397,39 +308,13 @@ const ChildCommentForm = ({
                 getTextareaRef={setRef}
               />
               <ButtonWrapper>
-                {allowAnonymousParticipation && (
-                  <Checkbox
-                    ml="8px"
-                    checked={postAnonymously}
-                    label={
-                      <Text mb="12px" fontSize="s" color="coolGrey600">
-                        {formatMessage(messages.postAnonymously)}
-                        <IconTooltip
-                          content={
-                            <Text color="white" fontSize="s" m="0">
-                              {formatMessage(
-                                messages.inputsAssociatedWithProfile
-                              )}
-                            </Text>
-                          }
-                          iconSize="16px"
-                          placement="top-start"
-                          display="inline"
-                          ml="4px"
-                          transform="translate(0,-1)"
-                        />
-                      </Text>
-                    }
-                    onChange={() => setPostAnonymously(!postAnonymously)}
-                  />
-                )}
                 <CancelButton
                   disabled={processing}
                   onClick={onCancel}
                   buttonStyle="secondary"
                   padding={smallerThanTablet ? '6px 12px' : undefined}
                 >
-                  <FormattedMessage {...messages.cancel} />
+                  <FormattedMessage {...commentsMessages.cancel} />
                 </CancelButton>
                 <Button
                   className="e2e-submit-childcomment"
@@ -438,20 +323,12 @@ const ChildCommentForm = ({
                   disabled={!canSubmit}
                   padding={smallerThanTablet ? '6px 12px' : undefined}
                 >
-                  <FormattedMessage {...messages.publishComment} />
+                  <FormattedMessage {...commentsMessages.publishComment} />
                 </Button>
               </ButtonWrapper>
             </label>
           </Form>
         </FormContainer>
-        <AnonymousParticipationConfirmationModal
-          onConfirmAnonymousParticipation={() => {
-            setShowAnonymousConfirmationModal(false);
-            continueSubmission();
-          }}
-          showAnonymousConfirmationModal={showAnonymousConfirmationModal}
-          setShowAnonymousConfirmationModal={setShowAnonymousConfirmationModal}
-        />
       </Container>
     );
   }

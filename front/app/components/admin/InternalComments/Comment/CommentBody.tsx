@@ -8,7 +8,7 @@ import { IUpdatedComment } from 'api/comments/types';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import commentsMessages from 'components/PostShowComponents/Comments/messages';
 
 // Components
 import MentionsTextArea from 'components/UI/MentionsTextArea';
@@ -22,12 +22,9 @@ import styled, { useTheme } from 'styled-components';
 import { CLErrorsJSON, CLErrors } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
-import Outlet from 'components/Outlet';
 import useComment from 'api/comments/useComment';
 import useLocale from 'hooks/useLocale';
-import { filter } from 'rxjs/operators';
 import { Button } from '@citizenlab/cl2-component-library';
-import { commentTranslateButtonClicked$ } from '../events';
 import useLocalize from 'hooks/useLocalize';
 
 const Container = styled.div``;
@@ -86,8 +83,6 @@ const CommentBody = ({
 
   const [commentContent, setCommentContent] = useState('');
   const [editableCommentContent, setEditableCommentContent] = useState('');
-  const [translateButtonClicked, setTranslateButtonClicked] = useState(false);
-
   const [apiErrors, setApiErrors] = useState<CLErrors | null>(null);
   const [textAreaRef, setTextAreaRef] = useState<HTMLTextAreaElement | null>(
     null
@@ -126,19 +121,9 @@ const CommentBody = ({
     }
   }, [comment, commentContent, localize]);
 
-  useEffect(() => {
-    const subscription = commentTranslateButtonClicked$
-      .pipe(filter(({ eventValue }) => eventValue === commentId))
-      .subscribe(() => {
-        setTranslateButtonClicked(
-          (translateButtonClicked) => !translateButtonClicked
-        );
-      });
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, [commentId]);
+  if (isNilOrError(locale)) {
+    return null;
+  }
 
   const setNewTextAreaRef = (ref: HTMLTextAreaElement) => {
     setTextAreaRef(ref);
@@ -165,34 +150,32 @@ const CommentBody = ({
   const onSubmit = async (event: FormEvent<any>) => {
     event.preventDefault();
 
-    if (!isNilOrError(locale)) {
-      const updatedComment: Omit<IUpdatedComment, 'commentId'> = {
-        body_multiloc: {
-          [locale]: editableCommentContent.replace(
-            /@\[(.*?)\]\((.*?)\)/gi,
-            '@$2'
-          ),
+    const updatedComment: Omit<IUpdatedComment, 'commentId'> = {
+      body_multiloc: {
+        [locale]: editableCommentContent.replace(
+          /@\[(.*?)\]\((.*?)\)/gi,
+          '@$2'
+        ),
+      },
+    };
+
+    setApiErrors(null);
+
+    updateComment(
+      { commentId, ...updatedComment },
+      {
+        onSuccess: () => {
+          onCommentSaved();
+          setCommentContent('');
         },
-      };
-
-      setApiErrors(null);
-
-      updateComment(
-        { commentId, ...updatedComment },
-        {
-          onSuccess: () => {
-            onCommentSaved();
-            setCommentContent('');
-          },
-          onError: (error) => {
-            if (isCLErrorJSON(error)) {
-              const apiErrors = (error as CLErrorsJSON).json.errors;
-              setApiErrors(apiErrors);
-            }
-          },
-        }
-      );
-    }
+        onError: (error) => {
+          if (isCLErrorJSON(error)) {
+            const apiErrors = (error as CLErrorsJSON).json.errors;
+            setApiErrors(apiErrors);
+          }
+        },
+      }
+    );
   };
 
   const cancelEditing = (event: React.MouseEvent) => {
@@ -200,10 +183,6 @@ const CommentBody = ({
     setEditableCommentContent('');
     onCancelEditing();
   };
-
-  if (isNilOrError(locale)) {
-    return null;
-  }
 
   return (
     <Container className={className}>
@@ -230,14 +209,14 @@ const CommentBody = ({
                 <Error apiErrors={apiErrors.body_multiloc[locale]} />
               )}
             <Button buttonStyle="secondary" onClick={cancelEditing}>
-              <FormattedMessage {...messages.cancelCommentEdit} />
+              <FormattedMessage {...commentsMessages.cancelCommentEdit} />
             </Button>
             <Button
               buttonStyle="primary"
               processing={processing}
               onClick={onSubmit}
             >
-              <FormattedMessage {...messages.saveCommentEdit} />
+              <FormattedMessage {...commentsMessages.saveCommentEdit} />
             </Button>
           </ButtonsWrapper>
         </StyledForm>
@@ -248,23 +227,9 @@ const CommentBody = ({
             textColor={theme.colors.tenantText}
           >
             <div aria-live="polite">
-              <Outlet
-                id="app.components.PostShowComponents.CommentBody.translation"
-                translateButtonClicked={translateButtonClicked}
-                commentContent={commentContent}
-                locale={locale}
-                commentId={commentId}
-              >
-                {(outletComponents) =>
-                  outletComponents.length > 0 ? (
-                    <>{outletComponents}</>
-                  ) : (
-                    <CommentText
-                      dangerouslySetInnerHTML={{ __html: commentContent }}
-                    />
-                  )
-                }
-              </Outlet>
+              <CommentText
+                dangerouslySetInnerHTML={{ __html: commentContent }}
+              />
             </div>
           </QuillEditedContent>
         </CommentWrapper>

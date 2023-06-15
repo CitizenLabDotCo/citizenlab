@@ -4,10 +4,8 @@ import { lighten } from 'polished';
 import styled from 'styled-components';
 import { media, colors, fontSizes, isRtl } from 'utils/styleUtils';
 import { useIntl } from 'utils/cl-intl';
-import messages from '../messages';
+import commentsMessages from 'components/PostShowComponents/Comments/messages';
 import { IPresentComment } from 'api/comments/types';
-import useUserById from 'api/users/useUserById';
-import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 
 const Container = styled.div`
   display: flex;
@@ -70,11 +68,6 @@ const CommentHeader = ({
   authorId,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const { data: author } = useUserById(authorId);
-
-  const isModerator = author
-    ? canModerateProject(projectId, { data: author.data })
-    : false;
 
   // With the current implementation, this needs to always render,
   // even if author is null/undefined.
@@ -89,7 +82,7 @@ const CommentHeader = ({
           isLinkToProfile={typeof authorId === 'string'}
           size={30}
           projectId={projectId}
-          showModeration={isModerator}
+          showModeration
           createdAt={commentAttributes.created_at}
           avatarBadgeBgColor={commentType === 'child' ? '#fbfbfb' : '#fff'}
           horizontalLayout={true}
@@ -97,13 +90,10 @@ const CommentHeader = ({
           fontSize={fontSizes.base}
           fontWeight={400}
           underline={true}
-          anonymous={commentAttributes.anonymous}
         />
       </Left>
       <Right>
-        {isModerator && (
-          <AdminBadge>{formatMessage(messages.official)}</AdminBadge>
-        )}
+        <AdminBadge>{formatMessage(commentsMessages.official)}</AdminBadge>
       </Right>
     </Container>
   );

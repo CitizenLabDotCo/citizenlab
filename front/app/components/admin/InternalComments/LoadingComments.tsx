@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import commentsMessages from 'components/PostShowComponents/Comments/messages';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
@@ -24,7 +24,7 @@ interface Props {
 export default (props: Props) => (
   <Container className={props.className}>
     <LoadingMessage>
-      <FormattedMessage {...messages.loadingComments} />
+      <FormattedMessage {...commentsMessages.loadingComments} />
     </LoadingMessage>
   </Container>
 );

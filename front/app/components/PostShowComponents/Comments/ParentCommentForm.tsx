@@ -196,7 +196,7 @@ const ParentCommentForm = ({
   const continueSubmission = async () => {
     setFocused(false);
 
-    if (locale && authUser && isString(inputValue) && trim(inputValue) !== '') {
+    if (isString(inputValue) && trim(inputValue) !== '') {
       const commentBodyMultiloc = {
         [locale]: inputValue.replace(/@\[(.*?)\]\((.*?)\)/gi, '@$2'),
       };
@@ -245,7 +245,7 @@ const ParentCommentForm = ({
                   profaneMessage: commentBodyMultiloc[locale],
                   location: 'InitiativesNewFormWrapper (citizen side)',
                   userId: authUser.data.id,
-                  host: !isNilOrError(appConfiguration)
+                  host: appConfiguration
                     ? appConfiguration.data.attributes.host
                     : null,
                 });
@@ -295,7 +295,7 @@ const ParentCommentForm = ({
                   profaneMessage: commentBodyMultiloc[locale],
                   location: 'InitiativesNewFormWrapper (citizen side)',
                   userId: authUser.data.id,
-                  host: !isNilOrError(appConfiguration)
+                  host: appConfiguration
                     ? appConfiguration.data.attributes.host
                     : null,
                 });
@@ -341,25 +341,24 @@ const ParentCommentForm = ({
     return null;
   };
 
-  const commentingEnabled =
+  const commentingDisabledReason =
     postType === 'initiative'
-      ? commentingPermissionInitiative?.enabled === true
-      : idea?.data.attributes?.action_descriptor.commenting_idea.enabled ===
-        true;
-  const isModerator =
-    !isNilOrError(authUser) && canModerateProject(projectId, authUser);
-  const canComment = authUser && commentingEnabled;
+      ? commentingPermissionInitiative?.disabledReason
+      : idea?.data.attributes?.action_descriptor.commenting_idea
+          .disabled_reason;
+  const isModerator = canModerateProject(projectId, authUser);
+  const canComment = !commentingDisabledReason;
   const placeholder = formatMessage(
     messages[`${postType}CommentBodyPlaceholder`]
   );
 
-  if (!isNilOrError(authUser) && canComment) {
+  if (canComment) {
     return (
       <Container className={className || ''}>
         <StyledAvatar
-          userId={authUser?.data.id}
+          userId={authUser.data.id}
           size={30}
-          isLinkToProfile={!!authUser?.data.id}
+          isLinkToProfile={!!authUser.data.id}
           moderator={isModerator}
         />
         <FormContainer
