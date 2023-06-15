@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -16,7 +16,6 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 // types
-import { IIdeaData } from 'api/ideas/types';
 import { ICommentData } from 'api/comments/types';
 import useUserById from 'api/users/useUserById';
 
@@ -45,11 +44,8 @@ const ReplyButton = styled.button`
 `;
 
 interface Props {
-  postType: 'idea' | 'initiative';
-  commentId: string;
   commentType: 'parent' | 'child' | undefined;
   authorId: string | null;
-  idea?: IIdeaData;
   comment: ICommentData;
   className?: string;
 }

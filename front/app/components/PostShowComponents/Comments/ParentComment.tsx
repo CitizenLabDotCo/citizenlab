@@ -45,7 +45,7 @@ interface Props {
   initiativeId: string | undefined;
   postType: 'idea' | 'initiative';
   commentId: string;
-  childCommentIds: string[] | false;
+  childCommentIds: string[];
   className?: string;
   allowAnonymousParticipation?: boolean;
 }
@@ -137,8 +137,7 @@ const ParentComment = ({
           </LoadMoreButton>
         )}
 
-        {modifiedChildCommentIds &&
-          modifiedChildCommentIds.length > 0 &&
+        {modifiedChildCommentIds.length > 0 &&
           modifiedChildCommentIds.map((childCommentId, index) => (
             <Comment
               ideaId={ideaId}

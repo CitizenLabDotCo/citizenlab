@@ -54,7 +54,6 @@ const DeletedIcon = styled(Icon)`
 interface Props {
   ideaId: string | undefined;
   initiativeId: string | undefined;
-  postType: 'idea' | 'initiative';
   projectId?: string | null;
   commentId: string;
   commentType: 'parent' | 'child';
@@ -66,7 +65,6 @@ interface Props {
 const Comment = ({
   ideaId,
   initiativeId,
-  postType,
   projectId,
   commentType,
   commentId,
@@ -138,7 +136,6 @@ const Comment = ({
                     className={commentType}
                     ideaId={ideaId}
                     initiativeId={initiativeId}
-                    postType={postType}
                     projectId={projectId}
                     commentId={commentId}
                     commentType={commentType}

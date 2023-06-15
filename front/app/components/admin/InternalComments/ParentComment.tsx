@@ -43,7 +43,7 @@ interface Props {
   initiativeId: string | undefined;
   postType: 'idea' | 'initiative';
   commentId: string;
-  childCommentIds: string[] | false;
+  childCommentIds: string[];
   className?: string;
 }
 
@@ -96,7 +96,6 @@ const ParentComment = ({
           <Comment
             ideaId={ideaId}
             initiativeId={initiativeId}
-            postType={postType}
             projectId={projectId}
             commentId={commentId}
             commentType="parent"
@@ -125,13 +124,11 @@ const ParentComment = ({
           </LoadMoreButton>
         )}
 
-        {modifiedChildCommentIds &&
-          modifiedChildCommentIds.length > 0 &&
+        {modifiedChildCommentIds.length > 0 &&
           modifiedChildCommentIds.map((childCommentId, index) => (
             <Comment
               ideaId={ideaId}
               initiativeId={initiativeId}
-              postType={postType}
               projectId={projectId}
               key={childCommentId}
               commentId={childCommentId}
