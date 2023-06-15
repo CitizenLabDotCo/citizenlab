@@ -199,8 +199,8 @@ lb:
       created_at: 'Agereecht bei'
       published_at: 'Verëffentlecht bei'
       comments_count: 'Kommentaren'
-      upvotes_count: 'En Daum erop ginn'
-      downvotes_count: 'En Daum erof ginn'
+      likes_count: 'Gefällt'
+      dislikes_count: 'Net gär'
       baskets_count: 'Kierf'
       input_url: 'URL'
       project: 'Projet'
@@ -241,7 +241,7 @@ lb:
       for_more_information: "Fir méi Informatioun doriwwer, Dir kënnt dës Säit consultéieren: %{termsAndConditionsPage}"
       you_can_sign_in_again_from: "Dir kënnt erëm ab %{date}umellen"
   user:
-    anon_first_name: "Benotzer"
+    anon_first_name: "User"
   time:
     am: am
     formats:
