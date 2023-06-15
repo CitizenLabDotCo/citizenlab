@@ -273,4 +273,12 @@ export default defineMessages({
     id: 'app.containers.Comments.visibleToUsersWarning',
     defaultMessage: 'Comments posted here will be visible to regular users.',
   },
+  notVisibleToUsersPlaceholder: {
+    id: 'app.containers.Comments.notVisibleToUsersPlaceholder',
+    defaultMessage: 'This comment is not visible to regular users',
+  },
+  visibleToUsersPlaceholder: {
+    id: 'app.containers.Comments.visibleToUsersPlaceholder',
+    defaultMessage: 'This comment is visible to regular users',
+  },
 });

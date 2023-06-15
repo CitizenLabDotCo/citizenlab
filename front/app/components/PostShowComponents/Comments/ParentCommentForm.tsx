@@ -20,7 +20,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // services
@@ -115,6 +115,7 @@ interface Props {
   postingComment: (arg: boolean) => void;
   className?: string;
   allowAnonymousParticipation?: boolean;
+  customPlaceholder?: MessageDescriptor;
 }
 
 const ParentCommentForm = ({
@@ -123,6 +124,7 @@ const ParentCommentForm = ({
   postType,
   className,
   allowAnonymousParticipation,
+  customPlaceholder,
 }: Props) => {
   const locale = useLocale();
   const { data: authUser } = useAuthUser();
@@ -349,7 +351,7 @@ const ParentCommentForm = ({
   const isModerator = canModerateProject(projectId, authUser);
   const canComment = !commentingDisabledReason;
   const placeholder = formatMessage(
-    messages[`${postType}CommentBodyPlaceholder`]
+    customPlaceholder || messages[`${postType}CommentBodyPlaceholder`]
   );
 
   if (canComment) {

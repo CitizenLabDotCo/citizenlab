@@ -8,7 +8,7 @@ import Comments from './Comments';
 import CommentSorting from './CommentSorting';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
@@ -30,10 +30,6 @@ import useProjectById from 'api/projects/useProjectById';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useComments from 'api/comments/useComments';
 import CommentingIdeaDisabled from './CommentingIdeaDisabled';
-
-const StyledParentCommentForm = styled(ParentCommentForm)`
-  margin-bottom: 25px;
-`;
 
 const Header = styled.div`
   display: flex;
@@ -70,6 +66,7 @@ export interface Props {
   postType: 'idea' | 'initiative';
   className?: string;
   allowAnonymousParticipation?: boolean;
+  customPlaceholder?: MessageDescriptor;
 }
 
 const PublicComments = ({
@@ -77,6 +74,7 @@ const PublicComments = ({
   postType,
   className,
   allowAnonymousParticipation,
+  customPlaceholder,
 }: Props) => {
   const initiativeId = postType === 'initiative' ? postId : undefined;
   const ideaId = postType === 'idea' ? postId : undefined;
@@ -146,13 +144,16 @@ const PublicComments = ({
         <CommentingProposalDisabled />
       )}
 
-      <StyledParentCommentForm
-        ideaId={ideaId}
-        initiativeId={initiativeId}
-        postType={postType}
-        postingComment={handleCommentPosting}
-        allowAnonymousParticipation={allowAnonymousParticipation}
-      />
+      <Box mb="25px">
+        <ParentCommentForm
+          ideaId={ideaId}
+          initiativeId={initiativeId}
+          postType={postType}
+          postingComment={handleCommentPosting}
+          allowAnonymousParticipation={allowAnonymousParticipation}
+          customPlaceholder={customPlaceholder}
+        />
+      </Box>
 
       <Comments
         ideaId={ideaId}
