@@ -28,7 +28,7 @@ RSpec.describe Notifications::InternalCommentOnYourInternalComment do
       let!(:child_internal_comment) do
         create(
           :internal_comment,
-          :with_mentioned_users,
+          :with_mentions,
           mentioned_users: [parent_author],
           parent: parent_internal_comment,
           post: idea
