@@ -63,11 +63,8 @@ const CommentReplyButton = ({
   const commentId = comment.id;
   const parentCommentId = comment.relationships.parent.data?.id ?? null;
   const { data: author } = useUserById(authorId);
-  const authorFirstName = author?.data.attributes.first_name;
-  const authorLastName = author?.data.attributes.last_name;
-  const authorSlug = author?.data.attributes.slug;
 
-  const onReply = useCallback(() => {
+  const onReply = () => {
     const { clickChildCommentReplyButton, clickParentCommentReplyButton } =
       tracks;
 
@@ -80,18 +77,11 @@ const CommentReplyButton = ({
     commentReplyButtonClicked({
       commentId,
       parentCommentId,
-      authorFirstName,
-      authorLastName,
-      authorSlug,
+      authorFirstName: author?.data.attributes.first_name,
+      authorLastName: author?.data.attributes.last_name,
+      authorSlug: author?.data.attributes.slug,
     });
-  }, [
-    commentType,
-    commentId,
-    parentCommentId,
-    authorFirstName,
-    authorLastName,
-    authorSlug,
-  ]);
+  };
 
   const isCommentDeleted = comment.attributes.publication_status === 'deleted';
 
