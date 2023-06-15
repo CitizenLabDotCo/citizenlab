@@ -187,8 +187,8 @@ const CompactIdeaCard = memo<IdeaCardProps>(
       return null;
     };
 
-    const onCardClick = (event: FormEvent) => {
-      event.preventDefault();
+    const onCardClick = (_event: FormEvent) => {
+      // event.preventDefault();
 
       eventEmitter.emit<IOpenPostPageModalEvent>('cardClick', {
         id: idea.data.id,

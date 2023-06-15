@@ -27,7 +27,7 @@ import MobileNavbar from 'containers/MobileNavbar';
 import Meta from './Meta';
 const UserDeletedModal = lazy(() => import('./UserDeletedModal'));
 const PlatformFooter = lazy(() => import('containers/PlatformFooter'));
-const PostPageFullscreenModal = lazy(() => import('./PostPageFullscreenModal'));
+// const PostPageFullscreenModal = lazy(() => import('./PostPageFullscreenModal'));
 
 // auth
 import HasPermission from 'components/HasPermission';
@@ -96,18 +96,20 @@ const App = ({ children }: Props) => {
   const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser, isLoading } = useAuthUser();
 
-  const [modalId, setModalId] = useState<string | null>(null);
-  const [modalSlug, setModalSlug] = useState<string | null>(null);
-  const [modalType, setModalType] = useState<'idea' | 'initiative' | null>(
-    null
-  );
+  // const [modalId, setModalId] = useState<string | null>(null);
+  // const [modalSlug, setModalSlug] = useState<string | null>(null);
+  // const [modalType, setModalType] = useState<'idea' | 'initiative' | null>(
+  //   null
+  // );
   const [
     userDeletedSuccessfullyModalOpened,
     setUserDeletedSuccessfullyModalOpened,
   ] = useState(false);
   const [userSuccessfullyDeleted, setUserSuccessfullyDeleted] = useState(false);
-  const [navbarRef, setNavbarRef] = useState<HTMLElement | null>(null);
-  const [mobileNavbarRef, setMobileNavbarRef] = useState<HTMLElement | null>(
+
+  // TODO remove
+  const [_navbarRef, setNavbarRef] = useState<HTMLElement | null>(null);
+  const [_mobileNavbarRef, setMobileNavbarRef] = useState<HTMLElement | null>(
     null
   );
   const [locale, setLocale] = useState<Locale | null>(null);
@@ -235,15 +237,15 @@ const App = ({ children }: Props) => {
         setLocale(locale);
       }),
 
-      eventEmitter
-        .observeEvent<IOpenPostPageModalEvent>('cardClick')
-        .subscribe(({ eventValue: { id, slug, type } }) => {
-          openPostPageModal(id, slug, type);
-        }),
+      // eventEmitter
+      //   .observeEvent<IOpenPostPageModalEvent>('cardClick')
+      //   .subscribe(({ eventValue: { id, slug, type } }) => {
+      //     openPostPageModal(id, slug, type);
+      //   }),
 
-      eventEmitter.observeEvent('closeIdeaModal').subscribe(() => {
-        closePostPageModal();
-      }),
+      // eventEmitter.observeEvent('closeIdeaModal').subscribe(() => {
+      //   closePostPageModal();
+      // }),
 
       eventEmitter
         .observeEvent('deleteProfileAndShowSuccessModal')
@@ -287,21 +289,21 @@ const App = ({ children }: Props) => {
     trackPage(location.pathname);
   }, [location.pathname]);
 
-  const openPostPageModal = (
-    id: string,
-    slug: string,
-    type: 'idea' | 'initiative'
-  ) => {
-    setModalId(id);
-    setModalSlug(slug);
-    setModalType(type);
-  };
+  // const openPostPageModal = (
+  //   id: string,
+  //   slug: string,
+  //   type: 'idea' | 'initiative'
+  // ) => {
+  //   setModalId(id);
+  //   setModalSlug(slug);
+  //   setModalType(type);
+  // };
 
-  const closePostPageModal = () => {
-    setModalId(null);
-    setModalSlug(null);
-    setModalType(null);
-  };
+  // const closePostPageModal = () => {
+  //   setModalId(null);
+  //   setModalSlug(null);
+  //   setModalType(null);
+  // };
 
   const closeUserDeletedModal = () => {
     setUserDeletedSuccessfullyModalOpened(false);
@@ -362,7 +364,7 @@ const App = ({ children }: Props) => {
               disableScroll={fullscreenModalEnabled && signUpInModalOpened}
             >
               <Meta />
-              <ErrorBoundary>
+              {/* <ErrorBoundary>
                 <Suspense fallback={null}>
                   <PostPageFullscreenModal
                     signUpInModalOpened={signUpInModalOpened}
@@ -374,7 +376,7 @@ const App = ({ children }: Props) => {
                     mobileNavbarRef={mobileNavbarRef}
                   />
                 </Suspense>
-              </ErrorBoundary>
+              </ErrorBoundary> */}
               <ErrorBoundary>
                 <Suspense fallback={null}>
                   <UserDeletedModal
