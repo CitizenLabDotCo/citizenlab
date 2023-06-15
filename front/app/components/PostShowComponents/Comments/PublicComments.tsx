@@ -72,7 +72,7 @@ export interface Props {
   allowAnonymousParticipation?: boolean;
 }
 
-const CommentsSection = ({
+const PublicComments = ({
   postId,
   postType,
   className,
@@ -186,4 +186,4 @@ const CommentsSection = ({
   );
 };
 
-export default CommentsSection;
+export default PublicComments;
