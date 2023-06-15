@@ -13,6 +13,7 @@ import useLocale from 'hooks/useLocale';
 import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
 import useProjectById from 'api/projects/useProjectById';
 import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
+import usePhase from 'api/phases/usePhase';
 
 // events
 import {
@@ -38,6 +39,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 // utils
 import { isFieldEnabled } from 'utils/projectUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import { getMethodConfig } from 'utils/participationMethodUtils';
 
 // typings
 import { Sort } from 'api/ideas/types';
@@ -128,6 +130,7 @@ const MapIdeasList = memo<Props>(({ projectId, phaseId, className }) => {
     phaseId,
   });
   const { data: project } = useProjectById(projectId);
+  const { data: phase } = usePhase(phaseId);
 
   // ideaMarkers
   const [search, setSearch] = useState<string | null>(null);
@@ -165,6 +168,13 @@ const MapIdeasList = memo<Props>(({ projectId, phaseId, className }) => {
 
   if (isNilOrError(ideaCustomFieldsSchema)) return null;
 
+  const methodConfig =
+    project &&
+    getMethodConfig(
+      phase?.data.attributes?.participation_method ||
+        project?.data.attributes?.participation_method
+    );
+
   const topicsEnabled = isFieldEnabled(
     'topic_ids',
     ideaCustomFieldsSchema.data.attributes,
@@ -185,34 +195,36 @@ const MapIdeasList = memo<Props>(({ projectId, phaseId, className }) => {
 
   return (
     <Container className={className || ''}>
-      <Header>
-        <DropdownFilters>
-          <SelectSort
-            onChange={handleSortOnChange}
-            alignment="left"
-            defaultSortingMethod={
-              project?.data.attributes.ideas_order ||
-              ideaDefaultSortMethodFallback
+      {methodConfig?.showIdeaFilters && (
+        <Header>
+          <DropdownFilters>
+            <SelectSort
+              onChange={handleSortOnChange}
+              alignment="left"
+              defaultSortingMethod={
+                project?.data.attributes.ideas_order ||
+                ideaDefaultSortMethodFallback
+              }
+            />
+            {topicsEnabled && (
+              <TopicFilterDropdown
+                onChange={handleTopicsOnChange}
+                alignment="left"
+                projectId={projectId}
+              />
+            )}
+          </DropdownFilters>
+
+          <StyledSearchInput
+            onChange={handleSearchOnChange}
+            a11y_numberOfSearchResults={
+              ideaMarkers && ideaMarkers.data.length > 0
+                ? ideaMarkers.data.length
+                : 0
             }
           />
-          {topicsEnabled && (
-            <TopicFilterDropdown
-              onChange={handleTopicsOnChange}
-              alignment="left"
-              projectId={projectId}
-            />
-          )}
-        </DropdownFilters>
-
-        <StyledSearchInput
-          onChange={handleSearchOnChange}
-          a11y_numberOfSearchResults={
-            ideaMarkers && ideaMarkers.data.length > 0
-              ? ideaMarkers.data.length
-              : 0
-          }
-        />
-      </Header>
+        </Header>
+      )}
 
       <IdeaMapCards>
         {ideaMarkers === undefined && (
