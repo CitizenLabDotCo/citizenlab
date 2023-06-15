@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { media, colors, fontSizes, isRtl } from 'utils/styleUtils';
 import { useIntl } from 'utils/cl-intl';
 import commentsMessages from 'components/PostShowComponents/Comments/messages';
-import { IPresentComment } from 'api/comments/types';
+import { IPresentComment } from 'api/internal_comments/types';
 
 const Container = styled.div`
   display: flex;

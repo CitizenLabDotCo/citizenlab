@@ -16,7 +16,7 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 // types
-import { ICommentData } from 'api/comments/types';
+import { ICommentData } from 'api/internal_comments/types';
 import useUserById from 'api/users/useUserById';
 
 const Container = styled.li`

@@ -2,7 +2,6 @@ import React from 'react';
 import FilterSelector from 'components/FilterSelector';
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import commentsMessages from 'components/PostShowComponents/Comments/messages';
-import { CommentsSort } from 'api/comments/types';
 import { Box } from '@citizenlab/cl2-component-library';
 import { InternalCommentSort } from 'api/internal_comments/types';
 
@@ -32,7 +31,7 @@ const CommentSorting = ({
   };
 
   const getSortOptions = () => {
-    const sortOptions: CommentsSort[] = ['-new', 'new'];
+    const sortOptions: InternalCommentSort[] = ['-new', 'new'];
     return sortOptions.map((sortOption) => {
       return {
         text: <FormattedMessage {...sortOptionsMessages[sortOption]} />,

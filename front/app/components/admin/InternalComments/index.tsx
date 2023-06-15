@@ -23,7 +23,7 @@ import tracks from './tracks';
 // hooks
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useIdeaById from 'api/ideas/useIdeaById';
-import useComments from 'api/comments/useComments';
+import useComments from 'api/internal_comments/useComments';
 import { InternalCommentSort } from 'api/internal_comments/types';
 
 const Container = styled.div``;

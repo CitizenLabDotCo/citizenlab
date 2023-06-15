@@ -27,8 +27,8 @@ import { colors, defaultStyles } from 'utils/styleUtils';
 
 // hooks
 import useIdeaById from 'api/ideas/useIdeaById';
-import useAddCommentToIdea from 'api/comments/useAddCommentToIdea';
-import useAddCommentToInitiative from 'api/comments/useAddCommentToInitiative';
+import useAddCommentToIdea from 'api/internal_comments/useAddCommentToIdea';
+import useAddCommentToInitiative from 'api/internal_comments/useAddCommentToInitiative';
 import useLocale from 'hooks/useLocale';
 import useAuthUser from 'api/me/useAuthUser';
 

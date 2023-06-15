@@ -14,7 +14,7 @@ import commentsMessages from 'components/PostShowComponents/Comments/messages';
 // style
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-import useComment from 'api/comments/useComment';
+import useComment from 'api/internal_comments/useComment';
 import useUserById from 'api/users/useUserById';
 
 const Container = styled.div``;

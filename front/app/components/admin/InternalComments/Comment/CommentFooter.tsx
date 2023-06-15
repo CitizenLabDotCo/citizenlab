@@ -9,7 +9,7 @@ import styled from 'styled-components';
 import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 
 // hooks
-import useComment from 'api/comments/useComment';
+import useComment from 'api/internal_comments/useComment';
 
 const footerHeight = '30px';
 const footerTopMargin = '6px';

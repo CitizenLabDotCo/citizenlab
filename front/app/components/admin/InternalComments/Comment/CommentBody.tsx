@@ -3,8 +3,8 @@ import React, { FormEvent, useEffect, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // Services
-import useUpdateComment from 'api/comments/useUpdateComment';
-import { IUpdatedComment } from 'api/comments/types';
+import useUpdateComment from 'api/internal_comments/useUpdateComment';
+import { IUpdatedComment } from 'api/internal_comments/types';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -22,7 +22,7 @@ import styled, { useTheme } from 'styled-components';
 import { CLErrorsJSON, CLErrors } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
-import useComment from 'api/comments/useComment';
+import useComment from 'api/internal_comments/useComment';
 import useLocale from 'hooks/useLocale';
 import { Button } from '@citizenlab/cl2-component-library';
 import useLocalize from 'hooks/useLocalize';

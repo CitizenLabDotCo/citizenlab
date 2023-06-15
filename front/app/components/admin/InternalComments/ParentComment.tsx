@@ -16,8 +16,8 @@ import { darken } from 'polished';
 
 // hooks
 import useIdeaById from 'api/ideas/useIdeaById';
-import useComment from 'api/comments/useComment';
-import useComments from 'api/comments/useComments';
+import useComment from 'api/internal_comments/useComment';
+import useComments from 'api/internal_comments/useComments';
 
 const Container = styled.div`
   position: relative;

@@ -28,8 +28,8 @@ import { hideVisually } from 'polished';
 import { colors, defaultStyles } from 'utils/styleUtils';
 import useLocale from 'hooks/useLocale';
 import useAuthUser from 'api/me/useAuthUser';
-import useAddCommentToIdea from 'api/comments/useAddCommentToIdea';
-import useAddCommentToInitiative from 'api/comments/useAddCommentToInitiative';
+import useAddCommentToIdea from 'api/internal_comments/useAddCommentToIdea';
+import useAddCommentToInitiative from 'api/internal_comments/useAddCommentToInitiative';
 
 const Container = styled.div`
   display: flex;

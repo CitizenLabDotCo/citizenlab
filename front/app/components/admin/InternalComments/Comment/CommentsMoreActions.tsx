@@ -17,8 +17,8 @@ import { deleteCommentModalClosed } from '../events';
 import styled from 'styled-components';
 import { isRtl } from 'utils/styleUtils';
 
-import useMarkCommentForDeletion from 'api/comments/useMarkForDeletion';
-import { DeleteReason, ICommentData } from 'api/comments/types';
+import useMarkCommentForDeletion from 'api/internal_comments/useMarkForDeletion';
+import { ICommentData } from 'api/internal_comments/types';
 import useAuthUser from 'api/me/useAuthUser';
 
 const Container = styled.div`
