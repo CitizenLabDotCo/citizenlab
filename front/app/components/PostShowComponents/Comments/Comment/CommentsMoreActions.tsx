@@ -20,7 +20,7 @@ import { deleteCommentModalClosed } from '../events';
 import styled from 'styled-components';
 import { isRtl } from 'utils/styleUtils';
 
-import useMarkCommentForDeletion from 'api/comments/useMarkForDeletion';
+import useMarkCommentForDeletion from 'api/comments/useMarkCommentForDeletion';
 import { DeleteReason, ICommentData } from 'api/comments/types';
 
 const Container = styled.div`

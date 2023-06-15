@@ -1,6 +1,6 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 
-import useMarkForDeletion from './useMarkForDeletion';
+import useMarkForDeletion from './useMarkCommentForDeletion';
 
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';

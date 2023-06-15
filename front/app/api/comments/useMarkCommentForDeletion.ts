@@ -12,7 +12,10 @@ interface MarkForDeletion {
   reason?: DeleteReason;
 }
 
-const markForDeletion = async ({ commentId, reason }: MarkForDeletion) => {
+const markCommentForDeletion = async ({
+  commentId,
+  reason,
+}: MarkForDeletion) => {
   return fetcher<IComment>({
     path: `/comments/${commentId}/mark_as_deleted`,
     action: 'post',
@@ -29,7 +32,7 @@ const useMarkCommentForDeletion = ({
 }) => {
   const queryClient = useQueryClient();
   return useMutation<IComment, CLErrors, MarkForDeletion>({
-    mutationFn: markForDeletion,
+    mutationFn: markCommentForDeletion,
     onSuccess: (_data) => {
       queryClient.invalidateQueries({
         queryKey: commentKeys.list({
