@@ -11,6 +11,7 @@ class NotificationService
     Notifications::IdeaMarkedAsSpam,
     Notifications::InitiativeAssignedToYou,
     Notifications::InitiativeMarkedAsSpam,
+    Notifications::InternalCommentOnYourInternalComment,
     Notifications::InviteAccepted,
     Notifications::MentionInComment,
     Notifications::MentionInInternalComment,
