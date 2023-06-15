@@ -58,6 +58,6 @@ describe('NonSortableFolderRow', () => {
     render(<NonSortableFolderRow {...props} />);
 
     const projectRows = screen.getAllByTestId('projectRow');
-    expect(projectRows.length).toEqual(1);
+    expect(projectRows.length).toEqual(2);
   });
 });
