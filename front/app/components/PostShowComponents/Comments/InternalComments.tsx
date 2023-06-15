@@ -9,6 +9,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import ParentCommentForm from './ParentCommentForm';
 import Comments from './Comments';
 import CommentSorting from './CommentSorting';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -33,8 +34,6 @@ import useProjectById from 'api/projects/useProjectById';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useComments from 'api/comments/useComments';
 import CommentingIdeaDisabled from './CommetingIdeaDisabled';
-
-const Container = styled.div``;
 
 const StyledParentCommentForm = styled(ParentCommentForm)`
   margin-bottom: 25px;
@@ -62,19 +61,6 @@ const StyledCommentSorting = styled(CommentSorting)`
   ${media.phone`
     justify-content: flex-start;
   `}
-`;
-
-const LoadMore = styled.div`
-  width: 100%;
-  height: 0px;
-`;
-
-const LoadingMore = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 30px;
 `;
 
 const LoadingMoreMessage = styled.div`
@@ -145,7 +131,7 @@ const InternalComments = ({
     const commentCount = post.data.attributes.comments_count;
 
     return (
-      <Container className={className || ''}>
+      <Box className={className || ''}>
         <Header>
           <Title color="tenantText" variant="h2" id="comments-main-title">
             <FormattedMessage {...messages.invisibleTitleComments} />
@@ -182,18 +168,24 @@ const InternalComments = ({
 
         {hasNextPage && !isFetchingNextPage && (
           <Observer onChange={handleIntersection} rootMargin="3000px">
-            <LoadMore />
+            <Box w="100%" />
           </Observer>
         )}
 
         {isFetchingNextPage && !posting && (
-          <LoadingMore>
+          <Box
+            w="100%"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            mb="30px"
+          >
             <LoadingMoreMessage>
               <FormattedMessage {...messages.loadingMoreComments} />
             </LoadingMoreMessage>
-          </LoadingMore>
+          </Box>
         )}
-      </Container>
+      </Box>
     );
   }
 
