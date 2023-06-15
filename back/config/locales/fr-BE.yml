@@ -2,17 +2,17 @@ fr-BE:
   symbols:
     outside: autre lieu
   idea_statuses:
-    proposed: soumis.e
+    proposed: soumise
     proposed_description: Cette idée à été proposée à l'administration
-    viewed: vu.e
+    viewed: vue
     viewed_description: Cette idée a été vue par une personne de la ville
-    under_consideration: pris.e en considération
+    under_consideration: prise en considération
     under_consideration_description: Cette idée a été prise en considération par l'administration
-    accepted: accepté.e
+    accepted: acceptée
     accepted_description: Cette idée a été acceptée et sera mise en place par l'administration
-    implemented: mis.e en place
+    implemented: mise en place
     implemented_description: Cette idée a été mise en place par l'administration
-    rejected: non-retenu.e
+    rejected: non-retenue
     rejected_description: Cette idée n'a pas été retenue
   initiative_statuses:
     proposed: soumise
@@ -23,8 +23,8 @@ fr-BE:
     threshold_reached_description: seuil atteint
     answered: répondue
     answered_description: répondue
-    ineligible: inéligible
-    ineligible_description: inéligible
+    ineligible: non-éligible
+    ineligible_description: non-éligible
   topics:
     nature: Nature et biodiversité
     nature_description: Nature et biodiversité
@@ -40,8 +40,8 @@ fr-BE:
     economy_description: Emploi, economie et tourisme
     housing: Logement
     housing_description: Logement
-    public_space: Espaces et bâtiments publics
-    public_space_description: Espaces et bâtiments publics
+    public_space: Espaces publics et bâti
+    public_space_description: Espaces publics et bâti
     safety: Sécurité
     safety_description: Sécurité
     education: Éducation et jeunesse
@@ -111,7 +111,7 @@ fr-BE:
         title: Titre
         description:
       body:
-        title: Description complète
+        title: Description
         description:
       author_id:
         title: Auteur
@@ -199,8 +199,8 @@ fr-BE:
       created_at: 'Soumis le'
       published_at: 'Publié le'
       comments_count: 'Commentaires'
-      upvotes_count: 'Votes pour'
-      downvotes_count: 'Votes contre'
+      likes_count: 'Likes'
+      dislikes_count: 'Dislikes'
       baskets_count: 'Paniers'
       input_url: 'URL'
       project: 'Projet'
@@ -239,7 +239,7 @@ fr-BE:
       paragraph_1_without_reason: "Votre compte sur la plateforme de participation de %{organizationName} a été temporairement désactivé en raison d'une violation des règles de la communauté."
       paragraph_1_with_reason: "Votre compte sur la plateforme de participation de %{organizationName} a été temporairement désactivé pour la raison suivante :"
       for_more_information: "Pour plus d'informations à ce sujet, vous pouvez consulter le site %{termsAndConditionsPage}."
-      you_can_sign_in_again_from: "Vous pouvez vous reconnecter à partir de %{date}"
+      you_can_sign_in_again_from: "Vous pourrez vous connecter à nouveau à partir du %{date}"
   user:
     anon_first_name: "Utilisateur"
   time:
