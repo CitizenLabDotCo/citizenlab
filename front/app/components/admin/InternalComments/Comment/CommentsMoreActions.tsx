@@ -9,7 +9,6 @@ import commentsMessages from 'components/PostShowComponents/Comments/messages';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import Modal from 'components/UI/Modal';
 import Button from 'components/UI/Button';
-import { usePermission } from 'services/permissions';
 
 // events
 import { deleteCommentModalClosed } from '../events';
@@ -20,6 +19,7 @@ import { isRtl } from 'utils/styleUtils';
 
 import useMarkCommentForDeletion from 'api/comments/useMarkForDeletion';
 import { DeleteReason, ICommentData } from 'api/comments/types';
+import useAuthUser from 'api/me/__mocks__/useAuthUser';
 
 const Container = styled.div`
   display: flex;
@@ -71,24 +71,18 @@ const CommentsMoreActions = ({
   ideaId,
   initiativeId,
 }: Props) => {
+  const { data: authUser } = useAuthUser();
   const { mutate: markForDeletion, isLoading } = useMarkCommentForDeletion({
     ideaId,
     initiativeId,
   });
-
   const [modalVisible_delete, setModalVisible_delete] = useState(false);
 
-  const canDelete = usePermission({
-    item: comment,
-    action: 'delete',
-    context: { projectId },
-  });
-
-  const canEdit = usePermission({
-    item: comment,
-    action: 'edit',
-    context: { projectId },
-  });
+  const authUserId = authUser.data.id;
+  // Internal comments can only be deleted by their own author (moderator or admin)
+  const authUserIsAuthor = authUserId === comment.relationships.author.data?.id;
+  const canDelete = authUserIsAuthor;
+  const canEdit = authUserIsAuthor;
 
   const openDeleteModal = () => {
     setModalVisible_delete(true);

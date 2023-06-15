@@ -4,6 +4,7 @@ export default {
   focusChildCommentEditor: 'Add a child comment editor focused',
   clickChildCommentPublish: 'Clicked button to post a child comment',
   clickReply: 'Comment reply clicked',
+  clickCommentsSortOrder: 'Clicked the comments sort order dropdown',
   clickParentCommentLoadMoreButton:
     "Clicked the 'Load more' button of a parent comment to load more child comments",
   clickParentCommentReplyButton:
