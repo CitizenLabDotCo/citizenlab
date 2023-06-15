@@ -25,7 +25,7 @@ const props: Props = {
   projectFolderId: 'projectFolderId',
 };
 
-describe('NonSortableFolderRow', () => {
+describe('ItemsInFolder', () => {
   it('Changes the order of projects', () => {
     render(<ItemsInFolder {...props} />);
 
