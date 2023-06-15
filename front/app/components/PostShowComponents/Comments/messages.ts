@@ -176,7 +176,7 @@ export default defineMessages({
     defaultMessage: 'Like',
   },
   commentCancelLike: {
-    id: 'app.containers.Comments.commentCancelLike',
+    id: 'app.containers.Comments.commentCancelUpvote',
     defaultMessage: 'Cancel',
   },
   commentReplyButton: {

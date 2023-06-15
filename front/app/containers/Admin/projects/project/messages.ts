@@ -80,7 +80,7 @@ export default defineMessages({
   },
   // edit - participationContext -----------------------------------------------
   noReactingLimitErrorMessage: {
-    id: 'app.containers.AdminPage.ProjectEdit.noReactingLimitErrorMessage',
+    id: 'app.containers.AdminPage.ProjectEdit.noVotingLimitErrorMessage',
     defaultMessage: 'Not a valid number',
   },
   noBudgetingAmountErrorMessage: {
@@ -118,7 +118,7 @@ export default defineMessages({
     defaultMessage: 'Collect input and feedback',
   },
   inputAndFeedbackDescription: {
-    id: 'app.containers.AdminPage.ProjectEdit.inputAndFeedbackDescription',
+    id: 'app.containers.AdminPage.ProjectEdit.inputAndFeedbackDescription2',
     defaultMessage:
       'Create or collect inputs, reactions and/or comments. Pick between different types of inputs: idea collection, option analysis, question and answer, issue identification and more.',
   },
@@ -229,11 +229,11 @@ export default defineMessages({
       'This will disable disliking, but liking will still be enabled. You can disable reacting completely in the Actions section of this tab.',
   },
   dislikingDisabled: {
-    id: 'app.containers.AdminPage.ProjectEdit.dislikingDisabled',
+    id: 'app.containers.AdminPage.ProjectEdit.downvotingDisabled',
     defaultMessage: 'Disabled',
   },
   dislikingEnabled: {
-    id: 'app.containers.AdminPage.ProjectEdit.dislikingEnabled',
+    id: 'app.containers.AdminPage.ProjectEdit.downvotingEnabled',
     defaultMessage: 'Enabled',
   },
   phasePermissions: {
@@ -305,7 +305,7 @@ export default defineMessages({
     defaultMessage: 'Random',
   },
   popularSortingMethod: {
-    id: 'app.containers.AdminPage.ProjectEdit.popularSortingMethod',
+    id: 'app.containers.AdminPage.ProjectEdit.popularSortingMethod2',
     defaultMessage: 'Most reactions',
   },
   newestSortingMethod: {

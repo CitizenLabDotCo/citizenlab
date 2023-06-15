@@ -107,7 +107,7 @@ export default defineMessages({
     defaultMessage: 'Active users',
   },
   numberOfActiveParticipantsDescription: {
-    id: 'app.containers.AdminPage.DashboardPage.numberOfActiveParticipantsDescription',
+    id: 'app.containers.AdminPage.DashboardPage.numberOfActiveParticipantsDescription2',
     defaultMessage:
       'The number of participants that posted inputs, reacted or commented.',
   },
@@ -213,7 +213,7 @@ export default defineMessages({
     defaultMessage: 'Other',
   },
   mostActiveUsersRankingDescription: {
-    id: 'app.containers.AdminPage.DashboardPage.mostActiveUsersRankingDescription',
+    id: 'app.containers.AdminPage.DashboardPage.mostActiveUsersRankingDescription2',
     defaultMessage:
       'The ranking is based on the number of inputs (5 points per input), comments (3 points per comment) and reactions (1 point per reaction) submitted by each participant.',
   },

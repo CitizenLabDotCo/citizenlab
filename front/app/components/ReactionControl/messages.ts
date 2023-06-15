@@ -65,7 +65,7 @@ export default defineMessages({
     defaultMessage: 'Your reaction was successfully registered!',
   },
   reactionErrorTitle: {
-    id: 'app.containers.ReactionControl.reactionErrorTitle',
+    id: 'app.containers.VoteControl.voteErrorTitle',
     defaultMessage: 'Something went wrong',
   },
   reactionErrorSubTitle: {
@@ -74,7 +74,7 @@ export default defineMessages({
       'Due to an error your reaction could not being registered. Please try again in a few minutes.',
   },
   close: {
-    id: 'app.containers.ReactionControl.close',
+    id: 'app.containers.VoteControl.close',
     defaultMessage: 'Close',
   },
 });
