@@ -1,3 +1,6 @@
+import React from 'react';
+
+// components
 import {
   Box,
   Button,
@@ -6,20 +9,25 @@ import {
   colors,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import React from 'react';
+import ConfettiSvg from './ConfettiSvg';
+
+// api
 import { VotingMethod } from 'services/participationContexts';
 import { useTheme } from 'styled-components';
-import messages from './messages';
-import { getVotingMethodConfig } from 'utils/votingMethodUtils/votingMethodUtils';
 import { useIntl } from 'utils/cl-intl';
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 import useBasket from 'hooks/useBasket';
-import { pastPresentOrFuture, toFullMonth } from 'utils/dateUtils';
 import { updateBasket } from 'services/baskets';
 import streams from 'utils/streams';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import ConfettiSvg from './ConfettiSvg';
+
+// utils
+import { getVotingMethodConfig } from 'utils/votingMethodUtils/votingMethodUtils';
+import { pastPresentOrFuture, toFullMonth } from 'utils/dateUtils';
+
+// intl
+import messages from './messages';
 
 type StatusModuleProps = {
   votingMethod?: VotingMethod | null;
@@ -33,6 +41,7 @@ const unsubmitBasket = async (basketId?: string) => {
       await updateBasket(basketId, {
         submitted_at: null,
       });
+      streams.fetchAllWith({ dataId: [basketId] });
     } catch (error) {
       streams.fetchAllWith({ dataId: [basketId] });
     }

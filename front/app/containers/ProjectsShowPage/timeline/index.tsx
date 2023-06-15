@@ -179,8 +179,7 @@ const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
                   <StatusModule
                     phase={selectedPhase}
                     project={project.data}
-                    // votingMethod={project?.data.attributes.voting_method}
-                    votingMethod={'budgeting'} // TODO: Get from data once implemented
+                    votingMethod={selectedPhase?.attributes.voting_method}
                   />
                 </>
               )}

@@ -81,8 +81,7 @@ const IdeasContainer = memo<InnerProps>(({ project, className }) => {
             {isPBProject && (
               <>
                 <StatusModule
-                  // votingMethod={project.attributes.voting_method}
-                  votingMethod={'budgeting'} // TODO: Get from data once implemented
+                  votingMethod={project.attributes.voting_method}
                   project={project}
                 />
               </>
