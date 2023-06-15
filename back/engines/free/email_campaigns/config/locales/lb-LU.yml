@@ -557,7 +557,7 @@ lb:
         input_is_updated: 'Input gëtt aktualiséiert'
         input_status_changes: 'Input Status Ännerungen'
         new_input_is_published: 'Neien Input gëtt publizéiert'
-        new_proposal_is_posted: 'Nei Propositioun ass gepost'
+        new_proposal_is_posted: 'New proposal is posted'
         project_phase_changes: 'Projet Phase Ännerungen'
         proposal_gets_reported_as_spam: 'Propositioun gëtt als Spam gemellt'
         proposal_is_assigned_to_admin: 'Propositioun ass dem Administrateur zougewisen'
