@@ -75,10 +75,6 @@ const StyledOfficialFeedback = styled(OfficialFeedback)`
   margin-top: 70px;
 `;
 
-const StyledComments = styled(CommentsSection)`
-  margin-top: 30px;
-`;
-
 const Right = styled.div`
   flex: 2;
   position: sticky;
@@ -230,7 +226,7 @@ const InitiativeContent = ({
                 // it means they are in the admin and therefore have permission
                 permissionToPost
               />
-              <StyledComments
+              <CommentsSection
                 allowAnonymousParticipation={
                   appConfiguration?.data.attributes.settings.initiatives
                     ?.allow_anonymous_participation
