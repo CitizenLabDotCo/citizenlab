@@ -557,7 +557,7 @@ ar:
         input_is_updated: 'تم تحديث الإدخال'
         input_status_changes: 'تغييرات حالة الإدخال'
         new_input_is_published: 'تم نشر مدخلات جديدة'
-        new_proposal_is_posted: 'تم نشر اقتراح جديد'
+        new_proposal_is_posted: 'New proposal is posted'
         project_phase_changes: 'تغييرات مرحلة المشروع'
         proposal_gets_reported_as_spam: 'تم الإبلاغ عن الاقتراح باعتباره بريدًا عشوائيًا'
         proposal_is_assigned_to_admin: 'يتم تعيين الاقتراح إلى المسؤول'
