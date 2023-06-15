@@ -1,84 +1,84 @@
 ca:
   symbols:
-    outside: algun altre lloc
+    outside: somewhere else
   idea_statuses:
-    proposed: proposat
-    proposed_description: Aquesta idea s'ha proposat a la ciutat
-    viewed: vist
-    viewed_description: Aquesta idea l'ha vist algú de la ciutat
-    under_consideration: sota consideració
-    under_consideration_description: Aquesta idea ha estat presa en consideració per l'Ajuntament
-    accepted: acceptat
-    accepted_description: Aquesta idea ha estat acceptada i serà implementada per la ciutat
-    implemented: implementat
-    implemented_description: Aquesta idea ha estat implementada per l'Ajuntament
-    rejected: rebutjada
-    rejected_description: Aquesta idea ha estat rebutjada
+    proposed: proposed
+    proposed_description: This idea has been proposed to the city
+    viewed: viewed
+    viewed_description: This idea has been seen by someone from the city
+    under_consideration: under consideration
+    under_consideration_description: This idea has been taken into consideration by the city
+    accepted: accepted
+    accepted_description: This idea has been accepted and will be implemented by the city
+    implemented: implemented
+    implemented_description: This idea has been implemented by the city
+    rejected: rejected
+    rejected_description: This idea has been rejected
   initiative_statuses:
-    proposed: proposat
-    proposed_description: proposat
-    expired: caducat
-    expired_description: caducat
-    threshold_reached: llindar assolit
-    threshold_reached_description: llindar assolit
-    answered: va respondre
-    answered_description: va respondre
-    ineligible: inelegible
-    ineligible_description: inelegible
+    proposed: proposed
+    proposed_description: proposed
+    expired: expired
+    expired_description: expired
+    threshold_reached: threshold reached
+    threshold_reached_description: threshold reached
+    answered: answered
+    answered_description: answered
+    ineligible: ineligible
+    ineligible_description: ineligible
   topics:
-    nature: Natura i biodiversitat
-    nature_description: Natura i biodiversitat
-    waste: Neteja i residus
-    waste_description: Neteja i residus
-    sustainability: Desenvolupament sostenible
-    sustainability_description: Desenvolupament sostenible
-    mobility: Mobilitat
-    mobility_description: Mobilitat
-    technology: Energia i tecnologia
-    technology_description: Energia i tecnologia
-    economy: Treball, economia i turisme
-    economy_description: Treball, economia i turisme
-    housing: Habitatge
-    housing_description: Habitatge
-    public_space: Espais i edificis públics
-    public_space_description: Espais i edificis públics
-    safety: Seguretat
-    safety_description: Seguretat
-    education: Educació i joventut
-    education_description: Educació i joventut
-    culture: Cultura, esports i esdeveniments
-    culture_description: Cultura, esports i esdeveniments
-    health: Salut i benestar
-    health_description: Salut i benestar
-    inclusion: Inclusió social
-    inclusion_description: Inclusió social
-    community: Desenvolupament comunitari
-    community_description: Desenvolupament comunitari
-    services: Serveis públics
-    services_description: Serveis públics
-    other: Altres
-    other_description: Altres
+    nature: Nature and biodiversity
+    nature_description: Nature and biodiversity
+    waste: Cleanliness and waste
+    waste_description: Cleanliness and waste
+    sustainability: Sustainable development
+    sustainability_description: Sustainable development
+    mobility: Mobility
+    mobility_description: Mobility
+    technology: Energy and technology
+    technology_description: Energy and technology
+    economy: Work, economy and tourism
+    economy_description: Work, economy and tourism
+    housing: Housing
+    housing_description: Housing
+    public_space: Public spaces and buildings
+    public_space_description: Public spaces and buildings
+    safety: Safety
+    safety_description: Safety
+    education: Education and youth
+    education_description: Education and youth
+    culture: Culture, sports and events
+    culture_description: Culture, sports and events
+    health: Health and welfare
+    health_description: Health and welfare
+    inclusion: Social inclusion
+    inclusion_description: Social inclusion
+    community: Community development
+    community_description: Community development
+    services: Public services
+    services_description: Public services
+    other: Other
+    other_description: Other
   static_pages:
-    terms_and_conditions_title: Termes i Condicions
+    terms_and_conditions_title: Terms & conditions
     terms_and_conditions_body: >
       <p>Aquests termes i condicions descriuen les regles i directrius per contribuir a la plataforma i estan pensats per ajudar a garantir un diàleg constructiu.</p> <p>Les vostres idees per millorar encara més la plataforma són benvingudes i es poden enviar a support@ citizenlab.co.</p> <h2>Qui pot participar?</h2> <p>Qualsevol persona pot veure projectes públics a través de la plataforma. Si voleu aportar contingut (per exemple, enviar aportacions o votar), haureu de registrar-vos i crear un compte. Podeu registrar-vos mitjançant la vostra adreça de correu electrònic; per a algunes plataformes, també és possible iniciar sessió amb un compte de Facebook o Google existent. Si utilitzeu algun d'aquests serveis, el vostre nom, adreça electrònica i foto de perfil es compartiran i s'afegiran al vostre compte de plataforma.</p> <p>Tingueu en compte que la creació del vostre compte no us atorga la propietat. Els administradors de la plataforma poden rebutjar, suspendre o suprimir comptes per motius com ara no complir els termes i condicions descrits en aquesta pàgina.</p> <p>Les condicions generals del vostre compte són les següents: </p> <ul> < li> <strong>Podeu crear un compte</strong> <p>Una persona no pot crear ni mantenir diversos comptes. Les dades del compte que proporcioneu han de ser precises i aquest compte no es pot transferir a una altra persona sense el permís d'un administrador de la plataforma. </p> </li> <li> <strong>El vostre compte no es pot utilitzar per a la promoció comercial</strong> <p>Un compte no es pot utilitzar amb l'únic propòsit de fer publicitat, comercialitzar un producte o servei, etc. </p> </li> <li> <strong>Sou responsable de mantenir la informació del vostre compte segura i confidencial</strong> <p>Sou l'única persona que hauria d'utilitzar el vostre compte i tenir accés a la contrasenya del vostre compte i dades d'inici de sessió. Per millorar la seguretat del vostre compte, us recomanem que utilitzeu una contrasenya amb una combinació de números, lletres minúscules i majúscules. No som responsables de cap pèrdua o dany ocasionat al vostre compte i no ens fem responsables del robatori (p. ex., mitjançant phishing). Tingueu en compte que mai us demanarem les vostres dades d'inici de sessió, com ara la vostra contrasenya. </p> <h2>La teva activitat a la plataforma</h2> <p>Per garantir una participació segura i productiva, hi ha algunes restriccions sobre el tipus de contingut que es pot publicar en aquesta plataforma. Qualsevol contingut que publiqueu a la plataforma ha d'estar lliure de:</p> <ul> <li> <strong>Dades privades</strong><p>Les dades confidencials i la informació personal d'altres persones, com ara números de telèfon i adreces, no es poden publicar sense la seva autorització i consentiment exprés. </p> <li><strong>Correu brossa/programari maliciós/phishing/virus/cucs/troians</strong> <p>Contingut o enllaços maliciosos que vulnerin la privadesa d'altres persones o que danyin o interrompin els navegadors o ordinadors d'altres persones. </p> </li> <li> <strong>Amenaces, insults i altres continguts inadequats </strong> <p>Atacs i insults personals, comportament o llenguatge amenaçador, comentaris discriminatoris, blasfemia i altres llenguatges ofensius.</p> > </li> <li><strong>Activitat publicitària i comercial</strong> <p>Contingut publicat amb l'únic propòsit d'anunciar un servei o producte comercial.</p> </li> <li> <strong> Material amb drets d'autor</strong> <p>Contingut que infringeix els drets de propietat intel·lectual (p. ex., imatges amb drets d'autor).</p> </li> <li> <strong>Activitats il·legals</strong> <p>Contingut que en qualsevol promou activitats il·legals.</li></p> </ul> <p>Les enviaments i altres continguts que incloguin qualsevol dels elements anteriors es poden editar, suprimir o impedir que es publiquin d'una altra manera, i el compte pot ser temporalment bloquejat o suprimit permanentment. Els comptes nous o addicionals creats per evitar la suspensió temporal o permanent també es poden supervisar i suprimir.</p> <h2>Lleis aplicables</h2> <p>És possible que l'ús d'un compte no infringeixi les lleis aplicables. Això inclou qualsevol violació de la legislació de privadesa, els drets de propietat intel·lectual, el codi penal, etc.</p> <p>No ens fem responsables de cap manera del contingut publicat a la plataforma que no s'adhereixi a les normes i lleis anteriors. Les infraccions es poden informar a support@citizenlab.co i poden comportar la supressió dels missatges rellevants i/o la suspensió o la revocació permanent del compte subjacent.</p> <p>És possible que el contingut publicat a la plataforma pugui contenir contingut nociu. fitxers o enllaços. En descarregar fitxers o accedir als hipervincles a través de la plataforma, assumeix el risc i la responsabilitat dels danys que es puguin produir.</p> <h2>Drets de propietat</h2> <p>Aquesta plataforma està protegida pels drets de propietat intel·lectual relacionats amb la seva contingut, codi font, bases de dades, etc. Qualsevol contingut original que publiqueu a la plataforma pot ser visible per al públic i està sota la llicència pública Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0), que permet que el vostre contingut ser compartit o adaptat amb atribució. No podeu reproduir, distribuir, modificar o transmetre la plataforma i qualsevol dels seus continguts que no siguin de domini públic sense permís.</p>
-    privacy_policy_title: Política de privacitat
+    privacy_policy_title: Privacy Policy
     privacy_policy_body: >
       <p>Responsable del tractament de les dades:</p> <p>CitizenLab NV - Anspachlaan 65 - 1000 Brussel·les - Bèlgica</p> <p>Adreça de correu electrònic de contacte: support@citizenlab.co</p> <p>Organització: //insereix contactes del client</p> <h2>1. POLÍTICA DE PRIVACITAT</h2> <p>Aquesta "Política de privadesa" s'aplica a les "Dades personals" recopilades per CitizenLab en nom de l'organització a través d'aquest lloc web.</p> <h2>2. QUÈ SÓN LES DADES PERSONALS?</h2> <p>En aquesta Política de Privadesa, les Dades Personals fan referència a la informació que permet identificar-te. Una persona identificable és una persona que es pot identificar, ja sigui directa o indirectament, en particular fent referència a un número d'identificació o a un o més factors relacionats amb la identitat física, fisiològica, mental, econòmica, cultural o social. Un exemple típic d'informació personal és el vostre nom i adreça electrònica.</p> <h2>3. QUINES DADES PERSONALS RECOLLIM?</h2> <p>Podríem recopilar les vostres dades personals de les tres fonts següents:</p> <h3>3.1 Dades personals que proporcioneu durant el procés de registre a la Plataforma, algunes de les quals són opcionals.</h3> <p>Les dades personals que podem recollir de vostè són:</p> <ul> <li>Nom i cognoms</li> <li>Adreça de correu electrònic</li> <li>Any de naixement</li> <li>Gènere</li> <li>Zona de residència</li> <li>Idioma preferit</li> </ul> <p>Aquesta llista es pot ampliar a petició de l'organització. Si trieu iniciar la sessió mitjançant un proveïdor d'autenticació de tercers com Google Accounts, Facebook o FranceConnect, obtindrem aquestes dades d'ells. Si trieu verificar la vostra identitat amb un proveïdor d'identitat extern com COW, FranceConnect o CSAM, obtindrem aquesta informació d'ells.</p> <h3>3.2 Dades personals que proporcioneu quan feu accions participatives a la nostra plataforma.< /h3> <p>Cada acció que feu a la plataforma (votar, publicar una idea, escriure un comentari, respondre una enquesta,...) es registra i s'emmagatzema. Aquestes dades també estan vinculades a les vostres dades de registre (3.1), cosa que implica que l'organització pot enllaçar el vostre perfil de plataforma a aquestes dades de participació.</p> <h3>3.3 Dades personals que recollim quan visiteu la nostra plataforma.</h3> <p>Nosaltres (i els processadors de tercers que actuen en nom nostre) recopilem informació sobre l'ús de la nostra plataforma per avaluar el bon funcionament i la seguretat de la plataforma. Amb aquesta finalitat, recollim informació tècnica que us pot identificar, com ara la vostra adreça IP i els detalls del navegador. En utilitzar els nostres serveis, accepteu que es recopilin aquestes dades.</p> <p>També recopilem dades d'ús per millorar els nostres serveis, podeu desactivar aquesta recollida en tot moment des del gestor de consentiments.</p> < h2>4. COM UTILITZAM LES DADES PERSONALS?</h2> <p>Podem utilitzar les vostres dades personals per als propòsits següents:</p> <ul> <li>En primer lloc, per comunicar la vostra aportació a l'organització amb el context rellevant i per elaborar informes agregats de totes les dades recollides en aquesta plataforma per ajudar-los en la presa de decisions.</li> <li>Per crear i mantenir el vostre perfil d'usuari en aquest lloc web.</li> <li>Per gestionar la identificació i l'autenticació dels usuaris.</li> <li>Per proporcionar informació sobre la vostra comunitat i/o alertar-vos quan les activitats de la plataforma us puguin interessar. Pots desactivar els correus electrònics d'usuari del teu perfil d'usuari en qualsevol moment.</li> <li>Per millorar els nostres serveis i supervisar-ne les funcionalitats.</li> </ul> <p>Les dades personals només s'emmagatzemen i processats durant el període requerit per a la finalitat del tractament. Després d'això, les dades se suprimiran o s'anonimitzaran.</p> <h2>5. AMB QUI COMPARTIM LES VOSTRES DADES PERSONALS?</h2> <p>Compartim les vostres dades personals amb l'organització en nom de la qual recopilem aquestes dades. Compartim les vostres dades amb els subencarregats que treballen en nom nostre. Mai vendrem ni llogarem les vostres dades personals a altres proveïdors de serveis, ni compartirem les vostres dades personals amb cap proveïdor de serveis que no compleixi el RGPD.</p> <h2>6. A ON TRANSFEREM LES TEVES DADES PERSONALS?</h2> <p>Només transferim les teves Dades Personals a proveïdors de serveis establerts fora de l'Espai Econòmic Europeu si compleixen l'art 44 GDPR.</p> <h2>7. QUINS DRETS TÉ?</h2> <p>Tens dret a consultar les teves dades personals en qualsevol moment, així com el dret a ser informat de l'ús que Citizenlab fa de les teves dades personals.</p> < h3>7.1 Dret a la rectificació, supressió i restricció del tractament</h3> <p>És lliure de decidir si vols o no proporcionar les teves dades personals a Citizenlab.A més, sempre tens dret a sol·licitar a Citizenlab la correcció, el complement o la supressió de les teves dades personals. Vostè reconeix que una negativa a proporcionar o una sol·licitud d'esborrat de dades personals fa que determinats serveis ja no es puguin oferir. També podeu sol·licitar que el tractament de les vostres dades personals sigui limitat. Si decideixes eliminar el teu compte de la plataforma, les dades personals que es van recollir sobre tu s'eliminaran dels nostres servidors. Algunes dades personals sobre vostè poden romandre a les dades de registre que conservem per motius de seguretat i legals durant un màxim de 30 dies.</p> <h3>7.2 Dret d'oposició</h3> <p>Tens dret a oposar-te al tractament de les seves dades personals per motius greus i legítims. A més, sempre teniu dret a oposar-vos a l'ús de les vostres dades personals amb finalitats de màrqueting directe; en aquests casos, no cal que n'indiqui els motius.</p> <h3>7.3 Dret a la portabilitat de les dades</h3> <p>Teniu dret a obtenir les dades personals que hàgiu proporcionat a Citizenlab d'una manera estructurada i típica i un formulari llegible per màquina i/o fer-los transferir a diferents responsables del tractament.</p> <h3>7.4 Dret a retirar el consentiment</h3> <p>En la mesura que el tractament es basa en el vostre consentiment previ, teniu dret a retirar aquesta aprovació.</p> <h3>7.5 Exercir els vostres drets</h3> <p>Podeu exercir els vostres drets posant-vos en contacte amb Citizenlab a aquest efecte, ja sigui per correu electrònic a support@citizenlab.co, per correu postal a Anspachlaan 65, 1000 Brussel·les, Bèlgica o utilitzant el formulari "Contacteu amb nosaltres" al nostre lloc web, sempre que adjunteu una còpia de la part frontal del vostre carnet d'identitat.</p> <h3>7.6 Presa de decisions i perfils automatitzats</h3> <p >El tractament de les vostres dades personals no inclou l'elaboració de perfils i tampoc serà sotmès per Citizenlab a una presa de decisions automatitzada.</p> <h3>7.7 Dret a presentar una queixa</h3> <p>Teniu dret a presentar una queixa a l'autoritat de privadesa del vostre país o a l'autoritat de privadesa belga sota la qual recau CitizenLab: Drukpersstraat 35, 1000 Brussel·les, Bèlgica, Tel + 32 (0)2 274 48 00, Fax +32 (0)2 274 48 35, correu electrònic: contact@adp-gba.be. Això no afecta el relleu davant un tribunal civil.</p> <h2>8. INFORMACIÓ ADDICIONAL SOBRE LA RECOLLIDA I EL TRACTAMENT DE DADES</h2> <h3>Procediments legals</h3> <p>CitizenLab i l'Organització per a la qual tractem aquestes dades poden utilitzar les Dades Personals de l'Usuari amb finalitats legals, judicials o judicials. fases anteriors en cas d'ús il·lícit d'aquesta Aplicació o dels serveis relacionats. L'Usuari és conscient que CitizenLab i l'Organització amb la qual treballem poden estar obligats a revelar les dades personals a petició de les institucions governamentals competents per al tractament de les Dades. La base legal d'aquest tractament és l'acceptació dels termes i condicions (base contractual) i el consentiment prestat.</p> <h3>Mesures de seguretat</h3> <p>Citizenlab ha desenvolupat mesures de seguretat que s'han ajustat a l'àmbit tecnològic. i a nivell organitzatiu per evitar la destrucció, pèrdua, falsificació, modificació, accés prohibit o la divulgació errònia a tercers de dades personals, així com qualsevol altre tractament prohibit d'aquestes dades. En cap cas, Citizenlab es fa responsable de cap pèrdua directa o indirecta derivada de l'ús incorrecte o il·lícit de les seves dades personals per part d'un tercer. Heu de complir en tot moment les instruccions de seguretat, fins i tot impedint tot accés prohibit a les vostres dades d'inici de sessió i contrasenya. Sou l'únic responsable de l'ús que es fa des del lloc web al vostre ordinador, l'adreça IP i les vostres dades d'identificació, així com de la confidencialitat d'aquests.</p> <h3>Canvis a aquesta política de privadesa</h3> <p >CitizenLab es reserva el dret de canviar aquesta política de privadesa en qualsevol moment notificant-ho als Usuaris en aquesta pàgina. Us animem a consultar aquesta pàgina per veure possibles canvis. La data de l'últim canvi s'indica a la part inferior de la pàgina. Si un Usuari s'oposa a qualsevol canvi en la política, l'Usuari no ha de continuar utilitzant aquesta Aplicació. Llevat que s'indiqui el contrari, la Política de privadesa vàlida aplicable en aquell moment s'aplica a totes les dades personals que hem recopilat.</p> <p><em>Actualització més recent: 17/12/2019</em></p>
-    infopage_title: Pàgina d'informació
+    infopage_title: Information Page
     infopage_body: "<p>Aquesta <strong>plataforma de participació tot en un</strong> és una iniciativa del vostre municipi o organització i es pot utilitzar per a diferents processos de consulta pública: recollida d'idees, votació, discussió, enquestes, enquestes, pressupostos participatius, cartografia en línia, planificació d'escenaris, suport a consells assessors i comitès, ...</p>\n<p>A la pàgina d'inici, veureu quins <strong>processos estan actius </strong>i en quina <strong>fase </strong>es troben actualment.</p>\n<p><img data-cl2-text-image-text-reference=\"e2c7bc7a-017d-4887-a3cb-b94185617a59\" alt=\"Regla de separació horitzontal\" data-align=\"center\" style=\"display: block; margin : auto;\"></p>\n<h2>Com inicio la sessió a la plataforma?</h2>\n<p>La sessió es fa fàcilment indicant el vostre nom i cognoms i la vostra adreça de correu electrònic. També podeu utilitzar el vostre compte de Google o Facebook. Els altres només podran veure el teu nom i cognoms.</p>\n<h2>Puc utilitzar la plataforma jo mateix, p. ex. organitzar una consulta pública?</h2>\n<p>Absolutament. Demaneu al responsable del vostre municipi o organització que us doni els drets de permís necessaris per convertir-vos en moderador del projecte. Un cop concedits aquests permisos, pots configurar el teu propi projecte i cronologia i compartir la informació que vulguis (vídeo, documents, imatges,...). Això també us permetrà convidar altres persones a la plataforma, cosa que els permetrà publicar idees dins del vostre projecte, votar o comentar.</p>\n<h2>Puc participar com a associació/organització/comitè? </h2>\n<p>Sí, això és possible. Atès que només el vostre nom i cognom són visibles per als altres a la plataforma, només podeu utilitzar el nom de la vostra organització mentre configureu el vostre perfil.</p>\n<h2>Per què hauria d'utilitzar aquesta plataforma i no crear un lloc web jo mateix?</h2>\n<p>Un equip de desenvolupadors dedicats i especialistes en participació en línia (<a href=\"https://www.citizenlab.co/en\" target=\"_blank\">CitizenLab,</a> encarregat pel vostre municipi o organització) està millorant i actualitzant aquesta plataforma diàriament. Fins i tot l'error més petit s'aborda immediatament i, si teniu propostes creatives, us poden ajudar a assenyalar quines funcions de la plataforma es poden utilitzar per a això o quines estan en procés.</p>\n<p><img data-cl2-text-image-text-reference=\"392d0e47-e5f9-41ab-9ceb-affac617b8b1\" alt=\"Regla de separació horitzontal\" data-align=\"center\" style=\"display: block; margin : auto;\"></p>\n<p><strong><em>Necessites més informació?</em></strong><em> Vols utilitzar la plataforma? Preguntes o comentaris? Poseu-vos en contacte amb el responsable del vostre municipi o organització. O poseu-vos en contacte amb CitizenLab mitjançant support@citizenlab.co.</em></p><strong>"
-    faq_title: Preguntes freqüents
+    faq_title: FAQ
     faq_body: "<h2 class=\"ql-align-justify\">Per a què serveix aquesta plataforma?</h2><p class=\"ql-align-justify\">Aquesta plataforma està dissenyada com un centre central per compartir informació i obtenir aportacions i comentaris. Els projectes de participació que estan actius actualment es mostren a la pàgina d'inici: cada projecte de participació pot tenir una manera de participació diferent, ja sigui afegint una idea, comentant una proposta, votant i prioritzant projectes o fent una enquesta. </p><h2 class=\"ql-align-justify\">Com participo? </h2><p class=\"ql-align-justify\">Sempre podeu navegar per projectes públics, però us haureu de registrar per dur a terme una acció. Això ajuda a mantenir un sentiment de comunitat i garantir la legitimitat de l'aportació. </p><h2 class=\"ql-align-justify\">Quina informació pot veure la gent sobre mi?</h2><p class=\"ql-align-justify\">El teu nom, foto i biografia, si ets n'he afegit un, són visibles. Sempre els pots canviar a la teva configuració.</p><h2 class=\"ql-align-justify\">Per què no puc publicar la meva aportació o enviar un comentari?</h2><p class=\"ql-align -justify\">La publicació, el comentari i la votació només es poden habilitar durant determinats moments o fases d'un projecte. En alguns casos, un projecte només pot estar obert a les contribucions d'un determinat grup d'interessats.</p><p class=\"ql-align-justify\">Si actualment la publicació està activada per a un projecte, veureu un botó que us demana que envieu una publicació. Alternativament, podeu cercar altres projectes actius per trobar oportunitats de participació addicionals.</p><h2 class=\"ql-align-justify\">Com edito o suprimo la meva entrada?</h2><p class=\"ql-align -justify\">Si has publicat la teva entrada però vols fer-hi modificacions o eliminar-la, pots trobar aquesta opció fent clic als tres petits punts que hi ha a la part superior dreta de la publicació. </p><h2 class=\"ql-align-justify\">Quines són les directrius de la comunitat i les polítiques de moderació?</h2><p class=\"ql-align-justify\">Les nostres directrius de la comunitat són aquí per garantir que la plataforma és un espai segur on tothom hi pot participar. Assegureu-vos que les vostres publicacions estiguin lliures de:</p><ul>\n<li class=\"ql-align-justify\">Atacs personals, insults, comentaris abusius o discriminatoris</li>\n  <li class=\"ql-align-justify\">Llenguatge ofensiu inclòs blasfemia</li>\n  <li class=\"ql-align-justify\">Material de màrqueting o publicitat</li>\n  <li class=\"ql-align-justify\">Informació personal sobre altres persones</li>\n  <li class=\"ql-align-justify\">Material amb drets d'autor com ara imatges</li>\n  </ul><p class=\"ql-align-justify\">Qualsevol publicació o comentari que no s'adhereixi a aquestes directrius es pot editar o suprimir o, en casos extrems, evitar que es publiquin. Si us plau, reviseu els nostres Termes &amp; Condicions per a més informació. </p><h2 class=\"ql-align-justify\">Com denuncio una publicació ofensiva?</h2><p class=\"ql-align-justify\">Feu clic als tres punts petits a la part superior dreta racó de la publicació per informar-ne. Si us plau, indiqueu el motiu pel qual esteu informant del contingut; això enviarà una notificació perquè la publicació es revisi.</p><h2 class=\"ql-align-justify\">Per què tinc dificultats per registrar-me o iniciar la sessió?< /h2><p class=\"ql-align-justify\">Si no us podeu registrar, pot ser perquè ja us heu registrat amb la mateixa adreça de correu electrònic o ja heu rebut una invitació per unir-vos a la plataforma. Si veieu un missatge que indica que la vostra adreça de correu electrònic l'ha pres una invitació pendent, comproveu el vostre correu electrònic i seguiu l'enllaç de la invitació per registrar el vostre compte. Si no trobeu la invitació, proveu de buscar a la vostra bústia de correu brossa o sol·liciteu una nova invitació. </p><h2 class=\"ql-align-justify\">Com restablir la meva contrasenya?</h2><p class=\"ql-align-justify\">Sempre podeu sol·licitar el restabliment de la contrasenya des del registre a la pàgina. Si restableix la contrasenya, s'enviarà un enllaç a la seva adreça de correu electrònic; seguiu les instruccions per canviar la contrasenya. Per motius de seguretat, l'enllaç té una validesa d'una hora. Si l'enllaç ha caducat, podeu tornar a fer clic a \"Has oblidat la contrasenya?\" a la pàgina d'inici de sessió per generar un nou enllaç de restabliment.</p><p class=\"ql-align-justify\">Si no ho has fet. rebeu el correu electrònic, comproveu que no estigui al vostre correu brossa i que esteu enviant l'enllaç a la mateixa adreça electrònica amb la qual us heu registrat.</p><h2 class=\"ql-align-justify\">Què faràs amb les meves dades?</h2><p class=\"ql-align-justify\">Reviseu la nostra política de privadesa per obtenir més informació sobre la recollida i l'ús de dades. En resum, mai utilitzarem les teves dades per a publicitat, màrqueting o altres tipus de correu brossa.</p><h2 class=\"ql-align-justify\">Quins correus electrònics rebré?</h2><p class=\" ql-align-justify\">Pot rebre correus electrònics relacionats amb el vostre compte i la vostra activitat a la plataforma, per exemple, quan algú respon a una de les vostres publicacions. Podeu controlar quins correus electrònics rebeu a la vostra configuració. Hi ha una secció anomenada \"Notificacions\" on podeu activar i desactivar les notificacions per correu electrònic.</p><h2 class=\"ql-align-justify\">Com puc suprimir el meu compte?</h2><p class=\" ql-align-justify\">A la vostra configuració hi ha l'opció d'esborrar el vostre compte. Les entrades que heu publicat es mantindran publicades, però el vostre nom s'eliminarà de la publicació i se substituirà per \"autor desconegut\". Si voleu suprimir totes les vostres aportacions, feu-ho abans de suprimir el vostre compte. </p>"
     initiatives_title: Propostes
     initiatives_body: >
       <img style="margin-bottom: 30px" data-cl2-text-image-text-reference="b4e659ab-2830-48fd-b3ce-96e16856262f" height="374.3745928338762" width="819" alt=""> < h2>Què és la proposta d'un ciutadà?</h2> <p>Com a resident de $|orgName| pots posar la teva proposta a l'agenda a través d'aquesta plataforma. Aquestes propostes són preferentment idees concretes que estan vinculades a la política local i sorgeixen d'una necessitat, desig o somni. Pot ser una proposta pròpia o col·laborativa. Potser us agradaria canviar o millorar una situació existent o iniciar un projecte nou.</p> <p>La implicació de $|orgName| en la implementació de la vostra proposta ha de ser alhora necessari i possible. En un escenari ideal, també esteu disponible per a més reflexió o cooperació, però això no és una obligació. "Reduir el límit de velocitat a l'autopista a 80 km/h" no és, doncs, una proposta contundent, mentre que "Convertir el carrer principal en zona de vianants". Així que porteu les vostres propostes! Si necessiteu més informació, rebreu una actualització o una reacció.</p><h2>Per què publicar una proposta en aquesta plataforma?</h2> <p>Aquesta és la plataforma de participació oficial de $|orgName|, que ofereix els següents avantatges:</p> <ul> <li>$|orgName| està implicat oficialment com a propietari d'aquesta plataforma i supervisa activament el que passa aquí. Quan publiqueu una proposta, la persona responsable rep automàticament un missatge. No cal que us poseu en contacte amb ells per assegurar-vos que la vostra proposta es tingui en compte.</li> <li>Aquesta plataforma s'ha desenvolupat específicament per a accions participatives oficials, com les propostes dels ciutadans. Cada element, des de l'experiència de l'usuari fins a l'enfocament pas a pas, es construeix precisament per a aquest propòsit. Quan utilitzeu les xarxes socials tradicionals, la vostra proposta podria desaparèixer en la sobrecàrrega d'estímuls i un correu electrònic normal desapareix ràpidament a una safata d'entrada plena.</li> <li>Els vostres conciutadans també són presents en aquesta plataforma. Poden donar suport i perfeccionar la vostra proposta. Com més creativa sigui la vostra proposta i com més suport aconsegueixi obtenir, més possibilitats s'aplicarà!</li> </ul> <h2>Com començar?</h2> <p>Primer, comproveu si la vostra proposta compleix els criteris següents:</p> <p>$|initiativesEligibilityCriteria|</p> <h2>Què podeu esperar quan la vostra proposta assoleixi $|initiativesVoting Threshold| vots dins de $|initiativesDaysLimit| dies?</h2> <p>$|initiativesThresholdReachedMessage|</p> <h2>Què passa amb les propostes que no reben $|initiativesVotingThreshold| vots a temps? </h2> <p>Això passa, però no us preocupeu. La vostra proposta romandrà a la plataforma. L'estat de la vostra proposta canviarà automàticament a "Caducat". En conseqüència, ja no es podrà votar. Si ho desitges, pots optar per esborrar la teva pròpia proposta en qualsevol moment.</p>
   nav_bar_items:
     home:
-      title: Casa
+      title: Home
     projects:
       title: Tots els projectes
     all_input:
-      title: Totes les entrades
+      title: All input
     proposals:
       title: Propostes
     events:
@@ -86,26 +86,26 @@ ca:
     about:
       title: Sobre
     faq:
-      title: Preguntes freqüents
+      title: FAQ
   projects:
-    open_idea_project_title: Una idea? Porta-ho al teu ajuntament!
-    open_idea_project_description_preview: Potser tens una idea que no encaixa amb algun dels projectes existents? Que publiqueu-lo aquí, recolliu suport i apunteu-lo a l'agenda política!
+    open_idea_project_title: An idea? Bring it to your council!
+    open_idea_project_description_preview: Maybe you have an idea that doesn't fit with one of the existing projects? Than post it here, gather support and get it on the political agenda!
     open_idea_project_description: >
-      <p>Aquí, podeu començar la vostra pròpia idea si no encaixa dins d'un dels projectes existents.</p><p><strong>L'objectiu?</strong> Per incorporar la teva idea a l'agenda política.</p><p><strong>Com?</strong> Recollint suport, és a dir, almenys 100 vots en 3 mesos. Podeu fer-ho fent primer la vostra idea "atractiu". Escriu-lo d'una manera clara i atractiva, afegeix imatges, dóna arguments sòlids basats en fets, afegeix arxius adjunts amb més detalls o informació de fons,... Després d'haver-ho fet, comença a compartir la teva idea a les xarxes socials o per correu electrònic. Convida persones a unir-se a la discussió sobre la teva idea, o simplement convèncer-les perquè la donin suport votant a favor.</p><p><strong>Sobre què?</strong> La teva idea pot tractar sobre moltes coses, sempre que estigui relacionada amb la teva ciutat i la seva política. Pot ser un problema que experimenteu, una solució que imagineu o fins i tot una combinació d'ambdós. Pot ser salvatge i a llarg termini, o molt tangible i una victòria ràpida.</p><p><strong>I llavors? </strong>Has arribat als 100 vots en 3 mesos? Felicitats! La ciutat ara tindrà en compte la teva idea. Si la vostra idea es considera factible i no perjudica col·lectius o individus concrets, tindreu l'oportunitat de presentar la vostra proposta durant la reunió del consell. Durant aquesta mateixa reunió, els membres del consell us donaran comentaris directes sobre què faran o no amb la vostra idea i per què. Si no aplegueu 100 vots en 3 mesos, la vostra proposta no serà considerada.</p><p>Tenim curiositat per conèixer les teves idees!</p>
+      <p>Here, you can start your own idea if it doesn't fit within one of the existing projects.</p><p><strong>The objective?</strong> To get your idea on the political agenda.</p><p><strong>How?</strong> By gathering support, namely at least 100 votes in 3 months. You can do that by first making your idea 'attractive'. Write it in a clear and engaging way, add images, give strong arguments based on facts, add attachments with further details or background information, ... After you've done that, start sharing your idea on social media or through email. Invite people to join the discussion on your idea, or simply convince them to support it by voting in favour.</p><p><strong>About what?</strong> Your idea can be about a lot of things, as long as it is related to your city and its policy. It can be a problem you experience, a solution you envision or even a combination of both. It can be wild and on the long term, or very tangible and a quick win.</p><p><strong>And then? </strong>Did you reach 100 votes in 3 months? Congratulations! The city will now take your idea in consideration. If your idea is considered to be feasible and does not harm specific groups or individuals, you will get the chance to present your proposal during the council meeting. During that same meeting, the council members will give you direct feedback on what they will or won't do with your idea and why. If you don't gather 100 votes in 3 months, your proposal won't be considered.</p><p>We're curious to learn about your ideas!</p>
   events:
-    council_meeting_title: Reunió del Consell
+    council_meeting_title: Council Meeting
     council_meeting_description: >
-      <p>Durant aquest consell es presentaran aquelles iniciatives ciutadanes que hagin aconseguit 100 vots en menys de 3 mesos.</p><p>A continuació, el consistori compartirà la seva visió sobre cada idea.</p>
+      <p>During this council meeting, those citizen initiatives that gained 100 votes in less than 3 months, will be presented.</p><p>The council will then share their view on each idea.</p>
   custom_fields:
     users:
       gender:
-        title: Gènere
+        title: Gender
       birthyear:
-        title: Any de naixement
+        title: Year of birth
       domicile:
-        title: Lloc de residència
+        title: Place of residence
       education:
-        title: Educació
+        title: Education
     ideas:
       title:
         title: Títol
@@ -122,12 +122,12 @@ ca:
         title: Ubicació
         description:
       proposed_budget:
-        title: Proposta de pressupost
+        title: Proposed Budget
         description:
       budget:
         title: Pressupost
       images:
-        title: Imatges
+        title: Images
         description:
       attachments:
         title: Adjunts
@@ -135,10 +135,10 @@ ca:
       section1:
         description:
       section2:
-        title: Imatges i fitxers adjunts
+        title: Images and attachments
         description:
       section3:
-        title: Detalls
+        title: Details
         description:
   custom_forms:
     categories:
@@ -160,90 +160,90 @@ ca:
       attachements:
         title: Imatges i fitxers adjunts
       extra:
-        title: Informació adicional
+        title: Additional information
   custom_field_options:
     gender:
-      male: Mascle
-      female: Dona
-      unspecified: Altres
+      male: Male
+      female: Female
+      unspecified: Other
     domicile:
-      outside: Algun altre lloc
+      outside: Somewhere else
     education:
-      ISCED2: Educació secundària inferior
-      ISCED3: Educació secundària superior
-      ISCED4: Educació postsecundària no terciària
-      ISCED5: Educació terciària de cicle curt
-      ISCED6: Batxillerat o equivalent
-      ISCED7: Màster o equivalent
-      ISCED8: Doctorat o equivalent
+      ISCED2: Lower secondary education
+      ISCED3: Upper secondary education
+      ISCED4: Post-secondary non-tertiary education
+      ISCED5: Short-cycle tertiary education
+      ISCED6: Bachelor or equivalent
+      ISCED7: Master or equivalent
+      ISCED8: Doctoral or equivalent
   initiatives:
     default_threshold_reached_message: >
-      <p>Es convida els iniciadors a presentar la seva proposta a la propera reunió del consell. Us proporcionarem una actualització oficial.</p>
+      <p>The initiators are invited to present their proposal at the next council meeting. We will provide an official update.</p>
     default_eligibility_criteria: >
-      <ul> <li>Ha d'estar dins de les àrees polítiques i competències de la política local</li> <li>Serveix l'interès públic més que el vostre interès individual</li> <li>No discrimina per sexe, raça, edat o antecedents</li> <li>No perjudica els altres</li> </ul>
+      <ul> <li>It must fall within the policy areas and competencies of local policy</li> <li>It serves the public interest rather than your individual interest</li> <li>It does not discriminate based on gender, race, age, or background</li> <li>It does not harm others</li> </ul>
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: 'Restablir la contrasenya'
-      message_you_reset_your_password: 'Heu sol·licitat un restabliment de la contrasenya per a la plataforma de participació de %{organizationName}. Feu clic al botó següent per triar una contrasenya nova i segura. L''enllaç caduca en 1 hora.'
-      subject: '%{organizationName}: Restableix la teva contrasenya'
+      message_you_reset_your_password: 'You requested a password reset for the participation platform of %{organizationName}. Click the button below to choose a new, safe password. The link expires in 1 hour.'
+      subject: '%{organizationName}: Reset your password'
       title_reset_your_password: 'Trieu una contrasenya nova'
   xlsx_export:
     column_headers:
       input_id: 'ID'
-      latitude: 'Latitud'
-      longitude: 'Longitud'
-      author_fullname: 'Nom de l''autor'
-      author_email: 'Correu electrònic de l''autor'
-      author_id: 'ID de l''autor'
-      budget: 'Pressupost'
-      created_at: 'Presentat a'
-      published_at: 'Publicat a'
+      latitude: 'Latitude'
+      longitude: 'Longitude'
+      author_fullname: 'Author name'
+      author_email: 'Author email'
+      author_id: 'Author ID'
+      budget: 'Budget'
+      created_at: 'Submitted at'
+      published_at: 'Published at'
       comments_count: 'Comentaris'
       upvotes_count: 'Vots a favor'
       downvotes_count: 'Vots en contra'
-      baskets_count: 'Cistelles'
+      baskets_count: 'Baskets'
       input_url: 'URL'
       project: 'Projecte'
       status: 'Estat'
       assignee_fullname: 'Cesionari'
-      assignee_email: 'Correu electrònic del cessionari'
-    anonymous: 'Anònim'
+      assignee_email: 'Assignee email'
+    anonymous: 'Anonymous'
   form_builder:
     default_select_field:
-      title: 'La teva pregunta'
-      option1: 'opció 1'
-      option2: 'Opció 2'
+      title: 'Your question'
+      option1: 'Option 1'
+      option2: 'Option 2'
     survey_end_page:
-      title: 'Final de l''enquesta'
-      description: "Envieu les vostres respostes seleccionant \"Envia l'enquesta\" a continuació."
+      title: 'Survey end'
+      description: "Please submit your answers by selecting 'Submit survey' below."
   project_copy:
     title_suffix: 'Còpia'
   confirmations_mailer:
     send_confirmation_code:
-      subject: "Confirmeu la vostra adreça de correu electrònic per a la plataforma de participació de %{organizationName}"
-      header: "El teu codi de confirmació"
-      header_message: "hola %{firstName}!"
-      confirm_email_address: "Confirma la teva adreça electrònica"
-      thanks_for_signing_up: "Gràcies per registrar-te a la plataforma de participació de %{organizationName}."
-      best_regards: "Salutacions cordials,"
-      ignore_email: "Si no heu sol·licitat cap codi, podeu ignorar aquest correu electrònic amb seguretat."
-      expire_code: "Aquest codi caducarà en "
-      24_hours: "24 hores."
-      copy_paste_the_link_below: "Copieu i enganxeu el codi següent al formulari de registre de la plataforma."
-      the_link_is_valid_for: "Aquest enllaç és vàlid durant 24 hores. Si l'enllaç ha caducat, podeu <a href=\"%{link}\">sol·licitar un codi nou</a>."
-      did_you_receive_this_email_in_error: "Heu rebut aquest correu electrònic per error? <a href=\"%{link}\">Fes-nos-ho saber</a>."
+      subject: "Confirm your email address for %{organizationName}'s participation platform"
+      header: "Your Confirmation Code"
+      header_message: "Hi %{firstName}!"
+      confirm_email_address: "Confirm your email address"
+      thanks_for_signing_up: "Thank you for your participation. Please enter this confirmation code in the window on %{organizationName}'s participation platform:"
+      best_regards: "Best regards,"
+      ignore_email: "If you didn't request a code, you can safely ignore this email."
+      expire_code: "This code will be expired in "
+      24_hours: "24 hours."
+      copy_paste_the_link_below: "Copy and paste the code below into the registration form on the platform."
+      the_link_is_valid_for: "This link is valid for 24 hours. If the link has expired, you may <a href=\"%{link}\">request a new code</a>."
+      did_you_receive_this_email_in_error: "Did you receive this email in error? <a href=\"%{link}\">Let us know</a>."
   user_blocked_mailer:
     send_user_blocked_email:
-      subject: 'El teu compte s''ha desactivat temporalment'
-      title_user_blocked: 'El teu compte s''ha desactivat temporalment'
-      paragraph_1_without_reason: "El vostre compte a la plataforma de participació de %{organizationName} s'ha desactivat temporalment per una infracció de les directrius de la comunitat."
-      paragraph_1_with_reason: "El vostre compte a la plataforma de participació de %{organizationName} s'ha desactivat temporalment pel motiu següent:"
-      for_more_information: "Per a més informació sobre això, podeu consultar el %{termsAndConditionsPage}"
-      you_can_sign_in_again_from: "Podeu tornar a iniciar la sessió des %{date}"
+      subject: 'Your account has been temporarily disabled'
+      title_user_blocked: 'Your account has been temporarily disabled'
+      paragraph_1_without_reason: "Your account on the participation platform of %{organizationName} has been temporarily disabled for a violation of the community guidelines."
+      paragraph_1_with_reason: "Your account on the participation platform of %{organizationName} has been temporarily disabled for the following reason:"
+      for_more_information: "For more information on this, you can consult the %{termsAndConditionsPage}"
+      you_can_sign_in_again_from: "You can sign in again from %{date}"
   user:
-    anon_first_name: "Usuari"
+    anon_first_name: "User"
   time:
-    am: soc
+    am: am
     formats:
       hour_of_day: "%H:%M"
     pm: pm
