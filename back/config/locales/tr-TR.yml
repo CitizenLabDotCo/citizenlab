@@ -135,10 +135,10 @@ tr:
       section1:
         description:
       section2:
-        title: Resimler ve ekler
+        title: Images and attachments
         description:
       section3:
-        title: Detaylar
+        title: Details
         description:
   custom_forms:
     categories:
@@ -189,33 +189,33 @@ tr:
       title_reset_your_password: 'Yeni bir parola seçin'
   xlsx_export:
     column_headers:
-      input_id: 'KIMLIK'
-      latitude: 'Enlem'
-      longitude: 'Boylam'
-      author_fullname: 'Yazar adı'
-      author_email: 'Yazar e-postası'
-      author_id: 'Yazar Kimliği'
-      budget: 'Bütçe'
-      created_at: 'Şu adrese gönderildi'
-      published_at: 'Şu adreste yayınlandı'
+      input_id: 'ID'
+      latitude: 'Latitude'
+      longitude: 'Longitude'
+      author_fullname: 'Author name'
+      author_email: 'Author email'
+      author_id: 'Author ID'
+      budget: 'Budget'
+      created_at: 'Submitted at'
+      published_at: 'Published at'
       comments_count: 'Yorumlar'
       upvotes_count: 'Olumlu oylar'
       downvotes_count: 'Olumsuz oylar'
-      baskets_count: 'Sepetler'
+      baskets_count: 'Baskets'
       input_url: 'URL'
       project: 'Proje'
       status: 'Durum'
       assignee_fullname: 'Atanan'
-      assignee_email: 'Atanan e-posta'
-    anonymous: 'Anonim'
+      assignee_email: 'Assignee email'
+    anonymous: 'Anonymous'
   form_builder:
     default_select_field:
-      title: 'Sizin sorunuz'
-      option1: 'Seçenek 1'
-      option2: 'Seçenek 2'
+      title: 'Your question'
+      option1: 'Option 1'
+      option2: 'Option 2'
     survey_end_page:
-      title: 'Anket sonu'
-      description: "Lütfen cevaplarınızı aşağıdaki 'Anketi gönder' seçeneğini seçerek gönderin."
+      title: 'Survey end'
+      description: "Please submit your answers by selecting 'Submit survey' below."
   project_copy:
     title_suffix: 'Kopya'
   confirmations_mailer:
@@ -223,25 +223,25 @@ tr:
       subject: "%{organizationName} katılım platformu için e-posta adresinizi doğrulayın"
       header: "Onay Kodunuz"
       header_message: "Merhaba %{firstName}!"
-      confirm_email_address: "E-posta adresinizi onaylayın"
+      confirm_email_address: "Confirm your email address"
       thanks_for_signing_up: "%{organizationName} katılım platformuna kaydolduğunuz için teşekkür ederiz."
-      best_regards: "Saygılarımla,"
-      ignore_email: "Eğer bir kod talep etmediyseniz, bu e-postayı güvenle göz ardı edebilirsiniz."
-      expire_code: "Bu kodun geçerlilik süresi "
-      24_hours: "24 saat."
+      best_regards: "Best regards,"
+      ignore_email: "If you didn't request a code, you can safely ignore this email."
+      expire_code: "This code will be expired in "
+      24_hours: "24 hours."
       copy_paste_the_link_below: "Aşağıdaki kodu kopyalayıp platformdaki kayıt formuna yapıştırın."
       the_link_is_valid_for: "Bu bağlantı 24 saat geçerlidir. Bağlantının süresi dolarsa <a href=\"%{link}\">yeni bir kod isteyebilirsiniz</a>."
       did_you_receive_this_email_in_error: "Bu e-postayı yanlışlıkla aldığınızı mı düşünüyorsunuz? <a href=\"%{link}\">Bize haber verin</a>."
   user_blocked_mailer:
     send_user_blocked_email:
-      subject: 'Hesabınız geçici olarak devre dışı bırakıldı'
-      title_user_blocked: 'Hesabınız geçici olarak devre dışı bırakıldı'
-      paragraph_1_without_reason: "%{organizationName} katılım platformundaki hesabınız, topluluk kurallarının ihlali nedeniyle geçici olarak devre dışı bırakılmıştır."
-      paragraph_1_with_reason: "%{organizationName} katılım platformundaki hesabınız aşağıdaki nedenden dolayı geçici olarak devre dışı bırakılmıştır:"
+      subject: 'Your account has been temporarily disabled'
+      title_user_blocked: 'Your account has been temporarily disabled'
+      paragraph_1_without_reason: "Your account on the participation platform of %{organizationName} has been temporarily disabled for a violation of the community guidelines."
+      paragraph_1_with_reason: "Your account on the participation platform of %{organizationName} has been temporarily disabled for the following reason:"
       for_more_information: "Bu konuda daha fazla bilgi için bu sayfaya başvurabilirsiniz: %{termsAndConditionsPage}"
-      you_can_sign_in_again_from: "%{date}adresinden tekrar oturum açabilirsiniz."
+      you_can_sign_in_again_from: "You can sign in again from %{date}"
   user:
-    anon_first_name: "Kullanıcı"
+    anon_first_name: "User"
   time:
     am: am
     formats:
