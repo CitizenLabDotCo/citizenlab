@@ -557,7 +557,7 @@ el:
         input_is_updated: 'Η είσοδος ενημερώνεται'
         input_status_changes: 'Αλλαγές κατάστασης εισόδου'
         new_input_is_published: 'Δημοσιεύονται νέες εισροές'
-        new_proposal_is_posted: 'Αναρτήθηκε νέα πρόταση'
+        new_proposal_is_posted: 'New proposal is posted'
         project_phase_changes: 'Αλλαγές φάσης έργου'
         proposal_gets_reported_as_spam: 'Η πρόταση αναφέρεται ως spam'
         proposal_is_assigned_to_admin: 'Η πρόταση ανατίθεται στον admin'
