@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { MouseEvent } from 'react';
 
 import { Box, StatusLabel } from '@citizenlab/cl2-component-library';
 import Link from 'utils/cl-router/Link';
@@ -70,11 +70,19 @@ type TabProps = {
   url: string;
   active: boolean;
   statusLabel?: string;
+  handleClick?: (event: MouseEvent<HTMLAnchorElement>) => void;
 } & React.HTMLAttributes<HTMLDivElement>;
 
-const Tab = ({ label, url, active, statusLabel, ...props }: TabProps) => (
+const Tab = ({
+  label,
+  url,
+  active,
+  statusLabel,
+  handleClick,
+  ...props
+}: TabProps) => (
   <Container active={active} {...props}>
-    <Link to={url}>
+    <Link to={url} onClick={handleClick}>
       {label}
       {statusLabel && (
         <Box ml="12px" display="inline">
