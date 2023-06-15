@@ -557,7 +557,7 @@
         input_is_updated: 'Inndata er oppdatert'
         input_status_changes: 'Inndatastatus endres'
         new_input_is_published: 'Nye innspill er publisert'
-        new_proposal_is_posted: 'Nytt forslag er lagt ut'
+        new_proposal_is_posted: 'New proposal is posted'
         project_phase_changes: 'Prosjektfaseendringer'
         proposal_gets_reported_as_spam: 'Forslaget blir rapportert som spam'
         proposal_is_assigned_to_admin: 'Forslaget tildeles admin'
