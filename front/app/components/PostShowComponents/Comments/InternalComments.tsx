@@ -9,7 +9,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import ParentCommentForm from './ParentCommentForm';
 import Comments from './Comments';
 import CommentSorting from './CommentSorting';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Title } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -18,7 +18,6 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 import { colors, fontSizes, media, isRtl } from 'utils/styleUtils';
-import { Title } from '@citizenlab/cl2-component-library';
 
 // typings
 import { CommentsSort } from 'api/comments/types';
