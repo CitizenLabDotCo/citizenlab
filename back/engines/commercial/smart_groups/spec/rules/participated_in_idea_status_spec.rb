@@ -242,7 +242,7 @@ describe SmartGroups::Rules::ParticipatedInIdeaStatus do
         'nl-NL' => 'Reageerde niet op een idee met status in de prullenmand'
       })
       expect(participated_reacted_idea_in_idea_status_in_rule.description_multiloc).to eq({
-        'en' => 'Voted on an idea with one of the following statuses in the garbage can',
+        'en' => 'Reacted to an idea with one of the following statuses in the garbage can',
         'fr-FR' => 'Voté pour une idée avec statut est un de dans la poubelle',
         'nl-NL' => 'Stemde op een idee met één van de volgende statussen in de prullenmand'
       })
@@ -252,7 +252,7 @@ describe SmartGroups::Rules::ParticipatedInIdeaStatus do
         'nl-NL' => 'Stemde niet op een idee met status in de prullenmand'
       })
       expect(participated_reacted_comment_in_idea_status_in_rule.description_multiloc).to eq({
-        'en' => 'Voted on a comment on an idea with one of the following statuses in the garbage can, delayed',
+        'en' => 'Reacted to a comment on an idea with one of the following statuses in the garbage can, delayed',
         'fr-FR' => 'Voté pour un commentaire sur une idée avec statut est un de dans la poubelle, retardé',
         'nl-NL' => 'Stemde op een reactie op een idee met één van de volgende statussen in de prullenmand, uitgesteld'
       })

@@ -243,7 +243,7 @@ describe SmartGroups::Rules::ParticipatedInTopic do
         'nl-NL' => 'Reageerde niet op een idee met thema bier'
       })
       expect(participated_reacted_idea_in_topic_in_rule.description_multiloc).to eq({
-        'en' => 'Voted on an idea with one of the following topics beer',
+        'en' => 'Reacted to an idea with one of the following topics beer',
         'fr-FR' => 'Voté pour une idée avec thème est un de bière',
         'nl-NL' => 'Stemde op een idee met één van de volgende thema bier'
       })
@@ -253,7 +253,7 @@ describe SmartGroups::Rules::ParticipatedInTopic do
         'nl-NL' => 'Stemde niet op een idee met thema bier'
       })
       expect(participated_reacted_comment_in_topic_in_rule.description_multiloc).to eq({
-        'en' => 'Voted on a comment on an idea with one of the following topics beer, delayed',
+        'en' => 'Reacted to a comment on an idea with one of the following topics beer, delayed',
         'fr-FR' => 'Voté pour un commentaire sur une idée avec thème est un de bière, retardé',
         'nl-NL' => 'Stemde op een reactie op een idee met één van de volgende thema bier, uitgesteld'
       })

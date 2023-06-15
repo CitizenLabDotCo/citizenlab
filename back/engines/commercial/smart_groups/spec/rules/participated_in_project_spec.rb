@@ -279,7 +279,7 @@ describe SmartGroups::Rules::ParticipatedInProject do
         'nl-NL' => 'Reageerde niet op een idee in het project bier'
       })
       expect(participated_reacted_idea_in_project_in_rule.description_multiloc).to eq({
-        'en' => 'Voted on an idea in one of the following projects beer, delayed',
+        'en' => 'Reacted to an idea in one of the following projects beer, delayed',
         'fr-FR' => 'Voté pour une idée dans l\'un des projets bière, retardé',
         'nl-NL' => 'Stemde op een idee in een van de volgende projecten bier, uitgesteld'
       })
@@ -289,7 +289,7 @@ describe SmartGroups::Rules::ParticipatedInProject do
         'nl-NL' => 'Stemde niet op een idee in het project bier'
       })
       expect(participated_reacted_comment_in_project_in_rule.description_multiloc).to eq({
-        'en' => 'Voted on a comment on an idea in one of the following projects beer, delayed',
+        'en' => 'Reacted to a comment on an idea in one of the following projects beer, delayed',
         'fr-FR' => 'Voté pour un commentaire sur une idée dans l\'un des projets bière, retardé',
         'nl-NL' => 'Stemde op een reactie op een idee in een van de volgende projecten bier, uitgesteld'
       })
