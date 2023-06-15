@@ -1,83 +1,30 @@
-// libraries
-import React, { useState, useCallback } from 'react';
-import Observer from '@researchgate/react-intersection-observer';
+import React, { useState, MouseEvent } from 'react';
 
 // components
-import ParentCommentForm from './ParentCommentForm';
-import Comments from './Comments';
-import CommentSorting from './CommentSorting';
+import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Tab } from 'components/admin/NavigationTabs';
+import PublicComments from './PublicComments';
+import InternalComments from 'components/admin/InternalComments';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
-import styled from 'styled-components';
-import { colors, fontSizes, media, isRtl } from 'utils/styleUtils';
-import { Title } from '@citizenlab/cl2-component-library';
+import styled, { css } from 'styled-components';
+import { colors } from 'utils/styleUtils';
+import { tabBorderSize } from 'components/admin/NavigationTabs/tabsStyleConstants';
 
-// typings
-import { CommentsSort } from 'api/comments/types';
-import CommentingProposalDisabled from './CommentingProposalDisabled';
+// Types
+import { ITab } from 'typings';
 
-// analytics
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
-// hooks
-import useInitiativeById from 'api/initiatives/useInitiativeById';
-import useProjectById from 'api/projects/useProjectById';
-import useIdeaById from 'api/ideas/useIdeaById';
-import useComments from 'api/comments/useComments';
-import CommentingIdeaDisabled from './CommentingIdeaDisabled';
-
-const Container = styled.div``;
-
-const StyledParentCommentForm = styled(ParentCommentForm)`
-  margin-bottom: 25px;
-`;
-
-const Header = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 30px;
-
-  ${isRtl`
-    flex-direction: row-reverse;
+const NavigationTabs = styled.nav`
+  ${({ theme }) => css`
+    width: 100%;
+    border-radius: ${theme.borderRadius} ${theme.borderRadius} 0 0;
+    display: flex;
+    border-bottom: ${tabBorderSize}px solid ${colors.grey400};
   `}
-`;
-
-const CommentCount = styled.span`
-  margin-left: 5px;
-`;
-
-const StyledCommentSorting = styled(CommentSorting)`
-  display: flex;
-  justify-content: flex-end;
-
-  ${media.phone`
-    justify-content: flex-start;
-  `}
-`;
-
-const LoadMore = styled.div`
-  width: 100%;
-  height: 0px;
-`;
-
-const LoadingMore = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 30px;
-`;
-
-const LoadingMoreMessage = styled.div`
-  color: ${colors.textSecondary};
-  font-size: ${fontSizes.m}px;
-  font-weight: 400;
 `;
 
 export interface Props {
@@ -85,113 +32,81 @@ export interface Props {
   postType: 'idea' | 'initiative';
   className?: string;
   allowAnonymousParticipation?: boolean;
+  showInternalComments?: boolean;
 }
+
+type CommentType = 'internal' | 'public';
+type NavTab = ITab & { name: CommentType };
 
 const CommentsSection = ({
   postId,
   postType,
   className,
   allowAnonymousParticipation,
+  showInternalComments = false,
 }: Props) => {
-  const initiativeId = postType === 'initiative' ? postId : undefined;
-  const ideaId = postType === 'idea' ? postId : undefined;
-  const { data: initiative } = useInitiativeById(initiativeId);
-  const { data: idea } = useIdeaById(ideaId);
-  const [sortOrder, setSortOrder] = useState<CommentsSort>('-new');
-  const {
-    data: comments,
-    isFetchingNextPage,
-    fetchNextPage,
-    hasNextPage,
-    isLoading,
-  } = useComments({
-    initiativeId: postType === 'initiative' ? postId : undefined,
-    ideaId: postType === 'idea' ? postId : undefined,
-    sort: sortOrder,
-  });
-
-  const commentsList = comments?.pages.flatMap((page) => page.data);
-
-  const post = initiative || idea;
-  const projectId = idea?.data.relationships?.project.data.id;
-  const { data: project } = useProjectById(projectId);
-
-  const [posting, setPosting] = useState(false);
-
-  const handleIntersection = useCallback(
-    (event: IntersectionObserverEntry, unobserve: () => void) => {
-      if (event.isIntersecting && hasNextPage) {
-        fetchNextPage();
-        unobserve();
-      }
+  const { formatMessage } = useIntl();
+  const [selectedTab, setSelectedTab] = useState<CommentType>('internal');
+  const tabs: NavTab[] = [
+    {
+      label: formatMessage(messages.internalConversation),
+      name: 'internal',
+      url: '',
     },
-    [fetchNextPage, hasNextPage]
-  );
+    {
+      label: formatMessage(messages.publicDiscussion),
+      name: 'public',
+      url: '',
+    },
+  ];
 
-  if (!post || !commentsList) return null;
-
-  const handleSortOrderChange = (sortOrder: CommentsSort) => {
-    trackEventByName(tracks.clickCommentsSortOrder);
-    setSortOrder(sortOrder);
-  };
-
-  const handleCommentPosting = (isPosting: boolean) => {
-    setPosting(isPosting);
-  };
-
-  const phaseId = project?.data.relationships?.current_phase?.data?.id;
-  const commentCount = post.data.attributes.comments_count;
+  if (showInternalComments) {
+    return (
+      <Box mt="70px">
+        <NavigationTabs>
+          {tabs.map(({ url, label, name }) => (
+            <Tab
+              label={label}
+              url={url}
+              key={name}
+              active={selectedTab === name}
+              handleClick={(event: MouseEvent<HTMLAnchorElement>) => {
+                event.preventDefault();
+                setSelectedTab(name);
+              }}
+            >
+              <Text>{label}</Text>
+            </Tab>
+          ))}
+        </NavigationTabs>
+        <Box>
+          {selectedTab === 'public' && (
+            <PublicComments
+              postId={postId}
+              postType={postType}
+              allowAnonymousParticipation={allowAnonymousParticipation}
+              className={className}
+            />
+          )}
+          {selectedTab === 'internal' && (
+            <InternalComments
+              postId={postId}
+              postType={postType}
+              className={className}
+            />
+          )}
+        </Box>
+      </Box>
+    );
+  }
 
   return (
-    <Container className={className || ''}>
-      <Header>
-        <Title color="tenantText" variant="h2" id="comments-main-title">
-          <FormattedMessage {...messages.invisibleTitleComments} />
-          {commentCount > 0 && <CommentCount>({commentCount})</CommentCount>}
-        </Title>
-        <StyledCommentSorting
-          onChange={handleSortOrderChange}
-          selectedCommentSort={sortOrder}
-        />
-      </Header>
-
-      {postType === 'idea' && idea ? (
-        <CommentingIdeaDisabled idea={idea} phaseId={phaseId} />
-      ) : (
-        <CommentingProposalDisabled />
-      )}
-
-      <StyledParentCommentForm
-        ideaId={ideaId}
-        initiativeId={initiativeId}
-        postType={postType}
-        postingComment={handleCommentPosting}
-        allowAnonymousParticipation={allowAnonymousParticipation}
-      />
-
-      <Comments
-        ideaId={ideaId}
-        initiativeId={initiativeId}
-        postType={postType}
-        allComments={commentsList}
-        loading={isLoading}
-        allowAnonymousParticipation={allowAnonymousParticipation}
-      />
-
-      {hasNextPage && !isFetchingNextPage && (
-        <Observer onChange={handleIntersection} rootMargin="3000px">
-          <LoadMore />
-        </Observer>
-      )}
-
-      {isFetchingNextPage && !posting && (
-        <LoadingMore>
-          <LoadingMoreMessage>
-            <FormattedMessage {...messages.loadingMoreComments} />
-          </LoadingMoreMessage>
-        </LoadingMore>
-      )}
-    </Container>
+    <PublicComments
+      postId={postId}
+      postType={postType}
+      allowAnonymousParticipation={allowAnonymousParticipation}
+      className={className}
+    />
   );
 };
 

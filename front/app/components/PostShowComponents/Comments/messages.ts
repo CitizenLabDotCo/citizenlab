@@ -261,4 +261,12 @@ export default defineMessages({
     id: 'app.containers.Comments.guidelinesLinkText',
     defaultMessage: 'our guidelines',
   },
+  publicDiscussion: {
+    id: 'app.containers.Comments.publicDiscussion',
+    defaultMessage: 'Public discussion',
+  },
+  internalConversation: {
+    id: 'app.containers.Comments.internalConversation',
+    defaultMessage: 'Internal conversation',
+  },
 });
