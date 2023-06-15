@@ -118,11 +118,7 @@ const IdeasList = ({
                     participationContextId={participationContextId}
                     participationContextType={participationContextType}
                     hideImage={hideImage}
-                    hideBody={
-                      config && config.hideAuthorOnIdeas
-                        ? config.hideAuthorOnIdeas
-                        : false
-                    }
+                    hideBody={config?.hideAuthorOnIdeas || false}
                     hideImagePlaceholder={hideImagePlaceholder}
                     hideIdeaStatus={hideIdeaStatus}
                   />
