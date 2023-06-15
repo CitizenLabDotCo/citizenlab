@@ -199,8 +199,8 @@ sr-Latn:
       created_at: 'Predato u'
       published_at: 'Objavljeno u'
       comments_count: 'Komentari'
-      upvotes_count: 'Glasovi podrške'
-      downvotes_count: 'Glasovi protiv'
+      likes_count: 'Свиђа'
+      dislikes_count: 'Не свиђа ми се'
       baskets_count: 'Korpe'
       input_url: 'URL'
       project: 'Projekat'
@@ -241,7 +241,7 @@ sr-Latn:
       for_more_information: "За више информација о овоме, можете консултовати %{termsAndConditionsPage}"
       you_can_sign_in_again_from: "Можете се поново пријавити од %{date}"
   user:
-    anon_first_name: "Корисник"
+    anon_first_name: "User"
   time:
     am: сам
     formats:
