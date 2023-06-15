@@ -557,7 +557,7 @@ ca:
         input_is_updated: 'L''entrada s''actualitza'
         input_status_changes: 'Canvis d''estat d''entrada'
         new_input_is_published: 'Es publica una nova entrada'
-        new_proposal_is_posted: 'S''ha publicat una nova proposta'
+        new_proposal_is_posted: 'New proposal is posted'
         project_phase_changes: 'Canvis de fase del projecte'
         proposal_gets_reported_as_spam: 'La proposta s''informa com a correu brossa'
         proposal_is_assigned_to_admin: 'La proposta s''assigna a l''administrador'
