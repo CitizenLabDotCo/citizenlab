@@ -75,7 +75,7 @@ export interface Props {
   allowAnonymousParticipation?: boolean;
 }
 
-const InternalComments = ({
+const PublicComments = ({
   postId,
   postType,
   className,
@@ -191,4 +191,4 @@ const InternalComments = ({
   return null;
 };
 
-export default InternalComments;
+export default PublicComments;
