@@ -22,12 +22,9 @@ import styled, { useTheme } from 'styled-components';
 import { CLErrorsJSON, CLErrors } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
-import Outlet from 'components/Outlet';
 import useComment from 'api/comments/useComment';
 import useLocale from 'hooks/useLocale';
-import { filter } from 'rxjs/operators';
 import { Button } from '@citizenlab/cl2-component-library';
-import { commentTranslateButtonClicked$ } from '../events';
 import useLocalize from 'hooks/useLocalize';
 
 const Container = styled.div``;
@@ -86,8 +83,6 @@ const CommentBody = ({
 
   const [commentContent, setCommentContent] = useState('');
   const [editableCommentContent, setEditableCommentContent] = useState('');
-  const [translateButtonClicked, setTranslateButtonClicked] = useState(false);
-
   const [apiErrors, setApiErrors] = useState<CLErrors | null>(null);
   const [textAreaRef, setTextAreaRef] = useState<HTMLTextAreaElement | null>(
     null
@@ -125,20 +120,6 @@ const CommentBody = ({
       setNewEditableCommentContent();
     }
   }, [comment, commentContent, localize]);
-
-  useEffect(() => {
-    const subscription = commentTranslateButtonClicked$
-      .pipe(filter(({ eventValue }) => eventValue === commentId))
-      .subscribe(() => {
-        setTranslateButtonClicked(
-          (translateButtonClicked) => !translateButtonClicked
-        );
-      });
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, [commentId]);
 
   if (isNilOrError(locale)) {
     return null;
@@ -246,23 +227,9 @@ const CommentBody = ({
             textColor={theme.colors.tenantText}
           >
             <div aria-live="polite">
-              <Outlet
-                id="app.components.PostShowComponents.CommentBody.translation"
-                translateButtonClicked={translateButtonClicked}
-                commentContent={commentContent}
-                locale={locale}
-                commentId={commentId}
-              >
-                {(outletComponents) =>
-                  outletComponents.length > 0 ? (
-                    <>{outletComponents}</>
-                  ) : (
-                    <CommentText
-                      dangerouslySetInnerHTML={{ __html: commentContent }}
-                    />
-                  )
-                }
-              </Outlet>
+              <CommentText
+                dangerouslySetInnerHTML={{ __html: commentContent }}
+              />
             </div>
           </QuillEditedContent>
         </CommentWrapper>

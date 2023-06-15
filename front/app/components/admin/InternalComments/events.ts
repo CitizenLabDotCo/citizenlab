@@ -2,7 +2,6 @@ import eventEmitter from 'utils/eventEmitter';
 
 enum events {
   commentReplyButtonClicked = 'commentReplyButtonClicked',
-  commentTranslateButtonClicked = 'commentTranslateButtonClicked',
   commentAdded = 'commentAdded',
   commentDeleted = 'commentDeleted',
 }
@@ -26,14 +25,6 @@ export const commentReplyButtonClicked$ =
   eventEmitter.observeEvent<ICommentReplyClicked>(
     events.commentReplyButtonClicked
   );
-
-// -----------
-
-export const commentTranslateButtonClicked = (commentId: string) =>
-  eventEmitter.emit<string>(events.commentTranslateButtonClicked, commentId);
-export const commentTranslateButtonClicked$ = eventEmitter.observeEvent<string>(
-  events.commentTranslateButtonClicked
-);
 
 // -----------
 

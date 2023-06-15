@@ -117,6 +117,7 @@ const ChildCommentForm = ({
   const textareaElement = useRef<HTMLTextAreaElement | null>(null);
   const processing =
     isAddCommentToIdeaLoading || isAddCommentToInitiativeLoading;
+
   useEffect(() => {
     const subscriptions: Subscription[] = [
       commentReplyButtonClicked$
