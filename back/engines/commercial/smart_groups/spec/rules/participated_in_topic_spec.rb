@@ -248,7 +248,7 @@ describe SmartGroups::Rules::ParticipatedInTopic do
         'nl-NL' => 'Stemde op een idee met één van de volgende thema bier'
       })
       expect(participated_not_reacted_idea_in_topic_in_rule.description_multiloc).to eq({
-        'en' => 'Did not vote on an idea with topic beer',
+        'en' => 'Did not react to an idea with topic beer',
         'fr-FR' => 'N\'as pas voté pour une idée avec thème bière',
         'nl-NL' => 'Stemde niet op een idee met thema bier'
       })
@@ -258,7 +258,7 @@ describe SmartGroups::Rules::ParticipatedInTopic do
         'nl-NL' => 'Stemde op een reactie op een idee met één van de volgende thema bier, uitgesteld'
       })
       expect(participated_not_reacted_comment_in_topic_in_rule.description_multiloc).to eq({
-        'en' => 'Did not vote on a comment on an idea with topic beer',
+        'en' => 'Did not react to a comment on an idea with topic beer',
         'fr-FR' => 'N\'as pas voté pour un commentaire sur une idée avec thème bière',
         'nl-NL' => 'Stemde niet op een reactie op een idee met thema bier'
       })

@@ -38,8 +38,6 @@ module EmailCampaigns
 
     def format_message(key, component: nil, escape_html: true, values: {})
       group = component || @campaign.class.name.demodulize.underscore
-      # TODO: .sub is a temporary fix until we deploy the copy changes to the front-end
-      group = group.sub 'reacted', 'voted'
       msg = t("email_campaigns.#{group}.#{key}", values)
       escape_html ? msg : msg.html_safe
     end

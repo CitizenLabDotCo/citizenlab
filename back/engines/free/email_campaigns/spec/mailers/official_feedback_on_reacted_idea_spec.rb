@@ -25,7 +25,7 @@ RSpec.describe EmailCampaigns::OfficialFeedbackOnReactedIdeaMailer do
     before_all { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
 
     it 'renders the subject' do
-      expect(mail.subject).to start_with('An idea you voted on has received an update')
+      expect(mail.subject).to start_with('An idea you reacted to has received an update')
     end
 
     it 'renders the sender email' do
