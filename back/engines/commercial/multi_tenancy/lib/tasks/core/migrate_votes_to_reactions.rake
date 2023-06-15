@@ -9,7 +9,8 @@ namespace :fix_existing_tenants do
               Tenant.creation_finalized.with_lifecycle('trial') +
               Tenant.creation_finalized.with_lifecycle('demo') +
               Tenant.creation_finalized.with_lifecycle('expired_trial') +
-              Tenant.creation_finalized.with_lifecycle('churned')
+              Tenant.creation_finalized.with_lifecycle('churned') +
+              Tenant.creation_finalized.with_lifecycle('not_applicable')
     vote_migrator = VotesToReactionMigrator.new
     tenants.each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
