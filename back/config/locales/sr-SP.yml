@@ -199,8 +199,8 @@ sr-Cyrl:
       created_at: 'Послано на'
       published_at: 'Објављено на'
       comments_count: 'Коментари'
-      upvotes_count: 'Упвотес'
-      downvotes_count: 'Довнвотес'
+      likes_count: 'Likes'
+      dislikes_count: 'Dislikes'
       baskets_count: 'Баскетс'
       input_url: 'УРЛ'
       project: 'Пројекат'
@@ -223,12 +223,12 @@ sr-Cyrl:
       subject: "Потврдите своју адресу е-поште за платформу за учешће %{organizationName}"
       header: "Ваш код за потврду"
       header_message: "Здраво %{firstName}!"
-      confirm_email_address: "Потврдите вашу емаил адресу"
+      confirm_email_address: "Confirm your email address"
       thanks_for_signing_up: "Хвала што сте се пријавили за платформу за учешће %{organizationName}."
-      best_regards: "Срдачан поздрав,"
-      ignore_email: "Ако нисте тражили код, можете безбедно да игноришете ову е-поруку."
-      expire_code: "Овај код ће истећи за "
-      24_hours: "24 сати."
+      best_regards: "Best regards,"
+      ignore_email: "If you didn't request a code, you can safely ignore this email."
+      expire_code: "This code will be expired in "
+      24_hours: "24 hours."
       copy_paste_the_link_below: "Копирајте и налепите код испод у формулар за регистрацију на платформи."
       the_link_is_valid_for: "Ова веза важи 24 сата. Ако је веза истекла, можете <a href=\"%{link}\">захтевати нови код</a>."
       did_you_receive_this_email_in_error: "Да ли сте ову е-пошту добили грешком? <a href=\"%{link}\">Обавестите нас</a>."
