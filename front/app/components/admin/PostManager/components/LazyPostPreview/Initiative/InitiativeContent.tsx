@@ -237,6 +237,7 @@ const InitiativeContent = ({
                 }
                 postId={initiativeId}
                 postType="initiative"
+                showInternalComments
               />
             </Left>
             <Right>

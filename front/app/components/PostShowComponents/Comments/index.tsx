@@ -32,6 +32,7 @@ export interface Props {
   postType: 'idea' | 'initiative';
   className?: string;
   allowAnonymousParticipation?: boolean;
+  showInternalComments?: boolean;
 }
 
 type CommentType = 'internal' | 'public';
@@ -42,6 +43,7 @@ const CommentsSection = ({
   postType,
   className,
   allowAnonymousParticipation,
+  showInternalComments = false,
 }: Props) => {
   const { formatMessage } = useIntl();
   const [selectedTab, setSelectedTab] = useState<CommentType>('internal');
@@ -58,42 +60,53 @@ const CommentsSection = ({
     },
   ];
 
-  return (
-    <Box mt="70px">
-      <NavigationTabs>
-        {tabs.map(({ url, label, name }) => (
-          <Tab
-            label={label}
-            url={url}
-            key={name}
-            active={selectedTab === name}
-            handleClick={(event: MouseEvent<HTMLAnchorElement>) => {
-              event.preventDefault();
-              setSelectedTab(name);
-            }}
-          >
-            <Text>{label}</Text>
-          </Tab>
-        ))}
-      </NavigationTabs>
-      <Box>
-        {selectedTab === 'public' && (
-          <PublicComments
-            postId={postId}
-            postType={postType}
-            allowAnonymousParticipation={allowAnonymousParticipation}
-            className={className}
-          />
-        )}
-        {selectedTab === 'internal' && (
-          <InternalComments
-            postId={postId}
-            postType={postType}
-            className={className}
-          />
-        )}
+  if (showInternalComments) {
+    return (
+      <Box mt="70px">
+        <NavigationTabs>
+          {tabs.map(({ url, label, name }) => (
+            <Tab
+              label={label}
+              url={url}
+              key={name}
+              active={selectedTab === name}
+              handleClick={(event: MouseEvent<HTMLAnchorElement>) => {
+                event.preventDefault();
+                setSelectedTab(name);
+              }}
+            >
+              <Text>{label}</Text>
+            </Tab>
+          ))}
+        </NavigationTabs>
+        <Box>
+          {selectedTab === 'public' && (
+            <PublicComments
+              postId={postId}
+              postType={postType}
+              allowAnonymousParticipation={allowAnonymousParticipation}
+              className={className}
+            />
+          )}
+          {selectedTab === 'internal' && (
+            <InternalComments
+              postId={postId}
+              postType={postType}
+              className={className}
+            />
+          )}
+        </Box>
       </Box>
-    </Box>
+    );
+  }
+
+  return (
+    <PublicComments
+      postId={postId}
+      postType={postType}
+      allowAnonymousParticipation={allowAnonymousParticipation}
+      className={className}
+    />
   );
 };
 
