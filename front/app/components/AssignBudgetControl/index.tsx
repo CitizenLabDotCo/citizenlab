@@ -182,6 +182,7 @@ const AssignBudgetControl = memo(
           ) {
             eventEmitter.emit(BUDGET_EXCEEDED_ERROR_EVENT);
             isPermitted = false;
+            setProcessing(false);
           }
 
           newIdeas = [
