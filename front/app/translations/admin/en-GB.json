@@ -1155,7 +1155,7 @@
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.saveCause": "Save",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.subtitleVolunteeringTab": "Here, you can set up the causes users can volunteer for and download the volunteers.",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.titleVolunteeringTab": "Volunteering",
-  "app.containers.AdminPage.ProjectEdit.VolunteeringTab.xVolunteers": "{x, plural, =0 {no volunteers} one {# volunteer} other {# volunteers}}",
+  "app.containers.AdminPage.ProjectEdit.VolunteeringTab.xVolunteers": "{x, plural, =0 {no participants} one {# participant} other {# participants}}",
   "app.containers.AdminPage.ProjectEdit.Voting.budgetingVotingMethodSubtitle": "Assign a budget to options and ask participants to select their preferred options that fit within a total budget.",
   "app.containers.AdminPage.ProjectEdit.Voting.budgetingVotingMethodTitle2": "Budget allocation",
   "app.containers.AdminPage.ProjectEdit.Voting.enabledActionsForResidents": "Enabled actions for residents",
