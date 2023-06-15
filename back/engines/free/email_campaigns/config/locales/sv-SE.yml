@@ -557,7 +557,7 @@ sv:
         input_is_updated: 'Inmatningen uppdateras'
         input_status_changes: 'Ändringar av ingångsstatus'
         new_input_is_published: 'Ny input publiceras'
-        new_proposal_is_posted: 'Ett nytt förslag har lagts fram.'
+        new_proposal_is_posted: 'New proposal is posted'
         project_phase_changes: 'Förändringar i projektfas'
         proposal_gets_reported_as_spam: 'Förslaget rapporteras som skräppost'
         proposal_is_assigned_to_admin: 'Förslaget har tilldelats admin'
