@@ -199,8 +199,8 @@ hr:
       created_at: 'Predano'
       published_at: 'Objavljeno'
       comments_count: 'Komentari'
-      upvotes_count: 'Glasovi za'
-      downvotes_count: 'Glasovi protiv'
+      likes_count: 'Sviđa mi se'
+      dislikes_count: 'Nesviđanja'
       baskets_count: 'Košarice'
       input_url: 'URL'
       project: 'Projekt'
@@ -241,7 +241,7 @@ hr:
       for_more_information: "Za više informacija o tome, možete konzultirati %{termsAndConditionsPage}"
       you_can_sign_in_again_from: "Možete se ponovno prijaviti od %{date}"
   user:
-    anon_first_name: "Korisnik"
+    anon_first_name: "User"
   time:
     am: am
     formats:
