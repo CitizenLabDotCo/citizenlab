@@ -5,7 +5,10 @@ import causeKeys from './keys';
 import { IInternalComment, InternalCommentsKeys } from './types';
 
 const fetchInternalComment = ({ id }: { id: string }) =>
-  fetcher<IInternalComment>({ path: `/comments/${id}`, action: 'get' });
+  fetcher<IInternalComment>({
+    path: `/internal_comments/${id}`,
+    action: 'get',
+  });
 
 const useInternalComment = (id: string) => {
   return useQuery<

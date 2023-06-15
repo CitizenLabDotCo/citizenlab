@@ -19,7 +19,7 @@ export const mockCommentDataAttributes1: IPresentInternalComment = {
 
 export const mockCommentData1: IInternalCommentData = {
   id: 'commentId',
-  type: 'comment',
+  type: 'internal_comment',
   attributes: mockCommentDataAttributes1,
   relationships: {
     post: {
@@ -47,7 +47,7 @@ export const commentsData: IInternalCommentData[] = [
   mockCommentData1,
   {
     id: 'commentId2',
-    type: 'comment',
+    type: 'internal_comment',
     attributes: {
       body_multiloc: { en: 'body_multiloc' },
       created_at: 'created_at',

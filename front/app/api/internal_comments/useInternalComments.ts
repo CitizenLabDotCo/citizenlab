@@ -17,12 +17,12 @@ const getInternalCommentsEndpoint = ({
   commentId,
 }: IInternalCommentParameters) => {
   if (ideaId) {
-    return `ideas/${ideaId}/comments`;
+    return `ideas/${ideaId}/internal_comments`;
   } else if (initiativeId) {
-    return `initiatives/${initiativeId}/comments`;
+    return `initiatives/${initiativeId}/internal_comments`;
   } else if (commentId) {
-    return `comments/${commentId}/children`;
-  } else return `users/${userId}/comments`;
+    return `internal_comments/${commentId}/children`;
+  } else return `users/${userId}/internal_comments`;
 };
 
 const fetchInternalComments = (

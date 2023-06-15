@@ -7,10 +7,10 @@ import { rest } from 'msw';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { commentsData, links } from './__mocks__/useInternalComments';
 
-const ideaPath = '*ideas/:ideaId/comments';
-const initiativePath = '*initiatives/:initiativeId/comments';
-const childrenPath = '*comments/:commentId/children';
-const userPath = '*users/:userId/comments';
+const ideaPath = '*ideas/:ideaId/internal_comments';
+const initiativePath = '*initiatives/:initiativeId/internal_comments';
+const childrenPath = '*internal_comments/:commentId/children';
+const userPath = '*users/:userId/internal_comments';
 
 const server = setupServer();
 

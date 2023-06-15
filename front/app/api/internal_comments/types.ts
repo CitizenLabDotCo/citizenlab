@@ -29,7 +29,7 @@ interface IDeletedInternalComment extends InternalCommentAttributes {
 
 export interface IInternalCommentData {
   id: string;
-  type: 'comment';
+  type: 'internal_comment';
   attributes: IPresentInternalComment | IDeletedInternalComment;
   relationships: {
     post: {

@@ -4,7 +4,7 @@ import {
   IInternalCommentQueryParameters,
 } from './types';
 
-const baseKey = { type: 'comment' };
+const baseKey = { type: 'internal_comment' };
 
 const internalCommentKeys = {
   all: () => [baseKey],

@@ -8,7 +8,7 @@ import { rest } from 'msw';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { commentsData } from './__mocks__/useInternalComments';
 
-const apiPath = '*/initiatives/:initiativeId/comments';
+const apiPath = '*/initiatives/:initiativeId/internal_comments';
 
 const server = setupServer(
   rest.post(apiPath, (_req, res, ctx) => {

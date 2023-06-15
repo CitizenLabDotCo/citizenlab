@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import commentKeys from 'api/comments/keys';
+import commentKeys from 'api/internal_comments/keys';
 import initiativesKeys from 'api/initiatives/keys';
 import { CLErrorsWrapper } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
@@ -11,7 +11,7 @@ const addInternalCommentToInitiative = async ({
   ...requestBody
 }: IInternalNewComment) =>
   fetcher<IInternalComment>({
-    path: `/initiatives/${initiativeId}/comments`,
+    path: `/initiatives/${initiativeId}/internal_comments`,
     action: 'post',
     body: { comment: { ...requestBody } },
   });

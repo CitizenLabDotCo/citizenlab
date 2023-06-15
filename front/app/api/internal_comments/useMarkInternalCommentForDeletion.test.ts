@@ -7,7 +7,7 @@ import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-const apiPath = '*comments/:commentId/mark_as_deleted';
+const apiPath = '*internal_comments/:commentId/mark_as_deleted';
 
 const server = setupServer(
   rest.post(apiPath, (_req, res, ctx) => {

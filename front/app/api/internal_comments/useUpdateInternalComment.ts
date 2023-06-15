@@ -9,7 +9,7 @@ const updateInternalComment = async ({
   ...requestBody
 }: IUpdatedInternalComment) =>
   fetcher<IInternalComment>({
-    path: `/comments/${commentId}`,
+    path: `/internal_comments/${commentId}`,
     action: 'patch',
     body: { comment: requestBody },
   });
