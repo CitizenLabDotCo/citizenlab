@@ -20,6 +20,8 @@ import useLocalize from 'hooks/useLocalize';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import eventEmitter from 'utils/eventEmitter';
+import { IOpenPostPageModalEvent } from 'containers/App';
 
 // styles
 import styled from 'styled-components';
@@ -31,8 +33,6 @@ import { IIdea } from 'api/ideas/types';
 
 // components
 import AssignBudgetControl from 'components/AssignBudgetControl';
-import eventEmitter from 'utils/eventEmitter';
-import { IOpenPostPageModalEvent } from 'containers/App';
 
 const BodyWrapper = styled.div`
   display: flex;
