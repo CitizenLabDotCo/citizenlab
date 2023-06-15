@@ -41,7 +41,6 @@ import RightColumnDesktop from './RightColumnDesktop';
 
 // utils
 import { isFieldEnabled } from 'utils/projectUtils';
-import eventEmitter from 'utils/eventEmitter';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
@@ -62,6 +61,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // utils
 import clHistory from 'utils/cl-router/history';
+import { useSearchParams } from 'react-router-dom';
 
 // style
 import styled from 'styled-components';
@@ -75,7 +75,6 @@ import useLocale from 'hooks/useLocale';
 import usePhases from 'api/phases/usePhases';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
-import { useSearchParams } from 'react-router-dom';
 import useIdeaImages from 'api/idea_images/useIdeaImages';
 import useLocalize from 'hooks/useLocalize';
 import { getCurrentPhase } from 'api/phases/utils';
@@ -191,20 +190,33 @@ export const IdeasShow = ({
   const { data: ideaImages } = useIdeaImages(ideaId);
 
   const [newIdeaId, setNewIdeaId] = useState<string | null>(null);
+  const [fromProject, setFromProject] = useState(false);
   const [translateButtonIsClicked, setTranslateButtonIsClicked] =
     useState<boolean>(false);
   const [queryParams] = useSearchParams();
   const ideaIdParameter = queryParams.get('new_idea_id');
+  const fromProjectParameter = queryParams.get('from_project');
   const timeout = useRef<NodeJS.Timeout>();
 
   useEffect(() => {
+    let replace = false;
+
     if (isString(ideaIdParameter)) {
       timeout.current = setTimeout(() => {
         setNewIdeaId(ideaIdParameter);
       }, 1500);
+      replace = true;
+    }
+
+    if (isString(fromProjectParameter)) {
+      setFromProject(true);
+      replace = true;
+    }
+
+    if (replace) {
       clHistory.replace(window.location.pathname);
     }
-  }, [ideaIdParameter]);
+  }, [ideaIdParameter, fromProjectParameter]);
 
   const { data: phases } = usePhases(projectId);
   const { data: idea } = useIdeaById(ideaId);
@@ -246,14 +258,14 @@ export const IdeasShow = ({
   let content: JSX.Element | null = null;
 
   const handleGoBack = useCallback(() => {
-    if (insideModal) {
-      eventEmitter.emit('closeIdeaModal');
-      return;
+    if (fromProject) {
+      clHistory.back();
+    } else if (project) {
+      clHistory.push(`/projects/${project.attributes.slug}`);
+    } else {
+      clHistory.push('/');
     }
-
-    if (!project) return;
-    clHistory.push(`/projects/${project.attributes.slug}`);
-  }, [project, insideModal]);
+  }, [fromProject, project]);
 
   if (
     !isNilOrError(project) &&

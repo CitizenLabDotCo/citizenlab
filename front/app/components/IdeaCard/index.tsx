@@ -1,5 +1,4 @@
-import React, { memo, FormEvent } from 'react';
-import { IOpenPostPageModalEvent } from 'containers/App';
+import React, { memo } from 'react';
 
 // components
 import UserName from 'components/UI/UserName';
@@ -20,7 +19,6 @@ import useProjectById from 'api/projects/useProjectById';
 import useLocalize from 'hooks/useLocalize';
 
 // utils
-import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
 
 // styles
@@ -187,24 +185,13 @@ const CompactIdeaCard = memo<IdeaCardProps>(
       return null;
     };
 
-    const onCardClick = (_event: FormEvent) => {
-      // event.preventDefault();
-
-      eventEmitter.emit<IOpenPostPageModalEvent>('cardClick', {
-        id: idea.data.id,
-        slug: idea.data.attributes.slug,
-        type: 'idea',
-      });
-    };
-
     return (
       <Card
-        onClick={onCardClick}
         className={[className, 'e2e-idea-card']
           .filter((item) => typeof item === 'string' && item !== '')
           .join(' ')}
         title={ideaTitle}
-        to={`/ideas/${idea.data.attributes.slug}`}
+        to={`/ideas/${idea.data.attributes.slug}?from_project=true`}
         image={
           !isNilOrError(ideaImage)
             ? ideaImage.data.attributes.versions.medium

@@ -1,4 +1,5 @@
-import React, { useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
+import { isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
@@ -14,10 +15,10 @@ import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
 
 // events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-import eventEmitter from 'utils/eventEmitter';
 
 // routing
 import clHistory from 'utils/cl-router/history';
+import { useSearchParams } from 'react-router-dom';
 
 // styling
 import styled from 'styled-components';
@@ -63,7 +64,6 @@ const Right = styled.div``;
 interface Props {
   ideaId: string;
   projectId: string;
-  insideModal: boolean;
   deselectIdeaOnMap?: () => void;
   className?: string;
 }
@@ -71,12 +71,22 @@ interface Props {
 const IdeaShowPageTopBar = ({
   ideaId,
   projectId,
-  insideModal,
   className,
   deselectIdeaOnMap,
 }: Props) => {
   const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
+
+  const [fromProject, setFromProject] = useState(false);
+  const [queryParams] = useSearchParams();
+  const fromProjectParameter = queryParams.get('from_project');
+
+  useEffect(() => {
+    if (isString(fromProjectParameter)) {
+      setFromProject(true);
+      clHistory.replace(window.location.pathname);
+    }
+  }, [fromProjectParameter]);
 
   const localize = useLocalize();
 
@@ -106,8 +116,8 @@ const IdeaShowPageTopBar = ({
   };
 
   const handleGoBack = useCallback(() => {
-    if (insideModal) {
-      eventEmitter.emit('closeIdeaModal');
+    if (fromProject) {
+      clHistory.back();
       return;
     }
 
@@ -116,9 +126,13 @@ const IdeaShowPageTopBar = ({
       return;
     }
 
-    if (!project) return;
-    clHistory.push(`/projects/${project.data.attributes.slug}`);
-  }, [insideModal, deselectIdeaOnMap, project]);
+    if (project) {
+      clHistory.push(`/projects/${project.data.attributes.slug}`);
+      return;
+    }
+
+    clHistory.push('/');
+  }, [fromProject, deselectIdeaOnMap, project]);
 
   return (
     <Container className={className || ''}>
