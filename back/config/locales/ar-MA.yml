@@ -199,15 +199,15 @@ ar-MA:
       created_at: 'تم التقديم في'
       published_at: 'تم النشر في'
       comments_count: 'التعليقات ممكنة'
-      upvotes_count: 'أصوات إيجابية'
-      downvotes_count: 'أصوات سلبية'
+      likes_count: 'Likes'
+      dislikes_count: 'Dislikes'
       baskets_count: 'سلال'
       input_url: 'URL'
       project: 'المشروع'
       status: 'الحالة'
       assignee_fullname: 'المعيّن إليه'
       assignee_email: 'البريد الإلكتروني للمعيَّن إليه'
-    anonymous: 'مجهول'
+    anonymous: 'Anonymous'
   form_builder:
     default_select_field:
       title: 'سؤالك'
@@ -223,11 +223,11 @@ ar-MA:
       subject: "قم بتأكيد عنوان البريد الإلكتروني لمنصة المشاركة الخاصة بمؤسسة %{organizationName}"
       header: "رمز التأكيد الخاص بك"
       header_message: "مرحبًا %{firstName}!"
-      confirm_email_address: "أكد عنوان بريدك الألكتروني"
+      confirm_email_address: "أكِّد عنوان بريدك الإلكتروني"
       thanks_for_signing_up: "نشكرك على تسجيل الاشتراك في منصة المشاركة الخاصة بمؤسسة %{organizationName}."
-      best_regards: "أطيب التحيات،"
-      ignore_email: "إذا لم تطلب رمزًا ، فيمكنك تجاهل هذا البريد الإلكتروني بأمان."
-      expire_code: "ستنتهي صلاحية هذا الرمز في "
+      best_regards: "مع أطيب التمنيات،"
+      ignore_email: "إذا لم تطلب رمزًا، فبإمكانك تجاهل هذه الرسالة بأمان."
+      expire_code: "ستنتهي صلاحية هذا الرمز بعد"
       24_hours: "24 ساعة."
       copy_paste_the_link_below: "انسخ الرمز أدناه والصقه في نموذج التسجيل في المنصة."
       the_link_is_valid_for: "تستمر صلاحية هذا الرابط لمدة 24 ساعة. إذا انتهت صلاحية الرابط، فبإمكانك <a href=\"%{link}\">طلب رمز جديد</a>."
@@ -236,14 +236,14 @@ ar-MA:
     send_user_blocked_email:
       subject: 'تم تعطيل حسابك مؤقتا'
       title_user_blocked: 'تم تعطيل حسابك مؤقتا'
-      paragraph_1_without_reason: "تم تعطيل حسابك على منصة المشاركة %{organizationName} مؤقتًا لانتهاك إرشادات المجتمع."
-      paragraph_1_with_reason: "تم تعطيل حسابك على منصة المشاركة %{organizationName} مؤقتًا للأسباب التالية:"
+      paragraph_1_without_reason: "Your account on the participation platform of %{organizationName} has been temporarily disabled for a violation of the community guidelines."
+      paragraph_1_with_reason: "Your account on the participation platform of %{organizationName} has been temporarily disabled for the following reason:"
       for_more_information: "لمزيد من المعلومات حول هذا الموضوع ، يمكنك الرجوع إلى %{termsAndConditionsPage}"
       you_can_sign_in_again_from: "يمكنك تسجيل الدخول مرة أخرى من %{date}"
   user:
-    anon_first_name: "مستخدم"
+    anon_first_name: "User"
   time:
-    am: أكون
+    am: am
     formats:
       hour_of_day: "%H:%M"
-    pm: مساءً
+    pm: pm
