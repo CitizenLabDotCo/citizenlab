@@ -14,7 +14,7 @@ import TimelineContainer from './timeline';
 import { Box, Spinner, useBreakpoint } from '@citizenlab/cl2-component-library';
 import Navigate from 'utils/cl-router/Navigate';
 import SuccessModal from './SucessModal';
-import { ProjectCTABar } from './ProjectCTABar';
+// import { ProjectCTABar } from './ProjectCTABar';
 import EventsViewer from 'containers/EventsPage/EventsViewer';
 import Centerer from 'components/UI/Centerer';
 import ErrorBoundary from 'components/ErrorBoundary';
@@ -127,7 +127,7 @@ const ProjectsShowPage = ({ project }: Props) => {
     content = (
       <ContentWrapper id="e2e-project-page">
         <ProjectHeader projectId={projectId} />
-        <ProjectCTABar projectId={projectId} />
+        {/* <ProjectCTABar projectId={projectId} /> */}
 
         <div id="participation-detail">
           {processType === 'continuous' ? (
@@ -200,9 +200,13 @@ const ProjectsShowPageWrapper = () => {
 
   const { pathname } = useLocation();
   const { slug, phaseNumber } = useParams();
-  const { data: project, status, error } = useProjectBySlug(slug);
+  const {
+    data: project,
+    status: statusProject,
+    error,
+  } = useProjectBySlug(slug);
   const { data: phases } = usePhases(project?.data.id);
-  const user = useAuthUser();
+  const { data: user, status: statusUser } = useAuthUser();
 
   const processType = project?.data.attributes?.process_type;
   const urlSegments = pathname
@@ -210,15 +214,15 @@ const ProjectsShowPageWrapper = () => {
     .split('/')
     .filter((segment) => segment !== '');
 
-  const projectPending = status === 'loading';
-  const userPending = user === undefined;
+  const projectPending = statusProject === 'loading';
+  const userPending = statusUser === 'loading';
   const pending = projectPending || userPending;
 
   useEffect(() => {
     if (pending) return;
     if (isError(user)) return;
 
-    if (user !== null) setUserWasLoggedIn(true);
+    if (user) setUserWasLoggedIn(true);
   }, [pending, user]);
 
   if (pending) {
@@ -240,7 +244,7 @@ const ProjectsShowPageWrapper = () => {
     return <Unauthorized />;
   }
 
-  if (status === 'error' || project === null) {
+  if (statusProject === 'error' || project === null) {
     return <PageNotFound />;
   }
 
