@@ -31,6 +31,14 @@ FactoryBot.define do
     association :post, factory: :idea
   end
 
+  factory :internal_comment_on_your_internal_comment,
+    parent: :notification,
+    class: 'Notifications::InternalCommentOnYourInternalComment' do
+    initiating_user
+    internal_comment
+    association :post, factory: :idea
+  end
+
   factory :idea_marked_as_spam, parent: :notification, class: 'Notifications::IdeaMarkedAsSpam' do
     association :post, factory: :idea
     project
@@ -70,6 +78,12 @@ FactoryBot.define do
   factory :mention_in_comment, parent: :notification, class: 'Notifications::MentionInComment' do
     initiating_user
     comment
+    association :post, factory: :idea
+  end
+
+  factory :mention_in_internal_comment, parent: :notification, class: 'Notifications::MentionInInternalComment' do
+    initiating_user
+    internal_comment
     association :post, factory: :idea
   end
 
