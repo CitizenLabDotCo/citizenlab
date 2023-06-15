@@ -117,7 +117,7 @@ const CommentsMoreActions = ({
     deleteComment();
   };
 
-  const deleteComment = async (reason?: DeleteReason) => {
+  const deleteComment = async () => {
     const commentId = comment.id;
     const authorId = comment.relationships.author.data?.id;
 
@@ -126,7 +126,6 @@ const CommentsMoreActions = ({
         commentId,
         authorId,
         projectId,
-        reason,
       },
       {
         onSuccess: () => {

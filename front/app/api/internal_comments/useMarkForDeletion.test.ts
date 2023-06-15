@@ -30,7 +30,6 @@ describe('useMarkForDeletion', () => {
     act(() => {
       result.current.mutate({
         commentId: 'commentId',
-        reason: { other_reason: 'reason', reason_code: 'other' },
       });
     });
 
@@ -54,7 +53,6 @@ describe('useMarkForDeletion', () => {
     act(() => {
       result.current.mutate({
         commentId: 'commentId',
-        reason: { other_reason: 'reason', reason_code: 'other' },
       });
     });
 

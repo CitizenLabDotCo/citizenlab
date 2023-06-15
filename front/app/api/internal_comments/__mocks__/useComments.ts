@@ -13,8 +13,6 @@ export const mockCommentDataAttributes1: IPresentComment = {
   body_multiloc: { en: 'body_multiloc' },
   created_at: 'created_at',
   publication_status: 'published',
-  upvotes_count: 0,
-  downvotes_count: 0,
   children_count: 0,
   updated_at: 'updated_at',
 };
@@ -54,8 +52,6 @@ export const commentsData: ICommentData[] = [
       body_multiloc: { en: 'body_multiloc' },
       created_at: 'created_at',
       publication_status: 'published',
-      upvotes_count: 0,
-      downvotes_count: 0,
       children_count: 0,
       updated_at: 'updated_at',
     },

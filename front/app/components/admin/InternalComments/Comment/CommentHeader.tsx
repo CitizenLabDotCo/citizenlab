@@ -78,7 +78,6 @@ const CommentHeader = ({
       <Left>
         <StyledAuthor
           authorId={authorId}
-          authorHash={commentAttributes.author_hash}
           isLinkToProfile={typeof authorId === 'string'}
           size={30}
           projectId={projectId}

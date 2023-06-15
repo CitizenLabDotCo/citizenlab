@@ -2,21 +2,19 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import commentKeys from './keys';
-import { DeleteReason, IComment } from './types';
+import { IComment } from './types';
 import userCommentsCount from 'api/user_comments_count/keys';
 
 interface MarkForDeletion {
   commentId: string;
   authorId?: string;
   projectId?: string | null;
-  reason?: DeleteReason;
 }
 
-const markForDeletion = async ({ commentId, reason }: MarkForDeletion) => {
+const markForDeletion = async ({ commentId }: MarkForDeletion) => {
   return fetcher<IComment>({
     path: `/comments/${commentId}/mark_as_deleted`,
-    action: 'post',
-    body: { comment: reason },
+    action: 'delete',
   });
 };
 
