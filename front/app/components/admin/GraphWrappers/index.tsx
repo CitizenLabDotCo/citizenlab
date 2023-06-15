@@ -170,4 +170,9 @@ export const GraphCardTitle = styled.h3`
   line-height: 1.3;
 `;
 
-export type IGraphUnit = 'users' | 'ideas' | 'comments' | 'votes' | 'responses';
+export type IGraphUnit =
+  | 'users'
+  | 'ideas'
+  | 'comments'
+  | 'reactions'
+  | 'responses';

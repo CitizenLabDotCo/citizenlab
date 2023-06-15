@@ -251,7 +251,7 @@ const InitiativeRow = ({
         <Cell>{renderTimingCell()}</Cell>
         <Cell>
           <Icon name="thumbs up" />
-          {attrs.upvotes_count}
+          {attrs.likes_count}
         </Cell>
         <Cell>{attrs.comments_count}</Cell>
       </StyledRow>
