@@ -13,6 +13,10 @@ FactoryBot.define do
       }
     end
 
+    trait :on_initiative do
+      association :post, factory: :initiative
+    end
+
     factory :comment_with_mentions do
       transient do
         mentioned_users { create_list(:user, 2) }

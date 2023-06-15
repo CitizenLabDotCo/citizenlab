@@ -17,20 +17,17 @@ PublicApi::Engine.routes.draw do
     resources :phases, only: %i[index show]
     resources :topics, only: %i[index show]
     resources :users, only: %i[index show]
+    resources :votes, only: %i[index]
 
     resources :ideas, only: %i[index show] do
       collection do
         get :comments, to: 'comments#for_ideas'
-        get :votes, to: 'votes#for_ideas'
-        get 'comments/votes', to: 'votes#for_idea_comments'
       end
     end
 
     resources :initiatives, only: %i[index show] do
       collection do
         get :comments, to: 'comments#for_initiatives'
-        get :votes, to: 'votes#for_initiatives'
-        get 'comments/votes', to: 'votes#for_initiative_comments'
       end
     end
 

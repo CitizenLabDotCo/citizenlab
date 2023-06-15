@@ -2,21 +2,30 @@
 
 module PublicApi
   class V2::VotesController < PublicApiController
-    def for_ideas
-      list_items Vote.where(votable_type: 'Idea'), V2::VoteSerializer
+    VOTABLE_TYPES = %w[idea initiative comment idea-comment initiative-comment]
+
+    def index
+      votes = PublicApi::VotesFinder.new(Vote.all, **finder_params).execute
+      list_items(votes, V2::VoteSerializer)
     end
 
-    def for_initiatives
-      list_items Vote.where(votable_type: 'Initiative'), V2::VoteSerializer
+    private
+
+    def finder_params
+      params.dup.permit(:votable_type, :user_id).to_h.tap do |params|
+        if params[:votable_type]
+          validate_votable_type!(params[:votable_type])
+          params[:votable_type] = params[:votable_type].snakecase.classify
+        end
+      end.symbolize_keys
     end
 
-    # TODO: How do we know if the vote comments are for ideas / initiatives?
-    def for_idea_comments
-      list_items Vote.where(votable_type: 'Comment'), V2::VoteSerializer
-    end
+    def validate_votable_type!(votable_type)
+      return if VOTABLE_TYPES.include?(votable_type)
 
-    def for_initiative_comments
-      list_items Vote.where(votable_type: 'Comment'), V2::VoteSerializer
+      raise InvalidEnumParameterValueError.new(
+        'votable_type', votable_type, VOTABLE_TYPES
+      )
     end
   end
 end

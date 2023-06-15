@@ -9,6 +9,21 @@ module PublicApi
     before_action :check_api_token
     before_action :set_locale
 
+    rescue_from InvalidEnumParameterValueError, with: :render_problem_details
+
+    def render_problem_details(exception)
+      problem_details = {
+        # TODO: What would be an appropriate base URI for types
+        type: "https://citizenlab.co/public_api/problems/#{exception.problem_id}}",
+        title: exception.title,
+        status: 400,
+        detail: exception.detail,
+        **exception.extra_details
+      }
+
+      render json: problem_details, status: 400
+    end
+
     def list_items(base_query, serializer)
       @items = base_query
         .order(created_at: :desc)
