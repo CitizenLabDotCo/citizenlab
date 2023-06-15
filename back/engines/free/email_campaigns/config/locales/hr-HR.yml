@@ -557,7 +557,7 @@ hr:
         input_is_updated: 'Unos je ažuriran'
         input_status_changes: 'Promjene statusa ulaza'
         new_input_is_published: 'Objavljen je novi unos'
-        new_proposal_is_posted: 'Novi prijedlog je objavljen'
+        new_proposal_is_posted: 'New proposal is posted'
         project_phase_changes: 'Promjene faza projekta'
         proposal_gets_reported_as_spam: 'Prijedlog se prijavljuje kao neželjena pošta'
         proposal_is_assigned_to_admin: 'Prijedlog je dodijeljen adminu'
