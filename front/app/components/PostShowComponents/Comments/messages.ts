@@ -269,4 +269,8 @@ export default defineMessages({
     id: 'app.containers.Comments.internalConversation',
     defaultMessage: 'Internal conversation',
   },
+  visibleToUsersWarning: {
+    id: 'app.containers.Comments.visibleToUsersWarning',
+    defaultMessage: 'Comments posted here will be visible to regular users.',
+  },
 });
