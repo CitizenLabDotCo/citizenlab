@@ -557,7 +557,7 @@ lv:
         input_is_updated: 'Ievade tiek atjaunināta'
         input_status_changes: 'Ieejas statusa izmaiņas'
         new_input_is_published: 'Tiek publicēti jauni dati'
-        new_proposal_is_posted: 'Ir publicēts jauns priekšlikums'
+        new_proposal_is_posted: 'New proposal is posted'
         project_phase_changes: 'Projekta fāzes izmaiņas'
         proposal_gets_reported_as_spam: 'Par priekšlikumu tiek ziņots kā par surogātpastu'
         proposal_is_assigned_to_admin: 'Priekšlikums ir piešķirts admin'
