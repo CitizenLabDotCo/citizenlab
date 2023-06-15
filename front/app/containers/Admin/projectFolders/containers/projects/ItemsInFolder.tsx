@@ -92,7 +92,7 @@ const ItemsInFolder = ({ projectFolderId }: Props) => {
               return (
                 <SortableRow
                   key={adminPublication.id}
-                  id={adminPublication.relationships.publication.data.id}
+                  id={adminPublication.id}
                   index={index}
                   moveRow={handleDragRow}
                   dropRow={handleDropRow}
