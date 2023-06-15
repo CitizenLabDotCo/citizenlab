@@ -1,6 +1,6 @@
 import { IAdminPublicationData } from '../types';
 
-export const adminPublicationsData: IAdminPublicationData[] = [
+export const mockFolderChildAdminPublicationsList: IAdminPublicationData[] = [
   {
     id: 'b3b91b93-e207-4cb0-b49b-737d4b25792e',
     type: 'admin_publication',
@@ -97,5 +97,7 @@ export const links = {
 };
 
 export default jest.fn(() => {
-  return { data: { pages: [{ data: adminPublicationsData, links }] } };
+  return {
+    data: { pages: [{ data: mockFolderChildAdminPublicationsList, links }] },
+  };
 });
