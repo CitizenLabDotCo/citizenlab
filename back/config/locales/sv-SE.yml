@@ -199,8 +199,8 @@ sv:
       created_at: 'Skickades in'
       published_at: 'Publicerades'
       comments_count: 'Kommentarer'
-      upvotes_count: 'Uppröster'
-      downvotes_count: 'Nerröster'
+      likes_count: 'Gillar'
+      dislikes_count: 'Ogillar'
       baskets_count: 'Korgar'
       input_url: 'Webbadress'
       project: 'Projekt'
@@ -241,7 +241,7 @@ sv:
       for_more_information: "Mer information om detta finns på %{termsAndConditionsPage}."
       you_can_sign_in_again_from: "Du kan logga in igen från %{date}"
   user:
-    anon_first_name: "Användare"
+    anon_first_name: "User"
   time:
     am: Jag är
     formats:
