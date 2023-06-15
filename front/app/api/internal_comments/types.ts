@@ -76,18 +76,6 @@ export interface IUpdatedComment {
   body_multiloc: Multiloc;
 }
 
-export const DeleteReasonCode = {
-  irrelevant: 'irrelevant',
-  inappropriate: 'inappropriate',
-  other: 'other',
-};
-
-export interface DeleteReason {
-  reason_code: keyof typeof DeleteReasonCode;
-  // Only here if reason_code is 'other'
-  other_reason?: string;
-}
-
 export type InternalCommentSort = '-new' | 'new';
 
 export type ICommentQueryParameters = {
