@@ -199,8 +199,8 @@ ca:
       created_at: 'Presentat a'
       published_at: 'Publicat a'
       comments_count: 'Comentaris'
-      upvotes_count: 'Vots a favor'
-      downvotes_count: 'Vots en contra'
+      likes_count: 'M''agrada'
+      dislikes_count: 'No li agrada'
       baskets_count: 'Cistelles'
       input_url: 'URL'
       project: 'Projecte'
@@ -223,12 +223,12 @@ ca:
       subject: "Confirmeu la vostra adreça de correu electrònic per a la plataforma de participació de %{organizationName}"
       header: "El teu codi de confirmació"
       header_message: "hola %{firstName}!"
-      confirm_email_address: "Confirma la teva adreça electrònica"
+      confirm_email_address: "Confirm your email address"
       thanks_for_signing_up: "Gràcies per registrar-te a la plataforma de participació de %{organizationName}."
-      best_regards: "Salutacions cordials,"
-      ignore_email: "Si no heu sol·licitat cap codi, podeu ignorar aquest correu electrònic amb seguretat."
-      expire_code: "Aquest codi caducarà en "
-      24_hours: "24 hores."
+      best_regards: "Best regards,"
+      ignore_email: "If you didn't request a code, you can safely ignore this email."
+      expire_code: "This code will be expired in "
+      24_hours: "24 hours."
       copy_paste_the_link_below: "Copieu i enganxeu el codi següent al formulari de registre de la plataforma."
       the_link_is_valid_for: "Aquest enllaç és vàlid durant 24 hores. Si l'enllaç ha caducat, podeu <a href=\"%{link}\">sol·licitar un codi nou</a>."
       did_you_receive_this_email_in_error: "Heu rebut aquest correu electrònic per error? <a href=\"%{link}\">Fes-nos-ho saber</a>."
@@ -241,7 +241,7 @@ ca:
       for_more_information: "Per a més informació sobre això, podeu consultar el %{termsAndConditionsPage}"
       you_can_sign_in_again_from: "Podeu tornar a iniciar la sessió des %{date}"
   user:
-    anon_first_name: "Usuari"
+    anon_first_name: "User"
   time:
     am: soc
     formats:
