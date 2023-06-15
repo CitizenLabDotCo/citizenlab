@@ -42,7 +42,6 @@ const ErrorToast = ({ errorMessage, showError, onClose }: ErrorToastProps) => {
         display="flex"
         justifyContent="space-between"
         alignItems="center"
-        data-testid="feedbackSuccessMessage"
       >
         <Box display="flex" gap="16px" alignItems="center">
           <Icon
