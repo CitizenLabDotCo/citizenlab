@@ -3,8 +3,8 @@ import React, { FormEvent, useEffect, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // Services
-import useUpdateComment from 'api/internal_comments/useUpdateComment';
-import { IUpdatedComment } from 'api/internal_comments/types';
+import useUpdateInternalComment from 'api/internal_comments/useUpdateInternalComment';
+import { IUpdatedInternalComment } from 'api/internal_comments/types';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -22,7 +22,7 @@ import styled, { useTheme } from 'styled-components';
 import { CLErrorsJSON, CLErrors } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
-import useComment from 'api/internal_comments/useComment';
+import useInternalComment from 'api/internal_comments/useInternalComment';
 import useLocale from 'hooks/useLocale';
 import { Button } from '@citizenlab/cl2-component-library';
 import useLocalize from 'hooks/useLocalize';
@@ -73,11 +73,12 @@ const CommentBody = ({
   initiativeId,
 }: Props) => {
   const theme = useTheme();
-  const { data: comment } = useComment(commentId);
-  const { mutate: updateComment, isLoading: processing } = useUpdateComment({
-    ideaId,
-    initiativeId,
-  });
+  const { data: comment } = useInternalComment(commentId);
+  const { mutate: updateComment, isLoading: processing } =
+    useUpdateInternalComment({
+      ideaId,
+      initiativeId,
+    });
   const localize = useLocalize();
   const locale = useLocale();
 
@@ -150,7 +151,7 @@ const CommentBody = ({
   const onSubmit = async (event: FormEvent<any>) => {
     event.preventDefault();
 
-    const updatedComment: Omit<IUpdatedComment, 'commentId'> = {
+    const updatedComment: Omit<IUpdatedInternalComment, 'commentId'> = {
       body_multiloc: {
         [locale]: editableCommentContent.replace(
           /@\[(.*?)\]\((.*?)\)/gi,

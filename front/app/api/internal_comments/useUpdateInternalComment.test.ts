@@ -1,7 +1,7 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 
-import useUpdateComment from './useUpdateComment';
-import { commentsData } from './__mocks__/useComments';
+import useUpdateInternalComment from './useUpdateInternalComment';
+import { commentsData } from './__mocks__/useInternalComments';
 
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
@@ -15,13 +15,13 @@ const server = setupServer(
   })
 );
 
-describe('useUpdateComment', () => {
+describe('useUpdateInternalComment', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
     const { result, waitFor } = renderHook(
-      () => useUpdateComment({ ideaId: 'ideaId' }),
+      () => useUpdateInternalComment({ ideaId: 'ideaId' }),
       {
         wrapper: createQueryClientWrapper(),
       }
@@ -46,7 +46,7 @@ describe('useUpdateComment', () => {
     );
 
     const { result, waitFor } = renderHook(
-      () => useUpdateComment({ ideaId: 'ideaId' }),
+      () => useUpdateInternalComment({ ideaId: 'ideaId' }),
       {
         wrapper: createQueryClientWrapper(),
       }

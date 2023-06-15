@@ -2,20 +2,20 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
-import commentKeys from './keys';
+import internalCommentKeys from './keys';
 import {
-  CommentsKeys,
-  ICommentParameters,
-  IComments,
-  ICommentQueryParameters,
+  InternalCommentsKeys,
+  IInternalCommentParameters,
+  IInternalComments,
+  IInternalCommentQueryParameters,
 } from './types';
 
-const getCommentsEndpoint = ({
+const getInternalCommentsEndpoint = ({
   ideaId,
   initiativeId,
   userId,
   commentId,
-}: ICommentParameters) => {
+}: IInternalCommentParameters) => {
   if (ideaId) {
     return `ideas/${ideaId}/comments`;
   } else if (initiativeId) {
@@ -25,11 +25,11 @@ const getCommentsEndpoint = ({
   } else return `users/${userId}/comments`;
 };
 
-const fetchComments = (
-  parameters: ICommentParameters & ICommentQueryParameters
+const fetchInternalComments = (
+  parameters: IInternalCommentParameters & IInternalCommentQueryParameters
 ) =>
-  fetcher<IComments>({
-    path: `/${getCommentsEndpoint(parameters)}`,
+  fetcher<IInternalComments>({
+    path: `/${getInternalCommentsEndpoint(parameters)}`,
     action: 'get',
     queryParams: {
       'page[size]': parameters.pageSize || 10,
@@ -38,13 +38,18 @@ const fetchComments = (
     },
   });
 
-const useComments = (
-  parameters: ICommentParameters & ICommentQueryParameters
+const useInternalComments = (
+  parameters: IInternalCommentParameters & IInternalCommentQueryParameters
 ) => {
-  return useInfiniteQuery<IComments, CLErrors, IComments, CommentsKeys>({
-    queryKey: commentKeys.list(parameters),
+  return useInfiniteQuery<
+    IInternalComments,
+    CLErrors,
+    IInternalComments,
+    InternalCommentsKeys
+  >({
+    queryKey: internalCommentKeys.list(parameters),
     queryFn: ({ pageParam }) =>
-      fetchComments({ ...parameters, pageNumber: pageParam }),
+      fetchInternalComments({ ...parameters, pageNumber: pageParam }),
     getNextPageParam: (lastPage) => {
       const hasNextPage = lastPage.links?.next;
       const pageNumber = getPageNumberFromUrl(lastPage.links.self);
@@ -59,4 +64,4 @@ const useComments = (
   });
 };
 
-export default useComments;
+export default useInternalComments;

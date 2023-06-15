@@ -9,7 +9,7 @@ import styled from 'styled-components';
 import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 
 // hooks
-import useComment from 'api/internal_comments/useComment';
+import useInternalComment from 'api/internal_comments/useInternalComment';
 
 const footerHeight = '30px';
 const footerTopMargin = '6px';
@@ -99,7 +99,7 @@ const CommentFooter = ({
   className,
   authorId,
 }: Props) => {
-  const { data: comment } = useComment(commentId);
+  const { data: comment } = useInternalComment(commentId);
 
   if (!comment) {
     return null;

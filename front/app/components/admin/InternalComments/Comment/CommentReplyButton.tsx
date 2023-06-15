@@ -16,7 +16,7 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 // types
-import { ICommentData } from 'api/internal_comments/types';
+import { IInternalCommentData } from 'api/internal_comments/types';
 import useUserById from 'api/users/useUserById';
 
 const Container = styled.li`
@@ -46,7 +46,7 @@ const ReplyButton = styled.button`
 interface Props {
   commentType: 'parent' | 'child' | undefined;
   authorId: string | null;
-  comment: ICommentData;
+  comment: IInternalCommentData;
   className?: string;
 }
 

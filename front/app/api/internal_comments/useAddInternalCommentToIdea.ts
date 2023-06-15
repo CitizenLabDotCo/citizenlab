@@ -1,34 +1,34 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import commentKeys from 'api/comments/keys';
-import initiativesKeys from 'api/initiatives/keys';
+import ideasKeys from 'api/ideas/keys';
 import { CLErrorsWrapper } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
-import { INewComment, IComment } from './types';
+import { IInternalNewComment, IInternalComment } from './types';
 import userCommentsCount from 'api/user_comments_count/keys';
 
-const addCommentToInitiative = async ({
-  initiativeId,
+const addCommentToIdea = async ({
+  ideaId,
   ...requestBody
-}: INewComment) =>
-  fetcher<IComment>({
-    path: `/initiatives/${initiativeId}/comments`,
+}: IInternalNewComment) =>
+  fetcher<IInternalComment>({
+    path: `/ideas/${ideaId}/comments`,
     action: 'post',
     body: { comment: { ...requestBody } },
   });
 
-const useAddCommentToInitiative = () => {
+const useAddCommentToIdea = () => {
   const queryClient = useQueryClient();
-  return useMutation<IComment, CLErrorsWrapper, INewComment>({
-    mutationFn: addCommentToInitiative,
+  return useMutation<IInternalComment, CLErrorsWrapper, IInternalNewComment>({
+    mutationFn: addCommentToIdea,
     onSuccess: (_data, variables) => {
-      queryClient.invalidateQueries({
-        queryKey: commentKeys.list({ initiativeId: variables.initiativeId }),
-      });
       queryClient.invalidateQueries({
         queryKey: commentKeys.list({ userId: variables.author_id }),
       });
       queryClient.invalidateQueries({
-        queryKey: initiativesKeys.item({ id: variables.initiativeId }),
+        queryKey: commentKeys.list({ ideaId: variables.ideaId }),
+      });
+      queryClient.invalidateQueries({
+        queryKey: ideasKeys.item({ id: variables.ideaId }),
       });
       queryClient.invalidateQueries({
         queryKey: userCommentsCount.items(),
@@ -43,4 +43,4 @@ const useAddCommentToInitiative = () => {
   });
 };
 
-export default useAddCommentToInitiative;
+export default useAddCommentToIdea;

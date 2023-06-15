@@ -2,35 +2,35 @@ import { IRelationship, Multiloc, ILinks } from 'typings';
 import { Keys } from 'utils/cl-react-query/types';
 import commentsKeys from './keys';
 
-export type CommentsKeys = Keys<typeof commentsKeys>;
+export type InternalCommentsKeys = Keys<typeof commentsKeys>;
 
-export type ICommentParameters = {
+export type IInternalCommentParameters = {
   ideaId?: string;
   initiativeId?: string;
   userId?: string;
   commentId?: string;
 };
 
-interface CommentAttributes {
+interface InternalCommentAttributes {
   created_at: string;
   updated_at: string;
   children_count: number;
 }
 
-export interface IPresentComment extends CommentAttributes {
+export interface IPresentInternalComment extends InternalCommentAttributes {
   body_multiloc: Multiloc;
   publication_status: 'published';
 }
 
-interface IDeletedComment extends CommentAttributes {
+interface IDeletedInternalComment extends InternalCommentAttributes {
   body_multiloc: null;
   publication_status: 'deleted';
 }
 
-export interface ICommentData {
+export interface IInternalCommentData {
   id: string;
   type: 'comment';
-  attributes: IPresentComment | IDeletedComment;
+  attributes: IPresentInternalComment | IDeletedInternalComment;
   relationships: {
     post: {
       data: IRelationship;
@@ -44,16 +44,16 @@ export interface ICommentData {
   };
 }
 
-export interface IComment {
-  data: ICommentData;
+export interface IInternalComment {
+  data: IInternalCommentData;
 }
 
-export interface IComments {
-  data: ICommentData[];
+export interface IInternalComments {
+  data: IInternalCommentData[];
   links: ILinks;
 }
 
-export interface INewComment {
+export interface IInternalNewComment {
   ideaId?: string;
   initiativeId?: string;
   author_id: string;
@@ -61,7 +61,7 @@ export interface INewComment {
   body_multiloc: Multiloc;
 }
 
-export interface IUpdatedComment {
+export interface IUpdatedInternalComment {
   commentId: string;
   author_id?: string;
   parent_id?: string;
@@ -70,7 +70,7 @@ export interface IUpdatedComment {
 
 export type InternalCommentSort = '-new' | 'new';
 
-export type ICommentQueryParameters = {
+export type IInternalCommentQueryParameters = {
   sort?: InternalCommentSort;
   pageNumber?: number;
   pageSize?: number;

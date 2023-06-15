@@ -23,7 +23,7 @@ import tracks from './tracks';
 // hooks
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useIdeaById from 'api/ideas/useIdeaById';
-import useComments from 'api/internal_comments/useComments';
+import useInternalComments from 'api/internal_comments/useInternalComments';
 import { InternalCommentSort } from 'api/internal_comments/types';
 
 const Container = styled.div``;
@@ -93,7 +93,7 @@ const CommentsSection = ({ postId, postType, className }: Props) => {
     fetchNextPage,
     hasNextPage,
     isLoading,
-  } = useComments({
+  } = useInternalComments({
     initiativeId: postType === 'initiative' ? postId : undefined,
     ideaId: postType === 'idea' ? postId : undefined,
     sort: sortOrder,

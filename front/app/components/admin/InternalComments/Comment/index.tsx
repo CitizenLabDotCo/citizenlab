@@ -14,7 +14,7 @@ import commentsMessages from 'components/PostShowComponents/Comments/messages';
 // style
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-import useComment from 'api/internal_comments/useComment';
+import useInternalComment from 'api/internal_comments/useInternalComment';
 import useUserById from 'api/users/useUserById';
 
 const Container = styled.div``;
@@ -72,7 +72,7 @@ const Comment = ({
   last,
   className,
 }: Props) => {
-  const { data: comment } = useComment(commentId);
+  const { data: comment } = useInternalComment(commentId);
   const { data: author } = useUserById(
     comment?.data.relationships.author.data?.id
   );

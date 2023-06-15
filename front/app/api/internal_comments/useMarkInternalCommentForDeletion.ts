@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
-import commentKeys from './keys';
-import { IComment } from './types';
+import internalCommentKeys from './keys';
+import { IInternalComment } from './types';
 import userCommentsCount from 'api/user_comments_count/keys';
 
 interface MarkForDeletion {
@@ -11,14 +11,16 @@ interface MarkForDeletion {
   projectId?: string | null;
 }
 
-const markForDeletion = async ({ commentId }: MarkForDeletion) => {
-  return fetcher<IComment>({
+const markInternalCommentForDeletion = async ({
+  commentId,
+}: MarkForDeletion) => {
+  return fetcher<IInternalComment>({
     path: `/comments/${commentId}/mark_as_deleted`,
     action: 'delete',
   });
 };
 
-const useMarkCommentForDeletion = ({
+const useMarkInternalCommentForDeletion = ({
   ideaId,
   initiativeId,
 }: {
@@ -26,11 +28,11 @@ const useMarkCommentForDeletion = ({
   initiativeId?: string;
 }) => {
   const queryClient = useQueryClient();
-  return useMutation<IComment, CLErrors, MarkForDeletion>({
-    mutationFn: markForDeletion,
+  return useMutation<IInternalComment, CLErrors, MarkForDeletion>({
+    mutationFn: markInternalCommentForDeletion,
     onSuccess: (_data) => {
       queryClient.invalidateQueries({
-        queryKey: commentKeys.list({
+        queryKey: internalCommentKeys.list({
           ideaId,
           initiativeId,
         }),
@@ -43,4 +45,4 @@ const useMarkCommentForDeletion = ({
   });
 };
 
-export default useMarkCommentForDeletion;
+export default useMarkInternalCommentForDeletion;

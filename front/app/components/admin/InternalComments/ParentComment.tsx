@@ -16,8 +16,8 @@ import { darken } from 'polished';
 
 // hooks
 import useIdeaById from 'api/ideas/useIdeaById';
-import useComment from 'api/internal_comments/useComment';
-import useComments from 'api/internal_comments/useComments';
+import useInternalComment from 'api/internal_comments/useInternalComment';
+import useInternalComments from 'api/internal_comments/useInternalComments';
 
 const Container = styled.div`
   position: relative;
@@ -56,13 +56,13 @@ const ParentComment = ({
   childCommentIds,
 }: Props) => {
   const theme = useTheme();
-  const { data: comment } = useComment(commentId);
+  const { data: comment } = useInternalComment(commentId);
   const {
     data: childCommentsData,
     fetchNextPage,
     isFetchingNextPage,
     hasNextPage,
-  } = useComments({ commentId, pageSize: 5 });
+  } = useInternalComments({ commentId, pageSize: 5 });
   const childComments = childCommentsData?.pages
     .map((page) => page.data)
     .flat();

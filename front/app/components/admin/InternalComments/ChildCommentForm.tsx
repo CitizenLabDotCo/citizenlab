@@ -28,8 +28,8 @@ import { hideVisually } from 'polished';
 import { colors, defaultStyles } from 'utils/styleUtils';
 import useLocale from 'hooks/useLocale';
 import useAuthUser from 'api/me/useAuthUser';
-import useAddCommentToIdea from 'api/internal_comments/useAddCommentToIdea';
-import useAddCommentToInitiative from 'api/internal_comments/useAddCommentToInitiative';
+import useAddCommentToIdea from 'api/internal_comments/useAddInternalCommentToIdea';
+import useAddInternalCommentToInitiative from 'api/internal_comments/useAddInternalCommentToInitiative';
 
 const Container = styled.div`
   display: flex;
@@ -109,7 +109,7 @@ const ChildCommentForm = ({
   const {
     mutate: addCommentToInitiativeComment,
     isLoading: isAddCommentToInitiativeLoading,
-  } = useAddCommentToInitiative();
+  } = useAddInternalCommentToInitiative();
   const [inputValue, setInputValue] = useState('');
   const [focused, setFocused] = useState(false);
   const [canSubmit, setCanSubmit] = useState(false);

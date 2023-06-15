@@ -1,17 +1,20 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
-import commentKeys from './keys';
-import { IComment, IUpdatedComment } from './types';
+import internalCommentKeys from './keys';
+import { IInternalComment, IUpdatedInternalComment } from './types';
 
-const updateComment = async ({ commentId, ...requestBody }: IUpdatedComment) =>
-  fetcher<IComment>({
+const updateInternalComment = async ({
+  commentId,
+  ...requestBody
+}: IUpdatedInternalComment) =>
+  fetcher<IInternalComment>({
     path: `/comments/${commentId}`,
     action: 'patch',
     body: { comment: requestBody },
   });
 
-const useUpdateComment = ({
+const useUpdateInternalComment = ({
   ideaId,
   initiativeId,
 }: {
@@ -19,11 +22,11 @@ const useUpdateComment = ({
   initiativeId?: string;
 }) => {
   const queryClient = useQueryClient();
-  return useMutation<IComment, CLErrors, IUpdatedComment>({
-    mutationFn: updateComment,
+  return useMutation<IInternalComment, CLErrors, IUpdatedInternalComment>({
+    mutationFn: updateInternalComment,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: commentKeys.list({
+        queryKey: internalCommentKeys.list({
           ideaId,
           initiativeId,
         }),
@@ -32,4 +35,4 @@ const useUpdateComment = ({
   });
 };
 
-export default useUpdateComment;
+export default useUpdateInternalComment;

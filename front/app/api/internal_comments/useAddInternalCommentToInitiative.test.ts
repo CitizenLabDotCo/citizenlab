@@ -1,12 +1,12 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 
-import useAddCommentToInitiative from './useAddCommentToInitiative';
+import useAddInternalCommentToInitiative from './useAddInternalCommentToInitiative';
 
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { commentsData } from './__mocks__/useComments';
+import { commentsData } from './__mocks__/useInternalComments';
 
 const apiPath = '*/initiatives/:initiativeId/comments';
 
@@ -21,9 +21,12 @@ describe('useAddCommentToInitiative', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useAddCommentToInitiative(), {
-      wrapper: createQueryClientWrapper(),
-    });
+    const { result, waitFor } = renderHook(
+      () => useAddInternalCommentToInitiative(),
+      {
+        wrapper: createQueryClientWrapper(),
+      }
+    );
 
     act(() => {
       result.current.mutate({
@@ -44,9 +47,12 @@ describe('useAddCommentToInitiative', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useAddCommentToInitiative(), {
-      wrapper: createQueryClientWrapper(),
-    });
+    const { result, waitFor } = renderHook(
+      () => useAddInternalCommentToInitiative(),
+      {
+        wrapper: createQueryClientWrapper(),
+      }
+    );
 
     act(() => {
       result.current.mutate({

@@ -1,14 +1,17 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
-import { ICommentParameters, ICommentQueryParameters } from './types';
+import {
+  IInternalCommentParameters,
+  IInternalCommentQueryParameters,
+} from './types';
 
 const baseKey = { type: 'comment' };
 
-const commentKeys = {
+const internalCommentKeys = {
   all: () => [baseKey],
   lists: () => [{ ...baseKey, operation: 'list' }],
-  list: (params: ICommentParameters & ICommentQueryParameters) => [
-    { ...baseKey, operation: 'list', parameters: params },
-  ],
+  list: (
+    params: IInternalCommentParameters & IInternalCommentQueryParameters
+  ) => [{ ...baseKey, operation: 'list', parameters: params }],
   items: () => [{ ...baseKey, operation: 'item' }],
   item: ({ id }: { id: string }) => [
     {
@@ -19,4 +22,4 @@ const commentKeys = {
   ],
 } satisfies QueryKeys;
 
-export default commentKeys;
+export default internalCommentKeys;

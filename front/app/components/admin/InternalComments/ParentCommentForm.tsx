@@ -27,8 +27,8 @@ import { colors, defaultStyles } from 'utils/styleUtils';
 
 // hooks
 import useIdeaById from 'api/ideas/useIdeaById';
-import useAddCommentToIdea from 'api/internal_comments/useAddCommentToIdea';
-import useAddCommentToInitiative from 'api/internal_comments/useAddCommentToInitiative';
+import useAddCommentToIdea from 'api/internal_comments/useAddInternalCommentToIdea';
+import useAddInternalCommentToInitiative from 'api/internal_comments/useAddInternalCommentToInitiative';
 import useLocale from 'hooks/useLocale';
 import useAuthUser from 'api/me/useAuthUser';
 
@@ -117,7 +117,7 @@ const ParentCommentForm = ({
   const {
     mutate: addCommentToInitiative,
     isLoading: addCommentToInitiativeIsLoading,
-  } = useAddCommentToInitiative();
+  } = useAddInternalCommentToInitiative();
   const textareaElement = useRef<HTMLTextAreaElement | null>(null);
   const [inputValue, setInputValue] = useState('');
   const [focused, setFocused] = useState(false);

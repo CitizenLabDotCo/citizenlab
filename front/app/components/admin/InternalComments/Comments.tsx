@@ -6,7 +6,7 @@ import { Spinner } from '@citizenlab/cl2-component-library';
 import Centerer from 'components/UI/Centerer';
 
 // services
-import { ICommentData } from 'api/internal_comments/types';
+import { IInternalCommentData } from 'api/internal_comments/types';
 
 // events
 import { commentAdded$, commentDeleted$ } from './events';
@@ -35,7 +35,7 @@ interface Props {
   ideaId: string | undefined;
   initiativeId: string | undefined;
   postType: 'idea' | 'initiative';
-  allComments: ICommentData[];
+  allComments: IInternalCommentData[];
   loading: boolean;
   className?: string;
 }

@@ -1,4 +1,4 @@
-import { ICommentData, IPresentComment } from '../types';
+import { IInternalCommentData, IPresentInternalComment } from '../types';
 
 export const links = {
   last: 'http://localhost:3000/web_api/v1/ideas?page%5Bnumber%5D=9&page%5Bsize%5D=12&sort=random',
@@ -9,7 +9,7 @@ export const links = {
   prev: null,
 };
 
-export const mockCommentDataAttributes1: IPresentComment = {
+export const mockCommentDataAttributes1: IPresentInternalComment = {
   body_multiloc: { en: 'body_multiloc' },
   created_at: 'created_at',
   publication_status: 'published',
@@ -17,7 +17,7 @@ export const mockCommentDataAttributes1: IPresentComment = {
   updated_at: 'updated_at',
 };
 
-export const mockCommentData1: ICommentData = {
+export const mockCommentData1: IInternalCommentData = {
   id: 'commentId',
   type: 'comment',
   attributes: mockCommentDataAttributes1,
@@ -43,7 +43,7 @@ export const mockCommentData1: ICommentData = {
   },
 };
 
-export const commentsData: ICommentData[] = [
+export const commentsData: IInternalCommentData[] = [
   mockCommentData1,
   {
     id: 'commentId2',

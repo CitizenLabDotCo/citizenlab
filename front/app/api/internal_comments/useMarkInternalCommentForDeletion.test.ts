@@ -1,40 +1,39 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 
-import useAddCommentToIdea from './useAddCommentToIdea';
+import useMarkInternalCommentForDeletion from './useMarkInternalCommentForDeletion';
 
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { commentsData } from './__mocks__/useComments';
 
-const apiPath = '*/ideas/:ideaId/comments';
+const apiPath = '*comments/:commentId/mark_as_deleted';
 
 const server = setupServer(
   rest.post(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: commentsData[0] }));
+    return res(ctx.status(202));
   })
 );
 
-describe('useAddCommentToIdea', () => {
+describe('useMarkInternalCommentForDeletion', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useAddCommentToIdea(), {
-      wrapper: createQueryClientWrapper(),
-    });
+    const { result, waitFor } = renderHook(
+      () => useMarkInternalCommentForDeletion({ ideaId: 'ideaId' }),
+      {
+        wrapper: createQueryClientWrapper(),
+      }
+    );
 
     act(() => {
       result.current.mutate({
-        ideaId: 'ideaId',
-        author_id: 'author_id',
-        body_multiloc: { en: 'body_multiloc' },
+        commentId: 'commentId',
       });
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    expect(result.current.data?.data).toEqual(commentsData[0]);
   });
 
   it('returns error correctly', async () => {
@@ -44,15 +43,16 @@ describe('useAddCommentToIdea', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useAddCommentToIdea(), {
-      wrapper: createQueryClientWrapper(),
-    });
+    const { result, waitFor } = renderHook(
+      () => useMarkInternalCommentForDeletion({ ideaId: 'ideaId' }),
+      {
+        wrapper: createQueryClientWrapper(),
+      }
+    );
 
     act(() => {
       result.current.mutate({
-        ideaId: 'ideaId',
-        author_id: 'author_id',
-        body_multiloc: { en: 'body_multiloc' },
+        commentId: 'commentId',
       });
     });
 
