@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
+require_relative './shared/publication_filtering_model'
 
 resource 'Experiments' do
   explanation 'AB test data'
