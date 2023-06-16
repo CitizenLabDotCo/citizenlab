@@ -63,9 +63,8 @@ class HomePage < ApplicationRecord
   validates :banner_signed_out_header_multiloc, multiloc: true
   validates :banner_signed_out_subheader_multiloc, multiloc: true
   validates :banner_signed_out_header_overlay_color, css_color: true
-  validates :banner_signed_out_header_overlay_opacity, numericality: { only_integer: true,
-                                                                       in: [0..100],
-                                                                       allow_nil: true }
+  validates :banner_signed_out_header_overlay_opacity,
+    numericality: { only_integer: true, in: 0..100, allow_nil: true }
 
   validates :banner_cta_signed_in_type, inclusion: %w[customized_button no_button]
   validates :banner_cta_signed_out_type, inclusion: %w[sign_up_button customized_button no_button]

@@ -14,12 +14,12 @@ export const project1: IProjectData = {
     // posting_method: "unlimited",
     // posting_limited_max: 1,
     commenting_enabled: true,
-    voting_enabled: true,
-    upvoting_method: 'unlimited',
-    upvoting_limited_max: 10,
-    downvoting_enabled: false,
-    downvoting_method: 'unlimited',
-    downvoting_limited_max: 10,
+    reacting_enabled: true,
+    reacting_like_method: 'unlimited',
+    reacting_like_limited_max: 10,
+    reacting_dislike_enabled: false,
+    reacting_dislike_method: 'unlimited',
+    reacting_dislike_limited_max: 10,
     presentation_mode: 'card',
     min_budget: 0,
     max_budget: null,
@@ -63,7 +63,7 @@ export const project1: IProjectData = {
         enabled: true,
         disabled_reason: null,
       },
-      voting_idea: {
+      reacting_idea: {
         enabled: true,
         disabled_reason: null,
         up: {
@@ -72,11 +72,11 @@ export const project1: IProjectData = {
         },
         down: {
           enabled: false,
-          disabled_reason: 'downvoting_disabled',
+          disabled_reason: 'disliking_disabled',
         },
       },
       // MISMATCH: this attribute doesn't exist on our type
-      // comment_voting_idea: {
+      // comment_reacting_idea: {
       //   enabled: true,
       //   disabled_reason: null
       // },
@@ -159,12 +159,12 @@ export const project2: IProjectData = {
     // MISMATCH: doesn't seem to exist on our type
     // posting_limited_max: 1,
     commenting_enabled: true,
-    voting_enabled: true,
-    upvoting_method: 'unlimited',
-    upvoting_limited_max: 10,
-    downvoting_enabled: true,
-    downvoting_method: 'unlimited',
-    downvoting_limited_max: 10,
+    reacting_enabled: true,
+    reacting_like_method: 'unlimited',
+    reacting_like_limited_max: 10,
+    reacting_dislike_enabled: true,
+    reacting_dislike_method: 'unlimited',
+    reacting_dislike_limited_max: 10,
     presentation_mode: 'card',
     min_budget: 0,
     max_budget: null,
@@ -205,7 +205,7 @@ export const project2: IProjectData = {
         enabled: true,
         disabled_reason: null,
       },
-      voting_idea: {
+      reacting_idea: {
         enabled: true,
         disabled_reason: null,
         up: {
@@ -222,7 +222,7 @@ export const project2: IProjectData = {
         disabled_reason: 'not_document_annotation',
       },
       // MISMATCH: this attribute doesn't exist on our type
-      // comment_voting_idea: {
+      // comment_reacting_idea: {
       //   enabled: true,
       //   disabled_reason: null
       // },

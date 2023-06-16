@@ -53,7 +53,7 @@ describe TrendingIdeaService do
       #   lines.concat ["Pub_at:    #{i_got.published_at}       #{i_exp.published_at}"]
       #   lines.concat ['--------------------------']
       #   lines.concat ["Last C:    #{Time.at(i_got.comments.map{|c| c.created_at.to_i}.sort.reverse.first || 0)}       #{Time.at(i_exp.comments.map{|c| c.created_at.to_i}.sort.reverse.first || 0)}"]
-      #   lines.concat ["Last V:    #{Time.at(i_got.upvotes.map{|c| c.created_at.to_i}.sort.reverse.first || 0)}       #{Time.at(i_exp.upvotes.map{|c| c.created_at.to_i}.sort.reverse.first || 0)}"]
+      #   lines.concat ["Last V:    #{Time.at(i_got.likes.map{|c| c.created_at.to_i}.sort.reverse.first || 0)}       #{Time.at(i_exp.likes.map{|c| c.created_at.to_i}.sort.reverse.first || 0)}"]
       #   lines.concat ['--------------------------']
       #   lines.concat ["Last A:    #{i_got.idea_trending_info.last_activity_at}       #{i_exp.idea_trending_info.last_activity_at}"]
       #   lines.concat ["Mean A:    #{i_got.idea_trending_info.mean_activity_at}       #{i_exp.idea_trending_info.mean_activity_at}"]
@@ -73,16 +73,16 @@ describe TrendingIdeaService do
       idea = create(:idea, author: author, published_at: published_at)
       is_popular = (rand(3) == 0)
       (is_popular ? rand(20) : rand(3)).times do |_i|
-        create(:vote, votable: idea, mode: 'up',
+        create(:reaction, reactable: idea, mode: 'up',
           created_at: Faker::Time.between(from: published_at, to: DateTime.now))
       end
       if rand(2) == 0
-        create(:vote, votable: idea, mode: 'up',
+        create(:reaction, reactable: idea, mode: 'up',
           user: author,
           created_at: Faker::Time.between(from: published_at, to: DateTime.now))
       end
       (is_popular ? rand(10) : rand(3)).times do |_i|
-        create(:vote, votable: idea, mode: 'down',
+        create(:reaction, reactable: idea, mode: 'down',
           created_at: Faker::Time.between(from: published_at, to: DateTime.now))
       end
       (is_popular ? rand(10) : rand(3)).times do |_i|

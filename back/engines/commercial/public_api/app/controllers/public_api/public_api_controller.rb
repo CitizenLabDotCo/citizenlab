@@ -3,7 +3,7 @@
 module PublicApi
   class PublicApiController < ActionController::API
     include ::AuthToken::Authenticable
-    include Pundit
+    include Pundit::Authorization
 
     before_action :authenticate_api_client
     before_action :check_api_token
