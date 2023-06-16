@@ -65,6 +65,9 @@ import LinearScaleControl, {
 import SingleAttachmentControl, {
   singleAttachmentControlTester,
 } from './SingleAttachmentControl';
+import SingleSelectEnumControl, {
+  SingleSelectEnumControlTester,
+} from './SingleSelectEnumControl';
 
 export {
   CLCategoryLayout,
@@ -91,6 +94,8 @@ export {
   titleControlTester,
   SingleSelectControl,
   singleSelectControlTester,
+  SingleSelectEnumControl,
+  SingleSelectEnumControlTester,
   MultiSelectControl,
   multiSelectControlTester,
   MultiSelectCheckboxControl,

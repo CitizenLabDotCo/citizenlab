@@ -1,7 +1,7 @@
 import { withJsonFormsControlProps } from '@jsonforms/react';
 import {
   ControlProps,
-  isOneOfControl,
+  isEnumControl,
   RankedTester,
   rankWith,
 } from '@jsonforms/core';
@@ -18,7 +18,7 @@ const StyledSelect = styled(Select)`
   flex-grow: 1;
 `;
 
-const SingleSelectControl = ({
+const SingleSelectEnumControl = ({
   data,
   handleChange,
   path,
@@ -30,7 +30,7 @@ const SingleSelectControl = ({
   visible,
 }: ControlProps) => {
   const [didBlur, setDidBlur] = useState(false);
-  const options = getOptions(schema, 'single');
+  const options = getOptions(schema, 'singleEnum');
 
   if (!visible) {
     return null;
@@ -50,7 +50,7 @@ const SingleSelectControl = ({
           value={{
             value: data,
             label: 'any',
-          }}
+          }} /* sad workaround waiting for PR in component library */
           options={options as IOption[]}
           onChange={(val) => {
             setDidBlur(true);
@@ -69,9 +69,9 @@ const SingleSelectControl = ({
   );
 };
 
-export default withJsonFormsControlProps(SingleSelectControl);
+export default withJsonFormsControlProps(SingleSelectEnumControl);
 
-export const singleSelectControlTester: RankedTester = rankWith(
+export const SingleSelectEnumControlTester: RankedTester = rankWith(
   4,
-  isOneOfControl
+  isEnumControl
 );
