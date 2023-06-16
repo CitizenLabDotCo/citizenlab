@@ -82,12 +82,8 @@ const CommentsSection = ({
         </NavigationTabs>
         <Box>
           {selectedTab === 'public' && (
-            <Box>
-              <Box mt="16px">
-                <Warning>
-                  {formatMessage(messages.visibleToUsersWarning)}
-                </Warning>
-              </Box>
+            <Box mt="16px">
+              <Warning>{formatMessage(messages.visibleToUsersWarning)}</Warning>
               <PublicComments
                 postId={postId}
                 postType={postType}
