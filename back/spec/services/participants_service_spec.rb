@@ -47,6 +47,23 @@ describe ParticipantsService do
     end
   end
 
+  describe 'folder_participants_count' do
+    it 'returns the count of participatns' do
+      projects = create_list(:project, 2)
+      folder = create(:project_folder, projects: projects)
+
+      pp1 = create(:user)
+      idea1 = create(:idea, project: projects.first, author: pp1) # 1
+      idea2 = create(:idea, project: projects.last, anonymous: true) # 2
+      create(:idea)
+      pp2 = create(:user)
+      create(:comment, post: idea1, author: pp2) # 3
+      create(:comment, post: idea2, author: pp1)
+
+      expect(service.folder_participants_count(folder)).to eq 3
+    end
+  end
+
   describe 'projects_participants' do
     it 'returns participants of a given project at any time' do
       project = create(:continuous_budgeting_project)

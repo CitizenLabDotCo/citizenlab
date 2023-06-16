@@ -114,7 +114,7 @@ class ParticipantsService
     Rails.cache.fetch("#{folder.cache_key}/participant_count", expires_in: 1.day) do
       participant_ids = projects_participants(folder.projects).pluck(:id)
       anonymous_author_hashes = participant_ids.flat_map do |id|
-        folder.project_ids { |project_id| Idea.create_author_hash(id, project_id, true) }
+        folder.projects.ids { |project_id| Idea.create_author_hash(id, project_id, true) }
       end
       participant_ids.size + projects_anonymous_count(folder.projects, anonymous_author_hashes) + projects_everyone_count(folder.projects)
     end
