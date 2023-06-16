@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_07_142901) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_08_120425) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -514,6 +514,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_07_142901) do
     t.uuid "creation_phase_id"
     t.string "author_hash"
     t.boolean "anonymous", default: false, null: false
+    t.integer "internal_comments_count", default: 0, null: false
     t.index "((to_tsvector('simple'::regconfig, COALESCE((title_multiloc)::text, ''::text)) || to_tsvector('simple'::regconfig, COALESCE((body_multiloc)::text, ''::text))))", name: "index_ideas_search", using: :gin
     t.index ["author_hash"], name: "index_ideas_on_author_hash"
     t.index ["author_id"], name: "index_ideas_on_author_id"
@@ -628,6 +629,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_07_142901) do
     t.datetime "assigned_at", precision: nil
     t.string "author_hash"
     t.boolean "anonymous", default: false, null: false
+    t.integer "internal_comments_count", default: 0, null: false
     t.index "((to_tsvector('simple'::regconfig, COALESCE((title_multiloc)::text, ''::text)) || to_tsvector('simple'::regconfig, COALESCE((body_multiloc)::text, ''::text))))", name: "index_initiatives_search", using: :gin
     t.index ["author_id"], name: "index_initiatives_on_author_id"
     t.index ["location_point"], name: "index_initiatives_on_location_point", using: :gist
@@ -742,6 +744,28 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_07_142901) do
     t.index ["input_id", "input_type", "task_id"], name: "index_insights_zsc_tasks_inputs_on_input_and_task_id", unique: true
     t.index ["input_type", "input_id"], name: "index_insights_zsc_tasks_inputs_on_input"
     t.index ["task_id"], name: "index_insights_zeroshot_classification_tasks_inputs_on_task_id"
+  end
+
+  create_table "internal_comments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "author_id"
+    t.string "post_type"
+    t.uuid "post_id"
+    t.uuid "parent_id"
+    t.integer "lft", null: false
+    t.integer "rgt", null: false
+    t.text "body", null: false
+    t.string "publication_status", default: "published", null: false
+    t.datetime "body_updated_at", precision: nil
+    t.integer "children_count", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_id"], name: "index_internal_comments_on_author_id"
+    t.index ["created_at"], name: "index_internal_comments_on_created_at"
+    t.index ["lft"], name: "index_internal_comments_on_lft"
+    t.index ["parent_id"], name: "index_internal_comments_on_parent_id"
+    t.index ["post_id"], name: "index_internal_comments_on_post_id"
+    t.index ["post_type", "post_id"], name: "index_internal_comments_on_post"
+    t.index ["rgt"], name: "index_internal_comments_on_rgt"
   end
 
   create_table "invites", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -862,9 +886,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_07_142901) do
     t.string "post_status_type"
     t.uuid "project_folder_id"
     t.uuid "inappropriate_content_flag_id"
+    t.uuid "internal_comment_id"
     t.index ["created_at"], name: "index_notifications_on_created_at"
     t.index ["inappropriate_content_flag_id"], name: "index_notifications_on_inappropriate_content_flag_id"
     t.index ["initiating_user_id"], name: "index_notifications_on_initiating_user_id"
+    t.index ["internal_comment_id"], name: "index_notifications_on_internal_comment_id"
     t.index ["invite_id"], name: "index_notifications_on_invite_id"
     t.index ["official_feedback_id"], name: "index_notifications_on_official_feedback_id"
     t.index ["phase_id"], name: "index_notifications_on_phase_id"
@@ -1443,6 +1469,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_07_142901) do
   add_foreign_key "insights_zeroshot_classification_tasks_categories", "insights_categories", column: "category_id"
   add_foreign_key "insights_zeroshot_classification_tasks_categories", "insights_zeroshot_classification_tasks", column: "task_id"
   add_foreign_key "insights_zeroshot_classification_tasks_inputs", "insights_zeroshot_classification_tasks", column: "task_id"
+  add_foreign_key "internal_comments", "users", column: "author_id"
   add_foreign_key "invites", "users", column: "invitee_id"
   add_foreign_key "invites", "users", column: "inviter_id"
   add_foreign_key "maps_layers", "maps_map_configs", column: "map_config_id"
@@ -1452,6 +1479,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_07_142901) do
   add_foreign_key "nav_bar_items", "static_pages"
   add_foreign_key "notifications", "comments"
   add_foreign_key "notifications", "flag_inappropriate_content_inappropriate_content_flags", column: "inappropriate_content_flag_id"
+  add_foreign_key "notifications", "internal_comments"
   add_foreign_key "notifications", "invites"
   add_foreign_key "notifications", "official_feedbacks"
   add_foreign_key "notifications", "phases"
