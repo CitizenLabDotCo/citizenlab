@@ -49,8 +49,9 @@ describe('Budgeting CTA bar', () => {
       descriptionPreview: description,
       description,
       publicationStatus: 'published',
-      participationMethod: 'budgeting',
-      maxBudget: 100,
+      participationMethod: 'voting',
+      votingMethod: 'budgeting',
+      votingMaxTotal: 100,
     })
       .then((project) => {
         projectId = project.body.data.id;

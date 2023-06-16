@@ -100,10 +100,6 @@ namespace :cl2_back do
           allowed: true,
           enabled: true
         },
-        participatory_budgeting: {
-          enabled: true,
-          allowed: true
-        },
         similar_ideas: {
           enabled: true,
           allowed: true

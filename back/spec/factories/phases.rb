@@ -20,8 +20,8 @@ FactoryBot.define do
     participation_method { 'ideation' }
     start_at { '2017-05-01' }
     end_at { '2017-06-30' }
-    min_budget { 1 }
-    max_budget { 10_000 }
+    voting_min_total { 1 }
+    voting_max_total { 10_000 }
 
     transient do
       with_permissions { false }
@@ -59,6 +59,12 @@ FactoryBot.define do
 
     factory :native_survey_phase do
       participation_method { 'native_survey' }
+    end
+
+    factory :budgeting_phase do
+      participation_method { 'voting' }
+      voting_method { 'budgeting' }
+      voting_max_total { 1000 }
     end
   end
 end

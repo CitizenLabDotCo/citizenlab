@@ -2,14 +2,16 @@ import React, { PureComponent } from 'react';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { isEqual } from 'lodash-es';
+import { adopt } from 'react-adopt';
 
 // components
 import ParticipationMethodPicker from './components/ParticipationMethodPicker';
-import ParticipatoryBudgetingInputs from './components/ParticipatoryBudgetingInputs';
-import PollInputs from './components/PollInputs';
-import SurveyInputs from './components/SurveyInputs';
-import { Container, StyledSection } from './components/styling';
-import IdeationInputs from './components/IdeationInputs';
+import VotingInputs from './components/inputs/VotingInputs';
+import PollInputs from './components/inputs/PollInputs';
+import SurveyInputs from './components/inputs/SurveyInputs';
+import NativeSurveyInputs from './components/inputs/NativeSurveyInputs';
+import IdeationInputs from './components/inputs/IdeationInputs';
+import { Container, StyledSection } from './components/shared/styling';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import {
   Box,
@@ -18,7 +20,6 @@ import {
   IOption,
 } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
-import NativeSurveyInputs from './components/NativeSurveyInputs';
 
 // services
 import { IProject } from 'api/projects/types';
@@ -29,7 +30,7 @@ import {
   IdeaDefaultSortMethod,
   getDefaultSortMethodFallback,
   InputTerm,
-  INPUT_TERMS,
+  VotingMethod,
 } from 'services/participationContexts';
 import eventEmitter from 'utils/eventEmitter';
 
@@ -40,17 +41,16 @@ import GetFeatureFlag, {
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
-
-// typings
-import { CLErrors } from 'typings';
-import { adopt } from 'react-adopt';
 
 // utils
 import getOutput from './utils/getOutput';
 import validate from './utils/validate';
 import { anyIsDefined } from 'utils/helperUtils';
+
+// typings
+import { CLErrors } from 'typings';
 
 export interface IParticipationContextConfig {
   participation_method: ParticipationMethod;
@@ -61,13 +61,14 @@ export interface IParticipationContextConfig {
   reacting_like_limited_max?: number | null;
   reacting_dislike_enabled?: boolean | null;
   allow_anonymous_participation?: boolean | null;
+  voting_method?: VotingMethod | null;
   reacting_dislike_method?: 'unlimited' | 'limited' | null;
   reacting_dislike_limited_max?: number | null;
   presentation_mode?: 'map' | 'card' | null;
   ideas_order?: IdeaDefaultSortMethod;
   input_term?: InputTerm;
-  min_budget?: number | null;
-  max_budget?: number | null;
+  voting_min_total?: number | null;
+  voting_max_total?: number | null;
   survey_service?: TSurveyService | null;
   survey_embed_url?: string | null;
   poll_anonymous?: boolean;
@@ -104,8 +105,8 @@ interface Props extends DataProps, InputProps {}
 export interface State extends IParticipationContextConfig {
   noLikingLimitError: JSX.Element | null;
   noDislikingLimitError: JSX.Element | null;
-  minBudgetError: string | null;
-  maxBudgetError: string | null;
+  minTotalVotesError: string | null;
+  maxTotalVotesError: string | null;
   loaded: boolean;
 }
 
@@ -117,6 +118,7 @@ class ParticipationContext extends PureComponent<
 
   constructor(props: Props & WrappedComponentProps) {
     super(props);
+
     this.state = {
       participation_method: 'ideation',
       posting_enabled: true,
@@ -126,18 +128,19 @@ class ParticipationContext extends PureComponent<
       reacting_like_limited_max: null,
       reacting_dislike_enabled: true,
       allow_anonymous_participation: false,
+      voting_method: null,
       reacting_dislike_method: 'unlimited',
       reacting_dislike_limited_max: null,
       presentation_mode: 'card',
-      min_budget: null,
-      max_budget: null,
+      voting_min_total: null,
+      voting_max_total: null,
       survey_service: null,
       survey_embed_url: null,
       loaded: false,
       noLikingLimitError: null,
       noDislikingLimitError: null,
-      minBudgetError: null,
-      maxBudgetError: null,
+      minTotalVotesError: null,
+      maxTotalVotesError: null,
       poll_anonymous: false,
       ideas_order: 'trending',
       input_term: 'idea',
@@ -149,8 +152,10 @@ class ParticipationContext extends PureComponent<
   componentDidMount() {
     const { project, phase } = this.props;
     const participationContext = project ?? phase;
+
     if (participationContext && participationContext.data) {
       const newData = participationContext.data.attributes;
+
       this.setState((prevState) => {
         return {
           ...prevState,
@@ -164,9 +169,10 @@ class ParticipationContext extends PureComponent<
           reacting_dislike_limited_max: newData.reacting_dislike_limited_max,
           reacting_dislike_enabled: newData.reacting_dislike_enabled,
           allow_anonymous_participation: newData.allow_anonymous_participation,
+          voting_method: newData.voting_method,
           presentation_mode: newData.presentation_mode,
-          min_budget: newData.min_budget,
-          max_budget: newData.max_budget,
+          voting_min_total: newData.voting_min_total,
+          voting_max_total: newData.voting_max_total,
           survey_embed_url: newData.survey_embed_url,
           survey_service: newData.survey_service,
           poll_anonymous: newData.poll_anonymous,
@@ -219,28 +225,27 @@ class ParticipationContext extends PureComponent<
     participation_method: ParticipationMethod
   ) => {
     const ideation = participation_method === 'ideation';
-    const budgeting = participation_method === 'budgeting';
+    const voting = participation_method === 'voting';
     const survey = participation_method === 'survey';
-    const ideationOrBudgeting = ideation || budgeting;
+    const ideationOrVoting = ideation || voting;
 
     this.setState({
       participation_method,
       posting_enabled: ideation ? true : null,
-      commenting_enabled: ideationOrBudgeting ? true : null,
+      commenting_enabled: ideationOrVoting ? true : null,
       reacting_enabled: ideation ? true : null,
       reacting_like_method: ideation ? 'unlimited' : null,
       reacting_dislike_enabled: ideation ? true : null,
-      allow_anonymous_participation: ideationOrBudgeting ? false : null,
       reacting_dislike_method: ideation ? 'unlimited' : null,
-      presentation_mode: ideationOrBudgeting ? 'card' : null,
+      allow_anonymous_participation: ideation ? false : null,
+      voting_method: voting ? 'budgeting' : null,
+      presentation_mode: ideationOrVoting ? 'card' : null,
       survey_embed_url: null,
       survey_service: survey ? 'typeform' : null,
       document_annotation_embed_url: null,
-      min_budget: budgeting ? 0 : null,
-      max_budget: budgeting ? 1000 : null,
-      ideas_order: ideationOrBudgeting
-        ? getDefaultSortMethodFallback(ideation)
-        : null,
+      voting_min_total: voting ? 0 : null,
+      voting_max_total: voting ? 1000 : null,
+      ideas_order: ideation ? getDefaultSortMethodFallback(ideation) : null,
     });
   };
 
@@ -301,6 +306,12 @@ class ParticipationContext extends PureComponent<
     this.setState({ allow_anonymous_participation });
   };
 
+  handleVotingMethodOnChange = (
+    voting_method: VotingMethod | null | undefined
+  ) => {
+    this.setState({ voting_method });
+  };
+
   handleReactingDislikeMethodOnChange = (
     reacting_dislike_method: 'unlimited' | 'limited'
   ) => {
@@ -326,19 +337,19 @@ class ParticipationContext extends PureComponent<
     this.setState({ ideas_order });
   };
 
-  handleMaxBudgetingAmountChange = (newMaxBudget: string) => {
-    const max_budget = parseInt(newMaxBudget, 10);
+  handleVotingMinTotalChange = (newVotingMinTotal: string) => {
+    const voting_min_total = parseInt(newVotingMinTotal, 10);
     this.setState({
-      max_budget,
-      maxBudgetError: null,
+      voting_min_total,
+      minTotalVotesError: null,
     });
   };
 
-  handleMinBudgetingAmountChange = (newMinBudget: string) => {
-    const min_budget = parseInt(newMinBudget, 10);
+  handleVotingMaxTotalChange = (newVotingMaxTotal: string) => {
+    const voting_max_total = parseInt(newVotingMaxTotal, 10);
     this.setState({
-      min_budget,
-      minBudgetError: null,
+      voting_max_total,
+      maxTotalVotesError: null,
     });
   };
 
@@ -362,41 +373,20 @@ class ParticipationContext extends PureComponent<
     const {
       noLikingLimitError,
       noDislikingLimitError,
-      minBudgetError,
-      maxBudgetError,
+      minTotalVotesError,
+      maxTotalVotesError,
       isValidated,
     } = validate(this.state, formatMessage);
 
     this.setState({
       noLikingLimitError,
       noDislikingLimitError,
-      minBudgetError,
-      maxBudgetError,
+      minTotalVotesError,
+      maxTotalVotesError,
     });
 
     return isValidated;
   }
-
-  getInputTermOptions = () => {
-    return INPUT_TERMS.map((inputTerm: InputTerm) => {
-      const labelMessages: {
-        [key in InputTerm]: MessageDescriptor;
-      } = {
-        idea: messages.ideaTerm,
-        contribution: messages.contributionTerm,
-        question: messages.questionTerm,
-        option: messages.optionTerm,
-        issue: messages.issueTerm,
-        project: messages.projectTerm,
-      };
-      const labelMessage = labelMessages[inputTerm];
-
-      return {
-        value: inputTerm,
-        label: this.props.intl.formatMessage(labelMessage),
-      } as IOption;
-    });
-  };
 
   render() {
     const {
@@ -427,16 +417,17 @@ class ParticipationContext extends PureComponent<
       reacting_dislike_limited_max,
       reacting_dislike_enabled,
       allow_anonymous_participation,
-      min_budget,
-      max_budget,
+      voting_method,
+      voting_min_total,
+      voting_max_total,
       survey_embed_url,
       document_annotation_embed_url,
       survey_service,
       loaded,
       noLikingLimitError,
       noDislikingLimitError,
-      minBudgetError,
-      maxBudgetError,
+      minTotalVotesError,
+      maxTotalVotesError,
       poll_anonymous,
       presentation_mode,
       ideas_order,
@@ -473,35 +464,24 @@ class ParticipationContext extends PureComponent<
               }
             />
 
-            {participation_method === 'budgeting' && (
-              <ParticipatoryBudgetingInputs
+            {participation_method === 'voting' && (
+              <VotingInputs
                 isCustomInputTermEnabled={isCustomInputTermEnabled}
                 input_term={input_term}
                 handleInputTermChange={this.handleInputTermChange}
-                inputTermOptions={this.getInputTermOptions()}
-                allow_anonymous_participation={allow_anonymous_participation}
-                min_budget={min_budget}
-                max_budget={max_budget}
+                voting_method={voting_method}
+                voting_min_total={voting_min_total}
+                voting_max_total={voting_max_total}
                 commenting_enabled={commenting_enabled}
-                minBudgetError={minBudgetError}
-                maxBudgetError={maxBudgetError}
-                handleMinBudgetingAmountChange={
-                  this.handleMinBudgetingAmountChange
-                }
-                handleMaxBudgetingAmountChange={
-                  this.handleMaxBudgetingAmountChange
-                }
+                minTotalVotesError={minTotalVotesError}
+                maxTotalVotesError={maxTotalVotesError}
+                handleVotingMinTotalChange={this.handleVotingMinTotalChange}
+                handleVotingMaxTotalChange={this.handleVotingMaxTotalChange}
                 toggleCommentingEnabled={this.toggleCommentingEnabled}
                 apiErrors={apiErrors}
                 presentation_mode={presentation_mode}
                 handleIdeasDisplayChange={this.handleIdeasDisplayChange}
-                ideas_order={ideas_order}
-                handleIdeaDefaultSortMethodChange={
-                  this.handleIdeaDefaultSortMethodChange
-                }
-                handleAllowAnonymousParticipationOnChange={
-                  this.handleAllowAnonymousParticipationOnChange
-                }
+                handleVotingMethodOnChange={this.handleVotingMethodOnChange}
               />
             )}
 
@@ -514,7 +494,6 @@ class ParticipationContext extends PureComponent<
                   isCustomInputTermEnabled={isCustomInputTermEnabled}
                   input_term={input_term}
                   handleInputTermChange={this.handleInputTermChange}
-                  inputTermOptions={this.getInputTermOptions()}
                   posting_enabled={posting_enabled}
                   commenting_enabled={commenting_enabled}
                   reacting_enabled={reacting_enabled}

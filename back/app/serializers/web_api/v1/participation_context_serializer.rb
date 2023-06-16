@@ -23,10 +23,13 @@ module WebApi::V1::ParticipationContextSerializer
       attribute :reacting_dislike_limited_max
       attribute :allow_anonymous_participation
       attribute :presentation_mode
-      attribute :min_budget
-      attribute :max_budget
       attribute :ideas_order
       attribute :input_term
+      attribute :voting_method, if: proc { |object| object.voting? }
+      attribute :voting_max_total, if: proc { |object| object.voting? }
+      attribute :voting_min_total, if: proc { |object| object.voting? }
+      attribute :voting_max_votes_per_idea, if: proc { |object| object.voting? }
+      attribute :voting_term, if: proc { |object| object.voting? }
     end
   end
 end

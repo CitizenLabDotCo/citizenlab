@@ -131,12 +131,12 @@ export default defineMessages({
     defaultMessage:
       'Embed a Typeform, Google Form, Enalyzer, SurveyXact, Qualtrics, SmartSurvey, Snap Survey or Microsoft Forms survey.',
   },
-  conductParticipatoryBudgetingText: {
-    id: 'app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgetingText',
-    defaultMessage: 'Conduct a budget allocation exercise',
+  conductVotingOrPrioritizationText: {
+    id: 'app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationText',
+    defaultMessage: 'Conduct a voting or prioritization exercise',
   },
-  conductParticipatoryBudgetingDescriptionText: {
-    id: 'app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgetingDescriptionText',
+  conductVotingOrPrioritizationDescriptionText: {
+    id: 'app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationDescriptionText',
     defaultMessage:
       'Assign a budget to projects and ask participants to select their preferred projects that fit within a total budget.',
   },
@@ -236,14 +236,13 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.downvotingEnabled',
     defaultMessage: 'Enabled',
   },
-  phasePermissions: {
-    id: 'app.containers.AdminPage.ProjectEdit.phasePermissions',
-    defaultMessage: 'Enabled actions',
+  enabledActionsForResidents: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.enabledActionsForResidents',
+    defaultMessage: 'Enabled actions for residents',
   },
-  phasePermissionsTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.phasePermissionsTooltip',
-    defaultMessage:
-      'Select what participative action users can take during this ideation phase.',
+  enabledActionsTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.enabledActionsTooltip2',
+    defaultMessage: 'Select what participative actions users can take.',
   },
   unlimited: {
     id: 'app.containers.AdminPage.ProjectEdit.unlimited',
@@ -458,14 +457,27 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel',
     defaultMessage: 'What should an input be called?',
   },
+  minTotalVotesLargerThanMaxError: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.minTotalVotesLargerThanMaxError',
+    defaultMessage:
+      "The minimum number of votes can't be larger than the maximum number",
+  },
   minBudgetLargerThanMaxError: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.minBudgetLargerThanMaxError',
     defaultMessage:
       "The minimum budget can't be larger than the maximum budget",
   },
+  minVotesRequired: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.minVotesRequired',
+    defaultMessage: 'A minimum number of votes is required',
+  },
   minBudgetRequired: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.minBudgetRequired',
     defaultMessage: 'A minimum budget is required',
+  },
+  maxVotesRequired: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.maxVotesRequired',
+    defaultMessage: 'A maximum number of votes is required',
   },
   maxBudgetRequired: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.maxBudgetRequired',

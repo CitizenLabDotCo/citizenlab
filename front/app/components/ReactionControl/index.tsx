@@ -172,7 +172,8 @@ const ReactionControl = ({
     ? project.data || null
     : latestRelevantIdeaPhase;
   const isPBContext =
-    participationContext?.attributes.participation_method === 'budgeting';
+    participationContext?.attributes.participation_method === 'voting' &&
+    participationContext?.attributes.voting_method === 'budgeting';
 
   // Reactions count
   const likesCount = ideaAttributes.likes_count;

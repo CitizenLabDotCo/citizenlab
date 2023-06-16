@@ -152,10 +152,13 @@ const IdeaMapCard = memo<Props>(
 
     const isParticipatoryBudgetProject =
       project?.data.attributes.process_type === 'continuous' &&
-      project?.data.attributes.participation_method === 'budgeting';
+      project?.data.attributes.participation_method === 'voting' &&
+      project?.data.attributes.voting_method === 'budgeting';
 
     const isParticipatoryBudgetPhase =
-      phase && phase.data.attributes.participation_method === 'budgeting';
+      phase?.data.attributes.participation_method === 'voting' &&
+      phase?.data.attributes.voting_method === 'budgeting';
+
     const isParticipatoryBudgetIdea = phase
       ? isParticipatoryBudgetProject
       : isParticipatoryBudgetPhase;

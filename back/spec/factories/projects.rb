@@ -85,7 +85,7 @@ FactoryBot.define do
 
     factory :project_with_active_budgeting_phase do
       after(:create) do |project, _evaluator|
-        project.phases << create(:active_phase, project: project, participation_method: 'budgeting')
+        project.phases << create(:active_phase, project: project, participation_method: 'voting', voting_method: 'budgeting')
       end
     end
 
@@ -262,8 +262,9 @@ FactoryBot.define do
     #     y: { reacting_enabled: false }
     #   },
     #   current_phase_attrs: {
-    #     participation_method: 'budgeting',
-    #     max_budget: 1200
+    #     participation_method: 'voting',
+    #     voting_method: 'budgeting',
+    #     voting_max_total: 1200
     #   }
     # )
 
@@ -383,8 +384,9 @@ FactoryBot.define do
       factory :private_groups_continuous_project do
         process_type { 'continuous' }
         factory :private_groups_continuous_budgeting_project do
-          participation_method { 'budgeting' }
-          max_budget { 10_000 }
+          participation_method { 'voting' }
+          voting_method { 'budgeting' }
+          voting_max_total { 10_000 }
         end
       end
     end
@@ -423,8 +425,9 @@ FactoryBot.define do
 
     factory :continuous_budgeting_project do
       process_type { 'continuous' }
-      participation_method { 'budgeting' }
-      max_budget { 10_000 }
+      participation_method { 'voting' }
+      voting_method { 'budgeting' }
+      voting_max_total { 10_000 }
     end
 
     factory :continuous_poll_project do

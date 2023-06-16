@@ -705,7 +705,7 @@ models:
       en: Test group permissions with me Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
     presentation_mode: card
-    participation_method: budgeting
+    participation_method: voting
     process_type: continuous
     admin_publication_attributes:
       publication_status: published
@@ -716,7 +716,8 @@ models:
     reacting_enabled: true
     reacting_like_method: unlimited
     reacting_like_limited_max: 10
-    max_budget: 100000
+    voting_method: budgeting
+    voting_max_total: 100000
   - &charliesPb
     title_multiloc:
       en: Charlie Participatory Budgeting
@@ -731,7 +732,7 @@ models:
       en: Test group permissions with me Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
     presentation_mode: card
-    participation_method: budgeting
+    participation_method: voting
     process_type: continuous
     admin_publication_attributes:
       publication_status: published
@@ -742,7 +743,8 @@ models:
     reacting_enabled: true
     reacting_like_method: unlimited
     reacting_like_limited_max: 10
-    max_budget: 100000
+    voting_method: budgeting
+    voting_max_total: 100000
   - &verifiedPb
     title_multiloc:
       en: Verified Participatory Budgeting
@@ -757,7 +759,7 @@ models:
       en: Test group permissions with me Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
     presentation_mode: card
-    participation_method: budgeting
+    participation_method: voting
     process_type: continuous
     admin_publication_attributes:
       publication_status: published
@@ -768,7 +770,8 @@ models:
     reacting_enabled: true
     reacting_like_method: unlimited
     reacting_like_limited_max: 10
-    max_budget: 100000
+    voting_method: budgeting
+    voting_max_total: 100000
   - &project2
     title_multiloc:
       en: Test project 2 timeline
@@ -7263,7 +7266,7 @@ models:
     project_ref: *project1
     start_at_timediff: -5678
     end_at_timediff: -4760
-    participation_method: budgeting
+    participation_method: voting
     created_at: '2018-03-28 13:35:05'
     updated_at: '2018-03-28 13:35:05'
     posting_enabled: false
@@ -7271,7 +7274,8 @@ models:
     reacting_enabled: false
     reacting_like_method: unlimited
     reacting_like_limited_max: 10
-    max_budget: 100000
+    voting_method: budgeting
+    voting_max_total: 100000
   - &project1futureIdeation
     title_multiloc:
       en: Future Ideation

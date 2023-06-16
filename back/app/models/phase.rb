@@ -21,19 +21,22 @@
 #  survey_embed_url              :string
 #  survey_service                :string
 #  presentation_mode             :string           default("card")
-#  max_budget                    :integer
+#  voting_max_total              :integer
 #  poll_anonymous                :boolean          default(FALSE), not null
 #  reacting_dislike_enabled      :boolean          default(TRUE), not null
 #  ideas_count                   :integer          default(0), not null
 #  ideas_order                   :string
 #  input_term                    :string           default("idea")
-#  min_budget                    :integer          default(0)
+#  voting_min_total              :integer          default(0)
 #  reacting_dislike_method       :string           default("unlimited"), not null
 #  reacting_dislike_limited_max  :integer          default(10)
 #  posting_method                :string           default("unlimited"), not null
 #  posting_limited_max           :integer          default(1)
 #  document_annotation_embed_url :string
 #  allow_anonymous_participation :boolean          default(FALSE), not null
+#  voting_method                 :string
+#  voting_max_votes_per_idea     :integer
+#  voting_term                   :jsonb
 #
 # Indexes
 #
@@ -67,7 +70,6 @@ class Phase < ApplicationRecord
   validate :validate_start_at_before_end_at
   validate :validate_belongs_to_timeline_project
   validate :validate_no_other_overlapping_phases
-  validate :validate_no_other_budgeting_phases
 
   scope :starting_on, lambda { |date|
     where(start_at: date)
@@ -134,15 +136,6 @@ class Phase < ApplicationRecord
       errors.add(:base, :has_other_overlapping_phases,
         message: 'has other phases which overlap in start and end date')
     end
-  end
-
-  def validate_no_other_budgeting_phases
-    return unless budgeting? && project.phases.where.not(id: id).select(&:budgeting?).present?
-
-    errors.add(
-      :base, :has_other_budgeting_phases,
-      message: 'has other budgeting phases'
-    )
   end
 
   def strip_title

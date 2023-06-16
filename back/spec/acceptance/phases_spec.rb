@@ -115,8 +115,11 @@ resource 'Phases' do
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(',')}.", required: false
         parameter :survey_embed_url, 'The identifier for the survey from the external API, if participation_method is set to survey', required: false
         parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(',')}", required: false
-        parameter :min_budget, 'The minimum budget amount. Participatory budget should be greater or equal to input.', required: false
-        parameter :max_budget, 'The maximal budget amount each citizen can spend during participatory budgeting.', required: false
+        parameter :voting_method, "Either #{ParticipationContext::VOTING_METHODS.join(',')}. Required when the participation method is voting.", required: false
+        parameter :voting_min_total, 'The minimum value a basket can have.', required: false
+        parameter :voting_max_total, 'The maximal value a basket can have during voting. Required when the voting method is budgeting.', required: false
+        parameter :voting_max_votes_per_idea, 'The maximum amount of votes that can be assigned on the same idea.', required: false
+        parameter :voting_term, 'A multiloc term that is used to refer to the voting', required: false
         parameter :start_at, 'The start date of the phase', required: true
         parameter :end_at, 'The end date of the phase', required: true
         parameter :poll_anonymous, "Are users associated with their answer? Defaults to false. Only applies if participation_method is 'poll'", required: false
@@ -133,8 +136,6 @@ resource 'Phases' do
       let(:title_multiloc) { phase.title_multiloc }
       let(:description_multiloc) { phase.description_multiloc }
       let(:participation_method) { phase.participation_method }
-      let(:min_budget) { 100 }
-      let(:max_budget) { 1000 }
       let(:start_at) { phase.start_at }
       let(:end_at) { phase.end_at }
 
@@ -155,17 +156,36 @@ resource 'Phases' do
         expect(json_response.dig(:data, :attributes, :reacting_dislike_enabled)).to be true
         expect(json_response.dig(:data, :attributes, :reacting_like_method)).to eq 'unlimited'
         expect(json_response.dig(:data, :attributes, :reacting_like_limited_max)).to eq 10
-        expect(json_response.dig(:data, :attributes, :min_budget)).to eq 100
-        expect(json_response.dig(:data, :attributes, :max_budget)).to eq 1000
         expect(json_response.dig(:data, :attributes, :start_at)).to eq start_at.to_s
         expect(json_response.dig(:data, :attributes, :end_at)).to eq end_at.to_s
         expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
       end
 
+      describe do
+        let(:participation_method) { 'voting' }
+        let(:voting_method) { 'budgeting' }
+        let(:voting_max_total) { 100 }
+        let(:voting_min_total) { 10 }
+        let(:voting_max_votes_per_idea) { 5 }
+        let(:voting_term) { { 'en' => 'Grocery shopping' } }
+        let(:ideas_order) { 'new' }
+
+        example_request 'Create a voting phase' do
+          assert_status 201
+
+          expect(json_response.dig(:data, :attributes, :participation_method)).to eq 'voting'
+          expect(json_response.dig(:data, :attributes, :voting_method)).to eq 'budgeting'
+          expect(json_response.dig(:data, :attributes, :voting_max_total)).to eq 100
+          expect(json_response.dig(:data, :attributes, :voting_min_total)).to eq 10
+          expect(json_response.dig(:data, :attributes, :voting_max_votes_per_idea)).to eq 5
+          expect(json_response.dig(:data, :attributes, :voting_term)).to eq({ en: 'Grocery shopping' })
+          expect(json_response.dig(:data, :attributes, :ideas_order)).to eq 'new'
+          expect(json_response.dig(:data, :attributes, :input_term)).to eq 'idea'
+        end
+      end
+
       context 'native survey' do
         let(:phase) { build(:native_survey_phase) }
-        let(:min_budget) { nil }
-        let(:max_budget) { nil }
 
         example 'Create a native survey phase', document: false do
           do_request
@@ -206,8 +226,6 @@ resource 'Phases' do
           expect(phase_in_db.description_multiloc).to match description_multiloc
           expect(phase_in_db.start_at).to eq start_at
           expect(phase_in_db.end_at).to eq end_at
-          expect(phase_in_db.min_budget).to be_nil
-          expect(phase_in_db.max_budget).to be_nil
 
           # A native survey phase still has some ideation-related state, all column defaults.
           expect(phase_in_db.input_term).to eq 'idea'
@@ -262,36 +280,15 @@ resource 'Phases' do
       # ?
 
       describe do
-        let(:participation_method) { 'budgeting' }
-        let(:max_budget) { 420_000 }
-        let(:ideas_order) { 'new' }
+        before { create(:budgeting_phase, project: @project, start_at: '2000-01-01', end_at: '2000-01-05') }
 
-        example 'Create a participatory budgeting phase', document: false do
+        let(:participation_method) { 'voting' }
+        let(:voting_method) { 'budgeting' }
+        let(:voting_max_total) { 300 }
+
+        example 'Create multiple voting phases with the same voting method', document: false do
           do_request
           assert_status 201
-          expect(json_response.dig(:data, :attributes, :max_budget)).to eq max_budget
-          expect(json_response.dig(:data, :attributes, :ideas_order)).to be_present
-          expect(json_response.dig(:data, :attributes, :ideas_order)).to eq 'new'
-          expect(json_response.dig(:data, :attributes, :input_term)).to be_present
-          expect(json_response.dig(:data, :attributes, :input_term)).to eq 'idea'
-        end
-      end
-
-      describe do
-        before do
-          @project.phases.first.update(
-            participation_method: 'budgeting',
-            max_budget: 30_000
-          )
-        end
-
-        let(:participation_method) { 'budgeting' }
-        let(:max_budget) { 420_000 }
-
-        example '[error] Create multiple budgeting phases', document: false do
-          do_request
-          assert_status 422
-          expect(json_response).to include_response_error(:base, 'has_other_budgeting_phases')
         end
       end
 
@@ -340,7 +337,11 @@ resource 'Phases' do
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(',')}.", required: false
         parameter :survey_embed_url, 'The identifier for the survey from the external API, if participation_method is set to survey', required: false
         parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(',')}", required: false
-        parameter :max_budget, 'The maximal budget amount each citizen can spend during participatory budgeting.', required: false
+        parameter :voting_method, "Either #{ParticipationContext::VOTING_METHODS.join(',')}", required: false
+        parameter :voting_min_total, 'The minimum value a basket can have.', required: false
+        parameter :voting_max_total, 'The maximal value a basket can have during voting', required: false
+        parameter :voting_max_votes_per_idea, 'The maximum amount of votes that can be assigned on the same idea.', required: false
+        parameter :voting_term, 'A multiloc term that is used to refer to the voting', required: false
         parameter :start_at, 'The start date of the phase'
         parameter :end_at, 'The end date of the phase'
         parameter :poll_anonymous, "Are users associated with their answer? Only applies if participation_method is 'poll'. Can't be changed after first answer.", required: false
@@ -379,10 +380,29 @@ resource 'Phases' do
       end
 
       describe do
+        let(:id) { create(:budgeting_phase).id }
+        let(:participation_method) { 'voting' }
+        let(:voting_min_total) { 3 }
+        let(:voting_max_total) { 15 }
+        let(:voting_max_votes_per_idea) { 1 }
+        let(:voting_term) { { 'en' => 'Grocery shopping' } }
+
+        example_request 'Update a voting phase' do
+          assert_status 200
+
+          expect(json_response.dig(:data, :attributes, :voting_min_total)).to eq 3
+          expect(json_response.dig(:data, :attributes, :voting_max_total)).to eq 15
+          expect(json_response.dig(:data, :attributes, :voting_max_votes_per_idea)).to eq 1
+          expect(json_response.dig(:data, :attributes, :voting_term)).to eq({ en: 'Grocery shopping' })
+        end
+      end
+
+      describe do
         before do
           @project.phases.first.update!(
-            participation_method: 'budgeting',
-            max_budget: 30_000
+            participation_method: 'voting',
+            voting_method: 'budgeting',
+            voting_max_total: 30_000
           )
         end
 

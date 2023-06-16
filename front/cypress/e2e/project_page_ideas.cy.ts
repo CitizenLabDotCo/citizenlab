@@ -372,7 +372,7 @@ describe('Ideation CTA bar', () => {
           description,
           publicationStatus: 'published',
           participationMethod: 'ideation',
-          maxBudget: 100,
+          votingMaxTotal: 100,
         })
           .then((project) => {
             projectId = project.body.data.id;
@@ -392,7 +392,7 @@ describe('Ideation CTA bar', () => {
               description,
               publicationStatus: 'published',
               participationMethod: 'ideation',
-              maxBudget: 100,
+              votingMaxTotal: 100,
               postingEnabled: false,
             });
           })

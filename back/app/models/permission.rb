@@ -28,7 +28,7 @@ class Permission < ApplicationRecord
     'native_survey' => %w[posting_idea],
     'survey' => %w[taking_survey],
     'poll' => %w[taking_poll],
-    'budgeting' => %w[commenting_idea budgeting],
+    'voting' => %w[commenting_idea budgeting],
     'volunteering' => [],
     'document_annotation' => %w[annotating_document]
   }

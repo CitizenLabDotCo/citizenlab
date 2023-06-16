@@ -90,7 +90,7 @@ const PARTICIPATION_METHOD_MESSAGES: Record<
   information: messages.information,
   native_survey: messages.native_survey,
   survey: messages.survey,
-  budgeting: messages.budgeting,
+  voting: messages.budgeting,
   poll: messages.poll,
   volunteering: messages.volunteering,
   document_annotation: messages.document_annotation,

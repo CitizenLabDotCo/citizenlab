@@ -8,7 +8,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import { Box, IconTooltip, Text } from '@citizenlab/cl2-component-library';
 
 // intl
-import messages from './messages';
+import messages from '../messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 interface Props {

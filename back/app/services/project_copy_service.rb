@@ -210,12 +210,17 @@ class ProjectCopyService < TemplateService
       'reacting_dislike_enabled' => pc.reacting_dislike_enabled,
       'reacting_dislike_method' => pc.reacting_dislike_method,
       'reacting_dislike_limited_max' => pc.reacting_dislike_limited_max,
-      'max_budget' => pc.max_budget,
-      'min_budget' => pc.min_budget,
       'poll_anonymous' => pc.poll_anonymous,
       'ideas_order' => pc.ideas_order,
       'input_term' => pc.input_term
     }
+    if yml_pc['participation_method'] == 'voting'
+      yml_pc['voting_method'] = pc.voting_method
+      yml_pc['voting_max_total'] = pc.voting_max_total
+      yml_pc['voting_min_total'] = pc.voting_min_total
+      yml_pc['voting_max_votes_per_idea'] = pc.voting_max_votes_per_idea
+      yml_pc['voting_term'] = pc.voting_term
+    end
     if yml_pc['participation_method'] == 'survey'
       yml_pc['survey_embed_url'] = pc.survey_embed_url
       yml_pc['survey_service'] = pc.survey_service

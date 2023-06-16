@@ -4,8 +4,7 @@ import {
   TSurveyService,
   IdeaDefaultSortMethod,
   InputTerm,
-  ReactingMethod,
-  PresentationMode,
+  ParticipationContext,
 } from 'services/participationContexts';
 import { Keys } from 'utils/cl-react-query/types';
 import phasesKeys from './keys';
@@ -31,33 +30,9 @@ export interface IPhaseData {
   };
 }
 
-export interface IPhaseAttributes {
-  title_multiloc: Multiloc;
-  description_multiloc: Multiloc;
-  input_term: InputTerm;
+export interface IPhaseAttributes extends ParticipationContext {
   start_at: string;
   end_at: string;
-  created_at: string;
-  updated_at: string;
-  participation_method: ParticipationMethod;
-  posting_enabled: boolean;
-  commenting_enabled: boolean;
-  reacting_enabled: boolean;
-  reacting_like_method: ReactingMethod;
-  reacting_like_limited_max: number;
-  reacting_dislike_method: ReactingMethod;
-  allow_anonymous_participation: boolean;
-  reacting_dislike_enabled: boolean;
-  reacting_dislike_limited_max: number;
-  presentation_mode: PresentationMode;
-  min_budget?: number;
-  max_budget?: number;
-  survey_service?: TSurveyService;
-  survey_embed_url?: string;
-  poll_anonymous?: boolean;
-  ideas_count: number;
-  ideas_order?: IdeaDefaultSortMethod;
-  document_annotation_embed_url?: string;
 }
 
 export interface IPhases {
@@ -85,8 +60,8 @@ export interface IUpdatedPhaseProperties {
   reacting_dislike_enabled?: boolean | null;
   reacting_dislike_limited_max?: number | null;
   presentation_mode?: 'card' | 'map' | null;
-  min_budget?: number | null;
-  max_budget?: number | null;
+  voting_min_total?: number | null;
+  voting_max_total?: number | null;
   survey_service?: TSurveyService | null;
   survey_embed_url?: string | null;
   poll_anonymous?: boolean;

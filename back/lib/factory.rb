@@ -16,8 +16,8 @@ class Factory
       ::ParticipationMethod::DocumentAnnotation.new(participation_context)
     when 'survey'
       ::ParticipationMethod::Survey.new(participation_context)
-    when 'budgeting'
-      ::ParticipationMethod::Budgeting.new(participation_context)
+    when 'voting'
+      ::ParticipationMethod::Voting.new(participation_context)
     when 'poll'
       ::ParticipationMethod::Poll.new(participation_context)
     when 'volunteering'
@@ -26,6 +26,15 @@ class Factory
       ::ParticipationMethod::NativeSurvey.new(participation_context)
     else
       ::ParticipationMethod::None.new
+    end
+  end
+
+  def voting_method_for(participation_context)
+    case participation_context&.voting_method
+    when 'budgeting'
+      ::VotingMethod::Budgeting.new(participation_context)
+    else
+      ::VotingMethod::None.new
     end
   end
 
