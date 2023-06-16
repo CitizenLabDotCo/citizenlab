@@ -3,7 +3,7 @@ import experimentsKeys from './keys';
 
 export type ExperimentsKeys = Keys<typeof experimentsKeys>;
 
-interface IExperimentData {
+export interface IExperimentData {
   id: string;
   type: 'experiment';
   attributes: {
