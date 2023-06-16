@@ -22,16 +22,8 @@ RSpec.describe JsonSchemaGeneratorService do
             field1.key => { type: 'string' },
             field2.key => {
               type: 'string',
-              enum: [
-                {
-                  const: 'option1',
-                  title: 'youth council'
-                },
-                {
-                  const: 'option2',
-                  title: 'youth council'
-                }
-              ]
+              enum: %w[option1 option2],
+              enumNames: ['youth council', 'youth council']
             }
           }
         },
@@ -42,16 +34,8 @@ RSpec.describe JsonSchemaGeneratorService do
             field1.key => { type: 'string' },
             field2.key => {
               type: 'string',
-              enum: [
-                {
-                  const: 'option1',
-                  title: 'conseil des jeunes'
-                },
-                {
-                  const: 'option2',
-                  title: 'conseil des jeunes'
-                }
-              ]
+              enum: %w[option1 option2],
+              enumNames: ['conseil des jeunes', 'conseil des jeunes']
             }
           }
         },
@@ -62,16 +46,8 @@ RSpec.describe JsonSchemaGeneratorService do
             field1.key => { type: 'string' },
             field2.key => {
               type: 'string',
-              enum: [
-                {
-                  const: 'option1',
-                  title: 'jeugdraad'
-                },
-                {
-                  const: 'option2',
-                  title: 'jeugdraad'
-                }
-              ]
+              enum: %w[option1 option2],
+              enumNames: ['jeugdraad', 'jeugdraad']
             }
           }
         }
@@ -184,16 +160,8 @@ RSpec.describe JsonSchemaGeneratorService do
       it 'returns the schema for the given field' do
         expect(generator.visit_select(field)).to eq({
           type: 'string',
-          enum: [
-            {
-              const: 'option1',
-              title: 'youth council'
-            },
-            {
-              const: 'option2',
-              title: 'youth council'
-            }
-          ]
+          enum: %w[option1 option2],
+          enumNames: ['youth council', 'youth council']
         })
       end
     end

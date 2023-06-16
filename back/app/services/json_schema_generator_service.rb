@@ -74,12 +74,8 @@ class JsonSchemaGeneratorService < FieldVisitorService
     }.tap do |json|
       options = field.options.order(:ordering)
       unless options.empty?
-        json[:enum] = options.map do |option|
-          {
-            const: option.key,
-            title: multiloc_service.t(option.title_multiloc)
-          }
-        end
+        json[:enum] = options.map(&:key)
+        json[:enumNames] = options.map { |option| multiloc_service.t(option.title_multiloc) }
       end
     end
   end
