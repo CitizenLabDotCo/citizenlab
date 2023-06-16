@@ -120,14 +120,9 @@ const CommentsMoreActions = ({
 
   const deleteComment = async () => {
     const commentId = comment.id;
-    const authorId = comment.relationships.author.data?.id;
 
     markForDeletion(
-      {
-        commentId,
-        authorId,
-        projectId,
-      },
+      { commentId },
       {
         onSuccess: () => {
           deleteCommentModalClosed();

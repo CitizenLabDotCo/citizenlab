@@ -5,15 +5,13 @@ import internalCommentKeys from './keys';
 import { IInternalComment } from './types';
 import userCommentsCount from 'api/user_comments_count/keys';
 
-interface MarkForDeletion {
+interface MarkInternalCommentForDeletion {
   commentId: string;
-  authorId?: string;
-  projectId?: string | null;
 }
 
 const markInternalCommentForDeletion = async ({
   commentId,
-}: MarkForDeletion) => {
+}: MarkInternalCommentForDeletion) => {
   return fetcher<IInternalComment>({
     path: `/internal_comments/${commentId}/mark_as_deleted`,
     action: 'post',
@@ -29,7 +27,11 @@ const useMarkInternalCommentForDeletion = ({
   initiativeId?: string;
 }) => {
   const queryClient = useQueryClient();
-  return useMutation<IInternalComment, CLErrors, MarkForDeletion>({
+  return useMutation<
+    IInternalComment,
+    CLErrors,
+    MarkInternalCommentForDeletion
+  >({
     mutationFn: markInternalCommentForDeletion,
     onSuccess: (_data) => {
       queryClient.invalidateQueries({
