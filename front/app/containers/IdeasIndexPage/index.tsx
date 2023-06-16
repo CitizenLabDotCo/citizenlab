@@ -15,6 +15,9 @@ import messages from './messages';
 import styled from 'styled-components';
 import { media, fontSizes, colors, isRtl } from 'utils/styleUtils';
 
+// utils
+import { parseSearchParams } from './utils';
+
 // typings
 import { IQueryParameters, Sort } from 'api/ideas/types';
 import { QueryParametersUpdate } from 'components/IdeaCards/IdeasWithFiltersSidebar';
@@ -72,17 +75,6 @@ const PageTitle = styled.h1`
  `}
 `;
 
-const parseSearchParams = (newParams: QueryParametersUpdate) => {
-  const searchParams: Record<string, string> = {};
-
-  for (const key in newParams) {
-    const value = newParams[key];
-    if (value) searchParams[key] = JSON.stringify(value);
-  }
-
-  return searchParams;
-};
-
 export default memo(() => {
   const [searchParams, setSearchParams] = useSearchParams();
   const sortParam = searchParams.get('sort');
@@ -106,9 +98,9 @@ export default memo(() => {
 
   const updateQuery = useCallback(
     (newParams: QueryParametersUpdate) => {
-      setSearchParams(parseSearchParams(newParams));
+      setSearchParams(parseSearchParams(searchParams, newParams));
     },
-    [setSearchParams]
+    [setSearchParams, searchParams]
   );
 
   return (
