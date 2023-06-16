@@ -41,12 +41,12 @@ describe.skip('Proposal card component', () => {
         .find('.e2e-username')
         .contains('Sylvester Kalinoski');
 
-      // the card should contain the vote indicator component
-      cy.get('@initiativeCard').find('.e2e-initiative-card-vote-indicator');
+      // the card should contain the reaction indicator component
+      cy.get('@initiativeCard').find('.e2e-initiative-card-reaction-indicator');
 
-      // the card should contain a vote count of 1
+      // the card should contain a reaction count of 1
       cy.get('@initiativeCard')
-        .find('.e2e-initiative-card-vote-count')
+        .find('.e2e-initiative-card-reaction-count')
         .contains('1');
 
       // the card should contain a comment count of 0
@@ -69,7 +69,7 @@ describe.skip('Proposal card component', () => {
     });
   });
 
-  describe('vote count', () => {
+  describe('reaction count', () => {
     let initiativeId: string;
 
     before(() => {
@@ -86,12 +86,12 @@ describe.skip('Proposal card component', () => {
         })
         .then((initiative) => {
           initiativeId = initiative.body.data.id;
-          cy.apiUpvoteInitiative(email, password, initiativeId);
+          cy.apiLikeInitiative(email, password, initiativeId);
           cy.wait(2000);
         });
     });
 
-    it('correctly increments the vote count', () => {
+    it('correctly increments the reaction count', () => {
       cy.visit('/initiatives');
       cy.get('#e2e-initiatives-list');
       cy.get('#e2e-initiatives-sort-dropdown').click();
@@ -100,10 +100,10 @@ describe.skip('Proposal card component', () => {
       cy.get('#e2e-initiatives-list');
       cy.wait(1000);
 
-      // the card should contain a vote count of 2
+      // the card should contain a reaction count of 2
       cy.get('#e2e-initiatives-list .e2e-initiative-card')
         .first()
-        .find('.e2e-initiative-card-vote-count')
+        .find('.e2e-initiative-card-reaction-count')
         .contains('2');
     });
 

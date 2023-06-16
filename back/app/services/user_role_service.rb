@@ -11,8 +11,8 @@ class UserRoleService
       can_moderate_initiatives? user
     when 'Comment', 'OfficialFeedback'
       can_moderate? object.post, user
-    when 'Vote'
-      can_moderate? object.votable, user
+    when 'Reaction'
+      can_moderate? object.reactable, user
     when 'ProjectFolders::Folder'
       user.admin? || (object.id && user.project_folder_moderator?(object.id))
     when 'Project'

@@ -70,7 +70,7 @@ namespace :setup_and_support do
   desc 'Delete inactive non-participating users'
   task :delete_inactive_nonparticipating_users, [:host] => [:environment] do |_t, args|
     Apartment::Tenant.switch(args[:host].tr('.', '_')) do
-      participant_ids = Activity.pluck(:user_id) + Idea.pluck(:author_id) + Initiative.pluck(:author_id) + Comment.pluck(:author_id) + Vote.pluck(:user_id) + SpamReport.pluck(:user_id) + Basket.pluck(:user_id)
+      participant_ids = Activity.pluck(:user_id) + Idea.pluck(:author_id) + Initiative.pluck(:author_id) + Comment.pluck(:author_id) + Reaction.pluck(:user_id) + SpamReport.pluck(:user_id) + Basket.pluck(:user_id)
       participant_ids.uniq!
       users = User.normal_user.where.not(id: participant_ids)
       count = users.size
@@ -263,29 +263,29 @@ namespace :setup_and_support do
     end
   end
 
-  desc 'Delete users and votes'
-  task :delete_users_votes, %i[host url] => [:environment] do |_t, args|
+  desc 'Delete users and reactions'
+  task :delete_users_reactions, %i[host url] => [:environment] do |_t, args|
     emails = open(args[:url]).readlines.map(&:strip)
     Apartment::Tenant.switch(args[:host].tr('.', '_')) do
       users = User.where email: emails
-      Vote.where(user: users).destroy_all
+      Reaction.where(user: users).destroy_all
       users.destroy_all
     end
   end
 
-  desc 'Add anonymous up/downvotes to ideas'
-  task :add_idea_votes, %i[host url] => [:environment] do |_t, args|
+  desc 'Add anonymous likes/dislikes to ideas'
+  task :add_idea_reactions, %i[host url] => [:environment] do |_t, args|
     data = CSV.parse(open(args[:url]).read, { headers: true, col_sep: ',', converters: [] })
     Apartment::Tenant.switch(args[:host].tr('.', '_')) do
       errors = []
       data.each do |d|
         idea = Idea.find_by slug: d['slug'].strip
         if idea
-          d['add_upvotes'].to_i.times do
-            add_anonymous_vote idea, 'up'
+          d['add_likes'].to_i.times do
+            add_anonymous_reaction idea, 'up'
           end
-          d['add_downvotes'].to_i.times do
-            add_anonymous_vote idea, 'down'
+          d['add_dislikes'].to_i.times do
+            add_anonymous_reaction idea, 'down'
           end
         else
           errors += ["Couldn't find idea #{d['slug']}"]
@@ -380,11 +380,11 @@ namespace :setup_and_support do
     end
   end
 
-  def add_anonymous_vote(votable, mode)
+  def add_anonymous_reaction(reactable, mode)
     attrs = AnonymizeUserService.new.anonymized_attributes AppConfiguration.instance.settings('core', 'locales')
     attrs.delete 'custom_field_values'
     user = User.create! attrs
-    Vote.create!(votable: votable, mode: mode, user: user)
+    Reaction.create!(reactable: reactable, mode: mode, user: user)
     user.destroy!
   end
 end
