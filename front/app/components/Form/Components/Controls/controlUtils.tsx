@@ -26,10 +26,10 @@ export const getOptions = (schema, fieldType: 'single' | 'multi') => {
     );
   } else {
     return (
-      schema?.oneOf
-        ?.map((option) => ({
-          value: option.const,
-          label: option.title || option.const,
+      schema?.enum
+        ?.map((option, index) => ({
+          value: option.toString(),
+          label: schema?.enumNames[index],
         }))
         .filter((e) => e.value && e.label) || null
     );
