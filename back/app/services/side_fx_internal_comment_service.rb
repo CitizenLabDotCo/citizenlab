@@ -46,11 +46,11 @@ class SideFxInternalCommentService
   private
 
   def process_mentions(comment)
-    comment.body, _users = MentionService.new.process_mentions(comment.body)
+    comment.body, _users = mention_service.process_mentions(comment.body)
   end
 
   def notify_mentioned_users(comment, user)
-    mentioned_users = MentionService.new.extract_expanded_mention_users(comment.body)
+    mentioned_users = mention_service.extract_expanded_mention_users(comment.body)
 
     mentioned_users.uniq.each do |mentioned_user|
       LogActivityJob.perform_later(
@@ -65,7 +65,7 @@ class SideFxInternalCommentService
 
   def notify_updated_mentioned_users(comment, user)
     old_body, new_body = comment.body_previous_change
-    mentioned_users = MentionService.new.new_mentioned_users(old_body, new_body)
+    mentioned_users = mention_service.new_mentioned_users(old_body, new_body)
 
     mentioned_users.uniq.each do |mentioned_user|
       LogActivityJob.perform_later(
@@ -76,5 +76,9 @@ class SideFxInternalCommentService
         payload: { mentioned_user: mentioned_user.id }
       )
     end
+  end
+
+  def mention_service
+    @mention_service ||= MentionService.new
   end
 end
