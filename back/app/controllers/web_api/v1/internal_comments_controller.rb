@@ -104,8 +104,7 @@ class WebApi::V1::InternalCommentsController < ApplicationController
   end
 
   def mark_as_deleted
-    @comment.publication_status = 'deleted'
-    if @comment.save
+    if @comment.update(publication_status: 'deleted')
       SideFxInternalCommentService.new.after_mark_as_deleted(@comment, current_user)
       head :no_content
     else

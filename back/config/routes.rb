@@ -33,7 +33,7 @@ Rails.application.routes.draw do
         end
         resources :internal_comments, except: [:destroy], shallow: true do
           get :children, on: :member
-          post :mark_as_deleted, on: :member
+          patch :mark_as_deleted, on: :member
         end
         get 'comments/as_xlsx', on: :collection, to: 'comments#index_xlsx'
         resources :official_feedback, shallow: true

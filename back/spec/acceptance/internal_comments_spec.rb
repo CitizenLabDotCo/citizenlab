@@ -275,7 +275,7 @@ resource 'InternalComments' do
         end
       end
 
-      post 'web_api/v1/internal_comments/:id/mark_as_deleted' do
+      patch 'web_api/v1/internal_comments/:id/mark_as_deleted' do
         let(:internal_comment) { create(:internal_comment, author: @user, post: @idea) }
         let(:id) { internal_comment.id }
 
@@ -547,7 +547,7 @@ resource 'InternalComments' do
         end
       end
 
-      post 'web_api/v1/internal_comments/:id/mark_as_deleted' do
+      patch 'web_api/v1/internal_comments/:id/mark_as_deleted' do
         let(:internal_comment) { create(:internal_comment, author: @user, post: @initiative) }
         let(:id) { internal_comment.id }
 
