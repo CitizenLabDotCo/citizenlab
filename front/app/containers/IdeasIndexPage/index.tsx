@@ -77,7 +77,7 @@ const PageTitle = styled.h1`
 
 export default memo(() => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const sortParam = searchParams.get('sort');
+  const sortParam = searchParams.get('sort') as Sort | null;
   const searchParam = searchParams.get('search');
   const ideaStatusParam = searchParams.get('idea_status');
   const topicsParam = searchParams.get('topics');
@@ -86,7 +86,7 @@ export default memo(() => {
     () => ({
       'page[number]': 1,
       'page[size]': 12,
-      sort: (sortParam as Sort) ?? 'trending',
+      sort: sortParam ?? 'trending',
       project_publication_status: 'published',
       publication_status: 'published',
       search: searchParam ?? undefined,
