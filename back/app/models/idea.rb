@@ -146,16 +146,6 @@ class Idea < ApplicationRecord
       .where('ideas.id NOT IN (SELECT DISTINCT(post_id) FROM official_feedbacks)')
   }
 
-  scope :order_with, lambda { |scope_name|
-    case scope_name
-    when 'random'   then order_random
-    when 'popular'  then order_popular
-    when 'new'      then order_new
-    when '-new'     then order_new(:asc)
-    else order_trending
-    end
-  }
-
   scope :order_trending, -> { TrendingIdeaService.new.sort_trending(where('TRUE')) }
 
   def just_published?

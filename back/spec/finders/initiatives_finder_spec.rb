@@ -115,7 +115,7 @@ describe InitiativesFinder do
     end
 
     it 'sorts initiatives by \'random\'' do
-      expect(record_ids).to eq Initiative.order_random.pluck(:id)
+      expect(record_ids).to eq Initiative.order_random(nil).pluck(:id)
     end
   end
 

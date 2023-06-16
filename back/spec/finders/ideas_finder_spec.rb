@@ -145,7 +145,7 @@ describe IdeasFinder do
 
     describe '#sort_scopes (random)' do
       let(:sort) { 'random' }
-      let(:expected_record_ids) { Idea.order_random.pluck(:id) }
+      let(:expected_record_ids) { Idea.order_random(nil).pluck(:id) }
 
       it 'returns the sorted records' do
         expect(result_record_ids).to eq expected_record_ids

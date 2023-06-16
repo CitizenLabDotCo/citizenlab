@@ -7,7 +7,7 @@ class IdeasFinder < ApplicationFinder
   sort_scope '-new',         order_new: :asc
   sort_scope 'popular',      order_popular: :desc
   sort_scope '-popular',     order_popular: :asc
-  sort_scope 'random',       :order_random
+  sort_scope 'random',       :random_order # ->(ideas) { ideas.order_random(current_user) }
   sort_scope 'author_name',  ['users.first_name ASC', 'users.last_name ASC']
   sort_scope '-author_name', ['users.first_name DESC', 'users.last_name DESC']
   sort_scope 'status',       order_status: :asc
@@ -35,6 +35,10 @@ class IdeasFinder < ApplicationFinder
   end
 
   private
+
+  def random_order(ideas)
+    ideas.order_random(current_user)
+  end
 
   def only_idea_inputs_scope(scope)
     phase_ideas = scope.where(project: Project.where(process_type: 'timeline'), creation_phase: nil)
