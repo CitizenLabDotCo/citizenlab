@@ -118,10 +118,6 @@ const StyledOfficialFeedback = styled(OfficialFeedback)`
   margin-top: 70px;
 `;
 
-const StyledComments = styled(CommentsSection)`
-  margin-top: 30px;
-`;
-
 const Right = styled.div`
   flex: 2;
   position: sticky;
@@ -308,7 +304,7 @@ const IdeaContent = ({
                 permissionToPost
               />
 
-              <StyledComments
+              <CommentsSection
                 allowAnonymousParticipation={allowAnonymousParticipation}
                 postId={ideaId}
                 postType="idea"

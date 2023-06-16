@@ -31,10 +31,6 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import useComments from 'api/comments/useComments';
 import CommentingIdeaDisabled from './CommentingIdeaDisabled';
 
-const StyledParentCommentForm = styled(ParentCommentForm)`
-  margin-bottom: 25px;
-`;
-
 const Header = styled.div`
   display: flex;
   align-items: center;
@@ -70,6 +66,7 @@ export interface Props {
   postType: 'idea' | 'initiative';
   className?: string;
   allowAnonymousParticipation?: boolean;
+  emphasizePostingPublicly?: boolean;
 }
 
 const PublicComments = ({
@@ -77,6 +74,7 @@ const PublicComments = ({
   postType,
   className,
   allowAnonymousParticipation,
+  emphasizePostingPublicly,
 }: Props) => {
   const initiativeId = postType === 'initiative' ? postId : undefined;
   const ideaId = postType === 'idea' ? postId : undefined;
@@ -146,13 +144,16 @@ const PublicComments = ({
         <CommentingProposalDisabled />
       )}
 
-      <StyledParentCommentForm
-        ideaId={ideaId}
-        initiativeId={initiativeId}
-        postType={postType}
-        postingComment={handleCommentPosting}
-        allowAnonymousParticipation={allowAnonymousParticipation}
-      />
+      <Box mb="24px">
+        <ParentCommentForm
+          ideaId={ideaId}
+          initiativeId={initiativeId}
+          postType={postType}
+          postingComment={handleCommentPosting}
+          allowAnonymousParticipation={allowAnonymousParticipation}
+          emphasizePostingPublicly={emphasizePostingPublicly}
+        />
+      </Box>
 
       <Comments
         ideaId={ideaId}

@@ -5,6 +5,7 @@ import { Box, Text } from '@citizenlab/cl2-component-library';
 import { Tab } from 'components/admin/NavigationTabs';
 import PublicComments from './PublicComments';
 import InternalComments from 'components/admin/InternalComments';
+import Warning from 'components/UI/Warning';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -81,12 +82,16 @@ const CommentsSection = ({
         </NavigationTabs>
         <Box>
           {selectedTab === 'public' && (
-            <PublicComments
-              postId={postId}
-              postType={postType}
-              allowAnonymousParticipation={allowAnonymousParticipation}
-              className={className}
-            />
+            <Box mt="16px">
+              <Warning>{formatMessage(messages.visibleToUsersWarning)}</Warning>
+              <PublicComments
+                postId={postId}
+                postType={postType}
+                allowAnonymousParticipation={allowAnonymousParticipation}
+                className={className}
+                emphasizePostingPublicly
+              />
+            </Box>
           )}
           {selectedTab === 'internal' && (
             <InternalComments

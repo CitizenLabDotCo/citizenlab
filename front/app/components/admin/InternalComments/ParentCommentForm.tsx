@@ -243,6 +243,9 @@ const ParentCommentForm = ({
 
     return null;
   };
+  const textAreaPlaceholder = formatMessage(
+    commentsMessages.notVisibleToUsersPlaceholder
+  );
 
   return (
     <Container className={className || ''}>
@@ -267,9 +270,7 @@ const ParentCommentForm = ({
               id="submit-comment"
               className="e2e-parent-comment-form"
               name="comment"
-              placeholder={formatMessage(
-                commentsMessages[`${postType}CommentBodyPlaceholder`]
-              )}
+              placeholder={textAreaPlaceholder}
               rows={focused || processing ? 4 : 1}
               postId={ideaId || initiativeId}
               postType={postType}
@@ -299,8 +300,9 @@ const ParentCommentForm = ({
                 onClick={onSubmit}
                 disabled={hasEmptyError}
                 padding={smallerThanTablet ? '6px 12px' : undefined}
+                icon="shield-check"
               >
-                <FormattedMessage {...commentsMessages.publishComment} />
+                <FormattedMessage {...commentsMessages.postInternalComment} />
               </Button>
             </ButtonWrapper>
           </label>
