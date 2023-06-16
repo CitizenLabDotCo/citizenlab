@@ -28,7 +28,7 @@ import { hideVisually } from 'polished';
 import { colors, defaultStyles } from 'utils/styleUtils';
 import useLocale from 'hooks/useLocale';
 import useAuthUser from 'api/me/useAuthUser';
-import useAddCommentToIdea from 'api/internal_comments/useAddInternalCommentToIdea';
+import useAddInternalCommentToIdea from 'api/internal_comments/useAddInternalCommentToIdea';
 import useAddInternalCommentToInitiative from 'api/internal_comments/useAddInternalCommentToInitiative';
 
 const Container = styled.div`
@@ -105,7 +105,7 @@ const ChildCommentForm = ({
   const {
     mutate: addCommentToIdeaComment,
     isLoading: isAddCommentToIdeaLoading,
-  } = useAddCommentToIdea();
+  } = useAddInternalCommentToIdea();
   const {
     mutate: addCommentToInitiativeComment,
     isLoading: isAddCommentToInitiativeLoading,

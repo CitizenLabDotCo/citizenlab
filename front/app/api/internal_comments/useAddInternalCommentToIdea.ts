@@ -6,7 +6,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import { IInternalNewComment, IInternalComment } from './types';
 import userCommentsCount from 'api/user_comments_count/keys';
 
-const addCommentToIdea = async ({
+const addInternalCommentToIdea = async ({
   ideaId,
   ...requestBody
 }: IInternalNewComment) =>
@@ -16,10 +16,10 @@ const addCommentToIdea = async ({
     body: { comment: { ...requestBody } },
   });
 
-const useAddCommentToIdea = () => {
+const useAddInternalCommentToIdea = () => {
   const queryClient = useQueryClient();
   return useMutation<IInternalComment, CLErrorsWrapper, IInternalNewComment>({
-    mutationFn: addCommentToIdea,
+    mutationFn: addInternalCommentToIdea,
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({
         queryKey: commentKeys.list({ userId: variables.author_id }),
@@ -43,4 +43,4 @@ const useAddCommentToIdea = () => {
   });
 };
 
-export default useAddCommentToIdea;
+export default useAddInternalCommentToIdea;

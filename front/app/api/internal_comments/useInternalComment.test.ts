@@ -16,7 +16,7 @@ const server = setupServer(
   })
 );
 
-describe('useComment', () => {
+describe('useInternalComment', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 

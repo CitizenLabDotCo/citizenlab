@@ -27,7 +27,7 @@ import { colors, defaultStyles } from 'utils/styleUtils';
 
 // hooks
 import useIdeaById from 'api/ideas/useIdeaById';
-import useAddCommentToIdea from 'api/internal_comments/useAddInternalCommentToIdea';
+import useAddInternalCommentToIdea from 'api/internal_comments/useAddInternalCommentToIdea';
 import useAddInternalCommentToInitiative from 'api/internal_comments/useAddInternalCommentToInitiative';
 import useLocale from 'hooks/useLocale';
 import useAuthUser from 'api/me/useAuthUser';
@@ -113,7 +113,7 @@ const ParentCommentForm = ({
   const { formatMessage } = useIntl();
   const smallerThanTablet = useBreakpoint('tablet');
   const { mutate: addCommentToIdea, isLoading: addCommentToIdeaIsLoading } =
-    useAddCommentToIdea();
+    useAddInternalCommentToIdea();
   const {
     mutate: addCommentToInitiative,
     isLoading: addCommentToInitiativeIsLoading,

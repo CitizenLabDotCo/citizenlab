@@ -16,7 +16,7 @@ const server = setupServer(
   })
 );
 
-describe('useAddCommentToInitiative', () => {
+describe('useAddInternalCommentToInitiative', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
