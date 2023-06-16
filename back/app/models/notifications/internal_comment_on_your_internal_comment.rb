@@ -71,7 +71,7 @@ module Notifications
          recipient_id &&
          initiator_id &&
          (recipient_id != initiator_id) &&
-         !parent_author_mentioned?(internal_comment)
+         !recipient_mentioned?(internal_comment)
 
         attributes = {
           recipient_id: recipient_id,
@@ -90,11 +90,10 @@ module Notifications
       end
     end
 
-    def self.parent_author_mentioned?(internal_comment)
-      mentioned_users = MentionService.new.extract_expanded_mention_users(internal_comment.body)
-      mentioned_users.include?(internal_comment.parent&.author)
+    def self.recipient_mentioned?(internal_comment)
+      MentionService.new.user_mentioned?(internal_comment.body, internal_comment.parent.author)
     end
 
-    private_class_method :parent_author_mentioned?
+    private_class_method :recipient_mentioned?
   end
 end
