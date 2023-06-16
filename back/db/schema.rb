@@ -391,7 +391,7 @@ ActiveRecord::Schema.define(version: 2023_06_09_161522) do
   create_table "experiments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
     t.string "treatment", null: false
-    t.string "payload", null: false
+    t.string "action", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 class WebApi::V1::ExperimentSerializer < WebApi::V1::BaseSerializer
-  attributes :name, :treatment, :payload
+  attributes :name, :treatment, :action
 end

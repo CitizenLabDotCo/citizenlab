@@ -38,7 +38,7 @@ function useABTest<TreatmentOption extends string>({
   treatments,
 }: ABTestConfig<TreatmentOption>): {
   treatment: undefined | TreatmentOption;
-  send: undefined | ((payload: string) => void);
+  send: undefined | ((action: string) => void);
 } {
   const { mutate: addExperiment } = useAddExperiment();
   const { data: authUser, isLoading } = useAuthUser();
@@ -58,13 +58,13 @@ function useABTest<TreatmentOption extends string>({
   }, [authUser, isLoading, treatmentsStr]);
 
   const send = useCallback(
-    (payload: string) => {
+    (action: string) => {
       if (!treatment) return;
 
       addExperiment({
         name: experiment,
         treatment,
-        payload,
+        action,
       });
     },
     [addExperiment, experiment, treatment]

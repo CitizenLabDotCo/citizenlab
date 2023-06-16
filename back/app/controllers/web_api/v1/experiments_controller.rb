@@ -31,7 +31,7 @@ class WebApi::V1::ExperimentsController < ApplicationController
     params.require(:experiment).permit(
       :name,
       :treatment,
-      :payload
+      :action
     )
   end
 end

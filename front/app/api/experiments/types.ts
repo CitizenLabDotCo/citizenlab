@@ -9,7 +9,7 @@ interface IExperimentData {
   attributes: {
     name: string;
     treatment: string;
-    payload: string;
+    action: string;
   };
 }
 
@@ -24,5 +24,5 @@ export interface IExperiments {
 export interface IExperimentAdd {
   name: string;
   treatment: string;
-  payload: string;
+  action: string;
 }
