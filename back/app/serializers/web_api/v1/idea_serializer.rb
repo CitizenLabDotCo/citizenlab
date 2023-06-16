@@ -35,7 +35,7 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
     liking_disabled_reason = @participation_context_service.idea_reacting_disabled_reason_for(object, current_user(params), mode: 'up')
     disliking_disabled_reason = @participation_context_service.idea_reacting_disabled_reason_for(object, current_user(params), mode: 'down')
     cancelling_reactions_disabled_reason = @participation_context_service.cancelling_reacting_disabled_reason_for_idea(object, current_user(params))
-    budgeting_disabled_reason = @participation_context_service.budgeting_disabled_reason_for_idea(object, current_user(params))
+    voting_disabled_reason = @participation_context_service.voting_disabled_reason_for_idea(object, current_user(params))
     comment_reacting_disabled_reason = @participation_context_service.reacting_disabled_reason_for_idea_comment(Comment.new(post: object), current_user(params))
 
     {
@@ -64,10 +64,10 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
         disabled_reason: comment_reacting_disabled_reason,
         future_enabled: comment_reacting_disabled_reason && @participation_context_service.future_comment_reacting_idea_enabled_phase(object.project, current_user(params))&.start_at
       },
-      budgeting: {
-        enabled: !budgeting_disabled_reason,
-        disabled_reason: budgeting_disabled_reason,
-        future_enabled: budgeting_disabled_reason && @participation_context_service.future_budgeting_enabled_phase(object.project, current_user(params))&.start_at
+      voting: {
+        enabled: !voting_disabled_reason,
+        disabled_reason: voting_disabled_reason,
+        future_enabled: voting_disabled_reason && @participation_context_service.future_voting_enabled_phase(object.project, current_user(params))&.start_at
       }
     }
   end

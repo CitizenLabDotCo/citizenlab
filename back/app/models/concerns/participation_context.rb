@@ -21,7 +21,7 @@ module ParticipationContext
   POSTING_METHODS       = %w[unlimited limited].freeze
   REACTING_METHODS      = %w[unlimited limited].freeze
   IDEAS_ORDERS          = %w[trending random popular -new new].freeze
-  IDEAS_ORDERS_BUDGETING_EXCLUDE = %w[trending popular].freeze
+  IDEAS_ORDERS_VOTING_EXCLUDE = %w[trending popular].freeze
   INPUT_TERMS           = %w[idea question contribution project issue option].freeze
   DEFAULT_INPUT_TERM    = 'idea'
 
@@ -77,7 +77,7 @@ module ParticipationContext
       with_options if: :voting? do
         validates :voting_method, presence: true, inclusion: { in: VOTING_METHODS }
         validate :validate_voting
-        # validates :ideas_order, exclusion: { in: IDEAS_ORDERS_BUDGETING_EXCLUDE }, allow_nil: true
+        # validates :ideas_order, exclusion: { in: IDEAS_ORDERS_VOTING_EXCLUDE }, allow_nil: true
       end
       validates :voting_min_total,
         numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: :voting_max_total,

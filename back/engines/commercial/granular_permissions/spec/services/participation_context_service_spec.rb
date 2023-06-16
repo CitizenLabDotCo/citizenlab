@@ -269,7 +269,7 @@ describe ParticipationContextService do
     end
   end
 
-  describe 'budgeting_disabled_reasons' do
+  describe 'voting_disabled_reasons' do
     context 'for timeline projects' do
       it 'returns `not_signed_in` when user needs to be signed in' do
         project = create(
@@ -279,7 +279,7 @@ describe ParticipationContextService do
         idea = create(:idea, project: project, phases: [project.phases[2]])
         permission = service.get_participation_context(project).permissions.find_by(action: 'budgeting')
         permission.update!(permitted_by: 'users')
-        expect(service.budgeting_disabled_reason_for_idea(idea, nil)).to eq 'not_signed_in'
+        expect(service.voting_disabled_reason_for_idea(idea, nil)).to eq 'not_signed_in'
       end
 
       it 'returns `not_in_group` when the idea is in the current phase and budgeting is not permitted' do
@@ -293,13 +293,13 @@ describe ParticipationContextService do
           permitted_by: 'groups',
           group_ids: create_list(:group, 2).map(&:id)
         )
-        expect(service.budgeting_disabled_reason_for_idea(idea, create(:user))).to eq 'not_in_group'
+        expect(service.voting_disabled_reason_for_idea(idea, create(:user))).to eq 'not_in_group'
       end
 
       it "returns 'project_inactive' when the timeline is over" do
         project = create(:project_with_past_phases)
         idea = create(:idea, project: project, phases: [project.phases[2]])
-        expect(service.budgeting_disabled_reason_for_idea(idea, create(:user))).to eq 'project_inactive'
+        expect(service.voting_disabled_reason_for_idea(idea, create(:user))).to eq 'project_inactive'
       end
     end
 
@@ -312,13 +312,13 @@ describe ParticipationContextService do
           group_ids: create_list(:group, 2).map(&:id)
         )
         idea = create(:idea, project: project)
-        expect(service.budgeting_disabled_reason_for_idea(idea, create(:user))).to eq 'not_in_group'
+        expect(service.voting_disabled_reason_for_idea(idea, create(:user))).to eq 'not_in_group'
       end
 
       it "returns 'project_inactive' when the project is archived" do
         project = create(:continuous_budgeting_project, with_permissions: true, admin_publication_attributes: { publication_status: 'archived' })
         idea = create(:idea, project: project)
-        expect(service.budgeting_disabled_reason_for_idea(idea, create(:user))).to eq 'project_inactive'
+        expect(service.voting_disabled_reason_for_idea(idea, create(:user))).to eq 'project_inactive'
       end
     end
   end

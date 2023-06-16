@@ -189,7 +189,7 @@ describe ParticipationContextService do
     end
   end
 
-  describe 'budgeting_disabled_reasons' do
+  describe 'voting_disabled_reasons' do
     context 'for timeline projects' do
       it 'returns `not_verified` when the idea is in the current phase and budgeting is not permitted and a permitted group requires verification' do
         project = create(:project_with_current_phase,
@@ -198,7 +198,7 @@ describe ParticipationContextService do
         permission = service.get_participation_context(project).permissions.find_by(action: 'budgeting')
         verified_members = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
         permission.update!(permitted_by: 'groups', groups: [create(:group), verified_members])
-        expect(service.budgeting_disabled_reason_for_idea(idea, create(:user))).to eq 'not_verified'
+        expect(service.voting_disabled_reason_for_idea(idea, create(:user))).to eq 'not_verified'
       end
     end
 
@@ -209,7 +209,7 @@ describe ParticipationContextService do
         verified_members = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
         permission.update!(permitted_by: 'groups', groups: [create(:group), verified_members])
         idea = create(:idea, project: project)
-        expect(service.budgeting_disabled_reason_for_idea(idea, create(:user))).to eq 'not_verified'
+        expect(service.voting_disabled_reason_for_idea(idea, create(:user))).to eq 'not_verified'
       end
     end
   end
