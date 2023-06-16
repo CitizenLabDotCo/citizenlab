@@ -14,7 +14,10 @@ export const getSubtextElement = (description: string) => {
 };
 
 // Given a schema and field type, returns the options for a given array field
-export const getOptions = (schema, fieldType: 'single' | 'multi') => {
+export const getOptions = (
+  schema,
+  fieldType: 'singleEnum' | 'single' | 'multi'
+) => {
   if (fieldType === 'multi') {
     return (
       (!Array.isArray(schema.items) &&
@@ -24,12 +27,21 @@ export const getOptions = (schema, fieldType: 'single' | 'multi') => {
         }))) ||
       null
     );
-  } else {
+  } else if (fieldType === 'singleEnum') {
     return (
       schema?.enum
         ?.map((option, index) => ({
           value: option.toString(),
           label: schema?.enumNames[index],
+        }))
+        .filter((e) => e.value && e.label) || null
+    );
+  } else {
+    return (
+      schema?.oneOf
+        ?.map((option) => ({
+          value: option.const,
+          label: option.title || option.const,
         }))
         .filter((e) => e.value && e.label) || null
     );
