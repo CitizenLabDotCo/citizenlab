@@ -41,7 +41,7 @@ export const getOptions = (
       schema?.oneOf
         ?.map((option) => ({
           value: option.const,
-          label: option.title,
+          label: option.title || option.const,
         }))
         .filter((e) => e.value && e.label) || null
     );
