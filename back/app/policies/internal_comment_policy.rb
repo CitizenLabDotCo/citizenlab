@@ -61,6 +61,8 @@ class InternalCommentPolicy < ApplicationPolicy
   end
 
   def internal_comment_author?
-    record.author_id == user&.id
+    return false if user.nil?
+
+    record.author_id == user.id
   end
 end
