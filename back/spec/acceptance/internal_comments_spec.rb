@@ -22,13 +22,13 @@ resource 'InternalComments' do
 
       post 'web_api/v1/ideas/:idea_id/internal_comments' do
         with_options scope: :internal_comment do
-          parameter :body_text, 'Text field with the comment body', required: true
+          parameter :body, 'Text field with the comment body', required: true
           parameter :parent_id, 'The id of the comment this comment is a response to', required: false
         end
 
         let(:idea_id) { @idea.id }
         let(:internal_comment) { build(:internal_comment) }
-        let(:body_text) { internal_comment.body_text }
+        let(:body) { internal_comment.body }
 
         example_request '[Unauthorized] Create an internal comment on an idea' do
           assert_status 401
@@ -192,20 +192,20 @@ resource 'InternalComments' do
 
       post 'web_api/v1/ideas/:idea_id/internal_comments' do
         with_options scope: :internal_comment do
-          parameter :body_text, 'Text field with the comment body', required: true
+          parameter :body, 'Text field with the comment body', required: true
           parameter :parent_id, 'The id of the internal comment this internal comment is a response to', required: false
         end
 
         let(:idea_id) { @idea.id }
         let(:internal_comment) { build(:internal_comment) }
-        let(:body_text) { internal_comment.body_text }
+        let(:body) { internal_comment.body }
 
         example_request 'Create an internal comment on an idea' do
           assert_status 201
           json_response = json_parse(response_body)
 
           expect(json_response.dig(:data, :relationships, :author, :data, :id)).to eq @user.id
-          expect(json_response.dig(:data, :attributes, :body_text)).to match body_text
+          expect(json_response.dig(:data, :attributes, :body)).to match body
           expect(json_response.dig(:data, :relationships, :parent, :data)).to be_nil
           expect(json_response.dig(:data, :relationships, :post, :data, :id)).to eq idea_id
           expect(@idea.reload.internal_comments_count).to eq 1
@@ -219,7 +219,7 @@ resource 'InternalComments' do
             json_response = json_parse(response_body)
 
             expect(json_response.dig(:data, :relationships, :author, :data, :id)).to eq @user.id
-            expect(json_response.dig(:data, :attributes, :body_text)).to match body_text
+            expect(json_response.dig(:data, :attributes, :body)).to match body
             expect(json_response.dig(:data, :relationships, :parent, :data, :id)).to eq parent_id
             expect(json_response.dig(:data, :relationships, :post, :data, :id)).to eq idea_id
             expect(@idea.reload.internal_comments_count).to eq 2
@@ -227,12 +227,12 @@ resource 'InternalComments' do
         end
 
         describe do
-          let(:body_text) { '' }
+          let(:body) { '' }
 
           example_request '[error] Create an invalid internal comment' do
             assert_status 422
             json_response = json_parse response_body
-            expect(json_response).to include_response_error(:body_text, 'blank')
+            expect(json_response).to include_response_error(:body, 'blank')
           end
         end
 
@@ -251,18 +251,18 @@ resource 'InternalComments' do
 
       patch 'web_api/v1/internal_comments/:id' do
         with_options scope: :internal_comment do
-          parameter :body_text, 'Text field with the comment body'
+          parameter :body, 'Text field with the comment body'
           parameter :parent_id, 'The id of the internal comment this internal comment is a response to'
         end
 
         let(:internal_comment) { create(:internal_comment, author: @user, post: @idea) }
         let(:id) { internal_comment.id }
-        let(:body_text) { "His hair is not blond, it's orange. Get your facts straight!" }
+        let(:body) { "His hair is not blond, it's orange. Get your facts straight!" }
 
         example_request "Update author's own an internal comment on an idea" do
           assert_status 200
           json_response = json_parse(response_body)
-          expect(json_response.dig(:data, :attributes, :body_text)).to match body_text
+          expect(json_response.dig(:data, :attributes, :body)).to match body
           expect(@idea.reload.internal_comments_count).to eq 1
         end
 
@@ -306,13 +306,13 @@ resource 'InternalComments' do
 
       post 'web_api/v1/initiatives/:initiative_id/internal_comments' do
         with_options scope: :internal_comment do
-          parameter :body_text, 'Text field with the comment body', required: true
+          parameter :body, 'Text field with the comment body', required: true
           parameter :parent_id, 'The id of the comment this comment is a response to', required: false
         end
 
         let(:initiative_id) { @initiative.id }
         let(:internal_comment) { build(:internal_comment) }
-        let(:body_text) { internal_comment.body_text }
+        let(:body) { internal_comment.body }
 
         example_request '[Unauthorized] Create an internal comment on an initiative' do
           assert_status 401
@@ -476,20 +476,20 @@ resource 'InternalComments' do
 
       post 'web_api/v1/initiatives/:initiative_id/internal_comments' do
         with_options scope: :internal_comment do
-          parameter :body_text, 'Text field with the comment body', required: true
+          parameter :body, 'Text field with the comment body', required: true
           parameter :parent_id, 'The id of the comment this comment is a response to', required: false
         end
 
         let(:initiative_id) { @initiative.id }
         let(:internal_comment) { build(:internal_comment) }
-        let(:body_text) { internal_comment.body_text }
+        let(:body) { internal_comment.body }
 
         example_request 'Create an internal comment on an initiative' do
           assert_status 201
           json_response = json_parse(response_body)
 
           expect(json_response.dig(:data, :relationships, :author, :data, :id)).to eq @user.id
-          expect(json_response.dig(:data, :attributes, :body_text)).to match body_text
+          expect(json_response.dig(:data, :attributes, :body)).to match body
           expect(json_response.dig(:data, :relationships, :parent, :data)).to be_nil
           expect(json_response.dig(:data, :relationships, :post, :data, :id)).to eq initiative_id
           expect(@initiative.reload.internal_comments_count).to eq 1
@@ -503,7 +503,7 @@ resource 'InternalComments' do
             json_response = json_parse(response_body)
 
             expect(json_response.dig(:data, :relationships, :author, :data, :id)).to eq @user.id
-            expect(json_response.dig(:data, :attributes, :body_text)).to match body_text
+            expect(json_response.dig(:data, :attributes, :body)).to match body
             expect(json_response.dig(:data, :relationships, :parent, :data, :id)).to eq parent_id
             expect(json_response.dig(:data, :relationships, :post, :data, :id)).to eq initiative_id
             expect(@initiative.reload.internal_comments_count).to eq 2
@@ -511,30 +511,30 @@ resource 'InternalComments' do
         end
 
         describe do
-          let(:body_text) { '' }
+          let(:body) { '' }
 
           example_request '[error] Create an invalid internal comment' do
             assert_status 422
             json_response = json_parse response_body
-            expect(json_response).to include_response_error(:body_text, 'blank')
+            expect(json_response).to include_response_error(:body, 'blank')
           end
         end
       end
 
       patch 'web_api/v1/internal_comments/:id' do
         with_options scope: :internal_comment do
-          parameter :body_text, 'Text field with the comment body'
+          parameter :body, 'Text field with the comment body'
           parameter :parent_id, 'The id of the internal comment this internal comment is a response to'
         end
 
         let(:internal_comment) { create(:internal_comment, author: @user, post: @initiative) }
         let(:id) { internal_comment.id }
-        let(:body_text) { "His hair is not blond, it's orange. Get your facts straight!" }
+        let(:body) { "His hair is not blond, it's orange. Get your facts straight!" }
 
         example_request "Update author's own internal comment on an initiative" do
           assert_status 200
           json_response = json_parse(response_body)
-          expect(json_response.dig(:data, :attributes, :body_text)).to match body_text
+          expect(json_response.dig(:data, :attributes, :body)).to match body
           expect(@initiative.reload.internal_comments_count).to eq 1
         end
 
