@@ -69,7 +69,7 @@ resource 'Ideas' do
       parameter :author, 'Filter by author (user id)', required: false
       parameter :idea_status, 'Filter by status (idea status id)', required: false
       parameter :search, 'Filter by searching in title and body', required: false
-      parameter :sort, "Either 'new', '-new', 'trending', '-trending', 'popular', '-popular', 'author_name', '-author_name', 'upvotes_count', '-upvotes_count', 'downvotes_count', '-downvotes_count', 'status', '-status', 'baskets_count', '-baskets_count', 'random'", required: false
+      parameter :sort, "Either 'new', '-new', 'trending', '-trending', 'popular', '-popular', 'author_name', '-author_name', 'likes_count', '-likes_count', 'dislikes_count', '-dislikes_count', 'status', '-status', 'baskets_count', '-baskets_count', 'random'", required: false
       parameter :publication_status, 'Filter by publication status; returns all published ideas by default', required: false
       parameter :project_publication_status, "Filter by project publication_status. One of #{AdminPublication::PUBLICATION_STATUSES.join(', ')}", required: false
       parameter :feedback_needed, 'Filter out ideas that need feedback', required: false
@@ -261,13 +261,13 @@ resource 'Ideas' do
           expect(json_response[:data].size).to eq 6
         end
 
-        example 'List all ideas includes the user_vote', document: false do
-          vote = create(:vote, user: @user)
+        example 'List all ideas includes the user_reaction', document: false do
+          reaction = create(:reaction, user: @user)
 
           do_request
           json_response = json_parse(response_body)
-          expect(json_response[:data].filter_map { |d| d[:relationships][:user_vote][:data] }.first[:id]).to eq vote.id
-          expect(json_response[:included].pluck(:id)).to include vote.id
+          expect(json_response[:data].filter_map { |d| d[:relationships][:user_reaction][:data] }.first[:id]).to eq reaction.id
+          expect(json_response[:included].pluck(:id)).to include reaction.id
         end
 
         example 'Search for ideas should work with trending ordering', document: false do
@@ -521,7 +521,7 @@ resource 'Ideas' do
       let(:idea) { create(:idea) }
       let!(:baskets) { create_list(:basket, 2, ideas: [idea]) }
       let!(:topic) { create(:topic, ideas: [idea], projects: [idea.project]) }
-      let!(:user_vote) { create(:vote, user: @user, votable: idea) }
+      let!(:user_reaction) { create(:reaction, user: @user, reactable: idea) }
       let(:id) { idea.id }
 
       example_request 'Get one idea by id' do
@@ -539,7 +539,7 @@ resource 'Ideas' do
               disabled_reason: nil,
               future_enabled: nil
             },
-            voting_idea: {
+            reacting_idea: {
               enabled: true,
               disabled_reason: nil,
               cancelling_enabled: true,
@@ -554,7 +554,7 @@ resource 'Ideas' do
                 future_enabled: nil
               }
             },
-            comment_voting_idea: {
+            comment_reacting_idea: {
               enabled: true,
               disabled_reason: nil,
               future_enabled: nil
@@ -572,7 +572,7 @@ resource 'Ideas' do
           },
           author: { data: { id: idea.author_id, type: 'user' } },
           idea_status: { data: { id: idea.idea_status_id, type: 'idea_status' } },
-          user_vote: { data: { id: user_vote.id, type: 'vote' } }
+          user_reaction: { data: { id: user_reaction.id, type: 'reaction' } }
         )
       end
     end
@@ -672,14 +672,14 @@ resource 'Ideas' do
             expect(project.reload.ideas_count).to eq 1
           end
 
-          example 'Check for the automatic creation of an upvote by the author when an idea is created', document: false do
+          example 'Check for the automatic creation of a like by the author when an idea is created', document: false do
             do_request
             json_response = json_parse(response_body)
             new_idea = Idea.find(json_response.dig(:data, :id))
-            expect(new_idea.votes.size).to eq 1
-            expect(new_idea.votes[0].mode).to eq 'up'
-            expect(new_idea.votes[0].user.id).to eq @user.id
-            expect(json_response[:data][:attributes][:upvotes_count]).to eq 1
+            expect(new_idea.reactions.size).to eq 1
+            expect(new_idea.reactions[0].mode).to eq 'up'
+            expect(new_idea.reactions[0].user.id).to eq @user.id
+            expect(json_response[:data][:attributes][:likes_count]).to eq 1
           end
 
           describe 'Values for disabled fields are ignored' do
@@ -1033,15 +1033,15 @@ resource 'Ideas' do
             expect(json_response.dig(:data, :attributes, :location_description)).to eq location_description
           end
 
-          example 'Check for the automatic creation of an upvote by the author when the publication status of an idea is updated from draft to published', document: false do
+          example 'Check for the automatic creation of a like by the author when the publication status of an idea is updated from draft to published', document: false do
             @idea.update! publication_status: 'draft'
             do_request idea: { publication_status: 'published' }
             json_response = json_parse response_body
             new_idea = Idea.find json_response.dig(:data, :id)
-            expect(new_idea.votes.size).to eq 1
-            expect(new_idea.votes[0].mode).to eq 'up'
-            expect(new_idea.votes[0].user.id).to eq @user.id
-            expect(json_response.dig(:data, :attributes, :upvotes_count)).to eq 1
+            expect(new_idea.reactions.size).to eq 1
+            expect(new_idea.reactions[0].mode).to eq 'up'
+            expect(new_idea.reactions[0].user.id).to eq @user.id
+            expect(json_response.dig(:data, :attributes, :likes_count)).to eq 1
           end
 
           example '[error] Update an idea when there is a posting disabled reason' do

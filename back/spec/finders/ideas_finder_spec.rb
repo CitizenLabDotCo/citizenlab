@@ -152,36 +152,36 @@ describe IdeasFinder do
       end
     end
 
-    describe '#sortable_attributes (upvotes_count)' do
-      let(:sort) { 'upvotes_count' }
-      let(:expected_record_ids) { Idea.order(upvotes_count: :desc).pluck(:id) }
+    describe '#sortable_attributes (likes_count)' do
+      let(:sort) { 'likes_count' }
+      let(:expected_record_ids) { Idea.order(likes_count: :desc).pluck(:id) }
 
       it 'returns the sorted records' do
         expect(result_record_ids).to eq expected_record_ids
       end
     end
 
-    describe '#sortable_attributes (-upvotes_count)' do
-      let(:sort) { '-upvotes_count' }
-      let(:expected_record_ids) { Idea.order(upvotes_count: :asc).pluck(:id) }
+    describe '#sortable_attributes (-likes_count)' do
+      let(:sort) { '-likes_count' }
+      let(:expected_record_ids) { Idea.order(likes_count: :asc).pluck(:id) }
 
       it 'returns the sorted records' do
         expect(result_record_ids).to eq expected_record_ids
       end
     end
 
-    describe '#sortable_attributes (downvotes_count)' do
-      let(:sort) { 'downvotes_count' }
-      let(:expected_record_ids) { Idea.order(downvotes_count: :desc).pluck(:id) }
+    describe '#sortable_attributes (dislikes_count)' do
+      let(:sort) { 'dislikes_count' }
+      let(:expected_record_ids) { Idea.order(dislikes_count: :desc).pluck(:id) }
 
       it 'returns the sorted records' do
         expect(result_record_ids).to eq expected_record_ids
       end
     end
 
-    describe '#sortable_attributes (-downvotes_count)' do
-      let(:sort) { '-downvotes_count' }
-      let(:expected_record_ids) { Idea.order(downvotes_count: :asc).pluck(:id) }
+    describe '#sortable_attributes (-dislikes_count)' do
+      let(:sort) { '-dislikes_count' }
+      let(:expected_record_ids) { Idea.order(dislikes_count: :asc).pluck(:id) }
 
       it 'returns the sorted records' do
         expect(result_record_ids).to eq expected_record_ids

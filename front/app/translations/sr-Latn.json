@@ -40,6 +40,7 @@
   "app.components.Comments.commentingMaybeNotPermitted": "{signInLink} da biste mogli da učestvujete.",
   "app.components.Comments.inputsAssociatedWithProfile": "Подразумевано, ваши поднесци ће бити повезани са вашим профилом, осим ако не изаберете ову опцију.",
   "app.components.Comments.invisibleTitleComments": "Komentari",
+  "app.components.Comments.leastRecent": "Најмање недавно",
   "app.components.Comments.mostRecent": "Најновији",
   "app.components.Comments.mostUpvoted": "Najviše glasano",
   "app.components.Comments.official": "Zvanično",

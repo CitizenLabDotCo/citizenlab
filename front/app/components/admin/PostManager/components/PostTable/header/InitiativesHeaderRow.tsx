@@ -64,8 +64,8 @@ export default ({
         width={getWidth(1)}
         sortAttribute={sortAttribute}
         sortDirection={sortDirection}
-        sortAttributeName="upvotes_count"
-        onChange={handleSortClick('upvotes_count')}
+        sortAttributeName="likes_count"
+        onChange={handleSortClick('likes_count')}
       >
         <FormattedMessage {...messages.votes} />
       </SortableHeaderCell>

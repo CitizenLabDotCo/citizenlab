@@ -18,12 +18,12 @@ const initiativesActionDescriptorsData = {
         disabled_reason: 'not_signed_in',
         enabled: false,
       },
-      voting_initiative: { disabled_reason: 'not_signed_in', enabled: false },
-      comment_voting_initiative: {
+      reacting_initiative: { disabled_reason: 'not_signed_in', enabled: false },
+      comment_reacting_initiative: {
         disabled_reason: 'not_signed_in',
         enabled: false,
       },
-      cancelling_initiative_votes: {
+      cancelling_initiative_reactions: {
         disabled_reason: 'not_signed_in',
         enabled: false,
       },

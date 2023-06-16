@@ -105,7 +105,8 @@ module EmailCampaigns
     def self.campaign_description_multiloc
       @multiloc_service ||= MultilocService.new
       @multiloc_service.i18n_to_multiloc(
-        "email_campaigns.campaign_type_description.#{campaign_name}"
+        # TODO: .sub is a temporary fix until we deploy the copy changes to the front-end
+        "email_campaigns.campaign_type_description.#{campaign_name.sub 'reacted', 'voted'}"
       )
     end
 

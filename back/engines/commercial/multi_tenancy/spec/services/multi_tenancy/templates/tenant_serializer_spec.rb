@@ -30,7 +30,7 @@ describe MultiTenancy::Templates::TenantSerializer do
         expect(CustomForm.count).to be > 0
         expect(Event.count).to be > 0
         expect(IdeaStatus.count).to be > 0
-        expect(Vote.count).to be > 0
+        expect(Reaction.count).to be > 0
         expect(EmailCampaigns::UnsubscriptionToken.count).to be > 0
         expect(Volunteering::Cause.count).to be 5
         expect(Volunteering::Volunteer.count).to be > 0

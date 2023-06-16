@@ -12,9 +12,9 @@ enum events {
 interface ICommentReplyClicked {
   commentId: string | null;
   parentCommentId: string | null;
-  authorFirstName: string | null;
-  authorLastName: string | null;
-  authorSlug: string | null;
+  authorFirstName?: string | null;
+  authorLastName?: string | null;
+  authorSlug?: string | null;
 }
 
 export const commentReplyButtonClicked = (eventValue: ICommentReplyClicked) =>
@@ -42,11 +42,8 @@ export const commentAdded$ = eventEmitter.observeEvent(events.commentAdded);
 
 // -----------
 
-export const commentDeleted = () => eventEmitter.emit(events.commentDeleted);
 export const commentDeleted$ = eventEmitter.observeEvent(events.commentDeleted);
 
 // -----------
 
 export const deleteCommentModalClosed = () => eventEmitter.emit('modalClosed');
-
-// -----------
