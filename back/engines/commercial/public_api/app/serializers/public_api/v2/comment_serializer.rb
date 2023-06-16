@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class PublicApi::V2::CommentSerializer < ActiveModel::Serializer
+class PublicApi::V2::CommentSerializer < PublicApi::V2::BaseSerializer
   attributes :id,
     :body,
     :author_id,
@@ -14,17 +14,6 @@ class PublicApi::V2::CommentSerializer < ActiveModel::Serializer
     :children_count,
     :publication_status
 
-  attribute :post_type do
-    object.post_type.underscore.dasherize
-  end
-
-  def body
-    multiloc_service.t(object.body_multiloc)
-  end
-
-  private
-
-  def multiloc_service
-    @multiloc_service ||= MultilocService.new
-  end
+  attribute(:body) { MultilocService.new.t(object.body_multiloc) }
+  attribute(:post_type) { classname_to_type(object.post_type) }
 end

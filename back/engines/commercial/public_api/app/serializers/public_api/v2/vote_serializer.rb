@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class PublicApi::V2::VoteSerializer < ActiveModel::Serializer
+class PublicApi::V2::VoteSerializer < PublicApi::V2::BaseSerializer
   attributes(
     :id,
     :mode,
@@ -10,7 +10,5 @@ class PublicApi::V2::VoteSerializer < ActiveModel::Serializer
     :updated_at
   )
 
-  attribute :votable_type do
-    object.votable_type.underscore.dasherize
-  end
+  attribute(:votable_type) { classname_to_type(object.votable_type) }
 end

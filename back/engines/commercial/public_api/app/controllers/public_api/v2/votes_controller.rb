@@ -13,9 +13,11 @@ module PublicApi
 
     def finder_params
       params.dup.permit(:votable_type, :user_id).to_h.tap do |params|
-        if params[:votable_type]
-          validate_votable_type!(params[:votable_type])
-          params[:votable_type] = params[:votable_type].snakecase.classify
+        if (votable_type = params[:votable_type])
+          validate_votable_type!(votable_type)
+
+          # The finder expects classname-like values.
+          params[:votable_type] = V2::BaseSerializer.type_to_classname(votable_type)
         end
       end.symbolize_keys
     end

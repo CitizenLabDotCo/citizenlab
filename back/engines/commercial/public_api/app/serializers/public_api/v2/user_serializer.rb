@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class PublicApi::V2::UserSerializer < ActiveModel::Serializer
+class PublicApi::V2::UserSerializer < PublicApi::V2::BaseSerializer
   attributes :id,
     :email,
     :slug,

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class PublicApi::V2::TopicSerializer < ActiveModel::Serializer
+class PublicApi::V2::TopicSerializer < PublicApi::V2::BaseSerializer
   attributes :id,
     :title,
     :description,
