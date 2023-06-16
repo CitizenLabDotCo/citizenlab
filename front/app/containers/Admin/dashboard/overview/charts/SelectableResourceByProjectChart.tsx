@@ -14,8 +14,8 @@ import {
   ideasByProjectStream,
   ICommentsByProject,
   commentsByProjectStream,
-  IVotesByProject,
-  votesByProjectStream,
+  IReactionsByProject,
+  reactionsByProjectStream,
 } from 'services/stats';
 import { IOption } from 'typings';
 import { IResource } from '..';
@@ -46,7 +46,7 @@ const getCurrentStream = (currentResourceByProject: IResource) => {
   } else if (currentResourceByProject === 'comments') {
     return commentsByProjectStream;
   } else {
-    return votesByProjectStream;
+    return reactionsByProjectStream;
   }
 };
 
@@ -59,11 +59,13 @@ const SelectableResourceByProjectChart = ({
   const localize = useLocalize();
 
   const convertToGraphFormat = (
-    data: IIdeasByProject | IVotesByProject | ICommentsByProject
+    data: IIdeasByProject | IReactionsByProject | ICommentsByProject
   ) => {
     const { series, projects } = data.data.attributes;
     const dataKey =
-      currentResourceByProject === 'votes' ? 'total' : currentResourceByProject;
+      currentResourceByProject === 'reactions'
+        ? 'total'
+        : currentResourceByProject;
 
     const mapped = map(series[dataKey], (count: number, projectId: string) => ({
       name: localize(projects[projectId].title_multiloc),

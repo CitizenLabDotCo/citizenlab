@@ -52,9 +52,9 @@ module Analytics
           { name: 'initiative', parent: 'post' },
           { name: 'comment', parent: 'initiative' },
           { name: 'comment', parent: 'idea' },
-          { name: 'vote', parent: 'initiative' },
-          { name: 'vote', parent: 'idea' },
-          { name: 'vote', parent: 'comment' },
+          { name: 'reaction', parent: 'initiative' },
+          { name: 'reaction', parent: 'idea' },
+          { name: 'reaction', parent: 'comment' },
           { name: 'poll', parent: nil },
           { name: 'volunteer', parent: nil },
           { name: 'survey', parent: nil }

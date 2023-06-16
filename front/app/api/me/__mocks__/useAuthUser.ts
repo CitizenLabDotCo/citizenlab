@@ -1,6 +1,6 @@
 import { IUserData } from 'api/users/types';
 
-const meData: IUserData = {
+export const mockAuthUserData: IUserData = {
   id: 'dd3f228f-26dc-4844-8315-8277e8f7676e',
   type: 'user',
   attributes: {
@@ -21,12 +21,13 @@ const meData: IUserData = {
     email: 'admin@citizenlab.co',
     custom_field_values: {},
     avatar: { small: null, medium: null, large: null },
-    unread_notifications: 0,
+    // Don't put to 0
+    unread_notifications: 5,
     confirmation_required: false,
     verified: false,
   },
 };
 
 export default jest.fn(() => {
-  return { data: { data: meData } };
+  return { data: { data: mockAuthUserData } };
 });
