@@ -71,11 +71,11 @@ module IdCow
     # A transaction is successful if it meets one of the following rules:
     #
     # 1:
-    # Any person with IndVigencia = S can vote.
+    # Any person with IndVigencia = S can react.
     # <type:IndVigencia>S</type:IndVigencia>
     #
     # 2:
-    # If IndVigencia is not in 'S', check other rules.  Here are the exceptions that allow you to vote:
+    # If IndVigencia is not in 'S', check other rules.  Here are the exceptions that allow you to react:
     #     2.1
     #     <type:IndVigencia>N</type:IndVigencia>
     #     +
@@ -90,7 +90,7 @@ module IdCow
     #     <type:IndBloqueo>TEMPORAL</type:IndBloqueo>
     # **Both IndVigencia and IndBloqueo conditions must be met.
 
-    # For all other combinations that do not fit in these 4 alternatives, they must be blocked from voting.
+    # For all other combinations that do not fit in these 4 alternatives, they must be blocked from reacting.
     def valid_response!(estado_respuesta:, ind_vigencia: nil, ind_bloqueo: nil)
       raise Verification::VerificationService::NoMatchError if estado_respuesta != '000'
       return if ind_vigencia == 'S' || (ind_vigencia == 'N' && ['NO BLOQUEADO', 'RENOVACION', 'TEMPORAL'].include?(ind_bloqueo))

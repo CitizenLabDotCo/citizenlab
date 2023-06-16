@@ -12,11 +12,11 @@ import { IStreamParams, IStream } from 'utils/streams';
 import {
   IIdeasByTopic,
   ICommentsByTopic,
-  IVotesByTopic,
+  IReactionsByTopic,
   IIdeasByStatus,
   IIdeasByProject,
   ICommentsByProject,
-  IVotesByProject,
+  IReactionsByProject,
 } from 'services/stats';
 import {
   IUsersByBirthyear,
@@ -36,10 +36,10 @@ type children = (renderProps: {
 export interface ISupportedDataTypeMap {
   ideasByTopic: IIdeasByTopic;
   commentsByTopic: ICommentsByTopic;
-  votesByTopic: IVotesByTopic;
+  reactionsByTopic: IReactionsByTopic;
   ideasByProject: IIdeasByProject;
   ideasByStatus: IIdeasByStatus;
-  votesByProject: IVotesByProject;
+  reactionsByProject: IReactionsByProject;
   commentsByProject: ICommentsByProject;
   usersByBirthYear: IUsersByBirthyear;
   usersByDomicile: IUsersByDomicile;

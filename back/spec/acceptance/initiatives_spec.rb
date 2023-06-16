@@ -27,7 +27,7 @@ resource 'Initiatives' do
     parameter :assignee, 'Filter by assignee (user id)', required: false
     parameter :search, 'Filter by searching in title and body', required: false
     parameter :feedback_needed, 'Filter out initiatives that need feedback', required: false
-    parameter :sort, "Either 'new', '-new', 'author_name', '-author_name', 'upvotes_count', '-upvotes_count', 'status', '-status', 'random'", required: false
+    parameter :sort, "Either 'new', '-new', 'author_name', '-author_name', 'likes_count', '-likes_count', 'status', '-status', 'random'", required: false
 
     example_request 'List all published initiatives (default behaviour)' do
       expect(status).to eq(200)
@@ -148,14 +148,14 @@ resource 'Initiatives' do
       expect(json_response[:data].size).to eq 6
     end
 
-    example 'List all initiatives includes the user_vote', document: false do
+    example 'List all initiatives includes the user_reaction', document: false do
       initiative = create(:initiative)
-      vote = create(:vote, votable: initiative, user: @user)
+      reaction = create(:reaction, reactable: initiative, user: @user)
 
       do_request
       json_response = json_parse(response_body)
-      expect(json_response[:data].filter_map { |d| d[:relationships][:user_vote][:data] }.first[:id]).to eq vote.id
-      expect(json_response[:included].pluck(:id)).to include vote.id
+      expect(json_response[:data].filter_map { |d| d[:relationships][:user_reaction][:data] }.first[:id]).to eq reaction.id
+      expect(json_response[:included].pluck(:id)).to include reaction.id
     end
   end
 
@@ -361,14 +361,14 @@ resource 'Initiatives' do
         expect(json_response.dig(:data, :relationships, :assignee, :data, :id)).to eq assignee_id
       end
 
-      example 'Check for the automatic creation of an upvote by the author when an initiative is created', document: false do
+      example 'Check for the automatic creation of a like by the author when an initiative is created', document: false do
         do_request
         json_response = json_parse(response_body)
         new_initiative = Initiative.find(json_response.dig(:data, :id))
-        expect(new_initiative.votes.size).to eq 1
-        expect(new_initiative.votes[0].mode).to eq 'up'
-        expect(new_initiative.votes[0].user.id).to eq @user.id
-        expect(json_response[:data][:attributes][:upvotes_count]).to eq 1
+        expect(new_initiative.reactions.size).to eq 1
+        expect(new_initiative.reactions[0].mode).to eq 'up'
+        expect(new_initiative.reactions[0].user.id).to eq @user.id
+        expect(json_response[:data][:attributes][:likes_count]).to eq 1
       end
 
       example 'Check for the automatic assignement of the default assignee', document: false do
@@ -488,15 +488,15 @@ resource 'Initiatives' do
           expect(json_response.dig(:data, :relationships, :areas, :data).pluck(:id)).to match_array area_ids
         end
 
-        example 'Check for the automatic creation of an upvote by the author when the publication status of an initiative is updated from draft to published', document: false do
+        example 'Check for the automatic creation of a like by the author when the publication status of an initiative is updated from draft to published', document: false do
           @initiative.update!(publication_status: 'draft')
           do_request initiative: { publication_status: 'published' }
           json_response = json_parse(response_body)
           new_initiative = Initiative.find(json_response.dig(:data, :id))
-          expect(new_initiative.votes.size).to eq 1
-          expect(new_initiative.votes[0].mode).to eq 'up'
-          expect(new_initiative.votes[0].user.id).to eq @user.id
-          expect(json_response.dig(:data, :attributes, :upvotes_count)).to eq 1
+          expect(new_initiative.reactions.size).to eq 1
+          expect(new_initiative.reactions[0].mode).to eq 'up'
+          expect(new_initiative.reactions[0].user.id).to eq @user.id
+          expect(json_response.dig(:data, :attributes, :likes_count)).to eq 1
         end
       end
 

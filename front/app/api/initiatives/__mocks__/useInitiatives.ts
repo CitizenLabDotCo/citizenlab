@@ -15,7 +15,7 @@ export const initiativesData = [
       publication_status: 'published',
       budget: 100000,
       comments_count: 0,
-      upvotes_count: 0,
+      likes_count: 0,
       location_point_geojson: {
         type: 'Point',
         coordinates: [0, 0],
@@ -77,7 +77,7 @@ export const initiativesData = [
       publication_status: 'published',
       budget: 100000,
       comments_count: 0,
-      upvotes_count: 0,
+      likes_count: 0,
       location_point_geojson: {
         type: 'Point',
         coordinates: [0, 0],

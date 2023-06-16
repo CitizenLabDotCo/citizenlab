@@ -13,8 +13,8 @@
 #  body_multiloc      :jsonb
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
-#  upvotes_count      :integer          default(0), not null
-#  downvotes_count    :integer          default(0), not null
+#  likes_count        :integer          default(0), not null
+#  dislikes_count     :integer          default(0), not null
 #  publication_status :string           default("published"), not null
 #  body_updated_at    :datetime
 #  children_count     :integer          default(0), not null
@@ -43,10 +43,10 @@ class Comment < ApplicationRecord
 
   belongs_to :author, class_name: 'User', optional: true
   belongs_to :post, polymorphic: true
-  has_many :votes, as: :votable, dependent: :destroy
-  has_many :upvotes, -> { where(mode: 'up') }, as: :votable, class_name: 'Vote'
-  has_many :downvotes, -> { where(mode: 'down') }, as: :votable, class_name: 'Vote'
-  has_one :user_vote, ->(user_id) { where(user_id: user_id) }, as: :votable, class_name: 'Vote'
+  has_many :reactions, as: :reactable, dependent: :destroy
+  has_many :likes, -> { where(mode: 'up') }, as: :reactable, class_name: 'Reaction'
+  has_many :dislikes, -> { where(mode: 'down') }, as: :reactable, class_name: 'Reaction'
+  has_one :user_reaction, ->(user_id) { where(user_id: user_id) }, as: :reactable, class_name: 'Reaction'
   has_many :spam_reports, as: :spam_reportable, class_name: 'SpamReport', dependent: :destroy
 
   before_validation :set_publication_status, on: :create
