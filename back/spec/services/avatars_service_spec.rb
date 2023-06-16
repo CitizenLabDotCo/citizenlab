@@ -35,6 +35,25 @@ describe AvatarsService do
     end
   end
 
+  describe 'avatars_for_folder' do
+    it 'returns stuff in a folder' do
+      projects = create_list(:project, 2)
+      folder = create(:project_folder, projects: projects)
+      u1, u2, u3, u4, u5 = create_list(:user, 5)
+      idea = create(:idea, project: projects.first, author: u1)
+      create(:idea, project: projects.last, author: u2)
+      create(:reaction, reactable: idea, user: u3)
+      create(:comment, post: idea, author: u4)
+      create(:idea, author: u5)
+
+      result = service.avatars_for_folder(folder, limit: 2)
+
+      expect(result[:total_count]).to eq 4
+      expect(result[:users].size).to eq 2
+      expect(([u1, u2, u3, u4] - result[:users]).size).to eq 2
+    end
+  end
+
   describe 'avatars_for_idea' do
     it 'returns the idea and comments authors' do
       idea1, idea2 = create_list(:idea, 2)

@@ -21,6 +21,16 @@ class AvatarsService
     end
   end
 
+  # Returns a hash containing a list of users with avatars for a folder and the total number of participants.
+  def avatars_for_folder(folder, users: User.registered, limit: 5)
+    Rails.cache.fetch("#{folder.cache_key}/user_avatars", expires_in: 1.day) do
+      participants = @participants_service.projects_participants(folder.projects)
+      user_ids = fetch_user_ids_and_count(participants, limit)
+      participant_count = @participants_service.folder_participants_count(folder)
+      users_and_count(user_ids, participant_count)
+    end
+  end
+
   # Returns a hash containing a list of users with avatars for a group and the total member count.
   # @param group[Group] The group for which avatars of its members should be fetched
   # @param users[ActiveRecord::Relation] Scope of users to be filtered for avatars
