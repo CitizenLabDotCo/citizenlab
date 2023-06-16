@@ -8,6 +8,7 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
     :likes_count,
     :dislikes_count,
     :comments_count,
+    :internal_comments_count,
     :official_feedbacks_count,
     :location_point_geojson,
     :location_description,
@@ -28,6 +29,10 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
   attribute :body_multiloc do |object|
     TextImageService.new.render_data_images object, :body_multiloc
   end
+
+  attribute :internal_comments_count, if: proc { |object, params|
+    can_moderate?(object, params)
+  }
 
   attribute :action_descriptor do |object, params|
     @participation_context_service = params[:pcs] || ParticipationContextService.new

@@ -132,6 +132,7 @@ class User < ApplicationRecord
   has_many :initiatives, foreign_key: :author_id, dependent: :nullify
   has_many :assigned_initiatives, class_name: 'Initiative', foreign_key: :assignee_id, dependent: :nullify
   has_many :comments, foreign_key: :author_id, dependent: :nullify
+  has_many :internal_comments, foreign_key: :author_id, dependent: :nullify
   has_many :official_feedbacks, dependent: :nullify
   has_many :reactions, dependent: :nullify
 
@@ -331,8 +332,8 @@ class User < ApplicationRecord
   end
 
   def anon_last_name
-    # Generate a last name based on email in the format of '123456'
-    email.hash.abs.to_s[0, 6]
+    # Generate a numeric last name based on email in the format of '123456'
+    (email.sum**2).to_s[0, 6]
   end
 
   def highest_role
