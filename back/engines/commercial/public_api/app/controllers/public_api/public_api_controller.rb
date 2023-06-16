@@ -60,8 +60,9 @@ module PublicApi
 
     def date_filter_where_clause(date_field, date_values)
       dates = date_values.split(',')
-      start_date = (dates[0].presence || '2017-01-01')
-      end_date = (dates[1].presence || Date.tomorrow.strftime('%F'))
+      # TODO: fix SQL injection vulnerability?
+      start_date = dates[0].presence || '-infinity'
+      end_date = dates[1].presence || 'infinity'
       "#{date_field} BETWEEN '#{start_date}' AND '#{end_date}'"
     end
 

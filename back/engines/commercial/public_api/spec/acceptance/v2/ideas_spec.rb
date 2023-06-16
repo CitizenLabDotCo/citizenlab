@@ -30,7 +30,8 @@ resource 'Posts' do
   get '/api/v2/ideas/' do
     route_summary 'List ideas'
     route_description <<~DESC.squish
-      Retrieve a paginated list of all the ideas in the platform.
+      Retrieve a paginated list of all the ideas in the platform, with the most recent
+      ones appearing first.
     DESC
 
     include_context 'common_list_params'
