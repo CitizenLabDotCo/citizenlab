@@ -4,6 +4,9 @@ import { Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
 
+// services
+import { canModerateProject } from 'services/permissions/rules/projectPermissions';
+
 // components
 import Button from 'components/UI/Button';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
@@ -24,9 +27,6 @@ import tracks from './tracks';
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
-
-// services
-import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 
 // events
 import { commentReplyButtonClicked$, commentAdded } from './events';
@@ -92,7 +92,8 @@ const CancelButton = styled(Button)`
 `;
 
 interface Props {
-  postId: string;
+  ideaId: string | undefined;
+  initiativeId: string | undefined;
   postType: 'idea' | 'initiative';
   projectId?: string | null;
   parentId: string;
@@ -102,7 +103,8 @@ interface Props {
 
 const ChildCommentForm = ({
   parentId,
-  postId,
+  ideaId,
+  initiativeId,
   postType,
   projectId,
   className,
@@ -178,7 +180,7 @@ const ChildCommentForm = ({
   const onFocus = () => {
     trackEventByName(tracks.focusChildCommentEditor, {
       extra: {
-        postId,
+        postId: ideaId || initiativeId,
         postType,
         parentId,
       },
@@ -210,100 +212,99 @@ const ChildCommentForm = ({
 
       trackEventByName(tracks.clickChildCommentPublish, {
         extra: {
-          postId,
+          postId: ideaId || initiativeId,
           postType,
           parentId,
           content: inputValue,
         },
       });
 
-      try {
-        if (postType === 'idea' && projectId) {
-          addCommentToIdeaComment(
-            {
-              ideaId: postId,
-              author_id: authUser.data.id,
-              parent_id: parentId,
-              body_multiloc: commentBodyMultiloc,
-              anonymous: postAnonymously,
+      if (postType === 'idea' && projectId) {
+        addCommentToIdeaComment(
+          {
+            ideaId,
+            author_id: authUser.data.id,
+            parent_id: parentId,
+            body_multiloc: commentBodyMultiloc,
+            anonymous: postAnonymously,
+          },
+          {
+            onSuccess: () => {
+              commentAdded();
+              setInputValue('');
+              setFocused(false);
             },
-            {
-              onSuccess: () => {
-                commentAdded();
-                setInputValue('');
-                setFocused(false);
-              },
-              onError: (error) => {
-                const apiErrors = error.json.errors;
-                const profanityApiError = apiErrors.base.find(
-                  (apiError) => apiError.error === 'includes_banned_words'
-                );
+            onError: (error) => {
+              const apiErrors = error.errors;
+              const profanityApiError = apiErrors.base.find(
+                (apiError) => apiError.error === 'includes_banned_words'
+              );
 
-                setHasApiError(true);
+              setHasApiError(true);
 
-                if (profanityApiError) {
-                  trackEventByName(tracks.childCommentProfanityError.name, {
-                    locale,
-                    postId,
-                    postType,
-                    projectId,
-                    profaneMessage: commentBodyMultiloc[locale],
-                    location: 'InitiativesNewFormWrapper (citizen side)',
-                    userId: authUser.data.id,
-                    host: !isNilOrError(appConfiguration)
-                      ? appConfiguration.data.attributes.host
-                      : null,
-                  });
+              if (profanityApiError) {
+                trackEventByName(tracks.childCommentProfanityError.name, {
+                  locale,
+                  ideaId,
+                  postType,
+                  projectId,
+                  profaneMessage: commentBodyMultiloc[locale],
+                  location: 'Idea Child Comment Form (citizen side)',
+                  userId: authUser.data.id,
+                  host: !isNilOrError(appConfiguration)
+                    ? appConfiguration.data.attributes.host
+                    : null,
+                });
 
-                  setProfanityApiError(true);
-                }
-              },
-            }
-          );
-        }
-
-        if (postType === 'initiative') {
-          addCommentToInitiativeComment(
-            {
-              initiativeId: postId,
-              author_id: authUser.data.id,
-              parent_id: parentId,
-              body_multiloc: commentBodyMultiloc,
-              anonymous: postAnonymously,
+                setProfanityApiError(true);
+              }
             },
-            {
-              onSuccess: () => {
-                commentAdded();
-                setInputValue('');
-                setFocused(false);
-              },
-            }
-          );
-        }
-      } catch (error) {
-        const apiErrors = error.json.errors;
-        const profanityApiError = apiErrors.base.find(
-          (apiError) => apiError.error === 'includes_banned_words'
+          }
         );
+      }
 
-        setHasApiError(true);
+      if (postType === 'initiative') {
+        addCommentToInitiativeComment(
+          {
+            initiativeId,
+            author_id: authUser.data.id,
+            parent_id: parentId,
+            body_multiloc: commentBodyMultiloc,
+            anonymous: postAnonymously,
+          },
+          {
+            onSuccess: () => {
+              commentAdded();
+              setInputValue('');
+              setFocused(false);
+            },
+            onError: (error) => {
+              const apiErrors = error.errors;
+              const profanityApiError = apiErrors.base.find(
+                (apiError) => apiError.error === 'includes_banned_words'
+              );
 
-        if (profanityApiError) {
-          trackEventByName(tracks.childCommentProfanityError.name, {
-            locale,
-            postId,
-            postType,
-            projectId,
-            profaneMessage: commentBodyMultiloc[locale],
-            location: 'InitiativesNewFormWrapper (citizen side)',
-            userId: authUser.data.id,
-            host: !isNilOrError(appConfiguration)
-              ? appConfiguration.data.attributes.host
-              : null,
-          });
+              setHasApiError(true);
 
-          setProfanityApiError(true);
-        }
+              if (profanityApiError) {
+                trackEventByName(tracks.childCommentProfanityError.name, {
+                  locale,
+                  initiativeId,
+                  postType,
+                  projectId,
+                  profaneMessage: commentBodyMultiloc[locale],
+                  location: 'Initiative Child Comment Form (citizen side)',
+                  userId: authUser.data.id,
+                  host: !isNilOrError(appConfiguration)
+                    ? appConfiguration.data.attributes.host
+                    : null,
+                });
+
+                setProfanityApiError(true);
+              }
+            },
+          }
+        );
       }
     }
   };
@@ -358,7 +359,7 @@ const ChildCommentForm = ({
 
   if (!isNilOrError(authUser) && focused) {
     const isModerator =
-      !isNilOrError(authUser) && canModerateProject(postId, authUser);
+      !isNilOrError(authUser) && canModerateProject(projectId, authUser);
 
     return (
       <Container className={`${className || ''} e2e-childcomment-form`}>
@@ -382,7 +383,7 @@ const ChildCommentForm = ({
                 name="comment"
                 placeholder={placeholder}
                 rows={3}
-                postId={postId}
+                postId={ideaId || initiativeId}
                 postType={postType}
                 value={inputValue}
                 error={getErrorMessage()}

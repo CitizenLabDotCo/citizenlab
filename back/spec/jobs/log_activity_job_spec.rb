@@ -177,8 +177,8 @@ RSpec.describe LogActivityJob do
         Notifications::MentionInOfficialFeedback,
         Notifications::OfficialFeedbackOnCommentedIdea,
         Notifications::OfficialFeedbackOnCommentedInitiative,
-        Notifications::OfficialFeedbackOnVotedIdea,
-        Notifications::OfficialFeedbackOnVotedInitiative,
+        Notifications::OfficialFeedbackOnReactedIdea,
+        Notifications::OfficialFeedbackOnReactedInitiative,
         Notifications::OfficialFeedbackOnYourIdea,
         Notifications::OfficialFeedbackOnYourInitiative,
         Notifications::ProjectFolderModerationRightsReceived,
@@ -189,8 +189,8 @@ RSpec.describe LogActivityJob do
         Notifications::StatusChangeOfYourInitiative,
         Notifications::StatusChangeOnCommentedIdea,
         Notifications::StatusChangeOnCommentedInitiative,
-        Notifications::StatusChangeOnVotedIdea,
-        Notifications::StatusChangeOnVotedInitiative,
+        Notifications::StatusChangeOnReactedIdea,
+        Notifications::StatusChangeOnReactedInitiative,
         Notifications::ThresholdReachedForAdmin,
         OfficialFeedback,
         Phase,
@@ -206,7 +206,7 @@ RSpec.describe LogActivityJob do
         Surveys::Response,
         Volunteering::Cause,
         Volunteering::Volunteer,
-        Vote
+        Reaction
       ]
     end
 

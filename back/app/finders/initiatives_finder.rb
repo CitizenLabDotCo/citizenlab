@@ -11,7 +11,7 @@ class InitiativesFinder < ApplicationFinder
   sort_scope 'author_name',  ['users.first_name ASC', 'users.last_name ASC']
   sort_scope '-author_name', ['users.first_name DESC', 'users.last_name DESC']
 
-  sortable_attributes :upvotes_count
+  sortable_attributes :likes_count
 
   private
 

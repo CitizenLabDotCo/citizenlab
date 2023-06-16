@@ -12,7 +12,7 @@
 #  author_id                :uuid
 #  created_at               :datetime
 #  updated_at               :datetime
-#  upvotes_count            :integer
+#  likes_count              :integer
 #  location_point           :geography        point, 4326
 #  location_description     :string
 #  comments_count           :integer

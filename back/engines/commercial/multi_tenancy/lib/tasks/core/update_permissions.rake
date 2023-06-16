@@ -15,7 +15,7 @@ namespace :fix_existing_tenants do
     Tenant.all.each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
         Permission.where(action: 'posting').update_all action: 'posting_idea'
-        Permission.where(action: 'voting').update_all action: 'voting_idea'
+        Permission.where(action: 'reacting').update_all action: 'reacting_idea'
         Permission.where(action: 'commenting').update_all action: 'commenting_idea'
       end
     end

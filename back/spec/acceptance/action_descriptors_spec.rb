@@ -43,15 +43,15 @@ resource 'ActionDescriptors' do
                   enabled: false,
                   disabled_reason: 'not_in_group'
                 },
-                voting_initiative: {
+                reacting_initiative: {
                   enabled: true,
                   disabled_reason: nil
                 },
-                cancelling_initiative_votes: {
+                cancelling_initiative_reactions: {
                   enabled: true,
                   disabled_reason: nil
                 },
-                comment_voting_initiative: {
+                comment_reacting_initiative: {
                   enabled: false,
                   disabled_reason: 'not_in_group'
                 }

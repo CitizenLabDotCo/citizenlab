@@ -285,7 +285,7 @@ module MultiTenancy
             initiatives: {
               enabled: true,
               allowed: true,
-              voting_threshold: 20,
+              reacting_threshold: 20,
               days_limit: 5,
               threshold_reached_message: MultilocService.new.i18n_to_multiloc(
                 'initiatives.default_threshold_reached_message',
@@ -378,7 +378,7 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            disable_downvoting: {
+            disable_disliking: {
               enabled: true,
               allowed: true
             },

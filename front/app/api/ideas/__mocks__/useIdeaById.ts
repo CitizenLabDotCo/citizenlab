@@ -16,8 +16,8 @@ export const ideaData: IIdeaData[] = [
       author_name: 'Lucas',
       slug: 'idea-1',
       publication_status: 'published',
-      upvotes_count: 10,
-      downvotes_count: 1,
+      likes_count: 10,
+      dislikes_count: 1,
       comments_count: 2,
       official_feedbacks_count: 0,
       location_point_geojson: {
@@ -32,7 +32,7 @@ export const ideaData: IIdeaData[] = [
       proposed_budget: 45,
       baskets_count: 0,
       action_descriptor: {
-        voting_idea: {
+        reacting_idea: {
           enabled: true,
           disabled_reason: null,
           cancelling_enabled: true,
@@ -52,7 +52,7 @@ export const ideaData: IIdeaData[] = [
           disabled_reason: 'not_permitted',
           future_enabled: null,
         },
-        comment_voting_idea: {
+        comment_reacting_idea: {
           enabled: true,
           disabled_reason: null,
           future_enabled: null,
@@ -112,8 +112,8 @@ export const ideaData: IIdeaData[] = [
       author_name: 'Lucas',
       slug: 'idea-2',
       publication_status: 'published',
-      upvotes_count: 10,
-      downvotes_count: 1,
+      likes_count: 10,
+      dislikes_count: 1,
       comments_count: 2,
       official_feedbacks_count: 0,
       location_point_geojson: {
@@ -128,7 +128,7 @@ export const ideaData: IIdeaData[] = [
       proposed_budget: 45,
       baskets_count: 0,
       action_descriptor: {
-        voting_idea: {
+        reacting_idea: {
           enabled: true,
           disabled_reason: null,
           cancelling_enabled: true,
@@ -148,7 +148,7 @@ export const ideaData: IIdeaData[] = [
           disabled_reason: 'not_permitted',
           future_enabled: null,
         },
-        comment_voting_idea: {
+        comment_reacting_idea: {
           enabled: true,
           disabled_reason: null,
           future_enabled: null,

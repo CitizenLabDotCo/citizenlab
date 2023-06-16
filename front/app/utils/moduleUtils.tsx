@@ -27,11 +27,9 @@ import { TVerificationStep } from 'containers/Authentication/steps/Verification/
 import { TTabName } from 'containers/Admin/projects/all/CreateProject';
 import { NavItem } from 'containers/Admin/sideBar/navItems';
 import { LatLngTuple } from 'leaflet';
-import { GetAppConfigurationLocalesChildProps } from 'resources/GetAppConfigurationLocales';
 import { GetIdeaByIdChildProps } from 'resources/GetIdeaById';
 import { GetLocaleChildProps } from 'resources/GetLocale';
 import { GetWindowSizeChildProps } from 'resources/GetWindowSize';
-import { ICommentData } from 'api/comments/types';
 import { IGroupDataAttributes, MembershipType } from 'api/groups/types';
 import { TNotificationData } from 'api/notifications/types';
 import { IPhaseData } from 'api/phases/types';
@@ -197,9 +195,7 @@ export interface OutletsPropertyMap {
     locale: GetLocaleChildProps;
   };
   'app.components.PostShowComponents.CommentFooter.left': {
-    comment: ICommentData;
-    locale: GetLocaleChildProps;
-    tenantLocales: GetAppConfigurationLocalesChildProps;
+    commentId: string;
   };
   'app.containers.InitiativesShow.left': {
     windowSize: GetWindowSizeChildProps;
@@ -310,6 +306,7 @@ interface Routes {
   'admin.dashboards': RouteConfiguration[];
   'admin.project_templates': RouteConfiguration[];
   'admin.settings': RouteConfiguration[];
+  'admin.tools': RouteConfiguration[];
   'admin.reporting': RouteConfiguration[];
 }
 
@@ -433,6 +430,10 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
       ),
       'admin.settings': parseModuleRoutes(
         mergedRoutes?.['admin.settings'],
+        RouteTypes.ADMIN
+      ),
+      'admin.tools': parseModuleRoutes(
+        mergedRoutes?.['admin.tools'],
         RouteTypes.ADMIN
       ),
       'admin.reporting': parseModuleRoutes(

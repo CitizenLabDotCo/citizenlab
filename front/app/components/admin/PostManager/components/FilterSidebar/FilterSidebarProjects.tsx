@@ -4,6 +4,8 @@ import { Menu, Divider } from 'semantic-ui-react';
 import FilterSidebarProjectsItem from './FilterSidebarProjectsItem';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
+import { Box, Text } from '@citizenlab/cl2-component-library';
+import Button from 'components/UI/Button';
 
 interface Props {
   projects?: IProjectData[] | null;
@@ -39,6 +41,20 @@ const FilterSidebarProjects = ({
           <Divider />
         </>
       )}
+      <Box display="inline-flex">
+        <Button
+          buttonStyle="text"
+          icon="edit"
+          pl="12px"
+          linkTo="/admin/projects"
+          iconPos="right"
+          iconSize="14px"
+        >
+          <Text m="0px" color="coolGrey600" fontSize="s" textAlign="left">
+            <FormattedMessage {...messages.editProjects} />
+          </Text>
+        </Button>
+      </Box>
       {projects &&
         projects.map((project) => (
           <FilterSidebarProjectsItem

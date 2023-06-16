@@ -18,8 +18,8 @@ module EmailCampaigns
                 'nl-BE' => '<p> </p><p>Dankzij “kom op voor je wijk” hebben wij een prachtig initiatief verwezenlijkt in Kessel-Lo namelijk de Kessel-Lo Falls. De Kessel-Lo Falls is uitgegroeid tot een plaats waar buurtbewoners zich verzamelen. Dit voor een gezellige barbecue, moes tuinieren, racen van de heuvels, rustig een boekje lezen of spelen met de kipjes. Onze 6 sierkipjes zijn een aantrekpleisters voor kindjes uit de beurt. Ook onze pilates lessen tijdens de zomer trokken maar liefst meer dan 30 sportievelingen. Of er nu gevoetbald, gehonkbald, gelopen of gesquasht wordt. De beweegbank is een zeer mooie toegevoegde waarde voor onze sportieve buurtbewoners. </p><p>Op de Falls is er meer dan plaats genoeg voor de beweegbank. Enerzijds bij onze goal, anderzijds aan de straatkant (dichtbij de passerende joggers), langs de moestuin of gezellig bij onze kipjes. De exacte plaats laten we graag gezamenlijk door de buurtbewoners beslissen. Alvast hartelijk bedankt om onze aanvraag in overweging te nemen. Het Kessel-Lo Falls team. </p><p> </p>'
               },
               author_name: 'Chris Beenders',
-              upvotes_count: 7,
-              downvotes_count: 0,
+              likes_count: 7,
+              dislikes_count: 0,
               comments_count: 1,
               published_at: '2019-09-08T07:40:11Z',
               url: 'http://localhost:3000/nl-BE/ideas/beweegbank-op-de-kessel-lo-falls',
@@ -73,8 +73,8 @@ module EmailCampaigns
                 'nl-BE' => '<p>Een beweegbank zou geweldig passen op deze locatie vanwege de nabijheid van oa. WGC Caleido, lagere school Grasmushof, Redingenhof en fitness JIMS. De jongeren van het Redingenhof die geregeld op deze site hun middagpauze nemen krijgen via een beweegbank de mogelijkheid tot een actieve (en betaalbare) middagpauze. Ook cliënten van JIMS kunnen bij goed weer van de bank gebruik maken om een deeltje van hun training in openlucht uit te voeren. WGC Caleido zou zich daarnaast ten volle willen inzetten in het kader van kinesitherapie om patiënten toe te leiden tot het gebruik van de bank. Op die manier draagt men bij tot een buurtgerichte werking waarin patiënten, buurtbewoners en zorgverleners worden geïnspireerd en gestimuleerd tot een actieve levensstijl met alle positieve gevolgen op termijn.</p>'
               },
               author_name: 'Katrien Van Pamel',
-              upvotes_count: 12,
-              downvotes_count: 0,
+              likes_count: 12,
+              dislikes_count: 0,
               comments_count: 1,
               published_at: '2019-09-05T07:14:19Z',
               url: 'http://localhost:3000/nl-BE/ideas/beweegbank-thv-park-tussen-slachthuislaan-en-arthur-de-greefstraat',
@@ -114,8 +114,8 @@ module EmailCampaigns
                 'nl-BE' => '<p>hoi, ikv heropwaardering keizersberg en midden in natuur zou beweegbank super zijn. Eerst aanloop naar boven en daar dan in alle rust oefeningen kunnen doen</p>'
               },
               author_name: 'Cindy Colla',
-              upvotes_count: 2,
-              downvotes_count: 0,
+              likes_count: 2,
+              dislikes_count: 0,
               comments_count: 0,
               published_at: '2019-09-09T07:38:19Z',
               url: 'http://localhost:3000/nl-BE/ideas/keizersberg-beweegbank',
@@ -150,7 +150,7 @@ module EmailCampaigns
               url: 'http://localhost:3000/initiatives/werkelijke-milieukost-doorrekenen-op-alle-producten-1',
               published_at: '2019-09-09T13:04:49Z',
               author_name: 'Sebi Hoorens',
-              upvotes_count: 1,
+              likes_count: 1,
               comments_count: 0,
               images: [
                 {
@@ -179,7 +179,7 @@ module EmailCampaigns
               url: 'http://localhost:3000/initiatives/werkelijke-milieukost-doorrekenen-op-alle-producten',
               published_at: '2019-09-09T12:50:44Z',
               author_name: 'Sebi Hoorens',
-              upvotes_count: 5,
+              likes_count: 5,
               comments_count: 2,
               images: [
                 {
@@ -210,7 +210,7 @@ module EmailCampaigns
               url: 'http://localhost:3000/initiatives/werkelijke-milieukost-doorrekenen-op-alle-producten',
               published_at: '2019-09-09T12:50:44Z',
               author_name: 'Sebi Hoorens',
-              upvotes_count: 5,
+              likes_count: 5,
               comments_count: 2,
               threshold_reached_at: '2019-09-09T14:15:46Z',
               images: [

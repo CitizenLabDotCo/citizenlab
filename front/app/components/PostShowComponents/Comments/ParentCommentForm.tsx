@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { isString, trim, get } from 'lodash-es';
+import { isString, trim } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -37,7 +37,6 @@ import { hideVisually } from 'polished';
 import { colors, defaultStyles } from 'utils/styleUtils';
 
 // hooks
-import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useAddCommentToIdea from 'api/comments/useAddCommentToIdea';
 import useAddCommentToInitiative from 'api/comments/useAddCommentToInitiative';
@@ -110,7 +109,8 @@ const CancelButton = styled(Button)`
 `;
 
 interface Props {
-  postId: string;
+  ideaId: string | undefined;
+  initiativeId: string | undefined;
   postType: 'idea' | 'initiative';
   postingComment: (arg: boolean) => void;
   className?: string;
@@ -118,7 +118,8 @@ interface Props {
 }
 
 const ParentCommentForm = ({
-  postId,
+  ideaId,
+  initiativeId,
   postType,
   className,
   allowAnonymousParticipation,
@@ -146,11 +147,8 @@ const ParentCommentForm = ({
   const [postAnonymously, setPostAnonymously] = useState(false);
   const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
     useState(false);
-  const initiativeId = postType === 'initiative' ? postId : undefined;
-  const ideaId = postType === 'idea' ? postId : undefined;
-  const { data: initiative } = useInitiativeById(initiativeId);
   const { data: idea } = useIdeaById(ideaId);
-  const post = initiative || idea;
+  const projectId = idea ? idea.data.relationships.project.data.id : null;
 
   const processing =
     addCommentToIdeaIsLoading || addCommentToInitiativeIsLoading;
@@ -170,7 +168,7 @@ const ParentCommentForm = ({
   const onFocus = () => {
     trackEventByName(tracks.focusParentCommentEditor, {
       extra: {
-        postId,
+        postId: ideaId || initiativeId,
         postType,
       },
     });
@@ -196,9 +194,6 @@ const ParentCommentForm = ({
   };
 
   const continueSubmission = async () => {
-    const projectId: string | null =
-      idea?.data.relationships.project.data.id || null;
-
     setFocused(false);
 
     if (locale && authUser && isString(inputValue) && trim(inputValue) !== '') {
@@ -208,7 +203,7 @@ const ParentCommentForm = ({
 
       trackEventByName(tracks.clickParentCommentPublish, {
         extra: {
-          postId,
+          postId: ideaId || initiativeId,
           postType,
           content: inputValue,
         },
@@ -217,7 +212,7 @@ const ParentCommentForm = ({
       if (postType === 'idea' && projectId) {
         addCommentToIdea(
           {
-            ideaId: postId,
+            ideaId,
             author_id: authUser.data.id,
             body_multiloc: commentBodyMultiloc,
             anonymous: postAnonymously,
@@ -234,7 +229,7 @@ const ParentCommentForm = ({
               close();
             },
             onError: (error) => {
-              const apiErrors = error.json.errors;
+              const apiErrors = error.errors;
               const profanityApiError = apiErrors.base.find(
                 (apiError) => apiError.error === 'includes_banned_words'
               );
@@ -244,7 +239,7 @@ const ParentCommentForm = ({
               if (profanityApiError) {
                 trackEventByName(tracks.parentCommentProfanityError.name, {
                   locale,
-                  postId,
+                  ideaId,
                   postType,
                   projectId,
                   profaneMessage: commentBodyMultiloc[locale],
@@ -267,7 +262,7 @@ const ParentCommentForm = ({
       if (postType === 'initiative') {
         addCommentToInitiative(
           {
-            initiativeId: postId,
+            initiativeId,
             author_id: authUser.data.id,
             body_multiloc: commentBodyMultiloc,
             anonymous: postAnonymously,
@@ -284,7 +279,7 @@ const ParentCommentForm = ({
               close();
             },
             onError: (error) => {
-              const apiErrors = error.json.errors;
+              const apiErrors = error.errors;
               const profanityApiError = apiErrors.base.find(
                 (apiError) => apiError.error === 'includes_banned_words'
               );
@@ -294,7 +289,7 @@ const ParentCommentForm = ({
               if (profanityApiError) {
                 trackEventByName(tracks.parentCommentProfanityError.name, {
                   locale,
-                  postId,
+                  initiativeId,
                   postType,
                   projectId,
                   profaneMessage: commentBodyMultiloc[locale],
@@ -351,11 +346,6 @@ const ParentCommentForm = ({
       ? commentingPermissionInitiative?.enabled === true
       : idea?.data.attributes?.action_descriptor.commenting_idea.enabled ===
         true;
-  const projectId: string | null = get(
-    post,
-    'relationships.project.data.id',
-    null
-  );
   const isModerator =
     !isNilOrError(authUser) && canModerateProject(projectId, authUser);
   const canComment = authUser && commentingEnabled;
@@ -389,7 +379,7 @@ const ParentCommentForm = ({
                 name="comment"
                 placeholder={placeholder}
                 rows={focused || processing ? 4 : 1}
-                postId={postId}
+                postId={ideaId || initiativeId}
                 postType={postType}
                 value={inputValue}
                 error={getErrorMessage()}

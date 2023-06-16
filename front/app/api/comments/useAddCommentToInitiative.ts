@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import commentKeys from 'api/comments/keys';
 import initiativesKeys from 'api/initiatives/keys';
-import { CLErrorsJSON } from 'typings';
+import { CLErrorsWrapper } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import { INewComment, IComment } from './types';
 import userCommentsCount from 'api/user_comments_count/keys';
@@ -18,7 +18,7 @@ const addCommentToInitiative = async ({
 
 const useAddCommentToInitiative = () => {
   const queryClient = useQueryClient();
-  return useMutation<IComment, CLErrorsJSON, INewComment>({
+  return useMutation<IComment, CLErrorsWrapper, INewComment>({
     mutationFn: addCommentToInitiative,
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({
