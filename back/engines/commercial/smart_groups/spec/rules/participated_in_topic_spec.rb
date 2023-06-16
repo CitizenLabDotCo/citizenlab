@@ -59,7 +59,7 @@ describe SmartGroups::Rules::ParticipatedInTopic do
       @user4 = create(:user)
       @idea1 = create(:idea, topics: [@topic1], author: @user1, project: @project)
       @comment = create(:comment, post: @idea1, author: @user3)
-      @vote = create(:vote, votable: @comment, user: @user2)
+      @reaction = create(:reaction, reactable: @comment, user: @user2)
       @idea2 = create(:idea, topics: [@topic2], author: @user3, project: @project)
     end
 
@@ -99,26 +99,26 @@ describe SmartGroups::Rules::ParticipatedInTopic do
       expect(@ids).to match_array [@user1.id, @user2.id, @user4.id]
     end
 
-    it "correctly filters on 'voted_idea_in' predicate" do
-      rule = described_class.new('voted_idea_in', [@topic1.id])
+    it "correctly filters on 'reacted_idea_in' predicate" do
+      rule = described_class.new('reacted_idea_in', [@topic1.id])
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
       expect(@ids).to match_array []
     end
 
-    it "correctly filters on 'not_voted_idea_in' predicate" do
-      rule = described_class.new('not_voted_idea_in', @topic1.id)
+    it "correctly filters on 'not_reacted_idea_in' predicate" do
+      rule = described_class.new('not_reacted_idea_in', @topic1.id)
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
       expect(@ids).to match_array [@user1.id, @user2.id, @user3.id, @user4.id]
     end
 
-    it "correctly filters on 'voted_comment_in' predicate" do
-      rule = described_class.new('voted_comment_in', [@topic1.id])
+    it "correctly filters on 'reacted_comment_in' predicate" do
+      rule = described_class.new('reacted_comment_in', [@topic1.id])
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
       expect(@ids).to match_array [@user2.id]
     end
 
-    it "correctly filters on 'not_voted_comment_in' predicate" do
-      rule = described_class.new('not_voted_comment_in', @topic1.id)
+    it "correctly filters on 'not_reacted_comment_in' predicate" do
+      rule = described_class.new('not_reacted_comment_in', @topic1.id)
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
       expect(@ids).to match_array [@user1.id, @user3.id, @user4.id]
     end
@@ -182,31 +182,31 @@ describe SmartGroups::Rules::ParticipatedInTopic do
         'value' => topic1.id
       })
     end
-    let(:participated_voted_idea_in_topic_in_rule) do
+    let(:participated_reacted_idea_in_topic_in_rule) do
       described_class.from_json({
         'ruleType' => 'participated_in_topic',
-        'predicate' => 'voted_idea_in',
+        'predicate' => 'reacted_idea_in',
         'value' => [topic1.id]
       })
     end
-    let(:participated_not_voted_idea_in_topic_in_rule) do
+    let(:participated_not_reacted_idea_in_topic_in_rule) do
       described_class.from_json({
         'ruleType' => 'participated_in_topic',
-        'predicate' => 'not_voted_idea_in',
+        'predicate' => 'not_reacted_idea_in',
         'value' => topic1.id
       })
     end
-    let(:participated_voted_comment_in_topic_in_rule) do
+    let(:participated_reacted_comment_in_topic_in_rule) do
       described_class.from_json({
         'ruleType' => 'participated_in_topic',
-        'predicate' => 'voted_comment_in',
+        'predicate' => 'reacted_comment_in',
         'value' => [topic1.id, topic2.id]
       })
     end
-    let(:participated_not_voted_comment_in_topic_in_rule) do
+    let(:participated_not_reacted_comment_in_topic_in_rule) do
       described_class.from_json({
         'ruleType' => 'participated_in_topic',
-        'predicate' => 'not_voted_comment_in',
+        'predicate' => 'not_reacted_comment_in',
         'value' => topic1.id
       })
     end
@@ -242,22 +242,22 @@ describe SmartGroups::Rules::ParticipatedInTopic do
         'fr-FR' => 'N\'as pas commenté sur une idée avec thème bière',
         'nl-NL' => 'Reageerde niet op een idee met thema bier'
       })
-      expect(participated_voted_idea_in_topic_in_rule.description_multiloc).to eq({
+      expect(participated_reacted_idea_in_topic_in_rule.description_multiloc).to eq({
         'en' => 'Voted on an idea with one of the following topics beer',
         'fr-FR' => 'Voté pour une idée avec thème est un de bière',
         'nl-NL' => 'Stemde op een idee met één van de volgende thema bier'
       })
-      expect(participated_not_voted_idea_in_topic_in_rule.description_multiloc).to eq({
+      expect(participated_not_reacted_idea_in_topic_in_rule.description_multiloc).to eq({
         'en' => 'Did not vote on an idea with topic beer',
         'fr-FR' => 'N\'as pas voté pour une idée avec thème bière',
         'nl-NL' => 'Stemde niet op een idee met thema bier'
       })
-      expect(participated_voted_comment_in_topic_in_rule.description_multiloc).to eq({
+      expect(participated_reacted_comment_in_topic_in_rule.description_multiloc).to eq({
         'en' => 'Voted on a comment on an idea with one of the following topics beer, delayed',
         'fr-FR' => 'Voté pour un commentaire sur une idée avec thème est un de bière, retardé',
         'nl-NL' => 'Stemde op een reactie op een idee met één van de volgende thema bier, uitgesteld'
       })
-      expect(participated_not_voted_comment_in_topic_in_rule.description_multiloc).to eq({
+      expect(participated_not_reacted_comment_in_topic_in_rule.description_multiloc).to eq({
         'en' => 'Did not vote on a comment on an idea with topic beer',
         'fr-FR' => 'N\'as pas voté pour un commentaire sur une idée avec thème bière',
         'nl-NL' => 'Stemde niet op een reactie op een idee met thema bier'

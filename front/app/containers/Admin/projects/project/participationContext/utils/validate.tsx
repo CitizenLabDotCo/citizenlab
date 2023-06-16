@@ -7,10 +7,10 @@ import { FormatMessage } from 'typings';
 
 export default (state: State, formatMessage: FormatMessage) => {
   const {
-    upvoting_method,
-    downvoting_method,
-    upvoting_limited_max,
-    downvoting_limited_max,
+    reacting_like_method,
+    reacting_dislike_method,
+    reacting_like_limited_max,
+    reacting_dislike_limited_max,
     participation_method,
     voting_method,
     voting_min_total,
@@ -18,30 +18,30 @@ export default (state: State, formatMessage: FormatMessage) => {
   } = state;
 
   let isValidated = true;
-  let noUpvotingLimitError: JSX.Element | null = null;
-  let noDownvotingLimitError: JSX.Element | null = null;
+  let noLikingLimitError: JSX.Element | null = null;
+  let noDislikingLimitError: JSX.Element | null = null;
   let minTotalVotesError: string | null = null;
   let maxTotalVotesError: string | null = null;
 
   if (
-    upvoting_method === 'limited' &&
-    (!upvoting_limited_max ||
-      !isFinite(upvoting_limited_max) ||
-      upvoting_limited_max < 1)
+    reacting_like_method === 'limited' &&
+    (!reacting_like_limited_max ||
+      !isFinite(reacting_like_limited_max) ||
+      reacting_like_limited_max < 1)
   ) {
-    noUpvotingLimitError = (
+    noLikingLimitError = (
       <FormattedMessage {...messages.noVotingLimitErrorMessage} />
     );
     isValidated = false;
   }
 
   if (
-    downvoting_method === 'limited' &&
-    (!downvoting_limited_max ||
-      !isFinite(downvoting_limited_max) ||
-      downvoting_limited_max < 1)
+    reacting_dislike_method === 'limited' &&
+    (!reacting_dislike_limited_max ||
+      !isFinite(reacting_dislike_limited_max) ||
+      reacting_dislike_limited_max < 1)
   ) {
-    noDownvotingLimitError = (
+    noDislikingLimitError = (
       <FormattedMessage {...messages.noVotingLimitErrorMessage} />
     );
     isValidated = false;
@@ -83,8 +83,8 @@ export default (state: State, formatMessage: FormatMessage) => {
   }
 
   return {
-    noUpvotingLimitError,
-    noDownvotingLimitError,
+    noLikingLimitError,
+    noDislikingLimitError,
     minTotalVotesError,
     maxTotalVotesError,
     isValidated,

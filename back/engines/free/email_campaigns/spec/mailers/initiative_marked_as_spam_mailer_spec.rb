@@ -18,7 +18,7 @@ RSpec.describe EmailCampaigns::InitiativeMarkedAsSpamMailer do
           post_title_multiloc: initiative.title_multiloc,
           post_author_name: initiative.author_name,
           post_url: Frontend::UrlService.new.model_to_url(initiative, locale: recipient.locale),
-          initiative_votes_needed: initiative.votes_needed,
+          initiative_reactions_needed: initiative.reactions_needed,
           initiative_expires_at: initiative.expires_at.iso8601,
           spam_report_reason_code: 'other',
           spam_report_other_reason: 'This post is an intrusion to my privacy'

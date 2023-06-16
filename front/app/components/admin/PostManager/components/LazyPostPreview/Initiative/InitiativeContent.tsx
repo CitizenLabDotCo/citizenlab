@@ -10,12 +10,12 @@ import Body from 'components/PostShowComponents/Body';
 import DropdownMap from 'components/PostShowComponents/DropdownMap';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import PostedBy from 'containers/InitiativesShow/PostedBy';
-import Comments from 'components/PostShowComponents/Comments';
+import CommentsSection from 'components/PostShowComponents/Comments';
 import FileAttachments from 'components/UI/FileAttachments';
 import FeedbackSettings from './FeedbackSettings';
 import Button from 'components/UI/Button';
 import { Top, Content, Container } from '../PostPreview';
-import VoteIndicator from 'components/InitiativeCard/VoteIndicator';
+import ReactionIndicator from 'components/InitiativeCard/ReactionIndicator';
 import { Box } from '@citizenlab/cl2-component-library';
 
 // resources
@@ -75,7 +75,7 @@ const StyledOfficialFeedback = styled(OfficialFeedback)`
   margin-top: 70px;
 `;
 
-const StyledComments = styled(Comments)`
+const StyledComments = styled(CommentsSection)`
   margin-top: 30px;
 `;
 
@@ -89,7 +89,7 @@ const Right = styled.div`
   line-height: 19px;
 `;
 
-const VotePreview = styled.div`
+const ReactionPreview = styled.div`
   border: 1px solid #e0e0e0;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.05);
   border-radius: 3px;
@@ -240,15 +240,15 @@ const InitiativeContent = ({
               />
             </Left>
             <Right>
-              <VotePreview>
+              <ReactionPreview>
                 <DaysLeft>
                   <FormattedMessage
                     {...messages.xDaysLeft}
                     values={{ x: daysLeft }}
                   />
                 </DaysLeft>
-                <VoteIndicator initiativeId={initiativeId} />
-              </VotePreview>
+                <ReactionIndicator initiativeId={initiativeId} />
+              </ReactionPreview>
 
               <FeedbackSettings initiativeId={initiativeId} />
             </Right>

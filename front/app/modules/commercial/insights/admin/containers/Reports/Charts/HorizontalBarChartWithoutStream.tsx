@@ -41,7 +41,7 @@ import {
 import { IGraphPoint } from 'typings';
 import ReportExportMenu from 'components/admin/ReportExportMenu';
 
-interface VoteGraphPoint extends IGraphPoint {
+interface ReactionGraphPoint extends IGraphPoint {
   up: number;
   down: number;
   slug: string;
@@ -50,7 +50,7 @@ interface VoteGraphPoint extends IGraphPoint {
 }
 
 interface Props {
-  serie: VoteGraphPoint[] | undefined;
+  serie: ReactionGraphPoint[] | undefined;
   graphTitleString: string;
   graphUnit: IGraphUnit;
   className?: string;
@@ -143,7 +143,7 @@ export const HorizontalBarChartWithoutStream: React.SFC<
                 name="Total"
                 opacity={0}
                 barSize={
-                  ['ideas', 'votes'].includes(graphUnit) ? 30 : sizes.bar
+                  ['ideas', 'reactions'].includes(graphUnit) ? 30 : sizes.bar
                 }
                 animationDuration={animation.duration}
                 animationBegin={animation.begin}
@@ -151,11 +151,13 @@ export const HorizontalBarChartWithoutStream: React.SFC<
                 cursor="pointer"
               />
               <Bar
-                name="Downvotes"
-                stackId={'votes'}
+                name="Dislikes"
+                stackId={'reactions'}
                 dataKey="down"
                 fill={legacyColors.barFill}
-                barSize={['ideas', 'votes'].includes(graphUnit) ? 5 : sizes.bar}
+                barSize={
+                  ['ideas', 'reactions'].includes(graphUnit) ? 5 : sizes.bar
+                }
                 animationDuration={animation.duration}
                 animationBegin={animation.begin}
               >
@@ -189,12 +191,14 @@ export const HorizontalBarChartWithoutStream: React.SFC<
               </Bar>
 
               <Bar
-                name="Upvotes"
-                stackId={'votes'}
+                name="Likes"
+                stackId={'reactions'}
                 dataKey="up"
                 fill={legacyColors.barFill}
                 opacity={0.7}
-                barSize={['ideas', 'votes'].includes(graphUnit) ? 5 : sizes.bar}
+                barSize={
+                  ['ideas', 'reactions'].includes(graphUnit) ? 5 : sizes.bar
+                }
                 animationDuration={animation.duration}
                 animationBegin={animation.begin}
               >

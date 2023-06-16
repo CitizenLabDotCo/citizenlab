@@ -25,14 +25,14 @@ describe Analytics::QueryRunnerService do
     it 'return groups with aggregations' do
       idea = create(:idea)
       initiative = create(:initiative)
-      create_list(:vote, 2, votable: idea)
-      create_list(:vote, 1, votable: initiative)
+      create_list(:reaction, 2, reactable: idea)
+      create_list(:reaction, 1, reactable: initiative)
 
       query_param = ActionController::Parameters.new(
         fact: 'post',
         groups: 'dimension_type.name',
         aggregations: {
-          votes_count: %w[sum]
+          reactions_count: %w[sum]
         }
       )
       query = Analytics::Query.new(query_param)
@@ -41,8 +41,8 @@ describe Analytics::QueryRunnerService do
       results, * = runner.run(query)
 
       expected_result = [
-        { 'dimension_type.name' => 'initiative', 'sum_votes_count' => 1 },
-        { 'dimension_type.name' => 'idea', 'sum_votes_count' => 2 }
+        { 'dimension_type.name' => 'initiative', 'sum_reactions_count' => 1 },
+        { 'dimension_type.name' => 'idea', 'sum_reactions_count' => 2 }
       ]
       expect(results).to match_array expected_result
     end

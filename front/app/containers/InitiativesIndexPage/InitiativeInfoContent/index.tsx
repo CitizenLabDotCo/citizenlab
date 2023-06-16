@@ -41,8 +41,8 @@ const InitiativeInfoContent = memo<InjectedLocalized & Props>(
     const { data: appConfig } = useAppConfiguration();
 
     if (!isNilOrError(appConfig)) {
-      const voteThreshold =
-        appConfig.data.attributes.settings.initiatives?.voting_threshold;
+      const reactionThreshold =
+        appConfig.data.attributes.settings.initiatives?.reacting_threshold;
       const daysLimit =
         appConfig.data.attributes.settings.initiatives?.days_limit;
 
@@ -56,7 +56,7 @@ const InitiativeInfoContent = memo<InjectedLocalized & Props>(
                   <FormattedMessage
                     {...messages.constraints}
                     values={{
-                      voteThreshold,
+                      voteThreshold: reactionThreshold,
                       daysLimit,
                     }}
                   />

@@ -52,6 +52,8 @@ export type InputTerm =
   | 'issue'
   | 'contribution';
 
+export type ReactingMethod = 'limited' | 'unlimited';
+
 export type PresentationMode = 'card' | 'map';
 
 export interface ParticipationContext {
@@ -63,13 +65,13 @@ export interface ParticipationContext {
   participation_method: ParticipationMethod;
   posting_enabled: boolean;
   commenting_enabled: boolean;
-  voting_enabled: boolean;
-  upvoting_method: 'limited' | 'unlimited';
-  upvoting_limited_max: number;
-  downvoting_method: 'limited' | 'unlimited';
+  reacting_enabled: boolean;
+  reacting_like_method: 'limited' | 'unlimited';
+  reacting_like_limited_max: number;
+  reacting_dislike_method: 'limited' | 'unlimited';
   allow_anonymous_participation: boolean;
-  downvoting_enabled: boolean;
-  downvoting_limited_max: number;
+  reacting_dislike_enabled: boolean;
+  reacting_dislike_limited_max: number;
   presentation_mode: PresentationMode;
   survey_service?: TSurveyService | null;
   survey_embed_url?: string | null;

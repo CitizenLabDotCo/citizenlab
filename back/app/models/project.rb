@@ -18,9 +18,9 @@
 #  participation_method          :string           default("ideation")
 #  posting_enabled               :boolean          default(TRUE)
 #  commenting_enabled            :boolean          default(TRUE)
-#  voting_enabled                :boolean          default(TRUE), not null
-#  upvoting_method               :string           default("unlimited"), not null
-#  upvoting_limited_max          :integer          default(10)
+#  reacting_enabled              :boolean          default(TRUE), not null
+#  reacting_like_method          :string           default("unlimited"), not null
+#  reacting_like_limited_max     :integer          default(10)
 #  process_type                  :string           default("timeline"), not null
 #  internal_role                 :string
 #  survey_embed_url              :string
@@ -29,12 +29,12 @@
 #  comments_count                :integer          default(0), not null
 #  default_assignee_id           :uuid
 #  poll_anonymous                :boolean          default(FALSE), not null
-#  downvoting_enabled            :boolean          default(TRUE), not null
+#  reacting_dislike_enabled      :boolean          default(TRUE), not null
 #  ideas_order                   :string
 #  input_term                    :string           default("idea")
 #  voting_min_total              :integer          default(0)
-#  downvoting_method             :string           default("unlimited"), not null
-#  downvoting_limited_max        :integer          default(10)
+#  reacting_dislike_method       :string           default("unlimited"), not null
+#  reacting_dislike_limited_max  :integer          default(10)
 #  include_all_areas             :boolean          default(FALSE), not null
 #  posting_method                :string           default("unlimited"), not null
 #  posting_limited_max           :integer          default(1)
@@ -61,7 +61,7 @@ class Project < ApplicationRecord
   mount_base64_uploader :header_bg, ProjectHeaderBgUploader
 
   has_many :ideas, dependent: :destroy
-  has_many :votes, through: :ideas
+  has_many :reactions, through: :ideas
 
   has_many :projects_topics, dependent: :destroy
   has_many :topics, -> { order(:ordering) }, through: :projects_topics

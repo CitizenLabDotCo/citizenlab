@@ -16,7 +16,7 @@ import SortingPicker from './SortingPicker';
 import {
   StyledSectionField,
   ToggleRow,
-  VotingLimitInput,
+  ReactingLimitInput,
 } from '../../shared/styling';
 
 // i18n
@@ -40,28 +40,30 @@ interface Props {
   handleInputTermChange: (option: IOption) => void;
   posting_enabled: boolean;
   commenting_enabled: boolean;
-  voting_enabled: boolean;
-  upvoting_method: 'unlimited' | 'limited' | null | undefined;
-  upvoting_limited_max: number | null | undefined;
+  reacting_enabled: boolean;
+  reacting_like_method: 'unlimited' | 'limited' | null | undefined;
+  reacting_like_limited_max: number | null | undefined;
   allow_anonymous_participation: boolean | null | undefined;
-  noUpvotingLimitError: JSX.Element | null;
-  downvoting_enabled: boolean | null | undefined;
-  downvoting_method: 'unlimited' | 'limited' | null | undefined;
-  downvoting_limited_max: number | null | undefined;
-  noDownvotingLimitError: JSX.Element | null;
+  noLikingLimitError: JSX.Element | null;
+  reacting_dislike_enabled: boolean | null | undefined;
+  reacting_dislike_method: 'unlimited' | 'limited' | null | undefined;
+  reacting_dislike_limited_max: number | null | undefined;
+  noDislikingLimitError: JSX.Element | null;
   apiErrors: ApiErrors;
   togglePostingEnabled: () => void;
   toggleCommentingEnabled: () => void;
-  toggleVotingEnabled: () => void;
-  handleUpvotingMethodOnChange: (
-    upvoting_method: 'unlimited' | 'limited'
+  toggleReactingEnabled: () => void;
+  handleReactingLikeMethodOnChange: (
+    reacting_like_method: 'unlimited' | 'limited'
   ) => void;
-  handleDownvotingMethodOnChange: (
-    downvoting_method: 'unlimited' | 'limited'
+  handleReactingDislikeMethodOnChange: (
+    reacting_dislike_method: 'unlimited' | 'limited'
   ) => void;
-  handleUpvotingLimitOnChange: (upvoting_limited_max: string) => void;
-  handleDownvotingLimitOnChange: (downvoting_limited_max: string) => void;
-  handleDownvotingEnabledOnChange: (downvoting_enabled: boolean) => void;
+  handleLikingLimitOnChange: (reacting_like_limited_max: string) => void;
+  handleDislikingLimitOnChange: (reacting_dislike_limited_max: string) => void;
+  handleReactingDislikeEnabledOnChange: (
+    reacting_dislike_enabled: boolean
+  ) => void;
   handleAllowAnonymousParticipationOnChange: (
     allow_anonymous_participation: boolean
   ) => void;
@@ -79,24 +81,24 @@ export default ({
   handleInputTermChange,
   posting_enabled,
   commenting_enabled,
-  voting_enabled,
-  upvoting_method,
-  downvoting_method,
+  reacting_enabled,
+  reacting_like_method,
+  reacting_dislike_method,
   allow_anonymous_participation,
-  upvoting_limited_max,
-  downvoting_limited_max,
-  downvoting_enabled,
-  noUpvotingLimitError,
-  noDownvotingLimitError,
+  reacting_like_limited_max,
+  reacting_dislike_limited_max,
+  reacting_dislike_enabled,
+  noLikingLimitError,
+  noDislikingLimitError,
   apiErrors,
   togglePostingEnabled,
   toggleCommentingEnabled,
-  toggleVotingEnabled,
-  handleUpvotingMethodOnChange,
-  handleDownvotingMethodOnChange,
-  handleUpvotingLimitOnChange,
-  handleDownvotingLimitOnChange,
-  handleDownvotingEnabledOnChange,
+  toggleReactingEnabled,
+  handleReactingLikeMethodOnChange,
+  handleReactingDislikeMethodOnChange,
+  handleLikingLimitOnChange,
+  handleDislikingLimitOnChange,
+  handleReactingDislikeEnabledOnChange,
   handleAllowAnonymousParticipationOnChange,
   presentation_mode,
   handleIdeasDisplayChange,
@@ -153,62 +155,62 @@ export default ({
 
         <ToggleRow className="last">
           <Toggle
-            checked={voting_enabled}
-            onChange={toggleVotingEnabled}
+            checked={reacting_enabled}
+            onChange={toggleReactingEnabled}
             label={formatMessage(messages.inputVotingEnabled)}
           />
           <Error apiErrors={apiErrors && apiErrors.voting_enabled} />
         </ToggleRow>
       </StyledSectionField>
-      {voting_enabled && (
+      {reacting_enabled && (
         <>
           <SectionField>
             <SubSectionTitle>
               <FormattedMessage {...messages.upvotingMethodTitle} />
             </SubSectionTitle>
             <Radio
-              onChange={handleUpvotingMethodOnChange}
-              currentValue={upvoting_method}
+              onChange={handleReactingLikeMethodOnChange}
+              currentValue={reacting_like_method}
               value="unlimited"
-              name="upvotingmethod"
-              id="upvotingmethod-unlimited"
+              name="likingmethod"
+              id="likingmethod-unlimited"
               label={<FormattedMessage {...messages.unlimited} />}
             />
             <Radio
-              onChange={handleUpvotingMethodOnChange}
-              currentValue={upvoting_method}
+              onChange={handleReactingLikeMethodOnChange}
+              currentValue={reacting_like_method}
               value="limited"
-              name="upvotingmethod"
-              id="upvotingmethod-limited"
+              name="likingmethod"
+              id="likingmethod-limited"
               label={<FormattedMessage {...messages.limited} />}
             />
-            <Error apiErrors={apiErrors && apiErrors.voting_method} />
+            <Error apiErrors={apiErrors && apiErrors.reacting_method} />
 
-            {upvoting_method === 'limited' && (
+            {reacting_like_method === 'limited' && (
               <>
                 <SubSectionTitle>
                   <FormattedMessage {...messages.maxUpvotes} />
                 </SubSectionTitle>
-                <VotingLimitInput
-                  id="upvoting-limit"
+                <ReactingLimitInput
+                  id="liking-limit"
                   type="number"
                   min="1"
                   placeholder=""
                   value={
-                    upvoting_limited_max
-                      ? upvoting_limited_max.toString()
+                    reacting_like_limited_max
+                      ? reacting_like_limited_max.toString()
                       : null
                   }
-                  onChange={handleUpvotingLimitOnChange}
+                  onChange={handleLikingLimitOnChange}
                 />
                 <Error
-                  text={noUpvotingLimitError}
-                  apiErrors={apiErrors && apiErrors.voting_limit}
+                  text={noLikingLimitError}
+                  apiErrors={apiErrors && apiErrors.reacting_limit}
                 />
               </>
             )}
           </SectionField>
-          <FeatureFlag name="disable_downvoting">
+          <FeatureFlag name="disable_disliking">
             <SectionField>
               <SubSectionTitle>
                 <FormattedMessage {...messages.downvotingPosts} />
@@ -219,64 +221,66 @@ export default ({
                 />
               </SubSectionTitle>
               <Radio
-                onChange={handleDownvotingEnabledOnChange}
-                currentValue={downvoting_enabled}
+                onChange={handleReactingDislikeEnabledOnChange}
+                currentValue={reacting_dislike_enabled}
                 value={true}
-                name="enableDownvoting"
-                id="enableDownvoting-true"
+                name="enableDisliking"
+                id="enableDisliking-true"
                 label={<FormattedMessage {...messages.downvotingEnabled} />}
               />
               <Radio
-                onChange={handleDownvotingEnabledOnChange}
-                currentValue={downvoting_enabled}
+                onChange={handleReactingDislikeEnabledOnChange}
+                currentValue={reacting_dislike_enabled}
                 value={false}
-                name="enableDownvoting"
-                id="enableDownvoting-false"
+                name="enableDisliking"
+                id="enableDisliking-false"
                 label={<FormattedMessage {...messages.downvotingDisabled} />}
               />
-              <Error apiErrors={apiErrors && apiErrors.downvoting_enabled} />
+              <Error
+                apiErrors={apiErrors && apiErrors.reacting_dislike_enabled}
+              />
             </SectionField>
-            {downvoting_enabled && (
+            {reacting_dislike_enabled && (
               <SectionField>
                 <SubSectionTitle>
                   <FormattedMessage {...messages.downvotingMethodTitle} />
                 </SubSectionTitle>
                 <Radio
-                  onChange={handleDownvotingMethodOnChange}
-                  currentValue={downvoting_method}
+                  onChange={handleReactingDislikeMethodOnChange}
+                  currentValue={reacting_dislike_method}
                   value="unlimited"
-                  name="downvotingmethod"
-                  id="downvotingmethod-unlimited"
+                  name="dislikingmethod"
+                  id="dislikingmethod-unlimited"
                   label={<FormattedMessage {...messages.unlimited} />}
                 />
                 <Radio
-                  onChange={handleDownvotingMethodOnChange}
-                  currentValue={downvoting_method}
+                  onChange={handleReactingDislikeMethodOnChange}
+                  currentValue={reacting_dislike_method}
                   value="limited"
-                  name="downvotingmethod"
-                  id="downvotingmethod-limited"
+                  name="dislikingmethod"
+                  id="dislikingmethod-limited"
                   label={<FormattedMessage {...messages.limited} />}
                 />
-                {downvoting_method === 'limited' && (
+                {reacting_dislike_method === 'limited' && (
                   <>
                     <SubSectionTitle>
                       <FormattedMessage {...messages.maxDownvotes} />
                     </SubSectionTitle>
-                    <VotingLimitInput
-                      id="downvoting-limit"
+                    <ReactingLimitInput
+                      id="disliking-limit"
                       type="number"
                       min="1"
                       placeholder=""
                       value={
-                        downvoting_limited_max
-                          ? downvoting_limited_max.toString()
+                        reacting_dislike_limited_max
+                          ? reacting_dislike_limited_max.toString()
                           : null
                       }
-                      onChange={handleDownvotingLimitOnChange}
+                      onChange={handleDislikingLimitOnChange}
                     />
                     <Error
-                      text={noDownvotingLimitError}
-                      apiErrors={apiErrors && apiErrors.voting_limit}
+                      text={noDislikingLimitError}
+                      apiErrors={apiErrors && apiErrors.reacting_limit}
                     />
                   </>
                 )}
