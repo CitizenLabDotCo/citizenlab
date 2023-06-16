@@ -16,7 +16,7 @@ module EmailCampaigns
           post_published_at: Time.zone.today.prev_week.iso8601,
           post_author_name: 'Chuck Norris',
           post_url: 'demo.stg.citizenlab.co',
-          post_upvotes_count: 3,
+          post_likes_count: 3,
           post_comments_count: 4,
           post_images: post.initiative_images.map do |image|
             {

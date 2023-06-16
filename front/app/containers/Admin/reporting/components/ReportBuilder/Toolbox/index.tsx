@@ -17,10 +17,10 @@ import VisitorsTrafficSourcesWidget from '../Widgets/ChartWidgets/VisitorsTraffi
 import AgeWidget from '../Widgets/ChartWidgets/AgeWidget';
 import GenderWidget from '../Widgets/ChartWidgets/GenderWidget';
 import ActiveUsersWidget from '../Widgets/ChartWidgets/ActiveUsersWidget';
-import MostVotedIdeasWidget from '../Widgets/MostVotedIdeasWidget';
+import MostReactedIdeasWidget from '../Widgets/MostReactedIdeasWidget';
 import PostsByTimeWidget from '../Widgets/ChartWidgets/PostsByTimeWidget';
 import CommentsByTimeWidget from '../Widgets/ChartWidgets/CommentsByTimeWidget';
-import VotesByTimeWidget from '../Widgets/ChartWidgets/VotesByTimeWidget';
+import ReactionsByTimeWidget from '../Widgets/ChartWidgets/ReactionsByTimeWidget';
 
 // types
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
@@ -146,16 +146,16 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             label={formatMessage(SurveyResultsWidget.craft.custom.title)}
           />
           <DraggableElement
-            id="e2e-most-voted-ideas-widget"
+            id="e2e-most-reacted-ideas-widget"
             component={
-              <MostVotedIdeasWidget
-                title={formatMessage(MostVotedIdeasWidget.craft.custom.title)}
+              <MostReactedIdeasWidget
+                title={formatMessage(MostReactedIdeasWidget.craft.custom.title)}
                 numberOfIdeas={5}
                 collapseLongText={false}
               />
             }
             icon="idea"
-            label={formatMessage(MostVotedIdeasWidget.craft.custom.title)}
+            label={formatMessage(MostReactedIdeasWidget.craft.custom.title)}
           />
         </Accordion>
 
@@ -263,17 +263,17 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             label={formatMessage(CommentsByTimeWidget.craft.custom.title)}
           />
           <DraggableElement
-            id="e2e-draggable-votes-by-time-widget"
+            id="e2e-draggable-reactions-by-time-widget"
             component={
-              <VotesByTimeWidget
-                title={formatMessage(VotesByTimeWidget.craft.custom.title)}
+              <ReactionsByTimeWidget
+                title={formatMessage(ReactionsByTimeWidget.craft.custom.title)}
                 projectId={undefined}
                 startAt={undefined}
                 endAt={chartEndDate}
               />
             }
             icon="chart-bar"
-            label={formatMessage(VotesByTimeWidget.craft.custom.title)}
+            label={formatMessage(ReactionsByTimeWidget.craft.custom.title)}
           />
         </Accordion>
       </Box>

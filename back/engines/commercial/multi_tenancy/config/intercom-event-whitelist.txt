@@ -86,10 +86,10 @@ User searched_users
 Volunteering::Cause created
 Volunteering::Volunteer created
 Volunteering::Volunteer deleted
-Vote canceled_comment_upvote
-Vote canceled_idea_downvote
-Vote canceled_idea_upvote
-Vote comment_upvoted
-Vote idea_downvoted
-Vote idea_upvoted
-Vote initiative_upvoted
+Reaction canceled_comment_like
+Reaction canceled_idea_dislike
+Reaction canceled_idea_like
+Reaction comment_liked
+Reaction idea_disliked
+Reaction idea_liked
+Reaction initiative_liked

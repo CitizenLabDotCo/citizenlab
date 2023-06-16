@@ -6,6 +6,6 @@ FactoryBot.define do
     association :post, factory: :idea
     parent { nil }
     publication_status { 'published' }
-    body_text { '<p>I think this is a very good idea!</p>' }
+    body { '<p>I think this is a very good idea!</p>' }
   end
 end

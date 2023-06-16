@@ -3,9 +3,9 @@
 class WebApi::V1::InternalCommentSerializer < WebApi::V1::BaseSerializer
   attributes :publication_status, :children_count, :created_at, :updated_at
 
-  attribute :body_text do |object|
+  attribute :body do |object|
     if object.publication_status != 'deleted'
-      object.body_text
+      object.body
     end
   end
 

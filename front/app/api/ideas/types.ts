@@ -14,13 +14,13 @@ export type IdeasKeys = Keys<typeof ideasKeys>;
 
 export type IdeaPublicationStatus = 'draft' | 'published' | 'archived' | 'spam';
 
-export type IdeaVotingDisabledReason =
+export type IdeaReactingDisabledReason =
   | 'project_inactive'
   | 'not_ideation'
-  | 'voting_disabled'
-  | 'downvoting_disabled'
-  | 'upvoting_limited_max_reached'
-  | 'downvoting_limited_max_reached'
+  | 'reacting_disabled'
+  | 'disliking_disabled'
+  | 'reacting_like_limited_max_reached'
+  | 'reacting_dislike_limited_max_reached'
   | 'idea_not_in_current_phase'
   | PermissionsDisabledReason;
 
@@ -44,10 +44,10 @@ export type Sort =
   | '-popular'
   | 'author_name'
   | '-author_name'
-  | 'upvotes_count'
-  | '-upvotes_count'
-  | 'downvotes_count'
-  | '-downvotes_count'
+  | 'likes_count'
+  | '-likes_count'
+  | 'dislikes_count'
+  | '-dislikes_count'
   | 'baskets_count'
   | '-baskets_count'
   | 'status'
@@ -58,16 +58,16 @@ export type SortAttribute =
   | 'trending'
   | 'popular'
   | 'author_name'
-  | 'upvotes_count'
-  | 'downvotes_count'
+  | 'likes_count'
+  | 'dislikes_count'
   | 'baskets_count'
   | 'status';
 
-type VotingIdeaActionDescriptor =
+type ReactingIdeaActionDescriptor =
   | { enabled: true; disabled_reason: null; cancelling_enabled: boolean }
   | {
       enabled: false;
-      disabled_reason: IdeaVotingDisabledReason;
+      disabled_reason: IdeaReactingDisabledReason;
       cancelling_enabled: boolean;
     };
 
@@ -80,8 +80,8 @@ export interface IIdeaData {
     author_name: string | null;
     slug: string;
     publication_status: IdeaPublicationStatus;
-    upvotes_count: number;
-    downvotes_count: number;
+    likes_count: number;
+    dislikes_count: number;
     comments_count: number;
     official_feedbacks_count: number;
     baskets_count: number;
@@ -93,20 +93,20 @@ export interface IIdeaData {
     updated_at: string;
     published_at: string;
     action_descriptor: {
-      voting_idea: VotingIdeaActionDescriptor & {
-        up: ActionDescriptorFutureEnabled<IdeaVotingDisabledReason>;
-        down: ActionDescriptorFutureEnabled<IdeaVotingDisabledReason>;
+      reacting_idea: ReactingIdeaActionDescriptor & {
+        up: ActionDescriptorFutureEnabled<IdeaReactingDisabledReason>;
+        down: ActionDescriptorFutureEnabled<IdeaReactingDisabledReason>;
       };
       commenting_idea: ActionDescriptorFutureEnabled<IdeaCommentingDisabledReason>;
-      // Confusingly, 'comment_voting_idea' is an action descriptor, but
+      // Confusingly, 'comment_reacting_idea' is an action descriptor, but
       // not an action, and it doesn't have its own granular permissions.
       // In other words, you can't specifically say that you don't want
-      // people to be able to vote on comments. This is instead derived from 'commenting_idea'.
+      // people to be able to reaction on comments. This is instead derived from 'commenting_idea'.
       // Why is it an action descriptor then, and why don't we just use 'commenting_idea'?
       // Because of legacy reasons. Should be fixed in the future.
-      // For now, just know that 'comment_voting_idea' is just an action descriptor,
+      // For now, just know that 'comment_reacting_idea' is just an action descriptor,
       // but not an action (so e.g. it can't be used in the authentication_requirements API).
-      comment_voting_idea: ActionDescriptorFutureEnabled<IdeaCommentingDisabledReason>;
+      comment_reacting_idea: ActionDescriptorFutureEnabled<IdeaCommentingDisabledReason>;
       budgeting?: ActionDescriptorFutureEnabled<IdeaBudgetingDisabledReason>;
     };
     anonymous: boolean;
@@ -134,7 +134,7 @@ export interface IIdeaData {
     idea_status: {
       data: IRelationship;
     };
-    user_vote?: {
+    user_reaction?: {
       data: IRelationship | null;
     };
   };

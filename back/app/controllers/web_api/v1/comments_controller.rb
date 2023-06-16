@@ -23,10 +23,10 @@ class WebApi::V1::CommentsController < ApplicationController
       root_comments.order(created_at: :desc)
     when '-new'
       root_comments.order(created_at: :asc)
-    when 'upvotes_count'
-      root_comments.order(upvotes_count: :asc, lft: :asc)
-    when '-upvotes_count'
-      root_comments.order(upvotes_count: :desc, lft: :asc)
+    when 'likes_count'
+      root_comments.order(likes_count: :asc, lft: :asc)
+    when '-likes_count'
+      root_comments.order(likes_count: :desc, lft: :asc)
     when nil
       root_comments.order(lft: :asc)
     else
@@ -57,11 +57,11 @@ class WebApi::V1::CommentsController < ApplicationController
     @comments = merge_comments(root_comments.to_a, child_comments.to_a)
 
     serialization_options = if current_user
-      votes = Vote.where(user: current_user, votable: @comments)
-      votes_by_comment_id = votes.index_by(&:votable_id)
+      reactions = Reaction.where(user: current_user, reactable: @comments)
+      reactions_by_comment_id = reactions.index_by(&:reactable_id)
       {
-        params: jsonapi_serializer_params(vbci: votes_by_comment_id),
-        include: %i[author user_vote]
+        params: jsonapi_serializer_params(vbci: reactions_by_comment_id),
+        include: %i[author user_reaction]
       }
     else
       { params: jsonapi_serializer_params, include: [:author] }
@@ -118,11 +118,11 @@ class WebApi::V1::CommentsController < ApplicationController
     @comments = paginate @comments
 
     serialization_options = if current_user
-      votes = Vote.where(user: current_user, votable: @comments.all)
-      votes_by_comment_id = votes.index_by(&:votable_id)
+      reactions = Reaction.where(user: current_user, reactable: @comments.all)
+      reactions_by_comment_id = reactions.index_by(&:reactable_id)
       {
-        params: jsonapi_serializer_params(vbci: votes_by_comment_id),
-        include: %i[author user_vote]
+        params: jsonapi_serializer_params(vbci: reactions_by_comment_id),
+        include: %i[author user_reaction]
       }
     else
       { params: jsonapi_serializer_params, include: [:author] }

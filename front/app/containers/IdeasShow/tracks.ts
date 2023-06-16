@@ -1,9 +1,9 @@
 export default {
-  clickUpvote: {
-    name: 'Idea upvote clicked',
+  clickLike: {
+    name: 'Idea like clicked',
   },
-  clickDownvote: {
-    name: 'Idea downvote clicked',
+  clickDislike: {
+    name: 'Idea dislike clicked',
   },
   sharingModalOpened: {
     name: 'ideaflow social sharing modal opened',
