@@ -144,7 +144,7 @@ const PublicComments = ({
         <CommentingProposalDisabled />
       )}
 
-      <Box mb="25px">
+      <Box mb="24px">
         <ParentCommentForm
           ideaId={ideaId}
           initiativeId={initiativeId}

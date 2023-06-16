@@ -119,7 +119,7 @@ const CommentsSection = ({ postId, postType, className }: Props) => {
         />
       </Header>
 
-      <Box mb="25px">
+      <Box mb="24px">
         <ParentCommentForm
           ideaId={ideaId}
           initiativeId={initiativeId}
