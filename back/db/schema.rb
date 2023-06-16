@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_06_08_120425) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_08_120425) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -753,12 +753,12 @@ ActiveRecord::Schema.define(version: 2023_06_08_120425) do
     t.uuid "parent_id"
     t.integer "lft", null: false
     t.integer "rgt", null: false
-    t.text "body_text", null: false
+    t.text "body", null: false
     t.string "publication_status", default: "published", null: false
-    t.datetime "body_updated_at"
+    t.datetime "body_updated_at", precision: nil
     t.integer "children_count", default: 0, null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["author_id"], name: "index_internal_comments_on_author_id"
     t.index ["created_at"], name: "index_internal_comments_on_created_at"
     t.index ["lft"], name: "index_internal_comments_on_lft"

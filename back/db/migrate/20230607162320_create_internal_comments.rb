@@ -8,7 +8,7 @@ class CreateInternalComments < ActiveRecord::Migration[6.1]
       t.uuid :parent_id, null: true, index: true
       t.integer :lft, null: false, index: true
       t.integer :rgt, null: false, index: true
-      t.text :body_text, null: false
+      t.text :body, null: false
       t.string :publication_status, null: false, default: 'published'
       t.datetime :body_updated_at, null: true
       t.integer :children_count, null: false, default: 0

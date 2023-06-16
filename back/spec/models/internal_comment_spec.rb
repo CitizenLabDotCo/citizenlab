@@ -11,8 +11,8 @@ RSpec.describe Comment do
 
   describe 'body sanitizer' do
     it 'sanitizes script tags in the body' do
-      internal_comment = create(:internal_comment, body_text: '<p>Test</p><script>The script tags should be removed!</script>')
-      expect(internal_comment.body_text).to eq('<p>Test</p>The script tags should be removed!')
+      internal_comment = create(:internal_comment, body: '<p>Test</p><script>The script tags should be removed!</script>')
+      expect(internal_comment.body).to eq('<p>Test</p>The script tags should be removed!')
     end
   end
 

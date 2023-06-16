@@ -41,11 +41,11 @@ class InternalCommentPolicy < ApplicationPolicy
   end
 
   def permitted_attributes_for_create
-    %i[parent_id body_text]
+    %i[parent_id body]
   end
 
   def permitted_attributes_for_update
-    internal_comment_author? ? [:body_text] : []
+    internal_comment_author? ? [:body] : []
   end
 
   private

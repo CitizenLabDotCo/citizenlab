@@ -7,8 +7,8 @@ describe WebApi::V1::InternalCommentSerializer do
     let(:internal_comment) { create(:internal_comment, publication_status: 'deleted') }
 
     it 'should not include the body text' do
-      body_text = described_class.new(internal_comment).serializable_hash.dig(:data, :attributes, :body_text)
-      expect(body_text).to be_nil
+      body = described_class.new(internal_comment).serializable_hash.dig(:data, :attributes, :body)
+      expect(body).to be_nil
     end
 
     it 'should not include the author relationship data' do
