@@ -50,7 +50,7 @@ const SingleSelectControl = ({
           value={{
             value: data,
             label: 'any',
-          }}
+          }} /* sad workaround waiting for PR in component library */
           options={options as IOption[]}
           onChange={(val) => {
             setDidBlur(true);
