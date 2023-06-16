@@ -93,7 +93,7 @@ const CommentsSection = ({
                 postType={postType}
                 allowAnonymousParticipation={allowAnonymousParticipation}
                 className={className}
-                customPlaceholder={messages.visibleToUsersPlaceholder}
+                emphasizePostingPublicly
               />
             </Box>
           )}

@@ -8,7 +8,7 @@ import Comments from './Comments';
 import CommentSorting from './CommentSorting';
 
 // i18n
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
@@ -66,7 +66,7 @@ export interface Props {
   postType: 'idea' | 'initiative';
   className?: string;
   allowAnonymousParticipation?: boolean;
-  customPlaceholder?: MessageDescriptor;
+  emphasizePostingPublicly?: boolean;
 }
 
 const PublicComments = ({
@@ -74,7 +74,7 @@ const PublicComments = ({
   postType,
   className,
   allowAnonymousParticipation,
-  customPlaceholder,
+  emphasizePostingPublicly,
 }: Props) => {
   const initiativeId = postType === 'initiative' ? postId : undefined;
   const ideaId = postType === 'idea' ? postId : undefined;
@@ -151,7 +151,7 @@ const PublicComments = ({
           postType={postType}
           postingComment={handleCommentPosting}
           allowAnonymousParticipation={allowAnonymousParticipation}
-          customPlaceholder={customPlaceholder}
+          emphasizePostingPublicly={emphasizePostingPublicly}
         />
       </Box>
 

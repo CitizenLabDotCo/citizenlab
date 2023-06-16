@@ -38,6 +38,14 @@ export default defineMessages({
     id: 'app.containers.Comments.publishComment',
     defaultMessage: 'Post comment',
   },
+  postInternalComment: {
+    id: 'app.containers.Comments.postInternalComment',
+    defaultMessage: 'Post internal comment',
+  },
+  postPublicComment: {
+    id: 'app.containers.Comments.postPublicComment',
+    defaultMessage: 'Post public comment',
+  },
   commentDeletedPlaceholder: {
     id: 'app.containers.Comments.commentDeletedPlaceholder',
     defaultMessage: 'This comment has been deleted.',
