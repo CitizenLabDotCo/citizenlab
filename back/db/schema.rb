@@ -890,6 +890,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_08_120425) do
     t.index ["created_at"], name: "index_notifications_on_created_at"
     t.index ["inappropriate_content_flag_id"], name: "index_notifications_on_inappropriate_content_flag_id"
     t.index ["initiating_user_id"], name: "index_notifications_on_initiating_user_id"
+    t.index ["internal_comment_id"], name: "index_notifications_on_internal_comment_id"
     t.index ["invite_id"], name: "index_notifications_on_invite_id"
     t.index ["official_feedback_id"], name: "index_notifications_on_official_feedback_id"
     t.index ["phase_id"], name: "index_notifications_on_phase_id"
