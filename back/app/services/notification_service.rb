@@ -18,8 +18,8 @@ class NotificationService
     Notifications::MentionInOfficialFeedback,
     Notifications::OfficialFeedbackOnCommentedIdea,
     Notifications::OfficialFeedbackOnCommentedInitiative,
-    Notifications::OfficialFeedbackOnVotedIdea,
-    Notifications::OfficialFeedbackOnVotedInitiative,
+    Notifications::OfficialFeedbackOnReactedIdea,
+    Notifications::OfficialFeedbackOnReactedInitiative,
     Notifications::OfficialFeedbackOnYourIdea,
     Notifications::OfficialFeedbackOnYourInitiative,
     Notifications::ProjectFolderModerationRightsReceived,
@@ -30,8 +30,8 @@ class NotificationService
     Notifications::StatusChangeOfYourInitiative,
     Notifications::StatusChangeOnCommentedIdea,
     Notifications::StatusChangeOnCommentedInitiative,
-    Notifications::StatusChangeOnVotedIdea,
-    Notifications::StatusChangeOnVotedInitiative,
+    Notifications::StatusChangeOnReactedIdea,
+    Notifications::StatusChangeOnReactedInitiative,
     Notifications::ThresholdReachedForAdmin
   ].freeze
 

@@ -32,6 +32,7 @@
 #  index_notifications_on_created_at                           (created_at)
 #  index_notifications_on_inappropriate_content_flag_id        (inappropriate_content_flag_id)
 #  index_notifications_on_initiating_user_id                   (initiating_user_id)
+#  index_notifications_on_internal_comment_id                  (internal_comment_id)
 #  index_notifications_on_invite_id                            (invite_id)
 #  index_notifications_on_official_feedback_id                 (official_feedback_id)
 #  index_notifications_on_phase_id                             (phase_id)

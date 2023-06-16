@@ -25,7 +25,7 @@ describe SideFxInternalCommentService do
       u2_mention = mention_service.user_to_mention(u2)
       u2_mention_expanded = mention_service.add_span_around u2_mention, u2
 
-      internal_comment.body_text = "Let's mention #{u1_mention_expanded} and #{u2_mention_expanded}"
+      internal_comment.body = "Let's mention #{u1_mention_expanded} and #{u2_mention_expanded}"
 
       expectation = expect { service.after_create(internal_comment, user) }
 
@@ -53,7 +53,7 @@ describe SideFxInternalCommentService do
 
   describe 'after_update' do
     it "logs a 'changed' action job when the internal comment has changed" do
-      internal_comment.update(body_text: 'changed')
+      internal_comment.update(body: 'changed')
       expect { service.after_update(internal_comment, user) }
         .to enqueue_job(LogActivityJob)
         .with(internal_comment, 'changed', user, internal_comment.updated_at.to_i, project_id: project_id)
@@ -69,8 +69,8 @@ describe SideFxInternalCommentService do
       u2_mention = mention_service.user_to_mention(u2)
       u2_mention_expanded = mention_service.add_span_around u2_mention, u2
 
-      internal_comment = create(:internal_comment, body_text: u1_mention_expanded.to_s)
-      internal_comment.update(body_text: "Let's mention #{u1_mention_expanded} and #{u2_mention_expanded}")
+      internal_comment = create(:internal_comment, body: u1_mention_expanded.to_s)
+      internal_comment.update(body: "Let's mention #{u1_mention_expanded} and #{u2_mention_expanded}")
 
       expectation = expect { service.after_update(internal_comment, user) }
       created_at = internal_comment.created_at.to_i

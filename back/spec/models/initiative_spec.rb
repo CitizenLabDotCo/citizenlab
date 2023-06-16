@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Initiative do
   context 'associations' do
-    it { is_expected.to have_many(:votes) }
+    it { is_expected.to have_many(:reactions) }
   end
 
   context 'Default factory' do
