@@ -1,7 +1,5 @@
-import React, { memo, useState, useCallback } from 'react';
-
-// services
-import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
+import React, { memo, useCallback, useMemo } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 // components
 import ContentContainer from 'components/ContentContainer';
@@ -18,7 +16,8 @@ import styled from 'styled-components';
 import { media, fontSizes, colors, isRtl } from 'utils/styleUtils';
 
 // typings
-import { IQueryParameters } from 'api/ideas/types';
+import { IQueryParameters, Sort } from 'api/ideas/types';
+import { QueryParametersUpdate } from 'components/IdeaCards/IdeasWithFiltersSidebar';
 
 const Container = styled.main`
   min-height: calc(
@@ -73,19 +72,44 @@ const PageTitle = styled.h1`
  `}
 `;
 
+const parseSearchParams = (newParams: QueryParametersUpdate) => {
+  const searchParams: Record<string, string> = {};
+
+  for (const key in newParams) {
+    const value = newParams[key];
+    if (value) searchParams[key] = JSON.stringify(value);
+  }
+
+  return searchParams;
+};
+
 export default memo(() => {
-  const [ideasQueryParameters, setIdeasQueryParameters] =
-    useState<IQueryParameters>({
+  const [searchParams, setSearchParams] = useSearchParams();
+  const sortParam = searchParams.get('sort');
+  const searchParam = searchParams.get('search');
+  const ideaStatusParam = searchParams.get('idea_status');
+  const topicsParam = searchParams.get('topics');
+
+  const ideasQueryParameters = useMemo<IQueryParameters>(
+    () => ({
       'page[number]': 1,
       'page[size]': 12,
-      sort: ideaDefaultSortMethodFallback,
+      sort: (sortParam as Sort) ?? 'trending',
       project_publication_status: 'published',
       publication_status: 'published',
-    });
+      search: searchParam ?? undefined,
+      idea_status: ideaStatusParam ?? undefined,
+      topics: topicsParam ? JSON.parse(topicsParam) : undefined,
+    }),
+    [sortParam, searchParam, ideaStatusParam, topicsParam]
+  );
 
-  const updateQuery = useCallback((newParams: Partial<IQueryParameters>) => {
-    setIdeasQueryParameters((current) => ({ ...current, ...newParams }));
-  }, []);
+  const updateQuery = useCallback(
+    (newParams: QueryParametersUpdate) => {
+      setSearchParams(parseSearchParams(newParams));
+    },
+    [setSearchParams]
+  );
 
   return (
     <>

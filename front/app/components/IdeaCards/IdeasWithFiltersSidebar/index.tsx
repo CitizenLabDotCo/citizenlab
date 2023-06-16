@@ -135,9 +135,16 @@ const ContentRight = styled.div<{ filterColumnWidth: number }>`
   top: 100px;
 `;
 
+export interface QueryParametersUpdate {
+  sort?: Sort;
+  search?: string;
+  idea_status?: string;
+  topics?: string[];
+}
+
 export interface Props {
   ideaQueryParameters: IQueryParameters;
-  onUpdateQuery: (newParams: Partial<IQueryParameters>) => void;
+  onUpdateQuery: (newParams: QueryParametersUpdate) => void;
 }
 
 const IdeaCards = ({ ideaQueryParameters, onUpdateQuery }: Props) => {
@@ -175,14 +182,14 @@ const IdeaCards = ({ ideaQueryParameters, onUpdateQuery }: Props) => {
 
   const handleStatusOnChange = useCallback(
     (idea_status: string | null) => {
-      onUpdateQuery({ idea_status });
+      onUpdateQuery({ idea_status: idea_status ?? undefined });
     },
     [onUpdateQuery]
   );
 
   const handleTopicsOnChange = useCallback(
     (topics: string[] | null) => {
-      onUpdateQuery({ topics });
+      onUpdateQuery({ topics: topics ?? undefined });
     },
     [onUpdateQuery]
   );

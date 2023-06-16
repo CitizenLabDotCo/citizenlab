@@ -77,16 +77,16 @@ const IdeaShowPageTopBar = ({
   const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
 
-  const [fromProject, setFromProject] = useState(false);
+  const [goBack, setGoBack] = useState(false);
   const [queryParams] = useSearchParams();
-  const fromProjectParameter = queryParams.get('from_project');
+  const goBackParameter = queryParams.get('go_back');
 
   useEffect(() => {
-    if (isString(fromProjectParameter)) {
-      setFromProject(true);
+    if (isString(goBackParameter)) {
+      setGoBack(true);
       clHistory.replace(window.location.pathname);
     }
-  }, [fromProjectParameter]);
+  }, [goBackParameter]);
 
   const localize = useLocalize();
 
@@ -116,23 +116,18 @@ const IdeaShowPageTopBar = ({
   };
 
   const handleGoBack = useCallback(() => {
-    if (fromProject) {
+    if (goBack) {
       clHistory.back();
-      return;
-    }
-
-    if (deselectIdeaOnMap) {
+    } else if (deselectIdeaOnMap) {
       deselectIdeaOnMap();
       return;
-    }
-
-    if (project) {
+    } else if (project) {
       clHistory.push(`/projects/${project.data.attributes.slug}`);
       return;
+    } else {
+      clHistory.push('/');
     }
-
-    clHistory.push('/');
-  }, [fromProject, deselectIdeaOnMap, project]);
+  }, [goBack, deselectIdeaOnMap, project]);
 
   return (
     <Container className={className || ''}>

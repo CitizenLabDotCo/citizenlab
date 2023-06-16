@@ -191,7 +191,7 @@ const CompactIdeaCard = memo<IdeaCardProps>(
           .filter((item) => typeof item === 'string' && item !== '')
           .join(' ')}
         title={ideaTitle}
-        to={`/ideas/${idea.data.attributes.slug}?from_project=true`}
+        to={`/ideas/${idea.data.attributes.slug}?go_back=true`}
         image={
           !isNilOrError(ideaImage)
             ? ideaImage.data.attributes.versions.medium

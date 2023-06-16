@@ -190,12 +190,12 @@ export const IdeasShow = ({
   const { data: ideaImages } = useIdeaImages(ideaId);
 
   const [newIdeaId, setNewIdeaId] = useState<string | null>(null);
-  const [fromProject, setFromProject] = useState(false);
+  const [goBack, setGoBack] = useState(false);
   const [translateButtonIsClicked, setTranslateButtonIsClicked] =
     useState<boolean>(false);
   const [queryParams] = useSearchParams();
   const ideaIdParameter = queryParams.get('new_idea_id');
-  const fromProjectParameter = queryParams.get('from_project');
+  const goBackParameter = queryParams.get('go_back');
   const timeout = useRef<NodeJS.Timeout>();
 
   useEffect(() => {
@@ -208,15 +208,15 @@ export const IdeasShow = ({
       replace = true;
     }
 
-    if (isString(fromProjectParameter)) {
-      setFromProject(true);
+    if (isString(goBackParameter)) {
+      setGoBack(true);
       replace = true;
     }
 
     if (replace) {
       clHistory.replace(window.location.pathname);
     }
-  }, [ideaIdParameter, fromProjectParameter]);
+  }, [ideaIdParameter, goBackParameter]);
 
   const { data: phases } = usePhases(projectId);
   const { data: idea } = useIdeaById(ideaId);
@@ -258,14 +258,14 @@ export const IdeasShow = ({
   let content: JSX.Element | null = null;
 
   const handleGoBack = useCallback(() => {
-    if (fromProject) {
+    if (goBack) {
       clHistory.back();
     } else if (project) {
       clHistory.push(`/projects/${project.attributes.slug}`);
     } else {
       clHistory.push('/');
     }
-  }, [fromProject, project]);
+  }, [goBack, project]);
 
   if (
     !isNilOrError(project) &&
