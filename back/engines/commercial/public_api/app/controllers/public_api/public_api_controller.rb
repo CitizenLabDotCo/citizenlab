@@ -14,7 +14,7 @@ module PublicApi
     def render_problem_details(exception)
       problem_details = {
         # TODO: What would be an appropriate base URI for types
-        type: "https://citizenlab.co/public_api/problems/#{exception.problem_id}}",
+        type: "https://citizenlab.co/public_api/problems/#{exception.problem_id}",
         title: exception.title,
         status: 400,
         detail: exception.detail,
