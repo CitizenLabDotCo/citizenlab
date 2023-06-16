@@ -716,7 +716,6 @@ models:
     reacting_enabled: true
     reacting_like_method: unlimited
     reacting_like_limited_max: 10
-    max_budget: 100000
     voting_method: budgeting
     voting_max_total: 100000
   - &charliesPb

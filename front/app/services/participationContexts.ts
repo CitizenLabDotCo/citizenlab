@@ -52,8 +52,6 @@ export type InputTerm =
   | 'issue'
   | 'contribution';
 
-export type ReactingMethod = 'limited' | 'unlimited';
-
 export type PresentationMode = 'card' | 'map';
 
 export interface ParticipationContext {
