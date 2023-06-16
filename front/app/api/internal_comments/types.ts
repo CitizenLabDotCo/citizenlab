@@ -1,4 +1,4 @@
-import { IRelationship, Multiloc, ILinks } from 'typings';
+import { IRelationship, ILinks } from 'typings';
 import { Keys } from 'utils/cl-react-query/types';
 import commentsKeys from './keys';
 
@@ -18,12 +18,12 @@ interface InternalCommentAttributes {
 }
 
 export interface IPresentInternalComment extends InternalCommentAttributes {
-  body_multiloc: Multiloc;
+  body_text: string;
   publication_status: 'published';
 }
 
 interface IDeletedInternalComment extends InternalCommentAttributes {
-  body_multiloc: null;
+  body_text: string;
   publication_status: 'deleted';
 }
 
@@ -65,7 +65,7 @@ export interface IUpdatedInternalComment {
   commentId: string;
   author_id?: string;
   parent_id?: string;
-  body_text: Multiloc;
+  body_text: string;
 }
 
 export type InternalCommentSort = '-new' | 'new';

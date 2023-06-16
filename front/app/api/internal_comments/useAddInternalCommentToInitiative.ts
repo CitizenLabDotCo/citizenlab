@@ -13,7 +13,7 @@ const addInternalCommentToInitiative = async ({
   fetcher<IInternalComment>({
     path: `/initiatives/${initiativeId}/internal_comments`,
     action: 'post',
-    body: { comment: { ...requestBody } },
+    body: { internal_comment: { ...requestBody } },
   });
 
 const useAddInternalCommentToInitiative = () => {

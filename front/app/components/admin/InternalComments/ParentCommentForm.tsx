@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react';
 import { isString, trim } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Button from 'components/UI/Button';
@@ -29,7 +28,6 @@ import { colors, defaultStyles } from 'utils/styleUtils';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useAddInternalCommentToIdea from 'api/internal_comments/useAddInternalCommentToIdea';
 import useAddInternalCommentToInitiative from 'api/internal_comments/useAddInternalCommentToInitiative';
-import useLocale from 'hooks/useLocale';
 import useAuthUser from 'api/me/useAuthUser';
 
 const Container = styled.div`
@@ -108,14 +106,15 @@ const ParentCommentForm = ({
   postType,
   className,
 }: Props) => {
-  const locale = useLocale();
   const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
   const smallerThanTablet = useBreakpoint('tablet');
-  const { mutate: addCommentToIdea, isLoading: addCommentToIdeaIsLoading } =
-    useAddInternalCommentToIdea();
   const {
-    mutate: addCommentToInitiative,
+    mutate: addInternalCommentToIdea,
+    isLoading: addCommentToIdeaIsLoading,
+  } = useAddInternalCommentToIdea();
+  const {
+    mutate: addInternalCommentToInitiative,
     isLoading: addCommentToInitiativeIsLoading,
   } = useAddInternalCommentToInitiative();
   const textareaElement = useRef<HTMLTextAreaElement | null>(null);
@@ -129,7 +128,7 @@ const ParentCommentForm = ({
   const processing =
     addCommentToIdeaIsLoading || addCommentToInitiativeIsLoading;
 
-  if (isNilOrError(locale) || !authUser) {
+  if (!authUser) {
     return null;
   }
 
@@ -164,9 +163,10 @@ const ParentCommentForm = ({
     setFocused(false);
 
     if (isString(inputValue) && trim(inputValue) !== '') {
-      const commentBodyMultiloc = {
-        [locale]: inputValue.replace(/@\[(.*?)\]\((.*?)\)/gi, '@$2'),
-      };
+      const commentBodyText = inputValue.replace(
+        /@\[(.*?)\]\((.*?)\)/gi,
+        '@$2'
+      );
 
       trackEventByName(tracks.clickParentCommentPublish, {
         extra: {
@@ -177,11 +177,11 @@ const ParentCommentForm = ({
       });
 
       if (postType === 'idea' && projectId) {
-        addCommentToIdea(
+        addInternalCommentToIdea(
           {
             ideaId,
             author_id: authUser.data.id,
-            body_text: commentBodyMultiloc,
+            body_text: commentBodyText,
           },
           {
             onSuccess: (comment) => {
@@ -204,11 +204,11 @@ const ParentCommentForm = ({
       }
 
       if (postType === 'initiative') {
-        addCommentToInitiative(
+        addInternalCommentToInitiative(
           {
             initiativeId,
             author_id: authUser.data.id,
-            body_text: commentBodyMultiloc,
+            body_text: commentBodyText,
           },
           {
             onSuccess: (comment) => {

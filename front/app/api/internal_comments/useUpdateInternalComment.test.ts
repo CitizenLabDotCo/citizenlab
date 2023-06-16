@@ -30,7 +30,7 @@ describe('useUpdateInternalComment', () => {
     act(() => {
       result.current.mutate({
         commentId: 'commentId',
-        body_multiloc: { en: 'name' },
+        body_text: 'name',
       });
     });
 
@@ -54,7 +54,7 @@ describe('useUpdateInternalComment', () => {
     act(() => {
       result.current.mutate({
         commentId: 'commentId',
-        body_multiloc: { en: 'name' },
+        body_text: 'name',
       });
     });
     await waitFor(() => expect(result.current.isError).toBe(true));

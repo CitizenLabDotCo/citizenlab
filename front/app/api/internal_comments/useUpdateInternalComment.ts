@@ -11,7 +11,7 @@ const updateInternalComment = async ({
   fetcher<IInternalComment>({
     path: `/internal_comments/${commentId}`,
     action: 'patch',
-    body: { comment: requestBody },
+    body: { internal_comment: requestBody },
   });
 
 const useUpdateInternalComment = ({

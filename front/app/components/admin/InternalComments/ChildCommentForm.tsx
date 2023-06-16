@@ -2,7 +2,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Button from 'components/UI/Button';
@@ -26,7 +25,6 @@ import { commentReplyButtonClicked$, commentAdded } from './events';
 import styled from 'styled-components';
 import { hideVisually } from 'polished';
 import { colors, defaultStyles } from 'utils/styleUtils';
-import useLocale from 'hooks/useLocale';
 import useAuthUser from 'api/me/useAuthUser';
 import useAddInternalCommentToIdea from 'api/internal_comments/useAddInternalCommentToIdea';
 import useAddInternalCommentToInitiative from 'api/internal_comments/useAddInternalCommentToInitiative';
@@ -98,7 +96,6 @@ const ChildCommentForm = ({
   className,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const locale = useLocale();
   const { data: authUser } = useAuthUser();
   const smallerThanTablet = useBreakpoint('tablet');
 
@@ -143,7 +140,7 @@ const ChildCommentForm = ({
     };
   }, [parentId]);
 
-  if (!authUser || isNilOrError(locale)) {
+  if (!authUser) {
     return null;
   }
 
@@ -182,9 +179,10 @@ const ChildCommentForm = ({
 
   const onSubmit = async () => {
     if (canSubmit) {
-      const commentBodyMultiloc = {
-        [locale]: inputValue.replace(/@\[(.*?)\]\((.*?)\)/gi, '@$2'),
-      };
+      const commentBodyText = inputValue.replace(
+        /@\[(.*?)\]\((.*?)\)/gi,
+        '@$2'
+      );
 
       setCanSubmit(false);
 
@@ -203,7 +201,7 @@ const ChildCommentForm = ({
             ideaId,
             author_id: authUser.data.id,
             parent_id: parentId,
-            body_text: commentBodyMultiloc,
+            body_text: commentBodyText,
           },
           {
             onSuccess: () => {
@@ -224,7 +222,7 @@ const ChildCommentForm = ({
             initiativeId,
             author_id: authUser.data.id,
             parent_id: parentId,
-            body_text: commentBodyMultiloc,
+            body_text: commentBodyText,
           },
           {
             onSuccess: () => {

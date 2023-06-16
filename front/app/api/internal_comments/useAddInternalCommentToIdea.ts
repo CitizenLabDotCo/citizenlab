@@ -13,7 +13,7 @@ const addInternalCommentToIdea = async ({
   fetcher<IInternalComment>({
     path: `/ideas/${ideaId}/internal_comments`,
     action: 'post',
-    body: { comment: { ...requestBody } },
+    body: { internal_comment: { ...requestBody } },
   });
 
 const useAddInternalCommentToIdea = () => {

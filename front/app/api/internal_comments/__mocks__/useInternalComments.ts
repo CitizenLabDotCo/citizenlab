@@ -10,7 +10,7 @@ export const links = {
 };
 
 export const mockCommentDataAttributes1: IPresentInternalComment = {
-  body_multiloc: { en: 'body_multiloc' },
+  body_text: { en: 'body_multiloc' },
   created_at: 'created_at',
   publication_status: 'published',
   children_count: 0,
@@ -49,7 +49,7 @@ export const commentsData: IInternalCommentData[] = [
     id: 'commentId2',
     type: 'internal_comment',
     attributes: {
-      body_multiloc: { en: 'body_multiloc' },
+      body_text: { en: 'body_multiloc' },
       created_at: 'created_at',
       publication_status: 'published',
       children_count: 0,

@@ -25,7 +25,6 @@ import { isCLErrorJSON } from 'utils/errorUtils';
 import useInternalComment from 'api/internal_comments/useInternalComment';
 import useLocale from 'hooks/useLocale';
 import { Button } from '@citizenlab/cl2-component-library';
-import useLocalize from 'hooks/useLocalize';
 
 const Container = styled.div``;
 
@@ -79,7 +78,6 @@ const CommentBody = ({
       ideaId,
       initiativeId,
     });
-  const localize = useLocalize();
   const locale = useLocale();
 
   const [commentContent, setCommentContent] = useState('');
@@ -94,9 +92,7 @@ const CommentBody = ({
       const setNewCommentContent = () => {
         let commentContent = '';
 
-        commentContent = localize(
-          comment.data.attributes.body_multiloc
-        ).replace(
+        commentContent = comment.data.attributes.body_text.replace(
           /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi,
           '<a class="mention" data-link="/profile/$2" href="/profile/$2">$3</a>'
         );
@@ -107,9 +103,7 @@ const CommentBody = ({
       const setNewEditableCommentContent = () => {
         let editableCommentContent = '';
 
-        editableCommentContent = localize(
-          comment.data.attributes.body_multiloc
-        ).replace(
+        editableCommentContent = comment.data.attributes.body_text.replace(
           /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>@([\S\s]*?)<\/span>/gi,
           '@[$3]($2)'
         );
@@ -120,7 +114,7 @@ const CommentBody = ({
       setNewCommentContent();
       setNewEditableCommentContent();
     }
-  }, [comment, commentContent, localize]);
+  }, [comment, commentContent]);
 
   if (isNilOrError(locale)) {
     return null;
@@ -152,12 +146,7 @@ const CommentBody = ({
     event.preventDefault();
 
     const updatedComment: Omit<IUpdatedInternalComment, 'commentId'> = {
-      body_multiloc: {
-        [locale]: editableCommentContent.replace(
-          /@\[(.*?)\]\((.*?)\)/gi,
-          '@$2'
-        ),
-      },
+      body_text: editableCommentContent.replace(/@\[(.*?)\]\((.*?)\)/gi, '@$2'),
     };
 
     setApiErrors(null);
