@@ -203,7 +203,7 @@ const ChildCommentForm = ({
             ideaId,
             author_id: authUser.data.id,
             parent_id: parentId,
-            body_multiloc: commentBodyMultiloc,
+            body_text: commentBodyMultiloc,
           },
           {
             onSuccess: () => {
@@ -224,7 +224,7 @@ const ChildCommentForm = ({
             initiativeId,
             author_id: authUser.data.id,
             parent_id: parentId,
-            body_multiloc: commentBodyMultiloc,
+            body_text: commentBodyMultiloc,
           },
           {
             onSuccess: () => {

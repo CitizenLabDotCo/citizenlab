@@ -58,14 +58,14 @@ export interface IInternalNewComment {
   initiativeId?: string;
   author_id: string;
   parent_id?: string;
-  body_multiloc: Multiloc;
+  body_text: string;
 }
 
 export interface IUpdatedInternalComment {
   commentId: string;
   author_id?: string;
   parent_id?: string;
-  body_multiloc: Multiloc;
+  body_text: Multiloc;
 }
 
 export type InternalCommentSort = '-new' | 'new';

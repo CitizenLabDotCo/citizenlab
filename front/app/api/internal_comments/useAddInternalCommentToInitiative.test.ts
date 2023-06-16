@@ -30,9 +30,8 @@ describe('useAddInternalCommentToInitiative', () => {
 
     act(() => {
       result.current.mutate({
-        initiativeId: 'initiativeId',
         author_id: 'author_id',
-        body_multiloc: { en: 'body_multiloc' },
+        body_text: 'body_text',
       });
     });
 
@@ -58,7 +57,7 @@ describe('useAddInternalCommentToInitiative', () => {
       result.current.mutate({
         initiativeId: 'initiativeId',
         author_id: 'author_id',
-        body_multiloc: { en: 'body_multiloc' },
+        body_text: 'body_text',
       });
     });
 
