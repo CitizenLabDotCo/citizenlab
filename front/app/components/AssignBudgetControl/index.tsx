@@ -139,7 +139,7 @@ const AssignBudgetControl = memo(
       return null;
     }
 
-    const actionDescriptor = idea.data.attributes.action_descriptor.budgeting;
+    const actionDescriptor = idea.data.attributes.action_descriptor.voting;
 
     if (!actionDescriptor) return null;
 
@@ -221,12 +221,12 @@ const AssignBudgetControl = memo(
         return;
       }
 
-      const budgetingDisabledReason = actionDescriptor.disabled_reason;
+      const votingDisabledReason = actionDescriptor.disabled_reason;
 
-      if (isFixableByAuthentication(budgetingDisabledReason)) {
+      if (isFixableByAuthentication(votingDisabledReason)) {
         const context = {
           type: participationContextType,
-          action: 'budgeting',
+          action: 'voting',
           id: participationContextId,
         } as const;
 

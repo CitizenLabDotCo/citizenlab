@@ -33,7 +33,7 @@ export type IParticipationContextPermissionAction =
   | 'commenting_idea'
   | 'taking_survey'
   | 'taking_poll'
-  | 'budgeting' // TODO change
+  | 'voting' // TODO change
   | 'annotating_document';
 
 interface IParticipationContextPermissionData {

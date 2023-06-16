@@ -28,9 +28,9 @@ export type IdeaCommentingDisabledReason =
   | 'idea_not_in_current_phase'
   | CommentingDisabledReason;
 
-export type IdeaBudgetingDisabledReason =
+export type IdeaVotingDisabledReason =
   | 'project_inactive'
-  | 'not_budgeting'
+  | 'not_voting'
   | 'idea_not_in_current_phase'
   | PermissionsDisabledReason;
 
@@ -107,7 +107,7 @@ export interface IIdeaData {
       // For now, just know that 'comment_reacting_idea' is just an action descriptor,
       // but not an action (so e.g. it can't be used in the authentication_requirements API).
       comment_reacting_idea: ActionDescriptorFutureEnabled<IdeaCommentingDisabledReason>;
-      budgeting?: ActionDescriptorFutureEnabled<IdeaBudgetingDisabledReason>;
+      voting?: ActionDescriptorFutureEnabled<IdeaVotingDisabledReason>;
     };
     anonymous: boolean;
     author_hash: string;
