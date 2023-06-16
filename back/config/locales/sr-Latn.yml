@@ -241,7 +241,7 @@ sr-Latn:
       for_more_information: "За више информација о овоме, можете консултовати %{termsAndConditionsPage}"
       you_can_sign_in_again_from: "Можете се поново пријавити од %{date}"
   user:
-    anon_first_name: "User"
+    anon_first_name: "Корисник"
   time:
     am: сам
     formats:
