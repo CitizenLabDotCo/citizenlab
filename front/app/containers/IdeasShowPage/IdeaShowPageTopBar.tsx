@@ -120,10 +120,8 @@ const IdeaShowPageTopBar = ({
       clHistory.back();
     } else if (deselectIdeaOnMap) {
       deselectIdeaOnMap();
-      return;
     } else if (project) {
       clHistory.push(`/projects/${project.data.attributes.slug}`);
-      return;
     } else {
       clHistory.push('/');
     }
