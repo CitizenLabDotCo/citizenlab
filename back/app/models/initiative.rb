@@ -10,8 +10,8 @@
 #  publication_status       :string
 #  published_at             :datetime
 #  author_id                :uuid
-#  upvotes_count            :integer          default(0), not null
-#  downvotes_count          :integer          default(0), not null
+#  likes_count              :integer          default(0), not null
+#  dislikes_count           :integer          default(0), not null
 #  location_point           :geography        point, 4326
 #  location_description     :string
 #  slug                     :string
@@ -124,8 +124,8 @@ class Initiative < ApplicationRecord
       .where(initiative_statuses: { code: 'proposed' })
   }
 
-  def votes_needed(configuration = AppConfiguration.instance)
-    [configuration.settings('initiatives', 'voting_threshold') - upvotes_count, 0].max
+  def reactions_needed(configuration = AppConfiguration.instance)
+    [configuration.settings('initiatives', 'reacting_threshold') - likes_count, 0].max
   end
 
   def expires_at(configuration = AppConfiguration.instance)

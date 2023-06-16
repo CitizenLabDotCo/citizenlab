@@ -100,10 +100,10 @@ type TParticipatedInProjectPredicate =
   | 'not_posted_in'
   | 'commented_in'
   | 'not_commented_in'
-  | 'voted_idea_in'
-  | 'not_voted_idea_in'
-  | 'voted_comment_in'
-  | 'not_voted_comment_in'
+  | 'reacted_idea_in'
+  | 'not_reacted_idea_in'
+  | 'reacted_comment_in'
+  | 'not_reacted_comment_in'
   | 'budgeted_in'
   | 'not_budgeted_in'
   | 'volunteered_in'
@@ -116,10 +116,10 @@ type TParticipatedInTopicPredicate =
   | 'not_posted_in'
   | 'commented_in'
   | 'not_commented_in'
-  | 'voted_idea_in'
-  | 'not_voted_idea_in'
-  | 'voted_comment_in'
-  | 'not_voted_comment_in';
+  | 'reacted_idea_in'
+  | 'not_reacted_idea_in'
+  | 'reacted_comment_in'
+  | 'not_reacted_comment_in';
 
 type TParticipatedInStatusPredicate =
   | 'in'
@@ -128,10 +128,10 @@ type TParticipatedInStatusPredicate =
   | 'not_posted_in'
   | 'commented_in'
   | 'not_commented_in'
-  | 'voted_idea_in'
-  | 'not_voted_idea_in'
-  | 'voted_comment_in'
-  | 'not_voted_comment_in';
+  | 'reacted_idea_in'
+  | 'not_reacted_idea_in'
+  | 'reacted_comment_in'
+  | 'not_reacted_comment_in';
 
 type TVerifiedPredicate = 'is_verified' | 'not_is_verified';
 
@@ -356,8 +356,8 @@ export type TRule =
         | 'not_in'
         | 'not_posted_in'
         | 'not_commented_in'
-        | 'not_voted_idea_in'
-        | 'not_voted_comment_in'
+        | 'not_reacted_idea_in'
+        | 'not_reacted_comment_in'
         | 'not_budgeted_in'
         | 'not_volunteered_in';
 
@@ -372,8 +372,8 @@ export type TRule =
         | 'in'
         | 'posted_in'
         | 'commented_in'
-        | 'voted_idea_in'
-        | 'voted_comment_in'
+        | 'reacted_idea_in'
+        | 'reacted_comment_in'
         | 'budgeted_in'
         | 'volunteered_in';
 
@@ -388,8 +388,8 @@ export type TRule =
         | 'not_in'
         | 'not_posted_in'
         | 'not_commented_in'
-        | 'not_voted_idea_in'
-        | 'not_voted_comment_in';
+        | 'not_reacted_idea_in'
+        | 'not_reacted_comment_in';
       /**
        * The id of a topic
        */
@@ -401,8 +401,8 @@ export type TRule =
         | 'in'
         | 'posted_in'
         | 'commented_in'
-        | 'voted_idea_in'
-        | 'voted_comment_in';
+        | 'reacted_idea_in'
+        | 'reacted_comment_in';
       /**
        * The IDs of topics
        */
@@ -414,8 +414,8 @@ export type TRule =
         | 'not_in'
         | 'not_posted_in'
         | 'not_commented_in'
-        | 'not_voted_idea_in'
-        | 'not_voted_comment_in';
+        | 'not_reacted_idea_in'
+        | 'not_reacted_comment_in';
       /**
        * The id of an idea status
        */
@@ -427,8 +427,8 @@ export type TRule =
         | 'in'
         | 'posted_in'
         | 'commented_in'
-        | 'voted_idea_in'
-        | 'voted_comment_in';
+        | 'reacted_idea_in'
+        | 'reacted_comment_in';
       /**
        * The IDs of idea statuses
        */
@@ -521,10 +521,10 @@ export const ruleTypeConstraints = {
     not_posted_in: ProjectValueSelector,
     commented_in: ProjectValuesSelector,
     not_commented_in: ProjectValueSelector,
-    voted_idea_in: ProjectValuesSelector,
-    not_voted_idea_in: ProjectValueSelector,
-    voted_comment_in: ProjectValuesSelector,
-    not_voted_comment_in: ProjectValueSelector,
+    reacted_idea_in: ProjectValuesSelector,
+    not_reacted_idea_in: ProjectValueSelector,
+    reacted_comment_in: ProjectValuesSelector,
+    not_reacted_comment_in: ProjectValueSelector,
     budgeted_in: ProjectValuesSelector,
     not_budgeted_in: ProjectValueSelector,
     volunteered_in: ProjectValuesSelector,
@@ -537,10 +537,10 @@ export const ruleTypeConstraints = {
     not_posted_in: TopicValueSelector,
     commented_in: TopicValuesSelector,
     not_commented_in: TopicValueSelector,
-    voted_idea_in: TopicValuesSelector,
-    not_voted_idea_in: TopicValueSelector,
-    voted_comment_in: TopicValuesSelector,
-    not_voted_comment_in: TopicValueSelector,
+    reacted_idea_in: TopicValuesSelector,
+    not_reacted_idea_in: TopicValueSelector,
+    reacted_comment_in: TopicValuesSelector,
+    not_reacted_comment_in: TopicValueSelector,
   },
   participated_in_idea_status: {
     in: IdeaStatusValuesSelector,
@@ -549,10 +549,10 @@ export const ruleTypeConstraints = {
     not_posted_in: IdeaStatusValueSelector,
     commented_in: IdeaStatusValuesSelector,
     not_commented_in: IdeaStatusValueSelector,
-    voted_idea_in: IdeaStatusValuesSelector,
-    not_voted_idea_in: IdeaStatusValueSelector,
-    voted_comment_in: IdeaStatusValuesSelector,
-    not_voted_comment_in: IdeaStatusValueSelector,
+    reacted_idea_in: IdeaStatusValuesSelector,
+    not_reacted_idea_in: IdeaStatusValueSelector,
+    reacted_comment_in: IdeaStatusValuesSelector,
+    not_reacted_comment_in: IdeaStatusValueSelector,
   },
   verified: {
     is_verified: null,

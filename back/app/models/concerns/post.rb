@@ -35,10 +35,10 @@ module Post
     has_many :internal_comments, as: :post, dependent: :destroy
     has_many :official_feedbacks, as: :post, dependent: :destroy
 
-    has_many :votes, as: :votable, dependent: :destroy
-    has_many :upvotes, -> { where(mode: 'up') }, as: :votable, class_name: 'Vote'
-    has_many :downvotes, -> { where(mode: 'down') }, as: :votable, class_name: 'Vote'
-    has_one :user_vote, ->(user_id) { where(user_id: user_id) }, as: :votable, class_name: 'Vote'
+    has_many :reactions, as: :reactable, dependent: :destroy
+    has_many :likes, -> { where(mode: 'up') }, as: :reactable, class_name: 'Reaction'
+    has_many :dislikes, -> { where(mode: 'down') }, as: :reactable, class_name: 'Reaction'
+    has_one :user_reaction, ->(user_id) { where(user_id: user_id) }, as: :reactable, class_name: 'Reaction'
 
     has_many :spam_reports, as: :spam_reportable, class_name: 'SpamReport', dependent: :destroy
 
@@ -77,7 +77,7 @@ module Post
     end
 
     def score
-      upvotes_count - downvotes_count
+      likes_count - dislikes_count
     end
 
     def author_name

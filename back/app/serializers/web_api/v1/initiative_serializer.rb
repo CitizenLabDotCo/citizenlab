@@ -4,7 +4,7 @@ class WebApi::V1::InitiativeSerializer < WebApi::V1::BaseSerializer
   attributes :title_multiloc,
     :slug,
     :publication_status,
-    :upvotes_count,
+    :likes_count,
     :comments_count,
     :internal_comments_count,
     :official_feedbacks_count,
@@ -14,7 +14,7 @@ class WebApi::V1::InitiativeSerializer < WebApi::V1::BaseSerializer
     :updated_at,
     :published_at,
     :expires_at,
-    :votes_needed,
+    :reactions_needed,
     :anonymous,
     :author_hash
 
@@ -45,21 +45,21 @@ class WebApi::V1::InitiativeSerializer < WebApi::V1::BaseSerializer
     can_moderate? object, params
   }, record_type: :user, serializer: WebApi::V1::UserSerializer
 
-  has_one :user_vote, if: proc { |object, params|
+  has_one :user_reaction, if: proc { |object, params|
     signed_in? object, params
-  }, record_type: :vote, serializer: WebApi::V1::VoteSerializer do |object, params|
-    cached_user_vote object, params
+  }, record_type: :reaction, serializer: WebApi::V1::ReactionSerializer do |object, params|
+    cached_user_reaction object, params
   end
 
   def self.can_moderate?(_object, params)
     current_user(params) && UserRoleService.new.can_moderate_initiatives?(current_user(params))
   end
 
-  def self.cached_user_vote(object, params)
+  def self.cached_user_reaction(object, params)
     if params[:vbii]
       params.dig(:vbii, object.id)
     else
-      object.votes.where(user_id: current_user(params)&.id).first
+      object.reactions.where(user_id: current_user(params)&.id).first
     end
   end
 end

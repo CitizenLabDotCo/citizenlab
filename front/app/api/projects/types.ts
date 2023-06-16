@@ -49,12 +49,12 @@ export interface IUpdatedProjectProperties {
   participation_method?: ParticipationMethod | null;
   posting_enabled?: boolean | null;
   commenting_enabled?: boolean | null;
-  voting_enabled?: boolean | null;
-  upvoting_method?: 'limited' | 'unlimited' | null;
-  downvoting_method?: 'limited' | 'unlimited' | null;
-  upvoting_limited_max?: number | null;
-  downvoting_enabled?: boolean | null;
-  downvoting_limited_max?: number | null;
+  reacting_enabled?: boolean | null;
+  reacting_like_method?: 'limited' | 'unlimited' | null;
+  reacting_dislike_method?: 'limited' | 'unlimited' | null;
+  reacting_like_limited_max?: number | null;
+  reacting_dislike_enabled?: boolean | null;
+  reacting_dislike_limited_max?: number | null;
   presentation_mode?: PresentationMode | null;
   admin_publication_attributes?: {
     publication_status?: PublicationStatus;
@@ -147,20 +147,20 @@ export interface IProjectAttributes {
   participation_method: ParticipationMethod;
   posting_enabled: boolean;
   commenting_enabled: boolean;
-  // voting_enabled should be used to update the project setting
-  // and as a read value if we don't know if the user is doing an up/down vote
+  // reacting_enabled should be used to update the project setting
+  // and as a read value if we don't know if the user is doing an up/down reaction
   // (although the action_descriptor might be better for that too, to be checked).
   //
-  // voting_enabled doesn't take downvoting_enabled into account
-  // or upvoting_limited_max/downvoting_limited_max.
-  // For more specific values, see the voting_idea action_descriptor
-  voting_enabled: boolean;
-  upvoting_method: 'limited' | 'unlimited';
-  upvoting_limited_max: number;
-  downvoting_enabled: boolean;
+  // reacting_enabled doesn't take reacting_dislike_enabled into account
+  // or reacting_like_limited_max/reacting_dislike_limited_max.
+  // For more specific values, see the reacting_idea action_descriptor
+  reacting_enabled: boolean;
+  reacting_like_method: 'limited' | 'unlimited';
+  reacting_like_limited_max: number;
+  reacting_dislike_enabled: boolean;
   allow_anonymous_participation: boolean;
-  downvoting_method: 'limited' | 'unlimited';
-  downvoting_limited_max: number;
+  reacting_dislike_method: 'limited' | 'unlimited';
+  reacting_dislike_limited_max: number;
   presentation_mode: PresentationMode;
   internal_role: 'open_idea_box' | null;
   publication_status: PublicationStatus;
@@ -179,9 +179,9 @@ export interface IProjectAttributes {
   action_descriptor: {
     posting_idea: ActionDescriptorFutureEnabled<PostingDisabledReason>;
     commenting_idea: ActionDescriptor<CommentingDisabledReason>;
-    voting_idea: ActionDescriptor<ProjectVotingDisabledReason> & {
-      up: ActionDescriptor<ProjectVotingDisabledReason>;
-      down: ActionDescriptor<ProjectVotingDisabledReason>;
+    reacting_idea: ActionDescriptor<ProjectReactingDisabledReason> & {
+      up: ActionDescriptor<ProjectReactingDisabledReason>;
+      down: ActionDescriptor<ProjectReactingDisabledReason>;
     };
     taking_survey: ActionDescriptor<SurveyDisabledReason>;
     taking_poll: ActionDescriptor<PollDisabledReason>;
@@ -231,13 +231,13 @@ export type CommentingDisabledReason =
   | 'commenting_disabled'
   | PermissionsDisabledReason;
 
-type ProjectVotingDisabledReason =
+type ProjectReactingDisabledReason =
   | 'project_inactive'
   | 'not_ideation'
-  | 'voting_disabled'
-  | 'downvoting_disabled'
-  | 'upvoting_limited_max_reached'
-  | 'downvoting_limited_max_reached'
+  | 'reacting_disabled'
+  | 'disliking_disabled'
+  | 'reacting_like_limited_max_reached'
+  | 'reacting_dislike_limited_max_reached'
   | PermissionsDisabledReason;
 
 export type PostingDisabledReason =
@@ -288,12 +288,12 @@ export interface IUpdatedProjectProperties {
   participation_method?: ParticipationMethod | null;
   posting_enabled?: boolean | null;
   commenting_enabled?: boolean | null;
-  voting_enabled?: boolean | null;
-  upvoting_method?: 'limited' | 'unlimited' | null;
-  downvoting_method?: 'limited' | 'unlimited' | null;
-  upvoting_limited_max?: number | null;
-  downvoting_enabled?: boolean | null;
-  downvoting_limited_max?: number | null;
+  reacting_enabled?: boolean | null;
+  reacting_like_method?: 'limited' | 'unlimited' | null;
+  reacting_dislike_method?: 'limited' | 'unlimited' | null;
+  reacting_like_limited_max?: number | null;
+  reacting_dislike_enabled?: boolean | null;
+  reacting_dislike_limited_max?: number | null;
   presentation_mode?: PresentationMode | null;
   admin_publication_attributes?: {
     publication_status?: PublicationStatus;
