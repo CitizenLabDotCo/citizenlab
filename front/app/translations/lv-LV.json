@@ -40,6 +40,7 @@
   "app.components.Comments.commentingMaybeNotPermitted": "Lūdzu, {signInLink}, lai uzzinātu, kādas darbības var veikt.",
   "app.components.Comments.inputsAssociatedWithProfile": "Pēc noklusējuma jūsu iesniegumi tiks saistīti ar jūsu profilu, ja vien neizvēlaties šo opciju.",
   "app.components.Comments.invisibleTitleComments": "Komentāri",
+  "app.components.Comments.leastRecent": "Vismazāk nesen",
   "app.components.Comments.mostRecent": "Jaunākais",
   "app.components.Comments.mostUpvoted": "Vislielāko balsu skaitu saņēma",
   "app.components.Comments.official": "Oficiālais",

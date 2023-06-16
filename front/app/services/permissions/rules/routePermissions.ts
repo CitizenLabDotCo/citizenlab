@@ -16,7 +16,7 @@ const MODERATOR_ROUTES = [
   '/admin/projects',
   '/admin/ideas',
   '/admin/ideas/import',
-  '/admin/workshops',
+  '/admin/tools',
   '/admin/processing',
   '/admin/dashboard/moderation',
   '/admin/reporting/insights',

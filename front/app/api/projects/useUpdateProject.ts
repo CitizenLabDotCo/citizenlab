@@ -2,11 +2,11 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrorsJSON } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import { IProject, IUpdatedProjectProperties } from './types';
-import streams from 'utils/streams';
-import { API_PATH } from 'containers/App/constants';
 import projectsKeys from './keys';
 import topicsKeys from 'api/topics/keys';
 import areasKeys from 'api/areas/keys';
+import adminPublicationsKeys from 'api/admin_publications/keys';
+import adminPublicationsStatusCountsKeys from 'api/admin_publications_status_counts/keys';
 import meKeys from 'api/me/keys';
 
 export const updateProject = async ({
@@ -28,12 +28,11 @@ const useUpdateProject = () => {
       queryClient.invalidateQueries({ queryKey: topicsKeys.lists() });
       queryClient.invalidateQueries({ queryKey: areasKeys.lists() });
       queryClient.invalidateQueries({ queryKey: meKeys.all() });
-
-      await streams.fetchAllWith({
-        apiEndpoint: [
-          `${API_PATH}/admin_publications`,
-          `${API_PATH}/admin_publications/status_counts`,
-        ],
+      queryClient.invalidateQueries({
+        queryKey: adminPublicationsKeys.lists(),
+      });
+      queryClient.invalidateQueries({
+        queryKey: adminPublicationsStatusCountsKeys.items(),
       });
     },
   });

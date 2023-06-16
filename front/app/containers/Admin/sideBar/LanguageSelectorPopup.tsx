@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
+import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
 import { Popup } from 'semantic-ui-react';
 
 // i18n
@@ -45,9 +45,13 @@ export const LanguageSelectorPopup = ({ setIsOpen, isOpen }: Props) => {
     <Popup
       trigger={
         <Box display="flex" justifyContent="space-between" w="100%">
-          {formatMessage({ ...messages.language })}
+          <Text my="0px" color="coolGrey600">
+            {formatMessage({ ...messages.language })}
+          </Text>
           <Box display="flex" justifyContent="center" alignItems="center">
-            {selectedLocale}
+            <Text my="0px" color="coolGrey600">
+              {selectedLocale}
+            </Text>
             <Icon name="chevron-right" fill={colors.grey600} />
           </Box>
         </Box>
@@ -76,7 +80,9 @@ export const LanguageSelectorPopup = ({ setIsOpen, isOpen }: Props) => {
               onClick={() => updateLocale(tenantLocale, appConfig)}
             >
               <Box display="flex" justifyContent="space-between" w="100%">
-                {shortenedAppLocalePairs[tenantLocale]}
+                <Text my="0px" color="coolGrey600">
+                  {shortenedAppLocalePairs[tenantLocale]}
+                </Text>
               </Box>
             </ItemMenu>
           );

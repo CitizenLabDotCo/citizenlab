@@ -9,7 +9,6 @@ import {
   formCustomFieldsStream,
   formCustomFieldOptionStream,
 } from '../services/formCustomFields';
-import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   inputTypes?: ICustomFieldInputType[];
@@ -94,26 +93,5 @@ export default function useFormCustomFields({
     return () => subscription.unsubscribe();
   }, [inputTypes, projectId, phaseId]);
 
-  // return formCustomFields;
-  // TODO: fix this properly
-  return isNilOrError(formCustomFields)
-    ? formCustomFields
-    : removeInvalidEntries(formCustomFields);
+  return formCustomFields;
 }
-
-const removeInvalidEntries = (formCustomFields: IFlatCustomField[]) => {
-  const fields: IFlatCustomField[] = [];
-  let firstValidFieldFound = false;
-
-  formCustomFields.forEach((field) => {
-    if (['page', 'section'].includes(field.input_type)) {
-      firstValidFieldFound = true;
-    }
-
-    if (firstValidFieldFound) {
-      fields.push(field);
-    }
-  });
-
-  return fields;
-};

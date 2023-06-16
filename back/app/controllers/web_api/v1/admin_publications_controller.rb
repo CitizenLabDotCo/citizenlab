@@ -43,7 +43,7 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
 
     counts = publications.group(:publication_status).count
 
-    render json: { status_counts: counts }
+    render json: raw_json({ status_counts: counts })
   end
 
   def show

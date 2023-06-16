@@ -27,6 +27,6 @@ export default async function resendEmailConfirmationCode(newEmail?: string) {
 
     return true;
   } catch (errors) {
-    throw errors.json.errors;
+    throw errors.errors;
   }
 }

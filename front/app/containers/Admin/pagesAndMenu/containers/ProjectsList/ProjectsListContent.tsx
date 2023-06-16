@@ -8,7 +8,7 @@ import Link from 'utils/cl-router/Link';
 import Warning from 'components/UI/Warning';
 
 // hooks
-import useAdminPublications from 'hooks/useAdminPublications';
+import useAdminPublications from 'api/admin_publications/useAdminPublications';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -33,12 +33,15 @@ const ProjectsListContent = ({ customPage }: Props) => {
   // Needs to be in sync with the projects list shown in
   // the projects list config of the custom page in the admin.
   // Comment reference to find it easily: 881dd218.
-  const { list: adminPublicationsList } = useAdminPublications({
+
+  const { data } = useAdminPublications({
     topicIds,
     areaIds,
     publicationStatusFilter: ['published', 'archived'],
     onlyProjects: true,
   });
+
+  const adminPublicationsList = data?.pages.map((page) => page.data).flat();
 
   if (isNilOrError(adminPublicationsList)) return null;
 

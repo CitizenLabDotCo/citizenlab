@@ -10,7 +10,7 @@ describe ParticipationContextService do
       {
         participation_method: 'ideation',
         posting_enabled: false,
-        voting_enabled: false,
+        reacting_enabled: false,
         commenting_enabled: false
       }
     end
@@ -27,8 +27,8 @@ describe ParticipationContextService do
       expect(service.participation_possible_for_context?(project, create(:user))).to be true
     end
 
-    it 'returns true when voting is possible' do
-      expect(service).to receive(:idea_voting_disabled_reason_for).and_return nil
+    it 'returns true when reacting is possible' do
+      expect(service).to receive(:idea_reacting_disabled_reason_for).and_return nil
       project = create(:continuous_project, no_participation_attributes)
       expect(service.participation_possible_for_context?(project, create(:user))).to be true
     end
@@ -257,325 +257,325 @@ describe ParticipationContextService do
     end
   end
 
-  describe 'idea_voting_disabled_reason_for' do
+  describe 'idea_reacting_disabled_reason_for' do
     let(:user) { create(:user) }
 
-    context 'a vote' do
-      it 'returns nil when voting is enabled in the current phase' do
-        project = create(:project_with_current_phase, current_phase_attrs: { voting_enabled: true })
+    context 'a reaction' do
+      it 'returns nil when reacting is enabled in the current phase' do
+        project = create(:project_with_current_phase, current_phase_attrs: { reacting_enabled: true })
         idea = create(:idea, project: project, phases: project.phases)
-        vote = build(:vote, user: user, votable: idea)
+        reaction = build(:reaction, user: user, reactable: idea)
 
-        expect(service.idea_voting_disabled_reason_for(vote, user)).to be_nil
+        expect(service.idea_reacting_disabled_reason_for(reaction, user)).to be_nil
       end
 
       it "returns `project_inactive` when the timeline hasn't started yet" do
         project = create(:project_with_future_phases)
         idea = create(:idea, project: project, phases: project.phases)
-        vote = build(:vote, user: user, votable: idea)
+        reaction = build(:reaction, user: user, reactable: idea)
 
-        expect(service.idea_voting_disabled_reason_for(vote, user)).to eq 'project_inactive'
+        expect(service.idea_reacting_disabled_reason_for(reaction, user)).to eq 'project_inactive'
       end
 
       it "returns `idea_not_in_current_phase` when it's not in the current phase" do
         project = create(
           :project_with_current_phase,
           phases_config: { sequence: 'xxcxx' },
-          current_phase_attrs: { voting_enabled: true }
+          current_phase_attrs: { reacting_enabled: true }
         )
         idea_phases = project.phases.order(:start_at).take(2) + [project.phases.order(:start_at).last]
         idea = create(:idea, project: project, phases: idea_phases)
-        vote = build(:vote, user: user, votable: idea)
+        reaction = build(:reaction, user: user, reactable: idea)
 
-        expect(service.idea_voting_disabled_reason_for(vote, user)).to eq 'idea_not_in_current_phase'
+        expect(service.idea_reacting_disabled_reason_for(reaction, user)).to eq 'idea_not_in_current_phase'
       end
 
-      it 'returns `voting_disabled` if voting is disabled' do
-        project = create(:continuous_project, voting_enabled: false)
+      it 'returns `reacting_disabled` if reacting is disabled' do
+        project = create(:continuous_project, reacting_enabled: false)
         idea = create(:idea, project: project)
-        vote = build(:vote, user: user, votable: idea)
+        reaction = build(:reaction, user: user, reactable: idea)
 
-        expect(service.idea_voting_disabled_reason_for(vote, user)).to eq 'voting_disabled'
+        expect(service.idea_reacting_disabled_reason_for(reaction, user)).to eq 'reacting_disabled'
       end
 
-      it 'returns `downvoting_disabled` for a downvote if downvoting is disabled' do
-        project = create(:continuous_project, voting_enabled: true, downvoting_enabled: false)
+      it 'returns `reacting_dislike_disabled` for a dislike if disliking is disabled' do
+        project = create(:continuous_project, reacting_enabled: true, reacting_dislike_enabled: false)
         idea = create(:idea, project: project)
-        vote = build(:vote, mode: 'down', user: user, votable: idea)
+        reaction = build(:reaction, mode: 'down', user: user, reactable: idea)
 
-        expect(service.idea_voting_disabled_reason_for(vote, user)).to eq 'downvoting_disabled'
+        expect(service.idea_reacting_disabled_reason_for(reaction, user)).to eq 'reacting_dislike_disabled'
       end
 
-      it 'returns nil for an upvote if downvoting is disabled' do
-        project = create(:continuous_project, voting_enabled: true, downvoting_enabled: false)
+      it 'returns nil for a like if disliking is disabled' do
+        project = create(:continuous_project, reacting_enabled: true, reacting_dislike_enabled: false)
         idea = create(:idea, project: project)
-        vote = build(:vote, mode: 'up', user: user, votable: idea)
+        reaction = build(:reaction, mode: 'up', user: user, reactable: idea)
 
-        expect(service.idea_voting_disabled_reason_for(vote, user)).to be_nil
+        expect(service.idea_reacting_disabled_reason_for(reaction, user)).to be_nil
       end
 
-      it "returns nil for a downvote, but while the mode is explicitely specified as 'up', even though downvoting is disabled" do
-        project = create(:continuous_project, voting_enabled: true, downvoting_enabled: false)
+      it "returns nil for a dislike, but while the mode is explicitly specified as 'up', even though disliking is disabled" do
+        project = create(:continuous_project, reacting_enabled: true, reacting_dislike_enabled: false)
         idea = create(:idea, project: project)
-        vote = build(:vote, mode: 'down', user: user, votable: idea)
+        reaction = build(:reaction, mode: 'down', user: user, reactable: idea)
 
-        expect(service.idea_voting_disabled_reason_for(vote, user, mode: 'up')).to be_nil
+        expect(service.idea_reacting_disabled_reason_for(reaction, user, mode: 'up')).to be_nil
       end
 
-      it 'returns `upvoting_limited_max_reached` if the upvoting limit was reached' do
-        project = create(:continuous_project, voting_enabled: true, upvoting_method: 'limited', upvoting_limited_max: 1)
+      it 'returns `reacting_like_limited_max_reached` if the like limit was reached' do
+        project = create(:continuous_project, reacting_enabled: true, reacting_like_method: 'limited', reacting_like_limited_max: 1)
         idea = create(:idea, project: project)
-        create(:vote, mode: 'up', user: user, votable: idea)
-        vote = build(:vote, mode: 'up', user: user, votable: idea)
+        create(:reaction, mode: 'up', user: user, reactable: idea)
+        reaction = build(:reaction, mode: 'up', user: user, reactable: idea)
 
-        expect(service.idea_voting_disabled_reason_for(vote, user)).to eq 'upvoting_limited_max_reached'
+        expect(service.idea_reacting_disabled_reason_for(reaction, user)).to eq 'reacting_like_limited_max_reached'
       end
 
-      it 'returns nil if the upvoting limit was not reached' do
-        project = create(:continuous_project, voting_enabled: true, upvoting_method: 'limited', upvoting_limited_max: 1)
+      it 'returns nil if the like limit was not reached' do
+        project = create(:continuous_project, reacting_enabled: true, reacting_like_method: 'limited', reacting_like_limited_max: 1)
         idea = create(:idea, project: project)
-        create(:vote, mode: 'down', user: user, votable: idea)
-        vote = build(:vote, mode: 'up', user: user, votable: idea)
+        create(:reaction, mode: 'down', user: user, reactable: idea)
+        reaction = build(:reaction, mode: 'up', user: user, reactable: idea)
 
-        expect(service.idea_voting_disabled_reason_for(vote, user)).to be_nil
+        expect(service.idea_reacting_disabled_reason_for(reaction, user)).to be_nil
       end
 
-      it 'returns `downvoting_limited_max_reached` if the downvoting limit was reached' do
-        project = create(:continuous_project, voting_enabled: true,
-          downvoting_enabled: true, downvoting_method: 'limited', downvoting_limited_max: 1)
+      it 'returns `reacting_dislike_limited_max_reached` if the disliking limit was reached' do
+        project = create(:continuous_project, reacting_enabled: true,
+          reacting_dislike_enabled: true, reacting_dislike_method: 'limited', reacting_dislike_limited_max: 1)
         idea = create(:idea, project: project)
-        create(:vote, mode: 'down', user: user, votable: idea)
-        vote = build(:vote, mode: 'down', user: user, votable: idea)
+        create(:reaction, mode: 'down', user: user, reactable: idea)
+        reaction = build(:reaction, mode: 'down', user: user, reactable: idea)
 
-        expect(service.idea_voting_disabled_reason_for(vote, user)).to eq 'downvoting_limited_max_reached'
+        expect(service.idea_reacting_disabled_reason_for(reaction, user)).to eq 'reacting_dislike_limited_max_reached'
       end
 
-      it 'returns nil if the downvoting limit was not reached' do
-        project = create(:continuous_project, voting_enabled: true,
-          downvoting_enabled: true, downvoting_method: 'limited', downvoting_limited_max: 1)
+      it 'returns nil if the disliking limit was not reached' do
+        project = create(:continuous_project, reacting_enabled: true,
+          reacting_dislike_enabled: true, reacting_dislike_method: 'limited', reacting_dislike_limited_max: 1)
         idea = create(:idea, project: project)
-        create(:vote, mode: 'up', user: user, votable: idea)
-        vote = build(:vote, mode: 'down', user: user, votable: idea)
+        create(:reaction, mode: 'up', user: user, reactable: idea)
+        reaction = build(:reaction, mode: 'down', user: user, reactable: idea)
 
-        expect(service.idea_voting_disabled_reason_for(vote, user)).to be_nil
+        expect(service.idea_reacting_disabled_reason_for(reaction, user)).to be_nil
       end
     end
 
     context 'an idea' do
-      it 'returns nil when voting is enabled' do
-        project = create(:continuous_project, voting_enabled: true)
+      it 'returns nil when reacting is enabled' do
+        project = create(:continuous_project, reacting_enabled: true)
         idea = create(:idea, project: project)
 
-        expect(service.idea_voting_disabled_reason_for(idea, user, mode: 'up')).to be_nil
-        expect(service.idea_voting_disabled_reason_for(idea, user, mode: 'down')).to be_nil
+        expect(service.idea_reacting_disabled_reason_for(idea, user, mode: 'up')).to be_nil
+        expect(service.idea_reacting_disabled_reason_for(idea, user, mode: 'down')).to be_nil
       end
 
       it 'returns `project_inactive` when the timeline has past' do
         project = create(:project_with_past_phases)
         idea = create(:idea, project: project, phases: project.phases)
 
-        expect(service.idea_voting_disabled_reason_for(idea, user, mode: 'up')).to eq 'project_inactive'
-        expect(service.idea_voting_disabled_reason_for(idea, user, mode: 'down')).to eq 'project_inactive'
+        expect(service.idea_reacting_disabled_reason_for(idea, user, mode: 'up')).to eq 'project_inactive'
+        expect(service.idea_reacting_disabled_reason_for(idea, user, mode: 'down')).to eq 'project_inactive'
       end
 
       it "returns `not_ideation` when we're in a participatory budgeting context" do
         project = create(:continuous_budgeting_project)
         idea = create(:idea, project: project)
 
-        expect(service.idea_voting_disabled_reason_for(idea, user, mode: 'up')).to eq 'not_ideation'
-        expect(service.idea_voting_disabled_reason_for(idea, user, mode: 'down')).to eq 'not_ideation'
+        expect(service.idea_reacting_disabled_reason_for(idea, user, mode: 'up')).to eq 'not_ideation'
+        expect(service.idea_reacting_disabled_reason_for(idea, user, mode: 'down')).to eq 'not_ideation'
       end
 
       it "returns `idea_not_in_current_phase` when it's not in the current phase" do
         project = create(
           :project_with_current_phase,
           phases_config: { sequence: 'xxcxx' },
-          current_phase_attrs: { voting_enabled: true }
+          current_phase_attrs: { reacting_enabled: true }
         )
         idea_phases = [project.phases.order(:start_at).first, project.phases.order(:start_at).last]
         idea = create(:idea, project: project, phases: idea_phases)
 
-        expect(service.idea_voting_disabled_reason_for(idea, user, mode: 'up')).to eq 'idea_not_in_current_phase'
-        expect(service.idea_voting_disabled_reason_for(idea, user, mode: 'down')).to eq 'idea_not_in_current_phase'
+        expect(service.idea_reacting_disabled_reason_for(idea, user, mode: 'up')).to eq 'idea_not_in_current_phase'
+        expect(service.idea_reacting_disabled_reason_for(idea, user, mode: 'down')).to eq 'idea_not_in_current_phase'
       end
 
-      it 'returns `downvoting_limited_max_reached` if the downvoting limit was reached' do
-        project = create(:continuous_project, voting_enabled: true,
-          downvoting_enabled: true, downvoting_method: 'limited', downvoting_limited_max: 1)
+      it 'returns `reacting_dislike_limited_max_reached` if the dislike limit was reached' do
+        project = create(:continuous_project, reacting_enabled: true,
+          reacting_dislike_enabled: true, reacting_dislike_method: 'limited', reacting_dislike_limited_max: 1)
         idea = create(:idea, project: project)
-        create(:vote, mode: 'down', user: user, votable: idea)
+        create(:reaction, mode: 'down', user: user, reactable: idea)
 
-        expect(service.idea_voting_disabled_reason_for(idea, user, mode: 'up')).to be_nil
-        expect(service.idea_voting_disabled_reason_for(idea, user, mode: 'down')).to eq 'downvoting_limited_max_reached'
+        expect(service.idea_reacting_disabled_reason_for(idea, user, mode: 'up')).to be_nil
+        expect(service.idea_reacting_disabled_reason_for(idea, user, mode: 'down')).to eq 'reacting_dislike_limited_max_reached'
       end
     end
 
     context 'a continuous project' do
-      it 'returns nil when voting is enabled' do
-        project = create(:continuous_project, voting_enabled: true)
+      it 'returns nil when reacting is enabled' do
+        project = create(:continuous_project, reacting_enabled: true)
 
-        expect(service.idea_voting_disabled_reason_for(project, user, mode: 'up')).to be_nil
-        expect(service.idea_voting_disabled_reason_for(project, user, mode: 'down')).to be_nil
+        expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'up')).to be_nil
+        expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'down')).to be_nil
       end
 
       it 'returns `project_inactive` when the project is archived' do
         project = create(:continuous_project, admin_publication_attributes: { publication_status: 'archived' })
 
-        expect(service.idea_voting_disabled_reason_for(project, user, mode: 'up')).to eq 'project_inactive'
-        expect(service.idea_voting_disabled_reason_for(project, user, mode: 'down')).to eq 'project_inactive'
+        expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'up')).to eq 'project_inactive'
+        expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'down')).to eq 'project_inactive'
       end
 
       it "returns `not_ideation` when we're in an information context" do
         project = create(:continuous_project, participation_method: 'information')
 
-        expect(service.idea_voting_disabled_reason_for(project, user, mode: 'up')).to eq 'not_ideation'
-        expect(service.idea_voting_disabled_reason_for(project, user, mode: 'down')).to eq 'not_ideation'
+        expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'up')).to eq 'not_ideation'
+        expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'down')).to eq 'not_ideation'
       end
 
-      it 'returns `voting_disabled` if voting is disabled' do
-        project = create(:continuous_project, voting_enabled: false)
+      it 'returns `reacting_disabled` if reacting is disabled' do
+        project = create(:continuous_project, reacting_enabled: false)
 
-        expect(service.idea_voting_disabled_reason_for(project, user, mode: 'up')).to eq 'voting_disabled'
-        expect(service.idea_voting_disabled_reason_for(project, user, mode: 'down')).to eq 'voting_disabled'
+        expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'up')).to eq 'reacting_disabled'
+        expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'down')).to eq 'reacting_disabled'
       end
 
-      it 'returns nil for upvoting if downvoting is disabled' do
-        project = create(:continuous_project, voting_enabled: true, downvoting_enabled: false)
+      it 'returns nil for liking if disliking is disabled' do
+        project = create(:continuous_project, reacting_enabled: true, reacting_dislike_enabled: false)
 
-        expect(service.idea_voting_disabled_reason_for(project, user, mode: 'up')).to be_nil
+        expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'up')).to be_nil
       end
 
-      it 'returns `downvoting_disabled` for downvoting if downvoting is disabled' do
-        project = create(:continuous_project, voting_enabled: true, downvoting_enabled: false)
+      it 'returns `reacting_dislike_disabled` for disliking if disliking is disabled' do
+        project = create(:continuous_project, reacting_enabled: true, reacting_dislike_enabled: false)
 
-        expect(service.idea_voting_disabled_reason_for(project, user, mode: 'down')).to eq 'downvoting_disabled'
+        expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'down')).to eq 'reacting_dislike_disabled'
       end
     end
 
     context 'a timeline project' do
-      it 'returns nil when voting is enabled in the current phase' do
-        project = create(:project_with_current_phase, current_phase_attrs: { voting_enabled: true })
+      it 'returns nil when reacting is enabled in the current phase' do
+        project = create(:project_with_current_phase, current_phase_attrs: { reacting_enabled: true })
 
-        expect(service.idea_voting_disabled_reason_for(project, user, mode: 'up')).to be_nil
-        expect(service.idea_voting_disabled_reason_for(project, user, mode: 'down')).to be_nil
+        expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'up')).to be_nil
+        expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'down')).to be_nil
       end
 
       it 'returns `project_inactive` when the project is archived' do
         project = create(
           :project_with_current_phase,
-          admin_publication_attributes: { publication_status: 'archived' }, current_phase_attrs: { voting_enabled: true }
+          admin_publication_attributes: { publication_status: 'archived' }, current_phase_attrs: { reacting_enabled: true }
         )
 
-        expect(service.idea_voting_disabled_reason_for(project, user, mode: 'up')).to eq 'project_inactive'
-        expect(service.idea_voting_disabled_reason_for(project, user, mode: 'down')).to eq 'project_inactive'
+        expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'up')).to eq 'project_inactive'
+        expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'down')).to eq 'project_inactive'
       end
 
       it "returns `project_inactive` when the timeline hasn't started yet" do
         project = create(:project_with_future_phases)
 
-        expect(service.idea_voting_disabled_reason_for(project, user, mode: 'up')).to eq 'project_inactive'
-        expect(service.idea_voting_disabled_reason_for(project, user, mode: 'down')).to eq 'project_inactive'
+        expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'up')).to eq 'project_inactive'
+        expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'down')).to eq 'project_inactive'
       end
 
       it 'returns `project_inactive` when the timeline has past' do
         project = create(:project_with_past_phases)
 
-        expect(service.idea_voting_disabled_reason_for(project, user, mode: 'up')).to eq 'project_inactive'
-        expect(service.idea_voting_disabled_reason_for(project, user, mode: 'down')).to eq 'project_inactive'
+        expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'up')).to eq 'project_inactive'
+        expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'down')).to eq 'project_inactive'
       end
 
       it "returns `not_ideation` when we're in a participatory budgeting context dsofifopwefwe" do
         project = create(:project_with_current_phase, current_phase_attrs: { participation_method: 'budgeting' })
 
-        expect(service.idea_voting_disabled_reason_for(project, user, mode: 'up')).to eq 'not_ideation'
-        expect(service.idea_voting_disabled_reason_for(project, user, mode: 'down')).to eq 'not_ideation'
+        expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'up')).to eq 'not_ideation'
+        expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'down')).to eq 'not_ideation'
       end
 
-      it 'returns `voting_disabled` if voting is disabled' do
-        project = create(:project_with_current_phase, current_phase_attrs: { voting_enabled: false })
+      it 'returns `reacting_disabled` if reacting is disabled' do
+        project = create(:project_with_current_phase, current_phase_attrs: { reacting_enabled: false })
 
-        expect(service.idea_voting_disabled_reason_for(project, user, mode: 'up')).to eq 'voting_disabled'
-        expect(service.idea_voting_disabled_reason_for(project, user, mode: 'down')).to eq 'voting_disabled'
+        expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'up')).to eq 'reacting_disabled'
+        expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'down')).to eq 'reacting_disabled'
       end
 
-      it 'returns `upvoting_limited_max_reached` if the upvoting limit was reached' do
+      it 'returns `reacting_like_limited_max_reached` if the like limit was reached' do
         project = create(:project_with_current_phase,
-          current_phase_attrs: { voting_enabled: true, upvoting_method: 'limited', upvoting_limited_max: 1 })
-        create(:vote, mode: 'up', user: user, votable: create(:idea, project: project, phases: project.phases))
+          current_phase_attrs: { reacting_enabled: true, reacting_like_method: 'limited', reacting_like_limited_max: 1 })
+        create(:reaction, mode: 'up', user: user, reactable: create(:idea, project: project, phases: project.phases))
 
-        expect(service.idea_voting_disabled_reason_for(project, user, mode: 'up')).to eq 'upvoting_limited_max_reached'
-        expect(service.idea_voting_disabled_reason_for(project, user, mode: 'down')).to be_nil
+        expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'up')).to eq 'reacting_like_limited_max_reached'
+        expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'down')).to be_nil
       end
     end
 
     context 'a phase' do
-      it 'returns nil when voting is enabled' do
+      it 'returns nil when reacting is enabled' do
         project = create(
           :project_with_current_phase,
-          phases_config: { sequence: 'xcx', c: { voting_enabled: true }, x: { voting_enabled: false } }
+          phases_config: { sequence: 'xcx', c: { reacting_enabled: true }, x: { reacting_enabled: false } }
         )
         phase = project.phases.order(:start_at)[1]
 
-        expect(service.idea_voting_disabled_reason_for(phase, user, mode: 'up')).to be_nil
-        expect(service.idea_voting_disabled_reason_for(phase, user, mode: 'down')).to be_nil
+        expect(service.idea_reacting_disabled_reason_for(phase, user, mode: 'up')).to be_nil
+        expect(service.idea_reacting_disabled_reason_for(phase, user, mode: 'down')).to be_nil
       end
 
-      it 'returns nil when voting is enabled for that phase, but disabled for the current phase' do
+      it 'returns nil when reacting is enabled for that phase, but disabled for the current phase' do
         project = create(
           :project_with_current_phase,
-          phases_config: { sequence: 'xxcxx', c: { voting_enabled: false }, x: { voting_enabled: true } }
+          phases_config: { sequence: 'xxcxx', c: { reacting_enabled: false }, x: { reacting_enabled: true } }
         )
         phase = project.phases.order(:start_at).first
 
-        expect(service.idea_voting_disabled_reason_for(phase, user, mode: 'up')).to be_nil
-        expect(service.idea_voting_disabled_reason_for(phase, user, mode: 'down')).to be_nil
+        expect(service.idea_reacting_disabled_reason_for(phase, user, mode: 'up')).to be_nil
+        expect(service.idea_reacting_disabled_reason_for(phase, user, mode: 'down')).to be_nil
       end
 
-      it 'returns `upvoting_limited_max_reached` if the upvoting limit was reached for that phase' do
+      it 'returns `reacting_like_limited_max_reached` if the like limit was reached for that phase' do
         project = create(
           :project_with_current_phase,
-          phases_config: { sequence: 'xxcxx', c: { voting_enabled: true },
-                           x: { voting_enabled: true, upvoting_method: 'limited', upvoting_limited_max: 2 } }
+          phases_config: { sequence: 'xxcxx', c: { reacting_enabled: true },
+                           x: { reacting_enabled: true, reacting_like_method: 'limited', reacting_like_limited_max: 2 } }
         )
         phase = project.phases.order(:start_at).first
         ideas = create_list(:idea, 2, project: project, phases: project.phases)
         ideas.each do |idea|
-          create(:vote, mode: 'up', votable: idea, user: user)
+          create(:reaction, mode: 'up', reactable: idea, user: user)
         end
 
-        expect(service.idea_voting_disabled_reason_for(phase, user, mode: 'up')).to eq 'upvoting_limited_max_reached'
-        expect(service.idea_voting_disabled_reason_for(phase, user, mode: 'down')).to be_nil
+        expect(service.idea_reacting_disabled_reason_for(phase, user, mode: 'up')).to eq 'reacting_like_limited_max_reached'
+        expect(service.idea_reacting_disabled_reason_for(phase, user, mode: 'down')).to be_nil
       end
     end
   end
 
-  describe 'cancelling_votes_disabled_reasons' do
+  describe 'cancelling_reactions_disabled_reasons' do
     let(:user) { create(:user) }
-    let(:reasons) { ParticipationContextService::VOTING_DISABLED_REASONS }
+    let(:reasons) { ParticipationContextService::REACTING_DISABLED_REASONS }
 
     context 'timeline project' do
-      it 'returns nil when voting is enabled in the current phase' do
+      it 'returns nil when reacting is enabled in the current phase' do
         project = create(:project_with_current_phase)
         idea = create(:idea, project: project, phases: [project.phases[2]])
-        expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to be_nil
+        expect(service.cancelling_reacting_disabled_reason_for_idea(idea, idea.author)).to be_nil
       end
 
       it "returns `idea_not_in_current_phase` when it's not in the current phase" do
         project = create(:project_with_current_phase)
         idea = create(:idea, project: project, phases: [project.phases[1]])
-        expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to eq reasons[:idea_not_in_current_phase]
+        expect(service.cancelling_reacting_disabled_reason_for_idea(idea, idea.author)).to eq reasons[:idea_not_in_current_phase]
       end
 
-      it "returns 'voting_disabled' if it's in the current phase and voting is disabled" do
-        project = create(:project_with_current_phase, current_phase_attrs: { voting_enabled: false })
+      it "returns 'reacting_disabled' if it's in the current phase and reacting is disabled" do
+        project = create(:project_with_current_phase, current_phase_attrs: { reacting_enabled: false })
         idea = create(:idea, project: project, phases: [project.phases[2]])
-        expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to eq reasons[:voting_disabled]
+        expect(service.cancelling_reacting_disabled_reason_for_idea(idea, idea.author)).to eq reasons[:reacting_disabled]
       end
 
       it "returns 'project_inactive' when the timeline has past" do
         project = create(:project_with_past_phases)
         idea = create(:idea, project: project, phases: project.phases)
-        expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to eq reasons[:project_inactive]
+        expect(service.cancelling_reacting_disabled_reason_for_idea(idea, idea.author)).to eq reasons[:project_inactive]
       end
 
       it "returns `not_ideation` when we're in a participatory budgeting context" do
@@ -584,33 +584,33 @@ describe ParticipationContextService do
           current_phase_attrs: { participation_method: 'budgeting', max_budget: 1200 }
         )
         idea = create(:idea, project: project, phases: project.phases)
-        expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to eq 'not_ideation'
+        expect(service.cancelling_reacting_disabled_reason_for_idea(idea, idea.author)).to eq 'not_ideation'
       end
     end
 
     context 'continuous project' do
-      it 'returns nil when voting is enabled' do
+      it 'returns nil when reacting is enabled' do
         project = create(:continuous_project)
         idea = create(:idea, project: project)
-        expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to be_nil
+        expect(service.cancelling_reacting_disabled_reason_for_idea(idea, idea.author)).to be_nil
       end
 
       it "returns 'project_inactive' when the project is archived" do
         project = create(:continuous_project, admin_publication_attributes: { publication_status: 'archived' })
         idea = create(:idea, project: project, phases: project.phases)
-        expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to eq reasons[:project_inactive]
+        expect(service.cancelling_reacting_disabled_reason_for_idea(idea, idea.author)).to eq reasons[:project_inactive]
       end
 
-      it "returns 'voting_disabled' if voting is disabled" do
-        project = create(:continuous_project, voting_enabled: false)
+      it "returns 'reacting_disabled' if reacting is disabled" do
+        project = create(:continuous_project, reacting_enabled: false)
         idea = create(:idea, project: project)
-        expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to eq reasons[:voting_disabled]
+        expect(service.cancelling_reacting_disabled_reason_for_idea(idea, idea.author)).to eq reasons[:reacting_disabled]
       end
 
-      it 'returns nil when downvoting is disabled but voting is enabled' do
-        project = create(:continuous_project, voting_enabled: true, downvoting_enabled: false)
+      it 'returns nil when disliking is disabled but reacting is enabled' do
+        project = create(:continuous_project, reacting_enabled: true, reacting_dislike_enabled: false)
         idea = create(:idea, project: project)
-        expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to be_nil
+        expect(service.cancelling_reacting_disabled_reason_for_idea(idea, idea.author)).to be_nil
       end
     end
   end
@@ -765,43 +765,43 @@ describe ParticipationContextService do
     end
   end
 
-  describe 'future_voting_enabled_phase' do
-    it 'returns the first upcoming phase that has voting enabled' do
+  describe 'future_reacting_enabled_phase' do
+    it 'returns the first upcoming phase that has reacting enabled' do
       project = create(
         :project_with_current_phase,
         phases_config: {
           sequence: 'xcxxy',
-          x: { voting_enabled: true, downvoting_enabled: false },
-          c: { voting_enabled: false },
-          y: { voting_enabled: true, downvoting_enabled: true }
+          x: { reacting_enabled: true, reacting_dislike_enabled: false },
+          c: { reacting_enabled: false },
+          y: { reacting_enabled: true, reacting_dislike_enabled: true }
         }
       )
-      expect(service.future_upvoting_idea_enabled_phase(project, create(:user))).to eq project.phases.order(:start_at)[2]
-      expect(service.future_downvoting_idea_enabled_phase(project, create(:user))).to eq project.phases.order(:start_at)[4]
+      expect(service.future_liking_idea_enabled_phase(project, create(:user))).to eq project.phases.order(:start_at)[2]
+      expect(service.future_disliking_idea_enabled_phase(project, create(:user))).to eq project.phases.order(:start_at)[4]
     end
 
-    it 'returns nil if no next phase has voting enabled' do
+    it 'returns nil if no next phase has reacting enabled' do
       project = create(
         :project_with_current_phase,
         phases_config: {
           sequence: 'xcyy',
-          y: { voting_enabled: false }
+          y: { reacting_enabled: false }
         }
       )
-      expect(service.future_upvoting_idea_enabled_phase(project, create(:user))).to be_nil
-      expect(service.future_downvoting_idea_enabled_phase(project, create(:user))).to be_nil
+      expect(service.future_liking_idea_enabled_phase(project, create(:user))).to be_nil
+      expect(service.future_disliking_idea_enabled_phase(project, create(:user))).to be_nil
     end
 
     it 'returns nil for a continuous project' do
       project = create(:continuous_project)
-      expect(service.future_upvoting_idea_enabled_phase(project, create(:user))).to be_nil
-      expect(service.future_downvoting_idea_enabled_phase(project, create(:user))).to be_nil
+      expect(service.future_liking_idea_enabled_phase(project, create(:user))).to be_nil
+      expect(service.future_disliking_idea_enabled_phase(project, create(:user))).to be_nil
     end
 
     it 'returns nil for a project without future phases' do
       project = create(:project_with_past_phases)
-      expect(service.future_upvoting_idea_enabled_phase(project, create(:user))).to be_nil
-      expect(service.future_downvoting_idea_enabled_phase(project, create(:user))).to be_nil
+      expect(service.future_liking_idea_enabled_phase(project, create(:user))).to be_nil
+      expect(service.future_disliking_idea_enabled_phase(project, create(:user))).to be_nil
     end
   end
 

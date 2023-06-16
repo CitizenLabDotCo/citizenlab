@@ -23,8 +23,8 @@ import { getAvailableTabs, getCurrentTab } from './utils';
 
 // typings
 import { PublicationTab, Props as BaseProps } from '.';
-import { IUseAdminPublicationsOutput } from 'hooks/useAdminPublications';
-import { IStatusCounts } from 'hooks/useAdminPublicationsStatusCounts';
+import { IAdminPublicationData } from 'api/admin_publications/types';
+import { IStatusCountsAll } from 'api/admin_publications_status_counts/types';
 
 const Container = styled.div`
   display: flex;
@@ -36,13 +36,18 @@ const StyledTopbar = styled(Topbar)`
 `;
 
 interface Props extends BaseProps {
-  statusCounts: IStatusCounts | Error | null | undefined;
+  statusCounts: IStatusCountsAll;
   onChangeTopics?: (topics: string[]) => void;
   onChangeAreas?: (areas: string[]) => void;
   onChangeSearch?: (search: string | null) => void;
   showFilters: boolean;
-  adminPublications: IUseAdminPublicationsOutput;
-  statusCountsWithoutFilters: IStatusCounts | undefined | null | Error;
+  adminPublications: IAdminPublicationData[];
+  statusCountsWithoutFilters: IStatusCountsAll;
+  onChangePublicationStatus?: (publicationStatus: PublicationTab[]) => void;
+  onLoadMore?: () => void;
+  loadingInitial?: boolean;
+  loadingMore?: boolean;
+  hasMore?: boolean;
 }
 
 const ProjectAndFolderCardsInner = ({
@@ -57,11 +62,16 @@ const ProjectAndFolderCardsInner = ({
   onChangeSearch,
   adminPublications,
   statusCountsWithoutFilters,
+  onChangePublicationStatus,
+  onLoadMore,
+  loadingInitial,
+  loadingMore,
+  hasMore,
 }: Props) => {
   const [currentTab, setCurrentTab] = useState<PublicationTab | null>(null);
 
   useEffect(() => {
-    if (isNilOrError(statusCounts) || currentTab) return;
+    if (currentTab) return;
     setCurrentTab((currentTab) => getCurrentTab(statusCounts, currentTab));
   }, [statusCounts, currentTab]);
 
@@ -80,27 +90,22 @@ const ProjectAndFolderCardsInner = ({
   );
 
   useEffect(() => {
-    if (!publicationStatusesForCurrentTab) return;
-    adminPublications.onChangePublicationStatus(
-      publicationStatusesForCurrentTab
+    const publicationStatusesForCurrentTab = JSON.parse(
+      publicationStatusesForCurrentTabStringified
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [publicationStatusesForCurrentTabStringified]);
+    if (!publicationStatusesForCurrentTab) return;
+    onChangePublicationStatus &&
+      onChangePublicationStatus(publicationStatusesForCurrentTab);
+  }, [publicationStatusesForCurrentTabStringified, onChangePublicationStatus]);
 
   const handleChangeSearch = React.useCallback(
     (search: string | null) => {
       onChangeSearch?.(search);
-      adminPublications.onChangeSearch(search);
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [onChangeSearch]
   );
 
-  if (
-    isNilOrError(statusCounts) ||
-    !currentTab ||
-    isNilOrError(statusCountsWithoutFilters)
-  ) {
+  if (!currentTab) {
     return null;
   }
 
@@ -109,21 +114,19 @@ const ProjectAndFolderCardsInner = ({
 
   const showMore = () => {
     trackEventByName(tracks.clickOnProjectsShowMoreButton);
-    adminPublications.onLoadMore();
+    onLoadMore && onLoadMore();
   };
 
   const handleChangeTopics = (topics: string[]) => {
     onChangeTopics?.(topics);
-    adminPublications.onChangeTopics(topics);
   };
 
   const handleChangeAreas = (areas: string[]) => {
     onChangeAreas?.(areas);
-    adminPublications.onChangeAreas(areas);
   };
 
-  const { loadingInitial, loadingMore, hasMore, list } = adminPublications;
-  const hasPublications = !isNilOrError(list) && list.length > 0;
+  const hasPublications =
+    !isNilOrError(adminPublications) && adminPublications.length > 0;
 
   return (
     <Container id="e2e-projects-container">
@@ -162,14 +165,14 @@ const ProjectAndFolderCardsInner = ({
         <PublicationStatusTabs
           currentTab={currentTab}
           availableTabs={availableTabs}
-          list={list}
+          list={adminPublications}
           layout={layout}
-          hasMore={hasMore}
+          hasMore={!!hasMore}
         />
       )}
 
       {!loadingInitial && hasPublications && hasMore && (
-        <Footer loadingMore={loadingMore} onShowMore={showMore} />
+        <Footer loadingMore={!!loadingMore} onShowMore={showMore} />
       )}
     </Container>
   );

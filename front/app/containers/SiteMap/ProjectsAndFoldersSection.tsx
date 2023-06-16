@@ -10,7 +10,7 @@ import Link from 'utils/cl-router/Link';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-import useAdminPublications from 'hooks/useAdminPublications';
+import useAdminPublications from 'api/admin_publications/useAdminPublications';
 import ProjectFolderSiteMapItem from './ProjectFolderSiteMapItem';
 
 const AllProjectsLink = styled(Link)`
@@ -23,11 +23,13 @@ interface Props {
 }
 
 const ProjectsAndFoldersSection = ({ projectsSectionRef }: Props) => {
-  const { list: adminPublications } = useAdminPublications({
+  const { data } = useAdminPublications({
     publicationStatusFilter: ['draft', 'published', 'archived'],
     rootLevelOnly: true,
     removeNotAllowedParents: true,
   });
+
+  const adminPublications = data?.pages.map((page) => page.data).flat();
 
   if (!isNilOrError(adminPublications)) {
     return (
@@ -40,13 +42,15 @@ const ProjectsAndFoldersSection = ({ projectsSectionRef }: Props) => {
         </AllProjectsLink>
         {adminPublications.map((adminPublication) => (
           <React.Fragment key={adminPublication.id}>
-            {adminPublication.publicationType === 'project' && (
+            {adminPublication.relationships.publication.data.type ===
+              'project' && (
               <Project
                 projectId={adminPublication.relationships.publication.data.id}
                 hightestTitle="h3"
               />
             )}
-            {adminPublication.publicationType === 'folder' && (
+            {adminPublication.relationships.publication.data.type ===
+              'folder' && (
               <ProjectFolderSiteMapItem
                 projectFolderId={
                   adminPublication.relationships.publication.data.id

@@ -199,10 +199,10 @@ resource 'AdminPublication' do
 
         json_response = json_parse(response_body)
 
-        expect(json_response[:status_counts][:draft]).to eq 2
-        expect(json_response[:status_counts][:archived]).to eq 2
+        expect(json_response[:data][:attributes][:status_counts][:draft]).to eq 2
+        expect(json_response[:data][:attributes][:status_counts][:archived]).to eq 2
 
-        expect(json_response[:status_counts][:published]).to eq 3
+        expect(json_response[:data][:attributes][:status_counts][:published]).to eq 3
       end
     end
   end
@@ -412,10 +412,10 @@ resource 'AdminPublication' do
         expect(status).to eq 200
 
         json_response = json_parse(response_body)
-        expect(json_response[:status_counts][:draft]).to be_nil
-        expect(json_response[:status_counts][:published]).to eq 2
+        expect(json_response[:data][:attributes][:status_counts][:draft]).to be_nil
+        expect(json_response[:data][:attributes][:status_counts][:published]).to eq 2
 
-        expect(json_response[:status_counts][:archived]).to eq 1
+        expect(json_response[:data][:attributes][:status_counts][:archived]).to eq 1
       end
     end
   end

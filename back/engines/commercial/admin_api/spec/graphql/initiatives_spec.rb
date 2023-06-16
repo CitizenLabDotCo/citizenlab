@@ -39,7 +39,7 @@ RSpec.describe AdminApi::Schema do
                     }
                   }
                 }
-                upvotesCount
+                likesCount
                 commentsCount
               }
             }
@@ -57,7 +57,7 @@ RSpec.describe AdminApi::Schema do
       expect(edges&.first&.dig('node', 'id')).to be_present
       expect(edges&.first&.dig('node', 'href')).to be_present
       expect(edges&.first&.dig('node', 'titleMultiloc')&.values&.compact&.size).to be >= 1
-      expect(edges&.first&.dig('node', 'upvotesCount')).to be_present
+      expect(edges&.first&.dig('node', 'likesCount')).to be_present
       expect(edges&.first&.dig('node', 'commentsCount')).to be_present
     end
   end

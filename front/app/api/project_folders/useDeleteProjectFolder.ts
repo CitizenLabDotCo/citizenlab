@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import fetcher from 'utils/cl-react-query/fetcher';
 import projectFolderKeys from './keys';
-import streams from 'utils/streams';
-import { API_PATH } from 'containers/App/constants';
 import projectsKeys from 'api/projects/keys';
+import adminPublicationsKeys from 'api/admin_publications/keys';
+import adminPublicationsStatusCountsKeys from 'api/admin_publications_status_counts/keys';
 
 const deleteProjectFolder = ({
   projectFolderId,
@@ -27,8 +27,11 @@ const useDeleteProjectFolder = () => {
       queryClient.invalidateQueries({
         queryKey: projectsKeys.lists(),
       });
-      await streams.fetchAllWith({
-        partialApiEndpoint: [`${API_PATH}/admin_publications`],
+      queryClient.invalidateQueries({
+        queryKey: adminPublicationsKeys.lists(),
+      });
+      queryClient.invalidateQueries({
+        queryKey: adminPublicationsStatusCountsKeys.items(),
       });
     },
   });
