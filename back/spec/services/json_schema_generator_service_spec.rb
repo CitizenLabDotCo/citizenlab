@@ -22,7 +22,7 @@ RSpec.describe JsonSchemaGeneratorService do
             field1.key => { type: 'string' },
             field2.key => {
               type: 'string',
-              oneOf: [
+              enum: [
                 {
                   const: 'option1',
                   title: 'youth council'
@@ -42,7 +42,7 @@ RSpec.describe JsonSchemaGeneratorService do
             field1.key => { type: 'string' },
             field2.key => {
               type: 'string',
-              oneOf: [
+              enum: [
                 {
                   const: 'option1',
                   title: 'conseil des jeunes'
@@ -62,7 +62,7 @@ RSpec.describe JsonSchemaGeneratorService do
             field1.key => { type: 'string' },
             field2.key => {
               type: 'string',
-              oneOf: [
+              enum: [
                 {
                   const: 'option1',
                   title: 'jeugdraad'
@@ -184,7 +184,7 @@ RSpec.describe JsonSchemaGeneratorService do
       it 'returns the schema for the given field' do
         expect(generator.visit_select(field)).to eq({
           type: 'string',
-          oneOf: [
+          enum: [
             {
               const: 'option1',
               title: 'youth council'

@@ -24,7 +24,7 @@ class UserJsonSchemaGeneratorService < JsonSchemaGeneratorService
         const: 'outside',
         title: I18n.t('custom_field_options.domicile.outside')
       })
-      schema[:oneOf] = areas
+      schema[:enum] = areas
     end
   end
 end
