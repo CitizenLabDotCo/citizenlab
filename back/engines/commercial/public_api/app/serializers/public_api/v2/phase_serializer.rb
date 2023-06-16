@@ -14,12 +14,12 @@ class PublicApi::V2::PhaseSerializer < ActiveModel::Serializer
     :ideas_count,
     :posting_enabled,
     :commenting_enabled,
-    :voting_enabled,
-    :upvoting_method,
-    :upvoting_limited_max,
-    :downvoting_enabled,
-    :downvoting_method,
-    :downvoting_limited_max,
+    :reacting_enabled,
+    :reacting_like_method,
+    :reacting_like_limited_max,
+    :reacting_dislike_enabled,
+    :reacting_dislike_method,
+    :reacting_dislike_limited_max,
     :max_budget,
     :min_budget
 

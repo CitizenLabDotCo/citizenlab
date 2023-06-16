@@ -9,8 +9,8 @@ class PublicApi::V2::CommentSerializer < ActiveModel::Serializer
     :created_at,
     :updated_at,
     :body_updated_at,
-    :upvotes_count,
-    :downvotes_count,
+    :likes_count,
+    :dislikes_count,
     :children_count,
     :publication_status
 

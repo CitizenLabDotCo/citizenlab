@@ -17,7 +17,7 @@ PublicApi::Engine.routes.draw do
     resources :phases, only: %i[index show]
     resources :topics, only: %i[index show]
     resources :users, only: %i[index show]
-    resources :votes, only: %i[index]
+    resources :reactions, only: %i[index]
 
     resources :ideas, only: %i[index show] do
       collection do
