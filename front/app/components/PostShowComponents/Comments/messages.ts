@@ -38,6 +38,14 @@ export default defineMessages({
     id: 'app.containers.Comments.publishComment',
     defaultMessage: 'Post comment',
   },
+  postInternalComment: {
+    id: 'app.containers.Comments.postInternalComment',
+    defaultMessage: 'Post internal comment',
+  },
+  postPublicComment: {
+    id: 'app.containers.Comments.postPublicComment',
+    defaultMessage: 'Post public comment',
+  },
   commentDeletedPlaceholder: {
     id: 'app.containers.Comments.commentDeletedPlaceholder',
     defaultMessage: 'This comment has been deleted.',
@@ -268,5 +276,17 @@ export default defineMessages({
   internalConversation: {
     id: 'app.containers.Comments.internalConversation',
     defaultMessage: 'Internal conversation',
+  },
+  visibleToUsersWarning: {
+    id: 'app.containers.Comments.visibleToUsersWarning',
+    defaultMessage: 'Comments posted here will be visible to regular users.',
+  },
+  notVisibleToUsersPlaceholder: {
+    id: 'app.containers.Comments.notVisibleToUsersPlaceholder',
+    defaultMessage: 'This comment is not visible to regular users',
+  },
+  visibleToUsersPlaceholder: {
+    id: 'app.containers.Comments.visibleToUsersPlaceholder',
+    defaultMessage: 'This comment is visible to regular users',
   },
 });

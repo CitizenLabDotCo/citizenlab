@@ -20,7 +20,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // services
@@ -115,6 +115,7 @@ interface Props {
   postingComment: (arg: boolean) => void;
   className?: string;
   allowAnonymousParticipation?: boolean;
+  emphasizePostingPublicly?: boolean;
 }
 
 const ParentCommentForm = ({
@@ -123,6 +124,7 @@ const ParentCommentForm = ({
   postType,
   className,
   allowAnonymousParticipation,
+  emphasizePostingPublicly = false,
 }: Props) => {
   const locale = useLocale();
   const { data: authUser } = useAuthUser();
@@ -348,9 +350,13 @@ const ParentCommentForm = ({
           .disabled_reason;
   const isModerator = canModerateProject(projectId, authUser);
   const canComment = !commentingDisabledReason;
-  const placeholder = formatMessage(
-    messages[`${postType}CommentBodyPlaceholder`]
-  );
+  const buttonText: MessageDescriptor = emphasizePostingPublicly
+    ? messages.postPublicComment
+    : messages.publishComment;
+  const placeholderMessage: MessageDescriptor = emphasizePostingPublicly
+    ? messages.visibleToUsersPlaceholder
+    : messages[`${postType}CommentBodyPlaceholder`];
+  const placeholder = formatMessage(placeholderMessage);
 
   if (canComment) {
     return (
@@ -433,8 +439,9 @@ const ParentCommentForm = ({
                   onClick={onSubmit}
                   disabled={hasEmptyError}
                   padding={smallerThanTablet ? '6px 12px' : undefined}
+                  icon={emphasizePostingPublicly ? 'users' : undefined}
                 >
-                  <FormattedMessage {...messages.publishComment} />
+                  <FormattedMessage {...buttonText} />
                 </Button>
               </ButtonWrapper>
             </label>

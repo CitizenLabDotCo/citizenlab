@@ -6,6 +6,7 @@ import Observer from '@researchgate/react-intersection-observer';
 import ParentCommentForm from './ParentCommentForm';
 import Comments from './Comments';
 import CommentSorting from './CommentSorting';
+import { Box, Title } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -14,7 +15,6 @@ import commentsMessages from 'components/PostShowComponents/Comments/messages';
 // style
 import styled from 'styled-components';
 import { colors, fontSizes, media, isRtl } from 'utils/styleUtils';
-import { Title } from '@citizenlab/cl2-component-library';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
@@ -25,12 +25,6 @@ import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useInternalComments from 'api/internal_comments/useInternalComments';
 import { InternalCommentSort } from 'api/internal_comments/types';
-
-const Container = styled.div``;
-
-const StyledParentCommentForm = styled(ParentCommentForm)`
-  margin-bottom: 25px;
-`;
 
 const Header = styled.div`
   display: flex;
@@ -54,19 +48,6 @@ const StyledCommentSorting = styled(CommentSorting)`
   ${media.phone`
     justify-content: flex-start;
   `}
-`;
-
-const LoadMore = styled.div`
-  width: 100%;
-  height: 0px;
-`;
-
-const LoadingMore = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 30px;
 `;
 
 const LoadingMoreMessage = styled.div`
@@ -127,7 +108,7 @@ const CommentsSection = ({ postId, postType, className }: Props) => {
   const commentCount = post.data.attributes.comments_count;
 
   return (
-    <Container className={className || ''}>
+    <Box className={className || ''}>
       <Header>
         <Title color="tenantText" variant="h2" id="comments-main-title">
           <FormattedMessage {...commentsMessages.invisibleTitleComments} />
@@ -139,12 +120,14 @@ const CommentsSection = ({ postId, postType, className }: Props) => {
         />
       </Header>
 
-      <StyledParentCommentForm
-        ideaId={ideaId}
-        initiativeId={initiativeId}
-        postType={postType}
-        postingComment={handleCommentPosting}
-      />
+      <Box mb="24px">
+        <ParentCommentForm
+          ideaId={ideaId}
+          initiativeId={initiativeId}
+          postType={postType}
+          postingComment={handleCommentPosting}
+        />
+      </Box>
 
       <Comments
         ideaId={ideaId}
@@ -156,18 +139,24 @@ const CommentsSection = ({ postId, postType, className }: Props) => {
 
       {hasNextPage && !isFetchingNextPage && (
         <Observer onChange={handleIntersection} rootMargin="3000px">
-          <LoadMore />
+          <Box w="100%" />
         </Observer>
       )}
 
       {isFetchingNextPage && !posting && (
-        <LoadingMore>
+        <Box
+          w="100%"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          mb="30px"
+        >
           <LoadingMoreMessage>
             <FormattedMessage {...commentsMessages.loadingMoreComments} />
           </LoadingMoreMessage>
-        </LoadingMore>
+        </Box>
       )}
-    </Container>
+    </Box>
   );
 };
 
