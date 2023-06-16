@@ -91,7 +91,7 @@ module Notifications
     end
 
     def self.parent_author_mentioned?(internal_comment)
-      mentioned_users = MentionService.new.extract_expanded_mention_users(internal_comment.body_text)
+      mentioned_users = MentionService.new.extract_expanded_mention_users(internal_comment.body)
       mentioned_users.include?(internal_comment.parent&.author)
     end
 
