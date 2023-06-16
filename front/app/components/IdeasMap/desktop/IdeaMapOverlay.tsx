@@ -10,12 +10,12 @@ import { useWindowSize } from '@citizenlab/cl2-component-library';
 
 // components
 import MapIdeasList from './MapIdeasList';
-import IdeasShow from 'containers/IdeasShow';
 import IdeaShowPageTopBar from 'containers/IdeasShowPage/IdeaShowPageTopBar';
 
 // styling
 import styled from 'styled-components';
 import { defaultCardStyle } from 'utils/styleUtils';
+import MapOverlayIdeaContent from '../MapOverlayIdeaContent';
 
 const timeout = 200;
 
@@ -77,7 +77,7 @@ const InnerOverlay = styled.div<{ right: string }>`
 
 const StyledIdeaShowPageTopBar = styled(IdeaShowPageTopBar)``;
 
-const StyledIdeasShow = styled(IdeasShow)`
+const StyledMapOverlayIdeaContent = styled(MapOverlayIdeaContent)`
   flex: 1;
   overflow-x: hidden;
   overflow-y: auto;
@@ -149,7 +149,7 @@ const IdeaMapOverlay = memo<Props>(({ projectId, phaseId, className }) => {
               projectId={projectId}
               insideModal={false}
             />
-            <StyledIdeasShow
+            <StyledMapOverlayIdeaContent
               ideaId={selectedIdeaId as string}
               projectId={projectId}
               insideModal={false}
