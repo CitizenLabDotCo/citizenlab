@@ -3,13 +3,13 @@ import commentKeys from 'api/internal_comments/keys';
 import initiativesKeys from 'api/initiatives/keys';
 import { CLErrorsWrapper } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
-import { IInternalNewComment, IInternalComment } from './types';
+import { IInitiativeNewInternalComment, IInternalComment } from './types';
 import userCommentsCount from 'api/user_comments_count/keys';
 
 const addInternalCommentToInitiative = async ({
   initiativeId,
   ...requestBody
-}: IInternalNewComment) =>
+}: IInitiativeNewInternalComment) =>
   fetcher<IInternalComment>({
     path: `/initiatives/${initiativeId}/internal_comments`,
     action: 'post',
@@ -18,25 +18,29 @@ const addInternalCommentToInitiative = async ({
 
 const useAddInternalCommentToInitiative = () => {
   const queryClient = useQueryClient();
-  return useMutation<IInternalComment, CLErrorsWrapper, IInternalNewComment>({
+  return useMutation<
+    IInternalComment,
+    CLErrorsWrapper,
+    IInitiativeNewInternalComment
+  >({
     mutationFn: addInternalCommentToInitiative,
-    onSuccess: (_data, variables) => {
+    onSuccess: (_data, { initiativeId, author_id, parent_id }) => {
       queryClient.invalidateQueries({
-        queryKey: commentKeys.list({ initiativeId: variables.initiativeId }),
+        queryKey: commentKeys.list({ type: 'initiative', initiativeId }),
       });
       queryClient.invalidateQueries({
-        queryKey: commentKeys.list({ userId: variables.author_id }),
+        queryKey: commentKeys.list({ type: 'author', authorId: author_id }),
       });
       queryClient.invalidateQueries({
-        queryKey: initiativesKeys.item({ id: variables.initiativeId }),
+        queryKey: initiativesKeys.item({ id: initiativeId }),
       });
       queryClient.invalidateQueries({
         queryKey: userCommentsCount.items(),
       });
 
-      if (variables.parent_id) {
+      if (parent_id) {
         queryClient.invalidateQueries({
-          queryKey: commentKeys.list({ commentId: variables.parent_id }),
+          queryKey: commentKeys.list({ type: 'comment', commentId: parent_id }),
         });
       }
     },

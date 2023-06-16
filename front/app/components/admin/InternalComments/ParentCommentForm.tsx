@@ -176,7 +176,7 @@ const ParentCommentForm = ({
         },
       });
 
-      if (postType === 'idea' && projectId) {
+      if (postType === 'idea' && projectId && ideaId) {
         addInternalCommentToIdea(
           {
             ideaId,
@@ -203,7 +203,7 @@ const ParentCommentForm = ({
         );
       }
 
-      if (postType === 'initiative') {
+      if (postType === 'initiative' && initiativeId) {
         addInternalCommentToInitiative(
           {
             initiativeId,

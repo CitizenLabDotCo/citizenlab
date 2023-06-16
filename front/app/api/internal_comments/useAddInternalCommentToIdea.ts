@@ -3,13 +3,13 @@ import commentKeys from 'api/internal_comments/keys';
 import ideasKeys from 'api/ideas/keys';
 import { CLErrorsWrapper } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
-import { IInternalNewComment, IInternalComment } from './types';
+import { IIdeaNewInternalComment, IInternalComment } from './types';
 import userCommentsCount from 'api/user_comments_count/keys';
 
 const addInternalCommentToIdea = async ({
   ideaId,
   ...requestBody
-}: IInternalNewComment) =>
+}: IIdeaNewInternalComment) =>
   fetcher<IInternalComment>({
     path: `/ideas/${ideaId}/internal_comments`,
     action: 'post',
@@ -18,25 +18,36 @@ const addInternalCommentToIdea = async ({
 
 const useAddInternalCommentToIdea = () => {
   const queryClient = useQueryClient();
-  return useMutation<IInternalComment, CLErrorsWrapper, IInternalNewComment>({
+  return useMutation<
+    IInternalComment,
+    CLErrorsWrapper,
+    IIdeaNewInternalComment
+  >({
     mutationFn: addInternalCommentToIdea,
-    onSuccess: (_data, variables) => {
+    onSuccess: (_data, { ideaId, author_id, parent_id }) => {
       queryClient.invalidateQueries({
-        queryKey: commentKeys.list({ userId: variables.author_id }),
-      });
-      queryClient.invalidateQueries({
-        queryKey: commentKeys.list({ ideaId: variables.ideaId }),
-      });
-      queryClient.invalidateQueries({
-        queryKey: ideasKeys.item({ id: variables.ideaId }),
+        queryKey: commentKeys.list({
+          type: 'author',
+          authorId: author_id,
+        }),
       });
       queryClient.invalidateQueries({
         queryKey: userCommentsCount.items(),
       });
 
-      if (variables.parent_id) {
+      queryClient.invalidateQueries({
+        queryKey: commentKeys.list({
+          type: 'idea',
+          ideaId,
+        }),
+      });
+      queryClient.invalidateQueries({
+        queryKey: ideasKeys.item({ id: ideaId }),
+      });
+
+      if (parent_id) {
         queryClient.invalidateQueries({
-          queryKey: commentKeys.list({ commentId: variables.parent_id }),
+          queryKey: commentKeys.list({ type: 'comment', commentId: parent_id }),
         });
       }
     },

@@ -34,12 +34,23 @@ const useMarkInternalCommentForDeletion = ({
   >({
     mutationFn: markInternalCommentForDeletion,
     onSuccess: (_data) => {
-      queryClient.invalidateQueries({
-        queryKey: internalCommentKeys.list({
-          ideaId,
-          initiativeId,
-        }),
-      });
+      if (ideaId) {
+        queryClient.invalidateQueries({
+          queryKey: internalCommentKeys.list({
+            type: 'idea',
+            ideaId,
+          }),
+        });
+      }
+
+      if (initiativeId) {
+        queryClient.invalidateQueries({
+          queryKey: internalCommentKeys.list({
+            type: 'initiative',
+            initiativeId,
+          }),
+        });
+      }
 
       queryClient.invalidateQueries({
         queryKey: userCommentsCount.items(),

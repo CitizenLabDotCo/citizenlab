@@ -64,7 +64,6 @@ export interface Props {
 }
 
 const CommentsMoreActions = ({
-  projectId,
   onCommentEdit,
   comment,
   className,
@@ -73,10 +72,7 @@ const CommentsMoreActions = ({
 }: Props) => {
   const { data: authUser } = useAuthUser();
   const { mutate: markForDeletion, isLoading } =
-    useMarkInternalCommentForDeletion({
-      ideaId,
-      initiativeId,
-    });
+    useMarkInternalCommentForDeletion({ ideaId, initiativeId });
   const [modalVisible_delete, setModalVisible_delete] = useState(false);
 
   const authUserId = authUser?.data.id;

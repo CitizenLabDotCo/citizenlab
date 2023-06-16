@@ -62,7 +62,7 @@ const ParentComment = ({
     fetchNextPage,
     isFetchingNextPage,
     hasNextPage,
-  } = useInternalComments({ commentId, pageSize: 5 });
+  } = useInternalComments({ type: 'comment', commentId, pageSize: 5 });
   const childComments = childCommentsData?.pages
     .map((page) => page.data)
     .flat();

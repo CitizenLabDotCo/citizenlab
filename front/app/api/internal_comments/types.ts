@@ -4,12 +4,11 @@ import commentsKeys from './keys';
 
 export type InternalCommentsKeys = Keys<typeof commentsKeys>;
 
-export type IInternalCommentParameters = {
-  ideaId?: string;
-  initiativeId?: string;
-  userId?: string;
-  commentId?: string;
-};
+export type IInternalCommentParameters =
+  | { type: 'idea'; ideaId: string }
+  | { type: 'initiative'; initiativeId: string }
+  | { type: 'author'; authorId: string }
+  | { type: 'comment'; commentId: string };
 
 interface InternalCommentAttributes {
   created_at: string;
@@ -53,9 +52,15 @@ export interface IInternalComments {
   links: ILinks;
 }
 
-export interface IInternalNewComment {
-  ideaId?: string;
-  initiativeId?: string;
+export interface IIdeaNewInternalComment extends INewInternalComment {
+  ideaId: string;
+}
+
+export interface IInitiativeNewInternalComment extends INewInternalComment {
+  initiativeId: string;
+}
+
+export interface INewInternalComment {
   author_id: string;
   parent_id?: string;
   body_text: string;

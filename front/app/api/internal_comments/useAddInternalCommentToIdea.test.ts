@@ -30,6 +30,7 @@ describe('useAddInternalCommentToIdea', () => {
 
     act(() => {
       result.current.mutate({
+        ideaId: 'ideaId',
         author_id: 'author_id',
         body_text: 'body_text',
       });

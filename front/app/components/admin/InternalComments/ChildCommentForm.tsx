@@ -195,7 +195,7 @@ const ChildCommentForm = ({
         },
       });
 
-      if (postType === 'idea' && projectId) {
+      if (postType === 'idea' && projectId && ideaId) {
         addCommentToIdeaComment(
           {
             ideaId,
@@ -216,7 +216,7 @@ const ChildCommentForm = ({
         );
       }
 
-      if (postType === 'initiative') {
+      if (postType === 'initiative' && initiativeId) {
         addCommentToInitiativeComment(
           {
             initiativeId,
