@@ -70,20 +70,8 @@ describe JsonFormsService do
                           'field3' =>
               {
                 type: 'string',
-                oneOf: [
-                  {
-                    const: 'option_1',
-                    title: 'youth council'
-                  },
-                  {
-                    const: 'option_2',
-                    title: 'youth council'
-                  },
-                  {
-                    const: 'option_3',
-                    title: 'youth council'
-                  }
-                ]
+                enum: %w[option_1 option_2 option_3],
+                enumNames: ['youth council', 'youth council', 'youth council']
               },
                           'field4' =>
               {
@@ -295,10 +283,8 @@ describe JsonFormsService do
                     required_field.key => { type: 'number' },
                     optional_field.key => {
                       type: 'string',
-                      oneOf: [
-                        { const: 'option1', title: 'Rabbit' },
-                        { const: 'option2', title: 'Bear' }
-                      ]
+                      enum: %w[option1 option2],
+                      enumNames: %w[Rabbit Bear]
                     }
                   ),
                   required: match_array(['title_multiloc', 'body_multiloc', 'topic_ids', required_field.key])

@@ -47,7 +47,7 @@ RSpec.describe JsonSchemaGeneratorService do
             field2.key => {
               type: 'string',
               enum: %w[option1 option2],
-              enumNames: ['jeugdraad', 'jeugdraad']
+              enumNames: %w[jeugdraad jeugdraad]
             }
           }
         }
