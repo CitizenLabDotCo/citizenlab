@@ -226,10 +226,10 @@ export interface IOfficialFeedbackOnCommentedInitiativeNotificationData
   };
 }
 
-export interface IOfficialFeedbackOnVotedIdeaNotificationData
+export interface IOfficialFeedbackOnReactedIdeaNotificationData
   extends IBaseNotificationData {
   attributes: {
-    type: 'official_feedback_on_voted_idea';
+    type: 'official_feedback_on_reacted_idea';
     read_at: string | null;
     created_at: string;
     official_feedback_author: Multiloc;
@@ -238,10 +238,10 @@ export interface IOfficialFeedbackOnVotedIdeaNotificationData
   };
 }
 
-export interface IOfficialFeedbackOnVotedInitiativeNotificationData
+export interface IOfficialFeedbackOnReactedInitiativeNotificationData
   extends IBaseNotificationData {
   attributes: {
-    type: 'official_feedback_on_voted_initiative';
+    type: 'official_feedback_on_reacted_initiative';
     read_at: string | null;
     created_at: string;
     official_feedback_author: Multiloc;
@@ -359,10 +359,10 @@ export interface IStatusChangeOnCommentedInitiativeNotificationData
   };
 }
 
-export interface IStatusChangeOnVotedIdeaNotificationData
+export interface IStatusChangeOnReactedIdeaNotificationData
   extends IBaseNotificationData {
   attributes: {
-    type: 'status_change_on_voted_idea';
+    type: 'status_change_on_reacted_idea';
     read_at: string | null;
     created_at: string;
     post_title_multiloc: Multiloc;
@@ -371,10 +371,10 @@ export interface IStatusChangeOnVotedIdeaNotificationData
   };
 }
 
-export interface IStatusChangeOnVotedInitiativeNotificationData
+export interface IStatusChangeOnReactedInitiativeNotificationData
   extends IBaseNotificationData {
   attributes: {
-    type: 'status_change_on_voted_initiative';
+    type: 'status_change_on_reacted_initiative';
     read_at: string | null;
     created_at: string;
     post_title_multiloc: Multiloc;
@@ -421,8 +421,8 @@ export interface INotificationDataMap {
   IMentionInOfficialFeedbackNotificationData: IMentionInOfficialFeedbackNotificationData;
   IOfficialFeedbackOnCommentedIdeaNotificationData: IOfficialFeedbackOnCommentedIdeaNotificationData;
   IOfficialFeedbackOnCommentedInitiativeNotificationData: IOfficialFeedbackOnCommentedInitiativeNotificationData;
-  IOfficialFeedbackOnVotedIdeaNotificationData: IOfficialFeedbackOnVotedIdeaNotificationData;
-  IOfficialFeedbackOnVotedInitiativeNotificationData: IOfficialFeedbackOnVotedInitiativeNotificationData;
+  IOfficialFeedbackOnReactedIdeaNotificationData: IOfficialFeedbackOnReactedIdeaNotificationData;
+  IOfficialFeedbackOnReactedInitiativeNotificationData: IOfficialFeedbackOnReactedInitiativeNotificationData;
   IOfficialFeedbackOnYourIdeaNotificationData: IOfficialFeedbackOnYourIdeaNotificationData;
   IOfficialFeedbackOnYourInitiativeNotificationData: IOfficialFeedbackOnYourInitiativeNotificationData;
   IProjectModerationRightsReceivedNotificationData: IProjectModerationRightsReceivedNotificationData;
@@ -432,8 +432,8 @@ export interface INotificationDataMap {
   IStatusChangeOfYourInitiativeNotificationData: IStatusChangeOfYourInitiativeNotificationData;
   IStatusChangeOnCommentedIdeaNotificationData: IStatusChangeOnCommentedIdeaNotificationData;
   IStatusChangeOnCommentedInitiativeNotificationData: IStatusChangeOnCommentedInitiativeNotificationData;
-  IStatusChangeOnVotedIdeaNotificationData: IStatusChangeOnVotedIdeaNotificationData;
-  IStatusChangeOnVotedInitiativeNotificationData: IStatusChangeOnVotedInitiativeNotificationData;
+  IStatusChangeOnReactedIdeaNotificationData: IStatusChangeOnReactedIdeaNotificationData;
+  IStatusChangeOnReactedInitiativeNotificationData: IStatusChangeOnReactedInitiativeNotificationData;
   IThresholdReachedForAdminNotificationData: IThresholdReachedForAdminNotificationData;
   IProjectFolderModerationRightsReceivedNotificationData: IProjectFolderModerationRightsReceivedNotificationData;
 }

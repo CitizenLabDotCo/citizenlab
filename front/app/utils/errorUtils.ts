@@ -58,8 +58,8 @@ export type GenericErrorKey = (typeof genericErrors)[number];
 // it's probably our system that's at fault. Decided to add them either way, they can contact us with a bit more info in that case)
 
 export type CustomErrorKey = 'includes_banned_words';
-// | 'already_upvoted'
-// | 'already_downvoted'
+// | 'already_liked'
+// | 'already_disliked'
 // | 'children_not_allowed'
 // | 'less_than_min_budget'
 // | 'exceed_budget_limit'

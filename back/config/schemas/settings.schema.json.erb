@@ -579,14 +579,21 @@
         "title": "Proposals",
         "description":  "Allow proposals. Disabling this feature removes the corresponding item from the navbar",
         "additionalProperties": false,
-        "required-settings": ["voting_threshold", "days_limit", "threshold_reached_message", "eligibility_criteria"],
+        "required-settings": ["reacting_threshold", "days_limit", "threshold_reached_message", "eligibility_criteria"],
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true },
           "enabled": { "type": "boolean", "default": true },
           "voting_threshold": {
             "title": "Voting Threshold",
-            "description": "Default value for how many votes a proposal needs to move to the next stage. This value can be changed in the admin panel on the platform.",
+            "description": "Deprecated - Use 'Reacting Threshold'",
+            "type": "integer",
+            "minimum": 2,
+            "default": 300
+          },
+          "reacting_threshold": {
+            "title": "Reacting Threshold",
+            "description": "Default value for how many votes (reactions) a proposal needs to move to the next stage. This value can be changed in the admin panel on the platform.",
             "type": "integer",
             "minimum": 2,
             "default": 300
@@ -879,10 +886,22 @@
         }
       },
 
+      "disable_disliking": {
+        "type": "object",
+        "title": "Disliking Toggle",
+        "description": "Display toggle in Project settings or Project’s timeline phase settings, that permits the disabling and re-enabling of dislike reactions. By default, disliking is enabled. (previously called disable_downvoting",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
       "ideaflow_social_sharing": {
         "type": "object",
-        "title": "Share Proposals on Social Media",
-        "description":  "After posting a proposal, users receive a pop-up to share their proposal on social media.",
+        "title": "Share Ideas on Social Media",
+        "description":  "After posting an idea, users receive a pop-up to share their idea on social media.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -893,8 +912,8 @@
 
       "initiativeflow_social_sharing": {
         "type": "object",
-        "title": "Share Initiative on Social Media",
-        "description": "After posting an initiative, users receive a pop-up to share their proposal on social media.",
+        "title": "Share Proposals on Social Media",
+        "description": "After posting a proposal, users receive a pop-up to share their proposal on social media.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {

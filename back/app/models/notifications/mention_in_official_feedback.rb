@@ -65,7 +65,7 @@ module Notifications
       recipient_id = activity.payload['mentioned_user']
       initiator_id = official_feedback&.user_id
       participant_ids = [official_feedback.post.author_id]
-      participant_ids += official_feedback.post.votes.pluck(:user_id)
+      participant_ids += official_feedback.post.reactions.pluck(:user_id)
       participant_ids += official_feedback.post.comments.pluck(:author_id)
       participant_ids.uniq!
 

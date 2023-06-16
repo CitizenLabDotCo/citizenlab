@@ -21,8 +21,8 @@ export interface IIdeaMarkerData {
     title_multiloc: Multiloc;
     location_point_geojson: GeoJSON.Point;
     location_description: string;
-    upvotes_count: number;
-    downvotes_count: number;
+    likes_count: number;
+    dislikes_count: number;
     comments_count: number;
     budget: number | null;
   };

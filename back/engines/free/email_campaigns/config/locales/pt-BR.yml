@@ -98,7 +98,7 @@ pt:
       subject: 'Você se tornou um administrador na plataforma de %{organizationName}'
       text_create_participatory_process: 'Como administrador, você pode criar e configurar novos projetos de participação. Você pode adicionar novas fases usando a linha do tempo. Cada uma destas fases pode ter o seu próprio comportamento no que diz respeito ao lançamento de idéias, comentários e votação.'
       text_moderate_analyse_input: 'Uma vez que os projetos sejam lançados, as primeiras idéias chegarão. Você receberá relatórios semanais com todas as atividades necessárias para que você fique ciente de tudo. A visão geral das idéias o ajudará a moderar a entrada e a colaborar no processamento das mesmas.'
-      text_platform_setup: 'Como administrador, você pode configurar sua plataforma de participação. Escolha um logotipo, imagens e cores, escreva uma mensagem pessoal na sua página inicial, envie convites, defina o que quer saber dos seus utilizadores, ...'
+      text_platform_setup: 'Como administrador, você pode configurar sua plataforma de participação. Escolha um logotipo, imagens e cores, escreva uma mensagem pessoal na sua página inicial, envie convites, defina o que quer saber dos seus usuários, ...'
       title_create_participatory_process: 'Desenhar o processo participativo'
       title_moderate_analyse_input: 'Dirigir e analisar os dados introduzidos'
       title_platform_setup: 'Configure a sua plataforma'

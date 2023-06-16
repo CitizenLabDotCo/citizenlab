@@ -163,7 +163,7 @@ resource 'Stats - Users' do
           @idea3 = create(:idea)
           @comment1 = create(:comment, author: @user2, idea: @idea1)
           @comment2 = create(:comment, post: @idea2)
-          create(:vote, votable: @idea1)
+          create(:reaction, reactable: @idea1)
         end
       end
 
@@ -292,7 +292,7 @@ resource 'Stats - Users' do
           @idea3 = create(:idea)
           @comment1 = create(:comment, author: @user2, idea: @idea1)
           @comment2 = create(:comment, post: @idea2)
-          create(:vote, votable: @idea1)
+          create(:reaction, reactable: @idea1)
         end
       end
 
@@ -395,7 +395,7 @@ resource 'Stats - Users' do
           @idea3 = create(:idea)
           @comment1 = create(:comment, author: @user2, idea: @idea1)
           @comment2 = create(:comment, post: @idea2)
-          create(:vote, votable: @idea1)
+          create(:reaction, reactable: @idea1)
         end
       end
 
@@ -506,7 +506,7 @@ resource 'Stats - Users' do
           @idea3 = create(:idea)
           @comment1 = create(:comment, author: @user2, idea: @idea1)
           @comment2 = create(:comment, post: @idea2)
-          create(:vote, votable: @idea1)
+          create(:reaction, reactable: @idea1)
         end
       end
 
@@ -625,7 +625,7 @@ resource 'Stats - Users' do
           @idea3 = create(:idea)
           @comment1 = create(:comment, author: @user2, idea: @idea1)
           @comment2 = create(:comment, post: @idea2)
-          create(:vote, votable: @idea1)
+          create(:reaction, reactable: @idea1)
           create(:activity, user: @user1)
           create(:activity, user: @user2)
         end
@@ -778,7 +778,7 @@ resource 'Stats - Users' do
           @idea3 = create(:idea)
           @comment1 = create(:comment, author: @user2, idea: @idea1)
           @comment2 = create(:comment, post: @idea2)
-          create(:vote, votable: @idea1)
+          create(:reaction, reactable: @idea1)
           create(:activity, user: @user1)
           create(:activity, user: @user2)
         end

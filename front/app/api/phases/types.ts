@@ -4,7 +4,7 @@ import {
   TSurveyService,
   IdeaDefaultSortMethod,
   InputTerm,
-  VotingMethod,
+  ReactingMethod,
   PresentationMode,
 } from 'services/participationContexts';
 import { Keys } from 'utils/cl-react-query/types';
@@ -42,13 +42,13 @@ export interface IPhaseAttributes {
   participation_method: ParticipationMethod;
   posting_enabled: boolean;
   commenting_enabled: boolean;
-  voting_enabled: boolean;
-  upvoting_method: VotingMethod;
-  upvoting_limited_max: number;
-  downvoting_method: VotingMethod;
+  reacting_enabled: boolean;
+  reacting_like_method: ReactingMethod;
+  reacting_like_limited_max: number;
+  reacting_dislike_method: ReactingMethod;
   allow_anonymous_participation: boolean;
-  downvoting_enabled: boolean;
-  downvoting_limited_max: number;
+  reacting_dislike_enabled: boolean;
+  reacting_dislike_limited_max: number;
   presentation_mode: PresentationMode;
   min_budget?: number;
   max_budget?: number;
@@ -78,12 +78,12 @@ export interface IUpdatedPhaseProperties {
   participation_method?: ParticipationMethod;
   posting_enabled?: boolean | null;
   commenting_enabled?: boolean | null;
-  voting_enabled?: boolean | null;
-  upvoting_method?: 'limited' | 'unlimited' | null;
-  downvoting_method?: 'limited' | 'unlimited' | null;
-  upvoting_limited_max?: number | null;
-  downvoting_enabled?: boolean | null;
-  downvoting_limited_max?: number | null;
+  reacting_enabled?: boolean | null;
+  reacting_like_method?: 'limited' | 'unlimited' | null;
+  reacting_dislike_method?: 'limited' | 'unlimited' | null;
+  reacting_like_limited_max?: number | null;
+  reacting_dislike_enabled?: boolean | null;
+  reacting_dislike_limited_max?: number | null;
   presentation_mode?: 'card' | 'map' | null;
   min_budget?: number | null;
   max_budget?: number | null;

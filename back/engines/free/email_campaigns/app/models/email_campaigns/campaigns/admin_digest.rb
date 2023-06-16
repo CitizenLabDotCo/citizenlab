@@ -122,7 +122,7 @@ module EmailCampaigns
         activities: {
           new_ideas: stat_increase(Idea.pluck(:published_at).compact),
           new_initiatives: stat_increase(Initiative.pluck(:published_at).compact),
-          new_votes: stat_increase(Vote.pluck(:created_at)),
+          new_reactions: stat_increase(Reaction.pluck(:created_at)),
           new_comments: stat_increase(Comment.pluck(:created_at)),
           total_ideas: Idea.count,
           total_initiatives: Initiative.count,
@@ -230,17 +230,17 @@ module EmailCampaigns
 
     def ideas_activity_counts(ideas)
       idea_ids = ideas.pluck(:id)
-      new_votes = Vote.where(votable_id: idea_ids).where('created_at > ?', Time.now - days_ago)
-      new_upvotes_counts = new_votes.where(mode: 'up').group(:votable_id).count
-      new_downvotes_counts = new_votes.where(mode: 'down').group(:votable_id).count
+      new_reactions = Reaction.where(reactable_id: idea_ids).where('created_at > ?', Time.now - days_ago)
+      new_likes_counts = new_reactions.where(mode: 'up').group(:reactable_id).count
+      new_dislikes_counts = new_reactions.where(mode: 'down').group(:reactable_id).count
       new_comments_counts = Comment.where(post_id: idea_ids).where('created_at > ?', Time.now - days_ago).group(:post_id).count
 
       idea_ids.each_with_object({}) do |idea_id, object|
-        upvotes         = (new_upvotes_counts[idea_id] || 0)
-        downvotes       = (new_downvotes_counts[idea_id] || 0)
+        likes = (new_likes_counts[idea_id] || 0)
+        dislikes = (new_dislikes_counts[idea_id] || 0)
         comments        = (new_comments_counts[idea_id] || 0)
-        total           = (upvotes + downvotes + comments)
-        object[idea_id] = { upvotes: upvotes, downvotes: downvotes, comments: comments, total: total }
+        total           = (likes + dislikes + comments)
+        object[idea_id] = { likes: likes, dislikes: dislikes, comments: comments, total: total }
       end
     end
 
@@ -271,10 +271,10 @@ module EmailCampaigns
         url: Frontend::UrlService.new.model_to_url(idea),
         published_at: idea.published_at.iso8601,
         author_name: idea.author_name,
-        upvotes_count: idea.upvotes_count,
-        upvotes_increment: idea_activity(idea, :upvotes),
-        downvotes_count: idea.downvotes_count,
-        downvotes_increment: idea_activity(idea, :downvotes),
+        likes_count: idea.likes_count,
+        likes_increment: idea_activity(idea, :likes),
+        dislikes_count: idea.dislikes_count,
+        dislikes_increment: idea_activity(idea, :dislikes),
         comments_count: idea.comments_count,
         comments_increment: idea_activity(idea, :comments)
       }
@@ -287,7 +287,7 @@ module EmailCampaigns
         url: Frontend::UrlService.new.model_to_url(initiative),
         published_at: initiative.published_at&.iso8601,
         author_name: initiative.author_name,
-        upvotes_count: initiative.upvotes_count,
+        likes_count: initiative.likes_count,
         comments_count: initiative.comments_count,
         threshold_reached_at: initiative.threshold_reached_at&.iso8601,
         images: initiative.initiative_images.map { |image| serialize_image(image) },
