@@ -1,7 +1,7 @@
 import { withJsonFormsControlProps } from '@jsonforms/react';
 import {
   ControlProps,
-  isOneOfControl,
+  isEnumControl,
   RankedTester,
   rankWith,
 } from '@jsonforms/core';
@@ -73,5 +73,5 @@ export default withJsonFormsControlProps(SingleSelectControl);
 
 export const singleSelectControlTester: RankedTester = rankWith(
   4,
-  isOneOfControl
+  isEnumControl
 );
