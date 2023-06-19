@@ -30,7 +30,7 @@ const SingleSelectEnumControl = ({
   visible,
 }: ControlProps) => {
   const [didBlur, setDidBlur] = useState(false);
-  const options = getOptions(schema, 'singleEnum');
+  const options = getOptions(schema, 'singleEnum', uischema);
 
   if (!visible) {
     return null;

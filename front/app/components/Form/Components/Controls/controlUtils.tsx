@@ -1,3 +1,4 @@
+import { ControlElement, JsonSchema } from '@jsonforms/core';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import React from 'react';
 
@@ -15,8 +16,9 @@ export const getSubtextElement = (description: string) => {
 
 // Given a schema and field type, returns the options for a given array field
 export const getOptions = (
-  schema,
-  fieldType: 'singleEnum' | 'single' | 'multi'
+  schema: JsonSchema,
+  fieldType: 'singleEnum' | 'single' | 'multi',
+  uiSchema?: ControlElement
 ) => {
   if (fieldType === 'multi') {
     return (
@@ -32,7 +34,7 @@ export const getOptions = (
       schema?.enum
         ?.map((option, index) => ({
           value: option.toString(),
-          label: schema?.enumNames[index],
+          label: uiSchema?.options?.enumNames[index] || option.toString(),
         }))
         .filter((e) => e.value && e.label) || null
     );
