@@ -14,7 +14,7 @@ import tracks from '../tracks';
 
 // components
 import TopicFilterDropdown from '../shared/Filters/TopicFilterDropdown';
-import SelectSort from '../shared/Filters/SortFilterDropdown';
+import SelectSort, { Sort } from '../shared/Filters/SortFilterDropdown';
 import ProjectFilterDropdown from 'components/ProjectFilterDropdown';
 import SearchInput from 'components/UI/SearchInput';
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
@@ -35,7 +35,7 @@ import {
 } from 'services/participationContexts';
 import { IParticipationContextType } from 'typings';
 import { isFieldEnabled } from 'utils/projectUtils';
-import { IQueryParameters, Sort } from 'api/ideas/types';
+import { IQueryParameters } from 'api/ideas/types';
 import usePhase from 'api/phases/usePhase';
 
 const Container = styled.div`
@@ -131,9 +131,16 @@ const StyledSearchInput = styled(SearchInput)`
   `}
 `;
 
+interface QueryParametersUpdate {
+  search?: string;
+  sort?: Sort;
+  projects?: string[];
+  topics?: string[];
+}
+
 export interface Props {
   ideaQueryParameters: IQueryParameters;
-  onUpdateQuery: (newParams: Partial<IQueryParameters>) => void;
+  onUpdateQuery: (newParams: QueryParametersUpdate) => void;
 
   // other
   projectId?: string;
