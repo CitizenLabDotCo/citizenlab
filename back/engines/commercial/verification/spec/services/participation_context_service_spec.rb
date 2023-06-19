@@ -195,7 +195,7 @@ describe ParticipationContextService do
         project = create(:project_with_current_phase,
           current_phase_attrs: { with_permissions: true, participation_method: 'voting', voting_method: 'budgeting', voting_max_total: 10_000 })
         idea = create(:idea, project: project, phases: [project.phases[2]])
-        permission = service.get_participation_context(project).permissions.find_by(action: 'budgeting')
+        permission = service.get_participation_context(project).permissions.find_by(action: 'voting')
         verified_members = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
         permission.update!(permitted_by: 'groups', groups: [create(:group), verified_members])
         expect(service.voting_disabled_reason_for_idea(idea, create(:user))).to eq 'not_verified'
@@ -205,7 +205,7 @@ describe ParticipationContextService do
     context 'continuous project' do
       it "returns 'not_verified' when budgeting is disabled in a continuous project and a permitted group requires verification" do
         project = create(:continuous_budgeting_project, with_permissions: true)
-        permission = project.permissions.find_by(action: 'budgeting')
+        permission = project.permissions.find_by(action: 'voting')
         verified_members = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
         permission.update!(permitted_by: 'groups', groups: [create(:group), verified_members])
         idea = create(:idea, project: project)
