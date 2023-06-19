@@ -58,6 +58,9 @@ module Post
       modulus = RandomOrderingService.new.modulus_of_the_day(user)
       order(Arel.sql("(extract(epoch from #{table_name}.created_at) * 100)::bigint % #{modulus}, #{table_name}.id"))
     }
+    scope :order_author_name, lambda { |direction = :desc|
+      includes(:author).order('users.first_name' => direction, 'users.last_name' => direction)
+    }
 
     def location_point_geojson
       RGeo::GeoJSON.encode(location_point) if location_point.present?
