@@ -6,25 +6,31 @@ import React, {
   useCallback,
   lazy,
 } from 'react';
+
+// utils
 import { isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
-import styled from 'styled-components';
+import { useSearchParams } from 'react-router-dom';
+import { getInputTerm } from 'services/participationContexts';
+import { trackEventByName } from 'utils/analytics';
+import eventEmitter from 'utils/eventEmitter';
+import { getInputTermMessage } from 'utils/i18n';
+import { isFieldEnabled } from 'utils/projectUtils';
+import { isRtl } from 'utils/styleUtils';
+import clHistory from 'utils/cl-router/history';
+import tracks from './tracks';
+
+// components
 import Title from 'components/PostShowComponents/Title';
 import Image from 'components/PostShowComponents/Image';
 import Outlet from 'components/Outlet';
-import messages from './messages';
 import {
   media,
   useBreakpoint,
   Box,
   Spinner,
 } from '@citizenlab/cl2-component-library';
-import useIdeaImages from 'api/idea_images/useIdeaImages';
-import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
-import useIdeaById from 'api/ideas/useIdeaById';
-import usePhases from 'api/phases/usePhases';
-import { getCurrentParticipationContext } from 'api/phases/utils';
 import AssignBudgetControl from 'components/AssignBudgetControl';
 import Body from 'components/PostShowComponents/Body';
 import LoadingComments from 'components/PostShowComponents/Comments/LoadingComments';
@@ -43,27 +49,31 @@ import {
   pageContentMaxWidth,
   columnsGapDesktop,
 } from 'containers/IdeasShow/styleConstants';
+import { Modal } from 'semantic-ui-react';
+const LazyComments = lazy(
+  () => import('components/PostShowComponents/Comments')
+);
+
+// api
+import useIdeaImages from 'api/idea_images/useIdeaImages';
+import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
+import useIdeaById from 'api/ideas/useIdeaById';
+import usePhases from 'api/phases/usePhases';
+import { getCurrentParticipationContext } from 'api/phases/utils';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
-import useLocalize from 'hooks/useLocalize';
-import { useIntl, FormattedMessage } from 'utils/cl-intl';
-import { useSearchParams } from 'react-router-dom';
 import GetPermission, {
   GetPermissionChildProps,
 } from 'resources/GetPermission';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import { Modal } from 'semantic-ui-react';
-import { getInputTerm } from 'services/participationContexts';
-import { trackEventByName } from 'utils/analytics';
-import eventEmitter from 'utils/eventEmitter';
-import { getInputTermMessage } from 'utils/i18n';
-import { isFieldEnabled } from 'utils/projectUtils';
-import { isRtl } from 'utils/styleUtils';
-import clHistory from 'utils/cl-router/history';
-import tracks from './tracks';
-const LazyComments = lazy(
-  () => import('components/PostShowComponents/Comments')
-);
+
+// intl
+import messages from './messages';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
+import useLocalize from 'hooks/useLocalize';
+
+// style
+import styled from 'styled-components';
 
 // animations
 import CSSTransition from 'react-transition-group/CSSTransition';
