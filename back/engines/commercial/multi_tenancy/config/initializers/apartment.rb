@@ -65,6 +65,9 @@ Apartment.configure do |config|
     # not excluded that we can make this work by patching
     # `Apartment::Adapters::PostgresqlAdapter`, but this would require more research and
     # our time budget on this is limited.
+    require 'gem_extensions/active_record/migrator'
+    require 'gem_extensions/active_record/connection_adapters/abstract_adapter'
+    require 'gem_extensions/active_record/connection_adapters/postgre_sql_adapter'
     ActiveRecord::Migrator.prepend(GemExtensions::ActiveRecord::Migrator)
     ActiveRecord::ConnectionAdapters::AbstractAdapter.prepend(GemExtensions::ActiveRecord::ConnectionAdapters::AbstractAdapter)
     ActiveRecord::ConnectionAdapters::PostgreSQLAdapter.prepend(GemExtensions::ActiveRecord::ConnectionAdapters::PostgreSqlAdapter)

@@ -67,7 +67,7 @@ nl-BE:
     comment_deleted_by_admin:
       reason: 'De reden waarom je reactie is verwijderd:'
       cta_view: 'Bekijk dit idee'
-      event_description: '%{organizationName} verwijderde de reactie dat je bij een idee schreef.'
+      event_description: '%{organizationName} verwijderde de reactie die je bij een idee schreef.'
       main_header: '%{organizationName} verwijderde je reactie'
       other_reason: '%{otherReason}'
       inappropriate_reason: 'Je reactie werd als ongepast beschouwd'
@@ -78,8 +78,8 @@ nl-BE:
     admin_digest:
       subject: 'Je wekelijks admin-rapport van %{time}'
       preheader: 'Weekoverzicht van %{organizationName}'
-      title_your_weekly_report: '%{firstName}, je wekelijks overzicht'
-      text_introduction: 'Ontdek rond welke ideeën er het meest werd gediscussieerd de afgelopen week. Hieronder vind je het overzicht!'
+      title_your_weekly_report: '%{firstName}, je wekelijkse overzicht'
+      text_introduction: 'Ontdek rond welke bijdragen er het meest werd gediscussieerd de afgelopen week. Hieronder vind je het overzicht!'
       cta_visit_the_platform: 'Ga naar het platform'
       new_users: 'Nieuwe gebruikers'
       new_ideas: 'Nieuwe ideeën'
@@ -96,8 +96,8 @@ nl-BE:
       message_you_became_administrator: 'Je bent beheerder geworden van het participatieplatform van %{organizationName}.'
       preheader: 'Je bent beheerder geworden van het participatieplatform van %{organizationName}'
       subject: 'Je bent nu een beheerder op het platform van %{organizationName}'
-      text_create_participatory_process: 'Als beheerder kun je nieuwe participatieprojecten aanmaken en vormgeven. Je kunt nieuwe projectfases toevoegen met behulp van een tijdslijn. Elke projectfase heeft een inspraakmethode, bijvoorbeeld een poll, ideeëngeneratie, een inspraakworkshop of een stemronde.'
-      text_moderate_analyse_input: 'Zodra een project gelanceerd is, zullen de eerste ideeën binnenkomen. Om goed op de hoogte te blijven, krijg je een wekelijks overzicht van alle belangrijke activiteiten op het platform. In de ideeënsectie van het dashboard kun je alle input beheren, erover terugkoppelen naar je inwoners en analyseren.'
+      text_create_participatory_process: 'Als beheerder kun je nieuwe participatieprojecten aanmaken en vormgeven. Je kunt nieuwe projectfases toevoegen met behulp van een tijdslijn. Elke projectfase heeft een inspraakmethode, bijvoorbeeld een poll, ideeën en/of feedback verzamelen, een enquete of een stemronde.'
+      text_moderate_analyse_input: 'Zodra een project gelanceerd is, zullen de eerste ideeën binnenkomen. Om goed op de hoogte te blijven, krijg je een wekelijks overzicht van alle belangrijke activiteiten op het platform. In de bijdragen-sectie van het dashboard kun je alle input beheren, erover terugkoppelen naar je inwoners en analyseren.'
       text_platform_setup: 'Als een beheerder kan je je participatieplatform vormgeven. Kies een logo, voeg afbeeldingen en kleuren toe, schrijf een persoonlijk bericht op de homepagina, verstuur uitnodigingen, bepaal wat je wil weten van de mensen op je platform, ...'
       title_create_participatory_process: 'Geef het participatieproces vorm'
       title_moderate_analyse_input: 'Beheer en analyseer de input'
@@ -166,13 +166,13 @@ nl-BE:
       subject: 'Je hebt een toewijzing op het platform van %{organizationName}'
       preheader_initiative: 'Je kreeg het voorstel van %{authorName} toegewezen'
     invite_reminder:
-      cta_accept_invitation: 'Aanvaard je uitnodiging'
+      cta_accept_invitation: 'Accepteer je uitnodiging'
       invitation_header: 'Je hebt je uitnodiging nog niet geaccepteerd'
       preheader: 'Werk mee aan de toekomst van %{organizationName}.'
       subject: 'Reminder: registreer je op het participatieplatform van %{organizationName}'
     invite_received:
       added_a_message: '%{organizationName} schreef het volgende bericht:'
-      cta_accept_invitation: 'Aanvaard je uitnodiging'
+      cta_accept_invitation: 'Accepteer je uitnodiging'
       invitation_header: 'Je bent uitgenodigd!'
       invitation_header_message: '%{organizationName} nodigde je uit op hun participatieplatform.'
       preheader: '%{organizationName} stuurde je een uitnodiging om je te registreren op hun participatieplatform.'
@@ -196,7 +196,7 @@ nl-BE:
       by_author: 'door %{authorName}'
       commented: '%{organizationName} schreef:'
       cta_reply_to: 'Antwoord op %{organizationName}'
-      event_description: '%{organizationName} heeft je genoemd in hun feedback op het idee ''%{post}''. Klik op onderstaande link om in gesprek te gaan met %{organizationName}'
+      event_description: '%{organizationName} heeft je genoemd in hun feedback op het idee ''%{post}''. Klik op onderstaande knop om in gesprek te gaan met %{organizationName}'
       main_header: 'Je bent genoemd'
       subject: '%{organizationName} noemde je in hun feedback'
       preheader: '%{commentAuthor} heeft je genoemd in feedback'
@@ -218,8 +218,8 @@ nl-BE:
     moderator_digest:
       subject: 'Je weekoverzicht als projectbeheerder van %{time}'
       preheader: 'Het weekoverzicht voor projectbeheerders van %{organizationName}'
-      title_your_weekly_report: '%{firstName}, je wekelijks overzicht'
-      text_introduction: 'Ontdek rond welke ideeën er het meest werd gediscussieerd de afgelopen week. Hieronder kom je te weten wat er leeft in je project!'
+      title_your_weekly_report: '%{firstName}, je wekelijkse overzicht'
+      text_introduction: 'Ontdek rond welke ideeën er het meest werd gediscussieerd de afgelopen week. Hieronder kom je te weten wat er gebeurt met je project!'
       cta_manage: 'Beheer je project'
       new_users: 'Nieuwe gebruikers'
       new_ideas: 'Nieuwe ideeën'
@@ -353,7 +353,7 @@ nl-BE:
       subject: 'Je bent nu projectbeheerder op het platform van %{organizationName}'
       text_design_participatory_process: 'Als projectbeheerder kan je mee het project instellen en vormgeven en bepalen hoe andere gebruikers binnen je project werken. Je kan de tijdslijn aanpassen en de verschillende fases instellen. Kies bij elke fase de ''inspraakmethode'': ideeën posten, reacties verzamelen en/of stemmen of gebruik een fase om enkel informatie te geven.'
       text_moderate_analyse_input: 'Wanneer het project eenmaal is gelanceerd zullen de eerste ideeën binnenkomen. Je ontvangt wekelijks een rapport met alle kernactiviteiten (nieuwe ideeën, stemmen, reacties) zodat je altijd op de hoogte blijft. In het ideeën-overzicht binnen je project kan je zien welke ideeën de meeste voor- en tegenstemmen kregen, en je kan de projectstatus aanpassen of thema''s toevoegen.'
-      text_share_project_information: 'Om de kwaliteit van de bijdrages die binnenkomen te verhogen is het belangrijk om voldoende informatie aan je doelpubliek te geven: vul de beschrijving van het project in, voeg afbeeldingen toe (bv. ook schetsen en plannen) en communiceer ook over verwante activiteiten. Onthoud: kwaliteitsvolle informatie gaat vooraf aan goede participatie!'
+      text_share_project_information: 'Om de kwaliteit van de bijdragen die binnenkomen te verhogen is het belangrijk om voldoende informatie aan je doelpubliek te geven: vul de beschrijving van het project in, voeg afbeeldingen toe (bv. ook schetsen en plannen) en communiceer ook over verwante activiteiten. Onthoud: kwaliteitsvolle informatie gaat vooraf aan goede participatie!'
       title_design_participatory_process: 'Geef vorm aan het participatieproces'
       title_moderate_analyse_input: 'Beheer en analyseer de input'
       title_share_project_information: 'Geef informatie bij het project.'
@@ -366,8 +366,8 @@ nl-BE:
       no_projects: 'Nog geen projecten'
       preheader: 'Een beheerder van het platform van %{organizationName} heeft jou zojuist mapbeheerder gemaakt van de volgende map:'
       subject: 'Je bent nu mapbeheerder op het participatieplatform van %{organizationName}'
-      text_manage_folder: 'Een map is een manier om verschillende participatieprojecten samen te organiseren. Als mapbeheerder kan je de map en de mapbeschrijving bewerken en nieuwe projecten aanmaken (neem contact op met een platformbeheerder om projecten te verwijderen). Je hebt ook projectbeheerderrechten over alle projecten binnen de map, waardoor je de projecten kan bewerken, de inputs kan beheren en deelnemers kan e-mailen.'
-      text_moderate_analyse_input: "Zodra de projecten zijn gelanceerd beginnen de eerste inputs binnen te komen. U ontvangt wekelijkse rapporten met de belangrijkste activiteiten, zodat u op de hoogte kunt blijven van wat er gebeurt. De Post Manager in uw adminweergave zal u helpen de input te zien en beheren, inclusief het toekennen van statussen en het reageren op berichten en commentaren.\n"
+      text_manage_folder: 'Een map is een manier om verschillende participatieprojecten samen te organiseren. Als mapbeheerder kan je de map en de mapbeschrijving bewerken en nieuwe projecten aanmaken (neem contact op met een platformbeheerder om projecten te verwijderen). Je hebt ook projectbeheerderrechten over alle projecten binnen de map, waardoor je de projecten kan bewerken, de bijdragen kan beheren en deelnemers kan e-mailen.'
+      text_moderate_analyse_input: 'Zodra de projecten zijn gelanceerd beginnen de eerste bijdragen binnen te komen. Je ontvangt wekelijkse rapporten met de belangrijkste activiteiten, zodat je op de hoogte kan blijven van wat er gebeurt. De Input Manager in uw adminweergave zal u helpen de bijdrage te zien en beheren, inclusief het toekennen van statussen en het reageren op berichten en commentaren.'
       text_design_participatory_process: "U kunt de verschillende participatieprojecten in uw map beheren - configureer de participatiemethode, voeg een projectbeschrijving toe, afbeeldingen bijvoegen, en gerelateerde activiteiten communiceren. U kunt ook instellen hoe deelnemers met uw projecten omgaan, waaronder het instellen van toegangsrechten en het configureren van de instellingen voor posten, stemmen en commentaar geven.\n"
       title_design_participatory_process: 'Geef het participatieproces vorm'
       title_moderate_analyse_input: 'Beheer en analyseer de input'
@@ -448,7 +448,7 @@ nl-BE:
       today_by_author: "Vandaag door %{author}"
       yesterday_by_author: "Gisteren door %{author}"
       x_days_ago_by_author: "%{x} dagen geleden door %{author}"
-      trending_ideas: "Populaire bijdrages"
+      trending_ideas: "Populaire bijdragen"
       trending_ideas_text: "Geïnteresseerd in wat er is gebeurd op het platform? Bekijk de drie meest populaire ideeën, wat mensen erover te zeggen hebben en neem deel aan het gesprek."
       no_notifications: "Geen meldingen"
       one_notification: "1 melding"

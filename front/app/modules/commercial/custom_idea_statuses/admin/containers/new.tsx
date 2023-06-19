@@ -25,7 +25,7 @@ const NewIdeaStatus = () => {
   };
 
   const goBack = () => {
-    clHistory.push('/admin/ideas/statuses');
+    clHistory.push('/admin/settings/statuses');
   };
 
   if (!isNilOrError(tenantLocales)) {
