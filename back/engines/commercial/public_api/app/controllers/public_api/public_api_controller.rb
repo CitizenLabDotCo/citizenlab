@@ -68,7 +68,7 @@ module PublicApi
 
     # Default per page is 12, maximum is 24
     def num_per_page
-      [params[:page_size]&.to_i || 12, 24].min
+      [params[:page_size]&.to_i || 25, 100].min
     end
 
     private
