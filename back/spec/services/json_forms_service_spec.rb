@@ -168,7 +168,8 @@ describe JsonFormsService do
             label: 'Did you attend',
             options: {
               input_type: 'select',
-              description: 'Which councils are you attending in our city?'
+              description: 'Which councils are you attending in our city?',
+              enumNames: ['youth council', 'youth council']
             },
             scope: '#/properties/field3'
           },
