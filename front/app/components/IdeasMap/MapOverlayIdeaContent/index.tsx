@@ -14,7 +14,6 @@ import { adopt } from 'react-adopt';
 import { useSearchParams } from 'react-router-dom';
 import { getInputTerm } from 'services/participationContexts';
 import { trackEventByName } from 'utils/analytics';
-import eventEmitter from 'utils/eventEmitter';
 import { getInputTermMessage } from 'utils/i18n';
 import { isFieldEnabled } from 'utils/projectUtils';
 import { isRtl } from 'utils/styleUtils';
@@ -32,7 +31,6 @@ import LoadingComments from 'components/PostShowComponents/Comments/LoadingComme
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
-import IdeasShow from 'containers/IdeasShow';
 import IdeaSharingButton from 'containers/IdeasShow/Buttons/IdeaSharingButton';
 import MobileSharingButtonComponent from 'containers/IdeasShow/Buttons/MobileSharingButtonComponent';
 import IdeaMeta from 'containers/IdeasShow/IdeaMeta';
@@ -151,7 +149,6 @@ interface DataProps {
 interface InputProps {
   ideaId: string;
   projectId: string;
-  insideModal: boolean;
   setRef?: (element: HTMLDivElement) => void;
   className?: string;
 }
@@ -162,7 +159,6 @@ export const MapOverlayIdeaContent = ({
   className,
   postOfficialFeedbackPermission,
   projectId,
-  insideModal,
   project,
   ideaId,
   setRef,
@@ -227,14 +223,9 @@ export const MapOverlayIdeaContent = ({
   let content: JSX.Element | null = null;
 
   const handleGoBack = useCallback(() => {
-    if (insideModal) {
-      eventEmitter.emit('closeIdeaModal');
-      return;
-    }
-
     if (!project) return;
     clHistory.push(`/projects/${project.attributes.slug}`);
-  }, [project, insideModal]);
+  }, [project]);
 
   if (
     !isNilOrError(project) &&
@@ -462,6 +453,6 @@ const Data = adopt<DataProps, InputProps>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataProps) => <IdeasShow {...inputProps} {...dataProps} />}
+    {(dataProps) => <MapOverlayIdeaContent {...inputProps} {...dataProps} />}
   </Data>
 );

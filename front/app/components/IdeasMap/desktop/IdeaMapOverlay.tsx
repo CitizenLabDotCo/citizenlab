@@ -152,7 +152,6 @@ const IdeaMapOverlay = memo<Props>(({ projectId, phaseId, className }) => {
             <StyledMapOverlayIdeaContent
               ideaId={selectedIdeaId as string}
               projectId={projectId}
-              insideModal={false}
               setRef={handleIdeasShowSetRef}
             />
           </InnerOverlay>
