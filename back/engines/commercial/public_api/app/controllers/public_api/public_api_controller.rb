@@ -5,6 +5,7 @@ module PublicApi
     include ::AuthToken::Authenticable
     include ::Pundit::Authorization
 
+    around_action :switch_locale
     before_action :authenticate_api_client
     before_action :check_api_token
     before_action :set_locale
@@ -73,11 +74,12 @@ module PublicApi
 
     private
 
-    def set_locale
-      I18n.locale = AppConfiguration.instance.closest_locale_to(extract_locale_from_path_or_accept_language_header)
+    def switch_locale(&action)
+      locale = AppConfiguration.instance.closest_locale_to(requested_locale)
+      I18n.with_locale(locale, &action)
     end
 
-    def extract_locale_from_path_or_accept_language_header
+    def requested_locale
       return params[:locale] if present?
 
       request.env['HTTP_ACCEPT_LANGUAGE'].scan(/^[a-z]{2}/).first
