@@ -17,12 +17,12 @@ interface InternalCommentAttributes {
 }
 
 export interface IPresentInternalComment extends InternalCommentAttributes {
-  body_text: string;
+  body: string;
   publication_status: 'published';
 }
 
 interface IDeletedInternalComment extends InternalCommentAttributes {
-  body_text: string;
+  body: string;
   publication_status: 'deleted';
 }
 
@@ -63,14 +63,14 @@ export interface IInitiativeNewInternalComment extends INewInternalComment {
 export interface INewInternalComment {
   author_id: string;
   parent_id?: string;
-  body_text: string;
+  body: string;
 }
 
 export interface IUpdatedInternalComment {
   commentId: string;
   author_id?: string;
   parent_id?: string;
-  body_text: string;
+  body: string;
 }
 
 export type InternalCommentSort = '-new' | 'new';

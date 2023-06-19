@@ -32,7 +32,7 @@ describe('useAddInternalCommentToInitiative', () => {
       result.current.mutate({
         initiativeId: 'initiativeId',
         author_id: 'author_id',
-        body_text: 'body_text',
+        body: 'body_text',
       });
     });
 
@@ -58,7 +58,7 @@ describe('useAddInternalCommentToInitiative', () => {
       result.current.mutate({
         initiativeId: 'initiativeId',
         author_id: 'author_id',
-        body_text: 'body_text',
+        body: 'body_text',
       });
     });
 

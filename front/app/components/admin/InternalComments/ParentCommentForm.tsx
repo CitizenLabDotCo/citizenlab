@@ -181,7 +181,7 @@ const ParentCommentForm = ({
           {
             ideaId,
             author_id: authUser.data.id,
-            body_text: commentBodyText,
+            body: commentBodyText,
           },
           {
             onSuccess: (comment) => {
@@ -208,7 +208,7 @@ const ParentCommentForm = ({
           {
             initiativeId,
             author_id: authUser.data.id,
-            body_text: commentBodyText,
+            body: commentBodyText,
           },
           {
             onSuccess: (comment) => {

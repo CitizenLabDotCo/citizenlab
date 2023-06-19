@@ -201,7 +201,7 @@ const ChildCommentForm = ({
             ideaId,
             author_id: authUser.data.id,
             parent_id: parentId,
-            body_text: commentBodyText,
+            body: commentBodyText,
           },
           {
             onSuccess: () => {
@@ -222,7 +222,7 @@ const ChildCommentForm = ({
             initiativeId,
             author_id: authUser.data.id,
             parent_id: parentId,
-            body_text: commentBodyText,
+            body: commentBodyText,
           },
           {
             onSuccess: () => {

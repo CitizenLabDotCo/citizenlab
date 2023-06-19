@@ -32,7 +32,7 @@ describe('useAddInternalCommentToIdea', () => {
       result.current.mutate({
         ideaId: 'ideaId',
         author_id: 'author_id',
-        body_text: 'body_text',
+        body: 'body_text',
       });
     });
 
@@ -58,7 +58,7 @@ describe('useAddInternalCommentToIdea', () => {
       result.current.mutate({
         ideaId: 'ideaId',
         author_id: 'author_id',
-        body_text: 'body_text',
+        body: 'body_text',
       });
     });
 
