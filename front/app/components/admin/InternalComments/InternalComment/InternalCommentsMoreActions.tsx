@@ -63,7 +63,7 @@ export interface Props {
   initiativeId: string | undefined;
 }
 
-const CommentsMoreActions = ({
+const InternalCommentsMoreActions = ({
   projectId,
   onCommentEdit,
   comment,
@@ -173,4 +173,4 @@ const CommentsMoreActions = ({
   );
 };
 
-export default CommentsMoreActions;
+export default InternalCommentsMoreActions;

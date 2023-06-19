@@ -89,7 +89,7 @@ interface Props {
   className?: string;
 }
 
-const ChildCommentForm = ({
+const InternalChildCommentForm = ({
   parentId,
   ideaId,
   initiativeId,
@@ -336,4 +336,4 @@ const ChildCommentForm = ({
   return null;
 };
 
-export default ChildCommentForm;
+export default InternalChildCommentForm;
