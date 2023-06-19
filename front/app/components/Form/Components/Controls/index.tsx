@@ -59,12 +59,18 @@ import MultiSelectCheckboxControl, {
 import SingleSelectRadioControl, {
   singleSelectRadioControlTester,
 } from './SingleSelectRadioControl';
+import SingleSelectRadioEnumControl, {
+  singleSelectRadioEnumControlTester,
+} from './SingleSelectRadioEnumControl';
 import LinearScaleControl, {
   linearScaleControlTester,
 } from './LinearScaleControl';
 import SingleAttachmentControl, {
   singleAttachmentControlTester,
 } from './SingleAttachmentControl';
+import SingleSelectEnumControl, {
+  SingleSelectEnumControlTester,
+} from './SingleSelectEnumControl';
 
 export {
   CLCategoryLayout,
@@ -91,12 +97,16 @@ export {
   titleControlTester,
   SingleSelectControl,
   singleSelectControlTester,
+  SingleSelectEnumControl,
+  SingleSelectEnumControlTester,
   MultiSelectControl,
   multiSelectControlTester,
   MultiSelectCheckboxControl,
   multiSelectCheckboxControlTester,
   SingleSelectRadioControl,
   singleSelectRadioControlTester,
+  singleSelectRadioEnumControlTester,
+  SingleSelectRadioEnumControl,
   UserPickerControl,
   userPickerControlTester,
   CheckboxControl,
