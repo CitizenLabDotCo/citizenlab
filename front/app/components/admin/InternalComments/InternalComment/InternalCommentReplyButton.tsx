@@ -50,7 +50,7 @@ interface Props {
   className?: string;
 }
 
-const CommentReplyButton = ({
+const InternalCommentReplyButton = ({
   commentType,
   authorId,
   comment,
@@ -94,4 +94,4 @@ const CommentReplyButton = ({
   return null;
 };
 
-export default CommentReplyButton;
+export default InternalCommentReplyButton;

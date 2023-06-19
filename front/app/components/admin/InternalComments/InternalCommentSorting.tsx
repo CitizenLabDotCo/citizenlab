@@ -13,7 +13,7 @@ interface Props {
 
 export type InternalCommentSort = '-new' | 'new';
 
-const CommentSorting = ({
+const InternalCommentSorting = ({
   onChange,
   selectedCommentSort,
   className,
@@ -60,4 +60,4 @@ const CommentSorting = ({
   );
 };
 
-export default CommentSorting;
+export default InternalCommentSorting;

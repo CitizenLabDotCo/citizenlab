@@ -1,8 +1,8 @@
 import React from 'react';
 
 // components
-import CommentReplyButton from './CommentReplyButton';
-import CommentsMoreActions from './CommentsMoreActions';
+import InternalCommentReplyButton from './InternalCommentReplyButton';
+import InternalCommentsMoreActions from './InternalCommentsMoreActions';
 
 // style
 import styled from 'styled-components';
@@ -63,12 +63,12 @@ const Left = styled.ul`
   }
 `;
 
-const StyledCommentReplyButton = styled(CommentReplyButton)`
+const StyledCommentReplyButton = styled(InternalCommentReplyButton)`
   height: ${footerHeight};
   margin-top: ${footerTopMargin};
 `;
 
-const StyledCommentsMoreActions = styled(CommentsMoreActions)`
+const StyledCommentsMoreActions = styled(InternalCommentsMoreActions)`
   height: ${footerHeight};
   margin-top: ${footerTopMargin};
 `;
@@ -89,7 +89,7 @@ interface Props {
   authorId: string | null;
 }
 
-const CommentFooter = ({
+const InternalCommentFooter = ({
   onEditing,
   commentType,
   ideaId,
@@ -127,4 +127,4 @@ const CommentFooter = ({
   );
 };
 
-export default CommentFooter;
+export default InternalCommentFooter;

@@ -62,7 +62,7 @@ interface Props {
   className?: string;
 }
 
-const CommentBody = ({
+const InternalCommentBody = ({
   commentId,
   commentType,
   editing,
@@ -238,4 +238,4 @@ const CommentBody = ({
   );
 };
 
-export default CommentBody;
+export default InternalCommentBody;

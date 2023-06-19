@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useMemo, useState } from 'react';
 
 // components
-import ParentComment from './ParentComment';
+import InternalParentComment from './InternalParentComment';
 import { Spinner } from '@citizenlab/cl2-component-library';
 import Centerer from 'components/UI/Centerer';
 
@@ -25,7 +25,7 @@ const Container = styled.div`
   position: relative;
 `;
 
-const StyledParentComment = styled(ParentComment)`
+const StyledParentComment = styled(InternalParentComment)`
   &.loading {
     opacity: 0;
   }
@@ -40,7 +40,7 @@ interface Props {
   className?: string;
 }
 
-const CommentsSection = memo<Props>(
+const InternalCommentsSection = memo<Props>(
   ({ ideaId, initiativeId, postType, allComments, loading, className }) => {
     const { formatMessage } = useIntl();
     const [commentPostedMessage, setCommentPostedMessage] = useState('');
@@ -123,4 +123,4 @@ const CommentsSection = memo<Props>(
   }
 );
 
-export default CommentsSection;
+export default InternalCommentsSection;

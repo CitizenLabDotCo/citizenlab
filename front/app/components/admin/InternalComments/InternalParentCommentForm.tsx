@@ -102,7 +102,7 @@ interface Props {
   className?: string;
 }
 
-const ParentCommentForm = ({
+const InternalParentCommentForm = ({
   ideaId,
   initiativeId,
   postType,
@@ -312,4 +312,4 @@ const ParentCommentForm = ({
   );
 };
 
-export default ParentCommentForm;
+export default InternalParentCommentForm;

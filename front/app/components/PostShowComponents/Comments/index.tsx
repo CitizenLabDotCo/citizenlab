@@ -20,6 +20,7 @@ import { tabBorderSize } from 'components/admin/NavigationTabs/tabsStyleConstant
 import { ITab } from 'typings';
 
 // hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useIdeaById from 'api/ideas/useIdeaById';
 
@@ -51,6 +52,9 @@ const CommentsSection = ({
   showInternalComments = false,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const isInternalCommentingEnabled = useFeatureFlag({
+    name: 'internal_commenting',
+  });
   const [selectedTab, setSelectedTab] = useState<CommentType>('internal');
   const initiativeId = postType === 'initiative' ? postId : undefined;
   const ideaId = postType === 'idea' ? postId : undefined;
@@ -79,7 +83,7 @@ const CommentsSection = ({
     },
   ];
 
-  if (showInternalComments) {
+  if (showInternalComments && isInternalCommentingEnabled) {
     return (
       <Box mt="70px">
         <NavigationTabs>
