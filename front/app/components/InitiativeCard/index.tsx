@@ -6,7 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import Card from 'components/UI/Card';
 import { Icon } from '@citizenlab/cl2-component-library';
 import Author from 'components/Author';
-import VoteIndicator from './VoteIndicator';
+import ReactionIndicator from './ReactionIndicator';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -113,7 +113,9 @@ const InitiativeCard = ({
   const cardClassNames = [
     className,
     'e2e-initiative-card',
-    get(initiative, 'relationships.user_vote.data') ? 'voted' : 'not-voted',
+    get(initiative, 'relationships.user_reaction.data')
+      ? 'reacted'
+      : 'not-reacted',
     commentsCount > 0 ? 'e2e-has-comments' : null,
   ]
     .filter((item) => isString(item) && item !== '')
@@ -135,7 +137,7 @@ const InitiativeCard = ({
       }
       footer={
         <FooterInner>
-          <VoteIndicator initiativeId={initiativeId} />
+          <ReactionIndicator initiativeId={initiativeId} />
           <Spacer />
           <CommentInfo>
             <CommentIcon name="comments" ariaHidden />

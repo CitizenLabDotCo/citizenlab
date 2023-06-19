@@ -22,7 +22,7 @@ import BarChartActiveUsersByTime from './charts/BarChartActiveUsersByTime';
 import SelectableResourceByProjectChart from './charts/SelectableResourceByProjectChart';
 import SelectableResourceByTopicChart from './charts/SelectableResourceByTopicChart';
 import PostByTimeCard from 'components/admin/GraphCards/PostsByTimeCard';
-import VotesByTimeCard from 'components/admin/GraphCards/VotesByTimeCard';
+import ReactionsByTimeCard from 'components/admin/GraphCards/ReactionsByTimeCard';
 import CommentsByTimeCard from 'components/admin/GraphCards/CommentsByTimeCard';
 import RegistrationsByTimeCard from 'components/admin/GraphCards/RegistrationsByTimeCard';
 
@@ -47,7 +47,7 @@ interface DataProps {
   projects: GetProjectsChildProps;
 }
 
-export type IResource = 'ideas' | 'comments' | 'votes';
+export type IResource = 'ideas' | 'comments' | 'reactions';
 
 const OverviewDashboard = ({ projects }: DataProps) => {
   const user = useAuthUser();
@@ -57,7 +57,7 @@ const OverviewDashboard = ({ projects }: DataProps) => {
     () => [
       { value: 'ideas', label: formatMessage(messages.inputs) },
       { value: 'comments', label: formatMessage(messages.comments) },
-      { value: 'votes', label: formatMessage(messages.votes) },
+      { value: 'reactions', label: formatMessage(messages.votes) },
     ],
     [formatMessage]
   );
@@ -200,7 +200,7 @@ const OverviewDashboard = ({ projects }: DataProps) => {
             endAtMoment={endAtMoment}
             resolution={resolution}
           />
-          <VotesByTimeCard
+          <ReactionsByTimeCard
             projectId={currentProjectFilter}
             startAtMoment={startAtMoment}
             endAtMoment={endAtMoment}

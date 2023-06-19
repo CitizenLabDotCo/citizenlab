@@ -9,10 +9,10 @@ import Body from 'components/PostShowComponents/Body';
 import IdeaProposedBudget from 'containers/IdeasShow/IdeaProposedBudget';
 import DropdownMap from 'components/PostShowComponents/DropdownMap';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
-import Comments from 'components/PostShowComponents/Comments';
+import CommentsSection from 'components/PostShowComponents/Comments';
 import FileAttachments from 'components/UI/FileAttachments';
 import FeedbackSettings from './FeedbackSettings';
-import VotePreview from './VotePreview';
+import ReactionPreview from './ReactionPreview';
 import { IconTooltip, Box } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import Link from 'utils/cl-router/Link';
@@ -118,7 +118,7 @@ const StyledOfficialFeedback = styled(OfficialFeedback)`
   margin-top: 70px;
 `;
 
-const StyledComments = styled(Comments)`
+const StyledComments = styled(CommentsSection)`
   margin-top: 30px;
 `;
 
@@ -315,7 +315,7 @@ const IdeaContent = ({
               />
             </Left>
             <Right>
-              <VotePreview ideaId={ideaId} />
+              <ReactionPreview ideaId={ideaId} />
 
               {idea.attributes.budget && (
                 <>

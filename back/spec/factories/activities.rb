@@ -53,19 +53,19 @@ FactoryBot.define do
       action { 'created' }
     end
 
-    factory :idea_upvoted_activity do
-      association :item, factory: :vote
-      action { 'idea_upvoted' }
+    factory :idea_liked_activity do
+      association :item, factory: :reaction
+      action { 'idea_liked' }
     end
 
-    factory :idea_downvoted_activity do
-      association :item, factory: :downvote
-      action { 'idea_downvoted' }
+    factory :idea_disliked_activity do
+      association :item, factory: :dislike
+      action { 'idea_disliked' }
     end
 
-    factory :comment_upvoted_activity do
-      association :item, factory: :comment_vote
-      action { 'comment_upvoted' }
+    factory :comment_liked_activity do
+      association :item, factory: :comment_reaction
+      action { 'comment_liked' }
     end
 
     factory :admin_rights_given_activity do

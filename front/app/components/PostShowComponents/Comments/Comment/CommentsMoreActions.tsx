@@ -1,6 +1,5 @@
 // Libraries
 import React, { FormEvent, useState } from 'react';
-import { get } from 'lodash-es';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -11,7 +10,6 @@ import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import Modal from 'components/UI/Modal';
 import SpamReportForm from 'containers/SpamReport';
 import Button from 'components/UI/Button';
-import HasPermission from 'components/HasPermission';
 import CommentsAdminDeletionModal from '../CommentsAdminDeletionModal';
 import { usePermission } from 'services/permissions';
 
@@ -23,7 +21,7 @@ import styled from 'styled-components';
 import { isRtl } from 'utils/styleUtils';
 
 import useMarkCommentForDeletion from 'api/comments/useMarkForDeletion';
-import { ICommentData } from 'api/comments/types';
+import { DeleteReason, ICommentData } from 'api/comments/types';
 
 const Container = styled.div`
   display: flex;
@@ -63,8 +61,8 @@ export interface Props {
   comment: ICommentData;
   onCommentEdit: () => void;
   className?: string;
-  postId: string;
-  postType: 'idea' | 'initiative';
+  ideaId: string | undefined;
+  initiativeId: string | undefined;
 }
 
 const CommentsMoreActions = ({
@@ -72,12 +70,12 @@ const CommentsMoreActions = ({
   onCommentEdit,
   comment,
   className,
-  postType,
-  postId,
+  ideaId,
+  initiativeId,
 }: Props) => {
   const { mutate: markForDeletion, isLoading } = useMarkCommentForDeletion({
-    ideaId: postType === 'idea' ? postId : undefined,
-    initiativeId: postType === 'initiative' ? postId : undefined,
+    ideaId,
+    initiativeId,
   });
 
   const [modalVisible_spam, setModalVisible_spam] = useState(false);
@@ -98,6 +96,14 @@ const CommentsMoreActions = ({
   const canEdit = usePermission({
     item: comment,
     action: 'edit',
+    context: { projectId },
+  });
+
+  /* Justification required for the deletion:
+            when person who deletes the comment is not the author */
+  const needsToJustifyDeletion = usePermission({
+    item: comment,
+    action: 'justifyDeletion',
     context: { projectId },
   });
 
@@ -142,17 +148,20 @@ const CommentsMoreActions = ({
     deleteCommentModalClosed();
   };
 
-  const deleteComment = async (reason) => {
+  const handleDeleteClick = (_event: React.FormEvent) => {
+    deleteComment();
+  };
+
+  const deleteComment = async (reason?: DeleteReason) => {
     const commentId = comment.id;
-    const authorId = get(comment, 'relationships.author.data.id', undefined);
-    const reasonObj = get(reason, 'reason_code') ? reason : undefined;
+    const authorId = comment.relationships.author.data?.id;
 
     markForDeletion(
       {
         commentId,
         authorId,
         projectId,
-        reason: reasonObj,
+        reason,
       },
       {
         onSuccess: () => {
@@ -167,10 +176,6 @@ const CommentsMoreActions = ({
     setModalVisible_spam(false);
   };
 
-  if (!comment || !actions) {
-    return null;
-  }
-
   return (
     <>
       <Container className={className || ''}>
@@ -183,34 +188,26 @@ const CommentsMoreActions = ({
         className="e2e-comment-deletion-modal"
         header={<FormattedMessage {...messages.confirmCommentDeletion} />}
       >
-        <HasPermission
-          item={comment}
-          action="justifyDeletion"
-          context={{ projectId }}
-        >
-          {/* Justification required for the deletion */}
+        {needsToJustifyDeletion ? (
           <CommentsAdminDeletionModal
             onCloseDeleteModal={closeDeleteModal}
             onDeleteComment={deleteComment}
           />
-
-          {/* No justification required */}
-          <HasPermission.No>
-            <ButtonsWrapper>
-              <CancelButton buttonStyle="secondary" onClick={closeDeleteModal}>
-                <FormattedMessage {...messages.commentDeletionCancelButton} />
-              </CancelButton>
-              <AcceptButton
-                buttonStyle="primary"
-                processing={isLoading}
-                className="e2e-confirm-deletion"
-                onClick={deleteComment}
-              >
-                <FormattedMessage {...messages.commentDeletionConfirmButton} />
-              </AcceptButton>
-            </ButtonsWrapper>
-          </HasPermission.No>
-        </HasPermission>
+        ) : (
+          <ButtonsWrapper>
+            <CancelButton buttonStyle="secondary" onClick={closeDeleteModal}>
+              <FormattedMessage {...messages.commentDeletionCancelButton} />
+            </CancelButton>
+            <AcceptButton
+              buttonStyle="primary"
+              processing={isLoading}
+              className="e2e-confirm-deletion"
+              onClick={handleDeleteClick}
+            >
+              <FormattedMessage {...messages.commentDeletionConfirmButton} />
+            </AcceptButton>
+          </ButtonsWrapper>
+        )}
       </Modal>
 
       <Modal

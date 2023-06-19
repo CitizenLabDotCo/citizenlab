@@ -1,9 +1,6 @@
 import React, { FormEvent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
-// permissions
-import { canModerateProject } from 'services/permissions/rules/projectPermissions';
-
 // typings
 import { ICommentData } from 'api/comments/types';
 import { IOpenPostPageModalEvent } from 'containers/App';
@@ -95,20 +92,20 @@ const PostLinkRight = styled.div`
   white-space: nowrap;
 `;
 
-const VotesContainer = styled.div`
+const ReactionsContainer = styled.div`
   display: flex;
   align-items: center;
   margin-top: 20px;
 `;
 
-const VoteIcon = styled(Icon)`
+const ReactionIcon = styled(Icon)`
   flex: 0 0 24px;
   fill: ${colors.textSecondary};
   margin-right: 5px;
   margin-top: -2px;
 `;
 
-const VoteCount = styled.div`
+const ReactionCount = styled.div`
   color: ${colors.textSecondary};
 `;
 
@@ -187,41 +184,44 @@ const PostCommentGroup = ({ postType, comments, userId, postId }: Props) => {
       </PostLink>
 
       {comments.map((comment) => {
-        return (
-          <CommentContainer key={comment.id}>
-            <CommentHeader
-              projectId={projectId}
-              authorId={userId}
-              commentId={comment.id}
-              commentType="parent"
-              commentCreatedAt={comment.attributes.created_at}
-              moderator={canModerateProject(projectId, { data: user.data })}
-            />
-            <CommentBody
-              commentId={comment.id}
-              commentType="parent"
-              editing={false}
-              onCommentSaved={nothingHappens}
-              onCancelEditing={nothingHappens}
-              postId={postId}
-              postType={postType}
-            />
-            <VotesContainer>
-              <VoteIcon ariaHidden name="vote-up" />
-              <VoteCount aria-hidden>
-                {comment.attributes.upvotes_count}
-              </VoteCount>
-              <ScreenReaderOnly>
-                <FormattedMessage
-                  {...messages.a11y_upvotesCount}
-                  values={{
-                    upvotesCount: comment.attributes.upvotes_count,
-                  }}
-                />
-              </ScreenReaderOnly>
-            </VotesContainer>
-          </CommentContainer>
-        );
+        // Don't show deleted comments. Better to have a filter in the BE.
+        if (comment.attributes.publication_status === 'published') {
+          return (
+            <CommentContainer key={comment.id}>
+              <CommentHeader
+                projectId={projectId}
+                authorId={userId}
+                commentType="parent"
+                commentAttributes={comment.attributes}
+              />
+              <CommentBody
+                commentId={comment.id}
+                commentType="parent"
+                editing={false}
+                onCommentSaved={nothingHappens}
+                onCancelEditing={nothingHappens}
+                ideaId={ideaId}
+                initiativeId={initiativeId}
+              />
+              <ReactionsContainer>
+                <ReactionIcon ariaHidden name="vote-up" />
+                <ReactionCount aria-hidden>
+                  {comment.attributes.likes_count}
+                </ReactionCount>
+                <ScreenReaderOnly>
+                  <FormattedMessage
+                    {...messages.a11y_upvotesCount}
+                    values={{
+                      upvotesCount: comment.attributes.likes_count,
+                    }}
+                  />
+                </ScreenReaderOnly>
+              </ReactionsContainer>
+            </CommentContainer>
+          );
+        }
+
+        return null;
       })}
     </Container>
   );

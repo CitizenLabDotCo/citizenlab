@@ -13,8 +13,6 @@ import {
   activeBorderSize,
 } from './tabsStyleConstants';
 
-export const darkSkyBlue = '#7FBBCA'; // TODO: Use color from component library.
-
 type ContainerProps = {
   active: boolean;
 };
@@ -58,7 +56,7 @@ const Container = styled.div`
     }`}
 
     ${active &&
-    `border-color: ${darkSkyBlue};
+    `border-color: ${colors.teal500};
     // border-color: ${colors.primary}; TODO : set accent color in component library
 
     a {

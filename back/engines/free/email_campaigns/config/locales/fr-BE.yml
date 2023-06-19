@@ -76,7 +76,7 @@ fr-BE:
       subject: 'Votre commentaire a été supprimé de la plateforme de %{organizationName}'
       preheader: 'Votre commentaire a été supprimé'
     admin_digest:
-      subject: 'Votre rapport hebdomadaire du %{time}'
+      subject: 'Voici votre rapport hebdomadaire du %{time}'
       preheader: 'Rapport hebdomadaire de la plateforme de %{organizationName}'
       title_your_weekly_report: '%{firstName}, votre rapport hebdomadaire'
       text_introduction: 'Voici une sélection des idées les plus actives la semaine dernière. Découvrez ce qui se passe sur votre plateforme !'
@@ -86,7 +86,7 @@ fr-BE:
       new_comments: 'Nouveaux commentaires'
       title_activity_past_week: 'Activité de la semaine passée'
       title_no_activity_past_week: 'Il n''y a eu aucune activité la semaine passée'
-      title_initiatives_past_week: 'Nouvelles initiatives de la semaine dernière'
+      title_initiatives_past_week: 'Les nouvelles propositions de la semaine dernière'
       title_successful_initiatives_past_week: 'Initiatives qui ont atteint le nombre de voix requis au cours de la semaine dernière'
       yesterday_by_author: 'Hier par %{author}'
       today_by_author: 'Aujourd''hui par %{author}'

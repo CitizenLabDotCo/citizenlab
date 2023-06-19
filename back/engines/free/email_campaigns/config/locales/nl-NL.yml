@@ -96,7 +96,7 @@ nl:
       message_you_became_administrator: 'Je bent admin geworden van het participatieplatform van %{organizationName}.'
       preheader: 'Je bent admin geworden van het participatieplatform van %{organizationName}'
       subject: 'Je bent admin geworden van het participatieplatform van %{organizationName}'
-      text_create_participatory_process: 'Als admin kun je nieuwe participatieprojecten aanmaken en vormgeven. Je kunt nieuwe projectfases toevoegen met behulp van een tijdslijn. Elke projectfase heeft een inspraakmethode, bijvoorbeeld een poll, ideeëngeneratie, een inspraakworkshop of een stemronde.'
+      text_create_participatory_process: 'Als admin kun je nieuwe participatieprojecten aanmaken en vormgeven. Je kunt nieuwe projectfases toevoegen met behulp van een tijdslijn. Elke projectfase heeft een inspraakmethode, bijvoorbeeld een poll, ideeëngeneratie, een enquete of een stemronde.'
       text_moderate_analyse_input: 'Zodra een project gelanceerd is, zullen de eerste bijdrages binnenlopen. Om goed op de hoogte te blijven, krijg je een wekelijks overzicht van alle belangrijke activiteiten op het platform. In de post-sectie van het dashboard kun je alle input beheren, erover terugkoppelen naar je inwoners en analyseren.'
       text_platform_setup: 'Als admin kun je het participatieplatform vormgeven. Kies een logo, voeg afbeeldingen en kleuren toe, schrijf een persoonlijk bericht op de homepagina, verstuur uitnodigingen, bepaal wat je wilt weten van de mensen op het platform ...'
       title_create_participatory_process: 'Geef het participatieproces vorm'

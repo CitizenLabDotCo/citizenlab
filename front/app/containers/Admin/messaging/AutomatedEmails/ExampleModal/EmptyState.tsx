@@ -13,7 +13,10 @@ const EmptyState = () => {
   return (
     <Box mb="24px">
       <Text>
-        <FormattedMessage {...messages.noExampleYet} />
+        <FormattedMessage {...messages.clickOnButtonForExamples} />
+      </Text>
+      <Text>
+        <FormattedMessage {...messages.seeEmailHereText} />
       </Text>
       <Box display="flex" justifyContent="center" mt="32px">
         <Button

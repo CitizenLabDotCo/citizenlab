@@ -283,8 +283,8 @@ class Streams {
   // to push data in a stream that contains a sorted or/and paginated list.
   // In this case manually adding/removing/updating an item in the list
   // might not reflect the new state the back-end would return.
-  // For example: when the vote count on an idea changes, the newly
-  // returned list of ideas might vary from the previous if it's sorted by votes.
+  // For example: when the reaction count on an idea changes, the newly
+  // returned list of ideas might vary from the previous if it's sorted by reactions.
   // The only way to have a correct reflection of this new state is to
   // refetch the list from the back-end. Hence never manually push data in a query stream,
   // but always do a refetch!
