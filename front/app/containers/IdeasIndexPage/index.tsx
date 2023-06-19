@@ -99,7 +99,7 @@ export default memo(() => {
   const ideasQueryParameters = useMemo<QueryParameters>(
     () => ({
       'page[number]': 1,
-      'page[size]': 12,
+      'page[size]': 1,
       project_publication_status: 'published',
       publication_status: 'published',
       sort: sortParam ?? 'trending',

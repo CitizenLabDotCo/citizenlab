@@ -69,7 +69,7 @@ interface QueryParameters {
 const IdeasContainer = memo<InnerProps>(({ project, className }) => {
   const windowSize = useWindowSize();
 
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, _setSearchParams] = useSearchParams();
   const sortParam = searchParams.get('sort') as Sort | null;
   const searchParam = searchParams.get('search');
   const topicsParam = searchParams.get('topics');
@@ -89,8 +89,8 @@ const IdeasContainer = memo<InnerProps>(({ project, className }) => {
     [sortParam, searchParam, topicsParam, project]
   );
 
-  const updateQuery = useCallback((newParams: QueryParameters) => {
-    setIdeaQueryParameters((current) => ({ ...current, ...newParams }));
+  const updateQuery = useCallback((_newParams: QueryParameters) => {
+    // setIdeaQueryParameters((current) => ({ ...current, ...newParams }));
   }, []);
 
   const projectType = project.attributes.process_type;
