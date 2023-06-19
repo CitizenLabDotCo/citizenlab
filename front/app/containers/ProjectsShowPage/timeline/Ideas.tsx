@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useCallback, useMemo } from 'react';
 
 // hooks
 import usePhase from 'api/phases/usePhase';
@@ -6,6 +6,9 @@ import usePhase from 'api/phases/usePhase';
 // components
 import { IdeaCardsWithoutFiltersSidebar } from 'components/IdeaCards';
 import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
+
+// router
+import { useSearchParams } from 'react-router-dom';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -17,10 +20,12 @@ import styled from 'styled-components';
 
 // utils
 import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
+import { searchParamParser } from 'utils/cl-router/parseSearchParams';
 
 // typings
-import { IQueryParameters } from 'api/ideas/types';
 import { IPhaseData } from 'api/phases/types';
+import { Sort } from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
+import { QueryParametersUpdate } from 'components/IdeaCards/IdeasWithoutFiltersSidebar';
 
 const Container = styled.div``;
 
@@ -34,27 +39,57 @@ interface InnerProps {
   className?: string;
 }
 
+interface QueryParameters {
+  // constants
+  'page[number]': number;
+  'page[size]': number;
+  projects: string[];
+  phase: string;
+
+  // filters
+  search?: string;
+  sort: Sort;
+  topics?: string[];
+}
+
+const parseSearchParams = searchParamParser(['search', 'sort', 'topics']);
+
 const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
-  const [ideaQueryParameters, setIdeaQueryParameters] =
-    useState<IQueryParameters>({
-      projects: [projectId],
-      phase: phase.id,
-      sort: phase.attributes.ideas_order ?? ideaDefaultSortMethodFallback,
+  const [searchParams, setSearchParams] = useSearchParams();
+  const sortParam = searchParams.get('sort') as Sort | null;
+  const searchParam = searchParams.get('search');
+  const topicsParam = searchParams.get('topics');
+
+  const ideaQueryParameters = useMemo<QueryParameters>(
+    () => ({
       'page[number]': 1,
       'page[size]': 24,
-    });
-
-  useEffect(() => {
-    setIdeaQueryParameters((current) => ({
-      ...current,
+      projects: [projectId],
       phase: phase.id,
-      sort: phase.attributes.ideas_order ?? ideaDefaultSortMethodFallback,
-    }));
-  }, [phase]);
+      sort:
+        sortParam ??
+        phase.attributes.ideas_order ??
+        ideaDefaultSortMethodFallback,
+      search: searchParam ?? undefined,
+      topics: topicsParam ? JSON.parse(topicsParam) : undefined,
+    }),
+    [projectId, sortParam, searchParam, phase, topicsParam]
+  );
 
-  const updateQuery = useCallback((newParams: Partial<IQueryParameters>) => {
-    setIdeaQueryParameters((current) => ({ ...current, ...newParams }));
-  }, []);
+  // useEffect(() => {
+  //   setIdeaQueryParameters((current) => ({
+  //     ...current,
+  //     phase: phase.id,
+  //     sort: phase.attributes.ideas_order ?? ideaDefaultSortMethodFallback,
+  //   }));
+  // }, [phase]);
+
+  const updateQuery = useCallback(
+    (newParams: QueryParametersUpdate) => {
+      setSearchParams(parseSearchParams(searchParams, newParams));
+    },
+    [setSearchParams, searchParams]
+  );
 
   const participationMethod = phase.attributes.participation_method;
   if (
