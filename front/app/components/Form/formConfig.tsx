@@ -10,6 +10,8 @@ import {
   MultiSelectCheckboxControl,
   singleSelectRadioControlTester,
   SingleSelectRadioControl,
+  singleSelectRadioEnumControlTester,
+  SingleSelectRadioEnumControl,
   WYSIWYGControlTester,
   WYSIWYGControl,
   descriptionControlTester,
@@ -87,6 +89,10 @@ export const selectRenderers = (formType: 'default' | 'input' | 'survey') => {
         {
           tester: singleSelectRadioControlTester,
           renderer: SingleSelectRadioControl,
+        },
+        {
+          tester: singleSelectRadioEnumControlTester,
+          renderer: SingleSelectRadioEnumControl,
         },
         {
           tester: singleAttachmentControlTester,

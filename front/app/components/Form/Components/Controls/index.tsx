@@ -59,6 +59,9 @@ import MultiSelectCheckboxControl, {
 import SingleSelectRadioControl, {
   singleSelectRadioControlTester,
 } from './SingleSelectRadioControl';
+import SingleSelectRadioEnumControl, {
+  singleSelectRadioEnumControlTester,
+} from './SingleSelectRadioEnumControl';
 import LinearScaleControl, {
   linearScaleControlTester,
 } from './LinearScaleControl';
@@ -102,6 +105,8 @@ export {
   multiSelectCheckboxControlTester,
   SingleSelectRadioControl,
   singleSelectRadioControlTester,
+  singleSelectRadioEnumControlTester,
+  SingleSelectRadioEnumControl,
   UserPickerControl,
   userPickerControlTester,
   CheckboxControl,
