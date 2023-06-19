@@ -46,8 +46,7 @@ RSpec.describe UserJsonSchemaGeneratorService do
         schema = travel_to(Date.parse('1915-01-01')) { generator.visit_select(field) }
         expect(schema).to eq({
           type: 'string',
-          enum: [area1.id, area2.id, 'outside'],
-          enumNames: [area1.title_multiloc['en'], area2.title_multiloc['en'], 'Somewhere else']
+          enum: [area1.id, area2.id, 'outside']
         })
       end
     end
@@ -69,8 +68,7 @@ RSpec.describe UserJsonSchemaGeneratorService do
         it 'returns the schema for the given field' do
           expect(generator.visit_select(field)).to eq({
             type: 'string',
-            enum: %w[option1 option2],
-            enumNames: ['youth council', 'youth council']
+            enum: %w[option1 option2]
           })
         end
       end

@@ -25,7 +25,6 @@ class UserJsonSchemaGeneratorService < JsonSchemaGeneratorService
         title: I18n.t('custom_field_options.domicile.outside')
       })
       schema[:enum] = areas.pluck(:const)
-      schema[:enumNames] = areas.pluck(:title)
     end
   end
 end
