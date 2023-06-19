@@ -40,6 +40,7 @@
   "app.components.Comments.commentingMaybeNotPermitted": "Por favor {signInLink} para ver las acciones que puede llevar a cabo.",
   "app.components.Comments.inputsAssociatedWithProfile": "Por defecto, tus aportes se asociarán a tu perfil, a menos que selecciones esta opción.",
   "app.components.Comments.invisibleTitleComments": "Comentarios",
+  "app.components.Comments.leastRecent": "Menos reciente",
   "app.components.Comments.mostRecent": "Más recientes",
   "app.components.Comments.mostUpvoted": "Más votados",
   "app.components.Comments.official": "Oficial",
