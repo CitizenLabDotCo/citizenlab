@@ -64,11 +64,13 @@ module Notifications
 
     def self.make_notifications_on(activity)
       internal_comment = activity.item
-      recipient_id = internal_comment.post.assignee_id
-      initiator_id = internal_comment&.author_id
+      recipient_id = internal_comment&.post&.assignee_id
+      initiator_id = internal_comment.author_id
       parent_author_id = internal_comment&.parent&.author_id
+      post_type = internal_comment.post_type
 
-      if recipient_id &&
+      if post_type == 'Idea' &&
+         recipient_id &&
          initiator_id &&
          (recipient_id != initiator_id) &&
          (recipient_id != parent_author_id) && # user should receive a different notification for comment on their comment
@@ -79,11 +81,10 @@ module Notifications
           initiating_user_id: initiator_id,
           internal_comment: internal_comment,
           post_id: internal_comment.post_id,
-          post_type: internal_comment.post_type
+          post_type: post_type
         }
-        if attributes[:post_type] == 'Idea'
-          attributes[:project_id] = internal_comment.post.project_id
-        end
+
+        attributes[:project_id] = internal_comment.post.project_id if post_type == 'Idea'
 
         [new(attributes)]
       else
