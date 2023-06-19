@@ -59,6 +59,22 @@ resource 'ProjectFolder' do
       expect(json_response.dig(:data, :attributes, :avatars_count)).to eq 1
       expect(json_response.dig(:data, :relationships, :avatars)).to eq({ data: [{ id: idea.author_id, type: 'avatar' }] })
     end
+
+    example 'Get a folder includes ideas_count and comments_count', document: false do
+      idea = create(:idea)
+      create(:comment, post: idea)
+      draft_project = create(:project, admin_publication_attributes: { publication_status: 'draft' })
+      create(:idea, project: draft_project)
+      create(:comment)
+      also_idea = create(:idea)
+      folder = create(:project_folder, projects: [idea.project, also_idea.project, draft_project])
+      do_request id: folder.id
+
+      assert_status 200
+      json_response = json_parse response_body
+      expect(json_response.dig(:data, :attributes, :ideas_count)).to eq 2
+      expect(json_response.dig(:data, :attributes, :comments_count)).to eq 1
+    end
   end
 
   get 'web_api/v1/project_folders/by_slug/:slug' do

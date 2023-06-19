@@ -3,6 +3,18 @@
 class WebApi::V1::FolderSerializer < WebApi::V1::BaseSerializer
   attributes :title_multiloc, :description_preview_multiloc, :slug, :created_at, :updated_at
 
+  attribute :comments_count do |object|
+    Rails.cache.fetch("#{object.cache_key}/comments_count", expires_in: 1.day) do
+      object.projects.not_draft.sum(&:comments_count)
+    end
+  end
+
+  attribute :ideas_count do |object|
+    Rails.cache.fetch("#{object.cache_key}/ideas_count", expires_in: 1.day) do
+      object.projects.not_draft.sum(&:ideas_count)
+    end
+  end
+
   attribute :description_multiloc do |object|
     TextImageService.new.render_data_images object, :description_multiloc
   end
