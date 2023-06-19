@@ -277,18 +277,18 @@ describe ParticipationContextService do
           current_phase_attrs: { with_permissions: true, participation_method: 'voting', voting_method: 'budgeting', voting_max_total: 10_000 }
         )
         idea = create(:idea, project: project, phases: [project.phases[2]])
-        permission = service.get_participation_context(project).permissions.find_by(action: 'budgeting')
+        permission = service.get_participation_context(project).permissions.find_by(action: 'voting')
         permission.update!(permitted_by: 'users')
         expect(service.voting_disabled_reason_for_idea(idea, nil)).to eq 'not_signed_in'
       end
 
-      it 'returns `not_in_group` when the idea is in the current phase and budgeting is not permitted' do
+      it 'returns `not_in_group` when the idea is in the current phase and voting is not permitted' do
         project = create(
           :project_with_current_phase,
           current_phase_attrs: { with_permissions: true, participation_method: 'voting', voting_method: 'budgeting', voting_max_total: 10_000 }
         )
         idea = create(:idea, project: project, phases: [project.phases[2]])
-        permission = service.get_participation_context(project).permissions.find_by(action: 'budgeting')
+        permission = service.get_participation_context(project).permissions.find_by(action: 'voting')
         permission.update!(
           permitted_by: 'groups',
           group_ids: create_list(:group, 2).map(&:id)
@@ -304,9 +304,9 @@ describe ParticipationContextService do
     end
 
     context 'continuous project' do
-      it "returns 'not_in_group' when budgeting is disabled in a continuous project" do
+      it "returns 'not_in_group' when voting is disabled in a continuous project" do
         project = create(:continuous_budgeting_project, with_permissions: true)
-        permission = project.permissions.find_by(action: 'budgeting')
+        permission = project.permissions.find_by(action: 'voting')
         permission.update!(
           permitted_by: 'groups',
           group_ids: create_list(:group, 2).map(&:id)
