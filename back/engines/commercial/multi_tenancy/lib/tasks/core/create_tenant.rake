@@ -337,13 +337,13 @@ namespace :cl2_back do
           allowed: false,
           duration: 90
         },
-        internal_commenting: {
-          enabled: false,
-          allowed: false
-        },
         seat_based_billing: {
           enabled: true,
           allowed: true
+        },
+        internal_commenting: {
+          enabled: false,
+          allowed: false
         }
       }
     )
