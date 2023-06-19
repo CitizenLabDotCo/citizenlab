@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useState } from 'react';
+import React, { memo, useCallback, useMemo } from 'react';
 
 // components
 import ContentContainer from 'components/ContentContainer';
@@ -9,6 +9,9 @@ import {
   maxPageWidth,
 } from 'containers/ProjectsShowPage/styles';
 import SectionContainer from 'components/SectionContainer';
+
+// router
+import { useSearchParams } from 'react-router-dom';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
@@ -29,7 +32,7 @@ import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
 
 // typings
 import { IProjectData } from 'api/projects/types';
-import { IQueryParameters } from 'api/ideas/types';
+import { Sort } from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
 
 const Container = styled.div``;
 
@@ -51,17 +54,42 @@ interface InnerProps {
   project: IProjectData;
 }
 
+interface QueryParameters {
+  // constants
+  'page[number]': number;
+  'page[size]': number;
+  projects: string[];
+
+  // filters
+  search?: string;
+  sort: Sort;
+  topics?: string[];
+}
+
 const IdeasContainer = memo<InnerProps>(({ project, className }) => {
   const windowSize = useWindowSize();
-  const [ideaQueryParameters, setIdeaQueryParameters] =
-    useState<IQueryParameters>({
-      projects: [project.id],
-      sort: project.attributes.ideas_order ?? ideaDefaultSortMethodFallback,
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const sortParam = searchParams.get('sort') as Sort | null;
+  const searchParam = searchParams.get('search');
+  const topicsParam = searchParams.get('topics');
+
+  const ideaQueryParameters = useMemo<QueryParameters>(
+    () => ({
       'page[number]': 1,
       'page[size]': 24,
-    });
+      projects: [project.id],
+      sort:
+        sortParam ??
+        project.attributes.ideas_order ??
+        ideaDefaultSortMethodFallback,
+      search: searchParam ?? undefined,
+      topics: topicsParam ? JSON.parse(topicsParam) : undefined,
+    }),
+    [sortParam, searchParam, topicsParam, project]
+  );
 
-  const updateQuery = useCallback((newParams: Partial<IQueryParameters>) => {
+  const updateQuery = useCallback((newParams: QueryParameters) => {
     setIdeaQueryParameters((current) => ({ ...current, ...newParams }));
   }, []);
 
