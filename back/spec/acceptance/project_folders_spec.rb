@@ -43,9 +43,21 @@ resource 'ProjectFolder' do
     let(:id) { @folders.first.id }
 
     example_request 'Get one folder by id' do
-      expect(status).to eq 200
+      assert_status 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :id)).to eq @folders.first.id
+    end
+
+    example 'Get a folder includes the participants_count and avatars_count', document: false do
+      idea = create(:idea)
+      folder = create(:project_folder, projects: [idea.project])
+      do_request id: folder.id
+
+      assert_status 200
+      json_response = json_parse response_body
+      expect(json_response.dig(:data, :attributes, :participants_count)).to eq 1
+      expect(json_response.dig(:data, :attributes, :avatars_count)).to eq 1
+      expect(json_response.dig(:data, :relationships, :avatars)).to eq({ data: [{ id: idea.author_id, type: 'avatar' }] })
     end
   end
 
@@ -53,7 +65,7 @@ resource 'ProjectFolder' do
     let(:slug) { @folders.first.slug }
 
     example_request 'Get one folder by slug' do
-      expect(status).to eq 200
+      assert_status 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :id)).to eq @folders.first.id
     end

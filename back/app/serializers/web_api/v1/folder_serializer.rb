@@ -15,7 +15,26 @@ class WebApi::V1::FolderSerializer < WebApi::V1::BaseSerializer
     params.dig(:visible_children_count_by_parent_id, object.admin_publication.id) || Pundit.policy_scope(current_user(params), Project).where(id: object.admin_publication.children.map(&:publication_id)).count
   end
 
+  attribute :avatars_count do |object, params|
+    avatars_for_folder(object, params)[:total_count]
+  end
+
+  attribute :participants_count do |object, _params|
+    @participants_service ||= ParticipantsService.new
+    @participants_service.folder_participants_count(object)
+  end
+
   has_one :admin_publication, serializer: ::WebApi::V1::AdminPublicationSerializer
 
   has_many :images, serializer: ::WebApi::V1::ImageSerializer
+
+  has_many :avatars, serializer: WebApi::V1::AvatarSerializer do |object, params|
+    avatars_for_folder(object, params)[:users]
+  end
+
+  def self.avatars_for_folder(object, _params)
+    # TODO: call only once (not a second time for counts)
+    @participants_service ||= ParticipantsService.new
+    AvatarsService.new(@participants_service).avatars_for_folder(object, limit: 3)
+  end
 end
