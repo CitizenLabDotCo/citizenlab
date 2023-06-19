@@ -56,11 +56,11 @@
 #  fk_rails_...  (spam_report_id => spam_reports.id)
 #
 module Notifications
-  class InternalCommentOnIdeaAssignedToYou < Notification
+  class InternalCommentOnInitiativeAssignedToYou < Notification
     validates :initiating_user, :internal_comment, presence: true
 
     ACTIVITY_TRIGGERS = { 'InternalComment' => { 'created' => true } }
-    EVENT_NAME = 'Internal comment on idea assigned to you'
+    EVENT_NAME = 'Internal comment on initiative assigned to you'
 
     def self.make_notifications_on(activity)
       internal_comment = activity.item
@@ -69,7 +69,7 @@ module Notifications
       parent_author_id = internal_comment&.parent&.author_id
       post_type = internal_comment.post_type
 
-      if post_type == 'Idea' &&
+      if post_type == 'Initiative' &&
          recipient_id &&
          initiator_id &&
          (recipient_id != initiator_id) &&
@@ -81,8 +81,7 @@ module Notifications
           initiating_user_id: initiator_id,
           internal_comment: internal_comment,
           post_id: internal_comment.post_id,
-          post_type: post_type,
-          project_id: internal_comment.post.project_id
+          post_type: post_type
         }
 
         [new(attributes)]
