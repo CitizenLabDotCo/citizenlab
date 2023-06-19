@@ -64,7 +64,8 @@ module Notifications
 
     def self.make_notifications_on(activity)
       internal_comment = activity.item
-      recipient_id = internal_comment&.post&.assignee_id
+      recipient = internal_comment.post.assignee
+      recipient_id = recipient.id
       initiator_id = internal_comment.author_id
       parent_author_id = internal_comment&.parent&.author_id
       post_type = internal_comment.post_type
@@ -73,8 +74,8 @@ module Notifications
          recipient_id &&
          initiator_id &&
          (recipient_id != initiator_id) &&
-         (recipient_id != parent_author_id) && # user should receive a different notification for comment on their comment
-         !recipient_mentioned?(internal_comment) # user should receive a different notification if they are mentioned
+         (recipient_id != parent_author_id) &&
+         !MentionService.new.user_mentioned?(internal_comment.body, recipient)
 
         attributes = {
           recipient_id: recipient_id,
@@ -90,11 +91,5 @@ module Notifications
         []
       end
     end
-
-    def self.recipient_mentioned?(internal_comment)
-      MentionService.new.user_mentioned?(internal_comment.body, internal_comment.post.assignee)
-    end
-
-    private_class_method :recipient_mentioned?
   end
 end
