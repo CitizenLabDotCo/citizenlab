@@ -18,7 +18,7 @@ const useInternalComment = (id: string) => {
     InternalCommentsKeys
   >({
     queryKey: causeKeys.item({ id }),
-    queryFn: () => fetchInternalComment({ id }),
+    queryFn: () => fetchInternalComment(id),
   });
 };
 
