@@ -8018,7 +8018,7 @@ models:
       permitted_by: groups
       permission_scope_ref: *verifiedPoll
     - &114
-      action: budgeting
+      action: voting
       permitted_by: groups
       permission_scope_ref: *verifiedPb
     - &115
@@ -8038,7 +8038,7 @@ models:
       permitted_by: everyone_confirmed_email
       permission_scope_ref: *charliesIdeation
     - &1114
-      action: budgeting
+      action: voting
       permitted_by: groups
       permission_scope_ref: *charliesPb
     - &1115
