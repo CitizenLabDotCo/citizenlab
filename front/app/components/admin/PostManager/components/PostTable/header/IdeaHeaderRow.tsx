@@ -143,12 +143,12 @@ export default ({
     {
       name: 'up',
       cellProps: { width: 1 },
-      onChange: handleSortClick('upvotes_count'),
+      onChange: handleSortClick('likes_count'),
       Component: (
         props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
       ) => {
         return (
-          <SortableHeaderCell {...props} sortAttributeName="upvotes_count">
+          <SortableHeaderCell {...props} sortAttributeName="likes_count">
             <FormattedMessage {...messages.up} />
           </SortableHeaderCell>
         );
@@ -157,12 +157,12 @@ export default ({
     {
       name: 'down',
       cellProps: { width: 1 },
-      onChange: handleSortClick('downvotes_count'),
+      onChange: handleSortClick('dislikes_count'),
       Component: (
         props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
       ) => {
         return (
-          <SortableHeaderCell {...props} sortAttributeName="downvotes_count">
+          <SortableHeaderCell {...props} sortAttributeName="dislikes_count">
             <FormattedMessage {...messages.down} />
           </SortableHeaderCell>
         );

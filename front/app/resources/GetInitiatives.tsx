@@ -13,7 +13,7 @@ import {
   SortDirection,
 } from 'utils/paginationUtils';
 
-export type SortAttribute = 'new' | 'author_name' | 'upvotes_count' | 'status';
+export type SortAttribute = 'new' | 'author_name' | 'likes_count' | 'status';
 
 export type PublicationStatus = InitiativePublicationStatus;
 

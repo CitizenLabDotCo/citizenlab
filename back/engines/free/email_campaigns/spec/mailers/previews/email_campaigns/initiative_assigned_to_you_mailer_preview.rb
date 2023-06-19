@@ -15,7 +15,7 @@ module EmailCampaigns
           post_published_at: initiative.published_at&.iso8601,
           post_url: Frontend::UrlService.new.model_to_url(initiative, locale: recipient_user.locale),
           post_assigned_at: (initiative.assigned_at&.iso8601 || Time.now.iso8601),
-          initiative_votes_needed: initiative.votes_needed,
+          initiative_reactions_needed: initiative.reactions_needed,
           initiative_expires_at: initiative.expires_at.iso8601
         }
       }

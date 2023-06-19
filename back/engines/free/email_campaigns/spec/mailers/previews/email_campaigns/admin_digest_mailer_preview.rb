@@ -16,7 +16,7 @@ module EmailCampaigns
             activities: {
               new_ideas: { increase: 1 },
               new_initiatives: { increase: 1 },
-              new_votes: { increase: 1 },
+              new_reactions: { increase: 1 },
               new_comments: { increase: 1 },
               total_ideas: 1,
               total_initiatives: 2,

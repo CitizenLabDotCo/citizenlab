@@ -92,14 +92,14 @@ FactoryBot.define do
     association :post, factory: :initiative
   end
 
-  factory :official_feedback_on_voted_idea, parent: :notification, class: 'Notifications::OfficialFeedbackOnVotedIdea' do
+  factory :official_feedback_on_reacted_idea, parent: :notification, class: 'Notifications::OfficialFeedbackOnReactedIdea' do
     initiating_user
     official_feedback
     association :post, factory: :idea
     project
   end
 
-  factory :official_feedback_on_voted_initiative, parent: :notification, class: 'Notifications::OfficialFeedbackOnVotedInitiative' do
+  factory :official_feedback_on_reacted_initiative, parent: :notification, class: 'Notifications::OfficialFeedbackOnReactedInitiative' do
     initiating_user
     official_feedback
     association :post, factory: :initiative
@@ -155,7 +155,7 @@ FactoryBot.define do
     end
   end
 
-  factory :status_change_on_voted_idea, parent: :notification, class: 'Notifications::StatusChangeOnVotedIdea' do
+  factory :status_change_on_reacted_idea, parent: :notification, class: 'Notifications::StatusChangeOnReactedIdea' do
     association :post, factory: :idea
     project
     association :post_status, factory: :idea_status
@@ -164,7 +164,7 @@ FactoryBot.define do
     end
   end
 
-  factory :status_change_on_voted_initiative, parent: :notification, class: 'Notifications::StatusChangeOnVotedInitiative' do
+  factory :status_change_on_reacted_initiative, parent: :notification, class: 'Notifications::StatusChangeOnReactedInitiative' do
     association :post, factory: :initiative
     association :post_status, factory: :initiative_status
     before(:create) do |notification|

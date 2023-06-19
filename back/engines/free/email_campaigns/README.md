@@ -100,11 +100,11 @@ class SomeCampaign < Campaign
 end
 ```
 
-All consentable campaigns should have a category in the following list (to be kept in sync with front-end): 'own', 'admin', 'official', 'mention', 'voted', 'commented', 'weekly' as follows, so it can be displayed to the user consent form.
+All consentable campaigns should have a category in the following list (to be kept in sync with front-end): 'own', 'admin', 'official', 'mention', 'reacted', 'commented', 'weekly' as follows, so it can be displayed to the user consent form.
 
 ```ruby
 def self.category
-  'voted'
+  'reacted'
 end
 ```
 

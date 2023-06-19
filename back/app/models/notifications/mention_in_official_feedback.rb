@@ -32,6 +32,7 @@
 #  index_notifications_on_created_at                           (created_at)
 #  index_notifications_on_inappropriate_content_flag_id        (inappropriate_content_flag_id)
 #  index_notifications_on_initiating_user_id                   (initiating_user_id)
+#  index_notifications_on_internal_comment_id                  (internal_comment_id)
 #  index_notifications_on_invite_id                            (invite_id)
 #  index_notifications_on_official_feedback_id                 (official_feedback_id)
 #  index_notifications_on_phase_id                             (phase_id)
@@ -67,7 +68,7 @@ module Notifications
       recipient_id = activity.payload['mentioned_user']
       initiator_id = official_feedback&.user_id
       participant_ids = [official_feedback.post.author_id]
-      participant_ids += official_feedback.post.votes.pluck(:user_id)
+      participant_ids += official_feedback.post.reactions.pluck(:user_id)
       participant_ids += official_feedback.post.comments.pluck(:author_id)
       participant_ids.uniq!
 
