@@ -339,7 +339,7 @@ namespace :cl2_back do
         },
         internal_commenting: {
           enabled: false,
-          allowed: false,
+          allowed: false
         },
         seat_based_billing: {
           enabled: true,

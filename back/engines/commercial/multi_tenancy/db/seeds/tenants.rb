@@ -419,7 +419,7 @@ module MultiTenancy
             },
             internal_commenting: {
               enabled: true,
-              allowed: true,
+              allowed: true
             },
             seat_based_billing: {
               enabled: true,
