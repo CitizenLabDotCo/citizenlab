@@ -47,7 +47,7 @@ resource 'Phases' do
       type: :string
     )
 
-    context "when the page size is smaller than the total number of phases" do
+    context 'when the page size is smaller than the total number of phases' do
       let(:page_size) { 2 }
 
       example_request 'List only the first page of phases', document: false do

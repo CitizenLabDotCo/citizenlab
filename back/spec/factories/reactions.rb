@@ -15,7 +15,6 @@ FactoryBot.define do
     end
   end
 
-
   factory :reaction2, class: 'Reaction' do
     for_idea
     up

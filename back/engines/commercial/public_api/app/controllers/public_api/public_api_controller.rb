@@ -21,7 +21,7 @@ module PublicApi
         **exception.extra_details
       }
 
-      render json: problem_details, status: 400
+      render json: problem_details, status: :bad_request
     end
 
     def list_items(base_query, serializer)
