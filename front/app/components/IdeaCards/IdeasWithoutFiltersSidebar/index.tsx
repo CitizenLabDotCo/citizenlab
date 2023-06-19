@@ -212,7 +212,9 @@ const IdeasWithoutFiltersSidebar = ({
       topics,
     });
 
-    onUpdateQuery({ topics });
+    topics.length === 0
+      ? onUpdateQuery({ topics: undefined })
+      : onUpdateQuery({ topics });
   };
 
   const selectView = (selectedView: 'card' | 'map') => {

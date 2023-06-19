@@ -4,9 +4,9 @@ import React, { memo, useState } from 'react';
 import FilterSelector from 'components/FilterSelector';
 
 // i18n
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
+import useLocalize from 'hooks/useLocalize';
 
 // hooks
 import useProjectAllowedInputTopics from 'api/project_allowed_input_topics/useProjectAllowedInputTopics';
@@ -23,7 +23,8 @@ interface Props {
 }
 
 const TopicFilterDropdown = memo(
-  ({ alignment, projectId, onChange, localize }: Props & InjectedLocalized) => {
+  ({ alignment, projectId, onChange }: Props) => {
+    const localize = useLocalize();
     const [selectedValues, setSelectedValues] = useState<string[]>([]);
     const { data: allowedInputTopics } = useProjectAllowedInputTopics({
       projectId,
@@ -79,4 +80,4 @@ const TopicFilterDropdown = memo(
   }
 );
 
-export default injectLocalize(TopicFilterDropdown);
+export default TopicFilterDropdown;
