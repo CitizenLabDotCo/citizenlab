@@ -14,8 +14,8 @@ import {
   ideasByTopicStream,
   ICommentsByTopic,
   commentsByTopicStream,
-  IVotesByTopic,
-  votesByTopicStream,
+  IReactionsByTopic,
+  reactionsByTopicStream,
 } from 'services/stats';
 import { IResource } from '..';
 import { IResolution } from 'components/admin/ResolutionControl';
@@ -45,7 +45,7 @@ const getCurrentStream = (currentResourceByTopic: IResource) => {
   } else if (currentResourceByTopic === 'comments') {
     return commentsByTopicStream;
   } else {
-    return votesByTopicStream;
+    return reactionsByTopicStream;
   }
 };
 
@@ -57,11 +57,11 @@ const SelectableResourceByTopicChart = ({
   const localize = useLocalize();
 
   const convertToGraphFormat = (
-    data: IIdeasByTopic | IVotesByTopic | ICommentsByTopic
+    data: IIdeasByTopic | IReactionsByTopic | ICommentsByTopic
   ) => {
     const { series, topics } = data.data.attributes;
     const dataKey =
-      currentResourceByTopic === 'votes' ? 'total' : currentResourceByTopic;
+      currentResourceByTopic === 'reactions' ? 'total' : currentResourceByTopic;
 
     const mapped = map(series[dataKey], (count: number, topicId: string) => ({
       name: localize(topics[topicId].title_multiloc),

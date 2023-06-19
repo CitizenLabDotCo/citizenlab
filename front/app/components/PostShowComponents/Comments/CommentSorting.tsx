@@ -26,12 +26,12 @@ const CommentSorting = ({
     '-new': messages.leastRecent,
     // 'new' = most recent (date posted, ascending)
     new: messages.mostRecent,
-    // '-upvotes_count' = most votes (votes, descending)
-    '-upvotes_count': messages.mostUpvoted,
+    // '-likes_count' = most reactions (reactions, descending)
+    '-likes_count': messages.mostUpvoted,
   };
 
   const getSortOptions = () => {
-    const sortOptions: CommentsSort[] = ['-new', 'new', '-upvotes_count'];
+    const sortOptions: CommentsSort[] = ['-new', 'new', '-likes_count'];
     return sortOptions.map((sortOption) => {
       return {
         text: <FormattedMessage {...sortOptionsMessages[sortOption]} />,

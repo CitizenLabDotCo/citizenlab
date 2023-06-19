@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class IdeasFinder < ApplicationFinder
-  sortable_attributes 'upvotes_count', 'downvotes_count', 'baskets_count'
+  sortable_attributes 'likes_count', 'dislikes_count', 'baskets_count'
 
   sort_scope 'new',          order_new: :desc
   sort_scope '-new',         order_new: :asc
