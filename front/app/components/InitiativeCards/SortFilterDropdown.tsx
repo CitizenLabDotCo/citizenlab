@@ -10,10 +10,13 @@ import messages from './messages';
 // utils
 import { defaultSortingOptions } from 'utils/participationMethodUtils';
 
+export type Sort = 'random' | 'new' | '-new';
+
 type Props = {
   id?: string | undefined;
   alignment: 'left' | 'right';
-  onChange: (value: string) => void;
+  defaultSortingMethod?: Sort;
+  onChange: (value: Sort) => void;
 };
 
 type State = {
@@ -28,7 +31,7 @@ class SortFilterDropdown extends PureComponent<Props, State> {
     };
   }
 
-  handleOnChange = (selectedValue: string[]) => {
+  handleOnChange = (selectedValue: Sort[]) => {
     this.setState({ selectedValue });
     this.props.onChange(selectedValue[0]);
   };
