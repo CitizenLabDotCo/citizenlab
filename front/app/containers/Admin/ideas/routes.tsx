@@ -4,6 +4,7 @@ import moduleConfiguration from 'modules';
 
 const AdminIdeasContainer = lazy(() => import('./index'));
 const AdminIdeasAll = lazy(() => import('./all'));
+import PostPreviewIndex from 'components/admin/PostManager/components/LazyPostPreview';
 
 export default () => ({
   path: 'ideas',
@@ -20,6 +21,16 @@ export default () => ({
           <AdminIdeasAll />
         </PageLoading>
       ),
+      children: [
+        {
+          path: ':ideaId',
+          element: (
+            <PageLoading>
+              <PostPreviewIndex />
+            </PageLoading>
+          ),
+        },
+      ],
     },
     ...moduleConfiguration.routes['admin.ideas'],
   ],
