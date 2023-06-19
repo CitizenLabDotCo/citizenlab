@@ -131,7 +131,7 @@ const StyledSearchInput = styled(SearchInput)`
   `}
 `;
 
-interface QueryParametersUpdate {
+export interface QueryParametersUpdate {
   search?: string;
   sort?: Sort;
   projects?: string[];
@@ -274,6 +274,7 @@ const IdeasWithoutFiltersSidebar = ({
             )}
             {!showMapView && (
               <StyledSearchInput
+                defaultValue={ideaQueryParameters.search}
                 className="e2e-search-ideas-input"
                 onChange={handleSearchOnChange}
                 a11y_numberOfSearchResults={list.length}

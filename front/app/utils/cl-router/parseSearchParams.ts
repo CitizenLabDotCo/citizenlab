@@ -1,13 +1,31 @@
 import { isString } from 'lodash-es';
-import { QueryParametersUpdate } from 'components/IdeaCards/IdeasWithFiltersSidebar';
+
+export const searchParamParser = <ParamName extends string>(
+  paramNames: ParamName[]
+) => {
+  const parseSearchParams = (
+    searchParams: URLSearchParams,
+    newParams: Partial<Record<ParamName, any>>
+  ) => {
+    const newSearchParams: Partial<Record<ParamName, string>> = {};
+
+    paramNames.forEach((param) => {
+      setPropertyIfNecessary(newSearchParams, searchParams, newParams, param);
+    });
+
+    return newSearchParams;
+  };
+
+  return parseSearchParams;
+};
 
 // Situations in which need to add a property to newSearchParams:
 //  1. if there is already a property in the search params, and the propery is not a key in newParams
 //  2. if the propery is a key in newParams with a non-null value
 const setPropertyIfNecessary = (
-  newSearchParams: Record<string, string>,
+  newSearchParams: Partial<Record<string, string>>,
   searchParams: URLSearchParams,
-  newParams: QueryParametersUpdate,
+  newParams: Partial<Record<string, any>>,
   param: string
 ) => {
   const currentParam = searchParams.get(param);
@@ -25,23 +43,4 @@ const setPropertyIfNecessary = (
       : JSON.stringify(newParam);
     return;
   }
-};
-
-const PARAMS: (keyof QueryParametersUpdate)[] = [
-  'sort',
-  'search',
-  'idea_status',
-  'topics',
-];
-
-export const parseSearchParams = (
-  searchParams: URLSearchParams,
-  newParams: QueryParametersUpdate
-) => {
-  const newSearchParams: Record<string, string> = {};
-  PARAMS.forEach((param) => {
-    setPropertyIfNecessary(newSearchParams, searchParams, newParams, param);
-  });
-
-  return newSearchParams;
 };

@@ -29,10 +29,12 @@ import { viewportWidths, colors } from 'utils/styleUtils';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
+import { searchParamParser } from 'utils/cl-router/parseSearchParams';
 
 // typings
 import { IProjectData } from 'api/projects/types';
 import { Sort } from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
+import { QueryParametersUpdate } from 'components/IdeaCards/IdeasWithoutFiltersSidebar';
 
 const Container = styled.div``;
 
@@ -66,10 +68,12 @@ interface QueryParameters {
   topics?: string[];
 }
 
+const parseSearchParams = searchParamParser(['search', 'sort', 'topics']);
+
 const IdeasContainer = memo<InnerProps>(({ project, className }) => {
   const windowSize = useWindowSize();
 
-  const [searchParams, _setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const sortParam = searchParams.get('sort') as Sort | null;
   const searchParam = searchParams.get('search');
   const topicsParam = searchParams.get('topics');
@@ -89,9 +93,12 @@ const IdeasContainer = memo<InnerProps>(({ project, className }) => {
     [sortParam, searchParam, topicsParam, project]
   );
 
-  const updateQuery = useCallback((_newParams: QueryParameters) => {
-    // setIdeaQueryParameters((current) => ({ ...current, ...newParams }));
-  }, []);
+  const updateQuery = useCallback(
+    (newParams: QueryParametersUpdate) => {
+      setSearchParams(parseSearchParams(searchParams, newParams));
+    },
+    [setSearchParams, searchParams]
+  );
 
   const projectType = project.attributes.process_type;
   const participationMethod = project.attributes.participation_method;
@@ -139,7 +146,7 @@ const IdeasContainer = memo<InnerProps>(({ project, className }) => {
               onUpdateQuery={updateQuery}
               projectId={project.id}
               participationMethod={project.attributes.participation_method}
-              defaultSortingMethod={project.attributes.ideas_order}
+              defaultSortingMethod={ideaQueryParameters.sort}
               participationContextId={project.id}
               participationContextType="project"
               showViewToggle={true}

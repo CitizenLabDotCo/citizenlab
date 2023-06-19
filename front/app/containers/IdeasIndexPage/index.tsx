@@ -15,12 +15,10 @@ import messages from './messages';
 import styled from 'styled-components';
 import { media, fontSizes, colors, isRtl } from 'utils/styleUtils';
 
-// utils
-import { parseSearchParams } from './utils';
-
 // typings
 import { Sort } from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
 import { QueryParametersUpdate } from 'components/IdeaCards/IdeasWithFiltersSidebar';
+import { searchParamParser } from 'utils/cl-router/parseSearchParams';
 
 const Container = styled.main`
   min-height: calc(
@@ -88,6 +86,13 @@ export interface QueryParameters {
   idea_status?: string;
   topics?: string[];
 }
+
+const parseSearchParams = searchParamParser([
+  'sort',
+  'search',
+  'idea_status',
+  'topics',
+]);
 
 export default memo(() => {
   const [searchParams, setSearchParams] = useSearchParams();
