@@ -19,6 +19,9 @@ import { tabBorderSize } from 'components/admin/NavigationTabs/tabsStyleConstant
 // Types
 import { ITab } from 'typings';
 
+// hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 const NavigationTabs = styled.nav`
   ${({ theme }) => css`
     width: 100%;
@@ -47,6 +50,9 @@ const CommentsSection = ({
   showInternalComments = false,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const isInternalCommentingEnabled = useFeatureFlag({
+    name: 'internal_commenting',
+  });
   const [selectedTab, setSelectedTab] = useState<CommentType>('internal');
   const tabs: NavTab[] = [
     {
@@ -61,7 +67,7 @@ const CommentsSection = ({
     },
   ];
 
-  if (showInternalComments) {
+  if (showInternalComments && isInternalCommentingEnabled) {
     return (
       <Box mt="70px">
         <NavigationTabs>
