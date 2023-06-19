@@ -280,23 +280,23 @@ describe SmartGroups::Rules::ParticipatedInProject do
       })
       expect(participated_reacted_idea_in_project_in_rule.description_multiloc).to eq({
         'en' => 'Reacted to an idea in one of the following projects beer, delayed',
-        'fr-FR' => 'Voté pour une idée dans l\'un des projets bière, retardé',
-        'nl-NL' => 'Stemde op een idee in een van de volgende projecten bier, uitgesteld'
+        'fr-FR' => 'Reacted to an idea in one of the following projects bière, retardé',
+        'nl-NL' => 'Reacted to an idea in one of the following projects bier, uitgesteld'
       })
       expect(participated_not_reacted_idea_in_project_in_rule.description_multiloc).to eq({
         'en' => 'Did not react to an idea in the project beer',
-        'fr-FR' => 'N\'as pas voté pour une idée dans le projet bière',
-        'nl-NL' => 'Stemde niet op een idee in het project bier'
+        'fr-FR' => 'Did not react to an idea in the project bière',
+        'nl-NL' => 'Did not react to an idea in the project bier'
       })
       expect(participated_reacted_comment_in_project_in_rule.description_multiloc).to eq({
         'en' => 'Reacted to a comment on an idea in one of the following projects beer, delayed',
-        'fr-FR' => 'Voté pour un commentaire sur une idée dans l\'un des projets bière, retardé',
-        'nl-NL' => 'Stemde op een reactie op een idee in een van de volgende projecten bier, uitgesteld'
+        'fr-FR' => 'Reacted to a comment on an idea in one of the following projects bière, retardé',
+        'nl-NL' => 'Reacted to a comment on an idea in one of the following projects bier, uitgesteld'
       })
       expect(participated_not_reacted_comment_in_project_in_rule.description_multiloc).to eq({
         'en' => 'Did not react to a comment on an idea in the project beer',
-        'fr-FR' => 'N\'as pas voté pour un commentaire sur une idée dans le projet bière',
-        'nl-NL' => 'Stemde niet op een reactie op een idee in het project bier'
+        'fr-FR' => 'Did not react to a comment on an idea in the project bière',
+        'nl-NL' => 'Did not react to a comment on an idea in the project bier'
       })
       expect(participated_budgeted_in_project_in_rule.description_multiloc).to eq({
         'en' => 'Assigned a budget in one of the following projects beer, delayed',

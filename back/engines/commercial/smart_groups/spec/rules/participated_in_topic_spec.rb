@@ -244,23 +244,23 @@ describe SmartGroups::Rules::ParticipatedInTopic do
       })
       expect(participated_reacted_idea_in_topic_in_rule.description_multiloc).to eq({
         'en' => 'Reacted to an idea with one of the following topics beer',
-        'fr-FR' => 'Voté pour une idée avec thème est un de bière',
-        'nl-NL' => 'Stemde op een idee met één van de volgende thema bier'
+        'fr-FR' => 'Reacted to an idea with one of the following topics bière',
+        'nl-NL' => 'Reacted to an idea with one of the following topics bier'
       })
       expect(participated_not_reacted_idea_in_topic_in_rule.description_multiloc).to eq({
         'en' => 'Did not react to an idea with topic beer',
-        'fr-FR' => 'N\'as pas voté pour une idée avec thème bière',
-        'nl-NL' => 'Stemde niet op een idee met thema bier'
+        'fr-FR' => 'Did not react to an idea with topic bière',
+        'nl-NL' => 'Did not react to an idea with topic bier'
       })
       expect(participated_reacted_comment_in_topic_in_rule.description_multiloc).to eq({
         'en' => 'Reacted to a comment on an idea with one of the following topics beer, delayed',
-        'fr-FR' => 'Voté pour un commentaire sur une idée avec thème est un de bière, retardé',
-        'nl-NL' => 'Stemde op een reactie op een idee met één van de volgende thema bier, uitgesteld'
+        'fr-FR' => 'Reacted to a comment on an idea with one of the following topics bière, retardé',
+        'nl-NL' => 'Reacted to a comment on an idea with one of the following topics bier, uitgesteld'
       })
       expect(participated_not_reacted_comment_in_topic_in_rule.description_multiloc).to eq({
         'en' => 'Did not react to a comment on an idea with topic beer',
-        'fr-FR' => 'N\'as pas voté pour un commentaire sur une idée avec thème bière',
-        'nl-NL' => 'Stemde niet op een reactie op een idee met thema bier'
+        'fr-FR' => 'Did not react to a comment on an idea with topic bière',
+        'nl-NL' => 'Did not react to a comment on an idea with topic bier'
       })
     end
   end
