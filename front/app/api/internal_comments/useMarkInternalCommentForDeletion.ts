@@ -14,8 +14,7 @@ const markInternalCommentForDeletion = async ({
 }: MarkInternalCommentForDeletion) => {
   return fetcher<IInternalComment>({
     path: `/internal_comments/${commentId}/mark_as_deleted`,
-    action: 'post',
-    body: null,
+    action: 'patch',
   });
 };
 
