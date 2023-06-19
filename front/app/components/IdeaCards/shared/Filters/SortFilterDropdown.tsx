@@ -6,20 +6,19 @@ import FilterSelector from 'components/FilterSelector';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
-import {
-  IdeaDefaultSortMethod,
-  ideaDefaultSortMethodFallback,
-} from 'services/participationContexts';
+import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
 import { IProjectData } from 'api/projects/types';
 import { IPhaseData } from 'api/phases/types';
 import { getMethodConfig } from 'utils/participationMethodUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
+export type Sort = 'trending' | 'random' | 'popular' | 'new' | '-new';
+
 type Props = {
   id?: string | undefined;
   alignment: 'left' | 'right';
   onChange: (value: string) => void;
-  defaultSortingMethod?: IdeaDefaultSortMethod;
+  defaultSortingMethod?: Sort;
   phase?: IPhaseData;
   project?: Error | IProjectData | null;
 };
@@ -46,8 +45,6 @@ const SortFilterDropdown = ({
     onChange(selectedValue[0]);
   };
 
-  const sortTitle = <FormattedMessage {...messages.sortTitle} />;
-
   let options = [
     { text: <FormattedMessage {...messages.trending} />, value: 'trending' },
     { text: <FormattedMessage {...messages.random} />, value: 'random' },
@@ -70,7 +67,7 @@ const SortFilterDropdown = ({
   return (
     <FilterSelector
       id="e2e-ideas-sort-dropdown"
-      title={sortTitle}
+      title={<FormattedMessage {...messages.sortTitle} />}
       name="sort"
       selected={selectedValue}
       values={options}

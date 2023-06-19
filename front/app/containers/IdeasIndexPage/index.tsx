@@ -19,7 +19,7 @@ import { media, fontSizes, colors, isRtl } from 'utils/styleUtils';
 import { parseSearchParams } from './utils';
 
 // typings
-import { IQueryParameters, Sort } from 'api/ideas/types';
+import { Sort } from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
 import { QueryParametersUpdate } from 'components/IdeaCards/IdeasWithFiltersSidebar';
 
 const Container = styled.main`
@@ -75,6 +75,20 @@ const PageTitle = styled.h1`
  `}
 `;
 
+export interface QueryParameters {
+  // constants
+  'page[number]': number;
+  'page[size]': number;
+  project_publication_status: 'published';
+  publication_status: 'published';
+
+  // filters
+  sort: Sort;
+  search?: string;
+  idea_status?: string;
+  topics?: string[];
+}
+
 export default memo(() => {
   const [searchParams, setSearchParams] = useSearchParams();
   const sortParam = searchParams.get('sort') as Sort | null;
@@ -82,13 +96,13 @@ export default memo(() => {
   const ideaStatusParam = searchParams.get('idea_status');
   const topicsParam = searchParams.get('topics');
 
-  const ideasQueryParameters = useMemo<IQueryParameters>(
+  const ideasQueryParameters = useMemo<QueryParameters>(
     () => ({
       'page[number]': 1,
       'page[size]': 12,
-      sort: sortParam ?? 'trending',
       project_publication_status: 'published',
       publication_status: 'published',
+      sort: sortParam ?? 'trending',
       search: searchParam ?? undefined,
       idea_status: ideaStatusParam ?? undefined,
       topics: topicsParam ? JSON.parse(topicsParam) : undefined,

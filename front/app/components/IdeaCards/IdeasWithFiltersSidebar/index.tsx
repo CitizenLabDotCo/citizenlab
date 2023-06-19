@@ -13,7 +13,7 @@ import tracks from '../tracks';
 import { Spinner, useWindowSize } from '@citizenlab/cl2-component-library';
 import FiltersModal from './FiltersModal';
 import FiltersSideBar from './FiltersSideBar';
-import SortFilterDropdown from '../shared/Filters/SortFilterDropdown';
+import SortFilterDropdown, { Sort } from '../shared/Filters/SortFilterDropdown';
 import SearchInput from 'components/UI/SearchInput';
 import Button from 'components/UI/Button';
 import IdeasView from '../shared/IdeasView';
@@ -33,7 +33,7 @@ import {
 } from 'utils/styleUtils';
 
 // typings
-import { Sort, IQueryParameters } from 'api/ideas/types';
+import { QueryParameters } from 'containers/IdeasIndexPage';
 
 const gapWidth = 35;
 
@@ -143,7 +143,7 @@ export interface QueryParametersUpdate {
 }
 
 export interface Props {
-  ideaQueryParameters: IQueryParameters;
+  ideaQueryParameters: QueryParameters;
   onUpdateQuery: (newParams: QueryParametersUpdate) => void;
 }
 
@@ -266,6 +266,7 @@ const IdeaCards = ({ ideaQueryParameters, onUpdateQuery }: Props) => {
              */}
             <AboveContentRight>
               <SortFilterDropdown
+                defaultSortingMethod={ideaQueryParameters.sort}
                 onChange={handleSortOnChange}
                 alignment="right"
               />

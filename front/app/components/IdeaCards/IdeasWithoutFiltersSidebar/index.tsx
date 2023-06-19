@@ -285,7 +285,7 @@ const IdeasWithoutFiltersSidebar = ({
                 project={project?.data}
                 onChange={handleSortOnChange}
                 alignment={biggerThanLargeTablet ? 'right' : 'left'}
-                defaultSortingMethod={defaultSortingMethod || null}
+                defaultSortingMethod={defaultSortingMethod ?? undefined}
               />
               {allowProjectsFilter && (
                 <ProjectFilterDropdown
