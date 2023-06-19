@@ -38,7 +38,7 @@ resource 'Topics' do
     context "when filtering by 'created_at'" do
       let(:created_at) { '2022-05-01,2022-05-03' }
 
-      let(:topic) do
+      let!(:topic) do
         topics.first.tap { |t| t.update!(created_at: '2022-05-02') }
       end
 
@@ -52,7 +52,7 @@ resource 'Topics' do
     context "when filtering by 'updated_at'" do
       let(:updated_at) { ',2023-01-31' }
 
-      let(:topic) do
+      let!(:topic) do
         topics.first.tap { |t| t.update!(updated_at: '2023-01-01') }
       end
 
