@@ -2,10 +2,11 @@
 import React, { memo } from 'react';
 
 // Components
-import SearchInput from 'components/UI/SearchInput';
+import Button from 'components/UI/Button';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 // Styling
 import styled from 'styled-components';
@@ -46,18 +47,12 @@ export const TextAndButtons = styled.div`
   }
 `;
 
-export const StyledSearchInput = styled(SearchInput)`
-  flex: 0 0 250px;
-  width: 250px;
-`;
-
 interface Props {
-  onSearch: (newValue: string) => void;
   title: Record<string, string>;
   subtitle: Record<string, string>;
 }
 
-const UsersHeader = memo(({ onSearch, title, subtitle }: Props) => {
+const UsersHeader = memo(({ title, subtitle }: Props) => {
   return (
     <TitleWrapper>
       <FirstRow>
@@ -65,14 +60,11 @@ const UsersHeader = memo(({ onSearch, title, subtitle }: Props) => {
           <FormattedMessage tagName="h1" {...title} />
         </TextAndButtons>
         <Spacer />
-        <StyledSearchInput
-          onChange={onSearch}
-          // Not important here. Requires quite some refactoring
-          // to get users here in a nice and consistent manner.
-          // This a11y_... prop needs to be required so we always have it
-          // on the citizen side. Whenever this components is touched,
-          // you can give it the right value (number of users resulting from the search) here.
-          a11y_numberOfSearchResults={0}
+        <Button
+          linkTo="/admin/dashboard/users"
+          text={<FormattedMessage {...messages.userInsights} />}
+          icon="chart-bar"
+          buttonStyle="secondary"
         />
       </FirstRow>
       <FormattedMessage tagName="h2" {...subtitle} />

@@ -226,6 +226,18 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.allStatuses',
     defaultMessage: 'All statuses',
   },
+  editStatuses: {
+    id: 'app.components.admin.PostManager.editStatuses',
+    defaultMessage: 'Edit statuses',
+  },
+  editTags: {
+    id: 'app.components.admin.PostManager.editTags',
+    defaultMessage: 'Edit tags',
+  },
+  editProjects: {
+    id: 'app.components.admin.PostManager.editProjects',
+    defaultMessage: 'Edit projects',
+  },
   allPhases: {
     id: 'app.components.admin.PostManager.allPhases',
     defaultMessage: 'All phases',

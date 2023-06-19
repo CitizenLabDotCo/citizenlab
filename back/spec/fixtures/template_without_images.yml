@@ -819,9 +819,9 @@ models:
     participation_method: ideation
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
-    upvoting_limited_max: 10
+    reacting_enabled: true
+    reacting_like_method: unlimited
+    reacting_like_limited_max: 10
     max_budget:
     title_multiloc:
       en: An idea? Bring it to your council!
@@ -1082,9 +1082,9 @@ models:
     participation_method: ideation
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
-    upvoting_limited_max: 10
+    reacting_enabled: true
+    reacting_like_method: unlimited
+    reacting_like_limited_max: 10
     max_budget:
     title_multiloc:
       en: Quas et alias animi.
@@ -1112,9 +1112,9 @@ models:
     participation_method: ideation
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
-    upvoting_limited_max: 10
+    reacting_enabled: true
+    reacting_like_method: unlimited
+    reacting_like_limited_max: 10
     max_budget:
     title_multiloc:
       en: Ut optio facilis est.
@@ -1142,9 +1142,9 @@ models:
     participation_method: ideation
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: false
-    upvoting_method: unlimited
-    upvoting_limited_max: 5
+    reacting_enabled: false
+    reacting_like_method: unlimited
+    reacting_like_limited_max: 5
     max_budget:
     title_multiloc:
       en: Aut cum ipsam enim.
@@ -1172,9 +1172,9 @@ models:
     participation_method: ideation
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
-    upvoting_limited_max: 10
+    reacting_enabled: true
+    reacting_like_method: unlimited
+    reacting_like_limited_max: 10
     max_budget:
     title_multiloc:
       en: Blanditiis facere voluptatem libero.
@@ -1202,9 +1202,9 @@ models:
     participation_method: ideation
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
-    upvoting_limited_max: 10
+    reacting_enabled: true
+    reacting_like_method: unlimited
+    reacting_like_limited_max: 10
     max_budget:
     title_multiloc:
       en: Quaerat ut molestiae numquam.
@@ -1234,9 +1234,9 @@ models:
     participation_method: ideation
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: false
-    upvoting_method: unlimited
-    upvoting_limited_max: 13
+    reacting_enabled: false
+    reacting_like_method: unlimited
+    reacting_like_limited_max: 13
     max_budget:
     project_ref: *5
     title_multiloc:
@@ -1257,9 +1257,9 @@ models:
     participation_method: ideation
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
-    upvoting_limited_max: 13
+    reacting_enabled: true
+    reacting_like_method: unlimited
+    reacting_like_limited_max: 13
     max_budget:
     project_ref: *5
     title_multiloc:
@@ -1280,9 +1280,9 @@ models:
     participation_method: ideation
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: false
-    upvoting_method: unlimited
-    upvoting_limited_max: 13
+    reacting_enabled: false
+    reacting_like_method: unlimited
+    reacting_like_limited_max: 13
     max_budget:
     project_ref: *5
     title_multiloc:
@@ -1303,9 +1303,9 @@ models:
     participation_method: information
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
-    upvoting_limited_max: 10
+    reacting_enabled: true
+    reacting_like_method: unlimited
+    reacting_like_limited_max: 10
     max_budget:
     project_ref: *5
     title_multiloc:
@@ -1327,9 +1327,9 @@ models:
     participation_method: ideation
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: limited
-    upvoting_limited_max: 13
+    reacting_enabled: true
+    reacting_like_method: limited
+    reacting_like_limited_max: 13
     max_budget:
     project_ref: *6
     title_multiloc:
@@ -1351,9 +1351,9 @@ models:
     participation_method: ideation
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: limited
-    upvoting_limited_max: 14
+    reacting_enabled: true
+    reacting_like_method: limited
+    reacting_like_limited_max: 14
     max_budget:
     project_ref: *6
     title_multiloc:
@@ -1374,9 +1374,9 @@ models:
     participation_method: information
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
-    upvoting_limited_max: 10
+    reacting_enabled: true
+    reacting_like_method: unlimited
+    reacting_like_limited_max: 10
     max_budget:
     project_ref: *6
     title_multiloc:
@@ -1399,9 +1399,9 @@ models:
     participation_method: ideation
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
-    upvoting_limited_max: 6
+    reacting_enabled: true
+    reacting_like_method: unlimited
+    reacting_like_limited_max: 6
     max_budget:
     project_ref: *6
     title_multiloc:
@@ -1423,9 +1423,9 @@ models:
     participation_method: ideation
     posting_enabled: false
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
-    upvoting_limited_max: 2
+    reacting_enabled: true
+    reacting_like_method: unlimited
+    reacting_like_limited_max: 2
     max_budget:
     project_ref: *6
     title_multiloc:
@@ -1446,9 +1446,9 @@ models:
     participation_method: information
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
-    upvoting_limited_max: 10
+    reacting_enabled: true
+    reacting_like_method: unlimited
+    reacting_like_limited_max: 10
     max_budget:
     project_ref: *6
     title_multiloc:
@@ -1470,9 +1470,9 @@ models:
     participation_method: information
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
-    upvoting_limited_max: 10
+    reacting_enabled: true
+    reacting_like_method: unlimited
+    reacting_like_limited_max: 10
     max_budget:
     project_ref: *6
     title_multiloc:
@@ -1493,9 +1493,9 @@ models:
     participation_method: information
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
-    upvoting_limited_max: 10
+    reacting_enabled: true
+    reacting_like_method: unlimited
+    reacting_like_limited_max: 10
     max_budget:
     project_ref: *7
     title_multiloc:
@@ -1517,9 +1517,9 @@ models:
     participation_method: ideation
     posting_enabled: true
     commenting_enabled: false
-    voting_enabled: false
-    upvoting_method: unlimited
-    upvoting_limited_max: 10
+    reacting_enabled: false
+    reacting_like_method: unlimited
+    reacting_like_limited_max: 10
     max_budget:
     project_ref: *7
     title_multiloc:
@@ -1540,9 +1540,9 @@ models:
     participation_method: information
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
-    upvoting_limited_max: 10
+    reacting_enabled: true
+    reacting_like_method: unlimited
+    reacting_like_limited_max: 10
     max_budget:
     project_ref: *7
     title_multiloc:
@@ -1564,9 +1564,9 @@ models:
     participation_method: ideation
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    upvoting_method: unlimited
-    upvoting_limited_max: 7
+    reacting_enabled: true
+    reacting_like_method: unlimited
+    reacting_like_limited_max: 7
     max_budget:
     project_ref: *7
     title_multiloc:
@@ -1587,9 +1587,9 @@ models:
     participation_method: ideation
     posting_enabled: false
     commenting_enabled: false
-    voting_enabled: true
-    upvoting_method: unlimited
-    upvoting_limited_max: 8
+    reacting_enabled: true
+    reacting_like_method: unlimited
+    reacting_like_limited_max: 8
     max_budget:
     project_ref: *8
     title_multiloc:

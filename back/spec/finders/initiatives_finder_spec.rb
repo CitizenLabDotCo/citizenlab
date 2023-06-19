@@ -63,23 +63,23 @@ describe InitiativesFinder do
     end
   end
 
-  context 'when passing a sort param \'upvotes_count\'' do
+  context 'when passing a sort param \'likes_count\'' do
     before do
-      params[:sort] = 'upvotes_count'
+      params[:sort] = 'likes_count'
     end
 
-    it 'sorts initiatives by \'upvotes_count\'' do
-      expect(record_ids).to eq Initiative.order(upvotes_count: :asc).pluck(:id)
+    it 'sorts initiatives by \'likes_count\'' do
+      expect(record_ids).to eq Initiative.order(likes_count: :asc).pluck(:id)
     end
   end
 
-  context 'when passing a sort param \'-upvotes_count\'' do
+  context 'when passing a sort param \'-likes_count\'' do
     before do
-      params[:sort] = '-upvotes_count'
+      params[:sort] = '-likes_count'
     end
 
-    it 'sorts initiatives by \'-upvotes_count\'' do
-      expect(record_ids).to eq Initiative.order(upvotes_count: :desc).pluck(:id)
+    it 'sorts initiatives by \'-likes_count\'' do
+      expect(record_ids).to eq Initiative.order(likes_count: :desc).pluck(:id)
     end
   end
 

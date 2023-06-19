@@ -254,4 +254,8 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.inviteUsers',
     defaultMessage: 'Invite users',
   },
+  userInsights: {
+    id: 'app.containers.Admin.Users.userInsights',
+    defaultMessage: 'User insights',
+  },
 });
