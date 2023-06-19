@@ -13,11 +13,14 @@ export type UpdateField = {
   description_multiloc?: Multiloc;
   required?: boolean;
 };
-const updateField = async ({ customFieldId, ...rest }: UpdateField) =>
+const updateField = async ({
+  customFieldId,
+  ...otherFieldProperties
+}: UpdateField) =>
   fetcher<IUserCustomField>({
     path: `/users/custom_fields/${customFieldId}`,
     action: 'patch',
-    body: { custom_field: rest },
+    body: { custom_field: otherFieldProperties },
   });
 
 const useUpdateUserCustomFields = () => {

@@ -60,10 +60,6 @@ export interface IUserCustomFields {
   data: IUserCustomFieldData[];
 }
 
-export interface IUserCustomField {
-  data: IUserCustomFieldData;
-}
-
 export interface IUserCustomFields {
   data: IUserCustomFieldData[];
 }
