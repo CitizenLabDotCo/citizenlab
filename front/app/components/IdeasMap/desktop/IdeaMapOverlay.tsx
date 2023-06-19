@@ -153,7 +153,6 @@ const IdeaMapOverlay = memo<Props>(({ projectId, phaseId, className }) => {
               ideaId={selectedIdeaId as string}
               projectId={projectId}
               insideModal={false}
-              compact={true}
               setRef={handleIdeasShowSetRef}
             />
           </InnerOverlay>

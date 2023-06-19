@@ -25,12 +25,7 @@ import tracks from './tracks';
 import Title from 'components/PostShowComponents/Title';
 import Image from 'components/PostShowComponents/Image';
 import Outlet from 'components/Outlet';
-import {
-  media,
-  useBreakpoint,
-  Box,
-  Spinner,
-} from '@citizenlab/cl2-component-library';
+import { media, Box, Spinner } from '@citizenlab/cl2-component-library';
 import AssignBudgetControl from 'components/AssignBudgetControl';
 import Body from 'components/PostShowComponents/Body';
 import LoadingComments from 'components/PostShowComponents/Comments/LoadingComments';
@@ -44,11 +39,7 @@ import IdeaMeta from 'containers/IdeasShow/IdeaMeta';
 import IdeaMoreActions from 'containers/IdeasShow/IdeaMoreActions';
 import IdeaProposedBudget from 'containers/IdeasShow/IdeaProposedBudget';
 import MetaInformation from 'containers/IdeasShow/MetaInformation';
-import RightColumnDesktop from 'containers/IdeasShow/RightColumnDesktop';
-import {
-  pageContentMaxWidth,
-  columnsGapDesktop,
-} from 'containers/IdeasShow/styleConstants';
+import { pageContentMaxWidth } from 'containers/IdeasShow/styleConstants';
 import { Modal } from 'semantic-ui-react';
 const LazyComments = lazy(
   () => import('components/PostShowComponents/Comments')
@@ -117,10 +108,6 @@ const Container = styled.main`
   }
 `;
 
-const StyledRightColumnDesktop = styled(RightColumnDesktop)`
-  margin-left: ${columnsGapDesktop}px;
-`;
-
 const IdeaHeader = styled.div`
   display: flex;
   align-items: center;
@@ -166,7 +153,6 @@ interface InputProps {
   projectId: string;
   insideModal: boolean;
   setRef?: (element: HTMLDivElement) => void;
-  compact?: boolean;
   className?: string;
 }
 
@@ -178,7 +164,6 @@ export const MapOverlayIdeaContent = ({
   projectId,
   insideModal,
   project,
-  compact,
   ideaId,
   setRef,
 }: Props) => {
@@ -192,8 +177,6 @@ export const MapOverlayIdeaContent = ({
   const [queryParams] = useSearchParams();
   const ideaIdParameter = queryParams.get('new_idea_id');
   const timeout = useRef<NodeJS.Timeout>();
-
-  const isSmallerThanTablet = useBreakpoint('tablet');
 
   useEffect(() => {
     if (isString(ideaIdParameter)) {
@@ -270,8 +253,6 @@ export const MapOverlayIdeaContent = ({
     const ideaId = idea.data.id;
     const proposedBudget = idea.data.attributes?.proposed_budget;
     const ideaBody = localize(idea.data.attributes?.body_multiloc);
-    const isCompactView = compact === true || isSmallerThanTablet;
-
     if (isNilOrError(ideaCustomFieldsSchema)) return null;
 
     const proposedBudgetEnabled = isFieldEnabled(
@@ -289,18 +270,15 @@ export const MapOverlayIdeaContent = ({
     content = (
       <>
         <IdeaMeta ideaId={ideaId} />
-
-        {!isCompactView && (
-          <TopBar>
-            <Box mb="40px">
-              <GoBackButtonSolid
-                text={localize(project.attributes.title_multiloc)}
-                onClick={handleGoBack}
-              />
-            </Box>
-            <IdeaMoreActions idea={idea.data} projectId={projectId} />
-          </TopBar>
-        )}
+        <TopBar>
+          <Box mb="40px">
+            <GoBackButtonSolid
+              text={localize(project.attributes.title_multiloc)}
+              onClick={handleGoBack}
+            />
+          </Box>
+          <IdeaMoreActions idea={idea.data} projectId={projectId} />
+        </TopBar>
 
         <Box display="flex" id="e2e-idea-show-page-content">
           <Box flex="1 1 100%">
@@ -312,12 +290,10 @@ export const MapOverlayIdeaContent = ({
                 locale={locale}
                 translateButtonClicked={translateButtonIsClicked}
               />
-              {isCompactView && (
-                <Box ml="30px">
-                  {' '}
-                  <IdeaMoreActions idea={idea.data} projectId={projectId} />
-                </Box>
-              )}
+              <Box ml="30px">
+                {' '}
+                <IdeaMoreActions idea={idea.data} projectId={projectId} />
+              </Box>
             </IdeaHeader>
 
             {ideaImageLarge && (
@@ -355,37 +331,31 @@ export const MapOverlayIdeaContent = ({
                 translateButtonClicked={translateButtonIsClicked}
               />
             </Box>
-            {isCompactView && (
-              <Box my="30px">
-                {' '}
-                <AssignBudgetControl
-                  view="ideaPage"
-                  ideaId={ideaId}
-                  projectId={projectId}
-                />
-              </Box>
-            )}
-
-            {isCompactView && (
-              <Box mb="30px">
-                {' '}
-                <MetaInformation
-                  ideaId={ideaId}
-                  projectId={projectId}
-                  statusId={statusId}
-                  authorId={authorId}
-                  compact={isCompactView}
-                  anonymous={anonymous}
-                />
-              </Box>
-            )}
-
-            {isCompactView && (
-              <IdeaSharingButton
+            <Box my="30px">
+              {' '}
+              <AssignBudgetControl
+                view="ideaPage"
                 ideaId={ideaId}
-                buttonComponent={<MobileSharingButtonComponent />}
+                projectId={projectId}
               />
-            )}
+            </Box>
+
+            <Box mb="30px">
+              {' '}
+              <MetaInformation
+                ideaId={ideaId}
+                projectId={projectId}
+                statusId={statusId}
+                authorId={authorId}
+                compact={true}
+                anonymous={anonymous}
+              />
+            </Box>
+
+            <IdeaSharingButton
+              ideaId={ideaId}
+              buttonComponent={<MobileSharingButtonComponent />}
+            />
             <Box my="80px">
               <OfficialFeedback
                 postId={ideaId}
@@ -406,17 +376,6 @@ export const MapOverlayIdeaContent = ({
               </Suspense>
             </Box>
           </Box>
-
-          {!isCompactView && projectId && (
-            <StyledRightColumnDesktop
-              ideaId={ideaId}
-              projectId={projectId}
-              statusId={statusId}
-              authorId={authorId}
-              insideModal={insideModal}
-              anonymous={anonymous}
-            />
-          )}
         </Box>
       </>
     );
