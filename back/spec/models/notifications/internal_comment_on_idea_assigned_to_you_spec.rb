@@ -24,17 +24,21 @@ RSpec.describe Notifications::InternalCommentOnIdeaAssignedToYou do
       end
     end
 
-    context "when the internal comment is a comment on the assignee's internal comment" do
-      let(:parent_internal_comment) { create(:internal_comment, post: idea, author: assignee) }
-      let(:child_internal_comment) { create(:internal_comment, parent: parent_internal_comment, post: idea) }
-
+    shared_examples 'no notification created' do
       it 'does not make a notification on created internal comment activity' do
         notifications_count = described_class.count
-        activity = create(:activity, item: child_internal_comment, action: 'created')
+        activity = create(:activity, item: internal_comment, action: 'created')
         notifications = described_class.make_notifications_on activity
 
         expect(notifications.count).to eq notifications_count
       end
+    end
+
+    context "when the internal comment is a comment on the assignee's internal comment" do
+      let(:parent_internal_comment) { create(:internal_comment, post: idea, author: assignee) }
+      let(:internal_comment) { create(:internal_comment, parent: parent_internal_comment, post: idea) }
+
+      it_behaves_like 'no notification created'
     end
 
     context 'when the internal comment contains a mention of the assignee' do
@@ -47,26 +51,14 @@ RSpec.describe Notifications::InternalCommentOnIdeaAssignedToYou do
         )
       end
 
-      it 'does not make a notification on created internal comment activity' do
-        notifications_count = described_class.count
-        activity = create(:activity, item: internal_comment, action: 'created')
-        notifications = described_class.make_notifications_on activity
-
-        expect(notifications.count).to eq notifications_count
-      end
+      it_behaves_like 'no notification created'
     end
 
     context 'when the internal comment is on an initiative the assignee is assigned to' do
       let(:initiative) { create(:initiative, assignee: assignee) }
       let(:internal_comment) { create(:internal_comment, post: initiative) }
 
-      it 'does not make a notification on created internal comment activity' do
-        notifications_count = described_class.count
-        activity = create(:activity, item: internal_comment, action: 'created')
-        notifications = described_class.make_notifications_on activity
-
-        expect(notifications.count).to eq notifications_count
-      end
+      it_behaves_like 'no notification created'
     end
   end
 end
