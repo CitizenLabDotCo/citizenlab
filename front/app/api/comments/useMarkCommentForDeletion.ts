@@ -16,7 +16,7 @@ const markCommentForDeletion = async ({
 }: MarkForDeletion) => {
   return fetcher<IComment>({
     path: `/comments/${commentId}/mark_as_deleted`,
-    action: 'post',
+    action: 'patch',
     body: { comment: reason },
   });
 };
