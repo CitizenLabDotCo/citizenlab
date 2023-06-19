@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class EventsFinder < ApplicationFinder
-  default_sort :start_at
-  sortable_attributes 'start_at'
+  # default_sort :start_at
+  # sortable_attributes 'start_at'
 
   private
 

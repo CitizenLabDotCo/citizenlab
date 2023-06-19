@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class ActivitiesFinder < ApplicationFinder
-  default_sort acted_at: :asc
+  # default_sort acted_at: :asc
 
-  sortable_attributes :acted_at
+  # sortable_attributes :acted_at
 
   private
 

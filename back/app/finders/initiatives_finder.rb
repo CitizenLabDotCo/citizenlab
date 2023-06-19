@@ -1,17 +1,17 @@
 # frozen_string_literal: true
 
 class InitiativesFinder < ApplicationFinder
-  default_sort 'new'
+  # default_sort 'new'
 
-  sort_scope 'new',          order_new: :desc
-  sort_scope '-new',         order_new: :asc
-  sort_scope 'status',       order_status: :asc
-  sort_scope '-status',      order_status: :desc
-  sort_scope 'random',       ->(initiatives) { initiatives.order_random(current_user) }
-  sort_scope 'author_name',  ['users.first_name ASC', 'users.last_name ASC']
-  sort_scope '-author_name', ['users.first_name DESC', 'users.last_name DESC']
+  # sort_scope 'new',          order_new: :desc
+  # sort_scope '-new',         order_new: :asc
+  # sort_scope 'status',       order_status: :asc
+  # sort_scope '-status',      order_status: :desc
+  # sort_scope 'random',       ->(initiatives) { initiatives.order_random(current_user) }
+  # sort_scope 'author_name',  ['users.first_name ASC', 'users.last_name ASC']
+  # sort_scope '-author_name', ['users.first_name DESC', 'users.last_name DESC']
 
-  sortable_attributes :upvotes_count
+  # sortable_attributes :upvotes_count
 
   private
 

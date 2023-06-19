@@ -31,6 +31,7 @@ class WebApi::V1::IdeasController < ApplicationController
         }
       ]
     ).find_records
+    ideas = paginate SortByParams.new.sort_ideas(ideas, params, current_user)
 
     render json: linked_json(ideas, WebApi::V1::IdeaSerializer, serialization_options_for(ideas))
   end
@@ -42,6 +43,7 @@ class WebApi::V1::IdeasController < ApplicationController
       current_user: current_user,
       includes: %i[idea_trending_info]
     ).find_records
+    ideas = paginate SortByParams.new.sort_ideas(ideas, params, current_user)
 
     render json: linked_json(ideas, WebApi::V1::IdeaMiniSerializer, params: jsonapi_serializer_params(pcs: ParticipationContextService.new))
   end
@@ -53,6 +55,7 @@ class WebApi::V1::IdeasController < ApplicationController
       current_user: current_user,
       includes: %i[author topics project idea_status idea_files]
     ).find_records
+    ideas = paginate SortByParams.new.sort_ideas(ideas, params, current_user)
 
     render json: linked_json(ideas, WebApi::V1::PostMarkerSerializer, params: jsonapi_serializer_params)
   end
@@ -62,9 +65,9 @@ class WebApi::V1::IdeasController < ApplicationController
       params.merge(filter_can_moderate: true),
       scope: policy_scope(Idea).where(publication_status: 'published'),
       current_user: current_user,
-      includes: %i[author topics project idea_status idea_files],
-      paginate: false
+      includes: %i[author topics project idea_status idea_files]
     ).find_records
+    ideas = SortByParams.new.sort_ideas(ideas, params, current_user)
 
     I18n.with_locale(current_user&.locale) do
       xlsx = XlsxService.new.generate_ideas_xlsx ideas, view_private_attributes: Pundit.policy!(current_user, User).view_private_attributes?
@@ -79,6 +82,7 @@ class WebApi::V1::IdeasController < ApplicationController
       current_user: current_user,
       includes: %i[idea_trending_info]
     ).find_records
+    all_ideas = paginate SortByParams.new.sort_ideas(all_ideas, params, current_user)
     counts = {
       'idea_status_id' => {},
       'topic_id' => {}
