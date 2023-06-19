@@ -2,9 +2,9 @@
 import React, { useState } from 'react';
 
 // components
-import CommentHeader from './CommentHeader';
-import CommentBody from './CommentBody';
-import CommentFooter from './CommentFooter';
+import InternalCommentHeader from './InternalCommentHeader';
+import InternalCommentBody from './InternalCommentBody';
+import InternalCommentFooter from './InternalCommentFooter';
 import { Icon } from '@citizenlab/cl2-component-library';
 
 // i18n
@@ -62,7 +62,7 @@ interface Props {
   className?: string;
 }
 
-const Comment = ({
+const InternalComment = ({
   ideaId,
   initiativeId,
   projectId,
@@ -113,7 +113,7 @@ const Comment = ({
           }
           {comment.data.attributes.publication_status === 'published' && (
             <>
-              <CommentHeader
+              <InternalCommentHeader
                 projectId={projectId}
                 commentAttributes={comment.data.attributes}
                 commentType={commentType}
@@ -123,7 +123,7 @@ const Comment = ({
 
               <Content>
                 <BodyAndFooter>
-                  <CommentBody
+                  <InternalCommentBody
                     commentId={commentId}
                     commentType={commentType}
                     editing={editing}
@@ -132,7 +132,7 @@ const Comment = ({
                     ideaId={ideaId}
                     initiativeId={initiativeId}
                   />
-                  <CommentFooter
+                  <InternalCommentFooter
                     className={commentType}
                     ideaId={ideaId}
                     initiativeId={initiativeId}
@@ -162,4 +162,4 @@ const Comment = ({
   return null;
 };
 
-export default Comment;
+export default InternalComment;

@@ -3,9 +3,11 @@ import React, { useState, useCallback } from 'react';
 import Observer from '@researchgate/react-intersection-observer';
 
 // components
-import ParentCommentForm from './ParentCommentForm';
-import Comments from './Comments';
-import CommentSorting, { InternalCommentSort } from './CommentSorting';
+import InternalParentCommentForm from './InternalParentCommentForm';
+import Comments from './InternalComments';
+import InternalCommentSorting, {
+  InternalCommentSort,
+} from './InternalCommentSorting';
 import { Box, Title } from '@citizenlab/cl2-component-library';
 
 // i18n
@@ -40,7 +42,7 @@ const CommentCount = styled.span`
   margin-left: 5px;
 `;
 
-const StyledCommentSorting = styled(CommentSorting)`
+const StyledCommentSorting = styled(InternalCommentSorting)`
   display: flex;
   justify-content: flex-end;
 
@@ -61,7 +63,7 @@ export interface Props {
   className?: string;
 }
 
-const CommentsSection = ({ postId, postType, className }: Props) => {
+const InternalCommentsSection = ({ postId, postType, className }: Props) => {
   const initiativeId = postType === 'initiative' ? postId : undefined;
   const ideaId = postType === 'idea' ? postId : undefined;
   const { data: initiative } = useInitiativeById(initiativeId);
@@ -120,7 +122,7 @@ const CommentsSection = ({ postId, postType, className }: Props) => {
       </Header>
 
       <Box mb="24px">
-        <ParentCommentForm
+        <InternalParentCommentForm
           ideaId={ideaId}
           initiativeId={initiativeId}
           postType={postType}
@@ -159,4 +161,4 @@ const CommentsSection = ({ postId, postType, className }: Props) => {
   );
 };
 
-export default CommentsSection;
+export default InternalCommentsSection;

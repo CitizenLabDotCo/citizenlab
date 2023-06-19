@@ -1,8 +1,8 @@
 import React from 'react';
 
 // components
-import Comment from './Comment';
-import ChildCommentForm from './ChildCommentForm';
+import InternalComment from './InternalComment';
+import InternalChildCommentForm from './InternalChildCommentForm';
 import { Spinner } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 
@@ -28,7 +28,7 @@ const ParentCommentContainer = styled.div`
   position: relative;
 `;
 
-const StyledChildCommentForm = styled(ChildCommentForm)`
+const StyledChildCommentForm = styled(InternalChildCommentForm)`
   margin-top: 30px;
   margin-left: 38px;
 `;
@@ -47,7 +47,7 @@ interface Props {
   className?: string;
 }
 
-const ParentComment = ({
+const InternalParentComment = ({
   commentId,
   ideaId,
   initiativeId,
@@ -93,7 +93,7 @@ const ParentComment = ({
     return (
       <Container className={`${className || ''} e2e-parent-and-childcomments`}>
         <ParentCommentContainer className={commentDeleted ? 'deleted' : ''}>
-          <Comment
+          <InternalComment
             ideaId={ideaId}
             initiativeId={initiativeId}
             projectId={projectId}
@@ -126,7 +126,7 @@ const ParentComment = ({
 
         {modifiedChildCommentIds.length > 0 &&
           modifiedChildCommentIds.map((childCommentId, index) => (
-            <Comment
+            <InternalComment
               ideaId={ideaId}
               initiativeId={initiativeId}
               projectId={projectId}
@@ -153,4 +153,4 @@ const ParentComment = ({
   return null;
 };
 
-export default ParentComment;
+export default InternalParentComment;

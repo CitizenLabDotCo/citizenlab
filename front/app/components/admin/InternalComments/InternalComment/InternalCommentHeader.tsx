@@ -60,7 +60,7 @@ interface Props {
   authorId: string | null;
 }
 
-const CommentHeader = ({
+const InternalCommentHeader = ({
   projectId,
   commentType,
   className,
@@ -99,4 +99,4 @@ const CommentHeader = ({
   );
 };
 
-export default CommentHeader;
+export default InternalCommentHeader;
