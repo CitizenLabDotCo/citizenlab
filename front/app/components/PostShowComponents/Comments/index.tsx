@@ -19,6 +19,10 @@ import { tabBorderSize } from 'components/admin/NavigationTabs/tabsStyleConstant
 // Types
 import { ITab } from 'typings';
 
+// hooks
+import useInitiativeById from 'api/initiatives/useInitiativeById';
+import useIdeaById from 'api/ideas/useIdeaById';
+
 const NavigationTabs = styled.nav`
   ${({ theme }) => css`
     width: 100%;
@@ -47,15 +51,29 @@ const CommentsSection = ({
   showInternalComments = false,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const initiativeId = postType === 'initiative' ? postId : undefined;
+  const ideaId = postType === 'idea' ? postId : undefined;
+  const { data: initiative } = useInitiativeById(initiativeId);
+  const { data: idea } = useIdeaById(ideaId);
+  const post = initiative || idea;
+
+  if (!post) return null;
+  const publicCommentCount = post.data.attributes.comments_count;
+  const internalCommentCount = post.data.attributes.internal_comments_count;
+
   const [selectedTab, setSelectedTab] = useState<CommentType>('internal');
   const tabs: NavTab[] = [
     {
-      label: formatMessage(messages.internalConversation),
+      label: `${formatMessage(
+        messages.internalConversation
+      )} (${internalCommentCount})`,
       name: 'internal',
       url: '',
     },
     {
-      label: formatMessage(messages.publicDiscussion),
+      label: `${formatMessage(
+        messages.publicDiscussion
+      )} (${publicCommentCount})`,
       name: 'public',
       url: '',
     },
