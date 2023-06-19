@@ -76,6 +76,7 @@ export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
       currentPhase={currentPhase}
       CTAButton={CTAButton}
       hasUserParticipated={hasUserParticipated}
+      project={project}
     />
   );
 };

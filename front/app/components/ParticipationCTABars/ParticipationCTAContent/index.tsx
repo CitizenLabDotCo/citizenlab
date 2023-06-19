@@ -14,6 +14,10 @@ import { IPhaseData } from 'api/phases/types';
 
 // utils
 import { getPeriodRemainingUntil } from 'utils/dateUtils';
+import { getMethodConfig } from 'utils/participationMethodUtils';
+
+// types
+import { IProjectData } from 'api/projects/types';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -48,16 +52,24 @@ type Props = {
   hasUserParticipated?: boolean;
   CTAButton?: React.ReactNode;
   currentPhase: IPhaseData | undefined;
+  project: IProjectData;
 };
 
 export const ParticipationCTAContent = ({
   currentPhase,
   CTAButton,
   hasUserParticipated = false,
+  project,
 }: Props) => {
   const theme = useTheme();
   const isSmallerThanPhone = useBreakpoint('phone');
-  const isSurveyPostingEnabled = currentPhase?.attributes.posting_enabled;
+  const config = getMethodConfig(
+    currentPhase?.attributes.participation_method ||
+      project.attributes.participation_method
+  );
+  const useProjectClosedStyle =
+    config?.useProjectClosedCTABarStyle &&
+    config.useProjectClosedCTABarStyle(currentPhase || project);
 
   let timeLeft = currentPhase
     ? getPeriodRemainingUntil(currentPhase.attributes.end_at, 'weeks')
@@ -70,7 +82,7 @@ export const ParticipationCTAContent = ({
   }
 
   const getUserParticipationMessage = () => {
-    if (!isSurveyPostingEnabled) {
+    if (useProjectClosedStyle) {
       return messages.projectClosedForSubmission;
     }
     if (hasUserParticipated) {
@@ -96,7 +108,7 @@ export const ParticipationCTAContent = ({
       >
         <Box display="flex" flexDirection="row" alignItems="center">
           <Box>
-            {isSurveyPostingEnabled && (
+            {!useProjectClosedStyle && (
               <BlickingIcon
                 name={hasUserParticipated ? 'check-circle' : 'dot'}
                 width="16px"
@@ -168,7 +180,7 @@ export const ParticipationCTAContent = ({
         maxWidth={`${maxPageWidth}px`}
       >
         <Box display="flex" justifyContent="center" alignItems="center">
-          {isSurveyPostingEnabled && (
+          {!useProjectClosedStyle && (
             <BlickingIcon
               name={hasUserParticipated ? 'check-circle' : 'dot'}
               width="16px"
@@ -178,7 +190,6 @@ export const ParticipationCTAContent = ({
               showAnimation={!hasUserParticipated}
             />
           )}
-
           <Text color="white" fontSize="s" my="0px">
             <FormattedMessage {...getUserParticipationMessage()} />
           </Text>
