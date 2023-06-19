@@ -4,7 +4,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import causeKeys from './keys';
 import { IInternalComment, InternalCommentsKeys } from './types';
 
-const fetchInternalComment = ({ id }: { id: string }) =>
+const fetchInternalComment = (id: string) =>
   fetcher<IInternalComment>({
     path: `/internal_comments/${id}`,
     action: 'get',
