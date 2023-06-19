@@ -56,21 +56,22 @@
 #  fk_rails_...  (spam_report_id => spam_reports.id)
 #
 module Notifications
-  class InternalCommentOnYourInternalComment < Notification
+  class InternalCommentOnIdeaAssignedToYou < Notification
     validates :initiating_user, :internal_comment, presence: true
 
     ACTIVITY_TRIGGERS = { 'InternalComment' => { 'created' => true } }
-    EVENT_NAME = 'Internal comment on your internal comment'
+    EVENT_NAME = 'Internal comment on idea assigned to you'
 
     def self.make_notifications_on(activity)
       internal_comment = activity.item
-      recipient_id = internal_comment.parent&.author_id
+      recipient_id = internal_comment.post.assignee_id
       initiator_id = internal_comment&.author_id
+      parent_author_id = internal_comment&.parent&.author_id
 
-      if internal_comment.parent_id &&
-         recipient_id &&
+      if recipient_id &&
          initiator_id &&
          (recipient_id != initiator_id) &&
+         (recipient_id != parent_author_id) && # user should receive a different notification for comment on their comment
          !recipient_mentioned?(internal_comment) # user should receive a different notification if they are mentioned
 
         attributes = {
@@ -91,7 +92,7 @@ module Notifications
     end
 
     def self.recipient_mentioned?(internal_comment)
-      MentionService.new.user_mentioned?(internal_comment.body, internal_comment.parent.author)
+      MentionService.new.user_mentioned?(internal_comment.body, internal_comment.post.assignee)
     end
 
     private_class_method :recipient_mentioned?

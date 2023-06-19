@@ -25,7 +25,7 @@ RSpec.describe Notifications::InternalCommentOnYourInternalComment do
 
     context 'when the internal comment contains a mention of the parent author' do
       let(:parent_author) { parent_internal_comment.author }
-      let!(:child_internal_comment) do
+      let(:child_internal_comment) do
         create(
           :internal_comment,
           :with_mentions,
