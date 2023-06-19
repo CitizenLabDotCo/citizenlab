@@ -40,6 +40,7 @@
   "app.components.Comments.commentingMaybeNotPermitted": "Niet iedereen kan reageren. {signInLink} om te zien of je aan de voorwaarden voldoet.",
   "app.components.Comments.inputsAssociatedWithProfile": "Je inzendingen worden standaard aan je profiel gekoppeld, tenzij je deze optie selecteert.",
   "app.components.Comments.invisibleTitleComments": "Reacties",
+  "app.components.Comments.leastRecent": "Minst recent",
   "app.components.Comments.mostRecent": "Meest recente",
   "app.components.Comments.mostUpvoted": "Meeste stemmen",
   "app.components.Comments.official": "Officieel",
