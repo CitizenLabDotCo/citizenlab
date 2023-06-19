@@ -1,5 +1,5 @@
 import React from 'react';
-import { IUserCustomFieldInputType } from 'services/userCustomFields';
+import { IUserCustomFieldInputType } from 'api/user_custom_fields/types';
 
 import { Button, Box } from '@citizenlab/cl2-component-library';
 

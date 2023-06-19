@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 // hooks
-import useUserCustomField from 'hooks/useUserCustomField';
+import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
 import useUserCustomFieldOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
 import useLocalize from 'hooks/useLocalize';
 
@@ -48,7 +48,7 @@ const Options = injectIntl(
     intl: { formatMessage },
   }: Props & WrappedComponentProps) => {
     const [seeMore, setSeeMore] = useState(false);
-    const userCustomField = useUserCustomField(userCustomFieldId);
+    const { data: userCustomField } = useUserCustomField(userCustomFieldId);
     const { data: userCustomFieldOptions } =
       useUserCustomFieldOptions(userCustomFieldId);
     const localize = useLocalize();
@@ -58,7 +58,7 @@ const Options = injectIntl(
     }
 
     const options =
-      userCustomField.attributes.key === 'birthyear' && bins
+      userCustomField.data.attributes.key === 'birthyear' && bins
         ? formatBinOptions(bins, formatMessage(binMessages.andOver))
         : formatUserCustomFieldOptions(userCustomFieldOptions.data, localize);
 
@@ -69,7 +69,7 @@ const Options = injectIntl(
 
     const showSeeMoreButton = userCustomFieldOptions.data.length > 12;
     const showEditAgeGroupsButton =
-      userCustomField.attributes.key === 'birthyear' && bins;
+      userCustomField.data.attributes.key === 'birthyear' && bins;
 
     const onToggle = (optionId: string) => () => {
       const currentlyEnabled = optionId in formValues;
