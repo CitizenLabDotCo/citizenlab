@@ -299,14 +299,14 @@ describe SmartGroups::Rules::ParticipatedInProject do
         'nl-NL' => 'Stemde niet op een reactie op een idee in het project bier'
       })
       expect(participated_voted_in_project_in_rule.description_multiloc).to eq({
-        'en' => 'Assigned a budget in one of the following projects beer, delayed',
-        'fr-FR' => 'Dépensé un budget dans l\'un des projets bière, retardé',
-        'nl-NL' => 'Wees een budget toe in een van de volgende projecten bier, uitgesteld'
+        'en' => 'Voted in one of the following projects beer, delayed',
+        'fr-FR' => 'Voted in one of the following projects bière, retardé',
+        'nl-NL' => 'Voted in one of the following projects bier, uitgesteld'
       })
       expect(participated_not_voted_in_project_in_rule.description_multiloc).to eq({
-        'en' => 'Didn\'t assign a budget in the project beer',
-        'fr-FR' => 'N\'as pas dépensé un budget dans le projet bière',
-        'nl-NL' => 'Wees geen budget toe in het project bier'
+        'en' => 'Did not vote in the project beer',
+        'fr-FR' => 'Did not vote in the project bière',
+        'nl-NL' => 'Did not vote in the project bier'
       })
     end
   end
