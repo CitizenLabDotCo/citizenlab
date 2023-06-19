@@ -155,7 +155,7 @@ resource 'Phases' do
       example_request 'Returns the phase in the specified locale', document: false do
         assert_status 200
         expect(json_response_body.dig(:phase, :title))
-          .to eq project.phases[0].title_multiloc['nl-NL']
+          .to eq project.phase.title_multiloc['nl-NL']
       end
     end
   end
