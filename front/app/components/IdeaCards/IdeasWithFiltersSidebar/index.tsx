@@ -246,6 +246,7 @@ const IdeaCards = ({ ideaQueryParameters, onUpdateQuery }: Props) => {
               />
 
               <MobileSearchInput
+                defaultValue={ideaQueryParameters.search}
                 onChange={handleSearchOnChange}
                 a11y_numberOfSearchResults={list.length}
               />
@@ -310,6 +311,7 @@ const IdeaCards = ({ ideaQueryParameters, onUpdateQuery }: Props) => {
                 filterColumnWidth={filterColumnWidth}
               >
                 <FiltersSideBar
+                  defaultValue={ideaQueryParameters.search}
                   selectedIdeaFilters={ideaQueryParameters}
                   filtersActive={filtersActive}
                   ideasFilterCounts={ideasFilterCounts}
