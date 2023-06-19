@@ -10,7 +10,7 @@ import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 const apiPath = '*internal_comments/:commentId/mark_as_deleted';
 
 const server = setupServer(
-  rest.post(apiPath, (_req, res, ctx) => {
+  rest.patch(apiPath, (_req, res, ctx) => {
     return res(ctx.status(202));
   })
 );
@@ -38,7 +38,7 @@ describe('useMarkInternalCommentForDeletion', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.post(apiPath, (_req, res, ctx) => {
+      rest.patch(apiPath, (_req, res, ctx) => {
         return res(ctx.status(500));
       })
     );
