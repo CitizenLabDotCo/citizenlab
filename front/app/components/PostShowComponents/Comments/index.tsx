@@ -51,6 +51,7 @@ const CommentsSection = ({
   showInternalComments = false,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const [selectedTab, setSelectedTab] = useState<CommentType>('internal');
   const initiativeId = postType === 'initiative' ? postId : undefined;
   const ideaId = postType === 'idea' ? postId : undefined;
   const { data: initiative } = useInitiativeById(initiativeId);
@@ -61,7 +62,6 @@ const CommentsSection = ({
   const publicCommentCount = post.data.attributes.comments_count;
   const internalCommentCount = post.data.attributes.internal_comments_count;
 
-  const [selectedTab, setSelectedTab] = useState<CommentType>('internal');
   const tabs: NavTab[] = [
     {
       label: `${formatMessage(
