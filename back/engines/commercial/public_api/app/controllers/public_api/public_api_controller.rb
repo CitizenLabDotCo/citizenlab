@@ -8,7 +8,6 @@ module PublicApi
     around_action :switch_locale
     before_action :authenticate_api_client
     before_action :check_api_token
-    before_action :set_locale
 
     rescue_from InvalidEnumParameterValueError, with: :render_problem_details
 
