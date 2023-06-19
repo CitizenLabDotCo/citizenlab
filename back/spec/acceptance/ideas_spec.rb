@@ -559,9 +559,9 @@ resource 'Ideas' do
               disabled_reason: nil,
               future_enabled: nil
             },
-            budgeting: {
+            voting: {
               enabled: false,
-              disabled_reason: 'not_budgeting',
+              disabled_reason: 'not_voting',
               future_enabled: nil
             }
           }
