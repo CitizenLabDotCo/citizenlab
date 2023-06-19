@@ -225,6 +225,19 @@
         }
       },
 
+      "internal_commenting": {
+        "type": "object",
+        "title": "Internal commenting",
+        "description": "Admin and managers can have internal comments on ideas and proposals.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "required-settings": ["duration"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false },
+        }
+      },
+
       "jsonforms_custom_fields": {
         "type": "object",
         "title": "Rework of user custom fields (experimental)",
