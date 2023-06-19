@@ -29,7 +29,6 @@ const RegistrationCustomFieldSettings = () => {
   };
 
   const handleSubmit = (values: FormValues) => {
-    if (!customField) return;
     updateCustomFieldForUsers({
       customFieldId: customField.data.id,
       ...values,
