@@ -6,10 +6,7 @@ import useReferenceData from '../../hooks/useReferenceData';
 import useRScore from '../../hooks/useRScore';
 
 // services
-import {
-  usersByRegFieldXlsxEndpoint,
-  usersByDomicileXlsxEndpoint,
-} from 'services/userCustomFieldStats';
+import { usersByRegFieldXlsxEndpoint } from 'services/userCustomFieldStats';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -41,6 +38,7 @@ import {
 import { View } from 'components/admin/GraphCard/ViewToggle';
 import { usersByAgeXlsxEndpoint } from 'api/users_by_age/util';
 import { usersByGenderXlsxEndpoint } from 'api/users_by_gender/util';
+import { usersByDomicileXlsxEndpoint } from 'api/users_by_domicile/util';
 
 interface Props {
   userCustomField: IUserCustomFieldData;

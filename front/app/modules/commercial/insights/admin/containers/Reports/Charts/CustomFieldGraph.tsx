@@ -28,15 +28,9 @@ import { Box, colors } from '@citizenlab/cl2-component-library';
 
 // typings
 import { IUserCustomFieldData } from 'api/user_custom_fields/types';
-import { IStream } from 'utils/streams';
 
 // services
-import {
-  usersByRegFieldXlsxEndpoint,
-  usersByDomicileStream,
-  usersByDomicileXlsxEndpoint,
-  ICustomFieldParams,
-} from 'services/userCustomFieldStats';
+import { usersByRegFieldXlsxEndpoint } from 'services/userCustomFieldStats';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -47,11 +41,10 @@ import useUsersByGender from 'api/users_by_gender/useUsersByGender';
 import useUsersByBirthyear from 'api/users_by_birthyear/useUsersByBirthyear';
 import { usersByGenderXlsxEndpoint } from 'api/users_by_gender/util';
 import { usersByBirthyearXlsxEndpoint } from 'api/users_by_birthyear/util';
+import { usersByDomicileXlsxEndpoint } from 'api/users_by_domicile/util';
+import useUsersByDomicile from 'api/users_by_domicile/useUsersByDomicile';
 
 interface ICustomFieldEndpoint {
-  stream?: (
-    streamParams: ICustomFieldParams | null
-  ) => IStream<ISupportedDataType>;
   xlsxEndpoint: string;
 }
 
@@ -65,7 +58,6 @@ const customFieldEndpoints: Record<TAllowedCode, ICustomFieldEndpoint> = {
     xlsxEndpoint: usersByBirthyearXlsxEndpoint,
   },
   domicile: {
-    stream: usersByDomicileStream,
     xlsxEndpoint: usersByDomicileXlsxEndpoint,
   },
 };
@@ -108,38 +100,6 @@ const CustomTooltip = ({
   return null;
 };
 
-// const createCombinedStream = (
-//   customField: IUserCustomFieldData,
-//   { startAt, endAt }: { startAt: string; endAt: string },
-//   currentProject?: string
-// ) => {
-//   const { code } = customField.attributes;
-
-//   const stream =
-//     code && code in customFieldEndpoints
-//       ? customFieldEndpoints[code as TAllowedCode].stream
-//       : usersByRegFieldStream;
-
-//   const totalUsersStream = stream(null, customField.id);
-
-//   const participantsStream = stream(
-//     {
-//       queryParameters: {
-//         start_at: startAt,
-//         end_at: endAt,
-//         project: currentProject,
-//         filter_by_participation: true,
-//       },
-//     },
-//     customField.id
-//   );
-
-//   return combineLatest([
-//     totalUsersStream.observable,
-//     participantsStream.observable,
-//   ]);
-// };
-
 const CustomFieldsGraph = ({
   startAt,
   endAt,
@@ -156,22 +116,24 @@ const CustomFieldsGraph = ({
     end_at: endAt,
     project: currentProject,
     filter_by_participation: true,
-    enabled: code === 'gender',
   });
-  const { data: usersByGenderWithoutFilters } = useUsersByGender({
-    enabled: code === 'gender',
-  });
+  const { data: usersByGenderWithoutFilters } = useUsersByGender({});
 
   const { data: usersByBirthyearWithFilters } = useUsersByBirthyear({
     start_at: startAt,
     end_at: endAt,
     project: currentProject,
     filter_by_participation: true,
-    enabled: code === 'birthyear',
   });
-  const { data: usersByBirthyearWithoutFilters } = useUsersByBirthyear({
-    enabled: code === 'birthyear',
+  const { data: usersByBirthyearWithoutFilters } = useUsersByBirthyear({});
+
+  const { data: usersByDomicileWithFilters } = useUsersByDomicile({
+    start_at: startAt,
+    end_at: endAt,
+    project: currentProject,
+    filter_by_participation: true,
   });
+  const { data: usersByDomicileWithoutFilters } = useUsersByDomicile({});
 
   const currentChartRef = useRef();
   const convertAndMergeSeriesRef = useRef(
@@ -182,41 +144,36 @@ const CustomFieldsGraph = ({
   );
   const convertAndMergeSeries = convertAndMergeSeriesRef.current;
 
-  const totalSerie =
-    usersByGenderWithoutFilters || usersByBirthyearWithoutFilters;
-  const participantSerie =
-    usersByGenderWithFilters || usersByBirthyearWithFilters;
+  const serieMap: Record<
+    TAllowedCode,
+    {
+      totalSeries: ISupportedDataType | undefined;
+      participantSeries: ISupportedDataType | undefined;
+    }
+  > = {
+    domicile: {
+      totalSeries: usersByDomicileWithoutFilters,
+      participantSeries: usersByDomicileWithFilters,
+    },
+    birthyear: {
+      totalSeries: usersByBirthyearWithoutFilters,
+      participantSeries: usersByBirthyearWithFilters,
+    },
+    gender: {
+      totalSeries: usersByGenderWithoutFilters,
+      participantSeries: usersByGenderWithFilters,
+    },
+  };
+
+  const totalSerie = code && serieMap[code].totalSeries;
+
+  const participantSerie = code && serieMap[code].participantSeries;
+
   const serie =
+    code &&
     totalSerie &&
     participantSerie &&
     convertAndMergeSeries(totalSerie, participantSerie, code);
-
-  // useEffect(() => {
-  //   const combinedStream = createCombinedStream(
-  //     customField,
-  //     { startAt, endAt },
-  //     currentProject
-  //   );
-
-  //   const subscription = combinedStream.subscribe(
-  //     ([totalSerie, participantSerie]) => {
-  //       if (!isNilOrError(totalSerie) && !isNilOrError(participantSerie)) {
-  //         const { code } = customField.attributes;
-
-  //         const convertedAndMergedSeries = convertAndMergeSeries(
-  //           totalSerie,
-  //           participantSerie,
-  //           code
-  //         );
-
-  //         setSerie(convertedAndMergedSeries);
-  //       }
-  //     }
-  //   );
-
-  //   return () => subscription.unsubscribe();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [customField, currentProject, startAt, endAt]);
 
   const noData =
     isNilOrError(serie) ||

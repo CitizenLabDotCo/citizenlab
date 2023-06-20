@@ -79,14 +79,3 @@ export function usersByRegFieldStream(
     cacheStream: false,
   });
 }
-
-export const usersByDomicileXlsxEndpoint = `${apiEndpoint}/users_by_domicile_as_xlsx`;
-
-export function usersByDomicileStream(
-  streamParams: ICustomFieldParams | null = null
-) {
-  return streams.get<IUsersByDomicile>({
-    apiEndpoint: `${apiEndpoint}/users_by_domicile`,
-    ...streamParams,
-  });
-}

@@ -15,10 +15,7 @@ const fetchUsersByGender = (params: ICustomFieldParams) =>
     queryParams: params,
   });
 
-const useUsersByGender = ({
-  enabled = true,
-  ...queryParameters
-}: ICustomFieldParams & { enabled?: boolean }) => {
+const useUsersByGender = (queryParameters: ICustomFieldParams) => {
   return useQuery<
     IUsersByRegistrationField,
     CLErrors,
@@ -27,7 +24,6 @@ const useUsersByGender = ({
   >({
     queryKey: usersByGenderKeys.item(queryParameters),
     queryFn: () => fetchUsersByGender(queryParameters),
-    enabled,
   });
 };
 

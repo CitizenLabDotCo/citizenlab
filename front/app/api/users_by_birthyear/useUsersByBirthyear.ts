@@ -10,15 +10,12 @@ import usersByBirthyearKeys from './keys';
 
 const fetchUsersByBirthyear = (params: ICustomFieldParams) =>
   fetcher<IUsersByBirthyear>({
-    path: `/stats/users_by_age`,
+    path: `/stats/users_by_birthyear`,
     action: 'get',
     queryParams: params,
   });
 
-const useUsersByBirthyear = ({
-  enabled = true,
-  ...queryParameters
-}: ICustomFieldParams & { enabled?: boolean }) => {
+const useUsersByBirthyear = (queryParameters: ICustomFieldParams) => {
   return useQuery<
     IUsersByBirthyear,
     CLErrors,
@@ -27,7 +24,6 @@ const useUsersByBirthyear = ({
   >({
     queryKey: usersByBirthyearKeys.item(queryParameters),
     queryFn: () => fetchUsersByBirthyear(queryParameters),
-    enabled,
   });
 };
 

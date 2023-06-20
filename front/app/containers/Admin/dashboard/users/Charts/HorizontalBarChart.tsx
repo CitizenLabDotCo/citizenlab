@@ -25,35 +25,15 @@ import BarChart from 'components/admin/Graphs/BarChart';
 import ReportExportMenu from 'components/admin/ReportExportMenu';
 
 // resources
-import GetSerieFromStream from 'resources/GetSerieFromStream';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
 // types
-import { IStreamParams, IStream } from 'utils/streams';
 import { IGraphFormat } from 'typings';
-import {
-  IUsersByDomicile,
-  IUsersByRegistrationField,
-} from 'services/userCustomFieldStats';
-import { IUsersByBirthyear } from 'api/users_by_birthyear/types';
 
-interface DataProps {
+interface Props {
   serie?: IGraphFormat | null | Error;
-}
-
-type ISupportedDataType =
-  | IUsersByBirthyear
-  | IUsersByDomicile
-  | IUsersByRegistrationField;
-
-interface InputProps {
-  stream: (
-    streamParams?: IStreamParams | null,
-    customId?: string
-  ) => IStream<ISupportedDataType>;
-  convertToGraphFormat: (data: ISupportedDataType) => IGraphFormat | null;
   startAt: string | null | undefined;
   endAt: string | null;
   currentGroupFilter?: string | undefined;
@@ -64,8 +44,6 @@ interface InputProps {
   customId?: string;
   xlsxEndpoint?: string;
 }
-
-interface Props extends InputProps, DataProps {}
 
 export class HorizontalBarChart extends React.PureComponent<
   Props & WrappedComponentProps
@@ -134,10 +112,4 @@ export class HorizontalBarChart extends React.PureComponent<
 
 const HorizontalBarChartWithHoCs = injectIntl(HorizontalBarChart);
 
-const WrappedHorizontalBarChart = (inputProps: InputProps) => (
-  <GetSerieFromStream {...inputProps}>
-    {(serie) => <HorizontalBarChartWithHoCs {...serie} {...inputProps} />}
-  </GetSerieFromStream>
-);
-
-export default WrappedHorizontalBarChart;
+export default HorizontalBarChartWithHoCs;
