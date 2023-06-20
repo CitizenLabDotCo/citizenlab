@@ -62,7 +62,7 @@ export interface Props {
   postType: 'idea' | 'initiative';
   className?: string;
   allowAnonymousParticipation?: boolean;
-  emphasizePostingPublicly?: boolean;
+  isShownInBackOffice?: boolean;
 }
 
 const PublicComments = ({
@@ -70,7 +70,7 @@ const PublicComments = ({
   postType,
   className,
   allowAnonymousParticipation,
-  emphasizePostingPublicly,
+  isShownInBackOffice,
 }: Props) => {
   const initiativeId = postType === 'initiative' ? postId : undefined;
   const ideaId = postType === 'idea' ? postId : undefined;
@@ -120,8 +120,8 @@ const PublicComments = ({
 
   const phaseId = project?.data.relationships?.current_phase?.data?.id;
   const commentCount = post.data.attributes.comments_count;
-  const showCommentCount = !emphasizePostingPublicly && commentCount > 0;
-  const showHeader = !emphasizePostingPublicly || !!commentCount;
+  const showCommentCount = !isShownInBackOffice && commentCount > 0;
+  const showHeader = !isShownInBackOffice || !!commentCount;
 
   return (
     <Box className={className || ''}>
@@ -158,7 +158,7 @@ const PublicComments = ({
           postType={postType}
           postingComment={handleCommentPosting}
           allowAnonymousParticipation={allowAnonymousParticipation}
-          emphasizePostingPublicly={emphasizePostingPublicly}
+          isShownInBackOffice={isShownInBackOffice}
         />
       </Box>
 
@@ -169,7 +169,7 @@ const PublicComments = ({
         allComments={commentsList}
         loading={isLoading}
         allowAnonymousParticipation={allowAnonymousParticipation}
-        emphasizePostingPublicly={emphasizePostingPublicly}
+        isShownInBackOffice={isShownInBackOffice}
       />
 
       {hasNextPage && !isFetchingNextPage && (

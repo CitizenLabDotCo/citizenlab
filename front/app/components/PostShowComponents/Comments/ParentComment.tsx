@@ -48,7 +48,7 @@ interface Props {
   childCommentIds: string[];
   className?: string;
   allowAnonymousParticipation?: boolean;
-  emphasizePostingPublicly?: boolean;
+  isShownInBackOffice?: boolean;
 }
 
 const ParentComment = ({
@@ -59,7 +59,7 @@ const ParentComment = ({
   className,
   childCommentIds,
   allowAnonymousParticipation,
-  emphasizePostingPublicly = false,
+  isShownInBackOffice = false,
 }: Props) => {
   const commentingPermissionInitiative = useInitiativesPermissions(
     'commenting_initiative'
@@ -161,7 +161,7 @@ const ParentComment = ({
             projectId={projectId}
             parentId={commentId}
             allowAnonymousParticipation={allowAnonymousParticipation}
-            emphasizePostingPublicly={emphasizePostingPublicly}
+            isShownInBackOffice={isShownInBackOffice}
           />
         )}
       </Container>

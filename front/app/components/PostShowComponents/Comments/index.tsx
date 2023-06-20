@@ -111,7 +111,7 @@ const CommentsSection = ({
                 postType={postType}
                 allowAnonymousParticipation={allowAnonymousParticipation}
                 className={className}
-                emphasizePostingPublicly
+                isShownInBackOffice
               />
             </Box>
           )}

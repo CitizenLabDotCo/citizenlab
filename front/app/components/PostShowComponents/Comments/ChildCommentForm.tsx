@@ -99,7 +99,7 @@ interface Props {
   parentId: string;
   className?: string;
   allowAnonymousParticipation?: boolean;
-  emphasizePostingPublicly?: boolean;
+  isShownInBackOffice?: boolean;
 }
 
 const ChildCommentForm = ({
@@ -110,7 +110,7 @@ const ChildCommentForm = ({
   projectId,
   className,
   allowAnonymousParticipation,
-  emphasizePostingPublicly = false,
+  isShownInBackOffice = false,
 }: Props) => {
   const { formatMessage } = useIntl();
   const locale = useLocale();
@@ -363,7 +363,7 @@ const ChildCommentForm = ({
 
   if (focused) {
     const isModerator = canModerateProject(projectId, authUser);
-    const postButtonText: MessageDescriptor = emphasizePostingPublicly
+    const postButtonText: MessageDescriptor = isShownInBackOffice
       ? messages.postPublicComment
       : messages.publishComment;
 
@@ -445,7 +445,7 @@ const ChildCommentForm = ({
                   onClick={onSubmit}
                   disabled={!canSubmit}
                   padding={smallerThanTablet ? '6px 12px' : undefined}
-                  icon={emphasizePostingPublicly ? 'users' : undefined}
+                  icon={isShownInBackOffice ? 'users' : undefined}
                 >
                   <FormattedMessage {...postButtonText} />
                 </Button>

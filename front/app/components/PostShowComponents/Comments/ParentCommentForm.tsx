@@ -115,7 +115,7 @@ interface Props {
   postingComment: (arg: boolean) => void;
   className?: string;
   allowAnonymousParticipation?: boolean;
-  emphasizePostingPublicly?: boolean;
+  isShownInBackOffice?: boolean;
 }
 
 const ParentCommentForm = ({
@@ -124,7 +124,7 @@ const ParentCommentForm = ({
   postType,
   className,
   allowAnonymousParticipation,
-  emphasizePostingPublicly = false,
+  isShownInBackOffice = false,
 }: Props) => {
   const locale = useLocale();
   const { data: authUser } = useAuthUser();
@@ -350,10 +350,10 @@ const ParentCommentForm = ({
           .disabled_reason;
   const isModerator = canModerateProject(projectId, authUser);
   const canComment = !commentingDisabledReason;
-  const buttonText: MessageDescriptor = emphasizePostingPublicly
+  const buttonText: MessageDescriptor = isShownInBackOffice
     ? messages.postPublicComment
     : messages.publishComment;
-  const placeholderMessage: MessageDescriptor = emphasizePostingPublicly
+  const placeholderMessage: MessageDescriptor = isShownInBackOffice
     ? messages.visibleToUsersPlaceholder
     : messages[`${postType}CommentBodyPlaceholder`];
   const placeholder = formatMessage(placeholderMessage);
@@ -439,7 +439,7 @@ const ParentCommentForm = ({
                   onClick={onSubmit}
                   disabled={hasEmptyError}
                   padding={smallerThanTablet ? '6px 12px' : undefined}
-                  icon={emphasizePostingPublicly ? 'users' : undefined}
+                  icon={isShownInBackOffice ? 'users' : undefined}
                 >
                   <FormattedMessage {...buttonText} />
                 </Button>
