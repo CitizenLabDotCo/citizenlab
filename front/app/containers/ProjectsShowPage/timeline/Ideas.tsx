@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useMemo } from 'react';
 
 // hooks
 import usePhase from 'api/phases/usePhase';
@@ -9,6 +9,7 @@ import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 
 // router
 import { useSearchParams } from 'react-router-dom';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -20,12 +21,10 @@ import styled from 'styled-components';
 
 // utils
 import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
-import { searchParamParser } from 'utils/cl-router/parseSearchParams';
 
 // typings
 import { IPhaseData } from 'api/phases/types';
 import { Sort } from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
-import { QueryParametersUpdate } from 'components/IdeaCards/IdeasWithoutFiltersSidebar';
 
 const Container = styled.div``;
 
@@ -52,10 +51,8 @@ interface QueryParameters {
   topics?: string[];
 }
 
-const parseSearchParams = searchParamParser(['search', 'sort', 'topics']);
-
 const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const sortParam = searchParams.get('sort') as Sort | null;
   const searchParam = searchParams.get('search');
   const topicsParam = searchParams.get('topics');
@@ -83,13 +80,6 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
   //     sort: phase.attributes.ideas_order ?? ideaDefaultSortMethodFallback,
   //   }));
   // }, [phase]);
-
-  const updateQuery = useCallback(
-    (newParams: QueryParametersUpdate) => {
-      setSearchParams(parseSearchParams(searchParams, newParams));
-    },
-    [setSearchParams, searchParams]
-  );
 
   const participationMethod = phase.attributes.participation_method;
   if (
@@ -119,7 +109,7 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
       </StyledProjectPageSectionTitle>
       <IdeaCardsWithoutFiltersSidebar
         ideaQueryParameters={ideaQueryParameters}
-        onUpdateQuery={updateQuery}
+        onUpdateQuery={updateSearchParams}
         className={participationMethod}
         projectId={projectId}
         showViewToggle={true}

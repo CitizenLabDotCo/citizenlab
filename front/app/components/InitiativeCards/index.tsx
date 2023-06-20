@@ -24,6 +24,7 @@ import ProposalsList from './ProposalsList';
 
 // router
 import { useSearchParams } from 'react-router-dom';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 // hooks
 import useInfitineInitiatives from 'api/initiatives/useInfiniteInitiatives';
@@ -43,9 +44,6 @@ import {
   viewportWidths,
   defaultCardStyle,
 } from 'utils/styleUtils';
-
-// utils
-import { searchParamParser } from 'utils/cl-router/parseSearchParams';
 
 // typings
 import { Sort } from 'components/InitiativeCards/SortFilterDropdown';
@@ -197,13 +195,6 @@ const StyledViewButtons = styled(ViewButtons)`
   margin-right: 20px;
 `;
 
-const parseSearchParams = searchParamParser([
-  'sort',
-  'search',
-  'initiative_status',
-  'topics',
-]);
-
 interface Props {
   className?: string;
   invisibleTitleMessage: MessageDescriptor;
@@ -223,7 +214,7 @@ const InitiativeCards = ({ className, invisibleTitleMessage }: Props) => {
   const [selectedView, setSelectedView] = useState<'map' | 'card'>('card');
   const [filtersModalOpened, setFiltersModalOpened] = useState(false);
 
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const sortParam = searchParams.get('sort') as Sort | null;
   const searchParam = searchParams.get('search');
   const initiativeStatusParam = searchParams.get('initiative_status');
@@ -268,18 +259,15 @@ const InitiativeCards = ({ className, invisibleTitleMessage }: Props) => {
       sort,
     });
 
-    setSearchParams(parseSearchParams(searchParams, { sort }));
+    updateSearchParams({ sort });
   };
 
-  const handleSearchOnChange = useCallback(
-    (search: string | null) => {
-      setSearchParams(parseSearchParams(searchParams, { search }));
-    },
-    [setSearchParams, searchParams]
-  );
+  const handleSearchOnChange = useCallback((search: string | null) => {
+    updateSearchParams({ search });
+  }, []);
 
   const handleStatusOnChange = (initiative_status: string | null) => {
-    setSearchParams(parseSearchParams(searchParams, { initiative_status }));
+    updateSearchParams({ initiative_status });
   };
 
   const handleTopicsOnChange = (topics: string[] | null) => {
@@ -287,7 +275,7 @@ const InitiativeCards = ({ className, invisibleTitleMessage }: Props) => {
       topics,
     });
 
-    setSearchParams(parseSearchParams(searchParams, { topics }));
+    updateSearchParams({ topics });
   };
 
   const closeModal = () => {
@@ -295,14 +283,12 @@ const InitiativeCards = ({ className, invisibleTitleMessage }: Props) => {
   };
 
   const resetFilters = () => {
-    setSearchParams(
-      parseSearchParams(searchParams, {
-        sort: undefined,
-        search: undefined,
-        initiative_status: undefined,
-        topics: undefined,
-      })
-    );
+    updateSearchParams({
+      sort: undefined,
+      search: undefined,
+      initiative_status: undefined,
+      topics: undefined,
+    });
   };
 
   const closeModalAndRevertFilters = () => {

@@ -1,5 +1,8 @@
-import React, { memo, useCallback, useMemo } from 'react';
+import React, { memo, useMemo } from 'react';
+
+// router
 import { useSearchParams } from 'react-router-dom';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 // components
 import ContentContainer from 'components/ContentContainer';
@@ -17,8 +20,6 @@ import { media, fontSizes, colors, isRtl } from 'utils/styleUtils';
 
 // typings
 import { Sort } from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
-import { QueryParametersUpdate } from 'components/IdeaCards/IdeasWithFiltersSidebar';
-import { searchParamParser } from 'utils/cl-router/parseSearchParams';
 
 const Container = styled.main`
   min-height: calc(
@@ -87,15 +88,8 @@ export interface QueryParameters {
   topics?: string[];
 }
 
-const parseSearchParams = searchParamParser([
-  'sort',
-  'search',
-  'idea_status',
-  'topics',
-]);
-
 export default memo(() => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const sortParam = searchParams.get('sort') as Sort | null;
   const searchParam = searchParams.get('search');
   const ideaStatusParam = searchParams.get('idea_status');
@@ -115,13 +109,6 @@ export default memo(() => {
     [sortParam, searchParam, ideaStatusParam, topicsParam]
   );
 
-  const updateQuery = useCallback(
-    (newParams: QueryParametersUpdate) => {
-      setSearchParams(parseSearchParams(searchParams, newParams));
-    },
-    [setSearchParams, searchParams]
-  );
-
   return (
     <>
       <IdeasIndexMeta />
@@ -133,7 +120,7 @@ export default memo(() => {
           <IdeaCardsWithFiltersSidebar
             invisibleTitleMessage={messages.a11y_IdeasListTitle}
             ideaQueryParameters={ideasQueryParameters}
-            onUpdateQuery={updateQuery}
+            onUpdateQuery={updateSearchParams}
           />
         </StyledContentContainer>
         <CityLogoSection />

@@ -1,9 +1,10 @@
-import React, { useState, useContext, memo, useCallback, useMemo } from 'react';
+import React, { useState, useContext, memo, useMemo } from 'react';
 import { Helmet } from 'react-helmet';
 import { PreviousPathnameContext } from 'context';
 
 // router
 import { useParams, useSearchParams } from 'react-router-dom';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 // components
 import { IdeaCardsWithoutFiltersSidebar } from 'components/IdeaCards';
@@ -30,11 +31,9 @@ import Unauthorized from 'components/Unauthorized';
 // utils
 import { isError } from 'utils/helperUtils';
 import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
-import { searchParamParser } from 'utils/cl-router/parseSearchParams';
 
 // typings
 import { IUserData } from 'api/users/types';
-import { QueryParametersUpdate } from 'components/IdeaCards/IdeasWithoutFiltersSidebar';
 import { Sort } from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
 
 const NotFoundContainer = styled.main`
@@ -101,13 +100,11 @@ interface QueryParameters {
   sort: Sort;
 }
 
-const parseSearchParams = searchParamParser(['sort', 'search']);
-
 export const UsersShowPage = memo<InnerProps>(({ className, user }) => {
   const [currentTab, setCurrentTab] = useState<UserTab>('ideas');
   const [savedScrollIndex, setSavedScrollIndex] = useState<number>(0);
 
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const sortParam = searchParams.get('sort') as Sort | null;
   const searchParam = searchParams.get('search');
 
@@ -120,13 +117,6 @@ export const UsersShowPage = memo<InnerProps>(({ className, user }) => {
       search: searchParam ?? undefined,
     }),
     [user, sortParam, searchParam]
-  );
-
-  const updateQuery = useCallback(
-    (newParams: QueryParametersUpdate) => {
-      setSearchParams(parseSearchParams(searchParams, newParams));
-    },
-    [setSearchParams, searchParams]
   );
 
   const changeTab = (toTab: UserTab) => () => {
@@ -154,7 +144,7 @@ export const UsersShowPage = memo<InnerProps>(({ className, user }) => {
               <IdeaCardsWithoutFiltersSidebar
                 defaultSortingMethod={ideaQueryParameters.sort}
                 ideaQueryParameters={ideaQueryParameters}
-                onUpdateQuery={updateQuery}
+                onUpdateQuery={updateSearchParams}
                 invisibleTitleMessage={messages.invisibleTitlePostsList}
               />
             </UserIdeas>
