@@ -62,7 +62,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 // utils
 import clHistory from 'utils/cl-router/history';
 import { useSearchParams } from 'react-router-dom';
-import { deleteSearchParams } from 'utils/cl-router/parseSearchParams';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 // style
 import styled from 'styled-components';
@@ -194,7 +194,7 @@ export const IdeasShow = ({
   const [goBack, setGoBack] = useState(false);
   const [translateButtonIsClicked, setTranslateButtonIsClicked] =
     useState<boolean>(false);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const ideaIdParameter = searchParams.get('new_idea_id');
   const goBackParameter = searchParams.get('go_back');
   const timeout = useRef<NodeJS.Timeout>();
@@ -212,10 +212,8 @@ export const IdeasShow = ({
       setGoBack(true);
     }
 
-    setSearchParams(
-      deleteSearchParams(searchParams, ['new_idea_id', 'go_back'])
-    );
-  }, [ideaIdParameter, goBackParameter, searchParams, setSearchParams]);
+    removeSearchParams(['new_idea_id', 'go_back']);
+  }, [ideaIdParameter, goBackParameter]);
 
   const { data: phases } = usePhases(projectId);
   const { data: idea } = useIdeaById(ideaId);

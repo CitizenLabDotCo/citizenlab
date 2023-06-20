@@ -13,7 +13,7 @@ import VoteIndicator from 'components/InitiativeCard/VoteIndicator';
 // router
 import clHistory from 'utils/cl-router/history';
 import { useSearchParams } from 'react-router-dom';
-import { deleteSearchParams } from 'utils/cl-router/parseSearchParams';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -122,7 +122,7 @@ const InitiativeShowPageTopBar = memo<Props>(({ initiativeId, className }) => {
 
     if (isString(goBackParameter)) {
       setGoBack(true);
-      setSearchParams(deleteSearchParams(searchParams, ['go_back']));
+      removeSearchParams(['go_back']);
     }
   }, [searchParams, setSearchParams]);
 

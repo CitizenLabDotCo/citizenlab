@@ -9,7 +9,7 @@ import tracks from './tracks';
 
 // router
 import { useSearchParams } from 'react-router-dom';
-import { deleteSearchParams } from 'utils/cl-router/parseSearchParams';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 // components
 import Modal from 'components/UI/Modal';
@@ -337,7 +337,7 @@ const InitiativesShow = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const newInitiativeId = searchParams.get('new_initiative_id');
 
   const [loaded, setLoaded] = useState(false);
@@ -360,9 +360,9 @@ const InitiativesShow = ({
         setInitiativeIdForSocialSharing(newInitiativeId);
       }, 1500);
 
-      setSearchParams(deleteSearchParams(searchParams, ['new_initiative_id']));
+      removeSearchParams(['new_initiative_id']);
     }
-  }, [newInitiativeId, setSearchParams, searchParams]);
+  }, [newInitiativeId]);
 
   useEffect(() => {
     if (!loaded && !isUndefined(initiativeImages)) {

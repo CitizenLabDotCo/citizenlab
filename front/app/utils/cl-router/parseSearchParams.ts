@@ -44,18 +44,3 @@ const setPropertyIfNecessary = (
     return;
   }
 };
-
-export const deleteSearchParams = (
-  searchParams: URLSearchParams,
-  paramsToBeDeleted: string[]
-) => {
-  const newSearchParams: Record<string, string> = {};
-
-  for (const [name, value] of searchParams.entries()) {
-    if (!paramsToBeDeleted.includes(name)) {
-      newSearchParams[name] = value;
-    }
-  }
-
-  return newSearchParams;
-};
