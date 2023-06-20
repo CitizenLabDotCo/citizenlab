@@ -5,19 +5,16 @@ import internalCommentKeys from './keys';
 import { IInternalComment } from './types';
 import userCommentsCount from 'api/user_comments_count/keys';
 
-interface MarkForDeletion {
+interface MarkInternalCommentForDeletion {
   commentId: string;
-  authorId?: string;
-  projectId?: string | null;
 }
 
 const markInternalCommentForDeletion = async ({
   commentId,
-}: MarkForDeletion) => {
+}: MarkInternalCommentForDeletion) => {
   return fetcher<IInternalComment>({
     path: `/internal_comments/${commentId}/mark_as_deleted`,
-    action: 'post',
-    body: null,
+    action: 'patch',
   });
 };
 
@@ -29,15 +26,30 @@ const useMarkInternalCommentForDeletion = ({
   initiativeId?: string;
 }) => {
   const queryClient = useQueryClient();
-  return useMutation<IInternalComment, CLErrors, MarkForDeletion>({
+  return useMutation<
+    IInternalComment,
+    CLErrors,
+    MarkInternalCommentForDeletion
+  >({
     mutationFn: markInternalCommentForDeletion,
     onSuccess: (_data) => {
-      queryClient.invalidateQueries({
-        queryKey: internalCommentKeys.list({
-          ideaId,
-          initiativeId,
-        }),
-      });
+      if (ideaId) {
+        queryClient.invalidateQueries({
+          queryKey: internalCommentKeys.list({
+            type: 'idea',
+            ideaId,
+          }),
+        });
+      }
+
+      if (initiativeId) {
+        queryClient.invalidateQueries({
+          queryKey: internalCommentKeys.list({
+            type: 'initiative',
+            initiativeId,
+          }),
+        });
+      }
 
       queryClient.invalidateQueries({
         queryKey: userCommentsCount.items(),

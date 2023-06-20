@@ -7,8 +7,6 @@ import userCommentsCount from 'api/user_comments_count/keys';
 
 interface MarkForDeletion {
   commentId: string;
-  authorId?: string;
-  projectId?: string | null;
   reason?: DeleteReason;
 }
 

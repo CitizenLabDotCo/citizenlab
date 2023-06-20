@@ -154,13 +154,10 @@ const CommentsMoreActions = ({
 
   const deleteComment = async (reason?: DeleteReason) => {
     const commentId = comment.id;
-    const authorId = comment.relationships.author.data?.id;
 
     markForDeletion(
       {
         commentId,
-        authorId,
-        projectId,
         reason,
       },
       {

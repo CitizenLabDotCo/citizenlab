@@ -25,7 +25,7 @@ describe('useInternalComments', () => {
       })
     );
     const { result, waitFor } = renderHook(
-      () => useInternalComments({ ideaId: 'ideaId' }),
+      () => useInternalComments({ type: 'idea', ideaId: 'ideaId' }),
       {
         wrapper: createQueryClientWrapper(),
       }
@@ -46,7 +46,11 @@ describe('useInternalComments', () => {
       })
     );
     const { result, waitFor } = renderHook(
-      () => useInternalComments({ initiativeId: 'initiativeId' }),
+      () =>
+        useInternalComments({
+          type: 'initiative',
+          initiativeId: 'initiativeId',
+        }),
       {
         wrapper: createQueryClientWrapper(),
       }
@@ -67,7 +71,7 @@ describe('useInternalComments', () => {
       })
     );
     const { result, waitFor } = renderHook(
-      () => useInternalComments({ userId: 'userId' }),
+      () => useInternalComments({ type: 'author', authorId: 'authorId' }),
       {
         wrapper: createQueryClientWrapper(),
       }
@@ -88,7 +92,7 @@ describe('useInternalComments', () => {
       })
     );
     const { result, waitFor } = renderHook(
-      () => useInternalComments({ commentId: 'commentId' }),
+      () => useInternalComments({ type: 'comment', commentId: 'commentId' }),
       {
         wrapper: createQueryClientWrapper(),
       }
@@ -110,7 +114,7 @@ describe('useInternalComments', () => {
     );
 
     const { result, waitFor } = renderHook(
-      () => useInternalComments({ ideaId: 'ideaId' }),
+      () => useInternalComments({ type: 'idea', ideaId: 'ideaId' }),
       {
         wrapper: createQueryClientWrapper(),
       }

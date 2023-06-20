@@ -75,8 +75,9 @@ const CommentsSection = ({ postId, postType, className }: Props) => {
     hasNextPage,
     isLoading,
   } = useInternalComments({
-    initiativeId: postType === 'initiative' ? postId : undefined,
-    ideaId: postType === 'idea' ? postId : undefined,
+    type: postType,
+    ideaId: postId,
+    initiativeId: postId,
     sort: sortOrder,
   });
   const [posting, setPosting] = useState(false);

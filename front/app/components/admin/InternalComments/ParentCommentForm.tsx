@@ -176,12 +176,12 @@ const ParentCommentForm = ({
         },
       });
 
-      if (postType === 'idea' && projectId) {
+      if (postType === 'idea' && projectId && ideaId) {
         addInternalCommentToIdea(
           {
             ideaId,
             author_id: authUser.data.id,
-            body_text: commentBodyText,
+            body: commentBodyText,
           },
           {
             onSuccess: (comment) => {
@@ -203,12 +203,12 @@ const ParentCommentForm = ({
         );
       }
 
-      if (postType === 'initiative') {
+      if (postType === 'initiative' && initiativeId) {
         addInternalCommentToInitiative(
           {
             initiativeId,
             author_id: authUser.data.id,
-            body_text: commentBodyText,
+            body: commentBodyText,
           },
           {
             onSuccess: (comment) => {

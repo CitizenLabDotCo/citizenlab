@@ -10,19 +10,20 @@ import {
   IInternalCommentQueryParameters,
 } from './types';
 
-const getInternalCommentsEndpoint = ({
-  ideaId,
-  initiativeId,
-  userId,
-  commentId,
-}: IInternalCommentParameters) => {
-  if (ideaId) {
-    return `ideas/${ideaId}/internal_comments`;
-  } else if (initiativeId) {
-    return `initiatives/${initiativeId}/internal_comments`;
-  } else if (commentId) {
-    return `internal_comments/${commentId}/children`;
-  } else return `users/${userId}/internal_comments`;
+const getInternalCommentsEndpoint = (params: IInternalCommentParameters) => {
+  const { type } = params;
+
+  switch (type) {
+    case 'idea':
+      return `ideas/${params.ideaId}/internal_comments`;
+    case 'initiative':
+      return `initiatives/${params.initiativeId}/internal_comments`;
+    case 'comment':
+      return `internal_comments/${params.commentId}/children`;
+    case 'author':
+    default:
+      return `users/${params.authorId}/internal_comments`;
+  }
 };
 
 const fetchInternalComments = (
@@ -56,11 +57,6 @@ const useInternalComments = (
 
       return hasNextPage && pageNumber ? pageNumber + 1 : null;
     },
-    enabled:
-      !!parameters.userId ||
-      !!parameters.initiativeId ||
-      !!parameters.ideaId ||
-      !!parameters.commentId,
   });
 };
 
