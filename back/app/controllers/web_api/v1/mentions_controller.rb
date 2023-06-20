@@ -55,7 +55,7 @@ class WebApi::V1::MentionsController < ApplicationController
   # @param [Idea, Initiative, nil] post
   # @return [ActiveRecord::Relation]
   def find_users_by_query(query, post)
-    case params[:roles].uniq
+    case params[:roles]&.uniq
     when %w[admin moderator], %w[moderator admin]
       query_scope(query).admin.or(query_scope(query).project_moderator(post&.project_id))
     when ['admin']
