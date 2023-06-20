@@ -4,7 +4,7 @@ import { renderHook } from '@testing-library/react-hooks';
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { IUsersByAge } from 'services/userCustomFieldStats';
+import { IUsersByAge } from './types';
 
 const apiPath = `*stats/users_by_age`;
 

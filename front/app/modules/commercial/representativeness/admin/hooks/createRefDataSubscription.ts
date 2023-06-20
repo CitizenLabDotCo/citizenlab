@@ -2,7 +2,6 @@
 import {
   usersByGenderStream,
   usersByRegFieldStream,
-  IUsersByAge,
   IUsersByRegistrationField,
 } from 'services/userCustomFieldStats';
 
@@ -14,6 +13,7 @@ import { forEachBin } from '../utils/bins';
 
 // typings
 import { Multiloc, Locale } from 'typings';
+import { IUsersByAge } from 'api/users_by_age/types';
 
 interface RepresentativenessRowBase {
   actualPercentage: number;

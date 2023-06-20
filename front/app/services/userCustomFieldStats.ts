@@ -79,22 +79,6 @@ export interface IUsersByBirthyear {
   };
 }
 
-export interface IUsersByAge {
-  data: {
-    type: 'users_by_age';
-    attributes: {
-      total_user_count: number;
-      unknown_age_count: number;
-      series: {
-        user_counts: number[];
-        expected_user_counts: number[];
-        reference_population: number[];
-        bins: (number | null)[];
-      };
-    };
-  };
-}
-
 export const usersByRegFieldXlsxEndpoint = (customFieldId: string) =>
   `${apiEndpoint}/users_by_custom_field_as_xlsx/${customFieldId}`;
 
