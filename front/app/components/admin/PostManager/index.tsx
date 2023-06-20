@@ -35,6 +35,7 @@ import IdeasCount from './components/IdeasCount';
 import InitiativesCount from './components/InitiativesCount';
 import { Input } from 'semantic-ui-react';
 import FeedbackToggle from './components/TopLevelFilters/FeedbackToggle';
+import LazyPostPreview from './components/LazyPostPreview';
 import LazyStatusChangeModal from './components/StatusChangeModal/LazyStatusChangeModal';
 import Outlet from 'components/Outlet';
 
@@ -403,6 +404,15 @@ export class PostManager extends React.PureComponent<Props, State> {
               openPreview={this.openPreview}
             />
           </ThreeColumns>
+          <Suspense fallback={null}>
+            <LazyPostPreview
+              type={type}
+              postId={previewPostId}
+              mode={previewMode}
+              onClose={this.closePreview}
+              onSwitchPreviewMode={this.switchPreviewMode}
+            />
+          </Suspense>
           {type === 'Initiatives' && (
             <Suspense fallback={null}>
               <LazyStatusChangeModal />
