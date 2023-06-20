@@ -4,7 +4,7 @@ import moduleConfiguration from 'modules';
 
 const AdminIdeasContainer = lazy(() => import('./index'));
 const AdminIdeasAll = lazy(() => import('./all'));
-import PostPreviewIndex from 'components/admin/PostManager/components/LazyPostPreview';
+import PostPreviewIndex from 'components/admin/PostManager/components/PostPreviewIndex';
 
 export default () => ({
   path: 'ideas',
