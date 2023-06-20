@@ -5,9 +5,7 @@ import Observer from '@researchgate/react-intersection-observer';
 // components
 import InternalParentCommentForm from './InternalParentCommentForm';
 import Comments from './InternalComments';
-import InternalCommentSorting, {
-  InternalCommentSort,
-} from './InternalCommentSorting';
+import InternalCommentSorting from './InternalCommentSorting';
 import { Box, Title } from '@citizenlab/cl2-component-library';
 
 // i18n
@@ -25,7 +23,8 @@ import tracks from './tracks';
 // hooks
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useIdeaById from 'api/ideas/useIdeaById';
-import useComments from 'api/comments/useComments';
+import useInternalComments from 'api/internal_comments/useInternalComments';
+import { InternalCommentSort } from 'api/internal_comments/types';
 
 const Header = styled.div`
   display: flex;
@@ -75,9 +74,10 @@ const InternalCommentsSection = ({ postId, postType, className }: Props) => {
     fetchNextPage,
     hasNextPage,
     isLoading,
-  } = useComments({
-    initiativeId: postType === 'initiative' ? postId : undefined,
-    ideaId: postType === 'idea' ? postId : undefined,
+  } = useInternalComments({
+    type: postType,
+    ideaId: postId,
+    initiativeId: postId,
     sort: sortOrder,
   });
   const [posting, setPosting] = useState(false);

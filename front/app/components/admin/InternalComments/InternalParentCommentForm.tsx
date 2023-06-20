@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react';
 import { isString, trim } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Button from 'components/UI/Button';
@@ -27,9 +26,8 @@ import { colors, defaultStyles } from 'utils/styleUtils';
 
 // hooks
 import useIdeaById from 'api/ideas/useIdeaById';
-import useAddCommentToIdea from 'api/comments/useAddCommentToIdea';
-import useAddCommentToInitiative from 'api/comments/useAddCommentToInitiative';
-import useLocale from 'hooks/useLocale';
+import useAddInternalCommentToIdea from 'api/internal_comments/useAddInternalCommentToIdea';
+import useAddInternalCommentToInitiative from 'api/internal_comments/useAddInternalCommentToInitiative';
 import useAuthUser from 'api/me/useAuthUser';
 
 const Container = styled.div`
@@ -108,16 +106,17 @@ const InternalParentCommentForm = ({
   postType,
   className,
 }: Props) => {
-  const locale = useLocale();
   const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
   const smallerThanTablet = useBreakpoint('tablet');
-  const { mutate: addCommentToIdea, isLoading: addCommentToIdeaIsLoading } =
-    useAddCommentToIdea();
   const {
-    mutate: addCommentToInitiative,
+    mutate: addInternalCommentToIdea,
+    isLoading: addCommentToIdeaIsLoading,
+  } = useAddInternalCommentToIdea();
+  const {
+    mutate: addInternalCommentToInitiative,
     isLoading: addCommentToInitiativeIsLoading,
-  } = useAddCommentToInitiative();
+  } = useAddInternalCommentToInitiative();
   const textareaElement = useRef<HTMLTextAreaElement | null>(null);
   const [inputValue, setInputValue] = useState('');
   const [focused, setFocused] = useState(false);
@@ -129,7 +128,7 @@ const InternalParentCommentForm = ({
   const processing =
     addCommentToIdeaIsLoading || addCommentToInitiativeIsLoading;
 
-  if (isNilOrError(locale) || !authUser) {
+  if (!authUser) {
     return null;
   }
 
@@ -164,9 +163,10 @@ const InternalParentCommentForm = ({
     setFocused(false);
 
     if (isString(inputValue) && trim(inputValue) !== '') {
-      const commentBodyMultiloc = {
-        [locale]: inputValue.replace(/@\[(.*?)\]\((.*?)\)/gi, '@$2'),
-      };
+      const commentBodyText = inputValue.replace(
+        /@\[(.*?)\]\((.*?)\)/gi,
+        '@$2'
+      );
 
       trackEventByName(tracks.clickParentCommentPublish, {
         extra: {
@@ -176,12 +176,12 @@ const InternalParentCommentForm = ({
         },
       });
 
-      if (postType === 'idea' && projectId) {
-        addCommentToIdea(
+      if (postType === 'idea' && projectId && ideaId) {
+        addInternalCommentToIdea(
           {
             ideaId,
             author_id: authUser.data.id,
-            body_multiloc: commentBodyMultiloc,
+            body: commentBodyText,
           },
           {
             onSuccess: (comment) => {
@@ -203,12 +203,12 @@ const InternalParentCommentForm = ({
         );
       }
 
-      if (postType === 'initiative') {
-        addCommentToInitiative(
+      if (postType === 'initiative' && initiativeId) {
+        addInternalCommentToInitiative(
           {
             initiativeId,
             author_id: authUser.data.id,
-            body_multiloc: commentBodyMultiloc,
+            body: commentBodyText,
           },
           {
             onSuccess: (comment) => {
