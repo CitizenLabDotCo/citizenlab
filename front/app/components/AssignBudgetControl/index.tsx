@@ -247,12 +247,11 @@ const AssignBudgetControl = memo(
         triggerAuthenticationFlow({ context, successAction });
       }
     };
-    console.log({ basket });
+
     const basketIdeaIds = !isNilOrError(basket)
       ? basket.data.relationships.ideas.data.map((idea) => idea.id)
       : [];
     const isInBasket = basketIdeaIds.includes(ideaId);
-    console.log(isInBasket);
 
     const isPermitted =
       actionDescriptor.enabled ||
