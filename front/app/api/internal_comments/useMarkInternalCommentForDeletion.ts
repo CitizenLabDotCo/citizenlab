@@ -5,6 +5,7 @@ import internalCommentKeys from './keys';
 import { IInternalComment } from './types';
 import userCommentsCount from 'api/user_comments_count/keys';
 import ideasKeys from 'api/ideas/keys';
+import initiativesKeys from 'api/initiatives/keys';
 
 interface MarkInternalCommentForDeletion {
   commentId: string;
@@ -54,6 +55,11 @@ const useMarkInternalCommentForDeletion = ({
             type: 'initiative',
             initiativeId,
           }),
+        });
+
+        // We invalidate the idea because the number of internal comments is on the initiative
+        queryClient.invalidateQueries({
+          queryKey: initiativesKeys.item({ id: initiativeId }),
         });
       }
 
