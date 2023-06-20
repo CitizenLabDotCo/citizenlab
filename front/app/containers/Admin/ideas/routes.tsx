@@ -21,16 +21,14 @@ export default () => ({
           <AdminIdeasAll />
         </PageLoading>
       ),
-      children: [
-        {
-          path: ':ideaId',
-          element: (
-            <PageLoading>
-              <PostPreviewIndex />
-            </PageLoading>
-          ),
-        },
-      ],
+    },
+    {
+      path: ':ideaId',
+      element: (
+        <PageLoading>
+          <PostPreviewIndex />
+        </PageLoading>
+      ),
     },
     ...moduleConfiguration.routes['admin.ideas'],
   ],
