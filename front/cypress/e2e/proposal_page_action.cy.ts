@@ -56,7 +56,7 @@ describe('Initiative show page actions', () => {
       cy.apiRemoveInitiative(initiativeId);
     });
 
-    it.only('saves a new official feedback, shows it and deletes it', () => {
+    it('saves a new official feedback and shows it', () => {
       const officialFeedbackBody = randomString(30);
       const officialFeedbackAuthor = randomString();
 
