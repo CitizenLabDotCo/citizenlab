@@ -1,14 +1,14 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 
-import useAddCommentToIdea from './useAddCommentToIdea';
+import useAddInternalCommentToIdea from './useAddInternalCommentToIdea';
 
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { commentsData } from './__mocks__/useComments';
+import { commentsData } from './__mocks__/useInternalComments';
 
-const apiPath = '*/ideas/:ideaId/comments';
+const apiPath = '*/ideas/:ideaId/internal_comments';
 
 const server = setupServer(
   rest.post(apiPath, (_req, res, ctx) => {
@@ -16,20 +16,23 @@ const server = setupServer(
   })
 );
 
-describe('useAddCommentToIdea', () => {
+describe('useAddInternalCommentToIdea', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useAddCommentToIdea(), {
-      wrapper: createQueryClientWrapper(),
-    });
+    const { result, waitFor } = renderHook(
+      () => useAddInternalCommentToIdea(),
+      {
+        wrapper: createQueryClientWrapper(),
+      }
+    );
 
     act(() => {
       result.current.mutate({
         ideaId: 'ideaId',
         author_id: 'author_id',
-        body_multiloc: { en: 'body_multiloc' },
+        body: 'body_text',
       });
     });
 
@@ -44,15 +47,18 @@ describe('useAddCommentToIdea', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useAddCommentToIdea(), {
-      wrapper: createQueryClientWrapper(),
-    });
+    const { result, waitFor } = renderHook(
+      () => useAddInternalCommentToIdea(),
+      {
+        wrapper: createQueryClientWrapper(),
+      }
+    );
 
     act(() => {
       result.current.mutate({
         ideaId: 'ideaId',
         author_id: 'author_id',
-        body_multiloc: { en: 'body_multiloc' },
+        body: 'body_text',
       });
     });
 

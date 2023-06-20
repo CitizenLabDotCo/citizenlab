@@ -17,8 +17,8 @@ import { deleteCommentModalClosed } from '../events';
 import styled from 'styled-components';
 import { isRtl } from 'utils/styleUtils';
 
-import useMarkCommentForDeletion from 'api/comments/useMarkForDeletion';
-import { DeleteReason, ICommentData } from 'api/comments/types';
+import useMarkInternalCommentForDeletion from 'api/internal_comments/useMarkInternalCommentForDeletion';
+import { IInternalCommentData } from 'api/internal_comments/types';
 import useAuthUser from 'api/me/useAuthUser';
 
 const Container = styled.div`
@@ -56,7 +56,7 @@ const AcceptButton = styled(Button)`
 // Typing
 export interface Props {
   projectId?: string | null;
-  comment: ICommentData;
+  comment: IInternalCommentData;
   onCommentEdit: () => void;
   className?: string;
   ideaId: string | undefined;
@@ -64,7 +64,6 @@ export interface Props {
 }
 
 const InternalCommentsMoreActions = ({
-  projectId,
   onCommentEdit,
   comment,
   className,
@@ -72,10 +71,8 @@ const InternalCommentsMoreActions = ({
   initiativeId,
 }: Props) => {
   const { data: authUser } = useAuthUser();
-  const { mutate: markForDeletion, isLoading } = useMarkCommentForDeletion({
-    ideaId,
-    initiativeId,
-  });
+  const { mutate: markForDeletion, isLoading } =
+    useMarkInternalCommentForDeletion({ ideaId, initiativeId });
   const [modalVisible_delete, setModalVisible_delete] = useState(false);
 
   const authUserId = authUser?.data.id;
@@ -117,17 +114,11 @@ const InternalCommentsMoreActions = ({
     deleteComment();
   };
 
-  const deleteComment = async (reason?: DeleteReason) => {
+  const deleteComment = async () => {
     const commentId = comment.id;
-    const authorId = comment.relationships.author.data?.id;
 
     markForDeletion(
-      {
-        commentId,
-        authorId,
-        projectId,
-        reason,
-      },
+      { commentId },
       {
         onSuccess: () => {
           deleteCommentModalClosed();

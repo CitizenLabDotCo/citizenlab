@@ -1,27 +1,28 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 
-import useUpdateComment from './useUpdateComment';
-import { commentsData } from './__mocks__/useComments';
+import useAddInternalCommentToInitiative from './useAddInternalCommentToInitiative';
 
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { commentsData } from './__mocks__/useInternalComments';
 
-const apiPath = '*comments/:id';
+const apiPath = '*/initiatives/:initiativeId/internal_comments';
+
 const server = setupServer(
-  rest.patch(apiPath, (_req, res, ctx) => {
+  rest.post(apiPath, (_req, res, ctx) => {
     return res(ctx.status(200), ctx.json({ data: commentsData[0] }));
   })
 );
 
-describe('useUpdateComment', () => {
+describe('useAddInternalCommentToInitiative', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
     const { result, waitFor } = renderHook(
-      () => useUpdateComment({ ideaId: 'ideaId' }),
+      () => useAddInternalCommentToInitiative(),
       {
         wrapper: createQueryClientWrapper(),
       }
@@ -29,8 +30,9 @@ describe('useUpdateComment', () => {
 
     act(() => {
       result.current.mutate({
-        commentId: 'commentId',
-        body_multiloc: { en: 'name' },
+        initiativeId: 'initiativeId',
+        author_id: 'author_id',
+        body: 'body_text',
       });
     });
 
@@ -40,23 +42,26 @@ describe('useUpdateComment', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.patch(apiPath, (_req, res, ctx) => {
+      rest.post(apiPath, (_req, res, ctx) => {
         return res(ctx.status(500));
       })
     );
 
     const { result, waitFor } = renderHook(
-      () => useUpdateComment({ ideaId: 'ideaId' }),
+      () => useAddInternalCommentToInitiative(),
       {
         wrapper: createQueryClientWrapper(),
       }
     );
+
     act(() => {
       result.current.mutate({
-        commentId: 'commentId',
-        body_multiloc: { en: 'name' },
+        initiativeId: 'initiativeId',
+        author_id: 'author_id',
+        body: 'body_text',
       });
     });
+
     await waitFor(() => expect(result.current.isError).toBe(true));
     expect(result.current.error).toBeDefined();
   });

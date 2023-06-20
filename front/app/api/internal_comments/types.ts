@@ -1,40 +1,35 @@
-import { IRelationship, Multiloc, ILinks } from 'typings';
+import { IRelationship, ILinks } from 'typings';
 import { Keys } from 'utils/cl-react-query/types';
 import commentsKeys from './keys';
 
-export type CommentsKeys = Keys<typeof commentsKeys>;
+export type InternalCommentsKeys = Keys<typeof commentsKeys>;
 
-export type ICommentParameters = {
-  ideaId?: string;
-  initiativeId?: string;
-  userId?: string;
-  commentId?: string;
-};
+export type IInternalCommentParameters =
+  | { type: 'idea'; ideaId: string }
+  | { type: 'initiative'; initiativeId: string }
+  | { type: 'author'; authorId: string }
+  | { type: 'comment'; commentId: string };
 
-interface CommentAttributes {
-  upvotes_count: number;
-  downvotes_count: number;
+interface InternalCommentAttributes {
   created_at: string;
   updated_at: string;
   children_count: number;
 }
 
-export interface IPresentComment extends CommentAttributes {
-  body_multiloc: Multiloc;
+export interface IPresentInternalComment extends InternalCommentAttributes {
+  body: string;
   publication_status: 'published';
-  anonymous?: boolean;
-  author_hash?: string;
 }
 
-interface IDeletedComment extends CommentAttributes {
-  body_multiloc: null;
+interface IDeletedInternalComment extends InternalCommentAttributes {
+  body: string;
   publication_status: 'deleted';
 }
 
-export interface ICommentData {
+export interface IInternalCommentData {
   id: string;
-  type: 'comment';
-  attributes: IPresentComment | IDeletedComment;
+  type: 'internal_comment';
+  attributes: IPresentInternalComment | IDeletedInternalComment;
   relationships: {
     post: {
       data: IRelationship;
@@ -45,54 +40,43 @@ export interface ICommentData {
     parent: {
       data: IRelationship | null;
     };
-    user_vote?: {
-      data: IRelationship | null;
-    };
   };
 }
 
-export interface IComment {
-  data: ICommentData;
+export interface IInternalComment {
+  data: IInternalCommentData;
 }
 
-export interface IComments {
-  data: ICommentData[];
+export interface IInternalComments {
+  data: IInternalCommentData[];
   links: ILinks;
 }
 
-export interface INewComment {
-  ideaId?: string;
-  initiativeId?: string;
-  author_id: string;
-  parent_id?: string;
-  body_multiloc: Multiloc;
-  anonymous?: boolean;
+export interface IIdeaNewInternalComment extends INewInternalComment {
+  ideaId: string;
 }
 
-export interface IUpdatedComment {
+export interface IInitiativeNewInternalComment extends INewInternalComment {
+  initiativeId: string;
+}
+
+export interface INewInternalComment {
+  author_id: string;
+  parent_id?: string;
+  body: string;
+}
+
+export interface IUpdatedInternalComment {
   commentId: string;
   author_id?: string;
   parent_id?: string;
-  body_multiloc: Multiloc;
+  body: string;
 }
 
-export const DeleteReasonCode = {
-  irrelevant: 'irrelevant',
-  inappropriate: 'inappropriate',
-  other: 'other',
-};
+export type InternalCommentSort = '-new' | 'new';
 
-export interface DeleteReason {
-  reason_code: keyof typeof DeleteReasonCode;
-  // Only here if reason_code is 'other'
-  other_reason?: string;
-}
-
-// back-end also offers 'upvotes_count' if needed
-export type CommentsSort = '-new' | 'new' | '-upvotes_count';
-
-export type ICommentQueryParameters = {
-  sort?: CommentsSort;
+export type IInternalCommentQueryParameters = {
+  sort?: InternalCommentSort;
   pageNumber?: number;
   pageSize?: number;
 };
