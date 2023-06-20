@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // hooks
@@ -8,20 +8,11 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 // components
 import Viewer from './Viewer';
 
-type ContentViewerProps = {
-  onMount: () => void;
-} & WithRouterProps;
-
-const ContentViewer = ({ onMount, params: { slug } }: ContentViewerProps) => {
+const ContentViewer = ({ params: { slug } }: WithRouterProps) => {
   const { data: project } = useProjectBySlug(slug);
   const featureEnabled = useFeatureFlag({
     name: 'project_description_builder',
   });
-
-  useEffect(() => {
-    if (!featureEnabled) return;
-    onMount();
-  }, [onMount, featureEnabled]);
 
   if (!featureEnabled || !project) {
     return null;
