@@ -4,10 +4,7 @@ import { rename, join, Series, binBirthyear } from 'utils/dataUtils';
 
 // typings
 import { TCustomFieldCode } from 'api/user_custom_fields/types';
-import {
-  IUsersByDomicile,
-  IUsersByBirthyear,
-} from 'services/userCustomFieldStats';
+import { IUsersByDomicile } from 'services/userCustomFieldStats';
 
 // i18n
 import messages from 'containers/Admin/dashboard/messages';
@@ -15,6 +12,7 @@ import { InjectedLocalized } from 'utils/localize';
 import { MessageDescriptor } from 'react-intl';
 import { FormatMessage } from 'typings';
 import { IUsersByRegistrationField } from 'api/users_by_gender/types';
+import { IUsersByBirthyear } from 'api/users_by_birthyear/types';
 
 export type ISupportedDataType =
   | IUsersByRegistrationField

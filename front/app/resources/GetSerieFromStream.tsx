@@ -19,11 +19,11 @@ import {
   IReactionsByProject,
 } from 'services/stats';
 import {
-  IUsersByBirthyear,
   IUsersByDomicile,
   IUsersByRegistrationField,
 } from 'services/userCustomFieldStats';
 import { IGraphFormat, IParticipationByTopic } from 'typings';
+import { IUsersByBirthyear } from 'api/users_by_birthyear/types';
 
 interface State {
   unconvertedSerie: ISupportedDataType | NilOrError;

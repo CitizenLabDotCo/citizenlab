@@ -34,10 +34,8 @@ import GetSerieFromStream from 'resources/GetSerieFromStream';
 import { IStreamParams, IStream } from 'utils/streams';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 import { IGraphFormat } from 'typings';
-import {
-  IUsersByBirthyear,
-  IUsersByRegistrationField,
-} from 'services/userCustomFieldStats';
+import { IUsersByRegistrationField } from 'services/userCustomFieldStats';
+import { IUsersByBirthyear } from 'api/users_by_birthyear/types';
 
 interface DataProps {
   serie: IGraphFormat;

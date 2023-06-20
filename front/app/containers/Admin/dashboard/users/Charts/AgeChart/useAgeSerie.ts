@@ -1,6 +1,3 @@
-// services
-import { IUsersByBirthyear } from 'services/userCustomFieldStats';
-
 // i18n
 import messages from 'containers/Admin/dashboard/messages';
 import { useIntl } from 'utils/cl-intl';
@@ -13,6 +10,7 @@ import { binBirthyear } from 'utils/dataUtils';
 import { QueryParameters } from './typings';
 import { FormatMessage } from 'typings';
 import useUsersByBirthyear from 'api/users_by_birthyear/useUsersByBirthyear';
+import { IUsersByBirthyear } from 'api/users_by_birthyear/types';
 
 export default function useAgeSerie({
   startAt,

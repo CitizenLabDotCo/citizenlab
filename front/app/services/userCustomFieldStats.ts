@@ -66,19 +66,6 @@ export interface IUsersByDomicile {
   };
 }
 
-export interface IUsersByBirthyear {
-  data: {
-    type: 'users_by_birthyear';
-    attributes: {
-      series: {
-        users: {
-          [key: string]: number;
-        };
-      };
-    };
-  };
-}
-
 export const usersByRegFieldXlsxEndpoint = (customFieldId: string) =>
   `${apiEndpoint}/users_by_custom_field_as_xlsx/${customFieldId}`;
 

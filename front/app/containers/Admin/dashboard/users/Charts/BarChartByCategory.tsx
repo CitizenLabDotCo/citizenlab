@@ -29,10 +29,10 @@ import { isNilOrError } from 'utils/helperUtils';
 import { IStreamParams, IStream } from 'utils/streams';
 import { IGraphFormat } from 'typings';
 import {
-  IUsersByBirthyear,
   IUsersByDomicile,
   IUsersByRegistrationField,
 } from 'services/userCustomFieldStats';
+import { IUsersByBirthyear } from 'api/users_by_birthyear/types';
 
 interface DataProps {
   serie: IGraphFormat;
