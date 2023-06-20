@@ -174,7 +174,6 @@ const InitiativePreview = ({
         <Body
           postId={initiative.data.id}
           postType="initiative"
-          locale={locale}
           body={initiativeBody}
         />
       </Description>

@@ -330,7 +330,6 @@ export const IdeasShow = ({
               <Body
                 postType="idea"
                 postId={ideaId}
-                locale={locale}
                 body={ideaBody}
                 translateButtonClicked={translateButtonIsClicked}
               />

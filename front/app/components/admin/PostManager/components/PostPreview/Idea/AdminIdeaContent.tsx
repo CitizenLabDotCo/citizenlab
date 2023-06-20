@@ -285,7 +285,6 @@ const AdminIdeaContent = ({
                 postId={ideaId}
                 postType="idea"
                 body={localize(idea.attributes.body_multiloc)}
-                locale={locale}
               />
 
               {!isNilOrError(project) && ideaGeoPosition && ideaAddress && (
