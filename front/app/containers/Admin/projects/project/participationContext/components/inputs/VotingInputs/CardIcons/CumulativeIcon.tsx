@@ -12,7 +12,7 @@ const CumulativeIcon = ({ selected }: { selected: boolean }) => {
   return (
     <Box display="flex">
       <Box bgColor={bgColor} borderRadius="4px" height="100%" px="5px">
-        <Box my="auto">
+        <Box my="auto" height="100%">
           <svg
             width="10"
             height="100%"
@@ -25,7 +25,6 @@ const CumulativeIcon = ({ selected }: { selected: boolean }) => {
           <svg
             style={{ marginLeft: '2px' }}
             width="10"
-            height="100%"
             viewBox="0 0 10 10"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
