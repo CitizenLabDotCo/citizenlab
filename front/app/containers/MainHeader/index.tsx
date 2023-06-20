@@ -245,14 +245,7 @@ const SignUpMenuItem = styled.button`
   `}
 `;
 
-interface Props {
-  setRef?: (arg: HTMLElement) => void | undefined;
-}
-
-const MainHeader = ({
-  setRef,
-  intl: { formatMessage },
-}: Props & WrappedComponentProps) => {
+const MainHeader = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser } = useAuthUser();
@@ -261,12 +254,6 @@ const MainHeader = ({
   const windowSize = useWindowSize();
 
   const [fullscreenModalOpened, setFullscreenModalOpened] = useState(false);
-
-  useEffect(() => {
-    if (setRef && containerRef.current) {
-      setRef(containerRef.current);
-    }
-  }, [setRef]);
 
   useEffect(() => {
     const subscriptions = [

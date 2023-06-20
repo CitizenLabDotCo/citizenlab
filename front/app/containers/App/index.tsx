@@ -96,22 +96,12 @@ const App = ({ children }: Props) => {
   const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser, isLoading } = useAuthUser();
 
-  // const [modalId, setModalId] = useState<string | null>(null);
-  // const [modalSlug, setModalSlug] = useState<string | null>(null);
-  // const [modalType, setModalType] = useState<'idea' | 'initiative' | null>(
-  //   null
-  // );
   const [
     userDeletedSuccessfullyModalOpened,
     setUserDeletedSuccessfullyModalOpened,
   ] = useState(false);
   const [userSuccessfullyDeleted, setUserSuccessfullyDeleted] = useState(false);
 
-  // TODO remove
-  const [_navbarRef, setNavbarRef] = useState<HTMLElement | null>(null);
-  const [_mobileNavbarRef, setMobileNavbarRef] = useState<HTMLElement | null>(
-    null
-  );
   const [locale, setLocale] = useState<Locale | null>(null);
   const [signUpInModalOpened, setSignUpInModalOpened] = useState(false);
 
@@ -289,22 +279,6 @@ const App = ({ children }: Props) => {
     trackPage(location.pathname);
   }, [location.pathname]);
 
-  // const openPostPageModal = (
-  //   id: string,
-  //   slug: string,
-  //   type: 'idea' | 'initiative'
-  // ) => {
-  //   setModalId(id);
-  //   setModalSlug(slug);
-  //   setModalType(type);
-  // };
-
-  // const closePostPageModal = () => {
-  //   setModalId(null);
-  //   setModalSlug(null);
-  //   setModalType(null);
-  // };
-
   const closeUserDeletedModal = () => {
     setUserDeletedSuccessfullyModalOpened(false);
   };
@@ -402,7 +376,7 @@ const App = ({ children }: Props) => {
               </ErrorBoundary>
               {showFrontOfficeNavbar && (
                 <ErrorBoundary>
-                  <MainHeader setRef={setNavbarRef} />
+                  <MainHeader />
                 </ErrorBoundary>
               )}
               <Box
@@ -439,7 +413,7 @@ const App = ({ children }: Props) => {
                   <PlatformFooter />
                 </Suspense>
               )}
-              {showMobileNav && <MobileNavbar setRef={setMobileNavbarRef} />}
+              {showMobileNav && <MobileNavbar />}
               <ErrorBoundary>
                 <div id="mobile-nav-portal" />
               </ErrorBoundary>
