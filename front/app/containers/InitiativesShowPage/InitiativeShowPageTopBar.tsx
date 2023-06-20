@@ -115,7 +115,7 @@ interface Props {
 
 const InitiativeShowPageTopBar = memo<Props>(({ initiativeId, className }) => {
   const [goBack, setGoBack] = useState(false);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
     const goBackParameter = searchParams.get('go_back');
@@ -124,7 +124,7 @@ const InitiativeShowPageTopBar = memo<Props>(({ initiativeId, className }) => {
       setGoBack(true);
       removeSearchParams(['go_back']);
     }
-  }, [searchParams, setSearchParams]);
+  }, [searchParams]);
 
   const onGoBack = useCallback(
     (event: MouseEvent<HTMLElement>) => {
