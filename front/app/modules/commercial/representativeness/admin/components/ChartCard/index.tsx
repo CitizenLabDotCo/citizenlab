@@ -10,7 +10,6 @@ import {
   usersByRegFieldXlsxEndpoint,
   usersByGenderXlsxEndpoint,
   usersByDomicileXlsxEndpoint,
-  usersByAgeXlsxEndpoint,
 } from 'services/userCustomFieldStats';
 
 // components
@@ -41,6 +40,7 @@ import {
   RepresentativenessRowMultiloc,
 } from '../../hooks/createRefDataSubscription';
 import { View } from 'components/admin/GraphCard/ViewToggle';
+import { usersByAgeXlsxEndpoint } from 'api/users_by_age/util';
 
 interface Props {
   userCustomField: IUserCustomFieldData;

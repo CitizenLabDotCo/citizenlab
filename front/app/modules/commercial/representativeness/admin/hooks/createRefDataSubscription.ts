@@ -1,7 +1,6 @@
 // services
 import {
   usersByGenderStream,
-  usersByAgeStream,
   usersByRegFieldStream,
   IUsersByAge,
   IUsersByRegistrationField,
@@ -58,38 +57,6 @@ export const createGenderFieldSubscription = (
   }).observable;
 
   const subscription = observable.subscribe(handleRegFieldResponse(setters));
-
-  return subscription;
-};
-
-// Birthyear field
-export const createAgeFieldSubscription = (
-  projectId: string | undefined,
-  locale: Locale,
-  { setReferenceData, setIncludedUsers, setReferenceDataUploaded }: Setters
-) => {
-  const observable = usersByAgeStream({
-    queryParameters: { project: projectId },
-  }).observable;
-
-  const subscription = observable.subscribe(
-    (usersByAge: IUsersByAge | NilOrError) => {
-      if (isNilOrError(usersByAge)) {
-        setReferenceData(usersByAge);
-        setIncludedUsers(usersByAge);
-        return;
-      }
-
-      if (!usersByAge.data.attributes.series.reference_population) {
-        setReferenceDataUploaded(false);
-        return;
-      }
-
-      setReferenceData(ageFieldToReferenceData(usersByAge, locale));
-      setIncludedUsers(ageFieldToIncludedUsers(usersByAge));
-      setReferenceDataUploaded(true);
-    }
-  );
 
   return subscription;
 };

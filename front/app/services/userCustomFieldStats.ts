@@ -141,14 +141,3 @@ export function usersByDomicileStream(
     ...streamParams,
   });
 }
-
-export function usersByAgeStream(
-  streamParams: ICustomFieldParams | null = null
-) {
-  return streams.get<IUsersByAge>({
-    apiEndpoint: `${apiEndpoint}/users_by_age`,
-    ...streamParams,
-  });
-}
-
-export const usersByAgeXlsxEndpoint = `${apiEndpoint}/users_by_age_as_xlsx`;
