@@ -58,7 +58,8 @@ class Permission < ApplicationRecord
 
   # Remove any actions that are not enabled on the project
   def self.enabled_actions(permission_scope)
-    return available_actions(permission_scope) unless permission_scope&.hide_disabled_permissions?
+    participation_method = Factory.instance.participation_method_for(permission_scope)
+    return available_actions(permission_scope) if participation_method&.return_disabled_actions?
 
     available_actions(permission_scope).filter_map do |action|
       next if
