@@ -28,7 +28,6 @@ import { ProcessType } from 'api/projects/types';
 
 // resources
 import GetIdeaById, { GetIdeaByIdChildProps } from 'resources/GetIdeaById';
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPermission, {
   GetPermissionChildProps,
@@ -164,7 +163,6 @@ interface InputProps {
 
 interface DataProps {
   idea: GetIdeaByIdChildProps;
-  locale: GetLocaleChildProps;
   project: GetProjectChildProps;
   postOfficialFeedbackPermission: GetPermissionChildProps;
 }
@@ -174,7 +172,6 @@ interface Props extends InputProps, DataProps {}
 const AdminIdeaContent = ({
   idea,
   project,
-  locale,
   handleClickEdit,
   closePreview,
   ideaId,
@@ -199,7 +196,7 @@ const AdminIdeaContent = ({
     }
   };
 
-  if (!isNilOrError(idea) && !isNilOrError(locale) && !isNilOrError(project)) {
+  if (!isNilOrError(idea) && !isNilOrError(project)) {
     const currentPhase = getCurrentPhase(phases?.data);
     const ideaId = idea.id;
     const ideaTitle = localize(idea.attributes.title_multiloc);
@@ -350,7 +347,6 @@ const AdminIdeaContent = ({
 };
 
 const Data = adopt<DataProps, InputProps>({
-  locale: <GetLocale />,
   idea: ({ ideaId, render }) => (
     <GetIdeaById ideaId={ideaId}>{render}</GetIdeaById>
   ),

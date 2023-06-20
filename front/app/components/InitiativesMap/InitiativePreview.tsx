@@ -23,7 +23,6 @@ import { colors, media, fontSizes } from 'utils/styleUtils';
 
 // hooks
 import useInitiativeById from 'api/initiatives/useInitiativeById';
-import useLocale from 'hooks/useLocale';
 
 const Container = styled.div`
   flex: 1;
@@ -138,9 +137,8 @@ const InitiativePreview = ({
   initiativeId,
 }: Props & InjectedLocalized) => {
   const { data: initiative } = useInitiativeById(initiativeId);
-  const locale = useLocale();
 
-  if (!initiative || isNilOrError(locale)) {
+  if (!initiative) {
     return null;
   }
 
