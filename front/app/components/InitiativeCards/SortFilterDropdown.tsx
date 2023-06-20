@@ -27,7 +27,7 @@ class SortFilterDropdown extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      selectedValue: ['new'],
+      selectedValue: [props.defaultSortingMethod ?? 'new'],
     };
   }
 
