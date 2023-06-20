@@ -32,10 +32,10 @@ import { Multiloc } from 'typings';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import validateOneOptionForMultiSelect from 'utils/yup/validateOneOptionForMultiSelect';
-import { addCustomFieldForUsers } from 'services/userCustomFields';
 import { getLabelForInputType } from '../../../containers/Granular/utils';
-import { addUserCustomFieldOption } from 'services/userCustomFieldOptions';
 import { IOptionsType } from 'services/formCustomFields';
+import useAddUserCustomFieldOption from 'api/user_custom_fields_options/useAddUserCustomFieldOption';
+import useAddUserCustomField from 'api/user_custom_fields/useAddUserCustomField';
 
 type AddFieldScreenProps = {
   setShowAddFieldPage: (show: boolean) => void;
@@ -53,6 +53,9 @@ export const AddFieldScreen = ({
   setShowAddFieldPage,
   defaultValues,
 }: AddFieldScreenProps) => {
+  const { mutateAsync: addUserCustomFieldOption } =
+    useAddUserCustomFieldOption();
+  const { mutateAsync: addCustomFieldForUsers } = useAddUserCustomField();
   const { formatMessage } = useIntl();
   const locale = useLocale();
   const locales = useAppConfigurationLocales();
@@ -96,7 +99,8 @@ export const AddFieldScreen = ({
             formValues?.input_type === 'select'
           ) {
             formValues?.options?.forEach(async (option) => {
-              await addUserCustomFieldOption(newField.data.id, {
+              await addUserCustomFieldOption({
+                customFieldId: newField.data.id,
                 title_multiloc: option.title_multiloc,
               });
             });

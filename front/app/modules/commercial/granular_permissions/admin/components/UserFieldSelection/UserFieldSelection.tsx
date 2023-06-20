@@ -30,13 +30,13 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // services
 import { IPermissionData } from 'services/actionPermissions';
-import { IUserCustomFieldData } from 'services/userCustomFields';
+import { IUserCustomFieldData } from 'api/user_custom_fields/types';
 import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
 import { HandlePermissionChangeProps } from '../../containers/Granular/utils';
 import { isAdmin } from 'services/permissions/roles';
 
 // hooks
-import useUserCustomFields from 'hooks/useUserCustomFields';
+import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 import useLocale from 'hooks/useLocale';
 import useAuthUser from 'api/me/useAuthUser';
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -66,7 +66,7 @@ const UserFieldSelection = ({
   const permissionsCustomFieldsEnabled = useFeatureFlag({
     name: 'permissions_custom_fields',
   });
-  const globalRegistrationFields = useUserCustomFields();
+  const { data: globalRegistrationFields } = useUserCustomFields();
   const initialFields = usePermissionsCustomFields({
     projectId,
     phaseId,
@@ -103,7 +103,7 @@ const UserFieldSelection = ({
     field: IPermissionsCustomFieldData,
     locale: Locale
   ) => {
-    return globalRegistrationFields?.find(
+    return globalRegistrationFields?.data.find(
       (globalField) =>
         globalField.id === field?.relationships?.custom_field?.data.id
     )?.attributes.title_multiloc[locale];
@@ -298,7 +298,7 @@ const UserFieldSelection = ({
                 selectedFields={initialFieldArray}
                 handleAddField={handleAddField}
                 isLoading={isLoading}
-                registrationFieldList={globalRegistrationFields}
+                registrationFieldList={globalRegistrationFields?.data}
                 locale={locale}
               />
             </>
