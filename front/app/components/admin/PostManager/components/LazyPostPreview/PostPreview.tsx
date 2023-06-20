@@ -1,4 +1,4 @@
-import React, { Suspense, PureComponent } from 'react';
+import React, { Suspense, useState } from 'react';
 
 // components
 import SideModal from 'components/UI/SideModal';
@@ -51,9 +51,7 @@ export const Content = styled.div`
   }
 `;
 
-interface DataProps {}
-
-interface InputProps {
+interface Props {
   type: ManagerType;
   onClose: () => void;
   postId: string | null;
@@ -61,42 +59,23 @@ interface InputProps {
   mode: 'edit' | 'view';
 }
 
-interface Props extends InputProps, DataProps {}
+const PostPreview = ({
+  type,
+  onClose,
+  postId,
+  onSwitchPreviewMode,
+  mode,
+}: Props) => {
+  const [opened, setOpened] = useState(true);
 
-interface State {
-  postId: string | null;
-  opened: boolean;
-}
-
-export default class PostPreview extends PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      postId: props.postId,
-      opened: false,
-    };
-  }
-
-  componentDidUpdate(prevProps: Props) {
-    if (prevProps.postId !== this.props.postId && this.props.postId) {
-      this.setState({ opened: true });
-      setTimeout(() => this.setState({ postId: this.props.postId }), 200);
-    }
-  }
-
-  onClose = () => {
-    this.setState({ opened: false });
-    setTimeout(() => {
-      this.setState({ postId: null });
-      this.props.onClose();
-    }, 450);
+  const handleOnClose = () => {
+    setOpened(false);
+    onClose();
   };
 
-  previewComponent = () => {
-    const { type, onSwitchPreviewMode, mode } = this.props;
+  const previewComponent = () => {
     const postType =
       type === 'AllIdeas' || type === 'ProjectIdeas' ? 'idea' : 'initiative';
-    const { postId } = this.state;
 
     if (postId) {
       return {
@@ -104,14 +83,14 @@ export default class PostPreview extends PureComponent<Props, State> {
           idea: (
             <LazyIdeaContent
               ideaId={postId}
-              closePreview={this.onClose}
+              closePreview={handleOnClose}
               handleClickEdit={onSwitchPreviewMode}
             />
           ),
           initiative: (
             <LazyInitiativeContent
               initiativeId={postId}
-              closePreview={this.onClose}
+              closePreview={handleOnClose}
               handleClickEdit={onSwitchPreviewMode}
             />
           ),
@@ -133,15 +112,11 @@ export default class PostPreview extends PureComponent<Props, State> {
     return null;
   };
 
-  render() {
-    const { opened } = this.state;
+  return (
+    <SideModal opened={opened} close={handleOnClose}>
+      <Suspense fallback={<FullPageSpinner />}>{previewComponent()}</Suspense>
+    </SideModal>
+  );
+};
 
-    return (
-      <SideModal opened={opened} close={this.onClose}>
-        <Suspense fallback={<FullPageSpinner />}>
-          {this.previewComponent()}
-        </Suspense>
-      </SideModal>
-    );
-  }
-}
+export default PostPreview;
