@@ -117,7 +117,7 @@ resource 'Mentions' do
         end
 
         example "Includes only admins and moderators of post's project when both roles are specified" do
-          do_request base_query_params.merge({ roles: %w[admin moderator] })
+          do_request base_query_params.merge({ roles: %w[moderator admin] })
           assert_status 200
           json_response = json_parse(response_body)
           expect(json_response[:data].pluck(:id)).to match_array [moderator_of_project.id, admin.id]

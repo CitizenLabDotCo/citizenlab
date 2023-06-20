@@ -26,7 +26,6 @@ class WebApi::V1::MentionsController < ApplicationController
 
   private
 
-  # @param [Array] roles
   def validate_roles_param
     return unless params[:roles]
 
@@ -35,7 +34,7 @@ class WebApi::V1::MentionsController < ApplicationController
   end
 
   # @param [String] post_type
-  # @param [Integer] post_id
+  # @param [String] post_id
   # @return [Idea, Initiative, nil]
   def find_post(post_type, post_id)
     post_class = post_type_to_class(post_type) if post_type
@@ -56,8 +55,8 @@ class WebApi::V1::MentionsController < ApplicationController
   # @param [Idea, Initiative, nil] post
   # @return [ActiveRecord::Relation]
   def find_users_by_query(query, post)
-    case params[:roles]
-    when %w[admin moderator]
+    case params[:roles].uniq
+    when %w[admin moderator], %w[moderator admin]
       query_scope(query).admin.or(query_scope(query).project_moderator(post&.project_id))
     when ['admin']
       query_scope(query).admin
