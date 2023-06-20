@@ -1218,7 +1218,7 @@
   "app.containers.AdminPage.ProjectEdit.eventsTab": "Événements",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabel": "Pièces jointes (max. 50Mo)",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabelTooltip": "Les fichiers ajoutés seront visibles sur la page \"information\" du projet.",
-  "app.containers.AdminPage.ProjectEdit.findVolunteers": "Trouver des bénévoles",
+  "app.containers.AdminPage.ProjectEdit.findVolunteers": "Inviter à participer",
   "app.containers.AdminPage.ProjectEdit.findVolunteersDescriptionText": "Demandez aux participants de se porter volontaires pour des activités et des causes.",
   "app.containers.AdminPage.ProjectEdit.folderAdminProjectFolderSelectTooltip": "Vous devrez ajouter le projet à un dossier sur lequel vous avez des droits d'administration.",
   "app.containers.AdminPage.ProjectEdit.folderSelectError": "Sélectionnez un dossier pour y ajouter ce projet.",
