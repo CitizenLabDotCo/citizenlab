@@ -1,4 +1,4 @@
-import React, { Suspense, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 
 // components
 import SideModal from 'components/UI/SideModal';
@@ -66,7 +66,13 @@ const PostPreview = ({
   onSwitchPreviewMode,
   mode,
 }: Props) => {
-  const [opened, setOpened] = useState(true);
+  const [opened, setOpened] = useState(false);
+
+  useEffect(() => {
+    if (typeof postId === 'string') {
+      setOpened(true);
+    }
+  }, [postId]);
 
   const handleOnClose = () => {
     setOpened(false);
