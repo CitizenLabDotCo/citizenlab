@@ -25,7 +25,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // events
@@ -99,6 +99,7 @@ interface Props {
   parentId: string;
   className?: string;
   allowAnonymousParticipation?: boolean;
+  emphasizePostingPublicly?: boolean;
 }
 
 const ChildCommentForm = ({
@@ -109,6 +110,7 @@ const ChildCommentForm = ({
   projectId,
   className,
   allowAnonymousParticipation,
+  emphasizePostingPublicly = false,
 }: Props) => {
   const { formatMessage } = useIntl();
   const locale = useLocale();
@@ -361,6 +363,9 @@ const ChildCommentForm = ({
 
   if (focused) {
     const isModerator = canModerateProject(projectId, authUser);
+    const postButtonText: MessageDescriptor = emphasizePostingPublicly
+      ? messages.postPublicComment
+      : messages.publishComment;
 
     return (
       <Container className={`${className || ''} e2e-childcomment-form`}>
@@ -440,8 +445,9 @@ const ChildCommentForm = ({
                   onClick={onSubmit}
                   disabled={!canSubmit}
                   padding={smallerThanTablet ? '6px 12px' : undefined}
+                  icon={emphasizePostingPublicly ? 'users' : undefined}
                 >
-                  <FormattedMessage {...messages.publishComment} />
+                  <FormattedMessage {...postButtonText} />
                 </Button>
               </ButtonWrapper>
             </label>

@@ -322,8 +322,9 @@ const InternalChildCommentForm = ({
                   onClick={onSubmit}
                   disabled={!canSubmit}
                   padding={smallerThanTablet ? '6px 12px' : undefined}
+                  icon="shield-check"
                 >
-                  <FormattedMessage {...commentsMessages.publishComment} />
+                  <FormattedMessage {...commentsMessages.postInternalComment} />
                 </Button>
               </ButtonWrapper>
             </label>

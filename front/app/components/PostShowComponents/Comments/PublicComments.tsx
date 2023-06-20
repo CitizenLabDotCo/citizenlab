@@ -169,6 +169,7 @@ const PublicComments = ({
         allComments={commentsList}
         loading={isLoading}
         allowAnonymousParticipation={allowAnonymousParticipation}
+        emphasizePostingPublicly={emphasizePostingPublicly}
       />
 
       {hasNextPage && !isFetchingNextPage && (
