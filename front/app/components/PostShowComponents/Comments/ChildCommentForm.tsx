@@ -2,7 +2,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, isPage } from 'utils/helperUtils';
+import { useLocation } from 'react-router-dom';
 
 // services
 import { canModerateProject } from 'services/permissions/rules/projectPermissions';
@@ -25,7 +26,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // events
@@ -115,6 +116,8 @@ const ChildCommentForm = ({
   const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser } = useAuthUser();
   const smallerThanTablet = useBreakpoint('tablet');
+  const { pathname } = useLocation();
+  const isAdminPage = isPage('admin', pathname);
 
   const {
     mutate: addCommentToIdeaComment,
@@ -361,6 +364,9 @@ const ChildCommentForm = ({
 
   if (focused) {
     const isModerator = canModerateProject(projectId, authUser);
+    const postButtonText: MessageDescriptor = isAdminPage
+      ? messages.postPublicComment
+      : messages.publishComment;
 
     return (
       <Container className={`${className || ''} e2e-childcomment-form`}>
@@ -440,8 +446,9 @@ const ChildCommentForm = ({
                   onClick={onSubmit}
                   disabled={!canSubmit}
                   padding={smallerThanTablet ? '6px 12px' : undefined}
+                  icon={isAdminPage ? 'users' : undefined}
                 >
-                  <FormattedMessage {...messages.publishComment} />
+                  <FormattedMessage {...postButtonText} />
                 </Button>
               </ButtonWrapper>
             </label>

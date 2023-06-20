@@ -1,6 +1,7 @@
 // libraries
 import React, { useState, useCallback } from 'react';
 import Observer from '@researchgate/react-intersection-observer';
+import { useLocation } from 'react-router-dom';
 
 // components
 import ParentCommentForm from './ParentCommentForm';
@@ -31,12 +32,10 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import useComments from 'api/comments/useComments';
 import CommentingIdeaDisabled from './CommentingIdeaDisabled';
 
-const Header = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 30px;
+// utils
+import { isPage } from 'utils/helperUtils';
 
+const Header = styled(Box)`
   ${isRtl`
     flex-direction: row-reverse;
   `}
@@ -49,6 +48,7 @@ const CommentCount = styled.span`
 const StyledCommentSorting = styled(CommentSorting)`
   display: flex;
   justify-content: flex-end;
+  width: 100%;
 
   ${media.phone`
     justify-content: flex-start;
@@ -66,7 +66,6 @@ export interface Props {
   postType: 'idea' | 'initiative';
   className?: string;
   allowAnonymousParticipation?: boolean;
-  emphasizePostingPublicly?: boolean;
 }
 
 const PublicComments = ({
@@ -74,12 +73,12 @@ const PublicComments = ({
   postType,
   className,
   allowAnonymousParticipation,
-  emphasizePostingPublicly,
 }: Props) => {
   const initiativeId = postType === 'initiative' ? postId : undefined;
   const ideaId = postType === 'idea' ? postId : undefined;
   const { data: initiative } = useInitiativeById(initiativeId);
   const { data: idea } = useIdeaById(ideaId);
+  const { pathname } = useLocation();
   const [sortOrder, setSortOrder] = useState<CommentsSort>('-new');
   const {
     data: comments,
@@ -124,19 +123,32 @@ const PublicComments = ({
 
   const phaseId = project?.data.relationships?.current_phase?.data?.id;
   const commentCount = post.data.attributes.comments_count;
+  const hasComments = commentCount > 0;
+  const isAdminPage = isPage('admin', pathname);
+  const showCommentCount = !isAdminPage && hasComments;
+  const showHeader = !isAdminPage || hasComments;
 
   return (
     <Box className={className || ''}>
-      <Header>
-        <Title color="tenantText" variant="h2" id="comments-main-title">
-          <FormattedMessage {...messages.invisibleTitleComments} />
-          {commentCount > 0 && <CommentCount>({commentCount})</CommentCount>}
-        </Title>
-        <StyledCommentSorting
-          onChange={handleSortOrderChange}
-          selectedCommentSort={sortOrder}
-        />
-      </Header>
+      {showHeader && (
+        <Header
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
+          mt="16px"
+        >
+          <Title color="tenantText" variant="h2" id="comments-main-title">
+            <FormattedMessage {...messages.invisibleTitleComments} />
+            {showCommentCount && <CommentCount>({commentCount})</CommentCount>}
+          </Title>
+          {hasComments && (
+            <StyledCommentSorting
+              onChange={handleSortOrderChange}
+              selectedCommentSort={sortOrder}
+            />
+          )}
+        </Header>
+      )}
 
       {postType === 'idea' && idea ? (
         <CommentingIdeaDisabled idea={idea} phaseId={phaseId} />
@@ -144,14 +156,13 @@ const PublicComments = ({
         <CommentingProposalDisabled />
       )}
 
-      <Box mb="24px">
+      <Box my="24px">
         <ParentCommentForm
           ideaId={ideaId}
           initiativeId={initiativeId}
           postType={postType}
           postingComment={handleCommentPosting}
           allowAnonymousParticipation={allowAnonymousParticipation}
-          emphasizePostingPublicly={emphasizePostingPublicly}
         />
       </Box>
 

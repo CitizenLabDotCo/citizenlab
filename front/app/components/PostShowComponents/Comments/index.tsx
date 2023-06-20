@@ -21,6 +21,9 @@ import { ITab } from 'typings';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useInitiativeById from 'api/initiatives/useInitiativeById';
+import useIdeaById from 'api/ideas/useIdeaById';
+import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 
 const NavigationTabs = styled.nav`
   ${({ theme }) => css`
@@ -53,15 +56,38 @@ const CommentsSection = ({
   const isInternalCommentingEnabled = useFeatureFlag({
     name: 'internal_commenting',
   });
+  const initiativeCommentingPermissions = useInitiativesPermissions(
+    'commenting_initiative'
+  );
   const [selectedTab, setSelectedTab] = useState<CommentType>('internal');
+  const initiativeId = postType === 'initiative' ? postId : undefined;
+  const ideaId = postType === 'idea' ? postId : undefined;
+  const { data: initiative } = useInitiativeById(initiativeId);
+  const { data: idea } = useIdeaById(ideaId);
+  const post = initiative || idea;
+
+  if (!post) return null;
+  const publicCommentCount = post.data.attributes.comments_count;
+  const internalCommentCount = post.data.attributes.internal_comments_count;
+  const commenting_idea =
+    idea?.data.attributes.action_descriptor.commenting_idea;
+  const commentingEnabled =
+    postType === 'idea'
+      ? commenting_idea?.enabled
+      : initiativeCommentingPermissions?.enabled;
+
   const tabs: NavTab[] = [
     {
-      label: formatMessage(messages.internalConversation),
+      label: `${formatMessage(
+        messages.internalConversation
+      )} (${internalCommentCount})`,
       name: 'internal',
       url: '',
     },
     {
-      label: formatMessage(messages.publicDiscussion),
+      label: `${formatMessage(
+        messages.publicDiscussion
+      )} (${publicCommentCount})`,
       name: 'public',
       url: '',
     },
@@ -89,13 +115,16 @@ const CommentsSection = ({
         <Box>
           {selectedTab === 'public' && (
             <Box mt="16px">
-              <Warning>{formatMessage(messages.visibleToUsersWarning)}</Warning>
+              {commentingEnabled === true && (
+                <Warning>
+                  {formatMessage(messages.visibleToUsersWarning)}
+                </Warning>
+              )}
               <PublicComments
                 postId={postId}
                 postType={postType}
                 allowAnonymousParticipation={allowAnonymousParticipation}
                 className={className}
-                emphasizePostingPublicly
               />
             </Box>
           )}

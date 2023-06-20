@@ -4,6 +4,8 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import internalCommentKeys from './keys';
 import { IInternalComment } from './types';
 import userCommentsCount from 'api/user_comments_count/keys';
+import ideasKeys from 'api/ideas/keys';
+import initiativesKeys from 'api/initiatives/keys';
 
 interface MarkInternalCommentForDeletion {
   commentId: string;
@@ -40,6 +42,11 @@ const useMarkInternalCommentForDeletion = ({
             ideaId,
           }),
         });
+
+        // We invalidate the idea because the number of internal comments is on the idea
+        queryClient.invalidateQueries({
+          queryKey: ideasKeys.item({ id: ideaId }),
+        });
       }
 
       if (initiativeId) {
@@ -48,6 +55,11 @@ const useMarkInternalCommentForDeletion = ({
             type: 'initiative',
             initiativeId,
           }),
+        });
+
+        // We invalidate the initiative because the number of internal comments is on the initiative
+        queryClient.invalidateQueries({
+          queryKey: initiativesKeys.item({ id: initiativeId }),
         });
       }
 

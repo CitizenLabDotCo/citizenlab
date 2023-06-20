@@ -4,6 +4,8 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import commentKeys from './keys';
 import { DeleteReason, IComment } from './types';
 import userCommentsCount from 'api/user_comments_count/keys';
+import ideasKeys from 'api/ideas/keys';
+import initiativesKeys from 'api/initiatives/keys';
 
 interface MarkForDeletion {
   commentId: string;
@@ -38,6 +40,20 @@ const useMarkCommentForDeletion = ({
           initiativeId,
         }),
       });
+
+      if (ideaId) {
+        // We invalidate the idea because the number of comments is on the idea
+        queryClient.invalidateQueries({
+          queryKey: ideasKeys.item({ id: ideaId }),
+        });
+      }
+
+      if (initiativeId) {
+        // We invalidate the initiative because the number of comments is on the initiative
+        queryClient.invalidateQueries({
+          queryKey: initiativesKeys.item({ id: initiativeId }),
+        });
+      }
 
       queryClient.invalidateQueries({
         queryKey: userCommentsCount.items(),
