@@ -3,10 +3,8 @@ import React, { Suspense, useEffect, useState } from 'react';
 // components
 import SideModal from 'components/UI/SideModal';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
-import LazyAdminIdeaEdit from './Idea/LazyAdminIdeaEdit';
-import LazyIdeaContent from './Idea/LazyIdeaContent';
-import LazyInitiativeEdit from './Initiative/LazyInitiativeEdit';
-import LazyInitiativeContent from './Initiative/LazyInitiativeContent';
+import IdeaPostPreview from './IdeaPostPreview';
+import InitiativePostPreview from './InitiativePostPreview';
 
 // styling
 import styled from 'styled-components';
@@ -85,34 +83,23 @@ const PostPreview = ({
 
     if (postId) {
       return {
-        view: {
-          idea: (
-            <LazyIdeaContent
-              ideaId={postId}
-              closePreview={handleOnClose}
-              handleClickEdit={onSwitchPreviewMode}
-            />
-          ),
-          initiative: (
-            <LazyInitiativeContent
-              initiativeId={postId}
-              closePreview={handleOnClose}
-              handleClickEdit={onSwitchPreviewMode}
-            />
-          ),
-        },
-        edit: {
-          idea: (
-            <LazyAdminIdeaEdit ideaId={postId} goBack={onSwitchPreviewMode} />
-          ),
-          initiative: (
-            <LazyInitiativeEdit
-              initiativeId={postId}
-              goBack={onSwitchPreviewMode}
-            />
-          ),
-        },
-      }[mode][postType];
+        idea: (
+          <IdeaPostPreview
+            onClose={onClose}
+            ideaId={postId}
+            onSwitchPreviewMode={onSwitchPreviewMode}
+            mode={mode}
+          />
+        ),
+        initiative: (
+          <InitiativePostPreview
+            onClose={onClose}
+            initiativeId={postId}
+            onSwitchPreviewMode={onSwitchPreviewMode}
+            mode={mode}
+          />
+        ),
+      }[postType];
     }
 
     return null;
