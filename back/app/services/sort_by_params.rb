@@ -15,8 +15,8 @@ class SortByParams
     when '-popular' then scope.order_popular(:asc)
     when 'author_name' then scope.order_author_name(:desc)
     when '-author_name' then scope.order_author_name(:asc)
-    when 'status' then scope.order(order_status: :desc)
-    when '-status' then scope.order(order_status: :asc)
+    when 'status' then scope.order_status(:desc)
+    when '-status' then scope.order_status(:asc)
     when 'trending'
       ids = TrendingIdeaService.new.sort_trending(scope).map(&:id)
       Idea.unscoped.where(id: ids).order_as_specified(id: ids)
@@ -41,8 +41,8 @@ class SortByParams
     when '-new' then scope.order_new(:asc)
     when 'author_name' then scope.order_author_name(:desc)
     when '-author_name' then scope.order_author_name(:asc)
-    when 'status' then scope.order(order_status: :desc)
-    when '-status' then scope.order(order_status: :asc)
+    when 'status' then scope.order_status(:desc)
+    when '-status' then scope.order_status(:asc)
     when 'upvotes_count' then scope.order(upvotes_count: :desc)
     when '-upvotes_count' then scope.order(upvotes_count: :asc)
     else
