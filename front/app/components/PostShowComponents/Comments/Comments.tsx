@@ -39,7 +39,6 @@ interface Props {
   loading: boolean;
   className?: string;
   allowAnonymousParticipation?: boolean;
-  isShownInBackOffice?: boolean;
 }
 
 const CommentsSection = memo<Props>(
@@ -51,7 +50,6 @@ const CommentsSection = memo<Props>(
     loading,
     className,
     allowAnonymousParticipation,
-    isShownInBackOffice = false,
   }) => {
     const { formatMessage } = useIntl();
     const [commentPostedMessage, setCommentPostedMessage] = useState('');
@@ -123,7 +121,6 @@ const CommentsSection = memo<Props>(
               childCommentIds={childCommentIds}
               className={loading ? 'loading' : ''}
               allowAnonymousParticipation={allowAnonymousParticipation}
-              isShownInBackOffice={isShownInBackOffice}
             />
           );
         })}

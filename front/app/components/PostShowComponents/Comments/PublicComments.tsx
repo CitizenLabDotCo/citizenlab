@@ -1,6 +1,7 @@
 // libraries
 import React, { useState, useCallback } from 'react';
 import Observer from '@researchgate/react-intersection-observer';
+import { useLocation } from 'react-router-dom';
 
 // components
 import ParentCommentForm from './ParentCommentForm';
@@ -30,6 +31,9 @@ import useProjectById from 'api/projects/useProjectById';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useComments from 'api/comments/useComments';
 import CommentingIdeaDisabled from './CommentingIdeaDisabled';
+
+// utils
+import { isPage } from 'utils/helperUtils';
 
 const Header = styled(Box)`
   ${isRtl`
@@ -62,7 +66,6 @@ export interface Props {
   postType: 'idea' | 'initiative';
   className?: string;
   allowAnonymousParticipation?: boolean;
-  isShownInBackOffice?: boolean;
 }
 
 const PublicComments = ({
@@ -70,12 +73,12 @@ const PublicComments = ({
   postType,
   className,
   allowAnonymousParticipation,
-  isShownInBackOffice,
 }: Props) => {
   const initiativeId = postType === 'initiative' ? postId : undefined;
   const ideaId = postType === 'idea' ? postId : undefined;
   const { data: initiative } = useInitiativeById(initiativeId);
   const { data: idea } = useIdeaById(ideaId);
+  const { pathname } = useLocation();
   const [sortOrder, setSortOrder] = useState<CommentsSort>('-new');
   const {
     data: comments,
@@ -120,8 +123,10 @@ const PublicComments = ({
 
   const phaseId = project?.data.relationships?.current_phase?.data?.id;
   const commentCount = post.data.attributes.comments_count;
-  const showCommentCount = !isShownInBackOffice && commentCount > 0;
-  const showHeader = !isShownInBackOffice || !!commentCount;
+  const hasComments = commentCount > 0;
+  const isAdminPage = isPage('admin', pathname);
+  const showCommentCount = !isAdminPage && hasComments;
+  const showHeader = !isAdminPage || hasComments;
 
   return (
     <Box className={className || ''}>
@@ -136,7 +141,7 @@ const PublicComments = ({
             <FormattedMessage {...messages.invisibleTitleComments} />
             {showCommentCount && <CommentCount>({commentCount})</CommentCount>}
           </Title>
-          {!!commentCount && (
+          {hasComments && (
             <StyledCommentSorting
               onChange={handleSortOrderChange}
               selectedCommentSort={sortOrder}
@@ -158,7 +163,6 @@ const PublicComments = ({
           postType={postType}
           postingComment={handleCommentPosting}
           allowAnonymousParticipation={allowAnonymousParticipation}
-          isShownInBackOffice={isShownInBackOffice}
         />
       </Box>
 
@@ -169,7 +173,6 @@ const PublicComments = ({
         allComments={commentsList}
         loading={isLoading}
         allowAnonymousParticipation={allowAnonymousParticipation}
-        isShownInBackOffice={isShownInBackOffice}
       />
 
       {hasNextPage && !isFetchingNextPage && (

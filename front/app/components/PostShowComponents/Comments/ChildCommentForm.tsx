@@ -2,7 +2,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, isPage } from 'utils/helperUtils';
+import { useLocation } from 'react-router-dom';
 
 // services
 import { canModerateProject } from 'services/permissions/rules/projectPermissions';
@@ -99,7 +100,6 @@ interface Props {
   parentId: string;
   className?: string;
   allowAnonymousParticipation?: boolean;
-  isShownInBackOffice?: boolean;
 }
 
 const ChildCommentForm = ({
@@ -110,13 +110,14 @@ const ChildCommentForm = ({
   projectId,
   className,
   allowAnonymousParticipation,
-  isShownInBackOffice = false,
 }: Props) => {
   const { formatMessage } = useIntl();
   const locale = useLocale();
   const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser } = useAuthUser();
   const smallerThanTablet = useBreakpoint('tablet');
+  const { pathname } = useLocation();
+  const isAdminPage = isPage('admin', pathname);
 
   const {
     mutate: addCommentToIdeaComment,
@@ -363,7 +364,7 @@ const ChildCommentForm = ({
 
   if (focused) {
     const isModerator = canModerateProject(projectId, authUser);
-    const postButtonText: MessageDescriptor = isShownInBackOffice
+    const postButtonText: MessageDescriptor = isAdminPage
       ? messages.postPublicComment
       : messages.publishComment;
 
@@ -445,7 +446,7 @@ const ChildCommentForm = ({
                   onClick={onSubmit}
                   disabled={!canSubmit}
                   padding={smallerThanTablet ? '6px 12px' : undefined}
-                  icon={isShownInBackOffice ? 'users' : undefined}
+                  icon={isAdminPage ? 'users' : undefined}
                 >
                   <FormattedMessage {...postButtonText} />
                 </Button>

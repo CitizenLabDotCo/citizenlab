@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { isString, trim } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, isPage } from 'utils/helperUtils';
 
 // components
 import Button from 'components/UI/Button';
@@ -14,6 +14,7 @@ import {
   Text,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
+import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -44,7 +45,7 @@ import useLocale from 'hooks/useLocale';
 import useAuthUser from 'api/me/useAuthUser';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
-import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
+import { useLocation } from 'react-router-dom';
 
 const Container = styled.div`
   display: flex;
@@ -115,7 +116,6 @@ interface Props {
   postingComment: (arg: boolean) => void;
   className?: string;
   allowAnonymousParticipation?: boolean;
-  isShownInBackOffice?: boolean;
 }
 
 const ParentCommentForm = ({
@@ -124,13 +124,14 @@ const ParentCommentForm = ({
   postType,
   className,
   allowAnonymousParticipation,
-  isShownInBackOffice = false,
 }: Props) => {
   const locale = useLocale();
   const { data: authUser } = useAuthUser();
   const { data: appConfiguration } = useAppConfiguration();
   const { formatMessage } = useIntl();
   const smallerThanTablet = useBreakpoint('tablet');
+  const { pathname } = useLocation();
+  const isAdminPage = isPage('admin', pathname);
   const { mutate: addCommentToIdea, isLoading: addCommentToIdeaIsLoading } =
     useAddCommentToIdea();
   const {
@@ -350,10 +351,10 @@ const ParentCommentForm = ({
           .disabled_reason;
   const isModerator = canModerateProject(projectId, authUser);
   const canComment = !commentingDisabledReason;
-  const buttonText: MessageDescriptor = isShownInBackOffice
+  const buttonText: MessageDescriptor = isAdminPage
     ? messages.postPublicComment
     : messages.publishComment;
-  const placeholderMessage: MessageDescriptor = isShownInBackOffice
+  const placeholderMessage: MessageDescriptor = isAdminPage
     ? messages.visibleToUsersPlaceholder
     : messages[`${postType}CommentBodyPlaceholder`];
   const placeholder = formatMessage(placeholderMessage);
@@ -439,7 +440,7 @@ const ParentCommentForm = ({
                   onClick={onSubmit}
                   disabled={hasEmptyError}
                   padding={smallerThanTablet ? '6px 12px' : undefined}
-                  icon={isShownInBackOffice ? 'users' : undefined}
+                  icon={isAdminPage ? 'users' : undefined}
                 >
                   <FormattedMessage {...buttonText} />
                 </Button>

@@ -88,6 +88,8 @@ const InternalCommentsSection = ({ postId, postType, className }: Props) => {
 
   if (!post || !commentsList) return null;
 
+  const hasComments = post.data.attributes.internal_comments_count > 0;
+
   const handleSortOrderChange = (sortOrder: InternalCommentSort) => {
     trackEventByName(tracks.clickCommentsSortOrder);
     setSortOrder(sortOrder);
@@ -97,11 +99,9 @@ const InternalCommentsSection = ({ postId, postType, className }: Props) => {
     setPosting(isPosting);
   };
 
-  const commentCount = post.data.attributes.internal_comments_count;
-
   return (
     <Box className={className || ''}>
-      {!!commentCount && (
+      {hasComments && (
         <Header
           display="flex"
           alignItems="center"
