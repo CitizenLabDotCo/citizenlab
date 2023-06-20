@@ -93,17 +93,6 @@ export function usersByRegFieldStream(
   });
 }
 
-export const usersByBirthyearXlsxEndpoint = `${apiEndpoint}/users_by_birthyear_as_xlsx`;
-
-export function usersByBirthyearStream(
-  streamParams: ICustomFieldParams | null = null
-) {
-  return streams.get<IUsersByBirthyear>({
-    apiEndpoint: `${apiEndpoint}/users_by_birthyear`,
-    ...streamParams,
-  });
-}
-
 export const usersByDomicileXlsxEndpoint = `${apiEndpoint}/users_by_domicile_as_xlsx`;
 
 export function usersByDomicileStream(

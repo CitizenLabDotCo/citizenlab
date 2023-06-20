@@ -1,6 +1,6 @@
 // utils
 import { map, orderBy } from 'lodash-es';
-import { rename, join, Series } from 'utils/dataUtils';
+import { rename, join, Series, binBirthyear } from 'utils/dataUtils';
 
 // typings
 import { TCustomFieldCode } from 'api/user_custom_fields/types';
@@ -66,14 +66,14 @@ const createConvertAndMergeSeries =
     const totalUsers = totalSerie.data.attributes.series.users;
     const participantUsers = participantSerie.data.attributes.series.users;
 
-    // if (code === 'birthyear') {
-    //   const options = { missingBin: formatMessage(messages._blank) };
+    if (code === 'birthyear') {
+      const options = { missingBin: formatMessage(messages._blank) };
 
-    //   const binnedTotal = binBirthyear(totalUsers, options);
-    //   const binnedParticipants = binBirthyear(participantUsers, options);
+      const binnedTotal = binBirthyear(totalUsers, options);
+      const binnedParticipants = binBirthyear(participantUsers, options);
 
-    //   return joinTotalAndParticipants(binnedTotal, binnedParticipants);
-    // }
+      return joinTotalAndParticipants(binnedTotal, binnedParticipants);
+    }
 
     if (code === 'gender') {
       return GENDER_COLUMNS.map((gender) => ({

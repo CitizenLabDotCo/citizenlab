@@ -1,22 +1,18 @@
-import { useState, useEffect } from 'react';
-
 // services
-import {
-  IUsersByBirthyear,
-  usersByBirthyearStream,
-} from 'services/userCustomFieldStats';
+import { IUsersByBirthyear } from 'services/userCustomFieldStats';
 
 // i18n
 import messages from 'containers/Admin/dashboard/messages';
 import { useIntl } from 'utils/cl-intl';
 
 // utils
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import { binBirthyear } from 'utils/dataUtils';
 
 // typings
-import { QueryParameters, AgeSerie } from './typings';
+import { QueryParameters } from './typings';
 import { FormatMessage } from 'typings';
+import useUsersByBirthyear from 'api/users_by_birthyear/useUsersByBirthyear';
 
 export default function useAgeSerie({
   startAt,
@@ -25,28 +21,16 @@ export default function useAgeSerie({
   projectId,
 }: QueryParameters) {
   const { formatMessage } = useIntl();
-  const [serie, setSerie] = useState<AgeSerie | NilOrError>();
+  const { data: usersByBirthyear } = useUsersByBirthyear({
+    start_at: startAt,
+    end_at: endAt,
+    group: currentGroupFilter,
+    project: projectId,
+  });
 
-  useEffect(() => {
-    const { observable } = usersByBirthyearStream({
-      queryParameters: {
-        start_at: startAt,
-        end_at: endAt,
-        group: currentGroupFilter,
-        project: projectId,
-      },
-    });
-
-    const subscription = observable.subscribe(
-      (response: IUsersByBirthyear | NilOrError) => {
-        isNilOrError(response)
-          ? setSerie(response)
-          : setSerie(convertToGraphFormat(response, formatMessage));
-      }
-    );
-
-    return () => subscription.unsubscribe();
-  }, [startAt, endAt, currentGroupFilter, projectId, formatMessage]);
+  const serie = usersByBirthyear
+    ? convertToGraphFormat(usersByBirthyear, formatMessage)
+    : null;
 
   return serie;
 }

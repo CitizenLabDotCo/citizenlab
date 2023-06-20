@@ -1,6 +1,5 @@
 import React, { useRef } from 'react';
 import { isEmpty } from 'lodash-es';
-import { combineLatest } from 'rxjs';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
@@ -33,10 +32,7 @@ import { IStream } from 'utils/streams';
 
 // services
 import {
-  usersByRegFieldStream,
   usersByRegFieldXlsxEndpoint,
-  usersByBirthyearStream,
-  usersByBirthyearXlsxEndpoint,
   usersByDomicileStream,
   usersByDomicileXlsxEndpoint,
   ICustomFieldParams,
@@ -48,19 +44,24 @@ import createConvertAndMergeSeries, {
   ISupportedDataType,
 } from './convertAndMergeSeries';
 import useUsersByGender from 'api/users_by_gender/useUsersByGender';
+import useUsersByBirthyear from 'api/users_by_birthyear/useUsersByBirthyear';
+import { usersByGenderXlsxEndpoint } from 'api/users_by_gender/util';
+import { usersByBirthyearXlsxEndpoint } from 'api/users_by_birthyear/util';
 
 interface ICustomFieldEndpoint {
-  stream: (
+  stream?: (
     streamParams: ICustomFieldParams | null
   ) => IStream<ISupportedDataType>;
   xlsxEndpoint: string;
 }
 
-type TAllowedCode = 'birthyear' | 'domicile';
+type TAllowedCode = 'gender' | 'birthyear' | 'domicile';
 
 const customFieldEndpoints: Record<TAllowedCode, ICustomFieldEndpoint> = {
+  gender: {
+    xlsxEndpoint: usersByGenderXlsxEndpoint,
+  },
   birthyear: {
-    stream: usersByBirthyearStream,
     xlsxEndpoint: usersByBirthyearXlsxEndpoint,
   },
   domicile: {
@@ -107,37 +108,37 @@ const CustomTooltip = ({
   return null;
 };
 
-const createCombinedStream = (
-  customField: IUserCustomFieldData,
-  { startAt, endAt }: { startAt: string; endAt: string },
-  currentProject?: string
-) => {
-  const { code } = customField.attributes;
+// const createCombinedStream = (
+//   customField: IUserCustomFieldData,
+//   { startAt, endAt }: { startAt: string; endAt: string },
+//   currentProject?: string
+// ) => {
+//   const { code } = customField.attributes;
 
-  const stream =
-    code && code in customFieldEndpoints
-      ? customFieldEndpoints[code as TAllowedCode].stream
-      : usersByRegFieldStream;
+//   const stream =
+//     code && code in customFieldEndpoints
+//       ? customFieldEndpoints[code as TAllowedCode].stream
+//       : usersByRegFieldStream;
 
-  const totalUsersStream = stream(null, customField.id);
+//   const totalUsersStream = stream(null, customField.id);
 
-  const participantsStream = stream(
-    {
-      queryParameters: {
-        start_at: startAt,
-        end_at: endAt,
-        project: currentProject,
-        filter_by_participation: true,
-      },
-    },
-    customField.id
-  );
+//   const participantsStream = stream(
+//     {
+//       queryParameters: {
+//         start_at: startAt,
+//         end_at: endAt,
+//         project: currentProject,
+//         filter_by_participation: true,
+//       },
+//     },
+//     customField.id
+//   );
 
-  return combineLatest([
-    totalUsersStream.observable,
-    participantsStream.observable,
-  ]);
-};
+//   return combineLatest([
+//     totalUsersStream.observable,
+//     participantsStream.observable,
+//   ]);
+// };
 
 const CustomFieldsGraph = ({
   startAt,
@@ -148,13 +149,29 @@ const CustomFieldsGraph = ({
   intl: { formatMessage },
   className,
 }: Props) => {
+  const { code } = customField.attributes;
+
   const { data: usersByGenderWithFilters } = useUsersByGender({
     start_at: startAt,
     end_at: endAt,
     project: currentProject,
     filter_by_participation: true,
+    enabled: code === 'gender',
   });
-  const { data: usersByGenderWithoutFilters } = useUsersByGender({});
+  const { data: usersByGenderWithoutFilters } = useUsersByGender({
+    enabled: code === 'gender',
+  });
+
+  const { data: usersByBirthyearWithFilters } = useUsersByBirthyear({
+    start_at: startAt,
+    end_at: endAt,
+    project: currentProject,
+    filter_by_participation: true,
+    enabled: code === 'birthyear',
+  });
+  const { data: usersByBirthyearWithoutFilters } = useUsersByBirthyear({
+    enabled: code === 'birthyear',
+  });
 
   const currentChartRef = useRef();
   const convertAndMergeSeriesRef = useRef(
@@ -164,10 +181,11 @@ const CustomFieldsGraph = ({
     })
   );
   const convertAndMergeSeries = convertAndMergeSeriesRef.current;
-  const { code } = customField.attributes;
 
-  const totalSerie = usersByGenderWithoutFilters;
-  const participantSerie = usersByGenderWithFilters;
+  const totalSerie =
+    usersByGenderWithoutFilters || usersByBirthyearWithoutFilters;
+  const participantSerie =
+    usersByGenderWithFilters || usersByBirthyearWithFilters;
   const serie =
     totalSerie &&
     participantSerie &&
