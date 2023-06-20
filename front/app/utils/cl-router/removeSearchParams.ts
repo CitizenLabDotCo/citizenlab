@@ -13,9 +13,8 @@ export const removeSearchParams = (paramsToBeDeleted: string[]) => {
     }
   }
 
-  clHistory.replace(
-    `${window.location.pathname}${stringify(newSearchParams, {
-      addQueryPrefix: true,
-    })}`
-  );
+  clHistory.replace({
+    pathname: window.location.pathname,
+    search: stringify(newSearchParams, { addQueryPrefix: true }),
+  });
 };
