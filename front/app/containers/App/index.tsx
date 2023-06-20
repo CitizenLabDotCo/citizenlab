@@ -227,16 +227,6 @@ const App = ({ children }: Props) => {
         setLocale(locale);
       }),
 
-      // eventEmitter
-      //   .observeEvent<IOpenPostPageModalEvent>('cardClick')
-      //   .subscribe(({ eventValue: { id, slug, type } }) => {
-      //     openPostPageModal(id, slug, type);
-      //   }),
-
-      // eventEmitter.observeEvent('closeIdeaModal').subscribe(() => {
-      //   closePostPageModal();
-      // }),
-
       eventEmitter
         .observeEvent('deleteProfileAndShowSuccessModal')
         .subscribe(() => {
@@ -338,19 +328,6 @@ const App = ({ children }: Props) => {
               disableScroll={fullscreenModalEnabled && signUpInModalOpened}
             >
               <Meta />
-              {/* <ErrorBoundary>
-                <Suspense fallback={null}>
-                  <PostPageFullscreenModal
-                    signUpInModalOpened={signUpInModalOpened}
-                    type={modalType}
-                    postId={modalId}
-                    slug={modalSlug}
-                    close={closePostPageModal}
-                    navbarRef={navbarRef}
-                    mobileNavbarRef={mobileNavbarRef}
-                  />
-                </Suspense>
-              </ErrorBoundary> */}
               <ErrorBoundary>
                 <Suspense fallback={null}>
                   <UserDeletedModal
