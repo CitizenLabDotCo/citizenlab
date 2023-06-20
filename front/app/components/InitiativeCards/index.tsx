@@ -409,6 +409,7 @@ const InitiativeCards = ({ className, invisibleTitleMessage }: Props) => {
               </FullscreenModal>
 
               <MobileSearchInput
+                defaultValue={selectedInitiativeFilters.search ?? undefined}
                 placeholder={searchPlaceholder}
                 ariaLabel={searchAriaLabel}
                 onChange={handleSearchOnChange}
