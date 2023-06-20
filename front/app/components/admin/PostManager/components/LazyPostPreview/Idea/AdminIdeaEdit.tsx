@@ -1,7 +1,10 @@
 import React, { useCallback, useContext, useEffect } from 'react';
 
 // components
-import { Content, Top } from '../PostPreview';
+import {
+  Content,
+  Top,
+} from 'components/admin/PostManager/components/LazyPostPreview/PostPreview';
 import {
   Box,
   Button,

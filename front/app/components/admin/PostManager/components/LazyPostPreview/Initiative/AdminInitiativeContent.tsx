@@ -14,7 +14,11 @@ import CommentsSection from 'components/PostShowComponents/Comments';
 import FileAttachments from 'components/UI/FileAttachments';
 import FeedbackSettings from './FeedbackSettings';
 import Button from 'components/UI/Button';
-import { Top, Content, Container } from '../PostPreview';
+import {
+  Top,
+  Content,
+  Container,
+} from 'components/admin/PostManager/components/LazyPostPreview/PostPreview';
 import ReactionIndicator from 'components/InitiativeCard/ReactionIndicator';
 import { Box } from '@citizenlab/cl2-component-library';
 
@@ -110,7 +114,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const InitiativeContent = ({
+const AdminInitiativeContent = ({
   localize,
   initiativeImages,
   handleClickEdit,
@@ -266,7 +270,9 @@ const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
 });
 
-const InitiativeContentWithHOCs = injectIntl(injectLocalize(InitiativeContent));
+const InitiativeContentWithHOCs = injectIntl(
+  injectLocalize(AdminInitiativeContent)
+);
 
 const WrappedInitiativeContent = (inputProps: InputProps) => (
   <Data {...inputProps}>

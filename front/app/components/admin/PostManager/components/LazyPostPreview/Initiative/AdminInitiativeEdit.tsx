@@ -17,7 +17,11 @@ import { isNilOrError } from 'utils/helperUtils';
 import InitiativesEditFormWrapper from 'containers/InitiativesEditPage/InitiativesEditFormWrapper';
 import Button from 'components/UI/Button';
 import { Box, LocaleSwitcher } from '@citizenlab/cl2-component-library';
-import { Content, Top, Container } from '../PostPreview';
+import {
+  Content,
+  Top,
+  Container,
+} from 'components/admin/PostManager/components/LazyPostPreview/PostPreview';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -46,7 +50,7 @@ interface DataProps {
 
 interface Props extends DataProps, InputProps {}
 
-const InitiativesEditPage = ({
+const AdminInitiativeEdit = ({
   locale,
   goBack,
   topics,
@@ -150,6 +154,6 @@ const Data = adopt<DataProps, InputProps>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataProps) => <InitiativesEditPage {...dataProps} {...inputProps} />}
+    {(dataProps) => <AdminInitiativeEdit {...dataProps} {...inputProps} />}
   </Data>
 );

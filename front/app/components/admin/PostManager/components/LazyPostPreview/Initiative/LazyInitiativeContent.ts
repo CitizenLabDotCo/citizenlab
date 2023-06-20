@@ -1,3 +1,3 @@
 import { lazy } from 'react';
 
-export default lazy(() => import('./InitiativeContent'));
+export default lazy(() => import('./AdminInitiativeContent'));

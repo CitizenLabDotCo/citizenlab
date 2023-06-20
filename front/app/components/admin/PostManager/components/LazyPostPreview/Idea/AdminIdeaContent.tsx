@@ -17,7 +17,11 @@ import { IconTooltip, Box } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import Link from 'utils/cl-router/Link';
 import T from 'components/T';
-import { Top, Content, Container } from '../PostPreview';
+import {
+  Top,
+  Content,
+  Container,
+} from 'components/admin/PostManager/components/LazyPostPreview/PostPreview';
 
 // services
 import { ProcessType } from 'api/projects/types';
@@ -167,7 +171,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const IdeaContent = ({
+const AdminIdeaContent = ({
   idea,
   project,
   locale,
@@ -372,6 +376,6 @@ const Data = adopt<DataProps, InputProps>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataProps) => <IdeaContent {...inputProps} {...dataProps} />}
+    {(dataProps) => <AdminIdeaContent {...inputProps} {...dataProps} />}
   </Data>
 );

@@ -1,3 +1,3 @@
 import { lazy } from 'react';
 
-export default lazy(() => import('./IdeaContent'));
+export default lazy(() => import('./AdminIdeaContent'));

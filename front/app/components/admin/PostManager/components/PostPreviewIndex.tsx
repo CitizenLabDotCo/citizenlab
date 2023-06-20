@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import PostPreview from './LazyPostPreview/PostPreview';
+import PostPreview from 'components/admin/PostManager/components/LazyPostPreview/PostPreview';
 import clHistory from 'utils/cl-router/history';
 import GoBackButton from 'components/UI/GoBackButton';
 import { Box } from '@citizenlab/cl2-component-library';
