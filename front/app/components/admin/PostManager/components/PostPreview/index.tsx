@@ -1,10 +1,9 @@
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // components
 import SideModal from 'components/UI/SideModal';
-import FullPageSpinner from 'components/UI/FullPageSpinner';
-import IdeaPostPreview from './IdeaPostPreview';
-import InitiativePostPreview from './InitiativePostPreview';
+import IdeaPostPreview from './Idea/IdeaPostPreview';
+import InitiativePostPreview from './Initiative/InitiativePostPreview';
 
 // styling
 import styled from 'styled-components';
@@ -107,7 +106,7 @@ const PostPreview = ({
 
   return (
     <SideModal opened={opened} close={handleOnClose}>
-      <Suspense fallback={<FullPageSpinner />}>{previewComponent()}</Suspense>
+      {previewComponent()}
     </SideModal>
   );
 };

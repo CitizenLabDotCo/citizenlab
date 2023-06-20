@@ -18,7 +18,7 @@ import {
   Top,
   Content,
   Container,
-} from 'components/admin/PostManager/components/LazyPostPreview/PostPreview';
+} from 'components/admin/PostManager/components/PostPreview';
 import ReactionIndicator from 'components/InitiativeCard/ReactionIndicator';
 import { Box } from '@citizenlab/cl2-component-library';
 

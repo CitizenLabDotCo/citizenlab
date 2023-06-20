@@ -3,31 +3,31 @@ import React, { Suspense, useEffect, useState } from 'react';
 // components
 import SideModal from 'components/UI/SideModal';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
-import LazyAdminIdeaEdit from './Idea/LazyAdminIdeaEdit';
-import LazyIdeaContent from './Idea/LazyIdeaContent';
+import AdminInitiativeEdit from 'components/admin/PostManager/components/PostPreview/Initiative/AdminInitiativeEdit';
+import AdminInitiativeContent from 'components/admin/PostManager/components/PostPreview/Initiative/AdminInitiativeContent';
 
-export interface Props {
+interface Props {
   onClose: () => void;
-  ideaId: string | null;
+  initiativeId: string | null;
   onSwitchPreviewMode: () => void;
   mode: 'edit' | 'view';
 }
 
-const IdeaPostPreview = ({
+const InitiativePostPreview = ({
   onClose,
-  ideaId,
+  initiativeId,
   onSwitchPreviewMode,
   mode,
 }: Props) => {
   const [opened, setOpened] = useState(false);
 
   useEffect(() => {
-    if (typeof ideaId === 'string') {
+    if (typeof initiativeId === 'string') {
       setOpened(true);
     }
-  }, [ideaId]);
+  }, [initiativeId]);
 
-  if (!ideaId) {
+  if (!initiativeId) {
     return null;
   }
 
@@ -39,13 +39,18 @@ const IdeaPostPreview = ({
   const previewComponent = () => {
     return {
       view: (
-        <LazyIdeaContent
-          ideaId={ideaId}
+        <AdminInitiativeContent
+          initiativeId={initiativeId}
           closePreview={handleOnClose}
           handleClickEdit={onSwitchPreviewMode}
         />
       ),
-      edit: <LazyAdminIdeaEdit ideaId={ideaId} goBack={onSwitchPreviewMode} />,
+      edit: (
+        <AdminInitiativeEdit
+          initiativeId={initiativeId}
+          goBack={onSwitchPreviewMode}
+        />
+      ),
     }[mode];
   };
 
@@ -56,4 +61,4 @@ const IdeaPostPreview = ({
   );
 };
 
-export default IdeaPostPreview;
+export default InitiativePostPreview;

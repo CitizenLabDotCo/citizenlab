@@ -21,7 +21,7 @@ import {
   Top,
   Content,
   Container,
-} from 'components/admin/PostManager/components/LazyPostPreview/PostPreview';
+} from 'components/admin/PostManager/components/PostPreview';
 
 // services
 import { ProcessType } from 'api/projects/types';

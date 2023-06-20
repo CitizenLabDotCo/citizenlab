@@ -21,7 +21,7 @@ import {
   Content,
   Top,
   Container,
-} from 'components/admin/PostManager/components/LazyPostPreview/PostPreview';
+} from 'components/admin/PostManager/components/PostPreview';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';

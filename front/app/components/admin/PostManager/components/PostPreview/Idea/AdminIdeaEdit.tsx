@@ -4,7 +4,7 @@ import React, { useCallback, useContext, useEffect } from 'react';
 import {
   Content,
   Top,
-} from 'components/admin/PostManager/components/LazyPostPreview/PostPreview';
+} from 'components/admin/PostManager/components/PostPreview';
 import {
   Box,
   Button,
