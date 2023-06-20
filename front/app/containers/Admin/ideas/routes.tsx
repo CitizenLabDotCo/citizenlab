@@ -26,7 +26,7 @@ export default () => ({
       path: ':ideaId',
       element: (
         <PageLoading>
-          <IdeaPreviewIndex />
+          <IdeaPreviewIndex goBackUrl="/admin/ideas" />
         </PageLoading>
       ),
     },

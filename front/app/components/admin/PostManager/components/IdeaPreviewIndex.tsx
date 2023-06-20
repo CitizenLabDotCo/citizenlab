@@ -5,16 +5,20 @@ import GoBackButton from 'components/UI/GoBackButton';
 import { Box } from '@citizenlab/cl2-component-library';
 import IdeaPostPreview from './PostPreview/Idea/IdeaPostPreview';
 
+interface Props {
+  goBackUrl: string;
+}
+
 type PreviewMode = 'view' | 'edit';
 
-const IdeaPreviewIndex = () => {
+const IdeaPreviewIndex = ({ goBackUrl }: Props) => {
   const [previewMode, setPreviewMode] = useState<PreviewMode>('view');
   const { ideaId } = useParams() as {
     ideaId: string;
   };
 
   const handleOnClose = () => {
-    clHistory.push('/admin/ideas');
+    clHistory.push(goBackUrl);
   };
 
   const handleOnSwitchPreviewMode = () => {
