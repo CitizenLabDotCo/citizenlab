@@ -21,7 +21,7 @@ describe('useAddBasket', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useAddBasket(), {
+    const { result, waitFor } = renderHook(() => useAddBasket('projectId'), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -45,7 +45,7 @@ describe('useAddBasket', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useAddBasket(), {
+    const { result, waitFor } = renderHook(() => useAddBasket('projectId'), {
       wrapper: createQueryClientWrapper(),
     });
 

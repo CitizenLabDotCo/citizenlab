@@ -22,7 +22,6 @@ import {
   isNilOrError,
   capitalizeParticipationContextType,
 } from 'utils/helperUtils';
-import streams from 'utils/streams';
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 
 // events
@@ -101,7 +100,7 @@ const AssignBudgetControl = memo(
     const { data: idea } = useIdeaById(ideaId);
     const { data: project } = useProjectById(projectId);
     const { data: phases } = usePhases(projectId);
-    const { mutateAsync: addBasket } = useAddBasket();
+    const { mutateAsync: addBasket } = useAddBasket(projectId);
     const { mutateAsync: updateBasket } = useUpdateBasket();
 
     const isContinuousProject =
@@ -197,7 +196,6 @@ const AssignBudgetControl = memo(
           trackEventByName(tracks.ideaAddedToBasket);
         } catch (error) {
           done();
-          streams.fetchAllWith({ dataId: [basket.data.id] });
         }
       } else {
         try {
@@ -249,11 +247,12 @@ const AssignBudgetControl = memo(
         triggerAuthenticationFlow({ context, successAction });
       }
     };
-
+    console.log({ basket });
     const basketIdeaIds = !isNilOrError(basket)
       ? basket.data.relationships.ideas.data.map((idea) => idea.id)
       : [];
     const isInBasket = basketIdeaIds.includes(ideaId);
+    console.log(isInBasket);
 
     const isPermitted =
       actionDescriptor.enabled ||
