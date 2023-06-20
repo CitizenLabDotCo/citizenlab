@@ -5,42 +5,41 @@ require 'rails_helper'
 describe SortByParams do
   subject(:service) { described_class.new }
 
-  let(:timeline_project) { create(:project_with_phases) }
-  let(:ideas) do
-    [
-      {
-        published_at: Time.now,
-        author: create(:user, first_name: 'Sean', last_name: 'Connery'),
-        upvotes_count: 5,
-        downvotes_count: 2,
-        baskets_count: 1
-      },
-      {
-        published_at: Time.now - 1.hour,
-        author: create(:user, first_name: 'Sean', last_name: 'Penn'),
-        upvotes_count: 3,
-        downvotes_count: 5,
-        baskets_count: 2
-      },
-      {
-        published_at: Time.now + 2.days,
-        author: create(:user, first_name: 'Jodie', last_name: 'Foster'),
-        upvotes_count: 0,
-        downvotes_count: 0,
-        baskets_count: 3
-      }
-    ].map do |attributes|
-      create(:idea, project: timeline_project, **attributes)
-    end
-  end
-  let(:params) { {} }
+  let(:params) { { sort: sort } }
   let(:user) { create(:user) }
-  let(:result_record_ids) { service.sort_ideas(Idea.where(id: ideas.map(&:id)), params, user).pluck(:id) }
 
-  context 'when passing a sort param' do
-    let(:params) { { sort: sort } }
+  describe 'sort_ideas' do
+    let(:timeline_project) { create(:project_with_phases) }
+    let(:ideas) do
+      [
+        {
+          published_at: Time.now,
+          author: create(:user, first_name: 'Sean', last_name: 'Connery'),
+          upvotes_count: 5,
+          downvotes_count: 2,
+          baskets_count: 1
+        },
+        {
+          published_at: Time.now - 1.hour,
+          author: create(:user, first_name: 'Sean', last_name: 'Penn'),
+          upvotes_count: 3,
+          downvotes_count: 5,
+          baskets_count: 2
+        },
+        {
+          published_at: Time.now + 2.days,
+          author: create(:user, first_name: 'Jodie', last_name: 'Foster'),
+          upvotes_count: 0,
+          downvotes_count: 0,
+          baskets_count: 3
+        }
+      ].map do |attributes|
+        create(:idea, project: timeline_project, **attributes)
+      end
+    end
+    let(:result_record_ids) { service.sort_ideas(Idea.where(id: ideas.map(&:id)), params, user).pluck(:id) }
 
-    describe '#sort_scopes (new)' do
+    describe 'new' do
       let(:sort) { 'new' }
       let(:expected_record_ids) { [ideas[2].id, ideas[0].id, ideas[1].id] }
 
@@ -49,7 +48,7 @@ describe SortByParams do
       end
     end
 
-    describe '#sort_scopes (-new)' do
+    describe '-new' do
       let(:sort) { '-new' }
       let(:expected_record_ids) { [ideas[1].id, ideas[0].id, ideas[2].id] }
 
@@ -59,36 +58,34 @@ describe SortByParams do
     end
 
     describe do
-      before { %w[proposed accepted implemented].map { |code| create(:idea_status, code: code) } }
-
-      let(:ideas) do
-        [
-          {
-            idea_status: IdeaStatus.find_by(code: 'implemented')
-          },
-          {
-            idea_status: IdeaStatus.find_by(code: 'proposed')
-          },
-          {
-            idea_status: IdeaStatus.find_by(code: 'accepted')
-          }
-        ].map do |attributes|
-          create(:idea, project: timeline_project, **attributes)
+      before do
+        %w[proposed accepted implemented].map.with_index do |code, i|
+          create(:idea_status, code: code, ordering: i)
         end
       end
 
-      describe '#sort_scopes (status)' do
+      let(:ideas) do
+        [
+          IdeaStatus.find_by(code: 'implemented'),
+          IdeaStatus.find_by(code: 'proposed'),
+          IdeaStatus.find_by(code: 'accepted')
+        ].map do |status|
+          create(:idea, project: timeline_project, idea_status: status)
+        end
+      end
+
+      describe 'status' do
         let(:sort) { 'status' }
-        let(:expected_record_ids) { [ideas[1].id, ideas[2].id, ideas[0].id] }
+        let(:expected_record_ids) { [ideas[0].id, ideas[2].id, ideas[1].id] }
 
         it 'returns the sorted records' do
           expect(result_record_ids).to eq expected_record_ids
         end
       end
 
-      describe '#sort_scopes (-status)' do
+      describe '-status' do
         let(:sort) { '-status' }
-        let(:expected_record_ids) { [ideas[0].id, ideas[2].id, ideas[1].id] }
+        let(:expected_record_ids) { [ideas[1].id, ideas[2].id, ideas[0].id] }
 
         it 'returns the sorted records' do
           expect(result_record_ids).to eq expected_record_ids
@@ -96,7 +93,7 @@ describe SortByParams do
       end
     end
 
-    describe '#sort_scopes (trending)' do
+    describe 'trending' do
       let(:sort) { 'trending' }
 
       it 'returns the ids in trending order' do
@@ -105,7 +102,7 @@ describe SortByParams do
       end
     end
 
-    describe '#sort_scopes (-trending)' do
+    describe '-trending' do
       let(:sort) { '-trending' }
 
       it 'returns the ids in reverse trending order' do
@@ -114,7 +111,7 @@ describe SortByParams do
       end
     end
 
-    describe '#sort_scopes (author_name)' do
+    describe 'author_name' do
       let(:sort) { 'author_name' }
       let(:expected_record_ids) { [ideas[1].id, ideas[0].id, ideas[2].id] }
 
@@ -123,7 +120,7 @@ describe SortByParams do
       end
     end
 
-    describe '#sort_scopes (-author_name)' do
+    describe '-author_name' do
       let(:sort) { '-author_name' }
       let(:expected_record_ids) { [ideas[2].id, ideas[0].id, ideas[1].id] }
 
@@ -132,7 +129,7 @@ describe SortByParams do
       end
     end
 
-    describe '#sort_scopes (popular)' do
+    describe 'popular' do
       let(:sort) { 'popular' }
       let(:expected_record_ids) { [ideas[0].id, ideas[2].id, ideas[1].id] }
 
@@ -141,7 +138,7 @@ describe SortByParams do
       end
     end
 
-    describe '#sort_scopes (-popular)' do
+    describe '-popular' do
       let(:sort) { '-popular' }
       let(:expected_record_ids) { [ideas[1].id, ideas[2].id, ideas[0].id] }
 
@@ -150,7 +147,7 @@ describe SortByParams do
       end
     end
 
-    describe '#sort_scopes (random)' do
+    describe 'random' do
       let(:sort) { 'random' }
       let(:expected_record_ids) { Idea.order_random(user).pluck(:id) }
 
@@ -159,7 +156,7 @@ describe SortByParams do
       end
     end
 
-    describe '#sortable_attributes (upvotes_count)' do
+    describe 'upvotes_count' do
       let(:sort) { 'upvotes_count' }
       let(:expected_record_ids) { [ideas[0].id, ideas[1].id, ideas[2].id] }
 
@@ -168,7 +165,7 @@ describe SortByParams do
       end
     end
 
-    describe '#sortable_attributes (-upvotes_count)' do
+    describe '-upvotes_count' do
       let(:sort) { '-upvotes_count' }
       let(:expected_record_ids) { [ideas[2].id, ideas[1].id, ideas[0].id] }
 
@@ -177,7 +174,7 @@ describe SortByParams do
       end
     end
 
-    describe '#sortable_attributes (downvotes_count)' do
+    describe 'downvotes_count' do
       let(:sort) { 'downvotes_count' }
       let(:expected_record_ids) { [ideas[1].id, ideas[0].id, ideas[2].id] }
 
@@ -186,7 +183,7 @@ describe SortByParams do
       end
     end
 
-    describe '#sortable_attributes (-downvotes_count)' do
+    describe '-downvotes_count' do
       let(:sort) { '-downvotes_count' }
       let(:expected_record_ids) { [ideas[2].id, ideas[0].id, ideas[1].id] }
 
@@ -195,7 +192,7 @@ describe SortByParams do
       end
     end
 
-    describe '#sortable_attributes (baskets_count)' do
+    describe 'baskets_count' do
       let(:sort) { 'baskets_count' }
       let(:expected_record_ids) { [ideas[2].id, ideas[1].id, ideas[0].id] }
 
@@ -204,9 +201,133 @@ describe SortByParams do
       end
     end
 
-    describe '#sortable_attributes (-baskets_count)' do
+    describe '-baskets_count' do
       let(:sort) { '-baskets_count' }
       let(:expected_record_ids) { [ideas[0].id, ideas[1].id, ideas[2].id] }
+
+      it 'returns the sorted records' do
+        expect(result_record_ids).to eq expected_record_ids
+      end
+    end
+  end
+
+  describe 'sort_initiatives' do
+    let(:initiatives) do
+      [
+        {
+          published_at: Time.now,
+          author: create(:user, first_name: 'Sean', last_name: 'Connery'),
+          upvotes_count: 5
+        },
+        {
+          published_at: Time.now - 1.hour,
+          author: create(:user, first_name: 'Sean', last_name: 'Penn'),
+          upvotes_count: 3
+        },
+        {
+          published_at: Time.now + 2.days,
+          author: create(:user, first_name: 'Jodie', last_name: 'Foster'),
+          upvotes_count: 0
+        }
+      ].map do |attributes|
+        create(:initiative, **attributes)
+      end
+    end
+    let(:result_record_ids) { service.sort_initiatives(Initiative.where(id: initiatives.map(&:id)), params, user).pluck(:id) }
+
+    describe 'new' do
+      let(:sort) { 'new' }
+      let(:expected_record_ids) { [initiatives[2].id, initiatives[0].id, initiatives[1].id] }
+
+      it 'returns the sorted records' do
+        expect(result_record_ids).to eq expected_record_ids
+      end
+    end
+
+    describe '-new' do
+      let(:sort) { '-new' }
+      let(:expected_record_ids) { [initiatives[1].id, initiatives[0].id, initiatives[2].id] }
+
+      it 'returns the sorted records' do
+        expect(result_record_ids).to eq expected_record_ids
+      end
+    end
+
+    describe do
+      before do
+        %w[proposed threshold_reached answered].map.with_index do |code, i|
+          create(:initiative_status, code: code, ordering: i)
+        end
+      end
+
+      let(:initiatives) do
+        [
+          InitiativeStatus.find_by(code: 'answered'),
+          InitiativeStatus.find_by(code: 'proposed'),
+          InitiativeStatus.find_by(code: 'threshold_reached')
+        ].map do |status|
+          create(:initiative, initiative_status: status)
+        end
+      end
+
+      describe 'status' do
+        let(:sort) { 'status' }
+        let(:expected_record_ids) { [initiatives[0].id, initiatives[2].id, initiatives[1].id] }
+
+        it 'returns the sorted records' do
+          expect(result_record_ids).to eq expected_record_ids
+        end
+      end
+
+      describe '-status' do
+        let(:sort) { '-status' }
+        let(:expected_record_ids) { [initiatives[1].id, initiatives[2].id, initiatives[0].id] }
+
+        it 'returns the sorted records' do
+          expect(result_record_ids).to eq expected_record_ids
+        end
+      end
+    end
+
+    describe 'author_name' do
+      let(:sort) { 'author_name' }
+      let(:expected_record_ids) { [initiatives[1].id, initiatives[0].id, initiatives[2].id] }
+
+      it 'returns the sorted records' do
+        expect(result_record_ids).to eq expected_record_ids
+      end
+    end
+
+    describe '-author_name' do
+      let(:sort) { '-author_name' }
+      let(:expected_record_ids) { [initiatives[2].id, initiatives[0].id, initiatives[1].id] }
+
+      it 'returns the sorted records' do
+        expect(result_record_ids).to eq expected_record_ids
+      end
+    end
+
+    describe 'random' do
+      let(:sort) { 'random' }
+      let(:expected_record_ids) { Initiative.order_random(user).pluck(:id) }
+
+      it 'returns the sorted records' do
+        expect(result_record_ids).to eq expected_record_ids
+      end
+    end
+
+    describe 'upvotes_count' do
+      let(:sort) { 'upvotes_count' }
+      let(:expected_record_ids) { [initiatives[0].id, initiatives[1].id, initiatives[2].id] }
+
+      it 'returns the sorted records' do
+        expect(result_record_ids).to eq expected_record_ids
+      end
+    end
+
+    describe '-upvotes_count' do
+      let(:sort) { '-upvotes_count' }
+      let(:expected_record_ids) { [initiatives[2].id, initiatives[1].id, initiatives[0].id] }
 
       it 'returns the sorted records' do
         expect(result_record_ids).to eq expected_record_ids
