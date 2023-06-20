@@ -2,7 +2,7 @@ import { IUsersByRegistrationField } from 'services/userCustomFieldStats';
 
 export const mockUsersByRegFields: IUsersByRegistrationField = {
   data: {
-    type: 'users_by_registration_field',
+    type: 'users_by_custom_field',
     attributes: {
       series: {
         users: {

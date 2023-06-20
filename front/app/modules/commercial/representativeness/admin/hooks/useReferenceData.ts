@@ -6,17 +6,18 @@ import useLocale from 'hooks/useLocale';
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import {
-  createGenderFieldSubscription,
   createRegFieldSubscription,
   RepresentativenessRowMultiloc,
   IncludedUsers,
   ageFieldToReferenceData,
   ageFieldToIncludedUsers,
+  handleRegFieldResponse2,
 } from './createRefDataSubscription';
 
 // typings
 import { IUserCustomFieldData } from 'api/user_custom_fields/types';
 import useUsersByAge from 'api/users_by_age/useUsersByAge';
+import useUsersByGender from 'api/users_by_gender/useUsersByGender';
 
 function useReferenceData(
   userCustomField: IUserCustomFieldData,
@@ -32,6 +33,7 @@ function useReferenceData(
     boolean | undefined
   >();
   const { data: usersByAge } = useUsersByAge({ project: projectId });
+  const { data: usersByGender } = useUsersByGender({ project: projectId });
   const locale = useLocale();
 
   const code = userCustomField.attributes.code;
@@ -47,9 +49,7 @@ function useReferenceData(
     };
 
     if (code === 'gender') {
-      const subscription = createGenderFieldSubscription(projectId, setters);
-
-      return () => subscription.unsubscribe();
+      handleRegFieldResponse2(usersByGender, setters);
     }
 
     if (code === 'birthyear') {
@@ -76,7 +76,7 @@ function useReferenceData(
     );
 
     return () => subscription.unsubscribe();
-  }, [code, userCustomFieldId, projectId, locale, usersByAge]);
+  }, [code, userCustomFieldId, projectId, locale, usersByAge, usersByGender]);
 
   return {
     referenceData,

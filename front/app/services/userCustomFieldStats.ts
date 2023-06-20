@@ -18,7 +18,7 @@ export interface ICustomFieldParams extends IStreamParams {
 // Response types
 export interface IUsersByRegistrationField {
   data: {
-    type: 'users_by_registration_field';
+    type: 'users_by_custom_field';
     attributes: {
       series: {
         users: {
@@ -26,10 +26,10 @@ export interface IUsersByRegistrationField {
         };
         reference_population: {
           [key: string]: number;
-        };
+        } | null;
         expected_users: {
           [key: string]: number;
-        };
+        } | null;
       };
       options: {
         [key: string]: {
@@ -100,17 +100,6 @@ export function usersByBirthyearStream(
 ) {
   return streams.get<IUsersByBirthyear>({
     apiEndpoint: `${apiEndpoint}/users_by_birthyear`,
-    ...streamParams,
-  });
-}
-
-export const usersByGenderXlsxEndpoint = `${apiEndpoint}/users_by_gender_as_xlsx`;
-
-export function usersByGenderStream(
-  streamParams: ICustomFieldParams | null = null
-) {
-  return streams.get<IUsersByRegistrationField>({
-    apiEndpoint: `${apiEndpoint}/users_by_gender`,
     ...streamParams,
   });
 }

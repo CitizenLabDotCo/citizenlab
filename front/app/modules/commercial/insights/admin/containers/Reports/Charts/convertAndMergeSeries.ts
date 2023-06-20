@@ -1,18 +1,10 @@
 // utils
 import { map, orderBy } from 'lodash-es';
-import {
-  binBirthyear,
-  rename,
-  join,
-  convertDomicileData,
-  Series,
-} from 'utils/dataUtils';
-import { fallbackMessages } from 'containers/Admin/dashboard/users/Charts/AreaChart';
+import { rename, join, Series } from 'utils/dataUtils';
 
 // typings
 import { TCustomFieldCode } from 'api/user_custom_fields/types';
 import {
-  IUsersByRegistrationField,
   IUsersByDomicile,
   IUsersByBirthyear,
 } from 'services/userCustomFieldStats';
@@ -22,6 +14,7 @@ import messages from 'containers/Admin/dashboard/messages';
 import { InjectedLocalized } from 'utils/localize';
 import { MessageDescriptor } from 'react-intl';
 import { FormatMessage } from 'typings';
+import { IUsersByRegistrationField } from 'api/users_by_gender/types';
 
 export type ISupportedDataType =
   | IUsersByRegistrationField
@@ -73,14 +66,14 @@ const createConvertAndMergeSeries =
     const totalUsers = totalSerie.data.attributes.series.users;
     const participantUsers = participantSerie.data.attributes.series.users;
 
-    if (code === 'birthyear') {
-      const options = { missingBin: formatMessage(messages._blank) };
+    // if (code === 'birthyear') {
+    //   const options = { missingBin: formatMessage(messages._blank) };
 
-      const binnedTotal = binBirthyear(totalUsers, options);
-      const binnedParticipants = binBirthyear(participantUsers, options);
+    //   const binnedTotal = binBirthyear(totalUsers, options);
+    //   const binnedParticipants = binBirthyear(participantUsers, options);
 
-      return joinTotalAndParticipants(binnedTotal, binnedParticipants);
-    }
+    //   return joinTotalAndParticipants(binnedTotal, binnedParticipants);
+    // }
 
     if (code === 'gender') {
       return GENDER_COLUMNS.map((gender) => ({
@@ -90,25 +83,25 @@ const createConvertAndMergeSeries =
       }));
     }
 
-    if (code === 'domicile') {
-      const parseName = (key, value) =>
-        key in fallbackMessages
-          ? formatMessage(fallbackMessages[key])
-          : localize(value.title_multiloc);
+    // if (code === 'domicile') {
+    //   const parseName = (key, value) =>
+    //     key in fallbackMessages
+    //       ? formatMessage(fallbackMessages[key])
+    //       : localize(value.title_multiloc);
 
-      const areas = (totalSerie as IUsersByDomicile).data.attributes.areas;
-      const resTotal = convertDomicileData(areas, totalUsers, parseName);
+    //   const areas = (totalSerie as IUsersByDomicile).data.attributes.areas;
+    //   const resTotal = convertDomicileData(areas, totalUsers, parseName);
 
-      const resParticipants = convertDomicileData(
-        areas,
-        participantUsers,
-        parseName
-      );
+    //   const resParticipants = convertDomicileData(
+    //     areas,
+    //     participantUsers,
+    //     parseName
+    //   );
 
-      const res = joinTotalAndParticipants(resTotal, resParticipants);
+    //   const res = joinTotalAndParticipants(resTotal, resParticipants);
 
-      return orderBy(res, 'participants', 'desc');
-    }
+    //   return orderBy(res, 'participants', 'desc');
+    // }
 
     const res = map(
       (totalSerie as IUsersByRegistrationField).data.attributes.options,

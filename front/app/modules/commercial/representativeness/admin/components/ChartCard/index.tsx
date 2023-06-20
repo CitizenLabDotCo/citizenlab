@@ -8,7 +8,6 @@ import useRScore from '../../hooks/useRScore';
 // services
 import {
   usersByRegFieldXlsxEndpoint,
-  usersByGenderXlsxEndpoint,
   usersByDomicileXlsxEndpoint,
 } from 'services/userCustomFieldStats';
 
@@ -41,6 +40,7 @@ import {
 } from '../../hooks/createRefDataSubscription';
 import { View } from 'components/admin/GraphCard/ViewToggle';
 import { usersByAgeXlsxEndpoint } from 'api/users_by_age/util';
+import { usersByGenderXlsxEndpoint } from 'api/users_by_gender/util';
 
 interface Props {
   userCustomField: IUserCustomFieldData;

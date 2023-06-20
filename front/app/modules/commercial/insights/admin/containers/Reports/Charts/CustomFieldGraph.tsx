@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import { isEmpty } from 'lodash-es';
 import { combineLatest } from 'rxjs';
 
@@ -35,8 +35,6 @@ import { IStream } from 'utils/streams';
 import {
   usersByRegFieldStream,
   usersByRegFieldXlsxEndpoint,
-  usersByGenderStream,
-  usersByGenderXlsxEndpoint,
   usersByBirthyearStream,
   usersByBirthyearXlsxEndpoint,
   usersByDomicileStream,
@@ -48,8 +46,8 @@ import {
 import { isNilOrError } from 'utils/helperUtils';
 import createConvertAndMergeSeries, {
   ISupportedDataType,
-  TOutput,
 } from './convertAndMergeSeries';
+import useUsersByGender from 'api/users_by_gender/useUsersByGender';
 
 interface ICustomFieldEndpoint {
   stream: (
@@ -58,13 +56,9 @@ interface ICustomFieldEndpoint {
   xlsxEndpoint: string;
 }
 
-type TAllowedCode = 'gender' | 'birthyear' | 'domicile';
+type TAllowedCode = 'birthyear' | 'domicile';
 
 const customFieldEndpoints: Record<TAllowedCode, ICustomFieldEndpoint> = {
-  gender: {
-    stream: usersByGenderStream,
-    xlsxEndpoint: usersByGenderXlsxEndpoint,
-  },
   birthyear: {
     stream: usersByBirthyearStream,
     xlsxEndpoint: usersByBirthyearXlsxEndpoint,
@@ -154,7 +148,14 @@ const CustomFieldsGraph = ({
   intl: { formatMessage },
   className,
 }: Props) => {
-  const [serie, setSerie] = useState<TOutput | null>(null);
+  const { data: usersByGenderWithFilters } = useUsersByGender({
+    start_at: startAt,
+    end_at: endAt,
+    project: currentProject,
+    filter_by_participation: true,
+  });
+  const { data: usersByGenderWithoutFilters } = useUsersByGender({});
+
   const currentChartRef = useRef();
   const convertAndMergeSeriesRef = useRef(
     createConvertAndMergeSeries({
@@ -163,40 +164,46 @@ const CustomFieldsGraph = ({
     })
   );
   const convertAndMergeSeries = convertAndMergeSeriesRef.current;
+  const { code } = customField.attributes;
 
-  useEffect(() => {
-    const combinedStream = createCombinedStream(
-      customField,
-      { startAt, endAt },
-      currentProject
-    );
+  const totalSerie = usersByGenderWithoutFilters;
+  const participantSerie = usersByGenderWithFilters;
+  const serie =
+    totalSerie &&
+    participantSerie &&
+    convertAndMergeSeries(totalSerie, participantSerie, code);
 
-    const subscription = combinedStream.subscribe(
-      ([totalSerie, participantSerie]) => {
-        if (!isNilOrError(totalSerie) && !isNilOrError(participantSerie)) {
-          const { code } = customField.attributes;
+  // useEffect(() => {
+  //   const combinedStream = createCombinedStream(
+  //     customField,
+  //     { startAt, endAt },
+  //     currentProject
+  //   );
 
-          const convertedAndMergedSeries = convertAndMergeSeries(
-            totalSerie,
-            participantSerie,
-            code
-          );
+  //   const subscription = combinedStream.subscribe(
+  //     ([totalSerie, participantSerie]) => {
+  //       if (!isNilOrError(totalSerie) && !isNilOrError(participantSerie)) {
+  //         const { code } = customField.attributes;
 
-          setSerie(convertedAndMergedSeries);
-        }
-      }
-    );
+  //         const convertedAndMergedSeries = convertAndMergeSeries(
+  //           totalSerie,
+  //           participantSerie,
+  //           code
+  //         );
 
-    return () => subscription.unsubscribe();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [customField, currentProject, startAt, endAt]);
+  //         setSerie(convertedAndMergedSeries);
+  //       }
+  //     }
+  //   );
+
+  //   return () => subscription.unsubscribe();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [customField, currentProject, startAt, endAt]);
 
   const noData =
     isNilOrError(serie) ||
     serie.every((item) => isEmpty(item)) ||
     serie.length <= 0;
-
-  const { code } = customField.attributes;
 
   const xlsxEndpoint =
     code && code in customFieldEndpoints

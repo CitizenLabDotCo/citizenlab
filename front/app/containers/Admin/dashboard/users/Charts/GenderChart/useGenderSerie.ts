@@ -1,22 +1,16 @@
-import { useState, useEffect } from 'react';
-
-// services
-import {
-  usersByGenderStream,
-  IUsersByRegistrationField,
-} from 'services/userCustomFieldStats';
+import { IUsersByRegistrationField } from 'api/users_by_gender/types';
 
 // i18n
 import messages from 'containers/Admin/dashboard/messages';
 import { useIntl } from 'utils/cl-intl';
 
 // utils
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { roundPercentages } from 'utils/math';
 
 // typings
 import { QueryParameters, GenderSerie } from './typings';
 import { FormatMessage } from 'typings';
+import useUsersByGender from 'api/users_by_gender/useUsersByGender';
 
 export default function useGenderSerie({
   startAt,
@@ -25,31 +19,16 @@ export default function useGenderSerie({
   projectId,
 }: QueryParameters) {
   const { formatMessage } = useIntl();
-  const [serie, setSerie] = useState<GenderSerie | NilOrError>();
+  const { data: usersByGender } = useUsersByGender({
+    start_at: startAt,
+    end_at: endAt,
+    group: currentGroupFilter,
+    project: projectId,
+  });
 
-  useEffect(() => {
-    const { observable } = usersByGenderStream({
-      queryParameters: {
-        start_at: startAt,
-        end_at: endAt,
-        group: currentGroupFilter,
-        project: projectId,
-      },
-    });
-
-    const subscription = observable.subscribe(
-      (response: IUsersByRegistrationField | NilOrError) => {
-        if (isNilOrError(response)) {
-          setSerie(response);
-          return;
-        }
-
-        setSerie(convertToGraphFormat(response, formatMessage));
-      }
-    );
-
-    return () => subscription.unsubscribe();
-  }, [startAt, endAt, currentGroupFilter, projectId, formatMessage]);
+  const serie = usersByGender
+    ? convertToGraphFormat(usersByGender, formatMessage)
+    : usersByGender;
 
   return serie;
 }
