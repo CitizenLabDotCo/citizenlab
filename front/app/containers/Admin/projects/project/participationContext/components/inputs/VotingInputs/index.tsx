@@ -1,8 +1,12 @@
 import React from 'react';
 
 // components
-import { Toggle, IconTooltip } from '@citizenlab/cl2-component-library';
-import { SectionField, SubSectionTitle } from 'components/admin/Section';
+import { Toggle, IconTooltip, Text } from '@citizenlab/cl2-component-library';
+import {
+  SectionField,
+  SubSectionTitle,
+  SubSectionTitleWithDescription,
+} from 'components/admin/Section';
 import Error from 'components/UI/Error';
 import DefaultViewPicker from '../../shared/DefaultViewPicker';
 import { ToggleRow } from '../../shared/styling';
@@ -17,6 +21,8 @@ import messages from '../../../../messages';
 import { InputTerm, VotingMethod } from 'services/participationContexts';
 import { ApiErrors } from '../../../';
 import { IOption } from 'typings';
+import CumulativeInputs from './votingMethodInputs/CumulativeInputs';
+import { StyledSectionDescription } from 'containers/Admin/initiatives/settings';
 
 export interface VotingInputsProps {
   isCustomInputTermEnabled: boolean;
@@ -61,8 +67,31 @@ export default ({
         voting_method={voting_method}
         handleVotingMethodOnChange={handleVotingMethodOnChange}
       />
+      <SectionField>
+        <SubSectionTitleWithDescription>
+          <FormattedMessage {...messages.optionsToVoteOn} />
+          <IconTooltip content={'TODO: add tooltip content'} />
+        </SubSectionTitleWithDescription>
+        <StyledSectionDescription>
+          Configure the voting options in the Input Manager tab.
+        </StyledSectionDescription>
+      </SectionField>
       {voting_method === 'budgeting' && (
         <BudgetingInputs
+          voting_min_total={voting_min_total}
+          voting_max_total={voting_max_total}
+          input_term={input_term}
+          isCustomInputTermEnabled={isCustomInputTermEnabled}
+          minTotalVotesError={minTotalVotesError}
+          maxTotalVotesError={maxTotalVotesError}
+          apiErrors={apiErrors}
+          handleInputTermChange={handleInputTermChange}
+          handleMinBudgetingAmountChange={handleVotingMinTotalChange}
+          handleMaxBudgetingAmountChange={handleVotingMaxTotalChange}
+        />
+      )}
+      {voting_method === 'cumulative' && (
+        <CumulativeInputs
           voting_min_total={voting_min_total}
           voting_max_total={voting_max_total}
           input_term={input_term}

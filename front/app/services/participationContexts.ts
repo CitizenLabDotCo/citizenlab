@@ -26,7 +26,7 @@ export type ParticipationMethod =
   | 'volunteering'
   | 'document_annotation';
 
-export type VotingMethod = 'budgeting';
+export type VotingMethod = 'budgeting' | 'cumulative';
 
 export type IdeaDefaultSortMethod =
   | 'trending'

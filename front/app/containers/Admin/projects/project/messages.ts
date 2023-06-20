@@ -136,9 +136,9 @@ export default defineMessages({
     defaultMessage: 'Conduct a voting or prioritization exercise',
   },
   conductVotingOrPrioritizationDescriptionText: {
-    id: 'app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationDescriptionText',
+    id: 'app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationDescriptionText2',
     defaultMessage:
-      'Assign a budget to projects and ask participants to select their preferred projects that fit within a total budget.',
+      'Select a voting method, and have users prioritize between a few different options.',
   },
   createNativeSurvey: {
     id: 'app.containers.AdminPage.ProjectEdit.createNativeSurvey',
@@ -239,6 +239,10 @@ export default defineMessages({
   enabledActionsForResidents: {
     id: 'app.containers.AdminPage.ProjectEdit.Voting.enabledActionsForResidents',
     defaultMessage: 'Enabled actions for residents',
+  },
+  optionsToVoteOn: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.optionsToVoteOn',
+    defaultMessage: 'Options to vote on',
   },
   enabledActionsTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.enabledActionsTooltip2',

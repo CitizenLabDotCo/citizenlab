@@ -11,11 +11,12 @@ import {
   IconTooltip,
   Text,
 } from '@citizenlab/cl2-component-library';
-import BudgetingIcon from './BudgetingIcon';
+import BudgetingIcon from './CardIcons/BudgetingIcon';
 import { SubSectionTitle } from 'components/admin/Section';
 
 // types
 import { VotingMethod } from 'services/participationContexts';
+import CumulativeIcon from './CardIcons/CumulativeIcon';
 
 type VotingMethodSelectorProps = {
   voting_method?: VotingMethod | null;
@@ -27,7 +28,6 @@ const VotingMethodSelector = ({
   handleVotingMethodOnChange,
 }: VotingMethodSelectorProps) => {
   const { formatMessage } = useIntl();
-  const budgetingSelected = voting_method === 'budgeting';
 
   return (
     <Box mb="35px">
@@ -42,16 +42,28 @@ const VotingMethodSelector = ({
       <Text mt="0px" mb="24px" color="textSecondary">
         {formatMessage(messages.votingMethodSelectorSubtitle)}
       </Text>
-      <CardButton
-        selected={budgetingSelected}
-        icon={<BudgetingIcon selected={budgetingSelected} />}
-        onClick={(e) => {
-          e.preventDefault();
-          handleVotingMethodOnChange('budgeting');
-        }}
-        title={formatMessage(messages.budgetingVotingMethodTitle)}
-        subtitle={formatMessage(messages.budgetingVotingMethodSubtitle)}
-      />
+      <Box display="flex" gap="16px">
+        <CardButton
+          selected={voting_method === 'cumulative'}
+          icon={<CumulativeIcon selected={voting_method === 'cumulative'} />}
+          onClick={(e) => {
+            e.preventDefault();
+            handleVotingMethodOnChange('cumulative');
+          }}
+          title={formatMessage(messages.cumulativeVotingMethodTitle)}
+          subtitle={formatMessage(messages.cumulativeVotingMethodSubtitle)}
+        />
+        <CardButton
+          selected={voting_method === 'budgeting'}
+          icon={<BudgetingIcon selected={voting_method === 'budgeting'} />}
+          onClick={(e) => {
+            e.preventDefault();
+            handleVotingMethodOnChange('budgeting');
+          }}
+          title={formatMessage(messages.budgetingVotingMethodTitle)}
+          subtitle={formatMessage(messages.budgetingVotingMethodSubtitle)}
+        />
+      </Box>
     </Box>
   );
 };
