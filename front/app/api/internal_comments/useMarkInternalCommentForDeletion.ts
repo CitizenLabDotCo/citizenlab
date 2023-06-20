@@ -57,7 +57,7 @@ const useMarkInternalCommentForDeletion = ({
           }),
         });
 
-        // We invalidate the idea because the number of internal comments is on the initiative
+        // We invalidate the initiative because the number of internal comments is on the initiative
         queryClient.invalidateQueries({
           queryKey: initiativesKeys.item({ id: initiativeId }),
         });

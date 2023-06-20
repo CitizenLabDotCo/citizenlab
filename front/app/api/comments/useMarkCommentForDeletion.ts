@@ -49,7 +49,7 @@ const useMarkCommentForDeletion = ({
       }
 
       if (initiativeId) {
-        // We invalidate the initiative because the number of comments is on the idea
+        // We invalidate the initiative because the number of comments is on the initiative
         queryClient.invalidateQueries({
           queryKey: initiativesKeys.item({ id: initiativeId }),
         });
