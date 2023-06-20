@@ -23,4 +23,9 @@ export default defineMessages({
     defaultMessage:
       '{commentsCount, plural, no {# comments} one {# comments} other {# comments}}',
   },
+  xInputs: {
+    id: 'app.components.ProjectFolderCard.xInputs',
+    defaultMessage:
+      '{ideasCount, plural, no {# inputs} one {# input} other {# inputs}}',
+  },
 });

@@ -540,7 +540,7 @@ const ProjectFolderCard = memo<Props>(
 
             <ContentFooterRight>
               <ProjectMetaItems>
-                {showIdeasCount && (
+                {showIdeasCount && ideasCount && (
                   <MetaItem className="first">
                     <Icon
                       height="23px"
@@ -550,6 +550,9 @@ const ProjectFolderCard = memo<Props>(
                       name="idea"
                     />
                     <MetaItemText aria-hidden>{ideasCount}</MetaItemText>
+                    <ScreenReaderOnly>
+                      {formatMessage(messages.xInputs, { ideasCount })}
+                    </ScreenReaderOnly>
                   </MetaItem>
                 )}
 
