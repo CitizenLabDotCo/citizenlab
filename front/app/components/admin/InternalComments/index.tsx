@@ -27,19 +27,10 @@ import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useComments from 'api/comments/useComments';
 
-const Header = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 30px;
-
+const Header = styled(Box)`
   ${isRtl`
     flex-direction: row-reverse;
   `}
-`;
-
-const CommentCount = styled.span`
-  margin-left: 5px;
 `;
 
 const StyledCommentSorting = styled(InternalCommentSorting)`
@@ -106,22 +97,28 @@ const InternalCommentsSection = ({ postId, postType, className }: Props) => {
     setPosting(isPosting);
   };
 
-  const commentCount = post.data.attributes.comments_count;
+  const commentCount = post.data.attributes.internal_comments_count;
 
   return (
     <Box className={className || ''}>
-      <Header>
-        <Title color="tenantText" variant="h2" id="comments-main-title">
-          <FormattedMessage {...commentsMessages.invisibleTitleComments} />
-          {commentCount > 0 && <CommentCount>({commentCount})</CommentCount>}
-        </Title>
-        <StyledCommentSorting
-          onChange={handleSortOrderChange}
-          selectedCommentSort={sortOrder}
-        />
-      </Header>
+      {!!commentCount && (
+        <Header
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
+          mt="16px"
+        >
+          <Title color="tenantText" variant="h2" id="comments-main-title">
+            <FormattedMessage {...commentsMessages.invisibleTitleComments} />
+          </Title>
+          <StyledCommentSorting
+            onChange={handleSortOrderChange}
+            selectedCommentSort={sortOrder}
+          />
+        </Header>
+      )}
 
-      <Box mb="24px">
+      <Box my="24px">
         <InternalParentCommentForm
           ideaId={ideaId}
           initiativeId={initiativeId}
