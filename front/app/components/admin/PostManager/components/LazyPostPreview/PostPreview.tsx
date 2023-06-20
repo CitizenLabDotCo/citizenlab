@@ -51,7 +51,7 @@ export const Content = styled.div`
   }
 `;
 
-interface Props {
+export interface Props {
   type: ManagerType;
   onClose: () => void;
   postId: string | null;
