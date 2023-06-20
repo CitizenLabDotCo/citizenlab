@@ -84,7 +84,7 @@ const ParentComment = ({
         ? commentingPermissionInitiative?.disabledReason
         : idea?.data.attributes.action_descriptor.commenting_idea
             .disabled_reason;
-    const showCommentForm = isNil(commentingDisabledReason) && !commentDeleted;
+    const showCommentForm = isNil(commentingDisabledReason);
     const hasChildComments = childCommentIds && childCommentIds.length > 0;
     const modifiedChildCommentIds = !isNilOrError(childComments)
       ? childComments
