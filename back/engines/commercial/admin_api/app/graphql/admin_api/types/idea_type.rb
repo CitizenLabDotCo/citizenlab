@@ -43,6 +43,7 @@ module AdminApi
     field :likes_count, Integer, null: false
     field :dislikes_count, Integer, null: false
     field :comments_count, Integer, null: false
+    field :internal_comments_count, Integer, null: false
     field :images, IdeaImage.connection_type, null: true
     def images
       object.idea_images
