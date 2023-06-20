@@ -56,7 +56,7 @@ const CommentsSection = ({
   const isInternalCommentingEnabled = useFeatureFlag({
     name: 'internal_commenting',
   });
-  const commentingPermissions = useInitiativesPermissions(
+  const initiativeCommentingPermissions = useInitiativesPermissions(
     'commenting_initiative'
   );
   const [selectedTab, setSelectedTab] = useState<CommentType>('internal');
@@ -74,7 +74,7 @@ const CommentsSection = ({
   const commentingEnabled =
     postType === 'idea'
       ? commenting_idea?.enabled
-      : commentingPermissions?.enabled;
+      : initiativeCommentingPermissions?.enabled;
 
   const tabs: NavTab[] = [
     {
