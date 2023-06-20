@@ -400,7 +400,8 @@ const ProjectFolderCard = memo<Props>(
       []
     );
 
-    const commentsCount = projectFolder?.data.attributes.participants_count;
+    // Footer
+    const commentsCount = projectFolder?.data.attributes.comments_count;
     const ideasCount = projectFolder?.data.attributes.ideas_count;
     const avatarIds =
       projectFolder?.data.relationships.avatars &&
@@ -409,8 +410,13 @@ const ProjectFolderCard = memo<Props>(
             (avatar) => avatar.id
           )
         : [];
-    const showFooter = commentsCount || ideasCount || avatarIds;
 
+    const showIdeasCount = ideasCount ? ideasCount > 0 : false;
+    const showCommentsCount = commentsCount ? commentsCount > 0 : false;
+    const showAvatarBubbles = avatarIds ? avatarIds.length > 0 : false;
+    const showFooter = showAvatarBubbles || showIdeasCount || showCommentsCount;
+
+    // Images
     const imageVersions = isNilOrError(projectFolderImages)
       ? null
       : projectFolderImages.data[0]?.attributes.versions;
@@ -521,7 +527,7 @@ const ProjectFolderCard = memo<Props>(
           </ContentBody>
           <ContentFooter className={`${size} ${!showFooter ? 'hidden' : ''}`}>
             <ContentFooterLeft>
-              {avatarIds && avatarIds.length > 0 && (
+              {showAvatarBubbles && (
                 <AvatarBubbles
                   size={32}
                   limit={3}
@@ -534,7 +540,7 @@ const ProjectFolderCard = memo<Props>(
 
             <ContentFooterRight>
               <ProjectMetaItems>
-                {ideasCount && ideasCount > 0 && (
+                {showIdeasCount && (
                   <MetaItem className="first">
                     <Icon
                       height="23px"
@@ -547,7 +553,7 @@ const ProjectFolderCard = memo<Props>(
                   </MetaItem>
                 )}
 
-                {commentsCount && commentsCount > 0 && (
+                {showCommentsCount && commentsCount && (
                   <MetaItem>
                     <Icon
                       height="23px"
