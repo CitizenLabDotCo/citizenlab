@@ -48,7 +48,7 @@ describe ParticipantsService do
   end
 
   describe 'folder_participants_count' do
-    it 'returns the count of participatns' do
+    it 'returns the count of participants' do
       projects = create_list(:project, 2)
       folder = create(:project_folder, projects: projects)
 
