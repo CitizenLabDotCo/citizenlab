@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 // components
-import SideModal from 'components/UI/SideModal';
 import AdminIdeaEdit from 'components/admin/PostManager/components/PostPreview/Idea/AdminIdeaEdit';
 import AdminIdeaContent from 'components/admin/PostManager/components/PostPreview/Idea/AdminIdeaContent';
 
@@ -18,41 +17,20 @@ const IdeaPostPreview = ({
   onSwitchPreviewMode,
   mode,
 }: Props) => {
-  const [opened, setOpened] = useState(false);
-
-  useEffect(() => {
-    if (typeof ideaId === 'string') {
-      setOpened(true);
-    }
-  }, [ideaId]);
-
   if (!ideaId) {
     return null;
   }
 
-  const handleOnClose = () => {
-    setOpened(false);
-    onClose();
-  };
-
-  const previewComponent = () => {
-    return {
-      view: (
-        <AdminIdeaContent
-          ideaId={ideaId}
-          closePreview={handleOnClose}
-          handleClickEdit={onSwitchPreviewMode}
-        />
-      ),
-      edit: <AdminIdeaEdit ideaId={ideaId} goBack={onSwitchPreviewMode} />,
-    }[mode];
-  };
-
-  return (
-    <SideModal opened={opened} close={handleOnClose}>
-      {previewComponent()}
-    </SideModal>
-  );
+  return {
+    view: (
+      <AdminIdeaContent
+        ideaId={ideaId}
+        closePreview={onClose}
+        handleClickEdit={onSwitchPreviewMode}
+      />
+    ),
+    edit: <AdminIdeaEdit ideaId={ideaId} goBack={onSwitchPreviewMode} />,
+  }[mode];
 };
 
 export default IdeaPostPreview;

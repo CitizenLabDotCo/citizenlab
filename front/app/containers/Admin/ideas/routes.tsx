@@ -4,7 +4,7 @@ import moduleConfiguration from 'modules';
 
 const AdminIdeasContainer = lazy(() => import('./index'));
 const AdminIdeasAll = lazy(() => import('./all'));
-import PostPreviewIndex from 'components/admin/PostManager/components/PostPreviewIndex';
+import IdeaPreviewIndex from 'components/admin/PostManager/components/IdeaPreviewIndex';
 
 export default () => ({
   path: 'ideas',
@@ -26,7 +26,7 @@ export default () => ({
       path: ':ideaId',
       element: (
         <PageLoading>
-          <PostPreviewIndex />
+          <IdeaPreviewIndex />
         </PageLoading>
       ),
     },
