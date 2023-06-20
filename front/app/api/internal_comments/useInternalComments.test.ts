@@ -1,20 +1,20 @@
 import { renderHook } from '@testing-library/react-hooks';
 
-import useComments from './useComments';
+import useInternalComments from './useInternalComments';
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { commentsData, links } from './__mocks__/useComments';
+import { commentsData, links } from './__mocks__/useInternalComments';
 
-const ideaPath = '*ideas/:ideaId/comments';
-const initiativePath = '*initiatives/:initiativeId/comments';
-const childrenPath = '*comments/:commentId/children';
-const userPath = '*users/:userId/comments';
+const ideaPath = '*ideas/:ideaId/internal_comments';
+const initiativePath = '*initiatives/:initiativeId/internal_comments';
+const childrenPath = '*internal_comments/:commentId/children';
+const userPath = '*users/:userId/internal_comments';
 
 const server = setupServer();
 
-describe('useComments', () => {
+describe('useInternalComments', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
@@ -25,7 +25,7 @@ describe('useComments', () => {
       })
     );
     const { result, waitFor } = renderHook(
-      () => useComments({ ideaId: 'ideaId' }),
+      () => useInternalComments({ type: 'idea', ideaId: 'ideaId' }),
       {
         wrapper: createQueryClientWrapper(),
       }
@@ -46,7 +46,11 @@ describe('useComments', () => {
       })
     );
     const { result, waitFor } = renderHook(
-      () => useComments({ initiativeId: 'initiativeId' }),
+      () =>
+        useInternalComments({
+          type: 'initiative',
+          initiativeId: 'initiativeId',
+        }),
       {
         wrapper: createQueryClientWrapper(),
       }
@@ -67,7 +71,7 @@ describe('useComments', () => {
       })
     );
     const { result, waitFor } = renderHook(
-      () => useComments({ userId: 'userId' }),
+      () => useInternalComments({ type: 'author', authorId: 'authorId' }),
       {
         wrapper: createQueryClientWrapper(),
       }
@@ -88,7 +92,7 @@ describe('useComments', () => {
       })
     );
     const { result, waitFor } = renderHook(
-      () => useComments({ commentId: 'commentId' }),
+      () => useInternalComments({ type: 'comment', commentId: 'commentId' }),
       {
         wrapper: createQueryClientWrapper(),
       }
@@ -110,7 +114,7 @@ describe('useComments', () => {
     );
 
     const { result, waitFor } = renderHook(
-      () => useComments({ ideaId: 'ideaId' }),
+      () => useInternalComments({ type: 'idea', ideaId: 'ideaId' }),
       {
         wrapper: createQueryClientWrapper(),
       }

@@ -20,7 +20,7 @@ import { deleteCommentModalClosed } from '../events';
 import styled from 'styled-components';
 import { isRtl } from 'utils/styleUtils';
 
-import useMarkCommentForDeletion from 'api/comments/useMarkForDeletion';
+import useMarkCommentForDeletion from 'api/comments/useMarkCommentForDeletion';
 import { DeleteReason, ICommentData } from 'api/comments/types';
 
 const Container = styled.div`
@@ -154,13 +154,10 @@ const CommentsMoreActions = ({
 
   const deleteComment = async (reason?: DeleteReason) => {
     const commentId = comment.id;
-    const authorId = comment.relationships.author.data?.id;
 
     markForDeletion(
       {
         commentId,
-        authorId,
-        projectId,
         reason,
       },
       {

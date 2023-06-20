@@ -3,8 +3,8 @@ import React, { FormEvent, useEffect, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // Services
-import useUpdateComment from 'api/comments/useUpdateComment';
-import { IUpdatedComment } from 'api/comments/types';
+import useUpdateInternalComment from 'api/internal_comments/useUpdateInternalComment';
+import { IUpdatedInternalComment } from 'api/internal_comments/types';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -22,10 +22,9 @@ import styled, { useTheme } from 'styled-components';
 import { CLErrorsJSON, CLErrors } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
-import useComment from 'api/comments/useComment';
+import useInternalComment from 'api/internal_comments/useInternalComment';
 import useLocale from 'hooks/useLocale';
 import { Button } from '@citizenlab/cl2-component-library';
-import useLocalize from 'hooks/useLocalize';
 
 const Container = styled.div``;
 
@@ -73,12 +72,12 @@ const InternalCommentBody = ({
   initiativeId,
 }: Props) => {
   const theme = useTheme();
-  const { data: comment } = useComment(commentId);
-  const { mutate: updateComment, isLoading: processing } = useUpdateComment({
-    ideaId,
-    initiativeId,
-  });
-  const localize = useLocalize();
+  const { data: comment } = useInternalComment(commentId);
+  const { mutate: updateComment, isLoading: processing } =
+    useUpdateInternalComment({
+      ideaId,
+      initiativeId,
+    });
   const locale = useLocale();
 
   const [commentContent, setCommentContent] = useState('');
@@ -93,9 +92,7 @@ const InternalCommentBody = ({
       const setNewCommentContent = () => {
         let commentContent = '';
 
-        commentContent = localize(
-          comment.data.attributes.body_multiloc
-        ).replace(
+        commentContent = comment.data.attributes.body.replace(
           /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi,
           '<a class="mention" data-link="/profile/$2" href="/profile/$2">$3</a>'
         );
@@ -106,9 +103,7 @@ const InternalCommentBody = ({
       const setNewEditableCommentContent = () => {
         let editableCommentContent = '';
 
-        editableCommentContent = localize(
-          comment.data.attributes.body_multiloc
-        ).replace(
+        editableCommentContent = comment.data.attributes.body.replace(
           /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>@([\S\s]*?)<\/span>/gi,
           '@[$3]($2)'
         );
@@ -119,7 +114,7 @@ const InternalCommentBody = ({
       setNewCommentContent();
       setNewEditableCommentContent();
     }
-  }, [comment, commentContent, localize]);
+  }, [comment, commentContent]);
 
   if (isNilOrError(locale)) {
     return null;
@@ -150,13 +145,8 @@ const InternalCommentBody = ({
   const onSubmit = async (event: FormEvent<any>) => {
     event.preventDefault();
 
-    const updatedComment: Omit<IUpdatedComment, 'commentId'> = {
-      body_multiloc: {
-        [locale]: editableCommentContent.replace(
-          /@\[(.*?)\]\((.*?)\)/gi,
-          '@$2'
-        ),
-      },
+    const updatedComment: Omit<IUpdatedInternalComment, 'commentId'> = {
+      body: editableCommentContent.replace(/@\[(.*?)\]\((.*?)\)/gi, '@$2'),
     };
 
     setApiErrors(null);

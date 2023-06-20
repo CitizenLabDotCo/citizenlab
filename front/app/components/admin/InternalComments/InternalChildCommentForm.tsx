@@ -2,7 +2,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Button from 'components/UI/Button';
@@ -26,10 +25,9 @@ import { commentReplyButtonClicked$, commentAdded } from './events';
 import styled from 'styled-components';
 import { hideVisually } from 'polished';
 import { colors, defaultStyles } from 'utils/styleUtils';
-import useLocale from 'hooks/useLocale';
 import useAuthUser from 'api/me/useAuthUser';
-import useAddCommentToIdea from 'api/comments/useAddCommentToIdea';
-import useAddCommentToInitiative from 'api/comments/useAddCommentToInitiative';
+import useAddInternalCommentToIdea from 'api/internal_comments/useAddInternalCommentToIdea';
+import useAddInternalCommentToInitiative from 'api/internal_comments/useAddInternalCommentToInitiative';
 
 const Container = styled.div`
   display: flex;
@@ -98,18 +96,17 @@ const InternalChildCommentForm = ({
   className,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const locale = useLocale();
   const { data: authUser } = useAuthUser();
   const smallerThanTablet = useBreakpoint('tablet');
 
   const {
     mutate: addCommentToIdeaComment,
     isLoading: isAddCommentToIdeaLoading,
-  } = useAddCommentToIdea();
+  } = useAddInternalCommentToIdea();
   const {
     mutate: addCommentToInitiativeComment,
     isLoading: isAddCommentToInitiativeLoading,
-  } = useAddCommentToInitiative();
+  } = useAddInternalCommentToInitiative();
   const [inputValue, setInputValue] = useState('');
   const [focused, setFocused] = useState(false);
   const [canSubmit, setCanSubmit] = useState(false);
@@ -143,7 +140,7 @@ const InternalChildCommentForm = ({
     };
   }, [parentId]);
 
-  if (!authUser || isNilOrError(locale)) {
+  if (!authUser) {
     return null;
   }
 
@@ -182,9 +179,10 @@ const InternalChildCommentForm = ({
 
   const onSubmit = async () => {
     if (canSubmit) {
-      const commentBodyMultiloc = {
-        [locale]: inputValue.replace(/@\[(.*?)\]\((.*?)\)/gi, '@$2'),
-      };
+      const commentBodyText = inputValue.replace(
+        /@\[(.*?)\]\((.*?)\)/gi,
+        '@$2'
+      );
 
       setCanSubmit(false);
 
@@ -197,13 +195,13 @@ const InternalChildCommentForm = ({
         },
       });
 
-      if (postType === 'idea' && projectId) {
+      if (postType === 'idea' && projectId && ideaId) {
         addCommentToIdeaComment(
           {
             ideaId,
             author_id: authUser.data.id,
             parent_id: parentId,
-            body_multiloc: commentBodyMultiloc,
+            body: commentBodyText,
           },
           {
             onSuccess: () => {
@@ -218,13 +216,13 @@ const InternalChildCommentForm = ({
         );
       }
 
-      if (postType === 'initiative') {
+      if (postType === 'initiative' && initiativeId) {
         addCommentToInitiativeComment(
           {
             initiativeId,
             author_id: authUser.data.id,
             parent_id: parentId,
-            body_multiloc: commentBodyMultiloc,
+            body: commentBodyText,
           },
           {
             onSuccess: () => {

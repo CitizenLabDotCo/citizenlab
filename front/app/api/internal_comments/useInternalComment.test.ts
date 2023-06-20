@@ -1,14 +1,14 @@
 import { renderHook } from '@testing-library/react-hooks';
 
-import useComment from './useComment';
+import useInternalComment from './useInternalComment';
 
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { commentsData } from './__mocks__/useComments';
+import { commentsData } from './__mocks__/useInternalComments';
 
-const apiPath = '*/comments/:id';
+const apiPath = '*/internal_comments/:id';
 
 const server = setupServer(
   rest.get(apiPath, (_req, res, ctx) => {
@@ -16,14 +16,17 @@ const server = setupServer(
   })
 );
 
-describe('useComment', () => {
+describe('useInternalComment', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useComment('commentId'), {
-      wrapper: createQueryClientWrapper(),
-    });
+    const { result, waitFor } = renderHook(
+      () => useInternalComment('commentId'),
+      {
+        wrapper: createQueryClientWrapper(),
+      }
+    );
 
     expect(result.current.isLoading).toBe(true);
 
@@ -40,9 +43,12 @@ describe('useComment', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useComment('commentId'), {
-      wrapper: createQueryClientWrapper(),
-    });
+    const { result, waitFor } = renderHook(
+      () => useInternalComment('commentId'),
+      {
+        wrapper: createQueryClientWrapper(),
+      }
+    );
 
     expect(result.current.isLoading).toBe(true);
     await waitFor(() => expect(result.current.isError).toBe(true));
