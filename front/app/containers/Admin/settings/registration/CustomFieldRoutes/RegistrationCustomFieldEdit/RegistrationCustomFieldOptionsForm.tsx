@@ -78,9 +78,7 @@ const RegistrationCustomFieldOptionsForm = ({
           <Button type="submit" processing={methods.formState.isSubmitting}>
             {formatMessage(messages.answerOptionSave)}
           </Button>
-        </Box>
 
-        <Box display="flex" alignItems="center">
           <Button
             buttonStyle="text"
             linkTo={`/admin/settings/registration/custom-fields/${userCustomFieldId}/options/`}

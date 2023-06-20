@@ -50,7 +50,11 @@ RSpec.describe UiSchemaGeneratorService do
               type: 'Control',
               scope: "#/properties/#{field2.key}",
               label: 'Field2 title',
-              options: { input_type: field2.input_type, description: 'Field2 description' }
+              options: {
+                input_type: field2.input_type,
+                description: 'Field2 description',
+                enumNames: ['youth council', 'youth council']
+              }
             }
           ]
         },
@@ -66,7 +70,11 @@ RSpec.describe UiSchemaGeneratorService do
               type: 'Control',
               scope: "#/properties/#{field2.key}",
               label: 'Field2 titre',
-              options: { input_type: field2.input_type, description: 'Field2 description' }
+              options: {
+                input_type: field2.input_type,
+                description: 'Field2 description',
+                enumNames: ['conseil des jeunes', 'conseil des jeunes']
+              }
             }
           ]
         },
@@ -82,7 +90,11 @@ RSpec.describe UiSchemaGeneratorService do
               type: 'Control',
               scope: "#/properties/#{field2.key}",
               label: 'Field2 titel',
-              options: { input_type: field2.input_type, description: 'Field2 description' }
+              options: {
+                input_type: field2.input_type,
+                description: 'Field2 description',
+                enumNames: %w[jeugdraad jeugdraad]
+              }
             }
           ]
         }
@@ -329,7 +341,11 @@ RSpec.describe UiSchemaGeneratorService do
           type: 'Control',
           scope: "#/properties/#{field_key}",
           label: 'Select field title',
-          options: { input_type: field.input_type, description: 'Select field description' }
+          options: {
+            input_type: field.input_type,
+            description: 'Select field description',
+            enumNames: []
+          }
         })
       end
     end
@@ -351,7 +367,11 @@ RSpec.describe UiSchemaGeneratorService do
           type: 'Control',
           scope: "#/properties/#{field_key}",
           label: 'Select field title',
-          options: { input_type: field.input_type, description: 'Select field description' }
+          options: {
+            input_type: field.input_type,
+            description: 'Select field description',
+            enumNames: ['youth council', 'youth council']
+          }
         })
       end
     end
