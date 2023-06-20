@@ -342,6 +342,7 @@
   "app.components.ProjectCard.xProjects": "{ideasCount, plural, one {# Projet} other {# Projeten}}",
   "app.components.ProjectCard.xQuestions": "{ideasCount, plural, one {# Fro} other {# Froen}}",
   "app.components.ProjectFolderCard.xComments": "{commentsCount, plural, no {#kommentarer} one {#kommentarer} other {#kommentarer}}",
+  "app.components.ProjectFolderCard.xInputs": "{ideasCount, plural, no {# Entréen} one {#input} other {# Entréen}}",
   "app.components.ProjectFolderCards.components.Topbar.a11y_projectFilterTabInfo": "{count, plural, no {# projeten} one {# projet} other {# projeten}}",
   "app.components.ProjectFolderCards.components.Topbar.all": "All",
   "app.components.ProjectFolderCards.components.Topbar.archived": "Archivéiert",
