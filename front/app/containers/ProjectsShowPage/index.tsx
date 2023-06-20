@@ -234,7 +234,7 @@ const ProjectsShowPageWrapper = () => {
   }
 
   const userJustLoggedOut = userWasLoggedIn && user === null;
-  const unauthorized = status === 'error' && isUnauthorizedRQ(error);
+  const unauthorized = statusProject === 'error' && isUnauthorizedRQ(error);
 
   if (userJustLoggedOut && unauthorized) {
     return <Navigate to="/" replace />;
