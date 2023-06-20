@@ -113,7 +113,7 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
         className={participationMethod}
         projectId={projectId}
         showViewToggle={true}
-        defaultSortingMethod={phase.attributes.ideas_order || null}
+        defaultSortingMethod={ideaQueryParameters.sort || null}
         defaultView={phase.attributes.presentation_mode}
         participationMethod={participationMethod}
         participationContextId={phase.id}

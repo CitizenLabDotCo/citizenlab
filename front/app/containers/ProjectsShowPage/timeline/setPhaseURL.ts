@@ -19,5 +19,7 @@ export default function setPhaseUrl(
       ? projectURL
       : `${projectURL}/${phaseNumber}`;
 
-  window.history.pushState(null, '', url);
+  const search = window.location.search;
+
+  window.history.pushState(null, '', url + search);
 }

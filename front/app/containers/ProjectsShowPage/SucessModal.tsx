@@ -3,7 +3,10 @@ import React, { useState, useEffect } from 'react';
 // hooks
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
+
+// router
 import { useSearchParams } from 'react-router-dom';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 // styling
 import rocket from 'assets/img/rocket.png';
@@ -46,6 +49,8 @@ const SuccessModal = ({ projectId }: Props) => {
       timer = setTimeout(() => {
         setShowModal(true);
       }, 1500);
+
+      removeSearchParams(['show_modal']);
     }
 
     return () => {
@@ -64,7 +69,7 @@ const SuccessModal = ({ projectId }: Props) => {
     // Clear URL parameters for continuous projects
     // (handled elsewhere for timeline projects)
     if (project?.data.attributes.process_type === 'continuous') {
-      window.history.replaceState(null, '', window.location.pathname);
+      removeSearchParams(['phase_id']);
     }
   }, [ready, project, phaseIdParam]);
 
