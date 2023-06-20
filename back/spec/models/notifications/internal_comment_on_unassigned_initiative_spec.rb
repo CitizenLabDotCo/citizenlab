@@ -2,13 +2,11 @@
 
 require 'rails_helper'
 
-RSpec.describe Notifications::InternalCommentOnUnassignedUnmoderatedIdea do
+RSpec.describe Notifications::InternalCommentOnUnassignedInitiative do
   describe 'make_notifications_on' do
-    let(:project) { create(:project) }
-    let(:project_folder) { create(:project_folder, projects: [project]) }
-    let(:idea) { create(:idea, project_id: project.id) }
+    let(:initiative) { create(:initiative) }
     let!(:admin) { create(:admin) }
-    let(:internal_comment) { create(:internal_comment, post: idea) }
+    let(:internal_comment) { create(:internal_comment, post: initiative) }
 
     context 'when an admin should receive this notification' do
       let(:activity) { create(:activity, item: internal_comment, action: 'created') }
@@ -18,9 +16,8 @@ RSpec.describe Notifications::InternalCommentOnUnassignedUnmoderatedIdea do
         expect(notifications.first).to have_attributes(
           recipient_id: admin.id,
           initiating_user_id: internal_comment.author_id,
-          post_id: idea.id,
-          internal_comment_id: internal_comment.id,
-          project_id: internal_comment.post.project_id
+          post_id: initiative.id,
+          internal_comment_id: internal_comment.id
         )
       end
     end
@@ -35,27 +32,15 @@ RSpec.describe Notifications::InternalCommentOnUnassignedUnmoderatedIdea do
       end
     end
 
-    context 'when someone is assigned to the idea' do
-      let(:idea) { create(:idea, assignee: create(:admin)) }
-
-      it_behaves_like 'no notification created'
-    end
-
-    context "when a moderator of the idea's project exists" do
-      let!(:_project_moderator) { create(:project_moderator, projects: [project]) }
-
-      it_behaves_like 'no notification created'
-    end
-
-    context "when a moderator of a folder containing the idea's project exists" do
-      let!(:project_folder_moderator) { create(:project_folder_moderator, project_folders: [project_folder]) }
+    context 'when someone is assigned to the initiative' do
+      let(:initiative) { create(:initiative, assignee: create(:admin)) }
 
       it_behaves_like 'no notification created'
     end
 
     context "when the internal comment is a comment on the recipient's internal comment" do
-      let(:parent_internal_comment) { create(:internal_comment, post: idea, author: admin) }
-      let(:internal_comment) { create(:internal_comment, parent: parent_internal_comment, post: idea) }
+      let(:parent_internal_comment) { create(:internal_comment, post: initiative, author: admin) }
+      let(:internal_comment) { create(:internal_comment, parent: parent_internal_comment, post: initiative) }
 
       it_behaves_like 'no notification created'
     end
@@ -66,7 +51,7 @@ RSpec.describe Notifications::InternalCommentOnUnassignedUnmoderatedIdea do
           :internal_comment,
           :with_mentions,
           mentioned_users: [admin],
-          post: idea
+          post: initiative
         )
       end
 
