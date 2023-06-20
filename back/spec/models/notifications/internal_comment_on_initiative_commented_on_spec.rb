@@ -2,14 +2,14 @@
 
 require 'rails_helper'
 
-RSpec.describe Notifications::InternalCommentOnIdeaYouCommentedInternallyOn do
+RSpec.describe Notifications::InternalCommentOnInitiativeYouCommentedInternallyOn do
   describe 'make_notifications_on' do
-    let(:idea) { create(:idea) }
+    let(:initiative) { create(:initiative) }
     let!(:commenter) { create(:admin) }
-    let!(:_internal_comment2) { create(:internal_comment, post: idea, author: commenter) }
-    let(:internal_comment) { create(:internal_comment, post: idea) }
+    let!(:_internal_comment2) { create(:internal_comment, post: initiative, author: commenter) }
+    let(:internal_comment) { create(:internal_comment, post: initiative) }
 
-    context 'when admin has internally commented on idea and should receive this notification' do
+    context 'when admin has internally commented on initiative and should receive this notification' do
       let(:activity) { create(:activity, item: internal_comment, action: 'created') }
 
       it 'makes a notification on created internal comment activity' do
@@ -17,18 +17,17 @@ RSpec.describe Notifications::InternalCommentOnIdeaYouCommentedInternallyOn do
         expect(notifications.first).to have_attributes(
           recipient_id: commenter.id,
           initiating_user_id: internal_comment.author_id,
-          post_id: idea.id,
-          internal_comment_id: internal_comment.id,
-          project_id: internal_comment.post.project_id
+          post_id: initiative.id,
+          internal_comment_id: internal_comment.id
         )
       end
     end
 
-    context "when recipient is moderator, but not of idea's project, and should receive this notification" do
-      let(:idea2) { create(:idea) }
+    context 'when recipient is moderator and should receive this notification' do
+      let(:initiative2) { create(:initiative) }
       let!(:project_moderator) { create(:project_moderator) }
-      let(:internal_comment) { create(:internal_comment, post: idea2) }
-      let!(:_internal_comment2) { create(:internal_comment, post: idea2, author: project_moderator) }
+      let(:internal_comment) { create(:internal_comment, post: initiative2) }
+      let!(:_internal_comment2) { create(:internal_comment, post: initiative2, author: project_moderator) }
       let(:activity) { create(:activity, item: internal_comment, action: 'created') }
 
       it 'makes a notification on created internal comment activity' do
@@ -36,9 +35,8 @@ RSpec.describe Notifications::InternalCommentOnIdeaYouCommentedInternallyOn do
         expect(notifications.first).to have_attributes(
           recipient_id: project_moderator.id,
           initiating_user_id: internal_comment.author_id,
-          post_id: idea2.id,
-          internal_comment_id: internal_comment.id,
-          project_id: internal_comment.post.project_id
+          post_id: initiative2.id,
+          internal_comment_id: internal_comment.id
         )
       end
     end
@@ -54,8 +52,8 @@ RSpec.describe Notifications::InternalCommentOnIdeaYouCommentedInternallyOn do
     end
 
     context "when the internal comment is a comment on the recipient's internal comment" do
-      let(:parent_internal_comment) { create(:internal_comment, post: idea, author: commenter) }
-      let(:internal_comment) { create(:internal_comment, parent: parent_internal_comment, post: idea) }
+      let(:parent_internal_comment) { create(:internal_comment, post: initiative, author: commenter) }
+      let(:internal_comment) { create(:internal_comment, parent: parent_internal_comment, post: initiative) }
 
       it_behaves_like 'no notification created'
     end
@@ -66,21 +64,15 @@ RSpec.describe Notifications::InternalCommentOnIdeaYouCommentedInternallyOn do
           :internal_comment,
           :with_mentions,
           mentioned_users: [commenter],
-          post: idea
+          post: initiative
         )
       end
 
       it_behaves_like 'no notification created'
     end
 
-    context 'when the internal comment is on an idea the recipient is assigned to' do
-      let(:idea) { create(:idea, assignee: commenter) }
-
-      it_behaves_like 'no notification created'
-    end
-
-    context "when recipient is moderator of idea's project" do
-      let(:commenter) { create(:project_moderator, projects: [idea.project]) }
+    context 'when the internal comment is on an initiative the recipient is assigned to' do
+      let(:initiative) { create(:initiative, assignee: commenter) }
 
       it_behaves_like 'no notification created'
     end
