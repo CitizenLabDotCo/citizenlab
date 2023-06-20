@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {
   Box,
@@ -11,7 +11,10 @@ import { colors } from 'utils/styleUtils';
 import Link from 'utils/cl-router/Link';
 
 // routing
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
+
+// utils
+import { deleteSearchParams } from 'utils/cl-router/parseSearchParams';
 
 const IdeaCard = ({ i }: { i: number }) => {
   return (
@@ -42,6 +45,16 @@ const options = [
 
 const Project = () => {
   const { slug } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const paramA = searchParams.get('a');
+  // const paramB = searchParams.get('b');
+
+  useEffect(() => {
+    if (paramA) {
+      setSearchParams(deleteSearchParams(searchParams, ['a']));
+    }
+  }, [searchParams, paramA, setSearchParams]);
+
   const [option, setOption] = useState<IOption>({
     value: 'a',
     label: 'Option A',

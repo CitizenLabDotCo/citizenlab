@@ -27,6 +27,7 @@ import { lighten } from 'polished';
 
 // utils
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import { deleteSearchParams } from 'utils/cl-router/parseSearchParams';
 
 // typings
 import { IdeaVotingDisabledReason } from 'api/ideas/types';
@@ -78,15 +79,15 @@ const IdeaShowPageTopBar = ({
   const { data: project } = useProjectById(projectId);
 
   const [goBack, setGoBack] = useState(false);
-  const [queryParams] = useSearchParams();
-  const goBackParameter = queryParams.get('go_back');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const goBackParameter = searchParams.get('go_back');
 
   useEffect(() => {
     if (isString(goBackParameter)) {
       setGoBack(true);
-      clHistory.replace(window.location.pathname);
+      setSearchParams(deleteSearchParams(searchParams, ['go_back']));
     }
-  }, [goBackParameter]);
+  }, [goBackParameter, setSearchParams, searchParams]);
 
   const localize = useLocalize();
 

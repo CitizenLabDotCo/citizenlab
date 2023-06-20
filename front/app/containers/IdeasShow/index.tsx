@@ -62,6 +62,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 // utils
 import clHistory from 'utils/cl-router/history';
 import { useSearchParams } from 'react-router-dom';
+import { deleteSearchParams } from 'utils/cl-router/parseSearchParams';
 
 // style
 import styled from 'styled-components';
@@ -193,30 +194,28 @@ export const IdeasShow = ({
   const [goBack, setGoBack] = useState(false);
   const [translateButtonIsClicked, setTranslateButtonIsClicked] =
     useState<boolean>(false);
-  const [queryParams] = useSearchParams();
-  const ideaIdParameter = queryParams.get('new_idea_id');
-  const goBackParameter = queryParams.get('go_back');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const ideaIdParameter = searchParams.get('new_idea_id');
+  const goBackParameter = searchParams.get('go_back');
   const timeout = useRef<NodeJS.Timeout>();
 
   useEffect(() => {
-    let replace = false;
+    if (ideaIdParameter === null && goBackParameter === null) return;
 
     if (isString(ideaIdParameter)) {
       timeout.current = setTimeout(() => {
         setNewIdeaId(ideaIdParameter);
       }, 1500);
-      replace = true;
     }
 
     if (isString(goBackParameter)) {
       setGoBack(true);
-      replace = true;
     }
 
-    if (replace) {
-      clHistory.replace(window.location.pathname);
-    }
-  }, [ideaIdParameter, goBackParameter]);
+    setSearchParams(
+      deleteSearchParams(searchParams, ['new_idea_id', 'go_back'])
+    );
+  }, [ideaIdParameter, goBackParameter, searchParams, setSearchParams]);
 
   const { data: phases } = usePhases(projectId);
   const { data: idea } = useIdeaById(ideaId);
