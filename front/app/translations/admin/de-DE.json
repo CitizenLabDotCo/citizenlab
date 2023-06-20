@@ -1731,7 +1731,7 @@
   "app.containers.AdminPage.groups.permissions.saveErrorMessage": "Etwas ist schief gelaufen, bitte versuchen Sie es später noch einmal.",
   "app.containers.AdminPage.groups.permissions.saveSuccess": "Geschafft!",
   "app.containers.AdminPage.groups.permissions.saveSuccessMessage": "Ihre Änderungen wurden gespeichert.",
-  "app.containers.AdminPage.groups.permissions.select": "Wählen Sie",
+  "app.containers.AdminPage.groups.permissions.select": "Auswählen",
   "app.containers.AdminPage.groups.permissions.selectUserGroups": "Gruppe(n) auswählen",
   "app.containers.AdminPage.groups.permissions.selectValueError": "Bitte wählen Sie einen Antworttyp",
   "app.containers.AdminPage.groups.permissions.useExistingRegistrationQuestions": "Fragen zur Registrierung auf Plattformebene stellen",
