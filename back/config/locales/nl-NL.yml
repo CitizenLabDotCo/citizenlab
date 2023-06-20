@@ -9,7 +9,7 @@ nl:
     under_consideration: in overweging
     under_consideration_description: Dit idee is in overweging genomen
     accepted: aangenomen
-    accepted_description: Dit idee is aanvaard en zal worden uitgevoerd
+    accepted_description: Dit idee is aangenomen en zal worden uitgevoerd
     implemented: uitgevoerd
     implemented_description: Dit idee is uitgevoerd
     rejected: afgewezen
@@ -199,8 +199,8 @@ nl:
       created_at: 'Ingediend om'
       published_at: 'Gepubliceerd om'
       comments_count: 'Reacties'
-      upvotes_count: 'Stemmen voor'
-      downvotes_count: 'Stemmen tegen'
+      likes_count: 'Houdt van'
+      dislikes_count: 'Heeft een hekel aan'
       baskets_count: 'Manden'
       input_url: 'URL'
       project: 'Project'
