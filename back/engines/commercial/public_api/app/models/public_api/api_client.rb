@@ -4,12 +4,13 @@
 #
 # Table name: public.public_api_api_clients
 #
-#  id         :uuid             not null, primary key
-#  name       :string
-#  secret     :string
-#  tenant_id  :uuid
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id           :uuid             not null, primary key
+#  name         :string
+#  secret       :string
+#  tenant_id    :uuid
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  last_used_at :datetime
 #
 # Indexes
 #
