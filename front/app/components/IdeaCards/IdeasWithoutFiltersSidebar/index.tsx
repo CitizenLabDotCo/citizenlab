@@ -8,6 +8,9 @@ import useProjectById from 'api/projects/useProjectById';
 import useIdeaCustomFieldsSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
 import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
 
+// router
+import { useSearchParams } from 'react-router-dom';
+
 // tracks
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../tracks';
@@ -174,6 +177,8 @@ const IdeasWithoutFiltersSidebar = ({
 }: Props) => {
   const locale = useLocale();
   const { windowWidth } = useWindowSize();
+  const [searchParams] = useSearchParams();
+
   const { data: project } = useProjectById(projectId);
 
   const [selectedView, setSelectedView] = useState<'card' | 'map'>('card');
@@ -181,6 +186,8 @@ const IdeasWithoutFiltersSidebar = ({
     phaseId: ideaQueryParameters.phase,
     projectId,
   });
+
+  const selectedIdeaMarkerId = searchParams.get('idea_map_id');
 
   const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } =
     useInfiniteIdeas(ideaQueryParameters);
@@ -240,9 +247,13 @@ const IdeasWithoutFiltersSidebar = ({
       )
     : false;
   const showViewButtons = !!(locationEnabled && showViewToggle);
-  const showListView =
-    !locationEnabled || (locationEnabled && selectedView === 'card');
-  const showMapView = locationEnabled && selectedView === 'map';
+
+  const view = !locationEnabled
+    ? 'card'
+    : selectedIdeaMarkerId
+    ? 'map'
+    : selectedView;
+
   const smallerThanBigTablet = !!(
     windowWidth && windowWidth <= viewportWidths.tablet
   );
@@ -264,11 +275,15 @@ const IdeasWithoutFiltersSidebar = ({
     return (
       <Container
         id="e2e-ideas-container"
-        className={`${className || ''} ${showMapView ? 'mapView' : 'listView'}`}
+        className={`${className || ''} ${
+          view === 'map' ? 'mapView' : 'listView'
+        }`}
       >
         <FiltersArea
           id="e2e-ideas-filters"
-          className={`ideasContainer ${showMapView ? 'mapView' : 'listView'}`}
+          className={`ideasContainer ${
+            view === 'map' ? 'mapView' : 'listView'
+          }`}
         >
           <LeftFilterArea>
             {showViewButtons && smallerThanSmallTablet && (
@@ -277,7 +292,7 @@ const IdeasWithoutFiltersSidebar = ({
                 onClick={selectView}
               />
             )}
-            {!showMapView && (
+            {!(view === 'map') && (
               <StyledSearchInput
                 defaultValue={ideaQueryParameters.search}
                 className="e2e-search-ideas-input"
@@ -289,7 +304,7 @@ const IdeasWithoutFiltersSidebar = ({
 
           <RightFilterArea>
             <DropdownFilters
-              className={`${showMapView ? 'hidden' : 'visible'} ${
+              className={`${view === 'map' ? 'hidden' : 'visible'} ${
                 showViewButtons ? 'hasViewButtons' : ''
               }`}
             >
@@ -335,8 +350,7 @@ const IdeasWithoutFiltersSidebar = ({
           hideIdeaStatus={
             (biggerThanLargeTablet && smallerThan1100px) || smallerThanPhone
           }
-          showListView={showListView}
-          showMapView={showMapView}
+          view={view}
           projectId={projectId}
           phaseId={phaseId || undefined}
           participationMethod={participationMethod}

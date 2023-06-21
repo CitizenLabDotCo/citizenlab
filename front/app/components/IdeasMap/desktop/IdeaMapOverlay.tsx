@@ -1,8 +1,9 @@
 import React, { memo, useState, useEffect } from 'react';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
-// events
-import { ideaMapCardSelected$, setIdeaMapCardSelected } from '../events';
+// router
+import { useSearchParams } from 'react-router-dom';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
@@ -96,24 +97,20 @@ interface Props {
 }
 
 const IdeaMapOverlay = memo<Props>(({ projectId, phaseId, className }) => {
+  const [searchParams] = useSearchParams();
   const { data: project } = useProjectById(projectId);
   const { windowWidth } = useWindowSize();
   const smallerThan1440px = !!(windowWidth && windowWidth <= 1440);
 
-  const [selectedIdeaId, setSelectedIdeaId] = useState<string | null>(null);
+  const selectedIdeaId = searchParams.get('idea_map_id');
   const [scrollContainerElement, setScrollContainerElement] =
     useState<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const subscription = ideaMapCardSelected$.subscribe((ideaId) => {
-      setSelectedIdeaId(ideaId);
-    });
-
     return () => {
-      setIdeaMapCardSelected(null);
-      subscription.unsubscribe();
+      updateSearchParams({ idea_map_id: null });
     };
-  }, [projectId]);
+  }, []);
 
   useEffect(() => {
     if (scrollContainerElement && selectedIdeaId) {
@@ -122,7 +119,7 @@ const IdeaMapOverlay = memo<Props>(({ projectId, phaseId, className }) => {
   }, [scrollContainerElement, selectedIdeaId]);
 
   const deselectIdeaOnMap = () => {
-    setIdeaMapCardSelected(null);
+    updateSearchParams({ idea_map_id: null });
   };
 
   const handleIdeasShowSetRef = (element: HTMLDivElement) => {

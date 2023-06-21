@@ -300,8 +300,7 @@ const IdeaCards = ({ ideaQueryParameters, onUpdateQuery }: Props) => {
                   (biggerThanLargeTablet && smallerThan1440px) ||
                   smallerThanPhone
                 }
-                showListView={true}
-                showMapView={false}
+                view="card"
               />
             </ContentLeft>
 

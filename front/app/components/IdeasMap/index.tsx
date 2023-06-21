@@ -28,9 +28,9 @@ import { getIdeaPostingRules } from 'services/actionTakingRules';
 
 // router
 import { useSearchParams } from 'react-router-dom';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 // events
-import { setIdeaMapCardSelected, ideaMapCardSelected$ } from './events';
 import {
   setLeafletMapSelectedMarker,
   setLeafletMapHoveredMarker,
@@ -228,9 +228,6 @@ const IdeasMap = memo<Props>((props) => {
   // state
   const [map, setMap] = useState<LeafletMap | null>(null);
   const [selectedLatLng, setSelectedLatLng] = useState<LatLng | null>(null);
-  const [selectedIdeaMarkerId, setSelectedIdeaMarkerId] = useState<
-    string | null
-  >(null);
   const [points, setPoints] = useState<Point[]>([]);
   const [containerWidth, setContainerWidth] = useState(initialContainerWidth);
   const [innerContainerLeftMargin, setInnerContainerLeftMargin] = useState(
@@ -239,6 +236,7 @@ const IdeasMap = memo<Props>((props) => {
   const [isCardClickable, setIsCardClickable] = useState(false);
 
   // ideaMarkers
+  const selectedIdeaMarkerId = searchParams.get('idea_map_id');
   const search = searchParams.get('search');
   const topicsParam = searchParams.get('topics');
   const topics: string[] = topicsParam ? JSON.parse(topicsParam) : [];
@@ -271,22 +269,22 @@ const IdeasMap = memo<Props>((props) => {
   });
 
   useEffect(() => {
+    setLeafletMapSelectedMarker(selectedIdeaMarkerId);
+  }, [selectedIdeaMarkerId]);
+
+  useEffect(() => {
     const subscriptions = [
-      ideaMapCardSelected$.subscribe((ideaId) => {
-        setLeafletMapSelectedMarker(ideaId);
-        setSelectedIdeaMarkerId(ideaId);
-      }),
       leafletMapSelectedMarker$.subscribe((ideaId) => {
-        setIdeaMapCardSelected(ideaId);
-        setSelectedIdeaMarkerId((_prevIdeaIdideaId) => {
-          // temporarily disable pointer events on the mobile ideacard popup to avoid
-          // the marker click event from propagating to the card that migth pop up on top of it
-          setIsCardClickable(false);
-          setTimeout(() => {
-            setIsCardClickable(true);
-          }, 200);
-          return ideaId;
-        });
+        if (ideaId === selectedIdeaMarkerId) return;
+
+        // temporarily disable pointer events on the mobile ideacard popup to avoid
+        // the marker click event from propagating to the card that migth pop up on top of it
+        setIsCardClickable(false);
+        setTimeout(() => {
+          setIsCardClickable(true);
+        }, 200);
+
+        updateSearchParams({ idea_map_id: ideaId });
       }),
       leafletMapClicked$.subscribe((latLng) => {
         setSelectedLatLng(latLng);
@@ -345,7 +343,7 @@ const IdeasMap = memo<Props>((props) => {
   };
 
   const handleIdeaMapCardOnClose = () => {
-    setIdeaMapCardSelected(null);
+    updateSearchParams({ idea_map_id: null });
     setLeafletMapSelectedMarker(null);
     setLeafletMapHoveredMarker(null);
   };
