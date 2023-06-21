@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 // components
 import FilterSelector from 'components/FilterSelector';
@@ -6,7 +6,6 @@ import FilterSelector from 'components/FilterSelector';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
-import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
 import { IProjectData } from 'api/projects/types';
 import { IPhaseData } from 'api/phases/types';
 import { getMethodConfig } from 'utils/participationMethodUtils';
@@ -17,31 +16,20 @@ export type Sort = 'trending' | 'random' | 'popular' | 'new' | '-new';
 type Props = {
   id?: string | undefined;
   alignment: 'left' | 'right';
+  value: Sort;
   onChange: (value: string) => void;
-  defaultSortingMethod?: Sort;
   phase?: IPhaseData;
   project?: Error | IProjectData | null;
 };
 
 const SortFilterDropdown = ({
   alignment,
+  value,
   onChange,
-  defaultSortingMethod,
   phase,
   project,
 }: Props) => {
-  const [selectedValue, setSelectedValue] = useState<string[]>([
-    defaultSortingMethod || ideaDefaultSortMethodFallback,
-  ]);
-
-  useEffect(() => {
-    if (defaultSortingMethod) {
-      setSelectedValue([defaultSortingMethod]);
-    }
-  }, [defaultSortingMethod]);
-
   const handleOnChange = (selectedValue: string[]) => {
-    setSelectedValue([selectedValue[0]]);
     onChange(selectedValue[0]);
   };
 
@@ -69,7 +57,7 @@ const SortFilterDropdown = ({
       id="e2e-ideas-sort-dropdown"
       title={<FormattedMessage {...messages.sortTitle} />}
       name="sort"
-      selected={selectedValue}
+      selected={[value]}
       values={options}
       onChange={handleOnChange}
       multipleSelectionAllowed={false}

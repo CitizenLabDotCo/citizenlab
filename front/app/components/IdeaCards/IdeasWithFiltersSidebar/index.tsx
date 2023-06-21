@@ -267,7 +267,7 @@ const IdeaCards = ({ ideaQueryParameters, onUpdateQuery }: Props) => {
              */}
             <AboveContentRight>
               <SortFilterDropdown
-                defaultSortingMethod={ideaQueryParameters.sort}
+                value={ideaQueryParameters.sort}
                 onChange={handleSortOnChange}
                 alignment="right"
               />

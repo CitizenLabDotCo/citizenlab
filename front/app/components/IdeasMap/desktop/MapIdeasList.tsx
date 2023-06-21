@@ -169,9 +169,9 @@ const MapIdeasList = memo<Props>(({ projectId, phaseId, className }) => {
       <Header>
         <DropdownFilters>
           <SelectSort
+            value={sort}
             onChange={handleSortOnChange}
             alignment="left"
-            defaultSortingMethod={sort}
           />
           {topicsEnabled && (
             <TopicFilterDropdown

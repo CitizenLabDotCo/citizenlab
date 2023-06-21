@@ -28,11 +28,14 @@ import { FormattedMessage } from 'utils/cl-intl';
 import styled from 'styled-components';
 import { media, viewportWidths, isRtl } from 'utils/styleUtils';
 
-// typings
+// constants
 import {
+  ideaDefaultSortMethodFallback,
   IdeaDefaultSortMethod,
   ParticipationMethod,
 } from 'services/participationContexts';
+
+// typings
 import { IParticipationContextType } from 'typings';
 import { isFieldEnabled } from 'utils/projectUtils';
 import { IQueryParameters } from 'api/ideas/types';
@@ -291,11 +294,11 @@ const IdeasWithoutFiltersSidebar = ({
               }`}
             >
               <SelectSort
+                value={defaultSortingMethod ?? ideaDefaultSortMethodFallback}
                 phase={phase?.data}
                 project={project?.data}
                 onChange={handleSortOnChange}
                 alignment={biggerThanLargeTablet ? 'right' : 'left'}
-                defaultSortingMethod={defaultSortingMethod ?? undefined}
               />
               {allowProjectsFilter && (
                 <ProjectFilterDropdown
