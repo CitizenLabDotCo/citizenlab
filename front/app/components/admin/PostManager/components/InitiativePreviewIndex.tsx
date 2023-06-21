@@ -17,7 +17,7 @@ const InitiativePreviewIndex = () => {
   };
 
   const handleOnSwitchPreviewMode = () => {
-    setPreviewMode(previewMode === 'edit' ? 'view' : 'edit');
+    setPreviewMode((previewMode) => (previewMode === 'edit' ? 'view' : 'edit'));
   };
 
   return (
