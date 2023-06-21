@@ -36,6 +36,7 @@ import {
   setLeafletMapHoveredMarker,
   leafletMapSelectedMarker$,
   leafletMapClicked$,
+  setLeafletMapCenter,
 } from 'components/UI/LeafletMap/events';
 
 // i18n
@@ -226,9 +227,9 @@ const IdeasMap = memo<Props>((props) => {
   const ideaButtonWrapperRef = useRef<HTMLDivElement | null>(null);
 
   // state
+  const [mounted, setMounted] = useState(false);
   const [map, setMap] = useState<LeafletMap | null>(null);
   const [selectedLatLng, setSelectedLatLng] = useState<LatLng | null>(null);
-  const [points, setPoints] = useState<Point[]>([]);
   const [containerWidth, setContainerWidth] = useState(initialContainerWidth);
   const [innerContainerLeftMargin, setInnerContainerLeftMargin] = useState(
     initialInnerContainerLeftMargin
@@ -267,10 +268,6 @@ const IdeasMap = memo<Props>((props) => {
       setContainerWidth(containerWidth);
     }
   });
-
-  useEffect(() => {
-    setLeafletMapSelectedMarker(selectedIdeaMarkerId);
-  }, [selectedIdeaMarkerId]);
 
   useEffect(() => {
     const subscriptions = [
@@ -318,7 +315,7 @@ const IdeasMap = memo<Props>((props) => {
     );
   }, [windowWidth, containerWidth, tablet]);
 
-  useEffect(() => {
+  const points = useMemo(() => {
     const ideaPoints: Point[] = [];
 
     if (!isNilOrError(ideaMarkers) && ideaMarkers.data.length > 0) {
@@ -335,7 +332,7 @@ const IdeasMap = memo<Props>((props) => {
       });
     }
 
-    setPoints(ideaPoints);
+    return ideaPoints;
   }, [ideaMarkers]);
 
   const handleMapOnInit = (map: LeafletMap) => {
@@ -351,6 +348,25 @@ const IdeasMap = memo<Props>((props) => {
   const selectedIdeaMarker = useMemo(() => {
     return ideaMarkers?.data.find(({ id }) => id === selectedIdeaMarkerId);
   }, [ideaMarkers, selectedIdeaMarkerId]);
+
+  useEffect(() => {
+    if (ideaMarkers === undefined) return;
+    if (mounted) return;
+
+    if (selectedIdeaMarker) {
+      setLeafletMapSelectedMarker(selectedIdeaMarker.id);
+
+      const geojsonCoordinates =
+        selectedIdeaMarker.attributes.location_point_geojson.coordinates;
+      const coordinates: [number, number] = [
+        geojsonCoordinates[1],
+        geojsonCoordinates[0],
+      ];
+      setLeafletMapCenter(coordinates);
+    }
+
+    setMounted(true);
+  }, [ideaMarkers, mounted, selectedIdeaMarker]);
 
   return (
     <Container

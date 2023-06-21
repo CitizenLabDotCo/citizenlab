@@ -107,12 +107,6 @@ const IdeaMapOverlay = memo<Props>(({ projectId, phaseId, className }) => {
     useState<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    return () => {
-      updateSearchParams({ idea_map_id: null });
-    };
-  }, []);
-
-  useEffect(() => {
     if (scrollContainerElement && selectedIdeaId) {
       scrollContainerElement.scrollTop = 0;
     }
