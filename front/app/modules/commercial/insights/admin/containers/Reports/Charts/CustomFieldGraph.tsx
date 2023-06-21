@@ -33,6 +33,7 @@ import { IUserCustomFieldData } from 'api/user_custom_fields/types';
 import { isNilOrError } from 'utils/helperUtils';
 import createConvertAndMergeSeries, {
   ISupportedDataType,
+  TOutput,
 } from './convertAndMergeSeries';
 import useUsersByGender from 'api/users_by_gender/useUsersByGender';
 import useUsersByBirthyear from 'api/users_by_birthyear/useUsersByBirthyear';
@@ -167,7 +168,7 @@ const CustomFieldsGraph = ({
 
   const participantSerie = code && serieMap[code].participantSeries;
 
-  const serie =
+  const serie: TOutput | undefined =
     code &&
     totalSerie &&
     participantSerie &&
