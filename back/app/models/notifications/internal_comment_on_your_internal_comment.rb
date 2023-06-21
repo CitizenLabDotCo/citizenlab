@@ -64,7 +64,7 @@ module Notifications
 
     def self.make_notifications_on(activity)
       internal_comment = activity.item
-      recipient = internal_comment.parent&.author
+      recipient = internal_comment&.parent&.author
       recipient_id = recipient&.id
       initiator_id = internal_comment&.author_id
 

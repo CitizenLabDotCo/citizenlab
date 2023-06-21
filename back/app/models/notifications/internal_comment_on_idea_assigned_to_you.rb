@@ -64,11 +64,11 @@ module Notifications
 
     def self.make_notifications_on(activity)
       internal_comment = activity.item
-      recipient = internal_comment.post.assignee
-      recipient_id = recipient.id
-      initiator_id = internal_comment.author_id
+      recipient = internal_comment&.post&.assignee
+      recipient_id = recipient&.id
+      initiator_id = internal_comment&.author_id
       parent_author_id = internal_comment&.parent&.author_id
-      post_type = internal_comment.post_type
+      post_type = internal_comment&.post_type
 
       if post_type == 'Idea' &&
          recipient_id &&
