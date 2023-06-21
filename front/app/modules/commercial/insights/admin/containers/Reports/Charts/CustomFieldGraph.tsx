@@ -29,9 +29,6 @@ import { Box, colors } from '@citizenlab/cl2-component-library';
 // typings
 import { IUserCustomFieldData } from 'api/user_custom_fields/types';
 
-// services
-import { usersByRegFieldXlsxEndpoint } from 'services/userCustomFieldStats';
-
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import createConvertAndMergeSeries, {
@@ -43,6 +40,7 @@ import { usersByGenderXlsxEndpoint } from 'api/users_by_gender/util';
 import { usersByBirthyearXlsxEndpoint } from 'api/users_by_birthyear/util';
 import { usersByDomicileXlsxEndpoint } from 'api/users_by_domicile/util';
 import useUsersByDomicile from 'api/users_by_domicile/useUsersByDomicile';
+import { usersByCustomFieldXlsxEndpoint } from 'api/users_by_custom_field/util';
 
 interface ICustomFieldEndpoint {
   xlsxEndpoint: string;
@@ -183,7 +181,7 @@ const CustomFieldsGraph = ({
   const xlsxEndpoint =
     code && code in customFieldEndpoints
       ? customFieldEndpoints[code as TAllowedCode].xlsxEndpoint
-      : usersByRegFieldXlsxEndpoint(customField.id);
+      : usersByCustomFieldXlsxEndpoint(customField.id);
 
   return (
     <GraphCard className={`dynamicHeight ${className}`}>

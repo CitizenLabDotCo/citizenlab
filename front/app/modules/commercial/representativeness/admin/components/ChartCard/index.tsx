@@ -5,9 +5,6 @@ import useLocalize from 'hooks/useLocalize';
 import useReferenceData from '../../hooks/useReferenceData';
 import useRScore from '../../hooks/useRScore';
 
-// services
-import { usersByRegFieldXlsxEndpoint } from 'services/userCustomFieldStats';
-
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 import EmptyCard from './EmptyCard';
@@ -39,6 +36,7 @@ import { View } from 'components/admin/GraphCard/ViewToggle';
 import { usersByAgeXlsxEndpoint } from 'api/users_by_age/util';
 import { usersByGenderXlsxEndpoint } from 'api/users_by_gender/util';
 import { usersByDomicileXlsxEndpoint } from 'api/users_by_domicile/util';
+import { usersByCustomFieldXlsxEndpoint } from 'api/users_by_custom_field/util';
 
 interface Props {
   userCustomField: IUserCustomFieldData;
@@ -57,7 +55,7 @@ const getXlsxEndpoint = (
     case 'birthyear':
       return usersByAgeXlsxEndpoint;
     default:
-      return usersByRegFieldXlsxEndpoint(userCustomFieldId);
+      return usersByCustomFieldXlsxEndpoint(userCustomFieldId);
   }
 };
 
