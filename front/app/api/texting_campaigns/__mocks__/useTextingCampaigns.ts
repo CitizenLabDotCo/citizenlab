@@ -1,6 +1,6 @@
 import { ITextingCampaignData } from '../types';
 
-export const notificationsData: ITextingCampaignData[] = [
+export const campaignsData: ITextingCampaignData[] = [
   {
     id: 'dbf5a843-8c03-4be5-8c8b-81cfc9ed7adf',
     type: 'campaign',
