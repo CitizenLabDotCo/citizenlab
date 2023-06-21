@@ -154,4 +154,5 @@ RSpec.describe ParticipationMethod::Budgeting do
   its(:supports_budget?) { is_expected.to be true }
   its(:supports_status?) { is_expected.to be true }
   its(:supports_assignment?) { is_expected.to be true }
+  its(:return_disabled_actions?) { is_expected.to be false }
 end
