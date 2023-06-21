@@ -4,7 +4,6 @@ import React from 'react';
 import { Toggle, IconTooltip, Text } from '@citizenlab/cl2-component-library';
 import {
   SectionField,
-  SubSectionTitle,
   SubSectionTitleWithDescription,
 } from 'components/admin/Section';
 import Error from 'components/UI/Error';
@@ -12,17 +11,22 @@ import DefaultViewPicker from '../../shared/DefaultViewPicker';
 import { ToggleRow } from '../../shared/styling';
 import VotingMethodSelector from './VotingMethodSelector';
 import BudgetingInputs from './votingMethodInputs/BudgetingInputs';
+import { StyledSectionDescription } from 'containers/Admin/initiatives/settings';
+import CumulativeInputs from './votingMethodInputs/CumulativeInputs';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../../../../messages';
 
 // typings
 import { InputTerm, VotingMethod } from 'services/participationContexts';
 import { ApiErrors } from '../../../';
-import { IOption } from 'typings';
-import CumulativeInputs from './votingMethodInputs/CumulativeInputs';
-import { StyledSectionDescription } from 'containers/Admin/initiatives/settings';
+import { IOption, Multiloc } from 'typings';
+
+// hooks
+import { useLocation, useParams } from 'react-router-dom';
+
+export type VotingTerm = { singular: Multiloc; plural: Multiloc };
 
 export interface VotingInputsProps {
   isCustomInputTermEnabled: boolean;
@@ -34,8 +38,11 @@ export interface VotingInputsProps {
   commenting_enabled: boolean | null | undefined;
   minTotalVotesError: string | null;
   maxTotalVotesError: string | null;
+  maxVotesPerOptionError: string | null;
+  voting_max_votes_per_idea?: number | null;
   handleVotingMinTotalChange: (newVotingMinTotal: string) => void;
   handleVotingMaxTotalChange: (newVotingMaxTotal: string) => void;
+  handleMaxVotesPerOptionAmountChange: (newMaxVotesPerOption: string) => void;
   toggleCommentingEnabled: () => void;
   apiErrors: ApiErrors;
   presentation_mode: 'card' | 'map' | null | undefined;
@@ -53,29 +60,50 @@ export default ({
   commenting_enabled,
   minTotalVotesError,
   maxTotalVotesError,
+  maxVotesPerOptionError,
+  voting_max_votes_per_idea,
   handleVotingMinTotalChange,
   handleVotingMaxTotalChange,
   toggleCommentingEnabled,
+  handleMaxVotesPerOptionAmountChange,
   apiErrors,
   presentation_mode,
   handleIdeasDisplayChange,
   handleVotingMethodOnChange,
 }: VotingInputsProps) => {
+  const { formatMessage } = useIntl();
+  const { pathname } = useLocation();
+  const { projectId } = useParams() as {
+    projectId: string;
+  };
+
   return (
     <>
       <VotingMethodSelector
         voting_method={voting_method}
         handleVotingMethodOnChange={handleVotingMethodOnChange}
       />
-      <SectionField>
-        <SubSectionTitleWithDescription>
-          <FormattedMessage {...messages.optionsToVoteOn} />
-          <IconTooltip content={'TODO: add tooltip content'} />
-        </SubSectionTitleWithDescription>
-        <StyledSectionDescription>
-          Configure the voting options in the Input Manager tab.
-        </StyledSectionDescription>
-      </SectionField>
+      {projectId && (
+        <SectionField>
+          <SubSectionTitleWithDescription>
+            <FormattedMessage {...messages.optionsToVoteOn} />
+            <IconTooltip content={'TODO: add tooltip content'} />
+          </SubSectionTitleWithDescription>
+          <StyledSectionDescription>
+            <FormattedMessage
+              {...messages.optionsToVoteOnDescription}
+              values={{
+                optionsPageLink: (
+                  <a href={`${pathname}/ideas`} rel="noreferrer">
+                    <FormattedMessage {...messages.optionsPageText} />
+                  </a>
+                ),
+              }}
+            />
+          </StyledSectionDescription>
+        </SectionField>
+      )}
+
       {voting_method === 'budgeting' && (
         <BudgetingInputs
           voting_min_total={voting_min_total}
@@ -92,25 +120,27 @@ export default ({
       )}
       {voting_method === 'cumulative' && (
         <CumulativeInputs
-          voting_min_total={voting_min_total}
           voting_max_total={voting_max_total}
-          input_term={input_term}
-          isCustomInputTermEnabled={isCustomInputTermEnabled}
-          minTotalVotesError={minTotalVotesError}
+          apiErrors={undefined}
           maxTotalVotesError={maxTotalVotesError}
-          apiErrors={apiErrors}
-          handleInputTermChange={handleInputTermChange}
-          handleMinBudgetingAmountChange={handleVotingMinTotalChange}
-          handleMaxBudgetingAmountChange={handleVotingMaxTotalChange}
+          maxVotesPerOptionError={maxVotesPerOptionError}
+          voting_max_votes_per_idea={voting_max_votes_per_idea}
+          handleMaxVotingAmountChange={handleVotingMaxTotalChange}
+          handleMaxVotesPerOptionAmountChange={
+            handleMaxVotesPerOptionAmountChange
+          }
         />
       )}
       <SectionField>
-        <SubSectionTitle>
-          <FormattedMessage {...messages.enabledActionsForResidents} />
+        <SubSectionTitleWithDescription>
+          <FormattedMessage {...messages.enabledActionsForUsers} />
           <IconTooltip
             content={<FormattedMessage {...messages.enabledActionsTooltip} />}
           />
-        </SubSectionTitle>
+        </SubSectionTitleWithDescription>
+        <StyledSectionDescription>
+          <FormattedMessage {...messages.enabledActionsForUsersDescription} />
+        </StyledSectionDescription>
 
         <ToggleRow>
           <Toggle
@@ -119,6 +149,9 @@ export default ({
             label={FormattedMessage(messages.inputCommentingEnabled)}
           />
         </ToggleRow>
+        <Text color={'textSecondary'} fontSize="s">
+          {formatMessage(messages.commentingBias)}
+        </Text>
         <Error apiErrors={apiErrors && apiErrors.commenting_enabled} />
       </SectionField>
 

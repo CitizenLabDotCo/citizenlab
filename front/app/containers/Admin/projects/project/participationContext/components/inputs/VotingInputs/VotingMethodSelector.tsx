@@ -2,7 +2,7 @@ import React from 'react';
 
 // intl
 import messages from './messages';
-import { useIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 // components
 import {
@@ -17,6 +17,7 @@ import { SubSectionTitle } from 'components/admin/Section';
 // types
 import { VotingMethod } from 'services/participationContexts';
 import CumulativeIcon from './CardIcons/CumulativeIcon';
+import Warning from 'components/UI/Warning';
 
 type VotingMethodSelectorProps = {
   voting_method?: VotingMethod | null;
@@ -64,6 +65,26 @@ const VotingMethodSelector = ({
           subtitle={formatMessage(messages.budgetingVotingMethodSubtitle)}
         />
       </Box>
+      {voting_method === 'cumulative' && (
+        <Box mt="16px">
+          <Warning>
+            <FormattedMessage
+              {...messages.learnMoreCumulativeVoting}
+              values={{
+                b: (chunks) => (
+                  <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+                ),
+                optionAnalysisArticleLink: (
+                  // TODO: Replace with article when ready
+                  <a href={'/'} target="_blank" rel="noreferrer">
+                    <FormattedMessage {...messages.optionAnalysisLinkText} />
+                  </a>
+                ),
+              }}
+            />
+          </Warning>
+        </Box>
+      )}
     </Box>
   );
 };

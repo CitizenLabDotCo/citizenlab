@@ -236,13 +236,21 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.downvotingEnabled',
     defaultMessage: 'Enabled',
   },
-  enabledActionsForResidents: {
-    id: 'app.containers.AdminPage.ProjectEdit.Voting.enabledActionsForResidents',
-    defaultMessage: 'Enabled actions for residents',
+  enabledActionsForUsers: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.enabledActionsForUsers',
+    defaultMessage: 'Actions for users',
+  },
+  enabledActionsForUsersDescription: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.enabledActionsForUsersDescription',
+    defaultMessage: 'Select what additional actions users can take.',
   },
   optionsToVoteOn: {
     id: 'app.containers.AdminPage.ProjectEdit.Voting.optionsToVoteOn',
     defaultMessage: 'Options to vote on',
+  },
+  commentingBias: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.commentingBias',
+    defaultMessage: 'Allowing users to comment can bias the voting process.',
   },
   enabledActionsTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.enabledActionsTooltip2',
@@ -471,6 +479,11 @@ export default defineMessages({
     defaultMessage:
       "The minimum budget can't be larger than the maximum budget",
   },
+  maxVotesPerOptionError: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.maxVotesPerOptionError',
+    defaultMessage:
+      'Maximum number of votes per option must be less than or equal to total number of votes',
+  },
   minVotesRequired: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.minVotesRequired',
     defaultMessage: 'A minimum number of votes is required',
@@ -519,5 +532,13 @@ export default defineMessages({
   konveioSupportArticle: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.konveioSupportArticle',
     defaultMessage: 'support article',
+  },
+  optionsToVoteOnDescription: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescription2',
+    defaultMessage: 'Configure the voting options in the {optionsPageLink}.',
+  },
+  optionsPageText: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.optionsPageText2',
+    defaultMessage: 'Input Manager tab',
   },
 });

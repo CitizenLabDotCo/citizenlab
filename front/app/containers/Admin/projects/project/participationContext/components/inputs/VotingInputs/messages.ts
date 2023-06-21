@@ -31,4 +31,34 @@ export default defineMessages({
     defaultMessage:
       'Users are given an amount of tokens to distribute between options',
   },
+  maximumVotesRecommendation: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.maximumVotesRecommendation',
+    defaultMessage:
+      'Its recommended that you limit the maximum votes per option to 50% of the total budget to avoid {strategicVotingLink}.',
+  },
+  voteCalled: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.voteCalled',
+    defaultMessage: 'What should a vote be called?',
+  },
+  strategicVotingLinkText: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.strategicVotingLinkText',
+    defaultMessage: 'strategic voting',
+  },
+  learnMoreCumulativeVoting: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.learnMoreCumulativeVoting',
+    defaultMessage:
+      'Learn more about when to use <b>multiple votes per option</b> in our {optionAnalysisArticleLink}.',
+  },
+  optionAnalysisLinkText: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.optionAnalysisLinkText',
+    defaultMessage: 'Option analysis overview',
+  },
+  numberVotesPerUser: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.numberVotesPerUser',
+    defaultMessage: 'Number of votes per user',
+  },
+  maxVotesPerOption: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.maxVotesPerOption',
+    defaultMessage: 'Maximum votes per option',
+  },
 });

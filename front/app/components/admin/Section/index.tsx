@@ -13,7 +13,7 @@ export const Section = styled.div`
 `;
 
 export const SectionField = styled(Box)`
-  margin-bottom: 35px;
+  margin-bottom: 30px;
   transition: all 200ms ease-in-out;
   width: 100%;
   max-width: 540px;

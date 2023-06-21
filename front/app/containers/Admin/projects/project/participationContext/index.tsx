@@ -69,6 +69,7 @@ export interface IParticipationContextConfig {
   input_term?: InputTerm;
   voting_min_total?: number | null;
   voting_max_total?: number | null;
+  voting_max_votes_per_idea?: number | null;
   survey_service?: TSurveyService | null;
   survey_embed_url?: string | null;
   poll_anonymous?: boolean;
@@ -107,6 +108,7 @@ export interface State extends IParticipationContextConfig {
   noDownvotingLimitError: JSX.Element | null;
   minTotalVotesError: string | null;
   maxTotalVotesError: string | null;
+  maxVotesPerOptionError: string | null;
   loaded: boolean;
 }
 
@@ -136,11 +138,13 @@ class ParticipationContext extends PureComponent<
       voting_max_total: null,
       survey_service: null,
       survey_embed_url: null,
+      voting_max_votes_per_idea: null,
       loaded: false,
       noUpvotingLimitError: null,
       noDownvotingLimitError: null,
       minTotalVotesError: null,
       maxTotalVotesError: null,
+      maxVotesPerOptionError: null,
       poll_anonymous: false,
       ideas_order: 'trending',
       input_term: 'idea',
@@ -173,6 +177,7 @@ class ParticipationContext extends PureComponent<
           presentation_mode: newData.presentation_mode,
           voting_min_total: newData.voting_min_total,
           voting_max_total: newData.voting_max_total,
+          voting_max_votes_per_idea: newData.voting_max_votes_per_idea,
           survey_embed_url: newData.survey_embed_url,
           survey_service: newData.survey_service,
           poll_anonymous: newData.poll_anonymous,
@@ -245,6 +250,7 @@ class ParticipationContext extends PureComponent<
       document_annotation_embed_url: null,
       voting_min_total: voting ? 0 : null,
       voting_max_total: voting ? 1000 : null,
+      voting_max_votes_per_idea: voting ? 1 : null,
       ideas_order: ideation ? getDefaultSortMethodFallback(ideation) : null,
     });
   };
@@ -347,6 +353,14 @@ class ParticipationContext extends PureComponent<
     });
   };
 
+  handleVotingMaxPerIdeaChange = (newVotingMaxPerIdeaTotal: string) => {
+    const voting_max_votes_per_idea = parseInt(newVotingMaxPerIdeaTotal, 10);
+    this.setState({
+      voting_max_votes_per_idea,
+      maxVotesPerOptionError: null,
+    });
+  };
+
   handleInputTermChange = (option: IOption) => {
     const input_term: InputTerm = option.value;
 
@@ -369,6 +383,7 @@ class ParticipationContext extends PureComponent<
       noDownvotingLimitError,
       minTotalVotesError,
       maxTotalVotesError,
+      maxVotesPerOptionError,
       isValidated,
     } = validate(this.state, formatMessage);
 
@@ -377,6 +392,7 @@ class ParticipationContext extends PureComponent<
       noDownvotingLimitError,
       minTotalVotesError,
       maxTotalVotesError,
+      maxVotesPerOptionError,
     });
 
     return isValidated;
@@ -414,6 +430,7 @@ class ParticipationContext extends PureComponent<
       voting_method,
       voting_min_total,
       voting_max_total,
+      voting_max_votes_per_idea,
       survey_embed_url,
       document_annotation_embed_url,
       survey_service,
@@ -422,6 +439,7 @@ class ParticipationContext extends PureComponent<
       noDownvotingLimitError,
       minTotalVotesError,
       maxTotalVotesError,
+      maxVotesPerOptionError,
       poll_anonymous,
       presentation_mode,
       ideas_order,
@@ -469,6 +487,7 @@ class ParticipationContext extends PureComponent<
                 commenting_enabled={commenting_enabled}
                 minTotalVotesError={minTotalVotesError}
                 maxTotalVotesError={maxTotalVotesError}
+                maxVotesPerOptionError={maxVotesPerOptionError}
                 handleVotingMinTotalChange={this.handleVotingMinTotalChange}
                 handleVotingMaxTotalChange={this.handleVotingMaxTotalChange}
                 toggleCommentingEnabled={this.toggleCommentingEnabled}
@@ -476,6 +495,10 @@ class ParticipationContext extends PureComponent<
                 presentation_mode={presentation_mode}
                 handleIdeasDisplayChange={this.handleIdeasDisplayChange}
                 handleVotingMethodOnChange={this.handleVotingMethodOnChange}
+                voting_max_votes_per_idea={voting_max_votes_per_idea}
+                handleMaxVotesPerOptionAmountChange={
+                  this.handleVotingMaxPerIdeaChange
+                }
               />
             )}
 

@@ -15,6 +15,7 @@ export default (state: State, formatMessage: FormatMessage) => {
     voting_method,
     voting_min_total,
     voting_max_total,
+    voting_max_votes_per_idea,
   } = state;
 
   let isValidated = true;
@@ -22,6 +23,16 @@ export default (state: State, formatMessage: FormatMessage) => {
   let noDownvotingLimitError: JSX.Element | null = null;
   let minTotalVotesError: string | null = null;
   let maxTotalVotesError: string | null = null;
+  let maxVotesPerOptionError: string | null = null;
+
+  if (
+    voting_max_votes_per_idea &&
+    voting_max_total &&
+    voting_max_votes_per_idea > voting_max_total
+  ) {
+    maxVotesPerOptionError = formatMessage(messages.maxVotesPerOptionError);
+    isValidated = false;
+  }
 
   if (
     upvoting_method === 'limited' &&
@@ -87,6 +98,7 @@ export default (state: State, formatMessage: FormatMessage) => {
     noDownvotingLimitError,
     minTotalVotesError,
     maxTotalVotesError,
+    maxVotesPerOptionError,
     isValidated,
   };
 };
