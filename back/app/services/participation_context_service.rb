@@ -3,8 +3,7 @@
 class ParticipationContextService
   POSTING_DISABLED_REASONS = {
     project_inactive: 'project_inactive',
-    not_ideation: 'not_ideation',
-    posting_disabled: 'posting_disabled',
+    posting_not_allowed: 'posting_not_allowed',
     posting_limited_max_reached: 'posting_limited_max_reached'
   }.freeze
 
@@ -17,8 +16,7 @@ class ParticipationContextService
 
   REACTING_DISABLED_REASONS = {
     project_inactive: 'project_inactive',
-    not_ideation: 'not_ideation',
-    reacting_disabled: 'reacting_disabled',
+    reacting_not_allowed: 'reacting_not_allowed',
     reacting_dislike_disabled: 'reacting_dislike_disabled',
     reacting_like_limited_max_reached: 'reacting_like_limited_max_reached',
     reacting_dislike_limited_max_reached: 'reacting_dislike_limited_max_reached',
@@ -91,10 +89,8 @@ class ParticipationContextService
   def posting_idea_disabled_reason_for_context(context, user)
     if !context
       POSTING_DISABLED_REASONS[:project_inactive]
-    elsif !Factory.instance.participation_method_for(context).posting_allowed?
-      POSTING_DISABLED_REASONS[:not_ideation] # TODO: (native surveys) change reason code?
-    elsif !context.posting_enabled
-      POSTING_DISABLED_REASONS[:posting_disabled]
+    elsif !Factory.instance.participation_method_for(context).posting_allowed? || !context.posting_enabled
+      POSTING_DISABLED_REASONS[:posting_not_allowed]
     elsif user && posting_limit_reached?(context, user)
       POSTING_DISABLED_REASONS[:posting_limited_max_reached]
     else
@@ -178,12 +174,10 @@ class ParticipationContextService
     context = get_participation_context idea.project
     if !context
       REACTING_DISABLED_REASONS[:project_inactive]
-    elsif !context.ideation?
-      REACTING_DISABLED_REASONS[:not_ideation]
     elsif !in_current_context? idea, context
       REACTING_DISABLED_REASONS[:idea_not_in_current_phase]
-    elsif !context.reacting_enabled
-      REACTING_DISABLED_REASONS[:reacting_disabled]
+    elsif !context.ideation? || !context.reacting_enabled
+      REACTING_DISABLED_REASONS[:reacting_not_allowed]
     else
       permission_denied_reason user, 'reacting_idea', get_participation_context(idea.project)
     end
@@ -301,10 +295,8 @@ class ParticipationContextService
 
   # Common reason regardless of the reaction type.
   def general_idea_reacting_disabled_reason(context, _user)
-    if !context.ideation?
-      REACTING_DISABLED_REASONS[:not_ideation]
-    elsif !context.reacting_enabled
-      REACTING_DISABLED_REASONS[:reacting_disabled]
+    if !context.ideation? || !context.reacting_enabled
+      REACTING_DISABLED_REASONS[:reacting_not_allowed]
     end
   end
 
