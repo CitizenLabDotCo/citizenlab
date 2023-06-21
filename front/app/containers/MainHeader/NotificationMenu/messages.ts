@@ -58,6 +58,10 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.mentionInComment',
     defaultMessage: '{name} mentioned you in a comment',
   },
+  mentionInInternalComment: {
+    id: 'app.containers.NotificationMenu.mentionInInternalComment',
+    defaultMessage: '{name} mentioned you in an internal comment',
+  },
   userReportedCommentAsSpam: {
     id: 'app.containers.NotificationMenu.userReportedCommentAsSpam',
     defaultMessage: "{name} reported a comment on '{postTitle}' as spam",
