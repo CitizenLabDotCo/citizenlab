@@ -1,7 +1,6 @@
 import { Streams } from '.';
 // @ts-ignore
 import _request, { __setResponseFor } from 'utils/request';
-import { authApiEndpoint } from 'services/auth';
 
 const request = _request as jest.MockedFunction<any>;
 
@@ -10,10 +9,6 @@ jest.mock('utils/request');
 let streams: Streams;
 
 // Dummy responses
-const dummyAuth = {
-  data: { id: 'auth-id', type: 'user', attributes: {} },
-};
-__setResponseFor(authApiEndpoint, null, null, dummyAuth);
 
 const dummyTest = {
   data: { id: 'test-id', type: 'test', attributes: {} },
@@ -51,9 +46,6 @@ __setResponseFor(
 beforeEach(async () => {
   streams = new Streams();
 
-  // fetch app config and auth, always need to be available
-  // (see .reset method)
-  await streams.get({ apiEndpoint: authApiEndpoint });
   jest.clearAllMocks();
 });
 
@@ -185,7 +177,6 @@ describe('streams.reset', () => {
       await streams.reset();
 
       expect(request.mock.calls).toEqual([
-        ['/web_api/v1/users/me', null, { method: 'GET' }, null],
         ['/web_api/v1/test', null, { method: 'GET' }, null],
       ]);
     });
@@ -202,9 +193,7 @@ describe('streams.reset', () => {
       jest.clearAllMocks();
       await streams.reset();
 
-      expect(request.mock.calls).toEqual([
-        ['/web_api/v1/users/me', null, { method: 'GET' }, null],
-      ]);
+      expect(request.mock.calls).toEqual([]);
     });
   });
 
@@ -260,7 +249,6 @@ describe('streams.reset', () => {
       });
 
       expect(request.mock.calls).toEqual([
-        ['/web_api/v1/users/me', null, { method: 'GET' }, null],
         [
           '/web_api/v1/param_test',
           null,
