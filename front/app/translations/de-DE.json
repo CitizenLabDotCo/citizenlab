@@ -1702,7 +1702,7 @@
   "app.utils.votingMethodUtils.budgetParticipationEnded": "<b>Das Einreichen von Budgets endete am {endDate}.</b> Die Teilnehmenden hatten insgesamt <b>{maxBudget} {currency} zur Verfügung, die sie auf {optionCount} aufteilen konnten.</b>",
   "app.utils.votingMethodUtils.budgetSubmitted": "Budget eingereicht",
   "app.utils.votingMethodUtils.budgetSubmittedWithIcon": "Budget eingereicht 🎉",
-  "app.utils.votingMethodUtils.budgetingSubmissionInstructions2": "Sie haben insgesamt <b>{maxBudget} USD, die Sie auf {optionCount} Optionen</b>verteilen können. Wählen Sie Ihre bevorzugten Optionen aus, indem Sie auf „Hinzufügen“ tippen. Wenn Sie fertig sind, klicken Sie auf „Senden“, um Ihr Budget einzureichen.",
+  "app.utils.votingMethodUtils.budgetingSubmissionInstructions2": "Sie haben insgesamt <b>{maxBudget} {currency}, die Sie auf {optionCount} Optionen</b>verteilen können. Wählen Sie Ihre bevorzugten Optionen aus, indem Sie auf „Hinzufügen“ wählen. Wenn Sie fertig sind, klicken Sie auf „Senden“, um Ihr Budget einzureichen.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>Herzlichen Glückwunsch, Ihr Budget wurde übermittelt!</b> Sie können Ihre Optionen unten jederzeit überprüfen oder sie vor dem <b>{endDate}</b>ändern.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous": "<b>Herzlichen Glückwunsch, Ihr Budget wurde übermittelt!</b> Sie können Ihre Optionen unten jederzeit überprüfen oder ändern.",
   "app.utils.votingMethodUtils.budgets": "Budgets",
