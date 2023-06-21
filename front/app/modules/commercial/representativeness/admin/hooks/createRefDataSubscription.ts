@@ -1,5 +1,4 @@
 // services
-import { usersByRegFieldStream } from 'services/userCustomFieldStats';
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
@@ -44,24 +43,8 @@ interface Setters {
   setReferenceDataUploaded: (uploaded?: boolean) => void;
 }
 
-// Other registration fields
-export const createRegFieldSubscription = (
-  userCustomFieldId: string,
-  projectId: string | undefined,
-  setters: Setters
-) => {
-  const observable = usersByRegFieldStream(
-    { queryParameters: { project: projectId } },
-    userCustomFieldId
-  ).observable;
-
-  const subscription = observable.subscribe(handleRegFieldResponse(setters));
-
-  return subscription;
-};
-
 // Helpers
-export const handleRegFieldResponse2 = (
+export const handleRegFieldResponse = (
   usersByRegField: IUsersByCustomField | undefined,
   { setReferenceData, setIncludedUsers, setReferenceDataUploaded }: Setters
 ) => {
@@ -80,25 +63,6 @@ export const handleRegFieldResponse2 = (
   setIncludedUsers(regFieldToIncludedUsers(usersByRegField));
   setReferenceDataUploaded(true);
 };
-
-export const handleRegFieldResponse =
-  ({ setReferenceData, setIncludedUsers, setReferenceDataUploaded }: Setters) =>
-  (usersByRegField: IUsersByCustomField | NilOrError) => {
-    if (isNilOrError(usersByRegField)) {
-      setReferenceData(usersByRegField);
-      setIncludedUsers(usersByRegField);
-      return;
-    }
-
-    if (!usersByRegField.data.attributes.series.reference_population) {
-      setReferenceDataUploaded(false);
-      return;
-    }
-
-    setReferenceData(regFieldToReferenceData(usersByRegField));
-    setIncludedUsers(regFieldToIncludedUsers(usersByRegField));
-    setReferenceDataUploaded(true);
-  };
 
 export const regFieldToReferenceData = (
   usersByField: IUsersByCustomField

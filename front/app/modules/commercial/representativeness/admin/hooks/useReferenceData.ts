@@ -6,18 +6,18 @@ import useLocale from 'hooks/useLocale';
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import {
-  createRegFieldSubscription,
   RepresentativenessRowMultiloc,
   IncludedUsers,
   ageFieldToReferenceData,
   ageFieldToIncludedUsers,
-  handleRegFieldResponse2,
+  handleRegFieldResponse,
 } from './createRefDataSubscription';
 
 // typings
 import { IUserCustomFieldData } from 'api/user_custom_fields/types';
 import useUsersByAge from 'api/users_by_age/useUsersByAge';
 import useUsersByGender from 'api/users_by_gender/useUsersByGender';
+import useUsersByCustomField from 'api/users_by_custom_field/useUsersByCustomField';
 
 function useReferenceData(
   userCustomField: IUserCustomFieldData,
@@ -34,10 +34,13 @@ function useReferenceData(
   >();
   const { data: usersByAge } = useUsersByAge({ project: projectId });
   const { data: usersByGender } = useUsersByGender({ project: projectId });
+  const { data: usersByCustomField } = useUsersByCustomField({
+    project: projectId,
+    id: userCustomField.id,
+  });
   const locale = useLocale();
 
   const code = userCustomField.attributes.code;
-  const userCustomFieldId = userCustomField.id;
 
   useEffect(() => {
     if (isNilOrError(locale)) return;
@@ -49,7 +52,7 @@ function useReferenceData(
     };
 
     if (code === 'gender') {
-      handleRegFieldResponse2(usersByGender, setters);
+      handleRegFieldResponse(usersByGender, setters);
     }
 
     if (code === 'birthyear') {
@@ -69,14 +72,8 @@ function useReferenceData(
       setReferenceDataUploaded(true);
     }
 
-    const subscription = createRegFieldSubscription(
-      userCustomFieldId,
-      projectId,
-      setters
-    );
-
-    return () => subscription.unsubscribe();
-  }, [code, userCustomFieldId, projectId, locale, usersByAge, usersByGender]);
+    handleRegFieldResponse(usersByCustomField, setters);
+  }, [code, locale, usersByAge, usersByGender, usersByCustomField]);
 
   return {
     referenceData,

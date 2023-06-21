@@ -1,10 +1,7 @@
 import React, { PureComponent } from 'react';
 
 // services
-import {
-  usersByRegFieldStream,
-  usersByRegFieldXlsxEndpoint,
-} from 'services/userCustomFieldStats';
+import { usersByRegFieldStream } from 'services/userCustomFieldStats';
 
 // hooks
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
@@ -32,6 +29,7 @@ import {
   IUserCustomFieldData,
 } from 'api/user_custom_fields/types';
 import { IUsersByCustomField } from 'api/users_by_custom_field/types';
+import { usersByCustomFieldXlsxEndpoint } from 'api/users_by_custom_field/util';
 
 interface InputProps {
   currentGroupFilter: string | undefined;
@@ -163,7 +161,7 @@ export class RegistrationFieldsToGraphs extends PureComponent<
               stream={usersByRegFieldStream}
               graphUnit="users"
               customId={field.id}
-              xlsxEndpoint={usersByRegFieldXlsxEndpoint(field.id)}
+              xlsxEndpoint={usersByCustomFieldXlsxEndpoint(field.id)}
             />
           );
         } else {
@@ -179,7 +177,7 @@ export class RegistrationFieldsToGraphs extends PureComponent<
               stream={usersByRegFieldStream}
               graphUnit="users"
               customId={field.id}
-              xlsxEndpoint={usersByRegFieldXlsxEndpoint(field.id)}
+              xlsxEndpoint={usersByCustomFieldXlsxEndpoint(field.id)}
             />
           );
         }
