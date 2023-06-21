@@ -24,7 +24,7 @@ import {
 import useAuthUser from 'api/me/useAuthUser';
 
 // services
-import { verifyGentRrn } from '../services/verify';
+import { verifyGentRrn } from '../api/verification_methods/verify';
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';
@@ -32,10 +32,11 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // images
-import { TVerificationMethod } from 'services/verificationMethods';
+import { TVerificationMethod } from 'api/verification_methods/types';
 import meKeys from 'api/me/keys';
 import usersKeys from 'api/users/keys';
 import { useQueryClient } from '@tanstack/react-query';
+import userLockedAttributesKeys from 'api/user_locked_attributes/keys';
 
 interface Props {
   onCancel: () => void;
@@ -81,10 +82,9 @@ const VerificationFormGentRrn = memo<Props & WrappedComponentProps>(
             await verifyGentRrn(rrn);
 
             const endpointsToRefetch = [
-              `${API_PATH}/users/me/locked_attributes`,
               `${API_PATH}/users/custom_fields/schema`,
             ];
-
+            queryClient.invalidateQueries(userLockedAttributesKeys.all());
             if (!isNilOrError(authUser)) {
               queryClient.invalidateQueries(
                 usersKeys.item({ id: authUser.data.id })
@@ -102,25 +102,25 @@ const VerificationFormGentRrn = memo<Props & WrappedComponentProps>(
           } catch (error) {
             setProcessing(false);
 
-            if (get(error, 'json.errors.base[0].error') === 'taken') {
+            if (get(error, 'errors.base[0].error') === 'taken') {
               setFormError(formatMessage(messages.takenFormError));
-            } else if (get(error, 'json.errors.base[0].error') === 'no_match') {
+            } else if (get(error, 'errors.base[0].error') === 'no_match') {
               setFormError(formatMessage(messages.noMatchFormError));
             } else if (
-              get(error, 'json.errors.base[0].error') === 'not_entitled' &&
-              get(error, 'json.errors.base[0].why') === 'too_young'
+              get(error, 'errors.base[0].error') === 'not_entitled' &&
+              get(error, 'errors.base[0].why') === 'too_young'
             ) {
               setFormError(
                 formatMessage(messages.notEntitledTooYoungFormError)
               );
             } else if (
-              get(error, 'json.errors.base[0].error') === 'not_entitled' &&
-              get(error, 'json.errors.base[0].why') === 'lives_outside'
+              get(error, 'errors.base[0].error') === 'not_entitled' &&
+              get(error, 'errors.base[0].why') === 'lives_outside'
             ) {
               setFormError(
                 formatMessage(messages.notEntitledLivesOutsideFormError)
               );
-            } else if (get(error, 'json.errors.rrn[0].error') === 'invalid') {
+            } else if (get(error, 'errors.rrn[0].error') === 'invalid') {
               setRrnError(formatMessage(messages.invalidRrnError));
             } else {
               reportError(error);

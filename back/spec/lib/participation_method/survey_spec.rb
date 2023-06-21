@@ -113,4 +113,5 @@ RSpec.describe ParticipationMethod::Survey do
   its(:supports_budget?) { is_expected.to be false }
   its(:supports_status?) { is_expected.to be false }
   its(:supports_assignment?) { is_expected.to be false }
+  its(:return_disabled_actions?) { is_expected.to be false }
 end
