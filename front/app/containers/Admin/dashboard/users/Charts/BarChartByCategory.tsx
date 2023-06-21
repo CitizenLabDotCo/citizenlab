@@ -1,10 +1,9 @@
 // libraries
-import React from 'react';
+import React, { useRef } from 'react';
 import { isEmpty } from 'lodash-es';
 
 // intl
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { useIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 
 // components
@@ -20,33 +19,16 @@ import BarChart from 'components/admin/Graphs/BarChart';
 import { DEFAULT_BAR_CHART_MARGIN } from 'components/admin/Graphs/styling';
 
 // resources
-import GetSerieFromStream from 'resources/GetSerieFromStream';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
 // types
-import { IStreamParams, IStream } from 'utils/streams';
-import { IGraphFormat } from 'typings';
-import { IUsersByBirthyear } from 'api/users_by_birthyear/types';
 import { IUsersByCustomField } from 'api/users_by_custom_field/types';
-import { IUsersByDomicile } from 'api/users_by_domicile/types';
+import useUsersByCustomField from 'api/users_by_custom_field/useUsersByCustomField';
+import useLocalize from 'hooks/useLocalize';
 
-interface DataProps {
-  serie: IGraphFormat;
-}
-
-type ISupportedDataType =
-  | IUsersByBirthyear
-  | IUsersByDomicile
-  | IUsersByCustomField;
-
-interface InputProps {
-  stream: (
-    streamParams?: IStreamParams | null,
-    customId?: string
-  ) => IStream<ISupportedDataType>;
-  convertToGraphFormat: (data: ISupportedDataType) => IGraphFormat | null;
+interface Props {
   startAt: string | null | undefined;
   endAt: string | null;
   currentGroupFilter: string | undefined;
@@ -57,81 +39,106 @@ interface InputProps {
   customId?: string;
   xlsxEndpoint: string;
   showExportMenu?: boolean;
+  id: string;
 }
 
-interface Props extends InputProps, DataProps {}
+type GraphOption = {
+  value: number;
+  name: string;
+  code: string;
+};
 
-export class BarChartByCategory extends React.PureComponent<
-  Props & WrappedComponentProps
-> {
-  currentChart: React.RefObject<any>;
-  constructor(props: Props & WrappedComponentProps) {
-    super(props);
-    this.currentChart = React.createRef();
-  }
-  render() {
+const BarChartByCategory = ({
+  startAt,
+  endAt,
+  currentGroupFilterLabel,
+  currentGroupFilter,
+  xlsxEndpoint,
+  className,
+  graphTitleString,
+  graphUnit,
+  showExportMenu = true,
+  id,
+}: Props) => {
+  const { formatMessage } = useIntl();
+  const localize = useLocalize();
+  const currentChart = useRef<any>();
+
+  const convertToGraphFormat = (data: IUsersByCustomField) => {
     const {
-      startAt,
-      endAt,
-      currentGroupFilterLabel,
-      currentGroupFilter,
-      xlsxEndpoint,
-      className,
-      graphTitleString,
-      serie,
-      intl: { formatMessage },
-      graphUnit,
-      showExportMenu = true,
-    } = this.props;
+      series: { users },
+      options,
+    } = data.data.attributes;
+    let res: GraphOption[] = [];
+    if (options) {
+      res = Object.entries(options)
+        .sort((a, b) => a[1].ordering - b[1].ordering)
+        .map(([key, value]) => ({
+          value: users[key] || 0,
+          name: localize(value.title_multiloc),
+          code: key,
+        }));
+    }
 
-    const noData =
-      isNilOrError(serie) ||
-      serie.every((item) => isEmpty(item)) ||
-      serie.length <= 0;
+    if (users['_blank']) {
+      res.push({
+        value: users['_blank'],
+        name: formatMessage(messages._blank),
+        code: '_blank',
+      });
+    }
 
-    const unitName = formatMessage(messages[graphUnit]);
+    return res.length > 0 ? res : null;
+  };
 
-    return (
-      <GraphCard className={className}>
-        <GraphCardInner>
-          <GraphCardHeader>
-            <GraphCardTitle>{graphTitleString}</GraphCardTitle>
-            {!noData && showExportMenu && (
-              <ReportExportMenu
-                name={graphTitleString}
-                svgNode={this.currentChart}
-                xlsx={{ endpoint: xlsxEndpoint }}
-                currentGroupFilterLabel={currentGroupFilterLabel}
-                currentGroupFilter={currentGroupFilter}
-                startAt={startAt}
-                endAt={endAt}
-              />
-            )}
-          </GraphCardHeader>
-          <BarChart
-            data={serie}
-            innerRef={this.currentChart}
-            margin={DEFAULT_BAR_CHART_MARGIN}
-            mapping={{
-              category: 'name',
-              length: 'value',
-            }}
-            bars={{ name: unitName }}
-            labels
-            tooltip
-          />
-        </GraphCardInner>
-      </GraphCard>
-    );
-  }
-}
+  const { data: usersByCustomField } = useUsersByCustomField({
+    start_at: startAt,
+    end_at: endAt,
+    group: currentGroupFilter,
+    id,
+  });
 
-const BarChartByCategoryWithHoCs = injectIntl(BarChartByCategory);
+  const serie = usersByCustomField && convertToGraphFormat(usersByCustomField);
 
-const WrappedBarChartByCategory = (inputProps: InputProps) => (
-  <GetSerieFromStream {...inputProps}>
-    {(serie) => <BarChartByCategoryWithHoCs {...serie} {...inputProps} />}
-  </GetSerieFromStream>
-);
+  const noData =
+    isNilOrError(serie) ||
+    serie.every((item) => isEmpty(item)) ||
+    serie.length <= 0;
 
-export default WrappedBarChartByCategory;
+  const unitName = formatMessage(messages[graphUnit]);
+
+  return (
+    <GraphCard className={className}>
+      <GraphCardInner>
+        <GraphCardHeader>
+          <GraphCardTitle>{graphTitleString}</GraphCardTitle>
+          {!noData && showExportMenu && (
+            <ReportExportMenu
+              name={graphTitleString}
+              svgNode={currentChart}
+              xlsx={{ endpoint: xlsxEndpoint }}
+              currentGroupFilterLabel={currentGroupFilterLabel}
+              currentGroupFilter={currentGroupFilter}
+              startAt={startAt}
+              endAt={endAt}
+            />
+          )}
+        </GraphCardHeader>
+        <BarChart
+          data={serie}
+          innerRef={currentChart}
+          margin={DEFAULT_BAR_CHART_MARGIN}
+          mapping={{
+            category: 'name',
+            length: 'value',
+          }}
+          bars={{ name: unitName }}
+          labels
+          tooltip
+        />
+      </GraphCardInner>
+    </GraphCard>
+  );
+};
+
+export default BarChartByCategory;

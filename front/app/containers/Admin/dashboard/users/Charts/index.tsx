@@ -1,14 +1,11 @@
 import React from 'react';
 
 // services
-import { usersByRegFieldStream } from 'services/userCustomFieldStats';
 
 // hooks
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
 // intl
-import messages from 'containers/Admin/dashboard/messages';
-import { useIntl } from 'utils/cl-intl';
 import useLocalize from 'hooks/useLocalize';
 
 // components
@@ -24,7 +21,6 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // typings
 import { IUserCustomFieldInputType } from 'api/user_custom_fields/types';
-import { IUsersByCustomField } from 'api/users_by_custom_field/types';
 import { usersByCustomFieldXlsxEndpoint } from 'api/users_by_custom_field/util';
 
 interface Props {
@@ -33,12 +29,6 @@ interface Props {
   startAt: string | null | undefined;
   endAt: string | null;
 }
-
-type GraphOption = {
-  value: number;
-  name: string;
-  code: string;
-};
 
 const RegistrationFieldsToGraphs = ({
   startAt,
@@ -52,46 +42,7 @@ const RegistrationFieldsToGraphs = ({
 
   const customFields = userCustomFields?.data;
 
-  const { formatMessage } = useIntl();
   const localize = useLocalize();
-  const convertToGraphFormat = (data: IUsersByCustomField) => {
-    const {
-      series: { users },
-      options,
-    } = data.data.attributes;
-    let res: GraphOption[] = [];
-    if (options) {
-      res = Object.entries(options)
-        .sort((a, b) => a[1].ordering - b[1].ordering)
-        .map(([key, value]) => ({
-          value: users[key] || 0,
-          name: localize(value.title_multiloc),
-          code: key,
-        }));
-    }
-
-    if (users['_blank']) {
-      res.push({
-        value: users['_blank'],
-        name: formatMessage(messages._blank),
-        code: '_blank',
-      });
-    }
-
-    return res.length > 0 ? res : null;
-  };
-  const convertCheckboxToGraphFormat = (data: IUsersByCustomField) => {
-    const {
-      series: { users },
-    } = data.data.attributes;
-    const res = ['_blank', 'true', 'false'].map((key) => ({
-      value: users[key] || 0,
-      name: formatMessage(messages[key]),
-      code: 'key',
-    }));
-
-    return res.length > 0 ? res : null;
-  };
 
   if (isNilOrError(customFields)) {
     return null;
@@ -147,12 +98,11 @@ const RegistrationFieldsToGraphs = ({
             endAt={endAt}
             currentGroupFilter={currentGroupFilter}
             currentGroupFilterLabel={currentGroupFilterLabel}
-            convertToGraphFormat={convertCheckboxToGraphFormat}
             graphTitleString={localize(field.attributes.title_multiloc)}
-            stream={usersByRegFieldStream}
             graphUnit="users"
             customId={field.id}
             xlsxEndpoint={usersByCustomFieldXlsxEndpoint(field.id)}
+            id={field.id}
           />
         );
       } else {
@@ -163,12 +113,11 @@ const RegistrationFieldsToGraphs = ({
             endAt={endAt}
             currentGroupFilter={currentGroupFilter}
             currentGroupFilterLabel={currentGroupFilterLabel}
-            convertToGraphFormat={convertToGraphFormat}
             graphTitleString={localize(field.attributes.title_multiloc)}
-            stream={usersByRegFieldStream}
             graphUnit="users"
             customId={field.id}
             xlsxEndpoint={usersByCustomFieldXlsxEndpoint(field.id)}
+            id={field.id}
           />
         );
       }
