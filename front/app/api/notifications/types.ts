@@ -203,6 +203,13 @@ export interface IMentionInInternalCommentData extends IBaseNotificationData {
   } & IInternalcommentBaseAttributes;
 }
 
+export interface IInternalCommentOnYourInternalCommentData
+  extends IBaseNotificationData {
+  attributes: {
+    type: 'internal_comment_on_your_internal_comment';
+  } & IInternalcommentBaseAttributes;
+}
+
 export interface IMentionInOfficialFeedbackNotificationData
   extends IBaseNotificationData {
   attributes: {
