@@ -30,7 +30,7 @@ export default (state: State, formatMessage: FormatMessage) => {
       reacting_like_limited_max < 1)
   ) {
     noLikingLimitError = (
-      <FormattedMessage {...messages.noVotingLimitErrorMessage} />
+      <FormattedMessage {...messages.noReactingLimitErrorMessage} />
     );
     isValidated = false;
   }
@@ -42,7 +42,7 @@ export default (state: State, formatMessage: FormatMessage) => {
       reacting_dislike_limited_max < 1)
   ) {
     noDislikingLimitError = (
-      <FormattedMessage {...messages.noVotingLimitErrorMessage} />
+      <FormattedMessage {...messages.noReactingLimitErrorMessage} />
     );
     isValidated = false;
   }
