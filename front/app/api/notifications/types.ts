@@ -210,6 +210,13 @@ export interface IInternalCommentOnYourInternalCommentData
   } & IInternalcommentBaseAttributes;
 }
 
+export interface IInternalCommentOnIdeaAssignedToYouData
+  extends IBaseNotificationData {
+  attributes: {
+    type: 'internal_comment_on_idea_assigned_to_you';
+  } & IInternalcommentBaseAttributes;
+}
+
 export interface IMentionInOfficialFeedbackNotificationData
   extends IBaseNotificationData {
   attributes: {
