@@ -1,6 +1,5 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { adopt } from 'react-adopt';
 
 // components
 import Title from 'components/PostShowComponents/Title';
@@ -27,11 +26,6 @@ import {
 import { ProcessType } from 'api/projects/types';
 
 // resources
-import GetIdeaById, { GetIdeaByIdChildProps } from 'resources/GetIdeaById';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetPermission, {
-  GetPermissionChildProps,
-} from 'resources/GetPermission';
 import useIdeaImages from 'api/idea_images/useIdeaImages';
 import useDeleteIdea from 'api/ideas/useDeleteIdea';
 
@@ -51,6 +45,8 @@ import { darken } from 'polished';
 import useIdeaFiles from 'api/idea_files/useIdeaFiles';
 import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
+import useIdeaById from 'api/ideas/useIdeaById';
+import useProjectById from 'api/projects/useProjectById';
 
 const StyledTitle = styled(Title)`
   margin-bottom: 20px;
@@ -155,33 +151,25 @@ const Picks = styled.div`
   align-items: center;
 `;
 
-interface InputProps {
+interface Props {
   ideaId: string;
   closePreview: () => void;
   handleClickEdit: () => void;
 }
 
-interface DataProps {
-  idea: GetIdeaByIdChildProps;
-  project: GetProjectChildProps;
-  postOfficialFeedbackPermission: GetPermissionChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-const AdminIdeaContent = ({
-  idea,
-  project,
-  handleClickEdit,
-  closePreview,
-  ideaId,
-}: Props) => {
+const AdminIdeaContent = ({ handleClickEdit, closePreview, ideaId }: Props) => {
+  const { data: idea } = useIdeaById(ideaId);
+  const { data: project } = useProjectById(
+    idea?.data.relationships.project.data.id
+  );
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { data: ideaImages } = useIdeaImages(ideaId);
   const { data: ideaFiles } = useIdeaFiles(ideaId);
   const { mutate: deleteIdea } = useDeleteIdea();
-  const { data: phases } = usePhases(project?.id);
+  const { data: phases } = usePhases(project?.data.id);
+
+  if (!idea || !project) return null;
 
   const handleClickDelete = (processType: ProcessType) => () => {
     const deleteConfirmationMessage = {
@@ -189,188 +177,155 @@ const AdminIdeaContent = ({
       timeline: messages.deleteInputInTimelineConfirmation,
     }[processType];
 
-    if (!isNilOrError(idea)) {
-      if (window.confirm(formatMessage(deleteConfirmationMessage))) {
-        deleteIdea(idea.id, { onSuccess: closePreview });
-      }
+    if (window.confirm(formatMessage(deleteConfirmationMessage))) {
+      deleteIdea(idea.data.id, { onSuccess: closePreview });
     }
   };
 
-  if (!isNilOrError(idea) && !isNilOrError(project)) {
-    const currentPhase = getCurrentPhase(phases?.data);
-    const ideaId = idea.id;
-    const ideaTitle = localize(idea.attributes.title_multiloc);
-    const ideaImageLarge =
-      ideaImages && ideaImages.data.length > 0
-        ? ideaImages.data[0].attributes.versions.large
-        : null;
-    const ideaGeoPosition = idea.attributes.location_point_geojson || null;
-    const ideaAddress = getAddressOrFallbackDMS(
-      idea.attributes.location_description,
-      idea.attributes.location_point_geojson
-    );
-    // AuthorId can be null if user has been deleted
-    const authorId = idea.relationships.author.data?.id || null;
-    const proposedBudget = idea.attributes.proposed_budget;
-    const processType = project.attributes.process_type;
-    const allowAnonymousParticipation =
-      project.attributes.allow_anonymous_participation ||
-      currentPhase?.attributes.allow_anonymous_participation;
+  const currentPhase = getCurrentPhase(phases?.data);
+  const ideaTitle = localize(idea.data.attributes.title_multiloc);
+  const ideaImageLarge =
+    ideaImages && ideaImages.data.length > 0
+      ? ideaImages.data[0].attributes.versions.large
+      : null;
+  const ideaGeoPosition = idea.data.attributes.location_point_geojson || null;
+  const ideaAddress = getAddressOrFallbackDMS(
+    idea.data.attributes.location_description,
+    idea.data.attributes.location_point_geojson
+  );
+  // AuthorId can be null if user has been deleted
+  const authorId = idea.data.relationships.author.data?.id || null;
+  const proposedBudget = idea.data.attributes.proposed_budget;
+  const processType = project.data.attributes.process_type;
+  const allowAnonymousParticipation =
+    project.data.attributes.allow_anonymous_participation ||
+    currentPhase?.attributes.allow_anonymous_participation;
 
-    return (
-      <Container>
-        <Top>
-          <Button icon="edit" buttonStyle="text" onClick={handleClickEdit}>
-            <FormattedMessage {...messages.edit} />
-          </Button>
-          <Button
-            icon="delete"
-            buttonStyle="text"
-            onClick={handleClickDelete(processType)}
-          >
-            <FormattedMessage {...messages.delete} />
-          </Button>
-        </Top>
-        <Content>
-          {!isNilOrError(project) && (
-            <BelongsToProject>
-              <FormattedMessage
-                {...messages.postedIn}
-                values={{
-                  projectLink: (
-                    <ProjectLink
-                      className="e2e-project-link"
-                      to={`/projects/${project.attributes.slug}`}
-                    >
-                      <T value={project.attributes.title_multiloc} />
-                    </ProjectLink>
-                  ),
-                }}
+  return (
+    <Container>
+      <Top>
+        <Button icon="edit" buttonStyle="text" onClick={handleClickEdit}>
+          <FormattedMessage {...messages.edit} />
+        </Button>
+        <Button
+          icon="delete"
+          buttonStyle="text"
+          onClick={handleClickDelete(processType)}
+        >
+          <FormattedMessage {...messages.delete} />
+        </Button>
+      </Top>
+      <Content>
+        {!isNilOrError(project) && (
+          <BelongsToProject>
+            <FormattedMessage
+              {...messages.postedIn}
+              values={{
+                projectLink: (
+                  <ProjectLink
+                    className="e2e-project-link"
+                    to={`/projects/${project.data.attributes.slug}`}
+                  >
+                    <T value={project.data.attributes.title_multiloc} />
+                  </ProjectLink>
+                ),
+              }}
+            />
+          </BelongsToProject>
+        )}
+
+        <StyledTitle postId={ideaId} postType="idea" title={ideaTitle} />
+        <StyledPostedBy
+          ideaId={ideaId}
+          authorId={authorId}
+          anonymous={idea.data.attributes.anonymous}
+        />
+        <Row>
+          <Left>
+            {ideaImageLarge && (
+              <IdeaImage
+                src={ideaImageLarge}
+                alt=""
+                className="e2e-ideaImage"
               />
-            </BelongsToProject>
-          )}
+            )}
 
-          <StyledTitle postId={ideaId} postType="idea" title={ideaTitle} />
-          <StyledPostedBy
-            ideaId={ideaId}
-            authorId={authorId}
-            anonymous={idea.attributes.anonymous}
-          />
-          <Row>
-            <Left>
-              {ideaImageLarge && (
-                <IdeaImage
-                  src={ideaImageLarge}
-                  alt=""
-                  className="e2e-ideaImage"
-                />
-              )}
+            {proposedBudget && (
+              <>
+                <BodySectionTitle>
+                  <FormattedMessage {...messages.proposedBudgetTitle} />
+                </BodySectionTitle>
+                <IdeaProposedBudget proposedBudget={proposedBudget} />
+                <BodySectionTitle>
+                  <FormattedMessage {...messages.bodyTitle} />
+                </BodySectionTitle>
+              </>
+            )}
 
-              {proposedBudget && (
-                <>
-                  <BodySectionTitle>
-                    <FormattedMessage {...messages.proposedBudgetTitle} />
-                  </BodySectionTitle>
-                  <IdeaProposedBudget proposedBudget={proposedBudget} />
-                  <BodySectionTitle>
-                    <FormattedMessage {...messages.bodyTitle} />
-                  </BodySectionTitle>
-                </>
-              )}
+            <StyledBody
+              postId={ideaId}
+              postType="idea"
+              body={localize(idea.data.attributes.body_multiloc)}
+            />
 
-              <StyledBody
-                postId={ideaId}
-                postType="idea"
-                body={localize(idea.attributes.body_multiloc)}
+            {!isNilOrError(project) && ideaGeoPosition && ideaAddress && (
+              <StyledMap
+                address={ideaAddress}
+                position={ideaGeoPosition}
+                projectId={project.data.id}
               />
+            )}
 
-              {!isNilOrError(project) && ideaGeoPosition && ideaAddress && (
-                <StyledMap
-                  address={ideaAddress}
-                  position={ideaGeoPosition}
-                  projectId={project.id}
-                />
-              )}
+            {ideaFiles && (
+              <Box mb="25px">
+                <FileAttachments files={ideaFiles.data} />
+              </Box>
+            )}
 
-              {ideaFiles && (
-                <Box mb="25px">
-                  <FileAttachments files={ideaFiles.data} />
-                </Box>
-              )}
+            <StyledOfficialFeedback
+              postId={ideaId}
+              postType="idea"
+              permissionToPost
+            />
 
-              <StyledOfficialFeedback
-                postId={ideaId}
-                postType="idea"
-                permissionToPost
-              />
+            <CommentsSection
+              allowAnonymousParticipation={allowAnonymousParticipation}
+              postId={ideaId}
+              postType="idea"
+              showInternalComments
+            />
+          </Left>
+          <Right>
+            <ReactionPreview ideaId={ideaId} />
 
-              <CommentsSection
-                allowAnonymousParticipation={allowAnonymousParticipation}
-                postId={ideaId}
-                postType="idea"
-                showInternalComments
-              />
-            </Left>
-            <Right>
-              <ReactionPreview ideaId={ideaId} />
+            {idea.data.attributes.budget && (
+              <>
+                <BudgetBox>
+                  <FormattedBudget value={idea.data.attributes.budget} />
+                  <Picks>
+                    <FormattedMessage
+                      {...messages.picks}
+                      values={{
+                        picksNumber: idea.data.attributes.baskets_count,
+                      }}
+                    />
+                    &nbsp;
+                    <IconTooltip
+                      content={
+                        <FormattedMessage {...messages.pbItemCountTooltip} />
+                      }
+                    />
+                  </Picks>
+                </BudgetBox>
+              </>
+            )}
 
-              {idea.attributes.budget && (
-                <>
-                  <BudgetBox>
-                    <FormattedBudget value={idea.attributes.budget} />
-                    <Picks>
-                      <FormattedMessage
-                        {...messages.picks}
-                        values={{
-                          picksNumber: idea.attributes.baskets_count,
-                        }}
-                      />
-                      &nbsp;
-                      <IconTooltip
-                        content={
-                          <FormattedMessage {...messages.pbItemCountTooltip} />
-                        }
-                      />
-                    </Picks>
-                  </BudgetBox>
-                </>
-              )}
-
-              <FeedbackSettings ideaId={ideaId} projectId={project.id} />
-            </Right>
-          </Row>
-        </Content>
-      </Container>
-    );
-  }
-  return null;
+            <FeedbackSettings ideaId={ideaId} projectId={project.data.id} />
+          </Right>
+        </Row>
+      </Content>
+    </Container>
+  );
 };
 
-const Data = adopt<DataProps, InputProps>({
-  idea: ({ ideaId, render }) => (
-    <GetIdeaById ideaId={ideaId}>{render}</GetIdeaById>
-  ),
-  project: ({ idea, render }) => (
-    <GetProject
-      projectId={
-        !isNilOrError(idea) ? idea.relationships.project.data.id : null
-      }
-    >
-      {render}
-    </GetProject>
-  ),
-  postOfficialFeedbackPermission: ({ project, render }) => (
-    <GetPermission
-      item={!isNilOrError(project) ? project : null}
-      action="moderate"
-    >
-      {render}
-    </GetPermission>
-  ),
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <AdminIdeaContent {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default AdminIdeaContent;
