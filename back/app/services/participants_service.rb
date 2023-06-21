@@ -104,8 +104,8 @@ class ParticipantsService
   def project_participants_count(project)
     Rails.cache.fetch("#{project.cache_key}/participant_count", expires_in: 1.day) do
       participant_ids = projects_participants([project]).pluck(:id)
-      anonymous_author_hashes = participant_ids.map { |id| Idea.create_author_hash(id, project.id, true) }
-      participant_ids.size + projects_anonymous_count([project], anonymous_author_hashes) + projects_everyone_count([project])
+      known_author_hashes = participant_ids.map { |id| Idea.create_author_hash(id, project.id, true) }
+      participant_ids.size + projects_anonymous_count([project], known_author_hashes) + projects_everyone_count([project])
     end
   end
 
@@ -113,21 +113,21 @@ class ParticipantsService
   def folder_participants_count(folder)
     Rails.cache.fetch("#{folder.cache_key}/participant_count", expires_in: 1.day) do
       participant_ids = projects_participants(folder.projects).pluck(:id)
-      anonymous_author_hashes = participant_ids.flat_map do |id|
+      known_author_hashes = participant_ids.flat_map do |id|
         folder.projects.ids { |project_id| Idea.create_author_hash(id, project_id, true) }
       end
-      participant_ids.size + projects_anonymous_count(folder.projects, anonymous_author_hashes) + projects_everyone_count(folder.projects)
+      participant_ids.size + projects_anonymous_count(folder.projects, known_author_hashes) + projects_everyone_count(folder.projects)
     end
   end
 
-  def projects_anonymous_count(projects, anonymous_author_hashes)
+  def projects_anonymous_count(projects, known_author_hashes)
     anonymous_idea_hashes = Idea.where(project: projects, anonymous: true)
-      .where.not(author_hash: anonymous_author_hashes)
+      .where.not(author_hash: known_author_hashes)
       .distinct.pluck(:author_hash)
     anonymous_comment_hashes = Comment.joins(:idea)
       .where(anonymous: true)
       .where(idea: { project: projects })
-      .where.not(author_hash: anonymous_author_hashes + anonymous_idea_hashes)
+      .where.not(author_hash: known_author_hashes + anonymous_idea_hashes)
       .distinct.pluck(:author_hash)
     anonymous_idea_hashes.size + anonymous_comment_hashes.size
   end
