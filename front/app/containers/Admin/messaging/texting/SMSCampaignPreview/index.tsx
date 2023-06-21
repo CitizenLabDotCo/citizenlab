@@ -15,10 +15,8 @@ import clHistory from 'utils/cl-router/history';
 import useTextingCampaign from 'api/texting_campaigns/useTextingCampaign';
 
 // services
-import {
-  deleteTextingCampaign,
-  sendTextingCampaign,
-} from 'services/textingCampaigns';
+import { sendTextingCampaign } from 'services/textingCampaigns';
+import useDeleteTextingCampaign from 'api/texting_campaigns/useDeleteTextingCampaign';
 
 // styling
 import styled from 'styled-components';
@@ -117,6 +115,8 @@ const InformativeTableRow = ({
 };
 
 const SMSCampaignPreview = (props: WithRouterProps) => {
+  const { mutate: deleteTextingCampaign, isLoading } =
+    useDeleteTextingCampaign();
   const [confirmationModalIsVisible, setConfirmationModalVisible] =
     useState(false);
   const [deleteCampaignModalIsVisible, setDeleteCampaignModalVisible] =
@@ -124,21 +124,20 @@ const SMSCampaignPreview = (props: WithRouterProps) => {
   const [hasTooManySegmentsError, setHasTooManySegmentsError] = useState(false);
   const [hasMonthlyLimitReachedError, setHasMonthlyLimitReachedError] =
     useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
   const { campaignId } = props.params;
   const { data: campaign } = useTextingCampaign(campaignId);
 
   const confirmSendTextingCampaign = async () => {
     try {
-      setIsLoading(true);
+      // setIsLoading(true);
       await sendTextingCampaign(campaignId);
       const url = `/admin/messaging/texting/${campaignId}`;
       clHistory.replace(url);
     } catch (e) {
-      setIsLoading(false);
+      //   setIsLoading(false);
       const smsCampaignBaseErrors: SMSCampaignBaseError[] | undefined =
-        e.json.errors.base;
+        e.errors.base;
       const tooManySegmentsError = smsCampaignBaseErrors?.find(
         (smsCampaignBaseError) =>
           smsCampaignBaseError.error === 'too_many_total_segments'
@@ -156,15 +155,13 @@ const SMSCampaignPreview = (props: WithRouterProps) => {
     }
   };
 
-  const confirmDeleteTextingCampaign = async () => {
-    try {
-      setIsLoading(true);
-      await deleteTextingCampaign(campaignId);
-      const url = `/admin/messaging/texting`;
-      clHistory.replace(url);
-    } catch (e) {
-      setIsLoading(false);
-    }
+  const confirmDeleteTextingCampaign = () => {
+    deleteTextingCampaign(campaignId, {
+      onSuccess: () => {
+        const url = `/admin/messaging/texting`;
+        clHistory.replace(url);
+      },
+    });
   };
 
   const openDeleteModal = () => {
