@@ -62,7 +62,7 @@ export const getStepConfig = (
       updateUser
     ),
 
-    ...claveUnicaFlow(getRequirements, setCurrentStep),
+    ...claveUnicaFlow(getRequirements, setCurrentStep, updateUser),
 
     'verification-only': {
       CLOSE: () => setCurrentStep('closed'),

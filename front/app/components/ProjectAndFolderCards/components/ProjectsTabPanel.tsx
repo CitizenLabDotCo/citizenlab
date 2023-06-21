@@ -9,12 +9,12 @@ import ProjectCard from 'components/ProjectCard';
 import ProjectFolderCard from './ProjectFolderCard';
 
 // types
-import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 import { BaseProps, TCardSize } from './PublicationStatusTabs';
 import { PublicationTab } from '../';
 
 // utils
 import { getTabId, getTabPanelId } from './Topbar/Tabs';
+import { IAdminPublicationData } from 'api/admin_publications/types';
 
 const Container = styled.div<{ hide: boolean }>`
   display: ${({ hide }) => (hide ? 'none' : 'flex')};
@@ -51,9 +51,7 @@ const ProjectsTabPanel = ({
         setCardSizes(newCardSizes);
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [list.length, layout]);
-
+  }, [list.length, layout, cardSizes, isLargerThanTablet]);
   return (
     // The id, aria-labelledby, hidden and hide are necessary
     // for the tab system to work well with screen readers.
@@ -67,9 +65,9 @@ const ProjectsTabPanel = ({
       hidden={tab !== currentTab}
       hide={tab !== currentTab}
     >
-      {list.map((item: IAdminPublicationContent, index: number) => {
-        const projectOrFolderId = item.publicationId;
-        const projectOrFolderType = item.publicationType;
+      {list.map((item: IAdminPublicationData, index: number) => {
+        const projectOrFolderId = item.relationships.publication.data.id;
+        const projectOrFolderType = item.relationships.publication.data.type;
         const getCardSize = (index: number) => {
           if (layout === 'dynamic') {
             return cardSizes[index];

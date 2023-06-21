@@ -1,6 +1,5 @@
 import React, { memo, useEffect, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // components
 import Timeline from './Timeline';
@@ -43,6 +42,8 @@ import { colors, viewportWidths, isRtl } from 'utils/styleUtils';
 // other
 import { isValidPhase } from '../phaseParam';
 import setPhaseURL from './setPhaseURL';
+import PhaseDocumentAnnotation from './document_annotation';
+import { useParams } from 'react-router-dom';
 
 const Container = styled.div``;
 
@@ -83,145 +84,141 @@ interface Props {
   className?: string;
 }
 
-const ProjectTimelineContainer = memo<Props & WithRouterProps>(
-  ({ projectId, className, params: { phaseNumber } }) => {
-    const { data: project } = useProjectById(projectId);
-    const { data: phases } = usePhases(projectId);
-    const locale = useLocale();
-    const windowSize = useWindowSize();
+const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
+  const { phaseNumber } = useParams() as {
+    phaseNumber: string;
+  };
+  const { data: project } = useProjectById(projectId);
+  const { data: phases } = usePhases(projectId);
+  const locale = useLocale();
+  const windowSize = useWindowSize();
 
-    const [selectedPhase, setSelectedPhase] = useState<
-      IPhaseData | undefined
-    >();
-    const currentPhase = getCurrentPhase(phases?.data);
+  const [selectedPhase, setSelectedPhase] = useState<IPhaseData | null>(null);
+  const currentPhase = getCurrentPhase(phases?.data);
 
-    useEffect(() => {
-      const subscription = selectedPhase$.subscribe((selectedPhase) => {
-        setSelectedPhase(selectedPhase);
-      });
+  useEffect(() => {
+    const subscription = selectedPhase$.subscribe((selectedPhase) => {
+      setSelectedPhase(selectedPhase || null);
+    });
 
-      return () => {
-        subscription.unsubscribe();
-        selectPhase(undefined);
-      };
-    }, []);
-
-    useEffect(() => {
-      if (
-        selectedPhase !== null &&
-        phases &&
-        project &&
-        !isNilOrError(locale)
-      ) {
-        setPhaseURL(
-          selectedPhase?.id,
-          currentPhase?.id,
-          phases.data,
-          project.data,
-          locale
-        );
-      }
-    }, [selectedPhase, phases, project, locale, currentPhase]);
-
-    useEffect(() => {
-      if (phases && phases.data.length > 0) {
-        const latestRelevantPhase = getLatestRelevantPhase(phases.data);
-
-        // if a phase parameter was provided, and it is valid, we set that as phase.
-        // otherwise, use the most logical phase
-        if (isValidPhase(phaseNumber, phases.data)) {
-          const phaseIndex = Number(phaseNumber) - 1;
-          selectPhase(phases.data[phaseIndex]);
-        } else if (latestRelevantPhase) {
-          selectPhase(latestRelevantPhase);
-        } else {
-          selectPhase(undefined);
-        }
-      }
-    }, [phaseNumber, phases]);
-
-    const handleSetSelectedPhase = (phase: IPhaseData) => {
-      setSelectedPhase(phase);
+    return () => {
+      subscription.unsubscribe();
+      selectPhase(undefined);
     };
+  }, []);
 
-    if (
-      !isNilOrError(project) &&
-      phases &&
-      phases.data.length > 0 &&
-      selectedPhase
-    ) {
-      const selectedPhaseId = selectedPhase.id;
-      const isPBPhase =
-        selectedPhase.attributes.participation_method === 'budgeting';
-      const participationMethod = selectedPhase.attributes.participation_method;
-      const smallerThanSmallTablet = windowSize
-        ? windowSize.windowWidth <= viewportWidths.tablet
-        : false;
-
-      return (
-        <Container className={`${className || ''} e2e-project-process-page`}>
-          <StyledSectionContainer>
-            <div>
-              <ContentContainer maxWidth={maxPageWidth}>
-                <Header>
-                  <StyledProjectPageSectionTitle>
-                    <FormattedMessage {...messages.phases} />
-                  </StyledProjectPageSectionTitle>
-                  <PhaseNavigation
-                    projectId={project.data.id}
-                    buttonStyle="white"
-                  />
-                </Header>
-                <StyledTimeline
-                  projectId={project.data.id}
-                  selectedPhase={selectedPhase}
-                  setSelectedPhase={handleSetSelectedPhase}
-                />
-                {isPBPhase && (
-                  <StyledPBExpenses
-                    participationContextId={selectedPhaseId}
-                    participationContextType="phase"
-                    viewMode={smallerThanSmallTablet ? 'column' : 'row'}
-                  />
-                )}
-                <PhaseSurvey
-                  projectId={project.data.id}
-                  phaseId={selectedPhaseId}
-                />
-              </ContentContainer>
-            </div>
-            <div>
-              <ContentContainer maxWidth={maxPageWidth}>
-                <PhasePoll
-                  projectId={project.data.id}
-                  phaseId={selectedPhaseId}
-                />
-                <PhaseVolunteering
-                  projectId={project.data.id}
-                  phaseId={selectedPhaseId}
-                />
-              </ContentContainer>
-            </div>
-
-            {(participationMethod === 'ideation' ||
-              participationMethod === 'budgeting') &&
-              selectedPhaseId && (
-                <div>
-                  <ContentContainer maxWidth={maxPageWidth}>
-                    <PhaseIdeas
-                      projectId={project.data.id}
-                      phaseId={selectedPhaseId}
-                    />
-                  </ContentContainer>
-                </div>
-              )}
-          </StyledSectionContainer>
-        </Container>
+  useEffect(() => {
+    if (selectedPhase !== null && phases && project && !isNilOrError(locale)) {
+      setPhaseURL(
+        selectedPhase?.id,
+        currentPhase?.id,
+        phases.data,
+        project.data,
+        locale
       );
     }
+  }, [selectedPhase, phases, project, locale, currentPhase]);
 
-    return null;
+  useEffect(() => {
+    if (phases && phases.data.length > 0) {
+      const latestRelevantPhase = getLatestRelevantPhase(phases.data);
+
+      // if a phase parameter was provided, and it is valid, we set that as phase.
+      // otherwise, use the most logical phase
+      if (isValidPhase(phaseNumber, phases.data)) {
+        const phaseIndex = Number(phaseNumber) - 1;
+        selectPhase(phases.data[phaseIndex]);
+      } else if (latestRelevantPhase) {
+        selectPhase(latestRelevantPhase);
+      } else {
+        selectPhase(undefined);
+      }
+    }
+  }, [phaseNumber, phases]);
+
+  const handleSetSelectedPhase = (phase: IPhaseData) => {
+    setSelectedPhase(phase);
+  };
+
+  useEffect(() => {
+    if (
+      selectedPhase &&
+      phases &&
+      phases.data.length > 0 &&
+      !isNilOrError(project) &&
+      !isNilOrError(locale)
+    ) {
+      setPhaseURL(
+        selectedPhase.id,
+        currentPhase?.id,
+        phases.data,
+        project.data,
+        locale
+      );
+    }
+  }, [selectedPhase, phases, project, locale, currentPhase]);
+
+  if (!isNilOrError(project) && selectedPhase) {
+    const selectedPhaseId = selectedPhase.id;
+    const isPBPhase =
+      selectedPhase.attributes.participation_method === 'budgeting';
+    const participationMethod = selectedPhase.attributes.participation_method;
+    const smallerThanSmallTablet = windowSize
+      ? windowSize.windowWidth <= viewportWidths.tablet
+      : false;
+
+    return (
+      <Container className={`${className || ''} e2e-project-process-page`}>
+        <StyledSectionContainer>
+          <div>
+            <ContentContainer maxWidth={maxPageWidth}>
+              <Header>
+                <StyledProjectPageSectionTitle>
+                  <FormattedMessage {...messages.phases} />
+                </StyledProjectPageSectionTitle>
+                <PhaseNavigation projectId={projectId} buttonStyle="white" />
+              </Header>
+              <StyledTimeline
+                projectId={projectId}
+                selectedPhase={selectedPhase}
+                setSelectedPhase={handleSetSelectedPhase}
+              />
+              {isPBPhase && (
+                <StyledPBExpenses
+                  participationContextId={selectedPhaseId}
+                  participationContextType="phase"
+                  viewMode={smallerThanSmallTablet ? 'column' : 'row'}
+                />
+              )}
+              <PhaseSurvey project={project.data} phaseId={selectedPhaseId} />
+              {participationMethod === 'document_annotation' && (
+                <PhaseDocumentAnnotation
+                  phase={selectedPhase}
+                  project={project.data}
+                />
+              )}
+            </ContentContainer>
+          </div>
+          <div>
+            <ContentContainer maxWidth={maxPageWidth}>
+              <PhasePoll projectId={projectId} phaseId={selectedPhaseId} />
+              <PhaseVolunteering
+                projectId={projectId}
+                phaseId={selectedPhaseId}
+              />
+              {(participationMethod === 'ideation' ||
+                participationMethod === 'budgeting') &&
+                selectedPhaseId && (
+                  <PhaseIdeas projectId={projectId} phaseId={selectedPhaseId} />
+                )}
+            </ContentContainer>
+          </div>
+        </StyledSectionContainer>
+      </Container>
+    );
   }
-);
 
-export default withRouter(ProjectTimelineContainer);
+  return null;
+});
+
+export default ProjectTimelineContainer;

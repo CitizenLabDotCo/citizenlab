@@ -38,9 +38,8 @@ export default defineMessages({
     defaultMessage: 'It is currently impossible to take this poll.',
   },
   pollDisabledNotActivePhase: {
-    id: 'app.containers.Projects.PollForm.pollDisabledNotActivePhase',
-    defaultMessage:
-      'This survey can only be taken when this phase in the timeline is active.',
+    id: 'app.containers.Projects.PollForm.pollDisabledNotActivePhase1',
+    defaultMessage: 'This poll can only be taken when this phase is active.',
   },
   signUpLinkText: {
     id: 'app.containers.Projects.PollForm.signUpLinkText',
@@ -62,6 +61,10 @@ export default defineMessages({
     id: 'app.containers.Projects.PollForm.pollDisabledNotVerified',
     defaultMessage:
       'Taking this poll requires verification of your account. {verificationLink}',
+  },
+  pollDisabledAlreadyResponded: {
+    id: 'app.containers.Projects.PollForm.pollDisabledAlreadyResponded',
+    defaultMessage: "You've already taken this poll.",
   },
   maxOptions: {
     id: 'app.containers.Projects.PollForm.maxOptions',

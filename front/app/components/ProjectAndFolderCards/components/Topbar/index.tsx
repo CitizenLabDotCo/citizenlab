@@ -32,9 +32,10 @@ import { getShowFilters, getShowFiltersLabel } from './show';
 import clHistory from 'utils/cl-router/history';
 
 // typings
-import { IStatusCounts } from 'hooks/useAdminPublicationsStatusCounts';
+
 import { PublicationTab } from '../..';
 import { useSearchParams } from 'react-router-dom';
+import { IStatusCountsAll } from 'api/admin_publications_status_counts/types';
 
 const Title = styled.h2<{ hasPublications: boolean }>`
   color: ${({ theme }) => theme.colors.tenantText};
@@ -124,7 +125,7 @@ const MobileFilters = styled.div`
 interface Props {
   className?: string;
   currentTab: PublicationTab;
-  statusCounts: IStatusCounts;
+  statusCounts: IStatusCountsAll;
   noAdminPublicationsAtAll: boolean;
   availableTabs: PublicationTab[];
   showTitle: boolean;

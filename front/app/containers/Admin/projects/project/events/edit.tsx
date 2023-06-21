@@ -32,7 +32,6 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // typings
 import { Multiloc, CLError, UploadFile } from 'typings';
-import { isCLErrorJSON } from 'utils/errorUtils';
 
 // utils
 import { withRouter } from 'utils/cl-router/withRouter';
@@ -251,9 +250,9 @@ const AdminProjectEventEdit = ({ params }: Props) => {
         }
         setSaving(false);
       } catch (errors) {
-        if (isCLErrorJSON(errors)) {
+        if (errors?.errors) {
           setSaving(false);
-          setApiErrors(errors.json.errors);
+          setApiErrors(errors.errors);
           setSubmitState('error');
         } else {
           setSaving(false);

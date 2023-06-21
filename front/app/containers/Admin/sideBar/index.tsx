@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError, isPage } from 'utils/helperUtils';
-import { get } from 'lodash-es';
 
 // components
-import { Icon, Box, Text } from '@citizenlab/cl2-component-library';
+import {
+  Icon,
+  Box,
+  Text,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 import MenuItem from './MenuItem';
 import Link from 'utils/cl-router/Link';
 import { SupportMenu } from './SupportMenu';
 import { UserMenu } from './UserMenu';
+import NotificationsPopup from './NotificationsPopup';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -17,7 +22,6 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 import { media, colors, stylingConsts } from 'utils/styleUtils';
-import { darkSkyBlue } from 'components/admin/NavigationTabs/Tab';
 
 // resources
 import GetIdeasCount, {
@@ -59,7 +63,8 @@ const MenuInner = styled.nav`
   position: fixed;
   top: 0;
   bottom: 0;
-  background: ${colors.blue700};
+  padding-bottom: 35px;
+  background: #003349;
 
   ${media.tablet`
     width: 80px;
@@ -95,6 +100,7 @@ const Sidebar = ({ ideasCount, initiativesCount }: Props) => {
   const { pathname } = useLocation();
   const [navItems, setNavItems] = useState<NavItem[]>(defaultNavItems);
   const isPagesAndMenuPage = isPage('pages_menu', pathname);
+  const isSmallerThanPhone = useBreakpoint('tablet');
 
   useEffect(() => {
     setNavItems((prevNavItems) => {
@@ -141,25 +147,33 @@ const Sidebar = ({ ideasCount, initiativesCount }: Props) => {
               height={
                 isPagesAndMenuPage ? `${stylingConsts.menuHeight}px` : '60px'
               }
-              background={darkSkyBlue}
+              background={colors.teal500}
               mb="10px"
               display="flex"
               alignItems="center"
-              pl="5px"
+              pr={isSmallerThanPhone ? '0px' : '8px'}
+              pl={isSmallerThanPhone ? '0px' : '16px'}
+              py="10px"
+              justifyContent={isSmallerThanPhone ? 'center' : undefined}
             >
               <Box
                 display="flex"
                 flex="0 0 auto"
-                w="45px"
-                h="45px"
                 alignItems="center"
                 justifyContent="center"
               >
-                <Icon name="arrow-left-circle" fill={colors.white} />
+                <Icon
+                  name="arrow-left-circle"
+                  fill={colors.white}
+                  width="20px"
+                  height="20px"
+                />
               </Box>
-              <Text color="white" fontSize="s" ml="10px">
-                {formatMessage({ ...messages.toPlatform })}
-              </Text>
+              {!isSmallerThanPhone && (
+                <Text color="white" fontSize="s" ml="17.5px">
+                  {formatMessage({ ...messages.toPlatform })}
+                </Text>
+              )}
             </Box>
           </Link>
         </Box>
@@ -175,6 +189,7 @@ const Sidebar = ({ ideasCount, initiativesCount }: Props) => {
         ))}
 
         <SupportMenu />
+        <NotificationsPopup />
         <UserMenu />
       </MenuInner>
     </Menu>
@@ -184,12 +199,12 @@ const Sidebar = ({ ideasCount, initiativesCount }: Props) => {
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   ideasCount: ({ authUser, render }) => (
-    <GetIdeasCount feedbackNeeded={true} assignee={get(authUser, 'id')}>
+    <GetIdeasCount feedbackNeeded assignee={authUser?.id}>
       {render}
     </GetIdeasCount>
   ),
   initiativesCount: ({ authUser, render }) => (
-    <GetInitiativesCount feedbackNeeded={true} assignee={get(authUser, 'id')}>
+    <GetInitiativesCount feedbackNeeded assignee={authUser?.id}>
       {render}
     </GetInitiativesCount>
   ),

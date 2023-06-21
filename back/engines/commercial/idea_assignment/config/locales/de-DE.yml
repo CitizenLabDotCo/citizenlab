@@ -1,7 +1,7 @@
 de:
   email_campaigns:
     campaign_type_description:
-      "idea_assigned_to_you": Zuweisung einer Idee an mich
+      "idea_assigned_to_you": Zuweisung eines Beitrags
     admin_campaign_type_description:
       "idea_assigned_to_you": Zuweisung einer Idee - Admins und Projektmanager*innen
     idea_assigned_to_you:

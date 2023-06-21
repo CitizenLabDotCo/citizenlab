@@ -62,14 +62,10 @@ export type ProposalsSettings = {
   allow_anonymous_participation: boolean;
   eligibility_criteria: Multiloc;
   threshold_reached_message: Multiloc;
-  voting_threshold: number;
+  reacting_threshold: number;
 };
 export interface IAppConfigurationSettings {
   core: IAppConfigurationSettingsCore;
-  show_clave_unica_consents: {
-    allowed: boolean;
-    enabled: boolean;
-  };
   advanced_custom_pages: {
     allowed: boolean;
     enabled: boolean;
@@ -161,7 +157,6 @@ export interface IAppConfigurationSettings {
   microsoft_forms_surveys?: AppConfigurationFeature;
   survey_xact_surveys?: AppConfigurationFeature;
   snap_survey_surveys?: AppConfigurationFeature;
-  konveio_surveys?: AppConfigurationFeature;
   project_folders?: AppConfigurationFeature;
   bulk_import_ideas?: AppConfigurationFeature;
   widgets?: AppConfigurationFeature;
@@ -174,7 +169,7 @@ export interface IAppConfigurationSettings {
   polls?: AppConfigurationFeature;
   moderation?: AppConfigurationFeature;
   flag_inappropriate_content?: AppConfigurationFeature;
-  disable_downvoting?: AppConfigurationFeature;
+  disable_disliking?: AppConfigurationFeature;
   project_visibility?: AppConfigurationFeature;
   project_management?: AppConfigurationFeature;
   idea_assignment?: AppConfigurationFeature;
@@ -226,6 +221,7 @@ export interface IAppConfigurationSettings {
     duration: boolean;
   };
   seat_based_billing?: AppConfigurationFeature;
+  konveio_document_annotation?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

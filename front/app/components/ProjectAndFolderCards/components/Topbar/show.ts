@@ -1,4 +1,4 @@
-import { IStatusCounts } from 'hooks/useAdminPublicationsStatusCounts';
+import { IStatusCountsAll } from 'api/admin_publications_status_counts/types';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { ITopicData } from 'api/topics/types';
 import { IAreaData } from 'api/areas/types';
@@ -6,7 +6,7 @@ import { IAreaData } from 'api/areas/types';
 interface GetShowFiltersParams {
   isSmallerThanPhone: boolean;
   hasPublications: boolean;
-  statusCounts: IStatusCounts;
+  statusCounts: IStatusCountsAll;
   selectedTopics: string[];
   selectedAreas: string[];
 }

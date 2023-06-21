@@ -2,8 +2,7 @@ import React from 'react';
 import IdeaCTAButton from './IdeaCTAButton';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 interface Props {
@@ -11,11 +10,8 @@ interface Props {
   ariaExpanded?: boolean;
 }
 
-const SharingButtonComponent = ({
-  intl: { formatMessage },
-  onClick,
-  ariaExpanded,
-}: Props & WrappedComponentProps) => {
+const SharingButtonComponent = ({ onClick, ariaExpanded }: Props) => {
+  const { formatMessage } = useIntl();
   return (
     <IdeaCTAButton
       iconName="share"
@@ -26,4 +22,4 @@ const SharingButtonComponent = ({
   );
 };
 
-export default injectIntl(SharingButtonComponent);
+export default SharingButtonComponent;

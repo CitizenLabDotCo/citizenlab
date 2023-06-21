@@ -4,13 +4,21 @@ import { filter } from 'rxjs/operators';
 import { isEqual } from 'lodash-es';
 
 // components
-import { ParticipationMethodPicker } from './components/ParticipationMethodPicker';
+import ParticipationMethodPicker from './components/ParticipationMethodPicker';
 import ParticipatoryBudgetingInputs from './components/ParticipatoryBudgetingInputs';
 import PollInputs from './components/PollInputs';
 import SurveyInputs from './components/SurveyInputs';
 import { Container, StyledSection } from './components/styling';
-import NativeSurveyInputs from './components/NativeSurveyInputs';
 import IdeationInputs from './components/IdeationInputs';
+import { SectionField, SubSectionTitle } from 'components/admin/Section';
+import {
+  Box,
+  IconTooltip,
+  Input,
+  IOption,
+} from '@citizenlab/cl2-component-library';
+import Error from 'components/UI/Error';
+import NativeSurveyInputs from './components/NativeSurveyInputs';
 
 // services
 import { IProject } from 'api/projects/types';
@@ -31,14 +39,13 @@ import GetFeatureFlag, {
 } from 'resources/GetFeatureFlag';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
 import messages from '../messages';
 
 // typings
 import { CLErrors } from 'typings';
 import { adopt } from 'react-adopt';
-import { IOption } from '@citizenlab/cl2-component-library';
 
 // utils
 import getOutput from './utils/getOutput';
@@ -49,13 +56,13 @@ export interface IParticipationContextConfig {
   participation_method: ParticipationMethod;
   posting_enabled?: boolean | null;
   commenting_enabled?: boolean | null;
-  voting_enabled?: boolean | null;
-  upvoting_method?: 'unlimited' | 'limited' | null;
-  upvoting_limited_max?: number | null;
-  downvoting_enabled?: boolean | null;
+  reacting_enabled?: boolean | null;
+  reacting_like_method?: 'unlimited' | 'limited' | null;
+  reacting_like_limited_max?: number | null;
+  reacting_dislike_enabled?: boolean | null;
   allow_anonymous_participation?: boolean | null;
-  downvoting_method?: 'unlimited' | 'limited' | null;
-  downvoting_limited_max?: number | null;
+  reacting_dislike_method?: 'unlimited' | 'limited' | null;
+  reacting_dislike_limited_max?: number | null;
   presentation_mode?: 'map' | 'card' | null;
   ideas_order?: IdeaDefaultSortMethod;
   input_term?: InputTerm;
@@ -64,6 +71,7 @@ export interface IParticipationContextConfig {
   survey_service?: TSurveyService | null;
   survey_embed_url?: string | null;
   poll_anonymous?: boolean;
+  document_annotation_embed_url?: string | null;
 }
 
 interface DataProps {
@@ -77,13 +85,13 @@ interface DataProps {
   microsoft_forms_enabled: GetFeatureFlagChildProps;
   survey_monkey_enabled: GetFeatureFlagChildProps;
   snap_survey_enabled: GetFeatureFlagChildProps;
-  konveio_enabled: GetFeatureFlagChildProps;
   isCustomInputTermEnabled: GetFeatureFlagChildProps;
 }
 
 export type ApiErrors = CLErrors | null | undefined;
 
 interface InputProps {
+  className?: string;
   onChange: (arg: IParticipationContextConfig) => void;
   onSubmit: (arg: IParticipationContextConfig) => void;
   phase?: IPhase | undefined | null;
@@ -94,8 +102,8 @@ interface InputProps {
 interface Props extends DataProps, InputProps {}
 
 export interface State extends IParticipationContextConfig {
-  noUpvotingLimitError: JSX.Element | null;
-  noDownvotingLimitError: JSX.Element | null;
+  noLikingLimitError: JSX.Element | null;
+  noDislikingLimitError: JSX.Element | null;
   minBudgetError: string | null;
   maxBudgetError: string | null;
   loaded: boolean;
@@ -113,26 +121,27 @@ class ParticipationContext extends PureComponent<
       participation_method: 'ideation',
       posting_enabled: true,
       commenting_enabled: true,
-      voting_enabled: true,
-      upvoting_method: 'unlimited',
-      upvoting_limited_max: null,
-      downvoting_enabled: true,
+      reacting_enabled: true,
+      reacting_like_method: 'unlimited',
+      reacting_like_limited_max: null,
+      reacting_dislike_enabled: true,
       allow_anonymous_participation: false,
-      downvoting_method: 'unlimited',
-      downvoting_limited_max: null,
+      reacting_dislike_method: 'unlimited',
+      reacting_dislike_limited_max: null,
       presentation_mode: 'card',
       min_budget: null,
       max_budget: null,
       survey_service: null,
       survey_embed_url: null,
       loaded: false,
-      noUpvotingLimitError: null,
-      noDownvotingLimitError: null,
+      noLikingLimitError: null,
+      noDislikingLimitError: null,
       minBudgetError: null,
       maxBudgetError: null,
       poll_anonymous: false,
       ideas_order: 'trending',
       input_term: 'idea',
+      document_annotation_embed_url: null,
     };
     this.subscriptions = [];
   }
@@ -148,12 +157,12 @@ class ParticipationContext extends PureComponent<
           participation_method: newData.participation_method,
           posting_enabled: newData.posting_enabled,
           commenting_enabled: newData.commenting_enabled,
-          voting_enabled: newData.voting_enabled,
-          upvoting_method: newData.upvoting_method,
-          downvoting_method: newData.downvoting_method,
-          upvoting_limited_max: newData.upvoting_limited_max,
-          downvoting_limited_max: newData.downvoting_limited_max,
-          downvoting_enabled: newData.downvoting_enabled,
+          reacting_enabled: newData.reacting_enabled,
+          reacting_like_method: newData.reacting_like_method,
+          reacting_dislike_method: newData.reacting_dislike_method,
+          reacting_like_limited_max: newData.reacting_like_limited_max,
+          reacting_dislike_limited_max: newData.reacting_dislike_limited_max,
+          reacting_dislike_enabled: newData.reacting_dislike_enabled,
           allow_anonymous_participation: newData.allow_anonymous_participation,
           presentation_mode: newData.presentation_mode,
           min_budget: newData.min_budget,
@@ -163,6 +172,7 @@ class ParticipationContext extends PureComponent<
           poll_anonymous: newData.poll_anonymous,
           ideas_order: newData.ideas_order,
           input_term: newData.input_term,
+          document_annotation_embed_url: newData.document_annotation_embed_url,
           loaded: true,
         };
       });
@@ -183,14 +193,14 @@ class ParticipationContext extends PureComponent<
 
   componentDidUpdate(_prevProps: Props, prevState: State) {
     const {
-      noUpvotingLimitError: _prevNoUpvotingLimit,
-      noDownvotingLimitError: _prevNoDownvotingLimit,
+      noLikingLimitError: _prevNoLikingLimit,
+      noDislikingLimitError: _prevNoDislikingLimit,
       loaded: _prevLoaded,
       ...prevPartialState
     } = prevState;
     const {
-      noUpvotingLimitError: _nextNoUpvotingLimit,
-      noDownvotingLimitError: _nextNoDownvotingLimit,
+      noLikingLimitError: _nextNoLikingLimit,
+      noDislikingLimitError: _nextNoDislikingLimit,
       loaded: _nextLoaded,
       ...nextPartialState
     } = this.state;
@@ -217,14 +227,15 @@ class ParticipationContext extends PureComponent<
       participation_method,
       posting_enabled: ideation ? true : null,
       commenting_enabled: ideationOrBudgeting ? true : null,
-      voting_enabled: ideation ? true : null,
-      upvoting_method: ideation ? 'unlimited' : null,
-      downvoting_enabled: ideation ? true : null,
+      reacting_enabled: ideation ? true : null,
+      reacting_like_method: ideation ? 'unlimited' : null,
+      reacting_dislike_enabled: ideation ? true : null,
       allow_anonymous_participation: ideationOrBudgeting ? false : null,
-      downvoting_method: ideation ? 'unlimited' : null,
+      reacting_dislike_method: ideation ? 'unlimited' : null,
       presentation_mode: ideationOrBudgeting ? 'card' : null,
       survey_embed_url: null,
       survey_service: survey ? 'typeform' : null,
+      document_annotation_embed_url: null,
       min_budget: budgeting ? 0 : null,
       max_budget: budgeting ? 1000 : null,
       ideas_order: ideationOrBudgeting
@@ -241,6 +252,12 @@ class ParticipationContext extends PureComponent<
     this.setState({ survey_embed_url });
   };
 
+  handleDocumentAnnotationEmbedUrlChange = (
+    document_annotation_embed_url: string
+  ) => {
+    this.setState({ document_annotation_embed_url });
+  };
+
   togglePostingEnabled = () => {
     this.setState((state) => ({ posting_enabled: !state.posting_enabled }));
   };
@@ -251,26 +268,31 @@ class ParticipationContext extends PureComponent<
     }));
   };
 
-  toggleVotingEnabled = () => {
-    this.setState((state) => ({ voting_enabled: !state.voting_enabled }));
+  toggleReactingEnabled = () => {
+    this.setState((state) => ({ reacting_enabled: !state.reacting_enabled }));
   };
 
-  handleUpvotingMethodOnChange = (upvoting_method: 'unlimited' | 'limited') => {
+  handleReactingLikeMethodOnChange = (
+    reacting_like_method: 'unlimited' | 'limited'
+  ) => {
     this.setState({
-      upvoting_method,
-      upvoting_limited_max: upvoting_method === 'unlimited' ? null : 5,
+      reacting_like_method,
+      reacting_like_limited_max:
+        reacting_like_method === 'unlimited' ? null : 5,
     });
   };
 
-  handleUpvotingLimitOnChange = (upvoting_limited_max: string) => {
+  handleLikingLimitOnChange = (reacting_like_limited_max: string) => {
     this.setState({
-      upvoting_limited_max: parseInt(upvoting_limited_max, 10),
-      noUpvotingLimitError: null,
+      reacting_like_limited_max: parseInt(reacting_like_limited_max, 10),
+      noLikingLimitError: null,
     });
   };
 
-  handleDownvotingEnabledOnChange = (downvoting_enabled: boolean) => {
-    this.setState({ downvoting_enabled });
+  handleReactingDislikeEnabledOnChange = (
+    reacting_dislike_enabled: boolean
+  ) => {
+    this.setState({ reacting_dislike_enabled });
   };
 
   handleAllowAnonymousParticipationOnChange = (
@@ -279,19 +301,20 @@ class ParticipationContext extends PureComponent<
     this.setState({ allow_anonymous_participation });
   };
 
-  handleDownvotingMethodOnChange = (
-    downvoting_method: 'unlimited' | 'limited'
+  handleReactingDislikeMethodOnChange = (
+    reacting_dislike_method: 'unlimited' | 'limited'
   ) => {
     this.setState({
-      downvoting_method,
-      downvoting_limited_max: downvoting_method === 'unlimited' ? null : 5,
+      reacting_dislike_method,
+      reacting_dislike_limited_max:
+        reacting_dislike_method === 'unlimited' ? null : 5,
     });
   };
 
-  handleDownvotingLimitOnChange = (downvoting_limited_max: string) => {
+  handleDislikingLimitOnChange = (reacting_dislike_limited_max: string) => {
     this.setState({
-      downvoting_limited_max: parseInt(downvoting_limited_max, 10),
-      noDownvotingLimitError: null,
+      reacting_dislike_limited_max: parseInt(reacting_dislike_limited_max, 10),
+      noDislikingLimitError: null,
     });
   };
 
@@ -337,16 +360,16 @@ class ParticipationContext extends PureComponent<
     } = this.props;
 
     const {
-      noUpvotingLimitError,
-      noDownvotingLimitError,
+      noLikingLimitError,
+      noDislikingLimitError,
       minBudgetError,
       maxBudgetError,
       isValidated,
     } = validate(this.state, formatMessage);
 
     this.setState({
-      noUpvotingLimitError,
-      noDownvotingLimitError,
+      noLikingLimitError,
+      noDislikingLimitError,
       minBudgetError,
       maxBudgetError,
     });
@@ -377,6 +400,7 @@ class ParticipationContext extends PureComponent<
 
   render() {
     const {
+      className,
       apiErrors,
       surveys_enabled,
       typeform_enabled,
@@ -388,30 +412,29 @@ class ParticipationContext extends PureComponent<
       survey_monkey_enabled,
       snap_survey_enabled,
       google_forms_enabled,
-      konveio_enabled,
       isCustomInputTermEnabled,
+      intl: { formatMessage },
     } = this.props;
-
-    const className = this.props['className'];
 
     const {
       participation_method,
       posting_enabled,
       commenting_enabled,
-      voting_enabled,
-      upvoting_method,
-      downvoting_method,
-      upvoting_limited_max,
-      downvoting_limited_max,
-      downvoting_enabled,
+      reacting_enabled,
+      reacting_like_method,
+      reacting_dislike_method,
+      reacting_like_limited_max,
+      reacting_dislike_limited_max,
+      reacting_dislike_enabled,
       allow_anonymous_participation,
       min_budget,
       max_budget,
       survey_embed_url,
+      document_annotation_embed_url,
       survey_service,
       loaded,
-      noUpvotingLimitError,
-      noDownvotingLimitError,
+      noLikingLimitError,
+      noDislikingLimitError,
       minBudgetError,
       maxBudgetError,
       poll_anonymous,
@@ -431,7 +454,6 @@ class ParticipationContext extends PureComponent<
         survey_monkey: survey_monkey_enabled,
         snap_survey: snap_survey_enabled,
         google_forms: google_forms_enabled,
-        konveio: konveio_enabled,
       };
 
       const showSurveys =
@@ -485,7 +507,7 @@ class ParticipationContext extends PureComponent<
 
             {participation_method === 'ideation' &&
               input_term &&
-              typeof voting_enabled === 'boolean' &&
+              typeof reacting_enabled === 'boolean' &&
               typeof posting_enabled === 'boolean' &&
               typeof commenting_enabled === 'boolean' && (
                 <IdeationInputs
@@ -495,31 +517,31 @@ class ParticipationContext extends PureComponent<
                   inputTermOptions={this.getInputTermOptions()}
                   posting_enabled={posting_enabled}
                   commenting_enabled={commenting_enabled}
-                  voting_enabled={voting_enabled}
-                  upvoting_method={upvoting_method}
-                  downvoting_method={downvoting_method}
-                  upvoting_limited_max={upvoting_limited_max}
-                  downvoting_limited_max={downvoting_limited_max}
-                  downvoting_enabled={downvoting_enabled}
-                  noUpvotingLimitError={noUpvotingLimitError}
-                  noDownvotingLimitError={noDownvotingLimitError}
+                  reacting_enabled={reacting_enabled}
+                  reacting_like_method={reacting_like_method}
+                  reacting_dislike_method={reacting_dislike_method}
+                  reacting_like_limited_max={reacting_like_limited_max}
+                  reacting_dislike_limited_max={reacting_dislike_limited_max}
+                  reacting_dislike_enabled={reacting_dislike_enabled}
+                  noLikingLimitError={noLikingLimitError}
+                  noDislikingLimitError={noDislikingLimitError}
                   allow_anonymous_participation={allow_anonymous_participation}
                   apiErrors={apiErrors}
                   togglePostingEnabled={this.togglePostingEnabled}
                   toggleCommentingEnabled={this.toggleCommentingEnabled}
-                  toggleVotingEnabled={this.toggleVotingEnabled}
-                  handleUpvotingMethodOnChange={
-                    this.handleUpvotingMethodOnChange
+                  toggleReactingEnabled={this.toggleReactingEnabled}
+                  handleReactingLikeMethodOnChange={
+                    this.handleReactingLikeMethodOnChange
                   }
-                  handleDownvotingMethodOnChange={
-                    this.handleDownvotingMethodOnChange
+                  handleReactingDislikeMethodOnChange={
+                    this.handleReactingDislikeMethodOnChange
                   }
-                  handleUpvotingLimitOnChange={this.handleUpvotingLimitOnChange}
-                  handleDownvotingLimitOnChange={
-                    this.handleDownvotingLimitOnChange
+                  handleLikingLimitOnChange={this.handleLikingLimitOnChange}
+                  handleDislikingLimitOnChange={
+                    this.handleDislikingLimitOnChange
                   }
-                  handleDownvotingEnabledOnChange={
-                    this.handleDownvotingEnabledOnChange
+                  handleReactingDislikeEnabledOnChange={
+                    this.handleReactingDislikeEnabledOnChange
                   }
                   handleAllowAnonymousParticipationOnChange={
                     this.handleAllowAnonymousParticipationOnChange
@@ -540,6 +562,51 @@ class ParticipationContext extends PureComponent<
                 togglePollAnonymous={this.togglePollAnonymous}
               />
             )}
+
+            {participation_method === 'document_annotation' && (
+              <SectionField>
+                <Box display="flex">
+                  <Box mr="8px">
+                    <SubSectionTitle>
+                      {formatMessage(
+                        messages.konveioDocumentAnnotationEmbedUrl
+                      )}
+                    </SubSectionTitle>
+                  </Box>
+                  <IconTooltip
+                    content={
+                      <FormattedMessage
+                        {...messages.konveioSupport}
+                        values={{
+                          supportArticleLink: (
+                            <a
+                              href={formatMessage(
+                                messages.konveioSupportPageURL
+                              )}
+                              target="_blank"
+                              rel="noreferrer"
+                            >
+                              {formatMessage(messages.konveioSupportArticle)}
+                            </a>
+                          ),
+                        }}
+                      />
+                    }
+                  />
+                </Box>
+                <Input
+                  onChange={this.handleDocumentAnnotationEmbedUrlChange}
+                  type="text"
+                  value={document_annotation_embed_url}
+                />
+                <Error
+                  apiErrors={
+                    apiErrors && apiErrors.document_annotation_embed_url
+                  }
+                />
+              </SectionField>
+            )}
+
             {participation_method === 'native_survey' && (
               <NativeSurveyInputs
                 allow_anonymous_participation={allow_anonymous_participation}
@@ -577,7 +644,6 @@ const Data = adopt<DataProps>({
   smartsurvey_enabled: <GetFeatureFlag name="smart_survey_surveys" />,
   snap_survey_enabled: <GetFeatureFlag name="snap_survey_surveys" />,
   microsoft_forms_enabled: <GetFeatureFlag name="microsoft_forms_surveys" />,
-  konveio_enabled: <GetFeatureFlag name="konveio_surveys" />,
   isCustomInputTermEnabled: <GetFeatureFlag name="idea_custom_copy" />,
 });
 

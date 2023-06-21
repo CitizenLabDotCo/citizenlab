@@ -1,6 +1,7 @@
 import { Keys } from 'utils/cl-react-query/types';
 import projectPermissionKeys from './keys';
-import { IPCPermissionAction, IRelationship } from 'typings';
+import { IRelationship } from 'typings';
+import { IParticipationContextPermissionAction } from 'services/actionPermissions';
 
 export type ProjectPermissionKeys = Keys<typeof projectPermissionKeys>;
 
@@ -29,7 +30,7 @@ export interface IPCPermissionData {
   id: string;
   type: string;
   attributes: {
-    action: IPCPermissionAction;
+    action: IParticipationContextPermissionAction;
     permitted_by:
       | 'everyone'
       | 'users'

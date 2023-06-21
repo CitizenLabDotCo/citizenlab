@@ -41,7 +41,7 @@ const Edit = () => {
   };
 
   const goBack = () => {
-    clHistory.push('/admin/ideas/statuses');
+    clHistory.push('/admin/settings/statuses');
   };
 
   if (!isNilOrError(ideaStatus) && !isNilOrError(tenantLocales)) {

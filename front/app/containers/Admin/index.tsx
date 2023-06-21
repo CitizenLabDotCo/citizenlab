@@ -14,7 +14,6 @@ import { colors, media } from 'utils/styleUtils';
 
 // utils
 import clHistory from 'utils/cl-router/history';
-import { endsWith } from 'utils/helperUtils';
 
 // stlying
 import 'assets/semantic/semantic.min.css';
@@ -116,14 +115,15 @@ const AdminPage = memo<Props & WithRouterProps>(
       pathname.includes('admin/initiatives') ||
       pathname.includes('admin/messaging') ||
       pathname.includes('admin/settings') ||
+      pathname.includes('admin/ideas') ||
       pathname.includes('admin/reporting');
 
     const fullWidth =
-      endsWith(pathname, 'admin/dashboard/moderation') ||
       pathname.includes('admin/dashboard') ||
       pathname.includes('admin/initiatives') ||
       pathname.includes('admin/messaging') ||
       pathname.includes('admin/settings') ||
+      pathname.includes('admin/ideas') ||
       pathname.includes('admin/reporting');
 
     return (

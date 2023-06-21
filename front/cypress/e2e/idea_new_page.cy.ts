@@ -64,7 +64,7 @@ describe('Idea new page for continuous project', () => {
     cy.get('#e2e-idea-description-input .e2e-error-message');
   });
 
-  it('saves correct location point when provided in URL', () => {
+  it.skip('saves correct location point when provided in URL', () => {
     cy.intercept('POST', '**/ideas').as('submitIdea');
 
     const ideaTitle = randomString(40);

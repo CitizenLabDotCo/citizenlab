@@ -76,6 +76,7 @@ const ActionForm = ({
     id: permissionId,
     attributes: { permitted_by: permittedBy, action },
   } = permissionData;
+
   return (
     <form>
       <Box mb="10px">

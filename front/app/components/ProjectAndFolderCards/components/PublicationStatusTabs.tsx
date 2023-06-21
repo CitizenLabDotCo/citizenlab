@@ -6,14 +6,14 @@ import ProjectsTabPanel from './ProjectsTabPanel';
 // hooks
 
 // types
-import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 import { TLayout, PublicationTab } from '..';
+import { IAdminPublicationData } from 'api/admin_publications/types';
 
 export type TCardSize = 'small' | 'medium' | 'large';
 
 export interface BaseProps {
   currentTab: PublicationTab;
-  list: IAdminPublicationContent[];
+  list: IAdminPublicationData[];
   layout: TLayout;
   hasMore: boolean;
 }

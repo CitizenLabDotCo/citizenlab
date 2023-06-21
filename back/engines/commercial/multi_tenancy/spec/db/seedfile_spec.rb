@@ -17,7 +17,7 @@ describe 'db/seeds.rb' do
     Apartment::Tenant.switch('localhost') do
       load Rails.root.join('db/seeds.rb')
       # The default tenant has a locked id to make it easier for other related
-      # projects to have seeddata that works out of the box with cl2-back
+      # projects to have seed data that works out of the box with cl2-back
       expect(Tenant.current.id).to eq 'c72c5211-8e03-470b-9564-04ec0a8c322b'
       expect(User.count).to be > 0
       expect(User.find_by(email: 'admin@citizenlab.co').id).to eq '386d255e-2ff1-4192-8e50-b3022576be50'

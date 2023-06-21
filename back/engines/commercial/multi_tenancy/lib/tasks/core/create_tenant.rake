@@ -182,7 +182,7 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        konveio_surveys: {
+        konveio_document_annotation: {
           enabled: true,
           allowed: true
         },
@@ -193,7 +193,7 @@ namespace :cl2_back do
         initiatives: {
           enabled: true,
           allowed: true,
-          voting_threshold: 300,
+          reacting_threshold: 300,
           days_limit: 90,
           threshold_reached_message: MultilocService.new.i18n_to_multiloc(
             'initiatives.default_threshold_reached_message',
@@ -298,7 +298,7 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        disable_downvoting: {
+        disable_disliking: {
           enabled: true,
           allowed: true
         },

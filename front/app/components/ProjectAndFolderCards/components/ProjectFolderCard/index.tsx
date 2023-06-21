@@ -33,13 +33,13 @@ import { ScreenReaderOnly } from 'utils/a11y';
 
 // hooks
 import useProjectFolderImages from 'api/project_folder_images/useProjectFolderImages';
-import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 
 // services
 import {
   getCardImageUrl,
   CARD_IMAGE_ASPECT_RATIO,
 } from 'api/project_folder_images/types';
+import { IAdminPublicationData } from 'api/admin_publications/types';
 
 const Container = styled(Link)`
   width: calc(33% - 12px);
@@ -290,7 +290,7 @@ const MapIconDescription = styled.span`
 export type TProjectFolderCardSize = 'small' | 'medium' | 'large';
 
 export interface Props {
-  publication: IAdminPublicationContent;
+  publication: IAdminPublicationData;
   size: TProjectFolderCardSize;
   layout: TLayout;
   className?: string;
@@ -300,7 +300,7 @@ const ProjectFolderCard = memo<Props>(
   ({ publication, size, layout, className }) => {
     const isSmallerThanPhone = useBreakpoint('phone');
     const { data: projectFolderImages } = useProjectFolderImages({
-      folderId: publication.publicationId,
+      folderId: publication.relationships.publication.data.id,
     });
 
     const handleProjectCardOnClick = useCallback(
@@ -383,7 +383,9 @@ const ProjectFolderCard = memo<Props>(
           !(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'
         } e2e-folder-card e2e-admin-publication-card`}
         to={folderUrl}
-        onClick={handleProjectCardOnClick(publication.publicationId)}
+        onClick={handleProjectCardOnClick(
+          publication.relationships.publication.data.id
+        )}
       >
         {screenReaderContent}
         {size !== 'large' && contentHeader}
@@ -401,7 +403,9 @@ const ProjectFolderCard = memo<Props>(
 
           <ContentBody className={size} aria-hidden>
             <FolderTitle
-              onClick={handleProjectTitleOnClick(publication.publicationId)}
+              onClick={handleProjectTitleOnClick(
+                publication.relationships.publication.data.id
+              )}
               className="e2e-folder-card-folder-title"
             >
               <T value={publication.attributes.publication_title_multiloc} />

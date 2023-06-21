@@ -72,6 +72,7 @@ export const NativeSurveyCTABar = ({ project }: CTABarProps) => {
   return (
     <ParticipationCTAContent
       currentPhase={currentPhase}
+      project={project}
       CTAButton={CTAButton}
       hasUserParticipated={hasUserParticipated}
     />

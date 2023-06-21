@@ -5,13 +5,13 @@ export default ({
   participation_method,
   posting_enabled,
   commenting_enabled,
-  voting_enabled,
-  upvoting_method,
-  downvoting_method,
+  reacting_enabled,
+  reacting_like_method,
+  reacting_dislike_method,
   allow_anonymous_participation,
-  upvoting_limited_max,
-  downvoting_limited_max,
-  downvoting_enabled,
+  reacting_like_limited_max,
+  reacting_dislike_limited_max,
+  reacting_dislike_enabled,
   presentation_mode,
   min_budget,
   max_budget,
@@ -20,6 +20,7 @@ export default ({
   poll_anonymous,
   ideas_order,
   input_term,
+  document_annotation_embed_url,
 }: State) => {
   let output: IParticipationContextConfig = {} as any;
 
@@ -36,13 +37,13 @@ export default ({
         participation_method,
         posting_enabled,
         commenting_enabled,
-        voting_enabled,
-        upvoting_method,
-        upvoting_limited_max,
-        downvoting_enabled,
+        reacting_enabled,
+        reacting_like_method,
+        reacting_like_limited_max,
+        reacting_dislike_enabled,
         allow_anonymous_participation,
-        downvoting_method,
-        downvoting_limited_max,
+        reacting_dislike_method,
+        reacting_dislike_limited_max,
         presentation_mode,
         ideas_order,
         input_term,
@@ -54,6 +55,11 @@ export default ({
       participation_method,
       survey_embed_url,
       survey_service,
+    };
+  } else if (participation_method === 'document_annotation') {
+    output = {
+      participation_method,
+      document_annotation_embed_url,
     };
   } else if (participation_method === 'poll') {
     output = {

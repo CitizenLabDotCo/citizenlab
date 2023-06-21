@@ -2,8 +2,9 @@
 
 module WebApi::V1::ParticipationContextSerializer
   extend ActiveSupport::Concern
-  include Surveys::WebApi::V1::SurveyParticipationContextSerializer
+  include DocumentAnnotation::WebApi::V1::DocumentAnnotationParticipationContextSerializer
   include Polls::WebApi::V1::PollParticipationContextSerializer
+  include Surveys::WebApi::V1::SurveyParticipationContextSerializer
 
   included do
     with_options if: proc { |object|
@@ -14,12 +15,12 @@ module WebApi::V1::ParticipationContextSerializer
       attribute :posting_method
       attribute :posting_limited_max
       attribute :commenting_enabled
-      attribute :voting_enabled
-      attribute :upvoting_method
-      attribute :upvoting_limited_max
-      attribute :downvoting_enabled
-      attribute :downvoting_method
-      attribute :downvoting_limited_max
+      attribute :reacting_enabled
+      attribute :reacting_like_method
+      attribute :reacting_like_limited_max
+      attribute :reacting_dislike_enabled
+      attribute :reacting_dislike_method
+      attribute :reacting_dislike_limited_max
       attribute :allow_anonymous_participation
       attribute :presentation_mode
       attribute :min_budget

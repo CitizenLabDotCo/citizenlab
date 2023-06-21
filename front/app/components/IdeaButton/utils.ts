@@ -10,6 +10,7 @@ export const getButtonMessage = (
   if (participationMethod === 'native_survey') {
     return messages.takeTheSurvey;
   }
+
   return getInputTermMessage(inputTerm, {
     idea: messages.submitYourIdea,
     option: messages.addAnOption,

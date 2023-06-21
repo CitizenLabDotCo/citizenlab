@@ -1,13 +1,12 @@
 import React from 'react';
 import ProjectRow, { Props } from '.';
 import { render, screen } from 'utils/testUtils/rtl';
-import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 import { IUserData } from 'api/users/types';
+import { IAdminPublicationData } from 'api/admin_publications/types';
 
-const publication: IAdminPublicationContent = {
+const publication: IAdminPublicationData = {
   id: '1',
-  publicationType: 'project' as const,
-  publicationId: 'publicationId',
+  type: 'admin_publication',
   attributes: {
     ordering: 0,
     depth: 0,

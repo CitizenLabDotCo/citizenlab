@@ -13,9 +13,10 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // typings
-import { IStatusCounts } from 'hooks/useAdminPublicationsStatusCounts';
+
 import { PublicationTab } from '../..';
 import { MessageDescriptor } from 'react-intl';
+import { IStatusCountsAll } from 'api/admin_publications_status_counts/types';
 
 const TabsContainer = styled.div`
   display: flex;
@@ -74,7 +75,7 @@ const StatusCount = styled.span`
 
 interface Props {
   currentTab: PublicationTab;
-  statusCounts: IStatusCounts;
+  statusCounts: IStatusCountsAll;
   availableTabs: PublicationTab[];
   onChangeTab: (tab: PublicationTab) => void;
 }

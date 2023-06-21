@@ -13,8 +13,7 @@ export type TSurveyService =
   | 'qualtrics'
   | 'smart_survey'
   | 'microsoft_forms'
-  | 'snap_survey'
-  | 'konveio';
+  | 'snap_survey';
 
 export type ParticipationMethod =
   | 'ideation'
@@ -23,7 +22,8 @@ export type ParticipationMethod =
   | 'survey'
   | 'budgeting'
   | 'poll'
-  | 'volunteering';
+  | 'volunteering'
+  | 'document_annotation';
 
 export type IdeaDefaultSortMethod =
   | 'trending'
@@ -49,7 +49,7 @@ export type InputTerm =
   | 'issue'
   | 'contribution';
 
-export type VotingMethod = 'limited' | 'unlimited';
+export type ReactingMethod = 'limited' | 'unlimited';
 
 export type PresentationMode = 'card' | 'map';
 

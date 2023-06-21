@@ -18,7 +18,13 @@ import useAuthUser from 'api/me/useAuthUser';
 interface Props {
   loading: boolean;
   setError: SetError;
-  onSubmit: (email: string) => void;
+  onSubmit: ({
+    email,
+    userId,
+  }: {
+    email: string;
+    userId: string;
+  }) => Promise<void>;
 }
 
 const ClaveUnicaEmail = ({ loading, setError, onSubmit }: Props) => {
@@ -37,7 +43,7 @@ const ClaveUnicaEmail = ({ loading, setError, onSubmit }: Props) => {
 
   const handleSubmit = async ({ email }: FormValues) => {
     try {
-      await onSubmit(email);
+      await onSubmit({ email, userId: authUser.data.id });
     } catch (e) {
       if (isCLErrorsIsh(e)) {
         handleCLErrorsIsh(e, methods.setError);

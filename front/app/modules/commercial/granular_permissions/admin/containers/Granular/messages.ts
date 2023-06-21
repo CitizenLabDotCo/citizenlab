@@ -68,6 +68,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.permissions.permissionAction_budgeting_subtitle',
     defaultMessage: 'Who can spend the budget?',
   },
+  permissionAction_annotating_document_subtitle: {
+    id: 'app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle',
+    defaultMessage: 'Who can annotate the document?',
+  },
   phase: {
     id: 'app.containers.AdminPage.groups.permissions.phase',
     defaultMessage: 'Phase ',

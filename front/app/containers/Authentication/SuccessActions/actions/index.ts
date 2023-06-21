@@ -8,11 +8,17 @@ import {
   RedirectToInitiativeFormParams,
 } from './redirectToInitiativeForm';
 import { replyToComment, ReplyToCommentParams } from './replyToComment';
-import { scrollToSurvey, ScrollToSurveyParams } from './scrollToSurvey';
+import { scrollTo, ScrollToParams } from './scrollTo';
 import { volunteer, VolunteerParams } from './volunteer';
-import { voteOnComment, VoteOnCommentParams } from './voteOnComment';
-import { voteOnIdea, VoteOnIdeaParams } from './voteOnIdea';
-import { voteOnInitiative, VoteOnInitiativeParams } from './voteOnInitiative';
+import {
+  reactionOnComment,
+  ReactionOnCommentParams,
+} from './reactionOnComment';
+import { reactionOnIdea, ReactionOnIdeaParams } from './reactionOnIdea';
+import {
+  reactionOnInitiative,
+  ReactionOnInitiativeParams,
+} from './reactionOnInitiative';
 
 interface AssignBudgetAction {
   name: 'assignBudget';
@@ -34,9 +40,9 @@ interface ReplyToCommentAction {
   params: ReplyToCommentParams;
 }
 
-interface ScrollToSurveyAction {
-  name: 'scrollToSurvey';
-  params: ScrollToSurveyParams;
+interface ScrollToAction {
+  name: 'scrollTo';
+  params: ScrollToParams;
 }
 
 interface VolunteerAction {
@@ -44,19 +50,19 @@ interface VolunteerAction {
   params: VolunteerParams;
 }
 
-interface VoteOnCommentAction {
-  name: 'voteOnComment';
-  params: VoteOnCommentParams;
+interface ReactionOnCommentAction {
+  name: 'reactionOnComment';
+  params: ReactionOnCommentParams;
 }
 
-interface VoteOnIdeaAction {
-  name: 'voteOnIdea';
-  params: VoteOnIdeaParams;
+interface ReactionOnIdeaAction {
+  name: 'reactionOnIdea';
+  params: ReactionOnIdeaParams;
 }
 
-interface VoteOnInitiativeAction {
-  name: 'voteOnInitiative';
-  params: VoteOnInitiativeParams;
+interface ReactionOnInitiativeAction {
+  name: 'reactionOnInitiative';
+  params: ReactionOnInitiativeParams;
 }
 
 export type SuccessAction =
@@ -64,11 +70,11 @@ export type SuccessAction =
   | RedirectToIdeaFormAction
   | RedirectToInitiativeFormAction
   | ReplyToCommentAction
-  | ScrollToSurveyAction
+  | ScrollToAction
   | VolunteerAction
-  | VoteOnCommentAction
-  | VoteOnIdeaAction
-  | VoteOnInitiativeAction;
+  | ReactionOnCommentAction
+  | ReactionOnIdeaAction
+  | ReactionOnInitiativeAction;
 
 export const getAction = ({ name, params }: SuccessAction) => {
   if (name === 'assignBudget') return assignBudget(params);
@@ -77,9 +83,9 @@ export const getAction = ({ name, params }: SuccessAction) => {
     return redirectToInitiativeForm(params);
   }
   if (name === 'replyToComment') return replyToComment(params);
-  if (name === 'scrollToSurvey') return scrollToSurvey(params);
+  if (name === 'scrollTo') return scrollTo(params);
   if (name === 'volunteer') return volunteer(params);
-  if (name === 'voteOnComment') return voteOnComment(params);
-  if (name === 'voteOnIdea') return voteOnIdea(params);
-  return voteOnInitiative(params);
+  if (name === 'reactionOnComment') return reactionOnComment(params);
+  if (name === 'reactionOnIdea') return reactionOnIdea(params);
+  return reactionOnInitiative(params);
 };

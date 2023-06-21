@@ -1,9 +1,9 @@
-import { IStatusCounts } from 'hooks/useAdminPublicationsStatusCounts';
+import { IStatusCountsAll } from 'api/admin_publications_status_counts/types';
 import { PublicationTab } from './';
 import { keys } from 'utils/helperUtils';
 
 export function getCurrentTab(
-  statusCounts: IStatusCounts,
+  statusCounts: IStatusCountsAll,
   currentTab: PublicationTab | null
 ): PublicationTab {
   const { published, archived, draft, all } = statusCounts;
@@ -22,7 +22,7 @@ export function getCurrentTab(
 }
 
 export function getAvailableTabs(
-  statusCounts: IStatusCounts
+  statusCounts: IStatusCountsAll
 ): PublicationTab[] {
   if (statusCounts.all === 0) {
     return ['all'];

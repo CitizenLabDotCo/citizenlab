@@ -259,7 +259,7 @@ FactoryBot.define do
     #   phases_config: {
     #     sequence: 'xcyy',
     #     x: { posting_enabled: false },
-    #     y: { voting_enabled: false }
+    #     y: { reacting_enabled: false }
     #   },
     #   current_phase_attrs: {
     #     participation_method: 'budgeting',
@@ -392,8 +392,8 @@ FactoryBot.define do
     factory :continuous_project do
       process_type { 'continuous' }
       participation_method { 'ideation' }
-      upvoting_method { 'unlimited' }
-      upvoting_limited_max { 7 }
+      reacting_like_method { 'unlimited' }
+      reacting_like_limited_max { 7 }
     end
 
     factory :continuous_native_survey_project do
@@ -413,6 +413,12 @@ FactoryBot.define do
       participation_method { 'survey' }
       survey_service { 'google_forms' }
       survey_embed_url { 'https://docs.google.com/forms/d/e/fake/viewform?embedded=true' }
+    end
+
+    factory :continuous_document_annotation_project do
+      process_type { 'continuous' }
+      participation_method { 'document_annotation' }
+      document_annotation_embed_url { 'https://citizenlab.konveio.com/document-title' }
     end
 
     factory :continuous_budgeting_project do

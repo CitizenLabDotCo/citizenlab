@@ -3,9 +3,9 @@ import { commentReplyButtonClicked } from 'components/PostShowComponents/Comment
 export interface ReplyToCommentParams {
   commentId: string | null;
   parentCommentId: string | null;
-  authorFirstName: string | null;
-  authorLastName: string | null;
-  authorSlug: string | null;
+  authorFirstName?: string | null;
+  authorLastName?: string | null;
+  authorSlug?: string | null;
 }
 
 export const replyToComment = (params: ReplyToCommentParams) => async () => {

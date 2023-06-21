@@ -42,7 +42,6 @@ export const PollCTABar = ({ phases, project }: CTABarProps) => {
   const CTAButton = (
     <Button
       id="e2e-participation-cta-poll"
-      buttonStyle="primary"
       onClick={handlePollClick}
       fontWeight="500"
       bgColor={theme.colors.white}
@@ -59,6 +58,7 @@ export const PollCTABar = ({ phases, project }: CTABarProps) => {
     <ParticipationCTAContent
       currentPhase={currentPhase}
       CTAButton={CTAButton}
+      project={project}
     />
   );
 };

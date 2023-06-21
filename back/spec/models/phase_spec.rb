@@ -197,7 +197,8 @@ RSpec.describe Phase do
       'budgeting' => true,
       'poll' => false,
       'volunteering' => false,
-      'native_survey' => true
+      'native_survey' => true,
+      'document_annotation' => false
     }
     # Written this way so that additional participation methods will make this spec fail.
     ParticipationContext::PARTICIPATION_METHODS.each do |participation_method|
