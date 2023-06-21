@@ -28,11 +28,9 @@ import { isNilOrError } from 'utils/helperUtils';
 // types
 import { IStreamParams, IStream } from 'utils/streams';
 import { IGraphFormat } from 'typings';
-import {
-  IUsersByDomicile,
-  IUsersByRegistrationField,
-} from 'services/userCustomFieldStats';
 import { IUsersByBirthyear } from 'api/users_by_birthyear/types';
+import { IUsersByCustomField } from 'api/users_by_custom_field/types';
+import { IUsersByDomicile } from 'api/users_by_domicile/types';
 
 interface DataProps {
   serie: IGraphFormat;
@@ -41,7 +39,7 @@ interface DataProps {
 type ISupportedDataType =
   | IUsersByBirthyear
   | IUsersByDomicile
-  | IUsersByRegistrationField;
+  | IUsersByCustomField;
 
 interface InputProps {
   stream: (

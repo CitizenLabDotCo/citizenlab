@@ -18,12 +18,10 @@ import {
   ICommentsByProject,
   IReactionsByProject,
 } from 'services/stats';
-import {
-  IUsersByDomicile,
-  IUsersByRegistrationField,
-} from 'services/userCustomFieldStats';
 import { IGraphFormat, IParticipationByTopic } from 'typings';
 import { IUsersByBirthyear } from 'api/users_by_birthyear/types';
+import { IUsersByDomicile } from 'api/users_by_domicile/types';
+import { IUsersByCustomField } from 'api/users_by_custom_field/types';
 
 interface State {
   unconvertedSerie: ISupportedDataType | NilOrError;
@@ -43,7 +41,7 @@ export interface ISupportedDataTypeMap {
   commentsByProject: ICommentsByProject;
   usersByBirthYear: IUsersByBirthyear;
   usersByDomicile: IUsersByDomicile;
-  usersByRegistrationField: IUsersByRegistrationField;
+  usersByRegistrationField: IUsersByCustomField;
 }
 
 export type ISupportedDataType =

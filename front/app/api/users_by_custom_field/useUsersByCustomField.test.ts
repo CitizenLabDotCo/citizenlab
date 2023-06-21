@@ -1,12 +1,12 @@
-import useUsersByGender from './useUsersByGender';
+import useUsersByCustomField from './useUsersByCustomField';
 
 import { renderHook } from '@testing-library/react-hooks';
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { IUsersByCustomField } from 'api/users_by_custom_field/types';
+import { IUsersByCustomField } from './types';
 
-const apiPath = `*stats/users_by_gender`;
+const apiPath = `*stats/users_by_custom_field/:id`;
 
 const data: IUsersByCustomField = {
   data: {
@@ -52,15 +52,15 @@ const server = setupServer(
   })
 );
 
-describe('useUsersByGender', () => {
+describe('useUsersByCustomField', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
     const { result, waitFor } = renderHook(
       () =>
-        useUsersByGender({
-          project: 'project',
+        useUsersByCustomField({
+          id: 'id',
         }),
       {
         wrapper: createQueryClientWrapper(),
@@ -84,8 +84,8 @@ describe('useUsersByGender', () => {
 
     const { result, waitFor } = renderHook(
       () =>
-        useUsersByGender({
-          project: 'project',
+        useUsersByCustomField({
+          id: 'id',
         }),
       {
         wrapper: createQueryClientWrapper(),

@@ -1,5 +1,3 @@
-import { IUsersByRegistrationField } from 'api/users_by_gender/types';
-
 // i18n
 import messages from 'containers/Admin/dashboard/messages';
 import { useIntl } from 'utils/cl-intl';
@@ -11,6 +9,7 @@ import { roundPercentages } from 'utils/math';
 import { QueryParameters, GenderSerie } from './typings';
 import { FormatMessage } from 'typings';
 import useUsersByGender from 'api/users_by_gender/useUsersByGender';
+import { IUsersByCustomField } from 'api/users_by_custom_field/types';
 
 export default function useGenderSerie({
   startAt,
@@ -36,7 +35,7 @@ export default function useGenderSerie({
 const options = ['male', 'female', 'unspecified', '_blank'];
 
 const convertToGraphFormat = (
-  data: IUsersByRegistrationField,
+  data: IUsersByCustomField,
   formatMessage: FormatMessage
 ): GenderSerie | null => {
   const { users } = data.data.attributes.series;

@@ -3,7 +3,6 @@ import React, { PureComponent } from 'react';
 // services
 import {
   usersByRegFieldStream,
-  IUsersByRegistrationField,
   usersByRegFieldXlsxEndpoint,
 } from 'services/userCustomFieldStats';
 
@@ -32,6 +31,7 @@ import {
   IUserCustomFieldInputType,
   IUserCustomFieldData,
 } from 'api/user_custom_fields/types';
+import { IUsersByCustomField } from 'api/users_by_custom_field/types';
 
 interface InputProps {
   currentGroupFilter: string | undefined;
@@ -55,7 +55,7 @@ export interface Props extends InputProps, DataProps {}
 export class RegistrationFieldsToGraphs extends PureComponent<
   Props & WrappedComponentProps & InjectedLocalized
 > {
-  convertToGraphFormat = (data: IUsersByRegistrationField) => {
+  convertToGraphFormat = (data: IUsersByCustomField) => {
     const {
       series: { users },
       options,
@@ -81,7 +81,7 @@ export class RegistrationFieldsToGraphs extends PureComponent<
 
     return res.length > 0 ? res : null;
   };
-  convertCheckboxToGraphFormat = (data: IUsersByRegistrationField) => {
+  convertCheckboxToGraphFormat = (data: IUsersByCustomField) => {
     const {
       series: { users },
     } = data.data.attributes;

@@ -4,14 +4,6 @@ import { Multiloc } from 'typings';
 
 export type UsersByDomicileKeys = Keys<typeof usersByDomicileKeys>;
 
-export interface ICustomFieldParams {
-  start_at?: string | null;
-  end_at?: string | null;
-  group?: string;
-  project?: string;
-  filter_by_participation?: boolean | null;
-}
-
 export interface IUsersByDomicile {
   data: {
     type: 'users_by_domicile';

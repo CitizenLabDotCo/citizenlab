@@ -34,8 +34,8 @@ import GetSerieFromStream from 'resources/GetSerieFromStream';
 import { IStreamParams, IStream } from 'utils/streams';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 import { IGraphFormat } from 'typings';
-import { IUsersByRegistrationField } from 'services/userCustomFieldStats';
 import { IUsersByBirthyear } from 'api/users_by_birthyear/types';
+import { IUsersByCustomField } from 'api/users_by_custom_field/types';
 
 interface DataProps {
   serie: IGraphFormat;
@@ -45,7 +45,7 @@ interface Serie extends IGraphFormat {
   percentage: number;
 }
 
-type ISupportedDataType = IUsersByBirthyear | IUsersByRegistrationField;
+type ISupportedDataType = IUsersByBirthyear | IUsersByCustomField;
 
 interface InputProps {
   stream: (

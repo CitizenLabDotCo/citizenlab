@@ -1,21 +1,27 @@
 // utils
 import { map, orderBy } from 'lodash-es';
-import { rename, join, Series, binBirthyear } from 'utils/dataUtils';
+import {
+  rename,
+  join,
+  Series,
+  binBirthyear,
+  convertDomicileData,
+} from 'utils/dataUtils';
 
 // typings
 import { TCustomFieldCode } from 'api/user_custom_fields/types';
-import { IUsersByDomicile } from 'services/userCustomFieldStats';
-
+import { IUsersByDomicile } from 'api/users_by_domicile/types';
 // i18n
 import messages from 'containers/Admin/dashboard/messages';
 import { InjectedLocalized } from 'utils/localize';
 import { MessageDescriptor } from 'react-intl';
 import { FormatMessage } from 'typings';
-import { IUsersByRegistrationField } from 'api/users_by_gender/types';
 import { IUsersByBirthyear } from 'api/users_by_birthyear/types';
+import { IUsersByCustomField } from 'api/users_by_custom_field/types';
+import { fallbackMessages } from 'containers/Admin/dashboard/users/Charts/AreaChart';
 
 export type ISupportedDataType =
-  | IUsersByRegistrationField
+  | IUsersByCustomField
   | IUsersByDomicile
   | IUsersByBirthyear;
 
@@ -81,28 +87,28 @@ const createConvertAndMergeSeries =
       }));
     }
 
-    // if (code === 'domicile') {
-    //   const parseName = (key, value) =>
-    //     key in fallbackMessages
-    //       ? formatMessage(fallbackMessages[key])
-    //       : localize(value.title_multiloc);
+    if (code === 'domicile') {
+      const parseName = (key, value) =>
+        key in fallbackMessages
+          ? formatMessage(fallbackMessages[key])
+          : localize(value.title_multiloc);
 
-    //   const areas = (totalSerie as IUsersByDomicile).data.attributes.areas;
-    //   const resTotal = convertDomicileData(areas, totalUsers, parseName);
+      const areas = (totalSerie as IUsersByDomicile).data.attributes.areas;
+      const resTotal = convertDomicileData(areas, totalUsers, parseName);
 
-    //   const resParticipants = convertDomicileData(
-    //     areas,
-    //     participantUsers,
-    //     parseName
-    //   );
+      const resParticipants = convertDomicileData(
+        areas,
+        participantUsers,
+        parseName
+      );
 
-    //   const res = joinTotalAndParticipants(resTotal, resParticipants);
+      const res = joinTotalAndParticipants(resTotal, resParticipants);
 
-    //   return orderBy(res, 'participants', 'desc');
-    // }
+      return orderBy(res, 'participants', 'desc');
+    }
 
     const res = map(
-      (totalSerie as IUsersByRegistrationField).data.attributes.options,
+      (totalSerie as IUsersByCustomField).data.attributes.options,
       (value, key) => ({
         total: totalUsers[key] || 0,
         participants: participantUsers[key] || 0,

@@ -1,70 +1,11 @@
+import {
+  ICustomFieldParams,
+  IUsersByCustomField,
+} from 'api/users_by_custom_field/types';
 import { API_PATH } from 'containers/App/constants';
-import { Multiloc } from 'typings';
-import streams, { IStreamParams } from 'utils/streams';
+import streams from 'utils/streams';
 
 const apiEndpoint = `${API_PATH}/stats`;
-
-// Parameters
-export interface ICustomFieldParams extends IStreamParams {
-  queryParameters?: {
-    start_at?: string | null;
-    end_at?: string | null;
-    group?: string;
-    project?: string;
-    filter_by_participation?: boolean | null;
-  };
-}
-
-// Response types
-export interface IUsersByRegistrationField {
-  data: {
-    type: 'users_by_custom_field';
-    attributes: {
-      series: {
-        users: {
-          [key: string]: number;
-        };
-        reference_population: {
-          [key: string]: number;
-        } | null;
-        expected_users: {
-          [key: string]: number;
-        } | null;
-      };
-      options: {
-        [key: string]: {
-          title_multiloc: Multiloc;
-          ordering: number;
-        };
-      };
-    };
-  };
-}
-
-export interface IUsersByDomicile {
-  data: {
-    type: 'users_by_domicile';
-    attributes: {
-      series: {
-        users: {
-          [key: string]: number;
-        };
-        // reference_population: {
-        //   [key: string]: number;
-        // }
-        // expected_users: {
-        //   [key: string]: number;
-        // };
-      };
-      areas: {
-        [key: string]: {
-          title_multiloc: Multiloc;
-          ordering: number;
-        };
-      };
-    };
-  };
-}
 
 export const usersByRegFieldXlsxEndpoint = (customFieldId: string) =>
   `${apiEndpoint}/users_by_custom_field_as_xlsx/${customFieldId}`;
@@ -73,7 +14,7 @@ export function usersByRegFieldStream(
   streamParams: ICustomFieldParams | null = null,
   customFieldId: string
 ) {
-  return streams.get<IUsersByRegistrationField>({
+  return streams.get<IUsersByCustomField>({
     apiEndpoint: `${apiEndpoint}/users_by_custom_field/${customFieldId}`,
     ...streamParams,
     cacheStream: false,

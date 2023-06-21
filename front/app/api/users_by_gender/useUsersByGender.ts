@@ -1,15 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
+import { UsersByGenderKeys } from './types';
+import usersByGenderKeys from './keys';
 import {
   ICustomFieldParams,
-  IUsersByRegistrationField,
-  UsersByGenderKeys,
-} from './types';
-import usersByGenderKeys from './keys';
+  IUsersByCustomField,
+} from 'api/users_by_custom_field/types';
 
 const fetchUsersByGender = (params: ICustomFieldParams) =>
-  fetcher<IUsersByRegistrationField>({
+  fetcher<IUsersByCustomField>({
     path: `/stats/users_by_gender`,
     action: 'get',
     queryParams: params,
@@ -17,9 +17,9 @@ const fetchUsersByGender = (params: ICustomFieldParams) =>
 
 const useUsersByGender = (queryParameters: ICustomFieldParams) => {
   return useQuery<
-    IUsersByRegistrationField,
+    IUsersByCustomField,
     CLErrors,
-    IUsersByRegistrationField,
+    IUsersByCustomField,
     UsersByGenderKeys
   >({
     queryKey: usersByGenderKeys.item(queryParameters),

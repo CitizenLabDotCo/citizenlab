@@ -1,8 +1,5 @@
 // services
-import {
-  usersByRegFieldStream,
-  IUsersByRegistrationField,
-} from 'services/userCustomFieldStats';
+import { usersByRegFieldStream } from 'services/userCustomFieldStats';
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
@@ -13,6 +10,7 @@ import { forEachBin } from '../utils/bins';
 // typings
 import { Multiloc, Locale } from 'typings';
 import { IUsersByAge } from 'api/users_by_age/types';
+import { IUsersByCustomField } from 'api/users_by_custom_field/types';
 
 interface RepresentativenessRowBase {
   actualPercentage: number;
@@ -64,7 +62,7 @@ export const createRegFieldSubscription = (
 
 // Helpers
 export const handleRegFieldResponse2 = (
-  usersByRegField: IUsersByRegistrationField | undefined,
+  usersByRegField: IUsersByCustomField | undefined,
   { setReferenceData, setIncludedUsers, setReferenceDataUploaded }: Setters
 ) => {
   if (isNilOrError(usersByRegField)) {
@@ -85,7 +83,7 @@ export const handleRegFieldResponse2 = (
 
 export const handleRegFieldResponse =
   ({ setReferenceData, setIncludedUsers, setReferenceDataUploaded }: Setters) =>
-  (usersByRegField: IUsersByRegistrationField | NilOrError) => {
+  (usersByRegField: IUsersByCustomField | NilOrError) => {
     if (isNilOrError(usersByRegField)) {
       setReferenceData(usersByRegField);
       setIncludedUsers(usersByRegField);
@@ -103,7 +101,7 @@ export const handleRegFieldResponse =
   };
 
 export const regFieldToReferenceData = (
-  usersByField: IUsersByRegistrationField
+  usersByField: IUsersByCustomField
 ): RepresentativenessRowMultiloc[] => {
   const { users, reference_population } = usersByField.data.attributes.series;
   if (reference_population === null) return [];
@@ -149,7 +147,7 @@ const syncKeys = (users: Record<string, number>, keys: string[]) => {
 };
 
 export const regFieldToIncludedUsers = (
-  usersByField: IUsersByRegistrationField
+  usersByField: IUsersByCustomField
 ): IncludedUsers => {
   const { users, reference_population } = usersByField.data.attributes.series;
   if (reference_population === null) {

@@ -1,6 +1,6 @@
-import { IUsersByRegistrationField } from 'services/userCustomFieldStats';
+import { IUsersByCustomField } from 'api/users_by_custom_field/types';
 
-export const mockUsersByRegFields: IUsersByRegistrationField = {
+export const mockUsersByRegFields: IUsersByCustomField = {
   data: {
     type: 'users_by_custom_field',
     attributes: {

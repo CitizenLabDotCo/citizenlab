@@ -3,14 +3,6 @@ import usersByAgeKeys from './keys';
 
 export type UsersByAgeKeys = Keys<typeof usersByAgeKeys>;
 
-export interface ICustomFieldParams {
-  start_at?: string | null;
-  end_at?: string | null;
-  group?: string;
-  project?: string;
-  filter_by_participation?: boolean | null;
-}
-
 export interface IUsersByAge {
   data: {
     type: 'users_by_age';
