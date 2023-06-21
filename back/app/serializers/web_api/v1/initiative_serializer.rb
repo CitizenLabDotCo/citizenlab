@@ -1,7 +1,22 @@
 # frozen_string_literal: true
 
 class WebApi::V1::InitiativeSerializer < WebApi::V1::BaseSerializer
-  attributes :title_multiloc, :slug, :publication_status, :likes_count, :comments_count, :official_feedbacks_count, :location_point_geojson, :location_description, :created_at, :updated_at, :published_at, :expires_at, :reactions_needed, :anonymous, :author_hash
+  attributes :title_multiloc,
+    :slug,
+    :publication_status,
+    :likes_count,
+    :comments_count,
+    :internal_comments_count,
+    :official_feedbacks_count,
+    :location_point_geojson,
+    :location_description,
+    :created_at,
+    :updated_at,
+    :published_at,
+    :expires_at,
+    :reactions_needed,
+    :anonymous,
+    :author_hash
 
   attribute :author_name do |object, params|
     name_service = UserDisplayNameService.new(AppConfiguration.instance, current_user(params))
@@ -15,6 +30,10 @@ class WebApi::V1::InitiativeSerializer < WebApi::V1::BaseSerializer
   attribute :header_bg do |object|
     object.header_bg && object.header_bg.versions.to_h { |k, v| [k.to_s, v.url] }
   end
+
+  attribute :internal_comments_count, if: proc { |object, params|
+    can_moderate?(object, params)
+  }
 
   has_many :initiative_images, serializer: WebApi::V1::ImageSerializer
   has_many :topics

@@ -1,14 +1,13 @@
 import React from 'react';
 
 // hooks
-import useUserCustomFields from 'hooks/useUserCustomFields';
+import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
 // components
 import ChartCard from '../../components/ChartCard';
 import EmptyCard from '../../components/ChartCard/EmptyCard';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 import { isShown, isSupported, sortUserCustomFields } from './utils';
 
 interface Props {
@@ -16,14 +15,14 @@ interface Props {
 }
 
 const ChartCards = ({ projectFilter }: Props) => {
-  const userCustomFields = useUserCustomFields({
+  const { data: userCustomFields } = useUserCustomFields({
     inputTypes: ['select', 'number'],
   });
 
-  if (isNilOrError(userCustomFields)) return null;
+  if (!userCustomFields) return null;
 
   const sortedUserCustomFields = sortUserCustomFields(
-    userCustomFields.filter(isShown)
+    userCustomFields.data.filter(isShown)
   );
 
   return (

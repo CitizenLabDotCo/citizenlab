@@ -42,6 +42,7 @@ RSpec.describe AdminApi::Schema do
                 likesCount
                 dislikesCount
                 commentsCount
+                internalCommentsCount
               }
             }
           }
@@ -61,6 +62,7 @@ RSpec.describe AdminApi::Schema do
       expect(edges&.first&.dig('node', 'likesCount')).to be_present
       expect(edges&.first&.dig('node', 'dislikesCount')).to be_present
       expect(edges&.first&.dig('node', 'commentsCount')).to be_present
+      expect(edges&.first&.dig('node', 'internalCommentsCount')).to be_present
     end
 
     context do

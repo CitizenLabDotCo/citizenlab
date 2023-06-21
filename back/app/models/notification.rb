@@ -25,12 +25,14 @@
 #  post_status_type              :string
 #  project_folder_id             :uuid
 #  inappropriate_content_flag_id :uuid
+#  internal_comment_id           :uuid
 #
 # Indexes
 #
 #  index_notifications_on_created_at                           (created_at)
 #  index_notifications_on_inappropriate_content_flag_id        (inappropriate_content_flag_id)
 #  index_notifications_on_initiating_user_id                   (initiating_user_id)
+#  index_notifications_on_internal_comment_id                  (internal_comment_id)
 #  index_notifications_on_invite_id                            (invite_id)
 #  index_notifications_on_official_feedback_id                 (official_feedback_id)
 #  index_notifications_on_phase_id                             (phase_id)
@@ -46,6 +48,7 @@
 #  fk_rails_...  (comment_id => comments.id)
 #  fk_rails_...  (inappropriate_content_flag_id => flag_inappropriate_content_inappropriate_content_flags.id)
 #  fk_rails_...  (initiating_user_id => users.id)
+#  fk_rails_...  (internal_comment_id => internal_comments.id)
 #  fk_rails_...  (invite_id => invites.id)
 #  fk_rails_...  (official_feedback_id => official_feedbacks.id)
 #  fk_rails_...  (phase_id => phases.id)
@@ -59,6 +62,7 @@ class Notification < ApplicationRecord
   belongs_to :post, polymorphic: true, optional: true
   belongs_to :post_status, polymorphic: true, optional: true
   belongs_to :comment, optional: true
+  belongs_to :internal_comment, optional: true
   belongs_to :project, optional: true
   belongs_to :phase, optional: true
   belongs_to :official_feedback, optional: true
