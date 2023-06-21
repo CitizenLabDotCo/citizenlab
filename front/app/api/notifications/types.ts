@@ -245,6 +245,13 @@ export interface IInternalCommentOnInitiativeYouCommentedInternallyOnData
   } & IInternalcommentBaseAttributes;
 }
 
+export interface IInternalCommentOnUnassignedUnmoderatedIdeaData
+  extends IBaseNotificationData {
+  attributes: {
+    type: 'internal_comment_on_unassigned_unmoderated_idea';
+  } & IInternalcommentBaseAttributes;
+}
+
 export interface IMentionInOfficialFeedbackNotificationData
   extends IBaseNotificationData {
   attributes: {
