@@ -13,6 +13,7 @@ RSpec.describe ParticipationMethod::Voting do
     it 'sets the posting method to unlimited' do
       participation_method.assign_defaults_for_participation_context
       expect(project.posting_method).to eq 'unlimited'
+      expect(project.ideas_order).to eq 'random'
     end
   end
 
@@ -147,6 +148,7 @@ RSpec.describe ParticipationMethod::Voting do
     end
   end
 
+  its(:allowed_ideas_orders) { is_expected.to eq ['random'] }
   its(:supports_publication?) { is_expected.to be true }
   its(:supports_commenting?) { is_expected.to be true }
   its(:supports_voting?) { is_expected.to be true }

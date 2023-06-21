@@ -11,10 +11,16 @@ RSpec.describe ParticipationMethod::Survey do
   describe '#assign_defaults_for_participation_context' do
     let(:project) { build(:continuous_project) }
 
-    it 'does not change the participation context' do
+    it 'does not change the posting_method' do
       expect do
         participation_method.assign_defaults_for_participation_context
       end.not_to change(project, :posting_method)
+    end
+
+    it 'does not change the ideas_order' do
+      expect do
+        participation_method.assign_defaults_for_participation_context
+      end.not_to change(project, :ideas_order)
     end
   end
 
@@ -106,6 +112,7 @@ RSpec.describe ParticipationMethod::Survey do
     end
   end
 
+  its(:allowed_ideas_orders) { is_expected.to be_empty }
   its(:supports_publication?) { is_expected.to be false }
   its(:supports_commenting?) { is_expected.to be false }
   its(:supports_voting?) { is_expected.to be false }

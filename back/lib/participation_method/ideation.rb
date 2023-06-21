@@ -2,6 +2,10 @@
 
 module ParticipationMethod
   class Ideation < Base
+    def assign_defaults_for_participation_context
+      participation_context.ideas_order ||= 'trending'
+    end
+
     # This method is invoked after creation of the input,
     # so store the new slug.
     def assign_slug(input)
@@ -267,6 +271,10 @@ module ParticipationMethod
 
     def validate_built_in_fields?
       true
+    end
+
+    def allowed_ideas_orders
+      %w[trending random popular -new new]
     end
 
     def supports_publication?

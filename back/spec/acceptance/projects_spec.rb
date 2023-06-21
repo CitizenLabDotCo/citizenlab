@@ -340,7 +340,7 @@ resource 'Projects' do
         let(:voting_enabled) { project.voting_enabled }
         let(:upvoting_method) { project.upvoting_method }
         let(:upvoting_limited_max) { project.upvoting_limited_max }
-        let(:ideas_order) { 'new' }
+        let(:ideas_order) { 'random' }
         let(:allow_anonymous_participation) { true }
 
         example_request 'Create a continuous project' do
@@ -368,7 +368,7 @@ resource 'Projects' do
           expect(json_response.dig(:data, :attributes, :upvoting_method)).to eq upvoting_method
           expect(json_response.dig(:data, :attributes, :upvoting_limited_max)).to eq upvoting_limited_max
           expect(json_response.dig(:data, :attributes, :ideas_order)).to be_present
-          expect(json_response.dig(:data, :attributes, :ideas_order)).to eq 'new'
+          expect(json_response.dig(:data, :attributes, :ideas_order)).to eq 'random'
           expect(json_response.dig(:data, :attributes, :input_term)).to be_present
           expect(json_response.dig(:data, :attributes, :input_term)).to eq 'idea'
           expect(json_response.dig(:data, :attributes, :allow_anonymous_participation)).to eq allow_anonymous_participation
@@ -561,7 +561,7 @@ resource 'Projects' do
       let(:visible_to) { 'groups' }
       let(:presentation_mode) { 'card' }
       let(:publication_status) { 'archived' }
-      let(:ideas_order) { 'new' }
+      let(:ideas_order) { 'random' }
       let(:default_assignee_id) { create(:admin).id }
 
       example 'Update a project' do
@@ -579,7 +579,7 @@ resource 'Projects' do
         expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
         expect(json_response.dig(:data, :attributes, :visible_to)).to eq 'groups'
         expect(json_response.dig(:data, :attributes, :ideas_order)).to be_present
-        expect(json_response.dig(:data, :attributes, :ideas_order)).to eq 'new'
+        expect(json_response.dig(:data, :attributes, :ideas_order)).to eq 'random'
         expect(json_response.dig(:data, :attributes, :input_term)).to be_present
         expect(json_response.dig(:data, :attributes, :input_term)).to eq 'idea'
         expect(json_response.dig(:data, :attributes, :presentation_mode)).to eq 'card'
