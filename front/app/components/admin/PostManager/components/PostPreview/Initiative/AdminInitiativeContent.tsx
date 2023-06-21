@@ -221,12 +221,14 @@ const AdminInitiativeContent = ({
             </Left>
             <Right>
               <ReactionPreview>
-                <DaysLeft>
-                  <FormattedMessage
-                    {...messages.xDaysLeft}
-                    values={{ x: daysLeft }}
-                  />
-                </DaysLeft>
+                {daysLeft > 0 && (
+                  <DaysLeft>
+                    <FormattedMessage
+                      {...messages.xDaysLeft}
+                      values={{ x: daysLeft }}
+                    />
+                  </DaysLeft>
+                )}
                 <ReactionIndicator initiativeId={initiativeId} />
               </ReactionPreview>
 
