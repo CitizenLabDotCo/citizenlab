@@ -54,6 +54,10 @@ module PublicApi
       }
     end
 
+    def used!
+      touch(:last_used_at)
+    end
+
     private
 
     def generate_secret
