@@ -75,6 +75,19 @@ services:
   #   image: memcached:alpine
   #   command: memcached -m 64
 
+  # Open API documentation - Only starts if you run docker compose --profile openapi up
+  openapi:
+    container_name: cl-open-api
+    image: swaggerapi/swagger-ui
+    ports:
+      - 8080:8080
+    volumes:
+      - ./back/doc/public_api:/usr/share/nginx/html/doc
+    environment:
+      URLS: "[{ url: 'doc/open_api.json', name: 'Public API'}]"
+    profiles:
+      - openapi
+
 volumes:
   postgres:
   bundle_path:

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_08_120425) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_20_114801) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -1741,54 +1741,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_08_120425) do
             WHERE (((reactions.mode)::text = 'up'::text) AND ((reactions.reactable_type)::text = 'Idea'::text))
             GROUP BY reactions.reactable_id) likes_at ON ((ideas.id = likes_at.reactable_id)));
   SQL
-  create_view "analytics_fact_posts", sql_definition: <<-SQL
-      SELECT i.id,
-      i.author_id AS user_id,
-      i.project_id AS dimension_project_id,
-      adt.id AS dimension_type_id,
-      (i.created_at)::date AS dimension_date_created_id,
-      (abf.feedback_first_date)::date AS dimension_date_first_feedback_id,
-      i.idea_status_id AS dimension_status_id,
-      (abf.feedback_first_date - i.created_at) AS feedback_time_taken,
-      COALESCE(abf.feedback_official, 0) AS feedback_official,
-      COALESCE(abf.feedback_status_change, 0) AS feedback_status_change,
-          CASE
-              WHEN (abf.feedback_first_date IS NULL) THEN 1
-              ELSE 0
-          END AS feedback_none,
-      (i.likes_count + i.dislikes_count) AS reactions_count,
-      i.likes_count,
-      i.dislikes_count,
-      i.publication_status
-     FROM ((ideas i
-       JOIN analytics_dimension_types adt ON (((adt.name)::text = 'idea'::text)))
-       LEFT JOIN analytics_build_feedbacks abf ON ((abf.post_id = i.id)))
-  UNION ALL
-   SELECT i.id,
-      i.author_id AS user_id,
-      NULL::uuid AS dimension_project_id,
-      adt.id AS dimension_type_id,
-      (i.created_at)::date AS dimension_date_created_id,
-      (abf.feedback_first_date)::date AS dimension_date_first_feedback_id,
-      isc.initiative_status_id AS dimension_status_id,
-      (abf.feedback_first_date - i.created_at) AS feedback_time_taken,
-      COALESCE(abf.feedback_official, 0) AS feedback_official,
-      COALESCE(abf.feedback_status_change, 0) AS feedback_status_change,
-          CASE
-              WHEN (abf.feedback_first_date IS NULL) THEN 1
-              ELSE 0
-          END AS feedback_none,
-      (i.likes_count + i.dislikes_count) AS reactions_count,
-      i.likes_count,
-      i.dislikes_count,
-      i.publication_status
-     FROM (((initiatives i
-       JOIN analytics_dimension_types adt ON (((adt.name)::text = 'initiative'::text)))
-       LEFT JOIN analytics_build_feedbacks abf ON ((abf.post_id = i.id)))
-       LEFT JOIN initiative_status_changes isc ON (((isc.initiative_id = i.id) AND (isc.updated_at = ( SELECT max(isc_.updated_at) AS max
-             FROM initiative_status_changes isc_
-            WHERE (isc_.initiative_id = i.id))))));
-  SQL
   create_view "analytics_fact_participations", sql_definition: <<-SQL
       SELECT i.id,
       i.author_id AS dimension_user_id,
@@ -1874,5 +1826,57 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_08_120425) do
        LEFT JOIN volunteering_causes vc ON ((vc.id = vv.cause_id)))
        LEFT JOIN phases p ON ((p.id = vc.participation_context_id)))
        JOIN analytics_dimension_types adt ON (((adt.name)::text = 'volunteer'::text)));
+  SQL
+  create_view "analytics_fact_posts", sql_definition: <<-SQL
+      SELECT i.id,
+      i.author_id AS user_id,
+      i.project_id AS dimension_project_id,
+      adt.id AS dimension_type_id,
+      (i.created_at)::date AS dimension_date_created_id,
+      (abf.feedback_first_date)::date AS dimension_date_first_feedback_id,
+      i.idea_status_id AS dimension_status_id,
+      (abf.feedback_first_date - i.created_at) AS feedback_time_taken,
+      COALESCE(abf.feedback_official, 0) AS feedback_official,
+      COALESCE(abf.feedback_status_change, 0) AS feedback_status_change,
+          CASE
+              WHEN (abf.feedback_first_date IS NULL) THEN 1
+              ELSE 0
+          END AS feedback_none,
+      (i.likes_count + i.dislikes_count) AS reactions_count,
+      i.likes_count,
+      i.dislikes_count,
+      i.publication_status
+     FROM (((((ideas i
+       JOIN analytics_dimension_types adt ON (((adt.name)::text = 'idea'::text)))
+       LEFT JOIN analytics_build_feedbacks abf ON ((abf.post_id = i.id)))
+       LEFT JOIN ideas_phases iph ON ((iph.idea_id = i.id)))
+       LEFT JOIN phases ph ON ((ph.id = iph.phase_id)))
+       LEFT JOIN projects pr ON ((pr.id = i.project_id)))
+    WHERE (((ph.id IS NULL) OR ((ph.participation_method)::text <> 'native_survey'::text)) AND ((pr.participation_method)::text <> 'native_survey'::text))
+  UNION ALL
+   SELECT i.id,
+      i.author_id AS user_id,
+      NULL::uuid AS dimension_project_id,
+      adt.id AS dimension_type_id,
+      (i.created_at)::date AS dimension_date_created_id,
+      (abf.feedback_first_date)::date AS dimension_date_first_feedback_id,
+      isc.initiative_status_id AS dimension_status_id,
+      (abf.feedback_first_date - i.created_at) AS feedback_time_taken,
+      COALESCE(abf.feedback_official, 0) AS feedback_official,
+      COALESCE(abf.feedback_status_change, 0) AS feedback_status_change,
+          CASE
+              WHEN (abf.feedback_first_date IS NULL) THEN 1
+              ELSE 0
+          END AS feedback_none,
+      (i.likes_count + i.dislikes_count) AS reactions_count,
+      i.likes_count,
+      i.dislikes_count,
+      i.publication_status
+     FROM (((initiatives i
+       JOIN analytics_dimension_types adt ON (((adt.name)::text = 'initiative'::text)))
+       LEFT JOIN analytics_build_feedbacks abf ON ((abf.post_id = i.id)))
+       LEFT JOIN initiative_status_changes isc ON (((isc.initiative_id = i.id) AND (isc.updated_at = ( SELECT max(isc_.updated_at) AS max
+             FROM initiative_status_changes isc_
+            WHERE (isc_.initiative_id = i.id))))));
   SQL
 end
