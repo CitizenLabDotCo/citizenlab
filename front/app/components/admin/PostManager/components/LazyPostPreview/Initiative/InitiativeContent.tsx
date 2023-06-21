@@ -15,7 +15,7 @@ import FileAttachments from 'components/UI/FileAttachments';
 import FeedbackSettings from './FeedbackSettings';
 import Button from 'components/UI/Button';
 import { Top, Content, Container } from '../PostPreview';
-import VoteIndicator from 'components/InitiativeCard/VoteIndicator';
+import ReactionIndicator from 'components/InitiativeCard/ReactionIndicator';
 import { Box } from '@citizenlab/cl2-component-library';
 
 // resources
@@ -89,7 +89,7 @@ const Right = styled.div`
   line-height: 19px;
 `;
 
-const VotePreview = styled.div`
+const ReactionPreview = styled.div`
   border: 1px solid #e0e0e0;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.05);
   border-radius: 3px;
@@ -240,15 +240,15 @@ const InitiativeContent = ({
               />
             </Left>
             <Right>
-              <VotePreview>
+              <ReactionPreview>
                 <DaysLeft>
                   <FormattedMessage
                     {...messages.xDaysLeft}
                     values={{ x: daysLeft }}
                   />
                 </DaysLeft>
-                <VoteIndicator initiativeId={initiativeId} />
-              </VotePreview>
+                <ReactionIndicator initiativeId={initiativeId} />
+              </ReactionPreview>
 
               <FeedbackSettings initiativeId={initiativeId} />
             </Right>

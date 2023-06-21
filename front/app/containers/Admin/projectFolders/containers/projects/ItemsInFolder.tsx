@@ -28,7 +28,7 @@ const publicationStatuses: PublicationStatus[] = [
   'published',
 ];
 
-interface Props {
+export interface Props {
   projectFolderId: string;
 }
 

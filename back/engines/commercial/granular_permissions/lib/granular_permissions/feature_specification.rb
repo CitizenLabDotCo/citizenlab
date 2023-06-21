@@ -15,7 +15,7 @@ module GranularPermissions
     end
 
     def self.feature_description
-      'Admin can specify permissions for specific projects and project phases (e.g., who can post, vote, etc.).'
+      'Admin can specify permissions for specific projects and project phases (e.g., who can post, react, etc.).'
     end
   end
 end

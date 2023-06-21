@@ -23,8 +23,8 @@ RSpec.describe EmailCampaigns::AssigneeDigestMailer do
                               published_at: (idea.published_at&.iso8601 || Time.now.iso8601),
                               assigned_at: (idea.assigned_at&.iso8601 || Time.now.iso8601),
                               author_name: name_service.display_name!(idea.author),
-                              upvotes_count: idea.upvotes_count,
-                              downvotes_count: idea.downvotes_count,
+                              likes_count: idea.likes_count,
+                              dislikes_count: idea.dislikes_count,
                               comments_count: idea.comments_count
                             }
                           end,
@@ -36,7 +36,7 @@ RSpec.describe EmailCampaigns::AssigneeDigestMailer do
                                     published_at: (initiative.published_at&.iso8601 || Time.now.iso8601),
                                     assigned_at: (initiative.assigned_at&.iso8601 || Time.now.iso8601),
                                     author_name: name_service.display_name!(initiative.author),
-                                    upvotes_count: initiative.upvotes_count,
+                                    likes_count: initiative.likes_count,
                                     comments_count: initiative.comments_count,
                                     images: initiative.initiative_images.map do |image|
                                               {
@@ -57,7 +57,7 @@ RSpec.describe EmailCampaigns::AssigneeDigestMailer do
                                               published_at: (initiative.published_at&.iso8601 || Time.now.iso8601),
                                               assigned_at: (initiative.assigned_at&.iso8601 || Time.now.iso8601),
                                               author_name: name_service.display_name!(initiative.author),
-                                              upvotes_count: initiative.upvotes_count,
+                                              likes_count: initiative.likes_count,
                                               comments_count: initiative.comments_count,
                                               threshold_reached_at: (initiative.threshold_reached_at&.iso8601 || Time.now.iso8601),
                                               images: initiative.initiative_images.map do |image|

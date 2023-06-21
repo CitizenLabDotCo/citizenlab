@@ -10,7 +10,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import useLocalize from 'hooks/useLocalize';
 
 // components
-import VoteControl from 'components/VoteControl';
+import ReactionControl from 'components/ReactionControl';
 import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
 
 // events
@@ -30,7 +30,7 @@ import { isFixableByAuthentication } from 'utils/actionDescriptors';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 // typings
-import { IdeaVotingDisabledReason } from 'api/ideas/types';
+import { IdeaReactingDisabledReason } from 'api/ideas/types';
 
 const Container = styled.div`
   flex: 0 0 ${(props) => props.theme.mobileTopBarHeight}px;
@@ -91,7 +91,9 @@ const IdeaShowPageTopBar = ({
 
   const localize = useLocalize();
 
-  const onDisabledVoteClick = (disabled_reason: IdeaVotingDisabledReason) => {
+  const onDisabledReactClick = (
+    disabled_reason: IdeaReactingDisabledReason
+  ) => {
     if (
       !isNilOrError(authUser) &&
       project &&
@@ -107,7 +109,7 @@ const IdeaShowPageTopBar = ({
       if (pcId && pcType) {
         triggerAuthenticationFlow({
           context: {
-            action: 'voting_idea',
+            action: 'reacting_idea',
             id: pcId,
             type: pcType,
           },
@@ -140,11 +142,11 @@ const IdeaShowPageTopBar = ({
           />
         </Left>
         <Right>
-          <VoteControl
+          <ReactionControl
             size="1"
             styleType="border"
             ideaId={ideaId}
-            disabledVoteClick={onDisabledVoteClick}
+            disabledReactionClick={onDisabledReactClick}
           />
         </Right>
       </TopBarInner>

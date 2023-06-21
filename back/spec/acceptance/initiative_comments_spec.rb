@@ -16,7 +16,7 @@ resource 'Comments' do
       parameter :number, 'Page number'
       parameter :size, 'Number of top-level comments per page. The response will include 2 to 5 child comments per top-level comment, so expect to receive more'
     end
-    parameter :sort, 'Either new, -new, upvotes_count or -upvotes_count. Defaults to -new. Only applies to the top-level comments, children are always returned chronologically.'
+    parameter :sort, 'Either new, -new, likes_count or -likes_count. Defaults to -new. Only applies to the top-level comments, children are always returned chronologically.'
 
     describe do
       before do
@@ -62,17 +62,17 @@ resource 'Comments' do
 
     describe do
       let(:initiative_id) { @initiative.id }
-      let(:sort) { '-upvotes_count' }
+      let(:sort) { '-likes_count' }
 
       before do
         @c1, @c2, @c3 = create_list(:comment, 3, post: @initiative)
-        create_list(:vote, 2, votable: @c3)
-        create_list(:vote, 3, votable: @c2)
+        create_list(:reaction, 2, reactable: @c3)
+        create_list(:reaction, 3, reactable: @c2)
         @c3sub1, @c3sub2 = create_list(:comment, 2, parent: @c3, post: @initiative)
-        create(:vote, votable: @c3sub2)
+        create(:reaction, reactable: @c3sub2)
       end
 
-      example_request 'List the top-level comments of an initiative sorted by descending upvotes_count' do
+      example_request 'List the top-level comments of an initiative sorted by descending likes_count' do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 5
@@ -176,7 +176,7 @@ resource 'Comments' do
       expect(status).to eq 200
       expect(response_data[:id]).to eq id
       expect(response_data[:attributes]).to include(
-        downvotes_count: 0,
+        dislikes_count: 0,
         publication_status: 'published',
         is_admin_comment: false,
         anonymous: false,
@@ -194,13 +194,13 @@ resource 'Comments' do
     get 'web_api/v1/initiatives/:initiative_id/comments' do
       let(:initiative_id) { @initiative.id }
 
-      example 'List all comments of an initiative includes the user_vote when authenticated' do
+      example 'List all comments of an initiative includes the user_reaction when authenticated' do
         comment = create(:comment, post: @initiative)
-        vote = create(:vote, user: @user, votable: comment)
+        reaction = create(:reaction, user: @user, reactable: comment)
         do_request
         json_response = json_parse(response_body)
-        expect(json_response[:data].filter_map { |d| d[:relationships][:user_vote][:data] }.first[:id]).to eq vote.id
-        expect(json_response[:included].pluck(:id)).to include vote.id
+        expect(json_response[:data].filter_map { |d| d[:relationships][:user_reaction][:data] }.first[:id]).to eq reaction.id
+        expect(json_response[:included].pluck(:id)).to include reaction.id
       end
     end
 

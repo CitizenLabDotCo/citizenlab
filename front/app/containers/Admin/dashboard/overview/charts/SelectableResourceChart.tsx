@@ -32,16 +32,16 @@ import BarChart from 'components/admin/Graphs/BarChart';
 import {
   IIdeasByTopic,
   ICommentsByTopic,
-  IVotesByTopic,
+  IReactionsByTopic,
   IIdeasByProject,
   ICommentsByProject,
-  IVotesByProject,
+  IReactionsByProject,
   ideasByTopicXlsxEndpoint,
   ideasByProjectXlsxEndpoint,
   commentsByTopicXlsxEndpoint,
   commentsByProjectXlsxEndpoint,
-  votesByTopicXlsxEndpoint,
-  votesByProjectXlsxEndpoint,
+  reactionsByTopicXlsxEndpoint,
+  reactionsByProjectXlsxEndpoint,
 } from 'services/stats';
 import { IStreamParams, IStream } from 'utils/streams';
 import { IResource } from '..';
@@ -100,10 +100,10 @@ interface DataProps {
 
 type ISupportedData =
   | IIdeasByTopic
-  | IVotesByTopic
+  | IReactionsByTopic
   | ICommentsByTopic
   | IIdeasByProject
-  | IVotesByProject
+  | IReactionsByProject
   | ICommentsByProject;
 
 type ByWhat = 'Topic' | 'Project';
@@ -136,7 +136,7 @@ interface Props extends InputProps, DataProps {}
 const RESOURCE_MESSAGES: Record<IResource, MessageDescriptor> = {
   ideas: messages.inputs,
   comments: messages.comments,
-  votes: messages.votes,
+  reactions: messages.votes,
 };
 
 const TITLE_MESSAGES: Record<ByWhat, MessageDescriptor> = {
@@ -157,10 +157,10 @@ const REPORT_EXPORT_MENU_NAME_MESSAGES: Record<ByWhat, MessageDescriptor> = {
 const XLSX_ENDPOINTS_MAP: Record<string, string> = {
   ideasTopic: ideasByTopicXlsxEndpoint,
   commentsTopic: commentsByTopicXlsxEndpoint,
-  votesTopic: votesByTopicXlsxEndpoint,
+  reactionsTopic: reactionsByTopicXlsxEndpoint,
   ideasProject: ideasByProjectXlsxEndpoint,
   commentsProject: commentsByProjectXlsxEndpoint,
-  votesProject: votesByProjectXlsxEndpoint,
+  reactionsProject: reactionsByProjectXlsxEndpoint,
 };
 
 const SelectableResourceChart = ({

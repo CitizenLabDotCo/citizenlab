@@ -10,8 +10,8 @@ import {
   ideasByTopicStream,
   ICommentsByTopic,
   commentsByTopicStream,
-  IVotesByTopic,
-  votesByTopicStream,
+  IReactionsByTopic,
+  reactionsByTopicStream,
 } from 'services/stats';
 import { IParticipationByTopic } from 'typings';
 import { fontSizes, colors } from 'utils/styleUtils';
@@ -43,7 +43,7 @@ interface DataProps {
   commentsByTopic: {
     serie: IParticipationByTopic;
   };
-  votesByTopic: {
+  reactionsByTopic: {
     serie: IParticipationByTopic;
   };
 }
@@ -116,7 +116,7 @@ const getCellColor = (value, participationType) => {
 interface Props extends InputProps, DataProps {}
 
 const ParticipationPerTopic = (props: Props) => {
-  const { votesByTopic, commentsByTopic, ideasByTopic, className } = props;
+  const { reactionsByTopic, commentsByTopic, ideasByTopic, className } = props;
   const localize = useLocalize();
   return (
     <>
@@ -127,7 +127,7 @@ const ParticipationPerTopic = (props: Props) => {
               <FormattedMessage {...messages.participationPerTopic} />
             </GraphCardTitle>
           </GraphCardHeader>
-          {isNilOrError(votesByTopic) ||
+          {isNilOrError(reactionsByTopic) ||
           isNilOrError(commentsByTopic) ||
           isNilOrError(ideasByTopic) ? (
             <NoDataContainer>
@@ -176,8 +176,8 @@ const ParticipationPerTopic = (props: Props) => {
                 <ParticipationType>
                   <FormattedMessage {...messages.votes} />
                 </ParticipationType>
-                {votesByTopic.serie &&
-                  votesByTopic.serie.map((topic, index) => (
+                {reactionsByTopic.serie &&
+                  reactionsByTopic.serie.map((topic, index) => (
                     <Cell
                       key={index}
                       cellColor={getCellColor(topic.value, 'total')}
@@ -198,7 +198,7 @@ const maxParticipationValue = {};
 
 const convertToGraphFormat =
   (dataKey: string) =>
-  (data: IIdeasByTopic | IVotesByTopic | ICommentsByTopic) => {
+  (data: IIdeasByTopic | IReactionsByTopic | ICommentsByTopic) => {
     const { series, topics } = data.data.attributes;
     maxParticipationValue[dataKey] = 0;
     const mapped = map(topics, ({ title_multiloc }, topicId: string) => {
@@ -238,10 +238,10 @@ const Data = adopt<DataProps, InputProps>({
       {render}
     </GetSerieFromStream>
   ),
-  votesByTopic: ({ projectId, endAt, render }) => (
+  reactionsByTopic: ({ projectId, endAt, render }) => (
     <GetSerieFromStream
       currentProjectFilter={projectId}
-      stream={votesByTopicStream}
+      stream={reactionsByTopicStream}
       endAt={endAt}
       convertToGraphFormat={convertToGraphFormat('total')}
     >

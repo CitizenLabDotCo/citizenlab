@@ -8,7 +8,7 @@ import React, {
 
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
-import VoteIndicator from 'components/InitiativeCard/VoteIndicator';
+import ReactionIndicator from 'components/InitiativeCard/ReactionIndicator';
 
 // router
 import clHistory from 'utils/cl-router/history';
@@ -151,7 +151,7 @@ const InitiativeShowPageTopBar = memo<Props>(({ initiativeId, className }) => {
           </GoBackLabel>
         </Left>
         <Right>
-          <VoteIndicator initiativeId={initiativeId} />
+          <ReactionIndicator initiativeId={initiativeId} />
         </Right>
       </TopBarInner>
     </Container>

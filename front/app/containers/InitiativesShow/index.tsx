@@ -30,7 +30,7 @@ import InitiativeMeta from './InitiativeMeta';
 import PostedBy from './PostedBy';
 import PostedByMobile from './PostedByMobile';
 import ActionBar from './ActionBar';
-import VoteControl from './VoteControl';
+import ReactionControl from './ReactionControl';
 import InitiativeMoreActions from './ActionBar/InitiativeMoreActions';
 import Outlet from 'components/Outlet';
 
@@ -299,7 +299,7 @@ const StyledOfficialFeedback = styled(OfficialFeedback)`
   margin-top: 80px;
 `;
 
-const StyledVoteControl = styled(VoteControl)`
+const StyledReactionControl = styled(ReactionControl)`
   box-shadow: 1px 0px 15px rgba(0, 0, 0, 0.06);
   border-bottom: 1px solid rgba(0, 0, 0, 0.06);
   padding: 25px;
@@ -412,8 +412,8 @@ const InitiativesShow = ({
     ? tenant.attributes.settings.initiatives
     : null;
 
-  const votingThreshold = initiativeSettings
-    ? initiativeSettings.voting_threshold.toString()
+  const reactingThreshold = initiativeSettings
+    ? initiativeSettings.reacting_threshold.toString()
     : '';
   const daysLimit = initiativeSettings
     ? initiativeSettings.days_limit.toString()
@@ -511,7 +511,7 @@ const InitiativesShow = ({
         )}
 
         {isNotDesktop && (
-          <StyledVoteControl
+          <StyledReactionControl
             initiativeId={initiativeId}
             onScrollToOfficialFeedback={onScrollToOfficialFeedback}
           />
@@ -632,10 +632,10 @@ const InitiativesShow = ({
                       {...messages.a11y_voteControl}
                     />
                   </ScreenReaderOnly>
-                  <VoteControl
+                  <ReactionControl
                     initiativeId={initiativeId}
                     onScrollToOfficialFeedback={onScrollToOfficialFeedback}
-                    id="e2e-initiative-vote-control"
+                    id="e2e-initiative-reaction-control"
                   />
                   <SharingWrapper>
                     <SharingButtons
@@ -709,7 +709,7 @@ const InitiativesShow = ({
               postId={initiativeIdForSocialSharing}
               title={formatMessage(messages.shareTitle)}
               subtitle={formatMessage(messages.shareSubtitle, {
-                votingThreshold,
+                votingThreshold: reactingThreshold,
                 daysLimit,
               })}
             />

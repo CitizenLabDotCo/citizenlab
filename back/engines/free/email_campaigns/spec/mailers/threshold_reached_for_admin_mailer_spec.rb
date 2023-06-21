@@ -18,7 +18,7 @@ RSpec.describe EmailCampaigns::ThresholdReachedForAdminMailer do
           post_published_at: notification.post.published_at.iso8601,
           post_author_name: notification.post.author_name,
           post_url: Frontend::UrlService.new.model_to_url(notification.post, locale: recipient.locale),
-          post_upvotes_count: notification.post.upvotes_count,
+          post_likes_count: notification.post.likes_count,
           post_comments_count: notification.post.comments_count,
           post_images: notification.post.initiative_images.map do |image|
             {

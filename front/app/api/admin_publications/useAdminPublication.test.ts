@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react-hooks';
 
 import useAdminPublication from './useAdminPublication';
-import { adminPublicationsData } from './__mocks__/useAdminPublications';
+import { mockFolderChildAdminPublicationsList } from './__mocks__/useAdminPublications';
 
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
@@ -12,7 +12,10 @@ const apiPath = '*admin_publications/:id';
 
 const server = setupServer(
   rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: adminPublicationsData[0] }));
+    return res(
+      ctx.status(200),
+      ctx.json({ data: mockFolderChildAdminPublicationsList[0] })
+    );
   })
 );
 
@@ -30,7 +33,9 @@ describe('useAdminPublication', () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
     expect(result.current.isLoading).toBe(false);
-    expect(result.current.data?.data).toEqual(adminPublicationsData[0]);
+    expect(result.current.data?.data).toEqual(
+      mockFolderChildAdminPublicationsList[0]
+    );
   });
 
   it('returns error correctly', async () => {

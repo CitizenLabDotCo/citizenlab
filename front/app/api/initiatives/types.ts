@@ -10,8 +10,8 @@ export type Sort =
   | '-new'
   | 'author_name'
   | '-author_name'
-  | 'upvotes_count'
-  | '-upvotes_count'
+  | 'likes_count'
+  | '-likes_count'
   | 'status'
   | '-status'
   | 'random';
@@ -46,7 +46,7 @@ export interface IInitiativeData {
     author_name: string;
     slug: string;
     publication_status: InitiativePublicationStatus;
-    upvotes_count: number;
+    likes_count: number;
     comments_count: number;
     location_point_geojson: GeoJSON.Point;
     location_description: string;
@@ -74,7 +74,7 @@ export interface IInitiativeData {
     initiative_status?: {
       data: IRelationship | null;
     };
-    user_vote?: {
+    user_reaction?: {
       data: IRelationship | null;
     };
   };

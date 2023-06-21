@@ -5,7 +5,7 @@ import UserName from 'components/UI/UserName';
 import Card from 'components/UI/Card/Compact';
 import { Icon } from '@citizenlab/cl2-component-library';
 import Avatar from 'components/Avatar';
-import FooterWithVoteControl from './FooterWithVoteControl';
+import FooterWithReactionControl from './FooterWithReactionControl';
 import FooterWithBudgetControl from './FooterWithBudgetControl';
 
 // types
@@ -173,7 +173,7 @@ const CompactIdeaCard = memo<IdeaCardProps>(
 
         if (participationMethod === 'ideation') {
           return (
-            <FooterWithVoteControl
+            <FooterWithReactionControl
               idea={idea}
               hideIdeaStatus={hideIdeaStatus}
               showCommentCount={showCommentCount}
