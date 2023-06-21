@@ -17,7 +17,6 @@ import AgeChart from './AgeChart';
 import { Box } from '@citizenlab/cl2-component-library';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 
 // typings
 import { IUserCustomFieldInputType } from 'api/user_custom_fields/types';
@@ -44,87 +43,91 @@ const RegistrationFieldsToGraphs = ({
 
   const localize = useLocalize();
 
-  if (isNilOrError(customFields)) {
+  if (!customFields) {
     return null;
   }
 
-  return customFields.map((field, index) => {
-    if (field.attributes.enabled) {
-      if (field.attributes.code === 'birthyear') {
-        return (
-          <Box width="50%" key={index}>
-            <AgeChart
-              startAt={startAt}
-              endAt={endAt}
-              currentGroupFilter={currentGroupFilter}
-              currentGroupFilterLabel={currentGroupFilterLabel}
-            />
-          </Box>
-        );
-      }
-      if (field.attributes.input_type === 'number') {
-        return;
-      }
-      if (field.attributes.code === 'gender') {
-        return (
-          <Box width="50%" key={index}>
-            <GenderChart
-              startAt={startAt}
-              endAt={endAt}
-              currentGroupFilter={currentGroupFilter}
-              currentGroupFilterLabel={currentGroupFilterLabel}
-            />
-          </Box>
-        );
-      }
+  return (
+    <>
+      {customFields.map((field, index) => {
+        if (field.attributes.enabled) {
+          if (field.attributes.code === 'birthyear') {
+            return (
+              <Box width="50%" key={index}>
+                <AgeChart
+                  startAt={startAt}
+                  endAt={endAt}
+                  currentGroupFilter={currentGroupFilter}
+                  currentGroupFilterLabel={currentGroupFilterLabel}
+                />
+              </Box>
+            );
+          }
+          if (field.attributes.input_type === 'number') {
+            return null;
+          }
+          if (field.attributes.code === 'gender') {
+            return (
+              <Box width="50%" key={index}>
+                <GenderChart
+                  startAt={startAt}
+                  endAt={endAt}
+                  currentGroupFilter={currentGroupFilter}
+                  currentGroupFilterLabel={currentGroupFilterLabel}
+                />
+              </Box>
+            );
+          }
 
-      if (field.attributes.code === 'domicile') {
-        return (
-          <AreaChart
-            key={index}
-            startAt={startAt}
-            endAt={endAt}
-            currentGroupFilter={currentGroupFilter}
-            currentGroupFilterLabel={currentGroupFilterLabel}
-          />
-        );
-      }
+          if (field.attributes.code === 'domicile') {
+            return (
+              <AreaChart
+                key={index}
+                startAt={startAt}
+                endAt={endAt}
+                currentGroupFilter={currentGroupFilter}
+                currentGroupFilterLabel={currentGroupFilterLabel}
+              />
+            );
+          }
 
-      if (field.attributes.input_type === 'checkbox') {
-        return (
-          <PieChartByCategory
-            key={index}
-            startAt={startAt}
-            endAt={endAt}
-            currentGroupFilter={currentGroupFilter}
-            currentGroupFilterLabel={currentGroupFilterLabel}
-            graphTitleString={localize(field.attributes.title_multiloc)}
-            graphUnit="users"
-            customId={field.id}
-            xlsxEndpoint={usersByCustomFieldXlsxEndpoint(field.id)}
-            id={field.id}
-          />
-        );
-      } else {
-        return (
-          <BarChartByCategory
-            key={index}
-            startAt={startAt}
-            endAt={endAt}
-            currentGroupFilter={currentGroupFilter}
-            currentGroupFilterLabel={currentGroupFilterLabel}
-            graphTitleString={localize(field.attributes.title_multiloc)}
-            graphUnit="users"
-            customId={field.id}
-            xlsxEndpoint={usersByCustomFieldXlsxEndpoint(field.id)}
-            id={field.id}
-          />
-        );
-      }
-    }
+          if (field.attributes.input_type === 'checkbox') {
+            return (
+              <PieChartByCategory
+                key={index}
+                startAt={startAt}
+                endAt={endAt}
+                currentGroupFilter={currentGroupFilter}
+                currentGroupFilterLabel={currentGroupFilterLabel}
+                graphTitleString={localize(field.attributes.title_multiloc)}
+                graphUnit="users"
+                customId={field.id}
+                xlsxEndpoint={usersByCustomFieldXlsxEndpoint(field.id)}
+                id={field.id}
+              />
+            );
+          } else {
+            return (
+              <BarChartByCategory
+                key={index}
+                startAt={startAt}
+                endAt={endAt}
+                currentGroupFilter={currentGroupFilter}
+                currentGroupFilterLabel={currentGroupFilterLabel}
+                graphTitleString={localize(field.attributes.title_multiloc)}
+                graphUnit="users"
+                customId={field.id}
+                xlsxEndpoint={usersByCustomFieldXlsxEndpoint(field.id)}
+                id={field.id}
+              />
+            );
+          }
+        }
 
-    return null;
-  });
+        return null;
+      })}
+    </>
+  );
 };
 
 const INPUT_TYPES: IUserCustomFieldInputType[] = [
