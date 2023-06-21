@@ -4,8 +4,7 @@ import clHistory from 'utils/cl-router/history';
 import GoBackButton from 'components/UI/GoBackButton';
 import { Box } from '@citizenlab/cl2-component-library';
 import InitiativePostPreview from './PostPreview/Initiative/InitiativePostPreview';
-
-type PreviewMode = 'view' | 'edit';
+import { PreviewMode } from '..';
 
 const InitiativePreviewIndex = () => {
   const [previewMode, setPreviewMode] = useState<PreviewMode>('view');

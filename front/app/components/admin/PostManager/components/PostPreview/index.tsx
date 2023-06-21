@@ -10,7 +10,7 @@ import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 // typings
-import { ManagerType } from '../..';
+import { ManagerType, PreviewMode } from '../..';
 
 export const Container = styled.div`
   min-height: 100%;
@@ -54,7 +54,7 @@ export interface Props {
   onClose: () => void;
   postId: string | null;
   onSwitchPreviewMode: () => void;
-  mode: 'edit' | 'view';
+  mode: PreviewMode;
 }
 
 const PostPreview = ({

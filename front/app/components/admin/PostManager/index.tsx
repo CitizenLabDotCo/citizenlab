@@ -120,6 +120,7 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 export type TFilterMenu = 'topics' | 'phases' | 'projects' | 'statuses';
+export type PreviewMode = 'view' | 'edit';
 
 interface State {
   /** A set of ids of ideas/initiatives that are currently selected */
@@ -127,7 +128,7 @@ interface State {
   activeFilterMenu: TFilterMenu;
   searchTerm: string | undefined;
   previewPostId: string | null;
-  previewMode: 'view' | 'edit';
+  previewMode: PreviewMode;
 }
 
 export class PostManager extends React.PureComponent<Props, State> {
