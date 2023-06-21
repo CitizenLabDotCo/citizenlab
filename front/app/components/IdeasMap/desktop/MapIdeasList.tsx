@@ -175,6 +175,7 @@ const MapIdeasList = memo<Props>(({ projectId, phaseId, className }) => {
           />
           {topicsEnabled && (
             <TopicFilterDropdown
+              selectedTopicIds={topics}
               onChange={handleTopicsOnChange}
               alignment="left"
               projectId={projectId}

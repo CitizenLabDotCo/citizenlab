@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useMemo } from 'react';
 
 // components
 import FilterSelector from 'components/FilterSelector';
@@ -13,44 +13,37 @@ import useProjectAllowedInputTopics from 'api/project_allowed_input_topics/usePr
 import useTopics from 'api/topics/useTopics';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 import { getTopicIds } from 'api/project_allowed_input_topics/util/getProjectTopicsIds';
 
 interface Props {
+  selectedTopicIds: string[];
   alignment: 'left' | 'right';
-  onChange: (value: any) => void;
+  onChange: (value: string[]) => void;
   projectId: string;
 }
 
 const TopicFilterDropdown = memo(
-  ({ alignment, projectId, onChange }: Props) => {
+  ({ selectedTopicIds, alignment, projectId, onChange }: Props) => {
     const localize = useLocalize();
-    const [selectedValues, setSelectedValues] = useState<string[]>([]);
     const { data: allowedInputTopics } = useProjectAllowedInputTopics({
       projectId,
     });
 
     const topicIds = getTopicIds(allowedInputTopics?.data);
     const { data: topics } = useTopics();
-    const filteredTopics = topics?.data.filter((topic) =>
-      topicIds.includes(topic.id)
-    );
 
-    const handleOnChange = (newSelectedValues: string[]) => {
-      setSelectedValues(newSelectedValues);
-      onChange(newSelectedValues);
-    };
+    const filteredTopics = useMemo(() => {
+      return topics?.data.filter((topic) => topicIds.includes(topic.id));
+    }, [topics, topicIds]);
 
-    const getOptions = () => {
-      if (isNilOrError(topics)) return [];
-
-      return filteredTopics?.map((topic) => ({
-        text: localize(topic.attributes.title_multiloc),
-        value: topic.id,
-      }));
-    };
-
-    const options = getOptions() || [];
+    const options = useMemo(() => {
+      return (
+        filteredTopics?.map((topic) => ({
+          text: localize(topic.attributes.title_multiloc),
+          value: topic.id,
+        })) ?? []
+      );
+    }, [filteredTopics, localize]);
 
     if (!allowedInputTopics || allowedInputTopics.data.length === 0) {
       return null;
@@ -66,9 +59,9 @@ const TopicFilterDropdown = memo(
           />
         }
         name="topics"
-        selected={selectedValues}
+        selected={selectedTopicIds}
         values={options}
-        onChange={handleOnChange}
+        onChange={onChange}
         multipleSelectionAllowed={true}
         last={true}
         left={alignment === 'left' ? '-5px' : undefined}

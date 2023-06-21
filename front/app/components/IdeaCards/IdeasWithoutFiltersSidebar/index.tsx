@@ -305,6 +305,7 @@ const IdeasWithoutFiltersSidebar = ({
               )}
               {topicsEnabled && !isNilOrError(project) && (
                 <TopicFilterDropdown
+                  selectedTopicIds={ideaQueryParameters.topics ?? []}
                   onChange={handleTopicsOnChange}
                   alignment={biggerThanLargeTablet ? 'right' : 'left'}
                   projectId={project.data.id}
