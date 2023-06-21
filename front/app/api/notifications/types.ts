@@ -198,77 +198,23 @@ interface IInternalCommentBaseAttributes {
   post_id: string;
 }
 
-interface IMentionInInternalCommentData extends IBaseNotificationData {
-  attributes: {
-    type: 'mention_in_internal_comment';
-  } & IInternalCommentBaseAttributes;
-}
+type InternalCommentType =
+  | 'mention_in_internal_comment'
+  | 'internal_comment_on_your_internal_comment'
+  | 'internal_comment_on_idea_assigned_to_you'
+  | 'internal_comment_on_initiative_assigned_to_you'
+  | 'internal_comment_on_idea_you_moderate'
+  | 'internal_comment_on_idea_you_commented_internally_on'
+  | 'internal_comment_on_initiative_you_commented_internally_on'
+  | 'internal_comment_on_unassigned_unmoderated_idea'
+  | 'internal_comment_on_unassigned_initiative';
 
-interface IInternalCommentOnYourInternalCommentData
+export interface IInternalCommentNotificationData
   extends IBaseNotificationData {
   attributes: {
-    type: 'internal_comment_on_your_internal_comment';
+    type: InternalCommentType;
   } & IInternalCommentBaseAttributes;
 }
-
-interface IInternalCommentOnIdeaAssignedToYouData
-  extends IBaseNotificationData {
-  attributes: {
-    type: 'internal_comment_on_idea_assigned_to_you';
-  } & IInternalCommentBaseAttributes;
-}
-
-interface IInternalCommentOnInitiativeAssignedToYouData
-  extends IBaseNotificationData {
-  attributes: {
-    type: 'internal_comment_on_initiative_assigned_to_you';
-  } & IInternalCommentBaseAttributes;
-}
-
-interface IInternalCommentOnIdeaYouModerateData extends IBaseNotificationData {
-  attributes: {
-    type: 'internal_comment_on_idea_you_moderate';
-  } & IInternalCommentBaseAttributes;
-}
-
-interface IInternalCommentOnIdeaYouCommentedInternallyOnData
-  extends IBaseNotificationData {
-  attributes: {
-    type: 'internal_comment_on_idea_you_commented_internally_on';
-  } & IInternalCommentBaseAttributes;
-}
-
-interface IInternalCommentOnInitiativeYouCommentedInternallyOnData
-  extends IBaseNotificationData {
-  attributes: {
-    type: 'internal_comment_on_initiative_you_commented_internally_on';
-  } & IInternalCommentBaseAttributes;
-}
-
-interface IInternalCommentOnUnassignedUnmoderatedIdeaData
-  extends IBaseNotificationData {
-  attributes: {
-    type: 'internal_comment_on_unassigned_unmoderated_idea';
-  } & IInternalCommentBaseAttributes;
-}
-
-interface IInternalCommentOnUnassignedInitiativeData
-  extends IBaseNotificationData {
-  attributes: {
-    type: 'internal_comment_on_unassigned_initiative';
-  } & IInternalCommentBaseAttributes;
-}
-
-export type InternalCommentNotificationData =
-  | IMentionInInternalCommentData
-  | IInternalCommentOnYourInternalCommentData
-  | IInternalCommentOnIdeaAssignedToYouData
-  | IInternalCommentOnInitiativeAssignedToYouData
-  | IInternalCommentOnIdeaYouModerateData
-  | IInternalCommentOnIdeaYouCommentedInternallyOnData
-  | IInternalCommentOnInitiativeYouCommentedInternallyOnData
-  | IInternalCommentOnUnassignedUnmoderatedIdeaData
-  | IInternalCommentOnUnassignedInitiativeData;
 
 export interface IMentionInOfficialFeedbackNotificationData
   extends IBaseNotificationData {
@@ -502,7 +448,7 @@ export interface INotificationDataMap {
   IInitiativeMarkedAsSpamNotificationData: IInitiativeMarkedAsSpamNotificationData;
   IInviteAcceptedNotificationData: IInviteAcceptedNotificationData;
   IMentionInCommentNotificationData: IMentionInCommentNotificationData;
-  InternalCommentNotificationData: InternalCommentNotificationData;
+  IInternalCommentNotificationData: IInternalCommentNotificationData;
   IMentionInOfficialFeedbackNotificationData: IMentionInOfficialFeedbackNotificationData;
   IOfficialFeedbackOnCommentedIdeaNotificationData: IOfficialFeedbackOnCommentedIdeaNotificationData;
   IOfficialFeedbackOnCommentedInitiativeNotificationData: IOfficialFeedbackOnCommentedInitiativeNotificationData;

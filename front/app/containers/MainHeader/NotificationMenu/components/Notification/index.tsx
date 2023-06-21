@@ -48,7 +48,7 @@ import {
   IInitiativeMarkedAsSpamNotificationData,
   IInviteAcceptedNotificationData,
   IMentionInCommentNotificationData,
-  InternalCommentNotificationData,
+  IInternalCommentNotificationData,
   IMentionInOfficialFeedbackNotificationData,
   IOfficialFeedbackOnCommentedIdeaNotificationData,
   IOfficialFeedbackOnCommentedInitiativeNotificationData,
@@ -170,7 +170,7 @@ const Notification = ({ notification }: Props) => {
     case 'internal_comment_on_unassigned_initiative':
       return (
         <InternalCommentNotification
-          notification={notification as InternalCommentNotificationData}
+          notification={notification as IInternalCommentNotificationData}
         />
       );
     case 'mention_in_official_feedback':

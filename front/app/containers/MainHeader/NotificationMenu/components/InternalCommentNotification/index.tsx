@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { isNilOrError, stopPropagation } from 'utils/helperUtils';
 
 // services
-import { InternalCommentNotificationData } from 'api/notifications/types';
+import { IInternalCommentNotificationData } from 'api/notifications/types';
 
 // i18n
 import messages from '../../messages';
@@ -14,11 +14,11 @@ import Link from 'utils/cl-router/Link';
 import { DeletedUser } from '../Notification';
 
 interface Props {
-  notification: InternalCommentNotificationData;
+  notification: IInternalCommentNotificationData;
 }
 
 const mapPostTypeToLink = (
-  notification: InternalCommentNotificationData
+  notification: IInternalCommentNotificationData
 ): string => {
   switch (notification.attributes.post_type) {
     case 'Idea':
@@ -29,7 +29,7 @@ const mapPostTypeToLink = (
 };
 
 const getNotificationMessage = (
-  notification: InternalCommentNotificationData
+  notification: IInternalCommentNotificationData
 ): MessageDescriptor => {
   switch (notification.attributes.type) {
     case 'mention_in_internal_comment':
