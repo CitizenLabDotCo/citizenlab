@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React from 'react';
 
 // components
 import {
@@ -15,13 +15,11 @@ import ideaFormMessages from 'containers/IdeasNewPage/messages';
 import Form, { AjvErrorGetter, ApiErrorGetter } from 'components/Form';
 
 // services
-import { usePermission } from 'services/permissions';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
 import useDeleteIdeaImage from 'api/idea_images/useDeleteIdeaImage';
 
 // hooks
 import useIdeaById from 'api/ideas/useIdeaById';
-import useAuthUser from 'api/me/useAuthUser';
 import useProjectById from 'api/projects/useProjectById';
 import useInputSchema from 'hooks/useInputSchema';
 import useIdeaImages from 'api/idea_images/useIdeaImages';
@@ -35,9 +33,7 @@ import messages from '../messages';
 import { getLocationGeojson } from 'containers/IdeasEditPage/utils';
 import { omit } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
-import clHistory from 'utils/cl-router/history';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
-import { PreviousPathnameContext } from 'context';
 
 const AdminIdeaEdit = ({
   ideaId,
@@ -46,15 +42,8 @@ const AdminIdeaEdit = ({
   ideaId: string;
   goBack: () => void;
 }) => {
-  const previousPathName = useContext(PreviousPathnameContext);
-  const { data: authUser } = useAuthUser();
   const { data: idea } = useIdeaById(ideaId);
   const { mutate: deleteIdeaImage } = useDeleteIdeaImage();
-  const granted = usePermission({
-    item: idea?.data || null,
-    action: 'edit',
-    context: idea?.data || null,
-  });
 
   const { mutate: updateIdea } = useUpdateIdea();
   const { data: project, status: projectStatus } = useProjectById(
@@ -67,12 +56,6 @@ const AdminIdeaEdit = ({
     projectId: project?.data.id,
     inputId: ideaId,
   });
-
-  useEffect(() => {
-    if (idea && authUser !== undefined && !granted) {
-      clHistory.replace(previousPathName || (!authUser ? '/sign-up' : '/'));
-    }
-  }, [idea, granted, previousPathName, authUser]);
 
   if (!idea || !project) return null;
 
