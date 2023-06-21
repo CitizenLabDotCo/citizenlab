@@ -1174,6 +1174,8 @@
   "app.containers.AdminPage.ProjectEdit.Voting.optionsToVoteOn": "Options to vote on",
   "app.containers.AdminPage.ProjectEdit.Voting.strategicVotingLinkText": "strategic voting",
   "app.containers.AdminPage.ProjectEdit.Voting.voteCalled": "What should a vote be called?",
+  "app.containers.AdminPage.ProjectEdit.Voting.voteCalledPlaceholderPlural": "E.g. Tokens",
+  "app.containers.AdminPage.ProjectEdit.Voting.voteCalledPlaceholderSingular": "E.g. Token",
   "app.containers.AdminPage.ProjectEdit.Voting.votingMethodSelectorSubtitle": "Each voting method has different pre-configurations",
   "app.containers.AdminPage.ProjectEdit.Voting.votingMethodSelectorTitle": "Voting method",
   "app.containers.AdminPage.ProjectEdit.Voting.votingMethodSelectorTooltip2": "The voting method determines the rules of how users vote",
