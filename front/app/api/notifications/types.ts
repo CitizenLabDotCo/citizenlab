@@ -224,6 +224,13 @@ export interface IInternalCommentOnInitiativeAssignedToYouData
   } & IInternalcommentBaseAttributes;
 }
 
+export interface IInternalCommentOnIdeaYouModerateData
+  extends IBaseNotificationData {
+  attributes: {
+    type: 'internal_comment_on_idea_you_moderate';
+  } & IInternalcommentBaseAttributes;
+}
+
 export interface IMentionInOfficialFeedbackNotificationData
   extends IBaseNotificationData {
   attributes: {
