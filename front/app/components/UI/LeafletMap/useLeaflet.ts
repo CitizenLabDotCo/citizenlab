@@ -20,6 +20,7 @@ import {
   setLeafletMapClicked,
   setLeafletMapCenter,
   setLeafletMapZoom,
+  setLeafletMarkersLoaded,
   leafletMapHoveredMarker$,
   leafletMapSelectedMarker$,
   leafletMapCenter$,
@@ -92,6 +93,7 @@ export default function useLeaflet(
   // State
   const [map, setMap] = useState<L.Map | null>(null);
   const [markers, setMarkers] = useState<L.Marker[] | null>(null);
+  const [markersLoaded, setMarkersLoaded] = useState(false);
   const [_tileLayer, setTileLayer] = useState<L.Layer | null>(null);
   const [_layers, setLayers] = useState<L.GeoJSON[] | null>(null);
   const [markerClusterGroup, setMarkerClusterGroup] =
@@ -290,12 +292,23 @@ export default function useLeaflet(
   ]);
 
   const refreshMarkers = () => {
+    if (!points) return;
+
     setMarkers((prevMarkers) => {
       service.removeLayers(map, prevMarkers);
       return service.addMarkersToMap(map, points, noMarkerClustering);
     });
   };
   useEffect(refreshMarkers, [map, points, noMarkerClustering]);
+
+  useEffect(() => {
+    if (markersLoaded) return;
+
+    if (markers) {
+      setMarkersLoaded(true);
+      setLeafletMarkersLoaded();
+    }
+  }, [markersLoaded, markers]);
 
   const refreshClusterGroups = () => {
     setMarkerClusterGroup((prevMarkerClusterGroup) => {

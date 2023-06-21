@@ -16,6 +16,7 @@ enum events {
   leafletMapHoveredMarkerChange = 'leafletMapHoveredMarkerChange',
   leafletMapSelectedMarkerChange = 'leafletMapSelectedMarkerChange',
   leafletMapClicked = 'leafletMapClicked',
+  leafletMarkersLoaded = 'leafletMarkersLoaded',
 }
 
 // ----------------------------------------------------------------------------------------------
@@ -95,3 +96,13 @@ export const leafletMapClicked$ = eventEmitter
   );
 
 // ----------------------------------------------------------------------------------------------
+
+// I'm so sorry about this but it's the only way to make sure that these damn markers have
+// loaded
+export function setLeafletMarkersLoaded() {
+  eventEmitter.emit(events.leafletMarkersLoaded);
+}
+
+export const leafletMarkersLoaded$ = eventEmitter.observeEvent<string | null>(
+  events.leafletMarkersLoaded
+);
