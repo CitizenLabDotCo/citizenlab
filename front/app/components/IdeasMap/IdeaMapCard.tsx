@@ -9,6 +9,7 @@ import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
 import {
   setLeafletMapHoveredMarker,
   leafletMapHoveredMarker$,
+  setLeafletMapSelectedMarker,
 } from 'components/UI/LeafletMap/events';
 
 // router
@@ -183,6 +184,8 @@ const IdeaMapCard = memo<Props>(
 
       if (tablet) {
         clHistory.push(`/ideas/${ideaMarker.attributes.slug}?go_back=true`);
+      } else {
+        setLeafletMapSelectedMarker(ideaMarker.id);
       }
     };
 

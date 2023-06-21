@@ -273,8 +273,6 @@ const IdeasMap = memo<Props>((props) => {
   useEffect(() => {
     const subscriptions = [
       leafletMapSelectedMarker$.subscribe((ideaId) => {
-        if (ideaId === selectedIdeaMarkerId) return;
-
         // temporarily disable pointer events on the mobile ideacard popup to avoid
         // the marker click event from propagating to the card that migth pop up on top of it
         setIsCardClickable(false);
@@ -342,7 +340,7 @@ const IdeasMap = memo<Props>((props) => {
     setMap(map);
   };
 
-  const handleIdeaMapCardOnClose = () => {
+  const deselectIdeaMarker = () => {
     updateSearchParams({ idea_map_id: null });
     setLeafletMapSelectedMarker(null);
     setLeafletMapHoveredMarker(null);
@@ -412,7 +410,7 @@ const IdeasMap = memo<Props>((props) => {
           >
             <StyledIdeaMapCard
               ideaMarker={selectedIdeaMarker as IIdeaMarkerData}
-              onClose={handleIdeaMapCardOnClose}
+              onClose={deselectIdeaMarker}
               isClickable={isCardClickable}
               projectId={projectId}
               phaseId={phaseId}
@@ -430,7 +428,11 @@ const IdeasMap = memo<Props>((props) => {
           layersControlPosition={tablet ? 'topright' : 'bottomright'}
         />
 
-        <StyledDesktopIdeaMapOverlay projectId={projectId} phaseId={phaseId} />
+        <StyledDesktopIdeaMapOverlay
+          projectId={projectId}
+          phaseId={phaseId}
+          deselectIdeaMarker={deselectIdeaMarker}
+        />
 
         <IdeaButtonWrapper
           className="create-idea-wrapper"

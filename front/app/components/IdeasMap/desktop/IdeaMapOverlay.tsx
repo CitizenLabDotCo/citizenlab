@@ -3,7 +3,6 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // router
 import { useSearchParams } from 'react-router-dom';
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
@@ -94,67 +93,66 @@ interface Props {
   projectId: string;
   phaseId?: string;
   className?: string;
+  deselectIdeaMarker: () => void;
 }
 
-const IdeaMapOverlay = memo<Props>(({ projectId, phaseId, className }) => {
-  const [searchParams] = useSearchParams();
-  const { data: project } = useProjectById(projectId);
-  const { windowWidth } = useWindowSize();
-  const smallerThan1440px = !!(windowWidth && windowWidth <= 1440);
+const IdeaMapOverlay = memo<Props>(
+  ({ projectId, phaseId, className, deselectIdeaMarker }) => {
+    const [searchParams] = useSearchParams();
+    const { data: project } = useProjectById(projectId);
+    const { windowWidth } = useWindowSize();
+    const smallerThan1440px = !!(windowWidth && windowWidth <= 1440);
 
-  const selectedIdeaId = searchParams.get('idea_map_id');
-  const [scrollContainerElement, setScrollContainerElement] =
-    useState<HTMLDivElement | null>(null);
+    const selectedIdeaId = searchParams.get('idea_map_id');
+    const [scrollContainerElement, setScrollContainerElement] =
+      useState<HTMLDivElement | null>(null);
 
-  useEffect(() => {
-    if (scrollContainerElement && selectedIdeaId) {
-      scrollContainerElement.scrollTop = 0;
-    }
-  }, [scrollContainerElement, selectedIdeaId]);
+    useEffect(() => {
+      if (scrollContainerElement && selectedIdeaId) {
+        scrollContainerElement.scrollTop = 0;
+      }
+    }, [scrollContainerElement, selectedIdeaId]);
 
-  const deselectIdeaOnMap = () => {
-    updateSearchParams({ idea_map_id: null });
-  };
+    const handleIdeasShowSetRef = (element: HTMLDivElement) => {
+      setScrollContainerElement(element);
+    };
 
-  const handleIdeasShowSetRef = (element: HTMLDivElement) => {
-    setScrollContainerElement(element);
-  };
-
-  if (project) {
-    return (
-      <Container className={className || ''}>
-        <StyledIdeasList projectId={projectId} phaseId={phaseId} />
-        <CSSTransition
-          classNames="animation"
-          in={!!selectedIdeaId}
-          timeout={timeout}
-          mounOnEnter={true}
-          unmountOnExit={true}
-          enter={true}
-          exit={true}
-        >
-          <InnerOverlay right={smallerThan1440px ? '-100px' : '-150px'}>
-            <StyledIdeaShowPageTopBar
-              ideaId={selectedIdeaId ?? undefined}
-              deselectIdeaOnMap={deselectIdeaOnMap}
-              projectId={projectId}
-            />
-            {selectedIdeaId && (
-              <StyledIdeasShow
-                ideaId={selectedIdeaId}
+    if (project) {
+      return (
+        <Container className={className || ''}>
+          <StyledIdeasList projectId={projectId} phaseId={phaseId} />
+          <CSSTransition
+            classNames="animation"
+            in={!!selectedIdeaId}
+            timeout={timeout}
+            mounOnEnter={true}
+            unmountOnExit={true}
+            enter={true}
+            exit={true}
+          >
+            <InnerOverlay right={smallerThan1440px ? '-100px' : '-150px'}>
+              <StyledIdeaShowPageTopBar
+                ideaId={selectedIdeaId ?? undefined}
+                deselectIdeaOnMap={deselectIdeaMarker}
                 projectId={projectId}
-                insideModal={false}
-                compact={true}
-                setRef={handleIdeasShowSetRef}
               />
-            )}
-          </InnerOverlay>
-        </CSSTransition>
-      </Container>
-    );
-  }
+              {selectedIdeaId && (
+                <StyledIdeasShow
+                  ideaId={selectedIdeaId}
+                  projectId={projectId}
+                  insideModal={false}
+                  compact={true}
+                  setRef={handleIdeasShowSetRef}
+                />
+              )}
+            </InnerOverlay>
+          </CSSTransition>
+        </Container>
+      );
+    }
 
-  return null;
-});
+    return null;
+  }
+);
 
 export default IdeaMapOverlay;

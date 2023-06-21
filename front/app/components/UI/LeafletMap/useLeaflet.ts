@@ -1,11 +1,5 @@
-import { useEffect, useState } from 'react';
-import {
-  distinctUntilChanged,
-  debounceTime,
-  startWith,
-  pairwise,
-  tap,
-} from 'rxjs/operators';
+import { useEffect, useState, useRef } from 'react';
+import { distinctUntilChanged, debounceTime } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
 import { isEqual } from 'lodash-es';
 import {
@@ -71,6 +65,15 @@ export interface ILeafletMapConfig {
   onInit?: (map: L.Map) => void;
 }
 
+// Marker icons
+const markerIcon = service.getMarkerIcon({ url: DEFAULT_MARKER_ICON });
+const markerHoverIcon = service.getMarkerIcon({
+  url: DEFAULT_MARKER_HOVER_ICON,
+});
+const markerActiveIcon = service.getMarkerIcon({
+  url: DEFAULT_MARKER_ACTIVE_ICON,
+});
+
 export default function useLeaflet(
   mapId: string,
   {
@@ -102,73 +105,63 @@ export default function useLeaflet(
     null
   );
 
-  // Marker icons
-  const markerIcon = service.getMarkerIcon({ url: DEFAULT_MARKER_ICON });
-  const markerHoverIcon = service.getMarkerIcon({
-    url: DEFAULT_MARKER_HOVER_ICON,
-  });
-  const markerActiveIcon = service.getMarkerIcon({
-    url: DEFAULT_MARKER_ACTIVE_ICON,
-  });
+  // Ref
+  const selectedMarkerRef = useRef<string | null>(null);
 
   // Subscriptions
-  const markerEvents = () => {
-    const subscriptions = [
-      combineLatest([
-        leafletMapHoveredMarker$.pipe(startWith(null, null), pairwise()),
-        leafletMapSelectedMarker$.pipe(
-          tap((selectedMarkerId) => {
-            const selectedMarker = markers?.find(
-              (marker) => marker.options['id'] === selectedMarkerId
-            );
+  useEffect(() => {
+    const selectSubscription = leafletMapSelectedMarker$.subscribe(
+      (selectedMarkerId) => {
+        selectedMarkerRef.current = selectedMarkerId;
 
-            if (selectedMarker) {
-              const isMarkerHiddenBehindCluster =
-                !map?.hasLayer(selectedMarker);
+        const selectedMarker = markers?.find(
+          (marker) => marker.options['id'] === selectedMarkerId
+        );
 
-              if (isMarkerHiddenBehindCluster) {
-                markerClusterGroup?.zoomToShowLayer(selectedMarker);
-              } else {
-                const { lat, lng } = selectedMarker.getLatLng();
-                setLeafletMapCenter([lat, lng]);
-              }
-            }
-          }),
-          startWith(null, null),
-          pairwise()
-        ),
-      ]).subscribe(
-        ([
-          [prevHoveredMarkerId, hoveredMarkerId],
-          [prevSelectedMarkerId, selectedMarkerId],
-        ]) => {
-          markers?.forEach((marker) => {
-            const markerId = marker.options['id'] as string;
+        if (selectedMarker) {
+          const isMarkerHiddenBehindCluster = !map?.hasLayer(selectedMarker);
 
-            if (markerId === selectedMarkerId) {
+          if (isMarkerHiddenBehindCluster) {
+            markerClusterGroup?.zoomToShowLayer(selectedMarker);
+          } else {
+            const { lat, lng } = selectedMarker.getLatLng();
+            setLeafletMapCenter([lat, lng]);
+          }
+        }
+
+        markers?.forEach((marker) => {
+          const markerId = marker.options['id'] as string;
+
+          if (markerId === selectedMarkerId) {
+            marker.setIcon(markerHoverIcon)?.setZIndexOffset(999);
+          } else {
+            marker.setIcon(markerIcon)?.setZIndexOffset(0);
+          }
+        });
+      }
+    );
+
+    const hoverSubscription = leafletMapHoveredMarker$.subscribe(
+      (hoveredMarkerId) => {
+        markers?.forEach((marker) => {
+          const markerId = marker.options['id'] as string;
+
+          if (markerId !== selectedMarkerRef.current) {
+            if (markerId === hoveredMarkerId) {
               marker.setIcon(markerActiveIcon)?.setZIndexOffset(999);
-            } else if (
-              markerId === hoveredMarkerId &&
-              hoveredMarkerId !== selectedMarkerId
-            ) {
-              marker.setIcon(markerHoverIcon)?.setZIndexOffset(999);
-            } else if (
-              markerId === prevHoveredMarkerId ||
-              markerId === prevSelectedMarkerId
-            ) {
+            } else {
               marker.setIcon(markerIcon)?.setZIndexOffset(0);
             }
-          });
-        }
-      ),
-    ];
+          }
+        });
+      }
+    );
 
     return () => {
-      subscriptions.forEach((subscription) => subscription.unsubscribe());
+      selectSubscription.unsubscribe();
+      hoverSubscription.unsubscribe();
     };
-  };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(markerEvents, [markers, map, markerClusterGroup]);
+  }, [map, markers, markerClusterGroup]);
 
   const mapEvents = () => {
     const subscriptions = [
