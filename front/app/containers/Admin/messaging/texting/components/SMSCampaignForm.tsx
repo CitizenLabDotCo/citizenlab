@@ -14,8 +14,8 @@ import clHistory from 'utils/cl-router/history';
 import {
   updateTextingCampaign,
   addTextingCampaign,
-  ITextingCampaignData,
 } from 'services/textingCampaigns';
+import { ITextingCampaignData } from 'api/texting_campaigns/types';
 
 interface Props {
   className?: string;

@@ -7,6 +7,7 @@ export type TTextingCampaignStatus = 'draft' | 'sending' | 'sent' | 'failed';
 
 export interface ITextingCampaignData {
   id: string;
+  type: 'campaign';
   attributes: {
     message: string;
     status: TTextingCampaignStatus;

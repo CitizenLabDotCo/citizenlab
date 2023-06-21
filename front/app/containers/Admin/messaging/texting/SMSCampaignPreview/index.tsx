@@ -12,7 +12,7 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
 
 // hooks
-import useTextingCampaign from 'hooks/useTextingCampaign';
+import useTextingCampaign from 'api/texting_campaigns/useTextingCampaign';
 
 // services
 import {
@@ -127,7 +127,7 @@ const SMSCampaignPreview = (props: WithRouterProps) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const { campaignId } = props.params;
-  const campaign = useTextingCampaign(campaignId);
+  const { data: campaign } = useTextingCampaign(campaignId);
 
   const confirmSendTextingCampaign = async () => {
     try {
@@ -191,7 +191,7 @@ const SMSCampaignPreview = (props: WithRouterProps) => {
   // actual error state when campaign not found
   if (isNilOrError(campaign)) return null;
 
-  const { message, phone_numbers } = campaign.attributes;
+  const { message, phone_numbers } = campaign.data.attributes;
   const segmentCount = Math.ceil(message.length / 160);
   const segmentPlural = segmentCount === 1 ? 'segment' : 'segments';
   const phoneNumberPlural =
