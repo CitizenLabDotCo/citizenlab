@@ -63,7 +63,7 @@ const Left = styled.div`
 const Right = styled.div``;
 
 interface Props {
-  ideaId: string;
+  ideaId?: string;
   projectId: string;
   deselectIdeaOnMap?: () => void;
   className?: string;

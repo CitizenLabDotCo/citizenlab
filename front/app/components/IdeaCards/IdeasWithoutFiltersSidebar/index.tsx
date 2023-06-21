@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
@@ -153,7 +153,7 @@ export interface Props {
   phaseId?: string;
   showViewToggle?: boolean | undefined;
   defaultSortingMethod?: IdeaDefaultSortMethod;
-  defaultView?: 'card' | 'map' | null | undefined;
+  defaultView?: 'card' | 'map';
   participationMethod?: ParticipationMethod | null;
   participationContextId?: string | null;
   participationContextType?: IParticipationContextType | null;
@@ -178,25 +178,23 @@ const IdeasWithoutFiltersSidebar = ({
   const locale = useLocale();
   const { windowWidth } = useWindowSize();
   const [searchParams] = useSearchParams();
+  const selectedIdeaMarkerId = searchParams.get('idea_map_id');
 
   const { data: project } = useProjectById(projectId);
 
-  const [selectedView, setSelectedView] = useState<'card' | 'map'>('card');
+  const [selectedView, setSelectedView] = useState<'card' | 'map'>(
+    selectedIdeaMarkerId ? 'map' : defaultView ?? 'card'
+  );
+
   const { data: ideaCustomFieldsSchemas } = useIdeaCustomFieldsSchema({
     phaseId: ideaQueryParameters.phase,
     projectId,
   });
 
-  const selectedIdeaMarkerId = searchParams.get('idea_map_id');
-
   const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } =
     useInfiniteIdeas(ideaQueryParameters);
   const list = data?.pages.map((page) => page.data).flat();
   const { data: phase } = usePhase(phaseId);
-
-  useEffect(() => {
-    setSelectedView(defaultView || 'card');
-  }, [defaultView]);
 
   const handleSearchOnChange = useCallback(
     (search: string) => {
@@ -248,12 +246,6 @@ const IdeasWithoutFiltersSidebar = ({
     : false;
   const showViewButtons = !!(locationEnabled && showViewToggle);
 
-  const view = !locationEnabled
-    ? 'card'
-    : selectedIdeaMarkerId
-    ? 'map'
-    : selectedView;
-
   const smallerThanBigTablet = !!(
     windowWidth && windowWidth <= viewportWidths.tablet
   );
@@ -276,13 +268,13 @@ const IdeasWithoutFiltersSidebar = ({
       <Container
         id="e2e-ideas-container"
         className={`${className || ''} ${
-          view === 'map' ? 'mapView' : 'listView'
+          selectedView === 'map' ? 'mapView' : 'listView'
         }`}
       >
         <FiltersArea
           id="e2e-ideas-filters"
           className={`ideasContainer ${
-            view === 'map' ? 'mapView' : 'listView'
+            selectedView === 'map' ? 'mapView' : 'listView'
           }`}
         >
           <LeftFilterArea>
@@ -292,7 +284,7 @@ const IdeasWithoutFiltersSidebar = ({
                 onClick={selectView}
               />
             )}
-            {!(view === 'map') && (
+            {!(selectedView === 'map') && (
               <StyledSearchInput
                 defaultValue={ideaQueryParameters.search}
                 className="e2e-search-ideas-input"
@@ -304,7 +296,7 @@ const IdeasWithoutFiltersSidebar = ({
 
           <RightFilterArea>
             <DropdownFilters
-              className={`${view === 'map' ? 'hidden' : 'visible'} ${
+              className={`${selectedView === 'map' ? 'hidden' : 'visible'} ${
                 showViewButtons ? 'hasViewButtons' : ''
               }`}
             >
@@ -350,7 +342,7 @@ const IdeasWithoutFiltersSidebar = ({
           hideIdeaStatus={
             (biggerThanLargeTablet && smallerThan1100px) || smallerThanPhone
           }
-          view={view}
+          view={selectedView}
           projectId={projectId}
           phaseId={phaseId || undefined}
           participationMethod={participationMethod}

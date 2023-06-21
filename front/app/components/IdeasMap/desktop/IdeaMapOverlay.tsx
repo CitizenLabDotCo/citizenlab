@@ -141,17 +141,19 @@ const IdeaMapOverlay = memo<Props>(({ projectId, phaseId, className }) => {
         >
           <InnerOverlay right={smallerThan1440px ? '-100px' : '-150px'}>
             <StyledIdeaShowPageTopBar
-              ideaId={selectedIdeaId as string}
+              ideaId={selectedIdeaId ?? undefined}
               deselectIdeaOnMap={deselectIdeaOnMap}
               projectId={projectId}
             />
-            <StyledIdeasShow
-              ideaId={selectedIdeaId as string}
-              projectId={projectId}
-              insideModal={false}
-              compact={true}
-              setRef={handleIdeasShowSetRef}
-            />
+            {selectedIdeaId && (
+              <StyledIdeasShow
+                ideaId={selectedIdeaId}
+                projectId={projectId}
+                insideModal={false}
+                compact={true}
+                setRef={handleIdeasShowSetRef}
+              />
+            )}
           </InnerOverlay>
         </CSSTransition>
       </Container>

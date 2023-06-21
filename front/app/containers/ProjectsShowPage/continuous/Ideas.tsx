@@ -140,7 +140,7 @@ const IdeasContainer = memo<InnerProps>(({ project, className }) => {
               participationContextId={project.id}
               participationContextType="project"
               showViewToggle={true}
-              defaultView={project.attributes.presentation_mode || null}
+              defaultView={project.attributes.presentation_mode}
               invisibleTitleMessage={messages.a11y_titleInputs}
             />
           </SectionContainer>
