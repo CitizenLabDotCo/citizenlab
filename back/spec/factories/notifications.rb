@@ -68,7 +68,7 @@ FactoryBot.define do
     class: 'Notifications::InternalCommentOnInitiativeYouCommentedInternallyOn' do
     initiating_user
     internal_comment
-    association :post, factory: :idea
+    association :post, factory: :initiative
   end
 
   factory :internal_comment_on_unassigned_initiative,
@@ -76,7 +76,7 @@ FactoryBot.define do
     class: 'Notifications::InternalCommentOnUnassignedInitiative' do
     initiating_user
     internal_comment
-    association :post, factory: :idea
+    association :post, factory: :initiative
   end
 
   factory :internal_comment_on_unassigned_unmoderated_idea,
