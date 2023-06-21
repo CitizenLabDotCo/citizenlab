@@ -10,12 +10,9 @@ import RemainingCharacters from '../components/RemainingCharacters';
 import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 
-// services
-import {
-  updateTextingCampaign,
-  addTextingCampaign,
-} from 'services/textingCampaigns';
 import { ITextingCampaignData } from 'api/texting_campaigns/types';
+import useAddTextingCampaign from 'api/texting_campaigns/useAddTextingCampaign';
+import useUpdateTextingCampaign from 'api/texting_campaigns/useUpdateTextingCampaign';
 
 interface Props {
   className?: string;
@@ -51,6 +48,8 @@ const SMSCampaignForm = ({
   campaign,
 }: Props) => {
   const campaignId = !isNilOrError(campaign) ? campaign.id : null;
+  const { mutateAsync: addTextingCampaign } = useAddTextingCampaign();
+  const { mutateAsync: updateTextingCampaign } = useUpdateTextingCampaign();
   const [inputPhoneNumbers, setInputPhoneNumbers] = useState<string | null>(
     null
   );
@@ -94,16 +93,21 @@ const SMSCampaignForm = ({
     if (isNilOrError(inputMessage) || isNilOrError(inputPhoneNumbers)) return;
 
     const splitNumbers = inputPhoneNumbers.split(',');
+
     try {
       setIsLoading(true);
       // if there's a campaignId and in this function,
       // we're in a draft campaign. Otherwise it's a new campaign.
       const result = campaignId
-        ? await updateTextingCampaign(campaignId, {
+        ? await updateTextingCampaign({
+            id: campaignId,
             message: inputMessage,
             phone_numbers: splitNumbers,
           })
-        : await addTextingCampaign(inputMessage, splitNumbers);
+        : await addTextingCampaign({
+            message: inputMessage,
+            phone_numbers: splitNumbers,
+          });
       const { id } = result.data;
       const url = `/admin/messaging/texting/${id}/preview`;
       clHistory.replace(url);
@@ -112,11 +116,11 @@ const SMSCampaignForm = ({
       // This error is added to the response in back/engines/commercial/texting/app/models/texting/campaign.rb
       // Conditions are in back/engines/commercial/texting/app/services/texting/phone_number.rb
       const invalidPhoneNumberError: InvalidPhoneNumberError | undefined =
-        e.json.errors.phone_numbers?.find(
+        e.errors.phone_numbers?.find(
           // at this stage there's only 1 possible phone number error (invalid)
-          // so if the phone_numbers key is on e.json.errors, this line should
+          // so if the phone_numbers key is on e.errors, this line should
           // always find an InvalidPhoneNumberError. The undefined lies in not
-          // finding the phone_numbers key on the e.json.errors object.
+          // finding the phone_numbers key on the e.errors object.
           (phoneNumberError: PhoneNumberError) =>
             phoneNumberError.error === 'invalid'
         );
