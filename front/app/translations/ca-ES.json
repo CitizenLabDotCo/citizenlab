@@ -1702,7 +1702,7 @@
   "app.utils.votingMethodUtils.budgetParticipationEnded": "<b>Presentació de pressupostos tancats el {endDate}.</b> participants tenien un total de <b>{maxBudget} {currency} cadascun per repartir entre {optionCount} opcions.</b>",
   "app.utils.votingMethodUtils.budgetSubmitted": "Pressupost presentat",
   "app.utils.votingMethodUtils.budgetSubmittedWithIcon": "Pressupost presentat 🎉",
-  "app.utils.votingMethodUtils.budgetingSubmissionInstructions": "Teniu un total de <b>{maxBudget} USD per distribuir entre {optionCount} opcions</b>. Seleccioneu les vostres opcions preferides tocant \"Afegeix\". Un cop hàgiu acabat, feu clic a \"Envia\" per enviar el vostre pressupost.",
+  "app.utils.votingMethodUtils.budgetingSubmissionInstructions2": "Tens un total de <b>{maxBudget} {currency} per distribuir entre {optionCount} opcions</b>. Seleccioneu les vostres opcions preferides tocant \"Afegeix\". Un cop hàgiu acabat, feu clic a \"Envia\" per enviar el vostre pressupost.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>Enhorabona, s'ha enviat el vostre pressupost!</b> Podeu comprovar les vostres opcions a continuació en qualsevol moment o modificar-les abans <b>{endDate}</b>.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous": "<b>Enhorabona, s'ha enviat el vostre pressupost!</b> Podeu comprovar les vostres opcions a continuació en qualsevol moment o modificar-les.",
   "app.utils.votingMethodUtils.budgets": "Pressupostos",
