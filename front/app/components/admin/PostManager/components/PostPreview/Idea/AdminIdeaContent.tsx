@@ -204,12 +204,17 @@ const AdminIdeaContent = ({ handleClickEdit, closePreview, ideaId }: Props) => {
   return (
     <Container>
       <Top>
-        <Button icon="edit" buttonStyle="text" onClick={handleClickEdit}>
+        <Button
+          mr="8px"
+          buttonStyle="secondary"
+          icon="edit"
+          onClick={handleClickEdit}
+        >
           <FormattedMessage {...messages.edit} />
         </Button>
         <Button
           icon="delete"
-          buttonStyle="text"
+          buttonStyle="delete"
           onClick={handleClickDelete(processType)}
         >
           <FormattedMessage {...messages.delete} />

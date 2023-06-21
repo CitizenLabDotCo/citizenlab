@@ -5,12 +5,7 @@ import {
   Content,
   Top,
 } from 'components/admin/PostManager/components/PostPreview';
-import {
-  Box,
-  Button,
-  colors,
-  Spinner,
-} from '@citizenlab/cl2-component-library';
+import { Box, Button, Spinner } from '@citizenlab/cl2-component-library';
 import ideaFormMessages from 'containers/IdeasNewPage/messages';
 import Form, { AjvErrorGetter, ApiErrorGetter } from 'components/Form';
 
@@ -167,12 +162,7 @@ const AdminIdeaEdit = ({
   return (
     <Box>
       <Top>
-        <Button
-          icon="arrow-left"
-          buttonStyle="text"
-          textColor={colors.primary}
-          onClick={goBack}
-        >
+        <Button onClick={goBack}>
           <FormattedMessage {...messages.cancelEdit} />
         </Button>
       </Top>
