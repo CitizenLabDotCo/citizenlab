@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 
 // components
 import {
@@ -74,45 +74,41 @@ const AdminIdeaEdit = ({
     }
   }, [idea, granted, previousPathName, authUser]);
 
-  const initialFormData =
-    isNilOrError(idea) || !schema
-      ? null
-      : Object.fromEntries(
-          Object.keys(schema.properties).map((prop) => {
-            if (prop === 'author_id') {
-              return [prop, idea.data.relationships?.author?.data?.id];
-            } else if (idea.data.attributes?.[prop]) {
-              return [prop, idea.data.attributes?.[prop]];
-            } else if (
-              prop === 'topic_ids' &&
-              Array.isArray(idea.data.relationships?.topics?.data)
-            ) {
-              return [
-                prop,
-                idea.data.relationships?.topics?.data.map((rel) => rel.id),
-              ];
-            } else if (
-              prop === 'idea_images_attributes' &&
-              Array.isArray(idea.data.relationships?.idea_images?.data)
-            ) {
-              return [prop, remoteImages?.data];
-            } else if (prop === 'idea_files_attributes') {
-              const attachmentsValue =
-                !isNilOrError(remoteFiles) && remoteFiles.data.length > 0
-                  ? remoteFiles.data
-                  : undefined;
-              return [prop, attachmentsValue];
-            } else return [prop, undefined];
-          })
-        );
+  if (!idea || !project) return null;
+
+  const initialFormData = !schema
+    ? null
+    : Object.fromEntries(
+        Object.keys(schema.properties).map((prop) => {
+          if (prop === 'author_id') {
+            return [prop, idea.data.relationships?.author?.data?.id];
+          } else if (idea.data.attributes?.[prop]) {
+            return [prop, idea.data.attributes?.[prop]];
+          } else if (
+            prop === 'topic_ids' &&
+            Array.isArray(idea.data.relationships?.topics?.data)
+          ) {
+            return [
+              prop,
+              idea.data.relationships?.topics?.data.map((rel) => rel.id),
+            ];
+          } else if (
+            prop === 'idea_images_attributes' &&
+            Array.isArray(idea.data.relationships?.idea_images?.data)
+          ) {
+            return [prop, remoteImages?.data];
+          } else if (prop === 'idea_files_attributes') {
+            const attachmentsValue =
+              !isNilOrError(remoteFiles) && remoteFiles.data.length > 0
+                ? remoteFiles.data
+                : undefined;
+            return [prop, attachmentsValue];
+          } else return [prop, undefined];
+        })
+      );
 
   // Set initial location point if exists
-  if (
-    initialFormData &&
-    !isNilOrError(idea) &&
-    idea.data.attributes &&
-    idea.data.attributes.location_point_geojson
-  ) {
+  if (initialFormData && idea.data.attributes.location_point_geojson) {
     initialFormData['location_point_geojson'] =
       idea.data.attributes.location_point_geojson;
   }
@@ -159,43 +155,31 @@ const AdminIdeaEdit = ({
     );
   };
 
-  const getApiErrorMessage: ApiErrorGetter = useCallback(
-    (error) => {
-      return (
-        ideaFormMessages[
-          `api_error_${uiSchema?.options?.inputTerm}_${error}`
-        ] ||
-        ideaFormMessages[`api_error_${error}`] ||
-        ideaFormMessages[`api_error_invalid`]
-      );
-    },
-    [uiSchema]
-  );
+  const getApiErrorMessage: ApiErrorGetter = (error) => {
+    return (
+      ideaFormMessages[`api_error_${uiSchema?.options?.inputTerm}_${error}`] ||
+      ideaFormMessages[`api_error_${error}`] ||
+      ideaFormMessages[`api_error_invalid`]
+    );
+  };
 
-  const getAjvErrorMessage: AjvErrorGetter = useCallback(
-    (error) => {
-      return (
-        messages[
-          `ajv_error_${uiSchema?.options?.inputTerm}_${
-            getFieldNameFromPath(error.instancePath) ||
-            error?.params?.missingProperty
-          }_${error.keyword}`
-        ] ||
-        messages[
-          `ajv_error_${
-            getFieldNameFromPath(error.instancePath) ||
-            error?.params?.missingProperty
-          }_${error.keyword}`
-        ] ||
-        undefined
-      );
-    },
-    [uiSchema]
-  );
-
-  if (isNilOrError(project)) {
-    return null;
-  }
+  const getAjvErrorMessage: AjvErrorGetter = (error) => {
+    return (
+      messages[
+        `ajv_error_${uiSchema?.options?.inputTerm}_${
+          getFieldNameFromPath(error.instancePath) ||
+          error?.params?.missingProperty
+        }_${error.keyword}`
+      ] ||
+      messages[
+        `ajv_error_${
+          getFieldNameFromPath(error.instancePath) ||
+          error?.params?.missingProperty
+        }_${error.keyword}`
+      ] ||
+      undefined
+    );
+  };
 
   return (
     <Box>
@@ -211,7 +195,7 @@ const AdminIdeaEdit = ({
       </Top>
 
       <Content className="idea-form">
-        {project && idea && schema && uiSchema ? (
+        {schema && uiSchema ? (
           <Form
             schema={schema}
             uiSchema={uiSchema}
