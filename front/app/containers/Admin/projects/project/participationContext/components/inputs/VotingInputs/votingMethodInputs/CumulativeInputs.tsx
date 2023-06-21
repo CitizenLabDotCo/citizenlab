@@ -2,7 +2,7 @@ import React from 'react';
 
 // intl
 import messages from '../messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 // components
 import { Input, Box, Text } from '@citizenlab/cl2-component-library';
@@ -31,6 +31,8 @@ const CumulativeInputs = ({
   maxTotalVotesError,
   maxVotesPerOptionError,
 }: Props) => {
+  const { formatMessage } = useIntl();
+
   return (
     <>
       <SectionField>
@@ -43,7 +45,9 @@ const CumulativeInputs = ({
               label={'Singular'}
               type={'text'}
               valueMultiloc={undefined}
-              placeholder={'E.g. Token'}
+              placeholder={formatMessage(
+                messages.voteCalledPlaceholderSingular
+              )}
             />
           </Box>
 
@@ -51,7 +55,7 @@ const CumulativeInputs = ({
             label={'Plural'}
             type={'text'}
             valueMultiloc={undefined}
-            placeholder={'E.g. Tokens'}
+            placeholder={formatMessage(messages.voteCalledPlaceholderPlural)}
           />
         </Box>
       </SectionField>
