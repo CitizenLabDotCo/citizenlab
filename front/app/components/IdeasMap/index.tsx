@@ -24,19 +24,13 @@ import usePhase from 'api/phases/usePhase';
 import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
 
 // services
-import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
 import { getIdeaPostingRules } from 'services/actionTakingRules';
 
+// router
+import { useSearchParams } from 'react-router-dom';
+
 // events
-import {
-  setIdeaMapCardSelected,
-  setIdeasSearch,
-  setIdeasSort,
-  setIdeasTopics,
-  ideaMapCardSelected$,
-  ideasSearch$,
-  ideasTopics$,
-} from './events';
+import { setIdeaMapCardSelected, ideaMapCardSelected$ } from './events';
 import {
   setLeafletMapSelectedMarker,
   setLeafletMapHoveredMarker,
@@ -55,7 +49,6 @@ import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 import { media, viewportWidths, colors, fontSizes } from 'utils/styleUtils';
 
 // typings
-import { Sort } from 'api/ideas/types';
 import { IIdeaMarkerData } from 'api/idea_markers/types';
 
 const mapMarginDesktop = 70;
@@ -221,6 +214,7 @@ const initialInnerContainerLeftMargin = getInnerContainerLeftMargin(
 
 const IdeasMap = memo<Props>((props) => {
   const { projectId, phaseId, className, id, ariaLabelledBy, tabIndex } = props;
+  const [searchParams] = useSearchParams();
   const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
@@ -245,12 +239,10 @@ const IdeasMap = memo<Props>((props) => {
   const [isCardClickable, setIsCardClickable] = useState(false);
 
   // ideaMarkers
-  const defaultIdeasSearch: string | null = null;
-  const defaultIdeasSort: Sort =
-    project?.data.attributes.ideas_order || ideaDefaultSortMethodFallback;
-  const defaultIdeasTopics: string[] = [];
-  const [search, setSearch] = useState<string | null>(defaultIdeasSearch);
-  const [topics, setTopics] = useState<string[]>(defaultIdeasTopics);
+  const search = searchParams.get('search');
+  const topicsParam = searchParams.get('topics');
+  const topics: string[] = topicsParam ? JSON.parse(topicsParam) : [];
+
   const { data: ideaMarkers } = useIdeaMarkers({
     projectIds: [projectId],
     phaseId,
@@ -299,18 +291,7 @@ const IdeasMap = memo<Props>((props) => {
       leafletMapClicked$.subscribe((latLng) => {
         setSelectedLatLng(latLng);
       }),
-      ideasSearch$.subscribe((search) => {
-        setSearch(search);
-      }),
-      ideasTopics$.subscribe((topics) => {
-        setTopics(topics);
-      }),
     ];
-
-    // defaults
-    setIdeasSearch(defaultIdeasSearch);
-    setIdeasSort(defaultIdeasSort);
-    setIdeasTopics(defaultIdeasTopics);
 
     return () => {
       subscriptions.forEach((subscription) => subscription.unsubscribe());

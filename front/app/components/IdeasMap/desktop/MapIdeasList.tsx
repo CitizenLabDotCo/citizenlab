@@ -1,9 +1,11 @@
-import React, { memo, useState, useEffect } from 'react';
+import React, { memo } from 'react';
 
 // components
 import { Icon, Spinner } from '@citizenlab/cl2-component-library';
 import TopicFilterDropdown from 'components/IdeaCards/shared/Filters/TopicFilterDropdown';
-import SelectSort from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
+import SelectSort, {
+  Sort,
+} from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
 import SearchInput from 'components/UI/SearchInput';
 import IdeaMapCard from '../IdeaMapCard';
 import Centerer from 'components/UI/Centerer';
@@ -14,15 +16,9 @@ import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
 import useProjectById from 'api/projects/useProjectById';
 import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
 
-// events
-import {
-  setIdeasSearch,
-  setIdeasSort,
-  setIdeasTopics,
-  ideasSort$,
-  ideasSearch$,
-  ideasTopics$,
-} from '../events';
+// router
+import { useSearchParams } from 'react-router-dom';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 // services
 import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
@@ -38,9 +34,6 @@ import { colors, fontSizes } from 'utils/styleUtils';
 // utils
 import { isFieldEnabled } from 'utils/projectUtils';
 import { isNilOrError } from 'utils/helperUtils';
-
-// typings
-import { Sort } from 'api/ideas/types';
 
 const Container = styled.div`
   width: 100%;
@@ -123,18 +116,22 @@ interface Props {
 
 const MapIdeasList = memo<Props>(({ projectId, phaseId, className }) => {
   const locale = useLocale();
+  const [searchParams] = useSearchParams();
+
   const { data: ideaCustomFieldsSchema } = useIdeaJsonFormSchema({
     projectId,
     phaseId,
   });
   const { data: project } = useProjectById(projectId);
 
-  // ideaMarkers
-  const [search, setSearch] = useState<string | null>(null);
-  const [topics, setTopics] = useState<string[]>([]);
-  const [sort, setSort] = useState<Sort>(
-    project?.data.attributes.ideas_order || ideaDefaultSortMethodFallback
-  );
+  const sort =
+    (searchParams.get('sort') as Sort | null) ??
+    project?.data.attributes.ideas_order ??
+    ideaDefaultSortMethodFallback;
+  const search = searchParams.get('search');
+  const topicsParam = searchParams.get('topics');
+  const topics: string[] = topicsParam ? JSON.parse(topicsParam) : [];
+
   const { data: ideaMarkers } = useIdeaMarkers({
     projectIds: [projectId],
     phaseId,
@@ -145,24 +142,6 @@ const MapIdeasList = memo<Props>(({ projectId, phaseId, className }) => {
 
   const isFiltered = (search && search.length > 0) || topics.length > 0;
 
-  useEffect(() => {
-    const subscriptions = [
-      ideasSearch$.subscribe((search) => {
-        setSearch(search);
-      }),
-      ideasSort$.subscribe((sort) => {
-        setSort(sort);
-      }),
-      ideasTopics$.subscribe((topics) => {
-        setTopics(topics);
-      }),
-    ];
-
-    return () => {
-      subscriptions.forEach((subscription) => subscription.unsubscribe());
-    };
-  }, []);
-
   if (isNilOrError(ideaCustomFieldsSchema)) return null;
 
   const topicsEnabled = isFieldEnabled(
@@ -171,16 +150,18 @@ const MapIdeasList = memo<Props>(({ projectId, phaseId, className }) => {
     locale
   );
 
-  const handleSearchOnChange = (newSearchValue: string) => {
-    setIdeasSearch(newSearchValue || null);
+  const handleSearchOnChange = (search: string | null) => {
+    updateSearchParams({ search });
   };
 
-  const handleSortOnChange = (newSort: Sort) => {
-    setIdeasSort(newSort);
+  const handleSortOnChange = (sort: Sort) => {
+    updateSearchParams({ sort });
   };
 
-  const handleTopicsOnChange = (newTopics: string[]) => {
-    setIdeasTopics(newTopics);
+  const handleTopicsOnChange = (topics: string[]) => {
+    topics.length === 0
+      ? updateSearchParams({ topics: undefined })
+      : updateSearchParams({ topics });
   };
 
   return (
@@ -190,10 +171,7 @@ const MapIdeasList = memo<Props>(({ projectId, phaseId, className }) => {
           <SelectSort
             onChange={handleSortOnChange}
             alignment="left"
-            defaultSortingMethod={
-              project?.data.attributes.ideas_order ||
-              ideaDefaultSortMethodFallback
-            }
+            defaultSortingMethod={sort}
           />
           {topicsEnabled && (
             <TopicFilterDropdown
@@ -205,6 +183,7 @@ const MapIdeasList = memo<Props>(({ projectId, phaseId, className }) => {
         </DropdownFilters>
 
         <StyledSearchInput
+          defaultValue={search ?? undefined}
           onChange={handleSearchOnChange}
           a11y_numberOfSearchResults={
             ideaMarkers && ideaMarkers.data.length > 0
