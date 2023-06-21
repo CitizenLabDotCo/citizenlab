@@ -179,7 +179,7 @@ const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
                   <StatusModule
                     phase={selectedPhase}
                     project={project.data}
-                    votingMethod={selectedPhase?.attributes.voting_method}
+                    votingMethod={'cumulative'} // TODO: Remove hardcoded value once BE implemented
                   />
                 </>
               )}

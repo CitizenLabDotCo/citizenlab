@@ -17,6 +17,10 @@ export default defineMessages({
     id: 'app.utils.votingMethodUtils.submittedBudgetsCountText',
     defaultMessage: 'people submitted their budgets',
   },
+  submittedVotesCountText: {
+    id: 'app.utils.votingMethodUtils.submittedVotesCountText',
+    defaultMessage: 'people submitted their votes',
+  },
   budgets: {
     id: 'app.utils.votingMethodUtils.budgets',
     defaultMessage: 'Budgets',
@@ -24,6 +28,10 @@ export default defineMessages({
   budget: {
     id: 'app.utils.votingMethodUtils.budget',
     defaultMessage: 'budget',
+  },
+  vote: {
+    id: 'app.utils.votingMethodUtils.vote',
+    defaultMessage: 'Vote',
   },
   votes: {
     id: 'app.utils.votingMethodUtils.votes',
@@ -53,12 +61,41 @@ export default defineMessages({
     id: 'app.utils.votingMethodUtils.submitYourBudget',
     defaultMessage: 'Submit your budget',
   },
+  castYourVote: {
+    id: 'app.utils.votingMethodUtils.castYourVote',
+    defaultMessage: 'Cast your vote',
+  },
+  votesCast: {
+    id: 'app.utils.votingMethodUtils.votesCast',
+    defaultMessage: 'Votes cast',
+  },
+  howToVote: {
+    id: 'app.utils.votingMethodUtils.howToVote',
+    defaultMessage: 'How to vote',
+  },
+  votingClosed: {
+    id: 'app.utils.votingMethodUtils.votingClosed',
+    defaultMessage: 'Voting closed',
+  },
   results: {
     id: 'app.utils.votingMethodUtils.results',
     defaultMessage: 'Results',
   },
+  finalTally: {
+    id: 'app.utils.votingMethodUtils.finalTally',
+    defaultMessage: 'Final tally',
+  },
+  cumulativeVotingInstructions: {
+    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructions',
+    defaultMessage:
+      'You have a total of <b>{totalVotes} votes to distribute between {optionCount} options</b>. Select your preferred options by tapping on “Vote”. Once you are done, click “Submit” to cast your vote.',
+  },
   budgetSubmittedWithIcon: {
     id: 'app.utils.votingMethodUtils.budgetSubmittedWithIcon',
     defaultMessage: 'Budget submitted 🎉',
+  },
+  voteSubmittedWithIcon: {
+    id: 'app.utils.votingMethodUtils.voteSubmittedWithIcon',
+    defaultMessage: 'Vote submitted 🎉',
   },
 });
