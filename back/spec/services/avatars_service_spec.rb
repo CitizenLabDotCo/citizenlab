@@ -36,7 +36,7 @@ describe AvatarsService do
   end
 
   describe 'avatars_for_folder' do
-    it 'returns stuff in a folder' do
+    it 'returns avatars for participants in a folder' do
       projects = create_list(:project, 2)
       folder = create(:project_folder, projects: projects)
       u1, u2, u3, u4, u5 = create_list(:user, 5)
