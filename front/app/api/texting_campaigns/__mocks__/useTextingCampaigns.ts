@@ -37,5 +37,5 @@ export const links = {
 };
 
 export default jest.fn(() => {
-  return { data: { data: notificationsData, links } };
+  return { data: { data: campaignsData, links } };
 });

@@ -1,5 +1,5 @@
 import { API_PATH } from 'containers/App/constants';
-import streams, { IStreamParams } from 'utils/streams';
+import streams from 'utils/streams';
 
 const apiEndpoint = `${API_PATH}/texting_campaigns`;
 
@@ -21,31 +21,6 @@ export interface ITextingCampaignData {
 export interface ITextingCampaign {
   data: ITextingCampaignData;
 }
-
-export interface ITextingCampaigns {
-  data: ITextingCampaignData[];
-}
-
-// multiple campaigns
-export const textingCampaignsStream = (
-  streamParams: IStreamParams | null = null
-) => {
-  return streams.get<ITextingCampaigns>({
-    apiEndpoint,
-    ...streamParams,
-  });
-};
-
-// one campaign by ID
-export const textingCampaignStream = (
-  campaignId: string,
-  streamParams: IStreamParams | null = null
-) => {
-  return streams.get<ITextingCampaign>({
-    apiEndpoint: `${apiEndpoint}/${campaignId}`,
-    ...streamParams,
-  });
-};
 
 export const addTextingCampaign = async (
   message: string,
