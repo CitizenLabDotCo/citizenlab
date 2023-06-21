@@ -21,7 +21,9 @@ const IdeaPreviewIndex = ({ goBackUrl }: Props) => {
   };
 
   const handleOnSwitchPreviewMode = () => {
-    setPreviewMode(previewMode === 'edit' ? 'view' : 'edit');
+    setPreviewMode((prevPreviewMode) =>
+      prevPreviewMode === 'edit' ? 'view' : 'edit'
+    );
   };
 
   return (
