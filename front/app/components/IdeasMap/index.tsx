@@ -243,6 +243,10 @@ const IdeasMap = memo<Props>((props) => {
   const topicsParam = searchParams.get('topics');
   const topics: string[] = topicsParam ? JSON.parse(topicsParam) : [];
 
+  const [initializedWithSelectedMarkerParam] = useState<boolean>(
+    !!selectedIdeaMarkerId
+  );
+
   const { data: ideaMarkers } = useIdeaMarkers({
     projectIds: [projectId],
     phaseId,
@@ -261,12 +265,12 @@ const IdeasMap = memo<Props>((props) => {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useLayoutEffect(() => {
-    const containerWidth = containerRef.current
+    const newContainerWidth = containerRef.current
       ?.getBoundingClientRect()
       .toJSON()?.width;
 
-    if (containerWidth) {
-      setContainerWidth(containerWidth);
+    if (newContainerWidth && newContainerWidth !== containerWidth) {
+      setContainerWidth(newContainerWidth);
     }
   });
 
@@ -351,12 +355,16 @@ const IdeasMap = memo<Props>((props) => {
   }, [ideaMarkers, selectedIdeaMarkerId]);
 
   useEffect(() => {
-    if (ideaMarkers === undefined) return;
     if (markerSelectionExecuted) return;
+    if (initializedWithSelectedMarkerParam === false) {
+      setMarkerSelectionExecuted(true);
+      return;
+    }
 
-    leafletMarkersLoaded$.subscribe(() => {
+    const subscription = leafletMarkersLoaded$.subscribe(() => {
       if (selectedIdeaMarker) {
         setLeafletMapSelectedMarker(selectedIdeaMarker.id);
+        setMarkerSelectionExecuted(true);
 
         const geojsonCoordinates =
           selectedIdeaMarker.attributes.location_point_geojson.coordinates;
@@ -364,12 +372,17 @@ const IdeasMap = memo<Props>((props) => {
           geojsonCoordinates[1],
           geojsonCoordinates[0],
         ];
+
         setLeafletMapCenter(coordinates);
       }
     });
 
-    setMarkerSelectionExecuted(true);
-  }, [ideaMarkers, markerSelectionExecuted, selectedIdeaMarker]);
+    return () => subscription.unsubscribe();
+  }, [
+    markerSelectionExecuted,
+    initializedWithSelectedMarkerParam,
+    selectedIdeaMarker,
+  ]);
 
   return (
     <Container

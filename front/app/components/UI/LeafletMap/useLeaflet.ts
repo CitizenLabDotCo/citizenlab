@@ -179,25 +179,11 @@ export default function useLeaflet(
       map.on('click', (event: L.LeafletMouseEvent) => {
         setLeafletMapClicked(event.latlng);
       });
-
-      map.on('moveend', (event: L.LeafletEvent) => {
-        const newCenter = event.target.getCenter() as L.LatLng;
-        const newCenterLat = newCenter.lat;
-        const newCenterLng = newCenter.lng;
-        setLeafletMapCenter([newCenterLat, newCenterLng]);
-      });
-
-      map.on('zoomend', (event: L.LeafletEvent) => {
-        const newZoom = event.target.getZoom() as number;
-        setLeafletMapZoom(newZoom);
-      });
     }
 
     return () => {
       subscriptions.forEach((subscription) => subscription.unsubscribe());
       map?.off('click');
-      map?.off('moveend');
-      map?.off('zoomend');
     };
   };
   useEffect(mapEvents, [map]);
@@ -231,12 +217,14 @@ export default function useLeaflet(
   };
   useEffect(refreshTile, [map, tileProvider, tileOptions]);
 
+  const centerStr = center ? JSON.stringify(center) : undefined;
+
   const refreshCenter = () => {
-    if (center !== undefined) {
-      setLeafletMapCenter(center);
-    }
+    if (!centerStr) return;
+    const center: L.LatLngTuple = JSON.parse(centerStr);
+    setLeafletMapCenter(center);
   };
-  useEffect(refreshCenter, [map, center]);
+  useEffect(refreshCenter, [map, centerStr]);
 
   const refreshZoom = () => {
     if (zoom !== undefined) {
