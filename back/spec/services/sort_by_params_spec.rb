@@ -334,4 +334,76 @@ describe SortByParams do
       end
     end
   end
+
+  describe 'sort_events' do
+    let(:events) do
+      [Time.zone.today, (Time.zone.today - 1.day), (Time.zone.today + 2.months)].map do |start_at|
+        create(:event, start_at: start_at, end_at: (Time.zone.today + 3.months))
+      end
+    end
+    let(:result_record_ids) { service.sort_events(Event.where(id: events.map(&:id)), params).pluck(:id) }
+
+    describe 'default behaviour' do
+      let(:sort) { nil }
+      let(:expected_record_ids) { [events[2].id, events[0].id, events[1].id] }
+
+      it 'returns the records sorted by start_at' do
+        expect(result_record_ids).to eq expected_record_ids
+      end
+    end
+
+    describe 'start_at' do
+      let(:sort) { 'start_at' }
+      let(:expected_record_ids) { [events[2].id, events[0].id, events[1].id] }
+
+      it 'returns the sorted records' do
+        expect(result_record_ids).to eq expected_record_ids
+      end
+    end
+
+    describe '-start_at' do
+      let(:sort) { '-start_at' }
+      let(:expected_record_ids) { [events[1].id, events[0].id, events[2].id] }
+
+      it 'returns the sorted records' do
+        expect(result_record_ids).to eq expected_record_ids
+      end
+    end
+  end
+
+  describe 'sort_activities' do
+    let(:activities) do
+      [Time.now, (Time.now - 2.minutes), (Time.now + 1.month)].map do |acted_at|
+        create(:activity, acted_at: acted_at)
+      end
+    end
+    let(:result_record_ids) { service.sort_activities(Activity.where(id: activities.map(&:id)), params).pluck(:id) }
+
+    describe 'default behaviour' do
+      let(:sort) { nil }
+      let(:expected_record_ids) { [activities[1].id, activities[0].id, activities[2].id] }
+
+      it 'returns the records sorted by -acted_at' do
+        expect(result_record_ids).to eq expected_record_ids
+      end
+    end
+
+    describe 'acted_at' do
+      let(:sort) { 'acted_at' }
+      let(:expected_record_ids) { [activities[2].id, activities[0].id, activities[1].id] }
+
+      it 'returns the sorted records' do
+        expect(result_record_ids).to eq expected_record_ids
+      end
+    end
+
+    describe '-acted_at' do
+      let(:sort) { '-acted_at' }
+      let(:expected_record_ids) { [activities[1].id, activities[0].id, activities[2].id] }
+
+      it 'returns the sorted records' do
+        expect(result_record_ids).to eq expected_record_ids
+      end
+    end
+  end
 end

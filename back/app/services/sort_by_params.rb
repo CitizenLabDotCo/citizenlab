@@ -59,7 +59,7 @@ class SortByParams
     end
   end
 
-  def sort_activies(scope, params)
+  def sort_activities(scope, params)
     case params[:sort] || DEFAULT_ACTIVITY_SORT
     when 'acted_at' then scope.order(acted_at: :desc)
     when '-acted_at' then scope.order(acted_at: :asc)
