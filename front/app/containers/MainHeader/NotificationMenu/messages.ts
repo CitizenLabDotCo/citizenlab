@@ -95,7 +95,7 @@ export default defineMessages({
       '{name} commented internally on an unassigned input in an unmanaged project',
   },
   internalCommentOnUnassignedInitiative: {
-    id: 'app.containers.NotificationMenu.internalCommentOnUnassignedUnmoderatedIdea',
+    id: 'app.containers.NotificationMenu.internalCommentOnUnassignedInitiative',
     defaultMessage: '{name} commented internally on an unassigned proposal',
   },
   userReportedCommentAsSpam: {
