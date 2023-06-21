@@ -207,8 +207,8 @@ RSpec/NamedSubject:
     - 'spec/models/idea_status_spec.rb'
     - 'spec/models/notifications/official_feedback_on_commented_idea_spec.rb'
     - 'spec/models/notifications/official_feedback_on_commented_initiative_spec.rb'
-    - 'spec/models/notifications/official_feedback_on_voted_idea_spec.rb'
-    - 'spec/models/notifications/official_feedback_on_voted_initiative_spec.rb'
+    - 'spec/models/notifications/official_feedback_on_reacted_idea_spec.rb'
+    - 'spec/models/notifications/official_feedback_on_reacted_initiative_spec.rb'
 
 # Offense count: 170
 # Configuration parameters: AllowedGroups.
@@ -440,7 +440,7 @@ Rails/UniqueValidationWithoutIndex:
     - 'app/models/invite.rb'
     - 'app/models/permission.rb'
     - 'app/models/project_folders/folder.rb'
-    - 'app/models/vote.rb'
+    - 'app/models/reaction.rb'
 
 # Offense count: 1
 # Configuration parameters: Severity, Environments.
@@ -480,7 +480,7 @@ Style/ClassVars:
     - 'app/controllers/web_api/v1/stats_controller.rb'
     - 'app/controllers/web_api/v1/stats_ideas_controller.rb'
     - 'app/controllers/web_api/v1/stats_users_controller.rb'
-    - 'app/controllers/web_api/v1/stats_votes_controller.rb'
+    - 'app/controllers/web_api/v1/stats_reactions_controller.rb'
     - 'app/models/email_snippet.rb'
     - 'app/services/side_fx_comment_service.rb'
     - 'app/services/side_fx_official_feedback_service.rb'

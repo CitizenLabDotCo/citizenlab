@@ -60,53 +60,53 @@ describe('Idea card component', () => {
     cy.get('#e2e-ideas-list');
   });
 
-  it('increments and decrements the vote count accordingly when the up and downvote buttons are clicked', () => {
+  it('increments and decrements the reaction count accordingly when the up and dislike buttons are clicked', () => {
     cy.get('#e2e-ideas-list')
       .find('.e2e-idea-card')
       .contains(ideaTitle)
       .closest('.e2e-idea-card')
-      .find('.e2e-ideacard-upvote-button')
-      .as('upvoteBtn');
+      .find('.e2e-ideacard-like-button')
+      .as('likeBtn');
     cy.get('#e2e-ideas-list')
       .find('.e2e-idea-card')
       .contains(ideaTitle)
       .closest('.e2e-idea-card')
-      .find('.e2e-ideacard-downvote-button')
-      .as('downvoteBtn');
+      .find('.e2e-ideacard-dislike-button')
+      .as('dislikeBtn');
 
-    // check initial upvotes & downvotes
-    cy.get('@upvoteBtn').contains('1');
-    cy.get('@downvoteBtn').contains('0');
+    // check initial likes & dislikes
+    cy.get('@likeBtn').contains('1');
+    cy.get('@dislikeBtn').contains('0');
 
-    // add upvote
+    // add like
     cy.wait(500);
-    cy.get('@upvoteBtn').click();
+    cy.get('@likeBtn').click();
     cy.wait(1000);
-    cy.get('@upvoteBtn').contains('2');
+    cy.get('@likeBtn').contains('2');
 
-    // remove upvote
+    // remove like
     cy.wait(500);
-    cy.get('@upvoteBtn').click();
+    cy.get('@likeBtn').click();
     cy.wait(1000);
-    cy.get('@upvoteBtn').contains('1');
+    cy.get('@likeBtn').contains('1');
 
-    // add downvote
+    // add dislike
     cy.wait(500);
-    cy.get('@downvoteBtn').click();
+    cy.get('@dislikeBtn').click();
     cy.wait(1000);
-    cy.get('@downvoteBtn').contains('1');
+    cy.get('@dislikeBtn').contains('1');
 
-    // remove downvote
+    // remove dislike
     cy.wait(500);
-    cy.get('@downvoteBtn').click();
+    cy.get('@dislikeBtn').click();
     cy.wait(1000);
-    cy.get('@downvoteBtn').contains('0');
+    cy.get('@dislikeBtn').contains('0');
 
-    // add downvote, then upvote
-    cy.get('@downvoteBtn').wait(500).click().wait(1000);
-    cy.get('@upvoteBtn').wait(500).click().wait(1000);
-    cy.get('@downvoteBtn').contains('0');
-    cy.get('@upvoteBtn').contains('2');
+    // add dislike, then like
+    cy.get('@dislikeBtn').wait(500).click().wait(1000);
+    cy.get('@likeBtn').wait(500).click().wait(1000);
+    cy.get('@dislikeBtn').contains('0');
+    cy.get('@likeBtn').contains('2');
   });
 
   it('shows the correct comment count', () => {

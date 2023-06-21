@@ -10,9 +10,15 @@ import {
 import { replyToComment, ReplyToCommentParams } from './replyToComment';
 import { scrollTo, ScrollToParams } from './scrollTo';
 import { volunteer, VolunteerParams } from './volunteer';
-import { voteOnComment, VoteOnCommentParams } from './voteOnComment';
-import { voteOnIdea, VoteOnIdeaParams } from './voteOnIdea';
-import { voteOnInitiative, VoteOnInitiativeParams } from './voteOnInitiative';
+import {
+  reactionOnComment,
+  ReactionOnCommentParams,
+} from './reactionOnComment';
+import { reactionOnIdea, ReactionOnIdeaParams } from './reactionOnIdea';
+import {
+  reactionOnInitiative,
+  ReactionOnInitiativeParams,
+} from './reactionOnInitiative';
 
 interface AssignBudgetAction {
   name: 'assignBudget';
@@ -44,19 +50,19 @@ interface VolunteerAction {
   params: VolunteerParams;
 }
 
-interface VoteOnCommentAction {
-  name: 'voteOnComment';
-  params: VoteOnCommentParams;
+interface ReactionOnCommentAction {
+  name: 'reactionOnComment';
+  params: ReactionOnCommentParams;
 }
 
-interface VoteOnIdeaAction {
-  name: 'voteOnIdea';
-  params: VoteOnIdeaParams;
+interface ReactionOnIdeaAction {
+  name: 'reactionOnIdea';
+  params: ReactionOnIdeaParams;
 }
 
-interface VoteOnInitiativeAction {
-  name: 'voteOnInitiative';
-  params: VoteOnInitiativeParams;
+interface ReactionOnInitiativeAction {
+  name: 'reactionOnInitiative';
+  params: ReactionOnInitiativeParams;
 }
 
 export type SuccessAction =
@@ -66,9 +72,9 @@ export type SuccessAction =
   | ReplyToCommentAction
   | ScrollToAction
   | VolunteerAction
-  | VoteOnCommentAction
-  | VoteOnIdeaAction
-  | VoteOnInitiativeAction;
+  | ReactionOnCommentAction
+  | ReactionOnIdeaAction
+  | ReactionOnInitiativeAction;
 
 export const getAction = ({ name, params }: SuccessAction) => {
   if (name === 'assignBudget') return assignBudget(params);
@@ -79,7 +85,7 @@ export const getAction = ({ name, params }: SuccessAction) => {
   if (name === 'replyToComment') return replyToComment(params);
   if (name === 'scrollTo') return scrollTo(params);
   if (name === 'volunteer') return volunteer(params);
-  if (name === 'voteOnComment') return voteOnComment(params);
-  if (name === 'voteOnIdea') return voteOnIdea(params);
-  return voteOnInitiative(params);
+  if (name === 'reactionOnComment') return reactionOnComment(params);
+  if (name === 'reactionOnIdea') return reactionOnIdea(params);
+  return reactionOnInitiative(params);
 };

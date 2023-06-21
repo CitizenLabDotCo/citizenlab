@@ -15,21 +15,21 @@
 #  participation_method          :string           default("ideation"), not null
 #  posting_enabled               :boolean          default(TRUE)
 #  commenting_enabled            :boolean          default(TRUE)
-#  voting_enabled                :boolean          default(TRUE), not null
-#  upvoting_method               :string           default("unlimited"), not null
-#  upvoting_limited_max          :integer          default(10)
+#  reacting_enabled              :boolean          default(TRUE), not null
+#  reacting_like_method          :string           default("unlimited"), not null
+#  reacting_like_limited_max     :integer          default(10)
 #  survey_embed_url              :string
 #  survey_service                :string
 #  presentation_mode             :string           default("card")
 #  voting_max_total              :integer
 #  poll_anonymous                :boolean          default(FALSE), not null
-#  downvoting_enabled            :boolean          default(TRUE), not null
+#  reacting_dislike_enabled      :boolean          default(TRUE), not null
 #  ideas_count                   :integer          default(0), not null
 #  ideas_order                   :string
 #  input_term                    :string           default("idea")
 #  voting_min_total              :integer          default(0)
-#  downvoting_method             :string           default("unlimited"), not null
-#  downvoting_limited_max        :integer          default(10)
+#  reacting_dislike_method       :string           default("unlimited"), not null
+#  reacting_dislike_limited_max  :integer          default(10)
 #  posting_method                :string           default("unlimited"), not null
 #  posting_limited_max           :integer          default(1)
 #  document_annotation_embed_url :string
@@ -53,7 +53,7 @@ class Phase < ApplicationRecord
 
   has_many :ideas_phases, dependent: :destroy
   has_many :ideas, through: :ideas_phases
-  has_many :votes, through: :ideas
+  has_many :reactions, through: :ideas
   has_many :text_images, as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :text_images
   has_many :phase_files, -> { order(:ordering) }, dependent: :destroy

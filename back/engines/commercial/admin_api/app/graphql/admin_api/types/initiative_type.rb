@@ -39,7 +39,7 @@ module AdminApi
     field :created_at, String, null: false
     field :published_at, String, null: false
     field :href, String, null: true
-    field :upvotes_count, Integer, null: false
+    field :likes_count, Integer, null: false
     field :comments_count, Integer, null: false
     field :images, InitiativeImage.connection_type, null: true
     def images
