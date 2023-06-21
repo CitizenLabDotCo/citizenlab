@@ -15,8 +15,8 @@ import clHistory from 'utils/cl-router/history';
 import useTextingCampaign from 'api/texting_campaigns/useTextingCampaign';
 
 // services
-import { sendTextingCampaign } from 'services/textingCampaigns';
 import useDeleteTextingCampaign from 'api/texting_campaigns/useDeleteTextingCampaign';
+import useSendTextingCampaign from 'api/texting_campaigns/useSendTextingCampaign';
 
 // styling
 import styled from 'styled-components';
@@ -115,8 +115,10 @@ const InformativeTableRow = ({
 };
 
 const SMSCampaignPreview = (props: WithRouterProps) => {
-  const { mutate: deleteTextingCampaign, isLoading } =
+  const { mutate: deleteTextingCampaign, isLoading: isLoadingDelete } =
     useDeleteTextingCampaign();
+  const { mutate: sendTextingCampaign, isLoading: isLoadingSend } =
+    useSendTextingCampaign();
   const [confirmationModalIsVisible, setConfirmationModalVisible] =
     useState(false);
   const [deleteCampaignModalIsVisible, setDeleteCampaignModalVisible] =
@@ -128,31 +130,37 @@ const SMSCampaignPreview = (props: WithRouterProps) => {
   const { campaignId } = props.params;
   const { data: campaign } = useTextingCampaign(campaignId);
 
-  const confirmSendTextingCampaign = async () => {
-    try {
-      // setIsLoading(true);
-      await sendTextingCampaign(campaignId);
-      const url = `/admin/messaging/texting/${campaignId}`;
-      clHistory.replace(url);
-    } catch (e) {
-      //   setIsLoading(false);
-      const smsCampaignBaseErrors: SMSCampaignBaseError[] | undefined =
-        e.errors.base;
-      const tooManySegmentsError = smsCampaignBaseErrors?.find(
-        (smsCampaignBaseError) =>
-          smsCampaignBaseError.error === 'too_many_total_segments'
-      );
-      const monthlyLimitReachedError = smsCampaignBaseErrors?.find(
-        (smsCampaignBaseError) =>
-          smsCampaignBaseError.error === 'monthly_limit_reached'
-      );
-      if (tooManySegmentsError) {
-        setHasTooManySegmentsError(true);
+  const isLoading = isLoadingDelete || isLoadingSend;
+
+  const confirmSendTextingCampaign = () => {
+    sendTextingCampaign(
+      { id: campaignId },
+      {
+        onSuccess: () => {
+          const url = `/admin/messaging/texting`;
+          clHistory.replace(url);
+        },
+        onError: (e) => {
+          const smsCampaignBaseErrors = e.errors.base as
+            | SMSCampaignBaseError[]
+            | undefined;
+          const tooManySegmentsError = smsCampaignBaseErrors?.find(
+            (smsCampaignBaseError) =>
+              smsCampaignBaseError.error === 'too_many_total_segments'
+          );
+          const monthlyLimitReachedError = smsCampaignBaseErrors?.find(
+            (smsCampaignBaseError) =>
+              smsCampaignBaseError.error === 'monthly_limit_reached'
+          );
+          if (tooManySegmentsError) {
+            setHasTooManySegmentsError(true);
+          }
+          if (monthlyLimitReachedError) {
+            setHasMonthlyLimitReachedError(true);
+          }
+        },
       }
-      if (monthlyLimitReachedError) {
-        setHasMonthlyLimitReachedError(true);
-      }
-    }
+    );
   };
 
   const confirmDeleteTextingCampaign = () => {
