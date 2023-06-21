@@ -35,6 +35,8 @@ RSpec.describe Notifications::InternalCommentOnYourInternalComment do
         )
       end
 
+      # Don't create this notification if the Activity (internal comment created)
+      # should lead to a MentionInInternalComment notification to the recipient.
       it 'does not make a notification on created internal comment activity' do
         notifications_count = described_class.count
         activity = create(:activity, item: child_internal_comment, action: 'created')

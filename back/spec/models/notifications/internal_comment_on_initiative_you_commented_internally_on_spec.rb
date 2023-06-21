@@ -55,6 +55,8 @@ RSpec.describe Notifications::InternalCommentOnInitiativeYouCommentedInternallyO
       let(:parent_internal_comment) { create(:internal_comment, post: initiative, author: commenter) }
       let(:internal_comment) { create(:internal_comment, parent: parent_internal_comment, post: initiative) }
 
+      # Don't create this notification if the Activity (internal comment created)
+      # should lead to a InternalCommentOnYourInternalComment notification to the recipient.
       it_behaves_like 'no notification created'
     end
 
@@ -68,12 +70,16 @@ RSpec.describe Notifications::InternalCommentOnInitiativeYouCommentedInternallyO
         )
       end
 
+      # Don't create this notification if the Activity (internal comment created)
+      # should lead to a MentionInInternalComment notification to the recipient.
       it_behaves_like 'no notification created'
     end
 
     context 'when the internal comment is on an initiative the recipient is assigned to' do
       let(:initiative) { create(:initiative, assignee: commenter) }
 
+      # Don't create this notification if the Activity (internal comment created)
+      # should lead to a InternalCommentOnInitiativeAssignedToYou notification to the recipient.
       it_behaves_like 'no notification created'
     end
   end

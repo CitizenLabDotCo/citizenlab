@@ -42,6 +42,8 @@ RSpec.describe Notifications::InternalCommentOnUnassignedInitiative do
       let(:parent_internal_comment) { create(:internal_comment, post: initiative, author: admin) }
       let(:internal_comment) { create(:internal_comment, parent: parent_internal_comment, post: initiative) }
 
+      # Don't create this notification if the Activity (internal comment created)
+      # should lead to a InternalCommentOnYourInternalComment notification to the recipient.
       it_behaves_like 'no notification created'
     end
 
@@ -55,6 +57,8 @@ RSpec.describe Notifications::InternalCommentOnUnassignedInitiative do
         )
       end
 
+      # Don't create this notification if the Activity (internal comment created)
+      # should lead to a MentionInInternalComment notification to the recipient.
       it_behaves_like 'no notification created'
     end
   end
