@@ -156,11 +156,6 @@ module ParticipationContext
     self.presentation_mode ||= 'card'
   end
 
-  # def set_ideas_order
-  #   self.ideas_order ||= Factory.instance.participation_method_for(self).default_ideas_order
-  #   # voting? ? 'random' : 'trending'
-  # end
-
   def set_input_term
     self.input_term ||= DEFAULT_INPUT_TERM
   end
