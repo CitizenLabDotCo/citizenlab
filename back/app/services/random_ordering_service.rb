@@ -5,7 +5,7 @@ class RandomOrderingService
     date = Date.today
     modulus = 1000 + date.to_time.to_i.to_s.chars.reverse[2..5].join.to_i
     if user&.id
-      modulus + user.id[0...4].chars.sum(&:ord)
+      modulus + user.id[0...8].chars.sum(&:ord)
     else
       modulus
     end
