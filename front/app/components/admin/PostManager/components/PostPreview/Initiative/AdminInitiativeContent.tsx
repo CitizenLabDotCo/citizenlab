@@ -1,7 +1,4 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { adopt } from 'react-adopt';
-import { get } from 'lodash-es';
 import { getPeriodRemainingUntil } from 'utils/dateUtils';
 
 // components
@@ -14,21 +11,17 @@ import CommentsSection from 'components/PostShowComponents/Comments';
 import FileAttachments from 'components/UI/FileAttachments';
 import FeedbackSettings from './FeedbackSettings';
 import Button from 'components/UI/Button';
-import { Top, Content, Container } from '../PostPreview';
+import {
+  Top,
+  Content,
+  Container,
+} from 'components/admin/PostManager/components/PostPreview';
 import ReactionIndicator from 'components/InitiativeCard/ReactionIndicator';
 import { Box } from '@citizenlab/cl2-component-library';
 
-// resources
-import GetInitiativeImages, {
-  GetInitiativeImagesChildProps,
-} from 'resources/GetInitiativeImages';
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-
 // i18n
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
@@ -39,6 +32,8 @@ import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useDeleteInitiative from 'api/initiatives/useDeleteInitiative';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useLocalize from 'hooks/useLocalize';
+import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
 
 const StyledTitle = styled(Title)`
   margin-bottom: 30px;
@@ -97,34 +92,27 @@ const DaysLeft = styled.div`
   margin-bottom: 20px;
 `;
 
-export interface InputProps {
+export interface Props {
   initiativeId: string;
   closePreview: () => void;
   handleClickEdit: () => void;
 }
 
-interface DataProps {
-  initiativeImages: GetInitiativeImagesChildProps;
-  locale: GetLocaleChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-const InitiativeContent = ({
-  localize,
-  initiativeImages,
+const AdminInitiativeContent = ({
   handleClickEdit,
-  locale,
   closePreview,
-  intl,
   initiativeId,
-}: Props & InjectedLocalized & WrappedComponentProps) => {
+}: Props) => {
+  const { formatMessage } = useIntl();
+  const localize = useLocalize();
   const { data: initiativeFiles } = useInitiativeFiles(initiativeId);
   const { data: appConfiguration } = useAppConfiguration();
   const { mutate: deleteInitiative } = useDeleteInitiative();
   const { data: initiative } = useInitiativeById(initiativeId);
+  const { data: initiativeImages } = useInitiativeImages(initiativeId);
+
   const handleClickDelete = () => {
-    const message = intl.formatMessage(messages.deleteInitiativeConfirmation);
+    const message = formatMessage(messages.deleteInitiativeConfirmation);
 
     if (initiative) {
       if (window.confirm(message)) {
@@ -140,11 +128,11 @@ const InitiativeContent = ({
     }
   };
 
-  if (!isNilOrError(initiative) && !isNilOrError(locale)) {
+  if (initiative) {
     const initiativeTitle = localize(initiative.data.attributes.title_multiloc);
     const initiativeImageLarge =
-      !isNilOrError(initiativeImages) && initiativeImages.length > 0
-        ? get(initiativeImages[0], 'attributes.versions.large', null)
+      initiativeImages && initiativeImages.data.length > 0
+        ? initiativeImages.data[0].attributes.versions.large
         : null;
     const initiativeGeoPosition =
       initiative.data.attributes.location_point_geojson || null;
@@ -191,11 +179,7 @@ const InitiativeContent = ({
               )}
 
               <PostedBy
-                authorId={get(
-                  initiative,
-                  'data.relationships.author.data.id',
-                  null
-                )}
+                authorId={initiative.data.relationships.author.data?.id}
                 showAboutInitiatives={false}
               />
 
@@ -203,7 +187,6 @@ const InitiativeContent = ({
                 postId={initiativeId}
                 postType="initiative"
                 body={localize(initiative.data.attributes.body_multiloc)}
-                locale={locale}
               />
 
               {initiativeGeoPosition && initiativeAddress && (
@@ -238,12 +221,14 @@ const InitiativeContent = ({
             </Left>
             <Right>
               <ReactionPreview>
-                <DaysLeft>
-                  <FormattedMessage
-                    {...messages.xDaysLeft}
-                    values={{ x: daysLeft }}
-                  />
-                </DaysLeft>
+                {daysLeft > 0 && (
+                  <DaysLeft>
+                    <FormattedMessage
+                      {...messages.xDaysLeft}
+                      values={{ x: daysLeft }}
+                    />
+                  </DaysLeft>
+                )}
                 <ReactionIndicator initiativeId={initiativeId} />
               </ReactionPreview>
 
@@ -257,23 +242,4 @@ const InitiativeContent = ({
   return null;
 };
 
-const Data = adopt<DataProps, InputProps>({
-  initiativeImages: ({ initiativeId, render }) => (
-    <GetInitiativeImages initiativeId={initiativeId}>
-      {render}
-    </GetInitiativeImages>
-  ),
-  locale: <GetLocale />,
-});
-
-const InitiativeContentWithHOCs = injectIntl(injectLocalize(InitiativeContent));
-
-const WrappedInitiativeContent = (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => (
-      <InitiativeContentWithHOCs {...inputProps} {...dataProps} />
-    )}
-  </Data>
-);
-
-export default WrappedInitiativeContent;
+export default AdminInitiativeContent;

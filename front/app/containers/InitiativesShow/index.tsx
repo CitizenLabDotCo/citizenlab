@@ -573,7 +573,6 @@ const InitiativesShow = ({
               <Body
                 postId={initiativeId}
                 postType="initiative"
-                locale={locale}
                 body={initiativeBody}
                 translateButtonClicked={translateButtonClicked}
               />

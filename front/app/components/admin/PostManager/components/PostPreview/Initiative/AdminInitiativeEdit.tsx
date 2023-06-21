@@ -1,15 +1,5 @@
 import React, { useState, useEffect } from 'react';
 
-// libraries
-import { adopt } from 'react-adopt';
-
-// resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetAppConfigurationLocales, {
-  GetAppConfigurationLocalesChildProps,
-} from 'resources/GetAppConfigurationLocales';
-import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
-
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -17,7 +7,11 @@ import { isNilOrError } from 'utils/helperUtils';
 import InitiativesEditFormWrapper from 'containers/InitiativesEditPage/InitiativesEditFormWrapper';
 import Button from 'components/UI/Button';
 import { Box, LocaleSwitcher } from '@citizenlab/cl2-component-library';
-import { Content, Top, Container } from '../PostPreview';
+import {
+  Content,
+  Top,
+  Container,
+} from 'components/admin/PostManager/components/PostPreview';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -32,27 +26,17 @@ import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
+import useLocale from 'hooks/useLocale';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
-export interface InputProps {
+export interface Props {
   initiativeId: string;
   goBack: () => void;
 }
 
-interface DataProps {
-  locale: GetLocaleChildProps;
-  tenantLocales: GetAppConfigurationLocalesChildProps;
-  topics: GetTopicsChildProps;
-}
-
-interface Props extends DataProps, InputProps {}
-
-const InitiativesEditPage = ({
-  locale,
-  goBack,
-  topics,
-  tenantLocales,
-  initiativeId,
-}: Props) => {
+const AdminInitiativeEdit = ({ goBack, initiativeId }: Props) => {
+  const locale = useLocale();
+  const tenantLocales = useAppConfigurationLocales();
   const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
   const { data: initiativeFiles } = useInitiativeFiles(initiativeId);
   const [files, setFiles] = useState<UploadFile[]>([]);
@@ -90,16 +74,13 @@ const InitiativesEditPage = ({
   }, [locale]);
 
   if (
-    isNilOrError(locale) ||
     isNilOrError(tenantLocales) ||
     !selectedLocale ||
     isNilOrError(initiative) ||
-    initiativeImages === undefined ||
-    isNilOrError(topics)
+    initiativeImages === undefined
   ) {
     return null;
   }
-  const initiativeTopics = topics.filter((topic) => !isNilOrError(topic));
 
   return (
     <Container>
@@ -129,27 +110,14 @@ const InitiativesEditPage = ({
           locale={selectedLocale}
           initiative={initiative.data}
           initiativeImage={
-            isNilOrError(initiativeImages) || initiativeImages.data.length === 0
-              ? null
-              : initiativeImages.data[0]
+            initiativeImages.data.length === 0 ? null : initiativeImages.data[0]
           }
           onPublished={goBack}
           initiativeFiles={files}
-          topics={initiativeTopics}
         />
       </Content>
     </Container>
   );
 };
 
-const Data = adopt<DataProps, InputProps>({
-  locale: <GetLocale />,
-  topics: <GetTopics excludeCode={'custom'} />,
-  tenantLocales: <GetAppConfigurationLocales />,
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <InitiativesEditPage {...dataProps} {...inputProps} />}
-  </Data>
-);
+export default AdminInitiativeEdit;
