@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Idea do
   context 'associations' do
-    it { is_expected.to have_many(:votes) }
+    it { is_expected.to have_many(:reactions) }
   end
 
   context 'Default factory' do
@@ -470,7 +470,7 @@ RSpec.describe Idea do
     before do
       5.times do |_i|
         idea = create(:idea)
-        rand(20).times { create(:vote, votable: idea, mode: %w[up down][rand(2)]) }
+        rand(20).times { create(:reaction, reactable: idea, mode: %w[up down][rand(2)]) }
       end
     end
 

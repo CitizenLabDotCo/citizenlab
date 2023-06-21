@@ -114,7 +114,7 @@ RSpec.describe ParticipationMethod::None do
   its(:allowed_ideas_orders) { is_expected.to be_empty }
   its(:supports_publication?) { is_expected.to be false }
   its(:supports_commenting?) { is_expected.to be false }
-  its(:supports_voting?) { is_expected.to be false }
+  its(:supports_reacting?) { is_expected.to be false }
   its(:supports_baskets?) { is_expected.to be false }
   its(:supports_budget?) { is_expected.to be false }
   its(:supports_status?) { is_expected.to be false }

@@ -1,4 +1,4 @@
-import { ICommentData } from '../types';
+import { ICommentData, IPresentComment } from '../types';
 
 export const links = {
   last: 'http://localhost:3000/web_api/v1/ideas?page%5Bnumber%5D=9&page%5Bsize%5D=12&sort=random',
@@ -9,40 +9,44 @@ export const links = {
   prev: null,
 };
 
-export const commentsData: ICommentData[] = [
-  {
-    id: 'commentId',
-    type: 'comment',
-    attributes: {
-      body_multiloc: { en: 'body_multiloc' },
-      created_at: 'created_at',
-      publication_status: 'published',
-      upvotes_count: 0,
-      downvotes_count: 0,
-      children_count: 0,
-      updated_at: 'updated_at',
+export const mockCommentDataAttributes1: IPresentComment = {
+  body_multiloc: { en: 'body_multiloc' },
+  created_at: 'created_at',
+  publication_status: 'published',
+  likes_count: 0,
+  dislikes_count: 0,
+  children_count: 0,
+  updated_at: 'updated_at',
+};
+
+export const mockCommentData1: ICommentData = {
+  id: 'commentId',
+  type: 'comment',
+  attributes: mockCommentDataAttributes1,
+  relationships: {
+    post: {
+      data: {
+        id: 'postId',
+        type: 'post',
+      },
     },
-    relationships: {
-      post: {
-        data: {
-          id: 'postId',
-          type: 'post',
-        },
+    author: {
+      data: {
+        id: 'authorId',
+        type: 'author',
       },
-      author: {
-        data: {
-          id: 'authorId',
-          type: 'author',
-        },
-      },
-      parent: {
-        data: {
-          id: 'parentId',
-          type: 'parent',
-        },
+    },
+    parent: {
+      data: {
+        id: 'parentId',
+        type: 'parent',
       },
     },
   },
+};
+
+export const commentsData: ICommentData[] = [
+  mockCommentData1,
   {
     id: 'commentId2',
     type: 'comment',
@@ -50,8 +54,8 @@ export const commentsData: ICommentData[] = [
       body_multiloc: { en: 'body_multiloc' },
       created_at: 'created_at',
       publication_status: 'published',
-      upvotes_count: 0,
-      downvotes_count: 0,
+      likes_count: 0,
+      dislikes_count: 0,
       children_count: 0,
       updated_at: 'updated_at',
     },

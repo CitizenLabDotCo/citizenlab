@@ -6,9 +6,9 @@ module MultiTenancy
       class ParticipationContext < Base
         attributes %i[
           commenting_enabled
-          downvoting_enabled
-          downvoting_limited_max
-          downvoting_method
+          reacting_dislike_enabled
+          reacting_dislike_limited_max
+          reacting_dislike_method
           ideas_order
           input_term
           participation_method
@@ -17,9 +17,9 @@ module MultiTenancy
           posting_limited_max
           posting_method
           presentation_mode
-          upvoting_limited_max
-          upvoting_method
-          voting_enabled
+          reacting_like_limited_max
+          reacting_like_method
+          reacting_enabled
         ]
 
         attribute(:voting_method, if: :voting?)

@@ -1,20 +1,20 @@
 import { randomString, randomEmail } from '../support/commands';
 
 // OS-133
-describe('Idea voting permissions', () => {
-  describe('a project that requires verification to vote', () => {
-    it('sends non-registred user to sign up, verifies the user and votes successfully', () => {
+describe('Idea reacting permissions', () => {
+  describe('a project that requires verification to reaction', () => {
+    it('sends non-registred user to sign up, verifies the user and reactions successfully', () => {
       const firstName = randomString();
       const lastName = randomString();
       const email = randomEmail();
       const password = randomString();
 
-      // try to vote while not signed in
+      // try to reaction while not signed in
       cy.visit('projects/verified-ideation');
       cy.location('pathname').should('eq', '/en/projects/verified-ideation');
       cy.get('#e2e-ideas-container');
       cy.wait(1000);
-      cy.get('.e2e-ideacard-upvote-button').click();
+      cy.get('.e2e-ideacard-like-button').click();
 
       // sign up modal check
       cy.get('#e2e-authentication-modal').should('exist');
@@ -50,11 +50,11 @@ describe('Idea voting permissions', () => {
       cy.get('#e2e-success-continue-button').click();
       cy.get('#e2e-sign-up-in-modal').should('not.exist');
       cy.get('#e2e-user-menu-container.e2e-verified');
-      cy.get('.e2e-ideacard-upvote-button.enabled');
+      cy.get('.e2e-ideacard-like-button.enabled');
     });
   });
 
-  describe('a project that requires verification to vote', () => {
+  describe('a project that requires verification to reaction', () => {
     let unverifiedId: string;
 
     before(() => {
@@ -78,7 +78,7 @@ describe('Idea voting permissions', () => {
       cy.visit('projects/verified-ideation');
       cy.get('#e2e-ideas-container');
       cy.wait(1000);
-      cy.get('.e2e-ideacard-upvote-button').click();
+      cy.get('.e2e-ideacard-like-button').click();
       cy.get('#e2e-verification-wizard-root');
     });
 
@@ -87,7 +87,7 @@ describe('Idea voting permissions', () => {
     });
   });
 
-  describe('a project that requires verification to vote', () => {
+  describe('a project that requires verification to reaction', () => {
     let verifiedId: string;
 
     before(() => {
@@ -114,12 +114,12 @@ describe('Idea voting permissions', () => {
         });
     });
 
-    it('lets verified users vote', () => {
+    it('lets verified users reaction', () => {
       cy.visit('projects/verified-ideation');
       cy.get('#e2e-ideas-container');
       cy.wait(1000);
-      cy.get('.e2e-ideacard-upvote-button').click();
-      cy.get('.e2e-vote-controls.up');
+      cy.get('.e2e-ideacard-like-button').click();
+      cy.get('.e2e-reaction-controls.up');
     });
 
     after(() => {
@@ -135,9 +135,9 @@ describe('Idea voting permissions', () => {
       const password = randomString();
 
       // Go to an idea of a project that doesn't require verification
-      // and try to vote
+      // and try to reaction
       cy.visit('ideas/very-new-idea');
-      cy.get('.e2e-ideacard-upvote-button').click();
+      cy.get('.e2e-ideacard-like-button').click();
 
       // Sign up flow
       cy.get('#e2e-authentication-modal');
@@ -170,14 +170,14 @@ describe('Idea voting permissions', () => {
       cy.wait(2000);
       cy.get('#e2e-authentication-modal').should('not.exist');
       cy.get('#e2e-user-menu-container');
-      cy.get('.e2e-ideacard-upvote-button')
+      cy.get('.e2e-ideacard-like-button')
         .first()
         .should('have.class', 'enabled');
     });
   });
 });
 
-describe('idea voting permissions for non-active users', () => {
+describe('idea reacting permissions for non-active users', () => {
   const firstName = randomString();
   const lastName = randomString();
   const email = randomEmail();
@@ -197,12 +197,12 @@ describe('idea voting permissions for non-active users', () => {
     });
   });
 
-  it("doesn't let non-active users vote", () => {
+  it("doesn't let non-active users reaction", () => {
     cy.setLoginCookie(email, password);
     cy.visit('projects/an-idea-bring-it-to-your-council');
     cy.get('#e2e-ideas-container').should('exist');
-    cy.get('.e2e-ideacard-upvote-button').should('exist');
-    cy.get('.e2e-ideacard-upvote-button').first().click();
+    cy.get('.e2e-ideacard-like-button').should('exist');
+    cy.get('.e2e-ideacard-like-button').first().click();
     cy.get('#e2e-authentication-modal').should('exist');
   });
 

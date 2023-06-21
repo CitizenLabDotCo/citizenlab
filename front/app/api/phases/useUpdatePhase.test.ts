@@ -13,9 +13,9 @@ import { IUpdatedPhaseProperties } from './types';
 const phasesMutationData: IUpdatedPhaseProperties = {
   commenting_enabled: false,
   description_multiloc: { en: 'For testing purposes' },
-  downvoting_enabled: false,
-  downvoting_limited_max: 0,
-  downvoting_method: 'limited',
+  reacting_dislike_enabled: false,
+  reacting_dislike_limited_max: 0,
+  reacting_dislike_method: 'limited',
   end_at: 'one week from now',
   input_term: 'idea',
   participation_method: 'information',
@@ -23,9 +23,9 @@ const phasesMutationData: IUpdatedPhaseProperties = {
   presentation_mode: 'card',
   start_at: 'today',
   title_multiloc: { en: 'A Mock Information phase' },
-  upvoting_limited_max: 0,
-  upvoting_method: 'limited',
-  voting_enabled: false,
+  reacting_like_limited_max: 0,
+  reacting_like_method: 'limited',
+  reacting_enabled: false,
 };
 
 const apiPath = '*phases/:phaseId';

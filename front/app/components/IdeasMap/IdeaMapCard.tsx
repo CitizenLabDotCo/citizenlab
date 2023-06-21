@@ -108,12 +108,12 @@ const MoneybagIcon = styled(Icon)`
   margin-right: 6px;
 `;
 
-const DownvoteIcon = styled(Icon)`
+const DislikeIcon = styled(Icon)`
   fill: ${colors.textSecondary};
   margin-right: 6px;
 `;
 
-const UpvoteIcon = styled(Icon)`
+const LikeIcon = styled(Icon)`
   fill: ${colors.textSecondary};
   margin-right: 6px;
   margin-top: 5px;
@@ -214,13 +214,13 @@ const IdeaMapCard = memo<Props>(
     if (!isNilOrError(appConfig) && !isNilOrError(ideaMarker) && project) {
       const tenantCurrency = appConfig.data.attributes.settings.core.currency;
       const ideaBudget = ideaMarker.attributes?.budget;
-      const votingActionDescriptor =
-        project.data.attributes.action_descriptor.voting_idea;
-      const showDownvote =
-        votingActionDescriptor.down.enabled === true ||
-        (votingActionDescriptor.down.enabled === false &&
-          votingActionDescriptor.down.disabled_reason !==
-            'downvoting_disabled');
+      const reactingActionDescriptor =
+        project.data.attributes.action_descriptor.reacting_idea;
+      const showDislike =
+        reactingActionDescriptor.down.enabled === true ||
+        (reactingActionDescriptor.down.enabled === false &&
+          reactingActionDescriptor.down.disabled_reason !==
+            'disliking_disabled');
       const commentingEnabled =
         project.data.attributes.action_descriptor.commenting_idea.enabled;
 
@@ -262,16 +262,14 @@ const IdeaMapCard = memo<Props>(
             {!isParticipatoryBudgetIdea && (
               <>
                 <FooterItem>
-                  <DownvoteIcon name="vote-up" />
-                  <FooterValue>
-                    {ideaMarker.attributes.upvotes_count}
-                  </FooterValue>
+                  <DislikeIcon name="vote-down" />
+                  <FooterValue>{ideaMarker.attributes.likes_count}</FooterValue>
                 </FooterItem>
-                {showDownvote && (
+                {showDislike && (
                   <FooterItem>
-                    <UpvoteIcon name="vote-down" />
+                    <LikeIcon name="vote-up" />
                     <FooterValue>
-                      {ideaMarker.attributes.downvotes_count}
+                      {ideaMarker.attributes.dislikes_count}
                     </FooterValue>
                   </FooterItem>
                 )}

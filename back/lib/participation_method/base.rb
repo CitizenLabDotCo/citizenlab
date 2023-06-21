@@ -81,7 +81,7 @@ module ParticipationMethod
       false
     end
 
-    def supports_voting?
+    def supports_reacting?
       false
     end
 

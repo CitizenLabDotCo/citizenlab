@@ -175,7 +175,7 @@ RSpec.describe ParticipationMethod::Ideation do
   its(:allowed_ideas_orders) { is_expected.to eq %w[trending random popular -new new] }
   its(:supports_publication?) { is_expected.to be true }
   its(:supports_commenting?) { is_expected.to be true }
-  its(:supports_voting?) { is_expected.to be true }
+  its(:supports_reacting?) { is_expected.to be true }
   its(:supports_baskets?) { is_expected.to be true }
   its(:supports_budget?) { is_expected.to be true }
   its(:supports_status?) { is_expected.to be true }

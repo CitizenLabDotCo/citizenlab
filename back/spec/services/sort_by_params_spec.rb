@@ -15,22 +15,22 @@ describe SortByParams do
         {
           published_at: Time.now,
           author: create(:user, first_name: 'Sean', last_name: 'Connery'),
-          upvotes_count: 5,
-          downvotes_count: 2,
+          likes_count: 5,
+          dislikes_count: 2,
           baskets_count: 1
         },
         {
           published_at: Time.now - 1.hour,
           author: create(:user, first_name: 'Sean', last_name: 'Penn'),
-          upvotes_count: 3,
-          downvotes_count: 5,
+          likes_count: 3,
+          dislikes_count: 5,
           baskets_count: 2
         },
         {
           published_at: Time.now + 2.days,
           author: create(:user, first_name: 'Jodie', last_name: 'Foster'),
-          upvotes_count: 0,
-          downvotes_count: 0,
+          likes_count: 0,
+          dislikes_count: 0,
           baskets_count: 3
         }
       ].map do |attributes|
@@ -156,8 +156,8 @@ describe SortByParams do
       end
     end
 
-    describe 'upvotes_count' do
-      let(:sort) { 'upvotes_count' }
+    describe 'likes_count' do
+      let(:sort) { 'likes_count' }
       let(:expected_record_ids) { [ideas[0].id, ideas[1].id, ideas[2].id] }
 
       it 'returns the sorted records' do
@@ -165,8 +165,8 @@ describe SortByParams do
       end
     end
 
-    describe '-upvotes_count' do
-      let(:sort) { '-upvotes_count' }
+    describe '-likes_count' do
+      let(:sort) { '-likes_count' }
       let(:expected_record_ids) { [ideas[2].id, ideas[1].id, ideas[0].id] }
 
       it 'returns the sorted records' do
@@ -174,8 +174,8 @@ describe SortByParams do
       end
     end
 
-    describe 'downvotes_count' do
-      let(:sort) { 'downvotes_count' }
+    describe 'dislikes_count' do
+      let(:sort) { 'dislikes_count' }
       let(:expected_record_ids) { [ideas[1].id, ideas[0].id, ideas[2].id] }
 
       it 'returns the sorted records' do
@@ -183,8 +183,8 @@ describe SortByParams do
       end
     end
 
-    describe '-downvotes_count' do
-      let(:sort) { '-downvotes_count' }
+    describe '-dislikes_count' do
+      let(:sort) { '-dislikes_count' }
       let(:expected_record_ids) { [ideas[2].id, ideas[0].id, ideas[1].id] }
 
       it 'returns the sorted records' do
@@ -217,17 +217,17 @@ describe SortByParams do
         {
           published_at: Time.now,
           author: create(:user, first_name: 'Sean', last_name: 'Connery'),
-          upvotes_count: 5
+          likes_count: 5
         },
         {
           published_at: Time.now - 1.hour,
           author: create(:user, first_name: 'Sean', last_name: 'Penn'),
-          upvotes_count: 3
+          likes_count: 3
         },
         {
           published_at: Time.now + 2.days,
           author: create(:user, first_name: 'Jodie', last_name: 'Foster'),
-          upvotes_count: 0
+          likes_count: 0
         }
       ].map do |attributes|
         create(:initiative, **attributes)
@@ -316,8 +316,8 @@ describe SortByParams do
       end
     end
 
-    describe 'upvotes_count' do
-      let(:sort) { 'upvotes_count' }
+    describe 'likes_count' do
+      let(:sort) { 'likes_count' }
       let(:expected_record_ids) { [initiatives[0].id, initiatives[1].id, initiatives[2].id] }
 
       it 'returns the sorted records' do
@@ -325,8 +325,8 @@ describe SortByParams do
       end
     end
 
-    describe '-upvotes_count' do
-      let(:sort) { '-upvotes_count' }
+    describe '-likes_count' do
+      let(:sort) { '-likes_count' }
       let(:expected_record_ids) { [initiatives[2].id, initiatives[1].id, initiatives[0].id] }
 
       it 'returns the sorted records' do

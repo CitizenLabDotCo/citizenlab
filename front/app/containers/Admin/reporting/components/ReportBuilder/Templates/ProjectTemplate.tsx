@@ -21,7 +21,7 @@ import Text from 'components/admin/ContentBuilder/Widgets/Text';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import ActiveUsersWidget from '../Widgets/ChartWidgets/ActiveUsersWidget';
 import SurveyResultsWidget from '../Widgets/SurveyResultsWidget';
-import MostVotedIdeasWidget from '../Widgets/MostVotedIdeasWidget';
+import MostReactedIdeasWidget from '../Widgets/MostReactedIdeasWidget';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -81,10 +81,10 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
         />
       )}
       {participationMethod === 'ideation' && (
-        <MostVotedIdeasWidget
+        <MostReactedIdeasWidget
           projectId={projectId}
           phaseId={phaseId}
-          title={formatMessage(MostVotedIdeasWidget.craft.custom.title)}
+          title={formatMessage(MostReactedIdeasWidget.craft.custom.title)}
           numberOfIdeas={5}
           collapseLongText={false}
         />

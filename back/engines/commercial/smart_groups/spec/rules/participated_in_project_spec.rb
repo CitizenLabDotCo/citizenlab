@@ -56,7 +56,7 @@ describe SmartGroups::Rules::ParticipatedInProject do
       @user2 = create(:user)
       @user3 = create(:user)
       @idea1 = create(:idea, project: @project1, author: @user1)
-      @vote = create(:vote, votable: @idea1, user: @user2)
+      @reaction = create(:reaction, reactable: @idea1, user: @user2)
       @comment = create(:comment, post: @idea1, author: @user3)
       @idea2 = create(:idea, project: @project2, author: @user3)
     end
@@ -97,38 +97,38 @@ describe SmartGroups::Rules::ParticipatedInProject do
       expect(@ids).to match_array [@user1.id, @user2.id]
     end
 
-    it "correctly filters on 'voted_idea_in' predicate" do
-      rule = described_class.new('voted_idea_in', [@project1.id])
+    it "correctly filters on 'reacted_idea_in' predicate" do
+      rule = described_class.new('reacted_idea_in', [@project1.id])
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
       expect(@ids).to match_array [@user2.id]
     end
 
-    it "correctly filters on 'not_voted_idea_in' predicate" do
-      rule = described_class.new('not_voted_idea_in', @project1.id)
+    it "correctly filters on 'not_reacted_idea_in' predicate" do
+      rule = described_class.new('not_reacted_idea_in', @project1.id)
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
       expect(@ids).to match_array [@user1.id, @user3.id]
     end
 
-    it "correctly filters on 'voted_comment_in' predicate" do
-      rule = described_class.new('voted_comment_in', [@project1.id])
+    it "correctly filters on 'reacted_comment_in' predicate" do
+      rule = described_class.new('reacted_comment_in', [@project1.id])
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
       expect(@ids).to match_array []
     end
 
-    it "correctly filters on 'not_voted_comment_in' predicate" do
-      rule = described_class.new('not_voted_comment_in', @project2.id)
+    it "correctly filters on 'not_reacted_comment_in' predicate" do
+      rule = described_class.new('not_reacted_comment_in', @project2.id)
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
       expect(@ids).to match_array [@user1.id, @user2.id, @user3.id]
     end
 
-    it "correctly filters on 'budgeted_in' predicate" do
-      rule = described_class.new('budgeted_in', [@project1.id])
+    it "correctly filters on 'voted_in' predicate" do
+      rule = described_class.new('voted_in', [@project1.id])
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
       expect(@ids).to match_array []
     end
 
-    it "correctly filters on 'not_budgeted_in' predicate" do
-      rule = described_class.new('not_budgeted_in', @project2.id)
+    it "correctly filters on 'not_voted_in' predicate" do
+      rule = described_class.new('not_voted_in', @project2.id)
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
       expect(@ids).to match_array [@user1.id, @user2.id, @user3.id]
     end
@@ -204,45 +204,45 @@ describe SmartGroups::Rules::ParticipatedInProject do
         'value' => project1.id
       })
     end
-    let(:participated_voted_idea_in_project_in_rule) do
+    let(:participated_reacted_idea_in_project_in_rule) do
       described_class.from_json({
         'ruleType' => 'participated_in_project',
-        'predicate' => 'voted_idea_in',
+        'predicate' => 'reacted_idea_in',
         'value' => [project1.id, project2.id]
       })
     end
-    let(:participated_not_voted_idea_in_project_in_rule) do
+    let(:participated_not_reacted_idea_in_project_in_rule) do
       described_class.from_json({
         'ruleType' => 'participated_in_project',
-        'predicate' => 'not_voted_idea_in',
+        'predicate' => 'not_reacted_idea_in',
         'value' => project1.id
       })
     end
-    let(:participated_voted_comment_in_project_in_rule) do
+    let(:participated_reacted_comment_in_project_in_rule) do
       described_class.from_json({
         'ruleType' => 'participated_in_project',
-        'predicate' => 'voted_comment_in',
+        'predicate' => 'reacted_comment_in',
         'value' => [project1.id, project2.id]
       })
     end
-    let(:participated_not_voted_comment_in_project_in_rule) do
+    let(:participated_not_reacted_comment_in_project_in_rule) do
       described_class.from_json({
         'ruleType' => 'participated_in_project',
-        'predicate' => 'not_voted_comment_in',
+        'predicate' => 'not_reacted_comment_in',
         'value' => project1.id
       })
     end
-    let(:participated_budgeted_in_project_in_rule) do
+    let(:participated_voted_in_project_in_rule) do
       described_class.from_json({
         'ruleType' => 'participated_in_project',
-        'predicate' => 'budgeted_in',
+        'predicate' => 'voted_in',
         'value' => [project1.id, project2.id]
       })
     end
-    let(:participated_not_budgeted_in_project_in_rule) do
+    let(:participated_not_voted_in_project_in_rule) do
       described_class.from_json({
         'ruleType' => 'participated_in_project',
-        'predicate' => 'not_budgeted_in',
+        'predicate' => 'not_voted_in',
         'value' => project1.id
       })
     end
@@ -278,35 +278,35 @@ describe SmartGroups::Rules::ParticipatedInProject do
         'fr-FR' => 'N\'as pas commenté sur une idée dans le projet bière',
         'nl-NL' => 'Reageerde niet op een idee in het project bier'
       })
-      expect(participated_voted_idea_in_project_in_rule.description_multiloc).to eq({
-        'en' => 'Voted on an idea in one of the following projects beer, delayed',
-        'fr-FR' => 'Voté pour une idée dans l\'un des projets bière, retardé',
-        'nl-NL' => 'Stemde op een idee in een van de volgende projecten bier, uitgesteld'
+      expect(participated_reacted_idea_in_project_in_rule.description_multiloc).to eq({
+        'en' => 'Reacted to an idea in one of the following projects beer, delayed',
+        'fr-FR' => 'Reacted to an idea in one of the following projects bière, retardé',
+        'nl-NL' => 'Reacted to an idea in one of the following projects bier, uitgesteld'
       })
-      expect(participated_not_voted_idea_in_project_in_rule.description_multiloc).to eq({
-        'en' => 'Did not vote on an idea in the project beer',
-        'fr-FR' => 'N\'as pas voté pour une idée dans le projet bière',
-        'nl-NL' => 'Stemde niet op een idee in het project bier'
+      expect(participated_not_reacted_idea_in_project_in_rule.description_multiloc).to eq({
+        'en' => 'Did not react to an idea in the project beer',
+        'fr-FR' => 'Did not react to an idea in the project bière',
+        'nl-NL' => 'Did not react to an idea in the project bier'
       })
-      expect(participated_voted_comment_in_project_in_rule.description_multiloc).to eq({
-        'en' => 'Voted on a comment on an idea in one of the following projects beer, delayed',
-        'fr-FR' => 'Voté pour un commentaire sur une idée dans l\'un des projets bière, retardé',
-        'nl-NL' => 'Stemde op een reactie op een idee in een van de volgende projecten bier, uitgesteld'
+      expect(participated_reacted_comment_in_project_in_rule.description_multiloc).to eq({
+        'en' => 'Reacted to a comment on an idea in one of the following projects beer, delayed',
+        'fr-FR' => 'Reacted to a comment on an idea in one of the following projects bière, retardé',
+        'nl-NL' => 'Reacted to a comment on an idea in one of the following projects bier, uitgesteld'
       })
-      expect(participated_not_voted_comment_in_project_in_rule.description_multiloc).to eq({
-        'en' => 'Did not vote on a comment on an idea in the project beer',
-        'fr-FR' => 'N\'as pas voté pour un commentaire sur une idée dans le projet bière',
-        'nl-NL' => 'Stemde niet op een reactie op een idee in het project bier'
+      expect(participated_not_reacted_comment_in_project_in_rule.description_multiloc).to eq({
+        'en' => 'Did not react to a comment on an idea in the project beer',
+        'fr-FR' => 'Did not react to a comment on an idea in the project bière',
+        'nl-NL' => 'Did not react to a comment on an idea in the project bier'
       })
-      expect(participated_budgeted_in_project_in_rule.description_multiloc).to eq({
-        'en' => 'Assigned a budget in one of the following projects beer, delayed',
-        'fr-FR' => 'Dépensé un budget dans l\'un des projets bière, retardé',
-        'nl-NL' => 'Wees een budget toe in een van de volgende projecten bier, uitgesteld'
+      expect(participated_voted_in_project_in_rule.description_multiloc).to eq({
+        'en' => 'Voted in one of the following projects beer, delayed',
+        'fr-FR' => 'Voted in one of the following projects bière, retardé',
+        'nl-NL' => 'Voted in one of the following projects bier, uitgesteld'
       })
-      expect(participated_not_budgeted_in_project_in_rule.description_multiloc).to eq({
-        'en' => 'Didn\'t assign a budget in the project beer',
-        'fr-FR' => 'N\'as pas dépensé un budget dans le projet bière',
-        'nl-NL' => 'Wees geen budget toe in het project bier'
+      expect(participated_not_voted_in_project_in_rule.description_multiloc).to eq({
+        'en' => 'Did not vote in the project beer',
+        'fr-FR' => 'Did not vote in the project bière',
+        'nl-NL' => 'Did not vote in the project bier'
       })
     end
   end

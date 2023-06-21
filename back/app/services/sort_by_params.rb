@@ -23,10 +23,10 @@ class SortByParams
     when '-trending'
       ids = TrendingIdeaService.new.sort_trending(scope).map(&:id).reverse
       Idea.unscoped.where(id: ids).order_as_specified(id: ids)
-    when 'upvotes_count' then scope.order(upvotes_count: :desc)
-    when '-upvotes_count' then scope.order(upvotes_count: :asc)
-    when 'downvotes_count' then scope.order(downvotes_count: :desc)
-    when '-downvotes_count' then scope.order(downvotes_count: :asc)
+    when 'likes_count' then scope.order(likes_count: :desc)
+    when '-likes_count' then scope.order(likes_count: :asc)
+    when 'dislikes_count' then scope.order(dislikes_count: :desc)
+    when '-dislikes_count' then scope.order(dislikes_count: :asc)
     when 'baskets_count' then scope.order(baskets_count: :desc)
     when '-baskets_count' then scope.order(baskets_count: :asc)
     else
@@ -43,8 +43,8 @@ class SortByParams
     when '-author_name' then scope.order_author_name(:asc)
     when 'status' then scope.order_status(:desc)
     when '-status' then scope.order_status(:asc)
-    when 'upvotes_count' then scope.order(upvotes_count: :desc)
-    when '-upvotes_count' then scope.order(upvotes_count: :asc)
+    when 'likes_count' then scope.order(likes_count: :desc)
+    when '-likes_count' then scope.order(likes_count: :asc)
     else
       raise "Unsupported sorting parameter #{params[:sort]}"
     end
