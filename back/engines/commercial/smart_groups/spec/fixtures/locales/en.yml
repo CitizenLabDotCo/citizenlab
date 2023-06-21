@@ -57,8 +57,8 @@ en:
       not_reacted_idea_in: "Did not react to an idea in the project %{value}"
       reacted_comment_in: "Reacted to a comment on an idea in one of the following projects %{value}"
       not_reacted_comment_in: "Did not react to a comment on an idea in the project %{value}"
-      budgeted_in: "Assigned a budget in one of the following projects %{value}"
-      not_budgeted_in: "Didn't assign a budget in the project %{value}"
+      voted_in: "Voted in one of the following projects %{value}"
+      not_voted_in: "Did not vote in the project %{value}"
     participated_in_topic:
       in: "Participation in an idea with one of the following topics %{value}"
       not_in: "No participation in an idea with topic %{value}"
