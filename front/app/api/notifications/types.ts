@@ -198,67 +198,77 @@ interface IInternalCommentBaseAttributes {
   post_id: string;
 }
 
-export interface IMentionInInternalCommentData extends IBaseNotificationData {
+interface IMentionInInternalCommentData extends IBaseNotificationData {
   attributes: {
     type: 'mention_in_internal_comment';
   } & IInternalCommentBaseAttributes;
 }
 
-export interface IInternalCommentOnYourInternalCommentData
+interface IInternalCommentOnYourInternalCommentData
   extends IBaseNotificationData {
   attributes: {
     type: 'internal_comment_on_your_internal_comment';
   } & IInternalCommentBaseAttributes;
 }
 
-export interface IInternalCommentOnIdeaAssignedToYouData
+interface IInternalCommentOnIdeaAssignedToYouData
   extends IBaseNotificationData {
   attributes: {
     type: 'internal_comment_on_idea_assigned_to_you';
   } & IInternalCommentBaseAttributes;
 }
 
-export interface IInternalCommentOnInitiativeAssignedToYouData
+interface IInternalCommentOnInitiativeAssignedToYouData
   extends IBaseNotificationData {
   attributes: {
     type: 'internal_comment_on_initiative_assigned_to_you';
   } & IInternalCommentBaseAttributes;
 }
 
-export interface IInternalCommentOnIdeaYouModerateData
-  extends IBaseNotificationData {
+interface IInternalCommentOnIdeaYouModerateData extends IBaseNotificationData {
   attributes: {
     type: 'internal_comment_on_idea_you_moderate';
   } & IInternalCommentBaseAttributes;
 }
 
-export interface IInternalCommentOnIdeaYouCommentedInternallyOnData
+interface IInternalCommentOnIdeaYouCommentedInternallyOnData
   extends IBaseNotificationData {
   attributes: {
     type: 'internal_comment_on_idea_you_commented_internally_on';
   } & IInternalCommentBaseAttributes;
 }
 
-export interface IInternalCommentOnInitiativeYouCommentedInternallyOnData
+interface IInternalCommentOnInitiativeYouCommentedInternallyOnData
   extends IBaseNotificationData {
   attributes: {
     type: 'internal_comment_on_initiative_you_commented_internally_on';
   } & IInternalCommentBaseAttributes;
 }
 
-export interface IInternalCommentOnUnassignedUnmoderatedIdeaData
+interface IInternalCommentOnUnassignedUnmoderatedIdeaData
   extends IBaseNotificationData {
   attributes: {
     type: 'internal_comment_on_unassigned_unmoderated_idea';
   } & IInternalCommentBaseAttributes;
 }
 
-export interface IInternalCommentOnUnassignedInitiativeData
+interface IInternalCommentOnUnassignedInitiativeData
   extends IBaseNotificationData {
   attributes: {
     type: 'internal_comment_on_unassigned_initiative';
   } & IInternalCommentBaseAttributes;
 }
+
+export type InternalCommentNotificationData =
+  | IMentionInInternalCommentData
+  | IInternalCommentOnYourInternalCommentData
+  | IInternalCommentOnIdeaAssignedToYouData
+  | IInternalCommentOnInitiativeAssignedToYouData
+  | IInternalCommentOnIdeaYouModerateData
+  | IInternalCommentOnIdeaYouCommentedInternallyOnData
+  | IInternalCommentOnInitiativeYouCommentedInternallyOnData
+  | IInternalCommentOnUnassignedUnmoderatedIdeaData
+  | IInternalCommentOnUnassignedInitiativeData;
 
 export interface IMentionInOfficialFeedbackNotificationData
   extends IBaseNotificationData {
@@ -493,14 +503,7 @@ export interface INotificationDataMap {
   IInviteAcceptedNotificationData: IInviteAcceptedNotificationData;
   IMentionInCommentNotificationData: IMentionInCommentNotificationData;
   IMentionInInternalCommentData: IMentionInInternalCommentData;
-  IInternalCommentOnYourInternalCommentData: IInternalCommentOnYourInternalCommentData;
-  IInternalCommentOnIdeaAssignedToYouData: IInternalCommentOnIdeaAssignedToYouData;
-  IInternalCommentOnInitiativeAssignedToYouData: IInternalCommentOnInitiativeAssignedToYouData;
-  IInternalCommentOnIdeaYouModerateData: IInternalCommentOnIdeaYouModerateData;
-  IInternalCommentOnIdeaYouCommentedInternallyOnData: IInternalCommentOnIdeaYouCommentedInternallyOnData;
-  IInternalCommentOnInitiativeYouCommentedInternallyOnData: IInternalCommentOnInitiativeYouCommentedInternallyOnData;
-  IInternalCommentOnUnassignedUnmoderatedIdeaData: IInternalCommentOnUnassignedUnmoderatedIdeaData;
-  IInternalCommentOnUnassignedInitiativeData: IInternalCommentOnUnassignedInitiativeData;
+  InternalCommentNotificationData: InternalCommentNotificationData;
   IMentionInOfficialFeedbackNotificationData: IMentionInOfficialFeedbackNotificationData;
   IOfficialFeedbackOnCommentedIdeaNotificationData: IOfficialFeedbackOnCommentedIdeaNotificationData;
   IOfficialFeedbackOnCommentedInitiativeNotificationData: IOfficialFeedbackOnCommentedInitiativeNotificationData;

@@ -62,6 +62,42 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.mentionInInternalComment',
     defaultMessage: '{name} mentioned you in an internal comment',
   },
+  internalCommentOnYourInternalComment: {
+    id: 'app.containers.NotificationMenu.internalCommentOnYourInternalComment',
+    defaultMessage: '{name} commented on your internal comment',
+  },
+  internalCommentOnIdeaAssignedToYou: {
+    id: 'app.containers.NotificationMenu.internalCommentOnIdeaAssignedToYou',
+    defaultMessage: '{name} commented internally on an input assigned to you',
+  },
+  internalCommentOnInitiativeAssignedToYou: {
+    id: 'app.containers.NotificationMenu.internalCommentOnInitiativeAssignedToYou',
+    defaultMessage: '{name} commented internally on a proposal assigned to you',
+  },
+  internalCommentOnIdeaYouModerate: {
+    id: 'app.containers.NotificationMenu.internalCommentOnIdeaYouModerate',
+    defaultMessage:
+      '{name} commented internally on an input in a project you manage',
+  },
+  internalCommentOnIdeaYouCommentedInternallyOn: {
+    id: 'app.containers.NotificationMenu.internalCommentOnIdeaYouCommentedInternallyOn',
+    defaultMessage:
+      '{name} commented internally on an input that you commented on internally',
+  },
+  internalCommentOnInitiativeYouCommentedInternallyOn: {
+    id: 'app.containers.NotificationMenu.internalCommentOnInitiativeYouCommentedInternallyOn',
+    defaultMessage:
+      '{name} commented internally on a proposal that you commented on internally',
+  },
+  internalCommentOnUnassignedUnmoderatedIdea: {
+    id: 'app.containers.NotificationMenu.internalCommentOnUnassignedUnmoderatedIdea',
+    defaultMessage:
+      '{name} commented internally on an unassigned input in an unmanaged project',
+  },
+  internalCommentOnUnassignedInitiative: {
+    id: 'app.containers.NotificationMenu.internalCommentOnUnassignedUnmoderatedIdea',
+    defaultMessage: '{name} commented internally on an unassigned proposal',
+  },
   userReportedCommentAsSpam: {
     id: 'app.containers.NotificationMenu.userReportedCommentAsSpam',
     defaultMessage: "{name} reported a comment on '{postTitle}' as spam",
