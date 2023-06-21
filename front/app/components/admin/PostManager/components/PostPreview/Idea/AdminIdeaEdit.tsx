@@ -142,7 +142,7 @@ const AdminIdeaEdit = ({
     return (
       ideaFormMessages[`api_error_${uiSchema?.options?.inputTerm}_${error}`] ||
       ideaFormMessages[`api_error_${error}`] ||
-      ideaFormMessages[`api_error_invalid`]
+      ideaFormMessages['api_error_invalid']
     );
   };
 
