@@ -12,7 +12,7 @@ resource 'Analytics - FactPosts model' do
   end
 
   post 'web_api/v1/analytics' do
-    before_all do
+    before do
       # Setup date dimensions
       @dates = [
         Date.new(2022, 9, 1),
