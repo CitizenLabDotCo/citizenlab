@@ -99,6 +99,17 @@ type RegisterUserCampaignName =
   | 'status_change_of_your_initiative'
   | 'user_digest';
 
+type InternalCommentCampaignName =
+  | 'mention_in_internal_comment'
+  | 'internal_comment_on_your_internal_comment'
+  | 'internal_comment_on_idea_assigned_to_you'
+  | 'internal_comment_on_initiative_assigned_to_you'
+  | 'internal_comment_on_idea_you_moderate'
+  | 'internal_comment_on_idea_you_commented_internally_on'
+  | 'internal_comment_on_initiative_you_commented_internally_on'
+  | 'internal_comment_on_unassigned_unmoderated_idea'
+  | 'internal_comment_on_unassigned_initiative';
+
 type AdminModeratorCampaignName =
   | 'admin_rights_received'
   | 'comment_marked_as_spam'
@@ -114,7 +125,8 @@ type AdminModeratorCampaignName =
   | 'admin_digest'
   | 'moderator_digest'
   | 'assignee_digest'
-  | 'your_proposed_initiatives_digest';
+  | 'your_proposed_initiatives_digest'
+  | InternalCommentCampaignName;
 
 type CampaignName =
   | 'manual'
