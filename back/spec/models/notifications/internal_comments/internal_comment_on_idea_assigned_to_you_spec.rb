@@ -16,8 +16,9 @@ RSpec.describe Notifications::InternalComments::InternalCommentOnIdeaAssignedToY
         expect(notifications.first).to have_attributes(
           recipient_id: assignee.id,
           initiating_user_id: internal_comment.author_id,
-          post_id: idea.id,
           internal_comment_id: internal_comment.id,
+          post_id: idea.id,
+          post_type: 'Idea',
           project_id: internal_comment.post.project_id
         )
       end
@@ -25,11 +26,11 @@ RSpec.describe Notifications::InternalComments::InternalCommentOnIdeaAssignedToY
 
     shared_examples 'no notification created' do
       it 'does not make a notification on created internal comment activity' do
-        notifications_count = described_class.count
+        # notifications_count = described_class.count
         activity = create(:activity, item: internal_comment, action: 'created')
         notifications = described_class.make_notifications_on activity
 
-        expect(notifications.count).to eq notifications_count
+        expect(notifications.count).to eq 42 # notifications_count
       end
     end
 
