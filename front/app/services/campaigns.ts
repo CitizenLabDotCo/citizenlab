@@ -4,14 +4,19 @@ import streams, { IStreamParams } from 'utils/streams';
 const apiEndpoint = `${API_PATH}/campaigns`;
 
 export interface ICampaignStats {
-  sent: number;
-  bounced: number;
-  failed: number;
-  accepted: number;
-  delivered: number;
-  opened: number;
-  clicked: number;
-  all: number;
+  data: {
+    type: 'stats';
+    attributes: {
+      sent: number;
+      bounced: number;
+      failed: number;
+      accepted: number;
+      delivered: number;
+      opened: number;
+      clicked: number;
+      all: number;
+    };
+  };
 }
 
 export function getCampaignStats(
