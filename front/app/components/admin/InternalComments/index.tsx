@@ -4,7 +4,7 @@ import Observer from '@researchgate/react-intersection-observer';
 
 // components
 import InternalParentCommentForm from './InternalParentCommentForm';
-import Comments from './InternalComments';
+import InternalComments from './InternalComments';
 import InternalCommentSorting from './InternalCommentSorting';
 import { Box, Title } from '@citizenlab/cl2-component-library';
 
@@ -130,7 +130,7 @@ const InternalCommentsSection = ({ postId, postType, className }: Props) => {
         />
       </Box>
 
-      <Comments
+      <InternalComments
         ideaId={ideaId}
         initiativeId={initiativeId}
         postType={postType}
