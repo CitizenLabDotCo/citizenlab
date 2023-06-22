@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Notifications::InternalCommentOnIdeaAssignedToYou do
+RSpec.describe Notifications::InternalComments::InternalCommentOnIdeaAssignedToYou do
   describe 'make_notifications_on' do
     let(:assignee) { create(:admin) }
     let(:idea) { create(:idea, assignee: assignee) }

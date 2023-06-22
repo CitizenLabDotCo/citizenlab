@@ -11,7 +11,6 @@ module Notifications
     end
 
     def recipients
-      internal_comment&.parent&.author_id
       [User.find(internal_comment&.parent&.author_id)]
     end
 

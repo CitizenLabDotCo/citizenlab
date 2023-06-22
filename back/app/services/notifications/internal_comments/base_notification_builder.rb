@@ -9,6 +9,8 @@ module Notifications
     end
 
     def build_notifications
+      return [] unless preconditions_met?
+
       recipients.filter_map do |recipient|
         next if skip_recipient?(recipient)
 
@@ -25,12 +27,20 @@ module Notifications
 
     private
 
+    def preconditions_met?
+      true
+    end
+
     def internal_comment
       @activity.item
     end
 
     def initiator_id
       internal_comment&.author_id
+    end
+
+    def parent_author_id
+      internal_comment&.parent&.author_id
     end
 
     def post
