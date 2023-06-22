@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { distinctUntilChanged, debounceTime } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
 import { isEqual } from 'lodash-es';
@@ -14,7 +14,6 @@ import {
   setLeafletMapClicked,
   setLeafletMapCenter,
   setLeafletMapZoom,
-  setLeafletMarkersLoaded,
   leafletMapHoveredMarker$,
   leafletMapSelectedMarker$,
   leafletMapCenter$,
@@ -49,6 +48,7 @@ L.Icon.Default.mergeOptions({
 });
 
 export interface ILeafletMapConfig {
+  selectedPointId?: string;
   center?: L.LatLngTuple;
   zoom?: number;
   tileProvider?: string | null;
@@ -77,6 +77,7 @@ const markerActiveIcon = service.getMarkerIcon({
 export default function useLeaflet(
   mapId: string,
   {
+    selectedPointId,
     center,
     zoom,
     tileProvider,
@@ -108,38 +109,49 @@ export default function useLeaflet(
   // Ref
   const selectedMarkerRef = useRef<string | null>(null);
 
+  const selectMarker = useCallback(
+    (selectedMarkerId: string) => {
+      selectedMarkerRef.current = selectedMarkerId;
+
+      const selectedMarker = markers?.find(
+        (marker) => marker.options['id'] === selectedMarkerId
+      );
+
+      if (selectedMarker) {
+        const isMarkerHiddenBehindCluster = !map?.hasLayer(selectedMarker);
+
+        if (isMarkerHiddenBehindCluster) {
+          markerClusterGroup?.zoomToShowLayer(selectedMarker);
+        } else {
+          const { lat, lng } = selectedMarker.getLatLng();
+          setLeafletMapCenter([lat, lng]);
+        }
+      }
+
+      markers?.forEach((marker) => {
+        const markerId = marker.options['id'] as string;
+
+        if (markerId === selectedMarkerId) {
+          marker.setIcon(markerHoverIcon)?.setZIndexOffset(999);
+        } else {
+          marker.setIcon(markerIcon)?.setZIndexOffset(0);
+        }
+      });
+    },
+    [map, markers, markerClusterGroup]
+  );
+
   // Subscriptions
   useEffect(() => {
-    const selectSubscription = leafletMapSelectedMarker$.subscribe(
-      (selectedMarkerId) => {
-        selectedMarkerRef.current = selectedMarkerId;
+    if (!selectedPointId || !markersLoaded) return;
+    setTimeout(() => {
+      selectMarker(selectedPointId);
+    }, 200);
+  }, [selectedPointId, markersLoaded, selectMarker]);
 
-        const selectedMarker = markers?.find(
-          (marker) => marker.options['id'] === selectedMarkerId
-        );
-
-        if (selectedMarker) {
-          const isMarkerHiddenBehindCluster = !map?.hasLayer(selectedMarker);
-
-          if (isMarkerHiddenBehindCluster) {
-            markerClusterGroup?.zoomToShowLayer(selectedMarker);
-          } else {
-            const { lat, lng } = selectedMarker.getLatLng();
-            setLeafletMapCenter([lat, lng]);
-          }
-        }
-
-        markers?.forEach((marker) => {
-          const markerId = marker.options['id'] as string;
-
-          if (markerId === selectedMarkerId) {
-            marker.setIcon(markerHoverIcon)?.setZIndexOffset(999);
-          } else {
-            marker.setIcon(markerIcon)?.setZIndexOffset(0);
-          }
-        });
-      }
-    );
+  useEffect(() => {
+    const selectSubscription =
+      leafletMapSelectedMarker$.subscribe(selectMarker);
 
     const hoverSubscription = leafletMapHoveredMarker$.subscribe(
       (hoveredMarkerId) => {
@@ -161,7 +173,7 @@ export default function useLeaflet(
       selectSubscription.unsubscribe();
       hoverSubscription.unsubscribe();
     };
-  }, [map, markers, markerClusterGroup]);
+  }, [map, markers, selectMarker]);
 
   const mapEvents = () => {
     const subscriptions = [
@@ -273,7 +285,7 @@ export default function useLeaflet(
   ]);
 
   const refreshMarkers = () => {
-    if (!points) return;
+    if (!map || !points) return;
 
     setMarkers((prevMarkers) => {
       service.removeLayers(map, prevMarkers);
@@ -287,11 +299,12 @@ export default function useLeaflet(
 
     if (markers) {
       setMarkersLoaded(true);
-      setLeafletMarkersLoaded();
     }
   }, [markersLoaded, markers]);
 
   const refreshClusterGroups = () => {
+    if (!map || !markers) return;
+
     setMarkerClusterGroup((prevMarkerClusterGroup) => {
       service.removeLayer(map, prevMarkerClusterGroup);
 

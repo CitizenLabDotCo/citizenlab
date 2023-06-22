@@ -7,7 +7,7 @@ import React, {
   useMemo,
 } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { popup, LatLng, Map as LeafletMap } from 'leaflet';
+import { popup, LatLng, Map as LeafletMap, LatLngTuple } from 'leaflet';
 import { CSSTransition } from 'react-transition-group';
 
 // components
@@ -34,10 +34,8 @@ import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import {
   setLeafletMapSelectedMarker,
   setLeafletMapHoveredMarker,
-  setLeafletMapCenter,
   leafletMapSelectedMarker$,
   leafletMapClicked$,
-  leafletMarkersLoaded$,
 } from 'components/UI/LeafletMap/events';
 
 // i18n
@@ -228,7 +226,6 @@ const IdeasMap = memo<Props>((props) => {
   const ideaButtonWrapperRef = useRef<HTMLDivElement | null>(null);
 
   // state
-  const [markerSelectionExecuted, setMarkerSelectionExecuted] = useState(false);
   const [map, setMap] = useState<LeafletMap | null>(null);
   const [selectedLatLng, setSelectedLatLng] = useState<LatLng | null>(null);
   const [containerWidth, setContainerWidth] = useState(initialContainerWidth);
@@ -236,6 +233,9 @@ const IdeasMap = memo<Props>((props) => {
     initialInnerContainerLeftMargin
   );
   const [isCardClickable, setIsCardClickable] = useState(false);
+  const [initialMapCenter, setInitialMapCenter] = useState<
+    LatLngTuple | undefined
+  >(undefined);
 
   // ideaMarkers
   const selectedIdeaMarkerId = searchParams.get('idea_map_id');
@@ -355,34 +355,15 @@ const IdeasMap = memo<Props>((props) => {
   }, [ideaMarkers, selectedIdeaMarkerId]);
 
   useEffect(() => {
-    if (markerSelectionExecuted) return;
-    if (initializedWithSelectedMarkerParam === false) {
-      setMarkerSelectionExecuted(true);
-      return;
-    }
+    if (!selectedIdeaMarker || initialMapCenter) return;
+    const { coordinates } =
+      selectedIdeaMarker.attributes.location_point_geojson;
+    setInitialMapCenter([coordinates[1], coordinates[0]]);
+  }, [initialMapCenter, selectedIdeaMarker]);
 
-    const subscription = leafletMarkersLoaded$.subscribe(() => {
-      if (selectedIdeaMarker) {
-        setLeafletMapSelectedMarker(selectedIdeaMarker.id);
-        setMarkerSelectionExecuted(true);
-
-        const geojsonCoordinates =
-          selectedIdeaMarker.attributes.location_point_geojson.coordinates;
-        const coordinates: [number, number] = [
-          geojsonCoordinates[1],
-          geojsonCoordinates[0],
-        ];
-
-        setLeafletMapCenter(coordinates);
-      }
-    });
-
-    return () => subscription.unsubscribe();
-  }, [
-    markerSelectionExecuted,
-    initializedWithSelectedMarkerParam,
-    selectedIdeaMarker,
-  ]);
+  if (initializedWithSelectedMarkerParam && !initialMapCenter) {
+    return null;
+  }
 
   return (
     <Container
@@ -432,6 +413,8 @@ const IdeasMap = memo<Props>((props) => {
         )}
 
         <Map
+          selectedPointId={selectedIdeaMarker?.id}
+          centerLatLng={initialMapCenter}
           onInit={handleMapOnInit}
           projectId={projectId}
           points={points}

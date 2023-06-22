@@ -94,15 +94,3 @@ export const leafletMapClicked$ = eventEmitter
     distinctUntilChanged((x, y) => isEqual(x, y)),
     debounceTime(50)
   );
-
-// ----------------------------------------------------------------------------------------------
-
-// I'm so sorry about this but it's the only way to make sure that these damn markers have
-// loaded
-export function setLeafletMarkersLoaded() {
-  eventEmitter.emit(events.leafletMarkersLoaded);
-}
-
-export const leafletMarkersLoaded$ = eventEmitter.observeEvent<string | null>(
-  events.leafletMarkersLoaded
-);

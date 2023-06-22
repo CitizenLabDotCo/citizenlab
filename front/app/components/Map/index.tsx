@@ -102,6 +102,7 @@ const CloseIcon = styled(Icon)`
 `;
 
 export interface IMapConfigProps {
+  selectedPointId?: string;
   centerLatLng?: LatLngTuple;
   points?: Point[];
   zoomLevel?: number;
@@ -123,6 +124,7 @@ export interface IMapProps {
 
 const Map = memo<IMapProps & IMapConfigProps>(
   ({
+    selectedPointId,
     projectId,
     centerLatLng,
     zoomLevel,
@@ -169,6 +171,7 @@ const Map = memo<IMapProps & IMapConfigProps>(
       if (!center || !zoom || !tileProvider) return;
 
       return {
+        selectedPointId,
         points,
         noMarkerClustering,
         zoom,
@@ -180,6 +183,7 @@ const Map = memo<IMapProps & IMapConfigProps>(
         ...additionalLeafletConfig,
       };
     }, [
+      selectedPointId,
       points,
       noMarkerClustering,
       zoom,
