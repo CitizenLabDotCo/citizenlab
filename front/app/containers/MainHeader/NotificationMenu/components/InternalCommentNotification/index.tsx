@@ -64,7 +64,11 @@ const InternalCommentNotification = memo<Props>((props) => {
     <NotificationWrapper
       linkTo={mapPostTypeToLink(notification)}
       timing={notification.attributes.created_at}
-      icon="mention"
+      icon={
+        notification.attributes.type === 'mention_in_internal_comment'
+          ? 'mention'
+          : 'comments'
+      }
       isRead={!!notification.attributes.read_at}
     >
       <FormattedMessage
