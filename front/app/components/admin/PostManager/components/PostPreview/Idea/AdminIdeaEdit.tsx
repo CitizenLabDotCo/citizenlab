@@ -29,6 +29,7 @@ import { getLocationGeojson } from 'containers/IdeasEditPage/utils';
 import { omit } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
+import { useTheme } from 'styled-components';
 
 const AdminIdeaEdit = ({
   ideaId,
@@ -37,6 +38,7 @@ const AdminIdeaEdit = ({
   ideaId: string;
   goBack: () => void;
 }) => {
+  const theme = useTheme();
   const { data: idea } = useIdeaById(ideaId);
   const { mutate: deleteIdeaImage } = useDeleteIdeaImage();
 
@@ -160,7 +162,7 @@ const AdminIdeaEdit = ({
   };
 
   return (
-    <Box>
+    <Box border="1px solid white" borderRadius={theme.borderRadius}>
       <Top>
         <Button onClick={goBack}>
           <FormattedMessage {...messages.cancelEdit} />

@@ -43,7 +43,7 @@ export const Content = styled.div`
   width: 100%;
 
   &.idea-form {
-    background: #f4f4f4;
+    background: ${colors.background};
   }
 `;
 

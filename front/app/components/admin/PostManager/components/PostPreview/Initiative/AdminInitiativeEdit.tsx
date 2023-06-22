@@ -7,11 +7,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import InitiativesEditFormWrapper from 'containers/InitiativesEditPage/InitiativesEditFormWrapper';
 import Button from 'components/UI/Button';
 import { Box, LocaleSwitcher } from '@citizenlab/cl2-component-library';
-import {
-  Content,
-  Top,
-  Container,
-} from 'components/admin/PostManager/components/PostPreview';
+import { Top } from 'components/admin/PostManager/components/PostPreview';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -28,6 +24,7 @@ import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
 import useLocale from 'hooks/useLocale';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import { useTheme } from 'styled-components';
 
 export interface Props {
   initiativeId: string;
@@ -35,6 +32,7 @@ export interface Props {
 }
 
 const AdminInitiativeEdit = ({ goBack, initiativeId }: Props) => {
+  const theme = useTheme();
   const locale = useLocale();
   const tenantLocales = useAppConfigurationLocales();
   const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
@@ -83,7 +81,16 @@ const AdminInitiativeEdit = ({ goBack, initiativeId }: Props) => {
   }
 
   return (
-    <Container>
+    <Box
+      minHeight="100%"
+      width="100%"
+      position="relative"
+      flexDirection="column"
+      alignItems="center"
+      bgColor="white"
+      border="1px solid white"
+      borderRadius={theme.borderRadius}
+    >
       <Top>
         <Box width="100%" justifyContent="space-between" display="flex">
           <Box>
@@ -100,7 +107,14 @@ const AdminInitiativeEdit = ({ goBack, initiativeId }: Props) => {
           </Box>
         </Box>
       </Top>
-      <Content>
+      <Box
+        py="30px"
+        pl="35px"
+        pr="35px"
+        mt="0"
+        width="100%"
+        background={colors.background}
+      >
         <InitiativesEditFormWrapper
           locale={selectedLocale}
           initiative={initiative.data}
@@ -110,8 +124,8 @@ const AdminInitiativeEdit = ({ goBack, initiativeId }: Props) => {
           onPublished={goBack}
           initiativeFiles={files}
         />
-      </Content>
-    </Container>
+      </Box>
+    </Box>
   );
 };
 
