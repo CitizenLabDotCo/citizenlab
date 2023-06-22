@@ -167,7 +167,7 @@ const ParentCommentForm = ({
     setHasEmptyError(inputValue.trim().length < 1);
   };
 
-  const onFocus = () => {
+  const onClick = () => {
     trackEventByName(tracks.focusParentCommentEditor, {
       extra: {
         postId: ideaId || initiativeId,
@@ -389,7 +389,7 @@ const ParentCommentForm = ({
                 value={inputValue}
                 error={getErrorMessage()}
                 onChange={onChange}
-                onFocus={onFocus}
+                onClick={onClick}
                 fontWeight="300"
                 padding="10px"
                 borderRadius="none"

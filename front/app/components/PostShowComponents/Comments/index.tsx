@@ -67,7 +67,7 @@ const CommentsSection = ({
     },
   ];
 
-  if (showInternalComments && isInternalCommentingEnabled) {
+  if (showInternalComments && true) {
     return (
       <Box mt="70px">
         <NavigationTabs>
