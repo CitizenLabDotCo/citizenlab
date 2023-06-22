@@ -70,10 +70,6 @@ export function sendCampaignPreview(campaignId: string) {
   );
 }
 
-export function deleteCampaign(campaignId: string) {
-  return streams.delete(`${apiEndpoint}/${campaignId}`, campaignId);
-}
-
 export function listCampaignDeliveries(
   campaignId: string,
   streamParams: IStreamParams | null = null
