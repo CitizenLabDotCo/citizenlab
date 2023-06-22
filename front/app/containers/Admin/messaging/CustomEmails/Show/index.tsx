@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import clHistory from 'utils/cl-router/history';
 
 // services & resources
-import { sendCampaign, sendCampaignPreview } from 'services/campaigns';
 import { isDraft } from 'api/campaigns/util';
 import GetGroup from 'resources/GetGroup';
 
@@ -37,6 +36,8 @@ import useAuthUser from 'api/me/useAuthUser';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useCampaign from 'api/campaigns/useCampaign';
 import useLocalize from 'hooks/useLocalize';
+import useSendCampaign from 'api/campaigns/useSendCampaign';
+import useSendCampaignPreview from 'api/campaigns/useSendCampaignPreview';
 
 const PageHeader = styled.div`
   display: flex;
@@ -129,28 +130,34 @@ const Show = () => {
   const { data: tenant } = useAppConfiguration();
   const { data: campaign } = useCampaign(campaignId);
 
+  const { mutate: sendCampaign, isLoading: isSendingCampaign } =
+    useSendCampaign();
+  const { mutate: sendCampaignPreview, isLoading: isSenndingCampaignPreview } =
+    useSendCampaignPreview();
+
+  const isLoading = isSendingCampaign || isSenndingCampaignPreview;
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
   const [showSendConfirmationModal, setShowSendConfirmationModal] =
     useState(false);
-  const [isCampaignSending, setIsCampaignSending] = useState(false);
 
   const handleSend = (noGroupsSelected: boolean) => () => {
     if (noGroupsSelected) {
       openSendConfirmationModal();
     } else {
-      setIsCampaignSending(true);
       sendCampaign(campaignId);
     }
   };
 
   const handleSendTestEmail = () => {
-    sendCampaignPreview(campaignId).then(() => {
-      const previewSentConfirmation = formatMessage(
-        messages.previewSentConfirmation
-      );
-      window.alert(previewSentConfirmation);
+    sendCampaignPreview(campaignId, {
+      onSuccess: () => {
+        const previewSentConfirmation = formatMessage(
+          messages.previewSentConfirmation
+        );
+        window.alert(previewSentConfirmation);
+      },
     });
   };
 
@@ -187,9 +194,10 @@ const Show = () => {
   };
 
   const confirmSendCampaign = (campaignId: string) => () => {
-    // loading state
-    sendCampaign(campaignId).then(() => {
-      closeSendConfirmationModal();
+    sendCampaign(campaignId, {
+      onSuccess: () => {
+        closeSendConfirmationModal();
+      },
     });
   };
 
@@ -233,8 +241,8 @@ const Show = () => {
                 icon="send"
                 iconPos="right"
                 onClick={handleSend(noGroupsSelected)}
-                disabled={isCampaignSending}
-                processing={isCampaignSending}
+                disabled={isLoading}
+                processing={isLoading}
               >
                 <FormattedMessage {...messages.send} />
               </Button>
@@ -326,8 +334,8 @@ const Show = () => {
                 onClick={confirmSendCampaign(campaign.data.id)}
                 icon="send"
                 iconPos="right"
-                disabled={isCampaignSending}
-                processing={isCampaignSending}
+                disabled={isLoading}
+                processing={isLoading}
               >
                 <FormattedMessage {...messages.sendNowButton} />
               </Button>
