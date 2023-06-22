@@ -233,6 +233,7 @@ const IdeaMapCard = memo<Props>(
           onMouseLeave={handleOnMouseLeave}
           role="button"
           tabIndex={0}
+          id="e2e-idea-map-card"
         >
           {tablet && (
             <StyledCloseIconButton
@@ -260,12 +261,14 @@ const IdeaMapCard = memo<Props>(
               <>
                 <FooterItem>
                   <LikeIcon name="vote-up" />
-                  <FooterValue>{ideaMarker.attributes.likes_count}</FooterValue>
+                  <FooterValue id="e2e-map-card-like-count">
+                    {ideaMarker.attributes.likes_count}
+                  </FooterValue>
                 </FooterItem>
                 {showDislike && (
                   <FooterItem>
                     <DislikeIcon name="vote-down" />
-                    <FooterValue>
+                    <FooterValue id="e2e-map-card-dislike-count">
                       {ideaMarker.attributes.dislikes_count}
                     </FooterValue>
                   </FooterItem>
