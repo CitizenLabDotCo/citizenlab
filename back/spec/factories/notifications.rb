@@ -41,7 +41,7 @@ FactoryBot.define do
 
   factory :internal_comment_on_idea_you_commented_internally_on,
     parent: :notification,
-    class: 'Notifications::InternalCommentOnIdeaYouCommentedInternallyOn' do
+    class: 'Notifications::InternalComments::InternalCommentOnIdeaYouCommentedInternallyOn' do
     initiating_user
     internal_comment
     association :post, factory: :idea
@@ -49,7 +49,7 @@ FactoryBot.define do
 
   factory :internal_comment_on_idea_you_moderate,
     parent: :notification,
-    class: 'Notifications::InternalCommentOnIdeaYouModerate' do
+    class: 'Notifications::InternalComments::InternalCommentOnIdeaYouModerate' do
     initiating_user
     internal_comment
     association :post, factory: :idea
@@ -57,7 +57,7 @@ FactoryBot.define do
 
   factory :internal_comment_on_initiative_assigned_to_you,
     parent: :notification,
-    class: 'Notifications::InternalCommentOnInitiativeAssignedToYou' do
+    class: 'Notifications::InternalComments::InternalCommentOnInitiativeAssignedToYou' do
     initiating_user
     internal_comment
     association :post, factory: :initiative
@@ -65,7 +65,7 @@ FactoryBot.define do
 
   factory :internal_comment_on_initiative_you_commented_internally_on,
     parent: :notification,
-    class: 'Notifications::InternalCommentOnInitiativeYouCommentedInternallyOn' do
+    class: 'Notifications::InternalComments::InternalCommentOnInitiativeYouCommentedInternallyOn' do
     initiating_user
     internal_comment
     association :post, factory: :initiative
@@ -73,7 +73,7 @@ FactoryBot.define do
 
   factory :internal_comment_on_unassigned_initiative,
     parent: :notification,
-    class: 'Notifications::InternalCommentOnUnassignedInitiative' do
+    class: 'Notifications::InternalComments::InternalCommentOnUnassignedInitiative' do
     initiating_user
     internal_comment
     association :post, factory: :initiative
@@ -81,7 +81,7 @@ FactoryBot.define do
 
   factory :internal_comment_on_unassigned_unmoderated_idea,
     parent: :notification,
-    class: 'Notifications::InternalCommentOnUnassignedUnmoderatedIdea' do
+    class: 'Notifications::InternalComments::InternalCommentOnUnassignedUnmoderatedIdea' do
     initiating_user
     internal_comment
     association :post, factory: :idea

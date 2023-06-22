@@ -2,19 +2,19 @@
 
 require 'rails_helper'
 
-RSpec.describe Notifications::InternalCommentOnInitiativeAssignedToYou do
+RSpec.describe Notifications::InternalComments::InternalCommentOnUnassignedInitiative do
   describe 'make_notifications_on' do
-    let(:assignee) { create(:admin) }
-    let(:initiative) { create(:initiative, assignee: assignee) }
+    let(:initiative) { create(:initiative) }
+    let!(:admin) { create(:admin) }
     let(:internal_comment) { create(:internal_comment, post: initiative) }
 
-    context 'when an assignee should receive this notification' do
+    context 'when an admin should receive this notification' do
       let(:activity) { create(:activity, item: internal_comment, action: 'created') }
 
       it 'makes a notification on created internal comment activity' do
         notifications = described_class.make_notifications_on activity
         expect(notifications.first).to have_attributes(
-          recipient_id: assignee.id,
+          recipient_id: admin.id,
           initiating_user_id: internal_comment.author_id,
           post_id: initiative.id,
           internal_comment_id: internal_comment.id
@@ -32,8 +32,14 @@ RSpec.describe Notifications::InternalCommentOnInitiativeAssignedToYou do
       end
     end
 
-    context "when the internal comment is a comment on the assignee's internal comment" do
-      let(:parent_internal_comment) { create(:internal_comment, post: initiative, author: assignee) }
+    context 'when someone is assigned to the initiative' do
+      let(:initiative) { create(:initiative, assignee: create(:admin)) }
+
+      it_behaves_like 'no notification created'
+    end
+
+    context "when the internal comment is a comment on the recipient's internal comment" do
+      let(:parent_internal_comment) { create(:internal_comment, post: initiative, author: admin) }
       let(:internal_comment) { create(:internal_comment, parent: parent_internal_comment, post: initiative) }
 
       # Don't create this notification if the Activity (internal comment created)
@@ -41,27 +47,18 @@ RSpec.describe Notifications::InternalCommentOnInitiativeAssignedToYou do
       it_behaves_like 'no notification created'
     end
 
-    context 'when the internal comment contains a mention of the assignee' do
+    context 'when the internal comment contains a mention of the recipient' do
       let(:internal_comment) do
         create(
           :internal_comment,
           :with_mentions,
-          mentioned_users: [assignee],
+          mentioned_users: [admin],
           post: initiative
         )
       end
 
       # Don't create this notification if the Activity (internal comment created)
       # should lead to a MentionInInternalComment notification to the recipient.
-      it_behaves_like 'no notification created'
-    end
-
-    context 'when the internal comment is on an idea the assignee is assigned to' do
-      let(:idea) { create(:idea, assignee: assignee) }
-      let(:internal_comment) { create(:internal_comment, post: idea) }
-
-      # Don't create this notification if the Activity (internal comment created)
-      # should lead to a InternalCommentOnIdeaAssignedToYou notification to the recipient.
       it_behaves_like 'no notification created'
     end
   end

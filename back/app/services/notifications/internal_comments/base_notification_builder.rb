@@ -39,12 +39,24 @@ module Notifications
       internal_comment&.author_id
     end
 
+    def assignee_id
+      internal_comment&.post&.assignee_id
+    end
+
     def parent_author_id
       internal_comment&.parent&.author_id
     end
 
     def post
       internal_comment.post
+    end
+
+    def project_id
+      post&.project_id
+    end
+
+    def folder_id
+      post&.project&.folder_id
     end
   end
 end

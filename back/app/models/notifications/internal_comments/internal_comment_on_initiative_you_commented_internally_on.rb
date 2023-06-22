@@ -56,39 +56,14 @@
 #  fk_rails_...  (spam_report_id => spam_reports.id)
 #
 module Notifications
-  class InternalCommentOnInitiativeAssignedToYou < Notification
-    validates :initiating_user, :internal_comment, presence: true
+  class InternalComments::InternalCommentOnInitiativeYouCommentedInternallyOn < Notification
+    validates :initiating_user, :internal_comment, :post, presence: true
 
     ACTIVITY_TRIGGERS = { 'InternalComment' => { 'created' => true } }
-    EVENT_NAME = 'Internal comment on initiative assigned to you'
+    EVENT_NAME = 'Internal comment on initiative you commented internally on'
 
     def self.make_notifications_on(activity)
-      internal_comment = activity.item
-      recipient = internal_comment&.post&.assignee
-      recipient_id = recipient&.id
-      initiator_id = internal_comment&.author_id
-      parent_author_id = internal_comment&.parent&.author_id
-      post_type = internal_comment&.post_type
-
-      if post_type == 'Initiative' &&
-         recipient_id &&
-         initiator_id &&
-         (recipient_id != initiator_id) &&
-         (recipient_id != parent_author_id) &&
-         !MentionService.new.user_mentioned?(internal_comment.body, recipient)
-
-        attributes = {
-          recipient_id: recipient_id,
-          initiating_user_id: initiator_id,
-          internal_comment: internal_comment,
-          post_id: internal_comment.post_id,
-          post_type: post_type
-        }
-
-        [new(attributes)]
-      else
-        []
-      end
+      InternalComments::InternalCommentOnInitiativeYouCommentedInternallyOnBuilder.new(activity).build_notifications
     end
   end
 end

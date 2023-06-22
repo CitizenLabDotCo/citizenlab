@@ -56,48 +56,14 @@
 #  fk_rails_...  (spam_report_id => spam_reports.id)
 #
 module Notifications
-  class InternalCommentOnIdeaYouModerate < Notification
-    validates :initiating_user, :internal_comment, presence: true
+  class InternalComments::InternalCommentOnUnassignedInitiative < Notification
+    validates :initiating_user, :internal_comment, :post, presence: true
 
     ACTIVITY_TRIGGERS = { 'InternalComment' => { 'created' => true } }
-    EVENT_NAME = 'Internal comment on idea in project or folder you moderate'
+    EVENT_NAME = 'Internal comment on unassigned initiative'
 
     def self.make_notifications_on(activity)
-      internal_comment = activity.item
-      initiator_id = internal_comment&.author_id
-      assignee_id = internal_comment&.post&.assignee_id
-      parent_author_id = internal_comment&.parent&.author_id
-      post_type = internal_comment&.post_type
-      project_id = internal_comment&.post&.project_id
-      folder_id = internal_comment&.post&.project&.folder_id
-      notifications = []
-
-      if post_type == 'Idea' && initiator_id
-        moderators = User.project_moderator(project_id)
-        moderators += User.project_folder_moderator(folder_id) if folder_id
-
-        moderators.uniq.each do |recipient|
-          recipient_id = recipient.id
-
-          next if (recipient_id == initiator_id) ||
-                  (recipient_id == parent_author_id) ||
-                  (recipient_id == assignee_id) ||
-                  MentionService.new.user_mentioned?(internal_comment.body, recipient)
-
-          attributes = {
-            recipient_id: recipient_id,
-            initiating_user_id: initiator_id,
-            internal_comment: internal_comment,
-            post_id: internal_comment.post_id,
-            post_type: post_type,
-            project_id: internal_comment.post.project_id
-          }
-
-          notifications << new(attributes)
-        end
-      end
-
-      notifications
+      InternalComments::InternalCommentOnUnassignedInitiativeBuilder.new(activity).build_notifications
     end
   end
 end

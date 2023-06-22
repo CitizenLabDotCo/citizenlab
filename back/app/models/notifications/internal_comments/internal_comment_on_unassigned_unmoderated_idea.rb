@@ -56,47 +56,14 @@
 #  fk_rails_...  (spam_report_id => spam_reports.id)
 #
 module Notifications
-  class InternalCommentOnUnassignedInitiative < Notification
-    validates :initiating_user, :internal_comment, presence: true
+  class InternalComments::InternalCommentOnUnassignedUnmoderatedIdea < Notification
+    validates :initiating_user, :internal_comment, :post, presence: true
 
     ACTIVITY_TRIGGERS = { 'InternalComment' => { 'created' => true } }
-    EVENT_NAME = 'Internal comment on unassigned initiative'
+    EVENT_NAME = 'Internal comment on unassigned and unmoderated idea'
 
     def self.make_notifications_on(activity)
-      internal_comment = activity.item
-      initiator_id = internal_comment&.author_id
-      assignee_id = internal_comment&.post&.assignee_id
-      parent_author_id = internal_comment&.parent&.author_id
-      post_type = internal_comment&.post_type
-      notifications = []
-
-      if post_type == 'Initiative' &&
-         initiator_id &&
-         assignee_id.nil?
-
-        commenters = InternalComment.where(post_id: internal_comment.post_id).map(&:author)
-
-        User.admin.each do |recipient|
-          recipient_id = recipient.id
-
-          next if (recipient_id == initiator_id) ||
-                  (recipient_id == parent_author_id) ||
-                  MentionService.new.user_mentioned?(internal_comment.body, recipient) ||
-                  commenters.include?(recipient)
-
-          attributes = {
-            recipient_id: recipient_id,
-            initiating_user_id: initiator_id,
-            internal_comment: internal_comment,
-            post_id: internal_comment.post_id,
-            post_type: post_type
-          }
-
-          notifications << new(attributes)
-        end
-      end
-
-      notifications
+      InternalComments::InternalCommentOnUnassignedUnmoderatedIdeaBuilder.new(activity).build_notifications
     end
   end
 end

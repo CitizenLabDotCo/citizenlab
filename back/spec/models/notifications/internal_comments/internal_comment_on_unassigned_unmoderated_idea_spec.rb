@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Notifications::InternalCommentOnUnassignedUnmoderatedIdea do
+RSpec.describe Notifications::InternalComments::InternalCommentOnUnassignedUnmoderatedIdea do
   describe 'make_notifications_on' do
     let(:project) { create(:project) }
     let(:project_folder) { create(:project_folder, projects: [project]) }

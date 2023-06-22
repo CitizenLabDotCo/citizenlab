@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Notifications::InternalCommentOnInitiativeYouCommentedInternallyOn do
+RSpec.describe Notifications::InternalComments::InternalCommentOnInitiativeYouCommentedInternallyOn do
   describe 'make_notifications_on' do
     let(:initiative) { create(:initiative) }
     let!(:commenter) { create(:admin) }
@@ -17,8 +17,10 @@ RSpec.describe Notifications::InternalCommentOnInitiativeYouCommentedInternallyO
         expect(notifications.first).to have_attributes(
           recipient_id: commenter.id,
           initiating_user_id: internal_comment.author_id,
+          internal_comment_id: internal_comment.id,
           post_id: initiative.id,
-          internal_comment_id: internal_comment.id
+          post_type: 'Initiative',
+          project_id: nil
         )
       end
     end
@@ -35,8 +37,10 @@ RSpec.describe Notifications::InternalCommentOnInitiativeYouCommentedInternallyO
         expect(notifications.first).to have_attributes(
           recipient_id: project_moderator.id,
           initiating_user_id: internal_comment.author_id,
+          internal_comment_id: internal_comment.id,
           post_id: initiative2.id,
-          internal_comment_id: internal_comment.id
+          post_type: 'Initiative',
+          project_id: nil
         )
       end
     end
