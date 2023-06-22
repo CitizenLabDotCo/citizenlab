@@ -32,6 +32,12 @@ RSpec.describe Notifications::InternalComments::InternalCommentOnUnassignedIniti
       end
     end
 
+    context 'when the recipient is the internal comment author' do
+      let(:internal_comment) { create(:internal_comment, author: admin, post: initiative) }
+
+      it_behaves_like 'no notification created'
+    end
+
     context 'when someone is assigned to the initiative' do
       let(:initiative) { create(:initiative, assignee: create(:admin)) }
 

@@ -24,9 +24,33 @@ RSpec.describe Notifications::InternalComments::InternalCommentOnYourInternalCom
       end
     end
 
+    shared_examples 'no notification created' do
+      it 'does not make a notification on created internal comment activity' do
+        notifications_count = described_class.count
+        activity = create(:activity, item: internal_comment, action: 'created')
+        notifications = described_class.make_notifications_on activity
+
+        expect(notifications.count).to eq notifications_count
+      end
+    end
+
+    context 'when the recipient is the internal comment author' do
+      let(:parent_author) { parent_internal_comment.author }
+      let(:internal_comment) do
+        create(
+          :internal_comment,
+          author: parent_internal_comment.author,
+          parent: parent_internal_comment,
+          post: idea
+        )
+      end
+
+      it_behaves_like 'no notification created'
+    end
+
     context 'when the internal comment contains a mention of the parent author' do
       let(:parent_author) { parent_internal_comment.author }
-      let(:child_internal_comment) do
+      let(:internal_comment) do
         create(
           :internal_comment,
           :with_mentions,
@@ -38,13 +62,7 @@ RSpec.describe Notifications::InternalComments::InternalCommentOnYourInternalCom
 
       # Don't create this notification if the Activity (internal comment created)
       # should lead to a MentionInInternalComment notification to the recipient.
-      it 'does not make a notification on created internal comment activity' do
-        notifications_count = described_class.count
-        activity = create(:activity, item: child_internal_comment, action: 'created')
-        notifications = described_class.make_notifications_on activity
-
-        expect(notifications.count).to eq notifications_count
-      end
+      it_behaves_like 'no notification created'
     end
   end
 end

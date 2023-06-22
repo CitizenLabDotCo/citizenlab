@@ -36,5 +36,15 @@ RSpec.describe Notifications::InternalComments::MentionInInternalComment do
         project_id: nil
       )
     end
+
+    it 'does not make a notification on when the recipient is the internal comment author' do
+      user = create(:user)
+      internal_comment = create(:internal_comment, author: user)
+      notifications_count = described_class.count
+      activity = create(:activity, item: internal_comment, action: 'mentioned', payload: { mentioned_user: user.id })
+      notifications = described_class.make_notifications_on activity
+
+      expect(notifications.count).to eq notifications_count
+    end
   end
 end

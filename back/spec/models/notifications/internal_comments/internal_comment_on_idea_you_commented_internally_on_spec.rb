@@ -55,6 +55,12 @@ RSpec.describe Notifications::InternalComments::InternalCommentOnIdeaYouCommente
       end
     end
 
+    context 'when the recipient is the internal comment author' do
+      let(:internal_comment) { create(:internal_comment, author: commenter, post: idea) }
+
+      it_behaves_like 'no notification created'
+    end
+
     context "when the internal comment is a comment on the recipient's internal comment" do
       let(:parent_internal_comment) { create(:internal_comment, post: idea, author: commenter) }
       let(:internal_comment) { create(:internal_comment, parent: parent_internal_comment, post: idea) }

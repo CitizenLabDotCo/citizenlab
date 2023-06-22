@@ -35,6 +35,12 @@ RSpec.describe Notifications::InternalComments::InternalCommentOnUnassignedUnmod
       end
     end
 
+    context 'when the recipient is the internal comment author' do
+      let(:internal_comment) { create(:internal_comment, author: admin, post: idea) }
+
+      it_behaves_like 'no notification created'
+    end
+
     context 'when someone is assigned to the idea' do
       let(:idea) { create(:idea, assignee: create(:admin)) }
 
