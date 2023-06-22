@@ -1702,7 +1702,7 @@
   "app.utils.votingMethodUtils.budgetParticipationEnded": "<b>La soumission des budgets s'est clôturée le {endDate}.</b> Chaque participant disposait d'un budget total de <b>{maxBudget} {currency} à répartir entre {optionCount} options.</b>",
   "app.utils.votingMethodUtils.budgetSubmitted": "Votre budget a été soumis",
   "app.utils.votingMethodUtils.budgetSubmittedWithIcon": "Votre budget a été soumis 🎉",
-  "app.utils.votingMethodUtils.budgetingSubmissionInstructions2": "Vous disposez d'un montant total de <b>{maxBudget} USD à répartir entre {optionCount} options</b>. Sélectionnez vos options préférées en cliquant sur « Ajouter ». Une fois votre sélection terminée, cliquez sur \"Soumettre\" pour envoyer votre budget.",
+  "app.utils.votingMethodUtils.budgetingSubmissionInstructions2": "Vous disposez d'un montant total de <b>{maxBudget} {currency} à répartir entre {optionCount} options</b>. Sélectionnez vos options préférées en cliquant sur « Ajouter ». Une fois votre sélection terminée, cliquez sur \"Soumettre\" pour envoyer votre budget.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>Félicitations ! Votre budget a été soumis avec succès !</b> Vous pouvez vérifier vos choix ci-dessous. Vous avez la possibilité de les modifier jusqu'au <b>{endDate}</b>.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous": "<b>Félicitations, votre budget a été soumis avec succès !</b> Vous pouvez vérifier et modifier vos choix ci-dessous.",
   "app.utils.votingMethodUtils.budgets": "Budgets",
