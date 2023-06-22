@@ -106,7 +106,7 @@ const InternalCommentsSection = ({ postId, postType, className }: Props) => {
     setPosting(isPosting);
   };
 
-  const commentCount = post.data.attributes.comments_count;
+  const commentCount = post.data.attributes.internal_comments_count;
 
   return (
     <Box className={className || ''}>
