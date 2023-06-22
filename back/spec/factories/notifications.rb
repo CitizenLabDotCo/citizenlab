@@ -137,7 +137,7 @@ FactoryBot.define do
     association :post, factory: :idea
   end
 
-  factory :mention_in_internal_comment, parent: :notification, class: 'Notifications::MentionInInternalComment' do
+  factory :mention_in_internal_comment, parent: :notification, class: 'Notifications::InternalComments::MentionInInternalComment' do
     initiating_user
     internal_comment
     association :post, factory: :idea

@@ -56,32 +56,14 @@
 #  fk_rails_...  (spam_report_id => spam_reports.id)
 #
 module Notifications
-  class MentionInInternalComment < Notification
+  class InternalComments::MentionInInternalComment < Notification
     validates :initiating_user, :internal_comment, :post, presence: true
 
     ACTIVITY_TRIGGERS = { 'InternalComment' => { 'mentioned' => true } }
     EVENT_NAME = 'Mention in an internal_comment'
 
     def self.make_notifications_on(activity)
-      internal_comment = activity.item
-      recipient_id = activity.payload['mentioned_user']
-      initiator_id = internal_comment&.author_id
-
-      if recipient_id && initiator_id && (recipient_id != initiator_id)
-        attributes = {
-          recipient_id: recipient_id,
-          initiating_user_id: initiator_id,
-          internal_comment: internal_comment,
-          post_id: internal_comment.post_id,
-          post_type: internal_comment.post_type
-        }
-        if attributes[:post_type] == 'Idea'
-          attributes[:project_id] = internal_comment.post.project_id
-        end
-        [new(attributes)]
-      else
-        []
-      end
+      InternalComments::MentionInInternalCommentBuilder.new(activity).build_notifications
     end
   end
 end

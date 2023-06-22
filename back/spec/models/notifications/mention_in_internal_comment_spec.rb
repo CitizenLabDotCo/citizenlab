@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Notifications::MentionInInternalComment do
+RSpec.describe Notifications::InternalComments::MentionInInternalComment do
   describe 'make_notifications_on' do
     it 'makes a notification on mentioned in internal comment on idea activity' do
       internal_comment = create(:internal_comment)
@@ -13,8 +13,9 @@ RSpec.describe Notifications::MentionInInternalComment do
       expect(notifications.first).to have_attributes(
         recipient_id: user.id,
         initiating_user_id: internal_comment.author_id,
-        post_id: internal_comment.post_id,
         internal_comment_id: internal_comment.id,
+        post_id: internal_comment.post_id,
+        post_type: 'Idea',
         project_id: internal_comment.post.project_id
       )
     end
@@ -29,8 +30,10 @@ RSpec.describe Notifications::MentionInInternalComment do
       expect(notifications.first).to have_attributes(
         recipient_id: user.id,
         initiating_user_id: internal_comment.author_id,
+        internal_comment_id: internal_comment.id,
         post_id: internal_comment.post_id,
-        internal_comment_id: internal_comment.id
+        post_type: 'Initiative',
+        project_id: nil
       )
     end
   end
