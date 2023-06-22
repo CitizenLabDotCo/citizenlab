@@ -20,7 +20,7 @@ const campaignDeliveriesData: ICampaignStats = {
       delivered: 1,
       opened: 0,
       clicked: 0,
-      all: 1,
+      total: 1,
     },
   },
 };

@@ -14,7 +14,7 @@ export interface ICampaignStats {
       delivered: number;
       opened: number;
       clicked: number;
-      all: number;
+      total: number;
     };
   };
 }
