@@ -19,10 +19,16 @@ interface Props {
 
 const mapPostTypeToLink = (
   notification: IInternalCommentNotificationData
-): string => {
+): string | null => {
   switch (notification.attributes.post_type) {
-    case 'Idea':
+    case 'Idea': {
+      // project_id cannot be null for an idea but we need to check it for TS because we have no project_id on initiatives
+      if (!notification.attributes.project_id) {
+        return null;
+      }
       return `/admin/projects/${notification.attributes.project_id}/ideas/${notification.attributes.post_id}`;
+    }
+
     case 'Initiative':
       return `/admin/initiatives/${notification.attributes.post_id}`;
   }
@@ -53,16 +59,19 @@ const getNotificationMessage = (
   }
 };
 
-const InternalCommentNotification = memo<Props>((props) => {
-  const { notification } = props;
-
+const InternalCommentNotification = memo<Props>(({ notification }) => {
   const deletedUser =
     isNilOrError(notification.attributes.initiating_user_first_name) ||
     isNilOrError(notification.attributes.initiating_user_slug);
+  const linkTo = mapPostTypeToLink(notification);
+
+  if (!linkTo) {
+    return null;
+  }
 
   return (
     <NotificationWrapper
-      linkTo={mapPostTypeToLink(notification)}
+      linkTo={linkTo}
       timing={notification.attributes.created_at}
       icon={
         notification.attributes.type === 'mention_in_internal_comment'
