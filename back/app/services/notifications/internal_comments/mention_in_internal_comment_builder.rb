@@ -5,9 +5,7 @@ module Notifications
     protected
 
     def skip_recipient?(recipient)
-      initiator_id.nil? ||
-        initiator_id == recipient.id ||
-        MentionService.new.user_mentioned?(internal_comment.body, recipient)
+      initiator_id.nil? || initiator_id == recipient.id
     end
 
     def recipients

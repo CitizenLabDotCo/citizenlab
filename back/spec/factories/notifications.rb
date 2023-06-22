@@ -89,7 +89,7 @@ FactoryBot.define do
 
   factory :internal_comment_on_your_internal_comment,
     parent: :notification,
-    class: 'Notifications::InternalCommentOnYourInternalComment' do
+    class: 'Notifications::InternalComments::InternalCommentOnYourInternalComment' do
     initiating_user
     internal_comment
     association :post, factory: :idea

@@ -18,7 +18,7 @@ class NotificationService
     Notifications::InternalCommentOnInitiativeYouCommentedInternallyOn,
     Notifications::InternalCommentOnUnassignedInitiative,
     Notifications::InternalCommentOnUnassignedUnmoderatedIdea,
-    Notifications::InternalCommentOnYourInternalComment,
+    Notifications::InternalComments::InternalCommentOnYourInternalComment,
     Notifications::InviteAccepted,
     Notifications::MentionInComment,
     Notifications::InternalComments::MentionInInternalComment,

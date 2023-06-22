@@ -9,7 +9,7 @@ module Notifications
     end
 
     def build_notifications
-      recipients.map do |recipient|
+      recipients.filter_map do |recipient|
         next if skip_recipient?(recipient)
 
         notification_class.new(

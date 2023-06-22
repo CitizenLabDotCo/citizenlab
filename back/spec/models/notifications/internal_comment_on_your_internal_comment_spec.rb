@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Notifications::InternalCommentOnYourInternalComment do
+RSpec.describe Notifications::InternalComments::InternalCommentOnYourInternalComment do
   describe 'make_notifications_on' do
     let(:idea) { create(:idea) }
     let(:parent_internal_comment) { create(:internal_comment, post: idea) }
@@ -16,8 +16,9 @@ RSpec.describe Notifications::InternalCommentOnYourInternalComment do
         expect(notifications.first).to have_attributes(
           recipient_id: parent_internal_comment.author_id,
           initiating_user_id: child_internal_comment.author_id,
-          post_id: parent_internal_comment.post_id,
           internal_comment_id: child_internal_comment.id,
+          post_id: parent_internal_comment.post_id,
+          post_type: child_internal_comment.post_type,
           project_id: parent_internal_comment.post.project_id
         )
       end
