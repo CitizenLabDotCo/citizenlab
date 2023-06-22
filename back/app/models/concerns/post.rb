@@ -55,8 +55,8 @@ module Post
 
     scope :order_new, ->(direction = :desc) { order(published_at: direction) }
     scope :order_random, lambda { |user|
-      modulus = RandomOrderingService.new.modulus_of_the_day(user)
-      order(Arel.sql("(extract(epoch from #{table_name}.created_at) * 100)::bigint % #{modulus}, #{table_name}.id"))
+      hash_part_for_today_and_user = Time.zone.today.to_s + user&.id.to_s
+      order(Arel.sql("md5(concat(id, '#{hash_part_for_today_and_user}'))"))
     }
     scope :order_author_name, lambda { |direction = :desc|
       includes(:author).order('users.first_name' => direction, 'users.last_name' => direction)
