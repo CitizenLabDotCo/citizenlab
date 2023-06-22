@@ -40,7 +40,6 @@ import {
 import { Observer, Observable, Subscription } from 'rxjs';
 
 // constants
-import { authApiEndpoint } from 'services/auth';
 import { currentOnboardingCampaignsApiEndpoint } from 'services/onboardingCampaigns';
 import { isUnauthorizedError } from 'utils/helperUtils';
 
@@ -123,19 +122,6 @@ class Streams {
     const promises: Promise<any>[] = [];
     const promisesToAwait: Promise<any>[] = [];
 
-    // rootStreams are the streams that should always be refetched when a reset occurs,
-    // and for which their refetch should be awaited before any others streams are refetched.
-    // Currently the only 2 rootstreams are those for the authUser
-    // and appConfiguration endpoints
-    const rootStreamIds = [authApiEndpoint];
-
-    rootStreamIds.forEach((rootStreamId) => {
-      const stream = this.streams[rootStreamId];
-      if (!stream) return;
-
-      promisesToAwait.push(stream.fetch());
-    });
-
     // Here we loop through all streams that are currently in the browser memory.
     // Every stream in the browser memory will be either refetched or removed
     // when reset() is executed, with the exception of the rootstreams
@@ -144,15 +130,9 @@ class Streams {
     Object.keys(this.streams).forEach((streamId) => {
       // If it's a rootstream or the custom fields stream
       // ('/users/custom_fields/schema') we ignore it.
-      // The rootstreams are already included in promisesToAwait and therefore
-      // so already queued for refetch, so would be redundant to add them to
-      // the list of refetched streams here as well.
       // We also ignore the custom fields stream in order to fix a bug
       // that could potentially freeze the browser when the custom fields stream would be refetched.
-      if (
-        !includes(rootStreamIds, streamId) &&
-        !streamId.endsWith('/users/custom_fields/schema')
-      ) {
+      if (!streamId.endsWith('/users/custom_fields/schema')) {
         // If the stream is currently active
         // (= being subscribed to by one or more components that are mounted when reset() gets called)
         // we inlcude the stream in the list of streams to refetch.
@@ -430,10 +410,7 @@ class Streams {
           // but rather the back-end telling us the user needs to be logged in to use the endpoint.
           // We can therefore view errors from these 2 endpoints as valid return values
           // and exclude them from the error-handling logic.
-          if (
-            streamId !== authApiEndpoint &&
-            streamId !== currentOnboardingCampaignsApiEndpoint
-          ) {
+          if (streamId !== currentOnboardingCampaignsApiEndpoint) {
             // push the error reponse into the stream
             this.streams[streamId].observer.next(error);
 
@@ -444,8 +421,6 @@ class Streams {
             }
 
             logError(error);
-          } else if (streamId === authApiEndpoint) {
-            this.streams[streamId].observer.next(null);
           }
 
           return null;
@@ -878,10 +853,6 @@ class Streams {
     }
 
     const mergedStreamIds = [...streamIds1, ...streamIds2, ...streamIds3];
-
-    if (includes(keys, authApiEndpoint)) {
-      mergedStreamIds.push(authApiEndpoint);
-    }
 
     uniq(mergedStreamIds).forEach((streamId) => {
       if (

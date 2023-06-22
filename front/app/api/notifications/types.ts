@@ -32,13 +32,15 @@ export interface IAdminRightsReceivedNotificationData
   };
 }
 
+type PostType = 'Initiative' | 'Idea';
+
 export interface ICommentDeletedByAdminNotificationData
   extends IBaseNotificationData {
   attributes: {
     type: 'comment_deleted_by_admin';
     read_at: string | null;
     created_at: string;
-    post_type: 'Initiative' | 'Idea';
+    post_type: PostType;
     post_slug: string | null;
     post_title_multiloc: Multiloc;
     reason_code: 'irrelevant' | 'inappropriate' | 'other';
@@ -55,7 +57,7 @@ export interface ICommentMarkedAsSpamNotificationData
     initiating_user_first_name: string | null;
     initiating_user_last_name: string | null;
     initiating_user_slug: string | null;
-    post_type: 'Initiative' | 'Idea';
+    post_type: PostType;
     post_slug: string | null;
     post_title_multiloc: Multiloc;
   };
@@ -70,7 +72,7 @@ export interface ICommentOnYourCommentNotificationData
     initiating_user_first_name: string | null;
     initiating_user_last_name: string | null;
     initiating_user_slug: string | null;
-    post_type: 'Initiative' | 'Idea';
+    post_type: PostType;
     post_slug: string | null;
     post_title_multiloc: Multiloc;
   };
@@ -180,9 +182,37 @@ export interface IMentionInCommentNotificationData
     initiating_user_first_name: string | null;
     initiating_user_last_name: string | null;
     initiating_user_slug: string | null;
-    post_type: 'Initiative' | 'Idea';
+    post_type: PostType;
     post_slug: string | null;
     post_title_multiloc: Multiloc;
+  };
+}
+
+type InternalCommentType =
+  | 'mention_in_internal_comment'
+  | 'internal_comment_on_your_internal_comment'
+  | 'internal_comment_on_idea_assigned_to_you'
+  | 'internal_comment_on_initiative_assigned_to_you'
+  | 'internal_comment_on_idea_you_moderate'
+  | 'internal_comment_on_idea_you_commented_internally_on'
+  | 'internal_comment_on_initiative_you_commented_internally_on'
+  | 'internal_comment_on_unassigned_unmoderated_idea'
+  | 'internal_comment_on_unassigned_initiative';
+
+export interface IInternalCommentNotificationData
+  extends IBaseNotificationData {
+  attributes: {
+    type: InternalCommentType;
+    read_at: string | null;
+    created_at: string;
+    initiating_user_first_name: string | null;
+    initiating_user_last_name: string | null;
+    initiating_user_slug: string | null;
+    post_type: PostType;
+    post_slug: string | null;
+    post_title_multiloc: Multiloc;
+    post_id: string;
+    project_id: string | null;
   };
 }
 
@@ -196,7 +226,7 @@ export interface IMentionInOfficialFeedbackNotificationData
     initiating_user_last_name: string | null;
     initiating_user_slug: string | null;
     official_feedback_author: Multiloc;
-    post_type: 'Initiative' | 'Idea';
+    post_type: PostType;
     post_slug: string | null;
     post_title_multiloc: Multiloc;
   };
@@ -418,6 +448,7 @@ export interface INotificationDataMap {
   IInitiativeMarkedAsSpamNotificationData: IInitiativeMarkedAsSpamNotificationData;
   IInviteAcceptedNotificationData: IInviteAcceptedNotificationData;
   IMentionInCommentNotificationData: IMentionInCommentNotificationData;
+  IInternalCommentNotificationData: IInternalCommentNotificationData;
   IMentionInOfficialFeedbackNotificationData: IMentionInOfficialFeedbackNotificationData;
   IOfficialFeedbackOnCommentedIdeaNotificationData: IOfficialFeedbackOnCommentedIdeaNotificationData;
   IOfficialFeedbackOnCommentedInitiativeNotificationData: IOfficialFeedbackOnCommentedInitiativeNotificationData;

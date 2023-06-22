@@ -72,7 +72,6 @@ const InternalParentComment = ({
     const projectId = idea?.data.relationships.project.data.id || null;
     const commentDeleted =
       comment.data.attributes.publication_status === 'deleted';
-    const showCommentForm = !commentDeleted;
     const hasChildComments = childCommentIds && childCommentIds.length > 0;
     const modifiedChildCommentIds = childComments
       ? childComments
@@ -137,15 +136,13 @@ const InternalParentComment = ({
             />
           ))}
 
-        {showCommentForm && (
-          <StyledChildCommentForm
-            ideaId={ideaId}
-            initiativeId={initiativeId}
-            postType={postType}
-            projectId={projectId}
-            parentId={commentId}
-          />
-        )}
+        <StyledChildCommentForm
+          ideaId={ideaId}
+          initiativeId={initiativeId}
+          postType={postType}
+          projectId={projectId}
+          parentId={commentId}
+        />
       </Container>
     );
   }

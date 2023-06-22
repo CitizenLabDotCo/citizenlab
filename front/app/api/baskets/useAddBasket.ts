@@ -13,7 +13,7 @@ const addBasket = async (requestBody: INewBasket) =>
     body: { basket: requestBody },
   });
 
-const useAddBasket = () => {
+const useAddBasket = (projectId: string) => {
   const queryClient = useQueryClient();
   return useMutation<IBasket, CLErrors, INewBasket>({
     mutationFn: addBasket,
@@ -22,14 +22,12 @@ const useAddBasket = () => {
       if (variables.participation_context_type === 'Project') {
         queryClient.invalidateQueries({
           queryKey: projectsKeys.item({
-            id: variables.participation_context_id,
+            id: projectId,
           }),
         });
       } else {
         queryClient.invalidateQueries({
-          queryKey: phasesKeys.item({
-            phaseId: variables.participation_context_id,
-          }),
+          queryKey: phasesKeys.list({ projectId }),
         });
       }
     },
