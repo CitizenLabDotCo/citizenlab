@@ -32,6 +32,7 @@ export const data: IIdeaData[] = [
       likes_count: 1,
       dislikes_count: 0,
       comments_count: 1,
+      internal_comments_count: 0,
       official_feedbacks_count: 0,
       location_point_geojson: null,
       location_description: null,
