@@ -14,7 +14,7 @@ const fetchCampaignDeliveries = ({
   campaignId,
 }: IParameters) =>
   fetcher<ICampaignDeliveries>({
-    path: `/campaigns${campaignId}/deliveries`,
+    path: `/campaigns/${campaignId}/deliveries`,
     action: 'get',
     queryParams: {
       'page[number]': pageNumber,
