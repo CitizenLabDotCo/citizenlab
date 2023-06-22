@@ -188,18 +188,6 @@ export interface IMentionInCommentNotificationData
   };
 }
 
-interface IInternalCommentBaseAttributes {
-  read_at: string | null;
-  created_at: string;
-  initiating_user_first_name: string | null;
-  initiating_user_last_name: string | null;
-  initiating_user_slug: string | null;
-  post_type: PostType;
-  post_slug: string | null;
-  post_title_multiloc: Multiloc;
-  post_id: string;
-}
-
 type InternalCommentType =
   | 'mention_in_internal_comment'
   | 'internal_comment_on_your_internal_comment'
