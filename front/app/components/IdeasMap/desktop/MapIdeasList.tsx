@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 
 // components
 import { Icon, Spinner } from '@citizenlab/cl2-component-library';
@@ -140,6 +140,20 @@ const MapIdeasList = memo<Props>(({ projectId, phaseId, className }) => {
     topics,
   });
 
+  const handleSearchOnChange = useCallback((search: string | null) => {
+    updateSearchParams({ search });
+  }, []);
+
+  const handleSortOnChange = useCallback((sort: Sort) => {
+    updateSearchParams({ sort });
+  }, []);
+
+  const handleTopicsOnChange = useCallback((topics: string[]) => {
+    topics.length === 0
+      ? updateSearchParams({ topics: undefined })
+      : updateSearchParams({ topics });
+  }, []);
+
   const isFiltered = (search && search.length > 0) || topics.length > 0;
 
   if (isNilOrError(ideaCustomFieldsSchema)) return null;
@@ -149,20 +163,6 @@ const MapIdeasList = memo<Props>(({ projectId, phaseId, className }) => {
     ideaCustomFieldsSchema.data.attributes,
     locale
   );
-
-  const handleSearchOnChange = (search: string | null) => {
-    updateSearchParams({ search });
-  };
-
-  const handleSortOnChange = (sort: Sort) => {
-    updateSearchParams({ sort });
-  };
-
-  const handleTopicsOnChange = (topics: string[]) => {
-    topics.length === 0
-      ? updateSearchParams({ topics: undefined })
-      : updateSearchParams({ topics });
-  };
 
   return (
     <Container className={className || ''}>
