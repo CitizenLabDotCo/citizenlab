@@ -22,7 +22,7 @@ const mapPostTypeToLink = (
 ): string => {
   switch (notification.attributes.post_type) {
     case 'Idea':
-      return `/admin/ideas/${notification.attributes.post_id}`;
+      return `/admin/projects/${notification.attributes.project_id}/ideas/${notification.attributes.post_id}`;
     case 'Initiative':
       return `/admin/initiatives/${notification.attributes.post_id}`;
   }
