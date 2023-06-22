@@ -153,6 +153,7 @@ const InternalCommentsMoreActions = ({
             processing={isLoading}
             className="e2e-confirm-deletion"
             onClick={handleDeleteClick}
+            id="e2e-confirm-deletion"
           >
             <FormattedMessage
               {...commentsMessages.commentDeletionConfirmButton}
