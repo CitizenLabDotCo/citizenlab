@@ -92,7 +92,8 @@ class ApplicationMailer < ActionMailer::Base
       subject: subject,
       from: from_email,
       to: to_email,
-      reply_to: reply_to_email
+      reply_to: reply_to_email,
+      domain: domain
     }
   end
 
@@ -114,7 +115,13 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   def from_email
-    email_address_with_name(ENV.fetch('DEFAULT_FROM_EMAIL'), organization_name)
+    email = raw_from_email
+
+    email_address_with_name(email, organization_name)
+  end
+
+  def custom_from_email
+    app_settings.core.from_email
   end
 
   def to_email
@@ -123,6 +130,14 @@ class ApplicationMailer < ActionMailer::Base
 
   def reply_to_email
     app_settings.core.reply_to_email.presence || ENV.fetch('DEFAULT_FROM_EMAIL')
+  end
+
+  def domain
+    raw_from_email&.split('@')&.last
+  end
+
+  def raw_from_email
+    custom_from_email.presence || ENV.fetch('DEFAULT_FROM_EMAIL')
   end
 
   def app_settings

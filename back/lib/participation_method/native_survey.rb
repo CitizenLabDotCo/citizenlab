@@ -78,6 +78,10 @@ module ParticipationMethod
       false
     end
 
+    def return_disabled_actions?
+      true
+    end
+
     # The "Additional information" category in the UI should be suppressed.
     # As long as the form builder does not support sections/categories,
     # we can suppress the heading by returning nil.
