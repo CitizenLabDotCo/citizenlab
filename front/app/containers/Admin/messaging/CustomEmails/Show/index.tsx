@@ -5,7 +5,8 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { adopt } from 'react-adopt';
 
 // services & resources
-import { sendCampaign, sendCampaignPreview, isDraft } from 'services/campaigns';
+import { sendCampaign, sendCampaignPreview } from 'services/campaigns';
+import { isDraft } from 'api/campaigns/util';
 import { ICampaignData } from 'api/campaigns/types';
 import GetCampaign from 'resources/GetCampaign';
 import GetGroup from 'resources/GetGroup';
