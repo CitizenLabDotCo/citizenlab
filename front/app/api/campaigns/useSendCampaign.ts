@@ -16,7 +16,7 @@ const useSendCampaign = () => {
   return useMutation<ICampaign, CLErrors, string>({
     mutationFn: sendCampaign,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: campaignKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: campaignKeys.all() });
     },
   });
 };
