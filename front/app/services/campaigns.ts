@@ -1,4 +1,4 @@
-import { IRelationship, Multiloc, ILinks } from 'typings';
+import { IRelationship, ILinks } from 'typings';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { ICampaignData } from 'api/campaigns/types';
@@ -6,15 +6,6 @@ import { queryClient } from 'utils/cl-react-query/queryClient';
 import campaignsKeys from 'api/campaigns/keys';
 
 const apiEndpoint = `${API_PATH}/campaigns`;
-
-export interface CampaignCreation {
-  campaign_name: string;
-  subject_multiloc: Multiloc;
-  body_multiloc: Multiloc;
-  sender: string;
-  reply_to?: string;
-  group_ids?: string[];
-}
 
 export interface ICampaign {
   data: ICampaignData;
@@ -56,16 +47,6 @@ export interface ICampaignStats {
   opened: number;
   clicked: number;
   all: number;
-}
-
-export async function createCampaign(campaignData: CampaignCreation) {
-  const stream = await streams.add<ICampaign>(`${apiEndpoint}`, {
-    campaign: campaignData,
-  });
-
-  queryClient.invalidateQueries({ queryKey: campaignsKeys.lists() });
-
-  return stream;
 }
 
 export async function sendCampaign(campaignId: string) {
