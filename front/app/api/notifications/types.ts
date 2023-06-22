@@ -215,7 +215,16 @@ export interface IInternalCommentNotificationData
   extends IBaseNotificationData {
   attributes: {
     type: InternalCommentType;
-  } & IInternalCommentBaseAttributes;
+    read_at: string | null;
+    created_at: string;
+    initiating_user_first_name: string | null;
+    initiating_user_last_name: string | null;
+    initiating_user_slug: string | null;
+    post_type: PostType;
+    post_slug: string | null;
+    post_title_multiloc: Multiloc;
+    post_id: string;
+  };
 }
 
 export interface IMentionInOfficialFeedbackNotificationData
