@@ -217,6 +217,7 @@ commercial_engines = [
   # group them with the other "id_" engines.
   'id_hoplr',
   'id_vienna_saml',
+  'id_nemlog_in',
   'verification'
 ]
 
