@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::Notifications::InternalCommentNotificationSerializer < WebApi::V1::Notifications::NotificationSerializer
-  attribute :post_type
+  attributes :post_type, :post_id, :project_id
 
   attribute :initiating_user_first_name do |object|
     object.initiating_user&.first_name
