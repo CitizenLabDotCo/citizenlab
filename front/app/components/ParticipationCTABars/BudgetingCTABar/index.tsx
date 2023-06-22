@@ -30,6 +30,7 @@ import eventEmitter from 'utils/eventEmitter';
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
+import { getVotingMethodConfig } from 'utils/votingMethodUtils/votingMethodUtils';
 
 export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
@@ -44,6 +45,9 @@ export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
     basketId = project.relationships.user_basket?.data?.id || null;
   }
   const basket = useBasket(basketId);
+  const votingConfig = getVotingMethodConfig(
+    currentPhase?.attributes?.voting_method || project.attributes.voting_method
+  );
 
   // Listen for budgeting exceeded error
   useEffect(() => {
@@ -123,6 +127,8 @@ export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
     </Button>
   );
 
+  const voteTerm = 'votes'; // TODO: Get from project/phase attributes once implemented on BE.
+
   return (
     <>
       <ParticipationCTAContent
@@ -135,7 +141,7 @@ export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
               maxBudget - (basket?.attributes.total_budget || 0)
             ).toLocaleString()}{' '}
             / {maxBudget.toLocaleString()}{' '}
-            {appConfig?.data.attributes.settings.core.currency}{' '}
+            {voteTerm || appConfig?.data.attributes.settings.core.currency}{' '}
             {formatMessage(messages.left)}
           </Text>
         }
