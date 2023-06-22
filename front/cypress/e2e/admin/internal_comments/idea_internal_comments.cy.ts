@@ -1,13 +1,16 @@
 import { randomString } from '../../../support/commands';
 
 describe('Idea internal comments', () => {
-  let projectId: string = null as any;
-  let ideaId: string = null as any;
+  let projectId: string;
+  let ideaId1: string;
+  let ideaId2: string;
   const projectTitle = randomString();
   const projectDescriptionPreview = randomString();
   const projectDescription = randomString();
-  const ideaTitle = randomString();
-  const ideaContent = randomString();
+  const ideaTitle1 = randomString();
+  const ideaContent1 = randomString();
+  const ideaTitle2 = randomString();
+  const ideaContent2 = randomString();
 
   before(() => {
     cy.apiCreateProject({
@@ -20,21 +23,23 @@ describe('Idea internal comments', () => {
     })
       .then((project) => {
         projectId = project.body.data.id;
-        return cy.apiCreateIdea(projectId, ideaTitle, ideaContent);
+        return cy.apiCreateIdea(projectId, ideaTitle1, ideaContent1);
       })
-      .then((idea) => {
-        ideaId = idea.body.data.id;
-        cy.setAdminLoginCookie();
-        cy.visit(`admin/projects/${projectId}/ideas/${ideaId}`);
+      .then((idea1) => {
+        ideaId1 = idea1.body.data.id;
+        return cy.apiCreateIdea(projectId, ideaTitle2, ideaContent2);
+      })
+      .then((idea2) => {
+        ideaId2 = idea2.body.data.id;
       });
   });
 
   it('allows users to post, edit and delete an internal comment', () => {
     const internalComment = randomString();
     const editedComment = randomString();
-
+    cy.setAdminLoginCookie();
+    cy.visit(`admin/projects/${projectId}/ideas/${ideaId1}`);
     cy.acceptCookies();
-
     // Create comment and check that comment is created
     cy.get('[data-cy="e2e-tab-internal"]').click();
     cy.get('#submit-comment').should('exist');
@@ -64,8 +69,52 @@ describe('Idea internal comments', () => {
     cy.get('.e2e-parentcomment').should('not.exist');
   });
 
+  it('allows users to reply to internal comments, edit and delete a reply', () => {
+    const internalComment = randomString();
+    const replyComment = randomString();
+    const editedReply = randomString();
+    cy.setAdminLoginCookie();
+    cy.visit(`admin/projects/${projectId}/ideas/${ideaId2}`);
+    cy.acceptCookies();
+    // Create comment and check that comment is created
+    cy.get('[data-cy="e2e-tab-internal"]').click();
+    cy.get('#submit-comment').should('exist');
+    cy.get('#submit-comment').click().type(internalComment);
+    cy.get('.e2e-submit-parentcomment').click();
+    cy.get('.e2e-parentcomment').contains(internalComment);
+
+    // Reply to comment and check that reply is created
+    cy.get('.e2e-comment-reply-button').should('exist');
+    cy.get('.e2e-comment-reply-button').click();
+    cy.get('#e2e-child-comment-text-area').should('exist');
+    cy.get('#e2e-child-comment-text-area').click().type(replyComment);
+    cy.get('.e2e-submit-childcomment').first().click();
+    cy.get('.e2e-childcomment').contains(replyComment);
+
+    // Edit reply and check that reply is edited
+    cy.get('[data-testid="moreOptionsButton"]').eq(1).should('exist');
+    cy.get('[data-testid="moreOptionsButton"]').eq(1).click();
+    cy.get('.e2e-more-actions-list button').eq(1).contains('Edit');
+    cy.get('.e2e-more-actions-list button').eq(1).click();
+    cy.get('#e2e-internal-comment-edit-textarea')
+      .click()
+      .clear()
+      .type(editedReply);
+    cy.get('#e2e-save-internal-comment-edit-button').click();
+    cy.get('.e2e-childcomment').contains(editedReply);
+
+    // Delete reply and check that reply is deleted
+    cy.get('[data-testid="moreOptionsButton"]').eq(1).should('exist');
+    cy.get('[data-testid="moreOptionsButton"]').eq(1).click();
+    cy.get('.e2e-more-actions-list button').eq(0).contains('Delete');
+    cy.get('.e2e-more-actions-list button').eq(0).click();
+    cy.get('#e2e-confirm-deletion').should('exist');
+    cy.get('#e2e-confirm-deletion').click();
+    cy.get('.e2e-childcomment').contains('This comment has been deleted.');
+  });
+
   after(() => {
-    cy.apiRemoveIdea(ideaId);
+    cy.apiRemoveIdea(ideaId1);
     cy.apiRemoveProject(projectId);
   });
 });

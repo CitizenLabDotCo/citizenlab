@@ -287,6 +287,7 @@ const InternalChildCommentForm = ({
               </HiddenLabel>
               <MentionsTextArea
                 className={`childcommentform-${parentId}`}
+                id="e2e-child-comment-text-area"
                 name="comment"
                 placeholder={formatMessage(
                   commentsMessages.childCommentBodyPlaceholder
