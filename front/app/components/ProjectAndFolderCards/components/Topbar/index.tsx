@@ -130,6 +130,7 @@ interface Props {
   availableTabs: PublicationTab[];
   showTitle: boolean;
   showSearch?: boolean;
+  search: string | null;
   showFilters: boolean;
   hasPublications: boolean;
   onChangeTopics: (topics: string[]) => void;
@@ -146,6 +147,7 @@ const Header = ({
   availableTabs,
   showTitle,
   showSearch,
+  search,
   showFilters,
   hasPublications,
   onChangeTopics,
@@ -240,6 +242,7 @@ const Header = ({
 
       {showSearch && (
         <StyledSearchInput
+          searchTerm={search}
           onChange={handleOnSearchChange}
           a11y_numberOfSearchResults={statusCounts.all}
           setInputRef={handleSetSearchInputRef}

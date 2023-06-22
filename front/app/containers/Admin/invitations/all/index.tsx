@@ -55,7 +55,7 @@ const EmptyStateContainer = styled.div`
 `;
 
 const InvitesTable = () => {
-  const [searchValue, setSearchValue] = useState('');
+  const [searchTerm, setSearchTerm] = useState<string | null>(null);
   const [exporting, setExporting] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
   const [sort, setSort] = useState<Sort>('-created_at');
@@ -63,7 +63,7 @@ const InvitesTable = () => {
   const { data: invites } = useInvites({
     sort,
     pageNumber,
-    search: searchValue,
+    search: searchTerm ?? undefined,
   });
 
   if (!invites) return null;
@@ -101,7 +101,7 @@ const InvitesTable = () => {
   };
 
   const handleChangeSearchTerm = (searchValue: string) => {
-    setSearchValue(searchValue);
+    setSearchTerm(searchValue);
   };
 
   const sortAttribute = getSortAttribute<Sort, SortAttribute>(sort);
@@ -111,6 +111,7 @@ const InvitesTable = () => {
     <Container>
       <HeaderContainer>
         <SearchInput
+          searchTerm={searchTerm}
           onChange={handleChangeSearchTerm}
           a11y_numberOfSearchResults={invites.data.length}
         />
@@ -161,7 +162,7 @@ const InvitesTable = () => {
         </Table>
       )}
 
-      {isEmpty(invites.data) && !isEmpty(searchValue) && (
+      {isEmpty(invites.data) && !isEmpty(searchTerm) && (
         <EmptyStateContainer>
           <FormattedMessage {...messages.currentlyNoInvitesThatMatchSearch} />
         </EmptyStateContainer>

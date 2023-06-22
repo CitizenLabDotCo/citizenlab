@@ -379,6 +379,7 @@ const InputsTable = ({
     <Inputs data-testid="insightsInputsTable">
       <SearchContainer>
         <SearchInput
+          searchTerm={search}
           onChange={onSearch}
           a11y_numberOfSearchResults={inputs.data.length}
         />
@@ -407,12 +408,13 @@ const InputsTable = ({
           </Button>
         </Box>
       </SearchContainer>
-      {inputsCategoryFilter === 'recentlyPosted' && inputs.data.length !== 0 && (
-        <RecentlyPostedInfoBox data-testid="insightsRecentlyAddedInfobox">
-          <Icon name="refresh" />
-          {formatMessage(messages.inputsTableRecentlyPostedInfoBox)}
-        </RecentlyPostedInfoBox>
-      )}
+      {inputsCategoryFilter === 'recentlyPosted' &&
+        inputs.data.length !== 0 && (
+          <RecentlyPostedInfoBox data-testid="insightsRecentlyAddedInfobox">
+            <Icon name="refresh" />
+            {formatMessage(messages.inputsTableRecentlyPostedInfoBox)}
+          </RecentlyPostedInfoBox>
+        )}
       <Box display="flex" justifyContent="space-between">
         <Box display="flex" minHeight="44px">
           <TableTitle />

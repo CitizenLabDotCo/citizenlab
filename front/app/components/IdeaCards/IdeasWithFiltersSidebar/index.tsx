@@ -239,6 +239,7 @@ const IdeaCards = ({ ideaQueryParameters, onUpdateQuery }: Props) => {
               />
 
               <MobileSearchInput
+                searchTerm={ideaQueryParameters.search ?? null}
                 onChange={handleSearchOnChange}
                 a11y_numberOfSearchResults={list.length}
               />

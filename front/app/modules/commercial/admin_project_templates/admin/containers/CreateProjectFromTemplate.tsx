@@ -174,6 +174,7 @@ const CreateProjectFromTemplate = memo(
         loading={loading}
         onLoadMore={handleLoadMoreTemplatesOnClick}
         loadingMore={loadingMore}
+        search={search}
         onSearchChange={handleSearchOnChange}
         onPurposeFilterChange={handlePurposeFilterOnChange}
         onDepartmentFilterChange={handleDepartmentFilterOnChange}

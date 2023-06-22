@@ -157,6 +157,7 @@ interface Props {
   allUsersIds: string[];
   groupId?: string;
   deleteUsersFromGroup?: (userIds: string[]) => void;
+  search: string | null;
   onSearch: (newValue: string) => void;
   usersDataLength: number;
 }
@@ -169,6 +170,7 @@ const UserTableActions = ({
   unselectAll,
   deleteUsersFromGroup,
   groupType,
+  search,
   onSearch,
   usersDataLength,
 }: Props) => {
@@ -437,6 +439,7 @@ const UserTableActions = ({
       </StyledBox>
       <Box flex="0 0 250px">
         <SearchInput
+          searchTerm={search}
           onChange={onSearch}
           a11y_numberOfSearchResults={usersDataLength}
         />

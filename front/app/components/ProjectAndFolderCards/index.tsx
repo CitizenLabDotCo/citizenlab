@@ -112,6 +112,7 @@ const ProjectAndFolderCards = ({
       publicationStatusFilter={publicationStatusFilter}
       onChangeTopics={onChangeTopics}
       onChangeAreas={onChangeAreas}
+      search={search}
       onChangeSearch={handleSearchChange}
       showSearch={showSearch}
       showFilters={true}

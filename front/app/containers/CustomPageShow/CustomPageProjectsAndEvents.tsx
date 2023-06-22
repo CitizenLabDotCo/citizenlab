@@ -89,6 +89,7 @@ const CustomPageProjectsAndEvents = ({ page }: Props) => {
             showTitle={false}
             showFilters={false}
             showSearch={false}
+            search={null}
             adminPublications={adminPublications || []}
             statusCountsWithoutFilters={getStatusCounts(
               statusCountsWithoutFilters

@@ -10,6 +10,7 @@ import { injectIntl } from 'utils/cl-intl';
 import { ScreenReaderOnly } from 'utils/a11y';
 
 export interface Props {
+  searchTerm: string | null;
   placeholder?: string;
   ariaLabel?: string;
   debounce?: number;
@@ -23,6 +24,7 @@ export interface Props {
 }
 
 const SearchInputWrapper = ({
+  searchTerm,
   placeholder,
   ariaLabel,
   debounce,
@@ -39,6 +41,7 @@ const SearchInputWrapper = ({
     </Label>
     <SearchInput
       id="search-input"
+      searchTerm={searchTerm}
       placeholder={placeholder || formatMessage(messages.searchPlaceholder)}
       ariaLabel={ariaLabel || formatMessage(messages.searchAriaLabel)}
       debounce={debounce}

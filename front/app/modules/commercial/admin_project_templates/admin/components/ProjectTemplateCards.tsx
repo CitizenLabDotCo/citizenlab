@@ -93,6 +93,7 @@ interface Props {
   loading: boolean;
   onLoadMore: () => void;
   loadingMore: boolean;
+  search: string | null;
   onSearchChange: (searchValue: string) => void;
   onPurposeFilterChange: (purposes: string[]) => void;
   onDepartmentFilterChange: (departments: string[]) => void;
@@ -113,6 +114,7 @@ const ProjectTemplateCards = memo<Props & WrappedComponentProps>(
     loadingMore,
     loading,
     onLoadMore,
+    search,
     onSearchChange,
     onPurposeFilterChange,
     onDepartmentFilterChange,
@@ -137,6 +139,7 @@ const ProjectTemplateCards = memo<Props & WrappedComponentProps>(
 
           <Right>
             <StyledSearchInput
+              searchTerm={search}
               placeholder={searchPlaceholder}
               ariaLabel={searchAriaLabel}
               onChange={onSearchChange}

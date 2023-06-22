@@ -267,6 +267,7 @@ const IdeasWithoutFiltersSidebar = ({
             )}
             {!showMapView && (
               <StyledSearchInput
+                searchTerm={ideaQueryParameters.search ?? null}
                 className="e2e-search-ideas-input"
                 onChange={handleSearchOnChange}
                 a11y_numberOfSearchResults={list.length}

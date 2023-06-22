@@ -56,14 +56,15 @@ const UserManager = ({
     useState<IQueryParameters['pageNumber']>(1);
   const [selectedUsers, setSelectedUsers] = useState<SelectedUsersType>('none');
   const [errors, setErrors] = useState<error[]>([]);
-  const [search, setSearch] = useState<string | undefined>(undefined);
-  const searchUser = (searchTerm: string) => {
-    setSearch(isString(searchTerm) && !isEmpty(searchTerm) ? searchTerm : '');
+  const [search, setSearch] = useState<string | null>(null);
+
+  const searchUser = (searchTerm: string | null) => {
+    setSearch(isString(searchTerm) && !isEmpty(searchTerm) ? searchTerm : null);
   };
 
   const { data: users } = useUsers({
     include_inactive: includeInactive,
-    search,
+    search: search ?? '',
     group: groupId,
     can_moderate: canModerate,
     only_blocked: onlyBlocked,
@@ -176,6 +177,7 @@ const UserManager = ({
         toggleSelectAll={toggleAllUsers}
         unselectAll={unselectAllUsers}
         deleteUsersFromGroup={deleteUsersFromGroup}
+        search={search}
         onSearch={searchUser}
         usersDataLength={users.data.length}
       />

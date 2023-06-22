@@ -326,6 +326,7 @@ const InitiativeCards = ({ className, invisibleTitleMessage }: Props) => {
       </ScreenReaderOnly>
 
       <DesktopSearchInput
+        searchTerm={selectedInitiativeFilters.search ?? null}
         placeholder={searchPlaceholder}
         ariaLabel={searchAriaLabel}
         onChange={handleSearchOnChange}
@@ -407,6 +408,7 @@ const InitiativeCards = ({ className, invisibleTitleMessage }: Props) => {
               </FullscreenModal>
 
               <MobileSearchInput
+                searchTerm={selectedInitiativeFilters.search ?? null}
                 placeholder={searchPlaceholder}
                 ariaLabel={searchAriaLabel}
                 onChange={handleSearchOnChange}

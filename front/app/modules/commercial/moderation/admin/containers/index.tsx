@@ -209,7 +209,7 @@ const Moderation = () => {
   const [selectedPageSize, setSelectedPageSize] = useState<number>(
     pageSizes[1].value
   );
-  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [searchTerm, setSearchTerm] = useState<string | null>(null);
   const [selectedTab, setSelectedTab] = useState<TActivityTabName>('unread');
   const [actionBarErrorMessage, setActionBarErrorMessage] = useState<
     string | null
@@ -319,7 +319,7 @@ const Moderation = () => {
   };
 
   useEffect(() => {
-    onSearchTermChange(searchTerm);
+    onSearchTermChange(searchTerm ?? '');
   }, [searchTerm, onSearchTermChange]);
 
   const isModerationSelected = (
@@ -496,6 +496,7 @@ const Moderation = () => {
               </Buttons>
             )}
             <StyledSearchInput
+              searchTerm={searchTerm}
               onChange={handleSearchTermChange}
               a11y_numberOfSearchResults={moderations.length}
             />

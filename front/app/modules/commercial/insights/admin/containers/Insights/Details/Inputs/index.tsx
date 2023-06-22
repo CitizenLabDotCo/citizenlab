@@ -178,6 +178,7 @@ const Inputs = ({
         {inputs.length > 0 && <Export />}
       </Box>
       <StyledSearch
+        searchTerm={query.search}
         onChange={onSearch}
         size="small"
         a11y_numberOfSearchResults={

@@ -39,6 +39,7 @@ interface Props extends BaseProps {
   statusCounts: IStatusCountsAll;
   onChangeTopics?: (topics: string[]) => void;
   onChangeAreas?: (areas: string[]) => void;
+  search: string | null;
   onChangeSearch?: (search: string | null) => void;
   showFilters: boolean;
   adminPublications: IAdminPublicationData[];
@@ -59,6 +60,7 @@ const ProjectAndFolderCardsInner = ({
   publicationStatusFilter,
   onChangeTopics,
   onChangeAreas,
+  search,
   onChangeSearch,
   adminPublications,
   statusCountsWithoutFilters,
@@ -133,6 +135,7 @@ const ProjectAndFolderCardsInner = ({
       <StyledTopbar
         showTitle={showTitle}
         showSearch={showSearch}
+        search={search}
         showFilters={showFilters}
         currentTab={currentTab}
         statusCounts={statusCounts}

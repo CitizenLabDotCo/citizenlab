@@ -107,6 +107,7 @@ const FiltersSideBar = ({
       </ScreenReaderOnly>
 
       <DesktopSearchInput
+        searchTerm={selectedIdeaFilters.search ?? null}
         onChange={onSearch}
         debounce={1500}
         a11y_numberOfSearchResults={numberOfSearchResults}
