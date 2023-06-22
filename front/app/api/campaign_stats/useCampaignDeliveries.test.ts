@@ -9,7 +9,7 @@ import { ICampaignStats } from './types';
 
 const apiPath = '*campaigns/:id/stats';
 
-const campaignDeliveriesData: ICampaignStats = {
+const campaignStatsData: ICampaignStats = {
   data: {
     type: 'stats',
     attributes: {
@@ -27,7 +27,7 @@ const campaignDeliveriesData: ICampaignStats = {
 
 const server = setupServer(
   rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: campaignDeliveriesData }));
+    return res(ctx.status(200), ctx.json({ data: campaignStatsData }));
   })
 );
 
@@ -48,7 +48,7 @@ describe('useCampaignStats', () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
     expect(result.current.isLoading).toBe(false);
-    expect(result.current.data?.data).toEqual(campaignDeliveriesData);
+    expect(result.current.data?.data).toEqual(campaignStatsData);
   });
 
   it('returns error correctly', async () => {
