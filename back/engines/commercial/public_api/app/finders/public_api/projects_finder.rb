@@ -2,7 +2,6 @@
 
 module PublicApi
   class ProjectsFinder
-
     def initialize(scope, folder_id: nil, publication_status: nil)
       @scope = scope
       @folder_id = folder_id
@@ -25,11 +24,11 @@ module PublicApi
 
       scope
         .joins(:admin_publication)
-        .where(admin_publication: { parent_id: folder_admin_publication.id})
+        .where(admin_publication: { parent_id: folder_admin_publication.id })
     end
 
     def filter_by_publication_status(scope)
-      return scope unless status = @publication_status
+      return scope unless @publication_status
 
       scope
         .joins(:admin_publication)

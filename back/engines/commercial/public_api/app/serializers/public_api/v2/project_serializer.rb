@@ -28,7 +28,6 @@ class PublicApi::V2::ProjectSerializer < PublicApi::V2::BaseSerializer
     :min_budget,
     :max_budget
 
-
   attribute :publication_status do
     object.admin_publication.publication_status
   end
