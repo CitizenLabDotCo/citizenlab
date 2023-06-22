@@ -1,17 +1,26 @@
 import { randomString } from '../../../support/commands';
 
 describe('Initiative internal comments', () => {
-  const initiativeTitle = randomString();
-  const initiativeContent = randomString();
-  let initiativeId: string;
+  const initiativeTitle1 = randomString();
+  const initiativeContent1 = randomString();
+  const initiativeTitle2 = randomString();
+  const initiativeContent2 = randomString();
+  let initiativeId1: string;
+  let initiativeId2: string;
 
   before(() => {
-    cy.apiCreateInitiative({ initiativeTitle, initiativeContent }).then(
-      (initiaitve) => {
-        initiativeId = initiaitve.body.data.id;
-        cy.wait(2000);
-      }
-    );
+    cy.apiCreateInitiative({
+      initiativeTitle: initiativeTitle1,
+      initiativeContent: initiativeContent1,
+    }).then((initiaitve) => {
+      initiativeId1 = initiaitve.body.data.id;
+    });
+    cy.apiCreateInitiative({
+      initiativeTitle: initiativeTitle2,
+      initiativeContent: initiativeContent2,
+    }).then((initiaitve) => {
+      initiativeId2 = initiaitve.body.data.id;
+    });
   });
 
   it('allows users to post, edit and delete an internal comment on an initiative', () => {
@@ -19,7 +28,7 @@ describe('Initiative internal comments', () => {
     const editedComment = randomString();
 
     cy.setAdminLoginCookie();
-    cy.visit(`admin/initiatives/${initiativeId}`);
+    cy.visit(`admin/initiatives/${initiativeId1}`);
     cy.acceptCookies();
 
     // Create comment and check that comment is created
@@ -51,7 +60,51 @@ describe('Initiative internal comments', () => {
     cy.get('.e2e-parentcomment').should('not.exist');
   });
 
+  it('allows users to reply to internal comments, edit and delete a reply', () => {
+    const internalComment = randomString();
+    const replyComment = randomString();
+    const editedReply = randomString();
+    cy.setAdminLoginCookie();
+    cy.visit(`admin/initiatives/${initiativeId2}`);
+    cy.acceptCookies();
+    // Create comment and check that comment is created
+    cy.get('[data-cy="e2e-tab-internal"]').click();
+    cy.get('#submit-comment').should('exist');
+    cy.get('#submit-comment').click().type(internalComment);
+    cy.get('.e2e-submit-parentcomment').click();
+    cy.get('.e2e-parentcomment').contains(internalComment);
+
+    // Reply to comment and check that reply is created
+    cy.get('.e2e-comment-reply-button').should('exist');
+    cy.get('.e2e-comment-reply-button').click();
+    cy.get('#e2e-child-comment-text-area').should('exist');
+    cy.get('#e2e-child-comment-text-area').click().type(replyComment);
+    cy.get('.e2e-submit-childcomment').first().click();
+    cy.get('.e2e-childcomment').contains(replyComment);
+
+    // Edit reply and check that reply is edited
+    cy.get('[data-testid="moreOptionsButton"]').eq(1).should('exist');
+    cy.get('[data-testid="moreOptionsButton"]').eq(1).click();
+    cy.get('.e2e-more-actions-list button').eq(1).contains('Edit');
+    cy.get('.e2e-more-actions-list button').eq(1).click();
+    cy.get('#e2e-internal-comment-edit-textarea')
+      .click()
+      .clear()
+      .type(editedReply);
+    cy.get('#e2e-save-internal-comment-edit-button').click();
+    cy.get('.e2e-childcomment').contains(editedReply);
+
+    // Delete reply and check that reply is deleted
+    cy.get('[data-testid="moreOptionsButton"]').eq(1).should('exist');
+    cy.get('[data-testid="moreOptionsButton"]').eq(1).click();
+    cy.get('.e2e-more-actions-list button').eq(0).contains('Delete');
+    cy.get('.e2e-more-actions-list button').eq(0).click();
+    cy.get('#e2e-confirm-deletion').should('exist');
+    cy.get('#e2e-confirm-deletion').click();
+    cy.get('.e2e-childcomment').contains('This comment has been deleted.');
+  });
+
   after(() => {
-    cy.apiRemoveInitiative(initiativeId);
+    cy.apiRemoveInitiative(initiativeId1);
   });
 });
