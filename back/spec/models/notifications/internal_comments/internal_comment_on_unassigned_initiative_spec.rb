@@ -67,5 +67,13 @@ RSpec.describe Notifications::InternalComments::InternalCommentOnUnassignedIniti
       # should lead to a MentionInInternalComment notification to the recipient.
       it_behaves_like 'no notification created'
     end
+
+    context 'when the recipient has already commented internally on the initiative' do
+      let!(:_other_internal_comment) { create(:internal_comment, post: initiative, author: admin) }
+
+      # Don't create this notification if the Activity (internal comment created)
+      # should lead to a InternalCommentOnInitiativeYouCommentedInternallyOn notification to the recipient.
+      it_behaves_like 'no notification created'
+    end
   end
 end
