@@ -87,12 +87,7 @@ const AdminInitiativeEdit = ({ goBack, initiativeId }: Props) => {
       <Top>
         <Box width="100%" justifyContent="space-between" display="flex">
           <Box>
-            <Button
-              icon="arrow-left"
-              buttonStyle="text"
-              textColor={colors.primary}
-              onClick={goBack}
-            >
+            <Button onClick={goBack}>
               <FormattedMessage {...messages.cancelEdit} />
             </Button>
           </Box>
