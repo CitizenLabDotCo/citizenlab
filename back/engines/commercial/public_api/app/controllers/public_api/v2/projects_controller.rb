@@ -3,25 +3,23 @@
 module PublicApi
   class V2::ProjectsController < PublicApiController
     def index
-      projects = Project
-        .includes(:project_images)
-        .includes(:map_config)
-        .order(created_at: :desc)
-        .page(params[:page_number])
-        .per(num_per_page)
+      projects = ProjectsFinder.new(
+        Project.includes(:project_images).includes(:map_config).order(created_at: :desc),
+        **finder_params
+      ).execute
 
-      projects = common_date_filters(projects)
-
-      # TODO: Add filter by topic, status & folder_id
-
-      render json: projects,
-        each_serializer: V2::ProjectSerializer,
-        adapter: :json,
-        meta: meta_properties(projects)
+      # TODO: Add filter by topic, status
+      list_items(projects, V2::ProjectSerializer)
     end
 
     def show
       show_item Project.find(params[:id]), V2::ProjectSerializer
+    end
+
+    private
+
+    def finder_params
+      params.permit(:folder_id).to_h.symbolize_keys
     end
   end
 end
