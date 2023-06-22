@@ -93,16 +93,6 @@ export function deleteCampaign(campaignId: string) {
   return streams.delete(`${apiEndpoint}/${campaignId}`, campaignId);
 }
 
-export function campaignByIdStream(
-  campaignId: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<ICampaign>({
-    apiEndpoint: `${apiEndpoint}/${campaignId}`,
-    ...streamParams,
-  });
-}
-
 export function listCampaignDeliveries(
   campaignId: string,
   streamParams: IStreamParams | null = null
