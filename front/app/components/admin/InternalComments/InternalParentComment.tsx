@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 // components
 import InternalComment from './InternalComment';
@@ -18,6 +18,10 @@ import { darken } from 'polished';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useInternalComment from 'api/internal_comments/useInternalComment';
 import useInternalComments from 'api/internal_comments/useInternalComments';
+import { useLocation } from 'react-router-dom';
+
+// Utils
+import { scrollToElement } from 'utils/scroll';
 
 const Container = styled.div`
   position: relative;
@@ -57,6 +61,7 @@ const InternalParentComment = ({
 }: Props) => {
   const theme = useTheme();
   const { data: comment } = useInternalComment(commentId);
+  const { hash } = useLocation();
   const {
     data: childCommentsData,
     fetchNextPage,
@@ -67,6 +72,12 @@ const InternalParentComment = ({
     .map((page) => page.data)
     .flat();
   const { data: idea } = useIdeaById(ideaId);
+
+  useEffect(() => {
+    if (hash === `#${commentId}`) {
+      scrollToElement({ id: commentId });
+    }
+  }, [commentId, hash]);
 
   if (comment) {
     const projectId = idea?.data.relationships.project.data.id || null;

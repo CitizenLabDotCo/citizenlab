@@ -20,17 +20,20 @@ interface Props {
 const mapPostTypeToLink = (
   notification: IInternalCommentNotificationData
 ): string | null => {
-  switch (notification.attributes.post_type) {
+  const { post_type, project_id, post_id, internal_comment_id } =
+    notification.attributes;
+
+  switch (post_type) {
     case 'Idea': {
       // project_id cannot be null for an idea but we need to check it for TS because we have no project_id on initiatives
-      if (!notification.attributes.project_id) {
+      if (!project_id) {
         return null;
       }
-      return `/admin/projects/${notification.attributes.project_id}/ideas/${notification.attributes.post_id}`;
+      return `/admin/projects/${project_id}/ideas/${post_id}#${internal_comment_id}`;
     }
 
     case 'Initiative':
-      return `/admin/initiatives/${notification.attributes.post_id}`;
+      return `/admin/initiatives/${post_id}#${internal_comment_id}`;
   }
 };
 
