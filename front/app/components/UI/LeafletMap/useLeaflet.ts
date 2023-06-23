@@ -107,11 +107,10 @@ export default function useLeaflet(
 
   // Ref
   const selectedMarkerRef = useRef<string | null>(null);
+  const hoveredMarkerRef = useRef<string | null>(null);
 
   const selectMarker = useCallback(
     (selectedMarkerId: string) => {
-      selectedMarkerRef.current = selectedMarkerId;
-
       const selectedMarker = markers?.find(
         (marker) => marker.options['id'] === selectedMarkerId
       );
@@ -127,15 +126,22 @@ export default function useLeaflet(
         }
       }
 
+      const previouslySelectedMarker = selectedMarkerRef.current;
+
       markers?.forEach((marker) => {
         const markerId = marker.options['id'] as string;
 
         if (markerId === selectedMarkerId) {
           marker.setIcon(markerHoverIcon)?.setZIndexOffset(999);
-        } else {
+        } else if (
+          markerId === previouslySelectedMarker &&
+          selectedMarkerId !== previouslySelectedMarker
+        ) {
           marker.setIcon(markerIcon)?.setZIndexOffset(0);
         }
       });
+
+      selectedMarkerRef.current = selectedMarkerId;
     },
     [map, markers, markerClusterGroup]
   );
@@ -152,17 +158,24 @@ export default function useLeaflet(
 
     const hoverSubscription = leafletMapHoveredMarker$.subscribe(
       (hoveredMarkerId) => {
+        const previouslyHoveredMarker = hoveredMarkerRef.current;
+
         markers?.forEach((marker) => {
           const markerId = marker.options['id'] as string;
 
           if (markerId !== selectedMarkerRef.current) {
             if (markerId === hoveredMarkerId) {
               marker.setIcon(markerActiveIcon)?.setZIndexOffset(999);
-            } else {
+            } else if (
+              markerId === previouslyHoveredMarker &&
+              hoveredMarkerId !== previouslyHoveredMarker
+            ) {
               marker.setIcon(markerIcon)?.setZIndexOffset(0);
             }
           }
         });
+
+        hoveredMarkerRef.current = hoveredMarkerId;
       }
     );
 
