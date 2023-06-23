@@ -26,6 +26,7 @@ class BasketsIdea < ApplicationRecord
 
   validates :idea, :basket, presence: true
   validate :idea_with_budget
+  validates :votes, numericality: { only_integer: true, greater_than: 0 }
 
   private
 
