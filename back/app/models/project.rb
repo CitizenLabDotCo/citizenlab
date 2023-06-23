@@ -40,7 +40,7 @@
 #  posting_limited_max           :integer          default(1)
 #  document_annotation_embed_url :string
 #  allow_anonymous_participation :boolean          default(FALSE), not null
-#  qr_code                      :string
+#  qr_code                       :string
 #
 # Indexes
 #
