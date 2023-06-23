@@ -31,7 +31,7 @@ module Analytics
       )
 
       enumerator.with_index(1) do |visits, index|
-        set_date_dimensions(visits)
+        update_date_dimensions(visits)
         persist_visit_data(visits)
 
         last_action_timestamp = visits.pluck('lastActionTimestamp').max
@@ -50,7 +50,7 @@ module Analytics
     private
 
     # Fix any date dimensions that don't exist for the visit data
-    def set_date_dimensions(visits)
+    def update_date_dimensions(visits)
       from = timestamp_to_date(visits.pluck('firstActionTimestamp').min)
       to = timestamp_to_date(visits.pluck('lastActionTimestamp').max)
       Analytics::PopulateDimensionsService.create_dates(from, to)
