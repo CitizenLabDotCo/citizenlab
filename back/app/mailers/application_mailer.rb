@@ -115,13 +115,15 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   def from_email
-    email = raw_from_email
-
-    email_address_with_name(email, organization_name)
+    email_address_with_name(raw_from_email, organization_name)
   end
 
   def custom_from_email
     app_settings.core.from_email
+  end
+
+  def raw_from_email
+    custom_from_email.presence || ENV.fetch('DEFAULT_FROM_EMAIL')
   end
 
   def to_email
@@ -134,10 +136,6 @@ class ApplicationMailer < ActionMailer::Base
 
   def domain
     raw_from_email&.split('@')&.last
-  end
-
-  def raw_from_email
-    custom_from_email.presence || ENV.fetch('DEFAULT_FROM_EMAIL')
   end
 
   def app_settings
