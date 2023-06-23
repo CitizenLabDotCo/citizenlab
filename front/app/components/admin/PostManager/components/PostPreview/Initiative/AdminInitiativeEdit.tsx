@@ -109,8 +109,7 @@ const AdminInitiativeEdit = ({ goBack, initiativeId }: Props) => {
       </Top>
       <Box
         py="30px"
-        pl="35px"
-        pr="35px"
+        px="35px"
         mt="0"
         width="100%"
         background={colors.background}
