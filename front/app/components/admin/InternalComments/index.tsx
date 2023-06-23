@@ -47,10 +47,6 @@ const LoadingMoreMessage = styled.div`
   font-weight: 400;
 `;
 
-const CommentCount = styled.span`
-  margin-left: 5px;
-`;
-
 export interface Props {
   postId: string;
   postType: 'idea' | 'initiative';
@@ -103,9 +99,6 @@ const InternalCommentsSection = ({ postId, postType, className }: Props) => {
     setPosting(isPosting);
   };
 
-  const commentCount = post.data.attributes.internal_comments_count;
-  const showCommentCount = commentCount > 0;
-
   return (
     <Box className={className || ''}>
       {hasComments && (
@@ -117,7 +110,6 @@ const InternalCommentsSection = ({ postId, postType, className }: Props) => {
         >
           <Title color="tenantText" variant="h2" id="comments-main-title">
             <FormattedMessage {...commentsMessages.invisibleTitleComments} />
-            {showCommentCount && <CommentCount>({commentCount})</CommentCount>}
           </Title>
           <StyledCommentSorting
             onChange={handleSortOrderChange}
