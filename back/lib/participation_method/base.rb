@@ -113,6 +113,11 @@ module ParticipationMethod
       false
     end
 
+    # Should an admin be able to set permissions for disabled actions?
+    def return_disabled_actions?
+      false
+    end
+
     private
 
     attr_reader :participation_context
