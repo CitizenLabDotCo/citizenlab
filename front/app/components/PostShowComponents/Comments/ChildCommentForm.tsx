@@ -184,7 +184,7 @@ const ChildCommentForm = ({
     setCanSubmit(focused && !hasEmptyError);
   };
 
-  const onClick = () => {
+  const onFocus = () => {
     trackEventByName(tracks.focusChildCommentEditor, {
       extra: {
         postId: ideaId || initiativeId,
@@ -397,7 +397,7 @@ const ChildCommentForm = ({
                 value={inputValue}
                 error={getErrorMessage()}
                 onChange={onChange}
-                onClick={onClick}
+                onFocus={onFocus}
                 fontWeight="300"
                 padding="10px"
                 borderRadius="none"

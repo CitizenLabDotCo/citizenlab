@@ -63,7 +63,7 @@ export interface Props {
   postType?: 'idea' | 'initiative';
   error?: JSX.Element | string | null;
   onChange?: (arg: string, locale: Locale | undefined) => void;
-  onClick?: () => void;
+  onFocus?: () => void;
   onBlur?: () => void;
   getTextareaRef?: (element: HTMLTextAreaElement) => void;
   color?: string;
@@ -92,7 +92,7 @@ const MentionsTextArea = ({
   rows,
   onChange,
   onBlur,
-  onClick,
+  onFocus,
   locale,
   getTextareaRef,
   postId,
@@ -183,8 +183,8 @@ const MentionsTextArea = ({
     onChange?.(event.target.value, locale);
   };
 
-  const handleOnClick = () => {
-    onClick?.();
+  const handleOnFocus = () => {
+    onFocus?.();
   };
 
   const handleOnBlur = () => {
@@ -241,11 +241,12 @@ const MentionsTextArea = ({
           displayTransform={mentionDisplayTransform}
           markup={'@[__display__](__id__)'}
           onChange={handleOnChange}
-          onClick={handleOnClick}
+          onFocus={handleOnFocus}
           onBlur={handleOnBlur}
           aria-label={ariaLabel}
           ref={setMentionsInputRef}
           inputRef={textareaElement}
+          autoFocus={false}
         >
           <Mention
             trigger="@"
