@@ -55,6 +55,9 @@ resource 'Project Folders' do
           .to match_array([archived_project_folder.id])
       end
     end
+
+    include_examples 'filtering_by_date', :project_folder, :created_at, :'project_folders/folder'
+    include_examples 'filtering_by_date', :project_folder, :updated_at, :'project_folders/folder'
   end
 
   get '/api/v2/project_folders/:id' do

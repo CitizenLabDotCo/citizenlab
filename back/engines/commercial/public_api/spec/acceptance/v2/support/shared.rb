@@ -23,3 +23,41 @@ RSpec.shared_context 'common_item_params' do
   # TODO: Appearing twice in docs if described here too
   parameter :id, 'Unique uuid for the item', in: :path, required: true, type: 'integer'
 end
+
+RSpec.shared_examples 'filtering_by_date' do |factory, date_attribute, resource_type = factory|
+  context "when filtering by '#{date_attribute}'" do
+
+    define_method(:create_resource) do |date|
+      resource = create(factory, date_attribute => date)
+
+      # Sometimes, the factory is unable to set the date correctly due to certain
+      # callbacks (e.g., :updated_at).
+      if resource.public_send(date_attribute) != date
+        resource.update!(date_attribute => date)
+      end
+
+      resource
+    end
+
+    let!(:expected_project_folders) do
+      [create_resource('2020-01-01'), create_resource('2020-01-02')]
+    end
+
+    let(date_attribute) { '2020-01-01,2020-01-02' }
+
+    before do
+      # Just another resource that should not be returned
+      create_resource('2020-01-03')
+    end
+
+    resource_name = resource_type.to_s.split('/').last.tr('_', ' ').pluralize
+    example_request "Lists #{resource_name} created between the given dates" do
+      assert_status 200
+
+      root_key = resource_type.to_s.pluralize.to_sym
+      expect(json_response_body[root_key].pluck(:id))
+        .to match_array(expected_project_folders.pluck(:id))
+    end
+  end
+end
+
