@@ -30,7 +30,9 @@ resource 'Experiments' do
       parameter :action, 'The action, or how the user responded to the treatment', required: true
     end
 
-    let(:experiment) { build(:experiment) }
+    let(:name) { 'Button location' }
+    let(:treatment) { 'Left' }
+    let(:action) { 'Button clicked' }
 
     example_request 'Create an experiment' do
       expect(response_status).to eq 201
