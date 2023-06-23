@@ -5,12 +5,12 @@ class SideFxBasketService
 
   def after_create(basket, user)
     LogActivityJob.perform_later(basket, 'created', user, basket.created_at.to_i)
-    update_basket_counts
+    update_basket_counts basket unless basket.submitted_at.nil?
   end
 
   def after_update(basket, user)
     LogActivityJob.perform_later(basket, 'changed', user, basket.updated_at.to_i)
-    update_basket_counts if basket.submitted_at_previously_changed?
+    update_basket_counts basket if basket.submitted_at_previously_changed?
   end
 
   def after_destroy(frozen_basket, user)
@@ -22,20 +22,59 @@ class SideFxBasketService
     )
   end
 
-  def update_basket_counts
-    query =
-      '
-      UPDATE ideas
+  def update_basket_counts(basket)
+    # NOTE: counter_culture does not work because xyz
+    # NOTE: Feels like we should be  able to update the votes count here too in the same queries
+    project = basket.ideas[0].project
+
+    # Update ideas
+    update_ideas_counts('ideas', project.id)
+
+    if basket.participation_context_type == 'Phase'
+      phase = basket.participation_context
+      # Update ideas_phases
+      update_ideas_counts('ideas_phases', project.id, phase.id)
+
+      # Update the phase
+      update_participation_context_counts(phase, phase)
+
+      # Update the project
+      # TODO: Is it right that we update the project counts when there are phases? Is this a useful number
+      update_participation_context_counts(project.phases, project)
+    else
+      # Update the project only
+      update_participation_context_counts(project, project)
+    end
+  end
+
+  private
+
+  # NOTE: We need to update all ideas on the project in case ideas have been removed
+  def update_ideas_counts(table, project_id, phase_id = nil)
+    table_id = table == 'ideas' ? 'id' : 'idea_id'
+    query = "
+      UPDATE #{table}
       SET baskets_count = counts.count
       FROM (
-        SELECT ideas.id as idea_id, count(submitted_baskets.id) as count
-        FROM ideas
-          LEFT OUTER JOIN baskets_ideas ON ideas.id = baskets_ideas.idea_id
-          LEFT OUTER JOIN (SELECT * FROM baskets WHERE submitted_at IS NOT NULL) as submitted_baskets ON baskets_ideas.basket_id = submitted_baskets.id
-        GROUP BY ideas.id
-      ) as counts
-      WHERE ideas.id = counts.idea_id
-    '
+        SELECT i.id AS idea_id, count(b.id) AS count
+        FROM ideas i
+        LEFT OUTER JOIN baskets_ideas bi ON i.id = bi.idea_id
+        LEFT OUTER JOIN baskets b ON bi.basket_id = b.id AND b.submitted_at IS NOT NULL"
+    query += " AND b.participation_context_id = '#{phase_id}'" if phase_id
+    query += "
+        WHERE i.project_id = '#{project_id}'
+        GROUP BY i.id
+      ) AS counts
+      WHERE #{table}.#{table_id} = counts.idea_id
+    "
+    query += " AND #{table}.phase_id = '#{phase_id}'" if phase_id
     ActiveRecord::Base.connection.execute(query)
   end
+
+  def update_participation_context_counts(count_contexts, update_context)
+    count = Basket.where(participation_context: count_contexts).where.not(submitted_at: nil).count
+    update_context.update!(baskets_count: count)
+  end
+
+
 end

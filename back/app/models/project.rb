@@ -43,6 +43,7 @@
 #  voting_method                 :string
 #  voting_max_votes_per_idea     :integer
 #  voting_term                   :jsonb
+#  baskets_count                 :integer          default(0), not null
 #
 # Indexes
 #
