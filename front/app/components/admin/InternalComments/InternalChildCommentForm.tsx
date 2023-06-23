@@ -269,7 +269,7 @@ const InternalChildCommentForm = ({
 
   if (focused) {
     return (
-      <Container className={`${className || ''} e2e-childcomment-form`}>
+      <Container className={`${className || ''}`}>
         <StyledAvatar
           userId={authUser?.data.id}
           size={30}
