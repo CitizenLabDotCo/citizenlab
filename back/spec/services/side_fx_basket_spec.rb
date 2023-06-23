@@ -83,7 +83,6 @@ describe SideFxBasketService do
         expect(project.reload.baskets_count).to eq 0
       end
     end
-
   end
 
   context 'new basket on continuous project' do

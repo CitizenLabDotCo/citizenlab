@@ -75,6 +75,4 @@ class SideFxBasketService
     count = Basket.where(participation_context: count_contexts).where.not(submitted_at: nil).count
     update_context.update!(baskets_count: count)
   end
-
-
 end
