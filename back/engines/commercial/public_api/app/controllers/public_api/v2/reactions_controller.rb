@@ -12,7 +12,7 @@ module PublicApi
     private
 
     def finder_params
-      params.dup.permit(:reactable_type, :user_id).to_h.tap do |params|
+      params.permit(:reactable_type, :user_id).to_h.tap do |params|
         if (reactable_type = params[:reactable_type])
           validate_reactable_type!(reactable_type)
 
