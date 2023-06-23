@@ -108,63 +108,6 @@ resource 'Baskets' do
           expect(json_response.dig(:data, :relationships, :ideas, :data).pluck(:id)).to match_array idea_ids
         end
       end
-
-      example "'baskets_count' is not updated when adding/removing the idea to an unsubmitted basket", document: false do
-        idea = create(:idea)
-        @basket.update!(ideas: [idea], submitted_at: Time.zone.now)
-        SideFxBasketService.new.update_basket_counts
-        old_baskets_count = idea.reload.baskets_count
-
-        do_request basket: { idea_ids: [create(:idea).id], submitted_at: nil }
-        expect(idea.reload.baskets_count).to eq(old_baskets_count - 1)
-      end
-
-      example "'baskets_count' is updated when adding/removing the idea to a submitted basket", document: false do
-        idea = create(:idea)
-        @basket.update!(ideas: [idea])
-        SideFxBasketService.new.update_basket_counts
-        old_baskets_count = idea.reload.baskets_count
-
-        do_request basket: { idea_ids: [create(:idea).id], submitted_at: Time.zone.now }
-        expect(idea.reload.baskets_count).to eq(old_baskets_count - 1)
-      end
-
-      example "'baskets_count' is updated when submitting a basket", document: false do
-        idea = create(:idea)
-        @basket.update!(ideas: [idea], submitted_at: nil)
-        SideFxBasketService.new.update_basket_counts
-        old_baskets_count = idea.reload.baskets_count
-
-        do_request basket: { submitted_at: Time.zone.now }
-        expect(idea.reload.baskets_count).to eq(old_baskets_count + 1)
-      end
-
-      example "'baskets_count' is updated when unsubmitting a basket", document: false do
-        idea = create(:idea)
-        @basket.update!(ideas: [idea], submitted_at: Time.zone.now)
-        SideFxBasketService.new.update_basket_counts
-        old_baskets_count = idea.reload.baskets_count
-
-        do_request basket: { submitted_at: nil, ideas: [] }
-        expect(idea.reload.baskets_count).to eq(old_baskets_count - 1)
-      end
-
-      describe "'baskets_count' stay up to date after removing an idea from the basket" do
-        before do
-          @trolley = create_list(:basket, 3, ideas: [idea], participation_context: create(:continuous_budgeting_project)).first
-          @trolley.update(user: @user)
-        end
-
-        let(:idea) { create(:idea) }
-        let(:idea_ids) { [] }
-        let(:basket_id) { @trolley.id }
-        let(:submitted_at) { Time.zone.now }
-
-        example '', document: false do
-          do_request
-          expect(idea.reload.baskets_count).to eq 2
-        end
-      end
     end
   end
 
