@@ -4,7 +4,7 @@ import React from 'react';
 import {
   IDLookupMethod,
   TVerificationMethod,
-} from 'services/verificationMethods';
+} from 'api/verification_methods/types';
 
 // components
 import VerificationMethodButton from 'components/UI/VerificationMethodButton';
