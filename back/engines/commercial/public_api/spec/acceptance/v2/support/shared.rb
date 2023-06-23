@@ -63,7 +63,7 @@ RSpec.shared_examples 'filtering_by_date' do |factory, date_attribute, resource_
     end
 
     resource_name = resource_type.to_s.split('/').last.tr('_', ' ').pluralize
-    example_request "Lists #{resource_name}  between the given dates" do
+    example_request "Lists #{resource_name} between the given dates" do
       root_key = resource_type.to_s.pluralize.to_sym
 
       expected_new_ids = nil
