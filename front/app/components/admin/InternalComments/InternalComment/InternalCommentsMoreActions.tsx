@@ -131,7 +131,11 @@ const InternalCommentsMoreActions = ({
   return (
     <>
       <Container className={className || ''}>
-        <MoreActionsMenu showLabel={false} actions={actions} />
+        <MoreActionsMenu
+          showLabel={false}
+          actions={actions}
+          data-cy="e2e-internal-comments-more-actions"
+        />
       </Container>
 
       <Modal

@@ -92,8 +92,10 @@ describe('Idea internal comments', () => {
     cy.get('.e2e-internal-child-comment').contains(replyComment);
 
     // Edit reply and check that reply is edited
-    cy.get('[data-testid="moreOptionsButton"]').eq(1).should('exist');
-    cy.get('[data-testid="moreOptionsButton"]').eq(1).click();
+    cy.get('[data-cy="e2e-internal-comments-more-actions"]')
+      .eq(1)
+      .should('exist');
+    cy.get('[data-cy="e2e-internal-comments-more-actions"]').eq(1).click();
     cy.get('.e2e-more-actions-list button').eq(1).contains('Edit');
     cy.get('.e2e-more-actions-list button').eq(1).click();
     cy.get('#e2e-internal-comment-edit-textarea')
@@ -104,8 +106,10 @@ describe('Idea internal comments', () => {
     cy.get('.e2e-internal-child-comment').contains(editedReply);
 
     // Delete reply and check that reply is deleted
-    cy.get('[data-testid="moreOptionsButton"]').eq(1).should('exist');
-    cy.get('[data-testid="moreOptionsButton"]').eq(1).click();
+    cy.get('[data-cy="e2e-internal-comments-more-actions"]')
+      .eq(1)
+      .should('exist');
+    cy.get('[data-cy="e2e-internal-comments-more-actions"]').eq(1).click();
     cy.get('.e2e-more-actions-list button').eq(0).contains('Delete');
     cy.get('.e2e-more-actions-list button').eq(0).click();
     cy.get('#e2e-confirm-internal-comment-deletion').should('exist');
