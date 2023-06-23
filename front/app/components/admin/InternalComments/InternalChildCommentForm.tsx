@@ -269,7 +269,7 @@ const InternalChildCommentForm = ({
 
   if (focused) {
     return (
-      <Container className={`${className || ''} e2e-childcomment-form`}>
+      <Container className={`${className || ''}`}>
         <StyledAvatar
           userId={authUser?.data.id}
           size={30}
@@ -287,6 +287,7 @@ const InternalChildCommentForm = ({
               </HiddenLabel>
               <MentionsTextArea
                 className={`childcommentform-${parentId}`}
+                id="e2e-internal-child-comment-text-area"
                 name="comment"
                 placeholder={formatMessage(
                   commentsMessages.childCommentBodyPlaceholder

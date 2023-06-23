@@ -102,6 +102,7 @@ const CommentsSection = ({
               label={label}
               url={url}
               key={name}
+              data-cy={`e2e-comments-tab-${name}`}
               active={selectedTab === name}
               handleClick={(event: MouseEvent<HTMLAnchorElement>) => {
                 event.preventDefault();
