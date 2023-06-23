@@ -8,7 +8,7 @@ module PublicApi
           :id,
           :slug,
           :created_at,
-          :updated_at,
+          :updated_at
         )
 
         attribute(:publication_status) do

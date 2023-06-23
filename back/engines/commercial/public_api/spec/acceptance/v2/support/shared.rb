@@ -79,4 +79,3 @@ RSpec.shared_examples 'filtering_by_date' do |factory, date_attribute, resource_
     end
   end
 end
-
