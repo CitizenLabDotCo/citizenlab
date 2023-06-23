@@ -198,7 +198,7 @@ const CommentsMoreActions = ({
             <AcceptButton
               buttonStyle="primary"
               processing={isLoading}
-              className="e2e-confirm-deletion"
+              className="e2e-confirm-internal-comment-deletion"
               onClick={handleDeleteClick}
             >
               <FormattedMessage {...messages.commentDeletionConfirmButton} />
