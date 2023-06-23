@@ -28,31 +28,33 @@ resource 'Project Folders' do
       enum: AdminPublication::PUBLICATION_STATUSES
     )
 
-    let_it_be(:project_folders) do
-      create_list(
-        :project_folder, 3,
-        admin_publication_attributes: { publication_status: 'published' }
-      )
-    end
-
-    example_request 'Lists project folders' do
-      assert_status 200
-      expect(json_response_body[:'project_folders/folders'].pluck(:id))
-        .to match_array(project_folders.pluck(:id))
-      expect(json_response_body[:meta]).to eq({ total_pages: 1, current_page: 1 })
-    end
-
-    context "when filtering by 'publication_status'" do
-      let!(:archived_project_folder) do
-        create(:project_folder, admin_publication_attributes: { publication_status: 'archived' })
+    context do
+      let_it_be(:project_folders) do
+        create_list(
+          :project_folder, 3,
+          admin_publication_attributes: { publication_status: 'published' }
+        )
       end
 
-      let(:publication_status) { 'archived' }
-
-      example_request 'Lists project folders with the given publication status' do
+      example_request 'Lists project folders' do
         assert_status 200
         expect(json_response_body[:'project_folders/folders'].pluck(:id))
-          .to match_array([archived_project_folder.id])
+          .to match_array(project_folders.pluck(:id))
+        expect(json_response_body[:meta]).to eq({ total_pages: 1, current_page: 1 })
+      end
+
+      context "when filtering by 'publication_status'" do
+        let!(:archived_project_folder) do
+          create(:project_folder, admin_publication_attributes: { publication_status: 'archived' })
+        end
+
+        let(:publication_status) { 'archived' }
+
+        example_request 'Lists project folders with the given publication status' do
+          assert_status 200
+          expect(json_response_body[:'project_folders/folders'].pluck(:id))
+            .to match_array([archived_project_folder.id])
+        end
       end
     end
 
