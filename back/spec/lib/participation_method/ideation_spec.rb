@@ -99,6 +99,12 @@ RSpec.describe ParticipationMethod::Ideation do
     end
   end
 
+  describe '#posting_allowed?' do
+    it 'returns true' do
+      expect(participation_method.posting_allowed?).to be true
+    end
+  end
+
   describe '#never_update?' do
     it 'returns false' do
       expect(participation_method.never_update?).to be false

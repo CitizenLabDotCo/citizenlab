@@ -45,6 +45,10 @@ module ParticipationMethod
       false
     end
 
+    def posting_allowed?
+      false
+    end
+
     def never_update?
       false
     end

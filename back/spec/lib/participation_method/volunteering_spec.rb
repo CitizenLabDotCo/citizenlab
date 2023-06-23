@@ -58,6 +58,12 @@ RSpec.describe ParticipationMethod::Volunteering do
     end
   end
 
+  describe '#posting_allowed?' do
+    it 'returns false' do
+      expect(participation_method.posting_allowed?).to be false
+    end
+  end
+
   describe '#never_update?' do
     it 'returns false' do
       expect(participation_method.never_update?).to be false
