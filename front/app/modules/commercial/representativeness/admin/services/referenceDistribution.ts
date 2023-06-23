@@ -4,8 +4,10 @@ import { apiEndpoint as statsEndpoint } from 'services/stats';
 import {
   IUserCustomFieldData,
   TCustomFieldCode,
-} from 'services/userCustomFields';
+} from 'api/user_custom_fields/types';
 import { getEndpoint as getRScoreEndpoint } from './rScore';
+import { queryClient } from 'utils/cl-react-query/queryClient';
+import userCustomFieldsKeys from 'api/user_custom_fields/keys';
 
 const ENDPOINT_BY_CODE = {
   gender: `${statsEndpoint}/users_by_gender`,
@@ -87,12 +89,15 @@ export async function createReferenceDistribution(
     { distribution }
   );
 
+  queryClient.invalidateQueries({
+    queryKey: userCustomFieldsKeys.lists(),
+  });
+
   await streams.fetchAllWith({
     apiEndpoint: [
       getCustomFieldEndpoint(id),
       getStatsEndpoint(code, id),
       getRScoreEndpoint(id),
-      `${API_PATH}/users/custom_fields`,
     ],
   });
 
@@ -124,12 +129,15 @@ export async function deleteReferenceDistribution({
     id
   );
 
+  queryClient.invalidateQueries({
+    queryKey: userCustomFieldsKeys.lists(),
+  });
+
   await streams.fetchAllWith({
     apiEndpoint: [
       getCustomFieldEndpoint(id),
       getStatsEndpoint(code, id),
       getRScoreEndpoint(id),
-      `${API_PATH}/users/custom_fields`,
     ],
   });
 

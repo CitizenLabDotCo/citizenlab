@@ -68,7 +68,7 @@ class ProjectCopyService < TemplateService
       @template['models']['ideas_phase']         = yml_ideas_phases shift_timestamps: shift_timestamps
       @template['models']['comment']             = yml_comments shift_timestamps: shift_timestamps
       @template['models']['official_feedback']   = yml_official_feedback shift_timestamps: shift_timestamps
-      @template['models']['vote']                = yml_votes shift_timestamps: shift_timestamps
+      @template['models']['reaction'] = yml_reactions shift_timestamps: shift_timestamps
     end
 
     @template
@@ -204,12 +204,12 @@ class ProjectCopyService < TemplateService
       'posting_method' => pc.posting_method,
       'posting_limited_max' => pc.posting_limited_max,
       'commenting_enabled' => pc.commenting_enabled,
-      'voting_enabled' => pc.voting_enabled,
-      'upvoting_method' => pc.upvoting_method,
-      'upvoting_limited_max' => pc.upvoting_limited_max,
-      'downvoting_enabled' => pc.downvoting_enabled,
-      'downvoting_method' => pc.downvoting_method,
-      'downvoting_limited_max' => pc.downvoting_limited_max,
+      'reacting_enabled' => pc.reacting_enabled,
+      'reacting_like_method' => pc.reacting_like_method,
+      'reacting_like_limited_max' => pc.reacting_like_limited_max,
+      'reacting_dislike_enabled' => pc.reacting_dislike_enabled,
+      'reacting_dislike_method' => pc.reacting_dislike_method,
+      'reacting_dislike_limited_max' => pc.reacting_dislike_limited_max,
       'max_budget' => pc.max_budget,
       'min_budget' => pc.min_budget,
       'poll_anonymous' => pc.poll_anonymous,
@@ -423,8 +423,8 @@ class ProjectCopyService < TemplateService
     user_ids += Idea.where(id: idea_ids).pluck(:author_id)
     comment_ids = Comment.where(post_id: idea_ids, post_type: 'Idea').ids
     user_ids += Comment.where(id: comment_ids).pluck(:author_id)
-    vote_ids = Vote.where(votable_id: [idea_ids + comment_ids]).ids
-    user_ids += Vote.where(id: vote_ids).pluck(:user_id)
+    reaction_ids = Reaction.where(reactable_id: [idea_ids + comment_ids]).ids
+    user_ids += Reaction.where(id: reaction_ids).pluck(:user_id)
     participation_context_ids = [@project.id] + @project.phases.ids
     user_ids += Basket.where(participation_context_id: participation_context_ids).pluck(:user_id)
     user_ids += OfficialFeedback.where(post_id: idea_ids, post_type: 'Idea').pluck(:user_id)
@@ -651,19 +651,19 @@ class ProjectCopyService < TemplateService
     end
   end
 
-  def yml_votes(shift_timestamps: 0)
+  def yml_reactions(shift_timestamps: 0)
     idea_ids = @project.ideas.published.where.not(author_id: nil).ids
     comment_ids = Comment.where(post_id: idea_ids, post_type: 'Idea')
-    Vote.where.not(user_id: nil).where(votable_id: idea_ids + comment_ids).map do |v|
-      yml_vote = {
-        'votable_ref' => lookup_ref(v.votable_id, %i[idea comment]),
+    Reaction.where.not(user_id: nil).where(reactable_id: idea_ids + comment_ids).map do |v|
+      yml_reaction = {
+        'reactable_ref' => lookup_ref(v.reactable_id, %i[idea comment]),
         'user_ref' => lookup_ref(v.user_id, :user),
         'mode' => v.mode,
         'created_at' => shift_timestamp(v.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(v.updated_at, shift_timestamps)&.iso8601
       }
-      store_ref yml_vote, v.id, :vote
-      yml_vote
+      store_ref yml_reaction, v.id, :reaction
+      yml_reaction
     end
   end
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_01_085753) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_20_114801) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -195,8 +195,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_01_085753) do
     t.jsonb "body_multiloc", default: {}
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
-    t.integer "upvotes_count", default: 0, null: false
-    t.integer "downvotes_count", default: 0, null: false
+    t.integer "likes_count", default: 0, null: false
+    t.integer "dislikes_count", default: 0, null: false
     t.string "publication_status", default: "published", null: false
     t.datetime "body_updated_at", precision: nil
     t.integer "children_count", default: 0, null: false
@@ -387,6 +387,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_01_085753) do
     t.index ["project_id"], name: "index_events_on_project_id"
   end
 
+  create_table "experiments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false
+    t.string "treatment", null: false
+    t.string "action", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "flag_inappropriate_content_inappropriate_content_flags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "flaggable_id", null: false
     t.string "flaggable_type", null: false
@@ -497,8 +505,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_01_085753) do
     t.uuid "author_id"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
-    t.integer "upvotes_count", default: 0, null: false
-    t.integer "downvotes_count", default: 0, null: false
+    t.integer "likes_count", default: 0, null: false
+    t.integer "dislikes_count", default: 0, null: false
     t.geography "location_point", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}
     t.string "location_description"
     t.integer "comments_count", default: 0, null: false
@@ -514,6 +522,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_01_085753) do
     t.uuid "creation_phase_id"
     t.string "author_hash"
     t.boolean "anonymous", default: false, null: false
+    t.integer "internal_comments_count", default: 0, null: false
     t.index "((to_tsvector('simple'::regconfig, COALESCE((title_multiloc)::text, ''::text)) || to_tsvector('simple'::regconfig, COALESCE((body_multiloc)::text, ''::text))))", name: "index_ideas_search", using: :gin
     t.index ["author_hash"], name: "index_ideas_on_author_hash"
     t.index ["author_id"], name: "index_ideas_on_author_id"
@@ -614,8 +623,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_01_085753) do
     t.string "publication_status"
     t.datetime "published_at", precision: nil
     t.uuid "author_id"
-    t.integer "upvotes_count", default: 0, null: false
-    t.integer "downvotes_count", default: 0, null: false
+    t.integer "likes_count", default: 0, null: false
+    t.integer "dislikes_count", default: 0, null: false
     t.geography "location_point", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}
     t.string "location_description"
     t.string "slug"
@@ -628,6 +637,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_01_085753) do
     t.datetime "assigned_at", precision: nil
     t.string "author_hash"
     t.boolean "anonymous", default: false, null: false
+    t.integer "internal_comments_count", default: 0, null: false
     t.index "((to_tsvector('simple'::regconfig, COALESCE((title_multiloc)::text, ''::text)) || to_tsvector('simple'::regconfig, COALESCE((body_multiloc)::text, ''::text))))", name: "index_initiatives_search", using: :gin
     t.index ["author_id"], name: "index_initiatives_on_author_id"
     t.index ["location_point"], name: "index_initiatives_on_location_point", using: :gist
@@ -742,6 +752,28 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_01_085753) do
     t.index ["input_id", "input_type", "task_id"], name: "index_insights_zsc_tasks_inputs_on_input_and_task_id", unique: true
     t.index ["input_type", "input_id"], name: "index_insights_zsc_tasks_inputs_on_input"
     t.index ["task_id"], name: "index_insights_zeroshot_classification_tasks_inputs_on_task_id"
+  end
+
+  create_table "internal_comments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "author_id"
+    t.string "post_type"
+    t.uuid "post_id"
+    t.uuid "parent_id"
+    t.integer "lft", null: false
+    t.integer "rgt", null: false
+    t.text "body", null: false
+    t.string "publication_status", default: "published", null: false
+    t.datetime "body_updated_at", precision: nil
+    t.integer "children_count", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_id"], name: "index_internal_comments_on_author_id"
+    t.index ["created_at"], name: "index_internal_comments_on_created_at"
+    t.index ["lft"], name: "index_internal_comments_on_lft"
+    t.index ["parent_id"], name: "index_internal_comments_on_parent_id"
+    t.index ["post_id"], name: "index_internal_comments_on_post_id"
+    t.index ["post_type", "post_id"], name: "index_internal_comments_on_post"
+    t.index ["rgt"], name: "index_internal_comments_on_rgt"
   end
 
   create_table "invites", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -862,9 +894,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_01_085753) do
     t.string "post_status_type"
     t.uuid "project_folder_id"
     t.uuid "inappropriate_content_flag_id"
+    t.uuid "internal_comment_id"
     t.index ["created_at"], name: "index_notifications_on_created_at"
     t.index ["inappropriate_content_flag_id"], name: "index_notifications_on_inappropriate_content_flag_id"
     t.index ["initiating_user_id"], name: "index_notifications_on_initiating_user_id"
+    t.index ["internal_comment_id"], name: "index_notifications_on_internal_comment_id"
     t.index ["invite_id"], name: "index_notifications_on_invite_id"
     t.index ["official_feedback_id"], name: "index_notifications_on_official_feedback_id"
     t.index ["phase_id"], name: "index_notifications_on_phase_id"
@@ -942,21 +976,21 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_01_085753) do
     t.string "participation_method", default: "ideation", null: false
     t.boolean "posting_enabled", default: true
     t.boolean "commenting_enabled", default: true
-    t.boolean "voting_enabled", default: true, null: false
-    t.string "upvoting_method", default: "unlimited", null: false
-    t.integer "upvoting_limited_max", default: 10
+    t.boolean "reacting_enabled", default: true, null: false
+    t.string "reacting_like_method", default: "unlimited", null: false
+    t.integer "reacting_like_limited_max", default: 10
     t.string "survey_embed_url"
     t.string "survey_service"
     t.string "presentation_mode", default: "card"
     t.integer "max_budget"
     t.boolean "poll_anonymous", default: false, null: false
-    t.boolean "downvoting_enabled", default: true, null: false
+    t.boolean "reacting_dislike_enabled", default: true, null: false
     t.integer "ideas_count", default: 0, null: false
     t.string "ideas_order"
     t.string "input_term", default: "idea"
     t.integer "min_budget", default: 0
-    t.string "downvoting_method", default: "unlimited", null: false
-    t.integer "downvoting_limited_max", default: 10
+    t.string "reacting_dislike_method", default: "unlimited", null: false
+    t.integer "reacting_dislike_limited_max", default: 10
     t.string "posting_method", default: "unlimited", null: false
     t.integer "posting_limited_max", default: 1
     t.string "document_annotation_embed_url"
@@ -1078,9 +1112,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_01_085753) do
     t.string "participation_method", default: "ideation"
     t.boolean "posting_enabled", default: true
     t.boolean "commenting_enabled", default: true
-    t.boolean "voting_enabled", default: true, null: false
-    t.string "upvoting_method", default: "unlimited", null: false
-    t.integer "upvoting_limited_max", default: 10
+    t.boolean "reacting_enabled", default: true, null: false
+    t.string "reacting_like_method", default: "unlimited", null: false
+    t.integer "reacting_like_limited_max", default: 10
     t.string "process_type", default: "timeline", null: false
     t.string "internal_role"
     t.string "survey_embed_url"
@@ -1089,12 +1123,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_01_085753) do
     t.integer "comments_count", default: 0, null: false
     t.uuid "default_assignee_id"
     t.boolean "poll_anonymous", default: false, null: false
-    t.boolean "downvoting_enabled", default: true, null: false
+    t.boolean "reacting_dislike_enabled", default: true, null: false
     t.string "ideas_order"
     t.string "input_term", default: "idea"
     t.integer "min_budget", default: 0
-    t.string "downvoting_method", default: "unlimited", null: false
-    t.integer "downvoting_limited_max", default: 10
+    t.string "reacting_dislike_method", default: "unlimited", null: false
+    t.integer "reacting_dislike_limited_max", default: 10
     t.boolean "include_all_areas", default: false, null: false
     t.string "posting_method", default: "unlimited", null: false
     t.integer "posting_limited_max", default: 1
@@ -1162,6 +1196,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_01_085753) do
 
   create_table "que_values", primary_key: "key", id: :text, force: :cascade do |t|
     t.jsonb "value", default: {}, null: false
+  end
+
+  create_table "reactions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "reactable_id"
+    t.string "reactable_type"
+    t.uuid "user_id"
+    t.string "mode", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.index ["reactable_type", "reactable_id", "user_id"], name: "index_reactions_on_reactable_type_and_reactable_id_and_user_id", unique: true
+    t.index ["reactable_type", "reactable_id"], name: "index_reactions_on_reactable_type_and_reactable_id"
+    t.index ["user_id"], name: "index_reactions_on_user_id"
   end
 
   create_table "report_builder_reports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1372,18 +1418,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_01_085753) do
     t.index ["user_id"], name: "index_volunteering_volunteers_on_user_id"
   end
 
-  create_table "votes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "votable_id"
-    t.string "votable_type"
-    t.uuid "user_id"
-    t.string "mode", null: false
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
-    t.index ["user_id"], name: "index_votes_on_user_id"
-    t.index ["votable_type", "votable_id", "user_id"], name: "index_votes_on_votable_type_and_votable_id_and_user_id", unique: true
-    t.index ["votable_type", "votable_id"], name: "index_votes_on_votable_type_and_votable_id"
-  end
-
   add_foreign_key "activities", "users"
   add_foreign_key "analytics_dimension_locales_fact_visits", "analytics_dimension_locales", column: "dimension_locale_id"
   add_foreign_key "analytics_dimension_locales_fact_visits", "analytics_fact_visits", column: "fact_visit_id"
@@ -1443,6 +1477,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_01_085753) do
   add_foreign_key "insights_zeroshot_classification_tasks_categories", "insights_categories", column: "category_id"
   add_foreign_key "insights_zeroshot_classification_tasks_categories", "insights_zeroshot_classification_tasks", column: "task_id"
   add_foreign_key "insights_zeroshot_classification_tasks_inputs", "insights_zeroshot_classification_tasks", column: "task_id"
+  add_foreign_key "internal_comments", "users", column: "author_id"
   add_foreign_key "invites", "users", column: "invitee_id"
   add_foreign_key "invites", "users", column: "inviter_id"
   add_foreign_key "maps_layers", "maps_map_configs", column: "map_config_id"
@@ -1452,6 +1487,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_01_085753) do
   add_foreign_key "nav_bar_items", "static_pages"
   add_foreign_key "notifications", "comments"
   add_foreign_key "notifications", "flag_inappropriate_content_inappropriate_content_flags", column: "inappropriate_content_flag_id"
+  add_foreign_key "notifications", "internal_comments"
   add_foreign_key "notifications", "invites"
   add_foreign_key "notifications", "official_feedbacks"
   add_foreign_key "notifications", "phases"
@@ -1478,6 +1514,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_01_085753) do
   add_foreign_key "projects_topics", "projects"
   add_foreign_key "projects_topics", "topics"
   add_foreign_key "public_api_api_clients", "tenants"
+  add_foreign_key "reactions", "users"
   add_foreign_key "report_builder_reports", "users", column: "owner_id"
   add_foreign_key "spam_reports", "users"
   add_foreign_key "static_page_files", "static_pages"
@@ -1485,27 +1522,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_01_085753) do
   add_foreign_key "static_pages_topics", "topics"
   add_foreign_key "user_custom_fields_representativeness_ref_distributions", "custom_fields"
   add_foreign_key "volunteering_volunteers", "volunteering_causes", column: "cause_id"
-  add_foreign_key "votes", "users"
 
-  create_view "idea_trending_infos", sql_definition: <<-SQL
-      SELECT ideas.id AS idea_id,
-      GREATEST(comments_at.last_comment_at, upvotes_at.last_upvoted_at, ideas.published_at) AS last_activity_at,
-      to_timestamp(round((((GREATEST(((comments_at.comments_count)::double precision * comments_at.mean_comment_at), (0)::double precision) + GREATEST(((upvotes_at.upvotes_count)::double precision * upvotes_at.mean_upvoted_at), (0)::double precision)) + date_part('epoch'::text, ideas.published_at)) / (((GREATEST((comments_at.comments_count)::numeric, 0.0) + GREATEST((upvotes_at.upvotes_count)::numeric, 0.0)) + 1.0))::double precision))) AS mean_activity_at
-     FROM ((ideas
-       FULL JOIN ( SELECT comments.post_id AS idea_id,
-              max(comments.created_at) AS last_comment_at,
-              avg(date_part('epoch'::text, comments.created_at)) AS mean_comment_at,
-              count(comments.post_id) AS comments_count
-             FROM comments
-            GROUP BY comments.post_id) comments_at ON ((ideas.id = comments_at.idea_id)))
-       FULL JOIN ( SELECT votes.votable_id,
-              max(votes.created_at) AS last_upvoted_at,
-              avg(date_part('epoch'::text, votes.created_at)) AS mean_upvoted_at,
-              count(votes.votable_id) AS upvotes_count
-             FROM votes
-            WHERE (((votes.mode)::text = 'up'::text) AND ((votes.votable_type)::text = 'Idea'::text))
-            GROUP BY votes.votable_id) upvotes_at ON ((ideas.id = upvotes_at.votable_id)));
-  SQL
   create_view "initiative_initiative_statuses", sql_definition: <<-SQL
       SELECT initiative_status_changes.initiative_id,
       initiative_status_changes.initiative_status_id
@@ -1516,39 +1533,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_01_085753) do
             GROUP BY initiative_status_changes_1.initiative_id) initiatives_with_last_status_change ON ((initiatives.id = initiatives_with_last_status_change.initiative_id)))
        JOIN initiative_status_changes ON (((initiatives.id = initiative_status_changes.initiative_id) AND (initiatives_with_last_status_change.last_status_changed_at = initiative_status_changes.created_at))))
        JOIN initiative_statuses ON ((initiative_statuses.id = initiative_status_changes.initiative_status_id)));
-  SQL
-  create_view "union_posts", sql_definition: <<-SQL
-      SELECT ideas.id,
-      ideas.title_multiloc,
-      ideas.body_multiloc,
-      ideas.publication_status,
-      ideas.published_at,
-      ideas.author_id,
-      ideas.created_at,
-      ideas.updated_at,
-      ideas.upvotes_count,
-      ideas.location_point,
-      ideas.location_description,
-      ideas.comments_count,
-      ideas.slug,
-      ideas.official_feedbacks_count
-     FROM ideas
-  UNION ALL
-   SELECT initiatives.id,
-      initiatives.title_multiloc,
-      initiatives.body_multiloc,
-      initiatives.publication_status,
-      initiatives.published_at,
-      initiatives.author_id,
-      initiatives.created_at,
-      initiatives.updated_at,
-      initiatives.upvotes_count,
-      initiatives.location_point,
-      initiatives.location_description,
-      initiatives.comments_count,
-      initiatives.slug,
-      initiatives.official_feedbacks_count
-     FROM initiatives;
   SQL
   create_view "moderation_moderations", sql_definition: <<-SQL
       SELECT ideas.id,
@@ -1713,6 +1697,144 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_01_085753) do
        LEFT JOIN finished_statuses_for_timeline_projects fsftp ON ((fsftp.project_id = ap.publication_id)))
     WHERE ((ap.publication_type)::text = 'Project'::text);
   SQL
+  create_view "union_posts", sql_definition: <<-SQL
+      SELECT ideas.id,
+      ideas.title_multiloc,
+      ideas.body_multiloc,
+      ideas.publication_status,
+      ideas.published_at,
+      ideas.author_id,
+      ideas.created_at,
+      ideas.updated_at,
+      ideas.likes_count,
+      ideas.location_point,
+      ideas.location_description,
+      ideas.comments_count,
+      ideas.slug,
+      ideas.official_feedbacks_count
+     FROM ideas
+  UNION ALL
+   SELECT initiatives.id,
+      initiatives.title_multiloc,
+      initiatives.body_multiloc,
+      initiatives.publication_status,
+      initiatives.published_at,
+      initiatives.author_id,
+      initiatives.created_at,
+      initiatives.updated_at,
+      initiatives.likes_count,
+      initiatives.location_point,
+      initiatives.location_description,
+      initiatives.comments_count,
+      initiatives.slug,
+      initiatives.official_feedbacks_count
+     FROM initiatives;
+  SQL
+  create_view "idea_trending_infos", sql_definition: <<-SQL
+      SELECT ideas.id AS idea_id,
+      GREATEST(comments_at.last_comment_at, likes_at.last_liked_at, ideas.published_at) AS last_activity_at,
+      to_timestamp(round((((GREATEST(((comments_at.comments_count)::double precision * comments_at.mean_comment_at), (0)::double precision) + GREATEST(((likes_at.likes_count)::double precision * likes_at.mean_liked_at), (0)::double precision)) + date_part('epoch'::text, ideas.published_at)) / (((GREATEST((comments_at.comments_count)::numeric, 0.0) + GREATEST((likes_at.likes_count)::numeric, 0.0)) + 1.0))::double precision))) AS mean_activity_at
+     FROM ((ideas
+       FULL JOIN ( SELECT comments.post_id AS idea_id,
+              max(comments.created_at) AS last_comment_at,
+              avg(date_part('epoch'::text, comments.created_at)) AS mean_comment_at,
+              count(comments.post_id) AS comments_count
+             FROM comments
+            GROUP BY comments.post_id) comments_at ON ((ideas.id = comments_at.idea_id)))
+       FULL JOIN ( SELECT reactions.reactable_id,
+              max(reactions.created_at) AS last_liked_at,
+              avg(date_part('epoch'::text, reactions.created_at)) AS mean_liked_at,
+              count(reactions.reactable_id) AS likes_count
+             FROM reactions
+            WHERE (((reactions.mode)::text = 'up'::text) AND ((reactions.reactable_type)::text = 'Idea'::text))
+            GROUP BY reactions.reactable_id) likes_at ON ((ideas.id = likes_at.reactable_id)));
+  SQL
+  create_view "analytics_fact_participations", sql_definition: <<-SQL
+      SELECT i.id,
+      i.author_id AS dimension_user_id,
+      i.project_id AS dimension_project_id,
+          CASE
+              WHEN (((pr.participation_method)::text = 'native_survey'::text) OR ((ph.participation_method)::text = 'native_survey'::text)) THEN survey.id
+              ELSE idea.id
+          END AS dimension_type_id,
+      (i.created_at)::date AS dimension_date_created_id,
+      (i.likes_count + i.dislikes_count) AS reactions_count,
+      i.likes_count,
+      i.dislikes_count
+     FROM ((((ideas i
+       LEFT JOIN projects pr ON ((pr.id = i.project_id)))
+       LEFT JOIN phases ph ON ((ph.id = i.creation_phase_id)))
+       JOIN analytics_dimension_types idea ON (((idea.name)::text = 'idea'::text)))
+       LEFT JOIN analytics_dimension_types survey ON (((survey.name)::text = 'survey'::text)))
+  UNION ALL
+   SELECT i.id,
+      i.author_id AS dimension_user_id,
+      NULL::uuid AS dimension_project_id,
+      adt.id AS dimension_type_id,
+      (i.created_at)::date AS dimension_date_created_id,
+      (i.likes_count + i.dislikes_count) AS reactions_count,
+      i.likes_count,
+      i.dislikes_count
+     FROM (initiatives i
+       JOIN analytics_dimension_types adt ON (((adt.name)::text = 'initiative'::text)))
+  UNION ALL
+   SELECT c.id,
+      c.author_id AS dimension_user_id,
+      i.project_id AS dimension_project_id,
+      adt.id AS dimension_type_id,
+      (c.created_at)::date AS dimension_date_created_id,
+      (c.likes_count + c.dislikes_count) AS reactions_count,
+      c.likes_count,
+      c.dislikes_count
+     FROM ((comments c
+       JOIN analytics_dimension_types adt ON ((((adt.name)::text = 'comment'::text) AND ((adt.parent)::text = lower((c.post_type)::text)))))
+       LEFT JOIN ideas i ON ((c.post_id = i.id)))
+  UNION ALL
+   SELECT r.id,
+      r.user_id AS dimension_user_id,
+      COALESCE(i.project_id, ic.project_id) AS dimension_project_id,
+      adt.id AS dimension_type_id,
+      (r.created_at)::date AS dimension_date_created_id,
+      1 AS reactions_count,
+          CASE
+              WHEN ((r.mode)::text = 'up'::text) THEN 1
+              ELSE 0
+          END AS likes_count,
+          CASE
+              WHEN ((r.mode)::text = 'down'::text) THEN 1
+              ELSE 0
+          END AS dislikes_count
+     FROM ((((reactions r
+       JOIN analytics_dimension_types adt ON ((((adt.name)::text = 'reaction'::text) AND ((adt.parent)::text = lower((r.reactable_type)::text)))))
+       LEFT JOIN ideas i ON ((i.id = r.reactable_id)))
+       LEFT JOIN comments c ON ((c.id = r.reactable_id)))
+       LEFT JOIN ideas ic ON ((ic.id = c.post_id)))
+  UNION ALL
+   SELECT pr.id,
+      pr.user_id AS dimension_user_id,
+      COALESCE(p.project_id, pr.participation_context_id) AS dimension_project_id,
+      adt.id AS dimension_type_id,
+      (pr.created_at)::date AS dimension_date_created_id,
+      0 AS reactions_count,
+      0 AS likes_count,
+      0 AS dislikes_count
+     FROM ((polls_responses pr
+       LEFT JOIN phases p ON ((p.id = pr.participation_context_id)))
+       JOIN analytics_dimension_types adt ON (((adt.name)::text = 'poll'::text)))
+  UNION ALL
+   SELECT vv.id,
+      vv.user_id AS dimension_user_id,
+      COALESCE(p.project_id, vc.participation_context_id) AS dimension_project_id,
+      adt.id AS dimension_type_id,
+      (vv.created_at)::date AS dimension_date_created_id,
+      0 AS reactions_count,
+      0 AS likes_count,
+      0 AS dislikes_count
+     FROM (((volunteering_volunteers vv
+       LEFT JOIN volunteering_causes vc ON ((vc.id = vv.cause_id)))
+       LEFT JOIN phases p ON ((p.id = vc.participation_context_id)))
+       JOIN analytics_dimension_types adt ON (((adt.name)::text = 'volunteer'::text)));
+  SQL
   create_view "analytics_fact_posts", sql_definition: <<-SQL
       SELECT i.id,
       i.author_id AS user_id,
@@ -1728,13 +1850,17 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_01_085753) do
               WHEN (abf.feedback_first_date IS NULL) THEN 1
               ELSE 0
           END AS feedback_none,
-      (i.upvotes_count + i.downvotes_count) AS votes_count,
-      i.upvotes_count,
-      i.downvotes_count,
+      (i.likes_count + i.dislikes_count) AS reactions_count,
+      i.likes_count,
+      i.dislikes_count,
       i.publication_status
-     FROM ((ideas i
+     FROM (((((ideas i
        JOIN analytics_dimension_types adt ON (((adt.name)::text = 'idea'::text)))
        LEFT JOIN analytics_build_feedbacks abf ON ((abf.post_id = i.id)))
+       LEFT JOIN ideas_phases iph ON ((iph.idea_id = i.id)))
+       LEFT JOIN phases ph ON ((ph.id = iph.phase_id)))
+       LEFT JOIN projects pr ON ((pr.id = i.project_id)))
+    WHERE (((ph.id IS NULL) OR ((ph.participation_method)::text <> 'native_survey'::text)) AND ((pr.participation_method)::text <> 'native_survey'::text))
   UNION ALL
    SELECT i.id,
       i.author_id AS user_id,
@@ -1750,9 +1876,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_01_085753) do
               WHEN (abf.feedback_first_date IS NULL) THEN 1
               ELSE 0
           END AS feedback_none,
-      (i.upvotes_count + i.downvotes_count) AS votes_count,
-      i.upvotes_count,
-      i.downvotes_count,
+      (i.likes_count + i.dislikes_count) AS reactions_count,
+      i.likes_count,
+      i.dislikes_count,
       i.publication_status
      FROM (((initiatives i
        JOIN analytics_dimension_types adt ON (((adt.name)::text = 'initiative'::text)))
@@ -1760,91 +1886,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_01_085753) do
        LEFT JOIN initiative_status_changes isc ON (((isc.initiative_id = i.id) AND (isc.updated_at = ( SELECT max(isc_.updated_at) AS max
              FROM initiative_status_changes isc_
             WHERE (isc_.initiative_id = i.id))))));
-  SQL
-  create_view "analytics_fact_participations", sql_definition: <<-SQL
-      SELECT i.id,
-      i.author_id AS dimension_user_id,
-      i.project_id AS dimension_project_id,
-          CASE
-              WHEN (((pr.participation_method)::text = 'native_survey'::text) OR ((ph.participation_method)::text = 'native_survey'::text)) THEN survey.id
-              ELSE idea.id
-          END AS dimension_type_id,
-      (i.created_at)::date AS dimension_date_created_id,
-      (i.upvotes_count + i.downvotes_count) AS votes_count,
-      i.upvotes_count,
-      i.downvotes_count
-     FROM ((((ideas i
-       LEFT JOIN projects pr ON ((pr.id = i.project_id)))
-       LEFT JOIN phases ph ON ((ph.id = i.creation_phase_id)))
-       JOIN analytics_dimension_types idea ON (((idea.name)::text = 'idea'::text)))
-       LEFT JOIN analytics_dimension_types survey ON (((survey.name)::text = 'survey'::text)))
-  UNION ALL
-   SELECT i.id,
-      i.author_id AS dimension_user_id,
-      NULL::uuid AS dimension_project_id,
-      adt.id AS dimension_type_id,
-      (i.created_at)::date AS dimension_date_created_id,
-      (i.upvotes_count + i.downvotes_count) AS votes_count,
-      i.upvotes_count,
-      i.downvotes_count
-     FROM (initiatives i
-       JOIN analytics_dimension_types adt ON (((adt.name)::text = 'initiative'::text)))
-  UNION ALL
-   SELECT c.id,
-      c.author_id AS dimension_user_id,
-      i.project_id AS dimension_project_id,
-      adt.id AS dimension_type_id,
-      (c.created_at)::date AS dimension_date_created_id,
-      (c.upvotes_count + c.downvotes_count) AS votes_count,
-      c.upvotes_count,
-      c.downvotes_count
-     FROM ((comments c
-       JOIN analytics_dimension_types adt ON ((((adt.name)::text = 'comment'::text) AND ((adt.parent)::text = lower((c.post_type)::text)))))
-       LEFT JOIN ideas i ON ((c.post_id = i.id)))
-  UNION ALL
-   SELECT v.id,
-      v.user_id AS dimension_user_id,
-      COALESCE(i.project_id, ic.project_id) AS dimension_project_id,
-      adt.id AS dimension_type_id,
-      (v.created_at)::date AS dimension_date_created_id,
-      1 AS votes_count,
-          CASE
-              WHEN ((v.mode)::text = 'up'::text) THEN 1
-              ELSE 0
-          END AS upvotes_count,
-          CASE
-              WHEN ((v.mode)::text = 'down'::text) THEN 1
-              ELSE 0
-          END AS downvotes_count
-     FROM ((((votes v
-       JOIN analytics_dimension_types adt ON ((((adt.name)::text = 'vote'::text) AND ((adt.parent)::text = lower((v.votable_type)::text)))))
-       LEFT JOIN ideas i ON ((i.id = v.votable_id)))
-       LEFT JOIN comments c ON ((c.id = v.votable_id)))
-       LEFT JOIN ideas ic ON ((ic.id = c.post_id)))
-  UNION ALL
-   SELECT pr.id,
-      pr.user_id AS dimension_user_id,
-      COALESCE(p.project_id, pr.participation_context_id) AS dimension_project_id,
-      adt.id AS dimension_type_id,
-      (pr.created_at)::date AS dimension_date_created_id,
-      0 AS votes_count,
-      0 AS upvotes_count,
-      0 AS downvotes_count
-     FROM ((polls_responses pr
-       LEFT JOIN phases p ON ((p.id = pr.participation_context_id)))
-       JOIN analytics_dimension_types adt ON (((adt.name)::text = 'poll'::text)))
-  UNION ALL
-   SELECT vv.id,
-      vv.user_id AS dimension_user_id,
-      COALESCE(p.project_id, vc.participation_context_id) AS dimension_project_id,
-      adt.id AS dimension_type_id,
-      (vv.created_at)::date AS dimension_date_created_id,
-      0 AS votes_count,
-      0 AS upvotes_count,
-      0 AS downvotes_count
-     FROM (((volunteering_volunteers vv
-       LEFT JOIN volunteering_causes vc ON ((vc.id = vv.cause_id)))
-       LEFT JOIN phases p ON ((p.id = vc.participation_context_id)))
-       JOIN analytics_dimension_types adt ON (((adt.name)::text = 'volunteer'::text)));
   SQL
 end

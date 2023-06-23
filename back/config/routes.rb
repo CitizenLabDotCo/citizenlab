@@ -17,8 +17,8 @@ Rails.application.routes.draw do
 
   namespace :web_api, defaults: { format: :json } do
     namespace :v1 do
-      concern :votable do
-        resources :votes, except: [:update], shallow: true do
+      concern :reactable do
+        resources :reactions, except: [:update], shallow: true do
           post :up, on: :collection
           post :down, on: :collection
         end
@@ -26,10 +26,14 @@ Rails.application.routes.draw do
       concern :post do
         resources :activities, only: [:index]
         resources :comments, shallow: true,
-          concerns: %i[votable spam_reportable],
-          defaults: { votable: 'Comment', spam_reportable: 'Comment' } do
+          concerns: %i[reactable spam_reportable],
+          defaults: { reactable: 'Comment', spam_reportable: 'Comment' } do
           get :children, on: :member
           post :mark_as_deleted, on: :member
+        end
+        resources :internal_comments, except: [:destroy], shallow: true do
+          get :children, on: :member
+          patch :mark_as_deleted, on: :member
         end
         get 'comments/as_xlsx', on: :collection, to: 'comments#index_xlsx'
         resources :official_feedback, shallow: true
@@ -39,8 +43,8 @@ Rails.application.routes.draw do
       end
 
       resources :ideas,
-        concerns: %i[votable spam_reportable post],
-        defaults: { votable: 'Idea', spam_reportable: 'Idea', post: 'Idea' } do
+        concerns: %i[reactable spam_reportable post],
+        defaults: { reactable: 'Idea', spam_reportable: 'Idea', post: 'Idea' } do
         resources :images, defaults: { container_type: 'Idea' }
         resources :files, defaults: { container_type: 'Idea' }
 
@@ -53,8 +57,8 @@ Rails.application.routes.draw do
       end
 
       resources :initiatives,
-        concerns: %i[votable spam_reportable post],
-        defaults: { votable: 'Initiative', spam_reportable: 'Initiative', post: 'Initiative' } do
+        concerns: %i[reactable spam_reportable post],
+        defaults: { reactable: 'Initiative', spam_reportable: 'Initiative', post: 'Initiative' } do
         resources :images, defaults: { container_type: 'Initiative' }
         resources :files, defaults: { container_type: 'Initiative' }
 
@@ -206,6 +210,8 @@ Rails.application.routes.draw do
 
       resource :home_page, only: %i[show update]
 
+      resources :experiments, only: %i[index create]
+
       scope 'stats' do
         route_params = { controller: 'stats_users' }
         get 'users_count', **route_params
@@ -241,13 +247,13 @@ Rails.application.routes.draw do
         get 'comments_by_topic_as_xlsx', **route_params
         get 'comments_by_project_as_xlsx', **route_params
 
-        route_params = { controller: 'stats_votes' }
-        get 'votes_count', **route_params
-        get 'votes_by_topic', **route_params
-        get 'votes_by_project', **route_params
+        route_params = { controller: 'stats_reactions' }
+        get 'reactions_count', **route_params
+        get 'reactions_by_topic', **route_params
+        get 'reactions_by_project', **route_params
 
-        get 'votes_by_topic_as_xlsx', **route_params
-        get 'votes_by_project_as_xlsx', **route_params
+        get 'reactions_by_topic_as_xlsx', **route_params
+        get 'reactions_by_project_as_xlsx', **route_params
       end
 
       scope 'mentions', controller: 'mentions' do
