@@ -11,7 +11,7 @@ module Notifications
     end
 
     def recipients
-      [User.find(internal_comment&.parent&.author_id)]
+      [User.find_by(id: internal_comment&.parent&.author_id)].compact
     end
 
     def notification_class

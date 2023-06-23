@@ -9,7 +9,7 @@ module Notifications
     end
 
     def recipients
-      [User.find(@activity.payload['mentioned_user'])]
+      [User.find_by(id: @activity.payload['mentioned_user'])].compact
     end
 
     def notification_class
