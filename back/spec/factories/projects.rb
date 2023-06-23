@@ -98,7 +98,12 @@ FactoryBot.define do
           start_at: 60.days.ago,
           end_at: 30.days.ago
         )
-        project.phases << create(:active_phase, project: project, participation_method: 'voting', voting_method: 'budgeting')
+        project.phases << create(
+          :active_phase,
+          project: project,
+          participation_method: 'voting',
+          voting_method: 'budgeting'
+        )
       end
     end
 
