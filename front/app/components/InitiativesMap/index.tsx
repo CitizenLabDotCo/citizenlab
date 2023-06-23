@@ -1,9 +1,11 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { popup, LatLng, Map as LeafletMap } from 'leaflet';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
 import { Subscription } from 'rxjs';
+
+// router
+import { useSearchParams } from 'react-router-dom';
 
 // Utils
 import { trackEventByName } from 'utils/analytics';
@@ -64,7 +66,9 @@ interface DataProps {
   initiativePermissions: GetInitiativesPermissionsChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps {
+  selectedInitiativeMarkerId: string | null;
+}
 
 interface State {
   selectedInitiativeId: string | null;
@@ -74,14 +78,11 @@ interface State {
   map?: LeafletMap | null;
 }
 
-export class InitiativesMap extends PureComponent<
-  Props & WithRouterProps,
-  State
-> {
+export class InitiativesMap extends PureComponent<Props, State> {
   private addInitiativeButtonElement: HTMLElement;
   private subscriptions: Subscription[];
 
-  constructor(props: Props & WithRouterProps) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       selectedInitiativeId: null,
@@ -252,10 +253,19 @@ const Data = adopt<DataProps, InputProps>({
   ),
 });
 
-const InitiativesMapWithRouter = withRouter(InitiativesMap);
+export default (inputProps: InputProps) => {
+  const [searchParams] = useSearchParams();
+  const selectedInitiativeMarkerId = searchParams.get('initiative_map_id');
 
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <InitiativesMapWithRouter {...inputProps} {...dataProps} />}
-  </Data>
-);
+  return (
+    <Data {...inputProps}>
+      {(dataProps) => (
+        <InitiativesMap
+          selectedInitiativeMarkerId={selectedInitiativeMarkerId}
+          {...inputProps}
+          {...dataProps}
+        />
+      )}
+    </Data>
+  );
+};
