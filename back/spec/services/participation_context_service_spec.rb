@@ -101,9 +101,9 @@ describe ParticipationContextService do
   end
 
   describe 'posting_idea_disabled_reason_for_project' do
-    it 'returns `posting_not_allowed` when posting is disabled' do
+    it 'returns `posting_disabled` when posting is disabled' do
       project = create(:project_with_current_phase, current_phase_attrs: { posting_enabled: false })
-      expect(service.posting_idea_disabled_reason_for_project(project, create(:user))).to eq 'posting_not_allowed'
+      expect(service.posting_idea_disabled_reason_for_project(project, create(:user))).to eq 'posting_disabled'
     end
 
     it "returns `nil` when we're in an ideation context" do
@@ -116,17 +116,17 @@ describe ParticipationContextService do
       expect(service.posting_idea_disabled_reason_for_project(project, create(:user))).to be_nil
     end
 
-    it "returns `posting_not_allowed` when we're not in an ideation or native_survey context" do
+    it "returns `not_ideation` when we're not in an ideation or native_survey context" do
       project = create(:project_with_current_phase, current_phase_attrs: { participation_method: 'information' })
-      expect(service.posting_idea_disabled_reason_for_project(project, create(:user))).to eq 'posting_not_allowed'
+      expect(service.posting_idea_disabled_reason_for_project(project, create(:user))).to eq 'not_ideation'
     end
 
-    it "returns `posting_not_allowed` when we're in a voting context" do
+    it "returns `not_ideation` when we're in a voting context" do
       project = create(
         :project_with_current_phase,
         current_phase_attrs: { participation_method: 'voting', voting_method: 'budgeting', voting_max_total: 1200 }
       )
-      expect(service.posting_idea_disabled_reason_for_project(project, create(:user))).to eq 'posting_not_allowed'
+      expect(service.posting_idea_disabled_reason_for_project(project, create(:user))).to eq 'not_ideation'
     end
 
     it 'returns `project_inactive` when the timeline is over' do
@@ -290,12 +290,12 @@ describe ParticipationContextService do
         expect(service.idea_reacting_disabled_reason_for(reaction, user)).to eq 'idea_not_in_current_phase'
       end
 
-      it 'returns `reacting_not_allowed` if reacting is disabled' do
+      it 'returns `reacting_disabled` if reacting is disabled' do
         project = create(:continuous_project, reacting_enabled: false)
         idea = create(:idea, project: project)
         reaction = build(:reaction, user: user, reactable: idea)
 
-        expect(service.idea_reacting_disabled_reason_for(reaction, user)).to eq 'reacting_not_allowed'
+        expect(service.idea_reacting_disabled_reason_for(reaction, user)).to eq 'reacting_disabled'
       end
 
       it 'returns `reacting_dislike_disabled` for a dislike if disliking is disabled' do
@@ -378,12 +378,12 @@ describe ParticipationContextService do
         expect(service.idea_reacting_disabled_reason_for(idea, user, mode: 'down')).to eq 'project_inactive'
       end
 
-      it "returns `reacting_not_allowed` when we're in a participatory budgeting context" do
+      it "returns `not_ideation` when we're in a participatory budgeting context" do
         project = create(:continuous_budgeting_project)
         idea = create(:idea, project: project)
 
-        expect(service.idea_reacting_disabled_reason_for(idea, user, mode: 'up')).to eq 'reacting_not_allowed'
-        expect(service.idea_reacting_disabled_reason_for(idea, user, mode: 'down')).to eq 'reacting_not_allowed'
+        expect(service.idea_reacting_disabled_reason_for(idea, user, mode: 'up')).to eq 'not_ideation'
+        expect(service.idea_reacting_disabled_reason_for(idea, user, mode: 'down')).to eq 'not_ideation'
       end
 
       it "returns `idea_not_in_current_phase` when it's not in the current phase" do
@@ -425,18 +425,18 @@ describe ParticipationContextService do
         expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'down')).to eq 'project_inactive'
       end
 
-      it "returns `reacting_not_allowed` when we're in an information context" do
+      it "returns `not_ideation` when we're in an information context" do
         project = create(:continuous_project, participation_method: 'information')
 
-        expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'up')).to eq 'reacting_not_allowed'
-        expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'down')).to eq 'reacting_not_allowed'
+        expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'up')).to eq 'not_ideation'
+        expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'down')).to eq 'not_ideation'
       end
 
-      it 'returns `reacting_not_allowed` if reacting is disabled' do
+      it 'returns `reacting_disabled` if reacting is disabled' do
         project = create(:continuous_project, reacting_enabled: false)
 
-        expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'up')).to eq 'reacting_not_allowed'
-        expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'down')).to eq 'reacting_not_allowed'
+        expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'up')).to eq 'reacting_disabled'
+        expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'down')).to eq 'reacting_disabled'
       end
 
       it 'returns nil for liking if disliking is disabled' do
@@ -484,18 +484,18 @@ describe ParticipationContextService do
         expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'down')).to eq 'project_inactive'
       end
 
-      it "returns `reacting_not_allowed` when we're in a participatory budgeting context" do
+      it "returns `not_ideation` when we're in a participatory budgeting context" do
         project = create(:project_with_current_phase, current_phase_attrs: { participation_method: 'voting', voting_method: 'budgeting', voting_max_total: 1000 })
 
-        expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'up')).to eq 'reacting_not_allowed'
-        expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'down')).to eq 'reacting_not_allowed'
+        expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'up')).to eq 'not_ideation'
+        expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'down')).to eq 'not_ideation'
       end
 
-      it 'returns `reacting_not_allowed` if reacting is disabled' do
+      it 'returns `reacting_disabled` if reacting is disabled' do
         project = create(:project_with_current_phase, current_phase_attrs: { reacting_enabled: false })
 
-        expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'up')).to eq 'reacting_not_allowed'
-        expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'down')).to eq 'reacting_not_allowed'
+        expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'up')).to eq 'reacting_disabled'
+        expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'down')).to eq 'reacting_disabled'
       end
 
       it 'returns `reacting_like_limited_max_reached` if the like limit was reached' do
@@ -566,10 +566,10 @@ describe ParticipationContextService do
         expect(service.cancelling_reacting_disabled_reason_for_idea(idea, idea.author)).to eq reasons[:idea_not_in_current_phase]
       end
 
-      it "returns 'reacting_not_allowed' if it's in the current phase and reacting is disabled" do
+      it "returns 'reacting_disabled' if it's in the current phase and reacting is disabled" do
         project = create(:project_with_current_phase, current_phase_attrs: { reacting_enabled: false })
         idea = create(:idea, project: project, phases: [project.phases[2]])
-        expect(service.cancelling_reacting_disabled_reason_for_idea(idea, idea.author)).to eq reasons[:reacting_not_allowed]
+        expect(service.cancelling_reacting_disabled_reason_for_idea(idea, idea.author)).to eq reasons[:reacting_disabled]
       end
 
       it "returns 'project_inactive' when the timeline has past" do
@@ -578,13 +578,13 @@ describe ParticipationContextService do
         expect(service.cancelling_reacting_disabled_reason_for_idea(idea, idea.author)).to eq reasons[:project_inactive]
       end
 
-      it "returns `reacting_not_allowed` when we're in a participatory budgeting context" do
+      it "returns `not_ideation` when we're in a participatory budgeting context" do
         project = create(
           :project_with_current_phase,
           current_phase_attrs: { participation_method: 'voting', voting_method: 'budgeting', voting_max_total: 1200 }
         )
         idea = create(:idea, project: project, phases: project.phases)
-        expect(service.cancelling_reacting_disabled_reason_for_idea(idea, idea.author)).to eq 'reacting_not_allowed'
+        expect(service.cancelling_reacting_disabled_reason_for_idea(idea, idea.author)).to eq 'not_ideation'
       end
     end
 
@@ -601,10 +601,10 @@ describe ParticipationContextService do
         expect(service.cancelling_reacting_disabled_reason_for_idea(idea, idea.author)).to eq reasons[:project_inactive]
       end
 
-      it "returns 'reacting_not_allowed' if reacting is disabled" do
+      it "returns 'reacting_disabled' if reacting is disabled" do
         project = create(:continuous_project, reacting_enabled: false)
         idea = create(:idea, project: project)
-        expect(service.cancelling_reacting_disabled_reason_for_idea(idea, idea.author)).to eq reasons[:reacting_not_allowed]
+        expect(service.cancelling_reacting_disabled_reason_for_idea(idea, idea.author)).to eq reasons[:reacting_disabled]
       end
 
       it 'returns nil when disliking is disabled but reacting is enabled' do
