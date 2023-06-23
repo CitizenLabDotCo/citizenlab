@@ -97,7 +97,6 @@ export default function useLeaflet(
   // State
   const [map, setMap] = useState<L.Map | null>(null);
   const [markers, setMarkers] = useState<L.Marker[] | null>(null);
-  const [markersLoaded, setMarkersLoaded] = useState(false);
   const [_tileLayer, setTileLayer] = useState<L.Layer | null>(null);
   const [_layers, setLayers] = useState<L.GeoJSON[] | null>(null);
   const [markerClusterGroup, setMarkerClusterGroup] =
@@ -143,11 +142,9 @@ export default function useLeaflet(
 
   // Subscriptions
   useEffect(() => {
-    if (!selectedPointId || !markersLoaded) return;
-    setTimeout(() => {
-      selectMarker(selectedPointId);
-    }, 200);
-  }, [selectedPointId, markersLoaded, selectMarker]);
+    if (!selectedPointId || !markers) return;
+    selectMarker(selectedPointId);
+  }, [selectedPointId, markers, selectMarker]);
 
   useEffect(() => {
     const selectSubscription =
@@ -293,14 +290,6 @@ export default function useLeaflet(
     });
   };
   useEffect(refreshMarkers, [map, points, noMarkerClustering]);
-
-  useEffect(() => {
-    if (markersLoaded) return;
-
-    if (markers) {
-      setMarkersLoaded(true);
-    }
-  }, [markersLoaded, markers]);
 
   const refreshClusterGroups = () => {
     if (!map || !markers) return;
