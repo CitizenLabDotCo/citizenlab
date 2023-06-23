@@ -184,6 +184,7 @@ const InternalCommentBody = ({
           >
             <MentionsTextArea
               name="body"
+              id="e2e-internal-comment-edit-textarea"
               value={editableCommentContent}
               rows={1}
               onChange={onEditableCommentContentChange}
@@ -205,6 +206,7 @@ const InternalCommentBody = ({
               buttonStyle="primary"
               processing={processing}
               onClick={onSubmit}
+              id="e2e-save-internal-comment-edit-button"
             >
               <FormattedMessage {...commentsMessages.saveCommentEdit} />
             </Button>

@@ -102,7 +102,9 @@ const InternalComment = ({
       <Container
         id={commentId}
         className={`${className || ''} ${commentType} ${
-          commentType === 'parent' ? 'e2e-parentcomment' : 'e2e-childcomment'
+          commentType === 'parent'
+            ? 'e2e-parentcomment'
+            : 'e2e-internal-child-comment'
         } e2e-comment`}
       >
         <ContainerInner
