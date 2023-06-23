@@ -22,8 +22,8 @@ import { useParams } from 'react-router-dom';
 // utils
 import QRCode from 'react-qr-code';
 import { Button, Text } from '@citizenlab/cl2-component-library';
-import useProject from 'hooks/useProject';
 import useQrCode from 'api/projects/useQrCode';
+import useProjectById from 'api/projects/useProjectById';
 
 const Container = styled.div``;
 
@@ -36,7 +36,7 @@ const ProjectQRCode = () => {
   const { projectId } = useParams() as { projectId: string };
 
   const [isProcessing, setIsProcessing] = useState(false);
-  const project = useProject({ projectId });
+  const { data: project } = useProjectById(projectId);
   const { mutate: qrCode } = useQrCode(projectId);
 
   // If null then don't show one - only show the button to generate
@@ -51,8 +51,8 @@ const ProjectQRCode = () => {
   }, []);
 
   // Generate function - POST: /projects/${projectId}/qr-code - returns project object
-  const showQrCode = project?.attributes.qr_code !== null;
-  const qrCodeUrl = `http://localhost:3000/projects/${projectId}/code/${project?.attributes.qr_code}`;
+  const showQrCode = project?.data.attributes.qr_code !== null;
+  const qrCodeUrl = `http://localhost:3000/projects/${projectId}/code/${project?.data.attributes.qr_code}`;
 
   console.log(isProcessing, showQrCode);
 

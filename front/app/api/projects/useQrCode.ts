@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import projectKeys from './keys';
-import { IProject } from '../../services/projects';
+import { IProject } from './types';
 
 type IQrCode = {
   id: string;
