@@ -391,6 +391,7 @@ resource 'Projects' do
             expect(json_response.dig(:data, :attributes, :voting_min_total)).to eq 10
             expect(json_response.dig(:data, :attributes, :voting_max_votes_per_idea)).to eq 5
             expect(json_response.dig(:data, :attributes, :voting_term)).to eq({ en: 'Grocery shopping' })
+            expect(json_response.dig(:data, :attributes, :baskets_count)).to eq 0
           end
         end
 

@@ -181,6 +181,7 @@ resource 'Phases' do
           expect(json_response.dig(:data, :attributes, :voting_term)).to eq({ en: 'Grocery shopping' })
           expect(json_response.dig(:data, :attributes, :ideas_order)).to eq 'new'
           expect(json_response.dig(:data, :attributes, :input_term)).to eq 'idea'
+          expect(json_response.dig(:data, :attributes, :baskets_count)).to eq 0
         end
       end
 
