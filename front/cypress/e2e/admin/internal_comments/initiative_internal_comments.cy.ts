@@ -9,6 +9,26 @@ describe('Initiative internal comments', () => {
   let initiativeId2: string;
 
   before(() => {
+    cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+      const adminJwt = response.body.jwt;
+      cy.request({
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${adminJwt}`,
+        },
+        method: 'PATCH',
+        url: `web_api/v1/app_configuration`,
+        body: {
+          settings: {
+            internal_commenting: {
+              enabled: true,
+              allowed: true,
+            },
+          },
+        },
+      });
+    });
+
     cy.apiCreateInitiative({
       initiativeTitle: initiativeTitle1,
       initiativeContent: initiativeContent1,
