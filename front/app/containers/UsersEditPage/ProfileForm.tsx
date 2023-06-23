@@ -1,13 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { adopt } from 'react-adopt';
 import streams from 'utils/streams';
 
 // services
-import GetLockedFields, {
-  GetLockedFieldsChildProps,
-} from 'resources/GetLockedFields';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 
 // components
@@ -30,9 +25,7 @@ import { handleHookFormSubmissionError } from 'utils/errorUtils';
 // i18n
 import { appLocalePairs, API_PATH } from 'containers/App/constants';
 import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import localize, { InjectedLocalized } from 'utils/localize';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 // styling
 import styled from 'styled-components';
@@ -43,11 +36,12 @@ import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/c
 // typings
 import { IOption, UploadFile, Multiloc } from 'typings';
 
-import GetFeatureFlag, {
-  GetFeatureFlagChildProps,
-} from 'resources/GetFeatureFlag';
 import eventEmitter from 'utils/eventEmitter';
 import useUpdateUser from 'api/users/useUpdateUser';
+import useUserLockedAttributes from 'api/user_locked_attributes/useUserLockedAttributes';
+import useAuthUser from 'api/me/useAuthUser';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 const StyledIconTooltip = styled(IconTooltip)`
   margin-left: 5px;
@@ -59,17 +53,7 @@ const InputContainer = styled.div`
   flex-direction: row;
 `;
 
-interface InputProps {}
-
-interface DataProps {
-  authUser: GetAuthUserChildProps;
-  lockedFields: GetLockedFieldsChildProps;
-  disableBio: GetFeatureFlagChildProps;
-}
-
 export type ExtraFormDataKey = 'custom_field_values';
-
-type Props = InputProps & DataProps & WrappedComponentProps & InjectedLocalized;
 
 type FormValues = {
   first_name?: string;
@@ -79,19 +63,14 @@ type FormValues = {
   avatar?: UploadFile[] | null;
 };
 
-const ProfileForm = ({
-  intl: { formatMessage },
-  disableBio,
-  tenantLocales,
-  lockedFields,
-  authUser,
-}: Props) => {
+const ProfileForm = () => {
+  const tenantLocales = useAppConfigurationLocales();
+  const disableBio = useFeatureFlag({ name: 'disable_user_bios' });
   const { mutateAsync: updateUser } = useUpdateUser();
-  const localeOptions: IOption[] = tenantLocales.map((locale) => ({
-    value: locale,
-    label: appLocalePairs[locale],
-  }));
+  const { data: authUser } = useAuthUser();
+  const { data: lockedAttributes } = useUserLockedAttributes();
 
+  const { formatMessage } = useIntl();
   const [extraFormData, setExtraFormData] = useState<{
     [field in ExtraFormDataKey]?: Record<string, any>;
   }>({});
@@ -113,14 +92,14 @@ const ProfileForm = ({
   const methods = useForm<FormValues>({
     mode: 'onBlur',
     defaultValues: {
-      first_name: authUser?.attributes.no_name
+      first_name: authUser?.data.attributes.no_name
         ? undefined
-        : authUser?.attributes.first_name ?? undefined,
-      last_name: authUser?.attributes.no_name
+        : authUser?.data.attributes.first_name ?? undefined,
+      last_name: authUser?.data.attributes.no_name
         ? undefined
-        : authUser?.attributes.last_name || undefined,
-      bio_multiloc: authUser?.attributes.bio_multiloc,
-      locale: authUser?.attributes.locale,
+        : authUser?.data.attributes.last_name || undefined,
+      bio_multiloc: authUser?.data.attributes.bio_multiloc,
+      locale: authUser?.data.attributes.locale,
     },
     resolver: yupResolver(schema),
   });
@@ -128,7 +107,7 @@ const ProfileForm = ({
   useEffect(() => {
     if (isNilOrError(authUser)) return;
     const avatarUrl =
-      authUser.attributes.avatar && authUser.attributes.avatar.medium;
+      authUser.data.attributes.avatar && authUser.data.attributes.avatar.medium;
     if (avatarUrl) {
       convertUrlToUploadFile(avatarUrl, null, null).then((fileAvatar) => {
         if (fileAvatar) {
@@ -140,7 +119,12 @@ const ProfileForm = ({
     }
   }, [authUser, methods]);
 
-  if (isNilOrError(authUser)) return null;
+  if (!authUser || !tenantLocales) return null;
+
+  const localeOptions: IOption[] = tenantLocales.map((locale) => ({
+    value: locale,
+    label: appLocalePairs[locale],
+  }));
 
   const onFormSubmit = async (formValues: FormValues) => {
     const avatar = formValues.avatar ? formValues.avatar[0].base64 : null;
@@ -161,7 +145,7 @@ const ProfileForm = ({
     });
 
     try {
-      await updateUser({ userId: authUser.id, ...newFormValues, avatar });
+      await updateUser({ userId: authUser.data.id, ...newFormValues, avatar });
       streams.fetchAllWith({
         apiEndpoint: [`${API_PATH}/onboarding_campaigns/current`],
       });
@@ -170,9 +154,9 @@ const ProfileForm = ({
     }
   };
 
-  const lockedFieldsNames = isNilOrError(lockedFields)
+  const lockedFieldsNames = !lockedAttributes
     ? []
-    : lockedFields.map((field) => field.attributes.name);
+    : lockedAttributes.data.map((field) => field.attributes.name);
 
   const handleCustomFieldsChange = ({
     key,
@@ -271,7 +255,7 @@ const ProfileForm = ({
           </SectionField>
         </form>
         <UserCustomFieldsForm
-          authUser={authUser}
+          authUser={authUser.data}
           authenticationContext={GLOBAL_CONTEXT}
           onChange={handleCustomFieldsChange}
         />
@@ -289,16 +273,4 @@ const ProfileForm = ({
   );
 };
 
-const ProfileFormWithHocs = injectIntl(localize(ProfileForm));
-
-const Data = adopt<DataProps, InputProps>({
-  authUser: <GetAuthUser />,
-  lockedFields: <GetLockedFields />,
-  disableBio: <GetFeatureFlag name="disable_user_bios" />,
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <ProfileFormWithHocs {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default ProfileForm;
