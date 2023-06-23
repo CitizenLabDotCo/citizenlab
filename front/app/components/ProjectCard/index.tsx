@@ -1,6 +1,6 @@
 import React, { memo, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { isEmpty, get, isNumber, round } from 'lodash-es';
+import { isEmpty, isNumber, round } from 'lodash-es';
 import moment from 'moment';
 import Observer from '@researchgate/react-intersection-observer';
 import bowser from 'bowser';
@@ -541,8 +541,8 @@ const ProjectCard = memo<Props>(
         project.data.relationships.avatars.data
           ? project.data.relationships.avatars.data.map((avatar) => avatar.id)
           : [];
-      const startAt = get(phase?.data, 'attributes.start_at');
-      const endAt = get(phase?.data, 'attributes.end_at');
+      const startAt = phase?.data.attributes.start_at;
+      const endAt = phase?.data.attributes.end_at;
       const timeRemaining = endAt
         ? moment.duration(moment(endAt).endOf('day').diff(moment())).humanize()
         : null;

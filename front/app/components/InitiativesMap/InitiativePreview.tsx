@@ -1,6 +1,5 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { get } from 'lodash-es';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -154,7 +153,7 @@ const InitiativePreview = ({
     });
   };
 
-  const initiativeAddress = get(initiative, 'attributes.location_description');
+  const initiativeAddress = initiative.data.attributes.location_description;
   const initiativeBody = localize(initiative.data.attributes.body_multiloc);
 
   return (
