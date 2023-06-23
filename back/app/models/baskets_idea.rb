@@ -9,6 +9,7 @@
 #  idea_id    :uuid
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  votes      :integer          default(1), not null
 #
 # Indexes
 #
