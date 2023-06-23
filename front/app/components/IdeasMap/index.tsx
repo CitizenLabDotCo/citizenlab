@@ -232,7 +232,7 @@ const IdeasMap = memo<Props>((props) => {
   const [innerContainerLeftMargin, setInnerContainerLeftMargin] = useState(
     initialInnerContainerLeftMargin
   );
-  const [isCardClickable, setIsCardClickable] = useState(false);
+  const [isCardClickable, setIsCardClickable] = useState(true);
   const [initialMapCenter, setInitialMapCenter] = useState<
     LatLngTuple | undefined
   >(undefined);
@@ -243,8 +243,8 @@ const IdeasMap = memo<Props>((props) => {
   const topicsParam = searchParams.get('topics');
   const topics: string[] = topicsParam ? JSON.parse(topicsParam) : [];
 
-  const [initializedWithSelectedMarkerParam] = useState<boolean>(
-    !!selectedIdeaMarkerId
+  const [initiallySelectedMarkerId] = useState<string | null>(
+    selectedIdeaMarkerId
   );
 
   const { data: ideaMarkers } = useIdeaMarkers({
@@ -361,7 +361,7 @@ const IdeasMap = memo<Props>((props) => {
     setInitialMapCenter([coordinates[1], coordinates[0]]);
   }, [initialMapCenter, selectedIdeaMarker]);
 
-  if (initializedWithSelectedMarkerParam && !initialMapCenter) {
+  if (initiallySelectedMarkerId && !initialMapCenter) {
     return null;
   }
 
@@ -413,7 +413,7 @@ const IdeasMap = memo<Props>((props) => {
         )}
 
         <Map
-          selectedPointId={selectedIdeaMarker?.id}
+          initialSelectedPointId={initiallySelectedMarkerId ?? undefined}
           centerLatLng={initialMapCenter}
           onInit={handleMapOnInit}
           projectId={projectId}

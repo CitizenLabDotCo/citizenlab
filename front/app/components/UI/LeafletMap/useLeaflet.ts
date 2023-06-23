@@ -48,7 +48,7 @@ L.Icon.Default.mergeOptions({
 });
 
 export interface ILeafletMapConfig {
-  selectedPointId?: string;
+  initialSelectedPointId?: string;
   center?: L.LatLngTuple;
   zoom?: number;
   tileProvider?: string | null;
@@ -77,7 +77,7 @@ const markerActiveIcon = service.getMarkerIcon({
 export default function useLeaflet(
   mapId: string,
   {
-    selectedPointId,
+    initialSelectedPointId,
     center,
     zoom,
     tileProvider,
@@ -104,6 +104,8 @@ export default function useLeaflet(
   const [_layersControl, setLayersControl] = useState<L.Control.Layers | null>(
     null
   );
+  const [initialSelectedPointDone, setInitialSelectedPointDone] =
+    useState(false);
 
   // Ref
   const selectedMarkerRef = useRef<string | null>(null);
@@ -148,9 +150,11 @@ export default function useLeaflet(
 
   // Subscriptions
   useEffect(() => {
-    if (!selectedPointId || !markers) return;
-    selectMarker(selectedPointId);
-  }, [selectedPointId, markers, selectMarker]);
+    if (initialSelectedPointDone) return;
+    if (!initialSelectedPointId || !markers) return;
+    selectMarker(initialSelectedPointId);
+    setInitialSelectedPointDone(true);
+  }, [initialSelectedPointDone, initialSelectedPointId, markers, selectMarker]);
 
   useEffect(() => {
     const selectSubscription =
