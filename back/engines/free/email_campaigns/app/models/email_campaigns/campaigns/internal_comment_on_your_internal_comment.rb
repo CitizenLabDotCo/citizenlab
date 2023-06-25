@@ -46,20 +46,24 @@ module EmailCampaigns
       users_scope.where(id: activity.item.recipient.id)
     end
 
+    def self.consentable_roles
+      %w[admin project_moderator project_folder_moderator]
+    end
+
     def self.recipient_role_multiloc_key
-      'email_campaigns.admin_labels.recipient_role.registered_users'
+      'email_campaigns.admin_labels.recipient_role.admins_and_managers'
     end
 
     def self.recipient_segment_multiloc_key
-      'email_campaigns.admin_labels.recipient_segment.user_who_commented'
+      'email_campaigns.admin_labels.recipient_segment.admins_and_managers'
     end
 
     def self.content_type_multiloc_key
-      'email_campaigns.admin_labels.content_type.comments'
+      'email_campaigns.admin_labels.content_type.internal_comments'
     end
 
     def self.trigger_multiloc_key
-      'email_campaigns.admin_labels.trigger.user_replies_to_comment'
+      'email_campaigns.admin_labels.trigger.user_replies_to_internal_comment'
     end
 
     def mailer_class
