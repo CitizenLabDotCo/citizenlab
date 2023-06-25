@@ -81,9 +81,30 @@ module EmailCampaigns
           internal_comment_body: notification.internal_comment.body,
           internal_comment_url: Frontend::UrlService.new.model_to_url(notification.internal_comment, locale: recipient.locale),
           post_title_multiloc: notification.post.title_multiloc,
-          post_type: notification.post_type
+          post_body_multiloc: notification.post.body_multiloc,
+          post_type: notification.post_type,
+          post_images: post_images(notification)
         }
       }]
+    end
+
+    def post_images(notification)
+      if notification.post_type == 'Idea'
+        notification.post.idea_images.map { |image| serialize_image(image) }
+      elsif notification.post_type == 'Initiative'
+        notification.post.initiative_images.map { |image| serialize_image(image) }
+      end
+    end
+
+    def serialize_image(image)
+      {
+        ordering: image.ordering,
+        versions: version_urls(image.image)
+      }
+    end
+
+    def version_urls(image)
+      image.versions.to_h { |k, v| [k.to_s, v.url] }
     end
   end
 end

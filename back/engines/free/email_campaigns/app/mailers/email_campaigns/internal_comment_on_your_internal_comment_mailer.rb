@@ -5,19 +5,15 @@ module EmailCampaigns
     protected
 
     def subject
-      format_message('subject', values: { organizationName: organization_name })
+      format_message('subject', values: { post: localize_for_recipient(event.post_title_multiloc) })
     end
 
     def header_title
-      format_message('main_header', values: { authorName: event.internal_comment_author_name })
+      format_message('main_header', values: { post: localize_for_recipient(event.post_title_multiloc) })
     end
 
     def header_message
-      format_message('event_description', values: {
-        authorNameFull: event.internal_comment_author_name,
-        authorName: event.initiating_user_first_name,
-        post: localize_for_recipient(event.post_title_multiloc)
-      })
+      format_message('event_description', values: { authorNameFull: event.internal_comment_author_name })
     end
 
     def preheader

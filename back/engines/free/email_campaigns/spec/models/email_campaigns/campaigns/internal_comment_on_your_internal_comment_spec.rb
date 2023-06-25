@@ -12,6 +12,7 @@ RSpec.describe EmailCampaigns::Campaigns::InternalCommentOnYourInternalComment d
   describe '#generate_commands' do
     let(:campaign) { create(:internal_comment_on_your_internal_comment_campaign) }
     let(:notification) { create(:internal_comment_on_your_internal_comment) }
+    let!(:idea_image) { create(:idea_image, idea: notification.post) }
     let(:notification_activity) { create(:activity, item: notification, action: 'created') }
     let(:recipient) { notification_activity.item.recipient }
     let(:name_service) { UserDisplayNameService.new(AppConfiguration.instance, recipient) }
@@ -21,6 +22,10 @@ RSpec.describe EmailCampaigns::Campaigns::InternalCommentOnYourInternalComment d
         recipient: recipient,
         activity: notification_activity
       ).first
+
+      image_url_split = idea_image.image.url.split('/')
+      image_url_split[-1] = "medium_#{image_url_split[-1]}"
+      idea_image_medium_version = image_url_split.join('/')
 
       expect(
         command.dig(:event_payload, :initiating_user_first_name)
@@ -41,8 +46,14 @@ RSpec.describe EmailCampaigns::Campaigns::InternalCommentOnYourInternalComment d
         command.dig(:event_payload, :post_title_multiloc)
       ).to eq(notification.post.title_multiloc)
       expect(
+        command.dig(:event_payload, :post_body_multiloc)
+      ).to eq(notification.post.body_multiloc)
+      expect(
         command.dig(:event_payload, :post_type)
       ).to eq(notification.post_type)
+      expect(
+        command.dig(:event_payload, :post_images).first[:versions]['medium']
+      ).to eq(idea_image_medium_version)
     end
   end
 end

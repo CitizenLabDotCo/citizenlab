@@ -300,12 +300,11 @@ en:
       preheader: '%{authorName} replied to your comment on %{organizationName}''s platform'
       replied: '%{authorFirstName} replied:'
     internal_comment_on_your_internal_comment:
-      cta_reply_to: 'Reply to %{firstName}'
-      event_description: '%{authorNameFull} wrote a reply to your comment on ''%{post}'' on the participation platform. Click the button below to continue the conversation with %{authorName}.'
-      subject: 'You have received a reply on your comment on the platform of %{organizationName}'
-      main_header: '%{authorName} replied to your comment'
+      cta_reply_to: 'View comment by %{firstName}'
+      event_description: '%{authorNameFull} commented on your internal comment.'
+      subject: 'You have received a comment on your internal comment on ''%{post}'''
+      main_header: 'You have received a comment on your internal comment on ''%{post}'''
       preheader: '%{authorName} replied to your comment on %{organizationName}''s platform'
-      replied: '%{authorFirstName} replied:'
     official_feedback_on_commented_initiative:
       by_author: 'by %{authorName}'
       updated: '%{officialName} wrote:'
