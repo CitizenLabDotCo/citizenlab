@@ -213,4 +213,5 @@ RspecApiDocumentation.configure do |config|
   config.api_name = ENV['API_NAME'] || 'API documentation'
   config.request_body_formatter = :json
   config.html_embedded_css_file = 'doc/style.css'
+  config.configurations_dir = Pathname.new(ENV['CONFIGURATIONS_DIR']) if ENV['CONFIGURATIONS_DIR']
 end

@@ -5,12 +5,11 @@ import Button from 'components/UI/Button';
 
 // services
 import { getLatestRelevantPhase } from 'api/phases/utils';
-import { addBasket, updateBasket } from 'services/baskets';
 
 // hooks
 import useAuthUser from 'api/me/useAuthUser';
 import useIdeaById from 'api/ideas/useIdeaById';
-import useBasket from 'hooks/useBasket';
+import useBasket from 'api/baskets/useBasket';
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
 
@@ -23,7 +22,6 @@ import {
   isNilOrError,
   capitalizeParticipationContextType,
 } from 'utils/helperUtils';
-import streams from 'utils/streams';
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 
 // events
@@ -42,6 +40,8 @@ import { fontSizes, colors, defaultCardStyle, media } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import PBExpenses from 'containers/ProjectsShowPage/shared/pb/PBExpenses';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
+import useAddBasket from 'api/baskets/useAddBasket';
+import useUpdateBasket from 'api/baskets/useUpdateBasket';
 
 const IdeaCardContainer = styled.div`
   display: flex;
@@ -100,6 +100,8 @@ const AssignBudgetControl = memo(
     const { data: idea } = useIdeaById(ideaId);
     const { data: project } = useProjectById(projectId);
     const { data: phases } = usePhases(projectId);
+    const { mutateAsync: addBasket } = useAddBasket(projectId);
+    const { mutateAsync: updateBasket } = useUpdateBasket();
 
     const isContinuousProject =
       project?.data.attributes.process_type === 'continuous';
@@ -125,7 +127,7 @@ const AssignBudgetControl = memo(
 
     const participationContextType = isContinuousProject ? 'project' : 'phase';
     const participationContextId = participationContext?.id || null;
-    const basket = useBasket(
+    const { data: basket } = useBasket(
       participationContext?.relationships?.user_basket?.data?.id
     );
 
@@ -158,8 +160,8 @@ const AssignBudgetControl = memo(
 
       setProcessing(true);
 
-      if (!isNilOrError(basket)) {
-        const basketIdeaIds = basket.relationships.ideas.data.map(
+      if (basket) {
+        const basketIdeaIds = basket.data.relationships.ideas.data.map(
           (idea) => idea.id
         );
         const isInBasket = basketIdeaIds.includes(ideaId);
@@ -167,12 +169,12 @@ const AssignBudgetControl = memo(
         let newIdeas: string[] = [];
 
         if (isInBasket) {
-          newIdeas = basket.relationships.ideas.data
+          newIdeas = basket.data.relationships.ideas.data
             .filter((basketIdea) => basketIdea.id !== idea.data.id)
             .map((basketIdea) => basketIdea.id);
         } else {
           newIdeas = [
-            ...basket.relationships.ideas.data.map(
+            ...basket.data.relationships.ideas.data.map(
               (basketIdea) => basketIdea.id
             ),
             idea.data.id,
@@ -180,7 +182,8 @@ const AssignBudgetControl = memo(
         }
 
         try {
-          await updateBasket(basket.id, {
+          await updateBasket({
+            id: basket.data.id,
             user_id: authUser.data.id,
             participation_context_id: participationContextId,
             participation_context_type: capitalizeParticipationContextType(
@@ -193,7 +196,6 @@ const AssignBudgetControl = memo(
           trackEventByName(tracks.ideaAddedToBasket);
         } catch (error) {
           done();
-          streams.fetchAllWith({ dataId: [basket.id] });
         }
       } else {
         try {
@@ -236,7 +238,9 @@ const AssignBudgetControl = memo(
             ideaId,
             participationContextId,
             participationContextType,
-            basket,
+            basket: basket?.data,
+            addBasket,
+            updateBasket,
           },
         };
 
@@ -245,7 +249,7 @@ const AssignBudgetControl = memo(
     };
 
     const basketIdeaIds = !isNilOrError(basket)
-      ? basket.relationships.ideas.data.map((idea) => idea.id)
+      ? basket.data.relationships.ideas.data.map((idea) => idea.id)
       : [];
     const isInBasket = basketIdeaIds.includes(ideaId);
 

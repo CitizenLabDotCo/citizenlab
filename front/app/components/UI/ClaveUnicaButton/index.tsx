@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import icon from './clave-unica-icon.svg';
 
 // typings
-import { TVerificationMethod } from 'services/verificationMethods';
+import { TVerificationMethod } from 'api/verification_methods/types';
 
 // CSS extracted from the official Clave Unica button
 // https://drive.google.com/file/d/1-aBGu5XEjHD1LYcqOZP_mUg4ekFLDv6v/view

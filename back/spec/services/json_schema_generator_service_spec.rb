@@ -22,16 +22,7 @@ RSpec.describe JsonSchemaGeneratorService do
             field1.key => { type: 'string' },
             field2.key => {
               type: 'string',
-              oneOf: [
-                {
-                  const: 'option1',
-                  title: 'youth council'
-                },
-                {
-                  const: 'option2',
-                  title: 'youth council'
-                }
-              ]
+              enum: %w[option1 option2]
             }
           }
         },
@@ -42,16 +33,7 @@ RSpec.describe JsonSchemaGeneratorService do
             field1.key => { type: 'string' },
             field2.key => {
               type: 'string',
-              oneOf: [
-                {
-                  const: 'option1',
-                  title: 'conseil des jeunes'
-                },
-                {
-                  const: 'option2',
-                  title: 'conseil des jeunes'
-                }
-              ]
+              enum: %w[option1 option2]
             }
           }
         },
@@ -62,16 +44,7 @@ RSpec.describe JsonSchemaGeneratorService do
             field1.key => { type: 'string' },
             field2.key => {
               type: 'string',
-              oneOf: [
-                {
-                  const: 'option1',
-                  title: 'jeugdraad'
-                },
-                {
-                  const: 'option2',
-                  title: 'jeugdraad'
-                }
-              ]
+              enum: %w[option1 option2]
             }
           }
         }
@@ -184,16 +157,7 @@ RSpec.describe JsonSchemaGeneratorService do
       it 'returns the schema for the given field' do
         expect(generator.visit_select(field)).to eq({
           type: 'string',
-          oneOf: [
-            {
-              const: 'option1',
-              title: 'youth council'
-            },
-            {
-              const: 'option2',
-              title: 'youth council'
-            }
-          ]
+          enum: %w[option1 option2]
         })
       end
     end
