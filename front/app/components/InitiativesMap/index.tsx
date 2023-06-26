@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, useState } from 'react';
 import { adopt } from 'react-adopt';
 import { popup, LatLng, Map as LeafletMap } from 'leaflet';
 import { isNilOrError } from 'utils/helperUtils';
@@ -70,6 +70,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {
   selectedInitiativeMarkerId: string | null;
+  initiallySelectedMarkerId: string | null;
 }
 
 interface State {
@@ -183,6 +184,7 @@ export class InitiativesMap extends PureComponent<Props, State> {
   render() {
     const {
       selectedInitiativeMarkerId,
+      initiallySelectedMarkerId,
       initiativeMarkers,
       className,
       initiativePermissions,
@@ -209,6 +211,7 @@ export class InitiativesMap extends PureComponent<Props, State> {
             )}
 
           <Map
+            initialSelectedPointId={initiallySelectedMarkerId ?? undefined}
             onInit={this.handleMapOnInit}
             points={points}
             boxContent={
@@ -250,12 +253,16 @@ const Data = adopt<DataProps, InputProps>({
 export default (inputProps: InputProps) => {
   const [searchParams] = useSearchParams();
   const selectedInitiativeMarkerId = searchParams.get('initiative_map_id');
+  const [initiallySelectedMarkerId] = useState<string | null>(
+    selectedInitiativeMarkerId
+  );
 
   return (
     <Data {...inputProps}>
       {(dataProps) => (
         <InitiativesMap
           selectedInitiativeMarkerId={selectedInitiativeMarkerId}
+          initiallySelectedMarkerId={initiallySelectedMarkerId}
           {...inputProps}
           {...dataProps}
         />
