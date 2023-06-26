@@ -105,6 +105,8 @@
   "app.components.admin.PostManager.bodyTitle": "Beschrijving",
   "app.components.admin.PostManager.changeStatusModalTitle": "Wijzig de status van dit voorstel",
   "app.components.admin.PostManager.comments": "Reacties",
+  "app.components.admin.PostManager.components.goToInputManager": "Ga naar invoermanager",
+  "app.components.admin.PostManager.components.goToProposalManager": "Ga naar proposal manager",
   "app.components.admin.PostManager.contributionFormTitle": "Bijdrage bewerken",
   "app.components.admin.PostManager.currentLat": "Huidige breedtegraad",
   "app.components.admin.PostManager.currentLng": "Huidige lengtegraad",
