@@ -73,14 +73,6 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
     [projectId, sortParam, searchParam, phase, topicsParam]
   );
 
-  // useEffect(() => {
-  //   setIdeaQueryParameters((current) => ({
-  //     ...current,
-  //     phase: phase.id,
-  //     sort: phase.attributes.ideas_order ?? ideaDefaultSortMethodFallback,
-  //   }));
-  // }, [phase]);
-
   const participationMethod = phase.attributes.participation_method;
   if (
     !(participationMethod === 'ideation' || participationMethod === 'budgeting')
