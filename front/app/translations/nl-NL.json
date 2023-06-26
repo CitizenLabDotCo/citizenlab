@@ -1702,7 +1702,7 @@
   "app.utils.votingMethodUtils.budgetParticipationEnded": "<b>Het indienen van budgetten sloot op {endDate}.</b> Deelnemers hadden elk in totaal <b>{maxBudget} {currency} te verdelen over {optionCount} opties.</b>",
   "app.utils.votingMethodUtils.budgetSubmitted": "Ingediende budget",
   "app.utils.votingMethodUtils.budgetSubmittedWithIcon": "Ingediende budget 🎉",
-  "app.utils.votingMethodUtils.budgetingSubmissionInstructions2": "Je hebt in totaal <b>{maxBudget} EUR om te verdelen over {optionCount} opties</b>. Selecteer de opties van je voorkeur door op \"Toevoegen\" te tikken. Als je klaar bent, klik je op \"Verzenden\" om je budget in te dienen.",
+  "app.utils.votingMethodUtils.budgetingSubmissionInstructions2": "Je hebt in totaal <b>{maxBudget} EUR om te verdelen over {optionCount} opties</b>. Selecteer voorkeursopties door op \"Toevoegen\" te klikken. Als je klaar bent, klik je op \"Verzenden\" om je budget in te dienen.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>Gefeliciteerd, je budget is ingediend!</b> Je kunt je opties hieronder op elk moment controleren of wijzigen voor <b>{endDate}</b>.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous": "<b>Gefeliciteerd, je budget is ingediend!</b> Je kunt je opties hieronder op elk moment controleren of wijzigen.",
   "app.utils.votingMethodUtils.budgets": "Budgetten",
