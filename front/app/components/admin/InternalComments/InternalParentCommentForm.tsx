@@ -284,6 +284,7 @@ const InternalParentCommentForm = ({
               border="none"
               boxShadow="none"
               getTextareaRef={setRef}
+              roles={postType === 'idea' ? ['admin', 'moderator'] : ['admin']}
             />
             <ButtonWrapper className={focused || processing ? 'visible' : ''}>
               <CancelButton

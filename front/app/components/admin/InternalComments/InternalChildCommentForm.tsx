@@ -305,6 +305,7 @@ const InternalChildCommentForm = ({
                 border="none"
                 boxShadow="none"
                 getTextareaRef={setRef}
+                roles={postType === 'idea' ? ['admin', 'moderator'] : ['admin']}
               />
               <ButtonWrapper>
                 <CancelButton
