@@ -20,14 +20,14 @@ da:
       "new_comment_for_admin": Ny kommentar i et projekt jeg modererer
       "new_comment_on_commented_idea": Ny kommentar på en idé jeg har kommenteret på
       "new_comment_on_commented_initiative": Ny kommentar på et borgerforslag jeg har kommenteret på
-      "new_comment_on_voted_idea": Ny kommentar på en idé jeg har stemt på
-      "new_comment_on_voted_initiative": Ny kommentar på et borgerforslag jeg har stemt på
+      "new_comment_on_reacted_idea": Ny kommentar til en idé, jeg reagerede på
+      "new_comment_on_reacted_initiative": Ny kommentar på et borgerforslag jeg har stemt på
       "new_idea_for_admin": Ny idé i et projekt jeg modererer
       "new_initiative_for_admin": Nyt borgerforslag
       "official_feedback_on_commented_idea": Opdatering på en idé jeg har kommenteret på
       "official_feedback_on_commented_initiative": Opdatering på et borgerforslag jeg har kommenteret på
-      "official_feedback_on_voted_idea": Opdatering på en idé jeg har stemt på
-      "official_feedback_on_voted_initiative": Opdatering på et borgerforslag jeg har stemt på
+      "official_feedback_on_reacted_idea": Opdatering på en idé, jeg reagerede på
+      "official_feedback_on_reacted_initiative": Opdatering af et forslag, jeg har stemt om
       "official_feedback_on_your_idea": Opdatering på min idé
       "official_feedback_on_your_initiative": Opdatering på mit borgerforslag
       "password_reset": Nulstilling af adgangskode
@@ -37,8 +37,8 @@ da:
       "project_phase_upcoming": Kommende ny projektfase
       "status_change_of_commented_idea": Statusændring af en idé jeg har kommenteret på
       "status_change_of_commented_initiative": Statusændring af et borgerforslag jeg har kommenteret på
-      "status_change_of_voted_idea": Statusændring af en idé jeg har stemt på
-      "status_change_of_voted_initiative": Statusændring af et borgerforslag jeg har stemt på
+      "status_change_of_reacted_idea": Statusændring af en idé, jeg reagerede på
+      "status_change_of_reacted_initiative": Statusændring af et forslag, jeg reagerede på
       "status_change_of_your_idea": Statusændring af min idé
       "status_change_of_your_initiative": Statusændring af mit borgerforslag
       "threshold_reached_for_admin": Borgerforslag har nået stemmegrænsen
@@ -255,21 +255,21 @@ da:
       main_header: '%{authorName} kommenterede på din idé'
       subject: 'Du har modtaget en kommentar på %{organizationName}s platform'
       preheader: '%{authorName} efterlod en kommentar på din idé for %{organizationName}'
-    new_comment_on_voted_initiative:
+    new_comment_on_reacted_initiative:
       commented: '%{commentAuthor} skrev:'
       cta_reply_to: 'Se dette borgerforslag'
       event_description: '%{commentAuthor} har kommenteret borgerforslag ''%{initiativeTitle}'', som du har stemt på. Deltag i diskussion på %{organizationName}s platform!'
       main_header: '%{firstName}, der er en ny kommentar til det borgerforslag, du har stemt på'
       subject: 'Der er en ny kommentar til det borgerforslag, du har stemt på'
       preheader: '%{commentAuthor} kommenterede til det borgerforslag, du har stemt på %{organizationName}s platform'
-    new_comment_on_voted_idea:
+    new_comment_on_reacted_idea:
       commented: '%{commentAuthor} kommenterede:'
-      cta_reply_to: 'Svar %{commentAuthor}'
+      cta_reply_to: 'Svar til %{commentAuthor}'
       days_ago: '%{numberOfDays} dage siden'
       event_description: '%{commentAuthor} har kommenteret på idéen ''%{ideaTitle}'', som du har stemt på. Deltag i diskussion på %{organizationName}s platform!'
-      main_header: '%{firstName}, der er en ny kommentar på den ide du har stemt på!'
-      subject: 'Der er en ny kommentar på den idé, du har stemt på! '
-      preheader: '%{commentAuthor} kommenterede på den idé, du har stemt på på %{organizationName}s platform'
+      main_header: '%{firstName}er der en ny kommentar til den idé, du har reageret på.'
+      subject: 'Der er en ny kommentar til den idé, du har reageret på'
+      preheader: '%{commentAuthor} efterlod en kommentar til den idé, du har reageret på, på platformen %{organizationName}'
       today: I dag
       yesterday: I går
     new_initiative_for_admin:
@@ -306,13 +306,13 @@ da:
       main_header: 'Der er en opdatering om et borgerforslag, du har kommenteret på'
       subject: 'Et borgerforslag, du kommenterede, har fået en opdatering på platformen til %{organizationName}'
       preheader: '%{officialName} gav feedback på et borgerforslag du kommenterede på'
-    official_feedback_on_voted_idea:
+    official_feedback_on_reacted_idea:
       by_author: 'af %{authorName}'
       updated: '%{officialName} skrev:'
       cta_view: 'Gå til denne idé'
       event_description: '%{officialName} har en opdatering af ideen ''%{ideaTitle}''. Klik på knappen nedenfor for at gå ind i samtalen med %{officialName}.'
-      subject: 'En ide du har stemt på, er blevet opdateret på %{organizationName} platformen'
-      preheader: '%{officialName} har opdateret en ide, du har stemt på'
+      subject: 'En idé, du reagerede på, har fået en opdatering på platformen %{organizationName}'
+      preheader: '%{officialName} efterlod en opdatering på en idé, du reagerede på'
       main_header: ""
     official_feedback_on_commented_idea:
       by_author: 'af %{authorName}'
@@ -330,7 +330,7 @@ da:
       main_header: 'Du har modtaget en opdatering fra %{organizationName}'
       subject: 'Du har modtaget en opdatering fra %{organizationName}'
       preheader: '%{officialName} kom med en officiel opdatering på din ide'
-    official_feedback_on_voted_initiative:
+    official_feedback_on_reacted_initiative:
       by_author: 'af %{authorName}'
       updated: '%{officialName} skrev:'
       cta_view: 'Gå til dette borgerforslag'
@@ -405,14 +405,14 @@ da:
       main_header: 'Din idé har en ny status'
       subject: 'Status på din idé er blevet ændret'
       preheader: '%{organizationName} ændrede status på din idé'
-    status_change_of_voted_idea:
+    status_change_of_reacted_idea:
       status_change: 'Den nye status for denne idé er ''%{ideaStatus}'''
-      cta_view_idea: 'Gå til idé'
+      cta_view_idea: 'Gå til denne idé'
       event_description: '%{organizationName} opdaterede status for idéen ''%{ideaTitle}'' på deres digitale deltagelsesplatform.'
-      main_header: 'En idé, du stemte på, har en ny status'
-      subject: 'Status på en idé, du har stemt på, er blevet ændret'
-      preheader: '%{organizationName} ændrede status på en idé, du har stemt på'
-    status_change_of_voted_initiative:
+      main_header: 'En idé, du reagerede på, har fået en ny status'
+      subject: 'Status for en idé, du reagerede på, er blevet ændret'
+      preheader: '%{organizationName} ændret status for en idé, du reagerede på'
+    status_change_of_reacted_initiative:
       status_change: 'Den nye status for dette borgerforslag er ''%{initiativeStatus}'''
       cta_view_initiative: 'Gå til dette borgerforslag'
       event_description: 'Status for borgerforslag ''%{initiativeTitle}'' er blevet opdateret på den digitale deltagelsesplatform for %{organizationName}.'
@@ -547,7 +547,7 @@ da:
         permissions: 'Tilladelser'
         projects: 'Projekter'
         proposals: 'Borgerforslag'
-        votes: 'Afstemninger'
+        reactions: 'Reaktioner'
       trigger:
         comment_is_deleted: 'Kommentar er slettet'
         comment_is_flagged_as_spam: 'Kommentar er markeret som spam'
