@@ -167,7 +167,6 @@ interface DataProps {
 interface InputProps {
   ideaId: string;
   projectId: string;
-  insideModal: boolean;
   setRef?: (element: HTMLDivElement) => void;
   compact?: boolean;
   className?: string;
@@ -180,7 +179,6 @@ export const IdeasShow = ({
   className,
   postOfficialFeedbackPermission,
   projectId,
-  insideModal,
   project,
   compact,
   ideaId,
@@ -423,7 +421,6 @@ export const IdeasShow = ({
               projectId={projectId}
               statusId={statusId}
               authorId={authorId}
-              insideModal={insideModal}
               anonymous={anonymous}
             />
           )}
