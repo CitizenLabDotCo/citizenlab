@@ -202,13 +202,13 @@ export default defineMessages({
     id: 'app.components.admin.UserFilterConditions.predicate_not_reacted_comment_in',
     defaultMessage: "didn't react to comment",
   },
-  predicate_budgeted_in: {
-    id: 'app.components.admin.UserFilterConditions.predicate_budgeted_in',
-    defaultMessage: 'spent budget',
+  predicate_voted_in: {
+    id: 'app.components.admin.UserFilterConditions.predicate_voted_in2',
+    defaultMessage: 'voted',
   },
-  predicate_not_budgeted_in: {
-    id: 'app.components.admin.UserFilterConditions.predicate_not_budgeted_in',
-    defaultMessage: "didn't spend budget",
+  predicate_not_voted_in: {
+    id: 'app.components.admin.UserFilterConditions.predicate_not_voted_in2',
+    defaultMessage: "didn't vote",
   },
   predicate_volunteered_in: {
     id: 'app.components.admin.UserFilterConditions.predicate_volunteered_in',
