@@ -25,6 +25,25 @@ resource 'Projects' do
 
     include_context 'common_list_params'
 
+    parameter(
+      :folder_id, <<~DESC.squish,
+        List only the projects that are in the specified folder.
+      DESC
+      required: false,
+      in: 'query',
+      type: 'string'
+    )
+
+    parameter(
+      :publication_status, <<~DESC.squish,
+        List only the projects that have the specified publication status.
+      DESC
+      required: false,
+      in: 'query',
+      type: 'string',
+      enum: AdminPublication::PUBLICATION_STATUSES
+    )
+
     context 'when the page size is smaller than the total number of projects' do
       let(:page_size) { 2 }
 
@@ -62,6 +81,55 @@ resource 'Projects' do
         assert_status 200
         expect(json_response_body[:projects].pluck(:id)).to eq [project.id]
         expect(json_response_body[:meta]).to eq({ total_pages: 1, current_page: 1 })
+      end
+    end
+
+    context "when filtering by 'folder_id'" do
+      let(:projects_in_folder) { create_list(:project, 2) }
+      let(:folder) { create(:project_folder, projects: projects_in_folder) }
+      let(:folder_id) { folder.id }
+
+      example_request 'List only the projects in the specified folder', document: false do
+        assert_status 200
+        expect(json_response_body[:projects].pluck(:id))
+          .to match_array projects_in_folder.pluck(:id)
+      end
+    end
+
+    context "when filtering by a valid 'publication_status'" do
+      let(:publication_status) { 'draft' }
+
+      before do
+        projects.first.tap do |p|
+          p.admin_publication.update!(publication_status: publication_status)
+        end
+      end
+
+      example_request 'List only the projects with the specified status' do
+        assert_status 200
+
+        expected_projects = Project
+          .joins(:admin_publication)
+          .where(admin_publications: { publication_status: publication_status })
+
+        # Sanity check
+        expect(expected_projects.count).to eq(1)
+
+        expect(json_response_body[:projects].pluck(:id))
+          .to match_array expected_projects.pluck(:id)
+      end
+    end
+
+    context "when filtering by an invalid 'publication_status'" do
+      let(:publication_status) { 'invalid-status' }
+
+      example_request 'Returns an error', document: false do
+        assert_status 400
+        expect(json_response_body).to include(
+          parameter_name: 'publication_status',
+          parameter_value: publication_status,
+          allowed_values: AdminPublication::PUBLICATION_STATUSES
+        )
       end
     end
   end
