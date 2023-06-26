@@ -20,14 +20,14 @@ es:
       "new_comment_for_admin": Nuevo comentario en un proyecto moderado por mí
       "new_comment_on_commented_idea": Nuevo comentario sobre una idea que comenté
       "new_comment_on_commented_initiative": Nuevo comentario sobre una propuesta que comenté
-      "new_comment_on_voted_idea": Nuevo comentario sobre una idea por la que voté
-      "new_comment_on_voted_initiative": Nuevo comentario sobre una propuesta por la que voté
+      "new_comment_on_reacted_idea": Nuevo comentario sobre una idea a la que reaccioné
+      "new_comment_on_reacted_initiative": Nuevo comentario sobre una propuesta por la que voté
       "new_idea_for_admin": Nueva idea en un proyecto moderado por mí
       "new_initiative_for_admin": Nueva propuesta
       "official_feedback_on_commented_idea": Actualización sobre una idea que comenté
       "official_feedback_on_commented_initiative": Actualización sobre una propuesta que comenté
-      "official_feedback_on_voted_idea": Actualización sobre una idea que voté
-      "official_feedback_on_voted_initiative": Actualización sobre una propuesta que voté
+      "official_feedback_on_reacted_idea": Actualización sobre una idea a la que reaccioné
+      "official_feedback_on_reacted_initiative": Actualización sobre una propuesta que voté
       "official_feedback_on_your_idea": Actualización sobre mi idea
       "official_feedback_on_your_initiative": Actualización sobre mi propuesta
       "password_reset": Restablecimiento de contraseña
@@ -37,8 +37,8 @@ es:
       "project_phase_upcoming": Próxima nueva fase del proyecto
       "status_change_of_commented_idea": Cambio de estado de una idea que comenté
       "status_change_of_commented_initiative": Cambio de estado de una propuesta que comenté
-      "status_change_of_voted_idea": Cambio de estado de una idea por la que voté
-      "status_change_of_voted_initiative": Cambio de estado de una propuesta por la que voté
+      "status_change_of_reacted_idea": Cambio de estado de una idea a la que reaccioné
+      "status_change_of_reacted_initiative": Cambio de estado de una propuesta por la que reaccioné
       "status_change_of_your_idea": Cambio de estado de mi idea
       "status_change_of_your_initiative": Cambio de estado de mi propuesta
       "threshold_reached_for_admin": La propuesta ha alcanzado el umbral de votación
@@ -255,21 +255,21 @@ es:
       main_header: '%{authorName} comentó tu idea'
       subject: 'Has recibido un comentario en la plataforma de %{organizationName}'
       preheader: '%{authorName} dejó un comentario sobre tu idea para %{organizationName}'
-    new_comment_on_voted_initiative:
+    new_comment_on_reacted_initiative:
       commented: '%{commentAuthor} escribió:'
       cta_reply_to: 'Ver esta propuesta'
       event_description: '%{commentAuthor} ha comentado la propuesta ''%{initiativeTitle}'' sobre la que has votado. Únete al debate en la plataforma de %{organizationName}!'
       main_header: '%{firstName}, hay un nuevo comentario sobre la propuesta por la que votaste'
       subject: 'Hay un nuevo comentario sobre la propuesta por la que votaste'
       preheader: '%{commentAuthor} dejó un comentario sobre la propuesta por la que tu votaste en la plataforma de %{organizationName}'
-    new_comment_on_voted_idea:
+    new_comment_on_reacted_idea:
       commented: '%{commentAuthor} comentó:'
-      cta_reply_to: 'Responder a%{commentAuthor}'
+      cta_reply_to: 'Responder a %{commentAuthor}'
       days_ago: '%{numberOfDays} días atrás'
       event_description: '%{commentAuthor} ha comentado la idea ''%{ideaTitle}'' sobre la que has votado. Únete al debate en la plataforma de %{organizationName}!'
-      main_header: '%{firstName}, hay un nuevo comentario sobre la idea por la que votaste'
-      subject: 'Hay un nuevo comentario sobre la idea por la que votaste'
-      preheader: '%{commentAuthor} dejó un comentario sobre la idea por la que tu votaste en la plataforma de %{organizationName}'
+      main_header: '%{firstName}hay un nuevo comentario sobre la idea a la que has reaccionado'
+      subject: 'Hay un nuevo comentario sobre la idea a la que has reaccionado'
+      preheader: '%{commentAuthor} deja un comentario sobre la idea a la que has reaccionado en la plataforma de %{organizationName}'
       today: Hoy
       yesterday: Ayer
     new_initiative_for_admin:
@@ -306,13 +306,13 @@ es:
       main_header: 'Hay una actualización sobre la propuesta que comentaste antes'
       subject: 'Una propuesta que comentaste ha recibido una actualización oficial en la plataforma %{organizationName}'
       preheader: '%{officialName} dejó una actualización sobre una propuesta que usted comentó'
-    official_feedback_on_voted_idea:
+    official_feedback_on_reacted_idea:
       by_author: 'por %{authorName}'
       updated: '%{officialName} escribió:'
       cta_view: 'Ir a esta idea'
       event_description: '%{officialName} ha commentado tu idea ''%{ideaTitle}''. Haga clic en el botón de abajo para continuar la conversación con %{officialName}.'
-      subject: 'Una idea sobre la que votastes ha recibido una actualización en la plataforma de %{organizationName}'
-      preheader: '%{officialName} dejó una actualización en una idea sobre la que votaste'
+      subject: 'Una idea a la que reaccionaste ha recibido una actualización en la plataforma de %{organizationName}'
+      preheader: '%{officialName} dejó una actualización sobre una idea a la que reaccionaste'
       main_header: ""
     official_feedback_on_commented_idea:
       by_author: 'por %{authorName}'
@@ -330,7 +330,7 @@ es:
       main_header: 'Has recibido una actualización de %{organizationName}'
       subject: 'Has recibido una actualización de %{organizationName}'
       preheader: '%{officialName} dejó una actualización oficial de tu idea'
-    official_feedback_on_voted_initiative:
+    official_feedback_on_reacted_initiative:
       by_author: 'por %{authorName}'
       updated: '%{officialName} escribió:'
       cta_view: 'Ir a esta propuesta'
@@ -405,14 +405,14 @@ es:
       main_header: 'Tu idea tiene un nuevo estado'
       subject: 'El estado de tu idea ha cambiado'
       preheader: '%{organizationName} cambió el estado de tu idea'
-    status_change_of_voted_idea:
+    status_change_of_reacted_idea:
       status_change: 'El nuevo estado de esta idea es ''%{ideaStatus}'''
-      cta_view_idea: 'Ir a la idea'
+      cta_view_idea: 'Ir a esta idea'
       event_description: '%{organizationName} actualizó el estado de la idea ''%{ideaTitle}'' en su plataforma de participación digital.'
-      main_header: 'Una idea que votó tiene un nuevo estado'
-      subject: 'El estado de una idea por la que votaste ha cambiado'
-      preheader: '%{organizationName} ccambió el estado de una idea por la que votaste'
-    status_change_of_voted_initiative:
+      main_header: 'Una idea a la que reaccionaste tiene un nuevo estatus'
+      subject: 'Se ha cambiado el estado de una idea a la que reaccionaste'
+      preheader: '%{organizationName} cambiaste el estado de una idea a la que reaccionaste'
+    status_change_of_reacted_initiative:
       status_change: 'El nuevo estado de esta propuesta es ''%{initiativeStatus}'''
       cta_view_initiative: 'Ir a esta propuesta'
       event_description: 'El estado de la propuesta ''%{initiativeTitle}'' se ha actualizado en la plataforma de participación digital de %{organizationName}.'
@@ -547,7 +547,7 @@ es:
         permissions: 'Permisos'
         projects: 'Proyectos'
         proposals: 'Propuestas'
-        votes: 'Votos'
+        reactions: 'Reacciones'
       trigger:
         comment_is_deleted: 'Se borra el comentario'
         comment_is_flagged_as_spam: 'Comentario marcado como spam'
