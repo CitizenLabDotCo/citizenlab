@@ -75,11 +75,11 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
   has_many :topics
   has_many :idea_images, serializer: WebApi::V1::ImageSerializer
   has_many :phases
+  has_many :ideas_phases
 
   belongs_to :author, record_type: :user, serializer: WebApi::V1::UserSerializer
   belongs_to :project
   belongs_to :idea_status
-  # belongs_to :ideas_phases
 
   has_one :user_reaction, if: proc { |object, params|
     signed_in? object, params

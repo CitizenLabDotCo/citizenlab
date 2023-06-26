@@ -284,6 +284,21 @@ resource 'Ideas' do
           do_request project_publication_status: 'published', sort: 'trending'
           expect(status).to eq(200)
         end
+
+        example 'List all ideas in a phase of a project - basket count does not show' do
+          pr = create(:project_with_active_budgeting_phase)
+          phase = pr.phases.first
+          ideas = create_list(:idea, 2, phases: [phase], project: pr)
+          basket = create(:basket, participation_context: phase, submitted_at: nil)
+          basket.update!(ideas: ideas, submitted_at: Time.zone.now)
+          SideFxBasketService.new.after_update basket, user
+
+          do_request phase: phase.id
+          assert_status 200
+          expect(response_data.size).to eq 2
+          expect(response_data.pluck(:id)).to match_array [ideas[0].id, ideas[1].id]
+          expect(json_response_body[:included].pluck(:type)).not_to include 'ideas_phase'
+        end
       end
     end
 
@@ -1377,6 +1392,36 @@ resource 'Ideas' do
           expect { Idea.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
           expect(phase.reload.ideas_count).to eq 0
         end
+      end
+    end
+  end
+
+  context 'when admin' do
+    let(:user) { create(:admin) }
+
+    before do
+      header_token_for user
+    end
+
+    get 'web_api/v1/ideas' do
+      parameter :phase, 'Filter by project phase', required: false
+
+      example 'List all ideas in a phase of a project - ideas_phase basket count is returned' do
+        pr = create(:project_with_active_budgeting_phase)
+        phase = pr.phases.first
+        ideas = create_list(:idea, 2, phases: [phase], project: pr)
+        basket = create(:basket, participation_context: phase, submitted_at: nil)
+        basket.update!(ideas: ideas, submitted_at: Time.zone.now)
+        SideFxBasketService.new.after_update basket, user
+
+        do_request phase: phase.id
+        assert_status 200
+        expect(response_data.size).to eq 2
+        expect(response_data.pluck(:id)).to match_array [ideas[0].id, ideas[1].id]
+        ideas_phases = json_response_body[:included].map { |i| i if i[:type] == 'ideas_phase' }.compact!
+        expect(ideas_phases.size).to eq 2
+        expect(ideas_phases[0][:attributes][:baskets_count]).to eq 1
+        expect(ideas_phases[1][:attributes][:baskets_count]).to eq 1
       end
     end
   end
