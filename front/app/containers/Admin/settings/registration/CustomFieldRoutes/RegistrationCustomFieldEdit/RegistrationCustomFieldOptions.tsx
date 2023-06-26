@@ -3,17 +3,13 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // utils
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-
-// services
-import {
-  IUserCustomFieldOptionData,
-  reorderUserCustomFieldOption,
-  deleteUserCustomFieldOption,
-} from 'services/userCustomFieldOptions';
+import { IUserCustomFieldOptionData } from 'api/user_custom_fields_options/types';
 
 // hooks
-import useUserCustomFieldOptions from 'hooks/useUserCustomFieldOptions';
+import useUserCustomFieldOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
+import useDeleteUserCustomFieldsOption from 'api/user_custom_fields_options/useDeleteUserCustomFieldsOption';
 import useLocalize from 'hooks/useLocalize';
+import useReorderUserCustomFieldOption from 'api/user_custom_fields_options/useReorderUserCustomFieldsOption';
 
 // components
 import {
@@ -34,14 +30,21 @@ const RegistrationCustomFieldOptions = memo(
     intl: { formatMessage },
     params: { userCustomFieldId },
   }: WrappedComponentProps & WithRouterProps) => {
-    const userCustomFieldOptions = useUserCustomFieldOptions(userCustomFieldId);
+    const { data: userCustomFieldOptions } =
+      useUserCustomFieldOptions(userCustomFieldId);
+    const { mutate: deleteUserCustomFieldOption } =
+      useDeleteUserCustomFieldsOption();
+    const { mutate: reorderUserCustomFieldOption } =
+      useReorderUserCustomFieldOption();
     const localize = useLocalize();
 
     const handleReorderCustomFieldOption = (
       customFieldOptionId: string,
       ordering: number
     ) => {
-      reorderUserCustomFieldOption(userCustomFieldId, customFieldOptionId, {
+      reorderUserCustomFieldOption({
+        customFieldId: userCustomFieldId,
+        optionId: customFieldOptionId,
         ordering,
       });
     };
@@ -54,10 +57,10 @@ const RegistrationCustomFieldOptions = memo(
         event.preventDefault();
 
         if (window.confirm(deleteMessage)) {
-          deleteUserCustomFieldOption(
-            userCustomFieldId,
-            userCustomFieldOptionId
-          );
+          deleteUserCustomFieldOption({
+            customFieldId: userCustomFieldId,
+            optionId: userCustomFieldOptionId,
+          });
         }
       };
 
@@ -74,11 +77,11 @@ const RegistrationCustomFieldOptions = memo(
             </Button>
           </ButtonWrapper>
           <SortableList
-            items={userCustomFieldOptions}
+            items={userCustomFieldOptions.data}
             onReorder={handleReorderCustomFieldOption}
             className="areas-list e2e-admin-areas-list"
             id="e2e-admin-areas-list"
-            key={userCustomFieldOptions.length}
+            key={userCustomFieldOptions.data.length}
           >
             {({ itemsList, handleDragRow, handleDropRow }) => (
               <>
@@ -95,7 +98,9 @@ const RegistrationCustomFieldOptions = memo(
                         index={index}
                         moveRow={handleDragRow}
                         dropRow={handleDropRow}
-                        isLastItem={index === userCustomFieldOptions.length - 1}
+                        isLastItem={
+                          index === userCustomFieldOptions.data.length - 1
+                        }
                       >
                         <TextCell className="expand">
                           {localize(

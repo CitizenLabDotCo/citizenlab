@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_21_144312) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_20_114801) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -529,7 +529,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_21_144312) do
     t.uuid "phase_id"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
-    t.integer "baskets_count", default: 0, null: false
     t.index ["idea_id", "phase_id"], name: "index_ideas_phases_on_idea_id_and_phase_id", unique: true
     t.index ["idea_id"], name: "index_ideas_phases_on_idea_id"
     t.index ["phase_id"], name: "index_ideas_phases_on_phase_id"
@@ -990,8 +989,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_21_144312) do
     t.boolean "allow_anonymous_participation", default: false, null: false
     t.string "voting_method"
     t.integer "voting_max_votes_per_idea"
-    t.jsonb "voting_term", default: {}
-    t.integer "baskets_count", default: 0, null: false
+    t.jsonb "voting_term_singular_multiloc", default: {}
+    t.jsonb "voting_term_plural_multiloc", default: {}
     t.index ["project_id"], name: "index_phases_on_project_id"
   end
 
@@ -1133,8 +1132,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_21_144312) do
     t.boolean "allow_anonymous_participation", default: false, null: false
     t.string "voting_method"
     t.integer "voting_max_votes_per_idea"
-    t.jsonb "voting_term", default: {}
-    t.integer "baskets_count", default: 0, null: false
+    t.jsonb "voting_term_singular_multiloc", default: {}
+    t.jsonb "voting_term_plural_multiloc", default: {}
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 
