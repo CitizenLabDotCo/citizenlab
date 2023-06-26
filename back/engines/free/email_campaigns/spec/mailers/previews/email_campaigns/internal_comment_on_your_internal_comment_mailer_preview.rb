@@ -18,21 +18,13 @@ module EmailCampaigns
             en: 'There are many advantages to paving your front garden. Less cars on the road and more space for pedestrians.'
           },
           post_type: 'Idea',
-          post_image_medium_url: serialize_medium_image(IdeaImage.first)
+          post_image_medium_url: IdeaImage.first.image.versions[:medium].url
         }
       }
 
       campaign = EmailCampaigns::Campaigns::InternalCommentOnYourInternalComment.first
 
       campaign.mailer_class.with(campaign: campaign, command: command).campaign_mail
-    end
-
-    def serialize_medium_image(image)
-      version_urls(image.image)['medium']
-    end
-
-    def version_urls(image)
-      image.versions.to_h { |k, v| [k.to_s, v.url] }
     end
   end
 end
