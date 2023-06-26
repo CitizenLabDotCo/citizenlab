@@ -73,21 +73,5 @@ module EmailCampaigns
     def generate_commands(recipient:, activity:, time: nil)
       Builders::InternalCommentsCampaignsCommandsBuilder.new.build_commands(recipient, activity)
     end
-
-    def post_image_medium_url(notification)
-      if notification.post_type == 'Idea'
-        serialize_medium_image(notification.post.idea_images.first)
-      elsif notification.post_type == 'Initiative'
-        serialize_medium_image(notification.post.initiative_images.first)
-      end
-    end
-
-    def serialize_medium_image(image)
-      version_urls(image.image)['medium']
-    end
-
-    def version_urls(image)
-      image.versions.to_h { |k, v| [k.to_s, v.url] }
-    end
   end
 end
