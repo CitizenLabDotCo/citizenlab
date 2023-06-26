@@ -20,14 +20,14 @@ ar-MA:
       "new_comment_for_admin": تعليق جديد في مشروع أُشرف عليه
       "new_comment_on_commented_idea": تعليق جديد على فكرة علّقت عليها
       "new_comment_on_commented_initiative": تعليق جديد على مُقترح علّقت عليه
-      "new_comment_on_voted_idea": تعليق جديد على فكرة صوتّ لها
-      "new_comment_on_voted_initiative": تعليق جديد على مُقترح صوتّ له
+      "new_comment_on_reacted_idea": تعليق جديد على فكرة تفاعلت معها
+      "new_comment_on_reacted_initiative": تعليق جديد على اقتراح قمت بالتصويت عليه
       "new_idea_for_admin": فكرة جديدة في مشروع أُشرف عليه
       "new_initiative_for_admin": مُقترح جديد
       "official_feedback_on_commented_idea": تحديث على فكرة علقت عليها
       "official_feedback_on_commented_initiative": تحديث على مُقترح علقت عليه
-      "official_feedback_on_voted_idea": تحديث على فكرة صوتّ لها
-      "official_feedback_on_voted_initiative": تحديث على مُقترح صوتّ له
+      "official_feedback_on_reacted_idea": تحديث عن فكرة قمت بالرد عليها
+      "official_feedback_on_reacted_initiative": تحديث لمقترح قمت بالتصويت عليه
       "official_feedback_on_your_idea": تحديث على فكرتي
       "official_feedback_on_your_initiative": تحديث على مُقترحي
       "password_reset": تمت إعادة تعيين كلمة المرور
@@ -37,8 +37,8 @@ ar-MA:
       "project_phase_upcoming": مرحلة مشروع جديدة قادمة
       "status_change_of_commented_idea": تغيرت حالة فكرة كنت قد علقت عليها
       "status_change_of_commented_initiative": تغيرت حالة مُقترح كنت قد علقت عليه
-      "status_change_of_voted_idea": تغيرت حالة فكرة كنت قد صوتّ لها
-      "status_change_of_voted_initiative": تغيرت حالة مُقترح كنت قد صوتّ له
+      "status_change_of_reacted_idea": تغيير حالة فكرة قمت بالرد عليها
+      "status_change_of_reacted_initiative": تغيير حالة اقتراح قمت بالرد عليه
       "status_change_of_your_idea": تغيرت حالة فكرتي
       "status_change_of_your_initiative": تغيرت حالة مُقترحي
       "threshold_reached_for_admin": بلغ المُقترح حد التصويت المطلوب
@@ -255,23 +255,23 @@ ar-MA:
       main_header: 'علّق %{authorName} على فكرتك'
       subject: 'لقد استلمت تعليقًا على المنصة الخاصة بـ %{organizationName}'
       preheader: 'ترك %{authorName} تعليقًا على فكرتك لـ %{organizationName}'
-    new_comment_on_voted_initiative:
-      commented: 'كتب %{commentAuthor}:'
-      cta_reply_to: 'اعرض هذا المُقترح'
-      event_description: 'علق %{commentAuthor} على المُقترح ''%{initiativeTitle}'' والتي قمت بالتصويت لها. انضم للنقاش على منصة %{organizationName}!'
-      main_header: '%{firstName}، هناك تعليق جديد على المُقترح التي صوّت له'
-      subject: 'هناك تعليق جديد على المُقترح التي صوّت له'
-      preheader: 'ترك %{commentAuthor} تعليقًا على المُقترح الذي قمت بالتصويت له على منصة %{organizationName}'
-    new_comment_on_voted_idea:
-      commented: 'علّق %{commentAuthor}:'
+    new_comment_on_reacted_initiative:
+      commented: '%{commentAuthor} كتب:'
+      cta_reply_to: 'اعرض هذا الاقتراح'
+      event_description: 'قام %{commentAuthor} بالتعليق على الاقتراح "%{initiativeTitle}" الذي قمت بالتصويت عليه. انضم إلى المناقشة على منصة %{organizationName}!'
+      main_header: '%{firstName}، هناك تعليق جديد على الاقتراح الذي قمت بالتصويت عليه'
+      subject: 'هناك تعليق جديد على الاقتراح الذي قمت بالتصويت عليه'
+      preheader: '%{commentAuthor} ترك تعليقًا على الاقتراح الذي قمت بالتصويت عليه على منصة %{organizationName}'
+    new_comment_on_reacted_idea:
+      commented: '%{commentAuthor} علق:'
       cta_reply_to: 'الرد على %{commentAuthor}'
       days_ago: 'قبل %{numberOfDays} يوم'
-      event_description: 'علق %{commentAuthor} على الفكرة ''%{ideaTitle}'' والتي قمت بالتصويت لها. انضم للنقاش على منصة %{organizationName}!'
-      main_header: '%{firstName}، هناك تعليق جديد على الفكرة التي صوّت لصالحها'
-      subject: 'هناك تعليق جديد على الفكرة التي صوّت لصالحها'
-      preheader: 'ترك %{commentAuthor} تعليقًا على الفكرة التي قمت بالتصويت لها على منصة %{organizationName}'
+      event_description: 'لقد علق %{commentAuthor} على الفكرة "%{ideaTitle}" التي تفاعلت معها. انضم إلى المناقشة على منصة %{organizationName}!'
+      main_header: '%{firstName}، هناك تعليق جديد على الفكرة التي تفاعلت معها'
+      subject: 'هناك تعليق جديد على الفكرة التي تفاعلت معها'
+      preheader: '%{commentAuthor} ترك تعليقًا على الفكرة التي تفاعلت معها على منصة %{organizationName}'
       today: اليوم
-      yesterday: الأمس
+      yesterday: أمس
     new_initiative_for_admin:
       by_author: 'بواسطة %{authorName}'
       commented: 'كتب %{authorFirstName}:'
@@ -306,13 +306,13 @@ ar-MA:
       main_header: 'هناك تحديث على مُقترح قد علقت عليه'
       subject: 'تلقى مُقترح كنت قد علقت عليه تحديثًا رسميًا على المنصة الخاصة بـ %{organizationName}'
       preheader: 'ترك %{officialName} تحديثًا رسميًا حول مُقترح علقت عليه'
-    official_feedback_on_voted_idea:
-      by_author: 'بواسطة %{authorName}'
-      updated: 'كتب %{officialName}:'
+    official_feedback_on_reacted_idea:
+      by_author: 'بمقدار %{authorName}'
+      updated: '%{officialName} كتب:'
       cta_view: 'اذهب إلى هذه الفكرة'
-      event_description: 'أعطى %{officialName} تحديثًا على الفكرة ''%{ideaTitle}''. انقر الزر أدناه لمتابعة الحوار مع %{officialName}.'
-      subject: 'تلقت فكرة كنت قد صوتّ لها تحديثًا رسميًا على المنصة الخاصة بـ %{organizationName}'
-      preheader: 'ترك %{officialName} تحديثًا حول فكرة قد صوتّ لها'
+      event_description: '%{officialName} قدم تحديثًا عن فكرة "%{ideaTitle}". انقر فوق الزر أدناه للدخول إلى المحادثة مع %{officialName}.'
+      subject: 'تلقت إحدى الأفكار التي قمت بالرد عليها تحديثًا على النظام الأساسي لـ %{organizationName}'
+      preheader: 'ترك %{officialName} تحديثًا لفكرة تفاعلت معها'
       main_header: ""
     official_feedback_on_commented_idea:
       by_author: 'بواسطة %{authorName}'
@@ -330,14 +330,14 @@ ar-MA:
       main_header: 'استلمت تحديثًا من %{organizationName}'
       subject: 'استلمت تحديثًا من %{organizationName}'
       preheader: 'ترك %{officialName} تحديثًا رسميًا حول فكرتك'
-    official_feedback_on_voted_initiative:
-      by_author: 'بواسطة %{authorName}'
-      updated: 'كتب %{officialName}:'
-      cta_view: 'اذهب إلى هذا المُقترح'
-      event_description: 'أعطى %{officialName} تحديثًا على المُقترح ''%{initiativeTitle}''. انقر الزر أدناه لمتابعة الحوار مع %{organizationName}.'
-      main_header: 'هناك تحديث على مُقترح قد صوتّ له'
-      subject: 'تلقى مُقترح كنت قد صوتّ له تحديثًا رسميًا على المنصة الخاصة بـ %{organizationName}'
-      preheader: 'ترك %{officialName} تحديثًا رسميًا حول مُقترح كنت قد صوتّ له'
+    official_feedback_on_reacted_initiative:
+      by_author: 'بمقدار %{authorName}'
+      updated: '%{officialName} كتب:'
+      cta_view: 'اذهب إلى هذا الاقتراح'
+      event_description: 'قدم %{officialName} تحديثًا للاقتراح "%{initiativeTitle}". انقر فوق الزر أدناه للدخول إلى المحادثة مع %{organizationName}.'
+      main_header: 'هناك تحديث لمقترح قمت بالتصويت عليه'
+      subject: 'تلقى الاقتراح الذي قمت بالتصويت عليه تحديثًا رسميًا على منصة %{organizationName}'
+      preheader: '%{officialName} ترك تحديثًا رسميًا لاقتراح قمت بالتصويت عليه'
     official_feedback_on_your_initiative:
       updated: 'كتب %{officialName}:'
       cta_view: 'اذهب إلى مُقترحك'
@@ -352,7 +352,7 @@ ar-MA:
       preheader: 'لقد جعلك مسؤول منصة المشاركة الخاصة بـ %{organizationName} للتوّ "مدير مشروع" للمشروع التالي'
       subject: 'لقد أصبحت مدير مشروع على المنصة الخاصة بـ%{organizationName}'
       text_design_participatory_process: 'بصفتك مدير مشروع، تستطيع تهيئة كيفية تفاعل المستخدمين داخل مشروعك. يمكنك إضافة مراحل جديدة باستخدام الجدول الزمني. ويمكن أن يكون لكل مرحلة من هذه المراحل سلوكها الخاص فيما يتعلق بنشر الفكرة والتعليق عليها والتصويت لها.'
-      text_moderate_analyse_input: 'بمجرد إطلاق المشروع، ستبدأ الأفكار بالتدفق. ستستلم تقارير أسبوعية حول جميع الأنشطة الرئيسية حتى تبقى على اطلاع تام بكافة المُجريات. ستساعدك النظرة العامة على الأفكار في طريقة عرض "مدير المشروع" على فهم الأفكار التي حصلت على أكبر عدد من الأصوات المؤيدة والمعارضة.'
+      text_moderate_analyse_input: 'بمجرد إطلاق المشروع ، ستظهر الأفكار الأولى. ستتلقى تقارير أسبوعية بجميع الأنشطة الرئيسية حتى تظل على اطلاع بالأمور. ستساعدك النظرة العامة على الأفكار في عرض مدير المشروع على فهم الأفكار التي حصلت على أكبر عدد من الإعجابات وعدم الإعجاب.'
       text_share_project_information: 'لرفع جودة الأفكار التي تحصل عليها، فمن الضروري مشاركة المعلومات الكافية: كإضافة وصف شامل للمشروع، وإرفاق الصور (بما في ذلك الرسومات والخطط)، والإعلان عن جميع الأحداث الجارية ذات الصلة. وتذكر: المعلومات الجيدة تسبق المشاركة الجيدة!'
       title_design_participatory_process: 'صمّم عملية المشاركة'
       title_moderate_analyse_input: 'قم بالإشراف على المُدخلات وتحليلها'
@@ -405,20 +405,20 @@ ar-MA:
       main_header: 'لدى فكرتك حالة جديدة'
       subject: 'تم تغيير حالة فكرتك'
       preheader: 'قامت %{organizationName} بتغيير حالة فكرتك'
-    status_change_of_voted_idea:
-      status_change: 'الحالة الجديدة لهذه الفكرة هي ''%{ideaStatus}'''
+    status_change_of_reacted_idea:
+      status_change: 'الوضع الجديد لهذه الفكرة هو "%{ideaStatus}"'
       cta_view_idea: 'اذهب إلى هذه الفكرة'
-      event_description: 'قامت %{organizationName} بتحديث حالة الفكرة ''%{ideaTitle}'' على منصة المشاركة الرقمية الخاصة بها.'
-      main_header: 'تم تغيير حالة فكرة كنت قد صوتّ لها'
-      subject: 'تغيرت حالة فكرة قمت بالتصويت لها'
-      preheader: 'قامت %{organizationName} بتغيير حالة فكرة قد صوتّ لها'
-    status_change_of_voted_initiative:
-      status_change: 'الحالة الجديدة لهذا المُقترح هي ''%{initiativeStatus}'''
-      cta_view_initiative: 'اذهب إلى هذا المُقترح'
-      event_description: 'تم تحديث حالة المُقترح ''%{initiativeTitle}'' على منصة المشاركة الرقمية الخاصة بـ %{organizationName}.'
-      main_header: 'تم تغيير حالة مُقترح كنت قد صوتّ له'
-      subject: 'تغيرت حالة مُقترح قمت بالتصويت له'
-      preheader: 'تغيرت حالة مُقترح قمت بالتصويت له'
+      event_description: '%{organizationName} تحديث حالة الفكرة "%{ideaTitle}" على منصة المشاركة الرقمية الخاصة بهم.'
+      main_header: 'أصبح للفكرة التي قمت بالرد عليها مكانة جديدة'
+      subject: 'تم تغيير حالة الفكرة التي تتفاعل معها'
+      preheader: '%{organizationName} غيّر حالة الفكرة التي تفاعلت معها'
+    status_change_of_reacted_initiative:
+      status_change: 'الوضع الجديد لهذا الاقتراح هو "%{initiativeStatus}"'
+      cta_view_initiative: 'اذهب إلى هذا الاقتراح'
+      event_description: 'تم تحديث حالة الاقتراح "%{initiativeTitle}" على منصة المشاركة الرقمية %{organizationName}.'
+      main_header: 'الاقتراح الذي قمت بالتصويت عليه له وضع جديد'
+      subject: 'تم تغيير حالة الاقتراح الذي قمت بالتصويت عليه'
+      preheader: 'تم تغيير حالة الاقتراح الذي قمت بالتصويت عليه'
     status_change_of_commented_initiative:
       status_change: 'الحالة الجديدة لهذا المُقترح هي ''%{initiativeStatus}'''
       cta_view_initiative: 'اذهب إلى هذا المُقترح'
@@ -547,7 +547,7 @@ ar-MA:
         permissions: 'أذونات'
         projects: 'المشاريع'
         proposals: 'اقتراحات'
-        votes: 'الأصوات'
+        reactions: 'تفاعلات'
       trigger:
         comment_is_deleted: 'تم حذف التعليق'
         comment_is_flagged_as_spam: 'تم وضع علامة على التعليق على أنه بريد عشوائي'
