@@ -6,13 +6,14 @@ import { IProject } from './types';
 
 type IQrCode = {
   id: string;
+  remove?: boolean;
 };
 
-const qrCode = ({ id }: IQrCode) =>
+const qrCode = ({ id, remove }: IQrCode) =>
   fetcher<IProject>({
-    path: `/projects/${id}/qrcode`,
+    path: `/projects/${id}/qr_code`,
     action: 'patch',
-    body: {},
+    body: remove ? { remove: true } : {},
   });
 
 const useQrCode = (projectId: string) => {

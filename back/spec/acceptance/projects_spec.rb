@@ -1119,6 +1119,31 @@ resource 'Projects' do
         expect(Idea.count).to eq 1
       end
     end
+
+    patch 'web_api/v1/projects/:id/qr_code' do
+      parameter :remove, 'Remove the QR code instead of generate. False by default', required: false
+
+      let!(:project) { create(:project) }
+      let(:id) { project.id }
+
+      context 'generate a QR code' do
+        example_request 'It returns a string that can be used to generate a QR code' do
+          assert_status 200
+          expect(response_data.dig(:attributes, :qr_code)).not_to be_nil
+        end
+      end
+
+      context 'remove a QR code' do
+        let(:remove) { true }
+
+        example 'It removes the qr_code string' do
+          project.generate_qr_code!
+          do_request
+          assert_status 200
+          expect(response_data.dig(:attributes, :qr_code)).to be_nil
+        end
+      end
+    end
   end
 
   get 'web_api/v1/projects' do

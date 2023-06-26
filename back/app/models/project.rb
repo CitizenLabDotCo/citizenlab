@@ -235,6 +235,11 @@ class Project < ApplicationRecord
     save!
   end
 
+  def remove_qr_code!
+    self.qr_code = nil
+    save!
+  end
+
   private
 
   def admin_publication_must_exist

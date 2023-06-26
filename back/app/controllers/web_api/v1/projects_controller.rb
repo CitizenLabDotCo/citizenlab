@@ -157,15 +157,16 @@ class WebApi::V1::ProjectsController < ApplicationController
   end
 
   def qr_code
-    if @project.generate_qr_code!
-      render json: WebApi::V1::ProjectSerializer.new(
-        @project,
-        params: fastjson_params,
-        include: %i[admin_publication project_images current_phase]
-      ).serialized_json
+    if params[:remove] == true
+      @project.remove_qr_code!
     else
-      render json: { errors: @project.errors.details }, status: :unprocessable_entity
+      @project.generate_qr_code!
     end
+    render json: WebApi::V1::ProjectSerializer.new(
+      @project,
+      params: jsonapi_serializer_params,
+      include: %i[admin_publication project_images current_phase permissions]
+    ).serializable_hash
   end
 
   private

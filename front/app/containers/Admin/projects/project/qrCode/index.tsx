@@ -39,22 +39,47 @@ const ProjectQRCode = () => {
   const { data: project } = useProjectById(projectId);
   const { mutate: qrCode } = useQrCode(projectId);
 
+  console.log(isProcessing);
   // If null then don't show one - only show the button to generate
 
   const handleGenerateQrCode = useCallback(() => {
     setIsProcessing(true);
+    qrCode({ id: projectId }, { onSuccess: () => setIsProcessing(false) });
+  }, []);
+
+  const handleDeleteQrCode = useCallback(() => {
+    setIsProcessing(true);
     qrCode(
-      { id: projectId },
-      // TODO: Refresh the project here - because it won't be done from the
+      { id: projectId, remove: true },
       { onSuccess: () => setIsProcessing(false) }
     );
   }, []);
 
   // Generate function - POST: /projects/${projectId}/qr-code - returns project object
   const showQrCode = project?.data.attributes.qr_code !== null;
-  const qrCodeUrl = `http://localhost:3000/projects/${projectId}/code/${project?.data.attributes.qr_code}`;
+  const qrCodeUrl = `http://localhost:3000/projects/${project?.data.attributes.slug}/qrcode/${project?.data.attributes.qr_code}`;
 
-  console.log(isProcessing, showQrCode);
+  /*
+  NEXT TODO: Do a route like the invites route that gets sent out in emails - this will log you in
+
+  /web_api/v1/projects/712e1976-0f49-4ef2-9ce1-fe8a34e44134/qr_code/<qr_code>
+  1. send a request to the backend which will return an invited user - based on the project_id and token existing like getUserDataFromToken
+  2. This will also log the user in and redirect to a) the main project page & b) later the exact action you want them to take (defined in QR code page) - qrcode_label
+
+  Then create a new tab in invites to generate anonymous user invites.
+  Allow these to be shared individually too?
+  Maybe allow unique code reg as one of the access rights so you get the option whether to ask for any data at all
+
+  "Sorry the number of users has been exceeded when those invites run out"
+
+  Then add a field for text to show on full screen (qrcode_label)
+
+Instead of this being another registration method - have a checkbox - allow anonymous registration via QR code -
+as an addtional way of registering for an action
+
+Additonal 10% - embedded email field on input form - confirm email before idea counts / shows
+
+   */
 
   /*
   14th June
@@ -115,41 +140,59 @@ const ProjectQRCode = () => {
         <FormattedMessage {...messages.description} />
       </SectionDescription>
 
-      <Section>
-        <Text>
-          Use carefully. Your QR code will open the following URL and log a user
-          in for voting only without having to add any personal details. This is
-          a unique long URL for this project. Click refresh if you want to
-          change this URL and the associated QR code. The QR code will register
-          a user against one of the unique codes below. You can generate more
-          codes if needed. If you want to Associate these codes with a smart
-          group, so you can tell what happened in each session. Or associate
-          with an event? Codes should be associated with a project.
-        </Text>
+      {showQrCode ? (
+        <Section>
+          <Text>
+            Use carefully. Your QR code will open the following URL and log a
+            user in for voting only without having to add any personal details.
+            This is a unique long URL for this project. Click refresh if you
+            want to change this URL and the associated QR code. The QR code will
+            register a user against one of the unique codes below. You can
+            generate more codes if needed. If you want to Associate these codes
+            with a smart group, so you can tell what happened in each session.
+            Or associate with an event? Codes should be associated with a
+            project.
+          </Text>
 
-        <Text>URL: {qrCodeUrl}</Text>
-        <QRCode value={qrCodeUrl} />
+          <Text>URL: {qrCodeUrl}</Text>
+          <QRCode value={qrCodeUrl} />
+          <Buttons>
+            <Button>Open in new tab - for session friendly purposes</Button>
+            <Button
+              onClick={handleGenerateQrCode}
+              icon="refresh"
+              buttonStyle="text"
+            >
+              Regenerate QR
+            </Button>
 
-        <Buttons>
-          <Button>Open in new tab - for session friendly purposes</Button>
+            <Button
+              onClick={handleDeleteQrCode}
+              icon="delete"
+              buttonStyle="text"
+            >
+              Delete code
+            </Button>
+          </Buttons>
+        </Section>
+      ) : (
+        <Section>
           <Button
             onClick={handleGenerateQrCode}
-            icon="delete"
+            icon="refresh"
             buttonStyle="text"
           >
-            Regenerate code
+            Generate a QR code
           </Button>
-
-          <Button>Delete code</Button>
-        </Buttons>
-      </Section>
+        </Section>
+      )}
 
       <SectionTitle>Generate codes</SectionTitle>
       <SectionDescription>
         <p>
           Checkbox: Automatically generate more codes when they run out. If you
           check this, then you may end up with uncontrolled registration if your
-          QR code gets in the wrong hands.
+          QR code gets in the wrong hands. X invite Codes left
         </p>
       </SectionDescription>
     </Container>

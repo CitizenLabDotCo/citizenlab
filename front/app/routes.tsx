@@ -49,6 +49,7 @@ const ReportPrintPage = lazy(
   () => import('containers/Admin/reporting/containers/PrintReport')
 );
 const DisabledAccount = lazy(() => import('containers/DisabledAccount'));
+const QRCodeLogin = lazy(() => import('containers/QRCodeLogin'));
 
 export default function createRoutes() {
   return [
@@ -189,6 +190,14 @@ export default function createRoutes() {
           element: (
             <PageLoading>
               <IdeasNewPage />
+            </PageLoading>
+          ),
+        },
+        {
+          path: 'projects/:slug/qrcode/:code',
+          element: (
+            <PageLoading>
+              <QRCodeLogin />
             </PageLoading>
           ),
         },
