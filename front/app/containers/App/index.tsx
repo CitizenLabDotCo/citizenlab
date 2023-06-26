@@ -76,12 +76,6 @@ const Container = styled.div<{
     `};
 `;
 
-export interface IOpenPostPageModalEvent {
-  id: string;
-  slug: string;
-  type: 'idea' | 'initiative';
-}
-
 interface Props {
   children: React.ReactNode;
 }

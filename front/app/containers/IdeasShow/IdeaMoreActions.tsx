@@ -58,7 +58,6 @@ const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
   };
 
   const onEditIdea = () => {
-    eventEmitter.emit('closeIdeaModal');
     clHistory.push(`/ideas/edit/${idea.id}`);
   };
 
@@ -72,7 +71,6 @@ const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
       deleteIdea(ideaId, {
         onSuccess: () => {
           clHistory.goBack();
-          eventEmitter.emit('closeIdeaModal');
         },
       });
     }
