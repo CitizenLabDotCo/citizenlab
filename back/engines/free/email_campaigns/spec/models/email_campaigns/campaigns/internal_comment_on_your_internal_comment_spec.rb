@@ -13,7 +13,6 @@ RSpec.describe EmailCampaigns::Campaigns::InternalCommentOnYourInternalComment d
     let(:campaign) { create(:internal_comment_on_your_internal_comment_campaign) }
     let(:notification) { create(:internal_comment_on_your_internal_comment) }
     let!(:idea_image) { create(:idea_image, idea: notification.post) }
-    let(:image_url) { idea_image.image.versions[:medium].url }
     let(:notification_activity) { create(:activity, item: notification, action: 'created') }
     let(:recipient) { notification_activity.item.recipient }
     let(:name_service) { UserDisplayNameService.new(AppConfiguration.instance, recipient) }
@@ -23,8 +22,6 @@ RSpec.describe EmailCampaigns::Campaigns::InternalCommentOnYourInternalComment d
         recipient: recipient,
         activity: notification_activity
       ).first
-
-      # image_url = EmailCampaigns::Builders::InternalCommentsCampaignsCommandsBuilder.new.serialize_medium_image(image)
 
       expect(
         command.dig(:event_payload, :initiating_user_first_name)
@@ -52,7 +49,7 @@ RSpec.describe EmailCampaigns::Campaigns::InternalCommentOnYourInternalComment d
       ).to eq(notification.post_type)
       expect(
         command.dig(:event_payload, :post_image_medium_url)
-      ).to eq(image_url)
+      ).to eq(idea_image.image.versions[:medium].url)
     end
   end
 end

@@ -14,6 +14,7 @@ en:
       "initiative_assigned_to_you": Assignment of a proposal to me
       "initiative_marked_as_spam": Proposal spam report
       "initiative_published": Publication of my proposal
+      "internal_comment_on_your_internal_comment": Internal comment on my internal comment
       "invite_received": Invitation
       "invite_reminder": Invitation reminder
       "mention_in_official_feedback": Mention in an update
@@ -62,6 +63,7 @@ en:
       "initiative_assigned_to_you": Assignment of a proposal - admins
       "initiative_marked_as_spam": Proposal spam report - admins
       "initiative_published": Publication of your proposal - all users
+      "internal_comment_on_your_internal_comment": Internal comment on your internal comment - admins and project managers
       "invite_received": Invitation - all users
       "invite_reminder": Invitation reminder - all users
       "mention_in_comment": Mention in a comment - all users
@@ -338,6 +340,12 @@ en:
       main_header: '%{authorName} replied to your comment'
       preheader: '%{authorName} replied to your comment on %{organizationName}''s platform'
       replied: '%{authorFirstName} replied:'
+    internal_comment_on_your_internal_comment:
+      cta_reply_to: 'View comment by %{firstName}'
+      event_description: '%{authorNameFull} commented on your internal comment.'
+      subject: 'You have received a comment on your internal comment on ''%{post}'''
+      main_header: 'You have received a comment on your internal comment on ''%{post}'''
+      preheader: '%{authorName} replied to your internal comment on ''%{post}'''
     official_feedback_on_commented_initiative:
       by_author: 'by %{authorName}'
       updated: '%{officialName} wrote:'
