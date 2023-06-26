@@ -211,14 +211,18 @@ interface QueryParameters {
 const InitiativeCards = ({ className, invisibleTitleMessage }: Props) => {
   const { formatMessage } = useIntl();
   const { windowWidth } = useWindowSize();
-  const [selectedView, setSelectedView] = useState<'map' | 'card'>('card');
-  const [filtersModalOpened, setFiltersModalOpened] = useState(false);
 
   const [searchParams] = useSearchParams();
   const sortParam = searchParams.get('sort') as Sort | null;
   const searchParam = searchParams.get('search');
   const initiativeStatusParam = searchParams.get('initiative_status');
   const topicsParam = searchParams.get('topics');
+  const selectedInitiativeMarkerId = searchParams.get('initiative_map_id');
+
+  const [selectedView, setSelectedView] = useState<'map' | 'card'>(
+    selectedInitiativeMarkerId ? 'map' : 'card'
+  );
+  const [filtersModalOpened, setFiltersModalOpened] = useState(false);
 
   const selectedInitiativeFilters = useMemo<QueryParameters>(
     () => ({
