@@ -243,9 +243,9 @@ const IdeasMap = memo<Props>((props) => {
   const topicsParam = searchParams.get('topics');
   const topics: string[] = topicsParam ? JSON.parse(topicsParam) : [];
 
-  const [initiallySelectedMarkerId] = useState<string | null>(
-    selectedIdeaMarkerId
-  );
+  const [initiallySelectedMarkerId, setInitiallySelectedMarkerId] = useState<
+    string | null
+  >(selectedIdeaMarkerId);
 
   const { data: ideaMarkers } = useIdeaMarkers({
     projectIds: [projectId],
@@ -355,11 +355,20 @@ const IdeasMap = memo<Props>((props) => {
   }, [ideaMarkers, selectedIdeaMarkerId]);
 
   useEffect(() => {
-    if (!selectedIdeaMarker || initialMapCenter) return;
-    const { coordinates } =
-      selectedIdeaMarker.attributes.location_point_geojson;
+    if (!initiallySelectedMarkerId || initialMapCenter) return;
+    const point = selectedIdeaMarker?.attributes.location_point_geojson;
+
+    if (!point) {
+      // For whatever reason, ideaMarkers also includes ideas without
+      // markers. If the search params contain one of those,
+      // we do nothing
+      setInitiallySelectedMarkerId(null);
+      return;
+    }
+
+    const { coordinates } = point;
     setInitialMapCenter([coordinates[1], coordinates[0]]);
-  }, [initialMapCenter, selectedIdeaMarker]);
+  }, [initiallySelectedMarkerId, initialMapCenter, selectedIdeaMarker]);
 
   if (initiallySelectedMarkerId && !initialMapCenter) {
     return null;
