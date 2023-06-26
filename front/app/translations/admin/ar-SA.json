@@ -105,6 +105,8 @@
   "app.components.admin.PostManager.bodyTitle": "وصف",
   "app.components.admin.PostManager.changeStatusModalTitle": "غيّر حالة هذا المُقترح",
   "app.components.admin.PostManager.comments": "التعليقات",
+  "app.components.admin.PostManager.components.goToInputManager": "انتقل إلى مدير الإدخال",
+  "app.components.admin.PostManager.components.goToProposalManager": "اذهب إلى مدير الاقتراح",
   "app.components.admin.PostManager.contributionFormTitle": "تحرير المساهمة",
   "app.components.admin.PostManager.currentLat": "دائرة العرض المركزية",
   "app.components.admin.PostManager.currentLng": "خط الطول المركزي",
