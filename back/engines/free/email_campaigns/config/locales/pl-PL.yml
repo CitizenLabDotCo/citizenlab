@@ -20,14 +20,14 @@ pl:
       "new_comment_for_admin": Nowy komentarz w projekcie, który moderuję
       "new_comment_on_commented_idea": Nowy komentarz do pomysłu, który skomentowałem(am)
       "new_comment_on_commented_initiative": Nowy komentarz do propozycji, którą skomentowałem(am)
-      "new_comment_on_voted_idea": Nowy komentarz do pomysłu, nad którym głosowałem
-      "new_comment_on_voted_initiative": Nowy komentarz do pomysłu, nad którym głosowałem
+      "new_comment_on_reacted_idea": Nowy komentarz do pomysłu, na który zareagowałem
+      "new_comment_on_reacted_initiative": Nowy komentarz do propozycji, na którą głosowałem
       "new_idea_for_admin": Nowy pomysł w projekcie, który moderuję
       "new_initiative_for_admin": Nowa propozycja
       "official_feedback_on_commented_idea": Aktualizacja pomysłu, który skomentowałem
       "official_feedback_on_commented_initiative": Aktualizacja propozycji, którą skomentowałem
-      "official_feedback_on_voted_idea": Aktualizacja pomysłu, na który zagłosowałem
-      "official_feedback_on_voted_initiative": Aktualizacja propozycji, na którą zagłosowałem
+      "official_feedback_on_reacted_idea": Aktualizacja pomysłu, na który zareagowałem
+      "official_feedback_on_reacted_initiative": Aktualizacja dotycząca propozycji, nad którą głosowałem
       "official_feedback_on_your_idea": Aktualizacja mojego pomysłu
       "official_feedback_on_your_initiative": Aktualizacja mojej propozycji
       "password_reset": Zmiana hasła
@@ -37,8 +37,8 @@ pl:
       "project_phase_upcoming": Nadchodzący nowy etap projektu
       "status_change_of_commented_idea": Zmiana statusu pomysłu, który skomentowałem
       "status_change_of_commented_initiative": Zmiana statusu propozycji, którą skomentowałem
-      "status_change_of_voted_idea": Zmiana statusu pomysłu, nad którym zagłosowałem
-      "status_change_of_voted_initiative": Zmiana statusu propozycji, nad którym głosowałem
+      "status_change_of_reacted_idea": Zmiana statusu pomysłu, na który zareagowałem
+      "status_change_of_reacted_initiative": Zmiana statusu propozycji, na którą zareagowałem
       "status_change_of_your_idea": Zmiana statusu mojego pomysłu
       "status_change_of_your_initiative": Zmiana statusu mojej propozycji
       "threshold_reached_for_admin": Propozycja osiągnęła próg poparcia w głosowaniu
@@ -255,21 +255,21 @@ pl:
       main_header: '%{authorName} skomentował Twój pomysł'
       subject: 'Otrzymałeś komentarz na platformie %{organizationName}'
       preheader: '%{authorName} skomentował Twój pomysł na platformie %{organizationName}'
-    new_comment_on_voted_initiative:
+    new_comment_on_reacted_initiative:
       commented: '%{commentAuthor} napisał:'
       cta_reply_to: 'Zobacz tę propozycję'
-      event_description: '%{commentAuthor} skomentował propozycję "%{initiativeTitle}", nad którą głosowałeś. Przyłącz się do dyskusji na platformie %{organizationName}!'
-      main_header: '%{firstName}, pojawił się nowy komentarz do propozycji, nad którą głosowałeś'
-      subject: 'Pojawił się nowy komentarz propozycji, nad którą głosowałeś'
-      preheader: '%{commentAuthor} skomentował propozycję, nad którą głosowałeś na platformie %{organizationName}'
-    new_comment_on_voted_idea:
+      event_description: '%{commentAuthor} skomentował(a) propozycję ''%{initiativeTitle}'', na którą głosowałeś(aś). Dołącz do dyskusji na platformie %{organizationName}!'
+      main_header: '%{firstName}pojawił się nowy komentarz do propozycji, na którą głosowałeś(-aś)'
+      subject: 'Pojawił się nowy komentarz do propozycji, na którą głosowałeś'
+      preheader: '%{commentAuthor} zostawił komentarz do propozycji, na którą głosowałeś na platformie %{organizationName}'
+    new_comment_on_reacted_idea:
       commented: '%{commentAuthor} skomentował:'
-      cta_reply_to: 'Odpowiedz %{commentAuthor}'
+      cta_reply_to: 'Odpowiedz na %{commentAuthor}'
       days_ago: '%{numberOfDays} dni temu'
-      event_description: '%{commentAuthor} skomentował pomysł "%{ideaTitle}" na który głosowałeś. Weź udział w dyskusji na platformie %{organizationName}!'
-      main_header: '%{firstName}, pojawił się nowy komentarz do pomysłu, nad którym głosowałeś'
-      subject: 'Pojawił się nowy komentarz pomysłu, nad którym głosowałeś'
-      preheader: '%{commentAuthor} skomentował pomysł, na który głosowałeś na platformie %{organizationName}'
+      event_description: '%{commentAuthor} skomentował(a) wpis "%{ideaTitle}", na który zareagowałeś(aś). Dołącz do dyskusji na platformie %{organizationName}!'
+      main_header: '%{firstName}pojawił się nowy komentarz do pomysłu, na który zareagowałeś'
+      subject: 'Pojawił się nowy komentarz do pomysłu, na który zareagowałeś'
+      preheader: '%{commentAuthor} zostaw komentarz do pomysłu, na który zareagowałeś na platformie %{organizationName}'
       today: Dzisiaj
       yesterday: Wczoraj
     new_initiative_for_admin:
@@ -306,13 +306,13 @@ pl:
       main_header: 'Pojawiła się aktualizacja propozycji, którą skomentowałeś'
       subject: 'Propozycja, którą skomentowałeś otrzymała oficjalną aktualizację na platformie %{organizationName}'
       preheader: '%{officialName} oficjalnie zaktualizował propozycję, którą skomentowałeś'
-    official_feedback_on_voted_idea:
-      by_author: 'wg %{authorName}'
+    official_feedback_on_reacted_idea:
+      by_author: 'przez %{authorName}'
       updated: '%{officialName} napisał:'
       cta_view: 'Przejdź do tego pomysłu'
-      event_description: '%{officialName} zaktualizował pomysł "%{ideaTitle}". Kliknij przycisk poniżej, aby przejść do rozmowy z %{officialName}.'
-      subject: 'Pomysł, nad którym głosowałeś, otrzymał aktualizację na platformie %{organizationName}'
-      preheader: '%{officialName} zaktualizował pomysł, nad którym głosowałeś'
+      event_description: '%{officialName} przedstawił aktualizację pomysłu "%{ideaTitle}". Kliknij poniższy przycisk, aby przejść do rozmowy z %{officialName}.'
+      subject: 'Pomysł, na który zareagowałeś, otrzymał aktualizację na platformie %{organizationName}.'
+      preheader: '%{officialName} Zostawiłeś aktualizację pomysłu, na który zareagowałeś'
       main_header: ""
     official_feedback_on_commented_idea:
       by_author: 'wg %{authorName}'
@@ -330,14 +330,14 @@ pl:
       main_header: 'Otrzymałeś aktualizację od %{organizationName}'
       subject: 'Otrzymałeś aktualizację od %{organizationName}'
       preheader: '%{officialName} oficjalnie zaktualizował Twój pomysł'
-    official_feedback_on_voted_initiative:
-      by_author: 'wg %{authorName}'
+    official_feedback_on_reacted_initiative:
+      by_author: 'przez %{authorName}'
       updated: '%{officialName} napisał:'
       cta_view: 'Przejdź do tej propozycji'
-      event_description: '%{officialName} zaktualizował propozycję "%{initiativeTitle}". Kliknij przycisk poniżej, aby przejść do rozmowy z %{organizationName}.'
-      main_header: 'Pojawiła się aktualizacja propozycji, na którą głosowałeś'
-      subject: 'Propozycja, nad którą głosowałeś, otrzymała oficjalną aktualizację na platformie %{organizationName}'
-      preheader: '%{officialName} oficjalnie zaktualizował propozycję, nad którą głosowałeś'
+      event_description: '%{officialName} przekazał aktualne informacje na temat propozycji "%{initiativeTitle}". Kliknij poniższy przycisk, aby przejść do rozmowy z %{organizationName}.'
+      main_header: 'Jest aktualizacja propozycji, na którą głosowałeś'
+      subject: 'Propozycja, na którą głosowałeś, otrzymała oficjalną aktualizację na platformie %{organizationName}.'
+      preheader: '%{officialName} pozostawiłeś oficjalną aktualizację dotyczącą propozycji, na którą głosowałeś(-aś)'
     official_feedback_on_your_initiative:
       updated: '%{officialName} napisał:'
       cta_view: 'Przejdź do swojej propozycji'
@@ -352,7 +352,7 @@ pl:
       preheader: 'Administrator platformy partycypacyjnej %{organizationName} właśnie ustanowił Cię moderatorem poniższego projektu'
       subject: 'Zostałeś moderatorem na platformie %{organizationName}'
       text_design_participatory_process: 'Jako moderator projektu, możesz skonfigurować sposób interakcji użytkowników w ramach Twojego projektu. Możesz dodawać nowe etapy za pomocą osi czasu. Każdy z tych etapów może mieć swoje własne zachowanie w odniesieniu do zamieszczania pomysłów, komentowania i głosowania.'
-      text_moderate_analyse_input: 'Gdy projekt zostanie uruchomiony, pojawią się pierwsze pomysły. Będziesz otrzymywał cotygodniowe raporty nt. wszystkich kluczowych działań, abyś był na bieżąco. Przegląd pomysłów w widoku moderatora projektu pomoże Ci zrozumieć, które z nich otrzymały najwięcej głosów pro i kontra.'
+      text_moderate_analyse_input: 'Po uruchomieniu projektu pojawią się pierwsze pomysły. Będziesz otrzymywać cotygodniowe raporty ze wszystkimi kluczowymi działaniami, aby być na bieżąco. Przegląd pomysłów w widoku menedżera projektu pomoże Ci zrozumieć, które pomysły uzyskały najwięcej polubień.'
       text_share_project_information: 'Aby podnieść jakość otrzymywanych pomysłów, kluczowe jest dzielenie się odpowiednimi informacjami: dodanie opisu projektu, dołączenie zdjęć (w tym szkiców i planów) oraz informowanie o wszystkich wydarzeniach z tym związanych. Pamiętaj: im lepsza informacja tym większe uczestnictwo obywateli!'
       title_design_participatory_process: 'Projektowanie procesu partycypacyjnego'
       title_moderate_analyse_input: 'Moderuj i analizuj dane'
@@ -405,20 +405,20 @@ pl:
       main_header: 'Twój pomysł ma nowy status'
       subject: 'Status Twojego pomysłu został zmieniony'
       preheader: '%{organizationName} zmienił status Twojego pomysłu'
-    status_change_of_voted_idea:
-      status_change: 'Nowy status tego pomysłu to "%{ideaStatus}"'
+    status_change_of_reacted_idea:
+      status_change: 'Nowy status tego pomysłu to ''%{ideaStatus}'''
       cta_view_idea: 'Przejdź do tego pomysłu'
-      event_description: '%{organizationName} zaktualizował status pomysłu "%{ideaTitle}" na swojej platformie uczestnictwa.'
-      main_header: 'Pomysł, nad którym głosowałeś, ma nowy status'
-      subject: 'Zmienił się status pomysłu, na który głosowałeś'
-      preheader: '%{organizationName} zmienił status pomysłu, na który głosowałeś'
-    status_change_of_voted_initiative:
-      status_change: 'Nowy status tej propozycji to "%{initiativeStatus}"'
+      event_description: '%{organizationName} zaktualizował status pomysłu "%{ideaTitle}" na swojej platformie uczestnictwa cyfrowego.'
+      main_header: 'Pomysł, na który zareagowałeś, ma nowy status'
+      subject: 'Status pomysłu, na który zareagowałeś, został zmieniony'
+      preheader: '%{organizationName} zmieniono status pomysłu, na który zareagowałeś(-aś)'
+    status_change_of_reacted_initiative:
+      status_change: 'Nowy status tej propozycji to "%{initiativeStatus}".'
       cta_view_initiative: 'Przejdź do tej propozycji'
-      event_description: 'Status propozycji "%{initiativeTitle}" na cyfrowej platformie uczestnictwa %{organizationName} został zaktualizowany.'
-      main_header: 'Propozycja, na którą głosowałeś, ma nowy status'
-      subject: 'Zmienił się status propozycji, na którą głosowałeś'
-      preheader: 'Status propozycji, na którą głosowałeś, zmienił się'
+      event_description: 'Status wniosku "%{initiativeTitle}" został zaktualizowany na cyfrowej platformie uczestnictwa %{organizationName}.'
+      main_header: 'Propozycja, nad którą głosowałeś, ma nowy status'
+      subject: 'Status propozycji, nad którą głosowałeś, uległ zmianie'
+      preheader: 'Status propozycji, nad którą głosowałeś, uległ zmianie'
     status_change_of_commented_initiative:
       status_change: 'Nowy status tej propozycji to "%{initiativeStatus}"'
       cta_view_initiative: 'Przejdź do tej propozycji'
@@ -547,7 +547,7 @@ pl:
         permissions: 'Uprawnienia'
         projects: 'Projekty'
         proposals: 'Propozycje'
-        votes: 'Głosy'
+        reactions: 'Reakcje'
       trigger:
         comment_is_deleted: 'Komentarz został usunięty.'
         comment_is_flagged_as_spam: 'Komentarz został oznaczony jako spam'
