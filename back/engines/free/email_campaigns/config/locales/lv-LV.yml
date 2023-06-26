@@ -20,14 +20,14 @@ lv:
       "new_comment_for_admin": Jauns komentārs projektā, kuru es moderēju
       "new_comment_on_commented_idea": Jauns komentārs par to ideju, kuru es komentēju
       "new_comment_on_commented_initiative": Jauns komentārs par to priekšlikumu, kuru es komentēju
-      "new_comment_on_voted_idea": Jauns komentārs par to ideju, par kuru es balsoju
-      "new_comment_on_voted_initiative": Jauns komentārs par to priekšlikumu, par kuru es balsoju
+      "new_comment_on_reacted_idea": Jauns komentārs par ideju es reaģēju uz
+      "new_comment_on_reacted_initiative": Jauns komentārs par priekšlikumu, par kuru balsoju
       "new_idea_for_admin": Jauna ideja projektā, kuru es moderēju
       "new_initiative_for_admin": Jauns priekšlikums
       "official_feedback_on_commented_idea": Atjaunināta informācija par to ideju, kuru es komentēju
       "official_feedback_on_commented_initiative": Atjaunināta informācija par to priekšlikumu, kuru es komentēju
-      "official_feedback_on_voted_idea": Atjaunināta informācija par to ideju, par kuru es balsoju
-      "official_feedback_on_voted_initiative": Atjaunināta informācija par to priekšlikumu, par kuru es balsoju
+      "official_feedback_on_reacted_idea": Atjauninājums par ideju, uz kuru es reaģēju
+      "official_feedback_on_reacted_initiative": Atjauninājums par priekšlikumu, par kuru balsoju
       "official_feedback_on_your_idea": Atjaunināta informācija par manu ideju
       "official_feedback_on_your_initiative": Atjaunināta informācija par manu priekšlikumu
       "password_reset": Paroles atiestatīšana
@@ -37,8 +37,8 @@ lv:
       "project_phase_upcoming": Gaidāmais jaunais projekta posms
       "status_change_of_commented_idea": Idejas, kuru es komentēju, statusa maiņa
       "status_change_of_commented_initiative": Priekšlikuma, kuru es komentēju, statusa maiņa
-      "status_change_of_voted_idea": Idejas, par kuru es balsoju, statusa maiņa
-      "status_change_of_voted_initiative": Priekšlikuma, par kuru es balsoju, statusa maiņa
+      "status_change_of_reacted_idea": Statusa maiņa no idejas, uz kuru es reaģēju
+      "status_change_of_reacted_initiative": Statusa izmaiņas priekšlikumam, uz kuru es reaģēju
       "status_change_of_your_idea": Manas idejas statusa maiņa
       "status_change_of_your_initiative": Mana priekšlikuma statusa maiņa
       "threshold_reached_for_admin": Priekšlikums sasniedzis balsošanas slieksni
@@ -255,21 +255,21 @@ lv:
       main_header: '%{authorName} komentēja jūsu ideju'
       subject: 'Jūs esat saņēmis komentāru par %{organizationName} platformu'
       preheader: '%{authorName} atstāja komentāru par jūsu ideju %{organizationName}'
-    new_comment_on_voted_initiative:
+    new_comment_on_reacted_initiative:
       commented: '%{commentAuthor} rakstīja:'
-      cta_reply_to: 'Skatīt šo priekšlikumu'
-      event_description: '%{commentAuthor} ir komentējis priekšlikumu ''%{initiativeTitle}'', par kuru esat balsojis. Pievienojieties diskusijai %{organizationName} platformā!'
+      cta_reply_to: 'Apskatīt šo priekšlikumu'
+      event_description: '%{commentAuthor} ir komentējis priekšlikumu "%{initiativeTitle}", par kuru esat balsojis. Pievienojieties diskusijai platformā %{organizationName}!'
       main_header: '%{firstName}, ir jauns komentārs par priekšlikumu, par kuru esat balsojis.'
       subject: 'Ir jauns komentārs par priekšlikumu, par kuru esat balsojis.'
-      preheader: '%{commentAuthor} atstāja komentāru par priekšlikumu, par kuru esat balsojis %{organizationName} platformā.'
-    new_comment_on_voted_idea:
+      preheader: '%{commentAuthor} atstāt komentāru par priekšlikumu, par kuru esat balsojis %{organizationName}platformā.'
+    new_comment_on_reacted_idea:
       commented: '%{commentAuthor} komentēja:'
       cta_reply_to: 'Atbildēt %{commentAuthor}'
-      days_ago: 'pirms %{numberOfDays} dienām'
-      event_description: '%{commentAuthor} ir komentējis ideju ''%{ideaTitle}'', par kuru esat balsojis. Pievienojieties diskusijai %{organizationName} platformā!'
-      main_header: '%{firstName}, ir jauns komentārs par ideju, par kuru esat balsojis.'
-      subject: 'Ir jauns komentārs par ideju, par kuru esat balsojis.'
-      preheader: '%{commentAuthor} atstāja komentāru par ideju, par kuru esat balsojis %{organizationName} platformā.'
+      days_ago: '%{numberOfDays} pirms vairākām dienām'
+      event_description: '%{commentAuthor} ir komentējis ideju ''%{ideaTitle}'', uz kuru jūs reaģējāt. Pievienojieties diskusijai %{organizationName}platformā!'
+      main_header: '%{firstName}, ir jauns komentārs par ideju, uz kuru jūs reaģējāt.'
+      subject: 'Ir jauns komentārs par ideju, uz kuru jūs reaģējāt.'
+      preheader: '%{commentAuthor} atstāt komentāru par ideju, uz kuru esat reaģējis %{organizationName}platformā.'
       today: Šodien
       yesterday: Vakar
     new_initiative_for_admin:
@@ -306,13 +306,13 @@ lv:
       main_header: 'Ir atjaunināta informācija par to priekšlikumu, kuru esat komentējis.'
       subject: 'Priekšlikums, kuru esat komentējis, ir oficiāli atjaunināts %{organizationName} platformā.'
       preheader: '%{officialName} atstāja oficiālu atjauninātu informāciju par to priekšlikumu, kuru esat komentējis'
-    official_feedback_on_voted_idea:
-      by_author: 'autors: %{authorName}'
+    official_feedback_on_reacted_idea:
+      by_author: 'līdz %{authorName}'
       updated: '%{officialName} rakstīja:'
-      cta_view: 'Pāriet uz šo ideju'
-      event_description: '%{officialName} sniedza atjauninātu informāciju par ideju "%{ideaTitle}". Noklikšķiniet uz zemāk redzamās pogas, lai iesaistītos sarunā ar %{officialName}.'
-      subject: 'Ideja, par kuru balsojāt, ir atjaunināta %{organizationName} platformā.'
-      preheader: '%{officialName} atstāja atjauninātu informāciju par to ideju, par kuru balsojāt'
+      cta_view: 'Pārejiet uz šo ideju'
+      event_description: '%{officialName} sniedza atjauninātu informāciju par ideju "%{ideaTitle}". Noklikšķiniet uz pogas zemāk, lai iesaistītos sarunā ar %{officialName}.'
+      subject: 'Ideja, uz kuru jūs reaģējāt, ir atjaunināta platformā %{organizationName}.'
+      preheader: '%{officialName} atstāja atjauninājumu par ideju, uz kuru jūs reaģējāt.'
       main_header: ""
     official_feedback_on_commented_idea:
       by_author: 'autors: %{authorName}'
@@ -330,14 +330,14 @@ lv:
       main_header: 'Jūs saņēmāt atjauninātu informāciju no %{organizationName}'
       subject: 'Jūs saņēmāt atjauninātu informāciju no %{organizationName}'
       preheader: '%{officialName} atstāja oficiālu atjauninātu informāciju par jūsu ideju'
-    official_feedback_on_voted_initiative:
-      by_author: 'autors: %{authorName}'
+    official_feedback_on_reacted_initiative:
+      by_author: 'līdz %{authorName}'
       updated: '%{officialName} rakstīja:'
-      cta_view: 'Pāriet uz šo priekšlikumu'
-      event_description: '%{officialName} sniedza atjauninātu informāciju par priekšlikumu "%{initiativeTitle}". Noklikšķiniet uz zemāk redzamās pogas, lai iesaistītos sarunā ar %{organizationName}.'
-      main_header: 'Ir atjaunināta informācija par to priekšlikumu, par kuru jūs balsojāt.'
-      subject: 'Priekšlikums, par kuru balsojāt, ir oficiāli atjaunināts %{organizationName} platformā.'
-      preheader: '%{officialName} atstāja oficiālu atjauninātu informāciju par to priekšlikumu, par kuru jūs balsojāt'
+      cta_view: 'Pārejiet uz šo priekšlikumu'
+      event_description: '%{officialName} sniedza atjauninātu informāciju par priekšlikumu "%{initiativeTitle}". Noklikšķiniet uz pogas zemāk, lai iesaistītos sarunā ar %{organizationName}.'
+      main_header: 'Ir atjaunināta informācija par priekšlikumu, par kuru jūs balsojāt.'
+      subject: 'Priekšlikums, par kuru balsojāt, ir oficiāli atjaunināts %{organizationName}platformā.'
+      preheader: '%{officialName} atstāt oficiālu atjauninājumu par priekšlikumu, par kuru balsojāt.'
     official_feedback_on_your_initiative:
       updated: '%{officialName} rakstīja:'
       cta_view: 'Pārejiet uz savu priekšlikumu'
@@ -352,7 +352,7 @@ lv:
       preheader: '%{organizationName} līdzdalības platformas administrators tikko iecēla jūs par šā projekta vadītāju'
       subject: 'Jūs kļuvāt par projektu vadītāju %{organizationName} platformā.'
       text_design_participatory_process: 'Būdams projekta vadītājs, varat konfigurēt lietotāju mijiedarbību projektā. Jūs varat pievienot jaunus posmus, izmantojot laika grafiku. Katram no šiem posmiem var būt sava uzvedība attiecībā uz ideju publicēšanu, komentēšanu un balsošanu.'
-      text_moderate_analyse_input: 'Tiklīdz projekts ir uzsākts, tiks saņemtas pirmās idejas. Jūs saņemsiet nedēļas pārskatus ar visām galvenajām darbībām, lai jūs būtu lietas kursā. Ideju pārskats projekta vadītāja skatā palīdzēs jums saprast, kuras idejas ir saņēmušas visvairāk pozitīvo un negatīvo balsu.'
+      text_moderate_analyse_input: 'Tiklīdz projekts tiks uzsākts, tiks saņemtas pirmās idejas. Jūs saņemsiet iknedēļas pārskatus ar visām galvenajām darbībām, lai jūs būtu lietas kursā. Ideju pārskats jūsu projekta vadītāja skatā palīdzēs jums saprast, kuras idejas ir saņēmušas visvairāk simpātiju un kuras ne.'
       text_share_project_information: 'Lai uzlabotu iegūto ideju kvalitāti, ir svarīgi dalīties ar pietiekamu informāciju: pievienot projekta aprakstu, pievienot attēlus (tostarp skices un plānus) un informēt par visiem saistītajiem notikumiem. Atcerieties: laba informācija ir priekšnoteikums labai līdzdalībai!'
       title_design_participatory_process: 'Izstrādāt līdzdalības procesu'
       title_moderate_analyse_input: 'Moderēt un analizēt ievadītos datus'
@@ -405,20 +405,20 @@ lv:
       main_header: 'Jūsu idejai ir jauns statuss'
       subject: 'Jūsu idejas statuss ir mainīts'
       preheader: '%{organizationName} mainīja jūsu idejas statusu'
-    status_change_of_voted_idea:
-      status_change: 'Šīs idejas jaunais statuss ir ''%{ideaStatus}'''
-      cta_view_idea: 'Pāriet uz šo ideju'
-      event_description: '%{organizationName} atjaunināja idejas "%{ideaTitle}" statusu savā digitālās līdzdalības platformā.'
-      main_header: 'Idejai, par kuru balsojāt, ir jauns statuss'
-      subject: 'Ir mainīts idejas, par kuru balsojāt, statuss.'
-      preheader: '%{organizationName} mainīja statusu tai idejai, par kuru jūs balsojāt'
-    status_change_of_voted_initiative:
-      status_change: 'Šā priekšlikuma jaunais statuss ir ''%{initiativeStatus}'''
-      cta_view_initiative: 'Pāriet uz šo priekšlikumu'
-      event_description: 'Priekšlikuma "%{initiativeTitle}" statuss ir atjaunināts %{organizationName} digitālās līdzdalības platformā.'
+    status_change_of_reacted_idea:
+      status_change: 'Šīs idejas jaunais statuss ir "%{ideaStatus}".'
+      cta_view_idea: 'Pārejiet uz šo ideju'
+      event_description: '%{organizationName} atjaunināja idejas statusu savā digitālās līdzdalības platformā "%{ideaTitle}".'
+      main_header: 'Idejai, uz kuru jūs reaģējāt, ir jauns statuss'
+      subject: 'Ir mainīts tās idejas statuss, uz kuru reaģējāt.'
+      preheader: '%{organizationName} mainīja statusu idejai, uz kuru jūs reaģējāt.'
+    status_change_of_reacted_initiative:
+      status_change: 'Šā priekšlikuma jaunais statuss ir "%{initiativeStatus}".'
+      cta_view_initiative: 'Pārejiet uz šo priekšlikumu'
+      event_description: 'Priekšlikuma "%{initiativeTitle}" statuss ir atjaunināts %{organizationName}digitālajā līdzdalības platformā.'
       main_header: 'Priekšlikumam, par kuru balsojāt, ir jauns statuss'
-      subject: 'Ir mainīts priekšlikuma, par kuru balsojāt, statuss.'
-      preheader: 'Ir mainījies priekšlikuma, par kuru balsojāt, statuss.'
+      subject: 'Ir mainījies priekšlikuma, par kuru balsojāt, statuss.'
+      preheader: 'Mainījies priekšlikuma, par kuru balsojāt, statuss'
     status_change_of_commented_initiative:
       status_change: 'Šā priekšlikuma jaunais statuss ir ''%{initiativeStatus}'''
       cta_view_initiative: 'Pāriet uz šo priekšlikumu'
@@ -547,7 +547,7 @@ lv:
         permissions: 'Atļaujas'
         projects: 'Projekti'
         proposals: 'Priekšlikumi'
-        votes: 'Balsis'
+        reactions: 'Reakcijas'
       trigger:
         comment_is_deleted: 'Komentārs ir dzēsts'
         comment_is_flagged_as_spam: 'Komentārs ir atzīmēts kā surogātpasts'
