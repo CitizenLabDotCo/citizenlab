@@ -42,7 +42,8 @@
 #  allow_anonymous_participation :boolean          default(FALSE), not null
 #  voting_method                 :string
 #  voting_max_votes_per_idea     :integer
-#  voting_term                   :jsonb
+#  voting_term_singular_multiloc :jsonb
+#  voting_term_plural_multiloc   :jsonb
 #
 # Indexes
 #

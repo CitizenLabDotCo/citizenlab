@@ -78,7 +78,8 @@ export interface ParticipationContext {
   ideas_order?: IdeaDefaultSortMethod;
   document_annotation_embed_url?: string | null;
   voting_method?: VotingMethod | null;
-  voting_term?: Multiloc | null;
+  voting_term_singular_multiloc?: Multiloc | null;
+  voting_term_plural_multiloc?: Multiloc | null;
   voting_min_total?: number | null;
   voting_max_total?: number | null;
   voting_max_votes_per_idea?: number | null;

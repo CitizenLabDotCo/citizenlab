@@ -150,7 +150,8 @@ class ProjectPolicy < ApplicationPolicy
         title_multiloc: CL2_SUPPORTED_LOCALES,
         description_multiloc: CL2_SUPPORTED_LOCALES,
         description_preview_multiloc: CL2_SUPPORTED_LOCALES,
-        voting_term: CL2_SUPPORTED_LOCALES,
+        voting_term_singular_multiloc: CL2_SUPPORTED_LOCALES,
+        voting_term_plural_multiloc: CL2_SUPPORTED_LOCALES,
         area_ids: [],
         topic_ids: []
       }

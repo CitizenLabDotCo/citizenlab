@@ -10,7 +10,8 @@ class AddVotingMethodToParticipationContext < ActiveRecord::Migration[6.1]
       add_column tablename, :voting_max_votes_per_idea, :integer
       rename_column tablename, :max_budget, :voting_max_total
       rename_column tablename, :min_budget, :voting_min_total
-      add_column tablename, :voting_term, :jsonb, default: {}
+      add_column tablename, :voting_term_singular_multiloc, :jsonb, default: {}
+      add_column tablename, :voting_term_plural_multiloc, :jsonb, default: {}
     end
   end
 end
