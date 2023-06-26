@@ -3,7 +3,7 @@
     <mj-table>
       <tr class="initiative">
         <% if post_image_url %>
-          <td style="width: 80px; padding: 15px 15px 0px 15px;">
+          <td style="padding: 15px 15px 0px 15px;">
             <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
               <%= image_tag(post_image_url, width: '100%') %>
             </span>

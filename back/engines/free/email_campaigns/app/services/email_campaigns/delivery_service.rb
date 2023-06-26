@@ -20,6 +20,7 @@ module EmailCampaigns
       Campaigns::InviteReceived,
       Campaigns::InviteReminder,
       Campaigns::Manual,
+      Campaigns::MentionInInternalComment,
       Campaigns::MentionInOfficialFeedback,
       Campaigns::ModeratorDigest,
       Campaigns::NewCommentForAdmin,
