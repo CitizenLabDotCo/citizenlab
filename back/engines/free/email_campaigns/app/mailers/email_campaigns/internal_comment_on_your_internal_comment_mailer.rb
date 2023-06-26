@@ -18,7 +18,7 @@ module EmailCampaigns
 
     def preheader
       format_message('preheader', values: {
-        organizationName: organization_name,
+        post: localize_for_recipient(event.post_title_multiloc),
         authorName: event.internal_comment_author_name
       })
     end

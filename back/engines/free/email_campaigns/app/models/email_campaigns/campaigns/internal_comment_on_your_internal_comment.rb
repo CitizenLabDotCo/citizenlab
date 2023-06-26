@@ -83,24 +83,21 @@ module EmailCampaigns
           post_title_multiloc: notification.post.title_multiloc,
           post_body_multiloc: notification.post.body_multiloc,
           post_type: notification.post_type,
-          post_images: post_images(notification)
+          post_image_medium_url: post_image_medium_url(notification)
         }
       }]
     end
 
-    def post_images(notification)
+    def post_image_medium_url(notification)
       if notification.post_type == 'Idea'
-        notification.post.idea_images.map { |image| serialize_image(image) }
+        serialize_medium_image(notification.post.idea_images.first)
       elsif notification.post_type == 'Initiative'
-        notification.post.initiative_images.map { |image| serialize_image(image) }
+        serialize_medium_image(notification.post.initiative_images.first)
       end
     end
 
-    def serialize_image(image)
-      {
-        ordering: image.ordering,
-        versions: version_urls(image.image)
-      }
+    def serialize_medium_image(image)
+      version_urls(image.image)['medium']
     end
 
     def version_urls(image)

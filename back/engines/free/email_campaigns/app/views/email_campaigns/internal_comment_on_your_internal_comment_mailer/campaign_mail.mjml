@@ -12,10 +12,10 @@
   <mj-column border="1px solid #eaeaea" background-color="#fff" border-radius="5px">
     <mj-table>
       <tr class="initiative">
-        <% if event&.post_images&.first&.versions&.medium %>
+        <% if event&.post_image_medium_url %>
           <td style="width: 80px; padding: 15px 15px 0px 15px;">
             <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
-              <%= image_tag(event.post_images.first.versions.medium, width: '100%') %>
+              <%= image_tag(event.post_image_medium_url, width: '100%') %>
             </span>
           </td>
         <% end %>

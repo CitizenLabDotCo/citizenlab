@@ -304,7 +304,7 @@ en:
       event_description: '%{authorNameFull} commented on your internal comment.'
       subject: 'You have received a comment on your internal comment on ''%{post}'''
       main_header: 'You have received a comment on your internal comment on ''%{post}'''
-      preheader: '%{authorName} replied to your comment on %{organizationName}''s platform'
+      preheader: '%{authorName} replied to your internal comment on ''%{post}'''
     official_feedback_on_commented_initiative:
       by_author: 'by %{authorName}'
       updated: '%{officialName} wrote:'

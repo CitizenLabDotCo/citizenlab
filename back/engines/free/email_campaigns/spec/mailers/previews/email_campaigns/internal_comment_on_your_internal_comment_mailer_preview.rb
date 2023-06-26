@@ -18,7 +18,7 @@ module EmailCampaigns
             en: 'There are many advantages to paving your front garden. Less cars on the road and more space for pedestrians.'
           },
           post_type: 'Idea',
-          post_images: [serialize_image(IdeaImage.first)]
+          post_image_medium_url: serialize_medium_image(IdeaImage.first)
         }
       }
 
@@ -27,11 +27,8 @@ module EmailCampaigns
       campaign.mailer_class.with(campaign: campaign, command: command).campaign_mail
     end
 
-    def serialize_image(image)
-      {
-        ordering: image.ordering,
-        versions: version_urls(image.image)
-      }
+    def serialize_medium_image(image)
+      version_urls(image.image)['medium']
     end
 
     def version_urls(image)

@@ -52,7 +52,7 @@ RSpec.describe EmailCampaigns::Campaigns::InternalCommentOnYourInternalComment d
         command.dig(:event_payload, :post_type)
       ).to eq(notification.post_type)
       expect(
-        command.dig(:event_payload, :post_images).first[:versions]['medium']
+        command.dig(:event_payload, :post_image_medium_url)
       ).to eq(idea_image_medium_version)
     end
   end
