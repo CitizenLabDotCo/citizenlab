@@ -27,7 +27,6 @@ import MobileNavbar from 'containers/MobileNavbar';
 import Meta from './Meta';
 const UserDeletedModal = lazy(() => import('./UserDeletedModal'));
 const PlatformFooter = lazy(() => import('containers/PlatformFooter'));
-// const PostPageFullscreenModal = lazy(() => import('./PostPageFullscreenModal'));
 
 // auth
 import HasPermission from 'components/HasPermission';
