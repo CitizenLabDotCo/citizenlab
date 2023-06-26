@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 
 // router
 import { useSearchParams } from 'react-router-dom';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 // Utils
 import { trackEventByName } from 'utils/analytics';
@@ -20,6 +21,7 @@ import InitiativePreview from './InitiativePreview';
 import {
   leafletMapSelectedMarker$,
   leafletMapClicked$,
+  setLeafletMapSelectedMarker,
 } from 'components/UI/LeafletMap/events';
 
 // Resources
@@ -71,7 +73,6 @@ interface Props extends InputProps, DataProps {
 }
 
 interface State {
-  selectedInitiativeId: string | null;
   points: Point[];
   lat?: number | null;
   lng?: number | null;
@@ -85,7 +86,6 @@ export class InitiativesMap extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      selectedInitiativeId: null,
       points: [],
     };
     this.subscriptions = [];
@@ -93,10 +93,8 @@ export class InitiativesMap extends PureComponent<Props, State> {
 
   componentDidMount() {
     this.subscriptions = [
-      leafletMapSelectedMarker$.subscribe((InitiativeId) => {
-        if (InitiativeId) {
-          this.handleInitiativeMarkerSelected(InitiativeId);
-        }
+      leafletMapSelectedMarker$.subscribe((initiativeId) => {
+        this.handleInitiativeMarkerSelected(initiativeId);
       }),
       leafletMapClicked$.subscribe((latLng) => {
         this.handleMapClicked(latLng);
@@ -125,46 +123,41 @@ export class InitiativesMap extends PureComponent<Props, State> {
   };
 
   getPoints = (
-    Initiatives: IGeotaggedInitiativeData[] | null | undefined | Error
+    initiatives: IGeotaggedInitiativeData[] | null | undefined | Error
   ) => {
-    const InitiativePoints: Point[] = [];
+    const initiativePoints: Point[] = [];
 
-    if (!isNilOrError(Initiatives) && Initiatives.length > 0) {
-      Initiatives.forEach((Initiative) => {
+    if (!isNilOrError(initiatives) && initiatives.length > 0) {
+      initiatives.forEach((initiative) => {
         if (
-          Initiative.attributes &&
-          Initiative.attributes.location_point_geojson
+          initiative.attributes &&
+          initiative.attributes.location_point_geojson
         ) {
-          InitiativePoints.push({
-            ...Initiative.attributes.location_point_geojson,
-            id: Initiative.id,
+          initiativePoints.push({
+            ...initiative.attributes.location_point_geojson,
+            id: initiative.id,
           });
         }
       });
     }
 
-    return InitiativePoints;
+    return initiativePoints;
   };
 
   deselectInitiative = () => {
-    this.setState({ selectedInitiativeId: null });
+    setLeafletMapSelectedMarker(null);
   };
 
   handleMapOnInit = (map: LeafletMap) => {
     this.setState({ map });
   };
 
-  handleInitiativeMarkerSelected = (InitiativeId: string) => {
+  handleInitiativeMarkerSelected = (initiativeId: string | null) => {
     trackEventByName(tracks.clickOnInitiativeMapMarker, {
-      extra: { InitiativeId },
+      extra: { initiativeId },
     });
 
-    this.setState(({ selectedInitiativeId }) => {
-      return {
-        selectedInitiativeId:
-          InitiativeId !== selectedInitiativeId ? InitiativeId : null,
-      };
-    });
+    updateSearchParams({ initiative_map_id: initiativeId });
   };
 
   handleMapClicked = (position: LatLng) => {
@@ -189,13 +182,14 @@ export class InitiativesMap extends PureComponent<Props, State> {
 
   render() {
     const {
+      selectedInitiativeMarkerId,
       initiativeMarkers,
       className,
       initiativePermissions,
       ariaLabelledBy,
       id,
     } = this.props;
-    const { selectedInitiativeId, points, lat, lng } = this.state;
+    const { points, lat, lng } = this.state;
 
     if (!isNilOrError(initiativePermissions)) {
       const { enabled } = initiativePermissions;
@@ -218,8 +212,8 @@ export class InitiativesMap extends PureComponent<Props, State> {
             onInit={this.handleMapOnInit}
             points={points}
             boxContent={
-              selectedInitiativeId ? (
-                <InitiativePreview initiativeId={selectedInitiativeId} />
+              selectedInitiativeMarkerId ? (
+                <InitiativePreview initiativeId={selectedInitiativeMarkerId} />
               ) : null
             }
             onBoxClose={this.deselectInitiative}
