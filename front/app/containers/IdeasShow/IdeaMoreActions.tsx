@@ -27,7 +27,6 @@ import styled from 'styled-components';
 
 // typings
 import { IIdeaData } from 'api/ideas/types';
-import eventEmitter from 'utils/eventEmitter';
 
 const Container = styled.div``;
 
