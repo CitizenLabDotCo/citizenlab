@@ -124,6 +124,7 @@ export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
   return (
     <>
       <ParticipationCTAContent
+        project={project}
         currentPhase={currentPhase}
         CTAButton={CTAButton}
         hasUserParticipated={hasUserParticipated}

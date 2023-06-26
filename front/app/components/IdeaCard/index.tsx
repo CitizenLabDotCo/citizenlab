@@ -1,4 +1,4 @@
-import React, { FormEvent, memo, useEffect } from 'react';
+import React, { memo, useEffect } from 'react';
 
 // components
 import UserName from 'components/UI/UserName';
