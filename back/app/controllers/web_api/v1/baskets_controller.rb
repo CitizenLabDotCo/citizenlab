@@ -22,7 +22,8 @@ class WebApi::V1::BasketsController < ApplicationController
       SideFxBasketService.new.after_create @basket, current_user
       render json: WebApi::V1::BasketSerializer.new(
         @basket,
-        params: jsonapi_serializer_params
+        params: jsonapi_serializer_params,
+        include: %i[baskets_ideas]
       ).serializable_hash, status: :created
     else
       render json: { errors: @basket.errors.details }, status: :unprocessable_entity
@@ -30,38 +31,31 @@ class WebApi::V1::BasketsController < ApplicationController
   end
 
   def update
-    new_idea_ids = basket_params[:idea_ids]
-    begin
-      ActiveRecord::Base.transaction do
-        if new_idea_ids
-          # Remove and add ideas to the basket.
-          #
-          # The reason we don't simply update on idea_ids is
-          # to keep the counter correct.
-          old_idea_ids = @basket.idea_ids
-          ideas_to_add = new_idea_ids - old_idea_ids
-          ideas_to_rmv = old_idea_ids - new_idea_ids
-          @basket.baskets_ideas.where(idea_id: ideas_to_rmv).each(&:destroy!)
-          ideas_to_add.each { |idea_id| @basket.baskets_ideas.create!(idea_id: idea_id) }
-        end
-        @basket.assign_attributes basket_params.except(:idea_ids)
-        save_params = {}
-        save_params[:context] = [:basket_submission] if @basket.submitted_at.present?
-        raise ClErrors::TransactionError.new(error_key: :unprocessable_basket) unless @basket.save(save_params)
-
-        SideFxBasketService.new.after_update @basket, current_user
+    attributes = basket_params.to_h
+    if attributes.key? 'baskets_ideas_attributes'
+      attributes['baskets_ideas_attributes'].each do |baskets_idea_attrs|
+        update_basket_idea = @basket.baskets_ideas.find_by(idea_id: baskets_idea_attrs['idea_id'])
+        baskets_idea_attrs['id'] = update_basket_idea.id if update_basket_idea
       end
+      delete_idea_ids = @basket.baskets_ideas.where.not(idea_id: attributes['baskets_ideas_attributes'].pluck('idea_id'))
+      attributes['baskets_ideas_attributes'] += delete_idea_ids.map do |delete_basket_idea|
+        { 'id' => delete_basket_idea.id, '_destroy' => true }
+      end
+    end
+    # @basket.baskets_ideas.each(&:mark_for_destruction) if basket_params.key? 'baskets_ideas_attributes' # https://stackoverflow.com/a/61460292/3585671
+    @basket.assign_attributes attributes
+    save_params = {}
+    save_params[:context] = [:basket_submission] if @basket.submitted_at.present?
+    if @basket.save(save_params)
+      SideFxBasketService.new.after_update @basket, current_user
       render json: WebApi::V1::BasketSerializer.new(
         @basket,
-        params: jsonapi_serializer_params
+        params: jsonapi_serializer_params,
+        include: %i[baskets_ideas]
       ).serializable_hash, status: :ok
-    rescue ClErrors::TransactionError => e
-      case e.error_key
-      when :unprocessable_basket
-        render json: { errors: @basket.errors.details }, status: :unprocessable_entity
-      else
-        raise e
-      end
+    else
+      byebug
+      render json: { errors: @basket.errors.details }, status: :unprocessable_entity
     end
   end
 
@@ -88,7 +82,7 @@ class WebApi::V1::BasketsController < ApplicationController
       :user_id,
       :participation_context_id,
       :participation_context_type,
-      idea_ids: []
+      baskets_ideas_attributes: %i[idea_id votes]
     )
   end
 end

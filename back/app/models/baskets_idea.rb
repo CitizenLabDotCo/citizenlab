@@ -26,6 +26,7 @@ class BasketsIdea < ApplicationRecord
   belongs_to :idea
 
   validates :idea, :basket, presence: true
+  validates :idea_id, uniqueness: { scope: :basket_id }
   validate :idea_with_budget
   validates :votes, numericality: { only_integer: true, greater_than: 0 }
 
