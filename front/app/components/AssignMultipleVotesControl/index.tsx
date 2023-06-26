@@ -3,23 +3,40 @@ import {
   Button,
   Input,
   Text,
-  Title,
+  colors,
+  useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import useAuthUser from 'api/me/useAuthUser';
-import phasesKeys from 'api/phases/keys';
 import usePhases from 'api/phases/usePhases';
 import { getLatestRelevantPhase } from 'api/phases/utils';
-import projectsKeys from 'api/projects/keys';
 import useProjectById from 'api/projects/useProjectById';
-import { API_PATH } from 'containers/App/constants';
 import useBasket from 'hooks/useBasket';
-import React from 'react';
-import { addBasket, updateBasket } from 'services/baskets';
-import { useTheme } from 'styled-components';
-import { queryClient } from 'utils/cl-react-query/queryClient';
-import { capitalizeParticipationContextType } from 'utils/helperUtils';
-import streams from 'utils/streams';
+import React, { useState } from 'react';
+import styled, { useTheme } from 'styled-components';
 
+const StyledBox = styled(Box)`
+  input {
+    border: none !important;
+    font-size: x-large;
+    padding: 0px !important;
+    margin: 0px !important;
+    text-align: center;
+    font-weight: 600;
+    font-size: 24px;
+    max-width: 100%;
+    size: 30;
+    background-color: ${colors.grey100};
+  }
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
+`;
 interface Props {
   projectId: string;
   ideaId: string;
@@ -28,10 +45,11 @@ interface Props {
 
 const AssignMultipleVotesControl = ({ projectId, ideaId }: Props) => {
   const theme = useTheme();
-  const [votes, setVotes] = React.useState(10);
+  const [votes, setVotes] = useState(-1);
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
   const { data: authUser } = useAuthUser();
+  const isMobileOrSmaller = useBreakpoint('phone');
   const isContinuousProject = true;
   const latestRelevantPhase = phases
     ? getLatestRelevantPhase(phases.data)
@@ -43,124 +61,102 @@ const AssignMultipleVotesControl = ({ projectId, ideaId }: Props) => {
     participationContext?.relationships?.user_basket?.data?.id
   );
 
-  console.log({ project, basket, authUser, participationContext });
-
-  const onPlusClick = async (event) => {
-    console.log('PLUS CLICKED');
+  const onAdd = async (event) => {
     event.stopPropagation();
     event?.preventDefault();
-    setVotes(votes + 1);
-
-    if (basket && authUser) {
-      try {
-        await updateBasket(basket.id, {
-          user_id: authUser.data.id,
-          participation_context_id: participationContext?.id,
-          idea_ids: [ideaId],
-          submitted_at: null,
-        });
-      } catch (error) {
-        console.log('Error');
-      }
+    const currentVotes = parseInt(votes.toString(), 10);
+    if (currentVotes <= 0) {
+      setVotes(1);
     } else {
-      console.log('ADDING BASKET 1');
-      try {
-        if (authUser && participationContext) {
-          console.log('ADDING BASKET 2');
-
-          await addBasket({
-            user_id: authUser.data.id,
-            participation_context_id: participationContext.id,
-            participation_context_type:
-              capitalizeParticipationContextType('project'),
-            idea_ids: [ideaId],
-          });
-          console.log('ADDING BASKET 3');
-
-          await streams.fetchAllWith({
-            apiEndpoint: [`${API_PATH}/users/${authUser.data.id}/baskets`],
-          });
-
-          // TODO: Remove the invalidations here after the basket data fetching PR by Iva is merged
-          queryClient.invalidateQueries({
-            queryKey: projectsKeys.item({ id: projectId }),
-          });
-          queryClient.invalidateQueries({
-            queryKey: phasesKeys.list({ projectId }),
-          });
-        }
-        console.log('ADDING BASKET 4');
-      } catch (error) {
-        console.log('ERROR');
-      }
+      setVotes(currentVotes + 1);
     }
   };
 
-  const onMinusClick = (event) => {
+  const onRemove = (event) => {
     event.stopPropagation();
     event?.preventDefault();
-    setVotes(votes - 1);
+    const currentVotes = parseInt(votes.toString(), 10);
+    if (currentVotes < 0) {
+      setVotes(0);
+    } else {
+      setVotes(parseInt(votes.toString(), 10) - 1);
+    }
   };
 
-  const onInputChange = async (event) => {
+  const onTextInputChange = async (event) => {
     setVotes(event);
-
-    // try {
-    //   if (basket && authUser) {
-    //     await updateBasket(basket.id, {
-    //       user_id: authUser.data.id,
-    //       participation_context_id: participationContext?.id,
-    //       idea_ids: [ideaId],
-    //       submitted_at: null,
-    //     });
-    //   }
-    // } catch (error) {
-    //   console.log("Error")
-    //   }
   };
+
+  if (votes > 0 || votes.toString() === '') {
+    return (
+      <Box
+        width="100%"
+        display="flex"
+        justifyContent="space-between"
+        style={{ cursor: 'default' }}
+      >
+        {!basket?.attributes.submitted_at && (
+          <Button
+            mr="8px"
+            bgColor={theme.colors.tenantPrimary}
+            onClick={onRemove}
+          >
+            <h1 style={{ margin: '0px' }}>-</h1>
+          </Button>
+        )}
+
+        <Box
+          onClick={(event) => {
+            event.stopPropagation();
+            event?.preventDefault();
+          }}
+          display="flex"
+          background={colors.grey100}
+          borderRadius={'3px'}
+          flexGrow={1}
+          justifyContent="center"
+          padding="8px"
+        >
+          <StyledBox
+            style={{
+              width: `${votes.toString().length * 20}px`,
+              maxWidth: `${isMobileOrSmaller ? '100px' : '160px'}`,
+            }}
+          >
+            <Input
+              value={votes.toString()}
+              onChange={onTextInputChange}
+              type="number"
+              min="0"
+              onBlur={() => {
+                if (votes.toString() === '') {
+                  setVotes(0);
+                }
+              }}
+            />
+          </StyledBox>
+          <Text fontSize="m" ml="8px" my="auto">
+            votes
+          </Text>
+        </Box>
+        {!basket?.attributes.submitted_at && (
+          <Button ml="8px" bgColor={theme.colors.tenantPrimary} onClick={onAdd}>
+            <h1 style={{ margin: '0px' }}>+</h1>
+          </Button>
+        )}
+      </Box>
+    );
+  }
 
   return (
-    <Box display="flex">
-      <Button
-        mr="8px"
-        bgColor={theme.colors.tenantPrimary}
-        onClick={onMinusClick}
-      >
-        <h1 style={{ margin: '0px' }}>-</h1>
-      </Button>
-      <Box
-        onClick={(event) => {
-          event.stopPropagation();
-          event?.preventDefault();
-        }}
-        display="flex"
-        border="1px solid black"
-        minWidth="200px"
-        justifyContent="center"
-        padding="8px"
-      >
-        <Box>
-          <Input
-            type="text"
-            inputmode="numeric"
-            pattern="[0-9]*"
-            size="auto"
-            value={votes.toString()}
-            onChange={onInputChange}
-          />
-        </Box>
-        <Text ml="4px" my="auto" m="0px">
-          votes
-        </Text>
-      </Box>
-      <Button
-        ml="8px"
-        bgColor={theme.colors.tenantPrimary}
-        onClick={onPlusClick}
-      >
-        <h1 style={{ margin: '0px' }}>+</h1>
-      </Button>
-    </Box>
+    <Button
+      buttonStyle="primary-outlined"
+      icon="vote-ballot"
+      width="100%"
+      onClick={onAdd}
+    >
+      Vote
+    </Button>
   );
 };
 
