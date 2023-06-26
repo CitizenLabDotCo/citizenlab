@@ -30,9 +30,8 @@ import eventEmitter from 'utils/eventEmitter';
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
-import { getVotingMethodConfig } from 'utils/votingMethodUtils/votingMethodUtils';
 
-export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
+export const VotingCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
   const { formatMessage } = useIntl();
   const { data: appConfig } = useAppConfiguration();
@@ -45,9 +44,6 @@ export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
     basketId = project.relationships.user_basket?.data?.id || null;
   }
   const basket = useBasket(basketId);
-  const votingConfig = getVotingMethodConfig(
-    currentPhase?.attributes?.voting_method || project.attributes.voting_method
-  );
 
   // Listen for budgeting exceeded error
   useEffect(() => {

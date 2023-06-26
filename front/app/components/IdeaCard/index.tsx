@@ -35,6 +35,7 @@ import { IIdea } from 'api/ideas/types';
 import AssignBudgetControl from 'components/AssignBudgetControl';
 import { getCurrentPhase } from 'api/phases/utils';
 import usePhases from 'api/phases/usePhases';
+import AssignMultipleVotesControl from 'components/AssignMultipleVotesControl';
 
 const BodyWrapper = styled.div`
   display: flex;
@@ -162,7 +163,12 @@ const CompactIdeaCard = memo<IdeaCardProps>(
       if (project) {
         const projectId = idea.data.relationships.project.data.id;
         const ideaBudget = idea.data.attributes.budget;
-        if (participationMethod === 'voting' && ideaBudget) {
+
+        if (
+          participationMethod === 'voting' &&
+          votingMethod === 'budgeting' &&
+          ideaBudget
+        ) {
           return (
             <Box display="flex" alignItems="center">
               <AssignBudgetControl
@@ -173,12 +179,24 @@ const CompactIdeaCard = memo<IdeaCardProps>(
             </Box>
           );
         }
+        if (participationMethod === 'voting' && votingMethod === 'cumulative') {
+          return (
+            <Box display="flex" alignItems="center">
+              <AssignMultipleVotesControl
+                projectId={projectId}
+                ideaId={idea.data.id}
+              />
+            </Box>
+          );
+        }
       }
       return null;
     };
-    const votingMethod =
-      currentPhase?.attributes.voting_method ||
-      project?.data.attributes.voting_method;
+
+    const votingMethod = 'cumulative'; // TODO: Replace after BE is implemented
+    // const votingMethod =
+    //   currentPhase?.attributes.voting_method ||
+    //   project?.data.attributes.voting_method;
 
     const getFooter = () => {
       if (project) {

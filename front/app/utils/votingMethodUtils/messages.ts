@@ -21,6 +21,26 @@ export default defineMessages({
     id: 'app.utils.votingMethodUtils.submittedVotesCountText',
     defaultMessage: 'people submitted their votes',
   },
+  votingPreSubmissionWarning: {
+    id: 'app.utils.votingMethodUtils.votingPreSubmissionWarning',
+    defaultMessage:
+      '<b>Your votes will not be counted</b> until you click "Submit"',
+  },
+  budgetingPreSubmissionWarning: {
+    id: 'app.utils.votingMethodUtils.votingPreSubmissionWarning',
+    defaultMessage:
+      '<b>Your budget will not be counted</b> until you click "Submit"',
+  },
+  votingSubmittedInstructions: {
+    id: 'app.utils.votingMethodUtils.votingSubmittedInstructions',
+    defaultMessage:
+      '<b>Congratulations, your vote has been submitted!</b> You can check your votes below at any point or modify them before <b>{endDate}</b>.',
+  },
+  votingSubmittedInstructionsContinuous: {
+    id: 'app.utils.votingMethodUtils.votingSubmittedInstructions',
+    defaultMessage:
+      '<b>Congratulations, your vote has been submitted!</b> You can check your votes below at any point or modify them.',
+  },
   budgets: {
     id: 'app.utils.votingMethodUtils.budgets',
     defaultMessage: 'Budgets',

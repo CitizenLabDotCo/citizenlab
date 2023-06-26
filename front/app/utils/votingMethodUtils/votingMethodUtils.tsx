@@ -25,6 +25,7 @@ import { toFullMonth } from 'utils/dateUtils';
   - getStatusDescription: Returns description for the status module
   - getStatusSubmissionCountCopy: Returns copy related to the submission count
   - getSubmissionTerm: Returns the submission type in specified form (i.e. singular vs plural)
+  - preSubmissionWarning: Returns warning to be displayed before submission is made
   */
 
 export type VoteSubmissionState =
@@ -49,6 +50,7 @@ export type VotingMethodConfig = {
     SubmissionState,
   }: GetStatusDescriptionProps) => JSX.Element | null;
   getSubmissionTerm?: (form: 'singular' | 'plural') => MessageDescriptor;
+  preSubmissionWarning: () => MessageDescriptor;
 };
 
 const budgetingConfig: VotingMethodConfig = {
@@ -149,6 +151,9 @@ const budgetingConfig: VotingMethodConfig = {
     }
     return messages.budgets;
   },
+  preSubmissionWarning: () => {
+    return messages.budgetingPreSubmissionWarning;
+  },
 };
 
 const cumulativeConfig: VotingMethodConfig = {
@@ -206,7 +211,7 @@ const cumulativeConfig: VotingMethodConfig = {
               ),
               endDate: phase && toFullMonth(phase.attributes.end_at, 'day'),
             }}
-            {...messages.budgetingSubmittedInstructions}
+            {...messages.votingSubmittedInstructions}
           />
         );
       }
@@ -217,7 +222,7 @@ const cumulativeConfig: VotingMethodConfig = {
               <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
             ),
           }}
-          {...messages.budgetingSubmittedInstructionsContinuous}
+          {...messages.votingSubmittedInstructionsContinuous}
         />
       );
     } else if (SubmissionState === 'submissionEnded') {
@@ -248,6 +253,9 @@ const cumulativeConfig: VotingMethodConfig = {
       return messages.vote;
     }
     return messages.votes;
+  },
+  preSubmissionWarning: () => {
+    return messages.votingPreSubmissionWarning;
   },
 };
 

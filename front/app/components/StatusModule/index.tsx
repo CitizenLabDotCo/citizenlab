@@ -14,7 +14,7 @@ import ConfettiSvg from './ConfettiSvg';
 // api
 import { VotingMethod } from 'services/participationContexts';
 import { useTheme } from 'styled-components';
-import { useIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 import useBasket from 'hooks/useBasket';
@@ -28,6 +28,7 @@ import { pastPresentOrFuture, toFullMonth } from 'utils/dateUtils';
 
 // intl
 import messages from './messages';
+import Warning from 'components/UI/Warning';
 
 type StatusModuleProps = {
   votingMethod?: VotingMethod | null;
@@ -139,6 +140,21 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
           </Box>
         )}
       </Box>
+      {basketStatus !== 'hasSubmitted' && (
+        <Box mb="16px">
+          <Warning>
+            <FormattedMessage
+              values={{
+                b: (chunks) => (
+                  <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+                ),
+              }}
+              {...(config?.preSubmissionWarning &&
+                config.preSubmissionWarning())}
+            />
+          </Warning>
+        </Box>
+      )}
     </Box>
   );
 };
