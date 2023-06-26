@@ -26,8 +26,8 @@ class PublicApi::V2::ProjectSerializer < PublicApi::V2::BaseSerializer
     :reacting_dislike_enabled,
     :reacting_dislike_method,
     :reacting_dislike_limited_max,
-    :min_budget,
-    :max_budget
+    :voting_max_total,
+    :voting_min_total
 
   def status
     object.admin_publication.publication_status
