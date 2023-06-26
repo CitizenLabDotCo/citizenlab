@@ -159,6 +159,7 @@ export interface Props {
   participationContextType?: IParticipationContextType | null;
   className?: string;
   allowProjectsFilter?: boolean;
+  goBackMode?: 'browserGoBackButton' | 'goToProject';
 }
 
 const IdeasWithoutFiltersSidebar = ({
@@ -174,6 +175,7 @@ const IdeasWithoutFiltersSidebar = ({
   participationMethod,
   participationContextId,
   participationContextType,
+  goBackMode,
 }: Props) => {
   const locale = useLocale();
   const { windowWidth } = useWindowSize();
@@ -348,6 +350,7 @@ const IdeasWithoutFiltersSidebar = ({
           participationMethod={participationMethod}
           participationContextId={participationContextId}
           participationContextType={participationContextType}
+          goBackMode={goBackMode}
         />
       </Container>
     );

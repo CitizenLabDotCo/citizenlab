@@ -104,6 +104,7 @@ interface Props {
   hideImage?: boolean;
   hideImagePlaceholder?: boolean;
   hideIdeaStatus?: boolean;
+  goBackMode?: 'browserGoBackButton' | 'goToProject';
 }
 
 const IdeaLoading = (props: Props) => {
@@ -130,6 +131,7 @@ const CompactIdeaCard = memo<IdeaCardProps>(
     hideImage = false,
     hideImagePlaceholder = false,
     hideIdeaStatus = false,
+    goBackMode = 'browserGoBackButton',
   }) => {
     const locale = useLocale();
     const localize = useLocalize();
@@ -185,13 +187,17 @@ const CompactIdeaCard = memo<IdeaCardProps>(
       return null;
     };
 
+    const { slug } = idea.data.attributes;
+    const searchParams =
+      goBackMode === 'browserGoBackButton' ? '?go_back=true' : '';
+
     return (
       <Card
         className={[className, 'e2e-idea-card']
           .filter((item) => typeof item === 'string' && item !== '')
           .join(' ')}
         title={ideaTitle}
-        to={`/ideas/${idea.data.attributes.slug}?go_back=true`}
+        to={`/ideas/${slug}${searchParams}`}
         image={
           !isNilOrError(ideaImage)
             ? ideaImage.data.attributes.versions.medium

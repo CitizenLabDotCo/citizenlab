@@ -146,6 +146,7 @@ export const UsersShowPage = memo<InnerProps>(({ className, user }) => {
                 ideaQueryParameters={ideaQueryParameters}
                 onUpdateQuery={updateSearchParams}
                 invisibleTitleMessage={messages.invisibleTitlePostsList}
+                goBackMode="goToProject"
               />
             </UserIdeas>
           )}
