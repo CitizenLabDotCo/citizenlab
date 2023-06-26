@@ -146,17 +146,16 @@ const AdminInitiativeContent = ({
       <Container>
         <Top>
           <Button
+            mr="8px"
             icon="edit"
-            buttonStyle="text"
-            textColor={colors.primary}
+            buttonStyle="secondary"
             onClick={handleClickEdit}
           >
             <FormattedMessage {...messages.edit} />
           </Button>
           <Button
             icon="delete"
-            buttonStyle="text"
-            textColor={colors.primary}
+            buttonStyle="delete"
             onClick={handleClickDelete}
           >
             <FormattedMessage {...messages.delete} />

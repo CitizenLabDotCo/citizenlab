@@ -40,7 +40,7 @@ interface Props {
   className?: string;
 }
 
-const InternalCommentsSection = memo<Props>(
+const InternalComments = memo<Props>(
   ({ ideaId, initiativeId, postType, allComments, loading, className }) => {
     const { formatMessage } = useIntl();
     const [commentPostedMessage, setCommentPostedMessage] = useState('');
@@ -123,4 +123,4 @@ const InternalCommentsSection = memo<Props>(
   }
 );
 
-export default InternalCommentsSection;
+export default InternalComments;

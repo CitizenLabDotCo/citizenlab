@@ -5,6 +5,7 @@ import GoBackButton from 'components/UI/GoBackButton';
 import { Box } from '@citizenlab/cl2-component-library';
 import InitiativePostPreview from './PostPreview/Initiative/InitiativePostPreview';
 import { PreviewMode } from '..';
+import messages from './messages';
 
 const InitiativePreviewIndex = () => {
   const [previewMode, setPreviewMode] = useState<PreviewMode>('view');
@@ -23,7 +24,10 @@ const InitiativePreviewIndex = () => {
   return (
     <>
       <Box mb="24px">
-        <GoBackButton onClick={handleOnClose} />
+        <GoBackButton
+          onClick={handleOnClose}
+          customMessage={messages.goToProposalManager}
+        />
       </Box>
 
       <InitiativePostPreview

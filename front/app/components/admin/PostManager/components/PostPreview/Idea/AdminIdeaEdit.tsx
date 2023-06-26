@@ -5,12 +5,7 @@ import {
   Content,
   Top,
 } from 'components/admin/PostManager/components/PostPreview';
-import {
-  Box,
-  Button,
-  colors,
-  Spinner,
-} from '@citizenlab/cl2-component-library';
+import { Box, Button, Spinner } from '@citizenlab/cl2-component-library';
 import ideaFormMessages from 'containers/IdeasNewPage/messages';
 import Form, { AjvErrorGetter, ApiErrorGetter } from 'components/Form';
 
@@ -34,6 +29,7 @@ import { getLocationGeojson } from 'containers/IdeasEditPage/utils';
 import { omit } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
+import { useTheme } from 'styled-components';
 
 const AdminIdeaEdit = ({
   ideaId,
@@ -42,6 +38,7 @@ const AdminIdeaEdit = ({
   ideaId: string;
   goBack: () => void;
 }) => {
+  const theme = useTheme();
   const { data: idea } = useIdeaById(ideaId);
   const { mutate: deleteIdeaImage } = useDeleteIdeaImage();
 
@@ -165,14 +162,9 @@ const AdminIdeaEdit = ({
   };
 
   return (
-    <Box>
+    <Box border="1px solid white" borderRadius={theme.borderRadius}>
       <Top>
-        <Button
-          icon="arrow-left"
-          buttonStyle="text"
-          textColor={colors.primary}
-          onClick={goBack}
-        >
+        <Button onClick={goBack}>
           <FormattedMessage {...messages.cancelEdit} />
         </Button>
       </Top>

@@ -30,10 +30,8 @@ export const Top = styled.div`
   position: sticky;
   top: 0;
   left: 0;
-  height: 50px;
   width: 100%;
-  padding-left: 15px;
-  padding-right: 50px;
+  padding: 16px;
   z-index: 1;
 `;
 
@@ -45,7 +43,7 @@ export const Content = styled.div`
   width: 100%;
 
   &.idea-form {
-    background: #f4f4f4;
+    background: ${colors.background};
   }
 `;
 

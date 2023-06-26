@@ -5,6 +5,7 @@ import GoBackButton from 'components/UI/GoBackButton';
 import { Box } from '@citizenlab/cl2-component-library';
 import IdeaPostPreview from './PostPreview/Idea/IdeaPostPreview';
 import { PreviewMode } from '..';
+import messages from './messages';
 
 interface Props {
   goBackUrl: string;
@@ -29,7 +30,10 @@ const IdeaPreviewIndex = ({ goBackUrl }: Props) => {
   return (
     <>
       <Box mb="24px">
-        <GoBackButton onClick={handleOnClose} />
+        <GoBackButton
+          onClick={handleOnClose}
+          customMessage={messages.goToInputManager}
+        />
       </Box>
 
       <IdeaPostPreview
