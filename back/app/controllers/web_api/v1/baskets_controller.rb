@@ -42,7 +42,6 @@ class WebApi::V1::BasketsController < ApplicationController
         { 'id' => delete_basket_idea.id, '_destroy' => true }
       end
     end
-    # @basket.baskets_ideas.each(&:mark_for_destruction) if basket_params.key? 'baskets_ideas_attributes' # https://stackoverflow.com/a/61460292/3585671
     @basket.assign_attributes attributes
     save_params = {}
     save_params[:context] = [:basket_submission] if @basket.submitted_at.present?
@@ -54,7 +53,6 @@ class WebApi::V1::BasketsController < ApplicationController
         include: %i[baskets_ideas]
       ).serializable_hash, status: :ok
     else
-      byebug
       render json: { errors: @basket.errors.details }, status: :unprocessable_entity
     end
   end
