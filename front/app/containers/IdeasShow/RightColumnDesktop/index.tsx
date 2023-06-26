@@ -2,7 +2,7 @@ import React from 'react';
 
 // components
 import MetaInformation from '../MetaInformation';
-import VoteControl from 'components/VoteControl';
+import ReactionControl from 'components/ReactionControl';
 import Buttons from 'containers/IdeasShow/CTABox/Buttons';
 import AssignBudgetControl from 'components/AssignBudgetControl';
 
@@ -14,11 +14,11 @@ import IdeaSharingButton from '../Buttons/IdeaSharingButton';
 import SharingButtonComponent from '../Buttons/SharingButtonComponent';
 import { Box } from '@citizenlab/cl2-component-library';
 
-const Container = styled.div<{ insideModal: boolean }>`
+const Container = styled.div`
   flex: 0 0 ${rightColumnWidthDesktop}px;
   width: ${rightColumnWidthDesktop}px;
   position: sticky;
-  top: ${(props) => (props.insideModal ? '30px' : '110px')};
+  top: 110px;
   align-self: flex-start;
 `;
 
@@ -27,7 +27,7 @@ const InnerContainer = styled.div`
   flex-direction: column;
 `;
 
-const StyledVoteControl = styled(VoteControl)`
+const StyledReactionControl = styled(ReactionControl)`
   padding-bottom: 23px;
   margin-bottom: 23px;
 `;
@@ -47,7 +47,6 @@ interface Props {
   projectId: string;
   statusId: string;
   authorId: string | null;
-  insideModal: boolean;
   anonymous?: boolean;
   className?: string;
 }
@@ -57,12 +56,11 @@ const RightColumnDesktop = ({
   projectId,
   statusId,
   authorId,
-  insideModal,
   anonymous,
   className,
 }: Props) => {
   return (
-    <Container insideModal={insideModal} className={className || ''}>
+    <Container className={className || ''}>
       <InnerContainer>
         <Box
           padding="20px"
@@ -70,7 +68,7 @@ const RightColumnDesktop = ({
           background={colors.background}
           mb="12px"
         >
-          <StyledVoteControl styleType="shadow" ideaId={ideaId} size="4" />
+          <StyledReactionControl styleType="shadow" ideaId={ideaId} size="4" />
           <StyledAssignBudgetControl
             view="ideaPage"
             ideaId={ideaId}

@@ -58,6 +58,12 @@ RSpec.describe ParticipationMethod::Survey do
     end
   end
 
+  describe '#posting_allowed?' do
+    it 'returns false' do
+      expect(participation_method.posting_allowed?).to be false
+    end
+  end
+
   describe '#never_update?' do
     it 'returns false' do
       expect(participation_method.never_update?).to be false
@@ -108,9 +114,10 @@ RSpec.describe ParticipationMethod::Survey do
 
   its(:supports_publication?) { is_expected.to be false }
   its(:supports_commenting?) { is_expected.to be false }
-  its(:supports_voting?) { is_expected.to be false }
+  its(:supports_reacting?) { is_expected.to be false }
   its(:supports_baskets?) { is_expected.to be false }
   its(:supports_budget?) { is_expected.to be false }
   its(:supports_status?) { is_expected.to be false }
   its(:supports_assignment?) { is_expected.to be false }
+  its(:return_disabled_actions?) { is_expected.to be false }
 end

@@ -1,9 +1,10 @@
-import React, { useState, useContext, memo, useCallback } from 'react';
+import React, { useState, useContext, memo, useMemo } from 'react';
 import { Helmet } from 'react-helmet';
 import { PreviousPathnameContext } from 'context';
 
 // router
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 // components
 import { IdeaCardsWithoutFiltersSidebar } from 'components/IdeaCards';
@@ -33,7 +34,7 @@ import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
 
 // typings
 import { IUserData } from 'api/users/types';
-import { IQueryParameters } from 'api/ideas/types';
+import { Sort } from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
 
 const NotFoundContainer = styled.main`
   min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px - 4rem);
@@ -88,21 +89,35 @@ interface InnerProps {
   user: IUserData;
 }
 
+interface QueryParameters {
+  // constants
+  'page[number]': number;
+  'page[size]': number;
+  author: string;
+
+  // filters
+  search?: string;
+  sort: Sort;
+}
+
 export const UsersShowPage = memo<InnerProps>(({ className, user }) => {
   const [currentTab, setCurrentTab] = useState<UserTab>('ideas');
   const [savedScrollIndex, setSavedScrollIndex] = useState<number>(0);
 
-  const [ideaQueryParameters, setIdeaQueryParameters] =
-    useState<IQueryParameters>({
-      author: user.id,
-      sort: ideaDefaultSortMethodFallback,
+  const [searchParams] = useSearchParams();
+  const sortParam = searchParams.get('sort') as Sort | null;
+  const searchParam = searchParams.get('search');
+
+  const ideaQueryParameters = useMemo<QueryParameters>(
+    () => ({
       'page[number]': 1,
       'page[size]': 24,
-    });
-
-  const updateQuery = useCallback((newParams: Partial<IQueryParameters>) => {
-    setIdeaQueryParameters((current) => ({ ...current, ...newParams }));
-  }, []);
+      author: user.id,
+      sort: sortParam ?? ideaDefaultSortMethodFallback,
+      search: searchParam ?? undefined,
+    }),
+    [user, sortParam, searchParam]
+  );
 
   const changeTab = (toTab: UserTab) => () => {
     const oldScroll = savedScrollIndex;
@@ -127,11 +142,13 @@ export const UsersShowPage = memo<InnerProps>(({ className, user }) => {
           {currentTab === 'ideas' && (
             <UserIdeas>
               <IdeaCardsWithoutFiltersSidebar
+                defaultSortingMethod={ideaQueryParameters.sort}
                 ideaQueryParameters={ideaQueryParameters}
-                onUpdateQuery={updateQuery}
+                onUpdateQuery={updateSearchParams}
                 invisibleTitleMessage={messages.invisibleTitlePostsList}
                 showSearchbar={true}
                 showDropdownFilters={true}
+                goBackMode="goToProject"
               />
             </UserIdeas>
           )}

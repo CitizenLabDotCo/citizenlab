@@ -9,7 +9,6 @@ import clHistory from 'utils/cl-router/history';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import { FocusOn } from 'react-focus-on';
-import eventEmitter from 'utils/eventEmitter';
 
 // resource
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -198,8 +197,6 @@ class FullscreenModal extends PureComponent<Props, State> {
       this.unlisten();
       this.unlisten = null;
     }
-
-    eventEmitter.emit('fullscreenModalClosed');
   };
 
   render() {

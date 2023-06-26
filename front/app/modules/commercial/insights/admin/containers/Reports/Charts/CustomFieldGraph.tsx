@@ -28,7 +28,7 @@ import BarChart from 'components/admin/Graphs/BarChart';
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
 // typings
-import { IUserCustomFieldData } from 'services/userCustomFields';
+import { IUserCustomFieldData } from 'api/user_custom_fields/types';
 import { IStream } from 'utils/streams';
 
 // services

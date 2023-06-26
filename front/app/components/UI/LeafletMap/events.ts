@@ -16,6 +16,7 @@ enum events {
   leafletMapHoveredMarkerChange = 'leafletMapHoveredMarkerChange',
   leafletMapSelectedMarkerChange = 'leafletMapSelectedMarkerChange',
   leafletMapClicked = 'leafletMapClicked',
+  leafletMarkersLoaded = 'leafletMarkersLoaded',
 }
 
 // ----------------------------------------------------------------------------------------------
@@ -93,5 +94,3 @@ export const leafletMapClicked$ = eventEmitter
     distinctUntilChanged((x, y) => isEqual(x, y)),
     debounceTime(50)
   );
-
-// ----------------------------------------------------------------------------------------------

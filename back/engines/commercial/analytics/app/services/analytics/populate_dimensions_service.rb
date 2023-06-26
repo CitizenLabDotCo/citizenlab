@@ -10,6 +10,19 @@ module Analytics
         populate_referrer_types
       end
 
+      def create_dates(from, to)
+        (from..to).each do |date|
+          Analytics::DimensionDate.create!(
+            date: date,
+            week: date.beginning_of_week.to_date,
+            month: "#{date.year}-#{date.strftime('%m')}",
+            year: date.year
+          )
+        rescue ActiveRecord::RecordNotUnique
+          # Ignore any that already exist
+        end
+      end
+
       private
 
       def populate_dates
@@ -35,26 +48,15 @@ module Analytics
         create_dates(from, to)
       end
 
-      def create_dates(from, to)
-        (from..to).each do |date|
-          Analytics::DimensionDate.create!(
-            date: date,
-            week: date.beginning_of_week.to_date,
-            month: "#{date.year}-#{date.strftime('%m')}",
-            year: date.year
-          )
-        end
-      end
-
       def populate_types
         types = [
           { name: 'idea', parent: 'post' },
           { name: 'initiative', parent: 'post' },
           { name: 'comment', parent: 'initiative' },
           { name: 'comment', parent: 'idea' },
-          { name: 'vote', parent: 'initiative' },
-          { name: 'vote', parent: 'idea' },
-          { name: 'vote', parent: 'comment' },
+          { name: 'reaction', parent: 'initiative' },
+          { name: 'reaction', parent: 'idea' },
+          { name: 'reaction', parent: 'comment' },
           { name: 'poll', parent: nil },
           { name: 'volunteer', parent: nil },
           { name: 'survey', parent: nil }

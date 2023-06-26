@@ -23,8 +23,8 @@ const selectUserCustomFieldOptions = [
 const birthyearUserCustomFieldOptions = [];
 
 jest.mock(
-  'hooks/useUserCustomFieldOptions',
-  () => () => mockUserCustomFieldOptions
+  'api/user_custom_fields_options/useUserCustomFieldsOptions',
+  () => () => ({ data: { data: mockUserCustomFieldOptions } })
 );
 
 let mockReferenceDistribution: any = {
@@ -57,7 +57,9 @@ const birthyearField = {
   },
 };
 
-jest.mock('hooks/useUserCustomField', () => () => mockUserCustomField);
+jest.mock('api/user_custom_fields/useUserCustomField', () => () => ({
+  data: { data: mockUserCustomField },
+}));
 
 describe('<Field />', () => {
   describe('select field', () => {

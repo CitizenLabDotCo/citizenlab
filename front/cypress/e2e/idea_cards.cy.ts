@@ -45,7 +45,7 @@ describe('Idea cards without filter sidebar sorting and filtering', () => {
       expect(cards.first()).to.contain(ideaTitle);
     });
 
-    // sort by most voted
+    // sort by most reacted
     cy.get('#e2e-ideas-sort-dropdown').click();
     cy.get('.e2e-sort-items').find('.e2e-sort-item-popular').click();
 

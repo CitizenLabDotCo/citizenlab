@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
@@ -8,13 +8,16 @@ import useProjectById from 'api/projects/useProjectById';
 import useIdeaCustomFieldsSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
 import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
 
+// router
+import { useSearchParams } from 'react-router-dom';
+
 // tracks
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../tracks';
 
 // components
 import TopicFilterDropdown from '../shared/Filters/TopicFilterDropdown';
-import SelectSort from '../shared/Filters/SortFilterDropdown';
+import SelectSort, { Sort } from '../shared/Filters/SortFilterDropdown';
 import ProjectFilterDropdown from 'components/ProjectFilterDropdown';
 import SearchInput from 'components/UI/SearchInput';
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
@@ -28,14 +31,17 @@ import { FormattedMessage } from 'utils/cl-intl';
 import styled from 'styled-components';
 import { media, viewportWidths, isRtl } from 'utils/styleUtils';
 
-// typings
+// constants
 import {
+  ideaDefaultSortMethodFallback,
   IdeaDefaultSortMethod,
   ParticipationMethod,
 } from 'services/participationContexts';
+
+// typings
 import { IParticipationContextType } from 'typings';
 import { isFieldEnabled } from 'utils/projectUtils';
-import { IQueryParameters, Sort } from 'api/ideas/types';
+import { IQueryParameters } from 'api/ideas/types';
 import usePhase from 'api/phases/usePhase';
 
 const Container = styled.div`
@@ -125,16 +131,23 @@ const StyledSearchInput = styled(SearchInput)`
   `}
 `;
 
+export interface QueryParametersUpdate {
+  search?: string;
+  sort?: Sort;
+  projects?: string[];
+  topics?: string[];
+}
+
 export interface Props {
   ideaQueryParameters: IQueryParameters;
-  onUpdateQuery: (newParams: Partial<IQueryParameters>) => void;
+  onUpdateQuery: (newParams: QueryParametersUpdate) => void;
 
   // other
   projectId?: string;
   phaseId?: string;
   showViewToggle?: boolean | undefined;
   defaultSortingMethod?: IdeaDefaultSortMethod;
-  defaultView?: 'card' | 'map' | null | undefined;
+  defaultView?: 'card' | 'map';
   participationMethod?: ParticipationMethod | null;
   participationContextId?: string | null;
   participationContextType?: IParticipationContextType | null;
@@ -142,6 +155,7 @@ export interface Props {
   allowProjectsFilter?: boolean;
   showSearchbar: boolean;
   showDropdownFilters: boolean;
+  goBackMode?: 'browserGoBackButton' | 'goToProject';
 }
 
 const IdeasWithoutFiltersSidebar = ({
@@ -159,12 +173,19 @@ const IdeasWithoutFiltersSidebar = ({
   participationContextType,
   showDropdownFilters,
   showSearchbar,
+  goBackMode,
 }: Props) => {
   const locale = useLocale();
   const { windowWidth } = useWindowSize();
+  const [searchParams] = useSearchParams();
+  const selectedIdeaMarkerId = searchParams.get('idea_map_id');
+
   const { data: project } = useProjectById(projectId);
 
-  const [selectedView, setSelectedView] = useState<'card' | 'map'>('card');
+  const [selectedView, setSelectedView] = useState<'card' | 'map'>(
+    selectedIdeaMarkerId ? 'map' : defaultView ?? 'card'
+  );
+
   const { data: ideaCustomFieldsSchemas } = useIdeaCustomFieldsSchema({
     phaseId: ideaQueryParameters.phase,
     projectId,
@@ -174,10 +195,6 @@ const IdeasWithoutFiltersSidebar = ({
     useInfiniteIdeas(ideaQueryParameters);
   const list = data?.pages.map((page) => page.data).flat();
   const { data: phase } = usePhase(phaseId);
-
-  useEffect(() => {
-    setSelectedView(defaultView || 'card');
-  }, [defaultView]);
 
   const handleSearchOnChange = useCallback(
     (search: string) => {
@@ -203,7 +220,9 @@ const IdeasWithoutFiltersSidebar = ({
       topics,
     });
 
-    onUpdateQuery({ topics });
+    topics.length === 0
+      ? onUpdateQuery({ topics: undefined })
+      : onUpdateQuery({ topics });
   };
 
   const selectView = (selectedView: 'card' | 'map') => {
@@ -226,9 +245,7 @@ const IdeasWithoutFiltersSidebar = ({
       )
     : false;
   const showViewButtons = !!(locationEnabled && showViewToggle);
-  const showListView =
-    !locationEnabled || (locationEnabled && selectedView === 'card');
-  const showMapView = locationEnabled && selectedView === 'map';
+
   const smallerThanBigTablet = !!(
     windowWidth && windowWidth <= viewportWidths.tablet
   );
@@ -250,11 +267,15 @@ const IdeasWithoutFiltersSidebar = ({
     return (
       <Container
         id="e2e-ideas-container"
-        className={`${className || ''} ${showMapView ? 'mapView' : 'listView'}`}
+        className={`${className || ''} ${
+          selectedView === 'map' ? 'mapView' : 'listView'
+        }`}
       >
         <FiltersArea
           id="e2e-ideas-filters"
-          className={`ideasContainer ${showMapView ? 'mapView' : 'listView'}`}
+          className={`ideasContainer ${
+            selectedView === 'map' ? 'mapView' : 'listView'
+          }`}
         >
           <LeftFilterArea>
             {showViewButtons && smallerThanSmallTablet && (
@@ -263,8 +284,9 @@ const IdeasWithoutFiltersSidebar = ({
                 onClick={selectView}
               />
             )}
-            {!showMapView && showSearchbar && (
+            {!(selectedView === 'map') && showSearchbar && (
               <StyledSearchInput
+                defaultValue={ideaQueryParameters.search}
                 className="e2e-search-ideas-input"
                 onChange={handleSearchOnChange}
                 a11y_numberOfSearchResults={list.length}
@@ -275,16 +297,16 @@ const IdeasWithoutFiltersSidebar = ({
           <RightFilterArea>
             {showDropdownFilters && (
               <DropdownFilters
-                className={`${showMapView ? 'hidden' : 'visible'} ${
+                className={`${selectedView === 'map' ? 'hidden' : 'visible'} ${
                   showViewButtons ? 'hasViewButtons' : ''
                 }`}
               >
                 <SelectSort
+                  value={defaultSortingMethod ?? ideaDefaultSortMethodFallback}
                   phase={phase?.data}
                   project={project?.data}
                   onChange={handleSortOnChange}
                   alignment={biggerThanLargeTablet ? 'right' : 'left'}
-                  defaultSortingMethod={defaultSortingMethod || null}
                 />
                 {allowProjectsFilter && (
                   <ProjectFilterDropdown
@@ -294,11 +316,12 @@ const IdeasWithoutFiltersSidebar = ({
                     onChange={handleProjectsOnChange}
                   />
                 )}
-                {topicsEnabled && !isNilOrError(project) && (
+                {topicsEnabled && !isNilOrError(project) && projectId && (
                   <TopicFilterDropdown
+                    projectId={projectId}
+                    selectedTopicIds={ideaQueryParameters.topics ?? []}
                     onChange={handleTopicsOnChange}
                     alignment={biggerThanLargeTablet ? 'right' : 'left'}
-                    projectId={project.data.id}
                   />
                 )}
               </DropdownFilters>
@@ -323,13 +346,13 @@ const IdeasWithoutFiltersSidebar = ({
           hideIdeaStatus={
             (biggerThanLargeTablet && smallerThan1100px) || smallerThanPhone
           }
-          showListView={showListView}
-          showMapView={showMapView}
+          view={selectedView}
           projectId={projectId}
           phaseId={phaseId || undefined}
           participationMethod={participationMethod}
           participationContextId={participationContextId}
           participationContextType={participationContextType}
+          goBackMode={goBackMode}
         />
       </Container>
     );

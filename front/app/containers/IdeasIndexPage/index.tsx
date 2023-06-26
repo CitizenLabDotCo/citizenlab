@@ -1,7 +1,8 @@
-import React, { memo, useState, useCallback } from 'react';
+import React, { memo, useMemo } from 'react';
 
-// services
-import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
+// router
+import { useSearchParams } from 'react-router-dom';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 // components
 import ContentContainer from 'components/ContentContainer';
@@ -18,7 +19,7 @@ import styled from 'styled-components';
 import { media, fontSizes, colors, isRtl } from 'utils/styleUtils';
 
 // typings
-import { IQueryParameters } from 'api/ideas/types';
+import { Sort } from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
 
 const Container = styled.main`
   min-height: calc(
@@ -73,19 +74,40 @@ const PageTitle = styled.h1`
  `}
 `;
 
+export interface QueryParameters {
+  // constants
+  'page[number]': number;
+  'page[size]': number;
+  project_publication_status: 'published';
+  publication_status: 'published';
+
+  // filters
+  sort: Sort;
+  search?: string;
+  idea_status?: string;
+  topics?: string[];
+}
+
 export default memo(() => {
-  const [ideasQueryParameters, setIdeasQueryParameters] =
-    useState<IQueryParameters>({
+  const [searchParams] = useSearchParams();
+  const sortParam = searchParams.get('sort') as Sort | null;
+  const searchParam = searchParams.get('search');
+  const ideaStatusParam = searchParams.get('idea_status');
+  const topicsParam = searchParams.get('topics');
+
+  const ideasQueryParameters = useMemo<QueryParameters>(
+    () => ({
       'page[number]': 1,
       'page[size]': 12,
-      sort: ideaDefaultSortMethodFallback,
       project_publication_status: 'published',
       publication_status: 'published',
-    });
-
-  const updateQuery = useCallback((newParams: Partial<IQueryParameters>) => {
-    setIdeasQueryParameters((current) => ({ ...current, ...newParams }));
-  }, []);
+      sort: sortParam ?? 'trending',
+      search: searchParam ?? undefined,
+      idea_status: ideaStatusParam ?? undefined,
+      topics: topicsParam ? JSON.parse(topicsParam) : undefined,
+    }),
+    [sortParam, searchParam, ideaStatusParam, topicsParam]
+  );
 
   return (
     <>
@@ -98,7 +120,7 @@ export default memo(() => {
           <IdeaCardsWithFiltersSidebar
             invisibleTitleMessage={messages.a11y_IdeasListTitle}
             ideaQueryParameters={ideasQueryParameters}
-            onUpdateQuery={updateQuery}
+            onUpdateQuery={updateSearchParams}
           />
         </StyledContentContainer>
         <CityLogoSection />
