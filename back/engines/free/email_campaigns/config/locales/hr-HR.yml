@@ -20,14 +20,14 @@ hr:
       "new_comment_for_admin": Novi komentar u projektu kojim upravljam
       "new_comment_on_commented_idea": Novi komentar na ideju koju sam komentirao/la
       "new_comment_on_commented_initiative": Novi komentar na prijedlog koji sam komentirao/la
-      "new_comment_on_voted_idea": Novi komentar na ideju za koju glasujem
-      "new_comment_on_voted_initiative": Novi komentar na prijedlog za koji glasujem
+      "new_comment_on_reacted_idea": Novi komentar na ideju na koju sam reagirao
+      "new_comment_on_reacted_initiative": Novi komentar na prijedlog za koji sam glasao
       "new_idea_for_admin": Nova ideja u projektu kojim upravljam
       "new_initiative_for_admin": Novi prijedlog
       "official_feedback_on_commented_idea": Nove informacije o ideji koju sam komentirao/la
       "official_feedback_on_commented_initiative": Nove informacije o prijedlogu koji sam komentirao/la
-      "official_feedback_on_voted_idea": Nove informacije o ideji za koju glasujem
-      "official_feedback_on_voted_initiative": Nove informacije o prijedlogu za koji glasujem
+      "official_feedback_on_reacted_idea": Ažuriranje ideje na koju sam reagirao
+      "official_feedback_on_reacted_initiative": Ažuriranje prijedloga za koji sam glasao
       "official_feedback_on_your_idea": Nove informacije o mojoj ideji
       "official_feedback_on_your_initiative": Nove informacije o mom prijedlogu
       "password_reset": Ponovno postavljanje lozinke
@@ -37,8 +37,8 @@ hr:
       "project_phase_upcoming": Nadolazeća nova faza projekta
       "status_change_of_commented_idea": Promjena statusa ideje koju sam komentirao/la
       "status_change_of_commented_initiative": Promjena statusa prijedloga koji sam komentirao/la
-      "status_change_of_voted_idea": Promjena statusa ideje za koju glasujem
-      "status_change_of_voted_initiative": Promjena statusa prijedloga za koji glasujem
+      "status_change_of_reacted_idea": Promjena statusa ideje na koju sam reagirao
+      "status_change_of_reacted_initiative": Promjena statusa prijedloga na koji sam reagirao
       "status_change_of_your_idea": Promjena statusa moje ideje
       "status_change_of_your_initiative": Promjena statusa mog prijedloga
       "threshold_reached_for_admin": Prijedlog je dosegao prag glasovanja
@@ -255,21 +255,21 @@ hr:
       main_header: '%{authorName} je komentirao/la vašu ideju'
       subject: 'Dobili ste komentar na platformi %{organizationName}'
       preheader: '%{authorName} je ostavio komentar na vašu ideju za %{organizationName}'
-    new_comment_on_voted_initiative:
-      commented: '%{commentAuthor} je napisao/la:'
+    new_comment_on_reacted_initiative:
+      commented: '%{commentAuthor} je napisao:'
       cta_reply_to: 'Pogledajte ovaj prijedlog'
-      event_description: '%{commentAuthor} je komentirao/la prijedlog ''%{initiativeTitle}'' za koji ste glasovali. Pridružite se raspravi na %{organizationName} platformi!'
-      main_header: '%{firstName}, evo novog komentara na prijedlog za koji ste glasovali'
-      subject: 'Novi komentar na prijedlog za koji ste glasovali'
-      preheader: '%{commentAuthor} je ostavio/la komentar na prijedlog za koji ste glasovali na %{organizationName} platformi'
-    new_comment_on_voted_idea:
-      commented: '%{commentAuthor} je komentirao/la:'
-      cta_reply_to: 'Odgovorite %{commentAuthor}'
-      days_ago: 'Prije %{numberOfDays} dana'
-      event_description: '%{commentAuthor} je komentirao/la ideju ''%{ideaTitle}'' za koju ste glasovali. Pridružite se raspravi na %{organizationName} platformi!'
-      main_header: '%{firstName}, objavljen je novi komentar na ideju za koju ste glasovali'
-      subject: 'Objavljen je novi komentar na ideju za koju ste glasovali'
-      preheader: '%{commentAuthor} je ostavio/la komentar na ideju za koju ste glasovali na %{organizationName} platformi'
+      event_description: '%{commentAuthor} je komentirao prijedlog ''%{initiativeTitle}'' o kojem ste glasovali. Pridružite se raspravi na platformi %{organizationName}!'
+      main_header: '%{firstName}, postoji novi komentar na prijedlog za koji ste glasovali'
+      subject: 'Postoji novi komentar na prijedlog za koji ste glasovali'
+      preheader: '%{commentAuthor} je ostavio komentar na prijedlog za koji ste glasovali na platformi %{organizationName}'
+    new_comment_on_reacted_idea:
+      commented: '%{commentAuthor} komentirao:'
+      cta_reply_to: 'Odgovori na %{commentAuthor}'
+      days_ago: 'prije %{numberOfDays} dana'
+      event_description: '%{commentAuthor} je komentirao ideju ''%{ideaTitle}'' na koju ste vi reagirali. Pridružite se raspravi na platformi %{organizationName}!'
+      main_header: '%{firstName}, postoji novi komentar na ideju na koju ste reagirali'
+      subject: 'Postoji novi komentar na ideju na koju ste reagirali'
+      preheader: '%{commentAuthor} je ostavio komentar na ideju na koju ste reagirali na platformi %{organizationName}'
       today: Danas
       yesterday: Jučer
     new_initiative_for_admin:
@@ -306,13 +306,13 @@ hr:
       main_header: 'Postoji novost o prijedlogu koji ste komentirali'
       subject: 'Prijedlog koji ste komentirali službeno je ažuriran na %{organizationName} platformi'
       preheader: '%{officialName} je službeno ažurirao prijedlog koji ste komentirali'
-    official_feedback_on_voted_idea:
+    official_feedback_on_reacted_idea:
       by_author: 'od %{authorName}'
-      updated: '%{officialName} je napisao/la:'
-      cta_view: 'Idite na ovu ideju'
-      event_description: '%{officialName} je objavio novost o ideji ''%{ideaTitle}''. Kliknite na gumb u nastavku kako biste započeli razgovor s %{officialName}.'
-      subject: 'Ideja za koju ste glasovali službeno je ažurirana na platformi %{organizationName}'
-      preheader: '%{officialName} je objavio službeno ažuriranje o ideji za koju ste glasovali'
+      updated: '%{officialName} je napisao:'
+      cta_view: 'Idi na ovu ideju'
+      event_description: '%{officialName} je dao ažuriranje ideje ''%{ideaTitle}''. Pritisnite donji gumb za ulazak u razgovor s %{officialName}.'
+      subject: 'Ideja na koju ste reagirali je ažurirana na platformi od %{organizationName}'
+      preheader: '%{officialName} je ostavio ažuriranje ideje na koju ste reagirali'
       main_header: ""
     official_feedback_on_commented_idea:
       by_author: 'od %{authorName}'
@@ -330,14 +330,14 @@ hr:
       main_header: 'Imate ažuriranje od %{organizationName}'
       subject: 'Imate ažuriranje od %{organizationName}'
       preheader: '%{officialName} je objavio službeno ažuriranje o vašoj ideji'
-    official_feedback_on_voted_initiative:
+    official_feedback_on_reacted_initiative:
       by_author: 'od %{authorName}'
-      updated: '%{officialName} je napisao/la:'
+      updated: '%{officialName} je napisao:'
       cta_view: 'Idi na ovaj prijedlog'
-      event_description: '%{officialName} je objavio novost o prijedlogu ''%{initiativeTitle}''. Kliknite na gumb u nastavku kako biste započeli razgovor s %{organizationName}.'
-      main_header: 'Postoji ažuriranje o prijedlogu za koji ste glasovali'
-      subject: 'Prijedlog za koji ste glasovali službeno je ažuriran na platformi %{organizationName}'
-      preheader: '%{officialName} je ažurirao prijedlog za koji ste glasovali'
+      event_description: '%{officialName} je izvijestio o prijedlogu ''%{initiativeTitle}''. Pritisnite donji gumb za ulazak u razgovor s %{organizationName}.'
+      main_header: 'Postoji ažuriranje prijedloga za koji ste glasovali'
+      subject: 'Prijedlog za koji ste glasovali dobio je službeno ažuriranje na platformi %{organizationName}'
+      preheader: '%{officialName} je ostavio službeno ažuriranje prijedloga za koji ste glasali'
     official_feedback_on_your_initiative:
       updated: '%{officialName} je napisao/la:'
       cta_view: 'Idite na svoj prijedlog'
@@ -352,7 +352,7 @@ hr:
       preheader: 'Administrator %{organizationName} platforme za sudjelovanje vas je postavio za voditelja sljedećeg projekta'
       subject: 'Postali ste voditelj projekta na %{organizationName} platformi'
       text_design_participatory_process: 'Kao voditelj projekta, možete konfigurirati način interakcije korisnika unutar vašeg projekta. Možete dodati nove faze pomoću vremenske trake. Svaka od ovih faza može imati vlastita pravila u vezi s objavljivanjem ideja, komentiranjem i glasovanjem.'
-      text_moderate_analyse_input: 'Nakon pokretanja projekta, stići će prve ideje. Primat ćete tjedna izvješća sa svim ključnim aktivnostima kako biste bili u tijeku. Pregled ideja u prikazu vašeg voditelja projekta pomoći će vam da shvatite koje su ideje dobile najviše pozitivnih i negativnih glasova.'
+      text_moderate_analyse_input: 'Nakon što se projekt pokrene, prve ideje će se javiti. Primat ćete tjedna izvješća sa svim ključnim aktivnostima kako biste bili u tijeku. Pregled ideja u prikazu vašeg voditelja projekta pomoći će vam da shvatite koje su ideje dobile najviše sviđanja i nesviđanja.'
       text_share_project_information: 'Kako biste povećali kvalitetu ideja koje dobivate, ključno je podijeliti dovoljno informacija: dodajte opis projekta, priložite slike (uključujući skice i planove) i komunicirajte o svim povezanim događajima koji se odvijaju. Zapamtite: dobra informiranost prethodi dobrom sudjelovanju!'
       title_design_participatory_process: 'Oblikujte postupak sudjelovanja'
       title_moderate_analyse_input: 'Moderirajte i analizirajte unos'
@@ -405,20 +405,20 @@ hr:
       main_header: 'Vaša ideja ima novi status'
       subject: 'Status vaše ideje je promijenjen'
       preheader: 'Status vaše ideje je promijenjen od strane %{organizationName}'
-    status_change_of_voted_idea:
+    status_change_of_reacted_idea:
       status_change: 'Novi status ove ideje je ''%{ideaStatus}'''
-      cta_view_idea: 'Idite na ovu ideju'
-      event_description: 'Status ideje „%{ideaTitle}“ je ažuriran je od strane administracije %{organizationName} platforme za sudjelovanje.'
-      main_header: 'Ideja za koju ste glasovali ima novi status'
-      subject: 'Status ideje za koju ste glasovali je promijenjen'
-      preheader: '%{organizationName} je promijenio status ideje za koju ste glasovali'
-    status_change_of_voted_initiative:
+      cta_view_idea: 'Idi na ovu ideju'
+      event_description: '%{organizationName} je ažurirao status ideje ''%{ideaTitle}'' na svojoj platformi za digitalno sudjelovanje.'
+      main_header: 'Ideja na koju ste reagirali ima novi status'
+      subject: 'Status ideje na koju ste reagirali je promijenjen'
+      preheader: '%{organizationName} je promijenio status ideje na koju ste reagirali'
+    status_change_of_reacted_initiative:
       status_change: 'Novi status ovog prijedloga je ''%{initiativeStatus}'''
       cta_view_initiative: 'Idi na ovaj prijedlog'
-      event_description: 'Status prijedloga ''%{initiativeTitle}'' na %{organizationName} platformi za sudjelovanje je ažuriran.'
-      main_header: 'Prijedlog za koji ste glasovali ima novi status'
-      subject: 'Status prijedloga za koji ste glasovali se promijenio'
-      preheader: 'Status prijedloga za koji ste glasovali se promijenio'
+      event_description: 'Status prijedloga ''%{initiativeTitle}'' ažuriran je na platformi za digitalno sudjelovanje od %{organizationName}.'
+      main_header: 'Prijedlog za koji ste glasali ima novi status'
+      subject: 'Status prijedloga za koji ste glasali je promijenjen'
+      preheader: 'Status prijedloga za koji ste glasovali promijenjen je'
     status_change_of_commented_initiative:
       status_change: 'Novi status ovog prijedloga je ''%{initiativeStatus}'''
       cta_view_initiative: 'Idi na ovaj prijedlog'
@@ -547,7 +547,7 @@ hr:
         permissions: 'Dozvole'
         projects: 'Projekti'
         proposals: 'Prijedlozi'
-        votes: 'Glasovi'
+        reactions: 'Reakcije'
       trigger:
         comment_is_deleted: 'Komentar je izbrisan'
         comment_is_flagged_as_spam: 'Komentar je označen kao neželjena pošta'
