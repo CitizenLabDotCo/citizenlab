@@ -1,15 +1,11 @@
-import React, { FormEvent } from 'react';
+import React from 'react';
 import { get, isString } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Card from 'components/UI/Card';
 import { Icon } from '@citizenlab/cl2-component-library';
 import Author from 'components/Author';
 import ReactionIndicator from './ReactionIndicator';
-
-// utils
-import eventEmitter from 'utils/eventEmitter';
 
 // i18n
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
@@ -20,9 +16,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
-
-// typings
-import { IOpenPostPageModalEvent } from 'containers/App';
 
 // hooks
 import useInitiativeById from 'api/initiatives/useInitiativeById';
@@ -90,18 +83,6 @@ const InitiativeCard = ({
 
   if (!initiative) return null;
 
-  const onCardClick = (event: FormEvent) => {
-    event.preventDefault();
-
-    if (!isNilOrError(initiative)) {
-      eventEmitter.emit<IOpenPostPageModalEvent>('cardClick', {
-        id: initiativeId,
-        slug: initiative.data.attributes.slug,
-        type: 'initiative',
-      });
-    }
-  };
-
   const initiativeTitle = localize(initiative.data.attributes.title_multiloc);
   const initiativeAuthorId = initiativeAuthor ? initiativeAuthor.data.id : null;
   const initiativeImageUrl: string | null = get(
@@ -123,8 +104,7 @@ const InitiativeCard = ({
   return (
     <Card
       className={cardClassNames}
-      onClick={onCardClick}
-      to={`/initiatives/${initiative.data.attributes.slug}`}
+      to={`/initiatives/${initiative.data.attributes.slug}?go_back=true`}
       imageUrl={initiativeImageUrl}
       title={initiativeTitle}
       body={

@@ -1,12 +1,8 @@
-import React, { FormEvent } from 'react';
+import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // typings
 import { ICommentData } from 'api/comments/types';
-import { IOpenPostPageModalEvent } from 'containers/App';
-
-// utils
-import eventEmitter from 'utils/eventEmitter';
 
 // style
 import styled from 'styled-components';
@@ -135,18 +131,6 @@ const PostCommentGroup = ({ postType, comments, userId, postId }: Props) => {
   const { data: user } = useUserById(userId);
   const post = initiative || idea;
 
-  const onIdeaLinkClick = (event: FormEvent<any>) => {
-    event.preventDefault();
-
-    if (!isNilOrError(post)) {
-      eventEmitter.emit<IOpenPostPageModalEvent>('cardClick', {
-        id: post.data.id,
-        slug: post.data.attributes.slug,
-        type: postType,
-      });
-    }
-  };
-
   if (isNilOrError(post) || isNilOrError(user)) {
     return null;
   }
@@ -166,7 +150,7 @@ const PostCommentGroup = ({ postType, comments, userId, postId }: Props) => {
           <FormattedMessage {...messages.a11y_initiativePostedIn} />
         )}
       </ScreenReaderOnly>
-      <PostLink to={`/${postType}s/${slug}`} onClick={onIdeaLinkClick}>
+      <PostLink to={`/${postType}s/${slug}?go_back=true`}>
         <PostLinkLeft>
           <StyledIcon
             ariaHidden
