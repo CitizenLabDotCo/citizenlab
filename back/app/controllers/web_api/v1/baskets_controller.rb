@@ -8,7 +8,7 @@ class WebApi::V1::BasketsController < ApplicationController
     render json: WebApi::V1::BasketSerializer.new(
       @basket,
       params: jsonapi_serializer_params,
-      include: [:ideas]
+      include: %i[baskets_ideas ideas]
     ).serializable_hash
   end
 

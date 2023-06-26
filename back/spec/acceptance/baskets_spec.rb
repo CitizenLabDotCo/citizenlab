@@ -11,7 +11,12 @@ resource 'Baskets' do
     @user = create(:user)
     @ideas = create_list(:idea, 3, project: create(:project), idea_status: create(:idea_status), author: @user)
     create_list(:basket, 2, participation_context: create(:continuous_budgeting_project))
-    @basket = create(:basket, ideas: @ideas, user: @user, participation_context: create(:continuous_budgeting_project))
+    @basket = create(
+      :basket,
+      user: @user,
+      participation_context: create(:continuous_budgeting_project),
+      baskets_ideas_attributes: [{ idea_id: @ideas[0].id, votes: 1 }, { idea_id: @ideas[1].id, votes: 2 }, { idea_id: @ideas[2].id, votes: 2 }]
+    )
   end
 
   get 'web_api/v1/baskets/:basket_id' do
@@ -21,7 +26,7 @@ resource 'Baskets' do
       before { header_token_for @user }
 
       example_request 'Get one basket by id' do
-        expect(status).to eq 200
+        assert_status 200
         json_response = json_parse(response_body)
 
         expect(json_response.dig(:data, :id)).to eq @basket.id
@@ -38,8 +43,11 @@ resource 'Baskets' do
             data: { id: @basket.user_id, type: 'user' }
           }
         )
+        expect(
+          json_response[:included].select { |included| included[:type] == 'baskets_idea' }.map { |baskets_idea| baskets_idea.dig(:attributes, :votes) }
+        ).to contain_exactly 1, 2, 2
         expect(json_response.dig(:data, :relationships, :ideas, :data).pluck(:id)).to match_array @ideas.map(&:id)
-        expect(json_response[:included].map { |h| h.dig(:attributes, :slug) }).to match_array @ideas.map(&:slug)
+        expect(json_response[:included].select { |included| included[:type] == 'idea' }.map { |h| h.dig(:attributes, :slug) }).to match_array @ideas.map(&:slug)
       end
     end
   end
