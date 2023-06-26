@@ -1702,7 +1702,7 @@
   "app.utils.votingMethodUtils.budgetParticipationEnded": "<b>El envío de presupuestos cerró en {endDate}.</b> Los participantes disponían de un total de <b>{maxBudget} {currency} cada uno para distribuir entre {optionCount} opcion(es).</b>",
   "app.utils.votingMethodUtils.budgetSubmitted": "Presupuesto enviado",
   "app.utils.votingMethodUtils.budgetSubmittedWithIcon": "Presupuesto enviado 🎉",
-  "app.utils.votingMethodUtils.budgetingSubmissionInstructions2": "Tienes un total de <b>{maxBudget} USD para distribuir entre {optionCount} opciones</b>. Selecciona las opciones que prefieras pulsando \"Añadir\". Cuando hayas terminado, pulsa \"Enviar\" para enviar tu presupuesto.",
+  "app.utils.votingMethodUtils.budgetingSubmissionInstructions2": "Tienes un total de <b>{maxBudget} {currency} para distribuir entre {optionCount} opciones</b>. Selecciona las opciones que prefieras pulsando \"Añadir\". Cuando hayas terminado, pulsa \"Enviar\" para enviar tu presupuesto.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>Enhorabuena, ¡tu presupuesto ha sido enviado!</b> Puedes revisar tu selección a continuación en cualquier momento o modificarla antes de <b>{endDate}</b>.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous": "<b>Enhorabuena, ¡tu presupuesto ha sido enviado!</b> Puedes revisar tu selección a continuación en cualquier momento o modificarla.",
   "app.utils.votingMethodUtils.budgets": "Presupuestos",
