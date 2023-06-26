@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 
 // components
 import UserName from 'components/UI/UserName';
@@ -7,6 +7,11 @@ import { Icon } from '@citizenlab/cl2-component-library';
 import Avatar from 'components/Avatar';
 import FooterWithReactionControl from './FooterWithReactionControl';
 import FooterWithBudgetControl from './FooterWithBudgetControl';
+
+// router
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import clHistory from 'utils/cl-router/history';
+import { useSearchParams } from 'react-router-dom';
 
 // types
 import { ParticipationMethod } from 'services/participationContexts';
@@ -28,6 +33,7 @@ import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 import { timeAgo } from 'utils/dateUtils';
 import useLocale from 'hooks/useLocale';
 import { IIdea } from 'api/ideas/types';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 const BodyWrapper = styled.div`
   display: flex;
@@ -150,6 +156,8 @@ const CompactIdeaCard = memo<IdeaCardProps>(
       .replace(/<[^>]*>?/gm, '')
       .replaceAll('&amp;', '&')
       .trim();
+    const [searchParams] = useSearchParams();
+    const scrollToCardParam = searchParams.get('scroll_to_card');
 
     const getFooter = () => {
       if (project) {
@@ -187,17 +195,44 @@ const CompactIdeaCard = memo<IdeaCardProps>(
       return null;
     };
 
+    useEffect(() => {
+      if (scrollToCardParam && idea.data.id === scrollToCardParam) {
+        setTimeout(() => {
+          const element = document.getElementById(scrollToCardParam);
+
+          const top =
+            (element?.getBoundingClientRect().top ?? 0) + window.scrollY + 80; // navbar
+
+          // TODO this doesnt work for shit
+
+          window.scroll({
+            top,
+          });
+        }, 1500);
+      }
+
+      removeSearchParams(['scroll_to_card']);
+    }, [scrollToCardParam, idea]);
+
     const { slug } = idea.data.attributes;
-    const searchParams =
-      goBackMode === 'browserGoBackButton' ? '?go_back=true' : '';
+    const params = goBackMode === 'browserGoBackButton' ? '?go_back=true' : '';
+
+    const handleClick = (e: React.MouseEvent) => {
+      e.preventDefault();
+      updateSearchParams({ scroll_to_card: idea.data.id });
+
+      clHistory.push(`/ideas/${slug}${params}`);
+    };
 
     return (
       <Card
+        id={idea.data.id}
         className={[className, 'e2e-idea-card']
           .filter((item) => typeof item === 'string' && item !== '')
           .join(' ')}
         title={ideaTitle}
-        to={`/ideas/${slug}${searchParams}`}
+        to={`/ideas/${slug}${params}`}
+        onClick={handleClick}
         image={
           !isNilOrError(ideaImage)
             ? ideaImage.data.attributes.versions.medium
