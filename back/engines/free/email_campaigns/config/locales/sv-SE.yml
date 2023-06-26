@@ -20,14 +20,14 @@ sv:
       "new_comment_for_admin": Ny kommentar i ett projekt jag modererar
       "new_comment_on_commented_idea": Ny kommentar för en idé jag kommenterat
       "new_comment_on_commented_initiative": Ny kommentar för ett förslag jag kommenterat
-      "new_comment_on_voted_idea": Ny kommentar för en idé jag röstat på
-      "new_comment_on_voted_initiative": Ny kommentar för ett förslag jag röstat för
+      "new_comment_on_reacted_idea": Ny kommentar till en idé som jag reagerade på
+      "new_comment_on_reacted_initiative": Ny kommentar till ett förslag som jag röstade för
       "new_idea_for_admin": Ny idé i ett projekt jag modererar
       "new_initiative_for_admin": Nytt förslag
       "official_feedback_on_commented_idea": Uppdatering för en idé jag kommenterat
       "official_feedback_on_commented_initiative": Uppdatering för ett förslag jag kommenterat
-      "official_feedback_on_voted_idea": Uppdatering för en idé jag röstat på
-      "official_feedback_on_voted_initiative": Uppdatering för ett förslag jag röstat på
+      "official_feedback_on_reacted_idea": Uppdatering av en idé som jag reagerade på
+      "official_feedback_on_reacted_initiative": Uppdatering av ett förslag som jag röstade om
       "official_feedback_on_your_idea": Uppdatering för min idé
       "official_feedback_on_your_initiative": Uppdatering för mitt förslag
       "password_reset": Återställning av lösenord
@@ -37,8 +37,8 @@ sv:
       "project_phase_upcoming": Kommande ny projektfas
       "status_change_of_commented_idea": Statusändring för en idé jag kommenterat
       "status_change_of_commented_initiative": Statusändring för ett förslag jag kommenterat
-      "status_change_of_voted_idea": Statusändring för en idé jag röstat på
-      "status_change_of_voted_initiative": Statusändring för ett förslag jag röstat på
+      "status_change_of_reacted_idea": Statusförändring av en idé som jag reagerade på
+      "status_change_of_reacted_initiative": Statusförändring av ett förslag som jag reagerade för
       "status_change_of_your_idea": Statusändring av min idé
       "status_change_of_your_initiative": Statusändring av mitt förslag
       "threshold_reached_for_admin": Förslaget nådde rösttröskeln
@@ -255,23 +255,23 @@ sv:
       main_header: '%{authorName} kommenterade din idé'
       subject: 'Du har fått en kommentar på %{organizationName}s plattform'
       preheader: '%{authorName} lämnade en kommentar för din idé för %{organizationName}'
-    new_comment_on_voted_initiative:
+    new_comment_on_reacted_initiative:
       commented: '%{commentAuthor} skrev:'
-      cta_reply_to: 'Se det här förslaget'
-      event_description: '%{commentAuthor} har kommenterat förslaget %{initiativeTitle} som du har röstat på. Gå med i diskussionen på plattformen för %{organizationName}!'
-      main_header: '%{firstName}, det finns en ny kommentar för förslaget du har röstat på'
-      subject: 'Det finns en ny kommentar för förslaget du har röstat på'
-      preheader: '%{commentAuthor} lämnade en kommentar för förslaget du har röstat på på plattformen för %{organizationName}'
-    new_comment_on_voted_idea:
+      cta_reply_to: 'Se detta förslag'
+      event_description: '%{commentAuthor} har kommenterat förslaget ''%{initiativeTitle}'' som du har röstat på. Delta i diskussionen om plattformen för %{organizationName}!'
+      main_header: '%{firstName}, det finns en ny kommentar till det förslag du har röstat på'
+      subject: 'Det finns en ny kommentar till det förslag du har röstat på'
+      preheader: '%{commentAuthor} lämnat en kommentar till det förslag som du har röstat om på plattformen %{organizationName}'
+    new_comment_on_reacted_idea:
       commented: '%{commentAuthor} kommenterade:'
-      cta_reply_to: 'Svar till %{commentAuthor}'
+      cta_reply_to: 'Svara på %{commentAuthor}'
       days_ago: '%{numberOfDays} dagar sedan'
-      event_description: '%{commentAuthor} har kommenterat idén %{ideaTitle} som du har röstat på. Gå med i diskussionen på plattformen för %{organizationName}!'
-      main_header: '%{firstName}, det finns en ny kommentar för idén du har röstat på'
-      subject: 'Det finns en ny kommentar för idén du har röstat på'
-      preheader: '%{commentAuthor} lämnade en kommentar för idén du har röstat på på plattformen för %{organizationName}'
-      today: I dag
-      yesterday: I går
+      event_description: '%{commentAuthor} har kommenterat idén ''%{ideaTitle}'' som du har reagerat på. Delta i diskussionen på plattformen %{organizationName}!'
+      main_header: '%{firstName}, det finns en ny kommentar till den idé du har reagerat på'
+      subject: 'Det finns en ny kommentar till den idé du har reagerat på'
+      preheader: '%{commentAuthor} lämnat en kommentar om den idé du har reagerat på på plattformen för %{organizationName}'
+      today: Idag
+      yesterday: Igår
     new_initiative_for_admin:
       by_author: 'av %{authorName}'
       commented: '%{authorFirstName} skrev:'
@@ -306,13 +306,13 @@ sv:
       main_header: 'Det finns en uppdatering för ett förslag som du kommenterat'
       subject: 'Ett förslag som du kommenterat har fått en officiell uppdatering på plattformen för %{organizationName}'
       preheader: '%{officialName} lämnade en officiell uppdatering för ett förslag som du kommenterat'
-    official_feedback_on_voted_idea:
+    official_feedback_on_reacted_idea:
       by_author: 'av %{authorName}'
       updated: '%{officialName} skrev:'
-      cta_view: 'Gå till den här idén'
-      event_description: '%{officialName} gav en uppdatering för idén %{ideaTitle}. Klicka på knappen nedan för att gå in i konversationen med %{officialName}.'
-      subject: 'En idé du röstat på har fått en uppdatering på plattformen för %{organizationName}'
-      preheader: '%{officialName} lämnade en uppdatering för en idé du röstat på'
+      cta_view: 'Gå till denna idé'
+      event_description: '%{officialName} gav en uppdatering om idén ''%{ideaTitle}''. Klicka på knappen nedan för att delta i samtalet med %{officialName}.'
+      subject: 'En idé som du reagerade på har fått en uppdatering på plattformen %{organizationName}'
+      preheader: '%{officialName} lämnade en uppdatering om en idé som du reagerade på'
       main_header: ""
     official_feedback_on_commented_idea:
       by_author: 'av %{authorName}'
@@ -330,14 +330,14 @@ sv:
       main_header: 'Du har fått en uppdatering från %{organizationName}'
       subject: 'Du har fått en uppdatering från %{organizationName}'
       preheader: '%{officialName} lämnade en officiell uppdatering för din idé'
-    official_feedback_on_voted_initiative:
+    official_feedback_on_reacted_initiative:
       by_author: 'av %{authorName}'
       updated: '%{officialName} skrev:'
-      cta_view: 'Gå till det här förslaget'
-      event_description: '%{officialName} gav en uppdatering för förslaget %{initiativeTitle}. Klicka på knappen nedan för att gå in i konversationen med %{organizationName}.'
-      main_header: 'Det finns en uppdatering för ett förslag du röstat på'
-      subject: 'Ett förslag du röstat på har fått en officiell uppdatering på plattformen för %{organizationName}'
-      preheader: '%{officialName} lämnade en officiell uppdatering för ett förslag du röstat på'
+      cta_view: 'Gå till detta förslag'
+      event_description: '%{officialName} gav en uppdatering om förslaget ''%{initiativeTitle}''. Klicka på knappen nedan för att fortsätta samtalet med %{organizationName}.'
+      main_header: 'Det finns en uppdatering om ett förslag som du röstade om'
+      subject: 'Ett förslag som du röstade på har fått en officiell uppdatering på plattformen %{organizationName}'
+      preheader: '%{officialName} lämnat en officiell uppdatering om ett förslag som du röstade om'
     official_feedback_on_your_initiative:
       updated: '%{officialName} skrev:'
       cta_view: 'Gå till ditt förslag'
@@ -352,7 +352,7 @@ sv:
       preheader: 'En administratör för plattformen för deltagande för %{organizationName} har precis gjort dig till projektledare för följande projekt'
       subject: 'Du blev projektledare på plattformen för %{organizationName}'
       text_design_participatory_process: 'Som projektledare kan du konfigurera hur användare interagerar inom ditt projekt. Du kan lägga till nya faser med tidslinjen. Var och en av de här faserna kan ha sitt eget beteende när det gäller att publicera idéer, kommentera och rösta.'
-      text_moderate_analyse_input: 'När projektet har lanserats kommer de första idéerna in. Du kommer att få veckorapporter med alla nyckelaktiviteter så att du håller koll på saker. Idéöversikten i projektledarvyn hjälper dig förstå vilka idéer som har fått flest upp- och nerröster.'
+      text_moderate_analyse_input: 'När projektet har lanserats kommer de första idéerna att komma in. Du kommer att få veckorapporter med alla viktiga aktiviteter så att du kan hålla koll på läget. Idéöversikten i projektledarvyn hjälper dig att förstå vilka idéer som har fått flest gillanden och ogillanden.'
       text_share_project_information: 'För att höja kvaliteten på de idéer du får är det viktigt att dela tillräcklig information: lägg till en projektbeskrivning, bifoga bilder (inkl. skisser och planer) och kommunicera alla relaterade evenemang som pågår. Kom ihåg: bra information är viktigt för bra deltagande!'
       title_design_participatory_process: 'Designa deltagandeprocessen'
       title_moderate_analyse_input: 'Moderera och analysera indata'
@@ -405,20 +405,20 @@ sv:
       main_header: 'Din idé har fått en ny status'
       subject: 'Statusen för din idé har ändrats'
       preheader: '%{organizationName} ändrade statusen för din idé'
-    status_change_of_voted_idea:
-      status_change: 'Den nya statusen för den här idén är %{ideaStatus}'
-      cta_view_idea: 'Gå till den här idén'
-      event_description: '%{organizationName} uppdaterade statusen för idén %{ideaTitle} på sin digitala plattform för deltagande.'
-      main_header: 'En idé du röstat på har en ny status'
-      subject: 'Statusen för en idé du röstat på har ändrats'
-      preheader: '%{organizationName} ändrade statusen för en idé du röstat på'
-    status_change_of_voted_initiative:
-      status_change: 'Den nya statusen för det här förslaget är %{initiativeStatus}'
-      cta_view_initiative: 'Gå till det här förslaget'
-      event_description: 'Statusen för förslaget %{initiativeTitle} har uppdaterats på %{organizationName}s digitala plattform för deltagande.'
-      main_header: 'Ett förslag du röstat på har en ny status'
-      subject: 'Statusen för ett förslag du röstat på har ändrats'
-      preheader: 'Statusen för ett förslag du röstat på ändrades'
+    status_change_of_reacted_idea:
+      status_change: 'Den nya statusen för denna idé är ''%{ideaStatus}'''
+      cta_view_idea: 'Gå till denna idé'
+      event_description: '%{organizationName} uppdaterade statusen för idén ''%{ideaTitle}'' på sin digitala deltagarplattform.'
+      main_header: 'En idé som du reagerade på har fått en ny status'
+      subject: 'Statusen för en idé som du reagerade på har ändrats'
+      preheader: '%{organizationName} ändrat status för en idé som du reagerade på'
+    status_change_of_reacted_initiative:
+      status_change: 'Den nya statusen för detta förslag är ''%{initiativeStatus}'''
+      cta_view_initiative: 'Gå till detta förslag'
+      event_description: 'Status för förslaget ''%{initiativeTitle}'' har uppdaterats på den digitala deltagandeplattformen för %{organizationName}.'
+      main_header: 'Ett förslag som du röstade om har fått en ny status'
+      subject: 'Statusen för ett förslag som du röstade om har ändrats'
+      preheader: 'Status för ett förslag som du röstade om ändrades'
     status_change_of_commented_initiative:
       status_change: 'Den nya statusen för det här förslaget är %{initiativeStatus}'
       cta_view_initiative: 'Gå till det här förslaget'
@@ -547,7 +547,7 @@ sv:
         permissions: 'Behörigheter'
         projects: 'Projekt'
         proposals: 'Förslag'
-        votes: 'Röster'
+        reactions: 'Reaktioner'
       trigger:
         comment_is_deleted: 'Kommentaren tas bort.'
         comment_is_flagged_as_spam: 'Kommentaren flaggas som skräppost'
