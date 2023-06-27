@@ -19,7 +19,7 @@ en:
       "internal_comment_on_idea_you_moderate": Internal comment on input in project or folder I manage
       "internal_comment_on_initiative_assigned_to_you": Internal comment on proposal assigned to me
       "internal_comment_on_initiative_you_commented_internally_on": Internal comment on proposal I commented internally on
-      "internal_comment_on_unassigned_initative": Internal comment on unassigned proposal
+      "internal_comment_on_unassigned_initiative": Internal comment on unassigned proposal
       "internal_comment_on_unassigned_unmoderated_idea": Internal comment on unassigned input in unmanaged project
       "internal_comment_on_your_internal_comment": Internal comment on my internal comment
       "invite_received": Invitation
@@ -76,7 +76,7 @@ en:
       "internal_comment_on_idea_you_moderate": Internal comment on input in project or folder you manage - project and folder managers
       "internal_comment_on_initiative_assigned_to_you": Internal comment on proposal assigned to you - admins
       "internal_comment_on_initiative_you_commented_internally_on": Internal comment on input you commented internally on - admins
-      "internal_comment_on_unassigned_initative": Internal comment on unassigned proposal - admins
+      "internal_comment_on_unassigned_initiative": Internal comment on unassigned proposal - admins
       "internal_comment_on_unassigned_unmoderated_idea": Internal comment on unassigned input in unmanaged project - admins
       "internal_comment_on_your_internal_comment": Internal comment on your internal comment - admins and project managers
       "invite_received": Invitation - all users
