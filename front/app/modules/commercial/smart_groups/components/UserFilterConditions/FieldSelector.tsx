@@ -1,7 +1,6 @@
 import React, { memo } from 'react';
 import { keys } from 'lodash-es';
 import { Select } from '@citizenlab/cl2-component-library';
-import { isNilOrError } from 'utils/helperUtils';
 
 import { IOption } from 'typings';
 
@@ -15,7 +14,7 @@ import {
 import {
   IUserCustomFieldData,
   IUserCustomFieldInputType,
-} from 'services/userCustomFields';
+} from 'api/user_custom_fields/types';
 
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
@@ -23,7 +22,7 @@ import { MessageDescriptor, WrappedComponentProps } from 'react-intl';
 
 // hooks
 import useLocalize from 'hooks/useLocalize';
-import useUserCustomFields from 'hooks/useUserCustomFields';
+import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
 export interface FieldDescriptor {
   ruleType?: TRule['ruleType'];
@@ -44,7 +43,7 @@ const FieldSelector = memo(
     fieldName,
   }: Props & WrappedComponentProps) => {
     const localize = useLocalize();
-    const userCustomFields = useUserCustomFields({});
+    const { data: userCustomFields } = useUserCustomFields({});
 
     const generateOptions = (
       userCustomFields: IUserCustomFieldData[]
@@ -119,10 +118,10 @@ const FieldSelector = memo(
       return JSON.parse(value);
     };
 
-    if (!isNilOrError(userCustomFields)) {
+    if (userCustomFields) {
       return (
         <Select
-          options={generateOptions(userCustomFields)}
+          options={generateOptions(userCustomFields.data)}
           onChange={handleOnChange}
           value={descriptorToOptionValue(field)}
           id={`${fieldName}-e2e`}

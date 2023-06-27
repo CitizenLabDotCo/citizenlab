@@ -1,5 +1,5 @@
 // libraries
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import { includes } from 'lodash-es';
 import { locales } from 'containers/App/constants';
 import bowser from 'bowser';
@@ -27,7 +27,6 @@ import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 // utils
 import { isNilOrError, isPage, isDesktop } from 'utils/helperUtils';
-import eventEmitter from 'utils/eventEmitter';
 import clHistory from 'utils/cl-router/history';
 
 // i18n
@@ -245,43 +244,13 @@ const SignUpMenuItem = styled.button`
   `}
 `;
 
-interface Props {
-  setRef?: (arg: HTMLElement) => void | undefined;
-}
-
-const MainHeader = ({
-  setRef,
-  intl: { formatMessage },
-}: Props & WrappedComponentProps) => {
+const MainHeader = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser } = useAuthUser();
   const locale = useLocale();
   const theme = useTheme();
   const windowSize = useWindowSize();
-
-  const [fullscreenModalOpened, setFullscreenModalOpened] = useState(false);
-
-  useEffect(() => {
-    if (setRef && containerRef.current) {
-      setRef(containerRef.current);
-    }
-  }, [setRef]);
-
-  useEffect(() => {
-    const subscriptions = [
-      eventEmitter.observeEvent('cardClick').subscribe(() => {
-        setFullscreenModalOpened(true);
-      }),
-      eventEmitter.observeEvent('fullscreenModalClosed').subscribe(() => {
-        setFullscreenModalOpened(false);
-      }),
-    ];
-
-    return () => {
-      subscriptions.forEach((subscription) => subscription.unsubscribe());
-    };
-  }, []);
 
   const tenantLocales = !isNilOrError(appConfiguration)
     ? appConfiguration.data.attributes.settings.core.locales
@@ -303,7 +272,6 @@ const MainHeader = ({
   const isAdminPage = isPage('admin', location.pathname);
   const isEmailSettingsPage = isPage('email-settings', location.pathname);
   const isProjectPage = !!(
-    !fullscreenModalOpened &&
     urlSegments.length === 3 &&
     urlSegments[0] === locale &&
     urlSegments[1] === 'projects'

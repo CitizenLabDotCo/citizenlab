@@ -69,7 +69,7 @@ export function addMarkerToMap(
 
 export function addMarkersToMap(
   map: L.Map | null | undefined,
-  points: Point[] = [],
+  points: Point[],
   noMarkerClustering?: boolean
 ) {
   const bounds: [number, number][] = [];

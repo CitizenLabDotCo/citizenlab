@@ -10,6 +10,8 @@ import {
   MultiSelectCheckboxControl,
   singleSelectRadioControlTester,
   SingleSelectRadioControl,
+  singleSelectRadioEnumControlTester,
+  SingleSelectRadioEnumControl,
   WYSIWYGControlTester,
   WYSIWYGControl,
   descriptionControlTester,
@@ -38,6 +40,8 @@ import {
   OrderedLayout,
   checkboxControlTester,
   singleSelectControlTester,
+  SingleSelectEnumControlTester,
+  SingleSelectEnumControl,
   CheckboxControl,
   MultiSelectControl,
   multiSelectControlTester,
@@ -52,6 +56,7 @@ const commonRenderers = [
   { tester: textAreaControlTester, renderer: TextAreaControl },
   { tester: checkboxControlTester, renderer: CheckboxControl },
   { tester: singleSelectControlTester, renderer: SingleSelectControl },
+  { tester: SingleSelectEnumControlTester, renderer: SingleSelectEnumControl },
   { tester: multiSelectControlTester, renderer: MultiSelectControl },
   { tester: WYSIWYGControlTester, renderer: WYSIWYGControl },
   { tester: descriptionControlTester, renderer: DescriptionControl },
@@ -84,6 +89,10 @@ export const selectRenderers = (formType: 'default' | 'input' | 'survey') => {
         {
           tester: singleSelectRadioControlTester,
           renderer: SingleSelectRadioControl,
+        },
+        {
+          tester: singleSelectRadioEnumControlTester,
+          renderer: SingleSelectRadioEnumControl,
         },
         {
           tester: singleAttachmentControlTester,

@@ -65,6 +65,7 @@ const StyledIdeasTopicsFilter = styled(TopicFilterBox)`
 `;
 
 export interface Props {
+  defaultValue?: string;
   className?: string;
   filtersActive: boolean;
   ideasFilterCounts: IIdeasFilterCounts | NilOrError;
@@ -77,6 +78,7 @@ export interface Props {
 }
 
 const FiltersSideBar = ({
+  defaultValue,
   className,
   filtersActive,
   ideasFilterCounts,
@@ -107,6 +109,7 @@ const FiltersSideBar = ({
       </ScreenReaderOnly>
 
       <DesktopSearchInput
+        defaultValue={defaultValue}
         onChange={onSearch}
         debounce={1500}
         a11y_numberOfSearchResults={numberOfSearchResults}

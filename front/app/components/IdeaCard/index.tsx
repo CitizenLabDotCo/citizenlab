@@ -1,12 +1,17 @@
-import React, { FormEvent, memo } from 'react';
+import React, { memo, useEffect } from 'react';
 
 // components
 import UserName from 'components/UI/UserName';
 import Card from 'components/UI/Card/Compact';
 import { Box, Icon } from '@citizenlab/cl2-component-library';
 import Avatar from 'components/Avatar';
-import FooterWithVoteControl from './FooterWithVoteControl';
 import IdeaCardFooter from './IdeaCardFooter';
+import FooterWithReactionControl from './FooterWithReactionControl';
+
+// router
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import clHistory from 'utils/cl-router/history';
+import { useSearchParams } from 'react-router-dom';
 
 // types
 import { ParticipationMethod } from 'services/participationContexts';
@@ -20,8 +25,6 @@ import useLocalize from 'hooks/useLocalize';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import eventEmitter from 'utils/eventEmitter';
-import { IOpenPostPageModalEvent } from 'containers/App';
 
 // styles
 import styled from 'styled-components';
@@ -30,6 +33,7 @@ import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 import { timeAgo } from 'utils/dateUtils';
 import useLocale from 'hooks/useLocale';
 import { IIdea } from 'api/ideas/types';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 // components
 import AssignBudgetControl from 'components/AssignBudgetControl';
@@ -113,6 +117,7 @@ interface Props {
   hideImagePlaceholder?: boolean;
   hideIdeaStatus?: boolean;
   hideBody?: boolean;
+  goBackMode?: 'browserGoBackButton' | 'goToProject';
 }
 
 const IdeaLoading = (props: Props) => {
@@ -138,6 +143,7 @@ const CompactIdeaCard = memo<IdeaCardProps>(
     hideImagePlaceholder = false,
     hideIdeaStatus = false,
     hideBody = false,
+    goBackMode = 'browserGoBackButton',
   }) => {
     const locale = useLocale();
     const localize = useLocalize();
@@ -158,6 +164,8 @@ const CompactIdeaCard = memo<IdeaCardProps>(
       .replace(/<[^>]*>?/gm, '')
       .replaceAll('&amp;', '&')
       .trim();
+    const [searchParams] = useSearchParams();
+    const scrollToCardParam = searchParams.get('scroll_to_card');
 
     const getInteractions = () => {
       if (project) {
@@ -217,7 +225,7 @@ const CompactIdeaCard = memo<IdeaCardProps>(
 
         if (participationMethod === 'ideation') {
           return (
-            <FooterWithVoteControl
+            <FooterWithReactionControl
               idea={idea}
               hideIdeaStatus={hideIdeaStatus}
               showCommentCount={showCommentCount}
@@ -229,20 +237,40 @@ const CompactIdeaCard = memo<IdeaCardProps>(
       return null;
     };
 
-    const onCardClick = (event: FormEvent) => {
-      event.preventDefault();
+    useEffect(() => {
+      if (scrollToCardParam && idea.data.id === scrollToCardParam) {
+        setTimeout(() => {
+          const element = document.getElementById(scrollToCardParam);
 
-      eventEmitter.emit<IOpenPostPageModalEvent>('cardClick', {
-        id: idea.data.id,
-        slug: idea.data.attributes.slug,
-        type: 'idea',
-      });
+          const top =
+            (element?.getBoundingClientRect().top ?? 0) + window.scrollY + 80; // navbar
+
+          // TODO this doesnt work for shit
+
+          window.scroll({
+            top,
+          });
+        }, 1500);
+      }
+
+      removeSearchParams(['scroll_to_card']);
+    }, [scrollToCardParam, idea]);
+
+    const { slug } = idea.data.attributes;
+    const params = goBackMode === 'browserGoBackButton' ? '?go_back=true' : '';
+
+    const handleClick = (e: React.MouseEvent) => {
+      e.preventDefault();
+      updateSearchParams({ scroll_to_card: idea.data.id });
+
+      clHistory.push(`/ideas/${slug}${params}`);
     };
 
     return (
       <Card
-        onClick={onCardClick}
+        onClick={handleClick}
         to={`/ideas/${idea.data.attributes.slug}`}
+        id={idea.data.id}
         className={[className, 'e2e-idea-card']
           .filter((item) => typeof item === 'string' && item !== '')
           .join(' ')}

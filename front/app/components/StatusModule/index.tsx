@@ -17,9 +17,8 @@ import { useTheme } from 'styled-components';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
-import useBasket from 'hooks/useBasket';
-import { updateBasket } from 'services/baskets';
-import streams from 'utils/streams';
+import useBasket from 'api/baskets/useBasket';
+import useUpdateBasket from 'api/baskets/useUpdateBasket';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // utils
@@ -36,17 +35,14 @@ type StatusModuleProps = {
   project: IProjectData;
 };
 
-const unsubmitBasket = async (basketId?: string) => {
-  if (basketId) {
-    try {
-      await updateBasket(basketId, {
-        submitted_at: null,
-      });
-      streams.fetchAllWith({ dataId: [basketId] });
-    } catch (error) {
-      streams.fetchAllWith({ dataId: [basketId] });
-    }
-  }
+const unsubmitBasket = async (
+  basketId: string,
+  updateBasket: ReturnType<typeof useUpdateBasket>['mutate']
+) => {
+  updateBasket({
+    id: basketId,
+    submitted_at: null,
+  });
 };
 
 const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
@@ -55,17 +51,18 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
   const isSmallerThanPhone = useBreakpoint('phone');
   const { formatMessage } = useIntl();
   const config = getVotingMethodConfig(votingMethod);
-  const basket = useBasket(
+  const { data: basket } = useBasket(
     phase
       ? phase?.relationships?.user_basket?.data?.id
       : project.relationships?.user_basket?.data?.id
   );
+  const { mutate: updateBasket } = useUpdateBasket();
   const phaseHasEnded = phase?.attributes
     ? pastPresentOrFuture(phase?.attributes.end_at) === 'past'
     : false;
   const basketStatus = phaseHasEnded
     ? 'submissionEnded'
-    : basket?.attributes?.submitted_at
+    : basket?.data.attributes?.submitted_at
     ? 'hasSubmitted'
     : 'hasNotSubmitted';
   const showDate = !phaseHasEnded && basketStatus === 'hasNotSubmitted';
@@ -118,7 +115,7 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
           {config?.getStatusSubmissionCountCopy &&
             formatMessage(config?.getStatusSubmissionCountCopy())}
         </Text>
-        {basketStatus === 'hasSubmitted' && (
+        {basket && basketStatus === 'hasSubmitted' && (
           <Box display={isSmallerThanPhone ? 'block' : 'flex'}>
             <Button
               buttonStyle="secondary"
@@ -128,7 +125,7 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
               icon="edit"
               mt="16px"
               onClick={() => {
-                unsubmitBasket(basket?.id);
+                unsubmitBasket(basket?.data.id, updateBasket);
               }}
             >
               {formatMessage(messages.modifyYour)}{' '}

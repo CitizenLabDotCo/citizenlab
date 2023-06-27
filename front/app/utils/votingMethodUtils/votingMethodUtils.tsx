@@ -87,6 +87,7 @@ const budgetingConfig: VotingMethodConfig = {
             b: (chunks) => (
               <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
             ),
+            currency: appConfig?.data.attributes.settings.core.currency,
             optionCount: phase
               ? phase.attributes.ideas_count
               : project.attributes.ideas_count,

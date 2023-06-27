@@ -45,12 +45,12 @@ import { randomString, randomEmail } from '../support/commands';
 //     cy.get('#e2e-item-popular').should('exist');
 //   });
 
-//   it('asks unauthorised users to log in or sign up before they vote', () => {
+//   it('asks unauthorised users to log in or sign up before they reaction', () => {
 //     cy.clearCookies();
 //     cy.get('#e2e-ideas-container')
 //       .find('.e2e-idea-card')
 //       .first()
-//       .find('.e2e-ideacard-upvote-button')
+//       .find('.e2e-ideacard-like-button')
 //       .click();
 //     cy.get('#e2e-authentication-modal').should('exist');
 //     cy.get('.e2e-modal-close-button').click();

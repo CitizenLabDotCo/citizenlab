@@ -23,8 +23,8 @@ import {
 } from 'components/admin/Section';
 import Warning from 'components/UI/Warning';
 import ProposalsFeatureToggle from './ProposalsFeatureToggle';
-import VotingThreshold from './VotingThreshold';
-import VotingLimit from './VotingLimit';
+import ReactingThreshold from './ReactingThreshold';
+import ReactingLimit from './ReactingLimit';
 import ThresholdReachedMessage from './ThresholdReachedMessage';
 import EligibilityCriteria from './EligibilityCriteria';
 import PageBody from './PageBody';
@@ -135,8 +135,8 @@ const InitiativesSettingsPage = () => {
       validated = true;
 
       if (
-        isNaN(localProposalsSettings.voting_threshold) ||
-        localProposalsSettings.voting_threshold < 2 ||
+        isNaN(localProposalsSettings.reacting_threshold) ||
+        localProposalsSettings.reacting_threshold < 2 ||
         isNaN(localProposalsSettings.days_limit) ||
         localProposalsSettings.days_limit < 1
       ) {
@@ -251,12 +251,12 @@ const InitiativesSettingsPage = () => {
               }
             />
           )}
-          <VotingThreshold
-            value={localProposalsSettings.voting_threshold}
-            onChange={updateProposalsSetting('voting_threshold')}
+          <ReactingThreshold
+            value={localProposalsSettings.reacting_threshold}
+            onChange={updateProposalsSetting('reacting_threshold')}
           />
 
-          <VotingLimit
+          <ReactingLimit
             value={localProposalsSettings.days_limit}
             onChange={updateProposalsSetting('days_limit')}
           />

@@ -269,6 +269,10 @@ module ParticipationMethod
       true
     end
 
+    def posting_allowed?
+      true
+    end
+
     def supports_publication?
       true
     end
@@ -277,7 +281,7 @@ module ParticipationMethod
       true
     end
 
-    def supports_voting?
+    def supports_reacting?
       true
     end
 

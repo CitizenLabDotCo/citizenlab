@@ -7,9 +7,9 @@ import ErrorToast from 'components/ErrorToast';
 
 // hooks
 import { useTheme } from 'styled-components';
-import useBasket from 'hooks/useBasket';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { updateBasket } from 'services/baskets';
+import useBasket from 'api/baskets/useBasket';
+import useUpdateBasket from 'api/baskets/useUpdateBasket';
 
 // services
 import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
@@ -37,13 +37,15 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
   const { data: appConfig } = useAppConfiguration();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
   const [showBudgetExceededError, setShowBudgetExceededError] = useState(false);
-  let basketId: string | null = null;
+  let basketId: string | undefined;
+
   if (currentPhase) {
-    basketId = currentPhase.relationships.user_basket?.data?.id || null;
+    basketId = currentPhase.relationships.user_basket?.data?.id;
   } else {
-    basketId = project.relationships.user_basket?.data?.id || null;
+    basketId = project.relationships.user_basket?.data?.id;
   }
-  const basket = useBasket(basketId);
+  const { data: basket } = useBasket(basketId);
+  const { mutate: updateBasket } = useUpdateBasket();
 
   // Listen for budgeting exceeded error
   useEffect(() => {
@@ -64,12 +66,12 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
     return null;
   }
 
-  const submittedAt = basket?.attributes.submitted_at || null;
-  const spentBudget = basket?.attributes.total_budget || 0;
+  const submittedAt = basket?.data.attributes.submitted_at || null;
+  const spentBudget = basket?.data.attributes.total_budget || 0;
   const hasUserParticipated = !!submittedAt && spentBudget > 0;
 
   const budgetExceedsLimit =
-    basket?.attributes['budget_exceeds_limit?'] || false;
+    basket?.data.attributes['budget_exceeds_limit?'] || false;
 
   const maxBudget =
     currentPhase?.attributes.voting_max_total ||
@@ -87,11 +89,7 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
   const handleSubmitExpensesOnClick = async () => {
     if (!isNilOrError(basket)) {
       const now = moment().format();
-      try {
-        await updateBasket(basket.id, { submitted_at: now });
-      } catch {
-        // Do nothing
-      }
+      updateBasket({ id: basket.data.id, submitted_at: now });
     }
   };
 
@@ -128,13 +126,14 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
   return (
     <>
       <ParticipationCTAContent
+        project={project}
         currentPhase={currentPhase}
         CTAButton={CTAButton}
         hasUserParticipated={hasUserParticipated}
         participationState={
           <Text color="white" m="0px" fontSize="s" my="0px" textAlign="left">
             {(
-              maxBudget - (basket?.attributes.total_budget || 0)
+              maxBudget - (basket?.data.attributes.total_budget || 0)
             ).toLocaleString()}{' '}
             / {maxBudget.toLocaleString()}{' '}
             {voteTerm || appConfig?.data.attributes.settings.core.currency}{' '}

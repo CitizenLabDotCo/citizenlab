@@ -78,6 +78,10 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.up',
     defaultMessage: 'Up',
   },
+  reactions: {
+    id: 'app.components.admin.PostManager.reactions',
+    defaultMessage: 'Reactions',
+  },
   votes: {
     id: 'app.components.admin.PostManager.votes',
     defaultMessage: 'Votes',

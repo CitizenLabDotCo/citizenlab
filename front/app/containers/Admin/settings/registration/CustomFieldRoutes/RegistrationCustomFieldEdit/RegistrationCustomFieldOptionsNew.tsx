@@ -6,24 +6,31 @@ import clHistory from 'utils/cl-router/history';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
-// services
-import { addUserCustomFieldOption } from 'services/userCustomFieldOptions';
-
 // components
 import { Section, SectionTitle } from 'components/admin/Section';
 import RegistrationCustomFieldOptionsForm, {
   FormValues,
 } from './RegistrationCustomFieldOptionsForm';
 
-const RegistrationCustomFieldOptionsNew = () => {
-  const { userCustomFieldId } = useParams() as { userCustomFieldId: string };
-  const handleSubmit = async (values: FormValues) => {
-    await addUserCustomFieldOption(userCustomFieldId, {
-      title_multiloc: values.title_multiloc,
-    });
+import useAddUserCustomFieldOption from 'api/user_custom_fields_options/useAddUserCustomFieldOption';
 
-    clHistory.push(
-      `/admin/settings/registration/custom-fields/${userCustomFieldId}/options/`
+const RegistrationCustomFieldOptionsNew = () => {
+  const { mutate: addUserCustomFieldOption } = useAddUserCustomFieldOption();
+  const { userCustomFieldId } = useParams() as { userCustomFieldId: string };
+
+  const handleSubmit = (values: FormValues) => {
+    addUserCustomFieldOption(
+      {
+        customFieldId: userCustomFieldId,
+        title_multiloc: values.title_multiloc,
+      },
+      {
+        onSuccess: () => {
+          clHistory.push(
+            `/admin/settings/registration/custom-fields/${userCustomFieldId}/options/`
+          );
+        },
+      }
     );
   };
 

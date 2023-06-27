@@ -2,7 +2,7 @@
 import React from 'react';
 
 // Services
-import { DeleteReasonCode } from 'api/comments/types';
+import { DeleteReason, DeleteReasonCode } from 'api/comments/types';
 
 // Components
 import Button from 'components/UI/Button';
@@ -19,8 +19,8 @@ import Feedback from 'components/HookForm/Feedback';
 import RadioGroup, { Radio } from 'components/HookForm/RadioGroup';
 
 // i18n
-import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { MessageDescriptor } from 'react-intl';
+import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // animation
@@ -47,7 +47,7 @@ const ButtonsWrapper = styled.div`
 
 const timeout = 300;
 
-const DeleteReason = styled.div`
+const DeleteReasonContainer = styled.div`
   transition: all ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);
   overflow: hidden;
 
@@ -80,9 +80,9 @@ type FormValues = {
 };
 
 type Props = {
-  onDeleteComment: (values: FormValues) => Promise<void>;
+  onDeleteComment: (reason: DeleteReason) => Promise<void>;
   onCloseDeleteModal: () => void;
-} & WrappedComponentProps;
+};
 
 const deleteReasonCodes = keys(DeleteReasonCode);
 
@@ -95,8 +95,8 @@ const DELETE_REASON_MESSAGES: Record<ReasonCode, MessageDescriptor> = {
 const CommentsAdminDeletionForm = ({
   onDeleteComment,
   onCloseDeleteModal,
-  intl: { formatMessage },
 }: Props) => {
+  const { formatMessage } = useIntl();
   const schema = object({
     reason_code: string().required(formatMessage(messages.deleteReasonError)),
     other_reason: string().when('reason_code', {
@@ -148,11 +148,11 @@ const CommentsAdminDeletionForm = ({
                 enter={true}
                 exit={true}
               >
-                <DeleteReason>
+                <DeleteReasonContainer>
                   <SectionField>
                     <TextArea name="other_reason" />
                   </SectionField>
-                </DeleteReason>
+                </DeleteReasonContainer>
               </CSSTransition>
             ) : null}
           </TransitionGroup>
@@ -175,4 +175,4 @@ const CommentsAdminDeletionForm = ({
   );
 };
 
-export default injectIntl(CommentsAdminDeletionForm);
+export default CommentsAdminDeletionForm;

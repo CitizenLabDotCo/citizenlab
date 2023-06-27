@@ -10,7 +10,7 @@ const phasesKeys = {
   ],
   items: () => [{ ...baseKey, operation: 'item' }],
   item: ({ phaseId }: { phaseId: string | undefined | null }) => [
-    { ...baseKey, operation: 'item', parameters: { phaseId } },
+    { ...baseKey, operation: 'item', parameters: { id: phaseId } },
   ],
 } satisfies QueryKeys;
 

@@ -23,7 +23,7 @@ import {
 import useAuthUser from 'api/me/useAuthUser';
 
 // services
-import { verifyIDLookup } from '../services/verify';
+import { verifyIDLookup } from '../api/verification_methods/verify';
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';
@@ -32,7 +32,7 @@ import messages from '../messages';
 import T from 'components/T';
 
 // typings
-import { IDLookupMethod } from 'services/verificationMethods';
+import { IDLookupMethod } from 'api/verification_methods/types';
 import meKeys from 'api/me/keys';
 import usersKeys from 'api/users/keys';
 import { useQueryClient } from '@tanstack/react-query';
@@ -88,13 +88,11 @@ const VerificationFormLookup = memo<Props & WrappedComponentProps>(
 
             onVerified();
           } catch (error) {
-            if (get(error, 'json.errors.base[0].error') === 'taken') {
+            if (get(error, 'errors.base[0].error') === 'taken') {
               setFormError(formatMessage(messages.takenFormError));
-            } else if (get(error, 'json.errors.base[0].error') === 'no_match') {
+            } else if (get(error, 'errors.base[0].error') === 'no_match') {
               setFormError(formatMessage(messages.noMatchFormError));
-            } else if (
-              get(error, 'json.errors.cardId[0].error') === 'invalid'
-            ) {
+            } else if (get(error, 'errors.cardId[0].error') === 'invalid') {
               setCardIdError(formatMessage(messages.invalidCardIdError));
             } else {
               reportError(error);

@@ -53,12 +53,12 @@ export interface IUpdatedPhaseProperties {
   participation_method?: ParticipationMethod;
   posting_enabled?: boolean | null;
   commenting_enabled?: boolean | null;
-  voting_enabled?: boolean | null;
-  upvoting_method?: 'limited' | 'unlimited' | null;
-  downvoting_method?: 'limited' | 'unlimited' | null;
-  upvoting_limited_max?: number | null;
-  downvoting_enabled?: boolean | null;
-  downvoting_limited_max?: number | null;
+  reacting_enabled?: boolean | null;
+  reacting_like_method?: 'limited' | 'unlimited' | null;
+  reacting_dislike_method?: 'limited' | 'unlimited' | null;
+  reacting_like_limited_max?: number | null;
+  reacting_dislike_enabled?: boolean | null;
+  reacting_dislike_limited_max?: number | null;
   presentation_mode?: 'card' | 'map' | null;
   voting_min_total?: number | null;
   voting_max_total?: number | null;

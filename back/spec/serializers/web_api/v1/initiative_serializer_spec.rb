@@ -35,4 +35,38 @@ describe WebApi::V1::InitiativeSerializer do
       expect(last_name).to eq 'Thomas Anderson'
     end
   end
+
+  context 'when serializing internal comments count of initiative' do
+    let(:initiative) { create(:initiative) }
+
+    before do
+      create_list(:internal_comment, 2, post: initiative)
+      initiative.reload
+    end
+
+    context 'when current user is nil (visitor)' do
+      it 'should not include internal comments count' do
+        expect(internal_comments_count_for_current_user(initiative, nil)).to be_nil
+      end
+    end
+
+    context 'when current user is regular user' do
+      it 'should not include internal comments count' do
+        expect(internal_comments_count_for_current_user(initiative, create(:user))).to be_nil
+      end
+    end
+
+    context 'when current user is admin' do
+      it 'should include internal comments count' do
+        expect(internal_comments_count_for_current_user(initiative, create(:admin))).to eq 2
+      end
+    end
+  end
+
+  def internal_comments_count_for_current_user(initiative, current_user)
+    described_class
+      .new(initiative, params: { current_user: current_user })
+      .serializable_hash
+      .dig(:data, :attributes, :internal_comments_count)
+  end
 end

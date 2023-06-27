@@ -41,8 +41,8 @@ declare global {
       apiCreateInitiative: typeof apiCreateInitiative;
       apiRemoveIdea: typeof apiRemoveIdea;
       apiRemoveInitiative: typeof apiRemoveInitiative;
-      apiUpvoteInitiative: typeof apiUpvoteInitiative;
-      apiDownvoteIdea: typeof apiDownvoteIdea;
+      apiLikeInitiative: typeof apiLikeInitiative;
+      apiDislikeIdea: typeof apiDislikeIdea;
       apiCreateOfficialFeedbackForIdea: typeof apiCreateOfficialFeedbackForIdea;
       apiCreateOfficialFeedbackForInitiative: typeof apiCreateOfficialFeedbackForInitiative;
       apiAddComment: typeof apiAddComment;
@@ -643,7 +643,7 @@ export function apiRemoveInitiative(initiativeId: string) {
   });
 }
 
-export function apiUpvoteInitiative(
+export function apiLikeInitiative(
   email: string,
   password: string,
   initiativeId: string
@@ -657,12 +657,12 @@ export function apiUpvoteInitiative(
         Authorization: `Bearer ${jwt}`,
       },
       method: 'POST',
-      url: `web_api/v1/initiatives/${initiativeId}/votes/up`,
+      url: `web_api/v1/initiatives/${initiativeId}/reactions/up`,
     });
   });
 }
 
-export function apiDownvoteIdea(
+export function apiDislikeIdea(
   email: string,
   password: string,
   ideaId: string
@@ -676,7 +676,7 @@ export function apiDownvoteIdea(
         Authorization: `Bearer ${jwt}`,
       },
       method: 'POST',
-      url: `web_api/v1/ideas/${ideaId}/votes/down`,
+      url: `web_api/v1/ideas/${ideaId}/reactions/down`,
     });
   });
 }
@@ -1120,7 +1120,7 @@ export function apiCreatePhase(
   endAt: string,
   participationMethod: ParticipationMethod,
   canPost: boolean,
-  canVote: boolean,
+  canReact: boolean,
   canComment: boolean,
   description?: string,
   surveyUrl?: string,
@@ -1150,7 +1150,7 @@ export function apiCreatePhase(
           participation_method: participationMethod,
           voting_method: votingMethod,
           posting_enabled: canPost,
-          voting_enabled: canVote,
+          reacting_enabled: canReact,
           commenting_enabled: canComment,
           description_multiloc: { en: description },
           survey_embed_url: surveyUrl,
@@ -1468,7 +1468,7 @@ Cypress.Commands.add('apiCreateIdea', apiCreateIdea);
 Cypress.Commands.add('apiRemoveIdea', apiRemoveIdea);
 Cypress.Commands.add('apiCreateInitiative', apiCreateInitiative);
 Cypress.Commands.add('apiRemoveInitiative', apiRemoveInitiative);
-Cypress.Commands.add('apiDownvoteIdea', apiDownvoteIdea);
+Cypress.Commands.add('apiDislikeIdea', apiDislikeIdea);
 Cypress.Commands.add(
   'apiCreateOfficialFeedbackForIdea',
   apiCreateOfficialFeedbackForIdea

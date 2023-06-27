@@ -54,7 +54,9 @@ describe('Project timeline page', () => {
           'description',
           undefined,
           undefined,
-          400
+          400,
+          false,
+          'budgeting'
         );
       });
   });
