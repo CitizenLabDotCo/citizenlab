@@ -228,7 +228,7 @@ en-CA:
       cta_reply_to: 'View comment by %{firstName}'
       event_description: '%{authorNameFull} mentioned you in an internal comment.'
       subject: '%{firstName} mentioned you in an internal comment.'
-      main_header: '%{authorNameFirst} mentioned you in an internal comment.'
+      main_header: '%{firstName} mentioned you in an internal comment.'
       preheader: '%{authorNameFull} mentioned you in an internal comment.'
     moderator_digest:
       subject: 'Your weekly project manager report of %{time}'
