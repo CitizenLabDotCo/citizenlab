@@ -32,10 +32,7 @@ resource 'Baskets' do
 
         expect(json_response.dig(:data, :id)).to eq @basket.id
         expect(json_response.dig(:data, :type)).to eq 'basket'
-        expect(json_response.dig(:data, :attributes)).to include(
-          total_budget: 2250,
-          budget_exceeds_limit?: false
-        )
+        expect(json_response.dig(:data, :attributes, :total_votes)).to eq 5
         expect(json_response.dig(:data, :relationships)).to include(
           participation_context: {
             data: { id: @basket.participation_context_id, type: 'project' }
