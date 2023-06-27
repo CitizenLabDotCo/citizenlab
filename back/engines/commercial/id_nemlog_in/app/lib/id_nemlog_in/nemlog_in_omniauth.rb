@@ -78,7 +78,7 @@ module IdNemlogIn
     # @param [AppConfiguration] configuration
     # @return [String] The path to the callback URL
     def redirect_uri(configuration)
-      "#{configuration.base_backend_uri}/auth/vienna_citizen/callback"
+      "#{configuration.base_backend_uri}/auth/nemlog_in/callback"
     end
 
     # @return [Symbol] The configured Vienna Login environment as a symbol
