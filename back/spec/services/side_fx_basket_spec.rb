@@ -42,7 +42,6 @@ describe SideFxBasketService do
         expect(current_phase.reload.baskets_count).to eq 0
         expect(project.reload.baskets_count).to eq 0
       end
-
     end
 
     context 'ideas in unsubmitted baskets' do
