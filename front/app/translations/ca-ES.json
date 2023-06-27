@@ -339,6 +339,8 @@
   "app.components.ProjectCard.xOptions": "{ideasCount, plural, one {# opció} other {# opcions}}",
   "app.components.ProjectCard.xProjects": "{ideasCount, plural, one {# projecte} other {# projectes}}",
   "app.components.ProjectCard.xQuestions": "{ideasCount, plural, one {# pregunta} other {# preguntes}}",
+  "app.components.ProjectFolderCard.xComments": "{commentsCount, plural, no {# comentaris} one {# comentaris} other {# comentaris}}",
+  "app.components.ProjectFolderCard.xInputs": "{ideasCount, plural, no {# entrades} one {# entrada} other {# entrades}}",
   "app.components.ProjectFolderCards.components.Topbar.a11y_projectFilterTabInfo": "{count, plural, no {# projects} one {# project} other {# projects}}",
   "app.components.ProjectFolderCards.components.Topbar.all": "Tots",
   "app.components.ProjectFolderCards.components.Topbar.archived": "Arxivat",
