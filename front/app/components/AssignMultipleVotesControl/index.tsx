@@ -6,13 +6,15 @@ import {
   colors,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
+import useBasket from 'api/baskets/useBasket';
 import useAuthUser from 'api/me/useAuthUser';
 import usePhases from 'api/phases/usePhases';
 import { getLatestRelevantPhase } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
-import useBasket from 'hooks/useBasket';
+import { BUDGET_EXCEEDED_ERROR_EVENT } from 'components/AssignBudgetControl';
 import React, { useState } from 'react';
 import styled, { useTheme } from 'styled-components';
+import eventEmitter from 'utils/eventEmitter';
 
 const StyledBox = styled(Box)`
   input {
@@ -57,7 +59,7 @@ const AssignMultipleVotesControl = ({ projectId, ideaId }: Props) => {
 
   const participationContext = project?.data;
 
-  const basket = useBasket(
+  const { data: basket } = useBasket(
     participationContext?.relationships?.user_basket?.data?.id
   );
 
@@ -65,10 +67,23 @@ const AssignMultipleVotesControl = ({ projectId, ideaId }: Props) => {
     event.stopPropagation();
     event?.preventDefault();
     const currentVotes = parseInt(votes.toString(), 10);
-    if (currentVotes <= 0) {
-      setVotes(1);
-    } else {
-      setVotes(currentVotes + 1);
+    if (
+      basket?.data.attributes.total_budget + (currentVotes + 1) >=
+      latestRelevantPhase?.attributes?.voting_max_total
+    ) {
+      console.log('HERE 1');
+      eventEmitter.emit(BUDGET_EXCEEDED_ERROR_EVENT);
+    }
+    // else if (currentVotes + 1 > latestRelevantPhase?.attributes?.voting_max_votes_per_idea) {
+    //   console.log("HERE 2");
+    //   eventEmitter.emit(BUDGET_EXCEEDED_ERROR_EVENT);
+    // }  // TODO: Implement this
+    else {
+      if (currentVotes <= 0) {
+        setVotes(1);
+      } else {
+        setVotes(currentVotes + 1);
+      }
     }
   };
 
@@ -95,7 +110,7 @@ const AssignMultipleVotesControl = ({ projectId, ideaId }: Props) => {
         justifyContent="space-between"
         style={{ cursor: 'default' }}
       >
-        {!basket?.attributes.submitted_at && (
+        {!basket?.data?.attributes.submitted_at && (
           <Button
             mr="8px"
             bgColor={theme.colors.tenantPrimary}
@@ -139,7 +154,7 @@ const AssignMultipleVotesControl = ({ projectId, ideaId }: Props) => {
             votes
           </Text>
         </Box>
-        {!basket?.attributes.submitted_at && (
+        {!basket?.data?.attributes.submitted_at && (
           <Button ml="8px" bgColor={theme.colors.tenantPrimary} onClick={onAdd}>
             <h1 style={{ margin: '0px' }}>+</h1>
           </Button>
