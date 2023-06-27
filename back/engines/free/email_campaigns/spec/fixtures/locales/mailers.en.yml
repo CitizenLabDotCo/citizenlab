@@ -15,6 +15,7 @@ en:
       "initiative_marked_as_spam": Proposal spam report
       "initiative_published": Publication of my proposal
       "internal_comment_on_idea_assigned_to_you": Internal comment on idea assigned to me
+      "internal_comment_on_idea_you_commented_internally_on": Internal comment on idea I commented internally on
       "internal_comment_on_idea_you_moderate": Internal comment on idea in project or folder I manage
       "internal_comment_on_initiative_assigned_to_you": Internal comment on initiative assigned to me
       "internal_comment_on_your_internal_comment": Internal comment on my internal comment
@@ -68,6 +69,7 @@ en:
       "initiative_marked_as_spam": Proposal spam report - admins
       "initiative_published": Publication of your proposal - all users
       "internal_comment_on_idea_assigned_to_you": Internal comment on idea assigned to you - admins and project managers
+      "internal_comment_on_idea_you_commented_internally_on": Internal comment on idea you commented internally on - admins and project managers
       "internal_comment_on_idea_you_moderate": Internal comment on idea in project or folder you manage - project and folder managers
       "internal_comment_on_initiative_assigned_to_you": Internal comment on initiative assigned to you - admins
       "internal_comment_on_your_internal_comment": Internal comment on your internal comment - admins and project managers
@@ -357,6 +359,12 @@ en:
     internal_comment_on_idea_assigned_to_you:
       cta_reply_to: 'View comment by %{firstName}'
       event_description: '%{authorNameFull} commented internally on an input assigned to you.'
+      subject: '''%{post}'' has a new internal comment'
+      main_header: '''%{post}'' has a new internal comment'
+      preheader: '''%{post}'' has a new internal comment'
+    internal_comment_on_idea_you_commented_internally_on:
+      cta_reply_to: 'View comment by %{firstName}'
+      event_description: '%{authorNameFull} commented internally on an input you commented internally on.'
       subject: '''%{post}'' has a new internal comment'
       main_header: '''%{post}'' has a new internal comment'
       preheader: '''%{post}'' has a new internal comment'
