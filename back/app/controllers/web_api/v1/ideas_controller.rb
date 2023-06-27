@@ -345,13 +345,12 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def serialization_options_for(ideas)
-    include = %i[author idea_images]
+    include = %i[author idea_images ideas_phases]
     if current_user
       # I have no idea why but the trending query part
       # breaks if you don't fetch the ids in this way.
       reactions = Reaction.where(user: current_user, reactable_id: ideas.map(&:id), reactable_type: 'Idea')
       include << 'user_reaction'
-      include << 'ideas_phases' if !current_user.normal_user?
       {
         params: jsonapi_serializer_params(vbii: reactions.index_by(&:reactable_id), pcs: ParticipationContextService.new),
         include: include

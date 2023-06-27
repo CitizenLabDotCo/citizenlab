@@ -13,9 +13,12 @@ describe SideFxBasketService do
     let(:ideas) { create_list(:idea, 2, project: project, phases: project.phases) }
 
     context 'ideas in submitted baskets' do
-      it "updates 'baskets_count' for the idea, idea_phase, current_phase and project" do
+      before do
         basket.update!(ideas: ideas, submitted_at: Time.zone.now)
         service.after_update basket, user
+      end
+
+      it "updates 'baskets_count' for the idea, idea_phase, current_phase and project" do
         expect(ideas[0].reload.baskets_count).to eq 1
         expect(ideas[1].reload.baskets_count).to eq 1
         expect(ideas[0].ideas_phases[0].reload.baskets_count).to eq 0
@@ -26,18 +29,18 @@ describe SideFxBasketService do
         expect(project.reload.baskets_count).to eq 1
       end
 
-      it "updates 'baskets_count' when the basket is deleted" do
-        binding.pry
-        basket.update!(ideas: ideas, submitted_at: Time.zone.now)
-        service.after_update basket, user
-        expect(ideas[0].reload.baskets_count).to eq 1
-        expect(ideas[1].reload.baskets_count).to eq 1
+      it "reduces the 'baskets_count' when the basket is deleted" do
+        basket.destroy!
+        service.after_destroy basket, user
+
+        expect(ideas[0].reload.baskets_count).to eq 0
+        expect(ideas[1].reload.baskets_count).to eq 0
         expect(ideas[0].ideas_phases[0].reload.baskets_count).to eq 0
         expect(ideas[1].ideas_phases[0].reload.baskets_count).to eq 0
-        expect(ideas[0].ideas_phases[1].reload.baskets_count).to eq 1
-        expect(ideas[1].ideas_phases[1].reload.baskets_count).to eq 1
-        expect(current_phase.reload.baskets_count).to eq 1
-        expect(project.reload.baskets_count).to eq 1
+        expect(ideas[0].ideas_phases[1].reload.baskets_count).to eq 0
+        expect(ideas[1].ideas_phases[1].reload.baskets_count).to eq 0
+        expect(current_phase.reload.baskets_count).to eq 0
+        expect(project.reload.baskets_count).to eq 0
       end
 
     end

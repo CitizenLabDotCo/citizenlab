@@ -26,7 +26,7 @@ class SideFxBasketService
   def update_basket_counts(basket)
     # NOTE: we cannot use counter_culture because we can't trigger it from another model being updated (basket)
     # NOTE: Think we should be able to update the votes count in the same queries in a future iteration
-    project = basket.ideas[0].project
+    project = basket.participation_context.project
 
     # Update ideas
     update_ideas_counts('ideas', project.id)
