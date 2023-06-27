@@ -346,6 +346,8 @@
   "app.components.ProjectCard.xOptions": "{ideasCount, plural, one {# solucija} other {# solucije}}",
   "app.components.ProjectCard.xProjects": "{ideasCount, plural, one {# projekat} other {# projekata}}",
   "app.components.ProjectCard.xQuestions": "{ideasCount, plural, one {# pitanje} other {# pitanja}}",
+  "app.components.ProjectFolderCard.xComments": "{commentsCount, plural, no {# цомментс} one {# цомментс} other {# цомментс}}",
+  "app.components.ProjectFolderCard.xInputs": "{ideasCount, plural, no {# улаза} one {# улазни} other {# улаза}}",
   "app.components.ProjectFolderCards.components.Topbar.a11y_projectFilterTabInfo": "{count, plural, no {# projekata} one {# projekat} other {# projekata}}",
   "app.components.ProjectFolderCards.components.Topbar.all": "Sve",
   "app.components.ProjectFolderCards.components.Topbar.archived": "Arhivirano",
