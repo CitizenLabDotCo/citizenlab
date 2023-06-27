@@ -285,7 +285,7 @@ resource 'Ideas' do
           expect(status).to eq(200)
         end
 
-        example 'List all ideas in a phase of a project - basket count does not show' do
+        example 'List all ideas in a phase of a project - basket count does not show', document: false do
           pr = create(:project_with_active_budgeting_phase)
           phase = pr.phases.first
           ideas = create_list(:idea, 2, phases: [phase], project: pr)

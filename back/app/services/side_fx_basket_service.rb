@@ -20,6 +20,7 @@ class SideFxBasketService
       user, Time.now.to_i,
       payload: { basket: serialized_basket }
     )
+    update_basket_counts frozen_basket
   end
 
   def update_basket_counts(basket)

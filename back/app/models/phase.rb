@@ -38,7 +38,6 @@
 #  voting_max_votes_per_idea     :integer
 #  voting_term_singular_multiloc :jsonb
 #  voting_term_plural_multiloc   :jsonb
-#  baskets_count                 :integer          default(0), not null
 #
 # Indexes
 #
