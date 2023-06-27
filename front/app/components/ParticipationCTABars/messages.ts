@@ -17,6 +17,10 @@ export default defineMessages({
     id: 'app.components.ParticipationCTABars.mobileProjectOpenForSubmission',
     defaultMessage: 'Open for participation',
   },
+  projectClosedForSubmission: {
+    id: 'app.components.ParticipationCTABars.projectClosedForSubmission',
+    defaultMessage: 'New submissions are not currently being accepted',
+  },
   userHasParticipated: {
     id: 'app.components.ParticipationCTABars.userHasParticipated',
     defaultMessage: 'You have participated in this project.',
@@ -57,5 +61,9 @@ export default defineMessages({
   left: {
     id: 'app.components.ParticipationCTABars.left',
     defaultMessage: 'left',
+  },
+  budgetExceededError: {
+    id: 'app.components.ParticipationCTABars.budgetExceededError',
+    defaultMessage: "You don't have enough budget",
   },
 });

@@ -2,7 +2,6 @@ import React, { memo } from 'react';
 import styled from 'styled-components';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import GoBackButton from 'components/UI/GoBackButton';
@@ -12,9 +11,8 @@ import { Outlet as RouterOutlet } from 'react-router-dom';
 // services
 import {
   IUserCustomFieldData,
-  isBuiltInField,
   IUserCustomFieldInputType,
-} from 'services/userCustomFields';
+} from 'api/user_custom_fields/types';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
@@ -22,8 +20,9 @@ import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 
 // hooks
-import useUserCustomField from 'hooks/useUserCustomField';
+import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
 import useLocalize from 'hooks/useLocalize';
+import { isBuiltInField } from 'api/user_custom_fields/util';
 
 const StyledGoBackButton = styled(GoBackButton)`
   display: flex;
@@ -40,7 +39,7 @@ const RegistrationCustomFieldEdit = memo(
     params: { userCustomFieldId },
   }: Props & WithRouterProps & WrappedComponentProps) => {
     const localize = useLocalize();
-    const userCustomField = useUserCustomField(userCustomFieldId);
+    const { data: userCustomField } = useUserCustomField(userCustomFieldId);
     const hasOptions = (inputType: IUserCustomFieldInputType) => {
       return inputType === 'select' || inputType === 'multiselect';
     };
@@ -76,14 +75,14 @@ const RegistrationCustomFieldEdit = memo(
       return tabs;
     };
 
-    if (!isNilOrError(userCustomField)) {
+    if (userCustomField) {
       return (
         <>
           <StyledGoBackButton onClick={goBack} />
           <TabbedResource
-            tabs={getTabs(userCustomField)}
+            tabs={getTabs(userCustomField.data)}
             resource={{
-              title: localize(userCustomField.attributes.title_multiloc),
+              title: localize(userCustomField.data.attributes.title_multiloc),
             }}
           >
             <RouterOutlet />

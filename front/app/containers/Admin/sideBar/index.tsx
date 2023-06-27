@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError, isPage } from 'utils/helperUtils';
-import { get } from 'lodash-es';
 
 // components
 import {
@@ -200,12 +199,12 @@ const Sidebar = ({ ideasCount, initiativesCount }: Props) => {
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   ideasCount: ({ authUser, render }) => (
-    <GetIdeasCount feedbackNeeded={true} assignee={get(authUser, 'id')}>
+    <GetIdeasCount feedbackNeeded assignee={authUser?.id}>
       {render}
     </GetIdeasCount>
   ),
   initiativesCount: ({ authUser, render }) => (
-    <GetInitiativesCount feedbackNeeded={true} assignee={get(authUser, 'id')}>
+    <GetInitiativesCount feedbackNeeded assignee={authUser?.id}>
       {render}
     </GetInitiativesCount>
   ),

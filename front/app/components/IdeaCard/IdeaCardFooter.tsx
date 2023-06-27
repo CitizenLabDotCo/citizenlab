@@ -3,6 +3,9 @@ import React, { FormEvent } from 'react';
 // components
 import CommentCount from './CommentCount';
 
+// router
+import clHistory from 'utils/cl-router/history';
+
 // types
 import { IIdea } from 'api/ideas/types';
 
@@ -13,8 +16,6 @@ import {
   colors,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import { IOpenPostPageModalEvent } from 'containers/App';
-import eventEmitter from 'utils/eventEmitter';
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -33,21 +34,16 @@ interface Props {
 
 const IdeaCardFooter = ({ idea, showCommentCount }: Props) => {
   const { formatMessage } = useIntl();
-  const isSmallerThanPhone = useBreakpoint('phone');
+  const isSmallerThanTablet = useBreakpoint('tablet');
 
   const onReadMoreClick = (event: FormEvent) => {
     event.preventDefault();
-
-    eventEmitter.emit<IOpenPostPageModalEvent>('cardClick', {
-      id: idea.data.id,
-      slug: idea.data.attributes.slug,
-      type: 'idea',
-    });
+    clHistory.push(`/ideas/${idea.data.attributes.slug}`);
   };
 
   return (
     <Footer>
-      {isSmallerThanPhone && (
+      {isSmallerThanTablet && (
         <Button
           size="s"
           textColor={colors.blue400}

@@ -3,7 +3,10 @@ import React, { useState, useEffect } from 'react';
 // hooks
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
+
+// router
 import { useSearchParams } from 'react-router-dom';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 // styling
 import rocket from 'assets/img/rocket.png';
@@ -26,49 +29,27 @@ const SuccessModal = ({ projectId }: Props) => {
   const { data: phases } = usePhases(projectId);
 
   const [queryParams] = useSearchParams();
-  const showModalParam = queryParams.get('show_modal');
-  const phaseIdParam = queryParams.get('phase_id');
+  const [showModalParam] = useState<boolean>(!!queryParams.get('show_modal'));
+  const [phaseIdParam] = useState<string | null>(queryParams.get('phase_id'));
 
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [phaseIdUrl, setPhaseIdUrl] = useState<string | null>(null);
 
   const ready = isReady(project?.data, phases);
 
   useEffect(() => {
-    if (!ready) return;
-
-    let timer: NodeJS.Timeout;
     if (showModalParam) {
-      // TODO: Handle animation when modal is open by default in Modal component
-      timer = setTimeout(() => {
+      setTimeout(() => {
         setShowModal(true);
       }, 1500);
     }
 
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [ready, showModalParam]);
-
-  // useEffect to handle modal state and phase parameters
-  useEffect(() => {
-    if (!ready) return;
-
-    if (phaseIdParam) {
-      setPhaseIdUrl(phaseIdParam);
-    }
-
-    // Clear URL parameters for continuous projects
-    // (handled elsewhere for timeline projects)
-    if (project?.data.attributes.process_type === 'continuous') {
-      window.history.replaceState(null, '', window.location.pathname);
-    }
-  }, [ready, project, phaseIdParam]);
+    removeSearchParams(['show_modal', 'phase_id']);
+  }, [showModalParam]);
 
   if (!ready) return null;
 
   const phaseInUrl =
-    phaseIdUrl && phases ? getPhase(phaseIdUrl, phases.data) : undefined;
+    phaseIdParam && phases ? getPhase(phaseIdParam, phases.data) : undefined;
   const participationContext =
     phaseInUrl ?? getCurrentParticipationContext(project?.data, phases?.data);
   const participationMethod =

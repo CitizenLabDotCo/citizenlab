@@ -1,12 +1,18 @@
-import React, { FormEvent, memo } from 'react';
+import React, { memo, useEffect } from 'react';
 
 // components
 import UserName from 'components/UI/UserName';
 import Card from 'components/UI/Card/Compact';
-import { Box, Icon } from '@citizenlab/cl2-component-library';
+import { Box, Icon, useBreakpoint } from '@citizenlab/cl2-component-library';
 import Avatar from 'components/Avatar';
-import FooterWithVoteControl from './FooterWithVoteControl';
 import IdeaCardFooter from './IdeaCardFooter';
+import FooterWithReactionControl from './FooterWithReactionControl';
+
+// router
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import clHistory from 'utils/cl-router/history';
+import { useSearchParams } from 'react-router-dom';
 
 // types
 import { ParticipationMethod } from 'services/participationContexts';
@@ -20,6 +26,9 @@ import useLocalize from 'hooks/useLocalize';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { scrollToElement } from 'utils/scroll';
+import eventEmitter from 'utils/eventEmitter';
+import { IMAGES_LOADED_EVENT } from 'components/admin/ContentBuilder/constants';
 
 // styles
 import styled from 'styled-components';
@@ -31,8 +40,8 @@ import { IIdea } from 'api/ideas/types';
 
 // components
 import AssignBudgetControl from 'components/AssignBudgetControl';
-import eventEmitter from 'utils/eventEmitter';
-import { IOpenPostPageModalEvent } from 'containers/App';
+import { getCurrentPhase } from 'api/phases/utils';
+import usePhases from 'api/phases/usePhases';
 
 const BodyWrapper = styled.div`
   display: flex;
@@ -110,6 +119,7 @@ interface Props {
   hideImagePlaceholder?: boolean;
   hideIdeaStatus?: boolean;
   hideBody?: boolean;
+  goBackMode?: 'browserGoBackButton' | 'goToProject';
 }
 
 const IdeaLoading = (props: Props) => {
@@ -135,16 +145,20 @@ const CompactIdeaCard = memo<IdeaCardProps>(
     hideImagePlaceholder = false,
     hideIdeaStatus = false,
     hideBody = false,
+    goBackMode = 'browserGoBackButton',
   }) => {
+    const smallerThanPhone = useBreakpoint('phone');
     const locale = useLocale();
     const localize = useLocalize();
     const { data: project } = useProjectById(
       idea.data.relationships.project.data.id
     );
+    const { data: phases } = usePhases(project?.data.id);
     const { data: ideaImage } = useIdeaImage(
       idea.data.id,
       idea.data.relationships.idea_images.data?.[0]?.id
     );
+    const currentPhase = phases ? getCurrentPhase(phases?.data) : undefined;
     const authorId = idea.data.relationships?.author?.data?.id || null;
     const authorHash = idea.data.attributes.author_hash;
     const ideaTitle = localize(idea.data.attributes.title_multiloc);
@@ -153,6 +167,8 @@ const CompactIdeaCard = memo<IdeaCardProps>(
       .replace(/<[^>]*>?/gm, '')
       .replaceAll('&amp;', '&')
       .trim();
+    const [searchParams] = useSearchParams();
+    const scrollToCardParam = searchParams.get('scroll_to_card');
 
     const getInteractions = () => {
       if (project) {
@@ -172,7 +188,9 @@ const CompactIdeaCard = memo<IdeaCardProps>(
       }
       return null;
     };
-    const votingMethod = project?.data.attributes.voting_method;
+    const votingMethod =
+      currentPhase?.attributes.voting_method ||
+      project?.data.attributes.voting_method;
 
     const getFooter = () => {
       if (project) {
@@ -193,7 +211,7 @@ const CompactIdeaCard = memo<IdeaCardProps>(
 
         if (participationMethod === 'ideation') {
           return (
-            <FooterWithVoteControl
+            <FooterWithReactionControl
               idea={idea}
               hideIdeaStatus={hideIdeaStatus}
               showCommentCount={showCommentCount}
@@ -205,20 +223,39 @@ const CompactIdeaCard = memo<IdeaCardProps>(
       return null;
     };
 
-    const onCardClick = (event: FormEvent) => {
-      event.preventDefault();
+    useEffect(() => {
+      if (scrollToCardParam && idea.data.id === scrollToCardParam) {
+        const subscription = eventEmitter
+          .observeEvent(IMAGES_LOADED_EVENT)
+          .subscribe(() => {
+            scrollToElement({
+              id: scrollToCardParam,
+              behavior: 'auto',
+              offset: smallerThanPhone ? 150 : 300,
+            });
 
-      eventEmitter.emit<IOpenPostPageModalEvent>('cardClick', {
-        id: idea.data.id,
-        slug: idea.data.attributes.slug,
-        type: 'idea',
-      });
+            subscription.unsubscribe();
+          });
+      }
+
+      removeSearchParams(['scroll_to_card']);
+    }, [scrollToCardParam, idea, smallerThanPhone]);
+
+    const { slug } = idea.data.attributes;
+    const params = goBackMode === 'browserGoBackButton' ? '?go_back=true' : '';
+
+    const handleClick = (e: React.MouseEvent) => {
+      e.preventDefault();
+      updateSearchParams({ scroll_to_card: idea.data.id });
+
+      clHistory.push(`/ideas/${slug}${params}`);
     };
 
     return (
       <Card
-        onClick={onCardClick}
+        onClick={handleClick}
         to={`/ideas/${idea.data.attributes.slug}`}
+        id={idea.data.id}
         className={[className, 'e2e-idea-card']
           .filter((item) => typeof item === 'string' && item !== '')
           .join(' ')}

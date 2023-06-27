@@ -30,14 +30,19 @@ export default defineMessages({
     defaultMessage: 'Votes',
   },
   budgetingSubmissionInstructions: {
-    id: 'app.utils.votingMethodUtils.budgetingSubmissionInstructions',
+    id: 'app.utils.votingMethodUtils.budgetingSubmissionInstructions2',
     defaultMessage:
-      'You have a total of <b>{maxBudget} USD to distribute between {optionCount} options</b>. Select your preferred options by tapping on "Add". Once you are done, click "Submit" to submit your budget.',
+      'You have a total of <b>{maxBudget} {currency} to distribute between {optionCount} options</b>. Select your preferred options by tapping on "Add". Once you are done, click "Submit" to submit your budget.',
   },
   budgetingSubmittedInstructions: {
     id: 'app.utils.votingMethodUtils.budgetingSubmittedInstructions2',
     defaultMessage:
       '<b>Congratulations, your budget has been submitted!</b> You can check your options below at any point or modify them before <b>{endDate}</b>.',
+  },
+  budgetingSubmittedInstructionsContinuous: {
+    id: 'app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous',
+    defaultMessage:
+      '<b>Congratulations, your budget has been submitted!</b> You can check your options below at any point or modify them.',
   },
   budgetParticipationEnded: {
     id: 'app.utils.votingMethodUtils.budgetParticipationEnded',

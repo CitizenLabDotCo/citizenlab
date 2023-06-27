@@ -6,7 +6,7 @@ class BasketPolicy < ApplicationPolicy
       user&.active? &&
       (record.user_id == user.id) &&
       ProjectPolicy.new(user, record.participation_context.project).show? &&
-      check_budgeting_allowed(record, user)
+      check_voting_allowed(record, user)
     ) || (
       user&.active? && UserRoleService.new.can_moderate?(record.participation_context, user)
     )
@@ -28,8 +28,8 @@ class BasketPolicy < ApplicationPolicy
 
   private
 
-  def check_budgeting_allowed(basket, user)
+  def check_voting_allowed(basket, user)
     pcs = ParticipationContextService.new
-    !pcs.budgeting_disabled_reason_for_context pcs.get_participation_context(basket.participation_context.project), user
+    !pcs.voting_disabled_reason_for_context pcs.get_participation_context(basket.participation_context.project), user
   end
 end

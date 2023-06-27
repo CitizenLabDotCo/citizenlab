@@ -1,23 +1,25 @@
-import React, { useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
+import { isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
 import useAuthUser from 'api/me/useAuthUser';
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // i18n
 import useLocalize from 'hooks/useLocalize';
 
 // components
-import VoteControl from 'components/VoteControl';
+import ReactionControl from 'components/ReactionControl';
 import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
 
 // events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-import eventEmitter from 'utils/eventEmitter';
 
 // routing
 import clHistory from 'utils/cl-router/history';
+import { useSearchParams } from 'react-router-dom';
 
 // styling
 import styled from 'styled-components';
@@ -26,10 +28,10 @@ import { lighten } from 'polished';
 
 // utils
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 // typings
-import { IdeaVotingDisabledReason } from 'api/ideas/types';
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
+import { IdeaReactingDisabledReason } from 'api/ideas/types';
 
 const Container = styled.div`
   flex: 0 0 ${(props) => props.theme.mobileTopBarHeight}px;
@@ -62,9 +64,8 @@ const Left = styled.div`
 const Right = styled.div``;
 
 interface Props {
-  ideaId: string;
+  ideaId?: string;
   projectId: string;
-  insideModal: boolean;
   deselectIdeaOnMap?: () => void;
   className?: string;
 }
@@ -72,17 +73,29 @@ interface Props {
 const IdeaShowPageTopBar = ({
   ideaId,
   projectId,
-  insideModal,
   className,
   deselectIdeaOnMap,
 }: Props) => {
   const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
-
-  const localize = useLocalize();
   const isSmallerThanTablet = useBreakpoint('tablet');
 
-  const onDisabledVoteClick = (disabled_reason: IdeaVotingDisabledReason) => {
+  const [goBack, setGoBack] = useState(false);
+  const [searchParams] = useSearchParams();
+  const goBackParameter = searchParams.get('go_back');
+
+  useEffect(() => {
+    if (isString(goBackParameter)) {
+      setGoBack(true);
+      removeSearchParams(['go_back']);
+    }
+  }, [goBackParameter]);
+
+  const localize = useLocalize();
+
+  const onDisabledReactClick = (
+    disabled_reason: IdeaReactingDisabledReason
+  ) => {
     if (
       !isNilOrError(authUser) &&
       project &&
@@ -98,7 +111,7 @@ const IdeaShowPageTopBar = ({
       if (pcId && pcType) {
         triggerAuthenticationFlow({
           context: {
-            action: 'voting_idea',
+            action: 'reacting_idea',
             id: pcId,
             type: pcType,
           },
@@ -108,19 +121,16 @@ const IdeaShowPageTopBar = ({
   };
 
   const handleGoBack = useCallback(() => {
-    if (insideModal) {
-      eventEmitter.emit('closeIdeaModal');
-      return;
-    }
-
-    if (deselectIdeaOnMap) {
+    if (goBack) {
+      clHistory.back();
+    } else if (deselectIdeaOnMap) {
       deselectIdeaOnMap();
-      return;
+    } else if (project) {
+      clHistory.push(`/projects/${project.data.attributes.slug}`);
+    } else {
+      clHistory.push('/');
     }
-
-    if (!project) return;
-    clHistory.push(`/projects/${project.data.attributes.slug}`);
-  }, [insideModal, deselectIdeaOnMap, project]);
+  }, [goBack, deselectIdeaOnMap, project]);
 
   return (
     <Container className={className || ''}>
@@ -135,11 +145,11 @@ const IdeaShowPageTopBar = ({
           />
         </Left>
         <Right>
-          <VoteControl
+          <ReactionControl
             size="1"
             styleType="border"
             ideaId={ideaId}
-            disabledVoteClick={onDisabledVoteClick}
+            disabledReactionClick={onDisabledReactClick}
           />
         </Right>
       </TopBarInner>

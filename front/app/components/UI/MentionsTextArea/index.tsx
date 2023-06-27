@@ -127,6 +127,7 @@ const MentionsTextArea = ({
           border: 'none',
           appearance: 'none',
           WebkitAppearance: 'none',
+          minHeight: `${rows * parseInt(lineHeight, 10)}px`,
         },
         input: {
           margin: 0,
@@ -135,7 +136,7 @@ const MentionsTextArea = ({
           fontSize,
           fontWeight,
           lineHeight,
-          minHeight: `${rows * parseInt(lineHeight as string, 10)}px`,
+          minHeight: `${rows * parseInt(lineHeight, 10)}px`,
           outline: 'none',
           border,
           borderRadius,
@@ -237,7 +238,6 @@ const MentionsTextArea = ({
           rows={rows}
           value={value || ''}
           placeholder={placeholder}
-          displayTransform={mentionDisplayTransform}
           markup={'@[__display__](__id__)'}
           onChange={handleOnChange}
           onFocus={handleOnFocus}
@@ -245,12 +245,14 @@ const MentionsTextArea = ({
           aria-label={ariaLabel}
           ref={setMentionsInputRef}
           inputRef={textareaElement}
+          autoFocus={false}
         >
           <Mention
             trigger="@"
             data={getUsers}
             appendSpaceOnAdd={true}
             style={mentionStyle}
+            displayTransform={mentionDisplayTransform}
           />
         </StyledMentionsInput>
         {children}

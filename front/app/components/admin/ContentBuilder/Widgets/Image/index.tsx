@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 // components
 import {
@@ -25,7 +25,10 @@ import { injectIntl } from 'utils/cl-intl';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
-import { IMAGE_UPLOADING_EVENT } from 'components/admin/ContentBuilder/constants';
+import {
+  IMAGE_UPLOADING_EVENT,
+  IMAGE_LOADED_EVENT,
+} from 'components/admin/ContentBuilder/constants';
 
 interface Props {
   imageUrl?: string;
@@ -39,6 +42,11 @@ const Image = ({ imageUrl, alt = '', dataCode }: Props) => {
       enabled: state.options.enabled,
     };
   });
+
+  const emitImageLoaded = useCallback(() => {
+    if (!imageUrl) return;
+    eventEmitter.emit(IMAGE_LOADED_EVENT, imageUrl);
+  }, [imageUrl]);
 
   return (
     <PageBreakBox
@@ -54,6 +62,7 @@ const Image = ({ imageUrl, alt = '', dataCode }: Props) => {
           src={imageUrl}
           alt={alt}
           data-code={dataCode}
+          onLoad={emitImageLoaded}
         />
       )}
       {/* In edit view, show an image placeholder if image is not set. */}

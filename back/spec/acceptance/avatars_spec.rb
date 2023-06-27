@@ -23,7 +23,7 @@ resource 'Avatars' do
     response_field :total, 'The total count of users in the given context, including those without avatar', scope: :meta
 
     example_request 'List random user avatars' do
-      expect(status).to eq(200)
+      assert_status 200
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 5
       expect(json_response[:data].map { |d| d.dig(:attributes, :avatar).keys }).to all(eq %i[small medium large])
@@ -40,7 +40,7 @@ resource 'Avatars' do
       end
 
       example_request 'Returns empty response for disabled banner_avatars_enabled' do
-        expect(status).to eq(200)
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 0
         expect(json_response.dig(:meta, :total)).to eq 0
@@ -56,8 +56,28 @@ resource 'Avatars' do
       let(:limit) { 2 }
 
       example_request 'List random user avatars in a project' do
-        expect(status).to eq(200)
+        assert_status 200
         json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 2
+        expect(json_response[:data].map { |d| d.dig(:attributes, :avatar).keys }).to all(eq %i[small medium large])
+        expect(json_response[:data].flat_map { |d| d.dig(:attributes, :avatar).values }).to all(be_present)
+        expect(json_response[:data].pluck(:id)).to all(satisfy { |id| author_ids.include?(id) })
+        expect(json_response.dig(:meta, :total)).to eq 3
+      end
+    end
+
+    describe do
+      let(:projects) { create_list(:project, 3) }
+      let(:folder) { create(:project_folder, projects: projects) }
+      let(:context_type) { 'project_folder' }
+      let(:context_id) { folder.id }
+      let!(:other_user) { create(:idea).author }
+      let!(:author_ids) { projects.map { |project| create(:idea, project: project).author.id } }
+      let(:limit) { 2 }
+
+      example_request 'List random user avatars in a folder' do
+        assert_status 200
+        json_response = json_parse response_body
         expect(json_response[:data].size).to eq 2
         expect(json_response[:data].map { |d| d.dig(:attributes, :avatar).keys }).to all(eq %i[small medium large])
         expect(json_response[:data].flat_map { |d| d.dig(:attributes, :avatar).values }).to all(be_present)
@@ -75,7 +95,7 @@ resource 'Avatars' do
       let(:limit) { 2 }
 
       example_request 'List random user avatars on an idea (author and commenters)' do
-        expect(status).to eq(200)
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 2
         expect(json_response[:data].map { |d| d.dig(:attributes, :avatar).keys }).to all(eq %i[small medium large])
@@ -94,7 +114,7 @@ resource 'Avatars' do
       let(:limit) { 2 }
 
       example_request 'List random user avatars on an initiative (author and commenters)' do
-        expect(status).to eq(200)
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 2
         expect(json_response[:data].map { |d| d.dig(:attributes, :avatar).keys }).to all(eq %i[small medium large])
@@ -115,7 +135,7 @@ resource 'Avatars' do
         let!(:member_ids) { create_list(:user, 4, manual_groups: [group]).map(&:id) }
 
         example_request 'List random user avatars in a group as an admin' do
-          expect(status).to eq(200)
+          assert_status 200
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 4
           expect(json_response[:data].map { |d| d.dig(:attributes, :avatar).keys }).to all(eq %i[small medium large])
@@ -136,7 +156,7 @@ resource 'Avatars' do
       let(:id) { user.id }
 
       example_request 'Get a single avatar' do
-        expect(status).to eq(200)
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :id)).to eq id
       end

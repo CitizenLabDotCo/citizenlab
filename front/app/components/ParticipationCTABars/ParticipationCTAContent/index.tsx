@@ -14,6 +14,10 @@ import { IPhaseData } from 'api/phases/types';
 
 // utils
 import { getPeriodRemainingUntil } from 'utils/dateUtils';
+import { getMethodConfig } from 'utils/participationMethodUtils';
+
+// types
+import { IProjectData } from 'api/projects/types';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -49,8 +53,9 @@ type Props = {
   CTAButton?: React.ReactNode;
   currentPhase: IPhaseData | undefined;
   hideDefaultParticipationMessage?: boolean;
-  participationState?: JSX.Element;
-  timeLocation?: 'left' | 'right';
+  participationState?: JSX.Element; // Optional element which displays on bottom left
+  timeLeftPosition?: 'left' | 'right';
+  project: IProjectData;
 };
 
 export const ParticipationCTAContent = ({
@@ -59,11 +64,20 @@ export const ParticipationCTAContent = ({
   hasUserParticipated = false,
   hideDefaultParticipationMessage = false,
   participationState,
-  timeLocation = 'right',
+  timeLeftPosition = 'right',
+  project,
 }: Props) => {
   const theme = useTheme();
   const { formatMessage } = useIntl();
   const isSmallerThanPhone = useBreakpoint('phone');
+  const config = getMethodConfig(
+    currentPhase?.attributes.participation_method ||
+      project.attributes.participation_method
+  );
+  const useProjectClosedStyle =
+    config?.useProjectClosedCTABarStyle &&
+    config.useProjectClosedCTABarStyle(currentPhase || project);
+
   let timeLeft = currentPhase
     ? getPeriodRemainingUntil(currentPhase.attributes.end_at, 'weeks')
     : undefined;
@@ -74,13 +88,18 @@ export const ParticipationCTAContent = ({
     timeLeftMessage = messages.xDayLeft;
   }
 
-  let userParticipationMessage = hasUserParticipated
-    ? messages.userHasParticipated
-    : messages.projectOpenForSubmission;
-
-  if (isSmallerThanPhone && !hasUserParticipated) {
-    userParticipationMessage = messages.mobileProjectOpenForSubmission;
-  }
+  const getUserParticipationMessage = () => {
+    if (useProjectClosedStyle) {
+      return messages.projectClosedForSubmission;
+    }
+    if (hasUserParticipated) {
+      return messages.userHasParticipated;
+    }
+    if (isSmallerThanPhone && !hasUserParticipated) {
+      return messages.mobileProjectOpenForSubmission;
+    }
+    return messages.projectOpenForSubmission;
+  };
 
   const timeLeftTranslated = timeLeft
     ? formatMessage(timeLeftMessage, { timeLeft })
@@ -105,14 +124,16 @@ export const ParticipationCTAContent = ({
           alignItems="center"
         >
           <Box>
-            <BlickingIcon
-              name={hasUserParticipated ? 'check-circle' : 'dot'}
-              width="16px"
-              height="16px"
-              fill={colors.white}
-              mr="8px"
-              showAnimation={!hasUserParticipated}
-            />
+            {!useProjectClosedStyle && (
+              <BlickingIcon
+                name={hasUserParticipated ? 'check-circle' : 'dot'}
+                width="16px"
+                height="16px"
+                fill={colors.white}
+                mr="8px"
+                showAnimation={!hasUserParticipated}
+              />
+            )}
           </Box>
           <Box
             display="flex"
@@ -121,20 +142,20 @@ export const ParticipationCTAContent = ({
             flexDirection="column"
           >
             <Text color="white" m="0px" fontSize="s">
-              <div
+              <span
                 style={{
                   ...(isSmallerThanPhone ? { fontWeight: '600' } : {}),
                 }}
               >
                 {!hideDefaultParticipationMessage && (
-                  <FormattedMessage {...userParticipationMessage} />
+                  <FormattedMessage {...getUserParticipationMessage()} />
                 )}
                 {hideDefaultParticipationMessage &&
-                  timeLocation === 'left' &&
+                  timeLeftPosition === 'left' &&
                   timeLeftTranslated?.toUpperCase()}
-              </div>
+              </span>
             </Text>
-            {timeLeft !== undefined && timeLocation === 'right' && (
+            {timeLeft !== undefined && timeLeftPosition === 'right' && (
               <Text
                 color="white"
                 style={{ textTransform: 'uppercase' }}
@@ -152,12 +173,7 @@ export const ParticipationCTAContent = ({
               </Text>
             )}
           </Box>
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            flexDirection="column"
-          >
+          <Box display="flex" alignItems="center" width="100%">
             {participationState && participationState}
           </Box>
         </Box>
@@ -188,24 +204,30 @@ export const ParticipationCTAContent = ({
         maxWidth={`${maxPageWidth}px`}
       >
         <Box display="flex" flexWrap="wrap" alignItems="center">
-          <BlickingIcon
-            name={hasUserParticipated ? 'check-circle' : 'dot'}
-            width="16px"
-            height="16px"
-            fill={colors.white}
-            mr="8px"
-            showAnimation={!hasUserParticipated}
-          />
-          <Text width="90%" color="white" fontSize="s" my="0px">
+          {!useProjectClosedStyle && (
+            <BlickingIcon
+              name={hasUserParticipated ? 'check-circle' : 'dot'}
+              width="16px"
+              height="16px"
+              fill={colors.white}
+              mr="8px"
+              showAnimation={!hasUserParticipated}
+            />
+          )}
+          <Text color="white" fontSize="s" my="0px">
             {!hideDefaultParticipationMessage && (
-              <FormattedMessage {...userParticipationMessage} />
-            )}
-            {timeLocation === 'left' && timeLeftTranslated?.toUpperCase()}{' '}
+              <FormattedMessage {...getUserParticipationMessage()} />
+            )}{' '}
+            {timeLeftPosition === 'left' && timeLeftTranslated?.toUpperCase()}{' '}
           </Text>
-          <Box display="flex">{participationState && participationState}</Box>
+          {participationState && (
+            <Box display="flex" width="100%">
+              {participationState}
+            </Box>
+          )}
         </Box>
         <Box display="flex" alignItems="center">
-          {timeLeft !== undefined && timeLocation === 'right' && (
+          {timeLeft !== undefined && timeLeftPosition === 'right' && (
             <Text
               color="white"
               style={{ textTransform: 'uppercase' }}

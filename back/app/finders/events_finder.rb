@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
 class EventsFinder < ApplicationFinder
-  default_sort :start_at
-  sortable_attributes 'start_at'
-
   private
 
   def static_page_id_condition(static_page_id)

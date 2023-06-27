@@ -200,9 +200,13 @@ const ProjectsShowPageWrapper = () => {
 
   const { pathname } = useLocation();
   const { slug, phaseNumber } = useParams();
-  const { data: project, status, error } = useProjectBySlug(slug);
+  const {
+    data: project,
+    status: statusProject,
+    error,
+  } = useProjectBySlug(slug);
   const { data: phases } = usePhases(project?.data.id);
-  const user = useAuthUser();
+  const { data: user, status: statusUser } = useAuthUser();
 
   const processType = project?.data.attributes?.process_type;
   const urlSegments = pathname
@@ -210,15 +214,15 @@ const ProjectsShowPageWrapper = () => {
     .split('/')
     .filter((segment) => segment !== '');
 
-  const projectPending = status === 'loading';
-  const userPending = user === undefined;
+  const projectPending = statusProject === 'loading';
+  const userPending = statusUser === 'loading';
   const pending = projectPending || userPending;
 
   useEffect(() => {
     if (pending) return;
     if (isError(user)) return;
 
-    if (user !== null) setUserWasLoggedIn(true);
+    if (user) setUserWasLoggedIn(true);
   }, [pending, user]);
 
   if (pending) {
@@ -230,7 +234,7 @@ const ProjectsShowPageWrapper = () => {
   }
 
   const userJustLoggedOut = userWasLoggedIn && user === null;
-  const unauthorized = status === 'error' && isUnauthorizedRQ(error);
+  const unauthorized = statusProject === 'error' && isUnauthorizedRQ(error);
 
   if (userJustLoggedOut && unauthorized) {
     return <Navigate to="/" replace />;
@@ -240,7 +244,7 @@ const ProjectsShowPageWrapper = () => {
     return <Unauthorized />;
   }
 
-  if (status === 'error' || project === null) {
+  if (statusProject === 'error' || project === null) {
     return <PageNotFound />;
   }
 

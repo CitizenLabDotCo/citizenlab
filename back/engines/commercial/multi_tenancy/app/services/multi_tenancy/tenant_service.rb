@@ -142,7 +142,7 @@ module MultiTenancy
     def validate_locales(template_name, config_locales)
       required_locales = ::MultiTenancy::Templates::Utils.new.required_locales(template_name)
 
-      unless required_locales.to_set <= config_locales.to_set # rubocop:disable Style/GuardClause
+      if required_locales.to_set > config_locales.to_set
         raise ClErrors::TransactionError.new(error_key: :missing_locales)
       end
     end

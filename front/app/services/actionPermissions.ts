@@ -3,7 +3,7 @@ import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship } from 'typings';
 
 export type IGlobalPermissionAction =
-  | 'voting_initiative'
+  | 'reacting_initiative'
   | 'commenting_initiative'
   | 'posting_initiative';
 
@@ -29,11 +29,11 @@ export interface IGlobalPermissionData {
 
 export type IParticipationContextPermissionAction =
   | 'posting_idea'
-  | 'voting_idea'
+  | 'reacting_idea'
   | 'commenting_idea'
   | 'taking_survey'
   | 'taking_poll'
-  | 'budgeting' // TODO change
+  | 'voting'
   | 'annotating_document';
 
 interface IParticipationContextPermissionData {

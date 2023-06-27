@@ -29,8 +29,8 @@ export const data: IIdeaData[] = [
       },
       slug: 'test-idea-ssdsdsd',
       publication_status: 'published',
-      upvotes_count: 1,
-      downvotes_count: 0,
+      likes_count: 1,
+      dislikes_count: 0,
       comments_count: 1,
       official_feedbacks_count: 0,
       location_point_geojson: null,
@@ -48,7 +48,7 @@ export const data: IIdeaData[] = [
           disabled_reason: null,
           future_enabled: null,
         },
-        voting_idea: {
+        reacting_idea: {
           enabled: true,
           disabled_reason: null,
           cancelling_enabled: true,
@@ -59,18 +59,18 @@ export const data: IIdeaData[] = [
           },
           down: {
             enabled: false,
-            disabled_reason: 'downvoting_disabled',
+            disabled_reason: 'disliking_disabled',
             future_enabled: null,
           },
         },
-        comment_voting_idea: {
+        comment_reacting_idea: {
           enabled: true,
           disabled_reason: null,
           future_enabled: null,
         },
-        budgeting: {
+        voting: {
           enabled: false,
-          disabled_reason: 'not_budgeting',
+          disabled_reason: 'not_voting',
           future_enabled: null,
         },
       },
@@ -105,7 +105,7 @@ export const data: IIdeaData[] = [
           type: 'idea_status',
         },
       },
-      user_vote: {
+      user_reaction: {
         data: null,
       },
       assignee: {

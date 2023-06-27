@@ -13,8 +13,8 @@
 #  author_id                :uuid
 #  created_at               :datetime         not null
 #  updated_at               :datetime         not null
-#  upvotes_count            :integer          default(0), not null
-#  downvotes_count          :integer          default(0), not null
+#  likes_count              :integer          default(0), not null
+#  dislikes_count           :integer          default(0), not null
 #  location_point           :geography        point, 4326
 #  location_description     :string
 #  comments_count           :integer          default(0), not null
@@ -30,6 +30,7 @@
 #  creation_phase_id        :uuid
 #  author_hash              :string
 #  anonymous                :boolean          default(FALSE), not null
+#  internal_comments_count  :integer          default(0), not null
 #
 # Indexes
 #
@@ -133,7 +134,7 @@ class Idea < ApplicationRecord
       .where(projects: { admin_publications: { publication_status: publication_status } })
   end)
 
-  scope :order_popular, ->(direction = :desc) { order(Arel.sql("(upvotes_count - downvotes_count) #{direction}, ideas.id")) }
+  scope :order_popular, ->(direction = :desc) { order(Arel.sql("(likes_count - dislikes_count) #{direction}, ideas.id")) }
   # based on https://medium.com/hacking-and-gonzo/how-hacker-news-ranking-algorithm-works-1d9b0cf2c08d
 
   scope :order_status, lambda { |direction = :desc|
@@ -145,18 +146,6 @@ class Idea < ApplicationRecord
     joins(:idea_status).where(idea_statuses: { code: 'proposed' })
       .where('ideas.id NOT IN (SELECT DISTINCT(post_id) FROM official_feedbacks)')
   }
-
-  scope :order_with, lambda { |scope_name|
-    case scope_name
-    when 'random'   then order_random
-    when 'popular'  then order_popular
-    when 'new'      then order_new
-    when '-new'     then order_new(:asc)
-    else order_trending
-    end
-  }
-
-  scope :order_trending, -> { TrendingIdeaService.new.sort_trending(where('TRUE')) }
 
   def just_published?
     publication_status_previous_change == %w[draft published] || publication_status_previous_change == [nil, 'published']

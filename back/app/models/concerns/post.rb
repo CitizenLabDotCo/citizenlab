@@ -32,12 +32,13 @@ module Post
     has_many :activities, as: :item
 
     has_many :comments, as: :post, dependent: :destroy
+    has_many :internal_comments, as: :post, dependent: :destroy
     has_many :official_feedbacks, as: :post, dependent: :destroy
 
-    has_many :votes, as: :votable, dependent: :destroy
-    has_many :upvotes, -> { where(mode: 'up') }, as: :votable, class_name: 'Vote'
-    has_many :downvotes, -> { where(mode: 'down') }, as: :votable, class_name: 'Vote'
-    has_one :user_vote, ->(user_id) { where(user_id: user_id) }, as: :votable, class_name: 'Vote'
+    has_many :reactions, as: :reactable, dependent: :destroy
+    has_many :likes, -> { where(mode: 'up') }, as: :reactable, class_name: 'Reaction'
+    has_many :dislikes, -> { where(mode: 'down') }, as: :reactable, class_name: 'Reaction'
+    has_one :user_reaction, ->(user_id) { where(user_id: user_id) }, as: :reactable, class_name: 'Reaction'
 
     has_many :spam_reports, as: :spam_reportable, class_name: 'SpamReport', dependent: :destroy
 
@@ -54,9 +55,12 @@ module Post
     scope :published, -> { where publication_status: 'published' }
 
     scope :order_new, ->(direction = :desc) { order(published_at: direction) }
-    scope :order_random, lambda {
-      modulus = RandomOrderingService.new.modulus_of_the_day
-      order(Arel.sql("(extract(epoch from #{table_name}.created_at) * 100)::bigint % #{modulus}, #{table_name}.id"))
+    scope :order_random, lambda { |user|
+      hash_part_for_today_and_user = Time.zone.today.to_s + user&.id.to_s
+      order(Arel.sql("md5(concat(#{table_name}.id, '#{hash_part_for_today_and_user}'))"))
+    }
+    scope :order_author_name, lambda { |direction = :desc|
+      includes(:author).order('users.first_name' => direction, 'users.last_name' => direction)
     }
 
     def location_point_geojson
@@ -76,7 +80,7 @@ module Post
     end
 
     def score
-      upvotes_count - downvotes_count
+      likes_count - dislikes_count
     end
 
     def author_name

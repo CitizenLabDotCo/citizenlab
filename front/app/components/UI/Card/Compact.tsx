@@ -126,6 +126,8 @@ const Body = styled.div`
 `;
 
 interface Props {
+  id?: string;
+  to: string;
   image: string | null;
   imagePlaceholder: JSX.Element;
   hideImage?: boolean;
@@ -139,14 +141,14 @@ interface Props {
   body: JSX.Element | string;
   interactions?: JSX.Element | null;
   footer: JSX.Element | null;
+  onClick?: (event: MouseEvent<HTMLAnchorElement>) => void;
   className?: string;
-  to: string;
-  onClick: (event: MouseEvent<HTMLAnchorElement>) => void;
 }
 
 export const Card = memo<Props>(
   ({
     image,
+    id,
     to,
     onClick,
     imagePlaceholder,
@@ -165,6 +167,7 @@ export const Card = memo<Props>(
       className={`e2e-card ${className} ${
         !(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'
       }`}
+      id={id}
     >
       {!hideImage && image && (
         <IdeaCardImageWrapper hasImage={!!image}>
@@ -188,7 +191,7 @@ export const Card = memo<Props>(
         </Header>
 
         {!hideBody && <Body>{body}</Body>}
-        <Box mt="auto">{interactions && interactions}</Box>
+        <Box mt="auto">{interactions}</Box>
         {footer}
       </ContentWrapper>
     </Container>

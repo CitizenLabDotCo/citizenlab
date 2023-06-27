@@ -19,10 +19,10 @@ export interface IIdeaMarkerData {
   attributes: {
     slug: string;
     title_multiloc: Multiloc;
-    location_point_geojson: GeoJSON.Point;
-    location_description: string;
-    upvotes_count: number;
-    downvotes_count: number;
+    location_point_geojson: GeoJSON.Point | null;
+    location_description: string | null;
+    likes_count: number;
+    dislikes_count: number;
     comments_count: number;
     budget: number | null;
   };
