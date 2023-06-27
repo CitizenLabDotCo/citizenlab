@@ -124,7 +124,12 @@ resource 'Baskets' do
       describe do
         let(:new_ideas) { create_list(:idea, 2, project: @project) }
         let(:idea_ids) { new_ideas.map(&:id) + [@ideas.first.id] }
-        let(:baskets_ideas_attributes) { new_ideas.map { |idea| { idea_id: idea.id } } + [{ idea_id: @ideas.first.id, votes: 4 }] }
+        let(:baskets_ideas_attributes) do
+          new_ideas.map { |idea| { idea_id: idea.id } } + [
+            { idea_id: @ideas.first.id, votes: 4 },
+            { idea_id: @ideas.last.id, votes: 0 } # Delete
+          ]
+        end
 
         example_request 'Update a basket' do
           assert_status 200

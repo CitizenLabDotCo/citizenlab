@@ -33,6 +33,9 @@ class WebApi::V1::BasketsController < ApplicationController
   def update
     attributes = basket_params.to_h
     if attributes.key? 'baskets_ideas_attributes'
+      attributes['baskets_ideas_attributes'].reject! do |baskets_idea_attrs|
+        baskets_idea_attrs.key?('votes') && baskets_idea_attrs['votes'] <= 0
+      end
       attributes['baskets_ideas_attributes'].each do |baskets_idea_attrs|
         update_basket_idea = @basket.baskets_ideas.find_by(idea_id: baskets_idea_attrs['idea_id'])
         baskets_idea_attrs['id'] = update_basket_idea.id if update_basket_idea
