@@ -246,6 +246,7 @@ const MentionsTextArea = ({
           aria-label={ariaLabel}
           ref={setMentionsInputRef}
           inputRef={textareaElement}
+          autoFocus={false}
         >
           <Mention
             trigger="@"
