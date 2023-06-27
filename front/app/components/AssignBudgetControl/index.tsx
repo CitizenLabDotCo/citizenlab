@@ -13,9 +13,6 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import useBasket from 'api/baskets/useBasket';
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
-import { queryClient } from 'utils/cl-react-query/queryClient';
-import projectsKeys from 'api/projects/keys';
-import phasesKeys from 'api/phases/keys';
 import useAddBasket from 'api/baskets/useAddBasket';
 import useUpdateBasket from 'api/baskets/useUpdateBasket';
 
