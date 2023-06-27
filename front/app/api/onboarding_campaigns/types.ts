@@ -13,14 +13,15 @@ export type OnboardingCampaignName =
 
 export interface OnboardingCampaignAttributes {
   name: OnboardingCampaignName;
-  cta_message_multiloc: Multiloc;
-  cta_button_multiloc: Multiloc;
-  cta_button_link: string;
+  cta_message_multiloc: Multiloc | null;
+  cta_button_multiloc: Multiloc | null;
+  cta_button_link: string | null;
 }
 
 export interface IOnboardingCampaign {
   data: {
     type: 'onboarding_campaign';
+    id: string;
     attributes: OnboardingCampaignAttributes;
   };
 }

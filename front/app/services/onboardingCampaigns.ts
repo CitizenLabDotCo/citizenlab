@@ -1,5 +1,5 @@
 import { API_PATH } from 'containers/App/constants';
-import streams, { IStreamParams } from 'utils/streams';
+import streams from 'utils/streams';
 import { Multiloc } from 'typings';
 
 export type OnboardingCampaignName =
@@ -22,15 +22,6 @@ export interface IOnboardingCampaign {
     type: 'onboarding_campaign';
     attributes: OnboardingCampaignAttributes;
   };
-}
-
-export function currentOnboardingCampaignsStream(
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IOnboardingCampaign>({
-    apiEndpoint: currentOnboardingCampaignsApiEndpoint,
-    ...streamParams,
-  });
 }
 
 export async function dismissOnboardingCampaign(name: OnboardingCampaignName) {
