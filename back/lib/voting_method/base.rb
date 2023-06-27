@@ -6,7 +6,11 @@ module VotingMethod
       @participation_context = participation_context
     end
 
-    def validate
+    def validate_participation_context
+      # Default is to do nothing.
+    end
+
+    def validate_baskets_idea
       # Default is to do nothing.
     end
 
