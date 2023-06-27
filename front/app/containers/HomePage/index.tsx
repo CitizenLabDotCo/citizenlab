@@ -14,9 +14,6 @@ const InfoSection = lazy(
 const Footer = lazy(() => import('./Footer'));
 import { canAccessRoute } from 'services/permissions/rules/routePermissions';
 
-// types
-import { SignUpInFlow } from 'containers/Authentication/typings';
-
 // hooks
 import useAuthUser from 'api/me/useAuthUser';
 import useHomepageSettings from 'hooks/useHomepageSettings';
