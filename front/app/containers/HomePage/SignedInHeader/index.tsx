@@ -26,7 +26,7 @@ import styled from 'styled-components';
 import { media, fontSizes, isRtl } from 'utils/styleUtils';
 
 // hooks
-import useCurrentOnboardingCampaign from 'hooks/useCurrentOnboardingCampaign';
+import useCurrentOnboardingCampaign from 'api/onboarding_campaigns/useCurrentOnboardingCampaign';
 
 const Header = styled.div`
   width: 100%;
@@ -146,7 +146,7 @@ export const Icons = styled.div`
 `;
 
 const SignedInHeader = () => {
-  const currentOnboardingCampaign = useCurrentOnboardingCampaign();
+  const { data: currentOnboardingCampaign } = useCurrentOnboardingCampaign();
 
   const handleSkip = (name: OnboardingCampaignName) => () => {
     trackEventByName(tracks.clickSkipButton, {

@@ -9,7 +9,7 @@ import T from 'components/T';
 import { OnboardingCampaignName } from 'services/onboardingCampaigns';
 
 // hooks
-import useCurrentOnboardingCampaign from 'hooks/useCurrentOnboardingCampaign';
+import useCurrentOnboardingCampaign from 'api/onboarding_campaigns/useCurrentOnboardingCampaign';
 import OnboardingStep from './OnboardingStep';
 import SkipButton from './SkipButton';
 import AcceptButton from './AcceptButton';
@@ -21,7 +21,7 @@ interface Props {
 }
 
 const CustomCTAStep = ({ onSkip, currentOnboardingCampaignName }: Props) => {
-  const onboardingCampaign = useCurrentOnboardingCampaign();
+  const { data: onboardingCampaign } = useCurrentOnboardingCampaign();
   const localize = useLocalize();
 
   if (!isNilOrError(onboardingCampaign)) {

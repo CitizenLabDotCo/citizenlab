@@ -17,9 +17,9 @@ export interface OnboardingCampaignAttributes {
   cta_button_link: string;
 }
 
-export interface OnboardingCampaignData {
+export interface IOnboardingCampaign {
   data: {
-    type: 'onboarding_status';
+    type: 'onboarding_campaign';
     attributes: OnboardingCampaignAttributes;
   };
 }
@@ -27,14 +27,14 @@ export interface OnboardingCampaignData {
 export function currentOnboardingCampaignsStream(
   streamParams: IStreamParams | null = null
 ) {
-  return streams.get<OnboardingCampaignData>({
+  return streams.get<IOnboardingCampaign>({
     apiEndpoint: currentOnboardingCampaignsApiEndpoint,
     ...streamParams,
   });
 }
 
 export async function dismissOnboardingCampaign(name: OnboardingCampaignName) {
-  const response = await streams.add<OnboardingCampaignData>(
+  const response = await streams.add<IOnboardingCampaign>(
     `${API_PATH}/onboarding_campaigns/${name}/dismissal`,
     {}
   );
