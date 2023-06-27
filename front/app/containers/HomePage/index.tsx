@@ -14,17 +14,25 @@ const InfoSection = lazy(
 const Footer = lazy(() => import('./Footer'));
 import { canAccessRoute } from 'services/permissions/rules/routePermissions';
 
+// types
+import { SignUpInFlow } from 'containers/Authentication/typings';
+
 // hooks
 import useAuthUser from 'api/me/useAuthUser';
 import useHomepageSettings from 'hooks/useHomepageSettings';
 import useKeyPress from 'hooks/useKeyPress';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+
 export const adminRedirectPath = '/admin/dashboard';
 
-const HomePage = () => {
+type HomePageProps = {
+  openAuthenticationStep?: SignUpInFlow;
+};
+const HomePage = ({ openAuthenticationStep }: HomePageProps) => {
   const homepageSettings = useHomepageSettings();
   const { data: authUser } = useAuthUser();
   const { data: appConfiguration } = useAppConfiguration();
@@ -37,6 +45,13 @@ const HomePage = () => {
           appConfiguration.data
         )
       : false;
+
+  useEffect(() => {
+    if (openAuthenticationStep) {
+      triggerAuthenticationFlow({ flow: openAuthenticationStep });
+      clHistory.replace('/');
+    }
+  }, [openAuthenticationStep]);
 
   useEffect(() => {
     if (pressedLetterAKey && userHasAdminAccess) {
