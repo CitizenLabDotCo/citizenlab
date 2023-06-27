@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { isNumber } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -18,13 +18,17 @@ import BottomBar from 'components/FiltersModal/BottomBar';
 import FullscreenModal from 'components/UI/FullscreenModal';
 import Button from 'components/UI/Button';
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
+import { ScreenReaderOnly } from 'utils/a11y';
+import EmptyProposals from './EmptyProposals';
+import ProposalsList from './ProposalsList';
 
-// resources
-import {
-  Sort,
-  IQueryParameters,
-  InitiativePublicationStatus,
-} from 'api/initiatives/types';
+// router
+import { useSearchParams } from 'react-router-dom';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+
+// hooks
+import useInfitineInitiatives from 'api/initiatives/useInfiniteInitiatives';
+import useInitiativesFilterCounts from 'api/initiatives_filter_counts/useInitiativesFilterCounts';
 
 // i18n
 import messages from './messages';
@@ -40,11 +44,9 @@ import {
   viewportWidths,
   defaultCardStyle,
 } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
-import EmptyProposals from './EmptyProposals';
-import ProposalsList from './ProposalsList';
-import useInfitineInitiatives from 'api/initiatives/useInfiniteInitiatives';
-import useInitiativesFilterCounts from 'api/initiatives_filter_counts/useInitiativesFilterCounts';
+
+// typings
+import { Sort } from 'components/InitiativeCards/SortFilterDropdown';
 
 const gapWidth = 35;
 
@@ -198,17 +200,41 @@ interface Props {
   invisibleTitleMessage: MessageDescriptor;
 }
 
-const InitiativeCards = ({ className, invisibleTitleMessage }: Props) => {
-  const defaultFilters = {
-    publication_status: 'published' as InitiativePublicationStatus,
-  };
+interface QueryParameters {
+  publication_status: 'published';
+  sort: Sort;
+  search?: string;
+  initiative_status?: string;
+  topics?: string[];
+}
 
+const InitiativeCards = ({ className, invisibleTitleMessage }: Props) => {
   const { formatMessage } = useIntl();
   const { windowWidth } = useWindowSize();
-  const [selectedView, setSelectedView] = useState<'map' | 'card'>('card');
+
+  const [searchParams] = useSearchParams();
+  const sortParam = searchParams.get('sort') as Sort | null;
+  const searchParam = searchParams.get('search');
+  const initiativeStatusParam = searchParams.get('initiative_status');
+  const topicsParam = searchParams.get('topics');
+  const selectedInitiativeMarkerId = searchParams.get('initiative_map_id');
+
+  const [selectedView, setSelectedView] = useState<'map' | 'card'>(
+    selectedInitiativeMarkerId ? 'map' : 'card'
+  );
   const [filtersModalOpened, setFiltersModalOpened] = useState(false);
-  const [selectedInitiativeFilters, setSelectedInitiativeFilters] =
-    useState<Partial<IQueryParameters>>(defaultFilters);
+
+  const selectedInitiativeFilters = useMemo<QueryParameters>(
+    () => ({
+      publication_status: 'published',
+      sort: sortParam ?? 'new',
+      search: searchParam ?? undefined,
+      initiative_status: initiativeStatusParam ?? undefined,
+      topics: topicsParam ? JSON.parse(topicsParam) : undefined,
+    }),
+    [sortParam, searchParam, initiativeStatusParam, topicsParam]
+  );
+
   const {
     data: initiatives,
     fetchNextPage,
@@ -236,54 +262,42 @@ const InitiativeCards = ({ className, invisibleTitleMessage }: Props) => {
     trackEventByName(tracks.sortingFilter, {
       sort,
     });
-    setSelectedInitiativeFilters({ ...selectedInitiativeFilters, sort });
+
+    updateSearchParams({ sort });
   };
 
-  const handleSearchOnChange = useCallback((search: string) => {
-    setSelectedInitiativeFilters((selectedInitiativeFilters) => ({
-      ...selectedInitiativeFilters,
-      search: search || undefined,
-    }));
+  const handleSearchOnChange = useCallback((search: string | null) => {
+    updateSearchParams({ search });
   }, []);
 
   const handleStatusOnChange = (initiative_status: string | null) => {
-    setSelectedInitiativeFilters({
-      ...selectedInitiativeFilters,
-      initiative_status,
-    });
+    updateSearchParams({ initiative_status });
   };
 
   const handleTopicsOnChange = (topics: string[] | null) => {
     trackEventByName(tracks.topicsFilter, {
       topics,
     });
-    setSelectedInitiativeFilters({ ...selectedInitiativeFilters, topics });
+
+    updateSearchParams({ topics });
   };
 
-  const handleStatusOnChangeAndApplyFilter = (
-    initiative_status: string | null
-  ) => {
-    setSelectedInitiativeFilters({
-      ...selectedInitiativeFilters,
-      initiative_status,
+  const closeModal = () => {
+    setFiltersModalOpened(false);
+  };
+
+  const resetFilters = () => {
+    updateSearchParams({
+      sort: undefined,
+      search: undefined,
+      initiative_status: undefined,
+      topics: undefined,
     });
   };
 
-  const handleTopicsOnChangeAndApplyFilter = (topics: string[] | null) => {
-    setSelectedInitiativeFilters({ ...selectedInitiativeFilters, topics });
-  };
-
-  const handleInitiativeFiltersOnReset = () => {
-    setSelectedInitiativeFilters(defaultFilters);
-  };
-
-  const closeModalAndApplyFilters = () => {
-    setFiltersModalOpened(false);
-  };
-
   const closeModalAndRevertFilters = () => {
-    setFiltersModalOpened(false);
-    setSelectedInitiativeFilters(defaultFilters);
+    closeModal();
+    resetFilters();
   };
 
   const selectView = (selectedView: 'card' | 'map') => {
@@ -301,13 +315,12 @@ const InitiativeCards = ({ className, invisibleTitleMessage }: Props) => {
   const filtersActive =
     selectedInitiativeFilters?.search ||
     selectedInitiativeFilters?.initiative_status ||
-    selectedInitiativeFilters?.areas ||
     selectedInitiativeFilters?.topics;
 
   const filtersSidebar = (
     <FiltersSidebarContainer className={className}>
       {filtersActive && (
-        <ClearFiltersButton onClick={handleInitiativeFiltersOnReset}>
+        <ClearFiltersButton onClick={resetFilters}>
           <ClearFiltersText>
             <FormattedMessage {...messages.resetFilters} />
           </ClearFiltersText>
@@ -326,27 +339,20 @@ const InitiativeCards = ({ className, invisibleTitleMessage }: Props) => {
       </ScreenReaderOnly>
 
       <DesktopSearchInput
+        defaultValue={selectedInitiativeFilters.search ?? undefined}
         placeholder={searchPlaceholder}
         ariaLabel={searchAriaLabel}
         onChange={handleSearchOnChange}
         a11y_numberOfSearchResults={flatInitiatives?.length || 0}
       />
       <StyledInitiativesStatusFilter
-        selectedStatusId={selectedInitiativeFilters?.initiative_status}
-        selectedInitiativeFilters={selectedInitiativeFilters || defaultFilters}
-        onChange={
-          !biggerThanLargeTablet
-            ? handleStatusOnChange
-            : handleStatusOnChangeAndApplyFilter
-        }
+        selectedStatusId={selectedInitiativeFilters.initiative_status}
+        selectedInitiativeFilters={selectedInitiativeFilters}
+        onChange={handleStatusOnChange}
       />
       <StyledInitiativesTopicsFilter
-        selectedTopicIds={selectedInitiativeFilters?.topics}
-        onChange={
-          !biggerThanLargeTablet
-            ? handleTopicsOnChange
-            : handleTopicsOnChangeAndApplyFilter
-        }
+        selectedTopicIds={selectedInitiativeFilters.topics}
+        onChange={handleTopicsOnChange}
       />
     </FiltersSidebarContainer>
   );
@@ -371,12 +377,12 @@ const InitiativeCards = ({ className, invisibleTitleMessage }: Props) => {
             <>
               <FullscreenModal
                 opened={filtersModalOpened}
-                close={closeModalAndApplyFilters}
+                close={closeModal}
                 animateInOut={true}
                 topBar={
                   <TopBar
                     onReset={closeModalAndRevertFilters}
-                    onClose={closeModalAndApplyFilters}
+                    onClose={closeModal}
                   />
                 }
                 bottomBar={
@@ -397,7 +403,7 @@ const InitiativeCards = ({ className, invisibleTitleMessage }: Props) => {
                         <FormattedMessage {...messages.showInitiatives} />
                       )
                     }
-                    onClick={closeModalAndApplyFilters}
+                    onClick={closeModal}
                   />
                 }
               >
@@ -407,6 +413,7 @@ const InitiativeCards = ({ className, invisibleTitleMessage }: Props) => {
               </FullscreenModal>
 
               <MobileSearchInput
+                defaultValue={selectedInitiativeFilters.search ?? undefined}
                 placeholder={searchPlaceholder}
                 ariaLabel={searchAriaLabel}
                 onChange={handleSearchOnChange}
@@ -431,6 +438,7 @@ const InitiativeCards = ({ className, invisibleTitleMessage }: Props) => {
             {selectedView === 'card' && (
               <AboveContentRight>
                 <SortFilterDropdown
+                  defaultSortingMethod={selectedInitiativeFilters.sort}
                   onChange={handleSortOnChange}
                   alignment="right"
                 />

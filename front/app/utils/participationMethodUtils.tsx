@@ -59,9 +59,25 @@ type FormTitleMethodProps = {
 
 type PostSortingOptionType = { text: JSX.Element; value: string };
 
+/* 
+Configuration Description
+---------------------------------
+formEditor: We currently have 2 UIs for admins to edit the form definition. This defines which UI, if any, the method uses.
+onFormSubmission: Called after input form submission.
+getFormTitle?:  Gets the title of the input form
+getModalContent: Returns modal content to be displayed on project page.
+getMethodPickerMessage: Returns the message to be displayed in the admin participation method picker.
+showInputManager: Returns whether the input manager should be shown in the admin view.
+isMethodLocked: Returns whether a method can be selected in the participation method picker.
+postType: Returns the type of input that is being posted.
+renderCTABar: Returns whether the CTA bar should be rendered.
+postSortingOptions?: Returns the sorting options for posts.
+showInputCount: Returns the input count to be used on project cards.
+useProjectClosedCTABarStyle?: Used to determine if the CTA bar should display "closed" styling.
+*/
+
 export type ParticipationMethodConfig = {
-  /** We currently have 2 UIs for admins to edit the form definition. This
-   * defines which UI, if any, the method uses */
+  /** When adding a new property, please add a description in the above comment */
   formEditor: 'simpleFormEditor' | 'surveyEditor' | null;
   onFormSubmission: (props: FormSubmissionMethodProps) => void;
   getModalContent: (
@@ -75,6 +91,9 @@ export type ParticipationMethodConfig = {
   renderCTABar: (props: CTABarProps) => ReactNode | JSX.Element | null;
   postSortingOptions?: PostSortingOptionType[];
   showInputCount: boolean;
+  useProjectClosedCTABarStyle?: (
+    participationContext: IPhaseData | IProjectData
+  ) => boolean;
 };
 
 const ideationConfig: ParticipationMethodConfig = {
@@ -172,6 +191,12 @@ const nativeSurveyConfig: ParticipationMethodConfig = {
   isMethodLocked: true,
   renderCTABar: (props: CTABarProps) => {
     return <NativeSurveyCTABar project={props.project} phases={props.phases} />;
+  },
+  useProjectClosedCTABarStyle: (participationContext) => {
+    if (!participationContext.attributes.posting_enabled) {
+      return true;
+    }
+    return false;
   },
 };
 

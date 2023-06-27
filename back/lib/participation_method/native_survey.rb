@@ -54,6 +54,10 @@ module ParticipationMethod
       true
     end
 
+    def posting_allowed?
+      true
+    end
+
     def never_update?
       true
     end
@@ -76,6 +80,10 @@ module ParticipationMethod
 
     def include_data_in_email?
       false
+    end
+
+    def return_disabled_actions?
+      true
     end
 
     # The "Additional information" category in the UI should be suppressed.

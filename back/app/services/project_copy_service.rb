@@ -219,7 +219,8 @@ class ProjectCopyService < TemplateService
       yml_pc['voting_max_total'] = pc.voting_max_total
       yml_pc['voting_min_total'] = pc.voting_min_total
       yml_pc['voting_max_votes_per_idea'] = pc.voting_max_votes_per_idea
-      yml_pc['voting_term'] = pc.voting_term
+      yml_pc['voting_term_singular_multiloc'] = pc.voting_term_singular_multiloc
+      yml_pc['voting_term_plural_multiloc'] = pc.voting_term_plural_multiloc
     end
     if yml_pc['participation_method'] == 'survey'
       yml_pc['survey_embed_url'] = pc.survey_embed_url

@@ -33,7 +33,7 @@ import { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 import { IGroupDataAttributes, MembershipType } from 'api/groups/types';
 import { TNotificationData } from 'api/notifications/types';
 import { IPhaseData } from 'api/phases/types';
-import { TVerificationMethod } from 'services/verificationMethods';
+import { TVerificationMethod } from 'api/verification_methods/types';
 import { SignUpInFlow } from 'containers/Authentication/typings';
 import {
   CellConfiguration,
@@ -75,7 +75,7 @@ export interface OutletsPropertyMap {
     labelTooltipText: string;
   };
   'app.ProjectsShowPage.shared.header.ProjectInfo.projectDescriptionBuilder': {
-    onMount: () => void;
+    id: string;
   };
   'app.containers.Admin.users.GroupsListPanel.listitem.icon': {
     type: MembershipType;

@@ -62,6 +62,7 @@ class Notification < ApplicationRecord
   belongs_to :post, polymorphic: true, optional: true
   belongs_to :post_status, polymorphic: true, optional: true
   belongs_to :comment, optional: true
+  belongs_to :internal_comment, optional: true
   belongs_to :project, optional: true
   belongs_to :phase, optional: true
   belongs_to :official_feedback, optional: true

@@ -1,7 +1,7 @@
 import React from 'react';
 
 // hooks
-import useUserCustomFieldOptions from 'hooks/useUserCustomFieldOptions';
+import useUserCustomFieldOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
 
 // components
 import { Select } from '@citizenlab/cl2-component-library';
@@ -15,7 +15,7 @@ import { isNilOrError, NilOrError } from 'utils/helperUtils';
 // typings
 import { TRule } from 'modules/commercial/smart_groups/components/UserFilterConditions/rules';
 import { IOption } from 'typings';
-import { IUserCustomFieldOptionData } from 'services/userCustomFieldOptions';
+import { IUserCustomFieldOptionData } from 'api/user_custom_fields_options/types';
 
 type Props = {
   rule: TRule;
@@ -65,12 +65,12 @@ const CustomFieldOptionValueSelectorWithHOC = localize(
 
 export default (inputProps: Props) => {
   const customFieldId = inputProps.rule?.['customFieldId'];
-  const customFieldOptions = useUserCustomFieldOptions(customFieldId);
+  const { data: customFieldOptions } = useUserCustomFieldOptions(customFieldId);
 
   return (
     <CustomFieldOptionValueSelectorWithHOC
       {...inputProps}
-      options={customFieldOptions}
+      options={customFieldOptions?.data}
     />
   );
 };

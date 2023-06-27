@@ -10,6 +10,10 @@ module ParticipationMethod
       %w[random]
     end
 
+    def posting_allowed?
+      false
+    end
+
     def sign_in_required_for_posting?
       true
     end

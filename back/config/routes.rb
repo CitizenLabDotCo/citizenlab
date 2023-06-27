@@ -31,6 +31,10 @@ Rails.application.routes.draw do
           get :children, on: :member
           post :mark_as_deleted, on: :member
         end
+        resources :internal_comments, except: [:destroy], shallow: true do
+          get :children, on: :member
+          patch :mark_as_deleted, on: :member
+        end
         get 'comments/as_xlsx', on: :collection, to: 'comments#index_xlsx'
         resources :official_feedback, shallow: true
       end
@@ -204,6 +208,8 @@ Rails.application.routes.draw do
       end
 
       resource :home_page, only: %i[show update]
+
+      resources :experiments, only: %i[index create]
 
       scope 'stats' do
         route_params = { controller: 'stats_users' }

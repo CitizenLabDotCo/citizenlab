@@ -49,6 +49,10 @@ module ParticipationMethod
       false
     end
 
+    def posting_allowed?
+      false
+    end
+
     def never_update?
       false
     end
@@ -114,6 +118,11 @@ module ParticipationMethod
     end
 
     def supports_answer_visible_to?
+      false
+    end
+
+    # Should an admin be able to set permissions for disabled actions?
+    def return_disabled_actions?
       false
     end
 

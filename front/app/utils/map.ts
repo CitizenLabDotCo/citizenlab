@@ -12,23 +12,16 @@ import formatcoords from 'formatcoords';
 
 export const getCenter = (
   centerLatLng?: LatLngTuple | null,
-  appConfig?: IAppConfigurationData | null | Error
+  appConfig?: IAppConfigurationData
 ) => {
+  if (centerLatLng) return centerLatLng;
+
   const tenantCenterLat =
-    !isNilOrError(appConfig) &&
     appConfig?.attributes?.settings?.maps?.map_center?.lat;
   const tenantCenterLong =
-    !isNilOrError(appConfig) &&
     appConfig?.attributes?.settings?.maps?.map_center?.long;
 
-  if (!isNilOrError(centerLatLng)) {
-    return centerLatLng;
-  } else if (
-    tenantCenterLat !== undefined &&
-    tenantCenterLat !== false &&
-    tenantCenterLong !== undefined &&
-    tenantCenterLong !== false
-  ) {
+  if (tenantCenterLat !== undefined && tenantCenterLong !== undefined) {
     return [
       parseFloat(tenantCenterLat),
       parseFloat(tenantCenterLong),

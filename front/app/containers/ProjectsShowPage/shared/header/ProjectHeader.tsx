@@ -1,4 +1,4 @@
-import React, { useState, memo } from 'react';
+import React, { memo } from 'react';
 
 import { isNilOrError } from 'utils/helperUtils';
 import { canModerateProject } from 'services/permissions/rules/projectPermissions';
@@ -82,7 +82,9 @@ interface Props {
 
 const ProjectHeader = memo<Props & WrappedComponentProps>(
   ({ projectId, className, intl: { formatMessage } }) => {
-    const [moduleActive, setModuleActive] = useState(false);
+    const projectDescriptionBuilderEnabled = useFeatureFlag({
+      name: 'project_description_builder',
+    });
     const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
     const { data: project } = useProjectById(projectId);
     const { data: authUser } = useAuthUser();
@@ -94,8 +96,6 @@ const ProjectHeader = memo<Props & WrappedComponentProps>(
       const userCanEditProject =
         !isNilOrError(authUser) &&
         canModerateProject(project.data.id, authUser);
-
-      const setModuleToActive = () => setModuleActive(true);
 
       return (
         <Container className={className || ''}>
@@ -136,11 +136,10 @@ const ProjectHeader = memo<Props & WrappedComponentProps>(
               projectId={projectId}
               hasHeaderImage={!!projectHeaderImageLargeUrl}
             />
-            {!moduleActive && <ProjectInfo projectId={projectId} />}
-            <Outlet
-              id="app.ProjectsShowPage.shared.header.ProjectInfo.projectDescriptionBuilder"
-              onMount={setModuleToActive}
-            />
+            {!projectDescriptionBuilderEnabled && (
+              <ProjectInfo projectId={projectId} />
+            )}
+            <Outlet id="app.ProjectsShowPage.shared.header.ProjectInfo.projectDescriptionBuilder" />
           </ContentContainer>
         </Container>
       );

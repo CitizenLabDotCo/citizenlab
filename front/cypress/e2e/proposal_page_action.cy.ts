@@ -56,9 +56,16 @@ describe('Initiative show page actions', () => {
       cy.apiRemoveInitiative(initiativeId);
     });
 
-    it('saves a new official feedback, shows it and deletes it', () => {
+    it('saves a new official feedback and shows it', () => {
       const officialFeedbackBody = randomString(30);
       const officialFeedbackAuthor = randomString();
+
+      // We wait for topics to be loaded since it is one of the last api calls.
+      // We do this so that the entire page is loaded and the focus won't be
+      // taken away from the official feedback inputs while typing by another
+      // input field that loads later. Example id (#submit-comment)
+      cy.intercept('**/topics').as('topicsRequest');
+      cy.wait('@topicsRequest');
 
       // input
       cy.get('.e2e-localeswitcher').each((button) => {

@@ -387,6 +387,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_22_132238) do
     t.index ["project_id"], name: "index_events_on_project_id"
   end
 
+  create_table "experiments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false
+    t.string "treatment", null: false
+    t.string "action", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "flag_inappropriate_content_inappropriate_content_flags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "flaggable_id", null: false
     t.string "flaggable_type", null: false

@@ -58,6 +58,7 @@ export const VolunteeringCTABar = ({ phases, project }: CTABarProps) => {
     <ParticipationCTAContent
       currentPhase={currentPhase}
       CTAButton={CTAButton}
+      project={project}
     />
   );
 };
