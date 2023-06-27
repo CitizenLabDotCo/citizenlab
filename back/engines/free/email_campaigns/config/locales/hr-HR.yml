@@ -16,7 +16,16 @@ hr:
       "initiative_published": Objava mog prijedloga
       "invite_received": Pozivnica
       "invite_reminder": Podsjetnik o pozivnici
+      "internal_comment_on_idea_assigned_to_you": Interni komentar na unos koji mi je dodijeljen
+      "internal_comment_on_idea_you_commented_internally_on": Interni komentar na unos koji sam interno komentirao
+      "internal_comment_on_idea_you_moderate": Interni komentar na unos u projektu ili mapi kojom upravljam
+      "internal_comment_on_initiative_assigned_to_you": Interni komentar na prijedlog koji mi je dodijeljen
+      "internal_comment_on_initiative_you_commented_internally_on": Interni komentar na prijedlog Ja sam interno komentirao
+      "internal_comment_on_unassigned_initiative": Interni komentar na nedodijeljeni prijedlog
+      "internal_comment_on_unassigned_unmoderated_idea": Interni komentar na nedodijeljeni unos u neupravljanom projektu
+      "internal_comment_on_your_internal_comment": Interni komentar na moj interni komentar
       "mention_in_official_feedback": Spominjanje u objavi
+      "mention_in_internal_comment": Spomenuti u internom komentaru
       "new_comment_for_admin": Novi komentar u projektu kojim upravljam
       "new_comment_on_commented_idea": Novi komentar na ideju koju sam komentirao/la
       "new_comment_on_commented_initiative": Novi komentar na prijedlog koji sam komentirao/la
@@ -215,6 +224,12 @@ hr:
       main_header: 'Ljudi pričaju o vama'
       subject: 'Neko vas je spomenuo na platformi %{organizationName}'
       preheader: '%{commentAuthor} vas je spomenuo/la u komentaru'
+    mention_in_internal_comment:
+      cta_reply_to: 'Pogledaj komentar od %{firstName}'
+      event_description: '%{authorNameFull} vas je spomenuo u internom komentaru.'
+      subject: '%{firstName} vas je spomenuo u internom komentaru.'
+      main_header: '%{authorNameFirst} vas je spomenuo u internom komentaru.'
+      preheader: '%{authorNameFull} vas je spomenuo u internom komentaru.'
     moderator_digest:
       subject: 'Vaš tjedni izvještaj za voditelje projekta od %{time}'
       preheader: 'Sažetak za voditelje projekta %{organizationName}'
@@ -298,6 +313,54 @@ hr:
       main_header: '%{authorName} je odgovorio/la na vaš komentar'
       preheader: '%{authorName} je odgovorio/la na vaš komentar na platformi %{organizationName}'
       replied: '%{authorFirstName} je odgovorio/la:'
+    internal_comment_on_your_internal_comment:
+      cta_reply_to: 'Pogledaj komentar od %{firstName}'
+      event_description: '%{authorNameFull} je komentirao vaš interni komentar.'
+      subject: 'Dobili ste komentar na svoj interni komentar na ''%{post}'''
+      main_header: 'Dobili ste komentar na svoj interni komentar na ''%{post}'''
+      preheader: '%{authorName} je odgovorio na vaš interni komentar na ''%{post}'''
+    internal_comment_on_idea_assigned_to_you:
+      cta_reply_to: 'Pogledaj komentar od %{firstName}'
+      event_description: '%{authorNameFull} je interno komentirao unos koji vam je dodijeljen.'
+      subject: '''%{post}'' ima novi interni komentar'
+      main_header: '''%{post}'' ima novi interni komentar'
+      preheader: '''%{post}'' ima novi interni komentar'
+    internal_comment_on_idea_you_commented_internally_on:
+      cta_reply_to: 'Pogledaj komentar od %{firstName}'
+      event_description: '%{authorNameFull} je interno komentirao unos koji ste vi interno komentirali.'
+      subject: '''%{post}'' ima novi interni komentar'
+      main_header: '''%{post}'' ima novi interni komentar'
+      preheader: '''%{post}'' ima novi interni komentar'
+    internal_comment_on_idea_you_moderate:
+      cta_reply_to: 'Pogledaj komentar od %{firstName}'
+      event_description: '%{authorNameFull} je interno komentirao unos u projektu ili mapi kojom upravljate.'
+      subject: '''%{post}'' ima novi interni komentar'
+      main_header: '''%{post}'' ima novi interni komentar'
+      preheader: '''%{post}'' ima novi interni komentar'
+    internal_comment_on_initiative_assigned_to_you:
+      cta_reply_to: 'Pogledaj komentar od %{firstName}'
+      event_description: '%{authorNameFull} je interno komentirao prijedlog koji vam je dodijeljen.'
+      subject: '''%{post}'' ima novi interni komentar'
+      main_header: '''%{post}'' ima novi interni komentar'
+      preheader: '''%{post}'' ima novi interni komentar'
+    internal_comment_on_initiative_you_commented_internally_on:
+      cta_reply_to: 'Pogledaj komentar od %{firstName}'
+      event_description: '%{authorNameFull} je interno komentirao prijedlog koji ste vi interno komentirali.'
+      subject: '''%{post}'' ima novi interni komentar'
+      main_header: '''%{post}'' ima novi interni komentar'
+      preheader: '''%{post}'' ima novi interni komentar'
+    internal_comment_on_unassigned_initiative:
+      cta_reply_to: 'Pogledaj komentar od %{firstName}'
+      event_description: '%{authorNameFull} je interno komentirao nedodijeljeni prijedlog.'
+      subject: '''%{post}'' ima novi interni komentar'
+      main_header: '''%{post}'' ima novi interni komentar'
+      preheader: '''%{post}'' ima novi interni komentar'
+    internal_comment_on_unassigned_unmoderated_idea:
+      cta_reply_to: 'Pogledaj komentar od %{firstName}'
+      event_description: '%{authorNameFull} je interno komentirao nedodijeljeni unos u neupravljanom projektu.'
+      subject: '''%{post}'' ima novi interni komentar'
+      main_header: '''%{post}'' ima novi interni komentar'
+      preheader: '''%{post}'' ima novi interni komentar'
     official_feedback_on_commented_initiative:
       by_author: 'od %{authorName}'
       updated: '%{officialName} je napisao/la:'
@@ -516,12 +579,15 @@ hr:
       remaining_days: 'Preostalo dana'
     admin_labels:
       recipient_role:
+        admins: 'Adminima'
         admins_and_managers: 'Administratorima i upraviteljima'
+        managers: 'Menadžerima'
         registered_users: 'Registriranim korisnicima'
       recipient_segment:
         admins: 'Administratori'
         admins_and_managers: 'Administratori i upravitelji'
         admins_and_managers_managing_the_project: 'Administratori i menadžeri koji upravljaju projektom'
+        managers_managing_the_project: 'Menadžeri koji upravljaju projektom'
         all_users: 'Svi korisnici'
         all_users_who_uploaded_proposals: 'Svi korisnici koji su učitali prijedloge'
         managers: 'Menadžeri'
@@ -544,6 +610,7 @@ hr:
         content_moderation: 'Moderiranje sadržaja'
         general: 'Općenito'
         inputs: 'Unosi'
+        internal_comments: 'Interni komentari'
         permissions: 'Dozvole'
         projects: 'Projekti'
         proposals: 'Prijedlozi'
@@ -556,6 +623,14 @@ hr:
         input_is_flagged_as_spam: 'Unos je označen kao spam'
         input_is_updated: 'Unos je ažuriran'
         input_status_changes: 'Promjene statusa ulaza'
+        internal_comment_is_posted_on_idea_assigned_to_user: Interni komentar objavljen je na unosu dodijeljenom korisniku'
+        internal_comment_is_posted_on_initiative_assigned_to_user: Interni komentar objavljen je na prijedlog dodijeljen korisniku'
+        internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: Interni komentar objavljen je na unosu u projektu ili mapi kojom upravlja korisnik'
+        internal_comment_is_posted_on_idea_user_has_commented_internally_on: Interni komentar objavljen je na unosu koji je korisnik interno komentirao na'
+        internal_comment_is_posted_on_initiative_user_has_commented_internally_on: Interni komentar objavljen je na prijedlogu koji je korisnik interno komentirao'
+        internal_comment_is_posted_on_unassigned_initiative: Interni komentar objavljen je na nedodijeljenom prijedlogu'
+        internal_comment_is_posted_on_unassigned_unmoderated_idea: Interni komentar objavljen je na nedodijeljenom unosu u neupravljanom projektu'
+        user_is_mentioned_in_internal_comment: 'Korisnik je spomenut u internom komentaru'
         new_input_is_published: 'Objavljen je novi unos'
         new_proposal_is_posted: 'Novi prijedlog je objavljen'
         project_phase_changes: 'Promjene faza projekta'
@@ -575,5 +650,6 @@ hr:
         proposal_is_published: 'Prijedlog je objavljen'
         user_registers_for_the_first_time: 'Korisnik se registrira prvi put'
         user_replies_to_comment: 'Korisnik odgovara na komentar'
+        user_replies_to_internal_comment: 'Korisnik odgovara na interni komentar'
         7_days_after_invite_is_sent: '7 dana nakon slanja poziva'
         7_days_before_the_project_changes_phase: '7 dana prije promjene faze projekta'
