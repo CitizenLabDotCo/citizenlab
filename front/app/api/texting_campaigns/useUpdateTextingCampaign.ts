@@ -24,8 +24,11 @@ const useUpdateTextingCampaign = () => {
   const queryClient = useQueryClient();
   return useMutation<ITextingCampaign, CLErrors, ITextingCampaignUpdate>({
     mutationFn: updateTextingCampaign,
-    onSuccess: () => {
+    onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: textingCampaignsKeys.lists() });
+      queryClient.invalidateQueries({
+        queryKey: textingCampaignsKeys.item({ id: variables.id }),
+      });
     },
   });
 };
