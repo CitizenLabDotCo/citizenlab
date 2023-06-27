@@ -16,6 +16,7 @@ en:
       "initiative_published": Publication of my proposal
       "invite_received": Invitation
       "invite_reminder": Invitation reminder
+      "internal_comment_on_idea_assigned_to_you": Internal comment on idea assigned to me
       "internal_comment_on_your_internal_comment": Internal comment on my internal comment
       "mention_in_official_feedback": Mention in an update
       "mention_in_internal_comment": Mention in an internal comment
@@ -312,6 +313,12 @@ en:
       subject: 'You have received a comment on your internal comment on ''%{post}'''
       main_header: 'You have received a comment on your internal comment on ''%{post}'''
       preheader: '%{authorName} replied to your internal comment on ''%{post}'''
+    internal_comment_on_idea_assigned_to_you:
+      cta_reply_to: 'View comment by %{firstName}'
+      event_description: '%{authorNameFull} commented internally on an input assigned to you.'
+      subject: '''%{post}'' has a new internal comment'
+      main_header: '''%{post}'' has a new internal comment'
+      preheader: '''%{post}'' has a new internal comment'
     official_feedback_on_commented_initiative:
       by_author: 'by %{authorName}'
       updated: '%{officialName} wrote:'
@@ -571,6 +578,7 @@ en:
         input_is_flagged_as_spam: 'Input is flagged as spam'
         input_is_updated: 'Input is updated'
         input_status_changes: 'Input status changes'
+        internal_comment_is_made_on_idea_assigned_to_user: Internal comment is made on idea assigned to user'
         user_is_mentioned_in_internal_comment: 'User is mentioned in internal comment'
         new_input_is_published: 'New input is published'
         new_proposal_is_posted: 'New proposal is posted'

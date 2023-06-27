@@ -14,6 +14,7 @@ en:
       "initiative_assigned_to_you": Assignment of a proposal to me
       "initiative_marked_as_spam": Proposal spam report
       "initiative_published": Publication of my proposal
+      "internal_comment_on_idea_assigned_to_you": Internal comment on idea assigned to me
       "internal_comment_on_your_internal_comment": Internal comment on my internal comment
       "invite_received": Invitation
       "invite_reminder": Invitation reminder
@@ -64,6 +65,7 @@ en:
       "initiative_assigned_to_you": Assignment of a proposal - admins
       "initiative_marked_as_spam": Proposal spam report - admins
       "initiative_published": Publication of your proposal - all users
+      "internal_comment_on_idea_assigned_to_you": Internal comment on idea assigned to you - admins and project managers
       "internal_comment_on_your_internal_comment": Internal comment on your internal comment - admins and project managers
       "invite_received": Invitation - all users
       "invite_reminder": Invitation reminder - all users
@@ -348,6 +350,12 @@ en:
       main_header: '%{authorName} replied to your comment'
       preheader: '%{authorName} replied to your comment on %{organizationName}''s platform'
       replied: '%{authorFirstName} replied:'
+    internal_comment_on_idea_assigned_to_you:
+      cta_reply_to: 'View comment by %{firstName}'
+      event_description: '%{authorNameFull} commented internally on an input assigned to you.'
+      subject: '''%{post}'' has a new internal comment'
+      main_header: '''%{post}'' has a new internal comment'
+      preheader: '''%{post}'' has a new internal comment'
     internal_comment_on_your_internal_comment:
       cta_reply_to: 'View comment by %{firstName}'
       event_description: '%{authorNameFull} commented on your internal comment.'
