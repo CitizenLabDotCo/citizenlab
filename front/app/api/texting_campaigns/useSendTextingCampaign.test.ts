@@ -10,7 +10,7 @@ import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
 const apiPath = '*texting_campaigns/:id/send';
 const server = setupServer(
-  rest.patch(apiPath, (_req, res, ctx) => {
+  rest.post(apiPath, (_req, res, ctx) => {
     return res(ctx.status(200), ctx.json({ data: campaignsData[0] }));
   })
 );

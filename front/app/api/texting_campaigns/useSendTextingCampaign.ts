@@ -11,7 +11,7 @@ interface ITextingCampaignSend {
 const sendTextingCampaign = ({ id }: ITextingCampaignSend) =>
   fetcher<ITextingCampaign>({
     path: `/texting_campaigns/${id}/send`,
-    action: 'patch',
+    action: 'post',
     body: {},
   });
 
