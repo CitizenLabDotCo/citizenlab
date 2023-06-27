@@ -233,6 +233,7 @@ const IdeaMapCard = memo<Props>(
           onMouseLeave={handleOnMouseLeave}
           role="button"
           tabIndex={0}
+          id="e2e-idea-map-card"
         >
           {tablet && (
             <StyledCloseIconButton
@@ -259,13 +260,15 @@ const IdeaMapCard = memo<Props>(
             {!isParticipatoryBudgetIdea && (
               <>
                 <FooterItem>
-                  <DislikeIcon name="vote-down" />
-                  <FooterValue>{ideaMarker.attributes.likes_count}</FooterValue>
+                  <LikeIcon name="vote-up" />
+                  <FooterValue id="e2e-map-card-like-count">
+                    {ideaMarker.attributes.likes_count}
+                  </FooterValue>
                 </FooterItem>
                 {showDislike && (
                   <FooterItem>
-                    <LikeIcon name="vote-up" />
-                    <FooterValue>
+                    <DislikeIcon name="vote-down" />
+                    <FooterValue id="e2e-map-card-dislike-count">
                       {ideaMarker.attributes.dislikes_count}
                     </FooterValue>
                   </FooterItem>

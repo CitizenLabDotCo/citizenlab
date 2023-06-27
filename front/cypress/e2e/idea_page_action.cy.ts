@@ -41,6 +41,38 @@ describe('Idea show page actions', () => {
         officialFeedbackAuthor
       );
     });
+
+    describe('Map idea card', () => {
+      const ideaTitle = randomString();
+      let ideaId: string;
+      let projectId: string;
+      let projectSlug: string;
+      const ideaContent = randomString();
+
+      before(() => {
+        cy.getProjectBySlug('an-idea-bring-it-to-your-council').then(
+          (project) => {
+            projectSlug = project.body.data.attributes.slug;
+            projectId = project.body.data.id;
+            cy.apiCreateIdea(projectId, ideaTitle, ideaContent).then((idea) => {
+              ideaId = idea.body.data.id;
+            });
+          }
+        );
+      });
+
+      it('displays correct likes and dislikes on map idea card', () => {
+        cy.visit(`/projects/${projectSlug}`);
+        cy.get('#view-tab-2').should('exist');
+        cy.get('#view-tab-2').click();
+        cy.get('#e2e-idea-map-card')
+          .first()
+          .within(() => {
+            cy.get('#e2e-map-card-like-count').should('contain', '1');
+            cy.get('#e2e-map-card-dislike-count').should('contain', '0');
+          });
+      });
+    });
   });
 
   describe('logged in as normal user', () => {
