@@ -212,6 +212,7 @@ export interface IInternalCommentNotificationData
     post_slug: string | null;
     post_title_multiloc: Multiloc;
     post_id: string;
+    internal_comment_id: string;
     project_id: string | null;
   };
 }

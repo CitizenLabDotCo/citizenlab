@@ -18,6 +18,7 @@ import { darken } from 'polished';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useInternalComment from 'api/internal_comments/useInternalComment';
 import useInternalComments from 'api/internal_comments/useInternalComments';
+import { useLocation } from 'react-router-dom';
 
 const Container = styled.div`
   position: relative;
@@ -57,12 +58,17 @@ const InternalParentComment = ({
 }: Props) => {
   const theme = useTheme();
   const { data: comment } = useInternalComment(commentId);
+  const { hash } = useLocation();
   const {
     data: childCommentsData,
     fetchNextPage,
     isFetchingNextPage,
     hasNextPage,
-  } = useInternalComments({ type: 'comment', commentId, pageSize: 5 });
+  } = useInternalComments({
+    type: 'comment',
+    commentId,
+    pageSize: !hash ? 5 : undefined,
+  });
   const childComments = childCommentsData?.pages
     .map((page) => page.data)
     .flat();
