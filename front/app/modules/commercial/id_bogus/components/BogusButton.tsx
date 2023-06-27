@@ -1,7 +1,7 @@
 import React from 'react';
 
 // typings
-import { TVerificationMethod } from 'services/verificationMethods';
+import { TVerificationMethod } from 'api/verification_methods/types';
 
 // components
 import VerificationMethodButton from 'components/UI/VerificationMethodButton';
