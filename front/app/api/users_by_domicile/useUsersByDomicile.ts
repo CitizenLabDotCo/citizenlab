@@ -12,7 +12,10 @@ const fetchUsersByDomicile = (params: ICustomFieldParams) =>
     queryParams: params,
   });
 
-const useUsersByDomicile = (queryParameters: ICustomFieldParams) => {
+const useUsersByDomicile = ({
+  enabled,
+  ...queryParameters
+}: ICustomFieldParams & { enabled: boolean }) => {
   return useQuery<
     IUsersByDomicile,
     CLErrors,
@@ -21,6 +24,7 @@ const useUsersByDomicile = (queryParameters: ICustomFieldParams) => {
   >({
     queryKey: usersByDomicileKeys.item(queryParameters),
     queryFn: () => fetchUsersByDomicile(queryParameters),
+    enabled,
   });
 };
 

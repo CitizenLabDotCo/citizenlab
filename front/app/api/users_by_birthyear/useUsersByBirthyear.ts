@@ -12,7 +12,10 @@ const fetchUsersByBirthyear = (params: ICustomFieldParams) =>
     queryParams: params,
   });
 
-const useUsersByBirthyear = (queryParameters: ICustomFieldParams) => {
+const useUsersByBirthyear = ({
+  enabled,
+  ...queryParameters
+}: ICustomFieldParams & { enabled: boolean }) => {
   return useQuery<
     IUsersByBirthyear,
     CLErrors,
@@ -21,6 +24,7 @@ const useUsersByBirthyear = (queryParameters: ICustomFieldParams) => {
   >({
     queryKey: usersByBirthyearKeys.item(queryParameters),
     queryFn: () => fetchUsersByBirthyear(queryParameters),
+    enabled,
   });
 };
 

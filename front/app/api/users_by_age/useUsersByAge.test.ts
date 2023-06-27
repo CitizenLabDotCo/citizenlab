@@ -39,6 +39,7 @@ describe('useUsersByAge', () => {
       () =>
         useUsersByAge({
           project: 'project',
+          enabled: true,
         }),
       {
         wrapper: createQueryClientWrapper(),
@@ -64,6 +65,7 @@ describe('useUsersByAge', () => {
       () =>
         useUsersByAge({
           project: 'project',
+          enabled: true,
         }),
       {
         wrapper: createQueryClientWrapper(),

@@ -24,6 +24,7 @@ export default function useAgeSerie({
     end_at: endAt,
     group: currentGroupFilter,
     project: projectId,
+    enabled: true,
   });
 
   const serie = usersByBirthyear

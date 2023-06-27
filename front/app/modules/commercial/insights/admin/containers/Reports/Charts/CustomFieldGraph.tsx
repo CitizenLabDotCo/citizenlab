@@ -115,24 +115,33 @@ const CustomFieldsGraph = ({
     end_at: endAt,
     project: currentProject,
     filter_by_participation: true,
+    enabled: code === 'gender',
   });
-  const { data: usersByGenderWithoutFilters } = useUsersByGender({});
+  const { data: usersByGenderWithoutFilters } = useUsersByGender({
+    enabled: code === 'gender',
+  });
 
   const { data: usersByBirthyearWithFilters } = useUsersByBirthyear({
     start_at: startAt,
     end_at: endAt,
     project: currentProject,
     filter_by_participation: true,
+    enabled: code === 'birthyear',
   });
-  const { data: usersByBirthyearWithoutFilters } = useUsersByBirthyear({});
+  const { data: usersByBirthyearWithoutFilters } = useUsersByBirthyear({
+    enabled: code === 'birthyear',
+  });
 
   const { data: usersByDomicileWithFilters } = useUsersByDomicile({
     start_at: startAt,
     end_at: endAt,
     project: currentProject,
     filter_by_participation: true,
+    enabled: code === 'domicile',
   });
-  const { data: usersByDomicileWithoutFilters } = useUsersByDomicile({});
+  const { data: usersByDomicileWithoutFilters } = useUsersByDomicile({
+    enabled: code === 'domicile',
+  });
 
   const currentChartRef = useRef();
   const convertAndMergeSeriesRef = useRef(

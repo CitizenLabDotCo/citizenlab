@@ -96,6 +96,7 @@ const BarChartByCategory = ({
     end_at: endAt,
     group: currentGroupFilter,
     id,
+    enabled: true,
   });
 
   const serie = usersByCustomField && convertToGraphFormat(usersByCustomField);

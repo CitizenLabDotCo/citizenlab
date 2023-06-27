@@ -35,6 +35,7 @@ describe('useUsersByDomicile', () => {
       () =>
         useUsersByDomicile({
           project: 'project',
+          enabled: true,
         }),
       {
         wrapper: createQueryClientWrapper(),
@@ -60,6 +61,7 @@ describe('useUsersByDomicile', () => {
       () =>
         useUsersByDomicile({
           project: 'project',
+          enabled: true,
         }),
       {
         wrapper: createQueryClientWrapper(),

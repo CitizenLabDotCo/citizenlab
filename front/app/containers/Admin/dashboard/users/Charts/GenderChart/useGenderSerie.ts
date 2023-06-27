@@ -23,6 +23,7 @@ export default function useGenderSerie({
     end_at: endAt,
     group: currentGroupFilter,
     project: projectId,
+    enabled: true,
   });
 
   const serie = usersByGender

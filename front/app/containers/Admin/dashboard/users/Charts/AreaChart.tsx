@@ -45,6 +45,7 @@ const AreaChart = (
     start_at: props.startAt,
     end_at: props.endAt,
     group: props.currentGroupFilter,
+    enabled: true,
   });
 
   const convertToGraphFormat = (data: IUsersByDomicile) => {

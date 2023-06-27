@@ -32,15 +32,22 @@ function useReferenceData(
   const [referenceDataUploaded, setReferenceDataUploaded] = useState<
     boolean | undefined
   >();
-  const { data: usersByAge } = useUsersByAge({ project: projectId });
-  const { data: usersByGender } = useUsersByGender({ project: projectId });
+
+  const code = userCustomField.attributes.code;
+  const { data: usersByAge } = useUsersByAge({
+    project: projectId,
+    enabled: code === 'birthyear',
+  });
+  const { data: usersByGender } = useUsersByGender({
+    project: projectId,
+    enabled: code === 'gender',
+  });
   const { data: usersByCustomField } = useUsersByCustomField({
     project: projectId,
     id: userCustomField.id,
+    enabled: !code,
   });
   const locale = useLocale();
-
-  const code = userCustomField.attributes.code;
 
   useEffect(() => {
     if (isNilOrError(locale)) return;

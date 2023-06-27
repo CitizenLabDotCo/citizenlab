@@ -61,6 +61,7 @@ describe('useUsersByCustomField', () => {
       () =>
         useUsersByCustomField({
           id: 'id',
+          enabled: true,
         }),
       {
         wrapper: createQueryClientWrapper(),
@@ -86,6 +87,7 @@ describe('useUsersByCustomField', () => {
       () =>
         useUsersByCustomField({
           id: 'id',
+          enabled: true,
         }),
       {
         wrapper: createQueryClientWrapper(),

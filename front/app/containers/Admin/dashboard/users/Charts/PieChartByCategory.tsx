@@ -67,6 +67,7 @@ const PieChartByCategory = ({
     end_at: endAt,
     group: currentGroupFilter,
     id,
+    enabled: true,
   });
 
   const convertCheckboxToGraphFormat = (data: IUsersByCustomField) => {
