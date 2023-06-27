@@ -342,6 +342,8 @@
   "app.components.ProjectCard.xOptions": "{ideasCount, plural, no {# options} واحدة {# option} أخرى {# options}}",
   "app.components.ProjectCard.xProjects": "{ideasCount, plural, no {# projects} واحد {# project} آخر {# projects}}",
   "app.components.ProjectCard.xQuestions": "{ideasCount, plural, no {# questions} واحد {# question} آخر {# questions}}",
+  "app.components.ProjectFolderCard.xComments": "{commentsCount, plural, no {# تعليقات} one {# تعليقات} other {# تعليقات}}",
+  "app.components.ProjectFolderCard.xInputs": "{ideasCount, plural, no {# مدخلات} one {# مدخل} other {# مدخلات}}",
   "app.components.ProjectFolderCards.components.Topbar.a11y_projectFilterTabInfo": "{count, plural, no {# مشروع} one {# مشروع} other {# مشروع/مشاريع}}",
   "app.components.ProjectFolderCards.components.Topbar.all": "الكل",
   "app.components.ProjectFolderCards.components.Topbar.archived": "مؤرشف",

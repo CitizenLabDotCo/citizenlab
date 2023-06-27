@@ -241,7 +241,6 @@ const MentionsTextArea = ({
           rows={rows}
           value={value || ''}
           placeholder={placeholder}
-          displayTransform={mentionDisplayTransform}
           markup={'@[__display__](__id__)'}
           onChange={handleOnChange}
           onFocus={handleOnFocus}
@@ -256,6 +255,7 @@ const MentionsTextArea = ({
             data={getUsers}
             appendSpaceOnAdd={true}
             style={mentionStyle}
+            displayTransform={mentionDisplayTransform}
           />
         </StyledMentionsInput>
         {children}
