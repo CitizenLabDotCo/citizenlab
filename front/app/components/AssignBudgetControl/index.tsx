@@ -1,7 +1,8 @@
 import React, { memo, FormEvent, useState } from 'react';
 
 // components
-import { Box, Button, Icon } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
+import AddToBasketButton from './AddToBasketButton';
 
 // services
 import { getLatestRelevantPhase } from 'api/phases/utils';
@@ -17,7 +18,6 @@ import projectsKeys from 'api/projects/keys';
 import phasesKeys from 'api/phases/keys';
 import useAddBasket from 'api/baskets/useAddBasket';
 import useUpdateBasket from 'api/baskets/useUpdateBasket';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -40,7 +40,7 @@ import messages from './messages';
 import FormattedBudget from 'utils/currency/FormattedBudget';
 
 // styles
-import styled, { useTheme } from 'styled-components';
+import styled from 'styled-components';
 import { fontSizes, colors, defaultCardStyle, media } from 'utils/styleUtils';
 
 // typings
@@ -107,8 +107,6 @@ const AssignBudgetControl = memo(
     const { data: phases } = usePhases(projectId);
     const { mutateAsync: addBasket } = useAddBasket(projectId);
     const { mutateAsync: updateBasket } = useUpdateBasket();
-    const { data: appConfig } = useAppConfiguration();
-    const theme = useTheme();
 
     const isContinuousProject =
       project?.data.attributes.process_type === 'continuous';
@@ -143,11 +141,7 @@ const AssignBudgetControl = memo(
 
     const [processing, setProcessing] = useState(false);
 
-    if (
-      isNilOrError(idea) ||
-      !idea.data.attributes.budget ||
-      !participationContextId
-    ) {
+    if (isNilOrError(idea) || !ideaBudget || !participationContextId) {
       return null;
     }
 
@@ -228,15 +222,6 @@ const AssignBudgetControl = memo(
             ),
             idea_ids: [idea.data.id],
           });
-
-          // TODO: Remove the invalidations here after the basket data fetching PR by Iva is merged
-          queryClient.invalidateQueries({
-            queryKey: projectsKeys.item({ id: projectId }),
-          });
-          queryClient.invalidateQueries({
-            queryKey: phasesKeys.list({ projectId }),
-          });
-
           done();
           trackEventByName(tracks.basketCreated);
         } catch (error) {
@@ -294,33 +279,19 @@ const AssignBudgetControl = memo(
 
     const buttonMessage = getAddRemoveButtonMessage(view, isInBasket);
 
-    const addRemoveButton = buttonVisible ? (
-      <Button
-        onClick={handleAddRemoveButtonClick}
-        disabled={buttonDisabled}
-        processing={processing}
-        bgColor={isInBasket ? colors.green500 : colors.white}
-        textColor={isInBasket ? colors.white : theme.colors.tenantPrimary}
-        textHoverColor={isInBasket ? colors.white : theme.colors.tenantPrimary}
-        bgHoverColor={isInBasket ? colors.green500 : 'white'}
-        borderColor={isInBasket ? '' : theme.colors.tenantPrimary}
-        width="100%"
-        className={`e2e-assign-budget-button ${
-          isInBasket ? 'in-basket' : 'not-in-basket'
-        }`}
-      >
-        {isInBasket && <Icon mb="4px" fill="white" name="check" />}
-        <FormattedMessage {...buttonMessage} />
-        {` (${
-          idea.data.attributes.budget
-        } ${appConfig?.data.attributes.settings.core.currency.toString()})`}
-      </Button>
-    ) : null;
-
     if (view === 'ideaCard') {
       return (
         <Box className={`e2e-assign-budget ${className || ''}`} width="100%">
-          {addRemoveButton}
+          {buttonVisible && (
+            <AddToBasketButton
+              onClick={handleAddRemoveButtonClick}
+              disabled={buttonDisabled}
+              processing={processing}
+              isInBasket={isInBasket}
+              budget={ideaBudget}
+              buttonMessage={buttonMessage}
+            />
+          )}
         </Box>
       );
     }
@@ -336,9 +307,18 @@ const AssignBudgetControl = memo(
             <ScreenReaderOnly>
               <FormattedMessage {...messages.a11y_price} />
             </ScreenReaderOnly>
-            <FormattedBudget value={idea.data.attributes.budget} />
+            <FormattedBudget value={ideaBudget} />
           </Budget>
-          {addRemoveButton}
+          {buttonVisible && (
+            <AddToBasketButton
+              onClick={handleAddRemoveButtonClick}
+              disabled={buttonDisabled}
+              processing={processing}
+              isInBasket={isInBasket}
+              budget={ideaBudget}
+              buttonMessage={buttonMessage}
+            />
+          )}
         </BudgetWithButtonWrapper>
         {isPermitted && (
           <StyledPBExpenses
