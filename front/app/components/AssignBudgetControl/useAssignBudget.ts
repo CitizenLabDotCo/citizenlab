@@ -26,8 +26,8 @@ const useAssignBudget = ({ projectId, ideaId }: Props) => {
   const { data: idea } = useIdeaById(ideaId);
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
-  const { mutate: updateBasket } = useUpdateBasket();
-  const { mutate: addBasket } = useAddBasket(projectId);
+  const { mutateAsync: addBasket } = useAddBasket(projectId);
+  const { mutateAsync: updateBasket } = useUpdateBasket();
 
   const assignBudget = useCallback(async () => {
     if (!authUser) {
