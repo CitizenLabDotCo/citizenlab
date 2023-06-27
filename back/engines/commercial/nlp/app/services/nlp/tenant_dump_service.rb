@@ -42,8 +42,8 @@ module NLP
           author_name: idea.author_name,
           location_description: idea.location_description,
           topics: idea.topics.map(&:id),
-          upvotes_count: idea.upvotes_count,
-          downvotes_count: idea.downvotes_count,
+          likes_count: idea.likes_count,
+          dislikes_count: idea.dislikes_count,
           updated_at: idea.updated_at.iso8601,
           published_at: idea.published_at.iso8601
         }

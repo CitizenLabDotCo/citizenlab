@@ -75,9 +75,9 @@ export interface IProjectAttributes extends ParticipationContext {
   action_descriptor: {
     posting_idea: ActionDescriptorFutureEnabled<PostingDisabledReason>;
     commenting_idea: ActionDescriptor<CommentingDisabledReason>;
-    voting_idea: ActionDescriptor<ProjectVotingDisabledReason> & {
-      up: ActionDescriptor<ProjectVotingDisabledReason>;
-      down: ActionDescriptor<ProjectVotingDisabledReason>;
+    reacting_idea: ActionDescriptor<ProjectReactingDisabledReason> & {
+      up: ActionDescriptor<ProjectReactingDisabledReason>;
+      down: ActionDescriptor<ProjectReactingDisabledReason>;
     };
     taking_survey: ActionDescriptor<SurveyDisabledReason>;
     taking_poll: ActionDescriptor<PollDisabledReason>;
@@ -127,13 +127,13 @@ export type CommentingDisabledReason =
   | 'commenting_disabled'
   | PermissionsDisabledReason;
 
-type ProjectVotingDisabledReason =
+type ProjectReactingDisabledReason =
   | 'project_inactive'
   | 'not_ideation'
-  | 'voting_disabled'
-  | 'downvoting_disabled'
-  | 'upvoting_limited_max_reached'
-  | 'downvoting_limited_max_reached'
+  | 'reacting_disabled'
+  | 'disliking_disabled'
+  | 'reacting_like_limited_max_reached'
+  | 'reacting_dislike_limited_max_reached'
   | PermissionsDisabledReason;
 
 export type PostingDisabledReason =
@@ -184,12 +184,12 @@ export interface IUpdatedProjectProperties {
   participation_method?: ParticipationMethod | null;
   posting_enabled?: boolean | null;
   commenting_enabled?: boolean | null;
-  voting_enabled?: boolean | null;
-  upvoting_method?: 'limited' | 'unlimited' | null;
-  downvoting_method?: 'limited' | 'unlimited' | null;
-  upvoting_limited_max?: number | null;
-  downvoting_enabled?: boolean | null;
-  downvoting_limited_max?: number | null;
+  reacting_enabled?: boolean | null;
+  reacting_like_method?: 'limited' | 'unlimited' | null;
+  reacting_dislike_method?: 'limited' | 'unlimited' | null;
+  reacting_like_limited_max?: number | null;
+  reacting_dislike_enabled?: boolean | null;
+  reacting_dislike_limited_max?: number | null;
   presentation_mode?: PresentationMode | null;
   admin_publication_attributes?: {
     publication_status?: PublicationStatus;

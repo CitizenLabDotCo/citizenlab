@@ -259,7 +259,7 @@ FactoryBot.define do
     #   phases_config: {
     #     sequence: 'xcyy',
     #     x: { posting_enabled: false },
-    #     y: { voting_enabled: false }
+    #     y: { reacting_enabled: false }
     #   },
     #   current_phase_attrs: {
     #     participation_method: 'voting',
@@ -394,8 +394,8 @@ FactoryBot.define do
     factory :continuous_project do
       process_type { 'continuous' }
       participation_method { 'ideation' }
-      upvoting_method { 'unlimited' }
-      upvoting_limited_max { 7 }
+      reacting_like_method { 'unlimited' }
+      reacting_like_limited_max { 7 }
     end
 
     factory :continuous_native_survey_project do

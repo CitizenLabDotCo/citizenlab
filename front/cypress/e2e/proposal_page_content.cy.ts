@@ -36,8 +36,8 @@ describe('when logged out', () => {
     cy.get('#e2e-initiative-description');
   });
 
-  it('shows the vote control', () => {
-    cy.get('#e2e-initiative-vote-control');
+  it('shows the reaction control', () => {
+    cy.get('#e2e-initiative-reaction-control');
   });
 
   it('shows the sharing component', () => {

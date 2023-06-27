@@ -7,7 +7,7 @@ import React, {
   useMemo,
 } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { popup, LatLng, Map as LeafletMap } from 'leaflet';
+import { popup, LatLng, Map as LeafletMap, LatLngTuple } from 'leaflet';
 import { CSSTransition } from 'react-transition-group';
 
 // components
@@ -24,19 +24,13 @@ import usePhase from 'api/phases/usePhase';
 import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
 
 // services
-import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
 import { getIdeaPostingRules } from 'services/actionTakingRules';
 
+// router
+import { useSearchParams } from 'react-router-dom';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+
 // events
-import {
-  setIdeaMapCardSelected,
-  setIdeasSearch,
-  setIdeasSort,
-  setIdeasTopics,
-  ideaMapCardSelected$,
-  ideasSearch$,
-  ideasTopics$,
-} from './events';
 import {
   setLeafletMapSelectedMarker,
   setLeafletMapHoveredMarker,
@@ -55,7 +49,6 @@ import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 import { media, viewportWidths, colors, fontSizes } from 'utils/styleUtils';
 
 // typings
-import { Sort } from 'api/ideas/types';
 import { IIdeaMarkerData } from 'api/idea_markers/types';
 
 const mapMarginDesktop = 70;
@@ -221,6 +214,7 @@ const initialInnerContainerLeftMargin = getInnerContainerLeftMargin(
 
 const IdeasMap = memo<Props>((props) => {
   const { projectId, phaseId, className, id, ariaLabelledBy, tabIndex } = props;
+  const [searchParams] = useSearchParams();
   const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
@@ -234,23 +228,25 @@ const IdeasMap = memo<Props>((props) => {
   // state
   const [map, setMap] = useState<LeafletMap | null>(null);
   const [selectedLatLng, setSelectedLatLng] = useState<LatLng | null>(null);
-  const [selectedIdeaMarkerId, setSelectedIdeaMarkerId] = useState<
-    string | null
-  >(null);
-  const [points, setPoints] = useState<Point[]>([]);
   const [containerWidth, setContainerWidth] = useState(initialContainerWidth);
   const [innerContainerLeftMargin, setInnerContainerLeftMargin] = useState(
     initialInnerContainerLeftMargin
   );
-  const [isCardClickable, setIsCardClickable] = useState(false);
+  const [isCardClickable, setIsCardClickable] = useState(true);
+  const [initialMapCenter, setInitialMapCenter] = useState<
+    LatLngTuple | undefined
+  >(undefined);
 
   // ideaMarkers
-  const defaultIdeasSearch: string | null = null;
-  const defaultIdeasSort: Sort =
-    project?.data.attributes.ideas_order || ideaDefaultSortMethodFallback;
-  const defaultIdeasTopics: string[] = [];
-  const [search, setSearch] = useState<string | null>(defaultIdeasSearch);
-  const [topics, setTopics] = useState<string[]>(defaultIdeasTopics);
+  const selectedIdeaMarkerId = searchParams.get('idea_map_id');
+  const search = searchParams.get('search');
+  const topicsParam = searchParams.get('topics');
+  const topics: string[] = topicsParam ? JSON.parse(topicsParam) : [];
+
+  const [initiallySelectedMarkerId, setInitiallySelectedMarkerId] = useState<
+    string | null
+  >(selectedIdeaMarkerId);
+
   const { data: ideaMarkers } = useIdeaMarkers({
     projectIds: [projectId],
     phaseId,
@@ -269,48 +265,31 @@ const IdeasMap = memo<Props>((props) => {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useLayoutEffect(() => {
-    const containerWidth = containerRef.current
+    const newContainerWidth = containerRef.current
       ?.getBoundingClientRect()
       .toJSON()?.width;
 
-    if (containerWidth) {
-      setContainerWidth(containerWidth);
+    if (newContainerWidth && newContainerWidth !== containerWidth) {
+      setContainerWidth(newContainerWidth);
     }
   });
 
   useEffect(() => {
     const subscriptions = [
-      ideaMapCardSelected$.subscribe((ideaId) => {
-        setLeafletMapSelectedMarker(ideaId);
-        setSelectedIdeaMarkerId(ideaId);
-      }),
       leafletMapSelectedMarker$.subscribe((ideaId) => {
-        setIdeaMapCardSelected(ideaId);
-        setSelectedIdeaMarkerId((_prevIdeaIdideaId) => {
-          // temporarily disable pointer events on the mobile ideacard popup to avoid
-          // the marker click event from propagating to the card that migth pop up on top of it
-          setIsCardClickable(false);
-          setTimeout(() => {
-            setIsCardClickable(true);
-          }, 200);
-          return ideaId;
-        });
+        // temporarily disable pointer events on the mobile ideacard popup to avoid
+        // the marker click event from propagating to the card that migth pop up on top of it
+        setIsCardClickable(false);
+        setTimeout(() => {
+          setIsCardClickable(true);
+        }, 200);
+
+        updateSearchParams({ idea_map_id: ideaId });
       }),
       leafletMapClicked$.subscribe((latLng) => {
         setSelectedLatLng(latLng);
       }),
-      ideasSearch$.subscribe((search) => {
-        setSearch(search);
-      }),
-      ideasTopics$.subscribe((topics) => {
-        setTopics(topics);
-      }),
     ];
-
-    // defaults
-    setIdeasSearch(defaultIdeasSearch);
-    setIdeasSort(defaultIdeasSort);
-    setIdeasTopics(defaultIdeasTopics);
 
     return () => {
       subscriptions.forEach((subscription) => subscription.unsubscribe());
@@ -339,10 +318,10 @@ const IdeasMap = memo<Props>((props) => {
     );
   }, [windowWidth, containerWidth, tablet]);
 
-  useEffect(() => {
-    const ideaPoints: Point[] = [];
-
+  const points = useMemo(() => {
     if (!isNilOrError(ideaMarkers) && ideaMarkers.data.length > 0) {
+      const ideaPoints: Point[] = [];
+
       ideaMarkers.data.forEach((ideaMarker) => {
         if (
           ideaMarker.attributes &&
@@ -354,17 +333,19 @@ const IdeasMap = memo<Props>((props) => {
           });
         }
       });
+
+      return ideaPoints;
     }
 
-    setPoints(ideaPoints);
+    return;
   }, [ideaMarkers]);
 
   const handleMapOnInit = (map: LeafletMap) => {
     setMap(map);
   };
 
-  const handleIdeaMapCardOnClose = () => {
-    setIdeaMapCardSelected(null);
+  const deselectIdeaMarker = () => {
+    updateSearchParams({ idea_map_id: null });
     setLeafletMapSelectedMarker(null);
     setLeafletMapHoveredMarker(null);
   };
@@ -372,6 +353,26 @@ const IdeasMap = memo<Props>((props) => {
   const selectedIdeaMarker = useMemo(() => {
     return ideaMarkers?.data.find(({ id }) => id === selectedIdeaMarkerId);
   }, [ideaMarkers, selectedIdeaMarkerId]);
+
+  useEffect(() => {
+    if (!initiallySelectedMarkerId || initialMapCenter) return;
+    const point = selectedIdeaMarker?.attributes.location_point_geojson;
+
+    if (!point) {
+      // For whatever reason, ideaMarkers also includes ideas without
+      // markers. If the search params contain one of those,
+      // we do nothing
+      setInitiallySelectedMarkerId(null);
+      return;
+    }
+
+    const { coordinates } = point;
+    setInitialMapCenter([coordinates[1], coordinates[0]]);
+  }, [initiallySelectedMarkerId, initialMapCenter, selectedIdeaMarker]);
+
+  if (initiallySelectedMarkerId && !initialMapCenter) {
+    return null;
+  }
 
   return (
     <Container
@@ -412,7 +413,7 @@ const IdeasMap = memo<Props>((props) => {
           >
             <StyledIdeaMapCard
               ideaMarker={selectedIdeaMarker as IIdeaMarkerData}
-              onClose={handleIdeaMapCardOnClose}
+              onClose={deselectIdeaMarker}
               isClickable={isCardClickable}
               projectId={projectId}
               phaseId={phaseId}
@@ -421,6 +422,8 @@ const IdeasMap = memo<Props>((props) => {
         )}
 
         <Map
+          initialSelectedPointId={initiallySelectedMarkerId ?? undefined}
+          centerLatLng={initialMapCenter}
           onInit={handleMapOnInit}
           projectId={projectId}
           points={points}
@@ -430,7 +433,11 @@ const IdeasMap = memo<Props>((props) => {
           layersControlPosition={tablet ? 'topright' : 'bottomright'}
         />
 
-        <StyledDesktopIdeaMapOverlay projectId={projectId} phaseId={phaseId} />
+        <StyledDesktopIdeaMapOverlay
+          projectId={projectId}
+          phaseId={phaseId}
+          deselectIdeaMarker={deselectIdeaMarker}
+        />
 
         <IdeaButtonWrapper
           className="create-idea-wrapper"

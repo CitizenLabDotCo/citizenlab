@@ -34,12 +34,12 @@ export function getProject(
       participation_method: participationMethod || null,
       posting_enabled: true,
       commenting_enabled: true,
-      voting_enabled: true,
-      upvoting_method: 'unlimited', // 'limited' | 'unlimited',
-      upvoting_limited_max: 0,
-      downvoting_enabled: true,
-      downvoting_method: 'unlimited', // 'limited' | 'unlimited',
-      downvoting_limited_max: 0,
+      reacting_enabled: true,
+      reacting_like_method: 'unlimited', // 'limited' | 'unlimited',
+      reacting_like_limited_max: 0,
+      reacting_dislike_enabled: true,
+      reacting_dislike_method: 'unlimited', // 'limited' | 'unlimited',
+      reacting_dislike_limited_max: 0,
       presentation_mode: 'card', // PresentationMode = 'map' | 'card' cf real project.ts
       internal_role: null, // 'open_idea_box' | null,
       publication_status: 'published', // PublicationStatus = 'draft' | 'published' | 'archived' cf real project.ts
@@ -56,7 +56,7 @@ export function getProject(
           enabled: true,
           disabled_reason: null,
         },
-        voting_idea: {
+        reacting_idea: {
           up: {
             enabled: true,
             disabled_reason: null,

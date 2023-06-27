@@ -5,14 +5,17 @@ import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import useAdminPublications from './useAdminPublications';
-import { adminPublicationsData, links } from './__mocks__/useAdminPublications';
+import {
+  mockFolderChildAdminPublicationsList,
+  links,
+} from './__mocks__/useAdminPublications';
 
 const apiPath = '*admin_publications';
 const server = setupServer(
   rest.get(apiPath, (_req, res, ctx) => {
     return res(
       ctx.status(200),
-      ctx.json({ data: adminPublicationsData, links })
+      ctx.json({ data: mockFolderChildAdminPublicationsList, links })
     );
   })
 );
@@ -38,7 +41,9 @@ describe('useAdminPublications', () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
     expect(result.current.isLoading).toBe(false);
-    expect(result.current.data?.pages[0].data).toEqual(adminPublicationsData);
+    expect(result.current.data?.pages[0].data).toEqual(
+      mockFolderChildAdminPublicationsList
+    );
     expect(result.current.hasNextPage).toBe(true);
   });
 
@@ -48,7 +53,10 @@ describe('useAdminPublications', () => {
       rest.get(apiPath, (_req, res, ctx) => {
         return res(
           ctx.status(200),
-          ctx.json({ data: adminPublicationsData, links: newLinks })
+          ctx.json({
+            data: mockFolderChildAdminPublicationsList,
+            links: newLinks,
+          })
         );
       })
     );
@@ -68,7 +76,9 @@ describe('useAdminPublications', () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
     expect(result.current.isLoading).toBe(false);
-    expect(result.current.data?.pages[0].data).toEqual(adminPublicationsData);
+    expect(result.current.data?.pages[0].data).toEqual(
+      mockFolderChildAdminPublicationsList
+    );
     expect(result.current.hasNextPage).toBe(false);
   });
 

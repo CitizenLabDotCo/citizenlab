@@ -35,7 +35,7 @@ export const ToggleRow = styled(Row)`
   }
 `;
 
-export const VotingLimitInput = styled(Input)`
+export const ReactingLimitInput = styled(Input)`
   width: 100px;
   height: 46px !important;
 `;

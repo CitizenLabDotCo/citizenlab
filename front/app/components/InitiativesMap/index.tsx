@@ -1,9 +1,12 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, useState } from 'react';
 import { adopt } from 'react-adopt';
 import { popup, LatLng, Map as LeafletMap } from 'leaflet';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
 import { Subscription } from 'rxjs';
+
+// router
+import { useSearchParams } from 'react-router-dom';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 // Utils
 import { trackEventByName } from 'utils/analytics';
@@ -18,6 +21,7 @@ import InitiativePreview from './InitiativePreview';
 import {
   leafletMapSelectedMarker$,
   leafletMapClicked$,
+  setLeafletMapSelectedMarker,
 } from 'components/UI/LeafletMap/events';
 
 // Resources
@@ -64,27 +68,25 @@ interface DataProps {
   initiativePermissions: GetInitiativesPermissionsChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps {
+  selectedInitiativeMarkerId: string | null;
+  initiallySelectedMarkerId: string | null;
+}
 
 interface State {
-  selectedInitiativeId: string | null;
   points: Point[];
   lat?: number | null;
   lng?: number | null;
   map?: LeafletMap | null;
 }
 
-export class InitiativesMap extends PureComponent<
-  Props & WithRouterProps,
-  State
-> {
+export class InitiativesMap extends PureComponent<Props, State> {
   private addInitiativeButtonElement: HTMLElement;
   private subscriptions: Subscription[];
 
-  constructor(props: Props & WithRouterProps) {
+  constructor(props: Props) {
     super(props);
     this.state = {
-      selectedInitiativeId: null,
       points: [],
     };
     this.subscriptions = [];
@@ -92,10 +94,8 @@ export class InitiativesMap extends PureComponent<
 
   componentDidMount() {
     this.subscriptions = [
-      leafletMapSelectedMarker$.subscribe((InitiativeId) => {
-        if (InitiativeId) {
-          this.handleInitiativeMarkerSelected(InitiativeId);
-        }
+      leafletMapSelectedMarker$.subscribe((initiativeId) => {
+        this.handleInitiativeMarkerSelected(initiativeId);
       }),
       leafletMapClicked$.subscribe((latLng) => {
         this.handleMapClicked(latLng);
@@ -124,46 +124,41 @@ export class InitiativesMap extends PureComponent<
   };
 
   getPoints = (
-    Initiatives: IGeotaggedInitiativeData[] | null | undefined | Error
+    initiatives: IGeotaggedInitiativeData[] | null | undefined | Error
   ) => {
-    const InitiativePoints: Point[] = [];
+    const initiativePoints: Point[] = [];
 
-    if (!isNilOrError(Initiatives) && Initiatives.length > 0) {
-      Initiatives.forEach((Initiative) => {
+    if (!isNilOrError(initiatives) && initiatives.length > 0) {
+      initiatives.forEach((initiative) => {
         if (
-          Initiative.attributes &&
-          Initiative.attributes.location_point_geojson
+          initiative.attributes &&
+          initiative.attributes.location_point_geojson
         ) {
-          InitiativePoints.push({
-            ...Initiative.attributes.location_point_geojson,
-            id: Initiative.id,
+          initiativePoints.push({
+            ...initiative.attributes.location_point_geojson,
+            id: initiative.id,
           });
         }
       });
     }
 
-    return InitiativePoints;
+    return initiativePoints;
   };
 
   deselectInitiative = () => {
-    this.setState({ selectedInitiativeId: null });
+    setLeafletMapSelectedMarker(null);
   };
 
   handleMapOnInit = (map: LeafletMap) => {
     this.setState({ map });
   };
 
-  handleInitiativeMarkerSelected = (InitiativeId: string) => {
+  handleInitiativeMarkerSelected = (initiativeId: string | null) => {
     trackEventByName(tracks.clickOnInitiativeMapMarker, {
-      extra: { InitiativeId },
+      extra: { initiativeId },
     });
 
-    this.setState(({ selectedInitiativeId }) => {
-      return {
-        selectedInitiativeId:
-          InitiativeId !== selectedInitiativeId ? InitiativeId : null,
-      };
-    });
+    updateSearchParams({ initiative_map_id: initiativeId });
   };
 
   handleMapClicked = (position: LatLng) => {
@@ -188,13 +183,15 @@ export class InitiativesMap extends PureComponent<
 
   render() {
     const {
+      selectedInitiativeMarkerId,
+      initiallySelectedMarkerId,
       initiativeMarkers,
       className,
       initiativePermissions,
       ariaLabelledBy,
       id,
     } = this.props;
-    const { selectedInitiativeId, points, lat, lng } = this.state;
+    const { points, lat, lng } = this.state;
 
     if (!isNilOrError(initiativePermissions)) {
       const { enabled } = initiativePermissions;
@@ -214,11 +211,12 @@ export class InitiativesMap extends PureComponent<
             )}
 
           <Map
+            initialSelectedPointId={initiallySelectedMarkerId ?? undefined}
             onInit={this.handleMapOnInit}
             points={points}
             boxContent={
-              selectedInitiativeId ? (
-                <InitiativePreview initiativeId={selectedInitiativeId} />
+              selectedInitiativeMarkerId ? (
+                <InitiativePreview initiativeId={selectedInitiativeMarkerId} />
               ) : null
             }
             onBoxClose={this.deselectInitiative}
@@ -252,10 +250,23 @@ const Data = adopt<DataProps, InputProps>({
   ),
 });
 
-const InitiativesMapWithRouter = withRouter(InitiativesMap);
+export default (inputProps: InputProps) => {
+  const [searchParams] = useSearchParams();
+  const selectedInitiativeMarkerId = searchParams.get('initiative_map_id');
+  const [initiallySelectedMarkerId] = useState<string | null>(
+    selectedInitiativeMarkerId
+  );
 
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <InitiativesMapWithRouter {...inputProps} {...dataProps} />}
-  </Data>
-);
+  return (
+    <Data {...inputProps}>
+      {(dataProps) => (
+        <InitiativesMap
+          selectedInitiativeMarkerId={selectedInitiativeMarkerId}
+          initiallySelectedMarkerId={initiallySelectedMarkerId}
+          {...inputProps}
+          {...dataProps}
+        />
+      )}
+    </Data>
+  );
+};

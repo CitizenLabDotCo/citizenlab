@@ -28,12 +28,12 @@ describe LocalProjectCopyService do
         posting_method: 'unlimited',
         posting_limited_max: 1,
         commenting_enabled: true,
-        voting_enabled: true,
-        upvoting_method: 'unlimited',
-        upvoting_limited_max: 10,
-        downvoting_enabled: true,
-        downvoting_method: 'limited',
-        downvoting_limited_max: 3,
+        reacting_enabled: true,
+        reacting_like_method: 'unlimited',
+        reacting_like_limited_max: 10,
+        reacting_dislike_enabled: true,
+        reacting_dislike_method: 'limited',
+        reacting_dislike_limited_max: 3,
         presentation_mode: 'card',
         ideas_order: 'trending',
         input_term: 'idea',
@@ -253,7 +253,8 @@ describe LocalProjectCopyService do
     it 'copies basic phase attributes' do
       ignore_attributes = %i[
         id project_id start_at end_at updated_at created_at
-        voting_method voting_max_total voting_min_total voting_max_votes_per_idea voting_term
+        voting_method voting_max_total voting_min_total voting_max_votes_per_idea
+        voting_term_singular_multiloc voting_term_plural_multiloc
         survey_embed_url survey_service
       ]
       copied_project = service.copy(timeline_project)

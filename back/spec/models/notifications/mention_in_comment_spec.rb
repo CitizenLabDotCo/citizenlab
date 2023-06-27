@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Notifications::MentionInComment do
   describe 'make_notifications_on' do
-    it 'makes a notification on mentioned comment activity' do
+    it 'makes a notification on mentioned in comment activity' do
       comment = create(:comment)
       user = create(:user)
       activity = create(:activity, item: comment, action: 'mentioned', payload: { mentioned_user: user.id })

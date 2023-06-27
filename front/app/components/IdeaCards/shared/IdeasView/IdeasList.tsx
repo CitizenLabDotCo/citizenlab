@@ -67,6 +67,7 @@ interface Props {
   hideImage?: boolean;
   hideImagePlaceholder?: boolean;
   hideIdeaStatus?: boolean;
+  goBackMode?: 'browserGoBackButton' | 'goToProject';
 }
 
 const IdeasList = ({
@@ -85,6 +86,7 @@ const IdeasList = ({
   hideImage = false,
   hideImagePlaceholder = false,
   hideIdeaStatus = false,
+  goBackMode,
 }: Props) => {
   const theme = useTheme();
   const config = participationMethod && getMethodConfig(participationMethod);
@@ -121,6 +123,7 @@ const IdeasList = ({
                     hideBody={config?.hideAuthorOnIdeas || false}
                     hideImagePlaceholder={hideImagePlaceholder}
                     hideIdeaStatus={hideIdeaStatus}
+                    goBackMode={goBackMode}
                   />
                 );
               })}

@@ -31,6 +31,7 @@ module Analytics
       )
 
       enumerator.with_index(1) do |visits, index|
+        update_date_dimensions(visits)
         persist_visit_data(visits)
 
         last_action_timestamp = visits.pluck('lastActionTimestamp').max
@@ -47,6 +48,13 @@ module Analytics
     end
 
     private
+
+    # Fix any date dimensions that don't exist for the visit data
+    def update_date_dimensions(visits)
+      from = timestamp_to_date(visits.pluck('firstActionTimestamp').min)
+      to = timestamp_to_date(visits.pluck('lastActionTimestamp').max)
+      Analytics::PopulateDimensionsService.create_dates(from, to)
+    end
 
     # @return [Array<String>] the ids of the newly created +FactVisit+ in the same order
     #   as +visit_data+.
@@ -110,8 +118,7 @@ module Analytics
     def update_referrer_types(visit_data)
       referrer_types_attrs = visit_data
         .pluck('referrerType', 'referrerTypeName').uniq
-        # being extra cautious and checking that matomo doesn't return empty values
-        .select { |type_infos| type_infos.none?(&:blank?) }
+        .select { |type_infos| type_infos.none?(&:blank?) } # being extra cautious and checking that matomo doesn't return empty values
         .map { |type, type_name| { key: type, name: type_name } }
 
       return if referrer_types_attrs.blank?

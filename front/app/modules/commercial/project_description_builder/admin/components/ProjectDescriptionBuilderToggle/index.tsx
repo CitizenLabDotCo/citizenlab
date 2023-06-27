@@ -27,7 +27,7 @@ import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 
 // Helpers
-import { isNil, isNilOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 type ProjectDescriptionBuilderToggleProps = {
   valueMultiloc: Multiloc | undefined | null;
@@ -106,17 +106,16 @@ const ProjectDescriptionBuilderToggle = ({
 
   return (
     <Box data-testid="projectDescriptionBuilderToggle">
-      {!isNil(projectDescriptionBuilderLayout) && (
-        <Box display="flex" gap="12px">
-          <StyledToggle
-            id="e2e-toggle-enable-project-description-builder"
-            checked={!!projectDescriptionBuilderLinkVisible}
-            label={formatMessage(messages.toggleLabel)}
-            onChange={toggleProjectDescriptionBuilderLinkVisible}
-          />
-          <StyledIconTooltip content={formatMessage(messages.toggleTooltip)} />
-        </Box>
-      )}
+      <Box display="flex" gap="12px">
+        <StyledToggle
+          id="e2e-toggle-enable-project-description-builder"
+          checked={!!projectDescriptionBuilderLinkVisible}
+          label={formatMessage(messages.toggleLabel)}
+          onChange={toggleProjectDescriptionBuilderLinkVisible}
+        />
+        <StyledIconTooltip content={formatMessage(messages.toggleTooltip)} />
+      </Box>
+
       {projectDescriptionBuilderLinkVisible && (
         <>
           <StyledLink id="e2e-project-description-builder-link" to={route}>

@@ -72,6 +72,13 @@ class MentionService
     User.where(id: user_ids).by_username(query).limit(limit).to_a
   end
 
+  # @param [String] text
+  # @param [User] user
+  # @return [Boolean]
+  def user_mentioned?(text, user)
+    extract_expanded_mention_users(text).include?(user)
+  end
+
   private
 
   # @param [String] text

@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useMemo } from 'react';
 
 // hooks
 import usePhase from 'api/phases/usePhase';
@@ -6,6 +6,10 @@ import usePhase from 'api/phases/usePhase';
 // components
 import { IdeaCardsWithoutFiltersSidebar } from 'components/IdeaCards';
 import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
+
+// router
+import { useSearchParams } from 'react-router-dom';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -19,8 +23,8 @@ import styled from 'styled-components';
 import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
 
 // typings
-import { IQueryParameters } from 'api/ideas/types';
 import { IPhaseData } from 'api/phases/types';
+import { Sort } from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
 
 const Container = styled.div``;
 
@@ -34,27 +38,40 @@ interface InnerProps {
   className?: string;
 }
 
+interface QueryParameters {
+  // constants
+  'page[number]': number;
+  'page[size]': number;
+  projects: string[];
+  phase: string;
+
+  // filters
+  search?: string;
+  sort: Sort;
+  topics?: string[];
+}
+
 const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
-  const [ideaQueryParameters, setIdeaQueryParameters] =
-    useState<IQueryParameters>({
-      projects: [projectId],
-      phase: phase.id,
-      sort: phase.attributes.ideas_order ?? ideaDefaultSortMethodFallback,
+  const [searchParams] = useSearchParams();
+  const sortParam = searchParams.get('sort') as Sort | null;
+  const searchParam = searchParams.get('search');
+  const topicsParam = searchParams.get('topics');
+
+  const ideaQueryParameters = useMemo<QueryParameters>(
+    () => ({
       'page[number]': 1,
       'page[size]': 24,
-    });
-
-  useEffect(() => {
-    setIdeaQueryParameters((current) => ({
-      ...current,
+      projects: [projectId],
       phase: phase.id,
-      sort: phase.attributes.ideas_order ?? ideaDefaultSortMethodFallback,
-    }));
-  }, [phase]);
-
-  const updateQuery = useCallback((newParams: Partial<IQueryParameters>) => {
-    setIdeaQueryParameters((current) => ({ ...current, ...newParams }));
-  }, []);
+      sort:
+        sortParam ??
+        phase.attributes.ideas_order ??
+        ideaDefaultSortMethodFallback,
+      search: searchParam ?? undefined,
+      topics: topicsParam ? JSON.parse(topicsParam) : undefined,
+    }),
+    [projectId, sortParam, searchParam, phase, topicsParam]
+  );
 
   const isPBProject =
     phase.attributes.participation_method === 'voting' &&
@@ -89,11 +106,11 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
       )}
       <IdeaCardsWithoutFiltersSidebar
         ideaQueryParameters={ideaQueryParameters}
-        onUpdateQuery={updateQuery}
+        onUpdateQuery={updateSearchParams}
         className={participationMethod}
         projectId={projectId}
         showViewToggle={true}
-        defaultSortingMethod={phase.attributes.ideas_order || null}
+        defaultSortingMethod={ideaQueryParameters.sort || null}
         defaultView={phase.attributes.presentation_mode}
         participationMethod={participationMethod}
         participationContextId={phase.id}

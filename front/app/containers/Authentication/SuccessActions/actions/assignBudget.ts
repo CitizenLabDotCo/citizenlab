@@ -1,5 +1,7 @@
-// services
-import { IBasketData, updateBasket, addBasket } from 'services/baskets';
+// api
+import { IBasketData } from 'api/baskets/types';
+import { updateBasket } from 'api/baskets/useUpdateBasket';
+import { addBasket } from 'api/baskets/useAddBasket';
 
 // tracks
 import { trackEventByName } from 'utils/analytics';
@@ -48,7 +50,8 @@ export const assignBudget =
       }
 
       try {
-        await updateBasket(basket.id, {
+        await updateBasket({
+          id: basket.id,
           user_id: authUser.id,
           participation_context_id: participationContextId,
           participation_context_type: capitalizeParticipationContextType(
