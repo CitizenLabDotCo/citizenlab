@@ -16,7 +16,16 @@ ca:
       "initiative_published": Publicació de la meva proposta
       "invite_received": Invitació
       "invite_reminder": Recordatori d'invitació
+      "internal_comment_on_idea_assigned_to_you": Comentari intern sobre l'entrada que se m'ha assignat
+      "internal_comment_on_idea_you_commented_internally_on": Comentari intern sobre l'entrada que he comentat internament
+      "internal_comment_on_idea_you_moderate": Comentari intern sobre l'entrada al projecte o carpeta que gestione
+      "internal_comment_on_initiative_assigned_to_you": Comentari intern sobre la proposta que se m'ha assignat
+      "internal_comment_on_initiative_you_commented_internally_on": Comentari intern sobre la proposta que he comentat internament
+      "internal_comment_on_unassigned_initiative": Comentari intern sobre la proposta no assignada
+      "internal_comment_on_unassigned_unmoderated_idea": Comentari intern sobre l'entrada no assignada en un projecte no gestionat
+      "internal_comment_on_your_internal_comment": Comentari intern sobre el meu comentari intern
       "mention_in_official_feedback": Esmenta en una actualització
+      "mention_in_internal_comment": Esmenta en un comentari intern
       "new_comment_for_admin": Nou comentari en un projecte que modero
       "new_comment_on_commented_idea": Nou comentari sobre una idea que vaig comentar
       "new_comment_on_commented_initiative": Nou comentari a una proposta que vaig comentar
@@ -215,6 +224,12 @@ ca:
       main_header: 'La gent parla de tu'
       subject: 'Algú t''ha mencionat a la plataforma de %{organizationName}'
       preheader: '%{commentAuthor} t''ha mencionat en un comentari'
+    mention_in_internal_comment:
+      cta_reply_to: 'Veure comentari per %{firstName}'
+      event_description: '%{authorNameFull} t''ha mencionat en un comentari intern.'
+      subject: '%{firstName} t''ha mencionat en un comentari intern.'
+      main_header: '%{authorNameFirst} t''ha mencionat en un comentari intern.'
+      preheader: '%{authorNameFull} t''ha mencionat en un comentari intern.'
     moderator_digest:
       subject: 'El vostre informe setmanal del gestor de projectes de %{time}'
       preheader: 'Resum del gestor de projectes de %{organizationName}'
@@ -298,6 +313,54 @@ ca:
       main_header: '%{authorName} han respost al teu comentari'
       preheader: '%{authorName} ha respost al teu comentari a la plataforma de %{organizationName}'
       replied: '%{authorFirstName} va respondre:'
+    internal_comment_on_your_internal_comment:
+      cta_reply_to: 'Veure comentari per %{firstName}'
+      event_description: '%{authorNameFull} ha comentat el teu comentari intern.'
+      subject: 'Heu rebut un comentari sobre el vostre comentari intern a "%{post}"'
+      main_header: 'Heu rebut un comentari sobre el vostre comentari intern a "%{post}"'
+      preheader: '%{authorName} ha respost al teu comentari intern sobre "%{post}"'
+    internal_comment_on_idea_assigned_to_you:
+      cta_reply_to: 'Veure comentari per %{firstName}'
+      event_description: '%{authorNameFull} ha comentat internament una entrada que se t''ha assignat.'
+      subject: '''%{post}'' té un nou comentari intern'
+      main_header: '''%{post}'' té un nou comentari intern'
+      preheader: '''%{post}'' té un nou comentari intern'
+    internal_comment_on_idea_you_commented_internally_on:
+      cta_reply_to: 'Veure comentari per %{firstName}'
+      event_description: '%{authorNameFull} va comentar internament una entrada que vau comentar internament.'
+      subject: '''%{post}'' té un nou comentari intern'
+      main_header: '''%{post}'' té un nou comentari intern'
+      preheader: '''%{post}'' té un nou comentari intern'
+    internal_comment_on_idea_you_moderate:
+      cta_reply_to: 'Veure comentari per %{firstName}'
+      event_description: '%{authorNameFull} ha comentat internament una entrada en un projecte o carpeta que gestioneu.'
+      subject: '''%{post}'' té un nou comentari intern'
+      main_header: '''%{post}'' té un nou comentari intern'
+      preheader: '''%{post}'' té un nou comentari intern'
+    internal_comment_on_initiative_assigned_to_you:
+      cta_reply_to: 'Veure comentari per %{firstName}'
+      event_description: '%{authorNameFull} ha comentat internament una proposta que se t''ha assignat.'
+      subject: '''%{post}'' té un nou comentari intern'
+      main_header: '''%{post}'' té un nou comentari intern'
+      preheader: '''%{post}'' té un nou comentari intern'
+    internal_comment_on_initiative_you_commented_internally_on:
+      cta_reply_to: 'Veure comentari per %{firstName}'
+      event_description: '%{authorNameFull} ha comentat internament una proposta que has comentat internament.'
+      subject: '''%{post}'' té un nou comentari intern'
+      main_header: '''%{post}'' té un nou comentari intern'
+      preheader: '''%{post}'' té un nou comentari intern'
+    internal_comment_on_unassigned_initiative:
+      cta_reply_to: 'Veure comentari per %{firstName}'
+      event_description: '%{authorNameFull} ha comentat internament una proposta no assignada.'
+      subject: '''%{post}'' té un nou comentari intern'
+      main_header: '''%{post}'' té un nou comentari intern'
+      preheader: '''%{post}'' té un nou comentari intern'
+    internal_comment_on_unassigned_unmoderated_idea:
+      cta_reply_to: 'Veure comentari per %{firstName}'
+      event_description: '%{authorNameFull} ha comentat internament una entrada no assignada en un projecte no gestionat.'
+      subject: '''%{post}'' té un nou comentari intern'
+      main_header: '''%{post}'' té un nou comentari intern'
+      preheader: '''%{post}'' té un nou comentari intern'
     official_feedback_on_commented_initiative:
       by_author: 'per %{authorName}'
       updated: '%{officialName} va escriure:'
@@ -516,12 +579,15 @@ ca:
       remaining_days: 'Dies restants'
     admin_labels:
       recipient_role:
+        admins: 'Als administradors'
         admins_and_managers: 'A administradors i gestors'
+        managers: 'Als directius'
         registered_users: 'A usuaris registrats'
       recipient_segment:
         admins: 'Administradors'
         admins_and_managers: 'Administradors i gestors'
         admins_and_managers_managing_the_project: 'Administradors i gestors que gestionen el projecte'
+        managers_managing_the_project: 'Responsables que gestionen el projecte'
         all_users: 'Tots els usuaris'
         all_users_who_uploaded_proposals: 'Tots els usuaris que han penjat propostes'
         managers: 'Gestors'
@@ -544,6 +610,7 @@ ca:
         content_moderation: 'Moderació de continguts'
         general: 'General'
         inputs: 'Entrades'
+        internal_comments: 'Comentaris interns'
         permissions: 'Permisos'
         projects: 'Projectes'
         proposals: 'Propostes'
@@ -556,6 +623,14 @@ ca:
         input_is_flagged_as_spam: 'L''entrada està marcada com a correu brossa'
         input_is_updated: 'L''entrada s''actualitza'
         input_status_changes: 'Canvis d''estat d''entrada'
+        internal_comment_is_posted_on_idea_assigned_to_user: El comentari intern es publica a l'entrada assignada a l'usuari'
+        internal_comment_is_posted_on_initiative_assigned_to_user: El comentari intern es publica sobre la proposta assignada a l'usuari"
+        internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: El comentari intern es publica a l'entrada al projecte o carpeta que gestiona l'usuari.
+        internal_comment_is_posted_on_idea_user_has_commented_internally_on: El comentari intern es publica a l'entrada que l'usuari ha comentat internament'
+        internal_comment_is_posted_on_initiative_user_has_commented_internally_on: El comentari intern es publica a la proposta que l'usuari ha comentat internament'
+        internal_comment_is_posted_on_unassigned_initiative: El comentari intern es publica sobre una proposta no assignada"
+        internal_comment_is_posted_on_unassigned_unmoderated_idea: El comentari intern es publica en una entrada no assignada en un projecte no gestionat"
+        user_is_mentioned_in_internal_comment: 'L''usuari s''esmenta al comentari intern'
         new_input_is_published: 'Es publica una nova entrada'
         new_proposal_is_posted: 'S''ha publicat una nova proposta'
         project_phase_changes: 'Canvis de fase del projecte'
@@ -575,5 +650,6 @@ ca:
         proposal_is_published: 'Es publica la proposta'
         user_registers_for_the_first_time: 'L''usuari es registra per primera vegada'
         user_replies_to_comment: 'L''usuari respon al comentari'
+        user_replies_to_internal_comment: 'L''usuari respon al comentari intern'
         7_days_after_invite_is_sent: '7 dies després de l''enviament de la invitació'
         7_days_before_the_project_changes_phase: '7 dies abans del canvi de fase del projecte'
