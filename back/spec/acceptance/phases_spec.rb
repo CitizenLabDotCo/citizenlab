@@ -119,7 +119,8 @@ resource 'Phases' do
         parameter :voting_min_total, 'The minimum value a basket can have.', required: false
         parameter :voting_max_total, 'The maximal value a basket can have during voting. Required when the voting method is budgeting.', required: false
         parameter :voting_max_votes_per_idea, 'The maximum amount of votes that can be assigned on the same idea.', required: false
-        parameter :voting_term, 'A multiloc term that is used to refer to the voting', required: false
+        parameter :voting_term_singular_multiloc, 'A multiloc term that is used to refer to the voting in singular form', required: false
+        parameter :voting_term_plural_multiloc, 'A multiloc term that is used to refer to the voting in plural form', required: false
         parameter :start_at, 'The start date of the phase', required: true
         parameter :end_at, 'The end date of the phase', required: true
         parameter :poll_anonymous, "Are users associated with their answer? Defaults to false. Only applies if participation_method is 'poll'", required: false
@@ -167,8 +168,9 @@ resource 'Phases' do
         let(:voting_max_total) { 100 }
         let(:voting_min_total) { 10 }
         let(:voting_max_votes_per_idea) { 5 }
-        let(:voting_term) { { 'en' => 'Grocery shopping' } }
-        let(:ideas_order) { 'new' }
+        let(:voting_term_singular_multiloc) { { 'en' => 'Grocery shopping' } }
+        let(:voting_term_plural_multiloc) { { 'en' => 'Groceries shoppings' } }
+        let(:ideas_order) { 'random' }
 
         example_request 'Create a voting phase' do
           assert_status 201
@@ -178,8 +180,9 @@ resource 'Phases' do
           expect(json_response.dig(:data, :attributes, :voting_max_total)).to eq 100
           expect(json_response.dig(:data, :attributes, :voting_min_total)).to eq 10
           expect(json_response.dig(:data, :attributes, :voting_max_votes_per_idea)).to eq 5
-          expect(json_response.dig(:data, :attributes, :voting_term)).to eq({ en: 'Grocery shopping' })
-          expect(json_response.dig(:data, :attributes, :ideas_order)).to eq 'new'
+          expect(json_response.dig(:data, :attributes, :voting_term_singular_multiloc)).to eq({ en: 'Grocery shopping' })
+          expect(json_response.dig(:data, :attributes, :voting_term_plural_multiloc)).to eq({ en: 'Groceries shoppings' })
+          expect(json_response.dig(:data, :attributes, :ideas_order)).to eq 'random'
           expect(json_response.dig(:data, :attributes, :input_term)).to eq 'idea'
         end
       end
@@ -341,10 +344,12 @@ resource 'Phases' do
         parameter :voting_min_total, 'The minimum value a basket can have.', required: false
         parameter :voting_max_total, 'The maximal value a basket can have during voting', required: false
         parameter :voting_max_votes_per_idea, 'The maximum amount of votes that can be assigned on the same idea.', required: false
-        parameter :voting_term, 'A multiloc term that is used to refer to the voting', required: false
+        parameter :voting_term_singular_multiloc, 'A multiloc term that is used to refer to the voting in singular form', required: false
+        parameter :voting_term_plural_multiloc, 'A multiloc term that is used to refer to the voting in plural form', required: false
         parameter :start_at, 'The start date of the phase'
         parameter :end_at, 'The end date of the phase'
         parameter :poll_anonymous, "Are users associated with their answer? Only applies if participation_method is 'poll'. Can't be changed after first answer.", required: false
+        parameter :ideas_order, 'The default order of ideas.'
       end
       ValidationErrorHelper.new.error_fields(self, Phase)
       response_field :project, "Array containing objects with signature {error: 'is_not_timeline_project'}", scope: :errors
@@ -385,7 +390,8 @@ resource 'Phases' do
         let(:voting_min_total) { 3 }
         let(:voting_max_total) { 15 }
         let(:voting_max_votes_per_idea) { 1 }
-        let(:voting_term) { { 'en' => 'Grocery shopping' } }
+        let(:voting_term_singular_multiloc) { { 'en' => 'Grocery shopping' } }
+        let(:voting_term_plural_multiloc) { { 'en' => 'Groceries shoppings' } }
 
         example_request 'Update a voting phase' do
           assert_status 200
@@ -393,7 +399,8 @@ resource 'Phases' do
           expect(json_response.dig(:data, :attributes, :voting_min_total)).to eq 3
           expect(json_response.dig(:data, :attributes, :voting_max_total)).to eq 15
           expect(json_response.dig(:data, :attributes, :voting_max_votes_per_idea)).to eq 1
-          expect(json_response.dig(:data, :attributes, :voting_term)).to eq({ en: 'Grocery shopping' })
+          expect(json_response.dig(:data, :attributes, :voting_term_singular_multiloc)).to eq({ en: 'Grocery shopping' })
+          expect(json_response.dig(:data, :attributes, :voting_term_plural_multiloc)).to eq({ en: 'Groceries shoppings' })
         end
       end
 
@@ -402,13 +409,15 @@ resource 'Phases' do
           @project.phases.first.update!(
             participation_method: 'voting',
             voting_method: 'budgeting',
-            voting_max_total: 30_000
+            voting_max_total: 30_000,
+            ideas_order: 'random'
           )
         end
 
         let(:ideas) { create_list(:idea, 2, project: @project) }
         let(:phase) { create(:phase, project: @project, participation_method: 'ideation', ideas: ideas) }
         let(:participation_method) { 'information' }
+        let(:ideas_order) { nil }
 
         example 'Make a phase with ideas an information phase' do
           do_request
@@ -426,6 +435,7 @@ resource 'Phases' do
 
         let(:ideas_phase) { phase.ideas[0].ideas_phases.first }
         let(:participation_method) { 'poll' }
+        let(:ideas_order) { nil }
 
         example 'Existing related ideas_phase remains valid' do
           expect(ideas_phase.valid?).to be true

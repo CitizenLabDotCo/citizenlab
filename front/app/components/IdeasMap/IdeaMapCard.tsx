@@ -1,5 +1,4 @@
 import React, { memo, useEffect, useState } from 'react';
-import { IOpenPostPageModalEvent } from 'containers/App';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -7,12 +6,15 @@ import CloseIconButton from 'components/UI/CloseIconButton';
 import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
 
 // events
-import eventEmitter from 'utils/eventEmitter';
-import { setIdeaMapCardSelected } from './events';
 import {
   setLeafletMapHoveredMarker,
   leafletMapHoveredMarker$,
+  setLeafletMapSelectedMarker,
 } from 'components/UI/LeafletMap/events';
+
+// router
+import clHistory from 'utils/cl-router/history';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 // hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -181,14 +183,12 @@ const IdeaMapCard = memo<Props>(
     const handleOnClick = (event: React.FormEvent) => {
       event?.preventDefault();
 
-      setIdeaMapCardSelected(ideaMarker.id);
+      updateSearchParams({ idea_map_id: ideaMarker.id });
 
       if (tablet) {
-        eventEmitter.emit<IOpenPostPageModalEvent>('cardClick', {
-          id: ideaMarker.id,
-          slug: ideaMarker.attributes.slug,
-          type: 'idea',
-        });
+        clHistory.push(`/ideas/${ideaMarker.attributes.slug}?go_back=true`);
+      } else {
+        setLeafletMapSelectedMarker(ideaMarker.id);
       }
     };
 

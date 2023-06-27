@@ -20,8 +20,6 @@ module ParticipationContext
   PRESENTATION_MODES    = %w[card map].freeze
   POSTING_METHODS       = %w[unlimited limited].freeze
   REACTING_METHODS      = %w[unlimited limited].freeze
-  IDEAS_ORDERS          = %w[trending random popular -new new].freeze
-  IDEAS_ORDERS_VOTING_EXCLUDE = %w[trending popular].freeze
   INPUT_TERMS           = %w[idea question contribution project issue option].freeze
   DEFAULT_INPUT_TERM    = 'idea'
 
@@ -51,12 +49,15 @@ module ParticipationContext
         validates :reacting_like_method, presence: true, inclusion: { in: REACTING_METHODS }
         validates :reacting_dislike_enabled, inclusion: { in: [true, false] }
         validates :reacting_dislike_method, presence: true, inclusion: { in: REACTING_METHODS }
-        validates :ideas_order, inclusion: { in: IDEAS_ORDERS }, allow_nil: true
         validates :input_term, inclusion: { in: INPUT_TERMS }
 
-        before_validation :set_ideas_order
         before_validation :set_input_term
       end
+      validates :ideas_order, inclusion: {
+        in: lambda do |pc|
+          Factory.instance.participation_method_for(pc).allowed_ideas_orders
+        end
+      }, allow_nil: true
       validates :posting_limited_max, presence: true,
         numericality: { only_integer: true, greater_than: 0 },
         if: %i[can_contain_input? posting_limited?]
@@ -77,7 +78,8 @@ module ParticipationContext
       with_options if: :voting? do
         validates :voting_method, presence: true, inclusion: { in: VOTING_METHODS }
         validate :validate_voting
-        # validates :ideas_order, exclusion: { in: IDEAS_ORDERS_VOTING_EXCLUDE }, allow_nil: true
+        validates :voting_term_singular_multiloc, multiloc: { presence: false }
+        validates :voting_term_plural_multiloc, multiloc: { presence: false }
       end
       validates :voting_min_total,
         numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: :voting_max_total,
@@ -154,10 +156,6 @@ module ParticipationContext
 
   def set_presentation_mode
     self.presentation_mode ||= 'card'
-  end
-
-  def set_ideas_order
-    self.ideas_order ||= voting? ? 'random' : 'trending'
   end
 
   def set_input_term

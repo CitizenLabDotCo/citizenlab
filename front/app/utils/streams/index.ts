@@ -410,7 +410,10 @@ class Streams {
           // but rather the back-end telling us the user needs to be logged in to use the endpoint.
           // We can therefore view errors from these 2 endpoints as valid return values
           // and exclude them from the error-handling logic.
-          if (streamId !== currentOnboardingCampaignsApiEndpoint) {
+          if (
+            streamId !== currentOnboardingCampaignsApiEndpoint &&
+            !streamId.includes('content_builder_layouts')
+          ) {
             // push the error reponse into the stream
             this.streams[streamId].observer.next(error);
 
@@ -421,6 +424,8 @@ class Streams {
             }
 
             logError(error);
+          } else if (streamId.includes('content_builder_layouts')) {
+            this.streams[streamId].observer.next(null);
           }
 
           return null;

@@ -7,7 +7,6 @@ class PublicApi::V2::ProjectSerializer < PublicApi::V2::BaseSerializer
     :description_preview,
     :process_type,
     :participation_method,
-    :status, # Should we change this to publication_status to avoid confusion
     :slug,
     :folder_id,
     :href, # Not in spec
@@ -26,10 +25,10 @@ class PublicApi::V2::ProjectSerializer < PublicApi::V2::BaseSerializer
     :reacting_dislike_enabled,
     :reacting_dislike_method,
     :reacting_dislike_limited_max,
-    :min_budget,
-    :max_budget
+    :voting_max_total,
+    :voting_min_total
 
-  def status
+  attribute :publication_status do
     object.admin_publication.publication_status
   end
 

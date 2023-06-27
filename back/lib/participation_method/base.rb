@@ -41,7 +41,15 @@ module ParticipationMethod
       false
     end
 
+    def allowed_ideas_orders
+      []
+    end
+
     def never_show?
+      false
+    end
+
+    def posting_allowed?
       false
     end
 

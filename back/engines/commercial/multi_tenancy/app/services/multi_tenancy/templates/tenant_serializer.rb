@@ -39,6 +39,7 @@ module MultiTenancy
           AdminPublication => serialize_admin_publications(AdminPublication),
           Area => serialize_records(Area),
           AreasProject => serialize_records(AreasProject),
+          AreasStaticPage => serialize_records(AreasStaticPage),
           Basket => serialize_records(Basket),
           ContentBuilder::Layout => serialize_records(ContentBuilder::Layout),
           ContentBuilder::LayoutImage => serialize_records(ContentBuilder::LayoutImage),
