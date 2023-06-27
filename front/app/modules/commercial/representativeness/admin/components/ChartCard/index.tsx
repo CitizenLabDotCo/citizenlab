@@ -31,7 +31,7 @@ import {
 import {
   RepresentativenessRow,
   RepresentativenessRowMultiloc,
-} from '../../hooks/createRefDataSubscription';
+} from '../../hooks/parseReferenceData';
 import { View } from 'components/admin/GraphCard/ViewToggle';
 import { usersByAgeXlsxEndpoint } from 'api/users_by_age/util';
 import { usersByGenderXlsxEndpoint } from 'api/users_by_gender/util';

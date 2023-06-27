@@ -11,7 +11,7 @@ import {
   ageFieldToReferenceData,
   ageFieldToIncludedUsers,
   handleRegFieldResponse,
-} from './createRefDataSubscription';
+} from './parseReferenceData';
 
 // typings
 import { IUserCustomFieldData } from 'api/user_custom_fields/types';

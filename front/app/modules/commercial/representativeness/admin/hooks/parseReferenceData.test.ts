@@ -5,7 +5,7 @@ import {
   ageFieldToReferenceData,
   ageFieldToIncludedUsers,
   RepresentativenessRowMultiloc,
-} from './createRefDataSubscription';
+} from './parseReferenceData';
 import { IUsersByAge } from 'api/users_by_age/types';
 
 describe('regFieldToReferenceData', () => {
