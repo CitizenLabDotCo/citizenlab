@@ -12,7 +12,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import commentsMessages from 'components/PostShowComponents/Comments/messages';
 
 // style
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import useInternalComment from 'api/internal_comments/useInternalComment';
 import useUserById from 'api/users/useUserById';
@@ -25,18 +25,28 @@ import { useLocation } from 'react-router-dom';
 
 const highlightAnimation = keyframes`
   0% {
-    opacity: 0.4;
+    opacity: 0;
+  }
+  25% {
+    opacity: 0.25;
   }
   50% {
-    opacity: 0.8;
+    opacity: 0.5;
+  }
+  75% {
+    opacity: 0.75;
   }
   100% {
     opacity: 1;
   }
 `;
 
-const HighlightedElement = styled(Box)`
-  animation: ${highlightAnimation} 2s ease-in-out forwards;
+const Container = styled(Box)<{ animate?: boolean }>`
+  ${({ animate }) =>
+    animate &&
+    css`
+      animation: ${highlightAnimation} 2s 3 ease-in-out;
+    `};
 `;
 
 const ContainerInner = styled.div`
@@ -97,6 +107,7 @@ const InternalComment = ({
   const { data: author } = useUserById(
     comment?.data.relationships.author.data?.id
   );
+  const [animateHighlight, setAnimateHighlight] = useState(false);
 
   useEffect(() => {
     const handleHashChange = () => {
@@ -107,10 +118,10 @@ const InternalComment = ({
       if (targetElement) {
         requestAnimationFrame(() => {
           scrollToElement({ id: elementId });
-          targetElement.style.animation = 'highlightAnimation';
+          setAnimateHighlight(true);
           setTimeout(() => {
-            targetElement.style.animation = '';
-          }, 500);
+            setAnimateHighlight(false);
+          }, 6000);
         });
       }
     };
@@ -147,7 +158,6 @@ const InternalComment = ({
     const lastComment =
       (commentType === 'parent' && !hasChildComments) ||
       (commentType === 'child' && last === true);
-    const Container = hash === `#${commentId}` ? HighlightedElement : Box;
 
     return (
       <Container
@@ -157,6 +167,7 @@ const InternalComment = ({
             ? 'e2e-parentcomment'
             : 'e2e-internal-child-comment'
         } e2e-comment`}
+        animate={hash === `#${commentId}` && animateHighlight}
       >
         <ContainerInner
           className={`${commentType} ${lastComment ? 'lastComment' : ''}`}
