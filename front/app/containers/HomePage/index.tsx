@@ -30,9 +30,9 @@ import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 export const adminRedirectPath = '/admin/dashboard';
 
 type HomePageProps = {
-  openAuthenticationStep?: SignUpInFlow;
+  openAuthentication?: boolean;
 };
-const HomePage = ({ openAuthenticationStep }: HomePageProps) => {
+const HomePage = ({ openAuthentication }: HomePageProps) => {
   const homepageSettings = useHomepageSettings();
   const { data: authUser } = useAuthUser();
   const { data: appConfiguration } = useAppConfiguration();
@@ -47,11 +47,10 @@ const HomePage = ({ openAuthenticationStep }: HomePageProps) => {
       : false;
 
   useEffect(() => {
-    if (openAuthenticationStep) {
-      triggerAuthenticationFlow({ flow: openAuthenticationStep });
-      clHistory.replace('/');
+    if (openAuthentication) {
+      triggerAuthenticationFlow();
     }
-  }, [openAuthenticationStep]);
+  }, [openAuthentication]);
 
   useEffect(() => {
     if (pressedLetterAKey && userHasAdminAccess) {

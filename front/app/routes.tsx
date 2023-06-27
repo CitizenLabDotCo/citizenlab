@@ -67,7 +67,7 @@ export default function createRoutes() {
           path: 'sign-in',
           element: (
             <PageLoading>
-              <HomePage openAuthenticationStep="signin" />
+              <HomePage openAuthentication={true} />
             </PageLoading>
           ),
         },
@@ -75,7 +75,7 @@ export default function createRoutes() {
           path: 'sign-up',
           element: (
             <PageLoading>
-              <HomePage openAuthenticationStep="signup" />
+              <HomePage openAuthenticationStep={true} />
             </PageLoading>
           ),
         },

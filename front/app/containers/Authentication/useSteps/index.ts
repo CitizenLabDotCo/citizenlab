@@ -211,6 +211,32 @@ export default function useSteps() {
       return;
     }
 
+    if (pathname.endsWith('/sign-in')) {
+      if (isNilOrError(authUser)) {
+        authenticationDataRef.current = {
+          flow: 'signin',
+          context: GLOBAL_CONTEXT,
+        };
+
+        transition(currentStep, 'START_INVITE_FLOW')(search);
+      }
+
+      if (pathname.endsWith('/sign-up')) {
+        if (isNilOrError(authUser)) {
+          authenticationDataRef.current = {
+            flow: 'signup',
+            context: GLOBAL_CONTEXT,
+          };
+
+          transition(currentStep, 'START_INVITE_FLOW')(search);
+        }
+
+        // Remove all parameters from URL as they've already been captured
+        window.history.replaceState(null, '', '/');
+        return;
+      }
+    }
+
     const urlSearchParams = parse(search, {
       ignoreQueryPrefix: true,
     }) as any;
