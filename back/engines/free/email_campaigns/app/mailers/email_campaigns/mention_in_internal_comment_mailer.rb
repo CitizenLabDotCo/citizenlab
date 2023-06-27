@@ -5,7 +5,7 @@ module EmailCampaigns
     protected
 
     def subject
-      format_message('subject', values: { authorNameFirst: event.initiating_user_first_name })
+      format_message('subject', values: { firstName: event.initiating_user_first_name })
     end
 
     def header_title
