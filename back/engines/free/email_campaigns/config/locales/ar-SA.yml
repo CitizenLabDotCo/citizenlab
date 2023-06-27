@@ -16,7 +16,16 @@ ar:
       "initiative_published": نشر مُقترحي
       "invite_received": دعوة
       "invite_reminder": تذكير بالدعوة
+      "internal_comment_on_idea_assigned_to_you": تعليق داخلي على المدخلات المخصصة لي
+      "internal_comment_on_idea_you_commented_internally_on": تعليق داخلي على المدخلات التي علقت عليها داخليًا
+      "internal_comment_on_idea_you_moderate": تعليق داخلي على الإدخال في المشروع أو المجلد الذي أديره
+      "internal_comment_on_initiative_assigned_to_you": تعليق داخلي على الاقتراح المخصص لي
+      "internal_comment_on_initiative_you_commented_internally_on": تعليق داخلي على الاقتراح الذي علقت عليه داخليًا
+      "internal_comment_on_unassigned_initiative": تعليق داخلي على اقتراح غير مخصص
+      "internal_comment_on_unassigned_unmoderated_idea": تعليق داخلي على المدخلات غير المعينة في مشروع غير مُدار
+      "internal_comment_on_your_internal_comment": تعليق داخلي على تعليقي الداخلي
       "mention_in_official_feedback": ذكر في تحديث
+      "mention_in_internal_comment": أذكر في تعليق داخلي
       "new_comment_for_admin": تعليق جديد في مشروع أُشرف عليه
       "new_comment_on_commented_idea": تعليق جديد على فكرة علّقت عليها
       "new_comment_on_commented_initiative": تعليق جديد على مُقترح علّقت عليه
@@ -215,6 +224,12 @@ ar:
       main_header: 'يتحدث الناس عنك'
       subject: 'ذكرك شخص على المنصة الخاصة بـ %{organizationName}'
       preheader: 'ذكرك %{commentAuthor} في تعليق'
+    mention_in_internal_comment:
+      cta_reply_to: 'عرض تعليق %{firstName}'
+      event_description: '%{authorNameFull} ذكرك في تعليق داخلي.'
+      subject: '%{firstName} ذكرك في تعليق داخلي.'
+      main_header: '%{authorNameFirst} ذكرك في تعليق داخلي.'
+      preheader: '%{authorNameFull} ذكرك في تعليق داخلي.'
     moderator_digest:
       subject: 'تقرير مدير المشروع الأسبوعي الخاص بك لـ%{time}'
       preheader: 'ملخص مدير المشروع لـ %{organizationName}'
@@ -298,6 +313,54 @@ ar:
       main_header: 'ردّ %{authorName} على تعليقك'
       preheader: 'رد %{authorName} على تعليقك على منصة %{organizationName}'
       replied: 'كتب %{authorFirstName}:'
+    internal_comment_on_your_internal_comment:
+      cta_reply_to: 'عرض تعليق %{firstName}'
+      event_description: '%{authorNameFull} علق على تعليقك الداخلي.'
+      subject: 'لقد تلقيت تعليقًا على تعليقك الداخلي على "%{post}"'
+      main_header: 'لقد تلقيت تعليقًا على تعليقك الداخلي على "%{post}"'
+      preheader: '%{authorName} رد على تعليقك الداخلي على ''%{post}'''
+    internal_comment_on_idea_assigned_to_you:
+      cta_reply_to: 'عرض تعليق %{firstName}'
+      event_description: '%{authorNameFull} علق داخليًا على إدخال مخصص لك.'
+      subject: '"%{post}" لديه تعليق داخلي جديد'
+      main_header: '"%{post}" لديه تعليق داخلي جديد'
+      preheader: '"%{post}" لديه تعليق داخلي جديد'
+    internal_comment_on_idea_you_commented_internally_on:
+      cta_reply_to: 'عرض تعليق %{firstName}'
+      event_description: '%{authorNameFull} علق داخليًا على إدخال قمت بالتعليق عليه داخليًا.'
+      subject: '"%{post}" لديه تعليق داخلي جديد'
+      main_header: '"%{post}" لديه تعليق داخلي جديد'
+      preheader: '"%{post}" لديه تعليق داخلي جديد'
+    internal_comment_on_idea_you_moderate:
+      cta_reply_to: 'عرض تعليق %{firstName}'
+      event_description: '%{authorNameFull} علق داخليًا على إدخال في مشروع أو مجلد تديره.'
+      subject: '"%{post}" لديه تعليق داخلي جديد'
+      main_header: '"%{post}" لديه تعليق داخلي جديد'
+      preheader: '"%{post}" لديه تعليق داخلي جديد'
+    internal_comment_on_initiative_assigned_to_you:
+      cta_reply_to: 'عرض تعليق %{firstName}'
+      event_description: '%{authorNameFull} علق داخليًا على اقتراح مخصص لك.'
+      subject: '"%{post}" لديه تعليق داخلي جديد'
+      main_header: '"%{post}" لديه تعليق داخلي جديد'
+      preheader: '"%{post}" لديه تعليق داخلي جديد'
+    internal_comment_on_initiative_you_commented_internally_on:
+      cta_reply_to: 'عرض تعليق %{firstName}'
+      event_description: '%{authorNameFull} علق داخليًا على اقتراح قمت بالتعليق عليه داخليًا.'
+      subject: '"%{post}" لديه تعليق داخلي جديد'
+      main_header: '"%{post}" لديه تعليق داخلي جديد'
+      preheader: '"%{post}" لديه تعليق داخلي جديد'
+    internal_comment_on_unassigned_initiative:
+      cta_reply_to: 'عرض تعليق %{firstName}'
+      event_description: '%{authorNameFull} علق داخليًا على اقتراح غير مخصص.'
+      subject: '"%{post}" لديه تعليق داخلي جديد'
+      main_header: '"%{post}" لديه تعليق داخلي جديد'
+      preheader: '"%{post}" لديه تعليق داخلي جديد'
+    internal_comment_on_unassigned_unmoderated_idea:
+      cta_reply_to: 'عرض تعليق %{firstName}'
+      event_description: '%{authorNameFull} علق داخليًا على إدخال غير محدد في مشروع غير مُدار.'
+      subject: '"%{post}" لديه تعليق داخلي جديد'
+      main_header: '"%{post}" لديه تعليق داخلي جديد'
+      preheader: '"%{post}" لديه تعليق داخلي جديد'
     official_feedback_on_commented_initiative:
       by_author: 'بواسطة %{authorName}'
       updated: 'كتب %{officialName}:'
@@ -516,12 +579,15 @@ ar:
       remaining_days: 'الأيام المتبقية'
     admin_labels:
       recipient_role:
+        admins: 'للمسؤولين'
         admins_and_managers: 'للمسؤولين والمديرين'
+        managers: 'للمديرين'
         registered_users: 'للمستخدمين المسجلين'
       recipient_segment:
         admins: 'المشرفون'
         admins_and_managers: 'المسؤولون والمديرون'
         admins_and_managers_managing_the_project: 'المسؤولون والمديرون الذين يديرون المشروع'
+        managers_managing_the_project: 'المدراء الذين يديرون المشروع'
         all_users: 'جميع المستخدمين'
         all_users_who_uploaded_proposals: 'جميع المستخدمين الذين قاموا بتحميل المقترحات'
         managers: 'المديرين'
@@ -544,6 +610,7 @@ ar:
         content_moderation: 'تعديل المحتوى'
         general: 'عام'
         inputs: 'المدخلات'
+        internal_comments: 'التعليقات الداخلية'
         permissions: 'أذونات'
         projects: 'المشاريع'
         proposals: 'اقتراحات'
@@ -556,6 +623,14 @@ ar:
         input_is_flagged_as_spam: 'تم وضع علامة على الإدخال على أنه بريد عشوائي'
         input_is_updated: 'تم تحديث الإدخال'
         input_status_changes: 'تغييرات حالة الإدخال'
+        internal_comment_is_posted_on_idea_assigned_to_user: يتم نشر التعليق الداخلي على الإدخال المخصص للمستخدم '
+        internal_comment_is_posted_on_initiative_assigned_to_user: يتم نشر التعليق الداخلي على الاقتراح المخصص للمستخدم '
+        internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: يتم نشر التعليق الداخلي على الإدخال في مشروع أو مجلد يديره المستخدم '
+        internal_comment_is_posted_on_idea_user_has_commented_internally_on: يتم نشر التعليق الداخلي على الإدخال الذي قام المستخدم بالتعليق عليه داخليًا على '
+        internal_comment_is_posted_on_initiative_user_has_commented_internally_on: يتم نشر التعليق الداخلي على الاقتراح الذي علق عليه المستخدم داخليًا على '
+        internal_comment_is_posted_on_unassigned_initiative: تم نشر التعليق الداخلي على اقتراح غير محدد '
+        internal_comment_is_posted_on_unassigned_unmoderated_idea: يتم نشر التعليق الداخلي على المدخلات غير المعينة في مشروع غير مُدار '
+        user_is_mentioned_in_internal_comment: 'تم ذكر المستخدم في التعليق الداخلي'
         new_input_is_published: 'تم نشر مدخلات جديدة'
         new_proposal_is_posted: 'تم نشر اقتراح جديد'
         project_phase_changes: 'تغييرات مرحلة المشروع'
@@ -575,5 +650,6 @@ ar:
         proposal_is_published: 'تم نشر الاقتراح'
         user_registers_for_the_first_time: 'يسجل المستخدم لأول مرة'
         user_replies_to_comment: 'يرد المستخدم على التعليق'
+        user_replies_to_internal_comment: 'ردود المستخدم على التعليق الداخلي'
         7_days_after_invite_is_sent: '7 أيام بعد إرسال الدعوة'
         7_days_before_the_project_changes_phase: '7 أيام قبل مرحلة تغييرات المشروع'
