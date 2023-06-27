@@ -87,7 +87,6 @@ export default ({
         <SectionField>
           <SubSectionTitleWithDescription>
             <FormattedMessage {...messages.optionsToVoteOn} />
-            <IconTooltip content={'TODO: add tooltip content'} />
           </SubSectionTitleWithDescription>
           <StyledSectionDescription>
             <FormattedMessage
