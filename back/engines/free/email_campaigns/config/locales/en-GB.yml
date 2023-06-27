@@ -16,7 +16,16 @@ en-GB:
       "initiative_published": Publication of my proposal
       "invite_received": Invitation
       "invite_reminder": Invitation reminder
+      "internal_comment_on_idea_assigned_to_you": Internal comment on input assigned to me
+      "internal_comment_on_idea_you_commented_internally_on": Internal comment on input I commented internally on
+      "internal_comment_on_idea_you_moderate": Internal comment on input in project or folder I manage
+      "internal_comment_on_initiative_assigned_to_you": Internal comment on proposal assigned to me
+      "internal_comment_on_initiative_you_commented_internally_on": Internal comment on proposal I commented internally on
+      "internal_comment_on_unassigned_initiative": Internal comment on unassigned proposal
+      "internal_comment_on_unassigned_unmoderated_idea": Internal comment on unassigned input in unmanaged project
+      "internal_comment_on_your_internal_comment": Internal comment on my internal comment
       "mention_in_official_feedback": Mention in an update
+      "mention_in_internal_comment": Mention in an internal comment
       "new_comment_for_admin": New comment in a project I moderate
       "new_comment_on_commented_idea": New comment on an idea I commented on
       "new_comment_on_commented_initiative": New comment on a proposal I commented on
@@ -215,6 +224,12 @@ en-GB:
       main_header: 'People are talking about you'
       subject: 'Someone mentioned you on the platform of %{organizationName}'
       preheader: '%{commentAuthor} mentioned you in a comment'
+    mention_in_internal_comment:
+      cta_reply_to: 'View comment by %{firstName}'
+      event_description: '%{authorNameFull} mentioned you in an internal comment.'
+      subject: '%{firstName} mentioned you in an internal comment.'
+      main_header: '%{authorNameFirst} mentioned you in an internal comment.'
+      preheader: '%{authorNameFull} mentioned you in an internal comment.'
     moderator_digest:
       subject: 'Your weekly project manager report of %{time}'
       preheader: 'Project manager digest of %{organizationName}'
@@ -298,6 +313,54 @@ en-GB:
       main_header: '%{authorName} replied to your comment'
       preheader: '%{authorName} replied to your comment on %{organizationName}''s platform'
       replied: '%{authorFirstName} replied:'
+    internal_comment_on_your_internal_comment:
+      cta_reply_to: 'View comment by %{firstName}'
+      event_description: '%{authorNameFull} commented on your internal comment.'
+      subject: 'You have received a comment on your internal comment on ''%{post}'''
+      main_header: 'You have received a comment on your internal comment on ''%{post}'''
+      preheader: '%{authorName} replied to your internal comment on ''%{post}'''
+    internal_comment_on_idea_assigned_to_you:
+      cta_reply_to: 'View comment by %{firstName}'
+      event_description: '%{authorNameFull} commented internally on an input assigned to you.'
+      subject: '''%{post}'' has a new internal comment'
+      main_header: '''%{post}'' has a new internal comment'
+      preheader: '''%{post}'' has a new internal comment'
+    internal_comment_on_idea_you_commented_internally_on:
+      cta_reply_to: 'View comment by %{firstName}'
+      event_description: '%{authorNameFull} commented internally on an input you commented internally on.'
+      subject: '''%{post}'' has a new internal comment'
+      main_header: '''%{post}'' has a new internal comment'
+      preheader: '''%{post}'' has a new internal comment'
+    internal_comment_on_idea_you_moderate:
+      cta_reply_to: 'View comment by %{firstName}'
+      event_description: '%{authorNameFull} commented internally on an input in a project or folder you manage.'
+      subject: '''%{post}'' has a new internal comment'
+      main_header: '''%{post}'' has a new internal comment'
+      preheader: '''%{post}'' has a new internal comment'
+    internal_comment_on_initiative_assigned_to_you:
+      cta_reply_to: 'View comment by %{firstName}'
+      event_description: '%{authorNameFull} commented internally on a proposal assigned to you.'
+      subject: '''%{post}'' has a new internal comment'
+      main_header: '''%{post}'' has a new internal comment'
+      preheader: '''%{post}'' has a new internal comment'
+    internal_comment_on_initiative_you_commented_internally_on:
+      cta_reply_to: 'View comment by %{firstName}'
+      event_description: '%{authorNameFull} commented internally on a proposal you commented internally on.'
+      subject: '''%{post}'' has a new internal comment'
+      main_header: '''%{post}'' has a new internal comment'
+      preheader: '''%{post}'' has a new internal comment'
+    internal_comment_on_unassigned_initiative:
+      cta_reply_to: 'View comment by %{firstName}'
+      event_description: '%{authorNameFull} commented internally on an unassigned proposal.'
+      subject: '''%{post}'' has a new internal comment'
+      main_header: '''%{post}'' has a new internal comment'
+      preheader: '''%{post}'' has a new internal comment'
+    internal_comment_on_unassigned_unmoderated_idea:
+      cta_reply_to: 'View comment by %{firstName}'
+      event_description: '%{authorNameFull} commented internally on an unassigned input in an unmanaged project.'
+      subject: '''%{post}'' has a new internal comment'
+      main_header: '''%{post}'' has a new internal comment'
+      preheader: '''%{post}'' has a new internal comment'
     official_feedback_on_commented_initiative:
       by_author: 'by %{authorName}'
       updated: '%{officialName} wrote:'
@@ -516,12 +579,15 @@ en-GB:
       remaining_days: 'Days remaining'
     admin_labels:
       recipient_role:
+        admins: 'To admins'
         admins_and_managers: 'To admins & managers'
+        managers: 'To managers'
         registered_users: 'To registered users'
       recipient_segment:
         admins: 'Admins'
         admins_and_managers: 'Admins & managers'
         admins_and_managers_managing_the_project: 'Admins & managers managing the project'
+        managers_managing_the_project: 'Managers managing the project'
         all_users: 'All users'
         all_users_who_uploaded_proposals: 'All users who uploaded proposals'
         managers: 'Managers'
@@ -544,6 +610,7 @@ en-GB:
         content_moderation: 'Content moderation'
         general: 'General'
         inputs: 'Inputs'
+        internal_comments: 'Internal comments'
         permissions: 'Permissions'
         projects: 'Projects'
         proposals: 'Proposals'
@@ -556,6 +623,14 @@ en-GB:
         input_is_flagged_as_spam: 'Input is flagged as spam'
         input_is_updated: 'Input is updated'
         input_status_changes: 'Input status changes'
+        internal_comment_is_posted_on_idea_assigned_to_user: Internal comment is posted on input assigned to user'
+        internal_comment_is_posted_on_initiative_assigned_to_user: Internal comment is posted on proposal assigned to user'
+        internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: Internal comment is posted on input in project or folder user manages'
+        internal_comment_is_posted_on_idea_user_has_commented_internally_on: Internal comment is posted on input user commented internally on'
+        internal_comment_is_posted_on_initiative_user_has_commented_internally_on: Internal comment is posted on proposal user commented internally on'
+        internal_comment_is_posted_on_unassigned_initiative: Internal comment is posted on unassigned proposal'
+        internal_comment_is_posted_on_unassigned_unmoderated_idea: Internal comment is posted on unassigned input in unmanaged project'
+        user_is_mentioned_in_internal_comment: 'User is mentioned in internal comment'
         new_input_is_published: 'New input is published'
         new_proposal_is_posted: 'New proposal is posted'
         project_phase_changes: 'Project phase changes'
@@ -575,5 +650,6 @@ en-GB:
         proposal_is_published: 'Proposal is published'
         user_registers_for_the_first_time: 'User registers for the first time'
         user_replies_to_comment: 'User replies to comment'
+        user_replies_to_internal_comment: 'User replies to internal comment'
         7_days_after_invite_is_sent: '7 days after invite is sent'
         7_days_before_the_project_changes_phase: '7 days before the project changes phase'
