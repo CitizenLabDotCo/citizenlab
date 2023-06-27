@@ -30,6 +30,9 @@ import useAddInternalCommentToIdea from 'api/internal_comments/useAddInternalCom
 import useAddInternalCommentToInitiative from 'api/internal_comments/useAddInternalCommentToInitiative';
 import useAuthUser from 'api/me/useAuthUser';
 
+// utils
+import { getMentionRoles } from './utils';
+
 const Container = styled.div`
   display: flex;
 `;
@@ -284,7 +287,7 @@ const InternalParentCommentForm = ({
               border="none"
               boxShadow="none"
               getTextareaRef={setRef}
-              roles={postType === 'idea' ? ['admin', 'moderator'] : ['admin']}
+              roles={getMentionRoles(postType === 'idea')}
             />
             <ButtonWrapper className={focused || processing ? 'visible' : ''}>
               <CancelButton

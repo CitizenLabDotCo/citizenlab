@@ -26,6 +26,9 @@ import useInternalComment from 'api/internal_comments/useInternalComment';
 import useLocale from 'hooks/useLocale';
 import { Button } from '@citizenlab/cl2-component-library';
 
+// utils
+import { getMentionRoles } from '../utils';
+
 const Container = styled.div``;
 
 const CommentWrapper = styled.div`
@@ -191,7 +194,7 @@ const InternalCommentBody = ({
               padding="15px"
               fontWeight="300"
               getTextareaRef={setNewTextAreaRef}
-              roles={ideaId ? ['admin', 'moderator'] : ['admin']}
+              roles={getMentionRoles(!!ideaId)}
             />
           </QuillEditedContent>
           <ButtonsWrapper>
