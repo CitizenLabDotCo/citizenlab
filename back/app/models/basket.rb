@@ -39,27 +39,25 @@ class Basket < ApplicationRecord
     !!submitted_at
   end
 
-  def total_budget
-    ideas.pluck(:budget).compact.sum
-  end
-
-  def budget_exceeds_limit?
-    total_budget > participation_context.voting_max_total
+  def total_votes
+    baskets_ideas.pluck(:votes).sum
   end
 
   private
 
-  def less_than_min_budget?
-    total_budget < participation_context.voting_min_total
-  end
-
   def basket_submission
     return unless submitted?
 
-    if less_than_min_budget?
-      errors.add(:ideas, :less_than_min_budget, message: 'less than the min budget while the basket is submitted')
-    elsif budget_exceeds_limit?
-      errors.add(:ideas, :exceed_budget_limit, message: 'exceed the budget limit while the basket is submitted')
+    if participation_context.voting_min_total && (total_votes < participation_context.voting_min_total)
+      errors.add(
+        :total_votes, :greater_than_or_equal_to, value: total_votes, count: participation_context.voting_min_total,
+        message: "must be greater than or equal to #{participation_context.voting_min_total}"
+      )
+    elsif participation_context.voting_max_total && (total_votes > participation_context.voting_max_total)
+      errors.add(
+        :total_votes, :less_than_or_equal_to, value: total_votes, count: participation_context.voting_max_total,
+        message: "must be less than or equal to #{participation_context.voting_max_total}"
+      )
     end
   end
 end

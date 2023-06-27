@@ -26,11 +26,12 @@ RSpec.describe Basket do
     end
   end
 
-  context 'when a basket exceeding the maximum budget' do
+  context 'when a basket exceeding the maximum votes' do
     before do
       project = create(:continuous_budgeting_project, voting_max_total: 1000)
-      ideas = create_list(:idea, 11, budget: 100, project: project)
+      ideas = create_list(:idea, 11, budget: 1, project: project)
       @basket = create(:basket, ideas: ideas, participation_context: project)
+      @basket.baskets_ideas.update_all(votes: 100)
     end
 
     it 'is valid in normal context' do
@@ -41,12 +42,14 @@ RSpec.describe Basket do
     it 'is not valid in submission context' do
       @basket.submitted_at = Time.now
       expect(@basket.save(context: :basket_submission)).to be(false)
+      expect(@basket.errors.details).to eq({ total_votes: [{ error: :less_than_or_equal_to, value: 1100, count: 1000 }] })
+      expect(@basket.errors.messages).to eq({ total_votes: ['must be less than or equal to 1000'] })
     end
   end
 
-  context 'when a basket less than the minimum budget' do
+  context 'when a basket less than the minimum votes' do
     let(:basket) { create(:basket, ideas: [idea], participation_context: project, submitted_at: Time.now) }
-    let(:project) { create(:continuous_budgeting_project, voting_min_total: 200) }
+    let(:project) { create(:continuous_budgeting_project, voting_min_total: 5) }
     let(:idea) { create(:idea, budget: 100, project: project) }
 
     it 'is valid in normal context' do
@@ -55,9 +58,8 @@ RSpec.describe Basket do
 
     it 'is not valid in submission context' do
       expect(basket.save(context: :basket_submission)).to be(false)
-      expect(basket.errors.details).to eq(
-        ideas: [error: :less_than_min_budget]
-      )
+      expect(basket.errors.details).to eq({ total_votes: [{ error: :greater_than_or_equal_to, value: 1, count: 5 }] })
+      expect(basket.errors.messages).to eq({ total_votes: ['must be greater than or equal to 5'] })
     end
   end
 
