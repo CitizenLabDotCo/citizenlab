@@ -20,6 +20,7 @@ en:
       "internal_comment_on_idea_you_commented_internally_on": Internal comment on idea I commented internally on
       "internal_comment_on_idea_you_moderate": Internal comment on idea in project or folder I manage
       "internal_comment_on_initiative_assigned_to_you": Internal comment on initiative assigned to me
+      "internal_comment_on_initiative_you_commented_internally_on": Internal comment on initiative I commented internally on
       "internal_comment_on_your_internal_comment": Internal comment on my internal comment
       "mention_in_official_feedback": Mention in an update
       "mention_in_internal_comment": Mention in an internal comment
@@ -340,6 +341,12 @@ en:
       subject: '''%{post}'' has a new internal comment'
       main_header: '''%{post}'' has a new internal comment'
       preheader: '''%{post}'' has a new internal comment'
+    internal_comment_on_initiative_you_commented_internally_on:
+      cta_reply_to: 'View comment by %{firstName}'
+      event_description: '%{authorNameFull} commented internally on a proposal you commented internally on.'
+      subject: '''%{post}'' has a new internal comment'
+      main_header: '''%{post}'' has a new internal comment'
+      preheader: '''%{post}'' has a new internal comment'
     official_feedback_on_commented_initiative:
       by_author: 'by %{authorName}'
       updated: '%{officialName} wrote:'
@@ -606,6 +613,7 @@ en:
         internal_comment_is_made_on_initiative_assigned_to_user: Internal comment is made on initiative assigned to user'
         internal_comment_is_made_on_idea_in_project_or_folder_user_manages: Internal comment is made on idea in project or folder user manages'
         internal_comment_is_made_on_idea_user_has_commented_internally_on: Internal comment is made on idea user commented internally on'
+        internal_comment_is_made_on_initiative_user_has_commented_internally_on: Internal comment is made on initiative user commented internally on'
         user_is_mentioned_in_internal_comment: 'User is mentioned in internal comment'
         new_input_is_published: 'New input is published'
         new_proposal_is_posted: 'New proposal is posted'
