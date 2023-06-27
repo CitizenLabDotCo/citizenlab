@@ -1,0 +1,9 @@
+<mj-section padding="0px 25px 25px 25px" text-align="left">
+  <mj-column background-color="#F2F6F8" border-radius="5px" padding="25px">
+    <mj-text font-size="14px">
+      <p style="margin: 0;">
+        <%= strip_tags(internal_comment_body) %>
+      </p>
+    </mj-text>
+  </mj-column>
+</mj-section>
