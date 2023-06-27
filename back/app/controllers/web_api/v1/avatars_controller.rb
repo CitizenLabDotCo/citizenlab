@@ -16,6 +16,10 @@ class WebApi::V1::AvatarsController < ApplicationController
       project = Project.find(params[:context_id])
       authorize project, :show?
       avatars_service.avatars_for_project(project, users: users, limit: limit)
+    when 'project_folder'
+      folder = ProjectFolders::Folder.find(params[:context_id])
+      authorize folder, :show?
+      avatars_service.avatars_for_folder(folder, users: users, limit: limit)
     when 'group'
       group = Group.find(params[:context_id])
       authorize group, :show?
