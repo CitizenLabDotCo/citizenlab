@@ -12,7 +12,7 @@ module EmailCampaigns
           initiating_user_last_name: 'Geeke',
           internal_comment_author_name: 'Matthias Geeke',
           internal_comment_body: 'I also think this proposal is amazing!',
-          internal_comment_url: 'http://localhost:3000/nl-BE/ideas/afschaffen-of-versoepelen-wetgeving-rond-verharden-van-voortuin',
+          internal_comment_url: 'http://localhost:3000/en/internal_comments/fake-url-comment-does-not-exist',
           post_title_multiloc: { en: 'Permit paving of front gardens' },
           post_body_multiloc: {
             en: 'There are many advantages to paving your front garden. Less cars on the road and more space for pedestrians.'
