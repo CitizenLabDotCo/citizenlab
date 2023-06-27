@@ -74,6 +74,10 @@ FactoryBot.define do
     enabled { true }
   end
 
+  factory :internal_comment_on_idea_you_moderate_campaign, class: EmailCampaigns::Campaigns::InternalCommentOnIdeaYouModerate do
+    enabled { true }
+  end
+
   factory :internal_comment_on_initiative_assigned_to_you_campaign, class: EmailCampaigns::Campaigns::InternalCommentOnInitiativeAssignedToYou do
     enabled { true }
   end

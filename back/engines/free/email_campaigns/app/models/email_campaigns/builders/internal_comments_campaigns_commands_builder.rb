@@ -21,16 +21,16 @@ module EmailCampaigns
     end
 
     def serialize_medium_image(image)
-      image.image.versions[:medium].url
+      image.image.versions[:medium].url if image&.image&.versions
     end
 
     private
 
     def post_image_medium_url(notification)
       if notification.post_type == 'Idea'
-        serialize_medium_image(notification.post.idea_images.first)
+        serialize_medium_image(notification&.post&.idea_images&.first)
       elsif notification.post_type == 'Initiative'
-        serialize_medium_image(notification.post.initiative_images.first)
+        serialize_medium_image(notification&.post&.initiative_images&.first)
       end
     end
   end
