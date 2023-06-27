@@ -16,7 +16,16 @@ it:
       "initiative_published": Pubblicazione della mia proposta
       "invite_received": Invito
       "invite_reminder": Promemoria dell'invito
+      "internal_comment_on_idea_assigned_to_you": Commento interno sull'input che mi è stato assegnato
+      "internal_comment_on_idea_you_commented_internally_on": Commento interno su input Ho commentato internamente su
+      "internal_comment_on_idea_you_moderate": Commento interno su un input nel progetto o nella cartella che gestisco
+      "internal_comment_on_initiative_assigned_to_you": Commento interno sulla proposta assegnatami
+      "internal_comment_on_initiative_you_commented_internally_on": Commento interno alla proposta Ho commentato internamente la proposta
+      "internal_comment_on_unassigned_initiative": Commento interno su proposta non assegnata
+      "internal_comment_on_unassigned_unmoderated_idea": Commento interno su un input non assegnato in un progetto non gestito
+      "internal_comment_on_your_internal_comment": Commento interno sul mio commento interno
       "mention_in_official_feedback": Menzione in un aggiornamento
+      "mention_in_internal_comment": Menzione in un commento interno
       "new_comment_for_admin": Nuovo commento in un progetto che modero
       "new_comment_on_commented_idea": Nuovo commento su un'idea che ho commentato
       "new_comment_on_commented_initiative": Nuovo commento su una proposta che ho commentato
@@ -215,6 +224,12 @@ it:
       main_header: 'La gente parla di te'
       subject: 'Qualcuno ti ha menzionato sulla piattaforma di %{organizationName}'
       preheader: '%{commentAuthor} ti ha menzionato in un commento'
+    mention_in_internal_comment:
+      cta_reply_to: 'Visualizza il commento di %{firstName}'
+      event_description: '%{authorNameFull} Ti ho citato in un commento interno.'
+      subject: '%{firstName} Ti ho citato in un commento interno.'
+      main_header: '%{authorNameFirst} Ti ho citato in un commento interno.'
+      preheader: '%{authorNameFull} Ti ho citato in un commento interno.'
     moderator_digest:
       subject: 'Il tuo rapporto settimanale del project manager di %{time}'
       preheader: 'Messaggi del project manager di %{organizationName}'
@@ -298,6 +313,54 @@ it:
       main_header: '%{authorName} ha risposto al tuo commento'
       preheader: '%{authorName} ha risposto al tuo commento sulla piattaforma di %{organizationName}'
       replied: '%{authorFirstName} ha commentato:'
+    internal_comment_on_your_internal_comment:
+      cta_reply_to: 'Visualizza il commento di %{firstName}'
+      event_description: '%{authorNameFull} ha commentato il tuo commento interno.'
+      subject: 'Hai ricevuto un commento sul tuo commento interno su ''%{post}''.'
+      main_header: 'Hai ricevuto un commento sul tuo commento interno su ''%{post}''.'
+      preheader: '%{authorName} ho risposto al tuo commento interno su ''%{post}''.'
+    internal_comment_on_idea_assigned_to_you:
+      cta_reply_to: 'Visualizza il commento di %{firstName}'
+      event_description: '%{authorNameFull} ha commentato internamente un input che ti è stato assegnato.'
+      subject: '''%{post}'' ha un nuovo commento interno'
+      main_header: '''%{post}'' ha un nuovo commento interno'
+      preheader: '''%{post}'' ha un nuovo commento interno'
+    internal_comment_on_idea_you_commented_internally_on:
+      cta_reply_to: 'Visualizza il commento di %{firstName}'
+      event_description: '%{authorNameFull} ha commentato internamente un input che hai commentato internamente.'
+      subject: '''%{post}'' ha un nuovo commento interno'
+      main_header: '''%{post}'' ha un nuovo commento interno'
+      preheader: '''%{post}'' ha un nuovo commento interno'
+    internal_comment_on_idea_you_moderate:
+      cta_reply_to: 'Visualizza il commento di %{firstName}'
+      event_description: '%{authorNameFull} ha commentato internamente un input in un progetto o in una cartella che gestisci.'
+      subject: '''%{post}'' ha un nuovo commento interno'
+      main_header: '''%{post}'' ha un nuovo commento interno'
+      preheader: '''%{post}'' ha un nuovo commento interno'
+    internal_comment_on_initiative_assigned_to_you:
+      cta_reply_to: 'Visualizza il commento di %{firstName}'
+      event_description: '%{authorNameFull} commentare internamente una proposta che ti è stata assegnata.'
+      subject: '''%{post}'' ha un nuovo commento interno'
+      main_header: '''%{post}'' ha un nuovo commento interno'
+      preheader: '''%{post}'' ha un nuovo commento interno'
+    internal_comment_on_initiative_you_commented_internally_on:
+      cta_reply_to: 'Visualizza il commento di %{firstName}'
+      event_description: '%{authorNameFull} ha commentato internamente una proposta che hai commentato internamente.'
+      subject: '''%{post}'' ha un nuovo commento interno'
+      main_header: '''%{post}'' ha un nuovo commento interno'
+      preheader: '''%{post}'' ha un nuovo commento interno'
+    internal_comment_on_unassigned_initiative:
+      cta_reply_to: 'Visualizza il commento di %{firstName}'
+      event_description: '%{authorNameFull} ha commentato internamente una proposta non assegnata.'
+      subject: '''%{post}'' ha un nuovo commento interno'
+      main_header: '''%{post}'' ha un nuovo commento interno'
+      preheader: '''%{post}'' ha un nuovo commento interno'
+    internal_comment_on_unassigned_unmoderated_idea:
+      cta_reply_to: 'Visualizza il commento di %{firstName}'
+      event_description: '%{authorNameFull} ha commentato internamente un input non assegnato in un progetto non gestito.'
+      subject: '''%{post}'' ha un nuovo commento interno'
+      main_header: '''%{post}'' ha un nuovo commento interno'
+      preheader: '''%{post}'' ha un nuovo commento interno'
     official_feedback_on_commented_initiative:
       by_author: 'da %{authorName}'
       updated: '%{officialName} ha scritto:'
@@ -516,12 +579,15 @@ it:
       remaining_days: 'Giorni rimanenti'
     admin_labels:
       recipient_role:
+        admins: 'Agli amministratori'
         admins_and_managers: 'Agli amministratori e ai manager'
+        managers: 'Ai manager'
         registered_users: 'Agli utenti registrati'
       recipient_segment:
         admins: 'Amministratori'
         admins_and_managers: 'Amministratori e manager'
         admins_and_managers_managing_the_project: 'Amministratori e manager che gestiscono il progetto'
+        managers_managing_the_project: 'Manager che gestiscono il progetto'
         all_users: 'Tutti gli utenti'
         all_users_who_uploaded_proposals: 'Tutti gli utenti che hanno caricato proposte'
         managers: 'Dirigenti'
@@ -544,6 +610,7 @@ it:
         content_moderation: 'Moderazione dei contenuti'
         general: 'Generale'
         inputs: 'Ingressi'
+        internal_comments: 'Commenti interni'
         permissions: 'Permessi'
         projects: 'Progetti'
         proposals: 'Proposte'
@@ -556,6 +623,14 @@ it:
         input_is_flagged_as_spam: 'L''input viene contrassegnato come spam'
         input_is_updated: 'L''input viene aggiornato'
         input_status_changes: 'Cambiamento dello stato dell''ingresso'
+        internal_comment_is_posted_on_idea_assigned_to_user: Il commento interno è pubblicato sull'input assegnato all'utente".
+        internal_comment_is_posted_on_initiative_assigned_to_user: Il commento interno viene pubblicato sulla proposta assegnata all'utente".
+        internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: Il commento interno viene pubblicato sull'input del progetto o della cartella che l'utente gestisce".
+        internal_comment_is_posted_on_idea_user_has_commented_internally_on: Il commento interno viene pubblicato sull'input che l'utente ha commentato internamente".
+        internal_comment_is_posted_on_initiative_user_has_commented_internally_on: Il commento interno viene pubblicato sulla proposta che l'utente ha commentato internamente".
+        internal_comment_is_posted_on_unassigned_initiative: Il commento interno è pubblicato su una proposta non assegnata".
+        internal_comment_is_posted_on_unassigned_unmoderated_idea: Viene pubblicato un commento interno su un input non assegnato in un progetto non gestito".
+        user_is_mentioned_in_internal_comment: 'L''utente è menzionato in un commento interno'
         new_input_is_published: 'Viene pubblicato un nuovo input'
         new_proposal_is_posted: 'La nuova proposta è pubblicata'
         project_phase_changes: 'Cambiamenti di fase del progetto'
@@ -575,5 +650,6 @@ it:
         proposal_is_published: 'La proposta viene pubblicata'
         user_registers_for_the_first_time: 'L''utente si registra per la prima volta'
         user_replies_to_comment: 'L''utente risponde al commento'
+        user_replies_to_internal_comment: 'L''utente risponde al commento interno'
         7_days_after_invite_is_sent: '7 giorni dopo l''invio dell''invito'
         7_days_before_the_project_changes_phase: '7 giorni prima della fase di modifica del progetto'
