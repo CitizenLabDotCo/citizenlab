@@ -25,6 +25,7 @@ const CustomCTAStep = ({ onSkip, currentOnboardingCampaignName }: Props) => {
   const localize = useLocalize();
 
   if (!isNilOrError(onboardingCampaign)) {
+    const ctaButtonLink = onboardingCampaign.data.attributes.cta_button_link;
     return (
       <OnboardingStep
         isIncomingStep={currentOnboardingCampaignName === 'custom_cta'}
@@ -42,12 +43,14 @@ const CustomCTAStep = ({ onSkip, currentOnboardingCampaignName }: Props) => {
 
           <Right>
             <SkipButton onClick={onSkip} />
-            <AcceptButton
-              text={localize(
-                onboardingCampaign.data.attributes.cta_button_multiloc
-              )}
-              linkTo={onboardingCampaign.data.attributes.cta_button_link}
-            />
+            {ctaButtonLink && (
+              <AcceptButton
+                text={localize(
+                  onboardingCampaign.data.attributes.cta_button_multiloc
+                )}
+                linkTo={ctaButtonLink}
+              />
+            )}
           </Right>
         </HeaderContent>
       </OnboardingStep>
