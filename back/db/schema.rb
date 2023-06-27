@@ -183,7 +183,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_23_085057) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.integer "votes", default: 1, null: false
-    t.index ["basket_id"], name: "index_baskets_ideas_on_basket_id"
+    t.index ["basket_id", "idea_id"], name: "index_baskets_ideas_on_basket_id_and_idea_id", unique: true
     t.index ["idea_id"], name: "index_baskets_ideas_on_idea_id"
   end
 
@@ -392,8 +392,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_23_085057) do
     t.string "name", null: false
     t.string "treatment", null: false
     t.string "action", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "flag_inappropriate_content_inappropriate_content_flags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
