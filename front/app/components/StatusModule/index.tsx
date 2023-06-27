@@ -66,8 +66,6 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
     : 'hasNotSubmitted';
   const showDate = !phaseHasEnded && basketStatus === 'hasNotSubmitted';
 
-  if (!basket) return null;
-
   return (
     <Box>
       <Title variant="h2" style={{ fontWeight: 600 }}>
@@ -116,7 +114,7 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
           {config?.getStatusSubmissionCountCopy &&
             formatMessage(config?.getStatusSubmissionCountCopy())}
         </Text>
-        {basketStatus === 'hasSubmitted' && (
+        {basket && basketStatus === 'hasSubmitted' && (
           <Box display={isSmallerThanPhone ? 'block' : 'flex'}>
             <Button
               buttonStyle="secondary"
