@@ -203,7 +203,7 @@ export const ParticipationCTAContent = ({
         width="100%"
         maxWidth={`${maxPageWidth}px`}
       >
-        <Box display="flex" justifyContent="center" alignItems="center">
+        <Box display="flex" flexWrap="wrap" alignItems="center">
           {!useProjectClosedStyle && (
             <BlickingIcon
               name={hasUserParticipated ? 'check-circle' : 'dot'}
@@ -220,9 +220,11 @@ export const ParticipationCTAContent = ({
             )}{' '}
             {timeLeftPosition === 'left' && timeLeftTranslated?.toUpperCase()}{' '}
           </Text>
-          <Box display="flex" width="100%">
-            {participationState && participationState}
-          </Box>
+          {participationState && (
+            <Box display="flex" width="100%">
+              {participationState}
+            </Box>
+          )}
         </Box>
         <Box display="flex" alignItems="center">
           {timeLeft !== undefined && timeLeftPosition === 'right' && (
