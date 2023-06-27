@@ -16,7 +16,16 @@ pl:
       "initiative_published": Publikacja mojej propozycji
       "invite_received": Zaproszenie
       "invite_reminder": Przypomnienie o zaproszeniu
+      "internal_comment_on_idea_assigned_to_you": Wewnętrzny komentarz dotyczący przydzielonych mi danych wejściowych
+      "internal_comment_on_idea_you_commented_internally_on": Wewnętrzny komentarz do danych wejściowych, które skomentowałem wewnętrznie
+      "internal_comment_on_idea_you_moderate": Wewnętrzny komentarz do danych wejściowych w zarządzanym przeze mnie projekcie lub folderze
+      "internal_comment_on_initiative_assigned_to_you": Wewnętrzny komentarz do przydzielonej mi propozycji
+      "internal_comment_on_initiative_you_commented_internally_on": Wewnętrzny komentarz do propozycji, którą skomentowałem wewnętrznie
+      "internal_comment_on_unassigned_initiative": Uwaga wewnętrzna dotycząca nieprzypisanej propozycji
+      "internal_comment_on_unassigned_unmoderated_idea": Wewnętrzny komentarz do nieprzypisanych danych wejściowych w niezarządzanym projekcie
+      "internal_comment_on_your_internal_comment": Wewnętrzny komentarz do mojego wewnętrznego komentarza
       "mention_in_official_feedback": Wzmianka w aktualizacji
+      "mention_in_internal_comment": Wzmianka w komentarzu wewnętrznym
       "new_comment_for_admin": Nowy komentarz w projekcie, który moderuję
       "new_comment_on_commented_idea": Nowy komentarz do pomysłu, który skomentowałem(am)
       "new_comment_on_commented_initiative": Nowy komentarz do propozycji, którą skomentowałem(am)
@@ -215,6 +224,12 @@ pl:
       main_header: 'Ludzie mówią o Tobie'
       subject: 'Ktoś wspomniał o Tobie na platformie %{organizationName}'
       preheader: '%{commentAuthor} wspomniał o Tobie w komentarzu'
+    mention_in_internal_comment:
+      cta_reply_to: 'Wyświetl komentarz przez %{firstName}'
+      event_description: '%{authorNameFull} wspomniałem o tobie w wewnętrznym komentarzu.'
+      subject: '%{firstName} wspomniałem o tobie w wewnętrznym komentarzu.'
+      main_header: '%{authorNameFirst} wspomniałem o tobie w wewnętrznym komentarzu.'
+      preheader: '%{authorNameFull} wspomniałem o tobie w wewnętrznym komentarzu.'
     moderator_digest:
       subject: 'Twój tygodniowy raport moderatora projektu z %{time}'
       preheader: 'Skrót dla moderatora projektu %{organizationName}'
@@ -298,6 +313,54 @@ pl:
       main_header: '%{authorName} odpowiedział na Twój komentarz'
       preheader: '%{authorName} odpowiedział na Twój komentarz na platformie %{organizationName}'
       replied: '%{authorFirstName} odpowiedział:'
+    internal_comment_on_your_internal_comment:
+      cta_reply_to: 'Wyświetl komentarz przez %{firstName}'
+      event_description: '%{authorNameFull} skomentował twój wewnętrzny komentarz.'
+      subject: 'Otrzymałeś komentarz do swojego wewnętrznego komentarza na stronie ''%{post}'''
+      main_header: 'Otrzymałeś komentarz do swojego wewnętrznego komentarza na stronie ''%{post}'''
+      preheader: '%{authorName} odpowiedział na twój wewnętrzny komentarz na stronie ''%{post}'''
+    internal_comment_on_idea_assigned_to_you:
+      cta_reply_to: 'Wyświetl komentarz przez %{firstName}'
+      event_description: '%{authorNameFull} skomentowałeś wewnętrznie wejście przypisane do Ciebie.'
+      subject: '''%{post}'' ma nowy komentarz wewnętrzny'
+      main_header: '''%{post}'' ma nowy komentarz wewnętrzny'
+      preheader: '''%{post}'' ma nowy komentarz wewnętrzny'
+    internal_comment_on_idea_you_commented_internally_on:
+      cta_reply_to: 'Wyświetl komentarz przez %{firstName}'
+      event_description: '%{authorNameFull} skomentowałeś wewnętrznie dane wejściowe, które skomentowałeś wewnętrznie.'
+      subject: '''%{post}'' ma nowy komentarz wewnętrzny'
+      main_header: '''%{post}'' ma nowy komentarz wewnętrzny'
+      preheader: '''%{post}'' ma nowy komentarz wewnętrzny'
+    internal_comment_on_idea_you_moderate:
+      cta_reply_to: 'Wyświetl komentarz przez %{firstName}'
+      event_description: '%{authorNameFull} komentować wewnętrznie dane wejściowe w projekcie lub folderze, którym zarządzasz.'
+      subject: '''%{post}'' ma nowy komentarz wewnętrzny'
+      main_header: '''%{post}'' ma nowy komentarz wewnętrzny'
+      preheader: '''%{post}'' ma nowy komentarz wewnętrzny'
+    internal_comment_on_initiative_assigned_to_you:
+      cta_reply_to: 'Wyświetl komentarz przez %{firstName}'
+      event_description: '%{authorNameFull} skomentowałeś wewnętrznie przydzieloną Ci propozycję.'
+      subject: '''%{post}'' ma nowy komentarz wewnętrzny'
+      main_header: '''%{post}'' ma nowy komentarz wewnętrzny'
+      preheader: '''%{post}'' ma nowy komentarz wewnętrzny'
+    internal_comment_on_initiative_you_commented_internally_on:
+      cta_reply_to: 'Wyświetl komentarz przez %{firstName}'
+      event_description: '%{authorNameFull} skomentowałeś wewnętrznie propozycję, którą skomentowałeś wewnętrznie.'
+      subject: '''%{post}'' ma nowy komentarz wewnętrzny'
+      main_header: '''%{post}'' ma nowy komentarz wewnętrzny'
+      preheader: '''%{post}'' ma nowy komentarz wewnętrzny'
+    internal_comment_on_unassigned_initiative:
+      cta_reply_to: 'Wyświetl komentarz przez %{firstName}'
+      event_description: '%{authorNameFull} skomentował wewnętrznie nieprzypisaną propozycję.'
+      subject: '''%{post}'' ma nowy komentarz wewnętrzny'
+      main_header: '''%{post}'' ma nowy komentarz wewnętrzny'
+      preheader: '''%{post}'' ma nowy komentarz wewnętrzny'
+    internal_comment_on_unassigned_unmoderated_idea:
+      cta_reply_to: 'Wyświetl komentarz przez %{firstName}'
+      event_description: '%{authorNameFull} skomentował wewnętrznie nieprzypisane dane wejściowe w niezarządzanym projekcie.'
+      subject: '''%{post}'' ma nowy komentarz wewnętrzny'
+      main_header: '''%{post}'' ma nowy komentarz wewnętrzny'
+      preheader: '''%{post}'' ma nowy komentarz wewnętrzny'
     official_feedback_on_commented_initiative:
       by_author: 'wg %{authorName}'
       updated: '%{officialName} napisał:'
@@ -516,12 +579,15 @@ pl:
       remaining_days: 'Pozostało dni'
     admin_labels:
       recipient_role:
+        admins: 'Do administratorów'
         admins_and_managers: 'Do administratorów i menedżerów'
+        managers: 'Do kierowników'
         registered_users: 'Dla zarejestrowanych użytkowników'
       recipient_segment:
         admins: 'Administratorzy'
         admins_and_managers: 'Administratorzy i menedżerowie'
         admins_and_managers_managing_the_project: 'Administratorzy i menedżerowie zarządzający projektem'
+        managers_managing_the_project: 'Menedżerowie zarządzający projektem'
         all_users: 'Wszyscy użytkownicy'
         all_users_who_uploaded_proposals: 'Wszyscy użytkownicy, którzy wysłali propozycje'
         managers: 'Menedżerowie'
@@ -544,6 +610,7 @@ pl:
         content_moderation: 'Moderacja treści'
         general: 'Ogólne'
         inputs: 'Wejścia'
+        internal_comments: 'Uwagi wewnętrzne'
         permissions: 'Uprawnienia'
         projects: 'Projekty'
         proposals: 'Propozycje'
@@ -556,6 +623,14 @@ pl:
         input_is_flagged_as_spam: 'Wejście jest oznaczone jako spam'
         input_is_updated: 'Wejście jest aktualizowane'
         input_status_changes: 'Zmiany stanu wejścia'
+        internal_comment_is_posted_on_idea_assigned_to_user: Komentarz wewnętrzny jest publikowany na wejściu przypisanym do użytkownika
+        internal_comment_is_posted_on_initiative_assigned_to_user: Komentarz wewnętrzny jest publikowany do propozycji przypisanej do użytkownika
+        internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: Komentarz wewnętrzny jest publikowany na wejściu w projekcie lub folderze zarządzanym przez użytkownika
+        internal_comment_is_posted_on_idea_user_has_commented_internally_on: Komentarz wewnętrzny jest publikowany na wejściu, które użytkownik skomentował wewnętrznie
+        internal_comment_is_posted_on_initiative_user_has_commented_internally_on: Komentarz wewnętrzny jest publikowany na temat propozycji, którą użytkownik skomentował wewnętrznie
+        internal_comment_is_posted_on_unassigned_initiative: Komentarz wewnętrzny został opublikowany na nieprzypisanej propozycji
+        internal_comment_is_posted_on_unassigned_unmoderated_idea: Komentarz wewnętrzny jest publikowany na nieprzypisanych danych wejściowych w niezarządzanym projekcie
+        user_is_mentioned_in_internal_comment: 'Użytkownik jest wymieniony w komentarzu wewnętrznym'
         new_input_is_published: 'Nowy wkład jest publikowany'
         new_proposal_is_posted: 'Nowa propozycja została opublikowana'
         project_phase_changes: 'Zmiany fazy projektu'
@@ -575,5 +650,6 @@ pl:
         proposal_is_published: 'Wniosek został opublikowany'
         user_registers_for_the_first_time: 'Użytkownik rejestruje się po raz pierwszy'
         user_replies_to_comment: 'Użytkownik odpowiada na komentarz'
+        user_replies_to_internal_comment: 'Użytkownik odpowiada na wewnętrzny komentarz'
         7_days_after_invite_is_sent: '7 dni po wysłaniu zaproszenia'
         7_days_before_the_project_changes_phase: '7 dni przed zmianą fazy projektu'
