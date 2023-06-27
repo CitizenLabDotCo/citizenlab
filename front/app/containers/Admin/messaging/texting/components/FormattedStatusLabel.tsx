@@ -4,7 +4,7 @@ import React from 'react';
 import messages from '../../messages';
 
 // typings
-import { TTextingCampaignStatus } from 'services/textingCampaigns';
+import { TTextingCampaignStatus } from 'api/texting_campaigns/types';
 
 // components
 import { StatusLabel } from '@citizenlab/cl2-component-library';
