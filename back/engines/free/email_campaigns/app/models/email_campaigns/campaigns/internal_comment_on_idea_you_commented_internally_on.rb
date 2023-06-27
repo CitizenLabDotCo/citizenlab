@@ -63,7 +63,7 @@ module EmailCampaigns
     end
 
     def self.trigger_multiloc_key
-      'email_campaigns.admin_labels.trigger.internal_comment_is_made_on_idea_user_has_commented_internally_on'
+      'email_campaigns.admin_labels.trigger.internal_comment_is_posted_on_idea_user_has_commented_internally_on'
     end
 
     def mailer_class
