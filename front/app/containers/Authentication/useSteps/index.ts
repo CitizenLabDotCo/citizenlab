@@ -211,30 +211,33 @@ export default function useSteps() {
       return;
     }
 
+    // launch sign in flow, derived from route
     if (pathname.endsWith('/sign-in')) {
       if (isNilOrError(authUser)) {
         authenticationDataRef.current = {
           flow: 'signin',
           context: GLOBAL_CONTEXT,
         };
-
-        transition(currentStep, 'START_INVITE_FLOW')(search);
+        transition(currentStep, 'TRIGGER_AUTHENTICATION_FLOW')();
       }
+      // Remove all parameters from URL as they've already been captured
+      window.history.replaceState(null, '', '/');
+      return;
+    }
 
-      if (pathname.endsWith('/sign-up')) {
-        if (isNilOrError(authUser)) {
-          authenticationDataRef.current = {
-            flow: 'signup',
-            context: GLOBAL_CONTEXT,
-          };
+    // launch sign up flow, derived from route
+    if (pathname.endsWith('/sign-up')) {
+      if (isNilOrError(authUser)) {
+        authenticationDataRef.current = {
+          flow: 'signup',
+          context: GLOBAL_CONTEXT,
+        };
 
-          transition(currentStep, 'START_INVITE_FLOW')(search);
-        }
-
-        // Remove all parameters from URL as they've already been captured
-        window.history.replaceState(null, '', '/');
-        return;
+        transition(currentStep, 'TRIGGER_AUTHENTICATION_FLOW')();
       }
+      // Remove all parameters from URL as they've already been captured
+      window.history.replaceState(null, '', '/');
+      return;
     }
 
     const urlSearchParams = parse(search, {
