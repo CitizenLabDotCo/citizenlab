@@ -114,6 +114,7 @@ const InternalChildCommentForm = ({
   const [focused, setFocused] = useState(false);
   const [canSubmit, setCanSubmit] = useState(false);
   const [hasApiError, setHasApiError] = useState(false);
+  const [tagValue, setTagValue] = useState('');
   const textareaElement = useRef<HTMLTextAreaElement | null>(null);
   const processing =
     isAddCommentToIdeaLoading || isAddCommentToInitiativeLoading;
@@ -132,6 +133,7 @@ const InternalChildCommentForm = ({
           const { authorFirstName, authorLastName, authorSlug } = eventValue;
           if (authorFirstName && authorLastName && authorSlug) {
             const tag = `@[${authorFirstName} ${authorLastName}](${authorSlug}) `;
+            setTagValue(tag);
             setInputValue(tag);
           }
           setFocused(true);
@@ -256,9 +258,11 @@ const InternalChildCommentForm = ({
         textareaElement?.current?.focus();
       }, 100);
 
-      setTimeout(() => {
-        textareaElement?.current && setCaretAtEnd(textareaElement.current);
-      }, 200);
+      if (tagValue === inputValue) {
+        setTimeout(() => {
+          textareaElement.current && setCaretAtEnd(textareaElement.current);
+        }, 200);
+      }
     }
   };
 
