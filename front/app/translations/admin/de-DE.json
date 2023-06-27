@@ -1934,7 +1934,7 @@
   "app.containers.admin.project.permissions.permissionsEveryoneEmailLabel": "Jede Person mit einer bestätigten E-Mail-Adresse",
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "Gruppe(n)",
   "app.containers.admin.project.permissions.permissionsSelectionLabelDescription": "Nutzer*innen in bestimmten Nutzer*innengruppen können teilnehmen. Sie können Gruppen auf der Registerkarte \"Nutzer*innen\" verwalten.",
-  "app.containers.admin.project.permissions.permissionsUsersLabel": "Registrierte NutzerInnen",
+  "app.containers.admin.project.permissions.permissionsUsersLabel": "Registrierte Nutzer*innen",
   "app.containers.admin.project.permissions.permissionsUsersLabelDescription": "Nutzer*innen, die ihre Konten mit Passwörtern eingerichtet haben, können teilnehmen.",
   "app.containers.admin.project.permissions.viewingRightsTitle": "Wer kann dieses Projekt sehen?",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.activeUsers": "Aktive Nutzer*innen",
