@@ -342,6 +342,8 @@
   "app.components.ProjectCard.xOptions": "{ideasCount, plural, one {# seçenek} other {# seçenek}}",
   "app.components.ProjectCard.xProjects": "{ideasCount, plural, one {# proje} other {# proje}}",
   "app.components.ProjectCard.xQuestions": "{ideasCount, plural, one {# soru} other {# soru}}",
+  "app.components.ProjectFolderCard.xComments": "{commentsCount, plural, no {# Yorumlar} one {# Yorumlar} other {# yorumlar}}",
+  "app.components.ProjectFolderCard.xInputs": "{ideasCount, plural, no {# girişler} one {# giriş} other {# girişler}}",
   "app.components.ProjectFolderCards.components.Topbar.a11y_projectFilterTabInfo": "{count, plural, one {# proje} other {# proje}}",
   "app.components.ProjectFolderCards.components.Topbar.all": "Tümü",
   "app.components.ProjectFolderCards.components.Topbar.archived": "Arşivlenmiş",
