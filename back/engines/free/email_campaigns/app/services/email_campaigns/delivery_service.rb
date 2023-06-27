@@ -21,6 +21,7 @@ module EmailCampaigns
       Campaigns::InternalCommentOnIdeaYouModerate,
       Campaigns::InternalCommentOnInitiativeAssignedToYou,
       Campaigns::InternalCommentOnInitiativeYouCommentedInternallyOn,
+      Campaigns::InternalCommentOnUnassignedUnmoderatedIdea,
       Campaigns::InternalCommentOnYourInternalComment,
       Campaigns::InviteReceived,
       Campaigns::InviteReminder,

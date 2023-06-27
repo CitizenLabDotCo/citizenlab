@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module EmailCampaigns
-  class InternalCommentOnYourInternalCommentMailerPreview < ActionMailer::Preview
+  class InternalCommentOnUnassignedUnmoderatedIdeaMailerPreview < ActionMailer::Preview
     include EmailCampaigns::MailerPreviewRecipient
 
     def campaign_mail
@@ -11,7 +11,7 @@ module EmailCampaigns
           initiating_user_first_name: 'Matthias',
           initiating_user_last_name: 'Geeke',
           internal_comment_author_name: 'Matthias Geeke',
-          internal_comment_body: 'I agree. I really think this input is amazing!',
+          internal_comment_body: 'I also think this input is amazing!',
           internal_comment_url: 'http://localhost:3000/nl-BE/ideas/afschaffen-of-versoepelen-wetgeving-rond-verharden-van-voortuin',
           post_title_multiloc: { en: 'Permit paving of front gardens' },
           post_body_multiloc: {
@@ -22,7 +22,7 @@ module EmailCampaigns
         }
       }
 
-      campaign = EmailCampaigns::Campaigns::InternalCommentOnYourInternalComment.first
+      campaign = EmailCampaigns::Campaigns::InternalCommentOnUnassignedUnmoderatedIdea.first
 
       campaign.mailer_class.with(campaign: campaign, command: command).campaign_mail
     end

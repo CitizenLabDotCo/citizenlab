@@ -11,7 +11,7 @@ module EmailCampaigns
           initiating_user_first_name: 'Matthias',
           initiating_user_last_name: 'Geeke',
           internal_comment_author_name: 'Matthias Geeke',
-          internal_comment_body: 'I also think this idea is amazing!',
+          internal_comment_body: 'I also think this input is amazing!',
           internal_comment_url: 'http://localhost:3000/nl-BE/ideas/afschaffen-of-versoepelen-wetgeving-rond-verharden-van-voortuin',
           post_title_multiloc: { en: 'Permit paving of front gardens' },
           post_body_multiloc: {
