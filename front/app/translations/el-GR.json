@@ -339,6 +339,8 @@
   "app.components.ProjectCard.xOptions": "{ideasCount, plural, one {# επιλογή} other {# επιλογές}}",
   "app.components.ProjectCard.xProjects": "{ideasCount, plural, one {# έργο} other {# έργα}}",
   "app.components.ProjectCard.xQuestions": "{ideasCount, plural, one {# ερώτηση} other {# ερωτήσεις}}",
+  "app.components.ProjectFolderCard.xComments": "{commentsCount, plural, no {# comments} one {# comments} other {# comments}}",
+  "app.components.ProjectFolderCard.xInputs": "{ideasCount, plural, no {# inputs} one {# input} other {# inputs}}",
   "app.components.ProjectFolderCards.components.Topbar.a11y_projectFilterTabInfo": "{count, plural, no {# έργα} one {# έργο} other {# έργα}}",
   "app.components.ProjectFolderCards.components.Topbar.all": "Όλα",
   "app.components.ProjectFolderCards.components.Topbar.archived": "Αρχειοθετημένος",

@@ -339,6 +339,8 @@
   "app.components.ProjectCard.xOptions": "{ideasCount, plural, one {# iespēja} other {# iespējas}}",
   "app.components.ProjectCard.xProjects": "{ideasCount, plural, one {# projekts} other {# projekti}}",
   "app.components.ProjectCard.xQuestions": "{ideasCount, plural, one {# jautājums} other {# jautājumi}}",
+  "app.components.ProjectFolderCard.xComments": "{commentsCount, plural, no {# komentāri} one {# komentāri} other {# komentāri}}",
+  "app.components.ProjectFolderCard.xInputs": "{ideasCount, plural, no {# ievadi} one {# input} other {# ievadi}}",
   "app.components.ProjectFolderCards.components.Topbar.a11y_projectFilterTabInfo": "{count, plural, no {# projekti} one {# projekts} other {# projekti}}",
   "app.components.ProjectFolderCards.components.Topbar.all": "Viss",
   "app.components.ProjectFolderCards.components.Topbar.archived": "Arhivēts",
