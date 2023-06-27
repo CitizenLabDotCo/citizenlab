@@ -262,7 +262,7 @@ const InitiativesNewFormWrapper = ({
       }
       setSaving(false);
     } catch (errorResponse) {
-      const apiErrors = get(errorResponse, 'json.errors');
+      const apiErrors = get(errorResponse, 'errors');
 
       const profanityApiError = apiErrors.base.find(
         (apiError) => apiError.error === 'includes_banned_words'
@@ -412,7 +412,7 @@ const InitiativesNewFormWrapper = ({
             setFiles((files) => [...files, file]);
           },
           onError: (errorResponse) => {
-            const apiErrors = get(errorResponse, 'json.errors');
+            const apiErrors = get(errorResponse, 'errors');
 
             setSaving(false);
             setApiErrors((oldApiErrors) => ({
