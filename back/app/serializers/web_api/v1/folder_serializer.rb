@@ -3,6 +3,18 @@
 class WebApi::V1::FolderSerializer < WebApi::V1::BaseSerializer
   attributes :title_multiloc, :description_preview_multiloc, :slug, :created_at, :updated_at
 
+  attribute :comments_count do |object|
+    Rails.cache.fetch("#{object.cache_key}/comments_count", expires_in: 1.day) do
+      object.projects.not_draft.sum(&:comments_count)
+    end
+  end
+
+  attribute :ideas_count do |object|
+    Rails.cache.fetch("#{object.cache_key}/ideas_count", expires_in: 1.day) do
+      object.projects.not_draft.sum(&:ideas_count)
+    end
+  end
+
   attribute :description_multiloc do |object|
     TextImageService.new.render_data_images object, :description_multiloc
   end
@@ -15,7 +27,26 @@ class WebApi::V1::FolderSerializer < WebApi::V1::BaseSerializer
     params.dig(:visible_children_count_by_parent_id, object.admin_publication.id) || Pundit.policy_scope(current_user(params), Project).where(id: object.admin_publication.children.map(&:publication_id)).count
   end
 
+  attribute :avatars_count do |object, params|
+    avatars_for_folder(object, params)[:total_count]
+  end
+
+  attribute :participants_count do |object, _params|
+    @participants_service ||= ParticipantsService.new
+    @participants_service.folder_participants_count(object)
+  end
+
   has_one :admin_publication, serializer: ::WebApi::V1::AdminPublicationSerializer
 
   has_many :images, serializer: ::WebApi::V1::ImageSerializer
+
+  has_many :avatars, serializer: WebApi::V1::AvatarSerializer do |object, params|
+    avatars_for_folder(object, params)[:users]
+  end
+
+  def self.avatars_for_folder(object, _params)
+    # TODO: call only once (not a second time for counts)
+    @participants_service ||= ParticipantsService.new
+    AvatarsService.new(@participants_service).avatars_for_folder(object, limit: 3)
+  end
 end

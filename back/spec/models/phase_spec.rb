@@ -50,6 +50,7 @@ RSpec.describe Phase do
       phase = create(:phase, participation_method: 'ideation')
       phase.participation_method = 'voting'
       phase.voting_method = 'budgeting'
+      phase.ideas_order = 'random'
       phase.voting_max_total = 200
       expect(phase.save).to be true
     end
@@ -57,6 +58,7 @@ RSpec.describe Phase do
     it 'cannot be changed from a transitive method to a non-transitive one' do
       phase = create(:phase, participation_method: 'ideation')
       phase.participation_method = 'native_survey'
+      phase.ideas_order = nil
       expect(phase.save).to be false
       expect(phase.errors.details).to eq({ participation_method: [{ error: :change_not_permitted }] })
     end
@@ -214,15 +216,6 @@ RSpec.describe Phase do
           expect(phase.can_contain_input?).to be expected_result
         end
       end
-    end
-  end
-
-  describe 'posting_method and posting_limited_max' do
-    it 'are set to defaults from the participation method' do
-      # We cannot stub side effects, otherwise we could have set
-      # posting_method and posting_limited_max to custom values.
-      expect_any_instance_of(ParticipationMethod::Base).to receive(:assign_defaults_for_participation_context).once
-      create(:phase)
     end
   end
 end

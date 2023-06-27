@@ -16,6 +16,7 @@ class WebApi::V1::InitiativesController < ApplicationController
       scope: policy_scope(Initiative),
       includes: %i[author assignee topics areas]
     ).find_records
+    initiatives = paginate SortByParamsService.new.sort_initiatives(initiatives, params, current_user)
     render json: linked_json(initiatives, WebApi::V1::InitiativeSerializer, serialization_options_for(initiatives))
   end
 
@@ -25,6 +26,7 @@ class WebApi::V1::InitiativesController < ApplicationController
       current_user: current_user,
       scope: policy_scope(Initiative)
     ).find_records
+    initiatives = paginate SortByParamsService.new.sort_initiatives(initiatives, params, current_user)
     render json: linked_json(initiatives, WebApi::V1::PostMarkerSerializer, params: jsonapi_serializer_params)
   end
 
@@ -34,9 +36,9 @@ class WebApi::V1::InitiativesController < ApplicationController
       params,
       current_user: current_user,
       scope: policy_scope(Initiative).where(publication_status: 'published'),
-      includes: %i[author initiative_status topics areas],
-      paginate: false
+      includes: %i[author initiative_status topics areas]
     ).find_records
+    initiatives = SortByParamsService.new.sort_initiatives(initiatives, params, current_user)
 
     I18n.with_locale(current_user&.locale) do
       xlsx = XlsxService.new.generate_initiatives_xlsx initiatives,
