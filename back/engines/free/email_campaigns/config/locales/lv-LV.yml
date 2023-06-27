@@ -16,7 +16,16 @@ lv:
       "initiative_published": Mana priekšlikuma publicēšana
       "invite_received": Uzaicinājums
       "invite_reminder": Atgādinājums par uzaicinājumu
+      "internal_comment_on_idea_assigned_to_you": Iekšējais komentārs par man piešķirto ieguldījumu
+      "internal_comment_on_idea_you_commented_internally_on": Iekšējs komentārs par ievadītajiem datiem, ko komentēju iekšēji
+      "internal_comment_on_idea_you_moderate": Iekšējs komentārs par ievades datiem projektā vai mapē, ko pārvaldu
+      "internal_comment_on_initiative_assigned_to_you": Iekšējais komentārs par man piešķirto priekšlikumu
+      "internal_comment_on_initiative_you_commented_internally_on": Iekšējs komentārs par priekšlikumu Iekšēji komentēju priekšlikumu
+      "internal_comment_on_unassigned_initiative": Iekšējais komentārs par nepiešķirtu priekšlikumu
+      "internal_comment_on_unassigned_unmoderated_idea": Iekšējais komentārs par nepiešķirtu ievades datu nepiešķirtiem ievades datiem neapsaimniekotā projektā
+      "internal_comment_on_your_internal_comment": Iekšējais komentārs par manu iekšējo komentāru
       "mention_in_official_feedback": Minēt atjauninājumā
+      "mention_in_internal_comment": Pieminēšana iekšējā komentārā
       "new_comment_for_admin": Jauns komentārs projektā, kuru es moderēju
       "new_comment_on_commented_idea": Jauns komentārs par to ideju, kuru es komentēju
       "new_comment_on_commented_initiative": Jauns komentārs par to priekšlikumu, kuru es komentēju
@@ -215,6 +224,12 @@ lv:
       main_header: 'Cilvēki runā par jums'
       subject: 'Kāds pieminēja jūs %{organizationName} platformā.'
       preheader: '%{commentAuthor} pieminēja jūs komentārā'
+    mention_in_internal_comment:
+      cta_reply_to: 'Skatīt komentāru pēc %{firstName}'
+      event_description: '%{authorNameFull} jūs pieminēja iekšējā komentārā.'
+      subject: '%{firstName} jūs pieminēja iekšējā komentārā.'
+      main_header: '%{authorNameFirst} jūs pieminēja iekšējā komentārā.'
+      preheader: '%{authorNameFull} jūs pieminēja iekšējā komentārā.'
     moderator_digest:
       subject: 'Jūsu nedēļas projekta vadītāja pārskats par %{time}'
       preheader: 'Projekta vadītāja pārskats par %{organizationName}'
@@ -298,6 +313,54 @@ lv:
       main_header: '%{authorName} atbildēja uz jūsu komentāru'
       preheader: '%{authorName} atbildēja uz jūsu komentāru %{organizationName} platformā'
       replied: '%{authorFirstName} atbildēja:'
+    internal_comment_on_your_internal_comment:
+      cta_reply_to: 'Skatīt komentāru pēc %{firstName}'
+      event_description: '%{authorNameFull} komentēja jūsu iekšējo komentāru.'
+      subject: 'Jūs esat saņēmis komentāru par savu iekšējo komentāru vietnē ''%{post}'''
+      main_header: 'Jūs esat saņēmis komentāru par savu iekšējo komentāru vietnē ''%{post}'''
+      preheader: '%{authorName} atbildēja uz jūsu iekšējo komentāru par ''%{post}'''
+    internal_comment_on_idea_assigned_to_you:
+      cta_reply_to: 'Skatīt komentāru pēc %{firstName}'
+      event_description: '%{authorNameFull} iekšēji komentēja jums piešķirto ievadi.'
+      subject: '''%{post}'' ir jauns iekšējais komentārs'
+      main_header: '''%{post}'' ir jauns iekšējais komentārs'
+      preheader: '''%{post}'' ir jauns iekšējais komentārs'
+    internal_comment_on_idea_you_commented_internally_on:
+      cta_reply_to: 'Skatīt komentāru pēc %{firstName}'
+      event_description: '%{authorNameFull} iekšēji komentēja ievades datus, kurus jūs komentējāt iekšēji.'
+      subject: '''%{post}'' ir jauns iekšējais komentārs'
+      main_header: '''%{post}'' ir jauns iekšējais komentārs'
+      preheader: '''%{post}'' ir jauns iekšējais komentārs'
+    internal_comment_on_idea_you_moderate:
+      cta_reply_to: 'Skatīt komentāru pēc %{firstName}'
+      event_description: '%{authorNameFull} iekšēji komentēt ievades ievades failu jūsu pārvaldītajā projektā vai mapē.'
+      subject: '''%{post}'' ir jauns iekšējais komentārs'
+      main_header: '''%{post}'' ir jauns iekšējais komentārs'
+      preheader: '''%{post}'' ir jauns iekšējais komentārs'
+    internal_comment_on_initiative_assigned_to_you:
+      cta_reply_to: 'Skatīt komentāru pēc %{firstName}'
+      event_description: '%{authorNameFull} iekšēji komentēja jums piešķirto priekšlikumu.'
+      subject: '''%{post}'' ir jauns iekšējais komentārs'
+      main_header: '''%{post}'' ir jauns iekšējais komentārs'
+      preheader: '''%{post}'' ir jauns iekšējais komentārs'
+    internal_comment_on_initiative_you_commented_internally_on:
+      cta_reply_to: 'Skatīt komentāru pēc %{firstName}'
+      event_description: '%{authorNameFull} iekšēji komentēja priekšlikumu, kuru jūs komentējāt iekšēji.'
+      subject: '''%{post}'' ir jauns iekšējais komentārs'
+      main_header: '''%{post}'' ir jauns iekšējais komentārs'
+      preheader: '''%{post}'' ir jauns iekšējais komentārs'
+    internal_comment_on_unassigned_initiative:
+      cta_reply_to: 'Skatīt komentāru pēc %{firstName}'
+      event_description: '%{authorNameFull} iekšēji komentēja nepiešķirtu priekšlikumu.'
+      subject: '''%{post}'' ir jauns iekšējais komentārs'
+      main_header: '''%{post}'' ir jauns iekšējais komentārs'
+      preheader: '''%{post}'' ir jauns iekšējais komentārs'
+    internal_comment_on_unassigned_unmoderated_idea:
+      cta_reply_to: 'Skatīt komentāru pēc %{firstName}'
+      event_description: '%{authorNameFull} iekšēji komentēja nepiešķirtu ievadi neapsaimniekotā projektā.'
+      subject: '''%{post}'' ir jauns iekšējais komentārs'
+      main_header: '''%{post}'' ir jauns iekšējais komentārs'
+      preheader: '''%{post}'' ir jauns iekšējais komentārs'
     official_feedback_on_commented_initiative:
       by_author: 'autors: %{authorName}'
       updated: '%{officialName} rakstīja:'
@@ -516,12 +579,15 @@ lv:
       remaining_days: 'Atlikušās dienas'
     admin_labels:
       recipient_role:
+        admins: 'Administratoriem'
         admins_and_managers: 'Administratoriem un vadītājiem'
+        managers: 'Vadītājiem'
         registered_users: 'Reģistrētiem lietotājiem'
       recipient_segment:
         admins: 'Administratori'
         admins_and_managers: 'Administratori un vadītāji'
         admins_and_managers_managing_the_project: 'Admini un vadītāji, kas pārvalda projektu'
+        managers_managing_the_project: 'Projekta vadītāji, kas pārvalda projektu'
         all_users: 'Visi lietotāji'
         all_users_who_uploaded_proposals: 'Visi lietotāji, kas augšupielādējuši priekšlikumus'
         managers: 'Vadītāji'
@@ -544,6 +610,7 @@ lv:
         content_moderation: 'Satura moderēšana'
         general: 'Vispārīgi'
         inputs: 'Ieejas'
+        internal_comments: 'Iekšējās piezīmes'
         permissions: 'Atļaujas'
         projects: 'Projekti'
         proposals: 'Priekšlikumi'
@@ -556,6 +623,14 @@ lv:
         input_is_flagged_as_spam: 'Ievads tiek atzīmēts kā surogātpasts'
         input_is_updated: 'Ievade tiek atjaunināta'
         input_status_changes: 'Ieejas statusa izmaiņas'
+        internal_comment_is_posted_on_idea_assigned_to_user: Iekšējais komentārs tiek publicēts par lietotājam piešķirto ievadi'
+        internal_comment_is_posted_on_initiative_assigned_to_user: Iekšējais komentārs ir publicēts par priekšlikumu, kas piešķirts lietotājam'
+        internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: Iekšējais komentārs tiek publicēts par ievadi projektā vai mapē, ko pārvalda lietotājs
+        internal_comment_is_posted_on_idea_user_has_commented_internally_on: Iekšējais komentārs tiek publicēts par ievades lietotāja iekšēji komentēto ievadi'
+        internal_comment_is_posted_on_initiative_user_has_commented_internally_on: Iekšējais komentārs tiek publicēts par priekšlikumu, ko lietotājs komentēja iekšēji
+        internal_comment_is_posted_on_unassigned_initiative: Iekšējais komentārs ir publicēts par nepiešķirtu priekšlikumu
+        internal_comment_is_posted_on_unassigned_unmoderated_idea: Iekšējais komentārs ir publicēts par nepiešķirtu ievades failu neapsaimniekotā projektā
+        user_is_mentioned_in_internal_comment: 'Lietotājs ir minēts iekšējā komentārā'
         new_input_is_published: 'Tiek publicēti jauni dati'
         new_proposal_is_posted: 'Ir publicēts jauns priekšlikums'
         project_phase_changes: 'Projekta fāzes izmaiņas'
@@ -575,5 +650,6 @@ lv:
         proposal_is_published: 'Priekšlikums ir publicēts'
         user_registers_for_the_first_time: 'Lietotājs reģistrējas pirmo reizi'
         user_replies_to_comment: 'Lietotājs atbild uz komentāru'
+        user_replies_to_internal_comment: 'Lietotājs atbild uz iekšēju komentāru'
         7_days_after_invite_is_sent: '7 dienas pēc uzaicinājuma nosūtīšanas'
         7_days_before_the_project_changes_phase: '7 dienas pirms projekta izmaiņu fāzes'
