@@ -9,7 +9,7 @@ module EmailCampaigns
     end
 
     def header_title
-      format_message('main_header', values: { authorNameFirst: event.initiating_user_first_name })
+      format_message('main_header', values: { firstName: event.initiating_user_first_name })
     end
 
     def header_message
