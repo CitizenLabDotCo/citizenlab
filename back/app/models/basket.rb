@@ -35,6 +35,10 @@ class Basket < ApplicationRecord
 
   delegate :project_id, to: :participation_context
 
+  def submitted?
+    !!submitted_at
+  end
+
   def total_budget
     ideas.pluck(:budget).compact.sum
   end
@@ -50,7 +54,7 @@ class Basket < ApplicationRecord
   end
 
   def basket_submission
-    return unless submitted_at
+    return unless submitted?
 
     if less_than_min_budget?
       errors.add(:ideas, :less_than_min_budget, message: 'less than the min budget while the basket is submitted')

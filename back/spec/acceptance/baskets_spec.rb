@@ -55,8 +55,7 @@ resource 'Baskets' do
 
   post 'web_api/v1/baskets' do
     with_options scope: :basket do
-      parameter :submitted_at, 'The time at which the basket was submitted to the city', required: false
-      parameter :user_id, 'The id of the user to whom the basket belongs', required: true
+      parameter :submitted, 'Boolean value to mark the basket as submitted or unsubmitted. Defaults to false.', required: false
       parameter :participation_context_id, 'The id of the phase/project to whom the basket belongs', required: true
       parameter :participation_context_type, 'The type of the participation context (e.g. Project, Phase)', required: true
       parameter :baskets_ideas_attributes, 'Array with baskets_ideas objects', required: false
@@ -70,10 +69,9 @@ resource 'Baskets' do
     context 'when authenticated' do
       before { header_token_for @user }
 
-      let(:basket) { build(:basket, user: @user, participation_context: @project) }
-      let(:user_id) { basket.user_id }
-      let(:participation_context_id) { basket.participation_context_id }
-      let(:participation_context_type) { basket.participation_context_type }
+      let(:submitted) { false }
+      let(:participation_context_id) { @project.id }
+      let(:participation_context_type) { 'Project' }
       let(:ideas) { create_list(:idea, 2, project: @project) }
       let(:baskets_ideas_attributes) { [{ idea_id: ideas.first.id, votes: 2 }, { idea_id: ideas.last.id, votes: 3 }] }
 
@@ -81,7 +79,8 @@ resource 'Baskets' do
       example_request 'Create a basket' do
         assert_status 201
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :relationships, :user, :data, :id)).to eq user_id
+        expect(json_response.dig(:data, :attributes, :submitted_at)).to be_nil
+        expect(json_response.dig(:data, :relationships, :user, :data, :id)).to eq @user.id
         expect(json_response.dig(:data, :relationships, :ideas, :data).pluck(:id)).to match_array ideas.map(&:id)
         expect(json_response.dig(:data, :relationships, :participation_context, :data, :id)).to eq participation_context_id
         expect(
@@ -104,10 +103,7 @@ resource 'Baskets' do
 
   patch 'web_api/v1/baskets/:basket_id' do
     with_options scope: :basket do
-      parameter :submitted_at, 'The time at which the basket was submitted to the city'
-      parameter :user_id, 'The id of the user to whom the basket belongs'
-      parameter :participation_context_id, 'The id of the phase/project to whom the basket belongs'
-      parameter :participation_context_type, 'The type of the participation context (e.g. Project, Phase)'
+      parameter :submitted, 'Boolean value to mark the basket as submitted or unsubmitted. Defaults to false.', required: false
       parameter :baskets_ideas_attributes, 'Array with baskets_ideas objects', required: false
     end
     with_options scope: %i[basket baskets_ideas_attributes] do
@@ -122,6 +118,7 @@ resource 'Baskets' do
       let(:basket_id) { @basket.id }
 
       describe do
+        let(:submitted) { true }
         let(:new_ideas) { create_list(:idea, 2, project: @project) }
         let(:idea_ids) { new_ideas.map(&:id) + [@ideas.first.id] }
         let(:baskets_ideas_attributes) do
@@ -134,6 +131,8 @@ resource 'Baskets' do
         example_request 'Update a basket' do
           assert_status 200
           json_response = json_parse(response_body)
+
+          expect(json_response.dig(:data, :attributes, :submitted_at)).to be_present
           expect(json_response.dig(:data, :relationships, :ideas, :data).pluck(:id)).to match_array idea_ids
           expect(
             json_response[:included].select { |included| included[:type] == 'baskets_idea' }.map { |baskets_idea| baskets_idea.dig(:attributes, :votes) }
