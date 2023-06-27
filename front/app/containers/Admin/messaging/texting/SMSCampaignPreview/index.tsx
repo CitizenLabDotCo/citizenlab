@@ -12,13 +12,11 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
 
 // hooks
-import useTextingCampaign from 'hooks/useTextingCampaign';
+import useTextingCampaign from 'api/texting_campaigns/useTextingCampaign';
 
 // services
-import {
-  deleteTextingCampaign,
-  sendTextingCampaign,
-} from 'services/textingCampaigns';
+import useDeleteTextingCampaign from 'api/texting_campaigns/useDeleteTextingCampaign';
+import useSendTextingCampaign from 'api/texting_campaigns/useSendTextingCampaign';
 
 // styling
 import styled from 'styled-components';
@@ -117,6 +115,10 @@ const InformativeTableRow = ({
 };
 
 const SMSCampaignPreview = (props: WithRouterProps) => {
+  const { mutate: deleteTextingCampaign, isLoading: isLoadingDelete } =
+    useDeleteTextingCampaign();
+  const { mutate: sendTextingCampaign, isLoading: isLoadingSend } =
+    useSendTextingCampaign();
   const [confirmationModalIsVisible, setConfirmationModalVisible] =
     useState(false);
   const [deleteCampaignModalIsVisible, setDeleteCampaignModalVisible] =
@@ -124,47 +126,50 @@ const SMSCampaignPreview = (props: WithRouterProps) => {
   const [hasTooManySegmentsError, setHasTooManySegmentsError] = useState(false);
   const [hasMonthlyLimitReachedError, setHasMonthlyLimitReachedError] =
     useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
   const { campaignId } = props.params;
-  const campaign = useTextingCampaign(campaignId);
+  const { data: campaign } = useTextingCampaign(campaignId);
 
-  const confirmSendTextingCampaign = async () => {
-    try {
-      setIsLoading(true);
-      await sendTextingCampaign(campaignId);
-      const url = `/admin/messaging/texting/${campaignId}`;
-      clHistory.replace(url);
-    } catch (e) {
-      setIsLoading(false);
-      const smsCampaignBaseErrors: SMSCampaignBaseError[] | undefined =
-        e.json.errors.base;
-      const tooManySegmentsError = smsCampaignBaseErrors?.find(
-        (smsCampaignBaseError) =>
-          smsCampaignBaseError.error === 'too_many_total_segments'
-      );
-      const monthlyLimitReachedError = smsCampaignBaseErrors?.find(
-        (smsCampaignBaseError) =>
-          smsCampaignBaseError.error === 'monthly_limit_reached'
-      );
-      if (tooManySegmentsError) {
-        setHasTooManySegmentsError(true);
+  const isLoading = isLoadingDelete || isLoadingSend;
+
+  const confirmSendTextingCampaign = () => {
+    sendTextingCampaign(
+      { id: campaignId },
+      {
+        onSuccess: () => {
+          const url = `/admin/messaging/texting`;
+          clHistory.replace(url);
+        },
+        onError: (e) => {
+          const smsCampaignBaseErrors = e.errors.base as
+            | SMSCampaignBaseError[]
+            | undefined;
+          const tooManySegmentsError = smsCampaignBaseErrors?.find(
+            (smsCampaignBaseError) =>
+              smsCampaignBaseError.error === 'too_many_total_segments'
+          );
+          const monthlyLimitReachedError = smsCampaignBaseErrors?.find(
+            (smsCampaignBaseError) =>
+              smsCampaignBaseError.error === 'monthly_limit_reached'
+          );
+          if (tooManySegmentsError) {
+            setHasTooManySegmentsError(true);
+          }
+          if (monthlyLimitReachedError) {
+            setHasMonthlyLimitReachedError(true);
+          }
+        },
       }
-      if (monthlyLimitReachedError) {
-        setHasMonthlyLimitReachedError(true);
-      }
-    }
+    );
   };
 
-  const confirmDeleteTextingCampaign = async () => {
-    try {
-      setIsLoading(true);
-      await deleteTextingCampaign(campaignId);
-      const url = `/admin/messaging/texting`;
-      clHistory.replace(url);
-    } catch (e) {
-      setIsLoading(false);
-    }
+  const confirmDeleteTextingCampaign = () => {
+    deleteTextingCampaign(campaignId, {
+      onSuccess: () => {
+        const url = `/admin/messaging/texting`;
+        clHistory.replace(url);
+      },
+    });
   };
 
   const openDeleteModal = () => {
@@ -191,7 +196,7 @@ const SMSCampaignPreview = (props: WithRouterProps) => {
   // actual error state when campaign not found
   if (isNilOrError(campaign)) return null;
 
-  const { message, phone_numbers } = campaign.attributes;
+  const { message, phone_numbers } = campaign.data.attributes;
   const segmentCount = Math.ceil(message.length / 160);
   const segmentPlural = segmentCount === 1 ? 'segment' : 'segments';
   const phoneNumberPlural =
