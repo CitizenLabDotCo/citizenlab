@@ -1,5 +1,5 @@
 // Libraries
-import React, { FormEvent, useEffect, useState } from 'react';
+import React, { FormEvent, useEffect, useState, useRef } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // Services
@@ -28,6 +28,10 @@ import { Button } from '@citizenlab/cl2-component-library';
 
 // utils
 import { getMentionRoles } from '../utils';
+import {
+  getCommentContent,
+  getEditableCommentContent,
+} from 'components/PostShowComponents/Comments/utils';
 
 const Container = styled.div``;
 
@@ -86,59 +90,47 @@ const InternalCommentBody = ({
   const [commentContent, setCommentContent] = useState('');
   const [editableCommentContent, setEditableCommentContent] = useState('');
   const [apiErrors, setApiErrors] = useState<CLErrors | null>(null);
-  const [textAreaRef, setTextAreaRef] = useState<HTMLTextAreaElement | null>(
-    null
-  );
+  const textareaElement = useRef<HTMLTextAreaElement | null>(null);
 
   useEffect(() => {
-    if (!isNilOrError(comment) && !commentContent) {
-      const setNewCommentContent = () => {
-        let commentContent = '';
-
-        commentContent = comment.data.attributes.body.replace(
-          /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi,
-          '<a class="mention" data-link="/profile/$2" href="/profile/$2">$3</a>'
-        );
-
-        setCommentContent(commentContent);
-      };
-
-      const setNewEditableCommentContent = () => {
-        let editableCommentContent = '';
-
-        editableCommentContent = comment.data.attributes.body.replace(
-          /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>@([\S\s]*?)<\/span>/gi,
-          '@[$3]($2)'
-        );
-
-        setEditableCommentContent(editableCommentContent);
-      };
-
-      setNewCommentContent();
-      setNewEditableCommentContent();
+    if (comment && !commentContent) {
+      setCommentContent(getCommentContent(comment.data.attributes.body));
+      setEditableCommentContent(
+        getEditableCommentContent(comment.data.attributes.body)
+      );
     }
   }, [comment, commentContent]);
 
-  if (isNilOrError(locale)) {
+  useEffect(() => {
+    if (editing) {
+      textareaElement.current && focusEndOfEditingArea(textareaElement.current);
+    }
+  }, [editing]);
+
+  if (isNilOrError(locale) || !comment) {
     return null;
   }
 
-  const setNewTextAreaRef = (ref: HTMLTextAreaElement) => {
-    setTextAreaRef(ref);
-    focusEndOfEditingArea();
+  const setNewTextAreaRef = (element: HTMLTextAreaElement) => {
+    textareaElement.current = element;
+
+    if (textareaElement.current) {
+      textareaElement.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+        inline: 'center',
+      });
+    }
   };
 
-  const focusEndOfEditingArea = () => {
-    if (isNilOrError(textAreaRef) || !editing) return;
-    textAreaRef.focus();
-
-    // set caret to end if text content exists
-    if (!isNilOrError(textAreaRef.textContent)) {
-      textAreaRef.setSelectionRange(
-        textAreaRef.textContent.length,
-        textAreaRef.textContent.length
+  const focusEndOfEditingArea = (element: HTMLTextAreaElement) => {
+    if (element.setSelectionRange && element.textContent) {
+      element.setSelectionRange(
+        element.textContent.length,
+        element.textContent.length
       );
     }
+    element.focus();
   };
 
   const onEditableCommentContentChange = (editableCommentContent: string) => {
@@ -173,7 +165,9 @@ const InternalCommentBody = ({
 
   const cancelEditing = (event: React.MouseEvent) => {
     event.preventDefault();
-    setEditableCommentContent('');
+    setEditableCommentContent(
+      getEditableCommentContent(comment.data.attributes.body)
+    );
     onCancelEditing();
   };
 
