@@ -34,7 +34,7 @@ RSpec.describe VotingMethod::Budgeting do
     end
 
     it 'sets errors when the budget is blank' do
-      baskets_idea =build(:baskets_idea, idea: build(:idea, budget: nil))
+      baskets_idea = build(:baskets_idea, idea: build(:idea, budget: nil))
       voting_method.validate_baskets_idea baskets_idea
       expect(baskets_idea.errors.details).to eq(idea: [error: :has_no_budget])
     end
