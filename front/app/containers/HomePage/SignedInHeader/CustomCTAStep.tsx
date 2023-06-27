@@ -6,7 +6,7 @@ import { HeaderContent, Left, Text, Right } from './';
 import T from 'components/T';
 
 // services
-import { OnboardingCampaignName } from 'services/onboardingCampaigns';
+import { OnboardingCampaignName } from 'api/onboarding_campaigns/types';
 
 // hooks
 import useCurrentOnboardingCampaign from 'api/onboarding_campaigns/useCurrentOnboardingCampaign';

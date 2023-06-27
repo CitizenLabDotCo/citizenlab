@@ -17,7 +17,7 @@ const useCurrentOnboardingCampaign = () => {
     IOnboardingCampaign,
     OnboardingCampaignKeys
   >({
-    queryKey: onboardingCampaignsKeys.items(),
+    queryKey: onboardingCampaignsKeys.all(),
     queryFn: () => fetchCurrentCampaign(),
   });
 };

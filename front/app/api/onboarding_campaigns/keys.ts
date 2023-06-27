@@ -6,7 +6,6 @@ const baseKey = {
 
 const onboardingCampaignsKeys = {
   all: () => [baseKey],
-  items: () => [{ ...baseKey, operation: 'item' }],
 } satisfies QueryKeys;
 
 export default onboardingCampaignsKeys;
