@@ -14,12 +14,13 @@ en:
       "initiative_assigned_to_you": Assignment of a proposal to me
       "initiative_marked_as_spam": Proposal spam report
       "initiative_published": Publication of my proposal
-      "internal_comment_on_idea_assigned_to_you": Internal comment on idea assigned to me
-      "internal_comment_on_idea_you_commented_internally_on": Internal comment on idea I commented internally on
-      "internal_comment_on_idea_you_moderate": Internal comment on idea in project or folder I manage
-      "internal_comment_on_initiative_assigned_to_you": Internal comment on initiative assigned to me
-      "internal_comment_on_initiative_you_commented_internally_on": Internal comment on initiative I commented internally on
-      "internal_comment_on_unassigned_unmoderated_idea": Internal comment on unassigned idea in unmanaged project
+      "internal_comment_on_idea_assigned_to_you": Internal comment on input assigned to me
+      "internal_comment_on_idea_you_commented_internally_on": Internal comment on input I commented internally on
+      "internal_comment_on_idea_you_moderate": Internal comment on input in project or folder I manage
+      "internal_comment_on_initiative_assigned_to_you": Internal comment on proposal assigned to me
+      "internal_comment_on_initiative_you_commented_internally_on": Internal comment on proposal I commented internally on
+      "internal_comment_on_unassigned_initative": Internal comment on unassigned proposal
+      "internal_comment_on_unassigned_unmoderated_idea": Internal comment on unassigned input in unmanaged project
       "internal_comment_on_your_internal_comment": Internal comment on my internal comment
       "invite_received": Invitation
       "invite_reminder": Invitation reminder
@@ -70,12 +71,13 @@ en:
       "initiative_assigned_to_you": Assignment of a proposal - admins
       "initiative_marked_as_spam": Proposal spam report - admins
       "initiative_published": Publication of your proposal - all users
-      "internal_comment_on_idea_assigned_to_you": Internal comment on idea assigned to you - admins and project managers
-      "internal_comment_on_idea_you_commented_internally_on": Internal comment on idea you commented internally on - admins and project managers
-      "internal_comment_on_idea_you_moderate": Internal comment on idea in project or folder you manage - project and folder managers
-      "internal_comment_on_initiative_assigned_to_you": Internal comment on initiative assigned to you - admins
-      "internal_comment_on_initiative_you_commented_internally_on": Internal comment on initiative you commented internally on - admins
-      "internal_comment_on_unassigned_unmoderated_idea": Internal comment on unassigned idea in unmanaged project - admins and project managers
+      "internal_comment_on_idea_assigned_to_you": Internal comment on input assigned to you - admins and project managers
+      "internal_comment_on_idea_you_commented_internally_on": Internal comment on input you commented internally on - admins and project managers
+      "internal_comment_on_idea_you_moderate": Internal comment on input in project or folder you manage - project and folder managers
+      "internal_comment_on_initiative_assigned_to_you": Internal comment on proposal assigned to you - admins
+      "internal_comment_on_initiative_you_commented_internally_on": Internal comment on input you commented internally on - admins
+      "internal_comment_on_unassigned_initative": Internal comment on unassigned proposal - admins
+      "internal_comment_on_unassigned_unmoderated_idea": Internal comment on unassigned input in unmanaged project - admins
       "internal_comment_on_your_internal_comment": Internal comment on your internal comment - admins and project managers
       "invite_received": Invitation - all users
       "invite_reminder": Invitation reminder - all users
@@ -387,6 +389,12 @@ en:
     internal_comment_on_initiative_you_commented_internally_on:
       cta_reply_to: 'View comment by %{firstName}'
       event_description: '%{authorNameFull} commented internally on a proposal you commented internally on.'
+      subject: '''%{post}'' has a new internal comment'
+      main_header: '''%{post}'' has a new internal comment'
+      preheader: '''%{post}'' has a new internal comment'
+    internal_comment_on_unassigned_initiative:
+      cta_reply_to: 'View comment by %{firstName}'
+      event_description: '%{authorNameFull} commented internally on an unassigned proposal.'
       subject: '''%{post}'' has a new internal comment'
       main_header: '''%{post}'' has a new internal comment'
       preheader: '''%{post}'' has a new internal comment'

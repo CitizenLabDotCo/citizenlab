@@ -16,12 +16,13 @@ en:
       "initiative_published": Publication of my proposal
       "invite_received": Invitation
       "invite_reminder": Invitation reminder
-      "internal_comment_on_idea_assigned_to_you": Internal comment on idea assigned to me
-      "internal_comment_on_idea_you_commented_internally_on": Internal comment on idea I commented internally on
-      "internal_comment_on_idea_you_moderate": Internal comment on idea in project or folder I manage
-      "internal_comment_on_initiative_assigned_to_you": Internal comment on initiative assigned to me
-      "internal_comment_on_initiative_you_commented_internally_on": Internal comment on initiative I commented internally on
-      "internal_comment_on_unassigned_unmoderated_idea": Internal comment on unassigned idea in unmanaged project
+      "internal_comment_on_idea_assigned_to_you": Internal comment on input assigned to me
+      "internal_comment_on_idea_you_commented_internally_on": Internal comment on input I commented internally on
+      "internal_comment_on_idea_you_moderate": Internal comment on input in project or folder I manage
+      "internal_comment_on_initiative_assigned_to_you": Internal comment on proposal assigned to me
+      "internal_comment_on_initiative_you_commented_internally_on": Internal comment on proposal I commented internally on
+      "internal_comment_on_unassigned_initative": Internal comment on unassigned proposal
+      "internal_comment_on_unassigned_unmoderated_idea": Internal comment on unassigned input in unmanaged project
       "internal_comment_on_your_internal_comment": Internal comment on my internal comment
       "mention_in_official_feedback": Mention in an update
       "mention_in_internal_comment": Mention in an internal comment
@@ -348,6 +349,12 @@ en:
       subject: '''%{post}'' has a new internal comment'
       main_header: '''%{post}'' has a new internal comment'
       preheader: '''%{post}'' has a new internal comment'
+    internal_comment_on_unassigned_initiative:
+      cta_reply_to: 'View comment by %{firstName}'
+      event_description: '%{authorNameFull} commented internally on an unassigned proposal.'
+      subject: '''%{post}'' has a new internal comment'
+      main_header: '''%{post}'' has a new internal comment'
+      preheader: '''%{post}'' has a new internal comment'
     internal_comment_on_unassigned_unmoderated_idea:
       cta_reply_to: 'View comment by %{firstName}'
       event_description: '%{authorNameFull} commented internally on an unassigned input in an unmanaged project.'
@@ -616,12 +623,13 @@ en:
         input_is_flagged_as_spam: 'Input is flagged as spam'
         input_is_updated: 'Input is updated'
         input_status_changes: 'Input status changes'
-        internal_comment_is_made_on_idea_assigned_to_user: Internal comment is made on idea assigned to user'
-        internal_comment_is_made_on_initiative_assigned_to_user: Internal comment is made on initiative assigned to user'
-        internal_comment_is_made_on_idea_in_project_or_folder_user_manages: Internal comment is made on idea in project or folder user manages'
-        internal_comment_is_made_on_idea_user_has_commented_internally_on: Internal comment is made on idea user commented internally on'
-        internal_comment_is_made_on_initiative_user_has_commented_internally_on: Internal comment is made on initiative user commented internally on'
-        internal_comment_is_made_on_unassigned_unmoderated_idea: Internal comment is made on unassigned idea in unmanaged project'
+        internal_comment_is_made_on_idea_assigned_to_user: Internal comment is made on input assigned to user'
+        internal_comment_is_made_on_initiative_assigned_to_user: Internal comment is made on proposal assigned to user'
+        internal_comment_is_made_on_idea_in_project_or_folder_user_manages: Internal comment is made on input in project or folder user manages'
+        internal_comment_is_made_on_idea_user_has_commented_internally_on: Internal comment is made on input user commented internally on'
+        internal_comment_is_made_on_initiative_user_has_commented_internally_on: Internal comment is made on proposal user commented internally on'
+        internal_comment_is_made_on_unassigned_initiative: Internal comment is made on unassigned proposal'
+        internal_comment_is_made_on_unassigned_unmoderated_idea: Internal comment is made on unassigned input in unmanaged project'
         user_is_mentioned_in_internal_comment: 'User is mentioned in internal comment'
         new_input_is_published: 'New input is published'
         new_proposal_is_posted: 'New proposal is posted'

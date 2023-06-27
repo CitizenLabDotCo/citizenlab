@@ -27,7 +27,7 @@
 #  fk_rails_...  (author_id => users.id)
 #
 module EmailCampaigns
-  class Campaigns::InternalCommentOnUnassignedUnmoderatedIdea < Campaign
+  class Campaigns::InternalCommentOnUnassignedInitiative < Campaign
     include Consentable
     include ActivityTriggerable
     include RecipientConfigurable
@@ -39,7 +39,7 @@ module EmailCampaigns
     recipient_filter :filter_notification_recipient
 
     def activity_triggers
-      { 'Notifications::InternalComments::InternalCommentOnUnassignedUnmoderatedIdea' => { 'created' => true } }
+      { 'Notifications::InternalComments::InternalCommentOnUnassignedInitiative' => { 'created' => true } }
     end
 
     def filter_notification_recipient(users_scope, activity:, time: nil)
@@ -63,11 +63,11 @@ module EmailCampaigns
     end
 
     def self.trigger_multiloc_key
-      'email_campaigns.admin_labels.trigger.internal_comment_is_made_on_unassigned_unmoderated_idea'
+      'email_campaigns.admin_labels.trigger.internal_comment_is_made_on_unassigned_initiative'
     end
 
     def mailer_class
-      InternalCommentOnUnassignedUnmoderatedIdeaMailer
+      InternalCommentOnUnassignedInitiativeMailer
     end
 
     def generate_commands(recipient:, activity:, time: nil)
