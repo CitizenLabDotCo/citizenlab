@@ -29,6 +29,9 @@ import useAuthUser from 'api/me/useAuthUser';
 import useAddInternalCommentToIdea from 'api/internal_comments/useAddInternalCommentToIdea';
 import useAddInternalCommentToInitiative from 'api/internal_comments/useAddInternalCommentToInitiative';
 
+// utils
+import { getMentionRoles } from './utils';
+
 const Container = styled.div`
   display: flex;
 `;
@@ -305,6 +308,7 @@ const InternalChildCommentForm = ({
                 border="none"
                 boxShadow="none"
                 getTextareaRef={setRef}
+                roles={getMentionRoles(postType === 'idea')}
               />
               <ButtonWrapper>
                 <CancelButton
