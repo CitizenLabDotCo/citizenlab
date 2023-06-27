@@ -7,7 +7,7 @@ module IdNemlogIn
 
     ENVIRONMENTS = {
       test: {
-        issuer: 'CitizenLab',
+        issuer: 'https://nemlogin-k3kd.loca.lt',
         # copied from https://github.com/digst/OIOSAML.Net/blob/master/src/dk.nita.saml20/WebsiteDemo/idp-metadata/test-devtest4-idp-metadata.xml
         metadata_xml_file: File.join(IdNemlogIn::Engine.root, 'config', 'saml', 'idp_metadata_test.xml')
       },
