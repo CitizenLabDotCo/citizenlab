@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_21_144312) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_22_132238) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -391,8 +391,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_21_144312) do
     t.string "name", null: false
     t.string "treatment", null: false
     t.string "action", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "flag_inappropriate_content_inappropriate_content_flags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -537,7 +537,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_21_144312) do
     t.uuid "phase_id"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
-    t.integer "baskets_count", default: 0, null: false
     t.index ["idea_id", "phase_id"], name: "index_ideas_phases_on_idea_id_and_phase_id", unique: true
     t.index ["idea_id"], name: "index_ideas_phases_on_idea_id"
     t.index ["phase_id"], name: "index_ideas_phases_on_phase_id"
@@ -1000,7 +999,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_21_144312) do
     t.integer "voting_max_votes_per_idea"
     t.jsonb "voting_term_singular_multiloc", default: {}
     t.jsonb "voting_term_plural_multiloc", default: {}
-    t.integer "baskets_count", default: 0, null: false
     t.index ["project_id"], name: "index_phases_on_project_id"
   end
 
@@ -1140,12 +1138,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_21_144312) do
     t.integer "posting_limited_max", default: 1
     t.string "document_annotation_embed_url"
     t.boolean "allow_anonymous_participation", default: false, null: false
-    t.string "qr_code"
     t.string "voting_method"
     t.integer "voting_max_votes_per_idea"
     t.jsonb "voting_term_singular_multiloc", default: {}
     t.jsonb "voting_term_plural_multiloc", default: {}
-    t.integer "baskets_count", default: 0, null: false
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 
@@ -1390,12 +1386,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_21_144312) do
     t.string "block_reason"
     t.datetime "block_end_at", precision: nil
     t.string "new_email"
-    t.string "unique_code"
     t.index "lower((email)::text)", name: "users_unique_lower_email_idx", unique: true
     t.index ["email"], name: "index_users_on_email"
     t.index ["registration_completed_at"], name: "index_users_on_registration_completed_at"
     t.index ["slug"], name: "index_users_on_slug", unique: true
-    t.index ["unique_code"], name: "index_users_on_unique_code", unique: true
   end
 
   create_table "verification_verifications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

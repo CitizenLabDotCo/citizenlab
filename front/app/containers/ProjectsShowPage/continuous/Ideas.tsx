@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useState } from 'react';
+import React, { memo, useMemo } from 'react';
 
 // components
 import ContentContainer from 'components/ContentContainer';
@@ -9,6 +9,9 @@ import {
   maxPageWidth,
 } from 'containers/ProjectsShowPage/styles';
 import SectionContainer from 'components/SectionContainer';
+
+// router
+import { useSearchParams } from 'react-router-dom';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
@@ -26,10 +29,11 @@ import { viewportWidths, colors } from 'utils/styleUtils';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 // typings
 import { IProjectData } from 'api/projects/types';
-import { IQueryParameters } from 'api/ideas/types';
+import { Sort } from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
 
 const Container = styled.div``;
 
@@ -51,19 +55,40 @@ interface InnerProps {
   project: IProjectData;
 }
 
+interface QueryParameters {
+  // constants
+  'page[number]': number;
+  'page[size]': number;
+  projects: string[];
+
+  // filters
+  search?: string;
+  sort: Sort;
+  topics?: string[];
+}
+
 const IdeasContainer = memo<InnerProps>(({ project, className }) => {
   const windowSize = useWindowSize();
-  const [ideaQueryParameters, setIdeaQueryParameters] =
-    useState<IQueryParameters>({
-      projects: [project.id],
-      sort: project.attributes.ideas_order ?? ideaDefaultSortMethodFallback,
+
+  const [searchParams] = useSearchParams();
+  const sortParam = searchParams.get('sort') as Sort | null;
+  const searchParam = searchParams.get('search');
+  const topicsParam = searchParams.get('topics');
+
+  const ideaQueryParameters = useMemo<QueryParameters>(
+    () => ({
       'page[number]': 1,
       'page[size]': 24,
-    });
-
-  const updateQuery = useCallback((newParams: Partial<IQueryParameters>) => {
-    setIdeaQueryParameters((current) => ({ ...current, ...newParams }));
-  }, []);
+      projects: [project.id],
+      sort:
+        sortParam ??
+        project.attributes.ideas_order ??
+        ideaDefaultSortMethodFallback,
+      search: searchParam ?? undefined,
+      topics: topicsParam ? JSON.parse(topicsParam) : undefined,
+    }),
+    [sortParam, searchParam, topicsParam, project]
+  );
 
   const projectType = project.attributes.process_type;
   const participationMethod = project.attributes.participation_method;
@@ -110,14 +135,14 @@ const IdeasContainer = memo<InnerProps>(({ project, className }) => {
 
             <IdeaCardsWithoutFiltersSidebar
               ideaQueryParameters={ideaQueryParameters}
-              onUpdateQuery={updateQuery}
+              onUpdateQuery={updateSearchParams}
               projectId={project.id}
               participationMethod={project.attributes.participation_method}
-              defaultSortingMethod={project.attributes.ideas_order}
+              defaultSortingMethod={ideaQueryParameters.sort}
               participationContextId={project.id}
               participationContextType="project"
               showViewToggle={true}
-              defaultView={project.attributes.presentation_mode || null}
+              defaultView={project.attributes.presentation_mode}
               invisibleTitleMessage={messages.a11y_titleInputs}
             />
           </SectionContainer>

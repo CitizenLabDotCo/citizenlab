@@ -14,11 +14,11 @@ import IdeaSharingButton from '../Buttons/IdeaSharingButton';
 import SharingButtonComponent from '../Buttons/SharingButtonComponent';
 import { Box } from '@citizenlab/cl2-component-library';
 
-const Container = styled.div<{ insideModal: boolean }>`
+const Container = styled.div`
   flex: 0 0 ${rightColumnWidthDesktop}px;
   width: ${rightColumnWidthDesktop}px;
   position: sticky;
-  top: ${(props) => (props.insideModal ? '30px' : '110px')};
+  top: 110px;
   align-self: flex-start;
 `;
 
@@ -47,7 +47,6 @@ interface Props {
   projectId: string;
   statusId: string;
   authorId: string | null;
-  insideModal: boolean;
   anonymous?: boolean;
   className?: string;
 }
@@ -57,12 +56,11 @@ const RightColumnDesktop = ({
   projectId,
   statusId,
   authorId,
-  insideModal,
   anonymous,
   className,
 }: Props) => {
   return (
-    <Container insideModal={insideModal} className={className || ''}>
+    <Container className={className || ''}>
       <InnerContainer>
         <Box
           padding="20px"

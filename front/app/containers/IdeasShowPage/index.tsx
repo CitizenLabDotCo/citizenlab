@@ -78,13 +78,11 @@ const IdeasShowPage = () => {
           <StyledIdeaShowPageTopBar
             projectId={idea.data.relationships.project.data.id}
             ideaId={idea.data.id}
-            insideModal={false}
           />
         )}
         <StyledIdeasShow
           ideaId={idea.data.id}
           projectId={idea.data.relationships.project.data.id}
-          insideModal={false}
         />
       </Box>
     );
