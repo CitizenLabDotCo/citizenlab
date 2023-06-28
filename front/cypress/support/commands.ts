@@ -1,4 +1,5 @@
 import 'cypress-file-upload';
+import 'cypress-axe';
 import './dnd';
 import { ParticipationMethod } from '../../app/services/participationContexts';
 import { IUserUpdate } from '../../app/api/users/types';
