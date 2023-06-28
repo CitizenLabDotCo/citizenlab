@@ -63,33 +63,34 @@ const AssignMultipleVotesControl = ({ projectId, ideaId }: Props) => {
   const { data: authUser } = useAuthUser();
   const isMobileOrSmaller = useBreakpoint('phone');
   const { formatMessage } = useIntl();
-  const isContinuousProject = true;
   const latestRelevantPhase = phases
     ? getLatestRelevantPhase(phases.data)
     : null;
-
-  const participationContext = project?.data;
+  const participationContext = latestRelevantPhase || project?.data;
 
   const { data: basket } = useBasket(
     participationContext?.relationships?.user_basket?.data?.id
   );
 
+  const isContinuousProject = true;
+
+  const currentTotal = basket?.data?.attributes?.total_budget;
+  const currentVotes = parseInt(votes.toString(), 10);
+  const votingMax =
+    latestRelevantPhase?.attributes?.voting_max_total ||
+    project?.data.attributes.voting_max_total;
+
   const onAdd = async (event) => {
     event.stopPropagation();
     event?.preventDefault();
-    const currentVotes = parseInt(votes.toString(), 10);
-    const currentTotal = basket?.data?.attributes?.total_budget;
-    const votingMax =
-      latestRelevantPhase?.attributes?.voting_max_total ||
-      project?.data.attributes.voting_max_total;
 
     console.log('currentTotal', currentTotal);
-
+    console.log(votingMax && currentVotes + 1 > votingMax);
     if (
       // currentTotal &&
       votingMax &&
       // currentTotal + (currentVotes + 1) >= votingMax // TODO: Implement this once BE done
-      currentVotes + 1 >= votingMax
+      currentVotes + 1 > votingMax
     ) {
       eventEmitter.emit(BUDGET_EXCEEDED_ERROR_EVENT);
     }
@@ -115,7 +116,14 @@ const AssignMultipleVotesControl = ({ projectId, ideaId }: Props) => {
   };
 
   const onTextInputChange = async (event) => {
-    setVotes(event);
+    const value = parseInt(event, 10);
+    if (votingMax && value > votingMax) {
+      // TODO: Calculate max remaining votes they could set, and use that.
+      setVotes(1);
+      eventEmitter.emit(BUDGET_EXCEEDED_ERROR_EVENT);
+    } else {
+      setVotes(event);
+    }
   };
 
   if (votes > 0 || votes.toString() === '') {
