@@ -6,7 +6,6 @@ import useUpdateMapLayer from 'modules/commercial/custom_maps/api/map_layers/use
 
 // hooks
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useMapConfig from '../../../hooks/useMapConfig';
 
 // components
 import {
@@ -38,6 +37,7 @@ import styled from 'styled-components';
 // typing
 import { Multiloc, IOption } from 'typings';
 import { IMapLayerAttributes } from 'modules/commercial/custom_maps/api/map_layers/types';
+import useMapConfig from 'modules/commercial/custom_maps/api/map_config/useMapConfig';
 
 const Container = styled.div`
   display: flex;
@@ -113,11 +113,12 @@ const MapLayerConfig = memo<Props & WrappedComponentProps>(
   ({ projectId, mapLayerId, className, onClose, intl: { formatMessage } }) => {
     const { mutateAsync: updateProjectMapLayer } = useUpdateMapLayer();
     const tenantLocales = useAppConfigurationLocales();
-    const mapConfig = useMapConfig({ projectId });
+    const { data: mapConfig } = useMapConfig(projectId);
 
     const mapLayer =
-      mapConfig?.attributes?.layers?.find((layer) => layer.id === mapLayerId) ||
-      undefined;
+      mapConfig?.data.attributes?.layers?.find(
+        (layer) => layer.id === mapLayerId
+      ) || undefined;
     const type = getLayerType(mapLayer);
 
     const [touched, setTouched] = useState(false);

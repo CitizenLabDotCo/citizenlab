@@ -1,7 +1,6 @@
-import { useMutation } from '@tanstack/react-query';
-import { API_PATH } from 'containers/App/constants';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import fetcher from 'utils/cl-react-query/fetcher';
-import streams from 'utils/streams';
+import mapConfigKeys from '../map_config/keys';
 
 const deleteMapLayer = ({ id, projectId }: { id: string; projectId: string }) =>
   fetcher({
@@ -10,13 +9,13 @@ const deleteMapLayer = ({ id, projectId }: { id: string; projectId: string }) =>
   });
 
 const useDeleteMapLayer = () => {
-  // const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: deleteMapLayer,
-    onSuccess: async (_data, variables) => {
-      await streams.fetchAllWith({
-        apiEndpoint: [`${API_PATH}/projects/${variables.projectId}/map_config`],
+    onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: mapConfigKeys.item({ projectId: variables.projectId }),
       });
     },
   });

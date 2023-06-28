@@ -9,7 +9,6 @@ import { SortableList, SortableRow } from 'components/admin/ResourceList';
 import GeoJsonImportButton from './GeoJsonImportButton';
 
 // hooks
-import useMapConfig from '../../../hooks/useMapConfig';
 import useDeleteMapLayer from 'modules/commercial/custom_maps/api/map_layers/useDeleteMapLayer';
 import useReorderMapLayer from 'modules/commercial/custom_maps/api/map_layers/useReorderMapLayer';
 
@@ -28,6 +27,7 @@ import messages from './messages';
 // styling
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
+import useMapConfig from 'modules/commercial/custom_maps/api/map_config/useMapConfig';
 
 const Container = styled.div``;
 
@@ -89,7 +89,7 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
     intl: { formatMessage },
     localize,
   }) => {
-    const mapConfig = useMapConfig({ projectId });
+    const { data: mapConfig } = useMapConfig(projectId);
     const { mutate: deleteProjectMapLayer } = useDeleteMapLayer();
     const { mutate: reorderProjectMapLayer } = useReorderMapLayer();
 
@@ -120,7 +120,7 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
       </a>
     );
 
-    const layers = mapConfig?.attributes?.layers;
+    const layers = mapConfig?.data.attributes?.layers;
 
     const layersWithOrdering =
       layers && layers.length > 0 ? addOrderingToLayers(layers) : null;
@@ -217,10 +217,10 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
           </StyledSortableList>
         )}
 
-        {mapConfig?.id && (
+        {mapConfig?.data.id && (
           <GeoJsonImportButton
             projectId={projectId}
-            mapConfigId={mapConfig.id}
+            mapConfigId={mapConfig.data.id}
           />
         )}
       </Container>

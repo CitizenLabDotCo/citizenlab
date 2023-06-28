@@ -1,9 +1,8 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import { IMapLayer, IMapLayerUpdateAttributes } from './types';
-import streams from 'utils/streams';
-import { API_PATH } from 'containers/App/constants';
+import mapConfigKeys from '../map_config/keys';
 
 const updateMapLayer = ({
   id,
@@ -17,14 +16,13 @@ const updateMapLayer = ({
   });
 
 const useUpdateMapLayer = () => {
-  // const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
   return useMutation<IMapLayer, CLErrors, IMapLayerUpdateAttributes>({
     mutationFn: updateMapLayer,
-    onSuccess: async (_data, variables) => {
-      await streams.fetchAllWith({
-        apiEndpoint: [`${API_PATH}/projects/${variables.projectId}/map_config`],
+    onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: mapConfigKeys.item({ projectId: variables.projectId }),
       });
-      // queryClient.invalidateQueries({ queryKey: causeKeys.lists() });
     },
   });
 };
