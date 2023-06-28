@@ -6,30 +6,24 @@ import { IPhases } from 'api/phases/types';
 import { IProject } from 'api/projects/types';
 
 export const getParticipationContext = (
+  project: IProject | undefined,
   idea: IIdea | undefined,
-  phases: IPhases | undefined,
-  project: IProject | undefined
+  phases: IPhases | undefined
 ) => {
-  if (!idea) return;
-  const ideaPhaseIds = idea.data.relationships?.phases?.data?.map(
+  if (!project) return;
+  if (project.data.attributes.process_type === 'continuous')
+    return project.data;
+  if (!phases) return;
+
+  const ideaPhaseIds = idea?.data.relationships?.phases?.data?.map(
     (item) => item.id
   );
 
-  // TODO
-  const ideaPhases = phases
-    ? phases.data.filter(
-        (phase) =>
-          Array.isArray(ideaPhaseIds) && ideaPhaseIds.includes(phase.id)
-      )
-    : undefined;
+  if (!ideaPhaseIds) return;
 
-  const latestRelevantIdeaPhase = ideaPhases
-    ? getLatestRelevantPhase(ideaPhases)
-    : undefined;
+  const ideaPhases = phases.data.filter((phase) =>
+    ideaPhaseIds.includes(phase.id)
+  );
 
-  const participationContext = !phases
-    ? project?.data
-    : latestRelevantIdeaPhase;
-
-  return participationContext;
+  return getLatestRelevantPhase(ideaPhases);
 };

@@ -4,9 +4,6 @@ import React, { memo, FormEvent, useState } from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import AddToBasketButton from './AddToBasketButton';
 
-// services
-import { getLatestRelevantPhase } from 'api/phases/utils';
-
 // hooks
 import useAuthUser from 'api/me/useAuthUser';
 import useIdeaById from 'api/ideas/useIdeaById';
@@ -27,6 +24,7 @@ import {
 } from 'utils/helperUtils';
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 import eventEmitter from 'utils/eventEmitter';
+import { getParticipationContext } from './utils';
 
 // events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
@@ -105,29 +103,12 @@ const AssignBudgetControl = memo(
     const { mutateAsync: addBasket } = useAddBasket(projectId);
     const { mutateAsync: updateBasket } = useUpdateBasket();
 
-    const isContinuousProject =
-      project?.data.attributes.process_type === 'continuous';
+    const participationContext = getParticipationContext(project, idea, phases);
+    const participationContextType =
+      project?.data.attributes.process_type === 'continuous'
+        ? 'project'
+        : 'phase';
 
-    const ideaPhaseIds = !isNilOrError(idea)
-      ? idea.data.relationships?.phases?.data?.map((item) => item.id)
-      : null;
-
-    const ideaPhases = phases
-      ? phases.data.filter(
-          (phase) =>
-            Array.isArray(ideaPhaseIds) && ideaPhaseIds.includes(phase.id)
-        )
-      : null;
-
-    const latestRelevantIdeaPhase = ideaPhases
-      ? getLatestRelevantPhase(ideaPhases)
-      : null;
-
-    const participationContext = isContinuousProject
-      ? project.data
-      : latestRelevantIdeaPhase;
-
-    const participationContextType = isContinuousProject ? 'project' : 'phase';
     const participationContextId = participationContext?.id || null;
     const { data: basket } = useBasket(
       participationContext?.relationships?.user_basket?.data?.id
