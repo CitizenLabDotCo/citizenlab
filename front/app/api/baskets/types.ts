@@ -3,6 +3,7 @@ import { Keys } from 'utils/cl-react-query/types';
 import basketsKeys from './keys';
 
 export type BasketsKeys = Keys<typeof basketsKeys>;
+export type BasketIdeaAttributes = { idea_id: string; votes?: number }[];
 
 export interface IBasketData {
   id: string;
@@ -33,6 +34,6 @@ export interface INewBasket {
   user_id: string;
   participation_context_id: string;
   participation_context_type: 'Project' | 'Phase';
-  idea_ids?: string[];
   submitted_at?: string | null;
+  baskets_ideas_attributes?: BasketIdeaAttributes;
 }

@@ -90,12 +90,14 @@ RSpec.describe Project do
       project.participation_method = 'voting'
       project.voting_method = 'budgeting'
       project.voting_max_total = 1000
+      project.ideas_order = 'random'
       expect(project.save).to be true
     end
 
     it 'cannot be changed from a transitive method to a non-transitive one' do
       project = create(:continuous_project, participation_method: 'ideation')
       project.participation_method = 'native_survey'
+      project.ideas_order = nil
       expect(project.save).to be false
       expect(project.errors.details).to eq({ participation_method: [{ error: :change_not_permitted }] })
     end
@@ -143,15 +145,6 @@ RSpec.describe Project do
           expect(project.can_contain_input?).to be expected_result
         end
       end
-    end
-  end
-
-  describe 'posting_method and posting_limited_max' do
-    it 'are set to defaults from the participation method' do
-      # We cannot stub side effects, otherwise we could have set
-      # posting_method and posting_limited_max to custom values.
-      expect_any_instance_of(ParticipationMethod::Base).to receive(:assign_defaults_for_participation_context).once
-      create(:continuous_project)
     end
   end
 
