@@ -390,6 +390,7 @@ resource 'Projects' do
               expect(response_data.dig(:attributes, :voting_max_total)).to eq 100
               expect(response_data.dig(:attributes, :voting_min_total)).to eq 10
               expect(response_data.dig(:attributes, :ideas_order)).to eq 'random'
+              expect(response_data.dig(:attributes, :baskets_count)).to eq 0
             end
           end
 
@@ -410,6 +411,7 @@ resource 'Projects' do
               expect(response_data.dig(:attributes, :voting_term_singular_multiloc)).to eq({ en: 'bean' })
               expect(response_data.dig(:attributes, :voting_term_plural_multiloc)).to eq({ en: 'beans' })
               expect(response_data.dig(:attributes, :ideas_order)).to eq 'random'
+              expect(response_data.dig(:attributes, :baskets_count)).to eq 0
             end
           end
 
@@ -427,6 +429,7 @@ resource 'Projects' do
               expect(response_data.dig(:attributes, :voting_term_singular_multiloc, :en)).to eq 'vote'
               expect(response_data.dig(:attributes, :voting_term_plural_multiloc, :en)).to eq 'votes'
               expect(response_data.dig(:attributes, :ideas_order)).to eq 'random'
+              expect(response_data.dig(:attributes, :baskets_count)).to eq 0
             end
           end
         end
