@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
@@ -43,6 +43,7 @@ import { IParticipationContextType } from 'typings';
 import { isFieldEnabled } from 'utils/projectUtils';
 import { IQueryParameters } from 'api/ideas/types';
 import usePhase from 'api/phases/usePhase';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 const Container = styled.div`
   width: 100%;
@@ -184,9 +185,13 @@ const IdeasWithoutFiltersSidebar = ({
 
   const { data: project } = useProjectById(projectId);
 
-  const [selectedView, setSelectedView] = useState<'card' | 'map'>(
-    selectedIdeaMarkerId ? 'map' : defaultView ?? 'card'
-  );
+  const selectedView =
+    (searchParams.get('view') as 'card' | 'map' | null) ??
+    (selectedIdeaMarkerId ? 'map' : defaultView ?? 'card');
+
+  const setSelectedView = useCallback((view: 'card' | 'map') => {
+    updateSearchParams({ view });
+  }, []);
 
   const { data: ideaCustomFieldsSchemas } = useIdeaCustomFieldsSchema({
     phaseId: ideaQueryParameters.phase,
@@ -225,10 +230,6 @@ const IdeasWithoutFiltersSidebar = ({
     topics.length === 0
       ? onUpdateQuery({ topics: undefined })
       : onUpdateQuery({ topics });
-  };
-
-  const selectView = (selectedView: 'card' | 'map') => {
-    setSelectedView(selectedView);
   };
 
   const locationEnabled = !isNilOrError(ideaCustomFieldsSchemas)
@@ -283,7 +284,7 @@ const IdeasWithoutFiltersSidebar = ({
             {showViewButtons && smallerThanSmallTablet && (
               <MobileViewButtons
                 selectedView={selectedView}
-                onClick={selectView}
+                onClick={setSelectedView}
               />
             )}
             {!(selectedView === 'map') && (
@@ -328,7 +329,7 @@ const IdeasWithoutFiltersSidebar = ({
             {showViewButtons && !smallerThanSmallTablet && (
               <DesktopViewButtons
                 selectedView={selectedView}
-                onClick={selectView}
+                onClick={setSelectedView}
               />
             )}
           </RightFilterArea>

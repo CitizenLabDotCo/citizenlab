@@ -25,8 +25,9 @@ class Basket < ApplicationRecord
   belongs_to :user
   belongs_to :participation_context, polymorphic: true
 
-  has_many :baskets_ideas, dependent: :destroy
+  has_many :baskets_ideas, -> { order(:created_at) }, dependent: :destroy, inverse_of: :basket
   has_many :ideas, through: :baskets_ideas
+  accepts_nested_attributes_for :baskets_ideas, allow_destroy: true
 
   validates :user, :participation_context, presence: true
   validate :basket_submission, on: :basket_submission
