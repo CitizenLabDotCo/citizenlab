@@ -1713,6 +1713,7 @@
   "app.utils.votingMethodUtils.howToParticipate": "Kā piedalīties",
   "app.utils.votingMethodUtils.results": "Rezultāti",
   "app.utils.votingMethodUtils.submitYourBudget": "Iesniedziet savu budžetu",
+  "app.utils.votingMethodUtils.submittedBudgetCountText": "persona iesniedza savu budžetu",
   "app.utils.votingMethodUtils.submittedBudgetsCountText": "cilvēki iesniedza savus budžetus",
   "app.utils.votingMethodUtils.votes": "Balsis",
   "containers.SiteMap.allProjects": "Visi projekti",
