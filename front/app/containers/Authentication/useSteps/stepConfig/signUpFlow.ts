@@ -13,21 +13,16 @@ import { trackEventByName } from 'utils/analytics';
 
 // utils
 import { askCustomFields } from './utils';
+import { getAuthenticationData } from '..';
 
 // typings
-import {
-  AuthenticationData,
-  AuthProvider,
-  GetRequirements,
-  UpdateState,
-} from '../../typings';
+import { AuthProvider, GetRequirements, UpdateState } from '../../typings';
 import { Step } from './typings';
 import { UseMutateFunction } from '@tanstack/react-query';
 import { IUser, IUserUpdate } from 'api/users/types';
 import { CLErrorsJSON } from 'typings';
 
 export const signUpFlow = (
-  getAuthenticationData: () => AuthenticationData,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
   updateState: UpdateState,

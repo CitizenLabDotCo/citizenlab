@@ -11,17 +11,13 @@ import { trackEventByName } from 'utils/analytics';
 
 // utils
 import { requiredCustomFields } from './utils';
+import { getAuthenticationData } from '..';
 
 // typings
-import {
-  AuthenticationData,
-  AuthProvider,
-  GetRequirements,
-} from '../../typings';
+import { AuthProvider, GetRequirements } from '../../typings';
 import { Step } from './typings';
 
 export const signInFlow = (
-  getAuthenticationData: () => AuthenticationData,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
   anySSOProviderEnabled: boolean

@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback, useMemo, useEffect } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 import { parse } from 'qs';
 
 // api
@@ -40,6 +40,16 @@ import { isNil, isNilOrError } from 'utils/helperUtils';
 
 let initialized = false;
 
+// The authentication data will be initialized with the global sign up flow.
+// In practice, this will be overwritten before firing the flow (see event
+// listeners below). But this is easier typescript-wise.
+let authenticationData: AuthenticationData = {
+  flow: 'signup',
+  context: GLOBAL_CONTEXT,
+};
+
+export const getAuthenticationData = () => authenticationData;
+
 export default function useSteps() {
   const anySSOEnabled = useAnySSOEnabled();
   const { pathname, search } = useLocation();
@@ -49,16 +59,6 @@ export default function useSteps() {
   // The authentication data will be initialized with the global sign up flow.
   // In practice, this will be overwritten before firing the flow (see event
   // listeners below). But this is easier typescript-wise
-  const authenticationDataRef = useRef<AuthenticationData>({
-    flow: 'signup',
-    context: GLOBAL_CONTEXT,
-  });
-
-  const authenticationData = authenticationDataRef.current;
-
-  const getAuthenticationData = useCallback(() => {
-    return authenticationDataRef.current;
-  }, []);
 
   const [currentStep, _setCurrentStep] = useState<Step>('closed');
 
@@ -102,7 +102,7 @@ export default function useSteps() {
       setError('requirements_fetching_failed');
       throw e;
     }
-  }, [getAuthenticationData, setError]);
+  }, [setError]);
 
   const updateState = useCallback((newState: Partial<State>) => {
     setState((state) => ({ ...state, ...newState }));
@@ -114,7 +114,6 @@ export default function useSteps() {
    * in one big object */
   const stepConfig = useMemo(() => {
     return getStepConfig(
-      getAuthenticationData,
       getRequirements,
       setCurrentStep,
       setError,
@@ -123,7 +122,6 @@ export default function useSteps() {
       updateUser
     );
   }, [
-    getAuthenticationData,
     getRequirements,
     setCurrentStep,
     setError,
@@ -165,7 +163,7 @@ export default function useSteps() {
     const subscription = triggerAuthenticationFlow$.subscribe((event) => {
       if (currentStep !== 'closed') return;
 
-      authenticationDataRef.current = event.eventValue;
+      authenticationData = event.eventValue;
       transition(currentStep, 'TRIGGER_AUTHENTICATION_FLOW')();
     });
 
@@ -178,7 +176,7 @@ export default function useSteps() {
     const subscription = triggerVerificationOnly$.subscribe(() => {
       if (currentStep !== 'closed') return;
 
-      authenticationDataRef.current = {
+      authenticationData = {
         flow: 'signup',
         context: GLOBAL_CONTEXT,
       };
@@ -198,7 +196,7 @@ export default function useSteps() {
     // launch invitation flow, derived from route
     if (pathname.endsWith('/invite')) {
       if (isNilOrError(authUser)) {
-        authenticationDataRef.current = {
+        authenticationData = {
           flow: 'signup',
           context: GLOBAL_CONTEXT,
         };
@@ -214,7 +212,7 @@ export default function useSteps() {
     // launch sign in flow, derived from route
     if (pathname.endsWith('/sign-in')) {
       if (isNilOrError(authUser)) {
-        authenticationDataRef.current = {
+        authenticationData = {
           flow: 'signin',
           context: GLOBAL_CONTEXT,
         };
@@ -228,11 +226,10 @@ export default function useSteps() {
     // launch sign up flow, derived from route
     if (pathname.endsWith('/sign-up')) {
       if (isNilOrError(authUser)) {
-        authenticationDataRef.current = {
+        authenticationData = {
           flow: 'signup',
           context: GLOBAL_CONTEXT,
         };
-
         transition(currentStep, 'TRIGGER_AUTHENTICATION_FLOW')();
       }
       // Remove all parameters from URL as they've already been captured
@@ -257,7 +254,7 @@ export default function useSteps() {
         error_code,
       } = urlSearchParams as SSOParams;
 
-      authenticationDataRef.current = {
+      authenticationData = {
         flow: sso_flow,
         context: {
           type: sso_verification_type,

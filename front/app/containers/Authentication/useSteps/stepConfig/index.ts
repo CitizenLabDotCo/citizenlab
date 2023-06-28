@@ -7,19 +7,13 @@ import { signUpFlow } from './signUpFlow';
 import { claveUnicaFlow } from './claveUnicaFlow';
 
 // typings
-import {
-  GetRequirements,
-  UpdateState,
-  AuthenticationData,
-  SetError,
-} from '../../typings';
+import { GetRequirements, UpdateState, SetError } from '../../typings';
 import { Step } from './typings';
 import { UseMutateFunction } from '@tanstack/react-query';
 import { IUser, IUserUpdate } from 'api/users/types';
 import { CLErrorsJSON } from 'typings';
 
 export const getStepConfig = (
-  getAuthenticationData: () => AuthenticationData,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
   setError: SetError,
@@ -28,17 +22,11 @@ export const getStepConfig = (
   updateUser: UseMutateFunction<IUser, CLErrorsJSON, IUserUpdate>
 ) => {
   return {
-    ...lightFlow(
-      getAuthenticationData,
-      getRequirements,
-      setCurrentStep,
-      updateState
-    ),
+    ...lightFlow(getRequirements, setCurrentStep, updateState),
 
     ...missingDataFlow(getRequirements, setCurrentStep, updateUser),
 
     ...sharedSteps(
-      getAuthenticationData,
       getRequirements,
       setCurrentStep,
       setError,
@@ -46,15 +34,9 @@ export const getStepConfig = (
       anySSOEnabled
     ),
 
-    ...signInFlow(
-      getAuthenticationData,
-      getRequirements,
-      setCurrentStep,
-      anySSOEnabled
-    ),
+    ...signInFlow(getRequirements, setCurrentStep, anySSOEnabled),
 
     ...signUpFlow(
-      getAuthenticationData,
       getRequirements,
       setCurrentStep,
       updateState,

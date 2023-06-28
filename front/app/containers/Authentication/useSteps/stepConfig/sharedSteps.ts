@@ -26,13 +26,12 @@ import {
   GetRequirements,
   SetError,
   UpdateState,
-  AuthenticationData,
   SignUpInError,
 } from '../../typings';
 import { Step } from './typings';
+import { getAuthenticationData } from '..';
 
 export const sharedSteps = (
-  getAuthenticationData: () => AuthenticationData,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
   setError: SetError,
