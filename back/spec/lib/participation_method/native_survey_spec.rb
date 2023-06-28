@@ -20,6 +20,12 @@ RSpec.describe ParticipationMethod::NativeSurvey do
         expect(participation_context.posting_method).to eq 'limited'
         expect(participation_context.posting_limited_max).to eq 1
       end
+
+      it 'does not change the ideas_order' do
+        expect do
+          participation_method.assign_defaults_for_participation_context
+        end.not_to change(participation_context, :ideas_order)
+      end
     end
 
     it 'sets and persists the id as the slug of the input' do
@@ -193,6 +199,7 @@ RSpec.describe ParticipationMethod::NativeSurvey do
     end
   end
 
+  its(:allowed_ideas_orders) { is_expected.to be_empty }
   its(:supports_publication?) { is_expected.to be false }
   its(:supports_commenting?) { is_expected.to be false }
   its(:supports_reacting?) { is_expected.to be false }

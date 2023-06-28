@@ -3,13 +3,14 @@ import React, { memo, useEffect } from 'react';
 // components
 import UserName from 'components/UI/UserName';
 import Card from 'components/UI/Card/Compact';
-import { Box, Icon } from '@citizenlab/cl2-component-library';
+import { Box, Icon, useBreakpoint } from '@citizenlab/cl2-component-library';
 import Avatar from 'components/Avatar';
 import IdeaCardFooter from './IdeaCardFooter';
 import FooterWithReactionControl from './FooterWithReactionControl';
 
 // router
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import clHistory from 'utils/cl-router/history';
 import { useSearchParams } from 'react-router-dom';
 
@@ -25,6 +26,9 @@ import useLocalize from 'hooks/useLocalize';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { scrollToElement } from 'utils/scroll';
+import eventEmitter from 'utils/eventEmitter';
+import { IMAGES_LOADED_EVENT } from 'components/admin/ContentBuilder/constants';
 
 // styles
 import styled from 'styled-components';
@@ -33,7 +37,6 @@ import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 import { timeAgo } from 'utils/dateUtils';
 import useLocale from 'hooks/useLocale';
 import { IIdea } from 'api/ideas/types';
-import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 // components
 import AssignBudgetControl from 'components/AssignBudgetControl';
@@ -144,6 +147,7 @@ const CompactIdeaCard = memo<IdeaCardProps>(
     hideBody = false,
     goBackMode = 'browserGoBackButton',
   }) => {
+    const smallerThanPhone = useBreakpoint('phone');
     const locale = useLocale();
     const localize = useLocalize();
     const { data: project } = useProjectById(
@@ -221,22 +225,21 @@ const CompactIdeaCard = memo<IdeaCardProps>(
 
     useEffect(() => {
       if (scrollToCardParam && idea.data.id === scrollToCardParam) {
-        setTimeout(() => {
-          const element = document.getElementById(scrollToCardParam);
+        const subscription = eventEmitter
+          .observeEvent(IMAGES_LOADED_EVENT)
+          .subscribe(() => {
+            scrollToElement({
+              id: scrollToCardParam,
+              behavior: 'auto',
+              offset: smallerThanPhone ? 150 : 300,
+            });
 
-          const top =
-            (element?.getBoundingClientRect().top ?? 0) + window.scrollY + 80; // navbar
-
-          // TODO this doesnt work for shit
-
-          window.scroll({
-            top,
+            subscription.unsubscribe();
           });
-        }, 1500);
       }
 
       removeSearchParams(['scroll_to_card']);
-    }, [scrollToCardParam, idea]);
+    }, [scrollToCardParam, idea, smallerThanPhone]);
 
     const { slug } = idea.data.attributes;
     const params = goBackMode === 'browserGoBackButton' ? '?go_back=true' : '';

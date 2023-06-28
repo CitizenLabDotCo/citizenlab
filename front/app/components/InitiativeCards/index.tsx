@@ -213,15 +213,21 @@ const InitiativeCards = ({ className, invisibleTitleMessage }: Props) => {
   const { windowWidth } = useWindowSize();
 
   const [searchParams] = useSearchParams();
+
   const sortParam = searchParams.get('sort') as Sort | null;
   const searchParam = searchParams.get('search');
   const initiativeStatusParam = searchParams.get('initiative_status');
   const topicsParam = searchParams.get('topics');
   const selectedInitiativeMarkerId = searchParams.get('initiative_map_id');
 
-  const [selectedView, setSelectedView] = useState<'map' | 'card'>(
-    selectedInitiativeMarkerId ? 'map' : 'card'
-  );
+  const selectedView =
+    (searchParams.get('view') as 'card' | 'map' | null) ??
+    (selectedInitiativeMarkerId ? 'map' : 'card');
+
+  const setSelectedView = useCallback((view: 'card' | 'map') => {
+    updateSearchParams({ view });
+  }, []);
+
   const [filtersModalOpened, setFiltersModalOpened] = useState(false);
 
   const selectedInitiativeFilters = useMemo<QueryParameters>(

@@ -338,6 +338,8 @@
   "app.components.ProjectCard.xOptions": "{ideasCount, plural, one {# alternativ} other {# alternativ}}",
   "app.components.ProjectCard.xProjects": "{ideasCount, plural, one {# projekt} other {# projekt}}",
   "app.components.ProjectCard.xQuestions": "{ideasCount, plural, one {# fråga} other {# frågor}}",
+  "app.components.ProjectFolderCard.xComments": "{commentsCount, plural, no {# kommentarer} one {# kommentarer} other {# kommentarer}}",
+  "app.components.ProjectFolderCard.xInputs": "{ideasCount, plural, no {# ingångar} one {# input} other {# ingångar}}",
   "app.components.ProjectFolderCards.components.Topbar.a11y_projectFilterTabInfo": "{count, plural, no {# projects} one {# projekt} other {# projekt}}",
   "app.components.ProjectFolderCards.components.Topbar.all": "Allt",
   "app.components.ProjectFolderCards.components.Topbar.archived": "Arkiverad",

@@ -1,20 +1,31 @@
 import React, { useEffect, memo } from 'react';
 import { Frame, Element, useEditor, SerializedNode } from '@craftjs/core';
+import { getImagesToBeLoaded, allImagesLoaded } from './imageLoading';
 
 type ContentBuilderFrame = {
   editorData?: Record<string, SerializedNode>;
   children?: React.ReactNode;
+  onLoadImages?: () => void;
 };
 
 const ContentBuilderFrame = memo(
-  ({ editorData, children }: ContentBuilderFrame) => {
+  ({ editorData, children, onLoadImages }: ContentBuilderFrame) => {
     const { actions } = useEditor();
 
     useEffect(() => {
       if (editorData) {
         actions.deserialize(editorData);
+
+        if (onLoadImages) {
+          const imagesToBeLoaded = getImagesToBeLoaded(editorData);
+
+          allImagesLoaded(imagesToBeLoaded).then(() => {
+            onLoadImages();
+          });
+        }
       }
-    }, [editorData, actions]);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [editorData]);
 
     return (
       <Frame>
