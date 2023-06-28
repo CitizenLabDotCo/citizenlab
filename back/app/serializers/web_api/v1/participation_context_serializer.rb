@@ -31,6 +31,7 @@ module WebApi::V1::ParticipationContextSerializer
       attribute :voting_max_votes_per_idea, if: proc { |object| object.voting? }
       attribute :voting_term_singular_multiloc, if: proc { |object| object.voting? }
       attribute :voting_term_plural_multiloc, if: proc { |object| object.voting? }
+      attribute :baskets_count, if: proc { |object| object.voting? }
     end
   end
 end
