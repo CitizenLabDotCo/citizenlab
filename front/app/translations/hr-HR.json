@@ -1713,6 +1713,7 @@
   "app.utils.votingMethodUtils.howToParticipate": "Kako sudjelovati",
   "app.utils.votingMethodUtils.results": "Rezultati",
   "app.utils.votingMethodUtils.submitYourBudget": "Pošaljite svoj proračun",
+  "app.utils.votingMethodUtils.submittedBudgetCountText": "osoba je predala svoj proračun",
   "app.utils.votingMethodUtils.submittedBudgetsCountText": "ljudi su predali svoje proračune",
   "app.utils.votingMethodUtils.votes": "Glasovi",
   "containers.SiteMap.allProjects": "Svi projekti",
