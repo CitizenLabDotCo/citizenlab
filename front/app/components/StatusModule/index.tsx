@@ -27,6 +27,7 @@ import { pastPresentOrFuture, toFullMonth } from 'utils/dateUtils';
 
 // intl
 import messages from './messages';
+import { isNilOrError } from 'utils/helperUtils';
 
 type StatusModuleProps = {
   votingMethod?: VotingMethod | null;
@@ -108,7 +109,7 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
             </Text>
           )}
         </>
-        {budgetCount && (
+        {!isNilOrError(budgetCount) && budgetCount > 0 && (
           <>
             <Text m="0px" fontSize="xxxxl" style={{ fontWeight: '700' }}>
               {budgetCount}
