@@ -1713,6 +1713,7 @@
   "app.utils.votingMethodUtils.howToParticipate": "Jak wziąć udział",
   "app.utils.votingMethodUtils.results": "Wyniki",
   "app.utils.votingMethodUtils.submitYourBudget": "Prześlij swój budżet",
+  "app.utils.votingMethodUtils.submittedBudgetCountText": "osoba przedstawiła swój budżet",
   "app.utils.votingMethodUtils.submittedBudgetsCountText": "osób przedstawiło swoje budżety",
   "app.utils.votingMethodUtils.votes": "Głosy",
   "containers.SiteMap.allProjects": "Wszystkie projekty",
