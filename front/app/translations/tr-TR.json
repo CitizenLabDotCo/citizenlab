@@ -1713,6 +1713,7 @@
   "app.utils.votingMethodUtils.howToParticipate": "Nasıl katılabilirsiniz",
   "app.utils.votingMethodUtils.results": "Sonuçlar",
   "app.utils.votingMethodUtils.submitYourBudget": "Bütçenizi gönderin",
+  "app.utils.votingMethodUtils.submittedBudgetCountText": "kişi bütçesini sundu",
   "app.utils.votingMethodUtils.submittedBudgetsCountText": "insanlar bütçelerini sundular",
   "app.utils.votingMethodUtils.votes": "Oylar",
   "containers.SiteMap.allProjects": "Tüm projeler",
