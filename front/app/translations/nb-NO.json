@@ -1713,6 +1713,7 @@
   "app.utils.votingMethodUtils.howToParticipate": "Hvordan delta",
   "app.utils.votingMethodUtils.results": "Resultater",
   "app.utils.votingMethodUtils.submitYourBudget": "Send inn budsjettet ditt",
+  "app.utils.votingMethodUtils.submittedBudgetCountText": "person har levert budsjettet sitt",
   "app.utils.votingMethodUtils.submittedBudgetsCountText": "folk sendte inn budsjettene sine",
   "app.utils.votingMethodUtils.votes": "Stemmer",
   "containers.SiteMap.allProjects": "Alle prosjekter",
