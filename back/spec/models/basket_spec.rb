@@ -29,7 +29,7 @@ RSpec.describe Basket do
   context 'when a basket exceeding the maximum votes' do
     before do
       project = create(:continuous_budgeting_project, voting_max_total: 1000)
-      ideas = create_list(:idea, 11, budget: 1, project: project)
+      ideas = create_list(:idea, 11, budget: 100, project: project)
       @basket = create(:basket, ideas: ideas, participation_context: project)
       @basket.baskets_ideas.update_all(votes: 100)
     end
@@ -50,7 +50,7 @@ RSpec.describe Basket do
   context 'when a basket less than the minimum votes' do
     let(:basket) { create(:basket, ideas: [idea], participation_context: project, submitted_at: Time.now) }
     let(:project) { create(:continuous_budgeting_project, voting_min_total: 5) }
-    let(:idea) { create(:idea, budget: 100, project: project) }
+    let(:idea) { create(:idea, budget: 1, project: project) }
 
     it 'is valid in normal context' do
       expect(basket).to be_valid
