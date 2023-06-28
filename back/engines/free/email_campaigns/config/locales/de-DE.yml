@@ -20,7 +20,7 @@ de:
       "new_comment_for_admin": Neuer Kommentar zu einem Projekt, das ich moderiere
       "new_comment_on_commented_idea": Neuer Kommentar zu einem Beitrag, der kommentiert wurde
       "new_comment_on_commented_initiative": Neuer Kommentar zu einem Vorschlag, der kommentiert wurde
-      "new_comment_on_reacted_idea": Neuer Kommentar zu einer Idee, auf die ich reagiert habe
+      "new_comment_on_reacted_idea": Neuer Kommentar zu einem Beitrag, auf den ich reagiert habe
       "new_comment_on_reacted_initiative": Neuer Kommentar zu einem Vorschlag, für den abgestimmt wurde
       "new_idea_for_admin": Neuer Beitrag zu einem Projekt, das moderiert wird
       "new_initiative_for_admin": Neuer Vorschlag
@@ -309,10 +309,10 @@ de:
     official_feedback_on_reacted_idea:
       by_author: 'von %{authorName}'
       updated: '%{officialName} schrieb:'
-      cta_view: 'Zur Idee'
-      event_description: '%{officialName} hat ein Update zu der Idee ''%{ideaTitle}'' gegeben. Klicke auf den Button unten, um auf%{officialName} zu reagieren.'
-      subject: 'Eine Idee, auf die Sie reagiert haben, hat ein Update auf der Plattform von %{organizationName}erhalten.'
-      preheader: '%{officialName} ein Update zu einer Idee hinterlassen, auf die Sie reagiert haben'
+      cta_view: 'Zum Beitrag'
+      event_description: '%{officialName} hat ein Update zu der Idee ''%{ideaTitle}'' gegeben. Klicke auf den Button unten, um auf %{officialName} zu reagieren.'
+      subject: 'Ein Beitrag, auf den du reagiert hast, hat ein Update auf der Plattform von %{organizationName} erhalten'
+      preheader: '%{officialName} hat ein Update zu einem Beitrag hinterlassen, auf den Sie reagiert haben'
       main_header: ""
     official_feedback_on_commented_idea:
       by_author: 'von %{authorName}'
@@ -336,7 +336,7 @@ de:
       cta_view: 'Zum Vorschlag'
       event_description: '%{officialName} hat ein Update zum Vorschlag ''%{initiativeTitle}'' gegeben. Klicke auf den Button unten, um auf %{organizationName} zu reagieren.'
       main_header: 'Es gibt ein Update zu einem Vorschlag, über den Sie abgestimmt haben'
-      subject: 'Ein Vorschlag, über den du abgestimmt hast, hat eine offizielle Aktualisierung auf der Plattform von %{organizationName} erhalten'
+      subject: 'Ein Vorschlag, über den du abgestimmt hast, hat ein offizielles Update auf der Plattform von %{organizationName} erhalten'
       preheader: '%{officialName} hat ein offizielles Update zum Vorschlag veröffentlicht, für den du abgestimmt hast'
     official_feedback_on_your_initiative:
       updated: '%{officialName} schrieb:'
@@ -406,12 +406,12 @@ de:
       subject: 'Der Status Ihrer Idee wurde geändert'
       preheader: '%{organizationName} hat den Status Ihrer Idee geändert'
     status_change_of_reacted_idea:
-      status_change: 'Der neue Status dieser Idee ist ''%{ideaStatus}'''
-      cta_view_idea: 'Zur Idee'
-      event_description: '%{organizationName} hat den Status des Beitrags ''%{ideaTitle}'' auf Ihrer digitalen Beteiligungsplattform aktualisiert.'
-      main_header: 'Eine Idee, auf die Sie reagiert haben, hat einen neuen Status'
-      subject: 'Der Status einer Idee, auf die Sie reagiert haben, wurde geändert'
-      preheader: '%{organizationName} den Status einer Idee geändert, auf die Sie reagiert haben'
+      status_change: 'Der neue Status dieses Beitrags ist ''%{ideaStatus}'''
+      cta_view_idea: 'Zum Beitrag'
+      event_description: '%{organizationName} hat den Status der Idee „%{ideaTitle}“ auf ihrer digitalen Beteiligungsplattform aktualisiert.'
+      main_header: 'Ein Beitrag, auf den du reagiert hast, hat einen neuen Status'
+      subject: 'Der Status eines Beitrags, auf den du reagiert hast, wurde geändert'
+      preheader: '%{organizationName} hat den Status eines Beitrags geändert, auf den du reagiert hast'
     status_change_of_reacted_initiative:
       status_change: 'Der neue Status des Vorschlags ist ''%{initiativeStatus}'''
       cta_view_initiative: 'Zum Vorschlag'
