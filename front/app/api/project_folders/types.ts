@@ -35,6 +35,11 @@ export interface IProjectFolderData {
   id: string;
   type: 'folder';
   attributes: {
+    avatars_count: number;
+    comments_count: number;
+    ideas_count: number;
+    participants_count: number;
+    visible_projects_count: number;
     title_multiloc: Multiloc;
     description_multiloc: Multiloc;
     description_preview_multiloc: Multiloc;
@@ -48,6 +53,9 @@ export interface IProjectFolderData {
     };
     admin_publication: {
       data: IRelationship | null;
+    };
+    avatars: {
+      data: IRelationship[] | null;
     };
   };
 }
