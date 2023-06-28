@@ -10,7 +10,7 @@ resource 'Baskets' do
     header 'Content-Type', 'application/json'
     @user = create(:user)
     @project = create(:continuous_budgeting_project)
-    @ideas = create_list(:idea, 3, project: @project, idea_status: create(:idea_status), author: @user)
+    @ideas = create_list(:idea, 3, project: @project, idea_status: create(:idea_status), author: @user, budget: 2)
     create_list(:basket, 2, participation_context: create(:continuous_budgeting_project))
     @basket = create(
       :basket,
@@ -32,7 +32,7 @@ resource 'Baskets' do
 
         expect(json_response.dig(:data, :id)).to eq @basket.id
         expect(json_response.dig(:data, :type)).to eq 'basket'
-        expect(json_response.dig(:data, :attributes, :total_votes)).to eq 5
+        # expect(json_response.dig(:data, :attributes, :total_votes)).to eq 5 # TODO: use other voting method to guarantee 5
         expect(json_response.dig(:data, :relationships)).to include(
           participation_context: {
             data: { id: @basket.participation_context_id, type: 'project' }
@@ -69,10 +69,9 @@ resource 'Baskets' do
       let(:submitted) { false }
       let(:participation_context_id) { @project.id }
       let(:participation_context_type) { 'Project' }
-      let(:ideas) { create_list(:idea, 2, project: @project) }
+      let(:ideas) { [create(:idea, project: @project, budget: 10), create(:idea, project: @project, budget: 5)] }
       let(:baskets_ideas_attributes) { [{ idea_id: ideas.first.id, votes: 2 }, { idea_id: ideas.last.id, votes: 3 }] }
 
-      # TODO: Cover 2 cases: 1) Setting the votes for a non-budgeting voting method; 2) Overwriting the votes with budgets for budgeting
       example_request 'Create a basket' do
         assert_status 201
         json_response = json_parse(response_body)
@@ -82,8 +81,21 @@ resource 'Baskets' do
         expect(json_response.dig(:data, :relationships, :participation_context, :data, :id)).to eq participation_context_id
         expect(
           json_response[:included].select { |included| included[:type] == 'baskets_idea' }.map { |baskets_idea| baskets_idea.dig(:attributes, :votes) }
-        ).to contain_exactly 2, 3
+        ).to contain_exactly 10, 5
       end
+
+      # TODO: Other voting method
+      # example_request 'Create a basket' do
+      #   assert_status 201
+      #   json_response = json_parse(response_body)
+      #   expect(json_response.dig(:data, :attributes, :submitted_at)).to be_nil
+      #   expect(json_response.dig(:data, :relationships, :user, :data, :id)).to eq @user.id
+      #   expect(json_response.dig(:data, :relationships, :ideas, :data).pluck(:id)).to match_array ideas.map(&:id)
+      #   expect(json_response.dig(:data, :relationships, :participation_context, :data, :id)).to eq participation_context_id
+      #   expect(
+      #     json_response[:included].select { |included| included[:type] == 'baskets_idea' }.map { |baskets_idea| baskets_idea.dig(:attributes, :votes) }
+      #   ).to contain_exactly 2, 3
+      # end
 
       example '[error] Create a basket in a survey', document: false do
         do_request(
@@ -116,7 +128,7 @@ resource 'Baskets' do
 
       describe do
         let(:submitted) { true }
-        let(:new_ideas) { create_list(:idea, 2, project: @project) }
+        let(:new_ideas) { create_list(:idea, 2, project: @project, budget: 5) }
         let(:idea_ids) { new_ideas.map(&:id) + [@ideas.first.id] }
         let(:baskets_ideas_attributes) do
           new_ideas.map { |idea| { idea_id: idea.id } } + [
@@ -133,8 +145,20 @@ resource 'Baskets' do
           expect(json_response.dig(:data, :relationships, :ideas, :data).pluck(:id)).to match_array idea_ids
           expect(
             json_response[:included].select { |included| included[:type] == 'baskets_idea' }.map { |baskets_idea| baskets_idea.dig(:attributes, :votes) }
-          ).to contain_exactly 1, 1, 4
+          ).to contain_exactly 2, 5, 5
         end
+
+        # TODO: Other voting method
+        # example_request 'Update a basket' do
+        #   assert_status 200
+        #   json_response = json_parse(response_body)
+
+        #   expect(json_response.dig(:data, :attributes, :submitted_at)).to be_present
+        #   expect(json_response.dig(:data, :relationships, :ideas, :data).pluck(:id)).to match_array idea_ids
+        #   expect(
+        #     json_response[:included].select { |included| included[:type] == 'baskets_idea' }.map { |baskets_idea| baskets_idea.dig(:attributes, :votes) }
+        #   ).to contain_exactly 1, 1, 4
+        # end
       end
     end
   end

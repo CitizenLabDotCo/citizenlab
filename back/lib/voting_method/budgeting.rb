@@ -21,5 +21,11 @@ module VotingMethod
     def budget_in_form?(user)
       !!user && UserRoleService.new.can_moderate_project?(participation_context.project, user)
     end
+
+    def assign_basket(basket)
+      basket.baskets_ideas.each do |baskets_idea|
+        baskets_idea.votes = baskets_idea.idea.budget
+      end
+    end
   end
 end
