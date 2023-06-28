@@ -1,3 +1,6 @@
+import React, { useState } from 'react';
+
+// components
 import {
   Box,
   Button,
@@ -6,15 +9,22 @@ import {
   colors,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
+import { BUDGET_EXCEEDED_ERROR_EVENT } from 'components/AssignBudgetControl';
+
+// api
 import useBasket from 'api/baskets/useBasket';
 import useAuthUser from 'api/me/useAuthUser';
 import usePhases from 'api/phases/usePhases';
 import { getLatestRelevantPhase } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
-import { BUDGET_EXCEEDED_ERROR_EVENT } from 'components/AssignBudgetControl';
-import React, { useState } from 'react';
+
+// style
 import styled, { useTheme } from 'styled-components';
+
+// utils
 import eventEmitter from 'utils/eventEmitter';
+import { useIntl } from 'utils/cl-intl';
+import messages from './messages';
 
 const StyledBox = styled(Box)`
   input {
@@ -52,6 +62,7 @@ const AssignMultipleVotesControl = ({ projectId, ideaId }: Props) => {
   const { data: phases } = usePhases(projectId);
   const { data: authUser } = useAuthUser();
   const isMobileOrSmaller = useBreakpoint('phone');
+  const { formatMessage } = useIntl();
   const isContinuousProject = true;
   const latestRelevantPhase = phases
     ? getLatestRelevantPhase(phases.data)
@@ -67,17 +78,22 @@ const AssignMultipleVotesControl = ({ projectId, ideaId }: Props) => {
     event.stopPropagation();
     event?.preventDefault();
     const currentVotes = parseInt(votes.toString(), 10);
+    const currentTotal = basket?.data?.attributes?.total_budget;
+    const votingMax =
+      latestRelevantPhase?.attributes?.voting_max_total ||
+      project?.data.attributes.voting_max_total;
+
+    console.log('currentTotal', currentTotal);
+
     if (
-      basket?.data.attributes.total_budget + (currentVotes + 1) >=
-      latestRelevantPhase?.attributes?.voting_max_total
+      // currentTotal &&
+      votingMax &&
+      // currentTotal + (currentVotes + 1) >= votingMax // TODO: Implement this once BE done
+      currentVotes + 1 >= votingMax
     ) {
-      console.log('HERE 1');
       eventEmitter.emit(BUDGET_EXCEEDED_ERROR_EVENT);
     }
-    // else if (currentVotes + 1 > latestRelevantPhase?.attributes?.voting_max_votes_per_idea) {
-    //   console.log("HERE 2");
-    //   eventEmitter.emit(BUDGET_EXCEEDED_ERROR_EVENT);
-    // }  // TODO: Implement this
+    // TODO: Implement OPTION_MAX_VOTE_EXCEEDED_ERROR_EVENT
     else {
       if (currentVotes <= 0) {
         setVotes(1);
@@ -151,7 +167,7 @@ const AssignMultipleVotesControl = ({ projectId, ideaId }: Props) => {
             />
           </StyledBox>
           <Text fontSize="m" ml="8px" my="auto">
-            votes
+            {formatMessage(messages.xVotes, { votes })}
           </Text>
         </Box>
         {!basket?.data?.attributes.submitted_at && (
