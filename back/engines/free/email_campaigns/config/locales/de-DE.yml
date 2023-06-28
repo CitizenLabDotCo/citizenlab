@@ -16,13 +16,13 @@ de:
       "initiative_published": Veröffentlichung eines Vorschlags
       "invite_received": Einladung
       "invite_reminder": Einladungserinnerung
-      "internal_comment_on_idea_assigned_to_you": Interner Kommentar zum mir zugewiesenen Input
-      "internal_comment_on_idea_you_commented_internally_on": Interner Kommentar zur Eingabe Ich habe intern kommentiert
-      "internal_comment_on_idea_you_moderate": Interner Kommentar zu einer Eingabe in einem von mir verwalteten Projekt oder Ordner
+      "internal_comment_on_idea_assigned_to_you": Interner Kommentar zum mir zugewiesenen Beitrag
+      "internal_comment_on_idea_you_commented_internally_on": Interner Kommentar zum Beitrag, den ich intern kommentiert habe
+      "internal_comment_on_idea_you_moderate": Interner Kommentar zu einem Beitrag in einem von mir verwalteten Projekt oder Ordner
       "internal_comment_on_initiative_assigned_to_you": Interner Kommentar zu einem mir zugewiesenen Vorschlag
-      "internal_comment_on_initiative_you_commented_internally_on": Interner Kommentar zum Vorschlag Ich habe einen internen Kommentar abgegeben zu
+      "internal_comment_on_initiative_you_commented_internally_on": Interner Kommentar zu einem Vorschlag, den ich intern kommentiert habe
       "internal_comment_on_unassigned_initiative": Interner Kommentar zu einem nicht zugewiesenen Vorschlag
-      "internal_comment_on_unassigned_unmoderated_idea": Interner Kommentar zu nicht zugewiesener Eingabe in nicht verwaltetem Projekt
+      "internal_comment_on_unassigned_unmoderated_idea": Interner Kommentar zu nicht zugewiesenem Beitrag in nicht verwaltetem Projekt
       "internal_comment_on_your_internal_comment": Interner Kommentar zu meinem internen Kommentar
       "mention_in_official_feedback": Erwähnung in einem offiziellen Update
       "mention_in_internal_comment": Erwähnung in einem internen Kommentar
@@ -228,7 +228,7 @@ de:
       cta_reply_to: 'Kommentar anzeigen von %{firstName}'
       event_description: '%{authorNameFull} hat Sie in einem internen Kommentar erwähnt.'
       subject: '%{firstName} hat Sie in einem internen Kommentar erwähnt.'
-      main_header: '%{authorNameFirst} hat Sie in einem internen Kommentar erwähnt.'
+      main_header: '%{firstName} hat Sie in einem internen Kommentar erwähnt.'
       preheader: '%{authorNameFull} hat Sie in einem internen Kommentar erwähnt.'
     moderator_digest:
       subject: 'Ihr wöchentlicher Projektmanagementbericht von %{time}'
@@ -316,9 +316,9 @@ de:
     internal_comment_on_your_internal_comment:
       cta_reply_to: 'Kommentar anzeigen von %{firstName}'
       event_description: '%{authorNameFull} hat auf Ihren internen Kommentar geantwortet.'
-      subject: 'Sie haben einen Kommentar zu Ihrem internen Kommentar auf ''%{post}'' erhalten.'
-      main_header: 'Sie haben einen Kommentar zu Ihrem internen Kommentar auf ''%{post}'' erhalten.'
-      preheader: '%{authorName} antwortete auf Ihren internen Kommentar zu ''%{post}'''
+      subject: 'Sie haben einen Kommentar zu Ihrem internen Kommentar ''%{post}'' erhalten'
+      main_header: 'Sie haben einen Kommentar zu Ihrem internen Kommentar ''%{post}'' erhalten'
+      preheader: '%{authorName} hat auf Ihren internen Kommentar %{post} geantwortet'
     internal_comment_on_idea_assigned_to_you:
       cta_reply_to: 'Kommentar anzeigen von %{firstName}'
       event_description: '%{authorNameFull} hat einen Ihnen zugewiesenen Beitrag intern kommentiert.'
@@ -327,13 +327,13 @@ de:
       preheader: '''%{post}'' hat einen neuen internen Kommentar'
     internal_comment_on_idea_you_commented_internally_on:
       cta_reply_to: 'Kommentar anzeigen von %{firstName}'
-      event_description: '%{authorNameFull} intern eine Eingabe kommentiert, die Sie intern kommentiert haben.'
+      event_description: '%{authorNameFull} hat intern einen Beitrag kommentiert, den Sie intern kommentiert haben.'
       subject: '''%{post}'' hat einen neuen internen Kommentar'
       main_header: '''%{post}'' hat einen neuen internen Kommentar'
       preheader: '''%{post}'' hat einen neuen internen Kommentar'
     internal_comment_on_idea_you_moderate:
       cta_reply_to: 'Kommentar anzeigen von %{firstName}'
-      event_description: '%{authorNameFull} intern eine Eingabe in einem von Ihnen verwalteten Projekt oder Ordner kommentiert.'
+      event_description: '%{authorNameFull} hat intern einen Beitrag in einem von Ihnen verwalteten Projekt oder Ordner kommentiert.'
       subject: '''%{post}'' hat einen neuen internen Kommentar'
       main_header: '''%{post}'' hat einen neuen internen Kommentar'
       preheader: '''%{post}'' hat einen neuen internen Kommentar'
@@ -345,7 +345,7 @@ de:
       preheader: '''%{post}'' hat einen neuen internen Kommentar'
     internal_comment_on_initiative_you_commented_internally_on:
       cta_reply_to: 'Kommentar anzeigen von %{firstName}'
-      event_description: '%{authorNameFull} intern einen Vorschlag kommentiert, den Sie intern kommentiert haben.'
+      event_description: '%{authorNameFull} hat intern einen Vorschlag kommentiert, den Sie intern kommentiert haben.'
       subject: '''%{post}'' hat einen neuen internen Kommentar'
       main_header: '''%{post}'' hat einen neuen internen Kommentar'
       preheader: '''%{post}'' hat einen neuen internen Kommentar'
