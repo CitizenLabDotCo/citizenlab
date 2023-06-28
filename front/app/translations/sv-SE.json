@@ -1713,6 +1713,7 @@
   "app.utils.votingMethodUtils.howToParticipate": "Hur man deltar",
   "app.utils.votingMethodUtils.results": "Resultat",
   "app.utils.votingMethodUtils.submitYourBudget": "Lämna in din budget",
+  "app.utils.votingMethodUtils.submittedBudgetCountText": "person lämnade in sin budget",
   "app.utils.votingMethodUtils.submittedBudgetsCountText": "människor lämnade in sina budgetar",
   "app.utils.votingMethodUtils.votes": "Röster",
   "containers.SiteMap.allProjects": "Alla projekt",
