@@ -375,25 +375,59 @@ resource 'Projects' do
           expect(json_response.dig(:data, :attributes, :allow_anonymous_participation)).to eq allow_anonymous_participation
         end
 
-        describe do
+        describe 'voting projects' do
           let(:participation_method) { 'voting' }
-          let(:voting_method) { 'budgeting' }
-          let(:voting_max_total) { 100 }
-          let(:voting_min_total) { 10 }
-          let(:voting_max_votes_per_idea) { 5 }
-          let(:voting_term_singular_multiloc) { { 'en' => 'Grocery shopping' } }
-          let(:voting_term_plural_multiloc) { { 'en' => 'Groceries shoppings' } }
 
-          example_request 'Create a voting project' do
-            assert_status 201
+          context 'budgeting' do
+            let(:voting_method) { 'budgeting' }
+            let(:voting_max_total) { 100 }
+            let(:voting_min_total) { 10 }
 
-            expect(json_response.dig(:data, :attributes, :participation_method)).to eq 'voting'
-            expect(json_response.dig(:data, :attributes, :voting_method)).to eq 'budgeting'
-            expect(json_response.dig(:data, :attributes, :voting_max_total)).to eq 100
-            expect(json_response.dig(:data, :attributes, :voting_min_total)).to eq 10
-            expect(json_response.dig(:data, :attributes, :voting_max_votes_per_idea)).to eq 5
-            expect(json_response.dig(:data, :attributes, :voting_term_singular_multiloc)).to eq({ en: 'Grocery shopping' })
-            expect(json_response.dig(:data, :attributes, :voting_term_plural_multiloc)).to eq({ en: 'Groceries shoppings' })
+            example_request 'Create a voting (budgeting) project' do
+              assert_status 201
+              expect(response_data.dig(:attributes, :participation_method)).to eq 'voting'
+              expect(response_data.dig(:attributes, :voting_method)).to eq 'budgeting'
+              expect(response_data.dig(:attributes, :voting_max_total)).to eq 100
+              expect(response_data.dig(:attributes, :voting_min_total)).to eq 10
+              expect(response_data.dig(:attributes, :ideas_order)).to eq 'random'
+            end
+          end
+
+          context 'multiple voting' do
+            let(:voting_method) { 'multiple_voting' }
+            let(:voting_max_total) { 10 }
+            let(:voting_max_votes_per_idea) { 5 }
+            let(:voting_term_singular_multiloc) { { 'en' => 'bean' } }
+            let(:voting_term_plural_multiloc) { { 'en' => 'beans' } }
+
+            example_request 'Create a voting (multiple voting) project' do
+              assert_status 201
+              expect(response_data.dig(:attributes, :participation_method)).to eq 'voting'
+              expect(response_data.dig(:attributes, :voting_method)).to eq 'multiple_voting'
+              expect(response_data.dig(:attributes, :voting_max_total)).to eq 10
+              expect(response_data.dig(:attributes, :voting_min_total)).to eq 0
+              expect(response_data.dig(:attributes, :voting_max_votes_per_idea)).to eq 5
+              expect(response_data.dig(:attributes, :voting_term_singular_multiloc)).to eq({ en: 'bean' })
+              expect(response_data.dig(:attributes, :voting_term_plural_multiloc)).to eq({ en: 'beans' })
+              expect(response_data.dig(:attributes, :ideas_order)).to eq 'random'
+            end
+          end
+
+          context 'single voting' do
+            let(:voting_method) { 'single_voting' }
+            let(:voting_max_total) { 10 }
+
+            example_request 'Create a voting (single voting) project - without a voting term' do
+              assert_status 201
+              expect(response_data.dig(:attributes, :participation_method)).to eq 'voting'
+              expect(response_data.dig(:attributes, :voting_method)).to eq 'single_voting'
+              expect(response_data.dig(:attributes, :voting_max_total)).to eq 10
+              expect(response_data.dig(:attributes, :voting_min_total)).to eq 0
+              expect(response_data.dig(:attributes, :voting_max_votes_per_idea)).to eq 1
+              expect(response_data.dig(:attributes, :voting_term_singular_multiloc, :en)).to eq 'vote'
+              expect(response_data.dig(:attributes, :voting_term_plural_multiloc, :en)).to eq 'votes'
+              expect(response_data.dig(:attributes, :ideas_order)).to eq 'random'
+            end
           end
         end
 
