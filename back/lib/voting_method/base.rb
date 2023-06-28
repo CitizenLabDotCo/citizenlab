@@ -14,6 +14,10 @@ module VotingMethod
       # Default is to do nothing.
     end
 
+    def budget_in_form?(_user)
+      false
+    end
+
     private
 
     attr_reader :participation_context

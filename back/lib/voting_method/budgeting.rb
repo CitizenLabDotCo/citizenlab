@@ -17,5 +17,9 @@ module VotingMethod
         baskets_idea.errors.add :idea, :has_no_budget, message: 'does not have a specified budget'
       end
     end
+
+    def budget_in_form?(user)
+      !!user && UserRoleService.new.can_moderate_project?(participation_context.project, user)
+    end
   end
 end

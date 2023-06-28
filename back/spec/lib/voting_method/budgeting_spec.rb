@@ -39,4 +39,19 @@ RSpec.describe VotingMethod::Budgeting do
       expect(baskets_idea.errors.details).to eq(idea: [error: :has_no_budget])
     end
   end
+
+  describe '#budget_in_form?' do
+    it 'returns false when the user is a visitor' do
+      expect(voting_method.budget_in_form?(nil)).to be false
+    end
+
+    it 'returns false when the user is not a moderator of the participation context' do
+      expect(voting_method.budget_in_form?(create(:project_moderator))).to be false
+    end
+
+    it 'returns true when the user is a moderator of the participation context' do
+      project.save!
+      expect(voting_method.budget_in_form?(create(:project_moderator, projects: [project]))).to be true
+    end
+  end
 end
