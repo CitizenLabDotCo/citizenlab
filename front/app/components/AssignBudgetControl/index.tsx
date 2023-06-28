@@ -295,8 +295,9 @@ const AssignBudgetControl = memo(
       isPermitted &&
       actionDescriptor.disabled_reason !== 'idea_not_in_current_phase';
     const buttonDisabled =
-      actionDescriptor.enabled === false &&
-      !isFixableByAuthentication(actionDescriptor.disabled_reason);
+      basket?.data.attributes.submitted_at !== null ||
+      (actionDescriptor.enabled === false &&
+        !isFixableByAuthentication(actionDescriptor.disabled_reason));
 
     const buttonMessage = getAddRemoveButtonMessage(view, isInBasket);
 
