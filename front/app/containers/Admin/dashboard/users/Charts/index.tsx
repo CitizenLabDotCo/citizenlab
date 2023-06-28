@@ -1,20 +1,12 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 
 // services
-import {
-  usersByRegFieldStream,
-  IUsersByRegistrationField,
-  usersByRegFieldXlsxEndpoint,
-} from 'services/userCustomFieldStats';
 
 // hooks
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
 // intl
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import localize, { InjectedLocalized } from 'utils/localize';
-import messages from 'containers/Admin/dashboard/messages';
+import useLocalize from 'hooks/useLocalize';
 
 // components
 import BarChartByCategory from './BarChartByCategory';
@@ -25,174 +17,118 @@ import AgeChart from './AgeChart';
 import { Box } from '@citizenlab/cl2-component-library';
 
 // utils
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 // typings
-import {
-  IUserCustomFieldInputType,
-  IUserCustomFieldData,
-} from 'api/user_custom_fields/types';
+import { IUserCustomFieldInputType } from 'api/user_custom_fields/types';
+import { usersByCustomFieldXlsxEndpoint } from 'api/users_by_custom_field/util';
 
-interface InputProps {
+interface Props {
   currentGroupFilter: string | undefined;
   currentGroupFilterLabel: string | undefined;
   startAt: string | null | undefined;
   endAt: string | null;
 }
 
-interface DataProps {
-  customFields: IUserCustomFieldData[] | NilOrError;
-}
+const RegistrationFieldsToGraphs = ({
+  startAt,
+  endAt,
+  currentGroupFilter,
+  currentGroupFilterLabel,
+}: Props) => {
+  const { data: userCustomFields } = useUserCustomFields({
+    inputTypes: INPUT_TYPES,
+  });
 
-type GraphOption = {
-  value: number;
-  name: string;
-  code: string;
-};
+  const customFields = userCustomFields?.data;
 
-export interface Props extends InputProps, DataProps {}
+  const localize = useLocalize();
 
-export class RegistrationFieldsToGraphs extends PureComponent<
-  Props & WrappedComponentProps & InjectedLocalized
-> {
-  convertToGraphFormat = (data: IUsersByRegistrationField) => {
-    const {
-      series: { users },
-      options,
-    } = data.data.attributes;
-    let res: GraphOption[] = [];
-    if (options) {
-      res = Object.entries(options)
-        .sort((a, b) => a[1].ordering - b[1].ordering)
-        .map(([key, value]) => ({
-          value: users[key] || 0,
-          name: this.props.localize(value.title_multiloc),
-          code: key,
-        }));
-    }
-
-    if (users['_blank']) {
-      res.push({
-        value: users['_blank'],
-        name: this.props.intl.formatMessage(messages._blank),
-        code: '_blank',
-      });
-    }
-
-    return res.length > 0 ? res : null;
-  };
-  convertCheckboxToGraphFormat = (data: IUsersByRegistrationField) => {
-    const {
-      series: { users },
-    } = data.data.attributes;
-    const res = ['_blank', 'true', 'false'].map((key) => ({
-      value: users[key] || 0,
-      name: this.props.intl.formatMessage(messages[key]),
-      code: 'key',
-    }));
-
-    return res.length > 0 ? res : null;
-  };
-
-  render() {
-    const {
-      customFields,
-      localize,
-      startAt,
-      endAt,
-      currentGroupFilter,
-      currentGroupFilterLabel,
-    } = this.props;
-
-    if (isNilOrError(customFields)) {
-      return null;
-    }
-
-    return customFields.map((field, index) => {
-      if (field.attributes.enabled) {
-        if (field.attributes.code === 'birthyear') {
-          return (
-            <Box width="50%" key={index}>
-              <AgeChart
-                startAt={startAt}
-                endAt={endAt}
-                currentGroupFilter={currentGroupFilter}
-                currentGroupFilterLabel={currentGroupFilterLabel}
-              />
-            </Box>
-          );
-        }
-        if (field.attributes.input_type === 'number') {
-          return;
-        }
-        if (field.attributes.code === 'gender') {
-          return (
-            <Box width="50%" key={index}>
-              <GenderChart
-                startAt={startAt}
-                endAt={endAt}
-                currentGroupFilter={currentGroupFilter}
-                currentGroupFilterLabel={currentGroupFilterLabel}
-              />
-            </Box>
-          );
-        }
-
-        if (field.attributes.code === 'domicile') {
-          return (
-            <AreaChart
-              key={index}
-              startAt={startAt}
-              endAt={endAt}
-              currentGroupFilter={currentGroupFilter}
-              currentGroupFilterLabel={currentGroupFilterLabel}
-            />
-          );
-        }
-
-        if (field.attributes.input_type === 'checkbox') {
-          return (
-            <PieChartByCategory
-              key={index}
-              startAt={startAt}
-              endAt={endAt}
-              currentGroupFilter={currentGroupFilter}
-              currentGroupFilterLabel={currentGroupFilterLabel}
-              convertToGraphFormat={this.convertCheckboxToGraphFormat}
-              graphTitleString={localize(field.attributes.title_multiloc)}
-              stream={usersByRegFieldStream}
-              graphUnit="users"
-              customId={field.id}
-              xlsxEndpoint={usersByRegFieldXlsxEndpoint(field.id)}
-            />
-          );
-        } else {
-          return (
-            <BarChartByCategory
-              key={index}
-              startAt={startAt}
-              endAt={endAt}
-              currentGroupFilter={currentGroupFilter}
-              currentGroupFilterLabel={currentGroupFilterLabel}
-              convertToGraphFormat={this.convertToGraphFormat}
-              graphTitleString={localize(field.attributes.title_multiloc)}
-              stream={usersByRegFieldStream}
-              graphUnit="users"
-              customId={field.id}
-              xlsxEndpoint={usersByRegFieldXlsxEndpoint(field.id)}
-            />
-          );
-        }
-      }
-
-      return null;
-    });
+  if (!customFields) {
+    return null;
   }
-}
 
-const RegistrationFieldsToGraphsWithHoCs = localize<Props>(
-  injectIntl(RegistrationFieldsToGraphs as any)
-) as any;
+  return (
+    <>
+      {customFields.map((field, index) => {
+        if (field.attributes.enabled) {
+          if (field.attributes.code === 'birthyear') {
+            return (
+              <Box width="50%" key={index}>
+                <AgeChart
+                  startAt={startAt}
+                  endAt={endAt}
+                  currentGroupFilter={currentGroupFilter}
+                  currentGroupFilterLabel={currentGroupFilterLabel}
+                />
+              </Box>
+            );
+          }
+          if (field.attributes.input_type === 'number') {
+            return null;
+          }
+          if (field.attributes.code === 'gender') {
+            return (
+              <Box width="50%" key={index}>
+                <GenderChart
+                  startAt={startAt}
+                  endAt={endAt}
+                  currentGroupFilter={currentGroupFilter}
+                  currentGroupFilterLabel={currentGroupFilterLabel}
+                />
+              </Box>
+            );
+          }
+
+          if (field.attributes.code === 'domicile') {
+            return (
+              <AreaChart
+                key={index}
+                startAt={startAt}
+                endAt={endAt}
+                currentGroupFilter={currentGroupFilter}
+                currentGroupFilterLabel={currentGroupFilterLabel}
+              />
+            );
+          }
+
+          if (field.attributes.input_type === 'checkbox') {
+            return (
+              <PieChartByCategory
+                key={index}
+                startAt={startAt}
+                endAt={endAt}
+                currentGroupFilter={currentGroupFilter}
+                currentGroupFilterLabel={currentGroupFilterLabel}
+                graphTitleString={localize(field.attributes.title_multiloc)}
+                graphUnit="users"
+                customId={field.id}
+                xlsxEndpoint={usersByCustomFieldXlsxEndpoint(field.id)}
+                id={field.id}
+              />
+            );
+          } else {
+            return (
+              <BarChartByCategory
+                key={index}
+                startAt={startAt}
+                endAt={endAt}
+                currentGroupFilter={currentGroupFilter}
+                currentGroupFilterLabel={currentGroupFilterLabel}
+                graphTitleString={localize(field.attributes.title_multiloc)}
+                graphUnit="users"
+                customId={field.id}
+                xlsxEndpoint={usersByCustomFieldXlsxEndpoint(field.id)}
+                id={field.id}
+              />
+            );
+          }
+        }
+
+        return null;
+      })}
+    </>
+  );
+};
 
 const INPUT_TYPES: IUserCustomFieldInputType[] = [
   'select',
@@ -201,15 +137,4 @@ const INPUT_TYPES: IUserCustomFieldInputType[] = [
   'number',
 ];
 
-export default (inputProps: InputProps) => {
-  const { data: userCustomFields } = useUserCustomFields({
-    inputTypes: INPUT_TYPES,
-  });
-
-  return (
-    <RegistrationFieldsToGraphsWithHoCs
-      {...inputProps}
-      customFields={userCustomFields?.data}
-    />
-  );
-};
+export default RegistrationFieldsToGraphs;

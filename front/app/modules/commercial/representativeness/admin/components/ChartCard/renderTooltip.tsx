@@ -9,7 +9,7 @@ import TooltipOutline from 'components/admin/Graphs/utilities/TooltipOutline';
 import { formatPercentage } from './utils';
 
 // typings
-import { RepresentativenessRow } from '../../hooks/createRefDataSubscription';
+import { RepresentativenessRow } from '../../hooks/parseReferenceData';
 
 interface CustomTooltipProps {
   label?: string;
