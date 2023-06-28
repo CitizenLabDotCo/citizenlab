@@ -1713,6 +1713,7 @@
   "app.utils.votingMethodUtils.howToParticipate": "Sådan deltager du",
   "app.utils.votingMethodUtils.results": "Resultater",
   "app.utils.votingMethodUtils.submitYourBudget": "Indsend dit budget",
+  "app.utils.votingMethodUtils.submittedBudgetCountText": "person har indsendt sit budget",
   "app.utils.votingMethodUtils.submittedBudgetsCountText": "borgere indsendte deres budgetter",
   "app.utils.votingMethodUtils.votes": "Stemmer",
   "containers.SiteMap.allProjects": "Alle projekter",
