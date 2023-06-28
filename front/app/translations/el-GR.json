@@ -1713,6 +1713,7 @@
   "app.utils.votingMethodUtils.howToParticipate": "Πώς να συμμετάσχετε",
   "app.utils.votingMethodUtils.results": "Αποτελέσματα",
   "app.utils.votingMethodUtils.submitYourBudget": "Υποβάλετε τον προϋπολογισμό σας",
+  "app.utils.votingMethodUtils.submittedBudgetCountText": "πρόσωπο που υπέβαλε τον προϋπολογισμό του",
   "app.utils.votingMethodUtils.submittedBudgetsCountText": "οι άνθρωποι υπέβαλαν τους προϋπολογισμούς τους",
   "app.utils.votingMethodUtils.votes": "Ψήφοι",
   "containers.SiteMap.allProjects": "Όλα τα έργα",
