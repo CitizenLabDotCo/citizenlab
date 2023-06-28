@@ -146,22 +146,7 @@ resource 'Reactions' do
       end
     end
 
-    context 'when filtering by created_at' do
-      let(:created_at) { '2020-01-01,2020-01-02' }
-
-      example_request 'Lists only the reactions created between the specified dates' do
-        assert_status 200
-        expect(json_response_body[:reactions].size).to eq(5)
-      end
-    end
-
-    context 'when filtering by updated_at' do
-      let(:updated_at) { '2021-01-02,2021-01-02' }
-
-      example_request 'Lists only the reactions updated between the specified dates' do
-        assert_status 200
-        expect(json_response_body[:reactions].size).to eq(2)
-      end
-    end
+    include_examples 'filtering_by_date', :reaction2, :created_at, :reaction
+    include_examples 'filtering_by_date', :reaction2, :updated_at, :reaction
   end
 end

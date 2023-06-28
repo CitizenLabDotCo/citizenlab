@@ -10,7 +10,7 @@ const convertAndMergeSeries = createConvertAndMergeSeries({
 const wrap = (attributes) =>
   ({
     data: {
-      type: 'users_by_registration_field',
+      type: 'users_by_custom_field',
       attributes,
     },
   } as any);

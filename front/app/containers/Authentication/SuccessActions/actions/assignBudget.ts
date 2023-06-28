@@ -8,7 +8,6 @@ import tracks from 'containers/ProjectsShowPage/shared/pb/tracks';
 
 // utils
 import { isNil, capitalizeParticipationContextType } from 'utils/helperUtils';
-import streams from 'utils/streams';
 
 // typings
 import { IUserData } from 'api/users/types';
@@ -53,21 +52,17 @@ export const assignBudget =
         ];
       }
 
-      try {
-        await updateBasket({
-          id: basket.id,
-          user_id: authUser.id,
-          participation_context_id: participationContextId,
-          participation_context_type: capitalizeParticipationContextType(
-            participationContextType
-          ),
-          idea_ids: newIdeas,
-          submitted_at: null,
-        });
-        trackEventByName(tracks.ideaAddedToBasket);
-      } catch (error) {
-        streams.fetchAllWith({ dataId: [basket.id] });
-      }
+      await updateBasket({
+        id: basket.id,
+        user_id: authUser.id,
+        participation_context_id: participationContextId,
+        participation_context_type: capitalizeParticipationContextType(
+          participationContextType
+        ),
+        idea_ids: newIdeas,
+        submitted_at: null,
+      });
+      trackEventByName(tracks.ideaAddedToBasket);
     } else {
       await addBasket({
         user_id: authUser.id,

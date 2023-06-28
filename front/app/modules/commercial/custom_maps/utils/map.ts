@@ -18,7 +18,7 @@ import {
 
 export const getCenter = (
   centerLatLng: LatLngTuple | null | undefined,
-  appConfig: IAppConfigurationData | undefined | null | Error,
+  appConfig: IAppConfigurationData | undefined,
   mapConfig: IMapConfigState
 ) => {
   const mapConfigLat = !isNilOrError(mapConfig)

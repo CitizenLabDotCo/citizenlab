@@ -48,7 +48,7 @@ const Container = styled.div`
 `;
 
 interface Props {
-  ideaId: string;
+  ideaId?: string;
   size: TSize;
   unauthenticatedReactionClick?: (reactionMode: TReactionMode) => void;
   disabledReactionClick?: (
@@ -92,6 +92,7 @@ const ReactionControl = ({
   const castReaction = useCallback(
     (reactionMode: 'up' | 'down') => {
       if (isNilOrError(authUser)) return;
+      if (!ideaId) return;
 
       // Change reaction (up -> down or down -> up)
       if (reactionId && myReactionMode !== reactionMode) {
@@ -201,6 +202,7 @@ const ReactionControl = ({
   };
 
   const onReaction = async (reactionMode: 'up' | 'down') => {
+    if (!ideaId) return;
     setReactingAnimation(reactionMode);
 
     const {

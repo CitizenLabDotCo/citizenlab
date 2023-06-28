@@ -1,26 +1,12 @@
 import streams from 'utils/streams';
 import { API_PATH } from 'containers/App/constants';
-import { apiEndpoint as statsEndpoint } from 'services/stats';
-import {
-  IUserCustomFieldData,
-  TCustomFieldCode,
-} from 'api/user_custom_fields/types';
+import { IUserCustomFieldData } from 'api/user_custom_fields/types';
 import { getEndpoint as getRScoreEndpoint } from './rScore';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import userCustomFieldsKeys from 'api/user_custom_fields/keys';
-
-const ENDPOINT_BY_CODE = {
-  gender: `${statsEndpoint}/users_by_gender`,
-  birthyear: `${statsEndpoint}/users_by_age`,
-};
-
-const getStatsEndpoint = (
-  code: TCustomFieldCode | null,
-  userCustomFieldId: string
-): string =>
-  code !== null && ENDPOINT_BY_CODE[code]
-    ? ENDPOINT_BY_CODE[code]
-    : `${statsEndpoint}/users_by_custom_field/${userCustomFieldId}`;
+import usersByBirthyearKeys from 'api/users_by_birthyear/keys';
+import usersByGenderKeys from 'api/users_by_gender/keys';
+import usersByCustomFieldKeys from 'api/users_by_custom_field/keys';
 
 const getCustomFieldEndpoint = (userCustomFieldId: string) =>
   `${API_PATH}/users/custom_fields/${userCustomFieldId}`;
@@ -81,7 +67,7 @@ export function referenceDistributionStream(userCustomFieldId: string) {
 }
 
 export async function createReferenceDistribution(
-  { id, attributes: { code } }: IUserCustomFieldData,
+  { id }: IUserCustomFieldData,
   distribution: TUploadDistribution
 ) {
   const response = await streams.add<IReferenceDistribution>(
@@ -93,19 +79,26 @@ export async function createReferenceDistribution(
     queryKey: userCustomFieldsKeys.lists(),
   });
 
+  queryClient.invalidateQueries({
+    queryKey: usersByBirthyearKeys.all(),
+  });
+
+  queryClient.invalidateQueries({
+    queryKey: usersByGenderKeys.all(),
+  });
+
+  queryClient.invalidateQueries({
+    queryKey: usersByCustomFieldKeys.all(),
+  });
   await streams.fetchAllWith({
-    apiEndpoint: [
-      getCustomFieldEndpoint(id),
-      getStatsEndpoint(code, id),
-      getRScoreEndpoint(id),
-    ],
+    apiEndpoint: [getRScoreEndpoint(id)],
   });
 
   return response;
 }
 
 export async function replaceReferenceDistribution(
-  { id, attributes: { code } }: IUserCustomFieldData,
+  { id }: IUserCustomFieldData,
   distribution: TUploadDistribution
 ) {
   const response = await streams.add<IReferenceDistribution>(
@@ -113,8 +106,20 @@ export async function replaceReferenceDistribution(
     { distribution }
   );
 
+  queryClient.invalidateQueries({
+    queryKey: usersByBirthyearKeys.all(),
+  });
+
+  queryClient.invalidateQueries({
+    queryKey: usersByGenderKeys.all(),
+  });
+
+  queryClient.invalidateQueries({
+    queryKey: usersByCustomFieldKeys.all(),
+  });
+
   await streams.fetchAllWith({
-    apiEndpoint: [getStatsEndpoint(code, id), getRScoreEndpoint(id)],
+    apiEndpoint: [getRScoreEndpoint(id)],
   });
 
   return response;
@@ -122,7 +127,6 @@ export async function replaceReferenceDistribution(
 
 export async function deleteReferenceDistribution({
   id,
-  attributes: { code },
 }: IUserCustomFieldData) {
   const response = await streams.delete(
     getReferenceDistributionEndpoint(id),
@@ -133,12 +137,20 @@ export async function deleteReferenceDistribution({
     queryKey: userCustomFieldsKeys.lists(),
   });
 
+  queryClient.invalidateQueries({
+    queryKey: usersByBirthyearKeys.all(),
+  });
+
+  queryClient.invalidateQueries({
+    queryKey: usersByGenderKeys.all(),
+  });
+
+  queryClient.invalidateQueries({
+    queryKey: usersByCustomFieldKeys.all(),
+  });
+
   await streams.fetchAllWith({
-    apiEndpoint: [
-      getCustomFieldEndpoint(id),
-      getStatsEndpoint(code, id),
-      getRScoreEndpoint(id),
-    ],
+    apiEndpoint: [getRScoreEndpoint(id)],
   });
 
   return response;
