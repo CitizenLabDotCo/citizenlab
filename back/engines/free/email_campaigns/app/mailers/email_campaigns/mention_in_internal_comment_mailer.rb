@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module EmailCampaigns
-  class MentionInInternalCommentMailer < ApplicationMailer
+  class MentionInInternalCommentMailer < BaseInternalCommentMailer
     protected
 
     def subject
@@ -10,10 +10,6 @@ module EmailCampaigns
 
     def header_title
       format_message('main_header', values: { firstName: event.initiating_user_first_name })
-    end
-
-    def header_message
-      format_message('event_description', values: { authorNameFull: event.internal_comment_author_name })
     end
 
     def preheader
