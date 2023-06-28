@@ -5,8 +5,14 @@ import useAuthUser from 'api/me/useAuthUser';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
+import useBasket from 'api/baskets/useBasket';
 import useUpdateBasket from 'api/baskets/useUpdateBasket';
 import useAddBasket from 'api/baskets/useAddBasket';
+
+// utils
+import { getParticipationContext } from './utils';
+import { capitalizeParticipationContextType } from 'utils/helperUtils';
+import eventEmitter from 'utils/eventEmitter';
 
 // tracks
 import { trackEventByName } from 'utils/analytics';
@@ -20,6 +26,8 @@ interface Props {
   ideaId: string;
 }
 
+export const BUDGET_EXCEEDED_ERROR_EVENT = 'budgetExceededError';
+
 const useAssignBudget = ({ projectId, ideaId }: Props) => {
   const [processing, setProcessing] = useState(false);
   const { data: authUser } = useAuthUser();
@@ -29,10 +37,26 @@ const useAssignBudget = ({ projectId, ideaId }: Props) => {
   const { mutateAsync: addBasket } = useAddBasket(projectId);
   const { mutateAsync: updateBasket } = useUpdateBasket();
 
+  const participationContext = getParticipationContext(project, idea, phases);
+
+  const { data: basket } = useBasket(
+    participationContext?.relationships?.user_basket?.data?.id
+  );
+
   const assignBudget = useCallback(async () => {
-    if (!authUser) {
+    if (!authUser || !idea || !participationContext) {
       return;
     }
+
+    const participationContextType =
+      project?.data.attributes.process_type === 'continuous'
+        ? 'project'
+        : 'phase';
+
+    const participationContextId = participationContext.id;
+    const maxBudget = participationContext?.attributes.voting_max_total;
+    const ideaBudget = idea?.data.attributes.budget;
+    const basketTotal = basket?.data.attributes.total_budget;
 
     const done = async () => {
       await timeout(200);
@@ -41,11 +65,11 @@ const useAssignBudget = ({ projectId, ideaId }: Props) => {
 
     setProcessing(true);
 
-    if (!isNilOrError(basket)) {
+    if (basket) {
       const basketIdeaIds = basket.data.relationships.ideas.data.map(
         (idea) => idea.id
       );
-      const isInBasket = basketIdeaIds.includes(ideaId);
+      const isInBasket = basketIdeaIds.includes(idea.data.id);
       let isPermitted = true;
       let newIdeas: string[] = [];
 
@@ -74,7 +98,7 @@ const useAssignBudget = ({ projectId, ideaId }: Props) => {
         ];
       }
 
-      if (isPermitted && !isNilOrError(basket)) {
+      if (isPermitted && basket) {
         try {
           await updateBasket({
             id: basket.data.id,
@@ -108,7 +132,15 @@ const useAssignBudget = ({ projectId, ideaId }: Props) => {
         done();
       }
     }
-  }, []);
+  }, [
+    addBasket,
+    updateBasket,
+    authUser,
+    basket,
+    participationContext,
+    idea,
+    project,
+  ]);
 
   return { assignBudget, processing };
 };

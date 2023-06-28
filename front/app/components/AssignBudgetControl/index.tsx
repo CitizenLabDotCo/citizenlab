@@ -1,29 +1,19 @@
-import React, { memo, FormEvent, useState } from 'react';
+import React, { memo, FormEvent } from 'react';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 import AddToBasketButton from './AddToBasketButton';
 
 // hooks
-import useAuthUser from 'api/me/useAuthUser';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useBasket from 'api/baskets/useBasket';
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
-import useAddBasket from 'api/baskets/useAddBasket';
-import useUpdateBasket from 'api/baskets/useUpdateBasket';
-
-// tracking
-import { trackEventByName } from 'utils/analytics';
-import tracks from 'containers/ProjectsShowPage/shared/pb/tracks';
+import useAssignBudget from './useAssignBudget';
 
 // utils
-import {
-  isNilOrError,
-  capitalizeParticipationContextType,
-} from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
-import eventEmitter from 'utils/eventEmitter';
 import { getParticipationContext } from './utils';
 
 // events
@@ -80,8 +70,6 @@ const StyledPBExpenses = styled(PBExpenses)`
   padding: 20px;
 `;
 
-export const BUDGET_EXCEEDED_ERROR_EVENT = 'budgetExceededError';
-
 type TView = 'ideaCard' | 'ideaPage';
 
 interface Props {
@@ -91,17 +79,12 @@ interface Props {
   className?: string;
 }
 
-const timeout = (ms: number) =>
-  new Promise((resolve) => setTimeout(resolve, ms));
-
 const AssignBudgetControl = memo(
   ({ view, ideaId, className, projectId }: Props) => {
-    const { data: authUser } = useAuthUser();
     const { data: idea } = useIdeaById(ideaId);
     const { data: project } = useProjectById(projectId);
     const { data: phases } = usePhases(projectId);
-    const { mutateAsync: addBasket } = useAddBasket(projectId);
-    const { mutateAsync: updateBasket } = useUpdateBasket();
+    const { assignBudget, processing } = useAssignBudget({ projectId, ideaId });
 
     const participationContext = getParticipationContext(project, idea, phases);
     const participationContextType =
@@ -113,11 +96,7 @@ const AssignBudgetControl = memo(
     const { data: basket } = useBasket(
       participationContext?.relationships?.user_basket?.data?.id
     );
-    const maxBudget = participationContext?.attributes.voting_max_total;
     const ideaBudget = idea?.data.attributes.budget;
-    const basketTotal = basket?.data.attributes.total_budget;
-
-    const [processing, setProcessing] = useState(false);
 
     if (isNilOrError(idea) || !ideaBudget || !participationContextId) {
       return null;
@@ -126,87 +105,6 @@ const AssignBudgetControl = memo(
     const actionDescriptor = idea.data.attributes.action_descriptor.voting;
 
     if (!actionDescriptor) return null;
-
-    const assignBudget = async () => {
-      if (isNilOrError(authUser)) {
-        return;
-      }
-
-      const done = async () => {
-        await timeout(200);
-        setProcessing(false);
-      };
-
-      setProcessing(true);
-
-      if (!isNilOrError(basket)) {
-        const basketIdeaIds = basket.data.relationships.ideas.data.map(
-          (idea) => idea.id
-        );
-        const isInBasket = basketIdeaIds.includes(ideaId);
-        let isPermitted = true;
-        let newIdeas: string[] = [];
-
-        if (isInBasket) {
-          newIdeas = basket.data.relationships.ideas.data
-            .filter((basketIdea) => basketIdea.id !== idea.data.id)
-            .map((basketIdea) => basketIdea.id);
-        } else {
-          // If new idea causes exceeded budget, emit an error
-          if (
-            basketTotal &&
-            maxBudget &&
-            ideaBudget &&
-            basketTotal + ideaBudget > maxBudget
-          ) {
-            eventEmitter.emit(BUDGET_EXCEEDED_ERROR_EVENT);
-            isPermitted = false;
-            setProcessing(false);
-          }
-
-          newIdeas = [
-            ...basket.data.relationships.ideas.data.map(
-              (basketIdea) => basketIdea.id
-            ),
-            idea.data.id,
-          ];
-        }
-
-        if (isPermitted && !isNilOrError(basket)) {
-          try {
-            await updateBasket({
-              id: basket.data.id,
-              user_id: authUser.data.id,
-              participation_context_id: participationContextId,
-              participation_context_type: capitalizeParticipationContextType(
-                participationContextType
-              ),
-              idea_ids: newIdeas,
-              submitted_at: null,
-            });
-            done();
-            trackEventByName(tracks.ideaAddedToBasket);
-          } catch (error) {
-            done();
-          }
-        }
-      } else {
-        try {
-          await addBasket({
-            user_id: authUser.data.id,
-            participation_context_id: participationContextId,
-            participation_context_type: capitalizeParticipationContextType(
-              participationContextType
-            ),
-            idea_ids: [idea.data.id],
-          });
-          done();
-          trackEventByName(tracks.basketCreated);
-        } catch (error) {
-          done();
-        }
-      }
-    };
 
     const handleAddRemoveButtonClick = (event?: FormEvent) => {
       event?.preventDefault();

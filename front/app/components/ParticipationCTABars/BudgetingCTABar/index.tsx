@@ -16,7 +16,7 @@ import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
 import { IPhaseData } from 'api/phases/types';
 
 // types
-import { BUDGET_EXCEEDED_ERROR_EVENT } from 'components/AssignBudgetControl';
+import { BUDGET_EXCEEDED_ERROR_EVENT } from 'components/AssignBudgetControl/useAssignBudget';
 
 // utils
 import {
