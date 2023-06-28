@@ -1713,6 +1713,7 @@
   "app.utils.votingMethodUtils.howToParticipate": "كيفية المشاركة",
   "app.utils.votingMethodUtils.results": "نتائج",
   "app.utils.votingMethodUtils.submitYourBudget": "أرسل ميزانيتك",
+  "app.utils.votingMethodUtils.submittedBudgetCountText": "قدم شخص ميزانيته",
   "app.utils.votingMethodUtils.submittedBudgetsCountText": "قدم الناس ميزانياتهم",
   "app.utils.votingMethodUtils.votes": "الأصوات",
   "containers.SiteMap.allProjects": "جميع المشاريع",
