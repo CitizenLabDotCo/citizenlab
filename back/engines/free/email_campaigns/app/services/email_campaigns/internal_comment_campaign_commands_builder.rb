@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module EmailCampaigns
-  class Builders::InternalCommentCampaignCommandsBuilder
+  class InternalCommentCampaignCommandsBuilder
     def build_commands(recipient, activity)
       notification = activity.item
       name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)

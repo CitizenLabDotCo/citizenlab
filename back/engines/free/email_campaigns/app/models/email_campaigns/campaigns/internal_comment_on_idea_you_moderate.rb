@@ -71,7 +71,7 @@ module EmailCampaigns
     end
 
     def generate_commands(recipient:, activity:, time: nil)
-      Builders::InternalCommentCampaignCommandsBuilder.new.build_commands(recipient, activity)
+      InternalCommentCampaignCommandsBuilder.new.build_commands(recipient, activity)
     end
   end
 end
