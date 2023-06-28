@@ -26,6 +26,7 @@ import eventEmitter from 'utils/eventEmitter';
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+import { isNilOrError } from 'utils/helperUtils';
 
 const StyledBox = styled(Box)`
   input {
@@ -177,6 +178,7 @@ const AssignMultipleVotesControl = ({ projectId, ideaId }: Props) => {
             <Input
               value={votes.toString()}
               onChange={onTextInputChange}
+              disabled={!isNilOrError(basket?.data?.attributes.submitted_at)}
               type="number"
               min="0"
               onBlur={() => {
@@ -202,6 +204,7 @@ const AssignMultipleVotesControl = ({ projectId, ideaId }: Props) => {
   return (
     <Button
       buttonStyle="primary-outlined"
+      disabled={!isNilOrError(basket?.data?.attributes.submitted_at)}
       icon="vote-ballot"
       width="100%"
       onClick={onAdd}
