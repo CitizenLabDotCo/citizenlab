@@ -1713,6 +1713,7 @@
   "app.utils.votingMethodUtils.howToParticipate": "Com participar",
   "app.utils.votingMethodUtils.results": "Resultats",
   "app.utils.votingMethodUtils.submitYourBudget": "Envieu el vostre pressupost",
+  "app.utils.votingMethodUtils.submittedBudgetCountText": "persona ha presentat el seu pressupost",
   "app.utils.votingMethodUtils.submittedBudgetsCountText": "la gent va presentar els seus pressupostos",
   "app.utils.votingMethodUtils.votes": "Vots",
   "containers.SiteMap.allProjects": "Tots els projectes",
