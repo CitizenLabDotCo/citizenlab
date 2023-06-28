@@ -47,6 +47,7 @@ import { fontSizes, colors, defaultCardStyle, media } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import PBExpenses from 'containers/ProjectsShowPage/shared/pb/PBExpenses';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
+import { BasketIdeaAttributes } from 'api/baskets/types';
 
 const IdeaPageContainer = styled.div`
   display: flex;
@@ -202,6 +203,12 @@ const AssignBudgetControl = memo(
 
         if (isPermitted && !isNilOrError(basket)) {
           try {
+            const basketIdeasAttributes: BasketIdeaAttributes = newIdeas.map(
+              (ideaId) => ({
+                idea_id: ideaId,
+              })
+            );
+
             await updateBasket({
               id: basket.data.id,
               user_id: authUser.data.id,
@@ -209,8 +216,8 @@ const AssignBudgetControl = memo(
               participation_context_type: capitalizeParticipationContextType(
                 participationContextType
               ),
-              idea_ids: newIdeas,
               submitted_at: null,
+              baskets_ideas_attributes: basketIdeasAttributes,
             });
             done();
             trackEventByName(tracks.ideaAddedToBasket);
@@ -226,7 +233,7 @@ const AssignBudgetControl = memo(
             participation_context_type: capitalizeParticipationContextType(
               participationContextType
             ),
-            idea_ids: [idea.data.id],
+            baskets_ideas_attributes: [{ idea_id: idea.data.id }],
           });
 
           // TODO: Remove the invalidations here after the basket data fetching PR by Iva is merged
@@ -288,9 +295,8 @@ const AssignBudgetControl = memo(
       isPermitted &&
       actionDescriptor.disabled_reason !== 'idea_not_in_current_phase';
     const buttonDisabled =
-      basket?.data.attributes.submitted_at !== null ||
-      (actionDescriptor.enabled === false &&
-        !isFixableByAuthentication(actionDescriptor.disabled_reason));
+      actionDescriptor.enabled === false &&
+      !isFixableByAuthentication(actionDescriptor.disabled_reason);
 
     const buttonMessage = getAddRemoveButtonMessage(view, isInBasket);
 

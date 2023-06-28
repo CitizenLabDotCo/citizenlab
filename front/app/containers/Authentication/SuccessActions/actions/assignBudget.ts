@@ -1,5 +1,5 @@
 // api
-import { IBasketData } from 'api/baskets/types';
+import { BasketIdeaAttributes, IBasketData } from 'api/baskets/types';
 import { updateBasket } from 'api/baskets/useUpdateBasket';
 import { addBasket } from 'api/baskets/useAddBasket';
 
@@ -50,6 +50,12 @@ export const assignBudget =
       }
 
       try {
+        const basketIdeasAttributes: BasketIdeaAttributes = newIdeas.map(
+          (ideaId) => ({
+            idea_id: ideaId,
+          })
+        );
+
         await updateBasket({
           id: basket.id,
           user_id: authUser.id,
@@ -57,7 +63,7 @@ export const assignBudget =
           participation_context_type: capitalizeParticipationContextType(
             participationContextType
           ),
-          idea_ids: newIdeas,
+          baskets_ideas_attributes: basketIdeasAttributes,
           submitted_at: null,
         });
         trackEventByName(tracks.ideaAddedToBasket);
@@ -71,7 +77,7 @@ export const assignBudget =
         participation_context_type: capitalizeParticipationContextType(
           participationContextType
         ),
-        idea_ids: [ideaId],
+        baskets_ideas_attributes: [{ idea_id: ideaId }],
       });
       trackEventByName(tracks.basketCreated);
     }

@@ -30,7 +30,7 @@ describe('useUpdateBasket', () => {
         user_id: 'userId',
         participation_context_id: 'contextId',
         participation_context_type: 'Project',
-        idea_ids: ['ideaId'],
+        baskets_ideas_attributes: [{ idea_id: 'ideaId' }],
       });
     });
 
@@ -54,7 +54,7 @@ describe('useUpdateBasket', () => {
         user_id: 'userId',
         participation_context_id: 'contextId',
         participation_context_type: 'Project',
-        idea_ids: ['ideaId'],
+        baskets_ideas_attributes: [{ idea_id: 'ideaId' }],
       });
     });
     await waitFor(() => expect(result.current.isError).toBe(true));
