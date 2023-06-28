@@ -45,6 +45,7 @@ import { anyIsUndefined, isNilOrError } from 'utils/helperUtils';
 import { isUnauthorizedRQ } from 'utils/errorUtils';
 import { scrollToElement } from 'utils/scroll';
 import { isError } from 'lodash-es';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 const Container = styled.main<{ background: string }>`
   flex: 1 0 auto;
@@ -111,6 +112,7 @@ const ProjectsShowPage = ({ project }: Props) => {
     if (scrollToEventId && mounted && !loading) {
       setTimeout(() => {
         scrollToElement({ id: scrollToEventId });
+        removeSearchParams(['scrollToEventId']);
       }, 2000);
     }
   }, [mounted, loading, scrollToEventId]);
