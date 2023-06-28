@@ -1,3 +1,1 @@
-<%= render partial: 'email_campaigns/internal_comments/internal_comment_mail_body', locals: {internal_comment_body: event.internal_comment_body} %>
-<%= render partial: 'email_campaigns/posts/post_with_image', locals: {post_image_url: event&.post_image_medium_url, post_title_multiloc: event.post_title_multiloc, post_body_multiloc: event.post_body_multiloc} %>
-<%= render partial: 'application/cta_button', locals: { href: event.internal_comment_url, message: format_message('cta_reply_to', values: {firstName: event.initiating_user_first_name&.capitalize}) } %>
+<%= render 'email_campaigns/internal_comments/internal_comment_mail', event: event %>
