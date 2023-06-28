@@ -295,7 +295,7 @@ const AssignBudgetControl = memo(
       isPermitted &&
       actionDescriptor.disabled_reason !== 'idea_not_in_current_phase';
     const buttonDisabled =
-      basket?.data.attributes.submitted_at !== null ||
+      !isNilOrError(basket?.data.attributes.submitted_at) ||
       (actionDescriptor.enabled === false &&
         !isFixableByAuthentication(actionDescriptor.disabled_reason));
 

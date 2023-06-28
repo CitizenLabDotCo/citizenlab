@@ -10,6 +10,7 @@ import {
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import ConfettiSvg from './ConfettiSvg';
+import Warning from 'components/UI/Warning';
 
 // api
 import { VotingMethod } from 'services/participationContexts';
@@ -24,10 +25,10 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 // utils
 import { getVotingMethodConfig } from 'utils/votingMethodUtils/votingMethodUtils';
 import { pastPresentOrFuture, toFullMonth } from 'utils/dateUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 // intl
 import messages from './messages';
-import Warning from 'components/UI/Warning';
 
 type StatusModuleProps = {
   votingMethod?: VotingMethod | null;
@@ -109,7 +110,7 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
             </Text>
           )}
         </>
-        {budgetCount && (
+        {!isNilOrError(budgetCount) && budgetCount > 0 && (
           <>
             <Text m="0px" fontSize="xxxxl" style={{ fontWeight: '700' }}>
               {budgetCount}

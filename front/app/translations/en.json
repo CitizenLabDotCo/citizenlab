@@ -1717,6 +1717,7 @@
   "app.utils.votingMethodUtils.howToVote": "How to vote",
   "app.utils.votingMethodUtils.results": "Results",
   "app.utils.votingMethodUtils.submitYourBudget": "Submit your budget",
+  "app.utils.votingMethodUtils.submittedBudgetCountText": "person submitted their budget",
   "app.utils.votingMethodUtils.submittedBudgetsCountText": "people submitted their budgets",
   "app.utils.votingMethodUtils.submittedVotesCountText": "people submitted their votes",
   "app.utils.votingMethodUtils.vote": "Vote",
