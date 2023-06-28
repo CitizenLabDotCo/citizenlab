@@ -1,10 +1,4 @@
-import React, {
-  memo,
-  useCallback,
-  MouseEvent,
-  useState,
-  useEffect,
-} from 'react';
+import React, { useCallback, MouseEvent, useState, useEffect } from 'react';
 
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
@@ -113,7 +107,7 @@ interface Props {
   className?: string;
 }
 
-const InitiativeShowPageTopBar = memo<Props>(({ initiativeId, className }) => {
+const InitiativeShowPageTopBar = ({ initiativeId, className }: Props) => {
   const [goBack, setGoBack] = useState(false);
   const [searchParams] = useSearchParams();
 
@@ -156,6 +150,6 @@ const InitiativeShowPageTopBar = memo<Props>(({ initiativeId, className }) => {
       </TopBarInner>
     </Container>
   );
-});
+};
 
 export default InitiativeShowPageTopBar;
