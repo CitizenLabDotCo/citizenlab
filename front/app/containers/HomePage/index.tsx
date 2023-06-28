@@ -22,14 +22,10 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 export const adminRedirectPath = '/admin/dashboard';
 
-type HomePageProps = {
-  openAuthentication?: boolean;
-};
-const HomePage = ({ openAuthentication }: HomePageProps) => {
+const HomePage = () => {
   const homepageSettings = useHomepageSettings();
   const { data: authUser } = useAuthUser();
   const { data: appConfiguration } = useAppConfiguration();
@@ -42,12 +38,6 @@ const HomePage = ({ openAuthentication }: HomePageProps) => {
           appConfiguration.data
         )
       : false;
-
-  useEffect(() => {
-    if (openAuthentication) {
-      triggerAuthenticationFlow();
-    }
-  }, [openAuthentication]);
 
   useEffect(() => {
     if (pressedLetterAKey && userHasAdminAccess) {

@@ -162,7 +162,6 @@ export default function useSteps() {
   useEffect(() => {
     const subscription = triggerAuthenticationFlow$.subscribe((event) => {
       if (currentStep !== 'closed') return;
-
       authenticationData = event.eventValue;
       transition(currentStep, 'TRIGGER_AUTHENTICATION_FLOW')();
     });
