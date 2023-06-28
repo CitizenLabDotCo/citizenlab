@@ -1,23 +1,13 @@
-import React, { memo, FormEvent } from 'react';
+import React, { memo } from 'react';
+
+// api
+import useIdeaById from 'api/ideas/useIdeaById';
+import useProjectById from 'api/projects/useProjectById';
+import usePhases from 'api/phases/usePhases';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 import AddToBasketButton from './AddToBasketButton';
-
-// hooks
-import useIdeaById from 'api/ideas/useIdeaById';
-import useBasket from 'api/baskets/useBasket';
-import useProjectById from 'api/projects/useProjectById';
-import usePhases from 'api/phases/usePhases';
-import useAssignBudget from './useAssignBudget';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import { isFixableByAuthentication } from 'utils/actionDescriptors';
-import { getParticipationContext } from './utils';
-
-// events
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -28,10 +18,12 @@ import FormattedBudget from 'utils/currency/FormattedBudget';
 import styled from 'styled-components';
 import { fontSizes, colors, defaultCardStyle, media } from 'utils/styleUtils';
 
+// utils
+import { getParticipationContext } from './utils';
+
 // typings
 import { ScreenReaderOnly } from 'utils/a11y';
 import PBExpenses from 'containers/ProjectsShowPage/shared/pb/PBExpenses';
-import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
 const IdeaPageContainer = styled.div`
   display: flex;
@@ -84,90 +76,32 @@ const AssignBudgetControl = memo(
     const { data: idea } = useIdeaById(ideaId);
     const { data: project } = useProjectById(projectId);
     const { data: phases } = usePhases(projectId);
-    const { assignBudget, processing } = useAssignBudget({ projectId, ideaId });
 
     const participationContext = getParticipationContext(project, idea, phases);
+    const participationContextId = participationContext?.id;
     const participationContextType =
       project?.data.attributes.process_type === 'continuous'
         ? 'project'
         : 'phase';
 
-    const participationContextId = participationContext?.id || null;
-    const { data: basket } = useBasket(
-      participationContext?.relationships?.user_basket?.data?.id
-    );
     const ideaBudget = idea?.data.attributes.budget;
+    const actionDescriptor = idea?.data.attributes.action_descriptor.voting;
 
-    if (isNilOrError(idea) || !ideaBudget || !participationContextId) {
-      return null;
-    }
-
-    const actionDescriptor = idea.data.attributes.action_descriptor.voting;
-
-    if (!actionDescriptor) return null;
-
-    const handleAddRemoveButtonClick = (event?: FormEvent) => {
-      event?.preventDefault();
-
-      if (actionDescriptor.enabled) {
-        assignBudget();
-        return;
-      }
-
-      const budgetingDisabledReason = actionDescriptor.disabled_reason;
-
-      if (isFixableByAuthentication(budgetingDisabledReason)) {
-        const context = {
-          type: participationContextType,
-          action: 'voting',
-          id: participationContextId,
-        } as const;
-
-        const successAction: SuccessAction = {
-          name: 'assignBudget',
-          params: {
-            ideaId,
-            participationContextId,
-            participationContextType,
-            basket: basket?.data,
-          },
-        };
-
-        triggerAuthenticationFlow({ context, successAction });
-      }
-    };
-
-    const basketIdeaIds = !isNilOrError(basket)
-      ? basket.data.relationships.ideas.data.map((idea) => idea.id)
-      : [];
-    const isInBasket = basketIdeaIds.includes(ideaId);
+    if (!actionDescriptor || !ideaBudget) return null;
 
     const isPermitted =
       actionDescriptor.enabled ||
       actionDescriptor.disabled_reason !== 'not_permitted';
-    const buttonVisible =
-      isPermitted &&
-      actionDescriptor.disabled_reason !== 'idea_not_in_current_phase';
-    const buttonDisabled =
-      basket?.data.attributes.submitted_at !== null ||
-      (actionDescriptor.enabled === false &&
-        !isFixableByAuthentication(actionDescriptor.disabled_reason));
-
-    const buttonMessage = getAddRemoveButtonMessage(view, isInBasket);
 
     if (view === 'ideaCard') {
       return (
         <Box className={`e2e-assign-budget ${className || ''}`} width="100%">
-          {buttonVisible && (
-            <AddToBasketButton
-              onClick={handleAddRemoveButtonClick}
-              disabled={buttonDisabled}
-              processing={processing}
-              isInBasket={isInBasket}
-              budget={ideaBudget}
-              buttonMessage={buttonMessage}
-            />
-          )}
+          <AddToBasketButton
+            ideaId={ideaId}
+            projectId={projectId}
+            inBasketMessage={messages.added}
+            notInBasketMessage={messages.add}
+          />
         </Box>
       );
     }
@@ -185,18 +119,14 @@ const AssignBudgetControl = memo(
             </ScreenReaderOnly>
             <FormattedBudget value={ideaBudget} />
           </Budget>
-          {buttonVisible && (
-            <AddToBasketButton
-              onClick={handleAddRemoveButtonClick}
-              disabled={buttonDisabled}
-              processing={processing}
-              isInBasket={isInBasket}
-              budget={ideaBudget}
-              buttonMessage={buttonMessage}
-            />
-          )}
+          <AddToBasketButton
+            ideaId={ideaId}
+            projectId={projectId}
+            inBasketMessage={messages.removeFromMyBasket}
+            notInBasketMessage={messages.addToMyBasket}
+          />
         </BudgetWithButtonWrapper>
-        {isPermitted && (
+        {isPermitted && participationContextId && (
           <StyledPBExpenses
             participationContextId={participationContextId}
             participationContextType={participationContextType}
@@ -209,20 +139,3 @@ const AssignBudgetControl = memo(
 );
 
 export default AssignBudgetControl;
-
-function getAddRemoveButtonMessage(view: TView, isInBasket: boolean) {
-  switch (view) {
-    case 'ideaCard':
-      if (isInBasket) {
-        return messages.added;
-      } else {
-        return messages.add;
-      }
-    case 'ideaPage':
-      if (isInBasket) {
-        return messages.removeFromMyBasket;
-      } else {
-        return messages.addToMyBasket;
-      }
-  }
-}
