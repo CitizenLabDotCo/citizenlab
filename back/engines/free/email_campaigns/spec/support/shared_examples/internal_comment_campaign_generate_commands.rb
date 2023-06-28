@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 RSpec.shared_examples 'internal_comment_campaign_generate_commands' do
+  let(:notification_activity) { create(:activity, item: notification, action: 'created') }
+  let(:recipient) { notification_activity.item.recipient }
+  let(:name_service) { UserDisplayNameService.new(AppConfiguration.instance, recipient) }
+
   it 'generates a command with the desired payload and tracked content' do
     command = campaign.generate_commands(
       recipient: recipient,
