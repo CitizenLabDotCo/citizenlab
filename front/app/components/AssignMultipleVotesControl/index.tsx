@@ -25,6 +25,7 @@ import styled, { useTheme } from 'styled-components';
 import eventEmitter from 'utils/eventEmitter';
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 const StyledBox = styled(Box)`
   input {
@@ -84,6 +85,11 @@ const AssignMultipleVotesControl = ({ projectId, ideaId }: Props) => {
     event.stopPropagation();
     event?.preventDefault();
 
+    if (!authUser) {
+      triggerAuthenticationFlow();
+      return;
+    }
+
     console.log('currentTotal', currentTotal);
     console.log(votingMax && currentVotes + 1 > votingMax);
     if (
@@ -107,6 +113,12 @@ const AssignMultipleVotesControl = ({ projectId, ideaId }: Props) => {
   const onRemove = (event) => {
     event.stopPropagation();
     event?.preventDefault();
+
+    if (!authUser) {
+      triggerAuthenticationFlow();
+      return;
+    }
+
     const currentVotes = parseInt(votes.toString(), 10);
     if (currentVotes < 0) {
       setVotes(0);
@@ -194,7 +206,7 @@ const AssignMultipleVotesControl = ({ projectId, ideaId }: Props) => {
       width="100%"
       onClick={onAdd}
     >
-      Vote
+      {formatMessage(messages.vote)}
     </Button>
   );
 };
