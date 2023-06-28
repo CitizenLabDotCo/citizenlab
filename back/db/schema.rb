@@ -174,6 +174,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_23_085057) do
     t.string "participation_context_type"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+    t.index ["submitted_at"], name: "index_baskets_on_submitted_at"
     t.index ["user_id"], name: "index_baskets_on_user_id"
   end
 
@@ -538,6 +539,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_23_085057) do
     t.uuid "phase_id"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+    t.integer "baskets_count", default: 0, null: false
     t.index ["idea_id", "phase_id"], name: "index_ideas_phases_on_idea_id_and_phase_id", unique: true
     t.index ["idea_id"], name: "index_ideas_phases_on_idea_id"
     t.index ["phase_id"], name: "index_ideas_phases_on_phase_id"
@@ -1000,6 +1002,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_23_085057) do
     t.integer "voting_max_votes_per_idea"
     t.jsonb "voting_term_singular_multiloc", default: {}
     t.jsonb "voting_term_plural_multiloc", default: {}
+    t.integer "baskets_count", default: 0, null: false
     t.index ["project_id"], name: "index_phases_on_project_id"
   end
 
@@ -1143,6 +1146,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_23_085057) do
     t.integer "voting_max_votes_per_idea"
     t.jsonb "voting_term_singular_multiloc", default: {}
     t.jsonb "voting_term_plural_multiloc", default: {}
+    t.integer "baskets_count", default: 0, null: false
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 
