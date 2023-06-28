@@ -43,7 +43,7 @@ export type GetStatusDescriptionProps = {
 export type VotingMethodConfig = {
   getStatusHeader: (submissionState: VoteSubmissionState) => MessageDescriptor;
   getStatusTitle: (submissionState: VoteSubmissionState) => MessageDescriptor;
-  getStatusSubmissionCountCopy?: () => MessageDescriptor;
+  getStatusSubmissionCountCopy?: (basketCount: number) => MessageDescriptor;
   getStatusDescription?: ({
     project,
     phase,
@@ -143,8 +143,11 @@ const budgetingConfig: VotingMethodConfig = {
     }
     return null;
   },
-  getStatusSubmissionCountCopy: () => {
-    return messages.submittedBudgetsCountText;
+  getStatusSubmissionCountCopy: (basketCount) => {
+    if (basketCount > 1) {
+      return messages.submittedBudgetsCountText;
+    }
+    return messages.submittedBudgetCountText;
   },
   getSubmissionTerm: (form) => {
     if (form === 'singular') {

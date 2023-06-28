@@ -15,6 +15,10 @@ import FileAttachments from 'components/UI/FileAttachments';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import eventEmitter from 'utils/eventEmitter';
+
+// constants
+import { IMAGES_LOADED_EVENT } from 'components/admin/ContentBuilder/constants';
 
 // typings
 import { Multiloc } from 'typings';
@@ -22,6 +26,10 @@ import { Multiloc } from 'typings';
 type PreviewProps = {
   projectId: string;
   projectTitle: Multiloc;
+};
+
+const handleLoadImages = () => {
+  eventEmitter.emit(IMAGES_LOADED_EVENT);
 };
 
 const Preview = ({ projectId, projectTitle }: PreviewProps) => {
@@ -60,7 +68,10 @@ const Preview = ({ projectId, projectTitle }: PreviewProps) => {
               {localize(projectTitle)}
             </Title>
             <Editor isPreview={true}>
-              <ContentBuilderFrame editorData={editorData} />
+              <ContentBuilderFrame
+                editorData={editorData}
+                onLoadImages={handleLoadImages}
+              />
             </Editor>
             {projectFiles && (
               <Box maxWidth="750px" mb="25px">

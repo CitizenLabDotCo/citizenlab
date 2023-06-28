@@ -118,4 +118,8 @@ export default defineMessages({
     id: 'app.utils.votingMethodUtils.voteSubmittedWithIcon',
     defaultMessage: 'Vote submitted 🎉',
   },
+  submittedBudgetCountText: {
+    id: 'app.utils.votingMethodUtils.submittedBudgetCountText',
+    defaultMessage: 'person submitted their budget',
+  },
 });
