@@ -1,7 +1,6 @@
 import { isNilOrError } from 'utils/helperUtils';
 import { IMapConfigState } from '../hooks/useMapConfig';
 import { IAppConfigurationData } from 'api/app_configuration/types';
-import { IMapLayerAttributes } from '../services/mapLayers';
 import { Locale } from 'typings';
 import { LatLngTuple } from 'leaflet';
 import { isNumber } from 'lodash-es';
@@ -15,6 +14,7 @@ import {
   MAPTILER_DEFAULT_OPTIONS,
   BASEMAP_AT_DEFAULT_OPTIONS,
 } from './tileProviderDefaultOptions';
+import { IMapLayerAttributes } from '../api/map_layers/types';
 
 export const getCenter = (
   centerLatLng: LatLngTuple | null | undefined,

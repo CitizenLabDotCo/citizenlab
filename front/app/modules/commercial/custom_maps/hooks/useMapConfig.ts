@@ -5,18 +5,16 @@ import {
   IMapConfig,
 } from '../services/mapConfigs';
 import { isNilOrError } from 'utils/helperUtils';
-import { combineLatest, of, Observable } from 'rxjs';
+import { of, Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { mapLayerByProjectMapConfigStream } from '../services/mapLayers';
 
 export interface Props {
   projectId?: string | null;
-  prefetchMapLayers?: boolean;
 }
 
 export type IMapConfigState = IMapConfigData | undefined | null;
 
-export default ({ projectId, prefetchMapLayers }: Props): IMapConfigState => {
+export default ({ projectId }: Props): IMapConfigState => {
   const [mapConfig, setMapConfig] = useState<IMapConfigData | undefined | null>(
     undefined
   );
@@ -29,22 +27,6 @@ export default ({ projectId, prefetchMapLayers }: Props): IMapConfigState => {
     if (projectId) {
       observable = mapConfigByProjectStream(projectId).observable.pipe(
         switchMap((mapConfig) => {
-          if (!isNilOrError(mapConfig) && prefetchMapLayers) {
-            const mapLayerIds = mapConfig?.data?.attributes?.layers?.map(
-              (mapLayer) => mapLayer.id
-            );
-
-            if (mapLayerIds && mapLayerIds.length > 0) {
-              combineLatest(
-                mapLayerIds.map(
-                  (mapLayerId) =>
-                    mapLayerByProjectMapConfigStream(projectId, mapLayerId)
-                      .observable
-                )
-              );
-            }
-          }
-
           return of(mapConfig);
         })
       );

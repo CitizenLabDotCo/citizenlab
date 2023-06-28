@@ -10,12 +10,8 @@ import GeoJsonImportButton from './GeoJsonImportButton';
 
 // hooks
 import useMapConfig from '../../../hooks/useMapConfig';
-
-// services
-import {
-  deleteProjectMapLayer,
-  reorderProjectMapLayer,
-} from '../../../services/mapLayers';
+import useDeleteMapLayer from 'modules/commercial/custom_maps/api/map_layers/useDeleteMapLayer';
+import useReorderMapLayer from 'modules/commercial/custom_maps/api/map_layers/useReorderMapLayer';
 
 // utils
 import { getLayerColor, getLayerIcon } from '../../../utils/map';
@@ -94,9 +90,11 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
     localize,
   }) => {
     const mapConfig = useMapConfig({ projectId });
+    const { mutate: deleteProjectMapLayer } = useDeleteMapLayer();
+    const { mutate: reorderProjectMapLayer } = useReorderMapLayer();
 
     const handleReorderLayers = (mapLayerId: string, newOrder: number) => {
-      reorderProjectMapLayer(projectId, mapLayerId, newOrder);
+      reorderProjectMapLayer({ projectId, id: mapLayerId, ordering: newOrder });
     };
 
     const removeLayer = (layerId: string) => (event: React.FormEvent) => {
@@ -105,7 +103,7 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
       const message = formatMessage(messages.deleteConfirmation);
 
       if (window.confirm(message)) {
-        deleteProjectMapLayer(projectId, layerId);
+        deleteProjectMapLayer({ projectId, id: layerId });
       }
     };
 

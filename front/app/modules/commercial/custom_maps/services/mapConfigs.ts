@@ -1,7 +1,7 @@
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { Multiloc } from 'typings';
-import { IMapLayerAttributes } from './mapLayers';
+import { IMapLayerAttributes } from '../api/map_layers/types';
 
 export interface IMapConfigAttributes {
   zoom_level?: string;
