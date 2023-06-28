@@ -11,8 +11,9 @@ export const getParticipationContext = (
   phases: IPhases | undefined
 ) => {
   if (!project) return;
-  if (project.data.attributes.process_type === 'continuous')
+  if (project.data.attributes.process_type === 'continuous') {
     return project.data;
+  }
   if (!phases) return;
 
   const ideaPhaseIds = idea?.data.relationships?.phases?.data?.map(
