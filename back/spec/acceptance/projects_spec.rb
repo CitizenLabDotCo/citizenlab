@@ -154,7 +154,8 @@ resource 'Projects' do
             comment_reacting_idea: { enabled: false, disabled_reason: 'project_inactive' },
             annotating_document: { enabled: false, disabled_reason: 'project_inactive' },
             taking_survey: { enabled: false, disabled_reason: 'project_inactive' },
-            taking_poll: { enabled: false, disabled_reason: 'project_inactive' }
+            taking_poll: { enabled: false, disabled_reason: 'project_inactive' },
+            voting: { enabled: false, disabled_reason: 'project_inactive' }
           }
         )
         expect(json_response.dig(:data, :relationships)).to include(
@@ -171,7 +172,10 @@ resource 'Projects' do
         basket = create(:basket, participation_context: project, user: @user)
         do_request id: project.id
         expect(status).to eq 200
-        expect(json_response.dig(:data, :relationships, :user_basket, :data, :id)).to eq basket.id
+        expect(response_data.dig(:relationships, :user_basket, :data, :id)).to eq basket.id
+        expect(response_data.dig(:attributes, :action_descriptor, :voting)).to eq(
+          { enabled: true, disabled_reason: nil }
+        )
       end
 
       example 'Get a project on a timeline project includes the current_phase', document: false do

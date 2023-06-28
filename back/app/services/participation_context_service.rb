@@ -236,6 +236,11 @@ class ParticipationContextService
     end
   end
 
+  def voting_disabled_reason_for_project(project, user)
+    context = get_participation_context project
+    voting_disabled_reason_for_context context, user
+  end
+
   def voting_disabled_reason_for_idea(idea, user)
     context = get_participation_context idea.project
     if context && !in_current_context?(idea, context)
