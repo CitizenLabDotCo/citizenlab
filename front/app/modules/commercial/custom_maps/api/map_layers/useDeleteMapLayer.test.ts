@@ -6,7 +6,7 @@ import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-const apiPath = '*causes/:id';
+const apiPath = '*/projects/:projectId/map_config/layers/:id';
 
 const server = setupServer(
   rest.delete(apiPath, (_req, res, ctx) => {
