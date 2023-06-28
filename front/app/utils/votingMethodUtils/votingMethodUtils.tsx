@@ -249,8 +249,12 @@ const cumulativeConfig: VotingMethodConfig = {
     }
     return null;
   },
-  getStatusSubmissionCountCopy: () => {
-    return messages.submittedVotesCountText;
+  getStatusSubmissionCountCopy: (basketCount) => {
+    if (basketCount > 1) {
+      return messages.submittedVotesCountText;
+    } else {
+      return messages.submittedVoteCountText;
+    }
   },
   getSubmissionTerm: (form) => {
     if (form === 'singular') {

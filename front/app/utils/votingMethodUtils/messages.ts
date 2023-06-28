@@ -17,9 +17,17 @@ export default defineMessages({
     id: 'app.utils.votingMethodUtils.submittedBudgetsCountText',
     defaultMessage: 'people submitted their budgets',
   },
+  submittedBudgetCountText: {
+    id: 'app.utils.votingMethodUtils.submittedBudgetCountText',
+    defaultMessage: 'person submitted their budget',
+  },
   submittedVotesCountText: {
     id: 'app.utils.votingMethodUtils.submittedVotesCountText',
     defaultMessage: 'people submitted their votes',
+  },
+  submittedVoteCountText: {
+    id: 'app.utils.votingMethodUtils.submittedVoteCountText',
+    defaultMessage: 'person submitted their vote',
   },
   votingPreSubmissionWarning: {
     id: 'app.utils.votingMethodUtils.votingPreSubmissionWarning',
@@ -117,9 +125,5 @@ export default defineMessages({
   voteSubmittedWithIcon: {
     id: 'app.utils.votingMethodUtils.voteSubmittedWithIcon',
     defaultMessage: 'Vote submitted 🎉',
-  },
-  submittedBudgetCountText: {
-    id: 'app.utils.votingMethodUtils.submittedBudgetCountText',
-    defaultMessage: 'person submitted their budget',
   },
 });
