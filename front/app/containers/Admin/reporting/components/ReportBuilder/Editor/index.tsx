@@ -53,10 +53,14 @@ const resolver = {
   GenderWidget,
   ActiveUsersWidget,
   MostReactedIdeasWidget,
+  // We point to the same widget as MostReactedIdeasWidget because there is data in production and other places that uses the old name. The resolver should be able to handle both names for backwards compatibility.
+  MostVotedIdeasWidget: MostReactedIdeasWidget,
   ProjectTemplate,
   PostsByTimeWidget,
   CommentsByTimeWidget,
   ReactionsByTimeWidget,
+  // We point to the same widget as MostReactedIdeasWidget because there is data in production and other places that uses the old name. The resolver should be able to handle both names for backwards compatibility.
+  VotesByTimeWidget: ReactionsByTimeWidget,
 };
 
 const Editor: React.FC<EditorProps> = ({
