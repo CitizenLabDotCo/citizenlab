@@ -623,13 +623,13 @@ sv:
         input_is_flagged_as_spam: 'Inmatning markeras som skräppost'
         input_is_updated: 'Inmatningen uppdateras'
         input_status_changes: 'Ändringar av ingångsstatus'
-        internal_comment_is_posted_on_idea_assigned_to_user: Intern kommentar publiceras på input som tilldelats användaren
-        internal_comment_is_posted_on_initiative_assigned_to_user: Intern kommentar läggs upp på förslag som tilldelats användaren
-        internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: Intern kommentar publiceras om input i projekt eller mapp som användaren hanterar
-        internal_comment_is_posted_on_idea_user_has_commented_internally_on: Intern kommentar publiceras på input användaren kommenterade internt på
-        internal_comment_is_posted_on_initiative_user_has_commented_internally_on: Intern kommentar publiceras på förslag som användaren kommenterat internt på
-        internal_comment_is_posted_on_unassigned_initiative: Intern kommentar publiceras på odelat förslag
-        internal_comment_is_posted_on_unassigned_unmoderated_idea: Intern kommentar publiceras på icke tilldelad input i icke hanterat projekt
+        internal_comment_is_posted_on_idea_assigned_to_user: 'Intern kommentar publiceras på input som tilldelats användaren'
+        internal_comment_is_posted_on_initiative_assigned_to_user: 'Intern kommentar läggs upp på förslag som tilldelats användaren'
+        internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'Intern kommentar publiceras om input i projekt eller mapp som användaren hanterar'
+        internal_comment_is_posted_on_idea_user_has_commented_internally_on: 'Intern kommentar publiceras på input användaren kommenterade internt på'
+        internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'Intern kommentar publiceras på förslag som användaren kommenterat internt på'
+        internal_comment_is_posted_on_unassigned_initiative: 'Intern kommentar publiceras på odelat förslag'
+        internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Intern kommentar publiceras på icke tilldelad input i icke hanterat projekt'
         user_is_mentioned_in_internal_comment: 'Användaren nämns i intern kommentar'
         new_input_is_published: 'Ny input publiceras'
         new_proposal_is_posted: 'Ett nytt förslag har lagts fram.'
