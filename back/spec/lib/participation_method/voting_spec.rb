@@ -11,7 +11,7 @@ RSpec.describe ParticipationMethod::Voting do
     context 'budgeting' do
       let(:context) { build(:continuous_budgeting_project) }
 
-      it 'sets the posting method to unlimited' do
+      it 'sets the posting method to unlimited and ideas order to random' do
         participation_method.assign_defaults_for_participation_context
         expect(context.posting_method).to eq 'unlimited'
         expect(context.ideas_order).to eq 'random'
