@@ -88,4 +88,30 @@ RSpec.describe Basket do
       expect(basket).to be_valid
     end
   end
+
+  context 'when deleting an idea with budget' do
+    it 'the idea is removed from all baskets and the total votes is changed' do
+      project = create(:continuous_budgeting_project)
+      idea = create(:idea, project: project, budget: 5)
+      basket = create(:basket, participation_context: project, ideas: (create_list(:idea, 2, project: project, budget: 10) + [idea]))
+      expect(basket.ideas.count).to eq 3
+      expect(basket.total_votes).to eq 25
+      idea.destroy!
+      basket.reload
+      expect(basket.ideas.count).to eq 2
+      expect(basket.total_votes).to eq 20
+    end
+  end
+
+  context 'when editing the budget of an idea' do
+    it 'the total votes of existing baskets is not changed' do
+      project = create(:continuous_budgeting_project)
+      idea = create(:idea, project: project, budget: 5)
+      basket = create(:basket, participation_context: project, ideas: (create_list(:idea, 2, project: project, budget: 10) + [idea]))
+      expect(basket.total_votes).to eq 25
+      idea.update!(budget: 7)
+      basket.reload
+      expect(basket.total_votes).to eq 25
+    end
+  end
 end
