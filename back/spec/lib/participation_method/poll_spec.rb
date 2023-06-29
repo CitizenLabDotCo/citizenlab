@@ -51,6 +51,19 @@ RSpec.describe ParticipationMethod::Poll do
     end
   end
 
+  describe '#author_in_form?' do
+    it 'returns false for a moderator when idea_author_change is activated' do
+      SettingsService.new.activate_feature! 'idea_author_change'
+      expect(participation_method.author_in_form?(create(:admin))).to be false
+    end
+  end
+
+  describe '#budget_in_form?' do
+    it 'returns false for a moderator' do
+      expect(participation_method.budget_in_form?(create(:admin))).to be false
+    end
+  end
+
   describe '#assign_defaults' do
     it 'does not change the input' do
       participation_method.assign_defaults input

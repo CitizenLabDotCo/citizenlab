@@ -26,11 +26,12 @@ RSpec.describe Basket do
     end
   end
 
-  context 'when a basket exceeding the maximum budget' do
+  context 'when a basket exceeding the maximum votes' do
     before do
       project = create(:continuous_budgeting_project, voting_max_total: 1000)
       ideas = create_list(:idea, 11, budget: 100, project: project)
       @basket = create(:basket, ideas: ideas, participation_context: project)
+      @basket.baskets_ideas.update_all(votes: 100)
     end
 
     it 'is valid in normal context' do
@@ -41,13 +42,15 @@ RSpec.describe Basket do
     it 'is not valid in submission context' do
       @basket.submitted_at = Time.now
       expect(@basket.save(context: :basket_submission)).to be(false)
+      expect(@basket.errors.details).to eq({ total_votes: [{ error: :less_than_or_equal_to, value: 1100, count: 1000 }] })
+      expect(@basket.errors.messages).to eq({ total_votes: ['must be less than or equal to 1000'] })
     end
   end
 
-  context 'when a basket less than the minimum budget' do
+  context 'when a basket less than the minimum votes' do
     let(:basket) { create(:basket, ideas: [idea], participation_context: project, submitted_at: Time.now) }
-    let(:project) { create(:continuous_budgeting_project, voting_min_total: 200) }
-    let(:idea) { create(:idea, budget: 100, project: project) }
+    let(:project) { create(:continuous_budgeting_project, voting_min_total: 5) }
+    let(:idea) { create(:idea, budget: 1, project: project) }
 
     it 'is valid in normal context' do
       expect(basket).to be_valid
@@ -55,9 +58,8 @@ RSpec.describe Basket do
 
     it 'is not valid in submission context' do
       expect(basket.save(context: :basket_submission)).to be(false)
-      expect(basket.errors.details).to eq(
-        ideas: [error: :less_than_min_budget]
-      )
+      expect(basket.errors.details).to eq({ total_votes: [{ error: :greater_than_or_equal_to, value: 1, count: 5 }] })
+      expect(basket.errors.messages).to eq({ total_votes: ['must be greater than or equal to 5'] })
     end
   end
 
@@ -84,6 +86,32 @@ RSpec.describe Basket do
       project.update!(participation_method: 'ideation')
       basket.reload
       expect(basket).to be_valid
+    end
+  end
+
+  context 'when deleting an idea with budget' do
+    it 'the idea is removed from all baskets and the total votes is changed' do
+      project = create(:continuous_budgeting_project)
+      idea = create(:idea, project: project, budget: 5)
+      basket = create(:basket, participation_context: project, ideas: (create_list(:idea, 2, project: project, budget: 10) + [idea]))
+      expect(basket.ideas.count).to eq 3
+      expect(basket.total_votes).to eq 25
+      idea.destroy!
+      basket.reload
+      expect(basket.ideas.count).to eq 2
+      expect(basket.total_votes).to eq 20
+    end
+  end
+
+  context 'when editing the budget of an idea' do
+    it 'the total votes of existing baskets is not changed' do
+      project = create(:continuous_budgeting_project)
+      idea = create(:idea, project: project, budget: 5)
+      basket = create(:basket, participation_context: project, ideas: (create_list(:idea, 2, project: project, budget: 10) + [idea]))
+      expect(basket.total_votes).to eq 25
+      idea.update!(budget: 7)
+      basket.reload
+      expect(basket.total_votes).to eq 25
     end
   end
 end

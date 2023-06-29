@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::BasketSerializer < WebApi::V1::BaseSerializer
-  attributes :submitted_at, :total_budget, :budget_exceeds_limit?
+  attributes :submitted_at, :total_votes
 
   belongs_to :participation_context, polymorphic: true
   belongs_to :user
