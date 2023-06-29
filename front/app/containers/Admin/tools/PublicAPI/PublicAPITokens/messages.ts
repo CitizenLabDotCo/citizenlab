@@ -56,7 +56,7 @@ export default defineMessages({
   },
   createTokenDescription: {
     id: 'app.containers.Admin.tools.apiTokens.createTokenDescription',
-    defaultMessage: 'Create a new token to use on our public API.',
+    defaultMessage: 'Create a new token to use with our public API.',
   },
   createTokenName: {
     id: 'app.containers.Admin.tools.apiTokens.createTokenName',

@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
-import apiClients from './keys';
+import apiClientsKeys from './keys';
 import { IAPIClients, APIClientKeys } from './types';
 
 const fetchAPIClients = () => {
@@ -13,7 +13,7 @@ const fetchAPIClients = () => {
 
 const useApiClients = () => {
   return useQuery<IAPIClients, CLErrors, IAPIClients, APIClientKeys>({
-    queryKey: apiClients.lists(),
+    queryKey: apiClientsKeys.lists(),
     queryFn: () => fetchAPIClients(),
   });
 };

@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import fetcher from 'utils/cl-react-query/fetcher';
-import areasKeys from './keys';
+import apiClientsKeys from './keys';
 
 const deleteApiClient = (id: string) =>
   fetcher({
@@ -15,7 +15,7 @@ const useDeleteApiClient = () => {
     mutationFn: deleteApiClient,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: areasKeys.lists(),
+        queryKey: apiClientsKeys.lists(),
       });
     },
   });

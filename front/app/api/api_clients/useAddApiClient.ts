@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrorsWrapper } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
-import areaKeys from './keys';
+import apiClientsKeys from './keys';
 import { IAPIClientResponse } from './types';
 
 interface IAPIClientAdd {
@@ -20,7 +20,7 @@ const useAddApiClient = () => {
   return useMutation<IAPIClientResponse, CLErrorsWrapper, IAPIClientAdd>({
     mutationFn: addApiClient,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: areaKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: apiClientsKeys.lists() });
     },
   });
 };

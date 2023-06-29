@@ -807,7 +807,7 @@
   "app.containers.Admin.reporting.resultsSection": "RESULTS",
   "app.containers.Admin.tools.apiTokens.createTokenButton": "Create new token",
   "app.containers.Admin.tools.apiTokens.createTokenCancel": "Cancel",
-  "app.containers.Admin.tools.apiTokens.createTokenDescription": "Create a new token to use on our public API.",
+  "app.containers.Admin.tools.apiTokens.createTokenDescription": "Create a new token to use with our public API.",
   "app.containers.Admin.tools.apiTokens.createTokenError": "Provide a name for your token",
   "app.containers.Admin.tools.apiTokens.createTokenModalButton": "Create token",
   "app.containers.Admin.tools.apiTokens.createTokenName": "Name",
