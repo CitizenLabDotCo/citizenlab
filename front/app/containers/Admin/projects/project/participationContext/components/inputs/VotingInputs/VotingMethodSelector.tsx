@@ -13,11 +13,11 @@ import {
 } from '@citizenlab/cl2-component-library';
 import BudgetingIcon from './CardIcons/BudgetingIcon';
 import { SubSectionTitle } from 'components/admin/Section';
+import Warning from 'components/UI/Warning';
+import MultipleVotingIcon from './CardIcons/MultipleVotingIcon';
 
 // types
 import { VotingMethod } from 'services/participationContexts';
-import MultipleVotingIcon from './CardIcons/MultipleVotingIcon';
-import Warning from 'components/UI/Warning';
 
 type VotingMethodSelectorProps = {
   voting_method?: VotingMethod | null;
