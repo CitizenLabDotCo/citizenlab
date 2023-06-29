@@ -12,7 +12,7 @@ import { ToggleRow } from '../../shared/styling';
 import VotingMethodSelector from './VotingMethodSelector';
 import BudgetingInputs from './votingMethodInputs/BudgetingInputs';
 import { StyledSectionDescription } from 'containers/Admin/initiatives/settings';
-import CumulativeInputs from './votingMethodInputs/CumulativeInputs';
+import MultipleVotingInputs from './votingMethodInputs/MultipleVotingInputs';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -117,8 +117,8 @@ export default ({
           handleMaxBudgetingAmountChange={handleVotingMaxTotalChange}
         />
       )}
-      {voting_method === 'cumulative' && (
-        <CumulativeInputs
+      {voting_method === 'multiple_voting' && (
+        <MultipleVotingInputs
           voting_max_total={voting_max_total}
           apiErrors={undefined}
           maxTotalVotesError={maxTotalVotesError}

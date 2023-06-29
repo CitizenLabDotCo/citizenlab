@@ -45,11 +45,13 @@ const VotingMethodSelector = ({
       </Text>
       <Box display="flex" gap="16px">
         <CardButton
-          selected={voting_method === 'cumulative'}
-          icon={<CumulativeIcon selected={voting_method === 'cumulative'} />}
+          selected={voting_method === 'multiple_voting'}
+          icon={
+            <CumulativeIcon selected={voting_method === 'multiple_voting'} />
+          }
           onClick={(e) => {
             e.preventDefault();
-            handleVotingMethodOnChange('cumulative');
+            handleVotingMethodOnChange('multiple_voting');
           }}
           title={formatMessage(messages.cumulativeVotingMethodTitle)}
           subtitle={formatMessage(messages.cumulativeVotingMethodSubtitle)}
@@ -65,7 +67,7 @@ const VotingMethodSelector = ({
           subtitle={formatMessage(messages.budgetingVotingMethodSubtitle)}
         />
       </Box>
-      {voting_method === 'cumulative' && (
+      {voting_method === 'multiple_voting' && (
         <Box mt="16px">
           <Warning>
             <FormattedMessage
