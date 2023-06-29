@@ -29,13 +29,18 @@ import eventEmitter from 'utils/eventEmitter';
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
+import {
+  VOTES_EXCEEDED_ERROR_EVENT,
+  VOTES_PER_OPTION_EXCEEDED_ERROR_EVENT,
+} from 'components/AssignMultipleVotesControl';
 
 export const VotingCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
   const { formatMessage } = useIntl();
   const { data: appConfig } = useAppConfiguration();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
-  const [showBudgetExceededError, setShowBudgetExceededError] = useState(false);
+  const [showError, setShowError] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   let basketId: string | undefined;
 
   if (currentPhase) {
@@ -51,12 +56,42 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
     const subscription = eventEmitter
       .observeEvent(BUDGET_EXCEEDED_ERROR_EVENT)
       .subscribe(() => {
-        setShowBudgetExceededError(true);
+        setError(formatMessage(messages.budgetExceededError));
+        setShowError(true);
       });
+
     return () => {
       subscription.unsubscribe();
     };
-  }, [setShowBudgetExceededError]);
+  }, [formatMessage]);
+
+  // Listen for voting per option exceeded error
+  useEffect(() => {
+    const subscription = eventEmitter
+      .observeEvent(VOTES_PER_OPTION_EXCEEDED_ERROR_EVENT)
+      .subscribe(() => {
+        setError(formatMessage(messages.votesPerOptionExceededError));
+        setShowError(true);
+      });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [formatMessage]);
+
+  // Listen for voting exceeded error
+  useEffect(() => {
+    const subscription = eventEmitter
+      .observeEvent(VOTES_EXCEEDED_ERROR_EVENT)
+      .subscribe(() => {
+        setError(formatMessage(messages.votesExceededError));
+        setShowError(true);
+      });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [formatMessage]);
 
   useEffect(() => {
     setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
@@ -142,9 +177,9 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
         timeLeftPosition="left"
       />
       <ErrorToast
-        errorMessage={formatMessage(messages.budgetExceededError)}
-        showError={showBudgetExceededError}
-        onClose={() => setShowBudgetExceededError(false)}
+        errorMessage={error || ''}
+        showError={showError}
+        onClose={() => setShowError(false)}
       />
     </>
   );
