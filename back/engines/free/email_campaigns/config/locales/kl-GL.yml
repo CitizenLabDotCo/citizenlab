@@ -627,6 +627,7 @@ kl:
         internal_comment_is_posted_on_initiative_assigned_to_user: 'Internal comment is posted on proposal assigned to user'
         internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'Internal comment is posted on input in project or folder user manages'
         internal_comment_is_posted_on_idea_user_has_commented_internally_on: 'Internal comment is posted on input user commented internally on'
+        internal_comment_is_posted_on_idea_user_moderates: 'Internal comment is posted on input user moderates'
         internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'Internal comment is posted on proposal user commented internally on'
         internal_comment_is_posted_on_unassigned_initiative: 'Internal comment is posted on unassigned proposal'
         internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Internal comment is posted on unassigned input in unmanaged project'
