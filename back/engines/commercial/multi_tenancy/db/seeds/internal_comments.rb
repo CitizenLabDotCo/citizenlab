@@ -17,7 +17,7 @@ module MultiTenancy
             post: idea
           )
 
-          create_reply_comment(idea, internal_comment, admins) if internal_comment && admins.second
+          create_reply_comment(idea, internal_comment, admins) if admins.second
         end
 
         if initiative && admins.first
@@ -27,7 +27,7 @@ module MultiTenancy
             post: initiative
           )
 
-          create_reply_comment(initiative, internal_comment, admins) if internal_comment && admins.second
+          create_reply_comment(initiative, internal_comment, admins) if admins.second
         end
       end
 
