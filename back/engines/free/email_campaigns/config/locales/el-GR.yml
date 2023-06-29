@@ -627,6 +627,7 @@ el:
         internal_comment_is_posted_on_initiative_assigned_to_user: 'Το εσωτερικό σχόλιο δημοσιεύεται στην πρόταση που έχει ανατεθεί στον χρήστη'''
         internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'Το εσωτερικό σχόλιο δημοσιεύεται στην είσοδο στο έργο ή στο φάκελο που διαχειρίζεται ο χρήστης'''
         internal_comment_is_posted_on_idea_user_has_commented_internally_on: 'Το εσωτερικό σχόλιο δημοσιεύεται στην είσοδο που σχολιάζει ο χρήστης εσωτερικά σε'''
+        internal_comment_is_posted_on_idea_user_moderates: 'Εσωτερικό σχόλιο δημοσιεύεται σε χρήστη εισόδου μετριάζει'
         internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'Το εσωτερικό σχόλιο δημοσιεύεται στην πρόταση που ο χρήστης σχολίασε εσωτερικά σε'''
         internal_comment_is_posted_on_unassigned_initiative: 'Εσωτερικό σχόλιο αναρτάται σε μη ανατεθείσα πρόταση'
         internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Εσωτερικό σχόλιο δημοσιεύεται σε μη καθορισμένη είσοδο σε μη διαχειριζόμενο έργο'''
