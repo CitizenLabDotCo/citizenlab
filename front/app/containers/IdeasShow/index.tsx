@@ -1,5 +1,4 @@
-import React, { lazy, Suspense, useState, useEffect, useCallback } from 'react';
-import { isString } from 'lodash-es';
+import React, { lazy, Suspense, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 
@@ -11,6 +10,7 @@ import tracks from './tracks';
 import Container from './components/Container';
 import IdeaSharingButton from './components/Buttons/IdeaSharingButton';
 import IdeaMeta from './components/IdeaMeta';
+import TopBar from './components/TopBar';
 import Title from 'components/PostShowComponents/Title';
 import IdeaProposedBudget from './components/IdeaProposedBudget';
 import Body from 'components/PostShowComponents/Body';
@@ -19,7 +19,6 @@ import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import AssignBudgetControl from 'components/AssignBudgetControl';
 import IdeaMoreActions from './components/IdeaMoreActions';
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
-import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
 const LazyComments = lazy(
   () => import('components/PostShowComponents/Comments')
 );
@@ -41,11 +40,6 @@ import GetPermission, {
 import { FormattedMessage } from 'utils/cl-intl';
 import useLocalize from 'hooks/useLocalize';
 import messages from './messages';
-
-// utils
-import clHistory from 'utils/cl-router/history';
-import { useSearchParams } from 'react-router-dom';
-import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 // style
 import styled from 'styled-components';
@@ -78,16 +72,6 @@ const IdeaHeader = styled.div`
 
   ${media.tablet`
     margin-top: 0px;
-  `}
-`;
-
-const TopBar = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  ${isRtl`
-    flex-direction: row-reverse;
   `}
 `;
 
@@ -130,15 +114,7 @@ export const IdeasShow = ({
   const [translateButtonIsClicked, setTranslateButtonIsClicked] =
     useState<boolean>(false);
 
-  const [searchParams] = useSearchParams();
-  const goBackParameter = searchParams.get('go_back');
-  const [goBack] = useState(isString(goBackParameter));
-
   const isSmallerThanTablet = useBreakpoint('tablet');
-
-  useEffect(() => {
-    removeSearchParams(['go_back']);
-  }, []);
 
   const { data: phases } = usePhases(projectId);
   const { data: idea } = useIdeaById(ideaId);
@@ -167,16 +143,6 @@ export const IdeasShow = ({
   };
 
   let content: JSX.Element | null = null;
-
-  const handleGoBack = useCallback(() => {
-    if (goBack) {
-      clHistory.back();
-    } else if (project) {
-      clHistory.push(`/projects/${project.attributes.slug}`);
-    } else {
-      clHistory.push('/');
-    }
-  }, [goBack, project]);
 
   if (
     !isNilOrError(project) &&
@@ -215,17 +181,7 @@ export const IdeasShow = ({
       <>
         <IdeaMeta ideaId={ideaId} />
 
-        {!isCompactView && (
-          <TopBar>
-            <Box mb="40px">
-              <GoBackButtonSolid
-                text={localize(project.attributes.title_multiloc)}
-                onClick={handleGoBack}
-              />
-            </Box>
-            <IdeaMoreActions idea={idea.data} projectId={projectId} />
-          </TopBar>
-        )}
+        {!isCompactView && <TopBar project={project} idea={idea.data} />}
 
         <Box display="flex" id="e2e-idea-show-page-content">
           <Box flex="1 1 100%">
