@@ -822,6 +822,7 @@
   "app.containers.Admin.tools.apiTokens.delete": "حذف الرمز المميز",
   "app.containers.Admin.tools.apiTokens.deleteConfirmation": "هل أنت متأكد أنك تريد حذف هذا الرمز المميز؟",
   "app.containers.Admin.tools.apiTokens.description": "إدارة رموز API الخاصة بك لواجهة برمجة التطبيقات العامة الخاصة بنا. لمزيد من المعلومات ، راجع {link}.",
+  "app.containers.Admin.tools.apiTokens.id": "بطاقة تعريف",
   "app.containers.Admin.tools.apiTokens.lastUsedAt": "آخر أستخدام",
   "app.containers.Admin.tools.apiTokens.link": "وثائق API",
   "app.containers.Admin.tools.apiTokens.linkUrl": "https://developers.citizenlab.co/reference-api-docs/",
