@@ -1,23 +1,14 @@
-import React, {
-  lazy,
-  Suspense,
-  useState,
-  useRef,
-  useEffect,
-  useCallback,
-} from 'react';
+import React, { lazy, Suspense, useState, useEffect, useCallback } from 'react';
 import { isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
-
-// services
-import { getInputTerm } from 'services/participationContexts';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // components
+import Container from './components/Container';
 import IdeaSharingButton from './components/Buttons/IdeaSharingButton';
 import IdeaMeta from './components/IdeaMeta';
 import Title from 'components/PostShowComponents/Title';
@@ -25,11 +16,9 @@ import IdeaProposedBudget from './components/IdeaProposedBudget';
 import Body from 'components/PostShowComponents/Body';
 import Image from 'components/PostShowComponents/Image';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
-import Modal from 'components/UI/Modal';
 import AssignBudgetControl from 'components/AssignBudgetControl';
-import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 import IdeaMoreActions from './components/IdeaMoreActions';
-import { Box, Spinner, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
 const LazyComments = lazy(
   () => import('components/PostShowComponents/Comments')
@@ -49,13 +38,9 @@ import GetPermission, {
 } from 'resources/GetPermission';
 
 // i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import useLocalize from 'hooks/useLocalize';
 import messages from './messages';
-import { getInputTermMessage } from 'utils/i18n';
-
-// animations
-import CSSTransition from 'react-transition-group/CSSTransition';
 
 // utils
 import clHistory from 'utils/cl-router/history';
@@ -65,9 +50,8 @@ import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 // style
 import styled from 'styled-components';
 import { media, isRtl } from 'utils/styleUtils';
-import { columnsGapDesktop, pageContentMaxWidth } from './styleConstants';
+import { columnsGapDesktop } from './styleConstants';
 import Outlet from 'components/Outlet';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // hooks
 import useLocale from 'hooks/useLocale';
@@ -76,45 +60,6 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
 import useIdeaImages from 'api/idea_images/useIdeaImages';
 import { getCurrentParticipationContext } from 'api/phases/utils';
-
-const contentFadeInDuration = 250;
-const contentFadeInEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
-const contentFadeInDelay = 150;
-
-const Container = styled.main`
-  width: 100%;
-  max-width: ${pageContentMaxWidth}px;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  margin-left: auto;
-  margin-right: auto;
-  background: #fff;
-
-  &.loading {
-    flex: 1;
-    justify-content: center;
-  }
-
-  &.isLoaded {
-    opacity: 0;
-
-    &.content-enter {
-      opacity: 0;
-
-      &.content-enter-active {
-        opacity: 1;
-        transition: opacity ${contentFadeInDuration}ms ${contentFadeInEasing}
-          ${contentFadeInDelay}ms;
-      }
-    }
-
-    &.content-enter-done {
-      opacity: 1;
-    }
-  }
-`;
 
 const StyledRightColumnDesktop = styled(RightColumnDesktop)`
   margin-left: ${columnsGapDesktop}px;
@@ -179,7 +124,6 @@ export const IdeasShow = ({
   ideaId,
   setRef,
 }: Props) => {
-  const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { data: ideaImages } = useIdeaImages(ideaId);
 
@@ -187,26 +131,18 @@ export const IdeasShow = ({
     useState<boolean>(false);
 
   const [searchParams] = useSearchParams();
-  const ideaIdParameter = searchParams.get('new_idea_id');
   const goBackParameter = searchParams.get('go_back');
-  const [newIdeaId, setNewIdeaId] = useState<string | null>(ideaIdParameter);
   const [goBack] = useState(isString(goBackParameter));
-
-  const timeout = useRef<NodeJS.Timeout>();
 
   const isSmallerThanTablet = useBreakpoint('tablet');
 
   useEffect(() => {
-    removeSearchParams(['new_idea_id', 'go_back']);
+    removeSearchParams(['go_back']);
   }, []);
 
   const { data: phases } = usePhases(projectId);
   const { data: idea } = useIdeaById(ideaId);
   const locale = useLocale();
-
-  const ideaflowSocialSharingIsEnabled = useFeatureFlag({
-    name: 'ideaflow_social_sharing',
-  });
 
   const { data: ideaCustomFieldsSchema } = useIdeaJsonFormSchema({
     projectId,
@@ -215,13 +151,6 @@ export const IdeasShow = ({
 
   const isLoaded =
     !isNilOrError(idea) && !isNilOrError(ideaImages) && !isNilOrError(project);
-
-  const closeIdeaSocialSharingModal = () => {
-    if (timeout.current) {
-      clearTimeout(timeout.current);
-    }
-    setNewIdeaId(null);
-  };
 
   const onTranslateIdea = () => {
     // analytics
@@ -413,69 +342,16 @@ export const IdeasShow = ({
     );
   }
 
-  if (!isNilOrError(project)) {
-    const inputTerm = getInputTerm(
-      project.attributes.process_type,
-      project,
-      phases?.data
-    );
-
-    return (
-      <>
-        {!isLoaded && (
-          <Container className={`loading ${className || ''}`}>
-            <Spinner />
-          </Container>
-        )}
-        <CSSTransition
-          classNames="content"
-          in={isLoaded}
-          timeout={{
-            enter: contentFadeInDuration + contentFadeInDelay,
-            exit: 0,
-          }}
-          enter={true}
-          exit={false}
-        >
-          <Container
-            id="e2e-idea-show"
-            className={`loaded ${className || ''}`}
-            ref={handleContainerRef}
-          >
-            {content}
-          </Container>
-        </CSSTransition>
-        {ideaflowSocialSharingIsEnabled && (
-          <Modal
-            opened={!!newIdeaId}
-            close={closeIdeaSocialSharingModal}
-            hasSkipButton={true}
-            skipText={<FormattedMessage {...messages.skipSharing} />}
-          >
-            {newIdeaId && (
-              <SharingModalContent
-                postType="idea"
-                postId={newIdeaId}
-                title={formatMessage(
-                  getInputTermMessage(inputTerm, {
-                    idea: messages.sharingModalTitle,
-                    option: messages.optionSharingModalTitle,
-                    project: messages.projectSharingModalTitle,
-                    question: messages.questionSharingModalTitle,
-                    issue: messages.issueSharingModalTitle,
-                    contribution: messages.contributionSharingModalTitle,
-                  })
-                )}
-                subtitle={formatMessage(messages.sharingModalSubtitle)}
-              />
-            )}
-          </Modal>
-        )}
-      </>
-    );
-  }
-
-  return null;
+  return (
+    <Container
+      projectId={projectId}
+      isLoaded={isLoaded}
+      className={className}
+      handleContainerRef={handleContainerRef}
+    >
+      {content}
+    </Container>
+  );
 };
 
 const Data = adopt<DataProps, InputProps>({
