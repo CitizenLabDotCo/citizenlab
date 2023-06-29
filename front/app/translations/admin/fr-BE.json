@@ -822,6 +822,7 @@
   "app.containers.Admin.tools.apiTokens.delete": "Supprimer le jeton",
   "app.containers.Admin.tools.apiTokens.deleteConfirmation": "Êtes-vous sûr de vouloir supprimer ce jeton ?",
   "app.containers.Admin.tools.apiTokens.description": "Gérez vos jetons d'API pour notre API publique. Pour plus d'informations, consultez notre site {link}.",
+  "app.containers.Admin.tools.apiTokens.id": "ID",
   "app.containers.Admin.tools.apiTokens.lastUsedAt": "Dernière utilisation",
   "app.containers.Admin.tools.apiTokens.link": "Documentation de l'API",
   "app.containers.Admin.tools.apiTokens.linkUrl": "https://developers.citizenlab.co/reference-api-docs/",
