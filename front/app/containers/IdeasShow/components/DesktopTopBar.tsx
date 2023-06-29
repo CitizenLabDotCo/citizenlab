@@ -65,6 +65,7 @@ const TopBar = ({ project, idea }: Props) => {
           onClick={handleGoBack}
         />
       </Box>
+
       <IdeaMoreActions idea={idea} projectId={project.id} />
     </Bar>
   );

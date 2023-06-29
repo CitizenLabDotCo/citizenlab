@@ -10,7 +10,7 @@ import tracks from './tracks';
 import Container from './components/Container';
 import IdeaSharingButton from './components/Buttons/IdeaSharingButton';
 import IdeaMeta from './components/IdeaMeta';
-import TopBar from './components/TopBar';
+import DesktopTopBar from './components/DesktopTopBar';
 import Title from 'components/PostShowComponents/Title';
 import IdeaProposedBudget from './components/IdeaProposedBudget';
 import Body from 'components/PostShowComponents/Body';
@@ -181,7 +181,7 @@ export const IdeasShow = ({
       <>
         <IdeaMeta ideaId={ideaId} />
 
-        {!isCompactView && <TopBar project={project} idea={idea.data} />}
+        {!isCompactView && <DesktopTopBar project={project} idea={idea.data} />}
 
         <Box display="flex" id="e2e-idea-show-page-content">
           <Box flex="1 1 100%">
