@@ -17,6 +17,7 @@ module PublicApi
     validates :secret, presence: true, length: { minimum: 20 }
 
     before_validation :generate_secret, on: :create
+    before_validation :generate_secret_postix
 
     has_secure_password :secret
 
@@ -46,12 +47,16 @@ module PublicApi
     end
 
     def generate_secret
-      if secret_digest.blank?
-        random_secret = SecureRandom.urlsafe_base64(50)
-        self.secret = random_secret
-        self.secret_postfix = random_secret[-4..]
-        random_secret
-      end
+      return if secret_digest.present?
+
+      random_secret = SecureRandom.urlsafe_base64(50)
+      self.secret = random_secret
+      random_secret
+    end
+
+    def generate_secret_postix
+      # has_secure_password sets @secret in case a new secret is assigned
+      self.secret_postfix = @secret[-4..] if @secret
     end
   end
 end

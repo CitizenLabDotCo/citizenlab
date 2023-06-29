@@ -376,3 +376,5 @@ namespace :cl2_back do
     MultiTenancy::TenantService.new.finalize_creation(tenant)
   end
 end
+
+# rubocop:enable Metrics/BlockLength
