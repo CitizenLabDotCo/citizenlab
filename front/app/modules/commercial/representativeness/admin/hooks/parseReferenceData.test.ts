@@ -1,20 +1,18 @@
+import { IUsersByCustomField } from 'api/users_by_custom_field/types';
 import {
   regFieldToReferenceData,
   regFieldToIncludedUsers,
   ageFieldToReferenceData,
   ageFieldToIncludedUsers,
   RepresentativenessRowMultiloc,
-} from './createRefDataSubscription';
-import {
-  IUsersByRegistrationField,
-  IUsersByAge,
-} from 'services/userCustomFieldStats';
+} from './parseReferenceData';
+import { IUsersByAge } from 'api/users_by_age/types';
 
 describe('regFieldToReferenceData', () => {
   it('works if users and reference_population have same keys', () => {
-    const usersByField: IUsersByRegistrationField = {
+    const usersByField: IUsersByCustomField = {
       data: {
-        type: 'users_by_registration_field',
+        type: 'users_by_custom_field',
         attributes: {
           series: {
             users: {
@@ -62,9 +60,9 @@ describe('regFieldToReferenceData', () => {
   });
 
   it('works if users and reference_population have same keys, weird ordering', () => {
-    const usersByField: IUsersByRegistrationField = {
+    const usersByField: IUsersByCustomField = {
       data: {
-        type: 'users_by_registration_field',
+        type: 'users_by_custom_field',
         attributes: {
           series: {
             users: {
@@ -112,9 +110,9 @@ describe('regFieldToReferenceData', () => {
   });
 
   it('works if reference data has fewer keys van user data', () => {
-    const usersByField: IUsersByRegistrationField = {
+    const usersByField: IUsersByCustomField = {
       data: {
-        type: 'users_by_registration_field',
+        type: 'users_by_custom_field',
         attributes: {
           series: {
             users: {
@@ -167,9 +165,9 @@ describe('regFieldToReferenceData', () => {
   });
 
   it('actual numbers fall back to zero if all relevant user data entries are zero (i.e. missing)', () => {
-    const usersByField: IUsersByRegistrationField = {
+    const usersByField: IUsersByCustomField = {
       data: {
-        type: 'users_by_registration_field',
+        type: 'users_by_custom_field',
         attributes: {
           series: {
             users: {
@@ -227,9 +225,9 @@ describe('regFieldToReferenceData', () => {
 
 describe('regFieldToIncludedUsers', () => {
   it('works', () => {
-    const usersByField: IUsersByRegistrationField = {
+    const usersByField: IUsersByCustomField = {
       data: {
-        type: 'users_by_registration_field',
+        type: 'users_by_custom_field',
         attributes: {
           series: {
             users: {
@@ -258,9 +256,9 @@ describe('regFieldToIncludedUsers', () => {
   });
 
   it('works if not all keys in users are in reference_population', () => {
-    const usersByField: IUsersByRegistrationField = {
+    const usersByField: IUsersByCustomField = {
       data: {
-        type: 'users_by_registration_field',
+        type: 'users_by_custom_field',
         attributes: {
           series: {
             users: {
@@ -290,9 +288,9 @@ describe('regFieldToIncludedUsers', () => {
   });
 
   it('returns 0 if all relevant keys are 0', () => {
-    const usersByField: IUsersByRegistrationField = {
+    const usersByField: IUsersByCustomField = {
       data: {
-        type: 'users_by_registration_field',
+        type: 'users_by_custom_field',
         attributes: {
           series: {
             users: {
@@ -322,9 +320,9 @@ describe('regFieldToIncludedUsers', () => {
   });
 
   it('returns 0 if all relevant keys (including _blank) are 0', () => {
-    const usersByField: IUsersByRegistrationField = {
+    const usersByField: IUsersByCustomField = {
       data: {
-        type: 'users_by_registration_field',
+        type: 'users_by_custom_field',
         attributes: {
           series: {
             users: {
@@ -354,9 +352,9 @@ describe('regFieldToIncludedUsers', () => {
   });
 
   it('works if less keys in users than in reference data', () => {
-    const usersByField: IUsersByRegistrationField = {
+    const usersByField: IUsersByCustomField = {
       data: {
-        type: 'users_by_registration_field',
+        type: 'users_by_custom_field',
         attributes: {
           series: {
             users: {

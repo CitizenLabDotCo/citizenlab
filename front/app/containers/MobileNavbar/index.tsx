@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, lazy, Suspense } from 'react';
+import React, { useState, useRef, lazy, Suspense } from 'react';
 import styled from 'styled-components';
 import { media, fontSizes, colors, isRtl } from 'utils/styleUtils';
 import messages from './messages';
@@ -82,24 +82,16 @@ export const NavigationItem = styled.li`
 `;
 
 interface Props {
-  setRef?: (arg: HTMLElement) => void | undefined;
   className?: string;
 }
 
 const MobileNavigation = ({
   className,
-  setRef,
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
   const navbarItems = useNavbarItems();
   const [isFullMenuOpened, setIsFullMenuOpened] = useState(false);
   const containerRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    if (setRef && containerRef.current) {
-      setRef(containerRef.current);
-    }
-  }, [setRef]);
 
   if (isNilOrError(navbarItems)) return null;
 

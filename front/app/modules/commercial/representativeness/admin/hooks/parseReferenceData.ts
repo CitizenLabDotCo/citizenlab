@@ -1,11 +1,4 @@
 // services
-import {
-  usersByGenderStream,
-  usersByAgeStream,
-  usersByRegFieldStream,
-  IUsersByAge,
-  IUsersByRegistrationField,
-} from 'services/userCustomFieldStats';
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
@@ -15,6 +8,8 @@ import { forEachBin } from '../utils/bins';
 
 // typings
 import { Multiloc, Locale } from 'typings';
+import { IUsersByAge } from 'api/users_by_age/types';
+import { IUsersByCustomField } from 'api/users_by_custom_field/types';
 
 interface RepresentativenessRowBase {
   actualPercentage: number;
@@ -48,94 +43,34 @@ interface Setters {
   setReferenceDataUploaded: (uploaded?: boolean) => void;
 }
 
-// Gender field
-export const createGenderFieldSubscription = (
-  projectId: string | undefined,
-  setters: Setters
-) => {
-  const observable = usersByGenderStream({
-    queryParameters: { project: projectId },
-  }).observable;
-
-  const subscription = observable.subscribe(handleRegFieldResponse(setters));
-
-  return subscription;
-};
-
-// Birthyear field
-export const createAgeFieldSubscription = (
-  projectId: string | undefined,
-  locale: Locale,
+// Helpers
+export const handleRegFieldResponse = (
+  usersByRegField: IUsersByCustomField | undefined,
   { setReferenceData, setIncludedUsers, setReferenceDataUploaded }: Setters
 ) => {
-  const observable = usersByAgeStream({
-    queryParameters: { project: projectId },
-  }).observable;
+  if (isNilOrError(usersByRegField)) {
+    setReferenceData(usersByRegField);
+    setIncludedUsers(usersByRegField);
+    return;
+  }
 
-  const subscription = observable.subscribe(
-    (usersByAge: IUsersByAge | NilOrError) => {
-      if (isNilOrError(usersByAge)) {
-        setReferenceData(usersByAge);
-        setIncludedUsers(usersByAge);
-        return;
-      }
+  if (!usersByRegField.data.attributes.series.reference_population) {
+    setReferenceDataUploaded(false);
+    return;
+  }
 
-      if (!usersByAge.data.attributes.series.reference_population) {
-        setReferenceDataUploaded(false);
-        return;
-      }
-
-      setReferenceData(ageFieldToReferenceData(usersByAge, locale));
-      setIncludedUsers(ageFieldToIncludedUsers(usersByAge));
-      setReferenceDataUploaded(true);
-    }
-  );
-
-  return subscription;
+  setReferenceData(regFieldToReferenceData(usersByRegField));
+  setIncludedUsers(regFieldToIncludedUsers(usersByRegField));
+  setReferenceDataUploaded(true);
 };
-
-// Other registration fields
-export const createRegFieldSubscription = (
-  userCustomFieldId: string,
-  projectId: string | undefined,
-  setters: Setters
-) => {
-  const observable = usersByRegFieldStream(
-    { queryParameters: { project: projectId } },
-    userCustomFieldId
-  ).observable;
-
-  const subscription = observable.subscribe(handleRegFieldResponse(setters));
-
-  return subscription;
-};
-
-// Helpers
-const handleRegFieldResponse =
-  ({ setReferenceData, setIncludedUsers, setReferenceDataUploaded }: Setters) =>
-  (usersByRegField: IUsersByRegistrationField | NilOrError) => {
-    if (isNilOrError(usersByRegField)) {
-      setReferenceData(usersByRegField);
-      setIncludedUsers(usersByRegField);
-      return;
-    }
-
-    if (!usersByRegField.data.attributes.series.reference_population) {
-      setReferenceDataUploaded(false);
-      return;
-    }
-
-    setReferenceData(regFieldToReferenceData(usersByRegField));
-    setIncludedUsers(regFieldToIncludedUsers(usersByRegField));
-    setReferenceDataUploaded(true);
-  };
 
 export const regFieldToReferenceData = (
-  usersByField: IUsersByRegistrationField
+  usersByField: IUsersByCustomField
 ): RepresentativenessRowMultiloc[] => {
   const { users, reference_population } = usersByField.data.attributes.series;
+  if (reference_population === null) return [];
 
-  const optionIds = Object.keys(reference_population);
+  const optionIds = reference_population && Object.keys(reference_population);
   const includedUsers = syncKeys(users, optionIds);
 
   const options = usersByField.data.attributes.options;
@@ -176,9 +111,17 @@ const syncKeys = (users: Record<string, number>, keys: string[]) => {
 };
 
 export const regFieldToIncludedUsers = (
-  usersByField: IUsersByRegistrationField
+  usersByField: IUsersByCustomField
 ): IncludedUsers => {
   const { users, reference_population } = usersByField.data.attributes.series;
+  if (reference_population === null) {
+    return {
+      known: 0,
+      total: 0,
+      percentage: 0,
+    };
+  }
+
   const includedUsers = syncKeys(users, [
     ...Object.keys(reference_population),
     '_blank',

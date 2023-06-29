@@ -3,7 +3,7 @@ import { ICommentParameters, ICommentQueryParameters } from './types';
 
 const baseKey = { type: 'comment' };
 
-const commentKeys = {
+const commentsKeys = {
   all: () => [baseKey],
   lists: () => [{ ...baseKey, operation: 'list' }],
   list: (params: ICommentParameters & ICommentQueryParameters) => [
@@ -19,4 +19,4 @@ const commentKeys = {
   ],
 } satisfies QueryKeys;
 
-export default commentKeys;
+export default commentsKeys;
