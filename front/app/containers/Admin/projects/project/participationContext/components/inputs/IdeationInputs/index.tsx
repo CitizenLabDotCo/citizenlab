@@ -119,8 +119,6 @@ export default ({
   const showReactingConfig =
     reacting_enabled && reactingConfigNotDefault.current;
 
-  console.log(reacting_enabled, reactingConfigNotDefault.current);
-
   return (
     <>
       {hasAnonymousParticipationEnabled && (
