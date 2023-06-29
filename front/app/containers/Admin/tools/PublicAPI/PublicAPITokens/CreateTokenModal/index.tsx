@@ -16,32 +16,6 @@ interface FormValues {
   name: string;
 }
 
-//   createTokenModalCancel: {
-//     id: 'app.containers.Admin.tools.apiTokens.createTokenCancel',
-//     defaultMessage: 'Cancel',
-//   },
-//   createTokenModalError: {
-//     id: 'app.containers.Admin.tools.apiTokens.createTokenError',
-//     defaultMessage: 'Provide a name for your token',
-//   },
-//   createTokenModalSuccess: {
-//     id: 'app.containers.Admin.tools.apiTokens.createTokenSuccess',
-//     defaultMessage: 'Your token has been created',
-//   },
-//   createTokenModalSuccessDescription: {
-//     id: 'app.containers.Admin.tools.apiTokens.createTokenSuccessDescription',
-//     defaultMessage:
-//       'Your token has been created. Please copy the secret below. You will not be able to see it again.',
-//   },
-//   createTokenModalSuccessCopy: {
-//     id: 'app.containers.Admin.tools.apiTokens.createTokenSuccessCopy',
-//     defaultMessage: 'Copy secret',
-//   },
-//   createTokenModalSuccessClose: {
-//     id: 'app.containers.Admin.tools.apiTokens.createTokenSuccessClose',
-//     defaultMessage: 'Close',
-//   },
-
 type CreateTokenModalProps = {
   onClose: () => void;
 };
