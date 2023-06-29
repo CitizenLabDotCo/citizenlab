@@ -627,6 +627,7 @@
         internal_comment_is_posted_on_initiative_assigned_to_user: 'Intern kommentar er lagt ut på forslag tildelt bruker'''
         internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'Intern kommentar legges ut på innspill i prosjekt eller mappe bruker administrerer'''
         internal_comment_is_posted_on_idea_user_has_commented_internally_on: 'Intern kommentar er lagt inn på input bruker kommentert internt på'''
+        internal_comment_is_posted_on_idea_user_moderates: 'Intern kommentar legges ut på input brukermoderater'
         internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'Intern kommentar er lagt ut på forslag bruker kommentert internt'''
         internal_comment_is_posted_on_unassigned_initiative: 'Intern kommentar er lagt ut på ikke-tildelt forslag'''
         internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Intern kommentar er lagt ut på ikke-tildelte input i uadministrert prosjekt'''
