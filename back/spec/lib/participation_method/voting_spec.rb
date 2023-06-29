@@ -21,17 +21,21 @@ RSpec.describe ParticipationMethod::Voting do
     context 'multiple voting' do
       let(:project) { build(:continuous_multiple_voting_project) }
 
-      it 'sets a default voting term of "vote"' do
+      it 'sets a default voting term of "vote", posting method to unlimited and ideas order to random' do
+        participation_method.assign_defaults_for_participation_context
         expect(project.voting_term_singular_multiloc['en']).to eq 'vote'
         expect(project.voting_term_plural_multiloc['en']).to eq 'votes'
+        expect(project.posting_method).to eq 'unlimited'
+        expect(project.ideas_order).to eq 'random'
       end
     end
 
     context 'single voting' do
       let(:project) { build(:continuous_single_voting_project) }
 
-      it 'sets the posting method to unlimited and ideas order to random' do
+      it 'sets voting_max_votes_per_idea to 1, posting method to unlimited and ideas order to random' do
         participation_method.assign_defaults_for_participation_context
+        expect(project.voting_max_votes_per_idea).to eq 1
         expect(project.posting_method).to eq 'unlimited'
         expect(project.ideas_order).to eq 'random'
       end
