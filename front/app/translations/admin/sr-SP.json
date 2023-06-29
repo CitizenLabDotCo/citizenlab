@@ -822,6 +822,7 @@
   "app.containers.Admin.tools.apiTokens.delete": "Избриши токен",
   "app.containers.Admin.tools.apiTokens.deleteConfirmation": "Да ли сте сигурни да желите да избришете овај токен?",
   "app.containers.Admin.tools.apiTokens.description": "Управљајте својим АПИ токенима за наш јавни АПИ. За више информација погледајте нашу {link}.",
+  "app.containers.Admin.tools.apiTokens.id": "ИД",
   "app.containers.Admin.tools.apiTokens.lastUsedAt": "Последње коришћено",
   "app.containers.Admin.tools.apiTokens.link": "АПИ документација",
   "app.containers.Admin.tools.apiTokens.linkUrl": "хттпс://девелоперс.цитизенлаб.цо/референце-апи-доцс/",
