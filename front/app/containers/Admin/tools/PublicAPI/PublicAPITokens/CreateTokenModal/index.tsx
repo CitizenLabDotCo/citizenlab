@@ -8,7 +8,13 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import Feedback from 'components/HookForm/Feedback';
 import Input from 'components/HookForm/Input';
-import { Box, Button, Text, Title } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Button,
+  Text,
+  Title,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import useAddApiClient from 'api/api_clients/useAddApiClient';
 import { handleCLErrorsIsh } from 'utils/errorUtils';
 
@@ -21,7 +27,7 @@ type CreateTokenModalProps = {
 };
 const CreateTokenModal = ({ onClose }: CreateTokenModalProps) => {
   const [success, setSuccess] = useState(false);
-  const [secret, setSecret] = useState<string>('');
+  const [secret, setSecret] = useState<string>('hi');
   const [tokenIsCopied, setTokenIsCopied] = useState(false);
   const { mutateAsync: addApiToken, isLoading } = useAddApiClient();
   const { formatMessage } = useIntl();
@@ -51,7 +57,7 @@ const CreateTokenModal = ({ onClose }: CreateTokenModalProps) => {
 
   return (
     <Box w="100%" m="24px auto" pr="24px">
-      {!success ? (
+      {success ? (
         <>
           <Title variant="h2">{formatMessage(messages.createTokenTitle)}</Title>
           <Text>{formatMessage(messages.createTokenDescription)}</Text>
@@ -93,7 +99,11 @@ const CreateTokenModal = ({ onClose }: CreateTokenModalProps) => {
           <Text>
             {formatMessage(messages.createTokenModalSuccessDescription)}
           </Text>
-          <Text>{secret}</Text>
+          <Box bgColor={colors.tealLight} py="4px">
+            <Text fontWeight="bold" textAlign="center">
+              {secret}
+            </Text>
+          </Box>
           <Box display="flex" gap="12px" justifyContent="flex-end" mt="40px">
             <Button buttonStyle="secondary" onClick={onClose}>
               {formatMessage(messages.createTokenModalSuccessClose)}
