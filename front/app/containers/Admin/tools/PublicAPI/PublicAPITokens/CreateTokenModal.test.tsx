@@ -35,6 +35,7 @@ describe('<CreateTokenModal />', () => {
       });
       // Displays the success screen correctly
       expect(screen.getByTestId('tokenCreateSuccess')).toBeInTheDocument();
+      expect(screen.getByText('secret')).toBeInTheDocument();
     });
   });
 });
