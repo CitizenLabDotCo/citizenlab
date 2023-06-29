@@ -79,6 +79,11 @@ export default defineMessages({
     defaultMessage: 'View project',
   },
   // edit - participationContext -----------------------------------------------
+  maxVotesPerOptionErrorText: {
+    id: 'app.containers.AdminPage.ProjectEdit.maxVotesPerOptionErrorText',
+    defaultMessage:
+      'Maximum number of votes per option must be less than or equal to total number of votes',
+  },
   noReactingLimitErrorMessage: {
     id: 'app.containers.AdminPage.ProjectEdit.noVotingLimitErrorMessage',
     defaultMessage: 'Not a valid number',

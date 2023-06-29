@@ -77,6 +77,24 @@ export default (state: State, formatMessage: FormatMessage) => {
       isValidated = false;
     }
 
+    if (isNaN(voting_max_votes_per_idea)) {
+      maxVotesPerOptionError =
+        voting_method === 'multiple_voting'
+          ? formatMessage(messages.maxBudgetRequired)
+          : formatMessage(messages.maxVotesRequired);
+
+      isValidated = false;
+    }
+
+    if (voting_max_votes_per_idea && voting_max_total) {
+      if (voting_max_votes_per_idea > voting_max_total) {
+        maxVotesPerOptionError = formatMessage(
+          messages.maxVotesPerOptionErrorText
+        );
+        isValidated = false;
+      }
+    }
+
     if (
       // need to check for typeof, because if voting_min_total
       // is 0, just checking voting_min_total will coerce to false
