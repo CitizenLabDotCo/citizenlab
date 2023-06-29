@@ -16,12 +16,12 @@ es-CL:
       "initiative_published": Publicación de mi propuesta
       "invite_received": Invitación
       "invite_reminder": Recordatorio de invitación
-      "internal_comment_on_idea_assigned_to_you": Comentario interno sobre la entrada que se me ha asignado
-      "internal_comment_on_idea_you_commented_internally_on": Comentario interno sobre la entrada Comenté internamente
+      "internal_comment_on_idea_assigned_to_you": Comentario interno sobre el aporte que se me ha asignado
+      "internal_comment_on_idea_you_commented_internally_on": Comentario interno sobre el aporte en el que comenté internamente
       "internal_comment_on_idea_you_moderate": Comentario interno sobre la entrada en el proyecto o carpeta que administro
       "internal_comment_on_initiative_assigned_to_you": Comentario interno sobre la propuesta que se me ha asignado
-      "internal_comment_on_initiative_you_commented_internally_on": Comentario interno sobre la propuesta Hice un comentario interno sobre
-      "internal_comment_on_unassigned_initiative": Comentario interno sobre la propuesta no asignada
+      "internal_comment_on_initiative_you_commented_internally_on": Comentario interno sobre la propuesta sobre la que hice un comentario interno
+      "internal_comment_on_unassigned_initiative": Comentario interno sobre propuesta no asignada
       "internal_comment_on_unassigned_unmoderated_idea": Comentario interno sobre entrada no asignada en proyecto no gestionado
       "internal_comment_on_your_internal_comment": Comentario interno sobre mi comentario interno
       "mention_in_official_feedback": Mención en una actualización
@@ -228,7 +228,7 @@ es-CL:
       cta_reply_to: 'Ver comentario de %{firstName}'
       event_description: '%{authorNameFull} te mencionó en un comentario interno.'
       subject: '%{firstName} te mencionó en un comentario interno.'
-      main_header: '%{authorNameFirst} te mencionó en un comentario interno.'
+      main_header: '%{firstName} te mencionó en un comentario interno.'
       preheader: '%{authorNameFull} te mencionó en un comentario interno.'
     moderator_digest:
       subject: 'Tu reporte semanal como moderador de %{time}'
@@ -315,37 +315,37 @@ es-CL:
       replied: '%{authorFirstName} respuesta:'
     internal_comment_on_your_internal_comment:
       cta_reply_to: 'Ver comentario de %{firstName}'
-      event_description: '%{authorNameFull} comenté tu comentario interno.'
+      event_description: '%{authorNameFull} comentó sobre tu comentario interno.'
       subject: 'Has recibido un comentario sobre tu comentario interno en ''%{post}'''
       main_header: 'Has recibido un comentario sobre tu comentario interno en ''%{post}'''
-      preheader: '%{authorName} respondido a tu comentario interno sobre ''%{post}'''
+      preheader: '%{authorName} respondió a tu comentario interno sobre ''%{post}'''
     internal_comment_on_idea_assigned_to_you:
       cta_reply_to: 'Ver comentario de %{firstName}'
-      event_description: '%{authorNameFull} comentado internamente una entrada que se te ha asignado.'
+      event_description: '%{authorNameFull} comentó internamente en un aporte que te fue asignado.'
       subject: '''%{post}'' tiene un nuevo comentario interno'
       main_header: '''%{post}'' tiene un nuevo comentario interno'
       preheader: '''%{post}'' tiene un nuevo comentario interno'
     internal_comment_on_idea_you_commented_internally_on:
       cta_reply_to: 'Ver comentario de %{firstName}'
-      event_description: '%{authorNameFull} comentaste internamente una entrada que comentaste internamente.'
+      event_description: '%{authorNameFull} comentó internamente en un aporte sobre el que comentaste internamente.'
       subject: '''%{post}'' tiene un nuevo comentario interno'
       main_header: '''%{post}'' tiene un nuevo comentario interno'
       preheader: '''%{post}'' tiene un nuevo comentario interno'
     internal_comment_on_idea_you_moderate:
       cta_reply_to: 'Ver comentario de %{firstName}'
-      event_description: '%{authorNameFull} comentado internamente una entrada de un proyecto o carpeta que gestionas.'
+      event_description: '%{authorNameFull} comentó internamente en un aporte de un proyecto o carpeta que gestionas.'
       subject: '''%{post}'' tiene un nuevo comentario interno'
       main_header: '''%{post}'' tiene un nuevo comentario interno'
       preheader: '''%{post}'' tiene un nuevo comentario interno'
     internal_comment_on_initiative_assigned_to_you:
       cta_reply_to: 'Ver comentario de %{firstName}'
-      event_description: '%{authorNameFull} comentaste internamente una propuesta que te fue asignada.'
+      event_description: '%{authorNameFull} comentó internamente en una propuesta que te fue asignada.'
       subject: '''%{post}'' tiene un nuevo comentario interno'
       main_header: '''%{post}'' tiene un nuevo comentario interno'
       preheader: '''%{post}'' tiene un nuevo comentario interno'
     internal_comment_on_initiative_you_commented_internally_on:
       cta_reply_to: 'Ver comentario de %{firstName}'
-      event_description: '%{authorNameFull} comentaste internamente una propuesta que comentaste internamente.'
+      event_description: '%{authorNameFull} comentó internamente en una propuesta sobre la que comentaste internamente.'
       subject: '''%{post}'' tiene un nuevo comentario interno'
       main_header: '''%{post}'' tiene un nuevo comentario interno'
       preheader: '''%{post}'' tiene un nuevo comentario interno'
@@ -357,7 +357,7 @@ es-CL:
       preheader: '''%{post}'' tiene un nuevo comentario interno'
     internal_comment_on_unassigned_unmoderated_idea:
       cta_reply_to: 'Ver comentario de %{firstName}'
-      event_description: '%{authorNameFull} comentó internamente una entrada no asignada en un proyecto no gestionado.'
+      event_description: '%{authorNameFull} comentó internamente en un aporte no asignado en un proyecto no gestionado.'
       subject: '''%{post}'' tiene un nuevo comentario interno'
       main_header: '''%{post}'' tiene un nuevo comentario interno'
       preheader: '''%{post}'' tiene un nuevo comentario interno'
@@ -623,14 +623,14 @@ es-CL:
         input_is_flagged_as_spam: 'El aporte ha sido marcado como spam'
         input_is_updated: 'El aporte ha sido actualizado'
         input_status_changes: 'Cambios en el estado de la entrada'
-        internal_comment_is_posted_on_idea_assigned_to_user: El comentario interno se publica en la entrada asignada al usuario".
-        internal_comment_is_posted_on_initiative_assigned_to_user: Se publica un comentario interno sobre la propuesta asignada al usuario".
-        internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: El comentario interno se publica en la entrada del proyecto o carpeta que gestiona el usuario".
+        internal_comment_is_posted_on_idea_assigned_to_user: Un comentario interno está posteado en el aporte asignado al usuario.
+        internal_comment_is_posted_on_initiative_assigned_to_user: Un comentario interno está posteado en la propuesta asignada al usuario.
+        internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: Un comentario interno está posteado en el aporte de un proyecto o carpeta que gestiona el usuario.
         internal_comment_is_posted_on_idea_user_has_commented_internally_on: El comentario interno se publica en la entrada que el usuario ha comentado internamente".
         internal_comment_is_posted_on_initiative_user_has_commented_internally_on: El comentario interno se publica en la propuesta que el usuario ha comentado internamente".
         internal_comment_is_posted_on_unassigned_initiative: Se publica un comentario interno sobre una propuesta no asignada".
         internal_comment_is_posted_on_unassigned_unmoderated_idea: Se publica un comentario interno sobre una entrada no asignada en un proyecto no gestionado".
-        user_is_mentioned_in_internal_comment: 'Se menciona al usuario en el comentario interno'
+        user_is_mentioned_in_internal_comment: 'El usuario es mencionado en el comentario interno'
         new_input_is_published: 'Un nuevo aporte ha sido publicado'
         new_proposal_is_posted: 'Una nueva propuesta ha sido publicada'
         project_phase_changes: 'Cambios de fase del proyecto'
