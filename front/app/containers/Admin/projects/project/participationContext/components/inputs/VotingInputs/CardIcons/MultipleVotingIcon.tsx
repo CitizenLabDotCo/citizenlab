@@ -6,7 +6,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 // styling
 import { colors } from 'utils/styleUtils';
 
-const CumulativeIcon = ({ selected }: { selected: boolean }) => {
+const MultipleVotingIcon = ({ selected }: { selected: boolean }) => {
   const bgColor = selected ? colors.teal200 : colors.grey500;
 
   return (
@@ -63,4 +63,4 @@ const CumulativeIcon = ({ selected }: { selected: boolean }) => {
   );
 };
 
-export default CumulativeIcon;
+export default MultipleVotingIcon;

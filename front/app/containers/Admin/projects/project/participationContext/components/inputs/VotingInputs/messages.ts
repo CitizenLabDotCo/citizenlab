@@ -22,12 +22,12 @@ export default defineMessages({
     defaultMessage:
       'Assign a budget to options and ask participants to select their preferred options that fit within a total budget.',
   },
-  cumulativeVotingMethodTitle: {
-    id: 'app.containers.AdminPage.ProjectEdit.Voting.cumulativeVotingMethodTitle2',
+  multipleVotingMethodTitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.multipleVotingMethodTitle',
     defaultMessage: 'Multiple votes per option',
   },
-  cumulativeVotingMethodSubtitle: {
-    id: 'app.containers.AdminPage.ProjectEdit.Voting.cumulativeVotingMethodSubtitle',
+  multipleVotingMethodSubtitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.multipleVotingMethodSubtitle',
     defaultMessage:
       'Users are given an amount of tokens to distribute between options',
   },
@@ -44,8 +44,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.Voting.strategicVotingLinkText',
     defaultMessage: 'strategic voting',
   },
-  learnMoreCumulativeVoting: {
-    id: 'app.containers.AdminPage.ProjectEdit.Voting.learnMoreCumulativeVoting',
+  learnMoreMultipleVoting: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.learnMoreMultipleVoting',
     defaultMessage:
       'Learn more about when to use <b>multiple votes per option</b> in our {optionAnalysisArticleLink}.',
   },

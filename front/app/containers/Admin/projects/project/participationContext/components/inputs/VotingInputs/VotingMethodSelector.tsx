@@ -16,7 +16,7 @@ import { SubSectionTitle } from 'components/admin/Section';
 
 // types
 import { VotingMethod } from 'services/participationContexts';
-import CumulativeIcon from './CardIcons/CumulativeIcon';
+import MultipleVotingIcon from './CardIcons/MultipleVotingIcon';
 import Warning from 'components/UI/Warning';
 
 type VotingMethodSelectorProps = {
@@ -45,14 +45,18 @@ const VotingMethodSelector = ({
       </Text>
       <Box display="flex" gap="16px">
         <CardButton
-          selected={voting_method === 'cumulative'}
-          icon={<CumulativeIcon selected={voting_method === 'cumulative'} />}
+          selected={voting_method === 'multiple_voting'}
+          icon={
+            <MultipleVotingIcon
+              selected={voting_method === 'multiple_voting'}
+            />
+          }
           onClick={(e) => {
             e.preventDefault();
-            handleVotingMethodOnChange('cumulative');
+            handleVotingMethodOnChange('multiple_voting');
           }}
-          title={formatMessage(messages.cumulativeVotingMethodTitle)}
-          subtitle={formatMessage(messages.cumulativeVotingMethodSubtitle)}
+          title={formatMessage(messages.multipleVotingMethodTitle)}
+          subtitle={formatMessage(messages.multipleVotingMethodSubtitle)}
         />
         <CardButton
           selected={voting_method === 'budgeting'}
@@ -65,11 +69,11 @@ const VotingMethodSelector = ({
           subtitle={formatMessage(messages.budgetingVotingMethodSubtitle)}
         />
       </Box>
-      {voting_method === 'cumulative' && (
+      {voting_method === 'multiple_voting' && (
         <Box mt="16px">
           <Warning>
             <FormattedMessage
-              {...messages.learnMoreCumulativeVoting}
+              {...messages.learnMoreMultipleVoting}
               values={{
                 b: (chunks) => (
                   <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>

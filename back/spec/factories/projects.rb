@@ -448,6 +448,19 @@ FactoryBot.define do
       voting_max_total { 10_000 }
     end
 
+    factory :continuous_multiple_voting_project do
+      process_type { 'continuous' }
+      participation_method { 'voting' }
+      voting_method { 'multiple_voting' }
+      voting_max_total { 10 }
+    end
+
+    factory :continuous_single_voting_project do
+      process_type { 'continuous' }
+      participation_method { 'voting' }
+      voting_method { 'single_voting' }
+    end
+
     factory :continuous_poll_project do
       process_type { 'continuous' }
       participation_method { 'poll' }

@@ -22,7 +22,7 @@ interface Props {
   handleMaxVotesPerOptionAmountChange: (newMaxVotesPerOption: string) => void;
 }
 
-const CumulativeInputs = ({
+const MultipleVotingInputs = ({
   voting_max_total,
   voting_max_votes_per_idea,
   handleMaxVotingAmountChange,
@@ -111,4 +111,4 @@ const CumulativeInputs = ({
   );
 };
 
-export default CumulativeInputs;
+export default MultipleVotingInputs;

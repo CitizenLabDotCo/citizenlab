@@ -249,7 +249,7 @@ class ParticipationContext extends PureComponent<
       survey_service: survey ? 'typeform' : null,
       document_annotation_embed_url: null,
       voting_min_total: voting ? 0 : null,
-      voting_max_total: voting ? 1000 : null,
+      voting_max_total: voting ? 100 : null,
       voting_max_votes_per_idea: voting ? 1 : null,
       ideas_order: ideation ? getDefaultSortMethodFallback(ideation) : null,
     });
