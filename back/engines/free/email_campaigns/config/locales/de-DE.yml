@@ -627,6 +627,7 @@ de:
         internal_comment_is_posted_on_initiative_assigned_to_user: 'Interner Kommentar wird zu dem dem Benutzer zugewiesenen Vorschlag veröffentlicht.'
         internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'Interner Kommentar wird bei der Eingabe in das Projekt oder den vom Benutzer verwalteten Ordner veröffentlicht'''
         internal_comment_is_posted_on_idea_user_has_commented_internally_on: 'Ein interner Kommentar wird bei einer Eingabe abgegeben, die der Benutzer intern kommentiert hat.'
+        internal_comment_is_posted_on_idea_user_moderates: 'Interner Kommentar wird auf Eingabe Benutzer moderiert gepostet'
         internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'Interner Kommentar wird auf Vorschlag veröffentlicht, den der Benutzer intern kommentiert hat'''
         internal_comment_is_posted_on_unassigned_initiative: 'Interner Kommentar wird zu nicht zugeordnetem Vorschlag veröffentlicht'''
         internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Interner Kommentar wird zu nicht zugewiesener Eingabe in nicht verwaltetem Projekt veröffentlicht'''
