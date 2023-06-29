@@ -627,6 +627,7 @@ sv:
         internal_comment_is_posted_on_initiative_assigned_to_user: 'Intern kommentar läggs upp på förslag som tilldelats användaren'
         internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'Intern kommentar publiceras om input i projekt eller mapp som användaren hanterar'
         internal_comment_is_posted_on_idea_user_has_commented_internally_on: 'Intern kommentar publiceras på input användaren kommenterade internt på'
+        internal_comment_is_posted_on_idea_user_moderates: 'Intern kommentar publiceras på input som användaren modererar'
         internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'Intern kommentar publiceras på förslag som användaren kommenterat internt på'
         internal_comment_is_posted_on_unassigned_initiative: 'Intern kommentar publiceras på odelat förslag'
         internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Intern kommentar publiceras på icke tilldelad input i icke hanterat projekt'
