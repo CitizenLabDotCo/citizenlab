@@ -35,6 +35,7 @@ import {
 
 // utils
 import { getInputTerm } from 'services/participationContexts';
+import { isString } from 'utils/helperUtils';
 
 const Main = styled.main`
   width: 100%;
@@ -92,7 +93,7 @@ const Container = ({
 
   const [searchParams] = useSearchParams();
   const ideaIdParameter = searchParams.get('new_idea_id');
-  const [newIdeaId, setNewIdeaId] = useState<string | null>(ideaIdParameter);
+  const [newIdeaId, setNewIdeaId] = useState<string | null>(null);
   const timeout = useRef<NodeJS.Timeout>();
 
   const ideaflowSocialSharingIsEnabled = useFeatureFlag({
@@ -100,8 +101,14 @@ const Container = ({
   });
 
   useEffect(() => {
+    if (isString(ideaIdParameter)) {
+      timeout.current = setTimeout(() => {
+        setNewIdeaId(ideaIdParameter);
+      }, 1500);
+    }
+
     removeSearchParams(['new_idea_id']);
-  }, []);
+  }, [ideaIdParameter]);
 
   const closeIdeaSocialSharingModal = () => {
     if (timeout.current) {
