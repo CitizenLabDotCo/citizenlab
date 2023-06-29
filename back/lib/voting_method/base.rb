@@ -10,12 +10,16 @@ module VotingMethod
       # Default is to do nothing.
     end
 
-    def validate_baskets_idea
+    def validate_baskets_idea(_baskets_idea)
       # Default is to do nothing.
     end
 
     def budget_in_form?(_user)
       false
+    end
+
+    def assign_basket(_basket)
+      # Default is to do nothing.
     end
 
     private
