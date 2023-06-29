@@ -105,7 +105,7 @@
   "app.components.admin.PostManager.bodyTitle": "Descripción",
   "app.components.admin.PostManager.changeStatusModalTitle": "Cambiar el estado de esta propuesta",
   "app.components.admin.PostManager.comments": "Comentarios",
-  "app.components.admin.PostManager.components.goToInputManager": "Ir al gestor de entradas",
+  "app.components.admin.PostManager.components.goToInputManager": "Ir al gestor de aportes",
   "app.components.admin.PostManager.components.goToProposalManager": "Ir al gestor de propuestas",
   "app.components.admin.PostManager.contributionFormTitle": "Editar contribución",
   "app.components.admin.PostManager.currentLat": "Latitud actual",
