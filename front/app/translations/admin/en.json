@@ -1271,6 +1271,7 @@
   "app.containers.AdminPage.ProjectEdit.mapTab": "Map",
   "app.containers.AdminPage.ProjectEdit.maxDislikes": "Maximum dislikes",
   "app.containers.AdminPage.ProjectEdit.maxLikes": "Maximum likes",
+  "app.containers.AdminPage.ProjectEdit.maxVotesPerOptionErrorText": "Maximum number of votes per option must be less than or equal to total number of votes",
   "app.containers.AdminPage.ProjectEdit.maximum": "Maximum",
   "app.containers.AdminPage.ProjectEdit.maximumTooltip": "Participants cannot exceed this budget when submitting their basket.",
   "app.containers.AdminPage.ProjectEdit.microsoft_forms": "Microsoft Forms",
