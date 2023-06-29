@@ -160,7 +160,7 @@ resource 'Baskets' do
         #   ).to contain_exactly 1, 1, 4
         # end
 
-        context 'for a past voting phase' do
+        context 'for a past voting phase' do # TODO: move to policy spec?
           let(:context) { create(:budgeting_phase, end_at: Date.yesterday) }
           let(:basket_id) { create(:basket, participation_context: context).id }
           let(:baskets_ideas_attributes) do
@@ -172,6 +172,20 @@ resource 'Baskets' do
             do_request
             assert_status 401
           end
+        end
+
+        example 'Updating a basket when the budget of an idea changed uses the new budget' do
+          @ideas.first.update!(budget: 7)
+
+          do_request
+          assert_status 200
+          json_response = json_parse response_body
+
+          expect(
+            json_response[:included].select { |included| included[:type] == 'baskets_idea' }.map { |baskets_idea| baskets_idea.dig(:attributes, :votes) }
+          ).to contain_exactly 7, 5, 5
+          @basket.reload
+          expect(@basket.total_votes).to eq 17
         end
       end
     end
@@ -191,7 +205,7 @@ resource 'Baskets' do
         expect(Basket.count).to eq(old_count - 1)
       end
 
-      context 'for a past voting phase' do
+      context 'for a past voting phase' do # TODO: move to policy spec?
         let(:basket_id) { create(:basket, participation_context: create(:budgeting_phase, end_at: Date.yesterday)).id }
 
         example 'Delete a basket', document: false do
