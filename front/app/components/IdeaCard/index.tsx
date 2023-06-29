@@ -226,7 +226,7 @@ const CompactIdeaCard = memo<IdeaCardProps>(
         // e.g. /ideas index page because there's no participationMethod
         // passed through to the IdeaCards from there.
         // Should probably have better solution in future.
-        if (participationMethod === 'voting' && votingMethod === 'budgeting') {
+        if (participationMethod === 'voting') {
           return (
             <IdeaCardFooter idea={idea} showCommentCount={showCommentCount} />
           );

@@ -15,7 +15,7 @@ import { BUDGET_EXCEEDED_ERROR_EVENT } from 'components/AssignBudgetControl';
 import useBasket from 'api/baskets/useBasket';
 import useAuthUser from 'api/me/useAuthUser';
 import usePhases from 'api/phases/usePhases';
-import { getLatestRelevantPhase } from 'api/phases/utils';
+import { getCurrentPhase, getLatestRelevantPhase } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 
 // style
@@ -26,7 +26,12 @@ import eventEmitter from 'utils/eventEmitter';
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-import { isNilOrError } from 'utils/helperUtils';
+import {
+  capitalizeParticipationContextType,
+  isNilOrError,
+} from 'utils/helperUtils';
+import useUpdateBasket from 'api/baskets/useUpdateBasket';
+import useAddBasket from 'api/baskets/useAddBasket';
 
 const StyledBox = styled(Box)`
   input {
@@ -59,28 +64,31 @@ interface Props {
 
 const AssignMultipleVotesControl = ({ projectId, ideaId }: Props) => {
   const theme = useTheme();
-  const [votes, setVotes] = useState(-1);
+  const { mutate: updateBasket } = useUpdateBasket();
+  const { mutate: addBasket } = useAddBasket(projectId);
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
   const { data: authUser } = useAuthUser();
   const isMobileOrSmaller = useBreakpoint('phone');
   const { formatMessage } = useIntl();
-  const latestRelevantPhase = phases
-    ? getLatestRelevantPhase(phases.data)
-    : null;
-  const participationContext = latestRelevantPhase || project?.data;
+  const currentPhase = phases ? getCurrentPhase(phases.data) : null;
+  const participationContext = currentPhase || project?.data;
 
   const { data: basket } = useBasket(
     participationContext?.relationships?.user_basket?.data?.id
   );
-
-  const isContinuousProject = true;
+  const [votes, setVotes] = useState(
+    basket?.data?.attributes?.total_budget || -1
+  );
 
   const currentTotal = basket?.data?.attributes?.total_budget;
   const currentVotes = parseInt(votes.toString(), 10);
   const votingMax =
-    latestRelevantPhase?.attributes?.voting_max_total ||
+    currentPhase?.attributes?.voting_max_total ||
     project?.data.attributes.voting_max_total;
+  const votingPerOptionMax =
+    currentPhase?.attributes?.voting_max_votes_per_idea ||
+    project?.data.attributes.voting_max_votes_per_idea;
 
   const onAdd = async (event) => {
     event.stopPropagation();
@@ -91,19 +99,52 @@ const AssignMultipleVotesControl = ({ projectId, ideaId }: Props) => {
       return;
     }
 
+    if (!participationContext) {
+      return;
+    }
+
     if (
-      // currentTotal &&
       votingMax &&
-      // currentTotal + (currentVotes + 1) >= votingMax // TODO: Implement this once BE done
-      currentVotes + 1 > votingMax
+      currentTotal &&
+      currentTotal + (currentVotes + 1) >= votingMax
     ) {
       eventEmitter.emit(BUDGET_EXCEEDED_ERROR_EVENT);
     }
-    // TODO: Implement OPTION_MAX_VOTE_EXCEEDED_ERROR_EVENT
-    else {
+    if (votingPerOptionMax && currentVotes + 1 > votingPerOptionMax) {
+      eventEmitter.emit(BUDGET_EXCEEDED_ERROR_EVENT); // TODO: Make specific error event for this
+    } else {
       if (currentVotes <= 0) {
+        if (basket?.data.id) {
+          updateBasket({
+            id: basket?.data.id,
+            baskets_ideas_attributes: [{ idea_id: ideaId, votes: 1 }],
+          });
+        } else {
+          addBasket({
+            user_id: authUser.data.id,
+            participation_context_id: participationContext.id,
+            participation_context_type: currentPhase ? 'Phase' : 'Project',
+            baskets_ideas_attributes: [{ idea_id: ideaId, votes: 1 }],
+          });
+        }
         setVotes(1);
       } else {
+        if (basket?.data.id) {
+          updateBasket({
+            id: basket?.data.id,
+            baskets_ideas_attributes: [
+              { idea_id: ideaId, votes: currentVotes + 1 },
+            ],
+          });
+        }
+        addBasket({
+          user_id: authUser.data.id,
+          participation_context_id: participationContext.id,
+          participation_context_type: currentPhase ? 'Phase' : 'Project',
+          baskets_ideas_attributes: [
+            { idea_id: ideaId, votes: currentVotes + 1 },
+          ],
+        });
         setVotes(currentVotes + 1);
       }
     }
