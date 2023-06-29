@@ -89,6 +89,24 @@ FactoryBot.define do
       end
     end
 
+    factory :project_with_past_ideation_and_active_budgeting_phase do
+      after(:create) do |project, _evaluator|
+        project.phases << create(
+          :phase,
+          project: project,
+          participation_method: 'ideation',
+          start_at: 60.days.ago,
+          end_at: 30.days.ago
+        )
+        project.phases << create(
+          :active_phase,
+          project: project,
+          participation_method: 'voting',
+          voting_method: 'budgeting'
+        )
+      end
+    end
+
     factory :project_with_active_native_survey_phase do
       after(:create) do |project, _evaluator|
         project.phases << create(:active_phase, project: project, participation_method: 'native_survey')
@@ -428,6 +446,19 @@ FactoryBot.define do
       participation_method { 'voting' }
       voting_method { 'budgeting' }
       voting_max_total { 10_000 }
+    end
+
+    factory :continuous_multiple_voting_project do
+      process_type { 'continuous' }
+      participation_method { 'voting' }
+      voting_method { 'multiple_voting' }
+      voting_max_total { 10 }
+    end
+
+    factory :continuous_single_voting_project do
+      process_type { 'continuous' }
+      participation_method { 'voting' }
+      voting_method { 'single_voting' }
     end
 
     factory :continuous_poll_project do

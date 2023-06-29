@@ -4,7 +4,7 @@ import React from 'react';
 import FormattedStatusLabel from '../components/FormattedStatusLabel';
 
 // typings
-import { ITextingCampaignData } from 'services/textingCampaigns';
+import { ITextingCampaignData } from 'api/texting_campaigns/types';
 
 // style
 import styled from 'styled-components';
@@ -62,7 +62,7 @@ const TextingCampaignRow = ({ campaign }: Props) => {
     <Row tabIndex={0} onClick={handleEvent}>
       <MessageCell>{truncate(message, 60)}</MessageCell>
 
-      {status === 'sent' && (
+      {status === 'sent' && sent_at && (
         <>
           <MetaInfoCell>
             <FormattedDate value={sent_at} />

@@ -247,3 +247,6 @@ en:
     formats:
       hour_of_day: "%l %p"
     pm: pm
+  voting_method:
+    default_voting_term_singular: "vote"
+    default_voting_term_plural: "votes"
