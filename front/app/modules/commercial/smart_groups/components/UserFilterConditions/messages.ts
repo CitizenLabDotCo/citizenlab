@@ -203,12 +203,12 @@ export default defineMessages({
     defaultMessage: "didn't react to comment",
   },
   predicate_voted_in: {
-    id: 'app.components.admin.UserFilterConditions.predicate_voted_in2',
-    defaultMessage: 'voted',
+    id: 'app.components.admin.UserFilterConditions.predicate_voted_in3',
+    defaultMessage: 'participated in voting',
   },
   predicate_not_voted_in: {
-    id: 'app.components.admin.UserFilterConditions.predicate_not_voted_in2',
-    defaultMessage: "didn't vote",
+    id: 'app.components.admin.UserFilterConditions.predicate_not_voted_in3',
+    defaultMessage: "didn't participate in voting",
   },
   predicate_volunteered_in: {
     id: 'app.components.admin.UserFilterConditions.predicate_volunteered_in',

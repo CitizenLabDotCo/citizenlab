@@ -29,6 +29,8 @@ class Basket < ApplicationRecord
   has_many :ideas, through: :baskets_ideas
   accepts_nested_attributes_for :baskets_ideas, allow_destroy: true
 
+  before_validation :assign_by_voting_method
+
   validates :user, :participation_context, presence: true
   validate :basket_submission, on: :basket_submission
 
@@ -36,27 +38,33 @@ class Basket < ApplicationRecord
 
   delegate :project_id, to: :participation_context
 
-  def total_budget
-    ideas.pluck(:budget).compact.sum
+  def submitted?
+    !!submitted_at
   end
 
-  def budget_exceeds_limit?
-    total_budget > participation_context.voting_max_total
+  def total_votes
+    baskets_ideas.pluck(:votes).sum
   end
 
   private
 
-  def less_than_min_budget?
-    total_budget < participation_context.voting_min_total
+  def assign_by_voting_method
+    Factory.instance.voting_method_for(participation_context).assign_basket self
   end
 
   def basket_submission
-    return unless submitted_at
+    return unless submitted?
 
-    if less_than_min_budget?
-      errors.add(:ideas, :less_than_min_budget, message: 'less than the min budget while the basket is submitted')
-    elsif budget_exceeds_limit?
-      errors.add(:ideas, :exceed_budget_limit, message: 'exceed the budget limit while the basket is submitted')
+    if participation_context.voting_min_total && (total_votes < participation_context.voting_min_total)
+      errors.add(
+        :total_votes, :greater_than_or_equal_to, value: total_votes, count: participation_context.voting_min_total,
+        message: "must be greater than or equal to #{participation_context.voting_min_total}"
+      )
+    elsif participation_context.voting_max_total && (total_votes > participation_context.voting_max_total)
+      errors.add(
+        :total_votes, :less_than_or_equal_to, value: total_votes, count: participation_context.voting_max_total,
+        message: "must be less than or equal to #{participation_context.voting_max_total}"
+      )
     end
   end
 end

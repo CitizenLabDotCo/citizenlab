@@ -6,7 +6,7 @@ RSpec.describe ParticipationMethod::Information do
   subject(:participation_method) { described_class.new project }
 
   let(:input) { create(:idea) }
-  let(:project) { create(:continuous_project) }
+  let(:project) { create(:continuous_project, participation_method: 'information') }
 
   describe '#assign_defaults_for_participation_context' do
     let(:project) { build(:continuous_project) }
@@ -48,6 +48,19 @@ RSpec.describe ParticipationMethod::Information do
   describe '#validate_built_in_fields?' do
     it 'returns false' do
       expect(participation_method.validate_built_in_fields?).to be false
+    end
+  end
+
+  describe '#author_in_form?' do
+    it 'returns false for a moderator when idea_author_change is activated' do
+      SettingsService.new.activate_feature! 'idea_author_change'
+      expect(participation_method.author_in_form?(create(:admin))).to be false
+    end
+  end
+
+  describe '#budget_in_form?' do
+    it 'returns false for a moderator' do
+      expect(participation_method.budget_in_form?(create(:admin))).to be false
     end
   end
 

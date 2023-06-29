@@ -273,6 +273,20 @@ module ParticipationMethod
       true
     end
 
+    def author_in_form?(user)
+      AppConfiguration.instance.feature_activated?('idea_author_change') \
+      && !!user \
+      && UserRoleService.new.can_moderate_project?(participation_context.project, user)
+    end
+
+    def budget_in_form?(user)
+      return false if participation_context.project.continuous?
+
+      participation_context.project.phases.any? do |phase|
+        phase.voting? && Factory.instance.voting_method_for(phase).budget_in_form?(user)
+      end
+    end
+
     def allowed_ideas_orders
       %w[trending random popular -new new]
     end
@@ -310,10 +324,6 @@ module ParticipationMethod
     end
 
     def sign_in_required_for_posting?
-      true
-    end
-
-    def include_author_budget_in_schema?
       true
     end
 

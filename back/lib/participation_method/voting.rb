@@ -20,6 +20,15 @@ module ParticipationMethod
       end
     end
 
+    def budget_in_form?(user)
+      if participation_context.project.continuous? \
+      && Factory.instance.voting_method_for(participation_context).budget_in_form?(user)
+        return true
+      end
+
+      super
+    end
+
     def allowed_ideas_orders
       %w[random]
     end
