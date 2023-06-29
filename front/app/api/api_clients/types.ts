@@ -21,8 +21,6 @@ export interface IAPIClientResponse {
     id: string;
     type: 'api_client_unmasked';
     attributes: {
-      name: string;
-
       secret: string;
     };
   };
