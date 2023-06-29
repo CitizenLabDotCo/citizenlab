@@ -6,22 +6,8 @@ import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { IAPIClients } from './types';
 
-const data: IAPIClients = {
-  data: [
-    {
-      id: '1',
-      type: 'api_client',
-      attributes: {
-        name: 'test',
-        created_at: '2021-03-18T09:00:00.000Z',
-        last_used_at: '2021-03-18T09:00:00.000Z',
-        masked_secret: 'test',
-      },
-    },
-  ],
-};
+import { data } from './__mocks__/useApiClients';
 
 const apiPath = '*api_clients';
 

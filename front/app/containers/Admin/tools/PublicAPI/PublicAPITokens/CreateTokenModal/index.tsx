@@ -86,7 +86,7 @@ const CreateTokenModal = ({ onClose }: CreateTokenModalProps) => {
           </FormProvider>
         </>
       ) : (
-        <Box>
+        <Box data-testid="tokenCreateSuccess">
           <Title variant="h2">
             {formatMessage(messages.createTokenModalSuccess)}
           </Title>

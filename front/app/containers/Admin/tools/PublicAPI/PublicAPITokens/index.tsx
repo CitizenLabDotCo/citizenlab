@@ -67,7 +67,7 @@ const PublicAPITokens = () => {
       </Box>
       {isLoading && <Spinner />}
       {apiTokens && apiTokens.data.length > 0 && (
-        <Table bgColor="white">
+        <Table bgColor="white" data-testid="apiTokensTable">
           <Thead>
             <Tr>
               <Th>{formatMessage(messages.name)}</Th>
