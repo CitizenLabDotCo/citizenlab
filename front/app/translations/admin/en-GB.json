@@ -822,6 +822,7 @@
   "app.containers.Admin.tools.apiTokens.delete": "Delete token",
   "app.containers.Admin.tools.apiTokens.deleteConfirmation": "Are you sure you want to delete this token?",
   "app.containers.Admin.tools.apiTokens.description": "Manage your API tokens for our public API. For more information, see our {link}.",
+  "app.containers.Admin.tools.apiTokens.id": "ID",
   "app.containers.Admin.tools.apiTokens.lastUsedAt": "Last used",
   "app.containers.Admin.tools.apiTokens.link": "API documentation",
   "app.containers.Admin.tools.apiTokens.linkUrl": "https://developers.citizenlab.co/reference-api-docs/",
