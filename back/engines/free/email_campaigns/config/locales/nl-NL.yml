@@ -627,6 +627,7 @@ nl:
         internal_comment_is_posted_on_initiative_assigned_to_user: 'Intern commentaar is geplaatst op voorstel toegewezen aan gebruiker''.'
         internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'Intern commentaar wordt geplaatst op invoer in project of map die gebruiker beheert'''
         internal_comment_is_posted_on_idea_user_has_commented_internally_on: 'Intern commentaar is geplaatst op input waar gebruiker intern commentaar op heeft gegeven'''
+        internal_comment_is_posted_on_idea_user_moderates: 'Intern commentaar wordt geplaatst op invoer gebruiker modereert'
         internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'Intern commentaar is geplaatst op voorstel waar gebruiker intern commentaar op heeft gegeven'''
         internal_comment_is_posted_on_unassigned_initiative: 'Intern commentaar is geplaatst op niet-toegewezen voorstel".'
         internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Intern commentaar is geplaatst op niet-toegewezen invoer in onbeheerd project''.'
