@@ -70,13 +70,6 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
   const basketCount =
     phase?.attributes.baskets_count || project?.attributes.baskets_count;
 
-  console.log('Status: ', basketStatus);
-  console.log(
-    'basket?.data.attributes?.submitted_at: ',
-    basket?.data.attributes?.submitted_at
-  );
-  console.log('basketCount: ', basketCount);
-
   return (
     <Box>
       <Title variant="h2" style={{ fontWeight: 600 }}>
@@ -152,7 +145,7 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
           </Box>
         )}
       </Box>
-      {basketStatus !== 'hasSubmitted' && (
+      {basketStatus !== 'hasSubmitted' && !phaseHasEnded && (
         <Box mb="16px">
           <Warning>
             <FormattedMessage
