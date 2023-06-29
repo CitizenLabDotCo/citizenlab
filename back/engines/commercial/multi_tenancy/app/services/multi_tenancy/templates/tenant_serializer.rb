@@ -245,17 +245,17 @@ module MultiTenancy
         internal_comments = post_scopes.each_with_object({}) do |scope, hash|
           hash.merge!(serialize_records(InternalComment.where(post: scope)))
         end
-      
+
         # The parent internal_comments must be listed before their children since the
         # children internal_comments reference their parent.
         child_to_parent = internal_comments.transform_values do |attributes|
           Array.wrap(attributes[:parent_ref]&.id)
         end
-      
+
         each_node = ->(&block) { child_to_parent.each_key(&block) }
         each_child = ->(node, &block) { child_to_parent[node].each(&block) }
         ordered_ids = TSort.tsort(each_node, each_child)
-      
+
         internal_comments.slice(*ordered_ids)
       end
 
