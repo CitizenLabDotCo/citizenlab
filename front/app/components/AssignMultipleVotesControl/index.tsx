@@ -91,8 +91,6 @@ const AssignMultipleVotesControl = ({ projectId, ideaId }: Props) => {
       return;
     }
 
-    console.log('currentTotal', currentTotal);
-    console.log(votingMax && currentVotes + 1 > votingMax);
     if (
       // currentTotal &&
       votingMax &&

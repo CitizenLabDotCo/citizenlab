@@ -67,8 +67,15 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
     ? 'hasSubmitted'
     : 'hasNotSubmitted';
   const showDate = !phaseHasEnded && basketStatus === 'hasNotSubmitted';
-  const budgetCount =
+  const basketCount =
     phase?.attributes.baskets_count || project?.attributes.baskets_count;
+
+  console.log('Status: ', basketStatus);
+  console.log(
+    'basket?.data.attributes?.submitted_at: ',
+    basket?.data.attributes?.submitted_at
+  );
+  console.log('basketCount: ', basketCount);
 
   return (
     <Box>
@@ -110,15 +117,15 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
             </Text>
           )}
         </>
-        {!isNilOrError(budgetCount) && budgetCount > 0 && (
+        {!isNilOrError(basketCount) && basketCount > 0 && (
           <>
             <Text m="0px" fontSize="xxxxl" style={{ fontWeight: '700' }}>
-              {budgetCount}
+              {basketCount}
             </Text>
             <Text m="0px">
               {config?.getStatusSubmissionCountCopy &&
                 formatMessage(
-                  config?.getStatusSubmissionCountCopy(budgetCount)
+                  config?.getStatusSubmissionCountCopy(basketCount)
                 )}
             </Text>
           </>

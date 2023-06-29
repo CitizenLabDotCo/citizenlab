@@ -86,7 +86,7 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
   const minBudgetReached = spentBudget >= minBudget;
   const minBudgetRequiredNotReached = minBudgetRequired && !minBudgetReached;
 
-  const handleSubmitExpensesOnClick = async () => {
+  const handleSubmitOnClick = async () => {
     if (!isNilOrError(basket)) {
       const now = moment().format();
       updateBasket({ id: basket.data.id, submitted_at: now });
@@ -105,7 +105,7 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
       icon={hasUserParticipated ? 'check' : 'vote-ballot'}
       buttonStyle="secondary"
       iconColor={theme.colors.tenantText}
-      onClick={handleSubmitExpensesOnClick}
+      onClick={handleSubmitOnClick}
       fontWeight="500"
       bgColor={theme.colors.white}
       textColor={theme.colors.tenantText}

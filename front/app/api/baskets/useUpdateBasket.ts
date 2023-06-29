@@ -19,18 +19,22 @@ const useUpdateBasket = () => {
   const queryClient = useQueryClient();
   return useMutation<IBasket, CLErrors, UpdateBasket>({
     mutationFn: updateBasket,
-    onSuccess: (data) => {
+    onSuccess: (data, variables) => {
       queryClient.invalidateQueries({ queryKey: basketKeys.items() });
-      queryClient.invalidateQueries({
-        queryKey: phasesKeys.item({
-          phaseId: data.data.relationships.participation_context.data.id,
-        }),
-      });
-      queryClient.invalidateQueries({
-        queryKey: projectsKeys.item({
-          id: data.data.relationships.participation_context.data.id,
-        }),
-      });
+      const contextId = data.data.relationships.participation_context.data.id;
+      if (variables.participation_context_type === 'Project') {
+        queryClient.invalidateQueries({
+          queryKey: phasesKeys.item({
+            phaseId: contextId,
+          }),
+        });
+      } else {
+        queryClient.invalidateQueries({
+          queryKey: projectsKeys.item({
+            id: contextId,
+          }),
+        });
+      }
     },
   });
 };
