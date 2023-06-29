@@ -159,6 +159,20 @@ resource 'Baskets' do
         #     json_response[:included].select { |included| included[:type] == 'baskets_idea' }.map { |baskets_idea| baskets_idea.dig(:attributes, :votes) }
         #   ).to contain_exactly 1, 1, 4
         # end
+
+        context 'for a past voting phase' do
+          let(:context) { create(:budgeting_phase, end_at: Date.yesterday) }
+          let(:basket_id) { create(:basket, participation_context: context).id }
+          let(:baskets_ideas_attributes) do
+            idea_id = create(:idea, project: context.project, budget: 3)
+            [{ idea_id: idea_id, votes: 4 }]
+          end
+
+          example 'Update a basket', document: false do
+            do_request
+            assert_status 401
+          end
+        end
       end
     end
   end
@@ -172,9 +186,18 @@ resource 'Baskets' do
       example 'Delete a basket' do
         old_count = Basket.count
         do_request
-        expect(response_status).to eq 200
+        assert_status 200
         expect { Basket.find(basket_id) }.to raise_error(ActiveRecord::RecordNotFound)
         expect(Basket.count).to eq(old_count - 1)
+      end
+
+      context 'for a past voting phase' do
+        let(:basket_id) { create(:basket, participation_context: create(:budgeting_phase, end_at: Date.yesterday)).id }
+
+        example 'Delete a basket', document: false do
+          do_request
+          assert_status 401
+        end
       end
     end
   end
