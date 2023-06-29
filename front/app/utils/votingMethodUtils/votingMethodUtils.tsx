@@ -160,7 +160,7 @@ const budgetingConfig: VotingMethodConfig = {
   },
 };
 
-const cumulativeConfig: VotingMethodConfig = {
+const multipleVotingConfig: VotingMethodConfig = {
   getStatusHeader: (submissionState: VoteSubmissionState) => {
     switch (submissionState) {
       case 'hasNotSubmitted':
@@ -280,5 +280,5 @@ const methodToConfig: {
   [method in VotingMethod]: VotingMethodConfig;
 } = {
   budgeting: budgetingConfig,
-  cumulative: cumulativeConfig,
+  multiple_voting: multipleVotingConfig,
 };

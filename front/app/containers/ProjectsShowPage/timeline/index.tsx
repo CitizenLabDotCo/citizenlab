@@ -153,7 +153,6 @@ const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
   if (!isNilOrError(project) && selectedPhase) {
     const selectedPhaseId = selectedPhase.id;
     const participationMethod = selectedPhase.attributes.participation_method;
-
     const isPBPhase =
       participationMethod === 'voting' &&
       selectedPhase.attributes.voting_method === 'budgeting';
@@ -179,7 +178,10 @@ const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
                   <StatusModule
                     phase={selectedPhase}
                     project={project.data}
-                    votingMethod={'cumulative'} // TODO: Remove hardcoded value once BE implemented
+                    votingMethod={
+                      selectedPhase?.attributes.voting_method ||
+                      project?.data.attributes.voting_method
+                    }
                   />
                 </>
               )}

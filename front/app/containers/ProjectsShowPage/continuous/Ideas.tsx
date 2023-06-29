@@ -105,7 +105,7 @@ const IdeasContainer = memo<InnerProps>(({ project, className }) => {
             {isPBProject && (
               <>
                 <StatusModule
-                  votingMethod={'cumulative'} // TODO: Remove hardcoded value once BE implemented
+                  votingMethod={project?.attributes.voting_method}
                   project={project}
                 />
               </>

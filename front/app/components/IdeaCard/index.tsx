@@ -191,7 +191,10 @@ const CompactIdeaCard = memo<IdeaCardProps>(
             </Box>
           );
         }
-        if (participationMethod === 'voting' && votingMethod === 'cumulative') {
+        if (
+          participationMethod === 'voting' &&
+          votingMethod === 'multiple_voting'
+        ) {
           return (
             <Box display="flex" alignItems="center">
               <AssignMultipleVotesControl
@@ -205,7 +208,9 @@ const CompactIdeaCard = memo<IdeaCardProps>(
       return null;
     };
 
-    const votingMethod = 'cumulative'; // TODO: Replace after BE is implemented
+    const votingMethod =
+      currentPhase?.attributes.voting_method ||
+      project?.data.attributes.voting_method;
     // const votingMethod =
     //   currentPhase?.attributes.voting_method ||
     //   project?.data.attributes.voting_method;
