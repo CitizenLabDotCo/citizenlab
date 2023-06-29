@@ -1,6 +1,7 @@
 import React from 'react';
 
 // components
+import { Box } from '@citizenlab/cl2-component-library';
 import MetaInformation from '../MetaInformation';
 import ReactionControl from 'components/ReactionControl';
 import Buttons from 'containers/IdeasShow/components/CTABox/Buttons';
@@ -12,7 +13,6 @@ import { rightColumnWidthDesktop } from '../../styleConstants';
 import { colors } from 'utils/styleUtils';
 import IdeaSharingButton from '../Buttons/IdeaSharingButton';
 import SharingButtonComponent from '../Buttons/SharingButtonComponent';
-import { Box } from '@citizenlab/cl2-component-library';
 
 const Container = styled.div`
   flex: 0 0 ${rightColumnWidthDesktop}px;
@@ -30,12 +30,6 @@ const InnerContainer = styled.div`
 const StyledReactionControl = styled(ReactionControl)`
   padding-bottom: 23px;
   margin-bottom: 23px;
-`;
-
-const StyledAssignBudgetControl = styled(AssignBudgetControl)`
-  padding-bottom: 23px;
-  margin-bottom: 23px;
-  border-bottom: solid 1px #ccc;
 `;
 
 const StyledMetaInformation = styled(MetaInformation)`
@@ -69,7 +63,9 @@ const RightColumnDesktop = ({
           mb="12px"
         >
           <StyledReactionControl styleType="shadow" ideaId={ideaId} size="4" />
-          <StyledAssignBudgetControl ideaId={ideaId} projectId={projectId} />
+          <Box pb="23px" mb="23px" borderBottom="solid 1px #ccc">
+            <AssignBudgetControl ideaId={ideaId} projectId={projectId} />
+          </Box>
           <Buttons ideaId={ideaId} />
         </Box>
         <Box mb="16px">

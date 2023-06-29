@@ -64,10 +64,9 @@ const StyledPBExpenses = styled(PBExpenses)`
 interface Props {
   projectId: string;
   ideaId: string;
-  className?: string;
 }
 
-const AssignBudgetControl = memo(({ ideaId, className, projectId }: Props) => {
+const AssignBudgetControl = memo(({ ideaId, projectId }: Props) => {
   const { data: idea } = useIdeaById(ideaId);
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
@@ -90,9 +89,7 @@ const AssignBudgetControl = memo(({ ideaId, className, projectId }: Props) => {
 
   return (
     <IdeaPageContainer
-      className={`pbAssignBudgetControlContainer e2e-assign-budget ${
-        className || ''
-      }`}
+      className={`pbAssignBudgetControlContainer e2e-assign-budget`}
     >
       <BudgetWithButtonWrapper>
         <Budget>
