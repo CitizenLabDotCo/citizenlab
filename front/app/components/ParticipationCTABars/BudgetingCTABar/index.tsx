@@ -23,7 +23,6 @@ import {
   CTABarProps,
   hasProjectEndedOrIsArchived,
 } from 'components/ParticipationCTABars/utils';
-import moment from 'moment';
 import { isNilOrError } from 'utils/helperUtils';
 import eventEmitter from 'utils/eventEmitter';
 
@@ -67,7 +66,7 @@ export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
   }
 
   const submittedAt = basket?.data.attributes.submitted_at || null;
-  const spentBudget = basket?.data.attributes.total_budget || 0;
+  const spentBudget = basket?.data.attributes.total_votes || 0;
   const hasUserParticipated = !!submittedAt && spentBudget > 0;
 
   const budgetExceedsLimit =
@@ -88,10 +87,12 @@ export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
 
   const handleSubmitExpensesOnClick = async () => {
     if (!isNilOrError(basket)) {
-      const now = moment().format();
-      updateBasket({ id: basket.data.id, submitted_at: now });
+      updateBasket({ id: basket.data.id, submitted: true });
     }
   };
+
+  console.log({ basket });
+  console.log('hasUserParticipated: ', hasUserParticipated);
 
   const CTAButton = hasUserParticipated ? (
     <Box display="flex">
@@ -131,7 +132,7 @@ export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
         participationState={
           <Text color="white" m="0px" fontSize="s" my="0px" textAlign="left">
             {(
-              maxBudget - (basket?.data.attributes.total_budget || 0)
+              maxBudget - (basket?.data.attributes.total_votes || 0)
             ).toLocaleString()}{' '}
             / {maxBudget.toLocaleString()}{' '}
             {appConfig?.data.attributes.settings.core.currency}{' '}

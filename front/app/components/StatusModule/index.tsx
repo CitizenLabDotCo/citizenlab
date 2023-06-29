@@ -41,7 +41,7 @@ const unsubmitBasket = async (
 ) => {
   updateBasket({
     id: basketId,
-    submitted_at: null,
+    submitted: false,
   });
 };
 
