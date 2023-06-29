@@ -623,13 +623,13 @@ fr:
         input_is_flagged_as_spam: 'Une contribution est signalée comme spam'
         input_is_updated: 'Une contribution est mise à jour'
         input_status_changes: 'Changements du statut d''une contribution'
-        internal_comment_is_posted_on_idea_assigned_to_user: Un commentaire interne est publié sur l'entrée attribuée à l'utilisateur.
-        internal_comment_is_posted_on_initiative_assigned_to_user: Un commentaire interne est publié sur la proposition attribuée à l'utilisateur.
-        internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: Un commentaire interne est publié sur les données saisies dans le projet ou le dossier géré par l'utilisateur.
-        internal_comment_is_posted_on_idea_user_has_commented_internally_on: Un commentaire interne est publié sur l'entrée "l'utilisateur a commenté en interne".
-        internal_comment_is_posted_on_initiative_user_has_commented_internally_on: Un commentaire interne est publié sur la proposition que l'utilisateur a commentée en interne.
-        internal_comment_is_posted_on_unassigned_initiative: Un commentaire interne est publié sur une proposition non attribuée.
-        internal_comment_is_posted_on_unassigned_unmoderated_idea: Un commentaire interne est publié sur une entrée non attribuée dans un projet non géré.
+        internal_comment_is_posted_on_idea_assigned_to_user: 'Un commentaire interne est publié sur l''entrée attribuée à l''utilisateur.'
+        internal_comment_is_posted_on_initiative_assigned_to_user: 'Un commentaire interne est publié sur la proposition attribuée à l''utilisateur.'
+        internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'Un commentaire interne est publié sur les données saisies dans le projet ou le dossier géré par l''utilisateur.'
+        internal_comment_is_posted_on_idea_user_has_commented_internally_on: 'Un commentaire interne est publié sur l''entrée "l''utilisateur a commenté en interne".'
+        internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'Un commentaire interne est publié sur la proposition que l''utilisateur a commentée en interne.'
+        internal_comment_is_posted_on_unassigned_initiative: 'Un commentaire interne est publié sur une proposition non attribuée.'
+        internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Un commentaire interne est publié sur une entrée non attribuée dans un projet non géré.'
         user_is_mentioned_in_internal_comment: 'L''utilisateur est mentionné dans un commentaire interne'
         new_input_is_published: 'Une nouvelle contribution a été postée'
         new_proposal_is_posted: 'Publication d''une nouvelle proposition'
