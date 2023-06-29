@@ -1160,6 +1160,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_29_120434) do
     t.string "name"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+    t.datetime "last_used_at"
     t.string "secret_digest", null: false
     t.string "secret_postfix", null: false
   end

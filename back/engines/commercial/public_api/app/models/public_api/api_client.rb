@@ -8,6 +8,7 @@
 #  name                  :string
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
+#  last_used_at :datetime
 #  secret_digest         :string           not null
 #  secret_postfix :string           not null
 #
@@ -38,6 +39,10 @@ module PublicApi
         sub: id,
         exp: 1.day.from_now.to_i
       }
+    end
+
+    def used!
+      touch(:last_used_at)
     end
 
     private
