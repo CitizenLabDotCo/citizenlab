@@ -324,11 +324,7 @@ export const MapOverlayIdeaContent = ({
             </Box>
             <Box my="30px">
               {' '}
-              <AssignBudgetControl
-                view="ideaPage"
-                ideaId={ideaId}
-                projectId={projectId}
-              />
+              <AssignBudgetControl ideaId={ideaId} projectId={projectId} />
             </Box>
 
             <Box mb="30px">

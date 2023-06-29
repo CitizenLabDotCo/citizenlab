@@ -6,7 +6,6 @@ import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
 import AddToBasketButton from './AddToBasketButton';
 
 // i18n
@@ -62,80 +61,62 @@ const StyledPBExpenses = styled(PBExpenses)`
   padding: 20px;
 `;
 
-type TView = 'ideaCard' | 'ideaPage';
-
 interface Props {
-  view: TView;
   projectId: string;
   ideaId: string;
   className?: string;
 }
 
-const AssignBudgetControl = memo(
-  ({ view, ideaId, className, projectId }: Props) => {
-    const { data: idea } = useIdeaById(ideaId);
-    const { data: project } = useProjectById(projectId);
-    const { data: phases } = usePhases(projectId);
+const AssignBudgetControl = memo(({ ideaId, className, projectId }: Props) => {
+  const { data: idea } = useIdeaById(ideaId);
+  const { data: project } = useProjectById(projectId);
+  const { data: phases } = usePhases(projectId);
 
-    const participationContext = getParticipationContext(project, idea, phases);
-    const participationContextId = participationContext?.id;
-    const participationContextType =
-      project?.data.attributes.process_type === 'continuous'
-        ? 'project'
-        : 'phase';
+  const participationContext = getParticipationContext(project, idea, phases);
+  const participationContextId = participationContext?.id;
+  const participationContextType =
+    project?.data.attributes.process_type === 'continuous'
+      ? 'project'
+      : 'phase';
 
-    const ideaBudget = idea?.data.attributes.budget;
-    const actionDescriptor = idea?.data.attributes.action_descriptor.voting;
+  const ideaBudget = idea?.data.attributes.budget;
+  const actionDescriptor = idea?.data.attributes.action_descriptor.voting;
 
-    if (!actionDescriptor || !ideaBudget) return null;
+  if (!actionDescriptor || !ideaBudget) return null;
 
-    const isPermitted =
-      actionDescriptor.enabled ||
-      actionDescriptor.disabled_reason !== 'not_permitted';
+  const isPermitted =
+    actionDescriptor.enabled ||
+    actionDescriptor.disabled_reason !== 'not_permitted';
 
-    if (view === 'ideaCard') {
-      return (
-        <Box className={`e2e-assign-budget ${className || ''}`} width="100%">
-          <AddToBasketButton
-            ideaId={ideaId}
-            projectId={projectId}
-            inBasketMessage={messages.added}
-            notInBasketMessage={messages.add}
-          />
-        </Box>
-      );
-    }
-
-    return (
-      <IdeaPageContainer
-        className={`pbAssignBudgetControlContainer e2e-assign-budget ${
-          className || ''
-        }`}
-      >
-        <BudgetWithButtonWrapper>
-          <Budget>
-            <ScreenReaderOnly>
-              <FormattedMessage {...messages.a11y_price} />
-            </ScreenReaderOnly>
-            <FormattedBudget value={ideaBudget} />
-          </Budget>
-          <AddToBasketButton
-            ideaId={ideaId}
-            projectId={projectId}
-            inBasketMessage={messages.removeFromMyBasket}
-            notInBasketMessage={messages.addToMyBasket}
-          />
-        </BudgetWithButtonWrapper>
-        {isPermitted && participationContextId && (
-          <StyledPBExpenses
-            participationContextId={participationContextId}
-            participationContextType={participationContextType}
-            viewMode="column"
-          />
-        )}
-      </IdeaPageContainer>
-    );
-  }
-);
+  return (
+    <IdeaPageContainer
+      className={`pbAssignBudgetControlContainer e2e-assign-budget ${
+        className || ''
+      }`}
+    >
+      <BudgetWithButtonWrapper>
+        <Budget>
+          <ScreenReaderOnly>
+            <FormattedMessage {...messages.a11y_price} />
+          </ScreenReaderOnly>
+          <FormattedBudget value={ideaBudget} />
+        </Budget>
+        <AddToBasketButton
+          ideaId={ideaId}
+          projectId={projectId}
+          inBasketMessage={messages.removeFromMyBasket}
+          notInBasketMessage={messages.addToMyBasket}
+        />
+      </BudgetWithButtonWrapper>
+      {isPermitted && participationContextId && (
+        <StyledPBExpenses
+          participationContextId={participationContextId}
+          participationContextType={participationContextType}
+          viewMode="column"
+        />
+      )}
+    </IdeaPageContainer>
+  );
+});
 
 export default AssignBudgetControl;

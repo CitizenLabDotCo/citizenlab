@@ -69,11 +69,7 @@ const RightColumnDesktop = ({
           mb="12px"
         >
           <StyledReactionControl styleType="shadow" ideaId={ideaId} size="4" />
-          <StyledAssignBudgetControl
-            view="ideaPage"
-            ideaId={ideaId}
-            projectId={projectId}
-          />
+          <StyledAssignBudgetControl ideaId={ideaId} projectId={projectId} />
           <Buttons ideaId={ideaId} />
         </Box>
         <Box mb="16px">

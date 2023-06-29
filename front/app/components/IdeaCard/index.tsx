@@ -7,6 +7,7 @@ import { Box, Icon, useBreakpoint } from '@citizenlab/cl2-component-library';
 import Avatar from 'components/Avatar';
 import IdeaCardFooter from './IdeaCardFooter';
 import FooterWithReactionControl from './FooterWithReactionControl';
+import AddToBasketButton from 'components/AssignBudgetControl/AddToBasketButton';
 
 // router
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
@@ -18,15 +19,22 @@ import { useSearchParams } from 'react-router-dom';
 import { ParticipationMethod } from 'services/participationContexts';
 import { IParticipationContextType } from 'typings';
 
+// i18n
+import messages from 'components/AssignBudgetControl/messages';
+
 // hooks
 import useIdeaById from 'api/ideas/useIdeaById';
 import useIdeaImage from 'api/idea_images/useIdeaImage';
 import useProjectById from 'api/projects/useProjectById';
 import useLocalize from 'hooks/useLocalize';
+import usePhases from 'api/phases/usePhases';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { scrollToElement } from 'utils/scroll';
+import { getCurrentPhase } from 'api/phases/utils';
+
+// events
 import eventEmitter from 'utils/eventEmitter';
 import { IMAGES_LOADED_EVENT } from 'components/admin/ContentBuilder/constants';
 
@@ -37,11 +45,6 @@ import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 import { timeAgo } from 'utils/dateUtils';
 import useLocale from 'hooks/useLocale';
 import { IIdea } from 'api/ideas/types';
-
-// components
-import AssignBudgetControl from 'components/AssignBudgetControl';
-import { getCurrentPhase } from 'api/phases/utils';
-import usePhases from 'api/phases/usePhases';
 
 const BodyWrapper = styled.div`
   display: flex;
@@ -177,11 +180,14 @@ const CompactIdeaCard = memo<IdeaCardProps>(
         if (participationMethod === 'voting' && ideaBudget) {
           return (
             <Box display="flex" alignItems="center">
-              <AssignBudgetControl
-                view="ideaCard"
-                projectId={projectId}
-                ideaId={idea.data.id}
-              />
+              <Box w="100%" className="e2e-assign-budget">
+                <AddToBasketButton
+                  projectId={projectId}
+                  ideaId={idea.data.id}
+                  inBasketMessage={messages.added}
+                  notInBasketMessage={messages.add}
+                />
+              </Box>
             </Box>
           );
         }

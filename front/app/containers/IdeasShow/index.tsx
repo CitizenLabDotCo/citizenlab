@@ -364,11 +364,7 @@ export const IdeasShow = ({
             {isCompactView && (
               <Box my="30px">
                 {' '}
-                <AssignBudgetControl
-                  view="ideaPage"
-                  ideaId={ideaId}
-                  projectId={projectId}
-                />
+                <AssignBudgetControl ideaId={ideaId} projectId={projectId} />
               </Box>
             )}
 
