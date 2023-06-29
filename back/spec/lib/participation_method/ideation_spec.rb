@@ -3,17 +3,17 @@
 require 'rails_helper'
 
 RSpec.describe ParticipationMethod::Ideation do
-  subject(:participation_method) { described_class.new project }
+  subject(:participation_method) { described_class.new context }
 
-  let(:project) { create(:continuous_project) }
+  let(:context) { create(:continuous_project) }
 
   describe '#assign_defaults_for_participation_context' do
-    let(:project) { build(:continuous_project) }
+    let(:context) { build(:continuous_project) }
 
     it 'sets the posting method to unlimited' do
       participation_method.assign_defaults_for_participation_context
-      expect(project.posting_method).to eq 'unlimited'
-      expect(project.ideas_order).to eq 'trending'
+      expect(context.posting_method).to eq 'unlimited'
+      expect(context.ideas_order).to eq 'trending'
     end
   end
 
@@ -38,7 +38,7 @@ RSpec.describe ParticipationMethod::Ideation do
   describe '#default_fields' do
     it 'returns the default ideation fields' do
       expect(
-        participation_method.default_fields(create(:custom_form, participation_context: project)).map(&:code)
+        participation_method.default_fields(create(:custom_form, participation_context: context)).map(&:code)
       ).to eq %w[
         ideation_section1
         title_multiloc
@@ -57,6 +57,67 @@ RSpec.describe ParticipationMethod::Ideation do
   describe '#validate_built_in_fields?' do
     it 'returns true' do
       expect(participation_method.validate_built_in_fields?).to be true
+    end
+  end
+
+  describe '#author_in_form?' do
+    it 'returns false for a visitor when idea_author_change is activated' do
+      SettingsService.new.activate_feature! 'idea_author_change'
+      expect(participation_method.author_in_form?(nil)).to be false
+    end
+
+    it 'returns false for a resident when idea_author_change is activated' do
+      SettingsService.new.activate_feature! 'idea_author_change'
+      expect(participation_method.author_in_form?(create(:user))).to be false
+    end
+
+    it 'returns false for a moderator when idea_author_change is deactivated' do
+      SettingsService.new.deactivate_feature! 'idea_author_change'
+      expect(participation_method.author_in_form?(create(:admin))).to be false
+    end
+
+    it 'returns true for a moderator when idea_author_change is activated' do
+      SettingsService.new.activate_feature! 'idea_author_change'
+      expect(participation_method.author_in_form?(create(:admin))).to be true
+    end
+  end
+
+  describe '#budget_in_form?' do
+    let(:c) { { participation_method: 'voting', voting_method: 'budgeting' } }
+    let(:context) do
+      project = create(
+        :project_with_current_phase,
+        phases_config: {
+          sequence: 'xc',
+          x: { participation_method: 'ideation' },
+          c: c
+        }
+      )
+      project.phases.first
+    end
+
+    it 'returns false for a resident and a timeline project with a budgeting phase' do
+      expect(participation_method.budget_in_form?(create(:user))).to be false
+    end
+
+    describe do
+      let(:context) { create(:continuous_project, participation_method: 'ideation') }
+
+      it 'returns false for a moderator and a timeline project without a budgeting phase' do
+        expect(participation_method.budget_in_form?(create(:admin))).to be false
+      end
+    end
+
+    describe do
+      let(:c) { { participation_method: 'ideation' } }
+
+      it 'returns false for a moderator and a timeline project without a budgeting phase' do
+        expect(participation_method.budget_in_form?(create(:admin))).to be false
+      end
+    end
+
+    it 'returns true for a moderator and a timeline project with a budgeting phase' do
+      expect(participation_method.budget_in_form?(create(:admin))).to be true
     end
   end
 

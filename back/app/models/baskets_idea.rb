@@ -27,14 +27,12 @@ class BasketsIdea < ApplicationRecord
 
   validates :idea, :basket, presence: true
   validates :idea_id, uniqueness: { scope: :basket_id }
-  validate :idea_with_budget
+  validate :validate_by_voting_method
   validates :votes, numericality: { only_integer: true, greater_than: 0 }
 
   private
 
-  def idea_with_budget
-    return if idea.budget
-
-    errors.add(:idea, :has_no_budget, message: 'does not have a specified budget')
+  def validate_by_voting_method
+    Factory.instance.voting_method_for(basket.participation_context).validate_baskets_idea(self)
   end
 end

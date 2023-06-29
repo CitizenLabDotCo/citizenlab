@@ -3,41 +3,41 @@
 require 'rails_helper'
 
 RSpec.describe ParticipationMethod::Voting do
-  subject(:participation_method) { described_class.new project }
+  subject(:participation_method) { described_class.new context }
 
-  let(:project) { create(:continuous_budgeting_project) }
+  let(:context) { create(:continuous_budgeting_project) }
 
   describe '#assign_defaults_for_participation_context' do
     context 'budgeting' do
-      let(:project) { build(:continuous_budgeting_project) }
+      let(:context) { build(:continuous_budgeting_project) }
 
       it 'sets the posting method to unlimited and ideas order to random' do
         participation_method.assign_defaults_for_participation_context
-        expect(project.posting_method).to eq 'unlimited'
-        expect(project.ideas_order).to eq 'random'
+        expect(context.posting_method).to eq 'unlimited'
+        expect(context.ideas_order).to eq 'random'
       end
     end
 
     context 'multiple voting' do
-      let(:project) { build(:continuous_multiple_voting_project) }
+      let(:context) { build(:continuous_multiple_voting_project) }
 
       it 'sets a default voting term of "vote", posting method to unlimited and ideas order to random' do
         participation_method.assign_defaults_for_participation_context
-        expect(project.voting_term_singular_multiloc['en']).to eq 'vote'
-        expect(project.voting_term_plural_multiloc['en']).to eq 'votes'
-        expect(project.posting_method).to eq 'unlimited'
-        expect(project.ideas_order).to eq 'random'
+        expect(context.voting_term_singular_multiloc['en']).to eq 'vote'
+        expect(context.voting_term_plural_multiloc['en']).to eq 'votes'
+        expect(context.posting_method).to eq 'unlimited'
+        expect(context.ideas_order).to eq 'random'
       end
     end
 
     context 'single voting' do
-      let(:project) { build(:continuous_single_voting_project) }
+      let(:context) { build(:continuous_single_voting_project) }
 
       it 'sets voting_max_votes_per_idea to 1, posting method to unlimited and ideas order to random' do
         participation_method.assign_defaults_for_participation_context
-        expect(project.voting_max_votes_per_idea).to eq 1
-        expect(project.posting_method).to eq 'unlimited'
-        expect(project.ideas_order).to eq 'random'
+        expect(context.voting_max_votes_per_idea).to eq 1
+        expect(context.posting_method).to eq 'unlimited'
+        expect(context.ideas_order).to eq 'random'
       end
     end
   end
@@ -63,7 +63,7 @@ RSpec.describe ParticipationMethod::Voting do
   describe '#default_fields' do
     it 'returns the default ideation fields' do
       expect(
-        participation_method.default_fields(create(:custom_form, participation_context: project)).map(&:code)
+        participation_method.default_fields(create(:custom_form, participation_context: context)).map(&:code)
       ).to eq %w[
         ideation_section1
         title_multiloc
@@ -76,6 +76,44 @@ RSpec.describe ParticipationMethod::Voting do
         location_description
         proposed_budget
       ]
+    end
+  end
+
+  describe '#validate_built_in_fields?' do
+    it 'returns true' do
+      expect(participation_method.validate_built_in_fields?).to be true
+    end
+  end
+
+  describe '#author_in_form?' do
+    before { SettingsService.new.activate_feature! 'idea_author_change' }
+
+    it 'returns false for a resident when idea_author_change is activated' do
+      expect(participation_method.author_in_form?(create(:user))).to be false
+    end
+
+    it 'returns true for a moderator when idea_author_change is activated' do
+      expect(participation_method.author_in_form?(create(:admin))).to be true
+    end
+  end
+
+  describe '#budget_in_form?' do
+    let(:context) { create(:continuous_budgeting_project) }
+
+    it 'returns false for a resident and a continuous budgeting project' do
+      expect(participation_method.budget_in_form?(create(:user))).to be false
+    end
+
+    it 'returns true for a moderator and a continuous budgeting project' do
+      expect(participation_method.budget_in_form?(create(:admin))).to be true
+    end
+
+    describe do
+      let(:context) { create(:budgeting_phase) }
+
+      it 'returns true for a moderator and a continuous budgeting project' do
+        expect(participation_method.budget_in_form?(create(:admin))).to be true
+      end
     end
   end
 
