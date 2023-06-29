@@ -183,32 +183,22 @@ export const IdeasShow = ({
   const localize = useLocalize();
   const { data: ideaImages } = useIdeaImages(ideaId);
 
-  const [newIdeaId, setNewIdeaId] = useState<string | null>(null);
-  const [goBack, setGoBack] = useState(false);
   const [translateButtonIsClicked, setTranslateButtonIsClicked] =
     useState<boolean>(false);
+
   const [searchParams] = useSearchParams();
   const ideaIdParameter = searchParams.get('new_idea_id');
   const goBackParameter = searchParams.get('go_back');
+  const [newIdeaId, setNewIdeaId] = useState<string | null>(ideaIdParameter);
+  const [goBack] = useState(isString(goBackParameter));
+
   const timeout = useRef<NodeJS.Timeout>();
 
   const isSmallerThanTablet = useBreakpoint('tablet');
 
   useEffect(() => {
-    if (ideaIdParameter === null && goBackParameter === null) return;
-
-    if (isString(ideaIdParameter)) {
-      timeout.current = setTimeout(() => {
-        setNewIdeaId(ideaIdParameter);
-      }, 1500);
-    }
-
-    if (isString(goBackParameter)) {
-      setGoBack(true);
-    }
-
     removeSearchParams(['new_idea_id', 'go_back']);
-  }, [ideaIdParameter, goBackParameter]);
+  }, []);
 
   const { data: phases } = usePhases(projectId);
   const { data: idea } = useIdeaById(ideaId);

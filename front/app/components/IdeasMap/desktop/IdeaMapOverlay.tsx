@@ -140,6 +140,7 @@ const IdeaMapOverlay = memo<Props>(
                 <StyledIdeasShow
                   ideaId={selectedIdeaId}
                   projectId={projectId}
+                  compact={true}
                   setRef={handleIdeasShowSetRef}
                 />
               )}
