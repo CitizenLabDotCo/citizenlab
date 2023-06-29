@@ -27,6 +27,7 @@ import { pastPresentOrFuture, toFullMonth } from 'utils/dateUtils';
 
 // intl
 import messages from './messages';
+import { isNilOrError } from 'utils/helperUtils';
 
 type StatusModuleProps = {
   votingMethod?: VotingMethod | null;
@@ -65,6 +66,8 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
     ? 'hasSubmitted'
     : 'hasNotSubmitted';
   const showDate = !phaseHasEnded && basketStatus === 'hasNotSubmitted';
+  const budgetCount =
+    phase?.attributes.baskets_count || project?.attributes.baskets_count;
 
   return (
     <Box>
@@ -106,14 +109,19 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
             </Text>
           )}
         </>
-        <Text m="0px" fontSize="xxxxl" style={{ fontWeight: '700' }}>
-          {/* TODO: Get submission count from BE once endpoint implemented*/}
-          127
-        </Text>
-        <Text m="0px">
-          {config?.getStatusSubmissionCountCopy &&
-            formatMessage(config?.getStatusSubmissionCountCopy())}
-        </Text>
+        {!isNilOrError(budgetCount) && budgetCount > 0 && (
+          <>
+            <Text m="0px" fontSize="xxxxl" style={{ fontWeight: '700' }}>
+              {budgetCount}
+            </Text>
+            <Text m="0px">
+              {config?.getStatusSubmissionCountCopy &&
+                formatMessage(
+                  config?.getStatusSubmissionCountCopy(budgetCount)
+                )}
+            </Text>
+          </>
+        )}
         {basket && basketStatus === 'hasSubmitted' && (
           <Box display={isSmallerThanPhone ? 'block' : 'flex'}>
             <Button

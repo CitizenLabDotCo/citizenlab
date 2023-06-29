@@ -33,6 +33,10 @@ class Factory
     case participation_context&.voting_method
     when 'budgeting'
       ::VotingMethod::Budgeting.new(participation_context)
+    when 'multiple_voting'
+      ::VotingMethod::MultipleVoting.new(participation_context)
+    when 'single_voting'
+      ::VotingMethod::SingleVoting.new(participation_context)
     else
       ::VotingMethod::None.new
     end

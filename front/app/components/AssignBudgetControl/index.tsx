@@ -7,6 +7,8 @@ import usePhases from 'api/phases/usePhases';
 
 // components
 import AddToBasketButton from './AddToBasketButton';
+import { ScreenReaderOnly } from 'utils/a11y';
+import PBExpenses from 'containers/ProjectsShowPage/shared/pb/PBExpenses';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -19,10 +21,6 @@ import { fontSizes, colors, defaultCardStyle, media } from 'utils/styleUtils';
 
 // utils
 import { getParticipationContext } from './utils';
-
-// typings
-import { ScreenReaderOnly } from 'utils/a11y';
-import PBExpenses from 'containers/ProjectsShowPage/shared/pb/PBExpenses';
 
 const IdeaPageContainer = styled.div`
   display: flex;

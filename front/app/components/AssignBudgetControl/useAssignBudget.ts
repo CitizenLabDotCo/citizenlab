@@ -18,6 +18,9 @@ import eventEmitter from 'utils/eventEmitter';
 import { trackEventByName } from 'utils/analytics';
 import tracks from 'containers/ProjectsShowPage/shared/pb/tracks';
 
+// typings
+import { BasketIdeaAttributes } from 'api/baskets/types';
+
 const timeout = (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -100,6 +103,12 @@ const useAssignBudget = ({ projectId, ideaId }: Props) => {
 
       if (isPermitted && basket) {
         try {
+          const basketIdeasAttributes: BasketIdeaAttributes = newIdeas.map(
+            (ideaId) => ({
+              idea_id: ideaId,
+            })
+          );
+
           await updateBasket({
             id: basket.data.id,
             user_id: authUser.data.id,
@@ -107,8 +116,8 @@ const useAssignBudget = ({ projectId, ideaId }: Props) => {
             participation_context_type: capitalizeParticipationContextType(
               participationContextType
             ),
-            idea_ids: newIdeas,
             submitted_at: null,
+            baskets_ideas_attributes: basketIdeasAttributes,
           });
           done();
           trackEventByName(tracks.ideaAddedToBasket);
@@ -124,7 +133,7 @@ const useAssignBudget = ({ projectId, ideaId }: Props) => {
           participation_context_type: capitalizeParticipationContextType(
             participationContextType
           ),
-          idea_ids: [idea.data.id],
+          baskets_ideas_attributes: [{ idea_id: idea.data.id }],
         });
         done();
         trackEventByName(tracks.basketCreated);

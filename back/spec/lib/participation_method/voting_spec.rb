@@ -8,12 +8,37 @@ RSpec.describe ParticipationMethod::Voting do
   let(:project) { create(:continuous_budgeting_project) }
 
   describe '#assign_defaults_for_participation_context' do
-    let(:project) { build(:continuous_budgeting_project) }
+    context 'budgeting' do
+      let(:project) { build(:continuous_budgeting_project) }
 
-    it 'sets the posting method to unlimited' do
-      participation_method.assign_defaults_for_participation_context
-      expect(project.posting_method).to eq 'unlimited'
-      expect(project.ideas_order).to eq 'random'
+      it 'sets the posting method to unlimited and ideas order to random' do
+        participation_method.assign_defaults_for_participation_context
+        expect(project.posting_method).to eq 'unlimited'
+        expect(project.ideas_order).to eq 'random'
+      end
+    end
+
+    context 'multiple voting' do
+      let(:project) { build(:continuous_multiple_voting_project) }
+
+      it 'sets a default voting term of "vote", posting method to unlimited and ideas order to random' do
+        participation_method.assign_defaults_for_participation_context
+        expect(project.voting_term_singular_multiloc['en']).to eq 'vote'
+        expect(project.voting_term_plural_multiloc['en']).to eq 'votes'
+        expect(project.posting_method).to eq 'unlimited'
+        expect(project.ideas_order).to eq 'random'
+      end
+    end
+
+    context 'single voting' do
+      let(:project) { build(:continuous_single_voting_project) }
+
+      it 'sets voting_max_votes_per_idea to 1, posting method to unlimited and ideas order to random' do
+        participation_method.assign_defaults_for_participation_context
+        expect(project.voting_max_votes_per_idea).to eq 1
+        expect(project.posting_method).to eq 'unlimited'
+        expect(project.ideas_order).to eq 'random'
+      end
     end
   end
 
@@ -54,12 +79,6 @@ RSpec.describe ParticipationMethod::Voting do
     end
   end
 
-  describe '#validate_built_in_fields?' do
-    it 'returns true' do
-      expect(participation_method.validate_built_in_fields?).to be true
-    end
-  end
-
   describe '#assign_defaults' do
     context 'when the proposed idea status is available' do
       let!(:proposed) { create(:idea_status_proposed) }
@@ -94,70 +113,26 @@ RSpec.describe ParticipationMethod::Voting do
     end
   end
 
-  describe '#never_show?' do
-    it 'returns false' do
-      expect(participation_method.never_show?).to be false
-    end
-  end
-
-  describe '#posting_allowed?' do
-    it 'returns false' do
-      expect(participation_method.posting_allowed?).to be false
-    end
-  end
-
-  describe '#never_update?' do
-    it 'returns false' do
-      expect(participation_method.never_update?).to be false
-    end
-  end
-
-  describe '#form_in_phase?' do
-    it 'returns false' do
-      expect(participation_method.form_in_phase?).to be false
-    end
-  end
-
-  describe '#edit_custom_form_allowed?' do
-    it 'returns true' do
-      expect(participation_method.edit_custom_form_allowed?).to be true
-    end
-  end
-
-  describe '#delete_inputs_on_pc_deletion?' do
-    it 'returns false' do
-      expect(participation_method.delete_inputs_on_pc_deletion?).to be false
-    end
-  end
-
-  describe '#sign_in_required_for_posting?' do
-    it 'returns true' do
-      expect(participation_method.sign_in_required_for_posting?).to be true
-    end
-  end
-
   describe '#extra_fields_category_translation_key' do
     it 'returns the translation key for the extra fields category' do
       expect(participation_method.extra_fields_category_translation_key).to eq 'custom_forms.categories.extra.title'
     end
   end
 
-  describe '#supports_toxicity_detection?' do
-    it 'returns true' do
-      expect(participation_method.supports_toxicity_detection?).to be true
-    end
-  end
-
-  describe '#include_data_in_email?' do
-    it 'returns true' do
-      expect(participation_method.include_data_in_email?).to be true
-    end
-  end
-
   its(:allowed_ideas_orders) { is_expected.to eq ['random'] }
+  its(:validate_built_in_fields?) { is_expected.to be true }
+  its(:never_show?) { is_expected.to be false }
+  its(:posting_allowed?) { is_expected.to be false }
+  its(:never_update?) { is_expected.to be false }
+  its(:form_in_phase?) { is_expected.to be false }
+  its(:edit_custom_form_allowed?) { is_expected.to be true }
+  its(:delete_inputs_on_pc_deletion?) { is_expected.to be false }
+  its(:sign_in_required_for_posting?) { is_expected.to be true }
+  its(:supports_toxicity_detection?) { is_expected.to be true }
+  its(:include_data_in_email?) { is_expected.to be true }
   its(:supports_publication?) { is_expected.to be true }
   its(:supports_commenting?) { is_expected.to be true }
-  its(:supports_reacting?) { is_expected.to be true }
+  its(:supports_reacting?) { is_expected.to be false }
   its(:supports_baskets?) { is_expected.to be true }
   its(:supports_budget?) { is_expected.to be true }
   its(:supports_status?) { is_expected.to be true }

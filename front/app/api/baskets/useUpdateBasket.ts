@@ -3,6 +3,8 @@ import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import basketKeys from './keys';
 import { IBasket, INewBasket } from './types';
+import phasesKeys from 'api/phases/keys';
+import projectsKeys from 'api/projects/keys';
 
 type UpdateBasket = Partial<INewBasket> & { id: string };
 
@@ -17,8 +19,18 @@ const useUpdateBasket = () => {
   const queryClient = useQueryClient();
   return useMutation<IBasket, CLErrors, UpdateBasket>({
     mutationFn: updateBasket,
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: basketKeys.items() });
+      queryClient.invalidateQueries({
+        queryKey: phasesKeys.item({
+          phaseId: data.data.relationships.participation_context.data.id,
+        }),
+      });
+      queryClient.invalidateQueries({
+        queryKey: projectsKeys.item({
+          id: data.data.relationships.participation_context.data.id,
+        }),
+      });
     },
   });
 };

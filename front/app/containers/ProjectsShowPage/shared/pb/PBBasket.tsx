@@ -1,7 +1,7 @@
 import React, { FormEvent } from 'react';
 
 // services
-import { IBasketData } from 'api/baskets/types';
+import { BasketIdeaAttributes, IBasketData } from 'api/baskets/types';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
@@ -165,6 +165,12 @@ const PBBasket = ({
           .filter((idea) => idea.id !== ideaIdToRemove)
           .map((idea) => idea.id);
 
+        const basketIdeasAttributes: BasketIdeaAttributes = newIdeas.map(
+          (ideaId) => ({
+            idea_id: ideaId,
+          })
+        );
+
         updateBasket(
           {
             id: basket.id,
@@ -173,7 +179,7 @@ const PBBasket = ({
             participation_context_type: capitalizeParticipationContextType(
               participationContextType
             ),
-            idea_ids: newIdeas,
+            baskets_ideas_attributes: basketIdeasAttributes,
             submitted_at: null,
           },
           {
