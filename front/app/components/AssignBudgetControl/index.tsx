@@ -140,7 +140,7 @@ const AssignBudgetControl = memo(
     );
     const maxBudget = participationContext?.attributes.voting_max_total;
     const ideaBudget = idea?.data.attributes.budget;
-    const basketTotal = basket?.data.attributes.total_budget;
+    const basketTotal = basket?.data.attributes.total_votes;
 
     const [processing, setProcessing] = useState(false);
 
@@ -206,17 +206,13 @@ const AssignBudgetControl = memo(
             const basketIdeasAttributes: BasketIdeaAttributes = newIdeas.map(
               (ideaId) => ({
                 idea_id: ideaId,
+                votes: 10,
               })
             );
 
             await updateBasket({
               id: basket.data.id,
-              user_id: authUser.data.id,
-              participation_context_id: participationContextId,
-              participation_context_type: capitalizeParticipationContextType(
-                participationContextType
-              ),
-              submitted_at: null,
+              submitted: false,
               baskets_ideas_attributes: basketIdeasAttributes,
             });
             done();
@@ -228,11 +224,11 @@ const AssignBudgetControl = memo(
       } else {
         try {
           await addBasket({
-            user_id: authUser.data.id,
             participation_context_id: participationContextId,
             participation_context_type: capitalizeParticipationContextType(
               participationContextType
             ),
+            submitted: false,
             baskets_ideas_attributes: [{ idea_id: idea.data.id }],
           });
 

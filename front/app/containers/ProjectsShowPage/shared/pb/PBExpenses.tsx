@@ -1,7 +1,6 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { round } from 'lodash-es';
-import moment from 'moment';
 import Tippy from '@tippyjs/react';
 
 // services
@@ -298,9 +297,8 @@ const PBExpenses = ({
 
   const handleSubmitExpensesOnClick = async () => {
     if (!isNilOrError(basket)) {
-      const now = moment().format();
       updateBasket(
-        { id: basket.data.id, submitted_at: now },
+        { id: basket.data.id, submitted: true },
         {
           onSuccess: () => {
             trackEventByName(tracks.basketSubmitted);
@@ -317,7 +315,7 @@ const PBExpenses = ({
       (participationContextType === 'phase' && phase))
   ) {
     const currency = appConfiguration.data.attributes.settings.core.currency;
-    const spentBudget = basket ? basket.data.attributes.total_budget : 0;
+    const spentBudget = basket ? basket.data.attributes.total_votes : 0;
     const budgetExceedsLimit = basket
       ? (basket.data.attributes['budget_exceeds_limit?'] as boolean)
       : false;

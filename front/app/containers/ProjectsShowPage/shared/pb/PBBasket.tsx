@@ -32,10 +32,7 @@ import messages from 'containers/ProjectsShowPage/messages';
 import FormattedBudget from 'utils/currency/FormattedBudget';
 
 // utils
-import {
-  isNilOrError,
-  capitalizeParticipationContextType,
-} from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 // typings
 import { IParticipationContextType } from 'typings';
@@ -174,13 +171,8 @@ const PBBasket = ({
         updateBasket(
           {
             id: basket.id,
-            user_id: authUser.data.id,
-            participation_context_id: participationContextId,
-            participation_context_type: capitalizeParticipationContextType(
-              participationContextType
-            ),
             baskets_ideas_attributes: basketIdeasAttributes,
-            submitted_at: null,
+            submitted: false,
           },
           {
             onSuccess: () => {
