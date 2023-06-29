@@ -2,11 +2,11 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import basketKeys from './keys';
-import { IBasket, INewBasket } from './types';
+import { IBasket, IUpdateBasket } from './types';
 import phasesKeys from 'api/phases/keys';
 import projectsKeys from 'api/projects/keys';
 
-type UpdateBasket = Partial<INewBasket> & { id: string };
+type UpdateBasket = Partial<IUpdateBasket> & { id: string };
 
 export const updateBasket = ({ id, ...requestBody }: UpdateBasket) =>
   fetcher<IBasket>({

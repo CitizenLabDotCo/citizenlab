@@ -27,7 +27,6 @@ describe('useAddBasket', () => {
 
     act(() => {
       result.current.mutate({
-        user_id: 'id',
         participation_context_id: 'id',
         participation_context_type: 'Project',
         baskets_ideas_attributes: [{ idea_id: 'id' }],
@@ -51,7 +50,6 @@ describe('useAddBasket', () => {
 
     act(() => {
       result.current.mutate({
-        user_id: 'id',
         participation_context_id: 'id',
         participation_context_type: 'Project',
         baskets_ideas_attributes: [{ idea_id: 'id' }],

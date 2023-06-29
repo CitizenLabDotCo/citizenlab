@@ -10,7 +10,7 @@ export interface IBasketData {
   type: string;
   attributes: {
     submitted_at: string;
-    total_budget: number;
+    total_votes: number;
     'budget_exceeds_limit?': false;
   };
   relationships: {
@@ -30,10 +30,14 @@ export interface IBasket {
   data: IBasketData;
 }
 
+export interface IUpdateBasket {
+  id: string;
+  submitted?: boolean | null;
+  baskets_ideas_attributes?: BasketIdeaAttributes;
+}
 export interface INewBasket {
-  user_id: string;
   participation_context_id: string;
   participation_context_type: 'Project' | 'Phase';
-  submitted_at?: string | null;
+  submitted?: boolean | null;
   baskets_ideas_attributes?: BasketIdeaAttributes;
 }

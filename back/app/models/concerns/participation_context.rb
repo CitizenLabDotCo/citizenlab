@@ -171,7 +171,7 @@ module ParticipationContext
   end
 
   def validate_voting
-    Factory.instance.voting_method_for(self).validate
+    Factory.instance.voting_method_for(self).validate_participation_context
   end
 end
 # rubocop:enable Metrics/ModuleLength
