@@ -38,6 +38,7 @@ import {
 
 // typings
 import { Observer, Observable, Subscription } from 'rxjs';
+import { isUnauthorizedError } from 'utils/helperUtils';
 
 // constants
 
@@ -412,15 +413,18 @@ class Streams {
             // push the error reponse into the stream
             this.streams[streamId].observer.next(error);
 
-            // push the error reponse into the stream
-            this.streams[streamId].observer.next(error);
+            // destroy the stream, except if it's an unauthorized error
+            // in that case we want to refetch when you log in
+            if (!isUnauthorizedError(error)) {
+              this.deleteStream(streamId, apiEndpoint);
+            }
 
             logError(error);
           } else if (streamId.includes('content_builder_layouts')) {
             this.streams[streamId].observer.next(null);
           }
 
-          logError(error);
+          return null;
         });
     };
 
