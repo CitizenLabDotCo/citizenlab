@@ -623,13 +623,13 @@ lv:
         input_is_flagged_as_spam: 'Ievads tiek atzīmēts kā surogātpasts'
         input_is_updated: 'Ievade tiek atjaunināta'
         input_status_changes: 'Ieejas statusa izmaiņas'
-        internal_comment_is_posted_on_idea_assigned_to_user: Iekšējais komentārs tiek publicēts par lietotājam piešķirto ievadi'
-        internal_comment_is_posted_on_initiative_assigned_to_user: Iekšējais komentārs ir publicēts par priekšlikumu, kas piešķirts lietotājam'
-        internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: Iekšējais komentārs tiek publicēts par ievadi projektā vai mapē, ko pārvalda lietotājs
-        internal_comment_is_posted_on_idea_user_has_commented_internally_on: Iekšējais komentārs tiek publicēts par ievades lietotāja iekšēji komentēto ievadi'
-        internal_comment_is_posted_on_initiative_user_has_commented_internally_on: Iekšējais komentārs tiek publicēts par priekšlikumu, ko lietotājs komentēja iekšēji
-        internal_comment_is_posted_on_unassigned_initiative: Iekšējais komentārs ir publicēts par nepiešķirtu priekšlikumu
-        internal_comment_is_posted_on_unassigned_unmoderated_idea: Iekšējais komentārs ir publicēts par nepiešķirtu ievades failu neapsaimniekotā projektā
+        internal_comment_is_posted_on_idea_assigned_to_user: 'Iekšējais komentārs tiek publicēts par lietotājam piešķirto ievadi'''
+        internal_comment_is_posted_on_initiative_assigned_to_user: 'Iekšējais komentārs ir publicēts par priekšlikumu, kas piešķirts lietotājam'''
+        internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'Iekšējais komentārs tiek publicēts par ievadi projektā vai mapē, ko pārvalda lietotājs'
+        internal_comment_is_posted_on_idea_user_has_commented_internally_on: 'Iekšējais komentārs tiek publicēts par ievades lietotāja iekšēji komentēto ievadi'''
+        internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'Iekšējais komentārs tiek publicēts par priekšlikumu, ko lietotājs komentēja iekšēji'
+        internal_comment_is_posted_on_unassigned_initiative: 'Iekšējais komentārs ir publicēts par nepiešķirtu priekšlikumu'
+        internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Iekšējais komentārs ir publicēts par nepiešķirtu ievades failu neapsaimniekotā projektā'
         user_is_mentioned_in_internal_comment: 'Lietotājs ir minēts iekšējā komentārā'
         new_input_is_published: 'Tiek publicēti jauni dati'
         new_proposal_is_posted: 'Ir publicēts jauns priekšlikums'
