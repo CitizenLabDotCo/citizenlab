@@ -822,6 +822,7 @@
   "app.containers.Admin.tools.apiTokens.delete": "Token läschen",
   "app.containers.Admin.tools.apiTokens.deleteConfirmation": "Sidd Dir sécher datt Dir dëst Token läschen wëllt?",
   "app.containers.Admin.tools.apiTokens.description": "Verwalten Är API Tokens fir eis ëffentlech API. Fir méi Informatiounen, kuckt eis {link}.",
+  "app.containers.Admin.tools.apiTokens.id": "ID",
   "app.containers.Admin.tools.apiTokens.lastUsedAt": "Last benotzt",
   "app.containers.Admin.tools.apiTokens.link": "API Dokumentatioun",
   "app.containers.Admin.tools.apiTokens.linkUrl": "https://developers.citizenlab.co/reference-api-docs/",
