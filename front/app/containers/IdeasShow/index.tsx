@@ -18,26 +18,26 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // components
-import IdeaSharingButton from './Buttons/IdeaSharingButton';
-import IdeaMeta from './IdeaMeta';
+import IdeaSharingButton from './components/Buttons/IdeaSharingButton';
+import IdeaMeta from './components/IdeaMeta';
 import Title from 'components/PostShowComponents/Title';
-import IdeaProposedBudget from './IdeaProposedBudget';
+import IdeaProposedBudget from './components/IdeaProposedBudget';
 import Body from 'components/PostShowComponents/Body';
 import Image from 'components/PostShowComponents/Image';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import Modal from 'components/UI/Modal';
 import AssignBudgetControl from 'components/AssignBudgetControl';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
-import IdeaMoreActions from './IdeaMoreActions';
+import IdeaMoreActions from './components/IdeaMoreActions';
 import { Box, Spinner, useBreakpoint } from '@citizenlab/cl2-component-library';
 import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
 const LazyComments = lazy(
   () => import('components/PostShowComponents/Comments')
 );
 import LoadingComments from 'components/PostShowComponents/Comments/LoadingComments';
-import MetaInformation from './MetaInformation';
-import MobileSharingButtonComponent from './Buttons/MobileSharingButtonComponent';
-import RightColumnDesktop from './RightColumnDesktop';
+import MetaInformation from './components/MetaInformation';
+import MobileSharingButtonComponent from './components/Buttons/MobileSharingButtonComponent';
+import RightColumnDesktop from './components/RightColumnDesktop';
 
 // utils
 import { isFieldEnabled } from 'utils/projectUtils';

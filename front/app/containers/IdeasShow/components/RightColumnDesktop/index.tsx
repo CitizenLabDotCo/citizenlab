@@ -3,12 +3,12 @@ import React from 'react';
 // components
 import MetaInformation from '../MetaInformation';
 import ReactionControl from 'components/ReactionControl';
-import Buttons from 'containers/IdeasShow/CTABox/Buttons';
+import Buttons from 'containers/IdeasShow/components/CTABox/Buttons';
 import AssignBudgetControl from 'components/AssignBudgetControl';
 
 // styling
 import styled from 'styled-components';
-import { rightColumnWidthDesktop } from '../styleConstants';
+import { rightColumnWidthDesktop } from '../../styleConstants';
 import { colors } from 'utils/styleUtils';
 import IdeaSharingButton from '../Buttons/IdeaSharingButton';
 import SharingButtonComponent from '../Buttons/SharingButtonComponent';
