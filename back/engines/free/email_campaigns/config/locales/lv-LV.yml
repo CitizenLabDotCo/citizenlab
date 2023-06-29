@@ -627,6 +627,7 @@ lv:
         internal_comment_is_posted_on_initiative_assigned_to_user: 'Iekšējais komentārs ir publicēts par priekšlikumu, kas piešķirts lietotājam'''
         internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'Iekšējais komentārs tiek publicēts par ievadi projektā vai mapē, ko pārvalda lietotājs'
         internal_comment_is_posted_on_idea_user_has_commented_internally_on: 'Iekšējais komentārs tiek publicēts par ievades lietotāja iekšēji komentēto ievadi'''
+        internal_comment_is_posted_on_idea_user_moderates: 'Iekšējais komentārs tiek publicēts par ieejas lietotāja moderē'
         internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'Iekšējais komentārs tiek publicēts par priekšlikumu, ko lietotājs komentēja iekšēji'
         internal_comment_is_posted_on_unassigned_initiative: 'Iekšējais komentārs ir publicēts par nepiešķirtu priekšlikumu'
         internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Iekšējais komentārs ir publicēts par nepiešķirtu ievades failu neapsaimniekotā projektā'
