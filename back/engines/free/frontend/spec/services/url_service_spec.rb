@@ -11,18 +11,19 @@ describe Frontend::UrlService do
     let(:initiative) { create(:initiative) }
     let(:internal_comment2) { create(:internal_comment, post: initiative) }
     let(:base_uri) { AppConfiguration.instance.base_frontend_uri }
+    let(:user) { create(:user, locale: 'en') }
 
     it 'returns the correct url for an internal comment on an idea' do
-      expect(service.model_to_url(internal_comment1))
+      expect(service.model_to_url(internal_comment1, locale: user.locale))
         .to eq(
-          "#{base_uri}/admin/projects/#{internal_comment1.post.project_id}" \
+          "#{base_uri}/en/admin/projects/#{internal_comment1.post.project_id}" \
           "/ideas/#{internal_comment1.post.id}##{internal_comment1.id}"
         )
     end
 
     it 'returns the correct url for an internal comment on an initiative' do
-      expect(service.model_to_url(internal_comment2))
-        .to eq("#{base_uri}/admin/initiatives/#{internal_comment2.post.id}##{internal_comment2.id}")
+      expect(service.model_to_url(internal_comment2, locale: user.locale))
+        .to eq("#{base_uri}/en/admin/initiatives/#{internal_comment2.post.id}##{internal_comment2.id}")
     end
   end
 end
