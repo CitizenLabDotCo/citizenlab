@@ -27,7 +27,7 @@ type CreateTokenModalProps = {
 };
 const CreateTokenModal = ({ onClose }: CreateTokenModalProps) => {
   const [success, setSuccess] = useState(false);
-  const [secret, setSecret] = useState<string>('hi');
+  const [secret, setSecret] = useState<string>('');
   const [tokenIsCopied, setTokenIsCopied] = useState(false);
   const { mutateAsync: addApiToken, isLoading } = useAddApiClient();
   const { formatMessage } = useIntl();
@@ -57,7 +57,7 @@ const CreateTokenModal = ({ onClose }: CreateTokenModalProps) => {
 
   return (
     <Box w="100%" m="24px auto" pr="24px">
-      {success ? (
+      {!success ? (
         <>
           <Title variant="h2">{formatMessage(messages.createTokenTitle)}</Title>
           <Text>{formatMessage(messages.createTokenDescription)}</Text>
