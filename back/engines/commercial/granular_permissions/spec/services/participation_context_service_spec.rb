@@ -279,6 +279,7 @@ describe ParticipationContextService do
         idea = create(:idea, project: project, phases: [project.phases[2]])
         permission = service.get_participation_context(project).permissions.find_by(action: 'voting')
         permission.update!(permitted_by: 'users')
+        expect(service.voting_disabled_reason_for_project(project, nil)).to eq 'not_signed_in'
         expect(service.voting_disabled_reason_for_idea(idea, nil)).to eq 'not_signed_in'
       end
 
@@ -293,12 +294,14 @@ describe ParticipationContextService do
           permitted_by: 'groups',
           group_ids: create_list(:group, 2).map(&:id)
         )
+        expect(service.voting_disabled_reason_for_project(project, create(:user))).to eq 'not_in_group'
         expect(service.voting_disabled_reason_for_idea(idea, create(:user))).to eq 'not_in_group'
       end
 
       it "returns 'project_inactive' when the timeline is over" do
         project = create(:project_with_past_phases)
         idea = create(:idea, project: project, phases: [project.phases[2]])
+        expect(service.voting_disabled_reason_for_project(project, create(:user))).to eq 'project_inactive'
         expect(service.voting_disabled_reason_for_idea(idea, create(:user))).to eq 'project_inactive'
       end
     end
@@ -312,12 +315,14 @@ describe ParticipationContextService do
           group_ids: create_list(:group, 2).map(&:id)
         )
         idea = create(:idea, project: project)
+        expect(service.voting_disabled_reason_for_project(project, create(:user))).to eq 'not_in_group'
         expect(service.voting_disabled_reason_for_idea(idea, create(:user))).to eq 'not_in_group'
       end
 
       it "returns 'project_inactive' when the project is archived" do
         project = create(:continuous_budgeting_project, with_permissions: true, admin_publication_attributes: { publication_status: 'archived' })
         idea = create(:idea, project: project)
+        expect(service.voting_disabled_reason_for_project(project, create(:user))).to eq 'project_inactive'
         expect(service.voting_disabled_reason_for_idea(idea, create(:user))).to eq 'project_inactive'
       end
     end
