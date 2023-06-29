@@ -623,13 +623,13 @@ nl-BE:
         input_is_flagged_as_spam: 'Bijdrage is gemarkeerd als spam'
         input_is_updated: 'De bijdrage is bijgewerkt'
         input_status_changes: 'Wijzigingen in de status van de input'
-        internal_comment_is_posted_on_idea_assigned_to_user: Intern commentaar is geplaatst op invoer toegewezen aan gebruiker'
-        internal_comment_is_posted_on_initiative_assigned_to_user: Intern commentaar is geplaatst op voorstel toegewezen aan gebruiker'.
-        internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: Intern commentaar wordt geplaatst op invoer in project of map die gebruiker beheert'
-        internal_comment_is_posted_on_idea_user_has_commented_internally_on: Intern commentaar is geplaatst op input waar gebruiker intern commentaar op heeft gegeven'
-        internal_comment_is_posted_on_initiative_user_has_commented_internally_on: Intern commentaar is geplaatst op voorstel waar gebruiker intern commentaar op heeft gegeven'
-        internal_comment_is_posted_on_unassigned_initiative: Intern commentaar is geplaatst op niet-toegewezen voorstel".
-        internal_comment_is_posted_on_unassigned_unmoderated_idea: Intern commentaar is geplaatst op niet-toegewezen invoer in onbeheerd project'.
+        internal_comment_is_posted_on_idea_assigned_to_user: 'Intern commentaar is geplaatst op invoer toegewezen aan gebruiker'''
+        internal_comment_is_posted_on_initiative_assigned_to_user: 'Intern commentaar is geplaatst op voorstel toegewezen aan gebruiker''.'
+        internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'Intern commentaar wordt geplaatst op invoer in project of map die gebruiker beheert'''
+        internal_comment_is_posted_on_idea_user_has_commented_internally_on: 'Intern commentaar is geplaatst op input waar gebruiker intern commentaar op heeft gegeven'''
+        internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'Intern commentaar is geplaatst op voorstel waar gebruiker intern commentaar op heeft gegeven'''
+        internal_comment_is_posted_on_unassigned_initiative: 'Intern commentaar is geplaatst op niet-toegewezen voorstel".'
+        internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Intern commentaar is geplaatst op niet-toegewezen invoer in onbeheerd project''.'
         user_is_mentioned_in_internal_comment: 'Gebruiker wordt genoemd in intern commentaar'
         new_input_is_published: 'Nieuwe bijdrage is gepubliceerd'
         new_proposal_is_posted: 'Nieuw voorstel is geplaatst'
