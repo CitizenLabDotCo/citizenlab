@@ -7,7 +7,7 @@ module ParticipationMethod
       participation_context.voting_max_votes_per_idea = 1 if participation_context.voting_method == 'single_voting'
 
       # Set the default voting term for multiple voting
-      if participation_context.voting_method == 'multiple_voting' && 
+      if participation_context.voting_method == 'multiple_voting' &&
          participation_context.voting_term_singular_multiloc.blank? &&
          participation_context.voting_term_plural_multiloc.blank?
 
