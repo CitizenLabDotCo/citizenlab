@@ -805,7 +805,6 @@
   "app.containers.Admin.reporting.reportBuilder": "Rapor oluşturucu",
   "app.containers.Admin.reporting.reportHeader": "Rapor başlığı",
   "app.containers.Admin.reporting.resultsSection": "SONUÇLAR",
-  "app.containers.Admin.tools.comingSoon": "Çok yakında",
   "app.containers.Admin.tools.learnMore": "Daha fazla bilgi edinin",
   "app.containers.Admin.tools.managePublicAPIKeys": "API Anahtarlarını Yönetme",
   "app.containers.Admin.tools.manageWidget": "Widget'ı yönet",

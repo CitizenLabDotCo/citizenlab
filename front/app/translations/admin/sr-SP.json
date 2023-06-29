@@ -805,7 +805,6 @@
   "app.containers.Admin.reporting.reportBuilder": "Градитељ извештаја",
   "app.containers.Admin.reporting.reportHeader": "Заглавље извештаја",
   "app.containers.Admin.reporting.resultsSection": "РЕЗУЛТАТИ",
-  "app.containers.Admin.tools.comingSoon": "Coming soon",
   "app.containers.Admin.tools.learnMore": "Learn more",
   "app.containers.Admin.tools.managePublicAPIKeys": "Manage API Keys",
   "app.containers.Admin.tools.manageWidget": "Manage widget",

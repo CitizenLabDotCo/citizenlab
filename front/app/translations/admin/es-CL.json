@@ -805,7 +805,6 @@
   "app.containers.Admin.reporting.reportBuilder": "Constructor de informes",
   "app.containers.Admin.reporting.reportHeader": "Encabezado del informe",
   "app.containers.Admin.reporting.resultsSection": "RESULTADOS",
-  "app.containers.Admin.tools.comingSoon": "Próximamente",
   "app.containers.Admin.tools.learnMore": "Saber más",
   "app.containers.Admin.tools.managePublicAPIKeys": "Gestionar claves API",
   "app.containers.Admin.tools.manageWidget": "Administrar widget",

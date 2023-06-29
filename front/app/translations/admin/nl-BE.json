@@ -805,7 +805,6 @@
   "app.containers.Admin.reporting.reportBuilder": "Rapportbouwer",
   "app.containers.Admin.reporting.reportHeader": "Koptekst rapport",
   "app.containers.Admin.reporting.resultsSection": "RESULTATEN",
-  "app.containers.Admin.tools.comingSoon": "Binnenkort beschikbaar",
   "app.containers.Admin.tools.learnMore": "Meer informatie",
   "app.containers.Admin.tools.managePublicAPIKeys": "Beheer API-sleutels",
   "app.containers.Admin.tools.manageWidget": "Beheer widget",
