@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
 // components
 import {
@@ -110,6 +110,17 @@ export default ({
   const hasAnonymousParticipationEnabled = useFeatureFlag({
     name: 'anonymous_participation',
   });
+
+  const reactingConfigNotDefault = useRef(
+    !reacting_dislike_enabled ||
+      reacting_like_method === 'limited' ||
+      reacting_dislike_method === 'limited'
+  );
+  const showReactingConfig =
+    reacting_enabled && reactingConfigNotDefault.current;
+
+  console.log(reacting_enabled, reactingConfigNotDefault.current);
+
   return (
     <>
       {hasAnonymousParticipationEnabled && (
@@ -162,7 +173,7 @@ export default ({
           <Error apiErrors={apiErrors && apiErrors.reacting_enabled} />
         </ToggleRow>
       </StyledSectionField>
-      {reacting_enabled && (
+      {showReactingConfig && (
         <>
           <SectionField>
             <SubSectionTitle>
