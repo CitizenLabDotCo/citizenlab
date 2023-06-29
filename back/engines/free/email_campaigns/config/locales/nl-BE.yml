@@ -16,16 +16,16 @@ nl-BE:
       "initiative_published": Posten van mijn voorstel
       "invite_received": Uitnodiging
       "invite_reminder": Herinnering uitnodiging
-      "internal_comment_on_idea_assigned_to_you": Intern commentaar op aan mij toegewezen input
-      "internal_comment_on_idea_you_commented_internally_on": Intern commentaar op input Ik heb intern commentaar gegeven op
-      "internal_comment_on_idea_you_moderate": Intern commentaar op invoer in project of map die ik beheer
-      "internal_comment_on_initiative_assigned_to_you": Intern commentaar op voorstel dat aan mij is toegewezen
-      "internal_comment_on_initiative_you_commented_internally_on": Intern commentaar op voorstel Ik heb intern commentaar gegeven op
-      "internal_comment_on_unassigned_initiative": Intern commentaar op niet-toegewezen voorstel
-      "internal_comment_on_unassigned_unmoderated_idea": Intern commentaar op niet-toegewezen invoer in onbeheerd project
-      "internal_comment_on_your_internal_comment": Intern commentaar op mijn interne commentaar
+      "internal_comment_on_idea_assigned_to_you": Interne reactie op aan mij toegewezen bijdrage
+      "internal_comment_on_idea_you_commented_internally_on": Interne reactie op een bijdrage waarop ik intern heb gereageerd
+      "internal_comment_on_idea_you_moderate": Interne reactie op een bijdrage in een project of map die ik beheer
+      "internal_comment_on_initiative_assigned_to_you": Interne reactie op een voorstel dat aan mij is toegewezen
+      "internal_comment_on_initiative_you_commented_internally_on": Interne reactie op een voorstel waarop ik intern heb gereageerd
+      "internal_comment_on_unassigned_initiative": Interne reactie op een niet-toegewezen voorstel
+      "internal_comment_on_unassigned_unmoderated_idea": Interne reactie op een niet-toegewezen bijdrage in een onbeheerd project
+      "internal_comment_on_your_internal_comment": Interne reactie op mijn interne reactie
       "mention_in_official_feedback": Vermelding in een update
-      "mention_in_internal_comment": Vermelding in een intern commentaar
+      "mention_in_internal_comment": Vermelding in een interne reactie
       "new_comment_for_admin": Nieuwe reactie in een project dat ik modereer
       "new_comment_on_commented_idea": Nieuwe reactie op een idee waar ik op reageerde
       "new_comment_on_commented_initiative": Nieuwe reactie op een voorstel waar ik op reageerde
@@ -225,10 +225,10 @@ nl-BE:
       subject: 'Iemand heeft je vernoemd op het platform van %{organizationName}'
       preheader: '%{commentAuthor} heeft je vermeld in een reactie'
     mention_in_internal_comment:
-      cta_reply_to: 'Bekijk commentaar van %{firstName}'
+      cta_reply_to: 'Bekijk reactie van %{firstName}'
       event_description: '%{authorNameFull} noemde je in een interne reactie.'
       subject: '%{firstName} noemde je in een interne reactie.'
-      main_header: '%{authorNameFirst} noemde je in een interne reactie.'
+      main_header: '%{firstName} noemde je in een interne reactie.'
       preheader: '%{authorNameFull} noemde je in een interne reactie.'
     moderator_digest:
       subject: 'Je weekoverzicht als projectbeheerder van %{time}'
@@ -314,7 +314,7 @@ nl-BE:
       preheader: '%{authorName} antwoordde op je reactie op het platform van %{organizationName}'
       replied: '%{authorFirstName} reageerde:'
     internal_comment_on_your_internal_comment:
-      cta_reply_to: 'Bekijk commentaar van %{firstName}'
+      cta_reply_to: 'Bekijk reactie van %{firstName}'
       event_description: '%{authorNameFull} heeft gereageerd op je interne reactie.'
       subject: 'Je hebt een reactie ontvangen op je interne reactie op ''%{post}''.'
       main_header: 'Je hebt een reactie ontvangen op je interne reactie op ''%{post}''.'
