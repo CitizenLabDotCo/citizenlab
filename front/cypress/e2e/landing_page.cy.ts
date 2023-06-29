@@ -56,6 +56,31 @@ describe('Landing page - not signed in', () => {
   });
 });
 
+describe('Landing page - URL sign in/up', () => {
+  it('shows correct authentication modal when logged out', () => {
+    cy.clearCookies();
+    cy.visit('/en/sign-in');
+    cy.get('#e2e-authentication-modal').should('exist');
+    cy.get('#e2e-authentication-modal').within(() => {
+      cy.contains('Sign in').should('exist');
+    });
+
+    cy.visit('/en/sign-up');
+    cy.get('#e2e-authentication-modal').should('exist');
+    cy.get('#e2e-authentication-modal').within(() => {
+      cy.contains('Sign up').should('exist');
+    });
+  });
+
+  it('shows no authentication modal when already logged in', () => {
+    cy.setAdminLoginCookie();
+    cy.visit('/en/sign-up');
+    cy.get('#e2e-authentication-modal').should('not.exist');
+    cy.visit('/en/sign-in');
+    cy.get('#e2e-authentication-modal').should('not.exist');
+  });
+});
+
 describe('Landing page - signed in', () => {
   const firstName = randomString();
   const lastName = randomString();

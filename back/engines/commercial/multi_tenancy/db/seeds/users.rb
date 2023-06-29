@@ -7,10 +7,15 @@ module MultiTenancy
     class Users < Base
       attr_reader :anonymizer
 
-      ADMIN_ATTRS = {
+      ADMIN_1_ATTRS = {
         id: '386d255e-2ff1-4192-8e50-b3022576be50',
         email: 'admin@citizenlab.co',
         password: 'democracy2.0',
+        roles: [{ type: 'admin' }],
+        locale: 'en'
+      }.freeze
+
+      ADMIN_2_ATTRS = {
         roles: [{ type: 'admin' }],
         locale: 'en'
       }.freeze
@@ -47,12 +52,13 @@ module MultiTenancy
 
       def run_for_empty_localhost
         random_user = anonymizer.anonymized_attributes(AppConfiguration.instance.settings('core', 'locales'))
-        User.create!(random_user.merge({ **admin_attrs, id: 'e0d698fc-5969-439f-9fe6-e74fe82b567a' }))
+        User.create!(random_user.merge({ **admin_1_attrs, id: 'e0d698fc-5969-439f-9fe6-e74fe82b567a' }))
       end
 
       def run_for_localhost
         locales = AppConfiguration.instance.settings('core', 'locales')
-        User.create! anonymizer.anonymized_attributes(locales).merge(admin_attrs)
+        User.create! anonymizer.anonymized_attributes(locales).merge(admin_1_attrs)
+        User.create! anonymizer.anonymized_attributes(locales).merge(admin_2_attrs)
         User.create! anonymizer.anonymized_attributes(locales).merge(moderator_attrs)
         User.create! anonymizer.anonymized_attributes(locales).merge(user_attrs)
 
@@ -61,8 +67,12 @@ module MultiTenancy
         end
       end
 
-      def admin_attrs
-        ADMIN_ATTRS
+      def admin_1_attrs
+        ADMIN_1_ATTRS
+      end
+
+      def admin_2_attrs
+        ADMIN_2_ATTRS
       end
 
       def moderator_attrs
