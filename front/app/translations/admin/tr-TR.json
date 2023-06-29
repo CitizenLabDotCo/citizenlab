@@ -822,6 +822,7 @@
   "app.containers.Admin.tools.apiTokens.delete": "Belirteci sil",
   "app.containers.Admin.tools.apiTokens.deleteConfirmation": "Bu belirteci silmek istediğinizden emin misiniz?",
   "app.containers.Admin.tools.apiTokens.description": "Genel API'miz için API belirteçlerinizi yönetin. Daha fazla bilgi için {link}adresimize bakın.",
+  "app.containers.Admin.tools.apiTokens.id": "KIMLIK",
   "app.containers.Admin.tools.apiTokens.lastUsedAt": "Son kullanılan",
   "app.containers.Admin.tools.apiTokens.link": "API belgeleri",
   "app.containers.Admin.tools.apiTokens.linkUrl": "https://developers.citizenlab.co/reference-api-docs/",
