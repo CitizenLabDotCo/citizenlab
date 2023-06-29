@@ -140,12 +140,16 @@ const IdeaShowPageTopBar = ({
           />
         </Left>
         <Right>
+          {/* Only visible if not participatory budgeting */}
           <ReactionControl
             size="1"
             styleType="border"
             ideaId={ideaId}
             disabledReactionClick={onDisabledReactClick}
           />
+
+          {/* Only visible if participatory budgeting */}
+          {/* TODO */}
         </Right>
       </TopBarInner>
     </Container>
