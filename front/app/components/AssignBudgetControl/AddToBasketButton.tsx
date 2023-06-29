@@ -15,7 +15,8 @@ import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { Button, Icon } from '@citizenlab/cl2-component-library';
 
 // i18n
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 // styling
 import { colors } from 'utils/styleUtils';
@@ -37,8 +38,6 @@ import { IdeaVotingDisabledReason } from 'api/ideas/types';
 interface Props {
   ideaId: string;
   projectId: string;
-  inBasketMessage: MessageDescriptor;
-  notInBasketMessage: MessageDescriptor;
 }
 
 const isButtonEnabled = (
@@ -59,12 +58,7 @@ const isButtonEnabled = (
   return basketNotSubmittedYet;
 };
 
-const AddToBasketButton = ({
-  ideaId,
-  projectId,
-  inBasketMessage,
-  notInBasketMessage,
-}: Props) => {
+const AddToBasketButton = ({ ideaId, projectId }: Props) => {
   const theme = useTheme();
   const { data: appConfig } = useAppConfiguration();
   const { data: idea } = useIdeaById(ideaId);
@@ -135,7 +129,7 @@ const AddToBasketButton = ({
     ? basket.data.relationships.ideas.data.map((idea) => idea.id)
     : [];
   const isInBasket = basketIdeaIds.includes(ideaId);
-  const buttonMessage = isInBasket ? inBasketMessage : notInBasketMessage;
+  const buttonMessage = isInBasket ? messages.added : messages.add;
 
   const buttonEnabled = isButtonEnabled(basket, actionDescriptor);
 

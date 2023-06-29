@@ -19,9 +19,6 @@ import { useSearchParams } from 'react-router-dom';
 import { ParticipationMethod } from 'services/participationContexts';
 import { IParticipationContextType } from 'typings';
 
-// i18n
-import messages from 'components/AssignBudgetControl/messages';
-
 // hooks
 import useIdeaById from 'api/ideas/useIdeaById';
 import useIdeaImage from 'api/idea_images/useIdeaImage';
@@ -184,8 +181,6 @@ const CompactIdeaCard = memo<IdeaCardProps>(
                 <AddToBasketButton
                   projectId={projectId}
                   ideaId={idea.data.id}
-                  inBasketMessage={messages.added}
-                  notInBasketMessage={messages.add}
                 />
               </Box>
             </Box>

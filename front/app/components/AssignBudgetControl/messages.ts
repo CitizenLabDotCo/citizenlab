@@ -5,17 +5,9 @@ export default defineMessages({
     id: 'app.components.AssignBudgetControl.added',
     defaultMessage: 'Added',
   },
-  removeFromMyBasket: {
-    id: 'app.components.AssignBudgetControl.removeFromMyBasket',
-    defaultMessage: 'Remove from my basket',
-  },
   add: {
     id: 'app.components.AssignBudgetControl.add',
     defaultMessage: 'Add',
-  },
-  addToMyBasket: {
-    id: 'app.components.AssignBudgetControl.addToMyBasket',
-    defaultMessage: 'Add to my basket',
   },
   budgetingNotPossible: {
     id: 'app.components.VoteControl.budgetingNotPossible',

@@ -96,12 +96,7 @@ const AssignBudgetControl = memo(({ ideaId, projectId }: Props) => {
           </ScreenReaderOnly>
           <FormattedBudget value={ideaBudget} />
         </Budget>
-        <AddToBasketButton
-          ideaId={ideaId}
-          projectId={projectId}
-          inBasketMessage={messages.removeFromMyBasket}
-          notInBasketMessage={messages.addToMyBasket}
-        />
+        <AddToBasketButton ideaId={ideaId} projectId={projectId} />
       </BudgetWithButtonWrapper>
       {isPermitted && participationContextId && (
         <StyledPBExpenses
