@@ -23,11 +23,16 @@ import { useTheme } from 'styled-components';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import {
+  ActionDescriptorFutureEnabled,
+  isFixableByAuthentication,
+} from 'utils/actionDescriptors';
 import { getParticipationContext } from './utils';
 
 // typings
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
+import { IBasket } from 'api/baskets/types';
+import { IdeaVotingDisabledReason } from 'api/ideas/types';
 
 interface Props {
   ideaId: string;
@@ -35,6 +40,24 @@ interface Props {
   inBasketMessage: MessageDescriptor;
   notInBasketMessage: MessageDescriptor;
 }
+
+const isButtonEnabled = (
+  basket: IBasket | undefined,
+  actionDescriptor: ActionDescriptorFutureEnabled<IdeaVotingDisabledReason>
+) => {
+  const actionDisabledAndNotFixable =
+    actionDescriptor.enabled === false &&
+    !isFixableByAuthentication(actionDescriptor.disabled_reason);
+
+  if (actionDisabledAndNotFixable) return false;
+
+  if (basket === undefined) {
+    return true;
+  }
+
+  const basketNotSubmittedYet = basket.data.attributes.submitted_at === null;
+  return basketNotSubmittedYet;
+};
 
 const AddToBasketButton = ({
   ideaId,
@@ -66,7 +89,6 @@ const AddToBasketButton = ({
   }
 
   const actionDescriptor = idea.data.attributes.action_descriptor.voting;
-
   if (!actionDescriptor) return null;
 
   const isPermitted =
@@ -115,17 +137,14 @@ const AddToBasketButton = ({
   const isInBasket = basketIdeaIds.includes(ideaId);
   const buttonMessage = isInBasket ? inBasketMessage : notInBasketMessage;
 
-  const buttonDisabled =
-    basket?.data.attributes.submitted_at !== null ||
-    (actionDescriptor.enabled === false &&
-      !isFixableByAuthentication(actionDescriptor.disabled_reason));
+  const buttonEnabled = isButtonEnabled(basket, actionDescriptor);
 
   const currency = appConfig?.data.attributes.settings.core.currency;
 
   return (
     <Button
       onClick={handleAddRemoveButtonClick}
-      disabled={buttonDisabled}
+      disabled={!buttonEnabled}
       processing={processing}
       bgColor={isInBasket ? colors.green500 : colors.white}
       textColor={isInBasket ? colors.white : theme.colors.tenantPrimary}
