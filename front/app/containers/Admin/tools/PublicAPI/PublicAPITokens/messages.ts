@@ -22,6 +22,10 @@ export default defineMessages({
     id: 'app.containers.Admin.tools.apiTokens.name',
     defaultMessage: 'Name',
   },
+  id: {
+    id: 'app.containers.Admin.tools.apiTokens.id',
+    defaultMessage: 'ID',
+  },
   secret: {
     id: 'app.containers.Admin.tools.apiTokens.secret',
     defaultMessage: 'Secret',

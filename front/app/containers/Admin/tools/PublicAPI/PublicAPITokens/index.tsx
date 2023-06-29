@@ -71,6 +71,7 @@ const PublicAPITokens = () => {
           <Thead>
             <Tr>
               <Th>{formatMessage(messages.name)}</Th>
+              <Th>{formatMessage(messages.id)}</Th>
               <Th>{formatMessage(messages.secret)}</Th>
               <Th>{formatMessage(messages.createdAt)}</Th>
               <Th>{formatMessage(messages.lastUsedAt)}</Th>
@@ -81,9 +82,13 @@ const PublicAPITokens = () => {
             {apiTokens.data.map((token) => (
               <Tr key={token.id}>
                 <Td>{token.attributes.name}</Td>
+                <Td>{token.id}</Td>
                 <Td>{token.attributes.masked_secret}</Td>
                 <Td>{formatDate(token.attributes.created_at)}</Td>
-                <Td>{formatDate(token.attributes.last_used_at)}</Td>
+                <Td>
+                  {token.attributes.last_used_at &&
+                    formatDate(token.attributes.last_used_at)}
+                </Td>
                 <Td>
                   <IconButton
                     iconName="delete"

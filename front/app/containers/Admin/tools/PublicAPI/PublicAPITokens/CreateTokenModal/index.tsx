@@ -17,10 +17,15 @@ import {
 } from '@citizenlab/cl2-component-library';
 import useAddApiClient from 'api/api_clients/useAddApiClient';
 import { handleCLErrorsIsh } from 'utils/errorUtils';
+import styled from 'styled-components';
 
 interface FormValues {
   name: string;
 }
+
+const StyledSecretText = styled(Text)`
+  word-break: break-all;
+`;
 
 type CreateTokenModalProps = {
   onClose: () => void;
@@ -81,6 +86,7 @@ const CreateTokenModal = ({ onClose }: CreateTokenModalProps) => {
                   buttonStyle="secondary"
                   onClick={onClose}
                   disabled={isLoading}
+                  type="button"
                 >
                   {formatMessage(messages.createTokenModalCancel)}
                 </Button>
@@ -99,10 +105,10 @@ const CreateTokenModal = ({ onClose }: CreateTokenModalProps) => {
           <Text>
             {formatMessage(messages.createTokenModalSuccessDescription)}
           </Text>
-          <Box bgColor={colors.tealLight} py="4px">
-            <Text fontWeight="bold" textAlign="center">
+          <Box bgColor={colors.tealLight} py="4px" px="12px">
+            <StyledSecretText fontWeight="bold" textAlign="center">
               {secret}
-            </Text>
+            </StyledSecretText>
           </Box>
           <Box display="flex" gap="12px" justifyContent="flex-end" mt="40px">
             <Button buttonStyle="secondary" onClick={onClose}>
