@@ -627,6 +627,7 @@ sr-Latn:
         internal_comment_is_posted_on_initiative_assigned_to_user: 'Интерни коментар се поставља на предлог који је додељен кориснику'
         internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'Интерни коментар се поставља на унос у пројекту или фолдеру којим корисник управља'''
         internal_comment_is_posted_on_idea_user_has_commented_internally_on: 'Интерни коментар се поставља на унос корисника који је интерно коментарисао на'''
+        internal_comment_is_posted_on_idea_user_moderates: 'Интерни коментар се поставља на унос корисника који модерира'
         internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'Интерни коментар се поставља на предлог који је корисник интерно коментарисао'''
         internal_comment_is_posted_on_unassigned_initiative: 'Интерни коментар је постављен на недодељени предлог'''
         internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Интерни коментар се поставља на недодељени унос у неуправљаном пројекту'''
