@@ -257,9 +257,9 @@ export default defineMessages({
     defaultMessage: 'Anonymous polling',
   },
   anonymousPollingTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.anonymousPollingTooltip2',
+    id: 'app.containers.AdminPage.ProjectEdit.anonymousPollingTooltip',
     defaultMessage:
-      "When enabled it's impossible to see who reacted to what. Users still need an account and can only react once.",
+      "When enabled it's impossible to see who voted on what. Users still need an account and can only vote once.",
   },
   enabled: {
     id: 'app.containers.AdminPage.ProjectEdit.enabled',
