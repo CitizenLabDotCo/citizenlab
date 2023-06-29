@@ -627,6 +627,7 @@ ca:
         internal_comment_is_posted_on_initiative_assigned_to_user: 'El comentari intern es publica sobre la proposta assignada a l''usuari"'
         internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'El comentari intern es publica a l''entrada al projecte o carpeta que gestiona l''usuari.'
         internal_comment_is_posted_on_idea_user_has_commented_internally_on: 'El comentari intern es publica a l''entrada que l''usuari ha comentat internament'''
+        internal_comment_is_posted_on_idea_user_moderates: 'El comentari intern es publica als moderadors d''usuari d''entrada'
         internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'El comentari intern es publica a la proposta que l''usuari ha comentat internament'''
         internal_comment_is_posted_on_unassigned_initiative: 'El comentari intern es publica sobre una proposta no assignada"'
         internal_comment_is_posted_on_unassigned_unmoderated_idea: 'El comentari intern es publica en una entrada no assignada en un projecte no gestionat"'
