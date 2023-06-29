@@ -28,9 +28,9 @@ module Frontend
         return model_to_path(model_instance.post)
       when InternalComment # Internal comments are only implemented in the Back Office / Admin UI
         if model_instance.post_type == 'Idea'
-          return "admin/projects/#{model_instance.post.project_id}/ideas/#{model_instance.post.id}##{model_instance.id}"
+          return "/admin/projects/#{model_instance.post.project_id}/ideas/#{model_instance.post.id}##{model_instance.id}"
         elsif model_instance.post_type == 'Initiative'
-          return "admin/initiatives/#{model_instance.post.id}##{model_instance.id}"
+          return "/admin/initiatives/#{model_instance.post.id}##{model_instance.id}"
         end
       when ProjectFolders::Folder
         subroute = 'folders'
