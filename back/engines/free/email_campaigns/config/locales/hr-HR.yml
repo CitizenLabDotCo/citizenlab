@@ -627,6 +627,7 @@ hr:
         internal_comment_is_posted_on_initiative_assigned_to_user: 'Interni komentar objavljen je na prijedlog dodijeljen korisniku'''
         internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'Interni komentar objavljen je na unosu u projektu ili mapi kojom upravlja korisnik'''
         internal_comment_is_posted_on_idea_user_has_commented_internally_on: 'Interni komentar objavljen je na unosu koji je korisnik interno komentirao na'''
+        internal_comment_is_posted_on_idea_user_moderates: 'Interni komentar objavljuje se na unosu koji moderira korisnik'
         internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'Interni komentar objavljen je na prijedlogu koji je korisnik interno komentirao'''
         internal_comment_is_posted_on_unassigned_initiative: 'Interni komentar objavljen je na nedodijeljenom prijedlogu'''
         internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Interni komentar objavljen je na nedodijeljenom unosu u neupravljanom projektu'''
