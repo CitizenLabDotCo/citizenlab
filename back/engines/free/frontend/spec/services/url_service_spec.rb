@@ -4,13 +4,13 @@ require 'rails_helper'
 
 describe Frontend::UrlService do
   let(:service) { described_class.new }
+  let(:base_uri) { AppConfiguration.instance.base_frontend_uri }
 
   describe '#model_to_url' do
     let(:idea) { create(:idea) }
     let(:internal_comment1) { create(:internal_comment, post: idea) }
     let(:initiative) { create(:initiative) }
     let(:internal_comment2) { create(:internal_comment, post: initiative) }
-    let(:base_uri) { AppConfiguration.instance.base_frontend_uri }
     let(:user) { create(:user, locale: 'en') }
 
     it 'returns the correct url for an internal comment on an idea' do
