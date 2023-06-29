@@ -45,12 +45,13 @@ module PublicApi
       touch(:last_used_at)
     end
 
-    private
-
     def generate_secret
-      random_secret = SecureRandom.urlsafe_base64(50)
-      self.secret = random_secret
-      self.secret_postfix = random_secret[-4..]
+      if secret_digest.blank?
+        random_secret = SecureRandom.urlsafe_base64(50)
+        self.secret = random_secret
+        self.secret_postfix = random_secret[-4..]
+        random_secret
+      end
     end
   end
 end
