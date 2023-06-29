@@ -4,7 +4,7 @@ import Button from 'components/UI/Button';
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
-import messages from '../messages';
+import messages from '../../messages';
 
 interface Props {
   onClick?: () => void;
