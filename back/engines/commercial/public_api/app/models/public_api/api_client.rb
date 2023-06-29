@@ -4,11 +4,13 @@
 #
 # Table name: public_api_api_clients
 #
-#  id         :uuid             not null, primary key
-#  name       :string
-#  secret     :string
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id                    :uuid             not null, primary key
+#  name                  :string
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
+#  last_used_at :datetime
+#  secret_digest         :string           not null
+#  secret_postfix :string           not null
 #
 module PublicApi
   class ApiClient < ApplicationRecord
@@ -16,8 +18,11 @@ module PublicApi
 
     before_validation :generate_secret, on: :create
 
+    has_secure_password :secret
+
     def authenticate(secret)
-      self.secret == secret
+      # Provided by has_secure_password
+      !!authenticate_secret(secret)
     end
 
     def self.from_token_request(request)
@@ -36,10 +41,16 @@ module PublicApi
       }
     end
 
+    def used!
+      touch(:last_used_at)
+    end
+
     private
 
     def generate_secret
-      self.secret ||= SecureRandom.urlsafe_base64(50)
+      random_secret = SecureRandom.urlsafe_base64(50)
+      self.secret = random_secret
+      self.secret_postfix = random_secret[-4..]
     end
   end
 end
