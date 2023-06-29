@@ -67,7 +67,7 @@ export default defineMessages({
     defaultMessage: 'Give your token a name',
   },
   createTokenModalButton: {
-    id: 'app.containers.Admin.tools.apiTokens.createTokenButton',
+    id: 'app.containers.Admin.tools.apiTokens.createTokenModalButton',
     defaultMessage: 'Create token',
   },
   createTokenModalCancel: {
