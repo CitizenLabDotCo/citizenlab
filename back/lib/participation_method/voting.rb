@@ -4,6 +4,20 @@ module ParticipationMethod
   class Voting < Ideation
     def assign_defaults_for_participation_context
       participation_context.ideas_order ||= 'random'
+      participation_context.voting_max_votes_per_idea = 1 if participation_context.voting_method == 'single_voting'
+
+      # Set the default voting term for multiple voting
+      if participation_context.voting_method == 'multiple_voting' && 
+         participation_context.voting_term_singular_multiloc.blank? &&
+         participation_context.voting_term_plural_multiloc.blank?
+
+        participation_context.voting_term_singular_multiloc = CL2_SUPPORTED_LOCALES.index_with do |locale|
+          I18n.t('voting_method.default_voting_term_singular', locale: locale)
+        end
+        participation_context.voting_term_plural_multiloc = CL2_SUPPORTED_LOCALES.index_with do |locale|
+          I18n.t('voting_method.default_voting_term_plural', locale: locale)
+        end
+      end
     end
 
     def allowed_ideas_orders

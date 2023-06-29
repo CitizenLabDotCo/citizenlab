@@ -417,17 +417,14 @@ resource 'Projects' do
 
           context 'single voting' do
             let(:voting_method) { 'single_voting' }
-            let(:voting_max_total) { 10 }
 
-            example_request 'Create a voting (single voting) project - without a voting term' do
+            example_request 'Create a voting (single voting) project' do
               assert_status 201
               expect(response_data.dig(:attributes, :participation_method)).to eq 'voting'
               expect(response_data.dig(:attributes, :voting_method)).to eq 'single_voting'
-              expect(response_data.dig(:attributes, :voting_max_total)).to eq 10
+              expect(response_data.dig(:attributes, :voting_max_total)).to eq nil
               expect(response_data.dig(:attributes, :voting_min_total)).to eq 0
               expect(response_data.dig(:attributes, :voting_max_votes_per_idea)).to eq 1
-              expect(response_data.dig(:attributes, :voting_term_singular_multiloc, :en)).to eq 'vote'
-              expect(response_data.dig(:attributes, :voting_term_plural_multiloc, :en)).to eq 'votes'
               expect(response_data.dig(:attributes, :ideas_order)).to eq 'random'
               expect(response_data.dig(:attributes, :baskets_count)).to eq 0
             end

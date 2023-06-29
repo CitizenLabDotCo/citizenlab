@@ -459,7 +459,6 @@ FactoryBot.define do
       process_type { 'continuous' }
       participation_method { 'voting' }
       voting_method { 'single_voting' }
-      voting_max_total { 10 }
     end
 
     factory :continuous_poll_project do
