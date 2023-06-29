@@ -154,7 +154,8 @@ resource 'Projects' do
             comment_reacting_idea: { enabled: false, disabled_reason: 'project_inactive' },
             annotating_document: { enabled: false, disabled_reason: 'project_inactive' },
             taking_survey: { enabled: false, disabled_reason: 'project_inactive' },
-            taking_poll: { enabled: false, disabled_reason: 'project_inactive' }
+            taking_poll: { enabled: false, disabled_reason: 'project_inactive' },
+            voting: { enabled: false, disabled_reason: 'project_inactive' }
           }
         )
         expect(json_response.dig(:data, :relationships)).to include(
@@ -171,7 +172,10 @@ resource 'Projects' do
         basket = create(:basket, participation_context: project, user: @user)
         do_request id: project.id
         expect(status).to eq 200
-        expect(json_response.dig(:data, :relationships, :user_basket, :data, :id)).to eq basket.id
+        expect(response_data.dig(:relationships, :user_basket, :data, :id)).to eq basket.id
+        expect(response_data.dig(:attributes, :action_descriptor, :voting)).to eq(
+          { enabled: true, disabled_reason: nil }
+        )
       end
 
       example 'Get a project on a timeline project includes the current_phase', document: false do
@@ -375,26 +379,59 @@ resource 'Projects' do
           expect(json_response.dig(:data, :attributes, :allow_anonymous_participation)).to eq allow_anonymous_participation
         end
 
-        describe do
+        describe 'voting projects' do
           let(:participation_method) { 'voting' }
-          let(:voting_method) { 'budgeting' }
-          let(:voting_max_total) { 100 }
-          let(:voting_min_total) { 10 }
-          let(:voting_max_votes_per_idea) { 5 }
-          let(:voting_term_singular_multiloc) { { 'en' => 'Grocery shopping' } }
-          let(:voting_term_plural_multiloc) { { 'en' => 'Groceries shoppings' } }
 
-          example_request 'Create a voting project' do
-            assert_status 201
+          context 'budgeting' do
+            let(:voting_method) { 'budgeting' }
+            let(:voting_max_total) { 100 }
+            let(:voting_min_total) { 10 }
 
-            expect(json_response.dig(:data, :attributes, :participation_method)).to eq 'voting'
-            expect(json_response.dig(:data, :attributes, :voting_method)).to eq 'budgeting'
-            expect(json_response.dig(:data, :attributes, :voting_max_total)).to eq 100
-            expect(json_response.dig(:data, :attributes, :voting_min_total)).to eq 10
-            expect(json_response.dig(:data, :attributes, :voting_max_votes_per_idea)).to eq 5
-            expect(json_response.dig(:data, :attributes, :voting_term_singular_multiloc)).to eq({ en: 'Grocery shopping' })
-            expect(json_response.dig(:data, :attributes, :voting_term_plural_multiloc)).to eq({ en: 'Groceries shoppings' })
-            expect(json_response.dig(:data, :attributes, :baskets_count)).to eq 0
+            example_request 'Create a voting (budgeting) project' do
+              assert_status 201
+              expect(response_data.dig(:attributes, :participation_method)).to eq 'voting'
+              expect(response_data.dig(:attributes, :voting_method)).to eq 'budgeting'
+              expect(response_data.dig(:attributes, :voting_max_total)).to eq 100
+              expect(response_data.dig(:attributes, :voting_min_total)).to eq 10
+              expect(response_data.dig(:attributes, :ideas_order)).to eq 'random'
+              expect(response_data.dig(:attributes, :baskets_count)).to eq 0
+            end
+          end
+
+          context 'multiple voting' do
+            let(:voting_method) { 'multiple_voting' }
+            let(:voting_max_total) { 10 }
+            let(:voting_max_votes_per_idea) { 5 }
+            let(:voting_term_singular_multiloc) { { 'en' => 'bean' } }
+            let(:voting_term_plural_multiloc) { { 'en' => 'beans' } }
+
+            example_request 'Create a voting (multiple voting) project' do
+              assert_status 201
+              expect(response_data.dig(:attributes, :participation_method)).to eq 'voting'
+              expect(response_data.dig(:attributes, :voting_method)).to eq 'multiple_voting'
+              expect(response_data.dig(:attributes, :voting_max_total)).to eq 10
+              expect(response_data.dig(:attributes, :voting_min_total)).to eq 0
+              expect(response_data.dig(:attributes, :voting_max_votes_per_idea)).to eq 5
+              expect(response_data.dig(:attributes, :voting_term_singular_multiloc)).to eq({ en: 'bean' })
+              expect(response_data.dig(:attributes, :voting_term_plural_multiloc)).to eq({ en: 'beans' })
+              expect(response_data.dig(:attributes, :ideas_order)).to eq 'random'
+              expect(response_data.dig(:attributes, :baskets_count)).to eq 0
+            end
+          end
+
+          context 'single voting' do
+            let(:voting_method) { 'single_voting' }
+
+            example_request 'Create a voting (single voting) project' do
+              assert_status 201
+              expect(response_data.dig(:attributes, :participation_method)).to eq 'voting'
+              expect(response_data.dig(:attributes, :voting_method)).to eq 'single_voting'
+              expect(response_data.dig(:attributes, :voting_max_total)).to be_nil
+              expect(response_data.dig(:attributes, :voting_min_total)).to eq 0
+              expect(response_data.dig(:attributes, :voting_max_votes_per_idea)).to eq 1
+              expect(response_data.dig(:attributes, :ideas_order)).to eq 'random'
+              expect(response_data.dig(:attributes, :baskets_count)).to eq 0
+            end
           end
         end
 

@@ -63,3 +63,6 @@ en:
     anon_first_name: "User"
   xlsx_export:
     anonymous: "Anonymous"
+  voting_method:
+    default_voting_term_singular: "vote"
+    default_voting_term_plural: "votes"
