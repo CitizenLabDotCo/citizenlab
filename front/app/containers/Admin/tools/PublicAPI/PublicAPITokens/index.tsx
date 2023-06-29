@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useIntl } from 'utils/cl-intl';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import {
   Title,
   Text,
@@ -13,31 +13,19 @@ import {
   colors,
   Button,
   Box,
+  Spinner,
 } from '@citizenlab/cl2-component-library';
 import messages from './messages';
 import useDeleteApiClient from 'api/api_clients/useDeleteApiClient';
 import CreateTokenModal from './CreateTokenModal';
 import Modal from 'components/UI/Modal';
-
-const apiTokens = {
-  data: [
-    {
-      type: 'public_api_tokens',
-      id: '1',
-      attributes: {
-        name: 'My first API token',
-        masked_secret: '********',
-        created_at: '2021-03-18T09:00:00.000Z',
-        last_used_at: '2021-03-18T09:00:00.000Z',
-      },
-    },
-  ],
-};
+import useApiClients from 'api/api_clients/useApiClients';
 
 const PublicAPITokens = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { formatMessage, formatDate } = useIntl();
   const { mutate: deleteToken } = useDeleteApiClient();
+  const { data: apiTokens, isLoading } = useApiClients();
 
   const handleDeleteToken = (id: string) => {
     if (window.confirm(formatMessage(messages.deleteConfirmation))) {
@@ -55,14 +43,30 @@ const PublicAPITokens = () => {
 
   return (
     <>
-      <Title>{formatMessage(messages.title)}</Title>
+      <Title variant="h1">{formatMessage(messages.title)}</Title>
       <Box display="flex" justifyContent={'space-between'} mb="12px">
-        <Text>{formatMessage(messages.description)}</Text>
+        <Text>
+          <FormattedMessage
+            {...messages.description}
+            values={{
+              link: (
+                <a
+                  href={formatMessage(messages.linkUrl)}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {formatMessage(messages.link)}
+                </a>
+              ),
+            }}
+          />
+        </Text>
         <Button color={colors.primary} onClick={openTokenModal}>
           {formatMessage(messages.createTokenButton)}
         </Button>
       </Box>
-      {apiTokens.data.length > 0 ? (
+      {isLoading && <Spinner />}
+      {apiTokens && apiTokens.data.length > 0 && (
         <Table bgColor="white">
           <Thead>
             <Tr>
@@ -93,8 +97,11 @@ const PublicAPITokens = () => {
             ))}
           </Tbody>
         </Table>
-      ) : (
-        <Text>{formatMessage(messages.noTokens)}</Text>
+      )}
+      {apiTokens && apiTokens.data.length === 0 && (
+        <Box display="flex" justifyContent="center" w="100%">
+          <Title variant="h3">{formatMessage(messages.noTokens)}</Title>
+        </Box>
       )}
       <Modal opened={isModalOpen} close={closeTokenModal}>
         <CreateTokenModal onClose={closeTokenModal} />

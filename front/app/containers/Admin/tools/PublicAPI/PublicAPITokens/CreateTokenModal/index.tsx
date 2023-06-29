@@ -22,6 +22,7 @@ type CreateTokenModalProps = {
 const CreateTokenModal = ({ onClose }: CreateTokenModalProps) => {
   const [success, setSuccess] = useState(false);
   const [secret, setSecret] = useState<string>('');
+  const [tokenIsCopied, setTokenIsCopied] = useState(false);
   const { mutateAsync: addApiToken, isLoading } = useAddApiClient();
   const { formatMessage } = useIntl();
   const schema = object({
@@ -45,6 +46,7 @@ const CreateTokenModal = ({ onClose }: CreateTokenModalProps) => {
 
   const copySecret = () => {
     navigator.clipboard.writeText(secret);
+    setTokenIsCopied(true);
   };
 
   return (
@@ -96,8 +98,14 @@ const CreateTokenModal = ({ onClose }: CreateTokenModalProps) => {
             <Button buttonStyle="secondary" onClick={onClose}>
               {formatMessage(messages.createTokenModalSuccessClose)}
             </Button>
-            <Button buttonStyle="primary" onClick={copySecret} icon="copy">
-              {formatMessage(messages.createTokenModalSuccessCopy)}
+            <Button
+              buttonStyle="primary"
+              onClick={copySecret}
+              icon={tokenIsCopied ? 'check' : 'copy'}
+            >
+              {tokenIsCopied
+                ? formatMessage(messages.createTokenModalSuccessCopySuccess)
+                : formatMessage(messages.createTokenModalSuccessCopy)}
             </Button>
           </Box>
         </Box>

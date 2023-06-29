@@ -7,7 +7,16 @@ export default defineMessages({
   },
   description: {
     id: 'app.containers.Admin.tools.apiTokens.description',
-    defaultMessage: 'Manage your API tokens for our public API.',
+    defaultMessage:
+      'Manage your API tokens for our public API. For more information, see our {link}.',
+  },
+  link: {
+    id: 'app.containers.Admin.tools.apiTokens.link',
+    defaultMessage: 'API documentation',
+  },
+  linkUrl: {
+    id: 'app.containers.Admin.tools.apiTokens.linkUrl',
+    defaultMessage: 'https://developers.citizenlab.co/reference-api-docs/',
   },
   name: {
     id: 'app.containers.Admin.tools.apiTokens.name',
@@ -85,5 +94,9 @@ export default defineMessages({
   createTokenModalSuccessClose: {
     id: 'app.containers.Admin.tools.apiTokens.createTokenSuccessClose',
     defaultMessage: 'Close',
+  },
+  createTokenModalSuccessCopySuccess: {
+    id: 'app.containers.Admin.tools.apiTokens.createTokenSuccessCopySuccess',
+    defaultMessage: 'Copied!',
   },
 });
