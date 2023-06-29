@@ -822,6 +822,7 @@
   "app.containers.Admin.tools.apiTokens.delete": "Suprimeix el testimoni",
   "app.containers.Admin.tools.apiTokens.deleteConfirmation": "Esteu segur que voleu suprimir aquest testimoni?",
   "app.containers.Admin.tools.apiTokens.description": "Gestioneu els vostres testimonis d'API per a la nostra API pública. Per a més informació, consulteu el nostre {link}.",
+  "app.containers.Admin.tools.apiTokens.id": "ID",
   "app.containers.Admin.tools.apiTokens.lastUsedAt": "Últim utilitzat",
   "app.containers.Admin.tools.apiTokens.link": "Documentació de l'API",
   "app.containers.Admin.tools.apiTokens.linkUrl": "https://developers.citizenlab.co/reference-api-docs/",
