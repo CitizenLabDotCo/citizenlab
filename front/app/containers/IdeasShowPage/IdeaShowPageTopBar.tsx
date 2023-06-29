@@ -1,5 +1,4 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
@@ -80,16 +79,12 @@ const IdeaShowPageTopBar = ({
   const { data: project } = useProjectById(projectId);
   const isSmallerThanTablet = useBreakpoint('tablet');
 
-  const [goBack, setGoBack] = useState(false);
   const [searchParams] = useSearchParams();
-  const goBackParameter = searchParams.get('go_back');
+  const [goBack] = useState(searchParams.get('go_back'));
 
   useEffect(() => {
-    if (isString(goBackParameter)) {
-      setGoBack(true);
-      removeSearchParams(['go_back']);
-    }
-  }, [goBackParameter]);
+    removeSearchParams(['go_back']);
+  }, []);
 
   const localize = useLocalize();
 
