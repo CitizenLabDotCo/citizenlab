@@ -16,7 +16,7 @@ import IdeaProposedBudget from './components/IdeaProposedBudget';
 import Body from 'components/PostShowComponents/Body';
 import Image from 'components/PostShowComponents/Image';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
-import AssignBudgetControl from 'components/AssignBudgetControl';
+import AddToBasketButton from 'components/AssignBudgetControl/AddToBasketButton';
 import IdeaMoreActions from './components/IdeaMoreActions';
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 const LazyComments = lazy(
@@ -239,7 +239,7 @@ export const IdeasShow = ({
             {isCompactView && (
               <Box my="30px">
                 {' '}
-                <AssignBudgetControl ideaId={ideaId} projectId={projectId} />
+                <AddToBasketButton ideaId={ideaId} projectId={projectId} />
               </Box>
             )}
 
