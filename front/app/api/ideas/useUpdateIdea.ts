@@ -48,7 +48,7 @@ const useUpdateIdea = () => {
       }
 
       streams.fetchAllWith({
-        apiEndpoint: [`${API_PATH}/analytics`, `${API_PATH}/topics`],
+        apiEndpoint: [`${API_PATH}/analytics`],
       });
     },
   });

@@ -218,7 +218,7 @@ const AssignBudgetControl = memo(
     const handleAddRemoveButtonClick = (event?: FormEvent) => {
       event?.preventDefault();
 
-      if (actionDescriptor.enabled) {
+      if (actionDescriptor?.enabled) {
         assignBudget();
         return;
       }

@@ -1,30 +1,27 @@
 // utils
 import { map, orderBy } from 'lodash-es';
 import {
-  binBirthyear,
   rename,
   join,
-  convertDomicileData,
   Series,
+  binBirthyear,
+  convertDomicileData,
 } from 'utils/dataUtils';
-import { fallbackMessages } from 'containers/Admin/dashboard/users/Charts/AreaChart';
 
 // typings
 import { TCustomFieldCode } from 'api/user_custom_fields/types';
-import {
-  IUsersByRegistrationField,
-  IUsersByDomicile,
-  IUsersByBirthyear,
-} from 'services/userCustomFieldStats';
-
+import { IUsersByDomicile } from 'api/users_by_domicile/types';
 // i18n
 import messages from 'containers/Admin/dashboard/messages';
 import { InjectedLocalized } from 'utils/localize';
 import { MessageDescriptor } from 'react-intl';
 import { FormatMessage } from 'typings';
+import { IUsersByBirthyear } from 'api/users_by_birthyear/types';
+import { IUsersByCustomField } from 'api/users_by_custom_field/types';
+import { fallbackMessages } from 'containers/Admin/dashboard/users/Charts/AreaChart';
 
 export type ISupportedDataType =
-  | IUsersByRegistrationField
+  | IUsersByCustomField
   | IUsersByDomicile
   | IUsersByBirthyear;
 
@@ -111,7 +108,7 @@ const createConvertAndMergeSeries =
     }
 
     const res = map(
-      (totalSerie as IUsersByRegistrationField).data.attributes.options,
+      (totalSerie as IUsersByCustomField).data.attributes.options,
       (value, key) => ({
         total: totalUsers[key] || 0,
         participants: participantUsers[key] || 0,

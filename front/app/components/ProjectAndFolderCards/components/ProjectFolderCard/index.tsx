@@ -13,7 +13,7 @@ import Image from 'components/UI/Image';
 
 // i18n
 import T from 'components/T';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // tracking
@@ -21,7 +21,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // style
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import {
   media,
   colors,
@@ -40,6 +40,8 @@ import {
   CARD_IMAGE_ASPECT_RATIO,
 } from 'api/project_folder_images/types';
 import { IAdminPublicationData } from 'api/admin_publications/types';
+import useProjectFolderById from 'api/project_folders/useProjectFolderById';
+import AvatarBubbles from 'components/AvatarBubbles';
 
 const Container = styled(Link)`
   width: calc(33% - 12px);
@@ -276,6 +278,78 @@ const FolderDescription = styled.div`
   margin-top: 15px;
 `;
 
+const ContentFooter = styled.div`
+  height: 45px;
+  flex-shrink: 0;
+  flex-grow: 0;
+  flex-basis: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 16px;
+  margin-top: 30px;
+  border-top: solid 1px #e0e0e0;
+
+  &.hidden {
+    border: none;
+
+    &.large {
+      margin-top: 0px;
+    }
+
+    &:not(.large) {
+      ${media.phone`
+        height: 20px;
+        flex-basis: 20px;
+        margin: 0px;
+        padding: 0px;
+      `}
+    }
+  }
+`;
+
+const ContentFooterSection = styled.div`
+  height: 100%;
+  display: flex;
+  align-items: center;
+`;
+
+const ContentFooterLeft = styled(ContentFooterSection)``;
+
+const ContentFooterRight = styled(ContentFooterSection)``;
+
+const ProjectMetaItems = styled.div`
+  height: 100%;
+  color: ${({ theme }) => theme.colors.tenantText};
+  font-size: ${fontSizes.base}px;
+  font-weight: 400;
+  display: flex;
+`;
+
+const MetaItem = styled.div`
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  cursor: pointer;
+  margin-left: 24px;
+
+  &.first {
+    margin-left: 0px;
+  }
+
+  ${media.phone`
+    margin-left: 20px;
+  `};
+`;
+
+const MetaItemText = styled.div`
+  color: ${({ theme }) => theme.colors.tenantText};
+  font-size: ${fontSizes.base}px;
+  font-weight: 400;
+  line-height: normal;
+  margin-left: 3px;
+`;
+
 const MapIcon = styled(Icon)`
   fill: ${({ theme }) => theme.colors.tenantSecondary};
   margin-right: 10px;
@@ -299,9 +373,14 @@ export interface Props {
 const ProjectFolderCard = memo<Props>(
   ({ publication, size, layout, className }) => {
     const isSmallerThanPhone = useBreakpoint('phone');
+    const { data: projectFolder } = useProjectFolderById(
+      publication.relationships.publication.data.id
+    );
     const { data: projectFolderImages } = useProjectFolderImages({
       folderId: publication.relationships.publication.data.id,
     });
+    const theme = useTheme();
+    const { formatMessage } = useIntl();
 
     const handleProjectCardOnClick = useCallback(
       (projectFolderId: string) => () => {
@@ -321,6 +400,23 @@ const ProjectFolderCard = memo<Props>(
       []
     );
 
+    // Footer
+    const commentsCount = projectFolder?.data.attributes.comments_count;
+    const ideasCount = projectFolder?.data.attributes.ideas_count;
+    const avatarIds =
+      projectFolder?.data.relationships.avatars &&
+      projectFolder?.data.relationships.avatars.data
+        ? projectFolder?.data.relationships.avatars.data.map(
+            (avatar) => avatar.id
+          )
+        : [];
+
+    const showIdeasCount = ideasCount ? ideasCount > 0 : false;
+    const showCommentsCount = commentsCount ? commentsCount > 0 : false;
+    const showAvatarBubbles = avatarIds ? avatarIds.length > 0 : false;
+    const showFooter = showAvatarBubbles || showIdeasCount || showCommentsCount;
+
+    // Images
     const imageVersions = isNilOrError(projectFolderImages)
       ? null
       : projectFolderImages.data[0]?.attributes.versions;
@@ -429,6 +525,55 @@ const ProjectFolderCard = memo<Props>(
               }}
             </T>
           </ContentBody>
+          <ContentFooter className={`${size} ${!showFooter ? 'hidden' : ''}`}>
+            <ContentFooterLeft>
+              {showAvatarBubbles && (
+                <AvatarBubbles
+                  size={32}
+                  limit={3}
+                  userCountBgColor={theme.colors.tenantPrimary}
+                  avatarIds={avatarIds}
+                  userCount={projectFolder?.data.attributes.participants_count}
+                />
+              )}
+            </ContentFooterLeft>
+
+            <ContentFooterRight>
+              <ProjectMetaItems>
+                {showIdeasCount && ideasCount && (
+                  <MetaItem className="first">
+                    <Icon
+                      height="23px"
+                      width="23px"
+                      fill={theme.colors.tenantPrimary}
+                      ariaHidden
+                      name="idea"
+                    />
+                    <MetaItemText aria-hidden>{ideasCount}</MetaItemText>
+                    <ScreenReaderOnly>
+                      {formatMessage(messages.xInputs, { ideasCount })}
+                    </ScreenReaderOnly>
+                  </MetaItem>
+                )}
+
+                {showCommentsCount && commentsCount && (
+                  <MetaItem>
+                    <Icon
+                      height="23px"
+                      width="23px"
+                      fill={theme.colors.tenantPrimary}
+                      ariaHidden
+                      name="comments"
+                    />
+                    <MetaItemText aria-hidden>{commentsCount}</MetaItemText>
+                    <ScreenReaderOnly>
+                      {formatMessage(messages.xComments, { commentsCount })}
+                    </ScreenReaderOnly>
+                  </MetaItem>
+                )}
+              </ProjectMetaItems>
+            </ContentFooterRight>
+          </ContentFooter>
         </FolderContent>
       </Container>
     );

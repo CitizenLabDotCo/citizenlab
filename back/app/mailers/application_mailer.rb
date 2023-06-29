@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ApplicationMailer < ActionMailer::Base
-  default from: 'hello@citizenlab.co'
+  default from: -> { default_from_email }
   layout 'mailer'
 
   attr_reader :user
@@ -92,7 +92,8 @@ class ApplicationMailer < ActionMailer::Base
       subject: subject,
       from: from_email,
       to: to_email,
-      reply_to: reply_to_email
+      reply_to: reply_to_email,
+      domain: domain
     }
   end
 
@@ -114,7 +115,15 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   def from_email
-    email_address_with_name(ENV.fetch('DEFAULT_FROM_EMAIL'), organization_name)
+    email_address_with_name(raw_from_email, organization_name)
+  end
+
+  def default_from_email
+    ENV.fetch('DEFAULT_FROM_EMAIL', 'hello@citizenlab.co')
+  end
+
+  def raw_from_email
+    app_settings.core.from_email.presence || default_from_email
   end
 
   def to_email
@@ -122,7 +131,11 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   def reply_to_email
-    app_settings.core.reply_to_email.presence || ENV.fetch('DEFAULT_FROM_EMAIL')
+    app_settings.core.reply_to_email.presence || default_from_email
+  end
+
+  def domain
+    raw_from_email&.split('@')&.last
   end
 
   def app_settings
