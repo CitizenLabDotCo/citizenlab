@@ -427,6 +427,11 @@ class User < ApplicationRecord
     registered? && !blocked? && !confirmation_required?
   end
 
+  def blank_and_can_be_deleted?
+    # atm it can be true only for users registered with ClaveUnica who haven't entered email
+    sso? && email.blank? && new_email.blank? && password_digest.blank? && identity_ids.count == 1
+  end
+
   def groups
     manual_groups
   end

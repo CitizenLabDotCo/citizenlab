@@ -121,7 +121,7 @@ module Verification
       taken = existing_users.present?
 
       if taken
-        if existing_users.all? { |u| u.email.blank? }
+        if existing_users.all?(&:blank_and_can_be_deleted?)
           existing_users.each { |u| DeleteUserJob.perform_now(u) }
         else
           raise VerificationTakenError
