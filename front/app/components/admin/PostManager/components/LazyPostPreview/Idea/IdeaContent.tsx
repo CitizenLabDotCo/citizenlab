@@ -6,7 +6,7 @@ import { adopt } from 'react-adopt';
 import Title from 'components/PostShowComponents/Title';
 import PostedBy from 'components/admin/PostManager/components/LazyPostPreview/Idea/PostedBy';
 import Body from 'components/PostShowComponents/Body';
-import IdeaProposedBudget from 'containers/IdeasShow/components/IdeaProposedBudget';
+import IdeaProposedBudget from 'containers/IdeasShow/components/ProposedBudget/IdeaProposedBudget';
 import DropdownMap from 'components/PostShowComponents/DropdownMap';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import CommentsSection from 'components/PostShowComponents/Comments';
