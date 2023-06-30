@@ -133,6 +133,7 @@ const ChildCommentForm = ({
   const [profanityApiError, setProfanityApiError] = useState(false);
   const [hasApiError, setHasApiError] = useState(false);
   const [postAnonymously, setPostAnonymously] = useState(false);
+  const [tagValue, setTagValue] = useState('');
   const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
     useState(false);
   const textareaElement = useRef<HTMLTextAreaElement | null>(null);
@@ -152,6 +153,7 @@ const ChildCommentForm = ({
           const { authorFirstName, authorLastName, authorSlug } = eventValue;
           if (authorFirstName && authorLastName && authorSlug) {
             const tag = `@[${authorFirstName} ${authorLastName}](${authorSlug}) `;
+            setTagValue(tag);
             setInputValue(tag);
           }
           setFocused(true);
@@ -327,12 +329,14 @@ const ChildCommentForm = ({
       });
 
       setTimeout(() => {
-        textareaElement?.current?.focus();
+        textareaElement.current?.focus();
       }, 100);
 
-      setTimeout(() => {
-        textareaElement?.current && setCaretAtEnd(textareaElement.current);
-      }, 200);
+      if (tagValue === inputValue) {
+        setTimeout(() => {
+          textareaElement.current && setCaretAtEnd(textareaElement.current);
+        }, 200);
+      }
     }
   };
 
