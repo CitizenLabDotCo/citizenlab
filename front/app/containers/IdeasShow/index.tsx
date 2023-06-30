@@ -14,7 +14,7 @@ import Image from 'components/PostShowComponents/Image';
 import TranslateButton from './components/TranslateButton';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import AddToBasketButton from 'components/AssignBudgetControl/AddToBasketButton';
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 const LazyComments = lazy(
   () => import('components/PostShowComponents/Comments')
 );
@@ -60,7 +60,7 @@ interface InputProps {
   ideaId: string;
   projectId: string;
   setRef?: (element: HTMLDivElement) => void;
-  compact?: boolean;
+  compact: boolean;
   className?: string;
 }
 
@@ -112,7 +112,7 @@ interface ContentProps {
   project: IProjectData;
   ideaImages: IIdeaImages;
   locale: Locale;
-  compact?: boolean;
+  compact: boolean;
 }
 
 const Content = ({
@@ -124,7 +124,6 @@ const Content = ({
   compact,
 }: ContentProps) => {
   const { data: phases } = usePhases(project.id);
-  const isSmallerThanTablet = useBreakpoint('tablet');
   const localize = useLocalize();
   const [translateButtonIsClicked, setTranslateButtonIsClicked] =
     useState(false);
@@ -135,7 +134,6 @@ const Content = ({
     ideaImages?.data[0]?.attributes?.versions?.large || null;
   const ideaId = idea.data.id;
   const ideaBody = localize(idea.data.attributes?.body_multiloc);
-  const isCompactView = compact === true || isSmallerThanTablet;
 
   const anonymous = idea.data.attributes.anonymous;
   const participationContext = getCurrentParticipationContext(
@@ -147,7 +145,7 @@ const Content = ({
     <>
       <IdeaMeta ideaId={ideaId} />
 
-      {!isCompactView && <DesktopTopBar project={project} idea={idea.data} />}
+      {!compact && <DesktopTopBar project={project} idea={idea.data} />}
 
       <Box display="flex" id="e2e-idea-show-page-content">
         <Box flex="1 1 100%">
@@ -155,7 +153,7 @@ const Content = ({
             idea={idea}
             projectId={project.id}
             translateButtonClicked={translateButtonIsClicked}
-            showActions={isCompactView}
+            showActions={compact}
           />
 
           {ideaImageLarge && (
@@ -179,14 +177,14 @@ const Content = ({
               translateButtonClicked={translateButtonIsClicked}
             />
           </Box>
-          {isCompactView && (
+          {compact && (
             <Box my="30px">
               {' '}
               <AddToBasketButton ideaId={ideaId} projectId={project.id} />
             </Box>
           )}
 
-          {isCompactView && (
+          {compact && (
             <Box mb="30px">
               {' '}
               <MetaInformation
@@ -194,13 +192,13 @@ const Content = ({
                 projectId={project.id}
                 statusId={statusId}
                 authorId={authorId}
-                compact={isCompactView}
+                compact={compact}
                 anonymous={anonymous}
               />
             </Box>
           )}
 
-          {isCompactView && (
+          {compact && (
             <IdeaSharingButton
               ideaId={ideaId}
               buttonComponent={<MobileSharingButtonComponent />}
@@ -226,7 +224,7 @@ const Content = ({
           </Box>
         </Box>
 
-        {!isCompactView && (
+        {!compact && (
           <StyledRightColumnDesktop
             ideaId={ideaId}
             projectId={project.id}
