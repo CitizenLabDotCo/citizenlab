@@ -56,16 +56,16 @@ describe('Landing page - not signed in', () => {
   });
 });
 
-describe.skip('Landing page - URL sign in/up', () => {
+describe('Landing page - URL sign in/up', () => {
   it('shows correct authentication modal when logged out', () => {
     cy.clearCookies();
     cy.visit('/sign-in');
     cy.get('#e2e-authentication-modal').should('exist');
-    cy.get('#e2e-sign-in-container').should('exist');
+    cy.contains('Log in').should('exist');
 
     cy.visit('/sign-up');
     cy.get('#e2e-authentication-modal').should('exist');
-    cy.get('#e2e-sign-up-container').should('exist');
+    cy.contains('Sign up').should('exist');
   });
 
   it('shows no authentication modal when already logged in', () => {
