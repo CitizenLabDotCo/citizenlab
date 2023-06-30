@@ -135,7 +135,6 @@ const Content = ({
   const ideaId = idea.data.id;
   const ideaBody = localize(idea.data.attributes?.body_multiloc);
 
-  const anonymous = idea.data.attributes.anonymous;
   const participationContext = getCurrentParticipationContext(
     project,
     phases?.data
@@ -193,7 +192,6 @@ const Content = ({
                 statusId={statusId}
                 authorId={authorId}
                 compact={compact}
-                anonymous={anonymous}
               />
             </Box>
           )}
@@ -230,7 +228,6 @@ const Content = ({
             projectId={project.id}
             statusId={statusId}
             authorId={authorId}
-            anonymous={anonymous}
           />
         )}
       </Box>

@@ -6,7 +6,7 @@ export const Item = styled.div<{ compact?: boolean }>`
   padding-bottom: 20px;
   border-top: solid 1px #ccc;
 
-  &.first {
+  &:first-of-type {
     border-top: none;
   }
 

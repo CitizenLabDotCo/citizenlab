@@ -2,13 +2,10 @@ import React, { memo } from 'react';
 
 // api
 import useIdeaById from 'api/ideas/useIdeaById';
-import useProjectById from 'api/projects/useProjectById';
-import usePhases from 'api/phases/usePhases';
 
 // components
 import AddToBasketButton from './AddToBasketButton';
 import { ScreenReaderOnly } from 'utils/a11y';
-import PBExpenses from 'containers/ProjectsShowPage/shared/pb/PBExpenses';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -18,9 +15,6 @@ import FormattedBudget from 'utils/currency/FormattedBudget';
 // styles
 import styled from 'styled-components';
 import { fontSizes, colors, defaultCardStyle, media } from 'utils/styleUtils';
-
-// utils
-import { getParticipationContext } from './utils';
 
 const IdeaPageContainer = styled.div`
   display: flex;
@@ -54,11 +48,6 @@ const Budget = styled.div`
   ${defaultCardStyle};
 `;
 
-const StyledPBExpenses = styled(PBExpenses)`
-  margin-top: 25px;
-  padding: 20px;
-`;
-
 interface Props {
   projectId: string;
   ideaId: string;
@@ -66,24 +55,11 @@ interface Props {
 
 const AssignBudgetControl = memo(({ ideaId, projectId }: Props) => {
   const { data: idea } = useIdeaById(ideaId);
-  const { data: project } = useProjectById(projectId);
-  const { data: phases } = usePhases(projectId);
-
-  const participationContext = getParticipationContext(project, idea, phases);
-  const participationContextId = participationContext?.id;
-  const participationContextType =
-    project?.data.attributes.process_type === 'continuous'
-      ? 'project'
-      : 'phase';
 
   const ideaBudget = idea?.data.attributes.budget;
   const actionDescriptor = idea?.data.attributes.action_descriptor.voting;
 
   if (!actionDescriptor || !ideaBudget) return null;
-
-  const isPermitted =
-    actionDescriptor.enabled ||
-    actionDescriptor.disabled_reason !== 'not_permitted';
 
   return (
     <IdeaPageContainer
@@ -98,13 +74,6 @@ const AssignBudgetControl = memo(({ ideaId, projectId }: Props) => {
         </Budget>
         <AddToBasketButton ideaId={ideaId} projectId={projectId} />
       </BudgetWithButtonWrapper>
-      {isPermitted && participationContextId && (
-        <StyledPBExpenses
-          participationContextId={participationContextId}
-          participationContextType={participationContextType}
-          viewMode="column"
-        />
-      )}
     </IdeaPageContainer>
   );
 });

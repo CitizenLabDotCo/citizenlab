@@ -16,7 +16,7 @@ import eventEmitter from 'utils/eventEmitter';
 
 // tracks
 import { trackEventByName } from 'utils/analytics';
-import tracks from 'containers/ProjectsShowPage/shared/pb/tracks';
+import tracks from 'components/AssignBudgetControl/tracks';
 
 // typings
 import { BasketIdeaAttributes } from 'api/baskets/types';
@@ -120,7 +120,10 @@ const useAssignBudget = ({ projectId, ideaId }: Props) => {
             baskets_ideas_attributes: basketIdeasAttributes,
           });
           done();
-          trackEventByName(tracks.ideaAddedToBasket);
+
+          isInBasket
+            ? trackEventByName(tracks.ideaRemovedFromBasket)
+            : trackEventByName(tracks.ideaAddedToBasket);
         } catch (error) {
           done();
         }

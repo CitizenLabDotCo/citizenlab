@@ -4,7 +4,10 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import Avatar from 'components/Avatar';
 import UserName from 'components/UI/UserName';
-import { Header, Item } from 'components/IdeasShowComponents/MetaInfoStyles';
+import {
+  Header,
+  Item,
+} from 'containers/IdeasShow/components/MetaInformation/MetaInfoStyles';
 
 // i18n
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
@@ -78,7 +81,7 @@ const PostedBy = memo<Props>(
       );
 
       return (
-        <Item className={`first ${className || ''}`} compact={compact}>
+        <Item className={className} compact={compact}>
           <Header>{formatMessage(messages.postedBy)}</Header>
           <UserWrapper className="e2e-idea-author">
             <StyledAvatar

@@ -13,9 +13,13 @@ import PostedBy from './PostedBy';
 import useLocale from 'hooks/useLocale';
 import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
 import Outlet from 'components/Outlet';
+import useProjectById from 'api/projects/useProjectById';
+import usePhases from 'api/phases/usePhases';
+import useIdeaById from 'api/ideas/useIdeaById';
 
 // utils
 import { isFieldEnabled } from 'utils/projectUtils';
+import { getCurrentParticipationContext } from 'api/phases/utils';
 
 const Container = styled.div`
   width: 100%;
@@ -31,7 +35,6 @@ interface Props {
   projectId: string;
   statusId: string;
   compact?: boolean;
-  anonymous?: boolean;
   className?: string;
 }
 
@@ -41,7 +44,6 @@ const MetaInformation = ({
   statusId,
   authorId,
   compact,
-  anonymous,
   className,
 }: Props) => {
   const locale = useLocale();
@@ -49,8 +51,25 @@ const MetaInformation = ({
     projectId,
     inputId: ideaId,
   });
+  const { data: project } = useProjectById(projectId);
+  const { data: phases } = usePhases(projectId);
+  const { data: idea } = useIdeaById(ideaId);
 
-  if (!isNilOrError(locale) && !isNilOrError(ideaCustomFieldsSchema)) {
+  const participationContext = getCurrentParticipationContext(
+    project?.data,
+    phases?.data
+  );
+
+  if (
+    !isNilOrError(locale) &&
+    ideaCustomFieldsSchema &&
+    idea &&
+    participationContext
+  ) {
+    const { anonymous } = idea.data.attributes;
+    const isBudgeting =
+      participationContext.attributes.voting_method === 'budgeting';
+
     const topicsEnabled = isFieldEnabled(
       'topic_ids',
       ideaCustomFieldsSchema.data.attributes,
@@ -71,13 +90,17 @@ const MetaInformation = ({
 
     return (
       <Container className={`${className || ''} ${compact ? 'compact' : ''}`}>
-        <PostedBy
-          authorId={authorId}
-          ideaId={ideaId}
-          compact={compact}
-          anonymous={anonymous}
-        />
-        <Status statusId={statusId} compact={compact} />
+        {!isBudgeting && (
+          <>
+            <PostedBy
+              authorId={authorId}
+              ideaId={ideaId}
+              compact={compact}
+              anonymous={anonymous}
+            />
+            <Status statusId={statusId} compact={compact} />
+          </>
+        )}
         {topicsEnabled && <IdeaTopics ideaId={ideaId} compact={compact} />}
         {locationEnabled && (
           <Location projectId={projectId} ideaId={ideaId} compact={compact} />

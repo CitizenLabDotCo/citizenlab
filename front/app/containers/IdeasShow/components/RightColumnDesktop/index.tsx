@@ -41,7 +41,6 @@ interface Props {
   projectId: string;
   statusId: string;
   authorId: string | null;
-  anonymous?: boolean;
   className?: string;
 }
 
@@ -50,7 +49,6 @@ const RightColumnDesktop = ({
   projectId,
   statusId,
   authorId,
-  anonymous,
   className,
 }: Props) => {
   return (
@@ -79,7 +77,6 @@ const RightColumnDesktop = ({
           projectId={projectId}
           statusId={statusId}
           authorId={authorId}
-          anonymous={anonymous}
         />
       </InnerContainer>
     </Container>
