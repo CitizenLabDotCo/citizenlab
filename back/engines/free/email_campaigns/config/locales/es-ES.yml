@@ -627,7 +627,7 @@ es:
         internal_comment_is_posted_on_initiative_assigned_to_user: 'Un comentario interno está posteado en la propuesta asignada al usuario'
         internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'Un comentario interno está posteado en el aporte de un proyecto o carpeta que gestiona el usuario'
         internal_comment_is_posted_on_idea_user_has_commented_internally_on: 'El comentario interno se publica en la entrada que el usuario ha comentado internamente'
-        internal_comment_is_posted_on_idea_user_moderates: 'El comentario interno se publica en la entrada El usuario modera'
+        internal_comment_is_posted_on_idea_user_moderates: 'Un comentario interno está posteado en el aporte que modera el usuario'
         internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'El comentario interno se publica en la propuesta que el usuario ha comentado internamente'
         internal_comment_is_posted_on_unassigned_initiative: 'Se publica un comentario interno sobre una propuesta no asignada'
         internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Se publica un comentario interno sobre una entrada no asignada en un proyecto no gestionado'
