@@ -17,10 +17,10 @@ da:
       "invite_received": Invitation
       "invite_reminder": Invitationspåmindelse
       "internal_comment_on_idea_assigned_to_you": Intern kommentar til input, der er tildelt mig
-      "internal_comment_on_idea_you_commented_internally_on": Intern kommentar til input Jeg kommenterede internt på
-      "internal_comment_on_idea_you_moderate": Intern kommentar til input i projekt eller mappe, jeg administrerer
-      "internal_comment_on_initiative_assigned_to_you": Intern kommentar til forslag, som jeg har fået tildelt
-      "internal_comment_on_initiative_you_commented_internally_on": Intern kommentar til forslag Jeg kommenterede internt på
+      "internal_comment_on_idea_you_commented_internally_on": Intern kommentar til input jeg kommenterede internt på
+      "internal_comment_on_idea_you_moderate": Intern kommentar til input i projekt eller mappe jeg administrerer
+      "internal_comment_on_initiative_assigned_to_you": Intern kommentar til forslag som jeg har fået tildelt
+      "internal_comment_on_initiative_you_commented_internally_on": Intern kommentar til forslag jeg kommenterede på
       "internal_comment_on_unassigned_initiative": Intern kommentar til ikke-tildelt forslag
       "internal_comment_on_unassigned_unmoderated_idea": Intern kommentar til ikke-tildelt input i ikke-administreret projekt
       "internal_comment_on_your_internal_comment": Intern kommentar til min interne kommentar
@@ -327,13 +327,13 @@ da:
       preheader: '''%{post}'' har en ny intern kommentar'
     internal_comment_on_idea_you_commented_internally_on:
       cta_reply_to: 'Se kommentar fra %{firstName}'
-      event_description: '%{authorNameFull} kommenterede internt på et input, du kommenterede internt på.'
+      event_description: '%{authorNameFull} kommenterede internt på et input, du kommenterede på internt.'
       subject: '''%{post}'' har en ny intern kommentar'
       main_header: '''%{post}'' har en ny intern kommentar'
       preheader: '''%{post}'' har en ny intern kommentar'
     internal_comment_on_idea_you_moderate:
       cta_reply_to: 'Se kommentar fra %{firstName}'
-      event_description: '%{authorNameFull} kommenteret internt på et input i et projekt eller en mappe, du administrerer.'
+      event_description: '%{authorNameFull} kommenterede internt på et input i et projekt eller en mappe du administrerer.'
       subject: '''%{post}'' har en ny intern kommentar'
       main_header: '''%{post}'' har en ny intern kommentar'
       preheader: '''%{post}'' har en ny intern kommentar'
@@ -345,7 +345,7 @@ da:
       preheader: '''%{post}'' har en ny intern kommentar'
     internal_comment_on_initiative_you_commented_internally_on:
       cta_reply_to: 'Se kommentar fra %{firstName}'
-      event_description: '%{authorNameFull} kommenterede internt på et forslag, du kommenterede internt på.'
+      event_description: '%{authorNameFull} kommenterede internt på et forslag, du kommenterede på internt.'
       subject: '''%{post}'' har en ny intern kommentar'
       main_header: '''%{post}'' har en ny intern kommentar'
       preheader: '''%{post}'' har en ny intern kommentar'
@@ -587,7 +587,7 @@ da:
         admins: 'Administratorer'
         admins_and_managers: 'Administratorer og projektledere'
         admins_and_managers_managing_the_project: 'Administratorer og projektledere, der forvalter projektet'
-        managers_managing_the_project: 'Ledere, der styrer projektet'
+        managers_managing_the_project: 'Projektledere, der styrer projektet'
         all_users: 'Alle brugere'
         all_users_who_uploaded_proposals: 'Alle brugere der har uploadet borgerforslag'
         managers: 'Projektledere'
@@ -623,14 +623,14 @@ da:
         input_is_flagged_as_spam: 'Input er markeret som spam'
         input_is_updated: 'Input er opdateret'
         input_status_changes: 'Input-status ændres'
-        internal_comment_is_posted_on_idea_assigned_to_user: 'Intern kommentar er lagt på input tildelt bruger'''
-        internal_comment_is_posted_on_initiative_assigned_to_user: 'Intern kommentar er postet på forslag tildelt bruger'''
-        internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'Intern kommentar lægges på input i projekt eller mappe, som brugeren administrerer'''
-        internal_comment_is_posted_on_idea_user_has_commented_internally_on: 'Intern kommentar er lagt ud på input, som brugeren har kommenteret internt på'''
-        internal_comment_is_posted_on_idea_user_moderates: 'Intern kommentar er lagt på input, som brugeren modererer'
-        internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'Intern kommentar er postet på forslag, som brugeren har kommenteret internt på'''
-        internal_comment_is_posted_on_unassigned_initiative: 'Intern kommentar er sendt på ikke-tildelt forslag'''
-        internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Intern kommentar er sendt på ikke-tildelt input i ikke-administreret projekt'''
+        internal_comment_is_posted_on_idea_assigned_to_user: 'Intern kommentar på input tildelt bruger'
+        internal_comment_is_posted_on_initiative_assigned_to_user: 'Intern kommentar er postet på forslag tildelt bruger'
+        internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'Intern kommentar på input i projekt eller mappe, som brugeren administrerer'
+        internal_comment_is_posted_on_idea_user_has_commented_internally_on: 'Intern kommentar på input, som brugeren har kommenteret internt på'
+        internal_comment_is_posted_on_idea_user_moderates: 'Intern kommentar på input, som brugeren modererer'
+        internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'Intern kommentar er postet på forslag, som brugeren har kommenteret internt på'
+        internal_comment_is_posted_on_unassigned_initiative: 'Intern kommentar er sendt på ikke-tildelt forslag'
+        internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Intern kommentar er sendt på ikke-tildelt input i ikke-administreret projekt'
         user_is_mentioned_in_internal_comment: 'Brugeren er nævnt i en intern kommentar'
         new_input_is_published: 'Nye input offentliggøres'
         new_proposal_is_posted: 'Nyt borgerorslag er offentliggjort'
