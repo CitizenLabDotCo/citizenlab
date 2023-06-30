@@ -1261,7 +1261,6 @@ resource 'Ideas' do
 
               assert_status 200
             end
-
           end
 
           describe 'Change the project' do
@@ -1447,7 +1446,6 @@ resource 'Ideas' do
           expect(json_parse(response_body)).to include_response_error(:base, 'Unauthorized!')
         end
       end
-
     end
   end
 
