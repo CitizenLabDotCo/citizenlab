@@ -31,6 +31,14 @@ export default defineMessages({
     defaultMessage:
       'Users are given an amount of tokens to distribute between options',
   },
+  singleVotingMethodTitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.singleVotingMethodTitle',
+    defaultMessage: 'One vote per option',
+  },
+  singleVotingMethodSubtitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.singleVotingMethodSubtitle',
+    defaultMessage: 'Users can chose to approve any of the options',
+  },
   maximumVotesRecommendation: {
     id: 'app.containers.AdminPage.ProjectEdit.Voting.maximumVotesRecommendation',
     defaultMessage:
@@ -45,9 +53,21 @@ export default defineMessages({
     defaultMessage: 'strategic voting',
   },
   learnMoreMultipleVoting: {
-    id: 'app.containers.AdminPage.ProjectEdit.Voting.learnMoreMultipleVoting',
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.learnMoreMultipleVoting2',
     defaultMessage:
-      'Learn more about when to use <b>multiple votes per option</b> in our {optionAnalysisArticleLink}.',
+      'Learn more about when to use {voteTypeDescription} in our {optionAnalysisArticleLink}.',
+  },
+  multipleVotesPerOption: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.multipleVotesPerOption',
+    defaultMessage: '<b>multiple votes per option</b>',
+  },
+  singleVotePerOption: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.singleVotePerOption',
+    defaultMessage: '<b>single vote per option</b>',
+  },
+  budgetAllocation: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.budgetAllocation',
+    defaultMessage: '<b>budget allocation</b>',
   },
   optionAnalysisLinkText: {
     id: 'app.containers.AdminPage.ProjectEdit.Voting.optionAnalysisLinkText',

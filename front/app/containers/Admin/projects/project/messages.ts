@@ -249,6 +249,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.Voting.enabledActionsForUsersDescription',
     defaultMessage: 'Select what additional actions users can take.',
   },
+  defaultViewOptions: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.defaultViewOptions',
+    defaultMessage: 'Default view of options',
+  },
   optionsToVoteOn: {
     id: 'app.containers.AdminPage.ProjectEdit.Voting.optionsToVoteOn',
     defaultMessage: 'Options to vote on',

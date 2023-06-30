@@ -267,6 +267,113 @@ const multipleVotingConfig: VotingMethodConfig = {
   },
 };
 
+const singleVotingConfig: VotingMethodConfig = {
+  getStatusHeader: (submissionState: VoteSubmissionState) => {
+    switch (submissionState) {
+      case 'hasNotSubmitted':
+        return messages.castYourVote;
+      case 'hasSubmitted':
+        return messages.votesCast;
+      case 'submissionEnded':
+        return messages.votingClosed;
+    }
+  },
+  getStatusTitle: (submissionState: VoteSubmissionState) => {
+    switch (submissionState) {
+      case 'hasNotSubmitted':
+        return messages.howToVote;
+      case 'hasSubmitted':
+        return messages.voteSubmittedWithIcon;
+      case 'submissionEnded':
+        return messages.finalTally;
+    }
+  },
+  getStatusDescription: ({
+    project,
+    phase,
+    SubmissionState,
+    appConfig,
+  }: GetStatusDescriptionProps) => {
+    if (SubmissionState === 'hasNotSubmitted') {
+      return (
+        <FormattedMessage
+          values={{
+            b: (chunks) => (
+              <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+            ),
+            optionCount: phase
+              ? phase.attributes.ideas_count
+              : project.attributes.ideas_count,
+            totalVotes: phase
+              ? phase.attributes.voting_max_total?.toLocaleString()
+              : project.attributes.voting_max_total?.toLocaleString(),
+          }}
+          {...messages.cumulativeVotingInstructions}
+        />
+      );
+    }
+    if (SubmissionState === 'hasSubmitted') {
+      if (phase) {
+        return (
+          <FormattedMessage
+            values={{
+              b: (chunks) => (
+                <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+              ),
+              endDate: phase && toFullMonth(phase.attributes.end_at, 'day'),
+            }}
+            {...messages.votingSubmittedInstructions}
+          />
+        );
+      }
+      return (
+        <FormattedMessage
+          values={{
+            b: (chunks) => (
+              <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+            ),
+          }}
+          {...messages.votingSubmittedInstructionsContinuous}
+        />
+      );
+    } else if (SubmissionState === 'submissionEnded') {
+      return (
+        <FormattedMessage
+          values={{
+            b: (chunks) => (
+              <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+            ),
+            endDate: phase && toFullMonth(phase.attributes.end_at, 'day'),
+            maxBudget:
+              phase && phase.attributes.voting_max_total?.toLocaleString(),
+            currency:
+              appConfig?.data.attributes.settings.core.currency.toString(),
+            optionCount: phase && phase.attributes.ideas_count,
+          }}
+          {...messages.budgetParticipationEnded}
+        />
+      );
+    }
+    return null;
+  },
+  getStatusSubmissionCountCopy: (basketCount) => {
+    if (basketCount > 1) {
+      return messages.submittedVotesCountText;
+    } else {
+      return messages.submittedVoteCountText;
+    }
+  },
+  getSubmissionTerm: (form) => {
+    if (form === 'singular') {
+      return messages.vote;
+    }
+    return messages.votes;
+  },
+  preSubmissionWarning: () => {
+    return messages.votingPreSubmissionWarning;
+  },
+};
+
 // Get the configuration object for the given voting method
 export function getVotingMethodConfig(
   votingMethod?: VotingMethod | null
@@ -281,4 +388,5 @@ const methodToConfig: {
 } = {
   budgeting: budgetingConfig,
   multiple_voting: multipleVotingConfig,
+  single_voting: singleVotingConfig,
 };

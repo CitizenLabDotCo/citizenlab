@@ -8,6 +8,15 @@ export function canContainIdeas(phase: IPhaseData) {
   return pm === 'ideation' || pm === 'voting';
 }
 
+export function getlatestIdeaContextPhase(phases: IPhaseData[]) {
+  const ideaContextPhases = phases.filter(
+    (phase) =>
+      phase.attributes.participation_method === 'ideation' ||
+      phase.attributes.participation_method === 'voting'
+  );
+  return getLatestRelevantPhase(ideaContextPhases);
+}
+
 export function getCurrentPhase(phases: IPhaseData[] | undefined) {
   if (!isNilOrError(phases)) {
     const currentPhase = phases.find(

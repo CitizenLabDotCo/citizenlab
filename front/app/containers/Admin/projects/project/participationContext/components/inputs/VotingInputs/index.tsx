@@ -1,7 +1,13 @@
 import React from 'react';
 
 // components
-import { Toggle, IconTooltip, Text } from '@citizenlab/cl2-component-library';
+import {
+  Toggle,
+  IconTooltip,
+  Text,
+  Box,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import {
   SectionField,
   SubSectionTitleWithDescription,
@@ -24,7 +30,7 @@ import { ApiErrors } from '../../../';
 import { IOption, Multiloc } from 'typings';
 
 // hooks
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 export type VotingTerm = { singular: Multiloc; plural: Multiloc };
 
@@ -40,9 +46,13 @@ export interface VotingInputsProps {
   maxTotalVotesError: string | null;
   maxVotesPerOptionError: string | null;
   voting_max_votes_per_idea?: number | null;
+  voting_term_plural_multiloc?: Multiloc | null;
+  voting_term_singular_multiloc?: Multiloc | null;
   handleVotingMinTotalChange: (newVotingMinTotal: string) => void;
   handleVotingMaxTotalChange: (newVotingMaxTotal: string) => void;
   handleMaxVotesPerOptionAmountChange: (newMaxVotesPerOption: string) => void;
+  handleVoteTermPluralChange: (termMultiloc: Multiloc) => void;
+  handleVoteTermSingularChange: (termMultiloc: Multiloc) => void;
   toggleCommentingEnabled: () => void;
   apiErrors: ApiErrors;
   presentation_mode: 'card' | 'map' | null | undefined;
@@ -62,10 +72,14 @@ export default ({
   maxTotalVotesError,
   maxVotesPerOptionError,
   voting_max_votes_per_idea,
+  voting_term_plural_multiloc,
+  voting_term_singular_multiloc,
   handleVotingMinTotalChange,
   handleVotingMaxTotalChange,
   toggleCommentingEnabled,
   handleMaxVotesPerOptionAmountChange,
+  handleVoteTermPluralChange,
+  handleVoteTermSingularChange,
   apiErrors,
   presentation_mode,
   handleIdeasDisplayChange,
@@ -73,9 +87,6 @@ export default ({
 }: VotingInputsProps) => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
-  const { projectId } = useParams() as {
-    projectId: string;
-  };
 
   return (
     <>
@@ -83,82 +94,88 @@ export default ({
         voting_method={voting_method}
         handleVotingMethodOnChange={handleVotingMethodOnChange}
       />
-      {projectId && (
+      <Box paddingLeft="32px" borderLeft={`1px solid ${colors.divider}`}>
+        {voting_method === 'budgeting' && (
+          <BudgetingInputs
+            voting_min_total={voting_min_total}
+            voting_max_total={voting_max_total}
+            input_term={input_term}
+            isCustomInputTermEnabled={isCustomInputTermEnabled}
+            minTotalVotesError={minTotalVotesError}
+            maxTotalVotesError={maxTotalVotesError}
+            apiErrors={apiErrors}
+            handleInputTermChange={handleInputTermChange}
+            handleMinBudgetingAmountChange={handleVotingMinTotalChange}
+            handleMaxBudgetingAmountChange={handleVotingMaxTotalChange}
+          />
+        )}
+        {voting_method !== 'budgeting' && (
+          <SectionField>
+            <SubSectionTitleWithDescription>
+              <FormattedMessage {...messages.optionsToVoteOn} />
+            </SubSectionTitleWithDescription>
+            <StyledSectionDescription>
+              <FormattedMessage
+                {...messages.optionsToVoteOnDescription}
+                values={{
+                  optionsPageLink: (
+                    <a href={`${pathname}/ideas`} rel="noreferrer">
+                      <FormattedMessage {...messages.optionsPageText} />
+                    </a>
+                  ),
+                }}
+              />
+            </StyledSectionDescription>
+          </SectionField>
+        )}
+        {voting_method === 'multiple_voting' && (
+          <MultipleVotingInputs
+            voting_max_total={voting_max_total}
+            apiErrors={undefined}
+            maxTotalVotesError={maxTotalVotesError}
+            maxVotesPerOptionError={maxVotesPerOptionError}
+            voting_max_votes_per_idea={voting_max_votes_per_idea}
+            voting_term_plural_multiloc={voting_term_plural_multiloc}
+            voting_term_singular_multiloc={voting_term_singular_multiloc}
+            handleMaxVotingAmountChange={handleVotingMaxTotalChange}
+            handleMaxVotesPerOptionAmountChange={
+              handleMaxVotesPerOptionAmountChange
+            }
+            handleVoteTermPluralChange={handleVoteTermPluralChange}
+            handleVoteTermSingularChange={handleVoteTermSingularChange}
+          />
+        )}
         <SectionField>
           <SubSectionTitleWithDescription>
-            <FormattedMessage {...messages.optionsToVoteOn} />
+            <FormattedMessage {...messages.enabledActionsForUsers} />
+            <IconTooltip
+              content={<FormattedMessage {...messages.enabledActionsTooltip} />}
+            />
           </SubSectionTitleWithDescription>
           <StyledSectionDescription>
-            <FormattedMessage
-              {...messages.optionsToVoteOnDescription}
-              values={{
-                optionsPageLink: (
-                  <a href={`${pathname}/ideas`} rel="noreferrer">
-                    <FormattedMessage {...messages.optionsPageText} />
-                  </a>
-                ),
-              }}
-            />
+            <FormattedMessage {...messages.enabledActionsForUsersDescription} />
           </StyledSectionDescription>
+
+          <ToggleRow>
+            <Toggle
+              checked={!!commenting_enabled}
+              onChange={toggleCommentingEnabled}
+              label={FormattedMessage(messages.inputCommentingEnabled)}
+            />
+          </ToggleRow>
+          <Text mb="0px" pb="0px" color={'textSecondary'} fontSize="s">
+            {formatMessage(messages.commentingBias)}
+          </Text>
+          <Error apiErrors={apiErrors && apiErrors.commenting_enabled} />
         </SectionField>
-      )}
 
-      {voting_method === 'budgeting' && (
-        <BudgetingInputs
-          voting_min_total={voting_min_total}
-          voting_max_total={voting_max_total}
-          input_term={input_term}
-          isCustomInputTermEnabled={isCustomInputTermEnabled}
-          minTotalVotesError={minTotalVotesError}
-          maxTotalVotesError={maxTotalVotesError}
+        <DefaultViewPicker
+          presentation_mode={presentation_mode}
           apiErrors={apiErrors}
-          handleInputTermChange={handleInputTermChange}
-          handleMinBudgetingAmountChange={handleVotingMinTotalChange}
-          handleMaxBudgetingAmountChange={handleVotingMaxTotalChange}
+          handleIdeasDisplayChange={handleIdeasDisplayChange}
+          title={messages.defaultViewOptions}
         />
-      )}
-      {voting_method === 'multiple_voting' && (
-        <MultipleVotingInputs
-          voting_max_total={voting_max_total}
-          apiErrors={undefined}
-          maxTotalVotesError={maxTotalVotesError}
-          maxVotesPerOptionError={maxVotesPerOptionError}
-          voting_max_votes_per_idea={voting_max_votes_per_idea}
-          handleMaxVotingAmountChange={handleVotingMaxTotalChange}
-          handleMaxVotesPerOptionAmountChange={
-            handleMaxVotesPerOptionAmountChange
-          }
-        />
-      )}
-      <SectionField>
-        <SubSectionTitleWithDescription>
-          <FormattedMessage {...messages.enabledActionsForUsers} />
-          <IconTooltip
-            content={<FormattedMessage {...messages.enabledActionsTooltip} />}
-          />
-        </SubSectionTitleWithDescription>
-        <StyledSectionDescription>
-          <FormattedMessage {...messages.enabledActionsForUsersDescription} />
-        </StyledSectionDescription>
-
-        <ToggleRow>
-          <Toggle
-            checked={!!commenting_enabled}
-            onChange={toggleCommentingEnabled}
-            label={FormattedMessage(messages.inputCommentingEnabled)}
-          />
-        </ToggleRow>
-        <Text color={'textSecondary'} fontSize="s">
-          {formatMessage(messages.commentingBias)}
-        </Text>
-        <Error apiErrors={apiErrors && apiErrors.commenting_enabled} />
-      </SectionField>
-
-      <DefaultViewPicker
-        presentation_mode={presentation_mode}
-        apiErrors={apiErrors}
-        handleIdeasDisplayChange={handleIdeasDisplayChange}
-      />
+      </Box>
     </>
   );
 };

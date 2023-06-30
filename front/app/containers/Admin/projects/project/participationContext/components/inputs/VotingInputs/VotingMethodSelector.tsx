@@ -18,6 +18,7 @@ import MultipleVotingIcon from './CardIcons/MultipleVotingIcon';
 
 // types
 import { VotingMethod } from 'services/participationContexts';
+import SingleVotingIcon from './CardIcons/SingleVotingIcon';
 
 type VotingMethodSelectorProps = {
   voting_method?: VotingMethod | null;
@@ -30,8 +31,31 @@ const VotingMethodSelector = ({
 }: VotingMethodSelectorProps) => {
   const { formatMessage } = useIntl();
 
+  const getVoteTypeDescription = () => {
+    switch (voting_method) {
+      case 'multiple_voting':
+        return formatMessage(messages.multipleVotesPerOption, {
+          b: (chunks: string) => (
+            <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+          ),
+        });
+      case 'single_voting':
+        return formatMessage(messages.singleVotePerOption, {
+          b: (chunks) => (
+            <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+          ),
+        });
+      case 'budgeting':
+        return formatMessage(messages.budgetAllocation, {
+          b: (chunks) => (
+            <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+          ),
+        });
+    }
+  };
+
   return (
-    <Box mb="35px">
+    <Box mb="35px" width="800px">
       <SubSectionTitle>
         {formatMessage(messages.votingMethodSelectorTitle)}
         <IconTooltip
@@ -44,6 +68,18 @@ const VotingMethodSelector = ({
         {formatMessage(messages.votingMethodSelectorSubtitle)}
       </Text>
       <Box display="flex" gap="16px">
+        <CardButton
+          selected={voting_method === 'single_voting'}
+          icon={
+            <SingleVotingIcon selected={voting_method === 'single_voting'} />
+          }
+          onClick={(e) => {
+            e.preventDefault();
+            handleVotingMethodOnChange('single_voting');
+          }}
+          title={formatMessage(messages.singleVotingMethodTitle)}
+          subtitle={formatMessage(messages.singleVotingMethodSubtitle)}
+        />
         <CardButton
           selected={voting_method === 'multiple_voting'}
           icon={
@@ -69,26 +105,25 @@ const VotingMethodSelector = ({
           subtitle={formatMessage(messages.budgetingVotingMethodSubtitle)}
         />
       </Box>
-      {voting_method === 'multiple_voting' && (
-        <Box mt="16px">
-          <Warning>
-            <FormattedMessage
-              {...messages.learnMoreMultipleVoting}
-              values={{
-                b: (chunks) => (
-                  <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
-                ),
-                optionAnalysisArticleLink: (
-                  // TODO: Replace with article when ready
-                  <a href={'/'} target="_blank" rel="noreferrer">
-                    <FormattedMessage {...messages.optionAnalysisLinkText} />
-                  </a>
-                ),
-              }}
-            />
-          </Warning>
-        </Box>
-      )}
+      <Box mt="16px">
+        <Warning>
+          <FormattedMessage
+            {...messages.learnMoreMultipleVoting}
+            values={{
+              b: (chunks) => (
+                <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+              ),
+              voteTypeDescription: getVoteTypeDescription(),
+              optionAnalysisArticleLink: (
+                // TODO: Replace with article when ready
+                <a href={'/'} target="_blank" rel="noreferrer">
+                  <FormattedMessage {...messages.optionAnalysisLinkText} />
+                </a>
+              ),
+            }}
+          />
+        </Warning>
+      </Box>
     </Box>
   );
 };

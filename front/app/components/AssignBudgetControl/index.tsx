@@ -48,6 +48,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import PBExpenses from 'containers/ProjectsShowPage/shared/pb/PBExpenses';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import { BasketIdeaAttributes } from 'api/baskets/types';
+import usePhase from 'api/phases/usePhase';
 
 const IdeaPageContainer = styled.div`
   display: flex;
@@ -95,21 +96,24 @@ interface Props {
   projectId: string;
   ideaId: string;
   className?: string;
+  phaseId?: string;
 }
 
 const timeout = (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
 const AssignBudgetControl = memo(
-  ({ view, ideaId, className, projectId }: Props) => {
+  ({ view, ideaId, className, projectId, phaseId }: Props) => {
     const { data: authUser } = useAuthUser();
     const { data: idea } = useIdeaById(ideaId);
     const { data: project } = useProjectById(projectId);
-    const { data: phases } = usePhases(projectId);
+    const { data: phase } = usePhase(phaseId);
     const { mutateAsync: addBasket } = useAddBasket(projectId);
     const { mutateAsync: updateBasket } = useUpdateBasket();
     const { data: appConfig } = useAppConfiguration();
     const theme = useTheme();
+
+    const latestRelevantIdeaPhase = phase?.data;
 
     const isContinuousProject =
       project?.data.attributes.process_type === 'continuous';
@@ -118,23 +122,13 @@ const AssignBudgetControl = memo(
       ? idea.data.relationships?.phases?.data?.map((item) => item.id)
       : null;
 
-    const ideaPhases = phases
-      ? phases.data.filter(
-          (phase) =>
-            Array.isArray(ideaPhaseIds) && ideaPhaseIds.includes(phase.id)
-        )
-      : null;
-
-    const latestRelevantIdeaPhase = ideaPhases
-      ? getLatestRelevantPhase(ideaPhases)
-      : null;
-
     const participationContext = isContinuousProject
       ? project.data
       : latestRelevantIdeaPhase;
 
     const participationContextType = isContinuousProject ? 'project' : 'phase';
     const participationContextId = participationContext?.id || null;
+
     const { data: basket } = useBasket(
       participationContext?.relationships?.user_basket?.data?.id
     );

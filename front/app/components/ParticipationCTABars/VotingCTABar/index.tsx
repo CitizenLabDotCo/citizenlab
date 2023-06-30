@@ -33,9 +33,11 @@ import {
   VOTES_EXCEEDED_ERROR_EVENT,
   VOTES_PER_OPTION_EXCEEDED_ERROR_EVENT,
 } from 'components/AssignMultipleVotesControl';
+import useLocale from 'hooks/useLocale';
 
 export const VotingCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
+  const locale = useLocale();
   const { formatMessage } = useIntl();
   const { data: appConfig } = useAppConfiguration();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
@@ -120,10 +122,21 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
   const minBudgetReached = spentBudget >= minBudget;
   const minBudgetRequiredNotReached = minBudgetRequired && !minBudgetReached;
 
+  if (isNilOrError(locale)) {
+    return null;
+  }
+
   const handleSubmitOnClick = async () => {
     if (!isNilOrError(basket)) {
       updateBasket({ id: basket.data.id, submitted: true });
     }
+  };
+
+  const getVoteTerm = () => {
+    if (currentPhase && currentPhase.attributes.voting_term_plural_multiloc) {
+      return currentPhase?.attributes?.voting_term_plural_multiloc[locale];
+    }
+    return null;
   };
 
   const CTAButton = hasUserParticipated ? (
@@ -154,8 +167,6 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
     </Button>
   );
 
-  const voteTerm = 'votes'; // TODO: Get from project/phase attributes once implemented on BE.
-
   return (
     <>
       <ParticipationCTAContent
@@ -164,14 +175,17 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
         CTAButton={CTAButton}
         hasUserParticipated={hasUserParticipated}
         participationState={
-          <Text color="white" m="0px" fontSize="s" my="0px" textAlign="left">
-            {(
-              maxBudget - (basket?.data.attributes.total_votes || 0)
-            ).toLocaleString()}{' '}
-            / {maxBudget.toLocaleString()}{' '}
-            {voteTerm || appConfig?.data.attributes.settings.core.currency}{' '}
-            {formatMessage(messages.left)}
-          </Text>
+          hasUserParticipated ? undefined : (
+            <Text color="white" m="0px" fontSize="s" my="0px" textAlign="left">
+              {(
+                maxBudget - (basket?.data.attributes.total_votes || 0)
+              ).toLocaleString()}{' '}
+              / {maxBudget.toLocaleString()}{' '}
+              {getVoteTerm() ||
+                appConfig?.data.attributes.settings.core.currency}{' '}
+              {formatMessage(messages.left)}
+            </Text>
+          )
         }
         hideDefaultParticipationMessage={currentPhase ? true : false}
         timeLeftPosition="left"
