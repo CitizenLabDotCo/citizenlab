@@ -25,19 +25,13 @@ import { useLocation } from 'react-router-dom';
 
 const highlightAnimation = keyframes`
   0% {
-    opacity: 0;
-  }
-  25% {
-    opacity: 0.25;
+    background-color: transparent;
   }
   50% {
-    opacity: 0.5;
-  }
-  75% {
-    opacity: 0.75;
+    background-color: ${colors.grey200};
   }
   100% {
-    opacity: 1;
+    background-color: transparent;
   }
 `;
 
@@ -45,7 +39,7 @@ const Container = styled(Box)<{ animate?: boolean }>`
   ${({ animate }) =>
     animate &&
     css`
-      animation: ${highlightAnimation} 2s 3 ease-in-out;
+      animation: ${highlightAnimation} 3s ease-in-out;
     `};
 `;
 
@@ -121,7 +115,7 @@ const InternalComment = ({
           setAnimateHighlight(true);
           setTimeout(() => {
             setAnimateHighlight(false);
-          }, 6000);
+          }, 3000);
         });
       }
     };
