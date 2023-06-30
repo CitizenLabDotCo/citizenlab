@@ -2,7 +2,7 @@
 
 class WebApi::V1::BasketsIdeasController < ApplicationController
   def index
-    baskets_ideas = policy_scope(basket.baskets_ideas).includes(:idea)
+    baskets_ideas = paginate policy_scope(basket.baskets_ideas).includes(:idea)
     render json: WebApi::V1::BasketsIdeaSerializer.new(
       baskets_ideas,
       params: jsonapi_serializer_params,
@@ -53,9 +53,10 @@ class WebApi::V1::BasketsIdeasController < ApplicationController
   end
 
   def destroy
-    baskets_idea = baskets_idea.destroy
+    SideFxBasketsIdeaService.new.before_destroy baskets_idea, current_user
+    baskets_idea.destroy
     if baskets_idea.destroyed?
-      SideFxBasketsIdeaService.new.after_destroy(baskets_idea, current_user)
+      SideFxBasketsIdeaService.new.after_destroy baskets_idea, current_user
       head :ok
     else
       head :internal_server_error
@@ -71,7 +72,7 @@ class WebApi::V1::BasketsIdeasController < ApplicationController
   end
 
   def basket
-    @basket = Basket.find(params[:basket_id])
+    @basket = Basket.find params[:basket_id]
   end
 
   def baskets_idea_params_for_create
