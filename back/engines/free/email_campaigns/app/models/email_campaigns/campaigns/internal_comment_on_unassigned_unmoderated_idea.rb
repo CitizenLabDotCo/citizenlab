@@ -63,7 +63,7 @@ module EmailCampaigns
     end
 
     def self.trigger_multiloc_key
-      'email_campaigns.admin_labels.trigger.internal_comment_is_made_on_unassigned_unmoderated_idea'
+      'email_campaigns.admin_labels.trigger.internal_comment_is_posted_on_unassigned_unmoderated_idea'
     end
 
     def mailer_class
