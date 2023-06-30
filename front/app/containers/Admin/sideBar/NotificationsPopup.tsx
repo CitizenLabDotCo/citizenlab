@@ -100,7 +100,7 @@ export const NotificationsPopup = () => {
               </>
             )}
             <Box
-              w={isSmallerThanPhone ? '0px' : '16px'}
+              w="auto"
               h={isSmallerThanPhone ? '0px' : '18px'}
               ref={iconDivRef}
             >
