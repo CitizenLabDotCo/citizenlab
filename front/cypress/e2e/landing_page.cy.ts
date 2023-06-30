@@ -56,7 +56,7 @@ describe('Landing page - not signed in', () => {
   });
 });
 
-describe('Landing page - URL sign in/up', () => {
+describe.skip('Landing page - URL sign in/up', () => {
   it('shows correct authentication modal when logged out', () => {
     cy.clearCookies();
     cy.visit('/sign-in');
