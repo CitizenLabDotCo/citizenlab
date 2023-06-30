@@ -10,8 +10,9 @@ import { useBreakpoint } from '@citizenlab/cl2-component-library';
 import useLocalize from 'hooks/useLocalize';
 
 // components
-import ReactionControl from 'components/ReactionControl';
 import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
+import ReactionControl from 'components/ReactionControl';
+import AddToBasketButton from 'components/AssignBudgetControl/AddToBasketButton';
 
 // events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
@@ -149,7 +150,9 @@ const IdeaShowPageTopBar = ({
           />
 
           {/* Only visible if participatory budgeting */}
-          {/* TODO */}
+          {ideaId && (
+            <AddToBasketButton ideaId={ideaId} projectId={projectId} />
+          )}
         </Right>
       </TopBarInner>
     </Container>
