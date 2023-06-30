@@ -827,7 +827,7 @@
   "app.containers.Admin.tools.apiTokens.link": "API-dokumentation",
   "app.containers.Admin.tools.apiTokens.linkUrl": "{tenantName, select, Odense {https://matomo.org/} other {https://developers.citizenlab.co/reference-api-docs}}/",
   "app.containers.Admin.tools.apiTokens.name": "Navn",
-  "app.containers.Admin.tools.apiTokens.noTokens": "Du har ikke nogen poletter endnu.",
+  "app.containers.Admin.tools.apiTokens.noTokens": "Du har ikke nogen tokens endnu.",
   "app.containers.Admin.tools.apiTokens.secret": "Hemmelighed",
   "app.containers.Admin.tools.apiTokens.title": "Offentlige API-tokens",
   "app.containers.Admin.tools.learnMore": "Få mere at vide",
