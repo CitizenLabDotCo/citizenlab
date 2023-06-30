@@ -1198,6 +1198,29 @@ resource 'Ideas' do
               end
             end
 
+            context 'Moving the idea from a voting phase' do
+              let(:project) { create(:project_with_past_ideation_and_active_budgeting_phase) }
+              let(:idea) { create(:idea, project: project, phases: [project.phases.last]) }
+              let(:id) { idea.id }
+
+              context 'Moving between phases' do
+                let(:phase_ids) { [project.phases.first.id] }
+
+                example_request 'Move the idea from a voting phase' do
+                  assert_status 200
+                end
+              end
+
+              context 'Moving between projects' do
+                let(:new_project) { create(:continuous_project) }
+                let(:project_id) { new_project.id }
+
+                example_request 'Move the idea to another (non-voting) project' do
+                  assert_status 200
+                end
+              end
+            end
+
             context 'when passing an empty array of phase ids' do
               before do
                 @project = create(:project_with_phases)
