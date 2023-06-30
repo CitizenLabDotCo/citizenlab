@@ -164,8 +164,8 @@ describe('Native survey project page actions', () => {
     // Visit the project page
     cy.visit(`/projects/${projectSlugContinous}`);
     // Check that correct text and actions shown
-    cy.get('#e2e-cta-button').should('exist');
-    cy.get('#e2e-cta-button').click();
+    cy.get('#e2e-idea-button').should('exist');
+    cy.get('#e2e-idea-button').first().click();
     cy.url().should('include', `/projects/${projectSlugContinous}/ideas/new`);
   });
 
