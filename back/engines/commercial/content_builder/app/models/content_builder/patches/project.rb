@@ -38,7 +38,7 @@ module ContentBuilder
         }, using: { tsearch: { prefix: true } }
 
         def uses_content_builder?
-          content_builder_layouts.present? && content_builder_layouts.pluck(:enabled).include?(true)
+          content_builder_layouts.any?(&:enabled)
         end
       end
 
