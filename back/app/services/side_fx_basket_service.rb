@@ -5,7 +5,7 @@ class SideFxBasketService
 
   def after_create(basket, user)
     LogActivityJob.perform_later(basket, 'created', user, basket.created_at.to_i)
-    update_basket_counts basket unless basket.submitted_at.nil?
+    update_basket_counts basket if basket.submitted?
   end
 
   def after_update(basket, user)
@@ -73,7 +73,7 @@ class SideFxBasketService
   end
 
   def update_participation_context_counts(count_contexts, update_context)
-    count = Basket.where(participation_context: count_contexts).where.not(submitted_at: nil).count
+    count = Basket.where(participation_context: count_contexts).submitted.count
     update_context.update!(baskets_count: count)
   end
 end
