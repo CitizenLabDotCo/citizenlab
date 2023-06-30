@@ -56,12 +56,6 @@ const BudgetingInputs = ({
 
   return (
     <>
-      {isCustomInputTermEnabled && (
-        <CustomFieldPicker
-          input_term={input_term}
-          handleInputTermChange={handleInputTermChange}
-        />
-      )}
       <SectionField>
         <SubSectionTitle>
           <FormattedMessage {...messages.totalBudget} />
@@ -98,6 +92,12 @@ const BudgetingInputs = ({
           apiErrors={apiErrors && apiErrors.voting_max_total}
         />
       </SectionField>
+      {isCustomInputTermEnabled && (
+        <CustomFieldPicker
+          input_term={input_term}
+          handleInputTermChange={handleInputTermChange}
+        />
+      )}
     </>
   );
 };

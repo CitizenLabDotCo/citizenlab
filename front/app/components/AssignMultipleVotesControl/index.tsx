@@ -32,6 +32,10 @@ import useAddBasket from 'api/baskets/useAddBasket';
 // import { BasketIdeaAttributes } from 'api/baskets/types';
 import useIdeaById from 'api/ideas/useIdeaById';
 
+export const VOTES_EXCEEDED_ERROR_EVENT = 'votesExceededError';
+export const VOTES_PER_OPTION_EXCEEDED_ERROR_EVENT =
+  'votesPerOptionExceededError';
+
 const StyledBox = styled(Box)`
   input {
     border: none !important;
@@ -114,41 +118,41 @@ const AssignMultipleVotesControl = ({ projectId, ideaId }: Props) => {
       currentTotal &&
       currentTotal + (currentVotes + 1) >= votingMax
     ) {
-      eventEmitter.emit(BUDGET_EXCEEDED_ERROR_EVENT);
+      eventEmitter.emit(VOTES_EXCEEDED_ERROR_EVENT);
     }
     if (votingPerOptionMax && currentVotes + 1 > votingPerOptionMax) {
-      eventEmitter.emit(BUDGET_EXCEEDED_ERROR_EVENT); // TODO: Make specific error event for this
+      eventEmitter.emit(VOTES_PER_OPTION_EXCEEDED_ERROR_EVENT);
     } else {
       if (currentVotes <= 0) {
-        if (basket?.data.id) {
-          updateBasket({
-            id: basket?.data.id,
-            baskets_ideas_attributes: [{ idea_id: ideaId, votes: 1 }],
-          });
-        } else {
-          addBasket({
-            participation_context_id: participationContext.id,
-            participation_context_type: currentPhase ? 'Phase' : 'Project',
-            baskets_ideas_attributes: [{ idea_id: ideaId, votes: 1 }],
-          });
-        }
+        // if (basket?.data.id) {
+        //   updateBasket({
+        //     id: basket?.data.id,
+        //     baskets_ideas_attributes: [{ idea_id: ideaId, votes: 1 }],
+        //   });
+        // } else {
+        //   addBasket({
+        //     participation_context_id: participationContext.id,
+        //     participation_context_type: currentPhase ? 'Phase' : 'Project',
+        //     baskets_ideas_attributes: [{ idea_id: ideaId, votes: 1 }],
+        //   });
+        // }
         setVotes(1);
       } else {
-        if (basket?.data.id) {
-          updateBasket({
-            id: basket?.data.id,
-            baskets_ideas_attributes: [
-              { idea_id: ideaId, votes: currentVotes + 1 },
-            ],
-          });
-        }
-        addBasket({
-          participation_context_id: participationContext.id,
-          participation_context_type: currentPhase ? 'Phase' : 'Project',
-          baskets_ideas_attributes: [
-            { idea_id: ideaId, votes: currentVotes + 1 },
-          ],
-        });
+        // if (basket?.data.id) {
+        //   updateBasket({
+        //     id: basket?.data.id,
+        //     baskets_ideas_attributes: [
+        //       { idea_id: ideaId, votes: currentVotes + 1 },
+        //     ],
+        //   });
+        // }
+        // addBasket({
+        //   participation_context_id: participationContext.id,
+        //   participation_context_type: currentPhase ? 'Phase' : 'Project',
+        //   baskets_ideas_attributes: [
+        //     { idea_id: ideaId, votes: currentVotes + 1 },
+        //   ],
+        // });
         setVotes(currentVotes + 1);
       }
     }

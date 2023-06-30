@@ -12,21 +12,30 @@ import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLoca
 // typing
 import { ApiErrors } from '../../../..';
 import { VotingAmountInputError } from '../../../shared/styling';
+import { Multiloc } from 'typings';
 interface Props {
   voting_max_total?: number | null;
   voting_max_votes_per_idea?: number | null;
   apiErrors: ApiErrors;
   maxTotalVotesError: string | null;
   maxVotesPerOptionError: string | null;
+  voting_term_plural_multiloc?: Multiloc | null;
+  voting_term_singular_multiloc?: Multiloc | null;
   handleMaxVotingAmountChange: (newMaxTotalVote: string) => void;
   handleMaxVotesPerOptionAmountChange: (newMaxVotesPerOption: string) => void;
+  handleVoteTermPluralChange: (termMultiloc: Multiloc) => void;
+  handleVoteTermSingularChange: (termMultiloc: Multiloc) => void;
 }
 
 const MultipleVotingInputs = ({
   voting_max_total,
   voting_max_votes_per_idea,
+  voting_term_plural_multiloc,
+  voting_term_singular_multiloc,
   handleMaxVotingAmountChange,
   handleMaxVotesPerOptionAmountChange,
+  handleVoteTermPluralChange,
+  handleVoteTermSingularChange,
   apiErrors,
   maxTotalVotesError,
   maxVotesPerOptionError,
@@ -44,18 +53,20 @@ const MultipleVotingInputs = ({
             <InputMultilocWithLocaleSwitcher
               label={'Singular'}
               type={'text'}
-              valueMultiloc={undefined}
+              valueMultiloc={voting_term_singular_multiloc}
               placeholder={formatMessage(
                 messages.voteCalledPlaceholderSingular
               )}
+              onChange={handleVoteTermSingularChange}
             />
           </Box>
 
           <InputMultilocWithLocaleSwitcher
             label={'Plural'}
             type={'text'}
-            valueMultiloc={undefined}
+            valueMultiloc={voting_term_plural_multiloc}
             placeholder={formatMessage(messages.voteCalledPlaceholderPlural)}
+            onChange={handleVoteTermPluralChange}
           />
         </Box>
       </SectionField>
@@ -93,7 +104,7 @@ const MultipleVotingInputs = ({
         <VotingAmountInputError
           apiErrors={apiErrors && apiErrors.voting_max_votes_per_idea}
         />
-        <Text color="textSecondary" fontSize="s">
+        <Text mb="0px" pb="0px" color="textSecondary" fontSize="s">
           <FormattedMessage
             {...messages.maximumVotesRecommendation}
             values={{

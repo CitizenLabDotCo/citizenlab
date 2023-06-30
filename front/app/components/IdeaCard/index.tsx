@@ -40,9 +40,10 @@ import { IIdea } from 'api/ideas/types';
 
 // components
 import AssignBudgetControl from 'components/AssignBudgetControl';
-import { getCurrentPhase } from 'api/phases/utils';
+import { getCurrentPhase, getlatestIdeaContextPhase } from 'api/phases/utils';
 import usePhases from 'api/phases/usePhases';
 import AssignMultipleVotesControl from 'components/AssignMultipleVotesControl';
+import usePhase from 'api/phases/usePhase';
 
 const BodyWrapper = styled.div`
   display: flex;
@@ -121,6 +122,7 @@ interface Props {
   hideIdeaStatus?: boolean;
   hideBody?: boolean;
   goBackMode?: 'browserGoBackButton' | 'goToProject';
+  viewingPhaseId?: string | null;
 }
 
 const IdeaLoading = (props: Props) => {
@@ -147,6 +149,7 @@ const CompactIdeaCard = memo<IdeaCardProps>(
     hideIdeaStatus = false,
     hideBody = false,
     goBackMode = 'browserGoBackButton',
+    viewingPhaseId,
   }) => {
     const smallerThanPhone = useBreakpoint('phone');
     const locale = useLocale();
@@ -154,6 +157,7 @@ const CompactIdeaCard = memo<IdeaCardProps>(
     const { data: project } = useProjectById(
       idea.data.relationships.project.data.id
     );
+    const { data: viewingPhase } = usePhase(viewingPhaseId);
     const { data: phases } = usePhases(project?.data.id);
     const { data: ideaImage } = useIdeaImage(
       idea.data.id,
@@ -176,24 +180,39 @@ const CompactIdeaCard = memo<IdeaCardProps>(
         const projectId = idea.data.relationships.project.data.id;
         const ideaBudget = idea.data.attributes.budget;
 
+        const showMultipleVoteControl =
+          viewingPhase?.data.attributes.participation_method === 'voting' &&
+          viewingPhase?.data.attributes.voting_method === 'multiple_voting' &&
+          ideaBudget;
+
+        const showBudgetControl =
+          viewingPhase?.data.attributes.participation_method === 'voting' &&
+          viewingPhase?.data.attributes.voting_method === 'budgeting' &&
+          ideaBudget;
         if (
-          participationMethod === 'voting' &&
-          votingMethod === 'budgeting' &&
-          ideaBudget
+          showBudgetControl ||
+          (participationMethod === 'voting' &&
+            votingMethod === 'budgeting' &&
+            ideaBudget)
         ) {
           return (
             <Box display="flex" alignItems="center">
               <AssignBudgetControl
                 view="ideaCard"
                 projectId={projectId}
+                phaseId={
+                  viewingPhase?.data.id ||
+                  (phases?.data && getlatestIdeaContextPhase(phases?.data)?.id)
+                }
                 ideaId={idea.data.id}
               />
             </Box>
           );
         }
         if (
-          participationMethod === 'voting' &&
-          votingMethod === 'multiple_voting'
+          showMultipleVoteControl ||
+          (participationMethod === 'voting' &&
+            votingMethod === 'multiple_voting')
         ) {
           return (
             <Box display="flex" alignItems="center">

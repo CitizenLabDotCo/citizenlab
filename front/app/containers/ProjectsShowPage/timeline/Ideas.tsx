@@ -73,10 +73,9 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
     [projectId, sortParam, searchParam, phase, topicsParam]
   );
 
-  const isPBProject =
-    phase.attributes.participation_method === 'voting' &&
-    phase.attributes.voting_method === 'budgeting';
   const participationMethod = phase.attributes.participation_method;
+  const isVotingContext = participationMethod === 'voting';
+
   if (
     !(participationMethod === 'ideation' || participationMethod === 'voting')
   ) {
@@ -90,7 +89,7 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
       id="project-ideas"
       className={`e2e-timeline-project-idea-cards ${className || ''}`}
     >
-      {!isPBProject && (
+      {!isVotingContext && (
         <StyledProjectPageSectionTitle>
           <FormattedMessage
             {...getInputTermMessage(inputTerm, {
@@ -117,8 +116,8 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
         participationContextType="phase"
         invisibleTitleMessage={messages.a11y_titleInputsPhase}
         phaseId={phase.id}
-        showDropdownFilters={isPBProject ? false : true}
-        showSearchbar={isPBProject ? false : true}
+        showDropdownFilters={isVotingContext ? false : true}
+        showSearchbar={isVotingContext ? false : true}
       />
     </Container>
   );

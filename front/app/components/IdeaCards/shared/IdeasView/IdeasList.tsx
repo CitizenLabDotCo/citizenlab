@@ -68,6 +68,7 @@ interface Props {
   hideImagePlaceholder?: boolean;
   hideIdeaStatus?: boolean;
   goBackMode?: 'browserGoBackButton' | 'goToProject';
+  phaseId?: string;
 }
 
 const IdeasList = ({
@@ -87,6 +88,7 @@ const IdeasList = ({
   hideImagePlaceholder = false,
   hideIdeaStatus = false,
   goBackMode,
+  phaseId,
 }: Props) => {
   const theme = useTheme();
   const config = participationMethod && getMethodConfig(participationMethod);
@@ -124,6 +126,7 @@ const IdeasList = ({
                     hideImagePlaceholder={hideImagePlaceholder}
                     hideIdeaStatus={hideIdeaStatus}
                     goBackMode={goBackMode}
+                    viewingPhaseId={phaseId}
                   />
                 );
               })}

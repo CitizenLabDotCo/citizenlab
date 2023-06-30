@@ -50,7 +50,7 @@ import validate from './utils/validate';
 import { anyIsDefined } from 'utils/helperUtils';
 
 // typings
-import { CLErrors } from 'typings';
+import { CLErrors, Multiloc } from 'typings';
 
 export interface IParticipationContextConfig {
   participation_method: ParticipationMethod;
@@ -70,6 +70,8 @@ export interface IParticipationContextConfig {
   voting_min_total?: number | null;
   voting_max_total?: number | null;
   voting_max_votes_per_idea?: number | null;
+  voting_term_singular_multiloc?: Multiloc | null;
+  voting_term_plural_multiloc?: Multiloc | null;
   survey_service?: TSurveyService | null;
   survey_embed_url?: string | null;
   poll_anonymous?: boolean;
@@ -145,6 +147,8 @@ class ParticipationContext extends PureComponent<
       minTotalVotesError: null,
       maxTotalVotesError: null,
       maxVotesPerOptionError: null,
+      voting_term_plural_multiloc: null,
+      voting_term_singular_multiloc: null,
       poll_anonymous: false,
       ideas_order: 'trending',
       input_term: 'idea',
@@ -178,6 +182,8 @@ class ParticipationContext extends PureComponent<
           voting_min_total: newData.voting_min_total,
           voting_max_total: newData.voting_max_total,
           voting_max_votes_per_idea: newData.voting_max_votes_per_idea,
+          voting_term_plural_multiloc: newData.voting_term_plural_multiloc,
+          voting_term_singular_multiloc: newData.voting_term_singular_multiloc,
           survey_embed_url: newData.survey_embed_url,
           survey_service: newData.survey_service,
           poll_anonymous: newData.poll_anonymous,
@@ -367,6 +373,18 @@ class ParticipationContext extends PureComponent<
     });
   };
 
+  handleVoteTermPluralChange = (voting_term_plural_multiloc: Multiloc) => {
+    this.setState({
+      voting_term_plural_multiloc,
+    });
+  };
+
+  handleVoteTermSingularChange = (voting_term_singular_multiloc: Multiloc) => {
+    this.setState({
+      voting_term_singular_multiloc,
+    });
+  };
+
   handleInputTermChange = (option: IOption) => {
     const input_term: InputTerm = option.value;
 
@@ -433,6 +451,8 @@ class ParticipationContext extends PureComponent<
       reacting_dislike_limited_max,
       reacting_dislike_enabled,
       allow_anonymous_participation,
+      voting_term_plural_multiloc,
+      voting_term_singular_multiloc,
       voting_method,
       voting_min_total,
       voting_max_total,
@@ -496,12 +516,16 @@ class ParticipationContext extends PureComponent<
                 maxVotesPerOptionError={maxVotesPerOptionError}
                 handleVotingMinTotalChange={this.handleVotingMinTotalChange}
                 handleVotingMaxTotalChange={this.handleVotingMaxTotalChange}
+                handleVoteTermPluralChange={this.handleVoteTermPluralChange}
+                handleVoteTermSingularChange={this.handleVoteTermSingularChange}
                 toggleCommentingEnabled={this.toggleCommentingEnabled}
                 apiErrors={apiErrors}
                 presentation_mode={presentation_mode}
                 handleIdeasDisplayChange={this.handleIdeasDisplayChange}
                 handleVotingMethodOnChange={this.handleVotingMethodOnChange}
                 voting_max_votes_per_idea={voting_max_votes_per_idea}
+                voting_term_plural_multiloc={voting_term_plural_multiloc}
+                voting_term_singular_multiloc={voting_term_singular_multiloc}
                 handleMaxVotesPerOptionAmountChange={
                   this.handleVotingMaxPerIdeaChange
                 }

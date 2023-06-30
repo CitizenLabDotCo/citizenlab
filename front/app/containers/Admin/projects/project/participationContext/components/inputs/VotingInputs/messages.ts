@@ -31,6 +31,14 @@ export default defineMessages({
     defaultMessage:
       'Users are given an amount of tokens to distribute between options',
   },
+  singleVotingMethodTitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.singleVotingMethodTitle',
+    defaultMessage: 'One vote per option',
+  },
+  singleVotingMethodSubtitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.singleVotingMethodSubtitle',
+    defaultMessage: 'Users can chose to approve any of the options',
+  },
   maximumVotesRecommendation: {
     id: 'app.containers.AdminPage.ProjectEdit.Voting.maximumVotesRecommendation',
     defaultMessage:
@@ -43,15 +51,6 @@ export default defineMessages({
   strategicVotingLinkText: {
     id: 'app.containers.AdminPage.ProjectEdit.Voting.strategicVotingLinkText',
     defaultMessage: 'strategic voting',
-  },
-  learnMoreMultipleVoting: {
-    id: 'app.containers.AdminPage.ProjectEdit.Voting.learnMoreMultipleVoting',
-    defaultMessage:
-      'Learn more about when to use <b>multiple votes per option</b> in our {optionAnalysisArticleLink}.',
-  },
-  optionAnalysisLinkText: {
-    id: 'app.containers.AdminPage.ProjectEdit.Voting.optionAnalysisLinkText',
-    defaultMessage: 'Option analysis overview',
   },
   numberVotesPerUser: {
     id: 'app.containers.AdminPage.ProjectEdit.Voting.numberVotesPerUser',

@@ -2,7 +2,7 @@ import React from 'react';
 
 // intl
 import messages from './messages';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 
 // components
 import {
@@ -13,11 +13,11 @@ import {
 } from '@citizenlab/cl2-component-library';
 import BudgetingIcon from './CardIcons/BudgetingIcon';
 import { SubSectionTitle } from 'components/admin/Section';
-import Warning from 'components/UI/Warning';
 import MultipleVotingIcon from './CardIcons/MultipleVotingIcon';
 
 // types
 import { VotingMethod } from 'services/participationContexts';
+import SingleVotingIcon from './CardIcons/SingleVotingIcon';
 
 type VotingMethodSelectorProps = {
   voting_method?: VotingMethod | null;
@@ -31,7 +31,7 @@ const VotingMethodSelector = ({
   const { formatMessage } = useIntl();
 
   return (
-    <Box mb="35px">
+    <Box mb="35px" width="800px">
       <SubSectionTitle>
         {formatMessage(messages.votingMethodSelectorTitle)}
         <IconTooltip
@@ -44,6 +44,18 @@ const VotingMethodSelector = ({
         {formatMessage(messages.votingMethodSelectorSubtitle)}
       </Text>
       <Box display="flex" gap="16px">
+        <CardButton
+          selected={voting_method === 'single_voting'}
+          icon={
+            <SingleVotingIcon selected={voting_method === 'single_voting'} />
+          }
+          onClick={(e) => {
+            e.preventDefault();
+            handleVotingMethodOnChange('single_voting');
+          }}
+          title={formatMessage(messages.singleVotingMethodTitle)}
+          subtitle={formatMessage(messages.singleVotingMethodSubtitle)}
+        />
         <CardButton
           selected={voting_method === 'multiple_voting'}
           icon={
@@ -69,26 +81,6 @@ const VotingMethodSelector = ({
           subtitle={formatMessage(messages.budgetingVotingMethodSubtitle)}
         />
       </Box>
-      {voting_method === 'multiple_voting' && (
-        <Box mt="16px">
-          <Warning>
-            <FormattedMessage
-              {...messages.learnMoreMultipleVoting}
-              values={{
-                b: (chunks) => (
-                  <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
-                ),
-                optionAnalysisArticleLink: (
-                  // TODO: Replace with article when ready
-                  <a href={'/'} target="_blank" rel="noreferrer">
-                    <FormattedMessage {...messages.optionAnalysisLinkText} />
-                  </a>
-                ),
-              }}
-            />
-          </Warning>
-        </Box>
-      )}
     </Box>
   );
 };

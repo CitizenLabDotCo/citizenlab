@@ -29,13 +29,20 @@ import eventEmitter from 'utils/eventEmitter';
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
+import {
+  VOTES_EXCEEDED_ERROR_EVENT,
+  VOTES_PER_OPTION_EXCEEDED_ERROR_EVENT,
+} from 'components/AssignMultipleVotesControl';
+import useLocale from 'hooks/useLocale';
 
 export const VotingCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
+  const locale = useLocale();
   const { formatMessage } = useIntl();
   const { data: appConfig } = useAppConfiguration();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
-  const [showBudgetExceededError, setShowBudgetExceededError] = useState(false);
+  const [showError, setShowError] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   let basketId: string | undefined;
 
   if (currentPhase) {
@@ -51,12 +58,42 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
     const subscription = eventEmitter
       .observeEvent(BUDGET_EXCEEDED_ERROR_EVENT)
       .subscribe(() => {
-        setShowBudgetExceededError(true);
+        setError(formatMessage(messages.budgetExceededError));
+        setShowError(true);
       });
+
     return () => {
       subscription.unsubscribe();
     };
-  }, [setShowBudgetExceededError]);
+  }, [formatMessage]);
+
+  // Listen for voting per option exceeded error
+  useEffect(() => {
+    const subscription = eventEmitter
+      .observeEvent(VOTES_PER_OPTION_EXCEEDED_ERROR_EVENT)
+      .subscribe(() => {
+        setError(formatMessage(messages.votesPerOptionExceededError));
+        setShowError(true);
+      });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [formatMessage]);
+
+  // Listen for voting exceeded error
+  useEffect(() => {
+    const subscription = eventEmitter
+      .observeEvent(VOTES_EXCEEDED_ERROR_EVENT)
+      .subscribe(() => {
+        setError(formatMessage(messages.votesExceededError));
+        setShowError(true);
+      });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [formatMessage]);
 
   useEffect(() => {
     setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
@@ -85,10 +122,25 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
   const minBudgetReached = spentBudget >= minBudget;
   const minBudgetRequiredNotReached = minBudgetRequired && !minBudgetReached;
 
+  if (isNilOrError(locale)) {
+    return null;
+  }
+
   const handleSubmitOnClick = async () => {
     if (!isNilOrError(basket)) {
       updateBasket({ id: basket.data.id, submitted: true });
     }
+  };
+
+  const getVoteTerm = () => {
+    if (currentPhase && currentPhase.attributes.voting_term_plural_multiloc) {
+      return currentPhase?.attributes?.voting_term_plural_multiloc[locale];
+    } else if (project.attributes.voting_term_plural_multiloc) {
+      return project.attributes.voting_term_plural_multiloc[
+        locale
+      ]?.toLowerCase();
+    }
+    return null;
   };
 
   const CTAButton = hasUserParticipated ? (
@@ -119,8 +171,6 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
     </Button>
   );
 
-  const voteTerm = 'votes'; // TODO: Get from project/phase attributes once implemented on BE.
-
   return (
     <>
       <ParticipationCTAContent
@@ -129,22 +179,25 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
         CTAButton={CTAButton}
         hasUserParticipated={hasUserParticipated}
         participationState={
-          <Text color="white" m="0px" fontSize="s" my="0px" textAlign="left">
-            {(
-              maxBudget - (basket?.data.attributes.total_votes || 0)
-            ).toLocaleString()}{' '}
-            / {maxBudget.toLocaleString()}{' '}
-            {voteTerm || appConfig?.data.attributes.settings.core.currency}{' '}
-            {formatMessage(messages.left)}
-          </Text>
+          hasUserParticipated ? undefined : (
+            <Text color="white" m="0px" fontSize="s" my="0px" textAlign="left">
+              {(
+                maxBudget - (basket?.data.attributes.total_votes || 0)
+              ).toLocaleString()}{' '}
+              / {maxBudget.toLocaleString()}{' '}
+              {getVoteTerm() ||
+                appConfig?.data.attributes.settings.core.currency}{' '}
+              {formatMessage(messages.left)}
+            </Text>
+          )
         }
         hideDefaultParticipationMessage={currentPhase ? true : false}
         timeLeftPosition="left"
       />
       <ErrorToast
-        errorMessage={formatMessage(messages.budgetExceededError)}
-        showError={showBudgetExceededError}
-        onClose={() => setShowBudgetExceededError(false)}
+        errorMessage={error || ''}
+        showError={showError}
+        onClose={() => setShowError(false)}
       />
     </>
   );
