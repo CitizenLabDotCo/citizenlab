@@ -189,7 +189,7 @@ module MultiTenancy
               allowed: true
             },
             similar_ideas: {
-              enabled: true,
+              enabled: false,
               allowed: true
             },
             geographic_dashboard: {
