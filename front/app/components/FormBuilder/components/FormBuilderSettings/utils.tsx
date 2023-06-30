@@ -34,8 +34,6 @@ export function getAdditionalSettings(
     return null;
   }
 
-  console.log('Input type: ', field.input_type);
-
   switch (field.input_type) {
     case 'multiselect':
       return (
