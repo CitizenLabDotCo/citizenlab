@@ -10,6 +10,7 @@ import messages from '../messages';
 import ConfigSelectWithLocaleSwitcher from './ConfigSelectWithLocaleSwitcher';
 import LinearScaleSettings from './LinearScaleSettings';
 import FieldGroupSettings from './FieldGroupSettings';
+import MultiselectSettings from './MultiselectSettings';
 
 // utils
 import { uuid4 } from '@sentry/utils';
@@ -33,8 +34,20 @@ export function getAdditionalSettings(
     return null;
   }
 
+  console.log('Input type: ', field.input_type);
+
   switch (field.input_type) {
     case 'multiselect':
+      return (
+        <>
+          <ConfigSelectWithLocaleSwitcher
+            name={`customFields.${field.index}.options`}
+            locales={locales}
+            platformLocale={platformLocale}
+          />
+          <MultiselectSettings />
+        </>
+      );
     case 'select':
       return (
         <ConfigSelectWithLocaleSwitcher

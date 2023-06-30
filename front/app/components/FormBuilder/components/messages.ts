@@ -61,6 +61,10 @@ export default defineMessages({
     id: 'app.components.formBuilder.proposedBudget',
     defaultMessage: 'Proposed budget',
   },
+  limitNumberAnswers: {
+    id: 'app.components.formBuilder.limitNumberAnswers',
+    defaultMessage: 'Limit number of answers',
+  },
   title: {
     id: 'app.components.formBuilder.title',
     defaultMessage: 'Title',
