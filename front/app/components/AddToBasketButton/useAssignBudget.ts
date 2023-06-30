@@ -16,7 +16,7 @@ import eventEmitter from 'utils/eventEmitter';
 
 // tracks
 import { trackEventByName } from 'utils/analytics';
-import tracks from 'components/AssignBudgetControl/tracks';
+import tracks from 'components/AddToBasketButton/tracks';
 
 // typings
 import { BasketIdeaAttributes } from 'api/baskets/types';

@@ -13,7 +13,7 @@ import Body from 'components/PostShowComponents/Body';
 import Image from 'components/PostShowComponents/Image';
 import TranslateButton from './components/TranslateButton';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
-import AddToBasketButton from 'components/AssignBudgetControl/AddToBasketButton';
+import AddToBasketButton from 'components/AddToBasketButton';
 import { Box } from '@citizenlab/cl2-component-library';
 const LazyComments = lazy(
   () => import('components/PostShowComponents/Comments')

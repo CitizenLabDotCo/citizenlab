@@ -7,7 +7,7 @@ import { Box, Icon, useBreakpoint } from '@citizenlab/cl2-component-library';
 import Avatar from 'components/Avatar';
 import IdeaCardFooter from './IdeaCardFooter';
 import FooterWithReactionControl from './FooterWithReactionControl';
-import AddToBasketButton from 'components/AssignBudgetControl/AddToBasketButton';
+import AddToBasketButton from 'components/AddToBasketButton';
 
 // router
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';

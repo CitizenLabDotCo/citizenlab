@@ -5,7 +5,7 @@ import { addBasket } from 'api/baskets/useAddBasket';
 
 // tracks
 import { trackEventByName } from 'utils/analytics';
-import tracks from 'components/AssignBudgetControl/tracks';
+import tracks from 'components/AddToBasketButton/tracks';
 
 // utils
 import { isNil, capitalizeParticipationContextType } from 'utils/helperUtils';

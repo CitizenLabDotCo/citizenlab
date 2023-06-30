@@ -12,7 +12,7 @@ import useLocalize from 'hooks/useLocalize';
 // components
 import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
 import ReactionControl from 'components/ReactionControl';
-import AddToBasketButton from 'components/AssignBudgetControl/AddToBasketButton';
+import AddToBasketButton from 'components/AddToBasketButton';
 
 // events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';

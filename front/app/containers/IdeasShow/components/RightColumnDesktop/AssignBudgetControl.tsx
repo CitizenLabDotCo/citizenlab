@@ -4,7 +4,7 @@ import React, { memo } from 'react';
 import useIdeaById from 'api/ideas/useIdeaById';
 
 // components
-import AddToBasketButton from './AddToBasketButton';
+import AddToBasketButton from 'components/AddToBasketButton';
 import { ScreenReaderOnly } from 'utils/a11y';
 
 // i18n

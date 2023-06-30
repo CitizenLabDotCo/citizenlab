@@ -5,7 +5,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 import MetaInformation from '../MetaInformation';
 import ReactionControl from 'components/ReactionControl';
 import Buttons from 'containers/IdeasShow/components/CTABox/Buttons';
-import AssignBudgetControl from 'components/AssignBudgetControl';
+import AssignBudgetControl from './AssignBudgetControl';
 
 // styling
 import styled from 'styled-components';
