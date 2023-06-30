@@ -31,6 +31,7 @@ import { IOption, Multiloc } from 'typings';
 
 // hooks
 import { useLocation } from 'react-router-dom';
+import Warning from 'components/UI/Warning';
 
 export type VotingTerm = { singular: Multiloc; plural: Multiloc };
 
@@ -88,6 +89,31 @@ export default ({
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
 
+  const getVoteTypeDescription = () => {
+    switch (voting_method) {
+      case 'multiple_voting':
+        return formatMessage(messages.multipleVotesPerOption, {
+          b: (chunks: string) => (
+            <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+          ),
+        });
+      case 'single_voting':
+        return formatMessage(messages.singleVotePerOption, {
+          b: (chunks) => (
+            <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+          ),
+        });
+      case 'budgeting':
+        return formatMessage(messages.budgetAllocation, {
+          b: (chunks) => (
+            <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+          ),
+        });
+      default:
+        return '';
+    }
+  };
+
   return (
     <>
       <VotingMethodSelector
@@ -95,6 +121,25 @@ export default ({
         handleVotingMethodOnChange={handleVotingMethodOnChange}
       />
       <Box paddingLeft="32px" borderLeft={`1px solid ${colors.divider}`}>
+        <Box mt="16px" width="700px">
+          <Warning>
+            <FormattedMessage
+              {...messages.learnMoreVotingMethod}
+              values={{
+                b: (chunks) => (
+                  <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+                ),
+                voteTypeDescription: getVoteTypeDescription(),
+                optionAnalysisArticleLink: (
+                  // TODO: Replace with article when ready
+                  <a href={'/'} target="_blank" rel="noreferrer">
+                    <FormattedMessage {...messages.optionAnalysisLinkText} />
+                  </a>
+                ),
+              }}
+            />
+          </Warning>
+        </Box>
         {voting_method === 'budgeting' && (
           <BudgetingInputs
             voting_min_total={voting_min_total}

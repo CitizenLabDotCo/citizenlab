@@ -2,7 +2,7 @@ import React from 'react';
 
 // intl
 import messages from './messages';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 
 // components
 import {
@@ -13,7 +13,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import BudgetingIcon from './CardIcons/BudgetingIcon';
 import { SubSectionTitle } from 'components/admin/Section';
-import Warning from 'components/UI/Warning';
 import MultipleVotingIcon from './CardIcons/MultipleVotingIcon';
 
 // types
@@ -30,29 +29,6 @@ const VotingMethodSelector = ({
   handleVotingMethodOnChange,
 }: VotingMethodSelectorProps) => {
   const { formatMessage } = useIntl();
-
-  const getVoteTypeDescription = () => {
-    switch (voting_method) {
-      case 'multiple_voting':
-        return formatMessage(messages.multipleVotesPerOption, {
-          b: (chunks: string) => (
-            <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
-          ),
-        });
-      case 'single_voting':
-        return formatMessage(messages.singleVotePerOption, {
-          b: (chunks) => (
-            <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
-          ),
-        });
-      case 'budgeting':
-        return formatMessage(messages.budgetAllocation, {
-          b: (chunks) => (
-            <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
-          ),
-        });
-    }
-  };
 
   return (
     <Box mb="35px" width="800px">
@@ -104,25 +80,6 @@ const VotingMethodSelector = ({
           title={formatMessage(messages.budgetingVotingMethodTitle)}
           subtitle={formatMessage(messages.budgetingVotingMethodSubtitle)}
         />
-      </Box>
-      <Box mt="16px">
-        <Warning>
-          <FormattedMessage
-            {...messages.learnMoreMultipleVoting}
-            values={{
-              b: (chunks) => (
-                <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
-              ),
-              voteTypeDescription: getVoteTypeDescription(),
-              optionAnalysisArticleLink: (
-                // TODO: Replace with article when ready
-                <a href={'/'} target="_blank" rel="noreferrer">
-                  <FormattedMessage {...messages.optionAnalysisLinkText} />
-                </a>
-              ),
-            }}
-          />
-        </Warning>
       </Box>
     </Box>
   );

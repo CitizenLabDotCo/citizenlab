@@ -79,6 +79,27 @@ export default defineMessages({
     defaultMessage: 'View project',
   },
   // edit - participationContext -----------------------------------------------
+  optionAnalysisLinkText: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.optionAnalysisLinkText',
+    defaultMessage: 'Option analysis overview',
+  },
+  learnMoreVotingMethod: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.learnMoreVotingMethod',
+    defaultMessage:
+      'Learn more about when to use {voteTypeDescription} in our {optionAnalysisArticleLink}.',
+  },
+  multipleVotesPerOption: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.multipleVotesPerOption',
+    defaultMessage: '<b>multiple votes per option</b>',
+  },
+  singleVotePerOption: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.singleVotePerOption',
+    defaultMessage: '<b>single vote per option</b>',
+  },
+  budgetAllocation: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.budgetAllocation',
+    defaultMessage: '<b>budget allocation</b>',
+  },
   maxVotesPerOptionErrorText: {
     id: 'app.containers.AdminPage.ProjectEdit.maxVotesPerOptionErrorText',
     defaultMessage:
