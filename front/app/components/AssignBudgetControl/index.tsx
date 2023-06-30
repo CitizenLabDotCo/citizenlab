@@ -3,15 +3,11 @@ import React, { memo, FormEvent, useState } from 'react';
 // components
 import { Box, Button, Icon } from '@citizenlab/cl2-component-library';
 
-// services
-import { getLatestRelevantPhase } from 'api/phases/utils';
-
 // hooks
 import useAuthUser from 'api/me/useAuthUser';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useBasket from 'api/baskets/useBasket';
 import useProjectById from 'api/projects/useProjectById';
-import usePhases from 'api/phases/usePhases';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import projectsKeys from 'api/projects/keys';
 import phasesKeys from 'api/phases/keys';
@@ -117,10 +113,6 @@ const AssignBudgetControl = memo(
 
     const isContinuousProject =
       project?.data.attributes.process_type === 'continuous';
-
-    const ideaPhaseIds = !isNilOrError(idea)
-      ? idea.data.relationships?.phases?.data?.map((item) => item.id)
-      : null;
 
     const participationContext = isContinuousProject
       ? project.data

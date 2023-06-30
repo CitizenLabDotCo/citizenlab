@@ -40,11 +40,7 @@ import { IIdea } from 'api/ideas/types';
 
 // components
 import AssignBudgetControl from 'components/AssignBudgetControl';
-import {
-  getCurrentPhase,
-  getLatestRelevantPhase,
-  getlatestIdeaContextPhase,
-} from 'api/phases/utils';
+import { getCurrentPhase, getlatestIdeaContextPhase } from 'api/phases/utils';
 import usePhases from 'api/phases/usePhases';
 import AssignMultipleVotesControl from 'components/AssignMultipleVotesControl';
 import usePhase from 'api/phases/usePhase';
@@ -206,7 +202,7 @@ const CompactIdeaCard = memo<IdeaCardProps>(
                 projectId={projectId}
                 phaseId={
                   viewingPhase?.data.id ||
-                  getlatestIdeaContextPhase(phases?.data)?.id
+                  (phases?.data && getlatestIdeaContextPhase(phases?.data)?.id)
                 }
                 ideaId={idea.data.id}
               />

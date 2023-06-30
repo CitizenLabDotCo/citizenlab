@@ -160,18 +160,16 @@ export default ({
             <SubSectionTitleWithDescription>
               <FormattedMessage {...messages.optionsToVoteOn} />
             </SubSectionTitleWithDescription>
-            <StyledSectionDescription>
-              <FormattedMessage
-                {...messages.optionsToVoteOnDescription}
-                values={{
-                  optionsPageLink: (
-                    <Link to={`${pathname}/ideas`} rel="noreferrer">
-                      <FormattedMessage {...messages.optionsPageText} />
-                    </Link>
-                  ),
-                }}
-              />
-            </StyledSectionDescription>
+            <FormattedMessage
+              {...messages.optionsToVoteOnDescription}
+              values={{
+                optionsPageLink: (
+                  <Link to={`${pathname}/ideas`} rel="noreferrer">
+                    <FormattedMessage {...messages.optionsPageText} />
+                  </Link>
+                ),
+              }}
+            />
           </SectionField>
         )}
         {voting_method === 'multiple_voting' && (
