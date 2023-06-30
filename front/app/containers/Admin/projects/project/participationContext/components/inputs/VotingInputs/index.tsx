@@ -19,6 +19,8 @@ import VotingMethodSelector from './VotingMethodSelector';
 import BudgetingInputs from './votingMethodInputs/BudgetingInputs';
 import { StyledSectionDescription } from 'containers/Admin/initiatives/settings';
 import MultipleVotingInputs from './votingMethodInputs/MultipleVotingInputs';
+import Link from 'utils/cl-router/Link';
+import Warning from 'components/UI/Warning';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -31,7 +33,6 @@ import { IOption, Multiloc } from 'typings';
 
 // hooks
 import { useLocation } from 'react-router-dom';
-import Warning from 'components/UI/Warning';
 
 export type VotingTerm = { singular: Multiloc; plural: Multiloc };
 
@@ -164,9 +165,9 @@ export default ({
                 {...messages.optionsToVoteOnDescription}
                 values={{
                   optionsPageLink: (
-                    <a href={`${pathname}/ideas`} rel="noreferrer">
+                    <Link to={`${pathname}/ideas`} rel="noreferrer">
                       <FormattedMessage {...messages.optionsPageText} />
-                    </a>
+                    </Link>
                   ),
                 }}
               />
