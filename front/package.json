@@ -122,7 +122,7 @@
     "react-password-strength-bar": "0.4.1",
     "react-places-autocomplete": "7.x",
     "react-range": "1.8.14",
-    "react-resize-detector": "8.0.3",
+    "react-resize-detector": "9.1.0",
     "react-router-dom": "^6.3.0",
     "react-select": "4.3.1",
     "react-share": "^4.4.1",
