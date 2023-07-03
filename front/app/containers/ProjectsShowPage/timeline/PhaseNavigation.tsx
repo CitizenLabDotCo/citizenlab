@@ -13,9 +13,6 @@ import { Button } from '@citizenlab/cl2-component-library';
 import { getCurrentPhase } from 'api/phases/utils';
 import { IPhaseData } from 'api/phases/types';
 
-// events
-import { selectedPhase$, selectPhase } from './events';
-
 // hooks
 import usePhases from 'api/phases/usePhases';
 
