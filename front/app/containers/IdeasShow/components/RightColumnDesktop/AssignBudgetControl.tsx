@@ -6,6 +6,8 @@ import useIdeaById from 'api/ideas/useIdeaById';
 // components
 import AddToBasketButton from 'components/AddToBasketButton';
 import { ScreenReaderOnly } from 'utils/a11y';
+import { Box, Text } from '@citizenlab/cl2-component-library';
+import VotesBudget from 'components/VotesBudget';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -41,10 +43,10 @@ const Budget = styled.div`
   font-size: ${fontSizes.m}px;
   font-weight: 600;
   text-align: center;
+  margin-bottom: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 3px;
   ${defaultCardStyle};
 `;
 
@@ -70,7 +72,12 @@ const AssignBudgetControl = memo(({ ideaId, projectId }: Props) => {
           <ScreenReaderOnly>
             <FormattedMessage {...messages.a11y_price} />
           </ScreenReaderOnly>
-          <FormattedBudget value={ideaBudget} />
+          <Box>
+            <FormattedBudget value={ideaBudget} />
+            <Text mb="0px" mt="8px" color="grey600" fontSize="xs">
+              <VotesBudget projectId={projectId} />
+            </Text>
+          </Box>
         </Budget>
         <AddToBasketButton ideaId={ideaId} projectId={projectId} />
       </BudgetWithButtonWrapper>
