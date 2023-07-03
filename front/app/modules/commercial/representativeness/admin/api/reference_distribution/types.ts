@@ -48,3 +48,5 @@ export interface IBinnedDistribution {
 export type Bins = (number | null)[];
 
 export type TUploadDistribution = Record<string, number> | IBinnedDistribution;
+
+export type TAddDistribution = TUploadDistribution & { id: string };

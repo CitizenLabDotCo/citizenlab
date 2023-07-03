@@ -1,13 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { omit } from 'lodash-es';
 
-// services
-import {
-  createReferenceDistribution,
-  Bins,
-  TReferenceDistributionData,
-} from '../../services/referenceDistribution';
-
 // hooks
 import useUserCustomFieldOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
 import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
@@ -34,6 +27,12 @@ import { isSupported } from '../../containers/Dashboard/utils';
 // typings
 import { IUserCustomFieldOptionData } from 'api/user_custom_fields_options/types';
 import useDeleteReferenceDistribution from '../../api/reference_distribution/useDeleteReferenceDistribution';
+import useAddReferenceDistribution from '../../api/reference_distribution/useAddReferenceDistribution';
+import {
+  Bins,
+  TAddDistribution,
+  TReferenceDistributionData,
+} from '../../api/reference_distribution/types';
 interface Props {
   userCustomFieldId: string;
 }
@@ -54,6 +53,8 @@ const Field = ({
 }: InnerProps) => {
   const { mutateAsync: deleteReferenceDistribution } =
     useDeleteReferenceDistribution();
+  const { mutateAsync: createReferenceDistribution } =
+    useAddReferenceDistribution();
   const [submitting, setSubmitting] = useState(false);
   const [touched, setTouched] = useState(false);
 
@@ -155,7 +156,10 @@ const Field = ({
     setSubmitting(true);
 
     if (submitAction === 'create' || submitAction === 'replace') {
-      await createReferenceDistribution(userCustomField.data, newDistribution);
+      await createReferenceDistribution({
+        id: userCustomField.data.id,
+        ...newDistribution,
+      } as TAddDistribution);
     }
 
     if (submitAction === 'delete') {
