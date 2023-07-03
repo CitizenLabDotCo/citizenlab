@@ -35,7 +35,7 @@ export default defineMessages({
       '<b>Your votes will not be counted</b> until you click "Submit"',
   },
   budgetingPreSubmissionWarning: {
-    id: 'app.utils.votingMethodUtils.votingPreSubmissionWarning',
+    id: 'app.utils.votingMethodUtils.budgetingPreSubmissionWarning',
     defaultMessage:
       '<b>Your budget will not be counted</b> until you click "Submit"',
   },
@@ -45,7 +45,7 @@ export default defineMessages({
       '<b>Congratulations, your vote has been submitted!</b> You can check your votes below at any point or modify them before <b>{endDate}</b>.',
   },
   votingSubmittedInstructionsContinuous: {
-    id: 'app.utils.votingMethodUtils.votingSubmittedInstructions',
+    id: 'app.utils.votingMethodUtils.votingSubmittedInstructionsContinuous',
     defaultMessage:
       '<b>Congratulations, your vote has been submitted!</b> You can check your votes below at any point or modify them.',
   },
