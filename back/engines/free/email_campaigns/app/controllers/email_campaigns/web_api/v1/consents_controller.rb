@@ -10,6 +10,12 @@ module EmailCampaigns
       authorize Consent
 
       @consents = policy_scope(Consent).where(user: current_user_by_unsubscription_token)
+
+      if params[:without_campaign_names]
+        campaign_types = params[:without_campaign_names].map { |name| Campaign.from_campaign_name(name) }
+        @consents = @consents.where.not(campaign_type: campaign_types)
+      end
+
       @consents = paginate @consents
 
       render json: linked_json(@consents, WebApi::V1::ConsentSerializer, params: jsonapi_serializer_params)
@@ -62,7 +68,8 @@ module EmailCampaigns
 
     def consent_params
       params.require(:consent).permit(
-        :consented
+        :consented,
+        :without_campaign_names
       )
     end
   end
