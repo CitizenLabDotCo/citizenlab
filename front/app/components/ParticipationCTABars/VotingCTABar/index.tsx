@@ -201,14 +201,12 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
         hideDefaultParticipationMessage={currentPhase ? true : false}
         timeLeftPosition="left"
       />
-      <Box hidden={!showError}>
-        <ErrorToast
-          errorMessage={error || ''}
-          showError={showError}
-          onClose={() => setShowError(false)}
-          aria-live="polite"
-        />
-      </Box>
+      <ErrorToast
+        errorMessage={error || ''}
+        showError={showError}
+        onClose={() => setShowError(false)}
+        aria-live="polite"
+      />
     </>
   );
 };
