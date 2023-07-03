@@ -30,7 +30,7 @@ module EmailCampaigns
     end
 
     def from_email
-      email_address_with_name ENV.fetch('DEFAULT_FROM_EMAIL', 'hello@citizenlab.co'), from_name(command[:sender], command[:author], recipient)
+      email_address_with_name (raw_from_email || 'hello@citizenlab.co'), from_name(command[:sender], command[:author], recipient)
     end
 
     private

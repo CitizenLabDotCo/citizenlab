@@ -9,11 +9,6 @@ import localize, { InjectedLocalized } from 'utils/localize';
 import messages from 'containers/Admin/dashboard/messages';
 
 // services
-import {
-  IUsersByDomicile,
-  usersByDomicileStream,
-  usersByDomicileXlsxEndpoint,
-} from 'services/userCustomFieldStats';
 
 // components
 import HorizontalBarChart from './HorizontalBarChart';
@@ -21,6 +16,9 @@ import HorizontalBarChart from './HorizontalBarChart';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { convertDomicileData } from 'utils/dataUtils';
+import { usersByDomicileXlsxEndpoint } from 'api/users_by_domicile/util';
+import { IUsersByDomicile } from 'api/users_by_domicile/types';
+import useUsersByDomicile from 'api/users_by_domicile/useUsersByDomicile';
 
 interface Props {
   startAt: string | null | undefined;
@@ -43,6 +41,13 @@ const AreaChart = (
     localize,
   } = props;
 
+  const { data: usersByDomicile } = useUsersByDomicile({
+    start_at: props.startAt,
+    end_at: props.endAt,
+    group: props.currentGroupFilter,
+    enabled: true,
+  });
+
   const convertToGraphFormat = (data: IUsersByDomicile) => {
     if (isNilOrError(data)) return null;
 
@@ -63,8 +68,9 @@ const AreaChart = (
       {...props}
       graphTitleString={formatMessage(messages.usersByDomicileTitle)}
       graphUnit="users"
-      stream={usersByDomicileStream}
-      convertToGraphFormat={convertToGraphFormat}
+      serie={
+        usersByDomicile ? convertToGraphFormat(usersByDomicile) : undefined
+      }
       className="dynamicHeight"
       xlsxEndpoint={usersByDomicileXlsxEndpoint}
     />

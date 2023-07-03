@@ -235,7 +235,7 @@ const InitiativesEditFormWrapper = ({
           { initiativeId: initiative.id, fileId: file.id as string },
           {
             onError: (errorResponse) => {
-              const apiErrors = get(errorResponse, 'json.errors');
+              const apiErrors = get(errorResponse, 'errors');
 
               setApiErrors((oldApiErrors) => ({
                 ...oldApiErrors,
@@ -264,7 +264,7 @@ const InitiativesEditFormWrapper = ({
                 file.id = res.data.id;
               },
               onError: (errorResponse) => {
-                const apiErrors = get(errorResponse, 'json.errors');
+                const apiErrors = get(errorResponse, 'errors');
 
                 setApiErrors((oldApiErrors) => ({
                   ...oldApiErrors,
@@ -284,7 +284,7 @@ const InitiativesEditFormWrapper = ({
 
       onPublished();
     } catch (errorResponse) {
-      const apiErrors = get(errorResponse, 'json.errors');
+      const apiErrors = get(errorResponse, 'errors');
 
       setApiErrors((oldApiErrors) => ({ ...oldApiErrors, ...apiErrors }));
       setPublishError(true);

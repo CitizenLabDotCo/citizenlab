@@ -75,3 +75,12 @@ export interface QueryParameters {
   pageSize?: number;
   pageNumber?: number;
 }
+
+export interface CampaignAdd {
+  campaign_name: string;
+  subject_multiloc: Multiloc;
+  body_multiloc: Multiloc;
+  sender: string;
+  reply_to?: string;
+  group_ids?: string[];
+}

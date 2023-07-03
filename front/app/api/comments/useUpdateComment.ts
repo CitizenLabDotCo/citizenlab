@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { CLErrors } from 'typings';
+import { CLErrorsWrapper } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import commentKeys from './keys';
 import { IComment, IUpdatedComment } from './types';
@@ -19,7 +19,7 @@ const useUpdateComment = ({
   initiativeId?: string;
 }) => {
   const queryClient = useQueryClient();
-  return useMutation<IComment, CLErrors, IUpdatedComment>({
+  return useMutation<IComment, CLErrorsWrapper, IUpdatedComment>({
     mutationFn: updateComment,
     onSuccess: () => {
       queryClient.invalidateQueries({

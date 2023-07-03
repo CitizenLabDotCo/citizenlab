@@ -45,6 +45,7 @@ describe('Idea posting permissions', () => {
       cy.setLoginCookie(unverifiedEmail, unverifiedPassword);
       cy.visit('projects/verified-ideation');
       cy.acceptCookies();
+      cy.get('#e2e-idea-button').should('exist');
       cy.get('#e2e-idea-button').first().click();
       cy.get('#e2e-verification-wizard-root').should('exist');
     });
@@ -53,6 +54,7 @@ describe('Idea posting permissions', () => {
       cy.setLoginCookie(verifiedEmail, verifiedPassword);
       cy.visit('projects/verified-ideation');
       cy.acceptCookies();
+      cy.get('#e2e-idea-button').should('exist');
       cy.get('#e2e-idea-button').first().click();
       cy.get('#e2e-idea-new-page').should('exist');
     });
@@ -88,7 +90,10 @@ describe('idea posting permissions for non-active users', () => {
     cy.setLoginCookie(email, password);
     cy.visit('projects/verified-ideation');
     cy.acceptCookies();
-    cy.get('.e2e-idea-button:visible').first().click();
+    cy.get('#e2e-ideas-list').find('.e2e-idea-card').should('exist');
+    cy.get('#e2e-ideas-list').find('.e2e-idea-card').first().click();
+    cy.get('#e2e-verify-identity-to-comment').should('exist');
+    cy.get('#e2e-verify-identity-to-comment').click();
     cy.get('#e2e-authentication-modal').should('exist');
   });
 

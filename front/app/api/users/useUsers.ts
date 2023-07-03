@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import { IQueryParameters, IUsers, UsersKeys } from './types';
-import projectsKeys from './keys';
+import usersKeys from './keys';
 
 const fetchUsers = ({ pageNumber, pageSize, ...rest }: IQueryParameters) =>
   fetcher<IUsers>({
@@ -15,11 +15,11 @@ const fetchUsers = ({ pageNumber, pageSize, ...rest }: IQueryParameters) =>
     },
   });
 
-const useInfiniteUsers = (queryParameters: IQueryParameters) => {
+const useUsers = (queryParameters: IQueryParameters) => {
   return useQuery<IUsers, CLErrors, IUsers, UsersKeys>({
-    queryKey: projectsKeys.list(queryParameters),
+    queryKey: usersKeys.list(queryParameters),
     queryFn: () => fetchUsers(queryParameters),
   });
 };
 
-export default useInfiniteUsers;
+export default useUsers;

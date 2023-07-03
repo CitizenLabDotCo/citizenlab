@@ -39,6 +39,7 @@ module Analytics
     end
 
     def persist_visit_data(visit_data)
+      update_date_dimensions(visit_data)
       visit_ids = persist_visits(visit_data)
       persist_visits_projects(visit_data, visit_ids)
       persist_visits_locales(visit_data, visit_ids)
@@ -47,6 +48,20 @@ module Analytics
     end
 
     private
+
+    # Fix any date dimensions that don't exist for the visit data
+    def update_date_dimensions(visits)
+      from = timestamp_to_date(visits.pluck('firstActionTimestamp').min)
+      to = timestamp_to_date(visits.pluck('lastActionTimestamp').max)
+      (from..to).each do |date|
+        Analytics::DimensionDate.create_or_find_by(
+          date: date,
+          week: date.beginning_of_week.to_date,
+          month: "#{date.year}-#{date.strftime('%m')}",
+          year: date.year
+        )
+      end
+    end
 
     # @return [Array<String>] the ids of the newly created +FactVisit+ in the same order
     #   as +visit_data+.

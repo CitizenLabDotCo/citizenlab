@@ -14,13 +14,12 @@ import clHistory from 'utils/cl-router/history';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // hooks
-import useTextingCampaign from 'hooks/useTextingCampaign';
+import useTextingCampaign from 'api/texting_campaigns/useTextingCampaign';
 
-// services
 import {
   ITextingCampaignData,
   TTextingCampaignStatus,
-} from 'services/textingCampaigns';
+} from 'api/texting_campaigns/types';
 
 // styling
 import styled from 'styled-components';
@@ -66,10 +65,12 @@ const getAdditionalInfoByStatus = (campaign: ITextingCampaignData) => {
       );
     case 'sent':
       return (
-        <>
-          Sent at: <FormattedTime value={campaign.attributes.sent_at} />,{' '}
-          <FormattedDate value={campaign.attributes.sent_at} />,
-        </>
+        campaign.attributes.sent_at && (
+          <>
+            Sent at: <FormattedTime value={campaign.attributes.sent_at} />,{' '}
+            <FormattedDate value={campaign.attributes.sent_at} />,
+          </>
+        )
       );
     case 'failed':
       return (
@@ -90,12 +91,12 @@ const getAdditionalInfoByStatus = (campaign: ITextingCampaignData) => {
 
 const ExistingSMSCampaign = (props: WithRouterProps) => {
   const { campaignId } = props.params;
-  const campaign = useTextingCampaign(campaignId);
+  const { data: campaign } = useTextingCampaign(campaignId);
 
   // show campaign not found
   if (isNilOrError(campaign)) return null;
 
-  const { status } = campaign.attributes;
+  const { status } = campaign.data.attributes;
   const isDraft = status === 'draft';
 
   return (
@@ -115,9 +116,9 @@ const ExistingSMSCampaign = (props: WithRouterProps) => {
         <Box display="inline-block" marginRight="12px" marginBottom="24px">
           <FormattedStatusLabel campaignStatus={status} />
         </Box>
-        <span>{getAdditionalInfoByStatus(campaign)}</span>
+        <span>{getAdditionalInfoByStatus(campaign.data)}</span>
       </>
-      <StyledSMSCampaignForm formIsLocked={!isDraft} campaign={campaign} />
+      <StyledSMSCampaignForm formIsLocked={!isDraft} campaign={campaign.data} />
     </Box>
   );
 };

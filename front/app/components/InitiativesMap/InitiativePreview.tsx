@@ -1,10 +1,6 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
-// utils
-import eventEmitter from 'utils/eventEmitter';
-import { IOpenPostPageModalEvent } from 'containers/App';
-
 // components
 import T from 'components/T';
 import Button from 'components/UI/Button';
@@ -143,16 +139,6 @@ const InitiativePreview = ({
     return null;
   }
 
-  const createInitiativeClickHandler = (event: React.MouseEvent) => {
-    event.preventDefault();
-
-    eventEmitter.emit<IOpenPostPageModalEvent>('cardClick', {
-      id: initiativeId,
-      slug: initiative.data.attributes.slug,
-      type: 'initiative',
-    });
-  };
-
   const initiativeAddress = initiative.data.attributes.location_description;
   const initiativeBody = localize(initiative.data.attributes.body_multiloc);
 
@@ -187,7 +173,7 @@ const InitiativePreview = ({
 
       <ViewInitiativeButton
         fullWidth={true}
-        onClick={createInitiativeClickHandler}
+        linkTo={`/initiatives/${initiative.data.attributes.slug}?go_back=true`}
       >
         <FormattedMessage {...messages.seeInitiative} />
       </ViewInitiativeButton>
