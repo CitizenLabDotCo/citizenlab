@@ -9,7 +9,7 @@ resource 'Baskets' do
   before do
     header 'Content-Type', 'application/json'
     @user = create(:user)
-    @project = create(:continuous_budgeting_project)
+    @project = create(:continuous_single_voting_project)
     @ideas = create_list(:idea, 3, project: @project, idea_status: create(:idea_status), author: @user, budget: 2)
     create_list(:basket, 2, participation_context: create(:continuous_budgeting_project))
     @basket = create(
@@ -32,7 +32,7 @@ resource 'Baskets' do
 
         expect(json_response.dig(:data, :id)).to eq @basket.id
         expect(json_response.dig(:data, :type)).to eq 'basket'
-        # expect(json_response.dig(:data, :attributes, :total_votes)).to eq 5 # TODO: use other voting method to guarantee 5
+        expect(json_response.dig(:data, :attributes, :total_votes)).to eq 5
         expect(json_response.dig(:data, :relationships)).to include(
           participation_context: {
             data: { id: @basket.participation_context_id, type: 'project' }
@@ -41,9 +41,9 @@ resource 'Baskets' do
             data: { id: @basket.user_id, type: 'user' }
           }
         )
-        # expect(
-        #   json_response[:included].select { |included| included[:type] == 'baskets_idea' }.map { |baskets_idea| baskets_idea.dig(:attributes, :votes) }
-        # ).to contain_exactly 1, 2, 2 # TODO: use other voting method to guarantee 1, 2, 2
+        expect(
+          json_response[:included].select { |included| included[:type] == 'baskets_idea' }.map { |baskets_idea| baskets_idea.dig(:attributes, :votes) }
+        ).to contain_exactly 1, 2, 2
         expect(json_response.dig(:data, :relationships, :ideas, :data).pluck(:id)).to match_array @ideas.map(&:id)
         expect(json_response[:included].select { |included| included[:type] == 'idea' }.map { |h| h.dig(:attributes, :slug) }).to match_array @ideas.map(&:slug)
       end
@@ -81,21 +81,27 @@ resource 'Baskets' do
         expect(json_response.dig(:data, :relationships, :participation_context, :data, :id)).to eq participation_context_id
         expect(
           json_response[:included].select { |included| included[:type] == 'baskets_idea' }.map { |baskets_idea| baskets_idea.dig(:attributes, :votes) }
-        ).to contain_exactly 10, 5
+        ).to contain_exactly 2, 3
       end
 
-      # TODO: Other voting method
-      # example_request 'Create a basket' do
-      #   assert_status 201
-      #   json_response = json_parse(response_body)
-      #   expect(json_response.dig(:data, :attributes, :submitted_at)).to be_nil
-      #   expect(json_response.dig(:data, :relationships, :user, :data, :id)).to eq @user.id
-      #   expect(json_response.dig(:data, :relationships, :ideas, :data).pluck(:id)).to match_array ideas.map(&:id)
-      #   expect(json_response.dig(:data, :relationships, :participation_context, :data, :id)).to eq participation_context_id
-      #   expect(
-      #     json_response[:included].select { |included| included[:type] == 'baskets_idea' }.map { |baskets_idea| baskets_idea.dig(:attributes, :votes) }
-      #   ).to contain_exactly 2, 3
-      # end
+      context 'when budgeting' do
+        let(:participation_context_id) { create(:continuous_budgeting_project).id }
+        let(:participation_context_type) { 'Project' }
+
+        example 'Create a basket', document: false do
+          do_request
+          assert_status 201
+          json_response = json_parse(response_body)
+
+          expect(json_response.dig(:data, :attributes, :submitted_at)).to be_nil
+          expect(json_response.dig(:data, :relationships, :user, :data, :id)).to eq @user.id
+          expect(json_response.dig(:data, :relationships, :ideas, :data).pluck(:id)).to match_array ideas.map(&:id)
+          expect(json_response.dig(:data, :relationships, :participation_context, :data, :id)).to eq participation_context_id
+          expect(
+            json_response[:included].select { |included| included[:type] == 'baskets_idea' }.map { |baskets_idea| baskets_idea.dig(:attributes, :votes) }
+          ).to contain_exactly 10, 5
+        end
+      end
 
       example '[error] Create a basket in a survey', document: false do
         do_request(
@@ -145,47 +151,41 @@ resource 'Baskets' do
           expect(json_response.dig(:data, :relationships, :ideas, :data).pluck(:id)).to match_array idea_ids
           expect(
             json_response[:included].select { |included| included[:type] == 'baskets_idea' }.map { |baskets_idea| baskets_idea.dig(:attributes, :votes) }
-          ).to contain_exactly 2, 5, 5
+          ).to contain_exactly 1, 1, 4
         end
 
-        # TODO: Other voting method
-        # example_request 'Update a basket' do
-        #   assert_status 200
-        #   json_response = json_parse(response_body)
-
-        #   expect(json_response.dig(:data, :attributes, :submitted_at)).to be_present
-        #   expect(json_response.dig(:data, :relationships, :ideas, :data).pluck(:id)).to match_array idea_ids
-        #   expect(
-        #     json_response[:included].select { |included| included[:type] == 'baskets_idea' }.map { |baskets_idea| baskets_idea.dig(:attributes, :votes) }
-        #   ).to contain_exactly 1, 1, 4
-        # end
-
-        context 'for a past voting phase' do # TODO: move to policy spec?
-          let(:context) { create(:budgeting_phase, end_at: Date.yesterday) }
-          let(:basket_id) { create(:basket, participation_context: context).id }
-          let(:baskets_ideas_attributes) do
-            idea_id = create(:idea, project: context.project, budget: 3)
-            [{ idea_id: idea_id, votes: 4 }]
+        context 'when budgeting' do
+          before do
+            @project = create(:continuous_budgeting_project)
+            @basket.update!(participation_context: @project)
+            @ideas.each { |idea| idea.update!(project_id: @project.id) }
           end
 
           example 'Update a basket', document: false do
             do_request
-            assert_status 401
+            assert_status 200
+            json_response = json_parse(response_body)
+
+            expect(json_response.dig(:data, :attributes, :submitted_at)).to be_present
+            expect(json_response.dig(:data, :relationships, :ideas, :data).pluck(:id)).to match_array idea_ids
+            expect(
+              json_response[:included].select { |included| included[:type] == 'baskets_idea' }.map { |baskets_idea| baskets_idea.dig(:attributes, :votes) }
+            ).to contain_exactly 2, 5, 5
           end
-        end
 
-        example 'Updating a basket when the budget of an idea changed uses the new budget' do
-          @ideas.first.update!(budget: 7)
+          example 'Updating a basket when the budget of an idea changed uses the new budget', document: false do
+            @ideas.first.update!(budget: 7)
 
-          do_request
-          assert_status 200
-          json_response = json_parse response_body
+            do_request
+            assert_status 200
+            json_response = json_parse response_body
 
-          expect(
-            json_response[:included].select { |included| included[:type] == 'baskets_idea' }.map { |baskets_idea| baskets_idea.dig(:attributes, :votes) }
-          ).to contain_exactly 7, 5, 5
-          @basket.reload
-          expect(@basket.total_votes).to eq 17
+            expect(
+              json_response[:included].select { |included| included[:type] == 'baskets_idea' }.map { |baskets_idea| baskets_idea.dig(:attributes, :votes) }
+            ).to contain_exactly 7, 5, 5
+            @basket.reload
+            expect(@basket.total_votes).to eq 17
+          end
         end
       end
     end
@@ -203,15 +203,6 @@ resource 'Baskets' do
         assert_status 200
         expect { Basket.find(basket_id) }.to raise_error(ActiveRecord::RecordNotFound)
         expect(Basket.count).to eq(old_count - 1)
-      end
-
-      context 'for a past voting phase' do # TODO: move to policy spec?
-        let(:basket_id) { create(:basket, participation_context: create(:budgeting_phase, end_at: Date.yesterday)).id }
-
-        example 'Delete a basket', document: false do
-          do_request
-          assert_status 401
-        end
       end
     end
   end
