@@ -1,12 +1,12 @@
 import { IUserData } from 'api/users/types';
 import { addCommentReaction } from 'api/comment_reactions/useAddCommentReaction';
 import { deleteCommentReaction } from 'api/comment_reactions/useDeleteCommentReaction';
-import streams from 'utils/streams';
-import { API_PATH } from 'containers/App/constants';
 import {
   trackLike,
   trackCancelLike,
 } from 'components/PostShowComponents/Comments/Comment/CommentReaction/trackReaction';
+import commentsKeys from 'api/comments/keys';
+import { queryClient } from 'utils/cl-react-query/queryClient';
 
 export interface ReactionOnCommentParams {
   alreadyReacted: boolean;
@@ -41,8 +41,7 @@ export const reactionOnComment =
 
       trackCancelLike(commentType);
     }
-
-    streams.fetchAllWith({
-      apiEndpoint: [`${API_PATH}/comments/${commentId}`],
+    queryClient.invalidateQueries({
+      queryKey: commentsKeys.item({ id: commentId }),
     });
   };

@@ -64,6 +64,22 @@ export default function createRoutes() {
           ),
         },
         {
+          path: 'sign-in',
+          element: (
+            <PageLoading>
+              <HomePage />
+            </PageLoading>
+          ),
+        },
+        {
+          path: 'sign-up',
+          element: (
+            <PageLoading>
+              <HomePage />
+            </PageLoading>
+          ),
+        },
+        {
           path: 'invite',
           element: (
             <PageLoading>

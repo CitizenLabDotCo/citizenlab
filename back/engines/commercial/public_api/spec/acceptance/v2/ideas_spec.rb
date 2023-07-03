@@ -48,33 +48,8 @@ resource 'Posts' do
       end
     end
 
-    context "when filtering by 'created_at'" do
-      let(:created_at) { '2022-05-01,2022-05-03' }
-
-      let!(:idea) do
-        ideas.first.tap { |idea| idea.update(created_at: '2022-05-02') }
-      end
-
-      example_request 'List only the ideas created between the specified dates' do
-        assert_status 200
-        expect(json_response_body[:ideas].pluck(:id)).to eq [idea.id]
-        expect(json_response_body[:meta]).to eq({ total_pages: 1, current_page: 1 })
-      end
-    end
-
-    context "when filtering by 'updated_at'" do
-      let(:updated_at) { ',2023-01-31' }
-
-      let!(:idea) do
-        ideas.first.tap { |idea| idea.update(updated_at: '2023-01-01') }
-      end
-
-      example_request 'List only the ideas updated between the specified dates' do
-        assert_status 200
-        expect(json_response_body[:ideas].pluck(:id)).to eq [idea.id]
-        expect(json_response_body[:meta]).to eq({ total_pages: 1, current_page: 1 })
-      end
-    end
+    include_examples 'filtering_by_date', :idea, :created_at
+    include_examples 'filtering_by_date', :idea, :updated_at
   end
 
   get '/api/v2/ideas/:id' do

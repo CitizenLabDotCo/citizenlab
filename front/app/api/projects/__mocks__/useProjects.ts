@@ -97,6 +97,7 @@ export const project1: IProjectData = {
     participants_count: 8,
     // MISMATCH: this attribute doesn't exist on our type
     // allocated_budget: 0
+    uses_content_builder: false,
   },
   relationships: {
     admin_publication: {
@@ -239,6 +240,7 @@ export const project2: IProjectData = {
     participants_count: 6,
     // MISMATCH: doesn't seem to exist on our type
     // allocated_budget: 0
+    uses_content_builder: false,
   },
   relationships: {
     admin_publication: {

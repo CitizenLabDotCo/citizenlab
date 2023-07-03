@@ -9,8 +9,7 @@ import { IParticipationContextType } from 'typings';
 import { IIdeaData } from 'api/ideas/types';
 
 interface Props {
-  showListView: boolean;
-  showMapView: boolean;
+  view: 'card' | 'map';
   defaultSortingMethod?: IdeaDefaultSortMethod;
   participationMethod?: ParticipationMethod | null;
   participationContextId?: string | null;
@@ -25,11 +24,11 @@ interface Props {
   hasMore: boolean;
   loadingMore: boolean;
   onLoadMore(): void;
+  goBackMode?: 'browserGoBackButton' | 'goToProject';
 }
 
 const IdeasView = ({
-  showListView,
-  showMapView,
+  view,
   participationContextId,
   participationContextType,
   participationMethod,
@@ -43,10 +42,11 @@ const IdeasView = ({
   hasMore,
   loadingMore,
   onLoadMore,
+  goBackMode,
 }: Props) => {
   return (
     <>
-      {showListView && list && (
+      {view === 'card' && list && (
         <IdeasList
           ariaLabelledBy={'view-tab-1'}
           id={'view-panel-1'}
@@ -63,13 +63,14 @@ const IdeasView = ({
           hideImage={hideImage}
           hideImagePlaceholder={hideImagePlaceholder}
           hideIdeaStatus={hideIdeaStatus}
+          goBackMode={goBackMode}
         />
       )}
       {/*
         IdeasMap is only used in projects at the moment,
         so I narrowed down the projectId type.
       */}
-      {showMapView && projectId && (
+      {view === 'map' && projectId && (
         <IdeasMap
           ariaLabelledBy={'view-tab-2'}
           id={'view-panel-2'}

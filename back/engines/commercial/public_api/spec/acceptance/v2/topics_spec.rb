@@ -35,31 +35,14 @@ resource 'Topics' do
       end
     end
 
-    context "when filtering by 'created_at'" do
-      let(:created_at) { '2022-05-01,2022-05-03' }
+    include_examples 'filtering_by_date', :topic, :created_at
 
-      let!(:topic) do
-        topics.first.tap { |t| t.update!(created_at: '2022-05-02') }
-      end
-
-      example_request 'List only the topics created in the specified range', document: false do
-        assert_status 200
-        expect(json_response_body[:topics].pluck(:id)).to eq [topic.id]
-        expect(json_response_body[:meta]).to eq({ total_pages: 1, current_page: 1 })
-      end
-    end
-
-    context "when filtering by 'updated_at'" do
-      let(:updated_at) { ',2023-01-31' }
-
-      let!(:topic) do
-        topics.first.tap { |t| t.update!(updated_at: '2023-01-01') }
-      end
-
-      example_request 'List only the topics updated between the specified dates', document: false do
-        assert_status 200
-        expect(json_response_body[:topics].pluck(:id)).to eq [topic.id]
-        expect(json_response_body[:meta]).to eq({ total_pages: 1, current_page: 1 })
+    # Temporarily disable acts_as_list callbacks because they modify the updated_at
+    # attribute and break the tests. We use `it_behaves_like` to include the tests
+    # in a nested context to limit the scope of the `around` block.
+    it_behaves_like 'filtering_by_date', :topic, :updated_at do
+      around do |example|
+        Topic.acts_as_list_no_update { example.run }
       end
     end
   end

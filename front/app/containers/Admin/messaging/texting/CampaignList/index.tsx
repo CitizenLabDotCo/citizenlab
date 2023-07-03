@@ -10,7 +10,7 @@ import { ButtonWrapper } from 'components/admin/PageWrapper';
 import TextCampaignListRow from './TextCampaignListRow';
 
 // resources
-import useTextingCampaigns from 'hooks/useTextingCampaigns';
+import useTextingCampaigns from 'api/texting_campaigns/useTextingCampaigns';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -51,11 +51,11 @@ const StatusTableHeader = styled(TableHeader)`
 `;
 
 const TextingCampaignsList = () => {
-  const textingCampaigns = useTextingCampaigns();
+  const { data: textingCampaigns } = useTextingCampaigns();
 
   if (isNilOrError(textingCampaigns)) return null;
 
-  if (textingCampaigns.length === 0) {
+  if (textingCampaigns.data.length === 0) {
     return (
       <Box background={colors.white} p="40px">
         <NoCampaignsWrapper>
@@ -106,7 +106,7 @@ const TextingCampaignsList = () => {
           </tr>
         </thead>
         <tbody>
-          {textingCampaigns.map((campaign) => {
+          {textingCampaigns.data.map((campaign) => {
             return (
               <TextCampaignListRow key={campaign.id} campaign={campaign} />
             );

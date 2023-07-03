@@ -126,13 +126,13 @@ export const ParticipationCTAContent = ({
             flexDirection="column"
           >
             <Text color="white" m="0px" fontSize="s">
-              <div
+              <span
                 style={{
                   ...(isSmallerThanPhone ? { fontWeight: '600' } : {}),
                 }}
               >
                 <FormattedMessage {...getUserParticipationMessage()} />
-              </div>
+              </span>
             </Text>
             {timeLeft !== undefined && (
               <Text

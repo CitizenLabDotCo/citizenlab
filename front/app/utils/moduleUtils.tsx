@@ -75,7 +75,7 @@ export interface OutletsPropertyMap {
     labelTooltipText: string;
   };
   'app.ProjectsShowPage.shared.header.ProjectInfo.projectDescriptionBuilder': {
-    onMount: () => void;
+    id: string;
   };
   'app.containers.Admin.users.GroupsListPanel.listitem.icon': {
     type: MembershipType;

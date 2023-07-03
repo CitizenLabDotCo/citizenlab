@@ -8,7 +8,8 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // router
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { useSearchParams } from 'react-router-dom';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 // components
 import Modal from 'components/UI/Modal';
@@ -31,6 +32,7 @@ import PostedByMobile from './PostedByMobile';
 import ActionBar from './ActionBar';
 import ReactionControl from './ReactionControl';
 import InitiativeMoreActions from './ActionBar/InitiativeMoreActions';
+import Outlet from 'components/Outlet';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -50,14 +52,11 @@ import GetAppConfiguration, {
 
 // utils
 import { getAddressOrFallbackDMS } from 'utils/map';
-import clHistory from 'utils/cl-router/history';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage } from 'utils/cl-intl';
-import injectIntl from 'utils/cl-intl/injectIntl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
+import useLocalize from 'hooks/useLocalize';
 
 // animations
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -80,8 +79,6 @@ import useInitiativeById from 'api/initiatives/useInitiativeById';
 
 // types
 import { IInitiativeData } from 'api/initiatives/types';
-
-import Outlet from 'components/Outlet';
 
 const contentFadeInDuration = 250;
 const contentFadeInEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -326,11 +323,10 @@ interface InputProps {
   className?: string;
 }
 
-interface Props extends DataProps, InputProps, IntiativeInputProps {}
+interface Props extends DataProps, InputProps {}
 
 const InitiativesShow = ({
   locale,
-  localize,
   initiativeImages,
   authUser,
   windowSize,
@@ -338,8 +334,12 @@ const InitiativesShow = ({
   postOfficialFeedbackPermission,
   tenant,
   initiativeId,
-  intl: { formatMessage },
-}: Props & WrappedComponentProps & InjectedLocalized & WithRouterProps) => {
+}: Props) => {
+  const { formatMessage } = useIntl();
+  const localize = useLocalize();
+  const [searchParams] = useSearchParams();
+  const newInitiativeId = searchParams.get('new_initiative_id');
+
   const [loaded, setLoaded] = useState(false);
   const [initiativeIdForSocialSharing, setInitiativeIdForSocialSharing] =
     useState<string | null>(null);
@@ -350,8 +350,7 @@ const InitiativesShow = ({
   ] = useState(false);
   const officialFeedbackElement = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout>();
-  const queryParams = new URLSearchParams(window.location.search);
-  const newInitiativeId = queryParams.get('new_initiative_id');
+
   const { data: initiativeFiles } = useInitiativeFiles(initiativeId);
   const { data: initiative } = useInitiativeById(initiativeId);
 
@@ -361,7 +360,7 @@ const InitiativesShow = ({
         setInitiativeIdForSocialSharing(newInitiativeId);
       }, 1500);
 
-      clHistory.replace(window.location.pathname);
+      removeSearchParams(['new_initiative_id']);
     }
   }, [newInitiativeId]);
 
@@ -412,10 +411,14 @@ const InitiativesShow = ({
   const initiativeSettings = !isNilOrError(tenant)
     ? tenant.attributes.settings.initiatives
     : null;
-  const votingThreshold = initiativeSettings
-    ? initiativeSettings.reacting_threshold
-    : null;
-  const daysLimit = initiativeSettings ? initiativeSettings.days_limit : null;
+
+  const reactingThreshold = initiativeSettings
+    ? initiativeSettings.reacting_threshold.toString()
+    : '';
+  const daysLimit = initiativeSettings
+    ? initiativeSettings.days_limit.toString()
+    : '';
+
   let content: JSX.Element | null = null;
 
   if (
@@ -705,7 +708,7 @@ const InitiativesShow = ({
               postId={initiativeIdForSocialSharing}
               title={formatMessage(messages.shareTitle)}
               subtitle={formatMessage(messages.shareSubtitle, {
-                votingThreshold,
+                votingThreshold: reactingThreshold,
                 daysLimit,
               })}
             />
@@ -715,10 +718,6 @@ const InitiativesShow = ({
     </>
   );
 };
-
-const InitiativesShowWithHOCs = injectLocalize<Props>(
-  withRouter(injectIntl(InitiativesShow))
-);
 
 const Data = adopt<DataProps, InputProps & IntiativeInputProps>({
   locale: <GetLocale />,
@@ -747,13 +746,7 @@ export default (inputProps: InputProps) => {
 
   return (
     <Data {...inputProps} initiative={initiative.data}>
-      {(dataProps) => (
-        <InitiativesShowWithHOCs
-          {...inputProps}
-          {...dataProps}
-          initiative={initiative.data}
-        />
-      )}
+      {(dataProps) => <InitiativesShow {...inputProps} {...dataProps} />}
     </Data>
   );
 };
