@@ -4,7 +4,6 @@ import { omit } from 'lodash-es';
 // services
 import {
   createReferenceDistribution,
-  deleteReferenceDistribution,
   Bins,
   TReferenceDistributionData,
 } from '../../services/referenceDistribution';
@@ -34,6 +33,7 @@ import { isSupported } from '../../containers/Dashboard/utils';
 
 // typings
 import { IUserCustomFieldOptionData } from 'api/user_custom_fields_options/types';
+import useDeleteReferenceDistribution from '../../api/reference_distribution/useDeleteReferenceDistribution';
 interface Props {
   userCustomFieldId: string;
 }
@@ -52,6 +52,8 @@ const Field = ({
   referenceDataUploaded,
   remoteFormValues,
 }: InnerProps) => {
+  const { mutateAsync: deleteReferenceDistribution } =
+    useDeleteReferenceDistribution();
   const [submitting, setSubmitting] = useState(false);
   const [touched, setTouched] = useState(false);
 
@@ -157,7 +159,7 @@ const Field = ({
     }
 
     if (submitAction === 'delete') {
-      await deleteReferenceDistribution(userCustomField.data);
+      await deleteReferenceDistribution(userCustomField.data.id);
     }
 
     setSubmitting(false);
