@@ -176,6 +176,7 @@ export interface IProjectAttributes {
   input_term: InputTerm;
   include_all_areas: boolean;
   folder_id?: string | null;
+  qr_code?: string;
   action_descriptor: {
     posting_idea: ActionDescriptorFutureEnabled<PostingDisabledReason>;
     commenting_idea: ActionDescriptor<CommentingDisabledReason>;

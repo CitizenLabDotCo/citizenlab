@@ -32,12 +32,14 @@
 #  block_reason                        :string
 #  block_end_at                        :datetime
 #  new_email                           :string
+#  unique_code                         :string
 #
 # Indexes
 #
 #  index_users_on_email                      (email)
 #  index_users_on_registration_completed_at  (registration_completed_at)
 #  index_users_on_slug                       (slug) UNIQUE
+#  index_users_on_unique_code                (unique_code) UNIQUE
 #  users_unique_lower_email_idx              (lower((email)::text)) UNIQUE
 #
 class User < ApplicationRecord
@@ -167,7 +169,9 @@ class User < ApplicationRecord
 
   store_accessor :custom_field_values, :gender, :birthyear, :domicile, :education
 
-  validates :email, presence: true, unless: -> { invite_pending? || (sso? && identities.none?(&:email_always_present?)) }
+  # TODO: Move email validation into one row
+  # TODO: Get latest logic from master - merge went wrong
+  validates :email, presence: true, if: :requires_email?
   validates :locale, presence: true, unless: :invite_pending?
   validates :email, uniqueness: true, allow_nil: true
   validates :slug, uniqueness: true, presence: true, unless: :invite_pending?
@@ -275,6 +279,10 @@ class User < ApplicationRecord
     # use any conditions before `or` very carefully (inspect the generated SQL)
     project_moderator.or(User.project_folder_moderator).where.not(id: admin).not_citizenlab_member
   }
+
+  def requires_email?
+    !invite_pending? && unique_code.blank?
+  end
 
   def assign_email_or_phone
     # Hack to embed phone numbers in email

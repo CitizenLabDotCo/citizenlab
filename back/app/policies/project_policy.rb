@@ -119,6 +119,10 @@ class ProjectPolicy < ApplicationPolicy
     create?
   end
 
+  def qr_code?
+    active_moderator?
+  end
+
   def shared_permitted_attributes
     shared = [
       :slug,
