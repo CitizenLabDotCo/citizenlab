@@ -104,12 +104,7 @@ const CampaignConsentForm = ({
         ]);
       setCampaignConsents(Object.fromEntries(campaignConsentsEntries));
     }
-  }, [
-    originalCampaignConsents,
-    localize,
-    internalCommentTypes,
-    isInternalCommentingEnabled,
-  ]);
+  }, [originalCampaignConsents, localize, isInternalCommentingEnabled]);
 
   useEffect(() => {
     if (loading && !!showFeedback) {
