@@ -31,7 +31,6 @@ const useCampaignDeliveries = ({ campaignId }: IParameters) => {
   >({
     queryKey: campaignDeliveriesKeys.list({ campaignId }),
     queryFn: () => fetchCampaignDeliveries({ campaignId }),
-    enabled: !!campaignId,
   });
 };
 
