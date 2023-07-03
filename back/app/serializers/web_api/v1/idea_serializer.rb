@@ -18,6 +18,7 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
     :budget,
     :proposed_budget,
     :baskets_count,
+    :votes_count,
     :anonymous,
     :author_hash
 

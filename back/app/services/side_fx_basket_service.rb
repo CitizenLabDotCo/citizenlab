@@ -25,7 +25,6 @@ class SideFxBasketService
 
   def update_basket_counts(basket)
     # NOTE: we cannot use counter_culture because we can't trigger it from another model being updated (basket)
-    # NOTE: Think we should be able to update the votes count in the same queries in a future iteration
     project = basket.participation_context.project
 
     # Update ideas
@@ -40,7 +39,6 @@ class SideFxBasketService
       update_participation_context_counts(phase, phase)
 
       # Update the project
-      # NOTE: Is it right that we update the project counts when there are phases? Is this a useful number?
       update_participation_context_counts(project.phases, project)
     else
       # Update the project only
