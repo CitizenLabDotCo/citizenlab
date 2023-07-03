@@ -1,3 +1,6 @@
+import React, { useEffect } from 'react';
+
+// components
 import {
   Box,
   Icon,
@@ -5,7 +8,6 @@ import {
   Text,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import React from 'react';
 import styled from 'styled-components';
 import CloseIconButton from 'components/UI/CloseIconButton';
 
@@ -26,8 +28,28 @@ type ErrorToastProps = {
 };
 
 const ErrorToast = ({ errorMessage, showError, onClose }: ErrorToastProps) => {
-  const isMobileView = useBreakpoint('phone');
+  const [atPageEnd, setAtPageEnd] = React.useState(false);
 
+  const handleScroll = () => {
+    // Ref: https://stackoverflow.com/questions/63501757/check-if-user-reached-the-bottom-of-the-page-react
+    const bottom =
+      Math.ceil(window.innerHeight + window.scrollY) >=
+      document.documentElement.scrollHeight;
+    bottom ? setAtPageEnd(true) : setAtPageEnd(false);
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll, {
+      passive: true,
+    });
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  const isMobileView = useBreakpoint('phone');
+  const marginBottom = isMobileView ? '64px' : atPageEnd ? '40px' : '0px';
   return (
     <StyledBox
       mx="auto"
@@ -38,7 +60,7 @@ const ErrorToast = ({ errorMessage, showError, onClose }: ErrorToastProps) => {
       className={showError ? 'visible' : 'hidden'}
       position="fixed"
       bottom="0"
-      mb={isMobileView ? '64px' : '0px'}
+      mb={marginBottom}
     >
       <Box
         bgColor={colors.errorLight}
