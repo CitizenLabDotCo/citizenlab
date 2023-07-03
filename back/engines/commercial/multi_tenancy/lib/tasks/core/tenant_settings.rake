@@ -41,7 +41,7 @@ namespace :tenant_settings do
   #   bundle exec rake tenant_settings:enable_feature_for_tenants[feature,url]
   # Example:
   #   bundle exec rake tenant_settings:enable_feature_for_tenants['participatory_budgeting','/tenants.txt']
-  #   Where /tmp/tenants.txt contains a list of tenant hosts, one per line. Example line: participer.grandparissud.fr
+  #   Where /tenants.txt contains a list of tenant hosts, one per line. Example line: participer.grandparissud.fr
   desc 'Enable tenant feature for specific tenants'
   task :enable_feature_for_tenants, %i[feature url] => [:environment] do |_t, args|
     tenants = File.readlines(args[:url]).map(&:strip)
@@ -74,7 +74,7 @@ namespace :tenant_settings do
   #   bundle exec rake tenant_settings:disable_feature_for_tenants[feature,url]
   # Example:
   #   bundle exec rake tenant_settings:disable_feature_for_tenants['participatory_budgeting','/tenants.txt']
-  #   Where /tmp/tenants.txt contains a list of tenant hosts, one per line. Example line: participer.grandparissud.fr
+  #   Where /tenants.txt contains a list of tenant hosts, one per line. Example line: participer.grandparissud.fr
   desc 'Disable tenant feature for specific tenants'
   task :disable_feature_for_tenants, %i[feature url] => [:environment] do |_t, args|
     tenants = File.readlines(args[:url]).map(&:strip)
