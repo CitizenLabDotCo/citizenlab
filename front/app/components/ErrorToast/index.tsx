@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 // components
 import {
@@ -29,6 +29,8 @@ type ErrorToastProps = {
 
 const ErrorToast = ({ errorMessage, showError, onClose }: ErrorToastProps) => {
   const atPageEnd = useRef(false);
+  const [marginBottom, setMarginBottom] = useState('0px');
+  const isMobileView = useBreakpoint('phone');
 
   const handleScroll = () => {
     // Ref: https://stackoverflow.com/questions/63501757/check-if-user-reached-the-bottom-of-the-page-react
@@ -37,8 +39,10 @@ const ErrorToast = ({ errorMessage, showError, onClose }: ErrorToastProps) => {
       document.documentElement.scrollHeight;
     if (bottom) {
       atPageEnd.current = true;
+      setMarginBottom('40px');
     } else {
       atPageEnd.current = false;
+      setMarginBottom('0px');
     }
   };
 
@@ -52,8 +56,6 @@ const ErrorToast = ({ errorMessage, showError, onClose }: ErrorToastProps) => {
     };
   }, []);
 
-  const isMobileView = useBreakpoint('phone');
-  const marginBottom = isMobileView ? '64px' : atPageEnd ? '40px' : '0px';
   return (
     <StyledBox
       mx="auto"
@@ -64,7 +66,7 @@ const ErrorToast = ({ errorMessage, showError, onClose }: ErrorToastProps) => {
       className={showError ? 'visible' : 'hidden'}
       position="fixed"
       bottom="0"
-      mb={marginBottom}
+      mb={isMobileView ? '64px' : marginBottom}
     >
       <Box
         bgColor={colors.errorLight}
@@ -77,7 +79,7 @@ const ErrorToast = ({ errorMessage, showError, onClose }: ErrorToastProps) => {
         justifyContent="space-between"
         alignItems="center"
       >
-        <Box display="flex" gap="16px" alignItems="center">
+        <Box display="flex" gap="16px" alignItems="center" aria-live="polite">
           <Icon
             name="alert-circle"
             fill={colors.error}

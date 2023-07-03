@@ -217,7 +217,6 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
         errorMessage={error || ''}
         showError={showError}
         onClose={() => setShowError(false)}
-        aria-live="polite"
       />
     </>
   );

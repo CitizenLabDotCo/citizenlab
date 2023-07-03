@@ -136,24 +136,26 @@ const AddToBasketButton = ({ ideaId, projectId }: Props) => {
   const currency = appConfig?.data.attributes.settings.core.currency;
 
   return (
-    <Button
-      onClick={handleAddRemoveButtonClick}
-      disabled={!buttonEnabled}
-      processing={processing}
-      bgColor={isInBasket ? colors.green500 : colors.white}
-      textColor={isInBasket ? colors.white : theme.colors.tenantPrimary}
-      textHoverColor={isInBasket ? colors.white : theme.colors.tenantPrimary}
-      bgHoverColor={isInBasket ? colors.green500 : 'white'}
-      borderColor={isInBasket ? '' : theme.colors.tenantPrimary}
-      width="100%"
-      className={`e2e-assign-budget-button ${
-        isInBasket ? 'in-basket' : 'not-in-basket'
-      }`}
-    >
-      {isInBasket && <Icon mb="4px" fill="white" name="check" />}
-      <FormattedMessage {...buttonMessage} />
-      {` (${ideaBudget} ${currency})`}
-    </Button>
+    <>
+      <Button
+        onClick={handleAddRemoveButtonClick}
+        disabled={!buttonEnabled}
+        processing={processing}
+        bgColor={isInBasket ? colors.green500 : colors.white}
+        textColor={isInBasket ? colors.white : theme.colors.tenantPrimary}
+        textHoverColor={isInBasket ? colors.white : theme.colors.tenantPrimary}
+        bgHoverColor={isInBasket ? colors.green500 : 'white'}
+        borderColor={isInBasket ? '' : theme.colors.tenantPrimary}
+        width="100%"
+        className={`e2e-assign-budget-button ${
+          isInBasket ? 'in-basket' : 'not-in-basket'
+        }`}
+      >
+        {isInBasket && <Icon mb="4px" fill="white" name="check" />}
+        <FormattedMessage {...buttonMessage} />
+        {` (${ideaBudget} ${currency})`}
+      </Button>
+    </>
   );
 };
 
