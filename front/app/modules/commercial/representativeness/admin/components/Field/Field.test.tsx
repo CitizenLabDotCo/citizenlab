@@ -4,13 +4,11 @@ import { render, screen, fireEvent, waitFor, act } from 'utils/testUtils/rtl';
 import { indices } from 'utils/helperUtils';
 import {
   createReferenceDistribution,
-  replaceReferenceDistribution,
   deleteReferenceDistribution,
 } from '../../services/referenceDistribution';
 
 jest.mock('../../services/referenceDistribution', () => ({
   createReferenceDistribution: jest.fn(),
-  replaceReferenceDistribution: jest.fn(),
   deleteReferenceDistribution: jest.fn(),
 }));
 
@@ -183,8 +181,8 @@ describe('<Field />', () => {
           );
         });
 
-        expect(replaceReferenceDistribution).toHaveBeenCalledTimes(1);
-        expect(replaceReferenceDistribution).toHaveBeenCalledWith(selectField, {
+        expect(createReferenceDistribution).toHaveBeenCalledTimes(1);
+        expect(createReferenceDistribution).toHaveBeenCalledWith(selectField, {
           option1: 100,
           option2: 100,
           option3: 200,
@@ -404,8 +402,8 @@ describe('<Field />', () => {
           );
         });
 
-        expect(replaceReferenceDistribution).toHaveBeenCalledTimes(1);
-        expect(replaceReferenceDistribution).toHaveBeenCalledWith(
+        expect(createReferenceDistribution).toHaveBeenCalledTimes(1);
+        expect(createReferenceDistribution).toHaveBeenCalledWith(
           birthyearField,
           {
             bins: [18, 25, 35, 45, 65, null],

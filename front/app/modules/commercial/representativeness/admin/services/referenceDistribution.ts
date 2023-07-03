@@ -92,34 +92,6 @@ export async function createReferenceDistribution(
   return response;
 }
 
-export async function replaceReferenceDistribution(
-  { id }: IUserCustomFieldData,
-  distribution: TUploadDistribution
-) {
-  const response = await streams.add<IReferenceDistribution>(
-    getReferenceDistributionEndpoint(id),
-    { distribution }
-  );
-
-  queryClient.invalidateQueries({
-    queryKey: usersByBirthyearKeys.all(),
-  });
-
-  queryClient.invalidateQueries({
-    queryKey: usersByGenderKeys.all(),
-  });
-
-  queryClient.invalidateQueries({
-    queryKey: usersByCustomFieldKeys.all(),
-  });
-
-  queryClient.invalidateQueries({
-    queryKey: rScoreKeys.item({ id }),
-  });
-
-  return response;
-}
-
 export async function deleteReferenceDistribution({
   id,
 }: IUserCustomFieldData) {

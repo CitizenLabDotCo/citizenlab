@@ -4,7 +4,6 @@ import { omit } from 'lodash-es';
 // services
 import {
   createReferenceDistribution,
-  replaceReferenceDistribution,
   deleteReferenceDistribution,
   Bins,
   TReferenceDistributionData,
@@ -153,12 +152,8 @@ const Field = ({
 
     setSubmitting(true);
 
-    if (submitAction === 'create') {
+    if (submitAction === 'create' || submitAction === 'replace') {
       await createReferenceDistribution(userCustomField.data, newDistribution);
-    }
-
-    if (submitAction === 'replace') {
-      await replaceReferenceDistribution(userCustomField.data, newDistribution);
     }
 
     if (submitAction === 'delete') {
