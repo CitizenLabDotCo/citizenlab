@@ -10,7 +10,7 @@ import useUpdateBasket from 'api/baskets/useUpdateBasket';
 import useAddBasket from 'api/baskets/useAddBasket';
 
 // utils
-import { getParticipationContext } from './utils';
+import { getLatestRelevantParticipationContext } from './utils';
 import { capitalizeParticipationContextType } from 'utils/helperUtils';
 import eventEmitter from 'utils/eventEmitter';
 
@@ -38,7 +38,11 @@ const useAssignBudget = ({ projectId, ideaId }: Props) => {
   const { mutateAsync: addBasket } = useAddBasket(projectId);
   const { mutateAsync: updateBasket } = useUpdateBasket();
 
-  const participationContext = getParticipationContext(project, idea, phases);
+  const participationContext = getLatestRelevantParticipationContext(
+    project,
+    idea,
+    phases
+  );
 
   const { data: basket } = useBasket(
     participationContext?.relationships?.user_basket?.data?.id

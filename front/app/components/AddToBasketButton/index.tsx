@@ -28,7 +28,7 @@ import {
   ActionDescriptorFutureEnabled,
   isFixableByAuthentication,
 } from 'utils/actionDescriptors';
-import { getParticipationContext } from './utils';
+import { getLatestRelevantParticipationContext } from './utils';
 
 // typings
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
@@ -66,7 +66,11 @@ const AddToBasketButton = ({ ideaId, projectId }: Props) => {
   const { data: phases } = usePhases(projectId);
   const { assignBudget, processing } = useAssignBudget({ projectId, ideaId });
 
-  const participationContext = getParticipationContext(project, idea, phases);
+  const participationContext = getLatestRelevantParticipationContext(
+    project,
+    idea,
+    phases
+  );
   const participationContextType =
     project?.data.attributes.process_type === 'continuous'
       ? 'project'
