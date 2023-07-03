@@ -38,51 +38,79 @@ jest.mock(
   }
 );
 
-describe('useProjectDescriptionBuilderLayout', () => {
-  it('should call projectDescriptionBuilderLayoutStream with correct arguments', () => {
-    renderHook(() => useProjectDescriptionBuilderLayout(projectId));
-    expect(projectDescriptionBuilderLayoutStream).toHaveBeenCalledWith(
-      projectId
-    );
-  });
-  it('should return data when data', async () => {
-    const { result } = renderHook(() =>
-      useProjectDescriptionBuilderLayout(projectId)
-    );
-    expect(result.current).toBe(undefined);
-    await act(
-      async () =>
-        await waitFor(() =>
-          expect(result.current).toBe(mockProjectDescriptionBuilderLayout)
-        )
-    );
-  });
-  it('should return error when error', () => {
-    const error = new Error();
-    mockObservable = new Observable((subscriber) => {
-      subscriber.next(new Error());
-    });
-    const { result } = renderHook(() =>
-      useProjectDescriptionBuilderLayout(projectId)
-    );
-    expect(result.current).toStrictEqual(error);
-  });
-  it('should return null when data is null', () => {
-    mockObservable = new Observable((subscriber) => {
-      subscriber.next(null);
-    });
-    const { result } = renderHook(() =>
-      useProjectDescriptionBuilderLayout(projectId)
-    );
-    expect(result.current).toBe(null);
-  });
-  it('should unsubscribe on unmount', () => {
-    jest.spyOn(Subscription.prototype, 'unsubscribe');
-    const { unmount } = renderHook(() =>
-      useProjectDescriptionBuilderLayout(projectId)
-    );
+const projectResponseEnabled = {
+  data: { data: { id: projectId, attributes: { uses_content_builder: true } } },
+};
 
-    unmount();
-    expect(Subscription.prototype.unsubscribe).toHaveBeenCalledTimes(1);
+const projectResponseDisabled = {
+  data: {
+    data: { id: projectId, attributes: { uses_content_builder: false } },
+  },
+};
+
+let mockProjectResponse = projectResponseEnabled;
+jest.mock('api/projects/useProjectById', () => () => mockProjectResponse);
+
+describe('useProjectDescriptionBuilderLayout', () => {
+  describe('layout enabled', () => {
+    beforeEach(() => {
+      mockProjectResponse = projectResponseEnabled;
+    });
+
+    it('should call projectDescriptionBuilderLayoutStream with correct arguments', () => {
+      renderHook(() => useProjectDescriptionBuilderLayout(projectId));
+      expect(projectDescriptionBuilderLayoutStream).toHaveBeenCalledWith(
+        projectId
+      );
+    });
+    it('should return data when data', async () => {
+      const { result } = renderHook(() =>
+        useProjectDescriptionBuilderLayout(projectId)
+      );
+      expect(result.current).toBe(undefined);
+      await act(
+        async () =>
+          await waitFor(() =>
+            expect(result.current).toBe(mockProjectDescriptionBuilderLayout)
+          )
+      );
+    });
+    it('should return error when error', () => {
+      const error = new Error();
+      mockObservable = new Observable((subscriber) => {
+        subscriber.next(new Error());
+      });
+      const { result } = renderHook(() =>
+        useProjectDescriptionBuilderLayout(projectId)
+      );
+      expect(result.current).toStrictEqual(error);
+    });
+    it('should return null when data is null', () => {
+      mockObservable = new Observable((subscriber) => {
+        subscriber.next(null);
+      });
+      const { result } = renderHook(() =>
+        useProjectDescriptionBuilderLayout(projectId)
+      );
+      expect(result.current).toBe(null);
+    });
+    it('should unsubscribe on unmount', () => {
+      jest.spyOn(Subscription.prototype, 'unsubscribe');
+      const { unmount } = renderHook(() =>
+        useProjectDescriptionBuilderLayout(projectId)
+      );
+
+      unmount();
+      expect(Subscription.prototype.unsubscribe).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('layout disabled', () => {
+    it('should not call projectDescriptionBuilderLayoutStream', () => {
+      mockProjectResponse = projectResponseDisabled;
+
+      renderHook(() => useProjectDescriptionBuilderLayout(projectId));
+      expect(projectDescriptionBuilderLayoutStream).not.toHaveBeenCalled();
+    });
   });
 });

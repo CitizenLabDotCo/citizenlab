@@ -59,7 +59,7 @@ const resolver = {
   PostsByTimeWidget,
   CommentsByTimeWidget,
   ReactionsByTimeWidget,
-  // We point to the same widget as MostReactedIdeasWidget because there is data in production and other places that uses the old name. The resolver should be able to handle both names for backwards compatibility.
+  // We point to the same widget as ReactionsByTimeWidget because there is data in production and other places that uses the old name. The resolver should be able to handle both names for backwards compatibility.
   VotesByTimeWidget: ReactionsByTimeWidget,
 };
 
