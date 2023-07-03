@@ -197,6 +197,7 @@ const multipleVotingConfig: VotingMethodConfig = {
             b: (chunks) => (
               <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
             ),
+            voteTerm: 'votes', // TODO: Replace with voting term from attributes
             optionCount: phase
               ? phase.attributes.ideas_count
               : project.attributes.ideas_count,

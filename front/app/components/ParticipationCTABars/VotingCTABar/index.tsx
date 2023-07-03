@@ -146,7 +146,9 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
       return null;
     }
     if (currentPhase && currentPhase.attributes.voting_term_plural_multiloc) {
-      return currentPhase?.attributes?.voting_term_plural_multiloc[locale];
+      return currentPhase?.attributes?.voting_term_plural_multiloc[
+        locale
+      ]?.toLowerCase();
     } else if (project.attributes.voting_term_plural_multiloc) {
       return project.attributes.voting_term_plural_multiloc[
         locale

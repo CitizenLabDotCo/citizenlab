@@ -114,9 +114,9 @@ export default defineMessages({
     defaultMessage: 'Final tally',
   },
   cumulativeVotingInstructions: {
-    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructions',
+    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructions2',
     defaultMessage:
-      'You have a total of <b>{totalVotes} votes to distribute between {optionCount} options</b>. Select your preferred options by tapping on “Vote”. Once you are done, click “Submit” to cast your vote.',
+      'You have a total of <b>{totalVotes} {voteTerm} to distribute between {optionCount} options</b>. Select your preferred options by tapping on “Vote”. Once you are done, click “Submit” to cast your vote.',
   },
   budgetSubmittedWithIcon: {
     id: 'app.utils.votingMethodUtils.budgetSubmittedWithIcon',
