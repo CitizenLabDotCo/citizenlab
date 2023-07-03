@@ -23,7 +23,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { isSubmittingAllowed, FormValues } from '../../utils/form';
 
 // typings
-import { Bins } from '../../services/referenceDistribution';
+import { Bins } from '../../api/reference_distribution/types';
 
 interface Props {
   userCustomFieldId: string;
