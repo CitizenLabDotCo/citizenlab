@@ -648,6 +648,7 @@
   "app.containers.App.appMetaDescription": "Laipni lūgti {orgName} tiešsaistes līdzdalības platformā. \nIepazīstieties ar vietējiem projektiem un iesaistieties diskusijā!",
   "app.containers.App.loading": "Notiek ielāde...",
   "app.containers.App.metaTitle": "{orgName} sabiedrības līdzdalības platforma | CitizenLab",
+  "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Konts ar šo e-pasta adresi jau pastāv. Jūs varat izrakstīties, pieteikties ar šo e-pasta adresi un pārbaudīt savu kontu iestatījumu lapā.",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Lūdzu, ievadiet žetonu",
   "app.containers.Authentication.steps.Invitation.token": "Žetons",
   "app.containers.CampaignsConsentForm.ally_categoryLabel": "E-pasti šajā kategorijā",
