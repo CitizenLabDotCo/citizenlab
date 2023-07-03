@@ -43,7 +43,6 @@ import { trackEventByName } from 'utils/analytics';
 // routing
 import { useSearchParams } from 'react-router-dom';
 import { internalCommentTypes } from 'api/notifications/types';
-import { CampaignName } from 'api/campaigns/types';
 
 type Props = {
   trackEventName?: string;
@@ -61,8 +60,13 @@ const CampaignConsentForm = ({
   const [searchParams, _] = useSearchParams();
   const unsubscriptionToken = searchParams.get('unsubscription_token');
 
-  const { data: originalCampaignConsents } =
-    useCampaignConsents(unsubscriptionToken);
+  const { data: originalCampaignConsents } = useCampaignConsents({
+    unsubscriptionToken,
+    withoutCampaignNames: [
+      ...(isInternalCommentingEnabled ? [] : internalCommentTypes),
+    ],
+  });
+
   const { mutate: updateCampaignConsents } = useUpdateCampaignConsents();
 
   const [campaignConsents, setCampaignConsents] = useState<
@@ -81,16 +85,6 @@ const CampaignConsentForm = ({
     if (!isNilOrError(originalCampaignConsents)) {
       const campaignConsentsEntries = originalCampaignConsents.data
         .sort((a, b): number => a.id.localeCompare(b.id))
-        .filter((consent) => {
-          if (
-            (internalCommentTypes as unknown as CampaignName).includes(
-              consent.attributes.campaign_name
-            )
-          ) {
-            return isInternalCommentingEnabled;
-          }
-          return true;
-        })
         .map((consent): [string, CampaignConsent] => [
           consent.id,
           {

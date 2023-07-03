@@ -38,3 +38,8 @@ export interface IConsentChanges {
   campaignId?: string;
   consented: boolean;
 }
+
+export interface IConsentsRequestData {
+  withoutCampaignNames?: CampaignName[];
+  unsubscriptionToken?: string | null;
+}

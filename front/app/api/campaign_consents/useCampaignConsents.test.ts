@@ -31,7 +31,7 @@ describe('useCampaignConsents', () => {
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useCampaignConsents(), {
+    const { result, waitFor } = renderHook(() => useCampaignConsents({}), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -50,7 +50,7 @@ describe('useCampaignConsents', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useCampaignConsents(), {
+    const { result, waitFor } = renderHook(() => useCampaignConsents({}), {
       wrapper: createQueryClientWrapper(),
     });
 
