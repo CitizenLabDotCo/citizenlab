@@ -9,7 +9,10 @@ import { isNil } from 'lodash-es';
 import { Icon, colors } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
 import Map, { Point } from 'components/Map';
-import { Header, Item } from 'components/IdeasShowComponents/MetaInfoStyles';
+import {
+  Header,
+  Item,
+} from 'containers/IdeasShow/components/MetaInformation/MetaInfoStyles';
 
 // utils
 import { getAddressOrFallbackDMS } from 'utils/map';

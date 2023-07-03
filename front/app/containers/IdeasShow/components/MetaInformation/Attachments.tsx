@@ -1,7 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import Attachment from './Attachment';
-import { Header, Item } from 'components/IdeasShowComponents/MetaInfoStyles';
+import {
+  Header,
+  Item,
+} from 'containers/IdeasShow/components/MetaInformation/MetaInfoStyles';
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n

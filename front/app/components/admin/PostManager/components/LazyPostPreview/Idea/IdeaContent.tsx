@@ -4,9 +4,9 @@ import { adopt } from 'react-adopt';
 
 // components
 import Title from 'components/PostShowComponents/Title';
-import PostedBy from 'containers/IdeasShow/PostedBy';
+import PostedBy from 'components/admin/PostManager/components/LazyPostPreview/Idea/PostedBy';
 import Body from 'components/PostShowComponents/Body';
-import IdeaProposedBudget from 'containers/IdeasShow/IdeaProposedBudget';
+import IdeaProposedBudget from 'containers/IdeasShow/components/ProposedBudget/IdeaProposedBudget';
 import DropdownMap from 'components/PostShowComponents/DropdownMap';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import CommentsSection from 'components/PostShowComponents/Comments';
@@ -47,7 +47,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 import useIdeaFiles from 'api/idea_files/useIdeaFiles';
 import usePhases from 'api/phases/usePhases';
-import { getCurrentPhase } from 'api/phases/utils';
+import { getCurrentParticipationContext } from 'api/phases/utils';
 
 const StyledTitle = styled(Title)`
   margin-bottom: 20px;
@@ -200,7 +200,10 @@ const IdeaContent = ({
   };
 
   if (!isNilOrError(idea) && !isNilOrError(locale) && !isNilOrError(project)) {
-    const currentPhase = getCurrentPhase(phases?.data);
+    const participationContext = getCurrentParticipationContext(
+      project,
+      phases?.data
+    );
     const ideaId = idea.id;
     const ideaTitle = localize(idea.attributes.title_multiloc);
     const ideaImageLarge =
@@ -217,8 +220,7 @@ const IdeaContent = ({
     const proposedBudget = idea.attributes.proposed_budget;
     const processType = project.attributes.process_type;
     const allowAnonymousParticipation =
-      project.attributes.allow_anonymous_participation ||
-      currentPhase?.attributes.allow_anonymous_participation;
+      participationContext?.attributes.allow_anonymous_participation;
 
     return (
       <Container>

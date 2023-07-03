@@ -16,7 +16,7 @@ import useProjectById from 'api/projects/useProjectById';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 
 // services
 import { ProcessType } from 'api/projects/types';

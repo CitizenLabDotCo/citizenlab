@@ -31,10 +31,8 @@ export interface IBasket {
 }
 
 export interface IUpdateBasket {
-  id: string;
   submitted?: boolean | null;
   baskets_ideas_attributes?: BasketIdeaAttributes;
-  participation_context_type: 'Project' | 'Phase';
 }
 export interface INewBasket {
   participation_context_id: string;

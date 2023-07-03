@@ -9,7 +9,7 @@ import {
   colors,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import { BUDGET_EXCEEDED_ERROR_EVENT } from 'components/AssignBudgetControl';
+import { BUDGET_EXCEEDED_ERROR_EVENT } from 'components/ParticipationCTABars/VotingCTABar/events';
 
 // api
 import useBasket from 'api/baskets/useBasket';

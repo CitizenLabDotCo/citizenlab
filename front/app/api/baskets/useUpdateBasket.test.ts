@@ -28,6 +28,7 @@ describe('useUpdateBasket', () => {
       result.current.mutate({
         id: 'id',
         baskets_ideas_attributes: [{ idea_id: 'ideaId' }],
+        participation_context_type: 'Phase',
       });
     });
 
@@ -49,6 +50,7 @@ describe('useUpdateBasket', () => {
       result.current.mutate({
         id: 'id',
         baskets_ideas_attributes: [{ idea_id: 'ideaId' }],
+        participation_context_type: 'Phase',
       });
     });
     await waitFor(() => expect(result.current.isError).toBe(true));

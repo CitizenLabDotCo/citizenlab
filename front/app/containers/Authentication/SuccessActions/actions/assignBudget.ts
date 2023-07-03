@@ -5,7 +5,7 @@ import { addBasket } from 'api/baskets/useAddBasket';
 
 // tracks
 import { trackEventByName } from 'utils/analytics';
-import tracks from 'containers/ProjectsShowPage/shared/pb/tracks';
+import tracks from 'components/AddToBasketButton/tracks';
 
 // utils
 import { isNil, capitalizeParticipationContextType } from 'utils/helperUtils';
@@ -60,7 +60,9 @@ export const assignBudget =
           baskets_ideas_attributes: basketIdeasAttributes,
           submitted: false,
         });
-        trackEventByName(tracks.ideaAddedToBasket);
+        isInBasket
+          ? trackEventByName(tracks.ideaRemovedFromBasket)
+          : trackEventByName(tracks.ideaAddedToBasket);
       } catch (error) {
         streams.fetchAllWith({ dataId: [basket.id] });
       }

@@ -38,11 +38,13 @@ type StatusModuleProps = {
 
 const unsubmitBasket = async (
   basketId: string,
-  updateBasket: ReturnType<typeof useUpdateBasket>['mutate']
+  updateBasket: ReturnType<typeof useUpdateBasket>['mutate'],
+  participation_context_type: 'Phase' | 'Project'
 ) => {
   updateBasket({
     id: basketId,
     submitted: false,
+    participation_context_type,
   });
 };
 
@@ -133,7 +135,11 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
               icon="edit"
               mt="16px"
               onClick={() => {
-                unsubmitBasket(basket?.data.id, updateBasket);
+                unsubmitBasket(
+                  basket?.data.id,
+                  updateBasket,
+                  phase ? 'Phase' : 'Project'
+                );
               }}
             >
               {formatMessage(messages.modifyYour)}{' '}

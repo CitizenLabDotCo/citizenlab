@@ -1,5 +1,8 @@
 import React from 'react';
-import { Header, Item } from 'components/IdeasShowComponents/MetaInfoStyles';
+import {
+  Header,
+  Item,
+} from 'containers/IdeasShow/components/MetaInformation/MetaInfoStyles';
 
 // hooks
 import useIdeaStatus from 'api/idea_statuses/useIdeaStatus';

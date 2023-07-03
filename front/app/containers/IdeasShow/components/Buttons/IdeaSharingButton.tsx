@@ -4,7 +4,7 @@ import { getInputTerm } from 'services/participationContexts';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from '../../messages';
 import { getInputTermMessage } from 'utils/i18n';
 
 // hooks

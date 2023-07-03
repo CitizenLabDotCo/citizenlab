@@ -5,17 +5,9 @@ export default defineMessages({
     id: 'app.components.AssignBudgetControl.added',
     defaultMessage: 'Added',
   },
-  removeFromMyBasket: {
-    id: 'app.components.AssignBudgetControl.removeFromMyBasket',
-    defaultMessage: 'Remove from my basket',
-  },
   add: {
     id: 'app.components.AssignBudgetControl.add',
     defaultMessage: 'Add',
-  },
-  addToMyBasket: {
-    id: 'app.components.AssignBudgetControl.addToMyBasket',
-    defaultMessage: 'Add to my basket',
   },
   budgetingNotPossible: {
     id: 'app.components.VoteControl.budgetingNotPossible',
@@ -35,9 +27,5 @@ export default defineMessages({
   budgetingNotVerified: {
     id: 'app.components.VoteControl.budgetingNotVerified',
     defaultMessage: 'Please {verifyAccountLink} to continue.',
-  },
-  a11y_price: {
-    id: 'app.components.AssignBudgetControl.a11y_price',
-    defaultMessage: 'Price: ',
   },
 });

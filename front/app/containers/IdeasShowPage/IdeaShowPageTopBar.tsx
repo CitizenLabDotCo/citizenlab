@@ -1,17 +1,18 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
 import useAuthUser from 'api/me/useAuthUser';
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // i18n
 import useLocalize from 'hooks/useLocalize';
 
 // components
-import ReactionControl from 'components/ReactionControl';
 import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
+import ReactionControl from 'components/ReactionControl';
+import AddToBasketButton from 'components/AddToBasketButton';
 
 // events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
@@ -77,17 +78,14 @@ const IdeaShowPageTopBar = ({
 }: Props) => {
   const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
+  const isSmallerThanTablet = useBreakpoint('tablet');
 
-  const [goBack, setGoBack] = useState(false);
   const [searchParams] = useSearchParams();
-  const goBackParameter = searchParams.get('go_back');
+  const [goBack] = useState(searchParams.get('go_back'));
 
   useEffect(() => {
-    if (isString(goBackParameter)) {
-      setGoBack(true);
-      removeSearchParams(['go_back']);
-    }
-  }, [goBackParameter]);
+    removeSearchParams(['go_back']);
+  }, []);
 
   const localize = useLocalize();
 
@@ -138,16 +136,23 @@ const IdeaShowPageTopBar = ({
             text={
               project ? localize(project.data.attributes.title_multiloc) : ''
             }
+            iconSize={isSmallerThanTablet ? '42px' : undefined}
             onClick={handleGoBack}
           />
         </Left>
         <Right>
+          {/* Only visible if not participatory budgeting */}
           <ReactionControl
             size="1"
             styleType="border"
             ideaId={ideaId}
             disabledReactionClick={onDisabledReactClick}
           />
+
+          {/* Only visible if participatory budgeting */}
+          {ideaId && (
+            <AddToBasketButton ideaId={ideaId} projectId={projectId} />
+          )}
         </Right>
       </TopBarInner>
     </Container>
