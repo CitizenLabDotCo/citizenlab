@@ -129,7 +129,7 @@ export default ({
       )}
       <StyledSectionField>
         <SubSectionTitle>
-          <FormattedMessage {...messages.enabledActionsForResidents} />
+          <FormattedMessage {...messages.enabledActionsForUsers} />
           <IconTooltip
             content={<FormattedMessage {...messages.enabledActionsTooltip} />}
           />

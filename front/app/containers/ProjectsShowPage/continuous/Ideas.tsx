@@ -91,9 +91,8 @@ const IdeasContainer = memo<InnerProps>(({ project, className }) => {
 
   if (!isNilOrError(project) && showIdeas) {
     const inputTerm = project.attributes.input_term;
-    const isPBProject =
-      project.attributes.participation_method === 'voting' &&
-      project.attributes.voting_method === 'budgeting';
+    const isVotingProject =
+      project.attributes.participation_method === 'voting';
 
     return (
       <Container
@@ -102,15 +101,15 @@ const IdeasContainer = memo<InnerProps>(({ project, className }) => {
       >
         <StyledContentContainer id="project-ideas" maxWidth={maxPageWidth}>
           <SectionContainer>
-            {isPBProject && (
+            {isVotingProject && (
               <>
                 <StatusModule
-                  votingMethod={project.attributes.voting_method}
+                  votingMethod={project?.attributes.voting_method}
                   project={project}
                 />
               </>
             )}
-            {!isPBProject && (
+            {!isVotingProject && (
               <StyledProjectPageSectionTitle>
                 <FormattedMessage
                   {...getInputTermMessage(inputTerm, {
@@ -136,8 +135,8 @@ const IdeasContainer = memo<InnerProps>(({ project, className }) => {
               showViewToggle={true}
               defaultView={project.attributes.presentation_mode}
               invisibleTitleMessage={messages.a11y_titleInputs}
-              showDropdownFilters={isPBProject ? false : true}
-              showSearchbar={isPBProject ? false : true}
+              showDropdownFilters={isVotingProject ? false : true}
+              showSearchbar={isVotingProject ? false : true}
             />
           </SectionContainer>
         </StyledContentContainer>

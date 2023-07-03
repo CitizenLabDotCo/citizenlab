@@ -18,7 +18,7 @@ import SharingModalContent from 'components/PostShowComponents/SharingModalConte
 import { IdeationCTABar } from 'components/ParticipationCTABars/IdeationCTABar';
 import { NativeSurveyCTABar } from 'components/ParticipationCTABars/NativeSurveyCTABar';
 import { EmbeddedSurveyCTABar } from 'components/ParticipationCTABars/EmbeddedSurveyCTABar';
-import { BudgetingCTABar } from 'components/ParticipationCTABars/BudgetingCTABar';
+import { VotingCTABar } from 'components/ParticipationCTABars/VotingCTABar';
 import { VolunteeringCTABar } from 'components/ParticipationCTABars/VolunteeringCTABar';
 import { PollCTABar } from 'components/ParticipationCTABars/PollCTABar';
 import { DocumentAnnotationCTABar } from 'components/ParticipationCTABars/DocumentAnnotationCTABar';
@@ -316,7 +316,7 @@ const votingConfig: ParticipationMethodConfig = {
   showInputManager: true,
   isMethodLocked: false,
   renderCTABar: (props: CTABarProps) => {
-    return <BudgetingCTABar project={props.project} phases={props.phases} />;
+    return <VotingCTABar project={props.project} phases={props.phases} />;
   },
   postSortingOptions: defaultSortingOptions.filter(
     (option) => option.value !== 'trending' && option.value !== 'popular'

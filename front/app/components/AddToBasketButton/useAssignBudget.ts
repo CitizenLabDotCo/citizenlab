@@ -18,6 +18,9 @@ import eventEmitter from 'utils/eventEmitter';
 import { trackEventByName } from 'utils/analytics';
 import tracks from 'components/AddToBasketButton/tracks';
 
+// constants
+import { BUDGET_EXCEEDED_ERROR_EVENT } from 'components/ParticipationCTABars/VotingCTABar/events';
+
 // typings
 import { BasketIdeaAttributes } from 'api/baskets/types';
 
@@ -28,8 +31,6 @@ interface Props {
   projectId: string;
   ideaId: string;
 }
-
-export const BUDGET_EXCEEDED_ERROR_EVENT = 'budgetExceededError';
 
 const useAssignBudget = ({ projectId, ideaId }: Props) => {
   const [processing, setProcessing] = useState(false);
@@ -59,7 +60,7 @@ const useAssignBudget = ({ projectId, ideaId }: Props) => {
     const participationContextId = participationContext.id;
     const maxBudget = participationContext?.attributes.voting_max_total;
     const ideaBudget = idea?.data.attributes.budget;
-    const basketTotal = basket?.data.attributes.total_budget;
+    const basketTotal = basket?.data.attributes.total_votes;
 
     const done = async () => {
       await timeout(200);
@@ -111,12 +112,9 @@ const useAssignBudget = ({ projectId, ideaId }: Props) => {
 
           await updateBasket({
             id: basket.data.id,
-            user_id: authUser.data.id,
-            participation_context_id: participationContextId,
             participation_context_type: capitalizeParticipationContextType(
               participationContextType
             ),
-            submitted_at: null,
             baskets_ideas_attributes: basketIdeasAttributes,
           });
           done();
@@ -131,7 +129,6 @@ const useAssignBudget = ({ projectId, ideaId }: Props) => {
     } else {
       try {
         await addBasket({
-          user_id: authUser.data.id,
           participation_context_id: participationContextId,
           participation_context_type: capitalizeParticipationContextType(
             participationContextType

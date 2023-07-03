@@ -50,7 +50,7 @@ import validate from './utils/validate';
 import { anyIsDefined } from 'utils/helperUtils';
 
 // typings
-import { CLErrors } from 'typings';
+import { CLErrors, Multiloc } from 'typings';
 
 export interface IParticipationContextConfig {
   participation_method: ParticipationMethod;
@@ -69,6 +69,9 @@ export interface IParticipationContextConfig {
   input_term?: InputTerm;
   voting_min_total?: number | null;
   voting_max_total?: number | null;
+  voting_max_votes_per_idea?: number | null;
+  voting_term_singular_multiloc?: Multiloc | null;
+  voting_term_plural_multiloc?: Multiloc | null;
   survey_service?: TSurveyService | null;
   survey_embed_url?: string | null;
   poll_anonymous?: boolean;
@@ -107,6 +110,7 @@ export interface State extends IParticipationContextConfig {
   noDislikingLimitError: JSX.Element | null;
   minTotalVotesError: string | null;
   maxTotalVotesError: string | null;
+  maxVotesPerOptionError: string | null;
   loaded: boolean;
 }
 
@@ -136,11 +140,15 @@ class ParticipationContext extends PureComponent<
       voting_max_total: null,
       survey_service: null,
       survey_embed_url: null,
+      voting_max_votes_per_idea: null,
       loaded: false,
       noLikingLimitError: null,
       noDislikingLimitError: null,
       minTotalVotesError: null,
       maxTotalVotesError: null,
+      maxVotesPerOptionError: null,
+      voting_term_plural_multiloc: null,
+      voting_term_singular_multiloc: null,
       poll_anonymous: false,
       ideas_order: 'trending',
       input_term: 'idea',
@@ -173,6 +181,9 @@ class ParticipationContext extends PureComponent<
           presentation_mode: newData.presentation_mode,
           voting_min_total: newData.voting_min_total,
           voting_max_total: newData.voting_max_total,
+          voting_max_votes_per_idea: newData.voting_max_votes_per_idea,
+          voting_term_plural_multiloc: newData.voting_term_plural_multiloc,
+          voting_term_singular_multiloc: newData.voting_term_singular_multiloc,
           survey_embed_url: newData.survey_embed_url,
           survey_service: newData.survey_service,
           poll_anonymous: newData.poll_anonymous,
@@ -244,7 +255,8 @@ class ParticipationContext extends PureComponent<
       survey_service: survey ? 'typeform' : null,
       document_annotation_embed_url: null,
       voting_min_total: voting ? 0 : null,
-      voting_max_total: voting ? 1000 : null,
+      voting_max_total: voting ? 100 : null,
+      voting_max_votes_per_idea: voting ? 1 : null,
       ideas_order: ideation ? getDefaultSortMethodFallback(ideation) : null,
     });
   };
@@ -353,6 +365,26 @@ class ParticipationContext extends PureComponent<
     });
   };
 
+  handleVotingMaxPerIdeaChange = (newVotingMaxPerIdeaTotal: string) => {
+    const voting_max_votes_per_idea = parseInt(newVotingMaxPerIdeaTotal, 10);
+    this.setState({
+      voting_max_votes_per_idea,
+      maxVotesPerOptionError: null,
+    });
+  };
+
+  handleVoteTermPluralChange = (voting_term_plural_multiloc: Multiloc) => {
+    this.setState({
+      voting_term_plural_multiloc,
+    });
+  };
+
+  handleVoteTermSingularChange = (voting_term_singular_multiloc: Multiloc) => {
+    this.setState({
+      voting_term_singular_multiloc,
+    });
+  };
+
   handleInputTermChange = (option: IOption) => {
     const input_term: InputTerm = option.value;
 
@@ -375,6 +407,7 @@ class ParticipationContext extends PureComponent<
       noDislikingLimitError,
       minTotalVotesError,
       maxTotalVotesError,
+      maxVotesPerOptionError,
       isValidated,
     } = validate(this.state, formatMessage);
 
@@ -383,6 +416,7 @@ class ParticipationContext extends PureComponent<
       noDislikingLimitError,
       minTotalVotesError,
       maxTotalVotesError,
+      maxVotesPerOptionError,
     });
 
     return isValidated;
@@ -417,9 +451,12 @@ class ParticipationContext extends PureComponent<
       reacting_dislike_limited_max,
       reacting_dislike_enabled,
       allow_anonymous_participation,
+      voting_term_plural_multiloc,
+      voting_term_singular_multiloc,
       voting_method,
       voting_min_total,
       voting_max_total,
+      voting_max_votes_per_idea,
       survey_embed_url,
       document_annotation_embed_url,
       survey_service,
@@ -428,6 +465,7 @@ class ParticipationContext extends PureComponent<
       noDislikingLimitError,
       minTotalVotesError,
       maxTotalVotesError,
+      maxVotesPerOptionError,
       poll_anonymous,
       presentation_mode,
       ideas_order,
@@ -475,13 +513,22 @@ class ParticipationContext extends PureComponent<
                 commenting_enabled={commenting_enabled}
                 minTotalVotesError={minTotalVotesError}
                 maxTotalVotesError={maxTotalVotesError}
+                maxVotesPerOptionError={maxVotesPerOptionError}
                 handleVotingMinTotalChange={this.handleVotingMinTotalChange}
                 handleVotingMaxTotalChange={this.handleVotingMaxTotalChange}
+                handleVoteTermPluralChange={this.handleVoteTermPluralChange}
+                handleVoteTermSingularChange={this.handleVoteTermSingularChange}
                 toggleCommentingEnabled={this.toggleCommentingEnabled}
                 apiErrors={apiErrors}
                 presentation_mode={presentation_mode}
                 handleIdeasDisplayChange={this.handleIdeasDisplayChange}
                 handleVotingMethodOnChange={this.handleVotingMethodOnChange}
+                voting_max_votes_per_idea={voting_max_votes_per_idea}
+                voting_term_plural_multiloc={voting_term_plural_multiloc}
+                voting_term_singular_multiloc={voting_term_singular_multiloc}
+                handleMaxVotesPerOptionAmountChange={
+                  this.handleVotingMaxPerIdeaChange
+                }
               />
             )}
 

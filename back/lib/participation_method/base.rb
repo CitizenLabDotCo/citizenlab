@@ -41,6 +41,14 @@ module ParticipationMethod
       false
     end
 
+    def author_in_form?(_user)
+      false
+    end
+
+    def budget_in_form?(_user)
+      false
+    end
+
     def allowed_ideas_orders
       []
     end
@@ -111,10 +119,6 @@ module ParticipationMethod
 
     def include_data_in_email?
       true
-    end
-
-    def include_author_budget_in_schema?
-      false
     end
 
     def supports_answer_visible_to?

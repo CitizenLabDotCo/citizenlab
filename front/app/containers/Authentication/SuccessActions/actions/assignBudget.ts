@@ -12,7 +12,6 @@ import { isNil, capitalizeParticipationContextType } from 'utils/helperUtils';
 import streams from 'utils/streams';
 
 // typings
-import { IUserData } from 'api/users/types';
 import { IParticipationContextType } from 'typings';
 
 export interface AssignBudgetParams {
@@ -29,7 +28,7 @@ export const assignBudget =
     participationContextType,
     basket,
   }: AssignBudgetParams) =>
-  async (authUser: IUserData) => {
+  async () => {
     if (!isNil(basket)) {
       const basketIdeaIds = basket.relationships.ideas.data.map(
         (idea) => idea.id
@@ -58,13 +57,8 @@ export const assignBudget =
 
         await updateBasket({
           id: basket.id,
-          user_id: authUser.id,
-          participation_context_id: participationContextId,
-          participation_context_type: capitalizeParticipationContextType(
-            participationContextType
-          ),
           baskets_ideas_attributes: basketIdeasAttributes,
-          submitted_at: null,
+          submitted: false,
         });
         isInBasket
           ? trackEventByName(tracks.ideaRemovedFromBasket)
@@ -74,7 +68,6 @@ export const assignBudget =
       }
     } else {
       await addBasket({
-        user_id: authUser.id,
         participation_context_id: participationContextId,
         participation_context_type: capitalizeParticipationContextType(
           participationContextType

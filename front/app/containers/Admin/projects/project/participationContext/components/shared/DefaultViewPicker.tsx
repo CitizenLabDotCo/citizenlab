@@ -6,7 +6,7 @@ import Error from 'components/UI/Error';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import messages from '../../../messages';
 
 // typings
@@ -16,16 +16,18 @@ interface Props {
   presentation_mode: 'card' | 'map' | null | undefined;
   apiErrors: ApiErrors;
   handleIdeasDisplayChange: (presentation_mode: 'map' | 'card') => void;
+  title?: MessageDescriptor;
 }
 
 export default ({
   presentation_mode,
   apiErrors,
   handleIdeasDisplayChange,
+  title,
 }: Props) => (
   <SectionField>
     <SubSectionTitle>
-      <FormattedMessage {...messages.inputsDefaultView} />
+      <FormattedMessage {...(title || messages.inputsDefaultView)} />
       <IconTooltip
         content={<FormattedMessage {...messages.inputsDefaultViewTooltip} />}
       />

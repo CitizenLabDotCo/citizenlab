@@ -15,28 +15,34 @@ import useUpdateBasket from 'api/baskets/useUpdateBasket';
 import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
 import { IPhaseData } from 'api/phases/types';
 
-// types
-import { BUDGET_EXCEEDED_ERROR_EVENT } from 'components/AddToBasketButton/useAssignBudget';
+// events
+import { BUDGET_EXCEEDED_ERROR_EVENT } from 'components/ParticipationCTABars/VotingCTABar/events';
 
 // utils
 import {
   CTABarProps,
   hasProjectEndedOrIsArchived,
 } from 'components/ParticipationCTABars/utils';
-import moment from 'moment';
 import { isNilOrError } from 'utils/helperUtils';
 import eventEmitter from 'utils/eventEmitter';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
+import {
+  VOTES_EXCEEDED_ERROR_EVENT,
+  VOTES_PER_OPTION_EXCEEDED_ERROR_EVENT,
+} from 'components/AssignMultipleVotesControl';
+import useLocale from 'hooks/useLocale';
 
-export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
+export const VotingCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
+  const locale = useLocale();
   const { formatMessage } = useIntl();
   const { data: appConfig } = useAppConfiguration();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
-  const [showBudgetExceededError, setShowBudgetExceededError] = useState(false);
+  const [showError, setShowError] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   let basketId: string | undefined;
 
   if (currentPhase) {
@@ -52,12 +58,42 @@ export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
     const subscription = eventEmitter
       .observeEvent(BUDGET_EXCEEDED_ERROR_EVENT)
       .subscribe(() => {
-        setShowBudgetExceededError(true);
+        setError(formatMessage(messages.budgetExceededError));
+        setShowError(true);
       });
+
     return () => {
       subscription.unsubscribe();
     };
-  }, [setShowBudgetExceededError]);
+  }, [formatMessage]);
+
+  // Listen for voting per option exceeded error
+  useEffect(() => {
+    const subscription = eventEmitter
+      .observeEvent(VOTES_PER_OPTION_EXCEEDED_ERROR_EVENT)
+      .subscribe(() => {
+        setError(formatMessage(messages.votesPerOptionExceededError));
+        setShowError(true);
+      });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [formatMessage]);
+
+  // Listen for voting exceeded error
+  useEffect(() => {
+    const subscription = eventEmitter
+      .observeEvent(VOTES_EXCEEDED_ERROR_EVENT)
+      .subscribe(() => {
+        setError(formatMessage(messages.votesExceededError));
+        setShowError(true);
+      });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [formatMessage]);
 
   useEffect(() => {
     setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
@@ -67,7 +103,7 @@ export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
   }
 
   const submittedAt = basket?.data.attributes.submitted_at || null;
-  const spentBudget = basket?.data.attributes.total_budget || 0;
+  const spentBudget = basket?.data.attributes.total_votes || 0;
   const hasUserParticipated = !!submittedAt && spentBudget > 0;
 
   const budgetExceedsLimit =
@@ -86,11 +122,29 @@ export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
   const minBudgetReached = spentBudget >= minBudget;
   const minBudgetRequiredNotReached = minBudgetRequired && !minBudgetReached;
 
-  const handleSubmitExpensesOnClick = async () => {
+  if (isNilOrError(locale)) {
+    return null;
+  }
+
+  const handleSubmitOnClick = async () => {
     if (!isNilOrError(basket)) {
-      const now = moment().format();
-      updateBasket({ id: basket.data.id, submitted_at: now });
+      updateBasket({
+        id: basket.data.id,
+        submitted: true,
+        participation_context_type: currentPhase ? 'Phase' : 'Project',
+      });
     }
+  };
+
+  const getVoteTerm = () => {
+    if (currentPhase && currentPhase.attributes.voting_term_plural_multiloc) {
+      return currentPhase?.attributes?.voting_term_plural_multiloc[locale];
+    } else if (project.attributes.voting_term_plural_multiloc) {
+      return project.attributes.voting_term_plural_multiloc[
+        locale
+      ]?.toLowerCase();
+    }
+    return null;
   };
 
   const CTAButton = hasUserParticipated ? (
@@ -105,7 +159,7 @@ export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
       icon={hasUserParticipated ? 'check' : 'vote-ballot'}
       buttonStyle="secondary"
       iconColor={theme.colors.tenantText}
-      onClick={handleSubmitExpensesOnClick}
+      onClick={handleSubmitOnClick}
       fontWeight="500"
       bgColor={theme.colors.white}
       textColor={theme.colors.tenantText}
@@ -129,23 +183,36 @@ export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
         CTAButton={CTAButton}
         hasUserParticipated={hasUserParticipated}
         participationState={
-          <Text color="white" m="0px" fontSize="s" my="0px" textAlign="left">
-            {(
-              maxBudget - (basket?.data.attributes.total_budget || 0)
-            ).toLocaleString()}{' '}
-            / {maxBudget.toLocaleString()}{' '}
-            {appConfig?.data.attributes.settings.core.currency}{' '}
-            {formatMessage(messages.left)}
-          </Text>
+          hasUserParticipated ? undefined : (
+            <Text
+              color="white"
+              m="0px"
+              fontSize="s"
+              my="0px"
+              textAlign="left"
+              aria-live="polite"
+            >
+              {(
+                maxBudget - (basket?.data.attributes.total_votes || 0)
+              ).toLocaleString()}{' '}
+              / {maxBudget.toLocaleString()}{' '}
+              {getVoteTerm() ||
+                appConfig?.data.attributes.settings.core.currency}{' '}
+              {formatMessage(messages.left)}
+            </Text>
+          )
         }
         hideDefaultParticipationMessage={currentPhase ? true : false}
         timeLeftPosition="left"
       />
-      <ErrorToast
-        errorMessage={formatMessage(messages.budgetExceededError)}
-        showError={showBudgetExceededError}
-        onClose={() => setShowBudgetExceededError(false)}
-      />
+      <Box hidden={!showError}>
+        <ErrorToast
+          errorMessage={error || ''}
+          showError={showError}
+          onClose={() => setShowError(false)}
+          aria-live="polite"
+        />
+      </Box>
     </>
   );
 };

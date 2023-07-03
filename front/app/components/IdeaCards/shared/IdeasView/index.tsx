@@ -64,6 +64,7 @@ const IdeasView = ({
           hideImagePlaceholder={hideImagePlaceholder}
           hideIdeaStatus={hideIdeaStatus}
           goBackMode={goBackMode}
+          phaseId={phaseId}
         />
       )}
       {/*

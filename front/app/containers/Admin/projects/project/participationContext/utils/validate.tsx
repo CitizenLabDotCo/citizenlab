@@ -15,6 +15,7 @@ export default (state: State, formatMessage: FormatMessage) => {
     voting_method,
     voting_min_total,
     voting_max_total,
+    voting_max_votes_per_idea,
   } = state;
 
   let isValidated = true;
@@ -22,6 +23,16 @@ export default (state: State, formatMessage: FormatMessage) => {
   let noDislikingLimitError: JSX.Element | null = null;
   let minTotalVotesError: string | null = null;
   let maxTotalVotesError: string | null = null;
+  let maxVotesPerOptionError: string | null = null;
+
+  if (
+    voting_max_votes_per_idea &&
+    voting_max_total &&
+    voting_max_votes_per_idea > voting_max_total
+  ) {
+    maxVotesPerOptionError = formatMessage(messages.maxVotesPerOptionError);
+    isValidated = false;
+  }
 
   if (
     reacting_like_method === 'limited' &&
@@ -66,6 +77,24 @@ export default (state: State, formatMessage: FormatMessage) => {
       isValidated = false;
     }
 
+    if (isNaN(voting_max_votes_per_idea)) {
+      maxVotesPerOptionError =
+        voting_method === 'multiple_voting'
+          ? formatMessage(messages.maxBudgetRequired)
+          : formatMessage(messages.maxVotesRequired);
+
+      isValidated = false;
+    }
+
+    if (voting_max_votes_per_idea && voting_max_total) {
+      if (voting_max_votes_per_idea > voting_max_total) {
+        maxVotesPerOptionError = formatMessage(
+          messages.maxVotesPerOptionErrorText
+        );
+        isValidated = false;
+      }
+    }
+
     if (
       // need to check for typeof, because if voting_min_total
       // is 0, just checking voting_min_total will coerce to false
@@ -87,6 +116,7 @@ export default (state: State, formatMessage: FormatMessage) => {
     noDislikingLimitError,
     minTotalVotesError,
     maxTotalVotesError,
+    maxVotesPerOptionError,
     isValidated,
   };
 };

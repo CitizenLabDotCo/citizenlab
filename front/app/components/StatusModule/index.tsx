@@ -10,11 +10,12 @@ import {
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import ConfettiSvg from './ConfettiSvg';
+import Warning from 'components/UI/Warning';
 
 // api
 import { VotingMethod } from 'services/participationContexts';
 import { useTheme } from 'styled-components';
-import { useIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 import useBasket from 'api/baskets/useBasket';
@@ -24,10 +25,10 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 // utils
 import { getVotingMethodConfig } from 'utils/votingMethodUtils/votingMethodUtils';
 import { pastPresentOrFuture, toFullMonth } from 'utils/dateUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 // intl
 import messages from './messages';
-import { isNilOrError } from 'utils/helperUtils';
 
 type StatusModuleProps = {
   votingMethod?: VotingMethod | null;
@@ -37,11 +38,13 @@ type StatusModuleProps = {
 
 const unsubmitBasket = async (
   basketId: string,
-  updateBasket: ReturnType<typeof useUpdateBasket>['mutate']
+  updateBasket: ReturnType<typeof useUpdateBasket>['mutate'],
+  participation_context_type: 'Phase' | 'Project'
 ) => {
   updateBasket({
     id: basketId,
-    submitted_at: null,
+    submitted: false,
+    participation_context_type,
   });
 };
 
@@ -66,7 +69,7 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
     ? 'hasSubmitted'
     : 'hasNotSubmitted';
   const showDate = !phaseHasEnded && basketStatus === 'hasNotSubmitted';
-  const budgetCount =
+  const basketCount =
     phase?.attributes.baskets_count || project?.attributes.baskets_count;
 
   return (
@@ -109,15 +112,15 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
             </Text>
           )}
         </>
-        {!isNilOrError(budgetCount) && budgetCount > 0 && (
+        {!isNilOrError(basketCount) && basketCount > 0 && (
           <>
             <Text m="0px" fontSize="xxxxl" style={{ fontWeight: '700' }}>
-              {budgetCount}
+              {basketCount}
             </Text>
             <Text m="0px">
               {config?.getStatusSubmissionCountCopy &&
                 formatMessage(
-                  config?.getStatusSubmissionCountCopy(budgetCount)
+                  config?.getStatusSubmissionCountCopy(basketCount)
                 )}
             </Text>
           </>
@@ -132,7 +135,11 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
               icon="edit"
               mt="16px"
               onClick={() => {
-                unsubmitBasket(basket?.data.id, updateBasket);
+                unsubmitBasket(
+                  basket?.data.id,
+                  updateBasket,
+                  phase ? 'Phase' : 'Project'
+                );
               }}
             >
               {formatMessage(messages.modifyYour)}{' '}
@@ -144,6 +151,21 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
           </Box>
         )}
       </Box>
+      {basketStatus !== 'hasSubmitted' && !phaseHasEnded && (
+        <Box mb="16px">
+          <Warning>
+            <FormattedMessage
+              values={{
+                b: (chunks) => (
+                  <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+                ),
+              }}
+              {...(config?.preSubmissionWarning &&
+                config.preSubmissionWarning())}
+            />
+          </Warning>
+        </Box>
+      )}
     </Box>
   );
 };

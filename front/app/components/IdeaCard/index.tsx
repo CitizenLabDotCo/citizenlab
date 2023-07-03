@@ -8,6 +8,7 @@ import Avatar from 'components/Avatar';
 import IdeaCardFooter from './IdeaCardFooter';
 import FooterWithReactionControl from './FooterWithReactionControl';
 import AddToBasketButton from 'components/AddToBasketButton';
+import AssignMultipleVotesControl from 'components/AssignMultipleVotesControl';
 
 // router
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
@@ -25,6 +26,7 @@ import useIdeaImage from 'api/idea_images/useIdeaImage';
 import useProjectById from 'api/projects/useProjectById';
 import useLocalize from 'hooks/useLocalize';
 import usePhases from 'api/phases/usePhases';
+import usePhase from 'api/phases/usePhase';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -120,6 +122,7 @@ interface Props {
   hideIdeaStatus?: boolean;
   hideBody?: boolean;
   goBackMode?: 'browserGoBackButton' | 'goToProject';
+  viewingPhaseId?: string | null;
 }
 
 const IdeaLoading = (props: Props) => {
@@ -146,6 +149,7 @@ const CompactIdeaCard = memo<IdeaCardProps>(
     hideIdeaStatus = false,
     hideBody = false,
     goBackMode = 'browserGoBackButton',
+    viewingPhaseId,
   }) => {
     const smallerThanPhone = useBreakpoint('phone');
     const locale = useLocale();
@@ -153,6 +157,7 @@ const CompactIdeaCard = memo<IdeaCardProps>(
     const { data: project } = useProjectById(
       idea.data.relationships.project.data.id
     );
+    const { data: viewingPhase } = usePhase(viewingPhaseId);
     const { data: phases } = usePhases(project?.data.id);
     const { data: ideaImage } = useIdeaImage(
       idea.data.id,
@@ -174,7 +179,22 @@ const CompactIdeaCard = memo<IdeaCardProps>(
       if (project) {
         const projectId = idea.data.relationships.project.data.id;
         const ideaBudget = idea.data.attributes.budget;
-        if (participationMethod === 'voting' && ideaBudget) {
+
+        const showMultipleVoteControl =
+          viewingPhase?.data.attributes.participation_method === 'voting' &&
+          viewingPhase?.data.attributes.voting_method === 'multiple_voting' &&
+          ideaBudget;
+
+        const showBudgetControl =
+          viewingPhase?.data.attributes.participation_method === 'voting' &&
+          viewingPhase?.data.attributes.voting_method === 'budgeting' &&
+          ideaBudget;
+        if (
+          showBudgetControl ||
+          (participationMethod === 'voting' &&
+            votingMethod === 'budgeting' &&
+            ideaBudget)
+        ) {
           return (
             <Box display="flex" alignItems="center">
               <Box w="100%" className="e2e-assign-budget">
@@ -186,9 +206,24 @@ const CompactIdeaCard = memo<IdeaCardProps>(
             </Box>
           );
         }
+        if (
+          showMultipleVoteControl ||
+          (participationMethod === 'voting' &&
+            votingMethod === 'multiple_voting')
+        ) {
+          return (
+            <Box display="flex" alignItems="center">
+              <AssignMultipleVotesControl
+                projectId={projectId}
+                ideaId={idea.data.id}
+              />
+            </Box>
+          );
+        }
       }
       return null;
     };
+
     const votingMethod =
       currentPhase?.attributes.voting_method ||
       project?.data.attributes.voting_method;
@@ -204,7 +239,7 @@ const CompactIdeaCard = memo<IdeaCardProps>(
         // e.g. /ideas index page because there's no participationMethod
         // passed through to the IdeaCards from there.
         // Should probably have better solution in future.
-        if (participationMethod === 'voting' && votingMethod === 'budgeting') {
+        if (participationMethod === 'voting') {
           return (
             <IdeaCardFooter idea={idea} showCommentCount={showCommentCount} />
           );

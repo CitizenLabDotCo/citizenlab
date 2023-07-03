@@ -153,10 +153,7 @@ const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
   if (!isNilOrError(project) && selectedPhase) {
     const selectedPhaseId = selectedPhase.id;
     const participationMethod = selectedPhase.attributes.participation_method;
-
-    const isPBPhase =
-      participationMethod === 'voting' &&
-      selectedPhase.attributes.voting_method === 'budgeting';
+    const isVotingPhase = participationMethod === 'voting';
 
     return (
       <Container className={`${className || ''} e2e-project-process-page`}>
@@ -174,12 +171,15 @@ const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
                 selectedPhase={selectedPhase}
                 setSelectedPhase={handleSetSelectedPhase}
               />
-              {isPBPhase && (
+              {isVotingPhase && (
                 <>
                   <StatusModule
                     phase={selectedPhase}
                     project={project.data}
-                    votingMethod={selectedPhase?.attributes.voting_method}
+                    votingMethod={
+                      selectedPhase?.attributes.voting_method ||
+                      project?.data.attributes.voting_method
+                    }
                   />
                 </>
               )}

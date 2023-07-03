@@ -11,11 +11,7 @@ import { IIdea } from 'api/ideas/types';
 
 // styles
 import styled from 'styled-components';
-import {
-  Button,
-  colors,
-  useBreakpoint,
-} from '@citizenlab/cl2-component-library';
+import { Button, colors } from '@citizenlab/cl2-component-library';
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -34,7 +30,6 @@ interface Props {
 
 const IdeaCardFooter = ({ idea, showCommentCount }: Props) => {
   const { formatMessage } = useIntl();
-  const isSmallerThanTablet = useBreakpoint('tablet');
 
   const onReadMoreClick = (event: FormEvent) => {
     event.preventDefault();
@@ -43,20 +38,18 @@ const IdeaCardFooter = ({ idea, showCommentCount }: Props) => {
 
   return (
     <Footer>
-      {isSmallerThanTablet && (
-        <Button
-          size="s"
-          textColor={colors.blue400}
-          mr="8px"
-          ml="auto"
-          m="0px"
-          p="0px"
-          buttonStyle="text"
-          onClick={onReadMoreClick}
-        >
-          <u>{formatMessage(messages.readMore)}</u>
-        </Button>
-      )}
+      <Button
+        size="s"
+        textColor={colors.blue400}
+        mr="8px"
+        ml="auto"
+        m="0px"
+        p="0px"
+        buttonStyle="text"
+        onClick={onReadMoreClick}
+      >
+        <u>{formatMessage(messages.readMore)}</u>
+      </Button>
       {showCommentCount && (
         <CommentCount commentCount={idea.data.attributes.comments_count} />
       )}

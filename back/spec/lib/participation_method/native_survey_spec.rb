@@ -93,6 +93,19 @@ RSpec.describe ParticipationMethod::NativeSurvey do
     end
   end
 
+  describe '#author_in_form?' do
+    it 'returns false for a moderator when idea_author_change is activated' do
+      SettingsService.new.activate_feature! 'idea_author_change'
+      expect(participation_method.author_in_form?(create(:admin))).to be false
+    end
+  end
+
+  describe '#budget_in_form?' do
+    it 'returns false for a moderator' do
+      expect(participation_method.budget_in_form?(create(:admin))).to be false
+    end
+  end
+
   describe '#assign_defaults' do
     context 'when the proposed idea status is available' do
       let!(:proposed) { create(:idea_status_proposed) }
