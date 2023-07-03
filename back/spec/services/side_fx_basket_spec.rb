@@ -15,37 +15,47 @@ describe SideFxBasketService do
     context 'ideas in submitted baskets' do
       before do
         basket.update!(ideas: ideas, submitted_at: Time.zone.now)
+        basket.baskets_ideas.update_all(votes: 10)
         service.after_update basket, user
       end
 
-      it "updates 'baskets_count' for the idea, idea_phase, current_phase and project" do
+      it "updates 'baskets_count' & 'votes_count' for the idea, idea_phase, current_phase and project" do
         expect(ideas[0].reload.baskets_count).to eq 1
         expect(ideas[1].reload.baskets_count).to eq 1
+        expect(ideas[0].reload.votes_count).to eq 10
+        expect(ideas[1].reload.votes_count).to eq 10
         expect(ideas[0].ideas_phases[0].reload.baskets_count).to eq 0
         expect(ideas[1].ideas_phases[0].reload.baskets_count).to eq 0
         expect(ideas[0].ideas_phases[1].reload.baskets_count).to eq 1
         expect(ideas[1].ideas_phases[1].reload.baskets_count).to eq 1
+        expect(ideas[0].ideas_phases[1].reload.votes_count).to eq 10
+        expect(ideas[1].ideas_phases[1].reload.votes_count).to eq 10
         expect(current_phase.reload.baskets_count).to eq 1
-        expect(project.reload.baskets_count).to eq 1
+        expect(current_phase.reload.votes_count).to eq 20
+        expect(project.reload.votes_count).to eq 20
       end
 
-      it "reduces the 'baskets_count' when the basket is deleted" do
+      it "reduces the 'baskets_count' and 'votes_count' when the basket is deleted" do
         basket.destroy!
         service.after_destroy basket, user
 
         expect(ideas[0].reload.baskets_count).to eq 0
         expect(ideas[1].reload.baskets_count).to eq 0
+        expect(ideas[0].reload.votes_count).to eq 0
+        expect(ideas[1].reload.votes_count).to eq 0
         expect(ideas[0].ideas_phases[0].reload.baskets_count).to eq 0
         expect(ideas[1].ideas_phases[0].reload.baskets_count).to eq 0
         expect(ideas[0].ideas_phases[1].reload.baskets_count).to eq 0
         expect(ideas[1].ideas_phases[1].reload.baskets_count).to eq 0
+        expect(ideas[0].ideas_phases[1].reload.votes_count).to eq 0
+        expect(ideas[1].ideas_phases[1].reload.votes_count).to eq 0
         expect(current_phase.reload.baskets_count).to eq 0
         expect(project.reload.baskets_count).to eq 0
       end
     end
 
     context 'ideas in unsubmitted baskets' do
-      it "Does not update 'baskets_count' for the idea, idea_phase, phase and project" do
+      it "Does not update 'baskets_count' or 'votes_count' for the idea, idea_phase, phase and project" do
         basket.update!(ideas: ideas)
         service.after_update basket, user
         expect(ideas[0].reload.baskets_count).to eq 0
@@ -55,7 +65,9 @@ describe SideFxBasketService do
         expect(ideas[0].ideas_phases[1].reload.baskets_count).to eq 0
         expect(ideas[1].ideas_phases[1].reload.baskets_count).to eq 0
         expect(current_phase.reload.baskets_count).to eq 0
+        expect(current_phase.reload.votes_count).to eq 0
         expect(project.reload.baskets_count).to eq 0
+        expect(project.reload.votes_count).to eq 0
       end
     end
   end
@@ -66,36 +78,55 @@ describe SideFxBasketService do
     let(:ideas) { create_list(:idea, 2, project: project) }
 
     context 'ideas in submitted baskets' do
-      it "updates 'baskets_count' for the idea and project" do
-        basket.update!(ideas: ideas, submitted_at: Time.zone.now)
-        service.after_update basket, user
-        expect(ideas[0].reload.baskets_count).to eq 1
-        expect(ideas[1].reload.baskets_count).to eq 1
-        expect(project.reload.baskets_count).to eq 1
+      before do
+        basket.baskets_ideas.update_all(votes: 5)
       end
 
-      it "reduces 'baskets_count' when the basket is unsubmitted" do
+      it "updates 'baskets_count' and 'votes_count' for the idea and project" do
         basket.update!(ideas: ideas, submitted_at: Time.zone.now)
+        basket.baskets_ideas.update_all(votes: 5)
         service.after_update basket, user
         expect(ideas[0].reload.baskets_count).to eq 1
         expect(ideas[1].reload.baskets_count).to eq 1
+        expect(ideas[0].reload.votes_count).to eq 5
+        expect(ideas[1].reload.votes_count).to eq 5
         expect(project.reload.baskets_count).to eq 1
+        expect(project.reload.votes_count).to eq 10
+      end
+
+      it "reduces 'baskets_count' and 'votes_count' when the basket is unsubmitted" do
+        basket.update!(ideas: ideas, submitted_at: Time.zone.now)
+        basket.baskets_ideas.update_all(votes: 3)
+        service.after_update basket, user
+        expect(ideas[0].reload.baskets_count).to eq 1
+        expect(ideas[1].reload.baskets_count).to eq 1
+        expect(ideas[0].reload.votes_count).to eq 3
+        expect(ideas[1].reload.votes_count).to eq 3
+        expect(project.reload.baskets_count).to eq 1
+        expect(project.reload.votes_count).to eq 6
 
         basket.update!(ideas: ideas, submitted_at: nil)
         service.after_update basket, user
         expect(ideas[0].reload.baskets_count).to eq 0
         expect(ideas[1].reload.baskets_count).to eq 0
+        expect(ideas[0].reload.votes_count).to eq 0
+        expect(ideas[1].reload.votes_count).to eq 0
         expect(project.reload.baskets_count).to eq 0
+        expect(project.reload.votes_count).to eq 0
       end
     end
 
     context 'ideas in unsubmitted baskets' do
-      it "does not update 'baskets_count' for the idea and project" do
+      it "does not update 'baskets_count' or 'votes_count' for the idea and project" do
         basket.update!(ideas: ideas)
+        basket.baskets_ideas.update_all(votes: 3)
         service.after_update basket, user
         expect(ideas[0].reload.baskets_count).to eq 0
         expect(ideas[1].reload.baskets_count).to eq 0
+        expect(ideas[0].reload.votes_count).to eq 0
+        expect(ideas[1].reload.votes_count).to eq 0
         expect(project.reload.baskets_count).to eq 0
+        expect(project.reload.votes_count).to eq 0
       end
     end
   end
@@ -105,22 +136,29 @@ describe SideFxBasketService do
     let(:ideas) { create_list(:idea, 2, project: project) }
 
     context 'ideas in submitted baskets' do
-      it "updates 'baskets_count' for the idea and project" do
+      it "updates 'baskets_count' and 'votes_count' for the idea and project" do
         basket = create(:basket, participation_context: project, ideas: ideas, submitted_at: Time.zone.now)
+        basket.baskets_ideas.update_all(votes: 4)
         service.after_create basket, user
         expect(ideas[0].reload.baskets_count).to eq 1
         expect(ideas[1].reload.baskets_count).to eq 1
+        expect(ideas[0].reload.votes_count).to eq 4
+        expect(ideas[1].reload.votes_count).to eq 4
         expect(project.reload.baskets_count).to eq 1
+        expect(project.reload.votes_count).to eq 8
       end
     end
 
     context 'ideas in unsubmitted baskets' do
-      it "does not update 'baskets_count' for the idea and project" do
+      it "does not update 'baskets_count' or 'votes_count' for the idea and project" do
         basket = create(:basket, participation_context: project, ideas: ideas, submitted_at: nil)
         service.after_create basket, user
         expect(ideas[0].reload.baskets_count).to eq 0
         expect(ideas[1].reload.baskets_count).to eq 0
+        expect(ideas[0].reload.votes_count).to eq 0
+        expect(ideas[1].reload.votes_count).to eq 0
         expect(project.reload.baskets_count).to eq 0
+        expect(project.reload.votes_count).to eq 0
       end
     end
   end
