@@ -26,7 +26,7 @@ const OfficialFeedbackOnYourIdeaNotification = memo<Props>((props) => {
   const { data: idea } = useIdeaBySlug(notification.attributes.post_slug);
   const projectId = !isNilOrError(idea)
     ? idea.data.relationships.project.data.id
-    : null;
+    : undefined;
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
 
