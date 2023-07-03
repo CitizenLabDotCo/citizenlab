@@ -25,6 +25,7 @@ import {
 } from 'components/ParticipationCTABars/utils';
 import { isNilOrError } from 'utils/helperUtils';
 import eventEmitter from 'utils/eventEmitter';
+import { getVotingMethodConfig } from 'utils/votingMethodUtils/votingMethodUtils';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -137,6 +138,13 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
   };
 
   const getVoteTerm = () => {
+    const voteConfig = getVotingMethodConfig(
+      currentPhase?.attributes?.voting_method ||
+        project.attributes.voting_method
+    );
+    if (!voteConfig?.useVoteTerm) {
+      return null;
+    }
     if (currentPhase && currentPhase.attributes.voting_term_plural_multiloc) {
       return currentPhase?.attributes?.voting_term_plural_multiloc[locale];
     } else if (project.attributes.voting_term_plural_multiloc) {

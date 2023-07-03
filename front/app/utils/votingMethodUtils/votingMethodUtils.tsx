@@ -26,6 +26,7 @@ import { toFullMonth } from 'utils/dateUtils';
   - getStatusSubmissionCountCopy: Returns copy related to the submission count
   - getSubmissionTerm: Returns the submission type in specified form (i.e. singular vs plural)
   - preSubmissionWarning: Returns warning to be displayed before submission is made
+  - useVoteTerm: Returns whether the custom vote term should be used in front office
   */
 
 export type VoteSubmissionState =
@@ -51,6 +52,7 @@ export type VotingMethodConfig = {
   }: GetStatusDescriptionProps) => JSX.Element | null;
   getSubmissionTerm?: (form: 'singular' | 'plural') => MessageDescriptor;
   preSubmissionWarning: () => MessageDescriptor;
+  useVoteTerm: boolean;
 };
 
 const budgetingConfig: VotingMethodConfig = {
@@ -158,6 +160,7 @@ const budgetingConfig: VotingMethodConfig = {
   preSubmissionWarning: () => {
     return messages.budgetingPreSubmissionWarning;
   },
+  useVoteTerm: false,
 };
 
 const multipleVotingConfig: VotingMethodConfig = {
@@ -265,6 +268,7 @@ const multipleVotingConfig: VotingMethodConfig = {
   preSubmissionWarning: () => {
     return messages.votingPreSubmissionWarning;
   },
+  useVoteTerm: true,
 };
 
 const singleVotingConfig: VotingMethodConfig = {
@@ -372,6 +376,7 @@ const singleVotingConfig: VotingMethodConfig = {
   preSubmissionWarning: () => {
     return messages.votingPreSubmissionWarning;
   },
+  useVoteTerm: false,
 };
 
 // Get the configuration object for the given voting method

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 // components
 import {
@@ -28,14 +28,18 @@ type ErrorToastProps = {
 };
 
 const ErrorToast = ({ errorMessage, showError, onClose }: ErrorToastProps) => {
-  const [atPageEnd, setAtPageEnd] = React.useState(false);
+  const atPageEnd = useRef(false);
 
   const handleScroll = () => {
     // Ref: https://stackoverflow.com/questions/63501757/check-if-user-reached-the-bottom-of-the-page-react
     const bottom =
       Math.ceil(window.innerHeight + window.scrollY) >=
       document.documentElement.scrollHeight;
-    bottom ? setAtPageEnd(true) : setAtPageEnd(false);
+    if (bottom) {
+      atPageEnd.current = true;
+    } else {
+      atPageEnd.current = false;
+    }
   };
 
   useEffect(() => {
