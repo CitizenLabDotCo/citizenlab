@@ -67,7 +67,7 @@ export default defineMessages({
     defaultMessage: "You don't have enough budget",
   },
   votesExceededError: {
-    id: 'app.components.ParticipationCTABars.budgetExceededError',
+    id: 'app.components.ParticipationCTABars.votesExceededError',
     defaultMessage: "You don't have enough votes left",
   },
   votesPerOptionExceededError: {
