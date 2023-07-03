@@ -34,8 +34,6 @@ import { IOption, Multiloc } from 'typings';
 // hooks
 import { useLocation } from 'react-router-dom';
 
-export type VotingTerm = { singular: Multiloc; plural: Multiloc };
-
 export interface VotingInputsProps {
   isCustomInputTermEnabled: boolean;
   input_term: InputTerm | undefined;
