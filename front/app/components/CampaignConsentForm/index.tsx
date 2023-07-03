@@ -24,6 +24,7 @@ import { groupCampaignsConsent, sortGroupedCampaignConsents } from './utils';
 // hooks
 import useCampaignConsents from 'api/campaign_consents/useCampaignConsents';
 import useUpdateCampaignConsents from 'api/campaign_consents/useUpdateCampaignConsents';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // typings
 import {
@@ -41,6 +42,8 @@ import { trackEventByName } from 'utils/analytics';
 
 // routing
 import { useSearchParams } from 'react-router-dom';
+import { internalCommentTypes } from 'api/notifications/types';
+import { CampaignName } from 'api/campaigns/types';
 
 type Props = {
   trackEventName?: string;
@@ -51,7 +54,9 @@ const CampaignConsentForm = ({
   runOnSave,
 }: Props) => {
   const localize = useLocalize();
-
+  const isInternalCommentingEnabled = useFeatureFlag({
+    name: 'internal_commenting',
+  });
   const { formatMessage } = useIntl();
   const [searchParams, _] = useSearchParams();
   const unsubscriptionToken = searchParams.get('unsubscription_token');
@@ -76,6 +81,16 @@ const CampaignConsentForm = ({
     if (!isNilOrError(originalCampaignConsents)) {
       const campaignConsentsEntries = originalCampaignConsents.data
         .sort((a, b): number => a.id.localeCompare(b.id))
+        .filter((consent) => {
+          if (
+            (internalCommentTypes as unknown as CampaignName).includes(
+              consent.attributes.campaign_name
+            )
+          ) {
+            return isInternalCommentingEnabled;
+          }
+          return true;
+        })
         .map((consent): [string, CampaignConsent] => [
           consent.id,
           {
@@ -89,7 +104,12 @@ const CampaignConsentForm = ({
         ]);
       setCampaignConsents(Object.fromEntries(campaignConsentsEntries));
     }
-  }, [originalCampaignConsents, localize]);
+  }, [
+    originalCampaignConsents,
+    localize,
+    internalCommentTypes,
+    isInternalCommentingEnabled,
+  ]);
 
   useEffect(() => {
     if (loading && !!showFeedback) {
