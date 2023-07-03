@@ -1,17 +1,17 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
 
-const baseKey = { type: 'rscore' };
+const baseKey = { type: 'reference_distribution' };
 
-const rScoreKeys = {
+const referenceDistributionKeys = {
   all: () => [baseKey],
   items: () => [{ ...baseKey, operation: 'item' }],
-  item: ({ id, projectId }: { id: string; projectId?: string }) => [
+  item: ({ id }: { id: string }) => [
     {
       ...baseKey,
       operation: 'item',
-      parameters: { id, projectId },
+      parameters: { id },
     },
   ],
 } satisfies QueryKeys;
 
-export default rScoreKeys;
+export default referenceDistributionKeys;

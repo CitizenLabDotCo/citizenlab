@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 // hooks
-import useReferenceDistribution from '../../hooks/useReferenceDistribution';
+import useReferenceDistributionData from '../../api/reference_distribution/useReferenceDistributionData';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -51,7 +51,8 @@ const FieldContent = ({
   onSubmit,
 }: Props) => {
   const [binModalOpen, setBinModalOpen] = useState(false);
-  const { referenceDataUploaded } = useReferenceDistribution(userCustomFieldId);
+  const { referenceDataUploaded } =
+    useReferenceDistributionData(userCustomFieldId);
 
   if (referenceDataUploaded === undefined) {
     return null;

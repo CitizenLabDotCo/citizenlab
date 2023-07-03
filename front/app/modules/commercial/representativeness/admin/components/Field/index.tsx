@@ -12,10 +12,10 @@ import {
 
 // hooks
 import useUserCustomFieldOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
-import useReferenceDistribution, {
-  RemoteFormValues,
-} from '../../hooks/useReferenceDistribution';
 import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
+import useReferenceDistributionData, {
+  RemoteFormValues,
+} from '../../api/reference_distribution/useReferenceDistributionData';
 
 // components
 import { Accordion, ListItem } from '@citizenlab/cl2-component-library';
@@ -214,7 +214,7 @@ const FieldWrapper = ({ userCustomFieldId }: Props) => {
   const { data: userCustomFieldOptions } =
     useUserCustomFieldOptions(userCustomFieldId);
   const { referenceDistribution, referenceDataUploaded, remoteFormValues } =
-    useReferenceDistribution(userCustomFieldId);
+    useReferenceDistributionData(userCustomFieldId);
 
   if (
     isNilOrError(userCustomFieldOptions) ||

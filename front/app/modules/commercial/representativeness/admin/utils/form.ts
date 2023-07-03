@@ -8,8 +8,8 @@ import {
   IBinnedDistribution,
   TUploadDistribution,
   Bins,
-} from '../services/referenceDistribution';
-import { RemoteFormValues } from '../hooks/useReferenceDistribution';
+} from '../api/reference_distribution/types';
+import { RemoteFormValues } from '../api/reference_distribution/useReferenceDistributionData';
 
 // EXPORTS
 export type FormValues = Record<string, number | null>;

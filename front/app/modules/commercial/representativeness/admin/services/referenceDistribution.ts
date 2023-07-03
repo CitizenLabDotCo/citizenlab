@@ -60,12 +60,6 @@ export type Bins = (number | null)[];
 
 export type TUploadDistribution = Record<string, number> | IBinnedDistribution;
 
-export function referenceDistributionStream(userCustomFieldId: string) {
-  return streams.get<IReferenceDistribution>({
-    apiEndpoint: getReferenceDistributionEndpoint(userCustomFieldId),
-  });
-}
-
 export async function createReferenceDistribution(
   { id }: IUserCustomFieldData,
   distribution: TUploadDistribution

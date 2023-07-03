@@ -1,18 +1,14 @@
-import { useState, useEffect } from 'react';
-
 // services
 import {
-  referenceDistributionStream,
   TReferenceDistributionData,
-  IReferenceDistribution,
   IBinnedDistribution,
   TCategoricalDistribution,
-} from '../services/referenceDistribution';
+} from './types';
 
 // utils
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
-import { forEachBin } from '../utils/bins';
+import { forEachBin } from '../../utils/bins';
 import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
+import useReferenceDistribution from './useReferenceDistribution';
 
 /*
  * This is an intermediate data structure that is able to represent
@@ -22,47 +18,22 @@ import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
  */
 export type RemoteFormValues = Record<string, number>;
 
-function useReferenceDistribution(userCustomFieldId: string) {
+function useReferenceDistributionData(userCustomFieldId: string) {
   const { data: userCustomField } = useUserCustomField(userCustomFieldId);
-  const [referenceDistribution, setReferenceDistribution] = useState<
-    TReferenceDistributionData | NilOrError
-  >();
+
+  const { data: referenceDistribution } = useReferenceDistribution({
+    id: userCustomFieldId,
+  });
 
   const referenceDataUploaded =
     !!userCustomField?.data.relationships?.current_ref_distribution.data;
-  const [remoteFormValues, setRemoteFormValues] = useState<
-    RemoteFormValues | undefined
-  >();
-
-  useEffect(() => {
-    if (!referenceDataUploaded) {
-      setReferenceDistribution(null);
-      return;
-    }
-
-    const observable =
-      referenceDistributionStream(userCustomFieldId).observable;
-    const subscription = observable.subscribe(
-      (referenceDistribution: IReferenceDistribution | NilOrError) => {
-        if (!isNilOrError(referenceDistribution)) {
-          const distributionData = referenceDistribution.data;
-
-          setReferenceDistribution(distributionData);
-          setRemoteFormValues(getRemoteFormValues(distributionData));
-        } else {
-          setReferenceDistribution(referenceDistribution);
-          setRemoteFormValues(undefined);
-        }
-      }
-    );
-
-    return () => subscription.unsubscribe();
-  }, [userCustomFieldId, referenceDataUploaded]);
 
   return {
-    referenceDistribution,
+    referenceDistribution: referenceDistribution?.data,
     referenceDataUploaded,
-    remoteFormValues,
+    remoteFormValues: referenceDistribution
+      ? getRemoteFormValues(referenceDistribution.data)
+      : undefined,
   };
 }
 
@@ -99,4 +70,4 @@ const convertCategoriesToRemoteFormValues = (
     {}
   );
 
-export default useReferenceDistribution;
+export default useReferenceDistributionData;

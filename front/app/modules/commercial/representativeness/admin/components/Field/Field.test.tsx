@@ -34,7 +34,7 @@ let mockReferenceDistribution: any = {
 };
 
 jest.mock(
-  '../../hooks/useReferenceDistribution',
+  '../../api/reference_distribution/useReferenceDistributionData',
   () => () => mockReferenceDistribution
 );
 
