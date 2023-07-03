@@ -7,13 +7,12 @@ import {
   IconTooltip,
   Input,
   Label,
-  colors,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 // intl
-import messages from '../../messages';
 import { useIntl } from 'utils/cl-intl';
+import messages from './messages';
 
 const StyledLabel = styled(Label)`
   height: 100%;
@@ -37,7 +36,7 @@ const MultiselectSettings = () => {
               <Box pl="4px">
                 <IconTooltip
                   placement="top-start"
-                  content="When turned on, respondents need to select the specified number of answers to proceed."
+                  content={formatMessage(messages.limitNumberAnswersTooltip)}
                 />
               </Box>
             </Box>
@@ -55,7 +54,10 @@ const MultiselectSettings = () => {
           </Box>
           <Box display="flex">
             <Box minWidth="100px" my="auto">
-              <StyledLabel htmlFor="maximumInput" value="Maximum" />
+              <StyledLabel
+                htmlFor="maximumInput"
+                value={formatMessage(messages.maximum)}
+              />
             </Box>
             <Input id="maximumInput" type="number" size="small" />
           </Box>
