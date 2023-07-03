@@ -29,13 +29,22 @@ function compilePath(path, options) {
 /**
  * Public API for matching a URL pathname to a path.
  */
-function matchPath(pathname, options = {} as any) {
-  if (typeof options === 'string' || Array.isArray(options)) {
-    // eslint-disable-next-line no-param-reassign
-    options = { path: options };
+function matchPath(
+  pathname: string,
+  {
+    path,
+    exact,
+  }: {
+    path: string[];
+    exact: boolean;
   }
+) {
+  // if (typeof options === 'string' || Array.isArray(options)) {
+  //   // eslint-disable-next-line no-param-reassign
+  //   options = { path: options };
+  // }
 
-  const { path, exact = false, strict = false, sensitive = false } = options;
+  // const { path, exact = false } = options;
 
   const paths = [].concat(path);
 
@@ -44,8 +53,8 @@ function matchPath(pathname, options = {} as any) {
     if (matched) return matched;
 
     const { regexp, keys } = compilePath(path, {
-      strict,
-      sensitive,
+      strict: false,
+      sensitive: false,
       end: exact,
     });
     const match = regexp.exec(pathname);
@@ -69,8 +78,8 @@ function matchPath(pathname, options = {} as any) {
   }, null);
 }
 
-export function getAllPathsFromRoutes(route) {
-  const res = [] as string[];
+export function getAllPathsFromRoutes(route: RouteConfiguration) {
+  const res: string[] = [];
   function makeRoute(head: string, path: string | undefined) {
     if (path?.startsWith('/')) {
       return path;
