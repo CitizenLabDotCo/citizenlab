@@ -126,7 +126,7 @@ module UserCustomFields
       UserCustomFields::WebApi::V1::UserCustomFieldSerializer.new(...).serializable_hash.to_json
     end
 
-    # Fix the ordering so it is sequential - sometimes some fields get set to the same order position
+    # Fix the ordering so it is sequential - sometimes some fields can get set to the same order position
     def fix_reordering
       fields = CustomField.with_resource_type('User').order(:ordering)
       if fields.pluck(:ordering) != (0..fields.size - 1).to_a
