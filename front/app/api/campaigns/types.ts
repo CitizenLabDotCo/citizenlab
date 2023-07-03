@@ -128,7 +128,7 @@ type AdminModeratorCampaignName =
   | 'your_proposed_initiatives_digest'
   | InternalCommentCampaignName;
 
-type CampaignName =
+export type CampaignName =
   | 'manual'
   | 'invite_received'
   | RegisterUserCampaignName
