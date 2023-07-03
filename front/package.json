@@ -227,7 +227,7 @@
     "resize-observer-polyfill": "^1.5.1",
     "rimraf": "5.0.1",
     "shelljs": "0.8.5",
-    "style-loader": "^3.3.2",
+    "style-loader": "^3.3.3",
     "ts-jest": "^29.1.0",
     "ts-loader": "^9.2.6",
     "ts-prune": "^0.10.1",
