@@ -28,6 +28,7 @@ import messages from './messages';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { isNilOrError } from 'utils/helperUtils';
 import useIdeaById from 'api/ideas/useIdeaById';
+import { isRtl } from 'utils/styleUtils';
 
 export const VOTES_EXCEEDED_ERROR_EVENT = 'votesExceededError';
 export const VOTES_PER_OPTION_EXCEEDED_ERROR_EVENT =
@@ -188,6 +189,7 @@ const AssignMultipleVotesControl = ({ projectId, ideaId }: Props) => {
         display="flex"
         justifyContent="space-between"
         style={{ cursor: 'default' }}
+        flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
       >
         {!basket?.data?.attributes.submitted_at && (
           <Button

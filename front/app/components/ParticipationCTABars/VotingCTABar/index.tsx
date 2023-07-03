@@ -35,6 +35,7 @@ import {
   VOTES_PER_OPTION_EXCEEDED_ERROR_EVENT,
 } from 'components/AssignMultipleVotesControl';
 import useLocale from 'hooks/useLocale';
+import useBasketsIdeas from 'api/baskets_ideas/useBasketsIdeas';
 
 export const VotingCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
@@ -45,7 +46,6 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
   const [showError, setShowError] = useState(false);
   const [error, setError] = useState<string | null>(null);
   let basketId: string | undefined;
-
   if (currentPhase) {
     basketId = currentPhase.relationships.user_basket?.data?.id;
   } else {
@@ -53,6 +53,9 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
   }
   const { data: basket } = useBasket(basketId);
   const { mutate: updateBasket } = useUpdateBasket();
+  const { data: basketsIdeas } = useBasketsIdeas(basket?.data.id);
+
+  console.log({ basketsIdeas });
 
   // Listen for budgeting exceeded error
   useEffect(() => {
