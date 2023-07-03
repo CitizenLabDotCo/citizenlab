@@ -9,7 +9,7 @@ import Row from './Row';
 import { colors, stylingConsts } from 'utils/styleUtils';
 
 // typings
-import { RepresentativenessData } from '../../../hooks/createRefDataSubscription';
+import { RepresentativenessData } from '../../../hooks/parseReferenceData';
 
 interface Props {
   columns: string[];

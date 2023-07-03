@@ -31,6 +31,70 @@ FactoryBot.define do
     association :post, factory: :idea
   end
 
+  factory :internal_comment_on_idea_assigned_to_you,
+    parent: :notification,
+    class: 'Notifications::InternalComments::InternalCommentOnIdeaAssignedToYou' do
+    initiating_user
+    internal_comment
+    association :post, factory: :idea
+  end
+
+  factory :internal_comment_on_idea_you_commented_internally_on,
+    parent: :notification,
+    class: 'Notifications::InternalComments::InternalCommentOnIdeaYouCommentedInternallyOn' do
+    initiating_user
+    internal_comment
+    association :post, factory: :idea
+  end
+
+  factory :internal_comment_on_idea_you_moderate,
+    parent: :notification,
+    class: 'Notifications::InternalComments::InternalCommentOnIdeaYouModerate' do
+    initiating_user
+    internal_comment
+    association :post, factory: :idea
+  end
+
+  factory :internal_comment_on_initiative_assigned_to_you,
+    parent: :notification,
+    class: 'Notifications::InternalComments::InternalCommentOnInitiativeAssignedToYou' do
+    initiating_user
+    internal_comment
+    association :post, factory: :initiative
+  end
+
+  factory :internal_comment_on_initiative_you_commented_internally_on,
+    parent: :notification,
+    class: 'Notifications::InternalComments::InternalCommentOnInitiativeYouCommentedInternallyOn' do
+    initiating_user
+    internal_comment
+    association :post, factory: :initiative
+  end
+
+  factory :internal_comment_on_unassigned_initiative,
+    parent: :notification,
+    class: 'Notifications::InternalComments::InternalCommentOnUnassignedInitiative' do
+    initiating_user
+    internal_comment
+    association :post, factory: :initiative
+  end
+
+  factory :internal_comment_on_unassigned_unmoderated_idea,
+    parent: :notification,
+    class: 'Notifications::InternalComments::InternalCommentOnUnassignedUnmoderatedIdea' do
+    initiating_user
+    internal_comment
+    association :post, factory: :idea
+  end
+
+  factory :internal_comment_on_your_internal_comment,
+    parent: :notification,
+    class: 'Notifications::InternalComments::InternalCommentOnYourInternalComment' do
+    initiating_user
+    internal_comment
+    association :post, factory: :idea
+  end
+
   factory :idea_marked_as_spam, parent: :notification, class: 'Notifications::IdeaMarkedAsSpam' do
     association :post, factory: :idea
     project
@@ -70,6 +134,12 @@ FactoryBot.define do
   factory :mention_in_comment, parent: :notification, class: 'Notifications::MentionInComment' do
     initiating_user
     comment
+    association :post, factory: :idea
+  end
+
+  factory :mention_in_internal_comment, parent: :notification, class: 'Notifications::InternalComments::MentionInInternalComment' do
+    initiating_user
+    internal_comment
     association :post, factory: :idea
   end
 

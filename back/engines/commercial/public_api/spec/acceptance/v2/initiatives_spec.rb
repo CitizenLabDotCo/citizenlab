@@ -36,33 +36,8 @@ resource 'Posts' do
       end
     end
 
-    context "when filtering by 'created_at'" do
-      let(:created_at) { '2022-05-01,2022-05-03' }
-
-      let!(:initiative) do
-        initiatives.first.tap { |initiative| initiative.update!(created_at: '2022-05-02') }
-      end
-
-      example_request 'List only the initiatives created between the specified dates', document: false do
-        assert_status 200
-        expect(json_response_body[:initiatives].size).to eq 1
-        expect(json_response_body[:meta]).to eq({ total_pages: 1, current_page: 1 })
-      end
-    end
-
-    context "when filtering by 'updated_at'" do
-      let(:updated_at) { ',2015-01-31' }
-
-      let!(:initiative) do
-        initiatives.first.tap { |initiative| initiative.update!(updated_at: '2015-01-01') }
-      end
-
-      example_request 'List only the initiatives updated between the specified dates', document: false do
-        assert_status 200
-        expect(json_response_body[:initiatives].pluck(:id)).to eq [initiative.id]
-        expect(json_response_body[:meta]).to eq({ total_pages: 1, current_page: 1 })
-      end
-    end
+    include_examples 'filtering_by_date', :initiative, :created_at
+    include_examples 'filtering_by_date', :initiative, :updated_at
   end
 
   get '/api/v2/initiatives/:id' do

@@ -59,53 +59,9 @@ resource 'Phases' do
       end
     end
 
-    context "when filtering by 'created_at'" do
-      let(:created_at) { '2022-05-01,2022-05-03' }
-
-      let!(:phase) do
-        project.phases.first.tap do |phase|
-          phase.update!(created_at: '2022-05-02')
-        end
-      end
-
-      example_request 'List only phases created between the specified dates', document: false do
-        assert_status 200
-        expect(json_response_body[:phases].pluck(:id)).to eq [phase.id]
-        expect(json_response_body[:meta]).to eq({ total_pages: 1, current_page: 1 })
-      end
-    end
-
-    context "when filtering by 'updated_at'" do
-      let(:updated_at) { ',2023-01-31' }
-
-      let!(:phase) do
-        project.phases.first.tap do |phase|
-          phase.update!(updated_at: '2023-01-01')
-        end
-      end
-
-      example_request 'List only phases updated between the specified dates', document: false do
-        assert_status 200
-        expect(json_response_body[:phases].pluck(:id)).to eq [phase.id]
-        expect(json_response_body[:meta]).to eq({ total_pages: 1, current_page: 1 })
-      end
-    end
-
-    context "when filtering by 'start_at'" do
-      let(:start_at) { '2020-01-01,2020-01-31' }
-
-      let!(:phase) do
-        project.phases.first.tap do |phase|
-          phase.update!(start_at: '2020-01-20')
-        end
-      end
-
-      example_request 'List only phases whose start date lies between the specified dates', document: false do
-        assert_status 200
-        expect(json_response_body[:phases].pluck(:id)).to eq [phase.id]
-        expect(json_response_body[:meta]).to eq({ total_pages: 1, current_page: 1 })
-      end
-    end
+    include_examples 'filtering_by_date', :phase, :created_at
+    include_examples 'filtering_by_date', :phase, :updated_at
+    include_examples 'filtering_by_date', :phase, :start_at
   end
 
   get '/api/v2/projects/:project_id/phases' do

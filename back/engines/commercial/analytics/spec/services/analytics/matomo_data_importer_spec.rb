@@ -20,12 +20,7 @@ RSpec.describe Analytics::MatomoDataImporter do
     let(:max_nb_batches) { 2 }
     let(:batch_size) { 3 }
     let(:options) { { max_nb_batches: max_nb_batches, batch_size: batch_size } }
-
-    before_all do
-      # Date dimension must be populated before importing data. Otherwise, the foreign key
-      # constraints on date columns in +analytics_fact_visits+ will be violated.
-      create(:dimension_date, date: start_time.to_date)
-    end
+    let(:dimension_date) { create(:dimension_date, date: start_time.to_date) }
 
     around do |example|
       cassette_library_dir = Analytics::Engine.root / 'spec' / 'fixtures' / 'vcr_cassettes'
@@ -34,19 +29,38 @@ RSpec.describe Analytics::MatomoDataImporter do
       end
     end
 
-    it 'imports visit data successfully' do
-      expect(HTTParty).to receive(:post)
-        .exactly(max_nb_batches).times
-        .and_call_original
+    context 'when date dimension already exists' do
+      before do
+        # Date dimension should normally be populated before importing data.
+        create(:dimension_date, date: start_time.to_date)
+      end
 
-      expect { importer.import(site_id, start_time.to_i, options) }
-        .to change(Analytics::FactVisit, :count).by(batch_size * max_nb_batches)
+      it 'imports visit data successfully' do
+        expect(HTTParty).to receive(:post)
+          .exactly(max_nb_batches).times
+          .and_call_original
+
+        expect { importer.import(site_id, start_time.to_i, options) }
+          .to change(Analytics::FactVisit, :count).by(batch_size * max_nb_batches)
+      end
+
+      it 'updates the list of referrers' do
+        expect(ErrorReporter).to receive(:report_msg)
+        expect { importer.import(site_id, start_time.to_i, options) }
+          .to change(Analytics::DimensionReferrerType, :count).by(2)
+      end
     end
 
-    it 'updates the list of referrers' do
-      expect(ErrorReporter).to receive(:report_msg)
-      expect { importer.import(site_id, start_time.to_i, options) }
-        .to change(Analytics::DimensionReferrerType, :count).by(2)
+    context 'when date dimension matching the visit data does not exist' do
+      it 'imports visit data successfully and adds the correct date dimensions' do
+        expect(HTTParty).to receive(:post)
+          .exactly(max_nb_batches).times
+          .and_call_original
+
+        expect { importer.import(site_id, start_time.to_i, options) }
+          .to change(Analytics::FactVisit, :count).by(batch_size * max_nb_batches)
+          .and change(Analytics::DimensionDate, :count).by(1)
+      end
     end
   end
 
