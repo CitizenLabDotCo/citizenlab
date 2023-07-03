@@ -15,6 +15,7 @@ import {
   maxPageWidth,
 } from 'containers/ProjectsShowPage/styles';
 import SectionContainer from 'components/SectionContainer';
+import PhaseDocumentAnnotation from './document_annotation';
 
 // services
 import { getLatestRelevantPhase, getCurrentPhase } from 'api/phases/utils';
@@ -29,7 +30,6 @@ import { selectedPhase$, selectPhase } from './events';
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
 import { useWindowSize } from '@citizenlab/cl2-component-library';
-import useLocale from 'hooks/useLocale';
 
 // i18n
 import messages from 'containers/ProjectsShowPage/messages';
@@ -42,7 +42,6 @@ import { colors, viewportWidths, isRtl } from 'utils/styleUtils';
 // other
 import { isValidPhase } from '../phaseParam';
 import setPhaseURL from './setPhaseURL';
-import PhaseDocumentAnnotation from './document_annotation';
 import { useParams } from 'react-router-dom';
 
 const Container = styled.div``;
@@ -85,12 +84,9 @@ interface Props {
 }
 
 const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
-  const { phaseNumber } = useParams() as {
-    phaseNumber: string;
-  };
+  const { phaseNumber } = useParams();
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
-  const locale = useLocale();
   const windowSize = useWindowSize();
 
   const [selectedPhase, setSelectedPhase] = useState<IPhaseData | null>(null);
@@ -108,16 +104,10 @@ const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
   }, []);
 
   useEffect(() => {
-    if (selectedPhase !== null && phases && project && !isNilOrError(locale)) {
-      setPhaseURL(
-        selectedPhase?.id,
-        currentPhase?.id,
-        phases.data,
-        project.data,
-        locale
-      );
+    if (selectedPhase !== null && phases && project) {
+      setPhaseURL(selectedPhase?.id, phases.data, project.data);
     }
-  }, [selectedPhase, phases, project, locale, currentPhase]);
+  }, [selectedPhase, phases, project, currentPhase]);
 
   useEffect(() => {
     if (phases && phases.data.length > 0) {
@@ -145,18 +135,11 @@ const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
       selectedPhase &&
       phases &&
       phases.data.length > 0 &&
-      !isNilOrError(project) &&
-      !isNilOrError(locale)
+      !isNilOrError(project)
     ) {
-      setPhaseURL(
-        selectedPhase.id,
-        currentPhase?.id,
-        phases.data,
-        project.data,
-        locale
-      );
+      setPhaseURL(selectedPhase.id, phases.data, project.data);
     }
-  }, [selectedPhase, phases, project, locale, currentPhase]);
+  }, [selectedPhase, phases, project, currentPhase]);
 
   if (!isNilOrError(project) && selectedPhase) {
     const selectedPhaseId = selectedPhase.id;
