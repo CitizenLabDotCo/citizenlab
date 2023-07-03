@@ -65,14 +65,29 @@ resource BasketsIdea do
         expect(json_response.dig(:data, :attributes, :votes)).to eq 3
         expect(json_response[:included].pluck(:id)).to include idea_id
       end
+
+      context 'when budgeting' do
+        before { @basket.update!(participation_context: create(:continuous_budgeting_project)) }
+
+        let(:idea_id) { create(:idea, project: @basket.participation_context, budget: 10).id }
+
+        example 'Add an idea to a basket', document: false do
+          do_request
+          assert_status 201
+          json_response = json_parse response_body
+
+          expect(json_response.dig(:data, :attributes, :votes)).to eq 10
+          expect(json_response[:included].pluck(:id)).to include idea_id
+        end
+      end
     end
 
     patch 'web_api/v1/baskets_ideas/:id' do
       parameter :votes, 'The number of times the idea is voted on.', scope: :baskets_idea, required: true
       ValidationErrorHelper.new.error_fields self, BasketsIdea
 
-      let!(:ideas) { create_baskets_ideas @basket, votes: [3, 2, 1] }
-      let(:baskets_idea) { @basket.baskets_ideas.where(votes: 3).first }
+      let(:ideas) { create_baskets_ideas @basket, votes: [3, 2, 1] }
+      let(:baskets_idea) { @basket.baskets_ideas.find_by(idea_id: ideas.first.id) }
       let(:id) { baskets_idea.id }
       let(:votes) { 4 }
 
@@ -80,6 +95,29 @@ resource BasketsIdea do
         assert_status 200
         json_response = json_parse response_body
         expect(json_response.dig(:data, :attributes, :votes)).to eq 4
+      end
+
+      context 'when budgeting' do
+        before do
+          @project = create(:continuous_budgeting_project)
+          @basket.update!(participation_context: @project)
+        end
+
+        let(:ideas) do
+          [3, 2].map do |budget|
+            create(:idea, project: @project, budget: budget).tap do |idea|
+              create(:baskets_idea, idea: idea, basket: @basket)
+            end
+          end
+        end
+
+        example 'The votes of a baskets_idea cannot be changed', document: false do
+          do_request
+          assert_status 200
+          json_response = json_parse response_body
+
+          expect(json_response.dig(:data, :attributes, :votes)).to eq 3
+        end
       end
     end
 
@@ -96,7 +134,7 @@ resource BasketsIdea do
 
   def create_baskets_ideas(basket, votes: [3, 2, 1])
     votes.map do |v|
-      create(:baskets_idea, basket: basket, idea: create(:idea, project: @project), votes: v).idea
+      create(:baskets_idea, basket: basket, idea: create(:idea, project: basket.participation_context.project), votes: v).idea
     end
   end
 end

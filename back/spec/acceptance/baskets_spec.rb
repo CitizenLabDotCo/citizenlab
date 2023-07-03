@@ -10,14 +10,17 @@ resource 'Baskets' do
     header 'Content-Type', 'application/json'
     @user = create(:user)
     @project = create(:continuous_single_voting_project)
-    @ideas = create_list(:idea, 3, project: @project, idea_status: create(:idea_status), author: @user, budget: 2)
     create_list(:basket, 2, participation_context: create(:continuous_budgeting_project))
     @basket = create(
       :basket,
       user: @user,
-      participation_context: @project,
-      baskets_ideas_attributes: [{ idea_id: @ideas[0].id, votes: 1 }, { idea_id: @ideas[1].id, votes: 2 }, { idea_id: @ideas[2].id, votes: 2 }]
+      participation_context: @project
     )
+    @ideas = [1, 2, 2].map do |votes|
+      create(:idea, project: @project, budget: 2).tap do |idea|
+        create(:baskets_idea, idea: idea, basket: @basket, votes: votes)
+      end
+    end
   end
 
   get 'web_api/v1/baskets/:basket_id' do
@@ -55,11 +58,6 @@ resource 'Baskets' do
       parameter :submitted, 'Boolean value to mark the basket as submitted or unsubmitted. Defaults to false.', required: false
       parameter :participation_context_id, 'The id of the phase/project to whom the basket belongs', required: true
       parameter :participation_context_type, 'The type of the participation context (e.g. Project, Phase)', required: true
-      parameter :baskets_ideas_attributes, 'Array with baskets_ideas objects', required: false
-    end
-    with_options scope: %i[basket baskets_ideas_attributes] do
-      parameter :idea_id, 'The ID of the idea added to the basket', required: true
-      parameter :votes, 'The number of times the idea is voted on', required: false
     end
     ValidationErrorHelper.new.error_fields(self, Basket)
 
@@ -69,38 +67,13 @@ resource 'Baskets' do
       let(:submitted) { false }
       let(:participation_context_id) { @project.id }
       let(:participation_context_type) { 'Project' }
-      let(:ideas) { [create(:idea, project: @project, budget: 10), create(:idea, project: @project, budget: 5)] }
-      let(:baskets_ideas_attributes) { [{ idea_id: ideas.first.id, votes: 2 }, { idea_id: ideas.last.id, votes: 3 }] }
 
       example_request 'Create a basket' do
         assert_status 201
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :attributes, :submitted_at)).to be_nil
         expect(json_response.dig(:data, :relationships, :user, :data, :id)).to eq @user.id
-        expect(json_response.dig(:data, :relationships, :ideas, :data).pluck(:id)).to match_array ideas.map(&:id)
         expect(json_response.dig(:data, :relationships, :participation_context, :data, :id)).to eq participation_context_id
-        expect(
-          json_response[:included].select { |included| included[:type] == 'baskets_idea' }.map { |baskets_idea| baskets_idea.dig(:attributes, :votes) }
-        ).to contain_exactly 2, 3
-      end
-
-      context 'when budgeting' do
-        let(:participation_context_id) { create(:continuous_budgeting_project).id }
-        let(:participation_context_type) { 'Project' }
-
-        example 'Create a basket', document: false do
-          do_request
-          assert_status 201
-          json_response = json_parse(response_body)
-
-          expect(json_response.dig(:data, :attributes, :submitted_at)).to be_nil
-          expect(json_response.dig(:data, :relationships, :user, :data, :id)).to eq @user.id
-          expect(json_response.dig(:data, :relationships, :ideas, :data).pluck(:id)).to match_array ideas.map(&:id)
-          expect(json_response.dig(:data, :relationships, :participation_context, :data, :id)).to eq participation_context_id
-          expect(
-            json_response[:included].select { |included| included[:type] == 'baskets_idea' }.map { |baskets_idea| baskets_idea.dig(:attributes, :votes) }
-          ).to contain_exactly 10, 5
-        end
       end
 
       example '[error] Create a basket in a survey', document: false do
@@ -117,14 +90,7 @@ resource 'Baskets' do
   end
 
   patch 'web_api/v1/baskets/:basket_id' do
-    with_options scope: :basket do
-      parameter :submitted, 'Boolean value to mark the basket as submitted or unsubmitted. Defaults to false.', required: false
-      parameter :baskets_ideas_attributes, 'Array with baskets_ideas objects', required: false
-    end
-    with_options scope: %i[basket baskets_ideas_attributes] do
-      parameter :idea_id, 'The ID of the idea added to the basket', required: true
-      parameter :votes, 'The number of times the idea is voted on', required: false
-    end
+    parameter :submitted, 'Boolean value to mark the basket as submitted or unsubmitted. Defaults to false.', scope: :basket, required: true
     ValidationErrorHelper.new.error_fields(self, Basket)
 
     context 'when authenticated' do
@@ -134,46 +100,23 @@ resource 'Baskets' do
 
       describe do
         let(:submitted) { true }
-        let(:new_ideas) { create_list(:idea, 2, project: @project, budget: 5) }
-        let(:idea_ids) { new_ideas.map(&:id) + [@ideas.first.id] }
-        let(:baskets_ideas_attributes) do
-          new_ideas.map { |idea| { idea_id: idea.id } } + [
-            { idea_id: @ideas.first.id, votes: 4 },
-            { idea_id: @ideas.last.id, votes: 0 } # Delete
-          ]
-        end
 
         example_request 'Update a basket' do
           assert_status 200
           json_response = json_parse(response_body)
 
           expect(json_response.dig(:data, :attributes, :submitted_at)).to be_present
-          expect(json_response.dig(:data, :relationships, :ideas, :data).pluck(:id)).to match_array idea_ids
-          expect(
-            json_response[:included].select { |included| included[:type] == 'baskets_idea' }.map { |baskets_idea| baskets_idea.dig(:attributes, :votes) }
-          ).to contain_exactly 1, 1, 4
         end
 
         context 'when budgeting' do
           before do
             @project = create(:continuous_budgeting_project)
             @basket.update!(participation_context: @project)
-            @ideas.each { |idea| idea.update!(project_id: @project.id) }
           end
 
-          example 'Update a basket', document: false do
-            do_request
-            assert_status 200
-            json_response = json_parse(response_body)
-
-            expect(json_response.dig(:data, :attributes, :submitted_at)).to be_present
-            expect(json_response.dig(:data, :relationships, :ideas, :data).pluck(:id)).to match_array idea_ids
-            expect(
-              json_response[:included].select { |included| included[:type] == 'baskets_idea' }.map { |baskets_idea| baskets_idea.dig(:attributes, :votes) }
-            ).to contain_exactly 2, 5, 5
-          end
-
-          example 'Updating a basket when the budget of an idea changed uses the new budget', document: false do
+          # TODO: With and without error?
+          # TODO: Also unsubmitting
+          example 'Submitting a basket when the budget of an idea changed uses the new budget', document: false do
             @ideas.first.update!(budget: 7)
 
             do_request
@@ -182,9 +125,40 @@ resource 'Baskets' do
 
             expect(
               json_response[:included].select { |included| included[:type] == 'baskets_idea' }.map { |baskets_idea| baskets_idea.dig(:attributes, :votes) }
-            ).to contain_exactly 7, 5, 5
+            ).to contain_exactly 7, 2, 2
             @basket.reload
-            expect(@basket.total_votes).to eq 17
+            expect(@basket.total_votes).to eq 11
+          end
+
+          describe do
+            let(:submitted) { false }
+
+            example 'Unsubmitting a basket when the budget of an idea changed uses the new budget', document: false do
+              @ideas.first.update!(budget: 7)
+
+              do_request
+              assert_status 200
+              json_response = json_parse response_body
+
+              expect(
+                json_response[:included].select { |included| included[:type] == 'baskets_idea' }.map { |baskets_idea| baskets_idea.dig(:attributes, :votes) }
+              ).to contain_exactly 7, 2, 2
+              @basket.reload
+              expect(@basket.total_votes).to eq 11
+            end
+          end
+
+          example '[error] Submitting a basket when the budget of an idea changed and exceeds the limit uses the new budget', document: false do
+            @project.update!(voting_max_total: 10)
+            @ideas.first.update!(budget: 7)
+
+            do_request
+            assert_status 422
+            expect(json_parse(response_body)).to eq({ errors: { total_votes: [{ error: 'less_than_or_equal_to', value: 11, count: 10 }] } })
+
+            @basket.reload
+            expect(@basket.baskets_ideas.map(&:votes)).to contain_exactly 7, 2, 2
+            expect(@basket.total_votes).to eq 11
           end
         end
       end

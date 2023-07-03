@@ -29,8 +29,6 @@ class Basket < ApplicationRecord
   has_many :ideas, through: :baskets_ideas
   accepts_nested_attributes_for :baskets_ideas, allow_destroy: true
 
-  before_validation :assign_by_voting_method
-
   validates :user, :participation_context, presence: true
   validate :basket_submission, on: :basket_submission
 
@@ -47,10 +45,6 @@ class Basket < ApplicationRecord
   end
 
   private
-
-  def assign_by_voting_method
-    Factory.instance.voting_method_for(participation_context).assign_basket self
-  end
 
   def basket_submission
     return unless submitted?
