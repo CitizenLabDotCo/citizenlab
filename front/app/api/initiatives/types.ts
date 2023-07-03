@@ -5,6 +5,7 @@ import initiativesKeys from './keys';
 export type InitiativesKeys = Keys<typeof initiativesKeys>;
 
 export type Sort =
+  | 'trending'
   | 'new'
   | '-new'
   | 'author_name'

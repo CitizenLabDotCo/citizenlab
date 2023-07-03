@@ -1,8 +1,5 @@
 import React, { useRef } from 'react';
 
-// services
-import { usersByBirthyearXlsxEndpoint } from 'services/userCustomFieldStats';
-
 // hooks
 import useAgeSerie from './useAgeSerie';
 
@@ -18,6 +15,7 @@ import { useIntl } from 'utils/cl-intl';
 // typings
 import { QueryParameters } from './typings';
 import { isNilOrError } from 'utils/helperUtils';
+import { usersByBirthyearXlsxEndpoint } from 'api/users_by_birthyear/util';
 
 interface Props extends QueryParameters {
   currentGroupFilterLabel?: string | undefined;

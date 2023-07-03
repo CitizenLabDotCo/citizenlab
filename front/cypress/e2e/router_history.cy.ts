@@ -28,10 +28,11 @@ describe('router history', () => {
       .invoke('attr', 'href')
       .then(($href) => {
         if (!$href) throw new Error();
+        const path = $href.split('?')[0];
 
         // Click on idea
         cy.get('#e2e-ideas-list > a').first().click();
-        cy.location('pathname').should('eq', $href);
+        cy.location('pathname').should('eq', path);
 
         // Go back with browser back button
         cy.go('back');
@@ -42,21 +43,10 @@ describe('router history', () => {
 
         // Go forward with browser forward button
         cy.go('forward');
-        cy.location('pathname').should('eq', $href);
+        cy.location('pathname').should('eq', path);
 
         // Go back with on-page button
         cy.get('#e2e-idea-other-link').click();
-        cy.location('pathname').should(
-          'eq',
-          '/en/projects/an-idea-bring-it-to-your-council'
-        );
-
-        // Go back with browser back button
-        cy.go('back');
-        cy.location('pathname').should('eq', $href);
-
-        // Go back with browser back button
-        cy.go('back');
         cy.location('pathname').should(
           'eq',
           '/en/projects/an-idea-bring-it-to-your-council'

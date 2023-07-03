@@ -105,7 +105,7 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
           allowed: true
         },
         similar_ideas: {
-          enabled: true,
+          enabled: false,
           allowed: true
         },
         geographic_dashboard: {

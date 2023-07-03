@@ -68,12 +68,14 @@ export interface FormValues {
 type CampaignFormProps = {
   onSubmit: (formValues: FormValues) => void | Promise<void>;
   defaultValues?: Partial<FormValues>;
+  isLoading: boolean;
 } & WrappedComponentProps;
 
 const CampaignForm = ({
   onSubmit,
   defaultValues,
   intl: { formatMessage },
+  isLoading,
 }: CampaignFormProps) => {
   const { data: user } = useAuthUser();
   const { data: groups } = useGroups({});
@@ -228,7 +230,7 @@ const CampaignForm = ({
           <Button
             id="e2e-campaign-form-save-button"
             type="submit"
-            processing={methods.formState.isSubmitting}
+            processing={isLoading}
           >
             {formatMessage(messages.formSave)}
           </Button>
