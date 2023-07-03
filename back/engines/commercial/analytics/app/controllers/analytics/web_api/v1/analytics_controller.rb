@@ -41,7 +41,7 @@ module Analytics
         if errors.present?
           render json: { 'messages' => errors }, status: :bad_request
         else
-          render json: { 'data' => results, 'links' => paginations }
+          render json: { 'data' => raw_json(results, type: 'analytics'), 'links' => paginations }
         end
       end
 
