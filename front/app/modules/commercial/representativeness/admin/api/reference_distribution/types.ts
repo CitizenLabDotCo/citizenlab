@@ -49,4 +49,4 @@ export type Bins = (number | null)[];
 
 export type TUploadDistribution = Record<string, number> | IBinnedDistribution;
 
-export type TAddDistribution = TUploadDistribution & { id: string };
+export type TAddDistribution = Omit<TUploadDistribution, 'id'> & { id: string };
