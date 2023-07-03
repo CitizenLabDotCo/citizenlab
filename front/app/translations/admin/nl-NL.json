@@ -864,7 +864,7 @@
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.save": "Opslaan",
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.to": "Tot en met",
   "app.containers.AdminPage.DashboardPage.components.Field.Options.editAgeGroups": "Leeftijdsgroepen wijzigen",
-  "app.containers.AdminPage.DashboardPage.components.Field.Options.itemNotCalculated": "Dit artikel zal niet worden berekend.",
+  "app.containers.AdminPage.DashboardPage.components.Field.Options.itemNotCalculated": "Dit item wordt niet berekend.",
   "app.containers.AdminPage.DashboardPage.components.Field.Options.seeLess": "Zie minder",
   "app.containers.AdminPage.DashboardPage.components.Field.Options.seeMore": "Zie {numberOfHiddenItems} meer...",
   "app.containers.AdminPage.DashboardPage.components.Field.baseMonth": "Basismaand (optioneel)",
