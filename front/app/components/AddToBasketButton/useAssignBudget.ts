@@ -24,9 +24,6 @@ import { BUDGET_EXCEEDED_ERROR_EVENT } from 'components/ParticipationCTABars/Vot
 // typings
 import { BasketIdeaAttributes } from 'api/baskets/types';
 
-const timeout = (ms: number) =>
-  new Promise((resolve) => setTimeout(resolve, ms));
-
 interface Props {
   projectId: string;
   ideaId: string;
@@ -63,7 +60,6 @@ const useAssignBudget = ({ projectId, ideaId }: Props) => {
     const basketTotal = basket?.data.attributes.total_votes;
 
     const done = async () => {
-      await timeout(200);
       setProcessing(false);
     };
 
