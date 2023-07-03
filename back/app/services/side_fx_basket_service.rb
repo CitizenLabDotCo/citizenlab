@@ -55,9 +55,14 @@ class SideFxBasketService
     table_id = table == 'ideas' ? 'id' : 'idea_id'
     query = "
       UPDATE #{table}
-      SET baskets_count = counts.count
+      SET
+        baskets_count = counts.baskets_count,
+        votes_count = COALESCE(counts.votes_count, 0)
       FROM (
-        SELECT i.id AS idea_id, count(b.id) AS count
+        SELECT
+          i.id AS idea_id,
+          COUNT(b.id) AS baskets_count,
+          SUM(CASE WHEN b.id IS NOT NULL THEN bi.votes END) AS votes_count
         FROM ideas i
         LEFT OUTER JOIN baskets_ideas bi ON i.id = bi.idea_id
         LEFT OUTER JOIN baskets b ON bi.basket_id = b.id AND b.submitted_at IS NOT NULL"
@@ -73,7 +78,9 @@ class SideFxBasketService
   end
 
   def update_participation_context_counts(count_contexts, update_context)
-    count = Basket.where(participation_context: count_contexts).where.not(submitted_at: nil).count
-    update_context.update!(baskets_count: count)
+    baskets = Basket.where(participation_context: count_contexts).where.not(submitted_at: nil)
+    baskets_count = baskets.count
+    votes_count = BasketsIdea.where(basket: baskets).sum(:votes)
+    update_context.update!(baskets_count: baskets_count, votes_count: votes_count)
   end
 end
