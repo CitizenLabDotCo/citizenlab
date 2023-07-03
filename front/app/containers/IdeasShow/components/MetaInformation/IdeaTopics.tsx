@@ -1,5 +1,8 @@
 import React from 'react';
-import { Header, Item } from 'components/IdeasShowComponents/MetaInfoStyles';
+import {
+  Header,
+  Item,
+} from 'containers/IdeasShow/components/MetaInformation/MetaInfoStyles';
 import Topics from 'components/PostShowComponents/Topics';
 import useIdeaById from 'api/ideas/useIdeaById';
 import { isNilOrError } from 'utils/helperUtils';

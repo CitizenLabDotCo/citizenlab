@@ -1,18 +1,18 @@
 import React from 'react';
 
 // components
+import { Box } from '@citizenlab/cl2-component-library';
 import MetaInformation from '../MetaInformation';
 import ReactionControl from 'components/ReactionControl';
-import Buttons from 'containers/IdeasShow/CTABox/Buttons';
-import AssignBudgetControl from 'components/AssignBudgetControl';
+import Buttons from 'containers/IdeasShow/components/CTABox/Buttons';
+import AssignBudgetControl from './AssignBudgetControl';
 
 // styling
 import styled from 'styled-components';
-import { rightColumnWidthDesktop } from '../styleConstants';
+import { rightColumnWidthDesktop } from '../../styleConstants';
 import { colors } from 'utils/styleUtils';
 import IdeaSharingButton from '../Buttons/IdeaSharingButton';
 import SharingButtonComponent from '../Buttons/SharingButtonComponent';
-import { Box } from '@citizenlab/cl2-component-library';
 
 const Container = styled.div`
   flex: 0 0 ${rightColumnWidthDesktop}px;
@@ -32,12 +32,6 @@ const StyledReactionControl = styled(ReactionControl)`
   margin-bottom: 23px;
 `;
 
-const StyledAssignBudgetControl = styled(AssignBudgetControl)`
-  padding-bottom: 23px;
-  margin-bottom: 23px;
-  border-bottom: solid 1px #ccc;
-`;
-
 const StyledMetaInformation = styled(MetaInformation)`
   margin-bottom: 40px;
 `;
@@ -47,7 +41,6 @@ interface Props {
   projectId: string;
   statusId: string;
   authorId: string | null;
-  anonymous?: boolean;
   className?: string;
 }
 
@@ -56,7 +49,6 @@ const RightColumnDesktop = ({
   projectId,
   statusId,
   authorId,
-  anonymous,
   className,
 }: Props) => {
   return (
@@ -69,11 +61,9 @@ const RightColumnDesktop = ({
           mb="12px"
         >
           <StyledReactionControl styleType="shadow" ideaId={ideaId} size="4" />
-          <StyledAssignBudgetControl
-            view="ideaPage"
-            ideaId={ideaId}
-            projectId={projectId}
-          />
+          <Box pb="23px" mb="23px" borderBottom="solid 1px #ccc">
+            <AssignBudgetControl ideaId={ideaId} projectId={projectId} />
+          </Box>
           <Buttons ideaId={ideaId} />
         </Box>
         <Box mb="16px">
@@ -87,7 +77,6 @@ const RightColumnDesktop = ({
           projectId={projectId}
           statusId={statusId}
           authorId={authorId}
-          anonymous={anonymous}
         />
       </InnerContainer>
     </Container>

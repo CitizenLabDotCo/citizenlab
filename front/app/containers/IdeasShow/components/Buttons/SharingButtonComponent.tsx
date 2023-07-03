@@ -3,7 +3,7 @@ import IdeaCTAButton from './IdeaCTAButton';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from '../../messages';
 
 interface Props {
   onClick?: () => void;

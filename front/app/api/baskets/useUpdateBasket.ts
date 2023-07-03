@@ -6,18 +6,28 @@ import { IBasket, IUpdateBasket } from './types';
 import phasesKeys from 'api/phases/keys';
 import projectsKeys from 'api/projects/keys';
 
-type UpdateBasket = Partial<IUpdateBasket> & { id: string };
+type UpdateBasket = Partial<IUpdateBasket> & {
+  id: string;
+};
 
-export const updateBasket = ({ id, ...requestBody }: UpdateBasket) =>
+export const updateBasket = ({
+  id,
+  submitted,
+  baskets_ideas_attributes,
+}: UpdateBasket) =>
   fetcher<IBasket>({
     path: `/baskets/${id}`,
     action: 'patch',
-    body: { basket: requestBody },
+    body: { basket: { submitted, baskets_ideas_attributes } },
   });
 
 const useUpdateBasket = () => {
   const queryClient = useQueryClient();
-  return useMutation<IBasket, CLErrors, UpdateBasket>({
+  return useMutation<
+    IBasket,
+    CLErrors,
+    UpdateBasket & { participation_context_type: 'Project' | 'Phase' }
+  >({
     mutationFn: updateBasket,
     onSuccess: (data, variables) => {
       queryClient.invalidateQueries({ queryKey: basketKeys.items() });

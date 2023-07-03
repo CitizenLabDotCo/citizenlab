@@ -2,19 +2,11 @@ import { pastPresentOrFuture } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { first, last, sortBy } from 'lodash-es';
 import { IPhaseData } from './types';
+import { IProjectData } from 'api/projects/types';
 
 export function canContainIdeas(phase: IPhaseData) {
   const pm = phase.attributes.participation_method;
   return pm === 'ideation' || pm === 'voting';
-}
-
-export function getlatestIdeaContextPhase(phases: IPhaseData[]) {
-  const ideaContextPhases = phases.filter(
-    (phase) =>
-      phase.attributes.participation_method === 'ideation' ||
-      phase.attributes.participation_method === 'voting'
-  );
-  return getLatestRelevantPhase(ideaContextPhases);
 }
 
 export function getCurrentPhase(phases: IPhaseData[] | undefined) {
@@ -115,3 +107,13 @@ export function getPhaseInputTerm(phases: IPhaseData[]) {
   // can in theory return null. Hence the fallback || 'idea' for typing purposes.
   return getLatestRelevantPhase(phases)?.attributes.input_term || 'idea';
 }
+
+export const getCurrentParticipationContext = (
+  project?: IProjectData,
+  phases?: IPhaseData[]
+) => {
+  if (!project) return;
+
+  if (project.attributes.process_type === 'continuous') return project;
+  return getCurrentPhase(phases);
+};

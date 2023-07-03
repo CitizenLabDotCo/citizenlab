@@ -15,8 +15,8 @@ import useUpdateBasket from 'api/baskets/useUpdateBasket';
 import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
 import { IPhaseData } from 'api/phases/types';
 
-// types
-import { BUDGET_EXCEEDED_ERROR_EVENT } from 'components/AssignBudgetControl';
+// events
+import { BUDGET_EXCEEDED_ERROR_EVENT } from 'components/ParticipationCTABars/VotingCTABar/events';
 
 // utils
 import {
@@ -128,7 +128,11 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
 
   const handleSubmitOnClick = async () => {
     if (!isNilOrError(basket)) {
-      updateBasket({ id: basket.data.id, submitted: true });
+      updateBasket({
+        id: basket.data.id,
+        submitted: true,
+        participation_context_type: currentPhase ? 'Phase' : 'Project',
+      });
     }
   };
 
