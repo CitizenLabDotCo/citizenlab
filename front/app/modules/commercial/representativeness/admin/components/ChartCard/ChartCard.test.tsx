@@ -30,8 +30,10 @@ window.ResizeObserver = FakeResizeObserver;
 
 jest.mock('../../api/r_score/useRScore', () => () => ({
   data: {
-    attributes: {
-      score: 0.8,
+    data: {
+      attributes: {
+        score: 0.8,
+      },
     },
   },
 }));
