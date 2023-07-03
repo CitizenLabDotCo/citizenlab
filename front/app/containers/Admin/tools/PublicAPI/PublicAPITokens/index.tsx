@@ -71,8 +71,8 @@ const PublicAPITokens = () => {
           <Thead>
             <Tr>
               <Th>{formatMessage(messages.name)}</Th>
-              <Th>{formatMessage(messages.id)}</Th>
-              <Th>{formatMessage(messages.secret)}</Th>
+              <Th>client_id</Th>
+              <Th>client_secret</Th>
               <Th>{formatMessage(messages.createdAt)}</Th>
               <Th>{formatMessage(messages.lastUsedAt)}</Th>
               <Th />

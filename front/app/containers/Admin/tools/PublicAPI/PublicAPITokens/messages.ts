@@ -22,14 +22,6 @@ export default defineMessages({
     id: 'app.containers.Admin.tools.apiTokens.name',
     defaultMessage: 'Name',
   },
-  id: {
-    id: 'app.containers.Admin.tools.apiTokens.id',
-    defaultMessage: 'ID',
-  },
-  secret: {
-    id: 'app.containers.Admin.tools.apiTokens.secret',
-    defaultMessage: 'Secret',
-  },
   createdAt: {
     id: 'app.containers.Admin.tools.apiTokens.createdAt',
     defaultMessage: 'Created',
@@ -89,11 +81,11 @@ export default defineMessages({
   createTokenModalSuccessDescription: {
     id: 'app.containers.Admin.tools.apiTokens.createTokenSuccessDescription',
     defaultMessage:
-      'Your token has been created. Please copy the secret below. You will not be able to see it again.',
+      'Your token has been created. Please copy the { secret } below. You will not be able to see it again.',
   },
   createTokenModalSuccessCopy: {
     id: 'app.containers.Admin.tools.apiTokens.createTokenSuccessCopy',
-    defaultMessage: 'Copy secret',
+    defaultMessage: 'Copy { secret }',
   },
   createTokenModalSuccessClose: {
     id: 'app.containers.Admin.tools.apiTokens.createTokenSuccessClose',

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 // form
 import { object, string } from 'yup';
-import { useIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -103,7 +103,12 @@ const CreateTokenModal = ({ onClose }: CreateTokenModalProps) => {
             {formatMessage(messages.createTokenModalSuccess)}
           </Title>
           <Text>
-            {formatMessage(messages.createTokenModalSuccessDescription)}
+            <FormattedMessage
+              {...messages.createTokenModalSuccessDescription}
+              values={{
+                secret: <span>client_secret</span>,
+              }}
+            />
           </Text>
           <Box bgColor={colors.tealLight} py="4px" px="12px">
             <StyledSecretText fontWeight="bold" textAlign="center">
@@ -119,9 +124,16 @@ const CreateTokenModal = ({ onClose }: CreateTokenModalProps) => {
               onClick={copySecret}
               icon={tokenIsCopied ? 'check' : 'copy'}
             >
-              {tokenIsCopied
-                ? formatMessage(messages.createTokenModalSuccessCopySuccess)
-                : formatMessage(messages.createTokenModalSuccessCopy)}
+              {tokenIsCopied ? (
+                formatMessage(messages.createTokenModalSuccessCopySuccess)
+              ) : (
+                <FormattedMessage
+                  {...messages.createTokenModalSuccessCopy}
+                  values={{
+                    secret: <span>client_secret</span>,
+                  }}
+                />
+              )}
             </Button>
           </Box>
         </Box>
