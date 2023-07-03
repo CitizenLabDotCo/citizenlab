@@ -11,11 +11,7 @@ import { IIdea } from 'api/ideas/types';
 
 // styles
 import styled from 'styled-components';
-import {
-  Button,
-  colors,
-  useBreakpoint,
-} from '@citizenlab/cl2-component-library';
+import { Button, colors } from '@citizenlab/cl2-component-library';
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
