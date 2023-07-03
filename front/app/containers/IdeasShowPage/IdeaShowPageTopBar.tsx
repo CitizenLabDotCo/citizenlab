@@ -151,7 +151,11 @@ const IdeaShowPageTopBar = ({
 
           {/* Only visible if participatory budgeting */}
           {ideaId && (
-            <AddToBasketButton ideaId={ideaId} projectId={projectId} />
+            <AddToBasketButton
+              ideaId={ideaId}
+              projectId={projectId}
+              buttonStyle="primary"
+            />
           )}
         </Right>
       </TopBarInner>

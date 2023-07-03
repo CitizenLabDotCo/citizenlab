@@ -179,7 +179,11 @@ const Content = ({
           {compact && (
             <Box my="30px">
               {' '}
-              <AddToBasketButton ideaId={ideaId} projectId={project.id} />
+              <AddToBasketButton
+                ideaId={ideaId}
+                projectId={project.id}
+                buttonStyle="primary-outlined"
+              />
             </Box>
           )}
 

@@ -201,6 +201,7 @@ const CompactIdeaCard = memo<IdeaCardProps>(
                 <AddToBasketButton
                   projectId={projectId}
                   ideaId={idea.data.id}
+                  buttonStyle="primary-outlined"
                 />
               </Box>
             </Box>

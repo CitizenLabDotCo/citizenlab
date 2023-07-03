@@ -79,7 +79,11 @@ const AssignBudgetControl = memo(({ ideaId, projectId }: Props) => {
             </Text>
           </Box>
         </Budget>
-        <AddToBasketButton ideaId={ideaId} projectId={projectId} />
+        <AddToBasketButton
+          ideaId={ideaId}
+          projectId={projectId}
+          buttonStyle="primary"
+        />
       </BudgetWithButtonWrapper>
     </IdeaPageContainer>
   );

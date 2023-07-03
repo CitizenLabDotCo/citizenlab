@@ -20,7 +20,6 @@ import messages from './messages';
 
 // styling
 import { colors } from 'utils/styleUtils';
-import { useTheme } from 'styled-components';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -38,6 +37,7 @@ import { IdeaVotingDisabledReason } from 'api/ideas/types';
 interface Props {
   ideaId: string;
   projectId: string;
+  buttonStyle: 'primary' | 'primary-outlined';
 }
 
 const isButtonEnabled = (
@@ -58,8 +58,7 @@ const isButtonEnabled = (
   return basketNotSubmittedYet;
 };
 
-const AddToBasketButton = ({ ideaId, projectId }: Props) => {
-  const theme = useTheme();
+const AddToBasketButton = ({ ideaId, projectId, buttonStyle }: Props) => {
   const { data: appConfig } = useAppConfiguration();
   const { data: idea } = useIdeaById(ideaId);
   const { data: project } = useProjectById(projectId);
@@ -144,11 +143,11 @@ const AddToBasketButton = ({ ideaId, projectId }: Props) => {
       onClick={handleAddRemoveButtonClick}
       disabled={!buttonEnabled}
       processing={processing}
-      bgColor={isInBasket ? colors.green500 : colors.white}
-      textColor={isInBasket ? colors.white : theme.colors.tenantPrimary}
-      textHoverColor={isInBasket ? colors.white : theme.colors.tenantPrimary}
-      bgHoverColor={isInBasket ? colors.green500 : 'white'}
-      borderColor={isInBasket ? '' : theme.colors.tenantPrimary}
+      buttonStyle={buttonStyle}
+      bgColor={isInBasket ? colors.green500 : undefined}
+      textColor={isInBasket ? colors.white : undefined}
+      textHoverColor={isInBasket ? colors.white : undefined}
+      bgHoverColor={isInBasket ? colors.green500 : undefined}
       width="100%"
       className={`e2e-assign-budget-button ${
         isInBasket ? 'in-basket' : 'not-in-basket'
