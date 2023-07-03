@@ -56,7 +56,10 @@ export type SingleCount = {
 };
 
 export type SingleCountResponse = {
-  data: SingleCount[][];
+  data: {
+    type: 'analytics';
+    attributes: SingleCount[][];
+  };
 };
 
 // Functions to be implemented on each StatCard

@@ -1,7 +1,4 @@
-import { useState, useEffect } from 'react';
-
 // services
-import { analyticsStream } from 'services/analyticsFacts';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -14,10 +11,8 @@ import { query } from './query';
 import { parseStats, parseTimeSeries, parseExcelData } from './parse';
 
 // typings
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
-import { XlsxData } from 'components/admin/ReportExportMenu';
-import { QueryParameters, Response, Stats, TimeSeries } from './typings';
-import { IResolution } from 'components/admin/ResolutionControl';
+import { QueryParameters, Response } from './typings';
+import useAnalytics from 'api/analytics/useAnalytics';
 
 export default function useVisitorsData({
   projectId,
@@ -27,55 +22,32 @@ export default function useVisitorsData({
 }: QueryParameters) {
   const { formatMessage } = useIntl();
 
-  const [currentResolution, setCurrentResolution] =
-    useState<IResolution>(resolution);
-  const [stats, setStats] = useState<Stats | NilOrError>();
-  const [timeSeries, setTimeSeries] = useState<TimeSeries | NilOrError>();
-  const [xlsxData, setXlsxData] = useState<XlsxData | NilOrError>();
+  const { data: analytics } = useAnalytics<Response>(
+    query({
+      projectId,
+      startAtMoment,
+      endAtMoment,
+      resolution,
+    })
+  );
 
-  useEffect(() => {
-    const observable = analyticsStream<Response>(
-      query({
-        projectId,
+  const translations = getTranslations(formatMessage);
+  const currentResolution = resolution;
+  const stats = analytics ? parseStats(analytics.data.attributes) : null;
+
+  const timeSeries = analytics?.data
+    ? parseTimeSeries(
+        analytics.data.attributes[2],
         startAtMoment,
         endAtMoment,
-        resolution,
-      })
-    ).observable;
+        resolution
+      )
+    : null;
 
-    const subscription = observable.subscribe(
-      (response: Response | NilOrError) => {
-        if (isNilOrError(response)) {
-          setStats(response);
-          setTimeSeries(response);
-          setXlsxData(response);
-          setCurrentResolution(resolution);
-          return;
-        }
-
-        const translations = getTranslations(formatMessage);
-
-        setCurrentResolution(resolution);
-
-        const stats = parseStats(response.data);
-        setStats(stats);
-
-        const timeSeries = parseTimeSeries(
-          response.data[2],
-          startAtMoment,
-          endAtMoment,
-          resolution
-        );
-        setTimeSeries(timeSeries);
-
-        setXlsxData(
-          parseExcelData(stats, timeSeries, translations, resolution)
-        );
-      }
-    );
-
-    return () => subscription.unsubscribe();
-  }, [projectId, startAtMoment, endAtMoment, resolution, formatMessage]);
+  const xlsxData =
+    analytics?.data && stats
+      ? parseExcelData(stats, timeSeries, translations, resolution)
+      : null;
 
   return { currentResolution, stats, timeSeries, xlsxData };
 }
