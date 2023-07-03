@@ -1715,7 +1715,7 @@
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous": "<b>Congratulations, your budget has been submitted!</b> You can check your options below at any point or modify them.",
   "app.utils.votingMethodUtils.budgets": "Budgets",
   "app.utils.votingMethodUtils.castYourVote": "Cast your vote",
-  "app.utils.votingMethodUtils.cumulativeVotingInstructions": "You have a total of <b>{totalVotes} votes to distribute between {optionCount} options</b>. Select your preferred options by tapping on “Vote”. Once you are done, click “Submit” to cast your vote.",
+  "app.utils.votingMethodUtils.cumulativeVotingInstructions2": "You have a total of <b>{totalVotes} {voteTerm} to distribute between {optionCount} options</b>. Select your preferred options by tapping on “Vote”. Once you are done, click “Submit” to cast your vote.",
   "app.utils.votingMethodUtils.finalResults": "Final results",
   "app.utils.votingMethodUtils.finalTally": "Final tally",
   "app.utils.votingMethodUtils.howToParticipate": "How to participate",
