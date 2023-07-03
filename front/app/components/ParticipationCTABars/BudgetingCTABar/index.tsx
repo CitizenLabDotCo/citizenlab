@@ -91,9 +91,6 @@ export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
     }
   };
 
-  console.log({ basket });
-  console.log('hasUserParticipated: ', hasUserParticipated);
-
   const CTAButton = hasUserParticipated ? (
     <Box display="flex">
       <Icon my="auto" mr="8px" name="check" fill="white" />
