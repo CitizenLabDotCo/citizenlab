@@ -648,6 +648,7 @@
   "app.containers.App.appMetaDescription": "Välkommen till onlineplattformen för deltagande för {orgName}. \nUpptäck lokala projekt och delta i diskussionen!",
   "app.containers.App.loading": "Läser in...",
   "app.containers.App.metaTitle": "Offentlig plattform för deltagande för {orgName} | CitizenLab",
+  "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Ett konto med den här e-postadressen finns redan. Du kan logga ut, logga in med den här e-postadressen och verifiera ditt konto på inställningssidan.",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Ange en token",
   "app.containers.Authentication.steps.Invitation.token": "Token",
   "app.containers.CampaignsConsentForm.ally_categoryLabel": "E-postmeddelanden i den här kategorin",
