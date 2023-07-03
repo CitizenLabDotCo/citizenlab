@@ -27,9 +27,6 @@ import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { isNilOrError } from 'utils/helperUtils';
-import useUpdateBasket from 'api/baskets/useUpdateBasket';
-import useAddBasket from 'api/baskets/useAddBasket';
-// import { BasketIdeaAttributes } from 'api/baskets/types';
 import useIdeaById from 'api/ideas/useIdeaById';
 
 export const VOTES_EXCEEDED_ERROR_EVENT = 'votesExceededError';
@@ -67,8 +64,6 @@ interface Props {
 
 const AssignMultipleVotesControl = ({ projectId, ideaId }: Props) => {
   const theme = useTheme();
-  const { mutate: updateBasket } = useUpdateBasket();
-  const { mutate: addBasket } = useAddBasket(projectId);
   const { data: project } = useProjectById(projectId);
   const { data: idea } = useIdeaById(ideaId);
   const { data: phases } = usePhases(projectId);
