@@ -79,12 +79,12 @@ export default defineMessages({
     defaultMessage: 'Your token has been created',
   },
   createTokenModalSuccessDescription: {
-    id: 'app.containers.Admin.tools.apiTokens.createTokenSuccessDescription',
+    id: 'app.containers.Admin.tools.apiTokens.createTokenSuccessDescription2',
     defaultMessage:
       'Your token has been created. Please copy the { secret } below. You will not be able to see it again.',
   },
   createTokenModalSuccessCopy: {
-    id: 'app.containers.Admin.tools.apiTokens.createTokenSuccessCopy',
+    id: 'app.containers.Admin.tools.apiTokens.createTokenSuccessCopyMessage',
     defaultMessage: 'Copy { secret }',
   },
   createTokenModalSuccessClose: {
@@ -92,7 +92,7 @@ export default defineMessages({
     defaultMessage: 'Close',
   },
   createTokenModalSuccessCopySuccess: {
-    id: 'app.containers.Admin.tools.apiTokens.createTokenSuccessCopySuccess',
+    id: 'app.containers.Admin.tools.apiTokens.createTokenSuccessCopySuccessMessage',
     defaultMessage: 'Copied!',
   },
 });
