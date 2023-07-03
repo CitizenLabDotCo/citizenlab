@@ -1,12 +1,12 @@
 import streams from 'utils/streams';
 import { API_PATH } from 'containers/App/constants';
 import { IUserCustomFieldData } from 'api/user_custom_fields/types';
-import { getEndpoint as getRScoreEndpoint } from './rScore';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import userCustomFieldsKeys from 'api/user_custom_fields/keys';
 import usersByBirthyearKeys from 'api/users_by_birthyear/keys';
 import usersByGenderKeys from 'api/users_by_gender/keys';
 import usersByCustomFieldKeys from 'api/users_by_custom_field/keys';
+import rScoreKeys from '../api/r_score/keys';
 
 const getCustomFieldEndpoint = (userCustomFieldId: string) =>
   `${API_PATH}/users/custom_fields/${userCustomFieldId}`;
@@ -90,8 +90,9 @@ export async function createReferenceDistribution(
   queryClient.invalidateQueries({
     queryKey: usersByCustomFieldKeys.all(),
   });
-  await streams.fetchAllWith({
-    apiEndpoint: [getRScoreEndpoint(id)],
+
+  queryClient.invalidateQueries({
+    queryKey: rScoreKeys.item({ id }),
   });
 
   return response;
@@ -118,8 +119,8 @@ export async function replaceReferenceDistribution(
     queryKey: usersByCustomFieldKeys.all(),
   });
 
-  await streams.fetchAllWith({
-    apiEndpoint: [getRScoreEndpoint(id)],
+  queryClient.invalidateQueries({
+    queryKey: rScoreKeys.item({ id }),
   });
 
   return response;
@@ -149,8 +150,8 @@ export async function deleteReferenceDistribution({
     queryKey: usersByCustomFieldKeys.all(),
   });
 
-  await streams.fetchAllWith({
-    apiEndpoint: [getRScoreEndpoint(id)],
+  queryClient.invalidateQueries({
+    queryKey: rScoreKeys.item({ id }),
   });
 
   return response;
