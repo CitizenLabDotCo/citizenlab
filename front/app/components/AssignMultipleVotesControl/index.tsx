@@ -29,7 +29,7 @@ import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { isNilOrError } from 'utils/helperUtils';
 import useUpdateBasket from 'api/baskets/useUpdateBasket';
 import useAddBasket from 'api/baskets/useAddBasket';
-import { BasketIdeaAttributes } from 'api/baskets/types';
+// import { BasketIdeaAttributes } from 'api/baskets/types';
 import useIdeaById from 'api/ideas/useIdeaById';
 
 export const VOTES_EXCEEDED_ERROR_EVENT = 'votesExceededError';
