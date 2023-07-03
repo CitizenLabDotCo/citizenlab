@@ -86,19 +86,19 @@ export default defineMessages({
   learnMoreVotingMethod: {
     id: 'app.containers.AdminPage.ProjectEdit.Voting.learnMoreVotingMethod',
     defaultMessage:
-      'Learn more about when to use {voteTypeDescription} in our {optionAnalysisArticleLink}.',
+      'Learn more about when to use <b> {voteTypeDescription} </b> in our {optionAnalysisArticleLink}.',
   },
   multipleVotesPerOption: {
-    id: 'app.containers.AdminPage.ProjectEdit.Voting.multipleVotesPerOption',
-    defaultMessage: '<b>multiple votes per option</b>',
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.multipleVotesPerOption2',
+    defaultMessage: 'multiple votes per option',
   },
   singleVotePerOption: {
-    id: 'app.containers.AdminPage.ProjectEdit.Voting.singleVotePerOption',
-    defaultMessage: '<b>single vote per option</b>',
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.singleVotePerOption2',
+    defaultMessage: 'single vote per option',
   },
   budgetAllocation: {
-    id: 'app.containers.AdminPage.ProjectEdit.Voting.budgetAllocation',
-    defaultMessage: '<b>budget allocation</b>',
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.budgetAllocation2',
+    defaultMessage: 'budget allocation',
   },
   maxVotesPerOptionErrorText: {
     id: 'app.containers.AdminPage.ProjectEdit.maxVotesPerOptionErrorText',

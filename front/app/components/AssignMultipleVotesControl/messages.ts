@@ -9,4 +9,16 @@ export default defineMessages({
     id: 'app.components.AssignMultipleVotesControl.vote',
     defaultMessage: 'Vote',
   },
+  removeVote: {
+    id: 'app.components.AssignMultipleVotesControl.removeVote',
+    defaultMessage: 'Remove vote',
+  },
+  addVote: {
+    id: 'app.components.AssignMultipleVotesControl.addVote',
+    defaultMessage: 'Add vote',
+  },
+  inputTextVotes: {
+    id: 'app.components.AssignMultipleVotesControl.inputTextVotes',
+    defaultMessage: 'Votes text input',
+  },
 });

@@ -180,7 +180,14 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
         hasUserParticipated={hasUserParticipated}
         participationState={
           hasUserParticipated ? undefined : (
-            <Text color="white" m="0px" fontSize="s" my="0px" textAlign="left">
+            <Text
+              color="white"
+              m="0px"
+              fontSize="s"
+              my="0px"
+              textAlign="left"
+              aria-live="polite"
+            >
               {(
                 maxBudget - (basket?.data.attributes.total_votes || 0)
               ).toLocaleString()}{' '}
@@ -194,11 +201,14 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
         hideDefaultParticipationMessage={currentPhase ? true : false}
         timeLeftPosition="left"
       />
-      <ErrorToast
-        errorMessage={error || ''}
-        showError={showError}
-        onClose={() => setShowError(false)}
-      />
+      <Box hidden={!showError}>
+        <ErrorToast
+          errorMessage={error || ''}
+          showError={showError}
+          onClose={() => setShowError(false)}
+          aria-live="polite"
+        />
+      </Box>
     </>
   );
 };

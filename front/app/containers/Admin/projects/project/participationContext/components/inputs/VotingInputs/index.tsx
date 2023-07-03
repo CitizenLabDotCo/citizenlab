@@ -93,23 +93,11 @@ export default ({
   const getVoteTypeDescription = () => {
     switch (voting_method) {
       case 'multiple_voting':
-        return formatMessage(messages.multipleVotesPerOption, {
-          b: (chunks: string) => (
-            <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
-          ),
-        });
+        return formatMessage(messages.multipleVotesPerOption);
       case 'single_voting':
-        return formatMessage(messages.singleVotePerOption, {
-          b: (chunks) => (
-            <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
-          ),
-        });
+        return formatMessage(messages.singleVotePerOption);
       case 'budgeting':
-        return formatMessage(messages.budgetAllocation, {
-          b: (chunks) => (
-            <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
-          ),
-        });
+        return formatMessage(messages.budgetAllocation);
       default:
         return '';
     }
@@ -122,7 +110,7 @@ export default ({
         handleVotingMethodOnChange={handleVotingMethodOnChange}
       />
       <Box paddingLeft="32px" borderLeft={`1px solid ${colors.divider}`}>
-        <Box mt="16px" width="700px">
+        <Box my="16px" width="700px">
           <Warning>
             <FormattedMessage
               {...messages.learnMoreVotingMethod}

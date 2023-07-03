@@ -199,6 +199,7 @@ const AssignMultipleVotesControl = ({ projectId, ideaId }: Props) => {
             mr="8px"
             bgColor={theme.colors.tenantPrimary}
             onClick={onRemove}
+            ariaLabel={formatMessage(messages.removeVote)}
           >
             <h1 style={{ margin: '0px' }}>-</h1>
           </Button>
@@ -233,14 +234,20 @@ const AssignMultipleVotesControl = ({ projectId, ideaId }: Props) => {
                   setVotes(0);
                 }
               }}
+              ariaLabel={formatMessage(messages.inputTextVotes)}
             />
           </StyledBox>
-          <Text fontSize="m" ml="8px" my="auto">
+          <Text fontSize="m" ml="8px" my="auto" aria-live="polite">
             {formatMessage(messages.xVotes, { votes })}
           </Text>
         </Box>
         {!basket?.data?.attributes.submitted_at && (
-          <Button ml="8px" bgColor={theme.colors.tenantPrimary} onClick={onAdd}>
+          <Button
+            ariaLabel={formatMessage(messages.addVote)}
+            ml="8px"
+            bgColor={theme.colors.tenantPrimary}
+            onClick={onAdd}
+          >
             <h1 style={{ margin: '0px' }}>+</h1>
           </Button>
         )}
