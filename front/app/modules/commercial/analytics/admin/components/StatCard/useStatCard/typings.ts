@@ -5,7 +5,7 @@ import {
   Resolution,
 } from 'components/admin/GraphCards/typings';
 import { MessageDescriptor } from 'react-intl';
-import { Query } from 'services/analyticsFacts';
+import { Query } from 'api/analytics/types';
 
 export interface StatCardStat {
   value: string;

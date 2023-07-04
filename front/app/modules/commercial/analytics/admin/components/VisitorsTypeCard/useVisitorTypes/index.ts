@@ -1,5 +1,5 @@
 // services
-import { Query, QuerySchema } from 'services/analyticsFacts';
+import { Query, QuerySchema } from 'api/analytics/types';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';

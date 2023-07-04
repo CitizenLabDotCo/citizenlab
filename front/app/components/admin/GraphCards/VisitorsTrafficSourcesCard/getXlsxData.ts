@@ -1,7 +1,5 @@
-import request from 'utils/request';
-
 // services
-import { apiEndpoint, QuerySchema, Query } from 'services/analyticsFacts';
+import { QuerySchema, Query } from 'api/analytics/types';
 
 // i18n
 import messages from './messages';
@@ -19,6 +17,7 @@ import { ProjectId, Dates } from '../typings';
 import { ReferrerListResponse } from './useVisitorReferrers/typings';
 import { XlsxData } from 'components/admin/ReportExportMenu';
 import { FormatMessage } from 'typings';
+import fetcher from 'utils/cl-react-query/fetcher';
 
 type QueryParameters = ProjectId & Dates;
 
@@ -54,12 +53,11 @@ export default async function getXlsxData(
   formatMessage: FormatMessage
 ): Promise<XlsxData> {
   try {
-    const referrersResponse = await request<ReferrerListResponse>(
-      apiEndpoint,
-      null,
-      { method: 'GET' },
-      sanitizeQueryParameters(query(parameters))
-    );
+    const referrersResponse = await fetcher<ReferrerListResponse>({
+      path: '/analytics',
+      action: 'get',
+      queryParams: sanitizeQueryParameters(query(parameters)) ?? undefined,
+    });
 
     return {
       ...referrerTypesXlsxData,
