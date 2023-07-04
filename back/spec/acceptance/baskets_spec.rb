@@ -114,8 +114,6 @@ resource 'Baskets' do
             @basket.update!(participation_context: @project)
           end
 
-          # TODO: With and without error?
-          # TODO: Also unsubmitting
           example 'Submitting a basket when the budget of an idea changed uses the new budget', document: false do
             @ideas.first.update!(budget: 7)
 
