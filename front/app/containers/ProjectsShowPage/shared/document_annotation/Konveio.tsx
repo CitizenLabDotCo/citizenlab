@@ -31,7 +31,7 @@ const Konveio = ({ documentUrl, className }: Props) => {
   urlParams['iframe'] = 'true';
 
   if (typeof email === 'string') {
-    urlParams['username'] = email;
+    urlParams['cemail'] = email;
   }
 
   // Build URL
