@@ -48,7 +48,7 @@ describe('Existing Timeline project', () => {
   });
 });
 
-describe('New timeline project', () => {
+describe.only('New timeline project', () => {
   const projectTitle = randomString();
   const projectDescriptionPreview = randomString();
   const projectDescription = randomString();
@@ -194,6 +194,32 @@ describe('New timeline project', () => {
 
   it('shows the events viewer even in draft projects', () => {
     cy.get('[data-testid="EventInformation"]').should('exist');
+  });
+
+  it('correctly handles phaseNumber URL parameter', () => {
+    const path = `/projects/${projectSlug}`;
+    const pathWithLocale = `/en${path}`;
+
+    cy.location('pathname').should('eq', pathWithLocale);
+
+    // visit first (past phase)
+    cy.visit(`${path}/1`);
+
+    cy.get('.e2e-phases').find('.selectedPhase').contains(phasePastTitle);
+
+    // go to next (current) phase
+    cy.get('.e2e-next-phase').click();
+
+    cy.location('pathname').should('eq', pathWithLocale);
+
+    cy.get('.e2e-phases').find('.selectedPhase').contains(phaseCurrentTitle);
+
+    // go to next (last) phase
+    cy.get('.e2e-next-phase').click();
+
+    cy.location('pathname').should('eq', `${pathWithLocale}/3`);
+
+    cy.get('.e2e-phases').find('.selectedPhase').contains(phaseFutureTitle);
   });
 
   after(() => {
