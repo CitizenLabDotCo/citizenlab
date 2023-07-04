@@ -259,10 +259,7 @@ const AssignMultipleVotesControl = ({ projectId, ideaId }: Props) => {
   };
 
   const onTextInputChange = async (event) => {
-    console.log('TEXT INPUT: ', event);
-    // localVotes.current = event;
-    // debouncing.current = true;
-    // updateBasketDebounced('remove');
+    console.log('TEXT INPUT: ', event); // TODO: implement text input update
   };
 
   if (!actionDescriptor) return null;
