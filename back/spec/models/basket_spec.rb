@@ -165,7 +165,7 @@ RSpec.describe Basket do
     end
   end
 
-  context '#update_counts' do
+  describe '#update_counts' do
     context 'existing basket on a project voting phase' do
       let(:project) { create(:project_with_past_ideation_and_active_budgeting_phase) }
       let(:current_phase) { TimelineService.new.current_phase(project) }
