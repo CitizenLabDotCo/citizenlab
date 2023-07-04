@@ -16,7 +16,16 @@ nl:
       "initiative_published": Publicatie van mijn voorstel
       "invite_received": Uitnodiging
       "invite_reminder": Herinnering uitnodiging
+      "internal_comment_on_idea_assigned_to_you": Interne reactie op aan mij toegewezen bijdrage
+      "internal_comment_on_idea_you_commented_internally_on": Interne reactie op een bijdrage waarop ik intern heb gereageerd
+      "internal_comment_on_idea_you_moderate": Interne reactie op een bijdrage in een project of map die ik beheer
+      "internal_comment_on_initiative_assigned_to_you": Interne reactie op een voorstel dat aan mij is toegewezen
+      "internal_comment_on_initiative_you_commented_internally_on": Interne reactie op een voorstel waarop ik intern heb gereageerd
+      "internal_comment_on_unassigned_initiative": Interne reactie op een niet-toegewezen voorstel
+      "internal_comment_on_unassigned_unmoderated_idea": Interne reactie op een niet-toegewezen bijdrage in een onbeheerd project
+      "internal_comment_on_your_internal_comment": Interne reactie op mijn interne reactie
       "mention_in_official_feedback": Vermelding in een update
+      "mention_in_internal_comment": Vermelding in een interne reactie
       "new_comment_for_admin": Nieuwe reactie in een project dat ik modereer
       "new_comment_on_commented_idea": Nieuwe reactie op een idee waar ik op reageerde
       "new_comment_on_commented_initiative": Nieuwe reactie op een voorstel waar ik op reageerde
@@ -215,6 +224,12 @@ nl:
       main_header: 'Je werd vermeld in een comment'
       subject: 'Iemand heeft je vernoemd op het platform van %{organizationName}'
       preheader: '%{commentAuthor} heeft je vermeld in een reactie'
+    mention_in_internal_comment:
+      cta_reply_to: 'Bekijk reactie van %{firstName}'
+      event_description: '%{authorNameFull} noemde je in een interne reactie.'
+      subject: '%{firstName} noemde je in een interne reactie.'
+      main_header: '%{firstName} noemde je in een interne reactie.'
+      preheader: '%{authorNameFull} noemde je in een interne reactie.'
     moderator_digest:
       subject: 'Je weekoverzicht als projectbeheerder van %{time}'
       preheader: 'Het weekoverzicht voor projectbeheerders van %{organizationName}'
@@ -298,6 +313,54 @@ nl:
       main_header: '%{authorName} antwoordde op je reactie'
       preheader: '%{authorName} antwoordde op je reactie op het platform van %{organizationName}'
       replied: '%{authorFirstName} reageerde:'
+    internal_comment_on_your_internal_comment:
+      cta_reply_to: 'Bekijk reactie van %{firstName}'
+      event_description: '%{authorNameFull} heeft gereageerd op je interne reactie.'
+      subject: 'Je hebt een reactie ontvangen op je interne reactie op ''%{post}'''
+      main_header: 'Je hebt een reactie ontvangen op je interne reactie op ''%{post}'''
+      preheader: '%{authorName} heeft gereageerd op je interne reactie op ''%{post}'''
+    internal_comment_on_idea_assigned_to_you:
+      cta_reply_to: 'Bekijk de reactie van %{firstName}'
+      event_description: '%{authorNameFull} heeft een interne reactie gegeven op een aan jou toegewezen bijdrage.'
+      subject: '''%{post}'' heeft een nieuwe interne reactie'
+      main_header: '''%{post}'' heeft een nieuwe interne reactie'
+      preheader: '''%{post}'' heeft een nieuwe interne reactie'
+    internal_comment_on_idea_you_commented_internally_on:
+      cta_reply_to: 'Bekijk de reactie van %{firstName}'
+      event_description: '%{authorNameFull} gaf een interne reactie op een bijdrage waar je een interne reactie op gaf.'
+      subject: '''%{post}'' heeft een nieuwe interne reactie'
+      main_header: '''%{post}'' heeft een nieuwe interne reactie'
+      preheader: '''%{post}'' heeft een nieuwe interne reactie'
+    internal_comment_on_idea_you_moderate:
+      cta_reply_to: 'Bekijk de reactie van %{firstName}'
+      event_description: '%{authorNameFull} gaf een interne reactie op een bijdrage in een project of map die je beheert.'
+      subject: '''%{post}'' heeft een nieuwe interne reactie'
+      main_header: '''%{post}'' heeft een nieuwe interne reactie'
+      preheader: '''%{post}'' heeft een nieuwe interne reactie'
+    internal_comment_on_initiative_assigned_to_you:
+      cta_reply_to: 'Bekijk de reactie van %{firstName}'
+      event_description: '%{authorNameFull} heeft een interne reactie gegeven op een aan jou toegewezen voorstel.'
+      subject: '''%{post}'' heeft een nieuwe interne reactie'
+      main_header: '''%{post}'' heeft een nieuwe interne reactie'
+      preheader: '''%{post}'' heeft een nieuwe interne reactie'
+    internal_comment_on_initiative_you_commented_internally_on:
+      cta_reply_to: 'Bekijk de reactie van %{firstName}'
+      event_description: '%{authorNameFull} gaf een interne reactie op een voorstel waar je intern op reageerde.'
+      subject: '''%{post}'' heeft een nieuwe interne reactie'
+      main_header: '''%{post}'' heeft een nieuwe interne reactie'
+      preheader: '''%{post}'' heeft een nieuwe interne reactie'
+    internal_comment_on_unassigned_initiative:
+      cta_reply_to: 'Bekijk de reactie van %{firstName}'
+      event_description: '%{authorNameFull} heeft een interne reactie gegeven op een niet-toegewezen voorstel.'
+      subject: '''%{post}'' heeft een nieuwe interne reactie'
+      main_header: '''%{post}'' heeft een nieuwe interne reactie'
+      preheader: '''%{post}'' heeft een nieuwe interne reactie'
+    internal_comment_on_unassigned_unmoderated_idea:
+      cta_reply_to: 'Bekijk de reactie van %{firstName}'
+      event_description: '%{authorNameFull} heeft een interne reactie gegeven op een niet-toegewezen bijdrage in een onbeheerd project.'
+      subject: '''%{post}'' heeft een nieuwe interne reactie'
+      main_header: '''%{post}'' heeft een nieuwe interne reactie'
+      preheader: '''%{post}'' heeft een nieuwe interne reactie'
     official_feedback_on_commented_initiative:
       by_author: 'door %{authorName}'
       updated: '%{officialName} schreef:'
@@ -516,12 +579,15 @@ nl:
       remaining_days: 'Resterende dagen'
     admin_labels:
       recipient_role:
+        admins: 'Aan admins'
         admins_and_managers: 'Aan admins & beheerders'
+        managers: 'Aan beheerders'
         registered_users: 'Aan geregistreerde gebruikers'
       recipient_segment:
         admins: 'Admins'
         admins_and_managers: 'Admins en beheerders'
         admins_and_managers_managing_the_project: 'Admins & beheerders die het project beheren'
+        managers_managing_the_project: 'Beheerders die het project beheren'
         all_users: 'Alle gebruikers'
         all_users_who_uploaded_proposals: 'Alle gebruikers die voorstellen hebben geüpload'
         managers: 'Beheerders'
@@ -544,6 +610,7 @@ nl:
         content_moderation: 'Inhoudelijke moderatie'
         general: 'Algemeen'
         inputs: 'Bijdragen'
+        internal_comments: 'Interne reacties'
         permissions: 'Machtigingen'
         projects: 'Projecten'
         proposals: 'Voorstellen'
@@ -556,6 +623,15 @@ nl:
         input_is_flagged_as_spam: 'Bijdrage is gemarkeerd als spam'
         input_is_updated: 'De bijdrage is bijgewerkt'
         input_status_changes: 'Wijzigingen in de status van de input'
+        internal_comment_is_posted_on_idea_assigned_to_user: 'Interne reactie is geplaatst op aan gebruiker toegewezen bijdrage'
+        internal_comment_is_posted_on_initiative_assigned_to_user: 'Interne reactie is geplaatst op aan gebruiker toegewezen voorstel'
+        internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'Interne reactie is geplaatst op bijdrage in project of map die gebruiker beheert'
+        internal_comment_is_posted_on_idea_user_has_commented_internally_on: 'Interne reactie is geplaatst op bijdrage waar gebruiker interne reactie op heeft gegeven'
+        internal_comment_is_posted_on_idea_user_moderates: 'Interne reactie is geplaatst op bijdrage die gebruiker modereert'
+        internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'Interne reactie is geplaatst op voorstel waar gebruiker interne reactie op heeft gegeven'
+        internal_comment_is_posted_on_unassigned_initiative: 'Interne reactie is geplaatst op niet-toegewezen voorstel'
+        internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Interne reactie is geplaatst op niet-toegewezen bijdrage in onbeheerd project'
+        user_is_mentioned_in_internal_comment: 'Gebruiker wordt genoemd in interne reactie'
         new_input_is_published: 'Nieuwe bijdrage is gepubliceerd'
         new_proposal_is_posted: 'Nieuw voorstel is geplaatst'
         project_phase_changes: 'Wijzigingen in projectfase'
@@ -575,5 +651,6 @@ nl:
         proposal_is_published: 'Voorstel is gepubliceerd'
         user_registers_for_the_first_time: 'Gebruiker registreert zich voor het eerst'
         user_replies_to_comment: 'Gebruiker reageert op reactie'
+        user_replies_to_internal_comment: 'Gebruiker reageert op interne reactie'
         7_days_after_invite_is_sent: '7 dagen na verzending van de uitnodiging'
         7_days_before_the_project_changes_phase: '7 dagen voor het project van fase verandert'
