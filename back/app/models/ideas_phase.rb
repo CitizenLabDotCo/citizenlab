@@ -10,6 +10,7 @@
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  baskets_count :integer          default(0), not null
+#  votes_count   :integer          default(0), not null
 #
 # Indexes
 #

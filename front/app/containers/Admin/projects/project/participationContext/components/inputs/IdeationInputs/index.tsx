@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
 // components
 import {
@@ -110,6 +110,12 @@ export default ({
   const hasAnonymousParticipationEnabled = useFeatureFlag({
     name: 'anonymous_participation',
   });
+
+  const reactingLimited = useRef(
+    reacting_like_method === 'limited' || reacting_dislike_method === 'limited'
+  );
+  const showReactingLimits = reactingLimited.current;
+
   return (
     <>
       {hasAnonymousParticipationEnabled && (
@@ -164,52 +170,54 @@ export default ({
       </StyledSectionField>
       {reacting_enabled && (
         <>
-          <SectionField>
-            <SubSectionTitle>
-              <FormattedMessage {...messages.likingMethodTitle} />
-            </SubSectionTitle>
-            <Radio
-              onChange={handleReactingLikeMethodOnChange}
-              currentValue={reacting_like_method}
-              value="unlimited"
-              name="likingmethod"
-              id="likingmethod-unlimited"
-              label={<FormattedMessage {...messages.unlimited} />}
-            />
-            <Radio
-              onChange={handleReactingLikeMethodOnChange}
-              currentValue={reacting_like_method}
-              value="limited"
-              name="likingmethod"
-              id="likingmethod-limited"
-              label={<FormattedMessage {...messages.limited} />}
-            />
-            <Error apiErrors={apiErrors && apiErrors.reacting_method} />
+          {showReactingLimits && (
+            <SectionField>
+              <SubSectionTitle>
+                <FormattedMessage {...messages.likingMethodTitle} />
+              </SubSectionTitle>
+              <Radio
+                onChange={handleReactingLikeMethodOnChange}
+                currentValue={reacting_like_method}
+                value="unlimited"
+                name="likingmethod"
+                id="likingmethod-unlimited"
+                label={<FormattedMessage {...messages.unlimited} />}
+              />
+              <Radio
+                onChange={handleReactingLikeMethodOnChange}
+                currentValue={reacting_like_method}
+                value="limited"
+                name="likingmethod"
+                id="likingmethod-limited"
+                label={<FormattedMessage {...messages.limited} />}
+              />
+              <Error apiErrors={apiErrors && apiErrors.reacting_method} />
 
-            {reacting_like_method === 'limited' && (
-              <>
-                <SubSectionTitle>
-                  <FormattedMessage {...messages.maxLikes} />
-                </SubSectionTitle>
-                <ReactingLimitInput
-                  id="liking-limit"
-                  type="number"
-                  min="1"
-                  placeholder=""
-                  value={
-                    reacting_like_limited_max
-                      ? reacting_like_limited_max.toString()
-                      : null
-                  }
-                  onChange={handleLikingLimitOnChange}
-                />
-                <Error
-                  text={noLikingLimitError}
-                  apiErrors={apiErrors && apiErrors.reacting_limit}
-                />
-              </>
-            )}
-          </SectionField>
+              {reacting_like_method === 'limited' && (
+                <>
+                  <SubSectionTitle>
+                    <FormattedMessage {...messages.maxLikes} />
+                  </SubSectionTitle>
+                  <ReactingLimitInput
+                    id="liking-limit"
+                    type="number"
+                    min="1"
+                    placeholder=""
+                    value={
+                      reacting_like_limited_max
+                        ? reacting_like_limited_max.toString()
+                        : null
+                    }
+                    onChange={handleLikingLimitOnChange}
+                  />
+                  <Error
+                    text={noLikingLimitError}
+                    apiErrors={apiErrors && apiErrors.reacting_limit}
+                  />
+                </>
+              )}
+            </SectionField>
+          )}
           <FeatureFlag name="disable_disliking">
             <SectionField>
               <SubSectionTitle>
@@ -240,7 +248,7 @@ export default ({
                 apiErrors={apiErrors && apiErrors.reacting_dislike_enabled}
               />
             </SectionField>
-            {reacting_dislike_enabled && (
+            {reacting_dislike_enabled && showReactingLimits && (
               <SectionField>
                 <SubSectionTitle>
                   <FormattedMessage {...messages.dislikingMethodTitle} />
