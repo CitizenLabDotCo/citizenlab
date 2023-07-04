@@ -4,6 +4,7 @@ import Button from 'components/UI/Button';
 import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import apiImage from './api.png';
 
 export const PublicAPI = () => {
   const isPublicAPIEnabled = useFeatureFlag({ name: 'public_api_tokens' });
@@ -13,7 +14,13 @@ export const PublicAPI = () => {
 
   return (
     <Box background={colors.white} display="flex" p="20px">
-      <Box w="415px" h="240px" background={colors.grey200} />
+      <img
+        width="320px"
+        height="240px"
+        src={apiImage}
+        alt={formatMessage(messages.publicAPIImage)}
+      />
+
       <Box ml="32px" display="flex" flexDirection="column">
         <Text variant="bodyL" color="primary" my="0px">
           {formatMessage(messages.publicAPITitle)}
