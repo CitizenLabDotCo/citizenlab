@@ -36,6 +36,10 @@ const Konveio = ({ documentUrl, className }: Props) => {
     urlParams['cemail'] = email;
   }
 
+  if (typeof fullName === 'string') {
+    urlParams['username'] = fullName;
+  }
+
   // Build URL
   const queryString = stringify(urlParams);
   const finalSurveyUrl = `${urlSplit[0]}?${queryString}`;
