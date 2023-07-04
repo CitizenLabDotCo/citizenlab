@@ -47,7 +47,7 @@ class Basket < ApplicationRecord
   end
 
   def destroy_or_keep!
-    if submitted? && participation_context_type == 'Phase' && participation_context.end_at <= Time.now
+    if submitted? && TimelineService.new.phase_is_complete?(participation_context)
       update!(user: nil)
     else
       destroy!
