@@ -22,7 +22,7 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Basket < ApplicationRecord
-  belongs_to :user
+  belongs_to :user, optional: true
   belongs_to :participation_context, polymorphic: true
 
   has_many :baskets_ideas, -> { order(:created_at) }, dependent: :destroy, inverse_of: :basket
@@ -31,7 +31,7 @@ class Basket < ApplicationRecord
 
   before_validation :assign_by_voting_method
 
-  validates :user, :participation_context, presence: true
+  validates :participation_context, presence: true
   validate :basket_submission, on: :basket_submission
 
   scope :submitted, -> { where.not(submitted_at: nil) }
@@ -44,6 +44,15 @@ class Basket < ApplicationRecord
 
   def total_votes
     baskets_ideas.pluck(:votes).sum
+  end
+
+  def destroy_or_keep!
+    if submitted_at.present? && participation_context_type == 'Phase' && participation_context.end_at <= Time.now
+      update!(user: nil)
+    else
+      destroy!
+      SideFxBasketService.new.after_destroy self, nil
+    end
   end
 
   private

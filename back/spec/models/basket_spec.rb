@@ -114,4 +114,55 @@ RSpec.describe Basket do
       expect(basket.total_votes).to eq 25
     end
   end
+
+  context 'when deleting a user' do
+    let(:user) { create(:user) }
+    let(:basket) { create(:basket, user: user) }
+
+    context 'when a basket has been submitted' do
+      before { basket.update!(submitted_at: Time.now) }
+
+      it 'deletes the basket if the project is continuous' do
+        basket.update!(participation_context: create(:continuous_budgeting_project))
+        user.destroy!
+        expect { basket.reload }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      it 'deletes the basket if the voting phase is not finished' do
+        basket.update!(participation_context: create(:budgeting_phase, end_at: Time.now + 7.days))
+        user.destroy!
+        expect { basket.reload }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      it 'keeps the basket if the voting phase has finished' do
+        basket.update!(participation_context: create(:budgeting_phase, end_at: Time.now - 7.days))
+        user.destroy!
+        expect { basket.reload }.not_to raise_error
+        expect(basket.reload.user).to be_nil
+      end
+    end
+
+    context 'when a basket is not submitted' do
+      before { basket.update!(submitted_at: nil) }
+
+      it 'deletes the basket if the project is continuous' do
+        basket.update!(participation_context: create(:continuous_budgeting_project))
+        user.destroy!
+        expect { basket.reload }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      it 'deletes the basket if the voting phase is not finished' do
+        basket.update!(participation_context: create(:budgeting_phase, end_at: Time.now + 7.days))
+        user.destroy!
+        expect { basket.reload }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      it 'deletes the basket if the voting phase has finished' do
+        basket.update!(participation_context: create(:budgeting_phase, end_at: Time.now - 7.days))
+        user.destroy!
+        expect { basket.reload }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+
+  end
 end
