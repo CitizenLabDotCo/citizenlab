@@ -60,7 +60,9 @@ export default function useVisitorsData({
   );
 
   const translations = getTranslations(formatMessage);
-  const pieData = analytics ? parsePieData(analytics.data, translations) : null;
+  const pieData = analytics
+    ? parsePieData(analytics.data.attributes, translations)
+    : null;
 
   const xlsxData =
     analytics && pieData ? parseExcelData(pieData, translations) : null;

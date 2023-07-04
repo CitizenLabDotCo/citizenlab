@@ -75,7 +75,7 @@ const parseReferrers = (
   { data }: ReferrerListResponse,
   formatMessage: FormatMessage
 ): XlsxData => {
-  if (data.length === 0) return {};
+  if (data.attributes.length === 0) return {};
 
   const trafficSource = formatMessage(referrerTypeMessages.trafficSource);
   const referrer = formatMessage(messages.referrer);
@@ -87,12 +87,14 @@ const parseReferrers = (
   const percentageOfVisitors = formatMessage(messages.percentageOfVisitors);
   const referrerTranslations = getReferrerTranslations(formatMessage);
 
-  const visitPercentages = roundPercentages(data.map(({ count }) => count));
+  const visitPercentages = roundPercentages(
+    data.attributes.map(({ count }) => count)
+  );
   const visitorPercentages = roundPercentages(
-    data.map(({ count_visitor_id }) => count_visitor_id)
+    data.attributes.map(({ count_visitor_id }) => count_visitor_id)
   );
 
-  const parsedData = data.map((row, i) => ({
+  const parsedData = data.attributes.map((row, i) => ({
     [trafficSource]:
       row['dimension_referrer_type.name'] in referrerTranslations
         ? referrerTranslations[row['dimension_referrer_type.name']]

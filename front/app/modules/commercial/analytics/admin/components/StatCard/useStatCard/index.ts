@@ -30,17 +30,17 @@ export default function useStatCard({
 
   const formattedLabels = formatLabels(messages, formatMessage, resolution);
 
-  const cardData = dataParser(
-    analytics?.data.attributes,
-    formattedLabels,
-    projectId
-  );
-  const xlsxData = parseExcelData(cardData);
+  const cardData =
+    analytics &&
+    dataParser(analytics.data.attributes, formattedLabels, projectId);
 
-  const statCard = {
-    cardData,
-    xlsxData,
-  };
+  const xlsxData = cardData && parseExcelData(cardData);
+
+  const statCard = cardData &&
+    xlsxData && {
+      cardData,
+      xlsxData,
+    };
 
   return statCard;
 }
