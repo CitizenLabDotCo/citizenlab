@@ -1,24 +1,20 @@
-import React, { useCallback, useContext, useEffect } from 'react';
+import React from 'react';
 
 // components
-import { Content, Top } from '../PostPreview';
 import {
-  Box,
-  Button,
-  colors,
-  Spinner,
-} from '@citizenlab/cl2-component-library';
+  Content,
+  Top,
+} from 'components/admin/PostManager/components/PostPreview';
+import { Box, Button, Spinner } from '@citizenlab/cl2-component-library';
 import ideaFormMessages from 'containers/IdeasNewPage/messages';
 import Form, { AjvErrorGetter, ApiErrorGetter } from 'components/Form';
 
 // services
-import { usePermission } from 'services/permissions';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
 import useDeleteIdeaImage from 'api/idea_images/useDeleteIdeaImage';
 
 // hooks
 import useIdeaById from 'api/ideas/useIdeaById';
-import useAuthUser from 'api/me/useAuthUser';
 import useProjectById from 'api/projects/useProjectById';
 import useInputSchema from 'hooks/useInputSchema';
 import useIdeaImages from 'api/idea_images/useIdeaImages';
@@ -32,9 +28,8 @@ import messages from '../messages';
 import { getLocationGeojson } from 'containers/IdeasEditPage/utils';
 import { omit } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
-import clHistory from 'utils/cl-router/history';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
-import { PreviousPathnameContext } from 'context';
+import { useTheme } from 'styled-components';
 
 const AdminIdeaEdit = ({
   ideaId,
@@ -43,15 +38,9 @@ const AdminIdeaEdit = ({
   ideaId: string;
   goBack: () => void;
 }) => {
-  const previousPathName = useContext(PreviousPathnameContext);
-  const { data: authUser } = useAuthUser();
+  const theme = useTheme();
   const { data: idea } = useIdeaById(ideaId);
   const { mutate: deleteIdeaImage } = useDeleteIdeaImage();
-  const granted = usePermission({
-    item: idea?.data || null,
-    action: 'edit',
-    context: idea?.data || null,
-  });
 
   const { mutate: updateIdea } = useUpdateIdea();
   const { data: project, status: projectStatus } = useProjectById(
@@ -65,51 +54,41 @@ const AdminIdeaEdit = ({
     inputId: ideaId,
   });
 
-  useEffect(() => {
-    if (idea && authUser !== undefined && !granted) {
-      clHistory.replace(previousPathName || (!authUser ? '/sign-up' : '/'));
-    }
-  }, [idea, granted, previousPathName, authUser]);
+  if (!idea || !project) return null;
 
-  const initialFormData =
-    isNilOrError(idea) || !schema
-      ? null
-      : Object.fromEntries(
-          Object.keys(schema.properties).map((prop) => {
-            if (prop === 'author_id') {
-              return [prop, idea.data.relationships?.author?.data?.id];
-            } else if (idea.data.attributes?.[prop]) {
-              return [prop, idea.data.attributes?.[prop]];
-            } else if (
-              prop === 'topic_ids' &&
-              Array.isArray(idea.data.relationships?.topics?.data)
-            ) {
-              return [
-                prop,
-                idea.data.relationships?.topics?.data.map((rel) => rel.id),
-              ];
-            } else if (
-              prop === 'idea_images_attributes' &&
-              Array.isArray(idea.data.relationships?.idea_images?.data)
-            ) {
-              return [prop, remoteImages?.data];
-            } else if (prop === 'idea_files_attributes') {
-              const attachmentsValue =
-                !isNilOrError(remoteFiles) && remoteFiles.data.length > 0
-                  ? remoteFiles.data
-                  : undefined;
-              return [prop, attachmentsValue];
-            } else return [prop, undefined];
-          })
-        );
+  const initialFormData = !schema
+    ? null
+    : Object.fromEntries(
+        Object.keys(schema.properties).map((prop) => {
+          if (prop === 'author_id') {
+            return [prop, idea.data.relationships?.author?.data?.id];
+          } else if (idea.data.attributes?.[prop]) {
+            return [prop, idea.data.attributes?.[prop]];
+          } else if (
+            prop === 'topic_ids' &&
+            Array.isArray(idea.data.relationships?.topics?.data)
+          ) {
+            return [
+              prop,
+              idea.data.relationships?.topics?.data.map((rel) => rel.id),
+            ];
+          } else if (
+            prop === 'idea_images_attributes' &&
+            Array.isArray(idea.data.relationships?.idea_images?.data)
+          ) {
+            return [prop, remoteImages?.data];
+          } else if (prop === 'idea_files_attributes') {
+            const attachmentsValue =
+              !isNilOrError(remoteFiles) && remoteFiles.data.length > 0
+                ? remoteFiles.data
+                : undefined;
+            return [prop, attachmentsValue];
+          } else return [prop, undefined];
+        })
+      );
 
   // Set initial location point if exists
-  if (
-    initialFormData &&
-    !isNilOrError(idea) &&
-    idea.data.attributes &&
-    idea.data.attributes.location_point_geojson
-  ) {
+  if (initialFormData && idea.data.attributes.location_point_geojson) {
     initialFormData['location_point_geojson'] =
       idea.data.attributes.location_point_geojson;
   }
@@ -156,59 +135,42 @@ const AdminIdeaEdit = ({
     );
   };
 
-  const getApiErrorMessage: ApiErrorGetter = useCallback(
-    (error) => {
-      return (
-        ideaFormMessages[
-          `api_error_${uiSchema?.options?.inputTerm}_${error}`
-        ] ||
-        ideaFormMessages[`api_error_${error}`] ||
-        ideaFormMessages[`api_error_invalid`]
-      );
-    },
-    [uiSchema]
-  );
+  const getApiErrorMessage: ApiErrorGetter = (error) => {
+    return (
+      ideaFormMessages[`api_error_${uiSchema?.options?.inputTerm}_${error}`] ||
+      ideaFormMessages[`api_error_${error}`] ||
+      ideaFormMessages['api_error_invalid']
+    );
+  };
 
-  const getAjvErrorMessage: AjvErrorGetter = useCallback(
-    (error) => {
-      return (
-        messages[
-          `ajv_error_${uiSchema?.options?.inputTerm}_${
-            getFieldNameFromPath(error.instancePath) ||
-            error?.params?.missingProperty
-          }_${error.keyword}`
-        ] ||
-        messages[
-          `ajv_error_${
-            getFieldNameFromPath(error.instancePath) ||
-            error?.params?.missingProperty
-          }_${error.keyword}`
-        ] ||
-        undefined
-      );
-    },
-    [uiSchema]
-  );
-
-  if (isNilOrError(project)) {
-    return null;
-  }
+  const getAjvErrorMessage: AjvErrorGetter = (error) => {
+    return (
+      messages[
+        `ajv_error_${uiSchema?.options?.inputTerm}_${
+          getFieldNameFromPath(error.instancePath) ||
+          error?.params?.missingProperty
+        }_${error.keyword}`
+      ] ||
+      messages[
+        `ajv_error_${
+          getFieldNameFromPath(error.instancePath) ||
+          error?.params?.missingProperty
+        }_${error.keyword}`
+      ] ||
+      undefined
+    );
+  };
 
   return (
-    <Box>
+    <Box border="1px solid white" borderRadius={theme.borderRadius}>
       <Top>
-        <Button
-          icon="arrow-left"
-          buttonStyle="text"
-          textColor={colors.primary}
-          onClick={goBack}
-        >
+        <Button onClick={goBack}>
           <FormattedMessage {...messages.cancelEdit} />
         </Button>
       </Top>
 
       <Content className="idea-form">
-        {project && idea && schema && uiSchema ? (
+        {schema && uiSchema ? (
           <Form
             schema={schema}
             uiSchema={uiSchema}
