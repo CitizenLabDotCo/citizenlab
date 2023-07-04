@@ -15,7 +15,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 // hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useCustomPage from 'hooks/useCustomPage';
+import useCustomPageBySlug from 'api/custom_pages/useCustomPageBySlug';
 import useResourceFiles from 'hooks/useResourceFiles';
 import { useParams } from 'react-router-dom';
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -78,11 +78,11 @@ const CustomPageShow = () => {
   };
   const { data: appConfiguration } = useAppConfiguration();
   const localize = useLocalize();
-  const page = useCustomPage({ customPageSlug: slug });
+  const { data: page } = useCustomPageBySlug(slug);
   const proposalsEnabled = useFeatureFlag({ name: 'initiatives' });
   const remotePageFiles = useResourceFiles({
     resourceType: 'page',
-    resourceId: !isNilOrError(page) ? page.id : null,
+    resourceId: !isNilOrError(page) ? page.data.id : null,
   });
 
   // when neither have loaded
@@ -97,13 +97,13 @@ const CustomPageShow = () => {
     // the initiatives feature is not enabled also show
     // not found
     (!isError(page) &&
-      page.attributes.code === 'proposals' &&
+      page.data.attributes.code === 'proposals' &&
       !proposalsEnabled)
   ) {
     return <PageNotFound />;
   }
 
-  const pageAttributes = page.attributes;
+  const pageAttributes = page.data.attributes;
   const localizedOrgName = localize(
     appConfiguration.data.attributes.settings.core.organization_name
   );
@@ -116,20 +116,22 @@ const CustomPageShow = () => {
       />
       {pageAttributes.banner_enabled ? (
         <Box background="#fff" width="100%">
-          <CustomPageHeader pageData={page} />
+          <CustomPageHeader pageData={page.data} />
         </Box>
       ) : (
         <NoBannerContainer>
           {/* show page text title if the banner is disabled */}
           <PageTitle>{localize(pageAttributes.title_multiloc)}</PageTitle>
           <Box zIndex="40000">
-            <AdminCustomPageEditButton pageId={page.id} />
+            <AdminCustomPageEditButton pageId={page.data.id} />
           </Box>
         </NoBannerContainer>
       )}
       <Content>
         <Fragment
-          name={!isNilOrError(page) ? `pages/${page && page.id}/content` : ''}
+          name={
+            !isNilOrError(page) ? `pages/${page && page.data.id}/content` : ''
+          }
         />
         {pageAttributes.top_info_section_enabled && (
           <InfoSection
@@ -145,12 +147,13 @@ const CustomPageShow = () => {
               <FileAttachments files={remotePageFiles} />
             </AttachmentsContainer>
           )}
-        <CustomPageProjectsAndEvents page={page} />
-        {pageAttributes.bottom_info_section_enabled && (
-          <InfoSection
-            multilocContent={pageAttributes.bottom_info_section_multiloc}
-          />
-        )}
+        <CustomPageProjectsAndEvents page={page.data} />
+        {pageAttributes.bottom_info_section_enabled &&
+          pageAttributes.bottom_info_section_multiloc && (
+            <InfoSection
+              multilocContent={pageAttributes.bottom_info_section_multiloc}
+            />
+          )}
       </Content>
     </Container>
   );

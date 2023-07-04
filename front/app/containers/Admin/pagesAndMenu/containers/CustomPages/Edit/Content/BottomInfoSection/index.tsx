@@ -1,5 +1,5 @@
 import GenericBottomInfoSection from 'containers/Admin/pagesAndMenu/containers/GenericBottomInfoSection';
-import useCustomPage from 'hooks/useCustomPage';
+import useCustomPageById from 'api/custom_pages/useCustomPageById';
 import useLocalize from 'hooks/useLocalize';
 import React from 'react';
 import { useParams } from 'react-router-dom';
@@ -9,7 +9,7 @@ import { isNilOrError } from 'utils/helperUtils';
 const BottomInfoSection = () => {
   const localize = useLocalize();
   const { customPageId } = useParams() as { customPageId: string };
-  const customPage = useCustomPage({ customPageId });
+  const { data: customPage } = useCustomPageById(customPageId);
 
   if (isNilOrError(customPage)) {
     return null;
@@ -27,18 +27,18 @@ const BottomInfoSection = () => {
 
   return (
     <GenericBottomInfoSection
-      pageData={customPage}
+      pageData={customPage?.data}
       updatePage={(data) => updateCustomPage(customPageId, data)}
       updatePageAndEnableSection={(data) =>
         updateCustomPageAndEnableSection(customPageId, data)
       }
       breadcrumbs={[
         {
-          label: localize(customPage.attributes.title_multiloc),
+          label: localize(customPage.data.attributes.title_multiloc),
           linkTo: `/admin/pages-menu/pages/${customPageId}/content`,
         },
       ]}
-      linkToViewPage={`/pages/${customPage.attributes.slug}`}
+      linkToViewPage={`/pages/${customPage.data.attributes.slug}`}
     />
   );
 };

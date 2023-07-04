@@ -1,7 +1,7 @@
 import React from 'react';
 import { screen, render, waitFor, userEvent } from 'utils/testUtils/rtl';
 import EditCustomPageSettings from './';
-import { ICustomPageData } from 'services/customPages';
+import { ICustomPageData } from 'api/custom_pages/types';
 
 jest.mock('api/topics/useTopics');
 jest.mock('api/areas/useAreas');

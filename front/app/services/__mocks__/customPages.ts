@@ -1,8 +1,9 @@
-import { ICustomPageData } from 'services/customPages';
+import { ICustomPageData } from 'api/custom_pages/types';
 
 const PAGES: ICustomPageData[] = [
   {
     id: '1231ec37-cd0b-4e1d-93a1-08678d4e269f',
+    type: 'static_page',
     relationships: {
       nav_bar_item: {
         data: null,
@@ -59,6 +60,7 @@ const PAGES: ICustomPageData[] = [
   },
   {
     id: 'f4a03d8c-41e1-4f31-beec-44bfa2a10250',
+    type: 'static_page',
     attributes: {
       title_multiloc: {
         en: 'Terms & conditions',
@@ -115,6 +117,7 @@ const PAGES: ICustomPageData[] = [
   },
   {
     id: '793d56cc-c8b3-4422-b393-972b71f82aa2',
+    type: 'static_page',
     attributes: {
       title_multiloc: {
         en: 'FAQ',
@@ -174,6 +177,7 @@ const PAGES: ICustomPageData[] = [
   },
   {
     id: '9404ad7c-084d-45eb-abbc-c71d5a129712',
+    type: 'static_page',
     attributes: {
       title_multiloc: {
         en: 'Proposals',
@@ -230,6 +234,7 @@ const PAGES: ICustomPageData[] = [
   },
   {
     id: 'e7854e94-3074-4607-b66e-0422aa3d8359',
+    type: 'static_page',
     attributes: {
       title_multiloc: {
         en: 'Information Page',
@@ -290,6 +295,7 @@ const PAGES: ICustomPageData[] = [
 
   {
     id: '1b095a31-72e1-450a-81be-f6e7a9296553',
+    type: 'static_page',
     attributes: {
       title_multiloc: {
         en: 'Laborum aperiam perspiciatis fugiat.',
@@ -346,6 +352,7 @@ const PAGES: ICustomPageData[] = [
   },
   {
     id: '0dc3ba64-0719-4e06-8687-06f3e60a84a0',
+    type: 'static_page',
     attributes: {
       title_multiloc: {
         en: 'Quo suscipit est quos.',

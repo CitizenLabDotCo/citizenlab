@@ -1,6 +1,6 @@
 import React from 'react';
 import CustomPageSettingsForm from '../../CustomPageSettingsForm';
-import useCustomPage from 'hooks/useCustomPage';
+import useCustomPageById from 'api/custom_pages/useCustomPageById';
 import { useParams } from 'react-router-dom';
 import { isNilOrError } from 'utils/helperUtils';
 import { TCustomPageCode, updateCustomPage } from 'services/customPages';
@@ -24,10 +24,10 @@ const customPageSlugAllowedToEdit: { [key in TCustomPageCode]: boolean } = {
 
 const EditCustomPageSettings = () => {
   const { customPageId } = useParams() as { customPageId: string };
-  const customPage = useCustomPage({ customPageId });
+  const { data: customPage } = useCustomPageById(customPageId);
 
   if (!isNilOrError(customPage)) {
-    const hasNavbarItem = !!customPage.relationships.nav_bar_item.data?.id;
+    const hasNavbarItem = !!customPage.data.relationships.nav_bar_item.data?.id;
 
     const handleOnSubmit = async (formValues: FormValues) => {
       // the form returns one area_id as a string,
@@ -48,10 +48,10 @@ const EditCustomPageSettings = () => {
       }
     };
 
-    const topicIds = customPage.relationships.topics.data.map(
+    const topicIds = customPage.data.relationships.topics.data.map(
       (topicRelationship) => topicRelationship.id
     );
-    const areaIds = customPage.relationships.areas.data.map(
+    const areaIds = customPage.data.relationships.areas.data.map(
       (areaRelationship) => areaRelationship.id
     );
 
@@ -59,19 +59,19 @@ const EditCustomPageSettings = () => {
       <CustomPageSettingsForm
         mode="edit"
         defaultValues={{
-          title_multiloc: customPage.attributes.title_multiloc,
+          title_multiloc: customPage.data.attributes.title_multiloc,
           ...(hasNavbarItem && {
             nav_bar_item_title_multiloc:
-              customPage.attributes.nav_bar_item_title_multiloc,
+              customPage.data.attributes.nav_bar_item_title_multiloc,
           }),
-          slug: customPage.attributes.slug,
-          projects_filter_type: customPage.attributes.projects_filter_type,
+          slug: customPage.data.attributes.slug,
+          projects_filter_type: customPage.data.attributes.projects_filter_type,
           topic_ids: topicIds,
           area_id: areaIds[0],
         }}
         showNavBarItemTitle={hasNavbarItem}
         onSubmit={handleOnSubmit}
-        hideSlug={!customPageSlugAllowedToEdit[customPage.attributes.code]}
+        hideSlug={!customPageSlugAllowedToEdit[customPage.data.attributes.code]}
       />
     );
   }

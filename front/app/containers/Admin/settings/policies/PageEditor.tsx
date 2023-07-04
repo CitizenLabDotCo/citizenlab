@@ -14,7 +14,7 @@ import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
 
 // hooks
 import useRemoteFiles, { RemoteFiles } from 'hooks/useRemoteFiles';
-import useCustomPage from 'hooks/useCustomPage';
+import useCustomPageBySlug from 'api/custom_pages/useCustomPageBySlug';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -97,10 +97,10 @@ interface Props {
 }
 
 const PageEditor = ({ className, pageSlug }: Props) => {
-  const page = useCustomPage({ customPageSlug: pageSlug });
+  const { data: page } = useCustomPageBySlug(pageSlug);
   const remotePageFiles = useRemoteFiles({
     resourceType: 'page',
-    resourceId: !isNilOrError(page) ? page.id : null,
+    resourceId: !isNilOrError(page) ? page.data.id : null,
   });
 
   const [expanded, setExpanded] = useState(false);
@@ -125,7 +125,7 @@ const PageEditor = ({ className, pageSlug }: Props) => {
     };
 
   if (!isNilOrError(page)) {
-    const pageId = page.id;
+    const pageId = page.data.id;
     return (
       <EditorWrapper
         className={`${className} e2e-page-editor editor-${pageSlug}`}
@@ -153,10 +153,10 @@ const PageEditor = ({ className, pageSlug }: Props) => {
               pageId={pageId}
               defaultValues={{
                 nav_bar_item_title_multiloc:
-                  page.attributes.nav_bar_item_title_multiloc,
-                title_multiloc: page.attributes.title_multiloc,
+                  page.data.attributes.nav_bar_item_title_multiloc,
+                title_multiloc: page.data.attributes.title_multiloc,
                 top_info_section_multiloc:
-                  page.attributes.top_info_section_multiloc,
+                  page.data.attributes.top_info_section_multiloc,
                 local_page_files: remotePageFiles,
               }}
               onSubmit={handleSubmit(pageId, remotePageFiles)}

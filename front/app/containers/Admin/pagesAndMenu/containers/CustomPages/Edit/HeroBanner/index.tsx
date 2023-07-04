@@ -20,14 +20,15 @@ import { isNilOrError, isNil } from 'utils/helperUtils';
 import { adminCustomPageContentPath } from 'containers/Admin/pagesAndMenu/routes';
 import { WrappedComponentProps } from 'react-intl';
 import { useParams } from 'react-router-dom';
-import useCustomPage from 'hooks/useCustomPage';
-import { ICustomPageAttributes, updateCustomPage } from 'services/customPages';
+import useCustomPageById from 'api/custom_pages/useCustomPageById';
+import { ICustomPageAttributes } from 'api/custom_pages/types';
 
 // i18n
 import messages from '../../../GenericHeroBannerForm/messages';
 import HelmetIntl from 'components/HelmetIntl';
 import useLocalize from 'hooks/useLocalize';
 import { injectIntl } from 'utils/cl-intl';
+import { updateCustomPage } from 'services/customPages';
 
 export type CustomPageBannerSettingKeyType = Extract<
   keyof ICustomPageAttributes,
@@ -48,12 +49,12 @@ const EditCustomPageHeroBannerForm = ({
     useState<ICustomPageAttributes | null>(null);
 
   const { customPageId } = useParams() as { customPageId: string };
-  const customPage = useCustomPage({ customPageId });
+  const { data: customPage } = useCustomPageById(customPageId);
 
   useEffect(() => {
     if (!isNilOrError(customPage)) {
       setLocalSettings({
-        ...customPage.attributes,
+        ...customPage.data.attributes,
       });
     }
   }, [customPage]);
@@ -81,7 +82,7 @@ const EditCustomPageHeroBannerForm = ({
     // only trigger this when the value is explicitly null and not undefined
     if (
       localSettings.header_bg?.large === null &&
-      customPage.attributes.header_bg?.large === null
+      customPage.data.attributes.header_bg?.large === null
     ) {
       setLocalSettings({
         ...localSettings,
@@ -209,14 +210,14 @@ const EditCustomPageHeroBannerForm = ({
           }
           formStatus={formStatus}
           isLoading={isLoading}
-          linkToViewPage={`/pages/${customPage.attributes.slug}`}
+          linkToViewPage={`/pages/${customPage.data.attributes.slug}`}
           breadcrumbs={[
             {
               label: formatMessage(pagesAndMenuBreadcrumb.label),
               linkTo: pagesAndMenuBreadcrumb.linkTo,
             },
             {
-              label: localize(customPage.attributes.title_multiloc),
+              label: localize(customPage.data.attributes.title_multiloc),
               linkTo: adminCustomPageContentPath(customPageId),
             },
             { label: formatMessage(messages.heroBannerTitle) },

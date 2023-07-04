@@ -6,7 +6,7 @@ import { API_PATH } from 'containers/App/constants';
 // hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useNavbarItemEnabled from 'hooks/useNavbarItemEnabled';
-import useCustomPage from 'hooks/useCustomPage';
+import useCustomPageBySlug from 'api/custom_pages/useCustomPageBySlug';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // services
@@ -69,7 +69,7 @@ const InitiativesSettingsPage = () => {
     isError: isAppConfigurationError,
   } = useUpdateAppConfiguration();
   const proposalsNavbarItemEnabled = useNavbarItemEnabled('proposals');
-  const proposalsPage = useCustomPage({ customPageSlug: 'initiatives' });
+  const { data: proposalsPage } = useCustomPageBySlug('initiatives');
 
   const remoteProposalsSettings = useMemo(() => {
     if (
@@ -95,7 +95,7 @@ const InitiativesSettingsPage = () => {
   useEffect(() => {
     if (!isNilOrError(proposalsPage)) {
       setNewProposalsPageBody(
-        proposalsPage.attributes.top_info_section_multiloc
+        proposalsPage.data.attributes.top_info_section_multiloc
       );
     }
   }, [proposalsPage]);
@@ -126,7 +126,7 @@ const InitiativesSettingsPage = () => {
     );
 
     const proposalsPageBodyChanged =
-      proposalsPage.attributes.top_info_section_multiloc !==
+      proposalsPage.data.attributes.top_info_section_multiloc !==
       newProposalsPageBody;
 
     const formChanged = proposalsSettingsChanged || proposalsPageBodyChanged;
@@ -163,7 +163,7 @@ const InitiativesSettingsPage = () => {
     );
 
     const proposalsPageBodyChanged =
-      proposalsPage.attributes.top_info_section_multiloc !==
+      proposalsPage.data.attributes.top_info_section_multiloc !==
       newProposalsPageBody;
 
     setProcessing(true);
@@ -178,7 +178,7 @@ const InitiativesSettingsPage = () => {
 
     try {
       if (proposalsPageBodyChanged) {
-        await updateCustomPage(proposalsPage.id, {
+        await updateCustomPage(proposalsPage.data.id, {
           top_info_section_multiloc: newProposalsPageBody,
         });
       }

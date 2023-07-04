@@ -33,7 +33,7 @@ import { UploadFile } from 'typings';
 import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
 
 // hooks
-import useCustomPage from 'hooks/useCustomPage';
+import useCustomPageById from 'api/custom_pages/useCustomPageById';
 import { updateCustomPage } from 'services/customPages';
 import useRemoteFiles from 'hooks/useRemoteFiles';
 import { useParams } from 'react-router-dom';
@@ -55,11 +55,11 @@ const AttachmentsForm = ({
 }: WrappedComponentProps) => {
   const localize = useLocalize();
   const { customPageId } = useParams() as { customPageId: string };
-  const customPage = useCustomPage({ customPageId });
+  const { data: customPage } = useCustomPageById(customPageId);
 
   const remotePageFiles = useRemoteFiles({
     resourceType: 'page',
-    resourceId: !isNilOrError(customPage) ? customPage.id : null,
+    resourceId: !isNilOrError(customPage) ? customPage.data.id : null,
   });
 
   const handleSubmit = async (
@@ -123,7 +123,7 @@ const AttachmentsForm = ({
     return null;
   }
 
-  const isSectionEnabled = customPage.attributes.files_section_enabled;
+  const isSectionEnabled = customPage.data.attributes.files_section_enabled;
 
   return (
     <>
@@ -139,7 +139,7 @@ const AttachmentsForm = ({
                 linkTo: pagesAndMenuBreadcrumb.linkTo,
               },
               {
-                label: localize(customPage.attributes.title_multiloc),
+                label: localize(customPage.data.attributes.title_multiloc),
                 linkTo: adminCustomPageContentPath(customPageId),
               },
               {
@@ -148,7 +148,7 @@ const AttachmentsForm = ({
             ]}
             rightSideCTA={
               <ViewCustomPageButton
-                linkTo={`/pages/${customPage.attributes.slug}`}
+                linkTo={`/pages/${customPage.data.attributes.slug}`}
               />
             }
           >

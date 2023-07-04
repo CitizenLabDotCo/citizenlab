@@ -20,7 +20,7 @@ import {
 } from 'services/customPages';
 
 // hooks
-import useCustomPage from 'hooks/useCustomPage';
+import useCustomPageById from 'api/custom_pages/useCustomPageById';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // routing
@@ -39,7 +39,7 @@ export interface ICustomPageSectionToggleData extends ISectionToggleData {
 const CustomPagesEditContent = () => {
   const { formatMessage } = useIntl();
   const { customPageId } = useParams() as { customPageId: string };
-  const customPage = useCustomPage({ customPageId });
+  const { data: customPage } = useCustomPageById(customPageId);
   const advancedCustomPagesEnabled = useFeatureFlag({
     name: 'advanced_custom_pages',
   });
@@ -50,7 +50,7 @@ const CustomPagesEditContent = () => {
 
   const hideProjects =
     !advancedCustomPagesEnabled ||
-    customPage.attributes.projects_filter_type === 'no_filter';
+    customPage.data.attributes.projects_filter_type === 'no_filter';
 
   const sectionTogglesData: ICustomPageSectionToggleData[] = [
     {
@@ -107,7 +107,7 @@ const CustomPagesEditContent = () => {
       }
       try {
         await updateCustomPage(customPageId, {
-          [sectionName]: !customPage.attributes[sectionName],
+          [sectionName]: !customPage.data.attributes[sectionName],
         });
       } catch (error) {
         console.error(error);
@@ -135,7 +135,7 @@ const CustomPagesEditContent = () => {
           return (
             <SectionToggle
               key={sectionToggleData.name}
-              checked={customPage.attributes[sectionToggleData.name]}
+              checked={customPage.data.attributes[sectionToggleData.name]}
               onChangeSectionToggle={handleOnChangeToggle(
                 sectionToggleData.name
               )}
