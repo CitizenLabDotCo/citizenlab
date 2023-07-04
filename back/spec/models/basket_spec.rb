@@ -163,6 +163,5 @@ RSpec.describe Basket do
         expect { basket.reload }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
-
   end
 end
