@@ -3,7 +3,7 @@ import { IProjectData } from 'api/projects/types';
 import clHistory from 'utils/cl-router/history';
 import { getCurrentPhase } from 'api/phases/utils';
 
-export default function setPhaseUrl(
+export default function setPhaseURL(
   selectedPhaseId: string | undefined,
   phases: IPhaseData[],
   project: IProjectData

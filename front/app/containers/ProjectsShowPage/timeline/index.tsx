@@ -86,18 +86,17 @@ const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
   const smallerThanTablet = useBreakpoint('tablet');
 
   const selectedPhase = useMemo(() => {
-    if (!phases || !project) return;
+    if (!phases) return;
 
     // if a phase parameter was provided, and it is valid, we set that as phase.
     // otherwise, use the most logical phase
     if (isValidPhase(phaseNumber, phases.data)) {
       const phaseIndex = Number(phaseNumber) - 1;
-      const phase = phases.data[phaseIndex];
-      return phase;
+      return phases.data[phaseIndex];
     }
 
     return getLatestRelevantPhase(phases.data);
-  }, [phaseNumber, project, phases]);
+  }, [phaseNumber, phases]);
 
   const selectPhase = (phase: IPhaseData) => {
     if (!phases || !project) return;

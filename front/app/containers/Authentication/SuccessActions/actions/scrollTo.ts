@@ -1,5 +1,4 @@
 import { scrollToElement } from 'utils/scroll';
-import { selectPhase } from 'containers/ProjectsShowPage/timeline/events';
 import clHistory from 'utils/cl-router/history';
 import { IPhaseData } from 'api/phases/types';
 
@@ -15,7 +14,9 @@ export const scrollTo =
   () => {
     const isOnProjectPage = pathname.endsWith(`/projects/${projectSlug}`);
 
-    currentPhase && selectPhase(currentPhase);
+    if (currentPhase) {
+      selectCurrentPhase(projectSlug);
+    }
 
     if (isOnProjectPage) {
       scrollToElement({ id: elementId, shouldFocus: true });
@@ -23,3 +24,7 @@ export const scrollTo =
       clHistory.push(`/projects/${projectSlug}#${elementId}`);
     }
   };
+
+const selectCurrentPhase = (projectSlug: string) => {
+  clHistory.push(`/projects/${projectSlug}`);
+};
