@@ -3,13 +3,13 @@ import { parse, stringify } from 'qs';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-import { isNilOrError } from 'utils/helperUtils';
 import useAuthUser from 'api/me/useAuthUser';
 
 const StyledIframe = styled.iframe`
   display: block;
   height: 1000px;
   width: 100%;
+  border: none;
 `;
 
 type Props = {
@@ -18,12 +18,10 @@ type Props = {
 };
 
 const Konveio = ({ documentUrl, className }: Props) => {
+  // We want to always render this component, no conditionals.
+  // Permissions are managed at a higher level.
   const { data: authUser } = useAuthUser();
-
-  const email =
-    !isNilOrError(authUser) && authUser.data.attributes.email
-      ? authUser.data.attributes.email
-      : null;
+  const email = authUser?.data.attributes.email;
 
   // Parse survey URL
   const urlSplit = documentUrl.split('?');
@@ -32,7 +30,7 @@ const Konveio = ({ documentUrl, className }: Props) => {
   urlParams['integration'] = 'CitizenLab';
   urlParams['iframe'] = 'true';
 
-  if (email !== null) {
+  if (typeof email === 'string') {
     urlParams['username'] = email;
   }
 
@@ -45,8 +43,7 @@ const Konveio = ({ documentUrl, className }: Props) => {
       <StyledIframe
         data-testid={'konveiosurvey'}
         src={finalSurveyUrl}
-        frameBorder={0}
-        allowFullScreen
+        allow="fullscreen"
       />
     </Box>
   );

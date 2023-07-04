@@ -56,9 +56,6 @@ const DocumentAnnotation = ({ project, phaseId, documentUrl }: Props) => {
         id="document-annotation"
         projectId={project.id}
         action="annotating_document"
-        // We want to always show the document.
-        // Konveio itself show a popup requesting
-        // a sign up/in before commenting is possible.
         enabled={isEnabled(disabled_reason)}
         phaseId={phaseId}
         disabledMessage={
