@@ -1,8 +1,3 @@
-import { Keys } from 'utils/cl-react-query/types';
-import analyticsKeys from './keys';
-
-export type AnalyticsKeys = Keys<typeof analyticsKeys>;
-
 // Query
 export interface Query {
   query: QuerySchema | QuerySchema[];

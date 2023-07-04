@@ -1,4 +1,3 @@
-import { XlsxData } from 'components/admin/ReportExportMenu';
 import {
   Dates,
   ProjectId,
@@ -20,11 +19,6 @@ export interface StatCardData {
   fileName: string;
   periodLabel?: string;
   stats: StatCardStat[];
-}
-
-export interface StatCardDataSet {
-  cardData: StatCardData;
-  xlsxData: XlsxData;
 }
 
 export type StatCardLabels = Record<string, string>;
