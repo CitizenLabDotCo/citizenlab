@@ -2,6 +2,7 @@ import { Multiloc } from 'typings';
 import notificationsKeys from './keys';
 
 import { Keys } from 'utils/cl-react-query/types';
+import { InternalCommentType } from 'api/campaigns/types';
 
 export type NotificationsKeys = Keys<typeof notificationsKeys>;
 
@@ -187,20 +188,6 @@ export interface IMentionInCommentNotificationData
     post_title_multiloc: Multiloc;
   };
 }
-
-export const internalCommentTypes = [
-  'mention_in_internal_comment',
-  'internal_comment_on_your_internal_comment',
-  'internal_comment_on_idea_assigned_to_you',
-  'internal_comment_on_initiative_assigned_to_you',
-  'internal_comment_on_idea_you_moderate',
-  'internal_comment_on_idea_you_commented_internally_on',
-  'internal_comment_on_initiative_you_commented_internally_on',
-  'internal_comment_on_unassigned_unmoderated_idea',
-  'internal_comment_on_unassigned_initiative',
-] as const;
-
-export type InternalCommentType = (typeof internalCommentTypes)[number];
 
 export interface IInternalCommentNotificationData
   extends IBaseNotificationData {

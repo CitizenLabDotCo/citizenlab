@@ -42,7 +42,7 @@ import { trackEventByName } from 'utils/analytics';
 
 // routing
 import { useSearchParams } from 'react-router-dom';
-import { internalCommentTypes } from 'api/notifications/types';
+import { internalCommentNotificationTypes } from 'api/campaigns/types';
 
 type Props = {
   trackEventName?: string;
@@ -63,7 +63,7 @@ const CampaignConsentForm = ({
   const { data: originalCampaignConsents } = useCampaignConsents({
     unsubscriptionToken,
     withoutCampaignNames: [
-      ...(isInternalCommentingEnabled ? [] : internalCommentTypes),
+      ...(isInternalCommentingEnabled ? [] : internalCommentNotificationTypes),
     ],
   });
 

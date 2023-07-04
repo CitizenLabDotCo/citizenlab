@@ -14,7 +14,7 @@ import {
 } from './types';
 import CampaignRow from './CampaignRow';
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import { internalCommentTypes } from 'api/notifications/types';
+import { internalCommentNotificationTypes } from 'api/campaigns/types';
 
 const AutomatedEmails = () => {
   const isInternalCommentingEnabled = useFeatureFlag({
@@ -25,7 +25,7 @@ const AutomatedEmails = () => {
     withoutCampaignNames: [
       'manual',
       'invite_received',
-      ...(isInternalCommentingEnabled ? [] : internalCommentTypes),
+      ...(isInternalCommentingEnabled ? [] : internalCommentNotificationTypes),
     ],
     pageSize: 250,
   });

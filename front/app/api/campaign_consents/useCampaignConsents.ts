@@ -8,23 +8,21 @@ import {
   IConsentsRequestData,
 } from './types';
 
-const fetchCampaignConsents = (consentsRequestData: IConsentsRequestData) => {
-  const { unsubscriptionToken, withoutCampaignNames: without_campaign_names } =
-    consentsRequestData;
+const fetchCampaignConsents = (consentsRequestData?: IConsentsRequestData) => {
   return fetcher<ICampaignConsents>({
     path: `/consents${
-      typeof unsubscriptionToken === 'string'
-        ? `?unsubscription_token=${unsubscriptionToken}`
+      typeof consentsRequestData?.unsubscriptionToken === 'string'
+        ? `?unsubscription_token=${consentsRequestData.unsubscriptionToken}`
         : ''
     }`,
     action: 'get',
     queryParams: {
-      without_campaign_names,
+      without_campaign_names: consentsRequestData?.withoutCampaignNames,
     },
   });
 };
 
-const useCampaignConsents = (consentsRequestData: IConsentsRequestData) => {
+const useCampaignConsents = (consentsRequestData?: IConsentsRequestData) => {
   return useQuery<
     ICampaignConsents,
     CLErrors,
