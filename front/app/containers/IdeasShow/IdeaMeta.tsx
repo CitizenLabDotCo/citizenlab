@@ -10,7 +10,7 @@ import useIdeaImages from 'api/idea_images/useIdeaImages';
 import useLocalize from 'hooks/useLocalize';
 
 // utils
-import { stripHtml } from 'utils/textUtils';
+import { getFullName, stripHtml } from 'utils/textUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { imageSizes } from 'utils/fileUtils';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
@@ -56,9 +56,7 @@ const IdeaMeta = ({ ideaId }: Props) => {
       project &&
       localize(project.data.attributes.title_multiloc, { maxChar: 20 });
     const projectSlug = project && project.data.attributes.slug;
-    const ideaAuthorName = author
-      ? `${author.data.attributes.first_name} ${author.data.attributes.last_name}`
-      : 'anonymous';
+    const ideaAuthorName = author ? getFullName(author.data) : 'anonymous';
 
     const articleJson = {
       '@type': 'Article',

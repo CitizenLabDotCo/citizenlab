@@ -22,6 +22,7 @@ import useLocalize from 'hooks/useLocalize';
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import moment from 'moment';
+import { getFullName } from 'utils/textUtils';
 
 type Props = {
   startAt?: string;
@@ -51,9 +52,7 @@ const AboutReportWidget = ({ reportId, projectId, startAt, endAt }: Props) => {
     ? null
     : report.relationships.owner.data.id;
   const { data: user } = useUserById(userId);
-  const projectModerator = !user
-    ? null
-    : `${user.data.attributes.first_name} ${user.data.attributes.last_name}`;
+  const projectModerator = !user ? null : getFullName(user.data);
 
   // Project name & time period
   const { data: project } = useProjectById(projectId);
