@@ -105,6 +105,8 @@
   "app.components.admin.PostManager.bodyTitle": "Опис",
   "app.components.admin.PostManager.changeStatusModalTitle": "Promenite status ovog predloga",
   "app.components.admin.PostManager.comments": "Komentari",
+  "app.components.admin.PostManager.components.goToInputManager": "Идите на менаџер уноса",
+  "app.components.admin.PostManager.components.goToProposalManager": "Идите до менаџера предлога",
   "app.components.admin.PostManager.contributionFormTitle": "Уредите допринос",
   "app.components.admin.PostManager.currentLat": "Centralna širina",
   "app.components.admin.PostManager.currentLng": "Centralna dužina",
