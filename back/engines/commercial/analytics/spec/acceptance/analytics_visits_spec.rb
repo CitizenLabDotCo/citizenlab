@@ -148,7 +148,7 @@ resource 'Analytics - Visits model' do
         }
       })
       assert_status 200
-      expect(response_data[:attributes][:size]).to eq(2)
+      expect(response_data[:attributes].size).to eq(2)
     end
 
     example 'group visitors by referrer type' do
@@ -162,7 +162,7 @@ resource 'Analytics - Visits model' do
         }
       })
       assert_status 200
-      expect(response_data[:attributes][:size]).to eq(1)
+      expect(response_data[:attributes].size).to eq(1)
     end
 
     example 'filter only visits by citizens or non-registered users (not admins or moderators)' do
