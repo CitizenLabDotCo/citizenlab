@@ -160,11 +160,11 @@ class XlsxService
     columns
   end
 
-  def generate_ideas_xlsx(ideas, view_private_attributes: false, with_tags: false)
-    columns = generate_idea_xlsx_columns(ideas, view_private_attributes: view_private_attributes, with_tags: with_tags)
+  # def generate_ideas_xlsx(ideas, view_private_attributes: false, with_tags: false)
+  #   columns = generate_idea_xlsx_columns(ideas, view_private_attributes: view_private_attributes, with_tags: with_tags)
 
-    generate_xlsx 'Ideas', columns, ideas
-  end
+  #   generate_xlsx 'Ideas', columns, ideas
+  # end
 
   def generate_initiatives_xlsx(initiatives, view_private_attributes: false)
     columns = [
