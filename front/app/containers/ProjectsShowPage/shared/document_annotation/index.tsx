@@ -62,7 +62,7 @@ const DocumentAnnotation = ({ project, phaseId, documentUrl }: Props) => {
           disabled_reason ? disabledMessages[disabled_reason] : null
         }
       >
-        <Konveio documentUrl={documentUrl} />;
+        <Konveio documentUrl={documentUrl} />
       </ParticipationPermission>
     );
   }
