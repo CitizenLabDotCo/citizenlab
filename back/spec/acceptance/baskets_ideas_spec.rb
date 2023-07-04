@@ -1,0 +1,135 @@
+# frozen_string_literal: true
+
+require 'rails_helper'
+require 'rspec_api_documentation/dsl'
+
+resource BasketsIdea do
+  explanation 'Ideas included in a basket, with the count of votes.'
+
+  before { header 'Content-Type', 'application/json' }
+
+  let(:user) { create(:user) }
+  let(:project) { create(:continuous_single_voting_project) }
+  let(:basket) { create(:basket, participation_context: project, user: user) }
+
+  context 'when resident' do
+    before { header_token_for user }
+
+    get 'web_api/v1/baskets/:basket_id/baskets_ideas' do
+      with_options scope: :page do
+        parameter :number, 'Page number'
+        parameter :size, 'Number of events per page'
+      end
+
+      let(:basket_id) { basket.id }
+      let!(:ideas) { create_baskets_ideas basket, votes: [3, 2, 1] }
+
+      example_request 'List all baskets_ideas of a basket' do
+        assert_status 200
+        json_response = json_parse response_body
+
+        expect(json_response[:data].pluck(:attributes).pluck(:votes)).to contain_exactly 3, 2, 1
+        expect(json_response[:included].select { |included| included[:type] == 'idea' }.pluck(:id)).to match_array ideas.map(&:id)
+      end
+    end
+
+    get 'web_api/v1/baskets_ideas/:id' do
+      let!(:ideas) { create_baskets_ideas basket, votes: [3, 2, 1] }
+      let(:id) { basket.baskets_ideas.where(votes: 2).first.id }
+
+      example_request 'Get one baskets_idea by ID' do
+        assert_status 200
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :id)).to eq id
+        expect(json_response.dig(:data, :attributes, :votes)).to eq 2
+        expect(json_response[:included].pluck(:id)).to include ideas[1].id
+      end
+    end
+
+    post 'web_api/v1/baskets/:basket_id/baskets_ideas' do
+      with_options scope: :baskets_idea do
+        parameter :idea_id, 'The ID of the idea added to the basket.', required: true
+        parameter :votes, 'The number of times the idea is voted on. Defaults to 1.', required: false
+      end
+      ValidationErrorHelper.new.error_fields self, BasketsIdea
+
+      let(:basket_id) { basket.id }
+      let(:idea_id) { create(:idea, project: project).id }
+      let(:votes) { 3 }
+
+      example_request 'Add an idea to a basket' do
+        assert_status 201
+        json_response = json_parse response_body
+
+        expect(json_response.dig(:data, :attributes, :votes)).to eq 3
+        expect(json_response[:included].pluck(:id)).to include idea_id
+      end
+
+      context 'when budgeting' do
+        let(:project) { create(:continuous_budgeting_project) }
+        let(:idea_id) { create(:idea, project: project, budget: 10).id }
+
+        example 'Add an idea to a basket', document: false do
+          do_request
+          assert_status 201
+          json_response = json_parse response_body
+
+          expect(json_response.dig(:data, :attributes, :votes)).to eq 10
+          expect(json_response[:included].pluck(:id)).to include idea_id
+        end
+      end
+    end
+
+    patch 'web_api/v1/baskets_ideas/:id' do
+      parameter :votes, 'The number of times the idea is voted on.', scope: :baskets_idea, required: true
+      ValidationErrorHelper.new.error_fields self, BasketsIdea
+
+      let(:ideas) { create_baskets_ideas basket, votes: [3, 2, 1] }
+      let(:baskets_idea) { basket.baskets_ideas.find_by(idea_id: ideas.first.id) }
+      let(:id) { baskets_idea.id }
+      let(:votes) { 4 }
+
+      example_request 'Update a baskets_idea' do
+        assert_status 200
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :attributes, :votes)).to eq 4
+      end
+
+      context 'when budgeting' do
+        let(:project) { create(:continuous_budgeting_project) }
+
+        let(:ideas) do
+          [3, 2].map do |budget|
+            create(:idea, project: project, budget: budget).tap do |idea|
+              create(:baskets_idea, idea: idea, basket: basket)
+            end
+          end
+        end
+
+        example 'The votes of a baskets_idea cannot be changed', document: false do
+          do_request
+          assert_status 200
+          json_response = json_parse response_body
+
+          expect(json_response.dig(:data, :attributes, :votes)).to eq 3
+        end
+      end
+    end
+
+    delete 'web_api/v1/baskets_ideas/:id' do
+      let(:baskets_idea) { create(:baskets_idea, basket: basket) }
+      let(:id) { baskets_idea.id }
+
+      example_request 'Delete a baskets_idea' do
+        assert_status 200
+        expect { BasketsIdea.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+  end
+
+  def create_baskets_ideas(basket, votes: [3, 2, 1])
+    votes.map do |v|
+      create(:baskets_idea, basket: basket, idea: create(:idea, project: basket.participation_context.project), votes: v).idea
+    end
+  end
+end

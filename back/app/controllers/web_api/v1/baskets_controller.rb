@@ -20,8 +20,7 @@ class WebApi::V1::BasketsController < ApplicationController
       SideFxBasketService.new.after_create basket, current_user
       render json: WebApi::V1::BasketSerializer.new(
         basket,
-        params: jsonapi_serializer_params,
-        include: %i[baskets_ideas]
+        params: jsonapi_serializer_params
       ).serializable_hash, status: :created
     else
       render json: { errors: basket.errors.details }, status: :unprocessable_entity
@@ -29,9 +28,12 @@ class WebApi::V1::BasketsController < ApplicationController
   end
 
   def update
-    basket.assign_attributes map_baskets_ideas(basket_update_attributes)
+    basket.assign_attributes basket_update_attributes
     save_params = {}
     save_params[:context] = [:basket_submission] if basket.submitted?
+    if basket_update_attributes.include? 'submitted_at'
+      Factory.instance.voting_method_for(basket.participation_context).update_before_submission_change! basket
+    end
     if basket.save(save_params)
       SideFxBasketService.new.after_update basket, current_user
       render json: WebApi::V1::BasketSerializer.new(
@@ -66,40 +68,19 @@ class WebApi::V1::BasketsController < ApplicationController
     attributes = params.require(:basket).permit(
       :submitted,
       :participation_context_id,
-      :participation_context_type,
-      baskets_ideas_attributes: %i[idea_id votes]
+      :participation_context_type
     ).to_h
     map_submission attributes
   end
 
   def basket_update_attributes
-    attributes = params.require(:basket).permit(
-      :submitted,
-      baskets_ideas_attributes: %i[idea_id votes]
-    ).to_h
+    attributes = params.require(:basket).permit(:submitted).to_h
     map_submission attributes
   end
 
   def map_submission(attributes)
     attributes['submitted_at'] = attributes['submitted'] ? Time.now : nil
     attributes.delete 'submitted'
-    attributes
-  end
-
-  def map_baskets_ideas(attributes)
-    if attributes.key? 'baskets_ideas_attributes'
-      attributes['baskets_ideas_attributes'].reject! do |baskets_idea_attrs|
-        baskets_idea_attrs.key?('votes') && baskets_idea_attrs['votes'] <= 0
-      end
-      attributes['baskets_ideas_attributes'].each do |baskets_idea_attrs|
-        update_basket_idea = basket.baskets_ideas.find_by(idea_id: baskets_idea_attrs['idea_id'])
-        baskets_idea_attrs['id'] = update_basket_idea.id if update_basket_idea
-      end
-      delete_idea_ids = basket.baskets_ideas.where.not(idea_id: attributes['baskets_ideas_attributes'].pluck('idea_id'))
-      attributes['baskets_ideas_attributes'] += delete_idea_ids.map do |delete_basket_idea|
-        { 'id' => delete_basket_idea.id, '_destroy' => true }
-      end
-    end
     attributes
   end
 end
