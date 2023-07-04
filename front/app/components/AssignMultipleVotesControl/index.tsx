@@ -96,9 +96,7 @@ const AssignMultipleVotesControl = ({ projectId, ideaId }: Props) => {
 
   // baskets
   const { mutateAsync: deleteBasketsIdea } = useDeleteBasketsIdea();
-  const { mutateAsync: addBasket } = useAddBasket(
-    participationContext?.id || ''
-  );
+  const { mutateAsync: addBasket } = useAddBasket(projectId);
   const { mutateAsync: addBasketsIdea } = useAddBasketsIdea();
   const { mutateAsync: updateBasketsIdea } = useUpdateBasketsIdea();
   const { data: basket } = useBasket(
