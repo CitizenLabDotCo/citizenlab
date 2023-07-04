@@ -51,7 +51,7 @@ export const parseTimeSeries = (
   );
 };
 
-export const parseStats = (data: Response['data']): Stats => {
+export const parseStats = (data: Response['data']['attributes']): Stats => {
   const registrationsWholePeriod = data[1][0];
   const registrationsLastPeriod = data[2][0];
   const visitsWholePeriod = data[3][0];
