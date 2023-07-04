@@ -48,7 +48,7 @@ describe('Existing Timeline project', () => {
   });
 });
 
-describe.only('New timeline project', () => {
+describe('New timeline project', () => {
   const projectTitle = randomString();
   const projectDescriptionPreview = randomString();
   const projectDescription = randomString();
