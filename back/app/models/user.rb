@@ -164,7 +164,7 @@ class User < ApplicationRecord
   has_many :campaign_email_commands, class_name: 'EmailCampaigns::CampaignEmailCommand', foreign_key: :recipient_id, dependent: :destroy
   has_many :baskets
   before_destroy :destroy_baskets
-  has_many :initiative_status_changes
+  has_many :initiative_status_changes, dependent: :nullify
 
   store_accessor :custom_field_values, :gender, :birthyear, :domicile, :education
 
