@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // components
 import {
@@ -18,15 +18,22 @@ import { getCurrentPhase } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useAssignVote from './useAssignVote';
+import useBasketsIdeas from 'api/baskets_ideas/useBasketsIdeas';
 
 // style
 import styled, { useTheme } from 'styled-components';
 
-// utils
+// events
 // import eventEmitter from 'utils/eventEmitter';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+
+// i18n
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+
+// typings
+import { IBasket } from 'api/baskets/types';
+import { IBasketsIdeaData, IBasketsIdeasData } from 'api/baskets_ideas/types';
 
 export const VOTES_EXCEEDED_ERROR_EVENT = 'votesExceededError';
 export const VOTES_PER_OPTION_EXCEEDED_ERROR_EVENT =
@@ -58,31 +65,54 @@ const StyledBox = styled(Box)`
 interface Props {
   projectId: string;
   ideaId: string;
-  className?: string;
 }
 
-// TODO remove
-const VOTES = 2;
-
 const AssignMultipleVotesControl = ({ projectId, ideaId }: Props) => {
+  const { data: project } = useProjectById(projectId);
+  const { data: phases } = usePhases(projectId);
+
+  // participation context
+  const currentPhase = phases ? getCurrentPhase(phases.data) : null;
+  const participationContext = currentPhase || project?.data;
+  const basketId = participationContext?.relationships?.user_basket?.data?.id;
+
+  // baskets
+  const { data: basket, isLoading: basketLoading } = useBasket(basketId);
+  const { data: basketIdeas, isLoading: basketIdeasLoading } =
+    useBasketsIdeas(basketId);
+
+  if (basketLoading || basketIdeasLoading) return null;
+
+  return (
+    <AssignMultipleVotesControlInner
+      projectId={projectId}
+      ideaId={ideaId}
+      basket={basket}
+      basketIdeas={basketIdeas}
+    />
+  );
+};
+
+interface InnerProps extends Props {
+  basket: IBasket | undefined;
+  basketIdeas: IBasketsIdeasData | undefined;
+}
+
+const AssignMultipleVotesControlInner = ({
+  projectId,
+  ideaId,
+  basket,
+  basketIdeas,
+}: InnerProps) => {
+  const [votes, _setVotes] = useState(0);
+
   const theme = useTheme();
   const { formatMessage } = useIntl();
   const isMobileOrSmaller = useBreakpoint('phone');
 
   // api
-  const { data: project } = useProjectById(projectId);
-  const { data: idea } = useIdeaById(ideaId);
-  const { data: phases } = usePhases(projectId);
   const { data: authUser } = useAuthUser();
-
-  // participation context
-  const currentPhase = phases ? getCurrentPhase(phases.data) : null;
-  const participationContext = currentPhase || project?.data;
-
-  // baskets
-  const { data: basket } = useBasket(
-    participationContext?.relationships?.user_basket?.data?.id
-  );
+  const { data: idea } = useIdeaById(ideaId);
 
   // action descriptors
   const actionDescriptor = idea?.data.attributes.action_descriptor.voting;
@@ -98,11 +128,6 @@ const AssignMultipleVotesControl = ({ projectId, ideaId }: Props) => {
       triggerAuthenticationFlow(); // TODO: Trigger with correct parameters
       return;
     }
-
-    if (!participationContext) {
-      return;
-    }
-
     // Emit errors if maximum allowance exceeded
     // if (votingMax && basketTotal) {
     //   if (
@@ -118,18 +143,14 @@ const AssignMultipleVotesControl = ({ projectId, ideaId }: Props) => {
     //   }
     // }
 
-    assignVote();
+    assignVote(10); // TODO
   };
 
   const onRemove = async (event) => {
     event.stopPropagation();
     event?.preventDefault();
 
-    if (!participationContext || !basket) {
-      return;
-    }
-
-    assignVote();
+    assignVote(10); // TODO
   };
 
   const onTextInputChange = async (_event) => {

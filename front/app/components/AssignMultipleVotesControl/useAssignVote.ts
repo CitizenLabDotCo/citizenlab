@@ -39,66 +39,65 @@ const useAssignVote = ({ projectId, ideaId }: Props) => {
   const { mutateAsync: addBasketsIdea } = useAddBasketsIdea();
   const { mutateAsync: updateBasketsIdea } = useUpdateBasketsIdea();
 
-  // state
-  const [votes, _setVotes] = useState(2); // TODO
+  const handleBasketUpdate = useCallback(
+    (votes: number) => {
+      if (!participationContext) return;
 
-  const handleBasketUpdate = useCallback(() => {
-    if (!participationContext) return;
-
-    if (!basket) {
-      // Create basket, and on success add new basketsIdea
-      addBasket(
-        {
-          participation_context_id: participationContext.id,
-          participation_context_type: phases ? 'Phase' : 'Project',
-        },
-        {
-          onSuccess: (basket) => {
-            addBasketsIdea({
-              basketId: basket.data.id,
-              idea_id: ideaId,
-              votes,
-            });
+      if (!basket) {
+        // Create basket, and on success add new basketsIdea
+        addBasket(
+          {
+            participation_context_id: participationContext.id,
+            participation_context_type: phases ? 'Phase' : 'Project',
           },
-        }
-      );
-    }
+          {
+            onSuccess: (basket) => {
+              addBasketsIdea({
+                basketId: basket.data.id,
+                idea_id: ideaId,
+                votes,
+              });
+            },
+          }
+        );
+      }
 
-    if (basket) {
-      if (votes === 0) {
-        // Add new baskets idea
-        addBasketsIdea({
-          basketId: basket.data.id,
-          idea_id: ideaId,
-          votes,
-        });
-      } else {
-        if (votes) {
-          deleteBasketsIdea({
+      if (basket) {
+        if (votes === 0) {
+          // Add new baskets idea
+          addBasketsIdea({
             basketId: basket.data.id,
-            basketIdeaId: ideaId,
-          });
-        } else {
-          // Update existing baskets idea
-          updateBasketsIdea({
-            basketId: basket.data.id,
-            basketsIdeaId: ideaId,
+            idea_id: ideaId,
             votes,
           });
+        } else {
+          if (votes) {
+            deleteBasketsIdea({
+              basketId: basket.data.id,
+              basketIdeaId: ideaId,
+            });
+          } else {
+            // Update existing baskets idea
+            updateBasketsIdea({
+              basketId: basket.data.id,
+              basketsIdeaId: ideaId,
+              votes,
+            });
+          }
         }
       }
-    }
-  }, [
-    addBasket,
-    addBasketsIdea,
-    deleteBasketsIdea,
-    updateBasketsIdea,
-    basket,
-    ideaId,
-    participationContext,
-    phases,
-    votes,
-  ]);
+    },
+    [
+      addBasket,
+      addBasketsIdea,
+      deleteBasketsIdea,
+      updateBasketsIdea,
+      basket,
+      ideaId,
+      participationContext,
+      phases,
+    ]
+  );
 
   // Debounced update function
   const assignVote = useMemo(() => {
