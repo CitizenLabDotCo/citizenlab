@@ -125,7 +125,7 @@ const AssignMultipleVotesControl = ({ projectId, ideaId }: Props) => {
   const budgetingDisabledReason = actionDescriptor?.disabled_reason;
 
   // voting
-  const localVotes = useRef(currentIdeaFromBasket?.votes || 0);
+  const localVotes = useRef(currentIdeaFromBasket?.votes || 0); // Had tried with useState as well, but wasn't able to get that working with the mutations
   const initialVotes = useRef(currentIdeaFromBasket?.votes || 0);
   const hasSetInitialVotes = useRef(false);
   const basketTotal = basket?.data?.attributes?.total_votes;
@@ -143,7 +143,7 @@ const AssignMultipleVotesControl = ({ projectId, ideaId }: Props) => {
       localVotes.current = currentIdeaFromBasket.votes;
       initialVotes.current = currentIdeaFromBasket.votes;
       hasSetInitialVotes.current = true;
-      setForceUpdate(Date.now());
+      setForceUpdate(Date.now()); // Temporary hacky way to force a re-render while using useRef, though is we get useState working we can remove this..
     }
   }, [currentIdeaFromBasket?.votes]);
 
@@ -164,7 +164,7 @@ const AssignMultipleVotesControl = ({ projectId, ideaId }: Props) => {
     if (votingMax && basketTotal) {
       if (
         basketTotal - initialVotes.current + (localVotes.current + 1) >
-        votingMax
+        votingMax // Used the initialVotes here to remove it from the current basketTotal, since localVotes + basketTotal aren't in sync.
       ) {
         eventEmitter.emit(VOTES_EXCEEDED_ERROR_EVENT);
         return;
