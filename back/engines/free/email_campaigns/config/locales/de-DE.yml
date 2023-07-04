@@ -16,8 +16,8 @@ de:
       "initiative_published": Veröffentlichung eines Vorschlags
       "invite_received": Einladung
       "invite_reminder": Einladungserinnerung
-      "internal_comment_on_idea_assigned_to_you": Interner Kommentar zum mir zugewiesenen Beitrag
-      "internal_comment_on_idea_you_commented_internally_on": Interner Kommentar zum Beitrag, den ich intern kommentiert habe
+      "internal_comment_on_idea_assigned_to_you": Interner Kommentar zu einem mir zugewiesenen Beitrag
+      "internal_comment_on_idea_you_commented_internally_on": Interner Kommentar zu einem Beitrag, den ich intern kommentiert habe
       "internal_comment_on_idea_you_moderate": Interner Kommentar zu einem Beitrag in einem von mir verwalteten Projekt oder Ordner
       "internal_comment_on_initiative_assigned_to_you": Interner Kommentar zu einem mir zugewiesenen Vorschlag
       "internal_comment_on_initiative_you_commented_internally_on": Interner Kommentar zu einem Vorschlag, den ich intern kommentiert habe
@@ -597,7 +597,7 @@ de:
         user_who_is_receiving_folder_moderator_rights: 'Nutzer*in erhält Ordner-Moderationsrechte'
         user_who_is_receiving_project_moderator_rights: 'Nutzer*in erhält Projektmanagementrechte'
         user_who_commented: 'Nutzer*in kommentiert'
-        user_who_is_mentioned: 'Erwähnte*r Nutzer*in'
+        user_who_is_mentioned: 'Erwähnte Admins & Manager*innen'
         user_who_published_the_proposal: 'Nutzer*in veröffentlicht Vorschlag'
         user_who_published_the_input: 'Nutzer*in veröffentlicht Beitrag'
         user_who_registers: 'Nutzer*in registriert sich '
@@ -623,10 +623,10 @@ de:
         input_is_flagged_as_spam: 'Beitrag wird als Spam gekennzeichnet'
         input_is_updated: 'Beitrag erhält ein offizielles Update'
         input_status_changes: 'Status eines Beitrags wird geändert'
-        internal_comment_is_posted_on_idea_assigned_to_user: 'Interner Kommentar wird zum Beitrag veröffentlicht, der dem Nutzer / der Nutzerin zugewiesen ist'
+        internal_comment_is_posted_on_idea_assigned_to_user: 'Interner Kommentar wird zu einem Beitrag veröffentlicht, der Nutzer*in zugewiesen ist'
         internal_comment_is_posted_on_initiative_assigned_to_user: 'Interner Kommentar wird zum Vorschlag veröffentlicht, der dem Nutzer / der Nutzerin zugewiesen ist'
         internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'Interne Kommentare werden zu Beiträgen in von Nutzer*innen verwalteten Projekten oder Ordnern gepostet'
-        internal_comment_is_posted_on_idea_user_has_commented_internally_on: 'Interner Kommentar wird zu Beitrag gepostet, die die Nutzer*innen intern kommentiert haben'
+        internal_comment_is_posted_on_idea_user_has_commented_internally_on: 'Interner Kommentar wird zu Beitrag gepostet, die Nutzer*in intern kommentiert hat'
         internal_comment_is_posted_on_idea_user_moderates: 'Interner Kommentar wird auf einen Beitrag, der von einem Nutzer / einer Nutzerin moderiert wird, gepostet'
         internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'Interner Kommentar wird auf Vorschlag veröffentlicht, den der Nutzer / die Nutzerin intern kommentiert hat'
         internal_comment_is_posted_on_unassigned_initiative: 'Interner Kommentar wird zu nicht zugeordnetem Vorschlag veröffentlicht'
