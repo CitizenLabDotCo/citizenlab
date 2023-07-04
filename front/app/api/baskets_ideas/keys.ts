@@ -1,7 +1,7 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
 
 const baseKey = {
-  type: 'baskets_ideas',
+  type: 'baskets_idea',
 };
 
 const basketsIdeasKeys = {

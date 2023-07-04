@@ -1,4 +1,10 @@
-import React, { useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
 // components
 import {
@@ -9,7 +15,6 @@ import {
   colors,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import { BUDGET_EXCEEDED_ERROR_EVENT } from 'components/ParticipationCTABars/VotingCTABar/events';
 
 // api
 import useBasket from 'api/baskets/useBasket';
@@ -17,6 +22,12 @@ import useAuthUser from 'api/me/useAuthUser';
 import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
+import useIdeaById from 'api/ideas/useIdeaById';
+import useBasketsIdeas from 'api/baskets_ideas/useBasketsIdeas';
+import useAddBasketsIdea from 'api/baskets_ideas/useAddBasketsIdeas';
+import useUpdateBasketsIdea from 'api/baskets_ideas/useUpdateBasketsIdea';
+import useAddBasket from 'api/baskets/useAddBasket';
+import useDeleteBasketsIdea from 'api/baskets_ideas/useDeleteBasketsIdea';
 
 // style
 import styled, { useTheme } from 'styled-components';
@@ -27,8 +38,7 @@ import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { isNilOrError } from 'utils/helperUtils';
-import useIdeaById from 'api/ideas/useIdeaById';
-import { isRtl } from 'utils/styleUtils';
+import { debounce } from 'lodash-es';
 
 export const VOTES_EXCEEDED_ERROR_EVENT = 'votesExceededError';
 export const VOTES_PER_OPTION_EXCEEDED_ERROR_EVENT =
@@ -65,43 +75,84 @@ interface Props {
 
 const AssignMultipleVotesControl = ({ projectId, ideaId }: Props) => {
   const theme = useTheme();
+
+  // intl
+  const { formatMessage } = useIntl();
+
+  // utils
+  const isMobileOrSmaller = useBreakpoint('phone');
+  const [, setForceUpdate] = useState(Date.now());
+  const debouncing = useRef(false);
+
+  // api
   const { data: project } = useProjectById(projectId);
   const { data: idea } = useIdeaById(ideaId);
   const { data: phases } = usePhases(projectId);
   const { data: authUser } = useAuthUser();
-  const isMobileOrSmaller = useBreakpoint('phone');
-  const { formatMessage } = useIntl();
+
+  // participation context
   const currentPhase = phases ? getCurrentPhase(phases.data) : null;
   const participationContext = currentPhase || project?.data;
 
+  // baskets
+  const { mutateAsync: deleteBasketsIdea } = useDeleteBasketsIdea();
+  const { mutateAsync: addBasket } = useAddBasket(
+    participationContext?.id || ''
+  );
+  const { mutateAsync: addBasketsIdea } = useAddBasketsIdea();
+  const { mutateAsync: updateBasketsIdea } = useUpdateBasketsIdea();
   const { data: basket } = useBasket(
     participationContext?.relationships?.user_basket?.data?.id
   );
-  const [votes, setVotes] = useState(
-    basket?.data?.attributes?.total_votes || -1
+  const { data: basketsIdeas } = useBasketsIdeas(basket?.data.id);
+  const currentBasketsIdeas: {
+    ideaId: string;
+    basketsIdeaId: string;
+    votes: number;
+  }[] = [];
+  basketsIdeas?.data.map((basketIdea) => {
+    const ideaId = basketIdea.relationships.idea.data['id'];
+    const basketsIdeaId = basketIdea.id;
+    const votes = basketIdea.attributes.votes;
+    currentBasketsIdeas.push({ ideaId, basketsIdeaId, votes });
+  });
+  const currentIdeaFromBasket = currentBasketsIdeas.find(
+    (basketsIdea) => basketsIdea.ideaId === ideaId
   );
 
+  // action descriptors
   const actionDescriptor = idea?.data.attributes.action_descriptor.voting;
   const budgetingDisabledReason = actionDescriptor?.disabled_reason;
 
-  const currentTotal = basket?.data?.attributes?.total_votes;
-  const currentVotes = parseInt(votes.toString(), 10);
-  const votingMax =
-    currentPhase?.attributes?.voting_max_total ||
-    project?.data.attributes.voting_max_total;
+  // voting
+  const localVotes = useRef(currentIdeaFromBasket?.votes || 0);
+  const initialVotes = useRef(currentIdeaFromBasket?.votes || 0);
+  const hasSetInitialVotes = useRef(false);
+  const basketTotal = basket?.data?.attributes?.total_votes;
+  const votingMax = participationContext?.attributes?.voting_max_total;
   const votingPerOptionMax =
-    currentPhase?.attributes?.voting_max_votes_per_idea ||
-    project?.data.attributes.voting_max_votes_per_idea;
+    participationContext?.attributes?.voting_max_votes_per_idea;
 
-  if (!actionDescriptor) return null;
-  if (budgetingDisabledReason === 'idea_not_in_current_phase') return null;
+  // Update initial local votes when basket is loaded
+  useEffect(() => {
+    if (
+      currentIdeaFromBasket?.votes &&
+      !debouncing.current &&
+      !hasSetInitialVotes.current
+    ) {
+      localVotes.current = currentIdeaFromBasket.votes;
+      initialVotes.current = currentIdeaFromBasket.votes;
+      hasSetInitialVotes.current = true;
+      setForceUpdate(Date.now());
+    }
+  }, [currentIdeaFromBasket?.votes]);
 
   const onAdd = async (event) => {
     event.stopPropagation();
     event?.preventDefault();
 
     if (!authUser) {
-      triggerAuthenticationFlow();
+      triggerAuthenticationFlow(); // TODO: Trigger with correct parameters
       return;
     }
 
@@ -109,80 +160,115 @@ const AssignMultipleVotesControl = ({ projectId, ideaId }: Props) => {
       return;
     }
 
-    if (
-      votingMax &&
-      currentTotal &&
-      currentTotal + (currentVotes + 1) >= votingMax
-    ) {
-      eventEmitter.emit(VOTES_EXCEEDED_ERROR_EVENT);
-    }
-    if (votingPerOptionMax && currentVotes + 1 > votingPerOptionMax) {
-      eventEmitter.emit(VOTES_PER_OPTION_EXCEEDED_ERROR_EVENT);
-    } else {
-      if (currentVotes <= 0) {
-        // if (basket?.data.id) {
-        //   updateBasket({
-        //     id: basket?.data.id,
-        //     baskets_ideas_attributes: [{ idea_id: ideaId, votes: 1 }],
-        //   });
-        // } else {
-        //   addBasket({
-        //     participation_context_id: participationContext.id,
-        //     participation_context_type: currentPhase ? 'Phase' : 'Project',
-        //     baskets_ideas_attributes: [{ idea_id: ideaId, votes: 1 }],
-        //   });
-        // }
-        setVotes(1);
-      } else {
-        // if (basket?.data.id) {
-        //   updateBasket({
-        //     id: basket?.data.id,
-        //     baskets_ideas_attributes: [
-        //       { idea_id: ideaId, votes: currentVotes + 1 },
-        //     ],
-        //   });
-        // }
-        // addBasket({
-        //   participation_context_id: participationContext.id,
-        //   participation_context_type: currentPhase ? 'Phase' : 'Project',
-        //   baskets_ideas_attributes: [
-        //     { idea_id: ideaId, votes: currentVotes + 1 },
-        //   ],
-        // });
-        setVotes(currentVotes + 1);
+    // Emit errors if maximum allowance exceeded
+    if (votingMax && basketTotal) {
+      if (
+        basketTotal - initialVotes.current + (localVotes.current + 1) >
+        votingMax
+      ) {
+        eventEmitter.emit(VOTES_EXCEEDED_ERROR_EVENT);
+        return;
+      }
+      if (votingPerOptionMax && localVotes.current + 1 > votingPerOptionMax) {
+        eventEmitter.emit(VOTES_PER_OPTION_EXCEEDED_ERROR_EVENT);
+        return;
       }
     }
+
+    localVotes.current = localVotes.current + 1;
+    debouncing.current = true;
+    updateBasketDebounced();
   };
 
-  const onRemove = (event) => {
+  const updateBasket = useCallback(() => {
+    if (!participationContext) {
+      return;
+    }
+    if (!basket) {
+      // Create basket, and on success add new basketsIdea
+      addBasket(
+        {
+          participation_context_id: participationContext?.id,
+          participation_context_type: currentPhase ? 'Phase' : 'Project',
+        },
+        {
+          onSuccess: (basket) => {
+            addBasketsIdea({
+              basketId: basket.data.id,
+              idea_id: ideaId,
+              votes: localVotes.current,
+            });
+          },
+        }
+      );
+    }
+
+    if (basket) {
+      if (!currentIdeaFromBasket) {
+        // Add new baskets idea
+        addBasketsIdea({
+          basketId: basket.data.id,
+          idea_id: ideaId,
+          votes: localVotes.current,
+        });
+      } else {
+        if (localVotes.current === 0) {
+          deleteBasketsIdea({
+            basketId: basket.data.id,
+            basketIdeaId: currentIdeaFromBasket.basketsIdeaId,
+          });
+        } else {
+          // Update existing baskets idea
+          updateBasketsIdea({
+            basketId: basket.data.id,
+            basketsIdeaId: currentIdeaFromBasket.basketsIdeaId,
+            votes: localVotes.current,
+          });
+        }
+      }
+    }
+    debouncing.current = false;
+  }, [
+    addBasket,
+    addBasketsIdea,
+    basket,
+    currentIdeaFromBasket,
+    currentPhase,
+    deleteBasketsIdea,
+    ideaId,
+    participationContext,
+    updateBasketsIdea,
+  ]);
+
+  // Debounced update function
+  const updateBasketDebounced = useMemo(() => {
+    return debounce(updateBasket, 100);
+  }, [updateBasket]);
+
+  const onRemove = async (event) => {
     event.stopPropagation();
     event?.preventDefault();
 
-    if (!authUser) {
-      triggerAuthenticationFlow();
+    if (!participationContext || !basket) {
       return;
     }
 
-    const currentVotes = parseInt(votes.toString(), 10);
-    if (currentVotes < 0) {
-      setVotes(0);
-    } else {
-      setVotes(parseInt(votes.toString(), 10) - 1);
-    }
+    localVotes.current = localVotes.current - 1;
+    debouncing.current = true;
+    updateBasketDebounced();
   };
 
   const onTextInputChange = async (event) => {
-    const value = parseInt(event, 10);
-    if (votingMax && value > votingMax) {
-      // TODO: Calculate max remaining votes they could set, and use that.
-      setVotes(1);
-      eventEmitter.emit(BUDGET_EXCEEDED_ERROR_EVENT);
-    } else {
-      setVotes(event);
-    }
+    console.log('TEXT INPUT: ', event);
+    // localVotes.current = event;
+    // debouncing.current = true;
+    // updateBasketDebounced('remove');
   };
 
-  if (votes > 0 || votes.toString() === '') {
+  if (!actionDescriptor) return null;
+  if (budgetingDisabledReason === 'idea_not_in_current_phase') return null;
+
+  if (localVotes.current > 0 || localVotes.current.toString() === '') {
     return (
       <Box
         width="100%"
@@ -216,26 +302,24 @@ const AssignMultipleVotesControl = ({ projectId, ideaId }: Props) => {
         >
           <StyledBox
             style={{
-              width: `${votes.toString().length * 20}px`,
+              width: `${localVotes.current.toString().length * 20}px`,
               maxWidth: `${isMobileOrSmaller ? '100px' : '160px'}`,
             }}
           >
             <Input
-              value={votes.toString()}
+              value={localVotes.current.toString()}
               onChange={onTextInputChange}
               disabled={!isNilOrError(basket?.data?.attributes.submitted_at)}
               type="number"
               min="0"
               onBlur={() => {
-                if (votes.toString() === '') {
-                  setVotes(0);
-                }
+                onTextInputChange;
               }}
               ariaLabel={formatMessage(messages.inputTextVotes)}
             />
           </StyledBox>
           <Text fontSize="m" ml="8px" my="auto" aria-live="polite">
-            {formatMessage(messages.xVotes, { votes })}
+            {formatMessage(messages.xVotes, { votes: localVotes.current })}
           </Text>
         </Box>
         {!basket?.data?.attributes.submitted_at && (

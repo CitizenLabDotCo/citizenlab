@@ -55,7 +55,13 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
   const { mutate: updateBasket } = useUpdateBasket();
   const { data: basketsIdeas } = useBasketsIdeas(basket?.data.id);
 
-  console.log({ basketsIdeas });
+  const currentBasketsIdeas: { ideaId: string; votes: number }[] = [];
+
+  basketsIdeas?.data.map((basketIdea) => {
+    const ideaId = basketIdea.relationships.idea.data['id'];
+    const votes = basketIdea.attributes.votes;
+    currentBasketsIdeas.push({ ideaId, votes });
+  });
 
   // Listen for budgeting exceeded error
   useEffect(() => {

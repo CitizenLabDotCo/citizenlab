@@ -27,7 +27,6 @@ describe('useUpdateBasket', () => {
     act(() => {
       result.current.mutate({
         id: 'id',
-        baskets_ideas_attributes: [{ idea_id: 'ideaId' }],
         participation_context_type: 'Phase',
       });
     });
@@ -49,7 +48,6 @@ describe('useUpdateBasket', () => {
     act(() => {
       result.current.mutate({
         id: 'id',
-        baskets_ideas_attributes: [{ idea_id: 'ideaId' }],
         participation_context_type: 'Phase',
       });
     });
