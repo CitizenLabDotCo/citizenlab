@@ -1,4 +1,4 @@
-pt:
+pt-BR:
   smart_group_rules:
     is_empty: "%{property} não contém nenhum valor"
     not_is_empty: "%{property} tem qualquer valor"

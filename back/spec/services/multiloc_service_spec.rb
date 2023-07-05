@@ -43,7 +43,7 @@ describe MultilocService do
     it 'falls back to the first available translation when no tenant locale is available' do
       translations = {
         'de-DE': 'wort',
-        pt: 'worto'
+        'pt-BR': 'worto'
       }
       expect(service.t(translations, user)).to eq 'wort'
     end
