@@ -648,6 +648,7 @@
   "app.containers.App.appMetaDescription": "Bienvenido a la plataforma de participación en línea de {orgName}. \n¡Explora proyectos locales y participa en la discusión!",
   "app.containers.App.loading": "Cargando...",
   "app.containers.App.metaTitle": "Plataforma de participación ciudadana {orgName} | CitizenLab",
+  "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Ya existe una cuenta con este correo electrónico. Puedes cerrar sesión, iniciar sesión con esta dirección de correo electrónico y verificar tu cuenta en la página de configuración.",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Por favor, introduzca un token",
   "app.containers.Authentication.steps.Invitation.token": "Token",
   "app.containers.CampaignsConsentForm.ally_categoryLabel": "Emails en esta categoría",
