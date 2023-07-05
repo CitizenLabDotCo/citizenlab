@@ -9,9 +9,9 @@ type IMapConfigUpdate = {
   id: string;
 } & IMapConfigAttributes;
 
-const updateMapConfig = ({ id, projectId, ...map_config }: IMapConfigUpdate) =>
+const updateMapConfig = ({ projectId, ...map_config }: IMapConfigUpdate) =>
   fetcher<IMapConfig>({
-    path: `/projects/${projectId}/map_config/${id}`,
+    path: `/projects/${projectId}/map_config`,
     action: 'patch',
     body: { map_config },
   });

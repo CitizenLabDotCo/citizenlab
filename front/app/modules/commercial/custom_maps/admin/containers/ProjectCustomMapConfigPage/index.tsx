@@ -139,7 +139,6 @@ const ProjectCustomMapConfigPage = memo<
   };
 
   useEffect(() => {
-    // create project mapConfig if it doesn't yet exist
     if (projectId && !isNilOrError(appConfig) && mapConfig === null) {
       createProjectMapConfig({
         projectId,
