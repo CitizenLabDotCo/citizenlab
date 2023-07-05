@@ -25,12 +25,18 @@ class BasketsIdea < ApplicationRecord
   belongs_to :basket
   belongs_to :idea
 
+  before_validation :assign_by_voting_method
+
   validates :idea, :basket, presence: true
   validates :idea_id, uniqueness: { scope: :basket_id }
   validate :validate_by_voting_method
   validates :votes, numericality: { only_integer: true, greater_than: 0 }
 
   private
+
+  def assign_by_voting_method
+    Factory.instance.voting_method_for(basket.participation_context).assign_baskets_idea self
+  end
 
   def validate_by_voting_method
     Factory.instance.voting_method_for(basket.participation_context).validate_baskets_idea(self)

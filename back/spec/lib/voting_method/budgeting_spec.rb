@@ -55,15 +55,15 @@ RSpec.describe VotingMethod::Budgeting do
     end
   end
 
-  describe '#assign_basket' do
-    it 'overwrites the votes with the budgets' do
-      basket = create(:basket, participation_context: project)
-      [1, 2, 3].map do |budget|
-        create(:baskets_idea, basket: basket, idea: create(:idea, budget: budget, project: project))
-      end
-      voting_method.assign_basket(basket.reload)
-      basket.save!
-      expect(basket.baskets_ideas.map(&:votes)).to contain_exactly 1, 2, 3
+  describe '#assign_baskets_idea' do
+    it 'overwrites the votes with the budget' do
+      idea = create(:idea, budget: 3, project: project)
+      baskets_idea = create(:baskets_idea, basket: create(:basket, participation_context: project), idea: idea, votes: 10)
+
+      voting_method.assign_baskets_idea(baskets_idea.reload)
+      baskets_idea.save!
+
+      expect(baskets_idea.votes).to eq 3
     end
   end
 end
