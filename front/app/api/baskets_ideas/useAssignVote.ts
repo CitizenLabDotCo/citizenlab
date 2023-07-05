@@ -17,13 +17,12 @@ import { getCurrentParticipationContext } from 'api/phases/utils';
 
 interface Props {
   projectId: string;
-  ideaId: string;
 }
 
 // TODO figure out how to derive this
 const EXISTS_IN_BASKET = false;
 
-const useAssignVote = ({ projectId, ideaId }: Props) => {
+const useAssignVote = ({ projectId }: Props) => {
   // api
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
@@ -43,7 +42,7 @@ const useAssignVote = ({ projectId, ideaId }: Props) => {
   const { mutateAsync: updateBasketsIdea } = useUpdateBasketsIdea();
 
   const handleBasketUpdate = useCallback(
-    (newVotes: number) => {
+    (ideaId: string, newVotes: number) => {
       if (!participationContext) return;
 
       if (!basket) {
@@ -107,7 +106,7 @@ const useAssignVote = ({ projectId, ideaId }: Props) => {
     return debounce(handleBasketUpdate, 100);
   }, [handleBasketUpdate]);
 
-  return { assignVote };
+  return assignVote;
 };
 
 export default useAssignVote;

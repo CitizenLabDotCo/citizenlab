@@ -17,7 +17,7 @@ import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 import useIdeaById from 'api/ideas/useIdeaById';
-import useAssignVote from './useAssignVote';
+import useAssignVote from 'api/baskets_ideas/useAssignVote';
 
 // style
 import styled, { useTheme } from 'styled-components';
@@ -95,7 +95,7 @@ const AssignMultipleVotesControl = ({
   const actionDescriptor = idea?.data.attributes.action_descriptor.voting;
   const budgetingDisabledReason = actionDescriptor?.disabled_reason;
 
-  const { assignVote } = useAssignVote({ projectId, ideaId });
+  const assignVote = useAssignVote({ projectId, ideaId });
 
   const onAdd = async (event) => {
     event.stopPropagation();
