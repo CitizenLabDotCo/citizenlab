@@ -140,6 +140,10 @@ module ParticipationContext
     participation_method == 'native_survey'
   end
 
+  def phase?
+    instance_of?(Phase)
+  end
+
   private
 
   def timeline_project?
