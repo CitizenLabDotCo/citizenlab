@@ -8,7 +8,7 @@ import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-const apiPath = '*/projects/:projectId/map_config/:id';
+const apiPath = '*/projects/:projectId/map_config';
 
 const server = setupServer(
   rest.patch(apiPath, (_req, res, ctx) => {
