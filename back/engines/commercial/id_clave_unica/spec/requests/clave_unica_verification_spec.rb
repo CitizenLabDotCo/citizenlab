@@ -157,7 +157,7 @@ describe 'clave_unica verification' do
       end
     end
 
-    context 'when verified registration is completed' do
+    context 'when verified registration is completed by new user' do
       before { new_user.update!(email: Faker::Internet.email) }
 
       it 'does not verify another user and does not delete previously verified new user' do
@@ -175,7 +175,7 @@ describe 'clave_unica verification' do
       end
     end
 
-    context 'when verified registration is not completed' do
+    context 'when verified registration is not completed by new user' do
       it 'successfully verifies another user and deletes previously verified blank new user' do
         get "/auth/clave_unica?token=#{@token}&pathname=/some-page"
         follow_redirect!
