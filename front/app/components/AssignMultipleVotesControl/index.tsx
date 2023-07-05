@@ -95,7 +95,7 @@ const AssignMultipleVotesControl = ({
   const actionDescriptor = idea?.data.attributes.action_descriptor.voting;
   const budgetingDisabledReason = actionDescriptor?.disabled_reason;
 
-  const assignVote = useAssignVote({ projectId, ideaId });
+  const assignVote = useAssignVote({ projectId });
 
   const onAdd = async (event) => {
     event.stopPropagation();
@@ -120,14 +120,14 @@ const AssignMultipleVotesControl = ({
     //   }
     // }
 
-    assignVote(10); // TODO
+    assignVote(ideaId, 10); // TODO
   };
 
   const onRemove = async (event) => {
     event.stopPropagation();
     event?.preventDefault();
 
-    assignVote(10); // TODO
+    assignVote(ideaId, 10); // TODO
   };
 
   const onTextInputChange = async (_event) => {

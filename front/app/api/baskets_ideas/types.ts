@@ -1,6 +1,5 @@
 import { Keys } from 'utils/cl-react-query/types';
 import basketsIdeasKeys from './keys';
-import { IRelationship } from 'typings';
 
 export type BasketsIdeasKeys = Keys<typeof basketsIdeasKeys>;
 
@@ -12,7 +11,16 @@ export interface IBasketsIdeaData {
   };
   relationships: {
     idea: {
-      data: IRelationship[];
+      data: {
+        id: string;
+        type: 'idea';
+      };
+    };
+    basket: {
+      data: {
+        id: string;
+        type: 'basket';
+      };
     };
   };
 }
@@ -35,7 +43,7 @@ export interface IAddBasketsIdea {
 }
 export interface IUpdateBasketsIdea {
   basketId: string;
-  basketsIdeaId: string;
+  basketIdeaId: string;
   votes: number;
 }
 

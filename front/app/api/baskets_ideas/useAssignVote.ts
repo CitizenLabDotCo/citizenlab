@@ -5,6 +5,7 @@ import { debounce } from 'lodash-es';
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
 import useBasket from 'api/baskets/useBasket';
+import useBasketsIdeas from './useBasketsIdeas';
 
 // mutations
 import useAddBasket from 'api/baskets/useAddBasket';
@@ -19,9 +20,6 @@ interface Props {
   projectId: string;
 }
 
-// TODO figure out how to derive this
-const EXISTS_IN_BASKET = false;
-
 const useAssignVote = ({ projectId }: Props) => {
   // api
   const { data: project } = useProjectById(projectId);
@@ -34,12 +32,27 @@ const useAssignVote = ({ projectId }: Props) => {
   const basketId = participationContext?.relationships?.user_basket?.data?.id;
 
   const { data: basket } = useBasket(basketId);
+  const { data: basketIdeas } = useBasketsIdeas(basketId);
 
   // mutations
   const { mutateAsync: deleteBasketsIdea } = useDeleteBasketsIdea();
   const { mutateAsync: addBasket } = useAddBasket(projectId);
   const { mutateAsync: addBasketsIdea } = useAddBasketsIdea();
   const { mutateAsync: updateBasketsIdea } = useUpdateBasketsIdea();
+
+  const basketIdeaIdPerIdeaId = useMemo<Record<string, string>>(() => {
+    if (!basketIdeas) return {};
+
+    return basketIdeas.data.reduce((acc, basketIdea) => {
+      const ideaId = basketIdea.relationships.idea.data.id;
+      const basketIdeaId = basketIdea.id;
+
+      return {
+        ...acc,
+        [ideaId]: basketIdeaId,
+      };
+    }, {});
+  }, [basketIdeas]);
 
   const handleBasketUpdate = useCallback(
     (ideaId: string, newVotes: number) => {
@@ -65,7 +78,9 @@ const useAssignVote = ({ projectId }: Props) => {
       }
 
       if (basket) {
-        if (!EXISTS_IN_BASKET) {
+        const existsInBasket = ideaId in basketIdeaIdPerIdeaId;
+
+        if (!existsInBasket) {
           // Add new baskets idea
           addBasketsIdea({
             basketId: basket.data.id,
@@ -73,16 +88,18 @@ const useAssignVote = ({ projectId }: Props) => {
             votes: newVotes,
           });
         } else {
+          const basketIdeaId = basketIdeaIdPerIdeaId[ideaId];
+
           if (newVotes === 0) {
             deleteBasketsIdea({
               basketId: basket.data.id,
-              basketIdeaId: ideaId,
+              basketIdeaId,
             });
           } else {
             // Update existing baskets idea
             updateBasketsIdea({
               basketId: basket.data.id,
-              basketsIdeaId: ideaId,
+              basketIdeaId,
               votes: newVotes,
             });
           }
@@ -95,9 +112,9 @@ const useAssignVote = ({ projectId }: Props) => {
       deleteBasketsIdea,
       updateBasketsIdea,
       basket,
-      ideaId,
       participationContext,
       phases,
+      basketIdeaIdPerIdeaId,
     ]
   );
 

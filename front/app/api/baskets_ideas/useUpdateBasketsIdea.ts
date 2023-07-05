@@ -7,7 +7,7 @@ import basketsKeys from 'api/baskets/keys';
 
 export const updateBasketsIdea = async (requestBody: IUpdateBasketsIdea) =>
   fetcher<IBasketsIdea>({
-    path: `/baskets_ideas/${requestBody.basketsIdeaId}`,
+    path: `/baskets_ideas/${requestBody.basketIdeaId}`,
     action: 'patch',
     body: {
       baskets_idea: {

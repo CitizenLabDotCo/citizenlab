@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
 import useBasketsIdeas from './useBasketsIdeas';
@@ -14,6 +14,7 @@ interface Props {
 const useCumulativeVoting = ({ projectId }: Props) => {
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
+  const assignVotes = useAssignVote({ projectId });
 
   const participationContext = getCurrentParticipationContext(
     project?.data,
@@ -22,14 +23,46 @@ const useCumulativeVoting = ({ projectId }: Props) => {
   const basketId = participationContext?.relationships?.user_basket?.data?.id;
   const { data: basketIdeas } = useBasketsIdeas(basketId);
 
-  const assignVote = useAssignVote({ projectId });
+  const remoteVotesPerIdea = useMemo<Record<string, number>>(() => {
+    if (!basketIdeas) return {};
 
-  const [votesPerIdea, setVotesPerIdea] = useState();
+    return basketIdeas.data.reduce((acc, basketIdea) => {
+      const votes = basketIdea.attributes.votes;
+      const ideaId = basketIdea.relationships.idea.data.id;
 
-  const;
+      return {
+        ...acc,
+        [ideaId]: votes,
+      };
+    }, {});
+  }, [basketIdeas]);
+
+  const [votesPerIdea, setVotesPerIdea] = useState<Record<string, number>>({});
+
+  const getVotes = useCallback(
+    (ideaId: string) => {
+      if (ideaId in votesPerIdea) return votesPerIdea[ideaId];
+      if (ideaId in remoteVotesPerIdea) return remoteVotesPerIdea[ideaId];
+      return 0;
+    },
+    [votesPerIdea, remoteVotesPerIdea]
+  );
+
+  const setVotes = useCallback(
+    (ideaId: string, newVotes: number) => {
+      setVotesPerIdea((votesPerIdea) => ({
+        ...votesPerIdea,
+        [ideaId]: newVotes,
+      }));
+
+      assignVotes(ideaId, newVotes);
+    },
+    [assignVotes]
+  );
 
   return {
-    votesPerIdea,
+    getVotes,
+    setVotes,
   };
 };
 

@@ -15,6 +15,7 @@ import { useSearchParams } from 'react-router-dom';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
+import useCumulativeVoting from 'api/baskets_ideas/useCumulativeVoting';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -66,6 +67,8 @@ const IdeasContainer = memo<InnerProps>(({ project, className }) => {
   const sortParam = searchParams.get('sort') as Sort | null;
   const searchParam = searchParams.get('search');
   const topicsParam = searchParams.get('topics');
+
+  useCumulativeVoting({ projectId: project.id });
 
   const ideaQueryParameters = useMemo<QueryParameters>(
     () => ({
