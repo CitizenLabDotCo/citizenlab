@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { debounce } from 'lodash-es';
 
 // api
@@ -19,6 +19,9 @@ interface Props {
   projectId: string;
   ideaId: string;
 }
+
+// TODO figure out how to derive this
+const BASKET_EXISTS = false;
 
 const useAssignVote = ({ projectId, ideaId }: Props) => {
   // api
@@ -63,7 +66,7 @@ const useAssignVote = ({ projectId, ideaId }: Props) => {
       }
 
       if (basket) {
-        if (votes === 0) {
+        if (!BASKET_EXISTS) {
           // Add new baskets idea
           addBasketsIdea({
             basketId: basket.data.id,
@@ -71,7 +74,7 @@ const useAssignVote = ({ projectId, ideaId }: Props) => {
             votes,
           });
         } else {
-          if (votes) {
+          if (votes === 0) {
             deleteBasketsIdea({
               basketId: basket.data.id,
               basketIdeaId: ideaId,

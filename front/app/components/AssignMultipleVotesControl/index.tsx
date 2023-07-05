@@ -33,7 +33,7 @@ import messages from './messages';
 
 // typings
 import { IBasket } from 'api/baskets/types';
-import { IBasketsIdeaData, IBasketsIdeasData } from 'api/baskets_ideas/types';
+import { IBasketsIdeasData } from 'api/baskets_ideas/types';
 
 export const VOTES_EXCEEDED_ERROR_EVENT = 'votesExceededError';
 export const VOTES_PER_OPTION_EXCEEDED_ERROR_EVENT =
@@ -102,8 +102,8 @@ const AssignMultipleVotesControlInner = ({
   projectId,
   ideaId,
   basket,
-  basketIdeas,
-}: InnerProps) => {
+}: // basketIdeas,
+InnerProps) => {
   const [votes, _setVotes] = useState(0);
 
   const theme = useTheme();
@@ -160,7 +160,7 @@ const AssignMultipleVotesControlInner = ({
   if (!actionDescriptor) return null;
   if (budgetingDisabledReason === 'idea_not_in_current_phase') return null;
 
-  if (VOTES > 0) {
+  if (votes > 0) {
     return (
       <Box
         width="100%"
@@ -194,12 +194,12 @@ const AssignMultipleVotesControlInner = ({
         >
           <StyledBox
             style={{
-              width: `${VOTES.toString().length * 20}px`,
+              width: `${votes.toString().length * 20}px`,
               maxWidth: `${isMobileOrSmaller ? '100px' : '160px'}`,
             }}
           >
             <Input
-              value={VOTES.toString()}
+              value={votes.toString()}
               onChange={onTextInputChange}
               disabled={!!basket?.data?.attributes.submitted_at}
               type="number"
@@ -211,7 +211,7 @@ const AssignMultipleVotesControlInner = ({
             />
           </StyledBox>
           <Text fontSize="m" ml="8px" my="auto" aria-live="polite">
-            {formatMessage(messages.xVotes, { votes: VOTES })}
+            {formatMessage(messages.xVotes, { votes })}
           </Text>
         </Box>
         {!basket?.data?.attributes.submitted_at && (
