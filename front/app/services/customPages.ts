@@ -92,23 +92,6 @@ export function listCustomPages(streamParams: IStreamParams | null = null) {
   });
 }
 
-enum POLICY_PAGE {
-  termsAndConditions = 'terms-and-conditions',
-  privacyPolicy = 'privacy-policy',
-}
-
-export const POLICY_PAGES: TPolicyPage[] = [
-  POLICY_PAGE.termsAndConditions,
-  POLICY_PAGE.privacyPolicy,
-];
-
-export function isPolicyPageSlug(slug: string): slug is TPolicyPage {
-  const termsAndConditionsSlug: TPolicyPage = POLICY_PAGE.termsAndConditions;
-  const privacyPolicySlug: TPolicyPage = POLICY_PAGE.privacyPolicy;
-
-  return slug === termsAndConditionsSlug || slug === privacyPolicySlug;
-}
-
 export type TPolicyPage = 'terms-and-conditions' | 'privacy-policy';
 
 export type TCustomPageCode =

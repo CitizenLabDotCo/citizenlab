@@ -5,14 +5,22 @@ import { injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import useCustomPageById from 'api/custom_pages/useCustomPageById';
 import { isNilOrError } from 'utils/helperUtils';
-import { isPolicyPageSlug } from 'services/customPages';
+
 import { SectionField } from 'components/admin/Section';
 import useNavbarItem from 'hooks/useNavbarItem';
+import { POLICY_PAGE, TPolicyPage } from 'api/custom_pages/types';
 
 type Props = {
   pageId: string | null;
   navbarItemId: string | null;
 };
+
+function isPolicyPageSlug(slug: string): slug is TPolicyPage {
+  const termsAndConditionsSlug: TPolicyPage = POLICY_PAGE.termsAndConditions;
+  const privacyPolicySlug: TPolicyPage = POLICY_PAGE.privacyPolicy;
+
+  return slug === termsAndConditionsSlug || slug === privacyPolicySlug;
+}
 
 const NavbarTitleField = ({
   pageId,

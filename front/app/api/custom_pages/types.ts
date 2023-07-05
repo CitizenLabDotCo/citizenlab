@@ -93,3 +93,13 @@ export type TCustomPageCode =
   // proposals here is the proposals about page (/pages/initiatives),
   // not the proposals index page (/initiatives).
   | 'proposals';
+
+export enum POLICY_PAGE {
+  termsAndConditions = 'terms-and-conditions',
+  privacyPolicy = 'privacy-policy',
+}
+
+export const POLICY_PAGES: TPolicyPage[] = [
+  POLICY_PAGE.termsAndConditions,
+  POLICY_PAGE.privacyPolicy,
+];
