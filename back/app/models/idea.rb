@@ -156,6 +156,11 @@ class Idea < ApplicationRecord
     publication_status_change == %w[draft published] || publication_status_change == [nil, 'published']
   end
 
+  def custom_form
+    participation_context = creation_phase || project
+    participation_context.custom_form || CustomForm.new(participation_context: participation_context)
+  end
+
   def input_term
     return project.input_term if project.continuous?
 
