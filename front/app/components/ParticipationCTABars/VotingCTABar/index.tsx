@@ -4,7 +4,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { Button, Icon, Box, Text } from '@citizenlab/cl2-component-library';
 import { ParticipationCTAContent } from 'components/ParticipationCTABars/ParticipationCTAContent';
 import ErrorToast from 'components/ErrorToast';
-import VotesBudget from 'components/VotesBudget';
+import VotesCounter from 'components/VotesCounter';
 
 // hooks
 import { useTheme } from 'styled-components';
@@ -171,7 +171,7 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
               textAlign="left"
               aria-live="polite"
             >
-              <VotesBudget projectId={project.id} />
+              <VotesCounter projectId={project.id} />
             </Text>
           )
         }
