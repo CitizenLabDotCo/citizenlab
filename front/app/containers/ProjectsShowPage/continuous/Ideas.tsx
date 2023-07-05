@@ -15,7 +15,7 @@ import { useSearchParams } from 'react-router-dom';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
-import useCumulativeVoting from 'api/baskets_ideas/useCumulativeVoting';
+import { CumulativeVotingContext } from 'api/baskets_ideas/useCumulativeVoting';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -68,10 +68,6 @@ const IdeasContainer = memo<InnerProps>(({ project, className }) => {
   const searchParam = searchParams.get('search');
   const topicsParam = searchParams.get('topics');
 
-  const cumulativeVotingInterface = useCumulativeVoting({
-    projectId: project.id,
-  });
-
   const ideaQueryParameters = useMemo<QueryParameters>(
     () => ({
       'page[number]': 1,
@@ -100,53 +96,54 @@ const IdeasContainer = memo<InnerProps>(({ project, className }) => {
       project.attributes.participation_method === 'voting';
 
     return (
-      <Container
-        id="e2e-continuos-project-idea-cards"
-        className={className || ''}
-      >
-        <StyledContentContainer id="project-ideas" maxWidth={maxPageWidth}>
-          <SectionContainer>
-            {isVotingProject && (
-              <>
-                <StatusModule
-                  votingMethod={project?.attributes.voting_method}
-                  project={project}
-                />
-              </>
-            )}
-            {!isVotingProject && (
-              <StyledProjectPageSectionTitle>
-                <FormattedMessage
-                  {...getInputTermMessage(inputTerm, {
-                    idea: messages.ideas,
-                    option: messages.options,
-                    project: messages.projects,
-                    question: messages.questions,
-                    issue: messages.issues,
-                    contribution: messages.contributions,
-                  })}
-                />
-              </StyledProjectPageSectionTitle>
-            )}
+      <CumulativeVotingContext projectId={project.id}>
+        <Container
+          id="e2e-continuos-project-idea-cards"
+          className={className || ''}
+        >
+          <StyledContentContainer id="project-ideas" maxWidth={maxPageWidth}>
+            <SectionContainer>
+              {isVotingProject && (
+                <>
+                  <StatusModule
+                    votingMethod={project?.attributes.voting_method}
+                    project={project}
+                  />
+                </>
+              )}
+              {!isVotingProject && (
+                <StyledProjectPageSectionTitle>
+                  <FormattedMessage
+                    {...getInputTermMessage(inputTerm, {
+                      idea: messages.ideas,
+                      option: messages.options,
+                      project: messages.projects,
+                      question: messages.questions,
+                      issue: messages.issues,
+                      contribution: messages.contributions,
+                    })}
+                  />
+                </StyledProjectPageSectionTitle>
+              )}
 
-            <IdeaCardsWithoutFiltersSidebar
-              ideaQueryParameters={ideaQueryParameters}
-              onUpdateQuery={updateSearchParams}
-              projectId={project.id}
-              participationMethod={project.attributes.participation_method}
-              defaultSortingMethod={ideaQueryParameters.sort}
-              participationContextId={project.id}
-              participationContextType="project"
-              showViewToggle={true}
-              defaultView={project.attributes.presentation_mode}
-              invisibleTitleMessage={messages.a11y_titleInputs}
-              showDropdownFilters={isVotingProject ? false : true}
-              showSearchbar={isVotingProject ? false : true}
-              cumulativeVotingInterface={cumulativeVotingInterface}
-            />
-          </SectionContainer>
-        </StyledContentContainer>
-      </Container>
+              <IdeaCardsWithoutFiltersSidebar
+                ideaQueryParameters={ideaQueryParameters}
+                onUpdateQuery={updateSearchParams}
+                projectId={project.id}
+                participationMethod={project.attributes.participation_method}
+                defaultSortingMethod={ideaQueryParameters.sort}
+                participationContextId={project.id}
+                participationContextType="project"
+                showViewToggle={true}
+                defaultView={project.attributes.presentation_mode}
+                invisibleTitleMessage={messages.a11y_titleInputs}
+                showDropdownFilters={isVotingProject ? false : true}
+                showSearchbar={isVotingProject ? false : true}
+              />
+            </SectionContainer>
+          </StyledContentContainer>
+        </Container>
+      </CumulativeVotingContext>
     );
   }
 

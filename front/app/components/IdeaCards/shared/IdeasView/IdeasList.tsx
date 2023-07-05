@@ -10,7 +10,6 @@ import EmptyIdeas from './EmptyIdeas';
 import { IIdeaData } from 'api/ideas/types';
 import { IParticipationContextType } from 'typings';
 import { getMethodConfig } from 'utils/participationMethodUtils';
-import { CumulativeVotingInterface } from 'api/baskets_ideas/useCumulativeVoting';
 
 const StyledIdeaCard = styled(IdeaCard)`
   flex-grow: 0;
@@ -70,7 +69,6 @@ interface Props {
   hideIdeaStatus?: boolean;
   goBackMode?: 'browserGoBackButton' | 'goToProject';
   phaseId?: string;
-  cumulativeVotingInterface?: CumulativeVotingInterface;
 }
 
 const IdeasList = ({
@@ -91,7 +89,6 @@ const IdeasList = ({
   hideIdeaStatus = false,
   goBackMode,
   phaseId,
-  cumulativeVotingInterface,
 }: Props) => {
   const theme = useTheme();
   const config = participationMethod && getMethodConfig(participationMethod);
@@ -130,7 +127,6 @@ const IdeasList = ({
                     hideIdeaStatus={hideIdeaStatus}
                     goBackMode={goBackMode}
                     viewingPhaseId={phaseId}
-                    cumulativeVotingInterface={cumulativeVotingInterface}
                   />
                 );
               })}

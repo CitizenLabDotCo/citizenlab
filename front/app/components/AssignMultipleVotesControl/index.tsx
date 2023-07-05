@@ -17,6 +17,7 @@ import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 import useIdeaById from 'api/ideas/useIdeaById';
+import useCumulativeVoting from 'api/baskets_ideas/useCumulativeVoting';
 
 // style
 import styled, { useTheme } from 'styled-components';
@@ -29,7 +30,6 @@ import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { useIntl } from 'utils/cl-intl';
 import useLocalize from 'hooks/useLocalize';
 import messages from './messages';
-import { CumulativeVotingInterface } from 'api/baskets_ideas/useCumulativeVoting';
 
 export const VOTES_EXCEEDED_ERROR_EVENT = 'votesExceededError';
 export const VOTES_PER_OPTION_EXCEEDED_ERROR_EVENT =
@@ -62,17 +62,17 @@ interface Props {
   projectId: string;
   ideaId: string;
   fillWidth?: boolean;
-  cumulativeVotingInterface: CumulativeVotingInterface;
 }
 
 const AssignMultipleVotesControl = ({
   projectId,
   ideaId,
   fillWidth,
-  cumulativeVotingInterface,
 }: Props) => {
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
+  const { getVotes, setVotes, userHasVotesLeft } = useCumulativeVoting();
+  const votes = getVotes(ideaId);
 
   // participation context
   const currentPhase = phases ? getCurrentPhase(phases.data) : null;
@@ -93,9 +93,6 @@ const AssignMultipleVotesControl = ({
   // action descriptors
   const actionDescriptor = idea?.data.attributes.action_descriptor.voting;
   const budgetingDisabledReason = actionDescriptor?.disabled_reason;
-
-  const votes = cumulativeVotingInterface.getVotes(ideaId);
-  const { userHasVotesLeft } = cumulativeVotingInterface;
 
   const onAdd = async (event) => {
     event.stopPropagation();
@@ -120,14 +117,14 @@ const AssignMultipleVotesControl = ({
     //   }
     // }
 
-    cumulativeVotingInterface.setVotes(ideaId, votes + 1);
+    setVotes(ideaId, votes + 1);
   };
 
   const onRemove = async (event) => {
     event.stopPropagation();
     event?.preventDefault();
 
-    cumulativeVotingInterface.setVotes(ideaId, votes - 1);
+    setVotes(ideaId, votes - 1);
   };
 
   const onTextInputChange = async (_event) => {

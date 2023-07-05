@@ -1,4 +1,10 @@
-import { useState, useMemo, useCallback } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useMemo,
+  useCallback,
+} from 'react';
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
 import useBasketsIdeas from './useBasketsIdeas';
@@ -9,17 +15,47 @@ import { getCurrentParticipationContext } from 'api/phases/utils';
 
 interface Props {
   projectId: string;
+  children: React.ReactNode;
 }
 
-export interface CumulativeVotingInterface {
+const CumulativeVotingInterfaceContext =
+  createContext<CumulativeVotingInterface | null>(null);
+
+export const CumulativeVotingContext = ({ projectId, children }: Props) => {
+  const { data: project } = useProjectById(projectId);
+
+  if (!(project?.data.attributes.voting_method === 'multiple_voting')) {
+    return <>{children}</>;
+  }
+
+  return (
+    <CumulativeVotingContextInner projectId={projectId}>
+      {children}
+    </CumulativeVotingContextInner>
+  );
+};
+
+const CumulativeVotingContextInner = ({ projectId, children }: Props) => {
+  const cumulativeVotingInterface = useCumulativeVotingInterface(projectId);
+
+  return (
+    <CumulativeVotingInterfaceContext.Provider
+      value={cumulativeVotingInterface}
+    >
+      {children}
+    </CumulativeVotingInterfaceContext.Provider>
+  );
+};
+
+interface CumulativeVotingInterface {
   getVotes: (ideaId: string) => number;
   setVotes: (ideaId: string, newVotes: number) => void;
   userHasVotesLeft: boolean;
 }
 
-const useCumulativeVoting = ({
-  projectId,
-}: Props): CumulativeVotingInterface => {
+const useCumulativeVotingInterface = (
+  projectId: string
+): CumulativeVotingInterface => {
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
   const assignVotes = useAssignVote({ projectId });
@@ -93,6 +129,20 @@ const useCumulativeVoting = ({
     setVotes,
     userHasVotesLeft,
   };
+};
+
+const useCumulativeVoting = () => {
+  const cumulativeVotingInterface = useContext(
+    CumulativeVotingInterfaceContext
+  );
+
+  if (cumulativeVotingInterface === null) {
+    throw new Error(
+      'The useCumulativeVoting hook should only be used within a CumulativeVotingContext.'
+    );
+  }
+
+  return cumulativeVotingInterface;
 };
 
 export default useCumulativeVoting;

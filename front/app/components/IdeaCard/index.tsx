@@ -44,7 +44,6 @@ import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 import { timeAgo } from 'utils/dateUtils';
 import useLocale from 'hooks/useLocale';
 import { IIdea } from 'api/ideas/types';
-import { CumulativeVotingInterface } from 'api/baskets_ideas/useCumulativeVoting';
 
 const BodyWrapper = styled.div`
   display: flex;
@@ -124,7 +123,6 @@ interface Props {
   hideBody?: boolean;
   goBackMode?: 'browserGoBackButton' | 'goToProject';
   viewingPhaseId?: string | null;
-  cumulativeVotingInterface?: CumulativeVotingInterface;
 }
 
 const IdeaLoading = (props: Props) => {
@@ -152,7 +150,6 @@ const CompactIdeaCard = memo<IdeaCardProps>(
     hideBody = false,
     goBackMode = 'browserGoBackButton',
     viewingPhaseId,
-    cumulativeVotingInterface,
   }) => {
     const smallerThanPhone = useBreakpoint('phone');
     const locale = useLocale();
@@ -208,13 +205,12 @@ const CompactIdeaCard = memo<IdeaCardProps>(
             </Box>
           );
         }
-        if (showMultipleVoteControl && cumulativeVotingInterface) {
+        if (showMultipleVoteControl) {
           return (
             <Box display="flex" alignItems="center">
               <AssignMultipleVotesControl
                 projectId={projectId}
                 ideaId={idea.data.id}
-                cumulativeVotingInterface={cumulativeVotingInterface}
               />
             </Box>
           );

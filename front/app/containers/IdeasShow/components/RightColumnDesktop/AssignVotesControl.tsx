@@ -30,11 +30,7 @@ const AssignVotesControl = memo(({ ideaId, projectId }: Props) => {
 
   return (
     <IdeaPageContainer>
-      <AssignMultipleVotesControl
-        ideaId={ideaId}
-        projectId={projectId}
-        cumulativeVotingInterface={'bla' as any}
-      />
+      <AssignMultipleVotesControl ideaId={ideaId} projectId={projectId} />
     </IdeaPageContainer>
   );
 });

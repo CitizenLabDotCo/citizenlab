@@ -7,7 +7,6 @@ import {
 } from 'services/participationContexts';
 import { IParticipationContextType } from 'typings';
 import { IIdeaData } from 'api/ideas/types';
-import { CumulativeVotingInterface } from 'api/baskets_ideas/useCumulativeVoting';
 
 interface Props {
   view: 'card' | 'map';
@@ -26,7 +25,6 @@ interface Props {
   loadingMore: boolean;
   onLoadMore(): void;
   goBackMode?: 'browserGoBackButton' | 'goToProject';
-  cumulativeVotingInterface?: CumulativeVotingInterface;
 }
 
 const IdeasView = ({
@@ -45,7 +43,6 @@ const IdeasView = ({
   loadingMore,
   onLoadMore,
   goBackMode,
-  cumulativeVotingInterface,
 }: Props) => {
   return (
     <>
@@ -68,7 +65,6 @@ const IdeasView = ({
           hideIdeaStatus={hideIdeaStatus}
           goBackMode={goBackMode}
           phaseId={phaseId}
-          cumulativeVotingInterface={cumulativeVotingInterface}
         />
       )}
       {/*
