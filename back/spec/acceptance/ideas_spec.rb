@@ -1206,7 +1206,7 @@ resource 'Ideas' do
               context 'Moving between phases' do
                 let(:phase_ids) { [project.phases.first.id] }
 
-                example_request 'Move the idea from a voting phase' do
+                example_request 'Move the idea from a voting phase', document: false do
                   assert_status 200
                 end
               end
@@ -1215,7 +1215,7 @@ resource 'Ideas' do
                 let(:new_project) { create(:continuous_project) }
                 let(:project_id) { new_project.id }
 
-                example_request 'Move the idea to another (non-voting) project' do
+                example_request 'Move the idea to another (non-voting) project', document: false do
                   assert_status 200
                 end
               end
