@@ -21,7 +21,7 @@ interface Props {
 }
 
 // TODO figure out how to derive this
-const BASKET_EXISTS = false;
+const EXISTS_IN_BASKET = false;
 
 const useAssignVote = ({ projectId, ideaId }: Props) => {
   // api
@@ -43,7 +43,7 @@ const useAssignVote = ({ projectId, ideaId }: Props) => {
   const { mutateAsync: updateBasketsIdea } = useUpdateBasketsIdea();
 
   const handleBasketUpdate = useCallback(
-    (votes: number) => {
+    (newVotes: number) => {
       if (!participationContext) return;
 
       if (!basket) {
@@ -58,7 +58,7 @@ const useAssignVote = ({ projectId, ideaId }: Props) => {
               addBasketsIdea({
                 basketId: basket.data.id,
                 idea_id: ideaId,
-                votes,
+                votes: newVotes,
               });
             },
           }
@@ -66,15 +66,15 @@ const useAssignVote = ({ projectId, ideaId }: Props) => {
       }
 
       if (basket) {
-        if (!BASKET_EXISTS) {
+        if (!EXISTS_IN_BASKET) {
           // Add new baskets idea
           addBasketsIdea({
             basketId: basket.data.id,
             idea_id: ideaId,
-            votes,
+            votes: newVotes,
           });
         } else {
-          if (votes === 0) {
+          if (newVotes === 0) {
             deleteBasketsIdea({
               basketId: basket.data.id,
               basketIdeaId: ideaId,
@@ -84,7 +84,7 @@ const useAssignVote = ({ projectId, ideaId }: Props) => {
             updateBasketsIdea({
               basketId: basket.data.id,
               basketsIdeaId: ideaId,
-              votes,
+              votes: newVotes,
             });
           }
         }
