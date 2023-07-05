@@ -44,6 +44,7 @@ import useProjectFiles from 'api/project_files/useProjectFiles';
 import { useParams } from 'react-router-dom';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAddProject from 'api/projects/useAddProject';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import {
   IUpdatedProjectProperties,
@@ -85,6 +86,7 @@ export type TOnProjectAttributesDiffChangeFunction = (
 
 const AdminProjectsProjectGeneral = () => {
   const { formatMessage } = useIntl();
+  const { data: appConfig } = useAppConfiguration();
   const { projectId } = useParams();
   const { data: project } = useProjectById(projectId);
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
@@ -561,6 +563,7 @@ const AdminProjectsProjectGeneral = () => {
                   onSubmit={handleParticipationContextOnSubmit}
                   onChange={handleParticipationContextOnChange}
                   apiErrors={apiErrors}
+                  appConfig={appConfig}
                 />
               </ParticipationContextWrapper>
             </CSSTransition>
@@ -573,6 +576,7 @@ const AdminProjectsProjectGeneral = () => {
             onSubmit={handleParticipationContextOnSubmit}
             onChange={handleParticipationContextOnChange}
             apiErrors={apiErrors}
+            appConfig={appConfig}
           />
         )}
 

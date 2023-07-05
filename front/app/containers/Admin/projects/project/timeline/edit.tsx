@@ -14,6 +14,7 @@ import usePhases from 'api/phases/usePhases';
 import usePhase from 'api/phases/usePhase';
 import useAddPhase from 'api/phases/useAddPhase';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // Components
 import { Label } from '@citizenlab/cl2-component-library';
@@ -67,6 +68,7 @@ const convertToFileType = (phaseFiles: IPhaseFiles | undefined) => {
 };
 
 const AdminProjectTimelineEdit = () => {
+  const { data: appConfig } = useAppConfiguration();
   const { mutateAsync: addPhaseFile } = useAddPhaseFile();
   const { mutateAsync: deletePhaseFile } = useDeletePhaseFile();
   const { projectId, id: phaseId } = useParams() as {
@@ -330,6 +332,7 @@ const AdminProjectTimelineEdit = () => {
                 onSubmit={handleParticipationContextOnSubmit}
                 onChange={handleParticipationContextOnChange}
                 apiErrors={errors}
+                appConfig={appConfig}
               />
             )}
             {!phase && (
@@ -338,6 +341,7 @@ const AdminProjectTimelineEdit = () => {
                 onSubmit={handleParticipationContextOnSubmit}
                 onChange={handleParticipationContextOnChange}
                 apiErrors={errors}
+                appConfig={appConfig}
               />
             )}
           </SectionField>

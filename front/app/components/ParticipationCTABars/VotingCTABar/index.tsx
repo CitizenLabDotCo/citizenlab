@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useMemo } from 'react';
 
 // Components
 import { Button, Icon, Box, Text } from '@citizenlab/cl2-component-library';
@@ -11,9 +11,6 @@ import { useTheme } from 'styled-components';
 import useBasket from 'api/baskets/useBasket';
 import useUpdateBasket from 'api/baskets/useUpdateBasket';
 
-// events
-import { BUDGET_EXCEEDED_ERROR_EVENT } from 'components/ParticipationCTABars/VotingCTABar/events';
-
 // utils
 import {
   CTABarProps,
@@ -21,23 +18,16 @@ import {
 } from 'components/ParticipationCTABars/utils';
 import { isNilOrError } from 'utils/helperUtils';
 import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
-import eventEmitter from 'utils/eventEmitter';
 
 // i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
-import {
-  VOTES_EXCEEDED_ERROR_EVENT,
-  VOTES_PER_OPTION_EXCEEDED_ERROR_EVENT,
-} from 'components/AssignMultipleVotesControl';
 import useLocale from 'hooks/useLocale';
+import useBasketsIdeas from 'api/baskets_ideas/useBasketsIdeas';
 
 export const VotingCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
   const locale = useLocale();
-  const { formatMessage } = useIntl();
-  const [showError, setShowError] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   const currentPhase = useMemo(() => {
     return getCurrentPhase(phases) || getLastPhase(phases);
@@ -49,48 +39,15 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
 
   const { data: basket } = useBasket(basketId);
   const { mutate: updateBasket } = useUpdateBasket();
+  const { data: basketsIdeas } = useBasketsIdeas(basket?.data.id);
 
-  // Listen for budgeting exceeded error
-  useEffect(() => {
-    const subscription = eventEmitter
-      .observeEvent(BUDGET_EXCEEDED_ERROR_EVENT)
-      .subscribe(() => {
-        setError(formatMessage(messages.budgetExceededError));
-        setShowError(true);
-      });
+  const currentBasketsIdeas: { ideaId: string; votes: number }[] = [];
 
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, [formatMessage]);
-
-  // Listen for voting per option exceeded error
-  useEffect(() => {
-    const subscription = eventEmitter
-      .observeEvent(VOTES_PER_OPTION_EXCEEDED_ERROR_EVENT)
-      .subscribe(() => {
-        setError(formatMessage(messages.votesPerOptionExceededError));
-        setShowError(true);
-      });
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, [formatMessage]);
-
-  // Listen for voting exceeded error
-  useEffect(() => {
-    const subscription = eventEmitter
-      .observeEvent(VOTES_EXCEEDED_ERROR_EVENT)
-      .subscribe(() => {
-        setError(formatMessage(messages.votesExceededError));
-        setShowError(true);
-      });
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, [formatMessage]);
+  basketsIdeas?.data.map((basketIdea) => {
+    const ideaId = basketIdea.relationships.idea.data['id'];
+    const votes = basketIdea.attributes.votes;
+    currentBasketsIdeas.push({ ideaId, votes });
+  });
 
   if (hasProjectEndedOrIsArchived(project, currentPhase)) {
     return null;
@@ -178,12 +135,7 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
         hideDefaultParticipationMessage={currentPhase ? true : false}
         timeLeftPosition="left"
       />
-      <ErrorToast
-        errorMessage={error || ''}
-        showError={showError}
-        onClose={() => setShowError(false)}
-        aria-live="polite"
-      />
+      <ErrorToast />
     </>
   );
 };

@@ -1,7 +1,7 @@
 // api
-import { BasketIdeaAttributes, IBasketData } from 'api/baskets/types';
-import { updateBasket } from 'api/baskets/useUpdateBasket';
+import { IBasketData } from 'api/baskets/types';
 import { addBasket } from 'api/baskets/useAddBasket';
+import { fetchBasketsIdeas } from 'api/baskets_ideas/useBasketsIdeas';
 
 // tracks
 import { trackEventByName } from 'utils/analytics';
@@ -13,6 +13,12 @@ import streams from 'utils/streams';
 
 // typings
 import { IParticipationContextType } from 'typings';
+import { getCurrentBasketsIdeas } from 'components/AddToBasketButton/useAssignBudget';
+import { deleteBasketsIdea } from 'api/baskets_ideas/useDeleteBasketsIdea';
+import { addBasketsIdea } from 'api/baskets_ideas/useAddBasketsIdeas';
+import { queryClient } from 'utils/cl-react-query/queryClient';
+import basketsKeys from 'api/baskets/keys';
+import { fetchIdea } from 'api/ideas/useIdeaById';
 
 export interface AssignBudgetParams {
   ideaId: string;
@@ -29,50 +35,48 @@ export const assignBudget =
     basket,
   }: AssignBudgetParams) =>
   async () => {
+    const idea = await fetchIdea({ id: ideaId });
+
     if (!isNil(basket)) {
-      const basketIdeaIds = basket.relationships.ideas.data.map(
-        (idea) => idea.id
+      const basketsIdeas =
+        (await fetchBasketsIdeas({ basketId: basket.id })) || [];
+      const currentBasketIdeas = getCurrentBasketsIdeas(basketsIdeas);
+      const ideaInBasket = currentBasketIdeas.find(
+        (basketIdea) => basketIdea.ideaId === ideaId
       );
-      const isInBasket = basketIdeaIds.includes(ideaId);
-
-      let newIdeas: string[] = [];
-
-      if (isInBasket) {
-        newIdeas = basket.relationships.ideas.data
-          .filter((basketIdea) => basketIdea.id !== ideaId)
-          .map((basketIdea) => basketIdea.id);
-      } else {
-        newIdeas = [
-          ...basket.relationships.ideas.data.map((basketIdea) => basketIdea.id),
-          ideaId,
-        ];
-      }
-
       try {
-        const basketIdeasAttributes: BasketIdeaAttributes = newIdeas.map(
-          (ideaId) => ({
-            idea_id: ideaId,
-          })
-        );
-
-        await updateBasket({
-          id: basket.id,
-          baskets_ideas_attributes: basketIdeasAttributes,
-          submitted: false,
-        });
-        isInBasket
-          ? trackEventByName(tracks.ideaRemovedFromBasket)
-          : trackEventByName(tracks.ideaAddedToBasket);
+        if (ideaInBasket) {
+          await deleteBasketsIdea({
+            basketId: basket.id,
+            basketIdeaId: ideaInBasket.basketsIdeaId,
+          });
+          trackEventByName(tracks.ideaRemovedFromBasket);
+        } else {
+          if (idea) {
+            await addBasketsIdea({
+              basketId: basket.id,
+              idea_id: ideaId,
+              votes: idea.data.attributes.budget || undefined,
+            });
+            queryClient.invalidateQueries({
+              queryKey: basketsKeys.item({ id: basket.id }),
+            });
+            trackEventByName(tracks.ideaAddedToBasket);
+          }
+        }
       } catch (error) {
         streams.fetchAllWith({ dataId: [basket.id] });
       }
     } else {
-      await addBasket({
+      const result = await addBasket({
         participation_context_id: participationContextId,
         participation_context_type: capitalizeParticipationContextType(
           participationContextType
         ),
-        baskets_ideas_attributes: [{ idea_id: ideaId }],
+      });
+      await addBasketsIdea({ basketId: result.data.id, idea_id: ideaId });
+      queryClient.invalidateQueries({
+        queryKey: basketsKeys.item({ id: result.data.id }),
       });
       trackEventByName(tracks.basketCreated);
     }

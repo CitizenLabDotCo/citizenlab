@@ -2,20 +2,14 @@
 
 class BasketPolicy < ApplicationPolicy
   def create?
-    (
-      user&.active? &&
+    user&.active? &&
       (record.user_id == user.id) &&
       ProjectPolicy.new(user, record.participation_context.project).show? &&
       check_voting_allowed(record, user)
-    ) || (
-      user&.active? && UserRoleService.new.can_moderate?(record.participation_context, user)
-    )
   end
 
   def show?
-    user&.active? && (
-      record.user_id == user.id || UserRoleService.new.can_moderate?(record.participation_context, user)
-    )
+    user&.active? && record.user_id == user.id
   end
 
   def update?

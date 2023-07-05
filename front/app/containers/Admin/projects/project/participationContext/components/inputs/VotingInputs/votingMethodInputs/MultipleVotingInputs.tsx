@@ -5,7 +5,7 @@ import messages from '../messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 // components
-import { Input, Box, Text } from '@citizenlab/cl2-component-library';
+import { Input, Box, Text, Error } from '@citizenlab/cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
@@ -13,12 +13,14 @@ import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLoca
 import { ApiErrors } from '../../../..';
 import { VotingAmountInputError } from '../../../shared/styling';
 import { Multiloc } from 'typings';
+
 interface Props {
   voting_max_total?: number | null;
   voting_max_votes_per_idea?: number | null;
   apiErrors: ApiErrors;
   maxTotalVotesError: string | null;
   maxVotesPerOptionError: string | null;
+  voteTermError: string | null;
   voting_term_plural_multiloc?: Multiloc | null;
   voting_term_singular_multiloc?: Multiloc | null;
   handleMaxVotingAmountChange: (newMaxTotalVote: string) => void;
@@ -39,6 +41,7 @@ const MultipleVotingInputs = ({
   apiErrors,
   maxTotalVotesError,
   maxVotesPerOptionError,
+  voteTermError,
 }: Props) => {
   const { formatMessage } = useIntl();
 
@@ -69,6 +72,11 @@ const MultipleVotingInputs = ({
             onChange={handleVoteTermPluralChange}
           />
         </Box>
+        {voteTermError && (
+          <Box mt="4px" maxWidth="400px">
+            <Error text={voteTermError} />
+          </Box>
+        )}
       </SectionField>
 
       <SectionField>

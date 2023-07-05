@@ -29,6 +29,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // intl
 import messages from './messages';
+import useLocale from 'hooks/useLocale';
 
 type StatusModuleProps = {
   votingMethod?: VotingMethod | null;
@@ -50,6 +51,7 @@ const unsubmitBasket = async (
 
 const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
   const theme = useTheme();
+  const locale = useLocale();
   const { data: appConfig } = useAppConfiguration();
   const isSmallerThanPhone = useBreakpoint('phone');
   const { formatMessage } = useIntl();
@@ -101,6 +103,7 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
                 phase,
                 SubmissionState: basketStatus,
                 appConfig,
+                locale,
               })}
           </Text>
           {phase && showDate && (

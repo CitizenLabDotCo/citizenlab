@@ -263,7 +263,9 @@ Rails.application.routes.draw do
         get 'initiatives'
       end
 
-      resources :baskets, except: [:index]
+      resources :baskets, except: [:index] do
+        resources :baskets_ideas, shallow: true
+      end
 
       resources :avatars, only: %i[index show]
     end
