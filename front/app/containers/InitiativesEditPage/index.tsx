@@ -17,7 +17,6 @@ import HasPermission from 'components/HasPermission';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import { PreviousPathnameContext } from 'context';
-import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -56,17 +55,11 @@ interface DataProps {
   authUser: GetAuthUserChildProps;
   locale: GetLocaleChildProps;
   previousPathName: string | null;
-  topics: GetTopicsChildProps;
 }
 
 interface Props extends DataProps {}
 
-const InitiativesEditPage = ({
-  previousPathName,
-  authUser,
-  locale,
-  topics,
-}: Props) => {
+const InitiativesEditPage = ({ previousPathName, authUser, locale }: Props) => {
   const { initiativeId } = useParams() as {
     initiativeId: string;
   };
@@ -113,8 +106,7 @@ const InitiativesEditPage = ({
     isNilOrError(authUser) ||
     isNilOrError(locale) ||
     !initiative ||
-    initiativeImages === undefined ||
-    isNilOrError(topics)
+    initiativeImages === undefined
   ) {
     return null;
   }
@@ -125,7 +117,6 @@ const InitiativesEditPage = ({
     }
   };
 
-  const initiativeTopics = topics.filter((topic) => !isNilOrError(topic));
   return (
     <HasPermission item={initiative.data} action="edit" context={initiative}>
       <InitiativesEditMeta />
@@ -143,7 +134,6 @@ const InitiativesEditPage = ({
           }
           onPublished={onPublished}
           initiativeFiles={files}
-          topics={initiativeTopics}
         />
       </PageLayout>
     </HasPermission>
@@ -153,7 +143,6 @@ const InitiativesEditPage = ({
 const Data = adopt<DataProps, WithRouterProps>({
   authUser: <GetAuthUser />,
   locale: <GetLocale />,
-  topics: <GetTopics excludeCode={'custom'} />,
   previousPathName: ({ render }) => (
     <PreviousPathnameContext.Consumer>
       {render as any}
