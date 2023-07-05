@@ -121,7 +121,7 @@ class Basket < ApplicationRecord
   end
 
   def update_participation_context_counts(count_contexts, update_context)
-    baskets = Basket.where(participation_context: count_contexts).where.not(submitted_at: nil)
+    baskets = Basket.where(participation_context: count_contexts).submitted
     baskets_count = baskets.count
     votes_count = BasketsIdea.where(basket: baskets).sum(:votes)
     update_context.update!(baskets_count: baskets_count, votes_count: votes_count)
