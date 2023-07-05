@@ -116,7 +116,7 @@ const MapLayerConfig = memo<Props & WrappedComponentProps>(
     const { data: mapConfig } = useMapConfig(projectId);
 
     const mapLayer =
-      mapConfig?.data.attributes?.layers?.find(
+      mapConfig?.data?.attributes?.layers?.find(
         (layer) => layer.id === mapLayerId
       ) || undefined;
     const type = getLayerType(mapLayer);

@@ -107,13 +107,13 @@ const Legend = memo<Props>(({ projectId, className }) => {
   }
 
   if (
-    mapConfig?.data.attributes?.legend &&
+    mapConfig?.data?.attributes?.legend &&
     mapConfig.data.attributes.legend.length > 0
   ) {
     hasCustomLegend = true;
     legend = mapConfig.data.attributes.legend;
   } else if (
-    mapConfig?.data.attributes?.layers &&
+    mapConfig?.data?.attributes?.layers &&
     mapConfig.data.attributes.layers.length > 0
   ) {
     legend = mapConfig.data.attributes.layers.map((layer) => ({

@@ -66,7 +66,7 @@ const LeafletConfig = memo<Props>(
         return [];
       }
 
-      return mapConfig.data.attributes.layers as GeoJSONLayer[];
+      return mapConfig?.data?.attributes?.layers as GeoJSONLayer[];
     }, [mapConfig]);
 
     const layerMarker = useCallback(
