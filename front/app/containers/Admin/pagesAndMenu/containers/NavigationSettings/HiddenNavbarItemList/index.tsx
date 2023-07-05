@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 
 // services
 import { getNavbarItemSlug, addNavbarItem } from 'services/navbar';
-import { ICustomPageData, TCustomPageCode } from 'services/customPages';
+import { ICustomPageData, TCustomPageCode } from 'api/custom_pages/types';
 import useDeleteCustomPage from 'api/custom_pages/useDeleteCustomPage';
 
 // hooks

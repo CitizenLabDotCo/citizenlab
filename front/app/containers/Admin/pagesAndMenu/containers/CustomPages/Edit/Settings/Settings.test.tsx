@@ -8,6 +8,7 @@ jest.mock('api/areas/useAreas');
 
 const mockCustomPage: ICustomPageData = {
   id: 'customPageId',
+  type: 'static_page',
   attributes: {
     top_info_section_multiloc: {},
     title_multiloc: { en: 'title' },

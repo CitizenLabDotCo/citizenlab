@@ -28,8 +28,8 @@ jest.mock('services/navbar', () => ({
   getNavbarItemSlug: jest.fn(),
 }));
 
-jest.mock('services/customPages', () => {
-  const original = jest.requireActual('services/customPages');
+jest.mock('api/custom_pages/types', () => {
+  const original = jest.requireActual('api/custom_pages/types');
 
   return {
     ...original,

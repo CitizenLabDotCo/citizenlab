@@ -27,7 +27,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // services
 import { DEFAULT_PAGE_SLUGS } from 'services/navbar';
-import { TCustomPageCode } from 'services/customPages';
+import { TCustomPageCode } from 'api/custom_pages/types';
 import useAuthUser from 'api/me/useAuthUser';
 import useProjects from 'api/projects/useProjects';
 
