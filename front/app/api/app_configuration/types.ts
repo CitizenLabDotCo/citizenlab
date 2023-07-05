@@ -221,6 +221,7 @@ export interface IAppConfigurationSettings {
     duration: boolean;
   };
   seat_based_billing?: AppConfigurationFeature;
+  internal_commenting?: AppConfigurationFeature;
   konveio_document_annotation?: AppConfigurationFeature;
 }
 

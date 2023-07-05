@@ -5,6 +5,7 @@ import initiativesKeys from './keys';
 export type InitiativesKeys = Keys<typeof initiativesKeys>;
 
 export type Sort =
+  | 'trending'
   | 'new'
   | '-new'
   | 'author_name'
@@ -47,6 +48,7 @@ export interface IInitiativeData {
     publication_status: InitiativePublicationStatus;
     likes_count: number;
     comments_count: number;
+    internal_comments_count: number;
     location_point_geojson: GeoJSON.Point;
     location_description: string;
     budget: number | null;

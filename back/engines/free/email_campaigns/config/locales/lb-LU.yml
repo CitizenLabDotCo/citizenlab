@@ -16,7 +16,16 @@ lb:
       "initiative_published": Verëffentlechung vu mengem Virschlag
       "invite_received": Invitatioun
       "invite_reminder": Invitatiounserënnerung
+      "internal_comment_on_idea_assigned_to_you": Interne Kommentar zum Input, deen mir zougewisen ass
+      "internal_comment_on_idea_you_commented_internally_on": Interne Commentaire op Input Ech kommentéiert intern op
+      "internal_comment_on_idea_you_moderate": Intern Kommentar op Input am Projet oder Dossier ech verwalten
+      "internal_comment_on_initiative_assigned_to_you": Interne Kommentar iwwer d'Propositioun, déi mir zougewisen ass
+      "internal_comment_on_initiative_you_commented_internally_on": Interne Commentaire zu Propositioun ech intern kommentéiert
+      "internal_comment_on_unassigned_initiative": Intern Kommentar iwwer net zougewisen Propositioun
+      "internal_comment_on_unassigned_unmoderated_idea": Intern Kommentar iwwer net zougewisen Input am net verwalteten Projet
+      "internal_comment_on_your_internal_comment": Interne Kommentar zu mengem internen Kommentar
       "mention_in_official_feedback": Ernimmung an engem Update
+      "mention_in_internal_comment": Ernimmen an engem internen Commentaire
       "new_comment_for_admin": Neie Kommentar an engem Projet, deen ech moderéieren
       "new_comment_on_commented_idea": Neie Kommentar zu enger Iddi, déi ech kommentéiert hunn
       "new_comment_on_commented_initiative": Neie Kommentar zu enger Virschlag, deen ech kommentéiert hunn
@@ -215,6 +224,12 @@ lb:
       main_header: 'Leit schwätzen iwwer Iech'
       subject: 'Et huet een Iech op der Plattform vun %{organizationName} ernimmt'
       preheader: '%{commentAuthor} huet Iech an engem Kommentar ernimmt'
+    mention_in_internal_comment:
+      cta_reply_to: 'Kuckt de Kommentar vum %{firstName}'
+      event_description: '%{authorNameFull} huet Iech an engem internen Kommentar ernimmt.'
+      subject: '%{firstName} huet Iech an engem internen Kommentar ernimmt.'
+      main_header: '%{authorNameFirst} huet Iech an engem internen Kommentar ernimmt.'
+      preheader: '%{authorNameFull} huet Iech an engem internen Kommentar ernimmt.'
     moderator_digest:
       subject: 'Wéchentlechen Bericht fir Projetsmanageren vum %{time}'
       preheader: 'Zesummefaassung fir Projetsmanagere vun %{organizationName}'
@@ -298,6 +313,54 @@ lb:
       main_header: '%{authorName} huet op Äre Kommentar geäntwert'
       preheader: '%{authorName} huet op de Kommentar op der Plattform %{organizationName} geäntwert'
       replied: '%{authorFirstName} huet geäntwert:'
+    internal_comment_on_your_internal_comment:
+      cta_reply_to: 'Kuckt de Kommentar vum %{firstName}'
+      event_description: '%{authorNameFull} kommentéiert Ären internen Kommentar.'
+      subject: 'Dir hutt e Kommentar zu Ärem internen Kommentar op ''%{post}'' kritt'
+      main_header: 'Dir hutt e Kommentar zu Ärem internen Kommentar op ''%{post}'' kritt'
+      preheader: '%{authorName} huet op Ären interne Kommentar op ''%{post}'' geäntwert'
+    internal_comment_on_idea_assigned_to_you:
+      cta_reply_to: 'Kuckt de Kommentar vum %{firstName}'
+      event_description: '%{authorNameFull} kommentéiert intern op en Input deen Iech zougewisen gouf.'
+      subject: '''%{post}'' huet en neien internen Kommentar'
+      main_header: '''%{post}'' huet en neien internen Kommentar'
+      preheader: '''%{post}'' huet en neien internen Kommentar'
+    internal_comment_on_idea_you_commented_internally_on:
+      cta_reply_to: 'Kuckt de Kommentar vum %{firstName}'
+      event_description: '%{authorNameFull} kommentéiert intern op en Input deen Dir intern kommentéiert hutt.'
+      subject: '''%{post}'' huet en neien internen Kommentar'
+      main_header: '''%{post}'' huet en neien internen Kommentar'
+      preheader: '''%{post}'' huet en neien internen Kommentar'
+    internal_comment_on_idea_you_moderate:
+      cta_reply_to: 'Kuckt de Kommentar vum %{firstName}'
+      event_description: '%{authorNameFull} kommentéiert intern op en Input an engem Projet oder Dossier deen Dir geréiert.'
+      subject: '''%{post}'' huet en neien internen Kommentar'
+      main_header: '''%{post}'' huet en neien internen Kommentar'
+      preheader: '''%{post}'' huet en neien internen Kommentar'
+    internal_comment_on_initiative_assigned_to_you:
+      cta_reply_to: 'Kuckt de Kommentar vum %{firstName}'
+      event_description: '%{authorNameFull} kommentéiert intern op eng Propositioun déi Iech zougewisen gouf.'
+      subject: '''%{post}'' huet en neien internen Kommentar'
+      main_header: '''%{post}'' huet en neien internen Kommentar'
+      preheader: '''%{post}'' huet en neien internen Kommentar'
+    internal_comment_on_initiative_you_commented_internally_on:
+      cta_reply_to: 'Kuckt de Kommentar vum %{firstName}'
+      event_description: '%{authorNameFull} kommentéiert intern op eng Propositioun déi Dir intern kommentéiert hutt.'
+      subject: '''%{post}'' huet en neien internen Kommentar'
+      main_header: '''%{post}'' huet en neien internen Kommentar'
+      preheader: '''%{post}'' huet en neien internen Kommentar'
+    internal_comment_on_unassigned_initiative:
+      cta_reply_to: 'Kuckt de Kommentar vum %{firstName}'
+      event_description: '%{authorNameFull} kommentéiert intern op eng net zougewisen Propositioun.'
+      subject: '''%{post}'' huet en neien internen Kommentar'
+      main_header: '''%{post}'' huet en neien internen Kommentar'
+      preheader: '''%{post}'' huet en neien internen Kommentar'
+    internal_comment_on_unassigned_unmoderated_idea:
+      cta_reply_to: 'Kuckt de Kommentar vum %{firstName}'
+      event_description: '%{authorNameFull} kommentéiert intern op en net zougewisenen Input an engem net verwalteten Projet.'
+      subject: '''%{post}'' huet en neien internen Kommentar'
+      main_header: '''%{post}'' huet en neien internen Kommentar'
+      preheader: '''%{post}'' huet en neien internen Kommentar'
     official_feedback_on_commented_initiative:
       by_author: 'vun %{authorName}'
       updated: '%{officialName} huet geschriwwen:'
@@ -516,12 +579,15 @@ lb:
       remaining_days: 'Deeg iwwereg'
     admin_labels:
       recipient_role:
+        admins: 'An den Admins'
         admins_and_managers: 'Fir Administrateuren & Manager'
+        managers: 'Zu Manager'
         registered_users: 'Fir registréiert Benotzer'
       recipient_segment:
         admins: 'Administrateuren'
         admins_and_managers: 'Administrateuren a Manager'
         admins_and_managers_managing_the_project: 'Administrateuren a Manager déi de Projet managen'
+        managers_managing_the_project: 'Manager déi de Projet managen'
         all_users: 'All Benotzer'
         all_users_who_uploaded_proposals: 'All Benotzer déi Propositioune eropgelueden hunn'
         managers: 'Manager'
@@ -544,6 +610,7 @@ lb:
         content_moderation: 'Inhalt Moderatioun'
         general: 'Général'
         inputs: 'Input'
+        internal_comments: 'Intern Kommentaren'
         permissions: 'Permissiounen'
         projects: 'Projeten'
         proposals: 'Propositioune'
@@ -556,6 +623,15 @@ lb:
         input_is_flagged_as_spam: 'Input gëtt als Spam markéiert'
         input_is_updated: 'Input gëtt aktualiséiert'
         input_status_changes: 'Input Status Ännerungen'
+        internal_comment_is_posted_on_idea_assigned_to_user: 'Interne Kommentar gëtt op Input gepost dem Benotzer zougewisen'
+        internal_comment_is_posted_on_initiative_assigned_to_user: 'Interne Kommentar gëtt op Propositioun gepost dem Benotzer zougewisen'
+        internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'Interne Kommentar gëtt op Input am Projet oder Dossier gepost'
+        internal_comment_is_posted_on_idea_user_has_commented_internally_on: 'Interne Kommentar gëtt op den Input gepost Benotzer huet intern kommentéiert'
+        internal_comment_is_posted_on_idea_user_moderates: 'Interne Kommentar gëtt op Input Benotzer Moderéiert gepost'
+        internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'Interne Kommentar gëtt op Propositioun gepost Benotzer huet intern kommentéiert'
+        internal_comment_is_posted_on_unassigned_initiative: 'Intern Kommentar gëtt op net zougewisen Propositioun gepost'
+        internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Interne Kommentar gëtt op net zougewisenen Input am net verwalteten Projet gepost'
+        user_is_mentioned_in_internal_comment: 'Benotzer gëtt am internen Kommentar ernimmt'
         new_input_is_published: 'Neien Input gëtt publizéiert'
         new_proposal_is_posted: 'Nei Propositioun ass gepost'
         project_phase_changes: 'Projet Phase Ännerungen'
@@ -575,5 +651,6 @@ lb:
         proposal_is_published: 'Propositioun ass publizéiert'
         user_registers_for_the_first_time: 'Benotzer registréiert fir d''éischte Kéier'
         user_replies_to_comment: 'Benotzer Äntwerten op Commentaire'
+        user_replies_to_internal_comment: 'Benotzer Äntwerten op intern Kommentar'
         7_days_after_invite_is_sent: '7 Deeg no der Invitatioun geschéckt'
         7_days_before_the_project_changes_phase: '7 Deeg virum Projet Ännerungen Phas'

@@ -18,8 +18,8 @@ import { IMapConfigData } from '../api/map_config/types';
 
 export const getCenter = (
   centerLatLng: LatLngTuple | null | undefined,
-  appConfig: IAppConfigurationData | undefined | null | Error,
-  mapConfig: IMapConfigData | undefined
+  mapConfig: IMapConfigData | undefined,
+  appConfig: IAppConfigurationData | undefined
 ) => {
   const mapConfigLat = !isNilOrError(mapConfig)
     ? mapConfig?.attributes.center_geojson?.coordinates[1]

@@ -34,22 +34,30 @@ interface Props {
 const LeafletConfig = memo<Props>(
   ({ onLeafletConfigChange, projectId, centerLatLng, zoomLevel, points }) => {
     const localize = useLocalize();
-    const { data: appConfig } = useAppConfiguration();
-    const { data: mapConfig } = useMapConfig(projectId);
+
+    const { data: mapConfig, isLoading: isLoadingMapConfig } =
+      useMapConfig(projectId);
+    const { data: appConfig, isLoading } = useAppConfiguration();
+
+    const loading = isLoading || isLoadingMapConfig;
 
     const center = useMemo(() => {
+      if (loading) return;
       return getCenter(centerLatLng, appConfig?.data, mapConfig?.data);
-    }, [centerLatLng, appConfig, mapConfig]);
+    }, [loading, centerLatLng, appConfig, mapConfig]);
 
     const zoom = useMemo(() => {
+      if (loading) return;
       return getZoomLevel(zoomLevel, appConfig?.data, mapConfig?.data);
-    }, [zoomLevel, appConfig, mapConfig]);
+    }, [loading, zoomLevel, appConfig, mapConfig]);
 
     const tileProvider = useMemo(() => {
+      if (loading) return;
       return getTileProvider(appConfig?.data, mapConfig?.data);
-    }, [appConfig, mapConfig]);
+    }, [loading, appConfig, mapConfig]);
 
     const tileOptions = useMemo(() => {
+      if (!tileProvider) return;
       return getTileOptions(tileProvider);
     }, [tileProvider]);
 
@@ -94,6 +102,8 @@ const LeafletConfig = memo<Props>(
     );
 
     useEffect(() => {
+      if (!center || !zoom || !tileProvider || !tileOptions) return;
+
       onLeafletConfigChange({
         geoJsonLayers,
         points,

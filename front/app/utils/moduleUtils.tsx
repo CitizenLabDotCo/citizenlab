@@ -27,7 +27,6 @@ import { TVerificationStep } from 'containers/Authentication/steps/Verification/
 import { TTabName } from 'containers/Admin/projects/all/CreateProject';
 import { NavItem } from 'containers/Admin/sideBar/navItems';
 import { LatLngTuple } from 'leaflet';
-import { GetIdeaByIdChildProps } from 'resources/GetIdeaById';
 import { GetLocaleChildProps } from 'resources/GetLocale';
 import { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 import { IGroupDataAttributes, MembershipType } from 'api/groups/types';
@@ -49,6 +48,7 @@ import {
   ProjectId,
   Resolution,
 } from 'components/admin/GraphCards/typings';
+import { IIdeaData } from 'api/ideas/types';
 
 export type StatCardProps = ProjectId & Dates & Resolution;
 
@@ -75,7 +75,7 @@ export interface OutletsPropertyMap {
     labelTooltipText: string;
   };
   'app.ProjectsShowPage.shared.header.ProjectInfo.projectDescriptionBuilder': {
-    onMount: () => void;
+    id: string;
   };
   'app.containers.Admin.users.GroupsListPanel.listitem.icon': {
     type: MembershipType;
@@ -207,8 +207,8 @@ export interface OutletsPropertyMap {
   'app.containers.IdeasShow.left': {
     translateButtonClicked: boolean;
     onClick: () => void;
-    idea: GetIdeaByIdChildProps;
-    locale: GetLocaleChildProps;
+    idea: IIdeaData;
+    locale: Locale;
   };
   'app.components.PostShowComponents.CommentBody.translation': {
     translateButtonClicked: boolean;

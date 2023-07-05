@@ -34,33 +34,8 @@ resource 'Users' do
       end
     end
 
-    context "when filtering by 'created_at'" do
-      let(:created_at) { '2022-05-01,2022-05-03' }
-
-      let!(:user) do
-        users.first.tap { |u| u.update(created_at: '2022-05-02') }
-      end
-
-      example_request 'List only users created between the specified dates', document: false do
-        assert_status 200
-        expect(json_response_body[:users].pluck(:id)).to eq [user.id]
-        expect(json_response_body[:meta]).to eq({ total_pages: 1, current_page: 1 })
-      end
-    end
-
-    context "when filtering by 'updated_at'" do
-      let(:updated_at) { ',2023-01-31' }
-
-      let!(:user) do
-        users.first.tap { |u| u.update(updated_at: '2023-01-01') }
-      end
-
-      example_request 'List only users updated between the specified dates', document: false do
-        assert_status 200
-        expect(json_response_body[:users].pluck(:id)).to eq [user.id]
-        expect(json_response_body[:meta]).to eq({ total_pages: 1, current_page: 1 })
-      end
-    end
+    include_examples 'filtering_by_date', :user, :created_at
+    include_examples 'filtering_by_date', :user, :updated_at
   end
 
   get '/api/v2/users/:id' do

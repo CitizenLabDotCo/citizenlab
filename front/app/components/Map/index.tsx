@@ -15,6 +15,7 @@ const LeafletMap = lazy(() => import('components/UI/LeafletMap'));
 
 // hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // utils
 import {
@@ -101,6 +102,7 @@ const CloseIcon = styled(Icon)`
 `;
 
 export interface IMapConfigProps {
+  initialSelectedPointId?: string;
   centerLatLng?: LatLngTuple;
   points?: Point[];
   zoomLevel?: number;
@@ -122,6 +124,7 @@ export interface IMapProps {
 
 const Map = memo<IMapProps & IMapConfigProps>(
   ({
+    initialSelectedPointId,
     projectId,
     centerLatLng,
     zoomLevel,
@@ -136,30 +139,39 @@ const Map = memo<IMapProps & IMapConfigProps>(
     className,
     hideLegend,
   }) => {
-    const { data: appConfig } = useAppConfiguration();
+    const { data: appConfig, isLoading } = useAppConfiguration();
+    const customMapsEnabled = useFeatureFlag({ name: 'custom_maps' });
 
     const [additionalLeafletConfig, setAdditionalLeafletConfig] =
       useState<ILeafletMapConfig | null>(null);
 
     const center = useMemo(() => {
+      if (isLoading) return;
+
       return getCenter(centerLatLng, appConfig?.data);
-    }, [centerLatLng, appConfig]);
+    }, [isLoading, centerLatLng, appConfig]);
 
     const zoom = useMemo(() => {
+      if (isLoading) return;
+
       return getZoomLevel(zoomLevel, appConfig?.data);
-    }, [zoomLevel, appConfig]);
+    }, [isLoading, zoomLevel, appConfig]);
 
     const tileProvider = useMemo(() => {
+      if (isLoading) return;
+
       return getTileProvider(appConfig?.data);
-    }, [appConfig]);
+    }, [isLoading, appConfig]);
 
     const tileOptions = useMemo(() => {
       return getTileOptions();
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [tileProvider]);
+    }, []);
 
     const leafletConfig = useMemo(() => {
+      if (!center || !zoom || !tileProvider) return;
+
       return {
+        initialSelectedPointId,
         points,
         noMarkerClustering,
         zoom,
@@ -171,6 +183,7 @@ const Map = memo<IMapProps & IMapConfigProps>(
         ...additionalLeafletConfig,
       };
     }, [
+      initialSelectedPointId,
       points,
       noMarkerClustering,
       zoom,
@@ -198,6 +211,8 @@ const Map = memo<IMapProps & IMapConfigProps>(
       onInit?.(map);
     };
 
+    if (!leafletConfig) return null;
+
     return (
       <Container className={className || ''}>
         <MapWrapper>
@@ -211,15 +226,17 @@ const Map = memo<IMapProps & IMapConfigProps>(
             </BoxContainer>
           )}
 
-          <Suspense fallback={false}>
-            <LeafletMap
-              id="mapid"
-              className="e2e-leafletmap"
-              mapHeight={mapHeight}
-              onInit={handleOnInit}
-              {...leafletConfig}
-            />
-          </Suspense>
+          {customMapsEnabled && additionalLeafletConfig === null ? null : (
+            <Suspense fallback={false}>
+              <LeafletMap
+                id="mapid"
+                className="e2e-leafletmap"
+                mapHeight={mapHeight}
+                onInit={handleOnInit}
+                {...leafletConfig}
+              />
+            </Suspense>
+          )}
           <Outlet
             id="app.components.Map.leafletConfig"
             projectId={projectId ?? undefined}
