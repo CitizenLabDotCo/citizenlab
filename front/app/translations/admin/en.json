@@ -1398,6 +1398,7 @@
   "app.containers.AdminPage.ProjectEdit.useTemplate": "Use template",
   "app.containers.AdminPage.ProjectEdit.viewPublicProject": "View project",
   "app.containers.AdminPage.ProjectEdit.volunteeringTab": "Volunteering",
+  "app.containers.AdminPage.ProjectEdit.voteTermError": "Vote terms must be specified for all locales",
   "app.containers.AdminPage.ProjectEdit.xGroupsHaveAccess": "{groupCount, plural, no {# groups can view} one {# group can view} other {# groups can view}}",
   "app.containers.AdminPage.ProjectEvents.addEventButton": "Add an event",
   "app.containers.AdminPage.ProjectEvents.dateStartLabel": "Start",
