@@ -6,7 +6,7 @@ import {
   removeNavbarItem,
   reorderNavbarItem,
 } from 'services/navbar';
-import { deleteCustomPage } from 'services/customPages';
+import useDeleteCustomPage from 'api/custom_pages/useDeleteCustomPage';
 
 // components
 import {
@@ -35,6 +35,7 @@ import { Item } from 'components/admin/ResourceList/SortableList';
 const VisibleNavbarItemList = ({
   intl: { formatMessage },
 }: WrappedComponentProps) => {
+  const { mutate: deleteCustomPage } = useDeleteCustomPage();
   const navbarItems = useNavbarItems();
   const pageSlugById = useCustomPageSlugById();
 

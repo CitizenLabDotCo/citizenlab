@@ -86,12 +86,6 @@ export function customPageByIdStream(customPageId: string) {
   });
 }
 
-export function customPageBySlugStream(pageSlug: string) {
-  return streams.get<ICustomPage>({
-    apiEndpoint: `${customPagesEndpoint}/by_slug/${pageSlug}`,
-  });
-}
-
 export async function updateCustomPage(
   customPageId: string,
   updatedPageSettings: Partial<ICustomPageAttributes>

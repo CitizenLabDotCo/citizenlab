@@ -2,11 +2,8 @@ import React, { useMemo } from 'react';
 
 // services
 import { getNavbarItemSlug, addNavbarItem } from 'services/navbar';
-import {
-  deleteCustomPage,
-  ICustomPageData,
-  TCustomPageCode,
-} from 'services/customPages';
+import { ICustomPageData, TCustomPageCode } from 'services/customPages';
+import useDeleteCustomPage from 'api/custom_pages/useDeleteCustomPage';
 
 // hooks
 import useNavbarItems from 'hooks/useNavbarItems';
@@ -41,6 +38,7 @@ const isNotFixedPage = (page: ICustomPageData) =>
 const HiddenNavbarItemList = ({
   intl: { formatMessage },
 }: WrappedComponentProps) => {
+  const { mutate: deleteCustomPage } = useDeleteCustomPage();
   const navbarItems = useNavbarItems();
   const removedDefaultNavbarItems = useRemovedDefaultNavbarItems();
   const pages = useCustomPages();

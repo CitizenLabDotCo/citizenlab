@@ -5,7 +5,6 @@ import clHistory from 'utils/cl-router/history';
 import { fireEvent, render, screen } from 'utils/testUtils/rtl';
 import VisibleNavbarItemList from '.';
 import { removeNavbarItem, reorderNavbarItem } from 'services/navbar';
-import { deleteCustomPage } from 'services/customPages';
 import dragAndDrop from 'utils/testUtils/dragAndDrop';
 
 jest.mock('hooks/useNavbarItems');
@@ -17,9 +16,11 @@ jest.mock('services/navbar', () => ({
   getNavbarItemSlug: jest.fn(),
 }));
 
-jest.mock('services/customPages', () => ({
-  deleteCustomPage: jest.fn(),
-}));
+const mockDeleteCustomPage = jest.fn();
+
+jest.mock('api/custom_pages/useDeleteCustomPage', () =>
+  jest.fn(() => ({ mutate: mockDeleteCustomPage }))
+);
 
 describe('<VisibleNavbarItemList />', () => {
   it('renders', () => {
@@ -96,12 +97,12 @@ describe('<VisibleNavbarItemList />', () => {
     const deleteButtons = screen.getAllByText('Delete');
 
     fireEvent.click(deleteButtons[0]);
-    expect(deleteCustomPage).toHaveBeenCalledWith(
+    expect(mockDeleteCustomPage).toHaveBeenCalledWith(
       'e7854e94-3074-4607-b66e-0422aa3d8359'
     );
 
     fireEvent.click(deleteButtons[1]);
-    expect(deleteCustomPage).toHaveBeenCalledWith(
+    expect(mockDeleteCustomPage).toHaveBeenCalledWith(
       '793d56cc-c8b3-4422-b393-972b71f82aa2'
     );
   });
