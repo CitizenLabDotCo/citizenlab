@@ -1,12 +1,12 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 
-import useDeleteArea from './useDeleteArea';
+import useDeleteCustomPage from './useDeleteCustomPage';
 
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-const apiPath = '*areas/:id';
+const apiPath = '*static_pages/:id';
 
 const server = setupServer(
   rest.delete(apiPath, (_req, res, ctx) => {
@@ -14,12 +14,12 @@ const server = setupServer(
   })
 );
 
-describe('useDeleteArea', () => {
+describe('useDeleteCustomPage', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useDeleteArea(), {
+    const { result, waitFor } = renderHook(() => useDeleteCustomPage(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -37,7 +37,7 @@ describe('useDeleteArea', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useDeleteArea(), {
+    const { result, waitFor } = renderHook(() => useDeleteCustomPage(), {
       wrapper: createQueryClientWrapper(),
     });
 

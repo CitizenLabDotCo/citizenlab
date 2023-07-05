@@ -3,12 +3,11 @@ import CustomPageSettingsForm from '../../CustomPageSettingsForm';
 import useCustomPageById from 'api/custom_pages/useCustomPageById';
 import { useParams } from 'react-router-dom';
 import { isNilOrError } from 'utils/helperUtils';
-import { TCustomPageCode, updateCustomPage } from 'services/customPages';
+import { TCustomPageCode } from 'api/custom_pages/types';
 import { FormValues } from 'containers/Admin/pagesAndMenu/containers/CustomPages/CustomPageSettingsForm';
-import streams from 'utils/streams';
-import { apiEndpoint as navbarItemsEndpoint } from 'services/navbar';
 import { omit } from 'lodash-es';
 
+import useUpdateCustomPage from 'api/custom_pages/useUpdateCustomPage';
 // Pages which are not allowed to have their slug edited are linked to internally.
 // Changing them would break these links.
 // E.g. 'faq'. Search for '/pages/faq' in the front codebase to find out.
@@ -23,6 +22,7 @@ const customPageSlugAllowedToEdit: { [key in TCustomPageCode]: boolean } = {
 };
 
 const EditCustomPageSettings = () => {
+  const { mutateAsync: updateCustomPage } = useUpdateCustomPage();
   const { customPageId } = useParams() as { customPageId: string };
   const { data: customPage } = useCustomPageById(customPageId);
 
@@ -38,14 +38,10 @@ const EditCustomPageSettings = () => {
           area_ids: [formValues.area_id],
         }),
       };
-      await updateCustomPage(customPageId, omit(newFormValues, 'area_id'));
-      // navbar items are a separate stream, so manually refresh on title update
-      // to reflect changes in the user's navbar
-      if (hasNavbarItem) {
-        streams.fetchAllWith({
-          apiEndpoint: [navbarItemsEndpoint],
-        });
-      }
+      await updateCustomPage({
+        id: customPageId,
+        ...omit(newFormValues, 'area_id'),
+      });
     };
 
     const topicIds = customPage.data.relationships.topics.data.map(

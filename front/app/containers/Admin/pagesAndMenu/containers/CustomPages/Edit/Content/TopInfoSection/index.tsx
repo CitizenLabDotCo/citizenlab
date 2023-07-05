@@ -3,11 +3,13 @@ import useCustomPageById from 'api/custom_pages/useCustomPageById';
 import useLocalize from 'hooks/useLocalize';
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { ICustomPageAttributes, updateCustomPage } from 'services/customPages';
+import { ICustomPageAttributes } from 'api/custom_pages/types';
 import { isNilOrError } from 'utils/helperUtils';
+import useUpdateCustomPage from 'api/custom_pages/useUpdateCustomPage';
 
 const TopInfoSection = () => {
   const localize = useLocalize();
+  const { mutateAsync: updateCustomPage } = useUpdateCustomPage();
   const { customPageId } = useParams() as { customPageId: string };
   const { data: customPage } = useCustomPageById(customPageId);
   if (isNilOrError(customPage)) {
@@ -18,7 +20,8 @@ const TopInfoSection = () => {
     customPageId: string,
     data: Partial<ICustomPageAttributes>
   ) => {
-    return updateCustomPage(customPageId, {
+    return updateCustomPage({
+      id: customPageId,
       ...data,
       top_info_section_enabled: true,
     });
@@ -27,7 +30,7 @@ const TopInfoSection = () => {
   return (
     <GenericTopInfoSection
       pageData={customPage.data}
-      updatePage={(data) => updateCustomPage(customPageId, data)}
+      updatePage={(data) => updateCustomPage({ id: customPageId, ...data })}
       updatePageAndEnableSection={(data) =>
         updateCustomPageAndEnableSection(customPageId, data)
       }

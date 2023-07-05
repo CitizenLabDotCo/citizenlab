@@ -13,15 +13,12 @@ import messages from './messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import sectionToggleMessages from 'containers/Admin/pagesAndMenu/components/SectionToggle/messages';
 
-// services
-import {
-  updateCustomPage,
-  TCustomPageEnabledSetting,
-} from 'services/customPages';
+import { TCustomPageEnabledSetting } from 'api/custom_pages/types';
 
 // hooks
 import useCustomPageById from 'api/custom_pages/useCustomPageById';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useUpdateCustomPage from 'api/custom_pages/useUpdateCustomPage';
 
 // routing
 import { useParams } from 'react-router-dom';
@@ -37,6 +34,7 @@ export interface ICustomPageSectionToggleData extends ISectionToggleData {
 
 // types
 const CustomPagesEditContent = () => {
+  const { mutate: updateCustomPage } = useUpdateCustomPage();
   const { formatMessage } = useIntl();
   const { customPageId } = useParams() as { customPageId: string };
   const { data: customPage } = useCustomPageById(customPageId);
@@ -105,13 +103,10 @@ const CustomPagesEditContent = () => {
       if (isNilOrError(customPage)) {
         return;
       }
-      try {
-        await updateCustomPage(customPageId, {
-          [sectionName]: !customPage.data.attributes[sectionName],
-        });
-      } catch (error) {
-        console.error(error);
-      }
+      updateCustomPage({
+        id: customPageId,
+        [sectionName]: !customPage.data.attributes[sectionName],
+      });
     };
 
   const handleOnClick = (sectionPath: string) => {

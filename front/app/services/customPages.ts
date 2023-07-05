@@ -2,7 +2,6 @@ import { API_PATH } from 'containers/App/constants';
 import { ImageSizes, IRelationship, Multiloc } from 'typings';
 import streams, { IStreamParams } from 'utils/streams';
 import { THomepageBannerLayout } from './homepageSettings';
-import { apiEndpoint as navbarEndpoint } from 'services/navbar';
 
 export interface ICustomPage {
   data: ICustomPageData;
@@ -84,28 +83,6 @@ export function customPageByIdStream(customPageId: string) {
   return streams.get<ICustomPage>({
     apiEndpoint: `${customPagesEndpoint}/${customPageId}`,
   });
-}
-
-export async function updateCustomPage(
-  customPageId: string,
-  updatedPageSettings: Partial<ICustomPageAttributes>
-) {
-  const customPageSettings = await streams.update(
-    `${customPagesEndpoint}/${customPageId}`,
-    customPageId,
-    { static_page: updatedPageSettings }
-  );
-  return customPageSettings;
-}
-
-export async function deleteCustomPage(pageId: string) {
-  const response = await streams.delete(
-    `${customPagesEndpoint}/${pageId}`,
-    pageId
-  );
-  await streams.fetchAllWith({ apiEndpoint: [navbarEndpoint] });
-
-  return response;
 }
 
 export function listCustomPages(streamParams: IStreamParams | null = null) {

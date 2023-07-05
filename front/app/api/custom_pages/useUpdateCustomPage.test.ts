@@ -1,26 +1,26 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 
-import useUpdateArea from './useUpdateArea';
-import { areasData } from './__mocks__/useAreas';
+import useUpdateCustomPage from './useUpdateCustomPage';
+import { customPagesData } from './__mocks__/useCustomPages';
 
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-const apiPath = '*areas/:id';
+const apiPath = '*static_pages/:id';
 const server = setupServer(
   rest.patch(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: areasData[0] }));
+    return res(ctx.status(200), ctx.json({ data: customPagesData[0] }));
   })
 );
 
-describe('useUpdateArea', () => {
+describe('useUpdateCustomPage', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useUpdateArea(), {
+    const { result, waitFor } = renderHook(() => useUpdateCustomPage(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -32,7 +32,7 @@ describe('useUpdateArea', () => {
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    expect(result.current.data?.data).toEqual(areasData[0]);
+    expect(result.current.data?.data).toEqual(customPagesData[0]);
   });
 
   it('returns error correctly', async () => {
@@ -42,7 +42,7 @@ describe('useUpdateArea', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useUpdateArea(), {
+    const { result, waitFor } = renderHook(() => useUpdateCustomPage(), {
       wrapper: createQueryClientWrapper(),
     });
     act(() => {

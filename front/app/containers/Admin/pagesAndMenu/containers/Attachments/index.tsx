@@ -34,7 +34,7 @@ import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
 
 // hooks
 import useCustomPageById from 'api/custom_pages/useCustomPageById';
-import { updateCustomPage } from 'services/customPages';
+import useUpdateCustomPage from 'api/custom_pages/useUpdateCustomPage';
 import useRemoteFiles from 'hooks/useRemoteFiles';
 import { useParams } from 'react-router-dom';
 
@@ -53,6 +53,7 @@ type FormValues = {
 const AttachmentsForm = ({
   intl: { formatMessage },
 }: WrappedComponentProps) => {
+  const { mutateAsync: updateCustomPage } = useUpdateCustomPage();
   const localize = useLocalize();
   const { customPageId } = useParams() as { customPageId: string };
   const { data: customPage } = useCustomPageById(customPageId);
@@ -84,7 +85,8 @@ const AttachmentsForm = ({
     }
 
     if (enableSection) {
-      const enableSectionPromise = updateCustomPage(customPageId, {
+      const enableSectionPromise = updateCustomPage({
+        id: customPageId,
         files_section_enabled: true,
       });
       promises.push(enableSectionPromise);

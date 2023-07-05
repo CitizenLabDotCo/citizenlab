@@ -28,7 +28,8 @@ import messages from '../../../GenericHeroBannerForm/messages';
 import HelmetIntl from 'components/HelmetIntl';
 import useLocalize from 'hooks/useLocalize';
 import { injectIntl } from 'utils/cl-intl';
-import { updateCustomPage } from 'services/customPages';
+
+import useUpdateCustomPage from 'api/custom_pages/useUpdateCustomPage';
 
 export type CustomPageBannerSettingKeyType = Extract<
   keyof ICustomPageAttributes,
@@ -40,6 +41,7 @@ export type CustomPageBannerSettingKeyType = Extract<
 const EditCustomPageHeroBannerForm = ({
   intl: { formatMessage },
 }: WrappedComponentProps) => {
+  const { mutateAsync: updateCustomPage } = useUpdateCustomPage();
   const localize = useLocalize();
   const [isLoading, setIsLoading] = useState(false);
   const [apiErrors, setApiErrors] = useState<CLErrors | null>(null);
@@ -103,11 +105,11 @@ const EditCustomPageHeroBannerForm = ({
     setIsLoading(true);
     setApiErrors(null);
     try {
-      await updateCustomPage(customPageId, settingsToUpdate);
+      await updateCustomPage({ id: customPageId, ...settingsToUpdate });
       setIsLoading(false);
       setFormStatus('success');
     } catch (error) {
-      const apiErrors = error.json.errors;
+      const apiErrors = error.errors;
       if (apiErrors) {
         setApiErrors(apiErrors);
       }
