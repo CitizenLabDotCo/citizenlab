@@ -190,7 +190,7 @@ const Content = ({
               {votingMethodConfig.getIdeaPageVoteControl({
                 ideaId,
                 projectId: project.id,
-                view: 'mobile',
+                compact: true,
               })}
             </Box>
           )}

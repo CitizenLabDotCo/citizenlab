@@ -15,6 +15,8 @@ import useAddBasketsIdeas from 'api/baskets_ideas/useAddBasketsIdeas';
 import useDeleteBasketsIdea from 'api/baskets_ideas/useDeleteBasketsIdea';
 import useAddBasket from 'api/baskets/useAddBasket';
 import useBasketsIdeas from 'api/baskets_ideas/useBasketsIdeas';
+import { IPhaseData } from 'api/phases/types';
+import eventEmitter from 'utils/eventEmitter';
 
 export const VOTES_EXCEEDED_ERROR_EVENT = 'votesExceededError';
 export const VOTES_PER_OPTION_EXCEEDED_ERROR_EVENT =
@@ -22,14 +24,20 @@ export const VOTES_PER_OPTION_EXCEEDED_ERROR_EVENT =
 
 interface Props {
   projectId: string;
+  viewingPhase?: IPhaseData | null;
   ideaId: string;
 }
 
-const AssignSingleVotesControl = ({ projectId, ideaId }: Props) => {
+const AssignSingleVotesControl = ({
+  projectId,
+  ideaId,
+  viewingPhase,
+}: Props) => {
   // participation context
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
-  const participationContext = getCurrentPhase(phases?.data) || project?.data;
+  const participationContext =
+    viewingPhase || getCurrentPhase(phases?.data) || project?.data;
   const contextType =
     participationContext?.type === 'phase' ? 'Phase' : 'Project';
   const { data: basket } = useBasket(
@@ -50,8 +58,19 @@ const AssignSingleVotesControl = ({ projectId, ideaId }: Props) => {
   const isLoading = isAddingToBasket || isRemovingFromBasket;
 
   const onAdd = async () => {
-    if (basket) {
-      addBasketsIdeas({ idea_id: ideaId, basketId: basket?.data.id, votes: 1 });
+    if (basket && participationContext?.attributes?.voting_max_total) {
+      if (
+        basket.data.attributes.total_votes + 1 >
+        participationContext?.attributes?.voting_max_total
+      ) {
+        eventEmitter.emit(VOTES_EXCEEDED_ERROR_EVENT);
+      } else {
+        addBasketsIdeas({
+          idea_id: ideaId,
+          basketId: basket?.data.id,
+          votes: 1,
+        });
+      }
     } else if (participationContext) {
       addBasket(
         {

@@ -287,7 +287,11 @@ const CompactIdeaCard = memo<IdeaCardProps>(
           </BodyWrapper>
         }
         hideBody={hideBody}
-        interactions={getInteractions({ project, viewingPhase, idea })}
+        interactions={getInteractions({
+          project: project?.data,
+          phase: viewingPhase?.data || currentPhase,
+          idea,
+        })}
         footer={getFooter()}
       />
     );

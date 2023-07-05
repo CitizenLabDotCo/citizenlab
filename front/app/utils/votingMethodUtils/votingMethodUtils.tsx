@@ -54,7 +54,7 @@ export type GetStatusDescriptionProps = {
 export type VoteControlProps = {
   ideaId: string;
   projectId: string;
-  view: 'mobile' | 'desktop';
+  compact: boolean;
 };
 
 export type VotingMethodConfig = {
@@ -71,7 +71,7 @@ export type VotingMethodConfig = {
   getIdeaPageVoteControl?: ({
     ideaId,
     projectId,
-    view,
+    compact,
   }: VoteControlProps) => JSX.Element | null;
   getSubmissionTerm?: (form: 'singular' | 'plural') => MessageDescriptor;
   preSubmissionWarning: () => MessageDescriptor;
@@ -183,11 +183,17 @@ const budgetingConfig: VotingMethodConfig = {
   preSubmissionWarning: () => {
     return messages.budgetingPreSubmissionWarning;
   },
-  getIdeaPageVoteControl: ({ ideaId, projectId, view }) => {
-    if (view === 'desktop') {
+  getIdeaPageVoteControl: ({ ideaId, projectId, compact }) => {
+    if (!compact) {
       return <AssignBudgetControl ideaId={ideaId} projectId={projectId} />;
     } else {
-      return <AddToBasketButton ideaId={ideaId} projectId={projectId} />;
+      return (
+        <AddToBasketButton
+          ideaId={ideaId}
+          projectId={projectId}
+          buttonStyle="primary-outlined"
+        />
+      );
     }
   },
   useVoteTerm: false,
@@ -305,8 +311,8 @@ const multipleVotingConfig: VotingMethodConfig = {
   preSubmissionWarning: () => {
     return messages.votingPreSubmissionWarning;
   },
-  getIdeaPageVoteControl: ({ ideaId, projectId, view }) => {
-    if (view === 'desktop') {
+  getIdeaPageVoteControl: ({ ideaId, projectId, compact }) => {
+    if (!compact) {
       return <AssignVotesControl ideaId={ideaId} projectId={projectId} />;
     }
     return (

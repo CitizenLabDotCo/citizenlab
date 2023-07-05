@@ -20,7 +20,6 @@ import messages from './messages';
 
 // styling
 import { colors } from 'utils/styleUtils';
-import { useTheme } from 'styled-components';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -28,16 +27,19 @@ import {
   ActionDescriptorFutureEnabled,
   isFixableByAuthentication,
 } from 'utils/actionDescriptors';
-import { getParticipationContext } from './utils';
+import { getLatestRelevantParticipationContext } from './utils';
 
 // typings
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import { IBasket } from 'api/baskets/types';
 import { IdeaVotingDisabledReason } from 'api/ideas/types';
+import { IPhaseData } from 'api/phases/types';
 
 interface Props {
   ideaId: string;
   projectId: string;
+  viewingPhase?: IPhaseData | null;
+  buttonStyle: 'primary' | 'primary-outlined';
 }
 
 const isButtonEnabled = (
@@ -58,15 +60,21 @@ const isButtonEnabled = (
   return basketNotSubmittedYet;
 };
 
-const AddToBasketButton = ({ ideaId, projectId }: Props) => {
-  const theme = useTheme();
+const AddToBasketButton = ({
+  ideaId,
+  projectId,
+  buttonStyle,
+  viewingPhase,
+}: Props) => {
   const { data: appConfig } = useAppConfiguration();
   const { data: idea } = useIdeaById(ideaId);
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
   const { assignBudget, processing } = useAssignBudget({ projectId, ideaId });
 
-  const participationContext = getParticipationContext(project, idea, phases);
+  const participationContext =
+    viewingPhase ||
+    getLatestRelevantParticipationContext(project, idea, phases);
   const participationContextType =
     project?.data.attributes.process_type === 'continuous'
       ? 'project'
@@ -136,26 +144,24 @@ const AddToBasketButton = ({ ideaId, projectId }: Props) => {
   const currency = appConfig?.data.attributes.settings.core.currency;
 
   return (
-    <>
-      <Button
-        onClick={handleAddRemoveButtonClick}
-        disabled={!buttonEnabled}
-        processing={processing}
-        bgColor={isInBasket ? colors.green500 : colors.white}
-        textColor={isInBasket ? colors.white : theme.colors.tenantPrimary}
-        textHoverColor={isInBasket ? colors.white : theme.colors.tenantPrimary}
-        bgHoverColor={isInBasket ? colors.green500 : 'white'}
-        borderColor={isInBasket ? '' : theme.colors.tenantPrimary}
-        width="100%"
-        className={`e2e-assign-budget-button ${
-          isInBasket ? 'in-basket' : 'not-in-basket'
-        }`}
-      >
-        {isInBasket && <Icon mb="4px" fill="white" name="check" />}
-        <FormattedMessage {...buttonMessage} />
-        {` (${ideaBudget} ${currency})`}
-      </Button>
-    </>
+    <Button
+      onClick={handleAddRemoveButtonClick}
+      disabled={!buttonEnabled}
+      processing={processing}
+      buttonStyle={buttonStyle}
+      bgColor={isInBasket ? colors.green500 : undefined}
+      textColor={isInBasket ? colors.white : undefined}
+      textHoverColor={isInBasket ? colors.white : undefined}
+      bgHoverColor={isInBasket ? colors.green500 : undefined}
+      width="100%"
+      className={`e2e-assign-budget-button ${
+        isInBasket ? 'in-basket' : 'not-in-basket'
+      }`}
+    >
+      {isInBasket && <Icon mb="4px" fill="white" name="check" />}
+      <FormattedMessage {...buttonMessage} />
+      {` (${ideaBudget} ${currency})`}
+    </Button>
   );
 };
 

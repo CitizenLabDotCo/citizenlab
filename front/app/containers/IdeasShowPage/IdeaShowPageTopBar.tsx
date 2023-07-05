@@ -162,7 +162,7 @@ const IdeaShowPageTopBar = ({
               {votingConfig?.getIdeaPageVoteControl({
                 ideaId,
                 projectId,
-                view: 'mobile',
+                compact: true,
               })}
             </Box>
           )}
