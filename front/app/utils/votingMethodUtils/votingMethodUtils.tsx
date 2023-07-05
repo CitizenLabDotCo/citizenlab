@@ -16,6 +16,12 @@ import { MessageDescriptor } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
 import { toFullMonth } from 'utils/dateUtils';
 
+// components
+import AssignVotesControl from 'containers/IdeasShow/components/RightColumnDesktop/AssignVotesControl';
+import AssignBudgetControl from 'containers/IdeasShow/components/RightColumnDesktop/AssignBudgetControl';
+import AddToBasketButton from 'components/AddToBasketButton';
+import AssignMultipleVotesControl from 'components/AssignMultipleVotesControl';
+
 /*
   Configuration Specifications
   
@@ -27,6 +33,7 @@ import { toFullMonth } from 'utils/dateUtils';
   - getSubmissionTerm: Returns the submission type in specified form (i.e. singular vs plural)
   - preSubmissionWarning: Returns warning to be displayed before submission is made
   - useVoteTerm: Returns whether the custom vote term should be used in front office
+  - getIdeaPageVoteControl: Returns the vote control to be displayed on the idea page
   */
 
 export type VoteSubmissionState =
@@ -41,6 +48,12 @@ export type GetStatusDescriptionProps = {
   appConfig?: IAppConfiguration;
 };
 
+export type VoteControlProps = {
+  ideaId: string;
+  projectId: string;
+  view: 'mobile' | 'desktop';
+};
+
 export type VotingMethodConfig = {
   getStatusHeader: (submissionState: VoteSubmissionState) => MessageDescriptor;
   getStatusTitle: (submissionState: VoteSubmissionState) => MessageDescriptor;
@@ -50,6 +63,11 @@ export type VotingMethodConfig = {
     phase,
     SubmissionState,
   }: GetStatusDescriptionProps) => JSX.Element | null;
+  getIdeaPageVoteControl?: ({
+    ideaId,
+    projectId,
+    view,
+  }: VoteControlProps) => JSX.Element | null;
   getSubmissionTerm?: (form: 'singular' | 'plural') => MessageDescriptor;
   preSubmissionWarning: () => MessageDescriptor;
   useVoteTerm: boolean;
@@ -160,6 +178,13 @@ const budgetingConfig: VotingMethodConfig = {
   preSubmissionWarning: () => {
     return messages.budgetingPreSubmissionWarning;
   },
+  getIdeaPageVoteControl: ({ ideaId, projectId, view }) => {
+    if (view === 'desktop') {
+      return <AssignBudgetControl ideaId={ideaId} projectId={projectId} />;
+    } else {
+      return <AddToBasketButton ideaId={ideaId} projectId={projectId} />;
+    }
+  },
   useVoteTerm: false,
 };
 
@@ -268,6 +293,18 @@ const multipleVotingConfig: VotingMethodConfig = {
   },
   preSubmissionWarning: () => {
     return messages.votingPreSubmissionWarning;
+  },
+  getIdeaPageVoteControl: ({ ideaId, projectId, view }) => {
+    if (view === 'desktop') {
+      return <AssignVotesControl ideaId={ideaId} projectId={projectId} />;
+    }
+    return (
+      <AssignMultipleVotesControl
+        ideaId={ideaId}
+        projectId={projectId}
+        fillWidth={true}
+      />
+    );
   },
   useVoteTerm: true,
 };

@@ -71,9 +71,14 @@ interface Props {
   projectId: string;
   ideaId: string;
   className?: string;
+  fillWidth?: boolean;
 }
 
-const AssignMultipleVotesControl = ({ projectId, ideaId }: Props) => {
+const AssignMultipleVotesControl = ({
+  projectId,
+  ideaId,
+  fillWidth,
+}: Props) => {
   const theme = useTheme();
 
   // intl
@@ -263,6 +268,10 @@ const AssignMultipleVotesControl = ({ projectId, ideaId }: Props) => {
   if (!actionDescriptor) return null;
   if (budgetingDisabledReason === 'idea_not_in_current_phase') return null;
 
+  if (localVotes.current === 0 && basket?.data?.attributes.submitted_at) {
+    return null;
+  }
+
   if (localVotes.current > 0 || localVotes.current.toString() === '') {
     return (
       <Box
@@ -294,6 +303,7 @@ const AssignMultipleVotesControl = ({ projectId, ideaId }: Props) => {
           flexGrow={1}
           justifyContent="center"
           padding="8px"
+          minWidth={fillWidth ? '140px' : 'auto'}
         >
           <StyledBox
             style={{

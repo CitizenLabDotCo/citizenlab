@@ -4,7 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // hooks
 import useProjectById from 'api/projects/useProjectById';
 import useAuthUser from 'api/me/useAuthUser';
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // i18n
 import useLocalize from 'hooks/useLocalize';
@@ -12,7 +12,6 @@ import useLocalize from 'hooks/useLocalize';
 // components
 import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
 import ReactionControl from 'components/ReactionControl';
-import AddToBasketButton from 'components/AddToBasketButton';
 
 // events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
@@ -29,9 +28,12 @@ import { lighten } from 'polished';
 // utils
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { getVotingMethodConfig } from 'utils/votingMethodUtils/votingMethodUtils';
 
 // typings
 import { IdeaReactingDisabledReason } from 'api/ideas/types';
+import { IProjectData } from 'api/projects/types';
+import { IPhaseData } from 'api/phases/types';
 
 const Container = styled.div`
   flex: 0 0 ${(props) => props.theme.mobileTopBarHeight}px;
@@ -68,6 +70,7 @@ interface Props {
   projectId: string;
   deselectIdeaOnMap?: () => void;
   className?: string;
+  participationContext?: IProjectData | IPhaseData;
 }
 
 const IdeaShowPageTopBar = ({
@@ -75,6 +78,7 @@ const IdeaShowPageTopBar = ({
   projectId,
   className,
   deselectIdeaOnMap,
+  participationContext,
 }: Props) => {
   const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
@@ -82,6 +86,10 @@ const IdeaShowPageTopBar = ({
 
   const [searchParams] = useSearchParams();
   const [goBack] = useState(searchParams.get('go_back'));
+
+  const votingConfig = getVotingMethodConfig(
+    participationContext?.attributes.voting_method
+  );
 
   useEffect(() => {
     removeSearchParams(['go_back']);
@@ -103,7 +111,6 @@ const IdeaShowPageTopBar = ({
           : 'phase';
       const pcId =
         project.data.relationships?.current_phase?.data?.id || project.data.id;
-
       if (pcId && pcType) {
         triggerAuthenticationFlow({
           context: {
@@ -150,8 +157,14 @@ const IdeaShowPageTopBar = ({
           />
 
           {/* Only visible if participatory budgeting */}
-          {ideaId && (
-            <AddToBasketButton ideaId={ideaId} projectId={projectId} />
+          {ideaId && votingConfig?.getIdeaPageVoteControl && (
+            <Box mr="8px">
+              {votingConfig?.getIdeaPageVoteControl({
+                ideaId,
+                projectId,
+                view: 'mobile',
+              })}
+            </Box>
           )}
         </Right>
       </TopBarInner>

@@ -13,7 +13,6 @@ import Body from 'components/PostShowComponents/Body';
 import Image from 'components/PostShowComponents/Image';
 import TranslateButton from './components/TranslateButton';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
-import AddToBasketButton from 'components/AddToBasketButton';
 import { Box } from '@citizenlab/cl2-component-library';
 const LazyComments = lazy(
   () => import('components/PostShowComponents/Comments')
@@ -22,6 +21,7 @@ import LoadingComments from 'components/PostShowComponents/Comments/LoadingComme
 import MetaInformation from './components/MetaInformation';
 import MobileSharingButtonComponent from './components/Buttons/MobileSharingButtonComponent';
 import RightColumnDesktop from './components/RightColumnDesktop';
+import ErrorToast from 'components/ErrorToast';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
@@ -41,11 +41,16 @@ import useLocale from 'hooks/useLocale';
 import usePhases from 'api/phases/usePhases';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useIdeaImages from 'api/idea_images/useIdeaImages';
-import { getCurrentParticipationContext } from 'api/phases/utils';
+
+// types
 import { IIdea } from 'api/ideas/types';
 import { IProjectData } from 'api/projects/types';
 import { IIdeaImages } from 'api/idea_images/types';
 import { Locale } from 'typings';
+
+// utils
+import { getVotingMethodConfig } from 'utils/votingMethodUtils/votingMethodUtils';
+import { getCurrentParticipationContext } from 'api/phases/utils';
 
 const StyledRightColumnDesktop = styled(RightColumnDesktop)`
   margin-left: ${columnsGapDesktop}px;
@@ -140,6 +145,10 @@ const Content = ({
     phases?.data
   );
 
+  const votingMethodConfig = getVotingMethodConfig(
+    participationContext?.attributes.voting_method
+  );
+
   return (
     <>
       <IdeaMeta ideaId={ideaId} />
@@ -176,26 +185,29 @@ const Content = ({
               translateButtonClicked={translateButtonIsClicked}
             />
           </Box>
-          {compact && (
-            <Box my="30px">
-              {' '}
-              <AddToBasketButton ideaId={ideaId} projectId={project.id} />
+          {compact && votingMethodConfig?.getIdeaPageVoteControl && (
+            <Box mb="16px">
+              {votingMethodConfig.getIdeaPageVoteControl({
+                ideaId,
+                projectId: project.id,
+                view: 'mobile',
+              })}
             </Box>
           )}
-
-          {compact && (
-            <Box mb="30px">
-              {' '}
-              <MetaInformation
-                ideaId={ideaId}
-                projectId={project.id}
-                statusId={statusId}
-                authorId={authorId}
-                compact={compact}
-              />
-            </Box>
-          )}
-
+          {compact &&
+            participationContext?.attributes.participation_method !==
+              'voting' && (
+              <Box mb="30px">
+                {' '}
+                <MetaInformation
+                  ideaId={ideaId}
+                  projectId={project.id}
+                  statusId={statusId}
+                  authorId={authorId}
+                  compact={compact}
+                />
+              </Box>
+            )}
           {compact && (
             <IdeaSharingButton
               ideaId={ideaId}
@@ -231,6 +243,7 @@ const Content = ({
           />
         )}
       </Box>
+      <ErrorToast />
     </>
   );
 };
