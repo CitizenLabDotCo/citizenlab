@@ -112,6 +112,7 @@ const AssignSingleVotesControl = ({
       onClick={() => (ideaInBasket ? onRemove() : onAdd())}
       text={ideaInBasket ? 'Voted' : 'Vote'}
       width="100%"
+      minWidth="240px"
       processing={isLoading}
     />
   );

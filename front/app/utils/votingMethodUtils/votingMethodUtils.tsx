@@ -23,6 +23,8 @@ import AddToBasketButton from 'components/AddToBasketButton';
 import AssignMultipleVotesControl from 'components/AssignMultipleVotesControl';
 import { Locale } from '@citizenlab/cl2-component-library';
 import { isNilOrError } from 'utils/helperUtils';
+import AssignSingleVotesControl from 'components/AssignSingleVoteControl';
+import AssignVoteControl from 'containers/IdeasShow/components/RightColumnDesktop/AssignVoteControl';
 
 /*
   Configuration Specifications
@@ -450,6 +452,12 @@ const singleVotingConfig: VotingMethodConfig = {
   },
   preSubmissionWarning: () => {
     return messages.votingPreSubmissionWarning;
+  },
+  getIdeaPageVoteControl: ({ ideaId, projectId, compact }) => {
+    if (compact) {
+      return <AssignSingleVotesControl ideaId={ideaId} projectId={projectId} />;
+    }
+    return <AssignVoteControl ideaId={ideaId} projectId={projectId} />;
   },
   useVoteTerm: false,
 };
