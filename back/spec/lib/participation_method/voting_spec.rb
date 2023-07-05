@@ -151,6 +151,16 @@ RSpec.describe ParticipationMethod::Voting do
     end
   end
 
+  describe '#custom_form' do
+    let(:project) { context.project }
+    let(:project_form) { create(:custom_form, participation_context: context.project) }
+    let(:context) { create(:budgeting_phase) }
+
+    it 'returns the custom form of the project' do
+      expect(participation_method.custom_form.participation_context_id).to eq project.id
+    end
+  end
+
   describe '#extra_fields_category_translation_key' do
     it 'returns the translation key for the extra fields category' do
       expect(participation_method.extra_fields_category_translation_key).to eq 'custom_forms.categories.extra.title'
@@ -163,7 +173,6 @@ RSpec.describe ParticipationMethod::Voting do
   its(:posting_allowed?) { is_expected.to be false }
   its(:never_update?) { is_expected.to be false }
   its(:creation_phase?) { is_expected.to be false }
-  # TODO custom_form spec
   its(:edit_custom_form_allowed?) { is_expected.to be true }
   its(:delete_inputs_on_pc_deletion?) { is_expected.to be false }
   its(:sign_in_required_for_posting?) { is_expected.to be true }
