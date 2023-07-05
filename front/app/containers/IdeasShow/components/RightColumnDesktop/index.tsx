@@ -77,7 +77,7 @@ const RightColumnDesktop = ({
               votingConfig.getIdeaPageVoteControl({
                 ideaId,
                 projectId,
-                view: 'desktop',
+                compact: false,
               })}
           </Box>
           <Buttons ideaId={ideaId} />

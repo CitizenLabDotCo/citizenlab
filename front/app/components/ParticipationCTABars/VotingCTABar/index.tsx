@@ -1,19 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useMemo } from 'react';
 
 // Components
 import { Button, Icon, Box, Text } from '@citizenlab/cl2-component-library';
 import { ParticipationCTAContent } from 'components/ParticipationCTABars/ParticipationCTAContent';
 import ErrorToast from 'components/ErrorToast';
+import VotesCounter from 'components/VotesCounter';
 
 // hooks
 import { useTheme } from 'styled-components';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useBasket from 'api/baskets/useBasket';
 import useUpdateBasket from 'api/baskets/useUpdateBasket';
-
-// services
-import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
-import { IPhaseData } from 'api/phases/types';
 
 // utils
 import {
@@ -21,10 +17,10 @@ import {
   hasProjectEndedOrIsArchived,
 } from 'components/ParticipationCTABars/utils';
 import { isNilOrError } from 'utils/helperUtils';
-import { getVotingMethodConfig } from 'utils/votingMethodUtils/votingMethodUtils';
+import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
 
 // i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import useLocale from 'hooks/useLocale';
 import useBasketsIdeas from 'api/baskets_ideas/useBasketsIdeas';
@@ -32,15 +28,15 @@ import useBasketsIdeas from 'api/baskets_ideas/useBasketsIdeas';
 export const VotingCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
   const locale = useLocale();
-  const { formatMessage } = useIntl();
-  const { data: appConfig } = useAppConfiguration();
-  const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
-  let basketId: string | undefined;
-  if (currentPhase) {
-    basketId = currentPhase.relationships.user_basket?.data?.id;
-  } else {
-    basketId = project.relationships.user_basket?.data?.id;
-  }
+
+  const currentPhase = useMemo(() => {
+    return getCurrentPhase(phases) || getLastPhase(phases);
+  }, [phases]);
+
+  const basketId = currentPhase
+    ? currentPhase.relationships.user_basket?.data?.id
+    : project.relationships.user_basket?.data?.id;
+
   const { data: basket } = useBasket(basketId);
   const { mutate: updateBasket } = useUpdateBasket();
   const { data: basketsIdeas } = useBasketsIdeas(basket?.data.id);
@@ -53,9 +49,6 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
     currentBasketsIdeas.push({ ideaId, votes });
   });
 
-  useEffect(() => {
-    setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
-  }, [phases]);
   if (hasProjectEndedOrIsArchived(project, currentPhase)) {
     return null;
   }
@@ -67,10 +60,6 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
   const budgetExceedsLimit =
     basket?.data.attributes['budget_exceeds_limit?'] || false;
 
-  const maxBudget =
-    currentPhase?.attributes.voting_max_total ||
-    project.attributes.voting_max_total ||
-    0;
   const minBudget =
     currentPhase?.attributes.voting_min_total ||
     project.attributes.voting_min_total ||
@@ -92,26 +81,6 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
         participation_context_type: currentPhase ? 'Phase' : 'Project',
       });
     }
-  };
-
-  const getVoteTerm = () => {
-    const voteConfig = getVotingMethodConfig(
-      currentPhase?.attributes?.voting_method ||
-        project.attributes.voting_method
-    );
-    if (!voteConfig?.useVoteTerm) {
-      return null;
-    }
-    if (currentPhase && currentPhase.attributes.voting_term_plural_multiloc) {
-      return currentPhase?.attributes?.voting_term_plural_multiloc[
-        locale
-      ]?.toLowerCase();
-    } else if (project.attributes.voting_term_plural_multiloc) {
-      return project.attributes.voting_term_plural_multiloc[
-        locale
-      ]?.toLowerCase();
-    }
-    return null;
   };
 
   const CTAButton = hasUserParticipated ? (
@@ -159,13 +128,7 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
               textAlign="left"
               aria-live="polite"
             >
-              {(
-                maxBudget - (basket?.data.attributes.total_votes || 0)
-              ).toLocaleString()}{' '}
-              / {maxBudget.toLocaleString()}{' '}
-              {getVoteTerm() ||
-                appConfig?.data.attributes.settings.core.currency}{' '}
-              {formatMessage(messages.left)}
+              <VotesCounter projectId={project.id} />
             </Text>
           )
         }
