@@ -28,7 +28,6 @@ import {
 
 // utils
 import { getCenter, getZoomLevel } from '../../../utils/map';
-import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
@@ -139,7 +138,7 @@ const ProjectCustomMapConfigPage = memo<
   };
 
   useEffect(() => {
-    if (projectId && !isNilOrError(appConfig) && mapConfig === null) {
+    if (projectId && appConfig && mapConfig?.data === null) {
       createProjectMapConfig({
         projectId,
         center_geojson: {
@@ -159,7 +158,7 @@ const ProjectCustomMapConfigPage = memo<
     createProjectMapConfig,
   ]);
 
-  if (projectId && mapConfig?.data.id) {
+  if (projectId && mapConfig?.data?.id) {
     return (
       <Container className={className || ''}>
         <StyledMapConfigOverview projectId={projectId} />
