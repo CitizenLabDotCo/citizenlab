@@ -197,13 +197,12 @@ describe('New timeline project', () => {
   });
 
   it('correctly handles phaseNumber URL parameter', () => {
-    const path = `/projects/${projectSlug}`;
-    const pathWithLocale = `/en${path}`;
+    const pathWithLocale = `/en/projects/${projectSlug}`;
 
     cy.location('pathname').should('eq', pathWithLocale);
 
     // visit first (past phase)
-    cy.visit(`${path}/1`);
+    cy.visit(`${pathWithLocale}/1`);
 
     cy.get('.e2e-phases').find('.selectedPhase').contains(phasePastTitle);
 
