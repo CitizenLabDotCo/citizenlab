@@ -11,7 +11,15 @@ interface Props {
   projectId: string;
 }
 
-const useCumulativeVoting = ({ projectId }: Props) => {
+interface CumulativeVotingInterface {
+  getVotes: (ideaId: string) => number;
+  setVotes: (ideaId: string, newVotes: number) => void;
+  userHasVotesLeft: boolean;
+}
+
+const useCumulativeVoting = ({
+  projectId,
+}: Props): CumulativeVotingInterface => {
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
   const assignVotes = useAssignVote({ projectId });
