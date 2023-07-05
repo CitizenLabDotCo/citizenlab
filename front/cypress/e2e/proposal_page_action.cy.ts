@@ -25,10 +25,10 @@ describe('Initiative show page actions', () => {
       cy.apiRemoveInitiative(initiativeId);
     });
 
-    it('asks unauthorised users to log in or sign up before they vote', () => {
-      cy.get('#e2e-initiative-upvote-button').should('exist');
+    it('asks unauthorised users to log in or sign up before they react', () => {
+      cy.get('#e2e-initiative-like-button').should('exist');
       cy.wait(2000);
-      cy.get('#e2e-initiative-upvote-button').click();
+      cy.get('#e2e-initiative-like-button').click();
       cy.get('#e2e-authentication-modal').should('exist');
     });
   });
@@ -56,9 +56,16 @@ describe('Initiative show page actions', () => {
       cy.apiRemoveInitiative(initiativeId);
     });
 
-    it('saves a new official feedback, shows it and deletes it', () => {
+    it('saves a new official feedback and shows it', () => {
       const officialFeedbackBody = randomString(30);
       const officialFeedbackAuthor = randomString();
+
+      // We wait for topics to be loaded since it is one of the last api calls.
+      // We do this so that the entire page is loaded and the focus won't be
+      // taken away from the official feedback inputs while typing by another
+      // input field that loads later. Example id (#submit-comment)
+      cy.intercept('**/topics').as('topicsRequest');
+      cy.wait('@topicsRequest');
 
       // input
       cy.get('.e2e-localeswitcher').each((button) => {
@@ -78,7 +85,7 @@ describe('Initiative show page actions', () => {
   });
 
   describe('logged in as normal user', () => {
-    describe('Vote', () => {
+    describe('Reaction', () => {
       const initiativeTitle = randomString();
       const initiativeContent = randomString();
       const firstName = randomString();
@@ -109,34 +116,34 @@ describe('Initiative show page actions', () => {
         cy.apiRemoveInitiative(initiativeId);
       });
 
-      it('adds and removes vote when vote buttons clicked', () => {
-        // get upvote button
-        cy.get('#e2e-initiative-vote-control')
-          .find('#e2e-initiative-upvote-button')
-          .as('voteButton');
+      it('adds and removes reaction when reaction buttons clicked', () => {
+        // get like button
+        cy.get('#e2e-initiative-reaction-control')
+          .find('#e2e-initiative-like-button')
+          .as('reactionButton');
 
-        // get initial vote count
-        cy.get('#e2e-initiative-not-voted-vote-count').contains('1 vote');
-        // upvote initiative
-        cy.get('@voteButton').click({ force: true });
-        cy.get('#e2e-initiative-voted-vote-count').contains('2 votes');
+        // get initial reaction count
+        cy.get('#e2e-initiative-not-reacted-reaction-count').contains('1 vote');
+        // like initiative
+        cy.get('@reactionButton').click({ force: true });
+        cy.get('#e2e-initiative-reacted-reaction-count').contains('2 votes');
 
-        // get cancel vote button
-        cy.get('#e2e-initiative-vote-control')
-          .find('#e2e-initiative-cancel-upvote-button')
-          .as('cancelVoteButton');
+        // get cancel reaction button
+        cy.get('#e2e-initiative-reaction-control')
+          .find('#e2e-initiative-cancel-like-button')
+          .as('cancelReactionButton');
 
-        // current vote count
-        cy.get('#e2e-initiative-voted-vote-count').contains('2 votes');
+        // current reaction count
+        cy.get('#e2e-initiative-reacted-reaction-count').contains('2 votes');
 
-        cy.get('#e2e-initiative-vote-control')
-          .find('#e2e-initiative-cancel-upvote-button')
-          .as('cancelVoteButton');
-        cy.get('@cancelVoteButton').click();
+        cy.get('#e2e-initiative-reaction-control')
+          .find('#e2e-initiative-cancel-like-button')
+          .as('cancelReactionButton');
+        cy.get('@cancelReactionButton').click();
 
-        // confirm vote count went down
-        cy.get('#e2e-initiative-not-voted-vote-count').should('exist');
-        cy.get('#e2e-initiative-not-voted-vote-count').contains('1 vote');
+        // confirm reaction count went down
+        cy.get('#e2e-initiative-not-reacted-reaction-count').should('exist');
+        cy.get('#e2e-initiative-not-reacted-reaction-count').contains('1 vote');
       });
     });
 

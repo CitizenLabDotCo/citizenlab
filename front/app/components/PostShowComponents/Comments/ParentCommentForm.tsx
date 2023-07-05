@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
-import { isString, trim, get } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
+import { isString, trim } from 'lodash-es';
+import { isNilOrError, isPage } from 'utils/helperUtils';
 
 // components
 import Button from 'components/UI/Button';
@@ -14,13 +14,14 @@ import {
   Text,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
+import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // services
@@ -37,7 +38,6 @@ import { hideVisually } from 'polished';
 import { colors, defaultStyles } from 'utils/styleUtils';
 
 // hooks
-import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useAddCommentToIdea from 'api/comments/useAddCommentToIdea';
 import useAddCommentToInitiative from 'api/comments/useAddCommentToInitiative';
@@ -45,7 +45,7 @@ import useLocale from 'hooks/useLocale';
 import useAuthUser from 'api/me/useAuthUser';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
-import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
+import { useLocation } from 'react-router-dom';
 
 const Container = styled.div`
   display: flex;
@@ -110,7 +110,8 @@ const CancelButton = styled(Button)`
 `;
 
 interface Props {
-  postId: string;
+  ideaId: string | undefined;
+  initiativeId: string | undefined;
   postType: 'idea' | 'initiative';
   postingComment: (arg: boolean) => void;
   className?: string;
@@ -118,7 +119,8 @@ interface Props {
 }
 
 const ParentCommentForm = ({
-  postId,
+  ideaId,
+  initiativeId,
   postType,
   className,
   allowAnonymousParticipation,
@@ -128,6 +130,8 @@ const ParentCommentForm = ({
   const { data: appConfiguration } = useAppConfiguration();
   const { formatMessage } = useIntl();
   const smallerThanTablet = useBreakpoint('tablet');
+  const { pathname } = useLocation();
+  const isAdminPage = isPage('admin', pathname);
   const { mutate: addCommentToIdea, isLoading: addCommentToIdeaIsLoading } =
     useAddCommentToIdea();
   const {
@@ -146,11 +150,8 @@ const ParentCommentForm = ({
   const [postAnonymously, setPostAnonymously] = useState(false);
   const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
     useState(false);
-  const initiativeId = postType === 'initiative' ? postId : undefined;
-  const ideaId = postType === 'idea' ? postId : undefined;
-  const { data: initiative } = useInitiativeById(initiativeId);
   const { data: idea } = useIdeaById(ideaId);
-  const post = initiative || idea;
+  const projectId = idea ? idea.data.relationships.project.data.id : null;
 
   const processing =
     addCommentToIdeaIsLoading || addCommentToInitiativeIsLoading;
@@ -170,7 +171,7 @@ const ParentCommentForm = ({
   const onFocus = () => {
     trackEventByName(tracks.focusParentCommentEditor, {
       extra: {
-        postId,
+        postId: ideaId || initiativeId,
         postType,
       },
     });
@@ -196,19 +197,16 @@ const ParentCommentForm = ({
   };
 
   const continueSubmission = async () => {
-    const projectId: string | null =
-      idea?.data.relationships.project.data.id || null;
-
     setFocused(false);
 
-    if (locale && authUser && isString(inputValue) && trim(inputValue) !== '') {
+    if (isString(inputValue) && trim(inputValue) !== '') {
       const commentBodyMultiloc = {
         [locale]: inputValue.replace(/@\[(.*?)\]\((.*?)\)/gi, '@$2'),
       };
 
       trackEventByName(tracks.clickParentCommentPublish, {
         extra: {
-          postId,
+          postId: ideaId || initiativeId,
           postType,
           content: inputValue,
         },
@@ -217,7 +215,7 @@ const ParentCommentForm = ({
       if (postType === 'idea' && projectId) {
         addCommentToIdea(
           {
-            ideaId: postId,
+            ideaId,
             author_id: authUser.data.id,
             body_multiloc: commentBodyMultiloc,
             anonymous: postAnonymously,
@@ -244,13 +242,13 @@ const ParentCommentForm = ({
               if (profanityApiError) {
                 trackEventByName(tracks.parentCommentProfanityError.name, {
                   locale,
-                  postId,
+                  ideaId,
                   postType,
                   projectId,
                   profaneMessage: commentBodyMultiloc[locale],
                   location: 'InitiativesNewFormWrapper (citizen side)',
                   userId: authUser.data.id,
-                  host: !isNilOrError(appConfiguration)
+                  host: appConfiguration
                     ? appConfiguration.data.attributes.host
                     : null,
                 });
@@ -267,7 +265,7 @@ const ParentCommentForm = ({
       if (postType === 'initiative') {
         addCommentToInitiative(
           {
-            initiativeId: postId,
+            initiativeId,
             author_id: authUser.data.id,
             body_multiloc: commentBodyMultiloc,
             anonymous: postAnonymously,
@@ -294,13 +292,13 @@ const ParentCommentForm = ({
               if (profanityApiError) {
                 trackEventByName(tracks.parentCommentProfanityError.name, {
                   locale,
-                  postId,
+                  initiativeId,
                   postType,
                   projectId,
                   profaneMessage: commentBodyMultiloc[locale],
                   location: 'InitiativesNewFormWrapper (citizen side)',
                   userId: authUser.data.id,
-                  host: !isNilOrError(appConfiguration)
+                  host: appConfiguration
                     ? appConfiguration.data.attributes.host
                     : null,
                 });
@@ -346,30 +344,28 @@ const ParentCommentForm = ({
     return null;
   };
 
-  const commentingEnabled =
+  const commentingDisabledReason =
     postType === 'initiative'
-      ? commentingPermissionInitiative?.enabled === true
-      : idea?.data.attributes?.action_descriptor.commenting_idea.enabled ===
-        true;
-  const projectId: string | null = get(
-    post,
-    'relationships.project.data.id',
-    null
-  );
-  const isModerator =
-    !isNilOrError(authUser) && canModerateProject(projectId, authUser);
-  const canComment = authUser && commentingEnabled;
-  const placeholder = formatMessage(
-    messages[`${postType}CommentBodyPlaceholder`]
-  );
+      ? commentingPermissionInitiative?.disabledReason
+      : idea?.data.attributes?.action_descriptor.commenting_idea
+          .disabled_reason;
+  const isModerator = canModerateProject(projectId, authUser);
+  const canComment = !commentingDisabledReason;
+  const buttonText: MessageDescriptor = isAdminPage
+    ? messages.postPublicComment
+    : messages.publishComment;
+  const placeholderMessage: MessageDescriptor = isAdminPage
+    ? messages.visibleToUsersPlaceholder
+    : messages[`${postType}CommentBodyPlaceholder`];
+  const placeholder = formatMessage(placeholderMessage);
 
-  if (!isNilOrError(authUser) && canComment) {
+  if (canComment) {
     return (
       <Container className={className || ''}>
         <StyledAvatar
-          userId={authUser?.data.id}
+          userId={authUser.data.id}
           size={30}
-          isLinkToProfile={!!authUser?.data.id}
+          isLinkToProfile={!!authUser.data.id}
           moderator={isModerator}
         />
         <FormContainer
@@ -389,7 +385,7 @@ const ParentCommentForm = ({
                 name="comment"
                 placeholder={placeholder}
                 rows={focused || processing ? 4 : 1}
-                postId={postId}
+                postId={ideaId || initiativeId}
                 postType={postType}
                 value={inputValue}
                 error={getErrorMessage()}
@@ -444,8 +440,9 @@ const ParentCommentForm = ({
                   onClick={onSubmit}
                   disabled={hasEmptyError}
                   padding={smallerThanTablet ? '6px 12px' : undefined}
+                  icon={isAdminPage ? 'users' : undefined}
                 >
-                  <FormattedMessage {...messages.publishComment} />
+                  <FormattedMessage {...buttonText} />
                 </Button>
               </ButtonWrapper>
             </label>

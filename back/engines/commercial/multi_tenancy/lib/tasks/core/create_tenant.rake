@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-namespace :cl2_back do
+namespace :cl2_back do # rubocop:disable Metrics/BlockLength
   desc 'Create a tenant with given host and optional template'
-  task :create_tenant, %i[host template] => [:environment] do |_t, args|
+  task :create_tenant, %i[host template] => [:environment] do |_t, args| # rubocop:disable Metrics/BlockLength
     host = args[:host] || raise("Please provide the 'host' arg")
     tenant_template = args[:template] || 'e2etests_template'
     Tenant.find_by(host: host)&.destroy!
@@ -105,7 +105,7 @@ namespace :cl2_back do
           allowed: true
         },
         similar_ideas: {
-          enabled: true,
+          enabled: false,
           allowed: true
         },
         geographic_dashboard: {
@@ -193,7 +193,7 @@ namespace :cl2_back do
         initiatives: {
           enabled: true,
           allowed: true,
-          voting_threshold: 300,
+          reacting_threshold: 300,
           days_limit: 90,
           threshold_reached_message: MultilocService.new.i18n_to_multiloc(
             'initiatives.default_threshold_reached_message',
@@ -298,7 +298,7 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        disable_downvoting: {
+        disable_disliking: {
           enabled: true,
           allowed: true
         },
@@ -340,6 +340,10 @@ namespace :cl2_back do
         seat_based_billing: {
           enabled: true,
           allowed: true
+        },
+        internal_commenting: {
+          enabled: false,
+          allowed: false
         }
       }
     )

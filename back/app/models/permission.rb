@@ -22,9 +22,9 @@ class Permission < ApplicationRecord
   PERMITTED_BIES = %w[everyone everyone_confirmed_email users groups admins_moderators].freeze
   ACTIONS = {
     # NOTE: Order of actions in each array is used when using :order_by_action
-    nil => %w[visiting posting_initiative commenting_initiative voting_initiative],
+    nil => %w[visiting posting_initiative commenting_initiative reacting_initiative],
     'information' => [],
-    'ideation' => %w[posting_idea commenting_idea voting_idea],
+    'ideation' => %w[posting_idea commenting_idea reacting_idea],
     'native_survey' => %w[posting_idea],
     'survey' => %w[taking_survey],
     'poll' => %w[taking_poll],
@@ -57,12 +57,15 @@ class Permission < ApplicationRecord
     ACTIONS[permission_scope&.participation_method]
   end
 
+  # Remove any actions that are not enabled on the project
   def self.enabled_actions(permission_scope)
-    # Remove any actions that are not enabled on the project
+    participation_method = Factory.instance.participation_method_for(permission_scope)
+    return available_actions(permission_scope) if participation_method&.return_disabled_actions?
+
     available_actions(permission_scope).filter_map do |action|
       next if
         (action == 'posting_idea' && !permission_scope&.posting_enabled?) ||
-        (action == 'voting_idea' && !permission_scope&.voting_enabled?) ||
+        (action == 'reacting_idea' && !permission_scope&.reacting_enabled?) ||
         (action == 'commenting_idea' && !permission_scope&.commenting_enabled?)
 
       action

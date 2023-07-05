@@ -16,6 +16,7 @@ require_relative 'groups'
 require_relative 'home_pages'
 require_relative 'ideas'
 require_relative 'iniatives'
+require_relative 'internal_comments'
 require_relative 'invites'
 require_relative 'permissions'
 require_relative 'project_folders'
@@ -111,6 +112,7 @@ module MultiTenancy
         MultiTenancy::Seeds::Projects.new(runner: self).run
         MultiTenancy::Seeds::Ideas.new(runner: self).run
         MultiTenancy::Seeds::Iniatives.new(runner: self).run
+        MultiTenancy::Seeds::InternalComments.new(runner: self).run
 
         InitiativeStatusService.new.automated_transitions!
 
@@ -191,7 +193,7 @@ module MultiTenancy
           })
           User.all.each do |u|
             if rand(5) < 2
-              Vote.create!(votable: c, user: u, mode: 'up',
+              Reaction.create!(reactable: c, user: u, mode: 'up',
                 created_at: Faker::Date.between(from: c.created_at, to: Time.zone.now))
             end
           end

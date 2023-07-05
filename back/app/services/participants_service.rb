@@ -4,16 +4,16 @@ class ParticipantsService
   ENGAGING_ACTIVITIES = [
     { item_type: 'Comment', action: 'created', score: 3 },
     { item_type: 'Idea', action: 'published', score: 5 },
-    { item_type: 'Vote', action: 'idea_upvoted', score: 1 },
-    { item_type: 'Vote', action: 'idea_downvoted', score: 1 },
-    { item_type: 'Vote', action: 'comment_upvoted', score: 1 },
-    { item_type: 'Vote', action: 'comment_downvoted', score: 1 },
+    { item_type: 'Reaction', action: 'idea_liked', score: 1 },
+    { item_type: 'Reaction', action: 'idea_disliked', score: 1 },
+    { item_type: 'Reaction', action: 'comment_liked', score: 1 },
+    { item_type: 'Reaction', action: 'comment_disliked', score: 1 },
     { item_type: 'Basket', action: 'created', score: 3 },
     { item_type: 'Polls::Response', action: 'created', score: 1 },
     { item_type: 'Volunteering::Volunteer', action: 'created', score: 3 }
   ]
 
-  PARTICIPANT_ACTIONS = %i[posting commenting idea_voting comment_voting budgeting polling volunteering]
+  PARTICIPANT_ACTIONS = %i[posting commenting idea_reacting comment_reacting budgeting polling volunteering]
 
   def participants(options = {})
     since = options[:since]
@@ -44,12 +44,12 @@ class ParticipantsService
     # Commenting
     comments = Comment.where(post: initiatives)
     participants = participants.or(User.where(id: comments.select(:author_id)))
-    # Initiative voting
-    votes = Vote.where(votable: initiatives)
-    participants = participants.or(User.where(id: votes.select(:user_id)))
-    # Comment voting
-    votes = Vote.where(votable: comments)
-    participants.or(User.where(id: votes.select(:user_id)))
+    # Initiative reacting
+    reactions = Reaction.where(reactable: initiatives)
+    participants = participants.or(User.where(id: reactions.select(:user_id)))
+    # Comment reacting
+    reactions = Reaction.where(reactable: comments)
+    participants.or(User.where(id: reactions.select(:user_id)))
   end
 
   def ideas_participants(ideas, options = {})
@@ -75,17 +75,17 @@ class ParticipantsService
       end
       participants = participants.or(User.where(id: comments_since.select(:author_id)))
     end
-    # Idea voting
-    if actions.include? :idea_voting
-      votes = Vote.where(votable_id: ideas)
-      votes = votes.where('created_at::date >= (?)::date', since) if since
-      participants = participants.or(User.where(id: votes.select(:user_id)))
+    # Idea reacting
+    if actions.include? :idea_reacting
+      reactions = Reaction.where(reactable_id: ideas)
+      reactions = reactions.where('created_at::date >= (?)::date', since) if since
+      participants = participants.or(User.where(id: reactions.select(:user_id)))
     end
-    # Comment voting
-    if actions.include? :comment_voting
-      votes = Vote.where(votable_id: comments)
-      votes = votes.where('created_at::date >= (?)::date', since) if since
-      participants = participants.or(User.where(id: votes.select(:user_id)))
+    # Comment reacting
+    if actions.include? :comment_reacting
+      reactions = Reaction.where(reactable_id: comments)
+      reactions = reactions.where('created_at::date >= (?)::date', since) if since
+      participants = participants.or(User.where(id: reactions.select(:user_id)))
     end
     participants
   end
@@ -104,19 +104,36 @@ class ParticipantsService
   def project_participants_count(project)
     Rails.cache.fetch("#{project.cache_key}/participant_count", expires_in: 1.day) do
       participant_ids = projects_participants([project]).pluck(:id)
-      participant_author_hashes = participant_ids.map { |id| Idea.create_author_hash(id, project.id, true) }
-      anonymous_idea_hashes = Idea.where(project: project, anonymous: true)
-        .where.not(author_hash: participant_author_hashes)
-        .distinct.pluck(:author_hash)
-      anonymous_comment_hashes = Comment.joins(:idea)
-        .where(anonymous: true)
-        .where(idea: { project: project })
-        .where.not(author_hash: participant_author_hashes + anonymous_idea_hashes)
-        .distinct.pluck(:author_hash)
-      everyone_survey_count = Idea.where(project: project, author: nil, anonymous: false).count
-
-      participant_ids.size + anonymous_idea_hashes.size + anonymous_comment_hashes.size + everyone_survey_count
+      known_author_hashes = participant_ids.map { |id| Idea.create_author_hash(id, project.id, true) }
+      participant_ids.size + projects_anonymous_count([project], known_author_hashes) + projects_everyone_count([project])
     end
+  end
+
+  # Returns the total count of all folder participants including anonymous posts - cached
+  def folder_participants_count(folder)
+    Rails.cache.fetch("#{folder.cache_key}/participant_count", expires_in: 1.day) do
+      participant_ids = projects_participants(folder.projects).pluck(:id)
+      known_author_hashes = participant_ids.flat_map do |id|
+        folder.projects.ids { |project_id| Idea.create_author_hash(id, project_id, true) }
+      end
+      participant_ids.size + projects_anonymous_count(folder.projects, known_author_hashes) + projects_everyone_count(folder.projects)
+    end
+  end
+
+  def projects_anonymous_count(projects, known_author_hashes)
+    anonymous_idea_hashes = Idea.where(project: projects, anonymous: true)
+      .where.not(author_hash: known_author_hashes)
+      .distinct.pluck(:author_hash)
+    anonymous_comment_hashes = Comment.joins(:idea)
+      .where(anonymous: true)
+      .where(idea: { project: projects })
+      .where.not(author_hash: known_author_hashes + anonymous_idea_hashes)
+      .distinct.pluck(:author_hash)
+    anonymous_idea_hashes.size + anonymous_comment_hashes.size
+  end
+
+  def projects_everyone_count(projects)
+    Idea.where(project: projects, author: nil, anonymous: false).size
   end
 
   def projects_participants(projects, options = {})
@@ -161,7 +178,7 @@ class ParticipantsService
 
   # Adapts the passed activities_scope to only take into account activities
   # that should truly be taken into account as actual activity generated by
-  # the user. E.g. Creating a vote is a truly engaging activity, whereas
+  # the user. E.g. Creating a reaction is a truly engaging activity, whereas
   # receiving project moderation rights is not
   def filter_engaging_activities(activities_scope)
     output = activities_scope

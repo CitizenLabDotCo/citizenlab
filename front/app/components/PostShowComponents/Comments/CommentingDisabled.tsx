@@ -25,12 +25,12 @@ import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 interface Props {
   projectId: string | null;
   phaseId: string | undefined;
-  commentingEnabled: boolean | null;
+  commentingEnabled: boolean;
   commentingDisabledReason: IdeaCommentingDisabledReason | null;
 }
 
 const calculateMessageDescriptor = (
-  commentingEnabled: boolean | null,
+  commentingEnabled: boolean,
   commentingDisabledReason: IdeaCommentingDisabledReason | null,
   authUser: IUserData | undefined
 ) => {
@@ -131,7 +131,7 @@ const CommentingDisabled = ({
               </button>
             ),
             verifyIdentityLink: (
-              <button onClick={signUp}>
+              <button id="e2e-verify-identity-to-comment" onClick={signUp}>
                 <FormattedMessage {...messages.verifyIdentityLinkText} />
               </button>
             ),

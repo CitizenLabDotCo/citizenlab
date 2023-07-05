@@ -3,7 +3,7 @@
 module Insights
   module Views
     class CreateService
-      include Pundit
+      include Pundit::Authorization
 
       attr_reader :current_user
 

@@ -1,5 +1,6 @@
 // services
-import { IBasketData, updateBasket, addBasket } from 'services/baskets';
+import { IBasketData } from 'api/baskets/types';
+import useAddBasket from 'api/baskets/useAddBasket';
 
 // tracks
 import { trackEventByName } from 'utils/analytics';
@@ -7,17 +8,19 @@ import tracks from 'containers/ProjectsShowPage/shared/pb/tracks';
 
 // utils
 import { isNil, capitalizeParticipationContextType } from 'utils/helperUtils';
-import streams from 'utils/streams';
 
 // typings
 import { IUserData } from 'api/users/types';
 import { IParticipationContextType } from 'typings';
+import useUpdateBasket from 'api/baskets/useUpdateBasket';
 
 export interface AssignBudgetParams {
   ideaId: string;
   participationContextId: string;
   participationContextType: IParticipationContextType;
   basket: IBasketData | null | undefined;
+  addBasket: ReturnType<typeof useAddBasket>['mutateAsync'];
+  updateBasket: ReturnType<typeof useUpdateBasket>['mutateAsync'];
 }
 
 export const assignBudget =
@@ -26,6 +29,8 @@ export const assignBudget =
     participationContextId,
     participationContextType,
     basket,
+    addBasket,
+    updateBasket,
   }: AssignBudgetParams) =>
   async (authUser: IUserData) => {
     if (!isNil(basket)) {
@@ -47,20 +52,17 @@ export const assignBudget =
         ];
       }
 
-      try {
-        await updateBasket(basket.id, {
-          user_id: authUser.id,
-          participation_context_id: participationContextId,
-          participation_context_type: capitalizeParticipationContextType(
-            participationContextType
-          ),
-          idea_ids: newIdeas,
-          submitted_at: null,
-        });
-        trackEventByName(tracks.ideaAddedToBasket);
-      } catch (error) {
-        streams.fetchAllWith({ dataId: [basket.id] });
-      }
+      await updateBasket({
+        id: basket.id,
+        user_id: authUser.id,
+        participation_context_id: participationContextId,
+        participation_context_type: capitalizeParticipationContextType(
+          participationContextType
+        ),
+        idea_ids: newIdeas,
+        submitted_at: null,
+      });
+      trackEventByName(tracks.ideaAddedToBasket);
     } else {
       await addBasket({
         user_id: authUser.id,

@@ -5,7 +5,7 @@ const oneYearAgo = moment().subtract(1, 'year').format('MMMM YYYY');
 describe('/admin route', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
-    cy.visit('/admin/dashboard');
+    cy.visit('/admin/dashboard/overview');
   });
 
   it('Shows the summary tab and all its graphs', () => {
@@ -18,7 +18,7 @@ describe('/admin route', () => {
       .find('.recharts-surface');
     cy.get('#e2e-ideas-chart');
     cy.get('#e2e-comments-chart');
-    cy.get('#e2e-votes-chart');
+    cy.get('#e2e-reactions-chart');
     cy.get('.e2e-resource-by-topic-chart');
     cy.get('.e2e-resource-by-project-chart');
   });

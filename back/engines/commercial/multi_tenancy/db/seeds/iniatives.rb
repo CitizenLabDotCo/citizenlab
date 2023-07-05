@@ -22,14 +22,14 @@ module MultiTenancy
             areas: Array.new(rand(3)) { rand(Area.count) }.uniq.map { |offset| Area.offset(offset).first },
             assignee: rand(5) == 0 ? User.admin.sample : nil
           )
-          # TODO: make initiative statuses correspond with required votes reached
+          # TODO: make initiative statuses correspond with required reactions reached
           InitiativeStatusChange.create!(
             created_at: initiative.published_at,
             initiative: initiative,
             initiative_status: InitiativeStatus.offset(rand(InitiativeStatus.count)).first
           )
 
-          [0, 0, 1, 1, 2][rand(5)].times do |_i|
+          [1, 1, 2, 2, 3][rand(5)].times do |_i|
             initiative.initiative_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
           end
           if rand(5) == 0
@@ -41,7 +41,7 @@ module MultiTenancy
           User.all.each do |u|
             r = rand(5)
             if r < 2
-              Vote.create!(votable: initiative, user: u, mode: 'up',
+              Reaction.create!(reactable: initiative, user: u, mode: 'up',
                 created_at: Faker::Date.between(from: initiative.published_at, to: Time.zone.now))
             end
           end

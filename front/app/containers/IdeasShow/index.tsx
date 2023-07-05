@@ -1,4 +1,11 @@
-import React, { lazy, Suspense, useState, useRef, useEffect } from 'react';
+import React, {
+  lazy,
+  Suspense,
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+} from 'react';
 import { isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
@@ -23,7 +30,7 @@ import AssignBudgetControl from 'components/AssignBudgetControl';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 import IdeaMoreActions from './IdeaMoreActions';
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
-import GoBackButton from './GoBackButton';
+import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
 const LazyComments = lazy(
   () => import('components/PostShowComponents/Comments')
 );
@@ -54,6 +61,8 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // utils
 import clHistory from 'utils/cl-router/history';
+import { useSearchParams } from 'react-router-dom';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 // style
 import styled from 'styled-components';
@@ -67,7 +76,6 @@ import useLocale from 'hooks/useLocale';
 import usePhases from 'api/phases/usePhases';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
-import { useSearchParams } from 'react-router-dom';
 import useIdeaImages from 'api/idea_images/useIdeaImages';
 import useLocalize from 'hooks/useLocalize';
 import { getCurrentPhase } from 'api/phases/utils';
@@ -159,7 +167,6 @@ interface DataProps {
 interface InputProps {
   ideaId: string;
   projectId: string;
-  insideModal: boolean;
   setRef?: (element: HTMLDivElement) => void;
   compact?: boolean;
   className?: string;
@@ -172,7 +179,6 @@ export const IdeasShow = ({
   className,
   postOfficialFeedbackPermission,
   projectId,
-  insideModal,
   project,
   compact,
   ideaId,
@@ -183,20 +189,29 @@ export const IdeasShow = ({
   const { data: ideaImages } = useIdeaImages(ideaId);
 
   const [newIdeaId, setNewIdeaId] = useState<string | null>(null);
+  const [goBack, setGoBack] = useState(false);
   const [translateButtonIsClicked, setTranslateButtonIsClicked] =
     useState<boolean>(false);
-  const [queryParams] = useSearchParams();
-  const ideaIdParameter = queryParams.get('new_idea_id');
+  const [searchParams] = useSearchParams();
+  const ideaIdParameter = searchParams.get('new_idea_id');
+  const goBackParameter = searchParams.get('go_back');
   const timeout = useRef<NodeJS.Timeout>();
 
   useEffect(() => {
+    if (ideaIdParameter === null && goBackParameter === null) return;
+
     if (isString(ideaIdParameter)) {
       timeout.current = setTimeout(() => {
         setNewIdeaId(ideaIdParameter);
       }, 1500);
-      clHistory.replace(window.location.pathname);
     }
-  }, [ideaIdParameter]);
+
+    if (isString(goBackParameter)) {
+      setGoBack(true);
+    }
+
+    removeSearchParams(['new_idea_id', 'go_back']);
+  }, [ideaIdParameter, goBackParameter]);
 
   const { data: phases } = usePhases(projectId);
   const { data: idea } = useIdeaById(ideaId);
@@ -237,6 +252,16 @@ export const IdeasShow = ({
 
   let content: JSX.Element | null = null;
 
+  const handleGoBack = useCallback(() => {
+    if (goBack) {
+      clHistory.back();
+    } else if (project) {
+      clHistory.push(`/projects/${project.attributes.slug}`);
+    } else {
+      clHistory.push('/');
+    }
+  }, [goBack, project]);
+
   if (
     !isNilOrError(project) &&
     !isNilOrError(idea) &&
@@ -276,7 +301,10 @@ export const IdeasShow = ({
         {!isCompactView && (
           <TopBar>
             <Box mb="40px">
-              <GoBackButton projectId={projectId} insideModal={insideModal} />
+              <GoBackButtonSolid
+                text={localize(project.attributes.title_multiloc)}
+                onClick={handleGoBack}
+              />
             </Box>
             <IdeaMoreActions idea={idea.data} projectId={projectId} />
           </TopBar>
@@ -330,7 +358,6 @@ export const IdeasShow = ({
               <Body
                 postType="idea"
                 postId={ideaId}
-                locale={locale}
                 body={ideaBody}
                 translateButtonClicked={translateButtonIsClicked}
               />
@@ -393,7 +420,6 @@ export const IdeasShow = ({
               projectId={projectId}
               statusId={statusId}
               authorId={authorId}
-              insideModal={insideModal}
               anonymous={anonymous}
             />
           )}

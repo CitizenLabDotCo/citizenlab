@@ -4,8 +4,6 @@ import { isString, isEmpty, capitalize } from 'lodash-es';
 // libraries
 import { MentionsInput, Mention } from 'react-mentions';
 
-// services
-
 // components
 import Error from 'components/UI/Error';
 
@@ -16,6 +14,8 @@ import { transparentize } from 'polished';
 
 // typings
 import { Locale } from 'typings';
+import { MentionRoles } from 'api/mentions/types';
+
 import getMentions from 'api/mentions/getMentions';
 
 const Container = styled.div`
@@ -77,6 +77,7 @@ export interface Props {
   background?: string;
   ariaLabel?: string;
   children?: React.ReactNode;
+  roles?: MentionRoles[];
 }
 
 const MentionsTextArea = ({
@@ -105,6 +106,7 @@ const MentionsTextArea = ({
   name,
   error,
   children,
+  roles,
 }: Props) => {
   const textareaElement = useRef<HTMLTextAreaElement | null>(null);
   const theme = useTheme();
@@ -127,6 +129,7 @@ const MentionsTextArea = ({
           border: 'none',
           appearance: 'none',
           WebkitAppearance: 'none',
+          minHeight: `${rows * parseInt(lineHeight, 10)}px`,
         },
         input: {
           margin: 0,
@@ -135,7 +138,7 @@ const MentionsTextArea = ({
           fontSize,
           fontWeight,
           lineHeight,
-          minHeight: `${rows * parseInt(lineHeight as string, 10)}px`,
+          minHeight: `${rows * parseInt(lineHeight, 10)}px`,
           outline: 'none',
           border,
           borderRadius,
@@ -144,6 +147,10 @@ const MentionsTextArea = ({
           appearance: 'none',
           WebkitAppearance: 'none',
           transition: 'min-height 180ms cubic-bezier(0.165, 0.84, 0.44, 1)',
+        },
+        highlighter: {
+          padding,
+          fontSize,
         },
         suggestions: {
           list: {
@@ -203,6 +210,7 @@ const MentionsTextArea = ({
         mention: query.toLowerCase(),
         post_id: postId,
         post_type: capitalize(postType) as 'Idea' | 'Initiative',
+        roles: roles,
       };
 
       const response = await getMentions(queryParameters);
@@ -233,7 +241,6 @@ const MentionsTextArea = ({
           rows={rows}
           value={value || ''}
           placeholder={placeholder}
-          displayTransform={mentionDisplayTransform}
           markup={'@[__display__](__id__)'}
           onChange={handleOnChange}
           onFocus={handleOnFocus}
@@ -241,12 +248,14 @@ const MentionsTextArea = ({
           aria-label={ariaLabel}
           ref={setMentionsInputRef}
           inputRef={textareaElement}
+          autoFocus={false}
         >
           <Mention
             trigger="@"
             data={getUsers}
             appendSpaceOnAdd={true}
             style={mentionStyle}
+            displayTransform={mentionDisplayTransform}
           />
         </StyledMentionsInput>
         {children}

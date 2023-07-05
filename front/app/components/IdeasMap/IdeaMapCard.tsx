@@ -1,5 +1,4 @@
 import React, { memo, useEffect, useState } from 'react';
-import { IOpenPostPageModalEvent } from 'containers/App';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -7,12 +6,15 @@ import CloseIconButton from 'components/UI/CloseIconButton';
 import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
 
 // events
-import eventEmitter from 'utils/eventEmitter';
-import { setIdeaMapCardSelected } from './events';
 import {
   setLeafletMapHoveredMarker,
   leafletMapHoveredMarker$,
+  setLeafletMapSelectedMarker,
 } from 'components/UI/LeafletMap/events';
+
+// router
+import clHistory from 'utils/cl-router/history';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 // hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -108,12 +110,12 @@ const MoneybagIcon = styled(Icon)`
   margin-right: 6px;
 `;
 
-const DownvoteIcon = styled(Icon)`
+const DislikeIcon = styled(Icon)`
   fill: ${colors.textSecondary};
   margin-right: 6px;
 `;
 
-const UpvoteIcon = styled(Icon)`
+const LikeIcon = styled(Icon)`
   fill: ${colors.textSecondary};
   margin-right: 6px;
   margin-top: 5px;
@@ -178,14 +180,12 @@ const IdeaMapCard = memo<Props>(
     const handleOnClick = (event: React.FormEvent) => {
       event?.preventDefault();
 
-      setIdeaMapCardSelected(ideaMarker.id);
+      updateSearchParams({ idea_map_id: ideaMarker.id });
 
       if (tablet) {
-        eventEmitter.emit<IOpenPostPageModalEvent>('cardClick', {
-          id: ideaMarker.id,
-          slug: ideaMarker.attributes.slug,
-          type: 'idea',
-        });
+        clHistory.push(`/ideas/${ideaMarker.attributes.slug}?go_back=true`);
+      } else {
+        setLeafletMapSelectedMarker(ideaMarker.id);
       }
     };
 
@@ -211,13 +211,13 @@ const IdeaMapCard = memo<Props>(
     if (!isNilOrError(appConfig) && !isNilOrError(ideaMarker) && project) {
       const tenantCurrency = appConfig.data.attributes.settings.core.currency;
       const ideaBudget = ideaMarker.attributes?.budget;
-      const votingActionDescriptor =
-        project.data.attributes.action_descriptor.voting_idea;
-      const showDownvote =
-        votingActionDescriptor.down.enabled === true ||
-        (votingActionDescriptor.down.enabled === false &&
-          votingActionDescriptor.down.disabled_reason !==
-            'downvoting_disabled');
+      const reactingActionDescriptor =
+        project.data.attributes.action_descriptor.reacting_idea;
+      const showDislike =
+        reactingActionDescriptor.down.enabled === true ||
+        (reactingActionDescriptor.down.enabled === false &&
+          reactingActionDescriptor.down.disabled_reason !==
+            'disliking_disabled');
       const commentingEnabled =
         project.data.attributes.action_descriptor.commenting_idea.enabled;
 
@@ -233,6 +233,7 @@ const IdeaMapCard = memo<Props>(
           onMouseLeave={handleOnMouseLeave}
           role="button"
           tabIndex={0}
+          id="e2e-idea-map-card"
         >
           {tablet && (
             <StyledCloseIconButton
@@ -259,16 +260,16 @@ const IdeaMapCard = memo<Props>(
             {!isParticipatoryBudgetIdea && (
               <>
                 <FooterItem>
-                  <DownvoteIcon name="vote-up" />
-                  <FooterValue>
-                    {ideaMarker.attributes.upvotes_count}
+                  <LikeIcon name="vote-up" />
+                  <FooterValue id="e2e-map-card-like-count">
+                    {ideaMarker.attributes.likes_count}
                   </FooterValue>
                 </FooterItem>
-                {showDownvote && (
+                {showDislike && (
                   <FooterItem>
-                    <UpvoteIcon name="vote-down" />
-                    <FooterValue>
-                      {ideaMarker.attributes.downvotes_count}
+                    <DislikeIcon name="vote-down" />
+                    <FooterValue id="e2e-map-card-dislike-count">
+                      {ideaMarker.attributes.dislikes_count}
                     </FooterValue>
                   </FooterItem>
                 )}

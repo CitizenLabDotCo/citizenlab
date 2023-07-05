@@ -27,7 +27,6 @@ import styled from 'styled-components';
 
 // typings
 import { IIdeaData } from 'api/ideas/types';
-import eventEmitter from 'utils/eventEmitter';
 
 const Container = styled.div``;
 
@@ -58,7 +57,6 @@ const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
   };
 
   const onEditIdea = () => {
-    eventEmitter.emit('closeIdeaModal');
     clHistory.push(`/ideas/edit/${idea.id}`);
   };
 
@@ -72,7 +70,6 @@ const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
       deleteIdea(ideaId, {
         onSuccess: () => {
           clHistory.goBack();
-          eventEmitter.emit('closeIdeaModal');
         },
       });
     }

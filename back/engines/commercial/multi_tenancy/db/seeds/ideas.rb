@@ -34,7 +34,7 @@ module MultiTenancy
             proposed_budget: rand(3) == 0 ? nil : (rand(10**rand(2..4)) + 50).round(-1)
           })
 
-          [0, 0, 1, 1, 2][rand(5)].times do |_i|
+          [1, 1, 2, 2, 3][rand(5)].times do |_i|
             idea.idea_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
           end
           if rand(5) == 0
@@ -46,10 +46,10 @@ module MultiTenancy
           User.all.each do |u|
             r = rand(5)
             if r == 0
-              Vote.create!(votable: idea, user: u, mode: 'down',
+              Reaction.create!(reactable: idea, user: u, mode: 'down',
                 created_at: Faker::Date.between(from: idea.published_at, to: Time.zone.now))
             elsif r > 0 && r < 3
-              Vote.create!(votable: idea, user: u, mode: 'up',
+              Reaction.create!(reactable: idea, user: u, mode: 'up',
                 created_at: Faker::Date.between(from: idea.published_at, to: Time.zone.now))
             end
           end

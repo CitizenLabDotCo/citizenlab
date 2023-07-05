@@ -12,18 +12,16 @@ import { IStreamParams, IStream } from 'utils/streams';
 import {
   IIdeasByTopic,
   ICommentsByTopic,
-  IVotesByTopic,
+  IReactionsByTopic,
   IIdeasByStatus,
   IIdeasByProject,
   ICommentsByProject,
-  IVotesByProject,
+  IReactionsByProject,
 } from 'services/stats';
-import {
-  IUsersByBirthyear,
-  IUsersByDomicile,
-  IUsersByRegistrationField,
-} from 'services/userCustomFieldStats';
 import { IGraphFormat, IParticipationByTopic } from 'typings';
+import { IUsersByBirthyear } from 'api/users_by_birthyear/types';
+import { IUsersByDomicile } from 'api/users_by_domicile/types';
+import { IUsersByCustomField } from 'api/users_by_custom_field/types';
 
 interface State {
   unconvertedSerie: ISupportedDataType | NilOrError;
@@ -36,14 +34,14 @@ type children = (renderProps: {
 export interface ISupportedDataTypeMap {
   ideasByTopic: IIdeasByTopic;
   commentsByTopic: ICommentsByTopic;
-  votesByTopic: IVotesByTopic;
+  reactionsByTopic: IReactionsByTopic;
   ideasByProject: IIdeasByProject;
   ideasByStatus: IIdeasByStatus;
-  votesByProject: IVotesByProject;
+  reactionsByProject: IReactionsByProject;
   commentsByProject: ICommentsByProject;
   usersByBirthYear: IUsersByBirthyear;
   usersByDomicile: IUsersByDomicile;
-  usersByRegistrationField: IUsersByRegistrationField;
+  usersByRegistrationField: IUsersByCustomField;
 }
 
 export type ISupportedDataType =

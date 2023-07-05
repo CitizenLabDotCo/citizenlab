@@ -1,13 +1,18 @@
-import React, { memo, FormEvent } from 'react';
-import { IOpenPostPageModalEvent } from 'containers/App';
+import React, { memo, useEffect } from 'react';
 
 // components
 import UserName from 'components/UI/UserName';
 import Card from 'components/UI/Card/Compact';
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, useBreakpoint } from '@citizenlab/cl2-component-library';
 import Avatar from 'components/Avatar';
-import FooterWithVoteControl from './FooterWithVoteControl';
+import FooterWithReactionControl from './FooterWithReactionControl';
 import FooterWithBudgetControl from './FooterWithBudgetControl';
+
+// router
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import clHistory from 'utils/cl-router/history';
+import { useSearchParams } from 'react-router-dom';
 
 // types
 import { ParticipationMethod } from 'services/participationContexts';
@@ -20,8 +25,10 @@ import useProjectById from 'api/projects/useProjectById';
 import useLocalize from 'hooks/useLocalize';
 
 // utils
-import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
+import { scrollToElement } from 'utils/scroll';
+import eventEmitter from 'utils/eventEmitter';
+import { IMAGES_LOADED_EVENT } from 'components/admin/ContentBuilder/constants';
 
 // styles
 import styled from 'styled-components';
@@ -106,6 +113,7 @@ interface Props {
   hideImage?: boolean;
   hideImagePlaceholder?: boolean;
   hideIdeaStatus?: boolean;
+  goBackMode?: 'browserGoBackButton' | 'goToProject';
 }
 
 const IdeaLoading = (props: Props) => {
@@ -132,7 +140,9 @@ const CompactIdeaCard = memo<IdeaCardProps>(
     hideImage = false,
     hideImagePlaceholder = false,
     hideIdeaStatus = false,
+    goBackMode = 'browserGoBackButton',
   }) => {
+    const smallerThanPhone = useBreakpoint('phone');
     const locale = useLocale();
     const localize = useLocalize();
     const { data: project } = useProjectById(
@@ -150,6 +160,8 @@ const CompactIdeaCard = memo<IdeaCardProps>(
       .replace(/<[^>]*>?/gm, '')
       .replaceAll('&amp;', '&')
       .trim();
+    const [searchParams] = useSearchParams();
+    const scrollToCardParam = searchParams.get('scroll_to_card');
 
     const getFooter = () => {
       if (project) {
@@ -175,7 +187,7 @@ const CompactIdeaCard = memo<IdeaCardProps>(
 
         if (participationMethod === 'ideation') {
           return (
-            <FooterWithVoteControl
+            <FooterWithReactionControl
               idea={idea}
               hideIdeaStatus={hideIdeaStatus}
               showCommentCount={showCommentCount}
@@ -187,24 +199,43 @@ const CompactIdeaCard = memo<IdeaCardProps>(
       return null;
     };
 
-    const onCardClick = (event: FormEvent) => {
-      event.preventDefault();
+    useEffect(() => {
+      if (scrollToCardParam && idea.data.id === scrollToCardParam) {
+        const subscription = eventEmitter
+          .observeEvent(IMAGES_LOADED_EVENT)
+          .subscribe(() => {
+            scrollToElement({
+              id: scrollToCardParam,
+              behavior: 'auto',
+              offset: smallerThanPhone ? 150 : 300,
+            });
 
-      eventEmitter.emit<IOpenPostPageModalEvent>('cardClick', {
-        id: idea.data.id,
-        slug: idea.data.attributes.slug,
-        type: 'idea',
-      });
+            subscription.unsubscribe();
+          });
+      }
+
+      removeSearchParams(['scroll_to_card']);
+    }, [scrollToCardParam, idea, smallerThanPhone]);
+
+    const { slug } = idea.data.attributes;
+    const params = goBackMode === 'browserGoBackButton' ? '?go_back=true' : '';
+
+    const handleClick = (e: React.MouseEvent) => {
+      e.preventDefault();
+      updateSearchParams({ scroll_to_card: idea.data.id });
+
+      clHistory.push(`/ideas/${slug}${params}`);
     };
 
     return (
       <Card
-        onClick={onCardClick}
+        id={idea.data.id}
         className={[className, 'e2e-idea-card']
           .filter((item) => typeof item === 'string' && item !== '')
           .join(' ')}
         title={ideaTitle}
-        to={`/ideas/${idea.data.attributes.slug}`}
+        to={`/ideas/${slug}${params}`}
+        onClick={handleClick}
         image={
           !isNilOrError(ideaImage)
             ? ideaImage.data.attributes.versions.medium

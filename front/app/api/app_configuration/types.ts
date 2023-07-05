@@ -62,7 +62,7 @@ export type ProposalsSettings = {
   allow_anonymous_participation: boolean;
   eligibility_criteria: Multiloc;
   threshold_reached_message: Multiloc;
-  voting_threshold: number;
+  reacting_threshold: number;
 };
 export interface IAppConfigurationSettings {
   core: IAppConfigurationSettingsCore;
@@ -169,7 +169,7 @@ export interface IAppConfigurationSettings {
   polls?: AppConfigurationFeature;
   moderation?: AppConfigurationFeature;
   flag_inappropriate_content?: AppConfigurationFeature;
-  disable_downvoting?: AppConfigurationFeature;
+  disable_disliking?: AppConfigurationFeature;
   project_visibility?: AppConfigurationFeature;
   project_management?: AppConfigurationFeature;
   idea_assignment?: AppConfigurationFeature;
@@ -221,6 +221,7 @@ export interface IAppConfigurationSettings {
     duration: boolean;
   };
   seat_based_billing?: AppConfigurationFeature;
+  internal_commenting?: AppConfigurationFeature;
   konveio_document_annotation?: AppConfigurationFeature;
 }
 

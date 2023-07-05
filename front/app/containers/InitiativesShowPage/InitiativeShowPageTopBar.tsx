@@ -1,12 +1,13 @@
-import React, { memo, useCallback, MouseEvent } from 'react';
-import clHistory from 'utils/cl-router/history';
+import React, { useCallback, MouseEvent, useState, useEffect } from 'react';
 
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
-import VoteIndicator from 'components/InitiativeCard/VoteIndicator';
+import ReactionIndicator from 'components/InitiativeCard/ReactionIndicator';
 
-// utils
-import eventEmitter from 'utils/eventEmitter';
+// router
+import clHistory from 'utils/cl-router/history';
+import { useSearchParams } from 'react-router-dom';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -16,6 +17,9 @@ import messages from './messages';
 import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 import { lighten } from 'polished';
+
+// utils
+import { isString } from 'lodash-es';
 
 const Container = styled.div`
   height: ${(props) => props.theme.mobileTopBarHeight}px;
@@ -100,41 +104,52 @@ const GoBackLabel = styled.div`
 
 interface Props {
   initiativeId: string;
-  insideModal?: boolean;
   className?: string;
 }
 
-const InitiativeShowPageTopBar = memo<Props>(
-  ({ initiativeId, insideModal, className }) => {
-    const onGoBack = useCallback((event: MouseEvent<HTMLElement>) => {
+const InitiativeShowPageTopBar = ({ initiativeId, className }: Props) => {
+  const [goBack, setGoBack] = useState(false);
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    const goBackParameter = searchParams.get('go_back');
+
+    if (isString(goBackParameter)) {
+      setGoBack(true);
+      removeSearchParams(['go_back']);
+    }
+  }, [searchParams]);
+
+  const onGoBack = useCallback(
+    (event: MouseEvent<HTMLElement>) => {
       event.preventDefault();
 
-      if (insideModal) {
-        eventEmitter.emit('closeIdeaModal');
+      if (goBack) {
+        clHistory.goBack();
       } else {
         clHistory.push('/');
       }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    },
+    [goBack]
+  );
 
-    return (
-      <Container className={className || ''}>
-        <TopBarInner>
-          <Left>
-            <GoBackButton onClick={onGoBack}>
-              <GoBackIcon name="arrow-left" />
-            </GoBackButton>
-            <GoBackLabel>
-              <FormattedMessage {...messages.goBack} />
-            </GoBackLabel>
-          </Left>
-          <Right>
-            <VoteIndicator initiativeId={initiativeId} />
-          </Right>
-        </TopBarInner>
-      </Container>
-    );
-  }
-);
+  return (
+    <Container className={className || ''}>
+      <TopBarInner>
+        <Left>
+          <GoBackButton onClick={onGoBack}>
+            <GoBackIcon name="arrow-left" />
+          </GoBackButton>
+          <GoBackLabel>
+            <FormattedMessage {...messages.goBack} />
+          </GoBackLabel>
+        </Left>
+        <Right>
+          <ReactionIndicator initiativeId={initiativeId} />
+        </Right>
+      </TopBarInner>
+    </Container>
+  );
+};
 
 export default InitiativeShowPageTopBar;

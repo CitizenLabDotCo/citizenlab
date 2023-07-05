@@ -2,32 +2,24 @@ import React from 'react';
 
 // components
 import MetaInformation from '../MetaInformation';
-import VoteControl from 'components/VoteControl';
+import ReactionControl from 'components/ReactionControl';
 import Buttons from 'containers/IdeasShow/CTABox/Buttons';
 import AssignBudgetControl from 'components/AssignBudgetControl';
+import IdeaSharingButton from '../Buttons/IdeaSharingButton';
+import SharingButtonComponent from '../Buttons/SharingButtonComponent';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // styling
 import styled from 'styled-components';
 import { rightColumnWidthDesktop } from '../styleConstants';
 import { colors } from 'utils/styleUtils';
-import IdeaSharingButton from '../Buttons/IdeaSharingButton';
-import SharingButtonComponent from '../Buttons/SharingButtonComponent';
-import { Box } from '@citizenlab/cl2-component-library';
-
-const Container = styled.div<{ insideModal: boolean }>`
-  flex: 0 0 ${rightColumnWidthDesktop}px;
-  width: ${rightColumnWidthDesktop}px;
-  position: sticky;
-  top: ${(props) => (props.insideModal ? '30px' : '110px')};
-  align-self: flex-start;
-`;
 
 const InnerContainer = styled.div`
   display: flex;
   flex-direction: column;
 `;
 
-const StyledVoteControl = styled(VoteControl)`
+const StyledReactionControl = styled(ReactionControl)`
   padding-bottom: 23px;
   margin-bottom: 23px;
 `;
@@ -47,7 +39,6 @@ interface Props {
   projectId: string;
   statusId: string;
   authorId: string | null;
-  insideModal: boolean;
   anonymous?: boolean;
   className?: string;
 }
@@ -57,12 +48,18 @@ const RightColumnDesktop = ({
   projectId,
   statusId,
   authorId,
-  insideModal,
   anonymous,
   className,
 }: Props) => {
   return (
-    <Container insideModal={insideModal} className={className || ''}>
+    <Box
+      flex={`0 0 ${rightColumnWidthDesktop}px`}
+      width={`${rightColumnWidthDesktop}px`}
+      position="sticky"
+      top="110px"
+      alignSelf="flex-start"
+      className={className}
+    >
       <InnerContainer>
         <Box
           padding="20px"
@@ -70,7 +67,7 @@ const RightColumnDesktop = ({
           background={colors.background}
           mb="12px"
         >
-          <StyledVoteControl styleType="shadow" ideaId={ideaId} size="4" />
+          <StyledReactionControl styleType="shadow" ideaId={ideaId} size="4" />
           <StyledAssignBudgetControl
             view="ideaPage"
             ideaId={ideaId}
@@ -92,7 +89,7 @@ const RightColumnDesktop = ({
           anonymous={anonymous}
         />
       </InnerContainer>
-    </Container>
+    </Box>
   );
 };
 

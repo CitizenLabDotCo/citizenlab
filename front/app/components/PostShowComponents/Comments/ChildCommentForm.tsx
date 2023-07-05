@@ -2,7 +2,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, isPage } from 'utils/helperUtils';
+import { useLocation } from 'react-router-dom';
+
+// services
+import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 
 // components
 import Button from 'components/UI/Button';
@@ -22,11 +26,8 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import messages from './messages';
-
-// services
-import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 
 // events
 import { commentReplyButtonClicked$, commentAdded } from './events';
@@ -92,7 +93,8 @@ const CancelButton = styled(Button)`
 `;
 
 interface Props {
-  postId: string;
+  ideaId: string | undefined;
+  initiativeId: string | undefined;
   postType: 'idea' | 'initiative';
   projectId?: string | null;
   parentId: string;
@@ -102,7 +104,8 @@ interface Props {
 
 const ChildCommentForm = ({
   parentId,
-  postId,
+  ideaId,
+  initiativeId,
   postType,
   projectId,
   className,
@@ -113,6 +116,8 @@ const ChildCommentForm = ({
   const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser } = useAuthUser();
   const smallerThanTablet = useBreakpoint('tablet');
+  const { pathname } = useLocation();
+  const isAdminPage = isPage('admin', pathname);
 
   const {
     mutate: addCommentToIdeaComment,
@@ -128,6 +133,7 @@ const ChildCommentForm = ({
   const [profanityApiError, setProfanityApiError] = useState(false);
   const [hasApiError, setHasApiError] = useState(false);
   const [postAnonymously, setPostAnonymously] = useState(false);
+  const [tagValue, setTagValue] = useState('');
   const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
     useState(false);
   const textareaElement = useRef<HTMLTextAreaElement | null>(null);
@@ -147,6 +153,7 @@ const ChildCommentForm = ({
           const { authorFirstName, authorLastName, authorSlug } = eventValue;
           if (authorFirstName && authorLastName && authorSlug) {
             const tag = `@[${authorFirstName} ${authorLastName}](${authorSlug}) `;
+            setTagValue(tag);
             setInputValue(tag);
           }
           setFocused(true);
@@ -157,6 +164,10 @@ const ChildCommentForm = ({
       subscriptions.forEach((subscription) => subscription.unsubscribe());
     };
   }, [parentId]);
+
+  if (!authUser || isNilOrError(locale)) {
+    return null;
+  }
 
   const setCaretAtEnd = (element: HTMLTextAreaElement) => {
     if (element.setSelectionRange && element.textContent) {
@@ -178,7 +189,7 @@ const ChildCommentForm = ({
   const onFocus = () => {
     trackEventByName(tracks.focusChildCommentEditor, {
       extra: {
-        postId,
+        postId: ideaId || initiativeId,
         postType,
         parentId,
       },
@@ -201,7 +212,7 @@ const ChildCommentForm = ({
   };
 
   const continueSubmission = async () => {
-    if (!isNilOrError(locale) && !isNilOrError(authUser) && canSubmit) {
+    if (canSubmit) {
       const commentBodyMultiloc = {
         [locale]: inputValue.replace(/@\[(.*?)\]\((.*?)\)/gi, '@$2'),
       };
@@ -210,7 +221,7 @@ const ChildCommentForm = ({
 
       trackEventByName(tracks.clickChildCommentPublish, {
         extra: {
-          postId,
+          postId: ideaId || initiativeId,
           postType,
           parentId,
           content: inputValue,
@@ -220,7 +231,7 @@ const ChildCommentForm = ({
       if (postType === 'idea' && projectId) {
         addCommentToIdeaComment(
           {
-            ideaId: postId,
+            ideaId,
             author_id: authUser.data.id,
             parent_id: parentId,
             body_multiloc: commentBodyMultiloc,
@@ -243,13 +254,13 @@ const ChildCommentForm = ({
               if (profanityApiError) {
                 trackEventByName(tracks.childCommentProfanityError.name, {
                   locale,
-                  postId,
+                  ideaId,
                   postType,
                   projectId,
                   profaneMessage: commentBodyMultiloc[locale],
                   location: 'Idea Child Comment Form (citizen side)',
                   userId: authUser.data.id,
-                  host: !isNilOrError(appConfiguration)
+                  host: appConfiguration
                     ? appConfiguration.data.attributes.host
                     : null,
                 });
@@ -264,7 +275,7 @@ const ChildCommentForm = ({
       if (postType === 'initiative') {
         addCommentToInitiativeComment(
           {
-            initiativeId: postId,
+            initiativeId,
             author_id: authUser.data.id,
             parent_id: parentId,
             body_multiloc: commentBodyMultiloc,
@@ -287,13 +298,13 @@ const ChildCommentForm = ({
               if (profanityApiError) {
                 trackEventByName(tracks.childCommentProfanityError.name, {
                   locale,
-                  postId,
+                  initiativeId,
                   postType,
                   projectId,
                   profaneMessage: commentBodyMultiloc[locale],
                   location: 'Initiative Child Comment Form (citizen side)',
                   userId: authUser.data.id,
-                  host: !isNilOrError(appConfiguration)
+                  host: appConfiguration
                     ? appConfiguration.data.attributes.host
                     : null,
                 });
@@ -318,16 +329,16 @@ const ChildCommentForm = ({
       });
 
       setTimeout(() => {
-        textareaElement?.current?.focus();
+        textareaElement.current?.focus();
       }, 100);
 
-      setTimeout(() => {
-        textareaElement?.current && setCaretAtEnd(textareaElement.current);
-      }, 200);
+      if (tagValue === inputValue) {
+        setTimeout(() => {
+          textareaElement.current && setCaretAtEnd(textareaElement.current);
+        }, 200);
+      }
     }
   };
-
-  const placeholder = formatMessage(messages.childCommentBodyPlaceholder);
 
   const getErrorMessage = () => {
     if (hasApiError) {
@@ -355,9 +366,11 @@ const ChildCommentForm = ({
     return null;
   };
 
-  if (!isNilOrError(authUser) && focused) {
-    const isModerator =
-      !isNilOrError(authUser) && canModerateProject(postId, authUser);
+  if (focused) {
+    const isModerator = canModerateProject(projectId, authUser);
+    const postButtonText: MessageDescriptor = isAdminPage
+      ? messages.postPublicComment
+      : messages.publishComment;
 
     return (
       <Container className={`${className || ''} e2e-childcomment-form`}>
@@ -379,9 +392,11 @@ const ChildCommentForm = ({
               <MentionsTextArea
                 className={`childcommentform-${parentId}`}
                 name="comment"
-                placeholder={placeholder}
+                placeholder={formatMessage(
+                  messages.childCommentBodyPlaceholder
+                )}
                 rows={3}
-                postId={postId}
+                postId={ideaId || initiativeId}
                 postType={postType}
                 value={inputValue}
                 error={getErrorMessage()}
@@ -435,8 +450,9 @@ const ChildCommentForm = ({
                   onClick={onSubmit}
                   disabled={!canSubmit}
                   padding={smallerThanTablet ? '6px 12px' : undefined}
+                  icon={isAdminPage ? 'users' : undefined}
                 >
-                  <FormattedMessage {...messages.publishComment} />
+                  <FormattedMessage {...postButtonText} />
                 </Button>
               </ButtonWrapper>
             </label>

@@ -16,7 +16,16 @@ pt:
       "initiative_published": Publicação da minha proposta
       "invite_received": Convite
       "invite_reminder": Lembrete do convite
+      "internal_comment_on_idea_assigned_to_you": Comentário interno sobre os dados que me foram atribuídos
+      "internal_comment_on_idea_you_commented_internally_on": Comentário interno sobre a entrada comentei dentro
+      "internal_comment_on_idea_you_moderate": Comentário interno sobre a introdução de dados num projeto ou pasta que eu administro
+      "internal_comment_on_initiative_assigned_to_you": Comentário interno sobre a proposta que me foi atribuída
+      "internal_comment_on_initiative_you_commented_internally_on": Comentário interno sobre a proposta comentei dentro
+      "internal_comment_on_unassigned_initiative": Comentário interno sobre proposta não atribuída
+      "internal_comment_on_unassigned_unmoderated_idea": Comentário interno sobre entrada não atribuída em projeto não gerenciado
+      "internal_comment_on_your_internal_comment": Comentário interno sobre o meu comentário interno
       "mention_in_official_feedback": Menção em uma atualização
+      "mention_in_internal_comment": Menção num comentário interno
       "new_comment_for_admin": Novo comentário em um projeto que eu sou moderador
       "new_comment_on_commented_idea": Novo comentário sobre uma ideia que eu comentei
       "new_comment_on_commented_initiative": Novo comentário sobre uma proposta que eu comentei
@@ -98,7 +107,7 @@ pt:
       subject: 'Você se tornou um administrador na plataforma de %{organizationName}'
       text_create_participatory_process: 'Como administrador, você pode criar e configurar novos projetos de participação. Você pode adicionar novas fases usando a linha do tempo. Cada uma destas fases pode ter o seu próprio comportamento no que diz respeito ao lançamento de idéias, comentários e votação.'
       text_moderate_analyse_input: 'Uma vez que os projetos sejam lançados, as primeiras idéias chegarão. Você receberá relatórios semanais com todas as atividades necessárias para que você fique ciente de tudo. A visão geral das idéias o ajudará a moderar a entrada e a colaborar no processamento das mesmas.'
-      text_platform_setup: 'Como administrador, você pode configurar sua plataforma de participação. Escolha um logotipo, imagens e cores, escreva uma mensagem pessoal na sua página inicial, envie convites, defina o que quer saber dos seus utilizadores, ...'
+      text_platform_setup: 'Como administrador, você pode configurar sua plataforma de participação. Escolha um logotipo, imagens e cores, escreva uma mensagem pessoal na sua página inicial, envie convites, defina o que quer saber dos seus usuários, ...'
       title_create_participatory_process: 'Desenhar o processo participativo'
       title_moderate_analyse_input: 'Dirigir e analisar os dados introduzidos'
       title_platform_setup: 'Configure a sua plataforma'
@@ -215,6 +224,12 @@ pt:
       main_header: 'As pessoas estão falando de você'
       subject: 'Alguém mencionou você na plataforma de %{organizationName}'
       preheader: '%{commentAuthor} mencionou você em um comentário'
+    mention_in_internal_comment:
+      cta_reply_to: 'Ver comentário de %{firstName}'
+      event_description: '%{authorNameFull} mencionou você em um comentário interno.'
+      subject: '%{firstName} mencionou você em um comentário interno.'
+      main_header: '%{firstName} mencionou você em um comentário interno.'
+      preheader: '%{authorNameFull} mencionou você em um comentário interno.'
     moderator_digest:
       subject: 'Seu relatório semanal como gerente do projeto de %{time}'
       preheader: 'Resumo de gerente do projeto de %{organizationName}'
@@ -298,6 +313,54 @@ pt:
       main_header: '%{authorName} respondeu ao seu comentário'
       preheader: '%{authorName} respondeu ao seu comentário sobre a plataforma de %{organizationName}'
       replied: '%{authorFirstName} respondeu:'
+    internal_comment_on_your_internal_comment:
+      cta_reply_to: 'Ver comentário de %{firstName}'
+      event_description: '%{authorNameFull} comentou o seu comentário interno.'
+      subject: 'Recebeu um comentário sobre o seu comentário interno em ''%{post}'''
+      main_header: 'Recebeu um comentário sobre o seu comentário interno em ''%{post}'''
+      preheader: '%{authorName} respondeu ao seu comentário interno sobre ''%{post}'''
+    internal_comment_on_idea_assigned_to_you:
+      cta_reply_to: 'Ver comentário de %{firstName}'
+      event_description: '%{authorNameFull} comentou dentro de uma entrada que lhe foi atribuída.'
+      subject: '''%{post}'' tem um novo comentário interno'
+      main_header: '''%{post}'' tem um novo comentário interno'
+      preheader: '''%{post}'' tem um novo comentário interno'
+    internal_comment_on_idea_you_commented_internally_on:
+      cta_reply_to: 'Ver comentário de %{firstName}'
+      event_description: '%{authorNameFull} comentou dentro de uma entrada que também comentou dentro.'
+      subject: '''%{post}'' tem um novo comentário interno'
+      main_header: '''%{post}'' tem um novo comentário interno'
+      preheader: '''%{post}'' tem um novo comentário interno'
+    internal_comment_on_idea_you_moderate:
+      cta_reply_to: 'Ver comentário de %{firstName}'
+      event_description: '%{authorNameFull} comentou dentro de uma entrada num projeto ou pasta que gerencia.'
+      subject: '''%{post}'' tem um novo comentário interno'
+      main_header: '''%{post}'' tem um novo comentário interno'
+      preheader: '''%{post}'' tem um novo comentário interno'
+    internal_comment_on_initiative_assigned_to_you:
+      cta_reply_to: 'Ver comentário de %{firstName}'
+      event_description: '%{authorNameFull} comentou dentro de uma proposta que lhe foi atribuída.'
+      subject: '''%{post}'' tem um novo comentário interno'
+      main_header: '''%{post}'' tem um novo comentário interno'
+      preheader: '''%{post}'' tem um novo comentário interno'
+    internal_comment_on_initiative_you_commented_internally_on:
+      cta_reply_to: 'Ver comentário de %{firstName}'
+      event_description: '%{authorNameFull} comentou dentro de uma proposta que também comentou dentro.'
+      subject: '''%{post}'' tem um novo comentário interno'
+      main_header: '''%{post}'' tem um novo comentário interno'
+      preheader: '''%{post}'' tem um novo comentário interno'
+    internal_comment_on_unassigned_initiative:
+      cta_reply_to: 'Ver comentário de %{firstName}'
+      event_description: '%{authorNameFull} comentou dentro de uma proposta não atribuída.'
+      subject: '''%{post}'' tem um novo comentário interno'
+      main_header: '''%{post}'' tem um novo comentário interno'
+      preheader: '''%{post}'' tem um novo comentário interno'
+    internal_comment_on_unassigned_unmoderated_idea:
+      cta_reply_to: 'Ver comentário de %{firstName}'
+      event_description: '%{authorNameFull} comentou internamente sobre uma entrada não atribuída num projeto não gerido.'
+      subject: '''%{post}'' tem um novo comentário interno'
+      main_header: '''%{post}'' tem um novo comentário interno'
+      preheader: '''%{post}'' tem um novo comentário interno'
     official_feedback_on_commented_initiative:
       by_author: 'por %{authorName}'
       updated: '%{officialName} escreveu:'
@@ -516,12 +579,15 @@ pt:
       remaining_days: 'Dias restantes'
     admin_labels:
       recipient_role:
+        admins: 'Aos administradores'
         admins_and_managers: 'Aos administradores e gestores'
+        managers: 'Aos gestores'
         registered_users: 'Aos usuários registrados'
       recipient_segment:
         admins: 'Administradores'
         admins_and_managers: 'Administradores e gestores'
         admins_and_managers_managing_the_project: 'Administradores e gestores que gerenciam o projeto'
+        managers_managing_the_project: 'Gestores que gerem o projeto'
         all_users: 'Todos os usuários'
         all_users_who_uploaded_proposals: 'Todos os usuários que enviaram propostas'
         managers: 'Gestores'
@@ -544,6 +610,7 @@ pt:
         content_moderation: 'Moderação de conteúdo'
         general: 'Geral'
         inputs: 'Entradas'
+        internal_comments: 'Observações internas'
         permissions: 'Permissões'
         projects: 'Projetos'
         proposals: 'Propostas'
@@ -556,6 +623,15 @@ pt:
         input_is_flagged_as_spam: 'A entrada é sinalizada como spam'
         input_is_updated: 'A entrada é atualizada'
         input_status_changes: 'Alterações do status da entrada'
+        internal_comment_is_posted_on_idea_assigned_to_user: 'O comentário interno é lançado na entrada atribuída ao utilizador'''
+        internal_comment_is_posted_on_initiative_assigned_to_user: 'O comentário interno é publicado na proposta atribuída ao utilizador'
+        internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'O comentário interno é publicado na entrada do projeto ou pasta que o utilizador gere'
+        internal_comment_is_posted_on_idea_user_has_commented_internally_on: 'O comentário interno é lançado na entrada que o utilizador comentou internamente'''
+        internal_comment_is_posted_on_idea_user_moderates: 'O comentário interno é publicado na entrada que o usuário modera'
+        internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'O comentário interno é publicado na proposta que o utilizador comentou internamente'
+        internal_comment_is_posted_on_unassigned_initiative: 'Comentário interno é publicado sobre proposta não atribuída'
+        internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Comentário interno é lançado em entrada não atribuída em projeto não gerido'
+        user_is_mentioned_in_internal_comment: 'O usuário é mencionado num comentário interno'
         new_input_is_published: 'Nova entrada é publicada'
         new_proposal_is_posted: 'Nova proposta foi postada'
         project_phase_changes: 'Alterações na fase do projeto'
@@ -575,5 +651,6 @@ pt:
         proposal_is_published: 'A proposta foi publicada'
         user_registers_for_the_first_time: 'Usuário se cadastra pela primeira vez'
         user_replies_to_comment: 'Usuário responde ao comentário'
+        user_replies_to_internal_comment: 'Respostas do usuário ao comentário interno'
         7_days_after_invite_is_sent: '7 dias após o envio do convite'
         7_days_before_the_project_changes_phase: '7 dias antes da fase de mudanças do projeto'

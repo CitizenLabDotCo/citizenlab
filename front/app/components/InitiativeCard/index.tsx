@@ -1,15 +1,11 @@
-import React, { FormEvent } from 'react';
+import React from 'react';
 import { get, isString } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Card from 'components/UI/Card';
 import { Icon } from '@citizenlab/cl2-component-library';
 import Author from 'components/Author';
-import VoteIndicator from './VoteIndicator';
-
-// utils
-import eventEmitter from 'utils/eventEmitter';
+import ReactionIndicator from './ReactionIndicator';
 
 // i18n
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
@@ -20,9 +16,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
-
-// typings
-import { IOpenPostPageModalEvent } from 'containers/App';
 
 // hooks
 import useInitiativeById from 'api/initiatives/useInitiativeById';
@@ -90,30 +83,16 @@ const InitiativeCard = ({
 
   if (!initiative) return null;
 
-  const onCardClick = (event: FormEvent) => {
-    event.preventDefault();
-
-    if (!isNilOrError(initiative)) {
-      eventEmitter.emit<IOpenPostPageModalEvent>('cardClick', {
-        id: initiativeId,
-        slug: initiative.data.attributes.slug,
-        type: 'initiative',
-      });
-    }
-  };
-
   const initiativeTitle = localize(initiative.data.attributes.title_multiloc);
   const initiativeAuthorId = initiativeAuthor ? initiativeAuthor.data.id : null;
-  const initiativeImageUrl: string | null = get(
-    initiativeImage,
-    'data.attributes.versions.medium',
-    null
-  );
+  const initiativeImageUrl = initiativeImage?.data.attributes.versions.medium;
   const commentsCount = initiative.data.attributes.comments_count;
   const cardClassNames = [
     className,
     'e2e-initiative-card',
-    get(initiative, 'relationships.user_vote.data') ? 'voted' : 'not-voted',
+    get(initiative, 'relationships.user_reaction.data')
+      ? 'reacted'
+      : 'not-reacted',
     commentsCount > 0 ? 'e2e-has-comments' : null,
   ]
     .filter((item) => isString(item) && item !== '')
@@ -121,8 +100,7 @@ const InitiativeCard = ({
   return (
     <Card
       className={cardClassNames}
-      onClick={onCardClick}
-      to={`/initiatives/${initiative.data.attributes.slug}`}
+      to={`/initiatives/${initiative.data.attributes.slug}?go_back=true`}
       imageUrl={initiativeImageUrl}
       title={initiativeTitle}
       body={
@@ -135,7 +113,7 @@ const InitiativeCard = ({
       }
       footer={
         <FooterInner>
-          <VoteIndicator initiativeId={initiativeId} />
+          <ReactionIndicator initiativeId={initiativeId} />
           <Spacer />
           <CommentInfo>
             <CommentIcon name="comments" ariaHidden />

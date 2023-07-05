@@ -184,13 +184,13 @@ models:
     areas: []
     idea_status_ref: *5
     publication_status: published
-  vote:
+  reaction:
   - mode: up
     user_ref: *4
-    votable_ref: *6
+    reactable_ref: *6
   - mode: up
     user_ref: *7
-    votable_ref: *6
+    reactable_ref: *6
   ideas_topic:
   - idea_ref: *6
     topic_ref: *8

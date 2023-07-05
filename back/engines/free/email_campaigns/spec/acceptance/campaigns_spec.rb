@@ -16,7 +16,7 @@ resource 'Campaigns' do
   get '/web_api/v1/campaigns' do
     before do
       @campaigns = create_list(:manual_campaign, 3)
-      @automated_campaigns = create_list(:official_feedback_on_voted_initiative_campaign, 2)
+      @automated_campaigns = create_list(:official_feedback_on_reacted_initiative_campaign, 2)
     end
 
     with_options scope: :page do
@@ -210,7 +210,7 @@ resource 'Campaigns' do
     example_request 'Get the delivery statistics of a sent campaign' do
       assert_status 200
       json_response = json_parse(response_body)
-      expect(json_response).to match({
+      expect(json_response[:data][:attributes]).to match({
         sent: 20,
         bounced: 0,
         failed: 0,

@@ -1,6 +1,7 @@
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 import { Locale } from 'typings';
+import clHistory from 'utils/cl-router/history';
 
 export default function setPhaseUrl(
   selectedPhaseId: string | undefined,
@@ -14,10 +15,15 @@ export default function setPhaseUrl(
   const projectSlug = project.attributes.slug;
 
   const projectURL = `/${locale}/projects/${projectSlug}`;
-  const url =
+  const pathname =
     selectedPhaseId === currentPhaseId
       ? projectURL
       : `${projectURL}/${phaseNumber}`;
 
-  window.history.pushState(null, '', url);
+  const search = window.location.search;
+
+  clHistory.push({
+    pathname,
+    search,
+  });
 }

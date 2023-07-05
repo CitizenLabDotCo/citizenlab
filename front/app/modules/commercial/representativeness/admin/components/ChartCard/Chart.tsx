@@ -14,7 +14,7 @@ import renderTooltip from './renderTooltip';
 import { formatPercentage, emptyString } from './utils';
 
 // typings
-import { RepresentativenessData } from '../../hooks/createRefDataSubscription';
+import { RepresentativenessData } from '../../hooks/parseReferenceData';
 
 interface Props {
   currentChartRef: React.RefObject<SVGElement | undefined>;

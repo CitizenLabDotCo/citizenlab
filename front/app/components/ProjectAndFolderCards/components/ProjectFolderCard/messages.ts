@@ -18,4 +18,14 @@ export default defineMessages({
     id: 'app.components.FolderFolderCard.archived',
     defaultMessage: 'Archived',
   },
+  xComments: {
+    id: 'app.components.ProjectFolderCard.xComments',
+    defaultMessage:
+      '{commentsCount, plural, no {# comments} one {# comments} other {# comments}}',
+  },
+  xInputs: {
+    id: 'app.components.ProjectFolderCard.xInputs',
+    defaultMessage:
+      '{ideasCount, plural, no {# inputs} one {# input} other {# inputs}}',
+  },
 });

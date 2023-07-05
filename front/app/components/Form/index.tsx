@@ -202,7 +202,7 @@ const Form = memo(
         try {
           await onSubmit(submissionData as FormData);
         } catch (e) {
-          setApiErrors(e.json.errors);
+          setApiErrors(e.errors);
         }
         setLoading(false);
       }

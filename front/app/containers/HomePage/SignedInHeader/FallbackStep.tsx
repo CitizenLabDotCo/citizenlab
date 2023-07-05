@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { OnboardingCampaignName } from 'services/onboardingCampaigns';
+import { OnboardingCampaignName } from 'api/onboarding_campaigns/types';
 import { Left, Right } from './';
 import useHomepageSettings from 'hooks/useHomepageSettings';
 import { isEmptyMultiloc, isNilOrError } from 'utils/helperUtils';

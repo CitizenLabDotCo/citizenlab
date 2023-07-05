@@ -11,7 +11,7 @@ describe AvatarsService do
       u1, u2, u3, u4, u5 = create_list(:user, 5)
       idea = create(:idea, project: project, author: u1)
       create(:idea, project: project, author: u2)
-      create(:vote, votable: idea, user: u3)
+      create(:reaction, reactable: idea, user: u3)
       create(:comment, post: idea, author: u4)
       create(:idea, author: u5)
 
@@ -32,6 +32,25 @@ describe AvatarsService do
 
       expect(result[:total_count]).to eq 1
       expect(result[:users].map(&:id)).to match_array [u1.id]
+    end
+  end
+
+  describe 'avatars_for_folder' do
+    it 'returns avatars for participants in a folder' do
+      projects = create_list(:project, 2)
+      folder = create(:project_folder, projects: projects)
+      u1, u2, u3, u4, u5 = create_list(:user, 5)
+      idea = create(:idea, project: projects.first, author: u1)
+      create(:idea, project: projects.last, author: u2)
+      create(:reaction, reactable: idea, user: u3)
+      create(:comment, post: idea, author: u4)
+      create(:idea, author: u5)
+
+      result = service.avatars_for_folder(folder, limit: 2)
+
+      expect(result[:total_count]).to eq 4
+      expect(result[:users].size).to eq 2
+      expect(([u1, u2, u3, u4] - result[:users]).size).to eq 2
     end
   end
 
@@ -57,11 +76,11 @@ describe AvatarsService do
       expect(result[:users].map(&:id)).to match_array [idea.author.id]
     end
 
-    it 'does not return the voters' do
+    it 'does not return the reactors' do
       idea = create(:idea)
-      create(:vote, votable: idea)
+      create(:reaction, reactable: idea)
       comment = create(:comment, post: idea)
-      create(:vote, votable: comment)
+      create(:reaction, reactable: comment)
 
       result = service.avatars_for_idea(idea)
 

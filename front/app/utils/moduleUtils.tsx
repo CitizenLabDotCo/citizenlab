@@ -27,15 +27,12 @@ import { TVerificationStep } from 'containers/Authentication/steps/Verification/
 import { TTabName } from 'containers/Admin/projects/all/CreateProject';
 import { NavItem } from 'containers/Admin/sideBar/navItems';
 import { LatLngTuple } from 'leaflet';
-import { GetAppConfigurationLocalesChildProps } from 'resources/GetAppConfigurationLocales';
-import { GetIdeaByIdChildProps } from 'resources/GetIdeaById';
 import { GetLocaleChildProps } from 'resources/GetLocale';
 import { GetWindowSizeChildProps } from 'resources/GetWindowSize';
-import { ICommentData } from 'api/comments/types';
 import { IGroupDataAttributes, MembershipType } from 'api/groups/types';
 import { TNotificationData } from 'api/notifications/types';
 import { IPhaseData } from 'api/phases/types';
-import { TVerificationMethod } from 'services/verificationMethods';
+import { TVerificationMethod } from 'api/verification_methods/types';
 import { SignUpInFlow } from 'containers/Authentication/typings';
 import {
   CellConfiguration,
@@ -51,6 +48,7 @@ import {
   ProjectId,
   Resolution,
 } from 'components/admin/GraphCards/typings';
+import { IIdeaData } from 'api/ideas/types';
 
 export type StatCardProps = ProjectId & Dates & Resolution;
 
@@ -77,7 +75,7 @@ export interface OutletsPropertyMap {
     labelTooltipText: string;
   };
   'app.ProjectsShowPage.shared.header.ProjectInfo.projectDescriptionBuilder': {
-    onMount: () => void;
+    id: string;
   };
   'app.containers.Admin.users.GroupsListPanel.listitem.icon': {
     type: MembershipType;
@@ -197,9 +195,7 @@ export interface OutletsPropertyMap {
     locale: GetLocaleChildProps;
   };
   'app.components.PostShowComponents.CommentFooter.left': {
-    comment: ICommentData;
-    locale: GetLocaleChildProps;
-    tenantLocales: GetAppConfigurationLocalesChildProps;
+    commentId: string;
   };
   'app.containers.InitiativesShow.left': {
     windowSize: GetWindowSizeChildProps;
@@ -211,8 +207,8 @@ export interface OutletsPropertyMap {
   'app.containers.IdeasShow.left': {
     translateButtonClicked: boolean;
     onClick: () => void;
-    idea: GetIdeaByIdChildProps;
-    locale: GetLocaleChildProps;
+    idea: IIdeaData;
+    locale: Locale;
   };
   'app.components.PostShowComponents.CommentBody.translation': {
     translateButtonClicked: boolean;

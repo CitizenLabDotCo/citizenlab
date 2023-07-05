@@ -30,6 +30,31 @@ export const AnonymousPostingToggle = ({
     <SectionField>
       <SubSectionTitle style={{ marginBottom: '0px' }}>
         <FormattedMessage {...messages.userAnonymity} />
+        <IconTooltip
+          p="0px"
+          ml="0px"
+          placement="top-start"
+          content={
+            <FormattedMessage
+              {...messages.userAnonymitySupportTooltip}
+              values={{
+                supportArticle: (
+                  <a
+                    href={formatMessage(
+                      messages.userAnonymitySupportTooltipLinkUrl
+                    )}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <FormattedMessage
+                      {...messages.userAnonymitySupportTooltipLinkText}
+                    />
+                  </a>
+                ),
+              }}
+            />
+          }
+        />
         <StatusLabel
           text={formatMessage(messages.betaLabel)}
           backgroundColor={colors.background}
