@@ -2,23 +2,23 @@
 
 module XlsxExport
   class GeneratorService
-    def generate_for_phase(phase_id, include_private_attributes)
-      phase = eager_load_phase(phase_id)
-      create_stream do |workbook|
-        create_phase_sheet(workbook, phase, include_private_attributes)
-      end
-    end
+    # def generate_for_phase(phase_id, include_private_attributes)
+    #   phase = eager_load_phase(phase_id)
+    #   create_stream do |workbook|
+    #     create_phase_sheet(workbook, phase, include_private_attributes)
+    #   end
+    # end
 
-    def generate_for_project(project_id, include_private_attributes)
-      project = eager_load_project(project_id)
-      create_stream do |workbook|
-        if project.continuous?
-          generate_for_continuous_project(workbook, project, include_private_attributes)
-        else
-          generate_for_timeline_project(workbook, project, include_private_attributes)
-        end
-      end
-    end
+    # def generate_for_project(project_id, include_private_attributes)
+    #   project = eager_load_project(project_id)
+    #   create_stream do |workbook|
+    #     if project.continuous?
+    #       generate_for_continuous_project(workbook, project, include_private_attributes)
+    #     else
+    #       generate_for_timeline_project(workbook, project, include_private_attributes)
+    #     end
+    #   end
+    # end
 
     private
 
@@ -55,7 +55,7 @@ module XlsxExport
 
     def generate_for_timeline_project(workbook, project, include_private_attributes)
       project.phases.each do |phase|
-        next unless phase.native_survey?
+        next unless phase.native_survey? ###
 
         create_phase_sheet(workbook, phase, include_private_attributes)
       end
