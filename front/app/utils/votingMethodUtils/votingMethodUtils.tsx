@@ -21,6 +21,8 @@ import AssignVotesControl from 'containers/IdeasShow/components/RightColumnDeskt
 import AssignBudgetControl from 'containers/IdeasShow/components/RightColumnDesktop/AssignBudgetControl';
 import AddToBasketButton from 'components/AddToBasketButton';
 import AssignMultipleVotesControl from 'components/AssignMultipleVotesControl';
+import { Locale } from '@citizenlab/cl2-component-library';
+import { isNilOrError } from 'utils/helperUtils';
 
 /*
   Configuration Specifications
@@ -46,6 +48,7 @@ export type GetStatusDescriptionProps = {
   SubmissionState: VoteSubmissionState;
   phase?: IPhaseData;
   appConfig?: IAppConfiguration;
+  locale?: Locale | null | Error;
 };
 
 export type VoteControlProps = {
@@ -214,7 +217,12 @@ const multipleVotingConfig: VotingMethodConfig = {
     phase,
     SubmissionState,
     appConfig,
+    locale,
   }: GetStatusDescriptionProps) => {
+    const participationContext = phase || project;
+    const voteTerm =
+      participationContext?.attributes?.voting_term_plural_multiloc;
+
     if (SubmissionState === 'hasNotSubmitted') {
       return (
         <FormattedMessage
@@ -222,7 +230,7 @@ const multipleVotingConfig: VotingMethodConfig = {
             b: (chunks) => (
               <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
             ),
-            voteTerm: 'votes', // TODO: Replace with voting term from attributes
+            voteTerm: voteTerm && !isNilOrError(locale) ? voteTerm[locale] : '',
             optionCount: phase
               ? phase.attributes.ideas_count
               : project.attributes.ideas_count,

@@ -39,6 +39,7 @@ import messages from './messages';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { isNilOrError } from 'utils/helperUtils';
 import { debounce } from 'lodash-es';
+import useLocale from 'hooks/useLocale';
 
 export const VOTES_EXCEEDED_ERROR_EVENT = 'votesExceededError';
 export const VOTES_PER_OPTION_EXCEEDED_ERROR_EVENT =
@@ -83,6 +84,7 @@ const AssignMultipleVotesControl = ({
 
   // intl
   const { formatMessage } = useIntl();
+  const locale = useLocale();
 
   // utils
   const isMobileOrSmaller = useBreakpoint('phone');
@@ -135,6 +137,12 @@ const AssignMultipleVotesControl = ({
   const votingMax = participationContext?.attributes?.voting_max_total;
   const votingPerOptionMax =
     participationContext?.attributes?.voting_max_votes_per_idea;
+  const votingTermSingular =
+    !isNilOrError(locale) &&
+    participationContext?.attributes?.voting_term_singular_multiloc?.[locale];
+  const votingTermPlural =
+    !isNilOrError(locale) &&
+    participationContext?.attributes?.voting_term_plural_multiloc?.[locale];
 
   // Update initial local votes when basket is loaded
   useEffect(() => {
@@ -265,7 +273,7 @@ const AssignMultipleVotesControl = ({
     console.log('TEXT INPUT: ', event); // TODO: implement text input update
   };
 
-  if (!actionDescriptor) return null;
+  if (!actionDescriptor || isNilOrError(locale)) return null;
   if (budgetingDisabledReason === 'idea_not_in_current_phase') return null;
 
   if (localVotes.current === 0 && basket?.data?.attributes.submitted_at) {
@@ -324,7 +332,14 @@ const AssignMultipleVotesControl = ({
             />
           </StyledBox>
           <Text fontSize="m" ml="8px" my="auto" aria-live="polite">
-            {formatMessage(messages.xVotes, { votes: localVotes.current })}
+            {formatMessage(messages.xVotes, {
+              votes: localVotes.current,
+              singular:
+                votingTermSingular ||
+                formatMessage(messages.vote).toLowerCase(),
+              plural:
+                votingTermPlural || formatMessage(messages.votes).toLowerCase(),
+            })}
           </Text>
         </Box>
         {!basket?.data?.attributes.submitted_at && (
