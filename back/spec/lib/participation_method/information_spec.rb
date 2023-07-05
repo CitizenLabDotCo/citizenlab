@@ -89,9 +89,19 @@ RSpec.describe ParticipationMethod::Information do
     end
   end
 
-  describe '#form_in_phase?' do
+  describe '#creation_phase?' do
     it 'returns false' do
-      expect(participation_method.form_in_phase?).to be false
+      expect(participation_method.creation_phase?).to be false
+    end
+  end
+
+  describe '#custom_form' do
+    let(:project) { create(:project_with_past_ideation_and_current_information_phase) }
+    let(:project_form) { create(:custom_form, participation_context: project) }
+    let(:context) { project.phases.last }
+
+    it 'returns the custom form of the project' do
+      expect(participation_method.custom_form.participation_context_id).to eq project.id
     end
   end
 

@@ -63,13 +63,8 @@ module XlsxExport
 
     def create_phase_sheet(workbook, phase, include_private_attributes)
       phase_participation_method = Factory.instance.participation_method_for phase
-      form = if phase_participation_method.form_in_phase?
-        phase.custom_form || CustomForm.new(participation_context: phase)
-      else
-        phase.project.custom_form || CustomForm.new(participation_context: phase.project)
-      end
       inputs = eager_load_inputs(phase.ideas)
-      sheet_generator = InputSheetGenerator.new(inputs, form, phase_participation_method, include_private_attributes)
+      sheet_generator = InputSheetGenerator.new(inputs, phase_participation_method.custom_form, phase_participation_method, include_private_attributes)
       sheet_name = MultilocService.new.t phase.title_multiloc
       sheet_generator.generate_sheet(workbook, sheet_name)
     end

@@ -53,6 +53,12 @@ FactoryBot.define do
       participation_method { 'poll' }
     end
 
+    factory :survey_phase do
+      participation_method { 'survey' }
+      survey_service { 'typeform' }
+      survey_embed_url { 'https://citizenlabco.typeform.com/to/HKGaPV?source=xxxxx' }
+    end
+
     factory :volunteering_phase do
       participation_method { 'volunteering' }
     end

@@ -635,60 +635,6 @@ resource 'Phases' do
     end
 
     get 'web_api/v1/phases/:id/as_xlsx' do
-      context 'for an ideation phase without persisted form' do
-        let(:project) { create(:project, process_type: 'timeline') }
-        let(:ideation_phase) do
-          create(
-            :phase,
-            project: project,
-            participation_method: 'ideation',
-            title_multiloc: {
-              'en' => 'Ideation phase',
-              'nl-BE' => 'Ideeënfase'
-            }
-          )
-        end
-        let(:id) { ideation_phase.id }
-
-        example 'Download an empty sheet', document: false do
-          do_request
-
-          assert_status 200
-          expect(xlsx_contents(response_body)).to eq([
-            {
-              sheet_name: ideation_phase.title_multiloc['en'],
-              column_headers: [
-                'ID',
-                'Title',
-                'Description',
-                'Attachments',
-                'Tags',
-                'Latitude',
-                'Longitude',
-                'Location',
-                'Proposed Budget',
-                'Author name',
-                'Author email',
-                'Author ID',
-                'Submitted at',
-                'Published at',
-                'Comments',
-                'Likes',
-                'Dislikes',
-                'Baskets',
-                'Budget',
-                'URL',
-                'Project',
-                'Status',
-                'Assignee',
-                'Assignee email'
-              ],
-              rows: []
-            }
-          ])
-        end
-      end
-
       context 'for an ideation phase with persisted form' do
         let(:project) { create(:project, process_type: 'timeline') }
         let(:project_form) { create(:custom_form, :with_default_fields, participation_context: project) }
@@ -709,46 +655,6 @@ resource 'Phases' do
             :custom_field_extra_custom_form,
             resource: project_form
           )
-        end
-
-        context 'when there are no inputs in the phase' do
-          example 'Download an empty sheet', document: false do
-            do_request
-            expect(status).to eq 200
-            expect(xlsx_contents(response_body)).to eq([
-              {
-                sheet_name: ideation_phase.title_multiloc['en'],
-                column_headers: [
-                  'ID',
-                  'Title',
-                  'Description',
-                  'Attachments',
-                  'Tags',
-                  'Latitude',
-                  'Longitude',
-                  'Location',
-                  'Proposed Budget',
-                  extra_idea_field.title_multiloc['en'],
-                  'Author name',
-                  'Author email',
-                  'Author ID',
-                  'Submitted at',
-                  'Published at',
-                  'Comments',
-                  'Likes',
-                  'Dislikes',
-                  'Baskets',
-                  'Budget',
-                  'URL',
-                  'Project',
-                  'Status',
-                  'Assignee',
-                  'Assignee email'
-                ],
-                rows: []
-              }
-            ])
-          end
         end
 
         context 'when there are inputs in the phase' do

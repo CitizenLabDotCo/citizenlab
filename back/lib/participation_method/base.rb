@@ -65,8 +65,12 @@ module ParticipationMethod
       false
     end
 
-    def form_in_phase?
+    def creation_phase?
       false
+    end
+
+    def custom_form
+      participation_context.project.custom_form || CustomForm.new(participation_context: participation_context.project)
     end
 
     def edit_custom_form_allowed?
