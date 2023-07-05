@@ -33,11 +33,11 @@ resource 'Users' do
                                        '(who can, in fact, moderate the project), ' \
                                        'OR All admins + users with project moderator role ' \
                                        '(if no project ID provided)', required: false
-      parameter :is_not_project_moderator, 'Users who are not project moderator of project, ' \
+      parameter :is_not_project_moderator, 'Users who are not project moderators of project, ' \
                                            'nor folder moderator of folder containing project (by project id), ' \
                                            'OR Users who do not have project moderator role ' \
                                            '(if no project ID provided)', required: false
-      parameter :is_not_folder_moderator, 'Users who are not folder moderator of folder (by folder id), ' \
+      parameter :is_not_folder_moderator, 'Users who are not folder moderators of folder (by folder id), ' \
                                           'OR Users who do not have folder moderator role ' \
                                           '(if no folder ID provided)', required: false
       example_request '[error] List all users' do
