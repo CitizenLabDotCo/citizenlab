@@ -105,6 +105,10 @@ export default defineMessages({
     defaultMessage:
       'Maximum number of votes per option must be less than or equal to total number of votes',
   },
+  voteTermError: {
+    id: 'app.containers.AdminPage.ProjectEdit.voteTermError',
+    defaultMessage: 'Vote terms must be specified for all locales',
+  },
   noReactingLimitErrorMessage: {
     id: 'app.containers.AdminPage.ProjectEdit.noVotingLimitErrorMessage',
     defaultMessage: 'Not a valid number',

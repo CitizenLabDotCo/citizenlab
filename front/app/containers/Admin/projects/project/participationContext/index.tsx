@@ -51,6 +51,7 @@ import { anyIsDefined } from 'utils/helperUtils';
 
 // typings
 import { CLErrors, Multiloc } from 'typings';
+import { IAppConfiguration } from 'api/app_configuration/types';
 
 export interface IParticipationContextConfig {
   participation_method: ParticipationMethod;
@@ -101,6 +102,7 @@ interface InputProps {
   phase?: IPhase | undefined | null;
   project?: IProject | undefined | null;
   apiErrors: ApiErrors;
+  appConfig?: IAppConfiguration;
 }
 
 interface Props extends DataProps, InputProps {}
@@ -111,7 +113,9 @@ export interface State extends IParticipationContextConfig {
   minTotalVotesError: string | null;
   maxTotalVotesError: string | null;
   maxVotesPerOptionError: string | null;
+  voteTermError: string | null;
   loaded: boolean;
+  appConfig: IAppConfiguration | null;
 }
 
 class ParticipationContext extends PureComponent<
@@ -149,10 +153,12 @@ class ParticipationContext extends PureComponent<
       maxVotesPerOptionError: null,
       voting_term_plural_multiloc: null,
       voting_term_singular_multiloc: null,
+      voteTermError: null,
       poll_anonymous: false,
       ideas_order: 'trending',
       input_term: 'idea',
       document_annotation_embed_url: null,
+      appConfig: props.appConfig || null,
     };
     this.subscriptions = [];
   }
@@ -376,12 +382,14 @@ class ParticipationContext extends PureComponent<
   handleVoteTermPluralChange = (voting_term_plural_multiloc: Multiloc) => {
     this.setState({
       voting_term_plural_multiloc,
+      voteTermError: null,
     });
   };
 
   handleVoteTermSingularChange = (voting_term_singular_multiloc: Multiloc) => {
     this.setState({
       voting_term_singular_multiloc,
+      voteTermError: null,
     });
   };
 
@@ -408,6 +416,7 @@ class ParticipationContext extends PureComponent<
       minTotalVotesError,
       maxTotalVotesError,
       maxVotesPerOptionError,
+      voteTermError,
       isValidated,
     } = validate(this.state, formatMessage);
 
@@ -417,6 +426,7 @@ class ParticipationContext extends PureComponent<
       minTotalVotesError,
       maxTotalVotesError,
       maxVotesPerOptionError,
+      voteTermError,
     });
 
     return isValidated;
@@ -466,6 +476,7 @@ class ParticipationContext extends PureComponent<
       minTotalVotesError,
       maxTotalVotesError,
       maxVotesPerOptionError,
+      voteTermError,
       poll_anonymous,
       presentation_mode,
       ideas_order,
@@ -513,6 +524,7 @@ class ParticipationContext extends PureComponent<
                 commenting_enabled={commenting_enabled}
                 minTotalVotesError={minTotalVotesError}
                 maxTotalVotesError={maxTotalVotesError}
+                voteTermError={voteTermError}
                 maxVotesPerOptionError={maxVotesPerOptionError}
                 handleVotingMinTotalChange={this.handleVotingMinTotalChange}
                 handleVotingMaxTotalChange={this.handleVotingMaxTotalChange}
