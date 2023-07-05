@@ -179,38 +179,33 @@ const CompactIdeaCard = memo<IdeaCardProps>(
       if (project) {
         const projectId = idea.data.relationships.project.data.id;
         const ideaBudget = idea.data.attributes.budget;
+        const participationContext = viewingPhase || project;
 
         const showMultipleVoteControl =
-          viewingPhase?.data.attributes.participation_method === 'voting' &&
-          viewingPhase?.data.attributes.voting_method === 'multiple_voting' &&
-          ideaBudget;
+          participationContext.data.attributes.participation_method ===
+            'voting' &&
+          participationContext.data.attributes.voting_method ===
+            'multiple_voting';
 
         const showBudgetControl =
-          viewingPhase?.data.attributes.participation_method === 'voting' &&
-          viewingPhase?.data.attributes.voting_method === 'budgeting' &&
+          participationContext.data.attributes.participation_method ===
+            'voting' &&
+          participationContext.data.attributes.voting_method === 'budgeting' &&
           ideaBudget;
-        if (
-          showBudgetControl ||
-          (participationMethod === 'voting' &&
-            votingMethod === 'budgeting' &&
-            ideaBudget)
-        ) {
+        if (showBudgetControl) {
           return (
             <Box display="flex" alignItems="center">
               <Box w="100%" className="e2e-assign-budget">
                 <AddToBasketButton
                   projectId={projectId}
                   ideaId={idea.data.id}
+                  buttonStyle="primary-outlined"
                 />
               </Box>
             </Box>
           );
         }
-        if (
-          showMultipleVoteControl ||
-          (participationMethod === 'voting' &&
-            votingMethod === 'multiple_voting')
-        ) {
+        if (showMultipleVoteControl) {
           return (
             <Box display="flex" alignItems="center">
               <AssignMultipleVotesControl

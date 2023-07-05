@@ -31,7 +31,7 @@ export interface IBasketsIdeas {
 export interface IAddBasketsIdea {
   basketId: string;
   idea_id: string;
-  votes: number;
+  votes?: number;
 }
 export interface IUpdateBasketsIdea {
   basketId: string;

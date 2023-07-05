@@ -4,7 +4,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import { BasketsIdeasKeys, IBasketsIdeasData } from './types';
 import basketsIdeasKeys from './keys';
 
-const fetchBasketsIdeas = ({ basketId }: { basketId?: string }) =>
+export const fetchBasketsIdeas = ({ basketId }: { basketId?: string }) =>
   fetcher<IBasketsIdeasData>({
     path: `/baskets/${basketId}/baskets_ideas`,
     action: 'get',

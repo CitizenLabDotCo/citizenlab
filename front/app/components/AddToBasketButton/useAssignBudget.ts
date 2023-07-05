@@ -12,7 +12,7 @@ import useDeleteBasketsIdea from 'api/baskets_ideas/useDeleteBasketsIdea';
 import useAddBasketsIdea from 'api/baskets_ideas/useAddBasketsIdeas';
 
 // utils
-import { getParticipationContext } from './utils';
+import { getLatestRelevantParticipationContext } from './utils';
 import { capitalizeParticipationContextType } from 'utils/helperUtils';
 import eventEmitter from 'utils/eventEmitter';
 
@@ -22,9 +22,6 @@ import tracks from 'components/AddToBasketButton/tracks';
 
 // constants
 import { BUDGET_EXCEEDED_ERROR_EVENT } from 'components/ParticipationCTABars/VotingCTABar/events';
-
-const timeout = (ms: number) =>
-  new Promise((resolve) => setTimeout(resolve, ms));
 
 interface Props {
   projectId: string;
@@ -55,7 +52,12 @@ const useAssignBudget = ({ projectId, ideaId }: Props) => {
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
   const { mutateAsync: addBasket } = useAddBasket(projectId);
-  const participationContext = getParticipationContext(project, idea, phases);
+
+  const participationContext = getLatestRelevantParticipationContext(
+    project,
+    idea,
+    phases
+  );
 
   const { data: basket } = useBasket(
     participationContext?.relationships?.user_basket?.data?.id
@@ -81,7 +83,6 @@ const useAssignBudget = ({ projectId, ideaId }: Props) => {
     const basketTotal = basket?.data.attributes.total_votes;
 
     const done = async () => {
-      await timeout(200);
       setProcessing(false);
     };
 

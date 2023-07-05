@@ -5,7 +5,6 @@ import { Box } from '@citizenlab/cl2-component-library';
 import MetaInformation from '../MetaInformation';
 import ReactionControl from 'components/ReactionControl';
 import Buttons from 'containers/IdeasShow/components/CTABox/Buttons';
-import AssignBudgetControl from './AssignBudgetControl';
 
 // styling
 import styled from 'styled-components';
@@ -13,6 +12,10 @@ import { rightColumnWidthDesktop } from '../../styleConstants';
 import { colors } from 'utils/styleUtils';
 import IdeaSharingButton from '../Buttons/IdeaSharingButton';
 import SharingButtonComponent from '../Buttons/SharingButtonComponent';
+import useProjectById from 'api/projects/useProjectById';
+import usePhases from 'api/phases/usePhases';
+import { getVotingMethodConfig } from 'utils/votingMethodUtils/votingMethodUtils';
+import { getCurrentPhase } from 'api/phases/utils';
 
 const Container = styled.div`
   flex: 0 0 ${rightColumnWidthDesktop}px;
@@ -51,6 +54,14 @@ const RightColumnDesktop = ({
   authorId,
   className,
 }: Props) => {
+  const { data: project } = useProjectById(projectId);
+  const { data: phases } = usePhases(projectId);
+
+  const currentContext = getCurrentPhase(phases?.data) || project?.data;
+  const votingConfig = getVotingMethodConfig(
+    currentContext?.attributes.voting_method
+  );
+
   return (
     <Container className={className || ''}>
       <InnerContainer>
@@ -62,7 +73,12 @@ const RightColumnDesktop = ({
         >
           <StyledReactionControl styleType="shadow" ideaId={ideaId} size="4" />
           <Box pb="23px" mb="23px" borderBottom="solid 1px #ccc">
-            <AssignBudgetControl ideaId={ideaId} projectId={projectId} />
+            {votingConfig?.getIdeaPageVoteControl &&
+              votingConfig.getIdeaPageVoteControl({
+                ideaId,
+                projectId,
+                compact: false,
+              })}
           </Box>
           <Buttons ideaId={ideaId} />
         </Box>

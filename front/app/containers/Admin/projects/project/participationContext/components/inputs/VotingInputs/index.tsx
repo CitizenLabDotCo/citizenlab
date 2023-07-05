@@ -45,6 +45,7 @@ export interface VotingInputsProps {
   minTotalVotesError: string | null;
   maxTotalVotesError: string | null;
   maxVotesPerOptionError: string | null;
+  voteTermError: string | null;
   voting_max_votes_per_idea?: number | null;
   voting_term_plural_multiloc?: Multiloc | null;
   voting_term_singular_multiloc?: Multiloc | null;
@@ -71,6 +72,7 @@ export default ({
   minTotalVotesError,
   maxTotalVotesError,
   maxVotesPerOptionError,
+  voteTermError,
   voting_max_votes_per_idea,
   voting_term_plural_multiloc,
   voting_term_singular_multiloc,
@@ -162,6 +164,7 @@ export default ({
           <MultipleVotingInputs
             voting_max_total={voting_max_total}
             apiErrors={undefined}
+            voteTermError={voteTermError}
             maxTotalVotesError={maxTotalVotesError}
             maxVotesPerOptionError={maxVotesPerOptionError}
             voting_max_votes_per_idea={voting_max_votes_per_idea}

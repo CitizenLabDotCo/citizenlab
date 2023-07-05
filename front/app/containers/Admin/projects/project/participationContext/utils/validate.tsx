@@ -16,6 +16,9 @@ export default (state: State, formatMessage: FormatMessage) => {
     voting_min_total,
     voting_max_total,
     voting_max_votes_per_idea,
+    voting_term_plural_multiloc,
+    voting_term_singular_multiloc,
+    appConfig,
   } = state;
 
   let isValidated = true;
@@ -24,6 +27,21 @@ export default (state: State, formatMessage: FormatMessage) => {
   let minTotalVotesError: string | null = null;
   let maxTotalVotesError: string | null = null;
   let maxVotesPerOptionError: string | null = null;
+  let voteTermError: string | null = null;
+
+  const locales = appConfig?.data.attributes.settings.core.locales;
+
+  locales?.map((locale) => {
+    if (
+      (voting_method === 'multiple_voting' &&
+        voting_term_plural_multiloc &&
+        !voting_term_plural_multiloc[locale]) ||
+      (voting_term_singular_multiloc && !voting_term_singular_multiloc[locale])
+    ) {
+      voteTermError = formatMessage(messages.voteTermError);
+      isValidated = false;
+    }
+  });
 
   if (
     voting_max_votes_per_idea &&
@@ -118,5 +136,6 @@ export default (state: State, formatMessage: FormatMessage) => {
     maxTotalVotesError,
     maxVotesPerOptionError,
     isValidated,
+    voteTermError,
   };
 };

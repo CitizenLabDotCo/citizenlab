@@ -18,7 +18,6 @@ import { getCurrentPhase } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useAssignVote from './useAssignVote';
-import useBasketsIdeas from 'api/baskets_ideas/useBasketsIdeas';
 
 // style
 import styled, { useTheme } from 'styled-components';
@@ -29,11 +28,8 @@ import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
+import useLocalize from 'hooks/useLocalize';
 import messages from './messages';
-
-// typings
-import { IBasket } from 'api/baskets/types';
-import { IBasketsIdeasData } from 'api/baskets_ideas/types';
 
 export const VOTES_EXCEEDED_ERROR_EVENT = 'votesExceededError';
 export const VOTES_PER_OPTION_EXCEEDED_ERROR_EVENT =
@@ -65,9 +61,14 @@ const StyledBox = styled(Box)`
 interface Props {
   projectId: string;
   ideaId: string;
+  fillWidth?: boolean;
 }
 
-const AssignMultipleVotesControl = ({ projectId, ideaId }: Props) => {
+const AssignMultipleVotesControl = ({
+  projectId,
+  ideaId,
+  fillWidth,
+}: Props) => {
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
 
@@ -77,37 +78,13 @@ const AssignMultipleVotesControl = ({ projectId, ideaId }: Props) => {
   const basketId = participationContext?.relationships?.user_basket?.data?.id;
 
   // baskets
-  const { data: basket, isLoading: basketLoading } = useBasket(basketId);
-  const { data: basketIdeas, isLoading: basketIdeasLoading } =
-    useBasketsIdeas(basketId);
+  const { data: basket } = useBasket(basketId);
 
-  if (basketLoading || basketIdeasLoading) return null;
-
-  return (
-    <AssignMultipleVotesControlInner
-      projectId={projectId}
-      ideaId={ideaId}
-      basket={basket}
-      basketIdeas={basketIdeas}
-    />
-  );
-};
-
-interface InnerProps extends Props {
-  basket: IBasket | undefined;
-  basketIdeas: IBasketsIdeasData | undefined;
-}
-
-const AssignMultipleVotesControlInner = ({
-  projectId,
-  ideaId,
-  basket,
-}: // basketIdeas,
-InnerProps) => {
   const [votes, _setVotes] = useState(0);
 
   const theme = useTheme();
   const { formatMessage } = useIntl();
+  const localize = useLocalize();
   const isMobileOrSmaller = useBreakpoint('phone');
 
   // api
@@ -157,8 +134,24 @@ InnerProps) => {
     // console.log('TEXT INPUT: ', event);
   };
 
-  if (!actionDescriptor) return null;
-  if (budgetingDisabledReason === 'idea_not_in_current_phase') return null;
+  if (
+    !actionDescriptor ||
+    budgetingDisabledReason === 'idea_not_in_current_phase' ||
+    !participationContext
+  ) {
+    return null;
+  }
+
+  const { voting_term_singular_multiloc, voting_term_plural_multiloc } =
+    participationContext.attributes;
+
+  const votingTermSingular = voting_term_singular_multiloc
+    ? localize(voting_term_singular_multiloc)
+    : formatMessage(messages.vote).toLowerCase();
+
+  const votingTermPlural = voting_term_plural_multiloc
+    ? localize(voting_term_plural_multiloc)
+    : formatMessage(messages.vote).toLowerCase();
 
   if (votes > 0) {
     return (
@@ -191,6 +184,7 @@ InnerProps) => {
           flexGrow={1}
           justifyContent="center"
           padding="8px"
+          minWidth={fillWidth ? '140px' : 'auto'}
         >
           <StyledBox
             style={{
@@ -211,7 +205,11 @@ InnerProps) => {
             />
           </StyledBox>
           <Text fontSize="m" ml="8px" my="auto" aria-live="polite">
-            {formatMessage(messages.xVotes, { votes })}
+            {formatMessage(messages.xVotes, {
+              votes,
+              singular: votingTermSingular,
+              plural: votingTermPlural,
+            })}
           </Text>
         </Box>
         {!basket?.data?.attributes.submitted_at && (

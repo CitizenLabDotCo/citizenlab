@@ -5,7 +5,7 @@ import { IIdea } from 'api/ideas/types';
 import { IPhases } from 'api/phases/types';
 import { IProject } from 'api/projects/types';
 
-export const getParticipationContext = (
+export const getLatestRelevantParticipationContext = (
   project: IProject | undefined,
   idea: IIdea | undefined,
   phases: IPhases | undefined
