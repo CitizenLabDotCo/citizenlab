@@ -41,7 +41,9 @@ const mockCustomPage: ICustomPageData = {
     areas: { data: [] },
   },
 };
-jest.mock('hooks/useCustomPage', () => jest.fn(() => mockCustomPage));
+jest.mock('api/custom_pages/useCustomPageById', () =>
+  jest.fn(() => ({ data: { data: mockCustomPage } }))
+);
 
 describe('EditCustomPageSettings', () => {
   it('renders error in case of invalid slug', async () => {
