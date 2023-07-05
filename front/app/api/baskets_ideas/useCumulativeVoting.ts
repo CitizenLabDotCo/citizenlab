@@ -60,9 +60,30 @@ const useCumulativeVoting = ({ projectId }: Props) => {
     [assignVotes]
   );
 
+  const numberOfVotesUserHas =
+    participationContext?.attributes.voting_max_total;
+
+  const userHasVotesLeft = useMemo(() => {
+    if (!numberOfVotesUserHas) return false;
+
+    let numberOfVotesCast = 0;
+
+    const ideaIdsSet = new Set([
+      ...Object.keys(votesPerIdea),
+      ...Object.keys(remoteVotesPerIdea),
+    ]);
+
+    ideaIdsSet.forEach((ideaId) => {
+      numberOfVotesCast += getVotes(ideaId);
+    });
+
+    return numberOfVotesCast < numberOfVotesUserHas;
+  }, [votesPerIdea, remoteVotesPerIdea, getVotes, numberOfVotesUserHas]);
+
   return {
     getVotes,
     setVotes,
+    userHasVotesLeft,
   };
 };
 
