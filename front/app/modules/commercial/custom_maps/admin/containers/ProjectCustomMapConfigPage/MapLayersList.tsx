@@ -217,7 +217,7 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
           </StyledSortableList>
         )}
 
-        {mapConfig?.data.id && (
+        {mapConfig?.data?.id && (
           <GeoJsonImportButton
             projectId={projectId}
             mapConfigId={mapConfig.data.id}
