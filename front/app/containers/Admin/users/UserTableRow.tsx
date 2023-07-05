@@ -37,6 +37,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import useExceedsSeats from 'hooks/useExceedsSeats';
 import useDeleteUser from 'api/users/useDeleteUser';
 import { IUserData } from 'api/users/types';
+import { getFullName } from 'utils/textUtils';
 
 const RegisteredAt = styled(Td)`
   white-space: nowrap;
@@ -232,7 +233,7 @@ const UserTableRow = ({
       </Td>
       <Td>
         <StyledLink to={`/profile/${userInRow.attributes.slug}`}>
-          {userInRow.attributes.first_name} {userInRow.attributes.last_name}
+          {getFullName(userInRow)}
         </StyledLink>
       </Td>
       <Td>{userInRow.attributes.email}</Td>

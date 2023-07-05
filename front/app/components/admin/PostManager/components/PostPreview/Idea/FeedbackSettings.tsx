@@ -31,6 +31,7 @@ import useUpdateIdea from 'api/ideas/useUpdateIdea';
 import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
 import { IIdea } from 'api/ideas/types';
 import { IIdeaStatuses } from 'api/idea_statuses/types';
+import { getFullName } from 'utils/textUtils';
 
 const StyledLabel = styled(Label)`
   margin-top: 20px;
@@ -80,7 +81,7 @@ const FeedbackSettings = ({ ideaId, className, prospectAssignees }: Props) => {
     if (!isNilOrError(prospectAssignees.usersList)) {
       const assigneeOptions = prospectAssignees.usersList.map((assignee) => ({
         value: assignee.id,
-        label: `${assignee.attributes.first_name} ${assignee.attributes.last_name}`,
+        label: getFullName(assignee),
       }));
       assigneeOptions.push({
         value: 'unassigned',
