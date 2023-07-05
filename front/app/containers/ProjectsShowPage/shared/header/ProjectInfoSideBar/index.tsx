@@ -32,6 +32,7 @@ import { Box, Icon, IconTooltip } from '@citizenlab/cl2-component-library';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { scrollToElement } from 'utils/scroll';
 import { hasEmbeddedSurvey, hasSurveyWithAnyonePermissions } from '../utils';
+import setPhaseUrl from 'containers/ProjectsShowPage/timeline/setPhaseURL';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -42,7 +43,6 @@ import FormattedBudget from 'utils/currency/FormattedBudget';
 // style
 import styled from 'styled-components';
 import { fontSizes, colors, isRtl, media } from 'utils/styleUtils';
-import { selectPhase } from 'containers/ProjectsShowPage/timeline/events';
 
 const Container = styled.div``;
 
@@ -159,14 +159,17 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
     (id: string, shouldSelectCurrentPhase = true) =>
       (event: FormEvent) => {
         event.preventDefault();
+        if (!phases || !project) return;
 
-        currentPhase && shouldSelectCurrentPhase && selectPhase(currentPhase);
+        if (currentPhase && shouldSelectCurrentPhase) {
+          setPhaseUrl(currentPhase.id, phases.data, project.data);
+        }
 
         setTimeout(() => {
           scrollToElement({ id, shouldFocus: true });
         }, 100);
       },
-    [currentPhase]
+    [currentPhase, phases, project]
   );
 
   const openShareModal = useCallback((event: FormEvent) => {
