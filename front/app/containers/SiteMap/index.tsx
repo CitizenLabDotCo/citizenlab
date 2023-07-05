@@ -4,7 +4,7 @@ import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 // hooks
 import useLocalize from 'hooks/useLocalize';
 import useNavbarItems from 'hooks/useNavbarItems';
-import useCustomPages from 'hooks/useCustomPages';
+import useCustomPages from 'api/custom_pages/useCustomPages';
 
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
@@ -122,7 +122,7 @@ const SiteMap = () => {
   const loaded = projects !== undefined;
   const navBarItems = useNavbarItems();
   const localize = useLocalize();
-  const pages = useCustomPages();
+  const { data: pages } = useCustomPages();
   const { data: authUser } = useAuthUser();
 
   const scrollTo =
@@ -151,7 +151,7 @@ const SiteMap = () => {
     archivedSection.current || draftSection.current || currentSection.current;
 
   if (!isNilOrError(pages)) {
-    const nonCustomStaticPages = pages.filter((page) => {
+    const nonCustomStaticPages = pages.data.filter((page) => {
       const showPageConditions: Record<TCustomPageCode, boolean> = {
         proposals: proposalsEnabled,
         about: true,
@@ -164,7 +164,7 @@ const SiteMap = () => {
       return showPageConditions[page.attributes.code];
     });
 
-    const customStaticPages = pages.filter((page) => {
+    const customStaticPages = pages.data.filter((page) => {
       return page.attributes.code === 'custom';
     });
 

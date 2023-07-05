@@ -7,8 +7,8 @@ import useDeleteCustomPage from 'api/custom_pages/useDeleteCustomPage';
 
 // hooks
 import useNavbarItems from 'hooks/useNavbarItems';
-import useCustomPages from 'hooks/useCustomPages';
-import useCustomPageSlugById from 'hooks/useCustomPageSlugById';
+import useCustomPages from 'api/custom_pages/useCustomPages';
+import useCustomPageSlugById from 'api/custom_pages/useCustomPageSlugById';
 import useRemovedDefaultNavbarItems from 'hooks/useRemovedDefaultNavbarItems';
 
 // components
@@ -41,7 +41,7 @@ const HiddenNavbarItemList = ({
   const { mutate: deleteCustomPage } = useDeleteCustomPage();
   const navbarItems = useNavbarItems();
   const removedDefaultNavbarItems = useRemovedDefaultNavbarItems();
-  const pages = useCustomPages();
+  const { data: pages } = useCustomPages();
   const pageSlugById = useCustomPageSlugById();
 
   const notAllHooksRendered =
@@ -56,7 +56,7 @@ const HiddenNavbarItemList = ({
     return getItemsNotInNavbar(
       navbarItems,
       removedDefaultNavbarItems,
-      pages.filter(isNotFixedPage)
+      pages.data.filter(isNotFixedPage)
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [notAllHooksRendered, navbarItems, removedDefaultNavbarItems, pages]);

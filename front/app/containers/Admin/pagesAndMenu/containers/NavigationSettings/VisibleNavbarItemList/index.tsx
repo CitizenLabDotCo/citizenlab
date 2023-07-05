@@ -19,7 +19,7 @@ import NavbarItemRow from 'containers/Admin/pagesAndMenu/containers/NavigationSe
 
 // hooks
 import useNavbarItems from 'hooks/useNavbarItems';
-import useCustomPageSlugById from 'hooks/useCustomPageSlugById';
+import useCustomPageSlugById from 'api/custom_pages/useCustomPageSlugById';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';

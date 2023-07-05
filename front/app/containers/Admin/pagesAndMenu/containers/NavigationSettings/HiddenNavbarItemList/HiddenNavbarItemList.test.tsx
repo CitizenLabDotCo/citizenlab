@@ -15,7 +15,7 @@ jest.mock('hooks/useRemovedDefaultNavbarItems', () =>
 );
 
 jest.mock('hooks/useCustomPages');
-jest.mock('hooks/useCustomPageSlugById');
+jest.mock('api/custom_pages/useCustomPageSlugById');
 
 const mockDeleteCustomPage = jest.fn();
 

@@ -1,6 +1,6 @@
 import { IRelationship, Multiloc } from 'typings';
 import { API_PATH } from 'containers/App/constants';
-import { TPageSlugById } from 'hooks/useCustomPageSlugById';
+import { TPageSlugById } from 'api/custom_pages/useCustomPageSlugById';
 import streams from 'utils/streams';
 import { IItemNotInNavbar } from 'utils/navbar';
 

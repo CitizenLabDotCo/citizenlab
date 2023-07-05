@@ -1,33 +1,27 @@
 import { renderHook } from '@testing-library/react-hooks';
 
-import useAreas from './useAreas';
+import useCustomPages from './useCustomPages';
 
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { areasData } from './__mocks__/useAreas';
-import { IAreasQueryParams } from './types';
+import { customPagesData } from './__mocks__/useCustomPages';
 
-const apiPath = '*/:type/:id/areas';
-
-const params: IAreasQueryParams = {
-  pageNumber: 1,
-  pageSize: 5000,
-};
+const apiPath = '*/static_pages';
 
 const server = setupServer(
   rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: areasData }));
+    return res(ctx.status(200), ctx.json({ data: customPagesData }));
   })
 );
 
-describe('useAreas', () => {
+describe('useCustomPages', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useAreas(params), {
+    const { result, waitFor } = renderHook(() => useCustomPages(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -36,7 +30,7 @@ describe('useAreas', () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
     expect(result.current.isLoading).toBe(false);
-    expect(result.current.data?.data).toEqual(areasData);
+    expect(result.current.data?.data).toEqual(customPagesData);
   });
 
   it('returns error correctly', async () => {
@@ -46,7 +40,7 @@ describe('useAreas', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useAreas(params), {
+    const { result, waitFor } = renderHook(() => useCustomPages(), {
       wrapper: createQueryClientWrapper(),
     });
 
