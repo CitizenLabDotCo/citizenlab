@@ -11,7 +11,7 @@ interface Props {
   projectId: string;
 }
 
-interface CumulativeVotingInterface {
+export interface CumulativeVotingInterface {
   getVotes: (ideaId: string) => number;
   setVotes: (ideaId: string, newVotes: number) => void;
   userHasVotesLeft: boolean;

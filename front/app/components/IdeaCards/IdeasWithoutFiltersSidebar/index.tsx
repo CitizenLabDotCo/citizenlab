@@ -44,6 +44,7 @@ import { isFieldEnabled } from 'utils/projectUtils';
 import { IQueryParameters } from 'api/ideas/types';
 import usePhase from 'api/phases/usePhase';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { CumulativeVotingInterface } from 'api/baskets_ideas/useCumulativeVoting';
 
 const Container = styled.div`
   width: 100%;
@@ -157,6 +158,7 @@ export interface Props {
   showSearchbar: boolean;
   showDropdownFilters: boolean;
   goBackMode?: 'browserGoBackButton' | 'goToProject';
+  cumulativeVotingInterface?: CumulativeVotingInterface;
 }
 
 const IdeasWithoutFiltersSidebar = ({
@@ -175,6 +177,7 @@ const IdeasWithoutFiltersSidebar = ({
   showDropdownFilters,
   showSearchbar,
   goBackMode,
+  cumulativeVotingInterface,
 }: Props) => {
   const locale = useLocale();
   const { windowWidth } = useWindowSize();
@@ -354,6 +357,7 @@ const IdeasWithoutFiltersSidebar = ({
           participationContextId={participationContextId}
           participationContextType={participationContextType}
           goBackMode={goBackMode}
+          cumulativeVotingInterface={cumulativeVotingInterface}
         />
       </Container>
     );

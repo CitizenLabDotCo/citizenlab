@@ -317,6 +317,7 @@ const multipleVotingConfig: VotingMethodConfig = {
         ideaId={ideaId}
         projectId={projectId}
         fillWidth={true}
+        cumulativeVotingInterface={'bla' as any}
       />
     );
   },

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 // components
 import {
@@ -17,7 +17,6 @@ import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 import useIdeaById from 'api/ideas/useIdeaById';
-import useAssignVote from 'api/baskets_ideas/useAssignVote';
 
 // style
 import styled, { useTheme } from 'styled-components';
@@ -30,6 +29,7 @@ import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { useIntl } from 'utils/cl-intl';
 import useLocalize from 'hooks/useLocalize';
 import messages from './messages';
+import { CumulativeVotingInterface } from 'api/baskets_ideas/useCumulativeVoting';
 
 export const VOTES_EXCEEDED_ERROR_EVENT = 'votesExceededError';
 export const VOTES_PER_OPTION_EXCEEDED_ERROR_EVENT =
@@ -62,12 +62,14 @@ interface Props {
   projectId: string;
   ideaId: string;
   fillWidth?: boolean;
+  cumulativeVotingInterface: CumulativeVotingInterface;
 }
 
 const AssignMultipleVotesControl = ({
   projectId,
   ideaId,
   fillWidth,
+  cumulativeVotingInterface,
 }: Props) => {
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
@@ -77,25 +79,23 @@ const AssignMultipleVotesControl = ({
   const participationContext = currentPhase || project?.data;
   const basketId = participationContext?.relationships?.user_basket?.data?.id;
 
-  // baskets
+  // api
   const { data: basket } = useBasket(basketId);
+  const { data: authUser } = useAuthUser();
+  const { data: idea } = useIdeaById(ideaId);
 
-  const [votes, _setVotes] = useState(0);
-
+  // other
   const theme = useTheme();
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const isMobileOrSmaller = useBreakpoint('phone');
 
-  // api
-  const { data: authUser } = useAuthUser();
-  const { data: idea } = useIdeaById(ideaId);
-
   // action descriptors
   const actionDescriptor = idea?.data.attributes.action_descriptor.voting;
   const budgetingDisabledReason = actionDescriptor?.disabled_reason;
 
-  const assignVote = useAssignVote({ projectId });
+  const votes = cumulativeVotingInterface.getVotes(ideaId);
+  const { userHasVotesLeft } = cumulativeVotingInterface;
 
   const onAdd = async (event) => {
     event.stopPropagation();
@@ -120,14 +120,14 @@ const AssignMultipleVotesControl = ({
     //   }
     // }
 
-    assignVote(ideaId, 10); // TODO
+    cumulativeVotingInterface.setVotes(ideaId, votes + 1);
   };
 
   const onRemove = async (event) => {
     event.stopPropagation();
     event?.preventDefault();
 
-    assignVote(ideaId, 10); // TODO
+    cumulativeVotingInterface.setVotes(ideaId, votes - 1);
   };
 
   const onTextInputChange = async (_event) => {
@@ -153,6 +153,9 @@ const AssignMultipleVotesControl = ({
     ? localize(voting_term_plural_multiloc)
     : formatMessage(messages.vote).toLowerCase();
 
+  const basketSubmitted = !!basket?.data?.attributes.submitted_at;
+  const disableInput = !userHasVotesLeft || basketSubmitted;
+
   if (votes > 0) {
     return (
       <Box
@@ -162,7 +165,7 @@ const AssignMultipleVotesControl = ({
         style={{ cursor: 'default' }}
         flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
       >
-        {!basket?.data?.attributes.submitted_at && (
+        {!basketSubmitted && (
           <Button
             mr="8px"
             bgColor={theme.colors.tenantPrimary}
@@ -195,7 +198,7 @@ const AssignMultipleVotesControl = ({
             <Input
               value={votes.toString()}
               onChange={onTextInputChange}
-              disabled={!!basket?.data?.attributes.submitted_at}
+              disabled={disableInput}
               type="number"
               min="0"
               onBlur={() => {
@@ -212,7 +215,7 @@ const AssignMultipleVotesControl = ({
             })}
           </Text>
         </Box>
-        {!basket?.data?.attributes.submitted_at && (
+        {!disableInput && (
           <Button
             ariaLabel={formatMessage(messages.addVote)}
             ml="8px"
@@ -229,7 +232,7 @@ const AssignMultipleVotesControl = ({
   return (
     <Button
       buttonStyle="primary-outlined"
-      disabled={!!basket?.data?.attributes.submitted_at}
+      disabled={!!basket?.data?.attributes.submitted_at || !userHasVotesLeft}
       icon="vote-ballot"
       width="100%"
       onClick={onAdd}

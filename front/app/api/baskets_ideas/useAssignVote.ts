@@ -30,6 +30,10 @@ const useAssignVote = ({ projectId }: Props) => {
     phases?.data
   );
   const basketId = participationContext?.relationships?.user_basket?.data?.id;
+  const participation_context_type =
+    project?.data.attributes.process_type === 'continuous'
+      ? 'Project'
+      : 'Phase';
 
   const { data: basket } = useBasket(basketId);
   const { data: basketIdeas } = useBasketsIdeas(basketId);
@@ -63,7 +67,7 @@ const useAssignVote = ({ projectId }: Props) => {
         addBasket(
           {
             participation_context_id: participationContext.id,
-            participation_context_type: phases ? 'Phase' : 'Project',
+            participation_context_type,
           },
           {
             onSuccess: (basket) => {
@@ -113,14 +117,14 @@ const useAssignVote = ({ projectId }: Props) => {
       updateBasketsIdea,
       basket,
       participationContext,
-      phases,
+      participation_context_type,
       basketIdeaIdPerIdeaId,
     ]
   );
 
   // Debounced update function
   const assignVote = useMemo(() => {
-    return debounce(handleBasketUpdate, 100);
+    return debounce(handleBasketUpdate, 500);
   }, [handleBasketUpdate]);
 
   return assignVote;

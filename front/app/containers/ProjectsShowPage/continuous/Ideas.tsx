@@ -68,7 +68,9 @@ const IdeasContainer = memo<InnerProps>(({ project, className }) => {
   const searchParam = searchParams.get('search');
   const topicsParam = searchParams.get('topics');
 
-  useCumulativeVoting({ projectId: project.id });
+  const cumulativeVotingInterface = useCumulativeVoting({
+    projectId: project.id,
+  });
 
   const ideaQueryParameters = useMemo<QueryParameters>(
     () => ({
@@ -140,6 +142,7 @@ const IdeasContainer = memo<InnerProps>(({ project, className }) => {
               invisibleTitleMessage={messages.a11y_titleInputs}
               showDropdownFilters={isVotingProject ? false : true}
               showSearchbar={isVotingProject ? false : true}
+              cumulativeVotingInterface={cumulativeVotingInterface}
             />
           </SectionContainer>
         </StyledContentContainer>
