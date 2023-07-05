@@ -10,6 +10,11 @@ FactoryBot.define do
     initiating_user
   end
 
+  factory :basket_submitted, parent: :notification, class: 'Notifications::BasketSubmitted' do
+    initiating_user
+    association :project, factory: :continuous_budgeting_project
+  end
+
   factory :comment_deleted_by_admin, parent: :notification, class: 'Notifications::CommentDeletedByAdmin' do
     comment
     association :post, factory: :idea

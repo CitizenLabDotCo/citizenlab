@@ -60,39 +60,26 @@
 #  fk_rails_...  (spam_report_id => spam_reports.id)
 #
 module Notifications
-  class OfficialFeedbackOnReactedInitiative < Notification
-    validates :initiating_user, :official_feedback, :post, presence: true
-    validates :post_type, inclusion: { in: ['Initiative'] }
+  class BasketSubmitted < Notification
+    # Don't understand how validations and belongs_to etc works
+    # validates :post_status, :post, :project, presence: true
+    # validates :post_type, inclusion: { in: ['Idea'] }
 
-    ACTIVITY_TRIGGERS = { 'OfficialFeedback' => { 'created' => true } }
-    EVENT_NAME = 'Official feedback on reacted initiative'
+    ACTIVITY_TRIGGERS = { 'Basket' => { 'submitted' => true } }
+    EVENT_NAME = 'Basket has been submitted'
 
     def self.make_notifications_on(activity)
-      official_feedback = activity.item
-      initiator_id = official_feedback.user_id
+      basket = activity.item
+      recipient_id = basket.user_id
 
-      if official_feedback.post_type == 'Initiative' && initiator_id && !InitiativeStatusChange.exists?(official_feedback: official_feedback)
-        comment_author_ids = User.active
-          .joins(:comments).merge(Comment.published)
-          .where(comments: { post: official_feedback.post })
-          .distinct
-          .ids
-        reactor_ids = User.active
-          .joins(:reactions).where(reactions: { reactable: official_feedback.post })
-          .distinct
-          .ids
-
-        (reactor_ids - [initiator_id, *comment_author_ids, official_feedback.post.author_id]).map do |recipient_id|
-          new(
-            recipient_id: recipient_id,
-            initiating_user_id: initiator_id,
-            post: official_feedback.post,
-            official_feedback: official_feedback
-          )
-        end
+      if basket && recipient_id
+        [new(
+          recipient_id: recipient_id,
+          basket_id: basket.id
+        )]
       else
         []
-      end.compact
+      end
     end
   end
 end
