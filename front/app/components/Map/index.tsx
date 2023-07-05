@@ -239,7 +239,7 @@ const Map = memo<IMapProps & IMapConfigProps>(
           )}
           <Outlet
             id="app.components.Map.leafletConfig"
-            projectId={projectId}
+            projectId={projectId ?? undefined}
             onLeafletConfigChange={handleLeafletConfigChange}
             centerLatLng={centerLatLng}
             zoomLevel={zoomLevel}
@@ -248,7 +248,10 @@ const Map = memo<IMapProps & IMapConfigProps>(
         </MapWrapper>
 
         {!hideLegend && (
-          <Outlet id="app.components.Map.Legend" projectId={projectId} />
+          <Outlet
+            id="app.components.Map.Legend"
+            projectId={projectId ?? undefined}
+          />
         )}
       </Container>
     );

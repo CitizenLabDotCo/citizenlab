@@ -2,7 +2,6 @@ import { memo, useMemo, useEffect, useCallback } from 'react';
 
 // hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useMapConfig from '../../../hooks/useMapConfig';
 
 // utils
 import {
@@ -22,10 +21,11 @@ import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
 // typings
 import { LatLngTuple } from 'leaflet';
 import { GeoJSONLayer, Point } from 'components/UI/LeafletMap/typings';
+import useMapConfig from 'modules/commercial/custom_maps/api/map_config/useMapConfig';
 
 interface Props {
   onLeafletConfigChange: (newLeafletConfig: ILeafletMapConfig) => void;
-  projectId?: string | null;
+  projectId?: string;
   centerLatLng?: LatLngTuple;
   zoomLevel?: number;
   points?: Point[];
@@ -34,24 +34,26 @@ interface Props {
 const LeafletConfig = memo<Props>(
   ({ onLeafletConfigChange, projectId, centerLatLng, zoomLevel, points }) => {
     const localize = useLocalize();
-    const { data: appConfig, isLoading } = useAppConfiguration();
-    const mapConfig = useMapConfig({ projectId });
 
-    const loading = isLoading || mapConfig === undefined;
+    const { data: mapConfig, isLoading: isLoadingMapConfig } =
+      useMapConfig(projectId);
+    const { data: appConfig, isLoading } = useAppConfiguration();
+
+    const loading = isLoading || isLoadingMapConfig;
 
     const center = useMemo(() => {
       if (loading) return;
-      return getCenter(centerLatLng, appConfig?.data, mapConfig);
+      return getCenter(centerLatLng, appConfig?.data, mapConfig?.data);
     }, [loading, centerLatLng, appConfig, mapConfig]);
 
     const zoom = useMemo(() => {
       if (loading) return;
-      return getZoomLevel(zoomLevel, appConfig?.data, mapConfig);
+      return getZoomLevel(zoomLevel, appConfig?.data, mapConfig?.data);
     }, [loading, zoomLevel, appConfig, mapConfig]);
 
     const tileProvider = useMemo(() => {
       if (loading) return;
-      return getTileProvider(appConfig?.data, mapConfig);
+      return getTileProvider(appConfig?.data, mapConfig?.data);
     }, [loading, appConfig, mapConfig]);
 
     const tileOptions = useMemo(() => {
@@ -64,7 +66,7 @@ const LeafletConfig = memo<Props>(
         return [];
       }
 
-      return mapConfig.attributes.layers as GeoJSONLayer[];
+      return mapConfig?.data?.attributes?.layers as GeoJSONLayer[];
     }, [mapConfig]);
 
     const layerMarker = useCallback(
