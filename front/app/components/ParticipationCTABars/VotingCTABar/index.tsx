@@ -35,12 +35,9 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
   const { formatMessage } = useIntl();
   const { data: appConfig } = useAppConfiguration();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
-  let basketId: string | undefined;
-  if (currentPhase) {
-    basketId = currentPhase.relationships.user_basket?.data?.id;
-  } else {
-    basketId = project.relationships.user_basket?.data?.id;
-  }
+  const basketId: string | undefined =
+    currentPhase?.relationships?.user_basket?.data?.id ||
+    project.relationships.user_basket?.data?.id;
   const { data: basket } = useBasket(basketId);
   const { mutate: updateBasket } = useUpdateBasket();
   const { data: basketsIdeas } = useBasketsIdeas(basket?.data.id);
@@ -61,24 +58,24 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
   }
 
   const submittedAt = basket?.data.attributes.submitted_at || null;
-  const spentBudget = basket?.data.attributes.total_votes || 0;
-  const hasUserParticipated = !!submittedAt && spentBudget > 0;
+  const votesCast = basket?.data.attributes.total_votes || 0;
+  const hasUserParticipated = !!submittedAt && votesCast > 0;
 
-  const budgetExceedsLimit =
+  const voteExceedsLimit =
     basket?.data.attributes['budget_exceeds_limit?'] || false;
 
-  const maxBudget =
+  const maxVotes =
     currentPhase?.attributes.voting_max_total ||
     project.attributes.voting_max_total ||
-    0;
-  const minBudget =
+    null;
+  const minVotes =
     currentPhase?.attributes.voting_min_total ||
     project.attributes.voting_min_total ||
     0;
 
-  const minBudgetRequired = minBudget > 0;
-  const minBudgetReached = spentBudget >= minBudget;
-  const minBudgetRequiredNotReached = minBudgetRequired && !minBudgetReached;
+  const minVotesRequired = minVotes > 0;
+  const minVotesReached = votesCast >= minVotes;
+  const minVotesRequiredNotReached = minVotesRequired && !minVotesReached;
 
   if (isNilOrError(locale)) {
     return null;
@@ -114,6 +111,9 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
     return null;
   };
 
+  const ctaDisabled =
+    voteExceedsLimit || votesCast === 0 || minVotesRequiredNotReached;
+
   const CTAButton = hasUserParticipated ? (
     <Box display="flex">
       <Icon my="auto" mr="8px" name="check" fill="white" />
@@ -134,9 +134,7 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
       textHoverColor={theme.colors.black}
       padding="6px 12px"
       fontSize="14px"
-      disabled={
-        budgetExceedsLimit || spentBudget === 0 || minBudgetRequiredNotReached
-      }
+      disabled={ctaDisabled}
     >
       <FormattedMessage {...messages.submit} />
     </Button>
@@ -150,7 +148,7 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
         CTAButton={CTAButton}
         hasUserParticipated={hasUserParticipated}
         participationState={
-          hasUserParticipated ? undefined : (
+          hasUserParticipated || !maxVotes ? undefined : (
             <Text
               color="white"
               m="0px"
@@ -160,9 +158,9 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
               aria-live="polite"
             >
               {(
-                maxBudget - (basket?.data.attributes.total_votes || 0)
+                maxVotes - (basket?.data.attributes.total_votes || 0)
               ).toLocaleString()}{' '}
-              / {maxBudget.toLocaleString()}{' '}
+              / {maxVotes.toLocaleString()}{' '}
               {getVoteTerm() ||
                 appConfig?.data.attributes.settings.core.currency}{' '}
               {formatMessage(messages.left)}

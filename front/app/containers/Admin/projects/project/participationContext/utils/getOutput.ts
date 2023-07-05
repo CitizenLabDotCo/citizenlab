@@ -79,7 +79,6 @@ export default ({
       {
         participation_method,
         voting_min_total,
-        voting_max_total,
         voting_max_votes_per_idea,
         voting_term_singular_multiloc,
         voting_term_plural_multiloc,
@@ -91,6 +90,7 @@ export default ({
       },
       isNil
     ) as IParticipationContextConfig;
+    output.voting_max_total = voting_max_total;
   }
 
   return output;

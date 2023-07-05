@@ -118,6 +118,36 @@ export default defineMessages({
     defaultMessage:
       'You have a total of <b>{totalVotes} {voteTerm} to distribute between {optionCount} options</b>. Select your preferred options by tapping on “Vote”. Once you are done, click “Submit” to cast your vote.',
   },
+  multipleVotingEnded: {
+    id: 'app.utils.votingMethodUtils.multipleVotingEnded',
+    defaultMessage:
+      'Voting closed on <b>{endDate}.</b> Participants had <b>{maxVotes} {voteTerm} each to distribute between {optionCount} options.</b>',
+  },
+  singleVotingUnlimitedEnded: {
+    id: 'app.utils.votingMethodUtils.multipleVotingEnded',
+    defaultMessage:
+      'Voting closed on <b>{endDate}.</b> Participants could <b>vote for as many options as they wished.</b>',
+  },
+  singleVotingEnded: {
+    id: 'app.utils.votingMethodUtils.multipleVotingEnded',
+    defaultMessage:
+      'Voting closed on <b>{endDate}.</b> Participants could <b>vote for {maxVotes} options.</b>',
+  },
+  singleVotingMultipleVotesInstructions: {
+    id: 'app.utils.votingMethodUtils.singleVotingMultipleVotesInstructions',
+    defaultMessage:
+      'You can vote for <b> {totalVotes} options</b>. Select your preferred options by tapping on “Vote”. Once you are done, click “Submit” to cast your vote.',
+  },
+  singleVotingOneVoteInstructions: {
+    id: 'app.utils.votingMethodUtils.singleVotingOneVoteInstructions',
+    defaultMessage:
+      'You can vote for <b>1 option</b>. Select your preferred option by tapping on “Vote”. Once you are done, click “Submit” to cast your vote.',
+  },
+  singleVotingInstructionsUnlimited: {
+    id: 'app.utils.votingMethodUtils.singleVotingInstructionsUnlimited',
+    defaultMessage:
+      'You can vote for as many options as you would like. Select your preferred options by tapping on “Vote”. Once you are done, click “Submit” to cast your vote.',
+  },
   budgetSubmittedWithIcon: {
     id: 'app.utils.votingMethodUtils.budgetSubmittedWithIcon',
     defaultMessage: 'Budget submitted 🎉',

@@ -65,6 +65,8 @@ export type VotingMethodConfig = {
     project,
     phase,
     SubmissionState,
+    appConfig,
+    locale,
   }: GetStatusDescriptionProps) => JSX.Element | null;
   getIdeaPageVoteControl?: ({
     ideaId,
@@ -216,7 +218,6 @@ const multipleVotingConfig: VotingMethodConfig = {
     project,
     phase,
     SubmissionState,
-    appConfig,
     locale,
   }: GetStatusDescriptionProps) => {
     const participationContext = phase || project;
@@ -266,7 +267,7 @@ const multipleVotingConfig: VotingMethodConfig = {
           {...messages.votingSubmittedInstructionsContinuous}
         />
       );
-    } else if (SubmissionState === 'submissionEnded') {
+    } else if (SubmissionState === 'submissionEnded' && !isNilOrError(locale)) {
       return (
         <FormattedMessage
           values={{
@@ -274,13 +275,15 @@ const multipleVotingConfig: VotingMethodConfig = {
               <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
             ),
             endDate: phase && toFullMonth(phase.attributes.end_at, 'day'),
-            maxBudget:
+            maxVotes:
               phase && phase.attributes.voting_max_total?.toLocaleString(),
-            currency:
-              appConfig?.data.attributes.settings.core.currency.toString(),
+            voteTerm:
+              participationContext?.attributes.voting_term_plural_multiloc?.[
+                locale
+              ] || 'votes',
             optionCount: phase && phase.attributes.ideas_count,
           }}
-          {...messages.budgetParticipationEnded}
+          {...messages.multipleVotingEnded}
         />
       );
     }
@@ -342,24 +345,32 @@ const singleVotingConfig: VotingMethodConfig = {
     project,
     phase,
     SubmissionState,
-    appConfig,
+    locale,
   }: GetStatusDescriptionProps) => {
+    const participationContext = phase || project;
+    const totalVotes = participationContext?.attributes.voting_max_total;
+
     if (SubmissionState === 'hasNotSubmitted') {
+      if (totalVotes) {
+        if (totalVotes > 1) {
+          return (
+            <FormattedMessage
+              values={{
+                b: (chunks) => (
+                  <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+                ),
+                totalVotes: participationContext?.attributes.voting_max_total,
+              }}
+              {...messages.singleVotingMultipleVotesInstructions}
+            />
+          );
+        }
+        return (
+          <FormattedMessage {...messages.singleVotingOneVoteInstructions} />
+        );
+      }
       return (
-        <FormattedMessage
-          values={{
-            b: (chunks) => (
-              <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
-            ),
-            optionCount: phase
-              ? phase.attributes.ideas_count
-              : project.attributes.ideas_count,
-            totalVotes: phase
-              ? phase.attributes.voting_max_total?.toLocaleString()
-              : project.attributes.voting_max_total?.toLocaleString(),
-          }}
-          {...messages.cumulativeVotingInstructions}
-        />
+        <FormattedMessage {...messages.singleVotingInstructionsUnlimited} />
       );
     }
     if (SubmissionState === 'hasSubmitted') {
@@ -386,23 +397,35 @@ const singleVotingConfig: VotingMethodConfig = {
           {...messages.votingSubmittedInstructionsContinuous}
         />
       );
-    } else if (SubmissionState === 'submissionEnded') {
-      return (
-        <FormattedMessage
-          values={{
-            b: (chunks) => (
-              <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
-            ),
-            endDate: phase && toFullMonth(phase.attributes.end_at, 'day'),
-            maxBudget:
-              phase && phase.attributes.voting_max_total?.toLocaleString(),
-            currency:
-              appConfig?.data.attributes.settings.core.currency.toString(),
-            optionCount: phase && phase.attributes.ideas_count,
-          }}
-          {...messages.budgetParticipationEnded}
-        />
-      );
+    } else if (SubmissionState === 'submissionEnded' && !isNilOrError(locale)) {
+      const votingMax = phase?.attributes?.voting_max_total;
+      if (votingMax) {
+        return (
+          <FormattedMessage
+            values={{
+              b: (chunks) => (
+                <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+              ),
+              endDate: phase && toFullMonth(phase.attributes.end_at, 'day'),
+              maxVotes: votingMax?.toLocaleString(),
+              optionCount: phase && phase.attributes.ideas_count,
+            }}
+            {...messages.singleVotingEnded}
+          />
+        );
+      } else {
+        return (
+          <FormattedMessage
+            values={{
+              b: (chunks) => (
+                <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+              ),
+              endDate: phase && toFullMonth(phase.attributes.end_at, 'day'),
+            }}
+            {...messages.singleVotingUnlimitedEnded}
+          />
+        );
+      }
     }
     return null;
   },

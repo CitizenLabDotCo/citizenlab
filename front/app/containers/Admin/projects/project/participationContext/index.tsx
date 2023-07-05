@@ -327,7 +327,13 @@ class ParticipationContext extends PureComponent<
   handleVotingMethodOnChange = (
     voting_method: VotingMethod | null | undefined
   ) => {
-    this.setState({ voting_method });
+    this.setState({
+      voting_method,
+      voting_max_votes_per_idea:
+        voting_method === 'single_voting'
+          ? 1
+          : this.state.voting_max_votes_per_idea,
+    });
   };
 
   handleReactingDislikeMethodOnChange = (
@@ -363,8 +369,10 @@ class ParticipationContext extends PureComponent<
     });
   };
 
-  handleVotingMaxTotalChange = (newVotingMaxTotal: string) => {
-    const voting_max_total = parseInt(newVotingMaxTotal, 10);
+  handleVotingMaxTotalChange = (newVotingMaxTotal: string | null) => {
+    const voting_max_total = newVotingMaxTotal
+      ? parseInt(newVotingMaxTotal, 10)
+      : null;
     this.setState({
       voting_max_total,
       maxTotalVotesError: null,

@@ -23,7 +23,7 @@ interface Props {
   voteTermError: string | null;
   voting_term_plural_multiloc?: Multiloc | null;
   voting_term_singular_multiloc?: Multiloc | null;
-  handleMaxVotingAmountChange: (newMaxTotalVote: string) => void;
+  handleMaxVotingAmountChange: (newMaxTotalVote: string | null) => void;
   handleMaxVotesPerOptionAmountChange: (newMaxVotesPerOption: string) => void;
   handleVoteTermPluralChange: (termMultiloc: Multiloc) => void;
   handleVoteTermSingularChange: (termMultiloc: Multiloc) => void;

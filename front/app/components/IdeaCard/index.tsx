@@ -3,12 +3,10 @@ import React, { memo, useEffect } from 'react';
 // components
 import UserName from 'components/UI/UserName';
 import Card from 'components/UI/Card/Compact';
-import { Box, Icon, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Icon, useBreakpoint } from '@citizenlab/cl2-component-library';
 import Avatar from 'components/Avatar';
 import IdeaCardFooter from './IdeaCardFooter';
 import FooterWithReactionControl from './FooterWithReactionControl';
-import AddToBasketButton from 'components/AddToBasketButton';
-import AssignMultipleVotesControl from 'components/AssignMultipleVotesControl';
 
 // router
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
@@ -32,6 +30,7 @@ import usePhase from 'api/phases/usePhase';
 import { isNilOrError } from 'utils/helperUtils';
 import { scrollToElement } from 'utils/scroll';
 import { getCurrentPhase } from 'api/phases/utils';
+import { getInteractions } from './utils';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
@@ -174,50 +173,6 @@ const CompactIdeaCard = memo<IdeaCardProps>(
       .trim();
     const [searchParams] = useSearchParams();
     const scrollToCardParam = searchParams.get('scroll_to_card');
-
-    const getInteractions = () => {
-      if (project) {
-        const projectId = idea.data.relationships.project.data.id;
-        const ideaBudget = idea.data.attributes.budget;
-        const participationContext = viewingPhase || project;
-
-        const showMultipleVoteControl =
-          participationContext.data.attributes.participation_method ===
-            'voting' &&
-          participationContext.data.attributes.voting_method ===
-            'multiple_voting';
-
-        const showBudgetControl =
-          participationContext.data.attributes.participation_method ===
-            'voting' &&
-          participationContext.data.attributes.voting_method === 'budgeting' &&
-          ideaBudget;
-        if (showBudgetControl) {
-          return (
-            <Box display="flex" alignItems="center">
-              <Box w="100%" className="e2e-assign-budget">
-                <AddToBasketButton
-                  projectId={projectId}
-                  ideaId={idea.data.id}
-                />
-              </Box>
-            </Box>
-          );
-        }
-        if (showMultipleVoteControl) {
-          return (
-            <Box display="flex" alignItems="center">
-              <AssignMultipleVotesControl
-                projectId={projectId}
-                ideaId={idea.data.id}
-              />
-            </Box>
-          );
-        }
-      }
-      return null;
-    };
-
     const votingMethod =
       currentPhase?.attributes.voting_method ||
       project?.data.attributes.voting_method;
@@ -332,7 +287,7 @@ const CompactIdeaCard = memo<IdeaCardProps>(
           </BodyWrapper>
         }
         hideBody={hideBody}
-        interactions={getInteractions()}
+        interactions={getInteractions({ project, viewingPhase, idea })}
         footer={getFooter()}
       />
     );

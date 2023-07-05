@@ -68,4 +68,13 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.Voting.voteCalledPlaceholderPlural',
     defaultMessage: 'E.g. Tokens',
   },
+  maximumVotes: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.maximumVotes',
+    defaultMessage: 'Maximum amount of votes',
+  },
+  maximumVotesDescription: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.maximumVotesDescription',
+    defaultMessage:
+      'You can limit the number votes a user can cast in total (with a maximum of one vote per option).',
+  },
 });
