@@ -14,8 +14,12 @@ export const scrollTo =
   () => {
     const isOnProjectPage = pathname.endsWith(`/projects/${projectSlug}`);
 
-    if (currentPhase) {
-      selectCurrentPhase(projectSlug);
+    const currentPhaseExists = !!currentPhase;
+
+    if (currentPhaseExists) {
+      // To get the current phase, we only need to navigate to the project page- if
+      // no phase parameter is provided it will automatically select the current phase
+      clHistory.push(`/projects/${projectSlug}`);
     }
 
     if (isOnProjectPage) {
@@ -24,7 +28,3 @@ export const scrollTo =
       clHistory.push(`/projects/${projectSlug}#${elementId}`);
     }
   };
-
-const selectCurrentPhase = (projectSlug: string) => {
-  clHistory.push(`/projects/${projectSlug}`);
-};
