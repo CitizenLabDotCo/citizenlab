@@ -52,10 +52,11 @@ const AssignSingleVotesControl = ({
   const isLoading = isAddingToBasket || isRemovingFromBasket;
 
   const onAdd = async () => {
-    if (basket && participationContext?.attributes?.voting_max_total) {
+    if (basket) {
+      const votingMaxTotal = participationContext?.attributes?.voting_max_total;
       if (
-        basket.data.attributes.total_votes + 1 >
-        participationContext?.attributes?.voting_max_total
+        votingMaxTotal &&
+        basket.data.attributes.total_votes + 1 > votingMaxTotal
       ) {
         eventEmitter.emit(VOTES_EXCEEDED_ERROR_EVENT);
       } else {
