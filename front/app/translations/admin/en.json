@@ -1170,6 +1170,8 @@
   "app.containers.AdminPage.ProjectEdit.Voting.enabledActionsForUsersDescription": "Select what additional actions users can take.",
   "app.containers.AdminPage.ProjectEdit.Voting.learnMoreVotingMethod": "Learn more about when to use <b> {voteTypeDescription} </b> in our {optionAnalysisArticleLink}.",
   "app.containers.AdminPage.ProjectEdit.Voting.maxVotesPerOption": "Maximum votes per option",
+  "app.containers.AdminPage.ProjectEdit.Voting.maximumVotes": "Maximum amount of votes",
+  "app.containers.AdminPage.ProjectEdit.Voting.maximumVotesDescription": "You can limit the number votes a user can cast in total (with a maximum of one vote per option).",
   "app.containers.AdminPage.ProjectEdit.Voting.maximumVotesRecommendation": "Its recommended that you limit the maximum votes per option to 50% of the total budget to avoid {strategicVotingLink}.",
   "app.containers.AdminPage.ProjectEdit.Voting.multipleVotesPerOption2": "multiple votes per option",
   "app.containers.AdminPage.ProjectEdit.Voting.multipleVotingMethodSubtitle": "Users are given an amount of tokens to distribute between options",
