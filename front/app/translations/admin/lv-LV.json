@@ -807,7 +807,6 @@
   "app.containers.Admin.reporting.reportBuilder": "Ziņojuma veidotājs",
   "app.containers.Admin.reporting.reportHeader": "Ziņojuma galvene",
   "app.containers.Admin.reporting.resultsSection": "REZULTĀTI",
-  "app.containers.Admin.tools.comingSoon": "Drīzumā gaidāms",
   "app.containers.Admin.tools.learnMore": "Uzzināt vairāk",
   "app.containers.Admin.tools.managePublicAPIKeys": "API atslēgu pārvaldība",
   "app.containers.Admin.tools.manageWidget": "Pārvaldīt logrīku",

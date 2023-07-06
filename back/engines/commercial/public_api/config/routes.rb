@@ -30,4 +30,10 @@ end
 
 Rails.application.routes.draw do
   mount PublicApi::Engine => '/api', as: 'public_api'
+
+  namespace :web_api, defaults: { format: :json } do
+    namespace :v1 do
+      resources :api_clients, except: [:update]
+    end
+  end
 end
