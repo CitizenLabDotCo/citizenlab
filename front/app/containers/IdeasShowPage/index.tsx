@@ -9,6 +9,9 @@ import PageNotFound from 'components/PageNotFound';
 import Unauthorized from 'components/Unauthorized';
 import VerticalCenterer from 'components/VerticalCenterer';
 
+// context
+import { CumulativeVotingContext } from 'api/baskets_ideas/useCumulativeVoting';
+
 // hooks
 import useIdeaBySlug from 'api/ideas/useIdeaBySlug';
 import useProjectById from 'api/projects/useProjectById';
@@ -85,20 +88,22 @@ const IdeasShowPage = () => {
 
   if (idea) {
     return (
-      <Box background={colors.white}>
-        {isSmallerThanTablet && (
-          <StyledIdeaShowPageTopBar
-            projectId={idea.data.relationships.project.data.id}
+      <CumulativeVotingContext projectId={project?.data.id}>
+        <Box background={colors.white}>
+          {isSmallerThanTablet && (
+            <StyledIdeaShowPageTopBar
+              projectId={idea.data.relationships.project.data.id}
+              ideaId={idea.data.id}
+              participationContext={participationContext}
+            />
+          )}
+          <StyledIdeasShow
             ideaId={idea.data.id}
-            participationContext={participationContext}
+            projectId={idea.data.relationships.project.data.id}
+            compact={isSmallerThanTablet}
           />
-        )}
-        <StyledIdeasShow
-          ideaId={idea.data.id}
-          projectId={idea.data.relationships.project.data.id}
-          compact={isSmallerThanTablet}
-        />
-      </Box>
+        </Box>
+      </CumulativeVotingContext>
     );
   }
 

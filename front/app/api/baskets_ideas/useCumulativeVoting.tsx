@@ -14,7 +14,7 @@ import useAssignVote from './useAssignVote';
 import { getCurrentParticipationContext } from 'api/phases/utils';
 
 interface Props {
-  projectId: string;
+  projectId?: string;
   children: React.ReactNode;
 }
 
@@ -32,7 +32,10 @@ const CumulativeVotingInterfaceContext =
 export const CumulativeVotingContext = ({ projectId, children }: Props) => {
   const { data: project } = useProjectById(projectId);
 
-  if (!(project?.data.attributes.voting_method === 'multiple_voting')) {
+  if (
+    !projectId ||
+    !(project?.data.attributes.voting_method === 'multiple_voting')
+  ) {
     return <>{children}</>;
   }
 
@@ -43,7 +46,12 @@ export const CumulativeVotingContext = ({ projectId, children }: Props) => {
   );
 };
 
-const CumulativeVotingContextInner = ({ projectId, children }: Props) => {
+interface InnerProps {
+  projectId: string;
+  children: React.ReactNode;
+}
+
+const CumulativeVotingContextInner = ({ projectId, children }: InnerProps) => {
   const cumulativeVotingInterface = useCumulativeVotingInterface(projectId);
 
   return (
