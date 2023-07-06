@@ -29,25 +29,12 @@ function compilePath(path, options) {
 /**
  * Public API for matching a URL pathname to a path.
  */
-function matchPath(
-  pathname: string,
-  {
-    path,
-    exact,
-  }: {
-    path: string[];
-    exact: boolean;
-  }
-) {
-  // if (typeof options === 'string' || Array.isArray(options)) {
-  //   // eslint-disable-next-line no-param-reassign
-  //   options = { path: options };
-  // }
+interface Options {
+  paths: string[];
+  exact: boolean;
+}
 
-  // const { path, exact = false } = options;
-
-  const paths = [].concat(path);
-
+function matchPath(pathname: string, { paths, exact }: Options) {
   return paths.reduce((matched, path) => {
     if (!path && path !== '') return null;
     if (matched) return matched;
