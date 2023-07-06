@@ -136,12 +136,6 @@ const useCumulativeVoting = () => {
     CumulativeVotingInterfaceContext
   );
 
-  if (cumulativeVotingInterface === null) {
-    throw new Error(
-      'The useCumulativeVoting hook should only be used within a CumulativeVotingContext.'
-    );
-  }
-
   return cumulativeVotingInterface;
 };
 

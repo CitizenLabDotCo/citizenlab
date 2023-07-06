@@ -71,8 +71,9 @@ const AssignMultipleVotesControl = ({
 }: Props) => {
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
-  const { getVotes, setVotes, userHasVotesLeft } = useCumulativeVoting();
-  const votes = getVotes(ideaId);
+  const cumulativeVoting = useCumulativeVoting();
+  const { getVotes, setVotes, userHasVotesLeft } = cumulativeVoting ?? {};
+  const votes = getVotes?.(ideaId);
 
   // participation context
   const currentPhase = phases ? getCurrentPhase(phases.data) : null;
@@ -98,6 +99,8 @@ const AssignMultipleVotesControl = ({
     event.stopPropagation();
     event?.preventDefault();
 
+    if (votes === undefined) return;
+
     if (!authUser) {
       triggerAuthenticationFlow(); // TODO: Trigger with correct parameters
       return;
@@ -117,14 +120,16 @@ const AssignMultipleVotesControl = ({
     //   }
     // }
 
-    setVotes(ideaId, votes + 1);
+    setVotes?.(ideaId, votes + 1);
   };
 
   const onRemove = async (event) => {
     event.stopPropagation();
     event?.preventDefault();
 
-    setVotes(ideaId, votes - 1);
+    if (votes === undefined) return;
+
+    setVotes?.(ideaId, votes - 1);
   };
 
   const onTextInputChange = async (_event) => {
@@ -134,7 +139,8 @@ const AssignMultipleVotesControl = ({
   if (
     !actionDescriptor ||
     budgetingDisabledReason === 'idea_not_in_current_phase' ||
-    !participationContext
+    !participationContext ||
+    votes === undefined
   ) {
     return null;
   }

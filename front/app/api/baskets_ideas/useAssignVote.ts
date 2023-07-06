@@ -124,7 +124,7 @@ const useAssignVote = ({ projectId }: Props) => {
 
   // Debounced update function
   const assignVote = useMemo(() => {
-    return debounce(handleBasketUpdate, 500);
+    return debounce(handleBasketUpdate, 300);
   }, [handleBasketUpdate]);
 
   return assignVote;
