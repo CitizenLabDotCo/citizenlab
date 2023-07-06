@@ -1,11 +1,15 @@
 import React from 'react';
+
+// components
 import { Box } from '@citizenlab/cl2-component-library';
 import AddToBasketButton from 'components/AddToBasketButton';
 import AssignMultipleVotesControl from 'components/AssignMultipleVotesControl';
+import AssignSingleVoteButton from 'components/AssignSingleVoteButton';
+
+// types
 import { IIdea } from 'api/ideas/types';
 import { IProjectData } from 'api/projects/types';
 import { IPhaseData } from 'api/phases/types';
-import AssignSingleVoteButton from 'components/AssignSingleVoteButton';
 
 type InteractionsProps = {
   idea: IIdea;
@@ -44,7 +48,7 @@ export const getInteractions = ({
           <AssignMultipleVotesControl
             projectId={projectId}
             ideaId={idea.data.id}
-            // viewingPhase={phase} // TODO: After Luuc is finished, add support for viewing phase phases (using viewingPhase)
+            // participationContext={participationContext} // TODO: After Luuc is finished, add support for viewing the past phases
           />
         </Box>
       );
