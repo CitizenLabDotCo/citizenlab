@@ -16,7 +16,16 @@ sr-Cyrl:
       "initiative_published": Објављивање мог предлога
       "invite_received": Позив
       "invite_reminder": Подсетник за позив
+      "internal_comment_on_idea_assigned_to_you": Интерни коментар на унос који ми је додељен
+      "internal_comment_on_idea_you_commented_internally_on": Интерни коментар на унос који сам интерно коментарисао
+      "internal_comment_on_idea_you_moderate": Интерни коментар на унос у пројекту или фолдеру којим управљам
+      "internal_comment_on_initiative_assigned_to_you": Интерни коментар на предлог који ми је додељен
+      "internal_comment_on_initiative_you_commented_internally_on": Интерни коментар на предлог који сам интерно коментарисао
+      "internal_comment_on_unassigned_initiative": Интерни коментар на недодељени предлог
+      "internal_comment_on_unassigned_unmoderated_idea": Интерни коментар на недодељени унос у неуправљаном пројекту
+      "internal_comment_on_your_internal_comment": Интерни коментар на мој интерни коментар
       "mention_in_official_feedback": Поменути у ажурирању
+      "mention_in_internal_comment": Поменути у интерном коментару
       "new_comment_for_admin": Нови коментар у пројекту којим управљам
       "new_comment_on_commented_idea": Нови коментар на идеју коју сам прокоментарисао
       "new_comment_on_commented_initiative": Нови коментар на предлог који сам коментарисао
@@ -215,6 +224,12 @@ sr-Cyrl:
       main_header: 'Људи причају о теби'
       subject: 'Неко вас је поменуо на платформи %{organizationName}'
       preheader: '%{commentAuthor} вас је поменуо у коментару'
+    mention_in_internal_comment:
+      cta_reply_to: 'Погледај коментар од %{firstName}'
+      event_description: '%{authorNameFull} вас је поменуо у интерном коментару.'
+      subject: '%{firstName} вас је поменуо у интерном коментару.'
+      main_header: '%{firstName} вас је поменуо у интерном коментару.'
+      preheader: '%{authorNameFull} вас је поменуо у интерном коментару.'
     moderator_digest:
       subject: 'Ваш недељни извештај менаџера пројекта од %{time}'
       preheader: 'Сажетак менаџера пројекта од %{organizationName}'
@@ -298,6 +313,54 @@ sr-Cyrl:
       main_header: '%{authorName} је одговорио на ваш коментар'
       preheader: '%{authorName} је одговорио на ваш коментар на платформи %{organizationName}'
       replied: '%{authorFirstName} је одговорио:'
+    internal_comment_on_your_internal_comment:
+      cta_reply_to: 'Погледај коментар од %{firstName}'
+      event_description: '%{authorNameFull} је коментарисало ваш интерни коментар.'
+      subject: 'Примили сте коментар на свој интерни коментар на ''%{post}'''
+      main_header: 'Примили сте коментар на свој интерни коментар на ''%{post}'''
+      preheader: '%{authorName} је одговорио на ваш интерни коментар на ''%{post}'''
+    internal_comment_on_idea_assigned_to_you:
+      cta_reply_to: 'Погледај коментар од %{firstName}'
+      event_description: '%{authorNameFull} је интерно коментарисао унос који вам је додељен.'
+      subject: '''%{post}'' има нови интерни коментар'
+      main_header: '''%{post}'' има нови интерни коментар'
+      preheader: '''%{post}'' има нови интерни коментар'
+    internal_comment_on_idea_you_commented_internally_on:
+      cta_reply_to: 'Погледај коментар од %{firstName}'
+      event_description: '%{authorNameFull} је интерно коментарисало унос који сте ви интерно коментарисали.'
+      subject: '''%{post}'' има нови интерни коментар'
+      main_header: '''%{post}'' има нови интерни коментар'
+      preheader: '''%{post}'' има нови интерни коментар'
+    internal_comment_on_idea_you_moderate:
+      cta_reply_to: 'Погледај коментар од %{firstName}'
+      event_description: '%{authorNameFull} је интерно коментарисао унос у пројекту или фасцикли којом управљате.'
+      subject: '''%{post}'' има нови интерни коментар'
+      main_header: '''%{post}'' има нови интерни коментар'
+      preheader: '''%{post}'' има нови интерни коментар'
+    internal_comment_on_initiative_assigned_to_you:
+      cta_reply_to: 'Погледај коментар од %{firstName}'
+      event_description: '%{authorNameFull} је интерно коментарисао предлог који вам је додељен.'
+      subject: '''%{post}'' има нови интерни коментар'
+      main_header: '''%{post}'' има нови интерни коментар'
+      preheader: '''%{post}'' има нови интерни коментар'
+    internal_comment_on_initiative_you_commented_internally_on:
+      cta_reply_to: 'Погледај коментар од %{firstName}'
+      event_description: '%{authorNameFull} је интерно коментарисало предлог који сте интерно коментарисали.'
+      subject: '''%{post}'' има нови интерни коментар'
+      main_header: '''%{post}'' има нови интерни коментар'
+      preheader: '''%{post}'' има нови интерни коментар'
+    internal_comment_on_unassigned_initiative:
+      cta_reply_to: 'Погледај коментар од %{firstName}'
+      event_description: '%{authorNameFull} је интерно коментарисало недодељени предлог.'
+      subject: '''%{post}'' има нови интерни коментар'
+      main_header: '''%{post}'' има нови интерни коментар'
+      preheader: '''%{post}'' има нови интерни коментар'
+    internal_comment_on_unassigned_unmoderated_idea:
+      cta_reply_to: 'Погледај коментар од %{firstName}'
+      event_description: '%{authorNameFull} је интерно коментарисао недодељени унос у пројекту којим се не управља.'
+      subject: '''%{post}'' има нови интерни коментар'
+      main_header: '''%{post}'' има нови интерни коментар'
+      preheader: '''%{post}'' има нови интерни коментар'
     official_feedback_on_commented_initiative:
       by_author: 'од %{authorName}'
       updated: '%{officialName} је написао:'
@@ -516,12 +579,15 @@ sr-Cyrl:
       remaining_days: 'Преостали дана'
     admin_labels:
       recipient_role:
+        admins: 'За администраторе'
         admins_and_managers: 'За администраторе и менаџере'
+        managers: 'Менаџерима'
         registered_users: 'За регистроване кориснике'
       recipient_segment:
         admins: 'Админс'
         admins_and_managers: 'Администратори и менаџери'
         admins_and_managers_managing_the_project: 'Администратори и менаџери који управљају пројектом'
+        managers_managing_the_project: 'Менаџери који управљају пројектом'
         all_users: 'Сви корисници'
         all_users_who_uploaded_proposals: 'Сви корисници који су отпремили предлоге'
         managers: 'Менаџери'
@@ -544,6 +610,7 @@ sr-Cyrl:
         content_moderation: 'Модерирање садржаја'
         general: 'Генерал'
         inputs: 'Инпутс'
+        internal_comments: 'Интерни коментари'
         permissions: 'Дозволе'
         projects: 'Пројекти'
         proposals: 'Предлози'
@@ -556,6 +623,15 @@ sr-Cyrl:
         input_is_flagged_as_spam: 'Унос је означен као нежељена пошта'
         input_is_updated: 'Унос је ажуриран'
         input_status_changes: 'Статус уноса се мења'
+        internal_comment_is_posted_on_idea_assigned_to_user: 'Интерни коментар се поставља на унос који је додељен кориснику'
+        internal_comment_is_posted_on_initiative_assigned_to_user: 'Интерни коментар се поставља на предлог који је додељен кориснику'
+        internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'Интерни коментар се поставља на унос у пројекту или фолдеру којим корисник управља'
+        internal_comment_is_posted_on_idea_user_has_commented_internally_on: 'Интерни коментар се поставља на унос на који је корисник интерно коментарисао'
+        internal_comment_is_posted_on_idea_user_moderates: 'Интерни коментар се поставља на унос корисника који модерира'
+        internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'Интерни коментар се поставља на предлог који је корисник интерно коментарисао'
+        internal_comment_is_posted_on_unassigned_initiative: 'Интерни коментар се поставља на недодељени предлог'
+        internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Интерни коментар се поставља на недодељени унос у неуправљаном пројекту'
+        user_is_mentioned_in_internal_comment: 'Корисник је поменут у интерном коментару'
         new_input_is_published: 'Нови унос је објављен'
         new_proposal_is_posted: 'Нови предлог је објављен'
         project_phase_changes: 'Промене фазе пројекта'
@@ -575,5 +651,6 @@ sr-Cyrl:
         proposal_is_published: 'Предлог је објављен'
         user_registers_for_the_first_time: 'Корисник се региструје по први пут'
         user_replies_to_comment: 'Корисник одговара на коментар'
+        user_replies_to_internal_comment: 'Корисник одговара на интерни коментар'
         7_days_after_invite_is_sent: '7 дана након слања позива'
         7_days_before_the_project_changes_phase: '7 дана пре промене фазе пројекта'

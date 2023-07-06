@@ -1,4 +1,4 @@
-import React, { memo, useState, useCallback, useEffect } from 'react';
+import React, { memo, useCallback, useMemo } from 'react';
 import { findIndex } from 'lodash-es';
 import Tippy from '@tippyjs/react';
 
@@ -6,18 +6,16 @@ import Tippy from '@tippyjs/react';
 import tracks from './tracks';
 import { trackEventByName } from 'utils/analytics';
 
+// router
+import { useParams } from 'react-router-dom';
+import setPhaseURL from './setPhaseURL';
+
 // components
 import { Button } from '@citizenlab/cl2-component-library';
 
-// services
-import { getCurrentPhase } from 'api/phases/utils';
-import { IPhaseData } from 'api/phases/types';
-
-// events
-import { selectedPhase$, selectPhase } from './events';
-
-// hooks
+// api
 import usePhases from 'api/phases/usePhases';
+import useProjectById from 'api/projects/useProjectById';
 
 // i18n
 import messages from 'containers/ProjectsShowPage/messages';
@@ -27,6 +25,13 @@ import { WrappedComponentProps } from 'react-intl';
 // style
 import styled from 'styled-components';
 import { colors, isRtl } from 'utils/styleUtils';
+
+// utils
+import { getCurrentPhase, getLatestRelevantPhase } from 'api/phases/utils';
+import { isValidPhase } from '../phaseParam';
+
+// typings
+import { IPhaseData } from 'api/phases/types';
 
 const Container = styled.div`
   display: flex;
@@ -69,18 +74,29 @@ interface Props {
 const PhaseNavigation = memo<Props & WrappedComponentProps>(
   ({ projectId, buttonStyle, className, intl: { formatMessage } }) => {
     const { data: phases } = usePhases(projectId);
+    const { phaseNumber } = useParams();
+    const { data: project } = useProjectById(projectId);
 
-    const [selectedPhase, setSelectedPhase] = useState<
-      IPhaseData | undefined
-    >();
+    const selectedPhase = useMemo(() => {
+      if (!phases) return;
 
-    useEffect(() => {
-      const subscription = selectedPhase$.subscribe((selectedPhase) => {
-        setSelectedPhase(selectedPhase);
-      });
+      // if a phase parameter was provided, and it is valid, we set that as phase.
+      // otherwise, use the most logical phase
+      if (isValidPhase(phaseNumber, phases.data)) {
+        const phaseIndex = Number(phaseNumber) - 1;
+        return phases.data[phaseIndex];
+      }
 
-      return () => subscription.unsubscribe();
-    }, []);
+      return getLatestRelevantPhase(phases.data);
+    }, [phaseNumber, phases]);
+
+    const selectPhase = useCallback(
+      (phase: IPhaseData) => {
+        if (!phases || !project) return;
+        setPhaseURL(phase.id, phases.data, project.data);
+      },
+      [phases, project]
+    );
 
     const goToNextPhase = useCallback(() => {
       trackEventByName(tracks.clickNextPhaseButton);
@@ -98,7 +114,7 @@ const PhaseNavigation = memo<Props & WrappedComponentProps>(
         const nextPhase = phases.data[nextPhaseIndex];
         selectPhase(nextPhase);
       }
-    }, [phases, selectedPhase]);
+    }, [phases, selectedPhase, selectPhase]);
 
     const goToPreviousPhase = useCallback(() => {
       trackEventByName(tracks.clickPreviousPhaseButton);
@@ -116,15 +132,18 @@ const PhaseNavigation = memo<Props & WrappedComponentProps>(
         const prevPhase = phases.data[prevPhaseIndex];
         selectPhase(prevPhase);
       }
-    }, [phases, selectedPhase]);
+    }, [phases, selectedPhase, selectPhase]);
 
     const goToCurrentPhase = useCallback(() => {
       if (phases) {
         trackEventByName(tracks.clickCurrentPhaseButton);
         const currentPhase = getCurrentPhase(phases.data);
-        selectPhase(currentPhase);
+
+        if (currentPhase) {
+          selectPhase(currentPhase);
+        }
       }
-    }, [phases]);
+    }, [phases, selectPhase]);
 
     if (phases && phases.data.length > 1) {
       const navButtonSize = '34px';

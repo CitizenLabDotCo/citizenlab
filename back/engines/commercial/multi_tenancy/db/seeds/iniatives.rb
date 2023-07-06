@@ -29,7 +29,7 @@ module MultiTenancy
             initiative_status: InitiativeStatus.offset(rand(InitiativeStatus.count)).first
           )
 
-          [0, 0, 1, 1, 2][rand(5)].times do |_i|
+          [1, 1, 2, 2, 3][rand(5)].times do |_i|
             initiative.initiative_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
           end
           if rand(5) == 0

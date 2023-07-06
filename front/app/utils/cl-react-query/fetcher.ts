@@ -19,7 +19,7 @@ interface Get {
 interface Patch {
   path: Path;
   action: 'patch';
-  body: Record<string, any>;
+  body?: Record<string, any>;
   queryParams?: never;
 }
 interface Post {
