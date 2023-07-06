@@ -142,8 +142,14 @@ const EditCustomPageHeroBannerForm = ({
     handleOnChange('header_bg', newImageBase64);
   };
   const handleOnBannerImageRemove = () => {
-    handleOnChange('header_bg', null);
-    handleOnOverlayChange(null, null);
+    if (localSettings) {
+      setLocalSettings({
+        ...localSettings,
+        header_bg: null,
+        banner_overlay_color: null,
+        banner_overlay_opacity: null,
+      });
+    }
   };
 
   const handleOnOverlayChange = (
