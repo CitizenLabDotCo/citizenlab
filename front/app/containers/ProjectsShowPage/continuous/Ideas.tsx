@@ -15,7 +15,6 @@ import { useSearchParams } from 'react-router-dom';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
-import { CumulativeVotingContext } from 'api/baskets_ideas/useCumulativeVoting';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -96,54 +95,52 @@ const IdeasContainer = memo<InnerProps>(({ project, className }) => {
       project.attributes.participation_method === 'voting';
 
     return (
-      <CumulativeVotingContext projectId={project.id}>
-        <Container
-          id="e2e-continuos-project-idea-cards"
-          className={className || ''}
-        >
-          <StyledContentContainer id="project-ideas" maxWidth={maxPageWidth}>
-            <SectionContainer>
-              {isVotingProject && (
-                <>
-                  <StatusModule
-                    votingMethod={project?.attributes.voting_method}
-                    project={project}
-                  />
-                </>
-              )}
-              {!isVotingProject && (
-                <StyledProjectPageSectionTitle>
-                  <FormattedMessage
-                    {...getInputTermMessage(inputTerm, {
-                      idea: messages.ideas,
-                      option: messages.options,
-                      project: messages.projects,
-                      question: messages.questions,
-                      issue: messages.issues,
-                      contribution: messages.contributions,
-                    })}
-                  />
-                </StyledProjectPageSectionTitle>
-              )}
+      <Container
+        id="e2e-continuos-project-idea-cards"
+        className={className || ''}
+      >
+        <StyledContentContainer id="project-ideas" maxWidth={maxPageWidth}>
+          <SectionContainer>
+            {isVotingProject && (
+              <>
+                <StatusModule
+                  votingMethod={project?.attributes.voting_method}
+                  project={project}
+                />
+              </>
+            )}
+            {!isVotingProject && (
+              <StyledProjectPageSectionTitle>
+                <FormattedMessage
+                  {...getInputTermMessage(inputTerm, {
+                    idea: messages.ideas,
+                    option: messages.options,
+                    project: messages.projects,
+                    question: messages.questions,
+                    issue: messages.issues,
+                    contribution: messages.contributions,
+                  })}
+                />
+              </StyledProjectPageSectionTitle>
+            )}
 
-              <IdeaCardsWithoutFiltersSidebar
-                ideaQueryParameters={ideaQueryParameters}
-                onUpdateQuery={updateSearchParams}
-                projectId={project.id}
-                participationMethod={project.attributes.participation_method}
-                defaultSortingMethod={ideaQueryParameters.sort}
-                participationContextId={project.id}
-                participationContextType="project"
-                showViewToggle={true}
-                defaultView={project.attributes.presentation_mode}
-                invisibleTitleMessage={messages.a11y_titleInputs}
-                showDropdownFilters={isVotingProject ? false : true}
-                showSearchbar={isVotingProject ? false : true}
-              />
-            </SectionContainer>
-          </StyledContentContainer>
-        </Container>
-      </CumulativeVotingContext>
+            <IdeaCardsWithoutFiltersSidebar
+              ideaQueryParameters={ideaQueryParameters}
+              onUpdateQuery={updateSearchParams}
+              projectId={project.id}
+              participationMethod={project.attributes.participation_method}
+              defaultSortingMethod={ideaQueryParameters.sort}
+              participationContextId={project.id}
+              participationContextType="project"
+              showViewToggle={true}
+              defaultView={project.attributes.presentation_mode}
+              invisibleTitleMessage={messages.a11y_titleInputs}
+              showDropdownFilters={isVotingProject ? false : true}
+              showSearchbar={isVotingProject ? false : true}
+            />
+          </SectionContainer>
+        </StyledContentContainer>
+      </Container>
     );
   }
 

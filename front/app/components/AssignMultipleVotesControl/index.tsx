@@ -71,8 +71,7 @@ const AssignMultipleVotesControl = ({
 }: Props) => {
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
-  const cumulativeVoting = useCumulativeVoting();
-  const { getVotes, setVotes, userHasVotesLeft } = cumulativeVoting ?? {};
+  const { getVotes, setVotes, userHasVotesLeft } = useCumulativeVoting();
   const votes = getVotes?.(ideaId);
 
   // participation context

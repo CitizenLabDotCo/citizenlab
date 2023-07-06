@@ -18,6 +18,13 @@ interface Props {
   children: React.ReactNode;
 }
 
+interface CumulativeVotingInterface {
+  getVotes?: (ideaId: string) => number;
+  setVotes?: (ideaId: string, newVotes: number) => void;
+  numberOfVotesCast?: number;
+  userHasVotesLeft?: boolean;
+}
+
 const CumulativeVotingInterfaceContext =
   createContext<CumulativeVotingInterface | null>(null);
 
@@ -47,15 +54,7 @@ const CumulativeVotingContextInner = ({ projectId, children }: Props) => {
   );
 };
 
-interface CumulativeVotingInterface {
-  getVotes: (ideaId: string) => number;
-  setVotes: (ideaId: string, newVotes: number) => void;
-  userHasVotesLeft: boolean;
-}
-
-const useCumulativeVotingInterface = (
-  projectId: string
-): CumulativeVotingInterface => {
+const useCumulativeVotingInterface = (projectId: string) => {
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
   const assignVotes = useAssignVote({ projectId });
@@ -114,9 +113,7 @@ const useCumulativeVotingInterface = (
   const numberOfVotesUserHas =
     participationContext?.attributes.voting_max_total;
 
-  const userHasVotesLeft = useMemo(() => {
-    if (!numberOfVotesUserHas) return false;
-
+  const numberOfVotesCast = useMemo(() => {
     let numberOfVotesCast = 0;
 
     const ideaIdsSet = new Set([
@@ -128,20 +125,35 @@ const useCumulativeVotingInterface = (
       numberOfVotesCast += getVotes(ideaId);
     });
 
+    return numberOfVotesCast;
+  }, [getVotes, remoteVotesPerIdea, votesPerIdea]);
+
+  const userHasVotesLeft = useMemo(() => {
+    if (!numberOfVotesUserHas) return false;
     return numberOfVotesCast < numberOfVotesUserHas;
-  }, [votesPerIdea, remoteVotesPerIdea, getVotes, numberOfVotesUserHas]);
+  }, [numberOfVotesUserHas, numberOfVotesCast]);
 
   return {
     getVotes,
     setVotes,
+    numberOfVotesCast,
     userHasVotesLeft,
   };
 };
 
-const useCumulativeVoting = () => {
+const useCumulativeVoting = (): CumulativeVotingInterface => {
   const cumulativeVotingInterface = useContext(
     CumulativeVotingInterfaceContext
   );
+
+  if (cumulativeVotingInterface === null) {
+    return {
+      getVotes: undefined,
+      setVotes: undefined,
+      numberOfVotesCast: undefined,
+      userHasVotesLeft: undefined,
+    };
+  }
 
   return cumulativeVotingInterface;
 };

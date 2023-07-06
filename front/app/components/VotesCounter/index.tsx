@@ -4,7 +4,7 @@ import React, { useMemo } from 'react';
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useBasket from 'api/baskets/useBasket';
+import useCumulativeVoting from 'api/baskets_ideas/useCumulativeVoting';
 
 // i18n
 import useLocalize from 'hooks/useLocalize';
@@ -22,6 +22,7 @@ const VotesCounter = ({ projectId }: Props) => {
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
   const { data: appConfig } = useAppConfiguration();
+  const { numberOfVotesCast } = useCumulativeVoting();
 
   const localize = useLocalize();
   const { formatMessage } = useIntl();
@@ -31,10 +32,6 @@ const VotesCounter = ({ projectId }: Props) => {
   }, [phases]);
 
   const currentParticipationContext = currentPhase ?? project?.data;
-  const basketId =
-    currentParticipationContext?.relationships.user_basket?.data?.id;
-
-  const { data: basket } = useBasket(basketId);
 
   const getVoteTerm = () => {
     if (
@@ -52,7 +49,6 @@ const VotesCounter = ({ projectId }: Props) => {
 
   const votingMaxTotal =
     currentParticipationContext?.attributes.voting_max_total;
-  const totalVotes = basket?.data.attributes.total_votes;
 
   const currency =
     currentParticipationContext?.attributes.voting_method === 'budgeting'
@@ -62,21 +58,20 @@ const VotesCounter = ({ projectId }: Props) => {
   if (votingMaxTotal) {
     return (
       <>
-        {(votingMaxTotal - (totalVotes || 0)).toLocaleString()} /{' '}
+        {(votingMaxTotal - (numberOfVotesCast ?? 0)).toLocaleString()} /{' '}
         {votingMaxTotal.toLocaleString()} {getVoteTerm() || currency}{' '}
         {formatMessage(messages.left)}
       </>
     );
   }
-  if (!votingMaxTotal && totalVotes) {
+  if (!votingMaxTotal && numberOfVotesCast) {
     return (
       <>
-        {`${formatMessage(messages.votedFor)} ${totalVotes} ${formatMessage(
-          messages.xOptions,
-          {
-            votes: totalVotes,
-          }
-        )}`}
+        {`${formatMessage(
+          messages.votedFor
+        )} ${numberOfVotesCast} ${formatMessage(messages.xOptions, {
+          votes: numberOfVotesCast,
+        })}`}
       </>
     );
   }
