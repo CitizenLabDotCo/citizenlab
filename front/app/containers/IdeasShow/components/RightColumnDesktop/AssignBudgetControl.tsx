@@ -2,6 +2,8 @@ import React, { memo } from 'react';
 
 // api
 import useIdeaById from 'api/ideas/useIdeaById';
+import useProjectById from 'api/projects/useProjectById';
+import usePhases from 'api/phases/usePhases';
 
 // components
 import AddToBasketButton from 'components/AddToBasketButton';
@@ -17,6 +19,9 @@ import FormattedBudget from 'utils/currency/FormattedBudget';
 // styles
 import styled from 'styled-components';
 import { fontSizes, colors, defaultCardStyle, media } from 'utils/styleUtils';
+
+// utils
+import { getCurrentPhase } from 'api/phases/utils';
 
 const IdeaPageContainer = styled.div`
   display: flex;
@@ -57,7 +62,9 @@ interface Props {
 
 const AssignBudgetControl = memo(({ ideaId, projectId }: Props) => {
   const { data: idea } = useIdeaById(ideaId);
-
+  const { data: project } = useProjectById(projectId);
+  const { data: phases } = usePhases(project?.data.id);
+  const participationContext = getCurrentPhase(phases?.data) || project?.data;
   const ideaBudget = idea?.data.attributes.budget;
   const actionDescriptor = idea?.data.attributes.action_descriptor.voting;
 
@@ -83,6 +90,7 @@ const AssignBudgetControl = memo(({ ideaId, projectId }: Props) => {
           ideaId={ideaId}
           projectId={projectId}
           buttonStyle="primary"
+          participationContext={participationContext}
         />
       </BudgetWithButtonWrapper>
     </IdeaPageContainer>
