@@ -22,7 +22,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 // utils
-import { isError, isNil, isNilOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 // styling
 import styled from 'styled-components';
@@ -76,9 +76,14 @@ const CustomPageShow = () => {
   const { slug } = useParams() as {
     slug: string;
   };
-  const { data: appConfiguration } = useAppConfiguration();
+  const { data: appConfiguration, isLoading: isLoadingAppConfiguration } =
+    useAppConfiguration();
   const localize = useLocalize();
-  const { data: page } = useCustomPageBySlug(slug);
+  const {
+    data: page,
+    isError,
+    isLoading: isLoadingPage,
+  } = useCustomPageBySlug(slug);
   const proposalsEnabled = useFeatureFlag({ name: 'initiatives' });
   const remotePageFiles = useResourceFiles({
     resourceType: 'page',
@@ -86,26 +91,24 @@ const CustomPageShow = () => {
   });
 
   // when neither have loaded
-  if (isNil(page) || isNilOrError(appConfiguration)) {
+  if (isLoadingAppConfiguration || isLoadingPage) {
     return null;
   }
 
   if (
     // if URL is mistyped, page is also an error
-    isError(page) ||
+    isError ||
     // If page loaded but it's /pages/initiatives but
     // the initiatives feature is not enabled also show
     // not found
-    (!isError(page) &&
-      page.data.attributes.code === 'proposals' &&
-      !proposalsEnabled)
+    (!isError && page.data.attributes.code === 'proposals' && !proposalsEnabled)
   ) {
     return <PageNotFound />;
   }
 
   const pageAttributes = page.data.attributes;
   const localizedOrgName = localize(
-    appConfiguration.data.attributes.settings.core.organization_name
+    appConfiguration?.data.attributes.settings.core.organization_name
   );
   return (
     <Container className={`e2e-page-${slug}`}>
