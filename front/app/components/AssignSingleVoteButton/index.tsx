@@ -5,6 +5,7 @@ import { Button, colors } from '@citizenlab/cl2-component-library';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import eventEmitter from 'utils/eventEmitter';
 
 // api
 import useBasket from 'api/baskets/useBasket';
@@ -12,9 +13,14 @@ import useAddBasketsIdeas from 'api/baskets_ideas/useAddBasketsIdeas';
 import useDeleteBasketsIdea from 'api/baskets_ideas/useDeleteBasketsIdea';
 import useAddBasket from 'api/baskets/useAddBasket';
 import useBasketsIdeas from 'api/baskets_ideas/useBasketsIdeas';
-import { IPhaseData } from 'api/phases/types';
-import eventEmitter from 'utils/eventEmitter';
+
+// types
 import { IProjectData } from 'api/projects/types';
+import { IPhaseData } from 'api/phases/types';
+
+// intl
+import { useIntl } from 'utils/cl-intl';
+import messages from './messages';
 
 export const VOTES_EXCEEDED_ERROR_EVENT = 'votesExceededError';
 export const VOTES_PER_OPTION_EXCEEDED_ERROR_EVENT =
@@ -33,6 +39,8 @@ const AssignSingleVoteButton = ({
   buttonStyle,
   participationContext,
 }: Props) => {
+  const { formatMessage } = useIntl();
+
   // participation context
   const contextType =
     participationContext?.type === 'phase' ? 'Phase' : 'Project';
@@ -107,7 +115,11 @@ const AssignSingleVoteButton = ({
       disabled={!isNilOrError(basket?.data?.attributes.submitted_at)}
       icon={ideaInBasket ? 'check' : 'vote-ballot'}
       onClick={() => (ideaInBasket ? onRemove() : onAdd())}
-      text={ideaInBasket ? 'Voted' : 'Vote'}
+      text={
+        ideaInBasket
+          ? formatMessage(messages.voted)
+          : formatMessage(messages.vote)
+      }
       width="100%"
       minWidth="240px"
       processing={isLoading}
