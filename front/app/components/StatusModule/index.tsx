@@ -50,21 +50,29 @@ const unsubmitBasket = async (
 };
 
 const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
-  const theme = useTheme();
-  const locale = useLocale();
   const { data: appConfig } = useAppConfiguration();
+
+  // style
+  const theme = useTheme();
   const isSmallerThanPhone = useBreakpoint('phone');
+
+  // intl
+  const locale = useLocale();
   const { formatMessage } = useIntl();
+
+  // participation context
   const config = getVotingMethodConfig(votingMethod);
+  const phaseHasEnded = phase?.attributes
+    ? pastPresentOrFuture(phase?.attributes.end_at) === 'past'
+    : false;
+
+  // basket
   const { data: basket } = useBasket(
     phase
       ? phase?.relationships?.user_basket?.data?.id
       : project.relationships?.user_basket?.data?.id
   );
   const { mutate: updateBasket } = useUpdateBasket();
-  const phaseHasEnded = phase?.attributes
-    ? pastPresentOrFuture(phase?.attributes.end_at) === 'past'
-    : false;
   const basketStatus = phaseHasEnded
     ? 'submissionEnded'
     : basket?.data.attributes?.submitted_at
