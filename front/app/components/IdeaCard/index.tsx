@@ -17,6 +17,7 @@ import { useSearchParams } from 'react-router-dom';
 // types
 import { ParticipationMethod } from 'services/participationContexts';
 import { IParticipationContextType } from 'typings';
+import { IIdea } from 'api/ideas/types';
 
 // hooks
 import useIdeaById from 'api/ideas/useIdeaById';
@@ -25,12 +26,15 @@ import useProjectById from 'api/projects/useProjectById';
 import useLocalize from 'hooks/useLocalize';
 import usePhases from 'api/phases/usePhases';
 import usePhase from 'api/phases/usePhase';
+import useBasket from 'api/baskets/useBasket';
+import useLocale from 'hooks/useLocale';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { scrollToElement } from 'utils/scroll';
 import { getCurrentPhase } from 'api/phases/utils';
 import { getInteractions } from './utils';
+import { pastPresentOrFuture, timeAgo } from 'utils/dateUtils';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
@@ -40,10 +44,6 @@ import { IMAGES_LOADED_EVENT } from 'components/admin/ContentBuilder/constants';
 import styled from 'styled-components';
 import { transparentize } from 'polished';
 import { colors, fontSizes, isRtl } from 'utils/styleUtils';
-import { pastPresentOrFuture, timeAgo } from 'utils/dateUtils';
-import useLocale from 'hooks/useLocale';
-import { IIdea } from 'api/ideas/types';
-import useBasket from 'api/baskets/useBasket';
 
 const BodyWrapper = styled.div`
   display: flex;
