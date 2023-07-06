@@ -10,6 +10,7 @@
   "app.components.AssignBudgetControl.a11y_price": "Price:",
   "app.components.AssignBudgetControl.add": "Add",
   "app.components.AssignBudgetControl.added": "Added",
+  "app.components.AssignBudgetControl.youHave": "You have",
   "app.components.AssignMultipleVotesControl.addVote": "Add vote",
   "app.components.AssignMultipleVotesControl.inputTextVotes": "Votes text input",
   "app.components.AssignMultipleVotesControl.removeVote": "Remove vote",
