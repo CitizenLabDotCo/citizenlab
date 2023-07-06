@@ -60,10 +60,6 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
   const voteExceedsLimit =
     basket?.data.attributes['budget_exceeds_limit?'] || false;
 
-  const maxVotes =
-    currentPhase?.attributes.voting_max_total ||
-    project.attributes.voting_max_total ||
-    null;
   const minVotes =
     currentPhase?.attributes.voting_min_total ||
     project.attributes.voting_min_total ||
@@ -124,7 +120,7 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
         CTAButton={CTAButton}
         hasUserParticipated={hasUserParticipated}
         participationState={
-          hasUserParticipated || !maxVotes ? undefined : (
+          hasUserParticipated ? undefined : (
             <Text
               color="white"
               m="0px"

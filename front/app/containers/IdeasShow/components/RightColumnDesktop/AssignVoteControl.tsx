@@ -2,22 +2,26 @@ import React, { memo } from 'react';
 
 // api
 import useIdeaById from 'api/ideas/useIdeaById';
+import useBasket from 'api/baskets/useBasket';
+import { getCurrentPhase } from 'api/phases/utils';
 
 // styles
 import styled from 'styled-components';
-import { colors, media } from 'utils/styleUtils';
+import { colors } from 'utils/styleUtils';
 
 // components
 import AssignSingleVoteButton from 'components/AssignSingleVoteButton';
+import VotesCounter from 'components/VotesCounter';
+import { Box } from '@citizenlab/cl2-component-library';
+
+// intl
+import messages from './messages';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 // api
 import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
-import { getCurrentPhase } from 'api/phases/utils';
-import VotesCounter from 'components/VotesCounter';
-import { Box } from '@citizenlab/cl2-component-library';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import { isNilOrError } from 'utils/helperUtils';
 
 const IdeaPageContainer = styled.div`
   display: flex;
@@ -33,12 +37,19 @@ interface Props {
 }
 
 const AssignVoteControl = memo(({ ideaId, projectId }: Props) => {
+  const { formatMessage } = useIntl();
   const { data: idea } = useIdeaById(ideaId);
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(project?.data.id);
   const participationContext = getCurrentPhase(phases?.data) || project?.data;
+  const { data: basket } = useBasket(
+    participationContext?.relationships?.user_basket?.data?.id
+  );
   const actionDescriptor = idea?.data.attributes.action_descriptor.voting;
   if (!actionDescriptor) return null;
+
+  const totalVotes = basket?.data?.attributes?.total_votes;
+  const totalVotesGreaterThanZero = !isNilOrError(totalVotes) && totalVotes > 0; // Need to use isNilOrError here, as otherwise the numbers can result in strange boolean values
 
   return (
     <IdeaPageContainer>
@@ -63,8 +74,24 @@ const AssignVoteControl = memo(({ ideaId, projectId }: Props) => {
         </Box>
       )}
       {!participationContext?.attributes.voting_max_total && (
-        <Box mt="8px" display="flex" width="100%" justifyContent="center">
-          <Box ml="4px">Have voted for x options</Box>
+        <Box
+          color={colors.grey700}
+          mt="8px"
+          display="flex"
+          width="100%"
+          justifyContent="center"
+        >
+          {!totalVotesGreaterThanZero && (
+            <Box ml="4px">{formatMessage(messages.voteForAtLeastOne)}</Box>
+          )}
+          {totalVotesGreaterThanZero &&
+            totalVotes > 0 && ( // Need to use isNilOrError here
+              <Box ml="4px">{`${formatMessage(
+                messages.haveVotedFor
+              )} ${totalVotes} ${formatMessage(messages.xOptions, {
+                votes: totalVotes,
+              })}`}</Box>
+            )}
         </Box>
       )}
     </IdeaPageContainer>

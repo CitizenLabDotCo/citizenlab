@@ -54,20 +54,33 @@ const VotesCounter = ({ projectId }: Props) => {
     currentParticipationContext?.attributes.voting_max_total;
   const totalVotes = basket?.data.attributes.total_votes;
 
-  if (!votingMaxTotal) return null;
-
   const currency =
     currentParticipationContext?.attributes.voting_method === 'budgeting'
       ? appConfig?.data.attributes.settings.core.currency
       : undefined;
 
-  return (
-    <>
-      {(votingMaxTotal - (totalVotes || 0)).toLocaleString()} /{' '}
-      {votingMaxTotal.toLocaleString()} {getVoteTerm() || currency}{' '}
-      {formatMessage(messages.left)}
-    </>
-  );
+  if (votingMaxTotal) {
+    return (
+      <>
+        {(votingMaxTotal - (totalVotes || 0)).toLocaleString()} /{' '}
+        {votingMaxTotal.toLocaleString()} {getVoteTerm() || currency}{' '}
+        {formatMessage(messages.left)}
+      </>
+    );
+  }
+  if (!votingMaxTotal && totalVotes) {
+    return (
+      <>
+        {`${formatMessage(messages.votedFor)} ${totalVotes} ${formatMessage(
+          messages.xOptions,
+          {
+            votes: totalVotes,
+          }
+        )}`}
+      </>
+    );
+  }
+  return <>{formatMessage(messages.voteForAtLeastOne)}</>;
 };
 
 export default VotesCounter;
