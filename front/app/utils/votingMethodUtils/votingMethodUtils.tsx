@@ -57,6 +57,7 @@ export type VoteControlProps = {
   ideaId: string;
   projectId: string;
   compact: boolean;
+  participationContext?: IPhaseData | IProjectData | null;
 };
 
 export type VotingMethodConfig = {
@@ -74,6 +75,7 @@ export type VotingMethodConfig = {
     ideaId,
     projectId,
     compact,
+    participationContext,
   }: VoteControlProps) => JSX.Element | null;
   getSubmissionTerm?: (form: 'singular' | 'plural') => MessageDescriptor;
   preSubmissionWarning: () => MessageDescriptor;
@@ -185,7 +187,12 @@ const budgetingConfig: VotingMethodConfig = {
   preSubmissionWarning: () => {
     return messages.budgetingPreSubmissionWarning;
   },
-  getIdeaPageVoteControl: ({ ideaId, projectId, compact }) => {
+  getIdeaPageVoteControl: ({
+    ideaId,
+    projectId,
+    participationContext,
+    compact,
+  }) => {
     if (!compact) {
       return <AssignBudgetControl ideaId={ideaId} projectId={projectId} />;
     } else {
@@ -194,6 +201,7 @@ const budgetingConfig: VotingMethodConfig = {
           ideaId={ideaId}
           projectId={projectId}
           buttonStyle="primary-outlined"
+          participationContext={participationContext}
         />
       );
     }
@@ -461,9 +469,20 @@ const singleVotingConfig: VotingMethodConfig = {
   preSubmissionWarning: () => {
     return messages.votingPreSubmissionWarning;
   },
-  getIdeaPageVoteControl: ({ ideaId, projectId, compact }) => {
+  getIdeaPageVoteControl: ({
+    ideaId,
+    projectId,
+    participationContext,
+    compact,
+  }) => {
     if (compact) {
-      return <AssignSingleVotesControl ideaId={ideaId} projectId={projectId} />;
+      return (
+        <AssignSingleVotesControl
+          participationContext={participationContext}
+          ideaId={ideaId}
+          projectId={projectId}
+        />
+      );
     }
     return <AssignVoteControl ideaId={ideaId} projectId={projectId} />;
   },

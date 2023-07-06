@@ -77,6 +77,7 @@ const RightColumnDesktop = ({
               votingConfig.getIdeaPageVoteControl({
                 ideaId,
                 projectId,
+                participationContext: currentContext,
                 compact: false,
               })}
           </Box>
