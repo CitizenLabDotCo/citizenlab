@@ -30,8 +30,7 @@ export interface AddPageFileObject {
   pageId: string;
   file: {
     name: string;
-    file?: string;
-    base64: string;
+    file: string;
     ordering?: number | null;
   };
 }

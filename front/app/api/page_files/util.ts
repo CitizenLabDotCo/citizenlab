@@ -50,7 +50,7 @@ function getPageFilesToAddPromises(
     const filesToAddPromises = filesToAdd.map((fileToAdd) =>
       addPageFile({
         pageId,
-        file: { base64: fileToAdd.base64, name: fileToAdd.name },
+        file: { file: fileToAdd.base64, name: fileToAdd.name },
       })
     );
 

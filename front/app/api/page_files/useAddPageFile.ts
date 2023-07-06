@@ -6,12 +6,12 @@ import { IPageFile, AddPageFileObject } from './types';
 
 const addPagesFile = async ({
   pageId,
-  file: { name, file, base64, ordering = null },
+  file: { name, file, ordering = null },
 }: AddPageFileObject) =>
   fetcher<IPageFile>({
     path: `/static_pages/${pageId}/files`,
     action: 'post',
-    body: { file: { name, file, base64, ordering } },
+    body: { file: { name, file, ordering } },
   });
 
 const useAddPagesFile = () => {

@@ -31,7 +31,6 @@ describe('useAddPageFile', () => {
         file: {
           name: 'file name',
           file: 'test file',
-          base64: 'test base64',
         },
       });
     });
@@ -57,7 +56,6 @@ describe('useAddPageFile', () => {
         file: {
           name: 'file name',
           file: 'test file',
-          base64: 'test base64',
         },
       });
     });
