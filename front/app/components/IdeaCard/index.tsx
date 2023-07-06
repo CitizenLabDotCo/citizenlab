@@ -252,13 +252,13 @@ const CompactIdeaCard = memo<IdeaCardProps>(
 
     return (
       <Card
-        onClick={handleClick}
-        to={`/ideas/${idea.data.attributes.slug}`}
         id={idea.data.id}
         className={[className, 'e2e-idea-card']
           .filter((item) => typeof item === 'string' && item !== '')
           .join(' ')}
         title={ideaTitle}
+        to={`/ideas/${slug}${params}`}
+        onClick={handleClick}
         image={
           !isNilOrError(ideaImage)
             ? ideaImage.data.attributes.versions.medium
