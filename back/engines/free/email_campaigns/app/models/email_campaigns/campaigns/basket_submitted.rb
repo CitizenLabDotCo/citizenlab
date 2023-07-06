@@ -64,19 +64,23 @@ module EmailCampaigns
       [{
         event_payload: {
           project_id: basket.participation_context.project,
-          voted_ideas: basket.ideas.map do |idea|
+          voted_ideas: format_ideas_list(basket.ideas, recipient)
+        }
+      }]
+    end
+
+    def self.format_ideas_list(ideas, recipient)
+      ideas.map do |idea|
+        {
+          title_multiloc: idea.title_multiloc,
+          url: Frontend::UrlService.new.model_to_url(idea, locale: recipient.locale),
+          images: idea.idea_images.map do |image|
             {
-              title_multiloc: idea.title_multiloc,
-              url: Frontend::UrlService.new.model_to_url(idea, locale: recipient.locale),
-              images: idea.images.map do |image|
-                {
-                  versions: image.image.versions.to_h { |k, v| [k.to_s, v.url] }
-                }
-              end
+              versions: image.image.versions.to_h { |k, v| [k.to_s, v.url] }
             }
           end
         }
-      }]
+      end
     end
   end
 end
