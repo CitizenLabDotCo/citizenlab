@@ -22,7 +22,7 @@ import useKeyPress from 'hooks/useKeyPress';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-export const adminRedirectPath = '/admin/dashboard';
+export const adminRedirectPath = '/admin/dashboard/visitors';
 
 const HomePage = () => {
   const homepageSettings = useHomepageSettings();

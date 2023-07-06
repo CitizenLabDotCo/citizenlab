@@ -207,7 +207,7 @@ const ProjectsShowPageWrapper = () => {
     status: statusProject,
     error,
   } = useProjectBySlug(slug);
-  const { data: phases } = usePhases(project?.data.id);
+  const { data: phases, status: statusPhases } = usePhases(project?.data.id);
   const { data: user, status: statusUser } = useAuthUser();
 
   const processType = project?.data.attributes?.process_type;
@@ -218,7 +218,9 @@ const ProjectsShowPageWrapper = () => {
 
   const projectPending = statusProject === 'loading';
   const userPending = statusUser === 'loading';
-  const pending = projectPending || userPending;
+  const phasesPending = statusPhases === 'loading';
+
+  const pending = projectPending || userPending || phasesPending;
 
   useEffect(() => {
     if (pending) return;
@@ -263,7 +265,6 @@ const ProjectsShowPageWrapper = () => {
   ) {
     // Redirect old childRoutes (e.g. /info, /process, ...) to the project index location
     const projectRoot = `/${urlSegments.slice(1, 3).join('/')}`;
-    // return <Redirect method="replace" path={projectRoot} />;
     return <Navigate to={projectRoot} replace />;
   }
 

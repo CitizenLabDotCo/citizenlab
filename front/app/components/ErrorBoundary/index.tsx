@@ -11,6 +11,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { WrappedComponentProps } from 'react-intl';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import { reportError } from 'utils/loggingUtils';
+import { getFullName } from 'utils/textUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -94,11 +95,11 @@ class ErrorBoundary extends Component<Props & WrappedComponentProps, State> {
       successMessage,
     };
     if (!isNilOrError(authUser)) {
-      const { first_name, last_name, email } = authUser.attributes;
+      const { email } = authUser.attributes;
       Object.assign(reportDialogProperties, {
         user: {
           email,
-          name: `${first_name} ${last_name}`,
+          name: getFullName(authUser),
         },
       });
     }
