@@ -49,8 +49,16 @@ module EmailCampaigns
       users_scope.where(id: activity.item.author_id)
     end
 
+    def self.recipient_role_multiloc_key
+      'email_campaigns.admin_labels.recipient_role.registered_users'
+    end
+
+    def self.recipient_segment_multiloc_key
+      'email_campaigns.admin_labels.recipient_segment.user_who_voted'
+    end
+
     def self.content_type_multiloc_key
-      'email_campaigns.admin_labels.content_type.inputs'
+      'email_campaigns.admin_labels.content_type.voting'
     end
 
     def self.trigger_multiloc_key

@@ -3,7 +3,7 @@ en:
     campaign_type_description:
       "manual": Official messages
       "admin_rights_received": Admin rights received
-      "basket_submitted": I voted on a project
+      "basket_submitted": Confirmation of voting
       "comment_deleted_by_admin": Deletion of my comment
       "comment_marked_as_spam": Comment spam report
       "comment_on_your_comment": A reply on my comment
@@ -547,6 +547,7 @@ en:
         users_who_engaged_with_the_input: 'Users who engaged with the input'
         users_who_engaged_with_the_project: 'Users who engaged with the project'
         users_who_engaged_with_the_proposal: 'Users who engaged with the proposal'
+        user_who_voted: 'User who voted'
       content_type:
         comments: 'Comments'
         content_moderation: 'Content moderation'
@@ -556,6 +557,7 @@ en:
         projects: 'Projects'
         proposals: 'Proposals'
         reactions: 'Reactions'
+        voting: 'Voting'
       trigger:
         comment_is_deleted: 'Comment is deleted'
         comment_is_flagged_as_spam: 'Comment is flagged as spam'
