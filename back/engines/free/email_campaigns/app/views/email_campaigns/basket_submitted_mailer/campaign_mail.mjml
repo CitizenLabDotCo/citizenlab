@@ -1,0 +1,32 @@
+<!-- Voted ideas -->
+<mj-section padding="20px 25px 30px">
+  <mj-column>
+    <mj-raw><% event.voted_ideas.each do |idea| %></mj-raw>
+    <mj-table cellpadding="15" padding-top="20px">
+      <tr style="border:1px solid #ecedee; background-color: #FFFFFF">
+        <td style="width: 80px;">
+          <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
+            <img width="96px" src="<%= idea.images&.first&.versions&.small %>">
+          </span>
+        </td>
+        <td width="200" style="text-align: left;">
+          <a style="font-size: 14px; font-weight: 300; color: #000; text-decoration: none;" href="<%= idea.url %>">
+            <%= localize_for_recipient(idea.title_multiloc).first(80) %>
+          </a>
+        </td>
+      </tr>
+      <mj-text>&nbsp;</mj-text>
+    </mj-table>
+    <mj-raw><% end %></mj-raw>
+  </mj-column>
+</mj-section>
+
+<!-- CTA button -->
+<mj-section padding="30px 25px">
+  <mj-column>
+    <mj-text>
+      <p><%= format_message('cta_message') %></p>
+    </mj-text>
+  </mj-column>
+</mj-section>
+<%= render partial: 'application/cta_button', locals: { href: event.project_url, message: format_message('cta_see_votes_submitted') } %>

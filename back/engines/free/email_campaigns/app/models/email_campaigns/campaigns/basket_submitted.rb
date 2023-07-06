@@ -30,7 +30,6 @@ module EmailCampaigns
   class Campaigns::BasketSubmitted < Campaign
     include Consentable
     include ActivityTriggerable
-    include RecipientConfigurable
     include Disableable
     include Trackable
     include LifecycleStageRestrictable
@@ -44,19 +43,10 @@ module EmailCampaigns
 
     def activity_triggers
       { 'Notifications::BasketSubmitted' => { 'created' => true } }
-      { 'Basket' => { 'submitted' => true } }
     end
 
     def filter_recipient(users_scope, activity:, time: nil)
       users_scope.where(id: activity.item.author_id)
-    end
-
-    def self.recipient_role_multiloc_key
-      'email_campaigns.admin_labels.recipient_role.registered_users'
-    end
-
-    def self.recipient_segment_multiloc_key
-      'email_campaigns.admin_labels.recipient_segment.user_who_published_the_input'
     end
 
     def self.content_type_multiloc_key
@@ -64,23 +54,25 @@ module EmailCampaigns
     end
 
     def self.trigger_multiloc_key
-      'email_campaigns.admin_labels.trigger.input_is_published'
+      'email_campaigns.admin_labels.trigger.votes_are_submitted'
     end
 
     def generate_commands(recipient:, activity:)
-      idea = activity.item
-      return [] unless idea.participation_method_on_creation.include_data_in_email?
+      basket = activity.item
+      basket.ideas
 
       [{
         event_payload: {
-          post_id: idea.id,
-          post_title_multiloc: idea.title_multiloc,
-          post_body_multiloc: idea.body_multiloc,
-          post_url: Frontend::UrlService.new.model_to_url(idea, locale: recipient.locale),
-          post_images: idea.idea_images.map do |image|
+          project_id: basket.participation_context.project,
+          voted_ideas: basket.ideas.map do |idea|
             {
-              ordering: image.ordering,
-              versions: image.image.versions.to_h { |k, v| [k.to_s, v.url] }
+              title_multiloc: idea.title_multiloc,
+              url: Frontend::UrlService.new.model_to_url(idea, locale: recipient.locale),
+              images: idea.images.map do |image|
+                {
+                  versions: image.image.versions.to_h { |k, v| [k.to_s, v.url] }
+                }
+              end
             }
           end
         }

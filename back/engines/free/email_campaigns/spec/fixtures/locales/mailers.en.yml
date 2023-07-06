@@ -144,6 +144,13 @@ en:
       title_platform_setup: 'Set your platform up'
       title_what_can_you_do_administrator: 'What can you do as an administrator?'
       title_you_became_administrator: 'You became an administrator'
+    basket_submitted:
+      subject: '%{organizationName}: You voted successfully'
+      preheader: 'You voted successfully on the participation platform of %{organizationName}'
+      title_basket_submitted: 'You voted successfully'
+      event_description: 'Thanks for participating. Your votes have been recorded. Visit the platform of %{organizationName} to see and manage your votes.'
+      cta_see_votes_submitted: 'See votes submitted'
+      cta_message: 'Click the button below to participate'
     comment_marked_as_spam:
       by_author: 'by %{authorName}'
       commented: '%{authorName} commented:'

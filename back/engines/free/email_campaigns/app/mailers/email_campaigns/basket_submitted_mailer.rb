@@ -11,22 +11,19 @@ module EmailCampaigns
     private
 
     def header_title
-      format_message('main_header')
+      format_message('title_basket_submitted')
     end
 
     def header_message
-      # TODO: tech debt
-      if app_configuration.name == 'Stad Leuven'
-        '<p style="margin-bottom: 20px;">
-           Bedankt om je idee te delen. We houden je verder op de hoogte van de volgende stappen binnen dit project.
-         </p>'.html_safe
-      else
-        format_message('message_next_steps', values: { firstName: recipient_first_name, organizationName: organization_name })
-      end
+      format_message(
+        'event_description',
+        values: { organizationName: organization_name },
+        escape_html: false
+      )
     end
 
     def preheader
-      format_message('preheader', values: { firstName: recipient_first_name, organizationName: organization_name })
+      format_message('preheader', values: { organizationName: organization_name })
     end
   end
 end

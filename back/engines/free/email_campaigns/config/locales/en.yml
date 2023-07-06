@@ -3,6 +3,7 @@ en:
     campaign_type_description:
       "manual": Official messages
       "admin_rights_received": Admin rights received
+      "basket_submitted": I voted on a project
       "comment_deleted_by_admin": Deletion of my comment
       "comment_marked_as_spam": Comment spam report
       "comment_on_your_comment": A reply on my comment
@@ -104,6 +105,13 @@ en:
       title_platform_setup: 'Set your platform up'
       title_what_can_you_do_administrator: 'What can you do as an administrator?'
       title_you_became_administrator: 'You became an administrator'
+    basket_submitted:
+      subject: '%{organizationName}: You voted successfully'
+      preheader: 'You voted successfully on the participation platform of %{organizationName}'
+      title_basket_submitted: 'You voted successfully'
+      event_description: 'Thanks for participating. Your votes have been recorded. Visit the platform of %{organizationName} to see and manage your votes.'
+      cta_see_votes_submitted: 'See votes submitted'
+      cta_message: 'Click the button below to participate'
     comment_marked_as_spam:
       by_author: 'by %{authorName}'
       commented: '%{authorName} commented:'
@@ -577,3 +585,4 @@ en:
         user_replies_to_comment: 'User replies to comment'
         7_days_after_invite_is_sent: '7 days after invite is sent'
         7_days_before_the_project_changes_phase: '7 days before the project changes phase'
+        votes_are_submitted: 'Votes are submitted'
