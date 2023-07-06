@@ -4,6 +4,7 @@ import bowser from 'bowser';
 // components
 import Image from 'components/UI/Image';
 import Link from 'utils/cl-router/Link';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // styling
 import styled from 'styled-components';
@@ -12,7 +13,6 @@ import {
   defaultCardHoverStyle,
   media,
 } from 'utils/styleUtils';
-import { Box } from '@citizenlab/cl2-component-library';
 
 const cardPadding = '17px';
 const cardInnerHeight = '162px';

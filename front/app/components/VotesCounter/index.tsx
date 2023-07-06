@@ -35,11 +35,10 @@ const VotesCounter = ({ projectId }: Props) => {
     currentParticipationContext?.relationships.user_basket?.data?.id;
 
   const { data: basket } = useBasket(basketId);
+  const votingMethod = currentParticipationContext?.attributes.voting_method;
 
   const getVoteTerm = () => {
-    if (
-      currentParticipationContext?.attributes.voting_method === 'single_voting'
-    ) {
+    if (votingMethod === 'single_voting') {
       return formatMessage(messages.votes);
     }
 
@@ -55,7 +54,7 @@ const VotesCounter = ({ projectId }: Props) => {
   const totalVotes = basket?.data.attributes.total_votes;
 
   const currency =
-    currentParticipationContext?.attributes.voting_method === 'budgeting'
+    votingMethod === 'budgeting'
       ? appConfig?.data.attributes.settings.core.currency
       : undefined;
 
@@ -63,7 +62,8 @@ const VotesCounter = ({ projectId }: Props) => {
     return (
       <>
         {(votingMaxTotal - (totalVotes || 0)).toLocaleString()} /{' '}
-        {votingMaxTotal.toLocaleString()} {getVoteTerm() || currency}{' '}
+        {votingMaxTotal.toLocaleString()}{' '}
+        {votingMethod !== 'budgeting' ? getVoteTerm() : currency}{' '}
         {formatMessage(messages.left)}
       </>
     );

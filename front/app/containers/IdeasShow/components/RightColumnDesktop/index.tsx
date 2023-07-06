@@ -1,19 +1,23 @@
 import React from 'react';
 
+// api
+import useProjectById from 'api/projects/useProjectById';
+import usePhases from 'api/phases/usePhases';
+
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 import MetaInformation from '../MetaInformation';
 import ReactionControl from 'components/ReactionControl';
 import Buttons from 'containers/IdeasShow/components/CTABox/Buttons';
+import IdeaSharingButton from '../Buttons/IdeaSharingButton';
+import SharingButtonComponent from '../Buttons/SharingButtonComponent';
 
 // styling
 import styled from 'styled-components';
 import { rightColumnWidthDesktop } from '../../styleConstants';
 import { colors } from 'utils/styleUtils';
-import IdeaSharingButton from '../Buttons/IdeaSharingButton';
-import SharingButtonComponent from '../Buttons/SharingButtonComponent';
-import useProjectById from 'api/projects/useProjectById';
-import usePhases from 'api/phases/usePhases';
+
+// utils
 import { getVotingMethodConfig } from 'utils/votingMethodUtils/votingMethodUtils';
 import { getCurrentPhase } from 'api/phases/utils';
 

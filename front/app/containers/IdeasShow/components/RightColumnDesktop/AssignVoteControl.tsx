@@ -84,14 +84,13 @@ const AssignVoteControl = memo(({ ideaId, projectId }: Props) => {
           {!totalVotesGreaterThanZero && (
             <Box ml="4px">{formatMessage(messages.voteForAtLeastOne)}</Box>
           )}
-          {totalVotesGreaterThanZero &&
-            totalVotes > 0 && ( // Need to use isNilOrError here
-              <Box ml="4px">{`${formatMessage(
-                messages.haveVotedFor
-              )} ${totalVotes} ${formatMessage(messages.xOptions, {
-                votes: totalVotes,
-              })}`}</Box>
-            )}
+          {totalVotesGreaterThanZero && totalVotes > 0 && (
+            <Box ml="4px">{`${formatMessage(
+              messages.haveVotedFor
+            )} ${totalVotes} ${formatMessage(messages.xOptions, {
+              votes: totalVotes,
+            })}`}</Box>
+          )}
         </Box>
       )}
     </IdeaPageContainer>
