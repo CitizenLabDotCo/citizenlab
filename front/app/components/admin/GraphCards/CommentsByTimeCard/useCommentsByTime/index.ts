@@ -1,5 +1,3 @@
-// services
-
 // i18n
 import { useIntl } from 'utils/cl-intl';
 import { getTranslations } from './translations';
@@ -16,6 +14,7 @@ import { getFormattedNumbers } from 'components/admin/GraphCards/_utils/parse';
 // typings
 import { QueryParameters, Response } from './typings';
 import useAnalytics from 'api/analytics/useAnalytics';
+import { useMemo } from 'react';
 
 export default function useCommentsByTime({
   projectId,
@@ -34,20 +33,27 @@ export default function useCommentsByTime({
 
   const { formatMessage } = useIntl();
 
-  const timeSeries = analytics?.data
-    ? parseTimeSeries(
-        analytics.data.attributes[0],
-        startAtMoment,
-        endAtMoment,
-        resolution,
-        analytics.data.attributes[1]
-      )
-    : null;
+  const timeSeries = useMemo(
+    () =>
+      analytics?.data
+        ? parseTimeSeries(
+            analytics.data.attributes[0],
+            startAtMoment,
+            endAtMoment,
+            resolution,
+            analytics.data.attributes[1]
+          )
+        : null,
+    [analytics?.data, startAtMoment, endAtMoment, resolution]
+  );
 
-  const xlsxData =
-    analytics?.data && timeSeries
-      ? parseExcelData(timeSeries, getTranslations(formatMessage))
-      : null;
+  const xlsxData = useMemo(
+    () =>
+      analytics?.data && timeSeries
+        ? parseExcelData(timeSeries, getTranslations(formatMessage))
+        : null,
+    [analytics?.data, timeSeries, formatMessage]
+  );
 
   const formattedNumbers = timeSeries
     ? getFormattedNumbers(timeSeries, timeSeries[0].comments)

@@ -11,6 +11,7 @@ import { parseTimeSeries, parseStats, parseExcelData } from './parse';
 // typings
 import { QueryParameters, Response } from './typings';
 import useAnalytics from 'api/analytics/useAnalytics';
+import { useMemo } from 'react';
 
 export default function useRegistrations({
   startAtMoment,
@@ -29,21 +30,28 @@ export default function useRegistrations({
 
   const translations = getTranslations(formatMessage);
 
-  const timeSeries = analytics?.data
-    ? parseTimeSeries(
-        analytics.data.attributes[0],
-        startAtMoment,
-        endAtMoment,
-        resolution
-      )
-    : null;
+  const timeSeries = useMemo(
+    () =>
+      analytics?.data
+        ? parseTimeSeries(
+            analytics.data.attributes[0],
+            startAtMoment,
+            endAtMoment,
+            resolution
+          )
+        : null,
+    [analytics?.data, startAtMoment, endAtMoment, resolution]
+  );
 
   const stats = analytics ? parseStats(analytics.data.attributes) : null;
 
-  const xlsxData =
-    analytics?.data && timeSeries && stats
-      ? parseExcelData(stats, timeSeries, resolution, translations)
-      : null;
+  const xlsxData = useMemo(
+    () =>
+      analytics?.data && timeSeries && stats
+        ? parseExcelData(stats, timeSeries, resolution, translations)
+        : null,
+    [analytics?.data, timeSeries, stats, resolution, translations]
+  );
 
   const currentResolution = resolution;
 
