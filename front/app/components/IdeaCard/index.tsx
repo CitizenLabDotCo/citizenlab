@@ -3,12 +3,10 @@ import React, { memo, useEffect } from 'react';
 // components
 import UserName from 'components/UI/UserName';
 import Card from 'components/UI/Card/Compact';
-import { Box, Icon, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Icon, useBreakpoint } from '@citizenlab/cl2-component-library';
 import Avatar from 'components/Avatar';
 import IdeaCardFooter from './IdeaCardFooter';
 import FooterWithReactionControl from './FooterWithReactionControl';
-import AddToBasketButton from 'components/AddToBasketButton';
-import AssignMultipleVotesControl from 'components/AssignMultipleVotesControl';
 
 // router
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
@@ -32,6 +30,7 @@ import usePhase from 'api/phases/usePhase';
 import { isNilOrError } from 'utils/helperUtils';
 import { scrollToElement } from 'utils/scroll';
 import { getCurrentPhase } from 'api/phases/utils';
+import { getInteractions } from './utils';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
@@ -41,9 +40,10 @@ import { IMAGES_LOADED_EVENT } from 'components/admin/ContentBuilder/constants';
 import styled from 'styled-components';
 import { transparentize } from 'polished';
 import { colors, fontSizes, isRtl } from 'utils/styleUtils';
-import { timeAgo } from 'utils/dateUtils';
+import { pastPresentOrFuture, timeAgo } from 'utils/dateUtils';
 import useLocale from 'hooks/useLocale';
 import { IIdea } from 'api/ideas/types';
+import useBasket from 'api/baskets/useBasket';
 
 const BodyWrapper = styled.div`
   display: flex;
@@ -164,6 +164,16 @@ const CompactIdeaCard = memo<IdeaCardProps>(
       idea.data.relationships.idea_images.data?.[0]?.id
     );
     const currentPhase = phases ? getCurrentPhase(phases?.data) : undefined;
+
+    const participationContext =
+      viewingPhase?.data || currentPhase || project?.data;
+    const participationContextEnded =
+      participationContext?.type === 'phase' &&
+      pastPresentOrFuture(participationContext?.attributes?.end_at) === 'past';
+    const { data: basket } = useBasket(
+      participationContext?.relationships?.user_basket?.data?.id
+    );
+
     const authorId = idea.data.relationships?.author?.data?.id || null;
     const authorHash = idea.data.attributes.author_hash;
     const ideaTitle = localize(idea.data.attributes.title_multiloc);
@@ -174,54 +184,7 @@ const CompactIdeaCard = memo<IdeaCardProps>(
       .trim();
     const [searchParams] = useSearchParams();
     const scrollToCardParam = searchParams.get('scroll_to_card');
-
-    const getInteractions = () => {
-      if (project) {
-        const projectId = idea.data.relationships.project.data.id;
-        const ideaBudget = idea.data.attributes.budget;
-        const participationContext = viewingPhase || project;
-
-        const showMultipleVoteControl =
-          participationContext.data.attributes.participation_method ===
-            'voting' &&
-          participationContext.data.attributes.voting_method ===
-            'multiple_voting';
-
-        const showBudgetControl =
-          participationContext.data.attributes.participation_method ===
-            'voting' &&
-          participationContext.data.attributes.voting_method === 'budgeting' &&
-          ideaBudget;
-        if (showBudgetControl) {
-          return (
-            <Box display="flex" alignItems="center">
-              <Box w="100%" className="e2e-assign-budget">
-                <AddToBasketButton
-                  projectId={projectId}
-                  ideaId={idea.data.id}
-                  buttonStyle="primary-outlined"
-                />
-              </Box>
-            </Box>
-          );
-        }
-        if (showMultipleVoteControl) {
-          return (
-            <Box display="flex" alignItems="center">
-              <AssignMultipleVotesControl
-                projectId={projectId}
-                ideaId={idea.data.id}
-              />
-            </Box>
-          );
-        }
-      }
-      return null;
-    };
-
-    const votingMethod =
-      currentPhase?.attributes.voting_method ||
-      project?.data.attributes.voting_method;
+    const votingMethod = participationContext?.attributes.voting_method;
 
     const getFooter = () => {
       if (project) {
@@ -282,6 +245,11 @@ const CompactIdeaCard = memo<IdeaCardProps>(
       clHistory.push(`/ideas/${slug}${params}`);
     };
 
+    const hideInteractions =
+      participationContextEnded && basket?.data.attributes.submitted_at === null
+        ? true
+        : false;
+
     return (
       <Card
         onClick={handleClick}
@@ -333,7 +301,14 @@ const CompactIdeaCard = memo<IdeaCardProps>(
           </BodyWrapper>
         }
         hideBody={hideBody}
-        interactions={getInteractions()}
+        interactions={
+          hideInteractions
+            ? null
+            : getInteractions({
+                participationContext,
+                idea,
+              })
+        }
         footer={getFooter()}
       />
     );

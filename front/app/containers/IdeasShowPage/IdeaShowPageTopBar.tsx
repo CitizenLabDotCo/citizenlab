@@ -148,20 +148,23 @@ const IdeaShowPageTopBar = ({
           />
         </Left>
         <Right>
-          {/* Only visible if not participatory budgeting */}
-          <ReactionControl
-            size="1"
-            styleType="border"
-            ideaId={ideaId}
-            disabledReactionClick={onDisabledReactClick}
-          />
-
-          {/* Only visible if participatory budgeting */}
+          {/* Only visible if not voting */}
+          {participationContext?.attributes.participation_method !==
+            'voting' && (
+            <ReactionControl
+              size="1"
+              styleType="border"
+              ideaId={ideaId}
+              disabledReactionClick={onDisabledReactClick}
+            />
+          )}
+          {/* Only visible if voting */}
           {ideaId && votingConfig?.getIdeaPageVoteControl && (
             <Box mr="8px">
               {votingConfig?.getIdeaPageVoteControl({
                 ideaId,
                 projectId,
+                participationContext,
                 compact: true,
               })}
             </Box>

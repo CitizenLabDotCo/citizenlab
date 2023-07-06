@@ -71,12 +71,19 @@ const RightColumnDesktop = ({
           background={colors.background}
           mb="12px"
         >
-          <StyledReactionControl styleType="shadow" ideaId={ideaId} size="4" />
+          {currentContext?.attributes.participation_method !== 'voting' && (
+            <StyledReactionControl
+              styleType="shadow"
+              ideaId={ideaId}
+              size="4"
+            />
+          )}
           <Box pb="23px" mb="23px" borderBottom="solid 1px #ccc">
             {votingConfig?.getIdeaPageVoteControl &&
               votingConfig.getIdeaPageVoteControl({
                 ideaId,
                 projectId,
+                participationContext: currentContext,
                 compact: false,
               })}
           </Box>

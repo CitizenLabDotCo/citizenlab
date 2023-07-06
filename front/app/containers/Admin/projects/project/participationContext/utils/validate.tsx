@@ -31,17 +31,18 @@ export default (state: State, formatMessage: FormatMessage) => {
 
   const locales = appConfig?.data.attributes.settings.core.locales;
 
-  locales?.map((locale) => {
-    if (
-      (voting_method === 'multiple_voting' &&
-        voting_term_plural_multiloc &&
-        !voting_term_plural_multiloc[locale]) ||
-      (voting_term_singular_multiloc && !voting_term_singular_multiloc[locale])
-    ) {
-      voteTermError = formatMessage(messages.voteTermError);
-      isValidated = false;
-    }
-  });
+  if (voting_method === 'multiple_voting') {
+    locales?.map((locale) => {
+      if (
+        (voting_term_plural_multiloc && !voting_term_plural_multiloc[locale]) ||
+        (voting_term_singular_multiloc &&
+          !voting_term_singular_multiloc[locale])
+      ) {
+        voteTermError = formatMessage(messages.voteTermError);
+        isValidated = false;
+      }
+    });
+  }
 
   if (
     voting_max_votes_per_idea &&

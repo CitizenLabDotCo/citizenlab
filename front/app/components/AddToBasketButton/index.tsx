@@ -5,7 +5,6 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useBasket from 'api/baskets/useBasket';
 import useProjectById from 'api/projects/useProjectById';
-import usePhases from 'api/phases/usePhases';
 import useAssignBudget from './useAssignBudget';
 
 // events
@@ -27,16 +26,18 @@ import {
   ActionDescriptorFutureEnabled,
   isFixableByAuthentication,
 } from 'utils/actionDescriptors';
-import { getLatestRelevantParticipationContext } from './utils';
 
 // typings
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import { IBasket } from 'api/baskets/types';
 import { IdeaVotingDisabledReason } from 'api/ideas/types';
+import { IPhaseData } from 'api/phases/types';
+import { IProjectData } from 'api/projects/types';
 
 interface Props {
   ideaId: string;
   projectId: string;
+  participationContext?: IPhaseData | IProjectData | null;
   buttonStyle: 'primary' | 'primary-outlined';
 }
 
@@ -58,18 +59,17 @@ const isButtonEnabled = (
   return basketNotSubmittedYet;
 };
 
-const AddToBasketButton = ({ ideaId, projectId, buttonStyle }: Props) => {
+const AddToBasketButton = ({
+  ideaId,
+  projectId,
+  buttonStyle,
+  participationContext,
+}: Props) => {
   const { data: appConfig } = useAppConfiguration();
   const { data: idea } = useIdeaById(ideaId);
   const { data: project } = useProjectById(projectId);
-  const { data: phases } = usePhases(projectId);
   const { assignBudget, processing } = useAssignBudget({ projectId, ideaId });
 
-  const participationContext = getLatestRelevantParticipationContext(
-    project,
-    idea,
-    phases
-  );
   const participationContextType =
     project?.data.attributes.process_type === 'continuous'
       ? 'project'

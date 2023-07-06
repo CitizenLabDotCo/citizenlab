@@ -191,6 +191,7 @@ const Content = ({
                 ideaId,
                 projectId: project.id,
                 compact: true,
+                participationContext,
               })}
             </Box>
           )}

@@ -54,20 +54,20 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
   }
 
   const submittedAt = basket?.data.attributes.submitted_at || null;
-  const spentBudget = basket?.data.attributes.total_votes || 0;
-  const hasUserParticipated = !!submittedAt && spentBudget > 0;
+  const votesCast = basket?.data.attributes.total_votes || 0;
+  const hasUserParticipated = !!submittedAt && votesCast > 0;
 
-  const budgetExceedsLimit =
+  const voteExceedsLimit =
     basket?.data.attributes['budget_exceeds_limit?'] || false;
 
-  const minBudget =
+  const minVotes =
     currentPhase?.attributes.voting_min_total ||
     project.attributes.voting_min_total ||
     0;
 
-  const minBudgetRequired = minBudget > 0;
-  const minBudgetReached = spentBudget >= minBudget;
-  const minBudgetRequiredNotReached = minBudgetRequired && !minBudgetReached;
+  const minVotesRequired = minVotes > 0;
+  const minVotesReached = votesCast >= minVotes;
+  const minVotesRequiredNotReached = minVotesRequired && !minVotesReached;
 
   if (isNilOrError(locale)) {
     return null;
@@ -82,6 +82,9 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
       });
     }
   };
+
+  const ctaDisabled =
+    voteExceedsLimit || votesCast === 0 || minVotesRequiredNotReached;
 
   const CTAButton = hasUserParticipated ? (
     <Box display="flex">
@@ -103,9 +106,7 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
       textHoverColor={theme.colors.black}
       padding="6px 12px"
       fontSize="14px"
-      disabled={
-        budgetExceedsLimit || spentBudget === 0 || minBudgetRequiredNotReached
-      }
+      disabled={ctaDisabled}
     >
       <FormattedMessage {...messages.submit} />
     </Button>

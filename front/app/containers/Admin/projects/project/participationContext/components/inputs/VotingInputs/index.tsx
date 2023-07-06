@@ -33,6 +33,7 @@ import { IOption, Multiloc } from 'typings';
 
 // hooks
 import { useLocation } from 'react-router-dom';
+import SingleVotingInputs from './votingMethodInputs/SingleVotingInputs';
 
 export interface VotingInputsProps {
   isCustomInputTermEnabled: boolean;
@@ -50,7 +51,7 @@ export interface VotingInputsProps {
   voting_term_plural_multiloc?: Multiloc | null;
   voting_term_singular_multiloc?: Multiloc | null;
   handleVotingMinTotalChange: (newVotingMinTotal: string) => void;
-  handleVotingMaxTotalChange: (newVotingMaxTotal: string) => void;
+  handleVotingMaxTotalChange: (newVotingMaxTotal: string | null) => void;
   handleMaxVotesPerOptionAmountChange: (newMaxVotesPerOption: string) => void;
   handleVoteTermPluralChange: (termMultiloc: Multiloc) => void;
   handleVoteTermSingularChange: (termMultiloc: Multiloc) => void;
@@ -176,6 +177,14 @@ export default ({
             }
             handleVoteTermPluralChange={handleVoteTermPluralChange}
             handleVoteTermSingularChange={handleVoteTermSingularChange}
+          />
+        )}
+        {voting_method === 'single_voting' && (
+          <SingleVotingInputs
+            voting_max_total={voting_max_total}
+            apiErrors={undefined}
+            maxTotalVotesError={maxTotalVotesError}
+            handleMaxVotingAmountChange={handleVotingMaxTotalChange}
           />
         )}
         <SectionField>

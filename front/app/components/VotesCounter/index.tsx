@@ -37,6 +37,12 @@ const VotesCounter = ({ projectId }: Props) => {
   const { data: basket } = useBasket(basketId);
 
   const getVoteTerm = () => {
+    if (
+      currentParticipationContext?.attributes.voting_method === 'single_voting'
+    ) {
+      return formatMessage(messages.votes);
+    }
+
     const term =
       currentParticipationContext?.attributes.voting_term_plural_multiloc;
     if (!term) return;
@@ -48,20 +54,33 @@ const VotesCounter = ({ projectId }: Props) => {
     currentParticipationContext?.attributes.voting_max_total;
   const totalVotes = basket?.data.attributes.total_votes;
 
-  if (!votingMaxTotal || totalVotes === undefined) return null;
-
   const currency =
     currentParticipationContext?.attributes.voting_method === 'budgeting'
       ? appConfig?.data.attributes.settings.core.currency
       : undefined;
 
-  return (
-    <>
-      {(votingMaxTotal - totalVotes).toLocaleString()} /{' '}
-      {votingMaxTotal.toLocaleString()} {getVoteTerm() || currency}{' '}
-      {formatMessage(messages.left)}
-    </>
-  );
+  if (votingMaxTotal) {
+    return (
+      <>
+        {(votingMaxTotal - (totalVotes || 0)).toLocaleString()} /{' '}
+        {votingMaxTotal.toLocaleString()} {getVoteTerm() || currency}{' '}
+        {formatMessage(messages.left)}
+      </>
+    );
+  }
+  if (!votingMaxTotal && totalVotes) {
+    return (
+      <>
+        {`${formatMessage(messages.votedFor)} ${totalVotes} ${formatMessage(
+          messages.xOptions,
+          {
+            votes: totalVotes,
+          }
+        )}`}
+      </>
+    );
+  }
+  return <>{formatMessage(messages.voteForAtLeastOne)}</>;
 };
 
 export default VotesCounter;
