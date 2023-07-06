@@ -156,7 +156,7 @@ const AssignMultipleVotesControl = ({
     : formatMessage(messages.vote).toLowerCase();
 
   const basketSubmitted = !!basket?.data?.attributes.submitted_at;
-  const disableInput = !userHasVotesLeft || basketSubmitted;
+  const disableAddingVote = !userHasVotesLeft || basketSubmitted;
 
   if (votes > 0) {
     return (
@@ -200,7 +200,7 @@ const AssignMultipleVotesControl = ({
             <Input
               value={votes.toString()}
               onChange={onTextInputChange}
-              disabled={disableInput}
+              disabled={basketSubmitted}
               type="number"
               min="0"
               onBlur={() => {
@@ -217,16 +217,17 @@ const AssignMultipleVotesControl = ({
             })}
           </Text>
         </Box>
-        {!disableInput && (
+        {
           <Button
             ariaLabel={formatMessage(messages.addVote)}
+            disabled={disableAddingVote}
             ml="8px"
             bgColor={theme.colors.tenantPrimary}
             onClick={onAdd}
           >
             <h1 style={{ margin: '0px' }}>+</h1>
           </Button>
-        )}
+        }
       </Box>
     );
   }
