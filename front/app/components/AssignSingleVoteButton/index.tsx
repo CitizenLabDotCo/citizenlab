@@ -26,7 +26,7 @@ interface Props {
   ideaId: string;
 }
 
-const AssignSingleVotesControl = ({
+const AssignSingleVoteButton = ({
   projectId,
   ideaId,
   participationContext,
@@ -113,4 +113,4 @@ const AssignSingleVotesControl = ({
   );
 };
 
-export default AssignSingleVotesControl;
+export default AssignSingleVoteButton;

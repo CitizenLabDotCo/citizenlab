@@ -6,7 +6,11 @@ import useIdeaById from 'api/ideas/useIdeaById';
 // styles
 import styled from 'styled-components';
 import { colors, media } from 'utils/styleUtils';
-import AssignSingleVotesControl from 'components/AssignSingleVoteControl';
+
+// components
+import AssignSingleVoteButton from 'components/AssignSingleVoteButton';
+
+// api
 import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
 import { getCurrentPhase } from 'api/phases/utils';
@@ -36,7 +40,7 @@ const AssignVoteControl = memo(({ ideaId, projectId }: Props) => {
 
   return (
     <IdeaPageContainer>
-      <AssignSingleVotesControl
+      <AssignSingleVoteButton
         ideaId={ideaId}
         projectId={projectId}
         participationContext={participationContext}

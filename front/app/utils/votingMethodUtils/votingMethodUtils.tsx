@@ -11,19 +11,19 @@ import { VotingMethod } from 'services/participationContexts';
 // intl
 import messages from './messages';
 import { MessageDescriptor } from 'react-intl';
+import { Locale } from '@citizenlab/cl2-component-library';
 
 // utils
 import { FormattedMessage } from 'utils/cl-intl';
 import { toFullMonth } from 'utils/dateUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import AssignVotesControl from 'containers/IdeasShow/components/RightColumnDesktop/AssignVotesControl';
 import AssignBudgetControl from 'containers/IdeasShow/components/RightColumnDesktop/AssignBudgetControl';
 import AddToBasketButton from 'components/AddToBasketButton';
 import AssignMultipleVotesControl from 'components/AssignMultipleVotesControl';
-import { Locale } from '@citizenlab/cl2-component-library';
-import { isNilOrError } from 'utils/helperUtils';
-import AssignSingleVotesControl from 'components/AssignSingleVoteControl';
+import AssignSingleVotesButton from 'components/AssignSingleVoteButton';
 import AssignVoteControl from 'containers/IdeasShow/components/RightColumnDesktop/AssignVoteControl';
 
 /*
@@ -477,7 +477,7 @@ const singleVotingConfig: VotingMethodConfig = {
   }) => {
     if (compact) {
       return (
-        <AssignSingleVotesControl
+        <AssignSingleVotesButton
           participationContext={participationContext}
           ideaId={ideaId}
           projectId={projectId}

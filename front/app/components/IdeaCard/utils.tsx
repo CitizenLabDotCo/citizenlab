@@ -5,7 +5,7 @@ import AssignMultipleVotesControl from 'components/AssignMultipleVotesControl';
 import { IIdea } from 'api/ideas/types';
 import { IProjectData } from 'api/projects/types';
 import { IPhaseData } from 'api/phases/types';
-import AssignSingleVoteControl from 'components/AssignSingleVoteControl';
+import AssignSingleVoteControl from 'components/AssignSingleVoteButton';
 
 type InteractionsProps = {
   idea: IIdea;
