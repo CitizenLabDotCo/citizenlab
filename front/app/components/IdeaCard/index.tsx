@@ -40,9 +40,10 @@ import { IMAGES_LOADED_EVENT } from 'components/admin/ContentBuilder/constants';
 import styled from 'styled-components';
 import { transparentize } from 'polished';
 import { colors, fontSizes, isRtl } from 'utils/styleUtils';
-import { timeAgo } from 'utils/dateUtils';
+import { pastPresentOrFuture, timeAgo } from 'utils/dateUtils';
 import useLocale from 'hooks/useLocale';
 import { IIdea } from 'api/ideas/types';
+import useBasket from 'api/baskets/useBasket';
 
 const BodyWrapper = styled.div`
   display: flex;
@@ -163,6 +164,16 @@ const CompactIdeaCard = memo<IdeaCardProps>(
       idea.data.relationships.idea_images.data?.[0]?.id
     );
     const currentPhase = phases ? getCurrentPhase(phases?.data) : undefined;
+
+    const participationContext =
+      viewingPhase?.data || currentPhase || project?.data;
+    const participationContextEnded =
+      participationContext?.type === 'phase' &&
+      pastPresentOrFuture(participationContext?.attributes?.end_at) === 'past';
+    const { data: basket } = useBasket(
+      participationContext?.relationships?.user_basket?.data?.id
+    );
+
     const authorId = idea.data.relationships?.author?.data?.id || null;
     const authorHash = idea.data.attributes.author_hash;
     const ideaTitle = localize(idea.data.attributes.title_multiloc);
@@ -173,9 +184,7 @@ const CompactIdeaCard = memo<IdeaCardProps>(
       .trim();
     const [searchParams] = useSearchParams();
     const scrollToCardParam = searchParams.get('scroll_to_card');
-    const votingMethod =
-      currentPhase?.attributes.voting_method ||
-      project?.data.attributes.voting_method;
+    const votingMethod = participationContext?.attributes.voting_method;
 
     const getFooter = () => {
       if (project) {
@@ -236,6 +245,11 @@ const CompactIdeaCard = memo<IdeaCardProps>(
       clHistory.push(`/ideas/${slug}${params}`);
     };
 
+    const hideInteractions =
+      participationContextEnded && basket?.data.attributes.submitted_at === null
+        ? true
+        : false;
+
     return (
       <Card
         onClick={handleClick}
@@ -287,11 +301,14 @@ const CompactIdeaCard = memo<IdeaCardProps>(
           </BodyWrapper>
         }
         hideBody={hideBody}
-        interactions={getInteractions({
-          project: project?.data,
-          phase: viewingPhase?.data || currentPhase,
-          idea,
-        })}
+        interactions={
+          hideInteractions
+            ? null
+            : getInteractions({
+                participationContext,
+                idea,
+              })
+        }
         footer={getFooter()}
       />
     );

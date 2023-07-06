@@ -5,18 +5,16 @@ import { Button, colors } from '@citizenlab/cl2-component-library';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { getCurrentPhase } from 'api/phases/utils';
 
 // api
 import useBasket from 'api/baskets/useBasket';
-import useProjectById from 'api/projects/useProjectById';
-import usePhases from 'api/phases/usePhases';
 import useAddBasketsIdeas from 'api/baskets_ideas/useAddBasketsIdeas';
 import useDeleteBasketsIdea from 'api/baskets_ideas/useDeleteBasketsIdea';
 import useAddBasket from 'api/baskets/useAddBasket';
 import useBasketsIdeas from 'api/baskets_ideas/useBasketsIdeas';
 import { IPhaseData } from 'api/phases/types';
 import eventEmitter from 'utils/eventEmitter';
+import { IProjectData } from 'api/projects/types';
 
 export const VOTES_EXCEEDED_ERROR_EVENT = 'votesExceededError';
 export const VOTES_PER_OPTION_EXCEEDED_ERROR_EVENT =
@@ -24,20 +22,16 @@ export const VOTES_PER_OPTION_EXCEEDED_ERROR_EVENT =
 
 interface Props {
   projectId: string;
-  viewingPhase?: IPhaseData | null;
+  participationContext?: IPhaseData | IProjectData | null;
   ideaId: string;
 }
 
 const AssignSingleVotesControl = ({
   projectId,
   ideaId,
-  viewingPhase,
+  participationContext,
 }: Props) => {
   // participation context
-  const { data: project } = useProjectById(projectId);
-  const { data: phases } = usePhases(projectId);
-  const participationContext =
-    viewingPhase || getCurrentPhase(phases?.data) || project?.data;
   const contextType =
     participationContext?.type === 'phase' ? 'Phase' : 'Project';
   const { data: basket } = useBasket(

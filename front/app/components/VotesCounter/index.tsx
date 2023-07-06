@@ -54,7 +54,7 @@ const VotesCounter = ({ projectId }: Props) => {
     currentParticipationContext?.attributes.voting_max_total;
   const totalVotes = basket?.data.attributes.total_votes;
 
-  if (!votingMaxTotal || totalVotes === undefined) return null;
+  if (!votingMaxTotal) return null;
 
   const currency =
     currentParticipationContext?.attributes.voting_method === 'budgeting'
@@ -63,7 +63,7 @@ const VotesCounter = ({ projectId }: Props) => {
 
   return (
     <>
-      {(votingMaxTotal - totalVotes).toLocaleString()} /{' '}
+      {(votingMaxTotal - (totalVotes || 0)).toLocaleString()} /{' '}
       {votingMaxTotal.toLocaleString()} {getVoteTerm() || currency}{' '}
       {formatMessage(messages.left)}
     </>

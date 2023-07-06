@@ -9,18 +9,15 @@ import AssignSingleVoteControl from 'components/AssignSingleVoteControl';
 
 type InteractionsProps = {
   idea: IIdea;
-  project?: IProjectData | null;
-  phase?: IPhaseData | null;
+  participationContext?: IPhaseData | IProjectData | null;
 };
 export const getInteractions = ({
-  project,
-  phase,
+  participationContext,
   idea,
 }: InteractionsProps) => {
-  if (project) {
+  if (participationContext) {
     const projectId = idea.data.relationships.project.data.id;
     const ideaBudget = idea.data.attributes.budget;
-    const participationContext = phase || project;
     const votingMethod = participationContext.attributes.voting_method;
 
     const showSingleVoteControl = votingMethod === 'single_voting';
@@ -32,9 +29,9 @@ export const getInteractions = ({
         <Box display="flex" alignItems="center">
           <Box w="100%" className="e2e-assign-budget">
             <AddToBasketButton
-              viewingPhase={phase}
-              buttonStyle="primary-outlined"
+              participationContext={participationContext}
               projectId={projectId}
+              buttonStyle="primary-outlined"
               ideaId={idea.data.id}
             />
           </Box>
@@ -58,7 +55,7 @@ export const getInteractions = ({
           <AssignSingleVoteControl
             projectId={projectId}
             ideaId={idea.data.id}
-            viewingPhase={phase}
+            participationContext={participationContext}
           />
         </Box>
       );
