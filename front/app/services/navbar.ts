@@ -3,6 +3,8 @@ import { API_PATH } from 'containers/App/constants';
 import { TPageSlugById } from 'api/custom_pages/useCustomPageSlugById';
 import streams from 'utils/streams';
 import { IItemNotInNavbar } from 'utils/navbar';
+import { queryClient } from 'utils/cl-react-query/queryClient';
+import customPagesKeys from 'api/custom_pages/keys';
 
 export const apiEndpoint = `${API_PATH}/nav_bar_items`;
 
@@ -108,8 +110,12 @@ export async function addNavbarItem(item: IItemNotInNavbar) {
     false
   );
 
+  queryClient.invalidateQueries({
+    queryKey: customPagesKeys.lists(),
+  });
+
   streams.fetchAllWith({
-    partialApiEndpoint: ['nav_bar_items', 'static_pages'],
+    partialApiEndpoint: ['nav_bar_items'],
   });
 
   return response;
@@ -151,8 +157,12 @@ export async function removeNavbarItem(navbarItemId: string) {
     navbarItemId
   );
 
+  queryClient.invalidateQueries({
+    queryKey: customPagesKeys.lists(),
+  });
+
   streams.fetchAllWith({
-    partialApiEndpoint: ['nav_bar_items', 'static_pages'],
+    partialApiEndpoint: ['nav_bar_items'],
   });
   return response;
 }
