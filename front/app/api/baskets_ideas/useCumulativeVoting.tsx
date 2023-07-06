@@ -23,6 +23,7 @@ interface CumulativeVotingInterface {
   setVotes?: (ideaId: string, newVotes: number) => void;
   numberOfVotesCast?: number;
   userHasVotesLeft?: boolean;
+  processing?: boolean;
 }
 
 const CumulativeVotingInterfaceContext =
@@ -57,7 +58,7 @@ const CumulativeVotingContextInner = ({ projectId, children }: Props) => {
 const useCumulativeVotingInterface = (projectId: string) => {
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
-  const assignVotes = useAssignVote({ projectId });
+  const { updateBasket, cancel, processing } = useAssignVote({ projectId });
 
   const participationContext = getCurrentParticipationContext(
     project?.data,
@@ -102,12 +103,12 @@ const useCumulativeVotingInterface = (projectId: string) => {
       const noUpdateNeeded = remoteVotesForThisIdea === newVotes;
 
       if (noUpdateNeeded) {
-        assignVotes.cancel();
+        cancel();
       } else {
-        assignVotes(ideaId, newVotes);
+        updateBasket(ideaId, newVotes);
       }
     },
-    [assignVotes, remoteVotesPerIdea]
+    [cancel, updateBasket, remoteVotesPerIdea]
   );
 
   const numberOfVotesUserHas =
@@ -138,6 +139,7 @@ const useCumulativeVotingInterface = (projectId: string) => {
     setVotes,
     numberOfVotesCast,
     userHasVotesLeft,
+    processing,
   };
 };
 
@@ -152,6 +154,7 @@ const useCumulativeVoting = (): CumulativeVotingInterface => {
       setVotes: undefined,
       numberOfVotesCast: undefined,
       userHasVotesLeft: undefined,
+      processing: undefined,
     };
   }
 

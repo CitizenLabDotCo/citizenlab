@@ -10,6 +10,7 @@ import VotesCounter from 'components/VotesCounter';
 import { useTheme } from 'styled-components';
 import useBasket from 'api/baskets/useBasket';
 import useUpdateBasket from 'api/baskets/useUpdateBasket';
+import useCumulativeVoting from 'api/baskets_ideas/useCumulativeVoting';
 
 // utils
 import {
@@ -28,6 +29,9 @@ import useBasketsIdeas from 'api/baskets_ideas/useBasketsIdeas';
 export const VotingCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
   const locale = useLocale();
+  const { processing: cumulativeVotesProcessing } = useCumulativeVoting();
+
+  console.log({ cumulativeVotesProcessing });
 
   const currentPhase = useMemo(() => {
     return getCurrentPhase(phases) || getLastPhase(phases);
@@ -84,7 +88,10 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
   };
 
   const ctaDisabled =
-    voteExceedsLimit || votesCast === 0 || minVotesRequiredNotReached;
+    voteExceedsLimit ||
+    votesCast === 0 ||
+    minVotesRequiredNotReached ||
+    cumulativeVotesProcessing;
 
   const CTAButton = hasUserParticipated ? (
     <Box display="flex">

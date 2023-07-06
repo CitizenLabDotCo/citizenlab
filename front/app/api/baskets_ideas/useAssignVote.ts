@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { debounce } from 'lodash-es';
 
 // api
@@ -21,6 +21,8 @@ interface Props {
 }
 
 const useAssignVote = ({ projectId }: Props) => {
+  const [processing, setProcessing] = useState(false);
+
   // api
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
@@ -58,35 +60,31 @@ const useAssignVote = ({ projectId }: Props) => {
     }, {});
   }, [basketIdeas]);
 
+  const basketExists = !!basket;
+
   const handleBasketUpdate = useCallback(
-    (ideaId: string, newVotes: number) => {
+    async (ideaId: string, newVotes: number) => {
       if (!participationContext) return;
 
-      if (!basket) {
-        // Create basket, and on success add new basketsIdea
-        addBasket(
-          {
-            participation_context_id: participationContext.id,
-            participation_context_type,
-          },
-          {
-            onSuccess: (basket) => {
-              addBasketsIdea({
-                basketId: basket.data.id,
-                idea_id: ideaId,
-                votes: newVotes,
-              });
-            },
-          }
-        );
+      if (!basketExists) {
+        const basket = await addBasket({
+          participation_context_id: participationContext.id,
+          participation_context_type,
+        });
+
+        await addBasketsIdea({
+          basketId: basket.data.id,
+          idea_id: ideaId,
+          votes: newVotes,
+        });
       }
 
-      if (basket) {
+      if (basketExists) {
         const existsInBasket = ideaId in basketIdeaIdPerIdeaId;
 
         if (!existsInBasket) {
           // Add new baskets idea
-          addBasketsIdea({
+          await addBasketsIdea({
             basketId: basket.data.id,
             idea_id: ideaId,
             votes: newVotes,
@@ -95,13 +93,13 @@ const useAssignVote = ({ projectId }: Props) => {
           const basketIdeaId = basketIdeaIdPerIdeaId[ideaId];
 
           if (newVotes === 0) {
-            deleteBasketsIdea({
+            await deleteBasketsIdea({
               basketId: basket.data.id,
               basketIdeaId,
             });
           } else {
             // Update existing baskets idea
-            updateBasketsIdea({
+            await updateBasketsIdea({
               basketId: basket.data.id,
               basketIdeaId,
               votes: newVotes,
@@ -109,13 +107,16 @@ const useAssignVote = ({ projectId }: Props) => {
           }
         }
       }
+
+      setProcessing(false);
     },
     [
       addBasket,
       addBasketsIdea,
       deleteBasketsIdea,
       updateBasketsIdea,
-      basket,
+      basketExists,
+      basket?.data.id,
       participationContext,
       participation_context_type,
       basketIdeaIdPerIdeaId,
@@ -123,11 +124,24 @@ const useAssignVote = ({ projectId }: Props) => {
   );
 
   // Debounced update function
-  const assignVote = useMemo(() => {
+  const handleBasketUpdateDebounced = useMemo(() => {
     return debounce(handleBasketUpdate, 300);
   }, [handleBasketUpdate]);
 
-  return assignVote;
+  const updateBasket = useCallback(
+    async (ideaId: string, newVotes: number) => {
+      setProcessing(true);
+      await handleBasketUpdateDebounced(ideaId, newVotes);
+    },
+    [handleBasketUpdateDebounced]
+  );
+
+  const cancel = useCallback(() => {
+    handleBasketUpdateDebounced.cancel();
+    setProcessing(false);
+  }, [handleBasketUpdateDebounced]);
+
+  return { updateBasket, processing, cancel };
 };
 
 export default useAssignVote;
