@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 // components
 import {
@@ -29,13 +29,9 @@ import { mixed, object } from 'yup';
 // typings
 import { UploadFile } from 'typings';
 
-// services
-import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
-
 // hooks
 import useCustomPage from 'hooks/useCustomPage';
 import { updateCustomPage } from 'services/customPages';
-import useRemoteFiles from 'hooks/useRemoteFiles';
 import { useParams } from 'react-router-dom';
 
 // constants
@@ -44,7 +40,15 @@ import { pagesAndMenuBreadcrumb } from '../../breadcrumbs';
 
 // utils
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, isString } from 'utils/helperUtils';
+import {
+  getFilesToRemove,
+  getFilesToAdd,
+  convertUrlToUploadFile,
+} from 'utils/fileUtils';
+import useAddPagesFile from 'api/page_files/useAddPageFile';
+import useDeletePageFile from 'api/page_files/useDeletePageFile';
+import usePageFiles from 'api/page_files/usePageFiles';
 
 type FormValues = {
   local_page_files: UploadFile[] | null;
@@ -55,12 +59,112 @@ const AttachmentsForm = ({
 }: WrappedComponentProps) => {
   const localize = useLocalize();
   const { customPageId } = useParams() as { customPageId: string };
+  const { data: remoteFiles } = usePageFiles(customPageId);
+  const { mutateAsync: addPageFile } = useAddPagesFile();
+  const { mutateAsync: deletePageFile } = useDeletePageFile();
+  const [files, setFiles] = React.useState<UploadFile[]>([]);
+
+  useEffect(() => {
+    async function getFiles() {
+      let files: UploadFile[] = [];
+
+      if (remoteFiles) {
+        files = (await Promise.all(
+          remoteFiles.data.map(async (file) => {
+            const uploadFile = convertUrlToUploadFile(
+              file.attributes.file.url,
+              file.id,
+              file.attributes.name
+            );
+            return uploadFile;
+          })
+        )) as UploadFile[];
+      }
+      setFiles(files);
+    }
+
+    getFiles();
+  }, [remoteFiles]);
+
   const customPage = useCustomPage({ customPageId });
 
-  const remotePageFiles = useRemoteFiles({
-    resourceType: 'page',
-    resourceId: !isNilOrError(customPage) ? customPage.id : null,
-  });
+  function getPageFilesToRemovePromises(
+    pageId: string,
+    localPageFiles: UploadFile[],
+    remotePageFiles: UploadFile[] | null
+  ) {
+    // localPageFiles = local state of files
+    // This means those previously uploaded + files that have been added/removed
+    // remotePageFiles = last saved state of files (remote)
+    if (!isNilOrError(localPageFiles) && !isNilOrError(remotePageFiles)) {
+      const filesToRemove = getFilesToRemove(localPageFiles, remotePageFiles);
+      const filesToRemovePromises = filesToRemove
+        .filter((fileToRemove) => isString(fileToRemove.id))
+        .map((fileToRemove) => {
+          return deletePageFile({ pageId, fileId: fileToRemove.id as string });
+        });
+
+      return filesToRemovePromises;
+    }
+
+    return null;
+  }
+
+  function getPageFilesToAddPromises(
+    pageId: string,
+    localPageFiles: UploadFile[],
+    remotePageFiles: UploadFile[] | null
+  ) {
+    // localPageFiles = local state of files
+    // This means those previously uploaded + files that have been added/removed
+    // remotePageFiles = last saved state of files (remote)
+
+    if (!isNilOrError(localPageFiles)) {
+      const filesToAdd = getFilesToAdd(localPageFiles, remotePageFiles);
+      const filesToAddPromises = filesToAdd.map((fileToAdd) =>
+        addPageFile({
+          pageId,
+          file: { base64: fileToAdd.base64, name: fileToAdd.name },
+        })
+      );
+
+      return filesToAddPromises;
+    }
+
+    return null;
+  }
+
+  async function handleAddPageFiles(
+    pageId: string,
+    localPageFiles: UploadFile[],
+    remotePageFiles: UploadFile[] | null
+  ) {
+    const filesToAddPromises = getPageFilesToAddPromises(
+      pageId,
+      localPageFiles,
+      remotePageFiles
+    );
+
+    if (filesToAddPromises) {
+      await Promise.all(filesToAddPromises);
+    }
+  }
+
+  async function handleRemovePageFiles(
+    pageId: string,
+    localPageFiles: UploadFile[],
+    remotePageFiles: UploadFile[] | null
+  ) {
+    const filesToRemovePromises = getPageFilesToRemovePromises(
+      pageId,
+      localPageFiles,
+      remotePageFiles
+    );
+
+    if (filesToRemovePromises) {
+      await Promise.all(filesToRemovePromises);
+    }
+  }
 
   const handleSubmit = async (
     { local_page_files }: FormValues,
@@ -72,12 +176,12 @@ const AttachmentsForm = ({
       const addPromise = handleAddPageFiles(
         customPageId,
         local_page_files,
-        remotePageFiles
+        files
       );
       const removePromise = handleRemovePageFiles(
         customPageId,
         local_page_files,
-        remotePageFiles
+        files
       );
 
       promises.push(addPromise, removePromise);
@@ -115,7 +219,7 @@ const AttachmentsForm = ({
 
   const methods = useForm({
     mode: 'onBlur',
-    defaultValues: { local_page_files: remotePageFiles },
+    defaultValues: { local_page_files: files },
     resolver: yupResolver(schema),
   });
 
@@ -162,10 +266,7 @@ const AttachmentsForm = ({
                   }
                 />
               </Label>
-              <FileUploader
-                name="local_page_files"
-                remoteFiles={remotePageFiles}
-              />
+              <FileUploader name="local_page_files" remoteFiles={files} />
             </SectionField>
             <Box display="flex">
               <Button

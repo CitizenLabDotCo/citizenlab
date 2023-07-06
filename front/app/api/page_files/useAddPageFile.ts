@@ -4,11 +4,14 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import pageFilesKeys from './keys';
 import { IPageFile, AddPageFileObject } from './types';
 
-const addPagesFile = async ({ pageId, ...requestBody }: AddPageFileObject) =>
+const addPagesFile = async ({
+  pageId,
+  file: { name, file, base64, ordering = null },
+}: AddPageFileObject) =>
   fetcher<IPageFile>({
     path: `/static_pages/${pageId}/files`,
     action: 'post',
-    body: requestBody,
+    body: { file: { name, file, base64, ordering } },
   });
 
 const useAddPagesFile = () => {

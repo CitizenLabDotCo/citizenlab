@@ -8,7 +8,7 @@ const baseKey = {
 const pageFilesKeys = {
   all: () => [baseKey],
   lists: () => [{ ...baseKey, operation: 'list' }],
-  list: ({ pageId }: { pageId: string }) => [
+  list: ({ pageId }: { pageId?: string }) => [
     { ...baseKey, operation: 'list', parameters: { pageId } },
   ],
 } satisfies QueryKeys;
