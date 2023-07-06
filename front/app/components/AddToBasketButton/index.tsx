@@ -148,6 +148,7 @@ const AddToBasketButton = ({
       textColor={isInBasket ? colors.white : undefined}
       textHoverColor={isInBasket ? colors.white : undefined}
       bgHoverColor={isInBasket ? colors.green500 : undefined}
+      borderColor={isInBasket ? colors.success : undefined}
       width="100%"
       className={`e2e-assign-budget-button ${
         isInBasket ? 'in-basket' : 'not-in-basket'
