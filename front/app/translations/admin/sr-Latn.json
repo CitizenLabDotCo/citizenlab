@@ -807,7 +807,6 @@
   "app.containers.Admin.reporting.reportBuilder": "Prijavi alatku za izradu",
   "app.containers.Admin.reporting.reportHeader": "Zaglavlje izveštaja",
   "app.containers.Admin.reporting.resultsSection": "REZULTATI",
-  "app.containers.Admin.tools.comingSoon": "Долази ускоро",
   "app.containers.Admin.tools.learnMore": "Сазнајте више",
   "app.containers.Admin.tools.managePublicAPIKeys": "Управљајте АПИ кључевима",
   "app.containers.Admin.tools.manageWidget": "Управљај виџетом",
