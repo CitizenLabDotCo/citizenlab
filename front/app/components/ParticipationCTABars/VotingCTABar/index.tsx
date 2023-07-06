@@ -31,8 +31,6 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
   const locale = useLocale();
   const { processing: cumulativeVotesProcessing } = useCumulativeVoting();
 
-  console.log({ cumulativeVotesProcessing });
-
   const currentPhase = useMemo(() => {
     return getCurrentPhase(phases) || getLastPhase(phases);
   }, [phases]);
