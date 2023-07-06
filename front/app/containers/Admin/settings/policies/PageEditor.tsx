@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // i18n
 import messages from './messages';
@@ -10,10 +10,9 @@ import PageForm, { FormValues } from 'components/PageForm';
 
 // services
 import { updateCustomPage } from 'services/customPages';
-import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
+import { handleAddPageFiles, handleRemovePageFiles } from 'api/page_files/util';
 
 // hooks
-import useRemoteFiles, { RemoteFiles } from 'hooks/useRemoteFiles';
 import useCustomPage from 'hooks/useCustomPage';
 
 // utils
@@ -25,6 +24,11 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 // styling
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
+import useAddPagesFile from 'api/page_files/useAddPageFile';
+import useDeletePageFile from 'api/page_files/useDeletePageFile';
+import usePageFiles from 'api/page_files/usePageFiles';
+import { UploadFile } from 'typings';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
 
 const timeout = 350;
 
@@ -98,10 +102,35 @@ interface Props {
 
 const PageEditor = ({ className, pageSlug }: Props) => {
   const page = useCustomPage({ customPageSlug: pageSlug });
-  const remotePageFiles = useRemoteFiles({
-    resourceType: 'page',
-    resourceId: !isNilOrError(page) ? page.id : null,
-  });
+  const { mutateAsync: addPageFile } = useAddPagesFile();
+  const { mutateAsync: deletePageFile } = useDeletePageFile();
+  const { data: remotePageFiles } = usePageFiles(
+    isNilOrError(page) ? undefined : page.id
+  );
+
+  const [files, setFiles] = React.useState<UploadFile[]>([]);
+
+  useEffect(() => {
+    async function getFiles() {
+      let files: UploadFile[] = [];
+
+      if (remotePageFiles) {
+        files = (await Promise.all(
+          remotePageFiles.data.map(async (file) => {
+            const uploadFile = convertUrlToUploadFile(
+              file.attributes.file.url,
+              file.id,
+              file.attributes.name
+            );
+            return uploadFile;
+          })
+        )) as UploadFile[];
+      }
+      setFiles(files);
+    }
+
+    getFiles();
+  }, [remotePageFiles]);
 
   const [expanded, setExpanded] = useState(false);
   const toggleDeploy = () => {
@@ -109,7 +138,7 @@ const PageEditor = ({ className, pageSlug }: Props) => {
   };
 
   const handleSubmit =
-    (pageId: string, remotePageFiles: RemoteFiles) =>
+    (pageId: string, remotePageFiles: UploadFile[] | null) =>
     async ({
       title_multiloc,
       top_info_section_multiloc,
@@ -119,8 +148,18 @@ const PageEditor = ({ className, pageSlug }: Props) => {
       await updateCustomPage(pageId, fieldValues);
 
       if (!isNilOrError(local_page_files)) {
-        handleAddPageFiles(pageId, local_page_files, remotePageFiles);
-        handleRemovePageFiles(pageId, local_page_files, remotePageFiles);
+        handleAddPageFiles(
+          pageId,
+          local_page_files,
+          remotePageFiles,
+          addPageFile
+        );
+        handleRemovePageFiles(
+          pageId,
+          local_page_files,
+          remotePageFiles,
+          deletePageFile
+        );
       }
     };
 
@@ -157,9 +196,9 @@ const PageEditor = ({ className, pageSlug }: Props) => {
                 title_multiloc: page.attributes.title_multiloc,
                 top_info_section_multiloc:
                   page.attributes.top_info_section_multiloc,
-                local_page_files: remotePageFiles,
+                local_page_files: files,
               }}
-              onSubmit={handleSubmit(pageId, remotePageFiles)}
+              onSubmit={handleSubmit(pageId, files)}
             />
           </EditionForm>
         </CSSTransition>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 // types
 import { Multiloc, UploadFile } from 'typings';
@@ -29,7 +29,8 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
 import useCustomPage from 'hooks/useCustomPage';
-import useRemoteFiles from 'hooks/useRemoteFiles';
+import usePageFiles from 'api/page_files/usePageFiles';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
 
 export interface FormValues {
   nav_bar_item_title_multiloc?: Multiloc;
@@ -47,10 +48,33 @@ interface Props {
 const PageForm = ({ onSubmit, defaultValues, pageId }: Props) => {
   const { formatMessage } = useIntl();
   const page = useCustomPage({ customPageId: pageId });
-  const remoteFiles = useRemoteFiles({
-    resourceId: pageId,
-    resourceType: 'page',
-  });
+  const { data: remotePageFiles } = usePageFiles(
+    isNilOrError(page) ? undefined : page.id
+  );
+
+  const [files, setFiles] = React.useState<UploadFile[]>([]);
+
+  useEffect(() => {
+    async function getFiles() {
+      let files: UploadFile[] = [];
+
+      if (remotePageFiles) {
+        files = (await Promise.all(
+          remotePageFiles.data.map(async (file) => {
+            const uploadFile = convertUrlToUploadFile(
+              file.attributes.file.url,
+              file.id,
+              file.attributes.name
+            );
+            return uploadFile;
+          })
+        )) as UploadFile[];
+      }
+      setFiles(files);
+    }
+
+    getFiles();
+  }, [remotePageFiles]);
   const schema = object({
     title_multiloc: validateAtLeastOneLocale(
       formatMessage(messages.titleMissingOneLanguageError)
@@ -120,7 +144,7 @@ const PageForm = ({ onSubmit, defaultValues, pageId }: Props) => {
               }
             />
           </Label>
-          <FileUploader name="local_page_files" remoteFiles={remoteFiles} />
+          <FileUploader name="local_page_files" remoteFiles={files} />
         </SectionField>
         <Box display="flex">
           <Button type="submit" processing={methods.formState.isSubmitting}>
