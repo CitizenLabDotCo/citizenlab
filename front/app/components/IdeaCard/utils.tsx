@@ -5,7 +5,7 @@ import AssignMultipleVotesControl from 'components/AssignMultipleVotesControl';
 import { IIdea } from 'api/ideas/types';
 import { IProjectData } from 'api/projects/types';
 import { IPhaseData } from 'api/phases/types';
-import AssignSingleVoteControl from 'components/AssignSingleVoteButton';
+import AssignSingleVoteButton from 'components/AssignSingleVoteButton';
 
 type InteractionsProps = {
   idea: IIdea;
@@ -52,10 +52,11 @@ export const getInteractions = ({
     if (showSingleVoteControl) {
       return (
         <Box display="flex" alignItems="center">
-          <AssignSingleVoteControl
+          <AssignSingleVoteButton
             projectId={projectId}
             ideaId={idea.data.id}
             participationContext={participationContext}
+            buttonStyle="primary-outlined"
           />
         </Box>
       );

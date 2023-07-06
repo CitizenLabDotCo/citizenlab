@@ -24,11 +24,13 @@ interface Props {
   projectId: string;
   participationContext?: IPhaseData | IProjectData | null;
   ideaId: string;
+  buttonStyle: 'primary' | 'primary-outlined';
 }
 
 const AssignSingleVoteButton = ({
   projectId,
   ideaId,
+  buttonStyle,
   participationContext,
 }: Props) => {
   // participation context
@@ -100,7 +102,7 @@ const AssignSingleVoteButton = ({
 
   return (
     <Button
-      buttonStyle={ideaInBasket ? 'primary' : 'primary-outlined'}
+      buttonStyle={ideaInBasket ? 'primary' : buttonStyle}
       bgColor={ideaInBasket ? colors.success : undefined}
       disabled={!isNilOrError(basket?.data?.attributes.submitted_at)}
       icon={ideaInBasket ? 'check' : 'vote-ballot'}

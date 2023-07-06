@@ -5,4 +5,8 @@ export default defineMessages({
     id: 'app.components.AssignBudgetControl.a11y_price',
     defaultMessage: 'Price: ',
   },
+  youHave: {
+    id: 'app.components.AssignBudgetControl.youHave',
+    defaultMessage: 'You have',
+  },
 });

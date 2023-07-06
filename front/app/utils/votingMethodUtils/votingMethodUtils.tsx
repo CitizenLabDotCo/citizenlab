@@ -23,7 +23,7 @@ import AssignVotesControl from 'containers/IdeasShow/components/RightColumnDeskt
 import AssignBudgetControl from 'containers/IdeasShow/components/RightColumnDesktop/AssignBudgetControl';
 import AddToBasketButton from 'components/AddToBasketButton';
 import AssignMultipleVotesControl from 'components/AssignMultipleVotesControl';
-import AssignSingleVotesButton from 'components/AssignSingleVoteButton';
+import AssignSingleVoteButton from 'components/AssignSingleVoteButton';
 import AssignVoteControl from 'containers/IdeasShow/components/RightColumnDesktop/AssignVoteControl';
 
 /*
@@ -477,10 +477,11 @@ const singleVotingConfig: VotingMethodConfig = {
   }) => {
     if (compact) {
       return (
-        <AssignSingleVotesButton
+        <AssignSingleVoteButton
           participationContext={participationContext}
           ideaId={ideaId}
           projectId={projectId}
+          buttonStyle={'primary'}
         />
       );
     }

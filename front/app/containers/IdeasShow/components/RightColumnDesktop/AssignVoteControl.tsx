@@ -14,15 +14,17 @@ import AssignSingleVoteButton from 'components/AssignSingleVoteButton';
 import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
 import { getCurrentPhase } from 'api/phases/utils';
+import VotesCounter from 'components/VotesCounter';
+import { Box } from '@citizenlab/cl2-component-library';
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 const IdeaPageContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  ${media.tablet`
-    padding: 20px;
-    background: ${colors.background};
-  `}
+  background: white;
+  padding: 24px;
 `;
 
 interface Props {
@@ -44,7 +46,27 @@ const AssignVoteControl = memo(({ ideaId, projectId }: Props) => {
         ideaId={ideaId}
         projectId={projectId}
         participationContext={participationContext}
+        buttonStyle="primary"
       />
+      {participationContext?.attributes.voting_max_total && (
+        <Box
+          color={colors.grey700}
+          mt="8px"
+          display="flex"
+          width="100%"
+          justifyContent="center"
+        >
+          <FormattedMessage {...messages.youHave} />
+          <Box ml="4px">
+            {project?.data.id && <VotesCounter projectId={project?.data.id} />}
+          </Box>
+        </Box>
+      )}
+      {!participationContext?.attributes.voting_max_total && (
+        <Box mt="8px" display="flex" width="100%" justifyContent="center">
+          <Box ml="4px">Have voted for x options</Box>
+        </Box>
+      )}
     </IdeaPageContainer>
   );
 });
