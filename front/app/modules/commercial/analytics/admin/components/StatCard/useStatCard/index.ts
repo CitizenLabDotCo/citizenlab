@@ -7,6 +7,7 @@ import { useIntl } from 'utils/cl-intl';
 // typings
 import { SingleCountResponse, StatCardQueryParameters } from './typings';
 import useAnalytics from 'api/analytics/useAnalytics';
+import { useState } from 'react';
 
 export default function useStatCard({
   messages,
@@ -18,6 +19,7 @@ export default function useStatCard({
   resolution,
 }: StatCardQueryParameters) {
   const { formatMessage } = useIntl();
+  const [currentResolution, setCurrentResolution] = useState(resolution);
 
   const { data: analytics } = useAnalytics<SingleCountResponse>(
     queryHandler({
@@ -25,10 +27,15 @@ export default function useStatCard({
       startAtMoment,
       endAtMoment,
       resolution,
-    })
+    }),
+    () => setCurrentResolution(resolution)
   );
 
-  const formattedLabels = formatLabels(messages, formatMessage, resolution);
+  const formattedLabels = formatLabels(
+    messages,
+    formatMessage,
+    currentResolution
+  );
 
   const cardData =
     analytics &&

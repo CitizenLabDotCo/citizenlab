@@ -15,7 +15,7 @@ import { parseTimeSeries, parseStats, parseExcelData } from './parse';
 // typings
 import { QueryParameters, Response } from './typings';
 import useAnalytics from 'api/analytics/useAnalytics';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
 export default function useActiveUsers({
   projectId,
@@ -24,6 +24,7 @@ export default function useActiveUsers({
   resolution,
 }: QueryParameters) {
   const { formatMessage } = useIntl();
+  const [currentResolution, setCurrentResolution] = useState(resolution);
 
   const { data: analytics } = useAnalytics<Response>(
     query({
@@ -31,7 +32,8 @@ export default function useActiveUsers({
       startAtMoment,
       endAtMoment,
       resolution,
-    })
+    }),
+    () => setCurrentResolution(resolution)
   );
 
   const stats = analytics ? parseStats(analytics.data.attributes) : null;
@@ -43,10 +45,10 @@ export default function useActiveUsers({
             analytics.data.attributes[0],
             startAtMoment,
             endAtMoment,
-            resolution
+            currentResolution
           )
         : null,
-    [analytics?.data, startAtMoment, endAtMoment, resolution]
+    [analytics?.data, startAtMoment, endAtMoment, currentResolution]
   );
 
   const xlsxData = useMemo(
@@ -61,8 +63,6 @@ export default function useActiveUsers({
         : null,
     [analytics?.data, stats, timeSeries, resolution, formatMessage]
   );
-
-  const currentResolution = resolution;
 
   return { timeSeries, stats, xlsxData, currentResolution };
 }

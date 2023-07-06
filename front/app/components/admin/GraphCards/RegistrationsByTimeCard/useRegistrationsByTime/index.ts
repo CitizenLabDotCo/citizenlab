@@ -16,7 +16,7 @@ import { getFormattedNumbers } from 'components/admin/GraphCards/_utils/parse';
 // typings
 import { QueryParameters, Response } from './typings';
 import useAnalytics from 'api/analytics/useAnalytics';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
 export default function useRegistrationsByTime({
   startAtMoment,
@@ -24,12 +24,14 @@ export default function useRegistrationsByTime({
   resolution,
 }: QueryParameters) {
   const { formatMessage } = useIntl();
+  const [currentResolution, setCurrentResolution] = useState(resolution);
   const { data: analytics } = useAnalytics<Response>(
     query({
       startAtMoment,
       endAtMoment,
       resolution,
-    })
+    }),
+    () => setCurrentResolution(resolution)
   );
 
   const timeSeries = useMemo(
@@ -39,11 +41,11 @@ export default function useRegistrationsByTime({
             analytics.data.attributes[0],
             startAtMoment,
             endAtMoment,
-            resolution,
+            currentResolution,
             analytics.data.attributes[1]
           )
         : null,
-    [analytics?.data, startAtMoment, endAtMoment, resolution]
+    [analytics?.data, startAtMoment, endAtMoment, currentResolution]
   );
 
   const xlsxData = useMemo(
@@ -64,8 +66,6 @@ export default function useRegistrationsByTime({
         formattedSerieChange: null,
         typeOfChange: '',
       };
-
-  const currentResolution = resolution;
 
   return { currentResolution, timeSeries, xlsxData, formattedNumbers };
 }

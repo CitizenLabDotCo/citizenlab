@@ -13,7 +13,8 @@ import { parseStats, parseTimeSeries, parseExcelData } from './parse';
 // typings
 import { QueryParameters, Response } from './typings';
 import useAnalytics from 'api/analytics/useAnalytics';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
+import { IResolution } from 'components/admin/ResolutionControl';
 
 export default function useVisitorsData({
   projectId,
@@ -22,18 +23,20 @@ export default function useVisitorsData({
   resolution,
 }: QueryParameters) {
   const { formatMessage } = useIntl();
-
+  const [currentResolution, setCurrentResolution] =
+    useState<IResolution>(resolution);
   const { data: analytics } = useAnalytics<Response>(
     query({
       projectId,
       startAtMoment,
       endAtMoment,
       resolution,
-    })
+    }),
+    () => setCurrentResolution(resolution)
   );
 
   const translations = getTranslations(formatMessage);
-  const currentResolution = resolution;
+
   const stats = analytics ? parseStats(analytics.data.attributes) : null;
 
   const timeSeries = useMemo(
@@ -43,10 +46,10 @@ export default function useVisitorsData({
             analytics.data.attributes[2],
             startAtMoment,
             endAtMoment,
-            resolution
+            currentResolution
           )
         : null,
-    [analytics?.data, startAtMoment, endAtMoment, resolution]
+    [analytics?.data, startAtMoment, endAtMoment, currentResolution]
   );
 
   const xlsxData = useMemo(

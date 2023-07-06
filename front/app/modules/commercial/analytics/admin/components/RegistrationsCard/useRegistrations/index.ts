@@ -11,7 +11,7 @@ import { parseTimeSeries, parseStats, parseExcelData } from './parse';
 // typings
 import { QueryParameters, Response } from './typings';
 import useAnalytics from 'api/analytics/useAnalytics';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
 export default function useRegistrations({
   startAtMoment,
@@ -19,13 +19,15 @@ export default function useRegistrations({
   resolution,
 }: QueryParameters) {
   const { formatMessage } = useIntl();
+  const [currentResolution, setCurrentResolution] = useState(resolution);
 
   const { data: analytics } = useAnalytics<Response>(
     query({
       startAtMoment,
       endAtMoment,
       resolution,
-    })
+    }),
+    () => setCurrentResolution(resolution)
   );
 
   const translations = getTranslations(formatMessage);
@@ -37,10 +39,10 @@ export default function useRegistrations({
             analytics.data.attributes[0],
             startAtMoment,
             endAtMoment,
-            resolution
+            currentResolution
           )
         : null,
-    [analytics?.data, startAtMoment, endAtMoment, resolution]
+    [analytics?.data, startAtMoment, endAtMoment, currentResolution]
   );
 
   const stats = analytics ? parseStats(analytics.data.attributes) : null;
@@ -48,12 +50,10 @@ export default function useRegistrations({
   const xlsxData = useMemo(
     () =>
       analytics?.data && timeSeries && stats
-        ? parseExcelData(stats, timeSeries, resolution, translations)
+        ? parseExcelData(stats, timeSeries, currentResolution, translations)
         : null,
-    [analytics?.data, timeSeries, stats, resolution, translations]
+    [analytics?.data, timeSeries, stats, currentResolution, translations]
   );
-
-  const currentResolution = resolution;
 
   return { currentResolution, timeSeries, stats, xlsxData };
 }

@@ -18,6 +18,7 @@ import {
 // typings
 import { QueryParameters, Response } from './typings';
 import useAnalytics from 'api/analytics/useAnalytics';
+import { useState } from 'react';
 
 export default function useEmailDeliveriesData({
   startAtMoment,
@@ -25,16 +26,17 @@ export default function useEmailDeliveriesData({
   resolution,
 }: QueryParameters) {
   const { formatMessage } = useIntl();
+  const [currentResolution, setCurrentResolution] = useState(resolution);
 
   const { data: analytics } = useAnalytics<Response>(
     query({
       startAtMoment,
       endAtMoment,
       resolution,
-    })
+    }),
+    () => setCurrentResolution(resolution)
   );
 
-  const currentResolution = resolution;
   const translations = getTranslations(formatMessage);
   const stats = analytics ? parseStats(analytics.data.attributes) : null;
 
@@ -46,7 +48,7 @@ export default function useEmailDeliveriesData({
           preparedTimeSeries,
           startAtMoment,
           endAtMoment,
-          resolution
+          currentResolution
         )
       : null;
   const xlsxData =

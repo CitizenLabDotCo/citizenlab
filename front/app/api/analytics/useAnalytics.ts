@@ -11,10 +11,14 @@ const fetchAnalytics = <Response extends BaseResponseData>(query: Query) =>
     queryParams: query,
   });
 
-const useAnalytics = <Response extends BaseResponseData>(query: Query) => {
+const useAnalytics = <Response extends BaseResponseData>(
+  query: Query,
+  onSuccess?: () => void
+) => {
   return useQuery<Response, CLErrors, Response, any>({
     queryKey: analyticsKeys.item(query),
     queryFn: () => fetchAnalytics(query),
+    onSuccess,
   });
 };
 
