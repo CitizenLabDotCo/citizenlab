@@ -70,9 +70,14 @@ const InternalCommentsMoreActions = ({
   ideaId,
   initiativeId,
 }: Props) => {
+  const parentCommentId = comment.relationships?.parent?.data?.id;
   const { data: authUser } = useAuthUser();
   const { mutate: markForDeletion, isLoading } =
-    useMarkInternalCommentForDeletion({ ideaId, initiativeId });
+    useMarkInternalCommentForDeletion({
+      ideaId,
+      initiativeId,
+      parentCommentId,
+    });
   const [modalVisible_delete, setModalVisible_delete] = useState(false);
 
   const authUserId = authUser?.data.id;
