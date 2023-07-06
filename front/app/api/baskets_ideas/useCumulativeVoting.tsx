@@ -99,9 +99,16 @@ const useCumulativeVotingInterface = (
         [ideaId]: newVotes,
       }));
 
-      assignVotes(ideaId, newVotes);
+      const remoteVotesForThisIdea = remoteVotesPerIdea[ideaId] ?? 0;
+      const noUpdateNeeded = remoteVotesForThisIdea === newVotes;
+
+      if (noUpdateNeeded) {
+        assignVotes.cancel();
+      } else {
+        assignVotes(ideaId, newVotes);
+      }
     },
-    [assignVotes]
+    [assignVotes, remoteVotesPerIdea]
   );
 
   const numberOfVotesUserHas =
