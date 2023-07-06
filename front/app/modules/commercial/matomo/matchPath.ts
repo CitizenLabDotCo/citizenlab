@@ -8,7 +8,13 @@ const cache = {};
 const cacheLimit = 10000;
 let cacheCount = 0;
 
-function compilePath(path, options) {
+interface CompilePathOptions {
+  strict: boolean;
+  sensitive: boolean;
+  end: boolean;
+}
+
+function compilePath(path: string, options: CompilePathOptions) {
   const cacheKey = `${options.end}${options.strict}${options.sensitive}`;
   const pathCache = cache[cacheKey] || (cache[cacheKey] = {});
 
@@ -29,12 +35,12 @@ function compilePath(path, options) {
 /**
  * Public API for matching a URL pathname to a path.
  */
-interface Options {
+interface MatchPathOptions {
   paths: string[];
   exact: boolean;
 }
 
-function matchPath(pathname: string, { paths, exact }: Options) {
+function matchPath(pathname: string, { paths, exact }: MatchPathOptions) {
   return paths.reduce((matched, path) => {
     if (!path && path !== '') return null;
     if (matched) return matched;
