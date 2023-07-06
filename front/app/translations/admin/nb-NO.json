@@ -105,6 +105,8 @@
   "app.components.admin.PostManager.bodyTitle": "Beskrivelse",
   "app.components.admin.PostManager.changeStatusModalTitle": "Endre status for dette forslaget",
   "app.components.admin.PostManager.comments": "Kommentarer",
+  "app.components.admin.PostManager.components.goToInputManager": "Gå til input manager",
+  "app.components.admin.PostManager.components.goToProposalManager": "Gå til forslagsansvarlig",
   "app.components.admin.PostManager.contributionFormTitle": "Rediger bidrag",
   "app.components.admin.PostManager.currentLat": "Midtre breddegrad",
   "app.components.admin.PostManager.currentLng": "Midtre lengdegrad",

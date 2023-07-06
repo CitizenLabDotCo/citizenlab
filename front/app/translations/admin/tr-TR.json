@@ -105,6 +105,8 @@
   "app.components.admin.PostManager.bodyTitle": "Açıklama",
   "app.components.admin.PostManager.changeStatusModalTitle": "Bu önerinin durumunu değiştirin",
   "app.components.admin.PostManager.comments": "Yorumlar",
+  "app.components.admin.PostManager.components.goToInputManager": "Giriş yöneticisine git",
+  "app.components.admin.PostManager.components.goToProposalManager": "Teklif yöneticisine git",
   "app.components.admin.PostManager.contributionFormTitle": "Katkıyı düzenle",
   "app.components.admin.PostManager.currentLat": "Enlemi ortala",
   "app.components.admin.PostManager.currentLng": "Boylamı ortala",

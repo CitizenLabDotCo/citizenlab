@@ -2,19 +2,27 @@ import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import campaignConsentKeys from './keys';
-import { CampaignConsentKeys, ICampaignConsents } from './types';
+import {
+  CampaignConsentKeys,
+  ICampaignConsents,
+  IConsentsRequestData,
+} from './types';
 
-const fetchCampaignConsents = (unsubscriptionToken) =>
-  fetcher<ICampaignConsents>({
+const fetchCampaignConsents = (consentsRequestData?: IConsentsRequestData) => {
+  return fetcher<ICampaignConsents>({
     path: `/consents${
-      typeof unsubscriptionToken === 'string'
-        ? `?unsubscription_token=${unsubscriptionToken}`
+      typeof consentsRequestData?.unsubscriptionToken === 'string'
+        ? `?unsubscription_token=${consentsRequestData.unsubscriptionToken}`
         : ''
     }`,
     action: 'get',
+    queryParams: {
+      without_campaign_names: consentsRequestData?.withoutCampaignNames,
+    },
   });
+};
 
-const useCampaignConsents = (unsubscriptionToken?: string | null) => {
+const useCampaignConsents = (consentsRequestData?: IConsentsRequestData) => {
   return useQuery<
     ICampaignConsents,
     CLErrors,
@@ -22,7 +30,7 @@ const useCampaignConsents = (unsubscriptionToken?: string | null) => {
     CampaignConsentKeys
   >({
     queryKey: campaignConsentKeys.items(),
-    queryFn: async () => await fetchCampaignConsents(unsubscriptionToken),
+    queryFn: async () => await fetchCampaignConsents(consentsRequestData),
   });
 };
 

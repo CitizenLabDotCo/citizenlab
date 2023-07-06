@@ -105,6 +105,8 @@
   "app.components.admin.PostManager.bodyTitle": "Apraksts",
   "app.components.admin.PostManager.changeStatusModalTitle": "Mainīt šī priekšlikuma statusu",
   "app.components.admin.PostManager.comments": "Komentāri",
+  "app.components.admin.PostManager.components.goToInputManager": "Iet uz ievades pārvaldnieku",
+  "app.components.admin.PostManager.components.goToProposalManager": "Pārejiet uz priekšlikumu pārvaldnieku",
   "app.components.admin.PostManager.contributionFormTitle": "Rediģēt ieguldījumu",
   "app.components.admin.PostManager.currentLat": "Ģeogrāfiskā platuma viduspunkts",
   "app.components.admin.PostManager.currentLng": "Ģeogrāfiskā garuma viduspunkts",

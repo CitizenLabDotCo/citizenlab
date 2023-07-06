@@ -13,7 +13,7 @@ import tracks from '../tracks';
 import { Spinner, useWindowSize } from '@citizenlab/cl2-component-library';
 import FiltersModal from './FiltersModal';
 import FiltersSideBar from './FiltersSideBar';
-import SortFilterDropdown from '../shared/Filters/SortFilterDropdown';
+import SortFilterDropdown, { Sort } from '../shared/Filters/SortFilterDropdown';
 import SearchInput from 'components/UI/SearchInput';
 import Button from 'components/UI/Button';
 import IdeasView from '../shared/IdeasView';
@@ -33,7 +33,7 @@ import {
 } from 'utils/styleUtils';
 
 // typings
-import { Sort, IQueryParameters } from 'api/ideas/types';
+import { QueryParameters } from 'containers/IdeasIndexPage';
 
 const gapWidth = 35;
 
@@ -135,9 +135,16 @@ const ContentRight = styled.div<{ filterColumnWidth: number }>`
   top: 100px;
 `;
 
+export interface QueryParametersUpdate {
+  sort?: Sort;
+  search?: string;
+  idea_status?: string;
+  topics?: string[];
+}
+
 export interface Props {
-  ideaQueryParameters: IQueryParameters;
-  onUpdateQuery: (newParams: Partial<IQueryParameters>) => void;
+  ideaQueryParameters: QueryParameters;
+  onUpdateQuery: (newParams: QueryParametersUpdate) => void;
 }
 
 const IdeaCards = ({ ideaQueryParameters, onUpdateQuery }: Props) => {
@@ -175,14 +182,14 @@ const IdeaCards = ({ ideaQueryParameters, onUpdateQuery }: Props) => {
 
   const handleStatusOnChange = useCallback(
     (idea_status: string | null) => {
-      onUpdateQuery({ idea_status });
+      onUpdateQuery({ idea_status: idea_status ?? undefined });
     },
     [onUpdateQuery]
   );
 
   const handleTopicsOnChange = useCallback(
     (topics: string[] | null) => {
-      onUpdateQuery({ topics });
+      onUpdateQuery({ topics: topics ?? undefined });
     },
     [onUpdateQuery]
   );
@@ -239,6 +246,7 @@ const IdeaCards = ({ ideaQueryParameters, onUpdateQuery }: Props) => {
               />
 
               <MobileSearchInput
+                defaultValue={ideaQueryParameters.search}
                 onChange={handleSearchOnChange}
                 a11y_numberOfSearchResults={list.length}
               />
@@ -259,6 +267,7 @@ const IdeaCards = ({ ideaQueryParameters, onUpdateQuery }: Props) => {
              */}
             <AboveContentRight>
               <SortFilterDropdown
+                value={ideaQueryParameters.sort}
                 onChange={handleSortOnChange}
                 alignment="right"
               />
@@ -291,8 +300,8 @@ const IdeaCards = ({ ideaQueryParameters, onUpdateQuery }: Props) => {
                   (biggerThanLargeTablet && smallerThan1440px) ||
                   smallerThanPhone
                 }
-                showListView={true}
-                showMapView={false}
+                view="card"
+                goBackMode="goToProject"
               />
             </ContentLeft>
 
@@ -302,6 +311,7 @@ const IdeaCards = ({ ideaQueryParameters, onUpdateQuery }: Props) => {
                 filterColumnWidth={filterColumnWidth}
               >
                 <FiltersSideBar
+                  defaultValue={ideaQueryParameters.search}
                   selectedIdeaFilters={ideaQueryParameters}
                   filtersActive={filtersActive}
                   ideasFilterCounts={ideasFilterCounts}

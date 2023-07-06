@@ -9,7 +9,7 @@ describe('/admin route', () => {
     cy.setAdminLoginCookie();
     cy.visit('/admin');
     cy.wait(1000);
-    cy.location('pathname').should('eq', '/en/admin/dashboard');
+    cy.location('pathname').should('eq', '/en/admin/dashboard/visitors');
     cy.get('#e2e-dashboard-container');
   });
 });
@@ -28,7 +28,7 @@ const ADMIN_PAGES = [
 describe('navigation to admin section when clicking corresponding button in side panel', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
-    cy.visit('/en/admin/dashboard');
+    cy.visit('/en/admin/dashboard/overview');
   });
 
   ADMIN_PAGES.forEach(({ url, container }) => {

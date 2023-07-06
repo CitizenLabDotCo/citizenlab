@@ -25,15 +25,14 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-const Container = styled.footer<{ insideModal?: boolean }>`
+const Container = styled.footer`
   display: flex;
   flex-direction: column;
   align-items: stretch;
   position: relative;
   ${media.tablet`
     margin-top: 0px;
-    padding-bottom: ${({ insideModal, theme: { mobileMenuHeight } }) =>
-      insideModal ? 0 : mobileMenuHeight}px;
+    padding-bottom: ${({ theme: { mobileMenuHeight } }) => mobileMenuHeight}px;
   `}
 `;
 
@@ -202,7 +201,6 @@ const CitizenLabLogo = styled(Icon)`
 
 interface Props {
   className?: string;
-  insideModal?: boolean;
 }
 
 // Hard-coded in front-end, not possible to edit
@@ -224,7 +222,7 @@ const MESSAGES_MAP: { [key in TFooterPage]: MessageDescriptor } = {
   'accessibility-statement': messages.accessibilityStatement,
 };
 
-const PlatformFooter = ({ className, insideModal }: Props) => {
+const PlatformFooter = ({ className }: Props) => {
   const { formatMessage } = useIntl();
   const { data: appConfiguration } = useAppConfiguration();
   const customizedA11yHrefEnabled = useFeatureFlag({
@@ -262,7 +260,7 @@ const PlatformFooter = ({ className, insideModal }: Props) => {
   });
 
   return (
-    <Container insideModal={insideModal} id="hook-footer" className={className}>
+    <Container id="hook-footer" className={className}>
       <FooterContainer>
         <PagesNav aria-label={formatMessage(messages.ariaLabel)}>
           <PagesNavList>

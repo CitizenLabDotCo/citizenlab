@@ -45,6 +45,7 @@ import { anyIsUndefined, isNilOrError } from 'utils/helperUtils';
 import { isUnauthorizedRQ } from 'utils/errorUtils';
 import { scrollToElement } from 'utils/scroll';
 import { isError } from 'lodash-es';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 const Container = styled.main<{ background: string }>`
   flex: 1 0 auto;
@@ -111,6 +112,7 @@ const ProjectsShowPage = ({ project }: Props) => {
     if (scrollToEventId && mounted && !loading) {
       setTimeout(() => {
         scrollToElement({ id: scrollToEventId });
+        removeSearchParams(['scrollToEventId']);
       }, 2000);
     }
   }, [mounted, loading, scrollToEventId]);
@@ -200,9 +202,13 @@ const ProjectsShowPageWrapper = () => {
 
   const { pathname } = useLocation();
   const { slug, phaseNumber } = useParams();
-  const { data: project, status, error } = useProjectBySlug(slug);
-  const { data: phases } = usePhases(project?.data.id);
-  const user = useAuthUser();
+  const {
+    data: project,
+    status: statusProject,
+    error,
+  } = useProjectBySlug(slug);
+  const { data: phases, status: statusPhases } = usePhases(project?.data.id);
+  const { data: user, status: statusUser } = useAuthUser();
 
   const processType = project?.data.attributes?.process_type;
   const urlSegments = pathname
@@ -210,15 +216,17 @@ const ProjectsShowPageWrapper = () => {
     .split('/')
     .filter((segment) => segment !== '');
 
-  const projectPending = status === 'loading';
-  const userPending = user === undefined;
-  const pending = projectPending || userPending;
+  const projectPending = statusProject === 'loading';
+  const userPending = statusUser === 'loading';
+  const phasesPending = statusPhases === 'loading';
+
+  const pending = projectPending || userPending || phasesPending;
 
   useEffect(() => {
     if (pending) return;
     if (isError(user)) return;
 
-    if (user !== null) setUserWasLoggedIn(true);
+    if (user) setUserWasLoggedIn(true);
   }, [pending, user]);
 
   if (pending) {
@@ -230,7 +238,7 @@ const ProjectsShowPageWrapper = () => {
   }
 
   const userJustLoggedOut = userWasLoggedIn && user === null;
-  const unauthorized = status === 'error' && isUnauthorizedRQ(error);
+  const unauthorized = statusProject === 'error' && isUnauthorizedRQ(error);
 
   if (userJustLoggedOut && unauthorized) {
     return <Navigate to="/" replace />;
@@ -240,7 +248,7 @@ const ProjectsShowPageWrapper = () => {
     return <Unauthorized />;
   }
 
-  if (status === 'error' || project === null) {
+  if (statusProject === 'error' || project === null) {
     return <PageNotFound />;
   }
 
@@ -257,7 +265,6 @@ const ProjectsShowPageWrapper = () => {
   ) {
     // Redirect old childRoutes (e.g. /info, /process, ...) to the project index location
     const projectRoot = `/${urlSegments.slice(1, 3).join('/')}`;
-    // return <Redirect method="replace" path={projectRoot} />;
     return <Navigate to={projectRoot} replace />;
   }
 

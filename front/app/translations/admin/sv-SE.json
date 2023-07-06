@@ -105,6 +105,8 @@
   "app.components.admin.PostManager.bodyTitle": "Beskrivning",
   "app.components.admin.PostManager.changeStatusModalTitle": "Ändra det här förslagets status",
   "app.components.admin.PostManager.comments": "Kommentarer",
+  "app.components.admin.PostManager.components.goToInputManager": "Gå till inmatningshanteraren",
+  "app.components.admin.PostManager.components.goToProposalManager": "Gå till förslagshanteraren",
   "app.components.admin.PostManager.contributionFormTitle": "Redigera bidrag",
   "app.components.admin.PostManager.currentLat": "Central latitud",
   "app.components.admin.PostManager.currentLng": "Central longitud",

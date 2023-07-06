@@ -7,7 +7,6 @@ import InitiativeForm, {
 
 // services
 import { Locale, Multiloc, UploadFile } from 'typings';
-import { ITopicData } from 'api/topics/types';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -32,6 +31,7 @@ import useDeleteInitiativeFile from 'api/initiative_files/useDeleteInitiativeFil
 import useUpdateInitiative from 'api/initiatives/useUpdateInitiative';
 import { IInitiativeAdd, IInitiativeData } from 'api/initiatives/types';
 import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
+import useTopics from 'api/topics/useTopics';
 
 interface Props {
   locale: Locale;
@@ -39,7 +39,6 @@ interface Props {
   initiativeImage: IInitiativeImageData | null;
   initiativeFiles: UploadFile[] | null;
   onPublished: () => void;
-  topics: ITopicData[];
 }
 
 function doNothing() {
@@ -51,11 +50,11 @@ const InitiativesEditFormWrapper = ({
   initiativeImage,
   onPublished,
   locale,
-  topics,
   initiativeFiles,
 }: Props) => {
   const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser } = useAuthUser();
+  const { data: topics } = useTopics({ excludeCode: 'custom' });
   const { mutate: addInitiativeImage } = useAddInitiativeImage();
   const { mutate: deleteInitiativeImage } = useDeleteInitiativeImage();
   const { mutate: addInitiativeFile } = useAddInitiativeFile();
@@ -110,6 +109,8 @@ const InitiativesEditFormWrapper = ({
       });
     }
   }, [initiative, initiativeImage]);
+
+  if (!topics || (image === undefined && initiativeImage)) return null;
 
   const allowAnonymousParticipation =
     appConfiguration?.data.attributes.settings.initiatives
@@ -396,7 +397,7 @@ const InitiativesEditFormWrapper = ({
     }
   };
 
-  if (image === undefined && initiativeImage) return null;
+  const initiativeTopics = topics.data.filter((topic) => !isNilOrError(topic));
 
   return (
     <>
@@ -419,7 +420,7 @@ const InitiativesEditFormWrapper = ({
         onChangeImage={onChangeImage}
         onAddFile={onAddFile}
         onRemoveFile={onRemoveFile}
-        topics={topics}
+        topics={initiativeTopics}
         titleProfanityError={titleProfanityError}
         descriptionProfanityError={descriptionProfanityError}
         postAnonymously={postAnonymously}

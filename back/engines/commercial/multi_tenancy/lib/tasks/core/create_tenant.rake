@@ -1,10 +1,8 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/BlockLength
-
-namespace :cl2_back do
+namespace :cl2_back do # rubocop:disable Metrics/BlockLength
   desc 'Create a tenant with given host and optional template'
-  task :create_tenant, %i[host template] => [:environment] do |_t, args|
+  task :create_tenant, %i[host template] => [:environment] do |_t, args| # rubocop:disable Metrics/BlockLength
     host = args[:host] || raise("Please provide the 'host' arg")
     tenant_template = args[:template] || 'e2etests_template'
     Tenant.find_by(host: host)&.destroy!
@@ -107,7 +105,7 @@ namespace :cl2_back do
           allowed: true
         },
         similar_ideas: {
-          enabled: true,
+          enabled: false,
           allowed: true
         },
         geographic_dashboard: {
@@ -346,6 +344,10 @@ namespace :cl2_back do
         public_api_tokens: {
           enabled: true,
           allowed: true
+        },
+        internal_commenting: {
+          enabled: false,
+          allowed: false
         }
       }
     )

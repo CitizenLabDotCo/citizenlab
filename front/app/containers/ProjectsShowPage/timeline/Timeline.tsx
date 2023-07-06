@@ -13,13 +13,11 @@ import PhaseDescriptions from './PhaseDescriptions';
 // hooks
 import usePhases from 'api/phases/usePhases';
 import useLocalize from 'hooks/useLocalize';
+import useProjectById from 'api/projects/useProjectById';
 
 // services
 import { getCurrentPhase } from 'api/phases/utils';
 import { IPhaseData } from 'api/phases/types';
-
-// events
-import { selectPhase } from './events';
 
 // i18n
 import messages from 'containers/ProjectsShowPage/messages';
@@ -27,6 +25,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
 import { getIsoDateUtc } from 'utils/dateUtils';
+import setPhaseURL from './setPhaseURL';
 
 // style
 import styled, { css } from 'styled-components';
@@ -238,6 +237,7 @@ const Timeline = ({
   setSelectedPhase,
 }: Props) => {
   const { data: phases } = usePhases(projectId);
+  const { data: project } = useProjectById(projectId);
   const localize = useLocalize();
   const tabsRef = useRef<HTMLButtonElement[]>([]);
 
@@ -245,9 +245,12 @@ const Timeline = ({
     (phase: IPhaseData | undefined) => (event: FormEvent) => {
       trackEventByName(tracks.clickOnPhase);
       event.preventDefault();
-      selectPhase(phase);
+
+      if (phase && phases && project) {
+        setPhaseURL(phase.id, phases.data, project.data);
+      }
     },
-    []
+    [phases, project]
   );
 
   const handleTabListOnKeyDown = (e: KeyboardEvent) => {

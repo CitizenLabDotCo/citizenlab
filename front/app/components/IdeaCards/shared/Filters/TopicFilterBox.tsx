@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -29,14 +29,6 @@ interface Props extends InputProps, DataProps {}
 
 const TopicFilterBox = memo<Props>(
   ({ selectedTopicIds, topics, onChange, className }) => {
-    const handleOnChange = useCallback(
-      (newsSelectedTopicIds: string[] | null) => {
-        onChange(newsSelectedTopicIds);
-      },
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      []
-    );
-
     if (
       !isNilOrError(topics) &&
       topics.filter((topic) => !isNilOrError(topic)).length > 0
@@ -46,7 +38,7 @@ const TopicFilterBox = memo<Props>(
           <TopicsFilter
             topics={topics.filter((topic) => !isNilOrError(topic))}
             selectedTopicIds={selectedTopicIds}
-            onChange={handleOnChange}
+            onChange={onChange}
           />
         </Container>
       );

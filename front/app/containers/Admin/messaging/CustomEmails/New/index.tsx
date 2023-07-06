@@ -1,7 +1,6 @@
 import React from 'react';
 
 import useAuthUser from 'api/me/useAuthUser';
-import { createCampaign } from 'services/campaigns';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 import { Box, colors } from '@citizenlab/cl2-component-library';
@@ -12,15 +11,23 @@ import CampaignForm, { FormValues, PageTitle } from '../CampaignForm';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 
+import useAddCampaign from 'api/campaigns/useAddCampaign';
+
 const New = () => {
   const { data: authUser } = useAuthUser();
-  const handleSubmit = async (values: FormValues) => {
-    const response = await createCampaign({
-      campaign_name: 'manual',
-      ...values,
-    });
-
-    clHistory.push(`/admin/messaging/emails/custom/${response.data.id}`);
+  const { mutate: createCampaign, isLoading } = useAddCampaign();
+  const handleSubmit = (values: FormValues) => {
+    createCampaign(
+      {
+        campaign_name: 'manual',
+        ...values,
+      },
+      {
+        onSuccess: (response) => {
+          clHistory.push(`/admin/messaging/emails/custom/${response.data.id}`);
+        },
+      }
+    );
   };
 
   const goBack = () => {
@@ -34,6 +41,7 @@ const New = () => {
         <FormattedMessage {...messages.addCampaignTitle} />
       </PageTitle>
       <CampaignForm
+        isLoading={isLoading}
         defaultValues={{
           sender: 'author',
           reply_to:
