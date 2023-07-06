@@ -374,7 +374,15 @@ const singleVotingConfig: VotingMethodConfig = {
           );
         }
         return (
-          <FormattedMessage {...messages.singleVotingOneVoteInstructions} />
+          <FormattedMessage
+            values={{
+              b: (chunks) => (
+                <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+              ),
+              totalVotes: participationContext?.attributes.voting_max_total,
+            }}
+            {...messages.singleVotingOneVoteInstructions}
+          />
         );
       }
       return (

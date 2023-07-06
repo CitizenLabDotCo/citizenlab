@@ -139,9 +139,9 @@ export default defineMessages({
       'You can vote for <b> {totalVotes} options</b>. Select your preferred options by tapping on “Vote”. Once you are done, click “Submit” to cast your vote.',
   },
   singleVotingOneVoteInstructions: {
-    id: 'app.utils.votingMethodUtils.singleVotingOneVoteInstructions',
+    id: 'app.utils.votingMethodUtils.singleVotingOneVoteInstructions2',
     defaultMessage:
-      'You can vote for <b>1 option</b>. Select your preferred option by tapping on “Vote”. Once you are done, click “Submit” to cast your vote.',
+      'You can vote for <b> 1 option </b>. Select your preferred option by tapping on “Vote”. Once you are done, click “Submit” to cast your vote.',
   },
   singleVotingInstructionsUnlimited: {
     id: 'app.utils.votingMethodUtils.singleVotingInstructionsUnlimited',
