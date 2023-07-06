@@ -57,11 +57,11 @@ export default function useActiveUsers({
         ? parseExcelData(
             stats,
             timeSeries,
-            resolution,
+            currentResolution,
             getTranslations(formatMessage)
           )
         : null,
-    [analytics?.data, stats, timeSeries, resolution, formatMessage]
+    [analytics?.data, stats, timeSeries, currentResolution, formatMessage]
   );
 
   return { timeSeries, stats, xlsxData, currentResolution };

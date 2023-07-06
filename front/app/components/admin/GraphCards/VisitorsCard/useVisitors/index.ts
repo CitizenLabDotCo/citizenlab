@@ -55,9 +55,9 @@ export default function useVisitorsData({
   const xlsxData = useMemo(
     () =>
       analytics?.data && stats
-        ? parseExcelData(stats, timeSeries, translations, resolution)
+        ? parseExcelData(stats, timeSeries, translations, currentResolution)
         : null,
-    [analytics?.data, stats, timeSeries, translations, resolution]
+    [analytics?.data, stats, timeSeries, translations, currentResolution]
   );
 
   return { currentResolution, stats, timeSeries, xlsxData };
