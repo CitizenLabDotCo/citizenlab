@@ -19,7 +19,7 @@ interface Props {
 }
 
 interface CumulativeVotingInterface {
-  getVotes?: (ideaId: string) => number;
+  getVotes?: (ideaId: string) => number | null;
   setVotes?: (ideaId: string, newVotes: number) => void;
   numberOfVotesCast?: number;
   userHasVotesLeft?: boolean;
@@ -75,8 +75,8 @@ const useCumulativeVotingInterface = (projectId: string) => {
   const basketId = participationContext?.relationships?.user_basket?.data?.id;
   const { data: basketIdeas } = useBasketsIdeas(basketId);
 
-  const remoteVotesPerIdea = useMemo<Record<string, number>>(() => {
-    if (!basketIdeas) return {};
+  const remoteVotesPerIdea = useMemo<Record<string, number> | null>(() => {
+    if (!basketIdeas) return null;
 
     return basketIdeas.data.reduce((acc, basketIdea) => {
       const votes = basketIdea.attributes.votes;
@@ -94,8 +94,8 @@ const useCumulativeVotingInterface = (projectId: string) => {
   const getVotes = useCallback(
     (ideaId: string) => {
       if (ideaId in votesPerIdea) return votesPerIdea[ideaId];
-      if (ideaId in remoteVotesPerIdea) return remoteVotesPerIdea[ideaId];
-      return 0;
+      if (!remoteVotesPerIdea) return null;
+      return ideaId in remoteVotesPerIdea ? remoteVotesPerIdea[ideaId] : 0;
     },
     [votesPerIdea, remoteVotesPerIdea]
   );
@@ -107,7 +107,11 @@ const useCumulativeVotingInterface = (projectId: string) => {
         [ideaId]: newVotes,
       }));
 
-      const remoteVotesForThisIdea = remoteVotesPerIdea[ideaId] ?? 0;
+      const remoteVotesForThisIdea =
+        remoteVotesPerIdea && ideaId in remoteVotesPerIdea
+          ? remoteVotesPerIdea[ideaId]
+          : 0;
+
       const noUpdateNeeded = remoteVotesForThisIdea === newVotes;
 
       if (noUpdateNeeded) {
@@ -127,11 +131,11 @@ const useCumulativeVotingInterface = (projectId: string) => {
 
     const ideaIdsSet = new Set([
       ...Object.keys(votesPerIdea),
-      ...Object.keys(remoteVotesPerIdea),
+      ...(remoteVotesPerIdea ? Object.keys(remoteVotesPerIdea) : []),
     ]);
 
     ideaIdsSet.forEach((ideaId) => {
-      numberOfVotesCast += getVotes(ideaId);
+      numberOfVotesCast += getVotes(ideaId) ?? 0;
     });
 
     return numberOfVotesCast;

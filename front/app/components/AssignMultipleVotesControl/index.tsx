@@ -31,6 +31,9 @@ import { useIntl } from 'utils/cl-intl';
 import useLocalize from 'hooks/useLocalize';
 import messages from './messages';
 
+// utils
+import { isNil } from 'utils/helperUtils';
+
 export const VOTES_EXCEEDED_ERROR_EVENT = 'votesExceededError';
 export const VOTES_PER_OPTION_EXCEEDED_ERROR_EVENT =
   'votesPerOptionExceededError';
@@ -98,7 +101,7 @@ const AssignMultipleVotesControl = ({
     event.stopPropagation();
     event?.preventDefault();
 
-    if (votes === undefined) return;
+    if (isNil(votes)) return;
 
     if (!authUser) {
       triggerAuthenticationFlow(); // TODO: Trigger with correct parameters
@@ -126,7 +129,7 @@ const AssignMultipleVotesControl = ({
     event.stopPropagation();
     event?.preventDefault();
 
-    if (votes === undefined) return;
+    if (isNil(votes)) return;
 
     setVotes?.(ideaId, votes - 1);
   };
@@ -157,6 +160,8 @@ const AssignMultipleVotesControl = ({
 
   const basketSubmitted = !!basket?.data?.attributes.submitted_at;
   const disableAddingVote = !userHasVotesLeft || basketSubmitted;
+
+  if (votes === null) return null;
 
   if (votes > 0) {
     return (
