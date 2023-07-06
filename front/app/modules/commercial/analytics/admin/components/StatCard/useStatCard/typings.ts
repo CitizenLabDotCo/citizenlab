@@ -1,11 +1,10 @@
-import { XlsxData } from 'components/admin/ReportExportMenu';
 import {
   Dates,
   ProjectId,
   Resolution,
 } from 'components/admin/GraphCards/typings';
 import { MessageDescriptor } from 'react-intl';
-import { Query } from 'services/analyticsFacts';
+import { Query } from 'api/analytics/types';
 
 export interface StatCardStat {
   value: string;
@@ -20,11 +19,6 @@ export interface StatCardData {
   fileName: string;
   periodLabel?: string;
   stats: StatCardStat[];
-}
-
-export interface StatCardDataSet {
-  cardData: StatCardData;
-  xlsxData: XlsxData;
 }
 
 export type StatCardLabels = Record<string, string>;
@@ -56,7 +50,10 @@ export type SingleCount = {
 };
 
 export type SingleCountResponse = {
-  data: SingleCount[][];
+  data: {
+    type: 'analytics';
+    attributes: SingleCount[][];
+  };
 };
 
 // Functions to be implemented on each StatCard

@@ -4,13 +4,16 @@ export type QueryParameters = Dates & Resolution;
 
 // Response
 export type Response = {
-  data: [
-    TimeSeriesResponse | [],
-    [RegistrationsCountRow] | [],
-    [RegistrationsCountRow] | [],
-    [VisitorsCountRow] | [],
-    [VisitorsCountRow] | []
-  ];
+  data: {
+    type: 'analytics';
+    attributes: [
+      TimeSeriesResponse | [],
+      [RegistrationsCountRow] | [],
+      [RegistrationsCountRow] | [],
+      [VisitorsCountRow] | [],
+      [VisitorsCountRow] | []
+    ];
+  };
 };
 
 type TimeSeriesResponse = TimeSeriesResponseRow[];

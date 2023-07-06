@@ -8,11 +8,7 @@ import {
 
 // typings
 import { QueryParameters } from './typings';
-import {
-  Query,
-  QuerySchema,
-  AggregationsConfig,
-} from 'services/analyticsFacts';
+import { Query, QuerySchema, AggregationsConfig } from 'api/analytics/types';
 
 const getAggregations = (): AggregationsConfig => ({
   all: 'count',
