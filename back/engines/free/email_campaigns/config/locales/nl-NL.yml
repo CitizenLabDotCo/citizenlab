@@ -20,14 +20,14 @@ nl:
       "new_comment_for_admin": Nieuwe reactie in een project dat ik modereer
       "new_comment_on_commented_idea": Nieuwe reactie op een idee waar ik op reageerde
       "new_comment_on_commented_initiative": Nieuwe reactie op een voorstel waar ik op reageerde
-      "new_comment_on_voted_idea": Nieuwe reactie op een idee waar ik op stemde
-      "new_comment_on_voted_initiative": Nieuwe reactie op een voorstel waar ik op stemde
+      "new_comment_on_reacted_idea": Nieuwe reactie op een idee waar ik op reageerde
+      "new_comment_on_reacted_initiative": Nieuwe reactie op een voorstel waar ik op stemde
       "new_idea_for_admin": Nieuw idee in een project dat ik modereer
       "new_initiative_for_admin": Nieuw voorstel
       "official_feedback_on_commented_idea": Update op een idee waar ik op reageerde
       "official_feedback_on_commented_initiative": Update op een voorstel waar ik op reageerde
-      "official_feedback_on_voted_idea": Update op een idee waar ik op stemde
-      "official_feedback_on_voted_initiative": Update op een voorstel waar ik op stemde
+      "official_feedback_on_reacted_idea": Update van een idee waar ik op reageerde
+      "official_feedback_on_reacted_initiative": Update van een voorstel waar ik op stemde
       "official_feedback_on_your_idea": Update op mijn idee
       "official_feedback_on_your_initiative": Update op mijn voorstel
       "password_reset": Herstel wachtwoord
@@ -37,8 +37,8 @@ nl:
       "project_phase_upcoming": Opkomende nieuwe projectfase
       "status_change_of_commented_idea": Statuswijziging van een idee waar ik op reageerde
       "status_change_of_commented_initiative": Statuswijziging van een voorstel waar ik op reageerde
-      "status_change_of_voted_idea": Statuswijziging van een idee waar ik op stemde
-      "status_change_of_voted_initiative": Statuswijziging van een voorstel waar ik op stemde
+      "status_change_of_reacted_idea": Statuswijziging van een idee waar ik op reageerde
+      "status_change_of_reacted_initiative": Statuswijziging van een voorstel waar ik op reageerde
       "status_change_of_your_idea": Statuswijziging van mijn idee
       "status_change_of_your_initiative": Statuswijziging van mijn voorstel
       "threshold_reached_for_admin": Een voorstel bereikte het benodigd aantal stemmen
@@ -255,21 +255,21 @@ nl:
       main_header: '%{authorName} heeft gereageerd op je idee'
       subject: 'Je hebt een reactie gekregen op het platform van %{organizationName}'
       preheader: '%{authorName} reageerde op jouw idee voor %{organizationName}'
-    new_comment_on_voted_initiative:
+    new_comment_on_reacted_initiative:
       commented: '%{commentAuthor} schreef:'
       cta_reply_to: 'Bekijk dit voorstel'
       event_description: '%{commentAuthor} reageerde op het voorstel ''%{initiativeTitle}'' waarop jij je stem uitbracht. Neem deel aan het gesprek op het platform van %{organizationName}!'
       main_header: '%{firstName}, er is een nieuwe reactie op het voorstel waar je op stemde'
       subject: 'Er is een nieuwe reactie op het voorstel waar je op stemde'
       preheader: '%{commentAuthor} plaatste een reactie bij het voorstel waarop je stemde op het platform van %{organizationName}'
-    new_comment_on_voted_idea:
+    new_comment_on_reacted_idea:
       commented: '%{commentAuthor} schreef:'
-      cta_reply_to: 'Antwoord op %{commentAuthor}'
+      cta_reply_to: 'Reageer op %{commentAuthor}'
       days_ago: '%{numberOfDays} dagen geleden'
-      event_description: '%{commentAuthor} reageerde op het idee ''%{ideaTitle}'' waarop jij je stem uitbracht. Neem deel aan het gesprek op het platform van %{organizationName}!'
-      main_header: '%{firstName}, er is een nieuwe reactie op het idee waarop je stemde'
-      subject: 'Er is een nieuwe reactie op het idee waarop je stemde'
-      preheader: '%{commentAuthor} plaatste een reactie bij het idee waarop je stemde op het platform van %{organizationName}'
+      event_description: '%{commentAuthor} reageerde op het idee ''%{ideaTitle}'' waarop jij reageerde. Neem deel aan het gesprek op het platform van %{organizationName}!'
+      main_header: '%{firstName}, er is een nieuwe reactie op het idee waarop je hebt gereageerd'
+      subject: 'Er is een nieuwe reactie op het idee waarop je hebt gereageerd'
+      preheader: '%{commentAuthor} heeft een reactie achtergelaten op het idee waarop je hebt gereageerd op het platform van %{organizationName}'
       today: Vandaag
       yesterday: Gisteren
     new_initiative_for_admin:
@@ -306,13 +306,13 @@ nl:
       main_header: 'Er is een update bij het voorstel waarop je reageerde'
       subject: 'Een voorstel waar je op reageerde, heeft een officiële update ontvangen op het platform van %{organizationName}'
       preheader: '%{officialName} schreef een officiële update bij het voorstel waarop je reageerde'
-    official_feedback_on_voted_idea:
+    official_feedback_on_reacted_idea:
       by_author: 'door %{authorName}'
       updated: '%{officialName} schreef:'
       cta_view: 'Ga naar dit idee'
       event_description: '%{officialName} gaf een update bij het idee ''%{ideaTitle}''. Klik op de onderstaande knop om het gesprek voort te zetten met %{officialName}.'
-      subject: 'Een idee waar je op gestemd hebt, heeft een update ontvangen op het platform van %{organizationName}'
-      preheader: '%{officialName} schreef een update bij het idee waarop je stemde'
+      subject: 'Een idee waar je op reageerde, heeft een update gekregen op het platform van %{organizationName}'
+      preheader: '%{officialName} heeft een update achtergelaten over een idee waarop je hebt gereageerd'
       main_header: ""
     official_feedback_on_commented_idea:
       by_author: 'door %{authorName}'
@@ -330,12 +330,12 @@ nl:
       main_header: 'Je hebt een update ontvangen van %{organizationName}'
       subject: 'Je hebt een update ontvangen van %{organizationName}'
       preheader: '%{officialName} schreef een officiële update bij je idee'
-    official_feedback_on_voted_initiative:
+    official_feedback_on_reacted_initiative:
       by_author: 'door %{authorName}'
       updated: '%{officialName} schreef:'
       cta_view: 'Ga naar dit voorstel'
-      event_description: '%{officialName} gaf een update bij het voorstel ''%{initiativeTitle}''. Klik op de onderstaande knop om het gesprek voort te zetten met %{organizationName}.'
-      main_header: 'Er is een update bij het voorstel waarop je hebt gestemd'
+      event_description: '%{officialName} gaf een update over het voorstel ''%{initiativeTitle}''. Klik op de onderstaande knop om het gesprek voort te zetten met %{organizationName}.'
+      main_header: 'Er is een update over het voorstel waarop je hebt gestemd'
       subject: 'Een voorstel waar je op gestemd hebt, heeft een update ontvangen op het platform van %{organizationName}'
       preheader: '%{officialName} schreef een officiële update bij het voorstel waarop je stemde'
     official_feedback_on_your_initiative:
@@ -352,7 +352,7 @@ nl:
       preheader: 'Een admin van het platform van %{organizationName} heeft jou zojuist projectbeheerder gemaakt van het volgende project'
       subject: 'Je bent nu projectbeheerder op het platform van %{organizationName}'
       text_design_participatory_process: 'Als projectbeheerder kan je mee het project instellen en vormgeven en bepalen hoe andere gebruikers binnen je project werken. Je kan de tijdslijn aanpassen en de verschillende fases instellen. Kies bij elke fase de ''inspraakmethode'': bijdrages posten, reacties verzamelen en/of stemmen of gebruik een fase om enkel informatie te geven.'
-      text_moderate_analyse_input: 'Wanneer het project eenmaal is gelanceerd zullen de eerste bijdrages binnenkomen. Je ontvangt wekelijks een rapport met alle kernactiviteiten (nieuwe ideeën, stemmen, reacties) zodat je altijd op de hoogte blijft. In het ideeën-overzicht binnen je project kan je zien welke ideeën de meeste voor- en tegenstemmen kregen, en je kan de projectstatus aanpassen of thema''s toevoegen.'
+      text_moderate_analyse_input: 'Wanneer het project eenmaal is gelanceerd zullen de eerste bijdragen binnenkomen. Je ontvangt wekelijks een rapport met alle kernactiviteiten (nieuwe bijdragen, stemmen, reacties) zodat je altijd op de hoogte blijft. In het bijdragen-overzicht binnen je project kan je zien welke bijdragen de meeste likes en dislikes kregen.'
       text_share_project_information: 'Om de kwaliteit van de bijdrages die binnenkomen te verhogen is het belangrijk om voldoende informatie aan je doelpubliek te geven: vul de beschrijving van het project in, voeg afbeeldingen toe (bv. ook schetsen en plannen) en communiceer ook over verwante activiteiten. Onthoud: kwaliteitsvolle informatie gaat vooraf aan goede participatie!'
       title_design_participatory_process: 'Geef vorm aan het participatieproces'
       title_moderate_analyse_input: 'Beheer en analyseer de input'
@@ -405,20 +405,20 @@ nl:
       main_header: 'Je idee heeft een nieuwe status'
       subject: 'De status van je idee werd gewijzigd'
       preheader: '%{organizationName} wijzigde de status van jouw idee'
-    status_change_of_voted_idea:
+    status_change_of_reacted_idea:
       status_change: 'De nieuwe status van dit idee is ''%{ideaStatus}'''
-      cta_view_idea: 'Ga naar het idee'
+      cta_view_idea: 'Ga naar dit idee'
       event_description: '%{organizationName} heeft de status van het idee ''%{ideaTitle}'' op hun digitale participatieplatform bijgewerkt.'
-      main_header: 'Een idee waar je op gestemd hebt, heeft een nieuwe status'
-      subject: 'De status van een idee waarop je je stem uitbracht werd gewijzigd'
-      preheader: '%{organizationName} wijzigde de status van een idee waarop je stemde'
-    status_change_of_voted_initiative:
+      main_header: 'Een idee waar je op reageerde, heeft een nieuwe status'
+      subject: 'De status van een idee waarop je hebt gereageerd, is gewijzigd'
+      preheader: '%{organizationName} heeft de status van een idee waarop je hebt gereageerd, gewijzigd'
+    status_change_of_reacted_initiative:
       status_change: 'De nieuwe status van dit voorstel is ''%{initiativeStatus}'''
       cta_view_initiative: 'Ga naar dit voorstel'
       event_description: 'De status van het voorstel ''%{initiativeTitle}'' is bijgewerkt op het digitale participatieplatform van %{organizationName}.'
       main_header: 'Een voorstel waar je op gestemd hebt, heeft een nieuwe status'
-      subject: 'De status van een voorstel waarop je je stem uitbracht werd gewijzigd'
-      preheader: 'De status van een voorstel waarop je stemde werd gewijzigd'
+      subject: 'De status van een voorstel waarop je hebt gestemd, is gewijzigd'
+      preheader: 'De status van een voorstel waarop je stemde, is gewijzigd'
     status_change_of_commented_initiative:
       status_change: 'De nieuwe status van dit voorstel is ''%{initiativeStatus}'''
       cta_view_initiative: 'Ga naar dit voorstel'
@@ -547,7 +547,7 @@ nl:
         permissions: 'Machtigingen'
         projects: 'Projecten'
         proposals: 'Voorstellen'
-        votes: 'Stemmen'
+        reactions: 'Reacties'
       trigger:
         comment_is_deleted: 'Reactie is verwijderd'
         comment_is_flagged_as_spam: 'Reactie is gemarkeerd als spam'
