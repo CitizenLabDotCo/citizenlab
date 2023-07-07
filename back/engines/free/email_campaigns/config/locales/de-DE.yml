@@ -20,14 +20,14 @@ de:
       "new_comment_for_admin": Neuer Kommentar zu einem Projekt, das ich moderiere
       "new_comment_on_commented_idea": Neuer Kommentar zu einem Beitrag, der kommentiert wurde
       "new_comment_on_commented_initiative": Neuer Kommentar zu einem Vorschlag, der kommentiert wurde
-      "new_comment_on_voted_idea": Neuer Kommentar zu einem Beitrag über den abgestimmt wurde
-      "new_comment_on_voted_initiative": Neuer Kommentar zu einem Vorschlag, für den abgestimmt wurde
+      "new_comment_on_reacted_idea": Neuer Kommentar zu einem Beitrag, auf den ich reagiert habe
+      "new_comment_on_reacted_initiative": Neuer Kommentar zu einem Vorschlag, für den ich gestimmt habe
       "new_idea_for_admin": Neuer Beitrag zu einem Projekt, das moderiert wird
       "new_initiative_for_admin": Neuer Vorschlag
       "official_feedback_on_commented_idea": Offizielles Update zu einem Beitrag, der kommentiert wurde
       "official_feedback_on_commented_initiative": Offizielles Update zu einem Vorschlag, der kommentiert wurde
-      "official_feedback_on_voted_idea": Offizielles Update zu einem Beitrag für den abgestimmt wurde
-      "official_feedback_on_voted_initiative": Offizielles Update zu einem Vorschlag, für den abgestimmt wurde
+      "official_feedback_on_reacted_idea": Update zu einem Beitrag, auf den ich reagiert habe
+      "official_feedback_on_reacted_initiative": Update zu einem Vorschlag, für den ich abgestimmt habe
       "official_feedback_on_your_idea": Offizielles Update zu einem Beitrag
       "official_feedback_on_your_initiative": Update zu einem Vorschlag
       "password_reset": Zurücksetzen des Passworts
@@ -37,8 +37,8 @@ de:
       "project_phase_upcoming": Bevorstehende neue Projektphase
       "status_change_of_commented_idea": Statusänderung eines Beitrags, der durch Nutzer*in kommentiert wurde
       "status_change_of_commented_initiative": Statusänderung eines Vorschlags, der kommentiert wurde
-      "status_change_of_voted_idea": Statusänderung eines Beitrags für den abgestimmt wurde
-      "status_change_of_voted_initiative": Statusänderung eines Vorschlags, für den abgestimmt wurde
+      "status_change_of_reacted_idea": Statusänderung eines Beitrags, auf den ich reagiert habe
+      "status_change_of_reacted_initiative": Statusänderung eines Vorschlags, auf den ich reagiert habe
       "status_change_of_your_idea": Statusänderung eines Beitrags
       "status_change_of_your_initiative": Statusänderung eines Vorschlags
       "threshold_reached_for_admin": Vorschlag hat die Abstimmungsschwelle erreicht
@@ -255,21 +255,21 @@ de:
       main_header: '%{authorName} hat Ihre Idee kommentiert'
       subject: 'Du hast einen Kommentar erhalten auf %{organizationName}s Plattform'
       preheader: '%{authorName} hat einen Kommentar zu Ihrer Idee für %{organizationName} hinterlassen'
-    new_comment_on_voted_initiative:
+    new_comment_on_reacted_initiative:
       commented: '%{commentAuthor} schrieb:'
-      cta_reply_to: 'Den Vorschlag ansehen'
+      cta_reply_to: 'Vorschlag ansehen'
       event_description: '%{commentAuthor} hat den Vorschlag "%{initiativeTitle}" kommentiert, für den du abgestimmt hast. Nehme an der Diskussion auf der Plattform von %{organizationName} teil!'
       main_header: '%{firstName}, es gibt einen neuen Kommentar zum Vorschlag, über den Sie abgestimmt haben'
       subject: 'Es gibt einen neuen Kommentar zum Vorschlag, für den du abgestimmt hast'
       preheader: '%{commentAuthor} hat auf der Plattform von %{organizationName} einen Kommentar zum Vorschlag hinterlassen, für den du abgestimmt hast'
-    new_comment_on_voted_idea:
+    new_comment_on_reacted_idea:
       commented: '%{commentAuthor} hat kommentiert:'
       cta_reply_to: 'Antworten Sie auf %{commentAuthor}'
       days_ago: 'vor %{numberOfDays} Tagen'
-      event_description: '%{commentAuthor} hat sich zu der Idee ''%{ideaTitle}'' geäußert, über die Sie abgestimmt haben. Beteiligen Sie sich an der Diskussion auf der Plattform von %{organizationName}!'
-      main_header: '%{firstName}, es gibt einen neuen Kommentar zu der Idee, über die Sie abgestimmt haben'
-      subject: 'Es gibt einen neuen Kommentar zu der Idee, über die Sie abgestimmt haben'
-      preheader: '%{commentAuthor} einen Kommentar zu der Idee hinterlassen, über die Sie auf der Plattform von %{organizationName} abgestimmt haben'
+      event_description: '%{commentAuthor} hat sich zu dem Beitrag ''%{ideaTitle}'' geäußert, für den Sie abgestimmt haben. Beteiligen Sie sich an der Diskussion auf der Plattform von %{organizationName}!'
+      main_header: '%{firstName}, es gibt einen neuen Kommentar zu dem Beitrag, auf den Sie reagiert haben'
+      subject: 'Es gibt einen neuen Kommentar zu dem Beitrag, auf den Sie reagiert haben'
+      preheader: '%{commentAuthor} hat einen Kommentar zu dem Beitrag hinterlassen, auf den Sie auf der Plattform von %{organizationName} reagiert haben'
       today: Heute
       yesterday: Gestern
     new_initiative_for_admin:
@@ -306,13 +306,13 @@ de:
       main_header: 'Es wurde ein Update zum Vorschlag veröffentlicht, den du kommentiert hast'
       subject: 'Ein Vorschlag, den du kommentiert hast, hat auf der Plattform von %{organizationName} ein Update erhalten'
       preheader: '%{officialName} hat ein offizielles Update zum Vorschlag veröffentlicht, den du kommentiert hast'
-    official_feedback_on_voted_idea:
+    official_feedback_on_reacted_idea:
       by_author: 'von %{authorName}'
       updated: '%{officialName} schrieb:'
-      cta_view: 'Zur Idee'
-      event_description: '%{officialName} hat ein Update zu der Idee ''%{ideaTitle}'' gegeben. Klicke auf den Button unten, um auf%{officialName} zu reagieren.'
-      subject: 'Eine Idee, über die Sie abgestimmt haben, hat eine Aktualisierung auf der Plattform von %{organizationName} erhalten'
-      preheader: '%{officialName} hat ein Update zu einer Idee veröffentlicht, für die du abgestimmt hast'
+      cta_view: 'Zum Beitrag'
+      event_description: '%{officialName} hat ein Update zu der Idee ''%{ideaTitle}'' gegeben. Klicke auf den Button unten, um auf %{officialName} zu reagieren.'
+      subject: 'Ein Beitrag, auf den du reagiert hast, hat ein Update auf der Plattform von %{organizationName} erhalten'
+      preheader: '%{officialName} hat ein Update zu einem Beitrag hinterlassen, auf den Sie reagiert haben'
       main_header: ""
     official_feedback_on_commented_idea:
       by_author: 'von %{authorName}'
@@ -330,13 +330,13 @@ de:
       main_header: 'Sie haben eine Aktualisierung von %{organizationName} erhalten'
       subject: 'Du hast ein offizielles Update von %{organizationName} erhalten'
       preheader: '%{officialName} hat eine offizielle Mitteilung zu Ihrer Idee hinterlassen'
-    official_feedback_on_voted_initiative:
+    official_feedback_on_reacted_initiative:
       by_author: 'von %{authorName}'
       updated: '%{officialName} schrieb:'
       cta_view: 'Zum Vorschlag'
-      event_description: '%{officialName} hat Vorschlag "%{initiativeTitle}" aktualisiert. Klicken Sie auf den Button unten, um auf %{organizationName} zu reagieren.'
+      event_description: '%{officialName} hat ein Update zum Vorschlag ''%{initiativeTitle}'' gegeben. Klicke auf den Button unten, um auf %{organizationName} zu reagieren.'
       main_header: 'Es gibt ein Update zu einem Vorschlag, über den Sie abgestimmt haben'
-      subject: 'Ein Vorschlag, über den du abgestimmt hast, hat eine offizielle Aktualisierung auf der Plattform von %{organizationName} erhalten'
+      subject: 'Ein Vorschlag, über den du abgestimmt hast, hat ein offizielles Update auf der Plattform von %{organizationName} erhalten'
       preheader: '%{officialName} hat ein offizielles Update zum Vorschlag veröffentlicht, für den du abgestimmt hast'
     official_feedback_on_your_initiative:
       updated: '%{officialName} schrieb:'
@@ -352,7 +352,7 @@ de:
       preheader: 'Ein Admin der Beteiligungsplattform %{organizationName} hat Sie gerade zum/zur Projektmanager*in des folgenden Projekts ernannt'
       subject: 'Sie sind jetzt Projektmanager*in auf der Plattform %{organizationName}'
       text_design_participatory_process: 'Als Projektmanager*in können Sie konfigurieren, wie Nutzer*innen innerhalb Ihres Projekts interagieren. Sie können neue Phasen zur Zeitleiste hinzufügen. Jede dieser Phasen kann unterschiedlich eingestellt werden bezüglich der Ideen-Eingabe, Kommentierung und Abstimmungen.'
-      text_moderate_analyse_input: 'Sobald das Projekt angelaufen ist, werden die ersten Ideen eintreffen. Sie erhalten wöchentliche Berichte mit allen wichtigen Aktivitäten, damit Sie den Überblick behalten. Die Ideenübersicht in Ihrer Projektmanagement-Ansicht hilft Ihnen zu verstehen, welche Ideen die meisten Für- und Gegen-Stimmen erhalten haben.'
+      text_moderate_analyse_input: 'Sobald das Projekt angelaufen ist, werden die ersten Beiträge eintreffen. Sie erhalten wöchentliche Berichte mit allen wichtigen Aktivitäten, damit Sie den Überblick behalten. Die Beitragsübersicht in Ihrer Projektmanagement-Ansicht hilft Ihnen zu verstehen, welche Ideen die meisten Für- und Gegen-Stimmen erhalten haben.'
       text_share_project_information: 'Um die Qualität der Ideen, die Sie erhalten, zu erhöhen, ist es vor allem wichtig, die Bürger:innen genügend zu informieren. Fügen Sie eine Projektbeschreibung hinzu. Fügen Sie Bilder, wie Pläne und Skizzen, hinzu. Kommunizieren Sie alle betreffenden Veranstaltungen und Ereignisse. Denken Sie daran: gut informieren ist das A und O jeder Beteiligung!'
       title_design_participatory_process: 'Gestalten Sie den partizipativen Prozess'
       title_moderate_analyse_input: 'Moderieren und analysieren Sie den Input der Bürger:innen'
@@ -405,17 +405,17 @@ de:
       main_header: 'Ihre Idee hat einen neuen Status'
       subject: 'Der Status Ihrer Idee wurde geändert'
       preheader: '%{organizationName} hat den Status Ihrer Idee geändert'
-    status_change_of_voted_idea:
-      status_change: 'Der neue Status dieser Idee ist ''%{ideaStatus}'''
-      cta_view_idea: 'Zur Idee'
-      event_description: '%{organizationName} hat den Status des Beitrags ''%{ideaTitle}'' auf Ihrer digitalen Beteiligungsplattform aktualisiert.'
-      main_header: 'Eine Idee, über die Sie abgestimmt haben, hat einen neuen Status'
-      subject: 'Der Status einer Idee, über die Sie abgestimmt haben, wurde geändert'
-      preheader: '%{organizationName} hat den Status einer Idee geändert, für die du abgestimmt hast'
-    status_change_of_voted_initiative:
+    status_change_of_reacted_idea:
+      status_change: 'Der neue Status dieses Beitrags ist ''%{ideaStatus}'''
+      cta_view_idea: 'Zum Beitrag'
+      event_description: '%{organizationName} hat den Status der Idee „%{ideaTitle}“ auf ihrer digitalen Beteiligungsplattform aktualisiert.'
+      main_header: 'Ein Beitrag, auf den du reagiert hast, hat einen neuen Status'
+      subject: 'Der Status eines Beitrags, auf den du reagiert hast, wurde geändert'
+      preheader: '%{organizationName} hat den Status eines Beitrags geändert, auf den du reagiert hast'
+    status_change_of_reacted_initiative:
       status_change: 'Der neue Status des Vorschlags ist ''%{initiativeStatus}'''
       cta_view_initiative: 'Zum Vorschlag'
-      event_description: 'Der Status des Vorschlags ''%{initiativeTitle}'' wurde auf der digitalen Beteiligungsplattform %{organizationName} aktualisiert.'
+      event_description: 'Der Status des Vorschlags ''%{initiativeTitle}'' wurde auf der digitalen Beteiligungsplattform von %{organizationName} aktualisiert.'
       main_header: 'Ein Vorschlag, über den du abgestimmt hast, hat einen neuen Status'
       subject: 'Der Status eines Vorschlags, über den du abgestimmt hast, hat sich geändert'
       preheader: 'Der Status eines Vorschlags, über den du abgestimmt hast, hat sich geändert'
@@ -531,7 +531,7 @@ de:
         user_who_is_receiving_folder_moderator_rights: 'Nutzer*in erhält Ordner-Moderationsrechte'
         user_who_is_receiving_project_moderator_rights: 'Nutzer*in erhält Projektmanagementrechte'
         user_who_commented: 'Nutzer*in kommentiert'
-        user_who_is_mentioned: 'Erwähnte*r Nutzer*in'
+        user_who_is_mentioned: 'Erwähnte Admins & Manager*innen'
         user_who_published_the_proposal: 'Nutzer*in veröffentlicht Vorschlag'
         user_who_published_the_input: 'Nutzer*in veröffentlicht Beitrag'
         user_who_registers: 'Nutzer*in registriert sich '
@@ -547,7 +547,7 @@ de:
         permissions: 'Berechtigungen'
         projects: 'Projekte'
         proposals: 'Vorschläge'
-        votes: 'Stimmen'
+        reactions: 'Reaktionen'
       trigger:
         comment_is_deleted: 'Kommentar wird gelöscht'
         comment_is_flagged_as_spam: 'Kommentar wird als Spam markiert'
