@@ -28,8 +28,6 @@ import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 export const VOTES_EXCEEDED_ERROR_EVENT = 'votesExceededError';
-export const VOTES_PER_OPTION_EXCEEDED_ERROR_EVENT =
-  'votesPerOptionExceededError';
 
 interface Props {
   projectId: string;
