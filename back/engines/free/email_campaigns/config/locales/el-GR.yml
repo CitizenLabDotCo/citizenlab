@@ -20,14 +20,14 @@ el:
       "new_comment_for_admin": Νέο σχόλιο σε ένα έργο που συντονίζω
       "new_comment_on_commented_idea": Νέο σχόλιο σε μια ιδέα που σχολίασα
       "new_comment_on_commented_initiative": Νέο σχόλιο για μια πρόταση που σχολίασα
-      "new_comment_on_voted_idea": Νέο σχόλιο για μια ιδέα που ψήφισα
-      "new_comment_on_voted_initiative": Νέο σχόλιο για μια πρόταση που ψήφισα
+      "new_comment_on_reacted_idea": Νέο σχόλιο σε μια ιδέα στην οποία αντέδρασα
+      "new_comment_on_reacted_initiative": Νέο σχόλιο για μια πρόταση που ψήφισα
       "new_idea_for_admin": Νέα ιδέα σε ένα έργο που συντονίζω
       "new_initiative_for_admin": Νέα πρόταση
       "official_feedback_on_commented_idea": Ενημέρωση σχετικά με μια ιδέα που σχολίασα
       "official_feedback_on_commented_initiative": Ενημέρωση σχετικά με μια πρόταση που σχολίασα
-      "official_feedback_on_voted_idea": Ενημέρωση σχετικά με μια ιδέα που ψήφισα
-      "official_feedback_on_voted_initiative": Ενημέρωση σχετικά με μια πρόταση που ψήφισα
+      "official_feedback_on_reacted_idea": Ενημέρωση για μια ιδέα στην οποία αντέδρασα
+      "official_feedback_on_reacted_initiative": Ενημέρωση σχετικά με μια πρόταση που ψήφισα
       "official_feedback_on_your_idea": Ενημέρωση για την ιδέα μου
       "official_feedback_on_your_initiative": Ενημέρωση για την πρότασή μου
       "password_reset": Επαναφορά κωδικού πρόσβασης
@@ -37,8 +37,8 @@ el:
       "project_phase_upcoming": Επόμενη νέα φάση έργου
       "status_change_of_commented_idea": Αλλαγή κατάστασης μιας ιδέας που σχολίασα
       "status_change_of_commented_initiative": Αλλαγή της κατάστασης μιας πρότασης που σχολίασα
-      "status_change_of_voted_idea": Αλλαγή κατάστασης μιας ιδέας που ψήφισα
-      "status_change_of_voted_initiative": Αλλαγή της κατάστασης μιας πρότασης που ψήφισα
+      "status_change_of_reacted_idea": Αλλαγή κατάστασης μιας ιδέας στην οποία αντέδρασα
+      "status_change_of_reacted_initiative": Αλλαγή κατάστασης μιας πρότασης για την οποία αντέδρασα
       "status_change_of_your_idea": Αλλαγή κατάστασης της ιδέας μου
       "status_change_of_your_initiative": Αλλαγή κατάστασης της πρότασής μου
       "threshold_reached_for_admin": Η πρόταση έφθασε το κατώτατο όριο ψήφου
@@ -255,21 +255,21 @@ el:
       main_header: '%{authorName} σχολίασε την ιδέα σας'
       subject: 'Έχετε λάβει ένα σχόλιο στην πλατφόρμα %{organizationName}''s'
       preheader: '%{authorName} άφησε ένα σχόλιο για την ιδέα σας για το %{organizationName}'
-    new_comment_on_voted_initiative:
+    new_comment_on_reacted_initiative:
       commented: '%{commentAuthor} έγραψε:'
       cta_reply_to: 'Προβολή αυτής της πρότασης'
       event_description: '%{commentAuthor} σχολίασε την πρόταση "%{initiativeTitle}" επί της οποίας ψηφίσατε. Συμμετέχετε στη συζήτηση στην πλατφόρμα %{organizationName}!'
       main_header: '%{firstName}, υπάρχει ένα νέο σχόλιο για την πρόταση που ψηφίσατε'
       subject: 'Υπάρχει ένα νέο σχόλιο για την πρόταση που έχετε ψηφίσει'
       preheader: '%{commentAuthor} άφησε ένα σχόλιο σχετικά με την πρόταση που ψηφίσατε στην πλατφόρμα του %{organizationName}'
-    new_comment_on_voted_idea:
+    new_comment_on_reacted_idea:
       commented: '%{commentAuthor} σχολίασε:'
       cta_reply_to: 'Απάντηση στο %{commentAuthor}'
       days_ago: '%{numberOfDays} ημέρες πριν'
-      event_description: '%{commentAuthor} έχει σχολιάσει την ιδέα ''%{ideaTitle}'' για την οποία έχετε ψηφίσει. Πάρτε μέρος στη συζήτηση στην πλατφόρμα του %{organizationName}!'
-      main_header: '%{firstName}, υπάρχει ένα νέο σχόλιο για την ιδέα που ψηφίσατε'
-      subject: 'Υπάρχει ένα νέο σχόλιο για την ιδέα που έχετε ψηφίσει'
-      preheader: '%{commentAuthor} άφησε ένα σχόλιο σχετικά με την ιδέα που ψηφίσατε στην πλατφόρμα του %{organizationName}'
+      event_description: '%{commentAuthor} σχολίασε την ιδέα ''%{ideaTitle}'' στην οποία αντιδράσατε. Πάρτε μέρος στη συζήτηση στην πλατφόρμα του %{organizationName}!'
+      main_header: '%{firstName}, υπάρχει ένα νέο σχόλιο για την ιδέα στην οποία αντιδράσατε'
+      subject: 'Υπάρχει ένα νέο σχόλιο για την ιδέα στην οποία αντιδράσατε'
+      preheader: '%{commentAuthor} άφησε ένα σχόλιο για την ιδέα στην οποία αντιδράσατε στην πλατφόρμα του %{organizationName}'
       today: Σήμερα
       yesterday: Χθες
     new_initiative_for_admin:
@@ -306,13 +306,13 @@ el:
       main_header: 'Υπάρχει μια ενημέρωση σχετικά με μια πρόταση που σχολιάσατε'
       subject: 'Μια πρόταση που σχολιάσατε έλαβε επίσημη ενημέρωση στην πλατφόρμα %{organizationName}'
       preheader: '%{officialName} αφήσατε μια επίσημη ενημέρωση για μια πρόταση που σχολιάσατε'
-    official_feedback_on_voted_idea:
+    official_feedback_on_reacted_idea:
       by_author: 'από %{authorName}'
       updated: '%{officialName} έγραψε:'
       cta_view: 'Πηγαίνετε σε αυτή την ιδέα'
       event_description: '%{officialName} ενημέρωσε για την ιδέα ''%{ideaTitle}''. Κάντε κλικ στο παρακάτω κουμπί για να μπείτε στη συζήτηση με το %{officialName}.'
-      subject: 'Μια ιδέα για την οποία ψηφίσατε έχει λάβει ενημέρωση στην πλατφόρμα %{organizationName}'
-      preheader: '%{officialName} άφησε μια ενημέρωση για μια ιδέα που ψηφίσατε'
+      subject: 'Μια ιδέα στην οποία αντιδράσατε έχει λάβει ενημέρωση στην πλατφόρμα %{organizationName}.'
+      preheader: '%{officialName} άφησε μια ενημέρωση για μια ιδέα στην οποία αντιδράσατε'
       main_header: ""
     official_feedback_on_commented_idea:
       by_author: 'από %{authorName}'
@@ -330,13 +330,13 @@ el:
       main_header: 'Λάβατε μια ενημέρωση από το %{organizationName}'
       subject: 'Λάβατε μια ενημέρωση από το %{organizationName}'
       preheader: '%{officialName} άφησε μια επίσημη ενημέρωση για την ιδέα σας'
-    official_feedback_on_voted_initiative:
+    official_feedback_on_reacted_initiative:
       by_author: 'από %{authorName}'
       updated: '%{officialName} έγραψε:'
       cta_view: 'Μεταβείτε στην παρούσα πρόταση'
-      event_description: '%{officialName} ενημέρωσε σχετικά με την πρόταση "%{initiativeTitle}". Πατήστε το παρακάτω κουμπί για να μπείτε στη συζήτηση με το %{organizationName}.'
+      event_description: '%{officialName} ενημέρωσε σχετικά με την πρόταση "%{initiativeTitle}". Κάντε κλικ στο παρακάτω κουμπί για να μπείτε στη συζήτηση με το %{organizationName}.'
       main_header: 'Υπάρχει μια ενημέρωση σχετικά με μια πρόταση που ψηφίσατε'
-      subject: 'Μια πρόταση για την οποία ψηφίσατε έχει λάβει επίσημη ενημέρωση στην πλατφόρμα %{organizationName}'
+      subject: 'Μια πρόταση για την οποία ψηφίσατε έχει λάβει επίσημη ενημέρωση στην πλατφόρμα %{organizationName}.'
       preheader: '%{officialName} άφησε επίσημη ενημέρωση για μια πρόταση που ψήφισε'
     official_feedback_on_your_initiative:
       updated: '%{officialName} έγραψε:'
@@ -352,7 +352,7 @@ el:
       preheader: 'Ένας διαχειριστής της πλατφόρμας συμμετοχής του %{organizationName} μόλις σας έκανε διαχειριστή του ακόλουθου έργου'
       subject: 'Έγινες διαχειριστής έργων στην πλατφόρμα %{organizationName}.'
       text_design_participatory_process: 'Ως διαχειριστής έργου, μπορείτε να ρυθμίσετε τον τρόπο με τον οποίο οι χρήστες αλληλεπιδρούν στο έργο σας. Μπορείτε να προσθέσετε νέες φάσεις χρησιμοποιώντας το χρονοδιάγραμμα. Κάθε μία από αυτές τις φάσεις μπορεί να έχει τη δική της συμπεριφορά όσον αφορά τη δημοσίευση ιδεών, το σχολιασμό και την ψηφοφορία.'
-      text_moderate_analyse_input: 'Μόλις ξεκινήσει το έργο, θα έρθουν οι πρώτες ιδέες. Θα λαμβάνετε εβδομαδιαίες αναφορές με όλες τις βασικές δραστηριότητες, ώστε να παραμένετε στην κορυφή των πραγμάτων. Η επισκόπηση των ιδεών στην προβολή του διαχειριστή έργου σας θα σας βοηθήσει να καταλάβετε ποιες ιδέες έλαβαν τα περισσότερα upvotes και downvotes.'
+      text_moderate_analyse_input: 'Μόλις ξεκινήσει το έργο, θα έρθουν οι πρώτες ιδέες. Θα λαμβάνετε εβδομαδιαίες αναφορές με όλες τις βασικές δραστηριότητες, ώστε να παραμένετε στην κορυφή των πραγμάτων. Η επισκόπηση των ιδεών στην προβολή του διαχειριστή έργου σας θα σας βοηθήσει να καταλάβετε ποιες ιδέες έχουν τις περισσότερες συμπάθειες και αντιπάθειες.'
       text_share_project_information: 'Για να αυξήσετε την ποιότητα των ιδεών που λαμβάνετε, είναι βασικό να μοιράζεστε επαρκείς πληροφορίες: προσθέστε μια περιγραφή του έργου, επισυνάψτε εικόνες (συμπεριλαμβανομένων σκίτσων και σχεδίων) και κοινοποιήστε όλα τα σχετικά γεγονότα που λαμβάνουν χώρα. Να θυμάστε: η καλή πληροφόρηση προηγείται της καλής συμμετοχής!'
       title_design_participatory_process: 'Σχεδιασμός της συμμετοχικής διαδικασίας'
       title_moderate_analyse_input: 'Μετριοποίηση και ανάλυση των εισροών'
@@ -405,14 +405,14 @@ el:
       main_header: 'Η ιδέα σας έχει μια νέα κατάσταση'
       subject: 'Η κατάσταση της ιδέας σας έχει αλλάξει'
       preheader: '%{organizationName} άλλαξε την κατάσταση της ιδέας σας'
-    status_change_of_voted_idea:
+    status_change_of_reacted_idea:
       status_change: 'Η νέα κατάσταση αυτής της ιδέας είναι ''%{ideaStatus}'''
       cta_view_idea: 'Πηγαίνετε σε αυτή την ιδέα'
       event_description: '%{organizationName} ενημέρωσε την κατάσταση της ιδέας "%{ideaTitle}" στην ψηφιακή πλατφόρμα συμμετοχής τους.'
-      main_header: 'Μια ιδέα που ψηφίσατε έχει νέα κατάσταση'
-      subject: 'Η κατάσταση μιας ιδέας για την οποία ψηφίσατε έχει αλλάξει'
-      preheader: '%{organizationName} άλλαξε την κατάσταση μιας ιδέας που ψηφίσατε'
-    status_change_of_voted_initiative:
+      main_header: 'Μια ιδέα στην οποία αντιδράσατε έχει νέα κατάσταση'
+      subject: 'Η κατάσταση μιας ιδέας στην οποία αντιδράσατε έχει αλλάξει'
+      preheader: '%{organizationName} αλλάξατε την κατάσταση μιας ιδέας στην οποία αντιδράσατε'
+    status_change_of_reacted_initiative:
       status_change: 'Η νέα κατάσταση της πρότασης αυτής είναι "%{initiativeStatus}".'
       cta_view_initiative: 'Μεταβείτε στην παρούσα πρόταση'
       event_description: 'Η κατάσταση της πρότασης "%{initiativeTitle}" ενημερώθηκε στην ψηφιακή πλατφόρμα συμμετοχής της %{organizationName}.'
@@ -547,7 +547,7 @@ el:
         permissions: 'Δικαιώματα'
         projects: 'Έργα'
         proposals: 'Προτάσεις'
-        votes: 'Ψήφοι'
+        reactions: 'Αντιδράσεις'
       trigger:
         comment_is_deleted: 'Το σχόλιο διαγράφεται'
         comment_is_flagged_as_spam: 'Το σχόλιο επισημαίνεται ως spam'
