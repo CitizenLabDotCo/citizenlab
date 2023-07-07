@@ -424,19 +424,35 @@ const singleVotingConfig: VotingMethodConfig = {
     } else if (SubmissionState === 'submissionEnded' && !isNilOrError(locale)) {
       const votingMax = phase?.attributes?.voting_max_total;
       if (votingMax) {
-        return (
-          <FormattedMessage
-            values={{
-              b: (chunks) => (
-                <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
-              ),
-              endDate: phase && toFullMonth(phase.attributes.end_at, 'day'),
-              maxVotes: votingMax?.toLocaleString(),
-              optionCount: phase && phase.attributes.ideas_count,
-            }}
-            {...messages.singleVotingEnded}
-          />
-        );
+        if (votingMax > 1) {
+          return (
+            <FormattedMessage
+              values={{
+                b: (chunks) => (
+                  <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+                ),
+                endDate: phase && toFullMonth(phase.attributes.end_at, 'day'),
+                maxVotes: votingMax?.toLocaleString(),
+                optionCount: phase && phase.attributes.ideas_count,
+              }}
+              {...messages.singleVotingEnded}
+            />
+          );
+        } else {
+          return (
+            <FormattedMessage
+              values={{
+                b: (chunks) => (
+                  <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+                ),
+                endDate: phase && toFullMonth(phase.attributes.end_at, 'day'),
+                maxVotes: votingMax?.toLocaleString(),
+                optionCount: phase && phase.attributes.ideas_count,
+              }}
+              {...messages.singleVotingOneVoteEnded}
+            />
+          );
+        }
       } else {
         return (
           <FormattedMessage

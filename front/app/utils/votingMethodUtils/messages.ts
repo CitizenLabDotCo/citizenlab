@@ -133,6 +133,11 @@ export default defineMessages({
     defaultMessage:
       'Voting closed on <b>{endDate}.</b> Participants could <b>vote for {maxVotes} options.</b>',
   },
+  singleVotingOneVoteEnded: {
+    id: 'app.utils.votingMethodUtils.singleVotingOneVoteEnded',
+    defaultMessage:
+      'Voting closed on <b>{endDate}.</b> Participants could <b>vote for 1 option.</b>',
+  },
   singleVotingMultipleVotesInstructions: {
     id: 'app.utils.votingMethodUtils.singleVotingMultipleVotesInstructions',
     defaultMessage:
