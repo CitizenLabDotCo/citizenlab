@@ -6,6 +6,9 @@ import { Button, colors } from '@citizenlab/cl2-component-library';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import eventEmitter from 'utils/eventEmitter';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
+import { isFixableByAuthentication } from 'utils/actionDescriptors';
 
 // api
 import useBasket from 'api/baskets/useBasket';
@@ -13,10 +16,12 @@ import useAddBasketsIdeas from 'api/baskets_ideas/useAddBasketsIdeas';
 import useDeleteBasketsIdea from 'api/baskets_ideas/useDeleteBasketsIdea';
 import useAddBasket from 'api/baskets/useAddBasket';
 import useBasketsIdeas from 'api/baskets_ideas/useBasketsIdeas';
+import useIdeaById from 'api/ideas/useIdeaById';
 
 // types
 import { IProjectData } from 'api/projects/types';
 import { IPhaseData } from 'api/phases/types';
+import { IParticipationContextType } from 'typings';
 
 // intl
 import { useIntl } from 'utils/cl-intl';
@@ -44,11 +49,12 @@ const AssignSingleVoteButton = ({
   // participation context
   const contextType =
     participationContext?.type === 'phase' ? 'Phase' : 'Project';
+  const { data: idea } = useIdeaById(ideaId);
+
+  // basket
   const { data: basket } = useBasket(
     participationContext?.relationships?.user_basket?.data?.id
   );
-
-  // basket
   const { mutate: addBasket } = useAddBasket(projectId);
   const { mutateAsync: addBasketsIdeas, isLoading: isAddingToBasket } =
     useAddBasketsIdeas();
@@ -61,7 +67,42 @@ const AssignSingleVoteButton = ({
   );
   const isLoading = isAddingToBasket || isRemovingFromBasket;
 
+  // permissions
+  const actionDescriptor = idea?.data.attributes.action_descriptor.voting;
+  if (!actionDescriptor) return null;
+
   const onAdd = async () => {
+    const votingDisabledReason = actionDescriptor.disabled_reason;
+
+    if (!participationContext) {
+      return;
+    }
+
+    // trigger authentication flow if not permitted
+    if (
+      votingDisabledReason &&
+      isFixableByAuthentication(votingDisabledReason)
+    ) {
+      const context = {
+        type: participationContext.type as IParticipationContextType,
+        action: 'voting',
+        id: participationContext.id,
+      } as const;
+
+      const successAction: SuccessAction = {
+        name: 'assignSingleVote',
+        params: {
+          ideaId,
+          participationContextId: participationContext.id,
+          participationContextType:
+            participationContext.type as IParticipationContextType,
+          basket: basket?.data,
+        },
+      };
+
+      triggerAuthenticationFlow({ context, successAction });
+    }
+
     if (basket) {
       const votingMaxTotal = participationContext?.attributes?.voting_max_total;
       if (
@@ -112,6 +153,7 @@ const AssignSingleVoteButton = ({
     <Button
       buttonStyle={ideaInBasket ? 'primary' : buttonStyle}
       bgColor={ideaInBasket ? colors.success : undefined}
+      borderColor={ideaInBasket ? colors.success : undefined}
       disabled={!isNilOrError(basket?.data?.attributes.submitted_at)}
       icon={ideaInBasket ? 'check' : 'vote-ballot'}
       onClick={() => (ideaInBasket ? onRemove() : onAdd())}

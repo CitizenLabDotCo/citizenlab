@@ -21,7 +21,9 @@ const useUpdateBasketsIdea = () => {
   return useMutation<IBasketsIdea, CLErrors, IUpdateBasketsIdea>({
     mutationFn: updateBasketsIdea,
     onSuccess: (_data, variables) => {
-      queryClient.invalidateQueries({ queryKey: basketsIdeasKeys.all() });
+      queryClient.invalidateQueries({
+        queryKey: basketsIdeasKeys.list({ basketId: variables.basketId }),
+      });
       queryClient.invalidateQueries({
         queryKey: basketsKeys.item({ id: variables.basketId }),
       });

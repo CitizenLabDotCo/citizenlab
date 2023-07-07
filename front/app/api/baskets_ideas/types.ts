@@ -17,6 +17,9 @@ export interface IBasketsIdeaData {
   };
 }
 
+export interface InputParameters {
+  basketId?: string | null;
+}
 export interface IBasketsIdea {
   data: IBasketsIdeaData;
 }

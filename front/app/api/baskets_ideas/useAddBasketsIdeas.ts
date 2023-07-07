@@ -22,7 +22,9 @@ const useAddBasketsIdea = () => {
   return useMutation<IBasketsIdea, CLErrors, IAddBasketsIdea>({
     mutationFn: addBasketsIdea,
     onSuccess: (_data, variables) => {
-      queryClient.invalidateQueries({ queryKey: basketsIdeasKeys.all() });
+      queryClient.invalidateQueries({
+        queryKey: basketsIdeasKeys.list({ basketId: variables.basketId }),
+      });
       queryClient.invalidateQueries({
         queryKey: basketsKeys.item({ id: variables.basketId }),
       });

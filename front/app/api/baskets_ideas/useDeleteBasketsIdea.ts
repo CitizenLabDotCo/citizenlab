@@ -16,7 +16,9 @@ const useDeleteBasketsIdea = () => {
   return useMutation<IBasketsIdea, CLErrors, IDeleteBasketsIdea>({
     mutationFn: deleteBasketsIdea,
     onSuccess: (_data, variables) => {
-      queryClient.invalidateQueries({ queryKey: basketsIdeasKeys.items() });
+      queryClient.invalidateQueries({
+        queryKey: basketsIdeasKeys.list({ basketId: variables.basketId }),
+      });
       queryClient.invalidateQueries({
         queryKey: basketsKeys.item({ id: variables.basketId }),
       });

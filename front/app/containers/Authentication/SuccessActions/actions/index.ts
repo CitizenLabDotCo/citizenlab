@@ -1,4 +1,5 @@
 import { assignBudget, AssignBudgetParams } from './assignBudget';
+import { assignSingleVote, AssignSingleVoteParams } from './assignSingleVote';
 import {
   redirectToIdeaForm,
   RedirectToIdeaFormParams,
@@ -23,6 +24,10 @@ import {
 interface AssignBudgetAction {
   name: 'assignBudget';
   params: AssignBudgetParams;
+}
+interface AssignSingleVoteAction {
+  name: 'assignSingleVote';
+  params: AssignSingleVoteParams;
 }
 
 interface RedirectToIdeaFormAction {
@@ -74,10 +79,12 @@ export type SuccessAction =
   | VolunteerAction
   | ReactionOnCommentAction
   | ReactionOnIdeaAction
-  | ReactionOnInitiativeAction;
+  | ReactionOnInitiativeAction
+  | AssignSingleVoteAction;
 
 export const getAction = ({ name, params }: SuccessAction) => {
   if (name === 'assignBudget') return assignBudget(params);
+  if (name === 'assignSingleVote') return assignSingleVote(params);
   if (name === 'redirectToIdeaForm') return redirectToIdeaForm(params);
   if (name === 'redirectToInitiativeForm') {
     return redirectToInitiativeForm(params);
