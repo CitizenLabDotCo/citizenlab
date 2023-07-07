@@ -20,14 +20,14 @@ sr-Latn:
       "new_comment_for_admin": Novi komentar u projektu kojim upravljam
       "new_comment_on_commented_idea": Novi komentar na ideju koju komentarišem
       "new_comment_on_commented_initiative": Novi komentar na predlog koji komentarišem
-      "new_comment_on_voted_idea": Novi komentar na ideju za koju glasam
-      "new_comment_on_voted_initiative": Novi komentar na predlog za koji glasam
+      "new_comment_on_reacted_idea": Нови коментар на идеју на коју сам реаговао
+      "new_comment_on_reacted_initiative": Нови коментар на предлог за који сам гласао
       "new_idea_for_admin": Nova ideja u projektu kojim upravljam
       "new_initiative_for_admin": Novi predlog
       "official_feedback_on_commented_idea": Nove informacije o ideji koju komentarišem
       "official_feedback_on_commented_initiative": Nove informacije o predlogu koji komentarišem
-      "official_feedback_on_voted_idea": Nove informacije o ideji za koju glasam
-      "official_feedback_on_voted_initiative": Nove informacije o predlogu za koji glasam
+      "official_feedback_on_reacted_idea": Ажурирање идеје на коју сам реаговао
+      "official_feedback_on_reacted_initiative": Ажурирање предлога за који сам гласао
       "official_feedback_on_your_idea": Nove informacije o mojoj ideji
       "official_feedback_on_your_initiative": Nove informacije o mome predlogu
       "password_reset": Resetovanje lozinke
@@ -37,8 +37,8 @@ sr-Latn:
       "project_phase_upcoming": Buduće faze projekta
       "status_change_of_commented_idea": Promena statusa ideje koju komentarišem
       "status_change_of_commented_initiative": Promena statusa predloga koji komentarišem
-      "status_change_of_voted_idea": Promena statusa ideje za koju glasam
-      "status_change_of_voted_initiative": Promena statusa predloga za koji glasam
+      "status_change_of_reacted_idea": Статусна промена идеје на коју сам реаговао
+      "status_change_of_reacted_initiative": Статусна промена предлога на који сам реаговао
       "status_change_of_your_idea": Promena statusa moje ideje
       "status_change_of_your_initiative": Promena statusa mog predloga
       "threshold_reached_for_admin": Predlog je dostigao neophodan broj glasova
@@ -255,23 +255,23 @@ sr-Latn:
       main_header: '%{authorName} je komentarisao/la vašu ideju'
       subject: 'Dobili ste komentar na platformi %{organizationName}'
       preheader: '%{authorName} je ostavio komentar na vašu ideju za %{organizationName}'
-    new_comment_on_voted_initiative:
-      commented: '%{commentAuthor} je napisao/la:'
-      cta_reply_to: 'Pogledajte ovaj predlog'
-      event_description: '%{commentAuthor} je komentarisao/la predlog ''%{initiativeTitle}'' za koji ste glasali. Pridružite se diskusiji na %{organizationName} platformi!'
-      main_header: '%{firstName}, evo novog komentara na predlog za koji ste glasali'
-      subject: 'Novi komentar na predlog za koji ste glasali'
-      preheader: '%{commentAuthor} je ostavio/la komentar na predlog za koji ste glasali na %{organizationName} platformi '
-    new_comment_on_voted_idea:
-      commented: '%{commentAuthor} je komentarisao/la:'
-      cta_reply_to: 'Odgovorite %{commentAuthor}'
-      days_ago: 'Pre %{numberOfDays} dana'
-      event_description: '%{commentAuthor} je komentarisao/la ideju ''%{ideaTitle}'' za koju ste glasali. Pridružite se diskusiji na %{organizationName} platformi!'
-      main_header: '%{firstName}, objavljen je novi komentar na ideji za koju ste glasali'
-      subject: 'Objavljen je novi komentar na ideji za koju ste glasali'
-      preheader: '%{commentAuthor} je ostavio/la komentar na ideji za koju ste glasali na %{organizationName} platformi'
-      today: Danas
-      yesterday: Juče
+    new_comment_on_reacted_initiative:
+      commented: '%{commentAuthor} је написао:'
+      cta_reply_to: 'Погледајте овај предлог'
+      event_description: '%{commentAuthor} је коментарисао предлог ''%{initiativeTitle}'' за који сте гласали. Придружите се дискусији на платформи %{organizationName}!'
+      main_header: '%{firstName}, постоји нови коментар на предлог за који сте гласали'
+      subject: 'Постоји нови коментар на предлог за који сте гласали'
+      preheader: '%{commentAuthor} је оставио коментар на предлог за који сте гласали на платформи %{organizationName}'
+    new_comment_on_reacted_idea:
+      commented: '%{commentAuthor} је коментарисало:'
+      cta_reply_to: 'Одговори на %{commentAuthor}'
+      days_ago: 'пре %{numberOfDays} дана'
+      event_description: '%{commentAuthor} је коментарисао идеју ''%{ideaTitle}'' на коју сте реаговали. Придружите се дискусији на платформи %{organizationName}!'
+      main_header: '%{firstName}, постоји нови коментар на идеју на коју сте реаговали'
+      subject: 'Постоји нови коментар на идеју на коју сте реаговали'
+      preheader: '%{commentAuthor} је оставио коментар на идеју на коју сте реаговали на платформи %{organizationName}'
+      today: Данас
+      yesterday: Јучер
     new_initiative_for_admin:
       by_author: 'od %{authorName}'
       commented: '%{authorFirstName} je napisao/la:'
@@ -306,14 +306,14 @@ sr-Latn:
       main_header: 'Postoji novost o predlogu koji ste komentarisali'
       subject: 'Predlog koji ste komentarisali zvanično je ažuriran na %{organizationName} platformi '
       preheader: '%{officialName} je zvanično ažurirao predlog koji ste komentarisali'
-    official_feedback_on_voted_idea:
-      by_author: 'od %{authorName}'
-      updated: '%{officialName} je napisao:'
-      cta_view: 'Idite na ovu ideju'
-      event_description: '%{officialName} je objavio novost o ideji ''%{ideaTitle}''. Kliknite na dugme u nastavku da biste započeli konverzaciju sa %{officialName}.'
-      subject: 'Ideja za koju ste glasali zvanično je ažurirana na platformi %{organizationName}'
-      preheader: '%{officialName} je objavio zvanično obaveštenje o ideji za koju ste glasali'
-      main_header: "[empty string]"
+    official_feedback_on_reacted_idea:
+      by_author: 'од %{authorName}'
+      updated: '%{officialName} је написао:'
+      cta_view: 'Иди на ову идеју'
+      event_description: '%{officialName} је дао ажурирање идеје ''%{ideaTitle}''. Кликните на дугме испод да бисте ушли у разговор са %{officialName}.'
+      subject: 'Идеја на коју сте реаговали је добила ажурирање на платформи %{organizationName}'
+      preheader: '%{officialName} је оставио ажурирање на идеју на коју сте реаговали'
+      main_header: ""
     official_feedback_on_commented_idea:
       by_author: 'od %{authorName}'
       updated: '%{officialName} je napisao:'
@@ -330,14 +330,14 @@ sr-Latn:
       main_header: 'Imate obaveštenje od %{organizationName}'
       subject: 'Imate obaveštenje od %{organizationName}'
       preheader: '%{officialName} je objavio zvanično obaveštenje o vašoj ideji'
-    official_feedback_on_voted_initiative:
-      by_author: 'od %{authorName}'
-      updated: '%{officialName} je napisao:'
-      cta_view: 'Idite na ovaj predlog'
-      event_description: '%{officialName} je objavio novost o predlogu ''%{initiativeTitle}''. Kliknite na dugme u nastavku da biste započeli konverzaciju sa %{organizationName}.'
-      main_header: 'Postoji novost o predlogu za koji ste glasali'
-      subject: 'Predlog za koji ste glasali zvanično je ažuriran na platformi %{organizationName}'
-      preheader: '%{officialName} je ažurirao predlog za koji ste glasali'
+    official_feedback_on_reacted_initiative:
+      by_author: 'од %{authorName}'
+      updated: '%{officialName} је написао:'
+      cta_view: 'Иди на овај предлог'
+      event_description: '%{officialName} је дао ажурирање на предлог ''%{initiativeTitle}''. Кликните на дугме испод да бисте ушли у разговор са %{organizationName}.'
+      main_header: 'Постоји ажурирање о предлогу за који сте гласали'
+      subject: 'Предлог за који сте гласали је добио званично ажурирање на платформи %{organizationName}'
+      preheader: '%{officialName} је оставио званично ажурирање о предлогу за који сте гласали'
     official_feedback_on_your_initiative:
       updated: '%{officialName} je napisao:'
       cta_view: 'Idite na svoj predlog'
@@ -352,7 +352,7 @@ sr-Latn:
       preheader: 'Administrator %{organizationName} participativne platforme vas je postavio za menadžera sledećeg projekta'
       subject: 'Postali ste menadžer projekta na %{organizationName} platformi '
       text_design_participatory_process: 'Kao menadžer projekta, možete da odredite kako će korisnici učestvovati u okviru njega. Pomoću vremenske linije možete dodati nove faze. Svaka od ovih faza može imati svoje specifičnosti u pogledu objavljivanja ideja, komentara i glasanja.'
-      text_moderate_analyse_input: 'Kada je projekat pokrenut, prve ideje će se pojaviti. Primaćete nedeljne izveštaje kako biste bili u toku sa svim ključnim aktivnostima. Pregled ideja će vam pomoći da saznate koje ideje su imale najviše glasova za ili protiv.'
+      text_moderate_analyse_input: 'Када се пројекат покрене, прве идеје ће се појавити. Добићете недељне извештаје са свим кључним активностима како бисте били у току. Преглед идеја у приказу менаџера пројекта ће вам помоћи да разумете које су идеје добиле највише свиђања, а које не.'
       text_share_project_information: 'Da biste poboljšali kvalitet ideja koje dobijate, važno je da omogućite dovoljno informacija: dodajte opis projekta, postavite slike (uključujući skice i planove) i najavite događaje. Zapamtite: kvalitetne informacije su osnova dobrog učešća!'
       title_design_participatory_process: 'Kreirajte participativni proces'
       title_moderate_analyse_input: 'Moderirajte i analizirajte unos'
@@ -405,20 +405,20 @@ sr-Latn:
       main_header: 'Vaša ideja ima novi status'
       subject: 'Status vaše ideje je promenjen'
       preheader: 'Status vaše ideje je promenjen od strane %{organizationName}'
-    status_change_of_voted_idea:
-      status_change: 'Novi status ove ideje je ''%{ideaStatus}'''
-      cta_view_idea: 'Idite na ovu ideju'
-      event_description: 'Status ideje „%{ideaTitle}“ je ažuriran od strane administracije %{organizationName} participativne platforme.'
-      main_header: 'Ideja za koju ste glasali ima novi status'
-      subject: 'Status ideje koju ste glasali je promenjen'
-      preheader: '%{organizationName} je promenio status ideje koju ste komentarisali'
-    status_change_of_voted_initiative:
-      status_change: 'Novi status ovog predloga je ''%{initiativeStatus}'''
-      cta_view_initiative: 'Idite na ovaj predlog'
-      event_description: 'Status predloga ''%{initiativeTitle}'' na %{organizationName} participativnoj platformi je ažuriran.'
-      main_header: 'Predlog za koji ste glasali ima novi status'
-      subject: 'Status predloga za koji ste glasali se promenio'
-      preheader: 'Status predloga za koji ste glasali se promenio'
+    status_change_of_reacted_idea:
+      status_change: 'Нови статус ове идеје је ''%{ideaStatus}'''
+      cta_view_idea: 'Иди на ову идеју'
+      event_description: '%{organizationName} је ажурирао статус идеје ''%{ideaTitle}'' на својој платформи за дигитално учешће.'
+      main_header: 'Идеја на коју сте реаговали има нови статус'
+      subject: 'Статус идеје на коју сте реаговали је промењен'
+      preheader: '%{organizationName} је променио статус идеје на коју сте реаговали'
+    status_change_of_reacted_initiative:
+      status_change: 'Нови статус овог предлога је ''%{initiativeStatus}'''
+      cta_view_initiative: 'Иди на овај предлог'
+      event_description: 'Статус предлога ''%{initiativeTitle}'' је ажуриран на дигиталној платформи за учешће %{organizationName}.'
+      main_header: 'Предлог за који сте гласали има нови статус'
+      subject: 'Статус предлога за који сте гласали је промењен'
+      preheader: 'Статус предлога за који сте гласали се променио'
     status_change_of_commented_initiative:
       status_change: 'Novi status ovog predloga je ''%{initiativeStatus}'''
       cta_view_initiative: 'Idite na ovaj predlog'
@@ -547,7 +547,7 @@ sr-Latn:
         permissions: 'Дозволе'
         projects: 'Пројекти'
         proposals: 'Предлози'
-        votes: 'Гласови'
+        reactions: 'Реакције'
       trigger:
         comment_is_deleted: 'Коментар је обрисан'
         comment_is_flagged_as_spam: 'Коментар је означен као непожељан'
