@@ -172,16 +172,15 @@ const AssignMultipleVotesControl = ({
         style={{ cursor: 'default' }}
         flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
       >
-        {!basketSubmitted && (
-          <Button
-            mr="8px"
-            bgColor={theme.colors.tenantPrimary}
-            onClick={onRemove}
-            ariaLabel={formatMessage(messages.removeVote)}
-          >
-            <h1 style={{ margin: '0px' }}>-</h1>
-          </Button>
-        )}
+        <Button
+          mr="8px"
+          bgColor={theme.colors.tenantPrimary}
+          onClick={onRemove}
+          ariaLabel={formatMessage(messages.removeVote)}
+          disabled={basketSubmitted}
+        >
+          <h1 style={{ margin: '0px' }}>-</h1>
+        </Button>
 
         <Box
           onClick={(event) => {
