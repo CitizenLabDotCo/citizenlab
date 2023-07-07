@@ -492,7 +492,7 @@
   "app.components.admin.UserFilterConditions.predicate_not_reacted_comment_in": "hat nicht auf den Kommentar reagiert",
   "app.components.admin.UserFilterConditions.predicate_not_reacted_input_in": "hat nicht auf den Beitrag reagiert",
   "app.components.admin.UserFilterConditions.predicate_not_volunteered_in": "hat sich nicht freiwillig gemeldet",
-  "app.components.admin.UserFilterConditions.predicate_not_voted_in3": "nicht an der Abstimmung teilgenommen haben",
+  "app.components.admin.UserFilterConditions.predicate_not_voted_in3": "nicht an der Abstimmung teilgenommen",
   "app.components.admin.UserFilterConditions.predicate_posted_input": "hat einen Eintrag geschrieben",
   "app.components.admin.UserFilterConditions.predicate_reacted_comment_in": "reagierte auf den Kommentar",
   "app.components.admin.UserFilterConditions.predicate_reacted_input_in": "reagierte auf Beitrag",
