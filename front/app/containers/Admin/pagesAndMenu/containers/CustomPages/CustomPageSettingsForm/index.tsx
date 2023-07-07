@@ -251,7 +251,7 @@ const CustomPageSettingsForm = ({
                 />
               </Box>
             )}
-            {!hideSlug && (
+            {!hideSlug && mode === 'edit' && (
               <Box mb={fieldMarginBottom}>
                 <SlugInput
                   slug={slug}
