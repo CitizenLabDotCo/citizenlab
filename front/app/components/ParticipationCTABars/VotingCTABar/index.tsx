@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 
 // Components
 import { Button, Icon, Box, Text } from '@citizenlab/cl2-component-library';
@@ -27,9 +27,11 @@ import useLocale from 'hooks/useLocale';
 import useBasketsIdeas from 'api/baskets_ideas/useBasketsIdeas';
 
 export const VotingCTABar = ({ phases, project }: CTABarProps) => {
+  const [processing, setProcessing] = useState(false);
   const theme = useTheme();
   const locale = useLocale();
-  const { processing: cumulativeVotesProcessing } = useCumulativeVoting();
+  const { numberOfVotesCast, processing: cumulativeVotingProcessing } =
+    useCumulativeVoting();
 
   const currentPhase = useMemo(() => {
     return getCurrentPhase(phases) || getLastPhase(phases);
@@ -51,13 +53,15 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
     currentBasketsIdeas.push({ ideaId, votes });
   });
 
-  if (hasProjectEndedOrIsArchived(project, currentPhase)) {
+  if (
+    hasProjectEndedOrIsArchived(project, currentPhase) ||
+    numberOfVotesCast === undefined
+  ) {
     return null;
   }
 
   const submittedAt = basket?.data.attributes.submitted_at || null;
-  const votesCast = basket?.data.attributes.total_votes || 0;
-  const hasUserParticipated = !!submittedAt && votesCast > 0;
+  const hasUserParticipated = !!submittedAt && numberOfVotesCast > 0;
 
   const voteExceedsLimit =
     basket?.data.attributes['budget_exceeds_limit?'] || false;
@@ -68,28 +72,49 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
     0;
 
   const minVotesRequired = minVotes > 0;
-  const minVotesReached = votesCast >= minVotes;
+  const minVotesReached = numberOfVotesCast >= minVotes;
   const minVotesRequiredNotReached = minVotesRequired && !minVotesReached;
 
   if (isNilOrError(locale)) {
     return null;
   }
 
-  const handleSubmitOnClick = async () => {
+  const handleSubmitOnClick = () => {
     if (!isNilOrError(basket)) {
-      updateBasket({
-        id: basket.data.id,
-        submitted: true,
-        participation_context_type: currentPhase ? 'Phase' : 'Project',
-      });
+      setProcessing(true);
+
+      if (cumulativeVotingProcessing) {
+        // Add a bit of timeout so that the cumulative voting request
+        // has time to complete
+        setTimeout(() => {
+          updateBasket(
+            {
+              id: basket.data.id,
+              submitted: true,
+              participation_context_type: currentPhase ? 'Phase' : 'Project',
+            },
+            {
+              onSuccess: () => setProcessing(false),
+            }
+          );
+        }, 300);
+      } else {
+        updateBasket(
+          {
+            id: basket.data.id,
+            submitted: true,
+            participation_context_type: currentPhase ? 'Phase' : 'Project',
+          },
+          {
+            onSuccess: () => setProcessing(false),
+          }
+        );
+      }
     }
   };
 
   const ctaDisabled =
-    voteExceedsLimit ||
-    votesCast === 0 ||
-    minVotesRequiredNotReached ||
-    cumulativeVotesProcessing;
+    voteExceedsLimit || numberOfVotesCast === 0 || minVotesRequiredNotReached;
 
   const CTAButton = hasUserParticipated ? (
     <Box display="flex">
@@ -112,6 +137,7 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
       padding="6px 12px"
       fontSize="14px"
       disabled={ctaDisabled}
+      processing={processing}
     >
       <FormattedMessage {...messages.submit} />
     </Button>

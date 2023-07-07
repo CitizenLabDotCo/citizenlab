@@ -31,10 +31,16 @@ const CumulativeVotingInterfaceContext =
 
 export const CumulativeVotingContext = ({ projectId, children }: Props) => {
   const { data: project } = useProjectById(projectId);
+  const { data: phases } = usePhases(projectId);
+
+  const participationContext = getCurrentParticipationContext(
+    project?.data,
+    phases?.data
+  );
 
   if (
     !projectId ||
-    !(project?.data.attributes.voting_method === 'multiple_voting')
+    !(participationContext?.attributes.voting_method === 'multiple_voting')
   ) {
     return <>{children}</>;
   }
@@ -94,10 +100,16 @@ const useCumulativeVotingInterface = (projectId: string) => {
   const getVotes = useCallback(
     (ideaId: string) => {
       if (ideaId in votesPerIdea) return votesPerIdea[ideaId];
-      if (!remoteVotesPerIdea) return null;
-      return ideaId in remoteVotesPerIdea ? remoteVotesPerIdea[ideaId] : 0;
+
+      const loading =
+        !participationContext || (basketId && !remoteVotesPerIdea);
+      if (loading) return null;
+
+      return remoteVotesPerIdea && ideaId in remoteVotesPerIdea
+        ? remoteVotesPerIdea[ideaId]
+        : 0;
     },
-    [votesPerIdea, remoteVotesPerIdea]
+    [votesPerIdea, remoteVotesPerIdea, participationContext, basketId]
   );
 
   const setVotes = useCallback(
