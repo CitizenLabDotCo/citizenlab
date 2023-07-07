@@ -579,7 +579,7 @@ nl:
       remaining_days: 'Resterende dagen'
     admin_labels:
       recipient_role:
-        admins: 'Aan admins'
+        admins: 'Aan platformbeheerders'
         admins_and_managers: 'Aan beheerders'
         managers: 'Aan beheerders'
         registered_users: 'Aan geregistreerde gebruikers'
