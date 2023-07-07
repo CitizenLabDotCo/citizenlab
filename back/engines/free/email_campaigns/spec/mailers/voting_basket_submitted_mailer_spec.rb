@@ -2,10 +2,10 @@
 
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::BasketSubmittedMailer do
+RSpec.describe EmailCampaigns::VotingBasketSubmittedMailer do
   describe 'campaign_mail' do
     let_it_be(:recipient) { create(:user, locale: 'en') }
-    let_it_be(:campaign) { EmailCampaigns::Campaigns::BasketSubmitted.create! }
+    let_it_be(:campaign) { EmailCampaigns::Campaigns::VotingBasketSubmitted.create! }
     let_it_be(:project) { create(:project) }
 
     # TODO: Can we make this command generate from a local basket

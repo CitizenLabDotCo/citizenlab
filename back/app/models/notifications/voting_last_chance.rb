@@ -60,25 +60,21 @@
 #  fk_rails_...  (spam_report_id => spam_reports.id)
 #
 module Notifications
-  class BasketSubmitted < Notification
-    # Don't understand how validations and belongs_to etc works
-    # validates :post_status, :post, :project, presence: true
-    # validates :post_type, inclusion: { in: ['Idea'] }
+  class VotingLastChance < Notification
+    validates :basket, presence: true
 
-    ACTIVITY_TRIGGERS = { 'Basket' => { 'submitted' => true } }
-    EVENT_NAME = 'Basket has been submitted'
+    ACTIVITY_TRIGGERS = { 'Phase' => { 'ending_soon' => true } }
+    EVENT_NAME = 'Phase ending soon'
 
     def self.make_notifications_on(activity)
-      basket = activity.item
-      recipient_id = basket.user_id
+      phase = activity.item
+      return unless phase.voting?
 
-      if basket && recipient_id
+      Basket.where(participation_context: phase).not_submitted do |basket|
         [new(
-          recipient_id: recipient_id,
+          recipient_id: basket.user_id,
           basket_id: basket.id
         )]
-      else
-        []
       end
     end
   end

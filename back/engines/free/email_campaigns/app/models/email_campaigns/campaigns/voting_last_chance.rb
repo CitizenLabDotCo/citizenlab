@@ -27,7 +27,7 @@
 #  fk_rails_...  (author_id => users.id)
 #
 module EmailCampaigns
-  class Campaigns::BasketSubmitted < Campaign
+  class Campaigns::VotingLastChance < Campaign
     include Consentable
     include ActivityTriggerable
     include Disableable
@@ -38,11 +38,11 @@ module EmailCampaigns
     recipient_filter :filter_recipient
 
     def mailer_class
-      BasketSubmittedMailer
+      VotingLastChanceMailer
     end
 
     def activity_triggers
-      { 'Notifications::BasketSubmitted' => { 'created' => true } }
+      { 'Notifications::VotingLastChance' => { 'created' => true } }
     end
 
     def filter_recipient(users_scope, activity:, time: nil)
@@ -54,7 +54,7 @@ module EmailCampaigns
     end
 
     def self.recipient_segment_multiloc_key
-      'email_campaigns.admin_labels.recipient_segment.user_who_voted'
+      'email_campaigns.admin_labels.recipient_segment.users_who_engaged_but_not_voted'
     end
 
     def self.content_type_multiloc_key
@@ -62,33 +62,19 @@ module EmailCampaigns
     end
 
     def self.trigger_multiloc_key
-      'email_campaigns.admin_labels.trigger.votes_are_submitted'
+      'email_campaigns.admin_labels.trigger.voting_2_days_before_phase_closes'
     end
 
     def generate_commands(recipient:, activity:)
+      # TODO: This needs sorting
       basket = activity.item
       basket.ideas
 
       [{
         event_payload: {
-          project_id: basket.participation_context.project,
-          voted_ideas: format_ideas_list(basket.ideas, recipient)
+          phase_id: basket.participation_context_id
         }
       }]
-    end
-
-    def self.format_ideas_list(ideas, recipient)
-      ideas.map do |idea|
-        {
-          title_multiloc: idea.title_multiloc,
-          url: Frontend::UrlService.new.model_to_url(idea, locale: recipient.locale),
-          images: idea.idea_images.map do |image|
-            {
-              versions: image.image.versions.to_h { |k, v| [k.to_s, v.url] }
-            }
-          end
-        }
-      end
     end
   end
 end

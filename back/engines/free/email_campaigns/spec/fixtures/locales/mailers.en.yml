@@ -144,13 +144,6 @@ en:
       title_platform_setup: 'Set your platform up'
       title_what_can_you_do_administrator: 'What can you do as an administrator?'
       title_you_became_administrator: 'You became an administrator'
-    basket_submitted:
-      subject: '%{organizationName}: You voted successfully'
-      preheader: 'You voted successfully on the participation platform of %{organizationName}'
-      title_basket_submitted: 'You voted successfully'
-      event_description: 'Thanks for participating. Your votes have been recorded. Visit the platform of %{organizationName} to see and manage your votes.'
-      cta_see_votes_submitted: 'See votes submitted'
-      cta_message: 'Click the button below to participate'
     comment_marked_as_spam:
       by_author: 'by %{authorName}'
       commented: '%{authorName} commented:'
@@ -567,4 +560,25 @@ en:
       new_votes: 'New votes'
       remaining_votes: 'Votes remaining'
       remaining_days: 'Days remaining'
+    voting_basket_submitted:
+      subject: '%{organizationName}: You voted successfully'
+      preheader: 'You voted successfully on the participation platform of %{organizationName}'
+      title_basket_submitted: 'You voted successfully'
+      event_description: 'Thanks for participating. Your votes have been recorded. Visit the platform of %{organizationName} to see and manage your votes.'
+      cta_see_votes_submitted: 'See votes submitted'
+      cta_message: 'Click the button below to participate'
+    voting_basket_not_submitted:
+      subject: '%{organizationName}: You didn''t submit your votes'
+      preheader: 'You didn''t submit your votes on the participation platform of %{organizationName}'
+      title_basket_not_submitted: 'You didn''t submit your votes'
+      event_description: 'You selected a few options for %{phaseTitle} but you didn''t submit your selection.'
+      cta_view_options_and_vote: 'View options and vote'
+      cta_message: 'Click the button below to submit your selected options'
+    voting_last_chance:
+      subject: '%{organizationName}: Last chance to vote for %{phaseTitle}'
+      preheader: 'Last chance to vote for %{phaseTitle} on the participation platform of %{organizationName}'
+      title_last_chance: 'Last chance to vote for %{phaseTitle}'
+      event_description: 'You selected a few options for %{phaseTitle} but you didn''t submit your selection.'
+      cta_view_options_and_vote: 'View options and vote'
+      cta_message: 'Click the button below to submit your selected options'
 

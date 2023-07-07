@@ -35,6 +35,7 @@ class Basket < ApplicationRecord
   validate :basket_submission, on: :basket_submission
 
   scope :submitted, -> { where.not(submitted_at: nil) }
+  scope :not_submitted, -> { where(submitted_at: nil) }
 
   delegate :project_id, to: :participation_context
 

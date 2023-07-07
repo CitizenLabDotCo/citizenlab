@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module EmailCampaigns
-  class BasketSubmittedMailer < ApplicationMailer
+  class VotingBasketSubmittedMailer < ApplicationMailer
     protected
 
     def subject
