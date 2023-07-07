@@ -248,5 +248,5 @@ de:
       hour_of_day: "%H:%M"
     pm: pm
   voting_method:
-    default_voting_term_singular: "abstimmen"
-    default_voting_term_plural: "stimmen"
+    default_voting_term_singular: "Stimme"
+    default_voting_term_plural: "Stimmen"
