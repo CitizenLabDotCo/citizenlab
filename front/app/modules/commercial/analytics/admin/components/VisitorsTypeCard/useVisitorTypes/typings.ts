@@ -4,7 +4,10 @@ export type QueryParameters = ProjectId & Dates;
 
 // Response
 export type Response = {
-  data: [BaseRow] | [];
+  data: {
+    type: 'analytics';
+    attributes: [BaseRow] | [];
+  };
 };
 
 interface BaseRow {

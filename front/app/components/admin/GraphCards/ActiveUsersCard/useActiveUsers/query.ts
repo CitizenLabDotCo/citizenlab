@@ -7,7 +7,7 @@ import {
 } from 'components/admin/GraphCards/_utils/query';
 
 // typings
-import { Query, QuerySchema } from 'services/analyticsFacts';
+import { Query, QuerySchema } from 'api/analytics/types';
 import { QueryParameters } from './typings';
 
 export const query = ({
