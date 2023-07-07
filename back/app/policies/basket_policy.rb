@@ -16,6 +16,10 @@ class BasketPolicy < ApplicationPolicy
     create?
   end
 
+  def upsert?
+    create?
+  end
+
   def destroy?
     update?
   end

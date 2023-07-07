@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class WebApi::V1::BasketsIdeasController < ApplicationController
+
+  skip_before_action :authenticate_user, only: :upsert
+
   def index
     baskets_ideas = paginate policy_scope(basket.baskets_ideas).includes(:idea)
     render json: WebApi::V1::BasketsIdeaSerializer.new(
@@ -40,6 +43,40 @@ class WebApi::V1::BasketsIdeasController < ApplicationController
     baskets_idea.assign_attributes baskets_idea_params_for_update
     authorize baskets_idea
     SideFxBasketsIdeaService.new.before_update baskets_idea, current_user
+    if baskets_idea.save
+      SideFxBasketsIdeaService.new.after_update baskets_idea, current_user
+      render json: WebApi::V1::BasketsIdeaSerializer.new(
+        baskets_idea,
+        params: jsonapi_serializer_params,
+        include: %i[idea]
+      ).serializable_hash, status: :ok
+    else
+      render json: { errors: baskets_idea.errors.details }, status: :unprocessable_entity
+    end
+  end
+
+  def upsert
+    # 1. Create or get basket
+    idea = Idea.find(params[:idea_id])
+    participation_context = ParticipationContextService.new.get_participation_context(idea.project)
+    participation_context_type = participation_context.phase? ? 'Phase' : 'Project'
+
+    basket = Basket.find_or_create_by(
+      participation_context: participation_context,
+      participation_context_type: participation_context_type,
+      user: current_user
+    )
+    # TODO: Authorisation & SideFx need to go in here
+    authorize basket
+
+    # 2. Create or update the baskets_idea
+    baskets_idea = BasketsIdea.find_or_create_by(
+      basket: basket,
+      idea: idea
+    )
+    # authorize baskets_idea
+
+    baskets_idea.votes = params[:votes]
     if baskets_idea.save
       SideFxBasketsIdeaService.new.after_update baskets_idea, current_user
       render json: WebApi::V1::BasketsIdeaSerializer.new(

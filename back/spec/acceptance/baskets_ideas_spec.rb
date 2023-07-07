@@ -127,6 +127,26 @@ resource BasketsIdea do
     end
   end
 
+  put 'web_api/v1/baskets_ideas/upsert/:idea_id' do
+    with_options scope: :baskets_idea do
+      parameter :idea_id, 'The ID of the idea added to the basket.', required: true
+      parameter :votes, 'The number of times the idea is voted on. Defaults to 1.', required: false
+    end
+    ValidationErrorHelper.new.error_fields self, BasketsIdea
+
+    let(:basket_id) { basket.id }
+    let(:idea_id) { create(:idea, project: project).id }
+    let(:votes) { 3 }
+
+    example_request 'Add an idea to a basket' do
+      assert_status 201
+      json_response = json_parse response_body
+
+      expect(json_response.dig(:data, :attributes, :votes)).to eq 3
+      expect(json_response[:included].pluck(:id)).to include idea_id
+    end
+  end
+
   def create_baskets_ideas(basket, votes: [3, 2, 1])
     votes.map do |v|
       create(:baskets_idea, basket: basket, idea: create(:idea, project: basket.participation_context.project), votes: v).idea
