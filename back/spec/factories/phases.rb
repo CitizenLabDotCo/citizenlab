@@ -67,6 +67,11 @@ FactoryBot.define do
       participation_method { 'native_survey' }
     end
 
+    factory :voting_phase do # TODO: replace budgeting_phase in generic voting specs
+      participation_method { 'voting' }
+      voting_method { 'single_voting' }
+    end
+
     factory :budgeting_phase do
       participation_method { 'voting' }
       voting_method { 'budgeting' }
