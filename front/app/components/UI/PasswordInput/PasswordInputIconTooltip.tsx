@@ -16,6 +16,7 @@ const PasswordInputIconTooltip = ({
 }: Props & WrappedComponentProps) => {
   return (
     <IconTooltip
+      placement="top-start"
       className={className}
       content={
         <>
