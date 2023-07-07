@@ -33,25 +33,27 @@ const VotesCounter = ({ projectId }: Props) => {
 
   const currentParticipationContext = currentPhase ?? project?.data;
 
+  if (!currentParticipationContext) return null;
+
+  const votingMethod = currentParticipationContext.attributes.voting_method;
+
   const getVoteTerm = () => {
-    if (
-      currentParticipationContext?.attributes.voting_method === 'single_voting'
-    ) {
+    if (votingMethod === 'single_voting') {
       return formatMessage(messages.votes);
     }
 
     const term =
-      currentParticipationContext?.attributes.voting_term_plural_multiloc;
+      currentParticipationContext.attributes.voting_term_plural_multiloc;
     if (!term) return;
 
     return localize(term).toLowerCase();
   };
 
   const votingMaxTotal =
-    currentParticipationContext?.attributes.voting_max_total;
+    currentParticipationContext.attributes.voting_max_total;
 
   const currency =
-    currentParticipationContext?.attributes.voting_method === 'budgeting'
+    votingMethod === 'budgeting'
       ? appConfig?.data.attributes.settings.core.currency
       : undefined;
 
@@ -59,7 +61,8 @@ const VotesCounter = ({ projectId }: Props) => {
     return (
       <>
         {(votingMaxTotal - (numberOfVotesCast ?? 0)).toLocaleString()} /{' '}
-        {votingMaxTotal.toLocaleString()} {getVoteTerm() || currency}{' '}
+        {votingMaxTotal.toLocaleString()}{' '}
+        {votingMethod !== 'budgeting' ? getVoteTerm() : currency}{' '}
         {formatMessage(messages.left)}
       </>
     );

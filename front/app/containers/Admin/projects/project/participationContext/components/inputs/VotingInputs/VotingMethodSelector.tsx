@@ -14,10 +14,10 @@ import {
 import BudgetingIcon from './CardIcons/BudgetingIcon';
 import { SubSectionTitle } from 'components/admin/Section';
 import MultipleVotingIcon from './CardIcons/MultipleVotingIcon';
+import SingleVotingIcon from './CardIcons/SingleVotingIcon';
 
 // types
 import { VotingMethod } from 'services/participationContexts';
-import SingleVotingIcon from './CardIcons/SingleVotingIcon';
 
 type VotingMethodSelectorProps = {
   voting_method?: VotingMethod | null;

@@ -4,7 +4,6 @@ import { isNilOrError } from 'utils/helperUtils';
 // hooks
 import useProjectById from 'api/projects/useProjectById';
 import useAuthUser from 'api/me/useAuthUser';
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // i18n
 import useLocalize from 'hooks/useLocalize';
@@ -12,6 +11,7 @@ import useLocalize from 'hooks/useLocalize';
 // components
 import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
 import ReactionControl from 'components/ReactionControl';
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';

@@ -21,6 +21,7 @@ import { StyledSectionDescription } from 'containers/Admin/initiatives/settings'
 import MultipleVotingInputs from './votingMethodInputs/MultipleVotingInputs';
 import Link from 'utils/cl-router/Link';
 import Warning from 'components/UI/Warning';
+import SingleVotingInputs from './votingMethodInputs/SingleVotingInputs';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -33,7 +34,6 @@ import { IOption, Multiloc } from 'typings';
 
 // hooks
 import { useLocation } from 'react-router-dom';
-import SingleVotingInputs from './votingMethodInputs/SingleVotingInputs';
 
 export interface VotingInputsProps {
   isCustomInputTermEnabled: boolean;
