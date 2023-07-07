@@ -248,5 +248,5 @@ pt:
       hour_of_day: "%H:%M"
     pm: pm
   voting_method:
-    default_voting_term_singular: "votação"
+    default_voting_term_singular: "voto"
     default_voting_term_plural: "votos"
