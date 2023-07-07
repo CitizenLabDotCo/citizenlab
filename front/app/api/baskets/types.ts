@@ -3,7 +3,6 @@ import { Keys } from 'utils/cl-react-query/types';
 import basketsKeys from './keys';
 
 export type BasketsKeys = Keys<typeof basketsKeys>;
-export type BasketIdeaAttributes = { idea_id: string; votes?: number }[];
 
 export interface IBasketData {
   id: string;

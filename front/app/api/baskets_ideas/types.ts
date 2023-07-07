@@ -27,10 +27,6 @@ export interface IBasketsIdeasData {
   data: IBasketsIdeaData[];
 }
 
-export interface IBasketsIdeas {
-  data: IBasketsIdeaData[];
-}
-
 export interface IAddBasketsIdea {
   basketId: string;
   idea_id: string;
