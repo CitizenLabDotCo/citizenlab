@@ -17,7 +17,7 @@ const useBasketsIdeas = (basketId?: string) => {
     IBasketsIdeasData,
     BasketsIdeasKeys
   >({
-    queryKey: basketsIdeasKeys.item({ id: basketId }),
+    queryKey: basketsIdeasKeys.item({ basketId }),
     queryFn: () => fetchBasketsIdeas({ basketId }),
     enabled: !!basketId,
     keepPreviousData: false,
