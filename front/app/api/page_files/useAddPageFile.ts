@@ -4,7 +4,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import pageFilesKeys from './keys';
 import { IPageFile, AddPageFileObject } from './types';
 
-const addPagesFile = async ({
+const addPageFile = async ({
   pageId,
   file: { name, file, ordering = null },
 }: AddPageFileObject) =>
@@ -14,18 +14,16 @@ const addPagesFile = async ({
     body: { file: { name, file, ordering } },
   });
 
-const useAddPagesFile = () => {
+const useAddPageFile = () => {
   const queryClient = useQueryClient();
   return useMutation<IPageFile, CLErrors, AddPageFileObject>({
-    mutationFn: addPagesFile,
-    onSuccess: (_data, variables) => {
+    mutationFn: addPageFile,
+    onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: pageFilesKeys.list({
-          pageId: variables.pageId,
-        }),
+        queryKey: pageFilesKeys.lists(),
       });
     },
   });
 };
 
-export default useAddPagesFile;
+export default useAddPageFile;

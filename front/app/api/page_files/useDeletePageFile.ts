@@ -19,11 +19,9 @@ const useDeletePageFile = () => {
 
   return useMutation({
     mutationFn: deletePageFile,
-    onSuccess: (_data, variables) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: pageFilesKeys.list({
-          pageId: variables.pageId,
-        }),
+        queryKey: pageFilesKeys.lists(),
       });
     },
   });
