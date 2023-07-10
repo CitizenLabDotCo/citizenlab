@@ -7,7 +7,7 @@ import {
   userEvent,
 } from 'utils/testUtils/rtl';
 import CustomPageSettingsForm from './';
-import { ProjectsFilterTypes } from 'services/customPages';
+import { ProjectsFilterTypes } from 'api/custom_pages/types';
 
 const titleEN = 'title en';
 const titleNL = 'title nl';

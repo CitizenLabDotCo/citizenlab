@@ -2,7 +2,7 @@ import React from 'react';
 
 // hooks
 import useNavbarItems from 'hooks/useNavbarItems';
-import useCustomPageSlugById from 'hooks/useCustomPageSlugById';
+import useCustomPageSlugById from 'api/custom_pages/useCustomPageSlugById';
 
 // components
 import DesktopNavbarItem from './DesktopNavbarItem';
