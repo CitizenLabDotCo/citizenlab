@@ -20,14 +20,16 @@ import { isNilOrError, isNil } from 'utils/helperUtils';
 import { adminCustomPageContentPath } from 'containers/Admin/pagesAndMenu/routes';
 import { WrappedComponentProps } from 'react-intl';
 import { useParams } from 'react-router-dom';
-import useCustomPage from 'hooks/useCustomPage';
-import { ICustomPageAttributes, updateCustomPage } from 'services/customPages';
+import useCustomPageById from 'api/custom_pages/useCustomPageById';
+import { ICustomPageAttributes } from 'api/custom_pages/types';
 
 // i18n
 import messages from '../../../GenericHeroBannerForm/messages';
 import HelmetIntl from 'components/HelmetIntl';
 import useLocalize from 'hooks/useLocalize';
 import { injectIntl } from 'utils/cl-intl';
+
+import useUpdateCustomPage from 'api/custom_pages/useUpdateCustomPage';
 
 export type CustomPageBannerSettingKeyType = Extract<
   keyof ICustomPageAttributes,
@@ -39,6 +41,7 @@ export type CustomPageBannerSettingKeyType = Extract<
 const EditCustomPageHeroBannerForm = ({
   intl: { formatMessage },
 }: WrappedComponentProps) => {
+  const { mutateAsync: updateCustomPage } = useUpdateCustomPage();
   const localize = useLocalize();
   const [isLoading, setIsLoading] = useState(false);
   const [apiErrors, setApiErrors] = useState<CLErrors | null>(null);
@@ -48,12 +51,12 @@ const EditCustomPageHeroBannerForm = ({
     useState<ICustomPageAttributes | null>(null);
 
   const { customPageId } = useParams() as { customPageId: string };
-  const customPage = useCustomPage({ customPageId });
+  const { data: customPage } = useCustomPageById(customPageId);
 
   useEffect(() => {
     if (!isNilOrError(customPage)) {
       setLocalSettings({
-        ...customPage.attributes,
+        ...customPage.data.attributes,
       });
     }
   }, [customPage]);
@@ -81,7 +84,7 @@ const EditCustomPageHeroBannerForm = ({
     // only trigger this when the value is explicitly null and not undefined
     if (
       localSettings.header_bg?.large === null &&
-      customPage.attributes.header_bg?.large === null
+      customPage.data.attributes.header_bg?.large === null
     ) {
       setLocalSettings({
         ...localSettings,
@@ -102,11 +105,11 @@ const EditCustomPageHeroBannerForm = ({
     setIsLoading(true);
     setApiErrors(null);
     try {
-      await updateCustomPage(customPageId, settingsToUpdate);
+      await updateCustomPage({ id: customPageId, ...settingsToUpdate });
       setIsLoading(false);
       setFormStatus('success');
     } catch (error) {
-      const apiErrors = error.json.errors;
+      const apiErrors = error.errors;
       if (apiErrors) {
         setApiErrors(apiErrors);
       }
@@ -139,8 +142,14 @@ const EditCustomPageHeroBannerForm = ({
     handleOnChange('header_bg', newImageBase64);
   };
   const handleOnBannerImageRemove = () => {
-    handleOnChange('header_bg', null);
-    handleOnOverlayChange(null, null);
+    if (localSettings) {
+      setLocalSettings({
+        ...localSettings,
+        header_bg: null,
+        banner_overlay_color: null,
+        banner_overlay_opacity: null,
+      });
+    }
   };
 
   const handleOnOverlayChange = (
@@ -209,14 +218,14 @@ const EditCustomPageHeroBannerForm = ({
           }
           formStatus={formStatus}
           isLoading={isLoading}
-          linkToViewPage={`/pages/${customPage.attributes.slug}`}
+          linkToViewPage={`/pages/${customPage.data.attributes.slug}`}
           breadcrumbs={[
             {
               label: formatMessage(pagesAndMenuBreadcrumb.label),
               linkTo: pagesAndMenuBreadcrumb.linkTo,
             },
             {
-              label: localize(customPage.attributes.title_multiloc),
+              label: localize(customPage.data.attributes.title_multiloc),
               linkTo: adminCustomPageContentPath(customPageId),
             },
             { label: formatMessage(messages.heroBannerTitle) },

@@ -11,7 +11,7 @@ import { viewportWidths } from '@citizenlab/cl2-component-library';
 import {
   ICustomPageAttributes,
   TCustomPageBannerLayout,
-} from 'services/customPages';
+} from 'api/custom_pages/types';
 import {
   IHomepageSettingsAttributes,
   THomepageBannerLayout,
