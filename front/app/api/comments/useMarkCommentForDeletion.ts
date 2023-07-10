@@ -6,6 +6,7 @@ import { DeleteReason, IComment } from './types';
 import userCommentsCount from 'api/user_comments_count/keys';
 import ideasKeys from 'api/ideas/keys';
 import initiativesKeys from 'api/initiatives/keys';
+import commentsKeys from 'api/comments/keys';
 
 interface MarkForDeletion {
   commentId: string;
@@ -26,9 +27,11 @@ const markCommentForDeletion = async ({
 const useMarkCommentForDeletion = ({
   ideaId,
   initiativeId,
+  parentCommentId,
 }: {
   ideaId?: string;
   initiativeId?: string;
+  parentCommentId?: string;
 }) => {
   const queryClient = useQueryClient();
   return useMutation<IComment, CLErrors, MarkForDeletion>({
@@ -45,6 +48,12 @@ const useMarkCommentForDeletion = ({
         // We invalidate the idea because the number of comments is on the idea
         queryClient.invalidateQueries({
           queryKey: ideasKeys.item({ id: ideaId }),
+        });
+      }
+
+      if (parentCommentId) {
+        queryClient.invalidateQueries({
+          queryKey: commentsKeys.list({ commentId: parentCommentId }),
         });
       }
 

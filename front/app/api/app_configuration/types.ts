@@ -223,6 +223,7 @@ export interface IAppConfigurationSettings {
   seat_based_billing?: AppConfigurationFeature;
   internal_commenting?: AppConfigurationFeature;
   konveio_document_annotation?: AppConfigurationFeature;
+  public_api_tokens?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

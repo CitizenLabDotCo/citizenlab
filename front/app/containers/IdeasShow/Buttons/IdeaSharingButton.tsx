@@ -26,7 +26,7 @@ const Component = ({ ideaId }: Props) => {
   const { data: idea } = useIdeaById(ideaId);
   const projectId = !isNilOrError(idea)
     ? idea.data.relationships.project.data.id
-    : null;
+    : undefined;
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
   const { data: authUser } = useAuthUser();

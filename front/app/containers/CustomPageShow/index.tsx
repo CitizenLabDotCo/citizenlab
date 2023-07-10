@@ -15,14 +15,14 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 // hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useCustomPage from 'hooks/useCustomPage';
+import useCustomPageBySlug from 'api/custom_pages/useCustomPageBySlug';
 import useResourceFiles from 'hooks/useResourceFiles';
 import { useParams } from 'react-router-dom';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 // utils
-import { isError, isNil, isNilOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 // styling
 import styled from 'styled-components';
@@ -76,36 +76,39 @@ const CustomPageShow = () => {
   const { slug } = useParams() as {
     slug: string;
   };
-  const { data: appConfiguration } = useAppConfiguration();
+  const { data: appConfiguration, isLoading: isLoadingAppConfiguration } =
+    useAppConfiguration();
   const localize = useLocalize();
-  const page = useCustomPage({ customPageSlug: slug });
+  const {
+    data: page,
+    isError,
+    isLoading: isLoadingPage,
+  } = useCustomPageBySlug(slug);
   const proposalsEnabled = useFeatureFlag({ name: 'initiatives' });
   const remotePageFiles = useResourceFiles({
     resourceType: 'page',
-    resourceId: !isNilOrError(page) ? page.id : null,
+    resourceId: !isNilOrError(page) ? page.data.id : null,
   });
 
   // when neither have loaded
-  if (isNil(page) || isNilOrError(appConfiguration)) {
+  if (isLoadingAppConfiguration || isLoadingPage) {
     return null;
   }
 
   if (
     // if URL is mistyped, page is also an error
-    isError(page) ||
+    isError ||
     // If page loaded but it's /pages/initiatives but
     // the initiatives feature is not enabled also show
     // not found
-    (!isError(page) &&
-      page.attributes.code === 'proposals' &&
-      !proposalsEnabled)
+    (!isError && page.data.attributes.code === 'proposals' && !proposalsEnabled)
   ) {
     return <PageNotFound />;
   }
 
-  const pageAttributes = page.attributes;
+  const pageAttributes = page.data.attributes;
   const localizedOrgName = localize(
-    appConfiguration.data.attributes.settings.core.organization_name
+    appConfiguration?.data.attributes.settings.core.organization_name
   );
   return (
     <Container className={`e2e-page-${slug}`}>
@@ -116,20 +119,22 @@ const CustomPageShow = () => {
       />
       {pageAttributes.banner_enabled ? (
         <Box background="#fff" width="100%">
-          <CustomPageHeader pageData={page} />
+          <CustomPageHeader pageData={page.data} />
         </Box>
       ) : (
         <NoBannerContainer>
           {/* show page text title if the banner is disabled */}
           <PageTitle>{localize(pageAttributes.title_multiloc)}</PageTitle>
           <Box zIndex="40000">
-            <AdminCustomPageEditButton pageId={page.id} />
+            <AdminCustomPageEditButton pageId={page.data.id} />
           </Box>
         </NoBannerContainer>
       )}
       <Content>
         <Fragment
-          name={!isNilOrError(page) ? `pages/${page && page.id}/content` : ''}
+          name={
+            !isNilOrError(page) ? `pages/${page && page.data.id}/content` : ''
+          }
         />
         {pageAttributes.top_info_section_enabled && (
           <InfoSection
@@ -145,12 +150,13 @@ const CustomPageShow = () => {
               <FileAttachments files={remotePageFiles} />
             </AttachmentsContainer>
           )}
-        <CustomPageProjectsAndEvents page={page} />
-        {pageAttributes.bottom_info_section_enabled && (
-          <InfoSection
-            multilocContent={pageAttributes.bottom_info_section_multiloc}
-          />
-        )}
+        <CustomPageProjectsAndEvents page={page.data} />
+        {pageAttributes.bottom_info_section_enabled &&
+          pageAttributes.bottom_info_section_multiloc && (
+            <InfoSection
+              multilocContent={pageAttributes.bottom_info_section_multiloc}
+            />
+          )}
       </Content>
     </Container>
   );

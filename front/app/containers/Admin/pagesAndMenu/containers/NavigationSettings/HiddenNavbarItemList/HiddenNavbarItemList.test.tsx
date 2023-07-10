@@ -1,6 +1,5 @@
 import { ADMIN_PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
 import allNavbarItems from 'services/__mocks__/navbarItems';
-import { deleteCustomPage } from 'services/customPages';
 import React from 'react';
 import clHistory from 'utils/cl-router/history';
 import { fireEvent, render, screen } from 'utils/testUtils/rtl';
@@ -15,16 +14,22 @@ jest.mock('hooks/useRemovedDefaultNavbarItems', () =>
   jest.fn(() => mockRemovedDefaultNavbarItems)
 );
 
-jest.mock('hooks/useCustomPages');
-jest.mock('hooks/useCustomPageSlugById');
+jest.mock('api/custom_pages/useCustomPages');
+jest.mock('api/custom_pages/useCustomPageSlugById');
+
+const mockDeleteCustomPage = jest.fn();
+
+jest.mock('api/custom_pages/useDeleteCustomPage', () =>
+  jest.fn(() => ({ mutate: mockDeleteCustomPage }))
+);
 
 jest.mock('services/navbar', () => ({
   addNavbarItem: jest.fn(),
   getNavbarItemSlug: jest.fn(),
 }));
 
-jest.mock('services/customPages', () => {
-  const original = jest.requireActual('services/customPages');
+jest.mock('api/custom_pages/types', () => {
+  const original = jest.requireActual('api/custom_pages/types');
 
   return {
     ...original,
@@ -102,12 +107,12 @@ describe('<HiddenNavbarItemList />', () => {
     const deleteButtons = screen.getAllByText('Delete');
 
     fireEvent.click(deleteButtons[0]);
-    expect(deleteCustomPage).toHaveBeenCalledWith(
+    expect(mockDeleteCustomPage).toHaveBeenCalledWith(
       '793d56cc-c8b3-4422-b393-972b71f82aa2'
     );
 
     fireEvent.click(deleteButtons[1]);
-    expect(deleteCustomPage).toHaveBeenCalledWith(
+    expect(mockDeleteCustomPage).toHaveBeenCalledWith(
       'e7854e94-3074-4607-b66e-0422aa3d8359'
     );
   });

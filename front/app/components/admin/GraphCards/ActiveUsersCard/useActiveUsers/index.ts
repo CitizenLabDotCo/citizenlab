@@ -1,7 +1,4 @@
-import { useState, useEffect } from 'react';
-
 // services
-import { analyticsStream } from 'services/analyticsFacts';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -14,12 +11,11 @@ import { query } from './query';
 import { parseTimeSeries, parseStats, parseExcelData } from './parse';
 
 // utils
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 // typings
-import { QueryParameters, Response, TimeSeries, Stats } from './typings';
-import { IResolution } from 'components/admin/ResolutionControl';
-import { XlsxData } from 'components/admin/ReportExportMenu';
+import { QueryParameters, Response } from './typings';
+import useAnalytics from 'api/analytics/useAnalytics';
+import { useMemo, useState } from 'react';
 
 export default function useActiveUsers({
   projectId,
@@ -28,58 +24,45 @@ export default function useActiveUsers({
   resolution,
 }: QueryParameters) {
   const { formatMessage } = useIntl();
+  const [currentResolution, setCurrentResolution] = useState(resolution);
 
-  const [timeSeries, setTimeSeries] = useState<TimeSeries | NilOrError>();
-  const [stats, setStats] = useState<Stats | NilOrError>();
-  const [xlsxData, setXlsxData] = useState<XlsxData | NilOrError>();
+  const { data: analytics } = useAnalytics<Response>(
+    query({
+      projectId,
+      startAtMoment,
+      endAtMoment,
+      resolution,
+    }),
+    () => setCurrentResolution(resolution)
+  );
 
-  const [currentResolution, setCurrentResolution] =
-    useState<IResolution>(resolution);
+  const stats = analytics ? parseStats(analytics.data.attributes) : null;
 
-  useEffect(() => {
-    const observable = analyticsStream<Response>(
-      query({
-        projectId,
-        startAtMoment,
-        endAtMoment,
-        resolution,
-      })
-    ).observable;
+  const timeSeries = useMemo(
+    () =>
+      analytics?.data
+        ? parseTimeSeries(
+            analytics.data.attributes[0],
+            startAtMoment,
+            endAtMoment,
+            currentResolution
+          )
+        : null,
+    [analytics?.data, startAtMoment, endAtMoment, currentResolution]
+  );
 
-    const subscription = observable.subscribe(
-      (response: Response | NilOrError) => {
-        if (isNilOrError(response)) {
-          setStats(response);
-          setTimeSeries(response);
-          setXlsxData(response);
-
-          return;
-        }
-
-        const translations = getTranslations(formatMessage);
-
-        setCurrentResolution(resolution);
-
-        const stats = parseStats(response.data);
-        setStats(stats);
-
-        const timeSeries = parseTimeSeries(
-          response.data[0],
-          startAtMoment,
-          endAtMoment,
-          resolution
-        );
-
-        setTimeSeries(timeSeries);
-
-        setXlsxData(
-          parseExcelData(stats, timeSeries, resolution, translations)
-        );
-      }
-    );
-
-    return () => subscription.unsubscribe();
-  }, [projectId, startAtMoment, endAtMoment, resolution, formatMessage]);
+  const xlsxData = useMemo(
+    () =>
+      analytics?.data && stats
+        ? parseExcelData(
+            stats,
+            timeSeries,
+            currentResolution,
+            getTranslations(formatMessage)
+          )
+        : null,
+    [analytics?.data, stats, timeSeries, currentResolution, formatMessage]
+  );
 
   return { timeSeries, stats, xlsxData, currentResolution };
 }
