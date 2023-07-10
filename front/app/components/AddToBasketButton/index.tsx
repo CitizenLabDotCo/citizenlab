@@ -27,6 +27,10 @@ import {
   isFixableByAuthentication,
 } from 'utils/actionDescriptors';
 
+// tracks
+import tracks from './tracks';
+import { trackEventByName } from 'utils/analytics';
+
 // typings
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import { IBasket } from 'api/baskets/types';
@@ -68,7 +72,7 @@ const AddToBasketButton = ({
   const { data: appConfig } = useAppConfiguration();
   const { data: idea } = useIdeaById(ideaId);
   const { data: project } = useProjectById(projectId);
-  const { assignBudget, processing } = useAssignBudget({ projectId, ideaId });
+  const { assignBudget, processing } = useAssignBudget({ ideaId });
 
   const participationContextType =
     project?.data.attributes.process_type === 'continuous'
@@ -97,11 +101,19 @@ const AddToBasketButton = ({
 
   if (!buttonVisible) return null;
 
+  const basketIdeaIds = !isNilOrError(basket)
+    ? basket.data.relationships.ideas.data.map((idea) => idea.id)
+    : [];
+  const isInBasket = basketIdeaIds.includes(ideaId);
+
   const handleAddRemoveButtonClick = (event?: FormEvent) => {
     event?.preventDefault();
 
     if (actionDescriptor.enabled) {
-      assignBudget();
+      assignBudget(isInBasket ? 'remove' : 'add');
+      trackEventByName(
+        isInBasket ? tracks.ideaRemovedFromBasket : tracks.ideaAddedToBasket
+      );
       return;
     }
 
@@ -128,10 +140,6 @@ const AddToBasketButton = ({
     }
   };
 
-  const basketIdeaIds = !isNilOrError(basket)
-    ? basket.data.relationships.ideas.data.map((idea) => idea.id)
-    : [];
-  const isInBasket = basketIdeaIds.includes(ideaId);
   const buttonMessage = isInBasket ? messages.added : messages.add;
 
   const buttonEnabled = isButtonEnabled(basket, actionDescriptor);
