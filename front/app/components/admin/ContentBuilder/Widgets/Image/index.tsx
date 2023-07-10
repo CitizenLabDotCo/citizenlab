@@ -11,7 +11,7 @@ import {
 import PageBreakBox from '../PageBreakBox';
 
 // image upload
-import { addContentBuilderImage } from 'services/contentBuilderImages';
+// import { addContentBuilderImage } from 'services/contentBuilderImages';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { UploadFile } from 'typings';
@@ -29,6 +29,9 @@ import {
   IMAGE_UPLOADING_EVENT,
   IMAGE_LOADED_EVENT,
 } from 'components/admin/ContentBuilder/constants';
+
+// hooks
+import useAddContentBuilderImage from 'api/content_builder_images/useAddContentBuilderImage';
 
 interface Props {
   imageUrl?: string;
@@ -82,6 +85,7 @@ const Image = ({ imageUrl, alt = '', dataCode }: Props) => {
 
 const ImageSettings = injectIntl(({ intl: { formatMessage } }) => {
   const [imageFiles, setImageFiles] = useState<UploadFile[]>([]);
+  const { mutateAsync: addContentBuilderImage } = useAddContentBuilderImage();
   const {
     actions: { setProp },
     imageUrl,
@@ -108,7 +112,10 @@ const ImageSettings = injectIntl(({ intl: { formatMessage } }) => {
     setImageFiles(imageFiles);
 
     try {
-      const response = await addContentBuilderImage(imageFiles[0].base64);
+      // const response = await addContentBuilderImage(imageFiles[0].base64);
+      const response = await addContentBuilderImage({
+        base64: imageFiles[0].base64,
+      });
       setProp((props: Props) => {
         props.dataCode = response.data.attributes.code;
         props.imageUrl = response.data.attributes.image_url;
