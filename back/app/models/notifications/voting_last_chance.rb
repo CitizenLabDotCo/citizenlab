@@ -68,13 +68,19 @@ module Notifications
 
     def self.make_notifications_on(activity)
       phase = activity.item
-      return unless phase.voting?
 
-      Basket.where(participation_context: phase).not_submitted do |basket|
-        [new(
-          recipient_id: basket.user_id,
-          basket_id: basket.id
-        )]
+      if phase.voting?
+        user_scope = ParticipantsService.new.projects_participants(Project.where(id: phase.project_id))
+        ProjectPolicy::InverseScope.new(phase.project, user_scope).resolve.filter_map do |recipient|
+          next unless ParticipationContextService.new.participation_possible_for_context? phase, recipient
+
+          new(
+            recipient: recipient,
+            phase: phase
+          )
+        end
+      else
+        []
       end
     end
   end

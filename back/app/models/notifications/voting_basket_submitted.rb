@@ -73,7 +73,7 @@ module Notifications
       if basket && recipient_id
         [new(
           recipient_id: recipient_id,
-          basket_id: basket.id
+          basket: basket
         )]
       else
         []

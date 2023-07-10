@@ -63,18 +63,20 @@ module Notifications
   class VotingBasketNotSubmitted < Notification
     validates :basket, presence: true
 
-    ACTIVITY_TRIGGERS = { 'Phase' => { 'ending_soon' => true } }
-    EVENT_NAME = 'Phase ending soon'
+    ACTIVITY_TRIGGERS = { 'Basket' => { 'not_submitted' => true } }
+    EVENT_NAME = 'Basket not submitted'
 
     def self.make_notifications_on(activity)
-      phase = activity.item
-      return unless phase.voting?
+      basket = activity.item
+      recipient_id = basket.user_id
 
-      Basket.where(participation_context: phase).not_submitted do |basket|
+      if basket && recipient_id
         [new(
-          recipient_id: basket.user_id,
-          basket_id: basket.id
+          recipient_id: recipient_id,
+          basket: basket
         )]
+      else
+        []
       end
     end
   end

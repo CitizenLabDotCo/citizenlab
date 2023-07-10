@@ -11,7 +11,7 @@ RSpec.describe Notifications::VotingBasketSubmitted do
       notifications = described_class.make_notifications_on activity
       expect(notifications.first).to have_attributes(
         recipient_id: basket.user_id,
-        basket_id: basket.id
+        basket: basket
       )
     end
   end
