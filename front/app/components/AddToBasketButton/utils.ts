@@ -1,9 +1,15 @@
 import { getLatestRelevantPhase } from 'api/phases/utils';
 
 // typings
-import { IIdea } from 'api/ideas/types';
+import { IIdea, IdeaVotingDisabledReason } from 'api/ideas/types';
 import { IPhases } from 'api/phases/types';
 import { IProject } from 'api/projects/types';
+import {
+  ActionDescriptorFutureEnabled,
+  isFixableByAuthentication,
+} from 'utils/actionDescriptors';
+import { IBasket } from 'api/baskets/types';
+import { IBasketsIdeasData } from 'api/baskets_ideas/types';
 
 export const getLatestRelevantParticipationContext = (
   project: IProject | undefined,
@@ -27,4 +33,35 @@ export const getLatestRelevantParticipationContext = (
   );
 
   return getLatestRelevantPhase(ideaPhases);
+};
+
+export const isButtonEnabled = (
+  basket: IBasket | undefined,
+  actionDescriptor: ActionDescriptorFutureEnabled<IdeaVotingDisabledReason>
+) => {
+  const actionDisabledAndNotFixable =
+    actionDescriptor.enabled === false &&
+    !isFixableByAuthentication(actionDescriptor.disabled_reason);
+
+  if (actionDisabledAndNotFixable) return false;
+
+  if (basket === undefined) {
+    return true;
+  }
+
+  const basketNotSubmittedYet = basket.data.attributes.submitted_at === null;
+  return basketNotSubmittedYet;
+};
+
+export const isIdeaInBasket = (
+  ideaId: string,
+  basketsIdeas?: IBasketsIdeasData
+) => {
+  if (!basketsIdeas) return false;
+
+  for (const basketsIdea of basketsIdeas.data) {
+    if (basketsIdea.relationships.idea.data.id === ideaId) return true;
+  }
+
+  return false;
 };

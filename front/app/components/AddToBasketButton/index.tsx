@@ -1,4 +1,4 @@
-import React, { FormEvent } from 'react';
+import React, { FormEvent, useMemo } from 'react';
 
 // api
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -23,19 +23,17 @@ import { colors } from 'utils/styleUtils';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import {
-  ActionDescriptorFutureEnabled,
-  isFixableByAuthentication,
-} from 'utils/actionDescriptors';
+import { isFixableByAuthentication } from 'utils/actionDescriptors';
 
 // tracks
 import tracks from './tracks';
 import { trackEventByName } from 'utils/analytics';
 
+// utils
+import { isIdeaInBasket, isButtonEnabled } from './utils';
+
 // typings
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
-import { IBasket } from 'api/baskets/types';
-import { IdeaVotingDisabledReason } from 'api/ideas/types';
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 
@@ -45,26 +43,6 @@ interface Props {
   participationContext?: IPhaseData | IProjectData | null;
   buttonStyle: 'primary' | 'primary-outlined';
 }
-
-const isButtonEnabled = (
-  basket: IBasket | undefined,
-  actionDescriptor: ActionDescriptorFutureEnabled<IdeaVotingDisabledReason>
-) => {
-  const actionDisabledAndNotFixable =
-    actionDescriptor.enabled === false &&
-    !isFixableByAuthentication(actionDescriptor.disabled_reason);
-
-  if (actionDisabledAndNotFixable) return false;
-
-  if (basket === undefined) {
-    return true;
-  }
-
-  const basketNotSubmittedYet = basket.data.attributes.submitted_at === null;
-  return basketNotSubmittedYet;
-};
-
-const isIdeaInBasket = () => {};
 
 const AddToBasketButton = ({
   ideaId,
@@ -84,11 +62,14 @@ const AddToBasketButton = ({
 
   const participationContextId = participationContext?.id || null;
   const basketId = participationContext?.relationships?.user_basket?.data?.id;
-  const isInBasket = !!basketId;
   const { data: basket } = useBasket(basketId);
   const ideaBudget = idea?.data.attributes.budget;
 
   const { data: basketsIdeas } = useBasketsIdeas(basket?.data.id);
+
+  const ideaInBasket = useMemo(() => {
+    return isIdeaInBasket(ideaId, basketsIdeas);
+  }, [ideaId, basketsIdeas]);
 
   if (isNilOrError(idea) || !ideaBudget || !participationContextId) {
     return null;
@@ -106,8 +87,6 @@ const AddToBasketButton = ({
 
   if (!buttonVisible) return null;
 
-  const ideaInBasket = isIdeaInBasket(ideaId, basketsIdeas);
-
   const handleAddRemoveButtonClick = (event?: FormEvent) => {
     event?.preventDefault();
 
@@ -118,9 +97,9 @@ const AddToBasketButton = ({
 
       // if (!maxBudget || !ideaBudget || !basketTotal)
 
-      assignBudget(isInBasket ? 'remove' : 'add');
+      assignBudget(ideaInBasket ? 'remove' : 'add');
       trackEventByName(
-        isInBasket ? tracks.ideaRemovedFromBasket : tracks.ideaAddedToBasket
+        ideaInBasket ? tracks.ideaRemovedFromBasket : tracks.ideaAddedToBasket
       );
       return;
     }
@@ -147,7 +126,7 @@ const AddToBasketButton = ({
     }
   };
 
-  const buttonMessage = isInBasket ? messages.added : messages.add;
+  const buttonMessage = ideaInBasket ? messages.added : messages.add;
   const buttonEnabled = isButtonEnabled(basket, actionDescriptor);
   const currency = appConfig?.data.attributes.settings.core.currency;
 
@@ -157,17 +136,17 @@ const AddToBasketButton = ({
       disabled={!buttonEnabled}
       processing={processing}
       buttonStyle={buttonStyle}
-      bgColor={isInBasket ? colors.green500 : undefined}
-      textColor={isInBasket ? colors.white : undefined}
-      textHoverColor={isInBasket ? colors.white : undefined}
-      bgHoverColor={isInBasket ? colors.green500 : undefined}
-      borderColor={isInBasket ? colors.success : undefined}
+      bgColor={ideaInBasket ? colors.green500 : undefined}
+      textColor={ideaInBasket ? colors.white : undefined}
+      textHoverColor={ideaInBasket ? colors.white : undefined}
+      bgHoverColor={ideaInBasket ? colors.green500 : undefined}
+      borderColor={ideaInBasket ? colors.success : undefined}
       width="100%"
       className={`e2e-assign-budget-button ${
-        isInBasket ? 'in-basket' : 'not-in-basket'
+        ideaInBasket ? 'in-basket' : 'not-in-basket'
       }`}
     >
-      {isInBasket && <Icon mb="4px" fill="white" name="check" />}
+      {ideaInBasket && <Icon mb="4px" fill="white" name="check" />}
       <FormattedMessage {...buttonMessage} />
       {` (${ideaBudget} ${currency})`}
     </Button>

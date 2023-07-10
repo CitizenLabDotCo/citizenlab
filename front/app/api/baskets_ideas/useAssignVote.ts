@@ -9,7 +9,7 @@ const useAssignVote = () => {
   const handleBasketUpdate = useCallback(
     async (ideaId: string, votes: number) => {
       await mutateAsync({ idea_id: ideaId, votes: votes === 0 ? null : votes });
-      setProcessing(true);
+      setProcessing(false);
     },
     [mutateAsync]
   );
