@@ -89,7 +89,7 @@ const VisibleNavbarItemList = ({
 
       <SortableList
         items={navbarItems.data}
-        onReorder={reorderNavbarItem}
+        onReorder={(id, ordering) => reorderNavbarItem({ id, ordering })}
         lockFirstNItems={2}
       >
         {({ lockedItemsList, itemsList, handleDragRow, handleDropRow }) => (
