@@ -182,6 +182,7 @@ resource BasketsIdea do
 
           example_request 'Delete an idea in an existing basket' do
             assert_status 200
+            expect(response_data[:id]).to eq baskets_idea.id
             expect { baskets_idea.reload }.to raise_error(ActiveRecord::RecordNotFound)
           end
         end
