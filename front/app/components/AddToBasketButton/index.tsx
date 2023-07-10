@@ -4,6 +4,7 @@ import React, { FormEvent } from 'react';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useBasket from 'api/baskets/useBasket';
+import useBasketsIdeas from 'api/baskets_ideas/useBasketsIdeas';
 import useProjectById from 'api/projects/useProjectById';
 import useAssignBudget from './useAssignBudget';
 
@@ -63,6 +64,8 @@ const isButtonEnabled = (
   return basketNotSubmittedYet;
 };
 
+const isIdeaInBasket = () => {};
+
 const AddToBasketButton = ({
   ideaId,
   projectId,
@@ -85,6 +88,8 @@ const AddToBasketButton = ({
   const { data: basket } = useBasket(basketId);
   const ideaBudget = idea?.data.attributes.budget;
 
+  const { data: basketsIdeas } = useBasketsIdeas(basket?.data.id);
+
   if (isNilOrError(idea) || !ideaBudget || !participationContextId) {
     return null;
   }
@@ -100,6 +105,8 @@ const AddToBasketButton = ({
     actionDescriptor.disabled_reason !== 'idea_not_in_current_phase';
 
   if (!buttonVisible) return null;
+
+  const ideaInBasket = isIdeaInBasket(ideaId, basketsIdeas);
 
   const handleAddRemoveButtonClick = (event?: FormEvent) => {
     event?.preventDefault();
