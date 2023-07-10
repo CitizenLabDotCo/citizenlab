@@ -8,7 +8,7 @@ import React, {
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
 import useBasketsIdeas from './useBasketsIdeas';
-import useAssignVote from './useAssignVote2';
+import useAssignVote from './useAssignVote';
 
 // utils
 import { getCurrentParticipationContext } from 'api/phases/utils';

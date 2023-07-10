@@ -7,7 +7,7 @@ import basketsIdeasKeys from 'api/baskets_ideas/keys';
 
 interface Params {
   idea_id: string;
-  votes: number;
+  votes: number | null;
 }
 
 export const addIdeaToBasket = async (params: Params) =>
