@@ -105,6 +105,12 @@ const AddToBasketButton = ({
     event?.preventDefault();
 
     if (actionDescriptor.enabled) {
+      // const maxBudget = participationContext?.attributes.voting_max_total;
+      // const ideaBudget = idea?.data.attributes.budget;
+      // const basketTotal = basket?.data.attributes.total_votes;
+
+      // if (!maxBudget || !ideaBudget || !basketTotal)
+
       assignBudget(isInBasket ? 'remove' : 'add');
       trackEventByName(
         isInBasket ? tracks.ideaRemovedFromBasket : tracks.ideaAddedToBasket
