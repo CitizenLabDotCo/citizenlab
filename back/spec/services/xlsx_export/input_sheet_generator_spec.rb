@@ -459,6 +459,8 @@ describe XlsxExport::InputSheetGenerator do
                 'Submitted at',
                 'Published at',
                 'Comments',
+                'Picks',
+                'Votes',
                 'Budget',
                 'URL',
                 'Project',
@@ -508,6 +510,8 @@ describe XlsxExport::InputSheetGenerator do
                 'Submitted at',
                 'Published at',
                 'Comments',
+                'Picks',
+                'Votes',
                 'Budget',
                 'URL',
                 'Project',
@@ -528,6 +532,8 @@ describe XlsxExport::InputSheetGenerator do
                   an_instance_of(DateTime), # created_at
                   an_instance_of(DateTime), # published_at
                   1,
+                  2,
+                  2,
                   ideation_response1.budget,
                   "http://example.org/ideas/#{ideation_response1.slug}",
                   participation_context.project.title_multiloc['en'],
@@ -571,6 +577,7 @@ describe XlsxExport::InputSheetGenerator do
         let!(:likes) { create_list(:reaction, 2, reactable: ideation_response1) }
         let!(:baskets) do
           create_list(:basket, 2, participation_context: participation_context, ideas: [ideation_response1]).each do |basket|
+            basket.baskets_ideas.first.update!(votes: 2)
             SideFxBasketService.new.update_basket_counts basket
           end
         end
@@ -599,6 +606,8 @@ describe XlsxExport::InputSheetGenerator do
                   'Submitted at',
                   'Published at',
                   'Comments',
+                  'Picks',
+                  'Votes',
                   'Budget',
                   'URL',
                   'Project',
@@ -619,6 +628,8 @@ describe XlsxExport::InputSheetGenerator do
                     an_instance_of(DateTime), # created_at
                     an_instance_of(DateTime), # published_at
                     1,
+                    2,
+                    4,
                     ideation_response1.budget,
                     "http://example.org/ideas/#{ideation_response1.slug}",
                     participation_context.project.title_multiloc['en'],
@@ -654,7 +665,8 @@ describe XlsxExport::InputSheetGenerator do
                   'Submitted at',
                   'Published at',
                   'Comments',
-                  'Baskets',
+                  'Picks',
+                  'Votes',
                   'Budget',
                   'URL',
                   'Project',
@@ -681,6 +693,7 @@ describe XlsxExport::InputSheetGenerator do
                     an_instance_of(DateTime), # published_at
                     1,
                     2,
+                    4,
                     ideation_response1.budget,
                     "http://example.org/ideas/#{ideation_response1.slug}",
                     participation_context.project.title_multiloc['en'],

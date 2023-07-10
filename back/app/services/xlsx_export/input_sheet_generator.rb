@@ -97,7 +97,11 @@ module XlsxExport
     end
 
     def baskets_count_report_field
-      ComputedFieldForReport.new(column_header_for('baskets_count'), ->(input) { participation_context.is_a?(Phase) ? participation_context.ideas_phases.find_by(idea_id: input.id).baskets_count : input.baskets_count })
+      ComputedFieldForReport.new(column_header_for('baskets_count'), ->(input) { voting_context(input, participation_context).baskets_count })
+    end
+
+    def votes_count_report_field
+      ComputedFieldForReport.new(column_header_for('votes_count'), ->(input) { voting_context(input, participation_context).votes_count })
     end
 
     def input_url_report_field
@@ -165,7 +169,10 @@ module XlsxExport
           meta_fields << likes_count_report_field
           meta_fields << dislikes_count_report_field
         end
-        meta_fields << baskets_count_report_field if include_private_attributes && participation_method.supports_baskets?
+        if participation_method.supports_baskets?
+          meta_fields << baskets_count_report_field
+          meta_fields << votes_count_report_field
+        end
         meta_fields << budget_report_field if participation_method.supports_budget?
         meta_fields << input_url_report_field unless participation_method.never_show?
         meta_fields << project_report_field
@@ -204,6 +211,17 @@ module XlsxExport
 
     def user_fields
       CustomField.with_resource_type('User').includes(:options).order(:ordering).all
+    end
+
+    def voting_context(input, participation_context)
+      case participation_context.class.name
+      when 'Phase'
+        participation_context.ideas_phases.find_by(idea_id: input.id)
+      when 'Project'
+        input
+      else
+        raise "Unknown participation context #{participation_context}"
+      end
     end
 
     def column_header_for(translation_key)
