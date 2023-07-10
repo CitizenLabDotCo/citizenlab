@@ -22,7 +22,7 @@ export const mockHomepageSettingsData: IHomepageSettingsData = {
     bottom_info_section_multiloc: {},
     projects_header_multiloc: {},
     banner_signed_out_header_overlay_color: null,
-    banner_signed_out_header_overlay_opacity: 50,
+    banner_signed_out_header_overlay_opacity: null,
     pinned_admin_publication_ids: ['pinnedAdminPubId1', 'pinnedAdminPubId2'],
     banner_cta_signed_in_text_multiloc: {},
     banner_cta_signed_in_type: 'no_button',
