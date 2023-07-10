@@ -21,16 +21,18 @@ import messages from './messages';
 // styling
 import { colors } from 'utils/styleUtils';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import { isFixableByAuthentication } from 'utils/actionDescriptors';
-
 // tracks
 import tracks from './tracks';
 import { trackEventByName } from 'utils/analytics';
 
+// events
+import eventEmitter from 'utils/eventEmitter';
+import { BUDGET_EXCEEDED_ERROR_EVENT } from 'components/ParticipationCTABars/VotingCTABar/events';
+
 // utils
 import { isIdeaInBasket, isButtonEnabled } from './utils';
+import { isNil } from 'utils/helperUtils';
+import { isFixableByAuthentication } from 'utils/actionDescriptors';
 
 // typings
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
@@ -71,7 +73,12 @@ const AddToBasketButton = ({
     return isIdeaInBasket(ideaId, basketsIdeas);
   }, [ideaId, basketsIdeas]);
 
-  if (isNilOrError(idea) || !ideaBudget || !participationContextId) {
+  if (
+    !idea ||
+    !ideaBudget ||
+    !participationContext ||
+    !participationContextId
+  ) {
     return null;
   }
 
@@ -90,13 +97,21 @@ const AddToBasketButton = ({
   const handleAddRemoveButtonClick = (event?: FormEvent) => {
     event?.preventDefault();
 
+    const maxBudget = participationContext.attributes.voting_max_total;
+    const ideaBudget = idea.data.attributes.budget;
+    const basketTotal = basket?.data.attributes.total_votes ?? 0;
+
+    if (isNil(maxBudget) || ideaBudget === null) return;
+
+    const ideaWillExceedBudget =
+      !ideaInBasket && basketTotal + ideaBudget > maxBudget;
+
+    if (ideaWillExceedBudget) {
+      eventEmitter.emit(BUDGET_EXCEEDED_ERROR_EVENT);
+      return;
+    }
+
     if (actionDescriptor.enabled) {
-      // const maxBudget = participationContext?.attributes.voting_max_total;
-      // const ideaBudget = idea?.data.attributes.budget;
-      // const basketTotal = basket?.data.attributes.total_votes;
-
-      // if (!maxBudget || !ideaBudget || !basketTotal)
-
       assignBudget(ideaInBasket ? 'remove' : 'add');
       trackEventByName(
         ideaInBasket ? tracks.ideaRemovedFromBasket : tracks.ideaAddedToBasket

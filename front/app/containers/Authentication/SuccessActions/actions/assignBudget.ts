@@ -41,24 +41,43 @@ export const assignBudget =
 
     const basketId =
       participationContext.data.relationships.user_basket?.data?.id;
+
+    // If no basket exists, the idea is definitely not in the basket
+    // yet, so we can add it to the basket (the BE will create the
+    // basket automatically)
+    if (!basketId) {
+      await addToBasketAndInvalidateCache({ ideaId, ideaBudget });
+      return;
+    }
+
     const basketsIdeas = await fetchBasketsIdeas({ basketId });
     const ideaInBasket = isIdeaInBasket(ideaId, basketsIdeas);
 
-    // If it turns out that the idea the user clicked was already in the basket,
+    // If a basket exists and the idea is already in the basket,
     // we do nothing
     if (ideaInBasket) return;
 
-    const response = await addIdeaToBasket({
-      idea_id: ideaId,
-      votes: ideaBudget,
-    });
-
-    const newBasketId = response.data.relationships.basket.data.id;
-
-    queryClient.invalidateQueries({
-      queryKey: basketsKeys.item({ id: newBasketId }),
-    });
-    queryClient.invalidateQueries({
-      queryKey: basketsIdeasKeys.item({ basketId: newBasketId }),
-    });
+    await addToBasketAndInvalidateCache({ ideaId, ideaBudget });
   };
+
+const addToBasketAndInvalidateCache = async ({
+  ideaId,
+  ideaBudget,
+}: {
+  ideaId: string;
+  ideaBudget: number;
+}) => {
+  const response = await addIdeaToBasket({
+    idea_id: ideaId,
+    votes: ideaBudget,
+  });
+
+  const newBasketId = response.data.relationships.basket.data.id;
+
+  queryClient.invalidateQueries({
+    queryKey: basketsKeys.item({ id: newBasketId }),
+  });
+  queryClient.invalidateQueries({
+    queryKey: basketsIdeasKeys.item({ basketId: newBasketId }),
+  });
+};
