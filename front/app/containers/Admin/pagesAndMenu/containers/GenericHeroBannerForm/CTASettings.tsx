@@ -10,7 +10,7 @@ import {
   CTASignedInType,
   CTASignedOutType,
   IHomepageSettingsAttributes,
-} from 'services/homepageSettings';
+} from 'api/homepage_settings/types';
 import styled from 'styled-components';
 import { CLErrors, Multiloc } from 'typings';
 import { FormattedMessage } from 'utils/cl-intl';

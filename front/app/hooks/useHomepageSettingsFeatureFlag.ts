@@ -1,10 +1,10 @@
 import {
   TAppConfigSectionSetting,
   TSectionSetting,
-} from 'services/homepageSettings';
+} from 'api/homepage_settings/types';
 import { THomepageSetting } from 'api/app_configuration/types';
 import { isNilOrError } from 'utils/helperUtils';
-import useHomepageSettings from './useHomepageSettings';
+import useHomepageSettings from 'api/homepage_settings/useHomepageSettings';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // If we deal with a section whose allowed value needs to be checked
@@ -29,7 +29,7 @@ export default function useHomepageSettingsFeatureFlag({
   sectionEnabledSettingName,
   appConfigSettingName,
 }: Parameters) {
-  const homepageSettings = useHomepageSettings();
+  const { data: homepageSettings } = useHomepageSettings();
   const { data: appConfig } = useAppConfiguration();
 
   const appConfigExists = !isNilOrError(appConfig);
@@ -43,7 +43,7 @@ export default function useHomepageSettingsFeatureFlag({
 
   // if the named setting is enabled in homepageSettings
   const homepageSettingisEnabled = homepageSettingsExist
-    ? homepageSettings.attributes[sectionEnabledSettingName]
+    ? homepageSettings.data.attributes[sectionEnabledSettingName]
     : false;
 
   // if no setting name from the app config was passed in,

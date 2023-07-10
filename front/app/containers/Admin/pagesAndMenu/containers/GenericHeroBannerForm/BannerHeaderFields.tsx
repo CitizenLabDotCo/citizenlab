@@ -5,7 +5,7 @@ import { forOwn, size, trim } from 'lodash-es';
 import React, { useState } from 'react';
 import { WrappedComponentProps } from 'react-intl';
 import { ICustomPageAttributes } from 'services/customPages';
-import { IHomepageSettingsAttributes } from 'services/homepageSettings';
+import { IHomepageSettingsAttributes } from 'api/homepage_settings/types';
 import { Multiloc } from 'typings';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';

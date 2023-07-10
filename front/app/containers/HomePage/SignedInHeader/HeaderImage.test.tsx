@@ -1,6 +1,6 @@
 import React from 'react';
 import HeaderImage from './HeaderImage';
-import { THomepageBannerLayout } from 'services/homepageSettings';
+import { THomepageBannerLayout } from 'api/homepage_settings/types';
 import { render, screen } from 'utils/testUtils/rtl';
 
 let mockHomepageBannerLayout: THomepageBannerLayout =

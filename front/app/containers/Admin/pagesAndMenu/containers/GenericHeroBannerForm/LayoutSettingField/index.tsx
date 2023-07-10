@@ -29,7 +29,7 @@ import {
 import {
   IHomepageSettingsAttributes,
   THomepageBannerLayout,
-} from 'services/homepageSettings';
+} from 'api/homepage_settings/types';
 
 const LayoutPreview = styled.img`
   width: 220px;

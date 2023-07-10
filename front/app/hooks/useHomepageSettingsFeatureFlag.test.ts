@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react-hooks';
 import useHomepageSettingsFeatureFlag from './useHomepageSettingsFeatureFlag';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useHomepageSettings from './useHomepageSettings';
+import useHomepageSettings from 'api/homepage_settings/useHomepageSettings';
 
 jest.mock('hooks/useHomepageSettings', () => {
   return jest.fn(() => ({

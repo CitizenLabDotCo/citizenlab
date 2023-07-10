@@ -15,7 +15,7 @@ import {
 import {
   IHomepageSettingsAttributes,
   THomepageBannerLayout,
-} from 'services/homepageSettings';
+} from 'api/homepage_settings/types';
 import { UploadFile } from 'typings';
 
 const HeaderImageOverlay = styled.div<{

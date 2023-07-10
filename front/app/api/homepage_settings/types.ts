@@ -2,6 +2,10 @@ import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { ImageSizes, Multiloc } from 'typings';
 const homepageSettingsEndpoint = `${API_PATH}/home_page`;
+import { Keys } from 'utils/cl-react-query/types';
+import homepageSettingsKeys from './keys';
+
+export type HomepageSettingsKeys = Keys<typeof homepageSettingsKeys>;
 
 // Enabled values for sections that have a corresponding
 // setting in appConfiguration.ts
@@ -27,14 +31,12 @@ export type THomepageBannerLayout =
   THomepageBannerLayoutMap[keyof THomepageBannerLayoutMap];
 
 export interface IHomepageSettings {
-  // To check
-  id: string;
-  // To check
-  type: string;
   data: IHomepageSettingsData;
 }
 
 export interface IHomepageSettingsData {
+  id: string;
+  type: 'home_page';
   attributes: IHomepageSettingsAttributes;
 }
 

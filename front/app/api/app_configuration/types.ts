@@ -7,7 +7,7 @@ import { API_PATH } from 'containers/App/constants';
 import { ImageSizes, Multiloc, Locale, UploadFile } from 'typings';
 import { TCategory } from 'components/ConsentManager/destinations';
 export const currentAppConfigurationEndpoint = `${API_PATH}/app_configuration`;
-import { THomepageSettingKeyMap } from 'services/homepageSettings';
+import { THomepageSettingKeyMap } from 'api/homepage_settings/types';
 
 interface AppConfigurationFeature {
   allowed: boolean;

@@ -18,8 +18,8 @@ import Outlet from 'components/Outlet';
 import {
   updateHomepageSettings,
   THomepageEnabledSetting,
-} from 'services/homepageSettings';
-import useHomepageSettings from 'hooks/useHomepageSettings';
+} from 'api/homepage_settings/types';
+import useHomepageSettings from 'api/homepage_settings/useHomepageSettings';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -34,7 +34,7 @@ export interface IHomepageSectionToggleData extends ISectionToggleData {
 
 const EditHomepage = () => {
   const { formatMessage } = useIntl();
-  const homepageSettings = useHomepageSettings();
+  const { data: homepageSettings } = useHomepageSettings();
   const [sectionTogglesData, setSectionTogglesData] = useState<
     IHomepageSectionToggleData[]
   >([
@@ -70,7 +70,7 @@ const EditHomepage = () => {
       }
       try {
         await updateHomepageSettings({
-          [sectionName]: !homepageSettings.attributes[sectionName],
+          [sectionName]: !homepageSettings.data.attributes[sectionName],
         });
       } catch (error) {
         console.error(error);
@@ -130,7 +130,7 @@ const EditHomepage = () => {
             <SectionToggle
               sectionToggleData={sectionToggleData}
               key={sectionToggleData.name}
-              checked={homepageSettings.attributes[sectionToggleData.name]}
+              checked={homepageSettings.data.attributes[sectionToggleData.name]}
               onChangeSectionToggle={handleOnChangeToggle(
                 sectionToggleData.name
               )}

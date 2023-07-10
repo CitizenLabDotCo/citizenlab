@@ -14,12 +14,12 @@ import BannerImageFields from 'containers/Admin/pagesAndMenu/containers/GenericH
 import AvatarsField from '../../containers/GenericHeroBannerForm/AvatarsField';
 
 // resources
-import useHomepageSettings from 'hooks/useHomepageSettings';
+import useHomepageSettings from 'api/homepage_settings/useHomepageSettings';
 import {
   IHomepageSettingsAttributes,
   THomepageBannerLayout,
   updateHomepageSettings,
-} from 'services/homepageSettings';
+} from 'api/homepage_settings/types';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -39,13 +39,11 @@ const EditHomepageHeroBannerForm = () => {
   const [localSettings, setLocalSettings] =
     useState<IHomepageSettingsAttributes | null>(null);
 
-  const homepageSettings = useHomepageSettings();
+  const { data: homepageSettings } = useHomepageSettings();
 
   useEffect(() => {
     if (!isNilOrError(homepageSettings)) {
-      setLocalSettings({
-        ...homepageSettings.attributes,
-      });
+      setLocalSettings(homepageSettings.data.attributes);
     }
   }, [homepageSettings]);
 
@@ -66,7 +64,7 @@ const EditHomepageHeroBannerForm = () => {
     // only trigger this when the value is explicitly null and not undefined
     if (
       localSettings.header_bg?.large === null &&
-      homepageSettings.attributes.header_bg?.large === null
+      homepageSettings.data.attributes.header_bg?.large === null
     ) {
       setLocalSettings({
         ...localSettings,
