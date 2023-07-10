@@ -19,7 +19,7 @@ export interface Item {
 
 interface InputProps {
   items: Item[];
-  onReorder: ({ id, ordering }: { id: string; ordering: number }) => void;
+  onReorder: (fieldId: string, newOrder: number) => void;
   children: (renderProps: RenderProps) => JSX.Element | JSX.Element[] | null;
   lockFirstNItems?: number;
   className?: string;
@@ -80,7 +80,7 @@ const SortableList = ({
     const item = find(listItems, { id: itemId });
 
     if (item && getLocalIndex(item.attributes.ordering) !== toIndex) {
-      onReorder({ id: itemId, ordering: getExternalIndex(toIndex) });
+      onReorder(itemId, getExternalIndex(toIndex));
     } else {
       setItemsWhileDragging(null);
     }

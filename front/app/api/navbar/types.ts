@@ -9,14 +9,6 @@ export type NavbarParameters = {
   onlyRemovedDefaultItems?: boolean;
 };
 
-export const DEFAULT_PAGE_SLUGS: Record<TDefaultNavbarItemCode, string> = {
-  home: '/',
-  projects: '/projects',
-  all_input: '/ideas',
-  proposals: '/initiatives',
-  events: '/events',
-};
-
 export type TDefaultNavbarItemCode =
   | 'home'
   | 'projects'
@@ -60,5 +52,6 @@ export interface INavbarItemAdd {
 }
 
 export interface INavbarItemUpdate {
+  id: string;
   title_multiloc?: Multiloc;
 }

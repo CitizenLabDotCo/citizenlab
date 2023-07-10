@@ -26,10 +26,10 @@ import { colors, fontSizes, media } from 'utils/styleUtils';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // services
-import { DEFAULT_PAGE_SLUGS } from 'services/navbar';
 import { TCustomPageCode } from 'api/custom_pages/types';
 import useAuthUser from 'api/me/useAuthUser';
 import useProjects from 'api/projects/useProjects';
+import { DEFAULT_PAGE_SLUGS } from 'api/navbar/util';
 
 const Container = styled.div`
   min-height: calc(
