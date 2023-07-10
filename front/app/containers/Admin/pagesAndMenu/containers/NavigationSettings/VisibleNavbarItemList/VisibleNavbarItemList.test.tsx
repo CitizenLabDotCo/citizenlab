@@ -7,7 +7,7 @@ import VisibleNavbarItemList from '.';
 import { removeNavbarItem, reorderNavbarItem } from 'services/navbar';
 import dragAndDrop from 'utils/testUtils/dragAndDrop';
 
-jest.mock('hooks/useNavbarItems');
+jest.mock('api/navbar/useNavbarItems');
 jest.mock('api/custom_pages/useCustomPageSlugById');
 
 jest.mock('services/navbar', () => ({

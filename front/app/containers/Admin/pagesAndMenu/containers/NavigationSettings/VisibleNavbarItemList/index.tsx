@@ -18,7 +18,7 @@ import { SubSectionTitle } from 'components/admin/Section';
 import NavbarItemRow from 'containers/Admin/pagesAndMenu/containers/NavigationSettings/NavbarItemRow';
 
 // hooks
-import useNavbarItems from 'hooks/useNavbarItems';
+import useNavbarItems from 'api/navbar/useNavbarItems';
 import useCustomPageSlugById from 'api/custom_pages/useCustomPageSlugById';
 
 // i18n
@@ -36,7 +36,7 @@ const VisibleNavbarItemList = ({
   intl: { formatMessage },
 }: WrappedComponentProps) => {
   const { mutate: deleteCustomPage } = useDeleteCustomPage();
-  const navbarItems = useNavbarItems();
+  const { data: navbarItems } = useNavbarItems();
   const pageSlugById = useCustomPageSlugById();
 
   if (isNilOrError(navbarItems) || isNilOrError(pageSlugById)) {
@@ -88,7 +88,7 @@ const VisibleNavbarItemList = ({
       </SubSectionTitle>
 
       <SortableList
-        items={navbarItems}
+        items={navbarItems.data}
         onReorder={reorderNavbarItem}
         lockFirstNItems={2}
       >

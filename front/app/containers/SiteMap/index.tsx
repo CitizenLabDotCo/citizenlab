@@ -3,7 +3,7 @@ import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // hooks
 import useLocalize from 'hooks/useLocalize';
-import useNavbarItems from 'hooks/useNavbarItems';
+import useNavbarItems from 'api/navbar/useNavbarItems';
 import useCustomPages from 'api/custom_pages/useCustomPages';
 
 // intl
@@ -120,7 +120,7 @@ const SiteMap = () => {
     publicationStatuses: ['draft', 'published', 'archived'],
   });
   const loaded = projects !== undefined;
-  const navBarItems = useNavbarItems();
+  const { data: navBarItems } = useNavbarItems();
   const localize = useLocalize();
   const { data: pages } = useCustomPages();
   const { data: authUser } = useAuthUser();
@@ -282,7 +282,7 @@ const SiteMap = () => {
                 <ul>
                   {/* Nav bar items that are not included in pages */}
                   {!isNilOrError(navBarItems) &&
-                    navBarItems
+                    navBarItems.data
                       .filter(
                         (navBarItem) =>
                           navBarItem.relationships.static_page.data === null

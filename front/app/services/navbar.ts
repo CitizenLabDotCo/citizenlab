@@ -44,13 +44,6 @@ export interface INavbarItem {
   };
 }
 
-export function navbarItemsStream({ onlyDefault } = { onlyDefault: false }) {
-  return streams.get<{ data: INavbarItem[] }>({
-    apiEndpoint,
-    queryParameters: { only_default: onlyDefault },
-  });
-}
-
 // utility function to get slug associated with navbar item
 export function getNavbarItemSlug(
   navbarItemCode: TNavbarItemCode,

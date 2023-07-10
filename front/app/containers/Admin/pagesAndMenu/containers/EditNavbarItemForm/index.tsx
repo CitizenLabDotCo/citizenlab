@@ -19,15 +19,18 @@ import { WrappedComponentProps } from 'react-intl';
 
 // hooks
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useNavbarItem from 'hooks/useNavbarItem';
+
 import useLocalize from 'hooks/useLocalize';
+import useNavbarItems from 'api/navbar/useNavbarItems';
 
 const EditNavbarItemForm = ({
   params: { navbarItemId },
   intl: { formatMessage },
 }: WithRouterProps & WrappedComponentProps) => {
   const appConfigurationLocales = useAppConfigurationLocales();
-  const navbarItem = useNavbarItem({ navbarItemId });
+  const { data: navbarItems } = useNavbarItems();
+
+  const navbarItem = navbarItems?.data.find((item) => item.id === navbarItemId);
   const localize = useLocalize();
 
   if (isNilOrError(appConfigurationLocales) || isNilOrError(navbarItem)) {

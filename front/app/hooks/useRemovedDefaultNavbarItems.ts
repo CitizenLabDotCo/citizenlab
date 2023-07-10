@@ -1,7 +1,9 @@
+import { INavbarItem } from 'api/navbar/types';
 import { useState, useEffect } from 'react';
 import { removedDefaultNavbarItems } from 'services/navbar';
 import { isNilOrError } from 'utils/helperUtils';
-import { TNavbarItemsState } from 'hooks/useNavbarItems';
+
+export type TNavbarItemsState = INavbarItem[] | undefined | null | Error;
 
 export default function useRemovedDefaultNavbarItems() {
   const [navbarItems, setNavbarItems] = useState<TNavbarItemsState>(undefined);

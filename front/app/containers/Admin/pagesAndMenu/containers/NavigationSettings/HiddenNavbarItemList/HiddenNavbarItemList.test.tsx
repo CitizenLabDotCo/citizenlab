@@ -9,10 +9,17 @@ import { addNavbarItem } from 'services/navbar';
 let mockNavbarItems = allNavbarItems;
 const mockRemovedDefaultNavbarItems = [];
 
-jest.mock('hooks/useNavbarItems', () => jest.fn(() => mockNavbarItems));
-jest.mock('hooks/useRemovedDefaultNavbarItems', () =>
-  jest.fn(() => mockRemovedDefaultNavbarItems)
-);
+// jest.mock('api/navbar/useNavbarItems', () =>
+//   jest.fn(() => ({ data: mockNavbarItems }))
+// );
+
+jest.mock('api/navbar/useNavbarItems', () => {
+  return jest.fn((params) => {
+    return params?.onlyRemovedDefaultItems
+      ? { data: mockRemovedDefaultNavbarItems }
+      : { data: mockNavbarItems };
+  });
+});
 
 jest.mock('api/custom_pages/useCustomPages');
 jest.mock('api/custom_pages/useCustomPageSlugById');
