@@ -3,29 +3,11 @@ import { IUserData } from 'api/users/types';
 import clHistory from 'utils/cl-router/history';
 import { render, userEvent } from 'utils/testUtils/rtl';
 import HomePage, { adminRedirectPath } from '.';
+import { mockAuthUserData } from 'api/me/__mocks__/useAuthUser';
 
-const mockUserData: IUserData = {
-  id: 'userId',
-  type: 'user',
-  attributes: {
-    first_name: 'Stewie',
-    last_name: 'McKenzie',
-    locale: 'en',
-    slug: 'stewie-mckenzie',
-    highest_role: 'admin',
-    bio_multiloc: {},
-    roles: [{ type: 'admin' }],
-    registration_completed_at: '',
-    created_at: '',
-    updated_at: '',
-    unread_notifications: 0,
-    invite_status: null,
-    confirmation_required: false,
-  },
-};
 jest.mock('api/home_page/useHomepageSettings');
 jest.mock('api/me/useAuthUser', () => () => ({
-  data: { data: mockUserData },
+  data: { data: mockAuthUserData },
 }));
 
 describe('HomePage', () => {
@@ -38,8 +20,8 @@ describe('HomePage', () => {
   });
 
   it('Does not redirect if you do not have admin access', async () => {
-    mockUserData.attributes.roles = [];
-    mockUserData.attributes.highest_role = 'user';
+    mockAuthUserData.attributes.roles = [];
+    mockAuthUserData.attributes.highest_role = 'user';
 
     render(<HomePage />);
     const user = userEvent.setup();
