@@ -15,18 +15,15 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 // services, hooks, resources, and types
 import Outlet from 'components/Outlet';
-import {
-  updateHomepageSettings,
-  THomepageEnabledSetting,
-} from 'api/homepage_settings/types';
+import { THomepageEnabledSetting } from 'api/homepage_settings/types';
 import useHomepageSettings from 'api/homepage_settings/useHomepageSettings';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 import { insertConfiguration } from 'utils/moduleUtils';
 import { InsertConfigurationOptions } from 'typings';
 import clHistory from 'utils/cl-router/history';
 import { ISectionToggleData } from 'containers/Admin/pagesAndMenu/components/SectionToggle';
+import useUpdateHomepageSettings from 'api/homepage_settings/useUpdateHomepageSettings';
 
 export interface IHomepageSectionToggleData extends ISectionToggleData {
   name: THomepageEnabledSetting | 'homepage_banner';
@@ -35,6 +32,7 @@ export interface IHomepageSectionToggleData extends ISectionToggleData {
 const EditHomepage = () => {
   const { formatMessage } = useIntl();
   const { data: homepageSettings } = useHomepageSettings();
+  const { mutate: updateHomepageSettings } = useUpdateHomepageSettings();
   const [sectionTogglesData, setSectionTogglesData] = useState<
     IHomepageSectionToggleData[]
   >([
@@ -63,18 +61,22 @@ const EditHomepage = () => {
     },
   ]);
 
+  if (!homepageSettings) {
+    return null;
+  }
+
   const handleOnChangeToggle =
-    (sectionName: THomepageEnabledSetting | 'homepage_banner') => async () => {
-      if (isNilOrError(homepageSettings)) {
-        return;
-      }
-      try {
-        await updateHomepageSettings({
+    (sectionName: THomepageEnabledSetting | 'homepage_banner') => () => {
+      updateHomepageSettings(
+        {
           [sectionName]: !homepageSettings.data.attributes[sectionName],
-        });
-      } catch (error) {
-        console.error(error);
-      }
+        },
+        {
+          onError: (error) => {
+            console.error(error);
+          },
+        }
+      );
     };
 
   const handleOnData = (
@@ -90,10 +92,6 @@ const EditHomepage = () => {
       clHistory.push(`/admin/pages-menu/homepage/${url}/`);
     }
   };
-
-  if (isNilOrError(homepageSettings)) {
-    return null;
-  }
 
   return (
     <SectionFormWrapper

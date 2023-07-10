@@ -18,8 +18,7 @@ import { object } from 'yup';
 
 // i18n
 import HelmetIntl from 'components/HelmetIntl';
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // typings
@@ -55,10 +54,10 @@ const GenericTopInfoSection = ({
   updatePage,
   updatePageAndEnableSection,
   breadcrumbs,
-  intl: { formatMessage },
   linkToViewPage,
-}: WrappedComponentProps & Props) => {
+}: Props) => {
   const theme = useTheme();
+  const { formatMessage } = useIntl();
 
   const onFormSubmit = async (formValues: FormValues) => {
     try {
@@ -156,4 +155,4 @@ const GenericTopInfoSection = ({
   );
 };
 
-export default injectIntl(GenericTopInfoSection);
+export default GenericTopInfoSection;

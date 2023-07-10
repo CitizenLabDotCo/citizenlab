@@ -18,7 +18,6 @@ import useHomepageSettings from 'api/homepage_settings/useHomepageSettings';
 import {
   IHomepageSettingsAttributes,
   THomepageBannerLayout,
-  updateHomepageSettings,
 } from 'api/homepage_settings/types';
 
 // utils
@@ -30,6 +29,7 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../../containers/GenericHeroBannerForm/messages';
 import CTASettings from '../../containers/GenericHeroBannerForm//CTASettings';
 import LayoutSettingField from '../../containers/GenericHeroBannerForm/LayoutSettingField';
+import useUpdateHomepageSettings from 'api/homepage_settings/useUpdateHomepageSettings';
 
 const EditHomepageHeroBannerForm = () => {
   const { formatMessage } = useIntl();
@@ -40,6 +40,7 @@ const EditHomepageHeroBannerForm = () => {
     useState<IHomepageSettingsAttributes | null>(null);
 
   const { data: homepageSettings } = useHomepageSettings();
+  const { mutate: updateHomepageSettings } = useUpdateHomepageSettings();
 
   useEffect(() => {
     if (!isNilOrError(homepageSettings)) {
@@ -77,7 +78,7 @@ const EditHomepageHeroBannerForm = () => {
     setIsLoading(true);
     setApiErrors(null);
     try {
-      await updateHomepageSettings(localSettings);
+      updateHomepageSettings(localSettings);
       setIsLoading(false);
       setFormStatus('success');
     } catch (error) {
