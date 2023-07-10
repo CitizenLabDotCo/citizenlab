@@ -22,6 +22,7 @@ FactoryBot.define do
     end_at { Date.parse(start_at) + 60.days }
     min_budget { 1 }
     max_budget { 10_000 }
+    emails { { project_phase_started: true } }
 
     transient do
       with_permissions { false }
