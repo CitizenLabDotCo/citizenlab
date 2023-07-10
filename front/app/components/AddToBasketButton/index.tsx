@@ -80,9 +80,9 @@ const AddToBasketButton = ({
       : 'phase';
 
   const participationContextId = participationContext?.id || null;
-  const { data: basket } = useBasket(
-    participationContext?.relationships?.user_basket?.data?.id
-  );
+  const basketId = participationContext?.relationships?.user_basket?.data?.id;
+  const isInBasket = !!basketId;
+  const { data: basket } = useBasket(basketId);
   const ideaBudget = idea?.data.attributes.budget;
 
   if (isNilOrError(idea) || !ideaBudget || !participationContextId) {
@@ -100,11 +100,6 @@ const AddToBasketButton = ({
     actionDescriptor.disabled_reason !== 'idea_not_in_current_phase';
 
   if (!buttonVisible) return null;
-
-  const basketIdeaIds = !isNilOrError(basket)
-    ? basket.data.relationships.ideas.data.map((idea) => idea.id)
-    : [];
-  const isInBasket = basketIdeaIds.includes(ideaId);
 
   const handleAddRemoveButtonClick = (event?: FormEvent) => {
     event?.preventDefault();
@@ -132,7 +127,6 @@ const AddToBasketButton = ({
           ideaId,
           participationContextId,
           participationContextType,
-          basket: basket?.data,
         },
       };
 
@@ -141,9 +135,7 @@ const AddToBasketButton = ({
   };
 
   const buttonMessage = isInBasket ? messages.added : messages.add;
-
   const buttonEnabled = isButtonEnabled(basket, actionDescriptor);
-
   const currency = appConfig?.data.attributes.settings.core.currency;
 
   return (

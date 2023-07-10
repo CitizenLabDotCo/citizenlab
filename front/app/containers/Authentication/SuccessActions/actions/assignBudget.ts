@@ -2,20 +2,10 @@
 import { fetchIdea } from 'api/ideas/useIdeaById';
 import { fetchProjectById } from 'api/projects/useProjectById';
 import { fetchPhase } from 'api/phases/usePhase';
-import { fetchBasket } from 'api/baskets/useBasket';
 import { addIdeaToBasket } from 'api/baskets/useAddIdeaToBasket';
-
-// tracks
-import { trackEventByName } from 'utils/analytics';
-import tracks from 'components/AddToBasketButton/tracks';
-
-// utils
-import { isNil, capitalizeParticipationContextType } from 'utils/helperUtils';
-import streams from 'utils/streams';
 import { queryClient } from 'utils/cl-react-query/queryClient';
-
-// typings
-import { IParticipationContextType } from 'typings';
+import basketsKeys from 'api/baskets/keys';
+import basketsIdeasKeys from 'api/baskets_ideas/keys';
 
 export interface AssignBudgetParams {
   ideaId: string;
@@ -36,4 +26,29 @@ export const assignBudget =
       participationContextType === 'project'
         ? fetchProjectById({ id: participationContextId })
         : fetchPhase({ phaseId: participationContextId });
+
+    const [idea, participationContext] = await Promise.all([
+      ideaPromise,
+      participationContextPromise,
+    ]);
+
+    const ideaBudget = idea.data.attributes.budget;
+    if (!ideaBudget) return;
+
+    const isInBasket =
+      !!participationContext.data.relationships.user_basket?.data?.id;
+    if (isInBasket) return;
+
+    const response = await addIdeaToBasket({
+      idea_id: ideaId,
+      votes: ideaBudget,
+    });
+    const basketId = response.data.relationships.basket.data.id;
+
+    queryClient.invalidateQueries({
+      queryKey: basketsKeys.item({ id: basketId }),
+    });
+    queryClient.invalidateQueries({
+      queryKey: basketsIdeasKeys.item({ basketId }),
+    });
   };
