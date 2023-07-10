@@ -85,7 +85,11 @@ class WebApi::V1::BasketsIdeasController < ApplicationController
       baskets_idea.destroy
       if baskets_idea.destroyed?
         SideFxBasketsIdeaService.new.after_destroy baskets_idea, current_user
-        head :ok
+        # Returning the frozen basket as the front-end needs a response
+        render json: WebApi::V1::BasketsIdeaSerializer.new(
+          baskets_idea,
+          params: jsonapi_serializer_params,
+        ).serializable_hash, status: :ok
         return
       end
     end
