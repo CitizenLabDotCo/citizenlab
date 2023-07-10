@@ -17,14 +17,16 @@ const useAnalytics = <Response extends BaseResponseData>(
   onSuccess?: () => void
 ) => {
   const queryClient = useQueryClient();
+  const stringifiedQuery = JSON.stringify(query);
 
   // Call onSuccess if the query is already in the cache
   useEffect(() => {
-    const queryKey = analyticsKeys.item(query);
+    const parsedQuery = JSON.parse(stringifiedQuery);
+    const queryKey = analyticsKeys.item(parsedQuery);
     if (queryClient.getQueryData(queryKey)) {
       onSuccess && onSuccess();
     }
-  }, [query, queryClient, onSuccess]);
+  }, [stringifiedQuery, queryClient, onSuccess]);
 
   return useQuery<Response, CLErrors, Response, any>({
     queryKey: analyticsKeys.item(query),
