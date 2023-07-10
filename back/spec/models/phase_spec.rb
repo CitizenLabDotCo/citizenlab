@@ -81,6 +81,34 @@ RSpec.describe Phase do
     end
   end
 
+  describe 'emails validation' do
+    it 'fails when null' do
+      phase = build(:phase, emails: nil)
+      expect(phase).to be_invalid
+    end
+
+    it 'fails when empty' do
+      phase = build(:phase, emails: {})
+      expect(phase).to be_invalid
+    end
+
+    it 'fails when contains invalid key' do
+      phase = build(:phase, emails: { invalid_key: true })
+      expect(phase).to be_invalid
+    end
+
+    it 'fails when contains invalid value' do
+      phase = build(:phase, emails: { invalid_key: 'not_a_boolean' })
+      expect(phase).to be_invalid
+    end
+
+    # Not really necessary, but useful while developing
+    it 'succeeds when contains valid key and value' do
+      phase = build(:phase, emails: { project_phase_started: false })
+      expect(phase).to be_valid
+    end
+  end
+
   describe 'project validation' do
     it 'succeeds when the associated project is a timeline project' do
       phase = build(:phase, project: build(:project, process_type: 'timeline'))
