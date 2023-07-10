@@ -30,6 +30,7 @@ import {
   getStatus,
   parseFormValues,
   convertBinsToFormValues,
+  FormValues,
 } from '../../utils/form';
 import { isSupported } from '../../containers/Dashboard/utils';
 
@@ -66,13 +67,7 @@ const Field = ({
       : undefined
   );
 
-  const [formValues, setFormValues] = useState(
-    getInitialValues(
-      userCustomFieldOptions,
-      referenceDataUploaded,
-      remoteFormValues
-    )
-  );
+  const [formValues, setFormValues] = useState<FormValues | null>(null);
 
   const { data: userCustomField } = useUserCustomField(userCustomFieldId);
 
@@ -83,7 +78,7 @@ const Field = ({
   }, [isBinnedDistribution, bins, referenceDistribution]);
 
   useEffect(() => {
-    if (formValues === null) {
+    if (formValues === null && remoteFormValues) {
       setFormValues(
         getInitialValues(
           userCustomFieldOptions,
@@ -109,7 +104,6 @@ const Field = ({
   const titleMultiloc = userCustomField.data.attributes.title_multiloc;
 
   const binsSet = isBirthyear ? !!bins : undefined;
-
   const status = getStatus(formValues, remoteFormValues, touched, binsSet);
 
   const handleUpdateEnabled = (optionId: string, enabled: boolean) => {
@@ -222,10 +216,6 @@ const FieldWrapper = ({ userCustomFieldId }: Props) => {
   ) {
     return null;
   }
-
-  console.log('remoteFormValues', remoteFormValues);
-  console.log('referenceDistribution', referenceDistribution);
-  console.log('referenceDataUploaded', referenceDataUploaded);
 
   return (
     <Field

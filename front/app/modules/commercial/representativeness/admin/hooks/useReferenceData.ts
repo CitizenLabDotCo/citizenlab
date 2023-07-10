@@ -47,6 +47,7 @@ function useReferenceData(
     id: userCustomField.id,
     enabled: !code,
   });
+
   const locale = useLocale();
 
   useEffect(() => {
@@ -60,6 +61,7 @@ function useReferenceData(
 
     if (code === 'gender') {
       handleRegFieldResponse(usersByGender, setters);
+      return;
     }
 
     if (code === 'birthyear') {
@@ -77,6 +79,7 @@ function useReferenceData(
       setReferenceData(ageFieldToReferenceData(usersByAge, locale));
       setIncludedUsers(ageFieldToIncludedUsers(usersByAge));
       setReferenceDataUploaded(true);
+      return;
     }
 
     handleRegFieldResponse(usersByCustomField, setters);
