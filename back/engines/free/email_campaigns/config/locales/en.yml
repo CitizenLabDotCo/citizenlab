@@ -603,6 +603,7 @@ en:
         user_registers_for_the_first_time: 'User registers for the first time'
         user_replies_to_comment: 'User replies to comment'
         voting_2_days_before_phase_closes: '2 days before voting phase closes'
+        voting_1_day_after_last_votes: '1 day after user last voted'
         voting_basket_submitted: 'Votes are submitted'
         7_days_after_invite_is_sent: '7 days after invite is sent'
         7_days_before_the_project_changes_phase: '7 days before the project changes phase'

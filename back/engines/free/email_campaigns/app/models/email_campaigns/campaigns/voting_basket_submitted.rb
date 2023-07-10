@@ -46,7 +46,7 @@ module EmailCampaigns
     end
 
     def filter_recipient(users_scope, activity:, time: nil)
-      users_scope.where(id: activity.item.author_id)
+      users_scope.where(id: activity.item.recipient.id)
     end
 
     def self.recipient_role_multiloc_key
@@ -67,8 +67,6 @@ module EmailCampaigns
 
     def generate_commands(recipient:, activity:)
       basket = activity.item
-      basket.ideas
-
       [{
         event_payload: {
           project_id: basket.participation_context.project,

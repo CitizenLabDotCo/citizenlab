@@ -46,7 +46,7 @@ module EmailCampaigns
     end
 
     def filter_recipient(users_scope, activity:, time: nil)
-      users_scope.where(id: activity.item.author_id)
+      users_scope.where(id: activity.item.recipient.id)
     end
 
     def self.recipient_role_multiloc_key
@@ -66,13 +66,12 @@ module EmailCampaigns
     end
 
     def generate_commands(recipient:, activity:)
-      # TODO: This needs sorting
       basket = activity.item
-      basket.ideas
-
       [{
         event_payload: {
-          phase_id: basket.participation_context_id
+          project_url: Frontend::UrlService.new.model_to_url(project, locale: recipient.locale),
+          phase_title_multiloc: basket.participation_context.title_multiloc,
+          project_title_multiloc: basket.participation_context.project.title_multiloc
         }
       }]
     end
