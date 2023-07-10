@@ -45,6 +45,10 @@ export interface INavbarItem {
   };
 }
 
+export interface INavbarItemResponse {
+  data: INavbarItem;
+}
+
 export interface INavbarItems {
   data: INavbarItem[];
 }

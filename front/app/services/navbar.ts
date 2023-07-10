@@ -2,7 +2,6 @@ import { IRelationship, Multiloc } from 'typings';
 import { API_PATH } from 'containers/App/constants';
 import { TPageSlugById } from 'api/custom_pages/useCustomPageSlugById';
 import streams from 'utils/streams';
-import { IItemNotInNavbar } from 'utils/navbar';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import customPagesKeys from 'api/custom_pages/keys';
 
@@ -65,47 +64,8 @@ export function getNavbarItemSlug(
   return null;
 }
 
-interface INavbarItemAdd {
-  code: TNavbarItemCode;
-  static_page_id?: string;
-  title_multiloc?: Multiloc;
-}
-
 export interface INavbarItemUpdate {
   title_multiloc?: Multiloc;
-}
-
-export async function addNavbarItem(item: IItemNotInNavbar) {
-  const navbarItem: INavbarItemAdd =
-    item.type === 'default_item'
-      ? {
-          code: item.navbarCode,
-          title_multiloc: item.navbarTitleMultiloc,
-        }
-      : {
-          code: 'custom',
-          static_page_id: item.pageId,
-          title_multiloc: item.pageTitleMultiloc,
-        };
-
-  const response = await streams.add<INavbarItem>(
-    apiEndpoint,
-    {
-      nav_bar_item: navbarItem,
-    },
-    false,
-    false
-  );
-
-  queryClient.invalidateQueries({
-    queryKey: customPagesKeys.lists(),
-  });
-
-  streams.fetchAllWith({
-    partialApiEndpoint: ['nav_bar_items'],
-  });
-
-  return response;
 }
 
 export async function updateNavbarItem(
