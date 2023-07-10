@@ -4,7 +4,7 @@ import React from 'react';
 import clHistory from 'utils/cl-router/history';
 import { fireEvent, render, screen } from 'utils/testUtils/rtl';
 import VisibleNavbarItemList from '.';
-import { removeNavbarItem, reorderNavbarItem } from 'services/navbar';
+import { reorderNavbarItem } from 'services/navbar';
 import dragAndDrop from 'utils/testUtils/dragAndDrop';
 
 jest.mock('api/navbar/useNavbarItems');
@@ -12,14 +12,18 @@ jest.mock('api/custom_pages/useCustomPageSlugById');
 
 jest.mock('services/navbar', () => ({
   reorderNavbarItem: jest.fn(),
-  removeNavbarItem: jest.fn(),
-  getNavbarItemSlug: jest.fn(),
 }));
 
 const mockDeleteCustomPage = jest.fn();
 
 jest.mock('api/custom_pages/useDeleteCustomPage', () =>
   jest.fn(() => ({ mutate: mockDeleteCustomPage }))
+);
+
+const mockRemoveNavbarItem = jest.fn();
+
+jest.mock('api/navbar/useDeleteNavbarItem', () =>
+  jest.fn(() => ({ mutate: mockRemoveNavbarItem }))
 );
 
 describe('<VisibleNavbarItemList />', () => {
@@ -113,11 +117,11 @@ describe('<VisibleNavbarItemList />', () => {
     const removeButtons = screen.getAllByText('Remove from navbar');
 
     fireEvent.click(removeButtons[0]);
-    expect(removeNavbarItem).toHaveBeenCalledWith(
+    expect(mockRemoveNavbarItem).toHaveBeenCalledWith(
       '2003e851-6cae-4ce8-a0e4-4b930fe73009'
     );
     fireEvent.click(removeButtons[1]);
-    expect(removeNavbarItem).toHaveBeenLastCalledWith(
+    expect(mockRemoveNavbarItem).toHaveBeenLastCalledWith(
       '037c953a-f717-4d17-beca-b0b684335b7b'
     );
   });

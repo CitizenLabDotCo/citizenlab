@@ -1,8 +1,6 @@
 import { IRelationship, Multiloc } from 'typings';
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
-import { queryClient } from 'utils/cl-react-query/queryClient';
-import customPagesKeys from 'api/custom_pages/keys';
 
 export const apiEndpoint = `${API_PATH}/nav_bar_items`;
 
@@ -65,21 +63,5 @@ export async function reorderNavbarItem(
 
   streams.fetchAllWith({ partialApiEndpoint: [apiEndpoint] });
 
-  return response;
-}
-
-export async function removeNavbarItem(navbarItemId: string) {
-  const response = await streams.delete(
-    `${apiEndpoint}/${navbarItemId}`,
-    navbarItemId
-  );
-
-  queryClient.invalidateQueries({
-    queryKey: customPagesKeys.lists(),
-  });
-
-  streams.fetchAllWith({
-    partialApiEndpoint: ['nav_bar_items'],
-  });
   return response;
 }

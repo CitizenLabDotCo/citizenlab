@@ -1,12 +1,12 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 
-import useDeleteCause from './useDeleteCause';
+import useDeleteNavbarItem from './useDeleteNavbarItem';
 
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-const apiPath = '*causes/:id';
+const apiPath = '*nav_bar_items/:id';
 
 const server = setupServer(
   rest.delete(apiPath, (_req, res, ctx) => {
@@ -14,12 +14,12 @@ const server = setupServer(
   })
 );
 
-describe('useDeleteCause', () => {
+describe('useDeleteNavbarItem', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useDeleteCause(), {
+    const { result, waitFor } = renderHook(() => useDeleteNavbarItem(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -37,7 +37,7 @@ describe('useDeleteCause', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useDeleteCause(), {
+    const { result, waitFor } = renderHook(() => useDeleteNavbarItem(), {
       wrapper: createQueryClientWrapper(),
     });
 

@@ -1,12 +1,9 @@
 import React from 'react';
 
 // services
-import {
-  getNavbarItemSlug,
-  removeNavbarItem,
-  reorderNavbarItem,
-} from 'services/navbar';
+import { reorderNavbarItem } from 'services/navbar';
 import useDeleteCustomPage from 'api/custom_pages/useDeleteCustomPage';
+import useDeleteNavbarItem from 'api/navbar/useDeleteNavbarItem';
 
 // components
 import {
@@ -31,11 +28,13 @@ import { ADMIN_PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 import { Item } from 'components/admin/ResourceList/SortableList';
+import { getNavbarItemSlug } from 'api/navbar/util';
 
 const VisibleNavbarItemList = ({
   intl: { formatMessage },
 }: WrappedComponentProps) => {
   const { mutate: deleteCustomPage } = useDeleteCustomPage();
+  const { mutate: removeNavbarItem } = useDeleteNavbarItem();
   const { data: navbarItems } = useNavbarItems();
   const pageSlugById = useCustomPageSlugById();
 

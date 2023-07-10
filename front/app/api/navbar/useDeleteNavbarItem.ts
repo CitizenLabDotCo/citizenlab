@@ -1,24 +1,28 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import fetcher from 'utils/cl-react-query/fetcher';
 import causesKeys from './keys';
+import customPagesKeys from 'api/custom_pages/keys';
 
-const deleteCause = (id: string) =>
+const deleteNavbarItem = (id: string) =>
   fetcher({
-    path: `/causes/${id}`,
+    path: `/nav_bar_item/${id}`,
     action: 'delete',
   });
 
-const useDeleteCause = () => {
+const useDeleteNavbarItem = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: deleteCause,
+    mutationFn: deleteNavbarItem,
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: causesKeys.lists(),
+      });
+      queryClient.invalidateQueries({
+        queryKey: customPagesKeys.lists(),
       });
     },
   });
 };
 
-export default useDeleteCause;
+export default useDeleteNavbarItem;

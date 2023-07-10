@@ -8,7 +8,7 @@ import { rest } from 'msw';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { navbarItemsData } from './__mocks__/useNavbarItems';
 
-const apiPath = '*causes';
+const apiPath = '*nav_bar_items';
 
 const server = setupServer(
   rest.post(apiPath, (_req, res, ctx) => {
