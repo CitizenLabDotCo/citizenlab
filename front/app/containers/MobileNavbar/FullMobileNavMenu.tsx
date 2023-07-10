@@ -4,7 +4,7 @@ import tracks from './tracks';
 
 // hooks
 import useNavbarItems from 'hooks/useNavbarItems';
-import useCustomPageSlugById from 'hooks/useCustomPageSlugById';
+import useCustomPageSlugById from 'api/custom_pages/useCustomPageSlugById';
 import useLocalize from 'hooks/useLocalize';
 
 // components

@@ -1,8 +1,9 @@
-import { API_PATH } from 'containers/App/constants';
 import { ImageSizes, IRelationship, Multiloc } from 'typings';
-import streams, { IStreamParams } from 'utils/streams';
 import { THomepageBannerLayout } from 'api/homepage_settings/types';
-import { apiEndpoint as navbarEndpoint } from 'services/navbar';
+import { Keys } from 'utils/cl-react-query/types';
+import customPagesKeys from './keys';
+
+export type CustomPagesKeys = Keys<typeof customPagesKeys>;
 
 export interface ICustomPage {
   data: ICustomPageData;
@@ -14,6 +15,7 @@ export interface ICustomPages {
 
 export interface ICustomPageData {
   id: string;
+  type: 'static_page';
   attributes: ICustomPageAttributes;
   relationships: {
     nav_bar_item: {
@@ -62,7 +64,7 @@ export interface ICustomPageAttributes extends ICustomPageEnabledSettings {
   banner_cta_button_url: string | null;
   banner_header_multiloc: Multiloc;
   banner_subheader_multiloc: Multiloc;
-  bottom_info_section_multiloc: Multiloc;
+  bottom_info_section_multiloc?: Multiloc;
   header_bg: ImageSizes | null;
 
   code: TCustomPageCode;
@@ -73,74 +75,6 @@ export interface ICustomPageAttributes extends ICustomPageEnabledSettings {
 
   created_at: string;
   updated_at: string;
-}
-
-// the entity is called StaticPage on the backend, but for
-// frontend purposes we refer to it as a Custom Page
-export const customPagesEndpoint = `${API_PATH}/static_pages`;
-
-export function createCustomPage(pageData: { title_multiloc: Multiloc }) {
-  return streams.add<ICustomPage>(customPagesEndpoint, {
-    static_page: pageData,
-  });
-}
-
-export function customPageByIdStream(customPageId: string) {
-  return streams.get<ICustomPage>({
-    apiEndpoint: `${customPagesEndpoint}/${customPageId}`,
-  });
-}
-
-export function customPageBySlugStream(pageSlug: string) {
-  return streams.get<ICustomPage>({
-    apiEndpoint: `${customPagesEndpoint}/by_slug/${pageSlug}`,
-  });
-}
-
-export async function updateCustomPage(
-  customPageId: string,
-  updatedPageSettings: Partial<ICustomPageAttributes>
-) {
-  const customPageSettings = await streams.update(
-    `${customPagesEndpoint}/${customPageId}`,
-    customPageId,
-    { static_page: updatedPageSettings }
-  );
-  return customPageSettings;
-}
-
-export async function deleteCustomPage(pageId: string) {
-  const response = await streams.delete(
-    `${customPagesEndpoint}/${pageId}`,
-    pageId
-  );
-  await streams.fetchAllWith({ apiEndpoint: [navbarEndpoint] });
-
-  return response;
-}
-
-export function listCustomPages(streamParams: IStreamParams | null = null) {
-  return streams.get<{ data: ICustomPageData[] }>({
-    apiEndpoint: `${customPagesEndpoint}`,
-    ...streamParams,
-  });
-}
-
-enum POLICY_PAGE {
-  termsAndConditions = 'terms-and-conditions',
-  privacyPolicy = 'privacy-policy',
-}
-
-export const POLICY_PAGES: TPolicyPage[] = [
-  POLICY_PAGE.termsAndConditions,
-  POLICY_PAGE.privacyPolicy,
-];
-
-export function isPolicyPageSlug(slug: string): slug is TPolicyPage {
-  const termsAndConditionsSlug: TPolicyPage = POLICY_PAGE.termsAndConditions;
-  const privacyPolicySlug: TPolicyPage = POLICY_PAGE.privacyPolicy;
-
-  return slug === termsAndConditionsSlug || slug === privacyPolicySlug;
 }
 
 export type TPolicyPage = 'terms-and-conditions' | 'privacy-policy';
@@ -159,3 +93,13 @@ export type TCustomPageCode =
   // proposals here is the proposals about page (/pages/initiatives),
   // not the proposals index page (/initiatives).
   | 'proposals';
+
+export enum POLICY_PAGE {
+  termsAndConditions = 'terms-and-conditions',
+  privacyPolicy = 'privacy-policy',
+}
+
+export const POLICY_PAGES: TPolicyPage[] = [
+  POLICY_PAGE.termsAndConditions,
+  POLICY_PAGE.privacyPolicy,
+];

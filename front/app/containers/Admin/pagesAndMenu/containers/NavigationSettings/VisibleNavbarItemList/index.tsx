@@ -6,7 +6,7 @@ import {
   removeNavbarItem,
   reorderNavbarItem,
 } from 'services/navbar';
-import { deleteCustomPage } from 'services/customPages';
+import useDeleteCustomPage from 'api/custom_pages/useDeleteCustomPage';
 
 // components
 import {
@@ -19,7 +19,7 @@ import NavbarItemRow from 'containers/Admin/pagesAndMenu/containers/NavigationSe
 
 // hooks
 import useNavbarItems from 'hooks/useNavbarItems';
-import useCustomPageSlugById from 'hooks/useCustomPageSlugById';
+import useCustomPageSlugById from 'api/custom_pages/useCustomPageSlugById';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -35,6 +35,7 @@ import { Item } from 'components/admin/ResourceList/SortableList';
 const VisibleNavbarItemList = ({
   intl: { formatMessage },
 }: WrappedComponentProps) => {
+  const { mutate: deleteCustomPage } = useDeleteCustomPage();
   const navbarItems = useNavbarItems();
   const pageSlugById = useCustomPageSlugById();
 

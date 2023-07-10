@@ -17,7 +17,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import {
   ICustomPageAttributes,
   TCustomPageBannerLayout,
-} from 'services/customPages';
+} from 'api/custom_pages/types';
 import {
   IHomepageSettingsAttributes,
   THomepageBannerLayout,
