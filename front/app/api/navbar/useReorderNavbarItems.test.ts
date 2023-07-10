@@ -1,7 +1,7 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 
-import useReorderCause from './useReorderCause';
-import { causesData } from './__mocks__/useCauses';
+import useReorderNavbarItems from './useReorderNavbarItems';
+import { navbarItemsData } from './__mocks__/useNavbarItems';
 
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
@@ -11,16 +11,16 @@ import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 const apiPath = '*causes/:id/reorder';
 const server = setupServer(
   rest.patch(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: causesData[0] }));
+    return res(ctx.status(200), ctx.json({ data: navbarItemsData[0] }));
   })
 );
 
-describe('useReorderCause', () => {
+describe('useReorderNavbarItems', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useReorderCause(), {
+    const { result, waitFor } = renderHook(() => useReorderNavbarItems(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -32,7 +32,7 @@ describe('useReorderCause', () => {
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    expect(result.current.data?.data).toEqual(causesData[0]);
+    expect(result.current.data?.data).toEqual(navbarItemsData[0]);
   });
 
   it('returns error correctly', async () => {
@@ -42,7 +42,7 @@ describe('useReorderCause', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useReorderCause(), {
+    const { result, waitFor } = renderHook(() => useReorderNavbarItems(), {
       wrapper: createQueryClientWrapper(),
     });
     act(() => {

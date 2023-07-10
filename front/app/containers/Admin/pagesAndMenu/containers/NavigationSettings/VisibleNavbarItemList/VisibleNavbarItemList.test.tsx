@@ -4,15 +4,17 @@ import React from 'react';
 import clHistory from 'utils/cl-router/history';
 import { fireEvent, render, screen } from 'utils/testUtils/rtl';
 import VisibleNavbarItemList from '.';
-import { reorderNavbarItem } from 'services/navbar';
+
 import dragAndDrop from 'utils/testUtils/dragAndDrop';
 
 jest.mock('api/navbar/useNavbarItems');
 jest.mock('api/custom_pages/useCustomPageSlugById');
 
-jest.mock('services/navbar', () => ({
-  reorderNavbarItem: jest.fn(),
-}));
+const mockReorderNavbarItem = jest.fn();
+
+jest.mock('api/navbar/useReorderNavbarItems', () =>
+  jest.fn(() => ({ mutate: mockReorderNavbarItem }))
+);
 
 const mockDeleteCustomPage = jest.fn();
 
@@ -55,11 +57,11 @@ describe('<VisibleNavbarItemList />', () => {
 
     dragAndDrop(fifthRow, thirdRow);
 
-    expect(reorderNavbarItem).toHaveBeenCalledTimes(1);
-    expect(reorderNavbarItem).toHaveBeenCalledWith(
-      '2003e851-6cae-4ce8-a0e4-4b930fe73009',
-      4
-    );
+    expect(mockReorderNavbarItem).toHaveBeenCalledTimes(1);
+    expect(mockReorderNavbarItem).toHaveBeenCalledWith({
+      id: '2003e851-6cae-4ce8-a0e4-4b930fe73009',
+      ordering: 4,
+    });
   });
 
   it('calls clHistory.push on click edit with correct arg (default item)', () => {

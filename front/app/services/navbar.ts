@@ -50,18 +50,3 @@ export async function updateNavbarItem(
 
   return response;
 }
-
-export async function reorderNavbarItem(
-  navbarItemId: string,
-  navbarItemOrdering: number
-) {
-  const response = await streams.update<INavbarItem>(
-    `${apiEndpoint}/${navbarItemId}/reorder`,
-    navbarItemId,
-    { nav_bar_item: { ordering: navbarItemOrdering } }
-  );
-
-  streams.fetchAllWith({ partialApiEndpoint: [apiEndpoint] });
-
-  return response;
-}

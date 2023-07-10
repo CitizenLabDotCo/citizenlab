@@ -1,7 +1,6 @@
 import React from 'react';
 
 // services
-import { reorderNavbarItem } from 'services/navbar';
 import useDeleteCustomPage from 'api/custom_pages/useDeleteCustomPage';
 import useDeleteNavbarItem from 'api/navbar/useDeleteNavbarItem';
 
@@ -29,12 +28,14 @@ import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 import { Item } from 'components/admin/ResourceList/SortableList';
 import { getNavbarItemSlug } from 'api/navbar/util';
+import useReorderNavbarItem from 'api/navbar/useReorderNavbarItems';
 
 const VisibleNavbarItemList = ({
   intl: { formatMessage },
 }: WrappedComponentProps) => {
   const { mutate: deleteCustomPage } = useDeleteCustomPage();
   const { mutate: removeNavbarItem } = useDeleteNavbarItem();
+  const { mutate: reorderNavbarItem } = useReorderNavbarItem();
   const { data: navbarItems } = useNavbarItems();
   const pageSlugById = useCustomPageSlugById();
 
