@@ -8,7 +8,7 @@ import React, {
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
 import useBasketsIdeas from './useBasketsIdeas';
-import useAssignVote from './useAssignVote';
+import useAssignVote from './useAssignVote2';
 
 // utils
 import { getCurrentParticipationContext } from 'api/phases/utils';
@@ -72,7 +72,7 @@ const CumulativeVotingContextInner = ({ projectId, children }: InnerProps) => {
 const useCumulativeVotingInterface = (projectId: string) => {
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
-  const { updateBasket, cancel, processing } = useAssignVote({ projectId });
+  const { updateBasket, cancel, processing } = useAssignVote();
 
   const participationContext = getCurrentParticipationContext(
     project?.data,
