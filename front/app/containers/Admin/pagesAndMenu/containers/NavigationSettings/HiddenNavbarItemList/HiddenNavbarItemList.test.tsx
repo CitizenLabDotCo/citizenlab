@@ -4,7 +4,6 @@ import React from 'react';
 import clHistory from 'utils/cl-router/history';
 import { fireEvent, render, screen } from 'utils/testUtils/rtl';
 import HiddenNavbarItemList from '.';
-import { addNavbarItem } from 'services/navbar';
 
 let mockNavbarItems = allNavbarItems;
 const mockRemovedDefaultNavbarItems = [];
@@ -16,6 +15,12 @@ jest.mock('api/navbar/useNavbarItems', () => {
       : { data: { data: mockNavbarItems } };
   });
 });
+
+const mockAddNavbarItem = jest.fn();
+
+jest.mock('api/navbar/useAddNavbarItem', () =>
+  jest.fn(() => ({ mutate: mockAddNavbarItem }))
+);
 
 jest.mock('api/custom_pages/useCustomPages');
 jest.mock('api/custom_pages/useCustomPageSlugById');
@@ -70,10 +75,10 @@ describe('<HiddenNavbarItemList />', () => {
     const addButtons = screen.getAllByText('Add to navbar');
 
     fireEvent.click(addButtons[0]);
-    expect(addNavbarItem).not.toHaveBeenCalled();
+    expect(mockAddNavbarItem).not.toHaveBeenCalled();
 
     fireEvent.click(addButtons[1]);
-    expect(addNavbarItem).not.toHaveBeenCalled();
+    expect(mockAddNavbarItem).not.toHaveBeenCalled();
   });
 
   it('calls addNavbarItem on click add button with correct data', () => {
@@ -91,7 +96,7 @@ describe('<HiddenNavbarItemList />', () => {
     };
 
     fireEvent.click(addButtons[0]);
-    expect(addNavbarItem).toHaveBeenCalledWith(faqItem);
+    expect(mockAddNavbarItem).toHaveBeenCalledWith(faqItem);
 
     const aboutItem = {
       pageCode: 'about',
@@ -101,7 +106,7 @@ describe('<HiddenNavbarItemList />', () => {
     };
 
     fireEvent.click(addButtons[1]);
-    expect(addNavbarItem).toHaveBeenCalledWith(aboutItem);
+    expect(mockAddNavbarItem).toHaveBeenCalledWith(aboutItem);
   });
 
   it('calls deleteCustomPage on click delete button with correct page id', () => {

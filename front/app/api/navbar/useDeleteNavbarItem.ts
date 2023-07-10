@@ -5,7 +5,7 @@ import customPagesKeys from 'api/custom_pages/keys';
 
 const deleteNavbarItem = (id: string) =>
   fetcher({
-    path: `/nav_bar_item/${id}`,
+    path: `/nav_bar_items/${id}`,
     action: 'delete',
   });
 
