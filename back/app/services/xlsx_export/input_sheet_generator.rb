@@ -4,12 +4,13 @@ module XlsxExport
   class InputSheetGenerator
     US_DATE_TIME_FORMAT = 'mm/dd/yyyy hh:mm:ss'
 
-    def initialize(inputs, form, participation_method, include_private_attributes)
+    def initialize(inputs, participation_context, include_private_attributes)
       super()
       @inputs = inputs
-      @fields_in_form = IdeaCustomFieldsService.new(form).reportable_fields
+      @participation_context = participation_context
       @include_private_attributes = include_private_attributes
-      @participation_method = participation_method
+      @participation_method = Factory.instance.participation_method_for participation_context
+      @fields_in_form = IdeaCustomFieldsService.new(participation_method.custom_form).reportable_fields
     end
 
     def generate_sheet(workbook, sheetname)
@@ -45,7 +46,7 @@ module XlsxExport
 
     private
 
-    attr_reader :inputs, :fields_in_form, :participation_method, :include_private_attributes
+    attr_reader :inputs, :participation_context, :fields_in_form, :participation_method, :include_private_attributes
 
     def input_id_report_field
       ComputedFieldForReport.new(column_header_for('input_id'), ->(input) { input.id })
@@ -96,7 +97,7 @@ module XlsxExport
     end
 
     def baskets_count_report_field
-      ComputedFieldForReport.new(column_header_for('baskets_count'), ->(input) { input.baskets_count })
+      ComputedFieldForReport.new(column_header_for('baskets_count'), ->(input) { participation_context.is_a?(Phase) ? participation_context.ideas_phases.find_by(idea_id: input.id).baskets_count : input.baskets_count })
     end
 
     def input_url_report_field
@@ -164,7 +165,7 @@ module XlsxExport
           meta_fields << likes_count_report_field
           meta_fields << dislikes_count_report_field
         end
-        meta_fields << baskets_count_report_field if participation_method.supports_baskets?
+        meta_fields << baskets_count_report_field if include_private_attributes && participation_method.supports_baskets?
         meta_fields << budget_report_field if participation_method.supports_budget?
         meta_fields << input_url_report_field unless participation_method.never_show?
         meta_fields << project_report_field
