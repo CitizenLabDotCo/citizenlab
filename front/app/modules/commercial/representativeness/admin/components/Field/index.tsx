@@ -223,6 +223,10 @@ const FieldWrapper = ({ userCustomFieldId }: Props) => {
     return null;
   }
 
+  console.log('remoteFormValues', remoteFormValues);
+  console.log('referenceDistribution', referenceDistribution);
+  console.log('referenceDataUploaded', referenceDataUploaded);
+
   return (
     <Field
       userCustomFieldId={userCustomFieldId}
