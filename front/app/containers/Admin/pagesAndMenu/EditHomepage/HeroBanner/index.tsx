@@ -20,9 +20,6 @@ import {
   THomepageBannerLayout,
 } from 'api/home_page/types';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
 // i18n
 import HelmetIntl from 'components/HelmetIntl';
 import { useIntl } from 'utils/cl-intl';
@@ -43,12 +40,12 @@ const EditHomepageHeroBannerForm = () => {
   const { mutate: updateHomepageSettings } = useUpdateHomepageSettings();
 
   useEffect(() => {
-    if (!isNilOrError(homepageSettings)) {
+    if (homepageSettings) {
       setLocalSettings(homepageSettings.data.attributes);
     }
   }, [homepageSettings]);
 
-  if (isNilOrError(homepageSettings)) {
+  if (!homepageSettings || !localSettings) {
     return null;
   }
 
@@ -121,15 +118,13 @@ const EditHomepageHeroBannerForm = () => {
     opacity: IHomepageSettingsAttributes['banner_signed_out_header_overlay_opacity'],
     color: IHomepageSettingsAttributes['banner_signed_out_header_overlay_color']
   ) => {
-    if (!isNilOrError(localSettings)) {
-      setFormStatus('enabled');
+    setFormStatus('enabled');
 
-      setLocalSettings({
-        ...localSettings,
-        banner_signed_out_header_overlay_color: color,
-        banner_signed_out_header_overlay_opacity: opacity,
-      });
-    }
+    setLocalSettings({
+      ...localSettings,
+      banner_signed_out_header_overlay_color: color,
+      banner_signed_out_header_overlay_opacity: opacity,
+    });
   };
 
   const handleOnChangeBannerAvatarsEnabled = (
@@ -153,100 +148,94 @@ const EditHomepageHeroBannerForm = () => {
   ) => {
     setFormStatus('enabled');
 
-    if (!isNilOrError(localSettings)) {
-      setLocalSettings({
-        ...localSettings,
-        [key]: value,
-      });
-    }
+    setLocalSettings({
+      ...localSettings,
+      [key]: value,
+    });
   };
 
-  if (!isNilOrError(localSettings)) {
-    return (
-      <>
-        <HelmetIntl title={messages.homepageMetaTitle} />
-        <GenericHeroBannerForm
-          onSave={handleSave}
-          title={formatMessage(messages.heroBannerTitle)}
-          isLoading={isLoading}
-          formStatus={formStatus}
-          breadcrumbs={[
-            {
-              label: formatMessage(pagesAndMenuBreadcrumb.label),
-              linkTo: pagesAndMenuBreadcrumb.linkTo,
-            },
-            {
-              label: formatMessage(homeBreadcrumb.label),
-              linkTo: homeBreadcrumb.linkTo,
-            },
-            { label: formatMessage(messages.heroBannerTitle) },
-          ]}
-          setFormStatus={setFormStatus}
-          bannerImageFieldsComponent={
-            <BannerImageFields
-              bannerLayout={localSettings.banner_layout}
-              bannerOverlayColor={
-                localSettings.banner_signed_out_header_overlay_color
-              }
-              bannerOverlayOpacity={
-                localSettings.banner_signed_out_header_overlay_opacity
-              }
-              headerBg={localSettings.header_bg}
-              onAddImage={handleOnBannerImageAdd}
-              onRemoveImage={handleOnBannerImageRemove}
-              onOverlayChange={handleOnOverlayChange}
-            />
-          }
-          bannerHeaderFieldsComponent={
-            <BannerHeaderFields
-              bannerHeaderMultiloc={
-                localSettings.banner_signed_out_header_multiloc
-              }
-              bannerSubheaderMultiloc={
-                localSettings.banner_signed_out_subheader_multiloc
-              }
-              onHeaderChange={handleHeaderSignedOutMultilocOnChange}
-              onSubheaderChange={handleSubheaderSignedOutMultilocOnChange}
-              title={formatMessage(messages.bannerTextTitle)}
-              inputLabelText={formatMessage(messages.bannerHeaderSignedOut)}
-              subheaderInputLabelText={formatMessage(
-                messages.bannerHeaderSignedOutSubtitle
-              )}
-            />
-          }
-          layoutSettingFieldComponent={
-            <LayoutSettingField
-              bannerLayout={localSettings.banner_layout}
-              onChange={(bannerLayout: THomepageBannerLayout) => {
-                handleOnChange('banner_layout', bannerLayout);
-              }}
-            />
-          }
-          bannerMultilocFieldComponent={
-            <BannerHeaderMultilocField
-              onChange={handleBannerSignedInMultilocOnChange}
-              headerMultiloc={localSettings.banner_signed_in_header_multiloc}
-            />
-          }
-          avatarsFieldComponent={
-            <AvatarsField
-              checked={localSettings.banner_avatars_enabled}
-              onChange={handleOnChangeBannerAvatarsEnabled}
-            />
-          }
-          ctaSettingsComponent={
-            <CTASettings
-              localHomepageSettings={localSettings}
-              onChange={handleOnChange}
-              apiErrors={apiErrors}
-            />
-          }
-        />
-      </>
-    );
-  }
-
-  return null;
+  return (
+    <>
+      <HelmetIntl title={messages.homepageMetaTitle} />
+      <GenericHeroBannerForm
+        onSave={handleSave}
+        title={formatMessage(messages.heroBannerTitle)}
+        isLoading={isLoading}
+        formStatus={formStatus}
+        breadcrumbs={[
+          {
+            label: formatMessage(pagesAndMenuBreadcrumb.label),
+            linkTo: pagesAndMenuBreadcrumb.linkTo,
+          },
+          {
+            label: formatMessage(homeBreadcrumb.label),
+            linkTo: homeBreadcrumb.linkTo,
+          },
+          { label: formatMessage(messages.heroBannerTitle) },
+        ]}
+        setFormStatus={setFormStatus}
+        bannerImageFieldsComponent={
+          <BannerImageFields
+            bannerLayout={localSettings.banner_layout}
+            bannerOverlayColor={
+              localSettings.banner_signed_out_header_overlay_color
+            }
+            bannerOverlayOpacity={
+              localSettings.banner_signed_out_header_overlay_opacity
+            }
+            headerBg={localSettings.header_bg}
+            onAddImage={handleOnBannerImageAdd}
+            onRemoveImage={handleOnBannerImageRemove}
+            onOverlayChange={handleOnOverlayChange}
+          />
+        }
+        bannerHeaderFieldsComponent={
+          <BannerHeaderFields
+            bannerHeaderMultiloc={
+              localSettings.banner_signed_out_header_multiloc
+            }
+            bannerSubheaderMultiloc={
+              localSettings.banner_signed_out_subheader_multiloc
+            }
+            onHeaderChange={handleHeaderSignedOutMultilocOnChange}
+            onSubheaderChange={handleSubheaderSignedOutMultilocOnChange}
+            title={formatMessage(messages.bannerTextTitle)}
+            inputLabelText={formatMessage(messages.bannerHeaderSignedOut)}
+            subheaderInputLabelText={formatMessage(
+              messages.bannerHeaderSignedOutSubtitle
+            )}
+          />
+        }
+        layoutSettingFieldComponent={
+          <LayoutSettingField
+            bannerLayout={localSettings.banner_layout}
+            onChange={(bannerLayout: THomepageBannerLayout) => {
+              handleOnChange('banner_layout', bannerLayout);
+            }}
+          />
+        }
+        bannerMultilocFieldComponent={
+          <BannerHeaderMultilocField
+            onChange={handleBannerSignedInMultilocOnChange}
+            headerMultiloc={localSettings.banner_signed_in_header_multiloc}
+          />
+        }
+        avatarsFieldComponent={
+          <AvatarsField
+            checked={localSettings.banner_avatars_enabled}
+            onChange={handleOnChangeBannerAvatarsEnabled}
+          />
+        }
+        ctaSettingsComponent={
+          <CTASettings
+            localHomepageSettings={localSettings}
+            onChange={handleOnChange}
+            apiErrors={apiErrors}
+          />
+        }
+      />
+    </>
+  );
 };
 
 export default EditHomepageHeroBannerForm;
