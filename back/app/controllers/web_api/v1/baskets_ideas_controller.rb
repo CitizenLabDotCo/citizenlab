@@ -55,7 +55,6 @@ class WebApi::V1::BasketsIdeasController < ApplicationController
   def upsert
     # 1. Create or get basket
     idea = Idea.find(params[:idea_id])
-    # TODO: return 404 if idea not found?
     participation_context = ParticipationContextService.new.get_participation_context(idea.project)
     participation_context_type = participation_context.phase? ? 'Phase' : 'Project'
 

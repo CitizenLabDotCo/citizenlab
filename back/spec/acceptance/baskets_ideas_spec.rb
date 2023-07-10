@@ -176,6 +176,15 @@ resource BasketsIdea do
           end
         end
       end
+
+      context 'idea does not exist' do
+        let(:idea_id) { 'NON_EXISTENT' }
+        let(:votes) { 1 }
+
+        example_request 'Add an non existent idea to a basket' do
+          assert_status 404
+        end
+      end
     end
   end
 
