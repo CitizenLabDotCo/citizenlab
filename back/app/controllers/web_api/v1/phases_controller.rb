@@ -120,9 +120,11 @@ class WebApi::V1::PhasesController < ApplicationController
       :poll_anonymous,
       :ideas_order,
       :input_term,
-      { title_multiloc: CL2_SUPPORTED_LOCALES,
+      {
+        title_multiloc: CL2_SUPPORTED_LOCALES,
         description_multiloc: CL2_SUPPORTED_LOCALES,
-        emails: {} }
+        emails: Phase::EMAILS
+      }
     ]
     if AppConfiguration.instance.feature_activated? 'disable_disliking'
       permitted += %i[reacting_dislike_enabled reacting_dislike_method reacting_dislike_limited_max]

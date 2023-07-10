@@ -47,6 +47,8 @@
 class Phase < ApplicationRecord
   include ParticipationContext
 
+  EMAILS = [:project_phase_started].freeze
+
   belongs_to :project
 
   has_many :ideas_phases, dependent: :destroy
