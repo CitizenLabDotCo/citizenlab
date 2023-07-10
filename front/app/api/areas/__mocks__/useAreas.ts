@@ -8,10 +8,7 @@ export const areasData: IAreaData[] = [
       title_multiloc: {
         en: 'Area 1',
       },
-      description_multiloc: {
-        en: 'Description of area 1',
-      },
-
+      description_multiloc: {},
       ordering: 1,
       static_page_ids: ['3'],
     },
@@ -33,9 +30,7 @@ export const areasData: IAreaData[] = [
       title_multiloc: {
         en: 'Area 2',
       },
-      description_multiloc: {
-        en: 'Description of area 2',
-      },
+      description_multiloc: {},
 
       ordering: 1,
       static_page_ids: ['4'],

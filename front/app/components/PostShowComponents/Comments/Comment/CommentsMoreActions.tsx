@@ -73,9 +73,11 @@ const CommentsMoreActions = ({
   ideaId,
   initiativeId,
 }: Props) => {
+  const parentCommentId = comment.relationships?.parent?.data?.id;
   const { mutate: markForDeletion, isLoading } = useMarkCommentForDeletion({
     ideaId,
     initiativeId,
+    parentCommentId,
   });
 
   const [modalVisible_spam, setModalVisible_spam] = useState(false);

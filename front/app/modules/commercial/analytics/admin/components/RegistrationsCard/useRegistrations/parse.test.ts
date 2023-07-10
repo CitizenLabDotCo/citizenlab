@@ -34,7 +34,7 @@ describe('parseTimeSeries', () => {
 
 describe('parseStats', () => {
   it('works', () => {
-    const response: Response['data'] = [
+    const response: Response['data']['attributes'] = [
       [],
       [{ count: 10 }],
       [{ count: 8 }],

@@ -341,6 +341,10 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
           enabled: true,
           allowed: true
         },
+        public_api_tokens: {
+          enabled: true,
+          allowed: true
+        },
         internal_commenting: {
           enabled: false,
           allowed: false

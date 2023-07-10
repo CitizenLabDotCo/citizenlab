@@ -30,8 +30,8 @@ import { mixed, object } from 'yup';
 import { UploadFile } from 'typings';
 
 // hooks
-import useCustomPage from 'hooks/useCustomPage';
-import { updateCustomPage } from 'services/customPages';
+import useCustomPageById from 'api/custom_pages/useCustomPageById';
+import useUpdateCustomPage from 'api/custom_pages/useUpdateCustomPage';
 import { useParams } from 'react-router-dom';
 
 // constants
@@ -54,8 +54,11 @@ type FormValues = {
 const AttachmentsForm = ({
   intl: { formatMessage },
 }: WrappedComponentProps) => {
+  const { mutateAsync: updateCustomPage } = useUpdateCustomPage();
   const localize = useLocalize();
   const { customPageId } = useParams() as { customPageId: string };
+
+  const { data: customPage } = useCustomPageById(customPageId);
   const { data: remoteFiles } = usePageFiles(customPageId);
   const { mutateAsync: addPageFile } = useAddPagesFile();
   const { mutateAsync: deletePageFile } = useDeletePageFile();
@@ -83,8 +86,6 @@ const AttachmentsForm = ({
     getFiles();
   }, [remoteFiles]);
 
-  const customPage = useCustomPage({ customPageId });
-
   const handleSubmit = async (
     { local_page_files }: FormValues,
     enableSection = false
@@ -109,7 +110,8 @@ const AttachmentsForm = ({
     }
 
     if (enableSection) {
-      const enableSectionPromise = updateCustomPage(customPageId, {
+      const enableSectionPromise = updateCustomPage({
+        id: customPageId,
         files_section_enabled: true,
       });
       promises.push(enableSectionPromise);
@@ -148,7 +150,7 @@ const AttachmentsForm = ({
     return null;
   }
 
-  const isSectionEnabled = customPage.attributes.files_section_enabled;
+  const isSectionEnabled = customPage.data.attributes.files_section_enabled;
 
   return (
     <>
@@ -164,7 +166,7 @@ const AttachmentsForm = ({
                 linkTo: pagesAndMenuBreadcrumb.linkTo,
               },
               {
-                label: localize(customPage.attributes.title_multiloc),
+                label: localize(customPage.data.attributes.title_multiloc),
                 linkTo: adminCustomPageContentPath(customPageId),
               },
               {
@@ -173,7 +175,7 @@ const AttachmentsForm = ({
             ]}
             rightSideCTA={
               <ViewCustomPageButton
-                linkTo={`/pages/${customPage.attributes.slug}`}
+                linkTo={`/pages/${customPage.data.attributes.slug}`}
               />
             }
           >

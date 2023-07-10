@@ -8,12 +8,10 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { Icon } from '@citizenlab/cl2-component-library';
 import PageForm, { FormValues } from 'components/PageForm';
 
-// services
-import { updateCustomPage } from 'services/customPages';
+// api
 import { handleAddPageFiles, handleRemovePageFiles } from 'api/page_files/util';
-
-// hooks
-import useCustomPage from 'hooks/useCustomPage';
+import useCustomPageBySlug from 'api/custom_pages/useCustomPageBySlug';
+import useUpdateCustomPage from 'api/custom_pages/useUpdateCustomPage';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -101,11 +99,12 @@ interface Props {
 }
 
 const PageEditor = ({ className, pageSlug }: Props) => {
-  const page = useCustomPage({ customPageSlug: pageSlug });
   const { mutateAsync: addPageFile } = useAddPagesFile();
   const { mutateAsync: deletePageFile } = useDeletePageFile();
+  const { data: page } = useCustomPageBySlug(pageSlug);
+  const { mutateAsync: updateCustomPage } = useUpdateCustomPage();
   const { data: remotePageFiles } = usePageFiles(
-    isNilOrError(page) ? undefined : page.id
+    isNilOrError(page) ? undefined : page.data.id
   );
 
   const [files, setFiles] = React.useState<UploadFile[]>([]);
@@ -145,7 +144,7 @@ const PageEditor = ({ className, pageSlug }: Props) => {
       local_page_files,
     }: FormValues) => {
       const fieldValues = { title_multiloc, top_info_section_multiloc };
-      await updateCustomPage(pageId, fieldValues);
+      await updateCustomPage({ id: pageId, ...fieldValues });
 
       if (!isNilOrError(local_page_files)) {
         handleAddPageFiles(
@@ -164,7 +163,7 @@ const PageEditor = ({ className, pageSlug }: Props) => {
     };
 
   if (!isNilOrError(page)) {
-    const pageId = page.id;
+    const pageId = page.data.id;
     return (
       <EditorWrapper
         className={`${className} e2e-page-editor editor-${pageSlug}`}
@@ -192,10 +191,10 @@ const PageEditor = ({ className, pageSlug }: Props) => {
               pageId={pageId}
               defaultValues={{
                 nav_bar_item_title_multiloc:
-                  page.attributes.nav_bar_item_title_multiloc,
-                title_multiloc: page.attributes.title_multiloc,
+                  page.data.attributes.nav_bar_item_title_multiloc,
+                title_multiloc: page.data.attributes.title_multiloc,
                 top_info_section_multiloc:
-                  page.attributes.top_info_section_multiloc,
+                  page.data.attributes.top_info_section_multiloc,
                 local_page_files: files,
               }}
               onSubmit={handleSubmit(pageId, files)}
