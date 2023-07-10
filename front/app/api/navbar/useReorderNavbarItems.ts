@@ -21,7 +21,7 @@ const useReorderNavbarItem = () => {
   return useMutation<INavbarItemResponse, CLErrors, IReorderNavbarItem>({
     mutationFn: reorderNavbarItem,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: navbarKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: navbarKeys.all() });
     },
   });
 };

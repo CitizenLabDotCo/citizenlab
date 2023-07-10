@@ -30,7 +30,7 @@ const useAddNavbarItem = () => {
   return useMutation<INavbarItemResponse, CLErrors, IItemNotInNavbar>({
     mutationFn: addNavbarItem,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: navbarKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: navbarKeys.all() });
       queryClient.invalidateQueries({
         queryKey: customPagesKeys.lists(),
       });

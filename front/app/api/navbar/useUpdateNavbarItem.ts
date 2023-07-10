@@ -16,7 +16,7 @@ const useUpdateNavbarItem = () => {
   return useMutation<INavbarItemResponse, CLErrors, INavbarItemUpdate>({
     mutationFn: updateNavbarItem,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: navbarKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: navbarKeys.all() });
     },
   });
 };

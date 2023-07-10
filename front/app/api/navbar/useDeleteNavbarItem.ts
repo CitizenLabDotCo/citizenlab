@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import fetcher from 'utils/cl-react-query/fetcher';
-import causesKeys from './keys';
+import navbarKeys from './keys';
 import customPagesKeys from 'api/custom_pages/keys';
 
 const deleteNavbarItem = (id: string) =>
@@ -16,7 +16,7 @@ const useDeleteNavbarItem = () => {
     mutationFn: deleteNavbarItem,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: causesKeys.lists(),
+        queryKey: navbarKeys.all(),
       });
       queryClient.invalidateQueries({
         queryKey: customPagesKeys.lists(),
