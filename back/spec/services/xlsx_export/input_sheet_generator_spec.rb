@@ -4,6 +4,8 @@ require 'rails_helper'
 
 describe XlsxExport::InputSheetGenerator do
   describe '#generate_sheet' do
+    before { create(:idea_status_proposed) }
+
     let(:include_private_attributes) { false }
     let(:participation_method) { Factory.instance.participation_method_for(participation_context) }
     let(:form) { participation_method.custom_form }
@@ -40,7 +42,7 @@ describe XlsxExport::InputSheetGenerator do
                 'Comments',
                 'Likes',
                 'Dislikes',
-                'Baskets',
+                'Baskets', # TODO: remove
                 'Budget',
                 'URL',
                 'Project',
@@ -111,7 +113,7 @@ describe XlsxExport::InputSheetGenerator do
                   'Comments',
                   'Likes',
                   'Dislikes',
-                  'Baskets',
+                  'Baskets', # TODO: definitely remove (should be private)
                   'Budget',
                   'URL',
                   'Project',
@@ -172,7 +174,7 @@ describe XlsxExport::InputSheetGenerator do
                   'Comments',
                   'Likes',
                   'Dislikes',
-                  'Baskets',
+                  'Baskets', # TODO: remove
                   'Budget',
                   'URL',
                   'Project',
@@ -218,6 +220,161 @@ describe XlsxExport::InputSheetGenerator do
 
     context 'for a native survey context' do
       let(:participation_context) { create(:native_survey_phase) }
+      let(:form) { create(:custom_form, participation_context: participation_context) }
+
+      # Create a page to describe that it is not included in the export.
+      let!(:page_field) { create(:custom_field_page, resource: form) }
+      let!(:multiselect_field) do
+        create(
+          :custom_field_multiselect,
+          resource: form,
+          title_multiloc: { 'en' => 'What are your favourite pets?' },
+          description_multiloc: {}
+        )
+      end
+      let!(:cat_option) do
+        create(:custom_field_option, custom_field: multiselect_field, key: 'cat', title_multiloc: { 'en' => 'Cat' })
+      end
+      let!(:dog_option) do
+        create(:custom_field_option, custom_field: multiselect_field, key: 'dog', title_multiloc: { 'en' => 'Dog' })
+      end
+
+      let(:survey_response1) do
+        create(
+          :idea,
+          project: participation_context.project,
+          creation_phase: participation_context,
+          phases: [participation_context],
+          custom_field_values: { multiselect_field.key => %w[cat dog] }
+        )
+      end
+      let(:survey_response2) do
+        create(
+          :idea,
+          project: participation_context.project,
+          creation_phase: participation_context,
+          phases: [participation_context],
+          custom_field_values: { multiselect_field.key => %w[cat] }
+        )
+      end
+      let(:survey_response3) do
+        create(
+          :idea,
+          project: participation_context.project,
+          creation_phase: participation_context,
+          phases: [participation_context],
+          custom_field_values: { multiselect_field.key => %w[dog] },
+          author: nil
+        )
+      end
+      let(:inputs) { [survey_response1, survey_response2, survey_response3] }
+
+      describe 'when there are no inputs' do
+        let(:inputs) { [] }
+
+        it 'Generates an empty sheet' do
+          expect(xlsx).to eq([
+            {
+              sheet_name: 'My sheet',
+              column_headers: [
+                'ID',
+                'What are your favourite pets?',
+                'Submitted at',
+                'Project'
+              ],
+              rows: []
+            }
+          ])
+        end
+      end
+
+      context 'without private attributes' do
+        let(:include_private_attributes) { false }
+
+        it 'Generates an sheet with the phase inputs' do
+          expect(xlsx).to match([
+            {
+              sheet_name: 'My sheet',
+              column_headers: [
+                'ID',
+                'What are your favourite pets?',
+                'Submitted at',
+                'Project'
+              ],
+              rows: [
+                [
+                  survey_response1.id,
+                  'Cat, Dog',
+                  an_instance_of(DateTime), # created_at
+                  participation_context.project.title_multiloc['en']
+                ],
+                [
+                  survey_response2.id,
+                  'Cat',
+                  an_instance_of(DateTime), # created_at
+                  participation_context.project.title_multiloc['en']
+                ],
+                [
+                  survey_response3.id,
+                  'Dog',
+                  an_instance_of(DateTime), # created_at
+                  participation_context.project.title_multiloc['en']
+                ]
+              ]
+            }
+          ])
+        end
+      end
+
+      context 'with private attributes' do
+        let(:include_private_attributes) { true }
+
+        it 'Generates an sheet with the phase inputs' do
+          expect(xlsx).to match([
+            {
+              sheet_name: 'My sheet',
+              column_headers: [
+                'ID',
+                'What are your favourite pets?',
+                'Author name',
+                'Author email',
+                'Author ID',
+                'Submitted at',
+                'Project'
+              ],
+              rows: [
+                [
+                  survey_response1.id,
+                  'Cat, Dog',
+                  survey_response1.author_name,
+                  survey_response1.author.email,
+                  survey_response1.author_id,
+                  an_instance_of(DateTime), # created_at
+                  participation_context.project.title_multiloc['en']
+                ],
+                [
+                  survey_response2.id,
+                  'Cat',
+                  survey_response2.author_name,
+                  survey_response2.author.email,
+                  survey_response2.author_id,
+                  an_instance_of(DateTime), # created_at
+                  participation_context.project.title_multiloc['en']
+                ],
+                [
+                  survey_response3.id,
+                  'Dog',
+                  nil,
+                  nil,
+                  nil,
+                  an_instance_of(DateTime), # created_at
+                  participation_context.project.title_multiloc['en']
+                ]
+              ]
+            }
+          ])
+        end
+      end
     end
 
     context 'for a voting context' do
