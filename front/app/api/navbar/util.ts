@@ -1,15 +1,31 @@
-import { API_PATH } from 'containers/App/constants';
-import { IParticipationContextType } from 'typings';
-import { requestBlob } from 'utils/request';
-import { saveAs } from 'file-saver';
+import { TPageSlugById } from 'api/custom_pages/useCustomPageSlugById';
+import { TDefaultNavbarItemCode, TNavbarItemCode } from './types';
 
-export async function exportVolunteers(
-  participationContextId: string,
-  participationContextType: IParticipationContextType
+export const DEFAULT_PAGE_SLUGS: Record<TDefaultNavbarItemCode, string> = {
+  home: '/',
+  projects: '/projects',
+  all_input: '/ideas',
+  proposals: '/initiatives',
+  events: '/events',
+};
+
+// utility function to get slug associated with navbar item
+export function getNavbarItemSlug(
+  navbarItemCode: TNavbarItemCode,
+  pageBySlugId: TPageSlugById,
+  pageId?: string
 ) {
-  const blob = await requestBlob(
-    `${API_PATH}/${participationContextType}s/${participationContextId}/volunteers/as_xlsx`,
-    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-  );
-  saveAs(blob, 'volunteers-export.xlsx');
+  // Default navbar item
+  if (navbarItemCode !== 'custom' && !pageId) {
+    return DEFAULT_PAGE_SLUGS[navbarItemCode];
+  }
+
+  // Page navbar item
+  if (navbarItemCode === 'custom' && pageId) {
+    return pageBySlugId[pageId];
+  }
+
+  // This is impossible, but I can't seem to make typescript understand
+  // that. So just returning null here
+  return null;
 }

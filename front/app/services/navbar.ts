@@ -1,19 +1,10 @@
 import { IRelationship, Multiloc } from 'typings';
 import { API_PATH } from 'containers/App/constants';
-import { TPageSlugById } from 'api/custom_pages/useCustomPageSlugById';
 import streams from 'utils/streams';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import customPagesKeys from 'api/custom_pages/keys';
 
 export const apiEndpoint = `${API_PATH}/nav_bar_items`;
-
-export const DEFAULT_PAGE_SLUGS: Record<TDefaultNavbarItemCode, string> = {
-  home: '/',
-  projects: '/projects',
-  all_input: '/ideas',
-  proposals: '/initiatives',
-  events: '/events',
-};
 
 export type TDefaultNavbarItemCode =
   | 'home'
@@ -41,27 +32,6 @@ export interface INavbarItem {
       data: IRelationship | null;
     };
   };
-}
-
-// utility function to get slug associated with navbar item
-export function getNavbarItemSlug(
-  navbarItemCode: TNavbarItemCode,
-  pageBySlugId: TPageSlugById,
-  pageId?: string
-) {
-  // Default navbar item
-  if (navbarItemCode !== 'custom' && !pageId) {
-    return DEFAULT_PAGE_SLUGS[navbarItemCode];
-  }
-
-  // Page navbar item
-  if (navbarItemCode === 'custom' && pageId) {
-    return pageBySlugId[pageId];
-  }
-
-  // This is impossible, but I can't seem to make typescript understand
-  // that. So just returning null here
-  return null;
 }
 
 export interface INavbarItemUpdate {

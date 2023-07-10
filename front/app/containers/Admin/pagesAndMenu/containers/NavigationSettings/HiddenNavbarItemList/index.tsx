@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 
 // services
-import { getNavbarItemSlug } from 'services/navbar';
 import useAddNavbarItem from 'api/navbar/useAddNavbarItem';
 import { ICustomPageData, TCustomPageCode } from 'api/custom_pages/types';
 import useDeleteCustomPage from 'api/custom_pages/useDeleteCustomPage';
@@ -26,6 +25,7 @@ import { ADMIN_PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 import getItemsNotInNavbar, { IItemNotInNavbar } from 'utils/navbar';
+import { getNavbarItemSlug } from 'api/navbar/util';
 
 const FIXED_PAGES_SET = new Set<TCustomPageCode>([
   'terms-and-conditions',
