@@ -24,7 +24,6 @@ import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import useLocale from 'hooks/useLocale';
-import useBasketsIdeas from 'api/baskets_ideas/useBasketsIdeas';
 
 export const VotingCTABar = ({ phases, project }: CTABarProps) => {
   const [processing, setProcessing] = useState(false);
@@ -37,31 +36,22 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
     return getCurrentPhase(phases) || getLastPhase(phases);
   }, [phases]);
 
-  const basketId = currentPhase
-    ? currentPhase.relationships.user_basket?.data?.id
-    : project.relationships.user_basket?.data?.id;
+  const participationContext = currentPhase ?? project;
+  const basketId = participationContext.relationships.user_basket?.data?.id;
 
   const { data: basket } = useBasket(basketId);
   const { mutate: updateBasket } = useUpdateBasket();
-  const { data: basketsIdeas } = useBasketsIdeas(basket?.data.id);
-
-  const currentBasketsIdeas: { ideaId: string; votes: number }[] = [];
-
-  basketsIdeas?.data.map((basketIdea) => {
-    const ideaId = basketIdea.relationships.idea.data['id'];
-    const votes = basketIdea.attributes.votes;
-    currentBasketsIdeas.push({ ideaId, votes });
-  });
 
   if (
     hasProjectEndedOrIsArchived(project, currentPhase) ||
-    numberOfVotesCast === undefined
+    (participationContext.attributes.voting_method === 'multiple_voting' &&
+      numberOfVotesCast === undefined)
   ) {
     return null;
   }
 
   const submittedAt = basket?.data.attributes.submitted_at || null;
-  const hasUserParticipated = !!submittedAt && numberOfVotesCast > 0;
+  const hasUserParticipated = !!submittedAt;
 
   const voteExceedsLimit =
     basket?.data.attributes['budget_exceeds_limit?'] || false;
