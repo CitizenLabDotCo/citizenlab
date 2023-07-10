@@ -1,5 +1,5 @@
 import { ADMIN_PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
-import allNavbarItems from 'services/__mocks__/navbarItems';
+import { navbarItemsData as allNavbarItems } from 'api/navbar/__mocks__/useNavbarItems';
 import React from 'react';
 import clHistory from 'utils/cl-router/history';
 import { fireEvent, render, screen } from 'utils/testUtils/rtl';

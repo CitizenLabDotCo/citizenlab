@@ -75,12 +75,6 @@ export interface INavbarItemUpdate {
   title_multiloc?: Multiloc;
 }
 
-export function removedDefaultNavbarItems() {
-  return streams.get<{ data: INavbarItem[] }>({
-    apiEndpoint: `${apiEndpoint}/removed_default_items`,
-  });
-}
-
 export async function addNavbarItem(item: IItemNotInNavbar) {
   const navbarItem: INavbarItemAdd =
     item.type === 'default_item'
