@@ -7,7 +7,7 @@ import { Image } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // hooks
@@ -35,14 +35,11 @@ const LogoLink = styled.a`
   cursor: pointer;
 `;
 
-interface Props {}
-
-const CityLogoSection = ({
-  intl: { formatMessage },
-}: Props & WrappedComponentProps) => {
+const CityLogoSection = () => {
   const locale = useLocale();
   const { data: appConfiguration } = useAppConfiguration();
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
 
   if (!isNilOrError(appConfiguration)) {
     const currentTenantLogo =

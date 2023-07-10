@@ -23,7 +23,7 @@ const mockUserData: IUserData = {
     confirmation_required: false,
   },
 };
-jest.mock('hooks/useHomepageSettings');
+jest.mock('api/home_page/useHomepageSettings');
 jest.mock('api/me/useAuthUser', () => () => ({
   data: { data: mockUserData },
 }));
