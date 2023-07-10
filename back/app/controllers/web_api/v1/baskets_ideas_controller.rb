@@ -52,6 +52,51 @@ class WebApi::V1::BasketsIdeasController < ApplicationController
     end
   end
 
+  def upsert
+    # 1. Create or get basket
+    idea = Idea.find(params[:idea_id])
+    participation_context = ParticipationContextService.new.get_participation_context(idea.project)
+    participation_context_type = participation_context.phase? ? 'Phase' : 'Project'
+
+    basket = Basket.find_or_initialize_by(
+      participation_context: participation_context,
+      participation_context_type: participation_context_type,
+      user: current_user
+    )
+    if basket.new_record?
+      if basket.save
+        SideFxBasketService.new.after_create basket, current_user
+      else
+        render json: { errors: baskets_idea.errors.details }, status: :unprocessable_entity
+        return
+      end
+    end
+
+    # 2. Create or update the baskets_idea
+    baskets_idea = BasketsIdea.find_or_initialize_by(
+      basket: basket,
+      idea: idea
+    )
+    record_is_new = baskets_idea.new_record?
+    authorize baskets_idea
+
+    baskets_idea.assign_attributes baskets_idea_params_for_update
+    if baskets_idea.save
+      if record_is_new
+        SideFxBasketsIdeaService.new.after_create baskets_idea, current_user
+      else
+        SideFxBasketsIdeaService.new.after_update baskets_idea, current_user
+      end
+      render json: WebApi::V1::BasketsIdeaSerializer.new(
+        baskets_idea,
+        params: jsonapi_serializer_params,
+        include: %i[idea]
+      ).serializable_hash, status: :ok
+    else
+      render json: { errors: baskets_idea.errors.details }, status: :unprocessable_entity
+    end
+  end
+
   def destroy
     SideFxBasketsIdeaService.new.before_destroy baskets_idea, current_user
     baskets_idea.destroy

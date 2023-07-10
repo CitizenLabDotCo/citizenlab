@@ -125,6 +125,67 @@ resource BasketsIdea do
         expect { BasketsIdea.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
+
+    put 'web_api/v1/baskets/ideas/:idea_id' do
+      with_options scope: :baskets_idea do
+        parameter :idea_id, 'The ID of the idea added to the basket.', required: true
+        parameter :votes, 'The number of times the idea is voted on. Defaults to 1.', required: false
+      end
+      ValidationErrorHelper.new.error_fields self, BasketsIdea
+
+      let(:idea) { create(:idea, project: project) }
+      let(:idea_id) { idea.id }
+
+      context 'basket and basket_idea do not exist' do
+        let(:votes) { 1 }
+
+        example_request 'Add an idea to a basket & create the basket' do
+          assert_status 200
+
+          expect(response_data.dig(:attributes, :votes)).to eq 1
+          expect(json_response_body[:included].pluck(:id)).to include idea_id
+        end
+      end
+
+      context 'basket already exists' do
+        let!(:basket) { create(:basket, participation_context: project, user: user) }
+
+        context 'basket_idea does not exist' do
+          let(:votes) { 2 }
+
+          example_request 'Add an idea to an existing basket' do
+            assert_status 200
+
+            expect(response_data.dig(:attributes, :votes)).to eq 2
+            expect(json_response_body[:included].pluck(:id)).to include idea_id
+            expect(response_data.dig(:relationships, :basket, :data, :id)).to eq basket.id
+          end
+        end
+
+        context 'basket_idea already exists' do
+          let!(:baskets_idea) { create(:baskets_idea, basket: basket, idea: idea) }
+          let(:votes) { 3 }
+
+          example_request 'Update an idea in an existing basket' do
+            assert_status 200
+
+            expect(response_data.dig(:attributes, :votes)).to eq 3
+            expect(json_response_body[:included].pluck(:id)).to include idea_id
+            expect(response_data[:id]).to eq baskets_idea.id
+            expect(response_data.dig(:relationships, :basket, :data, :id)).to eq basket.id
+          end
+        end
+      end
+
+      context 'idea does not exist' do
+        let(:idea_id) { 'NON_EXISTENT' }
+        let(:votes) { 1 }
+
+        example_request 'Add an non existent idea to a basket' do
+          assert_status 404
+        end
+      end
+    end
   end
 
   def create_baskets_ideas(basket, votes: [3, 2, 1])
