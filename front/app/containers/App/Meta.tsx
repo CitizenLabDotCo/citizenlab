@@ -10,7 +10,7 @@ import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import useHomepageSettings from 'api/homepage_settings/useHomepageSettings';
+import useHomepageSettings from 'api/home_page/useHomepageSettings';
 
 // i18n
 import messages from './messages';

@@ -2,7 +2,7 @@ import BannerButton, {
   BannerButtonStyle,
 } from 'components/LandingPages/citizen/BannerButton';
 import SignUpButton from 'containers/HomePage/SignUpButton';
-import useHomepageSettings from 'api/homepage_settings/useHomepageSettings';
+import useHomepageSettings from 'api/home_page/useHomepageSettings';
 import useLocalize from 'hooks/useLocalize';
 import React, { KeyboardEvent, MouseEvent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';

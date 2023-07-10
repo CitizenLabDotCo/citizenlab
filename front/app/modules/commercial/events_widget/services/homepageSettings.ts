@@ -1,4 +1,4 @@
-import 'api/homepage_settings/types';
+import 'api/home_page/types';
 
 declare module 'api/homepage_settings/types' {
   interface THomepageSettingKeyMap {

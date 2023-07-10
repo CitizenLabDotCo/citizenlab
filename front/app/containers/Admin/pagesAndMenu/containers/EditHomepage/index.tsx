@@ -15,15 +15,15 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 // services, hooks, resources, and types
 import Outlet from 'components/Outlet';
-import { THomepageEnabledSetting } from 'api/homepage_settings/types';
-import useHomepageSettings from 'api/homepage_settings/useHomepageSettings';
+import { THomepageEnabledSetting } from 'api/home_page/types';
+import useHomepageSettings from 'api/home_page/useHomepageSettings';
 
 // utils
 import { insertConfiguration } from 'utils/moduleUtils';
 import { InsertConfigurationOptions } from 'typings';
 import clHistory from 'utils/cl-router/history';
 import { ISectionToggleData } from 'containers/Admin/pagesAndMenu/components/SectionToggle';
-import useUpdateHomepageSettings from 'api/homepage_settings/useUpdateHomepageSettings';
+import useUpdateHomepageSettings from 'api/home_page/useUpdateHomepageSettings';
 
 export interface IHomepageSectionToggleData extends ISectionToggleData {
   name: THomepageEnabledSetting | 'homepage_banner';

@@ -14,11 +14,11 @@ import BannerImageFields from 'containers/Admin/pagesAndMenu/containers/GenericH
 import AvatarsField from '../../containers/GenericHeroBannerForm/AvatarsField';
 
 // resources
-import useHomepageSettings from 'api/homepage_settings/useHomepageSettings';
+import useHomepageSettings from 'api/home_page/useHomepageSettings';
 import {
   IHomepageSettingsAttributes,
   THomepageBannerLayout,
-} from 'api/homepage_settings/types';
+} from 'api/home_page/types';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -29,7 +29,7 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../../containers/GenericHeroBannerForm/messages';
 import CTASettings from '../../containers/GenericHeroBannerForm//CTASettings';
 import LayoutSettingField from '../../containers/GenericHeroBannerForm/LayoutSettingField';
-import useUpdateHomepageSettings from 'api/homepage_settings/useUpdateHomepageSettings';
+import useUpdateHomepageSettings from 'api/home_page/useUpdateHomepageSettings';
 
 const EditHomepageHeroBannerForm = () => {
   const { formatMessage } = useIntl();

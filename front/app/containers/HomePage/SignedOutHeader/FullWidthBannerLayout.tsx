@@ -7,7 +7,7 @@ import {
   HeaderImageOverlay,
 } from 'components/LandingPages/citizen/FullWidthBannerLayout';
 import HeaderContent from './HeaderContent';
-import { IHomepageSettingsData } from 'api/homepage_settings/types';
+import { IHomepageSettingsData } from 'api/home_page/types';
 
 interface Props {
   className?: string;

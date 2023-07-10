@@ -1,10 +1,7 @@
-import {
-  TAppConfigSectionSetting,
-  TSectionSetting,
-} from 'api/homepage_settings/types';
+import { TAppConfigSectionSetting, TSectionSetting } from 'api/home_page/types';
 import { THomepageSetting } from 'api/app_configuration/types';
 import { isNilOrError } from 'utils/helperUtils';
-import useHomepageSettings from 'api/homepage_settings/useHomepageSettings';
+import useHomepageSettings from 'api/home_page/useHomepageSettings';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // If we deal with a section whose allowed value needs to be checked

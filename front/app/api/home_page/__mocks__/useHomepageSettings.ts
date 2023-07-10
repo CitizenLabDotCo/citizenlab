@@ -1,4 +1,4 @@
-import { IHomepageSettingsData } from 'api/homepage_settings/types';
+import { IHomepageSettingsData } from 'api/home_page/types';
 
 export const mockHomepageSettingsData: IHomepageSettingsData = {
   id: '1',

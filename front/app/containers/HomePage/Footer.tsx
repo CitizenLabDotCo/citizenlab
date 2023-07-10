@@ -3,7 +3,7 @@ import React from 'react';
 // hooks
 import useAuthUser from 'api/me/useAuthUser';
 import useLocalize from 'hooks/useLocalize';
-import useHomepageSettings from 'api/homepage_settings/useHomepageSettings';
+import useHomepageSettings from 'api/home_page/useHomepageSettings';
 
 // events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';

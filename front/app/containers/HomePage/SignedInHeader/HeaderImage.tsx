@@ -2,7 +2,7 @@ import React from 'react';
 import styled, { useTheme } from 'styled-components';
 import { Image, Box } from '@citizenlab/cl2-component-library';
 import { media, isRtl } from 'utils/styleUtils';
-import useHomepageSettings from 'api/homepage_settings/useHomepageSettings';
+import useHomepageSettings from 'api/home_page/useHomepageSettings';
 import { isNilOrError } from 'utils/helperUtils';
 
 const HeaderImageContainer = styled.div`

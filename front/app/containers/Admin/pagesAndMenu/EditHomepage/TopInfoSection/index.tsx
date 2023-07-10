@@ -1,10 +1,10 @@
-import useHomepageSettings from 'api/homepage_settings/useHomepageSettings';
+import useHomepageSettings from 'api/home_page/useHomepageSettings';
 import React from 'react';
-import { IHomepageSettingsAttributes } from 'api/homepage_settings/types';
+import { IHomepageSettingsAttributes } from 'api/home_page/types';
 import { isNilOrError } from 'utils/helperUtils';
 import { homeBreadcrumb } from '../../breadcrumbs';
 import GenericTopInfoSection from 'containers/Admin/pagesAndMenu/containers/GenericTopInfoSection';
-import useUpdateHomepageSettings from 'api/homepage_settings/useUpdateHomepageSettings';
+import useUpdateHomepageSettings from 'api/home_page/useUpdateHomepageSettings';
 import { useIntl } from 'utils/cl-intl';
 
 const TopInfoSection = () => {

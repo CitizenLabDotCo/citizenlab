@@ -1,7 +1,7 @@
 import React from 'react';
 import FullWidthBannerLayout from './FullWidthBannerLayout';
 import { isNilOrError } from 'utils/helperUtils';
-import useHomepageSettings from 'api/homepage_settings/useHomepageSettings';
+import useHomepageSettings from 'api/home_page/useHomepageSettings';
 import TwoColumnLayout from './TwoColumnLayout';
 import TwoRowLayout from './TwoRowLayout';
 import FixedRatioLayout from './FixedRatioLayout';

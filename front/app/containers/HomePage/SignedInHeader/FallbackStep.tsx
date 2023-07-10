@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { OnboardingCampaignName } from 'api/onboarding_campaigns/types';
 import { Left, Right } from './';
-import useHomepageSettings from 'api/homepage_settings/useHomepageSettings';
+import useHomepageSettings from 'api/home_page/useHomepageSettings';
 import { isEmptyMultiloc, isNilOrError } from 'utils/helperUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';

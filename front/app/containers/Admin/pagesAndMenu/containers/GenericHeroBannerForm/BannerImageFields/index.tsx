@@ -21,7 +21,7 @@ import {
 import {
   IHomepageSettingsAttributes,
   THomepageBannerLayout,
-} from 'api/homepage_settings/types';
+} from 'api/home_page/types';
 import ImageInfoTooltip from './ImageInfoTooltip';
 
 export interface Props {

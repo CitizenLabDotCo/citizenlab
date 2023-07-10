@@ -1,7 +1,7 @@
 import BannerButton, {
   BannerButtonStyle,
 } from 'components/LandingPages/citizen/BannerButton';
-import useHomepageSettings from 'api/homepage_settings/useHomepageSettings';
+import useHomepageSettings from 'api/home_page/useHomepageSettings';
 import useLocalize from 'hooks/useLocalize';
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';

@@ -1,5 +1,5 @@
 import { ImageSizes, IRelationship, Multiloc } from 'typings';
-import { THomepageBannerLayout } from 'api/homepage_settings/types';
+import { THomepageBannerLayout } from 'api/home_page/types';
 import { Keys } from 'utils/cl-react-query/types';
 import customPagesKeys from './keys';
 

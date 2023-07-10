@@ -8,7 +8,7 @@ import {
 } from 'components/LandingPages/citizen/HeaderContent';
 import { WrappedComponentProps } from 'react-intl';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-import useHomepageSettings from 'api/homepage_settings/useHomepageSettings';
+import useHomepageSettings from 'api/home_page/useHomepageSettings';
 import useLocalize from 'hooks/useLocalize';
 import React from 'react';
 import styled from 'styled-components';

@@ -16,7 +16,7 @@ import { canAccessRoute } from 'services/permissions/rules/routePermissions';
 
 // hooks
 import useAuthUser from 'api/me/useAuthUser';
-import useHomepageSettings from 'api/homepage_settings/useHomepageSettings';
+import useHomepageSettings from 'api/home_page/useHomepageSettings';
 import useKeyPress from 'hooks/useKeyPress';
 
 // utils
