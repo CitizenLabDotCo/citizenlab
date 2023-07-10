@@ -10,7 +10,7 @@ module EmailCampaigns
         recipient: recipient_user,
         event_payload: {
           project_url: Frontend::UrlService.new.model_to_url(project, locale: recipient_user.locale),
-          phase_title_multiloc: project.phases.first.title_multiloc || 'PHASE TITLE'
+          context_title_multiloc: project.phases.first.title_multiloc || project.title_multiloc
         }
       }
       campaign = EmailCampaigns::Campaigns::VotingBasketNotSubmitted.first

@@ -12,7 +12,7 @@ RSpec.describe EmailCampaigns::VotingBasketNotSubmittedMailer do
         recipient: recipient,
         event_payload: {
           project_url: Frontend::UrlService.new.model_to_url(project, locale: recipient.locale),
-          phase_title_multiloc: project.phases.first.title_multiloc
+          context_title_multiloc: project.phases.first.title_multiloc
         }
       }
     end

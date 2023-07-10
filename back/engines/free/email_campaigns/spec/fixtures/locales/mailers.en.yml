@@ -571,7 +571,7 @@ en:
       subject: '%{organizationName}: You didn''t submit your votes'
       preheader: 'You didn''t submit your votes on the participation platform of %{organizationName}'
       title_basket_not_submitted: 'You didn''t submit your votes'
-      event_description: 'You selected a few options for %{phaseTitle} but you didn''t submit your selection.'
+      event_description: 'You selected a few options for %{contextTitle} but you didn''t submit your selection.'
       cta_view_options_and_vote: 'View options and vote'
       cta_message: 'Click the button below to submit your selected options'
     voting_last_chance:

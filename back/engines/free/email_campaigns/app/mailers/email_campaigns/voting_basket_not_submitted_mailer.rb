@@ -15,7 +15,7 @@ module EmailCampaigns
     end
 
     def header_message
-      format_message('event_description', values: { phaseTitle: localize_for_recipient(event.phase_title_multiloc) })
+      format_message('event_description', values: { contextTitle: localize_for_recipient(event.context_title_multiloc) })
     end
 
     def preheader

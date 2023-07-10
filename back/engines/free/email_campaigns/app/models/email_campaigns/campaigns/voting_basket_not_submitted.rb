@@ -70,8 +70,7 @@ module EmailCampaigns
       [{
         event_payload: {
           project_url: Frontend::UrlService.new.model_to_url(basket.participation_context.project, locale: recipient.locale),
-          # TODO: Change name of phase title to context_title
-          phase_title_multiloc: basket.participation_context.title_multiloc
+          context_title_multiloc: basket.participation_context.title_multiloc
         }
       }]
     end
