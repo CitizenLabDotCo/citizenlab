@@ -6,15 +6,13 @@ RSpec.describe EmailCampaigns::VotingBasketNotSubmittedMailer do
   describe 'campaign_mail' do
     let_it_be(:recipient) { create(:user, locale: 'en') }
     let_it_be(:campaign) { EmailCampaigns::Campaigns::VotingBasketNotSubmitted.create! }
-    let_it_be(:project) { create(:project) }
-
-    # TODO: Can we make this command generate from a local basket
+    let_it_be(:project) { create(:project_with_phases) }
     let_it_be(:command) do
       {
         recipient: recipient,
         event_payload: {
           project_url: Frontend::UrlService.new.model_to_url(project, locale: recipient.locale),
-          phase_title: 'PHASE TITLE'
+          phase_title_multiloc: project.phases.first.title_multiloc
         }
       }
     end
@@ -26,7 +24,7 @@ RSpec.describe EmailCampaigns::VotingBasketNotSubmittedMailer do
     end
 
     it 'renders the subject' do
-      expect(mail.subject).to end_with("You didn't submit your votes")
+      expect(mail.subject).to end_with "You didn't submit your votes"
     end
 
     it 'renders the receiver email' do
@@ -37,18 +35,19 @@ RSpec.describe EmailCampaigns::VotingBasketNotSubmittedMailer do
       expect(mail.from).to all(end_with('@citizenlab.co'))
     end
 
-    it 'says you selected a few options' do
-      expect(mail.body.encoded).to match('You selected a few options')
+    it "displays 'you selected a few options' in the body" do
+      expect(mail.body.encoded).to match 'You selected a few options'
     end
 
-    it 'displays the correct phase' do
-      expect(mail.body.encoded).to match('PHASE TITLE')
+    it 'displays the correct phase in the body' do
+      expect(mail.body.encoded).to match project.phases.first.title_multiloc['en']
     end
 
-    it 'assigns see votes submitted CTA' do
+    it "displays 'View options and vote' button with correct link" do
       project_url = Frontend::UrlService.new.model_to_url(project, locale: recipient.locale)
-      expect(mail.body.encoded).to match(project_url)
-      expect(mail.body.encoded).to match('Click the button below to submit your selected options')
+      expect(mail.body.encoded).to match project_url
+      expect(mail.body.encoded).to match 'Click the button below to submit your selected options'
+      expect(mail.body.encoded).to match 'View options and vote'
     end
   end
 end

@@ -5,21 +5,27 @@ module EmailCampaigns
     protected
 
     def subject
-      format_message('subject', values: { organizationName: organization_name })
+      format_message('subject', values: {
+        organizationName: organization_name,
+        phaseTitle: localize_for_recipient(event.phase_title_multiloc)
+      })
     end
 
     private
 
     def header_title
-      format_message('title_last_chance', values: { phaseTitle: event.phase_title_multiloc })
+      format_message('title_last_chance', values: { phaseTitle: localize_for_recipient(event.phase_title_multiloc) })
     end
 
     def header_message
-      format_message('event_description', values: { phaseTitle: localize_for_recipient(event.project_title_multiloc) })
+      format_message('event_description', values: { projectTitle: localize_for_recipient(event.project_title_multiloc) })
     end
 
     def preheader
-      format_message('preheader', values: { organizationName: organization_name })
+      format_message('preheader', values: {
+        organizationName: organization_name,
+        phaseTitle: localize_for_recipient(event.phase_title_multiloc)
+      })
     end
   end
 end

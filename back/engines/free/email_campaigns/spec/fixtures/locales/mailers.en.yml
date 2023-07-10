@@ -578,7 +578,6 @@ en:
       subject: '%{organizationName}: Last chance to vote for %{phaseTitle}'
       preheader: 'Last chance to vote for %{phaseTitle} on the participation platform of %{organizationName}'
       title_last_chance: 'Last chance to vote for %{phaseTitle}'
-      event_description: 'You selected a few options for %{phaseTitle} but you didn''t submit your selection.'
-      cta_view_options_and_vote: 'View options and vote'
-      cta_message: 'Click the button below to submit your selected options'
+      event_description: 'The voting phase for the %{projectTitle} project is coming to a close tomorrow, at midnight. Time is running out, and we noticed that you haven''t cast your vote yet! Act now by simply clicking the button below to participate. By doing so, you''ll gain access to a range of options and have the chance to provide your input, which is crucial in deciding the future of this project. '
+      cta_vote: 'Vote'
 
