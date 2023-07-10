@@ -72,7 +72,7 @@ class WebApi::V1::BasketsIdeasController < ApplicationController
       end
     end
 
-    # 2. Create or update the baskets_idea
+    # 2. Create, update or delete the baskets_idea
     baskets_idea = BasketsIdea.find_or_initialize_by(
       basket: basket,
       idea: idea
@@ -81,6 +81,15 @@ class WebApi::V1::BasketsIdeasController < ApplicationController
     authorize baskets_idea
 
     baskets_idea.assign_attributes baskets_idea_params_for_update
+    if !record_is_new && baskets_idea.votes.nil?
+      baskets_idea.destroy
+      if baskets_idea.destroyed?
+        SideFxBasketsIdeaService.new.after_destroy baskets_idea, current_user
+        head :ok
+        return
+      end
+    end
+
     if baskets_idea.save
       if record_is_new
         SideFxBasketsIdeaService.new.after_create baskets_idea, current_user

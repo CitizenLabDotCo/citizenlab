@@ -129,7 +129,7 @@ resource BasketsIdea do
     put 'web_api/v1/baskets/ideas/:idea_id' do
       with_options scope: :baskets_idea do
         parameter :idea_id, 'The ID of the idea added to the basket.', required: true
-        parameter :votes, 'The number of times the idea is voted on. Defaults to 1.', required: false
+        parameter :votes, 'The number of times the idea is voted on. If set to nil, the relationship between basket and idea will be deleted.', required: false
       end
       ValidationErrorHelper.new.error_fields self, BasketsIdea
 
@@ -173,6 +173,16 @@ resource BasketsIdea do
             expect(json_response_body[:included].pluck(:id)).to include idea_id
             expect(response_data[:id]).to eq baskets_idea.id
             expect(response_data.dig(:relationships, :basket, :data, :id)).to eq basket.id
+          end
+        end
+
+        context 'basket_idea already exists and votes is set to nil' do
+          let!(:baskets_idea) { create(:baskets_idea, basket: basket, idea: idea) }
+          let(:votes) { nil }
+
+          example_request 'Delete an idea in an existing basket' do
+            assert_status 200
+            expect { baskets_idea.reload }.to raise_error(ActiveRecord::RecordNotFound)
           end
         end
       end
