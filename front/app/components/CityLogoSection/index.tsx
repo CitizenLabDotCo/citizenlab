@@ -6,8 +6,7 @@ import Fragment from 'components/Fragment';
 import { Image } from '@citizenlab/cl2-component-library';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl, useIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // hooks
@@ -83,4 +82,4 @@ const CityLogoSection = () => {
   return null;
 };
 
-export default injectIntl(CityLogoSection);
+export default CityLogoSection;
