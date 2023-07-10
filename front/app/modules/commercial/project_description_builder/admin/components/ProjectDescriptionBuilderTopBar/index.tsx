@@ -23,10 +23,13 @@ import clHistory from 'utils/cl-router/history';
 import { useParams } from 'react-router-dom';
 
 // services
-import { addProjectDescriptionBuilderLayout } from '../../../services/projectDescriptionBuilder';
+// import { addProjectDescriptionBuilderLayout } from '../../../services/projectDescriptionBuilder';
 
 // types
 import { Locale } from 'typings';
+
+// Hooks
+import useAddProjectDescriptionBuilderLayout from 'api/project_description_builder/useAddProjectDescriptionBuilderLayout';
 
 type ProjectDescriptionBuilderTopBarProps = {
   hasPendingState?: boolean;
@@ -55,6 +58,8 @@ const ProjectDescriptionBuilderTopBar = ({
   const { query } = useEditor();
   const localize = useLocalize();
   const { data: project } = useProjectById(projectId);
+  const { mutateAsync: addProjectDescriptionBuilderLayout } =
+    useAddProjectDescriptionBuilderLayout();
 
   const disableSave = localesWithError.length > 0;
 
@@ -66,10 +71,25 @@ const ProjectDescriptionBuilderTopBar = ({
     if (selectedLocale) {
       try {
         setLoading(true);
-        await addProjectDescriptionBuilderLayout(projectId, {
-          craftjs_jsonmultiloc: {
-            ...draftEditorData,
-            [selectedLocale]: query.getSerializedNodes(),
+        // await addProjectDescriptionBuilderLayout(projectId, {
+        //   craftjs_jsonmultiloc: {
+        //     ...draftEditorData,
+        //     [selectedLocale]: query.getSerializedNodes(),
+        //   },
+        // });
+        // await addProjectDescriptionBuilderLayout(projectId, {
+        //   craftjs_jsonmultiloc: {
+        //     ...draftEditorData,
+        //     [selectedLocale]: query.getSerializedNodes(),
+        //   },
+        // });
+        await addProjectDescriptionBuilderLayout({
+          projectId,
+          requestBody: {
+            craftjs_jsonmultiloc: {
+              ...draftEditorData,
+              [selectedLocale]: query.getSerializedNodes(),
+            },
           },
         });
       } catch {
