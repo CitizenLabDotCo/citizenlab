@@ -9,15 +9,11 @@ import { addNavbarItem } from 'services/navbar';
 let mockNavbarItems = allNavbarItems;
 const mockRemovedDefaultNavbarItems = [];
 
-// jest.mock('api/navbar/useNavbarItems', () =>
-//   jest.fn(() => ({ data: mockNavbarItems }))
-// );
-
 jest.mock('api/navbar/useNavbarItems', () => {
   return jest.fn((params) => {
     return params?.onlyRemovedDefaultItems
-      ? { data: mockRemovedDefaultNavbarItems }
-      : { data: mockNavbarItems };
+      ? { data: { data: mockRemovedDefaultNavbarItems } }
+      : { data: { data: mockNavbarItems } };
   });
 });
 
