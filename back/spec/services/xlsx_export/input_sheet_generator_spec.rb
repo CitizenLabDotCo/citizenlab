@@ -55,6 +55,75 @@ describe XlsxExport::InputSheetGenerator do
       end
 
       context 'without persisted form' do
+        let(:assignee) { create(:admin, first_name: 'John', last_name: 'Doe') }
+        let(:ideation_response1) do
+          create(
+            :idea_with_topics,
+            project: participation_context.project,
+            phases: [participation_context],
+            author: create(:user, custom_field_values: { create(:custom_field_birthyear).code => 1999 }),
+            assignee: assignee
+          )
+        end
+        let!(:attachment1) { create(:idea_file, idea: ideation_response1) }
+        let!(:comments) { create_list(:comment, 1, post: ideation_response1) }
+        let!(:likes) { create_list(:reaction, 2, reactable: ideation_response1) }
+        let!(:dislikes) { create_list(:dislike, 1, reactable: ideation_response1) }
+        let(:inputs) { [ideation_response1.reload] }
+
+        it 'Generates an sheet with the phase inputs' do
+          expect(xlsx).to match([
+            {
+              sheet_name: 'My sheet',
+              column_headers: [
+                'ID',
+                'Title',
+                'Description',
+                'Attachments',
+                'Tags',
+                'Latitude',
+                'Longitude',
+                'Location',
+                'Proposed Budget',
+                'Submitted at',
+                'Published at',
+                'Comments',
+                'Likes',
+                'Dislikes',
+                'Baskets', # TODO: definitely remove (should be private)
+                'Budget',
+                'URL',
+                'Project',
+                'Status',
+                'birthyear'
+              ],
+              rows: [
+                [
+                  ideation_response1.id,
+                  ideation_response1.title_multiloc['en'],
+                  'It would improve the air quality!', # html tags are removed
+                  %r{\A/uploads/.+/idea_file/file/#{attachment1.id}/#{attachment1.name}\Z},
+                  "#{ideation_response1.topics[0].title_multiloc['en']}, #{ideation_response1.topics[1].title_multiloc['en']}",
+                  ideation_response1.location_point.coordinates.last,
+                  ideation_response1.location_point.coordinates.first,
+                  ideation_response1.location_description,
+                  ideation_response1.proposed_budget,
+                  an_instance_of(DateTime), # created_at
+                  an_instance_of(DateTime), # published_at
+                  1,
+                  2,
+                  1,
+                  0,
+                  ideation_response1.budget,
+                  "http://example.org/ideas/#{ideation_response1.slug}",
+                  participation_context.project.title_multiloc['en'],
+                  ideation_response1.idea_status.title_multiloc['en'],
+                  1999
+                ]
+              ]
+            }
+          ])
+        end
       end
 
       context 'with persisted form' do
@@ -87,7 +156,6 @@ describe XlsxExport::InputSheetGenerator do
         let!(:comments) { create_list(:comment, 1, post: ideation_response1) }
         let!(:likes) { create_list(:reaction, 2, reactable: ideation_response1) }
         let!(:dislikes) { create_list(:dislike, 1, reactable: ideation_response1) }
-        let!(:baskets) { create_list(:basket, 0, participation_context: participation_context, ideas: [ideation_response1]) }
         let(:inputs) { [ideation_response1.reload] }
 
         context 'without private attributes' do

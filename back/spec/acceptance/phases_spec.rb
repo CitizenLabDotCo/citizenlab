@@ -65,7 +65,7 @@ resource 'Phases' do
 
       example '[error] Try downloading phase inputs' do
         do_request
-        expect(status).to eq 401
+        assert_status 401
       end
     end
 
@@ -75,7 +75,7 @@ resource 'Phases' do
 
       example '[error] Try downloading phase inputs' do
         do_request
-        expect(status).to eq 401
+        assert_status 401
       end
     end
   end
@@ -635,7 +635,6 @@ resource 'Phases' do
     end
 
     get 'web_api/v1/phases/:id/as_xlsx' do
-
       context 'for a native survey phase with persisted form' do
         let(:project) { create(:project_with_active_native_survey_phase) }
         let(:active_phase) { project.phases.first }
