@@ -7235,7 +7235,7 @@ models:
     start_at_timediff: -6226
     end_at_timediff: -5978
     participation_method: survey
-    emails:
+    campaigns_settings:
       project_phase_started: false
     created_at: '2018-03-28 13:35:05'
     updated_at: '2018-03-28 13:35:05'
