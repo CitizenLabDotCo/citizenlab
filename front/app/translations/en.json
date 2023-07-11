@@ -1124,6 +1124,7 @@
   "app.containers.NotificationMenu.votingBasketNotSubmitted": "You didn't submit your votes",
   "app.containers.NotificationMenu.votingBasketSubmitted": "You voted successfully",
   "app.containers.NotificationMenu.votingLastChance": "Last chance to vote for {phaseTitle}",
+  "app.containers.NotificationMenu.votingResults": "{phaseTitle} vote results revealed",
   "app.containers.NotificationMenu.xAssignedPostToYou": "{name} assigned {postTitle} to you",
   "app.containers.PasswordRecovery.emailError": "This doesn't look like a valid email",
   "app.containers.PasswordRecovery.emailLabel": "Email",
