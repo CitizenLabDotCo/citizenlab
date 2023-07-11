@@ -1,5 +1,5 @@
 <!-- CTA button -->
-<mj-section padding="30px 25px">
+<mj-section padding="0 25px">
   <mj-column>
     <mj-text>
       <p><%= format_message('cta_message') %></p>

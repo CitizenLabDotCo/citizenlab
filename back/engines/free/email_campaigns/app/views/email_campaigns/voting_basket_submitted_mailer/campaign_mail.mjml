@@ -1,28 +1,31 @@
 <!-- Voted ideas -->
-<mj-section padding="20px 25px 30px">
+<mj-section padding="0 25px 0">
   <mj-column>
     <mj-raw><% event.voted_ideas.each do |idea| %></mj-raw>
-    <mj-table cellpadding="15" padding-top="20px">
+    <mj-table cellpadding="10" padding-top="20px">
       <tr style="border:1px solid #ecedee; background-color: #FFFFFF">
-        <td style="width: 80px;">
-          <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
-            <img width="96px" src="<%= idea.images&.first&.versions&.small %>">
-          </span>
+        <td width="96">
+            <a style="font-size: 14px; font-weight: 700; color: #000; text-decoration: none;" href="<%= idea.url %>">
+            <mj-raw><% if idea.images.size > 0 %></mj-raw>
+              <img width="80px" src="<%= idea.images&.first&.versions&.small %>">
+            <mj-raw><% else %></mj-raw>
+              <img width="80px" src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/icons/icon_idea_grey.png">
+            <mj-raw><% end %></mj-raw>
+            </a>
         </td>
-        <td width="200" style="text-align: left;">
-          <a style="font-size: 14px; font-weight: 300; color: #000; text-decoration: none;" href="<%= idea.url %>">
-            <%= localize_for_recipient(idea.title_multiloc).first(80) %>
+        <td style="text-align: left; vertical-align: top;">
+          <a style="font-size: 14px; font-weight: 700; color: #000; text-decoration: none;" href="<%= idea.url %>">
+            <%= localize_for_recipient(idea.title_multiloc) %>
           </a>
         </td>
       </tr>
-      <mj-text>&nbsp;</mj-text>
     </mj-table>
     <mj-raw><% end %></mj-raw>
   </mj-column>
 </mj-section>
 
 <!-- CTA button -->
-<mj-section padding="30px 25px">
+<mj-section padding="10px 25px 0">
   <mj-column>
     <mj-text>
       <p><%= format_message('cta_message') %></p>

@@ -18,7 +18,7 @@ module EmailCampaigns
     end
 
     def header_message
-      format_message('event_description', values: { projectTitle: localize_for_recipient(event.project_title_multiloc) })
+      nil
     end
 
     def preheader
