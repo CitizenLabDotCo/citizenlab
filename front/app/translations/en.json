@@ -111,7 +111,6 @@
   "app.components.ErrorBoundary.genericErrorWithForm": "An error occurred and we cannot display this content. Please try again, or {openForm}",
   "app.components.ErrorBoundary.openFormText": "help us figure it out",
   "app.components.ErrorToast.budgetExceededError": "You don't have enough budget",
-  "app.components.ErrorToast.voteMaxPerOptionExceededError": "You've reached the maximum number of votes per option",
   "app.components.ErrorToast.votesExceededError": "You don't have enough votes left",
   "app.components.EventCard.a11y_lessContentVisible": "Less event information became visible.",
   "app.components.EventCard.a11y_moreContentVisible": "More event information became visible.",
