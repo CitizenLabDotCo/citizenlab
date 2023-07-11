@@ -67,7 +67,13 @@ const Field = ({
       : undefined
   );
 
-  const [formValues, setFormValues] = useState<FormValues | null>(null);
+  const [formValues, setFormValues] = useState<FormValues | null>(
+    getInitialValues(
+      userCustomFieldOptions,
+      referenceDataUploaded,
+      remoteFormValues
+    )
+  );
 
   const { data: userCustomField } = useUserCustomField(userCustomFieldId);
 
