@@ -31,7 +31,7 @@ import defaultNavItems, { NavItem } from './navItems';
 
 // Hooks
 import { useLocation } from 'react-router-dom';
-import useAuthUser from 'api/me/__mocks__/useAuthUser';
+import useAuthUser from 'api/me/useAuthUser';
 import useIdeasCount from 'api/idea_count/useIdeasCount';
 import useInitiativesCount from 'api/initiative_counts/useInitiativesCount';
 
