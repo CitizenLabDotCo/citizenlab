@@ -18,8 +18,8 @@ export default defineMessages({
     defaultMessage:
       'Give feedback, add topics and move inputs from one project to another',
   },
-  tabManage: {
-    id: 'app.containers.admin.ideas.all.tabManage',
-    defaultMessage: 'Manage',
+  tabOverview: {
+    id: 'app.containers.admin.ideas.all.tabOverview',
+    defaultMessage: 'Overview',
   },
 });

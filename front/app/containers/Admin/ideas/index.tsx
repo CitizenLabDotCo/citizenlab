@@ -24,7 +24,7 @@ const IdeasPage = () => {
   const { pathname } = useLocation();
   const [tabs, setTabs] = useState<ITab[]>([
     {
-      label: formatMessage(messages.tabManage),
+      label: formatMessage(messages.tabOverview),
       name: 'manage',
       url: '/admin/ideas',
     },
