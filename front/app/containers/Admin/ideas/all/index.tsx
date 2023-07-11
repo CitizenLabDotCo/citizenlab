@@ -4,7 +4,8 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import PostManager, { TFilterMenu } from 'components/admin/PostManager';
-import { Box, Text, colors } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
+import { PageTitle, SectionDescription } from 'components/admin/Section';
 
 // resources
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
@@ -30,11 +31,12 @@ const IdeasTab = memo(({ projects }: Props) => {
   if (!isNilOrError(projects)) {
     return (
       <>
-        <Box mb="28px">
-          <Text color="coolGrey600">
-            <FormattedMessage {...messages.inputManagerPageSubtitle} />
-          </Text>
-        </Box>
+        <PageTitle>
+          <FormattedMessage {...messages.inputManagerPageTitle} />
+        </PageTitle>
+        <SectionDescription>
+          <FormattedMessage {...messages.inputManagerPageSubtitle} />
+        </SectionDescription>
         <Box background={colors.white} p="40px">
           <PostManager
             type="AllIdeas"
