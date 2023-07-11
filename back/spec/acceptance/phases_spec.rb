@@ -59,19 +59,8 @@ resource 'Phases' do
   end
 
   get 'web_api/v1/phases/:id/as_xlsx' do
-    context 'for an ideation phase' do
-      let(:project) { create(:project_with_active_ideation_phase) }
-      let(:id) { project.phases.first.id }
-
-      example '[error] Try downloading phase inputs' do
-        do_request
-        assert_status 401
-      end
-    end
-
-    context 'for a native survey phase' do
-      let(:project) { create(:project_with_active_native_survey_phase) }
-      let(:id) { project.phases.first.id }
+    describe do
+      let(:id) { create(:project_with_active_ideation_phase).phases.first.id }
 
       example '[error] Try downloading phase inputs' do
         do_request
@@ -753,9 +742,9 @@ resource 'Phases' do
   end
 
   context 'when project moderator' do
-    get 'web_api/v1/phases/:id/as_xlsx' do
-      before { header_token_for create(:project_moderator, projects: [project]) }
+    before { header_token_for create(:project_moderator, projects: [project]) }
 
+    get 'web_api/v1/phases/:id/as_xlsx' do
       let(:project) { create(:project_with_active_native_survey_phase) }
       let(:active_phase) { project.phases.first }
       let(:form) { create(:custom_form, participation_context: active_phase) }

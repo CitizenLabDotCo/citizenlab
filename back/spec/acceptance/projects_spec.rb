@@ -869,115 +869,6 @@ resource 'Projects' do
     end
 
     get 'web_api/v1/projects/:id/as_xlsx' do
-      context 'for a continuous native survey project' do
-        let(:project) { create(:continuous_native_survey_project) }
-        let(:project_form) { create(:custom_form, participation_context: project) }
-        let(:id) { project.id }
-        let(:multiselect_field) do
-          create(
-            :custom_field_multiselect,
-            resource: project_form,
-            title_multiloc: { 'en' => 'What are your favourite pets?' },
-            description_multiloc: {}
-          )
-        end
-        let!(:cat_option) do
-          create(:custom_field_option, custom_field: multiselect_field, key: 'cat', title_multiloc: { 'en' => 'Cat' })
-        end
-        let!(:dog_option) do
-          create(:custom_field_option, custom_field: multiselect_field, key: 'dog', title_multiloc: { 'en' => 'Dog' })
-        end
-
-        context 'when there are no inputs in the project' do
-          example 'Download native survey phase inputs in one sheet' do
-            do_request
-            expect(status).to eq 200
-            expect(xlsx_contents(response_body)).to match_array([
-              {
-                sheet_name: project.title_multiloc['en'],
-                column_headers: [
-                  'ID',
-                  'What are your favourite pets?',
-                  'Author name',
-                  'Author email',
-                  'Author ID',
-                  'Submitted at',
-                  'Project'
-                ],
-                rows: []
-              }
-            ])
-          end
-        end
-
-        context 'when there are inputs in the project' do
-          let!(:file_upload_field) do
-            create(
-              :custom_field,
-              resource: project_form,
-              title_multiloc: { 'en' => 'Upload your favourite file' },
-              input_type: 'file_upload'
-            )
-          end
-          let!(:survey_response1) do
-            create(
-              :idea,
-              project: project,
-              custom_field_values: { multiselect_field.key => %w[cat dog] }
-            )
-          end
-          let!(:survey_response2) do
-            create(
-              :idea,
-              project: project,
-              custom_field_values: { multiselect_field.key => %w[cat] }
-            )
-          end
-
-          example 'Download native survey phase inputs in one sheet' do
-            do_request
-            expect(status).to eq 200
-            expect(xlsx_contents(response_body)).to match_array([
-              {
-                sheet_name: project.title_multiloc['en'],
-                column_headers: [
-                  'ID',
-                  multiselect_field.title_multiloc['en'],
-                  'Upload your favourite file',
-                  'Author name',
-                  'Author email',
-                  'Author ID',
-                  'Submitted at',
-                  'Project'
-                ],
-                rows: [
-                  [
-                    survey_response1.id,
-                    'Cat, Dog',
-                    '',
-                    survey_response1.author_name,
-                    survey_response1.author.email,
-                    survey_response1.author_id,
-                    an_instance_of(DateTime), # created_at
-                    project.title_multiloc['en']
-                  ],
-                  [
-                    survey_response2.id,
-                    'Cat',
-                    '',
-                    survey_response2.author_name,
-                    survey_response2.author.email,
-                    survey_response2.author_id,
-                    an_instance_of(DateTime), # created_at
-                    project.title_multiloc['en']
-                  ]
-                ]
-              }
-            ])
-          end
-        end
-      end
-
       context 'for a timeline project' do
         let(:project) { create(:project, process_type: 'timeline') }
         let(:project_form) { create(:custom_form, participation_context: project) }
@@ -1048,41 +939,6 @@ resource 'Projects' do
             :custom_field_extra_custom_form,
             resource: project_form
           )
-        end
-
-        context 'when there are no inputs in the phases' do
-          example 'Download native survey phase inputs in separate sheets' do
-            do_request
-            expect(status).to eq 200
-            expect(xlsx_contents(response_body)).to match_array([
-              {
-                sheet_name: 'Phase 2 survey', # The colon is removed from phase title "Phase 2: survey"
-                column_headers: [
-                  'ID',
-                  'What are your favourite pets?',
-                  'Author name',
-                  'Author email',
-                  'Author ID',
-                  'Submitted at',
-                  'Project'
-                ],
-                rows: []
-              },
-              {
-                sheet_name: 'Phase 3 survey', # The colon is removed from phase title "Phase 3: survey"
-                column_headers: [
-                  'ID',
-                  'We need a swimming pool.',
-                  'Author name',
-                  'Author email',
-                  'Author ID',
-                  'Submitted at',
-                  'Project'
-                ],
-                rows: []
-              }
-            ])
-          end
         end
 
         context 'when there are inputs in the phases' do
@@ -1276,23 +1132,12 @@ resource 'Projects' do
   end
 
   get 'web_api/v1/projects/:id/as_xlsx' do
-    context 'for a continuous project' do
-      let(:project) { create(:continuous_project) }
-      let(:id) { project.id }
+    describe do
+      let(:id) { create(:continuous_project).id }
 
-      example '[error] Try downloading phase inputs' do
+      example '[error] Try downloading project inputs' do
         do_request
-        expect(status).to eq 401
-      end
-    end
-
-    context 'for a timeline project' do
-      let(:project) { create(:project_with_active_native_survey_phase) }
-      let(:id) { project.id }
-
-      example '[error] Try downloading phase inputs' do
-        do_request
-        expect(status).to eq 401
+        assert_status 401
       end
     end
   end
@@ -1328,35 +1173,20 @@ resource 'Projects' do
   end
 
   context 'as a project folder moderator' do
-    before { header_token_for user }
+    before { header_token_for moderator }
 
-    let!(:project_folder) { create(:project_folder) }
-    let!(:user) { create(:project_folder_moderator, project_folders: [project_folder]) }
-    let!(:projects_within_folder) do
-      projects = publication_statuses.map do |status|
-        create(
-          :project,
-          admin_publication_attributes: {
-            publication_status: status,
-            parent_id: project_folder.admin_publication.id
-          }
-        )
+    let!(:project_folder) { create(:project_folder, projects: projects) }
+    let(:moderator) { create(:project_folder_moderator, project_folders: [project_folder]) }
+    let(:projects) do
+      publication_statuses.map do |status|
+        create(:continuous_project, admin_publication_attributes: { publication_status: status })
       end
-      Project.includes(:admin_publication).where(projects: { id: projects.pluck(:id) })
     end
-
     let!(:projects_outside_of_folder) do
-      projects = publication_statuses.map do |status|
-        create(
-          :project,
-          admin_publication_attributes: {
-            publication_status: status
-          }
-        )
+      publication_statuses.map do |status|
+        create(:project, admin_publication_attributes: { publication_status: status })
       end
-      Project.includes(:admin_publication).where(projects: { id: projects.pluck(:id) })
     end
-
     let(:publication_statuses) { AdminPublication::PUBLICATION_STATUSES }
 
     get 'web_api/v1/projects' do
@@ -1373,16 +1203,78 @@ resource 'Projects' do
       parameter :filter_ids, 'Filter out only projects with the given list of IDs', required: false
 
       example_request 'Lists projects that belong to a folder the user moderates' do
-        expect(status).to eq(200)
-
+        assert_status 200
         json_response = json_parse(response_body)
         ids = json_response[:data].pluck(:id)
-        projects = Project.includes(:admin_publication)
+        expected_projects = Project.includes(:admin_publication)
           .where(admin_publications: { publication_status: %w[published archived] })
           .where(projects: { visible_to: 'public' })
-          .or(projects_within_folder)
+          .or(Project.where(id: projects.map(&:id)))
 
-        expect(ids).to match_array projects.pluck(:id)
+        expect(ids).to match_array expected_projects.pluck(:id)
+      end
+    end
+
+    get 'web_api/v1/projects/:id/as_xlsx' do
+      describe do
+        let(:project) { projects.first }
+        let(:id) { project.id }
+        let!(:idea) { create(:idea, project: project) }
+
+        example 'Download phase inputs without private user data', document: false do
+          expected_params = [[idea], project, false]
+          allow(XlsxExport::InputSheetGenerator).to receive(:new).and_return(XlsxExport::InputSheetGenerator.new(*expected_params))
+          do_request
+          expect(XlsxExport::InputSheetGenerator).to have_received(:new).with(*expected_params)
+          assert_status 200
+          expect(xlsx_contents(response_body)).to match([
+            {
+              sheet_name: project.title_multiloc['en'],
+              column_headers: [
+                'ID',
+                'Title',
+                'Description',
+                'Attachments',
+                'Tags',
+                'Latitude',
+                'Longitude',
+                'Location',
+                'Proposed Budget',
+                'Submitted at',
+                'Published at',
+                'Comments',
+                'Likes',
+                'Dislikes',
+                'Budget',
+                'URL',
+                'Project',
+                'Status'
+              ],
+              rows: [
+                [
+                  idea.id,
+                  idea.title_multiloc['en'],
+                  'It would improve the air quality!', # html tags are removed
+                  '',
+                  '',
+                  idea.location_point.coordinates.last,
+                  idea.location_point.coordinates.first,
+                  idea.location_description,
+                  idea.proposed_budget,
+                  an_instance_of(DateTime), # created_at
+                  an_instance_of(DateTime), # published_at
+                  0,
+                  0,
+                  0,
+                  idea.budget,
+                  "http://example.org/ideas/#{idea.slug}",
+                  project.title_multiloc['en'],
+                  idea.idea_status.title_multiloc['en']
+                ]
+              ]
+            }
+          ])
+        end
       end
     end
 
@@ -1445,7 +1337,7 @@ resource 'Projects' do
           let(:folder_id) { project_folder.id }
 
           example_request 'Allows the creation of a project within a folder the user moderates' do
-            expect(response_status).to eq 201
+            assert_status 201
 
             json_response                    = json_parse(response_body)
             response_resource_id             = json_response.dig(:data, :id)
@@ -1458,7 +1350,7 @@ resource 'Projects' do
           end
 
           example_request 'Adds all folder moderators as moderators of the project' do
-            expect(response_status).to eq 201
+            assert_status 201
 
             json_response              = json_parse(response_body)
             response_resource_id       = json_response.dig(:data, :id)
@@ -1473,7 +1365,7 @@ resource 'Projects' do
           let(:folder_id) { create(:project_folder).id }
 
           example_request 'It does not authorize the folder moderator' do
-            expect(response_status).to eq 401
+            assert_status 401
           end
         end
       end
@@ -1481,24 +1373,22 @@ resource 'Projects' do
 
     patch 'web_api/v1/projects/:id' do
       describe do
-        let!(:project) { create(:project) }
-
+        let(:project) { create(:project) }
         let(:id) { project.id }
 
         example_request 'It does not authorize the folder moderator' do
-          expect(response_status).to eq 401
+          assert_status 401
         end
       end
     end
 
     delete 'web_api/v1/projects/:id' do
       describe do
-        let!(:project) { create(:project) }
-
+        let(:project) { create(:project) }
         let(:id) { project.id }
 
         example_request 'It does not authorize the folder moderator' do
-          expect(response_status).to eq 401
+          assert_status 401
         end
       end
     end
@@ -1512,14 +1402,14 @@ resource 'Projects' do
         let(:id) { project_in_folder_user_moderates.id }
 
         example_request 'Allows the copying of a project within a folder the user moderates' do
-          expect(response_status).to eq 201
+          assert_status 201
 
           copied_project = Project.find(json_response.dig(:data, :id))
           expect(copied_project.title_multiloc['en']).to include(project_in_folder_user_moderates.title_multiloc['en'])
         end
 
         example_request 'Adds all folder moderators as moderators of the project' do
-          expect(response_status).to eq 201
+          assert_status 201
 
           response_resource_id = json_response.dig(:data, :id)
           project_moderators = User.project_moderator(response_resource_id)
@@ -1533,7 +1423,7 @@ resource 'Projects' do
         let(:id) { project_in_other_folder.id }
 
         example_request 'It does not authorize the folder moderator' do
-          expect(response_status).to eq 401
+          assert_status 401
         end
       end
     end
