@@ -1449,6 +1449,7 @@
   "app.containers.AdminPage.ProjectTimeline.subtitleTimeline": "Set up or edit the timeline phases of this project.",
   "app.containers.AdminPage.ProjectTimeline.titleLabel": "Phase name",
   "app.containers.AdminPage.ProjectTimeline.titleTimeline": "Project phases",
+  "app.containers.AdminPage.ProjectTimeline.uploadAttachments": "Upload attachments",
   "app.containers.AdminPage.ReportsTab.customFieldTitleExport": "{fieldName}_repartition",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.subtitleTerminology": "Terminology (homepage filter)",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.terminologyTooltip": "How should tags in the front page filter be called? E.g. tags, categories, departments, ...",
