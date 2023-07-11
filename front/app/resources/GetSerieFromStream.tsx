@@ -10,10 +10,6 @@ import { isNilOrError, NilOrError } from 'utils/helperUtils';
 // typings
 import { IStreamParams, IStream } from 'utils/streams';
 import {
-  IIdeasByTopic,
-  ICommentsByTopic,
-  IReactionsByTopic,
-  IIdeasByStatus,
   IIdeasByProject,
   ICommentsByProject,
   IReactionsByProject,
@@ -22,6 +18,10 @@ import { IGraphFormat, IParticipationByTopic } from 'typings';
 import { IUsersByBirthyear } from 'api/users_by_birthyear/types';
 import { IUsersByDomicile } from 'api/users_by_domicile/types';
 import { IUsersByCustomField } from 'api/users_by_custom_field/types';
+import { IIdeasByStatus } from 'api/ideas_by_status/types';
+import { IIdeasByTopic } from 'api/ideas_by_topic/types';
+import { ICommentsByTopic } from 'api/comments_by_topic/types';
+import { IReactionsByTopic } from 'api/reactions_by_topic/types';
 
 interface State {
   unconvertedSerie: ISupportedDataType | NilOrError;

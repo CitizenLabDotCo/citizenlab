@@ -5,26 +5,6 @@ import { Multiloc } from 'typings';
 export const apiEndpoint = `${API_PATH}/stats`;
 
 // Ideas
-export interface IIdeasByStatus {
-  data: {
-    type: 'ideas_by_status';
-    attributes: {
-      series: {
-        ideas: {
-          [key: string]: number;
-        };
-      };
-      idea_status: {
-        [key: string]: {
-          title_multiloc: Multiloc;
-          color: string;
-          ordering: number;
-        };
-      };
-    };
-  };
-}
-
 export interface IIdeasByTopic {
   data: {
     type: 'ideas_by_topics';
@@ -60,14 +40,6 @@ export interface IIdeasByProject {
     };
   };
 }
-
-export function ideasByStatusStream(streamParams: IStreamParams | null = null) {
-  return streams.get<IIdeasByStatus>({
-    apiEndpoint: `${apiEndpoint}/ideas_by_status`,
-    ...streamParams,
-  });
-}
-export const ideasByStatusXlsxEndpoint = `${apiEndpoint}/ideas_by_status_as_xlsx`;
 
 export const ideasByTopicXlsxEndpoint = `${apiEndpoint}/ideas_by_topic_as_xlsx`;
 

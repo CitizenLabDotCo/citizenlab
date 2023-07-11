@@ -36,11 +36,8 @@ import {
   IIdeasByProject,
   ICommentsByProject,
   IReactionsByProject,
-  ideasByTopicXlsxEndpoint,
   ideasByProjectXlsxEndpoint,
-  commentsByTopicXlsxEndpoint,
   commentsByProjectXlsxEndpoint,
-  reactionsByTopicXlsxEndpoint,
   reactionsByProjectXlsxEndpoint,
 } from 'services/stats';
 import { IStreamParams, IStream } from 'utils/streams';
@@ -49,6 +46,9 @@ import { IGraphFormat, IOption } from 'typings';
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
+import { ideasByTopicXlsxEndpoint } from 'api/ideas_by_topic/util';
+import { commentsByTopicXlsxEndpoint } from 'api/comments_by_topic/util';
+import { reactionsByTopicXlsxEndpoint } from 'api/reactions_by_topic/util';
 
 const GraphCardTitle = styled.h3`
   margin: 0;

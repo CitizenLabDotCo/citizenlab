@@ -1,14 +1,14 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
-import { IIdeasByStatusParams } from './types';
+import { IReactionsByTopicParams } from './types';
 
-const baseKey = { type: 'ideas_by_status' };
+const baseKey = { type: 'reactions_by_topic' };
 
-const ideasByStatusKeys = {
+const reactionsByTopicKeys = {
   all: () => [baseKey],
   items: () => [{ ...baseKey, operation: 'item' }],
-  item: (params: IIdeasByStatusParams) => [
+  item: (params: IReactionsByTopicParams) => [
     { ...baseKey, operation: 'item', parameters: params },
   ],
 } satisfies QueryKeys;
 
-export default ideasByStatusKeys;
+export default reactionsByTopicKeys;
