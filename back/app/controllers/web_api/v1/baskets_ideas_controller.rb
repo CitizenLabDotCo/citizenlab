@@ -79,35 +79,30 @@ class WebApi::V1::BasketsIdeasController < ApplicationController
     )
     record_is_new = baskets_idea.new_record?
     authorize baskets_idea
-
     baskets_idea.assign_attributes baskets_idea_params_for_update
-    if !record_is_new && baskets_idea.votes.nil?
+
+    if baskets_idea.votes.nil?
       baskets_idea.destroy
       if baskets_idea.destroyed?
         SideFxBasketsIdeaService.new.after_destroy baskets_idea, current_user
-        # Returning the frozen basket as the front-end needs a response
-        render json: WebApi::V1::BasketsIdeaSerializer.new(
-          baskets_idea,
-          params: jsonapi_serializer_params,
-        ).serializable_hash, status: :ok
-        return
       end
-    end
-
-    if baskets_idea.save
+    elsif baskets_idea.save
       if record_is_new
         SideFxBasketsIdeaService.new.after_create baskets_idea, current_user
       else
         SideFxBasketsIdeaService.new.after_update baskets_idea, current_user
       end
-      render json: WebApi::V1::BasketsIdeaSerializer.new(
-        baskets_idea,
-        params: jsonapi_serializer_params,
-        include: %i[idea]
-      ).serializable_hash, status: :ok
     else
       render json: { errors: baskets_idea.errors.details }, status: :unprocessable_entity
+      return
     end
+
+    # Always return a response - even if trying to delete a record that does not exist
+    render json: WebApi::V1::BasketsIdeaSerializer.new(
+      baskets_idea,
+      params: jsonapi_serializer_params,
+      include: %i[idea]
+    ).serializable_hash, status: :ok
   end
 
   def destroy
