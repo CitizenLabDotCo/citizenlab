@@ -995,7 +995,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_10_143815) do
     t.integer "posting_limited_max", default: 1
     t.string "document_annotation_embed_url"
     t.boolean "allow_anonymous_participation", default: false, null: false
-    t.jsonb "emails", default: {}
+    t.jsonb "campaigns_settings", default: {}
     t.index ["project_id"], name: "index_phases_on_project_id"
   end
 

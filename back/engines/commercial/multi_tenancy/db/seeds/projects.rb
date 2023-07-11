@@ -77,7 +77,7 @@ module MultiTenancy
             start_at: start_at,
             end_at: (start_at += rand(150).days),
             participation_method: %w[ideation budgeting poll information ideation ideation][rand(6)],
-            emails: { project_phase_started: true }
+            campaigns_settings: { project_phase_started: true }
           })
           if phase.budgeting?
             if has_budgeting
