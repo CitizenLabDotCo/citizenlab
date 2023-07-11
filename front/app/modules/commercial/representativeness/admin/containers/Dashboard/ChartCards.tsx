@@ -25,6 +25,8 @@ const ChartCards = ({ projectFilter }: Props) => {
     userCustomFields.data.filter(isShown)
   );
 
+  console.log('userCustomField', userCustomFields);
+
   return (
     <>
       {sortedUserCustomFields.map((userCustomField) => {

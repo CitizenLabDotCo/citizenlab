@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { omit } from 'lodash-es';
+import { omit, isEqual } from 'lodash-es';
 
 // services
 import {
@@ -84,14 +84,13 @@ const Field = ({
   }, [isBinnedDistribution, bins, referenceDistribution]);
 
   useEffect(() => {
-    if (formValues === null && remoteFormValues) {
-      setFormValues(
-        getInitialValues(
-          userCustomFieldOptions,
-          referenceDataUploaded,
-          remoteFormValues
-        )
-      );
+    const initialFormValues = getInitialValues(
+      userCustomFieldOptions,
+      referenceDataUploaded,
+      remoteFormValues
+    );
+    if (formValues === null || !isEqual(formValues, initialFormValues)) {
+      setFormValues(initialFormValues);
     }
   }, [
     formValues,
