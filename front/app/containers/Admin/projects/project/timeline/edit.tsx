@@ -25,9 +25,6 @@ import FileUploader from 'components/UI/FileUploader';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// Styling
-import styled from 'styled-components';
-
 // Typings
 import { CLErrors, UploadFile, Multiloc } from 'typings';
 
@@ -45,7 +42,6 @@ import useAddPhaseFile from 'api/phase_files/useAddPhaseFile';
 import useDeletePhaseFile from 'api/phase_files/useDeletePhaseFile';
 import usePhaseFiles from 'api/phase_files/usePhaseFiles';
 
-const PhaseForm = styled.form``;
 type SubmitStateType = 'disabled' | 'enabled' | 'error' | 'success';
 
 const convertToFileType = (phaseFiles: IPhaseFiles | undefined) => {
@@ -307,7 +303,7 @@ const AdminProjectTimelineEdit = () => {
         {!phase && <FormattedMessage {...messages.newPhaseTitle} />}
       </SectionTitle>
 
-      <PhaseForm onSubmit={handleOnSubmit}>
+      <form onSubmit={handleOnSubmit}>
         <Section>
           <SectionField>
             <InputMultilocWithLocaleSwitcher
@@ -388,7 +384,7 @@ const AdminProjectTimelineEdit = () => {
             messageSuccess: messages.saveSuccessMessage,
           }}
         />
-      </PhaseForm>
+      </form>
     </>
   );
 };
