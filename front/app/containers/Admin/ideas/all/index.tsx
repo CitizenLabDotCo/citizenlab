@@ -1,6 +1,4 @@
-import React, { memo } from 'react';
-import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
+import React from 'react';
 
 // components
 import PostManager, { TFilterMenu } from 'components/admin/PostManager';
@@ -8,27 +6,27 @@ import { Box, colors } from '@citizenlab/cl2-component-library';
 import { PageTitle, SectionDescription } from 'components/admin/Section';
 
 // resources
-import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 import { PublicationStatus } from 'api/projects/types';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
+import useProjects from 'api/projects/useProjects';
 
-interface DataProps {
-  projects: GetProjectsChildProps;
-}
-
-export interface Props extends DataProps {}
-
-const IdeasTab = memo(({ projects }: Props) => {
+const IdeasTab = () => {
   const defaultFilterMenu: TFilterMenu = 'projects';
   const visibleFilterMenus: TFilterMenu[] = [
     defaultFilterMenu,
     'topics',
     'statuses',
   ];
+  const { data: projects } = useProjects({
+    pageSize: 250,
+    sort: 'new',
+    publicationStatuses,
+    canModerate: true,
+  });
 
-  if (!isNilOrError(projects)) {
+  if (projects) {
     return (
       <>
         <PageTitle>
@@ -42,7 +40,7 @@ const IdeasTab = memo(({ projects }: Props) => {
             type="AllIdeas"
             defaultFilterMenu={defaultFilterMenu}
             visibleFilterMenus={visibleFilterMenus}
-            projects={projects}
+            projects={projects.data}
           />
         </Box>
       </>
@@ -50,7 +48,7 @@ const IdeasTab = memo(({ projects }: Props) => {
   }
 
   return null;
-});
+};
 
 const publicationStatuses: PublicationStatus[] = [
   'draft',
@@ -58,17 +56,4 @@ const publicationStatuses: PublicationStatus[] = [
   'archived',
 ];
 
-const Data = adopt<Props>({
-  projects: (
-    <GetProjects
-      pageSize={250}
-      sort="new"
-      publicationStatuses={publicationStatuses}
-      canModerate={true}
-    />
-  ),
-});
-
-export default () => (
-  <Data>{(dataProps: DataProps) => <IdeasTab {...dataProps} />}</Data>
-);
+export default IdeasTab;
