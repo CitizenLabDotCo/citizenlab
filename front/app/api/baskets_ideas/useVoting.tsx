@@ -29,21 +29,6 @@ interface VotingInterface {
 const VotingInterfaceContext = createContext<VotingInterface | null>(null);
 
 export const VotingContext = ({ projectId, children }: Props) => {
-  if (!projectId) {
-    return <>{children}</>;
-  }
-
-  return (
-    <VotingContextInner projectId={projectId}>{children}</VotingContextInner>
-  );
-};
-
-interface InnerProps {
-  projectId: string;
-  children: React.ReactNode;
-}
-
-const VotingContextInner = ({ projectId, children }: InnerProps) => {
   const votingInterface = useVotingInterface(projectId);
 
   return (
@@ -53,7 +38,7 @@ const VotingContextInner = ({ projectId, children }: InnerProps) => {
   );
 };
 
-const useVotingInterface = (projectId: string) => {
+const useVotingInterface = (projectId?: string) => {
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
   const { updateBasket, cancel, processing } = useAssignVote();
@@ -141,6 +126,8 @@ const useVotingInterface = (projectId: string) => {
     if (!numberOfVotesUserHas) return false;
     return numberOfVotesCast < numberOfVotesUserHas;
   }, [numberOfVotesUserHas, numberOfVotesCast]);
+
+  if (!project) return null;
 
   return {
     getVotes,

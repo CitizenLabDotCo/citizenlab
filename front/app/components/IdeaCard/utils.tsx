@@ -57,7 +57,6 @@ export const getInteractions = ({
       return (
         <Box display="flex" alignItems="center">
           <AssignSingleVoteButton
-            projectId={projectId}
             ideaId={idea.data.id}
             participationContext={participationContext}
             buttonStyle="primary-outlined"

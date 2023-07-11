@@ -30,7 +30,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import { useIntl } from 'utils/cl-intl';
 
 // context
-import { CumulativeVotingContext } from 'api/baskets_ideas/useVoting';
+import { VotingContext } from 'api/baskets_ideas/useVoting';
 
 // i18n
 import messages from 'utils/messages';
@@ -271,9 +271,9 @@ const ProjectsShowPageWrapper = () => {
   if (!project) return null;
 
   return (
-    <CumulativeVotingContext projectId={project.data.id}>
+    <VotingContext projectId={project.data.id}>
       <ProjectsShowPage project={project.data} />
-    </CumulativeVotingContext>
+    </VotingContext>
   );
 };
 

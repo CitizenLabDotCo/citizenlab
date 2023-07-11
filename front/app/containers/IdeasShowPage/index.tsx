@@ -10,7 +10,7 @@ import Unauthorized from 'components/Unauthorized';
 import VerticalCenterer from 'components/VerticalCenterer';
 
 // context
-import { CumulativeVotingContext } from 'api/baskets_ideas/useVoting';
+import { VotingContext } from 'api/baskets_ideas/useVoting';
 
 // hooks
 import useIdeaBySlug from 'api/ideas/useIdeaBySlug';
@@ -88,7 +88,7 @@ const IdeasShowPage = () => {
 
   if (idea) {
     return (
-      <CumulativeVotingContext projectId={project?.data.id}>
+      <VotingContext projectId={project?.data.id}>
         <Box background={colors.white}>
           {isSmallerThanTablet && (
             <StyledIdeaShowPageTopBar
@@ -103,7 +103,7 @@ const IdeasShowPage = () => {
             compact={isSmallerThanTablet}
           />
         </Box>
-      </CumulativeVotingContext>
+      </VotingContext>
     );
   }
 

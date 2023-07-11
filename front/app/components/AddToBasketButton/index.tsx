@@ -54,7 +54,7 @@ const AddToBasketButton = ({
   const { data: appConfig } = useAppConfiguration();
   const { data: idea } = useIdeaById(ideaId);
   const { data: project } = useProjectById(projectId);
-  const { getVotes, setVotes, processing, numberOfVotesCast } = useVoting();
+  const { getVotes, setVotes, numberOfVotesCast } = useVoting();
 
   const participationContextType =
     project?.data.attributes.process_type === 'continuous'
@@ -99,8 +99,9 @@ const AddToBasketButton = ({
       isNil(maxBudget) ||
       ideaBudget === null ||
       numberOfVotesCast === undefined
-    )
+    ) {
       return;
+    }
 
     const ideaWillExceedBudget =
       !ideaInBasket && numberOfVotesCast + ideaBudget > maxBudget;
@@ -111,6 +112,7 @@ const AddToBasketButton = ({
     }
 
     if (actionDescriptor.enabled) {
+      console.log(ideaInBasket);
       setVotes?.(ideaId, ideaInBasket ? 0 : ideaBudget);
       trackEventByName(
         ideaInBasket ? tracks.ideaRemovedFromBasket : tracks.ideaAddedToBasket
@@ -148,7 +150,6 @@ const AddToBasketButton = ({
     <Button
       onClick={handleAddRemoveButtonClick}
       disabled={!buttonEnabled}
-      processing={processing}
       buttonStyle={buttonStyle}
       bgColor={ideaInBasket ? colors.green500 : undefined}
       textColor={ideaInBasket ? colors.white : undefined}

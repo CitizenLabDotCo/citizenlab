@@ -49,17 +49,13 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
   const submittedAt = basket?.data.attributes.submitted_at || null;
   const hasUserParticipated = !!submittedAt;
 
-  const voteExceedsLimit =
-    basket?.data.attributes['budget_exceeds_limit?'] || false;
-
-  const minVotes =
-    currentPhase?.attributes.voting_min_total ||
-    project.attributes.voting_min_total ||
-    0;
+  const minVotes = participationContext.attributes.voting_min_total ?? 0;
+  const maxVotes = participationContext.attributes.voting_max_total ?? 0;
 
   const minVotesRequired = minVotes > 0;
   const minVotesReached = numberOfVotesCast >= minVotes;
   const minVotesRequiredNotReached = minVotesRequired && !minVotesReached;
+  const votesExceedLimit = numberOfVotesCast > maxVotes;
 
   const handleSubmitOnClick = () => {
     if (!isNilOrError(basket)) {
@@ -94,7 +90,7 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
   };
 
   const ctaDisabled =
-    voteExceedsLimit || numberOfVotesCast === 0 || minVotesRequiredNotReached;
+    votesExceedLimit || numberOfVotesCast === 0 || minVotesRequiredNotReached;
 
   const CTAButton = hasUserParticipated ? (
     <Box display="flex">

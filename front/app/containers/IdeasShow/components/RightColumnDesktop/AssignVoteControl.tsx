@@ -55,7 +55,6 @@ const AssignVoteControl = memo(({ ideaId, projectId }: Props) => {
     <IdeaPageContainer>
       <AssignSingleVoteButton
         ideaId={ideaId}
-        projectId={projectId}
         participationContext={participationContext}
         buttonStyle="primary"
       />

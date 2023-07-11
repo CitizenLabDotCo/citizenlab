@@ -480,7 +480,6 @@ const singleVotingConfig: VotingMethodConfig = {
         <AssignSingleVoteButton
           participationContext={participationContext}
           ideaId={ideaId}
-          projectId={projectId}
           buttonStyle={'primary'}
         />
       );

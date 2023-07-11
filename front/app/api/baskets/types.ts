@@ -11,7 +11,6 @@ export interface IBasketData {
   attributes: {
     submitted_at: string;
     total_votes: number;
-    'budget_exceeds_limit?': false;
   };
   relationships: {
     participation_context: {
