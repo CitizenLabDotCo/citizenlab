@@ -86,7 +86,13 @@ export const UserMenu = () => {
             p={isSmallerThanPhone ? '10px 0' : '10px 8px 10px 16px'}
             justifyContent={isSmallerThanPhone ? 'center' : undefined}
           >
-            <Avatar userId={authUser.data.id} size={24} addVerificationBadge />
+            <Box ml="-3px" mr="3px">
+              <Avatar
+                userId={authUser.data.id}
+                size={24}
+                addVerificationBadge
+              />
+            </Box>
             {!isSmallerThanPhone && (
               <Box
                 display="flex"
