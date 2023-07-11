@@ -10,11 +10,6 @@ FactoryBot.define do
     initiating_user
   end
 
-  factory :basket_submitted, parent: :notification, class: 'Notifications::BasketSubmitted' do
-    initiating_user
-    association :project, factory: :continuous_budgeting_project
-  end
-
   factory :comment_deleted_by_admin, parent: :notification, class: 'Notifications::CommentDeletedByAdmin' do
     comment
     association :post, factory: :idea
@@ -270,5 +265,15 @@ FactoryBot.define do
     before(:create) do |notification|
       notification.post.initiative_status_changes.create!(initiative_status: notification.post_status)
     end
+  end
+
+  factory :voting_basket_submitted, parent: :notification, class: 'Notifications::VotingBasketSubmitted' do
+    initiating_user
+    association :project, factory: :continuous_budgeting_project
+  end
+
+  factory :voting_basket_not_submitted, parent: :notification, class: 'Notifications::VotingBasketNotSubmitted' do
+    initiating_user
+    association :project, factory: :continuous_budgeting_project
   end
 end

@@ -208,10 +208,11 @@ RSpec.describe Notification do
 
   it 'deleting a basket also deletes notifications referencing it' do
     basket = create(:basket)
-    create(:basket_submitted, basket: basket)
+    create(:voting_basket_submitted, basket: basket)
+    create(:voting_basket_not_submitted, basket: basket)
     count = described_class.count
     basket.destroy!
 
-    expect(described_class.count).to eq(count - 1)
+    expect(described_class.count).to eq(count - 2)
   end
 end
