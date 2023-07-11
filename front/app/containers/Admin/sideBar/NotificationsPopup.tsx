@@ -143,9 +143,7 @@ export const NotificationsPopup = () => {
         overflowY="auto"
         zIndex="10000"
       >
-        <Box height="100%">
-          <Notifications />
-        </Box>
+        <Notifications />
       </Box>
     </Popup>
   );
