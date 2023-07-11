@@ -17,7 +17,7 @@ import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 import useIdeaById from 'api/ideas/useIdeaById';
-import useCumulativeVoting from 'api/baskets_ideas/useCumulativeVoting';
+import useCumulativeVoting from 'api/baskets_ideas/useVoting';
 
 // style
 import styled, { useTheme } from 'styled-components';

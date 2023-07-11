@@ -1,12 +1,11 @@
-import React, { FormEvent, useMemo } from 'react';
+import React, { FormEvent } from 'react';
 
 // api
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useBasket from 'api/baskets/useBasket';
-import useBasketsIdeas from 'api/baskets_ideas/useBasketsIdeas';
 import useProjectById from 'api/projects/useProjectById';
-import useAssignBudget from './useAssignBudget';
+import useVoting from 'api/baskets_ideas/useVoting';
 
 // events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
@@ -30,7 +29,7 @@ import eventEmitter from 'utils/eventEmitter';
 import { BUDGET_EXCEEDED_ERROR_EVENT } from 'components/ParticipationCTABars/VotingCTABar/events';
 
 // utils
-import { isIdeaInBasket, isButtonEnabled } from './utils';
+import { isButtonEnabled } from './utils';
 import { isNil } from 'utils/helperUtils';
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 
@@ -55,7 +54,7 @@ const AddToBasketButton = ({
   const { data: appConfig } = useAppConfiguration();
   const { data: idea } = useIdeaById(ideaId);
   const { data: project } = useProjectById(projectId);
-  const { assignBudget, processing } = useAssignBudget({ ideaId });
+  const { getVotes, setVotes, processing, numberOfVotesCast } = useVoting();
 
   const participationContextType =
     project?.data.attributes.process_type === 'continuous'
@@ -67,11 +66,7 @@ const AddToBasketButton = ({
   const { data: basket } = useBasket(basketId);
   const ideaBudget = idea?.data.attributes.budget;
 
-  const { data: basketsIdeas } = useBasketsIdeas(basket?.data.id);
-
-  const ideaInBasket = useMemo(() => {
-    return isIdeaInBasket(ideaId, basketsIdeas);
-  }, [ideaId, basketsIdeas]);
+  const ideaInBasket = !!getVotes?.(ideaId);
 
   if (
     !idea ||
@@ -99,12 +94,16 @@ const AddToBasketButton = ({
 
     const maxBudget = participationContext.attributes.voting_max_total;
     const ideaBudget = idea.data.attributes.budget;
-    const basketTotal = basket?.data.attributes.total_votes ?? 0;
 
-    if (isNil(maxBudget) || ideaBudget === null) return;
+    if (
+      isNil(maxBudget) ||
+      ideaBudget === null ||
+      numberOfVotesCast === undefined
+    )
+      return;
 
     const ideaWillExceedBudget =
-      !ideaInBasket && basketTotal + ideaBudget > maxBudget;
+      !ideaInBasket && numberOfVotesCast + ideaBudget > maxBudget;
 
     if (ideaWillExceedBudget) {
       eventEmitter.emit(BUDGET_EXCEEDED_ERROR_EVENT);
@@ -112,7 +111,7 @@ const AddToBasketButton = ({
     }
 
     if (actionDescriptor.enabled) {
-      assignBudget(ideaInBasket ? 'remove' : 'add');
+      setVotes?.(ideaId, ideaInBasket ? 0 : ideaBudget);
       trackEventByName(
         ideaInBasket ? tracks.ideaRemovedFromBasket : tracks.ideaAddedToBasket
       );

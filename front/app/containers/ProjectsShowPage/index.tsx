@@ -30,7 +30,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import { useIntl } from 'utils/cl-intl';
 
 // context
-import { CumulativeVotingContext } from 'api/baskets_ideas/useCumulativeVoting';
+import { CumulativeVotingContext } from 'api/baskets_ideas/useVoting';
 
 // i18n
 import messages from 'utils/messages';

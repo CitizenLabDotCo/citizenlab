@@ -8,15 +8,11 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // api
 import useBasket from 'api/baskets/useBasket';
-import useBasketsIdeas from 'api/baskets_ideas/useBasketsIdeas';
-import useAddIdeaToBasket from 'api/baskets/useAddIdeaToBasket';
+import useVoting from 'api/baskets_ideas/useVoting';
 
 // intl
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
-
-// utils
-import { isIdeaInBasket } from 'components/AddToBasketButton/utils';
 
 // types
 import { IProjectData } from 'api/projects/types';
@@ -42,18 +38,15 @@ const AssignSingleVoteButton = ({
   const { data: basket } = useBasket(
     participationContext?.relationships?.user_basket?.data?.id
   );
-
-  const { mutate: addToBasket, isLoading } = useAddIdeaToBasket();
-  const { data: basketsIdeas } = useBasketsIdeas(basket?.data.id);
-
-  const ideaInBasket = isIdeaInBasket(ideaId, basketsIdeas);
+  const { getVotes, setVotes, processing } = useVoting();
+  const ideaInBasket = !!getVotes?.(ideaId);
 
   const onAdd = async () => {
-    addToBasket({ idea_id: ideaId, votes: 1 });
+    setVotes?.(ideaId, 1);
   };
 
   const onRemove = async () => {
-    addToBasket({ idea_id: ideaId, votes: null });
+    setVotes?.(ideaId, 0);
   };
 
   return (
@@ -70,7 +63,7 @@ const AssignSingleVoteButton = ({
       }
       width="100%"
       minWidth="240px"
-      processing={isLoading}
+      processing={processing}
     />
   );
 };

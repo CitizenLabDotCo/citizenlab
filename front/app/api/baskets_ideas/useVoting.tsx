@@ -18,7 +18,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-interface CumulativeVotingInterface {
+interface VotingInterface {
   getVotes?: (ideaId: string) => number | null;
   setVotes?: (ideaId: string, newVotes: number) => void;
   numberOfVotesCast?: number;
@@ -26,29 +26,15 @@ interface CumulativeVotingInterface {
   processing?: boolean;
 }
 
-const CumulativeVotingInterfaceContext =
-  createContext<CumulativeVotingInterface | null>(null);
+const VotingInterfaceContext = createContext<VotingInterface | null>(null);
 
-export const CumulativeVotingContext = ({ projectId, children }: Props) => {
-  const { data: project } = useProjectById(projectId);
-  const { data: phases } = usePhases(projectId);
-
-  const participationContext = getCurrentParticipationContext(
-    project?.data,
-    phases?.data
-  );
-
-  if (
-    !projectId ||
-    !(participationContext?.attributes.voting_method === 'multiple_voting')
-  ) {
+export const VotingContext = ({ projectId, children }: Props) => {
+  if (!projectId) {
     return <>{children}</>;
   }
 
   return (
-    <CumulativeVotingContextInner projectId={projectId}>
-      {children}
-    </CumulativeVotingContextInner>
+    <VotingContextInner projectId={projectId}>{children}</VotingContextInner>
   );
 };
 
@@ -57,19 +43,17 @@ interface InnerProps {
   children: React.ReactNode;
 }
 
-const CumulativeVotingContextInner = ({ projectId, children }: InnerProps) => {
-  const cumulativeVotingInterface = useCumulativeVotingInterface(projectId);
+const VotingContextInner = ({ projectId, children }: InnerProps) => {
+  const votingInterface = useVotingInterface(projectId);
 
   return (
-    <CumulativeVotingInterfaceContext.Provider
-      value={cumulativeVotingInterface}
-    >
+    <VotingInterfaceContext.Provider value={votingInterface}>
       {children}
-    </CumulativeVotingInterfaceContext.Provider>
+    </VotingInterfaceContext.Provider>
   );
 };
 
-const useCumulativeVotingInterface = (projectId: string) => {
+const useVotingInterface = (projectId: string) => {
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
   const { updateBasket, cancel, processing } = useAssignVote();
@@ -167,12 +151,10 @@ const useCumulativeVotingInterface = (projectId: string) => {
   };
 };
 
-const useCumulativeVoting = (): CumulativeVotingInterface => {
-  const cumulativeVotingInterface = useContext(
-    CumulativeVotingInterfaceContext
-  );
+const useVoting = (): VotingInterface => {
+  const votingInterface = useContext(VotingInterfaceContext);
 
-  if (cumulativeVotingInterface === null) {
+  if (votingInterface === null) {
     return {
       getVotes: undefined,
       setVotes: undefined,
@@ -182,7 +164,7 @@ const useCumulativeVoting = (): CumulativeVotingInterface => {
     };
   }
 
-  return cumulativeVotingInterface;
+  return votingInterface;
 };
 
-export default useCumulativeVoting;
+export default useVoting;

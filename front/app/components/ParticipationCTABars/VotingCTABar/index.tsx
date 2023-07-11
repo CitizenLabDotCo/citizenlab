@@ -10,7 +10,7 @@ import VotesCounter from 'components/VotesCounter';
 import { useTheme } from 'styled-components';
 import useBasket from 'api/baskets/useBasket';
 import useUpdateBasket from 'api/baskets/useUpdateBasket';
-import useCumulativeVoting from 'api/baskets_ideas/useCumulativeVoting';
+import useVoting from 'api/baskets_ideas/useVoting';
 
 // utils
 import {
@@ -23,14 +23,11 @@ import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
-import useLocale from 'hooks/useLocale';
 
 export const VotingCTABar = ({ phases, project }: CTABarProps) => {
   const [processing, setProcessing] = useState(false);
   const theme = useTheme();
-  const locale = useLocale();
-  const { numberOfVotesCast, processing: cumulativeVotingProcessing } =
-    useCumulativeVoting();
+  const { numberOfVotesCast, processing: votingProcessing } = useVoting();
 
   const currentPhase = useMemo(() => {
     return getCurrentPhase(phases) || getLastPhase(phases);
@@ -44,8 +41,7 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
 
   if (
     hasProjectEndedOrIsArchived(project, currentPhase) ||
-    (participationContext.attributes.voting_method === 'multiple_voting' &&
-      numberOfVotesCast === undefined)
+    numberOfVotesCast === undefined
   ) {
     return null;
   }
@@ -65,16 +61,10 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
   const minVotesReached = numberOfVotesCast >= minVotes;
   const minVotesRequiredNotReached = minVotesRequired && !minVotesReached;
 
-  if (isNilOrError(locale)) {
-    return null;
-  }
-
   const handleSubmitOnClick = () => {
     if (!isNilOrError(basket)) {
-      setProcessing(true);
-
-      if (cumulativeVotingProcessing) {
-        // Add a bit of timeout so that the cumulative voting request
+      if (votingProcessing) {
+        // Add a bit of timeout so that the voting request
         // has time to complete
         setTimeout(() => {
           updateBasket(

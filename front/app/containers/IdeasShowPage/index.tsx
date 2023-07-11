@@ -10,7 +10,7 @@ import Unauthorized from 'components/Unauthorized';
 import VerticalCenterer from 'components/VerticalCenterer';
 
 // context
-import { CumulativeVotingContext } from 'api/baskets_ideas/useCumulativeVoting';
+import { CumulativeVotingContext } from 'api/baskets_ideas/useVoting';
 
 // hooks
 import useIdeaBySlug from 'api/ideas/useIdeaBySlug';

@@ -4,7 +4,7 @@ import React, { useMemo } from 'react';
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useCumulativeVoting from 'api/baskets_ideas/useCumulativeVoting';
+import useCumulativeVoting from 'api/baskets_ideas/useVoting';
 
 // i18n
 import useLocalize from 'hooks/useLocalize';
