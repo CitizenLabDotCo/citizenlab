@@ -45,6 +45,8 @@ import { isNilOrError } from 'utils/helperUtils';
 import useAddPhaseFile from 'api/phase_files/useAddPhaseFile';
 import useDeletePhaseFile from 'api/phase_files/useDeletePhaseFile';
 import usePhaseFiles from 'api/phase_files/usePhaseFiles';
+import useCampaigns from 'api/campaigns/useCampaigns';
+import CampaignRow from 'containers/Admin/messaging/AutomatedEmails/CampaignRow';
 
 type SubmitStateType = 'disabled' | 'enabled' | 'error' | 'success';
 
@@ -75,6 +77,10 @@ const AdminProjectTimelineEdit = () => {
   const { data: phaseFiles } = usePhaseFiles(phaseId);
   const { data: phase } = usePhase(phaseId || null);
   const { data: phases } = usePhases(projectId);
+  const { data: campaigns } = useCampaigns({
+    campaignNames: ['project_phase_started'],
+    pageSize: 10,
+  });
   const { mutate: addPhase } = useAddPhase();
   const { mutate: updatePhase } = useUpdatePhase();
   const [errors, setErrors] = useState<CLErrors | null>(null);
@@ -93,6 +99,10 @@ const AdminProjectTimelineEdit = () => {
       setInStatePhaseFiles(convertToFileType(phaseFiles));
     }
   }, [phaseFiles]);
+
+  if (!campaigns) {
+    return null;
+  }
 
   const handleTitleMultilocOnChange = (title_multiloc: Multiloc) => {
     setSubmitState('enabled');
@@ -367,6 +377,21 @@ const AdminProjectTimelineEdit = () => {
               files={inStatePhaseFiles}
               apiErrors={errors}
             />
+          </SectionField>
+
+          <SectionField>
+            <SubSectionTitle>
+              <FormattedMessage {...messages.automatedEmails} />
+            </SubSectionTitle>
+            {/* {campaigns.pages
+              .flatMap((page) => page.data)
+              .map((campaign) => (
+                <CampaignRow
+                  campaign={campaign}
+                  key={campaign.id}
+                  onClickViewExample={onClickViewExample(campaign.id)}
+                />
+              ))} */}
           </SectionField>
 
           {errors && errors.project && (

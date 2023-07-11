@@ -103,4 +103,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectTimeline.uploadAttachments',
     defaultMessage: 'Upload attachments',
   },
+  automatedEmails: {
+    id: 'app.containers.AdminPage.ProjectTimeline.automatedEmails',
+    defaultMessage: 'Automated emails',
+  },
 });
