@@ -300,4 +300,16 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.xAssignedPostToYou',
     defaultMessage: '{name} assigned {postTitle} to you',
   },
+  votingBasketSubmitted: {
+    id: 'app.containers.NotificationMenu.votingBasketSubmitted',
+    defaultMessage: 'You voted successfully',
+  },
+  votingBasketNotSubmitted: {
+    id: 'app.containers.NotificationMenu.votingBasketNotSubmitted',
+    defaultMessage: "You didn't submit your votes",
+  },
+  votingLastChance: {
+    id: 'app.containers.NotificationMenu.votingLastChance',
+    defaultMessage: 'Last chance to vote for {phaseTitle}',
+  },
 });
