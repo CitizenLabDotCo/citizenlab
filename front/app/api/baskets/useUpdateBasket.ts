@@ -29,7 +29,7 @@ const useUpdateBasket = () => {
     onSuccess: (data, variables) => {
       queryClient.invalidateQueries({ queryKey: basketKeys.items() });
       queryClient.invalidateQueries({
-        queryKey: basketsIdeasKeys.list({ basketId: variables.id }),
+        queryKey: basketsIdeasKeys.item({ basketId: variables.id }),
       });
       const contextId = data.data.relationships.participation_context.data.id;
       if (variables.participation_context_type === 'Project') {
