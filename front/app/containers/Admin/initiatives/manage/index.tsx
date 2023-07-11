@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { PageTitle, SectionDescription } from 'components/admin/Section';
+import { PageTitle } from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
