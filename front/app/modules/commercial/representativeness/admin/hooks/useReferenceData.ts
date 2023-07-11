@@ -45,7 +45,7 @@ function useReferenceData(
   const { data: usersByCustomField } = useUsersByCustomField({
     project: projectId,
     id: userCustomField.id,
-    enabled: !code,
+    enabled: !code || code === 'domicile',
   });
 
   const locale = useLocale();
