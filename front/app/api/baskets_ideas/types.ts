@@ -25,29 +25,10 @@ export interface IBasketsIdeaData {
   };
 }
 
-export interface IBasketsIdea {
-  data: IBasketsIdeaData;
-}
-export interface IBasketsIdeasData {
-  data: IBasketsIdeaData[];
-}
-
 export interface IBasketsIdeas {
   data: IBasketsIdeaData[];
 }
 
-export interface IAddBasketsIdea {
-  basketId: string;
-  idea_id: string;
-  votes?: number;
-}
-export interface IUpdateBasketsIdea {
-  basketId: string;
-  basketIdeaId: string;
-  votes: number;
-}
-
-export interface IDeleteBasketsIdea {
-  basketId: string;
-  basketIdeaId: string;
+export interface IBasketsIdea {
+  data: IBasketsIdeaData;
 }

@@ -2,7 +2,7 @@
 import { fetchIdea } from 'api/ideas/useIdeaById';
 import { fetchProjectById } from 'api/projects/useProjectById';
 import { fetchPhase } from 'api/phases/usePhase';
-import { addIdeaToBasket } from 'api/baskets/useAddIdeaToBasket';
+import { addIdeaToBasket } from 'api/baskets_ideas/useAddIdeaToBasket';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import basketsKeys from 'api/baskets/keys';
 import basketsIdeasKeys from 'api/baskets_ideas/keys';

@@ -9,7 +9,7 @@ import {
   isFixableByAuthentication,
 } from 'utils/actionDescriptors';
 import { IBasket } from 'api/baskets/types';
-import { IBasketsIdeasData } from 'api/baskets_ideas/types';
+import { IBasketsIdeas } from 'api/baskets_ideas/types';
 
 export const getLatestRelevantParticipationContext = (
   project: IProject | undefined,
@@ -55,7 +55,7 @@ export const isButtonEnabled = (
 
 export const isIdeaInBasket = (
   ideaId: string,
-  basketsIdeas?: IBasketsIdeasData
+  basketsIdeas?: IBasketsIdeas
 ) => {
   if (!basketsIdeas) return false;
 

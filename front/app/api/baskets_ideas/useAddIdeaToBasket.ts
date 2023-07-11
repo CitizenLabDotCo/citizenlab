@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
-import { IBasketsIdea } from '../baskets_ideas/types';
-import basketsKeys from './keys';
+import { IBasketsIdea } from './types';
+import basketsKeys from '../baskets/keys';
 import basketsIdeasKeys from 'api/baskets_ideas/keys';
 
 interface Params {

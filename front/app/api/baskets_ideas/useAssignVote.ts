@@ -1,5 +1,5 @@
 import { useState, useCallback, useMemo } from 'react';
-import useAddIdeaToBasket from 'api/baskets/useAddIdeaToBasket';
+import useAddIdeaToBasket from 'api/baskets_ideas/useAddIdeaToBasket';
 import { debounce } from 'lodash-es';
 
 const useAssignVote = () => {
