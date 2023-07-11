@@ -9,13 +9,17 @@ import { IPhaseFiles } from 'api/phase_files/types';
 import eventEmitter from 'utils/eventEmitter';
 
 // Components
-import { Label } from '@citizenlab/cl2-component-library';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import Error from 'components/UI/Error';
 import DateRangePicker from 'components/admin/DateRangePicker';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-import { Section, SectionTitle, SectionField } from 'components/admin/Section';
+import {
+  Section,
+  SectionTitle,
+  SectionField,
+  SubSectionTitle,
+} from 'components/admin/Section';
 import ParticipationContext, {
   IParticipationContextConfig,
 } from '../participationContext';
@@ -306,30 +310,30 @@ const AdminProjectTimelineEdit = () => {
       <form onSubmit={handleOnSubmit}>
         <Section>
           <SectionField>
+            <SubSectionTitle>
+              <FormattedMessage {...messages.titleLabel} />
+            </SubSectionTitle>
             <InputMultilocWithLocaleSwitcher
               id="title"
-              label={<FormattedMessage {...messages.titleLabel} />}
               type="text"
               valueMultiloc={phaseAttrs.title_multiloc}
               onChange={handleTitleMultilocOnChange}
             />
             <Error apiErrors={errors && errors.title_multiloc} />
           </SectionField>
-          <SectionField>
-            {/* TODO: After ParticipationContext refactor, it doesn't refetch phase service anymore
+          {/* TODO: After ParticipationContext refactor, it doesn't refetch phase service anymore
             This caused a bug where phase data was not being used after fetching. This is a temporary fix.
             ParticipationContext needs to be refactored to functional component. */}
-            <ParticipationContext
-              phase={phase}
-              onSubmit={handleParticipationContextOnSubmit}
-              onChange={handleParticipationContextOnChange}
-              apiErrors={errors}
-            />
-          </SectionField>
+          <ParticipationContext
+            phase={phase}
+            onSubmit={handleParticipationContextOnSubmit}
+            onChange={handleParticipationContextOnChange}
+            apiErrors={errors}
+          />
           <SectionField>
-            <Label>
+            <SubSectionTitle>
               <FormattedMessage {...messages.datesLabel} />
-            </Label>
+            </SubSectionTitle>
             <DateRangePicker
               startDateId={'startDate'}
               endDateId={'endDate'}
@@ -342,9 +346,9 @@ const AdminProjectTimelineEdit = () => {
           </SectionField>
 
           <SectionField className="fullWidth">
+            <SubSectionTitle>{quillMultilocLabel}</SubSectionTitle>
             <QuillMultilocWithLocaleSwitcher
               id="description"
-              label={quillMultilocLabel}
               valueMultiloc={phaseAttrs.description_multiloc}
               onChange={handleEditorOnChange}
               withCTAButton
@@ -353,6 +357,9 @@ const AdminProjectTimelineEdit = () => {
           </SectionField>
 
           <SectionField>
+            <SubSectionTitle>
+              <FormattedMessage {...messages.uploadAttachments} />
+            </SubSectionTitle>
             <FileUploader
               id="project-timeline-edit-form-file-uploader"
               onFileAdd={handlePhaseFileOnAdd}

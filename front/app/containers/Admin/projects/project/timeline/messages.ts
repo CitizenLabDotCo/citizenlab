@@ -99,4 +99,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectTimeline.deletePhaseButtonText',
     defaultMessage: 'Yes, delete this phase',
   },
+  uploadAttachments: {
+    id: 'app.containers.AdminPage.ProjectTimeline.uploadAttachments',
+    defaultMessage: 'Upload attachments',
+  },
 });
