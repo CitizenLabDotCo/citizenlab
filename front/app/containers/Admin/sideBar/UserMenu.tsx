@@ -164,6 +164,7 @@ export const UserMenu = () => {
             <Text my="0px" color="coolGrey600">
               {formatMessage({ ...messages.myProfile })}
             </Text>
+            <Icon name="user" fill={colors.grey600} />
           </Box>
         </ItemMenu>
         <ItemMenu buttonStyle="text" onClick={signOut}>
