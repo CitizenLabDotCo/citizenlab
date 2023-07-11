@@ -12,8 +12,11 @@ class AddCampaignsSettingsToPhases < ActiveRecord::Migration[7.0]
 
     reversible do |dir|
       dir.up do
+        enabled = EmailCampaigns::Campaign.find_by(type: 'EmailCampaigns::Campaigns::ProjectPhaseStarted')&.enabled
         StubPhase.reset_column_information
-        StubPhase.update_all(campaigns_settings: { 'project_phase_started' => true })
+        StubPhase.update_all(
+          campaigns_settings: { 'project_phase_started' => enabled }
+        )
       end
     end
   end
