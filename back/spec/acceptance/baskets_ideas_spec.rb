@@ -155,7 +155,6 @@ resource BasketsIdea do
 
           example_request 'Add an idea to an existing basket' do
             assert_status 200
-
             expect(response_data.dig(:attributes, :votes)).to eq 2
             expect(json_response_body[:included].pluck(:id)).to include idea_id
             expect(response_data.dig(:relationships, :basket, :data, :id)).to eq basket.id
@@ -168,7 +167,6 @@ resource BasketsIdea do
 
           example_request 'Update an idea in an existing basket' do
             assert_status 200
-
             expect(response_data.dig(:attributes, :votes)).to eq 3
             expect(json_response_body[:included].pluck(:id)).to include idea_id
             expect(response_data[:id]).to eq baskets_idea.id
@@ -183,7 +181,21 @@ resource BasketsIdea do
           example_request 'Delete an idea in an existing basket' do
             assert_status 200
             expect(response_data[:id]).to eq baskets_idea.id
+            expect(response_data.dig(:attributes, :votes)).to be_nil
+            expect(response_data.dig(:relationships, :idea, :data, :id)).to eq idea_id
             expect { baskets_idea.reload }.to raise_error(ActiveRecord::RecordNotFound)
+          end
+        end
+
+        context 'basket_idea does not exist and votes is set to nil' do
+          let(:votes) { nil }
+
+          example_request 'Return the baskets_idea that was never persisted', document: false do
+            assert_status 200
+            expect(response_data[:id]).to be_nil
+            expect(response_data.dig(:attributes, :votes)).to be_nil
+            expect(response_data.dig(:relationships, :idea, :data, :id)).to eq idea_id
+            expect(BasketsIdea.find_by(idea: idea)).to be_nil
           end
         end
       end
