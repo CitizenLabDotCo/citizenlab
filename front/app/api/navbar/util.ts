@@ -29,5 +29,3 @@ export function getNavbarItemSlug(
   // that. So just returning null here
   return null;
 }
-
-export const MAX_TITLE_LENGTH = 25;
