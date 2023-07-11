@@ -40,6 +40,7 @@ jest.mock(
 );
 
 let mockReferenceDistribution: any = {
+  isFetchedReferenceDistributionData: true,
   referenceDataUploaded: false,
   referenceDistribution: null,
   remoteFormValues: undefined,
@@ -93,6 +94,7 @@ describe('<Field />', () => {
           referenceDataUploaded: false,
           referenceDistribution: null,
           remoteFormValues: undefined,
+          isFetchedReferenceDistributionData: true,
         };
       });
 
@@ -148,6 +150,7 @@ describe('<Field />', () => {
     describe('with saved data', () => {
       beforeEach(() => {
         mockReferenceDistribution = {
+          isFetchedReferenceDistributionData: true,
           referenceDataUploaded: true,
           referenceDistribution: {
             type: 'categorical_distribution',
@@ -247,6 +250,7 @@ describe('<Field />', () => {
     describe('no data yet', () => {
       beforeEach(() => {
         mockReferenceDistribution = {
+          isFetchedReferenceDistributionData: true,
           referenceDataUploaded: false,
           referenceDistribution: null,
           remoteFormValues: undefined,
@@ -368,6 +372,7 @@ describe('<Field />', () => {
     describe('with saved data', () => {
       beforeEach(() => {
         mockReferenceDistribution = {
+          isFetchedReferenceDistributionData: true,
           referenceDataUploaded: true,
           referenceDistribution: {
             type: 'binned_distribution',
