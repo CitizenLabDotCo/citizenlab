@@ -1,5 +1,4 @@
 // api
-import { fetchIdea } from 'api/ideas/useIdeaById';
 import { fetchProjectById } from 'api/projects/useProjectById';
 import { fetchPhase } from 'api/phases/usePhase';
 import { voteForIdea } from 'api/baskets_ideas/useVoteForIdea';
@@ -11,33 +10,25 @@ import { fetchBasketsIdeas } from 'api/baskets_ideas/useBasketsIdeas';
 // utils
 import { isIdeaInBasket } from 'components/AddToBasketButton/utils';
 
-export interface AssignBudgetParams {
+export interface VoteParams {
   ideaId: string;
   participationContextId: string;
   participationContextType: 'project' | 'phase';
+  votes: number;
 }
 
-export const assignBudget =
+export const vote =
   ({
     ideaId,
     participationContextId,
     participationContextType,
-  }: AssignBudgetParams) =>
+    votes,
+  }: VoteParams) =>
   async () => {
-    const ideaPromise = fetchIdea({ id: ideaId });
-
-    const participationContextPromise =
+    const participationContext =
       participationContextType === 'project'
-        ? fetchProjectById({ id: participationContextId })
-        : fetchPhase({ phaseId: participationContextId });
-
-    const [idea, participationContext] = await Promise.all([
-      ideaPromise,
-      participationContextPromise,
-    ]);
-
-    const ideaBudget = idea.data.attributes.budget;
-    if (!ideaBudget) return;
+        ? await fetchProjectById({ id: participationContextId })
+        : await fetchPhase({ phaseId: participationContextId });
 
     const basketId =
       participationContext.data.relationships.user_basket?.data?.id;
@@ -46,7 +37,7 @@ export const assignBudget =
     // yet, so we can add it to the basket (the BE will create the
     // basket automatically)
     if (!basketId) {
-      await addToBasketAndInvalidateCache({ ideaId, ideaBudget });
+      await addToBasketAndInvalidateCache({ ideaId, votes });
       return;
     }
 
@@ -57,19 +48,19 @@ export const assignBudget =
     // we do nothing
     if (ideaInBasket) return;
 
-    await addToBasketAndInvalidateCache({ ideaId, ideaBudget });
+    await addToBasketAndInvalidateCache({ ideaId, votes });
   };
 
 const addToBasketAndInvalidateCache = async ({
   ideaId,
-  ideaBudget,
+  votes,
 }: {
   ideaId: string;
-  ideaBudget: number;
+  votes: number;
 }) => {
   const response = await voteForIdea({
     idea_id: ideaId,
-    votes: ideaBudget,
+    votes,
   });
 
   const newBasketId = response.data.relationships.basket.data.id;

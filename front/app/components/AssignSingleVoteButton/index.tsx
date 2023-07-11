@@ -14,14 +14,19 @@ import useVoting from 'api/baskets_ideas/useVoting';
 // events
 import eventEmitter from 'utils/eventEmitter';
 import { VOTES_EXCEEDED_ERROR_EVENT } from 'components/ErrorToast/events';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 // intl
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
+// utils
+import { isFixableByAuthentication } from 'utils/actionDescriptors';
+
 // types
 import { IProjectData } from 'api/projects/types';
 import { IPhaseData } from 'api/phases/types';
+import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
 interface Props {
   participationContext?: IPhaseData | IProjectData | null;
@@ -45,7 +50,40 @@ const AssignSingleVoteButton = ({
 
   // permissions
   const actionDescriptor = idea?.data.attributes.action_descriptor.voting;
-  if (!actionDescriptor) return null;
+
+  if (!actionDescriptor || !participationContext) {
+    return null;
+  }
+
+  const vote = () => {
+    if (actionDescriptor.enabled) {
+      ideaInBasket ? onRemove() : onAdd();
+      return;
+    }
+
+    if (isFixableByAuthentication(actionDescriptor.disabled_reason)) {
+      const participationContextId = participationContext.id;
+      const participationContextType = participationContext.type;
+
+      const context = {
+        type: participationContextType,
+        action: 'voting',
+        id: participationContextId,
+      } as const;
+
+      const successAction: SuccessAction = {
+        name: 'vote',
+        params: {
+          ideaId,
+          participationContextId,
+          participationContextType,
+          votes: 1,
+        },
+      };
+
+      triggerAuthenticationFlow({ context, successAction });
+    }
+  };
 
   const onAdd = async () => {
     const maxVotes = participationContext?.attributes.voting_max_total;
@@ -72,7 +110,7 @@ const AssignSingleVoteButton = ({
       borderColor={ideaInBasket ? colors.success : undefined}
       disabled={!isNilOrError(basket?.data?.attributes.submitted_at)}
       icon={ideaInBasket ? 'check' : 'vote-ballot'}
-      onClick={() => (ideaInBasket ? onRemove() : onAdd())}
+      onClick={vote}
       text={
         ideaInBasket
           ? formatMessage(messages.voted)

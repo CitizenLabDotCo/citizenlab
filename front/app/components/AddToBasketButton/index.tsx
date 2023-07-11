@@ -77,6 +77,8 @@ const AddToBasketButton = ({
     return null;
   }
 
+  ideaBudget;
+
   const actionDescriptor = idea.data.attributes.action_descriptor.voting;
   if (!actionDescriptor) return null;
 
@@ -92,26 +94,21 @@ const AddToBasketButton = ({
   const handleAddRemoveButtonClick = (event?: FormEvent) => {
     event?.preventDefault();
 
-    const maxBudget = participationContext.attributes.voting_max_total;
-    const ideaBudget = idea.data.attributes.budget;
-
-    if (
-      isNil(maxBudget) ||
-      ideaBudget === null ||
-      numberOfVotesCast === undefined
-    ) {
-      return;
-    }
-
-    const ideaWillExceedBudget =
-      !ideaInBasket && numberOfVotesCast + ideaBudget > maxBudget;
-
-    if (ideaWillExceedBudget) {
-      eventEmitter.emit(BUDGET_EXCEEDED_ERROR_EVENT);
-      return;
-    }
-
     if (actionDescriptor.enabled) {
+      const maxBudget = participationContext.attributes.voting_max_total;
+
+      if (isNil(maxBudget) || numberOfVotesCast === undefined) {
+        return;
+      }
+
+      const ideaWillExceedBudget =
+        !ideaInBasket && numberOfVotesCast + ideaBudget > maxBudget;
+
+      if (ideaWillExceedBudget) {
+        eventEmitter.emit(BUDGET_EXCEEDED_ERROR_EVENT);
+        return;
+      }
+
       setVotes?.(ideaId, ideaInBasket ? 0 : ideaBudget);
       trackEventByName(
         ideaInBasket ? tracks.ideaRemovedFromBasket : tracks.ideaAddedToBasket
@@ -129,11 +126,12 @@ const AddToBasketButton = ({
       } as const;
 
       const successAction: SuccessAction = {
-        name: 'assignBudget',
+        name: 'vote',
         params: {
           ideaId,
           participationContextId,
           participationContextType,
+          votes: ideaBudget,
         },
       };
 
