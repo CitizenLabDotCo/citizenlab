@@ -1,4 +1,3 @@
-import { from } from 'rxjs';
 import { UploadFile } from 'typings';
 import { isString } from 'lodash-es';
 import { reportError } from 'utils/loggingUtils';
@@ -76,14 +75,6 @@ export async function convertUrlToUploadFile(
     reportError(error);
     return null;
   }
-}
-
-export function convertUrlToUploadFileObservable(
-  url: string,
-  id: string | null,
-  filename: string | null
-) {
-  return from(convertUrlToUploadFile(url, id, filename));
 }
 
 export function getFilesToRemove(
