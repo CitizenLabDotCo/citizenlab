@@ -12,6 +12,7 @@ import useVoteForIdea from './useVoteForIdea';
 
 // utils
 import { getCurrentParticipationContext } from 'api/phases/utils';
+import { isNil } from 'utils/helperUtils';
 
 interface Props {
   projectId?: string;
@@ -48,9 +49,13 @@ const useVotingInterface = (projectId?: string) => {
     phases?.data
   );
   const basketId = participationContext?.relationships?.user_basket?.data?.id;
-  const { data: basketIdeas } = useBasketsIdeas(basketId);
+  const { data: basketIdeas, isLoading: basketIdeasLoading } =
+    useBasketsIdeas(basketId);
 
-  const remoteVotesPerIdea = useMemo<Record<string, number> | null>(() => {
+  const remoteVotesPerIdea = useMemo<
+    Record<string, number> | null | undefined
+  >(() => {
+    if (basketIdeasLoading) return undefined;
     if (!basketIdeas) return null;
 
     return basketIdeas.data.reduce((acc, basketIdea) => {
@@ -62,7 +67,7 @@ const useVotingInterface = (projectId?: string) => {
         [ideaId]: votes,
       };
     }, {});
-  }, [basketIdeas]);
+  }, [basketIdeas, basketIdeasLoading]);
 
   const [votesPerIdea, setVotesPerIdea] = useState<Record<string, number>>({});
 
@@ -97,6 +102,8 @@ const useVotingInterface = (projectId?: string) => {
     participationContext?.attributes.voting_max_total;
 
   const numberOfVotesCast = useMemo(() => {
+    if (remoteVotesPerIdea === undefined) return undefined;
+
     let numberOfVotesCast = 0;
 
     const ideaIdsSet = new Set([
@@ -112,7 +119,10 @@ const useVotingInterface = (projectId?: string) => {
   }, [getVotes, remoteVotesPerIdea, votesPerIdea]);
 
   const userHasVotesLeft = useMemo(() => {
-    if (!numberOfVotesUserHas) return false;
+    if (numberOfVotesCast === undefined || isNil(numberOfVotesUserHas)) {
+      return undefined;
+    }
+
     return numberOfVotesCast < numberOfVotesUserHas;
   }, [numberOfVotesUserHas, numberOfVotesCast]);
 
