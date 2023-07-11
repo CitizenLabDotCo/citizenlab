@@ -151,6 +151,7 @@ const CompactIdeaCard = memo<IdeaCardProps>(
     goBackMode = 'browserGoBackButton',
     viewingPhaseId,
   }) => {
+    const isGeneralIdeasPage = window.location.pathname.endsWith('/ideas');
     const smallerThanPhone = useBreakpoint('phone');
     const locale = useLocale();
     const localize = useLocalize();
@@ -246,7 +247,9 @@ const CompactIdeaCard = memo<IdeaCardProps>(
     };
 
     const hideInteractions =
-      participationContextEnded && basket?.data.attributes.submitted_at === null
+      isGeneralIdeasPage ||
+      (participationContextEnded &&
+        basket?.data.attributes.submitted_at === null)
         ? true
         : false;
 

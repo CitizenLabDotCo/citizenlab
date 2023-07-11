@@ -7,6 +7,7 @@ import { Button, colors } from '@citizenlab/cl2-component-library';
 import { isNilOrError } from 'utils/helperUtils';
 
 // api
+import useIdeaById from 'api/ideas/useIdeaById';
 import useBasket from 'api/baskets/useBasket';
 import useVoting from 'api/baskets_ideas/useVoting';
 
@@ -35,11 +36,16 @@ const AssignSingleVoteButton = ({
 }: Props) => {
   const { formatMessage } = useIntl();
 
+  const { data: idea } = useIdeaById(ideaId);
   const { data: basket } = useBasket(
     participationContext?.relationships?.user_basket?.data?.id
   );
   const { getVotes, setVotes, numberOfVotesCast } = useVoting();
   const ideaInBasket = !!getVotes?.(ideaId);
+
+  // permissions
+  const actionDescriptor = idea?.data.attributes.action_descriptor.voting;
+  if (!actionDescriptor) return null;
 
   const onAdd = async () => {
     const maxVotes = participationContext?.attributes.voting_max_total;
@@ -63,6 +69,7 @@ const AssignSingleVoteButton = ({
     <Button
       buttonStyle={ideaInBasket ? 'primary' : buttonStyle}
       bgColor={ideaInBasket ? colors.success : undefined}
+      borderColor={ideaInBasket ? colors.success : undefined}
       disabled={!isNilOrError(basket?.data?.attributes.submitted_at)}
       icon={ideaInBasket ? 'check' : 'vote-ballot'}
       onClick={() => (ideaInBasket ? onRemove() : onAdd())}

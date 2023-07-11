@@ -28,19 +28,19 @@ const useUpdateBasket = () => {
     mutationFn: updateBasket,
     onSuccess: (data, variables) => {
       queryClient.invalidateQueries({ queryKey: basketKeys.items() });
-      queryClient.invalidateQueries({ queryKey: basketsIdeasKeys.all() }); // TODO: Invalidate specific
+      queryClient.invalidateQueries({
+        queryKey: basketsIdeasKeys.list({ basketId: variables.id }),
+      });
       const contextId = data.data.relationships.participation_context.data.id;
       if (variables.participation_context_type === 'Project') {
-        queryClient.invalidateQueries({
-          queryKey: phasesKeys.item({
-            phaseId: contextId,
-          }),
-        });
-      } else {
         queryClient.invalidateQueries({
           queryKey: projectsKeys.item({
             id: contextId,
           }),
+        });
+      } else {
+        queryClient.invalidateQueries({
+          queryKey: phasesKeys.item({ phaseId: contextId }),
         });
       }
     },
