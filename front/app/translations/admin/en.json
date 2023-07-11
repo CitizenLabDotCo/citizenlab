@@ -1426,6 +1426,7 @@
   "app.containers.AdminPage.ProjectIdeaForm.saved": "Saved!",
   "app.containers.AdminPage.ProjectIdeaForm.viewFormLinkCopy": "View form",
   "app.containers.AdminPage.ProjectTimeline.addPhaseButton": "Add a phase",
+  "app.containers.AdminPage.ProjectTimeline.automatedEmails": "Automated emails",
   "app.containers.AdminPage.ProjectTimeline.cancelDeleteButtonText": "Cancel",
   "app.containers.AdminPage.ProjectTimeline.datesLabel": "Dates",
   "app.containers.AdminPage.ProjectTimeline.deletePhaseButton": "Delete",
