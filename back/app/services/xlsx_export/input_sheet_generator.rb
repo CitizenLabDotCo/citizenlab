@@ -5,7 +5,6 @@ module XlsxExport
     US_DATE_TIME_FORMAT = 'mm/dd/yyyy hh:mm:ss'
 
     def initialize(inputs, participation_context, include_private_attributes)
-      super()
       @inputs = inputs
       @participation_context = participation_context
       @include_private_attributes = include_private_attributes
