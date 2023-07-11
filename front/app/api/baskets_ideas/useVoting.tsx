@@ -8,7 +8,7 @@ import React, {
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
 import useBasketsIdeas from './useBasketsIdeas';
-import useAssignVote from './useAssignVote';
+import useVoteForIdea from './useVoteForIdea';
 
 // utils
 import { getCurrentParticipationContext } from 'api/phases/utils';
@@ -41,7 +41,7 @@ export const VotingContext = ({ projectId, children }: Props) => {
 const useVotingInterface = (projectId?: string) => {
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
-  const { updateBasket, cancel, processing } = useAssignVote();
+  const { voteForIdea, processing } = useVoteForIdea();
 
   const participationContext = getCurrentParticipationContext(
     project?.data,
@@ -88,20 +88,9 @@ const useVotingInterface = (projectId?: string) => {
         [ideaId]: newVotes,
       }));
 
-      const remoteVotesForThisIdea =
-        remoteVotesPerIdea && ideaId in remoteVotesPerIdea
-          ? remoteVotesPerIdea[ideaId]
-          : 0;
-
-      const noUpdateNeeded = remoteVotesForThisIdea === newVotes;
-
-      if (noUpdateNeeded) {
-        cancel();
-      } else {
-        updateBasket(ideaId, newVotes);
-      }
+      voteForIdea(ideaId, newVotes);
     },
-    [cancel, updateBasket, remoteVotesPerIdea]
+    [voteForIdea]
   );
 
   const numberOfVotesUserHas =
