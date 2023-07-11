@@ -78,6 +78,10 @@ module ParticipationMethod
       true
     end
 
+    def supports_exports?
+      true
+    end
+
     def supports_toxicity_detection?
       false
     end

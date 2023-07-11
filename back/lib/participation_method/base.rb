@@ -89,6 +89,10 @@ module ParticipationMethod
       'custom_forms.categories.extra.title'
     end
 
+    def supports_exports?
+      false
+    end
+
     def supports_publication?
       false
     end

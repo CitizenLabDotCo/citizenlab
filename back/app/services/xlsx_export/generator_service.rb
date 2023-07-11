@@ -53,7 +53,7 @@ module XlsxExport
 
     def generate_for_timeline_project(workbook, project, include_private_attributes)
       project.phases.each do |phase|
-        next unless phase.native_survey? ###
+        next unless Factory.instance.participation_method_for(phase).supports_exports?
 
         create_phase_sheet(workbook, phase, include_private_attributes)
       end

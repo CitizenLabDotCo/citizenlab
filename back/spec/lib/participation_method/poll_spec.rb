@@ -142,6 +142,7 @@ RSpec.describe ParticipationMethod::Poll do
   end
 
   its(:allowed_ideas_orders) { is_expected.to be_empty }
+  its(:supports_exports?) { is_expected.to be false }
   its(:supports_publication?) { is_expected.to be false }
   its(:supports_commenting?) { is_expected.to be false }
   its(:supports_reacting?) { is_expected.to be false }

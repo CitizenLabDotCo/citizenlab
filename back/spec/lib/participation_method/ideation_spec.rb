@@ -250,6 +250,7 @@ RSpec.describe ParticipationMethod::Ideation do
   end
 
   its(:allowed_ideas_orders) { is_expected.to eq %w[trending random popular -new new] }
+  its(:supports_exports?) { is_expected.to be true }
   its(:supports_publication?) { is_expected.to be true }
   its(:supports_commenting?) { is_expected.to be true }
   its(:supports_reacting?) { is_expected.to be true }

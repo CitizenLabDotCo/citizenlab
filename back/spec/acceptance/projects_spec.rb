@@ -871,173 +871,213 @@ resource 'Projects' do
     get 'web_api/v1/projects/:id/as_xlsx' do
       context 'for a timeline project' do
         let(:project) { create(:project, process_type: 'timeline') }
-        let(:project_form) { create(:custom_form, participation_context: project) }
-        let(:active_phase) do
-          create(
-            :active_phase,
-            project: project,
-            participation_method: 'native_survey',
-            title_multiloc: {
-              'en' => 'Phase 2: survey',
-              'nl-BE' => 'Fase 2: survey'
-            }
-          )
-        end
-        let(:future_phase) do
-          create(
-            :phase,
-            project: project,
-            participation_method: 'native_survey',
-            start_at: active_phase.end_at + 30.days,
-            end_at: active_phase.end_at + 60.days,
-            title_multiloc: {
-              'en' => 'Phase 3: survey',
-              'nl-BE' => 'Fase 3: survey'
-            }
-          )
-        end
+        let(:project_form) { create(:custom_form, :with_default_fields, participation_context: project) }
+        let!(:extra_idea_field) { create(:custom_field_extra_custom_form, resource: project_form) }
         let(:ideation_phase) do
           create(
             :phase,
             project: project,
             participation_method: 'ideation',
-            start_at: active_phase.start_at - 60.days,
-            end_at: active_phase.start_at - 30.days,
-            title_multiloc: {
-              'en' => 'Phase 1: ideation',
-              'nl-BE' => 'Fase 1: ideeën'
-            }
+            title_multiloc: { 'en' => 'Phase 1: Ideation' },
+            start_at: (Time.zone.today - 40.days),
+            end_at: (Time.zone.today - 31.days)
           )
         end
-        let(:active_phase_form) { create(:custom_form, participation_context: active_phase) }
-        let(:future_phase_form) { create(:custom_form, participation_context: future_phase) }
+        let(:native_survey_phase) do
+          create(
+            :phase,
+            project: project,
+            participation_method: 'native_survey',
+            title_multiloc: { 'en' => 'Phase 2: Native survey' },
+            start_at: (Time.zone.today - 30.days),
+            end_at: (Time.zone.today - 21.days)
+          )
+        end
+        let(:survey_form) { create(:custom_form, participation_context: native_survey_phase) }
+        let!(:linear_scale_field) { create(:custom_field_linear_scale, resource: survey_form) }
+        let(:information_phase) do
+          create(
+            :phase,
+            project: project,
+            participation_method: 'information',
+            title_multiloc: { 'en' => 'Phase 3: Information' },
+            start_at: (Time.zone.today - 20.days),
+            end_at: (Time.zone.today - 11.days)
+          )
+        end
+        let(:voting_phase) do
+          create(
+            :voting_phase,
+            project: project,
+            title_multiloc: { 'en' => 'Phase 4: Voting' },
+            start_at: (Time.zone.today - 10.days),
+            end_at: (Time.zone.today + 2.days)
+          )
+        end
         let(:id) { project.id }
-        # Create a page to describe that it is not included in the export.
-        let!(:page_field) { create(:custom_field_page, resource: active_phase_form) }
-        let(:multiselect_field) do
+
+        let!(:ideation_response) do
           create(
-            :custom_field_multiselect,
-            resource: active_phase_form,
-            title_multiloc: { 'en' => 'What are your favourite pets?' },
-            description_multiloc: {}
+            :idea,
+            project: project,
+            custom_field_values: { extra_idea_field.key => 'Answer' },
+            phases: [ideation_phase, voting_phase]
           )
         end
-        let!(:cat_option) do
-          create(:custom_field_option, custom_field: multiselect_field, key: 'cat', title_multiloc: { 'en' => 'Cat' })
-        end
-        let!(:dog_option) do
-          create(:custom_field_option, custom_field: multiselect_field, key: 'dog', title_multiloc: { 'en' => 'Dog' })
-        end
-        let!(:linear_scale_field) do
+        let!(:survey_response) do
           create(
-            :custom_field_linear_scale,
-            resource: future_phase_form
-          )
-        end
-        let!(:extra_idea_field) do
-          create(
-            :custom_field_extra_custom_form,
-            resource: project_form
+            :idea,
+            project: project,
+            creation_phase: native_survey_phase,
+            phases: [native_survey_phase],
+            custom_field_values: { linear_scale_field.key => 2 }
           )
         end
 
-        context 'when there are inputs in the phases' do
-          let!(:ideation_response1) do
-            create(
-              :idea,
-              project: project,
-              custom_field_values: { extra_idea_field.key => 'Answer' }
-            )
-          end
-          let!(:active_survey_response1) do
-            create(
-              :idea,
-              project: project,
-              creation_phase: active_phase,
-              phases: [active_phase],
-              custom_field_values: { multiselect_field.key => %w[cat dog] }
-            )
-          end
-          let!(:active_survey_response2) do
-            create(
-              :idea,
-              project: project,
-              creation_phase: active_phase,
-              phases: [active_phase],
-              custom_field_values: { multiselect_field.key => %w[cat] }
-            )
-          end
-          let!(:future_survey_response1) do
-            create(
-              :idea,
-              project: project,
-              creation_phase: active_phase,
-              phases: [future_phase],
-              custom_field_values: { linear_scale_field.key => 4 }
-            )
-          end
-
-          example 'Download native survey phase inputs in separate sheets' do
-            do_request
-            expect(status).to eq 200
-            expect(xlsx_contents(response_body)).to match_array([
-              {
-                sheet_name: 'Phase 2 survey', # The colon is removed from phase title "Phase 2: survey"
-                column_headers: [
-                  'ID',
-                  multiselect_field.title_multiloc['en'],
-                  'Author name',
-                  'Author email',
-                  'Author ID',
-                  'Submitted at',
-                  'Project'
-                ],
-                rows: [
-                  [
-                    active_survey_response1.id,
-                    'Cat, Dog',
-                    active_survey_response1.author_name,
-                    active_survey_response1.author.email,
-                    active_survey_response1.author_id,
-                    an_instance_of(DateTime), # created_at
-                    project.title_multiloc['en']
-                  ],
-                  [
-                    active_survey_response2.id,
-                    'Cat',
-                    active_survey_response2.author_name,
-                    active_survey_response2.author.email,
-                    active_survey_response2.author_id,
-                    an_instance_of(DateTime), # created_at
-                    project.title_multiloc['en']
-                  ]
+        example_request 'Download inputs of a timeline project with different phases in separate sheets' do
+          assert_status 200
+          xlsx = xlsx_contents response_body
+          expect(xlsx.size).to eq 3
+          expect(xlsx).to match_array([
+            {
+              sheet_name: 'Phase 1 Ideation',
+              column_headers: [
+                'ID',
+                'Title',
+                'Description',
+                'Attachments',
+                'Tags',
+                'Latitude',
+                'Longitude',
+                'Location',
+                'Proposed Budget',
+                extra_idea_field.title_multiloc['en'],
+                'Author name',
+                'Author email',
+                'Author ID',
+                'Submitted at',
+                'Published at',
+                'Comments',
+                'Likes',
+                'Dislikes',
+                'Budget',
+                'URL',
+                'Project',
+                'Status',
+                'Assignee',
+                'Assignee email'
+              ],
+              rows: [
+                [
+                  ideation_response.id,
+                  ideation_response.title_multiloc['en'],
+                  'It would improve the air quality!', # html tags are removed
+                  '',
+                  '',
+                  ideation_response.location_point.coordinates.last,
+                  ideation_response.location_point.coordinates.first,
+                  ideation_response.location_description,
+                  ideation_response.proposed_budget,
+                  'Answer',
+                  ideation_response.author_name,
+                  ideation_response.author.email,
+                  ideation_response.author_id,
+                  an_instance_of(DateTime), # created_at
+                  an_instance_of(DateTime), # published_at
+                  0,
+                  0,
+                  0,
+                  ideation_response.budget,
+                  "http://example.org/ideas/#{ideation_response.slug}",
+                  project.title_multiloc['en'],
+                  ideation_response.idea_status.title_multiloc['en'],
+                  nil,
+                  nil
                 ]
-              },
-              {
-                sheet_name: 'Phase 3 survey', # The colon is removed from phase title "Phase 3: survey"
-                column_headers: [
-                  'ID',
-                  linear_scale_field.title_multiloc['en'],
-                  'Author name',
-                  'Author email',
-                  'Author ID',
-                  'Submitted at',
-                  'Project'
-                ],
-                rows: [
-                  [
-                    future_survey_response1.id,
-                    4,
-                    future_survey_response1.author_name,
-                    future_survey_response1.author.email,
-                    future_survey_response1.author_id,
-                    an_instance_of(DateTime), # created_at
-                    project.title_multiloc['en']
-                  ]
+              ]
+            },
+            {
+              sheet_name: 'Phase 2 Native survey',
+              column_headers: [
+                'ID',
+                linear_scale_field.title_multiloc['en'],
+                'Author name',
+                'Author email',
+                'Author ID',
+                'Submitted at',
+                'Project'
+              ],
+              rows: [
+                [
+                  survey_response.id,
+                  2,
+                  survey_response.author_name,
+                  survey_response.author.email,
+                  survey_response.author_id,
+                  an_instance_of(DateTime), # created_at
+                  project.title_multiloc['en']
                 ]
-              }
-            ])
-          end
+              ]
+            },
+            # Phase 3 is not included because it's an information phase.
+            {
+              sheet_name: 'Phase 4 Voting',
+              column_headers: [
+                'ID',
+                'Title',
+                'Description',
+                'Attachments',
+                'Tags',
+                'Latitude',
+                'Longitude',
+                'Location',
+                'Proposed Budget',
+                extra_idea_field.title_multiloc['en'],
+                'Author name',
+                'Author email',
+                'Author ID',
+                'Submitted at',
+                'Published at',
+                'Comments',
+                'Picks',
+                'Votes',
+                'Budget',
+                'URL',
+                'Project',
+                'Status',
+                'Assignee',
+                'Assignee email'
+              ],
+              rows: [
+                [
+                  ideation_response.id,
+                  ideation_response.title_multiloc['en'],
+                  'It would improve the air quality!', # html tags are removed
+                  '',
+                  '',
+                  ideation_response.location_point.coordinates.last,
+                  ideation_response.location_point.coordinates.first,
+                  ideation_response.location_description,
+                  ideation_response.proposed_budget,
+                  'Answer',
+                  ideation_response.author_name,
+                  ideation_response.author.email,
+                  ideation_response.author_id,
+                  an_instance_of(DateTime), # created_at
+                  an_instance_of(DateTime), # published_at
+                  0,
+                  0,
+                  0,
+                  ideation_response.budget,
+                  "http://example.org/ideas/#{ideation_response.slug}",
+                  project.title_multiloc['en'],
+                  ideation_response.idea_status.title_multiloc['en'],
+                  nil,
+                  nil
+                ]
+              ]
+            }
+          ])
         end
       end
     end
