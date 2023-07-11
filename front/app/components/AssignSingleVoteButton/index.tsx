@@ -5,107 +5,55 @@ import { Button, colors } from '@citizenlab/cl2-component-library';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import eventEmitter from 'utils/eventEmitter';
 
 // api
 import useBasket from 'api/baskets/useBasket';
-import useAddBasketsIdeas from 'api/baskets_ideas/useAddBasketsIdeas';
-import useDeleteBasketsIdea from 'api/baskets_ideas/useDeleteBasketsIdea';
-import useAddBasket from 'api/baskets/useAddBasket';
 import useBasketsIdeas from 'api/baskets_ideas/useBasketsIdeas';
-
-// types
-import { IProjectData } from 'api/projects/types';
-import { IPhaseData } from 'api/phases/types';
+import useAddIdeaToBasket from 'api/baskets/useAddIdeaToBasket';
 
 // intl
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
+
+// utils
+import { isIdeaInBasket } from 'components/AddToBasketButton/utils';
+
+// types
+import { IProjectData } from 'api/projects/types';
+import { IPhaseData } from 'api/phases/types';
 
 export const VOTES_EXCEEDED_ERROR_EVENT = 'votesExceededError';
 export const VOTES_PER_OPTION_EXCEEDED_ERROR_EVENT =
   'votesPerOptionExceededError';
 
 interface Props {
-  projectId: string;
   participationContext?: IPhaseData | IProjectData | null;
   ideaId: string;
   buttonStyle: 'primary' | 'primary-outlined';
 }
 
 const AssignSingleVoteButton = ({
-  projectId,
   ideaId,
   buttonStyle,
   participationContext,
 }: Props) => {
   const { formatMessage } = useIntl();
 
-  // participation context
-  const contextType =
-    participationContext?.type === 'phase' ? 'Phase' : 'Project';
   const { data: basket } = useBasket(
     participationContext?.relationships?.user_basket?.data?.id
   );
 
-  // basket
-  const { mutate: addBasket } = useAddBasket(projectId);
-  const { mutateAsync: addBasketsIdeas, isLoading: isAddingToBasket } =
-    useAddBasketsIdeas();
-  const { mutateAsync: deleteBasketsIdea, isLoading: isRemovingFromBasket } =
-    useDeleteBasketsIdea();
+  const { mutate: addToBasket, isLoading } = useAddIdeaToBasket();
   const { data: basketsIdeas } = useBasketsIdeas(basket?.data.id);
 
-  const ideaInBasket = basket?.data.relationships.ideas.data.find(
-    (idea) => idea.id === ideaId
-  );
-  const isLoading = isAddingToBasket || isRemovingFromBasket;
+  const ideaInBasket = isIdeaInBasket(ideaId, basketsIdeas);
 
   const onAdd = async () => {
-    if (basket) {
-      const votingMaxTotal = participationContext?.attributes?.voting_max_total;
-      if (
-        votingMaxTotal &&
-        basket.data.attributes.total_votes + 1 > votingMaxTotal
-      ) {
-        eventEmitter.emit(VOTES_EXCEEDED_ERROR_EVENT);
-      } else {
-        addBasketsIdeas({
-          idea_id: ideaId,
-          basketId: basket?.data.id,
-          votes: 1,
-        });
-      }
-    } else if (participationContext) {
-      addBasket(
-        {
-          participation_context_id: participationContext?.id,
-          participation_context_type: contextType,
-        },
-        {
-          onSuccess: (response) => {
-            addBasketsIdeas({
-              idea_id: ideaId,
-              basketId: response.data.id,
-              votes: 1,
-            });
-          },
-        }
-      );
-    }
+    addToBasket({ idea_id: ideaId, votes: 1 });
   };
 
   const onRemove = async () => {
-    if (basket) {
-      basketsIdeas?.data.map((basketIdea) => {
-        if (basketIdea.relationships.idea.data['id'] === ideaId) {
-          deleteBasketsIdea({
-            basketIdeaId: basketIdea.id,
-            basketId: basket?.data.id,
-          });
-        }
-      });
-    }
+    addToBasket({ idea_id: ideaId, votes: null });
   };
 
   return (
