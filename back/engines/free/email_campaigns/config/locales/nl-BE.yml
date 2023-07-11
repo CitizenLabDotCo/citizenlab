@@ -586,7 +586,7 @@ nl-BE:
       recipient_segment:
         admins: 'Platformbeheerders'
         admins_and_managers: 'Beheerders'
-        admins_and_managers_managing_the_project: 'Platformbeheerders & beheerders die het project beheren'
+        admins_and_managers_managing_the_project: 'Beheerders'
         managers_managing_the_project: 'Beheerders die het project beheren'
         all_users: 'Alle gebruikers'
         all_users_who_uploaded_proposals: 'Alle gebruikers die voorstellen hebben geüpload'
