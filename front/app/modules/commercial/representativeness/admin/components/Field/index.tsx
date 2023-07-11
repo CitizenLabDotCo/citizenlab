@@ -89,10 +89,14 @@ const Field = ({
       referenceDataUploaded,
       remoteFormValues
     );
-    if (formValues === null || !isEqual(formValues, initialFormValues)) {
+    if (
+      !touched &&
+      (formValues === null || !isEqual(formValues, initialFormValues))
+    ) {
       setFormValues(initialFormValues);
     }
   }, [
+    touched,
     formValues,
     userCustomFieldOptions,
     referenceDataUploaded,
