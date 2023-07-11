@@ -8,12 +8,16 @@ export const basketsIdeasData: IBasketsIdeaData = {
   },
   relationships: {
     idea: {
-      data: [
-        {
-          id: '1',
-          type: 'idea',
-        },
-      ],
+      data: {
+        id: '1',
+        type: 'idea',
+      },
+    },
+    basket: {
+      data: {
+        id: '2',
+        type: 'basket',
+      },
     },
   },
 };
