@@ -27,3 +27,7 @@ export interface IBasketData {
 export interface IBasket {
   data: IBasketData;
 }
+
+export interface IUpdateBasket {
+  submitted?: boolean | null;
+}
