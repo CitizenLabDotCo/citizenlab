@@ -10,6 +10,10 @@ import { isNilOrError } from 'utils/helperUtils';
 import useBasket from 'api/baskets/useBasket';
 import useVoting from 'api/baskets_ideas/useVoting';
 
+// events
+import eventEmitter from 'utils/eventEmitter';
+import { VOTES_EXCEEDED_ERROR_EVENT } from 'components/ErrorToast/events';
+
 // intl
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
@@ -17,10 +21,6 @@ import messages from './messages';
 // types
 import { IProjectData } from 'api/projects/types';
 import { IPhaseData } from 'api/phases/types';
-
-export const VOTES_EXCEEDED_ERROR_EVENT = 'votesExceededError';
-export const VOTES_PER_OPTION_EXCEEDED_ERROR_EVENT =
-  'votesPerOptionExceededError';
 
 interface Props {
   participationContext?: IPhaseData | IProjectData | null;
@@ -38,10 +38,20 @@ const AssignSingleVoteButton = ({
   const { data: basket } = useBasket(
     participationContext?.relationships?.user_basket?.data?.id
   );
-  const { getVotes, setVotes, processing } = useVoting();
+  const { getVotes, setVotes, numberOfVotesCast } = useVoting();
   const ideaInBasket = !!getVotes?.(ideaId);
 
   const onAdd = async () => {
+    const maxVotes = participationContext?.attributes.voting_max_total;
+    if (!maxVotes || numberOfVotesCast === undefined) {
+      return;
+    }
+
+    if (numberOfVotesCast === maxVotes) {
+      eventEmitter.emit(VOTES_EXCEEDED_ERROR_EVENT);
+      return;
+    }
+
     setVotes?.(ideaId, 1);
   };
 
@@ -63,7 +73,6 @@ const AssignSingleVoteButton = ({
       }
       width="100%"
       minWidth="240px"
-      processing={processing}
     />
   );
 };

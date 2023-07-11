@@ -34,10 +34,6 @@ import messages from './messages';
 // utils
 import { isNil } from 'utils/helperUtils';
 
-export const VOTES_EXCEEDED_ERROR_EVENT = 'votesExceededError';
-export const VOTES_PER_OPTION_EXCEEDED_ERROR_EVENT =
-  'votesPerOptionExceededError';
-
 const StyledBox = styled(Box)`
   input {
     border: none !important;

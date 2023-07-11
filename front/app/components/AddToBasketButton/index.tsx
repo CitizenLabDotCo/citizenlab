@@ -26,7 +26,7 @@ import { trackEventByName } from 'utils/analytics';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
-import { BUDGET_EXCEEDED_ERROR_EVENT } from 'components/ParticipationCTABars/VotingCTABar/events';
+import { BUDGET_EXCEEDED_ERROR_EVENT } from 'components/ErrorToast/events';
 
 // utils
 import { isButtonEnabled } from './utils';
@@ -112,7 +112,6 @@ const AddToBasketButton = ({
     }
 
     if (actionDescriptor.enabled) {
-      console.log(ideaInBasket);
       setVotes?.(ideaId, ideaInBasket ? 0 : ideaBudget);
       trackEventByName(
         ideaInBasket ? tracks.ideaRemovedFromBasket : tracks.ideaAddedToBasket
