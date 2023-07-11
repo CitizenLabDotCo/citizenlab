@@ -187,9 +187,9 @@ const Sidebar = () => {
           <MenuItem navItem={navItem} key={navItem.name} />
         ))}
 
-        <SupportMenu />
         <NotificationsPopup />
         <UserMenu />
+        <SupportMenu />
       </MenuInner>
     </Menu>
   );
