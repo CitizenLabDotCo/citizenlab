@@ -323,22 +323,12 @@ const AdminProjectTimelineEdit = () => {
             {/* TODO: After ParticipationContext refactor, it doesn't refetch phase service anymore
             This caused a bug where phase data was not being used after fetching. This is a temporary fix.
             ParticipationContext needs to be refactored to functional component. */}
-            {phase && (
-              <ParticipationContext
-                phase={phase}
-                onSubmit={handleParticipationContextOnSubmit}
-                onChange={handleParticipationContextOnChange}
-                apiErrors={errors}
-              />
-            )}
-            {!phase && (
-              <ParticipationContext
-                phase={undefined}
-                onSubmit={handleParticipationContextOnSubmit}
-                onChange={handleParticipationContextOnChange}
-                apiErrors={errors}
-              />
-            )}
+            <ParticipationContext
+              phase={phase}
+              onSubmit={handleParticipationContextOnSubmit}
+              onChange={handleParticipationContextOnChange}
+              apiErrors={errors}
+            />
           </SectionField>
           <SectionField>
             <Label>
