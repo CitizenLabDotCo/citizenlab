@@ -312,4 +312,8 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.votingLastChance',
     defaultMessage: 'Last chance to vote for {phaseTitle}',
   },
+  votingResults: {
+    id: 'app.containers.NotificationMenu.votingResults',
+    defaultMessage: '{phaseTitle} vote results revealed',
+  },
 });

@@ -143,5 +143,31 @@ describe ActivitiesService do
           .not_to have_enqueued_job(LogActivityJob)
       end
     end
+
+    describe '#create_phase_ended_activities' do
+      let(:now) { Time.parse '2022-07-01 10:00:00 +0000' }
+
+      it 'logs phase ended activity when a phase has ended' do
+        phase = create(:budgeting_phase, start_at: now - 10.days, end_at: now - 1.hour)
+        expect { service.create_periodic_activities(now: now) }
+          .to have_enqueued_job(LogActivityJob)
+          .with(phase, 'ended', nil, now.to_i, project_id: phase.project_id)
+      end
+
+      it 'does not log a phase ended activity when one has already been logged' do
+        phase = create(:budgeting_phase, start_at: now - 10.days, end_at: now - 1.hour)
+        create(:activity, item: phase, action: 'ended')
+        expect { service.create_periodic_activities(now: now) }
+          .not_to have_enqueued_job(LogActivityJob)
+          .with(phase, 'ended', nil, now.to_i, project_id: phase.project_id)
+      end
+
+      it 'does not log a phase ended activity when the phase has not ended' do
+        phase = create(:budgeting_phase, start_at: now - 10.days, end_at: now + 1.day)
+        expect { service.create_periodic_activities(now: now) }
+          .not_to have_enqueued_job(LogActivityJob)
+          .with(phase, 'ended', nil, now.to_i, project_id: phase.project_id)
+      end
+    end
   end
 end

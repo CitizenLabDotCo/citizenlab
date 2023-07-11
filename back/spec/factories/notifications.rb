@@ -282,4 +282,9 @@ FactoryBot.define do
     project
     phase
   end
+
+  factory :voting_results, parent: :notification, class: 'Notifications::VotingResults' do
+    project
+    phase
+  end
 end
