@@ -35,6 +35,8 @@ export interface IHomepageSettings {
 }
 
 export interface IHomepageSettingsData {
+  id: string;
+  type: 'home_page';
   attributes: IHomepageSettingsAttributes;
 }
 

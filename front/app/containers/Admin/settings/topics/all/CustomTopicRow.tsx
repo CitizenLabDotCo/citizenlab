@@ -8,7 +8,7 @@ import { IconTooltip, colors } from '@citizenlab/cl2-component-library';
 import Link from 'utils/cl-router/Link';
 
 // resources
-import useCustomPages from 'hooks/useCustomPages';
+import useCustomPages from 'api/custom_pages/useCustomPages';
 
 // hooks
 import useLocalize from 'hooks/useLocalize';
@@ -51,7 +51,11 @@ const CustomTopicRow = (props: Props) => {
   const staticPageIds = topic.relationships.static_pages.data.map(
     (page) => page.id
   );
-  const staticPages = useCustomPages({ ids: staticPageIds });
+
+  const { data: pages } = useCustomPages();
+
+  const staticPages =
+    pages?.data.filter((page) => staticPageIds.includes(page.id)) || [];
 
   return (
     <Row

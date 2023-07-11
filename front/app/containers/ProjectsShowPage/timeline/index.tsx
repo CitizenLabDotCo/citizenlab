@@ -1,5 +1,4 @@
-import React, { memo, useEffect, useState } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import React, { memo, useMemo } from 'react';
 
 // components
 import Timeline from './Timeline';
@@ -15,21 +14,16 @@ import {
   maxPageWidth,
 } from 'containers/ProjectsShowPage/styles';
 import SectionContainer from 'components/SectionContainer';
+import PhaseDocumentAnnotation from './document_annotation';
 
-// services
-import { getLatestRelevantPhase, getCurrentPhase } from 'api/phases/utils';
-
-// typings
-import { IPhaseData } from 'api/phases/types';
-
-// events
-import { selectedPhase$, selectPhase } from './events';
+// router
+import setPhaseURL from './setPhaseURL';
+import { useParams } from 'react-router-dom';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
-import { useWindowSize } from '@citizenlab/cl2-component-library';
-import useLocale from 'hooks/useLocale';
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // i18n
 import messages from 'containers/ProjectsShowPage/messages';
@@ -37,13 +31,14 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
-import { colors, viewportWidths, isRtl } from 'utils/styleUtils';
+import { colors, isRtl } from 'utils/styleUtils';
 
-// other
+// utils
+import { getLatestRelevantPhase } from 'api/phases/utils';
 import { isValidPhase } from '../phaseParam';
-import setPhaseURL from './setPhaseURL';
-import PhaseDocumentAnnotation from './document_annotation';
-import { useParams } from 'react-router-dom';
+
+// typings
+import { IPhaseData } from 'api/phases/types';
 
 const Container = styled.div``;
 
@@ -85,87 +80,34 @@ interface Props {
 }
 
 const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
-  const { phaseNumber } = useParams() as {
-    phaseNumber: string;
-  };
+  const { phaseNumber } = useParams();
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
-  const locale = useLocale();
-  const windowSize = useWindowSize();
+  const smallerThanTablet = useBreakpoint('tablet');
 
-  const [selectedPhase, setSelectedPhase] = useState<IPhaseData | null>(null);
-  const currentPhase = getCurrentPhase(phases?.data);
+  const selectedPhase = useMemo(() => {
+    if (!phases) return;
 
-  useEffect(() => {
-    const subscription = selectedPhase$.subscribe((selectedPhase) => {
-      setSelectedPhase(selectedPhase || null);
-    });
-
-    return () => {
-      subscription.unsubscribe();
-      selectPhase(undefined);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (selectedPhase !== null && phases && project && !isNilOrError(locale)) {
-      setPhaseURL(
-        selectedPhase?.id,
-        currentPhase?.id,
-        phases.data,
-        project.data,
-        locale
-      );
+    // if a phase parameter was provided, and it is valid, we set that as phase.
+    // otherwise, use the most logical phase
+    if (isValidPhase(phaseNumber, phases.data)) {
+      const phaseIndex = Number(phaseNumber) - 1;
+      return phases.data[phaseIndex];
     }
-  }, [selectedPhase, phases, project, locale, currentPhase]);
 
-  useEffect(() => {
-    if (phases && phases.data.length > 0) {
-      const latestRelevantPhase = getLatestRelevantPhase(phases.data);
-
-      // if a phase parameter was provided, and it is valid, we set that as phase.
-      // otherwise, use the most logical phase
-      if (isValidPhase(phaseNumber, phases.data)) {
-        const phaseIndex = Number(phaseNumber) - 1;
-        selectPhase(phases.data[phaseIndex]);
-      } else if (latestRelevantPhase) {
-        selectPhase(latestRelevantPhase);
-      } else {
-        selectPhase(undefined);
-      }
-    }
+    return getLatestRelevantPhase(phases.data);
   }, [phaseNumber, phases]);
 
-  const handleSetSelectedPhase = (phase: IPhaseData) => {
-    setSelectedPhase(phase);
+  const selectPhase = (phase: IPhaseData) => {
+    if (!phases || !project) return;
+    setPhaseURL(phase.id, phases.data, project.data);
   };
 
-  useEffect(() => {
-    if (
-      selectedPhase &&
-      phases &&
-      phases.data.length > 0 &&
-      !isNilOrError(project) &&
-      !isNilOrError(locale)
-    ) {
-      setPhaseURL(
-        selectedPhase.id,
-        currentPhase?.id,
-        phases.data,
-        project.data,
-        locale
-      );
-    }
-  }, [selectedPhase, phases, project, locale, currentPhase]);
-
-  if (!isNilOrError(project) && selectedPhase) {
+  if (project && selectedPhase) {
     const selectedPhaseId = selectedPhase.id;
     const isPBPhase =
       selectedPhase.attributes.participation_method === 'budgeting';
     const participationMethod = selectedPhase.attributes.participation_method;
-    const smallerThanSmallTablet = windowSize
-      ? windowSize.windowWidth <= viewportWidths.tablet
-      : false;
 
     return (
       <Container className={`${className || ''} e2e-project-process-page`}>
@@ -181,13 +123,13 @@ const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
               <StyledTimeline
                 projectId={projectId}
                 selectedPhase={selectedPhase}
-                setSelectedPhase={handleSetSelectedPhase}
+                setSelectedPhase={selectPhase}
               />
               {isPBPhase && (
                 <StyledPBExpenses
                   participationContextId={selectedPhaseId}
                   participationContextType="phase"
-                  viewMode={smallerThanSmallTablet ? 'column' : 'row'}
+                  viewMode={smallerThanTablet ? 'column' : 'row'}
                 />
               )}
               <PhaseSurvey project={project.data} phaseId={selectedPhaseId} />

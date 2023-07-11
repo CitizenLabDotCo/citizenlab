@@ -19,6 +19,7 @@ import { isRegularUser, isAdmin } from 'services/permissions/roles';
 
 import { IUserData } from 'api/users/types';
 import BillingWarning from 'components/admin/SeatBasedBilling/SeatInfo/BillingWarning';
+import { getFullName } from 'utils/textUtils';
 
 const getInfoText = (
   isUserAdmin: boolean,
@@ -128,7 +129,7 @@ const ChangeSeatModal = ({
               values={{
                 name: (
                   <Text as="span" fontWeight="bold" fontSize="m">
-                    {`${userToChangeSeat.attributes.first_name} ${userToChangeSeat.attributes.last_name}`}
+                    {getFullName(userToChangeSeat)}
                   </Text>
                 ),
               }}

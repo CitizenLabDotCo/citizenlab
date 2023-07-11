@@ -29,6 +29,7 @@ import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
 import useExceedsSeats from 'hooks/useExceedsSeats';
 import useDeleteProjectFolderModerator from 'api/project_folder_moderators/useDeleteProjectFolderModerator';
 import useAddProjectFolderModerator from 'api/project_folder_moderators/useAddProjectFolderModerator';
+import { getFullName } from 'utils/textUtils';
 
 const StyledA = styled.a`
   &:hover {
@@ -186,7 +187,7 @@ const FolderPermissions = () => {
                       <Avatar userId={folderModerator.id} size={30} />
                     </Box>
                     <Text as="span" m="0">
-                      {`${folderModerator.attributes.first_name} ${folderModerator.attributes.last_name}`}
+                      {getFullName(folderModerator)}
                     </Text>
                   </Box>
                   <Text as="span" m="0">

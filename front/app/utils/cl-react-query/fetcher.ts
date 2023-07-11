@@ -19,7 +19,7 @@ interface Get {
 interface Patch {
   path: Path;
   action: 'patch';
-  body: Record<string, any>;
+  body?: Record<string, any>;
   queryParams?: never;
 }
 interface Post {
@@ -39,7 +39,7 @@ type FetcherArgs = Get | Patch | Post | Delete;
 
 type BaseData = { id?: string; type: string };
 
-type BaseResponseData =
+export type BaseResponseData =
   | { data: BaseData; included?: BaseData[] }
   | { data: BaseData[]; included?: BaseData[] };
 

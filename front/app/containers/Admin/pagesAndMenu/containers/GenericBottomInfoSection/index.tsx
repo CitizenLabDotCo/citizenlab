@@ -28,7 +28,7 @@ import { Multiloc } from 'typings';
 import { pagesAndMenuBreadcrumb } from '../../breadcrumbs';
 
 // services and hooks
-import { ICustomPageData } from 'services/customPages';
+import { ICustomPageData } from 'api/custom_pages/types';
 import { IHomepageSettingsData } from 'services/homepageSettings';
 
 // utils

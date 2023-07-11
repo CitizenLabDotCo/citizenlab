@@ -16,6 +16,7 @@ import {
 } from 'components/ConsentManager/destinations';
 import { isAdmin, isRegularUser } from 'services/permissions/roles';
 import { ModuleConfiguration } from 'utils/moduleUtils';
+import { getFullName } from 'utils/textUtils';
 
 export const INTERCOM_APP_ID = process.env.INTERCOM_APP_ID;
 
@@ -90,7 +91,7 @@ const configuration: ModuleConfiguration = {
             ? {
                 email: user.data.attributes.email,
                 user_id: user.data.id,
-                name: `${user.data.attributes.first_name} + ${user.data.attributes.last_name}`,
+                name: getFullName(user.data),
                 firstName: user.data.attributes.first_name,
                 lastName: user.data.attributes.last_name,
                 locale: user.data.attributes.locale,

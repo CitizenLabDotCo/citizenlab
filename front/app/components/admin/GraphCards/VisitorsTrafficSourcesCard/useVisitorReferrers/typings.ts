@@ -6,7 +6,7 @@ export type QueryParameters = ProjectId & Dates & Pagination;
 
 // Responses
 export interface ReferrerListResponse {
-  data: ReferrerRow[];
+  data: { type: 'analytics'; attributes: ReferrerRow[] };
   links: ILinks;
 }
 
@@ -18,7 +18,10 @@ export interface ReferrerRow {
 }
 
 export interface ReferrerTotalsResponse {
-  data: [ReferrersTotalRow]; // TODO
+  data: {
+    type: 'analytics';
+    attributes: [ReferrersTotalRow];
+  }; // TODO
 }
 
 export interface ReferrersTotalRow {
