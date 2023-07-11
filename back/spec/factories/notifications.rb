@@ -268,12 +268,18 @@ FactoryBot.define do
   end
 
   factory :voting_basket_submitted, parent: :notification, class: 'Notifications::VotingBasketSubmitted' do
-    initiating_user
-    association :project, factory: :continuous_budgeting_project
+    project
+    basket
   end
 
   factory :voting_basket_not_submitted, parent: :notification, class: 'Notifications::VotingBasketNotSubmitted' do
-    initiating_user
-    association :project, factory: :continuous_budgeting_project
+    project
+    phase
+    basket
+  end
+
+  factory :voting_last_chance, parent: :notification, class: 'Notifications::VotingLastChance' do
+    project
+    phase
   end
 end

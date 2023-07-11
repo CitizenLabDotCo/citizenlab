@@ -61,7 +61,8 @@
 #
 module Notifications
   class VotingLastChance < Notification
-    validates :basket, presence: true
+    validates :project, presence: true
+    validates :phase, presence: true
 
     ACTIVITY_TRIGGERS = { 'Phase' => { 'ending_soon' => true } }
     EVENT_NAME = 'Phase ending soon'
@@ -76,6 +77,7 @@ module Notifications
 
           new(
             recipient: recipient,
+            project: phase.project,
             phase: phase
           )
         end

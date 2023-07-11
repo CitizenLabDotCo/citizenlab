@@ -62,6 +62,8 @@
 module Notifications
   class VotingBasketNotSubmitted < Notification
     validates :basket, presence: true
+    validates :project, presence: true
+    validates :phase, presence: true
 
     ACTIVITY_TRIGGERS = { 'Basket' => { 'not_submitted' => true } }
     EVENT_NAME = 'Basket not submitted'
@@ -73,7 +75,9 @@ module Notifications
       if basket && recipient_id
         [new(
           recipient_id: recipient_id,
-          basket: basket
+          basket: basket,
+          project: basket.participation_context.project,
+          phase: basket.participation_context.phase? ? basket.participation_context : nil
         )]
       else
         []
