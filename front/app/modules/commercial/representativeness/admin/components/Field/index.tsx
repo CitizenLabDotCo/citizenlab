@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { omit } from 'lodash-es';
+import { omit, isEqual } from 'lodash-es';
 
 // hooks
 import useUserCustomFieldOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
@@ -21,6 +21,7 @@ import {
   getStatus,
   parseFormValues,
   convertBinsToFormValues,
+  FormValues,
 } from '../../utils/form';
 import { isSupported } from '../../containers/Dashboard/utils';
 
@@ -68,7 +69,7 @@ const Field = ({
       : undefined
   );
 
-  const [formValues, setFormValues] = useState(
+  const [formValues, setFormValues] = useState<FormValues | null>(
     getInitialValues(
       userCustomFieldOptions,
       referenceDataUploaded,
@@ -85,16 +86,19 @@ const Field = ({
   }, [isBinnedDistribution, bins, referenceDistribution]);
 
   useEffect(() => {
-    if (formValues === null) {
-      setFormValues(
-        getInitialValues(
-          userCustomFieldOptions,
-          referenceDataUploaded,
-          remoteFormValues
-        )
-      );
+    const initialFormValues = getInitialValues(
+      userCustomFieldOptions,
+      referenceDataUploaded,
+      remoteFormValues
+    );
+    if (
+      !touched &&
+      (formValues === null || !isEqual(formValues, initialFormValues))
+    ) {
+      setFormValues(initialFormValues);
     }
   }, [
+    touched,
     formValues,
     userCustomFieldOptions,
     referenceDataUploaded,
@@ -111,7 +115,6 @@ const Field = ({
   const titleMultiloc = userCustomField.data.attributes.title_multiloc;
 
   const binsSet = isBirthyear ? !!bins : undefined;
-
   const status = getStatus(formValues, remoteFormValues, touched, binsSet);
 
   const handleUpdateEnabled = (optionId: string, enabled: boolean) => {
