@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { omit, isEqual } from 'lodash-es';
+import { omit } from 'lodash-es';
 
 // hooks
 import useUserCustomFieldOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
@@ -84,26 +84,6 @@ const Field = ({
       setBins(referenceDistribution.attributes.distribution.bins);
     }
   }, [isBinnedDistribution, bins, referenceDistribution]);
-
-  useEffect(() => {
-    const initialFormValues = getInitialValues(
-      userCustomFieldOptions,
-      referenceDataUploaded,
-      remoteFormValues
-    );
-    if (
-      !touched &&
-      (formValues === null || !isEqual(formValues, initialFormValues))
-    ) {
-      setFormValues(initialFormValues);
-    }
-  }, [
-    touched,
-    formValues,
-    userCustomFieldOptions,
-    referenceDataUploaded,
-    remoteFormValues,
-  ]);
 
   if (formValues === null || !userCustomField) {
     return null;
@@ -217,12 +197,17 @@ const Field = ({
 const FieldWrapper = ({ userCustomFieldId }: Props) => {
   const { data: userCustomFieldOptions } =
     useUserCustomFieldOptions(userCustomFieldId);
-  const { referenceDistribution, referenceDataUploaded, remoteFormValues } =
-    useReferenceDistributionData(userCustomFieldId);
+  const {
+    referenceDistribution,
+    referenceDataUploaded,
+    remoteFormValues,
+    isFetchedReferenceDistributionData,
+  } = useReferenceDistributionData(userCustomFieldId);
 
   if (
     isNilOrError(userCustomFieldOptions) ||
-    referenceDataUploaded === undefined
+    referenceDataUploaded === undefined ||
+    !isFetchedReferenceDistributionData
   ) {
     return null;
   }
