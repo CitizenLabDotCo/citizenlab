@@ -1,12 +1,12 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { SectionDescription } from 'components/admin/Section';
+import { PageTitle, SectionDescription } from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import PostManager, { TFilterMenu } from 'components/admin/PostManager';
 import Button from 'components/UI/Button';
-import { Box, Title, Text } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 import { colors } from 'utils/styleUtils';
@@ -33,9 +33,9 @@ const InitiativesManagePage = () => {
         className="e2e-resource-header"
       >
         <Box>
-          <Title color="primary">
+          <PageTitle>
             <FormattedMessage {...messages.titleInitiatives} />
-          </Title>
+          </PageTitle>
           <Text color="coolGrey600">
             <FormattedMessage {...messages.subtitleDescription} />
           </Text>
@@ -52,10 +52,6 @@ const InitiativesManagePage = () => {
         </Box>
       </Box>
       <Box mb="30px" background={colors.white} p="40px">
-        <SectionDescription>
-          <FormattedMessage {...messages.subtitleDescription} />
-        </SectionDescription>
-
         <PostManager
           type="Initiatives"
           visibleFilterMenus={visibleFilterMenus}
