@@ -69,9 +69,6 @@ module EmailCampaigns
     def generate_commands(recipient:, activity:, time: nil)
       notification = activity.item
       if notification.phase.voting?
-        # NOTE: Voting phases send a different email
-        []
-      else
         [{
           event_payload: {
             phase_title_multiloc: notification.phase.title_multiloc,
@@ -84,6 +81,8 @@ module EmailCampaigns
           },
           delay: 8.hours.to_i
         }]
+      else
+        []
       end
     end
   end
