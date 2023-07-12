@@ -33,10 +33,9 @@ function useReferenceDistributionData(userCustomFieldId: string) {
   return {
     referenceDistribution: referenceDistribution?.data,
     referenceDataUploaded,
-    remoteFormValues:
-      referenceDistribution && referenceDataUploaded
-        ? getRemoteFormValues(referenceDistribution.data)
-        : undefined,
+    remoteFormValues: referenceDistribution
+      ? getRemoteFormValues(referenceDistribution.data)
+      : undefined,
   };
 }
 
