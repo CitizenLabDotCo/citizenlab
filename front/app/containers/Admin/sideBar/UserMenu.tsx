@@ -86,10 +86,14 @@ export const UserMenu = () => {
             p={isSmallerThanPhone ? '10px 0' : '10px 8px 10px 16px'}
             justifyContent={isSmallerThanPhone ? 'center' : undefined}
           >
-            <Box ml="-3px" mr="3px">
+            {/*
+              Margins are needed to align with other icons/items in sidebar.
+              Changes in Avatar component are needed so size prop behaves correctly.
+            */}
+            <Box ml="-2px" mr="6px">
               <Avatar
                 userId={authUser.data.id}
-                size={24}
+                size={20}
                 addVerificationBadge
               />
             </Box>
