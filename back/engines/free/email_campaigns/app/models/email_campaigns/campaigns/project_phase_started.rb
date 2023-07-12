@@ -87,7 +87,7 @@ module EmailCampaigns
     private
 
     def campaign_enabled?(activity:, time: nil)
-      return false if self.class.first.enabled == false
+      return false unless enabled
 
       activity.item.phase.campaigns_settings['project_phase_started']
     end
