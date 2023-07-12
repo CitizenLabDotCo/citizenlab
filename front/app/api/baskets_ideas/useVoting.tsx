@@ -52,10 +52,13 @@ const useVotingInterface = (projectId?: string) => {
   const { data: basketIdeas, isFetching: basketIdeasLoading } =
     useBasketsIdeas(basketId);
 
+  const basketIdeasInitialLoad = basketId && !basketIdeas && basketIdeasLoading;
+
   const remoteVotesPerIdea = useMemo<
     Record<string, number> | null | undefined
   >(() => {
-    if (basketIdeasLoading) return undefined;
+    // undefined means initial load
+    if (basketIdeasInitialLoad) return undefined;
     if (!basketIdeas) return null;
 
     return basketIdeas.data.reduce((acc, basketIdea) => {
@@ -67,7 +70,7 @@ const useVotingInterface = (projectId?: string) => {
         [ideaId]: votes,
       };
     }, {});
-  }, [basketIdeas, basketIdeasLoading]);
+  }, [basketIdeasInitialLoad, basketIdeas]);
 
   const [votesPerIdea, setVotesPerIdea] = useState<Record<string, number>>({});
 
