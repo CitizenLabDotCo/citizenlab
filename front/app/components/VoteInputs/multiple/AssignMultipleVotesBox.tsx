@@ -40,20 +40,18 @@ const AssignMultipleVotesBox = memo(
           ideaId={ideaId}
           participationContext={participationContext}
         />
-        {participationContext?.attributes.voting_max_total && (
-          <Box
-            color={colors.grey700}
-            mt="8px"
-            display="flex"
-            width="100%"
-            justifyContent="center"
-          >
-            <FormattedMessage {...messages.youHave} />
-            <Box ml="4px">
-              <VotesCounter participationContext={participationContext} />
-            </Box>
+        <Box
+          color={colors.grey700}
+          mt="8px"
+          display="flex"
+          width="100%"
+          justifyContent="center"
+        >
+          <FormattedMessage {...messages.youHave} />
+          <Box ml="4px">
+            <VotesCounter participationContext={participationContext} />
           </Box>
-        )}
+        </Box>
       </WhiteBox>
     );
   }
