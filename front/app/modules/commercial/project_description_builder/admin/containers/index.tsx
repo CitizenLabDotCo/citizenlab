@@ -22,7 +22,6 @@ import ContentBuilderSettings from 'components/admin/ContentBuilder/Settings';
 
 // hooks
 import useLocale from 'hooks/useLocale';
-// import useProjectDescriptionBuilderLayout from '../../hooks/useProjectDescriptionBuilderLayout';
 import useProjectDescriptionBuilderLayout from 'api/project_description_builder/useProjectDescriptionBuilderLayout';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
@@ -50,8 +49,6 @@ const ProjectDescriptionBuilderPage = () => {
   });
   const locale = useLocale();
   const locales = useAppConfigurationLocales();
-  // const projectDescriptionBuilderLayout =
-  //   useProjectDescriptionBuilderLayout(projectId);
   const { data: projectDescriptionBuilderLayout } =
     useProjectDescriptionBuilderLayout(projectId);
   const { data: project } = useProjectById(projectId);
@@ -91,17 +88,6 @@ const ProjectDescriptionBuilderPage = () => {
       return rest;
     });
   };
-
-  // const getEditorData = () => {
-  //   if (!isNilOrError(projectDescriptionBuilderLayout) && selectedLocale) {
-  //     if (draftData && draftData[selectedLocale]) {
-  //       return draftData[selectedLocale];
-  //     } else {
-  //       return projectDescriptionBuilderLayout.data.attributes
-  //         .craftjs_jsonmultiloc[selectedLocale];
-  //     }
-  //   } else return undefined;
-  // };
 
   const getEditorData = () => {
     if (projectDescriptionBuilderLayout && selectedLocale) {

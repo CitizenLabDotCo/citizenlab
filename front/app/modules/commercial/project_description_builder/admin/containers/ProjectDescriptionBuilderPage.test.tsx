@@ -7,7 +7,7 @@ import {
   CONTENT_BUILDER_ERROR_EVENT,
 } from 'components/admin/ContentBuilder/constants';
 
-import { IProjectDescriptionBuilderData } from '../../services/projectDescriptionBuilder';
+import { IProjectDescriptionBuilderData } from 'api/project_description_builder/types';
 import eventEmitter from 'utils/eventEmitter';
 
 const mockEditorData: IProjectDescriptionBuilderData = {
@@ -34,9 +34,12 @@ const mockEditorData: IProjectDescriptionBuilderData = {
   },
 };
 
-jest.mock('../../hooks/useProjectDescriptionBuilderLayout', () => {
-  return jest.fn(() => ({ data: mockEditorData }));
-});
+jest.mock(
+  'api/project_description_builder/useProjectDescriptionBuilderLayout',
+  () => {
+    return jest.fn(() => ({ data: mockEditorData }));
+  }
+);
 
 jest.mock('hooks/useAppConfigurationLocales', () =>
   jest.fn(() => ['en', 'fr-FR'])

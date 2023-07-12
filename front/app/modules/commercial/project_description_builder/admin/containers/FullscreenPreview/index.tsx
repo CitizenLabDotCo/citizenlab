@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 // hooks
-import useProjectDescriptionBuilderLayout from '../../../hooks/useProjectDescriptionBuilderLayout';
+import useProjectDescriptionBuilderLayout from 'api/project_description_builder/useProjectDescriptionBuilderLayout';
 import useLocale from 'hooks/useLocale';
 import useProjectById from 'api/projects/useProjectById';
 import { useParams } from 'react-router-dom';
@@ -23,7 +23,7 @@ export const FullScreenPreview = () => {
   const platformLocale = useLocale();
   const { data: project } = useProjectById(projectId);
 
-  const projectDescriptionBuilderLayout =
+  const { data: projectDescriptionBuilderLayout } =
     useProjectDescriptionBuilderLayout(projectId);
 
   if (isNilOrError(platformLocale) || !project) {

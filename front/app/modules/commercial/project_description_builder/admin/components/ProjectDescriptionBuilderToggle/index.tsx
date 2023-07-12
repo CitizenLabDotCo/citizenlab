@@ -9,7 +9,7 @@ import styled from 'styled-components';
 
 // Hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import useProjectDescriptionBuilderLayout from '../../../hooks/useProjectDescriptionBuilderLayout';
+import useProjectDescriptionBuilderLayout from 'api/project_description_builder/useProjectDescriptionBuilderLayout';
 
 // Utils
 import Link from 'utils/cl-router/Link';
@@ -25,9 +25,6 @@ import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMult
 import messages from '../../messages';
 import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
-
-// Helpers
-import { isNilOrError } from 'utils/helperUtils';
 
 // Hooks
 import useAddProjectDescriptionBuilderLayout from 'api/project_description_builder/useAddProjectDescriptionBuilderLayout';
@@ -66,9 +63,9 @@ const ProjectDescriptionBuilderToggle = ({
   const featureEnabled = useFeatureFlag({
     name: 'project_description_builder',
   });
-  const projectDescriptionBuilderLayout = useProjectDescriptionBuilderLayout(
-    params.projectId
-  );
+  const { data: projectDescriptionBuilderLayout } =
+    useProjectDescriptionBuilderLayout(params.projectId);
+
   const route = `/admin/project-description-builder/projects/${params.projectId}/description`;
   const [
     projectDescriptionBuilderLinkVisible,
@@ -83,7 +80,7 @@ const ProjectDescriptionBuilderToggle = ({
   }, [onMount, featureEnabled]);
 
   useEffect(() => {
-    if (!isNilOrError(projectDescriptionBuilderLayout)) {
+    if (projectDescriptionBuilderLayout) {
       const projectDescriptionBuilderEnabled =
         projectDescriptionBuilderLayout.data.attributes.enabled;
       setProjectDescriptionBuilderLinkVisible(projectDescriptionBuilderEnabled);

@@ -19,7 +19,7 @@ mockProjectDescriptionBuilderLayoutData =
   DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA;
 
 jest.mock(
-  'modules/commercial/project_description_builder/hooks/useProjectDescriptionBuilderLayout',
+  'api/project_description_builder/useProjectDescriptionBuilderLayout',
   () => {
     return jest.fn(() => mockProjectDescriptionBuilderLayoutData);
   }

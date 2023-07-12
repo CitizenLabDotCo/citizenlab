@@ -1,7 +1,7 @@
 import React from 'react';
 
 // hooks
-import useProjectDescriptionBuilderLayout from 'modules/commercial/project_description_builder/hooks/useProjectDescriptionBuilderLayout';
+import useProjectDescriptionBuilderLayout from 'api/project_description_builder/useProjectDescriptionBuilderLayout';
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 import useProjectFiles from 'api/project_files/useProjectFiles';
@@ -37,14 +37,14 @@ const Preview = ({ projectId, projectTitle }: PreviewProps) => {
   const localize = useLocalize();
   const { data: projectFiles } = useProjectFiles(projectId);
 
-  const projectDescriptionBuilderLayout =
+  const { data: projectDescriptionBuilderLayout } =
     useProjectDescriptionBuilderLayout(projectId);
 
   const isLoadingProjectDescriptionBuilderLayout =
     projectDescriptionBuilderLayout === undefined;
 
   const projectDescriptionBuilderContent =
-    !isNilOrError(projectDescriptionBuilderLayout) &&
+    projectDescriptionBuilderLayout &&
     !isNilOrError(locale) &&
     projectDescriptionBuilderLayout.data.attributes.enabled &&
     projectDescriptionBuilderLayout.data.attributes.craftjs_jsonmultiloc[
