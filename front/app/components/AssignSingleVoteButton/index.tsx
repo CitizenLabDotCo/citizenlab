@@ -29,7 +29,7 @@ import { IPhaseData } from 'api/phases/types';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
 interface Props {
-  participationContext?: IPhaseData | IProjectData | null;
+  participationContext: IPhaseData | IProjectData;
   ideaId: string;
   buttonStyle: 'primary' | 'primary-outlined';
 }
@@ -43,7 +43,7 @@ const AssignSingleVoteButton = ({
 
   const { data: idea } = useIdeaById(ideaId);
   const { data: basket } = useBasket(
-    participationContext?.relationships?.user_basket?.data?.id
+    participationContext.relationships?.user_basket?.data?.id
   );
   const { getVotes, setVotes, numberOfVotesCast } = useVoting();
   const ideaInBasket = !!getVotes?.(ideaId);
@@ -51,7 +51,7 @@ const AssignSingleVoteButton = ({
   // permissions
   const actionDescriptor = idea?.data.attributes.action_descriptor.voting;
 
-  if (!actionDescriptor || !participationContext) {
+  if (!actionDescriptor) {
     return null;
   }
 

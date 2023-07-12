@@ -39,7 +39,7 @@ import { IProjectData } from 'api/projects/types';
 
 interface Props {
   ideaId: string;
-  participationContext?: IPhaseData | IProjectData | null;
+  participationContext: IPhaseData | IProjectData;
   buttonStyle: 'primary' | 'primary-outlined';
 }
 
@@ -52,18 +52,18 @@ const AddToBasketButton = ({
   const { data: idea } = useIdeaById(ideaId);
   const { getVotes, setVotes, numberOfVotesCast } = useVoting();
 
-  const basketId = participationContext?.relationships?.user_basket?.data?.id;
+  const basketId = participationContext.relationships?.user_basket?.data?.id;
   const { data: basket } = useBasket(basketId);
   const ideaBudget = idea?.data.attributes.budget;
 
   const ideaInBasket = !!getVotes?.(ideaId);
 
-  if (!idea || !ideaBudget || !participationContext) {
+  if (!idea || !ideaBudget) {
     return null;
   }
 
-  const participationContextId = participationContext?.id;
-  const participationContextType = participationContext?.type;
+  const participationContextId = participationContext.id;
+  const participationContextType = participationContext.type;
 
   const actionDescriptor = idea.data.attributes.action_descriptor.voting;
   if (!actionDescriptor) return null;

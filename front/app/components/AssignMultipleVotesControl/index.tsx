@@ -60,7 +60,7 @@ const StyledBox = styled(Box)`
 `;
 interface Props {
   ideaId: string;
-  participationContext?: IPhaseData | IProjectData | null;
+  participationContext: IPhaseData | IProjectData;
   fillWidth?: boolean;
 }
 
@@ -73,7 +73,7 @@ const AssignMultipleVotesControl = ({
   const votes = getVotes?.(ideaId);
 
   // participation context
-  const basketId = participationContext?.relationships?.user_basket?.data?.id;
+  const basketId = participationContext.relationships?.user_basket?.data?.id;
 
   // api
   const { data: basket } = useBasket(basketId);
@@ -134,7 +134,6 @@ const AssignMultipleVotesControl = ({
   if (
     !actionDescriptor ||
     budgetingDisabledReason === 'idea_not_in_current_phase' ||
-    !participationContext ||
     votes === undefined
   ) {
     return null;
