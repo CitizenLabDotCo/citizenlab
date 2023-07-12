@@ -13,7 +13,7 @@ import { ManagerType } from '../..';
 import { isAdmin } from 'services/permissions/roles';
 
 interface Props {
-  postManagerLocation: ManagerType;
+  type: ManagerType;
   statuses?: IIdeaStatusData[] | IInitiativeStatusData[] | null;
   selectedStatus?: string | null;
   onChangeStatusFilter?: (status: string | null) => void;
@@ -23,7 +23,7 @@ const FilterSidebarStatuses = ({
   statuses,
   selectedStatus,
   onChangeStatusFilter,
-  postManagerLocation,
+  type,
 }: Props) => {
   const { data: authUser } = useAuthUser();
 
@@ -52,8 +52,8 @@ const FilterSidebarStatuses = ({
         <Divider />
         {/* Only input statuses can be edited and only admins can do this */}
         {isAdmin({ data: authUser.data }) &&
-          (postManagerLocation === 'AllIdeas' ||
-            (postManagerLocation === 'ProjectIdeas' && (
+          (type === 'AllIdeas' ||
+            (type === 'ProjectIdeas' && (
               <Box display="inline-flex">
                 <Button
                   buttonStyle="text"

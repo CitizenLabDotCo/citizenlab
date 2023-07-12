@@ -44,7 +44,7 @@ interface Props {
   activeFilterMenu: string | null;
   onChangeActiveFilterMenu: (arg: string) => void;
   visibleFilterMenus: string[];
-  postManagerLocation: ManagerType;
+  type: ManagerType;
 }
 
 const FilterSidebar = ({
@@ -63,7 +63,7 @@ const FilterSidebar = ({
   onChangeProjectFilter,
   onChangeStatusFilter,
   visibleFilterMenus,
-  postManagerLocation,
+  type,
 }: Props) => {
   const { formatMessage } = useIntl();
   const handleItemClick = (_event, data) => {
@@ -147,7 +147,7 @@ const FilterSidebar = ({
       key: 'statuses',
       content: (
         <StatusesMenu
-          postManagerLocation={postManagerLocation}
+          type={type}
           statuses={statuses}
           selectedStatus={selectedStatus}
           onChangeStatusFilter={onChangeStatusFilter}
