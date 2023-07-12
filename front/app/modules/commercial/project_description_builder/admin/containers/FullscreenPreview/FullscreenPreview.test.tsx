@@ -22,8 +22,10 @@ let mockProjectDescriptionBuilderLayoutData:
 
 jest.mock(
   'api/project_description_builder/useProjectDescriptionBuilderLayout',
-  () => {
-    return jest.fn(() => mockProjectDescriptionBuilderLayoutData);
+  () => () => {
+    return {
+      data: mockProjectDescriptionBuilderLayoutData,
+    };
   }
 );
 

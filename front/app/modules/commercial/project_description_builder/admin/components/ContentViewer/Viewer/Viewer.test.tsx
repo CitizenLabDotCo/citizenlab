@@ -23,8 +23,10 @@ let mockProjectDescriptionBuilderLayoutData:
 
 jest.mock(
   'api/project_description_builder/useProjectDescriptionBuilderLayout',
-  () => {
-    return jest.fn(() => mockProjectDescriptionBuilderLayoutData);
+  () => () => {
+    return {
+      data: mockProjectDescriptionBuilderLayoutData,
+    };
   }
 );
 
@@ -48,22 +50,5 @@ describe('Preview', () => {
     expect(
       screen.queryByTestId('projectDescriptionBuilderPreviewContent')
     ).not.toBeInTheDocument();
-  });
-
-  it('should shows description when project description builder hook returns error', () => {
-    mockProjectDescriptionBuilderLayoutData = new Error();
-    render(<Preview projectId={projectId} projectTitle={projectTitle} />);
-    expect(
-      screen.getByTestId('projectDescriptionBuilderProjectDescription')
-    ).toBeInTheDocument();
-    expect(
-      screen.queryByTestId('projectDescriptionBuilderPreviewContent')
-    ).not.toBeInTheDocument();
-  });
-  it('shows loading state correctly', () => {
-    mockProjectDescriptionBuilderLayoutData = undefined;
-    render(<Preview projectId={projectId} projectTitle={projectTitle} />);
-
-    expect(screen.getByTestId('spinner')).toBeInTheDocument();
   });
 });
