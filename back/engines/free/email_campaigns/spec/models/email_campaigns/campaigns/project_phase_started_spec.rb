@@ -41,7 +41,7 @@ RSpec.describe EmailCampaigns::Campaigns::ProjectPhaseStarted do
         expect(campaign.reload.send(:campaign_enabled?, activity: notification_activity)).to be false
       end
 
-      it 'returns true when campaign is enabled at phase level' do
+      it 'returns false when campaign is enabled at phase level' do
         phase = create(:phase, campaigns_settings: { project_phase_started: true })
         notification = create(:project_phase_started, phase: phase)
         notification_activity = create(:activity, item: notification, action: 'created')
