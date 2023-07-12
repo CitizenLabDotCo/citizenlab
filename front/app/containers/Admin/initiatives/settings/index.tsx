@@ -75,7 +75,7 @@ const InitiativesSettingsPage = () => {
   } = useUpdateAppConfiguration();
   const { data: navbarItems } = useNavbarItems();
   const proposalsNavbarItemEnabled = navbarItems?.data.some(
-    (navbarItem) => 'proposals' === navbarItem.attributes.code
+    (navbarItem) => navbarItem.attributes.code === 'proposals'
   );
 
   const { data: proposalsPage } = useCustomPageBySlug('initiatives');

@@ -6,7 +6,7 @@ import { INavbarItemResponse, INavbarItemAdd } from './types';
 import { IItemNotInNavbar } from 'utils/navbar';
 import customPagesKeys from 'api/custom_pages/keys';
 
-const addNavbarItem = async (item: IItemNotInNavbar) => {
+const addNavbarItem = (item: IItemNotInNavbar) => {
   const navbarItem: INavbarItemAdd =
     item.type === 'default_item'
       ? {

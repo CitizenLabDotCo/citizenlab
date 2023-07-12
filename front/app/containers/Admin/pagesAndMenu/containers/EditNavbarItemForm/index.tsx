@@ -16,7 +16,6 @@ import { WrappedComponentProps } from 'react-intl';
 
 // hooks
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-
 import useLocalize from 'hooks/useLocalize';
 import useNavbarItems from 'api/navbar/useNavbarItems';
 
