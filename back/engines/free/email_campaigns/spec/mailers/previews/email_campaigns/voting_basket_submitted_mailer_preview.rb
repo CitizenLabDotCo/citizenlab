@@ -11,7 +11,7 @@ module EmailCampaigns
         recipient: recipient_user,
         event_payload: {
           project_url: Frontend::UrlService.new.model_to_url(project, locale: recipient_user.locale),
-          voted_ideas: EmailCampaigns::Campaigns::VotingBasketSubmitted.format_ideas_list(ideas, recipient_user)
+          voted_ideas: EmailCampaigns::Campaigns::VotingBasketSubmitted.new.format_ideas_list(ideas, recipient_user)
         }
       }
       campaign = EmailCampaigns::Campaigns::VotingBasketSubmitted.first

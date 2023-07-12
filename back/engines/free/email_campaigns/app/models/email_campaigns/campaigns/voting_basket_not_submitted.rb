@@ -66,7 +66,7 @@ module EmailCampaigns
     end
 
     def generate_commands(recipient:, activity:)
-      basket = activity.item
+      basket = activity.item.basket
       [{
         event_payload: {
           project_url: Frontend::UrlService.new.model_to_url(basket.participation_context.project, locale: recipient.locale),
