@@ -32,9 +32,7 @@ describe('useAddProjectDescriptionBuilderLayout', () => {
     act(() => {
       result.current.mutate({
         projectId: 'projectId',
-        requestBody: {
-          enabled: true,
-        },
+        enabled: true,
       });
     });
 
@@ -61,9 +59,7 @@ describe('useAddProjectDescriptionBuilderLayout', () => {
     act(() => {
       result.current.mutate({
         projectId: 'projectId',
-        requestBody: {
-          enabled: true,
-        },
+        enabled: true,
       });
     });
 

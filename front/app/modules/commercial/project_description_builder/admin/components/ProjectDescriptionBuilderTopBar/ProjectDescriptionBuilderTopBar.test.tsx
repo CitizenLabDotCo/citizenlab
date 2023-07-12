@@ -145,7 +145,7 @@ describe('ProjectDescriptionBuilderTopBar', () => {
 
     expect(mockAddProjectDescriptionBuilderLayout).toHaveBeenCalledWith({
       projectId: 'id',
-      requestBody: { craftjs_jsonmultiloc: { en: {} } },
+      craftjs_jsonmultiloc: { en: {} },
     });
   });
   it('enables and disables save in accordance with the error status', async () => {

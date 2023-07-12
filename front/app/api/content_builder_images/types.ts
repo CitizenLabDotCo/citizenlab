@@ -8,7 +8,3 @@ export interface IContentBuilderImage {
     };
   };
 }
-
-export interface IAddContentBuilderImage {
-  base64: string;
-}

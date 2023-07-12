@@ -111,9 +111,7 @@ const ImageSettings = injectIntl(({ intl: { formatMessage } }) => {
     setImageFiles(imageFiles);
 
     try {
-      const response = await addContentBuilderImage({
-        base64: imageFiles[0].base64,
-      });
+      const response = await addContentBuilderImage(imageFiles[0].base64);
       setProp((props: Props) => {
         props.dataCode = response.data.attributes.code;
         props.imageUrl = response.data.attributes.image_url;

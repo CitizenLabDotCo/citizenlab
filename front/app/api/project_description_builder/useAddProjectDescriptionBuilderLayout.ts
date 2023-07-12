@@ -10,12 +10,13 @@ import {
 
 const addProjectDescriptionBuilderLayout = async ({
   projectId,
-  requestBody,
+  craftjs_jsonmultiloc,
+  enabled,
 }: IAddProjectDescriptionBuilderLayout) =>
   fetcher<IProjectDescriptionBuilderLayout>({
     path: `/projects/${projectId}/content_builder_layouts/project_description/upsert`,
     action: 'post',
-    body: { content_builder_layout: requestBody },
+    body: { content_builder_layout: { craftjs_jsonmultiloc, enabled } },
   });
 
 const useAddProjectDescriptionBuilderLayout = () => {
@@ -34,7 +35,7 @@ const useAddProjectDescriptionBuilderLayout = () => {
       });
 
       // We invalidate the project if `enabled` changes because the `uses_content_builder` attribute will also change on the project
-      if (variables.requestBody.hasOwnProperty('enabled')) {
+      if (Object.prototype.hasOwnProperty.call(variables, 'enabled')) {
         queryClient.invalidateQueries({
           queryKey: projectsKeys.item({ id: variables.projectId }),
         });

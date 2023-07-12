@@ -26,9 +26,7 @@ describe('useAddContentBuilderImage', () => {
     });
 
     act(() => {
-      result.current.mutate({
-        base64: 'test_base64',
-      });
+      result.current.mutate('test_base64');
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
@@ -47,9 +45,7 @@ describe('useAddContentBuilderImage', () => {
     });
 
     act(() => {
-      result.current.mutate({
-        base64: 'test_base64',
-      });
+      result.current.mutate('test_base64');
     });
 
     await waitFor(() => expect(result.current.isError).toBe(true));

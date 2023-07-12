@@ -20,12 +20,8 @@ export interface IProjectDescriptionBuilderLayout {
   data: IProjectDescriptionBuilderData;
 }
 
-export interface IProjectDescriptionBuilderLayoutObject {
-  craftjs_jsonmultiloc?: JsonMultiloc;
-  enabled?: boolean;
-}
-
 export interface IAddProjectDescriptionBuilderLayout {
   projectId: string;
-  requestBody: IProjectDescriptionBuilderLayoutObject;
+  craftjs_jsonmultiloc?: JsonMultiloc;
+  enabled?: boolean;
 }

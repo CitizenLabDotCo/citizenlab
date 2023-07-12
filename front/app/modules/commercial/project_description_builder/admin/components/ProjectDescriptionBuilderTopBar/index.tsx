@@ -68,11 +68,9 @@ const ProjectDescriptionBuilderTopBar = ({
         setLoading(true);
         await addProjectDescriptionBuilderLayout({
           projectId,
-          requestBody: {
-            craftjs_jsonmultiloc: {
-              ...draftEditorData,
-              [selectedLocale]: query.getSerializedNodes(),
-            },
+          craftjs_jsonmultiloc: {
+            ...draftEditorData,
+            [selectedLocale]: query.getSerializedNodes(),
           },
         });
       } catch {

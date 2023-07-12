@@ -77,7 +77,7 @@ describe('ProjectDescriptionBuilderToggle', () => {
     ).toBeInTheDocument();
     expect(mockAddProjectDescriptionBuilderLayout).toHaveBeenCalledWith({
       projectId: 'projectId',
-      requestBody: { enabled: true },
+      enabled: true,
     });
   });
 
@@ -98,7 +98,7 @@ describe('ProjectDescriptionBuilderToggle', () => {
     expect(screen.queryByText('QuillLabel')).not.toBeInTheDocument();
     expect(mockAddProjectDescriptionBuilderLayout).toHaveBeenCalledWith({
       projectId: 'projectId',
-      requestBody: { enabled: true },
+      enabled: true,
     });
   });
 

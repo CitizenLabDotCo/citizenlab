@@ -98,7 +98,7 @@ const ProjectDescriptionBuilderToggle = ({
   const toggleLayoutEnabledStatus = async (enabled: boolean) => {
     await addProjectDescriptionBuilderLayout({
       projectId: params.projectId,
-      requestBody: { enabled },
+      enabled,
     });
   };
 

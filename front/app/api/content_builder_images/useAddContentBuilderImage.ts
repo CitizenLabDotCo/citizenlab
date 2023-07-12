@@ -2,9 +2,9 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import projectFolderImagesKeys from './keys';
-import { IContentBuilderImage, IAddContentBuilderImage } from './types';
+import { IContentBuilderImage } from './types';
 
-const addContentBuilderImage = async ({ base64 }: IAddContentBuilderImage) =>
+const addContentBuilderImage = async (base64: string) =>
   fetcher<IContentBuilderImage>({
     path: '/content_builder_layout_images',
     action: 'post',
@@ -13,7 +13,7 @@ const addContentBuilderImage = async ({ base64 }: IAddContentBuilderImage) =>
 
 const useAddContentBuilderImage = () => {
   const queryClient = useQueryClient();
-  return useMutation<IContentBuilderImage, CLErrors, IAddContentBuilderImage>({
+  return useMutation<IContentBuilderImage, CLErrors, string>({
     mutationFn: addContentBuilderImage,
     onSuccess: () => {
       queryClient.invalidateQueries({
