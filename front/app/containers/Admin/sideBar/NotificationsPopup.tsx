@@ -70,7 +70,7 @@ export const NotificationsPopup = () => {
             display="flex"
             alignItems="center"
             w="100%"
-            p={isSmallerThanPhone ? '10px 0' : '10px 8px 10px 16px'}
+            p={isSmallerThanPhone ? '10px 0' : '10px 16px'}
             justifyContent={isSmallerThanPhone ? 'center' : undefined}
           >
             <Box
@@ -93,18 +93,18 @@ export const NotificationsPopup = () => {
                   fontSize="base"
                   textAlign="left"
                   my="0px"
-                  w="100%"
                 >
                   {formatMessage({ ...messages.notifications })}
                 </Text>
               </>
             )}
-            <Box
-              w="auto"
-              h={isSmallerThanPhone ? '0px' : '18px'}
-              ref={iconDivRef}
-            >
-              {unreadNotificationsCount > 0 && (
+            {!isSmallerThanPhone && unreadNotificationsCount > 0 && (
+              <Box
+                w="auto"
+                h={isSmallerThanPhone ? '0px' : '18px'}
+                ref={iconDivRef}
+                ml="auto"
+              >
                 <Box
                   background={colors.red500}
                   p="0px 4px"
@@ -117,8 +117,8 @@ export const NotificationsPopup = () => {
                     {unreadNotificationsCount}
                   </Text>
                 </Box>
-              )}
-            </Box>
+              </Box>
+            )}
           </Box>
         </StyledBox>
       }

@@ -90,12 +90,8 @@ export const UserMenu = () => {
               Margins are needed to align with other icons/items in sidebar.
               Changes in Avatar component are needed so size prop behaves correctly.
             */}
-            <Box ml="-2px" mr="6px">
-              <Avatar
-                userId={authUser.data.id}
-                size={20}
-                addVerificationBadge
-              />
+            <Box ml="-2px" mr={isSmallerThanPhone ? '0' : '6px'}>
+              <Avatar userId={authUser.data.id} size={20} />
             </Box>
             {!isSmallerThanPhone && (
               <Box
