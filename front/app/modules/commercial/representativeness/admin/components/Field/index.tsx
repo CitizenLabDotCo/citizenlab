@@ -26,7 +26,6 @@ import {
 import { isSupported } from '../../containers/Dashboard/utils';
 
 // typings
-import { IUserCustomFieldOptionData } from 'api/user_custom_fields_options/types';
 import useDeleteReferenceDistribution from '../../api/reference_distribution/useDeleteReferenceDistribution';
 import useAddReferenceDistribution from '../../api/reference_distribution/useAddReferenceDistribution';
 import {
@@ -39,18 +38,16 @@ interface Props {
 }
 
 interface InnerProps extends Props {
-  userCustomFieldOptions: IUserCustomFieldOptionData[];
   referenceDistribution: TReferenceDistributionData | NilOrError;
   remoteFormValues?: RemoteFormValues;
-  referenceDataUploaded: boolean;
+  initialValues: FormValues | null;
 }
 
 const Field = ({
   userCustomFieldId,
-  userCustomFieldOptions,
   referenceDistribution,
-  referenceDataUploaded,
   remoteFormValues,
+  initialValues,
 }: InnerProps) => {
   const { mutateAsync: deleteReferenceDistribution } =
     useDeleteReferenceDistribution();
@@ -70,11 +67,7 @@ const Field = ({
   );
 
   const [formValues, setFormValues] = useState<FormValues | null>(
-    getInitialValues(
-      userCustomFieldOptions,
-      referenceDataUploaded,
-      remoteFormValues
-    )
+    initialValues
   );
 
   const { data: userCustomField } = useUserCustomField(userCustomFieldId);
@@ -197,28 +190,28 @@ const Field = ({
 const FieldWrapper = ({ userCustomFieldId }: Props) => {
   const { data: userCustomFieldOptions } =
     useUserCustomFieldOptions(userCustomFieldId);
-  const {
-    referenceDistribution,
-    referenceDataUploaded,
-    remoteFormValues,
-    isFetchedReferenceDistributionData,
-  } = useReferenceDistributionData(userCustomFieldId);
+  const { referenceDistribution, referenceDataUploaded, remoteFormValues } =
+    useReferenceDistributionData(userCustomFieldId);
 
   if (
     isNilOrError(userCustomFieldOptions) ||
-    referenceDataUploaded === undefined ||
-    !isFetchedReferenceDistributionData
+    referenceDataUploaded === undefined
   ) {
     return null;
   }
 
+  const initialValues = getInitialValues(
+    userCustomFieldOptions.data,
+    referenceDataUploaded,
+    remoteFormValues
+  );
+
   return (
     <Field
       userCustomFieldId={userCustomFieldId}
-      userCustomFieldOptions={userCustomFieldOptions?.data}
       referenceDistribution={referenceDistribution}
-      referenceDataUploaded={referenceDataUploaded}
       remoteFormValues={remoteFormValues}
+      initialValues={initialValues}
     />
   );
 };

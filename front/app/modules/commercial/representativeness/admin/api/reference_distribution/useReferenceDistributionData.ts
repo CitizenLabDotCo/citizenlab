@@ -19,27 +19,23 @@ import useReferenceDistribution from './useReferenceDistribution';
 export type RemoteFormValues = Record<string, number>;
 
 function useReferenceDistributionData(userCustomFieldId: string) {
-  const { data: userCustomField, isFetched: isFetchedCustomField } =
-    useUserCustomField(userCustomFieldId);
+  const { data: userCustomField } = useUserCustomField(userCustomFieldId);
 
-  const {
-    data: referenceDistribution,
-    isFetched: isFetchedReferenceDistribution,
-  } = useReferenceDistribution({
+  const { data: referenceDistribution } = useReferenceDistribution({
     id: userCustomFieldId,
   });
 
-  const referenceDataUploaded =
-    !!userCustomField?.data.relationships?.current_ref_distribution.data;
+  const referenceDataUploaded = userCustomField
+    ? !!userCustomField.data.relationships?.current_ref_distribution.data
+    : undefined;
 
   return {
-    isFetchedReferenceDistributionData:
-      isFetchedCustomField || isFetchedReferenceDistribution,
     referenceDistribution: referenceDistribution?.data,
     referenceDataUploaded,
-    remoteFormValues: referenceDistribution
-      ? getRemoteFormValues(referenceDistribution.data)
-      : undefined,
+    remoteFormValues:
+      referenceDistribution && referenceDataUploaded
+        ? getRemoteFormValues(referenceDistribution.data)
+        : undefined,
   };
 }
 
