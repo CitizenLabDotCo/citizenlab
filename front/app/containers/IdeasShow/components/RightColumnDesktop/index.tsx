@@ -91,7 +91,6 @@ const RightColumnDesktop = ({
               votingConfig?.getIdeaPageVoteInput &&
               votingConfig.getIdeaPageVoteInput({
                 ideaId,
-                projectId,
                 participationContext,
                 compact: false,
               })}

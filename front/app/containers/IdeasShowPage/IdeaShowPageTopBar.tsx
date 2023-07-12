@@ -165,7 +165,6 @@ const IdeaShowPageTopBar = ({
               <Box mr="8px">
                 {votingConfig?.getIdeaPageVoteInput({
                   ideaId,
-                  projectId,
                   participationContext,
                   compact: true,
                 })}

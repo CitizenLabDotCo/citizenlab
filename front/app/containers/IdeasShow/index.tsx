@@ -191,7 +191,6 @@ const Content = ({
               <Box mb="16px">
                 {votingMethodConfig.getIdeaPageVoteInput({
                   ideaId,
-                  projectId: project.id,
                   compact: true,
                   participationContext,
                 })}

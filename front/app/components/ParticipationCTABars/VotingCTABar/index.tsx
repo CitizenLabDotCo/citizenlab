@@ -136,7 +136,7 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
               textAlign="left"
               aria-live="polite"
             >
-              <VotesCounter projectId={project.id} />
+              <VotesCounter participationContext={participationContext} />
             </Text>
           )
         }
