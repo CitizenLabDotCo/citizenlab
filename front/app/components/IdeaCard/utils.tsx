@@ -20,7 +20,6 @@ export const getInteractions = ({
   idea,
 }: InteractionsProps) => {
   if (participationContext) {
-    const projectId = idea.data.relationships.project.data.id;
     const ideaBudget = idea.data.attributes.budget;
     const votingMethod = participationContext.attributes.voting_method;
 
@@ -33,10 +32,9 @@ export const getInteractions = ({
         <Box display="flex" alignItems="center">
           <Box w="100%" className="e2e-assign-budget">
             <AddToBasketButton
-              participationContext={participationContext}
-              projectId={projectId}
-              buttonStyle="primary-outlined"
               ideaId={idea.data.id}
+              participationContext={participationContext}
+              buttonStyle="primary-outlined"
             />
           </Box>
         </Box>
@@ -46,9 +44,8 @@ export const getInteractions = ({
       return (
         <Box display="flex" alignItems="center">
           <AssignMultipleVotesControl
-            projectId={projectId}
             ideaId={idea.data.id}
-            // participationContext={participationContext} // TODO: After Luuc is finished, add support for viewing the past phases
+            participationContext={participationContext}
           />
         </Box>
       );

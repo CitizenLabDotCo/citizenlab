@@ -13,9 +13,6 @@ import {
 // api
 import useBasket from 'api/baskets/useBasket';
 import useAuthUser from 'api/me/useAuthUser';
-import usePhases from 'api/phases/usePhases';
-import { getCurrentPhase } from 'api/phases/utils';
-import useProjectById from 'api/projects/useProjectById';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useCumulativeVoting from 'api/baskets_ideas/useVoting';
 
@@ -33,6 +30,10 @@ import messages from './messages';
 
 // utils
 import { isNil } from 'utils/helperUtils';
+
+// typings
+import { IPhaseData } from 'api/phases/types';
+import { IProjectData } from 'api/projects/types';
 
 const StyledBox = styled(Box)`
   input {
@@ -58,24 +59,20 @@ const StyledBox = styled(Box)`
   }
 `;
 interface Props {
-  projectId: string;
   ideaId: string;
+  participationContext?: IPhaseData | IProjectData | null;
   fillWidth?: boolean;
 }
 
 const AssignMultipleVotesControl = ({
-  projectId,
   ideaId,
+  participationContext,
   fillWidth,
 }: Props) => {
-  const { data: project } = useProjectById(projectId);
-  const { data: phases } = usePhases(projectId);
   const { getVotes, setVotes, userHasVotesLeft } = useCumulativeVoting();
   const votes = getVotes?.(ideaId);
 
   // participation context
-  const currentPhase = phases ? getCurrentPhase(phases.data) : null;
-  const participationContext = currentPhase || project?.data;
   const basketId = participationContext?.relationships?.user_basket?.data?.id;
 
   // api

@@ -4,7 +4,6 @@ import React, { FormEvent } from 'react';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useBasket from 'api/baskets/useBasket';
-import useProjectById from 'api/projects/useProjectById';
 import useVoting from 'api/baskets_ideas/useVoting';
 
 // events
@@ -40,44 +39,31 @@ import { IProjectData } from 'api/projects/types';
 
 interface Props {
   ideaId: string;
-  projectId: string;
   participationContext?: IPhaseData | IProjectData | null;
   buttonStyle: 'primary' | 'primary-outlined';
 }
 
 const AddToBasketButton = ({
   ideaId,
-  projectId,
   buttonStyle,
   participationContext,
 }: Props) => {
   const { data: appConfig } = useAppConfiguration();
   const { data: idea } = useIdeaById(ideaId);
-  const { data: project } = useProjectById(projectId);
   const { getVotes, setVotes, numberOfVotesCast } = useVoting();
 
-  const participationContextType =
-    project?.data.attributes.process_type === 'continuous'
-      ? 'project'
-      : 'phase';
-
-  const participationContextId = participationContext?.id || null;
   const basketId = participationContext?.relationships?.user_basket?.data?.id;
   const { data: basket } = useBasket(basketId);
   const ideaBudget = idea?.data.attributes.budget;
 
   const ideaInBasket = !!getVotes?.(ideaId);
 
-  if (
-    !idea ||
-    !ideaBudget ||
-    !participationContext ||
-    !participationContextId
-  ) {
+  if (!idea || !ideaBudget || !participationContext) {
     return null;
   }
 
-  ideaBudget;
+  const participationContextId = participationContext?.id;
+  const participationContextType = participationContext?.type;
 
   const actionDescriptor = idea.data.attributes.action_descriptor.voting;
   if (!actionDescriptor) return null;
