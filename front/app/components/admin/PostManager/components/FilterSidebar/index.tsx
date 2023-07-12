@@ -15,6 +15,7 @@ import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 import { ITopicData } from 'api/topics/types';
 import { useIntl } from 'utils/cl-intl';
+import { ManagerType } from '../..';
 
 const InfoIcon = styled(Icon)`
   fill: ${colors.teal700};
@@ -43,6 +44,7 @@ interface Props {
   activeFilterMenu: string | null;
   onChangeActiveFilterMenu: (arg: string) => void;
   visibleFilterMenus: string[];
+  postManagerLocation: ManagerType;
 }
 
 const FilterSidebar = ({
@@ -61,6 +63,7 @@ const FilterSidebar = ({
   onChangeProjectFilter,
   onChangeStatusFilter,
   visibleFilterMenus,
+  postManagerLocation,
 }: Props) => {
   const { formatMessage } = useIntl();
   const handleItemClick = (_event, data) => {
@@ -144,6 +147,7 @@ const FilterSidebar = ({
       key: 'statuses',
       content: (
         <StatusesMenu
+          postManagerLocation={postManagerLocation}
           statuses={statuses}
           selectedStatus={selectedStatus}
           onChangeStatusFilter={onChangeStatusFilter}
