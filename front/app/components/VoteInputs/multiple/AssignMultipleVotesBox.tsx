@@ -5,6 +5,8 @@ import useIdeaById from 'api/ideas/useIdeaById';
 
 // components
 import AssignMultipleVotesControl from './AssignMultipleVotesInput';
+import { Text } from '@citizenlab/cl2-component-library';
+import VotesCounter from 'components/VotesCounter';
 
 // styles
 import styled from 'styled-components';
@@ -44,6 +46,9 @@ const AssignMultipleVotesBox = memo(
           ideaId={ideaId}
           participationContext={participationContext}
         />
+        <Text mb="0px" mt="8px" color="grey600" fontSize="xs">
+          <VotesCounter participationContext={participationContext} />
+        </Text>
       </IdeaPageContainer>
     );
   }
