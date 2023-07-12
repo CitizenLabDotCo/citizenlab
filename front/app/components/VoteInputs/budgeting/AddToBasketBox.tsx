@@ -11,7 +11,7 @@ import VotesCounter from 'components/VotesCounter';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../../containers/IdeasShow/components/RightColumnDesktop/messages';
+import messages from '../_shared/messages';
 import FormattedBudget from 'utils/currency/FormattedBudget';
 
 // styles

@@ -4,27 +4,21 @@ import React, { memo } from 'react';
 import useIdeaById from 'api/ideas/useIdeaById';
 
 // components
+import WhiteBox from '../_shared/WhiteBox';
 import AssignMultipleVotesControl from './AssignMultipleVotesInput';
-import { Text } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import VotesCounter from 'components/VotesCounter';
 
+// i18n
+import messages from '../_shared/messages';
+import { FormattedMessage } from 'utils/cl-intl';
+
 // styles
-import styled from 'styled-components';
-import { colors, media } from 'utils/styleUtils';
+import { colors } from 'utils/styleUtils';
 
 // typings
 import { IProjectData } from 'api/projects/types';
 import { IPhaseData } from 'api/phases/types';
-
-const IdeaPageContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  ${media.tablet`
-    padding: 20px;
-    background: ${colors.background};
-  `}
-`;
 
 interface Props {
   ideaId: string;
@@ -41,15 +35,26 @@ const AssignMultipleVotesBox = memo(
     }
 
     return (
-      <IdeaPageContainer>
+      <WhiteBox>
         <AssignMultipleVotesControl
           ideaId={ideaId}
           participationContext={participationContext}
         />
-        <Text mb="0px" mt="8px" color="grey600" fontSize="xs">
-          <VotesCounter participationContext={participationContext} />
-        </Text>
-      </IdeaPageContainer>
+        {participationContext?.attributes.voting_max_total && (
+          <Box
+            color={colors.grey700}
+            mt="8px"
+            display="flex"
+            width="100%"
+            justifyContent="center"
+          >
+            <FormattedMessage {...messages.youHave} />
+            <Box ml="4px">
+              <VotesCounter participationContext={participationContext} />
+            </Box>
+          </Box>
+        )}
+      </WhiteBox>
     );
   }
 );

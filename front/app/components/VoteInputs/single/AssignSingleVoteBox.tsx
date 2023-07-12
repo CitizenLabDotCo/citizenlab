@@ -5,29 +5,21 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import useBasket from 'api/baskets/useBasket';
 
 // styles
-import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 // components
+import WhiteBox from '../_shared/WhiteBox';
 import AssignSingleVoteButton from 'components/VoteInputs/single/AssignSingleVoteButton';
 import VotesCounter from 'components/VotesCounter';
 import { Box } from '@citizenlab/cl2-component-library';
 
 // intl
-import messages from '../../../containers/IdeasShow/components/RightColumnDesktop/messages';
+import messages from '../_shared/messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 // typings
 import { IProjectData } from 'api/projects/types';
 import { IPhaseData } from 'api/phases/types';
-
-const IdeaPageContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  background: white;
-  padding: 24px;
-`;
 
 interface Props {
   ideaId: string;
@@ -48,7 +40,7 @@ const AssignSingleVoteBox = memo(({ ideaId, participationContext }: Props) => {
   const totalVotesGreaterThanZero = totalVotes !== undefined && totalVotes > 0;
 
   return (
-    <IdeaPageContainer>
+    <WhiteBox>
       <AssignSingleVoteButton
         ideaId={ideaId}
         participationContext={participationContext}
@@ -88,7 +80,7 @@ const AssignSingleVoteBox = memo(({ ideaId, participationContext }: Props) => {
           )}
         </Box>
       )}
-    </IdeaPageContainer>
+    </WhiteBox>
   );
 });
 
