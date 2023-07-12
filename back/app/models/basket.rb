@@ -91,6 +91,18 @@ class Basket < ApplicationRecord
         message: "must be less than or equal to #{participation_context.voting_max_total}"
       )
     end
+
+    max_votes = participation_context.voting_max_votes_per_idea
+    return unless max_votes
+
+    baskets_ideas.each do |baskets_idea|
+      if baskets_idea.votes > max_votes
+        errors.add(
+          :baskets_ideas, :less_than_or_equal_to, value: baskets_idea.votes, count: max_votes, idea_id: baskets_idea.idea_id,
+          message: "must be less than or equal to #{max_votes}"
+        )
+      end
+    end
   end
 
   # NOTE: All ideas on the project are updated in case ideas have been removed from a basket or a basket is unpublished

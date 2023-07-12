@@ -30,7 +30,6 @@ class BasketsIdea < ApplicationRecord
   validates :idea, :basket, presence: true
   validates :idea_id, uniqueness: { scope: :basket_id }
   validate :validate_by_voting_method
-  validate :max_votes_per_idea
   validates :votes, numericality: { only_integer: true, greater_than: 0 }
 
   private
@@ -41,15 +40,5 @@ class BasketsIdea < ApplicationRecord
 
   def validate_by_voting_method
     Factory.instance.voting_method_for(basket.participation_context).validate_baskets_idea(self)
-  end
-
-  def max_votes_per_idea
-    max_votes = basket.participation_context.voting_max_votes_per_idea
-    if max_votes && (votes > max_votes)
-      errors.add(
-        :votes, :less_than_or_equal_to, value: votes, count: max_votes,
-        message: "must be less than or equal to #{max_votes}"
-      )
-    end
   end
 end
