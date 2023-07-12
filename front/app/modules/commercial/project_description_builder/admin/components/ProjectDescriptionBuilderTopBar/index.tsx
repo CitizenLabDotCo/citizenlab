@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import useProjectById from 'api/projects/useProjectById';
 import useLocalize from 'hooks/useLocalize';
 import { useEditor, SerializedNodes } from '@craftjs/core';
+import useAddProjectDescriptionBuilderLayout from 'api/project_description_builder/useAddProjectDescriptionBuilderLayout';
 
 // components
 import Container from 'components/admin/ContentBuilder/TopBar/Container';
@@ -24,9 +25,6 @@ import { useParams } from 'react-router-dom';
 
 // types
 import { Locale } from 'typings';
-
-// Hooks
-import useAddProjectDescriptionBuilderLayout from 'api/project_description_builder/useAddProjectDescriptionBuilderLayout';
 
 type ProjectDescriptionBuilderTopBarProps = {
   hasPendingState?: boolean;

@@ -10,6 +10,7 @@ import styled from 'styled-components';
 // Hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useProjectDescriptionBuilderLayout from 'api/project_description_builder/useProjectDescriptionBuilderLayout';
+import useAddProjectDescriptionBuilderLayout from 'api/project_description_builder/useAddProjectDescriptionBuilderLayout';
 
 // Utils
 import Link from 'utils/cl-router/Link';
@@ -19,15 +20,11 @@ import { fontSizes } from 'utils/styleUtils';
 import { Toggle, IconTooltip, Box } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-// import { addProjectDescriptionBuilderLayout } from 'modules/commercial/project_description_builder/services/projectDescriptionBuilder';
 
 // Messages
 import messages from '../../messages';
 import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
-
-// Hooks
-import useAddProjectDescriptionBuilderLayout from 'api/project_description_builder/useAddProjectDescriptionBuilderLayout';
 
 type ProjectDescriptionBuilderToggleProps = {
   valueMultiloc: Multiloc | undefined | null;
@@ -99,12 +96,6 @@ const ProjectDescriptionBuilderToggle = ({
   };
 
   const toggleLayoutEnabledStatus = async (enabled: boolean) => {
-    // try {
-    //   await addProjectDescriptionBuilderLayout(params.projectId, { enabled });
-    // } catch {
-    //   // Do nothing
-    // }
-
     await addProjectDescriptionBuilderLayout({
       projectId: params.projectId,
       requestBody: { enabled },

@@ -11,7 +11,6 @@ import {
 import PageBreakBox from '../PageBreakBox';
 
 // image upload
-// import { addContentBuilderImage } from 'services/contentBuilderImages';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { UploadFile } from 'typings';
@@ -112,7 +111,6 @@ const ImageSettings = injectIntl(({ intl: { formatMessage } }) => {
     setImageFiles(imageFiles);
 
     try {
-      // const response = await addContentBuilderImage(imageFiles[0].base64);
       const response = await addContentBuilderImage({
         base64: imageFiles[0].base64,
       });
