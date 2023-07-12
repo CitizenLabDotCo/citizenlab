@@ -12,9 +12,7 @@ module EmailCampaigns
       # We currently only have one campaign that can be enabled/disabled at phase level,
       # and we align the respective phase-level values with the campaign enabled when the campaign value is updated.
       return unless campaign.saved_change_to_enabled? &&
-                    campaign.id == EmailCampaigns::Campaign.where(
-                      type: 'EmailCampaigns::Campaigns::ProjectPhaseStarted'
-                    ).first.id
+                    campaign.type == 'EmailCampaigns::Campaigns::ProjectPhaseStarted'
 
       Phase.update_all(
         "campaigns_settings = jsonb_set(campaigns_settings, array['project_phase_started']," \
