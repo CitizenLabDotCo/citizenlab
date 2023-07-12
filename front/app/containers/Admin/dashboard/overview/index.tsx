@@ -50,7 +50,7 @@ interface DataProps {
 export type IResource = 'ideas' | 'comments' | 'reactions';
 
 const OverviewDashboard = ({ projects }: DataProps) => {
-  const user = useAuthUser();
+  const { data: user } = useAuthUser();
   const { formatMessage } = useIntl();
 
   const resourceOptions = useMemo(

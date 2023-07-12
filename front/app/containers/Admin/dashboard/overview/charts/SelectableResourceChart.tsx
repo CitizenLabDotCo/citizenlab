@@ -1,8 +1,8 @@
 import React, { useRef, useEffect, useState } from 'react';
 
 // intl
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { MessageDescriptor } from 'react-intl';
 import messages from '../../messages';
 
 // styling
@@ -14,7 +14,6 @@ import {
 import { media, colors } from 'utils/styleUtils';
 
 // resources
-import GetSerieFromStream from 'resources/GetSerieFromStream';
 
 // components
 import ReportExportMenu from 'components/admin/ReportExportMenu';
@@ -30,22 +29,15 @@ import BarChart from 'components/admin/Graphs/BarChart';
 
 // typings
 import {
-  IIdeasByTopic,
-  ICommentsByTopic,
-  IReactionsByTopic,
-  IIdeasByProject,
-  ICommentsByProject,
-  IReactionsByProject,
   ideasByProjectXlsxEndpoint,
   commentsByProjectXlsxEndpoint,
   reactionsByProjectXlsxEndpoint,
 } from 'services/stats';
-import { IStreamParams, IStream } from 'utils/streams';
 import { IResource } from '..';
 import { IGraphFormat, IOption } from 'typings';
 
 // utils
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import { ideasByTopicXlsxEndpoint } from 'api/ideas_by_topic/util';
 import { commentsByTopicXlsxEndpoint } from 'api/comments_by_topic/util';
 import { reactionsByTopicXlsxEndpoint } from 'api/reactions_by_topic/util';
@@ -94,25 +86,11 @@ export const GraphCardShowMore = styled.button`
   }
 `;
 
-interface DataProps {
-  serie: IGraphFormat | NilOrError;
-}
-
-type ISupportedData =
-  | IIdeasByTopic
-  | IReactionsByTopic
-  | ICommentsByTopic
-  | IIdeasByProject
-  | IReactionsByProject
-  | ICommentsByProject;
-
 type ByWhat = 'Topic' | 'Project';
 
 interface QueryProps {
   startAt: string | null | undefined;
   endAt: string | null;
-  stream: (streamParams?: IStreamParams | null) => IStream<ISupportedData>;
-  convertToGraphFormat: (resource: ISupportedData) => IGraphFormat | null;
   currentFilter: string | undefined;
   byWhat: ByWhat;
   currentProjectFilter?: string;
@@ -124,14 +102,13 @@ interface QueryProps {
   resolution: IResolution;
 }
 
-interface InputProps extends QueryProps {
+interface Props extends QueryProps {
   className?: string;
   onResourceByXChange: (option: IOption) => void;
   currentSelectedResource: IResource;
   resourceOptions: IOption[];
+  serie?: IGraphFormat;
 }
-
-interface Props extends InputProps, DataProps {}
 
 const RESOURCE_MESSAGES: Record<IResource, MessageDescriptor> = {
   ideas: messages.inputs,
@@ -171,9 +148,9 @@ const SelectableResourceChart = ({
   currentFilter,
   byWhat,
   serie,
-  intl: { formatMessage },
   ...reportExportMenuProps
-}: Props & WrappedComponentProps) => {
+}: Props) => {
+  const { formatMessage } = useIntl();
   const currentChart = useRef();
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [showMore, setShowMore] = useState<boolean | null>(null);
@@ -216,7 +193,7 @@ const SelectableResourceChart = ({
               options={resourceOptions}
             />
           </SHiddenLabel>
-          {!isNilOrError(serie) && (
+          {serie && (
             <ReportExportMenu
               svgNode={currentChart}
               name={formatMessage(REPORT_EXPORT_MENU_NAME_MESSAGES[byWhat])}
@@ -271,10 +248,4 @@ const SelectableResourceChart = ({
   );
 };
 
-const SelectableResourceChartWithHoCs = injectIntl(SelectableResourceChart);
-
-export default (inputProps: InputProps) => (
-  <GetSerieFromStream {...inputProps}>
-    {(serie) => <SelectableResourceChartWithHoCs {...serie} {...inputProps} />}
-  </GetSerieFromStream>
-);
+export default SelectableResourceChart;

@@ -11,10 +11,14 @@ const fetchIdeasByTopic = (params: IIdeasByTopicParams) =>
     queryParams: params,
   });
 
-const useIdeasByTopic = ({ ...queryParameters }: IIdeasByTopicParams) => {
+const useIdeasByTopic = ({
+  enabled,
+  ...queryParameters
+}: IIdeasByTopicParams & { enabled: boolean }) => {
   return useQuery<IIdeasByTopic, CLErrors, IIdeasByTopic, IdeasByTopicKeys>({
     queryKey: ideasByTopicKeys.item(queryParameters),
     queryFn: () => fetchIdeasByTopic(queryParameters),
+    enabled,
   });
 };
 

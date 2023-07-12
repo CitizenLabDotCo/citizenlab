@@ -45,7 +45,9 @@ describe('useIdeasByTopic', () => {
       () =>
         useIdeasByTopic({
           project: 'project',
+          enabled: true,
         }),
+
       {
         wrapper: createQueryClientWrapper(),
       }
@@ -70,6 +72,7 @@ describe('useIdeasByTopic', () => {
       () =>
         useIdeasByTopic({
           project: 'project',
+          enabled: true,
         }),
       {
         wrapper: createQueryClientWrapper(),

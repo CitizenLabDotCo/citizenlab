@@ -15,7 +15,10 @@ const fetchCommentsByTopic = (params: ICommentsByTopicParams) =>
     queryParams: params,
   });
 
-const useCommentsByTopic = ({ ...queryParameters }: ICommentsByTopicParams) => {
+const useCommentsByTopic = ({
+  enabled,
+  ...queryParameters
+}: ICommentsByTopicParams & { enabled: boolean }) => {
   return useQuery<
     ICommentsByTopic,
     CLErrors,
@@ -24,6 +27,7 @@ const useCommentsByTopic = ({ ...queryParameters }: ICommentsByTopicParams) => {
   >({
     queryKey: commentsByTopicKeys.item(queryParameters),
     queryFn: () => fetchCommentsByTopic(queryParameters),
+    enabled,
   });
 };
 

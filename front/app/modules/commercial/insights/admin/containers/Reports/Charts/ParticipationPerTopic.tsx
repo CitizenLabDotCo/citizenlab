@@ -101,16 +101,19 @@ const ParticipationPerTopic = ({ endAt, projectId, className }: Props) => {
   const { data: ideasByTopic } = useIdeasByTopic({
     end_at: endAt,
     project: projectId ?? undefined,
+    enabled: true,
   });
 
   const { data: commentsByTopic } = useCommentsByTopic({
     end_at: endAt,
     project: projectId ?? undefined,
+    enabled: true,
   });
 
   const { data: reactionsByTopic } = useReactionsByTopic({
     end_at: endAt,
     project: projectId ?? undefined,
+    enabled: true,
   });
 
   const ideasByTopicSerie =

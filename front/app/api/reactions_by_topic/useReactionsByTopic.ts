@@ -16,8 +16,9 @@ const fetchReactionsByTopic = (params: IReactionsByTopicParams) =>
   });
 
 const useReactionsByTopic = ({
+  enabled,
   ...queryParameters
-}: IReactionsByTopicParams) => {
+}: IReactionsByTopicParams & { enabled: boolean }) => {
   return useQuery<
     IReactionsByTopic,
     CLErrors,
@@ -26,6 +27,7 @@ const useReactionsByTopic = ({
   >({
     queryKey: reactionsByTopicKeys.item(queryParameters),
     queryFn: () => fetchReactionsByTopic(queryParameters),
+    enabled,
   });
 };
 

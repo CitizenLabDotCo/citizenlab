@@ -45,6 +45,7 @@ describe('useReactionsByTopic', () => {
       () =>
         useReactionsByTopic({
           project: 'project',
+          enabled: true,
         }),
       {
         wrapper: createQueryClientWrapper(),
@@ -70,6 +71,7 @@ describe('useReactionsByTopic', () => {
       () =>
         useReactionsByTopic({
           project: 'project',
+          enabled: true,
         }),
       {
         wrapper: createQueryClientWrapper(),

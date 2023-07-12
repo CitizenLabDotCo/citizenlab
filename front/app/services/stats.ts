@@ -5,23 +5,6 @@ import { Multiloc } from 'typings';
 export const apiEndpoint = `${API_PATH}/stats`;
 
 // Ideas
-export interface IIdeasByTopic {
-  data: {
-    type: 'ideas_by_topics';
-    attributes: {
-      series: {
-        ideas: {
-          [key: string]: number;
-        };
-      };
-      topics: {
-        [key: string]: {
-          title_multiloc: Multiloc;
-        };
-      };
-    };
-  };
-}
 
 export interface IIdeasByProject {
   data: {
@@ -39,15 +22,6 @@ export interface IIdeasByProject {
       };
     };
   };
-}
-
-export const ideasByTopicXlsxEndpoint = `${apiEndpoint}/ideas_by_topic_as_xlsx`;
-
-export function ideasByTopicStream(streamParams: IStreamParams | null = null) {
-  return streams.get<IIdeasByTopic>({
-    apiEndpoint: `${apiEndpoint}/ideas_by_topic`,
-    ...streamParams,
-  });
 }
 
 export const ideasByProjectXlsxEndpoint = `${apiEndpoint}/ideas_by_project_as_xlsx`;
@@ -85,23 +59,6 @@ export function activeUsersByTimeStream(
 export const activeUsersByTimeCumulativeXlsxEndpoint = `${apiEndpoint}/active_users_by_time_cumulative_as_xlsx`;
 
 // Comments
-export interface ICommentsByTopic {
-  data: {
-    type: 'comments_by_topic';
-    attributes: {
-      series: {
-        comments: {
-          [key: string]: number;
-        };
-      };
-      topics: {
-        [key: string]: {
-          title_multiloc: Multiloc;
-        };
-      };
-    };
-  };
-}
 
 export interface ICommentsByProject {
   data: {
@@ -121,17 +78,6 @@ export interface ICommentsByProject {
   };
 }
 
-export const commentsByTopicXlsxEndpoint = `${apiEndpoint}/comments_by_topic_as_xlsx`;
-
-export function commentsByTopicStream(
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<ICommentsByTopic>({
-    apiEndpoint: `${apiEndpoint}/comments_by_topic`,
-    ...streamParams,
-  });
-}
-
 export const commentsByProjectXlsxEndpoint = `${apiEndpoint}/comments_by_project_as_xlsx`;
 
 export function commentsByProjectStream(
@@ -144,23 +90,6 @@ export function commentsByProjectStream(
 }
 
 // Reactions
-export interface IReactionsByTopic {
-  data: {
-    type: 'reactions_by_topic';
-    attributes: {
-      series: {
-        reactions: {
-          [key: string]: number;
-        };
-      };
-      topics: {
-        [key: string]: {
-          title_multiloc: Multiloc;
-        };
-      };
-    };
-  };
-}
 
 export interface IReactionsByProject {
   data: {
@@ -178,17 +107,6 @@ export interface IReactionsByProject {
       };
     };
   };
-}
-
-export const reactionsByTopicXlsxEndpoint = `${apiEndpoint}/reactions_by_topic_as_xlsx`;
-
-export function reactionsByTopicStream(
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IReactionsByTopic>({
-    apiEndpoint: `${apiEndpoint}/reactions_by_topic`,
-    ...streamParams,
-  });
 }
 
 export const reactionsByProjectXlsxEndpoint = `${apiEndpoint}/reactions_by_project_as_xlsx`;
