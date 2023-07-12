@@ -60,7 +60,7 @@ interface Props {
   ideaId: string;
 }
 
-const AssignBudgetControl = memo(({ ideaId, projectId }: Props) => {
+const AddToBasketBox = memo(({ ideaId, projectId }: Props) => {
   const { data: idea } = useIdeaById(ideaId);
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(project?.data.id);
@@ -103,4 +103,4 @@ const AssignBudgetControl = memo(({ ideaId, projectId }: Props) => {
   );
 });
 
-export default AssignBudgetControl;
+export default AddToBasketBox;

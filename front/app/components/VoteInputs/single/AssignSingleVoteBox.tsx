@@ -35,7 +35,7 @@ interface Props {
   ideaId: string;
 }
 
-const AssignVoteControl = memo(({ ideaId, projectId }: Props) => {
+const AssignSingleVoteBox = memo(({ ideaId, projectId }: Props) => {
   const { formatMessage } = useIntl();
   const { data: idea } = useIdeaById(ideaId);
   const { data: project } = useProjectById(projectId);
@@ -100,4 +100,4 @@ const AssignVoteControl = memo(({ ideaId, projectId }: Props) => {
   );
 });
 
-export default AssignVoteControl;
+export default AssignSingleVoteBox;

@@ -64,7 +64,7 @@ interface Props {
   fillWidth?: boolean;
 }
 
-const AssignMultipleVotesControl = ({
+const AssignMultipleVotesInput = ({
   ideaId,
   participationContext,
   fillWidth,
@@ -241,4 +241,4 @@ const AssignMultipleVotesControl = ({
   );
 };
 
-export default AssignMultipleVotesControl;
+export default AssignMultipleVotesInput;

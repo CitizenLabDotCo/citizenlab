@@ -34,7 +34,7 @@ import { VotingMethod } from 'services/participationContexts';
   - getSubmissionTerm: Returns the submission type in specified form (i.e. singular vs plural)
   - preSubmissionWarning: Returns warning to be displayed before submission is made
   - useVoteTerm: Returns whether the custom vote term should be used in front office
-  - getIdeaPageVoteControl: Returns the vote control to be displayed on the idea page
+  - getIdeaPageVoteInput: Returns the vote input to be displayed on the idea page
   */
 
 export type VoteSubmissionState =
@@ -68,7 +68,7 @@ export type VotingMethodConfig = {
     appConfig,
     locale,
   }: GetStatusDescriptionProps) => JSX.Element | null;
-  getIdeaPageVoteControl?: ({
+  getIdeaPageVoteInput?: ({
     ideaId,
     projectId,
     compact,
@@ -184,7 +184,7 @@ const budgetingConfig: VotingMethodConfig = {
   preSubmissionWarning: () => {
     return messages.budgetingPreSubmissionWarning;
   },
-  getIdeaPageVoteControl: ({
+  getIdeaPageVoteInput: ({
     ideaId,
     projectId,
     participationContext,
@@ -317,7 +317,7 @@ const multipleVotingConfig: VotingMethodConfig = {
   preSubmissionWarning: () => {
     return messages.votingPreSubmissionWarning;
   },
-  getIdeaPageVoteControl: ({
+  getIdeaPageVoteInput: ({
     ideaId,
     projectId,
     participationContext,
@@ -486,7 +486,7 @@ const singleVotingConfig: VotingMethodConfig = {
   preSubmissionWarning: () => {
     return messages.votingPreSubmissionWarning;
   },
-  getIdeaPageVoteControl: ({
+  getIdeaPageVoteInput: ({
     ideaId,
     projectId,
     participationContext,

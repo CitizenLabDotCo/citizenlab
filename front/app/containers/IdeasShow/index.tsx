@@ -187,9 +187,9 @@ const Content = ({
           </Box>
           {compact &&
             participationContext &&
-            votingMethodConfig?.getIdeaPageVoteControl && (
+            votingMethodConfig?.getIdeaPageVoteInput && (
               <Box mb="16px">
-                {votingMethodConfig.getIdeaPageVoteControl({
+                {votingMethodConfig.getIdeaPageVoteInput({
                   ideaId,
                   projectId: project.id,
                   compact: true,

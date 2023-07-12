@@ -88,8 +88,8 @@ const RightColumnDesktop = ({
           )}
           <Box pb="23px" mb="23px" borderBottom="solid 1px #ccc">
             {participationContext &&
-              votingConfig?.getIdeaPageVoteControl &&
-              votingConfig.getIdeaPageVoteControl({
+              votingConfig?.getIdeaPageVoteInput &&
+              votingConfig.getIdeaPageVoteInput({
                 ideaId,
                 projectId,
                 participationContext,
