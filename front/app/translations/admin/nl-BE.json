@@ -51,7 +51,7 @@
   "app.components.SeatInfo.adminSeatsTooltip1": "Platformbeheerders zijn verantwoordelijk voor het platform en hebben beheerdersrechten voor alle mappen en projecten. Je kunt {visitHelpCenter} raadplegen voor meer informatie over de verschillende rollen.",
   "app.components.SeatInfo.currentAdminSeatsTitle": "Huidige platformbeheerders",
   "app.components.SeatInfo.currentManagerSeatsTitle": "Huidige map- en projectbeheerders",
-  "app.components.SeatInfo.includedAdminToolTip": "Dit toont het aantal beschikbare accounts voor platformbeheerders binnen het jaarcontract.",
+  "app.components.SeatInfo.includedAdminToolTip": "Dit toont het aantal beschikbare accounts voor map- en projectbeheerders binnen het jaarcontract.",
   "app.components.SeatInfo.includedManagerToolTip": "Dit toont het aantal beschikbare accounts voor map- en projectbeheerders binnen het jaarcontract.",
   "app.components.SeatInfo.includedSeats": "Accounts in gebruik",
   "app.components.SeatInfo.managerSeats": "Map- en projectbeheerders",
