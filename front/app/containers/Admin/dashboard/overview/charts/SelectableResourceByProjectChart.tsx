@@ -91,8 +91,6 @@ const SelectableResourceByProjectChart = ({
     data[currentResourceByProject] &&
     convertToGraphFormat(data[currentResourceByProject]);
 
-  console.log('serie', serie);
-
   return (
     <SelectableResourceChart
       onResourceByXChange={onResourceByProjectChange}
