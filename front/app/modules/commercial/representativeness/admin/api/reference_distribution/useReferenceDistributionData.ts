@@ -21,13 +21,14 @@ export type RemoteFormValues = Record<string, number>;
 function useReferenceDistributionData(userCustomFieldId: string) {
   const { data: userCustomField } = useUserCustomField(userCustomFieldId);
 
-  const { data: referenceDistribution } = useReferenceDistribution({
+  const { data: referenceDistribution, isFetched } = useReferenceDistribution({
     id: userCustomFieldId,
   });
 
-  const referenceDataUploaded = userCustomField
-    ? !!userCustomField.data.relationships?.current_ref_distribution.data
-    : undefined;
+  const referenceDataUploaded =
+    userCustomField && isFetched
+      ? !!userCustomField.data.relationships?.current_ref_distribution.data
+      : undefined;
 
   return {
     referenceDistribution: referenceDistribution?.data,

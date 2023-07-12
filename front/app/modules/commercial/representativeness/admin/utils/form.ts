@@ -20,13 +20,6 @@ export const getInitialValues = (
   remoteFormValues?: RemoteFormValues
 ): FormValues | null => {
   if (referenceDataUploaded) {
-    // If reference data has been uploaded, but the remote
-    // form values are undefined, we are still waiting for
-    // the data to sync.
-    // Hence we return null and don't render anything until
-    // the data has been synced
-    if (!remoteFormValues) return null;
-
     return { ...remoteFormValues };
   }
 
