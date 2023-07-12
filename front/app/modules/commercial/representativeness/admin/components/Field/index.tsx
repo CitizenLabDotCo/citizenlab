@@ -49,7 +49,6 @@ const Field = ({
   remoteFormValues,
   initialValues,
 }: InnerProps) => {
-  console.log(remoteFormValues);
   const { mutateAsync: deleteReferenceDistribution } =
     useDeleteReferenceDistribution();
   const { mutateAsync: createReferenceDistribution } =
