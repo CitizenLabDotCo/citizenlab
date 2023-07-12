@@ -21,8 +21,4 @@ export default defineMessages({
     id: 'app.components.AssignMultipleVotesControl.addVote',
     defaultMessage: 'Add vote',
   },
-  inputTextVotes: {
-    id: 'app.components.AssignMultipleVotesControl.inputTextVotes',
-    defaultMessage: 'Votes text input',
-  },
 });
