@@ -210,6 +210,10 @@ FactoryBot.define do
   factory :voting_last_chance_campaign, class: EmailCampaigns::Campaigns::VotingLastChance do
     enabled { true }
   end
+
+  factory :voting_phase_started_campaign, class: EmailCampaigns::Campaigns::VotingPhaseStarted do
+    enabled { true }
+  end
 end
 
 def weekly_schedule

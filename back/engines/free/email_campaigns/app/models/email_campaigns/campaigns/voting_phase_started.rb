@@ -27,7 +27,7 @@
 #  fk_rails_...  (author_id => users.id)
 #
 module EmailCampaigns
-  class Campaigns::ProjectPhaseStarted < Campaign
+  class Campaigns::VotingPhaseStarted < Campaign
     include Consentable
     include ActivityTriggerable
     include RecipientConfigurable
@@ -39,7 +39,7 @@ module EmailCampaigns
     recipient_filter :filter_notification_recipient
 
     def mailer_class
-      ProjectPhaseStartedMailer
+      VotingPhaseStartedMailer
     end
 
     def activity_triggers

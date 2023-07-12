@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module EmailCampaigns
-  class ProjectPhaseStartedMailer < ApplicationMailer
+  class VotingPhaseStartedMailer < ApplicationMailer
     private
 
     def project_title
