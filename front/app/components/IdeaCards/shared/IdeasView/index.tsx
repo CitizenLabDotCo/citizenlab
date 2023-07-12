@@ -5,15 +5,12 @@ import {
   IdeaDefaultSortMethod,
   ParticipationMethod,
 } from 'services/participationContexts';
-import { IParticipationContextType } from 'typings';
 import { IIdeaData } from 'api/ideas/types';
 
 interface Props {
   view: 'card' | 'map';
   defaultSortingMethod?: IdeaDefaultSortMethod;
   participationMethod?: ParticipationMethod | null;
-  participationContextId?: string | null;
-  participationContextType?: IParticipationContextType | null;
   hideImage: boolean;
   hideImagePlaceholder: boolean;
   hideIdeaStatus: boolean;
@@ -29,8 +26,6 @@ interface Props {
 
 const IdeasView = ({
   view,
-  participationContextId,
-  participationContextType,
   participationMethod,
   hideImage,
   hideImagePlaceholder,
@@ -57,8 +52,6 @@ const IdeasView = ({
           loadingMore={loadingMore}
           list={list}
           participationMethod={participationMethod}
-          participationContextId={participationContextId}
-          participationContextType={participationContextType}
           tabIndex={0}
           hideImage={hideImage}
           hideImagePlaceholder={hideImagePlaceholder}

@@ -16,7 +16,6 @@ import { useSearchParams } from 'react-router-dom';
 
 // types
 import { ParticipationMethod } from 'services/participationContexts';
-import { IParticipationContextType } from 'typings';
 import { IIdea } from 'api/ideas/types';
 
 // hooks
@@ -115,8 +114,6 @@ interface Props {
   ideaId: string;
   className?: string;
   participationMethod?: ParticipationMethod | null;
-  participationContextId?: string | null;
-  participationContextType?: IParticipationContextType | null;
   hideImage?: boolean;
   hideImagePlaceholder?: boolean;
   hideIdeaStatus?: boolean;
@@ -129,7 +126,7 @@ const IdeaLoading = (props: Props) => {
   const { data: idea } = useIdeaById(props.ideaId);
 
   if (idea) {
-    return <CompactIdeaCard idea={idea} {...props} />;
+    return <IdeaCard idea={idea} {...props} />;
   }
 
   return null;
@@ -139,7 +136,7 @@ interface IdeaCardProps extends Props {
   idea: IIdea;
 }
 
-const CompactIdeaCard = memo<IdeaCardProps>(
+const IdeaCard = memo<IdeaCardProps>(
   ({
     idea,
     className,

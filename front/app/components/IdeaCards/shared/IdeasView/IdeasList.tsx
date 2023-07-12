@@ -8,7 +8,6 @@ import { rgba } from 'polished';
 import { ParticipationMethod } from 'services/participationContexts';
 import EmptyIdeas from './EmptyIdeas';
 import { IIdeaData } from 'api/ideas/types';
-import { IParticipationContextType } from 'typings';
 import { getMethodConfig } from 'utils/participationMethodUtils';
 
 const StyledIdeaCard = styled(IdeaCard)`
@@ -60,8 +59,6 @@ interface Props {
   loadingMore: boolean;
   list: IIdeaData[] | null;
   participationMethod?: ParticipationMethod | null;
-  participationContextId?: string | null;
-  participationContextType?: IParticipationContextType | null;
   ariaLabelledBy?: string;
   tabIndex?: number;
   hideImage?: boolean;
@@ -80,8 +77,6 @@ const IdeasList = ({
   loadingMore,
   list,
   participationMethod,
-  participationContextId,
-  participationContextType,
   ariaLabelledBy,
   tabIndex,
   hideImage = false,
@@ -119,8 +114,6 @@ const IdeasList = ({
                     key={idea.id}
                     ideaId={idea.id}
                     participationMethod={participationMethod}
-                    participationContextId={participationContextId}
-                    participationContextType={participationContextType}
                     hideImage={hideImage}
                     hideBody={config?.hideAuthorOnIdeas || false}
                     hideImagePlaceholder={hideImagePlaceholder}

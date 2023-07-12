@@ -170,8 +170,6 @@ const IdeasWithoutFiltersSidebar = ({
   className,
   allowProjectsFilter,
   participationMethod,
-  participationContextId,
-  participationContextType,
   showDropdownFilters,
   showSearchbar,
   goBackMode,
@@ -351,8 +349,6 @@ const IdeasWithoutFiltersSidebar = ({
           projectId={projectId}
           phaseId={phaseId || undefined}
           participationMethod={participationMethod}
-          participationContextId={participationContextId}
-          participationContextType={participationContextType}
           goBackMode={goBackMode}
         />
       </Container>
