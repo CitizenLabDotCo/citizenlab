@@ -23,7 +23,7 @@ import useUpdateBasket from 'api/baskets/useUpdateBasket';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // utils
-import { getVotingMethodConfig } from 'utils/votingMethodUtils/votingMethodUtils';
+import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
 import { pastPresentOrFuture, toFullMonth } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
 

@@ -49,7 +49,7 @@ import { IIdeaImages } from 'api/idea_images/types';
 import { Locale } from 'typings';
 
 // utils
-import { getVotingMethodConfig } from 'utils/votingMethodUtils/votingMethodUtils';
+import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
 import { getCurrentParticipationContext } from 'api/phases/utils';
 
 const StyledRightColumnDesktop = styled(RightColumnDesktop)`

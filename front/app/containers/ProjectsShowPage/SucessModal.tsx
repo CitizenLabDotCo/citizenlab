@@ -19,7 +19,7 @@ import Modal from 'components/UI/Modal';
 import {
   getMethodConfig,
   getPhase,
-} from 'utils/configs/participationMethodUtils';
+} from 'utils/configs/participationMethodConfig';
 import { getCurrentParticipationContext } from 'api/phases/utils';
 import { isReady } from './utils';
 

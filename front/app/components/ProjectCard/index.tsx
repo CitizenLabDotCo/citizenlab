@@ -52,7 +52,7 @@ import {
 import { ScreenReaderOnly } from 'utils/a11y';
 import { rgba, darken } from 'polished';
 import { getInputTermMessage } from 'utils/i18n';
-import { getMethodConfig } from 'utils/configs/participationMethodUtils';
+import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
 const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
   width: calc(33% - 12px);

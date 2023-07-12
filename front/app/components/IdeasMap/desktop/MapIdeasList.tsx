@@ -35,7 +35,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 // utils
 import { isFieldEnabled } from 'utils/projectUtils';
 import { isNilOrError } from 'utils/helperUtils';
-import { getMethodConfig } from 'utils/configs/participationMethodUtils';
+import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
 const Container = styled.div`
   width: 100%;

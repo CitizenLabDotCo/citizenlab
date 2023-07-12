@@ -8,7 +8,7 @@ import basketsIdeasKeys from 'api/baskets_ideas/keys';
 import { fetchBasketsIdeas } from 'api/baskets_ideas/useBasketsIdeas';
 
 // utils
-import { isIdeaInBasket } from 'components/AddToBasketButton/utils';
+import { isIdeaInBasket } from 'components/VoteInputs/budgeting/AddToBasketButton/utils';
 
 export interface VoteParams {
   ideaId: string;

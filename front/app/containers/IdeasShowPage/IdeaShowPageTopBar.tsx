@@ -28,7 +28,7 @@ import { lighten } from 'polished';
 // utils
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
-import { getVotingMethodConfig } from 'utils/votingMethodUtils/votingMethodUtils';
+import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
 
 // typings
 import { IdeaReactingDisabledReason } from 'api/ideas/types';

@@ -18,7 +18,7 @@ import { rightColumnWidthDesktop } from '../../styleConstants';
 import { colors } from 'utils/styleUtils';
 
 // utils
-import { getVotingMethodConfig } from 'utils/votingMethodUtils/votingMethodUtils';
+import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
 import { getCurrentParticipationContext } from 'api/phases/utils';
 
 const Container = styled.div`
