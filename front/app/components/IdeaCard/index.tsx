@@ -5,6 +5,7 @@ import Card from 'components/UI/Card/Compact';
 import { Icon, useBreakpoint } from '@citizenlab/cl2-component-library';
 import Body from './Body';
 import Footer from './Footer';
+import Interactions from './Interactions';
 
 // router
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
@@ -26,7 +27,6 @@ import useBasket from 'api/baskets/useBasket';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { scrollToElement } from 'utils/scroll';
-import { getInteractions } from './utils';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
@@ -184,12 +184,12 @@ const IdeaCard = memo<IdeaCardProps>(
         body={<Body idea={idea} />}
         hideBody={hideBody}
         interactions={
-          hideInteractions
-            ? null
-            : getInteractions({
-                participationContext,
-                idea,
-              })
+          hideInteractions ? null : (
+            <Interactions
+              idea={idea}
+              participationContext={participationContext}
+            />
+          )
         }
         footer={
           <Footer

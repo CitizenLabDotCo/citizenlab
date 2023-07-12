@@ -50,10 +50,13 @@ export type GetStatusDescriptionProps = {
   locale?: Locale | null | Error;
 };
 
-export type VoteInputProps = {
+type IdeaCardVoteInputProps = {
   ideaId: string;
-  compact: boolean;
   participationContext: IPhaseData | IProjectData;
+};
+
+type IdeaPageVoteInputProps = IdeaCardVoteInputProps & {
+  compact: boolean;
 };
 
 export type VotingMethodConfig = {
@@ -67,11 +70,15 @@ export type VotingMethodConfig = {
     appConfig,
     locale,
   }: GetStatusDescriptionProps) => JSX.Element | null;
-  getIdeaPageVoteInput?: ({
+  getIdeaCardVoteInput: ({
+    ideaId,
+    participationContext,
+  }: IdeaCardVoteInputProps) => JSX.Element | null;
+  getIdeaPageVoteInput: ({
     ideaId,
     compact,
     participationContext,
-  }: VoteInputProps) => JSX.Element | null;
+  }: IdeaPageVoteInputProps) => JSX.Element | null;
   getSubmissionTerm?: (form: 'singular' | 'plural') => MessageDescriptor;
   preSubmissionWarning: () => MessageDescriptor;
   useVoteTerm: boolean;
@@ -182,6 +189,13 @@ const budgetingConfig: VotingMethodConfig = {
   preSubmissionWarning: () => {
     return messages.budgetingPreSubmissionWarning;
   },
+  getIdeaCardVoteInput: ({ ideaId, participationContext }) => (
+    <AddToBasketButton
+      ideaId={ideaId}
+      participationContext={participationContext}
+      buttonStyle="primary-outlined"
+    />
+  ),
   getIdeaPageVoteInput: ({ ideaId, participationContext, compact }) => {
     if (!compact) {
       return (
@@ -194,8 +208,8 @@ const budgetingConfig: VotingMethodConfig = {
       return (
         <AddToBasketButton
           ideaId={ideaId}
-          buttonStyle="primary-outlined"
           participationContext={participationContext}
+          buttonStyle="primary"
         />
       );
     }
@@ -315,6 +329,12 @@ const multipleVotingConfig: VotingMethodConfig = {
   preSubmissionWarning: () => {
     return messages.votingPreSubmissionWarning;
   },
+  getIdeaCardVoteInput: ({ ideaId, participationContext }) => (
+    <AssignMultipleVotesInput
+      ideaId={ideaId}
+      participationContext={participationContext}
+    />
+  ),
   getIdeaPageVoteInput: ({ ideaId, participationContext, compact }) => {
     if (!compact) {
       return (
@@ -484,6 +504,13 @@ const singleVotingConfig: VotingMethodConfig = {
   preSubmissionWarning: () => {
     return messages.votingPreSubmissionWarning;
   },
+  getIdeaCardVoteInput: ({ ideaId, participationContext }) => (
+    <AssignSingleVoteButton
+      ideaId={ideaId}
+      participationContext={participationContext}
+      buttonStyle="primary-outlined"
+    />
+  ),
   getIdeaPageVoteInput: ({ ideaId, participationContext, compact }) => {
     if (!compact) {
       return (

@@ -185,17 +185,15 @@ const Content = ({
               translateButtonClicked={translateButtonIsClicked}
             />
           </Box>
-          {compact &&
-            participationContext &&
-            votingMethodConfig?.getIdeaPageVoteInput && (
-              <Box mb="16px">
-                {votingMethodConfig.getIdeaPageVoteInput({
-                  ideaId,
-                  compact: true,
-                  participationContext,
-                })}
-              </Box>
-            )}
+          {compact && participationContext && (
+            <Box mb="16px">
+              {votingMethodConfig?.getIdeaPageVoteInput({
+                ideaId,
+                compact: true,
+                participationContext,
+              })}
+            </Box>
+          )}
           {compact &&
             participationContext?.attributes.participation_method !==
               'voting' && (

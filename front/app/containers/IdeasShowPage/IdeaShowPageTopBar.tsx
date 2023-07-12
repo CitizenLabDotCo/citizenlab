@@ -159,17 +159,15 @@ const IdeaShowPageTopBar = ({
             />
           )}
           {/* Only visible if voting */}
-          {ideaId &&
-            participationContext &&
-            votingConfig?.getIdeaPageVoteInput && (
-              <Box mr="8px">
-                {votingConfig?.getIdeaPageVoteInput({
-                  ideaId,
-                  participationContext,
-                  compact: true,
-                })}
-              </Box>
-            )}
+          {ideaId && participationContext && (
+            <Box mr="8px">
+              {votingConfig?.getIdeaPageVoteInput({
+                ideaId,
+                participationContext,
+                compact: true,
+              })}
+            </Box>
+          )}
         </Right>
       </TopBarInner>
     </Container>
