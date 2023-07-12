@@ -21,4 +21,5 @@ export interface IActiveUsersByTimeParams {
   group?: string;
   topic?: string;
   project?: string;
+  interval: string;
 }

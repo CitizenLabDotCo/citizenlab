@@ -50,6 +50,7 @@ const BarChartActiveUsersByTime = (props: Props) => {
     project: props.currentProjectFilter,
     group: props.currentGroupFilter,
     topic: props.currentTopicFilter,
+    interval: props.resolution,
     enabled: true,
   });
 
