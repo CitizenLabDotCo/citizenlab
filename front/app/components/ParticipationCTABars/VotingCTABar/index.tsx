@@ -39,8 +39,6 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
   const { data: basket } = useBasket(basketId);
   const { mutate: updateBasket } = useUpdateBasket();
 
-  console.log({ numberOfVotesCast });
-
   if (
     hasProjectEndedOrIsArchived(project, currentPhase) ||
     numberOfVotesCast === undefined

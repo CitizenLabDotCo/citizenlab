@@ -1,7 +1,7 @@
 import React, { FormEvent } from 'react';
 
 // components
-import CommentCount from './CommentCount';
+import CommentCount from '../CommentCount';
 
 // router
 import clHistory from 'utils/cl-router/history';
@@ -13,7 +13,7 @@ import { IIdea } from 'api/ideas/types';
 import styled from 'styled-components';
 import { Button, colors } from '@citizenlab/cl2-component-library';
 import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 
 const Footer = styled.footer`
   display: flex;
