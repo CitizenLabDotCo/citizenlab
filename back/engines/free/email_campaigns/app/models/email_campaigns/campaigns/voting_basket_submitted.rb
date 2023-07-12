@@ -66,16 +66,16 @@ module EmailCampaigns
     end
 
     def generate_commands(recipient:, activity:)
-      basket = activity.item
+      basket = activity.item.basket
       [{
         event_payload: {
-          project_id: basket.participation_context.project,
+          project_url: Frontend::UrlService.new.model_to_url(basket.participation_context.project, locale: recipient.locale),
           voted_ideas: format_ideas_list(basket.ideas, recipient)
         }
       }]
     end
 
-    def self.format_ideas_list(ideas, recipient)
+    def format_ideas_list(ideas, recipient)
       ideas.map do |idea|
         {
           title_multiloc: idea.title_multiloc,

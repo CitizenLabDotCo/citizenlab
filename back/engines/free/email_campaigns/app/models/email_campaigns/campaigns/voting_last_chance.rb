@@ -66,13 +66,15 @@ module EmailCampaigns
     end
 
     def generate_commands(recipient:, activity:)
-      basket = activity.item
+      project = activity.item.project
+      phase = activity.item.phase
       [{
         event_payload: {
           project_url: Frontend::UrlService.new.model_to_url(project, locale: recipient.locale),
-          phase_title_multiloc: basket.participation_context.title_multiloc,
-          project_title_multiloc: basket.participation_context.project.title_multiloc
-        }
+          phase_title_multiloc: phase.title_multiloc,
+          project_title_multiloc: project.title_multiloc
+        },
+        delay: 8.hours.to_i
       }]
     end
   end
