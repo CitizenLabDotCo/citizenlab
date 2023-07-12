@@ -6,6 +6,7 @@ import {
   IProjectDescriptionBuilderLayout,
   ProjectDescriptionBuilderKeys,
 } from './types';
+import useProjectById from 'api/projects/useProjectById';
 
 // Before you convert this to react-query:
 // Please note that there is currently some custom logic inside of streams.ts.
@@ -25,6 +26,7 @@ const fetchProjectDescriptionBuilderLayout = (projectId: string) => {
 };
 
 const useProjectDescriptionBuilderLayout = (projectId: string) => {
+  const { data: project } = useProjectById(projectId);
   return useQuery<
     IProjectDescriptionBuilderLayout,
     CLErrors,
@@ -33,6 +35,7 @@ const useProjectDescriptionBuilderLayout = (projectId: string) => {
   >({
     queryKey: projectDescriptionBuilderKeys.item({ projectId }),
     queryFn: () => fetchProjectDescriptionBuilderLayout(projectId),
+    enabled: project && project.data.attributes.uses_content_builder,
   });
 };
 
