@@ -16,7 +16,16 @@
       "initiative_published": Publisering av mitt forslag
       "invite_received": Invitasjon
       "invite_reminder": 'Påminnelse: invitasjon'
+      "internal_comment_on_idea_assigned_to_you": Intern kommentar på innspill tildelt meg
+      "internal_comment_on_idea_you_commented_internally_on": Intern kommentar til innspill jeg kommenterte internt
+      "internal_comment_on_idea_you_moderate": Intern kommentar på innspill i prosjekt eller mappe jeg administrerer
+      "internal_comment_on_initiative_assigned_to_you": Intern kommentar til forslaget tildelt meg
+      "internal_comment_on_initiative_you_commented_internally_on": Intern kommentar til forslag jeg kommenterte internt
+      "internal_comment_on_unassigned_initiative": Intern kommentar til ikke-tildelt forslag
+      "internal_comment_on_unassigned_unmoderated_idea": Intern kommentar på ikke-tildelte innspill i uadministrert prosjekt
+      "internal_comment_on_your_internal_comment": Intern kommentar til min interne kommentar
       "mention_in_official_feedback": Nevne i en oppdatering
+      "mention_in_internal_comment": Nevn i en intern kommentar
       "new_comment_for_admin": Ny kommentar i et prosjekt jeg moderer
       "new_comment_on_commented_idea": Ny kommentar på en idé jeg har kommentert
       "new_comment_on_commented_initiative": Ny kommentar på et forslag jeg har kommentert
@@ -215,6 +224,12 @@
       main_header: 'Folk snakker om deg'
       subject: 'Noen nevnte deg på plattformen til %{organizationName}'
       preheader: '%{commentAuthor} nevnte deg i en kommentar'
+    mention_in_internal_comment:
+      cta_reply_to: 'Se kommentar av %{firstName}'
+      event_description: '%{authorNameFull} nevnte deg i en intern kommentar.'
+      subject: '%{firstName} nevnte deg i en intern kommentar.'
+      main_header: '%{authorNameFirst} nevnte deg i en intern kommentar.'
+      preheader: '%{authorNameFull} nevnte deg i en intern kommentar.'
     moderator_digest:
       subject: 'Din ukentlig prosjektrapport fra %{time}'
       preheader: 'Prosjektleder-sammendrag av %{organizationName}'
@@ -298,6 +313,54 @@
       main_header: '%{authorName} svarte på din kommentar'
       preheader: '%{authorName} svarte på kommentaren din på plattformen til %{organizationName}'
       replied: '%{authorFirstName} svarte:'
+    internal_comment_on_your_internal_comment:
+      cta_reply_to: 'Se kommentar av %{firstName}'
+      event_description: '%{authorNameFull} kommenterte din interne kommentar.'
+      subject: 'Du har mottatt en kommentar til din interne kommentar på ''%{post}'''
+      main_header: 'Du har mottatt en kommentar til din interne kommentar på ''%{post}'''
+      preheader: '%{authorName} svarte på din interne kommentar til ''%{post}'''
+    internal_comment_on_idea_assigned_to_you:
+      cta_reply_to: 'Se kommentar av %{firstName}'
+      event_description: '%{authorNameFull} kommenterte internt på et innspill som er tildelt deg.'
+      subject: '''%{post}'' har en ny intern kommentar'
+      main_header: '''%{post}'' har en ny intern kommentar'
+      preheader: '''%{post}'' har en ny intern kommentar'
+    internal_comment_on_idea_you_commented_internally_on:
+      cta_reply_to: 'Se kommentar av %{firstName}'
+      event_description: '%{authorNameFull} kommenterte internt på et innspill du kommenterte internt.'
+      subject: '''%{post}'' har en ny intern kommentar'
+      main_header: '''%{post}'' har en ny intern kommentar'
+      preheader: '''%{post}'' har en ny intern kommentar'
+    internal_comment_on_idea_you_moderate:
+      cta_reply_to: 'Se kommentar av %{firstName}'
+      event_description: '%{authorNameFull} kommenterte internt på et innspill i et prosjekt eller en mappe du administrerer.'
+      subject: '''%{post}'' har en ny intern kommentar'
+      main_header: '''%{post}'' har en ny intern kommentar'
+      preheader: '''%{post}'' har en ny intern kommentar'
+    internal_comment_on_initiative_assigned_to_you:
+      cta_reply_to: 'Se kommentar av %{firstName}'
+      event_description: '%{authorNameFull} kommenterte internt et forslag tildelt deg.'
+      subject: '''%{post}'' har en ny intern kommentar'
+      main_header: '''%{post}'' har en ny intern kommentar'
+      preheader: '''%{post}'' har en ny intern kommentar'
+    internal_comment_on_initiative_you_commented_internally_on:
+      cta_reply_to: 'Se kommentar av %{firstName}'
+      event_description: '%{authorNameFull} kommenterte internt et forslag du kommenterte internt.'
+      subject: '''%{post}'' har en ny intern kommentar'
+      main_header: '''%{post}'' har en ny intern kommentar'
+      preheader: '''%{post}'' har en ny intern kommentar'
+    internal_comment_on_unassigned_initiative:
+      cta_reply_to: 'Se kommentar av %{firstName}'
+      event_description: '%{authorNameFull} kommenterte internt et ikke-tildelt forslag.'
+      subject: '''%{post}'' har en ny intern kommentar'
+      main_header: '''%{post}'' har en ny intern kommentar'
+      preheader: '''%{post}'' har en ny intern kommentar'
+    internal_comment_on_unassigned_unmoderated_idea:
+      cta_reply_to: 'Se kommentar av %{firstName}'
+      event_description: '%{authorNameFull} kommenterte internt et ikke-tildelt innspill i et ikke-administrert prosjekt.'
+      subject: '''%{post}'' har en ny intern kommentar'
+      main_header: '''%{post}'' har en ny intern kommentar'
+      preheader: '''%{post}'' har en ny intern kommentar'
     official_feedback_on_commented_initiative:
       by_author: 'av %{authorName}'
       updated: '%{officialName} skrev:'
@@ -516,12 +579,15 @@
       remaining_days: 'Dager igjen'
     admin_labels:
       recipient_role:
+        admins: 'Til administratorer'
         admins_and_managers: 'Til administratorer og ledere'
+        managers: 'Til ledere'
         registered_users: 'Til registrerte brukere'
       recipient_segment:
         admins: 'Administratorer'
         admins_and_managers: 'Administratorer og ledere'
         admins_and_managers_managing_the_project: 'Administratorer og ledere som administrerer prosjektet'
+        managers_managing_the_project: 'Ledere som leder prosjektet'
         all_users: 'Alle brukere'
         all_users_who_uploaded_proposals: 'Alle brukere som lastet opp forslag'
         managers: 'Ledere'
@@ -544,6 +610,7 @@
         content_moderation: 'Moderering av innhold'
         general: 'Generell'
         inputs: 'Innganger'
+        internal_comments: 'Interne kommentarer'
         permissions: 'Tillatelser'
         projects: 'Prosjekter'
         proposals: 'Forslag'
@@ -556,6 +623,15 @@
         input_is_flagged_as_spam: 'Inndata er flagget som spam'
         input_is_updated: 'Inndata er oppdatert'
         input_status_changes: 'Inndatastatus endres'
+        internal_comment_is_posted_on_idea_assigned_to_user: 'Intern kommentar legges ut på input tildelt bruker'
+        internal_comment_is_posted_on_initiative_assigned_to_user: 'Intern kommentar er lagt ut på forslag tildelt bruker'
+        internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'Intern kommentar legges ut på innspill i prosjekt eller mappe bruker administrerer'
+        internal_comment_is_posted_on_idea_user_has_commented_internally_on: 'Intern kommentar er lagt inn på input bruker kommentert internt på'
+        internal_comment_is_posted_on_idea_user_moderates: 'Intern kommentar legges ut på input brukermoderater'
+        internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'Intern kommentar er lagt ut på forslag bruker kommentert internt'
+        internal_comment_is_posted_on_unassigned_initiative: 'Intern kommentar er lagt ut på ikke-tildelt forslag'
+        internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Intern kommentar er lagt ut på ikke-tildelte input i uadministrert prosjekt'
+        user_is_mentioned_in_internal_comment: 'Bruker er nevnt i intern kommentar'
         new_input_is_published: 'Nye innspill er publisert'
         new_proposal_is_posted: 'Nytt forslag er lagt ut'
         project_phase_changes: 'Prosjektfaseendringer'
@@ -575,5 +651,6 @@
         proposal_is_published: 'Forslaget er publisert'
         user_registers_for_the_first_time: 'Bruker registrerer seg for første gang'
         user_replies_to_comment: 'Brukeren svarer på kommentaren'
+        user_replies_to_internal_comment: 'Brukersvar på intern kommentar'
         7_days_after_invite_is_sent: '7 dager etter at invitasjonen er sendt'
         7_days_before_the_project_changes_phase: '7 dager før prosjektet endrer fase'
