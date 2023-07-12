@@ -15,7 +15,6 @@ import clHistory from 'utils/cl-router/history';
 import { useSearchParams } from 'react-router-dom';
 
 // types
-import { ParticipationMethod } from 'services/participationContexts';
 import { IIdea } from 'api/ideas/types';
 
 // hooks
@@ -32,6 +31,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { scrollToElement } from 'utils/scroll';
 import { getInteractions } from './utils';
 import { pastPresentOrFuture, timeAgo } from 'utils/dateUtils';
+import { getMethodConfig } from 'utils/participationMethodUtils';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
@@ -110,14 +110,12 @@ const ImagePlaceholderIcon = styled(Icon)`
 
 interface Props {
   ideaId: string;
+  phaseId?: string | null;
   className?: string;
-  participationMethod?: ParticipationMethod | null;
   hideImage?: boolean;
   hideImagePlaceholder?: boolean;
   hideIdeaStatus?: boolean;
-  hideBody?: boolean;
   goBackMode?: 'browserGoBackButton' | 'goToProject';
-  phaseId?: string | null;
 }
 
 const IdeaLoading = (props: Props) => {
@@ -137,14 +135,12 @@ interface IdeaCardProps extends Props {
 const IdeaCard = memo<IdeaCardProps>(
   ({
     idea,
+    phaseId,
     className,
-    participationMethod,
     hideImage = false,
     hideImagePlaceholder = false,
     hideIdeaStatus = false,
-    hideBody = false,
     goBackMode = 'browserGoBackButton',
-    phaseId,
   }) => {
     const isGeneralIdeasPage = window.location.pathname.endsWith('/ideas');
     const smallerThanPhone = useBreakpoint('phone');
@@ -160,6 +156,11 @@ const IdeaCard = memo<IdeaCardProps>(
     );
 
     const participationContext = phase?.data || project?.data;
+    const participationMethod =
+      participationContext?.attributes.participation_method;
+    const config = participationMethod && getMethodConfig(participationMethod);
+    const hideBody = config?.hideAuthorOnIdeas;
+
     const participationContextEnded =
       participationContext?.type === 'phase' &&
       pastPresentOrFuture(participationContext?.attributes?.end_at) === 'past';

@@ -35,7 +35,6 @@ import { media, viewportWidths, isRtl } from 'utils/styleUtils';
 import {
   ideaDefaultSortMethodFallback,
   IdeaDefaultSortMethod,
-  ParticipationMethod,
 } from 'services/participationContexts';
 
 // typings
@@ -148,7 +147,6 @@ export interface Props {
   showViewToggle?: boolean | undefined;
   defaultSortingMethod?: IdeaDefaultSortMethod;
   defaultView?: 'card' | 'map';
-  participationMethod?: ParticipationMethod | null;
   className?: string;
   allowProjectsFilter?: boolean;
   showSearchbar: boolean;
@@ -166,7 +164,6 @@ const IdeasWithoutFiltersSidebar = ({
   defaultSortingMethod,
   className,
   allowProjectsFilter,
-  participationMethod,
   showDropdownFilters,
   showSearchbar,
   goBackMode,
@@ -344,8 +341,7 @@ const IdeasWithoutFiltersSidebar = ({
           }
           view={selectedView}
           projectId={projectId}
-          phaseId={phaseId || undefined}
-          participationMethod={participationMethod}
+          phaseId={phaseId}
           goBackMode={goBackMode}
         />
       </Container>

@@ -1,16 +1,12 @@
 import React from 'react';
 import IdeasList from './IdeasList';
 import IdeasMap from 'components/IdeasMap';
-import {
-  IdeaDefaultSortMethod,
-  ParticipationMethod,
-} from 'services/participationContexts';
+import { IdeaDefaultSortMethod } from 'services/participationContexts';
 import { IIdeaData } from 'api/ideas/types';
 
 interface Props {
   view: 'card' | 'map';
   defaultSortingMethod?: IdeaDefaultSortMethod;
-  participationMethod?: ParticipationMethod | null;
   hideImage: boolean;
   hideImagePlaceholder: boolean;
   hideIdeaStatus: boolean;
@@ -26,7 +22,6 @@ interface Props {
 
 const IdeasView = ({
   view,
-  participationMethod,
   hideImage,
   hideImagePlaceholder,
   hideIdeaStatus,
@@ -51,7 +46,6 @@ const IdeasView = ({
           hasIdeas={list.length > 0}
           loadingMore={loadingMore}
           list={list}
-          participationMethod={participationMethod}
           tabIndex={0}
           hideImage={hideImage}
           hideImagePlaceholder={hideImagePlaceholder}

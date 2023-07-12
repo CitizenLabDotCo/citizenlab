@@ -5,10 +5,8 @@ import IdeaCard from 'components/IdeaCard';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 import { rgba } from 'polished';
-import { ParticipationMethod } from 'services/participationContexts';
 import EmptyIdeas from './EmptyIdeas';
 import { IIdeaData } from 'api/ideas/types';
-import { getMethodConfig } from 'utils/participationMethodUtils';
 
 const StyledIdeaCard = styled(IdeaCard)`
   flex-grow: 0;
@@ -58,7 +56,6 @@ interface Props {
   onLoadMore: () => void;
   loadingMore: boolean;
   list: IIdeaData[] | null;
-  participationMethod?: ParticipationMethod | null;
   ariaLabelledBy?: string;
   tabIndex?: number;
   hideImage?: boolean;
@@ -76,7 +73,6 @@ const IdeasList = ({
   hasMore,
   loadingMore,
   list,
-  participationMethod,
   ariaLabelledBy,
   tabIndex,
   hideImage = false,
@@ -86,7 +82,6 @@ const IdeasList = ({
   phaseId,
 }: Props) => {
   const theme = useTheme();
-  const config = participationMethod && getMethodConfig(participationMethod);
   const loadMoreIdeas = () => {
     onLoadMore();
   };
@@ -114,9 +109,7 @@ const IdeasList = ({
                     key={idea.id}
                     ideaId={idea.id}
                     phaseId={phaseId}
-                    participationMethod={participationMethod}
                     hideImage={hideImage}
-                    hideBody={config?.hideAuthorOnIdeas || false}
                     hideImagePlaceholder={hideImagePlaceholder}
                     hideIdeaStatus={hideIdeaStatus}
                     goBackMode={goBackMode}
