@@ -15,8 +15,8 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 // hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import usePageFiles from 'api/page_files/usePageFiles';
 import useCustomPageBySlug from 'api/custom_pages/useCustomPageBySlug';
-import useResourceFiles from 'hooks/useResourceFiles';
 import { useParams } from 'react-router-dom';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
@@ -85,10 +85,9 @@ const CustomPageShow = () => {
     isLoading: isLoadingPage,
   } = useCustomPageBySlug(slug);
   const proposalsEnabled = useFeatureFlag({ name: 'initiatives' });
-  const remotePageFiles = useResourceFiles({
-    resourceType: 'page',
-    resourceId: !isNilOrError(page) ? page.data.id : null,
-  });
+  const { data: remotePageFiles } = usePageFiles(
+    page ? page.data.id : undefined
+  );
 
   // when neither have loaded
   if (isLoadingAppConfiguration || isLoadingPage) {
@@ -143,11 +142,11 @@ const CustomPageShow = () => {
         )}
         {pageAttributes.files_section_enabled &&
           !isNilOrError(remotePageFiles) &&
-          remotePageFiles.length > 0 && (
+          remotePageFiles.data.length > 0 && (
             <AttachmentsContainer
               topInfoSectionEnabled={pageAttributes.top_info_section_enabled}
             >
-              <FileAttachments files={remotePageFiles} />
+              <FileAttachments files={remotePageFiles.data} />
             </AttachmentsContainer>
           )}
         <CustomPageProjectsAndEvents page={page.data} />
