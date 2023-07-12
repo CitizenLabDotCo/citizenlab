@@ -3,6 +3,7 @@ import moduleConfiguration from 'modules';
 import PageLoading from 'components/UI/PageLoading';
 import IdeaFormBuilder from './project/inputForm/IdeaFormBuilder';
 import SurveyFormBuilder from './project/nativeSurvey/SurveyFormBuilder';
+import AdminProjectIdeaPreviewIndex from './AdminProjectIdeaPreviewIndex';
 
 const AdminProjectsAndFolders = lazy(() => import('.'));
 const AdminProjectsList = lazy(() => import('./all'));
@@ -56,6 +57,14 @@ const createAdminProjectsRoutes = () => {
       },
       ...moduleConfiguration.routes['admin.project_templates'],
       ...moduleConfiguration.routes['admin.projects'],
+      {
+        path: ':projectId/ideas/:ideaId',
+        element: (
+          <PageLoading>
+            <AdminProjectIdeaPreviewIndex />
+          </PageLoading>
+        ),
+      },
       {
         path: ':projectId',
         element: (

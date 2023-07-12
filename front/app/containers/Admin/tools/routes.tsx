@@ -5,6 +5,7 @@ import messages from './messages';
 import { Outlet as RouterOutlet } from 'react-router-dom';
 import HelmetIntl from 'components/HelmetIntl';
 import Tools from './';
+import PublicAPITokens from './PublicAPI/PublicAPITokens';
 
 const toolsRoutes = () => {
   return {
@@ -21,6 +22,14 @@ const toolsRoutes = () => {
         element: (
           <PageLoading>
             <Tools />
+          </PageLoading>
+        ),
+      },
+      {
+        path: 'public-api-tokens',
+        element: (
+          <PageLoading>
+            <PublicAPITokens />
           </PageLoading>
         ),
       },

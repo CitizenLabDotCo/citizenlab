@@ -134,7 +134,7 @@ const EmailChange = () => {
         hideCloseButton={false}
         header={formatMessage(messages.confirmationModalTitle)}
       >
-        <Box padding="16px">
+        <Box padding="32px">
           {confirmationError && (
             <Box mb="16px">
               <Error

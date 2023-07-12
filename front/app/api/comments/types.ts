@@ -7,7 +7,7 @@ export type CommentsKeys = Keys<typeof commentsKeys>;
 export type ICommentParameters = {
   ideaId?: string;
   initiativeId?: string;
-  userId?: string;
+  authorId?: string;
   commentId?: string;
 };
 

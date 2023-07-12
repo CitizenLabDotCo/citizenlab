@@ -16,7 +16,7 @@ export const campaignsData: ICampaignData[] = [
       },
       created_at: '2021-03-03T09:00:00.000Z',
       updated_at: '2021-03-03T09:00:00.000Z',
-      campaign_name: 'campaign_name',
+      campaign_name: 'official_feedback_on_commented_idea',
       campaign_description_multiloc: {
         en: 'Weekly overview of your own proposals',
       },
@@ -56,7 +56,7 @@ export const campaignsData: ICampaignData[] = [
       },
       created_at: '2021-03-03T09:00:00.000Z',
       updated_at: '2021-03-03T09:00:00.000Z',
-      campaign_name: 'campaign_name',
+      campaign_name: 'official_feedback_on_reacted_idea',
       campaign_description_multiloc: {
         en: 'Weekly overview of your own proposals',
       },
@@ -82,3 +82,12 @@ export const campaignsData: ICampaignData[] = [
     },
   },
 ];
+
+export const links = {
+  self: 'http://localhost:3000/web_api/v1/campaigns?depth=0\u0026page%5Bnumber%5D=1\u0026page%5Bsize%5D=1000\u0026publication_statuses%5B%5D=published\u0026publication_statuses%5B%5D=archived\u0026remove_not_allowed_parents=true',
+  first:
+    'http://localhost:3000/web_api/v1/campaigns?depth=0\u0026page%5Bnumber%5D=1\u0026page%5Bsize%5D=1000\u0026publication_statuses%5B%5D=published\u0026publication_statuses%5B%5D=archived\u0026remove_not_allowed_parents=true',
+  last: 'http://localhost:3000/web_api/v1/campaigns?depth=0\u0026page%5Bnumber%5D=2\u0026page%5Bsize%5D=1000\u0026publication_statuses%5B%5D=published\u0026publication_statuses%5B%5D=archived\u0026remove_not_allowed_parents=true',
+  prev: null,
+  next: 'http://localhost:3000/web_api/v1/campaigns?depth=0\u0026page%5Bnumber%5D=2\u0026page%5Bsize%5D=1000\u0026publication_statuses%5B%5D=published\u0026publication_statuses%5B%5D=archived\u0026remove_not_allowed_parents=true',
+};

@@ -93,9 +93,11 @@ module PublicApi
     end
 
     def check_api_token
-      return if current_public_api_api_client
-
-      head :unauthorized
+      if (api_client = current_public_api_api_client)
+        api_client.used!
+      else
+        head :unauthorized
+      end
     end
   end
 end

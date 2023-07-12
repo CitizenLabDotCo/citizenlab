@@ -34,7 +34,7 @@ module MultiTenancy
             proposed_budget: rand(3) == 0 ? nil : (rand(10**rand(2..4)) + 50).round(-1)
           })
 
-          [0, 0, 1, 1, 2][rand(5)].times do |_i|
+          [1, 1, 2, 2, 3][rand(5)].times do |_i|
             idea.idea_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
           end
           if rand(5) == 0

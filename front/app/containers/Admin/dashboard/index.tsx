@@ -30,7 +30,7 @@ export const DashboardsPage = memo(
     const [tabs, setTabs] = useState<ITab[]>([
       {
         label: formatMessage(messages.tabOverview),
-        url: '/admin/dashboard',
+        url: '/admin/dashboard/overview',
         name: 'overview',
       },
       {
@@ -43,7 +43,7 @@ export const DashboardsPage = memo(
     const moderatorTabs: ITab[] = [
       {
         label: formatMessage(messages.tabOverview),
-        url: '/admin/dashboard',
+        url: '/admin/dashboard/overview',
         name: 'overview',
       },
     ];

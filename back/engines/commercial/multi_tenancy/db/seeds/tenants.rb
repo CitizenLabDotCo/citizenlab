@@ -185,7 +185,7 @@ module MultiTenancy
               allowed: true
             },
             similar_ideas: {
-              enabled: true,
+              enabled: false,
               allowed: true
             },
             geographic_dashboard: {
@@ -413,7 +413,15 @@ module MultiTenancy
               allowed: true,
               duration: 90
             },
+            internal_commenting: {
+              enabled: true,
+              allowed: true
+            },
             seat_based_billing: {
+              enabled: true,
+              allowed: true
+            },
+            public_api_tokens: {
               enabled: true,
               allowed: true
             }

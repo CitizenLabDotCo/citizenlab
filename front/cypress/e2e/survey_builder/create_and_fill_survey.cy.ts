@@ -595,7 +595,7 @@ describe('Survey builder', () => {
     // Try filling in the survey again
     cy.visit(`/projects/${projectSlug}`);
     cy.get('#e2e-cta-button').find('button').should('have.attr', 'disabled');
-    cy.get('#e2e-project-sidebar-surveys-count').should('not.exist');
+    cy.get('#e2e-project-sidebar-surveys-count').should('exist');
   });
 
   it('shows validation errors when current page or previous pages are referenced', () => {
