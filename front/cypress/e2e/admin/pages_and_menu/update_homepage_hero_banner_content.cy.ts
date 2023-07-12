@@ -140,7 +140,8 @@ describe('Admin: update Hero Banner content', () => {
     cy.get('.e2e-submit-wrapper-button').click();
     cy.wait('@saveHomePage').then((interception) => {
       const img = new Image();
-      img.src = interception.request.body.home_page.header_bg;
+      console.log(interception.request.body);
+      img.src = interception.request.body.header_bg;
       img.decode().then(() => {
         // test that cropping is really performed on the FE
         expect(img.width / img.height).to.eq(3);
