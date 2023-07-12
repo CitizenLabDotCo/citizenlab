@@ -16,7 +16,16 @@ tr:
       "initiative_published": Önerimin yayımlanması
       "invite_received": Davetiye
       "invite_reminder": Davetiye anımsatıcısı
+      "internal_comment_on_idea_assigned_to_you": Bana atanan girdiye ilişkin dahili yorum
+      "internal_comment_on_idea_you_commented_internally_on": Girdiye ilişkin dahili yorum Dahili olarak yorum yaptım
+      "internal_comment_on_idea_you_moderate": Yönettiğim proje veya klasördeki girdiye ilişkin dahili yorum
+      "internal_comment_on_initiative_assigned_to_you": Bana atanan teklif hakkında iç yorum
+      "internal_comment_on_initiative_you_commented_internally_on": Teklif hakkında dahili yorum Yaptım
+      "internal_comment_on_unassigned_initiative": Atanmamış teklif hakkında iç yorum
+      "internal_comment_on_unassigned_unmoderated_idea": Yönetilmeyen projede atanmamış girdi hakkında dahili yorum
+      "internal_comment_on_your_internal_comment": İç yorumum üzerine iç yorum
       "mention_in_official_feedback": Bir bildirimde bahis
+      "mention_in_internal_comment": Dahili bir yorumda bahsedin
       "new_comment_for_admin": Yönettiğim bir projede yeni yorum
       "new_comment_on_commented_idea": Yorum yaptığım bir fikir hakkında yeni yorum
       "new_comment_on_commented_initiative": Yorum yaptığım bir öneri hakkında yeni yorum
@@ -215,6 +224,12 @@ tr:
       main_header: 'İnsanlar sizin hakkınızda konuşuyor'
       subject: 'Birileri %{organizationName} platformunda sizden bahsetti'
       preheader: '%{commentAuthor} bir yorumda sizden bahsetti'
+    mention_in_internal_comment:
+      cta_reply_to: 'Yorumu görüntüle %{firstName}'
+      event_description: '%{authorNameFull} bir iç yorumda sizden bahsetti.'
+      subject: '%{firstName} bir iç yorumda sizden bahsetti.'
+      main_header: '%{authorNameFirst} bir iç yorumda sizden bahsetti.'
+      preheader: '%{authorNameFull} bir iç yorumda sizden bahsetti.'
     moderator_digest:
       subject: '%{time} haftalık proje yöneticisi raporunuz'
       preheader: '%{organizationName} proje yöneticisi özeti'
@@ -298,6 +313,54 @@ tr:
       main_header: '%{authorName} yorumunuzu yanıtladı'
       preheader: '%{authorName} %{organizationName} platformundaki yorumunuzu yanıtladı'
       replied: '%{authorFirstName} yanıtı:'
+    internal_comment_on_your_internal_comment:
+      cta_reply_to: 'Yorumu görüntüle %{firstName}'
+      event_description: '%{authorNameFull} iç yorumunuz üzerine yorum yaptı.'
+      subject: '''%{post}'' hakkındaki dahili yorumunuz hakkında bir yorum aldınız.'
+      main_header: '''%{post}'' hakkındaki dahili yorumunuz hakkında bir yorum aldınız.'
+      preheader: '%{authorName} ''%{post}'' hakkındaki dahili yorumunuza yanıt verdi'
+    internal_comment_on_idea_assigned_to_you:
+      cta_reply_to: 'Yorumu görüntüle %{firstName}'
+      event_description: '%{authorNameFull} Size atanan bir girdi hakkında dahili olarak yorum yaptı.'
+      subject: '''%{post}'' yeni bir dahili yoruma sahiptir'
+      main_header: '''%{post}'' yeni bir dahili yoruma sahiptir'
+      preheader: '''%{post}'' yeni bir dahili yoruma sahiptir'
+    internal_comment_on_idea_you_commented_internally_on:
+      cta_reply_to: 'Yorumu görüntüle %{firstName}'
+      event_description: '%{authorNameFull} dahili olarak yorumladığınız bir girdi üzerinde dahili olarak yorum yaptı.'
+      subject: '''%{post}'' yeni bir dahili yoruma sahiptir'
+      main_header: '''%{post}'' yeni bir dahili yoruma sahiptir'
+      preheader: '''%{post}'' yeni bir dahili yoruma sahiptir'
+    internal_comment_on_idea_you_moderate:
+      cta_reply_to: 'Yorumu görüntüle %{firstName}'
+      event_description: '%{authorNameFull} Yönettiğiniz bir proje veya klasördeki bir girdi hakkında dahili olarak yorum yaptı.'
+      subject: '''%{post}'' yeni bir dahili yoruma sahiptir'
+      main_header: '''%{post}'' yeni bir dahili yoruma sahiptir'
+      preheader: '''%{post}'' yeni bir dahili yoruma sahiptir'
+    internal_comment_on_initiative_assigned_to_you:
+      cta_reply_to: 'Yorumu görüntüle %{firstName}'
+      event_description: '%{authorNameFull} Size verilen bir teklif hakkında dahili olarak yorum yaptınız.'
+      subject: '''%{post}'' yeni bir dahili yoruma sahiptir'
+      main_header: '''%{post}'' yeni bir dahili yoruma sahiptir'
+      preheader: '''%{post}'' yeni bir dahili yoruma sahiptir'
+    internal_comment_on_initiative_you_commented_internally_on:
+      cta_reply_to: 'Yorumu görüntüle %{firstName}'
+      event_description: '%{authorNameFull} dahili olarak yorum yaptığınız bir teklif hakkında dahili olarak yorum yaptınız.'
+      subject: '''%{post}'' yeni bir dahili yoruma sahiptir'
+      main_header: '''%{post}'' yeni bir dahili yoruma sahiptir'
+      preheader: '''%{post}'' yeni bir dahili yoruma sahiptir'
+    internal_comment_on_unassigned_initiative:
+      cta_reply_to: 'Yorumu görüntüle %{firstName}'
+      event_description: '%{authorNameFull} atanmamış bir teklif hakkında dahili olarak yorum yapmıştır.'
+      subject: '''%{post}'' yeni bir dahili yoruma sahiptir'
+      main_header: '''%{post}'' yeni bir dahili yoruma sahiptir'
+      preheader: '''%{post}'' yeni bir dahili yoruma sahiptir'
+    internal_comment_on_unassigned_unmoderated_idea:
+      cta_reply_to: 'Yorumu görüntüle %{firstName}'
+      event_description: '%{authorNameFull} Yönetilmeyen bir projedeki atanmamış bir girdi hakkında dahili olarak yorum yaptı.'
+      subject: '''%{post}'' yeni bir dahili yoruma sahiptir'
+      main_header: '''%{post}'' yeni bir dahili yoruma sahiptir'
+      preheader: '''%{post}'' yeni bir dahili yoruma sahiptir'
     official_feedback_on_commented_initiative:
       by_author: '%{authorName} tarafından'
       updated: '%{officialName} şunu yazdı:'
@@ -516,12 +579,15 @@ tr:
       remaining_days: 'Kalan gün sayısı'
     admin_labels:
       recipient_role:
+        admins: 'Yöneticilere'
         admins_and_managers: 'Yöneticilere ve müdürlere'
+        managers: 'Yöneticilere'
         registered_users: 'Kayıtlı kullanıcılara'
       recipient_segment:
         admins: 'Yöneticiler'
         admins_and_managers: 'Yöneticiler ve müdürler'
         admins_and_managers_managing_the_project: 'Projeyi yöneten yöneticiler ve müdürler'
+        managers_managing_the_project: 'Projeyi yöneten yöneticiler'
         all_users: 'Tüm kullanıcılar'
         all_users_who_uploaded_proposals: 'Teklif yükleyen tüm kullanıcılar'
         managers: 'Yöneticiler'
@@ -544,6 +610,7 @@ tr:
         content_moderation: 'İçerik moderasyonu'
         general: 'Genel'
         inputs: 'Girişler'
+        internal_comments: 'Dahili yorumlar'
         permissions: 'İzinler'
         projects: 'Projeler'
         proposals: 'Teklifler'
@@ -556,6 +623,15 @@ tr:
         input_is_flagged_as_spam: 'Girdi spam olarak işaretlendi'
         input_is_updated: 'Girdi güncellenir'
         input_status_changes: 'Giriş durumu değişiklikleri'
+        internal_comment_is_posted_on_idea_assigned_to_user: 'Kullanıcıya atanan girdiye dahili yorum gönderilir'''
+        internal_comment_is_posted_on_initiative_assigned_to_user: 'Kullanıcıya atanan teklife dahili yorum gönderilir'''
+        internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'Dahili yorum, kullanıcının yönettiği proje veya klasördeki girdiye gönderilir'''
+        internal_comment_is_posted_on_idea_user_has_commented_internally_on: 'Dahili yorum, kullanıcının dahili olarak yorum yaptığı girdiye gönderilir'''
+        internal_comment_is_posted_on_idea_user_moderates: 'Giriş kullanıcı moderatörlerine dahili yorum gönderilir'
+        internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'Dahili yorum, kullanıcının dahili olarak yorum yaptığı teklife gönderilir'''
+        internal_comment_is_posted_on_unassigned_initiative: 'Atanmamış teklife iç yorum gönderildi'''
+        internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Yönetilmeyen projedeki atanmamış girdiye dahili yorum gönderildi'''
+        user_is_mentioned_in_internal_comment: 'Dahili yorumda kullanıcıdan bahsediliyor'
         new_input_is_published: 'Yeni girdi yayınlandı'
         new_proposal_is_posted: 'Yeni teklif yayınlandı'
         project_phase_changes: 'Proje aşaması değişiklikleri'
@@ -575,5 +651,6 @@ tr:
         proposal_is_published: 'Teklif yayınlandı'
         user_registers_for_the_first_time: 'Kullanıcı ilk kez kaydolur'
         user_replies_to_comment: 'Kullanıcı yoruma yanıt veriyor'
+        user_replies_to_internal_comment: 'Kullanıcı dahili yoruma yanıt veriyor'
         7_days_after_invite_is_sent: 'Davetiye gönderildikten 7 gün sonra'
         7_days_before_the_project_changes_phase: 'Proje değişiklik aşamasından 7 gün önce'
