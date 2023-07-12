@@ -33,6 +33,7 @@ interface InputProps {
   startAt: string | null | undefined;
   endAt: string | null;
   resolution: IResolution;
+  currentProjectFilter: string | undefined;
   currentProjectFilterLabel: string | undefined;
 }
 
@@ -46,18 +47,21 @@ const SelectableResourceByTopicChart = ({
   const { data: ideasByTopic } = useIdeasByTopic({
     start_at: otherProps.startAt,
     end_at: otherProps.endAt,
+    project: otherProps.currentProjectFilter,
     enabled: currentResourceByTopic === 'ideas',
   });
 
   const { data: commentsByTopic } = useCommentsByTopic({
     start_at: otherProps.startAt,
     end_at: otherProps.endAt,
+    project: otherProps.currentProjectFilter,
     enabled: currentResourceByTopic === 'comments',
   });
 
   const { data: reactionsByTopic } = useReactionsByTopic({
     start_at: otherProps.startAt,
     end_at: otherProps.endAt,
+    project: otherProps.currentProjectFilter,
     enabled: currentResourceByTopic === 'reactions',
   });
 

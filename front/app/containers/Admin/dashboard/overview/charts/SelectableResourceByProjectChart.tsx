@@ -45,21 +45,18 @@ const SelectableResourceByProjectChart = ({
   const { data: ideasByProject } = useIdeasByProject({
     start_at: otherProps.startAt,
     end_at: otherProps.endAt,
-    project: currentProjectFilter,
     enabled: currentResourceByProject === 'ideas',
   });
 
   const { data: commentsByProject } = useCommentsByProject({
     start_at: otherProps.startAt,
     end_at: otherProps.endAt,
-    project: currentProjectFilter,
     enabled: currentResourceByProject === 'comments',
   });
 
   const { data: reactionsByProject } = useReactionsByProject({
     start_at: otherProps.startAt,
     end_at: otherProps.endAt,
-    project: currentProjectFilter,
     enabled: currentResourceByProject === 'reactions',
   });
 
@@ -93,6 +90,8 @@ const SelectableResourceByProjectChart = ({
   const serie =
     data[currentResourceByProject] &&
     convertToGraphFormat(data[currentResourceByProject]);
+
+  console.log('serie', serie);
 
   return (
     <SelectableResourceChart
