@@ -22,9 +22,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { useParams } from 'react-router-dom';
 
-// services
-// import { addProjectDescriptionBuilderLayout } from '../../../services/projectDescriptionBuilder';
-
 // types
 import { Locale } from 'typings';
 
@@ -71,18 +68,6 @@ const ProjectDescriptionBuilderTopBar = ({
     if (selectedLocale) {
       try {
         setLoading(true);
-        // await addProjectDescriptionBuilderLayout(projectId, {
-        //   craftjs_jsonmultiloc: {
-        //     ...draftEditorData,
-        //     [selectedLocale]: query.getSerializedNodes(),
-        //   },
-        // });
-        // await addProjectDescriptionBuilderLayout(projectId, {
-        //   craftjs_jsonmultiloc: {
-        //     ...draftEditorData,
-        //     [selectedLocale]: query.getSerializedNodes(),
-        //   },
-        // });
         await addProjectDescriptionBuilderLayout({
           projectId,
           requestBody: {
