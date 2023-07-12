@@ -124,7 +124,7 @@ class Phase < ApplicationRecord
 
     campaigns_settings.each do |key, value|
       errors.add(:campaigns_settings, :invalid_key, message: 'invalid key') unless CAMPAIGNS.include?(key.to_sym)
-      next if [true, false].include? value
+      next if Utils.boolean? value
 
       errors.add(:campaigns_settings, :invalid_value, message: 'invalid value')
     end
