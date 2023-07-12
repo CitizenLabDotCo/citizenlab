@@ -1,7 +1,7 @@
-import { IRelationship, ImageSizes, Multiloc } from 'typings';
+import { ImageSizes, IRelationship, Multiloc } from 'typings';
+import { THomepageBannerLayout } from 'api/home_page/types';
 import { Keys } from 'utils/cl-react-query/types';
 import customPagesKeys from './keys';
-import { THomepageBannerLayout } from 'services/homepageSettings';
 
 export type CustomPagesKeys = Keys<typeof customPagesKeys>;
 

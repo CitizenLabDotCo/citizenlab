@@ -1,6 +1,6 @@
-import { INavbarItem } from 'services/navbar';
+import { INavbarItem } from '../types';
 
-const NAV_BAR_ITEMS: INavbarItem[] = [
+export const navbarItemsData: INavbarItem[] = [
   {
     id: '317f5ce0-7cd6-406b-b365-3a852bc2acf1',
     type: 'nav_bar_item',
@@ -149,4 +149,6 @@ const NAV_BAR_ITEMS: INavbarItem[] = [
   },
 ];
 
-export default NAV_BAR_ITEMS;
+export default jest.fn(() => {
+  return { data: { data: navbarItemsData } };
+});
