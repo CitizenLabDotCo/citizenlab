@@ -1,7 +1,8 @@
-import { API_PATH } from 'containers/App/constants';
-import streams from 'utils/streams';
 import { ImageSizes, Multiloc } from 'typings';
-const homepageSettingsEndpoint = `${API_PATH}/home_page`;
+import { Keys } from 'utils/cl-react-query/types';
+import homepageSettingsKeys from './keys';
+
+export type HomepageSettingsKeys = Keys<typeof homepageSettingsKeys>;
 
 // Enabled values for sections that have a corresponding
 // setting in appConfiguration.ts
@@ -27,10 +28,6 @@ export type THomepageBannerLayout =
   THomepageBannerLayoutMap[keyof THomepageBannerLayoutMap];
 
 export interface IHomepageSettings {
-  // To check
-  id: string;
-  // To check
-  type: string;
   data: IHomepageSettingsData;
 }
 
@@ -84,27 +81,3 @@ interface CTASignedOutTypeMap {
   no_button: 'no_button';
 }
 export type CTASignedOutType = CTASignedOutTypeMap[keyof CTASignedOutTypeMap];
-
-// streams
-export function homepageSettingsStream() {
-  return streams.get<IHomepageSettings>({
-    apiEndpoint: homepageSettingsEndpoint,
-  });
-}
-
-export async function updateHomepageSettings(
-  // still to update, won't work for header_bg, which has different types when
-  // updating vs. getting the data.
-  newHomepageSettings: Partial<IHomepageSettingsAttributes>
-) {
-  const homepageSettings = await streams.update<IHomepageSettings>(
-    homepageSettingsEndpoint,
-    // There's only 1 object with homepage settings
-    // As opposed to e.g. many ideas. So we can give it a dataId we like.
-    'home_page_settings',
-    { home_page: newHomepageSettings }
-  );
-  // is this needed?
-  await homepageSettingsStream().fetch();
-  return homepageSettings;
-}

@@ -1,17 +1,14 @@
 import { renderHook } from '@testing-library/react-hooks';
 import useHomepageSettingsFeatureFlag from './useHomepageSettingsFeatureFlag';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useHomepageSettings from './useHomepageSettings';
+import useHomepageSettings from 'api/home_page/useHomepageSettings';
+import { mockHomepageSettingsData } from 'api/home_page/__mocks__/useHomepageSettings';
 
-jest.mock('hooks/useHomepageSettings', () => {
-  return jest.fn(() => ({
-    attributes: {
-      events_widget_enabled: true,
-      top_info_section_enabled: true,
-      bottom_info_section_enabled: false,
-    },
-  }));
-});
+jest.mock('api/home_page/useHomepageSettings', () =>
+  jest.fn(() => ({
+    data: { data: mockHomepageSettingsData },
+  }))
+);
 
 jest.mock('api/app_configuration/useAppConfiguration', () =>
   jest.fn(() => ({
@@ -46,6 +43,7 @@ describe('useHomepageSettingsFeatureFlag', () => {
   });
 
   it('should return false when checking a disabled homepageSetting without a corresponding app config section', () => {
+    mockHomepageSettingsData.attributes.bottom_info_section_enabled = false;
     const { result } = renderHook(() =>
       useHomepageSettingsFeatureFlag({
         sectionEnabledSettingName: 'bottom_info_section_enabled',

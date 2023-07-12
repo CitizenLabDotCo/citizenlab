@@ -28,8 +28,8 @@ import { Multiloc } from 'typings';
 import { pagesAndMenuBreadcrumb } from '../../breadcrumbs';
 
 // services and hooks
+import { IHomepageSettingsData } from 'api/home_page/types';
 import { ICustomPageData } from 'api/custom_pages/types';
-import { IHomepageSettingsData } from 'services/homepageSettings';
 
 // utils
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
