@@ -11,7 +11,6 @@
   "app.components.AssignBudgetControl.add": "Add",
   "app.components.AssignBudgetControl.added": "Added",
   "app.components.AssignMultipleVotesControl.addVote": "Add vote",
-  "app.components.AssignMultipleVotesControl.inputTextVotes": "Votes text input",
   "app.components.AssignMultipleVotesControl.removeVote": "Remove vote",
   "app.components.AssignMultipleVotesControl.vote": "Vote",
   "app.components.AssignMultipleVotesControl.votes": "votes",
