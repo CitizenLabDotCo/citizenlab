@@ -4,7 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useNavbarItemEnabled from 'hooks/useNavbarItemEnabled';
+import useNavbarItems from 'api/navbar/useNavbarItems';
 import useCustomPageBySlug from 'api/custom_pages/useCustomPageBySlug';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useUpdateCustomPage from 'api/custom_pages/useUpdateCustomPage';
@@ -73,7 +73,11 @@ const InitiativesSettingsPage = () => {
     isLoading: isAppConfigurationLoading,
     isError: isAppConfigurationError,
   } = useUpdateAppConfiguration();
-  const proposalsNavbarItemEnabled = useNavbarItemEnabled('proposals');
+  const { data: navbarItems } = useNavbarItems();
+  const proposalsNavbarItemEnabled = navbarItems?.data.some(
+    (navbarItem) => navbarItem.attributes.code === 'proposals'
+  );
+
   const { data: proposalsPage } = useCustomPageBySlug('initiatives');
 
   const remoteProposalsSettings = useMemo(() => {
