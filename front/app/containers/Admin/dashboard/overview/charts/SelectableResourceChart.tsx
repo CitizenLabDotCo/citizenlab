@@ -13,8 +13,6 @@ import {
 } from 'components/admin/Graphs/styling';
 import { media, colors } from 'utils/styleUtils';
 
-// resources
-
 // components
 import ReportExportMenu from 'components/admin/ReportExportMenu';
 import {
