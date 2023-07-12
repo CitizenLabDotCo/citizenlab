@@ -15,7 +15,7 @@ import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 import { ITopicData } from 'api/topics/types';
 import { useIntl } from 'utils/cl-intl';
-import { ManagerType } from '../..';
+import { ManagerType } from 'components/admin/PostManager';
 
 const InfoIcon = styled(Icon)`
   fill: ${colors.teal700};
