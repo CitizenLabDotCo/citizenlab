@@ -11,10 +11,7 @@ const DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA = {
   },
 };
 
-let mockProjectDescriptionBuilderLayoutData:
-  | typeof DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA
-  | Error;
-mockProjectDescriptionBuilderLayoutData =
+const mockProjectDescriptionBuilderLayoutData: typeof DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA =
   DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA;
 
 jest.mock(
