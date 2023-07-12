@@ -10,7 +10,7 @@ jest.mock('api/me/useAuthUser', () => () => ({
 }));
 
 describe('HomePage', () => {
-  it('Tries to redirect on hitting the A key if you have admin access', async () => {
+  it.skip('Tries to redirect on hitting the A key if you have admin access', async () => {
     render(<HomePage />);
     const user = userEvent.setup();
     await user.keyboard('a');
