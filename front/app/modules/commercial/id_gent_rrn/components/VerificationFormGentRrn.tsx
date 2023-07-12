@@ -1,8 +1,6 @@
 import React, { memo, useCallback, useState } from 'react';
 import { isEmpty, get } from 'lodash-es';
 import { reportError } from 'utils/loggingUtils';
-import { API_PATH } from 'containers/App/constants';
-import streams from 'utils/streams';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -81,9 +79,6 @@ const VerificationFormGentRrn = memo<Props & WrappedComponentProps>(
             setProcessing(true);
             await verifyGentRrn(rrn);
 
-            const endpointsToRefetch = [
-              `${API_PATH}/users/custom_fields/schema`,
-            ];
             queryClient.invalidateQueries(userLockedAttributesKeys.all());
             if (!isNilOrError(authUser)) {
               queryClient.invalidateQueries(
@@ -92,9 +87,6 @@ const VerificationFormGentRrn = memo<Props & WrappedComponentProps>(
             }
 
             queryClient.invalidateQueries({ queryKey: meKeys.all() });
-            await streams.fetchAllWith({
-              apiEndpoint: endpointsToRefetch,
-            });
 
             setProcessing(false);
 

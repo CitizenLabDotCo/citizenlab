@@ -18,7 +18,7 @@ import useLocalize from 'hooks/useLocalize';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
-import useCustomPage from 'hooks/useCustomPage';
+import useCustomPageById from 'api/custom_pages/useCustomPageById';
 
 // routing
 import { Outlet as RouterOutlet, useParams } from 'react-router-dom';
@@ -28,13 +28,13 @@ const CustomPagesEditSettings = ({
 }: WrappedComponentProps) => {
   const localize = useLocalize();
   const { customPageId } = useParams() as { customPageId: string };
-  const customPage = useCustomPage({ customPageId });
+  const { data: customPage } = useCustomPageById(customPageId);
 
   if (isNilOrError(customPage)) {
     return null;
   }
 
-  const pageTitleMultiloc = customPage.attributes.title_multiloc;
+  const pageTitleMultiloc = customPage.data.attributes.title_multiloc;
   return (
     <>
       <HelmetIntl title={messages.editCustomPageMetaTitle} />
@@ -54,7 +54,7 @@ const CustomPagesEditSettings = ({
           title: localize(pageTitleMultiloc),
           rightSideCTA: (
             <ViewCustomPageButton
-              linkTo={`/pages/${customPage.attributes.slug}`}
+              linkTo={`/pages/${customPage.data.attributes.slug}`}
             />
           ),
         }}

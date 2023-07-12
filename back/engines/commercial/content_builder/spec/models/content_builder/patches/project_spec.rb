@@ -27,6 +27,23 @@ RSpec.describe ContentBuilder::Patches::Project do
         expect { project.destroy }.to change(ContentBuilder::Layout, :count).by(-2)
       end
     end
+
+    describe '#uses_content_builder?' do
+      it 'returns true if it has enabled layouts' do
+        expect(project.uses_content_builder?).to be true
+      end
+
+      it 'returns false if it has no enabled layouts' do
+        layout.update!(enabled: false)
+        expect(project.uses_content_builder?).to be false
+      end
+
+      it 'returns false if it has no layouts' do
+        layout.destroy!
+        another_layout.destroy!
+        expect(project.uses_content_builder?).to be false
+      end
+    end
   end
 
   describe '.search_ids_by_all_including_patches' do

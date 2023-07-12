@@ -16,6 +16,7 @@ import { ModuleConfiguration } from 'utils/moduleUtils';
 import { IUser } from 'api/users/types';
 import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
 import { IAppConfiguration } from 'api/app_configuration/types';
+import { getFullName } from 'utils/textUtils';
 
 const POSTHOG_API_KEY = process.env.POSTHOG_API_KEY;
 
@@ -54,7 +55,7 @@ const initializePosthog = async (
       // This sets the user for all subsequent events, and sets/updates her attributes
       ph.identify(user.data.id, {
         email: user.data.attributes.email,
-        name: `${user.data.attributes.first_name} ${user.data.attributes.last_name}`,
+        name: getFullName(user.data),
         first_name: user.data.attributes.first_name,
         last_name: user.data.attributes.last_name,
         locale: user.data.attributes.locale,

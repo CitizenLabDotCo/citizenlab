@@ -3,11 +3,9 @@ import { isEmpty, inRange } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
-import { updateProjectMapConfig } from '../../../services/mapConfigs';
-
-// hooks
+import useUpdateMapConfig from 'modules/commercial/custom_maps/api/map_config/useUpdateMapConfig';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useMapConfig from '../../../hooks/useMapConfig';
+import useMapConfig from '../../../api/map_config/useMapConfig';
 
 // components
 import { Input, IconTooltip, Icon } from '@citizenlab/cl2-component-library';
@@ -94,12 +92,21 @@ interface IFormValues {
 const MapCenterAndZoomConfig = memo<Props & WrappedComponentProps>(
   ({ projectId, className, intl: { formatMessage } }) => {
     const { data: appConfig } = useAppConfiguration();
-    const mapConfig = useMapConfig({ projectId });
+    const { mutateAsync: updateProjectMapConfig } = useUpdateMapConfig();
+    const { data: mapConfig } = useMapConfig(projectId);
 
-    const defaultLatLng = getCenter(undefined, appConfig?.data, mapConfig);
+    const defaultLatLng = getCenter(
+      undefined,
+      appConfig?.data,
+      mapConfig?.data
+    );
     const defaultLat = defaultLatLng[0];
     const defaultLng = defaultLatLng[1];
-    const defaultZoom = getZoomLevel(undefined, appConfig?.data, mapConfig);
+    const defaultZoom = getZoomLevel(
+      undefined,
+      appConfig?.data,
+      mapConfig?.data
+    );
 
     const [touched, setTouched] = useState(false);
     const [processing, setProcessing] = useState(false);
@@ -112,10 +119,18 @@ const MapCenterAndZoomConfig = memo<Props & WrappedComponentProps>(
 
     useEffect(() => {
       if (!isNilOrError(appConfig) && mapConfig) {
-        const defaultLatLng = getCenter(undefined, appConfig?.data, mapConfig);
+        const defaultLatLng = getCenter(
+          undefined,
+          appConfig?.data,
+          mapConfig?.data
+        );
         const defaultLat = defaultLatLng[0];
         const defaultLng = defaultLatLng[1];
-        const defaultZoom = getZoomLevel(undefined, appConfig?.data, mapConfig);
+        const defaultZoom = getZoomLevel(
+          undefined,
+          appConfig?.data,
+          mapConfig?.data
+        );
 
         formChange(
           {
@@ -168,7 +183,7 @@ const MapCenterAndZoomConfig = memo<Props & WrappedComponentProps>(
 
     const formError = (errorResponse) => {
       setProcessing(false);
-      setErrors(errorResponse?.json?.errors || 'unknown error');
+      setErrors(errorResponse?.errors || 'unknown error');
     };
 
     const handleCenterLatOnChange = (centerLat: string) => {
@@ -193,7 +208,9 @@ const MapCenterAndZoomConfig = memo<Props & WrappedComponentProps>(
           const defaultLng = parseFloat(formValues.defaultLng as any);
           const defaultZoom = formValues.defaultZoom?.toString() as string;
 
-          await updateProjectMapConfig(projectId, mapConfig.id, {
+          await updateProjectMapConfig({
+            projectId,
+            id: mapConfig.data.id,
             center_geojson: {
               type: 'Point',
               coordinates: [defaultLng, defaultLat],

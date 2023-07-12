@@ -13,15 +13,12 @@ import messages from './messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import sectionToggleMessages from 'containers/Admin/pagesAndMenu/components/SectionToggle/messages';
 
-// services
-import {
-  updateCustomPage,
-  TCustomPageEnabledSetting,
-} from 'services/customPages';
+import { TCustomPageEnabledSetting } from 'api/custom_pages/types';
 
 // hooks
-import useCustomPage from 'hooks/useCustomPage';
+import useCustomPageById from 'api/custom_pages/useCustomPageById';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useUpdateCustomPage from 'api/custom_pages/useUpdateCustomPage';
 
 // routing
 import { useParams } from 'react-router-dom';
@@ -37,9 +34,10 @@ export interface ICustomPageSectionToggleData extends ISectionToggleData {
 
 // types
 const CustomPagesEditContent = () => {
+  const { mutate: updateCustomPage } = useUpdateCustomPage();
   const { formatMessage } = useIntl();
   const { customPageId } = useParams() as { customPageId: string };
-  const customPage = useCustomPage({ customPageId });
+  const { data: customPage } = useCustomPageById(customPageId);
   const advancedCustomPagesEnabled = useFeatureFlag({
     name: 'advanced_custom_pages',
   });
@@ -50,7 +48,7 @@ const CustomPagesEditContent = () => {
 
   const hideProjects =
     !advancedCustomPagesEnabled ||
-    customPage.attributes.projects_filter_type === 'no_filter';
+    customPage.data.attributes.projects_filter_type === 'no_filter';
 
   const sectionTogglesData: ICustomPageSectionToggleData[] = [
     {
@@ -105,13 +103,10 @@ const CustomPagesEditContent = () => {
       if (isNilOrError(customPage)) {
         return;
       }
-      try {
-        await updateCustomPage(customPageId, {
-          [sectionName]: !customPage.attributes[sectionName],
-        });
-      } catch (error) {
-        console.error(error);
-      }
+      updateCustomPage({
+        id: customPageId,
+        [sectionName]: !customPage.data.attributes[sectionName],
+      });
     };
 
   const handleOnClick = (sectionPath: string) => {
@@ -135,7 +130,7 @@ const CustomPagesEditContent = () => {
           return (
             <SectionToggle
               key={sectionToggleData.name}
-              checked={customPage.attributes[sectionToggleData.name]}
+              checked={customPage.data.attributes[sectionToggleData.name]}
               onChangeSectionToggle={handleOnChangeToggle(
                 sectionToggleData.name
               )}

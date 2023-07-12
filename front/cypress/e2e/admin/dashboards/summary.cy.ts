@@ -5,7 +5,7 @@ const oneYearAgo = moment().subtract(1, 'year').format('MMMM YYYY');
 describe('/admin route', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
-    cy.visit('/admin/dashboard');
+    cy.visit('/admin/dashboard/overview');
   });
 
   it('Shows the summary tab and all its graphs', () => {

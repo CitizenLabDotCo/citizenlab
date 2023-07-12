@@ -63,7 +63,7 @@ export const UserComments = ({ userId }: Props) => {
     hasNextPage,
     isFetchingNextPage,
     fetchNextPage,
-  } = useComments({ userId });
+  } = useComments({ authorId: userId });
   const commentsList = comments?.pages.flatMap((page) => page.data);
 
   if (commentsList === undefined) {

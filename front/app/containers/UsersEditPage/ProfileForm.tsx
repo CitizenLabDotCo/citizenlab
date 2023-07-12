@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import streams from 'utils/streams';
 
 // services
 import { convertUrlToUploadFile } from 'utils/fileUtils';
@@ -23,7 +22,7 @@ import Feedback from 'components/HookForm/Feedback';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 // i18n
-import { appLocalePairs, API_PATH } from 'containers/App/constants';
+import { appLocalePairs } from 'containers/App/constants';
 import messages from './messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
@@ -42,6 +41,8 @@ import useUserLockedAttributes from 'api/user_locked_attributes/useUserLockedAtt
 import useAuthUser from 'api/me/useAuthUser';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import onboardingCampaignsKeys from 'api/onboarding_campaigns/keys';
+import { queryClient } from 'utils/cl-react-query/queryClient';
 
 const StyledIconTooltip = styled(IconTooltip)`
   margin-left: 5px;
@@ -146,8 +147,8 @@ const ProfileForm = () => {
 
     try {
       await updateUser({ userId: authUser.data.id, ...newFormValues, avatar });
-      streams.fetchAllWith({
-        apiEndpoint: [`${API_PATH}/onboarding_campaigns/current`],
+      queryClient.invalidateQueries({
+        queryKey: onboardingCampaignsKeys.all(),
       });
     } catch (error) {
       handleHookFormSubmissionError(error, methods.setError);

@@ -1,13 +1,12 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-import GetCampaignStats from 'resources/GetCampaignStats';
-import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { FormattedNumber } from 'react-intl';
 import { IconTooltip } from '@citizenlab/cl2-component-library';
+import useCampaignStats from 'api/campaign_stats/useCampaignStats';
 
 const Container = styled.div`
   display: flex;
@@ -49,77 +48,72 @@ const GraphCardCount = styled.div`
   font-size: ${fontSizes.xl}px;
 `;
 
-type InputProps = {
+type Props = {
   campaignId: string;
   className?: string;
 };
 
-type DataProps = {
-  stats: any;
-};
-
 type IRelevantStats = 'sent' | 'delivered' | 'opened' | 'clicked';
 
-type Props = InputProps & DataProps;
-
-interface State {}
-
-class CampaignStats extends React.Component<Props, State> {
-  relevantsStats = [
+const CampaignStats = ({ campaignId, className }: Props) => {
+  const { data: stats } = useCampaignStats(campaignId);
+  const relevantsStats = [
     'sent',
     'delivered',
     'opened',
     'clicked',
   ] as IRelevantStats[];
 
-  render() {
-    const { stats, className } = this.props;
-    if (isNilOrError(stats)) return null;
+  if (!stats) return null;
 
-    return (
-      <Container className={className}>
-        <GraphCard key="failed">
+  return (
+    <Container className={className}>
+      <GraphCard key="failed">
+        <GraphCardPercentage>
+          <FormattedNumber
+            style="percent"
+            value={
+              (stats.data.attributes.failed + stats.data.attributes.bounced) /
+              stats.data.attributes.total
+            }
+          />
+        </GraphCardPercentage>
+        <GraphCardCount>
+          {stats.data.attributes.failed + stats.data.attributes.bounced}
+        </GraphCardCount>
+        <GraphCardTitle>
+          <FormattedMessage {...messages.deliveryStatus_failed} />
+        </GraphCardTitle>
+      </GraphCard>
+      {relevantsStats.map((status) => (
+        <GraphCard key={status}>
           <GraphCardPercentage>
+            {stats.data.attributes[status]}
+          </GraphCardPercentage>
+          <GraphCardCount>
             <FormattedNumber
               style="percent"
-              value={(stats.failed + stats.bounced) / stats['total']}
+              value={
+                stats.data.attributes[status] / stats.data.attributes.total
+              }
             />
-          </GraphCardPercentage>
-          <GraphCardCount>{stats.failed + stats.bounced}</GraphCardCount>
+          </GraphCardCount>
           <GraphCardTitle>
-            <FormattedMessage {...messages.deliveryStatus_failed} />
+            <FormattedMessage {...messages[`deliveryStatus_${status}`]} />
+            {status === 'clicked' && (
+              <IconTooltip
+                content={
+                  <FormattedMessage
+                    {...messages.deliveryStatus_clickedTooltip}
+                  />
+                }
+              />
+            )}
           </GraphCardTitle>
         </GraphCard>
-        {this.relevantsStats.map((status) => (
-          <GraphCard key={status}>
-            <GraphCardPercentage>{stats[status]}</GraphCardPercentage>
-            <GraphCardCount>
-              <FormattedNumber
-                style="percent"
-                value={stats[status] / stats['total']}
-              />
-            </GraphCardCount>
-            <GraphCardTitle>
-              <FormattedMessage {...messages[`deliveryStatus_${status}`]} />
-              {status === 'clicked' && (
-                <IconTooltip
-                  content={
-                    <FormattedMessage
-                      {...messages.deliveryStatus_clickedTooltip}
-                    />
-                  }
-                />
-              )}
-            </GraphCardTitle>
-          </GraphCard>
-        ))}
-      </Container>
-    );
-  }
-}
+      ))}
+    </Container>
+  );
+};
 
-export default (inputProps: InputProps) => (
-  <GetCampaignStats campaignId={inputProps.campaignId}>
-    {(stats) => <CampaignStats {...inputProps} stats={stats} />}
-  </GetCampaignStats>
-);
+export default CampaignStats;

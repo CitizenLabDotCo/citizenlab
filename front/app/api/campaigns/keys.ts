@@ -13,7 +13,7 @@ const campaignsKeys = {
     {
       ...baseKey,
       operation: 'item',
-      parameters: { campaignId },
+      parameters: { id: campaignId },
     },
   ],
 } satisfies QueryKeys;

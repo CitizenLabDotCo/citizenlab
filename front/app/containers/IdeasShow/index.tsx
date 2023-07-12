@@ -37,7 +37,6 @@ import styled from 'styled-components';
 import { columnsGapDesktop } from './styleConstants';
 
 // hooks
-import useLocale from 'hooks/useLocale';
 import usePhases from 'api/phases/usePhases';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useIdeaImages from 'api/idea_images/useIdeaImages';
@@ -46,7 +45,6 @@ import useIdeaImages from 'api/idea_images/useIdeaImages';
 import { IIdea } from 'api/ideas/types';
 import { IProjectData } from 'api/projects/types';
 import { IIdeaImages } from 'api/idea_images/types';
-import { Locale } from 'typings';
 
 // utils
 import { getVotingMethodConfig } from 'utils/votingMethodUtils/votingMethodUtils';
@@ -82,9 +80,8 @@ export const IdeasShow = ({
 }: Props) => {
   const { data: ideaImages } = useIdeaImages(ideaId);
   const { data: idea } = useIdeaById(ideaId);
-  const locale = useLocale();
 
-  const isLoaded = !!(idea && ideaImages && project && !isNilOrError(locale));
+  const isLoaded = !!(idea && ideaImages && project);
 
   const handleContainerRef = (element: HTMLDivElement) => {
     setRef?.(element);
@@ -103,7 +100,6 @@ export const IdeasShow = ({
           idea={idea}
           project={project}
           ideaImages={ideaImages}
-          locale={locale}
           compact={compact}
         />
       )}
@@ -116,7 +112,6 @@ interface ContentProps {
   idea: IIdea;
   project: IProjectData;
   ideaImages: IIdeaImages;
-  locale: Locale;
   compact: boolean;
 }
 
@@ -125,7 +120,6 @@ const Content = ({
   idea,
   project,
   ideaImages,
-  locale,
   compact,
 }: ContentProps) => {
   const { data: phases } = usePhases(project.id);
@@ -180,7 +174,6 @@ const Content = ({
             <Body
               postType="idea"
               postId={ideaId}
-              locale={locale}
               body={ideaBody}
               translateButtonClicked={translateButtonIsClicked}
             />

@@ -40,7 +40,7 @@ const getDate = (row: TimeSeriesResponseRow) => {
 const _parseTimeSeries = timeSeriesParser(getDate, parseRow);
 
 export const parseTimeSeries = (
-  responseTimeSeries: Response['data'][2],
+  responseTimeSeries: Response['data']['attributes'][2],
   startAtMoment: Moment | null | undefined,
   endAtMoment: Moment | null,
   resolution: IResolution
@@ -56,7 +56,7 @@ export const parseTimeSeries = (
 export const parseStats = ([
   totalsWholePeriodRows,
   totalsLastPeriodRows,
-]: Response['data']): Stats => {
+]: Response['data']['attributes']): Stats => {
   const wholePeriod = totalsWholePeriodRows[0];
   const lastPeriod = totalsLastPeriodRows[0];
 
