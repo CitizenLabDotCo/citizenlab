@@ -49,7 +49,7 @@ const useVotingInterface = (projectId?: string) => {
     phases?.data
   );
   const basketId = participationContext?.relationships?.user_basket?.data?.id;
-  const { data: basketIdeas, isLoading: basketIdeasLoading } =
+  const { data: basketIdeas, isFetching: basketIdeasLoading } =
     useBasketsIdeas(basketId);
 
   const remoteVotesPerIdea = useMemo<
