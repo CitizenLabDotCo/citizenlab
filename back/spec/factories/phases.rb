@@ -61,6 +61,11 @@ FactoryBot.define do
       participation_method { 'native_survey' }
     end
 
+    factory :voting_phase do
+      participation_method { 'voting' }
+      voting_method { 'single_voting' }
+    end
+
     factory :budgeting_phase do
       participation_method { 'voting' }
       voting_method { 'budgeting' }
