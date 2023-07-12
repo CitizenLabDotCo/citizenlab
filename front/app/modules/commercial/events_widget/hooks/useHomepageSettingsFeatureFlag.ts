@@ -1,10 +1,7 @@
-import {
-  TAppConfigSectionSetting,
-  TSectionSetting,
-} from 'services/homepageSettings';
+import { TAppConfigSectionSetting, TSectionSetting } from 'api/home_page/types';
 import { THomepageSetting } from 'api/app_configuration/types';
 import { isNilOrError } from 'utils/helperUtils';
-import useHomepageSettings from './useHomepageSettings';
+import useHomepageSettings from 'api/home_page/useHomepageSettings';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // If we deal with a section whose allowed value needs to be checked
@@ -25,11 +22,11 @@ type RegularSectionParameters = {
 // If you just need to check the allowed value for appConfig settings,
 // you should still use onlyCheckAllowed useFeatureFlag/FeatureFlag/GetFeatureFlag. This hook
 // doesn't have this functionality implemented.
-export default function useHomepageSettingsFeatureFlag({
+function useHomepageSettingsFeatureFlag({
   sectionEnabledSettingName,
   appConfigSettingName,
 }: Parameters) {
-  const homepageSettings = useHomepageSettings();
+  const { data: homepageSettings } = useHomepageSettings();
   const { data: appConfig } = useAppConfiguration();
 
   const appConfigExists = !isNilOrError(appConfig);
@@ -43,7 +40,7 @@ export default function useHomepageSettingsFeatureFlag({
 
   // if the named setting is enabled in homepageSettings
   const homepageSettingisEnabled = homepageSettingsExist
-    ? homepageSettings.attributes[sectionEnabledSettingName]
+    ? homepageSettings.data.attributes[sectionEnabledSettingName]
     : false;
 
   // if no setting name from the app config was passed in,
@@ -61,3 +58,5 @@ export default function useHomepageSettingsFeatureFlag({
 
   return isAllowedInAppConfig && homepageSettingisEnabled;
 }
+
+export default useHomepageSettingsFeatureFlag;

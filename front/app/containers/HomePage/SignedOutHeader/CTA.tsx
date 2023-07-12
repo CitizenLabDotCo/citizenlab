@@ -2,7 +2,7 @@ import BannerButton, {
   BannerButtonStyle,
 } from 'components/LandingPages/citizen/BannerButton';
 import SignUpButton from 'containers/HomePage/SignUpButton';
-import useHomepageSettings from 'hooks/useHomepageSettings';
+import useHomepageSettings from 'api/home_page/useHomepageSettings';
 import useLocalize from 'hooks/useLocalize';
 import React, { KeyboardEvent, MouseEvent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
@@ -14,16 +14,16 @@ interface Props {
 
 const CTA = ({ buttonStyle, signUpIn }: Props) => {
   const localize = useLocalize();
-  const homepageSettings = useHomepageSettings();
+  const { data: homepageSettings } = useHomepageSettings();
 
   if (!isNilOrError(homepageSettings)) {
-    const ctaType = homepageSettings.attributes.banner_cta_signed_out_type;
+    const ctaType = homepageSettings.data.attributes.banner_cta_signed_out_type;
 
     const customButtonText =
-      homepageSettings.attributes.banner_cta_signed_out_text_multiloc;
+      homepageSettings.data.attributes.banner_cta_signed_out_text_multiloc;
 
     const customButtonUrl =
-      homepageSettings.attributes.banner_cta_signed_out_url;
+      homepageSettings.data.attributes.banner_cta_signed_out_url;
 
     switch (ctaType) {
       case 'sign_up_button':
