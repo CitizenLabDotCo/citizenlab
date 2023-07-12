@@ -36,7 +36,7 @@ module EmailCampaigns
     include LifecycleStageRestrictable
     allow_lifecycle_stages only: ['active']
 
-    before_send :campaign_enabled?
+    before_send :campaign_enabled_for_phase?
 
     recipient_filter :filter_notification_recipient
 
@@ -86,9 +86,7 @@ module EmailCampaigns
 
     private
 
-    def campaign_enabled?(activity:, time: nil)
-      return false unless enabled
-
+    def campaign_enabled_for_phase?(activity:, time: nil)
       activity.item.phase.campaigns_settings['project_phase_started']
     end
   end
