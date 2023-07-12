@@ -10,7 +10,7 @@ import ideasByStatusKeys from './keys';
 
 const fetchIdeasByStatus = (params: IIdeasByStatusParams) =>
   fetcher<IIdeasByStatus>({
-    path: `/stats//ideas_by_status`,
+    path: `/stats/ideas_by_status`,
     action: 'get',
     queryParams: params,
   });

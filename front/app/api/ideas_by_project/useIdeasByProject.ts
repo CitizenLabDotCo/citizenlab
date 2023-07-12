@@ -10,7 +10,7 @@ import ideasByProjectKeys from './keys';
 
 const fetchIdeasByProject = (params: IIdeasByProjectParams) =>
   fetcher<IIdeasByProject>({
-    path: `/stats/ideas_by_topic`,
+    path: `/stats/ideas_by_project`,
     action: 'get',
     queryParams: params,
   });
