@@ -19,12 +19,12 @@ import { toFullMonth } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import AssignVotesControl from 'containers/IdeasShow/components/RightColumnDesktop/AssignVotesControl';
-import AssignBudgetControl from 'containers/IdeasShow/components/RightColumnDesktop/AssignBudgetControl';
+import AssignVotesControl from 'components/VoteInputs/multiple/AssignVotesControl';
+import AssignBudgetControl from 'components/VoteInputs/budgeting/AssignBudgetControl';
 import AddToBasketButton from 'components/AddToBasketButton';
-import AssignMultipleVotesControl from 'components/AssignMultipleVotesControl';
-import AssignSingleVoteButton from 'components/AssignSingleVoteButton';
-import AssignVoteControl from 'containers/IdeasShow/components/RightColumnDesktop/AssignVoteControl';
+import AssignMultipleVotesControl from 'components/AssignMultipleVotesInput';
+import AssignSingleVoteButton from 'components/VoteInputs/single/AssignSingleVoteButton';
+import AssignVoteControl from 'components/VoteInputs/single/AssignVoteControl';
 
 /*
   Configuration Specifications

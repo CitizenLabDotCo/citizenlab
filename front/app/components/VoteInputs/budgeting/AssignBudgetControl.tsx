@@ -6,14 +6,14 @@ import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
 
 // components
-import AddToBasketButton from 'components/AddToBasketButton';
+import AddToBasketButton from './AddToBasketButton';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import VotesCounter from 'components/VotesCounter';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../../../containers/IdeasShow/components/RightColumnDesktop/messages';
 import FormattedBudget from 'utils/currency/FormattedBudget';
 
 // styles
@@ -21,7 +21,7 @@ import styled from 'styled-components';
 import { fontSizes, colors, defaultCardStyle, media } from 'utils/styleUtils';
 
 // utils
-import { getCurrentPhase } from 'api/phases/utils';
+import { getCurrentParticipationContext } from 'api/phases/utils';
 
 const IdeaPageContainer = styled.div`
   display: flex;
@@ -64,11 +64,18 @@ const AssignBudgetControl = memo(({ ideaId, projectId }: Props) => {
   const { data: idea } = useIdeaById(ideaId);
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(project?.data.id);
-  const participationContext = getCurrentPhase(phases?.data) || project?.data;
+
+  const participationContext = getCurrentParticipationContext(
+    project?.data,
+    phases?.data
+  );
+
   const ideaBudget = idea?.data.attributes.budget;
   const actionDescriptor = idea?.data.attributes.action_descriptor.voting;
 
-  if (!actionDescriptor || !ideaBudget) return null;
+  if (!actionDescriptor || !ideaBudget || !participationContext) {
+    return null;
+  }
 
   return (
     <IdeaPageContainer
@@ -88,7 +95,6 @@ const AssignBudgetControl = memo(({ ideaId, projectId }: Props) => {
         </Budget>
         <AddToBasketButton
           ideaId={ideaId}
-          projectId={projectId}
           buttonStyle="primary"
           participationContext={participationContext}
         />

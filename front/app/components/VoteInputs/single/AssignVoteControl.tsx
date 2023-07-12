@@ -3,25 +3,24 @@ import React, { memo } from 'react';
 // api
 import useIdeaById from 'api/ideas/useIdeaById';
 import useBasket from 'api/baskets/useBasket';
-import { getCurrentPhase } from 'api/phases/utils';
+import usePhases from 'api/phases/usePhases';
+import useProjectById from 'api/projects/useProjectById';
 
 // styles
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 // components
-import AssignSingleVoteButton from 'components/AssignSingleVoteButton';
+import AssignSingleVoteButton from 'components/VoteInputs/single/AssignSingleVoteButton';
 import VotesCounter from 'components/VotesCounter';
 import { Box } from '@citizenlab/cl2-component-library';
 
 // intl
-import messages from './messages';
+import messages from '../../../containers/IdeasShow/components/RightColumnDesktop/messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
-// api
-import usePhases from 'api/phases/usePhases';
-import useProjectById from 'api/projects/useProjectById';
-import { isNilOrError } from 'utils/helperUtils';
+// utils
+import { getCurrentParticipationContext } from 'api/phases/utils';
 
 const IdeaPageContainer = styled.div`
   display: flex;
@@ -41,15 +40,20 @@ const AssignVoteControl = memo(({ ideaId, projectId }: Props) => {
   const { data: idea } = useIdeaById(ideaId);
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(project?.data.id);
-  const participationContext = getCurrentPhase(phases?.data) || project?.data;
+
+  const participationContext = getCurrentParticipationContext(
+    project?.data,
+    phases?.data
+  );
+
   const { data: basket } = useBasket(
     participationContext?.relationships?.user_basket?.data?.id
   );
   const actionDescriptor = idea?.data.attributes.action_descriptor.voting;
-  if (!actionDescriptor) return null;
+  if (!actionDescriptor || !participationContext) return null;
 
   const totalVotes = basket?.data?.attributes?.total_votes;
-  const totalVotesGreaterThanZero = !isNilOrError(totalVotes) && totalVotes > 0; // Need to use isNilOrError here, as otherwise the numbers can result in strange boolean values
+  const totalVotesGreaterThanZero = totalVotes !== undefined && totalVotes > 0;
 
   return (
     <IdeaPageContainer>

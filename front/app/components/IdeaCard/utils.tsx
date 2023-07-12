@@ -3,8 +3,8 @@ import React from 'react';
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 import AddToBasketButton from 'components/AddToBasketButton';
-import AssignMultipleVotesControl from 'components/AssignMultipleVotesControl';
-import AssignSingleVoteButton from 'components/AssignSingleVoteButton';
+import AssignMultipleVotesControl from 'components/AssignMultipleVotesInput';
+import AssignSingleVoteButton from 'components/VoteInputs/single/AssignSingleVoteButton';
 
 // types
 import { IIdea } from 'api/ideas/types';
