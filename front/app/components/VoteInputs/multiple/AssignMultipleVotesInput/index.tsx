@@ -4,7 +4,6 @@ import React from 'react';
 import {
   Box,
   Button,
-  Input,
   Text,
   colors,
   useBreakpoint,
@@ -17,7 +16,7 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import useCumulativeVoting from 'api/baskets_ideas/useVoting';
 
 // style
-import styled, { useTheme } from 'styled-components';
+import { useTheme } from 'styled-components';
 
 // events
 // import eventEmitter from 'utils/eventEmitter';
@@ -35,29 +34,6 @@ import { isNil } from 'utils/helperUtils';
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 
-const StyledBox = styled(Box)`
-  input {
-    border: none !important;
-    font-size: x-large;
-    padding: 0px !important;
-    margin: 0px !important;
-    text-align: center;
-    font-weight: 600;
-    font-size: 24px;
-    max-width: 100%;
-    size: 30;
-    background-color: ${colors.grey100};
-  }
-
-  input::-webkit-outer-spin-button,
-  input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-  input[type='number'] {
-    -moz-appearance: textfield;
-  }
-`;
 interface Props {
   ideaId: string;
   participationContext: IPhaseData | IProjectData;
@@ -127,10 +103,6 @@ const AssignMultipleVotesInput = ({
     setVotes?.(ideaId, votes - 1);
   };
 
-  const onTextInputChange = async (_event) => {
-    // console.log('TEXT INPUT: ', event);
-  };
-
   if (
     !actionDescriptor ||
     budgetingDisabledReason === 'idea_not_in_current_phase' ||
@@ -187,24 +159,14 @@ const AssignMultipleVotesInput = ({
           padding="8px"
           minWidth={fillWidth ? '140px' : 'auto'}
         >
-          <StyledBox
-            style={{
-              width: `${votes.toString().length * 20}px`,
-              maxWidth: `${isMobileOrSmaller ? '100px' : '160px'}`,
-            }}
+          <Box
+            w={`${votes.toString().length * 20}px`}
+            maxWidth={isMobileOrSmaller ? '100px' : '160px'}
           >
-            <Input
-              value={votes.toString()}
-              onChange={onTextInputChange}
-              disabled={basketSubmitted}
-              type="number"
-              min="0"
-              onBlur={() => {
-                onTextInputChange;
-              }}
-              ariaLabel={formatMessage(messages.inputTextVotes)}
-            />
-          </StyledBox>
+            <Text mt="0px" mb="0px" fontSize="xxl" fontWeight="bold">
+              {votes}
+            </Text>
+          </Box>
           <Text fontSize="m" ml="8px" my="auto" aria-live="polite">
             {formatMessage(messages.xVotes, {
               votes,
