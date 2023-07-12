@@ -28,11 +28,6 @@ import { HiddenLabel } from 'utils/a11y';
 import BarChart from 'components/admin/Graphs/BarChart';
 
 // typings
-import {
-  ideasByProjectXlsxEndpoint,
-  commentsByProjectXlsxEndpoint,
-  reactionsByProjectXlsxEndpoint,
-} from 'services/stats';
 import { IResource } from '..';
 import { IGraphFormat, IOption } from 'typings';
 
@@ -41,6 +36,9 @@ import { isNilOrError } from 'utils/helperUtils';
 import { ideasByTopicXlsxEndpoint } from 'api/ideas_by_topic/util';
 import { commentsByTopicXlsxEndpoint } from 'api/comments_by_topic/util';
 import { reactionsByTopicXlsxEndpoint } from 'api/reactions_by_topic/util';
+import { commentsByProjectXlsxEndpoint } from 'api/comments_by_project/util';
+import { ideasByProjectXlsxEndpoint } from 'api/ideas_by_project/util';
+import { reactionsByProjectXlsxEndpoint } from 'api/reactions_by_project/util';
 
 const GraphCardTitle = styled.h3`
   margin: 0;
