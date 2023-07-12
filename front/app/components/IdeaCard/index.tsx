@@ -28,7 +28,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { scrollToElement } from 'utils/scroll';
 import { getInteractions } from './utils';
 import { pastPresentOrFuture } from 'utils/dateUtils';
-import { getMethodConfig } from 'utils/participationMethodUtils';
+import { getMethodConfig } from 'utils/configs/participationMethodUtils';
 
 // events
 import eventEmitter from 'utils/eventEmitter';

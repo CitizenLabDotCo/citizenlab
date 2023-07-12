@@ -16,7 +16,10 @@ import { Box, Title, Image } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
 
 // utils
-import { getMethodConfig, getPhase } from 'utils/participationMethodUtils';
+import {
+  getMethodConfig,
+  getPhase,
+} from 'utils/configs/participationMethodUtils';
 import { getCurrentParticipationContext } from 'api/phases/utils';
 import { isReady } from './utils';
 

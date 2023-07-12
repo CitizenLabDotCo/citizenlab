@@ -29,7 +29,7 @@ import Warning from 'components/UI/Warning';
 
 // utils
 import { geocode, reverseGeocode } from 'utils/locationTools';
-import { getMethodConfig } from 'utils/participationMethodUtils';
+import { getMethodConfig } from 'utils/configs/participationMethodUtils';
 import { getLocationGeojson } from '../utils';
 import { isError, isNilOrError } from 'utils/helperUtils';
 import { getCurrentParticipationContext } from 'api/phases/utils';

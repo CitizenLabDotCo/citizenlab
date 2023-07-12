@@ -22,7 +22,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 
 // utils
-import { getMethodConfig } from 'utils/participationMethodUtils';
+import { getMethodConfig } from 'utils/configs/participationMethodUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
 // typings

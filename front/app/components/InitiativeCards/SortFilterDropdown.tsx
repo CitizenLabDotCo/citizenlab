@@ -8,7 +8,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // utils
-import { defaultSortingOptions } from 'utils/participationMethodUtils';
+import { defaultSortingOptions } from 'utils/configs/participationMethodUtils';
 
 export type Sort = 'random' | 'new' | '-new';
 

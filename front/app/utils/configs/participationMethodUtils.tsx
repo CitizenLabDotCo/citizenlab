@@ -1,8 +1,8 @@
 import React, { ReactNode } from 'react';
 
 // intl
-import { FormattedMessage } from './cl-intl';
-import messages from './messages';
+import { FormattedMessage } from '../cl-intl';
+import messages from '../messages';
 
 // services
 import {
@@ -26,7 +26,7 @@ import { DocumentAnnotationCTABar } from 'components/ParticipationCTABars/Docume
 import { CTABarProps } from 'components/ParticipationCTABars/utils';
 
 // utils
-import { isNilOrError, NilOrError } from './helperUtils';
+import { isNilOrError, NilOrError } from '../helperUtils';
 import clHistory from 'utils/cl-router/history';
 import { IIdea } from 'api/ideas/types';
 

@@ -47,7 +47,7 @@ import {
   getAllParticipationMethods,
   getMethodConfig,
   showInputManager,
-} from 'utils/participationMethodUtils';
+} from 'utils/configs/participationMethodUtils';
 
 const TopContainer = styled.div`
   width: 100%;

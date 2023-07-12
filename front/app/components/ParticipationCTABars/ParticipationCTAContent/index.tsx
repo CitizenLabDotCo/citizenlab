@@ -14,7 +14,7 @@ import { IPhaseData } from 'api/phases/types';
 
 // utils
 import { getPeriodRemainingUntil } from 'utils/dateUtils';
-import { getMethodConfig } from 'utils/participationMethodUtils';
+import { getMethodConfig } from 'utils/configs/participationMethodUtils';
 
 // types
 import { IProjectData } from 'api/projects/types';
