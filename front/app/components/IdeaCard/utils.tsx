@@ -2,8 +2,8 @@ import React from 'react';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
-import AddToBasketButton from 'components/AddToBasketButton';
-import AssignMultipleVotesControl from 'components/AssignMultipleVotesInput';
+import AddToBasketButton from 'components/VoteInputs/budgeting/AddToBasketButton';
+import AssignMultipleVotesControl from 'components/VoteInputs/multiple/AssignMultipleVotesInput';
 import AssignSingleVoteButton from 'components/VoteInputs/single/AssignSingleVoteButton';
 
 // types

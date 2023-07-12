@@ -1,12 +1,12 @@
 import React from 'react';
 
-// types
-import { IPhaseData } from 'api/phases/types';
-import { IProjectData } from 'api/projects/types';
-import { IAppConfiguration } from 'api/app_configuration/types';
-
-// api
-import { VotingMethod } from 'services/participationContexts';
+// components
+import AddToBasketButton from 'components/VoteInputs/budgeting/AddToBasketButton';
+import AssignBudgetControl from 'components/VoteInputs/budgeting/AssignBudgetControl';
+import AssignMultipleVotesInput from 'components/VoteInputs/multiple/AssignMultipleVotesInput';
+import AssignVotesControl from 'components/VoteInputs/multiple/AssignVotesControl';
+import AssignSingleVoteButton from 'components/VoteInputs/single/AssignSingleVoteButton';
+import AssignVoteControl from 'components/VoteInputs/single/AssignVoteControl';
 
 // intl
 import messages from './messages';
@@ -18,14 +18,11 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { toFullMonth } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
-// components
-import AssignVotesControl from 'components/VoteInputs/multiple/AssignVotesControl';
-import AssignBudgetControl from 'components/VoteInputs/budgeting/AssignBudgetControl';
-import AddToBasketButton from 'components/AddToBasketButton';
-import AssignMultipleVotesControl from 'components/AssignMultipleVotesInput';
-import AssignSingleVoteButton from 'components/VoteInputs/single/AssignSingleVoteButton';
-import AssignVoteControl from 'components/VoteInputs/single/AssignVoteControl';
-
+// types
+import { IPhaseData } from 'api/phases/types';
+import { IProjectData } from 'api/projects/types';
+import { IAppConfiguration } from 'api/app_configuration/types';
+import { VotingMethod } from 'services/participationContexts';
 /*
   Configuration Specifications
   
@@ -57,7 +54,7 @@ export type VoteControlProps = {
   ideaId: string;
   projectId: string;
   compact: boolean;
-  participationContext?: IPhaseData | IProjectData | null;
+  participationContext: IPhaseData | IProjectData;
 };
 
 export type VotingMethodConfig = {
@@ -199,7 +196,6 @@ const budgetingConfig: VotingMethodConfig = {
       return (
         <AddToBasketButton
           ideaId={ideaId}
-          projectId={projectId}
           buttonStyle="primary-outlined"
           participationContext={participationContext}
         />
@@ -321,14 +317,19 @@ const multipleVotingConfig: VotingMethodConfig = {
   preSubmissionWarning: () => {
     return messages.votingPreSubmissionWarning;
   },
-  getIdeaPageVoteControl: ({ ideaId, projectId, compact }) => {
+  getIdeaPageVoteControl: ({
+    ideaId,
+    projectId,
+    participationContext,
+    compact,
+  }) => {
     if (!compact) {
       return <AssignVotesControl ideaId={ideaId} projectId={projectId} />;
     }
     return (
-      <AssignMultipleVotesControl
+      <AssignMultipleVotesInput
         ideaId={ideaId}
-        projectId={projectId}
+        participationContext={participationContext}
         fillWidth={true}
       />
     );
