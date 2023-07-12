@@ -2,8 +2,6 @@ import React, { memo } from 'react';
 
 // api
 import useIdeaById from 'api/ideas/useIdeaById';
-import useProjectById from 'api/projects/useProjectById';
-import usePhases from 'api/phases/usePhases';
 
 // components
 import AddToBasketButton from './AddToBasketButton';
@@ -20,8 +18,9 @@ import FormattedBudget from 'utils/currency/FormattedBudget';
 import styled from 'styled-components';
 import { fontSizes, colors, defaultCardStyle, media } from 'utils/styleUtils';
 
-// utils
-import { getCurrentParticipationContext } from 'api/phases/utils';
+// typings
+import { IProjectData } from 'api/projects/types';
+import { IPhaseData } from 'api/phases/types';
 
 const IdeaPageContainer = styled.div`
   display: flex;
@@ -56,24 +55,16 @@ const Budget = styled.div`
 `;
 
 interface Props {
-  projectId: string;
   ideaId: string;
+  participationContext: IProjectData | IPhaseData;
 }
 
-const AddToBasketBox = memo(({ ideaId, projectId }: Props) => {
+const AddToBasketBox = memo(({ ideaId, participationContext }: Props) => {
   const { data: idea } = useIdeaById(ideaId);
-  const { data: project } = useProjectById(projectId);
-  const { data: phases } = usePhases(project?.data.id);
-
-  const participationContext = getCurrentParticipationContext(
-    project?.data,
-    phases?.data
-  );
-
   const ideaBudget = idea?.data.attributes.budget;
   const actionDescriptor = idea?.data.attributes.action_descriptor.voting;
 
-  if (!actionDescriptor || !ideaBudget || !participationContext) {
+  if (!actionDescriptor || !ideaBudget) {
     return null;
   }
 
@@ -89,7 +80,7 @@ const AddToBasketBox = memo(({ ideaId, projectId }: Props) => {
           <Box>
             <FormattedBudget value={ideaBudget} />
             <Text mb="0px" mt="8px" color="grey600" fontSize="xs">
-              <VotesCounter projectId={projectId} />
+              <VotesCounter participationContext={participationContext} />
             </Text>
           </Box>
         </Budget>

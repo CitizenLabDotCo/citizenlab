@@ -3,8 +3,6 @@ import React, { memo } from 'react';
 // api
 import useIdeaById from 'api/ideas/useIdeaById';
 import useBasket from 'api/baskets/useBasket';
-import usePhases from 'api/phases/usePhases';
-import useProjectById from 'api/projects/useProjectById';
 
 // styles
 import styled from 'styled-components';
@@ -19,8 +17,9 @@ import { Box } from '@citizenlab/cl2-component-library';
 import messages from '../../../containers/IdeasShow/components/RightColumnDesktop/messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
-// utils
-import { getCurrentParticipationContext } from 'api/phases/utils';
+// typings
+import { IProjectData } from 'api/projects/types';
+import { IPhaseData } from 'api/phases/types';
 
 const IdeaPageContainer = styled.div`
   display: flex;
@@ -31,26 +30,19 @@ const IdeaPageContainer = styled.div`
 `;
 
 interface Props {
-  projectId: string;
   ideaId: string;
+  participationContext: IProjectData | IPhaseData;
 }
 
-const AssignSingleVoteBox = memo(({ ideaId, projectId }: Props) => {
+const AssignSingleVoteBox = memo(({ ideaId, participationContext }: Props) => {
   const { formatMessage } = useIntl();
   const { data: idea } = useIdeaById(ideaId);
-  const { data: project } = useProjectById(projectId);
-  const { data: phases } = usePhases(project?.data.id);
-
-  const participationContext = getCurrentParticipationContext(
-    project?.data,
-    phases?.data
-  );
 
   const { data: basket } = useBasket(
-    participationContext?.relationships?.user_basket?.data?.id
+    participationContext.relationships?.user_basket?.data?.id
   );
   const actionDescriptor = idea?.data.attributes.action_descriptor.voting;
-  if (!actionDescriptor || !participationContext) return null;
+  if (!actionDescriptor) return null;
 
   const totalVotes = basket?.data?.attributes?.total_votes;
   const totalVotesGreaterThanZero = totalVotes !== undefined && totalVotes > 0;
@@ -72,7 +64,7 @@ const AssignSingleVoteBox = memo(({ ideaId, projectId }: Props) => {
         >
           <FormattedMessage {...messages.youHave} />
           <Box ml="4px">
-            {project?.data.id && <VotesCounter projectId={project?.data.id} />}
+            <VotesCounter participationContext={participationContext} />
           </Box>
         </Box>
       )}

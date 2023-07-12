@@ -2,8 +2,6 @@ import React, { memo } from 'react';
 
 // api
 import useIdeaById from 'api/ideas/useIdeaById';
-import useProjectById from 'api/projects/useProjectById';
-import usePhases from 'api/phases/usePhases';
 
 // components
 import AssignMultipleVotesControl from './AssignMultipleVotesInput';
@@ -12,8 +10,9 @@ import AssignMultipleVotesControl from './AssignMultipleVotesInput';
 import styled from 'styled-components';
 import { colors, media } from 'utils/styleUtils';
 
-// utils
-import { getCurrentParticipationContext } from 'api/phases/utils';
+// typings
+import { IProjectData } from 'api/projects/types';
+import { IPhaseData } from 'api/phases/types';
 
 const IdeaPageContainer = styled.div`
   display: flex;
@@ -26,33 +25,28 @@ const IdeaPageContainer = styled.div`
 `;
 
 interface Props {
-  projectId: string;
   ideaId: string;
+  participationContext: IProjectData | IPhaseData;
 }
 
-const AssignMultipleVotesBox = memo(({ ideaId, projectId }: Props) => {
-  const { data: idea } = useIdeaById(ideaId);
-  const { data: project } = useProjectById(projectId);
-  const { data: phases } = usePhases(projectId);
+const AssignMultipleVotesBox = memo(
+  ({ ideaId, participationContext }: Props) => {
+    const { data: idea } = useIdeaById(ideaId);
+    const actionDescriptor = idea?.data.attributes.action_descriptor.voting;
 
-  const actionDescriptor = idea?.data.attributes.action_descriptor.voting;
-  const participationContext = getCurrentParticipationContext(
-    project?.data,
-    phases?.data
-  );
+    if (!actionDescriptor) {
+      return null;
+    }
 
-  if (!actionDescriptor || !participationContext) {
-    return null;
+    return (
+      <IdeaPageContainer>
+        <AssignMultipleVotesControl
+          ideaId={ideaId}
+          participationContext={participationContext}
+        />
+      </IdeaPageContainer>
+    );
   }
-
-  return (
-    <IdeaPageContainer>
-      <AssignMultipleVotesControl
-        ideaId={ideaId}
-        participationContext={participationContext}
-      />
-    </IdeaPageContainer>
-  );
-});
+);
 
 export default AssignMultipleVotesBox;

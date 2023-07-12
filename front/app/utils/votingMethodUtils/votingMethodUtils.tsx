@@ -2,11 +2,11 @@ import React from 'react';
 
 // components
 import AddToBasketButton from 'components/VoteInputs/budgeting/AddToBasketButton';
-import AssignBudgetControl from 'components/VoteInputs/budgeting/AssignBudgetControl';
+import AddToBasketBox from 'components/VoteInputs/budgeting/AddToBasketBox';
 import AssignMultipleVotesInput from 'components/VoteInputs/multiple/AssignMultipleVotesInput';
-import AssignVotesControl from 'components/VoteInputs/multiple/AssignVotesControl';
+import AssignMultipleVotesBox from 'components/VoteInputs/multiple/AssignMultipleVotesBox';
 import AssignSingleVoteButton from 'components/VoteInputs/single/AssignSingleVoteButton';
-import AssignVoteControl from 'components/VoteInputs/single/AssignVoteControl';
+import AssignSingleVoteBox from 'components/VoteInputs/single/AssignSingleVoteBox';
 
 // intl
 import messages from './messages';
@@ -50,9 +50,8 @@ export type GetStatusDescriptionProps = {
   locale?: Locale | null | Error;
 };
 
-export type VoteControlProps = {
+export type VoteInputProps = {
   ideaId: string;
-  projectId: string;
   compact: boolean;
   participationContext: IPhaseData | IProjectData;
 };
@@ -70,10 +69,9 @@ export type VotingMethodConfig = {
   }: GetStatusDescriptionProps) => JSX.Element | null;
   getIdeaPageVoteInput?: ({
     ideaId,
-    projectId,
     compact,
     participationContext,
-  }: VoteControlProps) => JSX.Element | null;
+  }: VoteInputProps) => JSX.Element | null;
   getSubmissionTerm?: (form: 'singular' | 'plural') => MessageDescriptor;
   preSubmissionWarning: () => MessageDescriptor;
   useVoteTerm: boolean;
@@ -184,14 +182,14 @@ const budgetingConfig: VotingMethodConfig = {
   preSubmissionWarning: () => {
     return messages.budgetingPreSubmissionWarning;
   },
-  getIdeaPageVoteInput: ({
-    ideaId,
-    projectId,
-    participationContext,
-    compact,
-  }) => {
+  getIdeaPageVoteInput: ({ ideaId, participationContext, compact }) => {
     if (!compact) {
-      return <AssignBudgetControl ideaId={ideaId} projectId={projectId} />;
+      return (
+        <AddToBasketBox
+          ideaId={ideaId}
+          participationContext={participationContext}
+        />
+      );
     } else {
       return (
         <AddToBasketButton
@@ -317,14 +315,14 @@ const multipleVotingConfig: VotingMethodConfig = {
   preSubmissionWarning: () => {
     return messages.votingPreSubmissionWarning;
   },
-  getIdeaPageVoteInput: ({
-    ideaId,
-    projectId,
-    participationContext,
-    compact,
-  }) => {
+  getIdeaPageVoteInput: ({ ideaId, participationContext, compact }) => {
     if (!compact) {
-      return <AssignVotesControl ideaId={ideaId} projectId={projectId} />;
+      return (
+        <AssignMultipleVotesBox
+          ideaId={ideaId}
+          participationContext={participationContext}
+        />
+      );
     }
     return (
       <AssignMultipleVotesInput
@@ -486,22 +484,23 @@ const singleVotingConfig: VotingMethodConfig = {
   preSubmissionWarning: () => {
     return messages.votingPreSubmissionWarning;
   },
-  getIdeaPageVoteInput: ({
-    ideaId,
-    projectId,
-    participationContext,
-    compact,
-  }) => {
-    if (compact) {
+  getIdeaPageVoteInput: ({ ideaId, participationContext, compact }) => {
+    if (!compact) {
       return (
-        <AssignSingleVoteButton
-          participationContext={participationContext}
+        <AssignSingleVoteBox
           ideaId={ideaId}
-          buttonStyle={'primary'}
+          participationContext={participationContext}
         />
       );
     }
-    return <AssignVoteControl ideaId={ideaId} projectId={projectId} />;
+
+    return (
+      <AssignSingleVoteButton
+        ideaId={ideaId}
+        participationContext={participationContext}
+        buttonStyle="primary"
+      />
+    );
   },
   useVoteTerm: false,
 };
