@@ -112,8 +112,6 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
         defaultSortingMethod={ideaQueryParameters.sort || null}
         defaultView={phase.attributes.presentation_mode}
         participationMethod={participationMethod}
-        participationContextId={phase.id}
-        participationContextType="phase"
         invisibleTitleMessage={messages.a11y_titleInputsPhase}
         phaseId={phase.id}
         showDropdownFilters={isVotingContext ? false : true}

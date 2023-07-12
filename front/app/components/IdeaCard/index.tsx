@@ -23,7 +23,6 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import useIdeaImage from 'api/idea_images/useIdeaImage';
 import useProjectById from 'api/projects/useProjectById';
 import useLocalize from 'hooks/useLocalize';
-import usePhases from 'api/phases/usePhases';
 import usePhase from 'api/phases/usePhase';
 import useBasket from 'api/baskets/useBasket';
 import useLocale from 'hooks/useLocale';
@@ -31,7 +30,6 @@ import useLocale from 'hooks/useLocale';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { scrollToElement } from 'utils/scroll';
-import { getCurrentPhase } from 'api/phases/utils';
 import { getInteractions } from './utils';
 import { pastPresentOrFuture, timeAgo } from 'utils/dateUtils';
 
@@ -119,7 +117,7 @@ interface Props {
   hideIdeaStatus?: boolean;
   hideBody?: boolean;
   goBackMode?: 'browserGoBackButton' | 'goToProject';
-  viewingPhaseId?: string | null;
+  phaseId?: string | null;
 }
 
 const IdeaLoading = (props: Props) => {
@@ -146,7 +144,7 @@ const IdeaCard = memo<IdeaCardProps>(
     hideIdeaStatus = false,
     hideBody = false,
     goBackMode = 'browserGoBackButton',
-    viewingPhaseId,
+    phaseId,
   }) => {
     const isGeneralIdeasPage = window.location.pathname.endsWith('/ideas');
     const smallerThanPhone = useBreakpoint('phone');
@@ -155,16 +153,13 @@ const IdeaCard = memo<IdeaCardProps>(
     const { data: project } = useProjectById(
       idea.data.relationships.project.data.id
     );
-    const { data: viewingPhase } = usePhase(viewingPhaseId);
-    const { data: phases } = usePhases(project?.data.id);
+    const { data: phase } = usePhase(phaseId);
     const { data: ideaImage } = useIdeaImage(
       idea.data.id,
       idea.data.relationships.idea_images.data?.[0]?.id
     );
-    const currentPhase = phases ? getCurrentPhase(phases?.data) : undefined;
 
-    const participationContext =
-      viewingPhase?.data || currentPhase || project?.data;
+    const participationContext = phase?.data || project?.data;
     const participationContextEnded =
       participationContext?.type === 'phase' &&
       pastPresentOrFuture(participationContext?.attributes?.end_at) === 'past';

@@ -113,13 +113,13 @@ const IdeasList = ({
                   <StyledIdeaCard
                     key={idea.id}
                     ideaId={idea.id}
+                    phaseId={phaseId}
                     participationMethod={participationMethod}
                     hideImage={hideImage}
                     hideBody={config?.hideAuthorOnIdeas || false}
                     hideImagePlaceholder={hideImagePlaceholder}
                     hideIdeaStatus={hideIdeaStatus}
                     goBackMode={goBackMode}
-                    viewingPhaseId={phaseId}
                   />
                 );
               })}

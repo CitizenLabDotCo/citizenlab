@@ -39,7 +39,6 @@ import {
 } from 'services/participationContexts';
 
 // typings
-import { IParticipationContextType } from 'typings';
 import { isFieldEnabled } from 'utils/projectUtils';
 import { IQueryParameters } from 'api/ideas/types';
 import usePhase from 'api/phases/usePhase';
@@ -150,8 +149,6 @@ export interface Props {
   defaultSortingMethod?: IdeaDefaultSortMethod;
   defaultView?: 'card' | 'map';
   participationMethod?: ParticipationMethod | null;
-  participationContextId?: string | null;
-  participationContextType?: IParticipationContextType | null;
   className?: string;
   allowProjectsFilter?: boolean;
   showSearchbar: boolean;
