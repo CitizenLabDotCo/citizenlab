@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import projectDescriptionBuilderKeys from './keys';
+import projectsKeys from 'api/projects/keys';
 import {
   IProjectDescriptionBuilderLayout,
   IAddProjectDescriptionBuilderLayout,
@@ -31,6 +32,13 @@ const useAddProjectDescriptionBuilderLayout = () => {
           projectId: variables.projectId,
         }),
       });
+
+      // We invalidate the project if `enabled` changes because the `uses_content_builder` attribute will also change on the project
+      if (variables.requestBody.hasOwnProperty('enabled')) {
+        queryClient.invalidateQueries({
+          queryKey: projectsKeys.item({ id: variables.projectId }),
+        });
+      }
     },
   });
 };
