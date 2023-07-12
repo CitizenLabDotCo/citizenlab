@@ -10,7 +10,7 @@ RSpec.describe EmailCampaigns::Campaigns::ProjectPhaseStarted do
   end
 
   describe '#campaign_enabled?' do
-    context 'when campaign is is enabled at campaign level' do
+    context 'when campaign is enabled at campaign level' do
       it 'returns false when campaign is disabled at phase level' do
         phase = create(:phase, campaigns_settings: { project_phase_started: false })
         notification = create(:project_phase_started, phase: phase)
@@ -30,7 +30,7 @@ RSpec.describe EmailCampaigns::Campaigns::ProjectPhaseStarted do
       end
     end
 
-    context 'when campaign is is disabled at campaign level' do
+    context 'when campaign is disabled at campaign level' do
       it 'returns false when campaign is disabled at phase level' do
         phase = create(:phase, campaigns_settings: { project_phase_started: false })
         notification = create(:project_phase_started, phase: phase)
