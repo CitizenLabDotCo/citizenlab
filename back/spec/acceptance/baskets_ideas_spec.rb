@@ -9,7 +9,7 @@ resource BasketsIdea do
   before { header 'Content-Type', 'application/json' }
 
   let(:user) { create(:user) }
-  let(:project) { create(:continuous_single_voting_project) }
+  let(:project) { create(:continuous_multiple_voting_project) }
   let(:basket) { create(:basket, participation_context: project, user: user) }
 
   context 'when resident' do
