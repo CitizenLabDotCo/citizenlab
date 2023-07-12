@@ -101,7 +101,7 @@ export const NotificationsPopup = () => {
             {!isSmallerThanPhone && unreadNotificationsCount > 0 && (
               <Box
                 w="auto"
-                h={isSmallerThanPhone ? '0px' : '18px'}
+                h="18px"
                 ref={iconDivRef}
                 ml="auto"
               >
