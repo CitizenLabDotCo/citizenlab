@@ -50,6 +50,7 @@ en:
       "voting_basket_submitted": Confirmation of voting
       "voting_basket_not_submitted": Votes not submitted
       "voting_last_chance": Last chance to vote
+      "voting_results": Voting results
       "your_proposed_initiatives_digest": Weekly overview of your proposals
     schedules:
       weekly:
@@ -539,6 +540,14 @@ en:
       body_2: 'Time is running out, and we noticed that you haven''t cast your vote yet! Act now by simply clicking the button below to participate.'
       body_3: 'By doing so, you''ll gain access to a range of options and have the chance to provide your input, which is crucial in deciding the future of this project.'
       cta_vote: 'Vote'
+    voting_results:
+      subject: '%{organizationName}: %{phaseTitle} vote results revealed!'
+      preheader: '%{phaseTitle} vote results revealed on the participation platform of %{organizationName}'
+      title_results: '%{phaseTitle} vote results revealed!'
+      body_1: 'Results are in!'
+      body_2: 'The results of the %{phaseTitle} vote in the %{organizationName} platform have been published!'
+      body_3: 'We encourage you to review the results and stay tuned for further updates on the next steps.'
+      cta_see_results: 'See results in the platform'
     admin_labels:
       recipient_role:
         admins_and_managers: 'To admins & managers'
@@ -606,6 +615,7 @@ en:
         user_replies_to_comment: 'User replies to comment'
         voting_2_days_before_phase_closes: '2 days before voting phase closes'
         voting_1_day_after_last_votes: '1 day after user last voted'
+        voting_phase_ended: 'Voting phase ended'
         voting_basket_submitted: 'Votes are submitted'
         7_days_after_invite_is_sent: '7 days after invite is sent'
         7_days_before_the_project_changes_phase: '7 days before the project changes phase'
