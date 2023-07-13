@@ -3,24 +3,23 @@ import React, { useMemo } from 'react';
 // api
 import useIdeas from 'api/ideas/useIdeas';
 
-// i18n
-import useLocalize from 'hooks/useLocalize';
-
 // components
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import VotingResultCard from './VotingResultCard';
+
+// typings
 import { IIdeaData } from 'api/ideas/types';
 
 interface Props {
   phaseId: string;
 }
 
-const IdeaResults = ({ phaseId }: Props) => {
+const VotingResults = ({ phaseId }: Props) => {
   const { data: ideas } = useIdeas({
     phase: phaseId,
     sort: 'baskets_count', // TODO: replace with votes_count when implemented by James
   });
   const smallerThanPhone = useBreakpoint('phone');
-  const localize = useLocalize();
 
   const desktopRows = useMemo(() => {
     if (!ideas || smallerThanPhone) return;
@@ -42,11 +41,11 @@ const IdeaResults = ({ phaseId }: Props) => {
   }, [ideas, smallerThanPhone]);
 
   return (
-    <Box mt="20px">
+    <Box mt={smallerThanPhone ? '4px' : '8px'} w="100%">
       {smallerThanPhone
         ? ideas?.data.map((idea) => (
-            <Box p="20px" bgColor="white" mt="20px" key={idea.id}>
-              {localize(idea.attributes.title_multiloc)}
+            <Box key={idea.id} mb="8px">
+              <VotingResultCard idea={idea} />
             </Box>
           ))
         : desktopRows?.map((row, rowIndex) => (
@@ -54,12 +53,16 @@ const IdeaResults = ({ phaseId }: Props) => {
               key={rowIndex}
               display="flex"
               w="100%"
-              mt="20px"
+              mb="20px"
               justifyContent="space-between"
             >
-              {row.map((idea) => (
-                <Box p="20px" bgColor="white" key={idea.id}>
-                  {localize(idea.attributes.title_multiloc)}
+              {row.map((idea, i) => (
+                <Box
+                  w="50%"
+                  key={idea.id}
+                  {...(i === 0 ? { mr: '8px' } : { ml: '8px' })}
+                >
+                  <VotingResultCard idea={idea} />
                 </Box>
               ))}
             </Box>
@@ -68,4 +71,4 @@ const IdeaResults = ({ phaseId }: Props) => {
   );
 };
 
-export default IdeaResults;
+export default VotingResults;

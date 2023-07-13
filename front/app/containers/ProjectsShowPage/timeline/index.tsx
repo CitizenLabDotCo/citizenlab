@@ -15,7 +15,7 @@ import {
 import SectionContainer from 'components/SectionContainer';
 import PhaseDocumentAnnotation from './document_annotation';
 import StatusModule from 'components/StatusModule';
-import IdeaResults from './IdeaResults';
+import VotingResults from './VotingResults';
 
 // router
 import setPhaseURL from './setPhaseURL';
@@ -108,7 +108,7 @@ const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
     const showIdeas =
       participationMethod === 'ideation' || (isVotingPhase && !isPastPhase);
 
-    const showIdeaResults = isVotingPhase && isPastPhase;
+    const showVotingResults = isVotingPhase && isPastPhase;
 
     return (
       <Container className={`${className || ''} e2e-project-process-page`}>
@@ -157,7 +157,7 @@ const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
               {showIdeas && (
                 <PhaseIdeas projectId={projectId} phaseId={selectedPhaseId} />
               )}
-              {showIdeaResults && <IdeaResults phaseId={selectedPhaseId} />}
+              {showVotingResults && <VotingResults phaseId={selectedPhaseId} />}
             </ContentContainer>
           </div>
         </StyledSectionContainer>
