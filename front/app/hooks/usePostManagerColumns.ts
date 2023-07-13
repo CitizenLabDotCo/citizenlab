@@ -10,20 +10,22 @@ export default function usePostManagerColumns(
   const phase = usePhases(phaseId);
   console.log(phase, project);
 
-  // TODO: Define the correct columns based on voting method etc
-  //
-  // const [reports, setReports] = useState<Report[] | NilOrError>();
-  //
-  // useEffect(() => {
-  //   const { observable } = reportsStream();
-  //   const subscription = observable.subscribe(
-  //     (reports: ReportsResponse | NilOrError) => {
-  //       setReports(isNilOrError(reports) ? reports : reports.data);
-  //     }
-  //   );
-  //
-  //   return () => subscription.unsubscribe();
-  // }, []);
+  // TODO: Define the correct columns based on voting method etc - use effect etc
+  // Error: Too many re-renders. React limits the number of renders to prevent an infinite loop.
+  // Probably need useEffect()
+  /*
+  const [columns, setColumns] = useState<string[]>(
+    [
+      'selection',
+      'assignee',
+      'title',
+      'published_on',
+      'up',
+      'down',
+    ]
+  );
+  setColumns([...columns, 'picks']);
+   */
 
   return [
     'selection',
