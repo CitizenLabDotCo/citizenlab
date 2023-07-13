@@ -9,11 +9,7 @@ jest.mock('hooks/useFeatureFlag', () => jest.fn(() => true));
 
 let mockReportLayout;
 jest.mock('hooks/useReportLayout', () => jest.fn(() => mockReportLayout));
-jest.mock('hooks/useReport', () =>
-  jest.fn(() => ({
-    attributes: { name: 'Report 1' },
-  }))
-);
+jest.mock('api/reports/useReport');
 jest.mock('../../hooks/useReportLocale', () => jest.fn(() => 'en'));
 
 const surveyResultsNodes = {

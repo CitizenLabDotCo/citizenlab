@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 // hooks
-import useReports from 'hooks/useReports';
+import useReports from 'api/reports/useReports';
 
 // styling
 import { colors } from 'utils/styleUtils';
@@ -20,27 +20,26 @@ import sharedMessages from '../../messages';
 import messages from './messages';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const ReportBuilderPage = () => {
-  const reports = useReports();
+  const { data: reports } = useReports();
   const [modalOpen, setModalOpen] = useState(false);
   const isReportBuilderAllowed = useFeatureFlag({
     name: 'report_builder',
     onlyCheckAllowed: true,
   });
 
-  if (isNilOrError(reports)) {
+  if (!reports) {
     return null;
   }
 
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
 
-  const showEmptyState = reports.length === 0;
+  const showEmptyState = reports.data.length === 0;
 
   return (
     <>
@@ -101,7 +100,7 @@ const ReportBuilderPage = () => {
             >
               <FormattedMessage {...messages.viewReports} />
             </Title>
-            {reports.map((report) => (
+            {reports.data.map((report) => (
               <ReportRow key={report.id} report={report} />
             ))}
           </Box>

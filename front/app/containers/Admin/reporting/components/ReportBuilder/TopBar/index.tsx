@@ -5,7 +5,7 @@ import { updateReportLayout } from 'services/reports';
 
 // hooks
 import { useEditor, SerializedNodes } from '@craftjs/core';
-import useReport from 'hooks/useReport';
+import useReport from 'api/reports/useReport';
 
 // components
 import Container from 'components/admin/ContentBuilder/TopBar/Container';
@@ -74,7 +74,7 @@ const ContentBuilderTopBar = ({
   const [showQuitModal, setShowQuitModal] = useState(false);
   const [hasChange, setHasChange] = useState(false);
   const { query } = useEditor();
-  const report = useReport(reportId);
+  const { data: report } = useReport(reportId);
 
   const disableSave = localesWithError.length > 0;
 
@@ -209,7 +209,7 @@ const ContentBuilderTopBar = ({
             <FormattedMessage {...messages.reportBuilder} />
           </Text>
           <Title variant="h4" as="h1" color="primary">
-            {isNilOrError(report) ? <></> : report.attributes.name}
+            {isNilOrError(report) ? <></> : report.data.attributes.name}
             <LocaleBadge>{selectedLocale?.toUpperCase()}</LocaleBadge>
           </Title>
         </Box>
