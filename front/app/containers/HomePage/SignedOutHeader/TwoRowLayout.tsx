@@ -5,7 +5,7 @@ import {
 } from 'components/LandingPages/citizen/TwoRowLayout';
 import HeaderContent from 'containers/HomePage/SignedOutHeader/HeaderContent';
 import React from 'react';
-import { IHomepageSettingsData } from 'services/homepageSettings';
+import { IHomepageSettingsData } from 'api/home_page/types';
 import { Box } from '@citizenlab/cl2-component-library';
 
 interface Props {

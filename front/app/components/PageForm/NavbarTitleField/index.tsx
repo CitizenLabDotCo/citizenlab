@@ -7,7 +7,7 @@ import useCustomPageById from 'api/custom_pages/useCustomPageById';
 import { isNilOrError } from 'utils/helperUtils';
 
 import { SectionField } from 'components/admin/Section';
-import useNavbarItem from 'hooks/useNavbarItem';
+import useNavbarItems from 'api/navbar/useNavbarItems';
 import { POLICY_PAGE, TPolicyPage } from 'api/custom_pages/types';
 
 type Props = {
@@ -28,7 +28,9 @@ const NavbarTitleField = ({
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
   const { data: page } = useCustomPageById(pageId ?? undefined);
-  const navbarItem = useNavbarItem({ navbarItemId });
+  const { data: navbarItems } = useNavbarItems();
+
+  const navbarItem = navbarItems?.data.find((item) => item.id === navbarItemId);
 
   if (
     isNilOrError(page) ||

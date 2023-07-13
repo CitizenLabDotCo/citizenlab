@@ -9,24 +9,22 @@ import SelectableResourceChart from './SelectableResourceChart';
 import useLocalize from 'hooks/useLocalize';
 
 // typings
-import {
-  IIdeasByProject,
-  ideasByProjectStream,
-  ICommentsByProject,
-  commentsByProjectStream,
-  IReactionsByProject,
-  reactionsByProjectStream,
-} from 'services/stats';
 import { IOption } from 'typings';
 import { IResource } from '..';
 import { IResolution } from 'components/admin/ResolutionControl';
+import useIdeasByProject from 'api/ideas_by_project/useIdeasByProject';
+import useCommentsByProject from 'api/comments_by_project/useCommentsByProject';
+import useReactionsByProject from 'api/reactions_by_project/useReactionsByProject';
+import { IIdeasByProject } from 'api/ideas_by_project/types';
+import { IReactionsByProject } from 'api/reactions_by_project/types';
+import { ICommentsByProject } from 'api/comments_by_project/types';
 
 interface QueryProps {
   startAt: string | null | undefined;
   endAt: string | null;
 }
 
-interface InputProps {
+interface Props extends QueryProps {
   currentProjectFilter: string | undefined;
   className: string;
   onResourceByProjectChange: (option: IOption) => void;
@@ -38,24 +36,30 @@ interface InputProps {
   currentProjectFilterLabel: string | undefined;
 }
 
-interface Props extends InputProps, QueryProps {}
-
-const getCurrentStream = (currentResourceByProject: IResource) => {
-  if (currentResourceByProject === 'ideas') {
-    return ideasByProjectStream;
-  } else if (currentResourceByProject === 'comments') {
-    return commentsByProjectStream;
-  } else {
-    return reactionsByProjectStream;
-  }
-};
-
 const SelectableResourceByProjectChart = ({
   currentResourceByProject,
   onResourceByProjectChange,
   currentProjectFilter,
   ...otherProps
 }: Props) => {
+  const { data: ideasByProject } = useIdeasByProject({
+    start_at: otherProps.startAt,
+    end_at: otherProps.endAt,
+    enabled: currentResourceByProject === 'ideas',
+  });
+
+  const { data: commentsByProject } = useCommentsByProject({
+    start_at: otherProps.startAt,
+    end_at: otherProps.endAt,
+    enabled: currentResourceByProject === 'comments',
+  });
+
+  const { data: reactionsByProject } = useReactionsByProject({
+    start_at: otherProps.startAt,
+    end_at: otherProps.endAt,
+    enabled: currentResourceByProject === 'reactions',
+  });
+
   const localize = useLocalize();
 
   const convertToGraphFormat = (
@@ -77,14 +81,23 @@ const SelectableResourceByProjectChart = ({
     return sortedByValue.length > 0 ? sortedByValue : null;
   };
 
+  const data: Record<IResource, any> = {
+    ideas: ideasByProject,
+    comments: commentsByProject,
+    reactions: reactionsByProject,
+  };
+
+  const serie =
+    data[currentResourceByProject] &&
+    convertToGraphFormat(data[currentResourceByProject]);
+
   return (
     <SelectableResourceChart
       onResourceByXChange={onResourceByProjectChange}
       currentSelectedResource={currentResourceByProject}
-      stream={getCurrentStream(currentResourceByProject)}
-      convertToGraphFormat={convertToGraphFormat}
       currentFilter={currentProjectFilter}
       byWhat="Project"
+      serie={serie}
       {...otherProps}
     />
   );

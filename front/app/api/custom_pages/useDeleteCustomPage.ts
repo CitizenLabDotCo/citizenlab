@@ -1,8 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import fetcher from 'utils/cl-react-query/fetcher';
 import customPagesKeys from './keys';
-import streams from 'utils/streams';
-import { apiEndpoint as navbarEndpoint } from 'services/navbar';
+import navbarKeys from 'api/navbar/keys';
 
 const deleteCustomPage = (id: string) =>
   fetcher({
@@ -19,7 +18,7 @@ const useDeleteCustomPage = () => {
       queryClient.invalidateQueries({
         queryKey: customPagesKeys.lists(),
       });
-      await streams.fetchAllWith({ apiEndpoint: [navbarEndpoint] });
+      queryClient.invalidateQueries({ queryKey: navbarKeys.lists() });
     },
   });
 };

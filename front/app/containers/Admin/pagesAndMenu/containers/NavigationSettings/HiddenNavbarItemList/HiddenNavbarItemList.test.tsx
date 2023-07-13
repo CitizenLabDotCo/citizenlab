@@ -1,17 +1,25 @@
 import { ADMIN_PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
-import allNavbarItems from 'services/__mocks__/navbarItems';
+import { navbarItemsData as allNavbarItems } from 'api/navbar/__mocks__/useNavbarItems';
 import React from 'react';
 import clHistory from 'utils/cl-router/history';
 import { fireEvent, render, screen } from 'utils/testUtils/rtl';
 import HiddenNavbarItemList from '.';
-import { addNavbarItem } from 'services/navbar';
 
 let mockNavbarItems = allNavbarItems;
 const mockRemovedDefaultNavbarItems = [];
 
-jest.mock('hooks/useNavbarItems', () => jest.fn(() => mockNavbarItems));
-jest.mock('hooks/useRemovedDefaultNavbarItems', () =>
-  jest.fn(() => mockRemovedDefaultNavbarItems)
+jest.mock('api/navbar/useNavbarItems', () => {
+  return jest.fn((params) => {
+    return params?.onlyRemovedDefaultItems
+      ? { data: { data: mockRemovedDefaultNavbarItems } }
+      : { data: { data: mockNavbarItems } };
+  });
+});
+
+const mockAddNavbarItem = jest.fn();
+
+jest.mock('api/navbar/useAddNavbarItem', () =>
+  jest.fn(() => ({ mutate: mockAddNavbarItem }))
 );
 
 jest.mock('api/custom_pages/useCustomPages');
@@ -22,11 +30,6 @@ const mockDeleteCustomPage = jest.fn();
 jest.mock('api/custom_pages/useDeleteCustomPage', () =>
   jest.fn(() => ({ mutate: mockDeleteCustomPage }))
 );
-
-jest.mock('services/navbar', () => ({
-  addNavbarItem: jest.fn(),
-  getNavbarItemSlug: jest.fn(),
-}));
 
 jest.mock('api/custom_pages/types', () => {
   const original = jest.requireActual('api/custom_pages/types');
@@ -67,10 +70,10 @@ describe('<HiddenNavbarItemList />', () => {
     const addButtons = screen.getAllByText('Add to navbar');
 
     fireEvent.click(addButtons[0]);
-    expect(addNavbarItem).not.toHaveBeenCalled();
+    expect(mockAddNavbarItem).not.toHaveBeenCalled();
 
     fireEvent.click(addButtons[1]);
-    expect(addNavbarItem).not.toHaveBeenCalled();
+    expect(mockAddNavbarItem).not.toHaveBeenCalled();
   });
 
   it('calls addNavbarItem on click add button with correct data', () => {
@@ -88,7 +91,7 @@ describe('<HiddenNavbarItemList />', () => {
     };
 
     fireEvent.click(addButtons[0]);
-    expect(addNavbarItem).toHaveBeenCalledWith(faqItem);
+    expect(mockAddNavbarItem).toHaveBeenCalledWith(faqItem);
 
     const aboutItem = {
       pageCode: 'about',
@@ -98,7 +101,7 @@ describe('<HiddenNavbarItemList />', () => {
     };
 
     fireEvent.click(addButtons[1]);
-    expect(addNavbarItem).toHaveBeenCalledWith(aboutItem);
+    expect(mockAddNavbarItem).toHaveBeenCalledWith(aboutItem);
   });
 
   it('calls deleteCustomPage on click delete button with correct page id', () => {
