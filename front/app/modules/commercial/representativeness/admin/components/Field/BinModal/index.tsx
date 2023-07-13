@@ -27,7 +27,7 @@ import {
 import { isEqual } from 'lodash-es';
 
 // typings
-import { Bins } from '../../../services/referenceDistribution';
+import { Bins } from '../../../api/reference_distribution/types';
 
 const ClearAllButton = styled.button`
   cursor: pointer;

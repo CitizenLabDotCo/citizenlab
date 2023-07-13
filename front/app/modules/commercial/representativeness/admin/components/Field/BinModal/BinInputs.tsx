@@ -23,7 +23,7 @@ import { clamp } from 'lodash-es';
 import { indices } from 'utils/helperUtils';
 
 // typings
-import { Bins } from '../../../services/referenceDistribution';
+import { Bins } from '../../../api/reference_distribution/types';
 
 const RemoveBinButton = styled.button`
   cursor: pointer;

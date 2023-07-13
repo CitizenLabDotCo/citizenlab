@@ -28,9 +28,13 @@ class FakeResizeObserver {
 // @ts-ignore
 window.ResizeObserver = FakeResizeObserver;
 
-jest.mock('../../hooks/useRScore', () => () => ({
-  attributes: {
-    score: 0.8,
+jest.mock('../../api/r_score/useRScore', () => () => ({
+  data: {
+    data: {
+      attributes: {
+        score: 0.8,
+      },
+    },
   },
 }));
 

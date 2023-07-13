@@ -1,8 +1,5 @@
-import { getRemoteFormValues } from './useReferenceDistribution';
-import {
-  IBinnedDistributionData,
-  ICategoricalDistributionData,
-} from '../services/referenceDistribution';
+import { getRemoteFormValues } from './useReferenceDistributionData';
+import { IBinnedDistributionData, ICategoricalDistributionData } from './types';
 
 describe('getRemoteFormValues', () => {
   it('works for categorical distributions', () => {
