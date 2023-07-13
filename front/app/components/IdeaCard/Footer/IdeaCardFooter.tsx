@@ -1,7 +1,7 @@
 import React, { FormEvent } from 'react';
 
 // components
-import CommentCount from '../CommentCount';
+import CommentCount from './CommentCount';
 
 // router
 import clHistory from 'utils/cl-router/history';

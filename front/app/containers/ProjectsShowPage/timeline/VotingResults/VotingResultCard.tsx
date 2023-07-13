@@ -21,9 +21,8 @@ const VotingResultCard = ({ idea }: Props) => {
 
   return (
     <Box
-      p="20px"
+      p="16px"
       bgColor="white"
-      key={idea.id}
       w="100%"
       borderRadius={stylingConsts.borderRadius}
       boxShadow={defaultStyles.boxShadow}

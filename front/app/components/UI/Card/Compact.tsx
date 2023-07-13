@@ -128,17 +128,14 @@ const Body = styled.div`
 interface Props {
   id?: string;
   to: string;
-  image: string | null;
-  imagePlaceholder: JSX.Element;
-  hideImage?: boolean;
-  hideBody?: boolean;
-  hideImagePlaceholder?: boolean;
+  image?: string | null;
+  imagePlaceholder?: JSX.Element;
   author?: {
     name: string;
     id: string;
   } | null;
   title: JSX.Element | string;
-  body: JSX.Element | string;
+  body?: JSX.Element | string;
   interactions?: JSX.Element | null;
   footer: JSX.Element | null;
   onClick?: (event: MouseEvent<HTMLAnchorElement>) => void;
@@ -152,11 +149,8 @@ export const Card = memo<Props>(
     to,
     onClick,
     imagePlaceholder,
-    hideImage = false,
-    hideImagePlaceholder = false,
     title,
     body,
-    hideBody,
     interactions,
     footer,
     className,
@@ -169,13 +163,13 @@ export const Card = memo<Props>(
       }`}
       id={id}
     >
-      {!hideImage && image && (
+      {image && (
         <IdeaCardImageWrapper hasImage={!!image}>
           <IdeaCardImage src={image} cover={true} alt="" />
         </IdeaCardImageWrapper>
       )}
 
-      {!hideImagePlaceholder && !image && (
+      {!image && imagePlaceholder && (
         <IdeaCardImageWrapper hasImage={!!image}>
           {imagePlaceholder}
         </IdeaCardImageWrapper>
@@ -190,7 +184,7 @@ export const Card = memo<Props>(
           )}
         </Header>
 
-        {!hideBody && <Body>{body}</Body>}
+        {body && <Body>{body}</Body>}
         <Box mt="auto">{interactions}</Box>
         {footer}
       </ContentWrapper>
