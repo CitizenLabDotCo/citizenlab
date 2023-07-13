@@ -1,28 +1,13 @@
 import React from 'react';
-
 import { Title } from 'components/PostShowComponents/Title';
-import GetMachineTranslation, {
-  GetMachineTranslationChildProps,
-} from 'modules/commercial/machine_translations/resources/GetMachineTranslation';
-import { isNilOrError } from 'utils/helperUtils';
 import { Locale } from 'typings';
-
-const parseTranslation = (
-  translation: GetMachineTranslationChildProps,
-  title
-) => {
-  if (!isNilOrError(translation)) {
-    return translation.attributes.translation;
-  }
-
-  return title;
-};
+import useTranslation from 'modules/commercial/machine_translations/hooks/useTranslation';
 
 interface Props {
   postId: string;
   postType: 'idea' | 'initiative';
   title: string;
-  locale?: Locale;
+  locale: Locale;
   translateButtonClicked?: boolean;
   color?: string;
   align: 'left' | 'center';
@@ -37,31 +22,26 @@ const PostShowTranslatedTitle = ({
   align,
   title,
 }: Props) => {
-  if (locale && translateButtonClicked) {
-    return (
-      <GetMachineTranslation
-        attributeName="title_multiloc"
-        localeTo={locale}
-        id={postId}
-        context={postType}
-      >
-        {(translation) => (
-          <Title
-            id={`e2e-${postType}-title`}
-            color={color}
-            align={align}
-            aria-live="polite"
-          >
-            {parseTranslation(translation, title)}
-          </Title>
-        )}
-      </GetMachineTranslation>
-    );
-  }
+  const translation = useTranslation({
+    attributeName: 'title_multiloc',
+    localeTo: locale,
+    id: postId,
+    context: postType,
+  });
+  const showTranslatedContent = translateButtonClicked && translation;
+  const content =
+    translateButtonClicked && translation
+      ? translation.attributes.translation
+      : title;
 
   return (
-    <Title id={`e2e-${postType}-title`} color={color} align={align}>
-      {title}
+    <Title
+      id={`e2e-${postType}-title`}
+      color={color}
+      align={align}
+      aria-live={showTranslatedContent ? 'polite' : undefined}
+    >
+      {content}
     </Title>
   );
 };
