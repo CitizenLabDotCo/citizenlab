@@ -30,6 +30,22 @@ RSpec.describe EmailCampaigns::VotingPhaseStartedMailer do
                   }
                 }
               ]
+            },
+            {
+              title_multiloc: {
+                'en' => 'Another idea title'
+              },
+              url: 'http://localhost:3000/en/ideas/another-idea',
+              images: [
+                {
+                  versions: {
+                    small: 'http://localhost:4000/uploads/small_image.jpeg',
+                    medium: 'http://localhost:4000/uploads/medium_image.jpeg',
+                    large: 'http://localhost:4000/uploads/large_image.jpeg',
+                    fb: 'http://localhost:4000/uploads/fb_image.jpeg'
+                  }
+                }
+              ]
             }
           ]
         }
@@ -58,12 +74,13 @@ RSpec.describe EmailCampaigns::VotingPhaseStartedMailer do
     it 'displays the correct body - including project title and number of options' do
       expect(mail.body.encoded).to match 'asking you to vote between'
       expect(mail.body.encoded).to match project.title_multiloc['en']
-      expect(mail.body.encoded).to match '1' # number of ideas passed to the email
+      expect(mail.body.encoded).to match '2 options' # number of ideas passed to the email
     end
 
     it 'lists the ideas for the phase in the body' do
-      expect(mail.body.encoded).to match('A voted idea title')
-      expect(mail.body.encoded).to match('ideas/a-voted-idea')
+      expect(mail.body.encoded).to match('An idea title')
+      expect(mail.body.encoded).to match('Another idea title')
+      expect(mail.body.encoded).to match('ideas/an-idea')
       expect(mail.body.encoded).to match('uploads/small_image.jpeg')
     end
 
