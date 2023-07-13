@@ -184,14 +184,6 @@ export type IGraphPoint = {
   ordering?: number;
 };
 
-export type ITopicSingleValue = {
-  nameMultiloc: Multiloc;
-  value: number;
-  code: string;
-};
-
-export type IParticipationByTopic = ITopicSingleValue[];
-
 export type IGraphFormat = IGraphPoint[];
 
 export type Override<T, U> = Pick<T, Exclude<keyof T, keyof U>> & U;

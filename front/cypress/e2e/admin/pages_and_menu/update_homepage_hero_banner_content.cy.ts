@@ -92,7 +92,7 @@ describe('Admin: update Hero Banner content', () => {
     );
     // Should exist before saving
     cy.get('[data-cy="e2e-overlay-toggle"]').should('exist');
-    cy.get('.e2e-submit-wrapper-button').click().contains('Success');
+    cy.get('.e2e-submit-wrapper-button').click();
     cy.wait('@saveHomePage');
     cy.get('.e2e-submit-wrapper-button').contains('Success');
     // Should exist after saving
@@ -111,7 +111,7 @@ describe('Admin: update Hero Banner content', () => {
     cy.get('[data-cy="e2e-image-cropper"]').should('not.exist');
     // Should not exist before saving
     cy.get('[data-cy="e2e-overlay-toggle"]').should('not.exist');
-    cy.get('.e2e-submit-wrapper-button').click().contains('Success');
+    cy.get('.e2e-submit-wrapper-button').click();
     cy.wait('@saveHomePage');
     cy.get('.e2e-submit-wrapper-button').contains('Success');
 

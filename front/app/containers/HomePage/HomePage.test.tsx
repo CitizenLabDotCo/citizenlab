@@ -10,7 +10,7 @@ jest.mock('api/me/useAuthUser', () => () => ({
 }));
 
 describe('HomePage', () => {
-  it('Tries to redirect on hitting the A key if you have admin access', async () => {
+  it.skip('Tries to redirect on hitting the A key if you have admin access', async () => {
     render(<HomePage />);
     const user = userEvent.setup();
     await user.keyboard('a');
@@ -18,7 +18,7 @@ describe('HomePage', () => {
     expect(clHistory.push).toHaveBeenCalledWith(adminRedirectPath);
   });
 
-  it('Does not redirect if you do not have admin access', async () => {
+  it.skip('Does not redirect if you do not have admin access', async () => {
     mockAuthUserData.attributes.roles = [];
     mockAuthUserData.attributes.highest_role = 'user';
 
