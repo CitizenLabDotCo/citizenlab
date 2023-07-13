@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, defaultStyles } from '@citizenlab/cl2-component-library';
 
 // i18n
 import useLocalize from 'hooks/useLocalize';
@@ -26,6 +26,7 @@ const VotingResultCard = ({ idea }: Props) => {
       key={idea.id}
       w="100%"
       borderRadius={stylingConsts.borderRadius}
+      boxShadow={defaultStyles.boxShadow}
     >
       {localize(idea.attributes.title_multiloc)}
     </Box>
