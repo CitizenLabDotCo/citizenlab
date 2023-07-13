@@ -1,5 +1,4 @@
 import React from 'react';
-import { isUndefined } from 'lodash-es';
 import { Toggle, Box, ListItem } from '@citizenlab/cl2-component-library';
 import { CampaignData } from 'containers/Admin/messaging/AutomatedEmails/types';
 import CampaignDescription from 'containers/Admin/messaging/AutomatedEmails/CampaignDescription';
@@ -15,7 +14,7 @@ const CampaignRow = ({ campaign, checked, handleOnEnabledToggle }: Props) => {
     <ListItem p="8px 0">
       <Box display="flex" alignItems="center">
         <Toggle
-          disabled={isUndefined(campaign.attributes.enabled)}
+          disabled={!campaign.attributes.enabled}
           checked={checked}
           onChange={handleOnEnabledToggle(campaign)}
         />

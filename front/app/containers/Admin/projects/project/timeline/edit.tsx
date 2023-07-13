@@ -50,6 +50,7 @@ import CampaignRow from './CampaignRow';
 import useLocalize from 'hooks/useLocalize';
 import { stringifyCampaignFields } from 'containers/Admin/messaging/AutomatedEmails/utils';
 import { CampaignData } from 'containers/Admin/messaging/AutomatedEmails/types';
+import { CampaignName } from 'api/campaigns/types';
 
 type SubmitStateType = 'disabled' | 'enabled' | 'error' | 'success';
 
@@ -70,6 +71,8 @@ const convertToFileType = (phaseFiles: IPhaseFiles | undefined) => {
   return [];
 };
 
+const CONFIGURABLE_CAMPAIGN_NAMES: CampaignName[] = ['project_phase_started'];
+
 const AdminProjectTimelineEdit = () => {
   const { mutateAsync: addPhaseFile } = useAddPhaseFile();
   const { mutateAsync: deletePhaseFile } = useDeletePhaseFile();
@@ -81,7 +84,7 @@ const AdminProjectTimelineEdit = () => {
   const { data: phase } = usePhase(phaseId || null);
   const { data: phases } = usePhases(projectId);
   const { data: campaigns } = useCampaigns({
-    campaignNames: ['project_phase_started'],
+    campaignNames: CONFIGURABLE_CAMPAIGN_NAMES,
     pageSize: 250,
   });
   const { mutate: addPhase } = useAddPhase();
@@ -113,19 +116,6 @@ const AdminProjectTimelineEdit = () => {
     setAttributeDiff({
       ...attributeDiff,
       title_multiloc,
-    });
-  };
-
-  const handleCampaignEnabledOnChange = (campaign: CampaignData) => () => {
-    setSubmitState('enabled');
-    setAttributeDiff({
-      ...attributeDiff,
-      campaigns_settings: {
-        [campaign.attributes.campaign_name]:
-          !phase?.data.attributes.campaigns_settings[
-            campaign.attributes.campaign_name
-          ],
-      },
     });
   };
 
@@ -268,7 +258,11 @@ const AdminProjectTimelineEdit = () => {
           );
         } else if (projectId) {
           addPhase(
-            { projectId, ...attributeDiff },
+            {
+              projectId,
+              ...attributeDiff,
+              campaigns_settings: initialCampaignsSettings,
+            },
             {
               onSuccess: (response) => {
                 handleSaveResponse(response, true);
@@ -321,11 +315,31 @@ const AdminProjectTimelineEdit = () => {
     return startDate;
   };
 
+  const flatCampaigns = campaigns.pages.flatMap((page) => page.data);
+  const initialCampaignsSettings = flatCampaigns.reduce((acc, campaign) => {
+    acc[campaign.attributes.campaign_name] = campaign.attributes.enabled;
+    return acc;
+  }, {});
+
   const phaseAttrs = phase
     ? { ...phase.data.attributes, ...attributeDiff }
-    : { ...attributeDiff };
+    : { ...attributeDiff, campaigns_settings: initialCampaignsSettings };
+
   const startDate = getStartDate();
   const endDate = phaseAttrs.end_at ? moment(phaseAttrs.end_at) : null;
+
+  const handleCampaignEnabledOnChange = (campaign: CampaignData) => () => {
+    setSubmitState('enabled');
+    const campaignKey = campaign.attributes.campaign_name;
+
+    setAttributeDiff({
+      ...attributeDiff,
+      campaigns_settings: {
+        ...phaseAttrs.campaigns_settings,
+        [campaignKey]: !phaseAttrs.campaigns_settings[campaignKey],
+      },
+    });
+  };
 
   return (
     <>
@@ -400,20 +414,18 @@ const AdminProjectTimelineEdit = () => {
             <SubSectionTitle>
               <FormattedMessage {...messages.automatedEmails} />
             </SubSectionTitle>
-            {campaigns.pages
-              .flatMap((page) => page.data)
-              .map((campaign) => (
-                <CampaignRow
-                  campaign={stringifyCampaignFields(campaign, localize)}
-                  checked={
-                    phaseAttrs.campaigns_settings?.[
-                      campaign.attributes.campaign_name
-                    ]
-                  }
-                  key={campaign.id}
-                  handleOnEnabledToggle={handleCampaignEnabledOnChange}
-                />
-              ))}
+            {flatCampaigns.map((campaign) => (
+              <CampaignRow
+                campaign={stringifyCampaignFields(campaign, localize)}
+                checked={
+                  phaseAttrs.campaigns_settings?.[
+                    campaign.attributes.campaign_name
+                  ]
+                }
+                key={campaign.id}
+                handleOnEnabledToggle={handleCampaignEnabledOnChange}
+              />
+            ))}
           </SectionField>
 
           {errors && errors.project && (
