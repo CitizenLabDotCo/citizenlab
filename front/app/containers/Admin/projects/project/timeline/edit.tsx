@@ -324,7 +324,7 @@ const AdminProjectTimelineEdit = () => {
 
   const phaseAttrs = phase
     ? { ...phase.data.attributes, ...attributeDiff }
-    : { ...attributeDiff, campaigns_settings: initialCampaignsSettings };
+    : { campaigns_settings: initialCampaignsSettings, ...attributeDiff };
 
   const startDate = getStartDate();
   const endDate = phaseAttrs.end_at ? moment(phaseAttrs.end_at) : null;
