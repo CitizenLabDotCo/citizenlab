@@ -38,7 +38,6 @@ describe('useActiveUsersByTime', () => {
       () =>
         useActiveUsersByTime({
           project: 'project',
-          enabled: true,
           interval: 'day',
         }),
 
@@ -66,7 +65,6 @@ describe('useActiveUsersByTime', () => {
       () =>
         useActiveUsersByTime({
           project: 'project',
-          enabled: true,
           interval: 'day',
         }),
       {

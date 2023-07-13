@@ -63,7 +63,6 @@ const BarChartActiveUsersByTime = (props: Props) => {
     group: props.currentGroupFilter,
     topic: props.currentTopicFilter,
     interval: props.resolution,
-    enabled: true,
   });
 
   const convertToGraphFormat = (data: IActiveUsersByTime) => {

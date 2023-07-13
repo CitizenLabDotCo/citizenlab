@@ -16,9 +16,8 @@ const fetchActiveUsersByTime = (params: IActiveUsersByTimeParams) =>
   });
 
 const useActiveUsersByTime = ({
-  enabled,
   ...queryParameters
-}: IActiveUsersByTimeParams & { enabled: boolean }) => {
+}: IActiveUsersByTimeParams) => {
   return useQuery<
     IActiveUsersByTime,
     CLErrors,
@@ -27,7 +26,6 @@ const useActiveUsersByTime = ({
   >({
     queryKey: activeUsersByTimeKeys.item(queryParameters),
     queryFn: () => fetchActiveUsersByTime(queryParameters),
-    enabled,
   });
 };
 
