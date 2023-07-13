@@ -22,12 +22,7 @@ const ResultBar = ({ budget, percentage, picks, baskets }: Props) => {
           <FormattedBudget value={budget} />
         </Text>
       )}
-      <ProgressBar
-        percentage={percentage}
-        picks={picks}
-        baskets={baskets}
-        fill="blue"
-      />
+      <ProgressBar percentage={percentage} picks={picks} baskets={baskets} />
     </Box>
   );
 };

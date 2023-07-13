@@ -13,7 +13,7 @@ interface Props {
   baskets?: number;
 }
 
-const ProgressBar = ({ percentage, picks, baskets }: Props) => {
+const ProgressBar = ({ percentage, picks, baskets: _baskets }: Props) => {
   const theme = useTheme();
 
   return (
