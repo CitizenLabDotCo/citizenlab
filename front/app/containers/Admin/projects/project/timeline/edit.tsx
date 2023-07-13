@@ -46,7 +46,10 @@ import useAddPhaseFile from 'api/phase_files/useAddPhaseFile';
 import useDeletePhaseFile from 'api/phase_files/useDeletePhaseFile';
 import usePhaseFiles from 'api/phase_files/usePhaseFiles';
 import useCampaigns from 'api/campaigns/useCampaigns';
-import CampaignRow from 'containers/Admin/messaging/AutomatedEmails/CampaignRow';
+import CampaignRow from './CampaignRow';
+import useLocalize from 'hooks/useLocalize';
+import { stringifyCampaignFields } from 'containers/Admin/messaging/AutomatedEmails/utils';
+import { CampaignData } from 'containers/Admin/messaging/AutomatedEmails/types';
 
 type SubmitStateType = 'disabled' | 'enabled' | 'error' | 'success';
 
@@ -79,7 +82,7 @@ const AdminProjectTimelineEdit = () => {
   const { data: phases } = usePhases(projectId);
   const { data: campaigns } = useCampaigns({
     campaignNames: ['project_phase_started'],
-    pageSize: 10,
+    pageSize: 250,
   });
   const { mutate: addPhase } = useAddPhase();
   const { mutate: updatePhase } = useUpdatePhase();
@@ -93,6 +96,7 @@ const AdminProjectTimelineEdit = () => {
   const [attributeDiff, setAttributeDiff] = useState<IUpdatedPhaseProperties>(
     {}
   );
+  const localize = useLocalize();
 
   useEffect(() => {
     if (phaseFiles) {
@@ -109,6 +113,19 @@ const AdminProjectTimelineEdit = () => {
     setAttributeDiff({
       ...attributeDiff,
       title_multiloc,
+    });
+  };
+
+  const handleCampaignEnabledOnChange = (campaign: CampaignData) => () => {
+    setSubmitState('enabled');
+    setAttributeDiff({
+      ...attributeDiff,
+      campaigns_settings: {
+        [campaign.attributes.campaign_name]:
+          !phase?.data.attributes.campaigns_settings[
+            campaign.attributes.campaign_name
+          ],
+      },
     });
   };
 
@@ -383,15 +400,20 @@ const AdminProjectTimelineEdit = () => {
             <SubSectionTitle>
               <FormattedMessage {...messages.automatedEmails} />
             </SubSectionTitle>
-            {/* {campaigns.pages
+            {campaigns.pages
               .flatMap((page) => page.data)
               .map((campaign) => (
                 <CampaignRow
-                  campaign={campaign}
+                  campaign={stringifyCampaignFields(campaign, localize)}
+                  checked={
+                    phaseAttrs.campaigns_settings?.[
+                      campaign.attributes.campaign_name
+                    ]
+                  }
                   key={campaign.id}
-                  onClickViewExample={onClickViewExample(campaign.id)}
+                  handleOnEnabledToggle={handleCampaignEnabledOnChange}
                 />
-              ))} */}
+              ))}
           </SectionField>
 
           {errors && errors.project && (
