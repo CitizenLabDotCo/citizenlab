@@ -590,3 +590,9 @@ en:
       body_2: 'The results of the %{phaseTitle} vote in the %{organizationName} platform have been published!'
       body_3: 'We encourage you to review the results and stay tuned for further updates on the next steps.'
       cta_see_results: 'See results in the platform'
+    voting_phase_started:
+      subject: '%{organizationName}: The voting phase started for %{projectName}'
+      preheader: 'The voting phase started for %{projectName} on the participation platform of %{organizationName}'
+      event_description: 'The project "%{projectName}" is asking you to vote between %{numIdeas} options:'
+      cta_message: 'Click the button below to participate'
+      cta_vote: 'Go to the platform to vote'
