@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
 import ReportBuilder from '.';
+import { reportsData } from 'api/reports/__mocks__/useReports';
 
 // service mocks
 
@@ -9,9 +10,14 @@ jest.mock('hooks/useFeatureFlag', () => jest.fn(() => true));
 
 let mockReportLayout;
 jest.mock('api/report_layout/useReportLayout', () =>
-  jest.fn(() => ({ data: { data: mockReportLayout } }))
+  jest.fn(() => ({ data: mockReportLayout }))
 );
-jest.mock('api/reports/useReport');
+
+const mockReport = reportsData[0];
+jest.mock('api/reports/useReport', () =>
+  jest.fn(() => ({ data: { data: mockReport } }))
+);
+
 jest.mock('../../hooks/useReportLocale', () => jest.fn(() => 'en'));
 
 const surveyResultsNodes = {
@@ -76,14 +82,14 @@ describe('<ReportBuilder />', () => {
   });
 
   it('renders if report layout', () => {
-    mockReportLayout = surveyResultsLayout;
+    mockReportLayout = { data: surveyResultsLayout };
     render(<ReportBuilder />);
 
     expect(screen.getByText('Report 1')).toBeInTheDocument();
   });
 
   it('renders layout to canvas if it exists', () => {
-    mockReportLayout = surveyResultsLayout;
+    mockReportLayout = { data: surveyResultsLayout };
     render(<ReportBuilder />);
 
     expect(screen.getByTestId('survey-results-widget')).toBeInTheDocument();
