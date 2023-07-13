@@ -118,6 +118,12 @@ export interface State extends IParticipationContextConfig {
   appConfig: IAppConfiguration | null;
 }
 
+const MAX_VOTES_PER_VOTING_METHOD: Record<VotingMethod, number> = {
+  single_voting: 1,
+  multiple_voting: 10,
+  budgeting: 100,
+};
+
 class ParticipationContext extends PureComponent<
   Props & WrappedComponentProps,
   State
@@ -324,15 +330,16 @@ class ParticipationContext extends PureComponent<
     this.setState({ allow_anonymous_participation });
   };
 
-  handleVotingMethodOnChange = (
-    voting_method: VotingMethod | null | undefined
-  ) => {
+  handleVotingMethodOnChange = (voting_method: VotingMethod) => {
+    const maxVotes = MAX_VOTES_PER_VOTING_METHOD[voting_method];
+
     this.setState({
       voting_method,
       voting_max_votes_per_idea:
         voting_method === 'single_voting'
           ? 1
           : this.state.voting_max_votes_per_idea,
+      voting_max_total: maxVotes,
     });
   };
 

@@ -4,7 +4,11 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import phasesKeys from './keys';
 import { IPhase, PhasesKeys } from './types';
 
-const fetchPhase = ({ phaseId }: { phaseId: string | undefined | null }) =>
+export const fetchPhase = ({
+  phaseId,
+}: {
+  phaseId: string | undefined | null;
+}) =>
   fetcher<IPhase>({
     path: `/phases/${phaseId}`,
     action: 'get',

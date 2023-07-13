@@ -6,7 +6,6 @@ export const basketData: IBasketData = {
   attributes: {
     submitted_at: '2020-10-01T10:00:00.000Z',
     total_votes: 1000,
-    'budget_exceeds_limit?': false,
   },
   relationships: {
     participation_context: {

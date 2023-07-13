@@ -18,8 +18,8 @@ import { rightColumnWidthDesktop } from '../../styleConstants';
 import { colors } from 'utils/styleUtils';
 
 // utils
-import { getVotingMethodConfig } from 'utils/votingMethodUtils/votingMethodUtils';
-import { getCurrentPhase } from 'api/phases/utils';
+import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
+import { getCurrentParticipationContext } from 'api/phases/utils';
 
 const InnerContainer = styled.div`
   display: flex;
@@ -53,9 +53,12 @@ const RightColumnDesktop = ({
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
 
-  const currentContext = getCurrentPhase(phases?.data) || project?.data;
+  const participationContext = getCurrentParticipationContext(
+    project?.data,
+    phases?.data
+  );
   const votingConfig = getVotingMethodConfig(
-    currentContext?.attributes.voting_method
+    participationContext?.attributes.voting_method
   );
 
   return (
@@ -74,7 +77,8 @@ const RightColumnDesktop = ({
           background={colors.background}
           mb="12px"
         >
-          {currentContext?.attributes.participation_method !== 'voting' && (
+          {participationContext?.attributes.participation_method !==
+            'voting' && (
             <StyledReactionControl
               styleType="shadow"
               ideaId={ideaId}
@@ -82,11 +86,10 @@ const RightColumnDesktop = ({
             />
           )}
           <Box pb="23px" mb="23px" borderBottom="solid 1px #ccc">
-            {votingConfig?.getIdeaPageVoteControl &&
-              votingConfig.getIdeaPageVoteControl({
+            {participationContext &&
+              votingConfig?.getIdeaPageVoteInput({
                 ideaId,
-                projectId,
-                participationContext: currentContext,
+                participationContext,
                 compact: false,
               })}
           </Box>

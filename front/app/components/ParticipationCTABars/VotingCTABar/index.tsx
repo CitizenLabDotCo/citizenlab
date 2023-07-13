@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 
 // Components
 import { Button, Icon, Box, Text } from '@citizenlab/cl2-component-library';
@@ -10,6 +10,7 @@ import VotesCounter from 'components/VotesCounter';
 import { useTheme } from 'styled-components';
 import useBasket from 'api/baskets/useBasket';
 import useUpdateBasket from 'api/baskets/useUpdateBasket';
+import useVoting from 'api/baskets_ideas/useVoting';
 
 // utils
 import {
@@ -22,69 +23,74 @@ import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
-import useLocale from 'hooks/useLocale';
-import useBasketsIdeas from 'api/baskets_ideas/useBasketsIdeas';
 
 export const VotingCTABar = ({ phases, project }: CTABarProps) => {
+  const [processing, setProcessing] = useState(false);
   const theme = useTheme();
-  const locale = useLocale();
+  const { numberOfVotesCast, processing: votingProcessing } = useVoting();
 
   const currentPhase = useMemo(() => {
     return getCurrentPhase(phases) || getLastPhase(phases);
   }, [phases]);
 
-  const basketId = currentPhase
-    ? currentPhase.relationships.user_basket?.data?.id
-    : project.relationships.user_basket?.data?.id;
+  const participationContext = currentPhase ?? project;
+  const basketId = participationContext.relationships.user_basket?.data?.id;
 
   const { data: basket } = useBasket(basketId);
   const { mutate: updateBasket } = useUpdateBasket();
-  const { data: basketsIdeas } = useBasketsIdeas(basket?.data.id);
 
-  const currentBasketsIdeas: { ideaId: string; votes: number }[] = [];
-
-  basketsIdeas?.data.map((basketIdea) => {
-    const ideaId = basketIdea.relationships.idea.data['id'];
-    const votes = basketIdea.attributes.votes;
-    currentBasketsIdeas.push({ ideaId, votes });
-  });
-
-  if (hasProjectEndedOrIsArchived(project, currentPhase)) {
+  if (
+    hasProjectEndedOrIsArchived(project, currentPhase) ||
+    numberOfVotesCast === undefined
+  ) {
     return null;
   }
 
   const submittedAt = basket?.data.attributes.submitted_at || null;
-  const votesCast = basket?.data.attributes.total_votes || 0;
-  const hasUserParticipated = !!submittedAt && votesCast > 0;
+  const hasUserParticipated = !!submittedAt;
 
-  const voteExceedsLimit =
-    basket?.data.attributes['budget_exceeds_limit?'] || false;
-
-  const minVotes =
-    currentPhase?.attributes.voting_min_total ||
-    project.attributes.voting_min_total ||
-    0;
+  const minVotes = participationContext.attributes.voting_min_total ?? 0;
+  const maxVotes = participationContext.attributes.voting_max_total ?? 0;
 
   const minVotesRequired = minVotes > 0;
-  const minVotesReached = votesCast >= minVotes;
+  const minVotesReached = numberOfVotesCast >= minVotes;
   const minVotesRequiredNotReached = minVotesRequired && !minVotesReached;
+  const votesExceedLimit = numberOfVotesCast > maxVotes;
 
-  if (isNilOrError(locale)) {
-    return null;
-  }
-
-  const handleSubmitOnClick = async () => {
+  const handleSubmitOnClick = () => {
     if (!isNilOrError(basket)) {
-      updateBasket({
-        id: basket.data.id,
-        submitted: true,
-        participation_context_type: currentPhase ? 'Phase' : 'Project',
-      });
+      if (votingProcessing) {
+        // Add a bit of timeout so that the voting request
+        // has time to complete
+        setTimeout(() => {
+          updateBasket(
+            {
+              id: basket.data.id,
+              submitted: true,
+              participation_context_type: currentPhase ? 'Phase' : 'Project',
+            },
+            {
+              onSuccess: () => setProcessing(false),
+            }
+          );
+        }, 300);
+      } else {
+        updateBasket(
+          {
+            id: basket.data.id,
+            submitted: true,
+            participation_context_type: currentPhase ? 'Phase' : 'Project',
+          },
+          {
+            onSuccess: () => setProcessing(false),
+          }
+        );
+      }
     }
   };
 
   const ctaDisabled =
-    voteExceedsLimit || votesCast === 0 || minVotesRequiredNotReached;
+    votesExceedLimit || numberOfVotesCast === 0 || minVotesRequiredNotReached;
 
   const CTAButton = hasUserParticipated ? (
     <Box display="flex">
@@ -107,6 +113,7 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
       padding="6px 12px"
       fontSize="14px"
       disabled={ctaDisabled}
+      processing={processing}
     >
       <FormattedMessage {...messages.submit} />
     </Button>
@@ -129,7 +136,7 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
               textAlign="left"
               aria-live="polite"
             >
-              <VotesCounter projectId={project.id} />
+              <VotesCounter participationContext={participationContext} />
             </Text>
           )
         }

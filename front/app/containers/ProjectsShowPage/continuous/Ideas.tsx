@@ -26,7 +26,6 @@ import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
@@ -89,7 +88,7 @@ const IdeasContainer = memo<InnerProps>(({ project, className }) => {
     (participationMethod === 'voting' || participationMethod === 'ideation')
   );
 
-  if (!isNilOrError(project) && showIdeas) {
+  if (showIdeas) {
     const inputTerm = project.attributes.input_term;
     const isVotingProject =
       project.attributes.participation_method === 'voting';
@@ -128,10 +127,7 @@ const IdeasContainer = memo<InnerProps>(({ project, className }) => {
               ideaQueryParameters={ideaQueryParameters}
               onUpdateQuery={updateSearchParams}
               projectId={project.id}
-              participationMethod={project.attributes.participation_method}
               defaultSortingMethod={ideaQueryParameters.sort}
-              participationContextId={project.id}
-              participationContextType="project"
               showViewToggle={true}
               defaultView={project.attributes.presentation_mode}
               invisibleTitleMessage={messages.a11y_titleInputs}

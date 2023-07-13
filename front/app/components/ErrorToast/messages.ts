@@ -9,8 +9,4 @@ export default defineMessages({
     id: 'app.components.ErrorToast.votesExceededError',
     defaultMessage: "You don't have enough votes left",
   },
-  votesPerOptionExceededError: {
-    id: 'app.components.ErrorToast.voteMaxPerOptionExceededError',
-    defaultMessage: "You've reached the maximum number of votes per option",
-  },
 });

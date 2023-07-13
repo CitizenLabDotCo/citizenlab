@@ -5,11 +5,8 @@ import IdeaCard from 'components/IdeaCard';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 import { rgba } from 'polished';
-import { ParticipationMethod } from 'services/participationContexts';
 import EmptyIdeas from './EmptyIdeas';
 import { IIdeaData } from 'api/ideas/types';
-import { IParticipationContextType } from 'typings';
-import { getMethodConfig } from 'utils/participationMethodUtils';
 
 const StyledIdeaCard = styled(IdeaCard)`
   flex-grow: 0;
@@ -59,9 +56,6 @@ interface Props {
   onLoadMore: () => void;
   loadingMore: boolean;
   list: IIdeaData[] | null;
-  participationMethod?: ParticipationMethod | null;
-  participationContextId?: string | null;
-  participationContextType?: IParticipationContextType | null;
   ariaLabelledBy?: string;
   tabIndex?: number;
   hideImage?: boolean;
@@ -79,9 +73,6 @@ const IdeasList = ({
   hasMore,
   loadingMore,
   list,
-  participationMethod,
-  participationContextId,
-  participationContextType,
   ariaLabelledBy,
   tabIndex,
   hideImage = false,
@@ -91,7 +82,6 @@ const IdeasList = ({
   phaseId,
 }: Props) => {
   const theme = useTheme();
-  const config = participationMethod && getMethodConfig(participationMethod);
   const loadMoreIdeas = () => {
     onLoadMore();
   };
@@ -118,15 +108,11 @@ const IdeasList = ({
                   <StyledIdeaCard
                     key={idea.id}
                     ideaId={idea.id}
-                    participationMethod={participationMethod}
-                    participationContextId={participationContextId}
-                    participationContextType={participationContextType}
+                    phaseId={phaseId}
                     hideImage={hideImage}
-                    hideBody={config?.hideAuthorOnIdeas || false}
                     hideImagePlaceholder={hideImagePlaceholder}
                     hideIdeaStatus={hideIdeaStatus}
                     goBackMode={goBackMode}
-                    viewingPhaseId={phaseId}
                   />
                 );
               })}

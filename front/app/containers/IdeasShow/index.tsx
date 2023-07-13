@@ -47,7 +47,7 @@ import { IProjectData } from 'api/projects/types';
 import { IIdeaImages } from 'api/idea_images/types';
 
 // utils
-import { getVotingMethodConfig } from 'utils/votingMethodUtils/votingMethodUtils';
+import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
 import { getCurrentParticipationContext } from 'api/phases/utils';
 
 const StyledRightColumnDesktop = styled(RightColumnDesktop)`
@@ -178,11 +178,10 @@ const Content = ({
               translateButtonClicked={translateButtonIsClicked}
             />
           </Box>
-          {compact && votingMethodConfig?.getIdeaPageVoteControl && (
+          {compact && participationContext && (
             <Box mb="16px">
-              {votingMethodConfig.getIdeaPageVoteControl({
+              {votingMethodConfig?.getIdeaPageVoteInput({
                 ideaId,
-                projectId: project.id,
                 compact: true,
                 participationContext,
               })}

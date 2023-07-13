@@ -1,57 +1,43 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 
 // api
-import useProjectById from 'api/projects/useProjectById';
-import usePhases from 'api/phases/usePhases';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useBasket from 'api/baskets/useBasket';
+import useCumulativeVoting from 'api/baskets_ideas/useVoting';
 
 // i18n
 import useLocalize from 'hooks/useLocalize';
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
+import { IProjectData } from 'api/projects/types';
+import { IPhaseData } from 'api/phases/types';
 
-// utils
-import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
+// typings
 
 interface Props {
-  projectId: string;
+  participationContext: IProjectData | IPhaseData;
 }
 
-const VotesCounter = ({ projectId }: Props) => {
-  const { data: project } = useProjectById(projectId);
-  const { data: phases } = usePhases(projectId);
+const VotesCounter = ({ participationContext }: Props) => {
   const { data: appConfig } = useAppConfiguration();
+  const { numberOfVotesCast } = useCumulativeVoting();
 
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
-  const currentPhase = useMemo(() => {
-    return getCurrentPhase(phases?.data) || getLastPhase(phases?.data);
-  }, [phases]);
-
-  const currentParticipationContext = currentPhase ?? project?.data;
-  const basketId =
-    currentParticipationContext?.relationships.user_basket?.data?.id;
-
-  const { data: basket } = useBasket(basketId);
-  const votingMethod = currentParticipationContext?.attributes.voting_method;
+  const votingMethod = participationContext.attributes.voting_method;
 
   const getVoteTerm = () => {
     if (votingMethod === 'single_voting') {
       return formatMessage(messages.votes);
     }
 
-    const term =
-      currentParticipationContext?.attributes.voting_term_plural_multiloc;
-    if (!term) return;
+    const { voting_term_plural_multiloc } = participationContext.attributes;
+    if (!voting_term_plural_multiloc) return;
 
-    return localize(term).toLowerCase();
+    return localize(voting_term_plural_multiloc).toLowerCase();
   };
 
-  const votingMaxTotal =
-    currentParticipationContext?.attributes.voting_max_total;
-  const totalVotes = basket?.data.attributes.total_votes;
+  const votingMaxTotal = participationContext.attributes.voting_max_total;
 
   const currency =
     votingMethod === 'budgeting'
@@ -61,22 +47,21 @@ const VotesCounter = ({ projectId }: Props) => {
   if (votingMaxTotal) {
     return (
       <>
-        {(votingMaxTotal - (totalVotes || 0)).toLocaleString()} /{' '}
+        {(votingMaxTotal - (numberOfVotesCast ?? 0)).toLocaleString()} /{' '}
         {votingMaxTotal.toLocaleString()}{' '}
         {votingMethod !== 'budgeting' ? getVoteTerm() : currency}{' '}
         {formatMessage(messages.left)}
       </>
     );
   }
-  if (!votingMaxTotal && totalVotes) {
+  if (!votingMaxTotal && numberOfVotesCast) {
     return (
       <>
-        {`${formatMessage(messages.votedFor)} ${totalVotes} ${formatMessage(
-          messages.xOptions,
-          {
-            votes: totalVotes,
-          }
-        )}`}
+        {`${formatMessage(
+          messages.votedFor
+        )} ${numberOfVotesCast} ${formatMessage(messages.xOptions, {
+          votes: numberOfVotesCast,
+        })}`}
       </>
     );
   }

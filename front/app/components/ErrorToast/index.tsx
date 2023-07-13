@@ -15,11 +15,10 @@ import styled from 'styled-components';
 import eventEmitter from 'utils/eventEmitter';
 
 // events
-import { BUDGET_EXCEEDED_ERROR_EVENT } from 'components/ParticipationCTABars/VotingCTABar/events';
 import {
+  BUDGET_EXCEEDED_ERROR_EVENT,
   VOTES_EXCEEDED_ERROR_EVENT,
-  VOTES_PER_OPTION_EXCEEDED_ERROR_EVENT,
-} from 'components/AssignMultipleVotesControl';
+} from './events';
 
 // intl
 import { useIntl } from 'utils/cl-intl';
@@ -49,20 +48,6 @@ const ErrorToast = () => {
       .observeEvent(BUDGET_EXCEEDED_ERROR_EVENT)
       .subscribe(() => {
         setError(formatMessage(messages.budgetExceededError));
-        setShowError(true);
-      });
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, [formatMessage]);
-
-  // Listen for voting per option exceeded error
-  useEffect(() => {
-    const subscription = eventEmitter
-      .observeEvent(VOTES_PER_OPTION_EXCEEDED_ERROR_EVENT)
-      .subscribe(() => {
-        setError(formatMessage(messages.votesPerOptionExceededError));
         setShowError(true);
       });
 

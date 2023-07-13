@@ -1,12 +1,11 @@
 import React, { memo, useEffect } from 'react';
 
 // components
-import UserName from 'components/UI/UserName';
 import Card from 'components/UI/Card/Compact';
 import { Icon, useBreakpoint } from '@citizenlab/cl2-component-library';
-import Avatar from 'components/Avatar';
-import IdeaCardFooter from './IdeaCardFooter';
-import FooterWithReactionControl from './FooterWithReactionControl';
+import Body from './Body';
+import Footer from './Footer';
+import Interactions from './Interactions';
 
 // router
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
@@ -15,8 +14,6 @@ import clHistory from 'utils/cl-router/history';
 import { useSearchParams } from 'react-router-dom';
 
 // types
-import { ParticipationMethod } from 'services/participationContexts';
-import { IParticipationContextType } from 'typings';
 import { IIdea } from 'api/ideas/types';
 
 // hooks
@@ -24,17 +21,14 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import useIdeaImage from 'api/idea_images/useIdeaImage';
 import useProjectById from 'api/projects/useProjectById';
 import useLocalize from 'hooks/useLocalize';
-import usePhases from 'api/phases/usePhases';
 import usePhase from 'api/phases/usePhase';
 import useBasket from 'api/baskets/useBasket';
-import useLocale from 'hooks/useLocale';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { scrollToElement } from 'utils/scroll';
-import { getCurrentPhase } from 'api/phases/utils';
-import { getInteractions } from './utils';
-import { pastPresentOrFuture, timeAgo } from 'utils/dateUtils';
+import { pastPresentOrFuture } from 'utils/dateUtils';
+import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
@@ -43,57 +37,7 @@ import { IMAGES_LOADED_EVENT } from 'components/admin/ContentBuilder/constants';
 // styles
 import styled from 'styled-components';
 import { transparentize } from 'polished';
-import { colors, fontSizes, isRtl } from 'utils/styleUtils';
-
-const BodyWrapper = styled.div`
-  display: flex;
-  align-items: flex-start;
-  ${isRtl`
-    flex-direction: row-reverse;
-  `}
-`;
-
-const StyledAvatar = styled(Avatar)`
-  margin-right: 6px;
-  margin-left: -4px;
-  margin-top: -2px;
-  ${isRtl`
-    margin-left: 6px;
-    margin-right: -4px;
-  `}
-`;
-
-const Body = styled.div`
-  font-size: ${fontSizes.s}px;
-  font-weight: 300;
-  color: ${colors.textSecondary};
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  line-height: 21px;
-  max-height: 42px;
-  overflow: hidden;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-word;
-`;
-
-const StyledUserName = styled(UserName)`
-  font-size: ${fontSizes.s}px;
-  font-weight: 500;
-  color: ${colors.textSecondary};
-  font-weight: 500;
-`;
-
-const Separator = styled.span`
-  margin-left: 4px;
-  margin-right: 4px;
-`;
-
-const TimeAgo = styled.span`
-  font-weight: 500;
-  margin-right: 5px;
-`;
+import { colors } from 'utils/styleUtils';
 
 const ImagePlaceholderContainer = styled.div`
   width: 100%;
@@ -113,23 +57,19 @@ const ImagePlaceholderIcon = styled(Icon)`
 
 interface Props {
   ideaId: string;
+  phaseId?: string | null;
   className?: string;
-  participationMethod?: ParticipationMethod | null;
-  participationContextId?: string | null;
-  participationContextType?: IParticipationContextType | null;
   hideImage?: boolean;
   hideImagePlaceholder?: boolean;
   hideIdeaStatus?: boolean;
-  hideBody?: boolean;
   goBackMode?: 'browserGoBackButton' | 'goToProject';
-  viewingPhaseId?: string | null;
 }
 
 const IdeaLoading = (props: Props) => {
   const { data: idea } = useIdeaById(props.ideaId);
 
   if (idea) {
-    return <CompactIdeaCard idea={idea} {...props} />;
+    return <IdeaCard idea={idea} {...props} />;
   }
 
   return null;
@@ -139,35 +79,34 @@ interface IdeaCardProps extends Props {
   idea: IIdea;
 }
 
-const CompactIdeaCard = memo<IdeaCardProps>(
+const IdeaCard = memo<IdeaCardProps>(
   ({
     idea,
+    phaseId,
     className,
-    participationMethod,
     hideImage = false,
     hideImagePlaceholder = false,
     hideIdeaStatus = false,
-    hideBody = false,
     goBackMode = 'browserGoBackButton',
-    viewingPhaseId,
   }) => {
     const isGeneralIdeasPage = window.location.pathname.endsWith('/ideas');
     const smallerThanPhone = useBreakpoint('phone');
-    const locale = useLocale();
     const localize = useLocalize();
     const { data: project } = useProjectById(
       idea.data.relationships.project.data.id
     );
-    const { data: viewingPhase } = usePhase(viewingPhaseId);
-    const { data: phases } = usePhases(project?.data.id);
+    const { data: phase } = usePhase(phaseId);
     const { data: ideaImage } = useIdeaImage(
       idea.data.id,
       idea.data.relationships.idea_images.data?.[0]?.id
     );
-    const currentPhase = phases ? getCurrentPhase(phases?.data) : undefined;
 
-    const participationContext =
-      viewingPhase?.data || currentPhase || project?.data;
+    const participationContext = phase?.data || project?.data;
+    const participationMethod =
+      participationContext?.attributes.participation_method;
+    const config = participationMethod && getMethodConfig(participationMethod);
+    const hideBody = config?.hideAuthorOnIdeas;
+
     const participationContextEnded =
       participationContext?.type === 'phase' &&
       pastPresentOrFuture(participationContext?.attributes?.end_at) === 'past';
@@ -175,48 +114,10 @@ const CompactIdeaCard = memo<IdeaCardProps>(
       participationContext?.relationships?.user_basket?.data?.id
     );
 
-    const authorId = idea.data.relationships?.author?.data?.id || null;
-    const authorHash = idea.data.attributes.author_hash;
     const ideaTitle = localize(idea.data.attributes.title_multiloc);
-    // remove html tags from wysiwyg output
-    const bodyText = localize(idea.data.attributes.body_multiloc)
-      .replace(/<[^>]*>?/gm, '')
-      .replaceAll('&amp;', '&')
-      .trim();
     const [searchParams] = useSearchParams();
     const scrollToCardParam = searchParams.get('scroll_to_card');
     const votingMethod = participationContext?.attributes.voting_method;
-
-    const getFooter = () => {
-      if (project) {
-        const commentingEnabled =
-          project.data.attributes.action_descriptor.commenting_idea.enabled;
-        const projectHasComments = project.data.attributes.comments_count > 0;
-        const showCommentCount = commentingEnabled || projectHasComments;
-
-        // the participationMethod checks ensure that the footer is not shown on
-        // e.g. /ideas index page because there's no participationMethod
-        // passed through to the IdeaCards from there.
-        // Should probably have better solution in future.
-        if (participationMethod === 'voting') {
-          return (
-            <IdeaCardFooter idea={idea} showCommentCount={showCommentCount} />
-          );
-        }
-
-        if (participationMethod === 'ideation') {
-          return (
-            <FooterWithReactionControl
-              idea={idea}
-              hideIdeaStatus={hideIdeaStatus}
-              showCommentCount={showCommentCount}
-            />
-          );
-        }
-      }
-
-      return null;
-    };
 
     useEffect(() => {
       if (scrollToCardParam && idea.data.id === scrollToCardParam) {
@@ -280,39 +181,24 @@ const CompactIdeaCard = memo<IdeaCardProps>(
         }
         hideImage={hideImage}
         hideImagePlaceholder={hideImagePlaceholder}
-        body={
-          <BodyWrapper>
-            <StyledAvatar
-              size={36}
-              userId={authorId}
-              fillColor={transparentize(0.6, colors.textSecondary)}
-              authorHash={authorHash}
-            />
-            <Body>
-              <StyledUserName
-                userId={authorId || null}
-                anonymous={idea.data.attributes.anonymous}
-              />
-              <Separator aria-hidden>&bull;</Separator>
-              {!isNilOrError(locale) && (
-                <TimeAgo>
-                  {timeAgo(Date.parse(idea.data.attributes.created_at), locale)}
-                </TimeAgo>
-              )}
-              <span aria-hidden> {bodyText}</span>
-            </Body>
-          </BodyWrapper>
-        }
+        body={<Body idea={idea} />}
         hideBody={hideBody}
         interactions={
-          hideInteractions
-            ? null
-            : getInteractions({
-                participationContext,
-                idea,
-              })
+          hideInteractions ? null : (
+            <Interactions
+              idea={idea}
+              participationContext={participationContext}
+            />
+          )
         }
-        footer={getFooter()}
+        footer={
+          <Footer
+            project={project}
+            idea={idea}
+            hideIdeaStatus={hideIdeaStatus}
+            participationMethod={participationMethod}
+          />
+        }
       />
     );
   }

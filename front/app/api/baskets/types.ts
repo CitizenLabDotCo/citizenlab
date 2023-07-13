@@ -10,7 +10,6 @@ export interface IBasketData {
   attributes: {
     submitted_at: string;
     total_votes: number;
-    'budget_exceeds_limit?': false;
   };
   relationships: {
     participation_context: {
@@ -30,10 +29,5 @@ export interface IBasket {
 }
 
 export interface IUpdateBasket {
-  submitted?: boolean | null;
-}
-export interface INewBasket {
-  participation_context_id: string;
-  participation_context_type: 'Project' | 'Phase';
   submitted?: boolean | null;
 }
