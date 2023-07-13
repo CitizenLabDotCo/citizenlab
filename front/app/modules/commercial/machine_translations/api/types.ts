@@ -26,7 +26,7 @@ export interface IMachineTranslation {
 }
 
 type IMachineTranslationAttributes = {
-  locale_to: Locale;
+  locale_to?: Locale;
   attribute_name: AttributeName;
 };
 

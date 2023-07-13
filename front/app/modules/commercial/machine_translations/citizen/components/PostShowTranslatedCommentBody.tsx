@@ -24,14 +24,13 @@ const PostShowTranslatedCommentBody = ({
     },
     enabled: true,
   });
-
-  const content =
-    translateButtonClicked && translation
-      ? translation.data.attributes.translation.replace(
-          /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi,
-          '<a class="mention" data-link="/profile/$2" href="/profile/$2">$3</a>'
-        )
-      : commentContent;
+  const showTranslatedContent = translateButtonClicked && translation;
+  const content = showTranslatedContent
+    ? translation.data.attributes.translation.replace(
+        /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi,
+        '<a class="mention" data-link="/profile/$2" href="/profile/$2">$3</a>'
+      )
+    : commentContent;
 
   return (
     <CommentText

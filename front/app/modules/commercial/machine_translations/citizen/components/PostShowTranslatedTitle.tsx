@@ -7,7 +7,7 @@ interface Props {
   postId: string;
   postType: 'idea' | 'initiative';
   title: string;
-  locale: Locale;
+  locale?: Locale;
   translateButtonClicked?: boolean;
   color?: string;
   align: 'left' | 'center';
@@ -28,11 +28,10 @@ const PostShowTranslatedTitle = ({
     id: postId,
     context: postType,
   });
-  const showTranslatedContent = translateButtonClicked && translation;
-  const content =
-    translateButtonClicked && translation
-      ? translation.attributes.translation
-      : title;
+  const showTranslatedContent = translateButtonClicked && translation && locale;
+  const content = showTranslatedContent
+    ? translation.attributes.translation
+    : title;
 
   return (
     <Title

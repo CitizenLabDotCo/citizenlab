@@ -5,7 +5,7 @@ import useMachineTranslationByCommentId from 'modules/commercial/machine_transla
 
 interface Parameters {
   attributeName: 'body_multiloc' | 'title_multiloc';
-  localeTo: Locale;
+  localeTo?: Locale;
   id: string;
   context: 'idea' | 'initiative' | 'comment';
 }
