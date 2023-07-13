@@ -7,7 +7,7 @@ import CommentCount from './CommentCount';
 import clHistory from 'utils/cl-router/history';
 
 // types
-import { IIdea } from 'api/ideas/types';
+import { IIdeaData } from 'api/ideas/types';
 
 // styles
 import styled from 'styled-components';
@@ -24,7 +24,7 @@ const Footer = styled.footer`
 `;
 
 interface Props {
-  idea: IIdea;
+  idea: IIdeaData;
   showCommentCount: boolean;
 }
 
@@ -33,7 +33,7 @@ const IdeaCardFooter = ({ idea, showCommentCount }: Props) => {
 
   const onReadMoreClick = (event: FormEvent) => {
     event.preventDefault();
-    clHistory.push(`/ideas/${idea.data.attributes.slug}`);
+    clHistory.push(`/ideas/${idea.attributes.slug}`);
   };
 
   return (
@@ -51,7 +51,7 @@ const IdeaCardFooter = ({ idea, showCommentCount }: Props) => {
         <u>{formatMessage(messages.readMore)}</u>
       </Button>
       {showCommentCount && (
-        <CommentCount commentCount={idea.data.attributes.comments_count} />
+        <CommentCount commentCount={idea.attributes.comments_count} />
       )}
     </Footer>
   );

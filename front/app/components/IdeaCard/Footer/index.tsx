@@ -6,12 +6,12 @@ import FooterWithReactionControl from './FooterWithReactionControl';
 
 // typings
 import { IProject } from 'api/projects/types';
-import { IIdea } from 'api/ideas/types';
+import { IIdeaData } from 'api/ideas/types';
 import { ParticipationMethod } from 'services/participationContexts';
 
 interface Props {
   project?: IProject;
-  idea: IIdea;
+  idea: IIdeaData;
   hideIdeaStatus: boolean;
   participationMethod: ParticipationMethod | undefined;
 }

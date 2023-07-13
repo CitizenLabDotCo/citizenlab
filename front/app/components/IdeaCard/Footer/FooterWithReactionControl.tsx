@@ -7,7 +7,7 @@ import CommentCount from './CommentCount';
 
 // styles
 import styled from 'styled-components';
-import { IIdea } from 'api/ideas/types';
+import { IIdeaData } from 'api/ideas/types';
 
 const Container = styled.footer`
   display: flex;
@@ -35,7 +35,7 @@ const StyledReactionControl = styled(ReactionControl)`
 `;
 
 interface Props {
-  idea: IIdea;
+  idea: IIdeaData;
   hideIdeaStatus?: boolean;
   className?: string;
   showCommentCount: boolean;
@@ -47,20 +47,20 @@ const FooterWithReactionControl = ({
   className,
   showCommentCount,
 }: Props) => {
-  const ideaStatusId = idea.data.relationships.idea_status.data.id;
+  const ideaStatusId = idea.relationships.idea_status.data.id;
 
   return (
     <Container className={className || ''}>
       <Left>
         <StyledReactionControl
           styleType="border"
-          ideaId={idea.data.id}
+          ideaId={idea.id}
           size="1"
           ariaHidden
         />
 
         {showCommentCount && (
-          <CommentCount commentCount={idea.data.attributes.comments_count} />
+          <CommentCount commentCount={idea.attributes.comments_count} />
         )}
       </Left>
       {!hideIdeaStatus && (

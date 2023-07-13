@@ -161,7 +161,7 @@ const IdeaCard = memo<IdeaCardProps>(
         footer={
           <Footer
             project={project}
-            idea={idea}
+            idea={idea.data}
             hideIdeaStatus={hideIdeaStatus}
             participationMethod={participationMethod}
           />

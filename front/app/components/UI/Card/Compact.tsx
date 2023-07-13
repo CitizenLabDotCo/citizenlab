@@ -4,14 +4,15 @@ import bowser from 'bowser';
 // components
 import Image from 'components/UI/Image';
 import Link from 'utils/cl-router/Link';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 
 // styling
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import {
   defaultCardStyle,
   defaultCardHoverStyle,
   media,
+  stylingConsts,
 } from 'utils/styleUtils';
 
 const cardPadding = '17px';
@@ -45,7 +46,7 @@ const Container = styled(Link)`
   `}
 `;
 
-const IdeaCardImageWrapper = styled.div<{ hasImage: boolean }>`
+const IdeaCardImageWrapper = styled.div`
   flex: 0 0 ${cardInnerHeight};
   width: ${cardInnerHeight};
   height: ${cardInnerHeight};
@@ -135,6 +136,7 @@ interface Props {
     id: string;
   } | null;
   title: JSX.Element | string;
+  rank?: number;
   body?: JSX.Element | string;
   interactions?: JSX.Element | null;
   footer: JSX.Element | null;
@@ -150,46 +152,66 @@ export const Card = memo<Props>(
     onClick,
     imagePlaceholder,
     title,
+    rank,
     body,
     interactions,
     footer,
     className,
-  }) => (
-    <Container
-      onClick={onClick}
-      to={to}
-      className={`e2e-card ${className} ${
-        !(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'
-      }`}
-      id={id}
-    >
-      {image && (
-        <IdeaCardImageWrapper hasImage={!!image}>
-          <IdeaCardImage src={image} cover={true} alt="" />
-        </IdeaCardImageWrapper>
-      )}
+  }) => {
+    const theme = useTheme();
 
-      {!image && imagePlaceholder && (
-        <IdeaCardImageWrapper hasImage={!!image}>
-          {imagePlaceholder}
-        </IdeaCardImageWrapper>
-      )}
+    return (
+      <Container
+        onClick={onClick}
+        to={to}
+        className={`e2e-card ${className} ${
+          !(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'
+        }`}
+        id={id}
+      >
+        {image && (
+          <IdeaCardImageWrapper>
+            <IdeaCardImage src={image} cover={true} alt="" />
+          </IdeaCardImageWrapper>
+        )}
 
-      <ContentWrapper>
-        <Header className="e2e-card-title">
-          {typeof title === 'string' ? (
-            <Title title={title}>{title}</Title>
-          ) : (
-            title
-          )}
-        </Header>
+        {!image && imagePlaceholder && (
+          <IdeaCardImageWrapper>
+            {rank !== undefined && (
+              <Box
+                position="absolute"
+                top="28px"
+                left="28px"
+                bgColor={theme.colors.primary}
+                borderRadius={stylingConsts.borderRadius}
+                px="12px"
+                py="4px"
+              >
+                <Text m="0" color="white" fontSize="xl" fontWeight="bold">
+                  #{rank}
+                </Text>
+              </Box>
+            )}
+            {imagePlaceholder}
+          </IdeaCardImageWrapper>
+        )}
 
-        {body && <Body>{body}</Body>}
-        <Box mt="auto">{interactions}</Box>
-        {footer}
-      </ContentWrapper>
-    </Container>
-  )
+        <ContentWrapper>
+          <Header className="e2e-card-title">
+            {typeof title === 'string' ? (
+              <Title title={title}>{title}</Title>
+            ) : (
+              title
+            )}
+          </Header>
+
+          {body && <Body>{body}</Body>}
+          <Box mt="auto">{interactions}</Box>
+          {footer}
+        </ContentWrapper>
+      </Container>
+    );
+  }
 );
 
 export default Card;

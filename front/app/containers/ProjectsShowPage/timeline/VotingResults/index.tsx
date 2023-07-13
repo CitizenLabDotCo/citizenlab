@@ -45,7 +45,7 @@ const VotingResults = ({ phaseId }: Props) => {
       {smallerThanPhone
         ? ideas?.data.map((idea) => (
             <Box key={idea.id} mb="8px">
-              <VotingResultCard idea={idea} />
+              <VotingResultCard idea={idea} phaseId={phaseId} />
             </Box>
           ))
         : desktopRows?.map((row, rowIndex) => (
@@ -62,7 +62,7 @@ const VotingResults = ({ phaseId }: Props) => {
                   key={idea.id}
                   {...(i === 0 ? { mr: '8px' } : { ml: '8px' })}
                 >
-                  <VotingResultCard idea={idea} />
+                  <VotingResultCard idea={idea} phaseId={phaseId} />
                 </Box>
               ))}
             </Box>
