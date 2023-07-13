@@ -85,7 +85,8 @@ export interface IIdeaData {
     comments_count: number;
     internal_comments_count: number;
     official_feedbacks_count: number;
-    baskets_count: number;
+    baskets_count?: number | null;
+    votes_count?: number | null;
     location_point_geojson: GeoJSON.Point | null;
     location_description: string | null;
     budget: number | null;
