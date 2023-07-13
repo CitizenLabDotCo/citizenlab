@@ -191,7 +191,7 @@ resource BasketsIdea do
           let!(:baskets_idea) { create(:baskets_idea, basket: basket, idea: idea) }
           let(:votes) { 0 }
 
-          example_request 'Delete an idea in an existing basket', document: false do
+          example_request 'Delete an idea in an existing basket' do
             assert_status 200
             expect(response_data[:id]).to eq baskets_idea.id
             expect(response_data.dig(:attributes, :votes)).to eq 0
@@ -203,7 +203,7 @@ resource BasketsIdea do
         context 'basket_idea does not exist and votes is set to nil' do
           let(:votes) { nil }
 
-          example_request 'Return the baskets_idea that was never persisted', document: false do
+          example_request 'Return the baskets_idea that was never persisted' do
             assert_status 200
             expect(response_data[:id]).to be_nil
             expect(response_data.dig(:attributes, :votes)).to be_nil

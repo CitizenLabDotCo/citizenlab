@@ -62,7 +62,6 @@ class WebApi::V1::BasketsIdeasController < ApplicationController
       user: current_user
     )
     if basket.new_record?
-      basket.participation_context_type = participation_context.phase? ? 'Phase' : 'Project'
       if basket.save
         SideFxBasketService.new.after_create basket, current_user
       else
