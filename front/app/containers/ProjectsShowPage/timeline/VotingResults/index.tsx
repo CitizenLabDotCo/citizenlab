@@ -17,7 +17,7 @@ interface Props {
 const VotingResults = ({ phaseId }: Props) => {
   const { data: ideas } = useIdeas({
     phase: phaseId,
-    sort: 'baskets_count', // TODO: replace with votes_count when implemented by James
+    sort: 'votes_count',
   });
   const smallerThanPhone = useBreakpoint('phone');
 

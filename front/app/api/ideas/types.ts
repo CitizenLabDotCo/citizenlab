@@ -51,7 +51,9 @@ export type Sort =
   | 'baskets_count'
   | '-baskets_count'
   | 'status'
-  | '-status';
+  | '-status'
+  | 'votes_count'
+  | '-votes_count';
 
 export type SortAttribute =
   | 'new'
@@ -61,7 +63,8 @@ export type SortAttribute =
   | 'likes_count'
   | 'dislikes_count'
   | 'baskets_count'
-  | 'status';
+  | 'status'
+  | 'votes_count';
 
 type ReactingIdeaActionDescriptor =
   | { enabled: true; disabled_reason: null; cancelling_enabled: boolean }
