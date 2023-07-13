@@ -24,6 +24,7 @@ import ParticipationContext, {
   IParticipationContextConfig,
 } from '../participationContext';
 import FileUploader from 'components/UI/FileUploader';
+import { Text } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -414,6 +415,9 @@ const AdminProjectTimelineEdit = () => {
             <SubSectionTitle>
               <FormattedMessage {...messages.automatedEmails} />
             </SubSectionTitle>
+            <Text color="coolGrey600" mt="0px" fontSize="m">
+              <FormattedMessage {...messages.automatedEmailsDescription} />
+            </Text>
             {flatCampaigns.map((campaign) => (
               <CampaignRow
                 campaign={stringifyCampaignFields(campaign, localize)}
