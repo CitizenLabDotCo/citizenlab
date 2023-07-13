@@ -19,9 +19,9 @@ FactoryBot.define do
     end
     participation_method { 'ideation' }
     start_at { '2017-05-01' }
-    end_at { '2017-06-30' }
-    voting_min_total { 1 }
-    voting_max_total { 10_000 }
+    end_at { Date.parse(start_at) + 60.days }
+    min_budget { 1 }
+    max_budget { 10_000 }
 
     transient do
       with_permissions { false }

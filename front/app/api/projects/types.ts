@@ -83,6 +83,7 @@ export interface IProjectAttributes extends ParticipationContext {
     taking_poll: ActionDescriptor<PollDisabledReason>;
     annotating_document: ActionDescriptor<DocumentAnnotationDisabledReason>;
   };
+  uses_content_builder: boolean;
 }
 
 export interface IProjectData {

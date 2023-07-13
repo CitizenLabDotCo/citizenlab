@@ -2,20 +2,18 @@ import React from 'react';
 import { IconTooltip } from '@citizenlab/cl2-component-library';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 type Props = {
   className?: string;
 };
 
-const PasswordInputIconTooltip = ({
-  intl: { formatMessage },
-  className,
-}: Props & WrappedComponentProps) => {
+const PasswordInputIconTooltip = ({ className }: Props) => {
+  const { formatMessage } = useIntl();
   return (
     <IconTooltip
+      placement="top-start"
       className={className}
       content={
         <>
@@ -31,4 +29,4 @@ const PasswordInputIconTooltip = ({
   );
 };
 
-export default injectIntl(PasswordInputIconTooltip);
+export default PasswordInputIconTooltip;

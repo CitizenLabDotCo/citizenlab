@@ -1,30 +1,38 @@
 import { ADMIN_PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
-import allNavbarItems from 'services/__mocks__/navbarItems';
-import { deleteCustomPage } from 'services/customPages';
+import { navbarItemsData as allNavbarItems } from 'api/navbar/__mocks__/useNavbarItems';
 import React from 'react';
 import clHistory from 'utils/cl-router/history';
 import { fireEvent, render, screen } from 'utils/testUtils/rtl';
 import HiddenNavbarItemList from '.';
-import { addNavbarItem } from 'services/navbar';
 
 let mockNavbarItems = allNavbarItems;
 const mockRemovedDefaultNavbarItems = [];
 
-jest.mock('hooks/useNavbarItems', () => jest.fn(() => mockNavbarItems));
-jest.mock('hooks/useRemovedDefaultNavbarItems', () =>
-  jest.fn(() => mockRemovedDefaultNavbarItems)
+jest.mock('api/navbar/useNavbarItems', () => {
+  return jest.fn((params) => {
+    return params?.onlyRemovedDefaultItems
+      ? { data: { data: mockRemovedDefaultNavbarItems } }
+      : { data: { data: mockNavbarItems } };
+  });
+});
+
+const mockAddNavbarItem = jest.fn();
+
+jest.mock('api/navbar/useAddNavbarItem', () =>
+  jest.fn(() => ({ mutate: mockAddNavbarItem }))
 );
 
-jest.mock('hooks/useCustomPages');
-jest.mock('hooks/useCustomPageSlugById');
+jest.mock('api/custom_pages/useCustomPages');
+jest.mock('api/custom_pages/useCustomPageSlugById');
 
-jest.mock('services/navbar', () => ({
-  addNavbarItem: jest.fn(),
-  getNavbarItemSlug: jest.fn(),
-}));
+const mockDeleteCustomPage = jest.fn();
 
-jest.mock('services/customPages', () => {
-  const original = jest.requireActual('services/customPages');
+jest.mock('api/custom_pages/useDeleteCustomPage', () =>
+  jest.fn(() => ({ mutate: mockDeleteCustomPage }))
+);
+
+jest.mock('api/custom_pages/types', () => {
+  const original = jest.requireActual('api/custom_pages/types');
 
   return {
     ...original,
@@ -62,10 +70,10 @@ describe('<HiddenNavbarItemList />', () => {
     const addButtons = screen.getAllByText('Add to navbar');
 
     fireEvent.click(addButtons[0]);
-    expect(addNavbarItem).not.toHaveBeenCalled();
+    expect(mockAddNavbarItem).not.toHaveBeenCalled();
 
     fireEvent.click(addButtons[1]);
-    expect(addNavbarItem).not.toHaveBeenCalled();
+    expect(mockAddNavbarItem).not.toHaveBeenCalled();
   });
 
   it('calls addNavbarItem on click add button with correct data', () => {
@@ -83,7 +91,7 @@ describe('<HiddenNavbarItemList />', () => {
     };
 
     fireEvent.click(addButtons[0]);
-    expect(addNavbarItem).toHaveBeenCalledWith(faqItem);
+    expect(mockAddNavbarItem).toHaveBeenCalledWith(faqItem);
 
     const aboutItem = {
       pageCode: 'about',
@@ -93,7 +101,7 @@ describe('<HiddenNavbarItemList />', () => {
     };
 
     fireEvent.click(addButtons[1]);
-    expect(addNavbarItem).toHaveBeenCalledWith(aboutItem);
+    expect(mockAddNavbarItem).toHaveBeenCalledWith(aboutItem);
   });
 
   it('calls deleteCustomPage on click delete button with correct page id', () => {
@@ -102,12 +110,12 @@ describe('<HiddenNavbarItemList />', () => {
     const deleteButtons = screen.getAllByText('Delete');
 
     fireEvent.click(deleteButtons[0]);
-    expect(deleteCustomPage).toHaveBeenCalledWith(
+    expect(mockDeleteCustomPage).toHaveBeenCalledWith(
       '793d56cc-c8b3-4422-b393-972b71f82aa2'
     );
 
     fireEvent.click(deleteButtons[1]);
-    expect(deleteCustomPage).toHaveBeenCalledWith(
+    expect(mockDeleteCustomPage).toHaveBeenCalledWith(
       'e7854e94-3074-4607-b66e-0422aa3d8359'
     );
   });

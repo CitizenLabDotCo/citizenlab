@@ -21,14 +21,6 @@ import { colors } from 'utils/styleUtils';
 import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
 import { getCurrentParticipationContext } from 'api/phases/utils';
 
-const Container = styled.div`
-  flex: 0 0 ${rightColumnWidthDesktop}px;
-  width: ${rightColumnWidthDesktop}px;
-  position: sticky;
-  top: 110px;
-  align-self: flex-start;
-`;
-
 const InnerContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -70,7 +62,14 @@ const RightColumnDesktop = ({
   );
 
   return (
-    <Container className={className || ''}>
+    <Box
+      flex={`0 0 ${rightColumnWidthDesktop}px`}
+      width={`${rightColumnWidthDesktop}px`}
+      position="sticky"
+      top="110px"
+      alignSelf="flex-start"
+      className={className}
+    >
       <InnerContainer>
         <Box
           padding="20px"
@@ -109,7 +108,7 @@ const RightColumnDesktop = ({
           authorId={authorId}
         />
       </InnerContainer>
-    </Container>
+    </Box>
   );
 };
 

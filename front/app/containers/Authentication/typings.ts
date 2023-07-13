@@ -13,7 +13,8 @@ export type ErrorCode =
   | 'requirements_fetching_failed'
   | 'invitation_error'
   | 'unknown'
-  | 'franceconnect_merging_failed';
+  | 'franceconnect_merging_failed'
+  | 'email_taken_and_user_can_be_verified';
 
 export interface State {
   email: string | null;

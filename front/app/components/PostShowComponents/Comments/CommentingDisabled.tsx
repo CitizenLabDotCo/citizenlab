@@ -131,7 +131,7 @@ const CommentingDisabled = ({
               </button>
             ),
             verifyIdentityLink: (
-              <button onClick={signUp}>
+              <button id="e2e-verify-identity-to-comment" onClick={signUp}>
                 <FormattedMessage {...messages.verifyIdentityLinkText} />
               </button>
             ),

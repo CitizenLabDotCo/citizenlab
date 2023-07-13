@@ -4,7 +4,10 @@ export type QueryParameters = Dates & Resolution;
 
 // Response
 export type Response = {
-  data: [TimeSeriesResponse | [], RegistrationsTotalRow[] | []];
+  data: {
+    type: 'analytics';
+    attributes: [TimeSeriesResponse | [], RegistrationsTotalRow[] | []];
+  };
 };
 
 type TimeSeriesResponse = TimeSeriesResponseRow[];

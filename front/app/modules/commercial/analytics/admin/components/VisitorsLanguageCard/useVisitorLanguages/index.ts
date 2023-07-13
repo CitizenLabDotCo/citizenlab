@@ -1,7 +1,5 @@
-import { useState, useEffect } from 'react';
-
 // services
-import { analyticsStream, Query, QuerySchema } from 'services/analyticsFacts';
+import { Query, QuerySchema } from 'api/analytics/types';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -11,15 +9,14 @@ import { getTranslations } from './translations';
 import { parsePieData, parseExcelData } from './parse';
 
 // typings
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
-import { XlsxData } from 'components/admin/ReportExportMenu';
-import { Response, PieRow, QueryParameters } from './typings';
+import { Response, QueryParameters } from './typings';
 
 // utils
 import {
   getProjectFilter,
   getDateFilter,
 } from 'components/admin/GraphCards/_utils/query';
+import useAnalytics from 'api/analytics/useAnalytics';
 
 const query = ({
   projectId,
@@ -55,33 +52,23 @@ export default function useVisitorsData({
   endAtMoment,
 }: QueryParameters) {
   const { formatMessage } = useIntl();
-  const [pieData, setPieData] = useState<PieRow[] | NilOrError>();
-  const [xlsxData, setXlsxData] = useState<XlsxData | NilOrError>();
 
-  useEffect(() => {
-    const observable = analyticsStream<Response>(
-      query({
-        projectId,
-        startAtMoment,
-        endAtMoment,
-      })
-    ).observable;
+  const { data: analytics } = useAnalytics<Response>(
+    query({
+      projectId,
+      startAtMoment,
+      endAtMoment,
+    })
+  );
 
-    const subscription = observable.subscribe(
-      (response: Response | NilOrError) => {
-        if (isNilOrError(response)) {
-          setPieData(response);
-          setXlsxData(response);
-          return;
-        }
-        const translations = getTranslations(formatMessage);
-        setXlsxData(parseExcelData(response.data, translations));
-        setPieData(parsePieData(response.data));
-      }
-    );
+  const translations = getTranslations(formatMessage);
 
-    return () => subscription.unsubscribe();
-  }, [projectId, startAtMoment, endAtMoment, formatMessage]);
+  const pieData = analytics ? parsePieData(analytics.data.attributes) : null;
+
+  const xlsxData =
+    analytics && pieData
+      ? parseExcelData(analytics.data.attributes, translations)
+      : null;
 
   return { pieData, xlsxData };
 }

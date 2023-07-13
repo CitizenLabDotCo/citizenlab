@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 // components
 import {
@@ -29,13 +29,9 @@ import { mixed, object } from 'yup';
 // typings
 import { UploadFile } from 'typings';
 
-// services
-import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
-
 // hooks
-import useCustomPage from 'hooks/useCustomPage';
-import { updateCustomPage } from 'services/customPages';
-import useRemoteFiles from 'hooks/useRemoteFiles';
+import useCustomPageById from 'api/custom_pages/useCustomPageById';
+import useUpdateCustomPage from 'api/custom_pages/useUpdateCustomPage';
 import { useParams } from 'react-router-dom';
 
 // constants
@@ -45,6 +41,11 @@ import { pagesAndMenuBreadcrumb } from '../../breadcrumbs';
 // utils
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
+import useAddPagesFile from 'api/page_files/useAddPageFile';
+import useDeletePageFile from 'api/page_files/useDeletePageFile';
+import usePageFiles from 'api/page_files/usePageFiles';
+import { handleAddPageFiles, handleRemovePageFiles } from 'api/page_files/util';
 
 type FormValues = {
   local_page_files: UploadFile[] | null;
@@ -53,14 +54,37 @@ type FormValues = {
 const AttachmentsForm = ({
   intl: { formatMessage },
 }: WrappedComponentProps) => {
+  const { mutateAsync: updateCustomPage } = useUpdateCustomPage();
   const localize = useLocalize();
   const { customPageId } = useParams() as { customPageId: string };
-  const customPage = useCustomPage({ customPageId });
 
-  const remotePageFiles = useRemoteFiles({
-    resourceType: 'page',
-    resourceId: !isNilOrError(customPage) ? customPage.id : null,
-  });
+  const { data: customPage } = useCustomPageById(customPageId);
+  const { data: remoteFiles } = usePageFiles(customPageId);
+  const { mutateAsync: addPageFile } = useAddPagesFile();
+  const { mutateAsync: deletePageFile } = useDeletePageFile();
+  const [files, setFiles] = React.useState<UploadFile[]>([]);
+
+  useEffect(() => {
+    async function getFiles() {
+      let files: UploadFile[] = [];
+
+      if (remoteFiles) {
+        files = (await Promise.all(
+          remoteFiles.data.map(async (file) => {
+            const uploadFile = convertUrlToUploadFile(
+              file.attributes.file.url,
+              file.id,
+              file.attributes.name
+            );
+            return uploadFile;
+          })
+        )) as UploadFile[];
+      }
+      setFiles(files);
+    }
+
+    getFiles();
+  }, [remoteFiles]);
 
   const handleSubmit = async (
     { local_page_files }: FormValues,
@@ -72,19 +96,22 @@ const AttachmentsForm = ({
       const addPromise = handleAddPageFiles(
         customPageId,
         local_page_files,
-        remotePageFiles
+        files,
+        addPageFile
       );
       const removePromise = handleRemovePageFiles(
         customPageId,
         local_page_files,
-        remotePageFiles
+        files,
+        deletePageFile
       );
 
       promises.push(addPromise, removePromise);
     }
 
     if (enableSection) {
-      const enableSectionPromise = updateCustomPage(customPageId, {
+      const enableSectionPromise = updateCustomPage({
+        id: customPageId,
         files_section_enabled: true,
       });
       promises.push(enableSectionPromise);
@@ -115,7 +142,7 @@ const AttachmentsForm = ({
 
   const methods = useForm({
     mode: 'onBlur',
-    defaultValues: { local_page_files: remotePageFiles },
+    defaultValues: { local_page_files: files },
     resolver: yupResolver(schema),
   });
 
@@ -123,7 +150,7 @@ const AttachmentsForm = ({
     return null;
   }
 
-  const isSectionEnabled = customPage.attributes.files_section_enabled;
+  const isSectionEnabled = customPage.data.attributes.files_section_enabled;
 
   return (
     <>
@@ -139,7 +166,7 @@ const AttachmentsForm = ({
                 linkTo: pagesAndMenuBreadcrumb.linkTo,
               },
               {
-                label: localize(customPage.attributes.title_multiloc),
+                label: localize(customPage.data.attributes.title_multiloc),
                 linkTo: adminCustomPageContentPath(customPageId),
               },
               {
@@ -148,7 +175,7 @@ const AttachmentsForm = ({
             ]}
             rightSideCTA={
               <ViewCustomPageButton
-                linkTo={`/pages/${customPage.attributes.slug}`}
+                linkTo={`/pages/${customPage.data.attributes.slug}`}
               />
             }
           >
@@ -162,10 +189,7 @@ const AttachmentsForm = ({
                   }
                 />
               </Label>
-              <FileUploader
-                name="local_page_files"
-                remoteFiles={remotePageFiles}
-              />
+              <FileUploader name="local_page_files" remoteFiles={files} />
             </SectionField>
             <Box display="flex">
               <Button

@@ -8,7 +8,7 @@ import {
 } from 'components/LandingPages/citizen/HeaderContent';
 import { WrappedComponentProps } from 'react-intl';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-import useHomepageSettings from 'hooks/useHomepageSettings';
+import useHomepageSettings from 'api/home_page/useHomepageSettings';
 import useLocalize from 'hooks/useLocalize';
 import React from 'react';
 import styled from 'styled-components';
@@ -49,7 +49,7 @@ const HeaderContent = ({
   fontColors,
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
-  const homepageSettings = useHomepageSettings();
+  const { data: homepageSettings } = useHomepageSettings();
   const localize = useLocalize();
   const isSmallerThanTablet = useBreakpoint('tablet');
 
@@ -63,7 +63,7 @@ const HeaderContent = ({
   const buttonStyle = getButtonStyle(fontColors);
 
   if (!isNilOrError(homepageSettings)) {
-    const homepageAttributes = homepageSettings.attributes;
+    const homepageAttributes = homepageSettings.data.attributes;
     const headerTitle = !isEmptyMultiloc(
       homepageAttributes.banner_signed_out_header_multiloc
     )

@@ -85,11 +85,7 @@ const InitiativeCard = ({
 
   const initiativeTitle = localize(initiative.data.attributes.title_multiloc);
   const initiativeAuthorId = initiativeAuthor ? initiativeAuthor.data.id : null;
-  const initiativeImageUrl: string | null = get(
-    initiativeImage,
-    'data.attributes.versions.medium',
-    null
-  );
+  const initiativeImageUrl = initiativeImage?.data.attributes.versions.medium;
   const commentsCount = initiative.data.attributes.comments_count;
   const cardClassNames = [
     className,

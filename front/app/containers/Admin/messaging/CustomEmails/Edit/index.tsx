@@ -19,7 +19,7 @@ interface Props {
 }
 
 const Edit = ({ campaign }: Props) => {
-  const { mutate: updateCampaign } = useUpdateCampaign();
+  const { mutate: updateCampaign, isLoading } = useUpdateCampaign();
   const handleSubmit = async (values: FormValues) => {
     updateCampaign(
       { id: campaign.id, campaign: values },
@@ -43,6 +43,7 @@ const Edit = ({ campaign }: Props) => {
         <FormattedMessage {...messages.editCampaignTitle} />
       </PageTitle>
       <CampaignForm
+        isLoading={isLoading}
         onSubmit={handleSubmit}
         defaultValues={{
           sender: campaign.attributes.sender,

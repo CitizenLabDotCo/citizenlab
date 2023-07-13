@@ -13,10 +13,20 @@ import {
   SubGroupedCampaignsEntry,
 } from './types';
 import CampaignRow from './CampaignRow';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import { internalCommentNotificationTypes } from 'api/campaigns/types';
 
 const AutomatedEmails = () => {
+  const isInternalCommentingEnabled = useFeatureFlag({
+    name: 'internal_commenting',
+  });
+
   const { data: campaigns } = useCampaigns({
-    withoutCampaignNames: ['manual', 'invite_received'],
+    withoutCampaignNames: [
+      'manual',
+      'invite_received',
+      ...(isInternalCommentingEnabled ? [] : internalCommentNotificationTypes),
+    ],
     pageSize: 250,
   });
 
