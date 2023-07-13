@@ -157,7 +157,7 @@ const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
               {showIdeas && (
                 <PhaseIdeas projectId={projectId} phaseId={selectedPhaseId} />
               )}
-              {showIdeaResults && <IdeaResults />}
+              {showIdeaResults && <IdeaResults phaseId={selectedPhaseId} />}
             </ContentContainer>
           </div>
         </StyledSectionContainer>
