@@ -43,6 +43,7 @@ import useUpdateIdea from 'api/ideas/useUpdateIdea';
 type Props = {
   type: ManagerType;
   idea: IIdeaData;
+  displayColumns?: string[];
   phases?: IPhaseData[];
   statuses?: IIdeaStatusData[];
   /** A set of ids of ideas/initiatives that are currently selected */
@@ -69,6 +70,7 @@ const IdeaRow = ({
   phases,
   statuses,
   idea,
+  displayColumns,
   selection,
   locale,
 }: Props) => {
@@ -282,17 +284,18 @@ const IdeaRow = ({
       ...(onClick ? { onClick } : {}),
     };
 
-    const Content = (
-      <Td key={name} borderBottom="none !important">
-        <Box
-          {...(['up', 'down'].includes(name)
-            ? { display: 'flex', flexDirection: 'row' }
-            : {})}
-        >
-          <Component idea={idea} selection={selection} {...handlers} />
-        </Box>
-      </Td>
-    );
+    const Content =
+      displayColumns && !displayColumns.includes(name) ? null : (
+        <Td key={name} borderBottom="none !important">
+          <Box
+            {...(['up', 'down'].includes(name)
+              ? { display: 'flex', flexDirection: 'row' }
+              : {})}
+          >
+            <Component idea={idea} selection={selection} {...handlers} />
+          </Box>
+        </Td>
+      );
 
     if (!featureFlag) return Content;
     return (

@@ -18,6 +18,7 @@ import {
   SortAttribute,
   IIdeaData,
 } from 'api/ideas/types';
+import usePostManagerColumns from '../hooks/usePostManagerColumns';
 
 interface Props extends Omit<IQueryParameters, 'sort' | 'basket_id'> {
   sort?: Sort;
@@ -29,6 +30,7 @@ type children = (renderProps: GetIdeasChildProps) => JSX.Element | null;
 interface State {
   queryParameters: IQueryParameters;
   list: IIdeaData[] | undefined;
+  displayColumns: string[];
   sortAttribute: SortAttribute;
   sortDirection: SortDirection;
   currentPage: number;
@@ -67,6 +69,11 @@ const GetIdeas = ({ children, sort = 'random', ...otherProps }: Props) => {
     'page[size]': otherProps['page[size]'] ?? 24,
   });
   const { data } = useIdeas(queryParameters);
+
+  const projectId = queryParameters.projects
+    ? queryParameters.projects[0]
+    : null;
+  const displayColumns = usePostManagerColumns(projectId, null);
 
   const list = data?.data;
 
@@ -168,6 +175,7 @@ const GetIdeas = ({ children, sort = 'random', ...otherProps }: Props) => {
   return (children as children)({
     queryParameters,
     list,
+    displayColumns,
     sortAttribute,
     sortDirection,
     currentPage,

@@ -80,6 +80,7 @@ export type IdeaHeaderCellComponentProps = {
 };
 
 interface Props {
+  displayColumns: string[];
   sortAttribute?: IdeasSortAttribute;
   sortDirection?: SortDirection;
   allSelected: boolean;
@@ -88,6 +89,7 @@ interface Props {
 }
 
 export default ({
+  displayColumns,
   sortAttribute,
   sortDirection,
   allSelected,
@@ -214,16 +216,17 @@ export default ({
       totalWidth
     )}%`;
 
-    const Content = (
-      <Component
-        sortAttribute={sortAttribute}
-        sortDirection={sortDirection}
-        allSelected={allSelected}
-        width={width}
-        {...handlers}
-        key={name}
-      />
-    );
+    const Content =
+      displayColumns && !displayColumns.includes(name) ? null : (
+        <Component
+          sortAttribute={sortAttribute}
+          sortDirection={sortDirection}
+          allSelected={allSelected}
+          width={width}
+          {...handlers}
+          key={name}
+        />
+      );
 
     if (!featureFlag) return Content;
     return (

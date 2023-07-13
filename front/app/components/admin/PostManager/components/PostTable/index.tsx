@@ -81,6 +81,7 @@ const Container = styled.div`
 
 interface Props {
   type: ManagerType;
+  displayColumns: string[];
   sortAttribute?: IdeasSortAttribute | InitiativesSortAttribute;
   sortDirection?: SortDirection;
   posts?: IIdeaData[] | IInitiativeData[];
@@ -170,6 +171,7 @@ export default class PostTable extends React.Component<Props> {
   render() {
     const {
       type,
+      displayColumns,
       sortAttribute,
       sortDirection,
       posts,
@@ -201,6 +203,7 @@ export default class PostTable extends React.Component<Props> {
             />
           ) : type === 'AllIdeas' || type === 'ProjectIdeas' ? (
             <IdeaHeaderRow
+              displayColumns={displayColumns}
               sortAttribute={sortAttribute}
               sortDirection={sortDirection}
               allSelected={this.allSelected()}
@@ -225,6 +228,7 @@ export default class PostTable extends React.Component<Props> {
                         post={post}
                         phases={phases}
                         statuses={statuses}
+                        displayColumns={displayColumns}
                         onUnselect={this.unselect(post.id)}
                         onToggleSelect={this.toggleSelect(post.id)}
                         onSingleSelect={this.singleSelect(post.id)}
