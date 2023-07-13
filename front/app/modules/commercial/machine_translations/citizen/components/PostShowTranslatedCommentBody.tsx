@@ -1,6 +1,7 @@
 import React from 'react';
 import { Locale } from 'typings';
 import useMachineTranslationByCommentId from 'modules/commercial/machine_translations/api/useMachineTranslationByCommentId';
+import { CommentText } from 'components/PostShowComponents/Comments/Comment/CommentBody';
 
 interface Props {
   translateButtonClicked: boolean;
@@ -33,7 +34,7 @@ const PostShowTranslatedCommentBody = ({
       : commentContent;
 
   return (
-    <div
+    <CommentText
       dangerouslySetInnerHTML={{
         __html: content,
       }}
