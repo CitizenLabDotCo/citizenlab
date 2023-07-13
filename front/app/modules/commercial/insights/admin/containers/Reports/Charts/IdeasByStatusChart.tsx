@@ -1,10 +1,9 @@
 // libraries
-import React from 'react';
+import React, { useRef } from 'react';
 import { isEmpty, map, orderBy } from 'lodash-es';
 
 // intl
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 // styling
@@ -25,21 +24,17 @@ import {
 import BarChart from 'components/admin/Graphs/BarChart';
 
 // resources
-import GetSerieFromStream from 'resources/GetSerieFromStream';
 
 // types
-import { ideasByStatusStream, ideasByStatusXlsxEndpoint } from 'services/stats';
 import { IGraphFormat } from 'typings';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { ideasByStatusXlsxEndpoint } from 'api/ideas_by_status/util';
+import useIdeasByStatus from 'api/ideas_by_status/useIdeasByStatus';
+import useLocalize from 'hooks/useLocalize';
 
-interface DataProps {
-  serie?: IGraphFormat | null | Error;
-}
-
-interface InputProps {
+interface Props {
   startAt: string | null | undefined;
   endAt: string | null;
   currentProjectFilter?: string | undefined;
@@ -48,97 +43,32 @@ interface InputProps {
   className?: string;
 }
 
-interface Props extends InputProps, DataProps {}
+const IdeasByStatusChart = ({
+  startAt,
+  endAt,
+  currentGroupFilterLabel,
+  currentGroupFilter,
+  currentProjectFilter,
+  className,
+}: Props) => {
+  const { formatMessage } = useIntl();
+  const localize = useLocalize();
+  const currentChart = useRef();
 
-export class IdeasByStatusChart extends React.PureComponent<
-  Props & WrappedComponentProps
-> {
-  currentChart: React.RefObject<any>;
-  constructor(props: Props & WrappedComponentProps) {
-    super(props);
-    this.currentChart = React.createRef();
-  }
+  const { data: ideasByStatus } = useIdeasByStatus({
+    start_at: startAt,
+    end_at: endAt,
+    project: currentProjectFilter,
+    group: currentGroupFilter,
+  });
 
-  render() {
-    const {
-      startAt,
-      endAt,
-      currentGroupFilterLabel,
-      currentGroupFilter,
-      className,
-      serie,
-      intl: { formatMessage },
-    } = this.props;
+  if (!ideasByStatus) return null;
 
-    const noData =
-      isNilOrError(serie) ||
-      serie.every((item) => isEmpty(item)) ||
-      serie.length <= 0;
-
-    const unitName = formatMessage(messages.inputs);
-    const sortedByValue = noData
-      ? null
-      : (orderBy(serie, ['value'], ['desc']) as IGraphFormat);
-
-    return (
-      <GraphCard className={className}>
-        <GraphCardInner>
-          <GraphCardHeader>
-            <GraphCardTitle>
-              <FormattedMessage {...messages.inputsByStatusTitle} />
-            </GraphCardTitle>
-            {!noData && (
-              <ReportExportMenu
-                name={formatMessage(messages.inputsByStatusTitle)}
-                svgNode={this.currentChart}
-                xlsx={{ endpoint: ideasByStatusXlsxEndpoint }}
-                currentGroupFilterLabel={currentGroupFilterLabel}
-                currentGroupFilter={currentGroupFilter}
-                startAt={startAt}
-                endAt={endAt}
-              />
-            )}
-          </GraphCardHeader>
-          <BarChart
-            height={
-              !noData && sortedByValue !== null && sortedByValue.length > 1
-                ? sortedByValue.length * 50
-                : 100
-            }
-            data={sortedByValue}
-            mapping={{
-              category: 'name',
-              length: 'value',
-              fill: ({ row: { color } }) => color ?? legacyColors.chartFill,
-              opacity: () => 0.8,
-            }}
-            layout="horizontal"
-            innerRef={this.currentChart}
-            margin={DEFAULT_BAR_CHART_MARGIN}
-            bars={{
-              name: unitName,
-              size: sizes.bar,
-            }}
-            yaxis={{ width: 150, tickLine: false }}
-            labels
-            tooltip
-          />
-        </GraphCardInner>
-      </GraphCard>
-    );
-  }
-}
-
-const IdeasByStatusChartWithHoCs = injectIntl(IdeasByStatusChart);
-
-const WrappedIdeasByStatusChart = (
-  inputProps: InputProps & InjectedLocalized
-) => {
-  const convertToGraphFormat = (response) => {
+  const convertToGraphFormat = () => {
     const {
       series: { ideas },
       idea_status,
-    } = response.data.attributes;
+    } = ideasByStatus.data.attributes;
 
     if (Object.keys(ideas).length <= 0) {
       return null;
@@ -146,21 +76,71 @@ const WrappedIdeasByStatusChart = (
 
     return map(idea_status, (status, id) => ({
       value: ideas[id] || 0,
-      name: inputProps.localize(status.title_multiloc),
+      name: localize(status.title_multiloc),
       code: id,
       color: status.color,
       ordering: status.ordering,
     }));
   };
+
+  const serie = convertToGraphFormat();
+
+  const noData =
+    isNilOrError(serie) ||
+    serie.every((item) => isEmpty(item)) ||
+    serie.length <= 0;
+
+  const unitName = formatMessage(messages.inputs);
+  const sortedByValue = noData
+    ? null
+    : (orderBy(serie, ['value'], ['desc']) as IGraphFormat);
+
   return (
-    <GetSerieFromStream
-      {...inputProps}
-      stream={ideasByStatusStream}
-      convertToGraphFormat={convertToGraphFormat}
-    >
-      {(serie) => <IdeasByStatusChartWithHoCs {...serie} {...inputProps} />}
-    </GetSerieFromStream>
+    <GraphCard className={className}>
+      <GraphCardInner>
+        <GraphCardHeader>
+          <GraphCardTitle>
+            <FormattedMessage {...messages.inputsByStatusTitle} />
+          </GraphCardTitle>
+          {!noData && (
+            <ReportExportMenu
+              name={formatMessage(messages.inputsByStatusTitle)}
+              svgNode={currentChart}
+              xlsx={{ endpoint: ideasByStatusXlsxEndpoint }}
+              currentGroupFilterLabel={currentGroupFilterLabel}
+              currentGroupFilter={currentGroupFilter}
+              startAt={startAt}
+              endAt={endAt}
+            />
+          )}
+        </GraphCardHeader>
+        <BarChart
+          height={
+            !noData && sortedByValue !== null && sortedByValue.length > 1
+              ? sortedByValue.length * 50
+              : 100
+          }
+          data={sortedByValue}
+          mapping={{
+            category: 'name',
+            length: 'value',
+            fill: ({ row: { color } }) => color ?? legacyColors.chartFill,
+            opacity: () => 0.8,
+          }}
+          layout="horizontal"
+          innerRef={currentChart}
+          margin={DEFAULT_BAR_CHART_MARGIN}
+          bars={{
+            name: unitName,
+            size: sizes.bar,
+          }}
+          yaxis={{ width: 150, tickLine: false }}
+          labels
+          tooltip
+        />
+      </GraphCardInner>
+    </GraphCard>
   );
 };
 
-export default injectLocalize(WrappedIdeasByStatusChart);
+export default IdeasByStatusChart;
