@@ -261,8 +261,8 @@ const AdminProjectTimelineEdit = () => {
           addPhase(
             {
               projectId,
-              ...attributeDiff,
               campaigns_settings: initialCampaignsSettings,
+              ...attributeDiff,
             },
             {
               onSuccess: (response) => {
