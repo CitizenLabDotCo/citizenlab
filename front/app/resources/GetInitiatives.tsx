@@ -51,7 +51,6 @@ export type GetInitiativesChildProps = {
   list: IInitiativeData[] | undefined | null;
   onResetParams: (paramsToOmit?: (keyof IQueryParameters)[]) => void;
   queryParameters: IQueryParameters;
-  displayColumns: string[];
   sortAttribute: SortAttribute;
   sortDirection: SortDirection;
   currentPage: number;
@@ -121,7 +120,6 @@ const GetInitiatives = ({ children }: Props) => {
     queryParameters: filter,
     currentPage: currentPage || 1,
     lastPage: lastPage || 1,
-    displayColumns: [],
     sortAttribute: filter.sort
       ? getSortAttribute<Sort, SortAttribute>(filter.sort)
       : 'new',

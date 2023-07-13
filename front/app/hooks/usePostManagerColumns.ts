@@ -1,44 +1,40 @@
 // hooks
 import useProjectById from '../api/projects/useProjectById';
 import usePhases from '../api/phases/usePhase';
+import { useMemo } from 'react';
 
 export default function usePostManagerColumns(
-  projectId: string | null,
-  phaseId: string | null
+  selectedProject?: string | null,
+  selectedPhase?: string | null
 ) {
-  const project = useProjectById(projectId);
-  const phase = usePhases(phaseId);
-  console.log(phase, project);
-
-  // TODO: Define the correct columns based on voting method etc - use effect etc
-  // useMemo
-  // Error: Too many re-renders. React limits the number of renders to prevent an infinite loop.
-  // Probably need useEffect()
-  /*
-  const [columns, setColumns] = useState<string[]>(
-    [
-      'selection',
-      'assignee',
-      'title',
-      'published_on',
-      'up',
-      'down',
-    ]
+  const project = useProjectById(
+    selectedProject === undefined ? null : selectedProject
   );
-  setColumns([...columns, 'picks']);
+  const phase = usePhases(selectedPhase === undefined ? null : selectedPhase);
 
-  Use a set instead
+  // if (phase.data) {
+  //   console.log('phase', phase.data.attributes);
+  // }
+  //
+  // if (project.data) {
+  //   console.log('phase', project.data.attributes);
+  // }
+  console.log('project', project);
 
-  const columns = useMemo(() => { ... }, [project, phase] )
-   */
-
-  return [
+  const coreColumns = new Set<string>([
     'selection',
     'assignee',
     'title',
     'published_on',
-    'up',
-    'down',
-    'picks',
-  ];
+  ]);
+
+  const columns = useMemo(() => {
+    if (selectedPhase) {
+      return coreColumns;
+    } else {
+      return coreColumns.add('up').add('up').add('picks');
+    }
+  }, [project, phase]);
+
+  return columns;
 }

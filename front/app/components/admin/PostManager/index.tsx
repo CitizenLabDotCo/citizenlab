@@ -384,7 +384,6 @@ export class PostManager extends React.PureComponent<Props, State> {
               <PostTable
                 type={type}
                 activeFilterMenu={activeFilterMenu}
-                displayColumns={posts.displayColumns}
                 sortAttribute={posts.sortAttribute}
                 sortDirection={posts.sortDirection}
                 onChangeSort={posts.onChangeSorting}
@@ -392,6 +391,8 @@ export class PostManager extends React.PureComponent<Props, State> {
                 phases={!isNilOrError(phases) ? phases : undefined}
                 statuses={!isNilOrError(postStatuses) ? postStatuses : []}
                 selection={selection}
+                selectedPhase={selectedPhase}
+                selectedProject={selectedProject}
                 onChangeSelection={this.handleChangeSelection}
                 currentPageNumber={posts.currentPage}
                 lastPageNumber={posts.lastPage}

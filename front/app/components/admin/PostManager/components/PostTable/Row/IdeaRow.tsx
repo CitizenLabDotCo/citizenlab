@@ -39,13 +39,15 @@ import { insertConfiguration } from 'utils/moduleUtils';
 
 // hooks
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
+import usePostManagerColumns from '../../../../../../hooks/usePostManagerColumns';
 
 type Props = {
   type: ManagerType;
   idea: IIdeaData;
-  displayColumns?: string[];
   phases?: IPhaseData[];
   statuses?: IIdeaStatusData[];
+  selectedPhase?: string | null;
+  selectedProject?: string | null;
   /** A set of ids of ideas/initiatives that are currently selected */
   selection: Set<string>;
   activeFilterMenu: TFilterMenu;
@@ -69,8 +71,9 @@ const IdeaRow = ({
   activeFilterMenu,
   phases,
   statuses,
+  selectedPhase,
+  selectedProject,
   idea,
-  displayColumns,
   selection,
   locale,
 }: Props) => {
@@ -268,6 +271,7 @@ const IdeaRow = ({
   const active = selection.has(idea.id);
   const projectId = idea.relationships.project.data.id;
   const selectedStatus = idea.relationships.idea_status.data.id;
+  const displayColumns = usePostManagerColumns(selectedProject, selectedPhase);
 
   const renderCell = (
     { idea, selection }: IdeaCellComponentProps,
@@ -285,7 +289,7 @@ const IdeaRow = ({
     };
 
     const Content =
-      displayColumns && !displayColumns.includes(name) ? null : (
+      displayColumns && !displayColumns.has(name) ? null : (
         <Td key={name} borderBottom="none !important">
           <Box
             {...(['up', 'down'].includes(name)

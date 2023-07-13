@@ -81,12 +81,13 @@ const Container = styled.div`
 
 interface Props {
   type: ManagerType;
-  displayColumns: string[];
   sortAttribute?: IdeasSortAttribute | InitiativesSortAttribute;
   sortDirection?: SortDirection;
   posts?: IIdeaData[] | IInitiativeData[];
   phases?: IPhaseData[];
   statuses?: IIdeaStatusData[] | IInitiativeStatusData[];
+  selectedPhase?: string | null;
+  selectedProject?: string | null;
   onChangeSort?: (sort: IdeasSort | InitiativesSort) => void;
   /** A set of ids of ideas/initiatives that are currently selected */
   selection: Set<string>;
@@ -171,7 +172,6 @@ export default class PostTable extends React.Component<Props> {
   render() {
     const {
       type,
-      displayColumns,
       sortAttribute,
       sortDirection,
       posts,
@@ -179,6 +179,8 @@ export default class PostTable extends React.Component<Props> {
       phases,
       activeFilterMenu,
       statuses,
+      selectedProject,
+      selectedPhase,
       handleSeeAll,
       openPreview,
     } = this.props;
@@ -203,7 +205,8 @@ export default class PostTable extends React.Component<Props> {
             />
           ) : type === 'AllIdeas' || type === 'ProjectIdeas' ? (
             <IdeaHeaderRow
-              displayColumns={displayColumns}
+              selectedProject={selectedProject}
+              selectedPhase={selectedPhase}
               sortAttribute={sortAttribute}
               sortDirection={sortDirection}
               allSelected={this.allSelected()}
@@ -228,7 +231,8 @@ export default class PostTable extends React.Component<Props> {
                         post={post}
                         phases={phases}
                         statuses={statuses}
-                        displayColumns={displayColumns}
+                        selectedProject={selectedProject}
+                        selectedPhase={selectedPhase}
                         onUnselect={this.unselect(post.id)}
                         onToggleSelect={this.toggleSelect(post.id)}
                         onSingleSelect={this.singleSelect(post.id)}

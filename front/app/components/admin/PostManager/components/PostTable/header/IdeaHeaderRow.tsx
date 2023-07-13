@@ -30,6 +30,7 @@ import {
 } from 'typings';
 import { SortAttribute as IdeasSortAttribute } from 'api/ideas/types';
 import { SortDirection } from 'utils/paginationUtils';
+import usePostManagerColumns from '../../../../../../hooks/usePostManagerColumns';
 
 interface SortableHeaderCellProps {
   sortAttribute?: IdeasSortAttribute;
@@ -80,7 +81,8 @@ export type IdeaHeaderCellComponentProps = {
 };
 
 interface Props {
-  displayColumns: string[];
+  selectedProject?: string | null;
+  selectedPhase?: string | null;
   sortAttribute?: IdeasSortAttribute;
   sortDirection?: SortDirection;
   allSelected: boolean;
@@ -89,7 +91,8 @@ interface Props {
 }
 
 export default ({
-  displayColumns,
+  selectedProject,
+  selectedPhase,
   sortAttribute,
   sortDirection,
   allSelected,
@@ -190,6 +193,8 @@ export default ({
     },
   ]);
 
+  const displayColumns = usePostManagerColumns(selectedProject, selectedPhase);
+
   const totalWidth = cells.reduce((acc, cell) => {
     if (typeof cell.cellProps?.width === 'number') {
       return cell.cellProps.width + acc;
@@ -217,7 +222,7 @@ export default ({
     )}%`;
 
     const Content =
-      displayColumns && !displayColumns.includes(name) ? null : (
+      displayColumns && !displayColumns.has(name) ? null : (
         <Component
           sortAttribute={sortAttribute}
           sortDirection={sortDirection}
