@@ -8,7 +8,9 @@ import ReportBuilder from '.';
 jest.mock('hooks/useFeatureFlag', () => jest.fn(() => true));
 
 let mockReportLayout;
-jest.mock('hooks/useReportLayout', () => jest.fn(() => mockReportLayout));
+jest.mock('api/report_layout/useReportLayout', () =>
+  jest.fn(() => ({ data: { data: mockReportLayout } }))
+);
 jest.mock('api/reports/useReport');
 jest.mock('../../hooks/useReportLocale', () => jest.fn(() => 'en'));
 

@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
-import eventsKeys from './keys';
+import reportsKeys from './keys';
 import { ReportsResponse, ReportsKeys } from './types';
 
 const fetchReports = () => {
@@ -13,7 +13,7 @@ const fetchReports = () => {
 
 const useReports = () => {
   return useQuery<ReportsResponse, CLErrors, ReportsResponse, ReportsKeys>({
-    queryKey: eventsKeys.lists(),
+    queryKey: reportsKeys.lists(),
     queryFn: () => fetchReports(),
   });
 };

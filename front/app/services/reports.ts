@@ -21,18 +21,6 @@ export interface ReportLayoutResponse {
   data: ReportLayout;
 }
 
-export function reportLayoutByIdStream(id: string) {
-  return streams.get<ReportLayoutResponse>({
-    apiEndpoint: `${apiEndpoint}/${id}/layout`,
-    handleErrorLogging: (error) => {
-      // A 404 error is expected when the content builder layout is not found so we don't want to log it
-      if (error.statusCode !== 404) {
-        reportError(error);
-      }
-    },
-  });
-}
-
 export async function updateReportLayout(
   id: string,
   craftMultiloc: JsonMultiloc
