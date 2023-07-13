@@ -7172,7 +7172,7 @@ models:
     start_at_timediff: -1440
     end_at_timediff: 1440
     participation_method: ideation
-    emails:
+    campaigns_settings:
       project_phase_started: true
     created_at: '2018-03-28 13:35:05'
     updated_at: '2018-03-28 13:35:05'
@@ -7204,7 +7204,7 @@ models:
     start_at_timediff: -4320
     end_at_timediff: -2880
     participation_method: ideation
-    emails:
+    campaigns_settings:
       project_phase_started: true
     created_at: '2018-03-28 13:35:05'
     updated_at: '2018-03-28 13:35:05'
@@ -7235,7 +7235,7 @@ models:
     start_at_timediff: -6226
     end_at_timediff: -5978
     participation_method: survey
-    emails:
+    campaigns_settings:
       project_phase_started: false
     created_at: '2018-03-28 13:35:05'
     updated_at: '2018-03-28 13:35:05'
@@ -7270,7 +7270,7 @@ models:
     start_at_timediff: -5678
     end_at_timediff: -4760
     participation_method: budgeting
-    emails:
+    campaigns_settings:
       project_phase_started: true
     created_at: '2018-03-28 13:35:05'
     updated_at: '2018-03-28 13:35:05'
@@ -7300,7 +7300,7 @@ models:
     start_at_timediff: 2280
     end_at_timediff: 3798
     participation_method: ideation
-    emails:
+    campaigns_settings:
       project_phase_started: true
     created_at: '2018-03-28 13:35:05'
     updated_at: '2018-03-28 13:35:05'
@@ -7320,7 +7320,7 @@ models:
     start_at: 2018-06-22
     end_at: 2018-08-21
     participation_method: poll
-    emails:
+    campaigns_settings:
       project_phase_started: true
     created_at: '2018-03-28 13:35:05'
     updated_at: '2018-03-28 13:35:05'
@@ -7347,7 +7347,7 @@ models:
     start_at: 2017-10-22
     end_at: 2017-10-28
     participation_method: ideation
-    emails:
+    campaigns_settings:
       project_phase_started: true
     created_at: '2018-03-28 13:35:07'
     updated_at: '2018-03-28 13:35:07'
@@ -7380,7 +7380,7 @@ models:
     start_at_timediff: -1440
     end_at_timediff: 1440
     participation_method: ideation
-    emails:
+    campaigns_settings:
       project_phase_started: true
     created_at: '2018-03-28 13:35:07'
     updated_at: '2018-03-28 13:35:07'
@@ -7408,7 +7408,7 @@ models:
     start_at: 2017-11-20
     end_at: 2017-12-12
     participation_method: information
-    emails:
+    campaigns_settings:
       project_phase_started: true
     created_at: '2018-03-28 13:35:07'
     updated_at: '2018-03-28 13:35:07'
@@ -7438,7 +7438,7 @@ models:
     start_at: 2017-12-13
     end_at: 2017-12-25
     participation_method: ideation
-    emails:
+    campaigns_settings:
       project_phase_started: true
     created_at: '2018-03-28 13:35:08'
     updated_at: '2018-03-28 13:35:08'
@@ -7472,7 +7472,7 @@ models:
     start_at: 2017-12-26
     end_at: 2018-01-12
     participation_method: ideation
-    emails:
+    campaigns_settings:
       project_phase_started: true
     created_at: '2018-03-28 13:35:08'
     updated_at: '2018-03-28 13:35:08'
@@ -7501,7 +7501,7 @@ models:
     start_at: 2018-01-13
     end_at: 2018-02-12
     participation_method: information
-    emails:
+    campaigns_settings:
       project_phase_started: true
     created_at: '2018-03-28 13:35:08'
     updated_at: '2018-03-28 13:35:08'
@@ -7531,7 +7531,7 @@ models:
     start_at: 2018-02-13
     end_at: 2018-03-15
     participation_method: ideation
-    emails:
+    campaigns_settings:
       project_phase_started: true
     created_at: '2018-03-28 13:35:08'
     updated_at: '2018-03-28 13:35:08'
@@ -7558,7 +7558,7 @@ models:
     start_at: 2018-03-16
     end_at: 2018-04-06
     participation_method: ideation
-    emails:
+    campaigns_settings:
       project_phase_started: true
     created_at: '2018-03-28 13:35:08'
     updated_at: '2018-03-28 13:35:08'
@@ -7588,7 +7588,7 @@ models:
     start_at: 2018-04-07
     end_at: 2018-04-20
     participation_method: ideation
-    emails:
+    campaigns_settings:
       project_phase_started: true
     created_at: '2018-03-28 13:35:08'
     updated_at: '2018-03-28 13:35:08'
@@ -7617,7 +7617,7 @@ models:
     start_at: 2018-04-21
     end_at: 2018-04-26
     participation_method: ideation
-    emails:
+    campaigns_settings:
       project_phase_started: true
     created_at: '2018-03-28 13:35:08'
     updated_at: '2018-03-28 13:35:08'
@@ -7646,7 +7646,7 @@ models:
     start_at: 2018-02-09
     end_at: 2018-02-25
     participation_method: information
-    emails:
+    campaigns_settings:
       project_phase_started: true
     created_at: '2018-03-28 13:35:09'
     updated_at: '2018-03-28 13:35:09'
@@ -7678,7 +7678,7 @@ models:
     start_at: 2018-02-26
     end_at: 2018-03-18
     participation_method: information
-    emails:
+    campaigns_settings:
       project_phase_started: true
     created_at: '2018-03-28 13:35:09'
     updated_at: '2018-03-28 13:35:09'
@@ -7709,7 +7709,7 @@ models:
     start_at: 2018-03-19
     end_at: 2018-04-08
     participation_method: ideation
-    emails:
+    campaigns_settings:
       project_phase_started: true
     created_at: '2018-03-28 13:35:09'
     updated_at: '2018-03-28 13:35:09'

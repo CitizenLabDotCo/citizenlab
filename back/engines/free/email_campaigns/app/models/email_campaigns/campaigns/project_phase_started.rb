@@ -36,6 +36,8 @@ module EmailCampaigns
     include LifecycleStageRestrictable
     allow_lifecycle_stages only: ['active']
 
+    before_send :campaign_enabled?
+
     recipient_filter :filter_notification_recipient
 
     def mailer_class
@@ -80,6 +82,14 @@ module EmailCampaigns
         },
         delay: 8.hours.to_i
       }]
+    end
+
+    private
+
+    def campaign_enabled?(activity:, time: nil)
+      return false if self.class.first.enabled == false
+
+      activity.item.phase.campaigns_settings['project_phase_started']
     end
   end
 end

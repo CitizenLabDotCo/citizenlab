@@ -83,28 +83,28 @@ RSpec.describe Phase do
 
   describe 'emails validation' do
     it 'fails when null' do
-      phase = build(:phase, emails: nil)
+      phase = build(:phase, campaigns_settings: nil)
       expect(phase).to be_invalid
     end
 
     it 'fails when empty' do
-      phase = build(:phase, emails: {})
+      phase = build(:phase, campaigns_settings: {})
       expect(phase).to be_invalid
     end
 
     it 'fails when contains invalid key' do
-      phase = build(:phase, emails: { invalid_key: true })
+      phase = build(:phase, campaigns_settings: { invalid_key: true })
       expect(phase).to be_invalid
     end
 
     it 'fails when contains invalid value' do
-      phase = build(:phase, emails: { invalid_key: 'not_a_boolean' })
+      phase = build(:phase, campaigns_settings: { invalid_key: 'not_a_boolean' })
       expect(phase).to be_invalid
     end
 
     # Not really necessary, but useful while developing
     it 'succeeds when contains valid key and value' do
-      phase = build(:phase, emails: { project_phase_started: false })
+      phase = build(:phase, campaigns_settings: { project_phase_started: false })
       expect(phase).to be_valid
     end
   end
