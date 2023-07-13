@@ -14,7 +14,7 @@ jest.mock('api/reports/useReports', () =>
 
 const mockCreateReport = jest.fn();
 
-jest.mock('api/reports/useCreateReport', () =>
+jest.mock('api/reports/useAddReport', () =>
   jest.fn(() => ({ mutate: mockCreateReport }))
 );
 
