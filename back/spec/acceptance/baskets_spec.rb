@@ -9,7 +9,7 @@ resource 'Baskets' do
   before do
     header 'Content-Type', 'application/json'
     @user = create(:user)
-    @project = create(:continuous_single_voting_project)
+    @project = create(:continuous_multiple_voting_project)
     create_list(:basket, 2, participation_context: create(:continuous_budgeting_project))
     @basket = create(
       :basket,

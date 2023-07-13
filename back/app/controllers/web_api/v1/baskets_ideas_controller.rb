@@ -56,18 +56,16 @@ class WebApi::V1::BasketsIdeasController < ApplicationController
     # 1. Create or get basket
     idea = Idea.find(params[:idea_id])
     participation_context = ParticipationContextService.new.get_participation_context(idea.project)
-    participation_context_type = participation_context.phase? ? 'Phase' : 'Project'
 
     basket = Basket.find_or_initialize_by(
       participation_context: participation_context,
-      participation_context_type: participation_context_type,
       user: current_user
     )
     if basket.new_record?
       if basket.save
         SideFxBasketService.new.after_create basket, current_user
       else
-        render json: { errors: baskets_idea.errors.details }, status: :unprocessable_entity
+        render json: { errors: basket.errors.details }, status: :unprocessable_entity
         return
       end
     end
@@ -81,7 +79,7 @@ class WebApi::V1::BasketsIdeasController < ApplicationController
     authorize baskets_idea
     baskets_idea.assign_attributes baskets_idea_params_for_update
 
-    if baskets_idea.votes.nil?
+    if baskets_idea.votes.nil? || baskets_idea.votes == 0
       baskets_idea.destroy
       if baskets_idea.destroyed?
         SideFxBasketsIdeaService.new.after_destroy baskets_idea, current_user

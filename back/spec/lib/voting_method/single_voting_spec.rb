@@ -45,12 +45,12 @@ RSpec.describe VotingMethod::SingleVoting do
   describe '#assign_baskets_idea' do
     it 'does not overwrite the votes' do
       idea = create(:idea, budget: 3, project: project)
-      baskets_idea = create(:baskets_idea, basket: create(:basket, participation_context: project), idea: idea, votes: 10)
+      baskets_idea = create(:baskets_idea, basket: create(:basket, participation_context: project), idea: idea, votes: 1)
 
       voting_method.assign_baskets_idea(baskets_idea.reload)
       baskets_idea.save!
 
-      expect(baskets_idea.votes).to eq 10
+      expect(baskets_idea.votes).to eq 1
     end
   end
 end

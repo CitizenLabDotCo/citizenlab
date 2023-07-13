@@ -29,6 +29,8 @@ class SortByParamsService
     when '-dislikes_count' then scope.order(dislikes_count: :asc)
     when 'baskets_count' then scope.order(baskets_count: :desc)
     when '-baskets_count' then scope.order(baskets_count: :asc)
+    when 'votes_count' then scope.order(votes_count: :desc)
+    when '-votes_count' then scope.order(votes_count: :asc)
     else
       raise "Unsupported sorting parameter #{params[:sort]}"
     end
