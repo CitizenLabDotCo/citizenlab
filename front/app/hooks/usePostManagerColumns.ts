@@ -11,6 +11,7 @@ export default function usePostManagerColumns(
   console.log(phase, project);
 
   // TODO: Define the correct columns based on voting method etc - use effect etc
+  // useMemo
   // Error: Too many re-renders. React limits the number of renders to prevent an infinite loop.
   // Probably need useEffect()
   /*
@@ -25,6 +26,10 @@ export default function usePostManagerColumns(
     ]
   );
   setColumns([...columns, 'picks']);
+
+  Use a set instead
+
+  const columns = useMemo(() => { ... }, [project, phase] )
    */
 
   return [
