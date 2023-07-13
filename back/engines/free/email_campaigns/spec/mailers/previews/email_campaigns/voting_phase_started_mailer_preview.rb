@@ -14,7 +14,7 @@ module EmailCampaigns
           project_url: Frontend::UrlService.new.model_to_url(project, locale: recipient_user.locale),
           project_title_multiloc: project.title_multiloc,
           phase_title_multiloc: phase.title_multiloc,
-          ideas: EmailCampaigns::Campaigns::VotingBasketSubmitted.new.format_ideas_list(ideas, recipient_user)
+          ideas: EmailCampaigns::PayloadFormatterService.new.format_ideas_list(ideas, recipient_user)
         }
       }
       campaign = EmailCampaigns::Campaigns::VotingPhaseStarted.first
