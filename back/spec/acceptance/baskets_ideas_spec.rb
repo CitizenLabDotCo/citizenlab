@@ -187,6 +187,19 @@ resource BasketsIdea do
           end
         end
 
+        context 'basket_idea already exists and votes is set to zero' do
+          let!(:baskets_idea) { create(:baskets_idea, basket: basket, idea: idea) }
+          let(:votes) { 0 }
+
+          example_request 'Delete an idea in an existing basket', document: false do
+            assert_status 200
+            expect(response_data[:id]).to eq baskets_idea.id
+            expect(response_data.dig(:attributes, :votes)).to eq 0
+            expect(response_data.dig(:relationships, :idea, :data, :id)).to eq idea_id
+            expect { baskets_idea.reload }.to raise_error(ActiveRecord::RecordNotFound)
+          end
+        end
+
         context 'basket_idea does not exist and votes is set to nil' do
           let(:votes) { nil }
 

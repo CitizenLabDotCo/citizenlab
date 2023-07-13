@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class BasketPolicy < ApplicationPolicy
+  # NOTE: If we change any of these, we also need to change BasketsIdeaPolicy
   def create?
     user&.active? &&
       (record.user_id == user.id) &&
@@ -21,7 +22,7 @@ class BasketPolicy < ApplicationPolicy
   end
 
   def destroy?
-    update?
+    create?
   end
 
   private

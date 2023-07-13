@@ -19,7 +19,7 @@ class BasketsIdeaPolicy < ApplicationPolicy
   end
 
   def create?
-    BasketPolicy.new(user, record.basket).update?
+    BasketPolicy.new(user, record.basket).create?
   end
 
   def update?
@@ -27,10 +27,10 @@ class BasketsIdeaPolicy < ApplicationPolicy
   end
 
   def destroy?
-    BasketPolicy.new(user, record.basket).update?
+    BasketPolicy.new(user, record.basket).destroy?
   end
 
   def upsert?
-    BasketPolicy.new(user, record.basket).update?
+    BasketPolicy.new(user, record.basket).upsert?
   end
 end
