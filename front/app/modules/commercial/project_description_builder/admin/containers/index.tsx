@@ -22,7 +22,7 @@ import ContentBuilderSettings from 'components/admin/ContentBuilder/Settings';
 
 // hooks
 import useLocale from 'hooks/useLocale';
-import useProjectDescriptionBuilderLayout from 'api/project_description_builder/useProjectDescriptionBuilderLayout';
+import useProjectDescriptionBuilderLayout from 'modules/commercial/project_description_builder/api/useProjectDescriptionBuilderLayout';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useProjectById from 'api/projects/useProjectById';

@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent, act, within } from 'utils/testUtils/rtl';
 import ProjectDescriptionBuilderTopBar from '.';
 import { Editor } from '@craftjs/core';
-import { IProjectDescriptionBuilderData } from 'api/project_description_builder/types';
+import { IProjectDescriptionBuilderData } from 'modules/commercial/project_description_builder/api/types';
 import clHistory from 'utils/cl-router/history';
 
 const mockEditorData: IProjectDescriptionBuilderData = {
@@ -30,7 +30,7 @@ const mockEditorData: IProjectDescriptionBuilderData = {
 };
 
 jest.mock(
-  'api/project_description_builder/useProjectDescriptionBuilderLayout',
+  'modules/commercial/project_description_builder/api/useProjectDescriptionBuilderLayout',
   () => () => {
     return {
       data: mockEditorData,
@@ -40,7 +40,7 @@ jest.mock(
 
 const mockAddProjectDescriptionBuilderLayout = jest.fn();
 jest.mock(
-  'api/project_description_builder/useAddProjectDescriptionBuilderLayout',
+  'modules/commercial/project_description_builder/api/useAddProjectDescriptionBuilderLayout',
   () => jest.fn(() => ({ mutateAsync: mockAddProjectDescriptionBuilderLayout }))
 );
 
