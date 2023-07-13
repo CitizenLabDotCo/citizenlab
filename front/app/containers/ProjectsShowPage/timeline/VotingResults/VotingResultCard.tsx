@@ -12,6 +12,7 @@ import useLocalize from 'hooks/useLocalize';
 import Card from 'components/UI/Card/Compact';
 import ImagePlaceholder from 'components/IdeaCard/ImagePlaceholder';
 import Rank from './Rank';
+import ResultBar from './ResultBar';
 import Footer from 'components/IdeaCard/Footer';
 
 // router
@@ -62,6 +63,7 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
         />
       }
       imageOverlay={<Rank rank={rank} />}
+      body={<ResultBar />}
       footer={
         <Footer
           project={project}
