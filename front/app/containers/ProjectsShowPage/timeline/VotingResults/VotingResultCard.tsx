@@ -63,7 +63,13 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
         />
       }
       imageOverlay={<Rank rank={rank} />}
-      body={<ResultBar />}
+      body={
+        <ResultBar
+          budget={idea.attributes.budget ?? undefined}
+          percentage={20}
+          picks={20}
+        />
+      }
       footer={
         <Footer
           project={project}
