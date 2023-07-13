@@ -15,7 +15,7 @@ export type TPhases = IPhaseData[] | undefined | null | Error;
 
 export interface IPhaseData {
   id: string;
-  type: string;
+  type: 'phase';
   attributes: IPhaseAttributes;
   relationships: {
     permissions: {

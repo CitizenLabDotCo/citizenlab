@@ -7,7 +7,7 @@ import CustomFieldPicker from '../../../shared/CustomFieldPicker';
 import { LabelBudgetingInput } from '../../../shared/labels';
 import {
   BudgetingAmountInput,
-  BudgetingAmountInputError,
+  VotingAmountInputError,
 } from '../../../shared/styling';
 
 // i18n
@@ -56,12 +56,6 @@ const BudgetingInputs = ({
 
   return (
     <>
-      {isCustomInputTermEnabled && (
-        <CustomFieldPicker
-          input_term={input_term}
-          handleInputTermChange={handleInputTermChange}
-        />
-      )}
       <SectionField>
         <SubSectionTitle>
           <FormattedMessage {...messages.totalBudget} />
@@ -78,8 +72,8 @@ const BudgetingInputs = ({
             <LabelBudgetingInput header="minimum" tooltip="minimumTooltip" />
           }
         />
-        <BudgetingAmountInputError text={minTotalVotesError} />
-        <BudgetingAmountInputError
+        <VotingAmountInputError text={minTotalVotesError} />
+        <VotingAmountInputError
           apiErrors={apiErrors && apiErrors.voting_min_total}
         />
       </SectionField>
@@ -93,11 +87,17 @@ const BudgetingInputs = ({
             <LabelBudgetingInput header="maximum" tooltip="maximumTooltip" />
           }
         />
-        <BudgetingAmountInputError text={maxTotalVotesError} />
-        <BudgetingAmountInputError
+        <VotingAmountInputError text={maxTotalVotesError} />
+        <VotingAmountInputError
           apiErrors={apiErrors && apiErrors.voting_max_total}
         />
       </SectionField>
+      {isCustomInputTermEnabled && (
+        <CustomFieldPicker
+          input_term={input_term}
+          handleInputTermChange={handleInputTermChange}
+        />
+      )}
     </>
   );
 };

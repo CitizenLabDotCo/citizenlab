@@ -2,8 +2,9 @@ import React, { memo, MouseEvent } from 'react';
 import bowser from 'bowser';
 
 // components
-import Link from 'utils/cl-router/Link';
 import Image from 'components/UI/Image';
+import Link from 'utils/cl-router/Link';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // styling
 import styled from 'styled-components';
@@ -23,8 +24,8 @@ const Container = styled(Link)`
   display: flex;
   align-items: center;
   padding: ${cardPadding};
-  cursor: pointer;
   ${defaultCardStyle};
+  cursor: pointer;
 
   &.desktop {
     ${defaultCardHoverStyle};
@@ -130,6 +131,7 @@ interface Props {
   image: string | null;
   imagePlaceholder: JSX.Element;
   hideImage?: boolean;
+  hideBody?: boolean;
   hideImagePlaceholder?: boolean;
   author?: {
     name: string;
@@ -137,6 +139,7 @@ interface Props {
   } | null;
   title: JSX.Element | string;
   body: JSX.Element | string;
+  interactions?: JSX.Element | null;
   footer: JSX.Element | null;
   onClick?: (event: MouseEvent<HTMLAnchorElement>) => void;
   className?: string;
@@ -144,15 +147,17 @@ interface Props {
 
 export const Card = memo<Props>(
   ({
+    image,
     id,
     to,
     onClick,
-    image,
     imagePlaceholder,
     hideImage = false,
     hideImagePlaceholder = false,
     title,
     body,
+    hideBody,
+    interactions,
     footer,
     className,
   }) => (
@@ -185,8 +190,8 @@ export const Card = memo<Props>(
           )}
         </Header>
 
-        <Body>{body}</Body>
-
+        {!hideBody && <Body>{body}</Body>}
+        <Box mt="auto">{interactions}</Box>
         {footer}
       </ContentWrapper>
     </Container>

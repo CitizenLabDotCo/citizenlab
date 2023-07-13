@@ -18,7 +18,7 @@ import {
 import { isNilOrError } from 'utils/helperUtils';
 import { colors } from 'utils/styleUtils';
 import clHistory from 'utils/cl-router/history';
-import { getMethodConfig } from 'utils/participationMethodUtils';
+import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
 // hooks & services
 import useLocalize from 'hooks/useLocalize';

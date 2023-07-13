@@ -2,7 +2,6 @@ import React, { memo, useMemo } from 'react';
 
 // components
 import Timeline from './Timeline';
-import PBExpenses from '../shared/pb/PBExpenses';
 import PhaseSurvey from './Survey';
 import PhasePoll from './Poll';
 import PhaseVolunteering from './Volunteering';
@@ -15,6 +14,7 @@ import {
 } from 'containers/ProjectsShowPage/styles';
 import SectionContainer from 'components/SectionContainer';
 import PhaseDocumentAnnotation from './document_annotation';
+import StatusModule from 'components/StatusModule';
 
 // router
 import setPhaseURL from './setPhaseURL';
@@ -23,7 +23,6 @@ import { useParams } from 'react-router-dom';
 // hooks
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // i18n
 import messages from 'containers/ProjectsShowPage/messages';
@@ -68,12 +67,6 @@ const StyledProjectPageSectionTitle = styled(ProjectPageSectionTitle)`
 const StyledTimeline = styled(Timeline)`
   margin-bottom: 22px;
 `;
-
-const StyledPBExpenses = styled(PBExpenses)`
-  padding: 20px;
-  margin-bottom: 50px;
-`;
-
 interface Props {
   projectId: string;
   className?: string;
@@ -83,7 +76,6 @@ const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
   const { phaseNumber } = useParams();
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
-  const smallerThanTablet = useBreakpoint('tablet');
 
   const selectedPhase = useMemo(() => {
     if (!phases) return;
@@ -106,10 +98,8 @@ const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
   if (project && selectedPhase) {
     const selectedPhaseId = selectedPhase.id;
     const participationMethod = selectedPhase.attributes.participation_method;
-    const votingMethod = selectedPhase.attributes.voting_method;
 
-    const isPBPhase =
-      participationMethod === 'voting' && votingMethod === 'budgeting';
+    const isVotingPhase = participationMethod === 'voting';
 
     return (
       <Container className={`${className || ''} e2e-project-process-page`}>
@@ -127,12 +117,17 @@ const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
                 selectedPhase={selectedPhase}
                 setSelectedPhase={selectPhase}
               />
-              {isPBPhase && (
-                <StyledPBExpenses
-                  participationContextId={selectedPhaseId}
-                  participationContextType="phase"
-                  viewMode={smallerThanTablet ? 'column' : 'row'}
-                />
+              {isVotingPhase && (
+                <>
+                  <StatusModule
+                    phase={selectedPhase}
+                    project={project.data}
+                    votingMethod={
+                      selectedPhase?.attributes.voting_method ||
+                      project?.data.attributes.voting_method
+                    }
+                  />
+                </>
               )}
               <PhaseSurvey project={project.data} phaseId={selectedPhaseId} />
               {participationMethod === 'document_annotation' && (
