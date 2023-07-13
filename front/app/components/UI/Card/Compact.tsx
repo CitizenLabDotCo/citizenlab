@@ -4,15 +4,14 @@ import bowser from 'bowser';
 // components
 import Image from 'components/UI/Image';
 import Link from 'utils/cl-router/Link';
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // styling
-import styled, { useTheme } from 'styled-components';
+import styled from 'styled-components';
 import {
   defaultCardStyle,
   defaultCardHoverStyle,
   media,
-  stylingConsts,
 } from 'utils/styleUtils';
 
 const cardPadding = '17px';
@@ -131,12 +130,12 @@ interface Props {
   to: string;
   image?: string | null;
   imagePlaceholder?: JSX.Element;
+  imageOverlay?: JSX.Element;
   author?: {
     name: string;
     id: string;
   } | null;
   title: JSX.Element | string;
-  rank?: number;
   body?: JSX.Element | string;
   interactions?: JSX.Element | null;
   footer: JSX.Element | null;
@@ -146,20 +145,18 @@ interface Props {
 
 export const Card = memo<Props>(
   ({
-    image,
     id,
     to,
-    onClick,
+    image,
     imagePlaceholder,
+    imageOverlay,
     title,
-    rank,
     body,
     interactions,
     footer,
     className,
+    onClick,
   }) => {
-    const theme = useTheme();
-
     return (
       <Container
         onClick={onClick}
@@ -171,27 +168,14 @@ export const Card = memo<Props>(
       >
         {image && (
           <IdeaCardImageWrapper>
+            {imageOverlay ?? null}
             <IdeaCardImage src={image} cover={true} alt="" />
           </IdeaCardImageWrapper>
         )}
 
         {!image && imagePlaceholder && (
           <IdeaCardImageWrapper>
-            {rank !== undefined && (
-              <Box
-                position="absolute"
-                top="28px"
-                left="28px"
-                bgColor={theme.colors.primary}
-                borderRadius={stylingConsts.borderRadius}
-                px="12px"
-                py="4px"
-              >
-                <Text m="0" color="white" fontSize="xl" fontWeight="bold">
-                  #{rank}
-                </Text>
-              </Box>
-            )}
+            {imageOverlay ?? null}
             {imagePlaceholder}
           </IdeaCardImageWrapper>
         )}

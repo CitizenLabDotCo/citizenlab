@@ -11,6 +11,7 @@ import useLocalize from 'hooks/useLocalize';
 // components
 import Card from 'components/UI/Card/Compact';
 import ImagePlaceholder from 'components/IdeaCard/ImagePlaceholder';
+import Rank from './Rank';
 import Footer from 'components/IdeaCard/Footer';
 
 // router
@@ -23,9 +24,10 @@ import { IIdeaData } from 'api/ideas/types';
 interface Props {
   idea: IIdeaData;
   phaseId: string;
+  rank: number;
 }
 
-const VotingResultCard = ({ idea, phaseId }: Props) => {
+const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
   const localize = useLocalize();
   const { data: phase } = usePhase(phaseId);
   const { data: project } = useProjectById(idea.relationships.project.data.id);
@@ -52,7 +54,6 @@ const VotingResultCard = ({ idea, phaseId }: Props) => {
       to={`/ideas/${slug}${params}`}
       onClick={handleClick}
       title={ideaTitle}
-      rank={1}
       image={ideaImage?.data.attributes.versions.medium}
       imagePlaceholder={
         <ImagePlaceholder
@@ -60,6 +61,7 @@ const VotingResultCard = ({ idea, phaseId }: Props) => {
           votingMethod={votingMethod}
         />
       }
+      imageOverlay={<Rank rank={rank} />}
       footer={
         <Footer
           project={project}

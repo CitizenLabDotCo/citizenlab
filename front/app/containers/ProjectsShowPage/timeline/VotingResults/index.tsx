@@ -24,28 +24,36 @@ const VotingResults = ({ phaseId }: Props) => {
   const desktopRows = useMemo(() => {
     if (!ideas || smallerThanPhone) return;
 
-    const columns: IIdeaData[][] = [];
+    const columns: { idea: IIdeaData; rank: number }[][] = [];
 
     for (let i = 0; i < ideas.data.length; i = i + 2) {
-      const ideaLeft = ideas.data[i];
+      // const ideaLeft = ideas.data[i];
+      // const ideaRight: IIdeaData | undefined = ideas.data[i + 1];
+      const left = { idea: ideas.data[i], rank: i + 1 };
       const ideaRight: IIdeaData | undefined = ideas.data[i + 1];
+      const right = ideaRight ? { idea: ideaRight, rank: i + 2 } : undefined;
 
-      if (ideaRight) {
-        columns.push([ideaLeft, ideaRight]);
+      if (right) {
+        columns.push([left, right]);
       } else {
-        columns.push([ideaLeft]);
+        columns.push([left]);
       }
     }
 
     return columns;
   }, [ideas, smallerThanPhone]);
 
+  const mobileRows = useMemo(() => {
+    if (!ideas || !smallerThanPhone) return;
+    return ideas.data.map((idea, i) => ({ idea, rank: i + 1 }));
+  }, [ideas, smallerThanPhone]);
+
   return (
     <Box mt={smallerThanPhone ? '4px' : '8px'} w="100%">
       {smallerThanPhone
-        ? ideas?.data.map((idea) => (
-            <Box key={idea.id} mb="8px">
-              <VotingResultCard idea={idea} phaseId={phaseId} />
+        ? mobileRows?.map((card) => (
+            <Box key={card.idea.id} mb="8px">
+              <VotingResultCard {...card} phaseId={phaseId} />
             </Box>
           ))
         : desktopRows?.map((row, rowIndex) => (
@@ -56,13 +64,13 @@ const VotingResults = ({ phaseId }: Props) => {
               mb="20px"
               justifyContent="space-between"
             >
-              {row.map((idea, i) => (
+              {row.map((card, i) => (
                 <Box
                   w="50%"
-                  key={idea.id}
+                  key={card.idea.id}
                   {...(i === 0 ? { mr: '8px' } : { ml: '8px' })}
                 >
-                  <VotingResultCard idea={idea} phaseId={phaseId} />
+                  <VotingResultCard {...card} phaseId={phaseId} />
                 </Box>
               ))}
             </Box>
