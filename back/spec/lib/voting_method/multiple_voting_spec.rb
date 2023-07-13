@@ -7,6 +7,16 @@ RSpec.describe VotingMethod::MultipleVoting do
 
   let(:project) { create(:continuous_multiple_voting_project) }
 
+  describe '#assign_defaults_for_participation_context' do
+    let(:context) { build(:continuous_multiple_voting_project) }
+
+    it 'does not change voting_max_votes_per_idea' do
+      project.voting_max_votes_per_idea = 3
+      voting_method.assign_defaults_for_participation_context
+      expect(project.voting_max_votes_per_idea).to eq 3
+    end
+  end
+
   describe '#validate_participation_context' do
     it 'sets no errors when voting_max_total is present' do
       project.voting_max_total = 10

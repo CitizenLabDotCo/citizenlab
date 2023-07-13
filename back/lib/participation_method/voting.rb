@@ -4,7 +4,7 @@ module ParticipationMethod
   class Voting < Ideation
     def assign_defaults_for_participation_context
       participation_context.ideas_order ||= 'random'
-      participation_context.voting_max_votes_per_idea = 1 if participation_context.voting_method == 'single_voting'
+      Factory.instance.voting_method_for(participation_context).assign_defaults_for_participation_context
     end
 
     def budget_in_form?(user)

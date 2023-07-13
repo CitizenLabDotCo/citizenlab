@@ -17,51 +17,6 @@ RSpec.describe ParticipationMethod::Voting do
         expect(context.ideas_order).to eq 'random'
       end
     end
-
-    describe 'voting_term_singular_multiloc_with_fallback' do
-      it "falls back to the translations when there's no title_multiloc" do
-        item = create(:phase, voting_term_singular_multiloc: nil)
-        expect(item.voting_term_singular_multiloc_with_fallback).to match({ 'en' => 'Vote', 'fr-FR' => 'Vote', 'nl-NL' => 'Stem' })
-      end
-
-      it 'returns the custom copy for locales with custom copy and falls back to the translations for other locales' do
-        item = create(:phase, voting_term_singular_multiloc: { 'nl-NL' => 'Voorkeur' })
-        expect(item.voting_term_singular_multiloc_with_fallback).to match({ 'en' => 'Vote', 'fr-FR' => 'Vote', 'nl-NL' => 'Voorkeur' })
-      end
-    end
-
-    describe 'voting_term_plural_multiloc_with_fallback' do
-      it "falls back to the translations when there's no title_multiloc" do
-        item = create(:phase, voting_term_plural_multiloc: nil)
-        expect(item.voting_term_plural_multiloc_with_fallback).to match({ 'en' => 'Votes', 'fr-FR' => 'Votes', 'nl-NL' => 'Stemmen' })
-      end
-
-      it 'returns the custom copy for locales with custom copy and falls back to the translations for other locales' do
-        item = create(:phase, voting_term_plural_multiloc: { 'en' => 'Preferences' })
-        expect(item.voting_term_plural_multiloc_with_fallback).to match({ 'en' => 'Preferences', 'fr-FR' => 'Votes', 'nl-NL' => 'Stemmen' })
-      end
-    end
-
-    context 'multiple voting' do
-      let(:context) { build(:continuous_multiple_voting_project) }
-
-      it 'sets a default voting term of "vote", posting method to unlimited and ideas order to random' do
-        participation_method.assign_defaults_for_participation_context
-        expect(context.posting_method).to eq 'unlimited'
-        expect(context.ideas_order).to eq 'random'
-      end
-    end
-
-    context 'single voting' do
-      let(:context) { build(:continuous_single_voting_project) }
-
-      it 'sets voting_max_votes_per_idea to 1, posting method to unlimited and ideas order to random' do
-        participation_method.assign_defaults_for_participation_context
-        expect(context.voting_max_votes_per_idea).to eq 1
-        expect(context.posting_method).to eq 'unlimited'
-        expect(context.ideas_order).to eq 'random'
-      end
-    end
   end
 
   describe '#assign_slug' do
