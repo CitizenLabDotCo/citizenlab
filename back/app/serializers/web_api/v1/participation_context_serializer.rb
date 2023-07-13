@@ -25,14 +25,23 @@ module WebApi::V1::ParticipationContextSerializer
       attribute :presentation_mode
       attribute :ideas_order
       attribute :input_term
-      attribute :voting_method, if: proc { |object| object.voting? }
-      attribute :voting_max_total, if: proc { |object| object.voting? }
-      attribute :voting_min_total, if: proc { |object| object.voting? }
-      attribute :voting_max_votes_per_idea, if: proc { |object| object.voting? }
-      attribute :voting_term_singular_multiloc, if: proc { |object| object.voting? }
-      attribute :voting_term_plural_multiloc, if: proc { |object| object.voting? }
-      attribute :baskets_count, if: proc { |object| object.voting? }
-      attribute :votes_count, if: proc { |object| object.voting? }
+    end
+
+    with_options if: proc { |object|
+      object.participation_context? && object.voting?
+    } do
+      attribute :voting_method
+      attribute :voting_max_total
+      attribute :voting_min_total
+      attribute :voting_max_votes_per_idea
+      attribute :baskets_count
+      attribute :votes_count
+      attribute :voting_term_singular_multiloc do |item|
+        item.voting_term_singular_multiloc_with_fallback
+      end
+      attribute :voting_term_singular_multiloc do |item|
+        item.voting_term_singular_multiloc_with_fallback
+      end
     end
   end
 end
