@@ -329,7 +329,7 @@ const AdminProjectTimelineEdit = () => {
   const startDate = getStartDate();
   const endDate = phaseAttrs.end_at ? moment(phaseAttrs.end_at) : null;
 
-  const handleCampaignEnabledOnChange = (campaign: CampaignData) => () => {
+  const handleCampaignEnabledOnChange = (campaign: CampaignData) => {
     setSubmitState('enabled');
     const campaignKey = campaign.attributes.campaign_name;
 

@@ -15,7 +15,7 @@ type Props = {
 
 const CampaignRow = ({ campaign, onClickViewExample }: Props) => {
   const { mutate: updateCampaign } = useUpdateCampaign();
-  const handleOnEnabledToggle = (campaign: CampaignData) => () => {
+  const handleOnEnabledToggle = () => {
     updateCampaign({
       id: campaign.id,
       campaign: {
@@ -33,7 +33,7 @@ const CampaignRow = ({ campaign, onClickViewExample }: Props) => {
             isUndefined(campaign.attributes.enabled) ||
             campaign.attributes.enabled
           }
-          onChange={handleOnEnabledToggle(campaign)}
+          onChange={handleOnEnabledToggle}
         />
         <CampaignDescription campaign={campaign} />
         {onClickViewExample && (

@@ -141,7 +141,7 @@ class CustomFields extends Component<Props & WrappedComponentProps, State> {
     }
   };
 
-  handleOnEnabledToggle = (field: IUserCustomFieldData) => () => {
+  handleOnEnabledToggle = (field: IUserCustomFieldData) => {
     if (!this.state.isProcessing) {
       this.setState({ isProcessing: true });
       this.props
@@ -250,7 +250,7 @@ class CustomFields extends Component<Props & WrappedComponentProps, State> {
                   }`}
                   checked={field.attributes.enabled}
                   disabled={isHiddenField(field)}
-                  onChange={this.handleOnEnabledToggle(field)}
+                  onChange={() => this.handleOnEnabledToggle(field)}
                 />
                 <StyledTextCell className="expand">
                   <TextCellContent>
