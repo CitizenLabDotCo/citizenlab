@@ -56,6 +56,10 @@ el:
       "moderator_digest": Εβδομαδιαία επισκόπηση για τους διαχειριστές έργων
       "assignee_digest": Εβδομαδιαία επισκόπηση των ιδεών που έχουν ανατεθεί
       "user_digest": Εβδομαδιαία επισκόπηση
+      "voting_basket_submitted": Επιβεβαίωση της ψηφοφορίας
+      "voting_basket_not_submitted": Ψήφοι που δεν υποβλήθηκαν
+      "voting_last_chance": Τελευταία ευκαιρία να ψηφίσετε
+      "voting_results": Αποτελέσματα ψηφοφορίας
       "your_proposed_initiatives_digest": Εβδομαδιαία επισκόπηση των προτάσεών σας
     schedules:
       weekly:
@@ -577,6 +581,42 @@ el:
       new_votes: 'Νέες ψηφοφορίες'
       remaining_votes: 'Υπολειπόμενες ψήφοι'
       remaining_days: 'Ημέρες που απομένουν'
+    voting_basket_submitted:
+      subject: '%{organizationName}: Ψηφίσατε με επιτυχία'
+      preheader: 'Ψηφίσατε με επιτυχία στην πλατφόρμα συμμετοχής του %{organizationName}'
+      title_basket_submitted: 'Ψηφίσατε με επιτυχία'
+      event_description: 'Ευχαριστώ για τη συμμετοχή σας. Οι ψήφοι σας έχουν καταγραφεί. Επισκεφθείτε την πλατφόρμα %{organizationName} για να δείτε και να διαχειριστείτε τις ψήφους σας.'
+      cta_see_votes_submitted: 'Δείτε τις υποβληθείσες ψήφους'
+      cta_message: 'Κάντε κλικ στο παρακάτω κουμπί για να συμμετάσχετε'
+    voting_basket_not_submitted:
+      subject: '%{organizationName}: Δεν υποβάλατε τις ψήφους σας'
+      preheader: 'Δεν καταθέσατε την ψήφο σας στην πλατφόρμα συμμετοχής του %{organizationName}'
+      title_basket_not_submitted: 'Δεν υποβάλατε τις ψήφους σας'
+      event_description: 'Επιλέξατε μερικές επιλογές για το %{contextTitle} , αλλά δεν υποβάλατε την επιλογή σας.'
+      cta_view_options_and_vote: 'Προβολή επιλογών και ψηφοφορία'
+      cta_message: 'Κάντε κλικ στο παρακάτω κουμπί για να υποβάλετε τις επιλεγμένες επιλογές σας'
+    voting_last_chance:
+      subject: '%{organizationName}: Τελευταία ευκαιρία να ψηφίσετε για το %{phaseTitle}'
+      preheader: 'Τελευταία ευκαιρία να ψηφίσετε για το %{phaseTitle} στην πλατφόρμα συμμετοχής του %{organizationName}'
+      title_last_chance: 'Τελευταία ευκαιρία να ψηφίσετε για το %{phaseTitle}'
+      body_1: 'Η φάση της ψηφοφορίας για το έργο %{projectTitle} ολοκληρώνεται αύριο, τα μεσάνυχτα.'
+      body_2: 'Ο χρόνος τελειώνει και παρατηρήσαμε ότι δεν έχετε ψηφίσει ακόμα! Ενεργήστε τώρα κάνοντας απλά κλικ στο παρακάτω κουμπί για να συμμετάσχετε.'
+      body_3: 'Με τον τρόπο αυτό, θα αποκτήσετε πρόσβαση σε μια σειρά επιλογών και θα έχετε την ευκαιρία να δώσετε τη συμβολή σας, η οποία είναι ζωτικής σημασίας για τη λήψη αποφάσεων σχετικά με το μέλλον αυτού του έργου.'
+      cta_vote: 'Ψηφίστε'
+    voting_results:
+      subject: '%{organizationName}: Αποκαλύφθηκαν τα αποτελέσματα της ψηφοφορίας στο %{phaseTitle} !'
+      preheader: '%{phaseTitle} τα αποτελέσματα της ψηφοφορίας αποκαλύφθηκαν στην πλατφόρμα συμμετοχής του %{organizationName}'
+      title_results: '%{phaseTitle} τα αποτελέσματα της ψηφοφορίας αποκαλύφθηκαν!'
+      body_1: 'Τα αποτελέσματα είναι έτοιμα!'
+      body_2: 'Τα αποτελέσματα της ψηφοφορίας %{phaseTitle} στην πλατφόρμα %{organizationName} έχουν δημοσιευθεί!'
+      body_3: 'Σας ενθαρρύνουμε να εξετάσετε τα αποτελέσματα και να μείνετε συντονισμένοι για περαιτέρω ενημερώσεις σχετικά με τα επόμενα βήματα.'
+      cta_see_results: 'Δείτε τα αποτελέσματα στην πλατφόρμα'
+    voting_phase_started:
+      subject: '%{organizationName}: Ξεκίνησε η φάση της ψηφοφορίας για το %{projectName}'
+      preheader: 'Η φάση της ψηφοφορίας ξεκίνησε για το %{projectName} στην πλατφόρμα συμμετοχής του %{organizationName}.'
+      event_description: 'Το πρόγραμμα "%{projectName}" σας ζητά να ψηφίσετε μεταξύ των επιλογών %{numIdeas} :'
+      cta_message: 'Κάντε κλικ στο παρακάτω κουμπί για να συμμετάσχετε'
+      cta_vote: 'Πηγαίνετε στην πλατφόρμα για να ψηφίσετε'
     admin_labels:
       recipient_role:
         admins: 'Προς τους διαχειριστές'
@@ -605,6 +645,9 @@ el:
         users_who_engaged_with_the_input: 'Χρήστες που ασχολήθηκαν με την εισαγωγή'
         users_who_engaged_with_the_project: 'Χρήστες που ασχολήθηκαν με το έργο'
         users_who_engaged_with_the_proposal: 'Χρήστες που ασχολήθηκαν με την πρόταση'
+        user_who_voted: 'Χρήστης που ψήφισε'
+        user_with_unsubmitted_votes: 'Χρήστης που δεν έχει υποβάλει την ψήφο του'
+        users_who_engaged_but_not_voted: 'Χρήστες που ασχολήθηκαν με το έργο αλλά δεν ψήφισαν'
       content_type:
         comments: 'Σχόλια'
         content_moderation: 'Μετριασμός περιεχομένου'
@@ -615,6 +658,7 @@ el:
         projects: 'Έργα'
         proposals: 'Προτάσεις'
         reactions: 'Αντιδράσεις'
+        voting: 'Ψηφοφορία'
       trigger:
         comment_is_deleted: 'Το σχόλιο διαγράφεται'
         comment_is_flagged_as_spam: 'Το σχόλιο επισημαίνεται ως spam'
@@ -652,5 +696,9 @@ el:
         user_registers_for_the_first_time: 'Ο χρήστης εγγράφεται για πρώτη φορά'
         user_replies_to_comment: 'Ο χρήστης απαντά στο σχόλιο'
         user_replies_to_internal_comment: 'Ο χρήστης απαντά στο εσωτερικό σχόλιο'
+        voting_2_days_before_phase_closes: '2 ημέρες πριν από τη λήξη της φάσης ψηφοφορίας'
+        voting_1_day_after_last_votes: '1 ημέρα μετά την τελευταία ψηφοφορία του χρήστη'
+        voting_phase_ended: 'Η φάση της ψηφοφορίας ολοκληρώθηκε'
+        voting_basket_submitted: 'Υποβάλλονται οι ψήφοι'
         7_days_after_invite_is_sent: '7 ημέρες μετά την αποστολή της πρόσκλησης'
         7_days_before_the_project_changes_phase: '7 ημέρες πριν από τη φάση αλλαγής του έργου'
