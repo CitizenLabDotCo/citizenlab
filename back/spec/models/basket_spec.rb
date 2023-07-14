@@ -109,6 +109,7 @@ RSpec.describe Basket do
         expect(basket.total_votes).to eq 25
         idea.destroy!
         basket.reload
+        expect(basket.ideas.pluck(:id)).not_to include idea.id
         expect(basket.ideas.count).to eq 2
         expect(basket.total_votes).to eq 20
       end

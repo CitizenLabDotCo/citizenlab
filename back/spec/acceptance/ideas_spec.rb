@@ -1032,7 +1032,7 @@ resource 'Ideas' do
       describe do
         before do
           @project = create(:continuous_project)
-          @idea =  create(:idea, author: @user, project: @project)
+          @idea = create(:idea, author: @user, project: @project)
         end
 
         let(:id) { @idea.id }
@@ -1070,6 +1070,15 @@ resource 'Ideas' do
 
             assert_status 401
             expect(json_parse(response_body)).to include_response_error(:base, 'i_dont_like_you')
+          end
+
+          example '[error] Normal resident cannot update an idea in a voting context', document: false do
+            @idea.update!(project: create(:continuous_budgeting_project))
+
+            do_request
+
+            assert_status 401
+            expect(json_response_body).to include_response_error(:base, 'not_ideation')
           end
         end
 
@@ -1189,6 +1198,31 @@ resource 'Ideas' do
               end
             end
 
+            context 'Moving the idea from a voting phase' do
+              let(:project) { create(:project_with_past_ideation_and_active_budgeting_phase) }
+              let(:idea) { create(:idea, project: project, phases: [project.phases.last]) }
+              let(:id) { idea.id }
+
+              context 'Moving between phases' do
+                let(:phase_ids) { [project.phases.first.id] }
+
+                example 'Move the idea from a voting phase', document: false do
+                  do_request
+                  assert_status 200
+                end
+              end
+
+              context 'Moving between projects' do
+                let(:new_project) { create(:continuous_project) }
+                let(:project_id) { new_project.id }
+
+                example 'Move the idea to another (non-voting) project', document: false do
+                  do_request
+                  assert_status 200
+                end
+              end
+            end
+
             context 'when passing an empty array of phase ids' do
               before do
                 @project = create(:project_with_phases)
@@ -1213,13 +1247,21 @@ resource 'Ideas' do
             end
           end
 
-          describe do
+          describe 'voting context' do
             let(:budget) { 1800 }
 
             example_request 'Change the participatory budget (as an admin)' do
               expect(status).to be 200
               json_response = json_parse response_body
               expect(json_response.dig(:data, :attributes, :budget)).to eq budget
+            end
+
+            example 'Admin can update an idea in a voting context', document: false do
+              @idea.update!(project: create(:continuous_budgeting_project))
+
+              do_request
+
+              assert_status 200
             end
           end
 
@@ -1394,6 +1436,16 @@ resource 'Ideas' do
           expect(response_status).to eq 200
           expect { Idea.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
           expect(phase.reload.ideas_count).to eq 0
+        end
+      end
+
+      context 'when a voting context' do
+        let(:idea) { create(:idea, project: create(:continuous_budgeting_project)) }
+        let(:id) { idea.id }
+
+        example_request '[error] Normal resident cannot delete an idea in a voting context', document: false do
+          assert_status 401
+          expect(json_parse(response_body)).to include_response_error(:base, 'Unauthorized!')
         end
       end
     end
