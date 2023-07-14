@@ -1222,7 +1222,7 @@
   "app.containers.AdminPage.ProjectEdit.adminProjectFolderSelectTooltip": "Projenizi mevcut bir klasöre ekleyebilirsiniz. Bunu daha sonra Projeler sekmesinden de yapabilirsiniz.",
   "app.containers.AdminPage.ProjectEdit.allowedInputTopicsTab": "Proje etiketleri",
   "app.containers.AdminPage.ProjectEdit.anonymousPolling": "Anonim oylama",
-  "app.containers.AdminPage.ProjectEdit.anonymousPollingTooltip2": "Etkinleştirildiğinde kimin neye tepki verdiğini görmek imkansızdır. Kullanıcıların hala bir hesaba ihtiyacı vardır ve yalnızca bir kez tepki verebilirler.",
+  "app.containers.AdminPage.ProjectEdit.anonymousPollingTooltip": "Etkinleştirildiğinde kimin neye oy verdiğini görmek mümkün olmaz. Kullanıcıların yine bir hesapları olması gerekir ve yalnızca bir kez oy kullanabilirler.",
   "app.containers.AdminPage.ProjectEdit.archived": "Arşivlenmiş",
   "app.containers.AdminPage.ProjectEdit.archivedStatus": "Arşivlenmiş",
   "app.containers.AdminPage.ProjectEdit.areaIsLinkedToStaticPage": "Bu alan silinemez çünkü aşağıdaki daha özel sayfa(lar)da projeleri görüntülemek için kullanılmaktadır. Alanı silebilmeniz için önce alanın sayfayla bağlantısını kaldırmanız veya sayfayı silmeniz gerekir.",
