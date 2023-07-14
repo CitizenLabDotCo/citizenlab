@@ -2,7 +2,8 @@
 import React, { useState, FormEvent } from 'react';
 
 // Services
-import { sendSpamReport, Report } from 'services/spamReports';
+import useAddSpamReport from 'api/spam_reports/useAddSpamReport';
+import { ISpamReportAdd, ReasonCode } from 'api/spam_reports/types';
 
 // Components
 import ReportForm from './SpamReportForm';
@@ -15,17 +16,17 @@ import { CLErrors } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
 interface Props {
-  resourceType: 'comments' | 'ideas' | 'initiatives';
-  resourceId: string;
+  targetType: 'comments' | 'ideas' | 'initiatives';
+  targetId: string;
 }
 
-const SpamReportForm = ({ resourceType, resourceId }: Props) => {
-  const [diff, setDiff] = useState<Report | null>(null);
-  const [loading, setLoading] = useState(false);
+const SpamReportForm = ({ targetType, targetId }: Props) => {
+  const [diff, setDiff] = useState<ISpamReportAdd['spam_report'] | null>(null);
   const [errors, setErrors] = useState<CLErrors | null>(null);
   const [saved, setSaved] = useState(false);
+  const { mutate: addSpamReport, isLoading } = useAddSpamReport();
 
-  const handleSelectionChange = (reason_code: Report['reason_code']) => {
+  const handleSelectionChange = (reason_code: ReasonCode) => {
     // Clear the "other reason" text when it's not necessary
 
     setDiff((diff) => {
@@ -56,21 +57,21 @@ const SpamReportForm = ({ resourceType, resourceId }: Props) => {
       return;
     }
 
-    setLoading(true);
-
-    sendSpamReport(resourceType, resourceId, diff)
-      .then(() => {
-        setLoading(false);
-        setSaved(true);
-        setErrors(null);
-        setDiff(null);
-      })
-      .catch((e) => {
-        setLoading(false);
-        if (isCLErrorJSON(e)) {
-          setErrors(e.json.errors);
-        }
-      });
+    addSpamReport(
+      { targetId, targetType, spam_report: diff },
+      {
+        onSuccess: () => {
+          setSaved(true);
+          setErrors(null);
+          setDiff(null);
+        },
+        onError: (e) => {
+          if (isCLErrorJSON(e)) {
+            setErrors(e.json.errors);
+          }
+        },
+      }
+    );
   };
 
   return (
@@ -81,7 +82,7 @@ const SpamReportForm = ({ resourceType, resourceId }: Props) => {
         onReasonChange={handleSelectionChange}
         onTextChange={handleReasonTextUpdate}
         onSubmit={handleSubmit}
-        loading={loading}
+        loading={isLoading}
         saved={saved}
         errors={errors}
       />
