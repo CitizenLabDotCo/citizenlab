@@ -316,4 +316,8 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.initiatives',
     defaultMessage: 'initiatives',
   },
+  budget: {
+    id: 'app.components.admin.PostManager.budget',
+    defaultMessage: 'Budget',
+  },
 });

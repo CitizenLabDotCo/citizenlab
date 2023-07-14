@@ -1,13 +1,7 @@
 import React, { ChangeEvent, useState } from 'react';
 
 // components
-import {
-  Thead,
-  Tr,
-  Th,
-  Text,
-  Checkbox,
-} from '@citizenlab/cl2-component-library';
+import { Thead, Tr, Th, Checkbox } from '@citizenlab/cl2-component-library';
 import FeatureFlag from 'components/FeatureFlag';
 import Outlet from 'components/Outlet';
 
@@ -146,6 +140,20 @@ export default ({
       },
     },
     {
+      name: 'comments',
+      cellProps: { width: 1 },
+      onChange: handleSortClick('likes_count'), // TODO: No sort attribute
+      Component: (
+        props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
+      ) => {
+        return (
+          <SortableHeaderCell {...props} sortAttributeName="likes_count">
+            <FormattedMessage {...messages.comments} />
+          </SortableHeaderCell>
+        );
+      },
+    },
+    {
       name: 'up',
       cellProps: { width: 1 },
       onChange: handleSortClick('likes_count'),
@@ -176,18 +184,42 @@ export default ({
     {
       name: 'picks',
       cellProps: { width: 1 },
-      Component: ({ width }) => {
+      onChange: handleSortClick('baskets_count'),
+      Component: (
+        props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
+      ) => {
         return (
-          <Th
-            width={width}
-            infoTooltip={
-              <Text mb="0px" mt="0px" fontSize="s">
-                <FormattedMessage {...messages.pbItemCountTooltip} />
-              </Text>
-            }
-          >
+          <SortableHeaderCell {...props} sortAttributeName="baskets_count">
             <FormattedMessage {...messages.participatoryBudgettingPicks} />
-          </Th>
+          </SortableHeaderCell>
+        );
+      },
+    },
+    {
+      name: 'budget',
+      cellProps: { width: 1 },
+      onChange: handleSortClick('baskets_count'),
+      Component: (
+        props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
+      ) => {
+        return (
+          <SortableHeaderCell {...props} sortAttributeName="baskets_count">
+            <FormattedMessage {...messages.budget} />
+          </SortableHeaderCell>
+        );
+      },
+    },
+    {
+      name: 'votes',
+      cellProps: { width: 1 },
+      onChange: handleSortClick('likes_count'), // TODO: No sort attribute
+      Component: (
+        props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
+      ) => {
+        return (
+          <SortableHeaderCell {...props} sortAttributeName="likes_count">
+            <FormattedMessage {...messages.votes} />
+          </SortableHeaderCell>
         );
       },
     },

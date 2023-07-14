@@ -128,6 +128,13 @@ const IdeaRow = ({
       },
     },
     {
+      name: 'comments',
+      cellProps: { singleLine: true },
+      Component: ({ idea }: IdeaCellComponentProps) => {
+        return <>{idea.attributes.comments_count}</>;
+      },
+    },
+    {
       name: 'up',
       cellProps: { singleLine: true },
       Component: ({ idea }) => {
@@ -156,6 +163,20 @@ const IdeaRow = ({
       cellProps: { singleLine: true },
       Component: ({ idea }: IdeaCellComponentProps) => {
         return <>{idea.attributes.baskets_count}</>;
+      },
+    },
+    {
+      name: 'budget',
+      cellProps: { singleLine: true },
+      Component: ({ idea }: IdeaCellComponentProps) => {
+        return <>{idea.attributes.budget}</>;
+      },
+    },
+    {
+      name: 'votes',
+      cellProps: { singleLine: true },
+      Component: ({ idea }: IdeaCellComponentProps) => {
+        return <>{idea.attributes.comments_count}</>; // TODO: votes_count here
       },
     },
   ]);
