@@ -366,6 +366,7 @@ export class PostManager extends React.PureComponent<Props, State> {
             <LeftColumn>
               <Sticky>
                 <FilterSidebar
+                  type={type}
                   activeFilterMenu={activeFilterMenu}
                   visibleFilterMenus={visibleFilterMenus}
                   onChangeActiveFilterMenu={this.handleChangeActiveFilterMenu}
