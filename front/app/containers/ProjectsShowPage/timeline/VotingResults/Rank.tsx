@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box, Text, BoxProps } from '@citizenlab/cl2-component-library';
 
 // styling
 import { stylingConsts } from 'utils/styleUtils';
@@ -9,16 +9,19 @@ import { useTheme } from 'styled-components';
 
 interface Props {
   rank: number;
+  position?: BoxProps['position'];
+  top?: string;
+  left?: string;
 }
 
-const Rank = ({ rank }: Props) => {
+const Rank = ({ rank, position, top, left }: Props) => {
   const theme = useTheme();
 
   return (
     <Box
-      position="absolute"
-      top="28px"
-      left="28px"
+      position={position}
+      top={top}
+      left={left}
       bgColor={theme.colors.primary}
       borderRadius={stylingConsts.borderRadius}
       px="12px"

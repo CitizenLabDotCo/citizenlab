@@ -11,6 +11,7 @@ import useIdeaImage from 'api/idea_images/useIdeaImage';
 import useLocalize from 'hooks/useLocalize';
 
 // components
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
 import Card from 'components/UI/Card/Compact';
 import ImagePlaceholder from 'components/IdeaCard/ImagePlaceholder';
 import Rank from './Rank';
@@ -44,6 +45,7 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
     idea.id,
     idea.relationships.idea_images.data?.[0]?.id
   );
+  const smallerThanPhone = useBreakpoint('phone');
 
   const ideaTitle = localize(idea.attributes.title_multiloc);
   const { slug } = idea.attributes;
@@ -77,6 +79,9 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
     }
   };
 
+  const image = ideaImage?.data.attributes.versions.medium;
+  const showHeader = !image && smallerThanPhone;
+
   return (
     <>
       <Observer onChange={handleIntersection}>
@@ -85,15 +90,22 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
             id={idea.id}
             to={`/ideas/${slug}${params}`}
             onClick={handleClick}
+            header={showHeader ? <Rank rank={rank} /> : undefined}
             title={ideaTitle}
-            image={ideaImage?.data.attributes.versions.medium}
+            image={image}
             imagePlaceholder={
-              <ImagePlaceholder
-                participationMethod="voting"
-                votingMethod={votingMethod}
-              />
+              smallerThanPhone ? undefined : (
+                <ImagePlaceholder
+                  participationMethod="voting"
+                  votingMethod={votingMethod}
+                />
+              )
             }
-            imageOverlay={<Rank rank={rank} />}
+            imageOverlay={
+              showHeader ? undefined : (
+                <Rank rank={rank} position="absolute" top="28px" left="28px" />
+              )
+            }
             body={
               votesPercentage !== undefined ? (
                 <Results
