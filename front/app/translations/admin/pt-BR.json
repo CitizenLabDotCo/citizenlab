@@ -1222,7 +1222,7 @@
   "app.containers.AdminPage.ProjectEdit.adminProjectFolderSelectTooltip": "Você pode adicionar seu projeto a uma pasta existente. Você também pode fazer isso mais tarde na guia Projetos.",
   "app.containers.AdminPage.ProjectEdit.allowedInputTopicsTab": "Etiqueta dos projetos",
   "app.containers.AdminPage.ProjectEdit.anonymousPolling": "Pesquisa anônima",
-  "app.containers.AdminPage.ProjectEdit.anonymousPollingTooltip2": "Quando ativado, é impossível ver quem reagiu a quê. Os utilizadores continuam a precisar de uma conta e só podem reagir uma vez.",
+  "app.containers.AdminPage.ProjectEdit.anonymousPollingTooltip": "Quando ativado, é impossível saber quem votou em quem. Os usuários precisam de uma conta e só podem votar uma vez.",
   "app.containers.AdminPage.ProjectEdit.archived": "Arquivado",
   "app.containers.AdminPage.ProjectEdit.archivedStatus": "Arquivado",
   "app.containers.AdminPage.ProjectEdit.areaIsLinkedToStaticPage": "Esta área não pode ser excluída porque está sendo usada para exibir projetos na(s) seguinte(s) página(s) personalizada(s). Você precisará desvincular a área da página ou excluir a página antes de poder excluir a área.",
