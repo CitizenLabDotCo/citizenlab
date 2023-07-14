@@ -56,6 +56,10 @@
       "moderator_digest": Ukentlig oversikt for prosjektledere
       "assignee_digest": Ukentlig oversikt over tildelte ideer
       "user_digest": Ukentlig oversikt
+      "voting_basket_submitted": Bekreftelse på stemmegivning
+      "voting_basket_not_submitted": Stemmer ikke levert
+      "voting_last_chance": Siste sjanse til å stemme
+      "voting_results": Stemmeresultater
       "your_proposed_initiatives_digest": Ukentlig oversikt over dine forslag
     schedules:
       weekly:
@@ -577,6 +581,42 @@
       new_votes: 'Nye stemmer'
       remaining_votes: 'Antall stemmer som mangler'
       remaining_days: 'Dager igjen'
+    voting_basket_submitted:
+      subject: '%{organizationName}: Du stemte'
+      preheader: 'Du stemte på deltakelsesplattformen til %{organizationName}'
+      title_basket_submitted: 'Du stemte'
+      event_description: 'Takk for at du deltar. Stemmene dine er registrert. Besøk plattformen til %{organizationName} for å se og administrere stemmene dine.'
+      cta_see_votes_submitted: 'Se innsendte stemmer'
+      cta_message: 'Klikk på knappen nedenfor for å delta'
+    voting_basket_not_submitted:
+      subject: '%{organizationName}: Du sendte ikke inn stemmene dine'
+      preheader: 'Du sendte ikke inn stemmene dine på deltakelsesplattformen til %{organizationName}'
+      title_basket_not_submitted: 'Du sendte ikke inn stemmene dine'
+      event_description: 'Du valgte noen få alternativer for %{contextTitle} , men du sendte ikke inn valget ditt.'
+      cta_view_options_and_vote: 'Se alternativer og stem'
+      cta_message: 'Klikk på knappen nedenfor for å sende inn de valgte alternativene'
+    voting_last_chance:
+      subject: '%{organizationName}: Siste sjanse til å stemme på %{phaseTitle}'
+      preheader: 'Siste sjanse til å stemme på %{phaseTitle} på deltakelsesplattformen til %{organizationName}'
+      title_last_chance: 'Siste sjanse til å stemme på %{phaseTitle}'
+      body_1: 'Avstemningsfasen for %{projectTitle} prosjektet nærmer seg slutten i morgen, ved midnatt.'
+      body_2: 'Tiden renner ut, og vi la merke til at du ikke har avgitt din stemme ennå! Handle nå ved å klikke på knappen nedenfor for å delta.'
+      body_3: 'Ved å gjøre det vil du få tilgang til en rekke alternativer og ha sjansen til å gi dine innspill, noe som er avgjørende for å bestemme fremtiden til dette prosjektet.'
+      cta_vote: 'Stemme'
+    voting_results:
+      subject: '%{organizationName}: %{phaseTitle} stemmeresultater avslørt!'
+      preheader: '%{phaseTitle} stemmeresultater avslørt på deltakelsesplattformen til %{organizationName}'
+      title_results: '%{phaseTitle} stemmeresultater avslørt!'
+      body_1: 'Resultatene er inne!'
+      body_2: 'Resultatene av %{phaseTitle} stemmen i %{organizationName} -plattformen er publisert!'
+      body_3: 'Vi oppfordrer deg til å gå gjennom resultatene og følge med for ytterligere oppdateringer om de neste trinnene.'
+      cta_see_results: 'Se resultater i plattformen'
+    voting_phase_started:
+      subject: '%{organizationName}: Stemmefasen startet for %{projectName}'
+      preheader: 'Stemmefasen startet for %{projectName} på deltakelsesplattformen til %{organizationName}'
+      event_description: 'Prosjektet "%{projectName}" ber deg om å stemme mellom %{numIdeas} alternativer:'
+      cta_message: 'Klikk på knappen nedenfor for å delta'
+      cta_vote: 'Gå til plattformen for å stemme'
     admin_labels:
       recipient_role:
         admins: 'Til administratorer'
@@ -605,6 +645,9 @@
         users_who_engaged_with_the_input: 'Brukere som engasjerte seg i innspillet'
         users_who_engaged_with_the_project: 'Brukere som engasjerte seg i prosjektet'
         users_who_engaged_with_the_proposal: 'Brukere som engasjerte seg i forslaget'
+        user_who_voted: 'Bruker som har stemt'
+        user_with_unsubmitted_votes: 'Bruker som ikke har sendt inn sine stemmer'
+        users_who_engaged_but_not_voted: 'Brukere som har engasjert seg i prosjektet, men ikke har stemt'
       content_type:
         comments: 'Kommentarer'
         content_moderation: 'Moderering av innhold'
@@ -615,6 +658,7 @@
         projects: 'Prosjekter'
         proposals: 'Forslag'
         reactions: 'Reaksjoner'
+        voting: 'Stemmegivning'
       trigger:
         comment_is_deleted: 'Kommentaren er slettet'
         comment_is_flagged_as_spam: 'Kommentar er merket som spam'
@@ -652,5 +696,9 @@
         user_registers_for_the_first_time: 'Bruker registrerer seg for første gang'
         user_replies_to_comment: 'Brukeren svarer på kommentaren'
         user_replies_to_internal_comment: 'Brukersvar på intern kommentar'
+        voting_2_days_before_phase_closes: '2 dager før avstemningsfasen avsluttes'
+        voting_1_day_after_last_votes: '1 dag etter at brukeren sist stemte'
+        voting_phase_ended: 'Avstemningsfasen er avsluttet'
+        voting_basket_submitted: 'Stemmer sendes inn'
         7_days_after_invite_is_sent: '7 dager etter at invitasjonen er sendt'
         7_days_before_the_project_changes_phase: '7 dager før prosjektet endrer fase'
