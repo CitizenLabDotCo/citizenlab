@@ -1222,7 +1222,7 @@
   "app.containers.AdminPage.ProjectEdit.adminProjectFolderSelectTooltip": "Jūs varat pievienot projektu esošai mapei. To var izdarīt arī vēlāk cilnē Projekti.",
   "app.containers.AdminPage.ProjectEdit.allowedInputTopicsTab": "Projekta tagi",
   "app.containers.AdminPage.ProjectEdit.anonymousPolling": "Anonīmā aptauja",
-  "app.containers.AdminPage.ProjectEdit.anonymousPollingTooltip2": "Kad tas ir ieslēgts, nav iespējams redzēt, kas uz ko reaģēja. Lietotājiem joprojām ir nepieciešams konts, un viņi var reaģēt tikai vienu reizi.",
+  "app.containers.AdminPage.ProjectEdit.anonymousPollingTooltip": "To iespējojot, nav iespējams redzēt, kurš par ko balsojis. Lietotājiem joprojām ir nepieciešams konts, un viņi var balsot tikai vienu reizi.",
   "app.containers.AdminPage.ProjectEdit.archived": "Arhivēts",
   "app.containers.AdminPage.ProjectEdit.archivedStatus": "Arhivēts",
   "app.containers.AdminPage.ProjectEdit.areaIsLinkedToStaticPage": "Šo apgabalu nevar dzēst, jo tas tiek izmantots, lai parādītu projektus nākamajā(-ās) pielāgotajā(-ās) lapā(-ēs). Pirms apgabala dzēšanas jums būs jāatvieno apgabala saite no lapas vai jāizdzēš lapa.",
