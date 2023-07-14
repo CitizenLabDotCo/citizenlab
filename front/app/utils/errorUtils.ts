@@ -172,23 +172,27 @@ export const handleCLErrorWrapper = (
   handleError: (error: string, options: Record<string, any>) => void,
   fieldArrayKey?: string
 ) => {
-  Object.keys(error.errors).forEach((key) => {
-    if (fieldArrayKey) {
-      Object.keys(error.errors[key]).forEach((errorKey) => {
-        const errorValue = error.errors[key][errorKey][0];
-        handleError(
-          `${fieldArrayKey}.${key}.${errorKey}`,
-          errorValue === 'string' ? { error: errorValue } : errorValue
-        );
+  error.errors
+    ? Object.keys(error.errors).forEach((key) => {
+        if (fieldArrayKey) {
+          Object.keys(error.errors[key]).forEach((errorKey) => {
+            const errorValue = error.errors[key][errorKey][0];
+            handleError(
+              `${fieldArrayKey}.${key}.${errorKey}`,
+              errorValue === 'string' ? { error: errorValue } : errorValue
+            );
+          });
+        } else {
+          const errorValue = error.errors[key][0];
+          handleError(
+            key,
+            typeof errorValue === 'string' ? { error: errorValue } : errorValue
+          );
+        }
+      })
+    : handleError('submissionError', {
+        type: 'server',
       });
-    } else {
-      const errorValue = error.errors[key][0];
-      handleError(
-        key,
-        typeof errorValue === 'string' ? { error: errorValue } : errorValue
-      );
-    }
-  });
 };
 
 export const handleCLErrorsJSON = (

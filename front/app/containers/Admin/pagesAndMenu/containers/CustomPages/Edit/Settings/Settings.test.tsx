@@ -1,13 +1,14 @@
 import React from 'react';
 import { screen, render, waitFor, userEvent } from 'utils/testUtils/rtl';
 import EditCustomPageSettings from './';
-import { ICustomPageData } from 'services/customPages';
+import { ICustomPageData } from 'api/custom_pages/types';
 
 jest.mock('api/topics/useTopics');
 jest.mock('api/areas/useAreas');
 
 const mockCustomPage: ICustomPageData = {
   id: 'customPageId',
+  type: 'static_page',
   attributes: {
     top_info_section_multiloc: {},
     title_multiloc: { en: 'title' },
@@ -40,7 +41,9 @@ const mockCustomPage: ICustomPageData = {
     areas: { data: [] },
   },
 };
-jest.mock('hooks/useCustomPage', () => jest.fn(() => mockCustomPage));
+jest.mock('api/custom_pages/useCustomPageById', () =>
+  jest.fn(() => ({ data: { data: mockCustomPage } }))
+);
 
 describe('EditCustomPageSettings', () => {
   it('renders error in case of invalid slug', async () => {

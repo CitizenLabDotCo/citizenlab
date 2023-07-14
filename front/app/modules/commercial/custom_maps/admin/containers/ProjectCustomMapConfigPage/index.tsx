@@ -13,13 +13,10 @@ import Centerer from 'components/UI/Centerer';
 
 // hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useMapConfig from '../../../hooks/useMapConfig';
+import useMapConfig from '../../../api/map_config/useMapConfig';
 
-// services
-import {
-  createProjectMapConfig,
-  updateProjectMapConfig,
-} from '../../../services/mapConfigs';
+import useAddMapConfig from 'modules/commercial/custom_maps/api/map_config/useAddMapConfig';
+import useUpdateMapConfig from 'modules/commercial/custom_maps/api/map_config/useUpdateMapConfig';
 
 // events
 import {
@@ -31,7 +28,6 @@ import {
 
 // utils
 import { getCenter, getZoomLevel } from '../../../utils/map';
-import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
@@ -82,12 +78,14 @@ const ProjectCustomMapConfigPage = memo<
   Props & WithRouterProps & WrappedComponentProps
 >(({ params: { projectId }, className, intl: { formatMessage } }) => {
   const { data: appConfig } = useAppConfiguration();
-  const mapConfig = useMapConfig({ projectId });
+  const { mutate: createProjectMapConfig } = useAddMapConfig();
+  const { mutate: updateProjectMapConfig } = useUpdateMapConfig();
+  const { data: mapConfig } = useMapConfig(projectId);
 
-  const defaultLatLng = getCenter(undefined, appConfig?.data, mapConfig);
+  const defaultLatLng = getCenter(undefined, appConfig?.data, mapConfig?.data);
   const defaultLat = defaultLatLng[0];
   const defaultLng = defaultLatLng[1];
-  const defaultZoom = getZoomLevel(undefined, appConfig?.data, mapConfig);
+  const defaultZoom = getZoomLevel(undefined, appConfig?.data, mapConfig?.data);
 
   const [currentLat, setCurrentLat] = useState<number | undefined>(undefined);
   const [currentLng, setCurrentLng] = useState<number | undefined>(undefined);
@@ -127,7 +125,9 @@ const ProjectCustomMapConfigPage = memo<
       currentLng !== undefined &&
       currentZoom !== null
     ) {
-      updateProjectMapConfig(projectId, mapConfig.id, {
+      updateProjectMapConfig({
+        projectId,
+        id: mapConfig.data.id,
         center_geojson: {
           type: 'Point',
           coordinates: [currentLng, currentLat],
@@ -138,9 +138,9 @@ const ProjectCustomMapConfigPage = memo<
   };
 
   useEffect(() => {
-    // create project mapConfig if it doesn't yet exist
-    if (projectId && !isNilOrError(appConfig) && mapConfig === null) {
-      createProjectMapConfig(projectId, {
+    if (projectId && appConfig && mapConfig?.data === null) {
+      createProjectMapConfig({
+        projectId,
         center_geojson: {
           type: 'Point',
           coordinates: [defaultLng, defaultLat],
@@ -148,10 +148,17 @@ const ProjectCustomMapConfigPage = memo<
         zoom_level: defaultZoom.toString(),
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [projectId, appConfig, mapConfig]);
+  }, [
+    projectId,
+    appConfig,
+    mapConfig,
+    defaultLat,
+    defaultLng,
+    defaultZoom,
+    createProjectMapConfig,
+  ]);
 
-  if (projectId && mapConfig?.id) {
+  if (projectId && mapConfig?.data?.id) {
     return (
       <Container className={className || ''}>
         <StyledMapConfigOverview projectId={projectId} />

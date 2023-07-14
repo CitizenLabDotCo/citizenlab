@@ -6,7 +6,7 @@ import {
 
 // typings
 import { QueryParameters } from './typings';
-import { Query, QuerySchema } from 'services/analyticsFacts';
+import { Query, QuerySchema } from 'api/analytics/types';
 
 export const query = ({
   startAtMoment,

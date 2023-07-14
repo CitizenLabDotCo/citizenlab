@@ -1,8 +1,5 @@
 import React, { useRef } from 'react';
 
-// services
-import { usersByGenderXlsxEndpoint } from 'services/userCustomFieldStats';
-
 // hooks
 import useGenderSerie from './useGenderSerie';
 
@@ -20,6 +17,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // typings
 import { QueryParameters } from './typings';
+import { usersByGenderXlsxEndpoint } from 'api/users_by_gender/util';
 
 interface Props extends QueryParameters {
   currentGroupFilterLabel?: string;

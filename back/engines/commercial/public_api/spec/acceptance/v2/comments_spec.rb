@@ -97,38 +97,8 @@ resource 'Comments' do
       end
     end
 
-    context "when filtering by 'created_at'" do
-      let(:created_at) { '2019-01-01,2019-01-10' }
-
-      let!(:returned_comments) do
-        comments.take(2).tap do |comments|
-          comments[0].update(created_at: '2019-01-01')
-          comments[1].update(created_at: '2019-01-10')
-        end
-      end
-
-      example_request 'List only the comments created between the specified dates' do
-        assert_status 200
-
-        comment_ids = json_response_body[:comments].pluck(:id)
-        expect(comment_ids).to match_array(returned_comments.pluck(:id))
-      end
-    end
-
-    context "when filtering by 'updated_at'" do
-      let(:updated_at) { '2021-01-01,2021-01-01' }
-
-      let!(:returned_comment) do
-        comments.first.tap { |comment| comment.update(updated_at: '2021-01-01') }
-      end
-
-      example_request 'List only the comments updated between the specified dates' do
-        assert_status 200
-
-        comment_ids = json_response_body[:comments].pluck(:id)
-        expect(comment_ids).to match_array([returned_comment.id])
-      end
-    end
+    include_examples 'filtering_by_date', :comment, :created_at
+    include_examples 'filtering_by_date', :comment, :updated_at
   end
 
   get '/api/v2/comments/:id' do

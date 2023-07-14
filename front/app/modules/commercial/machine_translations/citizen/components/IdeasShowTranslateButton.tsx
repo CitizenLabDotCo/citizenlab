@@ -1,11 +1,10 @@
 import React from 'react';
 
-import FeatureFlag from 'components/FeatureFlag';
 import TranslateButton from 'components/UI/TranslateButton';
 import styled from 'styled-components';
-import { isNilOrError } from 'utils/helperUtils';
-import { GetIdeaByIdChildProps } from 'resources/GetIdeaById';
-import { GetLocaleChildProps } from 'resources/GetLocale';
+import { IIdeaData } from 'api/ideas/types';
+import { Locale } from 'typings';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const StyledTranslateButton = styled(TranslateButton)`
   margin-bottom: 20px;
@@ -14,8 +13,8 @@ const StyledTranslateButton = styled(TranslateButton)`
 interface Props {
   translateButtonClicked: boolean;
   onClick: () => void;
-  idea: GetIdeaByIdChildProps;
-  locale: GetLocaleChildProps;
+  idea: IIdeaData;
+  locale: Locale;
 }
 
 const IdeasShowTranslateButton = ({
@@ -24,20 +23,16 @@ const IdeasShowTranslateButton = ({
   translateButtonClicked,
   onClick,
 }: Props) => {
-  const showTranslateButton =
-    !isNilOrError(idea) &&
-    !isNilOrError(locale) &&
-    !idea.attributes.title_multiloc[locale];
+  const featureEnabled = useFeatureFlag({ name: 'machine_translations' });
+  const showTranslateButton = !idea.attributes.title_multiloc[locale];
+
+  if (!featureEnabled || !showTranslateButton) return null;
 
   return (
-    <FeatureFlag name="machine_translations">
-      {showTranslateButton && (
-        <StyledTranslateButton
-          translateButtonClicked={translateButtonClicked}
-          onClick={onClick}
-        />
-      )}
-    </FeatureFlag>
+    <StyledTranslateButton
+      translateButtonClicked={translateButtonClicked}
+      onClick={onClick}
+    />
   );
 };
 

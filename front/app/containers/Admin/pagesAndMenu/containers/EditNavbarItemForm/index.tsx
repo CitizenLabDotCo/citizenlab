@@ -10,24 +10,26 @@ import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumb
 import { isNilOrError } from 'utils/helperUtils';
 import { getInitialFormValues, createNavbarItemUpdateData } from './utils';
 
-// services
-import { updateNavbarItem } from 'services/navbar';
-
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 
 // hooks
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useNavbarItem from 'hooks/useNavbarItem';
 import useLocalize from 'hooks/useLocalize';
+import useNavbarItems from 'api/navbar/useNavbarItems';
+
+import useUpdateNavbarItem from 'api/navbar/useUpdateNavbarItem';
 
 const EditNavbarItemForm = ({
   params: { navbarItemId },
   intl: { formatMessage },
 }: WithRouterProps & WrappedComponentProps) => {
   const appConfigurationLocales = useAppConfigurationLocales();
-  const navbarItem = useNavbarItem({ navbarItemId });
+  const { data: navbarItems } = useNavbarItems();
+  const { mutateAsync: updateNavbarItem } = useUpdateNavbarItem();
+
+  const navbarItem = navbarItems?.data.find((item) => item.id === navbarItemId);
   const localize = useLocalize();
 
   if (isNilOrError(appConfigurationLocales) || isNilOrError(navbarItem)) {
@@ -35,10 +37,11 @@ const EditNavbarItemForm = ({
   }
 
   const handleSubmit = async (values: FormValues) => {
-    await updateNavbarItem(
-      navbarItemId,
-      createNavbarItemUpdateData(navbarItem, values)
-    );
+    await updateNavbarItem({
+      id: navbarItemId,
+      title_multiloc: createNavbarItemUpdateData(navbarItem, values)
+        .title_multiloc,
+    });
   };
 
   return (

@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { isString, trim } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, isPage } from 'utils/helperUtils';
 
 // components
 import Button from 'components/UI/Button';
@@ -14,13 +14,14 @@ import {
   Text,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
+import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // services
@@ -44,7 +45,7 @@ import useLocale from 'hooks/useLocale';
 import useAuthUser from 'api/me/useAuthUser';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
-import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
+import { useLocation } from 'react-router-dom';
 
 const Container = styled.div`
   display: flex;
@@ -129,6 +130,8 @@ const ParentCommentForm = ({
   const { data: appConfiguration } = useAppConfiguration();
   const { formatMessage } = useIntl();
   const smallerThanTablet = useBreakpoint('tablet');
+  const { pathname } = useLocation();
+  const isAdminPage = isPage('admin', pathname);
   const { mutate: addCommentToIdea, isLoading: addCommentToIdeaIsLoading } =
     useAddCommentToIdea();
   const {
@@ -196,7 +199,7 @@ const ParentCommentForm = ({
   const continueSubmission = async () => {
     setFocused(false);
 
-    if (locale && authUser && isString(inputValue) && trim(inputValue) !== '') {
+    if (isString(inputValue) && trim(inputValue) !== '') {
       const commentBodyMultiloc = {
         [locale]: inputValue.replace(/@\[(.*?)\]\((.*?)\)/gi, '@$2'),
       };
@@ -245,7 +248,7 @@ const ParentCommentForm = ({
                   profaneMessage: commentBodyMultiloc[locale],
                   location: 'InitiativesNewFormWrapper (citizen side)',
                   userId: authUser.data.id,
-                  host: !isNilOrError(appConfiguration)
+                  host: appConfiguration
                     ? appConfiguration.data.attributes.host
                     : null,
                 });
@@ -295,7 +298,7 @@ const ParentCommentForm = ({
                   profaneMessage: commentBodyMultiloc[locale],
                   location: 'InitiativesNewFormWrapper (citizen side)',
                   userId: authUser.data.id,
-                  host: !isNilOrError(appConfiguration)
+                  host: appConfiguration
                     ? appConfiguration.data.attributes.host
                     : null,
                 });
@@ -341,25 +344,28 @@ const ParentCommentForm = ({
     return null;
   };
 
-  const commentingEnabled =
+  const commentingDisabledReason =
     postType === 'initiative'
-      ? commentingPermissionInitiative?.enabled === true
-      : idea?.data.attributes?.action_descriptor.commenting_idea.enabled ===
-        true;
-  const isModerator =
-    !isNilOrError(authUser) && canModerateProject(projectId, authUser);
-  const canComment = authUser && commentingEnabled;
-  const placeholder = formatMessage(
-    messages[`${postType}CommentBodyPlaceholder`]
-  );
+      ? commentingPermissionInitiative?.disabledReason
+      : idea?.data.attributes?.action_descriptor.commenting_idea
+          .disabled_reason;
+  const isModerator = canModerateProject(projectId, authUser);
+  const canComment = !commentingDisabledReason;
+  const buttonText: MessageDescriptor = isAdminPage
+    ? messages.postPublicComment
+    : messages.publishComment;
+  const placeholderMessage: MessageDescriptor = isAdminPage
+    ? messages.visibleToUsersPlaceholder
+    : messages[`${postType}CommentBodyPlaceholder`];
+  const placeholder = formatMessage(placeholderMessage);
 
-  if (!isNilOrError(authUser) && canComment) {
+  if (canComment) {
     return (
       <Container className={className || ''}>
         <StyledAvatar
-          userId={authUser?.data.id}
+          userId={authUser.data.id}
           size={30}
-          isLinkToProfile={!!authUser?.data.id}
+          isLinkToProfile={!!authUser.data.id}
           moderator={isModerator}
         />
         <FormContainer
@@ -434,8 +440,9 @@ const ParentCommentForm = ({
                   onClick={onSubmit}
                   disabled={hasEmptyError}
                   padding={smallerThanTablet ? '6px 12px' : undefined}
+                  icon={isAdminPage ? 'users' : undefined}
                 >
-                  <FormattedMessage {...messages.publishComment} />
+                  <FormattedMessage {...buttonText} />
                 </Button>
               </ButtonWrapper>
             </label>

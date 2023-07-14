@@ -1175,11 +1175,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_03_175732) do
 
   create_table "public_api_api_clients", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
-    t.string "secret"
-    t.uuid "tenant_id"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
-    t.index ["tenant_id"], name: "index_public_api_api_clients_on_tenant_id"
+    t.datetime "last_used_at"
+    t.string "secret_digest", null: false
+    t.string "secret_postfix", null: false
   end
 
   create_table "que_jobs", comment: "4", force: :cascade do |t|
@@ -1530,7 +1530,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_03_175732) do
   add_foreign_key "projects_allowed_input_topics", "topics"
   add_foreign_key "projects_topics", "projects"
   add_foreign_key "projects_topics", "topics"
-  add_foreign_key "public_api_api_clients", "tenants"
   add_foreign_key "reactions", "users"
   add_foreign_key "report_builder_reports", "users", column: "owner_id"
   add_foreign_key "spam_reports", "users"

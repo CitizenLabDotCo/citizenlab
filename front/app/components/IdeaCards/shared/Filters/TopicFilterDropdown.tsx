@@ -1,4 +1,4 @@
-import React, { memo, useMemo } from 'react';
+import React, { useMemo } from 'react';
 
 // components
 import FilterSelector from 'components/FilterSelector';
@@ -22,55 +22,58 @@ interface Props {
   projectId: string;
 }
 
-const TopicFilterDropdown = memo(
-  ({ selectedTopicIds, alignment, projectId, onChange }: Props) => {
-    const localize = useLocalize();
-    const { data: allowedInputTopics } = useProjectAllowedInputTopics({
-      projectId,
-    });
+const TopicFilterDropdown = ({
+  selectedTopicIds,
+  alignment,
+  projectId,
+  onChange,
+}: Props) => {
+  const localize = useLocalize();
+  const { data: allowedInputTopics } = useProjectAllowedInputTopics({
+    projectId,
+  });
 
-    const topicIds = getTopicIds(allowedInputTopics?.data);
-    const { data: topics } = useTopics();
+  const topicIds = getTopicIds(allowedInputTopics?.data);
+  const { data: topics } = useTopics();
 
-    const filteredTopics = useMemo(() => {
-      return topics?.data.filter((topic) => topicIds.includes(topic.id));
-    }, [topics, topicIds]);
+  const filteredTopics = useMemo(() => {
+    return topics?.data.filter((topic) => topicIds.includes(topic.id));
+  }, [topics, topicIds]);
 
-    const options = useMemo(() => {
-      return (
-        filteredTopics?.map((topic) => ({
-          text: localize(topic.attributes.title_multiloc),
-          value: topic.id,
-        })) ?? []
-      );
-    }, [filteredTopics, localize]);
-
-    if (!allowedInputTopics || allowedInputTopics.data.length === 0) {
-      return null;
-    }
-
+  const options = useMemo(() => {
     return (
-      <FilterSelector
-        id="e2e-idea-filter-selector"
-        title={
-          <FormattedMessage
-            {...messages.topicsTitle}
-            key={`topic-title-${Math.floor(Math.random() * 100000000)}`}
-          />
-        }
-        name="topics"
-        selected={selectedTopicIds}
-        values={options}
-        onChange={onChange}
-        multipleSelectionAllowed={true}
-        last={true}
-        left={alignment === 'left' ? '-5px' : undefined}
-        mobileLeft={alignment === 'left' ? '-5px' : undefined}
-        right={alignment === 'right' ? '-5px' : undefined}
-        mobileRight={alignment === 'right' ? '-5px' : undefined}
-      />
+      filteredTopics?.map((topic) => ({
+        text: localize(topic.attributes.title_multiloc),
+        value: topic.id,
+      })) ?? []
     );
+  }, [filteredTopics, localize]);
+
+  if (!allowedInputTopics || allowedInputTopics.data.length === 0) {
+    return null;
   }
-);
+
+  return (
+    <FilterSelector
+      id="e2e-idea-filter-selector"
+      title={
+        <FormattedMessage
+          {...messages.topicsTitle}
+          key={`topic-title-${Math.floor(Math.random() * 100000000)}`}
+        />
+      }
+      name="topics"
+      selected={selectedTopicIds}
+      values={options}
+      onChange={onChange}
+      multipleSelectionAllowed={true}
+      last={true}
+      left={alignment === 'left' ? '-5px' : undefined}
+      mobileLeft={alignment === 'left' ? '-5px' : undefined}
+      right={alignment === 'right' ? '-5px' : undefined}
+      mobileRight={alignment === 'right' ? '-5px' : undefined}
+    />
+  );
+};
 
 export default TopicFilterDropdown;

@@ -1,7 +1,5 @@
-import request from 'utils/request';
-
 // services
-import { apiEndpoint, QuerySchema, Query } from 'services/analyticsFacts';
+import { QuerySchema, Query } from 'api/analytics/types';
 
 // i18n
 import messages from './messages';
@@ -19,6 +17,7 @@ import { ProjectId, Dates } from '../typings';
 import { ReferrerListResponse } from './useVisitorReferrers/typings';
 import { XlsxData } from 'components/admin/ReportExportMenu';
 import { FormatMessage } from 'typings';
+import fetcher from 'utils/cl-react-query/fetcher';
 
 type QueryParameters = ProjectId & Dates;
 
@@ -54,12 +53,11 @@ export default async function getXlsxData(
   formatMessage: FormatMessage
 ): Promise<XlsxData> {
   try {
-    const referrersResponse = await request<ReferrerListResponse>(
-      apiEndpoint,
-      null,
-      { method: 'GET' },
-      sanitizeQueryParameters(query(parameters))
-    );
+    const referrersResponse = await fetcher<ReferrerListResponse>({
+      path: '/analytics',
+      action: 'get',
+      queryParams: sanitizeQueryParameters(query(parameters)) ?? undefined,
+    });
 
     return {
       ...referrerTypesXlsxData,
@@ -75,7 +73,7 @@ const parseReferrers = (
   { data }: ReferrerListResponse,
   formatMessage: FormatMessage
 ): XlsxData => {
-  if (data.length === 0) return {};
+  if (data.attributes.length === 0) return {};
 
   const trafficSource = formatMessage(referrerTypeMessages.trafficSource);
   const referrer = formatMessage(messages.referrer);
@@ -87,12 +85,14 @@ const parseReferrers = (
   const percentageOfVisitors = formatMessage(messages.percentageOfVisitors);
   const referrerTranslations = getReferrerTranslations(formatMessage);
 
-  const visitPercentages = roundPercentages(data.map(({ count }) => count));
+  const visitPercentages = roundPercentages(
+    data.attributes.map(({ count }) => count)
+  );
   const visitorPercentages = roundPercentages(
-    data.map(({ count_visitor_id }) => count_visitor_id)
+    data.attributes.map(({ count_visitor_id }) => count_visitor_id)
   );
 
-  const parsedData = data.map((row, i) => ({
+  const parsedData = data.attributes.map((row, i) => ({
     [trafficSource]:
       row['dimension_referrer_type.name'] in referrerTranslations
         ? referrerTranslations[row['dimension_referrer_type.name']]

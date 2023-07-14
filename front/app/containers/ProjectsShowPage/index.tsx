@@ -29,6 +29,9 @@ import useEvents from 'api/events/useEvents';
 import useAuthUser from 'api/me/useAuthUser';
 import { useIntl } from 'utils/cl-intl';
 
+// context
+import { VotingContext } from 'api/baskets_ideas/useVoting';
+
 // i18n
 import messages from 'utils/messages';
 
@@ -45,6 +48,7 @@ import { anyIsUndefined, isNilOrError } from 'utils/helperUtils';
 import { isUnauthorizedRQ } from 'utils/errorUtils';
 import { scrollToElement } from 'utils/scroll';
 import { isError } from 'lodash-es';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 const Container = styled.main<{ background: string }>`
   flex: 1 0 auto;
@@ -111,6 +115,7 @@ const ProjectsShowPage = ({ project }: Props) => {
     if (scrollToEventId && mounted && !loading) {
       setTimeout(() => {
         scrollToElement({ id: scrollToEventId });
+        removeSearchParams(['scrollToEventId']);
       }, 2000);
     }
   }, [mounted, loading, scrollToEventId]);
@@ -205,7 +210,7 @@ const ProjectsShowPageWrapper = () => {
     status: statusProject,
     error,
   } = useProjectBySlug(slug);
-  const { data: phases } = usePhases(project?.data.id);
+  const { data: phases, status: statusPhases } = usePhases(project?.data.id);
   const { data: user, status: statusUser } = useAuthUser();
 
   const processType = project?.data.attributes?.process_type;
@@ -216,7 +221,9 @@ const ProjectsShowPageWrapper = () => {
 
   const projectPending = statusProject === 'loading';
   const userPending = statusUser === 'loading';
-  const pending = projectPending || userPending;
+  const phasesPending = statusPhases === 'loading';
+
+  const pending = projectPending || userPending || phasesPending;
 
   useEffect(() => {
     if (pending) return;
@@ -261,13 +268,16 @@ const ProjectsShowPageWrapper = () => {
   ) {
     // Redirect old childRoutes (e.g. /info, /process, ...) to the project index location
     const projectRoot = `/${urlSegments.slice(1, 3).join('/')}`;
-    // return <Redirect method="replace" path={projectRoot} />;
     return <Navigate to={projectRoot} replace />;
   }
 
   if (!project) return null;
 
-  return <ProjectsShowPage project={project.data} />;
+  return (
+    <VotingContext projectId={project.data.id}>
+      <ProjectsShowPage project={project.data} />
+    </VotingContext>
+  );
 };
 
 export default () => (

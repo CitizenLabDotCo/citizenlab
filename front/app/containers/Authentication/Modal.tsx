@@ -92,6 +92,7 @@ export const ERROR_CODE_MESSAGES: Record<ErrorCode, MessageDescriptor> = {
   unknown: messages.unknownError,
   invitation_error: messages.invitationError,
   franceconnect_merging_failed: messages.franceConnectMergingFailed,
+  email_taken_and_user_can_be_verified: messages.emailTakenAndUserCanBeVerified,
 };
 
 type HelperTextKey = 'signup_helper_text' | 'custom_fields_signup_helper_text';

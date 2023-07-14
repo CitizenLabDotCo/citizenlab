@@ -25,11 +25,11 @@ import messages from '../messages';
 import {
   ICustomPageAttributes,
   TCustomPageBannerLayout,
-} from 'services/customPages';
+} from 'api/custom_pages/types';
 import {
   IHomepageSettingsAttributes,
   THomepageBannerLayout,
-} from 'services/homepageSettings';
+} from 'api/home_page/types';
 
 const LayoutPreview = styled.img`
   width: 220px;
