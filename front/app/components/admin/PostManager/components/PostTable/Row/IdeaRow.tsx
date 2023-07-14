@@ -39,7 +39,7 @@ import { insertConfiguration } from 'utils/moduleUtils';
 
 // hooks
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
-import usePostManagerColumns from '../../../../../../hooks/usePostManagerColumns';
+import usePostManagerColumnFilter from 'hooks/usePostManagerColumnFilter';
 
 type Props = {
   type: ManagerType;
@@ -119,15 +119,6 @@ const IdeaRow = ({
       },
     },
     {
-      name: 'published_on',
-      Component: ({ idea }) => {
-        if (!isNilOrError(locale)) {
-          return <>{timeAgo(Date.parse(idea.attributes.created_at), locale)}</>;
-        }
-        return null;
-      },
-    },
-    {
       name: 'comments',
       cellProps: { singleLine: true },
       Component: ({ idea }: IdeaCellComponentProps) => {
@@ -156,6 +147,15 @@ const IdeaRow = ({
             {idea.attributes.dislikes_count}
           </>
         );
+      },
+    },
+    {
+      name: 'published_on',
+      Component: ({ idea }) => {
+        if (!isNilOrError(locale)) {
+          return <>{timeAgo(Date.parse(idea.attributes.created_at), locale)}</>;
+        }
+        return null;
       },
     },
     {
@@ -292,7 +292,10 @@ const IdeaRow = ({
   const active = selection.has(idea.id);
   const projectId = idea.relationships.project.data.id;
   const selectedStatus = idea.relationships.idea_status.data.id;
-  const displayColumns = usePostManagerColumns(selectedProject, selectedPhase);
+  const displayColumns = usePostManagerColumnFilter(
+    selectedProject,
+    selectedPhase
+  );
 
   const renderCell = (
     { idea, selection }: IdeaCellComponentProps,

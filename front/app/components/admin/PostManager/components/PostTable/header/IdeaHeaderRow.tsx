@@ -24,7 +24,9 @@ import {
 } from 'typings';
 import { SortAttribute as IdeasSortAttribute } from 'api/ideas/types';
 import { SortDirection } from 'utils/paginationUtils';
-import usePostManagerColumns from '../../../../../../hooks/usePostManagerColumns';
+
+// hooks
+import usePostManagerColumnFilter from 'hooks/usePostManagerColumnFilter';
 
 interface SortableHeaderCellProps {
   sortAttribute?: IdeasSortAttribute;
@@ -126,20 +128,6 @@ export default ({
       },
     },
     {
-      name: 'published_on',
-      cellProps: { width: 2 },
-      onChange: handleSortClick('new'),
-      Component: (
-        props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
-      ) => {
-        return (
-          <SortableHeaderCell {...props} sortAttributeName="new">
-            <FormattedMessage {...messages.publication_date} />
-          </SortableHeaderCell>
-        );
-      },
-    },
-    {
       name: 'comments',
       cellProps: { width: 1 },
       onChange: handleSortClick('likes_count'), // TODO: No sort attribute
@@ -177,6 +165,20 @@ export default ({
         return (
           <SortableHeaderCell {...props} sortAttributeName="dislikes_count">
             <FormattedMessage {...messages.down} />
+          </SortableHeaderCell>
+        );
+      },
+    },
+    {
+      name: 'published_on',
+      cellProps: { width: 2 },
+      onChange: handleSortClick('new'),
+      Component: (
+        props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
+      ) => {
+        return (
+          <SortableHeaderCell {...props} sortAttributeName="new">
+            <FormattedMessage {...messages.publication_date} />
           </SortableHeaderCell>
         );
       },
@@ -225,7 +227,10 @@ export default ({
     },
   ]);
 
-  const displayColumns = usePostManagerColumns(selectedProject, selectedPhase);
+  const displayColumns = usePostManagerColumnFilter(
+    selectedProject,
+    selectedPhase
+  );
 
   const totalWidth = cells.reduce((acc, cell) => {
     if (typeof cell.cellProps?.width === 'number') {
