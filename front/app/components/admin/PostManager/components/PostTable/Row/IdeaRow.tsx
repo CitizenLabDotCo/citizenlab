@@ -40,6 +40,7 @@ import { insertConfiguration } from 'utils/moduleUtils';
 // hooks
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
 import usePostManagerColumnFilter from 'hooks/usePostManagerColumnFilter';
+import FormattedBudget from '../../../../../../utils/currency/FormattedBudget';
 
 type Props = {
   type: ManagerType;
@@ -169,7 +170,7 @@ const IdeaRow = ({
       name: 'budget',
       cellProps: { singleLine: true },
       Component: ({ idea }: IdeaCellComponentProps) => {
-        return <>{idea.attributes.budget}</>;
+        return <FormattedBudget value={idea.attributes.budget || 0} />;
       },
     },
     {

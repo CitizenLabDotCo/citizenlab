@@ -83,7 +83,7 @@ interface Props {
   sortDirection?: SortDirection;
   allSelected: boolean;
   toggleSelectAll: () => void;
-  handleSortClick: (newSortAttribute: IdeasSortAttribute) => () => void;
+  handleSortClick: (newSortAttribute: string) => () => void;
 }
 
 export default ({
@@ -200,12 +200,12 @@ export default ({
     {
       name: 'budget',
       cellProps: { width: 1 },
-      onChange: handleSortClick('baskets_count'),
+      onChange: handleSortClick('budget'),
       Component: (
         props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
       ) => {
         return (
-          <SortableHeaderCell {...props} sortAttributeName="baskets_count">
+          <SortableHeaderCell {...props} sortAttributeName="budget">
             <FormattedMessage {...messages.budget} />
           </SortableHeaderCell>
         );
@@ -214,12 +214,12 @@ export default ({
     {
       name: 'votes',
       cellProps: { width: 1 },
-      onChange: handleSortClick('likes_count'), // TODO: No sort attribute
+      onChange: handleSortClick('votes_count'),
       Component: (
         props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
       ) => {
         return (
-          <SortableHeaderCell {...props} sortAttributeName="likes_count">
+          <SortableHeaderCell {...props} sortAttributeName="votes_count">
             <FormattedMessage {...messages.votes} />
           </SortableHeaderCell>
         );

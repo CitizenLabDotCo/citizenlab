@@ -64,7 +64,8 @@ export type SortAttribute =
   | 'dislikes_count'
   | 'baskets_count'
   | 'status'
-  | 'votes_count';
+  | 'votes_count'
+  | 'budget';
 
 type ReactingIdeaActionDescriptor =
   | { enabled: true; disabled_reason: null; cancelling_enabled: boolean }
