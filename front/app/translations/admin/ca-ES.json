@@ -1222,7 +1222,7 @@
   "app.containers.AdminPage.ProjectEdit.adminProjectFolderSelectTooltip": "Podeu afegir el vostre projecte a una carpeta existent. També podeu fer-ho més endavant a la pestanya Projectes.",
   "app.containers.AdminPage.ProjectEdit.allowedInputTopicsTab": "Etiquetes del projecte",
   "app.containers.AdminPage.ProjectEdit.anonymousPolling": "Enquesta anònima",
-  "app.containers.AdminPage.ProjectEdit.anonymousPollingTooltip2": "Quan està activat, és impossible veure qui va reaccionar a què. Els usuaris encara necessiten un compte i només poden reaccionar una vegada.",
+  "app.containers.AdminPage.ProjectEdit.anonymousPollingTooltip": "Quan està activat, és impossible veure qui va votar sobre què. Els usuaris encara necessiten un compte i només poden votar una vegada.",
   "app.containers.AdminPage.ProjectEdit.archived": "Archived",
   "app.containers.AdminPage.ProjectEdit.archivedStatus": "Archived",
   "app.containers.AdminPage.ProjectEdit.areaIsLinkedToStaticPage": "Aquesta zona no es pot suprimir perquè s'utilitza per mostrar projectes a les pàgines més personalitzades següents. Haureu de desenllaçar l'àrea de la pàgina o suprimir la pàgina abans de poder suprimir la zona.",
