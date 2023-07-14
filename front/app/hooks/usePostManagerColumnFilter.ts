@@ -49,7 +49,7 @@ export default function usePostManagerColumnFilter(
       'down',
       'published_on',
     ]);
-  }, [project, phase]);
+  }, [selectedPhase, project, phase]);
 
   return displayColumns;
 }
