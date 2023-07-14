@@ -14,10 +14,7 @@ module EmailCampaigns
       return unless campaign.saved_change_to_enabled? &&
                     campaign.instance_of?(EmailCampaigns::Campaigns::ProjectPhaseStarted)
 
-      Phase.update_all(
-        "campaigns_settings = jsonb_set(campaigns_settings, array['project_phase_started']," \
-        "to_jsonb(#{campaign.enabled}));"
-      )
+      toggle_project_phase_started(campaign)
     end
 
     def before_send(campaign, user); end
@@ -32,6 +29,13 @@ module EmailCampaigns
 
     def resource_name
       :campaign
+    end
+
+    def toggle_project_phase_started(campaign)
+      Phase.update_all(
+        "campaigns_settings = jsonb_set(campaigns_settings, array['project_phase_started']," \
+        "to_jsonb(#{campaign.enabled}));"
+      )
     end
   end
 end
