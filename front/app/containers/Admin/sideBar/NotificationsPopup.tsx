@@ -93,18 +93,18 @@ export const NotificationsPopup = () => {
                   fontSize="base"
                   textAlign="left"
                   my="0px"
+                  w="100%"
                 >
                   {formatMessage({ ...messages.notifications })}
                 </Text>
               </>
             )}
-            {!isSmallerThanPhone && unreadNotificationsCount > 0 && (
-              <Box
-                w="auto"
-                h="18px"
-                ref={iconDivRef}
-                ml="auto"
-              >
+            <Box
+              w="auto"
+              h={isSmallerThanPhone ? '0' : '18px'}
+              ref={iconDivRef}
+            >
+              {unreadNotificationsCount > 0 && (
                 <Box
                   background={colors.red500}
                   p="0px 4px"
@@ -117,8 +117,8 @@ export const NotificationsPopup = () => {
                     {unreadNotificationsCount}
                   </Text>
                 </Box>
-              </Box>
-            )}
+              )}
+            </Box>
           </Box>
         </StyledBox>
       }

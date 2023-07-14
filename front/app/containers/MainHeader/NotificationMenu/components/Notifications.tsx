@@ -49,8 +49,30 @@ export const Notifications = () => {
     return <Spinner />;
   }
 
-  return (
-    <Box data-testid="notifications-dropdown">
+  if (!flattenNotifications) return null;
+
+  return flattenNotifications.length === 0 ? (
+    <Box display="flex" alignItems="center" py="50px">
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <Box mb="20px">
+          <img src={EmptyStateImg} role="presentation" alt="" />
+        </Box>
+        <EmptyStateText>
+          {formatMessage({ ...messages.noNotifications })}
+        </EmptyStateText>
+      </Box>
+    </Box>
+  ) : (
+    // height 100% is needed when we have >0 notifications in the
+    // notifications popup in the admin sidebar with current implementation.
+    // Not setting this will
+    // hide a part of the first notification there.
+    <Box height="100%">
       <InfiniteScroll
         pageStart={0}
         loadMore={() => fetchNextPage()}
@@ -69,32 +91,12 @@ export const Notifications = () => {
           </Box>
         }
       >
-        {flattenNotifications && flattenNotifications.length > 0 && (
-          <>
-            {flattenNotifications.map((notification) => (
-              <Notification key={notification.id} notification={notification} />
-            ))}
-          </>
-        )}
-        {(!flattenNotifications || flattenNotifications.length === 0) && (
-          <Box
-            height="200px"
-            display="flex"
-            flexDirection="column"
-            alignItems="stretch"
-            justifyContent="center"
-          >
-            <Box display="flex" justifyContent="center" mb="20px">
-              <img src={EmptyStateImg} role="presentation" alt="" />
-            </Box>
-            <EmptyStateText>
-              {formatMessage({ ...messages.noNotifications })}
-            </EmptyStateText>
-          </Box>
-        )}
+        {flattenNotifications.length > 0 &&
+          flattenNotifications.map((notification) => (
+            <Notification key={notification.id} notification={notification} />
+          ))}
       </InfiniteScroll>
     </Box>
   );
 };
-
 export default Notifications;
