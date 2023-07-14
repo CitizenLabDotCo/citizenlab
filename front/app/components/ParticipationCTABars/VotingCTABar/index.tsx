@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import JSConfetti from 'js-confetti';
 
 // Components
 import { Button, Icon, Box, Text } from '@citizenlab/cl2-component-library';
@@ -23,6 +24,8 @@ import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
+
+const confetti = new JSConfetti();
 
 export const VotingCTABar = ({ phases, project }: CTABarProps) => {
   const [processing, setProcessing] = useState(false);
@@ -70,7 +73,10 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
               participation_context_type: currentPhase ? 'Phase' : 'Project',
             },
             {
-              onSuccess: () => setProcessing(false),
+              onSuccess: () => {
+                setProcessing(false);
+                confetti.addConfetti();
+              },
             }
           );
         }, 300);
@@ -82,7 +88,10 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
             participation_context_type: currentPhase ? 'Phase' : 'Project',
           },
           {
-            onSuccess: () => setProcessing(false),
+            onSuccess: () => {
+              setProcessing(false);
+              confetti.addConfetti();
+            },
           }
         );
       }

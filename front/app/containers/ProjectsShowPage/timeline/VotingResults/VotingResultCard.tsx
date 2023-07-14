@@ -1,6 +1,4 @@
 import React from 'react';
-import Observer from '@researchgate/react-intersection-observer';
-import JSConfetti from 'js-confetti';
 
 // api
 import usePhase from 'api/phases/usePhase';
@@ -35,8 +33,6 @@ interface Props {
   rank: number;
 }
 
-const jsConfetti = new JSConfetti();
-
 const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
   const localize = useLocalize();
   const { data: phase } = usePhase(phaseId);
@@ -68,66 +64,51 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
     clHistory.push(`/ideas/${slug}${params}`);
   };
 
-  const handleIntersection = (
-    event: IntersectionObserverEntry,
-    unobserve: () => void
-  ) => {
-    if (rank !== 1) return;
-    if (event.isIntersecting) {
-      jsConfetti.addConfetti();
-      unobserve();
-    }
-  };
-
   const image = ideaImage?.data.attributes.versions.medium;
   const showHeader = !image && smallerThanPhone;
 
   return (
-    <>
-      <Observer onChange={handleIntersection}>
-        <div>
-          <Card
-            id={idea.id}
-            to={`/ideas/${slug}${params}`}
-            onClick={handleClick}
-            header={showHeader ? <Rank rank={rank} /> : undefined}
-            title={ideaTitle}
-            image={image}
-            imagePlaceholder={
-              smallerThanPhone ? undefined : (
-                <ImagePlaceholder
-                  participationMethod="voting"
-                  votingMethod={votingMethod}
-                />
-              )
-            }
-            imageOverlay={
-              showHeader ? undefined : (
-                <Rank rank={rank} position="absolute" top="28px" left="28px" />
-              )
-            }
-            body={
-              votesPercentage !== undefined ? (
-                <Results
-                  budget={idea.attributes.budget ?? undefined}
-                  votes={ideaVotes}
-                  votesPercentage={votesPercentage}
-                  baskets={baskets ?? 0}
-                />
-              ) : undefined
-            }
-            footer={
-              <Footer
-                project={project}
-                idea={idea}
-                hideIdeaStatus={true}
-                participationMethod="voting"
-              />
+    <Card
+      id={idea.id}
+      to={`/ideas/${slug}${params}`}
+      onClick={handleClick}
+      header={showHeader ? <Rank rank={rank} /> : undefined}
+      title={ideaTitle}
+      image={image}
+      imagePlaceholder={
+        smallerThanPhone ? undefined : (
+          <ImagePlaceholder
+            participationMethod="voting"
+            votingMethod={votingMethod}
+          />
+        )
+      }
+      imageOverlay={
+        showHeader ? undefined : (
+          <Rank rank={rank} position="absolute" top="28px" left="28px" />
+        )
+      }
+      body={
+        votesPercentage !== undefined ? (
+          <Results
+            budget={idea.attributes.budget ?? undefined}
+            votes={ideaVotes}
+            votesPercentage={votesPercentage}
+            baskets={
+              votingMethod === 'single_voting' ? undefined : baskets ?? 0
             }
           />
-        </div>
-      </Observer>
-    </>
+        ) : undefined
+      }
+      footer={
+        <Footer
+          project={project}
+          idea={idea}
+          hideIdeaStatus={true}
+          participationMethod="voting"
+        />
+      }
+    />
   );
 };
 

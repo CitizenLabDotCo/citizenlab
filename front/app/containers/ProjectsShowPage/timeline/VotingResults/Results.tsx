@@ -20,7 +20,12 @@ const Results = ({ budget, votes, votesPercentage, baskets }: Props) => {
   const { formatMessage } = useIntl();
 
   return (
-    <Box>
+    <Box
+      h="100%"
+      display="flex"
+      flexDirection="column"
+      justifyContent="flex-end"
+    >
       {budget && (
         <Text mb="8px" mt="8px" color="tenantPrimary">
           {formatMessage(messages.cost)}
