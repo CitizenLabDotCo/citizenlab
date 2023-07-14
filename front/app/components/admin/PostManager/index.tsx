@@ -395,6 +395,8 @@ export class PostManager extends React.PureComponent<Props, State> {
                 phases={!isNilOrError(phases) ? phases : undefined}
                 statuses={!isNilOrError(postStatuses) ? postStatuses : []}
                 selection={selection}
+                selectedPhase={selectedPhase}
+                selectedProject={selectedProject}
                 onChangeSelection={this.handleChangeSelection}
                 currentPageNumber={posts.currentPage}
                 lastPageNumber={posts.lastPage}

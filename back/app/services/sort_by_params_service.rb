@@ -31,6 +31,10 @@ class SortByParamsService
     when '-baskets_count' then scope.order(baskets_count: :asc)
     when 'votes_count' then scope.order(votes_count: :desc)
     when '-votes_count' then scope.order(votes_count: :asc)
+    when 'comments_count' then scope.order(comments_count: :desc)
+    when '-comments_count' then scope.order(comments_count: :asc)
+    when 'budget' then scope.order(budget: :desc)
+    when '-budget' then scope.order(budget: :asc)
     else
       raise "Unsupported sorting parameter #{params[:sort]}"
     end

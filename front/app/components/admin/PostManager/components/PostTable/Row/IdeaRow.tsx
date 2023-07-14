@@ -39,12 +39,16 @@ import { insertConfiguration } from 'utils/moduleUtils';
 
 // hooks
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
+import usePostManagerColumnFilter from 'hooks/usePostManagerColumnFilter';
+import FormattedBudget from '../../../../../../utils/currency/FormattedBudget';
 
 type Props = {
   type: ManagerType;
   idea: IIdeaData;
   phases?: IPhaseData[];
   statuses?: IIdeaStatusData[];
+  selectedPhase?: string | null;
+  selectedProject?: string | null;
   /** A set of ids of ideas/initiatives that are currently selected */
   selection: Set<string>;
   activeFilterMenu: TFilterMenu;
@@ -68,6 +72,8 @@ const IdeaRow = ({
   activeFilterMenu,
   phases,
   statuses,
+  selectedPhase,
+  selectedProject,
   idea,
   selection,
   locale,
@@ -114,12 +120,38 @@ const IdeaRow = ({
       },
     },
     {
-      name: 'published_on',
-      Component: ({ idea }) => {
-        if (!isNilOrError(locale)) {
-          return <>{timeAgo(Date.parse(idea.attributes.created_at), locale)}</>;
-        }
-        return null;
+      name: 'votes',
+      cellProps: { singleLine: true },
+      Component: ({ idea }: IdeaCellComponentProps) => {
+        return <>{idea.attributes.votes_count}</>;
+      },
+    },
+    {
+      name: 'picks',
+      cellProps: { singleLine: true },
+      Component: ({ idea }: IdeaCellComponentProps) => {
+        return <>{idea.attributes.baskets_count}</>;
+      },
+    },
+    {
+      name: 'participants',
+      cellProps: { singleLine: true },
+      Component: ({ idea }: IdeaCellComponentProps) => {
+        return <>{idea.attributes.baskets_count}</>;
+      },
+    },
+    {
+      name: 'budget',
+      cellProps: { singleLine: true },
+      Component: ({ idea }: IdeaCellComponentProps) => {
+        return <FormattedBudget value={idea.attributes.budget || 0} />;
+      },
+    },
+    {
+      name: 'comments',
+      cellProps: { singleLine: true },
+      Component: ({ idea }: IdeaCellComponentProps) => {
+        return <>{idea.attributes.comments_count}</>;
       },
     },
     {
@@ -147,10 +179,12 @@ const IdeaRow = ({
       },
     },
     {
-      name: 'picks',
-      cellProps: { singleLine: true },
-      Component: ({ idea }: IdeaCellComponentProps) => {
-        return <>{idea.attributes.baskets_count}</>;
+      name: 'published_on',
+      Component: ({ idea }) => {
+        if (!isNilOrError(locale)) {
+          return <>{timeAgo(Date.parse(idea.attributes.created_at), locale)}</>;
+        }
+        return null;
       },
     },
   ]);
@@ -266,6 +300,10 @@ const IdeaRow = ({
   const active = selection.has(idea.id);
   const projectId = idea.relationships.project.data.id;
   const selectedStatus = idea.relationships.idea_status.data.id;
+  const displayColumns = usePostManagerColumnFilter(
+    selectedProject,
+    selectedPhase
+  );
 
   const renderCell = (
     { idea, selection }: IdeaCellComponentProps,
@@ -282,17 +320,18 @@ const IdeaRow = ({
       ...(onClick ? { onClick } : {}),
     };
 
-    const Content = (
-      <Td key={name} borderBottom="none !important">
-        <Box
-          {...(['up', 'down'].includes(name)
-            ? { display: 'flex', flexDirection: 'row' }
-            : {})}
-        >
-          <Component idea={idea} selection={selection} {...handlers} />
-        </Box>
-      </Td>
-    );
+    const Content =
+      displayColumns && !displayColumns.has(name) ? null : (
+        <Td key={name} borderBottom="none !important">
+          <Box
+            {...(['up', 'down'].includes(name)
+              ? { display: 'flex', flexDirection: 'row' }
+              : {})}
+          >
+            <Component idea={idea} selection={selection} {...handlers} />
+          </Box>
+        </Td>
+      );
 
     if (!featureFlag) return Content;
     return (
