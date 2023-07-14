@@ -56,6 +56,10 @@ pl:
       "moderator_digest": Tygodniowy przegląd dla menadżerów projektu
       "assignee_digest": Tygodniowy przegląd przydzielonych pomysłów
       "user_digest": Tygodniowy przegląd
+      "voting_basket_submitted": Potwierdzenie głosowania
+      "voting_basket_not_submitted": Nieoddane głosy
+      "voting_last_chance": Ostatnia szansa na oddanie głosu
+      "voting_results": Wyniki głosowania
       "your_proposed_initiatives_digest": Tygodniowy przegląd Twoich propozycji
     schedules:
       weekly:
@@ -577,6 +581,42 @@ pl:
       new_votes: 'Nowe głosy'
       remaining_votes: 'Pozostało głosów'
       remaining_days: 'Pozostało dni'
+    voting_basket_submitted:
+      subject: '%{organizationName}Pomyślnie zagłosowałeś'
+      preheader: 'Pomyślnie zagłosowałeś na platformie uczestnictwa %{organizationName}'
+      title_basket_submitted: 'Zagłosowałeś pomyślnie'
+      event_description: 'Dziękujemy za udział. Twoje głosy zostały zarejestrowane. Odwiedź platformę %{organizationName} , aby zobaczyć i zarządzać swoimi głosami.'
+      cta_see_votes_submitted: 'Zobacz oddane głosy'
+      cta_message: 'Kliknij poniższy przycisk, aby wziąć udział'
+    voting_basket_not_submitted:
+      subject: '%{organizationName}Nie oddałeś swojego głosu'
+      preheader: 'Nie oddałeś głosu na platformie uczestnictwa %{organizationName}.'
+      title_basket_not_submitted: 'Nie oddałeś swojego głosu'
+      event_description: 'Wybrałeś kilka opcji dla %{contextTitle} , ale nie przesłałeś swojego wyboru.'
+      cta_view_options_and_vote: 'Zobacz opcje i zagłosuj'
+      cta_message: 'Kliknij poniższy przycisk, aby przesłać wybrane opcje'
+    voting_last_chance:
+      subject: '%{organizationName}Ostatnia szansa na oddanie głosu na %{phaseTitle}'
+      preheader: 'Ostatnia szansa, aby zagłosować na %{phaseTitle} na platformie uczestnictwa %{organizationName}'
+      title_last_chance: 'Ostatnia szansa na oddanie głosu na %{phaseTitle}'
+      body_1: 'Faza głosowania na projekt %{projectTitle} dobiegnie końca jutro o północy.'
+      body_2: 'Czas ucieka, a my zauważyliśmy, że jeszcze nie oddałeś swojego głosu! Działaj teraz, klikając poniższy przycisk, aby wziąć udział.'
+      body_3: 'W ten sposób uzyskasz dostęp do szeregu opcji i będziesz mieć szansę na wniesienie swojego wkładu, który ma kluczowe znaczenie dla podjęcia decyzji o przyszłości tego projektu.'
+      cta_vote: 'Głosuj'
+    voting_results:
+      subject: '%{organizationName}: %{phaseTitle} wyniki głosowania ujawnione!'
+      preheader: '%{phaseTitle} wyniki głosowania ujawnione na platformie uczestnictwa %{organizationName}'
+      title_results: '%{phaseTitle} wyniki głosowania ujawnione!'
+      body_1: 'Wyniki już są!'
+      body_2: '%{organizationName} Wyniki głosowania na platformie %{phaseTitle} zostały opublikowane!'
+      body_3: 'Zachęcamy do zapoznania się z wynikami i czekania na dalsze aktualizacje dotyczące kolejnych kroków.'
+      cta_see_results: 'Zobacz wyniki na platformie'
+    voting_phase_started:
+      subject: '%{organizationName}Rozpoczęła się faza głosowania na %{projectName}'
+      preheader: 'Rozpoczęła się faza głosowania na stronie %{projectName} na platformie uczestnictwa %{organizationName}.'
+      event_description: 'Projekt "%{projectName}" prosi Cię o głosowanie pomiędzy opcjami %{numIdeas} :'
+      cta_message: 'Kliknij poniższy przycisk, aby wziąć udział'
+      cta_vote: 'Przejdź do platformy, aby zagłosować'
     admin_labels:
       recipient_role:
         admins: 'Do administratorów'
@@ -605,6 +645,9 @@ pl:
         users_who_engaged_with_the_input: 'Użytkownicy, którzy zaangażowali się we wprowadzanie danych'
         users_who_engaged_with_the_project: 'Użytkownicy, którzy zaangażowali się w projekt'
         users_who_engaged_with_the_proposal: 'Użytkownicy, którzy zaangażowali się w propozycję'
+        user_who_voted: 'Użytkownik, który głosował'
+        user_with_unsubmitted_votes: 'Użytkownik, który nie oddał głosu'
+        users_who_engaged_but_not_voted: 'Użytkownicy, którzy zaangażowali się w projekt, ale nie głosowali'
       content_type:
         comments: 'Komentarze'
         content_moderation: 'Moderacja treści'
@@ -615,6 +658,7 @@ pl:
         projects: 'Projekty'
         proposals: 'Propozycje'
         reactions: 'Reakcje'
+        voting: 'Głosowanie'
       trigger:
         comment_is_deleted: 'Komentarz został usunięty.'
         comment_is_flagged_as_spam: 'Komentarz został oznaczony jako spam'
@@ -652,5 +696,9 @@ pl:
         user_registers_for_the_first_time: 'Użytkownik rejestruje się po raz pierwszy'
         user_replies_to_comment: 'Użytkownik odpowiada na komentarz'
         user_replies_to_internal_comment: 'Użytkownik odpowiada na wewnętrzny komentarz'
+        voting_2_days_before_phase_closes: '2 dni przed zakończeniem fazy głosowania'
+        voting_1_day_after_last_votes: '1 dzień po ostatnim głosowaniu użytkownika'
+        voting_phase_ended: 'Faza głosowania zakończona'
+        voting_basket_submitted: 'Głosy są oddawane'
         7_days_after_invite_is_sent: '7 dni po wysłaniu zaproszenia'
         7_days_before_the_project_changes_phase: '7 dni przed zmianą fazy projektu'
