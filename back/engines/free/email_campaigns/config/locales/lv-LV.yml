@@ -56,6 +56,10 @@ lv:
       "moderator_digest": Nedēļas pārskats projektu vadītājiem
       "assignee_digest": Nedēļas pārskats par piešķirtajām idejām
       "user_digest": Nedēļas pārskats
+      "voting_basket_submitted": Balsošanas apstiprināšana
+      "voting_basket_not_submitted": Neiesniegtās balsis
+      "voting_last_chance": Pēdējā iespēja balsot
+      "voting_results": Balsošanas rezultāti
       "your_proposed_initiatives_digest": Nedēļas pārskats par jūsu priekšlikumiem
     schedules:
       weekly:
@@ -577,6 +581,42 @@ lv:
       new_votes: 'Jaunas balsis'
       remaining_votes: 'Atlikušās balsis'
       remaining_days: 'Atlikušās dienas'
+    voting_basket_submitted:
+      subject: '%{organizationName}: Jūs veiksmīgi nobalsojāt'
+      preheader: 'Jūs veiksmīgi balsojāt %{organizationName}līdzdalības platformā.'
+      title_basket_submitted: 'Jūs veiksmīgi nobalsojāt'
+      event_description: 'Paldies par dalību. Jūsu balsis ir reģistrētas. Apmeklējiet %{organizationName} platformu, lai redzētu un pārvaldītu savas balsis.'
+      cta_see_votes_submitted: 'Skatīt iesniegtos balsojumus'
+      cta_message: 'Noklikšķiniet uz pogas zemāk, lai piedalītos'
+    voting_basket_not_submitted:
+      subject: '%{organizationName}: Jūs neiesūtījāt savas balsis'
+      preheader: 'Jūs neiesniedzāt savas balsis %{organizationName}dalības platformā.'
+      title_basket_not_submitted: 'Jūs neiesniedzāt savas balsis'
+      event_description: 'Izvēlējāties vairākas iespējas vietnē %{contextTitle} , bet atlasi neiesūtījāt.'
+      cta_view_options_and_vote: 'Skatiet opcijas un balsojiet'
+      cta_message: 'Noklikšķiniet uz pogas zemāk, lai iesniegtu atlasītās opcijas'
+    voting_last_chance:
+      subject: '%{organizationName}: Pēdējā iespēja balsot par %{phaseTitle}'
+      preheader: 'Pēdējā iespēja balsot par %{phaseTitle} %{organizationName}dalības platformā'
+      title_last_chance: 'Pēdējā iespēja balsot par %{phaseTitle}'
+      body_1: 'Rīt pusnaktī noslēgsies balsošana par projektu %{projectTitle} .'
+      body_2: 'Laiks iet uz beigām, un mēs pamanījām, ka jūs vēl neesat nobalsojis! Lai piedalītos balsošanā, vienkārši nospiediet zemāk redzamo pogu.'
+      body_3: 'Tādējādi jūs iegūsiet piekļuvi dažādām iespējām un iespēju sniegt savu ieguldījumu, kas ir ļoti svarīgs, lai lemtu par šī projekta nākotni.'
+      cta_vote: 'Balsojums'
+    voting_results:
+      subject: '%{organizationName}: %{phaseTitle} atklāti balsošanas rezultāti!'
+      preheader: '%{phaseTitle} balsošanas rezultāti atklāti %{organizationName}līdzdalības platformā.'
+      title_results: '%{phaseTitle} atklāti balsošanas rezultāti!'
+      body_1: 'Rezultāti ir zināmi!'
+      body_2: 'Ir publicēti %{phaseTitle} platformas %{organizationName} balsojuma rezultāti!'
+      body_3: 'Aicinām iepazīties ar rezultātiem un sekot līdzi turpmākai informācijai par nākamajiem soļiem.'
+      cta_see_results: 'Skatiet rezultātus platformā'
+    voting_phase_started:
+      subject: '%{organizationName}: Sācies %{projectName}balsošanas posms'
+      preheader: 'Sākās balsošanas posms par %{projectName} dalības platformā %{organizationName}.'
+      event_description: 'Projekts "%{projectName}" aicina jūs balsot starp %{numIdeas} iespējām:'
+      cta_message: 'Noklikšķiniet uz pogas zemāk, lai piedalītos'
+      cta_vote: 'Dodieties uz platformu, lai balsotu'
     admin_labels:
       recipient_role:
         admins: 'Administratoriem'
@@ -605,6 +645,9 @@ lv:
         users_who_engaged_with_the_input: 'Lietotāji, kas izmantoja ievades datus'
         users_who_engaged_with_the_project: 'Lietotāji, kas iesaistījās projektā'
         users_who_engaged_with_the_proposal: 'Lietotāji, kas iesaistījās priekšlikuma īstenošanā'
+        user_who_voted: 'Lietotājs, kas balsoja'
+        user_with_unsubmitted_votes: 'Lietotājs, kurš nav iesniedzis savu balsojumu'
+        users_who_engaged_but_not_voted: 'Lietotāji, kas iesaistījās projektā, bet nav balsojuši'
       content_type:
         comments: 'Komentāri'
         content_moderation: 'Satura moderēšana'
@@ -615,6 +658,7 @@ lv:
         projects: 'Projekti'
         proposals: 'Priekšlikumi'
         reactions: 'Reakcijas'
+        voting: 'Balsošana'
       trigger:
         comment_is_deleted: 'Komentārs ir dzēsts'
         comment_is_flagged_as_spam: 'Komentārs ir atzīmēts kā surogātpasts'
@@ -652,5 +696,9 @@ lv:
         user_registers_for_the_first_time: 'Lietotājs reģistrējas pirmo reizi'
         user_replies_to_comment: 'Lietotājs atbild uz komentāru'
         user_replies_to_internal_comment: 'Lietotājs atbild uz iekšēju komentāru'
+        voting_2_days_before_phase_closes: '2 dienas pirms balsošanas posma beigām'
+        voting_1_day_after_last_votes: '1 diena pēc tam, kad lietotājs pēdējo reizi balsojis'
+        voting_phase_ended: 'Balsošanas posma beigas'
+        voting_basket_submitted: 'Tiek iesniegtas balsis'
         7_days_after_invite_is_sent: '7 dienas pēc uzaicinājuma nosūtīšanas'
         7_days_before_the_project_changes_phase: '7 dienas pirms projekta izmaiņu fāzes'
