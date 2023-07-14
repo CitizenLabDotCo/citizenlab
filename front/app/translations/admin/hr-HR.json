@@ -1222,7 +1222,7 @@
   "app.containers.AdminPage.ProjectEdit.adminProjectFolderSelectTooltip": "Možete dodati projekt u postojeću mapu. Ovo možete učiniti i naknadno putem kartice Projekti.",
   "app.containers.AdminPage.ProjectEdit.allowedInputTopicsTab": "Oznake projekta",
   "app.containers.AdminPage.ProjectEdit.anonymousPolling": "Anonimno glasovanje",
-  "app.containers.AdminPage.ProjectEdit.anonymousPollingTooltip2": "Kada je uključeno, nemoguće je vidjeti tko je na što reagirao. Korisnici i dalje trebaju račun i mogu reagirati samo jednom.",
+  "app.containers.AdminPage.ProjectEdit.anonymousPollingTooltip": "Kada je ovo omogućeno, nemoguće je vidjeti tko je i za što glasao. Korisnici i dalje moraju imati račun i mogu glasati samo jednom.",
   "app.containers.AdminPage.ProjectEdit.archived": "Arhivirano",
   "app.containers.AdminPage.ProjectEdit.archivedStatus": "Arhivirano",
   "app.containers.AdminPage.ProjectEdit.areaIsLinkedToStaticPage": "Područje nije moguće izbrisati jer se koristi za prikaz projekata na jednoj ili više prilagođenih stranica. Prije brisanja područja trebate odspojiti područje sa stranice ili izbrisati stranicu.",
