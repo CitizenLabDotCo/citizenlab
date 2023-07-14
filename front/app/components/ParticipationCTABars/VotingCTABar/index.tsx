@@ -42,10 +42,7 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
   const { data: basket } = useBasket(basketId);
   const { mutate: updateBasket } = useUpdateBasket();
 
-  if (
-    hasProjectEndedOrIsArchived(project, currentPhase) ||
-    numberOfVotesCast === undefined
-  ) {
+  if (hasProjectEndedOrIsArchived(project, currentPhase)) {
     return null;
   }
 
@@ -56,9 +53,11 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
   const maxVotes = participationContext.attributes.voting_max_total ?? 0;
 
   const minVotesRequired = minVotes > 0;
-  const minVotesReached = numberOfVotesCast >= minVotes;
+  const minVotesReached =
+    numberOfVotesCast !== undefined ? numberOfVotesCast >= minVotes : false;
   const minVotesRequiredNotReached = minVotesRequired && !minVotesReached;
-  const votesExceedLimit = numberOfVotesCast > maxVotes;
+  const votesExceedLimit =
+    numberOfVotesCast !== undefined ? numberOfVotesCast > maxVotes : false;
 
   const handleSubmitOnClick = () => {
     if (!isNilOrError(basket)) {
