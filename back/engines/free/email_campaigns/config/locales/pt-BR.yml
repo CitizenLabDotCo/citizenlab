@@ -56,6 +56,10 @@ pt:
       "moderator_digest": Resumo semanal para gestores de projeto
       "assignee_digest": Resumo semanal das ideas atribuídas
       "user_digest": Resumo semanal
+      "voting_basket_submitted": Confirmação da votação
+      "voting_basket_not_submitted": Votos não apresentados
+      "voting_last_chance": Última oportunidade para votar
+      "voting_results": Resultados da votação
       "your_proposed_initiatives_digest": Resumo semanal das suas propostas
     schedules:
       weekly:
@@ -577,6 +581,42 @@ pt:
       new_votes: 'Novos Votos'
       remaining_votes: 'Votos restantes'
       remaining_days: 'Dias restantes'
+    voting_basket_submitted:
+      subject: '%{organizationName}: Votou com sucesso'
+      preheader: 'Votou com sucesso na plataforma de participação de %{organizationName}'
+      title_basket_submitted: 'Votou com sucesso'
+      event_description: 'Obrigado por participar. Os seus votos foram registados. Visite a plataforma de %{organizationName} para ver e gerir os seus votos.'
+      cta_see_votes_submitted: 'Ver votos apresentados'
+      cta_message: 'Clique no botão abaixo para participar'
+    voting_basket_not_submitted:
+      subject: '%{organizationName}: Não submeteu os seus votos'
+      preheader: 'Não submeteu os seus votos na plataforma de participação de %{organizationName}'
+      title_basket_not_submitted: 'Não submeteu os seus votos'
+      event_description: 'Seleccionou algumas opções para %{contextTitle} mas não submeteu a sua seleção.'
+      cta_view_options_and_vote: 'Ver opções e votar'
+      cta_message: 'Clique no botão abaixo para enviar as opções seleccionadas'
+    voting_last_chance:
+      subject: '%{organizationName}: Última oportunidade para votar em %{phaseTitle}'
+      preheader: 'Última oportunidade para votar em %{phaseTitle} na plataforma de participação de %{organizationName}'
+      title_last_chance: 'Última oportunidade para votar em %{phaseTitle}'
+      body_1: 'A fase de votação do projeto %{projectTitle} termina amanhã, à meia-noite.'
+      body_2: 'O tempo está a esgotar-se e reparámos que ainda não votou! Faça-o agora, clicando no botão abaixo para participar.'
+      body_3: 'Ao fazê-lo, terá acesso a uma série de opções e terá a oportunidade de dar o seu contributo, que é crucial para decidir o futuro deste projeto.'
+      cta_vote: 'Votação'
+    voting_results:
+      subject: '%{organizationName}: %{phaseTitle} resultados da votação revelados!'
+      preheader: '%{phaseTitle} resultados da votação revelados na plataforma de participação de %{organizationName}'
+      title_results: '%{phaseTitle} resultados da votação revelados!'
+      body_1: 'Os resultados já chegaram!'
+      body_2: 'Os resultados da votação %{phaseTitle} na plataforma %{organizationName} foram publicados!'
+      body_3: 'Convidamo-lo a analisar os resultados e a manter-se atento a novas actualizações sobre as próximas etapas.'
+      cta_see_results: 'Ver resultados na plataforma'
+    voting_phase_started:
+      subject: '%{organizationName}: A fase de votação começou em %{projectName}'
+      preheader: 'Começou a fase de votação para %{projectName} na plataforma de participação de %{organizationName}'
+      event_description: 'O projeto "%{projectName}" pede-lhe que vote entre as opções de %{numIdeas} :'
+      cta_message: 'Clique no botão abaixo para participar'
+      cta_vote: 'Ir para a plataforma para votar'
     admin_labels:
       recipient_role:
         admins: 'Aos administradores'
@@ -605,6 +645,9 @@ pt:
         users_who_engaged_with_the_input: 'Usuários engajados com a entrada'
         users_who_engaged_with_the_project: 'Usuários engajados com o projeto'
         users_who_engaged_with_the_proposal: 'Usuários engajados com a proposta'
+        user_who_voted: 'Utilizador que votou'
+        user_with_unsubmitted_votes: 'Utilizador que não submeteu os seus votos'
+        users_who_engaged_but_not_voted: 'Utilizadores que participaram no projeto mas não votaram'
       content_type:
         comments: 'Comentários'
         content_moderation: 'Moderação de conteúdo'
@@ -615,6 +658,7 @@ pt:
         projects: 'Projetos'
         proposals: 'Propostas'
         reactions: 'Reações'
+        voting: 'Votação'
       trigger:
         comment_is_deleted: 'Comentário excluído'
         comment_is_flagged_as_spam: 'O comentário foi sinalizado como spam'
@@ -652,5 +696,9 @@ pt:
         user_registers_for_the_first_time: 'Usuário se cadastra pela primeira vez'
         user_replies_to_comment: 'Usuário responde ao comentário'
         user_replies_to_internal_comment: 'Respostas do usuário ao comentário interno'
+        voting_2_days_before_phase_closes: '2 dias antes do encerramento da fase de votação'
+        voting_1_day_after_last_votes: '1 dia após a última votação do utilizador'
+        voting_phase_ended: 'Fim da fase de votação'
+        voting_basket_submitted: 'Os votos são apresentados'
         7_days_after_invite_is_sent: '7 dias após o envio do convite'
         7_days_before_the_project_changes_phase: '7 dias antes da fase de mudanças do projeto'
