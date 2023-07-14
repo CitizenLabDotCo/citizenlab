@@ -2,8 +2,9 @@ import React, { memo, useEffect } from 'react';
 
 // components
 import Card from 'components/UI/Card/Compact';
-import { Icon, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
 import Body from './Body';
+import ImagePlaceholder from './ImagePlaceholder';
 import Footer from './Footer';
 import Interactions from './Interactions';
 
@@ -25,7 +26,6 @@ import usePhase from 'api/phases/usePhase';
 import useBasket from 'api/baskets/useBasket';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 import { scrollToElement } from 'utils/scroll';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
@@ -33,27 +33,6 @@ import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 // events
 import eventEmitter from 'utils/eventEmitter';
 import { IMAGES_LOADED_EVENT } from 'components/admin/ContentBuilder/constants';
-
-// styles
-import styled from 'styled-components';
-import { transparentize } from 'polished';
-import { colors } from 'utils/styleUtils';
-
-const ImagePlaceholderContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: ${transparentize(0.94, colors.textSecondary)};
-`;
-
-const ImagePlaceholderIcon = styled(Icon)`
-  width: 80px;
-  height: 80px;
-  fill: ${transparentize(0.62, colors.textSecondary)};
-`;
 
 interface Props {
   ideaId: string;
@@ -157,32 +136,20 @@ const IdeaCard = memo<IdeaCardProps>(
     return (
       <Card
         id={idea.data.id}
-        className={[className, 'e2e-idea-card']
-          .filter((item) => typeof item === 'string' && item !== '')
-          .join(' ')}
-        title={ideaTitle}
+        className={`${className ?? ''} e2e-idea-card`.trim()}
         to={`/ideas/${slug}${params}`}
         onClick={handleClick}
-        image={
-          !isNilOrError(ideaImage)
-            ? ideaImage.data.attributes.versions.medium
-            : null
-        }
+        title={ideaTitle}
+        image={hideImage ? null : ideaImage?.data.attributes.versions.medium}
         imagePlaceholder={
-          <ImagePlaceholderContainer>
-            <ImagePlaceholderIcon
-              name={
-                participationMethod === 'voting' && votingMethod === 'budgeting'
-                  ? 'money-bag'
-                  : 'idea'
-              }
+          hideImagePlaceholder ? undefined : (
+            <ImagePlaceholder
+              participationMethod={participationMethod}
+              votingMethod={votingMethod}
             />
-          </ImagePlaceholderContainer>
+          )
         }
-        hideImage={hideImage}
-        hideImagePlaceholder={hideImagePlaceholder}
-        body={<Body idea={idea} />}
-        hideBody={hideBody}
+        body={hideBody ? undefined : <Body idea={idea} />}
         interactions={
           hideInteractions ? null : (
             <Interactions
@@ -194,7 +161,7 @@ const IdeaCard = memo<IdeaCardProps>(
         footer={
           <Footer
             project={project}
-            idea={idea}
+            idea={idea.data}
             hideIdeaStatus={hideIdeaStatus}
             participationMethod={participationMethod}
           />

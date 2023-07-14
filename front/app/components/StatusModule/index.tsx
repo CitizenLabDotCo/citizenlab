@@ -8,6 +8,7 @@ import {
   Title,
   colors,
   useBreakpoint,
+  defaultStyles,
 } from '@citizenlab/cl2-component-library';
 import ConfettiSvg from './ConfettiSvg';
 import Warning from 'components/UI/Warning';
@@ -83,7 +84,7 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
     phase?.attributes.baskets_count || project?.attributes.baskets_count;
 
   return (
-    <Box>
+    <Box boxShadow={defaultStyles.boxShadow}>
       <Title variant="h2" style={{ fontWeight: 600 }}>
         {config?.getStatusTitle &&
           formatMessage(config.getStatusHeader(basketStatus))}

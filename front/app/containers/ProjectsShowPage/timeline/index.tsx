@@ -15,6 +15,7 @@ import {
 import SectionContainer from 'components/SectionContainer';
 import PhaseDocumentAnnotation from './document_annotation';
 import StatusModule from 'components/StatusModule';
+import VotingResults from './VotingResults';
 
 // router
 import setPhaseURL from './setPhaseURL';
@@ -38,6 +39,7 @@ import { isValidPhase } from '../phaseParam';
 
 // typings
 import { IPhaseData } from 'api/phases/types';
+import { pastPresentOrFuture } from 'utils/dateUtils';
 
 const Container = styled.div``;
 
@@ -98,8 +100,15 @@ const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
   if (project && selectedPhase) {
     const selectedPhaseId = selectedPhase.id;
     const participationMethod = selectedPhase.attributes.participation_method;
+    const isPastPhase =
+      pastPresentOrFuture(selectedPhase.attributes.end_at) === 'past';
 
     const isVotingPhase = participationMethod === 'voting';
+
+    const showIdeas =
+      participationMethod === 'ideation' || (isVotingPhase && !isPastPhase);
+
+    const showVotingResults = isVotingPhase && isPastPhase;
 
     return (
       <Container className={`${className || ''} e2e-project-process-page`}>
@@ -145,11 +154,10 @@ const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
                 projectId={projectId}
                 phaseId={selectedPhaseId}
               />
-              {(participationMethod === 'ideation' ||
-                participationMethod === 'voting') &&
-                selectedPhaseId && (
-                  <PhaseIdeas projectId={projectId} phaseId={selectedPhaseId} />
-                )}
+              {showIdeas && (
+                <PhaseIdeas projectId={projectId} phaseId={selectedPhaseId} />
+              )}
+              {showVotingResults && <VotingResults phaseId={selectedPhaseId} />}
             </ContentContainer>
           </div>
         </StyledSectionContainer>

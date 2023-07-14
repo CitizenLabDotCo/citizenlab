@@ -114,13 +114,12 @@ const AssignMultipleVotesInput = ({
   const { voting_term_singular_multiloc, voting_term_plural_multiloc } =
     participationContext.attributes;
 
-  const votingTermSingular = voting_term_singular_multiloc
-    ? localize(voting_term_singular_multiloc)
-    : formatMessage(messages.vote).toLowerCase();
-
-  const votingTermPlural = voting_term_plural_multiloc
-    ? localize(voting_term_plural_multiloc)
-    : formatMessage(messages.vote).toLowerCase();
+  const votingTermSingular =
+    localize(voting_term_singular_multiloc) ??
+    formatMessage(messages.vote).toLowerCase();
+  const votingTermPlural =
+    localize(voting_term_plural_multiloc) ??
+    formatMessage(messages.votes).toLowerCase();
 
   const basketSubmitted = !!basket?.data?.attributes.submitted_at;
   const disableAddingVote = !userHasVotesLeft || basketSubmitted;

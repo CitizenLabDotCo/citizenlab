@@ -14,7 +14,7 @@ export const fetchPhase = ({
     action: 'get',
   });
 
-const usePhases = (phaseId: string | undefined | null) => {
+const usePhase = (phaseId: string | undefined | null) => {
   return useQuery<IPhase, CLErrors, IPhase, PhasesKeys>({
     queryKey: phasesKeys.item({ phaseId }),
     queryFn: () => fetchPhase({ phaseId }),
@@ -22,4 +22,4 @@ const usePhases = (phaseId: string | undefined | null) => {
   });
 };
 
-export default usePhases;
+export default usePhase;

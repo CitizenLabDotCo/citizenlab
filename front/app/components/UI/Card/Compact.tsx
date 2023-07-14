@@ -45,7 +45,7 @@ const Container = styled(Link)`
   `}
 `;
 
-const IdeaCardImageWrapper = styled.div<{ hasImage: boolean }>`
+const IdeaCardImageWrapper = styled.div`
   flex: 0 0 ${cardInnerHeight};
   width: ${cardInnerHeight};
   height: ${cardInnerHeight};
@@ -128,17 +128,16 @@ const Body = styled.div`
 interface Props {
   id?: string;
   to: string;
-  image: string | null;
-  imagePlaceholder: JSX.Element;
-  hideImage?: boolean;
-  hideBody?: boolean;
-  hideImagePlaceholder?: boolean;
+  image?: string | null;
+  imagePlaceholder?: JSX.Element;
+  imageOverlay?: JSX.Element;
   author?: {
     name: string;
     id: string;
   } | null;
+  header?: JSX.Element;
   title: JSX.Element | string;
-  body: JSX.Element | string;
+  body?: JSX.Element | string;
   interactions?: JSX.Element | null;
   footer: JSX.Element | null;
   onClick?: (event: MouseEvent<HTMLAnchorElement>) => void;
@@ -147,55 +146,63 @@ interface Props {
 
 export const Card = memo<Props>(
   ({
-    image,
     id,
     to,
-    onClick,
+    image,
     imagePlaceholder,
-    hideImage = false,
-    hideImagePlaceholder = false,
+    imageOverlay,
+    header,
     title,
     body,
-    hideBody,
     interactions,
     footer,
     className,
-  }) => (
-    <Container
-      onClick={onClick}
-      to={to}
-      className={`e2e-card ${className} ${
-        !(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'
-      }`}
-      id={id}
-    >
-      {!hideImage && image && (
-        <IdeaCardImageWrapper hasImage={!!image}>
-          <IdeaCardImage src={image} cover={true} alt="" />
-        </IdeaCardImageWrapper>
-      )}
+    onClick,
+  }) => {
+    return (
+      <Container
+        onClick={onClick}
+        to={to}
+        className={`e2e-card ${className} ${
+          !(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'
+        }`}
+        id={id}
+      >
+        {image && (
+          <IdeaCardImageWrapper>
+            {imageOverlay ?? null}
+            <IdeaCardImage src={image} cover={true} alt="" />
+          </IdeaCardImageWrapper>
+        )}
 
-      {!hideImagePlaceholder && !image && (
-        <IdeaCardImageWrapper hasImage={!!image}>
-          {imagePlaceholder}
-        </IdeaCardImageWrapper>
-      )}
+        {!image && imagePlaceholder && (
+          <IdeaCardImageWrapper>
+            {imageOverlay ?? null}
+            {imagePlaceholder}
+          </IdeaCardImageWrapper>
+        )}
 
-      <ContentWrapper>
-        <Header className="e2e-card-title">
-          {typeof title === 'string' ? (
-            <Title title={title}>{title}</Title>
-          ) : (
-            title
+        <ContentWrapper>
+          {header && (
+            <Box display="flex" mb="16px">
+              {header}
+            </Box>
           )}
-        </Header>
+          <Header className="e2e-card-title">
+            {typeof title === 'string' ? (
+              <Title title={title}>{title}</Title>
+            ) : (
+              title
+            )}
+          </Header>
 
-        {!hideBody && <Body>{body}</Body>}
-        <Box mt="auto">{interactions}</Box>
-        {footer}
-      </ContentWrapper>
-    </Container>
-  )
+          {body && <Body>{body}</Body>}
+          <Box mt="auto">{interactions}</Box>
+          {footer}
+        </ContentWrapper>
+      </Container>
+    );
+  }
 );
 
 export default Card;
