@@ -28,7 +28,7 @@ export default defineMessages({
     defaultMessage: 'Yes, turn on',
   },
   turnOff: {
-    id: 'app.containers.Admin.messaging.newProjectPhaseModal.turnOn',
+    id: 'app.containers.Admin.messaging.newProjectPhaseModal.turnOff',
     defaultMessage: 'Yes, turn off',
   },
 });
