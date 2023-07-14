@@ -56,6 +56,10 @@ tr:
       "moderator_digest": Proje yöneticileri için haftalık genel bakış
       "assignee_digest": Atanmış fikirlere haftalık genel bakış
       "user_digest": Haftalık genel bakış
+      "voting_basket_submitted": Oylamanın onaylanması
+      "voting_basket_not_submitted": Gönderilmeyen oylar
+      "voting_last_chance": Oy vermek için son şans
+      "voting_results": Oylama sonuçları
       "your_proposed_initiatives_digest": Önerilerinize haftalık genel bakış
     schedules:
       weekly:
@@ -577,6 +581,42 @@ tr:
       new_votes: 'Yeni oy sayısı'
       remaining_votes: 'Kalan oy sayısı'
       remaining_days: 'Kalan gün sayısı'
+    voting_basket_submitted:
+      subject: '%{organizationName}: Başarılı bir şekilde oy kullandınız'
+      preheader: '%{organizationName}katılım platformunda başarıyla oy kullandınız'
+      title_basket_submitted: 'Başarılı bir şekilde oy kullandınız'
+      event_description: 'Katıldığınız için teşekkürler. Oylarınız kaydedilmiştir. Oylarınızı görmek ve yönetmek için %{organizationName} platformunu ziyaret edin.'
+      cta_see_votes_submitted: 'Verilen oyları görün'
+      cta_message: 'Katılmak için aşağıdaki butona tıklayın'
+    voting_basket_not_submitted:
+      subject: '%{organizationName}: Oylarınızı teslim etmediniz'
+      preheader: 'Oylarınızı %{organizationName}katılım platformuna göndermediniz'
+      title_basket_not_submitted: 'Oylarınızı teslim etmediniz'
+      event_description: '%{contextTitle} için birkaç seçenek belirlediniz ancak seçiminizi göndermediniz.'
+      cta_view_options_and_vote: 'Seçenekleri görüntüleyin ve oy verin'
+      cta_message: 'Seçtiğiniz seçenekleri göndermek için aşağıdaki düğmeyi tıklayın'
+    voting_last_chance:
+      subject: '%{organizationName}: %{phaseTitle}adresine oy vermek için son şans'
+      preheader: '%{organizationName}katılım platformunda %{phaseTitle} için oy kullanmak için son şans'
+      title_last_chance: 'Oy vermek için son şans %{phaseTitle}'
+      body_1: '%{projectTitle} projesi için oylama aşaması yarın gece yarısı sona eriyor.'
+      body_2: 'Zaman daralıyor ve henüz oyunuzu kullanmadığınızı fark ettik! Katılmak için aşağıdaki butona tıklayarak hemen harekete geçin.'
+      body_3: 'Bunu yaparak, bir dizi seçeneğe erişim kazanacak ve bu projenin geleceğine karar vermede çok önemli olan katkılarınızı sunma şansına sahip olacaksınız.'
+      cta_vote: 'Oylama'
+    voting_results:
+      subject: '%{organizationName}: %{phaseTitle} oylama sonuçları açıklandı!'
+      preheader: '%{phaseTitle} oy sonuçlari %{organizationName}katilim platformu üzeri̇nden açiklandi'
+      title_results: '%{phaseTitle} oylama sonuçlari açiklandi!'
+      body_1: 'Sonuçlar geldi!'
+      body_2: '%{organizationName} platformundaki %{phaseTitle} oylamasının sonuçları yayınlandı!'
+      body_3: 'Sonuçları incelemenizi ve sonraki adımlarla ilgili güncellemeler için bizi takip etmenizi öneririz.'
+      cta_see_results: 'Platformdaki sonuçları görün'
+    voting_phase_started:
+      subject: '%{organizationName}: %{projectName}için oylama aşaması başladı'
+      preheader: '%{projectName} için %{organizationName}katılım platformunda oylama süreci başladı.'
+      event_description: '"%{projectName}" projesi sizden %{numIdeas} seçenekleri arasında oylama yapmanızı istiyor:'
+      cta_message: 'Katılmak için aşağıdaki butona tıklayın'
+      cta_vote: 'Oy vermek için platforma gidin'
     admin_labels:
       recipient_role:
         admins: 'Yöneticilere'
@@ -605,6 +645,9 @@ tr:
         users_who_engaged_with_the_input: 'Girdi ile etkileşime geçen kullanıcılar'
         users_who_engaged_with_the_project: 'Proje ile etkileşime geçen kullanıcılar'
         users_who_engaged_with_the_proposal: 'Teklifle etkileşime geçen kullanıcılar'
+        user_who_voted: 'Oy veren kullanıcı'
+        user_with_unsubmitted_votes: 'Oylarını göndermemiş olan kullanıcı'
+        users_who_engaged_but_not_voted: 'Proje ile ilgilenen ancak oy kullanmayan kullanıcılar'
       content_type:
         comments: 'Yorumlar'
         content_moderation: 'İçerik moderasyonu'
@@ -615,6 +658,7 @@ tr:
         projects: 'Projeler'
         proposals: 'Teklifler'
         reactions: 'Tepkiler'
+        voting: 'Oylama'
       trigger:
         comment_is_deleted: 'Yorum silindi'
         comment_is_flagged_as_spam: 'Yorum spam olarak işaretlendi'
@@ -652,5 +696,9 @@ tr:
         user_registers_for_the_first_time: 'Kullanıcı ilk kez kaydolur'
         user_replies_to_comment: 'Kullanıcı yoruma yanıt veriyor'
         user_replies_to_internal_comment: 'Kullanıcı dahili yoruma yanıt veriyor'
+        voting_2_days_before_phase_closes: 'Oylama aşamasının kapanmasına 2 gün kala'
+        voting_1_day_after_last_votes: 'Kullanıcı son oylamadan 1 gün sonra'
+        voting_phase_ended: 'Oylama aşaması sona erdi'
+        voting_basket_submitted: 'Oylar teslim edildi'
         7_days_after_invite_is_sent: 'Davetiye gönderildikten 7 gün sonra'
         7_days_before_the_project_changes_phase: 'Proje değişiklik aşamasından 7 gün önce'
