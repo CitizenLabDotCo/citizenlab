@@ -1222,7 +1222,7 @@
   "app.containers.AdminPage.ProjectEdit.adminProjectFolderSelectTooltip": "يمكنك إضافة مشروعك إلى مجلد حالي. يمكنك أيضًا إجراء ذلك لاحقًا في علامة التبويب \"المشاريع\".",
   "app.containers.AdminPage.ProjectEdit.allowedInputTopicsTab": "وسوم المشروع",
   "app.containers.AdminPage.ProjectEdit.anonymousPolling": "استطلاع مجهول",
-  "app.containers.AdminPage.ProjectEdit.anonymousPollingTooltip2": "عند التمكين ، من المستحيل معرفة من يتفاعل مع ماذا. لا يزال المستخدمون بحاجة إلى حساب ويمكنهم الرد مرة واحدة فقط.",
+  "app.containers.AdminPage.ProjectEdit.anonymousPollingTooltip": "عند التمكين، سيكون من المستحيل معرفة هوية المصوّتين ومعرفة ما صوتوا لصالحه. لا يزال المستخدمون بحاجة إلى حساب ويستطيع كل منهم التصويت مرة واحدة.",
   "app.containers.AdminPage.ProjectEdit.archived": "مؤرشف",
   "app.containers.AdminPage.ProjectEdit.archivedStatus": "مؤرشف",
   "app.containers.AdminPage.ProjectEdit.areaIsLinkedToStaticPage": "لا يمكن حذف هذه المنطقة؛ لأنها مستخدمة لعرض مشاريع في الصفحة (الصفحات) المخصصة التالية. سيتعين عليك إلغاء ربط المنطقة من الصفحة أو حذف الصفحة قبل حذف المنطقة.",
