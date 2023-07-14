@@ -56,6 +56,10 @@ ca:
       "moderator_digest": Visió general setmanal per a gestors de projectes
       "assignee_digest": Visió general setmanal de les idees assignades
       "user_digest": Resum setmanal
+      "voting_basket_submitted": Confirmació de la votació
+      "voting_basket_not_submitted": Vots no enviats
+      "voting_last_chance": Última oportunitat per votar
+      "voting_results": Resultats de les votacions
       "your_proposed_initiatives_digest": Resum setmanal de les vostres propostes
     schedules:
       weekly:
@@ -577,6 +581,42 @@ ca:
       new_votes: 'Nous vots'
       remaining_votes: 'Vots restants'
       remaining_days: 'Dies restants'
+    voting_basket_submitted:
+      subject: '%{organizationName}: has votat correctament'
+      preheader: 'Heu votat amb èxit a la plataforma de participació de %{organizationName}'
+      title_basket_submitted: 'Has votat correctament'
+      event_description: 'Gràcies per participar. Els vostres vots s''han registrat. Visiteu la plataforma de %{organizationName} per veure i gestionar els vostres vots.'
+      cta_see_votes_submitted: 'Veure vots enviats'
+      cta_message: 'Feu clic al botó següent per participar'
+    voting_basket_not_submitted:
+      subject: '%{organizationName}: no heu enviat els vostres vots'
+      preheader: 'No heu enviat els vostres vots a la plataforma de participació de %{organizationName}'
+      title_basket_not_submitted: 'No heu enviat els vostres vots'
+      event_description: 'Heu seleccionat algunes opcions per a %{contextTitle} , però no heu enviat la vostra selecció.'
+      cta_view_options_and_vote: 'Veure opcions i votar'
+      cta_message: 'Feu clic al botó següent per enviar les opcions seleccionades'
+    voting_last_chance:
+      subject: '%{organizationName}: última oportunitat per votar %{phaseTitle}'
+      preheader: 'Última oportunitat per votar %{phaseTitle} a la plataforma de participació de %{organizationName}'
+      title_last_chance: 'Última oportunitat per votar %{phaseTitle}'
+      body_1: 'La fase de votació del projecte %{projectTitle} s''acaba demà, a mitjanit.'
+      body_2: 'El temps s''acaba i ens hem adonat que encara no has votat! Actua ara fent clic al botó següent per participar.'
+      body_3: 'En fer-ho, tindreu accés a una sèrie d''opcions i tindreu l''oportunitat de donar la vostra aportació, que és crucial per decidir el futur d''aquest projecte.'
+      cta_vote: 'Vota'
+    voting_results:
+      subject: '%{organizationName}: %{phaseTitle} resultats de vots revelats!'
+      preheader: '%{phaseTitle} resultats de votació revelats a la plataforma de participació d'' %{organizationName}'
+      title_results: 'S''han revelat els resultats de %{phaseTitle} vots!'
+      body_1: 'Ja tenim els resultats!'
+      body_2: 'S''han publicat els resultats de la votació %{phaseTitle} a la plataforma %{organizationName}!'
+      body_3: 'Us animem a revisar els resultats i estar atents per a més actualitzacions sobre els passos següents.'
+      cta_see_results: 'Veure resultats a la plataforma'
+    voting_phase_started:
+      subject: '%{organizationName}: la fase de votació va començar per a %{projectName}'
+      preheader: 'La fase de votació va començar per %{projectName} a la plataforma de participació de l'' %{organizationName}'
+      event_description: 'El projecte "%{projectName}" us demana que voteu entre %{numIdeas} opcions:'
+      cta_message: 'Feu clic al botó següent per participar'
+      cta_vote: 'Aneu a la plataforma per votar'
     admin_labels:
       recipient_role:
         admins: 'Als administradors'
@@ -605,6 +645,9 @@ ca:
         users_who_engaged_with_the_input: 'Usuaris que han interaccionat amb l''entrada'
         users_who_engaged_with_the_project: 'Usuaris que han participat amb el projecte'
         users_who_engaged_with_the_proposal: 'Usuaris que han interaccionat amb la proposta'
+        user_who_voted: 'Usuari que ha votat'
+        user_with_unsubmitted_votes: 'Usuari que no ha enviat els seus vots'
+        users_who_engaged_but_not_voted: 'Usuaris que s''han implicat amb el projecte però no han votat'
       content_type:
         comments: 'Comentaris'
         content_moderation: 'Moderació de continguts'
@@ -615,6 +658,7 @@ ca:
         projects: 'Projectes'
         proposals: 'Propostes'
         reactions: 'Reaccions'
+        voting: 'Votació'
       trigger:
         comment_is_deleted: 'S''ha suprimit el comentari'
         comment_is_flagged_as_spam: 'El comentari està marcat com a correu brossa'
@@ -652,5 +696,9 @@ ca:
         user_registers_for_the_first_time: 'L''usuari es registra per primera vegada'
         user_replies_to_comment: 'L''usuari respon al comentari'
         user_replies_to_internal_comment: 'L''usuari respon al comentari intern'
+        voting_2_days_before_phase_closes: '2 dies abans del tancament de la fase de votació'
+        voting_1_day_after_last_votes: '1 dia després de la darrera votació de l''usuari'
+        voting_phase_ended: 'S''ha acabat la fase de votació'
+        voting_basket_submitted: 'Es presenten els vots'
         7_days_after_invite_is_sent: '7 dies després de l''enviament de la invitació'
         7_days_before_the_project_changes_phase: '7 dies abans del canvi de fase del projecte'
