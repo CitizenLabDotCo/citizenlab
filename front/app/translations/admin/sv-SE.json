@@ -1222,7 +1222,7 @@
   "app.containers.AdminPage.ProjectEdit.adminProjectFolderSelectTooltip": "Du kan lägga till ditt projekt i en befintlig mapp. Du kan även göra det här senare på fliken Projekt.",
   "app.containers.AdminPage.ProjectEdit.allowedInputTopicsTab": "Projektämnen",
   "app.containers.AdminPage.ProjectEdit.anonymousPolling": "Anonym omröstning",
-  "app.containers.AdminPage.ProjectEdit.anonymousPollingTooltip2": "När denna funktion är aktiverad går det inte att se vem som reagerade på vad. Användare behöver fortfarande ett konto och kan bara reagera en gång.",
+  "app.containers.AdminPage.ProjectEdit.anonymousPollingTooltip": "När funktionen har aktiverats går det inte att se vem som röstade på vad. Användare behöver fortfarande ha ett konto och kan bara rösta en gång.",
   "app.containers.AdminPage.ProjectEdit.archived": "Arkiverad",
   "app.containers.AdminPage.ProjectEdit.archivedStatus": "Arkiverad",
   "app.containers.AdminPage.ProjectEdit.areaIsLinkedToStaticPage": "Du kan inte ta bort det här området eftersom det används för att visa projekt på följande ytterligare anpassade sidor. Du måste ta bort länken till området från sidan eller ta bort sidan innan du kan ta bort området.",
