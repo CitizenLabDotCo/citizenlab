@@ -633,7 +633,7 @@
   "app.containers.Admin.Users.reachedLimitMessage": "Vous avez atteint la limite de postes dans votre plan, 1 poste supplémentaire pour {name} sera ajouté.",
   "app.containers.Admin.Users.registeredUser": "Utilisateur inscrit",
   "app.containers.Admin.Users.seeProfile": "Voir le profil de cet utilisateur",
-  "app.containers.Admin.Users.setAsAdmin": "Défini comme administrateur",
+  "app.containers.Admin.Users.setAsAdmin": "Définir comme administrateur",
   "app.containers.Admin.Users.setAsNormalUser": "Définir comme utilisateur normal",
   "app.containers.Admin.Users.since": "Enregistré le",
   "app.containers.Admin.Users.status": "Statut",
