@@ -1222,7 +1222,7 @@
   "app.containers.AdminPage.ProjectEdit.adminProjectFolderSelectTooltip": "Możesz dodać swój projekt do istniejącego folderu. Możesz to również zrobić później w zakładce Projekty.",
   "app.containers.AdminPage.ProjectEdit.allowedInputTopicsTab": "Tagi dozwolone",
   "app.containers.AdminPage.ProjectEdit.anonymousPolling": "Badanie anonimowe",
-  "app.containers.AdminPage.ProjectEdit.anonymousPollingTooltip2": "Po włączeniu nie można zobaczyć, kto na co zareagował. Użytkownicy nadal potrzebują konta i mogą zareagować tylko raz.",
+  "app.containers.AdminPage.ProjectEdit.anonymousPollingTooltip": "Kiedy ta opcja jest włączona, nie można zobaczyć, kto na co głosował. Użytkownicy nadal potrzebują konta i mogą głosować tylko raz.",
   "app.containers.AdminPage.ProjectEdit.archived": "Zarchiwizowany",
   "app.containers.AdminPage.ProjectEdit.archivedStatus": "Zarchiwizowany",
   "app.containers.AdminPage.ProjectEdit.areaIsLinkedToStaticPage": "Tego obszaru nie można usunąć, ponieważ jest on używany do wyświetlania projektów na kolejnych stronach niestandardowych. Zanim będzie można usunąć obszar, trzeba będzie odłączyć go od strony lub usunąć stronę.",
