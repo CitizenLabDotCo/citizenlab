@@ -33,6 +33,9 @@ import StatusChangeOnReactedIdeaNotification from '../StatusChangeOnReactedIdeaN
 import StatusChangeOnReactedInitiativeNotification from '../StatusChangeOnReactedInitiativeNotification';
 import ThresholdReachedForAdminNotification from '../ThresholdReachedForAdminNotification';
 import ProjectFolderModerationRightsReceivedNotification from '../ProjectFolderModerationRightsReceivedNotification';
+import VotingBasketSubmittedNotification from '../VotingBasketSubmittedNotification';
+import VotingBasketNotSubmittedNotification from '../VotingBasketNotSubmittedNotification';
+import VotingLastChanceNotification from '../VotingLastChanceNotification';
 
 import {
   TNotificationData,
@@ -67,6 +70,9 @@ import {
   IStatusChangeOnReactedInitiativeNotificationData,
   IThresholdReachedForAdminNotificationData,
   IProjectFolderModerationRightsReceivedNotificationData,
+  IVotingBasketSubmittedNotificationData,
+  IVotingBasketNotSubmittedNotificationData,
+  IVotingLastChanceNotificationData,
 } from 'api/notifications/types';
 import styled from 'styled-components';
 import Outlet from 'components/Outlet';
@@ -315,6 +321,26 @@ const Notification = ({ notification }: Props) => {
       } else {
         return null;
       }
+    case 'voting_basket_submitted':
+      return (
+        <VotingBasketSubmittedNotification
+          notification={notification as IVotingBasketSubmittedNotificationData}
+        />
+      );
+    case 'voting_basket_not_submitted':
+      return (
+        <VotingBasketNotSubmittedNotification
+          notification={
+            notification as IVotingBasketNotSubmittedNotificationData
+          }
+        />
+      );
+    case 'voting_last_chance':
+      return (
+        <VotingLastChanceNotification
+          notification={notification as IVotingLastChanceNotificationData}
+        />
+      );
     default:
       return (
         <Outlet

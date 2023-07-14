@@ -134,6 +134,10 @@ class Project < ApplicationRecord
     where.not(process_type: 'timeline')
   }
 
+  scope :is_timeline, lambda {
+    where(process_type: 'timeline')
+  }
+
   scope :ordered, lambda {
     includes(:admin_publication).order('admin_publications.ordering')
   }
