@@ -1653,7 +1653,7 @@
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.whatsAppMessage": "{projectFolderName} | von der Beteiligungsplattform {orgName}",
   "app.utils.AdminPage.ProjectEdit.conductParticipatoryBudgetingText": "Budgetzuweisung durchführen",
   "app.utils.AdminPage.ProjectEdit.createDocumentAnnotation": "Feedback zu einem Dokument sammeln",
-  "app.utils.AdminPage.ProjectEdit.createNativeSurvey": "Plattform-interne Umfrage erstellen",
+  "app.utils.AdminPage.ProjectEdit.createNativeSurvey": "Umfrage erstellen",
   "app.utils.AdminPage.ProjectEdit.createPoll": "Abstimmung erstellen",
   "app.utils.AdminPage.ProjectEdit.createSurveyText": "Einbinden einer externen Umfrage",
   "app.utils.AdminPage.ProjectEdit.findVolunteers": "Teilnehmende finden",

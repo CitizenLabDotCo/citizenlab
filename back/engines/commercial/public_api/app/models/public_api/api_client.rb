@@ -4,12 +4,12 @@
 #
 # Table name: public_api_api_clients
 #
-#  id                    :uuid             not null, primary key
-#  name                  :string
-#  created_at            :datetime         not null
-#  updated_at            :datetime         not null
-#  last_used_at :datetime
-#  secret_digest         :string           not null
+#  id             :uuid             not null, primary key
+#  name           :string
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  last_used_at   :datetime
+#  secret_digest  :string           not null
 #  secret_postfix :string           not null
 #
 module PublicApi
