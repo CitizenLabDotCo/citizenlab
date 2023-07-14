@@ -26,6 +26,7 @@ module XlsxExport
       Phase.where(
         id: phase_id
       ).includes(
+        :ideas_phases,
         project: { custom_form: { custom_fields: :options } },
         custom_form: { custom_fields: :options }
       ).first

@@ -6,6 +6,7 @@ module XlsxExport
       super()
       @model = model
       @option_index = option_index
+      @multiloc_service = MultilocService.new
     end
 
     def default(field)
@@ -28,7 +29,7 @@ module XlsxExport
       value = value_for(field)
       return '' if value.blank?
 
-      translation = MultilocService.new.t(value)
+      translation = multiloc_service.t value
       Utils.new.convert_to_text_long_lines(translation)
     end
 
@@ -100,7 +101,7 @@ module XlsxExport
 
     private
 
-    attr_reader :model, :option_index
+    attr_reader :model, :option_index, :multiloc_service
 
     VALUE_SEPARATOR = ', '
 
@@ -120,7 +121,7 @@ module XlsxExport
     end
 
     def value_for_multiloc(maybe_multiloc)
-      maybe_multiloc.is_a?(Hash) ? MultilocService.new.t(maybe_multiloc) : ''
+      maybe_multiloc.is_a?(Hash) ? multiloc_service.t(maybe_multiloc) : ''
     end
   end
 end

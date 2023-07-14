@@ -10,6 +10,8 @@ module XlsxExport
       @include_private_attributes = include_private_attributes
       @participation_method = Factory.instance.participation_method_for participation_context
       @fields_in_form = IdeaCustomFieldsService.new(participation_method.custom_form).reportable_fields
+      @multiloc_service = MultilocService.new
+      @url_service = Frontend::UrlService.new
     end
 
     def generate_sheet(workbook, sheetname)
@@ -45,7 +47,7 @@ module XlsxExport
 
     private
 
-    attr_reader :inputs, :participation_context, :fields_in_form, :participation_method, :include_private_attributes
+    attr_reader :inputs, :participation_context, :fields_in_form, :participation_method, :include_private_attributes, :multiloc_service, :url_service
 
     def input_id_report_field
       ComputedFieldForReport.new(column_header_for('input_id'), ->(input) { input.id })
@@ -106,7 +108,7 @@ module XlsxExport
     def input_url_report_field
       ComputedFieldForReport.new(
         column_header_for('input_url'),
-        ->(input) { Frontend::UrlService.new.model_to_url(input) },
+        ->(input) { url_service.model_to_url(input) },
         hyperlink: true
       )
     end
@@ -114,14 +116,14 @@ module XlsxExport
     def project_report_field
       ComputedFieldForReport.new(
         column_header_for('project'),
-        ->(input) { MultilocService.new.t(input.project.title_multiloc) }
+        ->(input) { multiloc_service.t(input.project.title_multiloc) }
       )
     end
 
     def status_report_field
       ComputedFieldForReport.new(
         column_header_for('status'),
-        ->(input) { MultilocService.new.t(input.idea_status&.title_multiloc) }
+        ->(input) { multiloc_service.t(input.idea_status&.title_multiloc) }
       )
     end
 
@@ -194,7 +196,7 @@ module XlsxExport
     end
 
     def all_report_fields
-      input_report_fields + author_report_fields + meta_report_fields + user_report_fields
+      @all_report_fields ||= input_report_fields + author_report_fields + meta_report_fields + user_report_fields
     end
 
     def all_column_headers
@@ -209,7 +211,7 @@ module XlsxExport
     end
 
     def user_fields
-      CustomField.with_resource_type('User').includes(:options).order(:ordering).all
+      @user_fields ||= CustomField.with_resource_type('User').includes(:options).order(:ordering).all
     end
 
     def voting_context(input, participation_context)
