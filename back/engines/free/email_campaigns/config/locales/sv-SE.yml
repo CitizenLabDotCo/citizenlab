@@ -56,6 +56,10 @@ sv:
       "moderator_digest": Veckoöversikt för projektledare
       "assignee_digest": Veckoöversikt över tilldelade idéer
       "user_digest": Veckoöversikt
+      "voting_basket_submitted": Bekräftelse av röstning
+      "voting_basket_not_submitted": Ej avgivna röster
+      "voting_last_chance": Sista chansen att rösta
+      "voting_results": Resultat av omröstningen
       "your_proposed_initiatives_digest": Veckoöversikt över dina förslag
     schedules:
       weekly:
@@ -577,6 +581,42 @@ sv:
       new_votes: 'Nya röster'
       remaining_votes: 'Röster kvar'
       remaining_days: 'Dagar kvar'
+    voting_basket_submitted:
+      subject: '%{organizationName}: Du röstade framgångsrikt'
+      preheader: 'Du röstade framgångsrikt på deltagandeplattformen för %{organizationName}'
+      title_basket_submitted: 'Du röstade framgångsrikt'
+      event_description: 'Tack för ert deltagande. Dina röster har registrerats. Besök plattformen %{organizationName} för att se och hantera dina röster.'
+      cta_see_votes_submitted: 'Se avgivna röster'
+      cta_message: 'Klicka på knappen nedan för att delta'
+    voting_basket_not_submitted:
+      subject: '%{organizationName}: Du har inte skickat in dina röster'
+      preheader: 'Du har inte lämnat dina röster på deltagandeplattformen %{organizationName}'
+      title_basket_not_submitted: 'Du har inte avgett din röst'
+      event_description: 'Du valde några alternativ för %{contextTitle} men du skickade inte in ditt val.'
+      cta_view_options_and_vote: 'Visa alternativ och rösta'
+      cta_message: 'Klicka på knappen nedan för att skicka in dina valda alternativ'
+    voting_last_chance:
+      subject: '%{organizationName}: Sista chansen att rösta på %{phaseTitle}'
+      preheader: 'Sista chansen att rösta på %{phaseTitle} på deltagarplattformen för %{organizationName}'
+      title_last_chance: 'Sista chansen att rösta på %{phaseTitle}'
+      body_1: 'Omröstningsfasen för %{projectTitle} -projektet avslutas i morgon vid midnatt.'
+      body_2: 'Tiden rinner ut, och vi har märkt att du inte har röstat än! Gör det nu genom att klicka på knappen nedan för att delta.'
+      body_3: 'På så sätt får du tillgång till en rad olika alternativ och möjlighet att ge din syn på saken, vilket är avgörande för projektets framtid.'
+      cta_vote: 'Omröstning'
+    voting_results:
+      subject: '%{organizationName}: %{phaseTitle} omröstningsresultat avslöjade!'
+      preheader: '%{phaseTitle} röstresultat avslöjade på deltagandeplattformen %{organizationName}'
+      title_results: '%{phaseTitle} omröstningsresultaten avslöjade!'
+      body_1: 'Resultaten har kommit!'
+      body_2: 'Resultatet av omröstningen på %{phaseTitle} i plattformen %{organizationName} har offentliggjorts!'
+      body_3: 'Vi uppmanar er att granska resultaten och hålla utkik efter ytterligare uppdateringar om nästa steg.'
+      cta_see_results: 'Se resultat i plattformen'
+    voting_phase_started:
+      subject: '%{organizationName}: Omröstningsfasen har inletts för %{projectName}'
+      preheader: 'Omröstningsfasen inleddes för %{projectName} på deltagandeplattformen för %{organizationName}'
+      event_description: 'Projektet "%{projectName}" ber dig att rösta mellan %{numIdeas} alternativ:'
+      cta_message: 'Klicka på knappen nedan för att delta'
+      cta_vote: 'Gå till plattformen för att rösta'
     admin_labels:
       recipient_role:
         admins: 'Till administratörer'
@@ -605,6 +645,9 @@ sv:
         users_who_engaged_with_the_input: 'Användare som engagerade sig i inmatningen'
         users_who_engaged_with_the_project: 'Användare som engagerade sig i projektet'
         users_who_engaged_with_the_proposal: 'Användare som engagerade sig i förslaget'
+        user_who_voted: 'Användare som röstade'
+        user_with_unsubmitted_votes: 'Användare som inte har lämnat sina röster'
+        users_who_engaged_but_not_voted: 'Användare som engagerat sig i projektet men inte röstat'
       content_type:
         comments: 'Kommentarer'
         content_moderation: 'Moderering av innehåll'
@@ -615,6 +658,7 @@ sv:
         projects: 'Projekt'
         proposals: 'Förslag'
         reactions: 'Reaktioner'
+        voting: 'Omröstning'
       trigger:
         comment_is_deleted: 'Kommentaren tas bort.'
         comment_is_flagged_as_spam: 'Kommentaren flaggas som skräppost'
@@ -652,5 +696,9 @@ sv:
         user_registers_for_the_first_time: 'Användaren registrerar sig för första gången'
         user_replies_to_comment: 'Användaren svarar på kommentaren'
         user_replies_to_internal_comment: 'Användaren svarar på intern kommentar'
+        voting_2_days_before_phase_closes: '2 dagar innan omröstningen avslutas'
+        voting_1_day_after_last_votes: '1 dag efter att användaren senast röstade'
+        voting_phase_ended: 'Omröstningsfasen avslutad'
+        voting_basket_submitted: 'Rösterna är avgivna'
         7_days_after_invite_is_sent: '7 dagar efter att inbjudan skickats'
         7_days_before_the_project_changes_phase: '7 dagar innan projektet byter fas'
