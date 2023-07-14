@@ -1222,7 +1222,7 @@
   "app.containers.AdminPage.ProjectEdit.adminProjectFolderSelectTooltip": "Suliniutit mappimut pioreersumut ilanngussinnaavat. Kingusinnerusukkuttaaq quppernermi \"Suliniutit\"-mi taamaaliorsinnaavutit.",
   "app.containers.AdminPage.ProjectEdit.allowedInputTopicsTab": "Suliniutit tag-itai",
   "app.containers.AdminPage.ProjectEdit.anonymousPolling": "Kinaassutsimik isertuussisitsilluni isumasiuineq",
-  "app.containers.AdminPage.ProjectEdit.anonymousPollingTooltip2": "When enabled it's impossible to see who reacted to what. Users still need an account and can only react once.",
+  "app.containers.AdminPage.ProjectEdit.anonymousPollingTooltip": "Atuutilersikkaanni kikkut sunik toqqaasimanersut takuneqarsinnaajunnaartarpoq. Atuisulli suli atuisuuffeqartariaqarput ataasiaannarlu taasisinnaatitaallutik.",
   "app.containers.AdminPage.ProjectEdit.archived": "Archived",
   "app.containers.AdminPage.ProjectEdit.archivedStatus": "Archived",
   "app.containers.AdminPage.ProjectEdit.areaIsLinkedToStaticPage": "This area cannot be deleted because it is being used to display projects on the following more custom page(s). You will need to unlink the area from the page, or delete the page before you can delete the area.",
