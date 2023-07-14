@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box, Text, Icon } from '@citizenlab/cl2-component-library';
 
 // styling
 import { useTheme } from 'styled-components';
@@ -18,7 +18,7 @@ interface Props {
   baskets?: number;
 }
 
-const ProgressBar = ({ votes, votesPercentage, baskets: _baskets }: Props) => {
+const ProgressBar = ({ votes, votesPercentage, baskets }: Props) => {
   const theme = useTheme();
   const { formatMessage } = useIntl();
 
@@ -54,6 +54,27 @@ const ProgressBar = ({ votes, votesPercentage, baskets: _baskets }: Props) => {
           {`${votesPercentage}% (${votes} ${formatMessage(messages.votes)})`}
         </Text>
       </Box>
+      {baskets !== undefined && (
+        <Box
+          position="absolute"
+          top="0"
+          right="0"
+          h="28px"
+          display="flex"
+          alignItems="center"
+        >
+          <Text mb="0" mt="1px" mr="4px" color="primary">
+            {baskets}
+          </Text>
+          <Icon
+            name="user"
+            width="20px"
+            height="20px"
+            mr="12px"
+            fill={theme.colors.primary}
+          />
+        </Box>
+      )}
     </Box>
   );
 };

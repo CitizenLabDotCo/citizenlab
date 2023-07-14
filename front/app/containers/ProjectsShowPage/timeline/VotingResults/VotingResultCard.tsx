@@ -57,6 +57,8 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
     ? roundPercentage(ideaVotes, totalVotes)
     : undefined;
 
+  const baskets = idea.attributes.baskets_count;
+
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     updateSearchParams({ scroll_to_card: idea.id });
@@ -98,6 +100,7 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
                   budget={idea.attributes.budget ?? undefined}
                   votes={ideaVotes}
                   votesPercentage={votesPercentage}
+                  baskets={baskets ?? 0}
                 />
               ) : undefined
             }
