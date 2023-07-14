@@ -28,7 +28,6 @@ describe('router history', () => {
       .invoke('attr', 'href')
       .then(($href) => {
         if (!$href) throw new Error();
-        console.log($href);
         const path = $href.split('?')[0];
 
         // Click on idea

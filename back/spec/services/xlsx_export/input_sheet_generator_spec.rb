@@ -487,9 +487,7 @@ describe XlsxExport::InputSheetGenerator do
         let!(:comments) { create_list(:comment, 1, post: ideation_response1) }
         let!(:likes) { create_list(:reaction, 1, reactable: ideation_response1) }
         let!(:baskets) do
-          create_list(:basket, 2, participation_context: participation_context, ideas: [ideation_response1]).each do |basket|
-            SideFxBasketService.new.update_basket_counts basket
-          end
+          create_list(:basket, 2, participation_context: participation_context, ideas: [ideation_response1]).each(&:update_counts!)
         end
         let(:inputs) { [ideation_response1.reload] }
 
@@ -578,7 +576,7 @@ describe XlsxExport::InputSheetGenerator do
         let!(:baskets) do
           create_list(:basket, 2, participation_context: participation_context, ideas: [ideation_response1]).each do |basket|
             basket.baskets_ideas.first.update!(votes: 2)
-            SideFxBasketService.new.update_basket_counts basket
+            basket.update_counts!
           end
         end
         let!(:other_phase) { create(:voting_phase, project: participation_context.project, start_at: (Time.now - 6.months), end_at: (Time.now - 4.months)) }

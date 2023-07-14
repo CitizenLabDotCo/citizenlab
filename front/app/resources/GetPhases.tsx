@@ -14,7 +14,7 @@ interface Props extends InputProps {
 }
 
 const GetPhases = ({ children, projectId }: Props) => {
-  const { data: phases } = usePhases(projectId);
+  const { data: phases } = usePhases(projectId ?? undefined);
   return (children as any)(phases?.data);
 };
 

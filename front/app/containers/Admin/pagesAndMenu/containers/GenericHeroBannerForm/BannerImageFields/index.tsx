@@ -17,11 +17,11 @@ import { isNilOrError } from 'utils/helperUtils';
 import {
   ICustomPageAttributes,
   TCustomPageBannerLayout,
-} from 'services/customPages';
+} from 'api/custom_pages/types';
 import {
   IHomepageSettingsAttributes,
   THomepageBannerLayout,
-} from 'services/homepageSettings';
+} from 'api/home_page/types';
 import ImageInfoTooltip from './ImageInfoTooltip';
 
 export interface Props {

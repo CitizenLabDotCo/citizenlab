@@ -1,6 +1,7 @@
 import React, { lazy } from 'react';
 import moduleConfiguration from 'modules';
 import PageLoading from 'components/UI/PageLoading';
+import InitiativePreviewIndex from 'components/admin/PostManager/components/InitiativePreviewIndex';
 const AdminInitiativesIndex = lazy(() => import('.'));
 const AdminInitiativesSettings = lazy(() => import('./settings'));
 
@@ -18,6 +19,14 @@ const createAdminInitiativesRoutes = () => ({
       element: (
         <PageLoading>
           <AdminInitiativesManage />
+        </PageLoading>
+      ),
+    },
+    {
+      path: ':initiativeId',
+      element: (
+        <PageLoading>
+          <InitiativePreviewIndex />
         </PageLoading>
       ),
     },

@@ -17,7 +17,7 @@ import { adminCustomPageSettingsPath } from '../../routes';
 // i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
-import { ICustomPageData } from 'services/customPages';
+import { ICustomPageData } from 'api/custom_pages/types';
 
 interface Props {
   customPage: ICustomPageData;

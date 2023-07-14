@@ -23,8 +23,6 @@
 #  index_tenants_on_host                   (host)
 #
 class Tenant < ApplicationRecord
-  include PublicApi::TenantDecorator
-
   attr_accessor :config_sync_enabled
 
   validates :name, :host, presence: true

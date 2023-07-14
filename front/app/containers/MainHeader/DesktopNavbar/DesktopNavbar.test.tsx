@@ -2,8 +2,8 @@ import React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
 import DesktopNavbar from '.';
 
-jest.mock('hooks/useNavbarItems');
-jest.mock('hooks/useCustomPageSlugById');
+jest.mock('api/navbar/useNavbarItems');
+jest.mock('api/custom_pages/useCustomPageSlugById');
 
 const mockAdminPublications = [
   {

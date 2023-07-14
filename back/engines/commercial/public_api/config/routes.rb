@@ -17,9 +17,10 @@ PublicApi::Engine.routes.draw do
     resources :ideas, only: %i[index show]
     resources :initiatives, only: %i[index show]
     resources :phases, only: %i[index show]
+    resources :project_folders, only: %i[index show]
+    resources :reactions, only: %i[index]
     resources :topics, only: %i[index show]
     resources :users, only: %i[index show]
-    resources :reactions, only: %i[index]
 
     resources :projects, only: %i[index show] do
       resources :phases, only: %i[index]
@@ -29,4 +30,10 @@ end
 
 Rails.application.routes.draw do
   mount PublicApi::Engine => '/api', as: 'public_api'
+
+  namespace :web_api, defaults: { format: :json } do
+    namespace :v1 do
+      resources :api_clients, except: [:update]
+    end
+  end
 end

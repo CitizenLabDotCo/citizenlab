@@ -6,10 +6,10 @@ import { HeaderContent, Left, Text, Right } from './';
 import T from 'components/T';
 
 // services
-import { OnboardingCampaignName } from 'services/onboardingCampaigns';
+import { OnboardingCampaignName } from 'api/onboarding_campaigns/types';
 
 // hooks
-import useCurrentOnboardingCampaign from 'hooks/useCurrentOnboardingCampaign';
+import useCurrentOnboardingCampaign from 'api/onboarding_campaigns/useCurrentOnboardingCampaign';
 import OnboardingStep from './OnboardingStep';
 import SkipButton from './SkipButton';
 import AcceptButton from './AcceptButton';
@@ -21,10 +21,11 @@ interface Props {
 }
 
 const CustomCTAStep = ({ onSkip, currentOnboardingCampaignName }: Props) => {
-  const onboardingCampaign = useCurrentOnboardingCampaign();
+  const { data: onboardingCampaign } = useCurrentOnboardingCampaign();
   const localize = useLocalize();
 
   if (!isNilOrError(onboardingCampaign)) {
+    const ctaButtonLink = onboardingCampaign.data.attributes.cta_button_link;
     return (
       <OnboardingStep
         isIncomingStep={currentOnboardingCampaignName === 'custom_cta'}
@@ -42,12 +43,14 @@ const CustomCTAStep = ({ onSkip, currentOnboardingCampaignName }: Props) => {
 
           <Right>
             <SkipButton onClick={onSkip} />
-            <AcceptButton
-              text={localize(
-                onboardingCampaign.data.attributes.cta_button_multiloc
-              )}
-              linkTo={onboardingCampaign.data.attributes.cta_button_link}
-            />
+            {ctaButtonLink && (
+              <AcceptButton
+                text={localize(
+                  onboardingCampaign.data.attributes.cta_button_multiloc
+                )}
+                linkTo={ctaButtonLink}
+              />
+            )}
           </Right>
         </HeaderContent>
       </OnboardingStep>

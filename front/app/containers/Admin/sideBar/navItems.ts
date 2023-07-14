@@ -16,7 +16,7 @@ export type NavItem = {
 const navItems: NavItem[] = [
   {
     name: 'dashboard',
-    link: '/admin/dashboard',
+    link: '/admin/dashboard/visitors',
     iconName: 'dashboard',
     message: 'dashboard',
   },

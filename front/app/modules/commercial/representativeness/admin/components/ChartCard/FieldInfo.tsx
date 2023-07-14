@@ -12,7 +12,7 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // typings
-import { IncludedUsers } from '../../hooks/createRefDataSubscription';
+import { IncludedUsers } from '../../hooks/parseReferenceData';
 
 const StyledIcon = styled(Icon)`
   transform: translateY(-1px);

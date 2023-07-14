@@ -1,6 +1,6 @@
 import React, { memo, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { isEmpty, get, isNumber, round } from 'lodash-es';
+import { isEmpty, isNumber, round } from 'lodash-es';
 import moment from 'moment';
 import Observer from '@researchgate/react-intersection-observer';
 import bowser from 'bowser';
@@ -52,7 +52,7 @@ import {
 import { ScreenReaderOnly } from 'utils/a11y';
 import { rgba, darken } from 'polished';
 import { getInputTermMessage } from 'utils/i18n';
-import { getMethodConfig } from 'utils/participationMethodUtils';
+import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
 const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
   width: calc(33% - 12px);
@@ -545,8 +545,8 @@ const ProjectCard = memo<Props>(
         project.data.relationships.avatars.data
           ? project.data.relationships.avatars.data.map((avatar) => avatar.id)
           : [];
-      const startAt = get(phase?.data, 'attributes.start_at');
-      const endAt = get(phase?.data, 'attributes.end_at');
+      const startAt = phase?.data.attributes.start_at;
+      const endAt = phase?.data.attributes.end_at;
       const timeRemaining = endAt
         ? moment.duration(moment(endAt).endOf('day').diff(moment())).humanize()
         : null;

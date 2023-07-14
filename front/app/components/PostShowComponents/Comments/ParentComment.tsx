@@ -45,7 +45,7 @@ interface Props {
   initiativeId: string | undefined;
   postType: 'idea' | 'initiative';
   commentId: string;
-  childCommentIds: string[] | false;
+  childCommentIds: string[];
   className?: string;
   allowAnonymousParticipation?: boolean;
 }
@@ -84,7 +84,7 @@ const ParentComment = ({
         ? commentingPermissionInitiative?.disabledReason
         : idea?.data.attributes.action_descriptor.commenting_idea
             .disabled_reason;
-    const showCommentForm = isNil(commentingDisabledReason) && !commentDeleted;
+    const showCommentForm = isNil(commentingDisabledReason);
     const hasChildComments = childCommentIds && childCommentIds.length > 0;
     const modifiedChildCommentIds = !isNilOrError(childComments)
       ? childComments
@@ -137,8 +137,7 @@ const ParentComment = ({
           </LoadMoreButton>
         )}
 
-        {modifiedChildCommentIds &&
-          modifiedChildCommentIds.length > 0 &&
+        {modifiedChildCommentIds.length > 0 &&
           modifiedChildCommentIds.map((childCommentId, index) => (
             <Comment
               ideaId={ideaId}

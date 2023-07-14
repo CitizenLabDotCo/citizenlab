@@ -22,7 +22,11 @@ const mockProjectData = {
   },
 };
 
-jest.mock('hooks/useResourceFiles', () => jest.fn(() => []));
+jest.mock('api/page_files/usePageFiles', () =>
+  jest.fn(() => {
+    return { data: [] };
+  })
+);
 jest.mock('api/projects/useProjectById', () =>
   jest.fn(() => ({ data: { data: mockProjectData } }))
 );

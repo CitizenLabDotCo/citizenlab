@@ -29,7 +29,7 @@ resource 'Analytics', use_transactional_fixtures: false do
           aggregations: { all: 'count' }
         })
         assert_status 200
-        expect(response_data).to eq([{ count: 1 }])
+        expect(response_data[:attributes]).to eq([{ count: 1 }])
       end
 
       example 'handles multiple queries' do
@@ -39,7 +39,7 @@ resource 'Analytics', use_transactional_fixtures: false do
         }
         do_request(query: [query, query])
         assert_status 200
-        expect(response_data).to eq([[{ count: 1 }], [{ count: 1 }]])
+        expect(response_data[:attributes]).to eq([[{ count: 1 }], [{ count: 1 }]])
       end
 
       example 'handles error in query' do
@@ -99,7 +99,7 @@ resource 'Analytics', use_transactional_fixtures: false do
           aggregations: { all: 'count' }
         })
         assert_status 200
-        expect(response_data).to eq([{ count: 1 }])
+        expect(response_data[:attributes]).to eq([{ count: 1 }])
       end
     end
   end

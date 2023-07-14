@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import { OnboardingCampaignName } from 'services/onboardingCampaigns';
+import { OnboardingCampaignName } from 'api/onboarding_campaigns/types';
 import { Left, Right } from './';
-import useHomepageSettings from 'hooks/useHomepageSettings';
+import useHomepageSettings from 'api/home_page/useHomepageSettings';
 import { isEmptyMultiloc, isNilOrError } from 'utils/helperUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
@@ -54,12 +54,12 @@ interface Props {
 }
 
 const FallbackStep = ({ currentOnboardingCampaignName }: Props) => {
-  const homepageSettings = useHomepageSettings();
+  const { data: homepageSettings } = useHomepageSettings();
   const { data: authUser } = useAuthUser();
 
   if (!isNilOrError(homepageSettings) && !isNilOrError(authUser)) {
     const defaultMessage =
-      homepageSettings.attributes.banner_signed_in_header_multiloc;
+      homepageSettings.data.attributes.banner_signed_in_header_multiloc;
 
     return (
       <OnboardingStep

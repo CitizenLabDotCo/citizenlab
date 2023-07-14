@@ -19,7 +19,6 @@ import useGroups from 'api/groups/useGroups';
 // Utils
 import { requestBlob } from 'utils/request';
 import { API_PATH } from 'containers/App/constants';
-import streams from 'utils/streams';
 
 // Events
 import eventEmitter from 'utils/eventEmitter';
@@ -284,7 +283,6 @@ const UserTableActions = ({
             0 &&
           !error.errors.group
         ) {
-          await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/groups`] });
           success();
           return true;
         } else {

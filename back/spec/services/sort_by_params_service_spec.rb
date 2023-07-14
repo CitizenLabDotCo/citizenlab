@@ -17,21 +17,24 @@ describe SortByParamsService do
           author: create(:user, first_name: 'Sean', last_name: 'Connery'),
           likes_count: 5,
           dislikes_count: 2,
-          baskets_count: 1
+          baskets_count: 1,
+          votes_count: 2
         },
         {
           published_at: Time.now - 1.hour,
           author: create(:user, first_name: 'Sean', last_name: 'Penn'),
           likes_count: 3,
           dislikes_count: 5,
-          baskets_count: 2
+          baskets_count: 2,
+          votes_count: 4
         },
         {
           published_at: Time.now + 2.days,
           author: create(:user, first_name: 'Jodie', last_name: 'Foster'),
           likes_count: 0,
           dislikes_count: 0,
-          baskets_count: 3
+          baskets_count: 3,
+          votes_count: 3
         }
       ].map do |attributes|
         create(:idea, project: timeline_project, **attributes)
@@ -204,6 +207,24 @@ describe SortByParamsService do
     describe '-baskets_count' do
       let(:sort) { '-baskets_count' }
       let(:expected_record_ids) { [ideas[0].id, ideas[1].id, ideas[2].id] }
+
+      it 'returns the sorted records' do
+        expect(result_record_ids).to eq expected_record_ids
+      end
+    end
+
+    describe 'votes_count' do
+      let(:sort) { 'votes_count' }
+      let(:expected_record_ids) { [ideas[1].id, ideas[2].id, ideas[0].id] }
+
+      it 'returns the sorted records' do
+        expect(result_record_ids).to eq expected_record_ids
+      end
+    end
+
+    describe '-votes_count' do
+      let(:sort) { '-votes_count' }
+      let(:expected_record_ids) { [ideas[0].id, ideas[2].id, ideas[1].id] }
 
       it 'returns the sorted records' do
         expect(result_record_ids).to eq expected_record_ids

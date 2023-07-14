@@ -24,6 +24,13 @@ class TimelineService
     end
   end
 
+  def phase_is_complete?(participation_context, time = Time.now)
+    return false unless participation_context.phase?
+
+    date = time.in_time_zone(AppConfiguration.instance.settings('core', 'timezone')).to_date
+    participation_context.end_at <= date
+  end
+
   def current_or_last_can_contain_ideas_phase(project, time = Time.now)
     date = time.in_time_zone(AppConfiguration.instance.settings('core', 'timezone')).to_date
     return unless project.timeline?

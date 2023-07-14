@@ -11,7 +11,7 @@ import {
 } from 'components/LandingPages/citizen/FixedRatioLayout';
 import HeaderContent from './HeaderContent';
 
-import { IHomepageSettingsData } from 'services/homepageSettings';
+import { IHomepageSettingsData } from 'api/home_page/types';
 
 interface Props {
   homepageSettings: IHomepageSettingsData;

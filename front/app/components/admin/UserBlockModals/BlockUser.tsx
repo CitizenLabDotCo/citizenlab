@@ -30,6 +30,7 @@ import useBlockUser from 'api/blocked_users/useBlockUser';
 // utils
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { getFullName } from 'utils/textUtils';
 
 type Props = {
   open: boolean;
@@ -86,7 +87,7 @@ const BlockUserModal = ({ open, setClose, user }: Props) => {
   if (success && updatedUser) {
     return (
       <SuccessfulUserBlock
-        name={`${user.attributes.first_name} ${user.attributes.last_name}`}
+        name={getFullName(user)}
         date={moment(updatedUser?.attributes.block_end_at).format('LL')}
         resetSuccess={() => setSuccess(false)}
         opened={true}

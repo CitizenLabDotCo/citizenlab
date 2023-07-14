@@ -255,13 +255,16 @@ resource 'User Custom Fields' do
         parameter :ordering, 'The position, starting from 0, where the field should be at. Fields after will move down.', required: true
       end
 
-      let(:id) { create(:custom_field).id }
+      let(:custom_field) { create(:custom_field) }
+      let(:id) { custom_field.id }
       let(:ordering) { 1 }
 
-      example_request 'Reorder a custom field' do
-        expect(response_status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :attributes, :ordering)).to match ordering
+      example 'Reorder a custom field' do
+        expect(custom_field.ordering).to eq 3
+        do_request
+        assert_status 200
+        expect(response_data.dig(:attributes, :ordering)).to match ordering
+        expect(custom_field.reload.ordering).to eq 1
         expect(CustomField.with_resource_type('User').order(:ordering)[1].id).to eq id
         expect(CustomField.with_resource_type('User').order(:ordering).map(&:ordering)).to eq (0..3).to_a
       end

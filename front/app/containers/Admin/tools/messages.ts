@@ -65,8 +65,4 @@ export default defineMessages({
     id: 'app.containers.Admin.tools.publicAPIImage',
     defaultMessage: 'Public API image',
   },
-  comingSoon: {
-    id: 'app.containers.Admin.tools.comingSoon',
-    defaultMessage: 'Coming soon',
-  },
 });

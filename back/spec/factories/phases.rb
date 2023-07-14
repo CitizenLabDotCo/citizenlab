@@ -19,7 +19,7 @@ FactoryBot.define do
     end
     participation_method { 'ideation' }
     start_at { '2017-05-01' }
-    end_at { '2017-06-30' }
+    end_at { Date.parse(start_at) + 60.days }
     voting_min_total { 1 }
     voting_max_total { 10_000 }
 
@@ -67,7 +67,7 @@ FactoryBot.define do
       participation_method { 'native_survey' }
     end
 
-    factory :voting_phase do # TODO: replace budgeting_phase in generic voting specs
+    factory :voting_phase do
       participation_method { 'voting' }
       voting_method { 'single_voting' }
     end
