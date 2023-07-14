@@ -6,7 +6,6 @@ import FileUploaderComponent, {
 import Error from 'components/UI/Error';
 import { Controller, useFormContext } from 'react-hook-form';
 import { UploadFile } from 'typings';
-import { RemoteFiles } from 'hooks/useRemoteFiles';
 import { get } from 'lodash-es';
 
 interface Props
@@ -15,7 +14,7 @@ interface Props
     'onFileAdd' | 'onFileRemove' | 'files' | 'id'
   > {
   name: string;
-  remoteFiles?: RemoteFiles;
+  remoteFiles?: UploadFile[] | null;
 }
 
 const FileUploader = ({ name, remoteFiles, ...rest }: Props) => {

@@ -16,10 +16,6 @@ import { GraphsContainer, Column } from 'components/admin/GraphWrappers';
 
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
-import {
-  activeUsersByTimeCumulativeXlsxEndpoint,
-  activeUsersByTimeStream,
-} from 'services/stats';
 import { colors } from 'utils/styleUtils';
 import { MessageDescriptor, WrappedComponentProps } from 'react-intl';
 
@@ -42,6 +38,7 @@ import CommentsByTimeCard from 'components/admin/GraphCards/CommentsByTimeCard';
 
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { activeUsersByTimeCumulativeXlsxEndpoint } from 'api/active_users_by_time/util';
 
 const Section = styled.div`
   margin-bottom: 20px;
@@ -235,7 +232,6 @@ const ProjectReport = memo(
                 <BarChartActiveUsersByTime
                   startAt={startAt}
                   endAt={endAt}
-                  stream={activeUsersByTimeStream}
                   resolution={resolution}
                   graphUnit="users"
                   graphUnitMessageKey="users"

@@ -3,7 +3,7 @@ import React from 'react';
 // hooks
 import useAuthUser from 'api/me/useAuthUser';
 import useLocalize from 'hooks/useLocalize';
-import useHomepageSettings from 'hooks/useHomepageSettings';
+import useHomepageSettings from 'api/home_page/useHomepageSettings';
 
 // events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
@@ -60,7 +60,7 @@ const StyledAvatarBubbles = styled(AvatarBubbles)`
 const Footer = () => {
   const { data: authUser } = useAuthUser();
   const localize = useLocalize();
-  const homepageSettings = useHomepageSettings();
+  const { data: homepageSettings } = useHomepageSettings();
 
   const signUpIn = (event: React.FormEvent) => {
     event.preventDefault();
@@ -73,9 +73,9 @@ const Footer = () => {
   if (!isNilOrError(homepageSettings)) {
     // tranlate header slogan into a h2 wih a fallback
     const headerSloganMultiLoc =
-      homepageSettings.attributes.banner_signed_out_subheader_multiloc;
+      homepageSettings.data.attributes.banner_signed_out_subheader_multiloc;
     const displayHeaderAvatars =
-      homepageSettings.attributes.banner_avatars_enabled;
+      homepageSettings.data.attributes.banner_avatars_enabled;
 
     return (
       <>

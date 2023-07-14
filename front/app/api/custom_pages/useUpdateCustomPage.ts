@@ -3,8 +3,7 @@ import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import customPageKeys from './keys';
 import { ICustomPage, ICustomPageAttributes } from './types';
-import streams from 'utils/streams';
-import { API_PATH } from 'containers/App/constants';
+import navbarKeys from 'api/navbar/keys';
 
 const updateCustomPage = ({
   id,
@@ -26,9 +25,7 @@ const useUpdateCustomPage = () => {
     mutationFn: updateCustomPage,
     onSuccess: async () => {
       queryClient.invalidateQueries({ queryKey: customPageKeys.lists() });
-      await streams.fetchAllWith({
-        apiEndpoint: [`${API_PATH}/nav_bar_items`],
-      });
+      queryClient.invalidateQueries({ queryKey: navbarKeys.lists() });
     },
   });
 };

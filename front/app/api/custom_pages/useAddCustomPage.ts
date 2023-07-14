@@ -3,8 +3,7 @@ import { CLErrors, Multiloc } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import customPagesKeys from './keys';
 import { ICustomPage } from './types';
-import streams from 'utils/streams';
-import { apiEndpoint as navbarEndpoint } from 'services/navbar';
+import navbarKeys from 'api/navbar/keys';
 
 type AddCustomPage = {
   title_multiloc: Multiloc;
@@ -23,7 +22,7 @@ const useAddCustomPage = () => {
     mutationFn: addCustomPage,
     onSuccess: async () => {
       queryClient.invalidateQueries({ queryKey: customPagesKeys.lists() });
-      await streams.fetchAllWith({ apiEndpoint: [navbarEndpoint] });
+      queryClient.invalidateQueries({ queryKey: navbarKeys.lists() });
     },
   });
 };
