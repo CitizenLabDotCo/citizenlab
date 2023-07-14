@@ -103,6 +103,7 @@
   "app.components.admin.PostManager.assignee": "Assignee",
   "app.components.admin.PostManager.automatic": "(automatic)",
   "app.components.admin.PostManager.bodyTitle": "Description",
+  "app.components.admin.PostManager.budget": "Budget",
   "app.components.admin.PostManager.changeStatusModalTitle": "Change this proposal's status",
   "app.components.admin.PostManager.comments": "Comments",
   "app.components.admin.PostManager.contributionFormTitle": "Edit contribution",
