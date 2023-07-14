@@ -98,7 +98,7 @@ module XlsxExport
     end
 
     def baskets_count_report_field
-      ComputedFieldForReport.new(column_header_for('baskets_count'), ->(input) { voting_context(input, participation_context).baskets_count })
+      ComputedFieldForReport.new(column_header_for('picks'), ->(input) { voting_context(input, participation_context).baskets_count })
     end
 
     def votes_count_report_field

@@ -201,7 +201,6 @@ fr-BE:
       comments_count: 'Commentaires'
       likes_count: 'Nombre de « likes »'
       dislikes_count: 'Nombre de « dislikes »'
-      baskets_count: 'Paniers'
       input_url: 'URL'
       project: 'Projet'
       status: 'Statut'

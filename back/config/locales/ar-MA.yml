@@ -201,7 +201,6 @@ ar-MA:
       comments_count: 'التعليقات ممكنة'
       likes_count: 'الإعجابات'
       dislikes_count: 'يكره'
-      baskets_count: 'سلال'
       input_url: 'URL'
       project: 'المشروع'
       status: 'الحالة'
