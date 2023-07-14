@@ -56,6 +56,10 @@ it:
       "moderator_digest": Panoramica settimanale per i project manager
       "assignee_digest": Panoramica settimanale delle idee assegnate
       "user_digest": Panoramica settimanale
+      "voting_basket_submitted": Conferma del voto
+      "voting_basket_not_submitted": Voti non inviati
+      "voting_last_chance": Ultima possibilità di voto
+      "voting_results": Risultati delle votazioni
       "your_proposed_initiatives_digest": Panoramica settimanale delle tue proposte
     schedules:
       weekly:
@@ -577,6 +581,42 @@ it:
       new_votes: 'Nuovi voti'
       remaining_votes: 'Voti rimanenti'
       remaining_days: 'Giorni rimanenti'
+    voting_basket_submitted:
+      subject: '%{organizationName}Hai votato con successo'
+      preheader: 'Hai votato con successo sulla piattaforma di partecipazione di %{organizationName}'
+      title_basket_submitted: 'Hai votato con successo'
+      event_description: 'Grazie per aver partecipato. I tuoi voti sono stati registrati. Visita la piattaforma di %{organizationName} per vedere e gestire i tuoi voti.'
+      cta_see_votes_submitted: 'Vedi i voti inviati'
+      cta_message: 'Clicca sul pulsante qui sotto per partecipare'
+    voting_basket_not_submitted:
+      subject: '%{organizationName}Non hai inviato i tuoi voti'
+      preheader: 'Non hai inviato i tuoi voti sulla piattaforma di partecipazione di %{organizationName}.'
+      title_basket_not_submitted: 'Non hai inviato i tuoi voti'
+      event_description: 'Hai selezionato alcune opzioni per %{contextTitle} ma non hai inviato la tua selezione.'
+      cta_view_options_and_vote: 'Visualizza le opzioni e vota'
+      cta_message: 'Clicca sul pulsante sottostante per inviare le opzioni selezionate'
+    voting_last_chance:
+      subject: '%{organizationName}Ultima possibilità di votare per %{phaseTitle}'
+      preheader: 'Ultima possibilità di votare per %{phaseTitle} sulla piattaforma di partecipazione di %{organizationName}'
+      title_last_chance: 'Ultima possibilità di votare per %{phaseTitle}'
+      body_1: 'La fase di votazione del progetto %{projectTitle} si concluderà domani a mezzanotte.'
+      body_2: 'Il tempo sta per scadere e abbiamo notato che non hai ancora espresso il tuo voto! Agisci subito cliccando sul pulsante qui sotto per partecipare.'
+      body_3: 'In questo modo avrai accesso a una serie di opzioni e avrai la possibilità di dare il tuo contributo, che è fondamentale per decidere il futuro di questo progetto.'
+      cta_vote: 'Vota'
+    voting_results:
+      subject: '%{organizationName}: %{phaseTitle} : rivelati i risultati delle votazioni!'
+      preheader: '%{phaseTitle} risultati del voto rivelati sulla piattaforma di partecipazione di %{organizationName}'
+      title_results: '%{phaseTitle} I risultati delle votazioni sono stati rivelati!'
+      body_1: 'I risultati sono arrivati!'
+      body_2: 'Sono stati pubblicati i risultati della votazione di %{phaseTitle} nella piattaforma %{organizationName} !'
+      body_3: 'Ti invitiamo a esaminare i risultati e a rimanere sintonizzato per ulteriori aggiornamenti sui prossimi passi.'
+      cta_see_results: 'Vedi i risultati nella piattaforma'
+    voting_phase_started:
+      subject: '%{organizationName}: La fase di voto è iniziata per %{projectName}'
+      preheader: 'La fase di votazione è iniziata per %{projectName} sulla piattaforma di partecipazione di %{organizationName}.'
+      event_description: 'Il progetto "%{projectName}" ti chiede di votare tra le opzioni di %{numIdeas} :'
+      cta_message: 'Clicca sul pulsante qui sotto per partecipare'
+      cta_vote: 'Vai alla piattaforma per votare'
     admin_labels:
       recipient_role:
         admins: 'Agli amministratori'
@@ -605,6 +645,9 @@ it:
         users_who_engaged_with_the_input: 'Utenti che si sono impegnati con l''input'
         users_who_engaged_with_the_project: 'Utenti che hanno partecipato al progetto'
         users_who_engaged_with_the_proposal: 'Utenti che hanno aderito alla proposta'
+        user_who_voted: 'Utente che ha votato'
+        user_with_unsubmitted_votes: 'Utente che non ha inviato i propri voti'
+        users_who_engaged_but_not_voted: 'Utenti che si sono impegnati nel progetto ma non hanno votato'
       content_type:
         comments: 'Commenti'
         content_moderation: 'Moderazione dei contenuti'
@@ -615,6 +658,7 @@ it:
         projects: 'Progetti'
         proposals: 'Proposte'
         reactions: 'Reazioni'
+        voting: 'Votazione'
       trigger:
         comment_is_deleted: 'Il commento viene cancellato'
         comment_is_flagged_as_spam: 'Il commento viene segnalato come spam'
@@ -652,5 +696,9 @@ it:
         user_registers_for_the_first_time: 'L''utente si registra per la prima volta'
         user_replies_to_comment: 'L''utente risponde al commento'
         user_replies_to_internal_comment: 'L''utente risponde al commento interno'
+        voting_2_days_before_phase_closes: '2 giorni prima della chiusura della fase di voto'
+        voting_1_day_after_last_votes: '1 giorno dopo l''ultimo voto dell''utente'
+        voting_phase_ended: 'La fase di votazione si è conclusa'
+        voting_basket_submitted: 'I voti vengono inviati'
         7_days_after_invite_is_sent: '7 giorni dopo l''invio dell''invito'
         7_days_before_the_project_changes_phase: '7 giorni prima della fase di modifica del progetto'
