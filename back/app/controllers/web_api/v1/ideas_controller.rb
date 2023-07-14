@@ -33,6 +33,8 @@ class WebApi::V1::IdeasController < ApplicationController
     ).find_records
     ideas = paginate SortByParamsService.new.sort_ideas(ideas, params, current_user)
 
+    ideas = update_voting_counts ideas, params
+
     render json: linked_json(ideas, WebApi::V1::IdeaSerializer, serialization_options_for(ideas))
   end
 
@@ -254,6 +256,22 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   private
+
+  # Change counts on idea for values for phase, if filtered by phase
+  def update_voting_counts(ideas, params)
+    if params[:phase]
+      phase_id = params[:phase]
+      ideas.map do |idea|
+        idea.ideas_phases.each do |ideas_phase|
+          if ideas_phase.phase_id == phase_id
+            idea.baskets_count = ideas_phase.baskets_count
+            idea.votes_count = ideas_phase.votes_count
+          end
+        end
+      end
+    end
+    ideas
+  end
 
   def render_show(input)
     authorize input
