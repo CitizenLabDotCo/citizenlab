@@ -1222,7 +1222,7 @@
   "app.containers.AdminPage.ProjectEdit.adminProjectFolderSelectTooltip": "You can add your project to an existing folder. You can also do this later in the Projects tab.",
   "app.containers.AdminPage.ProjectEdit.allowedInputTopicsTab": "Tag di ingresso consentiti",
   "app.containers.AdminPage.ProjectEdit.anonymousPolling": "Anonymous polling",
-  "app.containers.AdminPage.ProjectEdit.anonymousPollingTooltip2": "Se abilitato, è impossibile vedere chi ha reagito a cosa. Gli utenti devono comunque avere un account e possono reagire solo una volta.",
+  "app.containers.AdminPage.ProjectEdit.anonymousPollingTooltip": "When enabled it's impossible to see who voted on what. Users still need an account and can only vote once.",
   "app.containers.AdminPage.ProjectEdit.archived": "Archived",
   "app.containers.AdminPage.ProjectEdit.archivedStatus": "Archived",
   "app.containers.AdminPage.ProjectEdit.areaIsLinkedToStaticPage": "Non è possibile eliminare questa area perché viene utilizzata per visualizzare i progetti nelle seguenti pagine più personalizzate. È necessario scollegare l'area dalla pagina o eliminare la pagina prima di eliminare l'area.",
