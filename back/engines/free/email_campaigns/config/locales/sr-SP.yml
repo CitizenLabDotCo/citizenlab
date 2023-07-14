@@ -56,6 +56,10 @@ sr-Cyrl:
       "moderator_digest": Недељни преглед за менаџере пројеката
       "assignee_digest": Недељни преглед додељених идеја
       "user_digest": Недељни преглед
+      "voting_basket_submitted": Потврда гласања
+      "voting_basket_not_submitted": Гласови нису предати
+      "voting_last_chance": Последња прилика за гласање
+      "voting_results": Резултати гласања
       "your_proposed_initiatives_digest": Недељни преглед ваших предлога
     schedules:
       weekly:
@@ -577,6 +581,42 @@ sr-Cyrl:
       new_votes: 'Нови гласови'
       remaining_votes: 'Преостало гласова'
       remaining_days: 'Преостали дана'
+    voting_basket_submitted:
+      subject: '%{organizationName}: Успешно сте гласали'
+      preheader: 'Успешно сте гласали на платформи за учешће %{organizationName}'
+      title_basket_submitted: 'Успешно сте гласали'
+      event_description: 'Хвала на учешћу. Ваши гласови су забележени. Посетите платформу %{organizationName} да бисте видели и управљали својим гласовима.'
+      cta_see_votes_submitted: 'Погледајте достављене гласове'
+      cta_message: 'Кликните на дугме испод да бисте учествовали'
+    voting_basket_not_submitted:
+      subject: '%{organizationName}: Нисте послали своје гласове'
+      preheader: 'Нисте послали своје гласове на платформи за учешће %{organizationName}'
+      title_basket_not_submitted: 'Нисте предали своје гласове'
+      event_description: 'Изабрали сте неколико опција за %{contextTitle} , али нисте послали свој избор.'
+      cta_view_options_and_vote: 'Погледајте опције и гласајте'
+      cta_message: 'Кликните на дугме испод да бисте послали изабране опције'
+    voting_last_chance:
+      subject: '%{organizationName}: Последња прилика да гласате за %{phaseTitle}'
+      preheader: 'Последња прилика да гласате за %{phaseTitle} на платформи за учешће од %{organizationName}'
+      title_last_chance: 'Последња прилика да гласате за %{phaseTitle}'
+      body_1: 'Фаза гласања за пројекат %{projectTitle} завршава се сутра, у поноћ.'
+      body_2: 'Време истиче, а приметили смо да још нисте дали свој глас! Делујте сада једноставним кликом на дугме испод да бисте учествовали.'
+      body_3: 'На тај начин ћете добити приступ низу опција и имати прилику да дате свој допринос, што је кључно за одлучивање о будућности овог пројекта.'
+      cta_vote: 'Гласајте'
+    voting_results:
+      subject: 'Откривени резултати гласања %{organizationName}: %{phaseTitle}!'
+      preheader: '%{phaseTitle} резултата гласања откривено је на платформи за учешће од %{organizationName}'
+      title_results: 'Откривено %{phaseTitle} резултата гласања!'
+      body_1: 'Резултати су у!'
+      body_2: 'Објављени су резултати %{phaseTitle} гласања на платформи %{organizationName}!'
+      body_3: 'Препоручујемо вам да прегледате резултате и останите са нама за даља ажурирања о наредним корацима.'
+      cta_see_results: 'Погледајте резултате на платформи'
+    voting_phase_started:
+      subject: '%{organizationName}: Фаза гласања је почела за %{projectName}'
+      preheader: 'Фаза гласања је почела за %{projectName} на платформи за учешће од %{organizationName}'
+      event_description: 'Пројекат "%{projectName}" тражи од вас да гласате између %{numIdeas} опције:'
+      cta_message: 'Кликните на дугме испод да бисте учествовали'
+      cta_vote: 'Идите на платформу да гласате'
     admin_labels:
       recipient_role:
         admins: 'За администраторе'
@@ -605,6 +645,9 @@ sr-Cyrl:
         users_who_engaged_with_the_input: 'Корисници који су се бавили уносом'
         users_who_engaged_with_the_project: 'Корисници који су били ангажовани на пројекту'
         users_who_engaged_with_the_proposal: 'Корисници који су се бавили предлогом'
+        user_who_voted: 'Корисник који је гласао'
+        user_with_unsubmitted_votes: 'Корисник који није послао своје гласове'
+        users_who_engaged_but_not_voted: 'Корисници који су учествовали у пројекту, али нису гласали'
       content_type:
         comments: 'Коментари'
         content_moderation: 'Модерирање садржаја'
@@ -615,6 +658,7 @@ sr-Cyrl:
         projects: 'Пројекти'
         proposals: 'Предлози'
         reactions: 'Реакције'
+        voting: 'Гласање'
       trigger:
         comment_is_deleted: 'Коментар је обрисан'
         comment_is_flagged_as_spam: 'Коментар је означен као непожељан'
@@ -652,5 +696,9 @@ sr-Cyrl:
         user_registers_for_the_first_time: 'Корисник се региструје по први пут'
         user_replies_to_comment: 'Корисник одговара на коментар'
         user_replies_to_internal_comment: 'Корисник одговара на интерни коментар'
+        voting_2_days_before_phase_closes: '2 дана пре затварања фазе гласања'
+        voting_1_day_after_last_votes: '1 дан након што је корисник последњи пут гласао'
+        voting_phase_ended: 'Фаза гласања је завршена'
+        voting_basket_submitted: 'Гласови се предају'
         7_days_after_invite_is_sent: '7 дана након слања позива'
         7_days_before_the_project_changes_phase: '7 дана пре промене фазе пројекта'
