@@ -294,7 +294,7 @@ class XlsxService
   end
 
   def header_style(style)
-    style.add_style bg_color: '99ccff', fg_color: '2626ff', sz: 16, alignment: { horizontal: :center }
+    style.add_style b: true, alignment: { horizontal: :center, vertical: :top, wrap_text: true }
   end
 
   def namespace(field_id, option_key)
