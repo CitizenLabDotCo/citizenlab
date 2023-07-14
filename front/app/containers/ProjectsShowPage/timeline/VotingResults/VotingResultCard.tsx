@@ -91,6 +91,7 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
       body={
         votesPercentage !== undefined ? (
           <Results
+            phaseId={phaseId}
             budget={idea.attributes.budget ?? undefined}
             votes={ideaVotes}
             votesPercentage={votesPercentage}

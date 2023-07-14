@@ -1,5 +1,8 @@
 import React from 'react';
 
+// api
+import usePhase from 'api/phases/usePhase';
+
 // components
 import { Box, Text, Icon } from '@citizenlab/cl2-component-library';
 
@@ -10,17 +13,33 @@ import { transparentize } from 'polished';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
+import useLocalize from 'hooks/useLocalize';
+import messages from 'components/VoteInputs/multiple/AssignMultipleVotesInput/messages';
 
 interface Props {
+  phaseId: string;
   votes: number;
   votesPercentage: number;
   baskets?: number;
 }
 
-const ProgressBar = ({ votes, votesPercentage, baskets }: Props) => {
+const ProgressBar = ({ phaseId, votes, votesPercentage, baskets }: Props) => {
   const theme = useTheme();
   const { formatMessage } = useIntl();
+  const localize = useLocalize();
+  const { data: phase } = usePhase(phaseId);
+
+  if (!phase) return null;
+
+  const { voting_term_singular_multiloc, voting_term_plural_multiloc } =
+    phase.data.attributes;
+
+  const votingTermSingular =
+    localize(voting_term_singular_multiloc) ||
+    formatMessage(messages.vote).toLowerCase();
+  const votingTermPlural =
+    localize(voting_term_plural_multiloc) ||
+    formatMessage(messages.votes).toLowerCase();
 
   return (
     <Box
@@ -51,7 +70,11 @@ const ProgressBar = ({ votes, votesPercentage, baskets }: Props) => {
           fontSize="s"
           fontWeight="bold"
         >
-          {`${votesPercentage}% (${votes} ${formatMessage(messages.votes)})`}
+          {`${votesPercentage}% (${votes} ${formatMessage(messages.xVotes, {
+            votes,
+            singular: votingTermSingular,
+            plural: votingTermPlural,
+          })})`}
         </Text>
       </Box>
       {baskets !== undefined && (

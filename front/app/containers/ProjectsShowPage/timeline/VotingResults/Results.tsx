@@ -10,13 +10,20 @@ import FormattedBudget from 'utils/currency/FormattedBudget';
 import messages from './messages';
 
 interface Props {
+  phaseId: string;
   budget?: number;
   votes: number;
   votesPercentage: number;
   baskets?: number;
 }
 
-const Results = ({ budget, votes, votesPercentage, baskets }: Props) => {
+const Results = ({
+  phaseId,
+  budget,
+  votes,
+  votesPercentage,
+  baskets,
+}: Props) => {
   const { formatMessage } = useIntl();
 
   return (
@@ -33,6 +40,7 @@ const Results = ({ budget, votes, votesPercentage, baskets }: Props) => {
         </Text>
       )}
       <ProgressBar
+        phaseId={phaseId}
         votes={votes}
         votesPercentage={votesPercentage}
         baskets={baskets}
