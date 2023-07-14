@@ -1,4 +1,6 @@
 import React from 'react';
+import Observer from '@researchgate/react-intersection-observer';
+import JSConfetti from 'js-confetti';
 
 // api
 import usePhase from 'api/phases/usePhase';
@@ -32,6 +34,8 @@ interface Props {
   rank: number;
 }
 
+const jsConfetti = new JSConfetti();
+
 const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
   const localize = useLocalize();
   const { data: phase } = usePhase(phaseId);
@@ -60,38 +64,55 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
     clHistory.push(`/ideas/${slug}${params}`);
   };
 
+  const handleIntersection = (
+    event: IntersectionObserverEntry,
+    unobserve: () => void
+  ) => {
+    if (rank !== 1) return;
+    if (event.isIntersecting) {
+      jsConfetti.addConfetti();
+      unobserve();
+    }
+  };
+
   return (
-    <Card
-      id={idea.id}
-      to={`/ideas/${slug}${params}`}
-      onClick={handleClick}
-      title={ideaTitle}
-      image={ideaImage?.data.attributes.versions.medium}
-      imagePlaceholder={
-        <ImagePlaceholder
-          participationMethod="voting"
-          votingMethod={votingMethod}
-        />
-      }
-      imageOverlay={<Rank rank={rank} />}
-      body={
-        votesPercentage !== undefined ? (
-          <Results
-            budget={idea.attributes.budget ?? undefined}
-            votes={ideaVotes}
-            votesPercentage={votesPercentage}
+    <>
+      <Observer onChange={handleIntersection}>
+        <div>
+          <Card
+            id={idea.id}
+            to={`/ideas/${slug}${params}`}
+            onClick={handleClick}
+            title={ideaTitle}
+            image={ideaImage?.data.attributes.versions.medium}
+            imagePlaceholder={
+              <ImagePlaceholder
+                participationMethod="voting"
+                votingMethod={votingMethod}
+              />
+            }
+            imageOverlay={<Rank rank={rank} />}
+            body={
+              votesPercentage !== undefined ? (
+                <Results
+                  budget={idea.attributes.budget ?? undefined}
+                  votes={ideaVotes}
+                  votesPercentage={votesPercentage}
+                />
+              ) : undefined
+            }
+            footer={
+              <Footer
+                project={project}
+                idea={idea}
+                hideIdeaStatus={true}
+                participationMethod="voting"
+              />
+            }
           />
-        ) : undefined
-      }
-      footer={
-        <Footer
-          project={project}
-          idea={idea}
-          hideIdeaStatus={true}
-          participationMethod="voting"
-        />
-      }
-    />
+        </div>
+      </Observer>
+    </>
   );
 };
 
