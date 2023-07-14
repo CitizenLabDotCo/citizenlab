@@ -56,6 +56,10 @@ en-GB:
       "moderator_digest": Weekly overview for project managers
       "assignee_digest": Weekly overview of assigned ideas
       "user_digest": Weekly overview
+      "voting_basket_submitted": Confirmation of voting
+      "voting_basket_not_submitted": Votes not submitted
+      "voting_last_chance": Last chance to vote
+      "voting_results": Voting results
       "your_proposed_initiatives_digest": Weekly overview of your proposals
     schedules:
       weekly:
@@ -577,6 +581,42 @@ en-GB:
       new_votes: 'New votes'
       remaining_votes: 'Votes remaining'
       remaining_days: 'Days remaining'
+    voting_basket_submitted:
+      subject: '%{organizationName}: You voted successfully'
+      preheader: 'You voted successfully on the participation platform of %{organizationName}'
+      title_basket_submitted: 'You voted successfully'
+      event_description: 'Thanks for participating. Your votes have been recorded. Visit the platform of %{organizationName} to see and manage your votes.'
+      cta_see_votes_submitted: 'See votes submitted'
+      cta_message: 'Click the button below to participate'
+    voting_basket_not_submitted:
+      subject: '%{organizationName}: You didn''t submit your votes'
+      preheader: 'You didn''t submit your votes on the participation platform of %{organizationName}'
+      title_basket_not_submitted: 'You didn''t submit your votes'
+      event_description: 'You selected a few options for %{contextTitle} but you didn''t submit your selection.'
+      cta_view_options_and_vote: 'View options and vote'
+      cta_message: 'Click the button below to submit your selected options'
+    voting_last_chance:
+      subject: '%{organizationName}: Last chance to vote for %{phaseTitle}'
+      preheader: 'Last chance to vote for %{phaseTitle} on the participation platform of %{organizationName}'
+      title_last_chance: 'Last chance to vote for %{phaseTitle}'
+      body_1: 'The voting phase for the %{projectTitle} project is coming to a close tomorrow, at midnight.'
+      body_2: 'Time is running out, and we noticed that you haven''t cast your vote yet! Act now by simply clicking the button below to participate.'
+      body_3: 'By doing so, you''ll gain access to a range of options and have the chance to provide your input, which is crucial in deciding the future of this project.'
+      cta_vote: 'Vote'
+    voting_results:
+      subject: '%{organizationName}: %{phaseTitle} vote results revealed!'
+      preheader: '%{phaseTitle} vote results revealed on the participation platform of %{organizationName}'
+      title_results: '%{phaseTitle} vote results revealed!'
+      body_1: 'Results are in!'
+      body_2: 'The results of the %{phaseTitle} vote in the %{organizationName} platform have been published!'
+      body_3: 'We encourage you to review the results and stay tuned for further updates on the next steps.'
+      cta_see_results: 'See results in the platform'
+    voting_phase_started:
+      subject: '%{organizationName}: The voting phase started for %{projectName}'
+      preheader: 'The voting phase started for %{projectName} on the participation platform of %{organizationName}'
+      event_description: 'The project "%{projectName}" is asking you to vote between %{numIdeas} options:'
+      cta_message: 'Click the button below to participate'
+      cta_vote: 'Go to the platform to vote'
     admin_labels:
       recipient_role:
         admins: 'To admins'
@@ -605,6 +645,9 @@ en-GB:
         users_who_engaged_with_the_input: 'Users who engaged with the input'
         users_who_engaged_with_the_project: 'Users who engaged with the project'
         users_who_engaged_with_the_proposal: 'Users who engaged with the proposal'
+        user_who_voted: 'User who voted'
+        user_with_unsubmitted_votes: 'User who has not submitted their votes'
+        users_who_engaged_but_not_voted: 'Users who engaged with the project but have not voted'
       content_type:
         comments: 'Comments'
         content_moderation: 'Content moderation'
@@ -615,6 +658,7 @@ en-GB:
         projects: 'Projects'
         proposals: 'Proposals'
         reactions: 'Reactions'
+        voting: 'Voting'
       trigger:
         comment_is_deleted: 'Comment is deleted'
         comment_is_flagged_as_spam: 'Comment is flagged as spam'
@@ -652,5 +696,9 @@ en-GB:
         user_registers_for_the_first_time: 'User registers for the first time'
         user_replies_to_comment: 'User replies to comment'
         user_replies_to_internal_comment: 'User replies to internal comment'
+        voting_2_days_before_phase_closes: '2 days before voting phase closes'
+        voting_1_day_after_last_votes: '1 day after user last voted'
+        voting_phase_ended: 'Voting phase ended'
+        voting_basket_submitted: 'Votes are submitted'
         7_days_after_invite_is_sent: '7 days after invite is sent'
         7_days_before_the_project_changes_phase: '7 days before the project changes phase'
