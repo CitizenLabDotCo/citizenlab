@@ -1,4 +1,4 @@
-import React, { memo, useMemo } from 'react';
+import React, { useMemo } from 'react';
 
 // router
 import { useSearchParams } from 'react-router-dom';
@@ -88,7 +88,7 @@ export interface QueryParameters {
   topics?: string[];
 }
 
-export default memo(() => {
+export default () => {
   const [searchParams] = useSearchParams();
   const sortParam = searchParams.get('sort') as Sort | null;
   const searchParam = searchParams.get('search');
@@ -127,4 +127,4 @@ export default memo(() => {
       </Container>
     </>
   );
-});
+};

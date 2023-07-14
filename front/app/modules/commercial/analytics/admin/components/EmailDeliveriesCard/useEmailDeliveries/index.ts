@@ -1,7 +1,4 @@
-import { useState, useEffect } from 'react';
-
 // services
-import { analyticsStream } from 'services/analyticsFacts';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -19,65 +16,45 @@ import {
 } from './parse';
 
 // typings
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
-import { XlsxData } from 'components/admin/ReportExportMenu';
-import { QueryParameters, Response, Stats, TimeSeries } from './typings';
-import { IResolution } from 'components/admin/ResolutionControl';
+import { QueryParameters, Response } from './typings';
+import useAnalytics from 'api/analytics/useAnalytics';
+import { useState } from 'react';
 
-export default function useVisitorsData({
+export default function useEmailDeliveriesData({
   startAtMoment,
   endAtMoment,
   resolution,
 }: QueryParameters) {
   const { formatMessage } = useIntl();
+  const [currentResolution, setCurrentResolution] = useState(resolution);
 
-  const [currentResolution, setCurrentResolution] =
-    useState<IResolution>(resolution);
-  const [stats, setStats] = useState<Stats | NilOrError>();
-  const [timeSeries, setTimeSeries] = useState<TimeSeries | NilOrError>();
-  const [xlsxData, setXlsxData] = useState<XlsxData | NilOrError>();
+  const { data: analytics } = useAnalytics<Response>(
+    query({
+      startAtMoment,
+      endAtMoment,
+      resolution,
+    }),
+    () => setCurrentResolution(resolution)
+  );
 
-  useEffect(() => {
-    const observable = analyticsStream<Response>(
-      query({
-        startAtMoment,
-        endAtMoment,
-        resolution,
-      })
-    ).observable;
+  const translations = getTranslations(formatMessage);
+  const stats = analytics ? parseStats(analytics.data.attributes) : null;
 
-    const subscription = observable.subscribe(
-      (response: Response | NilOrError) => {
-        if (isNilOrError(response)) {
-          setStats(response);
-          setTimeSeries(response);
-          setXlsxData(response);
-          setCurrentResolution(resolution);
-          return;
-        }
-        const preparedTimeSeries = mergeTimeSeries(response.data[3]);
-
-        const translations = getTranslations(formatMessage);
-
-        setCurrentResolution(resolution);
-
-        const stats = parseStats(response.data);
-        setStats(stats);
-
-        const timeSeries = parseTimeSeries(
+  const preparedTimeSeries =
+    analytics && mergeTimeSeries(analytics.data.attributes[3]);
+  const timeSeries =
+    analytics?.data && preparedTimeSeries
+      ? parseTimeSeries(
           preparedTimeSeries,
           startAtMoment,
           endAtMoment,
-          resolution
-        );
-        setTimeSeries(timeSeries);
-
-        setXlsxData(parseExcelData(stats, timeSeries, translations));
-      }
-    );
-
-    return () => subscription.unsubscribe();
-  }, [startAtMoment, endAtMoment, resolution, formatMessage]);
+          currentResolution
+        )
+      : null;
+  const xlsxData =
+    analytics?.data && stats
+      ? parseExcelData(stats, timeSeries, translations)
+      : null;
 
   return { currentResolution, stats, timeSeries, xlsxData };
 }

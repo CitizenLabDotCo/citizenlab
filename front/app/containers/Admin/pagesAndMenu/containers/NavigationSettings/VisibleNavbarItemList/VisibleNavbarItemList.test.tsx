@@ -1,25 +1,32 @@
 import { ADMIN_PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
-import navbarItems from 'services/__mocks__/navbarItems';
+import { navbarItemsData as navbarItems } from 'api/navbar/__mocks__/useNavbarItems';
 import React from 'react';
 import clHistory from 'utils/cl-router/history';
 import { fireEvent, render, screen } from 'utils/testUtils/rtl';
 import VisibleNavbarItemList from '.';
-import { removeNavbarItem, reorderNavbarItem } from 'services/navbar';
-import { deleteCustomPage } from 'services/customPages';
+
 import dragAndDrop from 'utils/testUtils/dragAndDrop';
 
-jest.mock('hooks/useNavbarItems');
-jest.mock('hooks/useCustomPageSlugById');
+jest.mock('api/navbar/useNavbarItems');
+jest.mock('api/custom_pages/useCustomPageSlugById');
 
-jest.mock('services/navbar', () => ({
-  reorderNavbarItem: jest.fn(),
-  removeNavbarItem: jest.fn(),
-  getNavbarItemSlug: jest.fn(),
-}));
+const mockReorderNavbarItem = jest.fn();
 
-jest.mock('services/customPages', () => ({
-  deleteCustomPage: jest.fn(),
-}));
+jest.mock('api/navbar/useReorderNavbarItems', () =>
+  jest.fn(() => ({ mutate: mockReorderNavbarItem }))
+);
+
+const mockDeleteCustomPage = jest.fn();
+
+jest.mock('api/custom_pages/useDeleteCustomPage', () =>
+  jest.fn(() => ({ mutate: mockDeleteCustomPage }))
+);
+
+const mockRemoveNavbarItem = jest.fn();
+
+jest.mock('api/navbar/useDeleteNavbarItem', () =>
+  jest.fn(() => ({ mutate: mockRemoveNavbarItem }))
+);
 
 describe('<VisibleNavbarItemList />', () => {
   it('renders', () => {
@@ -50,11 +57,11 @@ describe('<VisibleNavbarItemList />', () => {
 
     dragAndDrop(fifthRow, thirdRow);
 
-    expect(reorderNavbarItem).toHaveBeenCalledTimes(1);
-    expect(reorderNavbarItem).toHaveBeenCalledWith(
-      '2003e851-6cae-4ce8-a0e4-4b930fe73009',
-      4
-    );
+    expect(mockReorderNavbarItem).toHaveBeenCalledTimes(1);
+    expect(mockReorderNavbarItem).toHaveBeenCalledWith({
+      id: '2003e851-6cae-4ce8-a0e4-4b930fe73009',
+      ordering: 4,
+    });
   });
 
   it('calls clHistory.push on click edit with correct arg (default item)', () => {
@@ -96,12 +103,12 @@ describe('<VisibleNavbarItemList />', () => {
     const deleteButtons = screen.getAllByText('Delete');
 
     fireEvent.click(deleteButtons[0]);
-    expect(deleteCustomPage).toHaveBeenCalledWith(
+    expect(mockDeleteCustomPage).toHaveBeenCalledWith(
       'e7854e94-3074-4607-b66e-0422aa3d8359'
     );
 
     fireEvent.click(deleteButtons[1]);
-    expect(deleteCustomPage).toHaveBeenCalledWith(
+    expect(mockDeleteCustomPage).toHaveBeenCalledWith(
       '793d56cc-c8b3-4422-b393-972b71f82aa2'
     );
   });
@@ -112,11 +119,11 @@ describe('<VisibleNavbarItemList />', () => {
     const removeButtons = screen.getAllByText('Remove from navbar');
 
     fireEvent.click(removeButtons[0]);
-    expect(removeNavbarItem).toHaveBeenCalledWith(
+    expect(mockRemoveNavbarItem).toHaveBeenCalledWith(
       '2003e851-6cae-4ce8-a0e4-4b930fe73009'
     );
     fireEvent.click(removeButtons[1]);
-    expect(removeNavbarItem).toHaveBeenLastCalledWith(
+    expect(mockRemoveNavbarItem).toHaveBeenLastCalledWith(
       '037c953a-f717-4d17-beca-b0b684335b7b'
     );
   });

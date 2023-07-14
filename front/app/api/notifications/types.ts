@@ -2,6 +2,7 @@ import { Multiloc } from 'typings';
 import notificationsKeys from './keys';
 
 import { Keys } from 'utils/cl-react-query/types';
+import { InternalCommentType } from 'api/campaigns/types';
 
 export type NotificationsKeys = Keys<typeof notificationsKeys>;
 
@@ -32,13 +33,15 @@ export interface IAdminRightsReceivedNotificationData
   };
 }
 
+type PostType = 'Initiative' | 'Idea';
+
 export interface ICommentDeletedByAdminNotificationData
   extends IBaseNotificationData {
   attributes: {
     type: 'comment_deleted_by_admin';
     read_at: string | null;
     created_at: string;
-    post_type: 'Initiative' | 'Idea';
+    post_type: PostType;
     post_slug: string | null;
     post_title_multiloc: Multiloc;
     reason_code: 'irrelevant' | 'inappropriate' | 'other';
@@ -55,7 +58,7 @@ export interface ICommentMarkedAsSpamNotificationData
     initiating_user_first_name: string | null;
     initiating_user_last_name: string | null;
     initiating_user_slug: string | null;
-    post_type: 'Initiative' | 'Idea';
+    post_type: PostType;
     post_slug: string | null;
     post_title_multiloc: Multiloc;
   };
@@ -70,7 +73,7 @@ export interface ICommentOnYourCommentNotificationData
     initiating_user_first_name: string | null;
     initiating_user_last_name: string | null;
     initiating_user_slug: string | null;
-    post_type: 'Initiative' | 'Idea';
+    post_type: PostType;
     post_slug: string | null;
     post_title_multiloc: Multiloc;
   };
@@ -180,9 +183,27 @@ export interface IMentionInCommentNotificationData
     initiating_user_first_name: string | null;
     initiating_user_last_name: string | null;
     initiating_user_slug: string | null;
-    post_type: 'Initiative' | 'Idea';
+    post_type: PostType;
     post_slug: string | null;
     post_title_multiloc: Multiloc;
+  };
+}
+
+export interface IInternalCommentNotificationData
+  extends IBaseNotificationData {
+  attributes: {
+    type: InternalCommentType;
+    read_at: string | null;
+    created_at: string;
+    initiating_user_first_name: string | null;
+    initiating_user_last_name: string | null;
+    initiating_user_slug: string | null;
+    post_type: PostType;
+    post_slug: string | null;
+    post_title_multiloc: Multiloc;
+    post_id: string;
+    internal_comment_id: string;
+    project_id: string | null;
   };
 }
 
@@ -196,7 +217,7 @@ export interface IMentionInOfficialFeedbackNotificationData
     initiating_user_last_name: string | null;
     initiating_user_slug: string | null;
     official_feedback_author: Multiloc;
-    post_type: 'Initiative' | 'Idea';
+    post_type: PostType;
     post_slug: string | null;
     post_title_multiloc: Multiloc;
   };
@@ -453,6 +474,7 @@ export interface INotificationDataMap {
   IInitiativeMarkedAsSpamNotificationData: IInitiativeMarkedAsSpamNotificationData;
   IInviteAcceptedNotificationData: IInviteAcceptedNotificationData;
   IMentionInCommentNotificationData: IMentionInCommentNotificationData;
+  IInternalCommentNotificationData: IInternalCommentNotificationData;
   IMentionInOfficialFeedbackNotificationData: IMentionInOfficialFeedbackNotificationData;
   IOfficialFeedbackOnCommentedIdeaNotificationData: IOfficialFeedbackOnCommentedIdeaNotificationData;
   IOfficialFeedbackOnCommentedInitiativeNotificationData: IOfficialFeedbackOnCommentedInitiativeNotificationData;

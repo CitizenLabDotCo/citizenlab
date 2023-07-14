@@ -1,5 +1,5 @@
 // Libraries
-import React, { FormEvent, useEffect, useState } from 'react';
+import React, { FormEvent, useEffect, useState, useRef } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // Services
@@ -19,8 +19,7 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 import styled, { useTheme } from 'styled-components';
 
 // Typings
-import { CLErrorsJSON, CLErrors } from 'typings';
-import { isCLErrorJSON } from 'utils/errorUtils';
+import { CLErrors } from 'typings';
 
 import Outlet from 'components/Outlet';
 import useComment from 'api/comments/useComment';
@@ -29,6 +28,12 @@ import { filter } from 'rxjs/operators';
 import { Button } from '@citizenlab/cl2-component-library';
 import { commentTranslateButtonClicked$ } from '../events';
 import useLocalize from 'hooks/useLocalize';
+
+// utils
+import {
+  getCommentContent,
+  getEditableCommentContent,
+} from 'components/PostShowComponents/Comments/utils';
 
 const Container = styled.div``;
 
@@ -89,42 +94,28 @@ const CommentBody = ({
   const [translateButtonClicked, setTranslateButtonClicked] = useState(false);
 
   const [apiErrors, setApiErrors] = useState<CLErrors | null>(null);
-  const [textAreaRef, setTextAreaRef] = useState<HTMLTextAreaElement | null>(
-    null
-  );
+  const textareaElement = useRef<HTMLTextAreaElement | null>(null);
 
   useEffect(() => {
     if (!isNilOrError(comment) && !commentContent) {
-      const setNewCommentContent = () => {
-        let commentContent = '';
-
-        commentContent = localize(
-          comment.data.attributes.body_multiloc
-        ).replace(
-          /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi,
-          '<a class="mention" data-link="/profile/$2" href="/profile/$2">$3</a>'
-        );
-
-        setCommentContent(commentContent);
-      };
-
-      const setNewEditableCommentContent = () => {
-        let editableCommentContent = '';
-
-        editableCommentContent = localize(
-          comment.data.attributes.body_multiloc
-        ).replace(
-          /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>@([\S\s]*?)<\/span>/gi,
-          '@[$3]($2)'
-        );
-
-        setEditableCommentContent(editableCommentContent);
-      };
-
-      setNewCommentContent();
-      setNewEditableCommentContent();
+      const localizedCommentContent = localize(
+        comment.data.attributes.body_multiloc
+      );
+      const localizedEditableCommentContent = localize(
+        comment.data.attributes.body_multiloc
+      );
+      setCommentContent(getCommentContent(localizedCommentContent));
+      setEditableCommentContent(
+        getEditableCommentContent(localizedEditableCommentContent)
+      );
     }
   }, [comment, commentContent, localize]);
+
+  useEffect(() => {
+    if (editing) {
+      textareaElement.current && focusEndOfEditingArea(textareaElement.current);
+    }
+  }, [editing]);
 
   useEffect(() => {
     const subscription = commentTranslateButtonClicked$
@@ -140,22 +131,26 @@ const CommentBody = ({
     };
   }, [commentId]);
 
-  const setNewTextAreaRef = (ref: HTMLTextAreaElement) => {
-    setTextAreaRef(ref);
-    focusEndOfEditingArea();
+  const setNewTextAreaRef = (element: HTMLTextAreaElement) => {
+    textareaElement.current = element;
+
+    if (textareaElement.current) {
+      textareaElement.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+        inline: 'center',
+      });
+    }
   };
 
-  const focusEndOfEditingArea = () => {
-    if (isNilOrError(textAreaRef) || !editing) return;
-    textAreaRef.focus();
-
-    // set caret to end if text content exists
-    if (!isNilOrError(textAreaRef.textContent)) {
-      textAreaRef.setSelectionRange(
-        textAreaRef.textContent.length,
-        textAreaRef.textContent.length
+  const focusEndOfEditingArea = (element: HTMLTextAreaElement) => {
+    if (element.setSelectionRange && element.textContent) {
+      element.setSelectionRange(
+        element.textContent.length,
+        element.textContent.length
       );
     }
+    element.focus();
   };
 
   const onEditableCommentContentChange = (editableCommentContent: string) => {
@@ -185,25 +180,24 @@ const CommentBody = ({
             setCommentContent('');
           },
           onError: (error) => {
-            if (isCLErrorJSON(error)) {
-              const apiErrors = (error as CLErrorsJSON).json.errors;
-              setApiErrors(apiErrors);
-            }
+            setApiErrors(error.errors);
           },
         }
       );
     }
   };
 
-  const cancelEditing = (event: React.MouseEvent) => {
-    event.preventDefault();
-    setEditableCommentContent('');
-    onCancelEditing();
-  };
-
-  if (isNilOrError(locale)) {
+  if (isNilOrError(locale) || !comment) {
     return null;
   }
+
+  const cancelEditing = (event: React.MouseEvent) => {
+    event.preventDefault();
+    setEditableCommentContent(
+      getEditableCommentContent(localize(comment.data.attributes.body_multiloc))
+    );
+    onCancelEditing();
+  };
 
   return (
     <Container className={className}>

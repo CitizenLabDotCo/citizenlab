@@ -79,6 +79,36 @@ export default defineMessages({
     defaultMessage: 'View project',
   },
   // edit - participationContext -----------------------------------------------
+  optionAnalysisLinkText: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.optionAnalysisLinkText',
+    defaultMessage: 'Option analysis overview',
+  },
+  learnMoreVotingMethod: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.learnMoreVotingMethod',
+    defaultMessage:
+      'Learn more about when to use <b> {voteTypeDescription} </b> in our {optionAnalysisArticleLink}.',
+  },
+  multipleVotesPerOption: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.multipleVotesPerOption2',
+    defaultMessage: 'multiple votes per option',
+  },
+  singleVotePerOption: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.singleVotePerOption2',
+    defaultMessage: 'single vote per option',
+  },
+  budgetAllocation: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.budgetAllocation2',
+    defaultMessage: 'budget allocation',
+  },
+  maxVotesPerOptionErrorText: {
+    id: 'app.containers.AdminPage.ProjectEdit.maxVotesPerOptionErrorText',
+    defaultMessage:
+      'Maximum number of votes per option must be less than or equal to total number of votes',
+  },
+  voteTermError: {
+    id: 'app.containers.AdminPage.ProjectEdit.voteTermError',
+    defaultMessage: 'Vote terms must be specified for all locales',
+  },
   noReactingLimitErrorMessage: {
     id: 'app.containers.AdminPage.ProjectEdit.noVotingLimitErrorMessage',
     defaultMessage: 'Not a valid number',
@@ -136,9 +166,9 @@ export default defineMessages({
     defaultMessage: 'Conduct a voting or prioritization exercise',
   },
   conductVotingOrPrioritizationDescriptionText: {
-    id: 'app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationDescriptionText',
+    id: 'app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationDescriptionText2',
     defaultMessage:
-      'Assign a budget to projects and ask participants to select their preferred projects that fit within a total budget.',
+      'Select a voting method, and have users prioritize between a few different options.',
   },
   createNativeSurvey: {
     id: 'app.containers.AdminPage.ProjectEdit.createNativeSurvey',
@@ -236,9 +266,25 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.downvotingEnabled',
     defaultMessage: 'Enabled',
   },
-  enabledActionsForResidents: {
-    id: 'app.containers.AdminPage.ProjectEdit.Voting.enabledActionsForResidents',
-    defaultMessage: 'Enabled actions for residents',
+  enabledActionsForUsers: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.enabledActionsForUsers',
+    defaultMessage: 'Actions for users',
+  },
+  enabledActionsForUsersDescription: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.enabledActionsForUsersDescription',
+    defaultMessage: 'Select what additional actions users can take.',
+  },
+  defaultViewOptions: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.defaultViewOptions',
+    defaultMessage: 'Default view of options',
+  },
+  optionsToVoteOn: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.optionsToVoteOn',
+    defaultMessage: 'Options to vote on',
+  },
+  commentingBias: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.commentingBias',
+    defaultMessage: 'Allowing users to comment can bias the voting process.',
   },
   enabledActionsTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.enabledActionsTooltip2',
@@ -257,9 +303,9 @@ export default defineMessages({
     defaultMessage: 'Anonymous polling',
   },
   anonymousPollingTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.anonymousPollingTooltip2',
+    id: 'app.containers.AdminPage.ProjectEdit.anonymousPollingTooltip',
     defaultMessage:
-      "When enabled it's impossible to see who reacted to what. Users still need an account and can only react once.",
+      "When enabled it's impossible to see who voted on what. Users still need an account and can only vote once.",
   },
   enabled: {
     id: 'app.containers.AdminPage.ProjectEdit.enabled',
@@ -467,6 +513,11 @@ export default defineMessages({
     defaultMessage:
       "The minimum budget can't be larger than the maximum budget",
   },
+  maxVotesPerOptionError: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.maxVotesPerOptionError',
+    defaultMessage:
+      'Maximum number of votes per option must be less than or equal to total number of votes',
+  },
   minVotesRequired: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.minVotesRequired',
     defaultMessage: 'A minimum number of votes is required',
@@ -515,5 +566,13 @@ export default defineMessages({
   konveioSupportArticle: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.konveioSupportArticle',
     defaultMessage: 'support article',
+  },
+  optionsToVoteOnDescription: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescription2',
+    defaultMessage: 'Configure the voting options in the {optionsPageLink}.',
+  },
+  optionsPageText: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.optionsPageText2',
+    defaultMessage: 'Input Manager tab',
   },
 });

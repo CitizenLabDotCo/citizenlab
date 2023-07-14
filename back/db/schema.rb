@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_05_172856) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_10_143815) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -900,8 +900,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_05_172856) do
     t.uuid "project_folder_id"
     t.uuid "inappropriate_content_flag_id"
     t.uuid "internal_comment_id"
-    t.uuid "basket_id"
-    t.index ["basket_id"], name: "index_notifications_on_basket_id"
     t.index ["created_at"], name: "index_notifications_on_created_at"
     t.index ["inappropriate_content_flag_id"], name: "index_notifications_on_inappropriate_content_flag_id"
     t.index ["initiating_user_id"], name: "index_notifications_on_initiating_user_id"
@@ -1002,6 +1000,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_05_172856) do
     t.integer "posting_limited_max", default: 1
     t.string "document_annotation_embed_url"
     t.boolean "allow_anonymous_participation", default: false, null: false
+    t.jsonb "campaigns_settings", default: {}
     t.string "voting_method"
     t.integer "voting_max_votes_per_idea"
     t.jsonb "voting_term_singular_multiloc", default: {}
@@ -1177,11 +1176,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_05_172856) do
 
   create_table "public_api_api_clients", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
-    t.string "secret"
-    t.uuid "tenant_id"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
-    t.index ["tenant_id"], name: "index_public_api_api_clients_on_tenant_id"
+    t.datetime "last_used_at"
+    t.string "secret_digest", null: false
+    t.string "secret_postfix", null: false
   end
 
   create_table "que_jobs", comment: "4", force: :cascade do |t|
@@ -1504,7 +1503,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_05_172856) do
   add_foreign_key "memberships", "groups"
   add_foreign_key "memberships", "users"
   add_foreign_key "nav_bar_items", "static_pages"
-  add_foreign_key "notifications", "baskets"
   add_foreign_key "notifications", "comments"
   add_foreign_key "notifications", "flag_inappropriate_content_inappropriate_content_flags", column: "inappropriate_content_flag_id"
   add_foreign_key "notifications", "internal_comments"
@@ -1533,7 +1531,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_05_172856) do
   add_foreign_key "projects_allowed_input_topics", "topics"
   add_foreign_key "projects_topics", "projects"
   add_foreign_key "projects_topics", "topics"
-  add_foreign_key "public_api_api_clients", "tenants"
   add_foreign_key "reactions", "users"
   add_foreign_key "report_builder_reports", "users", column: "owner_id"
   add_foreign_key "spam_reports", "users"

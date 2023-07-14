@@ -1,6 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import { isEmpty } from 'lodash-es';
-import { combineLatest } from 'rxjs';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
@@ -29,20 +28,6 @@ import { Box, colors } from '@citizenlab/cl2-component-library';
 
 // typings
 import { IUserCustomFieldData } from 'api/user_custom_fields/types';
-import { IStream } from 'utils/streams';
-
-// services
-import {
-  usersByRegFieldStream,
-  usersByRegFieldXlsxEndpoint,
-  usersByGenderStream,
-  usersByGenderXlsxEndpoint,
-  usersByBirthyearStream,
-  usersByBirthyearXlsxEndpoint,
-  usersByDomicileStream,
-  usersByDomicileXlsxEndpoint,
-  ICustomFieldParams,
-} from 'services/userCustomFieldStats';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -50,11 +35,15 @@ import createConvertAndMergeSeries, {
   ISupportedDataType,
   TOutput,
 } from './convertAndMergeSeries';
+import useUsersByGender from 'api/users_by_gender/useUsersByGender';
+import useUsersByBirthyear from 'api/users_by_birthyear/useUsersByBirthyear';
+import { usersByGenderXlsxEndpoint } from 'api/users_by_gender/util';
+import { usersByBirthyearXlsxEndpoint } from 'api/users_by_birthyear/util';
+import { usersByDomicileXlsxEndpoint } from 'api/users_by_domicile/util';
+import useUsersByDomicile from 'api/users_by_domicile/useUsersByDomicile';
+import { usersByCustomFieldXlsxEndpoint } from 'api/users_by_custom_field/util';
 
 interface ICustomFieldEndpoint {
-  stream: (
-    streamParams: ICustomFieldParams | null
-  ) => IStream<ISupportedDataType>;
   xlsxEndpoint: string;
 }
 
@@ -62,15 +51,12 @@ type TAllowedCode = 'gender' | 'birthyear' | 'domicile';
 
 const customFieldEndpoints: Record<TAllowedCode, ICustomFieldEndpoint> = {
   gender: {
-    stream: usersByGenderStream,
     xlsxEndpoint: usersByGenderXlsxEndpoint,
   },
   birthyear: {
-    stream: usersByBirthyearStream,
     xlsxEndpoint: usersByBirthyearXlsxEndpoint,
   },
   domicile: {
-    stream: usersByDomicileStream,
     xlsxEndpoint: usersByDomicileXlsxEndpoint,
   },
 };
@@ -113,38 +99,6 @@ const CustomTooltip = ({
   return null;
 };
 
-const createCombinedStream = (
-  customField: IUserCustomFieldData,
-  { startAt, endAt }: { startAt: string; endAt: string },
-  currentProject?: string
-) => {
-  const { code } = customField.attributes;
-
-  const stream =
-    code && code in customFieldEndpoints
-      ? customFieldEndpoints[code as TAllowedCode].stream
-      : usersByRegFieldStream;
-
-  const totalUsersStream = stream(null, customField.id);
-
-  const participantsStream = stream(
-    {
-      queryParameters: {
-        start_at: startAt,
-        end_at: endAt,
-        project: currentProject,
-        filter_by_participation: true,
-      },
-    },
-    customField.id
-  );
-
-  return combineLatest([
-    totalUsersStream.observable,
-    participantsStream.observable,
-  ]);
-};
-
 const CustomFieldsGraph = ({
   startAt,
   endAt,
@@ -154,7 +108,41 @@ const CustomFieldsGraph = ({
   intl: { formatMessage },
   className,
 }: Props) => {
-  const [serie, setSerie] = useState<TOutput | null>(null);
+  const { code } = customField.attributes;
+
+  const { data: usersByGenderWithFilters } = useUsersByGender({
+    start_at: startAt,
+    end_at: endAt,
+    project: currentProject,
+    filter_by_participation: true,
+    enabled: code === 'gender',
+  });
+  const { data: usersByGenderWithoutFilters } = useUsersByGender({
+    enabled: code === 'gender',
+  });
+
+  const { data: usersByBirthyearWithFilters } = useUsersByBirthyear({
+    start_at: startAt,
+    end_at: endAt,
+    project: currentProject,
+    filter_by_participation: true,
+    enabled: code === 'birthyear',
+  });
+  const { data: usersByBirthyearWithoutFilters } = useUsersByBirthyear({
+    enabled: code === 'birthyear',
+  });
+
+  const { data: usersByDomicileWithFilters } = useUsersByDomicile({
+    start_at: startAt,
+    end_at: endAt,
+    project: currentProject,
+    filter_by_participation: true,
+    enabled: code === 'domicile',
+  });
+  const { data: usersByDomicileWithoutFilters } = useUsersByDomicile({
+    enabled: code === 'domicile',
+  });
+
   const currentChartRef = useRef();
   const convertAndMergeSeriesRef = useRef(
     createConvertAndMergeSeries({
@@ -164,44 +152,46 @@ const CustomFieldsGraph = ({
   );
   const convertAndMergeSeries = convertAndMergeSeriesRef.current;
 
-  useEffect(() => {
-    const combinedStream = createCombinedStream(
-      customField,
-      { startAt, endAt },
-      currentProject
-    );
+  const serieMap: Record<
+    TAllowedCode,
+    {
+      totalSeries: ISupportedDataType | undefined;
+      participantSeries: ISupportedDataType | undefined;
+    }
+  > = {
+    domicile: {
+      totalSeries: usersByDomicileWithoutFilters,
+      participantSeries: usersByDomicileWithFilters,
+    },
+    birthyear: {
+      totalSeries: usersByBirthyearWithoutFilters,
+      participantSeries: usersByBirthyearWithFilters,
+    },
+    gender: {
+      totalSeries: usersByGenderWithoutFilters,
+      participantSeries: usersByGenderWithFilters,
+    },
+  };
 
-    const subscription = combinedStream.subscribe(
-      ([totalSerie, participantSerie]) => {
-        if (!isNilOrError(totalSerie) && !isNilOrError(participantSerie)) {
-          const { code } = customField.attributes;
+  const totalSerie = code && serieMap[code].totalSeries;
 
-          const convertedAndMergedSeries = convertAndMergeSeries(
-            totalSerie,
-            participantSerie,
-            code
-          );
+  const participantSerie = code && serieMap[code].participantSeries;
 
-          setSerie(convertedAndMergedSeries);
-        }
-      }
-    );
-
-    return () => subscription.unsubscribe();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [customField, currentProject, startAt, endAt]);
+  const serie: TOutput | undefined =
+    code &&
+    totalSerie &&
+    participantSerie &&
+    convertAndMergeSeries(totalSerie, participantSerie, code);
 
   const noData =
     isNilOrError(serie) ||
     serie.every((item) => isEmpty(item)) ||
     serie.length <= 0;
 
-  const { code } = customField.attributes;
-
   const xlsxEndpoint =
     code && code in customFieldEndpoints
       ? customFieldEndpoints[code as TAllowedCode].xlsxEndpoint
-      : usersByRegFieldXlsxEndpoint(customField.id);
+      : usersByCustomFieldXlsxEndpoint(customField.id);
 
   return (
     <GraphCard className={`dynamicHeight ${className}`}>

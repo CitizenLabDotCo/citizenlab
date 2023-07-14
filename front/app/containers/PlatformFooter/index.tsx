@@ -15,7 +15,7 @@ import { MessageDescriptor } from 'react-intl';
 import messages from './messages';
 
 // services
-import { TPolicyPage } from 'services/customPages';
+import { TPolicyPage } from 'api/custom_pages/types';
 
 // style
 import styled, { css } from 'styled-components';

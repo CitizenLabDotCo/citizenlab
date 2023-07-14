@@ -26,6 +26,7 @@ resource 'Campaign consents' do
     end
 
     parameter :unsubscription_token, 'A token passed through by e-mail unsubscribe links, giving unauthenticated access', required: false
+    parameter :without_campaign_names, "An array of campaign names that should not be returned. Possible values are #{EmailCampaigns::DeliveryService.new.campaign_classes.map(&:campaign_name).join(', ')}", required: false
 
     context 'when authenticated' do
       before { header_token_for @user }
@@ -58,6 +59,19 @@ resource 'Campaign consents' do
         end
 
         expect(response_content_type_multiloc).to eq campaigns_content_type_multiloc
+      end
+
+      context 'when using without_campaign_names' do
+        let(:without_campaign_names) { [@campaigns.first.class.campaign_name] }
+
+        example_request 'List all campaign consents without the first campaign' do
+          expect(status).to eq 200
+          json_response = json_parse(response_body)
+
+          expect(json_response[:data].size).to eq @consents.size - 1
+          expect(json_response[:data].pluck(:attributes).pluck(:campaign_name))
+            .not_to include without_campaign_names.first
+        end
       end
     end
 

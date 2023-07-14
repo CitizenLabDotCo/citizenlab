@@ -30,9 +30,6 @@ describe('useAddArea', () => {
         title_multiloc: {
           en: 'test',
         },
-        description_multiloc: {
-          en: 'test',
-        },
       });
     });
 
@@ -54,9 +51,6 @@ describe('useAddArea', () => {
     act(() => {
       result.current.mutate({
         title_multiloc: {
-          en: 'test',
-        },
-        description_multiloc: {
           en: 'test',
         },
       });

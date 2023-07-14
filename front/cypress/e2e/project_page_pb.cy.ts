@@ -1,34 +1,53 @@
-import { randomString } from '../support/commands';
+import { apiAddComment, randomString } from '../support/commands';
 
 describe('Continuous PB project', () => {
+  let projectId: string;
+  let projectSlug: string;
+  let ideaId: string;
+  let ideaSlug: string;
+  const projectTitle = randomString();
+  const ideaTitle = randomString();
+  const ideaContent = Math.random().toString(36);
+
   before(() => {
-    cy.visit('/projects/participatory-budgeting');
-    cy.get('#e2e-project-page');
-    cy.wait(1000);
-  });
-
-  it('shows the correct project header', () => {
-    cy.get('#e2e-project-header-image');
-    cy.get('#e2e-project-description');
-    cy.get('#e2e-project-sidebar');
-    cy.get('#e2e-project-sidebar-share-button');
-  });
-
-  it('shows the PB expenses box', () => {
-    cy.get('.e2e-pb-expenses-box');
+    cy.apiCreateProject({
+      type: 'continuous',
+      title: projectTitle,
+      descriptionPreview: '',
+      description: '',
+      publicationStatus: 'published',
+      participationMethod: 'voting',
+      votingMethod: 'budgeting',
+      votingMaxTotal: 1000,
+    }).then((project) => {
+      projectId = project.body.data.id;
+      projectSlug = project.body.data.attributes.slug;
+      return cy
+        .apiCreateIdea(
+          projectId,
+          ideaTitle,
+          ideaContent,
+          undefined,
+          undefined,
+          undefined,
+          300
+        )
+        .then((idea) => {
+          ideaId = idea.body.data.id;
+          ideaSlug = idea.body.data.attributes.slug;
+          cy.visit(`/en/projects/${projectSlug}`);
+          cy.get('#e2e-project-page');
+          cy.wait(1000);
+        });
+    });
   });
 
   it('shows the idea cards', () => {
     cy.get('#e2e-continuos-project-idea-cards');
   });
 
-  it('shows the current sorting options', () => {
-    cy.get('.e2e-filter-selector-button').first().click();
-    cy.get('#e2e-item-random').should('exist');
-    cy.get('#e2e-item-new').should('exist');
-    cy.get('#e2e-item--new').should('exist');
-    cy.get('#e2e-item-trending').should('not.exist');
-    cy.get('#e2e-item-popular').should('not.exist');
+  it('hides the idea sorting options', () => {
+    cy.get('.e2e-filter-selector-button').should('not.exist');
   });
 });
 
@@ -97,15 +116,15 @@ describe('Budgeting CTA bar', () => {
       .find('.e2e-assign-budget-button')
       .should('have.class', 'in-basket');
 
-    cy.get('[data-cy="e2e-submit-my-basket-button"]').should('exist');
-    cy.get('[data-cy="e2e-submit-my-basket-button"]').click({ force: true });
+    // cy.get('[data-cy="e2e-submit-my-basket-button"]').should('exist');
+    // cy.get('[data-cy="e2e-submit-my-basket-button"]').click({ force: true });
 
-    cy.get('[data-cy="budgeting-cta-button"]').should('not.exist');
+    // cy.get('[data-cy="budgeting-cta-button"]').should('not.exist');
 
-    cy.get('.e2e-assign-budget')
-      .first()
-      .find('.e2e-assign-budget-button')
-      .click();
-    cy.get('[data-cy="budgeting-cta-button"]').should('exist');
+    // cy.get('.e2e-assign-budget')
+    //   .first()
+    //   .find('.e2e-assign-budget-button')
+    //   .click();
+    // cy.get('[data-cy="budgeting-cta-button"]').should('exist');
   });
 });

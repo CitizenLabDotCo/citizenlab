@@ -65,6 +65,25 @@ RSpec.describe Basket do
     end
   end
 
+  context 'when an idea has more than the maximum votes per idea' do
+    let(:basket) { create(:basket, participation_context: phase, submitted_at: Time.now) }
+    let!(:basekts_idea) { create(:baskets_idea, basket: basket, idea: idea, votes: 4) }
+    let(:phase) { create(:voting_phase, voting_method: 'multiple_voting', voting_max_votes_per_idea: 3) }
+    let(:idea) { create(:idea, project: phase.project, phases: [phase]) }
+
+    it 'is valid in normal context' do
+      basket.submitted_at = Time.now
+      expect(basket).to be_valid
+    end
+
+    it 'is not valid in submission context' do
+      basket.submitted_at = Time.now
+      expect(basket.save(context: :basket_submission)).to be false
+      expect(basket.errors.details).to eq({ baskets_ideas: [{ error: :less_than_or_equal_to, value: 4, count: 3, idea_id: idea.id }] })
+      expect(basket.errors.messages).to eq({ baskets_ideas: ['must be less than or equal to 3'] })
+    end
+  end
+
   context "when the basket's project is updated to non-budgeting participation method" do
     let!(:basket) { create(:basket, ideas: [idea], participation_context: project, submitted_at: Time.now) }
     let(:project) { create(:continuous_budgeting_project, voting_min_total: 200) }
@@ -90,6 +109,7 @@ RSpec.describe Basket do
         expect(basket.total_votes).to eq 25
         idea.destroy!
         basket.reload
+        expect(basket.ideas.pluck(:id)).not_to include idea.id
         expect(basket.ideas.count).to eq 2
         expect(basket.total_votes).to eq 20
       end

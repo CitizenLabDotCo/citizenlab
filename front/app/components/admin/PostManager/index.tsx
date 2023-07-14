@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, lazy } from 'react';
 import { isFunction } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import styled from 'styled-components';
@@ -35,7 +35,10 @@ import IdeasCount from './components/IdeasCount';
 import InitiativesCount from './components/InitiativesCount';
 import { Input } from 'semantic-ui-react';
 import FeedbackToggle from './components/TopLevelFilters/FeedbackToggle';
-import LazyPostPreview from './components/LazyPostPreview';
+const LazyPostPreview = lazy(
+  () => import('components/admin/PostManager/components/PostPreview')
+);
+
 import LazyStatusChangeModal from './components/StatusChangeModal/LazyStatusChangeModal';
 import Outlet from 'components/Outlet';
 
@@ -117,6 +120,7 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 export type TFilterMenu = 'topics' | 'phases' | 'projects' | 'statuses';
+export type PreviewMode = 'view' | 'edit';
 
 interface State {
   /** A set of ids of ideas/initiatives that are currently selected */
@@ -124,7 +128,7 @@ interface State {
   activeFilterMenu: TFilterMenu;
   searchTerm: string | undefined;
   previewPostId: string | null;
-  previewMode: 'view' | 'edit';
+  previewMode: PreviewMode;
 }
 
 export class PostManager extends React.PureComponent<Props, State> {
@@ -391,6 +395,8 @@ export class PostManager extends React.PureComponent<Props, State> {
                 phases={!isNilOrError(phases) ? phases : undefined}
                 statuses={!isNilOrError(postStatuses) ? postStatuses : []}
                 selection={selection}
+                selectedPhase={selectedPhase}
+                selectedProject={selectedProject}
                 onChangeSelection={this.handleChangeSelection}
                 currentPageNumber={posts.currentPage}
                 lastPageNumber={posts.lastPage}

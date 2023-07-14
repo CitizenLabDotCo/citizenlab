@@ -15,7 +15,7 @@ const createAdminDashboardRoutes = () => {
     ),
     children: [
       {
-        index: true,
+        path: 'overview',
         element: (
           <PageLoading>
             <Overview />

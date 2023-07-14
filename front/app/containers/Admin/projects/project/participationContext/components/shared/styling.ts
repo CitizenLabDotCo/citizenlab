@@ -44,8 +44,8 @@ export const BudgetingAmountInput = styled(Input)`
   max-width: 288px;
 `;
 
-export const BudgetingAmountInputError = styled(Error)`
-  max-width: 288px;
+export const VotingAmountInputError = styled(Error)`
+  max-width: 400px;
 `;
 
 export const StyledA = styled.a`

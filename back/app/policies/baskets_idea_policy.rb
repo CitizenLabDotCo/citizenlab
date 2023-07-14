@@ -29,4 +29,8 @@ class BasketsIdeaPolicy < ApplicationPolicy
   def destroy?
     BasketPolicy.new(user, record.basket).update?
   end
+
+  def upsert?
+    BasketPolicy.new(user, record.basket).update?
+  end
 end

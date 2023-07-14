@@ -14,6 +14,7 @@ import InitiativeAssignedToYouNotification from '../InitiativeAssignedToYouNotif
 import InitiativeMarkedAsSpamNotification from '../InitiativeMarkedAsSpamNotification';
 import InviteAcceptedNotification from '../InviteAcceptedNotification';
 import MentionInCommentNotification from '../MentionInCommentNotification';
+import InternalCommentNotification from '../InternalCommentNotification';
 import MentionInOfficialFeedbackNotification from '../MentionInOfficialFeedbackNotification';
 import OfficialFeedbackOnCommentedIdeaNotification from '../OfficialFeedbackOnCommentedIdeaNotification';
 import OfficialFeedbackOnCommentedInitiativeNotification from '../OfficialFeedbackOnCommentedInitiativeNotification';
@@ -50,6 +51,7 @@ import {
   IInitiativeMarkedAsSpamNotificationData,
   IInviteAcceptedNotificationData,
   IMentionInCommentNotificationData,
+  IInternalCommentNotificationData,
   IMentionInOfficialFeedbackNotificationData,
   IOfficialFeedbackOnCommentedIdeaNotificationData,
   IOfficialFeedbackOnCommentedInitiativeNotificationData,
@@ -161,6 +163,20 @@ const Notification = ({ notification }: Props) => {
       return (
         <MentionInCommentNotification
           notification={notification as IMentionInCommentNotificationData}
+        />
+      );
+    case 'mention_in_internal_comment':
+    case 'internal_comment_on_your_internal_comment':
+    case 'internal_comment_on_idea_assigned_to_you':
+    case 'internal_comment_on_initiative_assigned_to_you':
+    case 'internal_comment_on_idea_you_moderate':
+    case 'internal_comment_on_idea_you_commented_internally_on':
+    case 'internal_comment_on_initiative_you_commented_internally_on':
+    case 'internal_comment_on_unassigned_unmoderated_idea':
+    case 'internal_comment_on_unassigned_initiative':
+      return (
+        <InternalCommentNotification
+          notification={notification as IInternalCommentNotificationData}
         />
       );
     case 'mention_in_official_feedback':
