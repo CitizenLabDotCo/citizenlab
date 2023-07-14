@@ -1222,7 +1222,7 @@
   "app.containers.AdminPage.ProjectEdit.adminProjectFolderSelectTooltip": "Je kunt je project toevoegen aan een bestaande map. Je kunt dit ook later doen in het tabblad Projecten.",
   "app.containers.AdminPage.ProjectEdit.allowedInputTopicsTab": "Toegestane invoer-tags",
   "app.containers.AdminPage.ProjectEdit.anonymousPolling": "Anonieme peiling",
-  "app.containers.AdminPage.ProjectEdit.anonymousPollingTooltip2": "Als deze optie is ingeschakeld, is het onmogelijk om te zien wie waarop heeft gereageerd. Gebruikers hebben nog steeds een account nodig en kunnen maar één keer reageren.",
+  "app.containers.AdminPage.ProjectEdit.anonymousPollingTooltip": "Bij een anonieme peiling is het onmogelijk om te zien wie waarvoor koos. Deelnemers moeten zich wel nog steeds registreren en kunnen slechts eenmaal hun stem uitbrengen.",
   "app.containers.AdminPage.ProjectEdit.archived": "Gearchiveerd",
   "app.containers.AdminPage.ProjectEdit.archivedStatus": "Gearchiveerd",
   "app.containers.AdminPage.ProjectEdit.areaIsLinkedToStaticPage": "Dit gebied kan niet worden verwijderd omdat het wordt gebruikt om projecten te tonen op de volgende meer aangepaste pagina('s). Je moet het gebied loskoppelen van de pagina, of de pagina verwijderen voordat je het gebied kunt verwijderen.",
