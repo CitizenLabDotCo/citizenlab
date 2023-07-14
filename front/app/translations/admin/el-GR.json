@@ -1222,7 +1222,7 @@
   "app.containers.AdminPage.ProjectEdit.adminProjectFolderSelectTooltip": "Μπορείτε να προσθέσετε το έργο σας σε έναν υπάρχοντα φάκελο. Μπορείτε επίσης να το κάνετε αυτό αργότερα στην καρτέλα Έργα.",
   "app.containers.AdminPage.ProjectEdit.allowedInputTopicsTab": "Ετικέτες έργου",
   "app.containers.AdminPage.ProjectEdit.anonymousPolling": "Ανώνυμη δημοσκόπηση",
-  "app.containers.AdminPage.ProjectEdit.anonymousPollingTooltip2": "Όταν είναι ενεργοποιημένο είναι αδύνατο να δούμε ποιος αντέδρασε σε τι. Οι χρήστες εξακολουθούν να χρειάζονται έναν λογαριασμό και μπορούν να αντιδράσουν μόνο μία φορά.",
+  "app.containers.AdminPage.ProjectEdit.anonymousPollingTooltip": "Όταν είναι ενεργοποιημένη, είναι αδύνατο να δείτε ποιος ψήφισε τι. Οι χρήστες εξακολουθούν να χρειάζονται έναν λογαριασμό και μπορούν να ψηφίσουν μόνο μία φορά.",
   "app.containers.AdminPage.ProjectEdit.archived": "Archived",
   "app.containers.AdminPage.ProjectEdit.archivedStatus": "Archived",
   "app.containers.AdminPage.ProjectEdit.areaIsLinkedToStaticPage": "Αυτή η περιοχή δεν μπορεί να διαγραφεί επειδή χρησιμοποιείται για την προβολή έργων στις παρακάτω προσαρμοσμένες σελίδες. Για να μπορέσετε να διαγράψετε την περιοχή, θα πρέπει πρώτα να καταργήσετε τη σύνδεση της περιοχής από τη σελίδα ή να διαγράψετε τη σελίδα.",
