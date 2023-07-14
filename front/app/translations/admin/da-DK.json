@@ -1222,7 +1222,7 @@
   "app.containers.AdminPage.ProjectEdit.adminProjectFolderSelectTooltip": "Du kan tilføje din projekt til en eksisterende mappe. Du kan også gøre dette senere under fanen Projekter.",
   "app.containers.AdminPage.ProjectEdit.allowedInputTopicsTab": "Tilladte input-tags",
   "app.containers.AdminPage.ProjectEdit.anonymousPolling": "Anonym meningsmåling",
-  "app.containers.AdminPage.ProjectEdit.anonymousPollingTooltip2": "Når den er aktiveret, er det umuligt at se, hvem der har stemt på hvad. Brugere skal stadig have en konto og kan kun stemme én gang.",
+  "app.containers.AdminPage.ProjectEdit.anonymousPollingTooltip": "Når den er aktiveret, er det umuligt at se, hvem der har stemt om hvad. Brugere skal stadig have en konto og kan kun stemme én gang.",
   "app.containers.AdminPage.ProjectEdit.archived": "Arkiveret",
   "app.containers.AdminPage.ProjectEdit.archivedStatus": "Arkiveret",
   "app.containers.AdminPage.ProjectEdit.areaIsLinkedToStaticPage": "Dette område kan ikke slettes, fordi det bruges til at vise projekter på følgende mere tilpassede side(r). Du skal fjerne forbindelsen mellem området og siden eller slette siden, før du kan slette området.",
