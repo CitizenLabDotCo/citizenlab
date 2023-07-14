@@ -12,12 +12,16 @@ import useLocalize from 'hooks/useLocalize';
 import Card from 'components/UI/Card/Compact';
 import ImagePlaceholder from 'components/IdeaCard/ImagePlaceholder';
 import Rank from './Rank';
-import ResultBar from './ResultBar';
+import Results from './Results';
 import Footer from 'components/IdeaCard/Footer';
 
 // router
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import clHistory from 'utils/cl-router/history';
+
+// utils
+import { isNil } from 'utils/helperUtils';
+import { roundPercentage } from 'utils/math';
 
 // typings
 import { IIdeaData } from 'api/ideas/types';
@@ -42,6 +46,13 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
   const params = '?go_back=true';
   const votingMethod = phase?.data.attributes.voting_method;
 
+  const ideaVotes = idea.attributes.votes_count ?? 0;
+  const totalVotes = phase?.data.attributes.votes_count;
+
+  const votesPercentage = !isNil(totalVotes)
+    ? roundPercentage(ideaVotes, totalVotes)
+    : undefined;
+
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     updateSearchParams({ scroll_to_card: idea.id });
@@ -64,11 +75,13 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
       }
       imageOverlay={<Rank rank={rank} />}
       body={
-        <ResultBar
-          budget={idea.attributes.budget ?? undefined}
-          percentage={20}
-          picks={20}
-        />
+        votesPercentage !== undefined ? (
+          <Results
+            budget={idea.attributes.budget ?? undefined}
+            votes={ideaVotes}
+            votesPercentage={votesPercentage}
+          />
+        ) : undefined
       }
       footer={
         <Footer

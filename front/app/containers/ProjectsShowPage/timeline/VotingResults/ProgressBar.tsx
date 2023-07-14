@@ -5,29 +5,35 @@ import { Box, Text } from '@citizenlab/cl2-component-library';
 
 // styling
 import { useTheme } from 'styled-components';
-import { colors, stylingConsts } from 'utils/styleUtils';
+import { stylingConsts } from 'utils/styleUtils';
+import { transparentize } from 'polished';
+
+// i18n
+import { useIntl } from 'utils/cl-intl';
+import messages from './messages';
 
 interface Props {
-  percentage: number;
-  picks: number;
+  votes: number;
+  votesPercentage: number;
   baskets?: number;
 }
 
-const ProgressBar = ({ percentage, picks, baskets: _baskets }: Props) => {
+const ProgressBar = ({ votes, votesPercentage, baskets: _baskets }: Props) => {
   const theme = useTheme();
+  const { formatMessage } = useIntl();
 
   return (
     <Box
       w="100%"
       h="28px"
       borderRadius={stylingConsts.borderRadius}
-      bgColor={colors.grey200}
+      bgColor={transparentize(0.9, theme.colors.tenantPrimary)}
       position="relative"
     >
       <Box
-        w={`${percentage}%`}
+        w={`${votesPercentage}%`}
         h="100%"
-        bgColor={theme.colors.primary}
+        bgColor={transparentize(0.75, theme.colors.primary)}
         borderRadius={stylingConsts.borderRadius}
       />
       <Box
@@ -38,9 +44,14 @@ const ProgressBar = ({ percentage, picks, baskets: _baskets }: Props) => {
         display="flex"
         alignItems="center"
       >
-        <Text m="0" color="white" ml="12px" fontSize="s">
-          {/* {percentage}% */}
-          {`${percentage}% (${picks} picks)`}
+        <Text
+          m="0"
+          color="tenantPrimary"
+          ml="12px"
+          fontSize="s"
+          fontWeight="bold"
+        >
+          {`${votesPercentage}% (${votes} ${formatMessage(messages.votes)})`}
         </Text>
       </Box>
     </Box>
