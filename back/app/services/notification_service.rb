@@ -42,7 +42,8 @@ class NotificationService
     Notifications::ThresholdReachedForAdmin,
     Notifications::VotingBasketSubmitted,
     Notifications::VotingBasketNotSubmitted,
-    Notifications::VotingLastChance
+    Notifications::VotingLastChance,
+    Notifications::VotingResults
   ].freeze
 
   def notification_classes

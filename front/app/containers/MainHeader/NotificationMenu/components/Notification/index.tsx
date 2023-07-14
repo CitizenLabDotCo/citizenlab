@@ -36,6 +36,7 @@ import ProjectFolderModerationRightsReceivedNotification from '../ProjectFolderM
 import VotingBasketSubmittedNotification from '../VotingBasketSubmittedNotification';
 import VotingBasketNotSubmittedNotification from '../VotingBasketNotSubmittedNotification';
 import VotingLastChanceNotification from '../VotingLastChanceNotification';
+import VotingResultsNotification from '../VotingResultsNotification';
 
 import {
   TNotificationData,
@@ -73,6 +74,7 @@ import {
   IVotingBasketSubmittedNotificationData,
   IVotingBasketNotSubmittedNotificationData,
   IVotingLastChanceNotificationData,
+  IVotingResultsNotificationData,
 } from 'api/notifications/types';
 import styled from 'styled-components';
 import Outlet from 'components/Outlet';
@@ -339,6 +341,12 @@ const Notification = ({ notification }: Props) => {
       return (
         <VotingLastChanceNotification
           notification={notification as IVotingLastChanceNotificationData}
+        />
+      );
+    case 'voting_results':
+      return (
+        <VotingResultsNotification
+          notification={notification as IVotingResultsNotificationData}
         />
       );
     default:

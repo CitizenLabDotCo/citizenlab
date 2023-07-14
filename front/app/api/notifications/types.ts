@@ -461,6 +461,16 @@ export interface IVotingLastChanceNotificationData
   };
 }
 
+export interface IVotingResultsNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'voting_results';
+    read_at: string | null;
+    created_at: string;
+    project_slug: string;
+    phase_title_multiloc: Multiloc;
+  };
+}
+
 export interface INotificationDataMap {
   IAdminRightsReceivedNotificationData: IAdminRightsReceivedNotificationData;
   ICommentDeletedByAdminNotificationData: ICommentDeletedByAdminNotificationData;
@@ -496,6 +506,7 @@ export interface INotificationDataMap {
   IVotingBasketSubmittedNotificationData: IVotingBasketSubmittedNotificationData;
   IVotingBasketNotSubmittedNotificationData: IVotingBasketNotSubmittedNotificationData;
   IVotingLastChanceNotificationData: IVotingLastChanceNotificationData;
+  IVotingResultsNotificationData: IVotingResultsNotificationData;
 }
 
 export type TNotificationData =

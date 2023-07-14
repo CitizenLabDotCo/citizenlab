@@ -70,23 +70,9 @@ module EmailCampaigns
       [{
         event_payload: {
           project_url: Frontend::UrlService.new.model_to_url(basket.participation_context.project, locale: recipient.locale),
-          voted_ideas: format_ideas_list(basket.ideas, recipient)
+          voted_ideas: EmailCampaigns::PayloadFormatterService.new.format_ideas_list(basket.ideas, recipient)
         }
       }]
-    end
-
-    def format_ideas_list(ideas, recipient)
-      ideas.map do |idea|
-        {
-          title_multiloc: idea.title_multiloc,
-          url: Frontend::UrlService.new.model_to_url(idea, locale: recipient.locale),
-          images: idea.idea_images.map do |image|
-            {
-              versions: image.image.versions.to_h { |k, v| [k.to_s, v.url] }
-            }
-          end
-        }
-      end
     end
   end
 end

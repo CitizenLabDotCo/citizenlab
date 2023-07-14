@@ -27,26 +27,25 @@
 #  fk_rails_...  (author_id => users.id)
 #
 module EmailCampaigns
-  class Campaigns::ProjectPhaseStarted < Campaign
+  class Campaigns::VotingResults < Campaign
     include Consentable
     include ActivityTriggerable
-    include RecipientConfigurable
     include Disableable
     include Trackable
     include LifecycleStageRestrictable
-    allow_lifecycle_stages only: ['active']
+    allow_lifecycle_stages only: %w[trial active]
 
-    recipient_filter :filter_notification_recipient
+    recipient_filter :filter_recipient
 
     def mailer_class
-      ProjectPhaseStartedMailer
+      VotingResultsMailer
     end
 
     def activity_triggers
-      { 'Notifications::ProjectPhaseStarted' => { 'created' => true } }
+      { 'Notifications::VotingResults' => { 'created' => true } }
     end
 
-    def filter_notification_recipient(users_scope, activity:, time: nil)
+    def filter_recipient(users_scope, activity:, time: nil)
       users_scope.where(id: activity.item.recipient.id)
     end
 
@@ -59,32 +58,22 @@ module EmailCampaigns
     end
 
     def self.content_type_multiloc_key
-      'email_campaigns.admin_labels.content_type.projects'
+      'email_campaigns.admin_labels.content_type.voting'
     end
 
     def self.trigger_multiloc_key
-      'email_campaigns.admin_labels.trigger.project_phase_changes'
+      'email_campaigns.admin_labels.trigger.voting_phase_ended'
     end
 
-    def generate_commands(recipient:, activity:, time: nil)
-      notification = activity.item
-      if notification.phase.voting?
-        # NOTE: Voting phases send a different email
-        []
-      else
-        [{
-          event_payload: {
-            phase_title_multiloc: notification.phase.title_multiloc,
-            phase_description_multiloc: notification.phase.description_multiloc,
-            phase_start_at: notification.phase.start_at.iso8601,
-            phase_end_at: notification.phase.end_at.iso8601,
-            phase_url: Frontend::UrlService.new.model_to_url(notification.phase, locale: recipient.locale),
-            project_title_multiloc: notification.project.title_multiloc,
-            project_description_preview_multiloc: notification.project.description_preview_multiloc
-          },
-          delay: 8.hours.to_i
-        }]
-      end
+    def generate_commands(recipient:, activity:)
+      basket = activity.item
+      [{
+        event_payload: {
+          project_url: Frontend::UrlService.new.model_to_url(project, locale: recipient.locale),
+          phase_title_multiloc: basket.participation_context.title_multiloc,
+          project_title_multiloc: basket.participation_context.project.title_multiloc
+        }
+      }]
     end
   end
 end

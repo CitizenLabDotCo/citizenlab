@@ -654,3 +654,17 @@ en:
       body_2: 'Time is running out, and we noticed that you haven''t cast your vote yet! Act now by simply clicking the button below to participate.'
       body_3: 'By doing so, you''ll gain access to a range of options and have the chance to provide your input, which is crucial in deciding the future of this project.'
       cta_vote: 'Vote'
+    voting_results:
+      subject: '%{organizationName}: %{phaseTitle} vote results revealed!'
+      preheader: '%{phaseTitle} vote results revealed on the participation platform of %{organizationName}'
+      title_results: '%{phaseTitle} vote results revealed!'
+      body_1: 'Results are in!'
+      body_2: 'The results of the %{phaseTitle} vote in the %{organizationName} platform have been published!'
+      body_3: 'We encourage you to review the results and stay tuned for further updates on the next steps.'
+      cta_see_results: 'See results in the platform'
+    voting_phase_started:
+      subject: '%{organizationName}: The voting phase started for %{projectName}'
+      preheader: 'The voting phase started for %{projectName} on the participation platform of %{organizationName}'
+      event_description: 'The project "%{projectName}" is asking you to vote between %{numIdeas} options:'
+      cta_message: 'Click the button below to participate'
+      cta_vote: 'Go to the platform to vote'

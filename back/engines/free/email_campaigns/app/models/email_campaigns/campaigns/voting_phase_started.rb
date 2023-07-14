@@ -27,7 +27,7 @@
 #  fk_rails_...  (author_id => users.id)
 #
 module EmailCampaigns
-  class Campaigns::ProjectPhaseStarted < Campaign
+  class Campaigns::VotingPhaseStarted < Campaign
     include Consentable
     include ActivityTriggerable
     include RecipientConfigurable
@@ -39,7 +39,7 @@ module EmailCampaigns
     recipient_filter :filter_notification_recipient
 
     def mailer_class
-      ProjectPhaseStartedMailer
+      VotingPhaseStartedMailer
     end
 
     def activity_triggers
@@ -69,21 +69,17 @@ module EmailCampaigns
     def generate_commands(recipient:, activity:, time: nil)
       notification = activity.item
       if notification.phase.voting?
-        # NOTE: Voting phases send a different email
-        []
-      else
         [{
           event_payload: {
+            project_url: Frontend::UrlService.new.model_to_url(notification.phase.project, locale: recipient.locale),
+            project_title_multiloc: notification.phase.project.title_multiloc,
             phase_title_multiloc: notification.phase.title_multiloc,
-            phase_description_multiloc: notification.phase.description_multiloc,
-            phase_start_at: notification.phase.start_at.iso8601,
-            phase_end_at: notification.phase.end_at.iso8601,
-            phase_url: Frontend::UrlService.new.model_to_url(notification.phase, locale: recipient.locale),
-            project_title_multiloc: notification.project.title_multiloc,
-            project_description_preview_multiloc: notification.project.description_preview_multiloc
+            ideas: EmailCampaigns::PayloadFormatterService.new.format_ideas_list(notification.phase.ideas, recipient)
           },
           delay: 8.hours.to_i
         }]
+      else
+        []
       end
     end
   end
