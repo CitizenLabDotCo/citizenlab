@@ -56,6 +56,10 @@ sr-Latn:
       "moderator_digest": Nedeljni pregled za menadžere projekata
       "assignee_digest": Nedeljni pregled dodeljenih ideja
       "user_digest": Nedeljni pregled
+      "voting_basket_submitted": Confirmation of voting
+      "voting_basket_not_submitted": Votes not submitted
+      "voting_last_chance": Last chance to vote
+      "voting_results": Voting results
       "your_proposed_initiatives_digest": Nedeljni pregled vaših predloga
     schedules:
       weekly:
@@ -577,6 +581,42 @@ sr-Latn:
       new_votes: 'Novi glasovi'
       remaining_votes: 'Preostali glasovi'
       remaining_days: 'Preostalih dana'
+    voting_basket_submitted:
+      subject: '%{organizationName}: You voted successfully'
+      preheader: 'You voted successfully on the participation platform of %{organizationName}'
+      title_basket_submitted: 'You voted successfully'
+      event_description: 'Thanks for participating. Your votes have been recorded. Visit the platform of %{organizationName} to see and manage your votes.'
+      cta_see_votes_submitted: 'See votes submitted'
+      cta_message: 'Click the button below to participate'
+    voting_basket_not_submitted:
+      subject: '%{organizationName}: You didn''t submit your votes'
+      preheader: 'You didn''t submit your votes on the participation platform of %{organizationName}'
+      title_basket_not_submitted: 'You didn''t submit your votes'
+      event_description: 'You selected a few options for %{contextTitle} but you didn''t submit your selection.'
+      cta_view_options_and_vote: 'View options and vote'
+      cta_message: 'Click the button below to submit your selected options'
+    voting_last_chance:
+      subject: '%{organizationName}: Last chance to vote for %{phaseTitle}'
+      preheader: 'Last chance to vote for %{phaseTitle} on the participation platform of %{organizationName}'
+      title_last_chance: 'Last chance to vote for %{phaseTitle}'
+      body_1: 'The voting phase for the %{projectTitle} project is coming to a close tomorrow, at midnight.'
+      body_2: 'Time is running out, and we noticed that you haven''t cast your vote yet! Act now by simply clicking the button below to participate.'
+      body_3: 'By doing so, you''ll gain access to a range of options and have the chance to provide your input, which is crucial in deciding the future of this project.'
+      cta_vote: 'Vote'
+    voting_results:
+      subject: '%{organizationName}: %{phaseTitle} vote results revealed!'
+      preheader: '%{phaseTitle} vote results revealed on the participation platform of %{organizationName}'
+      title_results: '%{phaseTitle} vote results revealed!'
+      body_1: 'Results are in!'
+      body_2: 'The results of the %{phaseTitle} vote in the %{organizationName} platform have been published!'
+      body_3: 'We encourage you to review the results and stay tuned for further updates on the next steps.'
+      cta_see_results: 'See results in the platform'
+    voting_phase_started:
+      subject: '%{organizationName}: The voting phase started for %{projectName}'
+      preheader: 'The voting phase started for %{projectName} on the participation platform of %{organizationName}'
+      event_description: 'The project "%{projectName}" is asking you to vote between %{numIdeas} options:'
+      cta_message: 'Click the button below to participate'
+      cta_vote: 'Go to the platform to vote'
     admin_labels:
       recipient_role:
         admins: 'За администраторе'
@@ -605,6 +645,9 @@ sr-Latn:
         users_who_engaged_with_the_input: 'Корисници који су се бавили уносом'
         users_who_engaged_with_the_project: 'Корисници који су били ангажовани на пројекту'
         users_who_engaged_with_the_proposal: 'Корисници који су се бавили предлогом'
+        user_who_voted: 'User who voted'
+        user_with_unsubmitted_votes: 'User who has not submitted their votes'
+        users_who_engaged_but_not_voted: 'Users who engaged with the project but have not voted'
       content_type:
         comments: 'Коментари'
         content_moderation: 'Модерирање садржаја'
@@ -615,6 +658,7 @@ sr-Latn:
         projects: 'Пројекти'
         proposals: 'Предлози'
         reactions: 'Реакције'
+        voting: 'Voting'
       trigger:
         comment_is_deleted: 'Коментар је обрисан'
         comment_is_flagged_as_spam: 'Коментар је означен као непожељан'
@@ -652,5 +696,9 @@ sr-Latn:
         user_registers_for_the_first_time: 'Корисник се региструје по први пут'
         user_replies_to_comment: 'Корисник одговара на коментар'
         user_replies_to_internal_comment: 'Корисник одговара на интерни коментар'
+        voting_2_days_before_phase_closes: '2 days before voting phase closes'
+        voting_1_day_after_last_votes: '1 day after user last voted'
+        voting_phase_ended: 'Voting phase ended'
+        voting_basket_submitted: 'Votes are submitted'
         7_days_after_invite_is_sent: '7 дана након слања позивнице'
         7_days_before_the_project_changes_phase: '7 дана пре промене фазе пројекта'
