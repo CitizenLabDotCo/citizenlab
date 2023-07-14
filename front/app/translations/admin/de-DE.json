@@ -1428,7 +1428,7 @@
   "app.containers.AdminPage.ProjectIdeaForm.viewFormLinkCopy": "Formular ansehen",
   "app.containers.AdminPage.ProjectTimeline.addPhaseButton": "Phase hinzufügen",
   "app.containers.AdminPage.ProjectTimeline.automatedEmails": "Automatisierte E-Mails",
-  "app.containers.AdminPage.ProjectTimeline.automatedEmailsDescription": "Sie können E-Mails konfigurieren, die auf einer Phasenebene ausgelöst werden",
+  "app.containers.AdminPage.ProjectTimeline.automatedEmailsDescription": "Sie können E-Mails konfigurieren, die auf Phasenebene ausgelöst werden",
   "app.containers.AdminPage.ProjectTimeline.cancelDeleteButtonText": "Abbrechen",
   "app.containers.AdminPage.ProjectTimeline.datesLabel": "Daten",
   "app.containers.AdminPage.ProjectTimeline.deletePhaseButton": "Löschen",
