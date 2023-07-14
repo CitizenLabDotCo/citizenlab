@@ -1222,7 +1222,7 @@
   "app.containers.AdminPage.ProjectEdit.adminProjectFolderSelectTooltip": "You can add your project to an existing folder. You can also do this later in the Projects tab.",
   "app.containers.AdminPage.ProjectEdit.allowedInputTopicsTab": "Erlaabten Input-Taggen",
   "app.containers.AdminPage.ProjectEdit.anonymousPolling": "Anonymous polling",
-  "app.containers.AdminPage.ProjectEdit.anonymousPollingTooltip2": "Wann aktivéiert ass et onméiglech ze gesinn wien op wat reagéiert huet. D'Benotzer brauchen nach ëmmer e Kont a kënnen nëmmen eemol reagéieren.",
+  "app.containers.AdminPage.ProjectEdit.anonymousPollingTooltip": "When enabled it's impossible to see who voted on what. Users still need an account and can only vote once.",
   "app.containers.AdminPage.ProjectEdit.archived": "Archived",
   "app.containers.AdminPage.ProjectEdit.archivedStatus": "Archived",
   "app.containers.AdminPage.ProjectEdit.areaIsLinkedToStaticPage": "Dës Regioun kann net geläscht ginn, well si benotzt gëtt, fir Projeten op de folgende weidere benotzerdefinéierte Säit(en) unzeweisen. Dir musst d’Regioun vun der Säit trennen oder d’Säit läschen virun datt Dir d’Regioun läsche kënnt.",
