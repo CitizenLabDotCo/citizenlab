@@ -128,14 +128,70 @@ export default ({
       },
     },
     {
-      name: 'comments',
+      name: 'votes',
       cellProps: { width: 1 },
-      onChange: handleSortClick('likes_count'), // TODO: No sort attribute
+      onChange: handleSortClick('votes_count'),
       Component: (
         props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
       ) => {
         return (
-          <SortableHeaderCell {...props} sortAttributeName="likes_count">
+          <SortableHeaderCell {...props} sortAttributeName="votes_count">
+            <FormattedMessage {...messages.votes} />
+          </SortableHeaderCell>
+        );
+      },
+    },
+    {
+      name: 'picks',
+      cellProps: { width: 1 },
+      onChange: handleSortClick('baskets_count'),
+      Component: (
+        props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
+      ) => {
+        return (
+          <SortableHeaderCell {...props} sortAttributeName="baskets_count">
+            <FormattedMessage {...messages.participatoryBudgettingPicks} />
+          </SortableHeaderCell>
+        );
+      },
+    },
+    {
+      name: 'participants',
+      cellProps: { width: 1 },
+      onChange: handleSortClick('baskets_count'),
+      Component: (
+        props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
+      ) => {
+        return (
+          <SortableHeaderCell {...props} sortAttributeName="baskets_count">
+            <FormattedMessage {...messages.participants} />
+          </SortableHeaderCell>
+        );
+      },
+    },
+    {
+      name: 'budget',
+      cellProps: { width: 1 },
+      onChange: handleSortClick('budget'),
+      Component: (
+        props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
+      ) => {
+        return (
+          <SortableHeaderCell {...props} sortAttributeName="budget">
+            <FormattedMessage {...messages.cost} />
+          </SortableHeaderCell>
+        );
+      },
+    },
+    {
+      name: 'comments',
+      cellProps: { width: 1 },
+      onChange: handleSortClick('comments_count'),
+      Component: (
+        props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
+      ) => {
+        return (
+          <SortableHeaderCell {...props} sortAttributeName="comments_count">
             <FormattedMessage {...messages.comments} />
           </SortableHeaderCell>
         );
@@ -179,48 +235,6 @@ export default ({
         return (
           <SortableHeaderCell {...props} sortAttributeName="new">
             <FormattedMessage {...messages.publication_date} />
-          </SortableHeaderCell>
-        );
-      },
-    },
-    {
-      name: 'picks',
-      cellProps: { width: 1 },
-      onChange: handleSortClick('baskets_count'),
-      Component: (
-        props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
-      ) => {
-        return (
-          <SortableHeaderCell {...props} sortAttributeName="baskets_count">
-            <FormattedMessage {...messages.participatoryBudgettingPicks} />
-          </SortableHeaderCell>
-        );
-      },
-    },
-    {
-      name: 'budget',
-      cellProps: { width: 1 },
-      onChange: handleSortClick('budget'),
-      Component: (
-        props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
-      ) => {
-        return (
-          <SortableHeaderCell {...props} sortAttributeName="budget">
-            <FormattedMessage {...messages.budget} />
-          </SortableHeaderCell>
-        );
-      },
-    },
-    {
-      name: 'votes',
-      cellProps: { width: 1 },
-      onChange: handleSortClick('votes_count'),
-      Component: (
-        props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
-      ) => {
-        return (
-          <SortableHeaderCell {...props} sortAttributeName="votes_count">
-            <FormattedMessage {...messages.votes} />
           </SortableHeaderCell>
         );
       },

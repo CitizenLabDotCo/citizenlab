@@ -53,7 +53,11 @@ export type Sort =
   | 'status'
   | '-status'
   | 'votes_count'
-  | '-votes_count';
+  | '-votes_count'
+  | 'comments_count'
+  | '-comments_count'
+  | 'budget'
+  | '-budget';
 
 export type SortAttribute =
   | 'new'
@@ -65,6 +69,7 @@ export type SortAttribute =
   | 'baskets_count'
   | 'status'
   | 'votes_count'
+  | 'comments_count'
   | 'budget';
 
 type ReactingIdeaActionDescriptor =

@@ -32,7 +32,7 @@ export default function usePostManagerColumnFilter(
             'selection',
             'title',
             'votes',
-            'picks',
+            'participants',
             'comments',
           ]);
         case 'single_voting':

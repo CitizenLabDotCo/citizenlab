@@ -120,6 +120,34 @@ const IdeaRow = ({
       },
     },
     {
+      name: 'votes',
+      cellProps: { singleLine: true },
+      Component: ({ idea }: IdeaCellComponentProps) => {
+        return <>{idea.attributes.votes_count}</>;
+      },
+    },
+    {
+      name: 'picks',
+      cellProps: { singleLine: true },
+      Component: ({ idea }: IdeaCellComponentProps) => {
+        return <>{idea.attributes.baskets_count}</>;
+      },
+    },
+    {
+      name: 'participants',
+      cellProps: { singleLine: true },
+      Component: ({ idea }: IdeaCellComponentProps) => {
+        return <>{idea.attributes.baskets_count}</>;
+      },
+    },
+    {
+      name: 'budget',
+      cellProps: { singleLine: true },
+      Component: ({ idea }: IdeaCellComponentProps) => {
+        return <FormattedBudget value={idea.attributes.budget || 0} />;
+      },
+    },
+    {
       name: 'comments',
       cellProps: { singleLine: true },
       Component: ({ idea }: IdeaCellComponentProps) => {
@@ -157,27 +185,6 @@ const IdeaRow = ({
           return <>{timeAgo(Date.parse(idea.attributes.created_at), locale)}</>;
         }
         return null;
-      },
-    },
-    {
-      name: 'picks',
-      cellProps: { singleLine: true },
-      Component: ({ idea }: IdeaCellComponentProps) => {
-        return <>{idea.attributes.baskets_count}</>;
-      },
-    },
-    {
-      name: 'budget',
-      cellProps: { singleLine: true },
-      Component: ({ idea }: IdeaCellComponentProps) => {
-        return <FormattedBudget value={idea.attributes.budget || 0} />;
-      },
-    },
-    {
-      name: 'votes',
-      cellProps: { singleLine: true },
-      Component: ({ idea }: IdeaCellComponentProps) => {
-        return <>{idea.attributes.comments_count}</>; // TODO: votes_count here
       },
     },
   ]);
