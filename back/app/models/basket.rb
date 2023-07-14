@@ -28,10 +28,14 @@ class Basket < ApplicationRecord
   has_many :baskets_ideas, -> { order(:created_at) }, dependent: :destroy, inverse_of: :basket
   has_many :ideas, through: :baskets_ideas
 
+  # TODO: Others use nullify and a before destroy function, but can't work out why
+  has_many :notifications, dependent: :destroy
+
   validates :participation_context, presence: true
   validate :basket_submission, on: :basket_submission
 
   scope :submitted, -> { where.not(submitted_at: nil) }
+  scope :not_submitted, -> { where(submitted_at: nil) }
 
   delegate :project_id, to: :participation_context
 
