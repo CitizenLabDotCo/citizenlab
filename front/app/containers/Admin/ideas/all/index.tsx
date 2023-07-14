@@ -2,8 +2,8 @@ import React from 'react';
 
 // components
 import PostManager, { TFilterMenu } from 'components/admin/PostManager';
-import { Box, colors } from '@citizenlab/cl2-component-library';
-import { PageTitle, SectionDescription } from 'components/admin/Section';
+import { Box, Title, colors } from '@citizenlab/cl2-component-library';
+import { SectionDescription } from 'components/admin/Section';
 
 // resources
 import { PublicationStatus } from 'api/projects/types';
@@ -29,9 +29,9 @@ const IdeasTab = () => {
   if (projects) {
     return (
       <>
-        <PageTitle>
+        <Title color="primary">
           <FormattedMessage {...messages.inputManagerPageTitle} />
-        </PageTitle>
+        </Title>
         <SectionDescription>
           <FormattedMessage {...messages.inputManagerPageSubtitle} />
         </SectionDescription>
