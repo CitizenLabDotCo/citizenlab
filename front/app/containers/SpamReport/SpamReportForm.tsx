@@ -2,7 +2,7 @@
 import React, { FormEvent } from 'react';
 
 // Services
-import { Report } from 'services/spamReports';
+import { ISpamReportAdd, ReasonCode } from 'api/spam_reports/types';
 
 // Utils
 import getSubmitState from 'utils/getSubmitState';
@@ -69,9 +69,9 @@ const ReportReason = styled.div`
 import { CRUDParams } from 'typings';
 
 interface Props extends CRUDParams {
-  reasonCodes: Report['reason_code'][];
-  diff: Report | null;
-  onReasonChange: { (value: Report['reason_code']): void };
+  reasonCodes: ReasonCode[];
+  diff: ISpamReportAdd['spam_report'] | null;
+  onReasonChange: { (value: ReasonCode): void };
   onTextChange: { (value: string): void };
   onSubmit: { (event: FormEvent): void };
 }

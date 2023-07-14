@@ -14,10 +14,6 @@ export interface ISpamReport {
   data: ISpamReportData;
 }
 
-export interface ISpamReports {
-  data: ISpamReportData[];
-}
-
 export type ISpamReportAdd = {
   targetType: 'comments' | 'ideas' | 'initiatives';
   targetId: string;

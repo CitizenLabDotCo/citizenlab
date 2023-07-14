@@ -1,8 +1,7 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 
 import useAddSpamReport from './useAddSpamReport';
-import { spamReportsData } from './__mocks__/useAddSpamReport';
-
+import { spamReportData } from './__mocks__/usAddSpamReport';
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
@@ -11,7 +10,7 @@ import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 const apiPath = '*/comments/:targetId/spam_reports';
 const server = setupServer(
   rest.post(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: spamReportsData[0] }));
+    return res(ctx.status(200), ctx.json({ data: spamReportData[0] }));
   })
 );
 
@@ -36,6 +35,6 @@ describe('useAddSpamReport', () => {
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    expect(result.current.data?.data).toEqual(spamReportsData[0]);
+    expect(result.current.data?.data).toEqual(spamReportData[0]);
   });
 });

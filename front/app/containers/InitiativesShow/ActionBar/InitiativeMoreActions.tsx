@@ -132,7 +132,7 @@ const InitiativeMoreActions = ({
         close={closeSpamModal}
         header={<FormattedMessage {...messages.reportAsSpamModalTitle} />}
       >
-        <SpamReportForm resourceId={initiative.id} resourceType="initiatives" />
+        <SpamReportForm targetId={initiative.id} targetType="initiatives" />
       </Modal>
     </Container>
   );
