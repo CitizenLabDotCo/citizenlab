@@ -40,7 +40,7 @@ const IdeaCardFooter = ({ idea, showCommentCount }: Props) => {
     <Footer>
       <Button
         size="s"
-        textColor={colors.blue400}
+        textColor={colors.coolGrey700}
         mr="8px"
         ml="auto"
         m="0px"
