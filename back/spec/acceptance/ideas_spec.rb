@@ -285,22 +285,36 @@ resource 'Ideas' do
           expect(status).to eq(200)
         end
 
-        example 'List all ideas in a phase of a project - ideas_phase basket count is returned' do
+        example 'List all ideas in a phase of a project - ideas_phase baskets_count and votes_count is returned' do
           pr = create(:project_with_active_budgeting_phase)
           phase = pr.phases.first
           ideas = create_list(:idea, 2, phases: [phase], project: pr)
           basket = create(:basket, participation_context: phase, submitted_at: nil)
+          basket2 = create(:basket, participation_context: phase, submitted_at: nil)
           basket.update!(ideas: ideas, submitted_at: Time.zone.now)
+          basket2.update!(ideas: ideas, submitted_at: Time.zone.now)
           SideFxBasketService.new.after_update basket, user
+          SideFxBasketService.new.after_update basket2, user
+
+          # Different phase (should be ignored in the counts)
+          phase2 = create(:voting_phase, project: pr)
+          basket3 = create(:basket, participation_context: phase2, submitted_at: nil)
+          basket3.update!(ideas: ideas, submitted_at: Time.zone.now)
+          SideFxBasketService.new.after_update basket3, user
 
           do_request phase: phase.id
           assert_status 200
+
           expect(response_data.size).to eq 2
           expect(response_data.pluck(:id)).to match_array [ideas[0].id, ideas[1].id]
           ideas_phases = json_response_body[:included].map { |i| i if i[:type] == 'ideas_phase' }.compact!
           expect(ideas_phases.size).to eq 2
-          expect(ideas_phases[0][:attributes][:baskets_count]).to eq 1
-          expect(ideas_phases[1][:attributes][:baskets_count]).to eq 1
+          expect(ideas_phases[0][:attributes][:baskets_count]).to eq 2
+          expect(ideas_phases[1][:attributes][:baskets_count]).to eq 2
+
+          # Check the value in idea has also changed
+          expect(ideas[0].reload[:baskets_count]).to eq 3
+          expect(response_data[0][:attributes][:baskets_count]).to eq 2
         end
       end
     end
