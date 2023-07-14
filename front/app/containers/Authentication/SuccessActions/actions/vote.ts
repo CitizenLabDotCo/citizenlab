@@ -9,6 +9,8 @@ import { fetchBasketsIdeas } from 'api/baskets_ideas/useBasketsIdeas';
 
 // utils
 import { isIdeaInBasket } from 'components/VoteInputs/budgeting/AddToBasketButton/utils';
+import { IProjectData } from 'api/projects/types';
+import { IPhaseData } from 'api/phases/types';
 
 export interface VoteParams {
   ideaId: string;
@@ -25,19 +27,22 @@ export const vote =
     votes,
   }: VoteParams) =>
   async () => {
-    const participationContext =
+    const { data: participationContext } =
       participationContextType === 'project'
         ? await fetchProjectById({ id: participationContextId })
         : await fetchPhase({ phaseId: participationContextId });
 
-    const basketId =
-      participationContext.data.relationships.user_basket?.data?.id;
+    const basketId = participationContext.relationships.user_basket?.data?.id;
 
     // If no basket exists, the idea is definitely not in the basket
     // yet, so we can add it to the basket (the BE will create the
     // basket automatically)
     if (!basketId) {
-      await addToBasketAndInvalidateCache({ ideaId, votes });
+      await addToBasketAndInvalidateCache({
+        ideaId,
+        votes,
+        participationContext,
+      });
       return;
     }
 
@@ -48,19 +53,35 @@ export const vote =
     // we do nothing
     if (ideaInBasket) return;
 
-    await addToBasketAndInvalidateCache({ ideaId, votes });
+    await addToBasketAndInvalidateCache({
+      ideaId,
+      votes,
+      participationContext,
+    });
   };
 
 const addToBasketAndInvalidateCache = async ({
   ideaId,
   votes,
+  participationContext,
 }: {
   ideaId: string;
   votes: number;
+  participationContext: IProjectData | IPhaseData;
 }) => {
+  const project_id =
+    participationContext.type === 'project'
+      ? participationContext.id
+      : participationContext.relationships.project.data.id;
+
+  const phase_id =
+    participationContext.type === 'phase' ? participationContext.id : undefined;
+
   const response = await voteForIdea({
     idea_id: ideaId,
     votes,
+    project_id,
+    phase_id,
   });
 
   const newBasketId = response.data.relationships.basket.data.id;

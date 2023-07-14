@@ -42,12 +42,14 @@ export const VotingContext = ({ projectId, children }: Props) => {
 const useVotingInterface = (projectId?: string) => {
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
-  const { voteForIdea, processing } = useVoteForIdea();
 
   const participationContext = getCurrentParticipationContext(
     project?.data,
     phases?.data
   );
+
+  const { voteForIdea, processing } = useVoteForIdea(participationContext);
+
   const basketId = participationContext?.relationships?.user_basket?.data?.id;
   const { data: basketIdeas, isFetching: basketIdeasLoading } =
     useBasketsIdeas(basketId);
@@ -96,9 +98,9 @@ const useVotingInterface = (projectId?: string) => {
         [ideaId]: newVotes,
       }));
 
-      voteForIdea(ideaId, newVotes);
+      voteForIdea(ideaId, newVotes, basketId);
     },
-    [voteForIdea]
+    [voteForIdea, basketId]
   );
 
   const numberOfVotesUserHas =
