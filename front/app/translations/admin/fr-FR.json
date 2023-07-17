@@ -1186,7 +1186,7 @@
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.subtitleVolunteeringTab": "Vous pouvez modifier ici les causes pour lesquelles les utilisateurs peuvent se porter volontaires et exporter la liste des volontaires.",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.titleVolunteeringTab": "Se porter volontaire",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.xVolunteers": "{x, plural, =0 {pas de volontaires} one {# volontaire} other {# volontaires}}",
-  "app.containers.AdminPage.ProjectEdit.Voting.budgetAllocation2": "allocation d'un budget",
+  "app.containers.AdminPage.ProjectEdit.Voting.budgetAllocation2": "l'allocation d'un budget",
   "app.containers.AdminPage.ProjectEdit.Voting.budgetingVotingMethodSubtitle": "Définissez un coût pour chacune des options et invitez les participants à sélectionner leurs options préférées en respectant un budget total.",
   "app.containers.AdminPage.ProjectEdit.Voting.budgetingVotingMethodTitle2": "Allocation d'un budget",
   "app.containers.AdminPage.ProjectEdit.Voting.commentingBias": "Autoriser les utilisateurs à commenter peut influencer le processus de vote.",
