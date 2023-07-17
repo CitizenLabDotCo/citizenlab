@@ -18,6 +18,11 @@ FactoryBot.define do
       }
     end
 
+    factory :initiative_status_approval_required do
+      code { 'approval_required' }
+      title_multiloc { { 'en' => 'approval_required' } }
+    end
+
     factory :initiative_status_proposed do
       code { 'proposed' }
       title_multiloc { { 'en' => 'proposed' } }
