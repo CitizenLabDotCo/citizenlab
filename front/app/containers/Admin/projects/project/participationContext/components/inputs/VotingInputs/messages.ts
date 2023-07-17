@@ -39,18 +39,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.Voting.singleVotingMethodSubtitle',
     defaultMessage: 'Users can chose to approve any of the options',
   },
-  maximumVotesRecommendation: {
-    id: 'app.containers.AdminPage.ProjectEdit.Voting.maximumVotesRecommendation',
-    defaultMessage:
-      'Its recommended that you limit the maximum votes per option to 50% of the total budget to avoid {strategicVotingLink}.',
-  },
   voteCalled: {
     id: 'app.containers.AdminPage.ProjectEdit.Voting.voteCalled',
     defaultMessage: 'What should a vote be called?',
-  },
-  strategicVotingLinkText: {
-    id: 'app.containers.AdminPage.ProjectEdit.Voting.strategicVotingLinkText',
-    defaultMessage: 'strategic voting',
   },
   numberVotesPerUser: {
     id: 'app.containers.AdminPage.ProjectEdit.Voting.numberVotesPerUser',
