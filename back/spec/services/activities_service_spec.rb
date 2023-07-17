@@ -93,9 +93,9 @@ describe ActivitiesService do
     end
 
     describe '#create_phase_ending_soon_activities' do
-      let(:now) { Time.parse '2022-07-01 10:00:00 +0000' }
+      let(:now) { Time.parse '2022-07-01 08:01:00 +0200' }
 
-      it 'logs phase ending soon activity when a phase is ending in the next 2 days' do
+      it 'logs phase ending soon activity after 8am when a phase is ending in the next 2 days' do
         phase = create(:budgeting_phase, start_at: now - 10.days, end_at: now + 2.days)
         expect { service.create_periodic_activities(now: now) }
           .to have_enqueued_job(LogActivityJob)
@@ -111,6 +111,13 @@ describe ActivitiesService do
 
       it 'does not log a phase ending_soon activity when the phase ends in more than 2 days' do
         create(:budgeting_phase, start_at: now - 10.days, end_at: now + 3.days)
+        expect { service.create_periodic_activities(now: now) }
+          .not_to have_enqueued_job(LogActivityJob)
+      end
+
+      it 'does not log a phase ending soon activity before 8am when a phase is ending in the next 2 days' do
+        now = Time.parse('2022-07-01 07:59:00 +0200')
+        create(:budgeting_phase, start_at: now - 10.days, end_at: now + 2.days)
         expect { service.create_periodic_activities(now: now) }
           .not_to have_enqueued_job(LogActivityJob)
       end

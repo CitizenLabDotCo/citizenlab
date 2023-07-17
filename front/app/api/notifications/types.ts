@@ -434,7 +434,6 @@ export interface IVotingBasketSubmittedNotificationData
     created_at: string;
     project_slug: string;
     project_title_multiloc: Multiloc;
-    // phase_title_multiloc: Multiloc;
   };
 }
 
