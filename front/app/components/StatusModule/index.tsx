@@ -30,7 +30,6 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // intl
 import messages from './messages';
-import useLocale from 'hooks/useLocale';
 
 type StatusModuleProps = {
   votingMethod?: VotingMethod | null;
@@ -58,7 +57,6 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
   const isSmallerThanPhone = useBreakpoint('phone');
 
   // intl
-  const locale = useLocale();
   const { formatMessage } = useIntl();
 
   // participation context
@@ -106,13 +104,12 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
         </Title>
         <>
           <Text>
-            {config?.getStatusDescription &&
-              config.getStatusDescription({
+            {config?.StatusDescription &&
+              config.StatusDescription({
                 project,
                 phase,
-                SubmissionState: basketStatus,
+                submissionState: basketStatus,
                 appConfig,
-                locale,
               })}
           </Text>
           {phase && showDate && (

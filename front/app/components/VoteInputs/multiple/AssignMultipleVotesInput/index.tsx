@@ -171,7 +171,7 @@ const AssignMultipleVotesInput = ({
               votes,
               singular: votingTermSingular,
               plural: votingTermPlural,
-            })}
+            }).toLowerCase()}
           </Text>
         </Box>
         {
