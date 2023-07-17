@@ -1204,7 +1204,7 @@
   "app.containers.AdminPage.ProjectEdit.Voting.optionAnalysisLinkText": "Analyse d'options",
   "app.containers.AdminPage.ProjectEdit.Voting.optionsToVoteOn": "Options de vote",
   "app.containers.AdminPage.ProjectEdit.Voting.singleVotePerOption2": "un seul vote par option",
-  "app.containers.AdminPage.ProjectEdit.Voting.singleVotingMethodSubtitle": "Les utilisateurs peuvent choisir d'approuver l'une ou l'autre des options",
+  "app.containers.AdminPage.ProjectEdit.Voting.singleVotingMethodSubtitle": "Les utilisateurs peuvent choisir une ou plusieurs options sans pondération",
   "app.containers.AdminPage.ProjectEdit.Voting.singleVotingMethodTitle": "Un vote par option",
   "app.containers.AdminPage.ProjectEdit.Voting.voteCalled": "Quel terme utiliser pour désigner un vote ?",
   "app.containers.AdminPage.ProjectEdit.Voting.voteCalledPlaceholderPlural": "Jeton par exemple",
