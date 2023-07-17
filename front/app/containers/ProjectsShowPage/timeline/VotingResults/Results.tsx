@@ -1,5 +1,8 @@
 import React from 'react';
 
+// api
+import usePhase from 'api/phases/usePhase';
+
 // components
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import ProgressBar from './ProgressBar';
@@ -25,6 +28,7 @@ const Results = ({
   baskets,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const { data: phase } = usePhase(phaseId);
 
   return (
     <Box
@@ -33,12 +37,14 @@ const Results = ({
       flexDirection="column"
       justifyContent="flex-end"
     >
-      {budget && (
-        <Text mb="8px" mt="8px" color="tenantPrimary">
-          {formatMessage(messages.cost)}
-          <FormattedBudget value={budget} />
-        </Text>
-      )}
+      {phase &&
+        phase.data.attributes.voting_method === 'budgeting' &&
+        budget && (
+          <Text mb="8px" mt="8px" color="tenantPrimary">
+            {formatMessage(messages.cost)}
+            <FormattedBudget value={budget} />
+          </Text>
+        )}
       <ProgressBar
         phaseId={phaseId}
         votes={votes}
