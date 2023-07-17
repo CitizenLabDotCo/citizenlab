@@ -71,6 +71,14 @@ const RightColumnDesktop = ({
       ? isIdeaInParticipationContext(idea, participationContext)
       : undefined;
 
+  const commentingEnabled =
+    !!idea?.data.attributes.action_descriptor.commenting_idea.enabled;
+
+  const showGreyBox =
+    participationContext?.attributes.participation_method !== 'voting' ||
+    (participationContext && ideaIsInParticipationContext && votingConfig) ||
+    commentingEnabled;
+
   return (
     <Box
       flex={`0 0 ${rightColumnWidthDesktop}px`}
@@ -81,31 +89,33 @@ const RightColumnDesktop = ({
       className={className}
     >
       <InnerContainer>
-        <Box
-          padding="20px"
-          borderRadius="3px"
-          background={colors.background}
-          mb="12px"
-        >
-          {participationContext?.attributes.participation_method !==
-            'voting' && (
-            <StyledReactionControl
-              styleType="shadow"
-              ideaId={ideaId}
-              size="4"
-            />
-          )}
-          <Box pb="23px" mb="23px" borderBottom="solid 1px #ccc">
-            {participationContext &&
-              ideaIsInParticipationContext &&
-              votingConfig?.getIdeaPageVoteInput({
-                ideaId,
-                participationContext,
-                compact: false,
-              })}
+        {showGreyBox && (
+          <Box
+            padding="20px"
+            borderRadius="3px"
+            background={colors.background}
+            mb="12px"
+          >
+            {participationContext?.attributes.participation_method !==
+              'voting' && (
+              <StyledReactionControl
+                styleType="shadow"
+                ideaId={ideaId}
+                size="4"
+              />
+            )}
+            <Box pb="23px" mb="23px" borderBottom="solid 1px #ccc">
+              {participationContext &&
+                ideaIsInParticipationContext &&
+                votingConfig?.getIdeaPageVoteInput({
+                  ideaId,
+                  participationContext,
+                  compact: false,
+                })}
+            </Box>
+            {commentingEnabled && <Buttons />}
           </Box>
-          <Buttons ideaId={ideaId} />
-        </Box>
+        )}
         <Box mb="16px">
           <IdeaSharingButton
             ideaId={ideaId}
