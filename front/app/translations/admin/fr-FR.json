@@ -1434,7 +1434,7 @@
   "app.containers.AdminPage.ProjectIdeaForm.saved": "Enregistré !",
   "app.containers.AdminPage.ProjectIdeaForm.viewFormLinkCopy": "Voir le formulaire",
   "app.containers.AdminPage.ProjectTimeline.addPhaseButton": "Ajouter une phase",
-  "app.containers.AdminPage.ProjectTimeline.automatedEmails": "Campagnes e-mail automatisées",
+  "app.containers.AdminPage.ProjectTimeline.automatedEmails": "E-mails automatisés",
   "app.containers.AdminPage.ProjectTimeline.automatedEmailsDescription": "Vous pouvez configurer des courriels déclenchés au niveau d'une phase",
   "app.containers.AdminPage.ProjectTimeline.cancelDeleteButtonText": "Annuler",
   "app.containers.AdminPage.ProjectTimeline.datesLabel": "Dates",
