@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class WebApi::V1::Notifications::VotingResultsSerializer < WebApi::V1::Notifications::NotificationSerializer
+class WebApi::V1::Notifications::VotingResultsPublishedSerializer < WebApi::V1::Notifications::NotificationSerializer
   attribute :project_slug do |object|
     object.project&.slug
   end

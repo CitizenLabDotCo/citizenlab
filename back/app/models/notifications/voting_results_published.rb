@@ -60,7 +60,7 @@
 #  fk_rails_...  (spam_report_id => spam_reports.id)
 #
 module Notifications
-  class VotingResults < Notification
+  class VotingResultsPublished < Notification
     validates :project, presence: true
     validates :phase, presence: true
 
