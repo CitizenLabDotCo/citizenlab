@@ -610,7 +610,7 @@ fr:
       body_1: 'Les résultats sont arrivés !'
       body_2: 'Les résultats du vote %{phaseTitle} sur la plateforme %{organizationName} ont été publiés !'
       body_3: 'Nous vous encourageons à examiner les résultats et à rester à l''écoute pour des mises à jour ultérieures sur les prochaines étapes.'
-      cta_see_results: 'Voir les résultats dans la plateforme'
+      cta_see_results: 'Voir les résultats sur la plateforme'
     voting_phase_started:
       subject: '%{organizationName}: La phase de vote a commencé pour %{projectName}'
       preheader: 'La phase de vote a commencé pour %{projectName} sur la plateforme de participation de %{organizationName}'
