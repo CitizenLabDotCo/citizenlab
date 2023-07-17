@@ -6,9 +6,6 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import useBasket from 'api/baskets/useBasket';
 import useVoting from 'api/baskets_ideas/useVoting';
 
-// events
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-
 // components
 import { Button, Icon } from '@citizenlab/cl2-component-library';
 
@@ -23,9 +20,13 @@ import { colors } from 'utils/styleUtils';
 import tracks from './tracks';
 import { trackEventByName } from 'utils/analytics';
 
+// routing
+import { useSearchParams } from 'react-router-dom';
+
 // events
 import eventEmitter from 'utils/eventEmitter';
 import { BUDGET_EXCEEDED_ERROR_EVENT } from 'components/ErrorToast/events';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 // utils
 import { isButtonEnabled } from './utils';
@@ -57,6 +58,9 @@ const AddToBasketButton = ({
   const ideaBudget = idea?.data.attributes.budget;
 
   const ideaInBasket = !!getVotes?.(ideaId);
+
+  const [searchParams] = useSearchParams();
+  const isProcessing = searchParams.get('processing_vote') === ideaId;
 
   if (!idea || !ideaBudget) {
     return null;
@@ -134,6 +138,7 @@ const AddToBasketButton = ({
       onClick={handleAddRemoveButtonClick}
       disabled={!buttonEnabled}
       buttonStyle={buttonStyle}
+      processing={isProcessing}
       bgColor={ideaInBasket ? colors.green500 : undefined}
       textColor={ideaInBasket ? colors.white : undefined}
       textHoverColor={ideaInBasket ? colors.white : undefined}

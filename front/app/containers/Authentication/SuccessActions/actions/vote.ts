@@ -6,11 +6,15 @@ import { queryClient } from 'utils/cl-react-query/queryClient';
 import basketsKeys from 'api/baskets/keys';
 import basketsIdeasKeys from 'api/baskets_ideas/keys';
 import { fetchBasketsIdeas } from 'api/baskets_ideas/useBasketsIdeas';
+import projectsKeys from 'api/projects/keys';
+import phasesKeys from 'api/phases/keys';
 
 // utils
 import { isIdeaInBasket } from 'components/VoteInputs/budgeting/AddToBasketButton/utils';
 import { IProjectData } from 'api/projects/types';
 import { IPhaseData } from 'api/phases/types';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 export interface VoteParams {
   ideaId: string;
@@ -27,6 +31,8 @@ export const vote =
     votes,
   }: VoteParams) =>
   async () => {
+    updateSearchParams({ processing_vote: ideaId });
+
     const { data: participationContext } =
       participationContextType === 'project'
         ? await fetchProjectById({ id: participationContextId })
@@ -43,6 +49,7 @@ export const vote =
         votes,
         participationContext,
       });
+      removeProcessing();
       return;
     }
 
@@ -51,14 +58,23 @@ export const vote =
 
     // If a basket exists and the idea is already in the basket,
     // we do nothing
-    if (ideaInBasket) return;
+    if (ideaInBasket) {
+      removeProcessing();
+      return;
+    }
 
     await addToBasketAndInvalidateCache({
       ideaId,
       votes,
       participationContext,
     });
+    removeProcessing();
   };
+
+const removeProcessing = () =>
+  setTimeout(() => {
+    removeSearchParams(['processing_vote']);
+  }, 250);
 
 const addToBasketAndInvalidateCache = async ({
   ideaId,
@@ -86,10 +102,38 @@ const addToBasketAndInvalidateCache = async ({
 
   const newBasketId = response.data.relationships.basket.data.id;
 
-  queryClient.invalidateQueries({
-    queryKey: basketsKeys.item({ id: newBasketId }),
-  });
-  queryClient.invalidateQueries({
-    queryKey: basketsIdeasKeys.item({ basketId: newBasketId }),
-  });
+  const promises = [
+    queryClient.invalidateQueries({
+      queryKey: basketsKeys.item({ id: newBasketId }),
+    }),
+    queryClient.invalidateQueries({
+      queryKey: basketsIdeasKeys.item({ basketId: newBasketId }),
+    }),
+  ];
+
+  const continuousProject = participationContext.type === 'project';
+
+  if (continuousProject) {
+    promises.push(
+      queryClient.invalidateQueries({
+        queryKey: projectsKeys.item({ id: project_id }),
+      })
+    );
+  }
+
+  if (!continuousProject) {
+    promises.push(
+      queryClient.invalidateQueries({
+        queryKey: phasesKeys.item({ phaseId: phase_id }),
+      })
+    );
+
+    promises.push(
+      queryClient.invalidateQueries({
+        queryKey: phasesKeys.list({ projectId: project_id }),
+      })
+    );
+  }
+
+  await Promise.all(promises);
 };

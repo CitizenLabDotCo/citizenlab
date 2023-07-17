@@ -26,6 +26,9 @@ import { useIntl } from 'utils/cl-intl';
 import useLocalize from 'hooks/useLocalize';
 import messages from './messages';
 
+// routing
+import { useSearchParams } from 'react-router-dom';
+
 // utils
 import { isNil } from 'utils/helperUtils';
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
@@ -48,6 +51,8 @@ const AssignMultipleVotesInput = ({
 }: Props) => {
   const { getVotes, setVotes, userHasVotesLeft } = useCumulativeVoting();
   const votes = getVotes?.(ideaId);
+  const [searchParams] = useSearchParams();
+  const isProcessing = searchParams.get('processing_vote') === ideaId;
 
   // participation context
   const basketId = participationContext.relationships?.user_basket?.data?.id;
@@ -215,6 +220,7 @@ const AssignMultipleVotesInput = ({
     <Button
       buttonStyle="primary-outlined"
       disabled={!!basket?.data?.attributes.submitted_at || !userHasVotesLeft}
+      processing={isProcessing}
       icon="vote-ballot"
       width="100%"
       onClick={onAdd}
