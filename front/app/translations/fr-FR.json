@@ -1159,7 +1159,7 @@
   "app.containers.NotificationMenu.userReactedToYourComment": "{name} a répondu à votre commentaire",
   "app.containers.NotificationMenu.userReportedCommentAsSpam": "{name} a signalé un commentaire sur « {postTitle} » comme spam",
   "app.containers.NotificationMenu.votingBasketNotSubmitted": "Vous n'avez pas soumis vos votes",
-  "app.containers.NotificationMenu.votingBasketSubmitted": "Vous avez voté avec succès",
+  "app.containers.NotificationMenu.votingBasketSubmitted": "Votre vote a été enregistré avec succès",
   "app.containers.NotificationMenu.votingLastChance": "Dernière chance de voter pour {phaseTitle}",
   "app.containers.NotificationMenu.votingResults": "{phaseTitle} résultats du vote révélés",
   "app.containers.NotificationMenu.xAssignedPostToYou": "{name} vous a attribué {postTitle}",
