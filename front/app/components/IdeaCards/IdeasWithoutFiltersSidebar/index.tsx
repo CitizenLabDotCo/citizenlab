@@ -3,7 +3,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
 import useLocale from 'hooks/useLocale';
-import { useWindowSize } from '@citizenlab/cl2-component-library';
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
 import useProjectById from 'api/projects/useProjectById';
 import useIdeaCustomFieldsSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
 import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
@@ -29,7 +29,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
-import { media, viewportWidths, isRtl } from 'utils/styleUtils';
+import { media, isRtl } from 'utils/styleUtils';
 
 // constants
 import {
@@ -169,9 +169,10 @@ const IdeasWithoutFiltersSidebar = ({
   goBackMode,
 }: Props) => {
   const locale = useLocale();
-  const { windowWidth } = useWindowSize();
   const [searchParams] = useSearchParams();
   const selectedIdeaMarkerId = searchParams.get('idea_map_id');
+  const smallerThanTablet = useBreakpoint('tablet');
+  const smallerThanPhone = useBreakpoint('phone');
 
   const { data: project } = useProjectById(projectId);
 
@@ -239,23 +240,6 @@ const IdeasWithoutFiltersSidebar = ({
     : false;
   const showViewButtons = !!(locationEnabled && showViewToggle);
 
-  const smallerThanBigTablet = !!(
-    windowWidth && windowWidth <= viewportWidths.tablet
-  );
-  const smallerThanSmallTablet = !!(
-    windowWidth && windowWidth <= viewportWidths.tablet
-  );
-  const biggerThanSmallTablet = !!(
-    windowWidth && windowWidth >= viewportWidths.tablet
-  );
-  const biggerThanLargeTablet = !!(
-    windowWidth && windowWidth >= viewportWidths.tablet
-  );
-  const smallerThan1100px = !!(windowWidth && windowWidth <= 1100);
-  const smallerThanPhone = !!(
-    windowWidth && windowWidth <= viewportWidths.phone
-  );
-
   if (list) {
     return (
       <Container
@@ -271,7 +255,7 @@ const IdeasWithoutFiltersSidebar = ({
           }`}
         >
           <LeftFilterArea>
-            {showViewButtons && smallerThanSmallTablet && (
+            {showViewButtons && smallerThanTablet && (
               <MobileViewButtons
                 selectedView={selectedView}
                 onClick={setSelectedView}
@@ -299,7 +283,7 @@ const IdeasWithoutFiltersSidebar = ({
                   phase={phase?.data}
                   project={project?.data}
                   onChange={handleSortOnChange}
-                  alignment={biggerThanLargeTablet ? 'right' : 'left'}
+                  alignment={!smallerThanTablet ? 'right' : 'left'}
                 />
                 {allowProjectsFilter && (
                   <ProjectFilterDropdown
@@ -314,13 +298,13 @@ const IdeasWithoutFiltersSidebar = ({
                     projectId={projectId}
                     selectedTopicIds={ideaQueryParameters.topics ?? []}
                     onChange={handleTopicsOnChange}
-                    alignment={biggerThanLargeTablet ? 'right' : 'left'}
+                    alignment={!smallerThanTablet ? 'right' : 'left'}
                   />
                 )}
               </DropdownFilters>
             )}
 
-            {showViewButtons && !smallerThanSmallTablet && (
+            {showViewButtons && !smallerThanTablet && (
               <DesktopViewButtons
                 selectedView={selectedView}
                 onClick={setSelectedView}
@@ -334,11 +318,9 @@ const IdeasWithoutFiltersSidebar = ({
           onLoadMore={fetchNextPage}
           hasMore={!!hasNextPage}
           loadingMore={isFetchingNextPage}
-          hideImage={smallerThanBigTablet && biggerThanSmallTablet}
-          hideImagePlaceholder={smallerThanBigTablet}
-          hideIdeaStatus={
-            (biggerThanLargeTablet && smallerThan1100px) || smallerThanPhone
-          }
+          hideImage={smallerThanPhone}
+          hideImagePlaceholder={smallerThanTablet}
+          hideIdeaStatus={!smallerThanTablet || smallerThanPhone}
           view={selectedView}
           projectId={projectId}
           phaseId={phaseId}

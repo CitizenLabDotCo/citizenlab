@@ -1,36 +1,13 @@
 import React from 'react';
-import styled from 'styled-components';
+import { Box } from '@citizenlab/cl2-component-library';
 import GoToCommentsButton from '../../Buttons/GoToCommentsButton';
-import { isNilOrError } from 'utils/helperUtils';
-import useIdeaById from 'api/ideas/useIdeaById';
 
-const Container = styled.div``;
-
-const StyledGoToCommentsButton = styled(GoToCommentsButton)`
-  margin-bottom: 10px;
-`;
-
-interface Props {
-  ideaId: string;
-  border?: string;
-  className?: string;
-}
-
-const IdeaCTAButtons = ({ ideaId, className }: Props) => {
-  const { data: idea } = useIdeaById(ideaId);
-
-  if (!isNilOrError(idea)) {
-    const commentingEnabled =
-      idea.data.attributes.action_descriptor.commenting_idea.enabled;
-
-    return (
-      <Container className={className || ''}>
-        {commentingEnabled && <StyledGoToCommentsButton />}
-      </Container>
-    );
-  }
-
-  return null;
+const IdeaCTAButtons = () => {
+  return (
+    <Box mb="10px">
+      <GoToCommentsButton />
+    </Box>
+  );
 };
 
 export default IdeaCTAButtons;

@@ -48,7 +48,10 @@ import { IIdeaImages } from 'api/idea_images/types';
 
 // utils
 import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
-import { getCurrentParticipationContext } from 'api/phases/utils';
+import {
+  getCurrentParticipationContext,
+  isIdeaInParticipationContext,
+} from 'api/phases/utils';
 
 const StyledRightColumnDesktop = styled(RightColumnDesktop)`
   margin-left: ${columnsGapDesktop}px;
@@ -143,6 +146,10 @@ const Content = ({
     participationContext?.attributes.voting_method
   );
 
+  const ideaIsInParticipationContext = participationContext
+    ? isIdeaInParticipationContext(idea, participationContext)
+    : undefined;
+
   return (
     <>
       <IdeaMeta ideaId={ideaId} />
@@ -178,7 +185,7 @@ const Content = ({
               translateButtonClicked={translateButtonIsClicked}
             />
           </Box>
-          {compact && participationContext && (
+          {compact && participationContext && ideaIsInParticipationContext && (
             <Box mb="16px">
               {votingMethodConfig?.getIdeaPageVoteInput({
                 ideaId,

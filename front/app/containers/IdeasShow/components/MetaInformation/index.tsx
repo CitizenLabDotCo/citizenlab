@@ -19,7 +19,10 @@ import useIdeaById from 'api/ideas/useIdeaById';
 
 // utils
 import { isFieldEnabled } from 'utils/projectUtils';
-import { getCurrentParticipationContext } from 'api/phases/utils';
+import {
+  getCurrentParticipationContext,
+  isIdeaInParticipationContext,
+} from 'api/phases/utils';
 
 const Container = styled.div`
   width: 100%;
@@ -88,9 +91,16 @@ const MetaInformation = ({
       locale
     );
 
+    const ideaIsInParticipationContext = isIdeaInParticipationContext(
+      idea,
+      participationContext
+    );
+
+    const hideAuthor = isBudgeting && ideaIsInParticipationContext;
+
     return (
       <Container className={`${className || ''} ${compact ? 'compact' : ''}`}>
-        {!isBudgeting && (
+        {!hideAuthor && (
           <>
             <PostedBy
               authorId={authorId}

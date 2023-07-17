@@ -20,6 +20,9 @@ import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
+// routing
+import { useSearchParams } from 'react-router-dom';
+
 // utils
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 
@@ -47,6 +50,9 @@ const AssignSingleVoteButton = ({
   );
   const { getVotes, setVotes, numberOfVotesCast } = useVoting();
   const ideaInBasket = !!getVotes?.(ideaId);
+
+  const [searchParams] = useSearchParams();
+  const isProcessing = searchParams.get('processing_vote') === ideaId;
 
   // permissions
   const actionDescriptor = idea?.data.attributes.action_descriptor.voting;
@@ -109,6 +115,7 @@ const AssignSingleVoteButton = ({
       bgColor={ideaInBasket ? colors.success : undefined}
       borderColor={ideaInBasket ? colors.success : undefined}
       disabled={!isNilOrError(basket?.data?.attributes.submitted_at)}
+      processing={isProcessing}
       icon={ideaInBasket ? 'check' : 'vote-ballot'}
       onClick={vote}
       text={

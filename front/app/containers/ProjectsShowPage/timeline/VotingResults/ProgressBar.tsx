@@ -74,7 +74,7 @@ const ProgressBar = ({ phaseId, votes, votesPercentage, baskets }: Props) => {
             votes,
             singular: votingTermSingular,
             plural: votingTermPlural,
-          })})`}
+          }).toLowerCase()})`}
         </Text>
       </Box>
       {baskets !== undefined && (

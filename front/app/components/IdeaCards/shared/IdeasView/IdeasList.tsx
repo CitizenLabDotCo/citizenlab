@@ -13,7 +13,7 @@ const StyledIdeaCard = styled(IdeaCard)`
   width: calc(50% - 20px);
   margin: 10px;
 
-  ${media.tablet`
+  ${media.phone`
     width: 100%;
   `};
 `;

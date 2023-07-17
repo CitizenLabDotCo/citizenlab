@@ -81,7 +81,8 @@ const useVotingInterface = (projectId?: string) => {
       if (ideaId in votesPerIdea) return votesPerIdea[ideaId];
 
       const loading =
-        !participationContext || (basketId && !remoteVotesPerIdea);
+        !participationContext || !!(basketId && !remoteVotesPerIdea);
+
       if (loading) return null;
 
       return remoteVotesPerIdea && ideaId in remoteVotesPerIdea

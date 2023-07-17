@@ -8,21 +8,21 @@ import AssignMultipleVotesBox from 'components/VoteInputs/multiple/AssignMultipl
 import AssignSingleVoteButton from 'components/VoteInputs/single/AssignSingleVoteButton';
 import AssignSingleVoteBox from 'components/VoteInputs/single/AssignSingleVoteBox';
 
-// intl
+// i18n
 import messages from './messages';
+import { Localize } from 'hooks/useLocalize';
 import { MessageDescriptor } from 'react-intl';
-import { Locale } from '@citizenlab/cl2-component-library';
 
 // utils
 import { FormattedMessage } from 'utils/cl-intl';
 import { toFullMonth } from 'utils/dateUtils';
-import { isNilOrError } from 'utils/helperUtils';
 
 // types
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 import { IAppConfiguration } from 'api/app_configuration/types';
 import { VotingMethod } from 'services/participationContexts';
+import { FormatMessage } from 'typings';
 /*
   Configuration Specifications
   
@@ -44,10 +44,11 @@ export type VoteSubmissionState =
 
 export type GetStatusDescriptionProps = {
   project: IProjectData;
-  SubmissionState: VoteSubmissionState;
+  submissionState: VoteSubmissionState;
   phase?: IPhaseData;
   appConfig?: IAppConfiguration;
-  locale?: Locale | null | Error;
+  localize: Localize;
+  formatMessage: FormatMessage;
 };
 
 type IdeaCardVoteInputProps = {
@@ -66,9 +67,8 @@ export type VotingMethodConfig = {
   getStatusDescription?: ({
     project,
     phase,
-    SubmissionState,
+    submissionState,
     appConfig,
-    locale,
   }: GetStatusDescriptionProps) => JSX.Element | null;
   getIdeaCardVoteInput: ({
     ideaId,
@@ -108,29 +108,51 @@ const budgetingConfig: VotingMethodConfig = {
   getStatusDescription: ({
     project,
     phase,
-    SubmissionState,
+    submissionState,
     appConfig,
   }: GetStatusDescriptionProps) => {
-    if (SubmissionState === 'hasNotSubmitted') {
+    if (submissionState === 'hasNotSubmitted') {
       return (
-        <FormattedMessage
-          values={{
-            b: (chunks) => (
-              <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
-            ),
-            currency: appConfig?.data.attributes.settings.core.currency,
-            optionCount: phase
-              ? phase.attributes.ideas_count
-              : project.attributes.ideas_count,
-            maxBudget: phase
-              ? phase.attributes.voting_max_total?.toLocaleString()
-              : project.attributes.voting_max_total?.toLocaleString(),
-          }}
-          {...messages.budgetingSubmissionInstructions}
-        />
+        <>
+          <FormattedMessage
+            values={{
+              b: (chunks) => (
+                <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+              ),
+              currency: appConfig?.data.attributes.settings.core.currency,
+              optionCount: phase
+                ? phase.attributes.ideas_count
+                : project.attributes.ideas_count,
+              maxBudget: phase
+                ? phase.attributes.voting_max_total?.toLocaleString()
+                : project.attributes.voting_max_total?.toLocaleString(),
+            }}
+            {...messages.budgetingSubmissionInstructionsTotalBudget}
+          />
+          <ul>
+            <li>
+              <FormattedMessage
+                {...messages.budgetingSubmissionInstructionsPreferredOptions}
+              />
+            </li>
+            <li>
+              <FormattedMessage
+                values={{
+                  maxVotes: project.attributes.voting_max_votes_per_idea,
+                }}
+                {...messages.budgetingSubmissionInstructionsMaxVotesPerIdea}
+              />
+            </li>
+            <li>
+              <FormattedMessage
+                {...messages.budgetingSubmissionInstructionsOnceYouAreDone}
+              />
+            </li>
+          </ul>
+        </>
       );
     }
-    if (SubmissionState === 'hasSubmitted') {
+    if (submissionState === 'hasSubmitted') {
       if (phase) {
         return (
           <FormattedMessage
@@ -154,7 +176,7 @@ const budgetingConfig: VotingMethodConfig = {
           {...messages.budgetingSubmittedInstructionsContinuous}
         />
       );
-    } else if (SubmissionState === 'submissionEnded') {
+    } else if (submissionState === 'submissionEnded') {
       return (
         <FormattedMessage
           values={{
@@ -241,21 +263,24 @@ const multipleVotingConfig: VotingMethodConfig = {
   getStatusDescription: ({
     project,
     phase,
-    SubmissionState,
-    locale,
+    submissionState,
+    localize,
+    formatMessage,
   }: GetStatusDescriptionProps) => {
     const participationContext = phase || project;
-    const voteTerm =
-      participationContext?.attributes?.voting_term_plural_multiloc;
+    const voteTerm = (
+      localize(participationContext?.attributes?.voting_term_plural_multiloc) ||
+      formatMessage(messages.votes)
+    ).toLowerCase();
 
-    if (SubmissionState === 'hasNotSubmitted') {
+    if (submissionState === 'hasNotSubmitted') {
       return (
         <FormattedMessage
           values={{
             b: (chunks) => (
               <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
             ),
-            voteTerm: voteTerm && !isNilOrError(locale) ? voteTerm[locale] : '',
+            voteTerm,
             optionCount: phase
               ? phase.attributes.ideas_count
               : project.attributes.ideas_count,
@@ -267,7 +292,7 @@ const multipleVotingConfig: VotingMethodConfig = {
         />
       );
     }
-    if (SubmissionState === 'hasSubmitted') {
+    if (submissionState === 'hasSubmitted') {
       if (phase) {
         return (
           <FormattedMessage
@@ -291,7 +316,7 @@ const multipleVotingConfig: VotingMethodConfig = {
           {...messages.votingSubmittedInstructionsContinuous}
         />
       );
-    } else if (SubmissionState === 'submissionEnded' && !isNilOrError(locale)) {
+    } else if (submissionState === 'submissionEnded') {
       return (
         <FormattedMessage
           values={{
@@ -301,10 +326,7 @@ const multipleVotingConfig: VotingMethodConfig = {
             endDate: phase && toFullMonth(phase.attributes.end_at, 'day'),
             maxVotes:
               phase && phase.attributes.voting_max_total?.toLocaleString(),
-            voteTerm:
-              participationContext?.attributes.voting_term_plural_multiloc?.[
-                locale
-              ] || 'votes',
+            voteTerm,
             optionCount: phase && phase.attributes.ideas_count,
           }}
           {...messages.multipleVotingEnded}
@@ -379,13 +401,12 @@ const singleVotingConfig: VotingMethodConfig = {
   getStatusDescription: ({
     project,
     phase,
-    SubmissionState,
-    locale,
+    submissionState,
   }: GetStatusDescriptionProps) => {
     const participationContext = phase || project;
     const totalVotes = participationContext?.attributes.voting_max_total;
 
-    if (SubmissionState === 'hasNotSubmitted') {
+    if (submissionState === 'hasNotSubmitted') {
       if (totalVotes) {
         if (totalVotes > 1) {
           return (
@@ -416,7 +437,7 @@ const singleVotingConfig: VotingMethodConfig = {
         <FormattedMessage {...messages.singleVotingInstructionsUnlimited} />
       );
     }
-    if (SubmissionState === 'hasSubmitted') {
+    if (submissionState === 'hasSubmitted') {
       if (phase) {
         return (
           <FormattedMessage
@@ -440,7 +461,7 @@ const singleVotingConfig: VotingMethodConfig = {
           {...messages.votingSubmittedInstructionsContinuous}
         />
       );
-    } else if (SubmissionState === 'submissionEnded' && !isNilOrError(locale)) {
+    } else if (submissionState === 'submissionEnded') {
       const votingMax = phase?.attributes?.voting_max_total;
       if (votingMax) {
         if (votingMax > 1) {

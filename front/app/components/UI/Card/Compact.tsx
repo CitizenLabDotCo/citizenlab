@@ -38,7 +38,7 @@ const Container = styled(Link)`
     );
   }
 
-  ${media.phone`
+  ${media.tablet`
     min-height: unset;
     flex-direction: column;
     align-items: stretch;
@@ -60,7 +60,7 @@ const IdeaCardImageWrapper = styled.div`
     height: ${cardInnerHeightExtended};
   }
 
-  ${media.phone`
+  ${media.tablet`
     width: 100%;
     margin-bottom: 18px;
   `}
@@ -85,7 +85,7 @@ const ContentWrapper = styled.div`
     height: ${cardInnerHeightExtended};
   }
 
-  ${media.phone`
+  ${media.tablet`
     height: unset;
   `}
 `;
@@ -95,7 +95,7 @@ const Header = styled.header`
   margin: 0;
   margin-bottom: 12px;
 
-  ${media.phone`
+  ${media.tablet`
     margin-bottom: 15px;
   `}
 `;
@@ -120,7 +120,7 @@ const Title = styled.h3`
 const Body = styled.div`
   flex-grow: 1;
 
-  ${media.phone`
+  ${media.tablet`
     margin-bottom: 25px;
   `}
 `;

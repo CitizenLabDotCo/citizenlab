@@ -3,6 +3,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { first, last, sortBy } from 'lodash-es';
 import { IPhaseData } from './types';
 import { IProjectData } from 'api/projects/types';
+import { IIdea } from 'api/ideas/types';
 
 export function canContainIdeas(phase: IPhaseData) {
   const pm = phase.attributes.participation_method;
@@ -116,4 +117,17 @@ export const getCurrentParticipationContext = (
 
   if (project.attributes.process_type === 'continuous') return project;
   return getCurrentPhase(phases);
+};
+
+export const isIdeaInParticipationContext = (
+  idea: IIdea,
+  participationContext: IProjectData | IPhaseData
+) => {
+  if (participationContext.type === 'project') {
+    return idea.data.relationships.project.data.id === participationContext.id;
+  }
+
+  return idea.data.relationships.phases.data.some(
+    (phase) => participationContext.id === phase.id
+  );
 };

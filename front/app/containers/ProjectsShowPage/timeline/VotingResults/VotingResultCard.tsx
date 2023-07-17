@@ -21,7 +21,6 @@ import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import clHistory from 'utils/cl-router/history';
 
 // utils
-import { isNil } from 'utils/helperUtils';
 import { roundPercentage } from 'utils/math';
 
 // typings
@@ -51,9 +50,9 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
   const ideaVotes = idea.attributes.votes_count ?? 0;
   const totalVotes = phase?.data.attributes.votes_count;
 
-  const votesPercentage = !isNil(totalVotes)
+  const votesPercentage = totalVotes
     ? roundPercentage(ideaVotes, totalVotes)
-    : undefined;
+    : 0;
 
   const baskets = idea.attributes.baskets_count;
 

@@ -28,9 +28,12 @@ import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
 import { pastPresentOrFuture, toFullMonth } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
+// styling
+import { fontSizes } from 'utils/styleUtils';
+
 // intl
 import messages from './messages';
-import useLocale from 'hooks/useLocale';
+import useLocalize from 'hooks/useLocalize';
 
 type StatusModuleProps = {
   votingMethod?: VotingMethod | null;
@@ -58,7 +61,7 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
   const isSmallerThanPhone = useBreakpoint('phone');
 
   // intl
-  const locale = useLocale();
+  const localize = useLocalize();
   const { formatMessage } = useIntl();
 
   // participation context
@@ -105,16 +108,17 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
             formatMessage(config.getStatusTitle(basketStatus))}
         </Title>
         <>
-          <Text>
+          <Box style={{ fontSize: fontSizes.m }}>
             {config?.getStatusDescription &&
               config.getStatusDescription({
                 project,
                 phase,
-                SubmissionState: basketStatus,
+                submissionState: basketStatus,
                 appConfig,
-                locale,
+                localize,
+                formatMessage,
               })}
-          </Text>
+          </Box>
           {phase && showDate && (
             <Text>
               {config?.getSubmissionTerm &&
