@@ -33,13 +33,7 @@ import {
 } from './utils';
 
 // services
-import {
-  IFlatCreateCustomField,
-  IFlatCustomField,
-  IFlatCustomFieldWithIndex,
-  updateFormCustomFields,
-  isNewCustomFieldObject,
-} from 'services/formCustomFields';
+import { updateFormCustomFields } from 'services/formCustomFields';
 
 // hooks
 import useFormSubmissionCount from 'hooks/useFormSubmissionCount';
@@ -50,6 +44,12 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import { FormBuilderConfig } from '../utils';
 import HelmetIntl from 'components/HelmetIntl';
+import {
+  IFlatCreateCustomField,
+  IFlatCustomField,
+  IFlatCustomFieldWithIndex,
+} from 'api/custom_fields/types';
+import { isNewCustomFieldObject } from 'api/custom_fields/util';
 
 const StyledRightColumn = styled(RightColumn)`
   height: calc(100vh - ${stylingConsts.menuHeight}px);
