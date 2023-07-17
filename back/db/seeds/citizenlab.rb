@@ -62,6 +62,7 @@ AppConfiguration.create!(
     initiatives: {
       enabled: true,
       allowed: true,
+      require_approval: true,
       voting_threshold: 300,
       days_limit: 90,
       threshold_reached_message: MultilocService.new.i18n_to_multiloc(
@@ -72,6 +73,10 @@ AppConfiguration.create!(
         'initiatives.default_eligibility_criteria',
         locales: CL2_SUPPORTED_LOCALES
       )
+    },
+    proposal_approval: {
+      enabled: true,
+      allowed: true
     },
     surveys: {
       enabled: true,
