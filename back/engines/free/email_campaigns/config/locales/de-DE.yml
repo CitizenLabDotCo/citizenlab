@@ -58,7 +58,7 @@ de:
       "user_digest": Wöchentliche Übersicht
       "voting_basket_submitted": Bestätigung der Abstimmung
       "voting_basket_not_submitted": Nicht abgegebene Stimmen
-      "voting_last_chance": Letzte Chance zu wählen
+      "voting_last_chance": Letzte Chance zur Abstimmung
       "voting_results": Abstimmungsergebnisse
       "your_proposed_initiatives_digest": Wöchentliche Übersicht eigener Vorschläge
     schedules:
@@ -583,40 +583,40 @@ de:
       remaining_days: 'Verbleibende Tage'
     voting_basket_submitted:
       subject: '%{organizationName}: Sie haben erfolgreich abgestimmt'
-      preheader: 'Sie haben erfolgreich auf der Beteiligungsplattform von %{organizationName}abgestimmt.'
-      title_basket_submitted: 'Sie haben erfolgreich gewählt'
-      event_description: 'Vielen Dank für Ihre Teilnahme. Ihre Stimmen wurden aufgezeichnet. Besuchen Sie die Plattform von %{organizationName} , um Ihre Stimmen zu sehen und zu verwalten.'
+      preheader: 'Sie haben erfolgreich auf der Beteiligungsplattform von %{organizationName} abgestimmt'
+      title_basket_submitted: 'Sie haben erfolgreich abgestimmt'
+      event_description: 'Vielen Dank für Ihre Teilnahme. Ihre Stimmen wurden aufgezeichnet. Besuchen Sie die Plattform von %{organizationName}, um Ihre Stimmen zu sehen und zu verwalten.'
       cta_see_votes_submitted: 'Siehe abgegebene Stimmen'
       cta_message: 'Klicken Sie auf die Schaltfläche unten, um teilzunehmen'
     voting_basket_not_submitted:
       subject: '%{organizationName}: Sie haben Ihre Stimmen nicht abgegeben'
-      preheader: 'Sie haben Ihre Stimme nicht auf der Beteiligungsplattform von %{organizationName}abgegeben.'
+      preheader: 'Sie haben Ihre Stimme nicht auf der Beteiligungsplattform von %{organizationName} abgegeben'
       title_basket_not_submitted: 'Sie haben Ihre Stimmen nicht abgegeben'
       event_description: 'Sie haben ein paar Optionen für %{contextTitle} ausgewählt, aber Sie haben Ihre Auswahl nicht abgeschickt.'
       cta_view_options_and_vote: 'Optionen ansehen und abstimmen'
-      cta_message: 'Klicken Sie auf die Schaltfläche unten, um Ihre ausgewählten Optionen zu übermitteln'
+      cta_message: 'Klicken Sie auf den Button unten, um Ihre ausgewählten Optionen abzuschicken'
     voting_last_chance:
-      subject: '%{organizationName}: Letzte Chance, für %{phaseTitle}zu stimmen'
-      preheader: 'Letzte Chance, für %{phaseTitle} auf der Beteiligungsplattform von %{organizationName}abzustimmen'
-      title_last_chance: 'Letzte Chance, für %{phaseTitle}zu stimmen'
+      subject: '%{organizationName}: Letzte Chance, für %{phaseTitle} abzustimmen'
+      preheader: 'Letzte Chance, für %{phaseTitle} auf der Beteiligungsplattform von %{organizationName} abzustimmen'
+      title_last_chance: 'Letzte Chance, für %{phaseTitle} abzustimmen'
       body_1: 'Die Abstimmungsphase für das Projekt %{projectTitle} geht morgen um Mitternacht zu Ende.'
-      body_2: 'Die Zeit läuft ab und wir haben festgestellt, dass Sie Ihre Stimme noch nicht abgegeben haben! Handeln Sie jetzt und klicken Sie einfach auf die Schaltfläche unten, um teilzunehmen.'
-      body_3: 'Auf diese Weise erhalten Sie Zugang zu einer Reihe von Optionen und haben die Möglichkeit, Ihren Beitrag zu leisten, der für die Entscheidung über die Zukunft dieses Projekts entscheidend ist.'
+      body_2: 'Die Zeit läuft ab und wir haben festgestellt, dass Sie Ihre Stimme noch nicht abgegeben haben! Klicken Sie auf den Button unten und machen Sie mit.'
+      body_3: 'Auf diese Weise erhalten Sie Zugang zu einer Reihe von Optionen und haben die Möglichkeit, Ihre Stimme abzugeben, die für die Entscheidung über die Zukunft dieses Projekts entscheidend ist.'
       cta_vote: 'Stimme'
     voting_results:
       subject: '%{organizationName}: %{phaseTitle} Abstimmungsergebnisse veröffentlicht!'
-      preheader: '%{phaseTitle} Wahlergebnisse auf der Beteiligungsplattform von %{organizationName}veröffentlicht'
-      title_results: '%{phaseTitle} Abstimmungsergebnisse enthüllt!'
+      preheader: '%{phaseTitle} Abstimmungsergebnisse auf der Beteiligungsplattform von %{organizationName} veröffentlicht'
+      title_results: '%{phaseTitle} Abstimmungsergebnisse veröffentlicht!'
       body_1: 'Die Ergebnisse sind da!'
       body_2: 'Die Ergebnisse der Abstimmung von %{phaseTitle} auf der Plattform %{organizationName} sind veröffentlicht worden!'
-      body_3: 'Wir ermutigen Sie, die Ergebnisse zu prüfen und bleiben für weitere Updates über die nächsten Schritte auf dem Laufenden.'
-      cta_see_results: 'Ergebnisse auf der Plattform sehen'
+      body_3: 'Schauen Sie sich die Ergebnisse an. Wir halten Sie über die nächsten Schritte auf dem Laufenden.'
+      cta_see_results: 'Ergebnisse auf der Plattform ansehen'
     voting_phase_started:
-      subject: '%{organizationName}: Die Abstimmungsphase für %{projectName}hat begonnen.'
-      preheader: 'Die Abstimmungsphase begann für %{projectName} auf der Beteiligungsplattform von %{organizationName}'
-      event_description: 'Das Projekt "%{projectName}" bittet Sie, zwischen den Optionen %{numIdeas} zu wählen:'
-      cta_message: 'Klicken Sie auf die Schaltfläche unten, um teilzunehmen'
-      cta_vote: 'Gehen Sie zur Plattform, um abzustimmen'
+      subject: '%{organizationName}: Die Abstimmungsphase für %{projectName} hat begonnen'
+      preheader: 'Die Abstimmungsphase für %{projectName} hat auf der Teilnahme-Plattform %{organizationName} begonnen'
+      event_description: 'Für das Projekt "%{projectName}" können Sie aus %{numIdeas} Optionen wählen:'
+      cta_message: 'Auf den Button klicken, um teilzunehmen'
+      cta_vote: 'Zur Plattform, um abzustimmen'
     admin_labels:
       recipient_role:
         admins: 'An Admins'
@@ -645,9 +645,9 @@ de:
         users_who_engaged_with_the_input: 'Nutzer*in interagiert mit Beitrag'
         users_who_engaged_with_the_project: 'Nutzer*in interagiert mit Beitrag'
         users_who_engaged_with_the_proposal: 'Nutzer*in interagiert mit Vorschlag'
-        user_who_voted: 'Benutzer, der abgestimmt hat'
-        user_with_unsubmitted_votes: 'Benutzer, der seine Stimme nicht abgegeben hat'
-        users_who_engaged_but_not_voted: 'Benutzer, die sich mit dem Projekt beschäftigt, aber nicht abgestimmt haben'
+        user_who_voted: 'Nutzer*innen, die abgestimmt haben'
+        user_with_unsubmitted_votes: 'Nutzer*innen, die Ihre Stimme(n) nicht abgeschickt haben'
+        users_who_engaged_but_not_voted: 'Nutzer*innen, die sich mit dem Projekt beschäftigt, aber nicht abgestimmt haben'
       content_type:
         comments: 'Kommentare'
         content_moderation: 'Inhaltsmoderation'
@@ -658,7 +658,7 @@ de:
         projects: 'Projekte'
         proposals: 'Vorschläge'
         reactions: 'Reaktionen'
-        voting: 'Abstimmen'
+        voting: 'Abstimmung'
       trigger:
         comment_is_deleted: 'Kommentar wird gelöscht'
         comment_is_flagged_as_spam: 'Kommentar wird als Spam markiert'
@@ -696,9 +696,9 @@ de:
         user_registers_for_the_first_time: 'Direkt nach der 1. Registrierung'
         user_replies_to_comment: 'Antwort wird veröffentlicht'
         user_replies_to_internal_comment: 'Nutzer*in antwortet auf internen Kommentar'
-        voting_2_days_before_phase_closes: '2 Tage vor Ende der Abstimmungsphase'
-        voting_1_day_after_last_votes: '1 Tag nach der letzten Abstimmung des Benutzers'
+        voting_2_days_before_phase_closes: '2 Tage vor Ende der Abstimmung'
+        voting_1_day_after_last_votes: '1 Tag nach der letzten Stimmabgabe der Nutzer*innen'
         voting_phase_ended: 'Abstimmungsphase beendet'
-        voting_basket_submitted: 'Stimmen werden abgegeben'
+        voting_basket_submitted: 'Stimmen eingereicht'
         7_days_after_invite_is_sent: '7 Tage nach Versand der 1. Einladung'
         7_days_before_the_project_changes_phase: '7 Tage bevor das Projekt die Phase wechselt'
