@@ -583,7 +583,7 @@ fr:
       remaining_days: 'Jours restants'
     voting_basket_submitted:
       subject: '%{organizationName}Vous avez voté avec succès'
-      preheader: 'Vous avez voté avec succès sur la plateforme de participation de %{organizationName}'
+      preheader: 'Votre vote a bien été enregistré sur la plateforme de participation de %{organizationName}'
       title_basket_submitted: 'Vous avez voté avec succès'
       event_description: 'Merci de votre participation. Vos votes ont été enregistrés. Rendez-vous sur la plateforme %{organizationName} pour consulter et gérer vos votes.'
       cta_see_votes_submitted: 'Voir les votes déposés'
@@ -647,7 +647,7 @@ fr:
         users_who_engaged_with_the_proposal: 'Les utilisateurs qui ont interagi avec la proposition'
         user_who_voted: 'Utilisateur ayant voté'
         user_with_unsubmitted_votes: 'Utilisateur qui n''a pas soumis ses votes'
-        users_who_engaged_but_not_voted: 'Utilisateurs ayant participé au projet mais n''ayant pas voté'
+        users_who_engaged_but_not_voted: 'Utilisateurs ayant participé au projet, mais n''ayant pas voté'
       content_type:
         comments: 'Commentaires'
         content_moderation: 'Modération du contenu'
