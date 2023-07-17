@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react-hooks';
 
 import useMachineTranslationByCommentId from './useMachineTranslationByCommentId';
-import { machineTranslation } from './__mocks__/machineTranslation';
+import { machineTranslationData } from './__mocks__/useMachineTranslationByCommentId';
 
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
@@ -12,7 +12,7 @@ const apiPath = '*comments/:commentId/machine_translation';
 
 const server = setupServer(
   rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: machineTranslation }));
+    return res(ctx.status(200), ctx.json({ data: machineTranslationData }));
   })
 );
 
@@ -41,7 +41,7 @@ describe('useMachineTranslationByCommentId', () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
     expect(result.current.isLoading).toBe(false);
-    expect(result.current.data?.data).toEqual(machineTranslation);
+    expect(result.current.data?.data).toEqual(machineTranslationData);
   });
 
   it('returns error correctly', async () => {
