@@ -201,7 +201,6 @@ es-CL:
       comments_count: 'Respuestas'
       likes_count: 'Me gusta'
       dislikes_count: 'No me gusta'
-      baskets_count: 'Cestas'
       input_url: 'URL'
       project: 'Proyecto'
       status: 'Estado'

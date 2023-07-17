@@ -201,7 +201,6 @@ it:
       comments_count: 'Commenti'
       likes_count: 'Preferiti'
       dislikes_count: 'Antipatie'
-      baskets_count: 'Cestini'
       input_url: 'URL'
       project: 'Progetto'
       status: 'Stato'

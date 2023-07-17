@@ -201,7 +201,6 @@ lb:
       comments_count: 'Kommentaren'
       likes_count: 'Gefällt'
       dislikes_count: 'Net gär'
-      baskets_count: 'Kierf'
       input_url: 'URL'
       project: 'Projet'
       status: 'Status'

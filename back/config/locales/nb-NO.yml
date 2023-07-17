@@ -201,7 +201,6 @@
       comments_count: 'Kommentarer'
       likes_count: 'Liker'
       dislikes_count: 'Misliker'
-      baskets_count: 'Kurver'
       input_url: 'URL-adresse'
       project: 'Prosjekt'
       status: 'Status'

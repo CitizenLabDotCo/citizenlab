@@ -201,7 +201,6 @@ pt:
       comments_count: 'Comentários'
       likes_count: 'Curtidas'
       dislikes_count: 'Não curtidas'
-      baskets_count: 'Cestas'
       input_url: 'URL'
       project: 'Projeto'
       status: 'Status'

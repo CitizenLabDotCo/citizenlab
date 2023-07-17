@@ -157,17 +157,14 @@ class Idea < ApplicationRecord
   end
 
   def custom_form
-    if participation_method_on_creation.form_in_phase?
-      creation_phase.custom_form || CustomForm.new(participation_context: creation_phase)
-    else
-      project.custom_form || CustomForm.new(participation_context: project)
-    end
+    participation_context = creation_phase || project
+    participation_context.custom_form || CustomForm.new(participation_context: participation_context)
   end
 
   def input_term
     return project.input_term if project.continuous?
 
-    return creation_phase.input_term if participation_method_on_creation.form_in_phase?
+    return creation_phase.input_term if participation_method_on_creation.creation_phase?
 
     participation_context = ParticipationContextService.new.get_participation_context(project)
     return participation_context.input_term if participation_context&.can_contain_ideas?
@@ -200,7 +197,7 @@ class Idea < ApplicationRecord
   end
 
   def schema_for_validation
-    fields = custom_form.custom_fields
+    fields = participation_method_on_creation.custom_form.custom_fields
     multiloc_schema = JsonSchemaGeneratorService.new.generate_for fields
     multiloc_schema.values.first
   end
@@ -260,13 +257,13 @@ class Idea < ApplicationRecord
       return
     end
 
-    return if participation_method_on_creation.form_in_phase?
-
-    errors.add(
-      :creation_phase,
-      :invalid_participation_method,
-      message: 'The creation phase cannot be set for transitive participation methods'
-    )
+    if !participation_method_on_creation.creation_phase?
+      errors.add(
+        :creation_phase,
+        :invalid_participation_method,
+        message: 'The creation phase cannot be set for transitive participation methods'
+      )
+    end
   end
 end
 
