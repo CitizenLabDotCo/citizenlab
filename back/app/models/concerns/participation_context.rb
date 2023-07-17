@@ -144,6 +144,18 @@ module ParticipationContext
     instance_of?(Phase)
   end
 
+  def voting_term_singular_multiloc_with_fallback
+    MultilocService.new.i18n_to_multiloc('voting_method.default_voting_term_singular').merge(
+      voting_term_singular_multiloc || {}
+    )
+  end
+
+  def voting_term_plural_multiloc_with_fallback
+    MultilocService.new.i18n_to_multiloc('voting_method.default_voting_term_plural').merge(
+      voting_term_plural_multiloc || {}
+    )
+  end
+
   private
 
   def timeline_project?

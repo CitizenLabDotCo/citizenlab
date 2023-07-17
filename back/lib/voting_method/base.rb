@@ -6,6 +6,10 @@ module VotingMethod
       @participation_context = participation_context
     end
 
+    def assign_defaults_for_participation_context
+      # Default is to do nothing.
+    end
+
     def validate_participation_context
       # Default is to do nothing.
     end

@@ -17,29 +17,6 @@ RSpec.describe ParticipationMethod::Voting do
         expect(context.ideas_order).to eq 'random'
       end
     end
-
-    context 'multiple voting' do
-      let(:context) { build(:continuous_multiple_voting_project) }
-
-      it 'sets a default voting term of "vote", posting method to unlimited and ideas order to random' do
-        participation_method.assign_defaults_for_participation_context
-        expect(context.voting_term_singular_multiloc['en']).to eq 'vote'
-        expect(context.voting_term_plural_multiloc['en']).to eq 'votes'
-        expect(context.posting_method).to eq 'unlimited'
-        expect(context.ideas_order).to eq 'random'
-      end
-    end
-
-    context 'single voting' do
-      let(:context) { build(:continuous_single_voting_project) }
-
-      it 'sets voting_max_votes_per_idea to 1, posting method to unlimited and ideas order to random' do
-        participation_method.assign_defaults_for_participation_context
-        expect(context.voting_max_votes_per_idea).to eq 1
-        expect(context.posting_method).to eq 'unlimited'
-        expect(context.ideas_order).to eq 'random'
-      end
-    end
   end
 
   describe '#assign_slug' do
