@@ -28,17 +28,14 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../../../../messages';
 
 // typings
-import { InputTerm, VotingMethod } from 'services/participationContexts';
+import { VotingMethod } from 'services/participationContexts';
 import { ApiErrors } from '../../../';
-import { IOption, Multiloc } from 'typings';
+import { Multiloc } from 'typings';
 
 // hooks
 import { useLocation } from 'react-router-dom';
 
 export interface VotingInputsProps {
-  isCustomInputTermEnabled: boolean;
-  input_term: InputTerm | undefined;
-  handleInputTermChange: (option: IOption) => void;
   voting_method: VotingMethod | null | undefined;
   voting_min_total: number | null | undefined;
   voting_max_total: number | null | undefined;
@@ -63,9 +60,6 @@ export interface VotingInputsProps {
 }
 
 export default ({
-  isCustomInputTermEnabled,
-  input_term,
-  handleInputTermChange,
   voting_method,
   voting_min_total,
   voting_max_total,
@@ -137,12 +131,9 @@ export default ({
           <BudgetingInputs
             voting_min_total={voting_min_total}
             voting_max_total={voting_max_total}
-            input_term={input_term}
-            isCustomInputTermEnabled={isCustomInputTermEnabled}
             minTotalVotesError={minTotalVotesError}
             maxTotalVotesError={maxTotalVotesError}
             apiErrors={apiErrors}
-            handleInputTermChange={handleInputTermChange}
             handleMinBudgetingAmountChange={handleVotingMinTotalChange}
             handleMaxBudgetingAmountChange={handleVotingMaxTotalChange}
           />
