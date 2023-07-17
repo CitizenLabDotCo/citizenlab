@@ -1423,7 +1423,7 @@
   "app.containers.AdminPage.ProjectEdit.useTemplate": "Utiliser le modèle",
   "app.containers.AdminPage.ProjectEdit.viewPublicProject": "Visualiser le projet",
   "app.containers.AdminPage.ProjectEdit.volunteeringTab": "Se porter volontaire",
-  "app.containers.AdminPage.ProjectEdit.voteTermError": "Les conditions de vote doivent être spécifiées pour tous les pays",
+  "app.containers.AdminPage.ProjectEdit.voteTermError": "La terminologie doit être définie pour toutes les langues",
   "app.containers.AdminPage.ProjectEdit.xGroupsHaveAccess": "{groupCount, plural, no {# groupes} one {# groupe} other {# groupes}}",
   "app.containers.AdminPage.ProjectEvents.addEventButton": "Ajouter un événement",
   "app.containers.AdminPage.ProjectEvents.dateStartLabel": "Début",
