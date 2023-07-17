@@ -53,8 +53,8 @@ type Props = {
   post: IIdeaData | IInitiativeData;
   phases?: IPhaseData[];
   statuses?: IIdeaStatusData[] | IInitiativeStatusData[];
-  selectedPhase?: string | null;
-  selectedProject?: string | null;
+  selectedPhaseId?: string | null;
+  selectedProjectId?: string | null;
   /** A set of ids of ideas/initiatives that are currently selected */
   selection: Set<string>;
   onUnselect: () => void;
@@ -72,8 +72,8 @@ const Row = ({
   activeFilterMenu,
   phases,
   statuses,
-  selectedProject,
-  selectedPhase,
+  selectedProjectId,
+  selectedPhaseId,
   className,
   openPreview,
   onToggleSelect,
@@ -102,8 +102,8 @@ const Row = ({
           type={type}
           idea={post as IIdeaData}
           statuses={statuses as IIdeaStatusData[]}
-          selectedProject={selectedProject}
-          selectedPhase={selectedPhase}
+          selectedProjectId={selectedProjectId}
+          selectedPhaseId={selectedPhaseId}
           phases={phases}
           selection={selection}
           activeFilterMenu={activeFilterMenu}

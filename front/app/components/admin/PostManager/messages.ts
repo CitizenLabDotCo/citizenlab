@@ -74,9 +74,9 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.remainingTime',
     defaultMessage: 'Days Remaining',
   },
-  up: {
-    id: 'app.components.admin.PostManager.up',
-    defaultMessage: 'Up',
+  likes: {
+    id: 'app.components.admin.PostManager.likes',
+    defaultMessage: 'Likes',
   },
   reactions: {
     id: 'app.components.admin.PostManager.reactions',
@@ -90,9 +90,9 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.comments',
     defaultMessage: 'Comments',
   },
-  down: {
-    id: 'app.components.admin.PostManager.down',
-    defaultMessage: 'Down',
+  dislikes: {
+    id: 'app.components.admin.PostManager.dislikes',
+    defaultMessage: 'Dislikes',
   },
   participatoryBudgettingPicks: {
     id: 'app.components.admin.PostManager.participatoryBudgettingPicks',
