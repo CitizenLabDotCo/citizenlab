@@ -15,6 +15,8 @@ en:
     rejected: rejected
     rejected_description: This idea has been rejected
   initiative_statuses:
+    approval_required: approval_required
+    approval_required_description: approval_required
     proposed: proposed
     proposed_description: proposed
     expired: expired
