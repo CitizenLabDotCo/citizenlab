@@ -183,8 +183,8 @@ resource 'Phases' do
             expect(response_data.dig(:attributes, :voting_max_total)).to eq 10
             expect(response_data.dig(:attributes, :voting_min_total)).to eq 0
             expect(response_data.dig(:attributes, :voting_max_votes_per_idea)).to eq 5
-            expect(response_data.dig(:attributes, :voting_term_singular_multiloc)).to eq({ en: 'bean' })
-            expect(response_data.dig(:attributes, :voting_term_plural_multiloc)).to eq({ en: 'beans' })
+            expect(response_data.dig(:attributes, :voting_term_singular_multiloc, :en)).to eq 'bean'
+            expect(response_data.dig(:attributes, :voting_term_plural_multiloc, :en)).to eq 'beans'
             expect(response_data.dig(:attributes, :ideas_order)).to eq 'random'
           end
         end
@@ -416,8 +416,8 @@ resource 'Phases' do
           expect(json_response.dig(:data, :attributes, :voting_min_total)).to eq 3
           expect(json_response.dig(:data, :attributes, :voting_max_total)).to eq 15
           expect(json_response.dig(:data, :attributes, :voting_max_votes_per_idea)).to eq 1
-          expect(json_response.dig(:data, :attributes, :voting_term_singular_multiloc)).to eq({ en: 'Grocery shopping' })
-          expect(json_response.dig(:data, :attributes, :voting_term_plural_multiloc)).to eq({ en: 'Groceries shoppings' })
+          expect(json_response.dig(:data, :attributes, :voting_term_singular_multiloc, :en)).to eq 'Grocery shopping'
+          expect(json_response.dig(:data, :attributes, :voting_term_plural_multiloc, :en)).to eq 'Groceries shoppings'
         end
       end
 

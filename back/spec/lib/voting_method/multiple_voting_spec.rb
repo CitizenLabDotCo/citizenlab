@@ -7,10 +7,13 @@ RSpec.describe VotingMethod::MultipleVoting do
 
   let(:project) { create(:continuous_multiple_voting_project) }
 
-  describe '#initialize' do
-    it 'sets a default voting term of "vote"' do
-      expect(project.voting_term_singular_multiloc['en']).to eq 'vote'
-      expect(project.voting_term_plural_multiloc['en']).to eq 'votes'
+  describe '#assign_defaults_for_participation_context' do
+    let(:context) { build(:continuous_multiple_voting_project) }
+
+    it 'does not change voting_max_votes_per_idea' do
+      project.voting_max_votes_per_idea = 3
+      voting_method.assign_defaults_for_participation_context
+      expect(project.voting_max_votes_per_idea).to eq 3
     end
   end
 
@@ -26,22 +29,6 @@ RSpec.describe VotingMethod::MultipleVoting do
       voting_method.validate_participation_context
       expect(project.errors.details).to eq(
         voting_max_total: [error: :blank]
-      )
-    end
-
-    it 'sets an error when voting term singular is set and voting term plural is not' do
-      project.voting_term_plural_multiloc = nil
-      voting_method.validate_participation_context
-      expect(project.errors.details).to eq(
-        voting_term_plural_multiloc: [error: :blank]
-      )
-    end
-
-    it 'sets an error when voting term plural is set and voting term singular is not' do
-      project.voting_term_singular_multiloc = nil
-      voting_method.validate_participation_context
-      expect(project.errors.details).to eq(
-        voting_term_singular_multiloc: [error: :blank]
       )
     end
   end

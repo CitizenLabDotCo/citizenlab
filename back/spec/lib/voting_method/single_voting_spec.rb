@@ -7,8 +7,12 @@ RSpec.describe VotingMethod::SingleVoting do
 
   let(:project) { create(:continuous_single_voting_project) }
 
-  describe '#initialize' do
-    it 'has max_votes_per_idea to 1' do
+  describe '#assign_defaults_for_participation_context' do
+    let(:context) { build(:continuous_single_voting_project) }
+
+    it 'sets voting_max_votes_per_idea to 1' do
+      project.voting_max_votes_per_idea = 3
+      voting_method.assign_defaults_for_participation_context
       expect(project.voting_max_votes_per_idea).to eq 1
     end
   end

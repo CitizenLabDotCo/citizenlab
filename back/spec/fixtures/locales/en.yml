@@ -84,5 +84,5 @@ en:
       assignee_fullname: 'Assignee'
       assignee_email: 'Assignee email'
   voting_method:
-    default_voting_term_singular: "vote"
-    default_voting_term_plural: "votes"
+    default_voting_term_singular: Vote
+    default_voting_term_plural: Votes
