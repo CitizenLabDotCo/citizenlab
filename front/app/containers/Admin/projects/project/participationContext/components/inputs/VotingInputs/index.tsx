@@ -121,8 +121,11 @@ export default ({
                 ),
                 voteTypeDescription: getVoteTypeDescription(),
                 optionAnalysisArticleLink: (
-                  // TODO: Replace with article when ready
-                  <a href={'/'} target="_blank" rel="noreferrer">
+                  <a
+                    href="https://support.citizenlab.co/en/articles/8124630-voting-and-prioritization-methods-for-enhanced-decision-making"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
                     <FormattedMessage {...messages.optionAnalysisLinkText} />
                   </a>
                 ),
