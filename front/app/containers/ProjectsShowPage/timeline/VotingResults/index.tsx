@@ -16,11 +16,11 @@ const VotingResults = ({ phaseId }: Props) => {
     phase: phaseId,
     sort: 'votes_count',
   });
-  const smallerThanTablet = useBreakpoint('tablet');
+
   const smallerThanPhone = useBreakpoint('phone');
 
   const getMx = (i: number) =>
-    smallerThanTablet ? {} : i % 2 ? { ml: '8px' } : { mr: '8px' };
+    smallerThanPhone ? {} : i % 2 ? { ml: '8px' } : { mr: '8px' };
 
   return (
     <Box
@@ -35,7 +35,7 @@ const VotingResults = ({ phaseId }: Props) => {
           key={idea.id}
           mb={smallerThanPhone ? '8px' : '20px'}
           flexGrow={0}
-          width={smallerThanTablet ? '100%' : 'calc(50% - 16px)'}
+          width={smallerThanPhone ? '100%' : 'calc(50% - 16px)'}
           {...getMx(i)}
         >
           <VotingResultCard idea={idea} phaseId={phaseId} rank={i + 1} />
