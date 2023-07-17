@@ -11,7 +11,7 @@
   "app.components.AssignBudgetControl.add": "Ajouter",
   "app.components.AssignBudgetControl.added": "Ajouté",
   "app.components.AssignMultipleVotesControl.addVote": "Ajouter un vote",
-  "app.components.AssignMultipleVotesControl.removeVote": "Supprimer le vote",
+  "app.components.AssignMultipleVotesControl.removeVote": "Retirer un vote",
   "app.components.AssignMultipleVotesControl.vote": "Voter",
   "app.components.AssignMultipleVotesControl.votes": "votes",
   "app.components.AssignMultipleVotesControl.xVotes2": "{votes, plural, one {{singular}} other {{plural}}}",
