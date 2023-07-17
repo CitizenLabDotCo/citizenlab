@@ -137,15 +137,13 @@ class WebApi::V1::IdeasController < ApplicationController
     send_error and return unless participation_context
 
     participation_method = Factory.instance.participation_method_for(participation_context)
-    participation_context_for_form = participation_method.form_in_phase? ? participation_context : project
-    custom_form = participation_context_for_form.custom_form || CustomForm.new(participation_context: participation_context_for_form)
 
-    extract_custom_field_values_from_params! custom_form
-    params_for_create = idea_params(custom_form, is_moderator)
-    params_for_file_upload_fields = extract_params_for_file_upload_fields(custom_form, params_for_create)
+    extract_custom_field_values_from_params! participation_method.custom_form
+    params_for_create = idea_params participation_method.custom_form, is_moderator
+    params_for_file_upload_fields = extract_params_for_file_upload_fields participation_method.custom_form, params_for_create
     input = Idea.new params_for_create
     if project.timeline?
-      input.creation_phase = (participation_context if participation_method.form_in_phase?)
+      input.creation_phase = (participation_context if participation_method.creation_phase?)
       input.phase_ids = [participation_context.id] if phase_ids.empty?
     end
     # NOTE: Needs refactor allow_anonymous_participation? so anonymous_participation can be allow or force

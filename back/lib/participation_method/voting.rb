@@ -28,6 +28,10 @@ module ParticipationMethod
       false
     end
 
+    def supports_baskets?
+      true
+    end
+
     def sign_in_required_for_posting?
       true
     end

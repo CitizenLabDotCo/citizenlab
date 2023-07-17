@@ -201,7 +201,6 @@ sv:
       comments_count: 'Kommentarer'
       likes_count: 'Gillar'
       dislikes_count: 'Ogillar'
-      baskets_count: 'Korgar'
       input_url: 'Webbadress'
       project: 'Projekt'
       status: 'Status'

@@ -89,9 +89,19 @@ RSpec.describe ParticipationMethod::Poll do
     end
   end
 
-  describe '#form_in_phase?' do
+  describe '#creation_phase?' do
     it 'returns false' do
-      expect(participation_method.form_in_phase?).to be false
+      expect(participation_method.creation_phase?).to be false
+    end
+  end
+
+  describe '#custom_form' do
+    let(:project) { context.project }
+    let(:project_form) { create(:custom_form, participation_context: context.project) }
+    let(:context) { create(:poll_phase) }
+
+    it 'returns the custom form of the project' do
+      expect(participation_method.custom_form.participation_context_id).to eq project.id
     end
   end
 
@@ -132,6 +142,7 @@ RSpec.describe ParticipationMethod::Poll do
   end
 
   its(:allowed_ideas_orders) { is_expected.to be_empty }
+  its(:supports_exports?) { is_expected.to be false }
   its(:supports_publication?) { is_expected.to be false }
   its(:supports_commenting?) { is_expected.to be false }
   its(:supports_reacting?) { is_expected.to be false }

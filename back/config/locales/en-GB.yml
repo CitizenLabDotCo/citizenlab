@@ -201,7 +201,6 @@ en-GB:
       comments_count: 'Comments'
       likes_count: 'Likes'
       dislikes_count: 'Dislikes'
-      baskets_count: 'Baskets'
       input_url: 'URL'
       project: 'Project'
       status: 'Status'

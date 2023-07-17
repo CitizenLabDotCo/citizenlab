@@ -201,7 +201,6 @@ el:
       comments_count: 'Σχόλια'
       likes_count: 'Μου αρέσει'
       dislikes_count: 'Απεχθάνεται το'
-      baskets_count: 'Καλάθια'
       input_url: 'ΔΙΕΎΘΥΝΣΗ URL'
       project: 'Έργο'
       status: 'Κατάσταση'

@@ -201,7 +201,6 @@ kl:
       comments_count: 'Comments'
       upvotes_count: 'Upvotes'
       downvotes_count: 'Downvotes'
-      baskets_count: 'Baskets'
       input_url: 'URL'
       project: 'Project'
       status: 'Status'
