@@ -73,7 +73,7 @@ AppConfiguration.create!(
         locales: CL2_SUPPORTED_LOCALES
       )
     },
-    proposal_approval: {
+    initiative_approval: {
       enabled: false,
       allowed: true
     },

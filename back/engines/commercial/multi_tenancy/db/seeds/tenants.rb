@@ -297,7 +297,7 @@ module MultiTenancy
                 locales: CL2_SUPPORTED_LOCALES
               )
             },
-            proposal_approval: {
+            initiative_approval: {
               enabled: true,
               allowed: true
             },
