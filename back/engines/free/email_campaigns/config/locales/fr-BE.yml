@@ -58,7 +58,7 @@ fr-BE:
       "user_digest": Aperçu hebdomadaire
       "voting_basket_submitted": Confirmation du vote
       "voting_basket_not_submitted": Votes non soumis
-      "voting_last_chance": Dernière chance de voter
+      "voting_last_chance": Dernière chance pour voter
       "voting_results": Résultats du vote
       "your_proposed_initiatives_digest": Aperçu hebdomadaire de vos propositions
     schedules:
@@ -583,10 +583,10 @@ fr-BE:
       remaining_days: 'Jours restants'
     voting_basket_submitted:
       subject: '%{organizationName}Vous avez voté avec succès'
-      preheader: 'Vous avez voté avec succès sur la plateforme de participation de %{organizationName}'
+      preheader: 'Votre vote a bien été enregistré sur la plateforme de participation de %{organizationName}'
       title_basket_submitted: 'Vous avez voté avec succès'
       event_description: 'Merci de votre participation. Vos votes ont été enregistrés. Rendez-vous sur la plateforme %{organizationName} pour consulter et gérer vos votes.'
-      cta_see_votes_submitted: 'Voir les votes déposés'
+      cta_see_votes_submitted: 'Voir les votes soumis'
       cta_message: 'Cliquez sur le bouton ci-dessous pour participer'
     voting_basket_not_submitted:
       subject: '%{organizationName}Vous n''avez pas soumis vos votes'
@@ -599,10 +599,10 @@ fr-BE:
       subject: '%{organizationName}Dernière chance de voter pour %{phaseTitle}'
       preheader: 'Dernière chance de voter pour %{phaseTitle} sur la plateforme de participation de %{organizationName}'
       title_last_chance: 'Dernière chance de voter pour %{phaseTitle}'
-      body_1: 'La phase de vote pour le projet %{projectTitle} se termine demain à minuit.'
-      body_2: 'Le temps presse et nous avons remarqué que vous n''avez pas encore voté ! Agissez dès maintenant en cliquant simplement sur le bouton ci-dessous pour participer.'
+      body_1: 'La phase de vote pour le projet %{projectTitle} prendra fin demain, à minuit.'
+      body_2: 'Le temps file, et nous avons remarqué que vous n''avez pas encore voté ! Agissez dès maintenant en cliquant sur le bouton ci-dessous pour participer.'
       body_3: 'Vous aurez ainsi accès à une série d''options et pourrez apporter votre contribution, qui est cruciale pour décider de l''avenir de ce projet.'
-      cta_vote: 'Votez'
+      cta_vote: 'Voter'
     voting_results:
       subject: '%{organizationName}: %{phaseTitle} résultats du vote dévoilés !'
       preheader: '%{phaseTitle} résultats des votes révélés sur la plateforme de participation de %{organizationName}'
@@ -647,7 +647,7 @@ fr-BE:
         users_who_engaged_with_the_proposal: 'Les utilisateurs qui ont interagi avec la proposition'
         user_who_voted: 'Utilisateur ayant voté'
         user_with_unsubmitted_votes: 'Utilisateur qui n''a pas soumis ses votes'
-        users_who_engaged_but_not_voted: 'Utilisateurs ayant participé au projet mais n''ayant pas voté'
+        users_who_engaged_but_not_voted: 'Utilisateurs ayant participé au projet, mais n''ayant pas voté'
       content_type:
         comments: 'Commentaires'
         content_moderation: 'Modération du contenu'
@@ -698,7 +698,7 @@ fr-BE:
         user_replies_to_internal_comment: 'L''utilisateur répond à un commentaire interne'
         voting_2_days_before_phase_closes: '2 jours avant la clôture de la phase de vote'
         voting_1_day_after_last_votes: '1 jour après le dernier vote de l''utilisateur'
-        voting_phase_ended: 'Fin de la phase de vote'
+        voting_phase_ended: 'La phase de vote est terminée'
         voting_basket_submitted: 'Les votes sont soumis'
         7_days_after_invite_is_sent: '7 jours après l''envoi de l''invitation'
         7_days_before_the_project_changes_phase: '7 jours avant le changement de phase du projet'
