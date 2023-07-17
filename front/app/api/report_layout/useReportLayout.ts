@@ -4,7 +4,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import reportLayoutKeys from './keys';
 import { ReportLayoutResponse, ReportLayoutKeys } from './types';
 
-const fetchReportLayout = ({ id }: { id: string }) =>
+const fetchReportLayout = (id: string) =>
   fetcher<ReportLayoutResponse>({
     path: `/reports/${id}/layout`,
     action: 'get',
@@ -18,7 +18,7 @@ const useReportLayout = (id: string) => {
     ReportLayoutKeys
   >({
     queryKey: reportLayoutKeys.item({ id }),
-    queryFn: () => fetchReportLayout({ id }),
+    queryFn: () => fetchReportLayout(id),
   });
 };
 
