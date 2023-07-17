@@ -11,7 +11,6 @@ import {
 
 // api
 import useBasket from 'api/baskets/useBasket';
-import useAuthUser from 'api/me/useAuthUser';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useCumulativeVoting from 'api/baskets_ideas/useVoting';
 
@@ -29,10 +28,12 @@ import messages from './messages';
 
 // utils
 import { isNil } from 'utils/helperUtils';
+import { isFixableByAuthentication } from 'utils/actionDescriptors';
 
 // typings
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
+import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
 interface Props {
   ideaId: string;
@@ -53,7 +54,6 @@ const AssignMultipleVotesInput = ({
 
   // api
   const { data: basket } = useBasket(basketId);
-  const { data: authUser } = useAuthUser();
   const { data: idea } = useIdeaById(ideaId);
 
   // other
@@ -70,12 +70,38 @@ const AssignMultipleVotesInput = ({
     event.stopPropagation();
     event?.preventDefault();
 
-    if (isNil(votes)) return;
+    if (isNil(votes) || !actionDescriptor) return;
 
-    if (!authUser) {
-      triggerAuthenticationFlow(); // TODO: Trigger with correct parameters
+    if (actionDescriptor.enabled) {
+      setVotes?.(ideaId, votes + 1);
       return;
     }
+
+    if (isFixableByAuthentication(actionDescriptor.disabled_reason)) {
+      const participationContextId = participationContext.id;
+      const participationContextType = participationContext.type;
+
+      const context = {
+        type: participationContextType,
+        action: 'voting',
+        id: participationContextId,
+      } as const;
+
+      const successAction: SuccessAction = {
+        name: 'vote',
+        params: {
+          ideaId,
+          participationContextId,
+          participationContextType,
+          votes: 1,
+        },
+      };
+
+      triggerAuthenticationFlow({ context, successAction });
+
+      return;
+    }
+
     // Emit errors if maximum allowance exceeded
     // if (votingMax && basketTotal) {
     //   if (
@@ -90,8 +116,6 @@ const AssignMultipleVotesInput = ({
     //     return;
     //   }
     // }
-
-    setVotes?.(ideaId, votes + 1);
   };
 
   const onRemove = async (event) => {
@@ -115,10 +139,10 @@ const AssignMultipleVotesInput = ({
     participationContext.attributes;
 
   const votingTermSingular =
-    localize(voting_term_singular_multiloc) ??
+    localize(voting_term_singular_multiloc) ||
     formatMessage(messages.vote).toLowerCase();
   const votingTermPlural =
-    localize(voting_term_plural_multiloc) ??
+    localize(voting_term_plural_multiloc) ||
     formatMessage(messages.votes).toLowerCase();
 
   const basketSubmitted = !!basket?.data?.attributes.submitted_at;
@@ -174,17 +198,15 @@ const AssignMultipleVotesInput = ({
             }).toLowerCase()}
           </Text>
         </Box>
-        {
-          <Button
-            ariaLabel={formatMessage(messages.addVote)}
-            disabled={disableAddingVote}
-            ml="8px"
-            bgColor={theme.colors.tenantPrimary}
-            onClick={onAdd}
-          >
-            <h1 style={{ margin: '0px' }}>+</h1>
-          </Button>
-        }
+        <Button
+          ariaLabel={formatMessage(messages.addVote)}
+          disabled={disableAddingVote}
+          ml="8px"
+          bgColor={theme.colors.tenantPrimary}
+          onClick={onAdd}
+        >
+          <h1 style={{ margin: '0px' }}>+</h1>
+        </Button>
       </Box>
     );
   }
