@@ -10,11 +10,11 @@ import AssignSingleVoteBox from 'components/VoteInputs/single/AssignSingleVoteBo
 
 // i18n
 import messages from './messages';
-import useLocalize from 'hooks/useLocalize';
+import { Localize } from 'hooks/useLocalize';
 import { MessageDescriptor } from 'react-intl';
 
 // utils
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import { toFullMonth } from 'utils/dateUtils';
 
 // types
@@ -22,13 +22,14 @@ import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 import { IAppConfiguration } from 'api/app_configuration/types';
 import { VotingMethod } from 'services/participationContexts';
+import { FormatMessage } from 'typings';
 /*
   Configuration Specifications
   
   StatusModule:
   - getStatusHeader: Returns header which appears directly above status module
   - getStatusTitle: Returns title for the status module
-  - StatusDescription: Returns description for the status module
+  - getStatusDescription: Returns description for the status module
   - getStatusSubmissionCountCopy: Returns copy related to the submission count
   - getSubmissionTerm: Returns the submission type in specified form (i.e. singular vs plural)
   - preSubmissionWarning: Returns warning to be displayed before submission is made
@@ -46,6 +47,8 @@ export type GetStatusDescriptionProps = {
   submissionState: VoteSubmissionState;
   phase?: IPhaseData;
   appConfig?: IAppConfiguration;
+  localize: Localize;
+  formatMessage: FormatMessage;
 };
 
 type IdeaCardVoteInputProps = {
@@ -61,7 +64,7 @@ export type VotingMethodConfig = {
   getStatusHeader: (submissionState: VoteSubmissionState) => MessageDescriptor;
   getStatusTitle: (submissionState: VoteSubmissionState) => MessageDescriptor;
   getStatusSubmissionCountCopy?: (basketCount: number) => MessageDescriptor;
-  StatusDescription?: ({
+  getStatusDescription?: ({
     project,
     phase,
     submissionState,
@@ -102,7 +105,7 @@ const budgetingConfig: VotingMethodConfig = {
         return messages.finalResults;
     }
   },
-  StatusDescription: ({
+  getStatusDescription: ({
     project,
     phase,
     submissionState,
@@ -257,14 +260,13 @@ const multipleVotingConfig: VotingMethodConfig = {
         return messages.finalTally;
     }
   },
-  StatusDescription: ({
+  getStatusDescription: ({
     project,
     phase,
     submissionState,
+    localize,
+    formatMessage,
   }: GetStatusDescriptionProps) => {
-    const localize = useLocalize();
-    const { formatMessage } = useIntl();
-
     const participationContext = phase || project;
     const voteTerm = (
       localize(participationContext?.attributes?.voting_term_plural_multiloc) ||
@@ -396,7 +398,7 @@ const singleVotingConfig: VotingMethodConfig = {
         return messages.finalTally;
     }
   },
-  StatusDescription: ({
+  getStatusDescription: ({
     project,
     phase,
     submissionState,

@@ -33,6 +33,7 @@ import { fontSizes } from 'utils/styleUtils';
 
 // intl
 import messages from './messages';
+import useLocalize from 'hooks/useLocalize';
 
 type StatusModuleProps = {
   votingMethod?: VotingMethod | null;
@@ -60,6 +61,7 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
   const isSmallerThanPhone = useBreakpoint('phone');
 
   // intl
+  const localize = useLocalize();
   const { formatMessage } = useIntl();
 
   // participation context
@@ -107,12 +109,14 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
         </Title>
         <>
           <Box style={{ fontSize: fontSizes.m }}>
-            {config?.StatusDescription &&
-              config.StatusDescription({
+            {config?.getStatusDescription &&
+              config.getStatusDescription({
                 project,
                 phase,
                 submissionState: basketStatus,
                 appConfig,
+                localize,
+                formatMessage,
               })}
           </Box>
           {phase && showDate && (
