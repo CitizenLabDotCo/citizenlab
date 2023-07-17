@@ -605,11 +605,11 @@ fr:
       cta_vote: 'Voter'
     voting_results:
       subject: '%{organizationName}: Les résultats du vote pour %{phaseTitle} sont disponibles !'
-      preheader: '%{phaseTitle} résultats des votes révélés sur la plateforme de participation de %{organizationName}'
+      preheader: 'Les résultats des votes pour %{phaseTitle} sur la plateforme de participation de %{organizationName} ont été publiés'
       title_results: 'Les résultats du vote pour %{phaseTitle} sont disponibles !'
       body_1: 'Les résultats sont arrivés !'
       body_2: 'Les résultats du vote pour %{phaseTitle} sur la plateforme %{organizationName} ont été publiés !'
-      body_3: 'Nous vous encourageons à examiner les résultats et à rester à l''écoute pour des mises à jour ultérieures sur les prochaines étapes.'
+      body_3: 'Nous vous invitons à prendre connaissance des résultats et à rester attentifs pour de futures mises à jour concernant les prochaines étapes.'
       cta_see_results: 'Voir les résultats sur la plateforme'
     voting_phase_started:
       subject: '%{organizationName}: La phase de vote a commencé pour %{projectName}'
