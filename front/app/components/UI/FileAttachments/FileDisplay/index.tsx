@@ -14,7 +14,7 @@ import { Icon } from '@citizenlab/cl2-component-library';
 import { IProjectFileData } from 'api/project_files/types';
 import { IPhaseFileData } from 'api/phase_files/types';
 import { IEventFileData } from 'api/event_files/types';
-import { ICustomPageFileData } from 'services/pageFiles';
+import { IPageFileData } from 'api/page_files/types';
 import { IIdeaFileData } from 'api/idea_files/types';
 
 const Container = styled.div`
@@ -73,7 +73,7 @@ interface Props {
   file:
     | IProjectFileData
     | IPhaseFileData
-    | ICustomPageFileData
+    | IPageFileData
     | IEventFileData
     | IIdeaFileData;
   className?: string;

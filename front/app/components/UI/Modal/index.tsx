@@ -3,7 +3,6 @@ import { createPortal } from 'react-dom';
 import { adopt } from 'react-adopt';
 import { Subscription, fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import clHistory from 'utils/cl-router/history';
 import eventEmitter from 'utils/eventEmitter';
 import { FocusOn } from 'react-focus-on';
 
@@ -462,7 +461,6 @@ interface State {
 }
 
 class Modal extends PureComponent<Props, State> {
-  unlisten: null | (() => void);
   subscription: Subscription | null;
 
   static defaultProps = {
@@ -475,7 +473,6 @@ class Modal extends PureComponent<Props, State> {
     this.state = {
       windowHeight: window.innerHeight,
     };
-    this.unlisten = null;
     this.subscription = null;
   }
 
@@ -507,7 +504,6 @@ class Modal extends PureComponent<Props, State> {
     window.addEventListener('popstate', this.handlePopstateEvent);
     window.addEventListener('keydown', this.handleKeypress);
     eventEmitter.emit('modalOpened');
-    this.unlisten = clHistory.listen(() => this.closeModal());
   };
 
   closeModal = () => {
@@ -529,8 +525,6 @@ class Modal extends PureComponent<Props, State> {
     window.removeEventListener('popstate', this.handlePopstateEvent);
     window.removeEventListener('keydown', this.handleKeypress);
     eventEmitter.emit('modalClosed');
-    this.unlisten && this.unlisten();
-    this.unlisten = null;
   };
 
   clickOutsideModal = () => {

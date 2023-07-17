@@ -16,6 +16,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 import { ManagerType } from 'components/admin/PostManager';
 import useAuthUser from 'api/me/useAuthUser';
+import { getFullName } from 'utils/textUtils';
 
 interface DataProps {
   prospectAssignees: GetUsersChildProps;
@@ -78,7 +79,7 @@ const AssigneeFilter = ({
           .map((assignee) => ({
             value: assignee.id,
             text: formatMessage(postManagerMessages.assignedTo, {
-              assigneeName: `${assignee.attributes.first_name} ${assignee.attributes.last_name}`,
+              assigneeName: getFullName(assignee),
             }),
             className: 'e2e-assignee-filter-other-user',
           }))

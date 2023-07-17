@@ -9,7 +9,7 @@ import { Response, PieRow } from './typings';
 import { Translations } from './translations';
 
 export const parsePieData = (
-  data: Response['data'],
+  data: Response['data']['attributes'],
   translations: Translations
 ): PieRow[] | null => {
   if (data.length === 0) return null;

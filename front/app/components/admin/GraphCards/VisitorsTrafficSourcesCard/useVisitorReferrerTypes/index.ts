@@ -1,7 +1,5 @@
-import { useState, useEffect } from 'react';
-
 // services
-import { analyticsStream, Query, QuerySchema } from 'services/analyticsFacts';
+import { Query, QuerySchema } from 'api/analytics/types';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -12,11 +10,10 @@ import { parsePieData, parseExcelData } from './parse';
 
 // utils
 import { getProjectFilter, getDateFilter } from '../../_utils/query';
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 // typings
-import { QueryParameters, Response, PieRow } from './typings';
-import { XlsxData } from 'components/admin/ReportExportMenu';
+import { QueryParameters, Response } from './typings';
+import useAnalytics from 'api/analytics/useAnalytics';
 
 const query = ({
   projectId,
@@ -49,37 +46,21 @@ export default function useVisitorsReferrerTypes({
   startAtMoment,
   endAtMoment,
 }: QueryParameters) {
+  const { data: analytics } = useAnalytics<Response>(
+    query({
+      projectId,
+      startAtMoment,
+      endAtMoment,
+    })
+  );
+
   const { formatMessage } = useIntl();
-  const [pieData, setPieData] = useState<PieRow[] | NilOrError>();
-  const [xlsxData, setXlsxData] = useState<XlsxData | NilOrError>();
+  const translations = getTranslations(formatMessage);
 
-  useEffect(() => {
-    const observable = analyticsStream<Response>(
-      query({
-        projectId,
-        startAtMoment,
-        endAtMoment,
-      })
-    ).observable;
-
-    const subscription = observable.subscribe(
-      (response: Response | NilOrError) => {
-        if (isNilOrError(response)) {
-          setPieData(response);
-          return;
-        }
-
-        const translations = getTranslations(formatMessage);
-
-        const pieData = parsePieData(response.data, translations);
-        setPieData(pieData);
-
-        setXlsxData(parseExcelData(pieData, translations));
-      }
-    );
-
-    return () => subscription.unsubscribe();
-  }, [projectId, startAtMoment, endAtMoment, formatMessage]);
+  const pieData = analytics
+    ? parsePieData(analytics.data.attributes, translations)
+    : null;
+  const xlsxData = pieData ? parseExcelData(pieData, translations) : null;
 
   return { pieData, xlsxData };
 }

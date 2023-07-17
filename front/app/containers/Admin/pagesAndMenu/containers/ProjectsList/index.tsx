@@ -11,7 +11,7 @@ import HelmetIntl from 'components/HelmetIntl';
 import useLocalize from 'hooks/useLocalize';
 import { useIntl } from 'utils/cl-intl';
 import { useParams } from 'react-router-dom';
-import useCustomPage from 'hooks/useCustomPage';
+import useCustomPageById from 'api/custom_pages/useCustomPageById';
 
 // utils
 import { pagesAndMenuBreadcrumb } from '../../breadcrumbs';
@@ -26,7 +26,7 @@ const ProjectList = () => {
   const { formatMessage } = useIntl();
 
   const { customPageId } = useParams() as { customPageId: string };
-  const customPage = useCustomPage({ customPageId });
+  const { data: customPage } = useCustomPageById(customPageId);
 
   if (isNilOrError(customPage)) {
     return null;
@@ -39,7 +39,7 @@ const ProjectList = () => {
         title={formatMessage(messages.pageTitle)}
         badge={
           <ShownOnPageBadge
-            shownOnPage={customPage.attributes.projects_enabled}
+            shownOnPage={customPage.data.attributes.projects_enabled}
           />
         }
         breadcrumbs={[
@@ -48,7 +48,7 @@ const ProjectList = () => {
             linkTo: pagesAndMenuBreadcrumb.linkTo,
           },
           {
-            label: localize(customPage.attributes.title_multiloc),
+            label: localize(customPage.data.attributes.title_multiloc),
             linkTo: adminCustomPageContentPath(customPageId),
           },
           {
@@ -57,11 +57,11 @@ const ProjectList = () => {
         ]}
         rightSideCTA={
           <ViewCustomPageButton
-            linkTo={`/pages/${customPage.attributes.slug}`}
+            linkTo={`/pages/${customPage.data.attributes.slug}`}
           />
         }
       >
-        <ProjectsListContent customPage={customPage} />
+        <ProjectsListContent customPage={customPage.data} />
       </SectionFormWrapper>
     </>
   );

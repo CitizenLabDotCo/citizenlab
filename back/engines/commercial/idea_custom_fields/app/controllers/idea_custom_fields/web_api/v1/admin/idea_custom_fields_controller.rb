@@ -94,7 +94,7 @@ module IdeaCustomFields
             option_temp_ids_to_ids_mapping_in_field_logic = update_options! field, options_params, errors, index
             option_temp_ids_to_ids_mapping.merge! option_temp_ids_to_ids_mapping_in_field_logic
           end
-          field.move_to_bottom
+          field.set_list_position(index)
         end
         raise UpdateAllFailedError, errors if errors.present?
       end

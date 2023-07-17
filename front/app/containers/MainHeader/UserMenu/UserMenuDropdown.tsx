@@ -70,12 +70,12 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
       content={
         <>
           <HasPermission
-            item={{ type: 'route', path: '/admin/dashboard' }}
+            item={{ type: 'route', path: '/admin/dashboard/visitors' }}
             action="access"
           >
             <DropdownListItem
               id="admin-link"
-              linkTo={'/admin/dashboard'}
+              linkTo={'/admin/dashboard/visitors'}
               onClick={handleCloseDropdown}
               buttonStyle="text"
               bgHoverColor={colors.grey300}

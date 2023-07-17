@@ -19,7 +19,7 @@ const useAddCommentToIdea = () => {
     mutationFn: addCommentToIdea,
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({
-        queryKey: commentKeys.list({ userId: variables.author_id }),
+        queryKey: commentKeys.list({ authorId: variables.author_id }),
       });
       queryClient.invalidateQueries({
         queryKey: commentKeys.list({ ideaId: variables.ideaId }),
