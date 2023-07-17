@@ -8,6 +8,20 @@ import { rest } from 'msw';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { projectDescriptionBuilderLayoutData } from './__mocks__/projectDescriptionBuilderLayout';
 
+const mockProjectData = {
+  id: '2',
+  type: 'project',
+  attributes: {
+    title_multiloc: { en: 'Test Project' },
+    slug: 'test',
+    uses_content_builder: true,
+  },
+};
+
+jest.mock('api/projects/useProjectById', () =>
+  jest.fn(() => ({ data: { data: mockProjectData } }))
+);
+
 const apiPath =
   '*projects/:projectId/content_builder_layouts/project_description';
 
@@ -25,6 +39,7 @@ describe('useProjectDescriptionBuilderLayout', () => {
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
+    const spy = jest.spyOn(global, 'fetch');
     const { result, waitFor } = renderHook(
       () => useProjectDescriptionBuilderLayout('projectId'),
       {
@@ -40,6 +55,7 @@ describe('useProjectDescriptionBuilderLayout', () => {
     expect(result.current.data?.data).toEqual(
       projectDescriptionBuilderLayoutData
     );
+    expect(spy).toHaveBeenCalledTimes(1);
   });
 
   it('returns error correctly', async () => {
@@ -60,5 +76,16 @@ describe('useProjectDescriptionBuilderLayout', () => {
     await waitFor(() => expect(result.current.isError).toBe(true));
     expect(result.current.error).toBeDefined();
     expect(result.current.isLoading).toBe(false);
+  });
+
+  it('does not make API call when uses_content_builder is false', async () => {
+    const spy = jest.spyOn(global, 'fetch');
+    mockProjectData.attributes.uses_content_builder = false;
+
+    renderHook(() => useProjectDescriptionBuilderLayout('projectId'), {
+      wrapper: createQueryClientWrapper(),
+    });
+
+    expect(spy).not.toHaveBeenCalled();
   });
 });

@@ -17,6 +17,7 @@ const fetchProjectDescriptionBuilderLayout = (projectId: string) => {
 
 const useProjectDescriptionBuilderLayout = (projectId: string) => {
   const { data: project } = useProjectById(projectId);
+
   return useQuery<
     IProjectDescriptionBuilderLayout,
     CLErrors,
@@ -25,7 +26,7 @@ const useProjectDescriptionBuilderLayout = (projectId: string) => {
   >({
     queryKey: projectDescriptionBuilderKeys.item({ projectId }),
     queryFn: () => fetchProjectDescriptionBuilderLayout(projectId),
-    enabled: project && project.data.attributes.uses_content_builder,
+    enabled: !!project && project.data.attributes.uses_content_builder,
   });
 };
 
