@@ -28,6 +28,9 @@ import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
 import { pastPresentOrFuture, toFullMonth } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
+// styling
+import { fontSizes } from 'utils/styleUtils';
+
 // intl
 import messages from './messages';
 
@@ -103,7 +106,7 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
             formatMessage(config.getStatusTitle(basketStatus))}
         </Title>
         <>
-          <Text>
+          <Box style={{ fontSize: fontSizes.m }}>
             {config?.StatusDescription &&
               config.StatusDescription({
                 project,
@@ -111,7 +114,7 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
                 submissionState: basketStatus,
                 appConfig,
               })}
-          </Text>
+          </Box>
           {phase && showDate && (
             <Text>
               {config?.getSubmissionTerm &&

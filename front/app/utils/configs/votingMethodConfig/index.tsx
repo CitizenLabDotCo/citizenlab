@@ -110,21 +110,43 @@ const budgetingConfig: VotingMethodConfig = {
   }: GetStatusDescriptionProps) => {
     if (submissionState === 'hasNotSubmitted') {
       return (
-        <FormattedMessage
-          values={{
-            b: (chunks) => (
-              <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
-            ),
-            currency: appConfig?.data.attributes.settings.core.currency,
-            optionCount: phase
-              ? phase.attributes.ideas_count
-              : project.attributes.ideas_count,
-            maxBudget: phase
-              ? phase.attributes.voting_max_total?.toLocaleString()
-              : project.attributes.voting_max_total?.toLocaleString(),
-          }}
-          {...messages.budgetingSubmissionInstructions}
-        />
+        <>
+          <FormattedMessage
+            values={{
+              b: (chunks) => (
+                <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+              ),
+              currency: appConfig?.data.attributes.settings.core.currency,
+              optionCount: phase
+                ? phase.attributes.ideas_count
+                : project.attributes.ideas_count,
+              maxBudget: phase
+                ? phase.attributes.voting_max_total?.toLocaleString()
+                : project.attributes.voting_max_total?.toLocaleString(),
+            }}
+            {...messages.budgetingSubmissionInstructionsTotalBudget}
+          />
+          <ul>
+            <li>
+              <FormattedMessage
+                {...messages.budgetingSubmissionInstructionsPreferredOptions}
+              />
+            </li>
+            <li>
+              <FormattedMessage
+                values={{
+                  maxVotes: project.attributes.voting_max_votes_per_idea,
+                }}
+                {...messages.budgetingSubmissionInstructionsMaxVotesPerIdea}
+              />
+            </li>
+            <li>
+              <FormattedMessage
+                {...messages.budgetingSubmissionInstructionsOnceYouAreDone}
+              />
+            </li>
+          </ul>
+        </>
       );
     }
     if (submissionState === 'hasSubmitted') {
