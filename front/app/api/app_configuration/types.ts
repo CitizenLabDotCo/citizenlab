@@ -63,6 +63,7 @@ export type ProposalsSettings = {
   eligibility_criteria: Multiloc;
   threshold_reached_message: Multiloc;
   reacting_threshold: number;
+  require_approval: boolean;
 };
 export interface IAppConfigurationSettings {
   core: IAppConfigurationSettingsCore;
@@ -126,6 +127,7 @@ export interface IAppConfigurationSettings {
   maps?: AppConfigurationMapSettings;
   participatory_budgeting?: AppConfigurationFeature;
   initiatives?: ProposalsSettings;
+  initiative_approval?: AppConfigurationFeature;
   fragments?: {
     allowed: boolean;
     enabled: boolean;
