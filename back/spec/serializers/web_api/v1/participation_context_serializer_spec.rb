@@ -27,7 +27,7 @@ describe WebApi::V1::ParticipationContextSerializer do
     end
   end
 
-  context 'for a past phase' do
+  context 'for a past voting phase' do
     let(:context) { create(:voting_phase, start_at: Time.zone.today - 5.days, end_at: Time.zone.today - 2.days, baskets_count: 4, votes_count: 7) }
 
     context 'when moderator' do
@@ -49,7 +49,7 @@ describe WebApi::V1::ParticipationContextSerializer do
     end
   end
 
-  context 'for an active phase' do
+  context 'for an active voting phase' do
     let(:context) { create(:voting_phase, start_at: Time.zone.today - 5.days, end_at: Time.zone.today + 5.days, baskets_count: 4, votes_count: 7) }
 
     context 'when moderator' do
@@ -71,7 +71,7 @@ describe WebApi::V1::ParticipationContextSerializer do
     end
   end
 
-  context 'for a future phase' do
+  context 'for a future voting phase' do
     let(:context) { create(:voting_phase, start_at: Time.zone.today + 2.days, end_at: Time.zone.today + 5.days, baskets_count: 4, votes_count: 7) }
 
     context 'when moderator' do
