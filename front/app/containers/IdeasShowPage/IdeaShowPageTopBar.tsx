@@ -4,6 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // hooks
 import useProjectById from 'api/projects/useProjectById';
 import useAuthUser from 'api/me/useAuthUser';
+import useIdeaById from 'api/ideas/useIdeaById';
 
 // i18n
 import useLocalize from 'hooks/useLocalize';
@@ -29,6 +30,7 @@ import { lighten } from 'polished';
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
+import { isIdeaInParticipationContext } from 'api/phases/utils';
 
 // typings
 import { IdeaReactingDisabledReason } from 'api/ideas/types';
@@ -82,6 +84,7 @@ const IdeaShowPageTopBar = ({
 }: Props) => {
   const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
+  const { data: idea } = useIdeaById(ideaId);
   const isSmallerThanTablet = useBreakpoint('tablet');
 
   const [searchParams] = useSearchParams();
@@ -90,6 +93,11 @@ const IdeaShowPageTopBar = ({
   const votingConfig = getVotingMethodConfig(
     participationContext?.attributes.voting_method
   );
+
+  const ideaIsInParticipationContext =
+    participationContext && idea
+      ? isIdeaInParticipationContext(idea, participationContext)
+      : undefined;
 
   useEffect(() => {
     removeSearchParams(['go_back']);
@@ -159,7 +167,7 @@ const IdeaShowPageTopBar = ({
             />
           )}
           {/* Only visible if voting */}
-          {ideaId && participationContext && (
+          {ideaId && participationContext && ideaIsInParticipationContext && (
             <Box mr="8px">
               {votingConfig?.getIdeaPageVoteInput({
                 ideaId,
