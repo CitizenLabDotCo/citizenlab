@@ -59,7 +59,7 @@ nl-BE:
       "voting_basket_submitted": Bevestiging van stemming
       "voting_basket_not_submitted": Niet-ingediende stemmen
       "voting_last_chance": Laatste kans om te stemmen
-      "voting_results": Stemuitslagen
+      "voting_results": Stemresultaten
       "your_proposed_initiatives_digest": Weekoverzicht van je voorstellen
     schedules:
       weekly:
@@ -582,38 +582,38 @@ nl-BE:
       remaining_votes: 'Resterende stemmen'
       remaining_days: 'Resterende dagen'
     voting_basket_submitted:
-      subject: '%{organizationName}U hebt succesvol gestemd'
+      subject: '%{organizationName}: Je hebt succesvol gestemd'
       preheader: 'Je hebt succesvol gestemd op het participatieplatform van %{organizationName}'
       title_basket_submitted: 'Je hebt succesvol gestemd'
       event_description: 'Bedankt voor je deelname. Je stemmen zijn geregistreerd. Ga naar het platform van %{organizationName} om je stemmen te bekijken en te beheren.'
-      cta_see_votes_submitted: 'Ingediende stemmen bekijken'
+      cta_see_votes_submitted: 'Bekijk ingediende stemmen'
       cta_message: 'Klik op de knop hieronder om deel te nemen'
     voting_basket_not_submitted:
       subject: '%{organizationName}: Je hebt je stemmen niet ingediend'
       preheader: 'Je hebt je stem niet uitgebracht op het participatieplatform van %{organizationName}'
       title_basket_not_submitted: 'Je hebt je stemmen niet ingediend'
-      event_description: 'Je hebt een paar opties geselecteerd voor %{contextTitle} , maar je hebt je selectie niet ingediend.'
-      cta_view_options_and_vote: 'Opties bekijken en stemmen'
-      cta_message: 'Klik op de knop hieronder om je geselecteerde opties in te voeren'
+      event_description: 'Je hebt een paar opties geselecteerd voor %{contextTitle}, maar je hebt je selectie niet ingediend.'
+      cta_view_options_and_vote: 'Bekijk opties en stem'
+      cta_message: 'Klik op de knop hieronder om je geselecteerde opties in te dienen'
     voting_last_chance:
-      subject: '%{organizationName}: Laatste kans om te stemmen op %{phaseTitle}'
-      preheader: 'Laatste kans om te stemmen op %{phaseTitle} op het participatieplatform van %{organizationName}'
-      title_last_chance: 'Laatste kans om te stemmen op %{phaseTitle}'
+      subject: '%{organizationName}: Laatste kans om te stemmen voor %{phaseTitle}'
+      preheader: 'Laatste kans om te stemmen voor %{phaseTitle} op het participatieplatform van %{organizationName}'
+      title_last_chance: 'Laatste kans om te stemmen voor %{phaseTitle}'
       body_1: 'De stemfase voor het %{projectTitle} project loopt morgen om middernacht af.'
       body_2: 'De tijd dringt en we hebben gemerkt dat je nog geen stem hebt uitgebracht! Doe nu mee door op de knop hieronder te klikken.'
       body_3: 'Door dit te doen krijg je toegang tot een reeks opties en krijg je de kans om je inbreng te geven, wat cruciaal is bij het beslissen over de toekomst van dit project.'
       cta_vote: 'Stem'
     voting_results:
-      subject: '%{organizationName}: %{phaseTitle} stemresultaten onthuld!'
-      preheader: '%{phaseTitle} stemuitslagen onthuld op het participatieplatform van %{organizationName}'
-      title_results: '%{phaseTitle} stemuitslagen onthuld!'
+      subject: '%{organizationName}: %{phaseTitle} stemresultaten bekendgemaakt!'
+      preheader: '%{phaseTitle} stemresultaten bekendgemaakt op het participatieplatform van %{organizationName}'
+      title_results: '%{phaseTitle} stemresultaten bekendgemaakt!'
       body_1: 'De resultaten zijn binnen!'
-      body_2: 'De resultaten van de %{phaseTitle} stemming in het %{organizationName} platform zijn gepubliceerd!'
+      body_2: 'De resultaten van de %{phaseTitle} stemming op het %{organizationName} platform zijn gepubliceerd!'
       body_3: 'We raden je aan om de resultaten te bekijken en op de hoogte te blijven van de volgende stappen.'
-      cta_see_results: 'Bekijk resultaten in het platform'
+      cta_see_results: 'Bekijk resultaten op het platform'
     voting_phase_started:
       subject: '%{organizationName}: De stemmingsfase is begonnen voor %{projectName}'
-      preheader: 'De stemfase is begonnen voor %{projectName} op het participatieplatform van %{organizationName}.'
+      preheader: 'De stemmingsfase is begonnen voor %{projectName} op het participatieplatform van %{organizationName}'
       event_description: 'Het project "%{projectName}" vraagt je om te stemmen tussen %{numIdeas} opties:'
       cta_message: 'Klik op de knop hieronder om deel te nemen'
       cta_vote: 'Ga naar het platform om te stemmen'
@@ -658,7 +658,7 @@ nl-BE:
         projects: 'Projecten'
         proposals: 'Voorstellen'
         reactions: 'Reacties'
-        voting: 'Stemmen'
+        voting: 'Stemming'
       trigger:
         comment_is_deleted: 'Reactie is verwijderd'
         comment_is_flagged_as_spam: 'Reactie is gemarkeerd als spam'
@@ -698,7 +698,7 @@ nl-BE:
         user_replies_to_internal_comment: 'Gebruiker reageert op interne reactie'
         voting_2_days_before_phase_closes: '2 dagen voordat de stemmingsfase sluit'
         voting_1_day_after_last_votes: '1 dag nadat gebruiker voor het laatst heeft gestemd'
-        voting_phase_ended: 'Stemming beëindigd'
-        voting_basket_submitted: 'Er wordt gestemd'
+        voting_phase_ended: 'Stemmingsfase beëindigd'
+        voting_basket_submitted: 'Stemmen zijn ingediend'
         7_days_after_invite_is_sent: '7 dagen na verzending van de uitnodiging'
         7_days_before_the_project_changes_phase: '7 dagen voor het project van fase verandert'
