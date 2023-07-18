@@ -2,9 +2,7 @@ import React from 'react';
 
 // components
 import { Button, colors } from '@citizenlab/cl2-component-library';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
+import Tippy from '@tippyjs/react';
 
 // api
 import useIdeaById from 'api/ideas/useIdeaById';
@@ -57,7 +55,10 @@ const AssignSingleVoteButton = ({
   // permissions
   const actionDescriptor = idea?.data.attributes.action_descriptor.voting;
 
-  if (!actionDescriptor) {
+  if (
+    !actionDescriptor ||
+    actionDescriptor.disabled_reason === 'idea_not_in_current_phase'
+  ) {
     return null;
   }
 
@@ -109,23 +110,36 @@ const AssignSingleVoteButton = ({
     setVotes?.(ideaId, 0);
   };
 
+  const buttonDisabledExplanation = basket?.data?.attributes.submitted_at
+    ? formatMessage(messages.votesSubmitted, { votes: numberOfVotesCast ?? 0 })
+    : undefined;
+
   return (
-    <Button
-      buttonStyle={ideaInBasket ? 'primary' : buttonStyle}
-      bgColor={ideaInBasket ? colors.success : undefined}
-      borderColor={ideaInBasket ? colors.success : undefined}
-      disabled={!isNilOrError(basket?.data?.attributes.submitted_at)}
-      processing={isProcessing}
-      icon={ideaInBasket ? 'check' : 'vote-ballot'}
-      onClick={vote}
-      text={
-        ideaInBasket
-          ? formatMessage(messages.voted)
-          : formatMessage(messages.vote)
-      }
-      width="100%"
-      minWidth="240px"
-    />
+    <Tippy
+      disabled={!buttonDisabledExplanation}
+      interactive={true}
+      placement="bottom"
+      content={buttonDisabledExplanation}
+    >
+      <div>
+        <Button
+          buttonStyle={ideaInBasket ? 'primary' : buttonStyle}
+          bgColor={ideaInBasket ? colors.success : undefined}
+          borderColor={ideaInBasket ? colors.success : undefined}
+          disabled={!!buttonDisabledExplanation}
+          processing={isProcessing}
+          icon={ideaInBasket ? 'check' : 'vote-ballot'}
+          onClick={vote}
+          text={
+            ideaInBasket
+              ? formatMessage(messages.voted)
+              : formatMessage(messages.vote)
+          }
+          width="100%"
+          minWidth="240px"
+        />
+      </div>
+    </Tippy>
   );
 };
 
