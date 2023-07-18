@@ -30,6 +30,7 @@ module PublicApi
       scope.where(project_id: @project_id)
     end
 
+    # Select only ideas that have all the topics
     def filter_by_topic_ids(scope)
       return scope unless @topic_ids
 
