@@ -249,16 +249,25 @@ const AssignMultipleVotesInput = ({
   }
 
   return (
-    <Button
-      buttonStyle="primary-outlined"
-      disabled={!!plusButtonDisabledExplanation}
-      processing={isProcessing}
-      icon="vote-ballot"
-      width="100%"
-      onClick={onAdd}
+    <Tippy
+      disabled={!plusButtonDisabledExplanation}
+      interactive={true}
+      placement="bottom"
+      content={plusButtonDisabledExplanation}
     >
-      {formatMessage(messages.vote)}
-    </Button>
+      <div>
+        <Button
+          buttonStyle="primary-outlined"
+          disabled={!!plusButtonDisabledExplanation}
+          processing={isProcessing}
+          icon="vote-ballot"
+          width="100%"
+          onClick={onAdd}
+        >
+          {formatMessage(messages.vote)}
+        </Button>
+      </div>
+    </Tippy>
   );
 };
 
