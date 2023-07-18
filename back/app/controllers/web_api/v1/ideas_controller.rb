@@ -33,7 +33,7 @@ class WebApi::V1::IdeasController < ApplicationController
     ).find_records
     ideas = paginate SortByParamsService.new.sort_ideas(ideas, params, current_user)
 
-    ideas = update_voting_counts ideas, params
+    ideas = update_phase_voting_counts ideas, params
 
     render json: linked_json(ideas, WebApi::V1::IdeaSerializer, serialization_options_for(ideas))
   end
@@ -255,22 +255,6 @@ class WebApi::V1::IdeasController < ApplicationController
 
   private
 
-  # Change counts on idea for values for phase, if filtered by phase
-  def update_voting_counts(ideas, params)
-    if params[:phase]
-      phase_id = params[:phase]
-      ideas.map do |idea|
-        idea.ideas_phases.each do |ideas_phase|
-          if ideas_phase.phase_id == phase_id
-            idea.baskets_count = ideas_phase.baskets_count
-            idea.votes_count = ideas_phase.votes_count
-          end
-        end
-      end
-    end
-    ideas
-  end
-
   def render_show(input)
     authorize input
     render json: WebApi::V1::IdeaSerializer.new(
@@ -399,6 +383,24 @@ class WebApi::V1::IdeasController < ApplicationController
     return false unless author_removal || (publishing && !input.author_id)
 
     input.participation_method_on_creation.sign_in_required_for_posting?
+  end
+
+  # Change counts on idea for values for phase, if filtered by phase
+  def update_phase_voting_counts(ideas, params)
+    if params[:phase]
+      phase_id = params[:phase]
+      ideas.map do |idea|
+        next if idea.baskets_count == 0
+
+        idea.ideas_phases.each do |ideas_phase|
+          if ideas_phase.phase_id == phase_id
+            idea.baskets_count = ideas_phase.baskets_count
+            idea.votes_count = ideas_phase.votes_count
+          end
+        end
+      end
+    end
+    ideas
   end
 end
 
