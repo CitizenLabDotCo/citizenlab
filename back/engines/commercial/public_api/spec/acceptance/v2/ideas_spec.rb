@@ -37,7 +37,7 @@ resource 'Posts' do
     include_context 'common_list_params'
 
     parameter(
-      :user_id,
+      :author_id,
       'Filter by author ID',
       required: false,
       type: :string,
@@ -73,13 +73,13 @@ resource 'Posts' do
       end
     end
 
-    context 'when filtering by user id' do
-      let(:user_id) { ideas.first.author_id }
+    context 'when filtering by author id' do
+      let(:author_id) { ideas.first.author_id }
 
       example_request 'List only the ideas of the specified user' do
         assert_status 200
         expect(json_response_body[:ideas].size).to eq(1)
-        expect(json_response_body[:ideas].first[:author_id]).to eq(user_id)
+        expect(json_response_body[:ideas].first[:author_id]).to eq(author_id)
       end
     end
 
