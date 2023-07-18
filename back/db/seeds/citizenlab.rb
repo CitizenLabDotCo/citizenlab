@@ -255,7 +255,7 @@ end
     title_multiloc: 'initiative_statuses.pending_approval',
     ordering: 100,
     code: 'pending_approval',
-    color: '#687782',
+    color: '#CC9331',
     description_multiloc: 'initiative_statuses.pending_approval_description'
   },
   {
