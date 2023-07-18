@@ -285,7 +285,7 @@ resource 'Ideas' do
           expect(status).to eq(200)
         end
 
-        example 'List all ideas in a phase of a project - ideas_phase baskets_count and votes_count is returned' do
+        example 'List all ideas in a phase of a project - baskets_count and votes_count are overwritten with values from ideas_phase' do
           pr = create(:project_with_active_budgeting_phase)
           phase = pr.phases.first
           ideas = create_list(:idea, 2, phases: [phase], project: pr)
@@ -312,7 +312,7 @@ resource 'Ideas' do
           expect(ideas_phases[0][:attributes][:baskets_count]).to eq 2
           expect(ideas_phases[1][:attributes][:baskets_count]).to eq 2
 
-          # Check the value in idea has also changed
+          # Check the value in idea has also been overwritten
           expect(ideas[0].reload[:baskets_count]).to eq 3
           expect(response_data[0][:attributes][:baskets_count]).to eq 2
         end
@@ -563,49 +563,49 @@ resource 'Ideas' do
         expect(json_response.dig(:data, :id)).to eq idea.id
         expect(json_response.dig(:data, :type)).to eq 'idea'
         expect(json_response.dig(:data, :attributes)).to include(
-          slug: idea.slug,
-          budget: idea.budget,
-          action_descriptor: {
-            commenting_idea: {
-              enabled: true,
-              disabled_reason: nil,
-              future_enabled: nil
-            },
-            reacting_idea: {
-              enabled: true,
-              disabled_reason: nil,
-              cancelling_enabled: true,
-              up: {
-                enabled: true,
-                disabled_reason: nil,
-                future_enabled: nil
-              },
-              down: {
-                enabled: true,
-                disabled_reason: nil,
-                future_enabled: nil
-              }
-            },
-            comment_reacting_idea: {
-              enabled: true,
-              disabled_reason: nil,
-              future_enabled: nil
-            },
-            voting: {
-              enabled: false,
-              disabled_reason: 'not_voting',
-              future_enabled: nil
-            }
-          }
-        )
+                                                           slug: idea.slug,
+                                                           budget: idea.budget,
+                                                           action_descriptor: {
+                                                             commenting_idea: {
+                                                               enabled: true,
+                                                               disabled_reason: nil,
+                                                               future_enabled: nil
+                                                             },
+                                                             reacting_idea: {
+                                                               enabled: true,
+                                                               disabled_reason: nil,
+                                                               cancelling_enabled: true,
+                                                               up: {
+                                                                 enabled: true,
+                                                                 disabled_reason: nil,
+                                                                 future_enabled: nil
+                                                               },
+                                                               down: {
+                                                                 enabled: true,
+                                                                 disabled_reason: nil,
+                                                                 future_enabled: nil
+                                                               }
+                                                             },
+                                                             comment_reacting_idea: {
+                                                               enabled: true,
+                                                               disabled_reason: nil,
+                                                               future_enabled: nil
+                                                             },
+                                                             voting: {
+                                                               enabled: false,
+                                                               disabled_reason: 'not_voting',
+                                                               future_enabled: nil
+                                                             }
+                                                           }
+                                                         )
         expect(json_response.dig(:data, :relationships)).to include(
-          topics: {
-            data: [{ id: topic.id, type: 'topic' }]
-          },
-          author: { data: { id: idea.author_id, type: 'user' } },
-          idea_status: { data: { id: idea.idea_status_id, type: 'idea_status' } },
-          user_reaction: { data: { id: user_reaction.id, type: 'reaction' } }
-        )
+                                                              topics: {
+                                                                data: [{ id: topic.id, type: 'topic' }]
+                                                              },
+                                                              author: { data: { id: idea.author_id, type: 'user' } },
+                                                              idea_status: { data: { id: idea.idea_status_id, type: 'idea_status' } },
+                                                              user_reaction: { data: { id: user_reaction.id, type: 'reaction' } }
+                                                            )
       end
     end
 
@@ -911,7 +911,7 @@ resource 'Ideas' do
 
           before do
             project.permissions.find_by(action: 'posting_idea')
-              .update!(permitted_by: 'groups', groups: [group])
+                   .update!(permitted_by: 'groups', groups: [group])
           end
 
           example '[error] Create an idea in a project with groups posting permission', document: false do

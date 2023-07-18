@@ -33,7 +33,7 @@ class WebApi::V1::IdeasController < ApplicationController
     ).find_records
     ideas = paginate SortByParamsService.new.sort_ideas(ideas, params, current_user)
 
-    ideas = update_voting_counts ideas, params
+    ideas = update_phase_voting_counts ideas, params
 
     render json: linked_json(ideas, WebApi::V1::IdeaSerializer, serialization_options_for(ideas))
   end
@@ -91,16 +91,16 @@ class WebApi::V1::IdeasController < ApplicationController
     }
     attributes = %w[idea_status_id topic_id]
     all_ideas.published
-      .joins('FULL OUTER JOIN ideas_topics ON ideas_topics.idea_id = ideas.id')
-      .select('idea_status_id, ideas_topics.topic_id, COUNT(DISTINCT(ideas.id)) as count')
-      .reorder(nil) # Avoids SQL error on GROUP BY when a search string was used
-      .group('GROUPING SETS (idea_status_id, ideas_topics.topic_id)')
-      .each do |record|
-        attributes.each do |attribute|
-          id = record.send attribute
-          counts[attribute][id] = record.count if id
-        end
+             .joins('FULL OUTER JOIN ideas_topics ON ideas_topics.idea_id = ideas.id')
+             .select('idea_status_id, ideas_topics.topic_id, COUNT(DISTINCT(ideas.id)) as count')
+             .reorder(nil) # Avoids SQL error on GROUP BY when a search string was used
+             .group('GROUPING SETS (idea_status_id, ideas_topics.topic_id)')
+             .each do |record|
+      attributes.each do |attribute|
+        id = record.send attribute
+        counts[attribute][id] = record.count if id
       end
+    end
     counts['total'] = all_ideas.count
     render json: raw_json(counts)
   end
@@ -130,10 +130,10 @@ class WebApi::V1::IdeasController < ApplicationController
     end
 
     participation_context = if is_moderator && phase_ids.any?
-      Phase.find(phase_ids.first)
-    else
-      ParticipationContextService.new.get_participation_context(project)
-    end
+                              Phase.find(phase_ids.first)
+                            else
+                              ParticipationContextService.new.get_participation_context(project)
+                            end
     send_error and return unless participation_context
 
     participation_method = Factory.instance.participation_method_for(participation_context)
@@ -254,22 +254,6 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   private
-
-  # Change counts on idea for values for phase, if filtered by phase
-  def update_voting_counts(ideas, params)
-    if params[:phase]
-      phase_id = params[:phase]
-      ideas.map do |idea|
-        idea.ideas_phases.each do |ideas_phase|
-          if ideas_phase.phase_id == phase_id
-            idea.baskets_count = ideas_phase.baskets_count
-            idea.votes_count = ideas_phase.votes_count
-          end
-        end
-      end
-    end
-    ideas
-  end
 
   def render_show(input)
     authorize input
@@ -399,6 +383,24 @@ class WebApi::V1::IdeasController < ApplicationController
     return false unless author_removal || (publishing && !input.author_id)
 
     input.participation_method_on_creation.sign_in_required_for_posting?
+  end
+
+  # Change counts on idea for values for phase, if filtered by phase
+  def update_phase_voting_counts(ideas, params)
+    if params[:phase]
+      phase_id = params[:phase]
+      ideas.map do |idea|
+        next if idea.baskets_count == 0
+
+        idea.ideas_phases.each do |ideas_phase|
+          if ideas_phase.phase_id == phase_id
+            idea.baskets_count = ideas_phase.baskets_count
+            idea.votes_count = ideas_phase.votes_count
+          end
+        end
+      end
+    end
+    ideas
   end
 end
 
