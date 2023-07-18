@@ -68,7 +68,7 @@ export default defineMessages({
   approvalRejectedStatusExplanationSentenceTwo: {
     id: 'app.containers.InitiativesShow.VoteControl.approvalRejectedStatusExplanationSentenceTwo',
     defaultMessage:
-      'Check the official update on your proposal for next steps.',
+      'Check the official update for an explanation of this decision.',
   },
   expiredStatusExplanation: {
     id: 'app.containers.InitiativesShow.VoteControl.expiredStatusExplanation',
