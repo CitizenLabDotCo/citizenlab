@@ -1,3 +1,5 @@
+import { ICampaignData } from 'api/campaigns/types';
+import { Localize } from 'hooks/useLocalize';
 import {
   CampaignData,
   GroupedCampaignsEntry,
@@ -37,3 +39,19 @@ export const sortBy =
 
     return numA - numB;
   };
+
+export const stringifyCampaignFields = (
+  campaign: ICampaignData,
+  localize: Localize
+) => {
+  const attrs = campaign.attributes;
+  return {
+    content_type: localize(attrs.content_type_multiloc),
+    recipient_role: localize(attrs.recipient_role_multiloc),
+    recipient_segment: localize(attrs.recipient_segment_multiloc),
+    campaign_description: localize(attrs.campaign_description_multiloc),
+    trigger: localize(attrs.trigger_multiloc),
+    schedule: attrs.schedule_multiloc && localize(attrs.schedule_multiloc),
+    ...campaign,
+  };
+};

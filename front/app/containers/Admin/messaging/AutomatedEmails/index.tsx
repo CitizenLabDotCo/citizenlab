@@ -6,7 +6,7 @@ import { colors } from 'utils/styleUtils';
 import useCampaigns from 'api/campaigns/useCampaigns';
 import useLocalize from 'hooks/useLocalize';
 import ExampleModal from './ExampleModal';
-import { groupBy, sortBy } from './utils';
+import { groupBy, sortBy, stringifyCampaignFields } from './utils';
 import {
   CampaignData,
   GroupedCampaignsEntry,
@@ -39,26 +39,10 @@ const AutomatedEmails = () => {
     () =>
       campaigns?.pages
         .flatMap((page) => page.data)
-        .map((campaign): CampaignData => {
-          const {
-            content_type_multiloc,
-            recipient_role_multiloc,
-            recipient_segment_multiloc,
-            trigger_multiloc,
-            campaign_description_multiloc,
-            schedule_multiloc,
-          } = campaign.attributes;
-
-          return {
-            content_type: localize(content_type_multiloc),
-            recipient_role: localize(recipient_role_multiloc),
-            recipient_segment: localize(recipient_segment_multiloc),
-            campaign_description: localize(campaign_description_multiloc),
-            trigger: localize(trigger_multiloc),
-            schedule: schedule_multiloc && localize(schedule_multiloc),
-            ...campaign,
-          };
-        })
+        .map(
+          (campaign): CampaignData =>
+            stringifyCampaignFields(campaign, localize)
+        )
         .reduce(groupBy('recipient_role'), [])
         .sort(sortBy('recipient_role'))
         .map(([recipient_role, group]: GroupedCampaignsEntry) => [
