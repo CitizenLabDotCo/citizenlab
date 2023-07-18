@@ -140,6 +140,12 @@ class Initiative < ApplicationRecord
       .order(:created_at).pluck(:created_at).last
   end
 
+  def approval_required?
+    require_approval = AppConfiguration.instance.settings('initiatives', 'require_approval')
+
+    AppConfiguration.instance.feature_activated?('initiative_approval') && require_approval == true
+  end
+
   private
 
   def generate_slug
@@ -183,12 +189,6 @@ class Initiative < ApplicationRecord
 
   def author_required_on_change?
     author_id_changed? && !anonymous?
-  end
-
-  def approval_required?
-    require_approval = AppConfiguration.instance.settings('initiatives', 'require_approval')
-
-    AppConfiguration.instance.feature_activated?('initiative_approval') && require_approval == true
   end
 end
 
