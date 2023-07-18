@@ -140,8 +140,6 @@ const AssignSingleVoteButton = ({
               ? formatMessage(messages.voted)
               : formatMessage(messages.vote)
           }
-          width="100%"
-          minWidth="240px"
         />
       </div>
     </Tippy>
