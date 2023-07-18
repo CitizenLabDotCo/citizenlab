@@ -4,10 +4,11 @@ export const getMinusButtonDisabledMessage = (
   basketSubmitted: boolean,
   onIdeaPage?: boolean
 ) => {
-  if (basketSubmitted)
+  if (basketSubmitted) {
     return onIdeaPage
       ? messages.votesSubmittedIdeaPage
       : messages.votesSubmitted;
+  }
   return undefined;
 };
 
@@ -18,10 +19,11 @@ export const getPlusButtonDisabledMessage = (
   onIdeaPage?: boolean
 ) => {
   if (!userHasVotesLeft) return messages.maxVotesReached;
-  if (basketSubmitted)
+  if (basketSubmitted) {
     return onIdeaPage
       ? messages.votesSubmittedIdeaPage
       : messages.votesSubmitted;
+  }
   if (maxVotesPerIdeaReached) return messages.maxVotesPerIdeaReached;
   return undefined;
 };
