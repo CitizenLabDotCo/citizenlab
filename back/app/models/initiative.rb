@@ -171,7 +171,7 @@ class Initiative < ApplicationRecord
 
   def initialize_initiative_status_changes
     initial_status = if approval_required?
-      InitiativeStatus.find_by(code: 'pending_approval')
+      InitiativeStatus.find_by(code: 'approval_pending')
     else
       InitiativeStatus.find_by(code: 'proposed')
     end
