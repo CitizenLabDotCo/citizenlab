@@ -170,7 +170,12 @@ class Initiative < ApplicationRecord
   end
 
   def initialize_initiative_status_changes
-    initial_status = InitiativeStatus.find_by(code: 'proposed')
+    initial_status = if approval_required?
+      InitiativeStatus.find_by(code: 'pending_approval')
+    else
+      InitiativeStatus.find_by(code: 'proposed')
+    end
+
     return unless initial_status && initiative_status_changes.empty? && !draft?
 
     initiative_status_changes.build(initiative_status: initial_status)
@@ -178,6 +183,12 @@ class Initiative < ApplicationRecord
 
   def author_required_on_change?
     author_id_changed? && !anonymous?
+  end
+
+  def approval_required?
+    require_approval = AppConfiguration.instance.settings('initiatives', 'require_approval')
+
+    AppConfiguration.instance.feature_activated?('initiative_approval') && require_approval == true
   end
 end
 
