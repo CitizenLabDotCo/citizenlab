@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_10_143815) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_18_124121) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -403,6 +403,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_10_143815) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["flaggable_id", "flaggable_type"], name: "inappropriate_content_flags_flaggable"
+  end
+
+  create_table "followers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "followable_type", null: false
+    t.uuid "followable_id", null: false
+    t.uuid "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["followable_id", "followable_type", "user_id"], name: "index_followers_followable_type_id_user_id", unique: true
+    t.index ["user_id"], name: "index_followers_on_user_id"
   end
 
   create_table "groups", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1135,6 +1145,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_10_143815) do
     t.integer "posting_limited_max", default: 1
     t.string "document_annotation_embed_url"
     t.boolean "allow_anonymous_participation", default: false, null: false
+    t.integer "followers_count", default: 0, null: false
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 
@@ -1447,6 +1458,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_10_143815) do
   add_foreign_key "email_campaigns_examples", "users", column: "recipient_id"
   add_foreign_key "event_files", "events"
   add_foreign_key "events", "projects"
+  add_foreign_key "followers", "users"
   add_foreign_key "groups_permissions", "groups"
   add_foreign_key "groups_permissions", "permissions"
   add_foreign_key "groups_projects", "groups"
