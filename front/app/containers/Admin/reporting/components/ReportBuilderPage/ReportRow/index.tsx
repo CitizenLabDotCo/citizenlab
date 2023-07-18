@@ -1,7 +1,4 @@
-import React, { useState } from 'react';
-
-// services
-import { deleteReport, Report } from 'services/reports';
+import React from 'react';
 
 // components
 import { ListItem, Box, Title } from '@citizenlab/cl2-component-library';
@@ -18,17 +15,18 @@ import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import ShareReportButton from './ShareReportButton';
 
+import useDeleteReport from 'api/reports/useDeleteReport';
+import { Report } from 'api/reports/types';
+
 interface Props {
   report: Report;
 }
 
 const ReportRow = ({ report }: Props) => {
+  const { mutate: deleteReport, isLoading } = useDeleteReport();
   const { formatMessage } = useIntl();
-  const [deleting, setDeleting] = useState(false);
 
   const handleDeleteReport = async () => {
-    setDeleting(true);
-
     if (
       window.confirm(
         formatMessage(messages.confirmDeleteReport, {
@@ -36,10 +34,8 @@ const ReportRow = ({ report }: Props) => {
         })
       )
     ) {
-      await deleteReport(report.id);
+      deleteReport(report.id);
     }
-
-    setDeleting(false);
   };
 
   const reportPath = `/admin/reporting/report-builder/${report.id}`;
@@ -77,8 +73,8 @@ const ReportRow = ({ report }: Props) => {
             icon="delete"
             buttonStyle="white"
             onClick={handleDeleteReport}
-            processing={deleting}
-            disabled={deleting}
+            processing={isLoading}
+            disabled={isLoading}
             iconSize="18px"
           >
             {formatMessage(messages.delete)}
@@ -88,7 +84,7 @@ const ReportRow = ({ report }: Props) => {
             icon="edit"
             buttonStyle="secondary"
             onClick={handleEditReport}
-            disabled={deleting}
+            disabled={isLoading}
             iconSize="18px"
           >
             {formatMessage(messages.edit)}
@@ -98,7 +94,7 @@ const ReportRow = ({ report }: Props) => {
             icon="eye"
             buttonStyle="secondary"
             onClick={handleViewReport}
-            disabled={deleting}
+            disabled={isLoading}
             iconSize="18px"
           >
             {formatMessage(messages.view)}
