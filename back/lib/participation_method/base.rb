@@ -138,6 +138,10 @@ module ParticipationMethod
       false
     end
 
+    def additional_export_columns
+      []
+    end
+
     private
 
     attr_reader :participation_context

@@ -442,33 +442,97 @@ describe XlsxExport::InputSheetGenerator do
       describe 'when there are no inputs' do
         let(:inputs) { [] }
 
-        it 'Generates an empty sheet' do
-          expect(xlsx).to eq([
-            {
-              sheet_name: 'My sheet',
-              column_headers: [
-                'ID',
-                'Title',
-                'Description',
-                'Attachments',
-                'Tags',
-                'Latitude',
-                'Longitude',
-                'Location',
-                'Proposed Budget',
-                'Submitted at',
-                'Published at',
-                'Comments',
-                'Picks',
-                'Votes',
-                'Budget',
-                'URL',
-                'Project',
-                'Status'
-              ],
-              rows: []
-            }
-          ])
+        context 'voting method is single voting' do
+          it 'Generates an empty sheet with the correct columns' do
+            expect(xlsx).to eq([
+              {
+                sheet_name: 'My sheet',
+                column_headers: [
+                  'ID',
+                  'Title',
+                  'Description',
+                  'Attachments',
+                  'Tags',
+                  'Latitude',
+                  'Longitude',
+                  'Location',
+                  'Proposed Budget',
+                  'Submitted at',
+                  'Published at',
+                  'Comments',
+                  'Votes',
+                  'URL',
+                  'Project',
+                  'Status'
+                ],
+                rows: []
+              }
+            ])
+          end
+        end
+
+        context 'voting method is multiple voting' do
+          let(:participation_context) { create(:voting_phase, voting_method: 'multiple_voting') }
+          it 'Generates an empty sheet with the correct columns' do
+            # participation_context.update!(voting_method: 'multiple_voting')
+            expect(xlsx).to eq([
+                                 {
+                                   sheet_name: 'My sheet',
+                                   column_headers: [
+                                     'ID',
+                                     'Title',
+                                     'Description',
+                                     'Attachments',
+                                     'Tags',
+                                     'Latitude',
+                                     'Longitude',
+                                     'Location',
+                                     'Proposed Budget',
+                                     'Submitted at',
+                                     'Published at',
+                                     'Comments',
+                                     'Participants',
+                                     'Votes',
+                                     'URL',
+                                     'Project',
+                                     'Status'
+                                   ],
+                                   rows: []
+                                 }
+                               ])
+          end
+        end
+
+        context 'voting method is budgeting' do
+          let(:participation_context) { create(:voting_phase, voting_method: 'budgeting') }
+          it 'Generates an empty sheet with the correct columns' do
+            # participation_context.update!(voting_method: 'budgeting')
+            expect(xlsx).to eq([
+                                 {
+                                   sheet_name: 'My sheet',
+                                   column_headers: [
+                                     'ID',
+                                     'Title',
+                                     'Description',
+                                     'Attachments',
+                                     'Tags',
+                                     'Latitude',
+                                     'Longitude',
+                                     'Location',
+                                     'Proposed Budget',
+                                     'Submitted at',
+                                     'Published at',
+                                     'Comments',
+                                     'Picks',
+                                     'Budget',
+                                     'URL',
+                                     'Project',
+                                     'Status'
+                                   ],
+                                   rows: []
+                                 }
+                               ])
+          end
         end
       end
 
