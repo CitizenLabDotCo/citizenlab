@@ -120,17 +120,6 @@ class Phase < ApplicationRecord
     self.description_multiloc = service.linkify_multiloc(description_multiloc)
   end
 
-  # Temporary fix for new toggle of project_phase_started campaign at phase-level.
-  # I merged BE work for this feature too soon, and we need to wait for FE part (awaiting translations).
-  # This fix will be removed as soon as FE part is merged. [Simon T., 14/07/2021]
-  def temporary_validation_fix
-    return if campaigns_settings.present?
-
-    enabled = EmailCampaigns::Campaign.find_by(type: 'EmailCampaigns::Campaigns::ProjectPhaseStarted')&.enabled
-
-    self.campaigns_settings = { project_phase_started: enabled }
-  end
-
   def validate_campaigns_settings_keys_and_values
     return if campaigns_settings.blank?
 
