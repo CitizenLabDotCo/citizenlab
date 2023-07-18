@@ -34,7 +34,7 @@ const VotesCounter = ({ participationContext }: Props) => {
     const { voting_term_plural_multiloc } = participationContext.attributes;
     if (!voting_term_plural_multiloc) return;
 
-    return localize(voting_term_plural_multiloc).toLowerCase();
+    return localize(voting_term_plural_multiloc);
   };
 
   const votingMaxTotal = participationContext.attributes.voting_max_total;

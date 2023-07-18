@@ -21,4 +21,25 @@ export default defineMessages({
     id: 'app.components.AssignMultipleVotesControl.addVote',
     defaultMessage: 'Add vote',
   },
+
+  // disabled explanations
+  maxVotesPerIdeaReached: {
+    id: 'app.components.AssignMultipleVotesControl.maxVotesPerIdeaReached',
+    defaultMessage:
+      'You have reached the maximum number of {maxVotes} votes per idea',
+  },
+  maxVotesReached: {
+    id: 'app.components.AssignMultipleVotesControl.maxVotesReached',
+    defaultMessage: 'You have used all of your votes',
+  },
+  votesSubmitted: {
+    id: 'app.components.AssignMultipleVotesControl.votesSubmitted',
+    defaultMessage:
+      'You have already submitted your votes. Click "Modify your vote" to change your votes.',
+  },
+  votesSubmittedIdeaPage: {
+    id: 'app.components.AssignMultipleVotesControl.votesSubmittedIdeaPage',
+    defaultMessage:
+      'You have already submitted your votes. To change your votes, go back to the project page and click "Modify your vote".',
+  },
 });

@@ -74,10 +74,9 @@ export default defineMessages({
     id: 'app.utils.votingMethodUtils.budgetingSubmissionInstructionsPreferredOptions',
     defaultMessage: 'Select your preferred options by tapping on "Add".',
   },
-  budgetingSubmissionInstructionsMaxVotesPerIdea: {
-    id: 'app.utils.votingMethodUtils.budgetingSubmissionInstructionsMaxVotesPerIdea',
-    defaultMessage:
-      'You can add a maximum number of {maxVotes} votes per option.',
+  budgetingSubmissionInstructionsMinBudget: {
+    id: 'app.utils.votingMethodUtils.budgetingSubmissionInstructionsMinBudget',
+    defaultMessage: 'The minimum required budget is {amount} {currency}.',
   },
   budgetingSubmissionInstructionsOnceYouAreDone: {
     id: 'app.utils.votingMethodUtils.budgetingSubmissionInstructionsOnceYouAreDone',
@@ -126,10 +125,23 @@ export default defineMessages({
     id: 'app.utils.votingMethodUtils.finalTally',
     defaultMessage: 'Final tally',
   },
-  cumulativeVotingInstructions: {
-    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructions2',
+  cumulativeVotingInstructionsTotalVotes: {
+    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalVotes',
     defaultMessage:
-      'You have a total of <b>{totalVotes} {voteTerm} to distribute between {optionCount} options</b>. Select your preferred options by tapping on “Vote”. Once you are done, click “Submit” to cast your vote.',
+      'You have a total of <b>{totalVotes} {voteTerm} to distribute between {optionCount} options</b>.',
+  },
+  cumulativeVotingInstructionsPreferredOptions: {
+    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsPreferredOptions',
+    defaultMessage: 'Select your preferred options by tapping on “Vote”.',
+  },
+  cumulativeVotingInstructionsMaxVotesPerIdea: {
+    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsMaxVotesPerIdea',
+    defaultMessage:
+      'You can add a maximum number of {maxVotes} votes per option.',
+  },
+  cumulativeVotingInstructionsOnceYouAreDone: {
+    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsOnceYouAreDone',
+    defaultMessage: 'Once you are done, click “Submit” to cast your vote.',
   },
   multipleVotingEnded: {
     id: 'app.utils.votingMethodUtils.multipleVotingEnded',
@@ -151,20 +163,31 @@ export default defineMessages({
     defaultMessage:
       'Voting closed on <b>{endDate}.</b> Participants could <b>vote for 1 option.</b>',
   },
-  singleVotingMultipleVotesInstructions: {
-    id: 'app.utils.votingMethodUtils.singleVotingMultipleVotesInstructions',
-    defaultMessage:
-      'You can vote for <b> {totalVotes} options</b>. Select your preferred options by tapping on “Vote”. Once you are done, click “Submit” to cast your vote.',
+  singleVotingOneVoteYouCanVote: {
+    id: 'app.utils.votingMethodUtils.singleVotingOneVoteYouCanVote',
+    defaultMessage: 'You can vote for <b>1 option</b>.',
   },
-  singleVotingOneVoteInstructions: {
-    id: 'app.utils.votingMethodUtils.singleVotingOneVoteInstructions2',
-    defaultMessage:
-      'You can vote for <b> 1 option </b>. Select your preferred option by tapping on “Vote”. Once you are done, click “Submit” to cast your vote.',
+  singleVotingMultipleVotesYouCanVote: {
+    id: 'app.utils.votingMethodUtils.singleVotingMultipleVotesYouCanVote',
+    defaultMessage: 'You can vote for <b>{totalVotes} options</b>.',
   },
-  singleVotingInstructionsUnlimited: {
-    id: 'app.utils.votingMethodUtils.singleVotingInstructionsUnlimited',
-    defaultMessage:
-      'You can vote for as many options as you would like. Select your preferred options by tapping on “Vote”. Once you are done, click “Submit” to cast your vote.',
+  singleVotingUnlimitedVotesYouCanVote: {
+    id: 'app.utils.votingMethodUtils.singleVotingUnlimitedVotesYouCanVote',
+    defaultMessage: 'You can vote for as many options as you would like.',
+  },
+
+  singleVotingPreferredOption: {
+    id: 'app.utils.votingMethodUtils.singleVotingOneVotePreferredOption',
+    defaultMessage: 'Select your preferred option by tapping on “Vote”.',
+  },
+  singleVotingPreferredOptions: {
+    id: 'app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions',
+    defaultMessage: 'Select your preferred options by tapping on “Vote”',
+  },
+
+  singleVotingOnceYouAreDone: {
+    id: 'app.utils.votingMethodUtils.singleVotingOnceYouAreDone',
+    defaultMessage: 'Once you are done, click “Submit” to cast your vote.',
   },
   budgetSubmittedWithIcon: {
     id: 'app.utils.votingMethodUtils.budgetSubmittedWithIcon',

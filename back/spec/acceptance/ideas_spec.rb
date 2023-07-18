@@ -285,7 +285,7 @@ resource 'Ideas' do
           expect(status).to eq(200)
         end
 
-        example 'List all ideas in a phase of a project - ideas_phase baskets_count and votes_count is returned' do
+        example 'List all ideas in a phase of a project - baskets_count and votes_count are overwritten with values from ideas_phase' do
           pr = create(:project_with_active_budgeting_phase)
           phase = pr.phases.first
           ideas = create_list(:idea, 2, phases: [phase], project: pr)
@@ -312,7 +312,7 @@ resource 'Ideas' do
           expect(ideas_phases[0][:attributes][:baskets_count]).to eq 2
           expect(ideas_phases[1][:attributes][:baskets_count]).to eq 2
 
-          # Check the value in idea has also changed
+          # Check the value in idea has also been overwritten
           expect(ideas[0].reload[:baskets_count]).to eq 3
           expect(response_data[0][:attributes][:baskets_count]).to eq 2
         end

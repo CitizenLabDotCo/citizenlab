@@ -74,10 +74,7 @@ const RightColumnDesktop = ({
   const commentingEnabled =
     !!idea?.data.attributes.action_descriptor.commenting_idea.enabled;
 
-  const showGreyBox =
-    participationContext?.attributes.participation_method !== 'voting' ||
-    (participationContext && ideaIsInParticipationContext && votingConfig) ||
-    commentingEnabled;
+  const showGreyBox = ideaIsInParticipationContext || commentingEnabled;
 
   return (
     <Box
@@ -96,14 +93,11 @@ const RightColumnDesktop = ({
             background={colors.background}
             mb="12px"
           >
-            {participationContext?.attributes.participation_method !==
-              'voting' && (
-              <StyledReactionControl
-                styleType="shadow"
-                ideaId={ideaId}
-                size="4"
-              />
-            )}
+            <StyledReactionControl
+              styleType="shadow"
+              ideaId={ideaId}
+              size="4"
+            />
             <Box pb="23px" mb="23px" borderBottom="solid 1px #ccc">
               {participationContext &&
                 ideaIsInParticipationContext &&

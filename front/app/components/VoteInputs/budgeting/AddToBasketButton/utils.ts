@@ -21,7 +21,7 @@ export const isButtonEnabled = (
     return true;
   }
 
-  const basketNotSubmittedYet = basket.data.attributes.submitted_at === null;
+  const basketNotSubmittedYet = !basket.data.attributes.submitted_at;
   return basketNotSubmittedYet;
 };
 

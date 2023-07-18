@@ -87,7 +87,7 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
     phase?.attributes.baskets_count || project?.attributes.baskets_count;
 
   return (
-    <Box boxShadow={defaultStyles.boxShadow} id="e2e-voting-status">
+    <Box boxShadow={defaultStyles.boxShadow} id="voting-status-module">
       <Title variant="h2" style={{ fontWeight: 600 }}>
         {config?.getStatusTitle &&
           formatMessage(config.getStatusHeader(basketStatus))}

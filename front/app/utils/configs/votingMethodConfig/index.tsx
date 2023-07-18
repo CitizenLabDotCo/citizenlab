@@ -12,9 +12,9 @@ import AssignSingleVoteBox from 'components/VoteInputs/single/AssignSingleVoteBo
 import messages from './messages';
 import { Localize } from 'hooks/useLocalize';
 import { MessageDescriptor } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
-import { FormattedMessage } from 'utils/cl-intl';
 import { toFullMonth } from 'utils/dateUtils';
 
 // types
@@ -111,7 +111,13 @@ const budgetingConfig: VotingMethodConfig = {
     submissionState,
     appConfig,
   }: GetStatusDescriptionProps) => {
+    const currency =
+      appConfig?.data.attributes.settings.core.currency.toString();
+
     if (submissionState === 'hasNotSubmitted') {
+      const participationContext = phase ?? project;
+      const minBudget = participationContext.attributes.voting_min_total;
+
       return (
         <>
           <FormattedMessage
@@ -119,13 +125,10 @@ const budgetingConfig: VotingMethodConfig = {
               b: (chunks) => (
                 <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
               ),
-              currency: appConfig?.data.attributes.settings.core.currency,
-              optionCount: phase
-                ? phase.attributes.ideas_count
-                : project.attributes.ideas_count,
-              maxBudget: phase
-                ? phase.attributes.voting_max_total?.toLocaleString()
-                : project.attributes.voting_max_total?.toLocaleString(),
+              currency,
+              optionCount: participationContext.attributes.ideas_count,
+              maxBudget:
+                participationContext.attributes.voting_max_total?.toLocaleString(),
             }}
             {...messages.budgetingSubmissionInstructionsTotalBudget}
           />
@@ -135,14 +138,17 @@ const budgetingConfig: VotingMethodConfig = {
                 {...messages.budgetingSubmissionInstructionsPreferredOptions}
               />
             </li>
-            <li>
-              <FormattedMessage
-                values={{
-                  maxVotes: project.attributes.voting_max_votes_per_idea,
-                }}
-                {...messages.budgetingSubmissionInstructionsMaxVotesPerIdea}
-              />
-            </li>
+            {typeof minBudget === 'number' && minBudget > 0 ? (
+              <li>
+                <FormattedMessage
+                  {...messages.budgetingSubmissionInstructionsMinBudget}
+                  values={{
+                    amount: minBudget,
+                    currency,
+                  }}
+                />
+              </li>
+            ) : null}
             <li>
               <FormattedMessage
                 {...messages.budgetingSubmissionInstructionsOnceYouAreDone}
@@ -186,8 +192,7 @@ const budgetingConfig: VotingMethodConfig = {
             endDate: phase && toFullMonth(phase.attributes.end_at, 'day'),
             maxBudget:
               phase && phase.attributes.voting_max_total?.toLocaleString(),
-            currency:
-              appConfig?.data.attributes.settings.core.currency.toString(),
+            currency,
             optionCount: phase && phase.attributes.ideas_count,
           }}
           {...messages.budgetParticipationEnded}
@@ -268,28 +273,47 @@ const multipleVotingConfig: VotingMethodConfig = {
     formatMessage,
   }: GetStatusDescriptionProps) => {
     const participationContext = phase || project;
-    const voteTerm = (
+    const voteTerm =
       localize(participationContext?.attributes?.voting_term_plural_multiloc) ||
-      formatMessage(messages.votes)
-    ).toLowerCase();
+      formatMessage(messages.votes).toLowerCase();
 
     if (submissionState === 'hasNotSubmitted') {
       return (
-        <FormattedMessage
-          values={{
-            b: (chunks) => (
-              <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
-            ),
-            voteTerm,
-            optionCount: phase
-              ? phase.attributes.ideas_count
-              : project.attributes.ideas_count,
-            totalVotes: phase
-              ? phase.attributes.voting_max_total?.toLocaleString()
-              : project.attributes.voting_max_total?.toLocaleString(),
-          }}
-          {...messages.cumulativeVotingInstructions}
-        />
+        <>
+          <FormattedMessage
+            values={{
+              b: (chunks) => (
+                <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+              ),
+              voteTerm,
+              optionCount: participationContext.attributes.ideas_count,
+              totalVotes:
+                participationContext.attributes.voting_max_total?.toLocaleString(),
+            }}
+            {...messages.cumulativeVotingInstructionsTotalVotes}
+          />
+          <ul>
+            <li>
+              <FormattedMessage
+                {...messages.cumulativeVotingInstructionsPreferredOptions}
+              />
+            </li>
+            <li>
+              <FormattedMessage
+                {...messages.cumulativeVotingInstructionsMaxVotesPerIdea}
+                values={{
+                  maxVotes:
+                    participationContext.attributes.voting_max_votes_per_idea,
+                }}
+              />
+            </li>
+            <li>
+              <FormattedMessage
+                {...messages.cumulativeVotingInstructionsOnceYouAreDone}
+              />
+            </li>
+          </ul>
+        </>
       );
     }
     if (submissionState === 'hasSubmitted') {
@@ -407,21 +431,19 @@ const singleVotingConfig: VotingMethodConfig = {
     const totalVotes = participationContext?.attributes.voting_max_total;
 
     if (submissionState === 'hasNotSubmitted') {
-      if (totalVotes) {
-        if (totalVotes > 1) {
-          return (
-            <FormattedMessage
-              values={{
-                b: (chunks) => (
-                  <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
-                ),
-                totalVotes: participationContext?.attributes.voting_max_total,
-              }}
-              {...messages.singleVotingMultipleVotesInstructions}
-            />
-          );
-        }
-        return (
+      const youCanVoteMessage = totalVotes
+        ? totalVotes > 1
+          ? messages.singleVotingMultipleVotesYouCanVote
+          : messages.singleVotingOneVoteYouCanVote
+        : messages.singleVotingUnlimitedVotesYouCanVote;
+
+      const preferredOptionMessage =
+        totalVotes === 1
+          ? messages.singleVotingPreferredOption
+          : messages.singleVotingPreferredOptions;
+
+      return (
+        <>
           <FormattedMessage
             values={{
               b: (chunks) => (
@@ -429,12 +451,17 @@ const singleVotingConfig: VotingMethodConfig = {
               ),
               totalVotes: participationContext?.attributes.voting_max_total,
             }}
-            {...messages.singleVotingOneVoteInstructions}
+            {...youCanVoteMessage}
           />
-        );
-      }
-      return (
-        <FormattedMessage {...messages.singleVotingInstructionsUnlimited} />
+          <ul>
+            <li>
+              <FormattedMessage {...preferredOptionMessage} />
+            </li>
+            <li>
+              <FormattedMessage {...messages.singleVotingOnceYouAreDone} />
+            </li>
+          </ul>
+        </>
       );
     }
     if (submissionState === 'hasSubmitted') {
