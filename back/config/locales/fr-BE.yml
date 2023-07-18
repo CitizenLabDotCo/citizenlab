@@ -201,7 +201,7 @@ fr-BE:
       comments_count: 'Commentaires'
       likes_count: 'Nombre de « likes »'
       dislikes_count: 'Nombre de « dislikes »'
-      picks: 'Choisis'
+      picks: 'Choix'
       votes_count: 'Votes'
       input_url: 'URL'
       project: 'Projet'
@@ -249,5 +249,5 @@ fr-BE:
       hour_of_day: "%Hh"
     pm: de l'après-midi
   voting_method:
-    default_voting_term_singular: "votez"
+    default_voting_term_singular: "vote"
     default_voting_term_plural: "votes"
