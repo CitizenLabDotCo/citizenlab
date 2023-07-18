@@ -430,7 +430,7 @@ class ProjectCopyService < TemplateService
     participation_context_ids = [@project.id] + @project.phases.ids
     user_ids += Basket.where(participation_context_id: participation_context_ids).pluck(:user_id)
     user_ids += OfficialFeedback.where(post_id: idea_ids, post_type: 'Idea').pluck(:user_id)
-    user_ids += Followers.where(followable_id: @project.id).pluck(:user_id)
+    user_ids += Follower.where(followable_id: @project.id).pluck(:user_id)
 
     User.where(id: user_ids.uniq).map do |user|
       yml_user = if anonymize_users
@@ -673,7 +673,7 @@ class ProjectCopyService < TemplateService
   def yml_followers(shift_timestamps: 0)
     @project.followers.map do |follower|
       {
-        'followable_ref' => lookup_ref(follower.reactable_id, %i[project]),
+        'followable_ref' => lookup_ref(follower.followable_id, %i[project]),
         'user_ref' => lookup_ref(follower.user_id, :user),
         'created_at' => shift_timestamp(follower.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(follower.updated_at, shift_timestamps)&.iso8601
