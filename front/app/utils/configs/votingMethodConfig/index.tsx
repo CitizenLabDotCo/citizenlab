@@ -273,10 +273,9 @@ const multipleVotingConfig: VotingMethodConfig = {
     formatMessage,
   }: GetStatusDescriptionProps) => {
     const participationContext = phase || project;
-    const voteTerm = (
+    const voteTerm =
       localize(participationContext?.attributes?.voting_term_plural_multiloc) ||
-      formatMessage(messages.votes)
-    ).toLowerCase();
+      formatMessage(messages.votes).toLowerCase();
 
     if (submissionState === 'hasNotSubmitted') {
       return (
