@@ -91,11 +91,11 @@ class WebApi::V1::IdeasController < ApplicationController
     }
     attributes = %w[idea_status_id topic_id]
     all_ideas.published
-             .joins('FULL OUTER JOIN ideas_topics ON ideas_topics.idea_id = ideas.id')
-             .select('idea_status_id, ideas_topics.topic_id, COUNT(DISTINCT(ideas.id)) as count')
-             .reorder(nil) # Avoids SQL error on GROUP BY when a search string was used
-             .group('GROUPING SETS (idea_status_id, ideas_topics.topic_id)')
-             .each do |record|
+      .joins('FULL OUTER JOIN ideas_topics ON ideas_topics.idea_id = ideas.id')
+      .select('idea_status_id, ideas_topics.topic_id, COUNT(DISTINCT(ideas.id)) as count')
+      .reorder(nil) # Avoids SQL error on GROUP BY when a search string was used
+      .group('GROUPING SETS (idea_status_id, ideas_topics.topic_id)')
+      .each do |record|
       attributes.each do |attribute|
         id = record.send attribute
         counts[attribute][id] = record.count if id
@@ -130,10 +130,10 @@ class WebApi::V1::IdeasController < ApplicationController
     end
 
     participation_context = if is_moderator && phase_ids.any?
-                              Phase.find(phase_ids.first)
-                            else
-                              ParticipationContextService.new.get_participation_context(project)
-                            end
+      Phase.find(phase_ids.first)
+    else
+      ParticipationContextService.new.get_participation_context(project)
+    end
     send_error and return unless participation_context
 
     participation_method = Factory.instance.participation_method_for(participation_context)

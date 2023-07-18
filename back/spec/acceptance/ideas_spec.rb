@@ -563,49 +563,49 @@ resource 'Ideas' do
         expect(json_response.dig(:data, :id)).to eq idea.id
         expect(json_response.dig(:data, :type)).to eq 'idea'
         expect(json_response.dig(:data, :attributes)).to include(
-                                                           slug: idea.slug,
-                                                           budget: idea.budget,
-                                                           action_descriptor: {
-                                                             commenting_idea: {
-                                                               enabled: true,
-                                                               disabled_reason: nil,
-                                                               future_enabled: nil
-                                                             },
-                                                             reacting_idea: {
-                                                               enabled: true,
-                                                               disabled_reason: nil,
-                                                               cancelling_enabled: true,
-                                                               up: {
-                                                                 enabled: true,
-                                                                 disabled_reason: nil,
-                                                                 future_enabled: nil
-                                                               },
-                                                               down: {
-                                                                 enabled: true,
-                                                                 disabled_reason: nil,
-                                                                 future_enabled: nil
-                                                               }
-                                                             },
-                                                             comment_reacting_idea: {
-                                                               enabled: true,
-                                                               disabled_reason: nil,
-                                                               future_enabled: nil
-                                                             },
-                                                             voting: {
-                                                               enabled: false,
-                                                               disabled_reason: 'not_voting',
-                                                               future_enabled: nil
-                                                             }
-                                                           }
-                                                         )
+          slug: idea.slug,
+          budget: idea.budget,
+          action_descriptor: {
+            commenting_idea: {
+              enabled: true,
+              disabled_reason: nil,
+              future_enabled: nil
+            },
+            reacting_idea: {
+              enabled: true,
+              disabled_reason: nil,
+              cancelling_enabled: true,
+              up: {
+                enabled: true,
+                disabled_reason: nil,
+                future_enabled: nil
+              },
+              down: {
+                enabled: true,
+                disabled_reason: nil,
+                future_enabled: nil
+              }
+            },
+            comment_reacting_idea: {
+              enabled: true,
+              disabled_reason: nil,
+              future_enabled: nil
+            },
+            voting: {
+              enabled: false,
+              disabled_reason: 'not_voting',
+              future_enabled: nil
+            }
+          }
+        )
         expect(json_response.dig(:data, :relationships)).to include(
-                                                              topics: {
-                                                                data: [{ id: topic.id, type: 'topic' }]
-                                                              },
-                                                              author: { data: { id: idea.author_id, type: 'user' } },
-                                                              idea_status: { data: { id: idea.idea_status_id, type: 'idea_status' } },
-                                                              user_reaction: { data: { id: user_reaction.id, type: 'reaction' } }
-                                                            )
+          topics: {
+            data: [{ id: topic.id, type: 'topic' }]
+          },
+          author: { data: { id: idea.author_id, type: 'user' } },
+          idea_status: { data: { id: idea.idea_status_id, type: 'idea_status' } },
+          user_reaction: { data: { id: user_reaction.id, type: 'reaction' } }
+        )
       end
     end
 
@@ -911,7 +911,7 @@ resource 'Ideas' do
 
           before do
             project.permissions.find_by(action: 'posting_idea')
-                   .update!(permitted_by: 'groups', groups: [group])
+              .update!(permitted_by: 'groups', groups: [group])
           end
 
           example '[error] Create an idea in a project with groups posting permission', document: false do
