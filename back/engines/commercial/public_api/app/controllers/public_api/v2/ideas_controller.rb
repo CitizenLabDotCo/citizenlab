@@ -22,7 +22,7 @@ module PublicApi
 
     def finder_params
       params
-        .permit(:user_id, :project_id)
+        .permit(:user_id, :project_id, topic_ids: [])
         .to_h
         .symbolize_keys
     end

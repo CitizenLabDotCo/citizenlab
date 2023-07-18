@@ -52,6 +52,15 @@ resource 'Posts' do
       in: :query
     )
 
+    parameter(
+      :topic_ids,
+      'List only the ideas that have all of the specified topics',
+      required: false,
+      type: :array,
+      items: { type: :string },
+      in: :query
+    )
+
     context 'when the page size is smaller than the total number of ideas' do
       let(:page_size) { 2 }
 
@@ -81,6 +90,24 @@ resource 'Posts' do
         assert_status 200
         expect(json_response_body[:ideas].size).to eq(1)
         expect(json_response_body[:ideas].first[:project_id]).to eq(project_id)
+      end
+    end
+
+    context 'when filtering by topic ids' do
+      let(:idea) { create(:idea_with_topics, topics_count: 3) }
+      let(:topics) { idea.topics.take(2) }
+      let(:topic_ids) { topics.pluck(:id) }
+
+      before do
+        # This idea should not be returned because it only has one of the requested
+        # topics.
+        create(:idea, project_id: idea.project_id).topics << topics.first
+      end
+
+      example_request 'List only the ideas that have all of the specified topics' do
+        assert_status 200
+        expect(json_response_body[:ideas].size).to eq(1)
+        expect(json_response_body[:ideas].pluck(:id)).to eq [idea.id]
       end
     end
 
