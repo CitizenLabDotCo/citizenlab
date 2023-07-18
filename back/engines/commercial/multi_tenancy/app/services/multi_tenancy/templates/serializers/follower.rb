@@ -4,7 +4,7 @@ module MultiTenancy
   module Templates
     module Serializers
       class Follower < Base
-        ref_attributes %i[follower user]
+        ref_attributes %i[followable user]
       end
     end
   end
