@@ -9,6 +9,7 @@ import ThresholdReached from './ThresholdReached';
 import Answered from './Answered';
 import Ineligible from './Ineligible';
 import Custom from './Custom';
+import ApprovalPending from './ApprovalPending';
 
 // events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
@@ -44,6 +45,7 @@ import {
 } from 'api/initiative_statuses/types';
 import { IAppConfigurationSettings } from 'api/app_configuration/types';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
+import ApprovalRejected from './ApprovalRejected';
 
 const Container = styled.div`
   ${media.desktop`
@@ -86,6 +88,14 @@ const componentMap: TComponentMap = {
   expired: {
     reacted: Expired,
     notReacted: Expired,
+  },
+  approval_rejected: {
+    reacted: ApprovalRejected,
+    notReacted: ApprovalRejected,
+  },
+  approval_pending: {
+    reacted: ApprovalPending,
+    notReacted: ApprovalPending,
   },
   threshold_reached: {
     reacted: ThresholdReached,
