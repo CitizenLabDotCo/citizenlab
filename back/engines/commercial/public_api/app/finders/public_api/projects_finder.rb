@@ -15,7 +15,6 @@ module PublicApi
     end
 
     def execute
-
       @scope
         .then { |scope| filter_by_folder_id(scope) }
         .then { |scope| filter_by_publication_status(scope) }
