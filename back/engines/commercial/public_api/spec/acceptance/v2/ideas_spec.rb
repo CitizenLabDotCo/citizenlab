@@ -44,6 +44,14 @@ resource 'Posts' do
       in: :query
     )
 
+    parameter(
+      :project_id,
+      'Filter by project ID',
+      required: false,
+      type: :string,
+      in: :query
+    )
+
     context 'when the page size is smaller than the total number of ideas' do
       let(:page_size) { 2 }
 
@@ -63,6 +71,16 @@ resource 'Posts' do
         assert_status 200
         expect(json_response_body[:ideas].size).to eq(1)
         expect(json_response_body[:ideas].first[:author_id]).to eq(user_id)
+      end
+    end
+
+    context 'when filtering by project id' do
+      let(:project_id) { ideas.first.project_id }
+
+      example_request 'List only the ideas of the specified project' do
+        assert_status 200
+        expect(json_response_body[:ideas].size).to eq(1)
+        expect(json_response_body[:ideas].first[:project_id]).to eq(project_id)
       end
     end
 
