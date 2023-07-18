@@ -15,8 +15,8 @@ en:
     rejected: rejected
     rejected_description: This idea has been rejected
   initiative_statuses:
-    pending_approval: pending_approval
-    pending_approval_description: pending_approval
+    pending_approval: pending approval
+    pending_approval_description: pending approval
     proposed: proposed
     proposed_description: proposed
     expired: expired
