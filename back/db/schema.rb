@@ -174,7 +174,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_10_143815) do
     t.string "participation_context_type"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
-    t.index ["submitted_at"], name: "index_baskets_on_submitted_at"
     t.index ["user_id"], name: "index_baskets_on_user_id"
   end
 
@@ -183,8 +182,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_10_143815) do
     t.uuid "idea_id"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
-    t.integer "votes", default: 1, null: false
-    t.index ["basket_id", "idea_id"], name: "index_baskets_ideas_on_basket_id_and_idea_id", unique: true
+    t.index ["basket_id"], name: "index_baskets_ideas_on_basket_id"
     t.index ["idea_id"], name: "index_baskets_ideas_on_idea_id"
   end
 
@@ -525,7 +523,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_10_143815) do
     t.string "author_hash"
     t.boolean "anonymous", default: false, null: false
     t.integer "internal_comments_count", default: 0, null: false
-    t.integer "votes_count", default: 0, null: false
     t.index "((to_tsvector('simple'::regconfig, COALESCE((title_multiloc)::text, ''::text)) || to_tsvector('simple'::regconfig, COALESCE((body_multiloc)::text, ''::text))))", name: "index_ideas_search", using: :gin
     t.index ["author_hash"], name: "index_ideas_on_author_hash"
     t.index ["author_id"], name: "index_ideas_on_author_id"
@@ -540,8 +537,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_10_143815) do
     t.uuid "phase_id"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
-    t.integer "baskets_count", default: 0, null: false
-    t.integer "votes_count", default: 0, null: false
     t.index ["idea_id", "phase_id"], name: "index_ideas_phases_on_idea_id_and_phase_id", unique: true
     t.index ["idea_id"], name: "index_ideas_phases_on_idea_id"
     t.index ["phase_id"], name: "index_ideas_phases_on_phase_id"
@@ -900,8 +895,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_10_143815) do
     t.uuid "project_folder_id"
     t.uuid "inappropriate_content_flag_id"
     t.uuid "internal_comment_id"
-    t.uuid "basket_id"
-    t.index ["basket_id"], name: "index_notifications_on_basket_id"
     t.index ["created_at"], name: "index_notifications_on_created_at"
     t.index ["inappropriate_content_flag_id"], name: "index_notifications_on_inappropriate_content_flag_id"
     t.index ["initiating_user_id"], name: "index_notifications_on_initiating_user_id"
@@ -989,13 +982,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_10_143815) do
     t.string "survey_embed_url"
     t.string "survey_service"
     t.string "presentation_mode", default: "card"
-    t.integer "voting_max_total"
+    t.integer "max_budget"
     t.boolean "poll_anonymous", default: false, null: false
     t.boolean "reacting_dislike_enabled", default: true, null: false
     t.integer "ideas_count", default: 0, null: false
     t.string "ideas_order"
     t.string "input_term", default: "idea"
-    t.integer "voting_min_total", default: 0
+    t.integer "min_budget", default: 0
     t.string "reacting_dislike_method", default: "unlimited", null: false
     t.integer "reacting_dislike_limited_max", default: 10
     t.string "posting_method", default: "unlimited", null: false
@@ -1003,12 +996,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_10_143815) do
     t.string "document_annotation_embed_url"
     t.boolean "allow_anonymous_participation", default: false, null: false
     t.jsonb "campaigns_settings", default: {}
-    t.string "voting_method"
-    t.integer "voting_max_votes_per_idea"
-    t.jsonb "voting_term_singular_multiloc", default: {}
-    t.jsonb "voting_term_plural_multiloc", default: {}
-    t.integer "baskets_count", default: 0, null: false
-    t.integer "votes_count", default: 0, null: false
     t.index ["project_id"], name: "index_phases_on_project_id"
   end
 
@@ -1133,14 +1120,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_10_143815) do
     t.string "internal_role"
     t.string "survey_embed_url"
     t.string "survey_service"
-    t.integer "voting_max_total"
+    t.integer "max_budget"
     t.integer "comments_count", default: 0, null: false
     t.uuid "default_assignee_id"
     t.boolean "poll_anonymous", default: false, null: false
     t.boolean "reacting_dislike_enabled", default: true, null: false
     t.string "ideas_order"
     t.string "input_term", default: "idea"
-    t.integer "voting_min_total", default: 0
+    t.integer "min_budget", default: 0
     t.string "reacting_dislike_method", default: "unlimited", null: false
     t.integer "reacting_dislike_limited_max", default: 10
     t.boolean "include_all_areas", default: false, null: false
@@ -1148,12 +1135,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_10_143815) do
     t.integer "posting_limited_max", default: 1
     t.string "document_annotation_embed_url"
     t.boolean "allow_anonymous_participation", default: false, null: false
-    t.string "voting_method"
-    t.integer "voting_max_votes_per_idea"
-    t.jsonb "voting_term_singular_multiloc", default: {}
-    t.jsonb "voting_term_plural_multiloc", default: {}
-    t.integer "baskets_count", default: 0, null: false
-    t.integer "votes_count", default: 0, null: false
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 
@@ -1505,7 +1486,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_10_143815) do
   add_foreign_key "memberships", "groups"
   add_foreign_key "memberships", "users"
   add_foreign_key "nav_bar_items", "static_pages"
-  add_foreign_key "notifications", "baskets"
   add_foreign_key "notifications", "comments"
   add_foreign_key "notifications", "flag_inappropriate_content_inappropriate_content_flags", column: "inappropriate_content_flag_id"
   add_foreign_key "notifications", "internal_comments"

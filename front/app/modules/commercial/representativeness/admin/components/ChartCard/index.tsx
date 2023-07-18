@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 // hooks
 import useLocalize from 'hooks/useLocalize';
 import useReferenceData from '../../hooks/useReferenceData';
-import useRScore from '../../hooks/useRScore';
+import useRScore from '../../api/r_score/useRScore';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -65,7 +65,10 @@ const ChartCard = injectIntl(
     projectFilter,
     intl: { formatMessage },
   }: Props & WrappedComponentProps) => {
-    const rScore = useRScore(userCustomField.id, projectFilter);
+    const { data: rScore } = useRScore({
+      id: userCustomField.id,
+      projectId: projectFilter,
+    });
     const { referenceData, includedUsers } = useReferenceData(
       userCustomField,
       projectFilter
@@ -135,7 +138,7 @@ const ChartCard = injectIntl(
         <Header
           title={title}
           svgNode={currentChartRef}
-          rScore={rScore.attributes.score}
+          rScore={rScore.data.attributes.score}
           view={view}
           projectFilter={projectFilter}
           xlsxEndpoint={xlsxEndpoint}

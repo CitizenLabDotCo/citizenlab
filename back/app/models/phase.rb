@@ -53,6 +53,8 @@
 class Phase < ApplicationRecord
   include ParticipationContext
 
+  CAMPAIGNS = [:project_phase_started].freeze
+
   belongs_to :project
 
   has_many :ideas_phases, dependent: :destroy
@@ -64,16 +66,19 @@ class Phase < ApplicationRecord
 
   before_validation :sanitize_description_multiloc
   before_validation :strip_title
+  before_validation :temporary_validation_fix
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify
 
   validates :project, presence: true
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, multiloc: { presence: false, html: true }
+  validates :campaigns_settings, presence: true
   validates :start_at, :end_at, presence: true
   validate :validate_start_at_before_end_at
   validate :validate_belongs_to_timeline_project
   validate :validate_no_other_overlapping_phases
+  validate :validate_campaigns_settings_keys_and_values
 
   scope :starting_on, lambda { |date|
     where(start_at: date)
@@ -118,6 +123,28 @@ class Phase < ApplicationRecord
     )
     self.description_multiloc = service.remove_multiloc_empty_trailing_tags(description_multiloc)
     self.description_multiloc = service.linkify_multiloc(description_multiloc)
+  end
+
+  # Temporary fix for new toggle of project_phase_started campaign at phase-level.
+  # I merged BE work for this feature too soon, and we need to wait for FE part (awaiting translations).
+  # This fix will be removed as soon as FE part is merged. [Simon T., 14/07/2021]
+  def temporary_validation_fix
+    return if campaigns_settings.present?
+
+    enabled = EmailCampaigns::Campaign.find_by(type: 'EmailCampaigns::Campaigns::ProjectPhaseStarted')&.enabled
+
+    self.campaigns_settings = { project_phase_started: enabled }
+  end
+
+  def validate_campaigns_settings_keys_and_values
+    return if campaigns_settings.blank?
+
+    campaigns_settings.each do |key, value|
+      errors.add(:campaigns_settings, :invalid_key, message: 'invalid key') unless CAMPAIGNS.include?(key.to_sym)
+      next if Utils.boolean? value
+
+      errors.add(:campaigns_settings, :invalid_value, message: 'invalid value')
+    end
   end
 
   def validate_start_at_before_end_at

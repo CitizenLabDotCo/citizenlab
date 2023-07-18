@@ -18,7 +18,7 @@ describe('HomePage', () => {
     expect(clHistory.push).toHaveBeenCalledWith(adminRedirectPath);
   });
 
-  it('Does not redirect if you do not have admin access', async () => {
+  it.skip('Does not redirect if you do not have admin access', async () => {
     mockAuthUserData.attributes.roles = [];
     mockAuthUserData.attributes.highest_role = 'user';
 

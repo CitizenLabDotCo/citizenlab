@@ -2,19 +2,31 @@ import React from 'react';
 import Field from '.';
 import { render, screen, fireEvent, waitFor, act } from 'utils/testUtils/rtl';
 import { indices } from 'utils/helperUtils';
-import {
-  createReferenceDistribution,
-  replaceReferenceDistribution,
-  deleteReferenceDistribution,
-} from '../../services/referenceDistribution';
 
-jest.mock('../../services/referenceDistribution', () => ({
-  createReferenceDistribution: jest.fn(),
-  replaceReferenceDistribution: jest.fn(),
-  deleteReferenceDistribution: jest.fn(),
-}));
+const mockAddReferenceDistribution = jest.fn();
+
+jest.mock(
+  '../../api/reference_distribution/useAddReferenceDistribution',
+  () => {
+    return jest.fn(() => ({
+      mutateAsync: mockAddReferenceDistribution,
+    }));
+  }
+);
+
+const mockDeleteReferenceDistribution = jest.fn();
+
+jest.mock(
+  '../../api/reference_distribution/useDeleteReferenceDistribution',
+  () => {
+    return jest.fn(() => ({
+      mutateAsync: mockDeleteReferenceDistribution,
+    }));
+  }
+);
 
 let mockUserCustomFieldOptions;
+
 const selectUserCustomFieldOptions = [
   { id: 'option1', attributes: { title_multiloc: { en: 'Option 1' } } },
   { id: 'option2', attributes: { title_multiloc: { en: 'Option 2' } } },
@@ -28,19 +40,21 @@ jest.mock(
 );
 
 let mockReferenceDistribution: any = {
+  isFetchedReferenceDistributionData: true,
   referenceDataUploaded: false,
   referenceDistribution: null,
   remoteFormValues: undefined,
 };
 
 jest.mock(
-  '../../hooks/useReferenceDistribution',
+  '../../api/reference_distribution/useReferenceDistributionData',
   () => () => mockReferenceDistribution
 );
 
 let mockUserCustomField;
 
 const selectField = {
+  id: 'custom_field_id',
   attributes: {
     input_type: 'select',
     key: null,
@@ -50,6 +64,7 @@ const selectField = {
 };
 
 const birthyearField = {
+  id: 'birthyear_field_id',
   attributes: {
     key: 'birthyear',
     code: 'birthyear',
@@ -79,6 +94,7 @@ describe('<Field />', () => {
           referenceDataUploaded: false,
           referenceDistribution: null,
           remoteFormValues: undefined,
+          isFetchedReferenceDistributionData: true,
         };
       });
 
@@ -100,8 +116,9 @@ describe('<Field />', () => {
           );
         });
 
-        expect(createReferenceDistribution).toHaveBeenCalledTimes(1);
-        expect(createReferenceDistribution).toHaveBeenCalledWith(selectField, {
+        expect(mockAddReferenceDistribution).toHaveBeenCalledTimes(1);
+        expect(mockAddReferenceDistribution).toHaveBeenCalledWith({
+          id: selectField.id,
           option1: 100,
           option2: 100,
           option3: 100,
@@ -126,13 +143,14 @@ describe('<Field />', () => {
           );
         });
 
-        expect(createReferenceDistribution).not.toHaveBeenCalled();
+        expect(mockAddReferenceDistribution).not.toHaveBeenCalled();
       });
     });
 
     describe('with saved data', () => {
       beforeEach(() => {
         mockReferenceDistribution = {
+          isFetchedReferenceDistributionData: true,
           referenceDataUploaded: true,
           referenceDistribution: {
             type: 'categorical_distribution',
@@ -183,8 +201,9 @@ describe('<Field />', () => {
           );
         });
 
-        expect(replaceReferenceDistribution).toHaveBeenCalledTimes(1);
-        expect(replaceReferenceDistribution).toHaveBeenCalledWith(selectField, {
+        expect(mockAddReferenceDistribution).toHaveBeenCalledTimes(1);
+        expect(mockAddReferenceDistribution).toHaveBeenCalledWith({
+          id: selectField.id,
           option1: 100,
           option2: 100,
           option3: 200,
@@ -207,8 +226,10 @@ describe('<Field />', () => {
           );
         });
 
-        expect(deleteReferenceDistribution).toHaveBeenCalledTimes(1);
-        expect(deleteReferenceDistribution).toHaveBeenCalledWith(selectField);
+        expect(mockDeleteReferenceDistribution).toHaveBeenCalledTimes(1);
+        expect(mockDeleteReferenceDistribution).toHaveBeenCalledWith(
+          selectField.id
+        );
       });
     });
   });
@@ -229,6 +250,7 @@ describe('<Field />', () => {
     describe('no data yet', () => {
       beforeEach(() => {
         mockReferenceDistribution = {
+          isFetchedReferenceDistributionData: true,
           referenceDataUploaded: false,
           referenceDistribution: null,
           remoteFormValues: undefined,
@@ -279,14 +301,12 @@ describe('<Field />', () => {
           );
         });
 
-        expect(createReferenceDistribution).toHaveBeenCalledTimes(1);
-        expect(createReferenceDistribution).toHaveBeenCalledWith(
-          birthyearField,
-          {
-            bins: [18, 25, 35, 45, 55, 65, null],
-            counts: [100, 100, 100, 100, 100, 100],
-          }
-        );
+        expect(mockAddReferenceDistribution).toHaveBeenCalledTimes(1);
+        expect(mockAddReferenceDistribution).toHaveBeenCalledWith({
+          id: birthyearField.id,
+          bins: [18, 25, 35, 45, 55, 65, null],
+          counts: [100, 100, 100, 100, 100, 100],
+        });
       });
 
       it('does not allow saving if form incomplete', async () => {
@@ -310,7 +330,7 @@ describe('<Field />', () => {
           );
         });
 
-        expect(createReferenceDistribution).not.toHaveBeenCalled();
+        expect(mockAddReferenceDistribution).not.toHaveBeenCalled();
       });
 
       it.skip('clears correct filled out options after modifying bins', async () => {
@@ -352,6 +372,7 @@ describe('<Field />', () => {
     describe('with saved data', () => {
       beforeEach(() => {
         mockReferenceDistribution = {
+          isFetchedReferenceDistributionData: true,
           referenceDataUploaded: true,
           referenceDistribution: {
             type: 'binned_distribution',
@@ -404,14 +425,12 @@ describe('<Field />', () => {
           );
         });
 
-        expect(replaceReferenceDistribution).toHaveBeenCalledTimes(1);
-        expect(replaceReferenceDistribution).toHaveBeenCalledWith(
-          birthyearField,
-          {
-            bins: [18, 25, 35, 45, 65, null],
-            counts: [100, 100, 200, 100, 100],
-          }
-        );
+        expect(mockAddReferenceDistribution).toHaveBeenCalledTimes(1);
+        expect(mockAddReferenceDistribution).toHaveBeenCalledWith({
+          id: birthyearField.id,
+          bins: [18, 25, 35, 45, 65, null],
+          counts: [100, 100, 200, 100, 100],
+        });
       });
     });
   });
