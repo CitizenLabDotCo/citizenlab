@@ -40,7 +40,6 @@ describe XlsxExport::InputSheetGenerator do
                 'Comments',
                 'Likes',
                 'Dislikes',
-                'Budget',
                 'URL',
                 'Project',
                 'Status'
@@ -87,7 +86,6 @@ describe XlsxExport::InputSheetGenerator do
                 'Comments',
                 'Likes',
                 'Dislikes',
-                'Budget',
                 'URL',
                 'Project',
                 'Status',
@@ -109,7 +107,6 @@ describe XlsxExport::InputSheetGenerator do
                   1,
                   2,
                   1,
-                  ideation_response1.budget,
                   "http://example.org/ideas/#{ideation_response1.slug}",
                   participation_context.project.title_multiloc['en'],
                   ideation_response1.idea_status.title_multiloc['en'],
@@ -176,7 +173,6 @@ describe XlsxExport::InputSheetGenerator do
                   'Comments',
                   'Likes',
                   'Dislikes',
-                  'Budget',
                   'URL',
                   'Project',
                   'Status'
@@ -198,7 +194,6 @@ describe XlsxExport::InputSheetGenerator do
                     1,
                     2,
                     1,
-                    ideation_response1.budget,
                     "http://example.org/ideas/#{ideation_response1.slug}",
                     participation_context.project.title_multiloc['en'],
                     ideation_response1.idea_status.title_multiloc['en']
@@ -235,7 +230,6 @@ describe XlsxExport::InputSheetGenerator do
                   'Comments',
                   'Likes',
                   'Dislikes',
-                  'Budget',
                   'URL',
                   'Project',
                   'Status',
@@ -262,7 +256,6 @@ describe XlsxExport::InputSheetGenerator do
                     1,
                     2,
                     1,
-                    ideation_response1.budget,
                     "http://example.org/ideas/#{ideation_response1.slug}",
                     participation_context.project.title_multiloc['en'],
                     ideation_response1.idea_status.title_multiloc['en'],
@@ -473,65 +466,67 @@ describe XlsxExport::InputSheetGenerator do
 
         context 'voting method is multiple voting' do
           let(:participation_context) { create(:voting_phase, voting_method: 'multiple_voting') }
+
           it 'Generates an empty sheet with the correct columns' do
             # participation_context.update!(voting_method: 'multiple_voting')
             expect(xlsx).to eq([
-                                 {
-                                   sheet_name: 'My sheet',
-                                   column_headers: [
-                                     'ID',
-                                     'Title',
-                                     'Description',
-                                     'Attachments',
-                                     'Tags',
-                                     'Latitude',
-                                     'Longitude',
-                                     'Location',
-                                     'Proposed Budget',
-                                     'Submitted at',
-                                     'Published at',
-                                     'Comments',
-                                     'Participants',
-                                     'Votes',
-                                     'URL',
-                                     'Project',
-                                     'Status'
-                                   ],
-                                   rows: []
-                                 }
-                               ])
+              {
+                sheet_name: 'My sheet',
+                column_headers: [
+                  'ID',
+                  'Title',
+                  'Description',
+                  'Attachments',
+                  'Tags',
+                  'Latitude',
+                  'Longitude',
+                  'Location',
+                  'Proposed Budget',
+                  'Submitted at',
+                  'Published at',
+                  'Comments',
+                  'Participants',
+                  'Votes',
+                  'URL',
+                  'Project',
+                  'Status'
+                ],
+                rows: []
+              }
+            ])
           end
         end
 
         context 'voting method is budgeting' do
           let(:participation_context) { create(:voting_phase, voting_method: 'budgeting') }
+
           it 'Generates an empty sheet with the correct columns' do
             # participation_context.update!(voting_method: 'budgeting')
             expect(xlsx).to eq([
-                                 {
-                                   sheet_name: 'My sheet',
-                                   column_headers: [
-                                     'ID',
-                                     'Title',
-                                     'Description',
-                                     'Attachments',
-                                     'Tags',
-                                     'Latitude',
-                                     'Longitude',
-                                     'Location',
-                                     'Proposed Budget',
-                                     'Submitted at',
-                                     'Published at',
-                                     'Comments',
-                                     'Picks',
-                                     'Budget',
-                                     'URL',
-                                     'Project',
-                                     'Status'
-                                   ],
-                                   rows: []
-                                 }
-                               ])
+              {
+                sheet_name: 'My sheet',
+                column_headers: [
+                  'ID',
+                  'Title',
+                  'Description',
+                  'Attachments',
+                  'Tags',
+                  'Latitude',
+                  'Longitude',
+                  'Location',
+                  'Proposed Budget',
+                  'Submitted at',
+                  'Published at',
+                  'Comments',
+                  'Picks',
+                  'Budget',
+                  'URL',
+                  'Project',
+                  'Status'
+                ],
+                rows: []
+              }
+            ])
           end
         end
       end
@@ -572,9 +567,7 @@ describe XlsxExport::InputSheetGenerator do
                 'Submitted at',
                 'Published at',
                 'Comments',
-                'Picks',
                 'Votes',
-                'Budget',
                 'URL',
                 'Project',
                 'Status',
@@ -595,8 +588,6 @@ describe XlsxExport::InputSheetGenerator do
                   an_instance_of(DateTime), # published_at
                   1,
                   2,
-                  2,
-                  ideation_response1.budget,
                   "http://example.org/ideas/#{ideation_response1.slug}",
                   participation_context.project.title_multiloc['en'],
                   ideation_response1.idea_status.title_multiloc['en'],
@@ -668,9 +659,7 @@ describe XlsxExport::InputSheetGenerator do
                   'Submitted at',
                   'Published at',
                   'Comments',
-                  'Picks',
                   'Votes',
-                  'Budget',
                   'URL',
                   'Project',
                   'Status'
@@ -690,9 +679,7 @@ describe XlsxExport::InputSheetGenerator do
                     an_instance_of(DateTime), # created_at
                     an_instance_of(DateTime), # published_at
                     1,
-                    2,
                     4,
-                    ideation_response1.budget,
                     "http://example.org/ideas/#{ideation_response1.slug}",
                     participation_context.project.title_multiloc['en'],
                     ideation_response1.idea_status.title_multiloc['en']
@@ -727,9 +714,7 @@ describe XlsxExport::InputSheetGenerator do
                   'Submitted at',
                   'Published at',
                   'Comments',
-                  'Picks',
                   'Votes',
-                  'Budget',
                   'URL',
                   'Project',
                   'Status',
@@ -754,9 +739,7 @@ describe XlsxExport::InputSheetGenerator do
                     an_instance_of(DateTime), # created_at
                     an_instance_of(DateTime), # published_at
                     1,
-                    2,
                     4,
-                    ideation_response1.budget,
                     "http://example.org/ideas/#{ideation_response1.slug}",
                     participation_context.project.title_multiloc['en'],
                     ideation_response1.idea_status.title_multiloc['en'],
