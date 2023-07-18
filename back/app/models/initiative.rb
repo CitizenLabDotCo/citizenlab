@@ -140,10 +140,11 @@ class Initiative < ApplicationRecord
       .order(:created_at).pluck(:created_at).last
   end
 
-  def approval_required?
-    require_approval = AppConfiguration.instance.settings('initiatives', 'require_approval')
+  def self.approval_required?
+    app_config = AppConfiguration.instance
+    require_approval = app_config.settings('initiatives', 'require_approval')
 
-    AppConfiguration.instance.feature_activated?('initiative_approval') && require_approval == true
+    app_config.feature_activated?('initiative_approval') && require_approval
   end
 
   private
@@ -176,12 +177,8 @@ class Initiative < ApplicationRecord
   end
 
   def initialize_initiative_status_changes
-    initial_status = if approval_required?
-      InitiativeStatus.find_by(code: 'approval_pending')
-    else
-      InitiativeStatus.find_by(code: 'proposed')
-    end
-
+    initial_status_code = self.class.approval_required? ? 'approval_pending' : 'proposed'
+    initial_status = InitiativeStatus.find_by(code: initial_status_code)
     return unless initial_status && initiative_status_changes.empty? && !draft?
 
     initiative_status_changes.build(initiative_status: initial_status)

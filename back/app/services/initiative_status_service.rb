@@ -115,9 +115,9 @@ class InitiativeStatusService
 
   def manual_status_ids
     statuses = InitiativeStatus.where(code: MANUAL_TRANSITIONS.values.map(&:keys).flatten.uniq)
-    statuses = statuses.where.not(code: 'proposed') unless Initiative.new.approval_required?
+    statuses = statuses.where.not(code: 'proposed') unless Initiative.approval_required?
 
-    statuses.map(&:id)
+    statuses.ids
   end
 
   def log_status_change(change, user: nil)
