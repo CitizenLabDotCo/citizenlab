@@ -33,4 +33,9 @@ export default defineMessages({
     defaultMessage:
       'You have already submitted your budget. Click "Modify your budget" to change your budget.',
   },
+  basketAlreadySubmittedIdeaPage: {
+    id: 'app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage',
+    defaultMessage:
+      'You have already submitted your budget. To change your budget, go back to the project page and click "Modify your budget".',
+  },
 });

@@ -43,12 +43,14 @@ interface Props {
   ideaId: string;
   participationContext: IPhaseData | IProjectData;
   buttonStyle: 'primary' | 'primary-outlined';
+  onIdeaPage?: boolean;
 }
 
 const AddToBasketButton = ({
   ideaId,
   buttonStyle,
   participationContext,
+  onIdeaPage,
 }: Props) => {
   const { data: appConfig } = useAppConfiguration();
   const { data: idea } = useIdeaById(ideaId);
@@ -136,7 +138,9 @@ const AddToBasketButton = ({
   const currency = appConfig?.data.attributes.settings.core.currency;
 
   const disabledMessage = basket?.data.attributes.submitted_at
-    ? messages.basketAlreadySubmitted
+    ? onIdeaPage
+      ? messages.basketAlreadySubmittedIdeaPage
+      : messages.basketAlreadySubmitted
     : undefined;
 
   const disabledExplanation = disabledMessage
