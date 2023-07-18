@@ -87,7 +87,7 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
     phase?.attributes.baskets_count || project?.attributes.baskets_count;
 
   return (
-    <Box boxShadow={defaultStyles.boxShadow}>
+    <Box boxShadow={defaultStyles.boxShadow} id="e2e-voting-status">
       <Title variant="h2" style={{ fontWeight: 600 }}>
         {config?.getStatusTitle &&
           formatMessage(config.getStatusHeader(basketStatus))}
@@ -150,6 +150,7 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
               borderColor={colors.grey400}
               icon="edit"
               mt="16px"
+              id="e2e-modify-votes"
               onClick={() => {
                 unsubmitBasket(
                   basket?.data.id,
