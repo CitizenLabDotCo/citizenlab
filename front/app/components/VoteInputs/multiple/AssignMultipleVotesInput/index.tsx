@@ -106,21 +106,6 @@ const AssignMultipleVotesInput = ({
 
       return;
     }
-
-    // Emit errors if maximum allowance exceeded
-    // if (votingMax && basketTotal) {
-    //   if (
-    //     basketTotal - initialVotes.current + (localVotes.current + 1) >
-    //     votingMax
-    //   ) {
-    //     eventEmitter.emit(VOTES_EXCEEDED_ERROR_EVENT);
-    //     return;
-    //   }
-    //   if (votingPerOptionMax && localVotes.current + 1 > votingPerOptionMax) {
-    //     eventEmitter.emit(VOTES_PER_OPTION_EXCEEDED_ERROR_EVENT);
-    //     return;
-    //   }
-    // }
   };
 
   const onRemove = async (event) => {
@@ -135,13 +120,17 @@ const AssignMultipleVotesInput = ({
   if (
     !actionDescriptor ||
     budgetingDisabledReason === 'idea_not_in_current_phase' ||
-    votes === undefined
+    votes === undefined ||
+    votes === null
   ) {
     return null;
   }
 
-  const { voting_term_singular_multiloc, voting_term_plural_multiloc } =
-    participationContext.attributes;
+  const {
+    voting_term_singular_multiloc,
+    voting_term_plural_multiloc,
+    voting_max_votes_per_idea,
+  } = participationContext.attributes;
 
   const votingTermSingular =
     localize(voting_term_singular_multiloc) ||
@@ -151,9 +140,10 @@ const AssignMultipleVotesInput = ({
     formatMessage(messages.votes).toLowerCase();
 
   const basketSubmitted = !!basket?.data?.attributes.submitted_at;
-  const disableAddingVote = !userHasVotesLeft || basketSubmitted;
+  const maxVotesPerIdeaReached = votes === voting_max_votes_per_idea;
 
-  if (votes === null) return null;
+  const disableAddingVote =
+    !userHasVotesLeft || basketSubmitted || maxVotesPerIdeaReached;
 
   if (votes > 0) {
     return (
@@ -219,7 +209,7 @@ const AssignMultipleVotesInput = ({
   return (
     <Button
       buttonStyle="primary-outlined"
-      disabled={!!basket?.data?.attributes.submitted_at || !userHasVotesLeft}
+      disabled={disableAddingVote}
       processing={isProcessing}
       icon="vote-ballot"
       width="100%"
