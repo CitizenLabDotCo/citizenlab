@@ -48,6 +48,28 @@ export default defineMessages({
     id: 'app.containers.InitiativesShow.VoteControl.ineligibleStatusExplanationBold',
     defaultMessage: 'to be eligible',
   },
+  approvalPendingStatusExplanationBold: {
+    id: 'app.containers.InitiativesShow.VoteControl.approvalPendingStatusExplanationBold',
+    defaultMessage:
+      'The city received this proposal and will now need to approve it.',
+  },
+  approvalPendingStatusExplanationSentenceTwo: {
+    id: 'app.containers.InitiativesShow.VoteControl.approvalPendingStatusExplanationSentenceTwo',
+    defaultMessage: "You will receive an email once it's approved.",
+  },
+  approvalPendingStatusExplanationSentenceThree: {
+    id: 'app.containers.InitiativesShow.VoteControl.approvalPendingStatusExplanationSentenceThree',
+    defaultMessage: "The proposal can't be shared until it's approved.",
+  },
+  approvalRejectedStatusExplanationBold: {
+    id: 'app.containers.InitiativesShow.VoteControl.approvalRejectedStatusExplanationBold',
+    defaultMessage: 'The city rejected this proposal.',
+  },
+  approvalRejectedStatusExplanationSentenceTwo: {
+    id: 'app.containers.InitiativesShow.VoteControl.approvalRejectedStatusExplanationSentenceTwo',
+    defaultMessage:
+      'Check the official update on your proposal for next steps.',
+  },
   expiredStatusExplanation: {
     id: 'app.containers.InitiativesShow.VoteControl.expiredStatusExplanation',
     defaultMessage:
