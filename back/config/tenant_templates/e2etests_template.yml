@@ -43,6 +43,18 @@ models:
       color: '#04884C'
       description_multiloc: idea_statuses.implemented_description
   initiative_status:
+    - &approval_pending
+      title_multiloc: initiative_statuses.approval_pending
+      ordering: 100
+      code: approval_pending
+      color: '#CC9331'
+      description_multiloc: initiative_statuses.approval_pending_description
+    - &approval_rejected
+      title_multiloc: initiative_statuses.approval_rejected
+      ordering: 100
+      code: approval_rejected
+      color: '#CC317E'
+      description_multiloc: initiative_statuses.approval_rejected_description
     - &initiative_proposed
       title_multiloc: initiative_statuses.proposed
       ordering: 100
