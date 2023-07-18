@@ -85,12 +85,41 @@ describe InitiativeStatusService do
       expect(service.transition_type(@status_ineligible)).to eq 'manual'
     end
 
-    # it 'labels the proposed status as manual' do
-    #   expect(service.transition_type(@status_proposed)).to eq 'manual'
-    # end
+    it 'labels the approval_pending status as automatic' do
+      expect(service.transition_type(@status_approval_pending)).to eq 'automatic'
+    end
 
     it 'labels the approval_rejected status as manual' do
       expect(service.transition_type(@status_approval_rejected)).to eq 'manual'
+    end
+
+    context 'when approval feature is fully activated' do
+      before do
+        SettingsService.new.activate_feature! 'initiative_approval'
+
+        configuration = AppConfiguration.instance
+        configuration.settings['initiatives'] = {
+          enabled: true,
+          allowed: true,
+          require_approval: true, # This is also required to activate the feature
+          reacting_threshold: 2,
+          days_limit: 20,
+          threshold_reached_message: { 'en' => 'Threshold reached' },
+          eligibility_criteria: { 'en' => 'Eligibility criteria' }
+        }
+        configuration.save!
+      end
+
+      it 'labels the proposed status as manual' do
+        expect(service.transition_type(@status_proposed)).to eq 'manual'
+      end
+    end
+
+    context 'when approval feature is not fully activated' do
+      it 'labels the proposed status as automatic' do
+        expect(Initiative.approval_required?).to be false
+        expect(service.transition_type(@status_proposed)).to eq 'automatic'
+      end
     end
   end
 end
