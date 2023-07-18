@@ -78,7 +78,7 @@ class Project < ApplicationRecord
   has_many :text_images, as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :text_images
   has_many :project_files, -> { order(:ordering) }, dependent: :destroy
-  has_many :followers, dependent: :destroy
+  has_many :followers, as: :followable, dependent: :destroy
 
   before_validation :generate_slug, on: :create
   before_validation :sanitize_description_multiloc, if: :description_multiloc

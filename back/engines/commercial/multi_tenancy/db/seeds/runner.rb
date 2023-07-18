@@ -12,6 +12,7 @@ require_relative 'custom_fields'
 require_relative 'custom_forms'
 require_relative 'custom_maps'
 require_relative 'email_campaign_examples'
+require_relative 'followers'
 require_relative 'groups'
 require_relative 'home_pages'
 require_relative 'ideas'
@@ -126,6 +127,7 @@ module MultiTenancy
         MultiTenancy::Seeds::Volunteers.new(runner: self).run
         MultiTenancy::Seeds::CustomMaps.new(runner: self).run
         MultiTenancy::Seeds::Analytics.new(runner: self).run
+        MultiTenancy::Seeds::Followers.new(runner: self).run
       end
 
       # @return [Array[String]] default seed locales
