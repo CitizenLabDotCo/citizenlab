@@ -5,16 +5,18 @@ import useProjectById from '../api/projects/useProjectById';
 import usePhases from '../api/phases/usePhase';
 
 export default function usePostManagerColumnFilter(
-  selectedProject?: string | null,
-  selectedPhase?: string | null
+  selectedProjectId?: string | null,
+  selectedPhaseId?: string | null
 ) {
   const project = useProjectById(
-    selectedProject === undefined ? null : selectedProject
+    selectedProjectId === undefined ? null : selectedProjectId
   );
-  const phase = usePhases(selectedPhase === undefined ? null : selectedPhase);
+  const phase = usePhases(
+    selectedPhaseId === undefined ? null : selectedPhaseId
+  );
 
   const displayColumns = useMemo(() => {
-    const attributes = selectedPhase
+    const attributes = selectedPhaseId
       ? phase.data?.data.attributes
       : project.data?.data.attributes;
     if (attributes) {
@@ -49,7 +51,7 @@ export default function usePostManagerColumnFilter(
       'down',
       'published_on',
     ]);
-  }, [selectedPhase, project, phase]);
+  }, [selectedPhaseId, project, phase]);
 
   return displayColumns;
 }

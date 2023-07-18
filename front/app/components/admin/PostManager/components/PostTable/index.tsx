@@ -86,8 +86,8 @@ interface Props {
   posts?: IIdeaData[] | IInitiativeData[];
   phases?: IPhaseData[];
   statuses?: IIdeaStatusData[] | IInitiativeStatusData[];
-  selectedPhase?: string | null;
-  selectedProject?: string | null;
+  selectedPhaseId?: string | null;
+  selectedProjectId?: string | null;
   onChangeSort?: (sort: IdeasSort | InitiativesSort) => void;
   /** A set of ids of ideas/initiatives that are currently selected */
   selection: Set<string>;
@@ -179,8 +179,8 @@ export default class PostTable extends React.Component<Props> {
       phases,
       activeFilterMenu,
       statuses,
-      selectedProject,
-      selectedPhase,
+      selectedProjectId,
+      selectedPhaseId,
       handleSeeAll,
       openPreview,
     } = this.props;
@@ -205,8 +205,8 @@ export default class PostTable extends React.Component<Props> {
             />
           ) : type === 'AllIdeas' || type === 'ProjectIdeas' ? (
             <IdeaHeaderRow
-              selectedProject={selectedProject}
-              selectedPhase={selectedPhase}
+              selectedProjectId={selectedProjectId}
+              selectedPhaseId={selectedPhaseId}
               sortAttribute={sortAttribute}
               sortDirection={sortDirection}
               allSelected={this.allSelected()}
@@ -231,8 +231,8 @@ export default class PostTable extends React.Component<Props> {
                         post={post}
                         phases={phases}
                         statuses={statuses}
-                        selectedProject={selectedProject}
-                        selectedPhase={selectedPhase}
+                        selectedProjectId={selectedProjectId}
+                        selectedPhaseId={selectedPhaseId}
                         onUnselect={this.unselect(post.id)}
                         onToggleSelect={this.toggleSelect(post.id)}
                         onSingleSelect={this.singleSelect(post.id)}

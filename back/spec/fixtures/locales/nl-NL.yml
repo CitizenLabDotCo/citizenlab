@@ -60,5 +60,5 @@ nl:
         option:
           title: Wat is je optie?
   voting_method:
-    default_voting_term_singular: Stem
-    default_voting_term_plural: Stemmen
+    default_voting_term_singular: stem
+    default_voting_term_plural: stemmen
