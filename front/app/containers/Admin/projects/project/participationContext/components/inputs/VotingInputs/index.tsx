@@ -127,6 +127,21 @@ export default ({
             />
           </Warning>
         </Box>
+        <SectionField>
+          <SubSectionTitleWithDescription>
+            <FormattedMessage {...messages.optionsToVoteOn} />
+          </SubSectionTitleWithDescription>
+          <FormattedMessage
+            {...messages.optionsToVoteOnDescription}
+            values={{
+              optionsPageLink: (
+                <Link to={`${pathname}/ideas`} rel="noreferrer">
+                  <FormattedMessage {...messages.optionsPageText} />
+                </Link>
+              ),
+            }}
+          />
+        </SectionField>
         {voting_method === 'budgeting' && (
           <BudgetingInputs
             voting_min_total={voting_min_total}
@@ -137,23 +152,6 @@ export default ({
             handleMinBudgetingAmountChange={handleVotingMinTotalChange}
             handleMaxBudgetingAmountChange={handleVotingMaxTotalChange}
           />
-        )}
-        {voting_method !== 'budgeting' && (
-          <SectionField>
-            <SubSectionTitleWithDescription>
-              <FormattedMessage {...messages.optionsToVoteOn} />
-            </SubSectionTitleWithDescription>
-            <FormattedMessage
-              {...messages.optionsToVoteOnDescription}
-              values={{
-                optionsPageLink: (
-                  <Link to={`${pathname}/ideas`} rel="noreferrer">
-                    <FormattedMessage {...messages.optionsPageText} />
-                  </Link>
-                ),
-              }}
-            />
-          </SectionField>
         )}
         {voting_method === 'multiple_voting' && (
           <MultipleVotingInputs
