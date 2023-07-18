@@ -8,6 +8,7 @@ import {
   colors,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
+import Tippy from '@tippyjs/react';
 
 // api
 import useBasket from 'api/baskets/useBasket';
@@ -32,6 +33,10 @@ import { useSearchParams } from 'react-router-dom';
 // utils
 import { isNil } from 'utils/helperUtils';
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import {
+  getMinusButtonDisabledMessage,
+  getPlusButtonDisabledMessage,
+} from './utils';
 
 // typings
 import { IPhaseData } from 'api/phases/types';
@@ -121,7 +126,8 @@ const AssignMultipleVotesInput = ({
     !actionDescriptor ||
     budgetingDisabledReason === 'idea_not_in_current_phase' ||
     votes === undefined ||
-    votes === null
+    votes === null ||
+    userHasVotesLeft === undefined
   ) {
     return null;
   }
@@ -131,6 +137,8 @@ const AssignMultipleVotesInput = ({
     voting_term_plural_multiloc,
     voting_max_votes_per_idea,
   } = participationContext.attributes;
+
+  if (isNil(voting_max_votes_per_idea)) return null;
 
   const votingTermSingular =
     localize(voting_term_singular_multiloc) ||
@@ -142,8 +150,24 @@ const AssignMultipleVotesInput = ({
   const basketSubmitted = !!basket?.data?.attributes.submitted_at;
   const maxVotesPerIdeaReached = votes === voting_max_votes_per_idea;
 
-  const disableAddingVote =
-    !userHasVotesLeft || basketSubmitted || maxVotesPerIdeaReached;
+  const minusButtonDisabledMessage =
+    getMinusButtonDisabledMessage(basketSubmitted);
+
+  const plusButtonDisabledMessage = getPlusButtonDisabledMessage(
+    userHasVotesLeft,
+    basketSubmitted,
+    maxVotesPerIdeaReached
+  );
+
+  const minusButtonDisabledExplanation = minusButtonDisabledMessage
+    ? formatMessage(minusButtonDisabledMessage)
+    : undefined;
+
+  const plusButtonDisabledExplanation = plusButtonDisabledMessage
+    ? formatMessage(plusButtonDisabledMessage, {
+        maxVotes: voting_max_votes_per_idea,
+      })
+    : undefined;
 
   if (votes > 0) {
     return (
@@ -154,15 +178,24 @@ const AssignMultipleVotesInput = ({
         style={{ cursor: 'default' }}
         flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
       >
-        <Button
-          mr="8px"
-          bgColor={theme.colors.tenantPrimary}
-          onClick={onRemove}
-          ariaLabel={formatMessage(messages.removeVote)}
-          disabled={basketSubmitted}
+        <Tippy
+          disabled={!minusButtonDisabledExplanation}
+          interactive={true}
+          placement="bottom"
+          content={minusButtonDisabledExplanation}
         >
-          <h1 style={{ margin: '0px' }}>-</h1>
-        </Button>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <Button
+              mr="8px"
+              bgColor={theme.colors.tenantPrimary}
+              onClick={onRemove}
+              ariaLabel={formatMessage(messages.removeVote)}
+              disabled={!!minusButtonDisabledExplanation}
+            >
+              <h1 style={{ margin: '0px' }}>-</h1>
+            </Button>
+          </div>
+        </Tippy>
 
         <Box
           onClick={(event) => {
@@ -193,15 +226,24 @@ const AssignMultipleVotesInput = ({
             }).toLowerCase()}
           </Text>
         </Box>
-        <Button
-          ariaLabel={formatMessage(messages.addVote)}
-          disabled={disableAddingVote}
-          ml="8px"
-          bgColor={theme.colors.tenantPrimary}
-          onClick={onAdd}
+        <Tippy
+          disabled={!plusButtonDisabledExplanation}
+          interactive={true}
+          placement="bottom"
+          content={plusButtonDisabledExplanation}
         >
-          <h1 style={{ margin: '0px' }}>+</h1>
-        </Button>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <Button
+              ariaLabel={formatMessage(messages.addVote)}
+              disabled={!!plusButtonDisabledExplanation}
+              ml="8px"
+              bgColor={theme.colors.tenantPrimary}
+              onClick={onAdd}
+            >
+              <h1 style={{ margin: '0px' }}>+</h1>
+            </Button>
+          </div>
+        </Tippy>
       </Box>
     );
   }
@@ -209,7 +251,7 @@ const AssignMultipleVotesInput = ({
   return (
     <Button
       buttonStyle="primary-outlined"
-      disabled={disableAddingVote}
+      disabled={!!plusButtonDisabledExplanation}
       processing={isProcessing}
       icon="vote-ballot"
       width="100%"

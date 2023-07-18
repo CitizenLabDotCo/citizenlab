@@ -136,7 +136,7 @@ export default defineMessages({
       'You can add a maximum number of {maxVotes} votes per option.',
   },
   cumulativeVotingInstructionsOnceYouAreDone: {
-    id: 'app.utils.votingMethodUtils.budgetingSubmissionInstructionsOnceYouAreDone',
+    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsOnceYouAreDone',
     defaultMessage: 'Once you are done, click “Submit” to cast your vote.',
   },
   multipleVotingEnded: {
