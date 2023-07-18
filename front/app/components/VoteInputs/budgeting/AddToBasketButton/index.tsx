@@ -8,9 +8,10 @@ import useVoting from 'api/baskets_ideas/useVoting';
 
 // components
 import { Button, Icon } from '@citizenlab/cl2-component-library';
+import Tippy from '@tippyjs/react';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // styling
@@ -52,6 +53,7 @@ const AddToBasketButton = ({
   const { data: appConfig } = useAppConfiguration();
   const { data: idea } = useIdeaById(ideaId);
   const { getVotes, setVotes, numberOfVotesCast } = useVoting();
+  const { formatMessage } = useIntl();
 
   const basketId = participationContext.relationships?.user_basket?.data?.id;
   const { data: basket } = useBasket(basketId);
@@ -133,26 +135,43 @@ const AddToBasketButton = ({
   const buttonEnabled = isButtonEnabled(basket, actionDescriptor);
   const currency = appConfig?.data.attributes.settings.core.currency;
 
+  const disabledMessage = basket?.data.attributes.submitted_at
+    ? messages.basketAlreadySubmitted
+    : undefined;
+
+  const disabledExplanation = disabledMessage
+    ? formatMessage(disabledMessage)
+    : undefined;
+
   return (
-    <Button
-      onClick={handleAddRemoveButtonClick}
-      disabled={!buttonEnabled}
-      buttonStyle={buttonStyle}
-      processing={isProcessing}
-      bgColor={ideaInBasket ? colors.green500 : undefined}
-      textColor={ideaInBasket ? colors.white : undefined}
-      textHoverColor={ideaInBasket ? colors.white : undefined}
-      bgHoverColor={ideaInBasket ? colors.green500 : undefined}
-      borderColor={ideaInBasket ? colors.success : undefined}
-      width="100%"
-      className={`e2e-assign-budget-button ${
-        ideaInBasket ? 'in-basket' : 'not-in-basket'
-      }`}
+    <Tippy
+      disabled={!disabledExplanation}
+      interactive={true}
+      placement="bottom"
+      content={disabledExplanation}
     >
-      {ideaInBasket && <Icon mb="4px" fill="white" name="check" />}
-      <FormattedMessage {...buttonMessage} />
-      {` (${ideaBudget} ${currency})`}
-    </Button>
+      <div>
+        <Button
+          onClick={handleAddRemoveButtonClick}
+          disabled={!buttonEnabled}
+          buttonStyle={buttonStyle}
+          processing={isProcessing}
+          bgColor={ideaInBasket ? colors.green500 : undefined}
+          textColor={ideaInBasket ? colors.white : undefined}
+          textHoverColor={ideaInBasket ? colors.white : undefined}
+          bgHoverColor={ideaInBasket ? colors.green500 : undefined}
+          borderColor={ideaInBasket ? colors.success : undefined}
+          width="100%"
+          className={`e2e-assign-budget-button ${
+            ideaInBasket ? 'in-basket' : 'not-in-basket'
+          }`}
+        >
+          {ideaInBasket && <Icon mb="4px" fill="white" name="check" />}
+          <FormattedMessage {...buttonMessage} />
+          {` (${ideaBudget} ${currency})`}
+        </Button>
+      </div>
+    </Tippy>
   );
 };
 

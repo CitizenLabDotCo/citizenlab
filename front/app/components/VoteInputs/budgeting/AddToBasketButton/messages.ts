@@ -28,4 +28,9 @@ export default defineMessages({
     id: 'app.components.VoteControl.budgetingNotVerified',
     defaultMessage: 'Please {verifyAccountLink} to continue.',
   },
+  basketAlreadySubmitted: {
+    id: 'app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmitted',
+    defaultMessage:
+      'You have already submitted your budget. Click "Modify your budget" to change your budget.',
+  },
 });
