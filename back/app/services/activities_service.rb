@@ -50,9 +50,11 @@ class ActivitiesService
   end
 
   def create_phase_ending_soon_activities(now)
-    Phase.published.where(end_at: now..now + 2.days).each do |phase|
-      if Activity.find_by(item: phase, action: 'ending_soon').nil?
-        LogActivityJob.perform_later(phase, 'ending_soon', nil, now.to_i)
+    if now.hour >= 8 && now.hour <= 20 # Only log activities during day time so they emails are more likely to be noticed
+      Phase.published.where(end_at: now..now + 2.days).each do |phase|
+        if Activity.find_by(item: phase, action: 'ending_soon').nil?
+          LogActivityJob.perform_later(phase, 'ending_soon', nil, now.to_i)
+        end
       end
     end
   end

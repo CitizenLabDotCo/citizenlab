@@ -77,8 +77,8 @@ export type IdeaHeaderCellComponentProps = {
 };
 
 interface Props {
-  selectedProject?: string | null;
-  selectedPhase?: string | null;
+  selectedProjectId?: string | null;
+  selectedPhaseId?: string | null;
   sortAttribute?: IdeasSortAttribute;
   sortDirection?: SortDirection;
   allSelected: boolean;
@@ -87,8 +87,8 @@ interface Props {
 }
 
 export default ({
-  selectedProject,
-  selectedPhase,
+  selectedProjectId,
+  selectedPhaseId,
   sortAttribute,
   sortDirection,
   allSelected,
@@ -206,7 +206,7 @@ export default ({
       ) => {
         return (
           <SortableHeaderCell {...props} sortAttributeName="likes_count">
-            <FormattedMessage {...messages.up} />
+            <FormattedMessage {...messages.likes} />
           </SortableHeaderCell>
         );
       },
@@ -220,7 +220,7 @@ export default ({
       ) => {
         return (
           <SortableHeaderCell {...props} sortAttributeName="dislikes_count">
-            <FormattedMessage {...messages.down} />
+            <FormattedMessage {...messages.dislikes} />
           </SortableHeaderCell>
         );
       },
@@ -242,8 +242,8 @@ export default ({
   ]);
 
   const displayColumns = usePostManagerColumnFilter(
-    selectedProject,
-    selectedPhase
+    selectedProjectId,
+    selectedPhaseId
   );
 
   const totalWidth = cells.reduce((acc, cell) => {

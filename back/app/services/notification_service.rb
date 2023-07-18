@@ -43,7 +43,7 @@ class NotificationService
     Notifications::VotingBasketSubmitted,
     Notifications::VotingBasketNotSubmitted,
     Notifications::VotingLastChance,
-    Notifications::VotingResults
+    Notifications::VotingResultsPublished
   ].freeze
 
   def notification_classes

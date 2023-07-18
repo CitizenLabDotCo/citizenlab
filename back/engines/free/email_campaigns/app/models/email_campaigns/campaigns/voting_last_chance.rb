@@ -73,8 +73,7 @@ module EmailCampaigns
           project_url: Frontend::UrlService.new.model_to_url(project, locale: recipient.locale),
           phase_title_multiloc: phase.title_multiloc,
           project_title_multiloc: project.title_multiloc
-        },
-        delay: 8.hours.to_i
+        }
       }]
     end
   end

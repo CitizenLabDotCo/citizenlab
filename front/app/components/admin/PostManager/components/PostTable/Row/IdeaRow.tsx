@@ -47,8 +47,8 @@ type Props = {
   idea: IIdeaData;
   phases?: IPhaseData[];
   statuses?: IIdeaStatusData[];
-  selectedPhase?: string | null;
-  selectedProject?: string | null;
+  selectedPhaseId?: string | null;
+  selectedProjectId?: string | null;
   /** A set of ids of ideas/initiatives that are currently selected */
   selection: Set<string>;
   activeFilterMenu: TFilterMenu;
@@ -72,8 +72,8 @@ const IdeaRow = ({
   activeFilterMenu,
   phases,
   statuses,
-  selectedPhase,
-  selectedProject,
+  selectedPhaseId,
+  selectedProjectId,
   idea,
   selection,
   locale,
@@ -121,42 +121,36 @@ const IdeaRow = ({
     },
     {
       name: 'votes',
-      cellProps: { singleLine: true },
       Component: ({ idea }: IdeaCellComponentProps) => {
         return <>{idea.attributes.votes_count}</>;
       },
     },
     {
       name: 'picks',
-      cellProps: { singleLine: true },
       Component: ({ idea }: IdeaCellComponentProps) => {
         return <>{idea.attributes.baskets_count}</>;
       },
     },
     {
       name: 'participants',
-      cellProps: { singleLine: true },
       Component: ({ idea }: IdeaCellComponentProps) => {
         return <>{idea.attributes.baskets_count}</>;
       },
     },
     {
       name: 'budget',
-      cellProps: { singleLine: true },
       Component: ({ idea }: IdeaCellComponentProps) => {
         return <FormattedBudget value={idea.attributes.budget || 0} />;
       },
     },
     {
       name: 'comments',
-      cellProps: { singleLine: true },
       Component: ({ idea }: IdeaCellComponentProps) => {
         return <>{idea.attributes.comments_count}</>;
       },
     },
     {
       name: 'up',
-      cellProps: { singleLine: true },
       Component: ({ idea }) => {
         return (
           <>
@@ -168,7 +162,6 @@ const IdeaRow = ({
     },
     {
       name: 'down',
-      cellProps: { singleLine: true },
       Component: ({ idea }: IdeaCellComponentProps) => {
         return (
           <>
@@ -301,8 +294,8 @@ const IdeaRow = ({
   const projectId = idea.relationships.project.data.id;
   const selectedStatus = idea.relationships.idea_status.data.id;
   const displayColumns = usePostManagerColumnFilter(
-    selectedProject,
-    selectedPhase
+    selectedProjectId,
+    selectedPhaseId
   );
 
   const renderCell = (
