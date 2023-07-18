@@ -419,21 +419,19 @@ const singleVotingConfig: VotingMethodConfig = {
     const totalVotes = participationContext?.attributes.voting_max_total;
 
     if (submissionState === 'hasNotSubmitted') {
-      if (totalVotes) {
-        if (totalVotes > 1) {
-          return (
-            <FormattedMessage
-              values={{
-                b: (chunks) => (
-                  <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
-                ),
-                totalVotes: participationContext?.attributes.voting_max_total,
-              }}
-              {...messages.singleVotingMultipleVotesInstructions}
-            />
-          );
-        }
-        return (
+      const youCanVoteMessage = totalVotes
+        ? totalVotes > 1
+          ? messages.singleVotingMultipleVotesYouCanVote
+          : messages.singleVotingOneVoteYouCanVote
+        : messages.singleVotingUnlimitedVotesYouCanVote;
+
+      const preferredOptionMessage =
+        totalVotes === 1
+          ? messages.singleVotingPreferredOption
+          : messages.singleVotingPreferredOptions;
+
+      return (
+        <>
           <FormattedMessage
             values={{
               b: (chunks) => (
@@ -441,12 +439,17 @@ const singleVotingConfig: VotingMethodConfig = {
               ),
               totalVotes: participationContext?.attributes.voting_max_total,
             }}
-            {...messages.singleVotingOneVoteInstructions}
+            {...youCanVoteMessage}
           />
-        );
-      }
-      return (
-        <FormattedMessage {...messages.singleVotingInstructionsUnlimited} />
+          <ul>
+            <li>
+              <FormattedMessage {...preferredOptionMessage} />
+            </li>
+            <li>
+              <FormattedMessage {...messages.singleVotingOnceYouAreDone} />
+            </li>
+          </ul>
+        </>
       );
     }
     if (submissionState === 'hasSubmitted') {
