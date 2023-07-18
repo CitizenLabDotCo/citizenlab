@@ -19,7 +19,7 @@ describe InitiativeStatusService do
       }
       configuration.save!
 
-      @status_approval_required = create(:initiative_status_approval_required)
+      @status_pending_approval = create(:initiative_status_pending_approval)
       @status_proposed = create(:initiative_status_proposed)
       @status_expired = create(:initiative_status_expired)
       @status_threshold_reached = create(:initiative_status_threshold_reached)
@@ -67,7 +67,7 @@ describe InitiativeStatusService do
 
   describe 'transition_type' do
     before do
-      @status_approval_required = create(:initiative_status_approval_required)
+      @status_pending_approval = create(:initiative_status_pending_approval)
       @status_proposed = create(:initiative_status_proposed)
       @status_expired = create(:initiative_status_expired)
       @status_threshold_reached = create(:initiative_status_threshold_reached)

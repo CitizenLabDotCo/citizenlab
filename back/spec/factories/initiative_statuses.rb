@@ -18,9 +18,9 @@ FactoryBot.define do
       }
     end
 
-    factory :initiative_status_approval_required do
-      code { 'approval_required' }
-      title_multiloc { { 'en' => 'approval_required' } }
+    factory :initiative_status_pending_approval do
+      code { 'pending_approval' }
+      title_multiloc { { 'en' => 'pending_approval' } }
     end
 
     factory :initiative_status_proposed do

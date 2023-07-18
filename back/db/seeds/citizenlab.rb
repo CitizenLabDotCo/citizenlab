@@ -252,11 +252,11 @@ end
 # Creates initiative statuses.
 [
   {
-    title_multiloc: 'initiative_statuses.approval_required',
+    title_multiloc: 'initiative_statuses.pending_approval',
     ordering: 100,
-    code: 'approval_required',
+    code: 'pending_approval',
     color: '#687782',
-    description_multiloc: 'initiative_statuses.approval_required_description'
+    description_multiloc: 'initiative_statuses.pending_approval_description'
   },
   {
     title_multiloc: 'initiative_statuses.proposed',

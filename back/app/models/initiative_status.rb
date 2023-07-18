@@ -14,7 +14,7 @@
 #  updated_at           :datetime         not null
 #
 class InitiativeStatus < ApplicationRecord
-  CODES = %w[approval_required proposed expired threshold_reached answered ineligible custom]
+  CODES = %w[pending_approval proposed expired threshold_reached answered ineligible custom]
 
   has_many :initiative_status_changes, dependent: :nullify
   has_many :initiative_initiative_statuses
