@@ -138,7 +138,7 @@ const budgetingConfig: VotingMethodConfig = {
                 {...messages.budgetingSubmissionInstructionsPreferredOptions}
               />
             </li>
-            {minBudget && (
+            {typeof minBudget === 'number' && minBudget > 0 ? (
               <li>
                 <FormattedMessage
                   {...messages.budgetingSubmissionInstructionsMinBudget}
@@ -148,7 +148,7 @@ const budgetingConfig: VotingMethodConfig = {
                   }}
                 />
               </li>
-            )}
+            ) : null}
             <li>
               <FormattedMessage
                 {...messages.budgetingSubmissionInstructionsOnceYouAreDone}
