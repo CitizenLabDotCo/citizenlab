@@ -991,7 +991,7 @@
   "app.containers.InitiativesShow.VoteControl.approvalPendingStatusExplanationSentenceThree": "The proposal can't be shared until it's approved.",
   "app.containers.InitiativesShow.VoteControl.approvalPendingStatusExplanationSentenceTwo": "You will receive an email once it's approved.",
   "app.containers.InitiativesShow.VoteControl.approvalRejectedStatusExplanationBold": "The city rejected this proposal.",
-  "app.containers.InitiativesShow.VoteControl.approvalRejectedStatusExplanationSentenceTwo": "Check the official update on your proposal for next steps.",
+  "app.containers.InitiativesShow.VoteControl.approvalRejectedStatusExplanationSentenceTwo": "Check the official update for an explanation of this decision.",
   "app.containers.InitiativesShow.VoteControl.cancelVote": "Cancel vote",
   "app.containers.InitiativesShow.VoteControl.days": "days",
   "app.containers.InitiativesShow.VoteControl.expiredStatusExplanation": "This proposal expired as it {expiredStatusExplanationBold}.",

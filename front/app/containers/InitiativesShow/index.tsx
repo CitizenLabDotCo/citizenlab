@@ -79,6 +79,8 @@ import useInitiativeById from 'api/initiatives/useInitiativeById';
 
 // types
 import { IInitiativeData } from 'api/initiatives/types';
+import useInitiativeApprovalRequired from 'hooks/useInitiativeApprovalRequired';
+import InitiativeCreatedModalContent from './InitiativeCreatedModalContent';
 
 const contentFadeInDuration = 250;
 const contentFadeInEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -350,6 +352,7 @@ const InitiativesShow = ({
   ] = useState(false);
   const officialFeedbackElement = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout>();
+  const initiativeApprovalRequired = useInitiativeApprovalRequired();
 
   const { data: initiativeFiles } = useInitiativeFiles(initiativeId);
   const { data: initiative } = useInitiativeById(initiativeId);
@@ -702,17 +705,20 @@ const InitiativesShow = ({
           hasSkipButton={true}
           skipText={<FormattedMessage {...messages.skipSharing} />}
         >
-          {initiativeIdForSocialSharing && (
-            <SharingModalContent
-              postType="initiative"
-              postId={initiativeIdForSocialSharing}
-              title={formatMessage(messages.shareTitle)}
-              subtitle={formatMessage(messages.shareSubtitle, {
-                votingThreshold: reactingThreshold,
-                daysLimit,
-              })}
-            />
-          )}
+          {initiativeIdForSocialSharing &&
+            (initiativeApprovalRequired ? (
+              <InitiativeCreatedModalContent />
+            ) : (
+              <SharingModalContent
+                postType="initiative"
+                postId={initiativeIdForSocialSharing}
+                title={formatMessage(messages.shareTitle)}
+                subtitle={formatMessage(messages.shareSubtitle, {
+                  votingThreshold: reactingThreshold,
+                  daysLimit,
+                })}
+              />
+            ))}
         </Modal>
       </FeatureFlag>
     </>
