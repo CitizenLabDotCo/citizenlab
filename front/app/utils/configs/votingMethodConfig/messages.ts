@@ -74,6 +74,10 @@ export default defineMessages({
     id: 'app.utils.votingMethodUtils.budgetingSubmissionInstructionsPreferredOptions',
     defaultMessage: 'Select your preferred options by tapping on "Add".',
   },
+  budgetingSubmissionInstructionsMinBudget: {
+    id: 'app.utils.votingMethodUtils.budgetingSubmissionInstructionsMinBudget',
+    defaultMessage: 'The minimum required budget is {amount} {currency}.',
+  },
   budgetingSubmissionInstructionsOnceYouAreDone: {
     id: 'app.utils.votingMethodUtils.budgetingSubmissionInstructionsOnceYouAreDone',
     defaultMessage: 'Once you are done, click "Submit" to submit your budget.',
