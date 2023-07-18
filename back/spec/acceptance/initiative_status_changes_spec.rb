@@ -35,7 +35,7 @@ resource 'InitiativeStatusChange' do
 
     let(:id) { @changes.first.id }
 
-    example_request 'Get one status changes on an initiative by id' do
+    example_request 'Get one status change on an initiative by id' do
       assert_status 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :id)).to eq @changes.first.id
@@ -47,6 +47,8 @@ resource 'InitiativeStatusChange' do
       @user = create(:admin)
       header_token_for @user
 
+      @status_approval_pending = create(:initiative_status_approval_pending)
+      @status_approval_rejected = create(:initiative_status_approval_rejected)
       @status_proposed = create(:initiative_status_proposed)
       @status_expired = create(:initiative_status_expired)
       @status_threshold_reached = create(:initiative_status_threshold_reached)
@@ -95,12 +97,33 @@ resource 'InitiativeStatusChange' do
         end
       end
 
-      describe do
-        let(:body_multiloc) { nil }
-        let(:author_multiloc) { nil }
+      context 'when the status transition requires official feedback' do
+        describe do
+          let(:body_multiloc) { nil }
+          let(:author_multiloc) { nil }
 
-        example_request '[error] Create a status change on an initiative without feedback' do
-          assert_status 422
+          example_request '[error] Create a status change on an initiative without feedback' do
+            assert_status 422
+          end
+        end
+      end
+
+      context 'when the status transition does not require official feedback' do
+        before do
+          create(
+            :initiative_status_change,
+            initiative: @initiative, initiative_status: @status_approval_pending
+          )
+        end
+
+        describe do
+          let(:initiative_status_id) { @status_proposed.id }
+          let(:body_multiloc) { nil }
+          let(:author_multiloc) { nil }
+
+          example_request 'Create a status change on an initiative without feedback' do
+            assert_status 201
+          end
         end
       end
 
