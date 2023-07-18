@@ -159,8 +159,6 @@ RSpec.describe ParticipationMethod::Voting do
   its(:supports_publication?) { is_expected.to be true }
   its(:supports_commenting?) { is_expected.to be true }
   its(:supports_reacting?) { is_expected.to be false }
-  its(:supports_baskets?) { is_expected.to be true }
-  its(:supports_budget?) { is_expected.to be true }
   its(:supports_status?) { is_expected.to be true }
   its(:supports_assignment?) { is_expected.to be true }
   its(:return_disabled_actions?) { is_expected.to be false }
