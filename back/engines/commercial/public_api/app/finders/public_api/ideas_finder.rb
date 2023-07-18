@@ -34,10 +34,10 @@ module PublicApi
       return scope unless @topic_ids
 
       scope
-        .joins(:idea_topics)
-        .where(idea_topics: { topic_id: @topic_ids })
-        .group(:id)
-        .having('COUNT(idea_topics.topic_id) = ?', @topic_ids.size)
+        .joins(:topics)
+        .where(topics: { id: @topic_ids })
+        .group('ideas.id')
+        .having('COUNT(topics.id) = ?', @topic_ids.size)
     end
   end
 end
