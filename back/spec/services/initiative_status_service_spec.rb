@@ -5,6 +5,14 @@ require 'rails_helper'
 describe InitiativeStatusService do
   let(:service) { described_class.new }
 
+  let!(:status_approval_pending) { create(:initiative_status_approval_pending) }
+  let!(:status_approval_rejected) { create(:initiative_status_approval_rejected) }
+  let!(:status_proposed) { create(:initiative_status_proposed) }
+  let!(:status_expired) { create(:initiative_status_expired) }
+  let!(:status_threshold_reached) { create(:initiative_status_threshold_reached) }
+  let!(:status_answered) { create(:initiative_status_answered) }
+  let!(:status_ineligible) { create(:initiative_status_ineligible) }
+
   describe '#automated_transitions!' do
     before do
       @initiative = create(:initiative)
@@ -18,20 +26,12 @@ describe InitiativeStatusService do
         eligibility_criteria: { 'en' => 'Eligibility criteria' }
       }
       configuration.save!
-
-      @status_approval_pending = create(:initiative_status_approval_pending)
-      @status_approval_rejected = create(:initiative_status_approval_rejected)
-      @status_proposed = create(:initiative_status_proposed)
-      @status_expired = create(:initiative_status_expired)
-      @status_threshold_reached = create(:initiative_status_threshold_reached)
-      @status_answered = create(:initiative_status_answered)
-      @status_ineligible = create(:initiative_status_ineligible)
     end
 
     it 'transitions when voting threshold was reached' do
       create(
         :initiative_status_change,
-        initiative: @initiative, initiative_status: @status_proposed
+        initiative: @initiative, initiative_status: status_proposed
       )
       create_list(:reaction, 3, reactable: @initiative, mode: 'up')
 
@@ -43,7 +43,7 @@ describe InitiativeStatusService do
     it 'transitions when expired' do
       create(
         :initiative_status_change,
-        initiative: @initiative, initiative_status: @status_proposed
+        initiative: @initiative, initiative_status: status_proposed
       )
 
       travel_to(Time.now + 22.days) do
@@ -55,7 +55,7 @@ describe InitiativeStatusService do
     it 'remains proposed if not expired nor threshold reached' do
       create(
         :initiative_status_change,
-        initiative: @initiative, initiative_status: @status_proposed
+        initiative: @initiative, initiative_status: status_proposed
       )
       create_list(:reaction, 1, reactable: @initiative, mode: 'up')
 
@@ -67,30 +67,20 @@ describe InitiativeStatusService do
   end
 
   describe 'transition_type' do
-    before do
-      @status_approval_pending = create(:initiative_status_approval_pending)
-      @status_approval_rejected = create(:initiative_status_approval_rejected)
-      @status_proposed = create(:initiative_status_proposed)
-      @status_expired = create(:initiative_status_expired)
-      @status_threshold_reached = create(:initiative_status_threshold_reached)
-      @status_answered = create(:initiative_status_answered)
-      @status_ineligible = create(:initiative_status_ineligible)
-    end
-
     it 'labels the threshold_reached status as automatic' do
-      expect(service.transition_type(@status_threshold_reached)).to eq 'automatic'
+      expect(service.transition_type(status_threshold_reached)).to eq 'automatic'
     end
 
     it 'labels the ineligible status as manual' do
-      expect(service.transition_type(@status_ineligible)).to eq 'manual'
+      expect(service.transition_type(status_ineligible)).to eq 'manual'
     end
 
     it 'labels the approval_pending status as automatic' do
-      expect(service.transition_type(@status_approval_pending)).to eq 'automatic'
+      expect(service.transition_type(status_approval_pending)).to eq 'automatic'
     end
 
     it 'labels the approval_rejected status as manual' do
-      expect(service.transition_type(@status_approval_rejected)).to eq 'manual'
+      expect(service.transition_type(status_approval_rejected)).to eq 'manual'
     end
 
     context 'when approval feature is fully activated' do
@@ -111,14 +101,14 @@ describe InitiativeStatusService do
       end
 
       it 'labels the proposed status as manual' do
-        expect(service.transition_type(@status_proposed)).to eq 'manual'
+        expect(service.transition_type(status_proposed)).to eq 'manual'
       end
     end
 
     context 'when approval feature is not fully activated' do
       it 'labels the proposed status as automatic' do
         expect(Initiative.approval_required?).to be false
-        expect(service.transition_type(@status_proposed)).to eq 'automatic'
+        expect(service.transition_type(status_proposed)).to eq 'automatic'
       end
     end
   end
