@@ -6,6 +6,7 @@ import { Button, Icon, Box, Text } from '@citizenlab/cl2-component-library';
 import { ParticipationCTAContent } from 'components/ParticipationCTABars/ParticipationCTAContent';
 import ErrorToast from 'components/ErrorToast';
 import VotesCounter from 'components/VotesCounter';
+import Tippy from '@tippyjs/react';
 
 // hooks
 import { useTheme } from 'styled-components';
@@ -20,9 +21,10 @@ import {
 } from 'components/ParticipationCTABars/utils';
 import { isNilOrError } from 'utils/helperUtils';
 import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
+import { getDisabledMessage } from './utils';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 const confetti = new JSConfetti();
@@ -31,6 +33,7 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
   const [processing, setProcessing] = useState(false);
   const theme = useTheme();
   const { numberOfVotesCast, processing: votingProcessing } = useVoting();
+  const { formatMessage } = useIntl();
 
   const currentPhase = useMemo(() => {
     return getCurrentPhase(phases) || getLastPhase(phases);
@@ -38,6 +41,8 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
 
   const participationContext = currentPhase ?? project;
   const basketId = participationContext.relationships.user_basket?.data?.id;
+
+  participationContext.attributes.voting_method;
 
   const { data: basket } = useBasket(basketId);
   const { mutate: updateBasket } = useUpdateBasket();
@@ -97,8 +102,23 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
     }
   };
 
-  const ctaDisabled =
-    votesExceedLimit || numberOfVotesCast === 0 || minVotesRequiredNotReached;
+  const votingMethod = participationContext.attributes.voting_method;
+  if (!votingMethod || numberOfVotesCast === undefined) return null;
+
+  const disabledMessage = getDisabledMessage(
+    votingMethod,
+    votesExceedLimit,
+    numberOfVotesCast,
+    minVotesRequiredNotReached
+  );
+
+  const disabledExplanation = disabledMessage
+    ? formatMessage(disabledMessage, {
+        votesCast: numberOfVotesCast,
+        votesLimit: maxVotes,
+        votesMinimum: minVotes,
+      })
+    : undefined;
 
   const CTAButton = hasUserParticipated ? (
     <Box display="flex">
@@ -108,23 +128,32 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
       </Text>
     </Box>
   ) : (
-    <Button
-      icon={hasUserParticipated ? 'check' : 'vote-ballot'}
-      buttonStyle="secondary"
-      iconColor={theme.colors.tenantText}
-      onClick={handleSubmitOnClick}
-      fontWeight="500"
-      bgColor={theme.colors.white}
-      textColor={theme.colors.tenantText}
-      data-cy="budgeting-cta-button"
-      textHoverColor={theme.colors.black}
-      padding="6px 12px"
-      fontSize="14px"
-      disabled={ctaDisabled}
-      processing={processing}
+    <Tippy
+      disabled={!disabledExplanation}
+      interactive={true}
+      placement="bottom"
+      content={disabledExplanation}
     >
-      <FormattedMessage {...messages.submit} />
-    </Button>
+      <div>
+        <Button
+          icon="vote-ballot"
+          buttonStyle="secondary"
+          iconColor={theme.colors.tenantText}
+          onClick={handleSubmitOnClick}
+          fontWeight="500"
+          bgColor={theme.colors.white}
+          textColor={theme.colors.tenantText}
+          data-cy="budgeting-cta-button"
+          textHoverColor={theme.colors.black}
+          padding="6px 12px"
+          fontSize="14px"
+          disabled={!!disabledExplanation}
+          processing={processing}
+        >
+          <FormattedMessage {...messages.submit} />
+        </Button>
+      </div>
+    </Tippy>
   );
 
   return (

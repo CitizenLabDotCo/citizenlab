@@ -137,14 +137,6 @@ const budgetingConfig: VotingMethodConfig = {
             </li>
             <li>
               <FormattedMessage
-                values={{
-                  maxVotes: project.attributes.voting_max_votes_per_idea,
-                }}
-                {...messages.budgetingSubmissionInstructionsMaxVotesPerIdea}
-              />
-            </li>
-            <li>
-              <FormattedMessage
                 {...messages.budgetingSubmissionInstructionsOnceYouAreDone}
               />
             </li>
@@ -275,21 +267,41 @@ const multipleVotingConfig: VotingMethodConfig = {
 
     if (submissionState === 'hasNotSubmitted') {
       return (
-        <FormattedMessage
-          values={{
-            b: (chunks) => (
-              <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
-            ),
-            voteTerm,
-            optionCount: phase
-              ? phase.attributes.ideas_count
-              : project.attributes.ideas_count,
-            totalVotes: phase
-              ? phase.attributes.voting_max_total?.toLocaleString()
-              : project.attributes.voting_max_total?.toLocaleString(),
-          }}
-          {...messages.cumulativeVotingInstructions}
-        />
+        <>
+          <FormattedMessage
+            values={{
+              b: (chunks) => (
+                <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+              ),
+              voteTerm,
+              optionCount: participationContext.attributes.ideas_count,
+              totalVotes:
+                participationContext.attributes.voting_max_total?.toLocaleString(),
+            }}
+            {...messages.cumulativeVotingInstructionsTotalVotes}
+          />
+          <ul>
+            <li>
+              <FormattedMessage
+                {...messages.cumulativeVotingInstructionsPreferredOptions}
+              />
+            </li>
+            <li>
+              <FormattedMessage
+                {...messages.cumulativeVotingInstructionsMaxVotesPerIdea}
+                values={{
+                  maxVotes:
+                    participationContext.attributes.voting_max_votes_per_idea,
+                }}
+              />
+            </li>
+            <li>
+              <FormattedMessage
+                {...messages.cumulativeVotingInstructionsOnceYouAreDone}
+              />
+            </li>
+          </ul>
+        </>
       );
     }
     if (submissionState === 'hasSubmitted') {
@@ -407,21 +419,19 @@ const singleVotingConfig: VotingMethodConfig = {
     const totalVotes = participationContext?.attributes.voting_max_total;
 
     if (submissionState === 'hasNotSubmitted') {
-      if (totalVotes) {
-        if (totalVotes > 1) {
-          return (
-            <FormattedMessage
-              values={{
-                b: (chunks) => (
-                  <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
-                ),
-                totalVotes: participationContext?.attributes.voting_max_total,
-              }}
-              {...messages.singleVotingMultipleVotesInstructions}
-            />
-          );
-        }
-        return (
+      const youCanVoteMessage = totalVotes
+        ? totalVotes > 1
+          ? messages.singleVotingMultipleVotesYouCanVote
+          : messages.singleVotingOneVoteYouCanVote
+        : messages.singleVotingUnlimitedVotesYouCanVote;
+
+      const preferredOptionMessage =
+        totalVotes === 1
+          ? messages.singleVotingPreferredOption
+          : messages.singleVotingPreferredOptions;
+
+      return (
+        <>
           <FormattedMessage
             values={{
               b: (chunks) => (
@@ -429,12 +439,17 @@ const singleVotingConfig: VotingMethodConfig = {
               ),
               totalVotes: participationContext?.attributes.voting_max_total,
             }}
-            {...messages.singleVotingOneVoteInstructions}
+            {...youCanVoteMessage}
           />
-        );
-      }
-      return (
-        <FormattedMessage {...messages.singleVotingInstructionsUnlimited} />
+          <ul>
+            <li>
+              <FormattedMessage {...preferredOptionMessage} />
+            </li>
+            <li>
+              <FormattedMessage {...messages.singleVotingOnceYouAreDone} />
+            </li>
+          </ul>
+        </>
       );
     }
     if (submissionState === 'hasSubmitted') {

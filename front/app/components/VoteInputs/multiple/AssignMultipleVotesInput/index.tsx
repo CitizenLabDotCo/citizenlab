@@ -8,6 +8,7 @@ import {
   colors,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
+import Tippy from '@tippyjs/react';
 
 // api
 import useBasket from 'api/baskets/useBasket';
@@ -32,6 +33,10 @@ import { useSearchParams } from 'react-router-dom';
 // utils
 import { isNil } from 'utils/helperUtils';
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import {
+  getMinusButtonDisabledMessage,
+  getPlusButtonDisabledMessage,
+} from './utils';
 
 // typings
 import { IPhaseData } from 'api/phases/types';
@@ -106,21 +111,6 @@ const AssignMultipleVotesInput = ({
 
       return;
     }
-
-    // Emit errors if maximum allowance exceeded
-    // if (votingMax && basketTotal) {
-    //   if (
-    //     basketTotal - initialVotes.current + (localVotes.current + 1) >
-    //     votingMax
-    //   ) {
-    //     eventEmitter.emit(VOTES_EXCEEDED_ERROR_EVENT);
-    //     return;
-    //   }
-    //   if (votingPerOptionMax && localVotes.current + 1 > votingPerOptionMax) {
-    //     eventEmitter.emit(VOTES_PER_OPTION_EXCEEDED_ERROR_EVENT);
-    //     return;
-    //   }
-    // }
   };
 
   const onRemove = async (event) => {
@@ -135,13 +125,20 @@ const AssignMultipleVotesInput = ({
   if (
     !actionDescriptor ||
     budgetingDisabledReason === 'idea_not_in_current_phase' ||
-    votes === undefined
+    votes === undefined ||
+    votes === null ||
+    userHasVotesLeft === undefined
   ) {
     return null;
   }
 
-  const { voting_term_singular_multiloc, voting_term_plural_multiloc } =
-    participationContext.attributes;
+  const {
+    voting_term_singular_multiloc,
+    voting_term_plural_multiloc,
+    voting_max_votes_per_idea,
+  } = participationContext.attributes;
+
+  if (isNil(voting_max_votes_per_idea)) return null;
 
   const votingTermSingular =
     localize(voting_term_singular_multiloc) ||
@@ -151,9 +148,26 @@ const AssignMultipleVotesInput = ({
     formatMessage(messages.votes).toLowerCase();
 
   const basketSubmitted = !!basket?.data?.attributes.submitted_at;
-  const disableAddingVote = !userHasVotesLeft || basketSubmitted;
+  const maxVotesPerIdeaReached = votes === voting_max_votes_per_idea;
 
-  if (votes === null) return null;
+  const minusButtonDisabledMessage =
+    getMinusButtonDisabledMessage(basketSubmitted);
+
+  const plusButtonDisabledMessage = getPlusButtonDisabledMessage(
+    userHasVotesLeft,
+    basketSubmitted,
+    maxVotesPerIdeaReached
+  );
+
+  const minusButtonDisabledExplanation = minusButtonDisabledMessage
+    ? formatMessage(minusButtonDisabledMessage)
+    : undefined;
+
+  const plusButtonDisabledExplanation = plusButtonDisabledMessage
+    ? formatMessage(plusButtonDisabledMessage, {
+        maxVotes: voting_max_votes_per_idea,
+      })
+    : undefined;
 
   if (votes > 0) {
     return (
@@ -164,15 +178,24 @@ const AssignMultipleVotesInput = ({
         style={{ cursor: 'default' }}
         flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
       >
-        <Button
-          mr="8px"
-          bgColor={theme.colors.tenantPrimary}
-          onClick={onRemove}
-          ariaLabel={formatMessage(messages.removeVote)}
-          disabled={basketSubmitted}
+        <Tippy
+          disabled={!minusButtonDisabledExplanation}
+          interactive={true}
+          placement="bottom"
+          content={minusButtonDisabledExplanation}
         >
-          <h1 style={{ margin: '0px' }}>-</h1>
-        </Button>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <Button
+              mr="8px"
+              bgColor={theme.colors.tenantPrimary}
+              onClick={onRemove}
+              ariaLabel={formatMessage(messages.removeVote)}
+              disabled={!!minusButtonDisabledExplanation}
+            >
+              <h1 style={{ margin: '0px' }}>-</h1>
+            </Button>
+          </div>
+        </Tippy>
 
         <Box
           onClick={(event) => {
@@ -203,30 +226,48 @@ const AssignMultipleVotesInput = ({
             }).toLowerCase()}
           </Text>
         </Box>
-        <Button
-          ariaLabel={formatMessage(messages.addVote)}
-          disabled={disableAddingVote}
-          ml="8px"
-          bgColor={theme.colors.tenantPrimary}
-          onClick={onAdd}
+        <Tippy
+          disabled={!plusButtonDisabledExplanation}
+          interactive={true}
+          placement="bottom"
+          content={plusButtonDisabledExplanation}
         >
-          <h1 style={{ margin: '0px' }}>+</h1>
-        </Button>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <Button
+              ariaLabel={formatMessage(messages.addVote)}
+              disabled={!!plusButtonDisabledExplanation}
+              ml="8px"
+              bgColor={theme.colors.tenantPrimary}
+              onClick={onAdd}
+            >
+              <h1 style={{ margin: '0px' }}>+</h1>
+            </Button>
+          </div>
+        </Tippy>
       </Box>
     );
   }
 
   return (
-    <Button
-      buttonStyle="primary-outlined"
-      disabled={!!basket?.data?.attributes.submitted_at || !userHasVotesLeft}
-      processing={isProcessing}
-      icon="vote-ballot"
-      width="100%"
-      onClick={onAdd}
+    <Tippy
+      disabled={!plusButtonDisabledExplanation}
+      interactive={true}
+      placement="bottom"
+      content={plusButtonDisabledExplanation}
     >
-      {formatMessage(messages.vote)}
-    </Button>
+      <div>
+        <Button
+          buttonStyle="primary-outlined"
+          disabled={!!plusButtonDisabledExplanation}
+          processing={isProcessing}
+          icon="vote-ballot"
+          width="100%"
+          onClick={onAdd}
+        >
+          {formatMessage(messages.vote)}
+        </Button>
+      </div>
+    </Tippy>
   );
 };
 
