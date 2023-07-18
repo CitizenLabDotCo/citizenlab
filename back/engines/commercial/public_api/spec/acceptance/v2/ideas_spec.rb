@@ -36,6 +36,14 @@ resource 'Posts' do
 
     include_context 'common_list_params'
 
+    parameter(
+      :user_id,
+      'Filter by author ID',
+      required: false,
+      type: :string,
+      in: :query
+    )
+
     context 'when the page size is smaller than the total number of ideas' do
       let(:page_size) { 2 }
 
@@ -45,6 +53,16 @@ resource 'Posts' do
 
         total_pages = (ideas.size.to_f / page_size).ceil
         expect(json_response_body[:meta]).to eq({ total_pages: total_pages, current_page: 1 })
+      end
+    end
+
+    context 'when filtering by user id' do
+      let(:user_id) { ideas.first.author_id }
+
+      example_request 'List only the ideas of the specified user' do
+        assert_status 200
+        expect(json_response_body[:ideas].size).to eq(1)
+        expect(json_response_body[:ideas].first[:author_id]).to eq(user_id)
       end
     end
 
