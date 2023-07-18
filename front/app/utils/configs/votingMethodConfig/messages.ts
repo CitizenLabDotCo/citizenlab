@@ -74,11 +74,6 @@ export default defineMessages({
     id: 'app.utils.votingMethodUtils.budgetingSubmissionInstructionsPreferredOptions',
     defaultMessage: 'Select your preferred options by tapping on "Add".',
   },
-  budgetingSubmissionInstructionsMaxVotesPerIdea: {
-    id: 'app.utils.votingMethodUtils.budgetingSubmissionInstructionsMaxVotesPerIdea',
-    defaultMessage:
-      'You can add a maximum number of {maxVotes} votes per option.',
-  },
   budgetingSubmissionInstructionsOnceYouAreDone: {
     id: 'app.utils.votingMethodUtils.budgetingSubmissionInstructionsOnceYouAreDone',
     defaultMessage: 'Once you are done, click "Submit" to submit your budget.',
@@ -126,10 +121,23 @@ export default defineMessages({
     id: 'app.utils.votingMethodUtils.finalTally',
     defaultMessage: 'Final tally',
   },
-  cumulativeVotingInstructions: {
-    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructions2',
+  cumulativeVotingInstructionsTotalVotes: {
+    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalVotes',
     defaultMessage:
-      'You have a total of <b>{totalVotes} {voteTerm} to distribute between {optionCount} options</b>. Select your preferred options by tapping on “Vote”. Once you are done, click “Submit” to cast your vote.',
+      'You have a total of <b>{totalVotes} {voteTerm} to distribute between {optionCount} options</b>.',
+  },
+  cumulativeVotingInstructionsPreferredOptions: {
+    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsPreferredOptions',
+    defaultMessage: 'Select your preferred options by tapping on “Vote”.',
+  },
+  cumulativeVotingInstructionsMaxVotesPerIdea: {
+    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsMaxVotesPerIdea',
+    defaultMessage:
+      'You can add a maximum number of {maxVotes} votes per option.',
+  },
+  cumulativeVotingInstructionsOnceYouAreDone: {
+    id: 'app.utils.votingMethodUtils.budgetingSubmissionInstructionsOnceYouAreDone',
+    defaultMessage: 'Once you are done, click “Submit” to cast your vote.',
   },
   multipleVotingEnded: {
     id: 'app.utils.votingMethodUtils.multipleVotingEnded',
