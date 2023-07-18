@@ -39,6 +39,7 @@ const AssignMultipleVotesBox = memo(
         <AssignMultipleVotesControl
           ideaId={ideaId}
           participationContext={participationContext}
+          onIdeaPage
         />
         <Box
           color={colors.grey700}

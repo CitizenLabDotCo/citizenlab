@@ -22,6 +22,7 @@ import {
 import { isNilOrError } from 'utils/helperUtils';
 import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
 import { getDisabledMessage } from './utils';
+import { scrollToElement } from 'utils/scroll';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -66,25 +67,7 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
 
   const handleSubmitOnClick = () => {
     if (!isNilOrError(basket)) {
-      if (votingProcessing) {
-        // Add a bit of timeout so that the voting request
-        // has time to complete
-        setTimeout(() => {
-          updateBasket(
-            {
-              id: basket.data.id,
-              submitted: true,
-              participation_context_type: currentPhase ? 'Phase' : 'Project',
-            },
-            {
-              onSuccess: () => {
-                setProcessing(false);
-                confetti.addConfetti();
-              },
-            }
-          );
-        }, 300);
-      } else {
+      const update = () => {
         updateBasket(
           {
             id: basket.data.id,
@@ -95,9 +78,22 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
             onSuccess: () => {
               setProcessing(false);
               confetti.addConfetti();
+              scrollToElement({
+                id: 'voting-status-module',
+              });
             },
           }
         );
+      };
+
+      if (votingProcessing) {
+        // Add a bit of timeout so that the voting request
+        // has time to complete
+        setTimeout(() => {
+          update();
+        }, 300);
+      } else {
+        update();
       }
     }
   };

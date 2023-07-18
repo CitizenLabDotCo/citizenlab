@@ -12,9 +12,9 @@ import AssignSingleVoteBox from 'components/VoteInputs/single/AssignSingleVoteBo
 import messages from './messages';
 import { Localize } from 'hooks/useLocalize';
 import { MessageDescriptor } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
-import { FormattedMessage } from 'utils/cl-intl';
 import { toFullMonth } from 'utils/dateUtils';
 
 // types
@@ -111,7 +111,13 @@ const budgetingConfig: VotingMethodConfig = {
     submissionState,
     appConfig,
   }: GetStatusDescriptionProps) => {
+    const currency =
+      appConfig?.data.attributes.settings.core.currency.toString();
+
     if (submissionState === 'hasNotSubmitted') {
+      const participationContext = phase ?? project;
+      const minBudget = participationContext.attributes.voting_min_total;
+
       return (
         <>
           <FormattedMessage
@@ -119,13 +125,10 @@ const budgetingConfig: VotingMethodConfig = {
               b: (chunks) => (
                 <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
               ),
-              currency: appConfig?.data.attributes.settings.core.currency,
-              optionCount: phase
-                ? phase.attributes.ideas_count
-                : project.attributes.ideas_count,
-              maxBudget: phase
-                ? phase.attributes.voting_max_total?.toLocaleString()
-                : project.attributes.voting_max_total?.toLocaleString(),
+              currency,
+              optionCount: participationContext.attributes.ideas_count,
+              maxBudget:
+                participationContext.attributes.voting_max_total?.toLocaleString(),
             }}
             {...messages.budgetingSubmissionInstructionsTotalBudget}
           />
@@ -135,6 +138,17 @@ const budgetingConfig: VotingMethodConfig = {
                 {...messages.budgetingSubmissionInstructionsPreferredOptions}
               />
             </li>
+            {typeof minBudget === 'number' && minBudget > 0 ? (
+              <li>
+                <FormattedMessage
+                  {...messages.budgetingSubmissionInstructionsMinBudget}
+                  values={{
+                    amount: minBudget,
+                    currency,
+                  }}
+                />
+              </li>
+            ) : null}
             <li>
               <FormattedMessage
                 {...messages.budgetingSubmissionInstructionsOnceYouAreDone}
@@ -178,8 +192,7 @@ const budgetingConfig: VotingMethodConfig = {
             endDate: phase && toFullMonth(phase.attributes.end_at, 'day'),
             maxBudget:
               phase && phase.attributes.voting_max_total?.toLocaleString(),
-            currency:
-              appConfig?.data.attributes.settings.core.currency.toString(),
+            currency,
             optionCount: phase && phase.attributes.ideas_count,
           }}
           {...messages.budgetParticipationEnded}
@@ -260,10 +273,9 @@ const multipleVotingConfig: VotingMethodConfig = {
     formatMessage,
   }: GetStatusDescriptionProps) => {
     const participationContext = phase || project;
-    const voteTerm = (
+    const voteTerm =
       localize(participationContext?.attributes?.voting_term_plural_multiloc) ||
-      formatMessage(messages.votes)
-    ).toLowerCase();
+      formatMessage(messages.votes).toLowerCase();
 
     if (submissionState === 'hasNotSubmitted') {
       return (

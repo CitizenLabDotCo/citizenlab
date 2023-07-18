@@ -47,12 +47,14 @@ interface Props {
   ideaId: string;
   participationContext: IPhaseData | IProjectData;
   fillWidth?: boolean;
+  onIdeaPage?: boolean;
 }
 
 const AssignMultipleVotesInput = ({
   ideaId,
   participationContext,
   fillWidth,
+  onIdeaPage,
 }: Props) => {
   const { getVotes, setVotes, userHasVotesLeft } = useCumulativeVoting();
   const votes = getVotes?.(ideaId);
@@ -150,13 +152,16 @@ const AssignMultipleVotesInput = ({
   const basketSubmitted = !!basket?.data?.attributes.submitted_at;
   const maxVotesPerIdeaReached = votes === voting_max_votes_per_idea;
 
-  const minusButtonDisabledMessage =
-    getMinusButtonDisabledMessage(basketSubmitted);
+  const minusButtonDisabledMessage = getMinusButtonDisabledMessage(
+    basketSubmitted,
+    onIdeaPage
+  );
 
   const plusButtonDisabledMessage = getPlusButtonDisabledMessage(
     userHasVotesLeft,
     basketSubmitted,
-    maxVotesPerIdeaReached
+    maxVotesPerIdeaReached,
+    onIdeaPage
   );
 
   const minusButtonDisabledExplanation = minusButtonDisabledMessage

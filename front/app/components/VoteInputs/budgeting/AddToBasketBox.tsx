@@ -88,6 +88,7 @@ const AddToBasketBox = memo(({ ideaId, participationContext }: Props) => {
           ideaId={ideaId}
           buttonStyle="primary"
           participationContext={participationContext}
+          onIdeaPage
         />
       </BudgetWithButtonWrapper>
     </IdeaPageContainer>

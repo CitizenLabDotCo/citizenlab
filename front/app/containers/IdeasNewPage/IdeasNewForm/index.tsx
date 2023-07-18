@@ -137,7 +137,7 @@ const IdeasNewPageWithJSONForm = () => {
     if (allowAnonymousPosting && postAnonymously) {
       setShowAnonymousConfirmationModal(true);
     } else {
-      continueSubmission(data);
+      await continueSubmission(data);
     }
   };
 

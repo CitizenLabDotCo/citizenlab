@@ -33,12 +33,14 @@ interface Props {
   participationContext: IPhaseData | IProjectData;
   ideaId: string;
   buttonStyle: 'primary' | 'primary-outlined';
+  onIdeaPage?: boolean;
 }
 
 const AssignSingleVoteButton = ({
   ideaId,
   buttonStyle,
   participationContext,
+  onIdeaPage,
 }: Props) => {
   const { formatMessage } = useIntl();
 
@@ -111,7 +113,10 @@ const AssignSingleVoteButton = ({
   };
 
   const buttonDisabledExplanation = basket?.data?.attributes.submitted_at
-    ? formatMessage(messages.votesSubmitted, { votes: numberOfVotesCast ?? 0 })
+    ? formatMessage(
+        onIdeaPage ? messages.votesSubmittedIdeaPage : messages.votesSubmitted,
+        { votes: numberOfVotesCast ?? 0 }
+      )
     : undefined;
 
   return (
@@ -135,8 +140,6 @@ const AssignSingleVoteButton = ({
               ? formatMessage(messages.voted)
               : formatMessage(messages.vote)
           }
-          width="100%"
-          minWidth="240px"
         />
       </div>
     </Tippy>

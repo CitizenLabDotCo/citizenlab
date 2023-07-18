@@ -37,4 +37,9 @@ export default defineMessages({
     defaultMessage:
       'You have already submitted your votes. Click "Modify your vote" to change your votes.',
   },
+  votesSubmittedIdeaPage: {
+    id: 'app.components.AssignMultipleVotesControl.votesSubmittedIdeaPage',
+    defaultMessage:
+      'You have already submitted your votes. To change your votes, go back to the project page and click "Modify your vote".',
+  },
 });
