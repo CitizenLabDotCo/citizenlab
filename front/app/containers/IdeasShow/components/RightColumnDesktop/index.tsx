@@ -3,6 +3,7 @@ import React from 'react';
 // api
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
+import useIdeaById from 'api/ideas/useIdeaById';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -19,7 +20,10 @@ import { colors } from 'utils/styleUtils';
 
 // utils
 import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
-import { getCurrentParticipationContext } from 'api/phases/utils';
+import {
+  getCurrentParticipationContext,
+  isIdeaInParticipationContext,
+} from 'api/phases/utils';
 
 const InnerContainer = styled.div`
   display: flex;
@@ -52,6 +56,7 @@ const RightColumnDesktop = ({
 }: Props) => {
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
+  const { data: idea } = useIdeaById(ideaId);
 
   const participationContext = getCurrentParticipationContext(
     project?.data,
@@ -60,6 +65,19 @@ const RightColumnDesktop = ({
   const votingConfig = getVotingMethodConfig(
     participationContext?.attributes.voting_method
   );
+
+  const ideaIsInParticipationContext =
+    participationContext && idea
+      ? isIdeaInParticipationContext(idea, participationContext)
+      : undefined;
+
+  const commentingEnabled =
+    !!idea?.data.attributes.action_descriptor.commenting_idea.enabled;
+
+  const showGreyBox =
+    participationContext?.attributes.participation_method !== 'voting' ||
+    (participationContext && ideaIsInParticipationContext && votingConfig) ||
+    commentingEnabled;
 
   return (
     <Box
@@ -71,30 +89,33 @@ const RightColumnDesktop = ({
       className={className}
     >
       <InnerContainer>
-        <Box
-          padding="20px"
-          borderRadius="3px"
-          background={colors.background}
-          mb="12px"
-        >
-          {participationContext?.attributes.participation_method !==
-            'voting' && (
-            <StyledReactionControl
-              styleType="shadow"
-              ideaId={ideaId}
-              size="4"
-            />
-          )}
-          <Box pb="23px" mb="23px" borderBottom="solid 1px #ccc">
-            {participationContext &&
-              votingConfig?.getIdeaPageVoteInput({
-                ideaId,
-                participationContext,
-                compact: false,
-              })}
+        {showGreyBox && (
+          <Box
+            padding="20px"
+            borderRadius="3px"
+            background={colors.background}
+            mb="12px"
+          >
+            {participationContext?.attributes.participation_method !==
+              'voting' && (
+              <StyledReactionControl
+                styleType="shadow"
+                ideaId={ideaId}
+                size="4"
+              />
+            )}
+            <Box pb="23px" mb="23px" borderBottom="solid 1px #ccc">
+              {participationContext &&
+                ideaIsInParticipationContext &&
+                votingConfig?.getIdeaPageVoteInput({
+                  ideaId,
+                  participationContext,
+                  compact: false,
+                })}
+            </Box>
+            {commentingEnabled && <Buttons />}
           </Box>
-          <Buttons ideaId={ideaId} />
-        </Box>
+        )}
         <Box mb="16px">
           <IdeaSharingButton
             ideaId={ideaId}

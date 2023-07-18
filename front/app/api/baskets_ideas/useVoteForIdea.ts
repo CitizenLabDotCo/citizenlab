@@ -44,15 +44,16 @@ const useVoteForIdeaMutation = () => {
       const { basket_id, project_id, phase_id } = variables;
 
       const newBasket = basket_id !== basketId;
+      const continuousProject = !phase_id;
 
       if (newBasket) {
-        if (project_id) {
+        if (continuousProject) {
           queryClient.invalidateQueries({
             queryKey: projectsKeys.item({ id: project_id }),
           });
         }
 
-        if (phase_id) {
+        if (!continuousProject) {
           queryClient.invalidateQueries({
             queryKey: phasesKeys.item({ phaseId: phase_id }),
           });

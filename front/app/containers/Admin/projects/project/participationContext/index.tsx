@@ -530,9 +530,6 @@ class ParticipationContext extends PureComponent<
 
             {participation_method === 'voting' && (
               <VotingInputs
-                isCustomInputTermEnabled={isCustomInputTermEnabled}
-                input_term={input_term}
-                handleInputTermChange={this.handleInputTermChange}
                 voting_method={voting_method}
                 voting_min_total={voting_min_total}
                 voting_max_total={voting_max_total}

@@ -5,7 +5,7 @@ import messages from '../messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 // components
-import { Input, Box, Text, Error } from '@citizenlab/cl2-component-library';
+import { Input, Box, Error } from '@citizenlab/cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
@@ -112,19 +112,6 @@ const MultipleVotingInputs = ({
         <VotingAmountInputError
           apiErrors={apiErrors && apiErrors.voting_max_votes_per_idea}
         />
-        <Text mb="0px" pb="0px" color="textSecondary" fontSize="s">
-          <FormattedMessage
-            {...messages.maximumVotesRecommendation}
-            values={{
-              strategicVotingLink: (
-                // TODO: Replace url with article link once written.
-                <a href={`/`} target="_blank" rel="noreferrer">
-                  <FormattedMessage {...messages.strategicVotingLinkText} />
-                </a>
-              ),
-            }}
-          />
-        </Text>
       </SectionField>
     </>
   );
