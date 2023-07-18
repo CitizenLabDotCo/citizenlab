@@ -8,7 +8,6 @@ module PublicApi
         **finder_params
       ).execute
 
-      # TODO: Add filter by project_id, topic_name
       # TODO: Only return ideas, separate endpoint for survey responses
 
       list_items(ideas, V2::IdeaSerializer)
