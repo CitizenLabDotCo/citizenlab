@@ -18,16 +18,18 @@ const Filters = () => {
       w="100%"
       h="320px"
     >
-      <Box display="flex" gap="24px" px="24px" justifyContent="space-evenly">
-        <Box>
+      <Box display="flex" gap="32px" px="24px">
+        <Box w="33%">
           <Text fontWeight="bold">{formatMessage(messages.author)}</Text>
           <AuthorFilters />
         </Box>
-        <Box>
-          <Text fontWeight="bold">{formatMessage(messages.input)}</Text>
+        <Box w="33%">
+          <Text fontWeight="bold" mb="44px">
+            {formatMessage(messages.input)}
+          </Text>
           <TimeFilter />
         </Box>
-        <Box>
+        <Box w="33%">
           <Text fontWeight="bold">{formatMessage(messages.engagement)}</Text>
           <EngagementFilter
             label={formatMessage(messages.numberOfVotes)}
