@@ -10,6 +10,12 @@ PATH
       ros-apartment (>= 2.9.0)
 
 PATH
+  remote: engines/commercial/analysis
+  specs:
+    analysis (0.1.0)
+      rails (~> 7.0)
+
+PATH
   remote: engines/commercial/analytics
   specs:
     analytics (0.1.0)
@@ -1104,6 +1110,7 @@ DEPENDENCIES
   activerecord-postgis-adapter (~> 8.0)
   acts_as_list (~> 1.1)
   admin_api!
+  analysis!
   analytics!
   annotate
   api-pagination (~> 5.0.0)
