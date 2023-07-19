@@ -42,8 +42,10 @@ const EngagementFilter = ({
               },
             ]}
             onChange={({ value }) => {
+              const existingValue =
+                searchParams.get(from) || searchParams.get(to);
               removeSearchParams([from, to]);
-              value && updateSearchParams({ [value]: 5 });
+              value && updateSearchParams({ [value]: existingValue || 5 });
             }}
             value={selectValue}
           />
