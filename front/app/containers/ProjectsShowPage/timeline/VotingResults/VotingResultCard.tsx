@@ -13,7 +13,7 @@ import useLocalize from 'hooks/useLocalize';
 import { useBreakpoint } from '@citizenlab/cl2-component-library';
 import Image from 'components/UI/Image';
 import ImagePlaceholder from 'components/IdeaCard/ImagePlaceholder';
-import Rank from './Rank';
+// import Rank from './Rank';
 import Results from './Results';
 import Footer from 'components/IdeaCard/Footer';
 
@@ -153,7 +153,7 @@ interface Props {
   rank: number;
 }
 
-const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
+const VotingResultCard = ({ idea, phaseId /* rank */ }: Props) => {
   const localize = useLocalize();
   const { data: phase } = usePhase(phaseId);
   const { data: project } = useProjectById(idea.relationships.project.data.id);
@@ -162,7 +162,7 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
     idea.relationships.idea_images.data?.[0]?.id
   );
   const smallerThanPhone = useBreakpoint('phone');
-  const smallerThanTablet = useBreakpoint('tablet');
+  // const smallerThanTablet = useBreakpoint('tablet');
 
   const ideaTitle = localize(idea.attributes.title_multiloc);
   const { slug } = idea.attributes;
@@ -186,7 +186,7 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
   };
 
   const image = ideaImage?.data.attributes.versions.medium;
-  const showHeader = !image && smallerThanPhone;
+  // const showHeader = !image && smallerThanPhone;
 
   return (
     <Container
