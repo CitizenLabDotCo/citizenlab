@@ -437,6 +437,7 @@
   "app.components.Sharing.shareViaMessenger": "Messenger ile paylaş",
   "app.components.Sharing.shareViaWhatsApp": "WhatsApp ile paylaş",
   "app.components.SideModal.closeButtonAria": "Kapat",
+  "app.components.StatusModule.futurePhase": "Henüz başlamamış bir aşamayı görüntülüyorsunuz. Aşama başladığında katılabileceksiniz.",
   "app.components.StatusModule.modifyYour": "Değiştirin",
   "app.components.StatusModule.submittedUntil2": "kadar sunulabilir",
   "app.components.TopicsPicker.numberOfSelectedTopics": "{numberOfSelectedTopics, plural, =0 {Sıfır etiket} one {bir etiket} other {# etiket}} seçildi. {selectedTopicNames}",
