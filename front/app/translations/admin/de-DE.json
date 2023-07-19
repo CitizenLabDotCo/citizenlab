@@ -1781,7 +1781,7 @@
   "app.containers.AdminPage.groups.permissions.permissionAction_take_poll_subtitle": "Wer kann an der Abstimmung teilnehmen?",
   "app.containers.AdminPage.groups.permissions.permissionAction_take_survey_subtitle": "Wer kann an der Umfrage teilnehmen?",
   "app.containers.AdminPage.groups.permissions.permissionAction_vote_proposals_subtitle": "Wer kann über Vorschläge abstimmen?",
-  "app.containers.AdminPage.groups.permissions.permissionAction_voting_subtitle": "Wer darf wählen?",
+  "app.containers.AdminPage.groups.permissions.permissionAction_voting_subtitle": "Wer darf abstimmen?",
   "app.containers.AdminPage.groups.permissions.phase": "Phase",
   "app.containers.AdminPage.groups.permissions.premiumUsersOnly": "Das Stellen von benutzerdefinierten Fragen ist Teil der Premium-Lizenz. Wenden Sie sich an Ihre Kundenbetreuerin, um mehr darüber zu erfahren.",
   "app.containers.AdminPage.groups.permissions.questionDescription": "Beschreibung der Frage",
