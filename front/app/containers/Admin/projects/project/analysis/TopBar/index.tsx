@@ -15,6 +15,8 @@ import SearchInput from 'components/UI/SearchInput';
 
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import Filters from './Filters';
+import { useIntl } from 'utils/cl-intl';
+import messages from './messages';
 
 const TopBar = () => {
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
@@ -22,6 +24,19 @@ const TopBar = () => {
   const { data: project } = useProjectById(projectId);
   const projectTitle = project?.data.attributes.title_multiloc;
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
+
+  const goBack = () => {
+    clHistory.goBack();
+  };
+
+  const toggleFilters = () => {
+    setIsFiltersOpen(!isFiltersOpen);
+  };
+
+  const handleSearch = (search: string) => {
+    updateSearchParams({ search });
+  };
 
   return (
     <Box
@@ -37,7 +52,7 @@ const TopBar = () => {
       gap="24px"
       px="24px"
     >
-      <GoBackButton onClick={() => clHistory.back()} />
+      <GoBackButton onClick={goBack} />
       <Title variant="h4" m="0px">
         {localize(projectTitle)}
       </Title>
@@ -45,16 +60,14 @@ const TopBar = () => {
         buttonStyle="secondary"
         icon="filter"
         size="s"
-        onClick={() => {
-          setIsFiltersOpen(!isFiltersOpen);
-        }}
+        onClick={toggleFilters}
       >
-        Filters
+        {formatMessage(messages.filters)}
       </Button>
 
       <Box marginLeft="auto">
         <SearchInput
-          onChange={(search) => updateSearchParams({ search })}
+          onChange={handleSearch}
           // TODO: add a11y number of search results
           a11y_numberOfSearchResults={0}
         />
