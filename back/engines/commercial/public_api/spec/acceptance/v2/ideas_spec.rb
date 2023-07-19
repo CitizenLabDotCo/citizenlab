@@ -53,15 +53,41 @@ resource 'Posts' do
   end
 
   get '/api/v2/ideas/deleted' do
-    let!(:deletion_activity) { create(:activity, item_type: 'Idea', action: 'deleted') }
+    parameter(
+      :deleted_at,
+      'Date item was deleted - in format "YYYY-DD-MM" - to filter between two dates separate with comma',
+      in: :query,
+      required: false,
+      type: 'string'
+    )
+
+    let!(:deletion_activities) do
+      %w[2020-01-01 2020-01-02].map do |date|
+        create(:activity, item_type: 'Idea', action: 'deleted', acted_at: date)
+      end
+    end
 
     example_request 'List deleted ideas' do
       assert_status 200
-      expect(json_response_body[:deleted_items]).to match_array([{
-        id: deletion_activity.item_id,
-        type: 'Idea',
-        deleted_at: deletion_activity.acted_at.iso8601(3)
-      }])
+
+      expected_items = deletion_activities.map do |activity|
+        {
+          id: activity.item_id,
+          type: 'Idea',
+          deleted_at: activity.acted_at.iso8601(3)
+        }
+      end
+
+      expect(json_response_body[:deleted_items]).to match_array(expected_items)
+    end
+
+    context "when filtering by 'deleted_at'" do
+      let(:deleted_at) { '2020-01-02,2020-01-31' }
+
+      example_request 'List only the ideas deleted during the specified period' do
+        assert_status 200
+        expect(json_response_body[:deleted_items].size).to eq(1)
+      end
     end
   end
 
