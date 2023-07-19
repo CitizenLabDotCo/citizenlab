@@ -73,8 +73,6 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
     ? pastPresentOrFuture(phase?.attributes.start_at) === 'future'
     : false;
 
-  console.log(phase?.attributes.start_at);
-
   // basket
   const { data: basket } = useBasket(
     phase
