@@ -5,7 +5,12 @@ import messages from '../messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 // components
-import { Input, Box, Error } from '@citizenlab/cl2-component-library';
+import {
+  Input,
+  Box,
+  Error,
+  IconTooltip,
+} from '@citizenlab/cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
@@ -50,6 +55,9 @@ const MultipleVotingInputs = ({
       <SectionField>
         <SubSectionTitle>
           <FormattedMessage {...messages.voteCalled} />
+          <IconTooltip
+            content={<FormattedMessage {...messages.ifLeftEmpty} />}
+          />
         </SubSectionTitle>
         <Box maxWidth="300px">
           <Box mb="24px">
