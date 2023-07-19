@@ -202,6 +202,7 @@ ar-MA:
       likes_count: 'الإعجابات'
       dislikes_count: 'يكره'
       picks: 'مختارات'
+      participants: 'مشاركون'
       votes_count: 'الأصوات'
       input_url: 'URL'
       project: 'المشروع'
