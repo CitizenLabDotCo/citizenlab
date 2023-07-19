@@ -1708,7 +1708,6 @@
   "app.containers.AdminPage.groups.permissions.option1": "valg 1",
   "app.containers.AdminPage.groups.permissions.pendingInvitation": "Ventende invitasjon",
   "app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle": "Hvem kan kommentere dokumentet?",
-  "app.containers.AdminPage.groups.permissions.permissionAction_budgeting_subtitle": "Hvem kan bruke budsjettet?",
   "app.containers.AdminPage.groups.permissions.permissionAction_comment_inputs_subtitle": "Hvem kan kommentere innspill?",
   "app.containers.AdminPage.groups.permissions.permissionAction_comment_proposals_subtitle": "Hvem kan kommentere forslag?",
   "app.containers.AdminPage.groups.permissions.permissionAction_post_proposal_subtitle": "Hvem kan legge ut et forslag?",
