@@ -47,8 +47,6 @@ resource 'InitiativeStatusChange' do
       @user = create(:admin)
       header_token_for @user
 
-      @status_approval_pending = create(:initiative_status_approval_pending)
-      @status_approval_rejected = create(:initiative_status_approval_rejected)
       @status_proposed = create(:initiative_status_proposed)
       @status_expired = create(:initiative_status_expired)
       @status_threshold_reached = create(:initiative_status_threshold_reached)
