@@ -437,6 +437,7 @@
   "app.components.Sharing.shareViaMessenger": "Udostępnij za pomocą Messengera",
   "app.components.Sharing.shareViaWhatsApp": "Udostępniaj przez WhatsApp",
   "app.components.SideModal.closeButtonAria": "Zamknij",
+  "app.components.StatusModule.futurePhase": "Oglądasz fazę, która jeszcze się nie rozpoczęła. Będziesz mógł wziąć w niej udział po jej rozpoczęciu.",
   "app.components.StatusModule.modifyYour": "Zmodyfikuj swój",
   "app.components.StatusModule.submittedUntil2": "mogą być składane do",
   "app.components.TopicsPicker.numberOfSelectedTopics": "Zaznaczono {numberOfSelectedTopics, plural, =0 {zero tematów} one {jeden temat} few {# tematy} many {# tematów} other {# tematy}}. {selectedTopicNames}",
