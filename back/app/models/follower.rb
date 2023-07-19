@@ -25,7 +25,10 @@ class Follower < ApplicationRecord
   belongs_to :followable, polymorphic: true
 
   validates :user, :followable, presence: true
-  validates :followable_id, uniqueness: { scope: :user_id }
+  # The index is there and should be correct, but we still get an offense. Perhaps because of the followable_type
+  # ruubocop:disable Rails/UniqueValidationWithoutIndex
+  validates :user_id, uniqueness: { scope: %i[followable_type followable_id] }
+  # ruubocop:enable Rails/UniqueValidationWithoutIndex
 
   counter_culture :followable, column_name: :followers_count
 end
