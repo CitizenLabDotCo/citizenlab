@@ -162,10 +162,6 @@ const IdeaMapCard = memo<Props>(
       ? isParticipatoryBudgetProject
       : isParticipatoryBudgetPhase;
 
-    const areReactionsEnabled = phase
-      ? phase.data.attributes.reacting_enabled
-      : project?.data.attributes.reacting_enabled;
-
     useEffect(() => {
       const subscriptions = [
         leafletMapHoveredMarker$.subscribe((hoverredIdeaId) => {
