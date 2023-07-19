@@ -437,6 +437,7 @@
   "app.components.Sharing.shareViaMessenger": "Del via Messenger",
   "app.components.Sharing.shareViaWhatsApp": "Del med WhatsApp",
   "app.components.SideModal.closeButtonAria": "Luk",
+  "app.components.StatusModule.futurePhase": "Du ser på en fase, der ikke er startet endnu. Du vil kunne deltage, når fasen starter.",
   "app.components.StatusModule.modifyYour": "Ændre din",
   "app.components.StatusModule.submittedUntil2": "kan indsendes indtil",
   "app.components.TopicsPicker.numberOfSelectedTopics": "Valgt {numberOfSelectedTopics, plural, =0 {zero topics} et {zero topics} andet {# topics}}.{selectedTopicNames}",
