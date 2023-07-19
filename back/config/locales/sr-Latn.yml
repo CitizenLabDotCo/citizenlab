@@ -202,6 +202,7 @@ sr-Latn:
       likes_count: 'Свиђа'
       dislikes_count: 'Не свиђа ми се'
       picks: 'Picks'
+      participants: 'Participants'
       votes_count: 'Votes'
       input_url: 'URL'
       project: 'Projekat'
