@@ -202,6 +202,7 @@ el:
       likes_count: 'Μου αρέσει'
       dislikes_count: 'Απεχθάνεται το'
       picks: 'Επιλογές'
+      participants: 'Συμμετέχοντες'
       votes_count: 'Ψήφοι'
       input_url: 'ΔΙΕΎΘΥΝΣΗ URL'
       project: 'Έργο'
