@@ -37,7 +37,7 @@ module Analysis
     private
 
     def project_xor_phase_present
-      return if phase ^ project
+      return if phase.present? ^ project.present?
 
       errors.add(:base, :project_or_phase_present, message: 'This analysis does not have only a project or only a phase associated')
     end

@@ -23,7 +23,7 @@
 #
 module Analysis
   class AnalysesCustomField < ApplicationRecord
-    belongs_to :analysis, class_name: 'Analyses::Analysis'
+    belongs_to :analysis, class_name: 'Analysis::Analysis'
     belongs_to :custom_field
   end
 end
