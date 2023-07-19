@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_10_143815) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_19_221540) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -52,6 +52,25 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_10_143815) do
     t.index ["parent_id"], name: "index_admin_publications_on_parent_id"
     t.index ["publication_type", "publication_id"], name: "index_admin_publications_on_publication_type_and_publication_id"
     t.index ["rgt"], name: "index_admin_publications_on_rgt"
+  end
+
+  create_table "analysis_analyses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "project_id"
+    t.uuid "phase_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["phase_id"], name: "index_analysis_analyses_on_phase_id"
+    t.index ["project_id"], name: "index_analysis_analyses_on_project_id"
+  end
+
+  create_table "analysis_analyses_custom_fields", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "analysis_id"
+    t.uuid "custom_field_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["analysis_id", "custom_field_id"], name: "index_analysis_analyses_custom_fields", unique: true
+    t.index ["analysis_id"], name: "index_analysis_analyses_custom_fields_on_analysis_id"
+    t.index ["custom_field_id"], name: "index_analysis_analyses_custom_fields_on_custom_field_id"
   end
 
   create_table "analytics_dimension_dates", primary_key: "date", id: :date, force: :cascade do |t|
@@ -1420,6 +1439,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_10_143815) do
   end
 
   add_foreign_key "activities", "users"
+  add_foreign_key "analysis_analyses", "phases"
+  add_foreign_key "analysis_analyses", "projects"
+  add_foreign_key "analysis_analyses_custom_fields", "analysis_analyses", column: "analysis_id"
+  add_foreign_key "analysis_analyses_custom_fields", "custom_fields"
   add_foreign_key "analytics_dimension_locales_fact_visits", "analytics_dimension_locales", column: "dimension_locale_id"
   add_foreign_key "analytics_dimension_locales_fact_visits", "analytics_fact_visits", column: "fact_visit_id"
   add_foreign_key "analytics_dimension_projects_fact_visits", "analytics_fact_visits", column: "fact_visit_id"

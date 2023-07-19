@@ -241,3 +241,4 @@ end
 
 CustomField.include(SmartGroups::Extensions::CustomField)
 CustomField.include(UserCustomFields::Patches::CustomField)
+CustomField.include(Analysis::Patches::CustomField)

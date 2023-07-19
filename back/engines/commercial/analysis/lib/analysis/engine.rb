@@ -6,7 +6,7 @@ module Analysis
 
     config.to_prepare do
       require 'analysis/feature_specification'
-      AppConfiguration::Settings.add_feature(Analysis::FeatureSpecification)
+      AppConfiguration::Settings.add_feature(::Analysis::FeatureSpecification)
     end
   end
 end
