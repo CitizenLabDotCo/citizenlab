@@ -15,9 +15,10 @@ import messages from './messages';
 interface Props {
   phaseId: string;
   budget?: number;
-  votes: number;
+  votes?: number;
   votesPercentage: number;
   baskets?: number;
+  tooltip?: string;
 }
 
 const Results = ({
@@ -26,6 +27,7 @@ const Results = ({
   votes,
   votesPercentage,
   baskets,
+  tooltip,
 }: Props) => {
   const { formatMessage } = useIntl();
   const { data: phase } = usePhase(phaseId);
@@ -41,8 +43,7 @@ const Results = ({
         phase.data.attributes.voting_method === 'budgeting' &&
         budget && (
           <Text mb="8px" mt="8px" color="tenantPrimary">
-            {formatMessage(messages.cost)}
-            <FormattedBudget value={budget} />
+            {formatMessage(messages.cost)} <FormattedBudget value={budget} />
           </Text>
         )}
       <ProgressBar
@@ -50,6 +51,7 @@ const Results = ({
         votes={votes}
         votesPercentage={votesPercentage}
         baskets={baskets}
+        tooltip={tooltip}
       />
     </Box>
   );

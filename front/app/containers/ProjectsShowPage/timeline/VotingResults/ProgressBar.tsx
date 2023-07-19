@@ -5,6 +5,7 @@ import usePhase from 'api/phases/usePhase';
 
 // components
 import { Box, Text, Icon } from '@citizenlab/cl2-component-library';
+import Tippy from '@tippyjs/react';
 
 // styling
 import { useTheme } from 'styled-components';
@@ -18,12 +19,19 @@ import messages from 'components/VoteInputs/multiple/AssignMultipleVotesInput/me
 
 interface Props {
   phaseId: string;
-  votes: number;
+  votes?: number;
   votesPercentage: number;
   baskets?: number;
+  tooltip?: string;
 }
 
-const ProgressBar = ({ phaseId, votes, votesPercentage, baskets }: Props) => {
+const ProgressBar = ({
+  phaseId,
+  votes,
+  votesPercentage,
+  baskets,
+  tooltip,
+}: Props) => {
   const theme = useTheme();
   const { formatMessage } = useIntl();
   const localize = useLocalize();
@@ -42,63 +50,79 @@ const ProgressBar = ({ phaseId, votes, votesPercentage, baskets }: Props) => {
     formatMessage(messages.votes).toLowerCase();
 
   return (
-    <Box
-      w="100%"
-      h="28px"
-      borderRadius={stylingConsts.borderRadius}
-      bgColor={transparentize(0.9, theme.colors.tenantPrimary)}
-      position="relative"
+    <Tippy
+      disabled={!tooltip}
+      content={tooltip}
+      interactive={true}
+      placement="bottom"
     >
       <Box
-        w={`${votesPercentage}%`}
-        h="100%"
-        bgColor={transparentize(0.75, theme.colors.primary)}
-        borderRadius={stylingConsts.borderRadius}
-      />
-      <Box
-        position="absolute"
-        left="0"
-        top="0"
+        w="100%"
         h="28px"
-        display="flex"
-        alignItems="center"
+        borderRadius={stylingConsts.borderRadius}
+        bgColor={transparentize(0.9, theme.colors.tenantPrimary)}
+        position="relative"
       >
-        <Text
-          m="0"
-          color="tenantPrimary"
-          ml="12px"
-          fontSize="s"
-          fontWeight="bold"
-        >
-          {`${votesPercentage}% (${votes} ${formatMessage(messages.xVotes, {
-            votes,
-            singular: votingTermSingular,
-            plural: votingTermPlural,
-          }).toLowerCase()})`}
-        </Text>
-      </Box>
-      {baskets !== undefined && (
+        <Box
+          w={`${votesPercentage}%`}
+          h="100%"
+          bgColor={transparentize(0.75, theme.colors.primary)}
+          borderRadius={stylingConsts.borderRadius}
+        />
         <Box
           position="absolute"
+          left="0"
           top="0"
-          right="0"
           h="28px"
           display="flex"
           alignItems="center"
         >
-          <Text mb="0" mt="1px" mr="4px" color="primary">
-            {baskets}
+          <Text
+            m="0"
+            color="tenantPrimary"
+            ml="12px"
+            fontSize="s"
+            fontWeight="bold"
+          >
+            {votes ? (
+              <>
+                {`${votesPercentage}% (${votes} ${formatMessage(
+                  messages.xVotes,
+                  {
+                    votes,
+                    singular: votingTermSingular,
+                    plural: votingTermPlural,
+                  }
+                ).toLowerCase()})`}
+              </>
+            ) : (
+              <>{votesPercentage}%</>
+            )}
           </Text>
-          <Icon
-            name="user"
-            width="20px"
-            height="20px"
-            mr="12px"
-            fill={theme.colors.primary}
-          />
         </Box>
-      )}
-    </Box>
+        {baskets !== undefined && (
+          <Box
+            position="absolute"
+            top="0"
+            right="0"
+            h="28px"
+            display="flex"
+            alignItems="center"
+          >
+            <Text mb="0" mt="1px" mr="4px" color="primary">
+              {baskets}
+            </Text>
+            <Icon
+              name="user"
+              width="20px"
+              height="20px"
+              mr="12px"
+              fill={theme.colors.primary}
+            />
+          </Box>
+        )}
+      </Box>
+    </Tippy>
   );
 };
 
