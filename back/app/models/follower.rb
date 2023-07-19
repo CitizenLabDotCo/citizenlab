@@ -25,7 +25,7 @@ class Follower < ApplicationRecord
   belongs_to :followable, polymorphic: true
 
   validates :user, :followable, presence: true
-  validates :user_id, uniqueness: { scope: :followable_id }
+  validates :followable_id, uniqueness: { scope: :user_id }
 
   counter_culture :followable, column_name: :followers_count
 end
