@@ -202,6 +202,7 @@ nl:
       likes_count: 'Likes'
       dislikes_count: 'Dislikes'
       picks: 'Keuzes'
+      participants: 'Deelnemers'
       votes_count: 'Stemmen'
       input_url: 'URL'
       project: 'Project'
