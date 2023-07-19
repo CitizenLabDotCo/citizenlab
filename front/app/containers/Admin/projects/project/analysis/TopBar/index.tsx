@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   stylingConsts,
   colors,
   Title,
+  Button,
 } from '@citizenlab/cl2-component-library';
 import GoBackButton from 'components/UI/GoBackButton';
 import clHistory from 'utils/cl-router/history';
@@ -13,8 +14,10 @@ import useLocalize from 'hooks/useLocalize';
 import SearchInput from 'components/UI/SearchInput';
 
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import Filters from './Filters';
 
 const TopBar = () => {
+  const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const { projectId } = useParams() as { projectId: string };
   const { data: project } = useProjectById(projectId);
   const projectTitle = project?.data.attributes.title_multiloc;
@@ -38,6 +41,17 @@ const TopBar = () => {
       <Title variant="h4" m="0px">
         {localize(projectTitle)}
       </Title>
+      <Button
+        buttonStyle="secondary"
+        icon="filter"
+        size="s"
+        onClick={() => {
+          setIsFiltersOpen(!isFiltersOpen);
+        }}
+      >
+        Filters
+      </Button>
+
       <Box marginLeft="auto">
         <SearchInput
           onChange={(search) => updateSearchParams({ search })}
@@ -45,6 +59,7 @@ const TopBar = () => {
           a11y_numberOfSearchResults={0}
         />
       </Box>
+      {isFiltersOpen && <Filters />}
     </Box>
   );
 };
