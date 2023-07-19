@@ -28,12 +28,12 @@ module ParticipationMethod
       false
     end
 
-    def supports_baskets?
+    def sign_in_required_for_posting?
       true
     end
 
-    def sign_in_required_for_posting?
-      true
+    def additional_export_columns
+      Factory.instance.voting_method_for(participation_context).export_columns
     end
   end
 end

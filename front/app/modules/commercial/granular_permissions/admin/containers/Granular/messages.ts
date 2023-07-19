@@ -64,9 +64,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.permissions.permissionAction_take_poll_subtitle',
     defaultMessage: 'Who can take the poll?',
   },
-  permissionAction_budgeting_subtitle: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_budgeting_subtitle',
-    defaultMessage: 'Who can spend the budget?',
+  permissionAction_voting_subtitle: {
+    id: 'app.containers.AdminPage.groups.permissions.permissionAction_voting_subtitle',
+    defaultMessage: 'Who can vote?',
   },
   permissionAction_annotating_document_subtitle: {
     id: 'app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle',

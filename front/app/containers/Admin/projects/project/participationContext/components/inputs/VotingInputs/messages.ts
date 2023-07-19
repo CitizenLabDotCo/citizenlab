@@ -52,12 +52,12 @@ export default defineMessages({
     defaultMessage: 'Maximum votes per option',
   },
   voteCalledPlaceholderSingular: {
-    id: 'app.containers.AdminPage.ProjectEdit.Voting.voteCalledPlaceholderSingular',
-    defaultMessage: 'E.g. Token',
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.voteCalledPlaceholderSingular2',
+    defaultMessage: 'E.g. token, point, carbon credit...',
   },
   voteCalledPlaceholderPlural: {
-    id: 'app.containers.AdminPage.ProjectEdit.Voting.voteCalledPlaceholderPlural',
-    defaultMessage: 'E.g. Tokens',
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.voteCalledPlaceholderPlural2',
+    defaultMessage: 'E.g. tokens, points, carbon credits...',
   },
   maximumVotes: {
     id: 'app.containers.AdminPage.ProjectEdit.Voting.maximumVotes',
@@ -67,5 +67,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.Voting.maximumVotesDescription',
     defaultMessage:
       'You can limit the number votes a user can cast in total (with a maximum of one vote per option).',
+  },
+  ifLeftEmpty: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.ifLeftEmpty',
+    defaultMessage: 'If left empty, this will default to "vote".',
   },
 });

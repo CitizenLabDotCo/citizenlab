@@ -255,8 +255,6 @@ describe SortByParamsService do
       end
       let(:phase_id) { project_with_phases.phases.first.id }
 
-      # let(:result_record_ids) { service.sort_ideas(Idea.where(id: ideas.map(&:id)), params, user).pluck(:id) }
-
       describe 'baskets_count' do
         let(:sort) { 'baskets_count' }
         let(:expected_record_ids) { [ideas[0].id, ideas[2].id, ideas[1].id] }

@@ -7,5 +7,9 @@ module VotingMethod
         participation_context.errors.add :voting_max_total, :blank, message: 'voting max total is blank'
       end
     end
+
+    def export_columns
+      %w[participants votes]
+    end
   end
 end
