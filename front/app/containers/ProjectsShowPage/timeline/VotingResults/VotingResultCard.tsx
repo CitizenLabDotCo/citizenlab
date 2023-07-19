@@ -10,10 +10,10 @@ import useIdeaImage from 'api/idea_images/useIdeaImage';
 import useLocalize from 'hooks/useLocalize';
 
 // components
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
+import { useBreakpoint, Box } from '@citizenlab/cl2-component-library';
 import Image from 'components/UI/Image';
-import ImagePlaceholder from 'components/IdeaCard/ImagePlaceholder';
-// import Rank from './Rank';
+import ImagePlaceholder from './ImagePlaceholder';
+import Rank from './Rank';
 import Results from './Results';
 import Footer from 'components/IdeaCard/Footer';
 
@@ -91,7 +91,7 @@ const IdeaCardImageWrapper = styled.div`
 const IdeaCardImage = styled(Image)`
   width: 100%;
   height: 100%;
-  flex: 1;
+  position: absolute;
 `;
 
 const ContentWrapper = styled.div`
@@ -153,7 +153,7 @@ interface Props {
   rank: number;
 }
 
-const VotingResultCard = ({ idea, phaseId /* rank */ }: Props) => {
+const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
   const localize = useLocalize();
   const { data: phase } = usePhase(phaseId);
   const { data: project } = useProjectById(idea.relationships.project.data.id);
@@ -199,20 +199,40 @@ const VotingResultCard = ({ idea, phaseId /* rank */ }: Props) => {
     >
       {image && (
         <IdeaCardImageWrapper>
-          <IdeaCardImage src={image} cover={true} alt="" />
+          <Box w="100%" h="100%" flex="1" position="relative">
+            <IdeaCardImage src={image} cover={true} alt="" />
+            <Box
+              position="absolute"
+              mt={smallerThanPhone ? '0px' : '12px'}
+              ml={smallerThanPhone ? '0px' : '12px'}
+            >
+              <Rank rank={rank} />
+            </Box>
+          </Box>
         </IdeaCardImageWrapper>
       )}
 
-      {!image && smallerThanPhone && (
+      {!image && !smallerThanPhone && (
         <IdeaCardImageWrapper>
-          <ImagePlaceholder
-            participationMethod="voting"
-            votingMethod={votingMethod}
-          />
+          <Box w="100%" h="100%" flex="1" position="relative">
+            <ImagePlaceholder
+              participationMethod="voting"
+              votingMethod={votingMethod}
+            />
+            <Box position="absolute" mt="12px" ml="12px">
+              <Rank rank={rank} />
+            </Box>
+          </Box>
         </IdeaCardImageWrapper>
       )}
 
       <ContentWrapper>
+        {!image && smallerThanPhone && (
+          <Box mb="12px" display="flex">
+            <Rank rank={rank} />
+          </Box>
+        )}
+
         <Header className="e2e-card-title">
           <Title title={ideaTitle}>{ideaTitle}</Title>
         </Header>
