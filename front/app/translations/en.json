@@ -208,7 +208,7 @@
   "app.components.InitiativesMap.newProposalsNotPermitted": "New proposals are not currently being accepted.",
   "app.components.InitiativesMap.noInitiativesWithLocation": "The proposals in this project don't have any location information.",
   "app.components.InitiativesMap.seeInitiative": "See proposal",
-  "app.components.InitiativesShow.createdModalSubtitle": "An admin will review your proposal shortly and either approve it or contact you with next steps.",
+  "app.components.InitiativesShow.createdModalSubtitle": "An admin will review your proposal shortly - you will be notified when the review is completed.",
   "app.components.InitiativesShow.createdModalTitle": "Congratulations, your proposal has been submitted for approval!",
   "app.components.InitiativesShow.deleteInitiative": "Delete proposal",
   "app.components.InitiativesShow.deleteInitiativeConfirmation": "Are you sure you want to delete this proposal?",

@@ -101,7 +101,7 @@ export default defineMessages({
   createdModalSubtitle: {
     id: 'app.components.InitiativesShow.createdModalSubtitle',
     defaultMessage:
-      'An admin will review your proposal shortly and either approve it or contact you with next steps.',
+      'An admin will review your proposal shortly - you will be notified when the review is completed.',
   },
   a11y_voteControl: {
     id: 'app.containers.InitiativesShow.a11y_voteControl',
