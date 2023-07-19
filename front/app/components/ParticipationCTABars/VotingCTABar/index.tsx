@@ -139,7 +139,7 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
           fontWeight="500"
           bgColor={theme.colors.white}
           textColor={theme.colors.tenantText}
-          data-cy="voting-submit-button"
+          id="e2e-voting-submit-button"
           textHoverColor={theme.colors.black}
           padding="6px 12px"
           fontSize="14px"

@@ -70,7 +70,7 @@ describe('Continuous Voting / Budgeting project', () => {
     cy.contains('How to participate');
     cy.contains('500 / 500');
 
-    cy.get('[data-cy="voting-submit-button"]')
+    cy.get('#e2e-voting-submit-button')
       .should('exist')
       .should('have.class', 'disabled');
 
@@ -81,7 +81,7 @@ describe('Continuous Voting / Budgeting project', () => {
       .should('have.class', 'in-basket');
     cy.wait(2000);
 
-    cy.get('[data-cy="voting-submit-button"]')
+    cy.get('#e2e-voting-submit-button')
       .should('exist')
       .should('not.have.class', 'disabled');
 
@@ -89,7 +89,7 @@ describe('Continuous Voting / Budgeting project', () => {
   });
 
   it('can submit the budget', () => {
-    cy.get('[data-cy="voting-submit-button"]').find('button').click();
+    cy.get('#e2e-voting-submit-button').find('button').click();
     cy.wait(2000);
 
     cy.contains('Budget submitted');
@@ -113,7 +113,7 @@ describe('Continuous Voting / Budgeting project', () => {
       .click()
       .should('have.class', 'not-in-basket');
 
-    cy.get('[data-cy="voting-submit-button"]')
+    cy.get('#e2e-voting-submit-button')
       .should('exist')
       .should('have.class', 'disabled');
   });
