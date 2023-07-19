@@ -202,6 +202,7 @@ es-CL:
       likes_count: 'Me gusta'
       dislikes_count: 'No me gusta'
       picks: 'Recoge'
+      participants: 'Participantes'
       votes_count: 'Votos'
       input_url: 'URL'
       project: 'Proyecto'
