@@ -180,6 +180,7 @@ const AssignMultipleVotesInput = ({
         width="100%"
         display="flex"
         justifyContent="space-between"
+        className="e2e-multiple-votes-widget"
         style={{ cursor: 'default' }}
         flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
       >
@@ -194,6 +195,7 @@ const AssignMultipleVotesInput = ({
               mr="8px"
               bgColor={theme.colors.tenantPrimary}
               onClick={onRemove}
+              className="e2e-vote-minus"
               ariaLabel={formatMessage(messages.removeVote)}
               disabled={!!minusButtonDisabledExplanation}
             >
@@ -241,6 +243,7 @@ const AssignMultipleVotesInput = ({
             <Button
               ariaLabel={formatMessage(messages.addVote)}
               disabled={!!plusButtonDisabledExplanation}
+              className="e2e-vote-plus"
               ml="8px"
               bgColor={theme.colors.tenantPrimary}
               onClick={onAdd}
@@ -265,6 +268,7 @@ const AssignMultipleVotesInput = ({
           buttonStyle="primary-outlined"
           disabled={!!plusButtonDisabledExplanation}
           processing={isProcessing}
+          className="e2e-multiple-votes-button"
           icon="vote-ballot"
           width="100%"
           onClick={onAdd}

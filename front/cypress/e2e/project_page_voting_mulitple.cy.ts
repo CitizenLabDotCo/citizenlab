@@ -1,6 +1,6 @@
 import { randomEmail, randomString } from '../support/commands';
 
-describe('Continuous Budgeting project', () => {
+describe('Continuous multiple voting project', () => {
   let projectId: string;
   let projectSlug: string;
   let ideaId: string;
@@ -22,8 +22,9 @@ describe('Continuous Budgeting project', () => {
       description: '',
       publicationStatus: 'published',
       participationMethod: 'voting',
-      votingMethod: 'budgeting',
-      votingMaxTotal: 500,
+      votingMethod: 'multiple_voting',
+      votingMaxVotesPerIdea: 2,
+      votingMaxTotal: 5,
     }).then((project) => {
       projectId = project.body.data.id;
       projectSlug = project.body.data.attributes.slug;
@@ -34,8 +35,7 @@ describe('Continuous Budgeting project', () => {
           ideaContent,
           undefined,
           undefined,
-          undefined,
-          100
+          undefined
         )
         .then((idea) => {
           ideaId = idea.body.data.id;
@@ -71,56 +71,82 @@ describe('Continuous Budgeting project', () => {
     cy.get('.e2e-filter-selector-button').should('not.exist');
   });
 
-  it('can allocate the budget to ideas and show how much budget is left', () => {
-    cy.contains('Submit your budget');
-    cy.contains('How to participate');
-    cy.contains('500 / 500');
+  it('can allocate the votes to ideas and show how many votes are left', () => {
+    cy.contains('Cast your vote');
+    cy.contains('How to vote');
+    cy.contains('5 / 5');
 
     cy.get('#e2e-voting-submit-button')
       .should('exist')
       .should('have.class', 'disabled');
 
     cy.get('#e2e-ideas-container')
-      .find('.e2e-assign-budget-button')
-      .should('have.class', 'not-in-basket')
-      .click()
-      .should('have.class', 'in-basket');
-    cy.wait(2000);
+      .find('.e2e-multiple-votes-button button')
+      .should('exist')
+      .click();
+
+    cy.get('#e2e-ideas-container')
+      .find('.e2e-multiple-votes-widget')
+      .should('exist');
 
     cy.get('#e2e-voting-submit-button')
       .should('exist')
       .should('not.have.class', 'disabled');
 
-    cy.contains('400 / 500');
-  });
-
-  it('can submit the budget', () => {
-    cy.get('#e2e-voting-submit-button').find('button').click();
-    cy.wait(2000);
-
-    cy.contains('Budget submitted');
-    cy.contains('You have participated in this project');
+    cy.contains('4 / 5');
 
     cy.get('#e2e-ideas-container')
-      .find('.e2e-assign-budget-button')
+      .find('.e2e-vote-plus button')
+      .click()
+      .should('have.class', 'disabled');
+    cy.contains('3 / 5');
+
+    cy.wait(1000);
+  });
+
+  it('can submit the votes', () => {
+    cy.get('#e2e-voting-submit-button').find('button').click();
+    cy.wait(1000);
+
+    cy.contains('Vote submitted');
+    cy.contains('Congratulations, your vote has been submitted');
+
+    cy.get('#e2e-ideas-container')
+      .find('.e2e-vote-minus button')
+      .should('have.class', 'disabled');
+
+    cy.get('#e2e-ideas-container')
+      .find('.e2e-vote-plus button')
       .should('have.class', 'disabled');
   });
 
-  it('can modify the budget and remove an option', () => {
+  it('can modify and remove your votes', () => {
     cy.get('#e2e-modify-votes')
       .should('exist')
-      .should('contain', 'Modify your budget')
+      .should('contain', 'Modify your vote')
       .click();
-    cy.wait(2000);
+    cy.wait(1000);
+
+    cy.get('#e2e-ideas-container').find('.e2e-vote-minus button').click();
 
     cy.get('#e2e-ideas-container')
-      .find('.e2e-assign-budget-button')
-      .should('have.class', 'in-basket')
-      .click()
-      .should('have.class', 'not-in-basket');
+      .find('.e2e-vote-plus button')
+      .should('not.have.class', 'disabled');
+
+    cy.contains('4 / 5');
+
+    cy.get('#e2e-ideas-container').find('.e2e-vote-minus button').click();
+
+    cy.contains('5 / 5');
+
+    cy.get('#e2e-ideas-container')
+      .find('.e2e-multiple-votes-button button')
+      .should('exist');
 
     cy.get('#e2e-voting-submit-button')
       .should('exist')
       .should('have.class', 'disabled');
   });
+
+  // TODO: Check you cannot add more than the maximum number of votes?
 });

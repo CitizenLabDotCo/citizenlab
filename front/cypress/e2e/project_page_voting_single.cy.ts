@@ -1,6 +1,6 @@
 import { randomEmail, randomString } from '../support/commands';
 
-describe('Continuous Budgeting project', () => {
+describe('Continuous Single voting project', () => {
   let projectId: string;
   let projectSlug: string;
   let ideaId: string;
@@ -22,8 +22,8 @@ describe('Continuous Budgeting project', () => {
       description: '',
       publicationStatus: 'published',
       participationMethod: 'voting',
-      votingMethod: 'budgeting',
-      votingMaxTotal: 500,
+      votingMethod: 'single_voting',
+      votingMaxTotal: 5,
     }).then((project) => {
       projectId = project.body.data.id;
       projectSlug = project.body.data.attributes.slug;
@@ -34,8 +34,7 @@ describe('Continuous Budgeting project', () => {
           ideaContent,
           undefined,
           undefined,
-          undefined,
-          100
+          undefined
         )
         .then((idea) => {
           ideaId = idea.body.data.id;
@@ -71,56 +70,58 @@ describe('Continuous Budgeting project', () => {
     cy.get('.e2e-filter-selector-button').should('not.exist');
   });
 
-  it('can allocate the budget to ideas and show how much budget is left', () => {
-    cy.contains('Submit your budget');
-    cy.contains('How to participate');
-    cy.contains('500 / 500');
+  it('can allocate votes to ideas and show how many votes are left', () => {
+    cy.contains('Cast your vote');
+    cy.contains('How to vote');
+    cy.contains('5 / 5');
 
     cy.get('#e2e-voting-submit-button')
       .should('exist')
       .should('have.class', 'disabled');
 
     cy.get('#e2e-ideas-container')
-      .find('.e2e-assign-budget-button')
-      .should('have.class', 'not-in-basket')
+      .find('.e2e-single-vote-button button')
+      .should('have.class', 'primary-outlined')
       .click()
-      .should('have.class', 'in-basket');
-    cy.wait(2000);
+      .should('have.class', 'primary');
+    cy.wait(1000);
 
     cy.get('#e2e-voting-submit-button')
       .should('exist')
       .should('not.have.class', 'disabled');
 
-    cy.contains('400 / 500');
+    cy.contains('4 / 5');
   });
 
-  it('can submit the budget', () => {
+  it('can submit the votes', () => {
     cy.get('#e2e-voting-submit-button').find('button').click();
-    cy.wait(2000);
+    cy.wait(1000);
 
-    cy.contains('Budget submitted');
-    cy.contains('You have participated in this project');
+    cy.contains('Vote submitted');
+    cy.contains('Congratulations, your vote has been submitted');
 
     cy.get('#e2e-ideas-container')
-      .find('.e2e-assign-budget-button')
+      .find('.e2e-single-vote-button button')
       .should('have.class', 'disabled');
   });
 
-  it('can modify the budget and remove an option', () => {
+  it('can modify and remove the votes', () => {
     cy.get('#e2e-modify-votes')
       .should('exist')
-      .should('contain', 'Modify your budget')
+      .should('contain', 'Modify your vote')
       .click();
-    cy.wait(2000);
+    cy.wait(1000);
 
     cy.get('#e2e-ideas-container')
-      .find('.e2e-assign-budget-button')
-      .should('have.class', 'in-basket')
+      .find('.e2e-single-vote-button button')
+      .should('have.class', 'primary')
       .click()
-      .should('have.class', 'not-in-basket');
+      .should('have.class', 'primary-outlined');
 
     cy.get('#e2e-voting-submit-button')
       .should('exist')
       .should('have.class', 'disabled');
   });
+
+  // TODO: Check you cannot add more than the maximum?
 });

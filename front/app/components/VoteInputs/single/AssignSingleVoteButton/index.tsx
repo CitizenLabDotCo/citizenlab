@@ -134,6 +134,7 @@ const AssignSingleVoteButton = ({
           disabled={!!buttonDisabledExplanation}
           processing={isProcessing}
           icon={ideaInBasket ? 'check' : 'vote-ballot'}
+          className="e2e-single-vote-button"
           onClick={vote}
           text={
             ideaInBasket

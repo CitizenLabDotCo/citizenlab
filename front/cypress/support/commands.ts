@@ -827,6 +827,7 @@ export function apiCreateProject({
   surveyUrl,
   surveyService,
   votingMaxTotal,
+  votingMaxVotesPerIdea,
   postingEnabled,
   allow_anonymous_participation,
 }: {
@@ -840,6 +841,7 @@ export function apiCreateProject({
   assigneeId?: string;
   surveyUrl?: string;
   votingMaxTotal?: number;
+  votingMaxVotesPerIdea?: number;
   surveyService?: 'typeform' | 'survey_monkey' | 'google_forms';
   postingEnabled?: boolean;
   allow_anonymous_participation?: boolean;
@@ -883,6 +885,7 @@ export function apiCreateProject({
           survey_embed_url: surveyUrl,
           survey_service: surveyService,
           voting_max_total: votingMaxTotal,
+          voting_max_votes_per_idea: votingMaxVotesPerIdea,
           posting_enabled: postingEnabled,
           allow_anonymous_participation: allow_anonymous_participation,
         },
