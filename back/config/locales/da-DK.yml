@@ -202,6 +202,7 @@ da:
       likes_count: 'Likes'
       dislikes_count: 'Dislikes'
       picks: 'Udvalgt'
+      participants: 'Deltagere'
       votes_count: 'Afstemninger'
       input_url: 'URL'
       project: '{tenantName, select, DeloitteDK {Verdensmål} other {Projekt}}'
