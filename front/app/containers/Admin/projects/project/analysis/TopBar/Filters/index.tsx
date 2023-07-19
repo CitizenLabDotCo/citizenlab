@@ -17,7 +17,7 @@ const Filters = () => {
       w="100%"
       h="320px"
     >
-      <Box display="flex" gap="24px" px="24px">
+      <Box display="flex" gap="24px" px="24px" justifyContent="space-evenly">
         <Text fontWeight="bold">{formatMessage(messages.author)}</Text>
         <Box>
           <Text fontWeight="bold">{formatMessage(messages.input)}</Text>

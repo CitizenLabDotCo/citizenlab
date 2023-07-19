@@ -27,7 +27,7 @@ const TopBar = () => {
   const { formatMessage } = useIntl();
 
   const goBack = () => {
-    clHistory.goBack();
+    clHistory.push(`/admin/projects/${projectId}/ideas`);
   };
 
   const toggleFilters = () => {
