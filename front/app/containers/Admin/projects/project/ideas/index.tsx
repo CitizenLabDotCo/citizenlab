@@ -14,6 +14,7 @@ import PostManager, { TFilterMenu } from 'components/admin/PostManager';
 // resources
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
+import Analysis from './Analysis';
 
 const StyledDiv = styled.div`
   margin-bottom: 30px;
@@ -47,6 +48,7 @@ const AdminProjectIdeas = () => {
         </SectionDescription>
       </StyledDiv>
 
+      <Analysis />
       {project && (
         <PostManager
           type="ProjectIdeas"
