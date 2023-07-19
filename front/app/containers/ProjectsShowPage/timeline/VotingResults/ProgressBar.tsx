@@ -93,7 +93,7 @@ const ProgressBar = ({
                     singular: votingTermSingular,
                     plural: votingTermPlural,
                   }
-                ).toLowerCase()})`}
+                )})`}
               </>
             ) : (
               <>{votesPercentage}%</>
