@@ -164,12 +164,14 @@ export default defineMessages({
       'Voting closed on <b>{endDate}.</b> Participants could <b>vote for 1 option.</b>',
   },
   singleVotingOneVoteYouCanVote: {
-    id: 'app.utils.votingMethodUtils.singleVotingOneVoteYouCanVote',
-    defaultMessage: 'You can vote for <b>1 option</b>.',
+    id: 'app.utils.votingMethodUtils.singleVotingOneVoteYouCanVote2',
+    defaultMessage:
+      'You have <b>1 vote</b> that you can assign to one of the options.',
   },
   singleVotingMultipleVotesYouCanVote: {
-    id: 'app.utils.votingMethodUtils.singleVotingMultipleVotesYouCanVote',
-    defaultMessage: 'You can vote for <b>{totalVotes} options</b>.',
+    id: 'app.utils.votingMethodUtils.singleVotingMultipleVotesYouCanVote2',
+    defaultMessage:
+      'You have <b>{totalVotes} votes</b> that you can assign to the options.',
   },
   singleVotingUnlimitedVotesYouCanVote: {
     id: 'app.utils.votingMethodUtils.singleVotingUnlimitedVotesYouCanVote',
