@@ -19,6 +19,8 @@ describe InitiativeStatusService do
       }
       configuration.save!
 
+      @status_approval_pending = create(:initiative_status_approval_pending)
+      @status_approval_rejected = create(:initiative_status_approval_rejected)
       @status_proposed = create(:initiative_status_proposed)
       @status_expired = create(:initiative_status_expired)
       @status_threshold_reached = create(:initiative_status_threshold_reached)
@@ -66,6 +68,8 @@ describe InitiativeStatusService do
 
   describe 'transition_type' do
     before do
+      @status_approval_pending = create(:initiative_status_approval_pending)
+      @status_approval_rejected = create(:initiative_status_approval_rejected)
       @status_proposed = create(:initiative_status_proposed)
       @status_expired = create(:initiative_status_expired)
       @status_threshold_reached = create(:initiative_status_threshold_reached)
@@ -79,6 +83,14 @@ describe InitiativeStatusService do
 
     it 'labels the ineligible status as manual' do
       expect(service.transition_type(@status_ineligible)).to eq 'manual'
+    end
+
+    # it 'labels the proposed status as manual' do
+    #   expect(service.transition_type(@status_proposed)).to eq 'manual'
+    # end
+
+    it 'labels the approval_rejected status as manual' do
+      expect(service.transition_type(@status_approval_rejected)).to eq 'manual'
     end
   end
 end

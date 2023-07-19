@@ -73,6 +73,10 @@ AppConfiguration.create!(
         locales: CL2_SUPPORTED_LOCALES
       )
     },
+    initiative_approval: {
+      enabled: false,
+      allowed: true
+    },
     surveys: {
       enabled: true,
       allowed: true
@@ -247,6 +251,20 @@ end
 
 # Creates initiative statuses.
 [
+  {
+    title_multiloc: 'initiative_statuses.approval_pending',
+    ordering: 100,
+    code: 'approval_pending',
+    color: '#CC9331',
+    description_multiloc: 'initiative_statuses.approval_pending_description'
+  },
+  {
+    title_multiloc: 'initiative_statuses.approval_rejected',
+    ordering: 100,
+    code: 'approval_rejected',
+    color: '#CC317E',
+    description_multiloc: 'initiative_statuses.approval_rejected_description'
+  },
   {
     title_multiloc: 'initiative_statuses.proposed',
     ordering: 100,

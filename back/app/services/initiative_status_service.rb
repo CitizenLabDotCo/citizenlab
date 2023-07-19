@@ -2,6 +2,14 @@
 
 class InitiativeStatusService
   MANUAL_TRANSITIONS = {
+    'approval_pending' => {
+      'proposed' => {
+        feedback_required: false
+      },
+      'approval_rejected' => {
+        feedback_required: true
+      }
+    },
     'proposed' => {
       'answered' => {
         feedback_required: true
@@ -106,7 +114,10 @@ class InitiativeStatusService
   end
 
   def manual_status_ids
-    InitiativeStatus.where(code: MANUAL_TRANSITIONS.values.map(&:keys).flatten.uniq).ids
+    statuses = InitiativeStatus.where(code: MANUAL_TRANSITIONS.values.map(&:keys).flatten.uniq)
+    statuses = statuses.where.not(code: 'proposed') unless Initiative.approval_required?
+
+    statuses.ids
   end
 
   def log_status_change(change, user: nil)

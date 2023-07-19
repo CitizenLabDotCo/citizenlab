@@ -86,12 +86,22 @@ export default defineMessages({
   },
   shareTitle: {
     id: 'app.components.InitiativesShow.shareTitle',
-    defaultMessage: 'Congratulations, your initiative was successfully posted!',
+    defaultMessage: 'Congratulations, your proposal was successfully posted!',
   },
   shareSubtitle: {
     id: 'app.components.InitiativesShow.shareSubtitle',
     defaultMessage:
-      'Share your initiative to reach {votingThreshold} votes in {daysLimit} days.',
+      'Share your proposal to reach {votingThreshold} votes in {daysLimit} days.',
+  },
+  createdModalTitle: {
+    id: 'app.components.InitiativesShow.createdModalTitle',
+    defaultMessage:
+      'Congratulations, your proposal has been submitted for approval!',
+  },
+  createdModalSubtitle: {
+    id: 'app.components.InitiativesShow.createdModalSubtitle',
+    defaultMessage:
+      'An admin will review your proposal shortly - you will be notified when the review is completed.',
   },
   a11y_voteControl: {
     id: 'app.containers.InitiativesShow.a11y_voteControl',
