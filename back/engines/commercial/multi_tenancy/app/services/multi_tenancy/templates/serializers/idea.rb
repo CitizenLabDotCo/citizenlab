@@ -16,6 +16,8 @@ module MultiTenancy
           title_multiloc
           author_hash
           anonymous
+          baskets_count
+          votes_count
         ]
 
         attribute(:published_at) { |idea| serialize_timestamp(idea.published_at) }

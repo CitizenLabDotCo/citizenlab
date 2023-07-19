@@ -212,7 +212,9 @@ class ProjectCopyService < TemplateService
       'reacting_dislike_limited_max' => pc.reacting_dislike_limited_max,
       'poll_anonymous' => pc.poll_anonymous,
       'ideas_order' => pc.ideas_order,
-      'input_term' => pc.input_term
+      'input_term' => pc.input_term,
+      'baskets_count' => pc.baskets_count,
+      'votes_count' => pc.votes_count
     }
     if yml_pc['participation_method'] == 'voting'
       yml_pc['voting_method'] = pc.voting_method
@@ -560,6 +562,8 @@ class ProjectCopyService < TemplateService
         'location_description' => idea.location_description,
         'budget' => idea.budget,
         'proposed_budget' => idea.proposed_budget,
+        'baskets_count' => idea.baskets_count,
+        'votes_count' => idea.votes_count,
         'text_images_attributes' => idea.text_images.map do |text_image|
           {
             'imageable_field' => text_image.imageable_field,
@@ -582,7 +586,8 @@ class ProjectCopyService < TemplateService
       if lookup_ref(b.idea_id, :idea)
         {
           'basket_ref' => lookup_ref(b.basket_id, :basket),
-          'idea_ref' => lookup_ref(b.idea_id, :idea)
+          'idea_ref' => lookup_ref(b.idea_id, :idea),
+          'votes' => b.votes
         }
       end.compact
     end
@@ -618,6 +623,8 @@ class ProjectCopyService < TemplateService
       {
         'idea_ref' => lookup_ref(i.idea_id, :idea),
         'phase_ref' => lookup_ref(i.phase_id, :phase),
+        'baskets_count' => i.baskets_count,
+        'votes_count' => i.votes_count,
         'created_at' => shift_timestamp(i.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(i.updated_at, shift_timestamps)&.iso8601
       }
