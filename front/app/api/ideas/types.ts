@@ -130,7 +130,7 @@ export interface IIdeaData {
     idea_images: {
       data: IRelationship[] | null;
     };
-    author: {
+    author?: {
       data: IRelationship | null;
     };
     assignee?: {
