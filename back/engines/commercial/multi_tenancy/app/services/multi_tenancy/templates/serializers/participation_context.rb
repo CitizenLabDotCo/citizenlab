@@ -20,6 +20,8 @@ module MultiTenancy
           reacting_like_limited_max
           reacting_like_method
           reacting_enabled
+          baskets_count
+          votes_count
         ]
 
         attribute(:voting_method, if: :voting?)
