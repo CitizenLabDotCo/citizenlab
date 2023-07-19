@@ -1,6 +1,6 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
-import { get, memoize } from 'lodash-es';
+import { memoize } from 'lodash-es';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -107,8 +107,7 @@ const FeedbackSettings = ({
       ) {
         const initiativeStatus = statuses.find(
           (status) =>
-            status.id ===
-            get(initiative, 'relationships.initiative_status.data.id')
+            status.id === initiative.relationships.initiative_status?.data?.id
         );
         if (initiativeStatus) {
           return {
@@ -127,7 +126,7 @@ const FeedbackSettings = ({
       JSON.stringify({
         initiativeId: isNilOrError(initiative)
           ? undefined
-          : get(initiative, 'relationships.initiative_status.data.id'),
+          : initiative.relationships.initiative_status?.data?.id,
         statusesId: isNilOrError(statuses)
           ? undefined
           : statuses.map((status) => status.id),
