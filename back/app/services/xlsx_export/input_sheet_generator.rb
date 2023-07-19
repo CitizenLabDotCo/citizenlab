@@ -97,8 +97,8 @@ module XlsxExport
       ComputedFieldForReport.new(column_header_for('dislikes_count'), ->(input) { input.dislikes_count })
     end
 
-    def baskets_count_report_field
-      ComputedFieldForReport.new(column_header_for('picks'), ->(input) { voting_context(input, participation_context).baskets_count })
+    def baskets_count_report_field(column_header_key)
+      ComputedFieldForReport.new(column_header_for(column_header_key), ->(input) { voting_context(input, participation_context).baskets_count })
     end
 
     def votes_count_report_field
@@ -170,11 +170,10 @@ module XlsxExport
           meta_fields << likes_count_report_field
           meta_fields << dislikes_count_report_field
         end
-        if participation_method.supports_baskets?
-          meta_fields << baskets_count_report_field
-          meta_fields << votes_count_report_field
-        end
-        meta_fields << budget_report_field if participation_method.supports_budget?
+        meta_fields << baskets_count_report_field('picks') if participation_method.additional_export_columns.include? 'picks'
+        meta_fields << baskets_count_report_field('participants') if participation_method.additional_export_columns.include? 'participants'
+        meta_fields << votes_count_report_field if participation_method.additional_export_columns.include? 'votes'
+        meta_fields << budget_report_field if participation_method.additional_export_columns.include? 'budget'
         meta_fields << input_url_report_field unless participation_method.never_show?
         meta_fields << project_report_field
         meta_fields << status_report_field if participation_method.supports_status?

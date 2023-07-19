@@ -105,14 +105,6 @@ module ParticipationMethod
       false
     end
 
-    def supports_baskets?
-      false
-    end
-
-    def supports_budget?
-      false
-    end
-
     def supports_status?
       false
     end
@@ -136,6 +128,10 @@ module ParticipationMethod
     # Should an admin be able to set permissions for disabled actions?
     def return_disabled_actions?
       false
+    end
+
+    def additional_export_columns
+      []
     end
 
     private

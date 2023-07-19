@@ -144,6 +144,32 @@ RSpec.describe ParticipationMethod::Voting do
     end
   end
 
+  describe '#additional_export_columns' do
+    context 'voting method is budgeting' do
+      let(:context) { create(:continuous_budgeting_project) }
+
+      it 'returns [picks, budget]' do
+        expect(participation_method.additional_export_columns).to eq %w[picks budget]
+      end
+    end
+
+    context 'voting method is multiple_voting' do
+      let(:context) { create(:continuous_multiple_voting_project) }
+
+      it 'returns [participants, votes]' do
+        expect(participation_method.additional_export_columns).to eq %w[participants votes]
+      end
+    end
+
+    context 'voting method is single_voting' do
+      let(:context) { create(:continuous_single_voting_project) }
+
+      it 'returns [votes] if voting method is single_voting' do
+        expect(participation_method.additional_export_columns).to eq %w[votes]
+      end
+    end
+  end
+
   its(:allowed_ideas_orders) { is_expected.to eq ['random'] }
   its(:validate_built_in_fields?) { is_expected.to be true }
   its(:never_show?) { is_expected.to be false }
@@ -159,8 +185,6 @@ RSpec.describe ParticipationMethod::Voting do
   its(:supports_publication?) { is_expected.to be true }
   its(:supports_commenting?) { is_expected.to be true }
   its(:supports_reacting?) { is_expected.to be false }
-  its(:supports_baskets?) { is_expected.to be true }
-  its(:supports_budget?) { is_expected.to be true }
   its(:supports_status?) { is_expected.to be true }
   its(:supports_assignment?) { is_expected.to be true }
   its(:return_disabled_actions?) { is_expected.to be false }

@@ -37,5 +37,9 @@ module VotingMethod
         baskets_idea.update!(votes: baskets_idea.idea.budget)
       end
     end
+
+    def export_columns
+      %w[picks budget]
+    end
   end
 end

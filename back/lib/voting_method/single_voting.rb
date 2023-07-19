@@ -11,5 +11,9 @@ module VotingMethod
         participation_context.errors.add :voting_max_votes_per_idea, :invalid, message: 'voting_max_votes_per_idea must be 1'
       end
     end
+
+    def export_columns
+      %w[votes]
+    end
   end
 end

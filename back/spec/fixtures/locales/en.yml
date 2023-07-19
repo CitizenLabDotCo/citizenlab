@@ -77,6 +77,7 @@ en:
       likes_count: 'Likes'
       dislikes_count: 'Dislikes'
       picks: 'Picks'
+      participants: 'Participants'
       votes_count: 'Votes'
       input_url: 'URL'
       project: 'Project'

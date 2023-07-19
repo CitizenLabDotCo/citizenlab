@@ -30,6 +30,10 @@ module VotingMethod
       # Default is to do nothing.
     end
 
+    def export_columns
+      []
+    end
+
     private
 
     attr_reader :participation_context
