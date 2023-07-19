@@ -1708,7 +1708,6 @@
   "app.containers.AdminPage.groups.permissions.option1": "Optie 1",
   "app.containers.AdminPage.groups.permissions.pendingInvitation": "Uitnodiging in behandeling",
   "app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle": "Wie kan het document annoteren?",
-  "app.containers.AdminPage.groups.permissions.permissionAction_budgeting_subtitle": "Wie mag het budget uitgeven?",
   "app.containers.AdminPage.groups.permissions.permissionAction_comment_inputs_subtitle": "Wie kan reageren op bijdragen?",
   "app.containers.AdminPage.groups.permissions.permissionAction_comment_proposals_subtitle": "Wie kan reageren op voorstellen?",
   "app.containers.AdminPage.groups.permissions.permissionAction_post_proposal_subtitle": "Wie kan een voorstel plaatsen?",
