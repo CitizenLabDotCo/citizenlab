@@ -135,7 +135,6 @@ interface Props {
     name: string;
     id: string;
   } | null;
-  header?: JSX.Element;
   title: JSX.Element | string;
   body?: JSX.Element | string;
   interactions?: JSX.Element | null;
@@ -150,8 +149,6 @@ export const Card = memo<Props>(
     to,
     image,
     imagePlaceholder,
-    imageOverlay,
-    header,
     title,
     body,
     interactions,
@@ -170,24 +167,15 @@ export const Card = memo<Props>(
       >
         {image && (
           <IdeaCardImageWrapper>
-            {imageOverlay ?? null}
             <IdeaCardImage src={image} cover={true} alt="" />
           </IdeaCardImageWrapper>
         )}
 
         {!image && imagePlaceholder && (
-          <IdeaCardImageWrapper>
-            {imageOverlay ?? null}
-            {imagePlaceholder}
-          </IdeaCardImageWrapper>
+          <IdeaCardImageWrapper>{imagePlaceholder}</IdeaCardImageWrapper>
         )}
 
         <ContentWrapper>
-          {header && (
-            <Box display="flex" mb="16px">
-              {header}
-            </Box>
-          )}
           <Header className="e2e-card-title">
             {typeof title === 'string' ? (
               <Title title={title}>{title}</Title>
