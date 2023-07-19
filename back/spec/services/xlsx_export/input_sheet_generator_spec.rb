@@ -468,7 +468,6 @@ describe XlsxExport::InputSheetGenerator do
           let(:participation_context) { create(:voting_phase, voting_method: 'multiple_voting') }
 
           it 'Generates an empty sheet with the correct columns' do
-            # participation_context.update!(voting_method: 'multiple_voting')
             expect(xlsx).to eq([
               {
                 sheet_name: 'My sheet',
@@ -501,7 +500,6 @@ describe XlsxExport::InputSheetGenerator do
           let(:participation_context) { create(:voting_phase, voting_method: 'budgeting') }
 
           it 'Generates an empty sheet with the correct columns' do
-            # participation_context.update!(voting_method: 'budgeting')
             expect(xlsx).to eq([
               {
                 sheet_name: 'My sheet',

@@ -229,4 +229,5 @@ RSpec.describe ParticipationMethod::NativeSurvey do
   its(:supports_status?) { is_expected.to be false }
   its(:supports_assignment?) { is_expected.to be false }
   its(:return_disabled_actions?) { is_expected.to be true }
+  its(:additional_export_columns) { is_expected.to eq [] }
 end

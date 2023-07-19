@@ -144,6 +144,32 @@ RSpec.describe ParticipationMethod::Voting do
     end
   end
 
+  describe '#additional_export_columns' do
+    context 'voting method is budgeting' do
+      let(:context) { create(:continuous_budgeting_project) }
+
+      it 'returns [picks, budget]' do
+        expect(participation_method.additional_export_columns).to eq %w[picks budget]
+      end
+    end
+
+    context 'voting method is multiple_voting' do
+      let(:context) { create(:continuous_multiple_voting_project) }
+
+      it 'returns [participants, votes]' do
+        expect(participation_method.additional_export_columns).to eq %w[participants votes]
+      end
+    end
+
+    context 'voting method is single_voting' do
+      let(:context) { create(:continuous_single_voting_project) }
+
+      it 'returns [votes] if voting method is single_voting' do
+        expect(participation_method.additional_export_columns).to eq %w[votes]
+      end
+    end
+  end
+
   its(:allowed_ideas_orders) { is_expected.to eq ['random'] }
   its(:validate_built_in_fields?) { is_expected.to be true }
   its(:never_show?) { is_expected.to be false }
