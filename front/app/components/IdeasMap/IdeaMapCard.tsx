@@ -218,11 +218,6 @@ const IdeaMapCard = memo<Props>(
       const reactingActionDescriptor =
         project.data.attributes.action_descriptor.reacting_idea;
 
-      const showLike =
-        reactingActionDescriptor.up.enabled === true ||
-        (reactingActionDescriptor.up.enabled === false &&
-          reactingActionDescriptor.up.disabled_reason !== 'reacting_disabled');
-
       const showDislike =
         reactingActionDescriptor.down.enabled === true ||
         (reactingActionDescriptor.down.enabled === false &&
@@ -235,6 +230,8 @@ const IdeaMapCard = memo<Props>(
       const projectHasComments = project.data.attributes.comments_count > 0;
 
       const showCommentCount = commentingEnabled || projectHasComments;
+
+      console.log(project.data.attributes.action_descriptor.reacting_idea);
 
       return (
         <Container
@@ -269,16 +266,15 @@ const IdeaMapCard = memo<Props>(
                 </FooterValue>
               </FooterItem>
             )}
-            {!isParticipatoryBudgetIdea && (
+            {!isParticipatoryBudgetIdea && reactingActionDescriptor.enabled && (
               <>
-                {showLike && (
-                  <FooterItem>
-                    <LikeIcon name="vote-up" />
-                    <FooterValue id="e2e-map-card-like-count">
-                      {ideaMarker.attributes.likes_count}
-                    </FooterValue>
-                  </FooterItem>
-                )}
+                <FooterItem>
+                  <LikeIcon name="vote-up" />
+                  <FooterValue id="e2e-map-card-like-count">
+                    {ideaMarker.attributes.likes_count}
+                  </FooterValue>
+                </FooterItem>
+
                 {showDislike && (
                   <FooterItem>
                     <DislikeIcon name="vote-down" />
