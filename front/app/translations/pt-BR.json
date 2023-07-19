@@ -437,6 +437,7 @@
   "app.components.Sharing.shareViaMessenger": "Compartilhe via Messenger",
   "app.components.Sharing.shareViaWhatsApp": "Compartilhe via WhatsApp",
   "app.components.SideModal.closeButtonAria": "Fechar",
+  "app.components.StatusModule.futurePhase": "Está a ver uma fase que ainda não começou. Poderá participar quando a fase começar.",
   "app.components.StatusModule.modifyYour": "Modifique o seu",
   "app.components.StatusModule.submittedUntil2": "pode ser enviado até",
   "app.components.TopicsPicker.numberOfSelectedTopics": "Selecionado {numberOfSelectedTopics, plural, =0 {zero tópicos} one {um tópico} other {# tópicos}}. {selectedTopicNames}",
