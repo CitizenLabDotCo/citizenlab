@@ -202,6 +202,7 @@ ca:
       likes_count: 'M''agrada'
       dislikes_count: 'No li agrada'
       picks: 'Seleccions'
+      participants: 'Participants'
       votes_count: 'Vots'
       input_url: 'URL'
       project: 'Projecte'
