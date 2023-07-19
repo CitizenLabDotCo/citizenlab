@@ -86,7 +86,7 @@ describe('Continuous Voting / Budgeting project', () => {
     cy.wait(2000);
     // cy.get('[data-cy="budgeting-cta-button"]')
     //   .should('not.exist')
-    cy.get('#e2e-voting-status').should('exist');
+    cy.get('#voting-status-module').should('exist');
     // .should('contain', 'Budget submitted');
     cy.get('#e2e-modify-votes').should('exist');
     // .should('contain', 'Modify your budget');
