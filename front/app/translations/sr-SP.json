@@ -437,6 +437,7 @@
   "app.components.Sharing.shareViaMessenger": "Делите преко Месинџера",
   "app.components.Sharing.shareViaWhatsApp": "Поделите преко ВхатсАпп-а",
   "app.components.SideModal.closeButtonAria": "Близу",
+  "app.components.StatusModule.futurePhase": "Гледате фазу која још није почела. Моћи ћете да учествујете када фаза почне.",
   "app.components.StatusModule.modifyYour": "Измените своје",
   "app.components.StatusModule.submittedUntil2": "може се поднети до",
   "app.components.TopicsPicker.numberOfSelectedTopics": "Изабрано {numberOfSelectedTopics, plural, =0 {зеро тагс} one {једна ознака} other {# ознаке}}. {selectedTopicNames}",
