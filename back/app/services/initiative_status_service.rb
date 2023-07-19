@@ -4,7 +4,7 @@ class InitiativeStatusService
   MANUAL_TRANSITIONS = {
     'approval_pending' => {
       'proposed' => {
-        feedback_required: false
+        feedback_required: true
       },
       'approval_rejected' => {
         feedback_required: true
