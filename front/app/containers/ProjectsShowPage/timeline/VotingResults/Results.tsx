@@ -18,6 +18,7 @@ interface Props {
   votes?: number;
   votesPercentage: number;
   baskets?: number;
+  tooltip?: string;
 }
 
 const Results = ({
@@ -26,6 +27,7 @@ const Results = ({
   votes,
   votesPercentage,
   baskets,
+  tooltip,
 }: Props) => {
   const { formatMessage } = useIntl();
   const { data: phase } = usePhase(phaseId);
@@ -49,6 +51,7 @@ const Results = ({
         votes={votes}
         votesPercentage={votesPercentage}
         baskets={baskets}
+        tooltip={tooltip}
       />
     </Box>
   );

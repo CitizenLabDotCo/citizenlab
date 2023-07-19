@@ -8,6 +8,8 @@ import useIdeaImage from 'api/idea_images/useIdeaImage';
 
 // i18n
 import useLocalize from 'hooks/useLocalize';
+import { useIntl } from 'utils/cl-intl';
+import messages from './messages';
 
 // components
 import { useBreakpoint, Box } from '@citizenlab/cl2-component-library';
@@ -162,7 +164,7 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
     idea.relationships.idea_images.data?.[0]?.id
   );
   const smallerThanPhone = useBreakpoint('phone');
-  // const smallerThanTablet = useBreakpoint('tablet');
+  const { formatMessage } = useIntl();
 
   const ideaTitle = localize(idea.attributes.title_multiloc);
   const { slug } = idea.attributes;
@@ -186,7 +188,6 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
   };
 
   const image = ideaImage?.data.attributes.versions.medium;
-  // const showHeader = !image && smallerThanPhone;
 
   return (
     <Container
@@ -245,6 +246,11 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
             votesPercentage={votesPercentage}
             baskets={
               votingMethod === 'single_voting' ? undefined : baskets ?? 0
+            }
+            tooltip={
+              votingMethod === 'budgeting'
+                ? formatMessage(messages.budgetingTooltip)
+                : undefined
             }
           />
         </Body>
