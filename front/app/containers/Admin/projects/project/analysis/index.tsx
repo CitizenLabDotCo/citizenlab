@@ -2,6 +2,7 @@ import { Box, colors } from '@citizenlab/cl2-component-library';
 import React from 'react';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
+import TopBar from './TopBar';
 
 const Analysis = () => {
   const modalPortalElement = document.getElementById('modal-portal');
@@ -18,7 +19,9 @@ const Analysis = () => {
       h="100vh"
       data-testid="contentBuilderPage"
     >
-      <FocusOn>analysis</FocusOn>
+      <FocusOn>
+        <TopBar />
+      </FocusOn>
     </Box>,
     modalPortalElement
   );

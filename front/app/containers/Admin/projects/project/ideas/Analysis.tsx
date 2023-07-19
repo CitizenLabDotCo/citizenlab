@@ -11,8 +11,11 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
+import { useParams } from 'react-router-dom';
+import clHistory from 'utils/cl-router/history';
 
 const Analysis = () => {
+  const { projectId } = useParams() as { projectId: string };
   const { formatMessage } = useIntl();
   const analysisEnabled = useFeatureFlag({ name: 'analysis' });
   if (!analysisEnabled) return null;
@@ -35,7 +38,12 @@ const Analysis = () => {
           <Text>{formatMessage(messages.analysisSubtitle)}</Text>
         </Box>
       </Box>
-      <Button buttonStyle="admin-dark">
+      <Button
+        buttonStyle="admin-dark"
+        onClick={() => {
+          clHistory.push(`/admin/projects/${projectId}/analysis/id`);
+        }}
+      >
         {formatMessage(messages.analysisButton)}
       </Button>
     </Box>
