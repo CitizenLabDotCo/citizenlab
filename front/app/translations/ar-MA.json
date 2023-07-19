@@ -437,6 +437,7 @@
   "app.components.Sharing.shareViaMessenger": "شارك عبر الماسنجر",
   "app.components.Sharing.shareViaWhatsApp": "شارك عبر الواتس أب",
   "app.components.SideModal.closeButtonAria": "إغلاق ",
+  "app.components.StatusModule.futurePhase": "أنت تشاهد مرحلة لم تبدأ بعد. ستتمكن من المشاركة عندما تبدأ المرحلة.",
   "app.components.StatusModule.modifyYour": "قم بتعديل ملف",
   "app.components.StatusModule.submittedUntil2": "يمكن تقديمها حتى",
   "app.components.TopicsPicker.numberOfSelectedTopics": "تم تحديد {numberOfSelectedTopics, plural, =0 {لا يوجد موضوعات} one {موضوع واحد} other {# موضوعات}}. {selectedTopicNames}",
