@@ -52,6 +52,19 @@ resource 'Posts' do
     include_examples 'filtering_by_date', :idea, :updated_at
   end
 
+  get '/api/v2/ideas/deleted' do
+    let!(:deletion_activity) { create(:activity, item_type: 'Idea', action: 'deleted') }
+
+    example_request 'List deleted ideas' do
+      assert_status 200
+      expect(json_response_body[:deleted_items]).to match_array([{
+        id: deletion_activity.item_id,
+        type: 'Idea',
+        deleted_at: deletion_activity.acted_at.iso8601(3)
+      }])
+    end
+  end
+
   get '/api/v2/ideas/:id' do
     route_summary 'Get idea'
     route_description 'Retrieve a single idea by its ID.'

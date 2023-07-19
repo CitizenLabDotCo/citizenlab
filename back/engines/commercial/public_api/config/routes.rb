@@ -14,7 +14,9 @@ PublicApi::Engine.routes.draw do
     post 'authenticate' => 'api_token#create'
 
     resources :comments, only: %i[index show]
-    resources :ideas, only: %i[index show]
+    resources :ideas, only: %i[index show] do
+      get 'deleted', on: :collection
+    end
     resources :initiatives, only: %i[index show]
     resources :phases, only: %i[index show]
     resources :project_folders, only: %i[index show]
