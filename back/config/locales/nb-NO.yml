@@ -202,6 +202,7 @@
       likes_count: 'Liker'
       dislikes_count: 'Misliker'
       picks: 'Valg'
+      participants: 'Deltakere'
       votes_count: 'Stemmer'
       input_url: 'URL-adresse'
       project: 'Prosjekt'
