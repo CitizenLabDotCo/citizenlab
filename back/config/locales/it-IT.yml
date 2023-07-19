@@ -202,6 +202,7 @@ it:
       likes_count: 'Preferiti'
       dislikes_count: 'Antipatie'
       picks: 'Plettri'
+      participants: 'Partecipanti'
       votes_count: 'Voti'
       input_url: 'URL'
       project: 'Progetto'
