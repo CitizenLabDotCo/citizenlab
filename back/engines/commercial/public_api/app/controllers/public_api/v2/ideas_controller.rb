@@ -2,6 +2,8 @@
 
 module PublicApi
   class V2::IdeasController < PublicApiController
+    include DeletedItemsAction
+
     def index
       ideas = Idea
         .order(created_at: :desc)
@@ -22,15 +24,6 @@ module PublicApi
 
     def show
       show_item Idea.find(params[:id]), V2::IdeaSerializer
-    end
-
-    def deleted
-      deleted_items = Activity.where(
-        item_type: 'Idea',
-        action: 'deleted',
-      )
-
-      list_items(deleted_items, V2::DeletedItemSerializer, root_key: :deleted_items)
     end
   end
 end
