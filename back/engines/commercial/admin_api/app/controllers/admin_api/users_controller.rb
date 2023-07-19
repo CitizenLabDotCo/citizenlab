@@ -34,8 +34,11 @@ module AdminApi
       @user.locale ||= AppConfiguration.instance.settings('core', 'locales').first
       SideFxUserService.new.before_create @user, nil
 
+      @user.confirm if [true, 'TRUE', 'true', '1', 1].include?(params[:confirm_email])
+
       if @user.save
         SideFxUserService.new.after_create @user, nil
+
         # This uses default model serialization
         render json: @user, status: :created
       else
