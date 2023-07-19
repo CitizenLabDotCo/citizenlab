@@ -5,7 +5,7 @@ module PublicApi
     def deleted
       deleted_items = Activity.where(
         item_type: controller_name.classify,
-        action: 'deleted',
+        action: 'deleted'
       )
 
       if params[:deleted_at]
