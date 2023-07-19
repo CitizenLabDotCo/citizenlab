@@ -162,6 +162,10 @@ const IdeaMapCard = memo<Props>(
       ? isParticipatoryBudgetProject
       : isParticipatoryBudgetPhase;
 
+    const areReactionsEnabled = phase
+      ? phase.data.attributes.reacting_enabled
+      : project?.data.attributes.reacting_enabled;
+
     useEffect(() => {
       const subscriptions = [
         leafletMapHoveredMarker$.subscribe((hoverredIdeaId) => {
@@ -213,15 +217,23 @@ const IdeaMapCard = memo<Props>(
       const ideaBudget = ideaMarker.attributes?.budget;
       const reactingActionDescriptor =
         project.data.attributes.action_descriptor.reacting_idea;
+
+      const showLike =
+        reactingActionDescriptor.up.enabled === true ||
+        (reactingActionDescriptor.up.enabled === false &&
+          reactingActionDescriptor.up.disabled_reason !== 'reacting_disabled');
+
       const showDislike =
         reactingActionDescriptor.down.enabled === true ||
         (reactingActionDescriptor.down.enabled === false &&
           reactingActionDescriptor.down.disabled_reason !==
             'disliking_disabled');
+
       const commentingEnabled =
         project.data.attributes.action_descriptor.commenting_idea.enabled;
 
       const projectHasComments = project.data.attributes.comments_count > 0;
+
       const showCommentCount = commentingEnabled || projectHasComments;
 
       return (
@@ -259,12 +271,14 @@ const IdeaMapCard = memo<Props>(
             )}
             {!isParticipatoryBudgetIdea && (
               <>
-                <FooterItem>
-                  <LikeIcon name="vote-up" />
-                  <FooterValue id="e2e-map-card-like-count">
-                    {ideaMarker.attributes.likes_count}
-                  </FooterValue>
-                </FooterItem>
+                {showLike && (
+                  <FooterItem>
+                    <LikeIcon name="vote-up" />
+                    <FooterValue id="e2e-map-card-like-count">
+                      {ideaMarker.attributes.likes_count}
+                    </FooterValue>
+                  </FooterItem>
+                )}
                 {showDislike && (
                   <FooterItem>
                     <DislikeIcon name="vote-down" />
