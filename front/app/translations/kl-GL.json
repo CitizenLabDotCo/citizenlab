@@ -437,6 +437,7 @@
   "app.components.Sharing.shareViaMessenger": "Messengerikkut siammarteruk",
   "app.components.Sharing.shareViaWhatsApp": "Share via WhatsApp",
   "app.components.SideModal.closeButtonAria": "Matujuk",
+  "app.components.StatusModule.futurePhase": "You are viewing a phase that has not started yet. You will be able to participate when the phase starts.",
   "app.components.StatusModule.modifyYour": "Modify your",
   "app.components.StatusModule.submittedUntil2": "may be submitted until",
   "app.components.TopicsPicker.numberOfSelectedTopics": "Selected {numberOfSelectedTopics, plural, =0 {zero topics} one {one topic} other {# topics}}. {selectedTopicNames}",
