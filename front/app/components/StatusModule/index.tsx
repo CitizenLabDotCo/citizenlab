@@ -69,6 +69,9 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
   const phaseHasEnded = phase?.attributes
     ? pastPresentOrFuture(phase?.attributes.end_at) === 'past'
     : false;
+  const phaseHasNotStartedYet = phase?.attributes
+    ? pastPresentOrFuture(phase?.attributes.start_at) === 'future'
+    : false;
 
   // basket
   const { data: basket } = useBasket(
@@ -88,6 +91,13 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
 
   return (
     <Box boxShadow={defaultStyles.boxShadow} id="voting-status-module">
+      {phaseHasNotStartedYet && (
+        <Box mb="40px">
+          <Warning icon="lock">
+            <FormattedMessage {...messages.futurePhase} />
+          </Warning>
+        </Box>
+      )}
       <Title variant="h2" style={{ fontWeight: 600 }}>
         {config?.getStatusTitle &&
           formatMessage(config.getStatusHeader(basketStatus))}
@@ -168,21 +178,23 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
           </Box>
         )}
       </Box>
-      {basketStatus !== 'hasSubmitted' && !phaseHasEnded && (
-        <Box mb="16px">
-          <Warning>
-            <FormattedMessage
-              values={{
-                b: (chunks) => (
-                  <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
-                ),
-              }}
-              {...(config?.preSubmissionWarning &&
-                config.preSubmissionWarning())}
-            />
-          </Warning>
-        </Box>
-      )}
+      {basketStatus !== 'hasSubmitted' &&
+        !phaseHasEnded &&
+        !phaseHasNotStartedYet && (
+          <Box mb="16px">
+            <Warning>
+              <FormattedMessage
+                values={{
+                  b: (chunks) => (
+                    <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+                  ),
+                }}
+                {...(config?.preSubmissionWarning &&
+                  config.preSubmissionWarning())}
+              />
+            </Warning>
+          </Box>
+        )}
     </Box>
   );
 };

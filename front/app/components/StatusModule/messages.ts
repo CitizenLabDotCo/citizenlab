@@ -9,4 +9,9 @@ export default defineMessages({
     id: 'app.components.StatusModule.modifyYour',
     defaultMessage: 'Modify your',
   },
+  futurePhase: {
+    id: 'app.components.StatusModule.futurePhase',
+    defaultMessage:
+      'You are viewing a phase that has not started yet. You will be able to participate when the phase starts.',
+  },
 });

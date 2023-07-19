@@ -70,8 +70,8 @@ const MetaInformation = ({
     participationContext
   ) {
     const { anonymous } = idea.data.attributes;
-    const isBudgeting =
-      participationContext.attributes.voting_method === 'budgeting';
+    const isVoting =
+      participationContext.attributes.participation_method === 'voting';
 
     const topicsEnabled = isFieldEnabled(
       'topic_ids',
@@ -96,7 +96,7 @@ const MetaInformation = ({
       participationContext
     );
 
-    const hideAuthor = isBudgeting && ideaIsInParticipationContext;
+    const hideAuthor = isVoting && ideaIsInParticipationContext;
 
     return (
       <Container className={`${className || ''} ${compact ? 'compact' : ''}`}>
