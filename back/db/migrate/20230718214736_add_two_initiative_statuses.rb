@@ -10,6 +10,12 @@ class AddTwoInitiativeStatuses < ActiveRecord::Migration[7.0]
       dir.up do
         service = MultilocService.new
 
+        proposed = StubInitiativeStatus.find_by(code: 'proposed')
+        return unless proposed
+
+        proposed.ordering = 150
+        proposed.save!
+
         ap = StubInitiativeStatus.find_or_initialize_by(code: 'approval_pending')
         ap.title_multiloc = service.i18n_to_multiloc(
           'initiative_statuses.approval_pending', locales: CL2_SUPPORTED_LOCALES
@@ -31,10 +37,6 @@ class AddTwoInitiativeStatuses < ActiveRecord::Migration[7.0]
         ar.ordering = 100
         ar.color = '#CC317E'
         ar.save!
-
-        proposed = StubInitiativeStatus.find_or_initialize_by(code: 'proposed')
-        proposed.ordering = 150
-        proposed.save!
       end
     end
   end
