@@ -437,6 +437,7 @@
   "app.components.Sharing.shareViaMessenger": "Podijelite putem Messengera",
   "app.components.Sharing.shareViaWhatsApp": "Podijelite putem WhatsAppa",
   "app.components.SideModal.closeButtonAria": "Zatvori",
+  "app.components.StatusModule.futurePhase": "Gledate fazu koja još nije započela. Moći ćete sudjelovati kada faza počne.",
   "app.components.StatusModule.modifyYour": "Izmijenite svoje",
   "app.components.StatusModule.submittedUntil2": "može se podnijeti do",
   "app.components.TopicsPicker.numberOfSelectedTopics": "Odabrani {numberOfSelectedTopics, plural, =0 {nula oznaka} one {jedna oznaka} other {# oznaka}}. {selectedTopicNames}",
