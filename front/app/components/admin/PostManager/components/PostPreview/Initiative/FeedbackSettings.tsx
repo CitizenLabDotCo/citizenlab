@@ -84,13 +84,16 @@ const FeedbackSettings = ({
   const { data: initiative } = useInitiativeById(initiativeId);
   const { mutate: updateInitiative } = useUpdateInitiative();
 
-  const getStatusOptions = (statuses, allowedTransitions) => {
+  const getStatusOptions = (
+    statuses: GetInitiativeStatusesChildProps,
+    allowedTransitions: GetInitiativeAllowedTransitionsChildProps
+  ): IOption[] => {
     if (!isNilOrError(statuses)) {
       return statuses.map((status) => ({
         value: status.id,
         label: localize(status.attributes.title_multiloc),
-        isDisabled:
-          allowedTransitions && allowedTransitions[status.id] === undefined,
+        disabled:
+          !!allowedTransitions && allowedTransitions[status.id] === undefined,
       }));
     } else {
       return [];
