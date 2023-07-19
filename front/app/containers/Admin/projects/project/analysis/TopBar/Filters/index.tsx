@@ -3,9 +3,11 @@ import { Box, colors, Text } from '@citizenlab/cl2-component-library';
 import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import EngagementFilter from './EngagementFilter';
+import TimeFilter from './TimeFilter';
 
 const Filters = () => {
   const { formatMessage } = useIntl();
+
   return (
     <Box
       position="absolute"
@@ -17,7 +19,10 @@ const Filters = () => {
     >
       <Box display="flex" gap="24px" px="24px">
         <Text fontWeight="bold">{formatMessage(messages.author)}</Text>
-        <Text fontWeight="bold">{formatMessage(messages.input)}</Text>
+        <Box>
+          <Text fontWeight="bold">{formatMessage(messages.input)}</Text>
+          <TimeFilter />
+        </Box>
         <Box>
           <Text fontWeight="bold">{formatMessage(messages.engagement)}</Text>
           <EngagementFilter
