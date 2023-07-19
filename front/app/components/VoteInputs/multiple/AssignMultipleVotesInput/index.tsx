@@ -9,18 +9,18 @@ import {
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
+import NumberInput from './NumberInput';
 
 // api
 import useBasket from 'api/baskets/useBasket';
 import useIdeaById from 'api/ideas/useIdeaById';
-import useCumulativeVoting from 'api/baskets_ideas/useVoting';
-
-// style
-import { useTheme } from 'styled-components';
+import useVoting from 'api/baskets_ideas/useVoting';
 
 // events
-// import eventEmitter from 'utils/eventEmitter';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+
+// styling
+import { useTheme } from 'styled-components';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -56,7 +56,8 @@ const AssignMultipleVotesInput = ({
   fillWidth,
   onIdeaPage,
 }: Props) => {
-  const { getVotes, setVotes, userHasVotesLeft } = useCumulativeVoting();
+  const { getVotes, setVotes, userHasVotesLeft, numberOfVotesCast } =
+    useVoting();
   const votes = getVotes?.(ideaId);
   const [searchParams] = useSearchParams();
   const isProcessing = searchParams.get('processing_vote') === ideaId;
@@ -138,6 +139,7 @@ const AssignMultipleVotesInput = ({
     voting_term_singular_multiloc,
     voting_term_plural_multiloc,
     voting_max_votes_per_idea,
+    voting_max_total,
   } = participationContext.attributes;
 
   if (isNil(voting_max_votes_per_idea)) return null;
@@ -151,6 +153,7 @@ const AssignMultipleVotesInput = ({
 
   const basketSubmitted = !!basket?.data?.attributes.submitted_at;
   const maxVotesPerIdeaReached = votes === voting_max_votes_per_idea;
+  const maxVotes = voting_max_total ?? 0;
 
   const minusButtonDisabledMessage = getMinusButtonDisabledMessage(
     basketSubmitted,
@@ -219,9 +222,14 @@ const AssignMultipleVotesInput = ({
             w={`${votes.toString().length * 20}px`}
             maxWidth={isMobileOrSmaller ? '100px' : '160px'}
           >
-            <Text mt="0px" mb="0px" fontSize="xxl" fontWeight="bold">
-              {votes}
-            </Text>
+            <NumberInput
+              value={votes}
+              max={Math.min(
+                voting_max_votes_per_idea,
+                maxVotes - (numberOfVotesCast ?? 0)
+              )}
+              onChange={(newValue) => setVotes?.(ideaId, newValue)}
+            />
           </Box>
           <Text fontSize="m" ml="8px" my="auto" aria-live="polite">
             {formatMessage(messages.xVotes, {
