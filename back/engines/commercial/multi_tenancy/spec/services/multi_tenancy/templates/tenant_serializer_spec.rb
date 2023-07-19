@@ -207,7 +207,7 @@ describe MultiTenancy::Templates::TenantSerializer do
     end
 
     it 'can deal with baskets - with or without users' do
-      project = create(:continuous_budgeting_project)
+      project = create(:continuous_multiple_voting_project)
       idea = create(:idea, project: project)
       user = create(:user)
       basket1 = create(:basket, participation_context: project, user: user)
