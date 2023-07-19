@@ -437,6 +437,7 @@
   "app.components.Sharing.shareViaMessenger": "Dela via Messenger",
   "app.components.Sharing.shareViaWhatsApp": "Dela via WhatsApp",
   "app.components.SideModal.closeButtonAria": "Stäng",
+  "app.components.StatusModule.futurePhase": "Du tittar på en fas som inte har startat ännu. Du kommer att kunna delta när fasen startar.",
   "app.components.StatusModule.modifyYour": "Ändra din",
   "app.components.StatusModule.submittedUntil2": "får lämnas in fram till",
   "app.components.TopicsPicker.numberOfSelectedTopics": "Valde {numberOfSelectedTopics, plural, =0 {noll ämnen} one {ett ämne} other {# ämnen}}. {selectedTopicNames}",
