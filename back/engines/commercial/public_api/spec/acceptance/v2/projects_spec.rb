@@ -143,5 +143,7 @@ resource 'Projects' do
       end
     end
   end
+
+  include_examples '/api/v2/.../deleted', :projects
   #  TODO: Error responses
 end

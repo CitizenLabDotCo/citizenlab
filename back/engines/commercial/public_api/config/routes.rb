@@ -17,17 +17,19 @@ PublicApi::Engine.routes.draw do
       get 'deleted', on: :collection
     end
 
-    resources :comments, only: %i[index show]
-    resources :ideas, only: %i[index show], concerns: :deleted_items
-    resources :initiatives, only: %i[index show]
-    resources :phases, only: %i[index show]
-    resources :project_folders, only: %i[index show]
-    resources :reactions, only: %i[index]
-    resources :topics, only: %i[index show]
-    resources :users, only: %i[index show]
+    with_options only: %i[index show], concerns: :deleted_items do |route_mapper|
+      route_mapper.resources :comments
+      route_mapper.resources :ideas
+      route_mapper.resources :initiatives
+      route_mapper.resources :phases
+      route_mapper.resources :project_folders
+      route_mapper.resources :reactions, only: %i[index]
+      route_mapper.resources :topics
+      route_mapper.resources :users
 
-    resources :projects, only: %i[index show] do
-      resources :phases, only: %i[index]
+      route_mapper.resources :projects do
+        resources :phases, only: %i[index]
+      end
     end
   end
 end

@@ -74,4 +74,7 @@ resource 'Posts' do
       end
     end
   end
+
+  include_examples '/api/v2/.../deleted', :initiatives
+
 end
