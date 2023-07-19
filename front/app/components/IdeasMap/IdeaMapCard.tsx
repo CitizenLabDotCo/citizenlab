@@ -231,8 +231,6 @@ const IdeaMapCard = memo<Props>(
 
       const showCommentCount = commentingEnabled || projectHasComments;
 
-      console.log(project.data.attributes.action_descriptor.reacting_idea);
-
       return (
         <Container
           className={`${className || ''} ${hovered ? 'hover' : ''}`}
