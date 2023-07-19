@@ -202,6 +202,7 @@ lb:
       likes_count: 'Gefällt'
       dislikes_count: 'Net gär'
       picks: 'Wielt'
+      participants: 'Participanten'
       votes_count: 'Stëmmen'
       input_url: 'URL'
       project: 'Projet'
