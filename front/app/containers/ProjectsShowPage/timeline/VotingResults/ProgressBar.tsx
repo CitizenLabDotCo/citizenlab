@@ -18,7 +18,7 @@ import messages from 'components/VoteInputs/multiple/AssignMultipleVotesInput/me
 
 interface Props {
   phaseId: string;
-  votes: number;
+  votes?: number;
   votesPercentage: number;
   baskets?: number;
 }
@@ -70,11 +70,17 @@ const ProgressBar = ({ phaseId, votes, votesPercentage, baskets }: Props) => {
           fontSize="s"
           fontWeight="bold"
         >
-          {`${votesPercentage}% (${votes} ${formatMessage(messages.xVotes, {
-            votes,
-            singular: votingTermSingular,
-            plural: votingTermPlural,
-          }).toLowerCase()})`}
+          {votes ? (
+            <>
+              {`${votesPercentage}% (${votes} ${formatMessage(messages.xVotes, {
+                votes,
+                singular: votingTermSingular,
+                plural: votingTermPlural,
+              }).toLowerCase()})`}
+            </>
+          ) : (
+            <>{votesPercentage}%</>
+          )}
         </Text>
       </Box>
       {baskets !== undefined && (

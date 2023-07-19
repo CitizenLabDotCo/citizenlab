@@ -241,7 +241,7 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
           <Results
             phaseId={phaseId}
             budget={idea.attributes.budget ?? undefined}
-            votes={ideaVotes}
+            votes={votingMethod === 'budgeting' ? undefined : ideaVotes}
             votesPercentage={votesPercentage}
             baskets={
               votingMethod === 'single_voting' ? undefined : baskets ?? 0
