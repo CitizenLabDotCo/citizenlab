@@ -224,6 +224,7 @@ export interface IAppConfigurationSettings {
   internal_commenting?: AppConfigurationFeature;
   konveio_document_annotation?: AppConfigurationFeature;
   public_api_tokens?: AppConfigurationFeature;
+  analysis?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

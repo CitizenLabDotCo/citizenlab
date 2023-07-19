@@ -180,6 +180,10 @@ AppConfiguration.create!(
     public_api_tokens: {
       enabled: true,
       allowed: true
+    },
+    analysis: {
+      enabled: true,
+      allowed: true
     }
   })
 )
