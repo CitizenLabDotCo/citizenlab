@@ -99,4 +99,25 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectTimeline.deletePhaseButtonText',
     defaultMessage: 'Yes, delete this phase',
   },
+  uploadAttachments: {
+    id: 'app.containers.AdminPage.ProjectTimeline.uploadAttachments',
+    defaultMessage: 'Upload attachments',
+  },
+  automatedEmails: {
+    id: 'app.containers.AdminPage.ProjectTimeline.automatedEmails',
+    defaultMessage: 'Automated emails',
+  },
+  automatedEmailsDescription: {
+    id: 'app.containers.AdminPage.ProjectTimeline.automatedEmailsDescription',
+    defaultMessage: 'You can configure emails triggered on a phase level',
+  },
+  disabledProjectPhaseEmailMessage: {
+    id: 'app.containers.AdminPage.ProjectTimeline.disabledProjectPhaseEmailMessage',
+    defaultMessage:
+      'This option is currently turned off for all projects on the {automatedEmailsLink} page. As a result, you will not be able to individually toggle this setting for this phase.',
+  },
+  automatedEmailsLinkText: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.ProjectsList.automatedEmailsLinkText',
+    defaultMessage: 'automated emails',
+  },
 });
