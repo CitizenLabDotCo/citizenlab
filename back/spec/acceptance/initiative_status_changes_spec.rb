@@ -35,7 +35,7 @@ resource 'InitiativeStatusChange' do
 
     let(:id) { @changes.first.id }
 
-    example_request 'Get one status change on an initiative by id' do
+    example_request 'Get one status changes on an initiative by id' do
       assert_status 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :id)).to eq @changes.first.id
@@ -97,33 +97,12 @@ resource 'InitiativeStatusChange' do
         end
       end
 
-      context 'when the status transition requires official feedback' do
-        describe do
-          let(:body_multiloc) { nil }
-          let(:author_multiloc) { nil }
+      describe do
+        let(:body_multiloc) { nil }
+        let(:author_multiloc) { nil }
 
-          example_request '[error] Create a status change on an initiative without feedback' do
-            assert_status 422
-          end
-        end
-      end
-
-      context 'when the status transition does not require official feedback' do
-        before do
-          create(
-            :initiative_status_change,
-            initiative: @initiative, initiative_status: @status_approval_pending
-          )
-        end
-
-        describe do
-          let(:initiative_status_id) { @status_proposed.id }
-          let(:body_multiloc) { nil }
-          let(:author_multiloc) { nil }
-
-          example_request 'Create a status change on an initiative without feedback' do
-            assert_status 201
-          end
+        example_request '[error] Create a status change on an initiative without feedback' do
+          assert_status 422
         end
       end
 
