@@ -202,6 +202,7 @@ sr-Cyrl:
       likes_count: 'Свиђа'
       dislikes_count: 'Не свиђа ми се'
       picks: 'Пицкс'
+      participants: 'Учесници'
       votes_count: 'Гласови'
       input_url: 'УРЛ'
       project: 'Пројекат'
