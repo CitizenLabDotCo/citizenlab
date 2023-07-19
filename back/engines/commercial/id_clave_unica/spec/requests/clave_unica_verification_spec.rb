@@ -127,7 +127,7 @@ describe 'clave_unica verification' do
 
   it 'creates user when the authentication token is not passed' do
     expect(User.count).to eq(1)
-    get '/auth/clave_unica?pathname=/whatever-page'
+    get '/auth/clave_unica?pathname=/some-page'
     follow_redirect!
 
     expect(User.count).to eq(2)
@@ -141,12 +141,57 @@ describe 'clave_unica verification' do
       password_digest: nil
     })
 
-    expect(response).to redirect_to('/en/complete-signup?pathname=%2Fwhatever-page')
+    expect(response).to redirect_to('/en/complete-signup?pathname=%2Fsome-page')
   end
 
-  context 'when phone registration enabled' do
+  context 'when verification is already taken by new user' do
+    before do
+      get '/auth/clave_unica'
+      follow_redirect!
+    end
+
+    let!(:new_user) do
+      User.order(created_at: :asc).last.tap do |user|
+        expect(user).to have_attributes({ email: nil })
+        expect_to_create_verified_user(user)
+      end
+    end
+
+    context 'when verified registration is completed by new user' do
+      before { new_user.update!(email: Faker::Internet.email) }
+
+      it 'does not verify another user and does not delete previously verified new user' do
+        get "/auth/clave_unica?token=#{@token}&pathname=/some-page"
+        follow_redirect!
+
+        expect(response).to redirect_to('/some-page?verification_error=true&error=taken')
+        expect(@user.reload).to have_attributes({
+          verified: false,
+          first_name: 'Rudolphi',
+          last_name: 'Raindeari'
+        })
+
+        expect(new_user.reload).to eq(new_user)
+      end
+    end
+
+    context 'when verified registration is not completed by new user' do
+      it 'successfully verifies another user and deletes previously verified blank new user' do
+        get "/auth/clave_unica?token=#{@token}&pathname=/some-page"
+        follow_redirect!
+
+        expect(response).to redirect_to('/en/some-page?verification_success=true')
+        expect_to_create_verified_user(@user.reload)
+        expect { new_user.reload }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+  end
+
+  describe 'update email after registration with ClaveUnica' do
     before do
       configuration = AppConfiguration.instance
+      # We enable phone registration, because this part is rarely used (so, can be broken) and specific for Chile.
+      # The normal email flow should work the same way as with phone registration turned off.
       configuration.settings['password_login'] = {
         'phone' => true,
         'allowed' => true,
@@ -169,7 +214,7 @@ describe 'clave_unica verification' do
       end
 
       it 'creates user that can confirm her email' do
-        get '/auth/clave_unica?pathname=/whatever-page'
+        get '/auth/clave_unica?pathname=/some-page'
         follow_redirect!
 
         user = User.order(created_at: :asc).last
@@ -199,7 +244,7 @@ describe 'clave_unica verification' do
       end
 
       it 'creates user that can update her email' do
-        get '/auth/clave_unica?pathname=/whatever-page'
+        get '/auth/clave_unica?pathname=/some-page'
         follow_redirect!
 
         user = User.order(created_at: :asc).last

@@ -201,7 +201,6 @@ sr-Latn:
       comments_count: 'Komentari'
       likes_count: 'Свиђа'
       dislikes_count: 'Не свиђа ми се'
-      baskets_count: 'Korpe'
       input_url: 'URL'
       project: 'Projekat'
       status: 'Status'

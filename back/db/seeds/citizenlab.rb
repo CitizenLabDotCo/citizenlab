@@ -172,6 +172,10 @@ AppConfiguration.create!(
     user_confirmation: {
       allowed: true,
       enabled: false
+    },
+    public_api_tokens: {
+      enabled: true,
+      allowed: true
     }
   })
 )

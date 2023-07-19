@@ -201,7 +201,6 @@ da:
       comments_count: 'Kommentarer'
       likes_count: 'Likes'
       dislikes_count: 'Dislikes'
-      baskets_count: 'Kurve'
       input_url: 'URL'
       project: '{tenantName, select, DeloitteDK {Verdensmål} other {Projekt}}'
       status: 'Status'

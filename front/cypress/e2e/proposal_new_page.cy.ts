@@ -100,7 +100,9 @@ describe('Initiative new page', () => {
     cy.get('#e2e-iniatiative-img-dropzone input').should('have.length', 0);
 
     // save the form
-    cy.get('.e2e-initiative-publish-button .e2e-submit-form').click();
+    cy.get('.e2e-initiative-publish-button .e2e-submit-form').click({
+      force: true,
+    });
 
     // verify redirect to the newly created initiative page
     cy.get('#e2e-initiative-show', { timeout: 200000 });

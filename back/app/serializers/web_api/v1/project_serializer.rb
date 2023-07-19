@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
-  include WebApi::V1::ParticipationContextSerializer
-
+class WebApi::V1::ProjectSerializer < WebApi::V1::ParticipationContextSerializer
   attributes(
     :description_preview_multiloc,
     :title_multiloc,
@@ -161,3 +159,4 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
 end
 
 WebApi::V1::ProjectSerializer.include(IdeaAssignment::Extensions::WebApi::V1::ProjectSerializer)
+WebApi::V1::ProjectSerializer.include(ContentBuilder::Extensions::WebApi::V1::ProjectSerializer)

@@ -3,15 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 // hooks
 import useLocalize from 'hooks/useLocalize';
 import useReferenceData from '../../hooks/useReferenceData';
-import useRScore from '../../hooks/useRScore';
-
-// services
-import {
-  usersByRegFieldXlsxEndpoint,
-  usersByGenderXlsxEndpoint,
-  usersByDomicileXlsxEndpoint,
-  usersByAgeXlsxEndpoint,
-} from 'services/userCustomFieldStats';
+import useRScore from '../../api/r_score/useRScore';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -39,8 +31,12 @@ import {
 import {
   RepresentativenessRow,
   RepresentativenessRowMultiloc,
-} from '../../hooks/createRefDataSubscription';
+} from '../../hooks/parseReferenceData';
 import { View } from 'components/admin/GraphCard/ViewToggle';
+import { usersByAgeXlsxEndpoint } from 'api/users_by_age/util';
+import { usersByGenderXlsxEndpoint } from 'api/users_by_gender/util';
+import { usersByDomicileXlsxEndpoint } from 'api/users_by_domicile/util';
+import { usersByCustomFieldXlsxEndpoint } from 'api/users_by_custom_field/util';
 
 interface Props {
   userCustomField: IUserCustomFieldData;
@@ -59,7 +55,7 @@ const getXlsxEndpoint = (
     case 'birthyear':
       return usersByAgeXlsxEndpoint;
     default:
-      return usersByRegFieldXlsxEndpoint(userCustomFieldId);
+      return usersByCustomFieldXlsxEndpoint(userCustomFieldId);
   }
 };
 
@@ -69,7 +65,10 @@ const ChartCard = injectIntl(
     projectFilter,
     intl: { formatMessage },
   }: Props & WrappedComponentProps) => {
-    const rScore = useRScore(userCustomField.id, projectFilter);
+    const { data: rScore } = useRScore({
+      id: userCustomField.id,
+      projectId: projectFilter,
+    });
     const { referenceData, includedUsers } = useReferenceData(
       userCustomField,
       projectFilter
@@ -139,7 +138,7 @@ const ChartCard = injectIntl(
         <Header
           title={title}
           svgNode={currentChartRef}
-          rScore={rScore.attributes.score}
+          rScore={rScore.data.attributes.score}
           view={view}
           projectFilter={projectFilter}
           xlsxEndpoint={xlsxEndpoint}

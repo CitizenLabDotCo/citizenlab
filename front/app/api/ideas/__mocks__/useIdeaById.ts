@@ -19,6 +19,7 @@ export const ideaData: IIdeaData[] = [
       likes_count: 10,
       dislikes_count: 1,
       comments_count: 2,
+      internal_comments_count: 2,
       official_feedbacks_count: 0,
       location_point_geojson: {
         type: 'Point',
@@ -115,6 +116,7 @@ export const ideaData: IIdeaData[] = [
       likes_count: 10,
       dislikes_count: 1,
       comments_count: 2,
+      internal_comments_count: 2,
       official_feedbacks_count: 0,
       location_point_geojson: {
         type: 'Point',

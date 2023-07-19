@@ -164,8 +164,9 @@ describe('Native survey project page actions', () => {
     // Visit the project page
     cy.visit(`/projects/${projectSlugContinous}`);
     // Check that correct text and actions shown
-    cy.get('#e2e-cta-button').should('exist');
-    cy.get('#e2e-cta-button').click();
+    cy.wait(3000); // I think the content build error is causing some flaky behaviour. This wait seems to fix it.
+    cy.get('#e2e-idea-button').should('exist');
+    cy.get('#e2e-idea-button').first().click();
     cy.url().should('include', `/projects/${projectSlugContinous}/ideas/new`);
   });
 

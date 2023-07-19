@@ -1,21 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { omit } from 'lodash-es';
 
-// services
-import {
-  createReferenceDistribution,
-  replaceReferenceDistribution,
-  deleteReferenceDistribution,
-  Bins,
-  TReferenceDistributionData,
-} from '../../services/referenceDistribution';
-
 // hooks
 import useUserCustomFieldOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
-import useReferenceDistribution, {
-  RemoteFormValues,
-} from '../../hooks/useReferenceDistribution';
 import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
+import useReferenceDistributionData, {
+  RemoteFormValues,
+} from '../../api/reference_distribution/useReferenceDistributionData';
 
 // components
 import { Accordion, ListItem } from '@citizenlab/cl2-component-library';
@@ -30,29 +21,38 @@ import {
   getStatus,
   parseFormValues,
   convertBinsToFormValues,
+  FormValues,
 } from '../../utils/form';
 import { isSupported } from '../../containers/Dashboard/utils';
 
 // typings
-import { IUserCustomFieldOptionData } from 'api/user_custom_fields_options/types';
+import useDeleteReferenceDistribution from '../../api/reference_distribution/useDeleteReferenceDistribution';
+import useAddReferenceDistribution from '../../api/reference_distribution/useAddReferenceDistribution';
+import {
+  Bins,
+  TAddDistribution,
+  TReferenceDistributionData,
+} from '../../api/reference_distribution/types';
 interface Props {
   userCustomFieldId: string;
 }
 
 interface InnerProps extends Props {
-  userCustomFieldOptions: IUserCustomFieldOptionData[];
   referenceDistribution: TReferenceDistributionData | NilOrError;
   remoteFormValues?: RemoteFormValues;
-  referenceDataUploaded: boolean;
+  initialValues: FormValues | null;
 }
 
 const Field = ({
   userCustomFieldId,
-  userCustomFieldOptions,
   referenceDistribution,
-  referenceDataUploaded,
   remoteFormValues,
+  initialValues,
 }: InnerProps) => {
+  const { mutateAsync: deleteReferenceDistribution } =
+    useDeleteReferenceDistribution();
+  const { mutateAsync: createReferenceDistribution } =
+    useAddReferenceDistribution();
   const [submitting, setSubmitting] = useState(false);
   const [touched, setTouched] = useState(false);
 
@@ -66,12 +66,8 @@ const Field = ({
       : undefined
   );
 
-  const [formValues, setFormValues] = useState(
-    getInitialValues(
-      userCustomFieldOptions,
-      referenceDataUploaded,
-      remoteFormValues
-    )
+  const [formValues, setFormValues] = useState<FormValues | null>(
+    initialValues
   );
 
   const { data: userCustomField } = useUserCustomField(userCustomFieldId);
@@ -81,23 +77,6 @@ const Field = ({
       setBins(referenceDistribution.attributes.distribution.bins);
     }
   }, [isBinnedDistribution, bins, referenceDistribution]);
-
-  useEffect(() => {
-    if (formValues === null) {
-      setFormValues(
-        getInitialValues(
-          userCustomFieldOptions,
-          referenceDataUploaded,
-          remoteFormValues
-        )
-      );
-    }
-  }, [
-    formValues,
-    userCustomFieldOptions,
-    referenceDataUploaded,
-    remoteFormValues,
-  ]);
 
   if (formValues === null || !userCustomField) {
     return null;
@@ -109,7 +88,6 @@ const Field = ({
   const titleMultiloc = userCustomField.data.attributes.title_multiloc;
 
   const binsSet = isBirthyear ? !!bins : undefined;
-
   const status = getStatus(formValues, remoteFormValues, touched, binsSet);
 
   const handleUpdateEnabled = (optionId: string, enabled: boolean) => {
@@ -153,16 +131,15 @@ const Field = ({
 
     setSubmitting(true);
 
-    if (submitAction === 'create') {
-      await createReferenceDistribution(userCustomField.data, newDistribution);
-    }
-
-    if (submitAction === 'replace') {
-      await replaceReferenceDistribution(userCustomField.data, newDistribution);
+    if (submitAction === 'create' || submitAction === 'replace') {
+      await createReferenceDistribution({
+        id: userCustomField.data.id,
+        ...newDistribution,
+      } as TAddDistribution);
     }
 
     if (submitAction === 'delete') {
-      await deleteReferenceDistribution(userCustomField.data);
+      await deleteReferenceDistribution(userCustomField.data.id);
     }
 
     setSubmitting(false);
@@ -214,7 +191,7 @@ const FieldWrapper = ({ userCustomFieldId }: Props) => {
   const { data: userCustomFieldOptions } =
     useUserCustomFieldOptions(userCustomFieldId);
   const { referenceDistribution, referenceDataUploaded, remoteFormValues } =
-    useReferenceDistribution(userCustomFieldId);
+    useReferenceDistributionData(userCustomFieldId);
 
   if (
     isNilOrError(userCustomFieldOptions) ||
@@ -223,13 +200,18 @@ const FieldWrapper = ({ userCustomFieldId }: Props) => {
     return null;
   }
 
+  const initialValues = getInitialValues(
+    userCustomFieldOptions.data,
+    referenceDataUploaded,
+    remoteFormValues
+  );
+
   return (
     <Field
       userCustomFieldId={userCustomFieldId}
-      userCustomFieldOptions={userCustomFieldOptions?.data}
       referenceDistribution={referenceDistribution}
-      referenceDataUploaded={referenceDataUploaded}
       remoteFormValues={remoteFormValues}
+      initialValues={initialValues}
     />
   );
 };

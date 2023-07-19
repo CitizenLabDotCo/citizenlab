@@ -2,6 +2,7 @@ import { Multiloc } from 'typings';
 import notificationsKeys from './keys';
 
 import { Keys } from 'utils/cl-react-query/types';
+import { InternalCommentType } from 'api/campaigns/types';
 
 export type NotificationsKeys = Keys<typeof notificationsKeys>;
 
@@ -32,13 +33,15 @@ export interface IAdminRightsReceivedNotificationData
   };
 }
 
+type PostType = 'Initiative' | 'Idea';
+
 export interface ICommentDeletedByAdminNotificationData
   extends IBaseNotificationData {
   attributes: {
     type: 'comment_deleted_by_admin';
     read_at: string | null;
     created_at: string;
-    post_type: 'Initiative' | 'Idea';
+    post_type: PostType;
     post_slug: string | null;
     post_title_multiloc: Multiloc;
     reason_code: 'irrelevant' | 'inappropriate' | 'other';
@@ -55,7 +58,7 @@ export interface ICommentMarkedAsSpamNotificationData
     initiating_user_first_name: string | null;
     initiating_user_last_name: string | null;
     initiating_user_slug: string | null;
-    post_type: 'Initiative' | 'Idea';
+    post_type: PostType;
     post_slug: string | null;
     post_title_multiloc: Multiloc;
   };
@@ -70,7 +73,7 @@ export interface ICommentOnYourCommentNotificationData
     initiating_user_first_name: string | null;
     initiating_user_last_name: string | null;
     initiating_user_slug: string | null;
-    post_type: 'Initiative' | 'Idea';
+    post_type: PostType;
     post_slug: string | null;
     post_title_multiloc: Multiloc;
   };
@@ -180,9 +183,27 @@ export interface IMentionInCommentNotificationData
     initiating_user_first_name: string | null;
     initiating_user_last_name: string | null;
     initiating_user_slug: string | null;
-    post_type: 'Initiative' | 'Idea';
+    post_type: PostType;
     post_slug: string | null;
     post_title_multiloc: Multiloc;
+  };
+}
+
+export interface IInternalCommentNotificationData
+  extends IBaseNotificationData {
+  attributes: {
+    type: InternalCommentType;
+    read_at: string | null;
+    created_at: string;
+    initiating_user_first_name: string | null;
+    initiating_user_last_name: string | null;
+    initiating_user_slug: string | null;
+    post_type: PostType;
+    post_slug: string | null;
+    post_title_multiloc: Multiloc;
+    post_id: string;
+    internal_comment_id: string;
+    project_id: string | null;
   };
 }
 
@@ -196,7 +217,7 @@ export interface IMentionInOfficialFeedbackNotificationData
     initiating_user_last_name: string | null;
     initiating_user_slug: string | null;
     official_feedback_author: Multiloc;
-    post_type: 'Initiative' | 'Idea';
+    post_type: PostType;
     post_slug: string | null;
     post_title_multiloc: Multiloc;
   };
@@ -405,6 +426,50 @@ export interface IProjectFolderModerationRightsReceivedNotificationData
   };
 }
 
+export interface IVotingBasketSubmittedNotificationData
+  extends IBaseNotificationData {
+  attributes: {
+    type: 'voting_basket_submitted';
+    read_at: string | null;
+    created_at: string;
+    project_slug: string;
+    project_title_multiloc: Multiloc;
+  };
+}
+
+export interface IVotingBasketNotSubmittedNotificationData
+  extends IBaseNotificationData {
+  attributes: {
+    type: 'voting_basket_not_submitted';
+    read_at: string | null;
+    created_at: string;
+    project_slug: string;
+    project_title_multiloc: Multiloc;
+    phase_title_multiloc: Multiloc;
+  };
+}
+
+export interface IVotingLastChanceNotificationData
+  extends IBaseNotificationData {
+  attributes: {
+    type: 'voting_last_chance';
+    read_at: string | null;
+    created_at: string;
+    project_slug: string;
+    phase_title_multiloc: Multiloc;
+  };
+}
+
+export interface IVotingResultsNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'voting_results';
+    read_at: string | null;
+    created_at: string;
+    project_slug: string;
+    phase_title_multiloc: Multiloc;
+  };
+}
+
 export interface INotificationDataMap {
   IAdminRightsReceivedNotificationData: IAdminRightsReceivedNotificationData;
   ICommentDeletedByAdminNotificationData: ICommentDeletedByAdminNotificationData;
@@ -418,6 +483,7 @@ export interface INotificationDataMap {
   IInitiativeMarkedAsSpamNotificationData: IInitiativeMarkedAsSpamNotificationData;
   IInviteAcceptedNotificationData: IInviteAcceptedNotificationData;
   IMentionInCommentNotificationData: IMentionInCommentNotificationData;
+  IInternalCommentNotificationData: IInternalCommentNotificationData;
   IMentionInOfficialFeedbackNotificationData: IMentionInOfficialFeedbackNotificationData;
   IOfficialFeedbackOnCommentedIdeaNotificationData: IOfficialFeedbackOnCommentedIdeaNotificationData;
   IOfficialFeedbackOnCommentedInitiativeNotificationData: IOfficialFeedbackOnCommentedInitiativeNotificationData;
@@ -436,6 +502,10 @@ export interface INotificationDataMap {
   IStatusChangeOnReactedInitiativeNotificationData: IStatusChangeOnReactedInitiativeNotificationData;
   IThresholdReachedForAdminNotificationData: IThresholdReachedForAdminNotificationData;
   IProjectFolderModerationRightsReceivedNotificationData: IProjectFolderModerationRightsReceivedNotificationData;
+  IVotingBasketSubmittedNotificationData: IVotingBasketSubmittedNotificationData;
+  IVotingBasketNotSubmittedNotificationData: IVotingBasketNotSubmittedNotificationData;
+  IVotingLastChanceNotificationData: IVotingLastChanceNotificationData;
+  IVotingResultsNotificationData: IVotingResultsNotificationData;
 }
 
 export type TNotificationData =

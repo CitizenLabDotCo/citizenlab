@@ -33,6 +33,8 @@ class WebApi::V1::IdeasController < ApplicationController
     ).find_records
     ideas = paginate SortByParamsService.new.sort_ideas(ideas, params, current_user)
 
+    ideas = update_phase_voting_counts ideas, params
+
     render json: linked_json(ideas, WebApi::V1::IdeaSerializer, serialization_options_for(ideas))
   end
 
@@ -94,11 +96,11 @@ class WebApi::V1::IdeasController < ApplicationController
       .reorder(nil) # Avoids SQL error on GROUP BY when a search string was used
       .group('GROUPING SETS (idea_status_id, ideas_topics.topic_id)')
       .each do |record|
-        attributes.each do |attribute|
-          id = record.send attribute
-          counts[attribute][id] = record.count if id
-        end
+      attributes.each do |attribute|
+        id = record.send attribute
+        counts[attribute][id] = record.count if id
       end
+    end
     counts['total'] = all_ideas.count
     render json: raw_json(counts)
   end
@@ -135,15 +137,13 @@ class WebApi::V1::IdeasController < ApplicationController
     send_error and return unless participation_context
 
     participation_method = Factory.instance.participation_method_for(participation_context)
-    participation_context_for_form = participation_method.form_in_phase? ? participation_context : project
-    custom_form = participation_context_for_form.custom_form || CustomForm.new(participation_context: participation_context_for_form)
 
-    extract_custom_field_values_from_params! custom_form
-    params_for_create = idea_params(custom_form, is_moderator)
-    params_for_file_upload_fields = extract_params_for_file_upload_fields(custom_form, params_for_create)
+    extract_custom_field_values_from_params! participation_method.custom_form
+    params_for_create = idea_params participation_method.custom_form, is_moderator
+    params_for_file_upload_fields = extract_params_for_file_upload_fields participation_method.custom_form, params_for_create
     input = Idea.new params_for_create
     if project.timeline?
-      input.creation_phase = (participation_context if participation_method.form_in_phase?)
+      input.creation_phase = (participation_context if participation_method.creation_phase?)
       input.phase_ids = [participation_context.id] if phase_ids.empty?
     end
     # NOTE: Needs refactor allow_anonymous_participation? so anonymous_participation can be allow or force
@@ -383,6 +383,24 @@ class WebApi::V1::IdeasController < ApplicationController
     return false unless author_removal || (publishing && !input.author_id)
 
     input.participation_method_on_creation.sign_in_required_for_posting?
+  end
+
+  # Change counts on idea for values for phase, if filtered by phase
+  def update_phase_voting_counts(ideas, params)
+    if params[:phase]
+      phase_id = params[:phase]
+      ideas.map do |idea|
+        next if idea.baskets_count == 0
+
+        idea.ideas_phases.each do |ideas_phase|
+          if ideas_phase.phase_id == phase_id
+            idea.baskets_count = ideas_phase.baskets_count
+            idea.votes_count = ideas_phase.votes_count
+          end
+        end
+      end
+    end
+    ideas
   end
 end
 

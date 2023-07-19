@@ -54,7 +54,7 @@ resource 'Analytics - Visits model' do
         }
       })
       assert_status 200
-      expect(response_data)
+      expect(response_data[:attributes])
         .to match_array([{
           avg_duration: '200.0',
           avg_pages_visited: '2.0',
@@ -82,7 +82,7 @@ resource 'Analytics - Visits model' do
         }
       })
       assert_status 200
-      expect(response_data)
+      expect(response_data[:attributes])
         .to eq([{
           avg_duration: '150.0',
           avg_pages_visited: '1.5',
@@ -102,7 +102,7 @@ resource 'Analytics - Visits model' do
         }
       })
       assert_status 200
-      expect(response_data)
+      expect(response_data[:attributes])
         .to match_array([
           {
             'dimension_date_last_action.month': '2022-09',
@@ -130,7 +130,7 @@ resource 'Analytics - Visits model' do
         }
       })
       assert_status 200
-      expect(response_data)
+      expect(response_data[:attributes])
         .to match_array([{
           count: 2,
           count_visitor_id: 1
@@ -148,7 +148,7 @@ resource 'Analytics - Visits model' do
         }
       })
       assert_status 200
-      expect(response_data.size).to eq(2)
+      expect(response_data[:attributes].size).to eq(2)
     end
 
     example 'group visitors by referrer type' do
@@ -162,7 +162,7 @@ resource 'Analytics - Visits model' do
         }
       })
       assert_status 200
-      expect(response_data.size).to eq(1)
+      expect(response_data[:attributes].size).to eq(1)
     end
 
     example 'filter only visits by citizens or non-registered users (not admins or moderators)' do
@@ -179,7 +179,7 @@ resource 'Analytics - Visits model' do
         }
       })
       assert_status 200
-      expect(response_data)
+      expect(response_data[:attributes])
         .to match_array([{
           count: 2,
           count_visitor_id: 1

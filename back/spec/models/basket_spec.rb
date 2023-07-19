@@ -15,18 +15,18 @@ RSpec.describe Basket do
       t1 = Time.now - 20.minutes
       i1 = create(:idea)
       travel_to t1 do
-        basket.update(ideas: [i1])
+        basket.update!(ideas: [i1])
       end
       t2 = Time.now
       i2 = create(:idea)
       travel_to t2 do
-        basket.update(ideas: [i1, i2])
+        basket.update!(ideas: [i1, i2])
       end
       expect(basket.baskets_ideas.pluck(:created_at).map(&:to_i)).to match_array [t1, t2].map(&:to_i)
     end
   end
 
-  context 'when a basket exceeding the maximum votes' do
+  context 'when a basket has more than the maximum votes' do
     before do
       project = create(:continuous_budgeting_project, voting_max_total: 1000)
       ideas = create_list(:idea, 11, budget: 100, project: project)
@@ -47,31 +47,40 @@ RSpec.describe Basket do
     end
   end
 
-  context 'when a basket less than the minimum votes' do
+  context 'when a basket has less than the minimum votes' do
     let(:basket) { create(:basket, ideas: [idea], participation_context: project, submitted_at: Time.now) }
     let(:project) { create(:continuous_budgeting_project, voting_min_total: 5) }
     let(:idea) { create(:idea, budget: 1, project: project) }
 
     it 'is valid in normal context' do
+      basket.submitted_at = Time.now
       expect(basket).to be_valid
     end
 
     it 'is not valid in submission context' do
+      basket.submitted_at = Time.now
       expect(basket.save(context: :basket_submission)).to be(false)
       expect(basket.errors.details).to eq({ total_votes: [{ error: :greater_than_or_equal_to, value: 1, count: 5 }] })
       expect(basket.errors.messages).to eq({ total_votes: ['must be greater than or equal to 5'] })
     end
   end
 
-  context 'when an idea without a budget' do
-    before do
-      @idea = create(:idea, budget: nil)
+  context 'when an idea has more than the maximum votes per idea' do
+    let(:basket) { create(:basket, participation_context: phase, submitted_at: Time.now) }
+    let!(:basekts_idea) { create(:baskets_idea, basket: basket, idea: idea, votes: 4) }
+    let(:phase) { create(:voting_phase, voting_method: 'multiple_voting', voting_max_votes_per_idea: 3) }
+    let(:idea) { create(:idea, project: phase.project, phases: [phase]) }
+
+    it 'is valid in normal context' do
+      basket.submitted_at = Time.now
+      expect(basket).to be_valid
     end
 
-    it 'cannot be added to a basket' do
-      basket = create(:basket)
-      basket_idea = build(:baskets_idea, basket: basket, idea: @idea)
-      expect(basket_idea).to be_invalid
+    it 'is not valid in submission context' do
+      basket.submitted_at = Time.now
+      expect(basket.save(context: :basket_submission)).to be false
+      expect(basket.errors.details).to eq({ baskets_ideas: [{ error: :less_than_or_equal_to, value: 4, count: 3, idea_id: idea.id }] })
+      expect(basket.errors.messages).to eq({ baskets_ideas: ['must be less than or equal to 3'] })
     end
   end
 
@@ -89,29 +98,30 @@ RSpec.describe Basket do
     end
   end
 
-  context 'when deleting an idea with budget' do
-    it 'the idea is removed from all baskets and the total votes is changed' do
-      project = create(:continuous_budgeting_project)
-      idea = create(:idea, project: project, budget: 5)
-      basket = create(:basket, participation_context: project, ideas: (create_list(:idea, 2, project: project, budget: 10) + [idea]))
-      expect(basket.ideas.count).to eq 3
-      expect(basket.total_votes).to eq 25
-      idea.destroy!
-      basket.reload
-      expect(basket.ideas.count).to eq 2
-      expect(basket.total_votes).to eq 20
-    end
-  end
+  context 'budgeting' do
+    let(:project) { create(:continuous_budgeting_project) }
+    let(:idea) { create(:idea, project: project, budget: 5) }
+    let(:basket) { create(:basket, participation_context: project, ideas: (create_list(:idea, 2, project: project, budget: 10) + [idea])) }
 
-  context 'when editing the budget of an idea' do
-    it 'the total votes of existing baskets is not changed' do
-      project = create(:continuous_budgeting_project)
-      idea = create(:idea, project: project, budget: 5)
-      basket = create(:basket, participation_context: project, ideas: (create_list(:idea, 2, project: project, budget: 10) + [idea]))
-      expect(basket.total_votes).to eq 25
-      idea.update!(budget: 7)
-      basket.reload
-      expect(basket.total_votes).to eq 25
+    context 'when deleting an idea with budget' do
+      it 'the idea is removed from all baskets and the total votes is changed' do
+        expect(basket.ideas.count).to eq 3
+        expect(basket.total_votes).to eq 25
+        idea.destroy!
+        basket.reload
+        expect(basket.ideas.pluck(:id)).not_to include idea.id
+        expect(basket.ideas.count).to eq 2
+        expect(basket.total_votes).to eq 20
+      end
+    end
+
+    context 'when editing the budget of an idea' do
+      it 'the total votes of existing baskets is not changed' do
+        expect(basket.total_votes).to eq 25
+        idea.update!(budget: 7)
+        basket.reload
+        expect(basket.total_votes).to eq 25
+      end
     end
   end
 

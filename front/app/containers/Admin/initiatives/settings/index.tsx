@@ -1,18 +1,16 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { isEmpty, isNaN, isEqual } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
-import { API_PATH } from 'containers/App/constants';
 
 // hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useNavbarItemEnabled from 'hooks/useNavbarItemEnabled';
-import useCustomPage from 'hooks/useCustomPage';
+import useNavbarItems from 'api/navbar/useNavbarItems';
+import useCustomPageBySlug from 'api/custom_pages/useCustomPageBySlug';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useUpdateCustomPage from 'api/custom_pages/useUpdateCustomPage';
 
 // services
 import { ProposalsSettings } from 'api/app_configuration/types';
-import { updateCustomPage } from 'services/customPages';
-import streams from 'utils/streams';
 import useUpdateAppConfiguration from 'api/app_configuration/useUpdateAppConfiguration';
 
 // components
@@ -59,6 +57,13 @@ export const StyledSectionDescription = styled(SectionDescription)`
 type ProposalsSettingName = keyof ProposalsSettings;
 
 const InitiativesSettingsPage = () => {
+  const {
+    mutate: updateCustomPage,
+    isLoading,
+    isSuccess,
+    isError,
+    reset,
+  } = useUpdateCustomPage();
   const { data: appConfiguration } = useAppConfiguration();
   const hasAnonymousParticipationEnabled = useFeatureFlag({
     name: 'anonymous_participation',
@@ -68,8 +73,12 @@ const InitiativesSettingsPage = () => {
     isLoading: isAppConfigurationLoading,
     isError: isAppConfigurationError,
   } = useUpdateAppConfiguration();
-  const proposalsNavbarItemEnabled = useNavbarItemEnabled('proposals');
-  const proposalsPage = useCustomPage({ customPageSlug: 'initiatives' });
+  const { data: navbarItems } = useNavbarItems();
+  const proposalsNavbarItemEnabled = navbarItems?.data.some(
+    (navbarItem) => navbarItem.attributes.code === 'proposals'
+  );
+
+  const { data: proposalsPage } = useCustomPageBySlug('initiatives');
 
   const remoteProposalsSettings = useMemo(() => {
     if (
@@ -95,14 +104,10 @@ const InitiativesSettingsPage = () => {
   useEffect(() => {
     if (!isNilOrError(proposalsPage)) {
       setNewProposalsPageBody(
-        proposalsPage.attributes.top_info_section_multiloc
+        proposalsPage.data.attributes.top_info_section_multiloc
       );
     }
   }, [proposalsPage]);
-
-  const [processing, setProcessing] = useState(false);
-  const [error, setError] = useState(false);
-  const [success, setSuccess] = useState(false);
 
   if (
     isNilOrError(appConfiguration) ||
@@ -126,12 +131,12 @@ const InitiativesSettingsPage = () => {
     );
 
     const proposalsPageBodyChanged =
-      proposalsPage.attributes.top_info_section_multiloc !==
+      proposalsPage.data.attributes.top_info_section_multiloc !==
       newProposalsPageBody;
 
     const formChanged = proposalsSettingsChanged || proposalsPageBodyChanged;
 
-    if (!processing && formChanged) {
+    if (!isLoading && formChanged) {
       validated = true;
 
       if (
@@ -163,10 +168,8 @@ const InitiativesSettingsPage = () => {
     );
 
     const proposalsPageBodyChanged =
-      proposalsPage.attributes.top_info_section_multiloc !==
+      proposalsPage.data.attributes.top_info_section_multiloc !==
       newProposalsPageBody;
-
-    setProcessing(true);
 
     if (proposalsSettingsChanged) {
       updateAppConfiguration({
@@ -176,23 +179,11 @@ const InitiativesSettingsPage = () => {
       });
     }
 
-    try {
-      if (proposalsPageBodyChanged) {
-        await updateCustomPage(proposalsPage.id, {
-          top_info_section_multiloc: newProposalsPageBody,
-        });
-      }
-
-      await streams.fetchAllWith({
-        apiEndpoint: [`${API_PATH}/nav_bar_items`],
+    if (proposalsPageBodyChanged) {
+      updateCustomPage({
+        id: proposalsPage.data.id,
+        top_info_section_multiloc: newProposalsPageBody,
       });
-
-      setProcessing(false);
-      setSuccess(true);
-      setError(false);
-    } catch (error) {
-      setProcessing(false);
-      setError(true);
     }
   };
 
@@ -202,13 +193,13 @@ const InitiativesSettingsPage = () => {
         ...localProposalsSettings,
         [settingName]: value,
       });
-      setSuccess(false);
+      reset();
     };
   };
 
   const updateProposalsPageBody = (bodyMultiloc: Multiloc) => {
     setNewProposalsPageBody(bodyMultiloc);
-    setSuccess(false);
+    reset();
   };
 
   const onToggle = () => {
@@ -279,9 +270,9 @@ const InitiativesSettingsPage = () => {
 
         <SubmitButton
           disabled={!validate()}
-          processing={processing || isAppConfigurationLoading}
-          error={error || isAppConfigurationError}
-          success={success}
+          processing={isLoading || isAppConfigurationLoading}
+          error={isError || isAppConfigurationError}
+          success={isSuccess}
           handleSubmit={handleSubmit}
         />
       </Box>

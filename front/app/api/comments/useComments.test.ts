@@ -67,7 +67,7 @@ describe('useComments', () => {
       })
     );
     const { result, waitFor } = renderHook(
-      () => useComments({ userId: 'userId' }),
+      () => useComments({ authorId: 'userId' }),
       {
         wrapper: createQueryClientWrapper(),
       }

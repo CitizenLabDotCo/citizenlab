@@ -2,7 +2,7 @@ import React, { memo, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
-import { createProjectMapLayer } from '../../../services/mapLayers';
+import useAddMapLayer from 'modules/commercial/custom_maps/api/map_layers/useAddMapLayer';
 
 // components
 import Error from 'components/UI/Error';
@@ -68,6 +68,7 @@ interface Props {
 
 const GeoJsonImportButton = memo<Props>(
   ({ projectId, mapConfigId, className }) => {
+    const { mutate: createProjectMapLayer } = useAddMapLayer();
     const tenantLocales = useAppConfigurationLocales();
 
     const [importError, setImportError] = useState(false);
@@ -82,16 +83,20 @@ const GeoJsonImportButton = memo<Props>(
         setImportError(false);
 
         if (mapConfigId && !isNilOrError(tenantLocales)) {
-          try {
-            createProjectMapLayer(projectId, {
+          createProjectMapLayer(
+            {
+              projectId,
               geojson,
               id: mapConfigId,
               title_multiloc: getUnnamedLayerTitleMultiloc(tenantLocales),
               default_enabled: true,
-            });
-          } catch {
-            setImportError(true);
-          }
+            },
+            {
+              onError: () => {
+                setImportError(true);
+              },
+            }
+          );
         }
       };
     };

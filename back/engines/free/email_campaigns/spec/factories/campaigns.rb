@@ -70,6 +70,42 @@ FactoryBot.define do
     enabled { true }
   end
 
+  factory :internal_comment_on_idea_assigned_to_you_campaign, class: EmailCampaigns::Campaigns::InternalCommentOnIdeaAssignedToYou do
+    enabled { true }
+  end
+
+  factory :internal_comment_on_idea_you_commented_internally_on_campaign, class: EmailCampaigns::Campaigns::InternalCommentOnIdeaYouCommentedInternallyOn do
+    enabled { true }
+  end
+
+  factory :internal_comment_on_idea_you_moderate_campaign, class: EmailCampaigns::Campaigns::InternalCommentOnIdeaYouModerate do
+    enabled { true }
+  end
+
+  factory :internal_comment_on_initiative_assigned_to_you_campaign, class: EmailCampaigns::Campaigns::InternalCommentOnInitiativeAssignedToYou do
+    enabled { true }
+  end
+
+  factory :internal_comment_on_initiative_you_commented_internally_on_campaign, class: EmailCampaigns::Campaigns::InternalCommentOnInitiativeYouCommentedInternallyOn do
+    enabled { true }
+  end
+
+  factory :internal_comment_on_unassigned_initiative_campaign, class: EmailCampaigns::Campaigns::InternalCommentOnUnassignedInitiative do
+    enabled { true }
+  end
+
+  factory :internal_comment_on_unassigned_unmoderated_idea_campaign, class: EmailCampaigns::Campaigns::InternalCommentOnUnassignedUnmoderatedIdea do
+    enabled { true }
+  end
+
+  factory :internal_comment_on_your_internal_comment_campaign, class: EmailCampaigns::Campaigns::InternalCommentOnYourInternalComment do
+    enabled { true }
+  end
+
+  factory :mention_in_internal_comment_campaign, class: EmailCampaigns::Campaigns::MentionInInternalComment do
+    enabled { true }
+  end
+
   factory :mention_in_official_feedback_campaign, class: EmailCampaigns::Campaigns::MentionInOfficialFeedback do
     enabled { true }
   end
@@ -197,6 +233,22 @@ FactoryBot.define do
   factory :your_proposed_initiatives_digest_campaign, class: EmailCampaigns::Campaigns::YourProposedInitiativesDigest do
     enabled { true }
     schedule { weekly_schedule }
+  end
+
+  factory :voting_basket_submitted_campaign, class: EmailCampaigns::Campaigns::VotingBasketSubmitted do
+    enabled { true }
+  end
+
+  factory :voting_basket_not_submitted_campaign, class: EmailCampaigns::Campaigns::VotingBasketNotSubmitted do
+    enabled { true }
+  end
+
+  factory :voting_last_chance_campaign, class: EmailCampaigns::Campaigns::VotingLastChance do
+    enabled { true }
+  end
+
+  factory :voting_phase_started_campaign, class: EmailCampaigns::Campaigns::VotingPhaseStarted do
+    enabled { true }
   end
 end
 

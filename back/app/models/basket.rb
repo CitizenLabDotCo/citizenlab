@@ -27,14 +27,15 @@ class Basket < ApplicationRecord
 
   has_many :baskets_ideas, -> { order(:created_at) }, dependent: :destroy, inverse_of: :basket
   has_many :ideas, through: :baskets_ideas
-  accepts_nested_attributes_for :baskets_ideas, allow_destroy: true
 
-  before_validation :assign_by_voting_method
+  # TODO: Others use nullify and a before destroy function, but can't work out why
+  has_many :notifications, dependent: :destroy
 
   validates :participation_context, presence: true
   validate :basket_submission, on: :basket_submission
 
   scope :submitted, -> { where.not(submitted_at: nil) }
+  scope :not_submitted, -> { where(submitted_at: nil) }
 
   delegate :project_id, to: :participation_context
 
@@ -80,10 +81,6 @@ class Basket < ApplicationRecord
 
   private
 
-  def assign_by_voting_method
-    Factory.instance.voting_method_for(participation_context).assign_basket self
-  end
-
   def basket_submission
     return unless submitted?
 
@@ -97,6 +94,18 @@ class Basket < ApplicationRecord
         :total_votes, :less_than_or_equal_to, value: total_votes, count: participation_context.voting_max_total,
         message: "must be less than or equal to #{participation_context.voting_max_total}"
       )
+    end
+
+    max_votes = participation_context.voting_max_votes_per_idea
+    return unless max_votes
+
+    baskets_ideas.each do |baskets_idea|
+      if baskets_idea.votes > max_votes
+        errors.add(
+          :baskets_ideas, :less_than_or_equal_to, value: baskets_idea.votes, count: max_votes, idea_id: baskets_idea.idea_id,
+          message: "must be less than or equal to #{max_votes}"
+        )
+      end
     end
   end
 
@@ -128,7 +137,7 @@ class Basket < ApplicationRecord
   end
 
   def update_participation_context_counts(count_contexts, update_context)
-    baskets = Basket.where(participation_context: count_contexts).where.not(submitted_at: nil)
+    baskets = Basket.where(participation_context: count_contexts).submitted
     baskets_count = baskets.count
     votes_count = BasketsIdea.where(basket: baskets).sum(:votes)
     update_context.update!(baskets_count: baskets_count, votes_count: votes_count)

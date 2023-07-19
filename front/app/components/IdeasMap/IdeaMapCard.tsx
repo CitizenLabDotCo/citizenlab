@@ -150,20 +150,16 @@ const IdeaMapCard = memo<Props>(
     const { windowWidth } = useWindowSize();
     const tablet = windowWidth <= viewportWidths.tablet;
 
+    const participationContext = phase || project;
+
     const [hovered, setHovered] = useState(false);
 
-    const isParticipatoryBudgetProject =
-      project?.data.attributes.process_type === 'continuous' &&
-      project?.data.attributes.participation_method === 'voting' &&
-      project?.data.attributes.voting_method === 'budgeting';
+    const isParticipatoryBudgetContext =
+      participationContext?.data.attributes.participation_method === 'voting' &&
+      participationContext?.data.attributes.voting_method === 'budgeting';
 
-    const isParticipatoryBudgetPhase =
-      phase?.data.attributes.participation_method === 'voting' &&
-      phase?.data.attributes.voting_method === 'budgeting';
-
-    const isParticipatoryBudgetIdea = phase
-      ? isParticipatoryBudgetProject
-      : isParticipatoryBudgetPhase;
+    const isVotingContext =
+      participationContext?.data.attributes.participation_method === 'voting';
 
     useEffect(() => {
       const subscriptions = [
@@ -252,7 +248,7 @@ const IdeaMapCard = memo<Props>(
             <T value={ideaMarker.attributes.title_multiloc} />
           </Title>
           <Footer>
-            {isParticipatoryBudgetIdea && tenantCurrency && ideaBudget && (
+            {isParticipatoryBudgetContext && tenantCurrency && ideaBudget && (
               <FooterItem>
                 <MoneybagIcon name="coin-stack" />
                 <FooterValue>
@@ -260,7 +256,7 @@ const IdeaMapCard = memo<Props>(
                 </FooterValue>
               </FooterItem>
             )}
-            {!isParticipatoryBudgetIdea && (
+            {!isParticipatoryBudgetContext && !isVotingContext && (
               <>
                 <FooterItem>
                   <LikeIcon name="vote-up" />

@@ -72,7 +72,7 @@ class WebApi::V1::PhasesController < ApplicationController
   def index_xlsx
     I18n.with_locale(current_user.locale) do
       include_private_attributes = Pundit.policy!(current_user, User).view_private_attributes?
-      xlsx = XlsxExport::GeneratorService.new.generate_for_phase(@phase.id, include_private_attributes)
+      xlsx = XlsxExport::GeneratorService.new.generate_inputs_for_phase @phase.id, include_private_attributes
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'inputs.xlsx'
     end
   end
@@ -126,7 +126,8 @@ class WebApi::V1::PhasesController < ApplicationController
         title_multiloc: CL2_SUPPORTED_LOCALES,
         description_multiloc: CL2_SUPPORTED_LOCALES,
         voting_term_singular_multiloc: CL2_SUPPORTED_LOCALES,
-        voting_term_plural_multiloc: CL2_SUPPORTED_LOCALES
+        voting_term_plural_multiloc: CL2_SUPPORTED_LOCALES,
+        campaigns_settings: Phase::CAMPAIGNS
       }
     ]
     if AppConfiguration.instance.feature_activated? 'disable_disliking'

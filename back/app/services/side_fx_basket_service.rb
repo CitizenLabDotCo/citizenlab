@@ -5,11 +5,15 @@ class SideFxBasketService
 
   def after_create(basket, user)
     LogActivityJob.perform_later(basket, 'created', user, basket.created_at.to_i)
-    basket.update_counts! unless basket.submitted_at.nil?
+    basket.update_counts! unless basket.submitted?
   end
 
   def after_update(basket, user)
-    LogActivityJob.perform_later(basket, 'changed', user, basket.updated_at.to_i)
+    if basket.submitted_at_previously_changed?(from: nil)
+      LogActivityJob.perform_later(basket, 'submitted', user, basket.updated_at.to_i)
+    else
+      LogActivityJob.perform_later(basket, 'changed', user, basket.updated_at.to_i)
+    end
     basket.update_counts! if basket.submitted_at_previously_changed?
   end
 

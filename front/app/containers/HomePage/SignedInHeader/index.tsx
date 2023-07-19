@@ -11,12 +11,6 @@ const FallbackStep = lazy(() => import('./FallbackStep'));
 import HeaderImage from './HeaderImage';
 import Avatar from 'components/Avatar';
 
-// services
-import {
-  dismissOnboardingCampaign,
-  OnboardingCampaignName,
-} from 'services/onboardingCampaigns';
-
 // tracking
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../tracks';
@@ -26,7 +20,9 @@ import styled from 'styled-components';
 import { media, fontSizes, isRtl } from 'utils/styleUtils';
 
 // hooks
-import useCurrentOnboardingCampaign from 'hooks/useCurrentOnboardingCampaign';
+import useCurrentOnboardingCampaign from 'api/onboarding_campaigns/useCurrentOnboardingCampaign';
+import useDismissOnboardingCampaign from 'api/onboarding_campaigns/useDismissOnboardingCampaign';
+import { OnboardingCampaignName } from 'api/onboarding_campaigns/types';
 
 const Header = styled.div`
   width: 100%;
@@ -146,7 +142,8 @@ export const Icons = styled.div`
 `;
 
 const SignedInHeader = () => {
-  const currentOnboardingCampaign = useCurrentOnboardingCampaign();
+  const { data: currentOnboardingCampaign } = useCurrentOnboardingCampaign();
+  const { mutate: dismissOnboardingCampaign } = useDismissOnboardingCampaign();
 
   const handleSkip = (name: OnboardingCampaignName) => () => {
     trackEventByName(tracks.clickSkipButton, {

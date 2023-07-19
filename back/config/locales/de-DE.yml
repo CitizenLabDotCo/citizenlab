@@ -201,7 +201,6 @@ de:
       comments_count: 'Kommentare'
       likes_count: 'Likes'
       dislikes_count: 'Dislikes'
-      baskets_count: 'Körbe'
       input_url: 'URL'
       project: '{orgName, select, München {Bezirke} other {Projekte}}'
       status: 'Status'

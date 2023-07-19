@@ -43,7 +43,7 @@ describe('Konveio', () => {
     const displayedIframe = screen.getByTestId('konveiosurvey');
     expect(displayedIframe).toHaveAttribute(
       'src',
-      'https://demo.konveio.com/node/93?iframe=true&integration=CitizenLab&username=test%40mail.com'
+      'https://demo.konveio.com/node/93?iframe=true&integration=CitizenLab&cemail=test%40mail.com&username=Stewie%20McKenzie'
     );
   });
 });

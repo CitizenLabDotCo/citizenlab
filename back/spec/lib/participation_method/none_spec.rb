@@ -88,9 +88,9 @@ RSpec.describe ParticipationMethod::None do
     end
   end
 
-  describe '#form_in_phase?' do
+  describe '#creation_phase?' do
     it 'returns false' do
-      expect(participation_method.form_in_phase?).to be false
+      expect(participation_method.creation_phase?).to be false
     end
   end
 
@@ -131,6 +131,7 @@ RSpec.describe ParticipationMethod::None do
   end
 
   its(:allowed_ideas_orders) { is_expected.to be_empty }
+  its(:supports_exports?) { is_expected.to be false }
   its(:supports_publication?) { is_expected.to be false }
   its(:supports_commenting?) { is_expected.to be false }
   its(:supports_reacting?) { is_expected.to be false }

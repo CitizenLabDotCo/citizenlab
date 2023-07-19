@@ -4,9 +4,17 @@ import moment, { Moment } from 'moment';
 import { isEmpty } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
 
-// Services
+// Api
 import { IPhaseFiles } from 'api/phase_files/types';
 import eventEmitter from 'utils/eventEmitter';
+import useAddPhaseFile from 'api/phase_files/useAddPhaseFile';
+import useDeletePhaseFile from 'api/phase_files/useDeletePhaseFile';
+import usePhaseFiles from 'api/phase_files/usePhaseFiles';
+import usePhases from 'api/phases/usePhases';
+import usePhase from 'api/phases/usePhase';
+import useAddPhase from 'api/phases/useAddPhase';
+import useUpdatePhase from 'api/phases/useUpdatePhase';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // Components
 import { Label } from '@citizenlab/cl2-component-library';
@@ -30,20 +38,14 @@ import styled from 'styled-components';
 
 // Typings
 import { CLErrors, UploadFile, Multiloc } from 'typings';
+import { IPhase, IPhaseData, IUpdatedPhaseProperties } from 'api/phases/types';
 
 // Resources
 import { FileType } from 'components/UI/FileUploader/FileDisplay';
 import { useParams } from 'react-router-dom';
-import usePhases from 'api/phases/usePhases';
-import usePhase from 'api/phases/usePhase';
-import useAddPhase from 'api/phases/useAddPhase';
-import useUpdatePhase from 'api/phases/useUpdatePhase';
-import { IPhase, IPhaseData, IUpdatedPhaseProperties } from 'api/phases/types';
 
+// utils
 import { isNilOrError } from 'utils/helperUtils';
-import useAddPhaseFile from 'api/phase_files/useAddPhaseFile';
-import useDeletePhaseFile from 'api/phase_files/useDeletePhaseFile';
-import usePhaseFiles from 'api/phase_files/usePhaseFiles';
 
 const PhaseForm = styled.form``;
 type SubmitStateType = 'disabled' | 'enabled' | 'error' | 'success';
@@ -66,6 +68,7 @@ const convertToFileType = (phaseFiles: IPhaseFiles | undefined) => {
 };
 
 const AdminProjectTimelineEdit = () => {
+  const { data: appConfig } = useAppConfiguration();
   const { mutateAsync: addPhaseFile } = useAddPhaseFile();
   const { mutateAsync: deletePhaseFile } = useDeletePhaseFile();
   const { projectId, id: phaseId } = useParams() as {
@@ -329,6 +332,7 @@ const AdminProjectTimelineEdit = () => {
                 onSubmit={handleParticipationContextOnSubmit}
                 onChange={handleParticipationContextOnChange}
                 apiErrors={errors}
+                appConfig={appConfig}
               />
             )}
             {!phase && (
@@ -337,6 +341,7 @@ const AdminProjectTimelineEdit = () => {
                 onSubmit={handleParticipationContextOnSubmit}
                 onChange={handleParticipationContextOnChange}
                 apiErrors={errors}
+                appConfig={appConfig}
               />
             )}
           </SectionField>

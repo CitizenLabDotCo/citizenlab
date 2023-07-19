@@ -7,6 +7,16 @@ RSpec.describe VotingMethod::Budgeting do
 
   let(:project) { build(:continuous_budgeting_project) }
 
+  describe '#assign_defaults_for_participation_context' do
+    let(:context) { build(:continuous_budgeting_project) }
+
+    it 'changes voting_max_votes_per_idea to nil' do
+      project.voting_max_votes_per_idea = 3
+      voting_method.assign_defaults_for_participation_context
+      expect(project.voting_max_votes_per_idea).to be_nil
+    end
+  end
+
   describe '#validate_participation_context' do
     it 'sets no errors when voting_max_total and voting_min_total are present' do
       project.voting_max_total = 10
@@ -55,15 +65,15 @@ RSpec.describe VotingMethod::Budgeting do
     end
   end
 
-  describe '#assign_basket' do
-    it 'overwrites the votes with the budgets' do
-      basket = create(:basket, participation_context: project)
-      [1, 2, 3].map do |budget|
-        create(:baskets_idea, basket: basket, idea: create(:idea, budget: budget, project: project))
-      end
-      voting_method.assign_basket(basket.reload)
-      basket.save!
-      expect(basket.baskets_ideas.map(&:votes)).to contain_exactly 1, 2, 3
+  describe '#assign_baskets_idea' do
+    it 'overwrites the votes with the budget' do
+      idea = create(:idea, budget: 3, project: project)
+      baskets_idea = create(:baskets_idea, basket: create(:basket, participation_context: project), idea: idea, votes: 10)
+
+      voting_method.assign_baskets_idea(baskets_idea.reload)
+      baskets_idea.save!
+
+      expect(baskets_idea.votes).to eq 3
     end
   end
 end

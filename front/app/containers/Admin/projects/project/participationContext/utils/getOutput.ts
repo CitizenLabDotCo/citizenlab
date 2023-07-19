@@ -17,6 +17,9 @@ export default ({
   voting_min_total,
   voting_max_total,
   survey_embed_url,
+  voting_max_votes_per_idea,
+  voting_term_singular_multiloc,
+  voting_term_plural_multiloc,
   survey_service,
   poll_anonymous,
   ideas_order,
@@ -76,7 +79,9 @@ export default ({
       {
         participation_method,
         voting_min_total,
-        voting_max_total,
+        voting_max_votes_per_idea,
+        voting_term_singular_multiloc,
+        voting_term_plural_multiloc,
         commenting_enabled,
         presentation_mode,
         ideas_order,
@@ -85,6 +90,7 @@ export default ({
       },
       isNil
     ) as IParticipationContextConfig;
+    output.voting_max_total = voting_max_total;
   }
 
   return output;

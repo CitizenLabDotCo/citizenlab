@@ -6,6 +6,10 @@ module VotingMethod
       @participation_context = participation_context
     end
 
+    def assign_defaults_for_participation_context
+      # Default is to do nothing.
+    end
+
     def validate_participation_context
       # Default is to do nothing.
     end
@@ -18,7 +22,11 @@ module VotingMethod
       false
     end
 
-    def assign_basket(_basket)
+    def assign_baskets_idea(_baskets_idea)
+      # Default is to do nothing.
+    end
+
+    def update_before_submission_change!(_basket)
       # Default is to do nothing.
     end
 

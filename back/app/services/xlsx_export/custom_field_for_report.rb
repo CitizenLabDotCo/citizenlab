@@ -7,10 +7,11 @@ module XlsxExport
     def initialize(custom_field, scope = nil)
       @custom_field = custom_field
       @scope = scope
+      @multiloc_service = MultilocService.new
     end
 
     def column_header
-      MultilocService.new.t(custom_field.title_multiloc)
+      multiloc_service.t(custom_field.title_multiloc)
     end
 
     def value_from(model)
@@ -28,7 +29,7 @@ module XlsxExport
 
     private
 
-    attr_reader :custom_field, :scope, :options
+    attr_reader :custom_field, :scope, :multiloc_service, :options
 
     def option_index
       @option_index ||= custom_field.options.index_by(&:key)

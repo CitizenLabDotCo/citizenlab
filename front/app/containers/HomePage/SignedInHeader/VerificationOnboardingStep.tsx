@@ -3,7 +3,7 @@ import { Icon } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import messages from '../messages';
 import { HeaderContent, Left, Right, Text, Icons, StyledAvatar } from '.';
-import { OnboardingCampaignName } from 'services/onboardingCampaigns';
+import { OnboardingCampaignName } from 'api/onboarding_campaigns/types';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import useAuthUser from 'api/me/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
