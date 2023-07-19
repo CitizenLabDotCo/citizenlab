@@ -202,6 +202,7 @@ lv:
       likes_count: 'Patīk'
       dislikes_count: 'Nepatīk'
       picks: 'Picks'
+      participants: 'Dalībnieki'
       votes_count: 'Balsis'
       input_url: 'URL'
       project: 'Projekts'
