@@ -24,7 +24,7 @@
   "app.components.AssignVoteControl.voteForAtLeastOne": "Stem op minstens 1 optie",
   "app.components.AssignVoteControl.voted": "Gestemd",
   "app.components.AssignVoteControl.votesSubmitted": "Je hebt je {votes, plural, one {stem} other {stemmen}} al uitgebracht. Klik op \"Wijzig je stem\" om je {votes, plural, one {stem} other {stemmen}} te wijzigen.",
-  "app.components.AssignVoteControl.votesSubmittedIdeaPage": "Je hebt je {votes, plural, one {stem} other {stemmen}}. Om je {votes, plural, one {stem} other {stemmen}}ga dan terug naar de projectpagina en klik op \"Wijzig je stem\".",
+  "app.components.AssignVoteControl.votesSubmittedIdeaPage": "Je hebt je {votes, plural, one {stem} other {stemmen}} al ingediend. Om je {votes, plural, one {stem} other {stemmen}} te wijzigen ga je terug naar de projectpagina en klik je op \"Wijzig je stem\".",
   "app.components.AssignVoteControl.xOptions": "{votes, plural, one {optie} other {opties}}",
   "app.components.AssignVoteControl.youHave": "Je hebt",
   "app.components.AuthProviders.continue": "Ga verder",
