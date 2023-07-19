@@ -194,7 +194,7 @@ const AdminIdeaContent = ({ handleClickEdit, closePreview, ideaId }: Props) => {
     idea.data.attributes.location_point_geojson
   );
   // AuthorId can be null if user has been deleted
-  const authorId = idea.data.relationships.author.data?.id || null;
+  const authorId = idea.data.relationships.author?.data?.id || null;
   const proposedBudget = idea.data.attributes.proposed_budget;
   const processType = project.data.attributes.process_type;
   const allowAnonymousParticipation =

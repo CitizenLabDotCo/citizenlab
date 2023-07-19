@@ -48,19 +48,24 @@ const useVotingInterface = (projectId?: string) => {
     phases?.data
   );
 
+  const [votesPerIdea, setVotesPerIdea] = useState<Record<string, number>>({});
+
   const { voteForIdea, processing } = useVoteForIdea(participationContext);
 
   const basketId = participationContext?.relationships?.user_basket?.data?.id;
   const { data: basketIdeas, isFetching: basketIdeasLoading } =
     useBasketsIdeas(basketId);
 
-  const basketIdeasInitialLoad = basketId && !basketIdeas && basketIdeasLoading;
+  const initialLoad =
+    basketId &&
+    !basketIdeas &&
+    basketIdeasLoading &&
+    Object.keys(votesPerIdea).length === 0;
 
   const remoteVotesPerIdea = useMemo<
     Record<string, number> | null | undefined
   >(() => {
-    // undefined means initial load
-    if (basketIdeasInitialLoad) return undefined;
+    if (initialLoad) return undefined;
     if (!basketIdeas) return null;
 
     return basketIdeas.data.reduce((acc, basketIdea) => {
@@ -72,9 +77,7 @@ const useVotingInterface = (projectId?: string) => {
         [ideaId]: votes,
       };
     }, {});
-  }, [basketIdeasInitialLoad, basketIdeas]);
-
-  const [votesPerIdea, setVotesPerIdea] = useState<Record<string, number>>({});
+  }, [initialLoad, basketIdeas]);
 
   const getVotes = useCallback(
     (ideaId: string) => {
