@@ -66,7 +66,7 @@ module PublicApi
       "#{date_field} BETWEEN '#{start_date}' AND '#{end_date}'"
     end
 
-    # Default per page is 12, maximum is 24
+    # Default per page is 25, maximum is 100
     def num_per_page
       [params[:page_size]&.to_i || 25, 100].min
     end
