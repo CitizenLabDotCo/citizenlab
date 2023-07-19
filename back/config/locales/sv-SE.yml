@@ -202,6 +202,7 @@ sv:
       likes_count: 'Gillar'
       dislikes_count: 'Ogillar'
       picks: 'Val'
+      participants: 'Deltagare'
       votes_count: 'Röster'
       input_url: 'Webbadress'
       project: 'Projekt'
