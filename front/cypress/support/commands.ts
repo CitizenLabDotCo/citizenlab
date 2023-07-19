@@ -1149,6 +1149,7 @@ export function apiCreatePhase(
           survey_service: surveyService,
           max_budget: maxBudget,
           allow_anonymous_participation: allow_anonymous_participation,
+          campaigns_settings: { project_phase_started: true },
         },
       },
     });
