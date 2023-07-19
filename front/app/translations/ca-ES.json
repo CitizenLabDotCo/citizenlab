@@ -437,6 +437,7 @@
   "app.components.Sharing.shareViaMessenger": "Compartir a través de Messenger",
   "app.components.Sharing.shareViaWhatsApp": "Compartir via WhatsApp",
   "app.components.SideModal.closeButtonAria": "Tancar",
+  "app.components.StatusModule.futurePhase": "Esteu veient una fase que encara no ha començat. Podreu participar quan comenci la fase.",
   "app.components.StatusModule.modifyYour": "Modifica el teu",
   "app.components.StatusModule.submittedUntil2": "es podrà presentar fins a",
   "app.components.TopicsPicker.numberOfSelectedTopics": "S'han seleccionat {numberOfSelectedTopics, plural, =0 {zero etiquetes} one {una etiqueta} other {# etiquetes}}. {selectedTopicNames}",
