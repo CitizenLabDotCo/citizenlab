@@ -198,11 +198,8 @@ const FeedbackSettings = ({
     statuses
   );
   const assigneeOptions = getAssigneeOptions(prospectAssignees);
-  const initiativeAssigneeOption = get(
-    initiative,
-    'relationships.assignee.data.id',
-    'unassigned'
-  );
+  const initiativeAssigneeOption =
+    initiative.data.relationships.assignee.data?.id ?? 'unassigned';
 
   return (
     <Container className={`${className} e2e-initiative-settings`}>
