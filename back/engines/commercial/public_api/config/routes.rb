@@ -13,10 +13,12 @@ PublicApi::Engine.routes.draw do
   namespace :v2 do
     post 'authenticate' => 'api_token#create'
 
-    resources :comments, only: %i[index show]
-    resources :ideas, only: %i[index show] do
+    concern :deleted_items do
       get 'deleted', on: :collection
     end
+
+    resources :comments, only: %i[index show]
+    resources :ideas, only: %i[index show], concerns: :deleted_items
     resources :initiatives, only: %i[index show]
     resources :phases, only: %i[index show]
     resources :project_folders, only: %i[index show]
