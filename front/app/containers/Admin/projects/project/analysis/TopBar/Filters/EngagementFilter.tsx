@@ -22,11 +22,7 @@ const EngagementFilter = ({
   const { formatMessage } = useIntl();
   const [searchParams] = useSearchParams();
 
-  const selectValue = searchParams.get(from)
-    ? from
-    : searchParams.get(to)
-    ? to
-    : undefined;
+  const selectValue = searchParams.get(to) ? to : from;
 
   return (
     <>
@@ -36,10 +32,6 @@ const EngagementFilter = ({
           <Select
             id="select"
             options={[
-              {
-                label: '',
-                value: '',
-              },
               {
                 label: formatMessage(messages.above),
                 value: from,
@@ -51,7 +43,7 @@ const EngagementFilter = ({
             ]}
             onChange={({ value }) => {
               removeSearchParams([from, to]);
-              value && updateSearchParams({ [value]: 10 });
+              value && updateSearchParams({ [value]: 5 });
             }}
             value={selectValue}
           />
@@ -60,7 +52,8 @@ const EngagementFilter = ({
           type="number"
           value={searchParams.get(from) || searchParams.get(to)}
           onChange={(value) => {
-            selectValue && updateSearchParams({ [selectValue]: value });
+            removeSearchParams([from, to]);
+            value && updateSearchParams({ [selectValue]: value });
           }}
         />
       </Box>
