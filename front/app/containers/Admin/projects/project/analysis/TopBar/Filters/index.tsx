@@ -4,6 +4,7 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import EngagementFilter from './EngagementFilter';
 import TimeFilter from './TimeFilter';
+import AuthorFilters from './AuthorFilters';
 
 const Filters = () => {
   const { formatMessage } = useIntl();
@@ -18,7 +19,10 @@ const Filters = () => {
       h="320px"
     >
       <Box display="flex" gap="24px" px="24px" justifyContent="space-evenly">
-        <Text fontWeight="bold">{formatMessage(messages.author)}</Text>
+        <Box>
+          <Text fontWeight="bold">{formatMessage(messages.author)}</Text>
+          <AuthorFilters />
+        </Box>
         <Box>
           <Text fontWeight="bold">{formatMessage(messages.input)}</Text>
           <TimeFilter />

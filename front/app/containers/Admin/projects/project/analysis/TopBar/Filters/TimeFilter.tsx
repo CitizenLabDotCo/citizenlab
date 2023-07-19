@@ -6,6 +6,15 @@ import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 const TimeFilter = () => {
   const [searchParams] = useSearchParams();
+
+  const endAtMoment = searchParams.get('published_at_to')
+    ? moment(searchParams.get('published_at_to'))
+    : moment();
+
+  const startAtMoment = searchParams.get('published_at_from')
+    ? moment(searchParams.get('published_at_from'))
+    : undefined;
+
   return (
     <TimeControl
       onChange={(from, to) => {
@@ -14,16 +23,8 @@ const TimeFilter = () => {
           published_at_to: to?.toISOString(),
         });
       }}
-      endAtMoment={
-        searchParams.get('published_at_to')
-          ? moment(searchParams.get('published_at_to'))
-          : null
-      }
-      startAtMoment={
-        searchParams.get('published_at_from')
-          ? moment(searchParams.get('published_at_from'))
-          : undefined
-      }
+      endAtMoment={endAtMoment}
+      startAtMoment={startAtMoment}
     />
   );
 };
