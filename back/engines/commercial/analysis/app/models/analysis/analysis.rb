@@ -34,10 +34,15 @@ module Analysis
       phase&.participation_method || project&.participation_method
     end
 
+    # We don't call this `project` to not collide with the project association
+    def hosting_project
+      project || phase&.project
+    end
+
     private
 
     def project_xor_phase_present
-      return if phase.present? ^ project.present?
+      return if phase.present? ^ project.present? # ^ on booleans is XOR
 
       errors.add(:base, :project_or_phase_present, message: 'This analysis does not have only a project or only a phase associated')
     end

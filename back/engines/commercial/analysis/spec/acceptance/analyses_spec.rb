@@ -54,7 +54,7 @@ resource 'Analyses' do
         created_at: kind_of(String)
       })
       expect(response_data.dig(:relationships, :custom_fields, :data, 0, :id)).to eq analysis.custom_fields.first.id
-      expect(response_data.dig(:included, 0, id)).to eq analysis.custom_fields.first.id
+      expect(response_data.dig(:included, 0, :id)).to eq analysis.custom_fields.first.id
     end
   end
 
@@ -96,7 +96,7 @@ resource 'Analyses' do
   end
 
   delete 'web_api/v1/analyses/:id' do
-    let(:analysis) { create(:analysis) }
+    let!(:analysis) { create(:analysis) }
     let(:id) { analysis.id }
 
     example 'Delete an analysis' do
