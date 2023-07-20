@@ -419,7 +419,7 @@ ca:
       preheader: 'Un administrador de la plataforma de participació de %{organizationName} us acaba de convertir en cap de projecte del següent projecte'
       subject: 'Et vas convertir en gestor de projectes a la plataforma de %{organizationName}'
       text_design_participatory_process: 'Com a gestor de projectes, podeu configurar com interactuen els usuaris dins del vostre projecte. Podeu afegir noves fases mitjançant la línia de temps. Cadascuna d''aquestes fases pot tenir el seu propi comportament pel que fa a la publicació d''idees, comentaris i votacions.'
-      text_moderate_analyse_input: 'Un cop engegat el projecte, apareixeran les primeres idees. Rebreu informes setmanals amb totes les activitats clau per estar al corrent de les coses. La visió general d''idees a la vista del vostre gestor de projectes us ajudarà a entendre quines idees han tingut més m''agrada i no.'
+      text_moderate_analyse_input: 'Un cop engegat el projecte, apareixeran les primeres idees. Rebreu informes setmanals amb totes les activitats clau per estar al corrent de les coses. La visió general d''idees a la vista del vostre gestor de projectes us ajudarà a entendre quines idees han obtingut més vots a favor i en contra.'
       text_share_project_information: 'Per augmentar la qualitat de les idees que rebeu, és clau compartir informació suficient: afegir una descripció del projecte, adjuntar imatges (inclosos esbossos i plànols) i comunicar tots els esdeveniments relacionats que estan passant. Recordeu: una bona informació precedeix a una bona participació!'
       title_design_participatory_process: 'Dissenyar el procés participatiu'
       title_moderate_analyse_input: 'Moderar i analitzar l''entrada'
