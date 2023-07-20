@@ -110,6 +110,8 @@ Rails.application.routes.draw do
         patch 'reorder', on: :member
       end
 
+      resources :followers, except: %i[create update]
+
       resource :app_configuration, only: %i[show update]
 
       resources :static_pages do
@@ -142,7 +144,7 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :projects do
+      resources :projects, defaults: { followable: 'Project' } do
         resources :events, only: %i[new create]
         resources :projects_allowed_input_topics, only: [:index]
         resources :phases, only: %i[index new create]
@@ -157,6 +159,8 @@ Rails.application.routes.draw do
         resources :moderators, controller: 'project_moderators', except: [:update] do
           get :users_search, on: :collection
         end
+
+        resources :followers, only: [:create]
 
         post 'copy', on: :member
         get 'by_slug/:slug', on: :collection, to: 'projects#by_slug'

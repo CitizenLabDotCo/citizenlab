@@ -40,6 +40,7 @@
 #  posting_limited_max           :integer          default(1)
 #  document_annotation_embed_url :string
 #  allow_anonymous_participation :boolean          default(FALSE), not null
+#  followers_count               :integer          default(0), not null
 #
 # Indexes
 #
@@ -77,6 +78,7 @@ class Project < ApplicationRecord
   has_many :text_images, as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :text_images
   has_many :project_files, -> { order(:ordering) }, dependent: :destroy
+  has_many :followers, as: :followable, dependent: :destroy
 
   before_validation :generate_slug, on: :create
   before_validation :sanitize_description_multiloc, if: :description_multiloc

@@ -1,0 +1,58 @@
+# frozen_string_literal: true
+
+class FollowerPolicy < ApplicationPolicy
+  class Scope
+    attr_reader :user, :scope
+
+    def initialize(user, scope)
+      @user = user
+      @scope = scope
+    end
+
+    def resolve
+      return scope.none if !user
+
+      @scope = scope.where(user: user)
+      # We hide followers where the followable is no longer accessible, so we
+      # don't expose private information. This is because the followable is
+      # included. It's fine to allow show? in this case, as we don't include
+      # the followable in this case.
+      filter_projects
+      scope
+    end
+
+    private
+
+    def filter_projects
+      visible_projects = Pundit.policy_scope user, Project
+      @scope = scope.where(followable: visible_projects).or(scope.where.not(followable_type: 'Project'))
+    end
+  end
+
+  def create?
+    return false if !user
+
+    if user.active? && record.user_id == user.id
+      case record.followable_type
+      when 'Project'
+        ProjectPolicy.new(user, record.followable).show?
+      else
+        raise "Unsupported followable type: #{record.followable_type}"
+      end
+    else
+      false
+    end
+  end
+
+  def show?
+    return false if !user
+
+    record.user_id == user.id
+  end
+
+  def destroy?
+    return false if !user
+
+    record.user_id == user.id
+  end
+end

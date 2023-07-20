@@ -170,15 +170,26 @@ resource 'Projects' do
         project = create(:continuous_budgeting_project)
         basket = create(:basket, participation_context: project, user: @user)
         do_request id: project.id
-        expect(status).to eq 200
+        assert_status 200
         expect(json_response.dig(:data, :relationships, :user_basket, :data, :id)).to eq basket.id
+      end
+
+      example 'Get a project with followers', document: false do
+        project = create(:project)
+        followers = [@user, create(:user)].map do |user|
+          create(:follower, followable: project, user: user)
+        end
+        do_request id: project.id
+        assert_status 200
+        expect(json_response.dig(:data, :attributes, :followers_count)).to eq 2
+        expect(json_response.dig(:data, :relationships, :user_follower, :data, :id)).to eq followers.first.id
       end
 
       example 'Get a project on a timeline project includes the current_phase', document: false do
         project = create(:project_with_current_phase)
         current_phase = project.phases[2]
         do_request id: project.id
-        expect(status).to eq 200
+        assert_status 200
         expect(json_response.dig(:data, :relationships, :current_phase, :data, :id)).to eq current_phase.id
         expect(json_response[:included].pluck(:id)).to include(current_phase.id)
       end
@@ -187,7 +198,7 @@ resource 'Projects' do
         idea = create(:idea)
         project = idea.project
         do_request id: project.id
-        expect(status).to eq 200
+        assert_status 200
         expect(json_response.dig(:data, :attributes, :participants_count)).to eq 1
         expect(json_response.dig(:data, :attributes, :avatars_count)).to eq 1
       end
@@ -197,7 +208,7 @@ resource 'Projects' do
       let(:slug) { @projects.first.slug }
 
       example_request 'Get one project by slug' do
-        expect(status).to eq 200
+        assert_status 200
         expect(json_response.dig(:data, :id)).to eq @projects.first.id
       end
 
@@ -206,7 +217,7 @@ resource 'Projects' do
 
         example 'Get an unexisting project by slug', document: false do
           do_request
-          expect(status).to eq 404
+          assert_status 404
         end
       end
     end
