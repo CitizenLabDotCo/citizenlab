@@ -25,18 +25,23 @@ const Filters = () => {
     >
       <Box display="flex" gap="32px">
         <Box w="33%">
-          <Text fontWeight="bold">{formatMessage(messages.author)}</Text>
+          <Text color="primary" fontWeight="bold">
+            {formatMessage(messages.author)}
+          </Text>
           <AuthorFilters />
         </Box>
         <Box w="33%">
-          <Text fontWeight="bold" mb="44px">
+          <Text color="primary" fontWeight="bold" mb="44px">
             {formatMessage(messages.input)}
           </Text>
           <TimeFilter />
         </Box>
         <Box w="33%">
-          <Text fontWeight="bold">{formatMessage(messages.engagement)}</Text>
+          <Text color="primary" fontWeight="bold">
+            {formatMessage(messages.engagement)}
+          </Text>
           <EngagementFilter
+            id="votes"
             label={formatMessage(messages.numberOfVotes)}
             searchParams={{
               from: 'votes_from',
@@ -44,6 +49,7 @@ const Filters = () => {
             }}
           />
           <EngagementFilter
+            id="comments"
             label={formatMessage(messages.numberOfComments)}
             searchParams={{
               from: 'comments_from',
@@ -51,6 +57,7 @@ const Filters = () => {
             }}
           />
           <EngagementFilter
+            id="reactions"
             label={formatMessage(messages.numberOfReactions)}
             searchParams={{
               from: 'reactions_from',

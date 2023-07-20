@@ -13,11 +13,13 @@ type EngagementFilterProps = {
     from: string;
     to: string;
   };
+  id?: string;
 };
 
 const EngagementFilter = ({
   label,
   searchParams: { from, to },
+  id,
 }: EngagementFilterProps) => {
   const { formatMessage } = useIntl();
   const [searchParams] = useSearchParams();
@@ -26,11 +28,10 @@ const EngagementFilter = ({
 
   return (
     <>
-      <Label>{label}</Label>
+      <Label htmlFor={id}>{label}</Label>
       <Box display="flex" gap="8px" mb="12px">
         <Box w="50%">
           <Select
-            id="select"
             options={[
               {
                 label: formatMessage(messages.above),
@@ -51,6 +52,7 @@ const EngagementFilter = ({
           />
         </Box>
         <Input
+          id={id}
           type="number"
           value={searchParams.get(from) || searchParams.get(to)}
           onChange={(value) => {

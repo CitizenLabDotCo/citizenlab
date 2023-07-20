@@ -64,7 +64,7 @@ const AuthorFilters = () => {
       )}
       {domicileOptions && (
         <MultipleSelect
-          id="domicile"
+          inputId="domicile"
           label="Domicile"
           options={domicileOptions.data.map((option) => ({
             label: localize(option.attributes.title_multiloc),
