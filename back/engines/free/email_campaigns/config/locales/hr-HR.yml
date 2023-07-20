@@ -419,7 +419,7 @@ hr:
       preheader: 'Administrator %{organizationName} platforme za sudjelovanje vas je postavio za voditelja sljedećeg projekta'
       subject: 'Postali ste voditelj projekta na %{organizationName} platformi'
       text_design_participatory_process: 'Kao voditelj projekta, možete konfigurirati način interakcije korisnika unutar vašeg projekta. Možete dodati nove faze pomoću vremenske trake. Svaka od ovih faza može imati vlastita pravila u vezi s objavljivanjem ideja, komentiranjem i glasovanjem.'
-      text_moderate_analyse_input: 'Nakon što se projekt pokrene, prve ideje će se javiti. Primat ćete tjedna izvješća sa svim ključnim aktivnostima kako biste bili u tijeku. Pregled ideja u prikazu vašeg voditelja projekta pomoći će vam da shvatite koje su ideje dobile najviše sviđanja i nesviđanja.'
+      text_moderate_analyse_input: 'Nakon pokretanja projekta, stići će prve ideje. Primat ćete tjedna izvješća sa svim ključnim aktivnostima kako biste bili u tijeku. Pregled ideja u prikazu vašeg voditelja projekta pomoći će vam da shvatite koje su ideje dobile najviše pozitivnih i negativnih glasova.'
       text_share_project_information: 'Kako biste povećali kvalitetu ideja koje dobivate, ključno je podijeliti dovoljno informacija: dodajte opis projekta, priložite slike (uključujući skice i planove) i komunicirajte o svim povezanim događajima koji se odvijaju. Zapamtite: dobra informiranost prethodi dobrom sudjelovanju!'
       title_design_participatory_process: 'Oblikujte postupak sudjelovanja'
       title_moderate_analyse_input: 'Moderirajte i analizirajte unos'
