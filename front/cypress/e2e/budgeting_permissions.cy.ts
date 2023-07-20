@@ -100,17 +100,12 @@ describe('Idea budgeting permissions test with verified users', () => {
     cy.get('#e2e-ideas-container');
     cy.acceptCookies();
     cy.wait(1000);
-    cy.get('.e2e-assign-budget')
-      .first()
+    cy.get('#e2e-ideas-container')
       .find('.e2e-assign-budget-button')
       .should('have.class', 'not-in-basket');
-    cy.get('.e2e-assign-budget')
-      .first()
-      .find('.e2e-assign-budget-button')
-      .click();
+    cy.get('#e2e-ideas-container').find('.e2e-assign-budget-button').click();
     cy.wait(2000);
-    cy.get('.e2e-assign-budget')
-      .first()
+    cy.get('#e2e-ideas-container')
       .find('.e2e-assign-budget-button')
       .should('have.class', 'in-basket');
   });
