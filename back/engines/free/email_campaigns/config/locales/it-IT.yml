@@ -419,7 +419,7 @@ it:
       preheader: 'Un amministratore della piattaforma di partecipazione di %{organizationName} ti ha appena nominato project manager del seguente progetto'
       subject: 'Sei diventato un project manager sulla piattaforma di %{organizationName}'
       text_design_participatory_process: 'Come project manager, puoi configurare come gli utenti interagiscono all''interno del tuo progetto. Puoi aggiungere nuove fasi usando la timeline. Ognuna di queste fasi può avere il proprio comportamento per quanto riguarda la pubblicazione di idee, i commenti e il voto.'
-      text_moderate_analyse_input: 'Una volta lanciato il progetto, arriveranno le prime idee. Riceverai rapporti settimanali con tutte le attività principali, in modo da rimanere sempre aggiornato. La panoramica delle idee nella vista del project manager ti aiuterà a capire quali sono le idee che hanno ottenuto il maggior numero di apprezzamenti.'
+      text_moderate_analyse_input: 'Una volta lanciato il progetto, arriveranno le prime idee. Riceverai rapporti settimanali con tutte le attività chiave in modo da rimanere in cima alle cose. La panoramica delle idee nella tua vista di project manager ti aiuterà a capire quali idee hanno ottenuto il maggior numero di upvotes e downvotes.'
       text_share_project_information: 'Per aumentare la qualità delle idee che stai ricevendo, è fondamentale condividere informazioni sufficienti: aggiungi una descrizione del progetto, allega immagini (inclusi schizzi e piani), e comunica tutti gli eventi correlati in corso. Ricorda: una buona informazione precede una buona partecipazione!'
       title_design_participatory_process: 'Progettare il processo partecipativo'
       title_moderate_analyse_input: 'Moderare e analizzare l''input'
