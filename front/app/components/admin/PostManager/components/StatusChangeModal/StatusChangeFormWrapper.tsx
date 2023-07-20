@@ -43,6 +43,7 @@ const ColoredText = styled.span<{ color: string }>`
 interface Props {
   initiativeId: string;
   newStatusId: string;
+  feedbackRequired?: boolean;
   closeModal: () => void;
 }
 
@@ -54,6 +55,7 @@ export interface FormValues extends MultilocFormValues {
 const StatusChangeFormWrapper = ({
   initiativeId,
   newStatusId,
+  feedbackRequired,
   closeModal,
 }: Props & WrappedComponentProps) => {
   const tenantLocales = useAppConfigurationLocales();
@@ -128,16 +130,18 @@ const StatusChangeFormWrapper = ({
 
   const submit = () => {
     const { body_multiloc, author_multiloc } = newOfficialFeedback;
-    if (validate()) {
+    const canSkipFeedback = !feedbackRequired;
+
+    if (canSkipFeedback || validate()) {
       if (mode === 'new') {
         updateInitiativeStatus(
           {
             initiativeId,
             initiative_status_id: newStatusId,
-            official_feedback_attributes: {
-              body_multiloc,
-              author_multiloc,
-            },
+            // official_feedback_attributes: {
+            //   body_multiloc,
+            //   author_multiloc,
+            // },
           },
           {
             onSuccess: closeModal,
@@ -192,6 +196,7 @@ const StatusChangeFormWrapper = ({
         onChangeAuthor={onChangeAuthor}
         onChangeBody={onChangeBody}
         onChangeMode={onChangeMode}
+        feedbackRequired={feedbackRequired}
         latestOfficialFeedback={officialFeedbacksList[0]}
         submit={submit}
       />
