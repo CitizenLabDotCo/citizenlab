@@ -20,6 +20,30 @@ RSpec.describe Phase do
     end
   end
 
+  describe 'voting_term_singular_multiloc_with_fallback' do
+    it "falls back to the translations when there's no title_multiloc" do
+      item = create(:phase, voting_term_singular_multiloc: nil)
+      expect(item.voting_term_singular_multiloc_with_fallback).to match({ 'en' => 'vote', 'fr-FR' => 'vote', 'nl-NL' => 'stem' })
+    end
+
+    it 'returns the custom copy for locales with custom copy and falls back to the translations for other locales' do
+      item = create(:phase, voting_term_singular_multiloc: { 'nl-NL' => 'voorkeur' })
+      expect(item.voting_term_singular_multiloc_with_fallback).to match({ 'en' => 'vote', 'fr-FR' => 'vote', 'nl-NL' => 'voorkeur' })
+    end
+  end
+
+  describe 'voting_term_plural_multiloc_with_fallback' do
+    it "falls back to the translations when there's no title_multiloc" do
+      item = create(:phase, voting_term_plural_multiloc: nil)
+      expect(item.voting_term_plural_multiloc_with_fallback).to match({ 'en' => 'votes', 'fr-FR' => 'votes', 'nl-NL' => 'stemmen' })
+    end
+
+    it 'returns the custom copy for locales with custom copy and falls back to the translations for other locales' do
+      item = create(:phase, voting_term_plural_multiloc: { 'en' => 'preferences' })
+      expect(item.voting_term_plural_multiloc_with_fallback).to match({ 'en' => 'preferences', 'fr-FR' => 'votes', 'nl-NL' => 'stemmen' })
+    end
+  end
+
   describe 'timing validation' do
     it 'succeeds when start_at and end_at are equal' do
       phase = build(:phase)
@@ -41,27 +65,33 @@ RSpec.describe Phase do
       expect(p.save).to be false
     end
 
-    it 'can be budgeting' do
-      p = create(:phase, participation_method: 'budgeting')
+    it 'can be voting' do
+      p = create(:phase, participation_method: 'voting', voting_method: 'budgeting', voting_max_total: 200)
       expect(p.save).to be true
     end
 
     it 'can be changed from a transitive method to another one' do
       phase = create(:phase, participation_method: 'ideation')
-      phase.participation_method = 'budgeting'
+      phase.participation_method = 'voting'
+      phase.voting_method = 'budgeting'
+      phase.ideas_order = 'random'
+      phase.voting_max_total = 200
       expect(phase.save).to be true
     end
 
     it 'cannot be changed from a transitive method to a non-transitive one' do
       phase = create(:phase, participation_method: 'ideation')
       phase.participation_method = 'native_survey'
+      phase.ideas_order = nil
       expect(phase.save).to be false
       expect(phase.errors.details).to eq({ participation_method: [{ error: :change_not_permitted }] })
     end
 
     it 'cannot be changed from a non-transitive method to a transitive one' do
       phase = create(:phase, participation_method: 'native_survey')
-      phase.participation_method = 'budgeting'
+      phase.participation_method = 'voting'
+      phase.voting_method = 'budgeting'
+      phase.voting_max_total = 200
       expect(phase.save).to be false
       expect(phase.errors.details).to eq({ participation_method: [{ error: :change_not_permitted }] })
     end
@@ -141,16 +171,16 @@ RSpec.describe Phase do
     end
   end
 
-  describe 'max_budget' do
+  describe 'voting_max_total' do
     it 'can be updated in a project with just one phase' do
       project = create(
         :project_with_current_phase,
         phases_config: { sequence: 'xc' },
-        current_phase_attrs: { participation_method: 'budgeting', max_budget: 1234 }
+        current_phase_attrs: { participation_method: 'voting', voting_method: 'budgeting', voting_max_total: 1234 }
       )
-      phase = project.phases.find_by participation_method: 'budgeting'
+      phase = project.phases.find_by voting_method: 'budgeting'
 
-      phase.max_budget = 9876
+      phase.voting_max_total = 9876
       expect(phase).to be_valid
     end
   end
@@ -221,7 +251,7 @@ RSpec.describe Phase do
       'information' => false,
       'ideation' => true,
       'survey' => false,
-      'budgeting' => true,
+      'voting' => true,
       'poll' => false,
       'volunteering' => false,
       'native_survey' => true,
@@ -237,15 +267,6 @@ RSpec.describe Phase do
           expect(phase.can_contain_input?).to be expected_result
         end
       end
-    end
-  end
-
-  describe 'posting_method and posting_limited_max' do
-    it 'are set to defaults from the participation method' do
-      # We cannot stub side effects, otherwise we could have set
-      # posting_method and posting_limited_max to custom values.
-      expect_any_instance_of(ParticipationMethod::Base).to receive(:assign_defaults_for_participation_context).once
-      create(:phase)
     end
   end
 end

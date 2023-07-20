@@ -5,6 +5,7 @@ module MultiTenancy
     module Serializers
       class BasketsIdea < Base
         ref_attributes %i[basket idea]
+        attributes %i[votes]
       end
     end
   end

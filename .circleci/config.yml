@@ -350,6 +350,20 @@ jobs:
     steps:
       - run: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:$CIRCLE_BRANCH bin/rake templates:generate"
 
+  back-deploy-developer-documentation:
+    resource_class: small
+    docker:
+      - image: cimg/base:2021.03
+    steps:
+      - echo_pipeline_parameters
+      - run: |
+          curl --request POST \
+            -u $CIRCLECI_API_TOKEN: \
+            --url https://circleci.com/api/v2/project/github/CitizenLabDotCo/documentation/pipeline \
+            --header 'content-type: application/json' \
+            --header 'x-attribution-login: '"$CIRCLE_USERNAME" \
+            --data '{"branch": "master"}'
+
   check-for-inconsistent-data:
     resource_class: small
     docker:
@@ -816,6 +830,11 @@ workflows:
           image_tag: $CIRCLE_SHA1
           requires:
             - back-build-docker-image
+      - back-deploy-developer-documentation:
+          context: circleci-api-token
+          filters:
+            branches:
+              only: production
       - back-deploy-to-swarm:
           name: Deploy to Europe
           requires:

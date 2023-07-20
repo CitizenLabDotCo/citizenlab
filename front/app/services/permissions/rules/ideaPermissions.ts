@@ -6,8 +6,8 @@ import { IUser } from 'api/users/types';
 const isAuthor = (idea: IIdeaData, user?: IUser) => {
   return (
     user &&
-    idea.relationships.author.data &&
-    idea.relationships.author.data.id === user.data.id
+    idea.relationships.author?.data &&
+    idea.relationships.author?.data.id === user.data.id
   );
 };
 
