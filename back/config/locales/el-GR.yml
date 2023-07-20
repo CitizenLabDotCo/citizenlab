@@ -201,6 +201,9 @@ el:
       comments_count: 'Σχόλια'
       likes_count: 'Μου αρέσει'
       dislikes_count: 'Απεχθάνεται το'
+      picks: 'Επιλογές'
+      participants: 'Συμμετέχοντες'
+      votes_count: 'Ψήφοι'
       input_url: 'ΔΙΕΎΘΥΝΣΗ URL'
       project: 'Έργο'
       status: 'Κατάσταση'
@@ -246,3 +249,6 @@ el:
     formats:
       hour_of_day: "%H:%M"
     pm: pm
+  voting_method:
+    default_voting_term_singular: "ψήφος"
+    default_voting_term_plural: "ψήφοι"

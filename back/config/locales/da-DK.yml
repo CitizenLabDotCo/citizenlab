@@ -201,6 +201,9 @@ da:
       comments_count: 'Kommentarer'
       likes_count: 'Likes'
       dislikes_count: 'Dislikes'
+      picks: 'Udvalgt'
+      participants: 'Deltagere'
+      votes_count: 'Afstemninger'
       input_url: 'URL'
       project: '{tenantName, select, DeloitteDK {Verdensmål} other {Projekt}}'
       status: 'Status'
@@ -246,3 +249,6 @@ da:
     formats:
       hour_of_day: "%H:%M"
     pm: pm
+  voting_method:
+    default_voting_term_singular: "stem"
+    default_voting_term_plural: "afstemninger"

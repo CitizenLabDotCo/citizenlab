@@ -201,6 +201,9 @@ pt:
       comments_count: 'Comentários'
       likes_count: 'Curtidas'
       dislikes_count: 'Não curtidas'
+      picks: 'Escolhas'
+      participants: 'Participantes'
+      votes_count: 'Votos'
       input_url: 'URL'
       project: 'Projeto'
       status: 'Status'
@@ -246,3 +249,6 @@ pt:
     formats:
       hour_of_day: "%H:%M"
     pm: pm
+  voting_method:
+    default_voting_term_singular: "voto"
+    default_voting_term_plural: "votos"
