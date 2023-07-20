@@ -261,14 +261,17 @@ const IdeaMapCard = memo<Props>(
             </Box>
           )}
           <Footer>
-            {isParticipatoryBudgetContext && tenantCurrency && ideaBudget && (
-              <FooterItem>
-                <MoneybagIcon name="coin-stack" />
-                <FooterValue>
-                  <FormattedBudget value={ideaBudget} />
-                </FooterValue>
-              </FooterItem>
-            )}
+            {isParticipatoryBudgetContext &&
+              tenantCurrency &&
+              ideaBudget &&
+              !showVoteInput && (
+                <FooterItem>
+                  <MoneybagIcon name="coin-stack" />
+                  <FooterValue>
+                    <FormattedBudget value={ideaBudget} />
+                  </FooterValue>
+                </FooterItem>
+              )}
             {!isParticipatoryBudgetContext && !isVotingContext && (
               <>
                 <FooterItem>
