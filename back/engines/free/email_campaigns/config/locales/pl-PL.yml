@@ -419,7 +419,7 @@ pl:
       preheader: 'Administrator platformy partycypacyjnej %{organizationName} właśnie ustanowił Cię moderatorem poniższego projektu'
       subject: 'Zostałeś moderatorem na platformie %{organizationName}'
       text_design_participatory_process: 'Jako moderator projektu, możesz skonfigurować sposób interakcji użytkowników w ramach Twojego projektu. Możesz dodawać nowe etapy za pomocą osi czasu. Każdy z tych etapów może mieć swoje własne zachowanie w odniesieniu do zamieszczania pomysłów, komentowania i głosowania.'
-      text_moderate_analyse_input: 'Po uruchomieniu projektu pojawią się pierwsze pomysły. Będziesz otrzymywać cotygodniowe raporty ze wszystkimi kluczowymi działaniami, aby być na bieżąco. Przegląd pomysłów w widoku menedżera projektu pomoże Ci zrozumieć, które pomysły uzyskały najwięcej polubień.'
+      text_moderate_analyse_input: 'Gdy projekt zostanie uruchomiony, pojawią się pierwsze pomysły. Będziesz otrzymywał cotygodniowe raporty nt. wszystkich kluczowych działań, abyś był na bieżąco. Przegląd pomysłów w widoku moderatora projektu pomoże Ci zrozumieć, które z nich otrzymały najwięcej głosów pro i kontra.'
       text_share_project_information: 'Aby podnieść jakość otrzymywanych pomysłów, kluczowe jest dzielenie się odpowiednimi informacjami: dodanie opisu projektu, dołączenie zdjęć (w tym szkiców i planów) oraz informowanie o wszystkich wydarzeniach z tym związanych. Pamiętaj: im lepsza informacja tym większe uczestnictwo obywateli!'
       title_design_participatory_process: 'Projektowanie procesu partycypacyjnego'
       title_moderate_analyse_input: 'Moderuj i analizuj dane'
