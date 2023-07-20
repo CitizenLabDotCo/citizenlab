@@ -419,7 +419,7 @@ sv:
       preheader: 'En administratör för plattformen för deltagande för %{organizationName} har precis gjort dig till projektledare för följande projekt'
       subject: 'Du blev projektledare på plattformen för %{organizationName}'
       text_design_participatory_process: 'Som projektledare kan du konfigurera hur användare interagerar inom ditt projekt. Du kan lägga till nya faser med tidslinjen. Var och en av de här faserna kan ha sitt eget beteende när det gäller att publicera idéer, kommentera och rösta.'
-      text_moderate_analyse_input: 'När projektet har lanserats kommer de första idéerna att komma in. Du kommer att få veckorapporter med alla viktiga aktiviteter så att du kan hålla koll på läget. Idéöversikten i projektledarvyn hjälper dig att förstå vilka idéer som har fått flest gillanden och ogillanden.'
+      text_moderate_analyse_input: 'När projektet har lanserats kommer de första idéerna in. Du kommer att få veckorapporter med alla nyckelaktiviteter så att du håller koll på saker. Idéöversikten i projektledarvyn hjälper dig förstå vilka idéer som har fått flest upp- och nerröster.'
       text_share_project_information: 'För att höja kvaliteten på de idéer du får är det viktigt att dela tillräcklig information: lägg till en projektbeskrivning, bifoga bilder (inkl. skisser och planer) och kommunicera alla relaterade evenemang som pågår. Kom ihåg: bra information är viktigt för bra deltagande!'
       title_design_participatory_process: 'Designa deltagandeprocessen'
       title_moderate_analyse_input: 'Moderera och analysera indata'
