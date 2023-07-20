@@ -17,7 +17,7 @@ class InitiativePolicy < ApplicationPolicy
       else
         not_draft.left_outer_joins(:initiative_initiative_status)
           .where.not(initiative_initiative_statuses: {
-            initiative_status_id: InitiativeStatus.where(code: %w[approval_pending approval_rejected]).select(:id)
+            initiative_status_id: InitiativeStatus.where(code: InitiativeStatus::NOT_PUBLICLY_VISIBLE_CODES).select(:id)
           })
           .or(not_draft.where(author: user))
       end
