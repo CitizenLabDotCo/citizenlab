@@ -13,7 +13,7 @@ class ParticipantsService
     { item_type: 'Volunteering::Volunteer', action: 'created', score: 3 }
   ]
 
-  PARTICIPANT_ACTIONS = %i[posting commenting idea_reacting comment_reacting budgeting polling volunteering]
+  PARTICIPANT_ACTIONS = %i[posting commenting idea_reacting comment_reacting voting polling volunteering]
 
   def participants(options = {})
     since = options[:since]
@@ -141,8 +141,8 @@ class ParticipantsService
     actions = options[:actions] || PARTICIPANT_ACTIONS
     ideas = Idea.where(project: projects)
     participants = ideas_participants(ideas, options)
-    # Budgeting
-    if actions.include? :budgeting
+    # voting
+    if actions.include? :voting
       baskets = Basket.submitted
       baskets = baskets.where(participation_context: projects)
         .or(baskets.where(participation_context: Phase.where(project: projects)))

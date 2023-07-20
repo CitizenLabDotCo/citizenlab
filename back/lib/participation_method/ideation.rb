@@ -2,6 +2,10 @@
 
 module ParticipationMethod
   class Ideation < Base
+    def assign_defaults_for_participation_context
+      participation_context.ideas_order ||= 'trending'
+    end
+
     # This method is invoked after creation of the input,
     # so store the new slug.
     def assign_slug(input)
@@ -269,6 +273,32 @@ module ParticipationMethod
       true
     end
 
+    def author_in_form?(user)
+      AppConfiguration.instance.feature_activated?('idea_author_change') \
+      && !!user \
+      && UserRoleService.new.can_moderate_project?(participation_context.project, user)
+    end
+
+    def budget_in_form?(user)
+      return false if participation_context.project.continuous?
+
+      participation_context.project.phases.any? do |phase|
+        phase.voting? && Factory.instance.voting_method_for(phase).budget_in_form?(user)
+      end
+    end
+
+    def allowed_ideas_orders
+      %w[trending random popular -new new]
+    end
+
+    def posting_allowed?
+      true
+    end
+
+    def supports_exports?
+      true
+    end
+
     def supports_publication?
       true
     end
@@ -281,14 +311,6 @@ module ParticipationMethod
       true
     end
 
-    def supports_baskets?
-      true
-    end
-
-    def supports_budget?
-      true
-    end
-
     def supports_status?
       true
     end
@@ -298,10 +320,6 @@ module ParticipationMethod
     end
 
     def sign_in_required_for_posting?
-      true
-    end
-
-    def include_author_budget_in_schema?
       true
     end
 

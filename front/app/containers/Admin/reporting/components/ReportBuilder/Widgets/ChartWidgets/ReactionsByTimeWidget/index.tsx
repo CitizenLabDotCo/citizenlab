@@ -47,7 +47,7 @@ ReactionsByTimeWidget.craft = {
     settings: ChartWidgetSettings,
   },
   custom: {
-    title: messages.votes,
+    title: messages.reactions,
     noPointerEvents: true,
   },
 };

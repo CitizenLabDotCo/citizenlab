@@ -80,7 +80,7 @@ export default defineMessages({
   subtitleTimeline: {
     id: 'app.containers.AdminPage.ProjectTimeline.subtitleTimeline',
     defaultMessage:
-      'Define the different timeline phases for your project and describe what each phase is about. In every phase you can pick a different participation method: idea gathering, surveys, information, voting, commenting or participatory budgeting.',
+      'Define the different timeline phases for your project and describe what each phase is about. In every phase you can pick a different participation method: idea gathering, surveys, information, reacting, commenting or participatory budgeting.',
   },
   deletePhaseConfirmationQuestion: {
     id: 'app.containers.AdminPage.ProjectTimeline.deletePhaseConfirmationQuestion',

@@ -59,3 +59,6 @@ fr:
           title: Quel est votre problème ?
         option:
           title: Quelle est votre option ?
+  voting_method:
+    default_voting_term_singular: vote
+    default_voting_term_plural: votes

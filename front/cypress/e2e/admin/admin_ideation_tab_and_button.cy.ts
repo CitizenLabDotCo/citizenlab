@@ -45,14 +45,16 @@ describe('Idea button and tab behaviour in timeline project with multiple ideati
           'Budgeting phase 1',
           '2025-01-02',
           '2025-01-25',
-          'budgeting',
+          'voting',
           true,
           true,
           true,
           'description',
           undefined,
           undefined,
-          400
+          400,
+          undefined,
+          'budgeting'
         );
       });
   });
@@ -324,8 +326,9 @@ describe('Idea button and tab behaviour in continuous project with budgeting pha
           description: randomString(),
           publicationStatus: 'published',
           assigneeId: user.body.data.id,
-          participationMethod: 'budgeting',
-          maxBudget: 400,
+          participationMethod: 'voting',
+          votingMethod: 'budgeting',
+          votingMaxTotal: 400,
         });
       })
       .then((project) => {

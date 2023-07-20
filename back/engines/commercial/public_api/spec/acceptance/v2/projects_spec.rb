@@ -44,6 +44,15 @@ resource 'Projects' do
       enum: AdminPublication::PUBLICATION_STATUSES
     )
 
+    parameter(
+      :topic_ids,
+      'List only the projects that have all the specified topics.',
+      required: false,
+      in: 'query',
+      type: 'array',
+      items: { type: 'string' }
+    )
+
     context 'when the page size is smaller than the total number of projects' do
       let(:page_size) { 2 }
 
@@ -102,6 +111,27 @@ resource 'Projects' do
           parameter_value: publication_status,
           allowed_values: AdminPublication::PUBLICATION_STATUSES
         )
+      end
+    end
+
+    context "when filtering by 'topic_ids'" do
+      let(:topics) { create_list(:topic, 2) }
+      let(:topic_ids) { topics.pluck(:id) }
+
+      let!(:project) do
+        create(:project).tap { |project| project.topics << topics }
+      end
+
+      before do
+        # This project should not be returned because it only has one of the requested
+        # topics.
+        create(:project).tap { |project| project.topics << topics.first }
+      end
+
+      example_request 'List only the projects that have all the specified topics' do
+        assert_status 200
+        expect(json_response_body[:projects].pluck(:id))
+          .to match_array [project.id]
       end
     end
 

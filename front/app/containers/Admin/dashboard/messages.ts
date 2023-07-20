@@ -52,13 +52,13 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.inputs',
     defaultMessage: 'Inputs',
   },
-  votes: {
-    id: 'app.containers.AdminPage.DashboardPage.votes',
-    defaultMessage: 'Votes',
+  reactions: {
+    id: 'app.containers.AdminPage.DashboardPage.reactions',
+    defaultMessage: 'Reactions',
   },
-  fiveInputsWithMostVotes: {
-    id: 'app.containers.AdminPage.DashboardPage.fiveInputsWithMostVotes',
-    defaultMessage: 'Top 5 inputs by votes',
+  fiveInputsWithMostReactions: {
+    id: 'app.containers.AdminPage.DashboardPage.fiveInputsWithMostReactions',
+    defaultMessage: 'Top 5 inputs by reactions',
   },
   comments: {
     id: 'app.containers.AdminPage.DashboardPage.comments',
@@ -107,9 +107,9 @@ export default defineMessages({
     defaultMessage: 'Active users',
   },
   numberOfActiveParticipantsDescription: {
-    id: 'app.containers.AdminPage.DashboardPage.numberOfActiveParticipantsDescription',
+    id: 'app.containers.AdminPage.DashboardPage.numberOfActiveParticipantsDescription2',
     defaultMessage:
-      'The number of participants that posted inputs, voted or commented.',
+      'The number of participants that posted inputs, reacted or commented.',
   },
   inputsByStatusTitle: {
     id: 'app.containers.AdminPage.DashboardPage.inputsByStatusTitle',
@@ -119,17 +119,17 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.commentsByTimeTitle',
     defaultMessage: 'Comments',
   },
-  numberOfVotesUp: {
-    id: 'app.containers.AdminPage.DashboardPage.numberOfVotesUp',
-    defaultMessage: 'Upvotes',
+  numberOfLikes: {
+    id: 'app.containers.AdminPage.DashboardPage.numberOfLikes',
+    defaultMessage: 'Likes',
   },
-  numberOfVotesDown: {
-    id: 'app.containers.AdminPage.DashboardPage.numberOfVotesDown',
-    defaultMessage: 'Downvotes',
+  numberOfDislikes: {
+    id: 'app.containers.AdminPage.DashboardPage.numberOfDislikes',
+    defaultMessage: 'Dislikes',
   },
-  numberOfVotesTotal: {
-    id: 'app.containers.AdminPage.DashboardPage.numberOfVotesTotal',
-    defaultMessage: 'Total votes',
+  numberOfReactionsTotal: {
+    id: 'app.containers.AdminPage.DashboardPage.numberOfReactionsTotal',
+    defaultMessage: 'Total reactions',
   },
   cumulatedTotal: {
     id: 'app.containers.AdminPage.DashboardPage.cumulatedTotal',
@@ -213,9 +213,9 @@ export default defineMessages({
     defaultMessage: 'Other',
   },
   mostActiveUsersRankingDescription: {
-    id: 'app.containers.AdminPage.DashboardPage.mostActiveUsersRankingDescription',
+    id: 'app.containers.AdminPage.DashboardPage.mostActiveUsersRankingDescription2',
     defaultMessage:
-      'The ranking is based on the number of inputs (5 points per input), comments (3 points per comment) and votes (1 point per vote) submitted by each participant.',
+      'The ranking is based on the number of inputs (5 points per input), comments (3 points per comment) and reactions (1 point per reaction) submitted by each participant.',
   },
   subtitleDashboard: {
     id: 'app.containers.AdminPage.DashboardPage.subtitleDashboard',
