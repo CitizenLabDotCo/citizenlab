@@ -18,7 +18,6 @@ import IdeaMapCard from './IdeaMapCard';
 import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
 
 // hooks
-import useAuthUser from 'api/me/useAuthUser';
 import useProjectById from 'api/projects/useProjectById';
 import usePhase from 'api/phases/usePhase';
 import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
