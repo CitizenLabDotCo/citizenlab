@@ -27,6 +27,10 @@ class InitiativeStatusPolicy < ApplicationPolicy
       else
         codes = InitiativeStatus::NOT_APPROVAL_CODES
         InitiativeStatus::APPROVAL_CODES.each do |code|
+          # We want to show only statuses used by the current user's initiatives on the initiatives page
+          # http://localhost:3000/en/initiatives
+          # If this user doesn't use these statuses, we hide them, as other users' initiatives with this status
+          # are hidden for this user anyway.
           codes += [code] if initiatives.with_status_code(code).any?
         end
         scope.where(code: codes)
