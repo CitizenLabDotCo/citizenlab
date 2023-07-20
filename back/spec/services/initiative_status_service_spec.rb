@@ -75,8 +75,8 @@ describe InitiativeStatusService do
       expect(service.transition_type(status_ineligible)).to eq 'manual'
     end
 
-    it 'labels the approval_pending status as automatic' do
-      expect(service.transition_type(status_approval_pending)).to eq 'automatic'
+    it 'labels the approval_pending status as manual' do
+      expect(service.transition_type(status_approval_pending)).to eq 'manual'
     end
 
     it 'labels the approval_rejected status as manual' do
