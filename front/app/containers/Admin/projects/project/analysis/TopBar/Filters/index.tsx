@@ -1,5 +1,10 @@
 import React from 'react';
-import { Box, colors, Text } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  colors,
+  stylingConsts,
+  Text,
+} from '@citizenlab/cl2-component-library';
 import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import EngagementFilter from './EngagementFilter';
@@ -12,13 +17,13 @@ const Filters = () => {
   return (
     <Box
       position="absolute"
-      bottom="-320px"
+      top={`${stylingConsts.menuHeight}px`}
       left="0"
       bg={colors.white}
       w="100%"
-      h="320px"
+      p="24px"
     >
-      <Box display="flex" gap="32px" px="24px">
+      <Box display="flex" gap="32px">
         <Box w="33%">
           <Text fontWeight="bold">{formatMessage(messages.author)}</Text>
           <AuthorFilters />
