@@ -10,6 +10,14 @@ class InitiativeStatusService
         feedback_required: true
       }
     },
+    'approval_rejected' => {
+      'approval_pending' => {
+        feedback_required: true
+      },
+      'proposed' => {
+        feedback_required: true
+      }
+    },
     'proposed' => {
       'answered' => {
         feedback_required: true
