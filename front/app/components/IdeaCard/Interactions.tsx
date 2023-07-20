@@ -3,6 +3,9 @@ import React from 'react';
 // config
 import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
 
+// utils
+import { isCurrentPhase } from 'api/phases/utils';
+
 // types
 import { IIdea } from 'api/ideas/types';
 import { IProjectData } from 'api/projects/types';
@@ -18,6 +21,13 @@ const Interactions = ({ participationContext, idea }: InteractionsProps) => {
   const config = getVotingMethodConfig(votingMethod);
 
   if (!config || !participationContext) return null;
+
+  if (
+    participationContext.type === 'phase' &&
+    !isCurrentPhase(participationContext)
+  ) {
+    return null;
+  }
 
   return (
     <>
