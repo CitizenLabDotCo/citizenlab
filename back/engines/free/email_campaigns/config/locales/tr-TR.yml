@@ -419,7 +419,7 @@ tr:
       preheader: '%{organizationName} katılım platformundaki bir yönetici sizi aşağıdaki projenin proje yöneticisi yaptı'
       subject: '%{organizationName} platformunda proje yöneticisi oldunuz'
       text_design_participatory_process: 'Proje yöneticisi olarak insanların projenizle etkileşim kurma biçimini yapılandırabilirsiniz. Zaman çizelgesini kullanarak yeni aşamalar ekleyebilirsiniz. Bu aşamaların her biri fikir yayınlama, yorum yapma ve oylama ile ilgili farklı davranışlar gösterebilir.'
-      text_moderate_analyse_input: 'Proje başlatıldıktan sonra ilk fikirler gelecektir. Her şeyden haberdar olmanız için tüm önemli faaliyetleri içeren haftalık raporlar alacaksınız. Proje yöneticisi görünümünüzdeki fikirlere genel bakış, hangi fikirlerin en çok beğenildiğini ve beğenilmediğini anlamanıza yardımcı olacaktır.'
+      text_moderate_analyse_input: 'Proje başlatıldıktan sonra fikirler ulaşmaya başlar. Her şeyden haberdar olmanız için tüm önemli faaliyetleri içeren haftalık raporlar alırsınız. Proje yöneticisi görünümünde bulabileceğiniz fikirlere genel bakış, en çok hangi fikirlerin olumlu veya olumsuz oy aldığını anlamanıza yardımcı olacaktır.'
       text_share_project_information: 'Aldığınız fikirlerin kalitesini yükseltmek için yeterli bilgi paylaşımı çok önemlidir: proje açıklaması ekleme, görseller (çizimler ve planlar dahil) ekleme ve tüm ilgili etkinlikleri bildirme. Unutmayın; iyi bilgilendirme katılımın iyi olmasını sağlar!'
       title_design_participatory_process: 'Katılımcı süreci tasarlama'
       title_moderate_analyse_input: 'Girdileri yönetme ve analiz etme'
