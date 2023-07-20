@@ -15,6 +15,7 @@
 #
 class InitiativeStatus < ApplicationRecord
   CODES = %w[approval_pending approval_rejected proposed expired threshold_reached answered ineligible custom]
+  NOT_PUBLICLY_VISIBLE_CODES = %w[approval_pending approval_rejected].freeze
 
   has_many :initiative_status_changes, dependent: :nullify
   has_many :initiative_initiative_statuses
