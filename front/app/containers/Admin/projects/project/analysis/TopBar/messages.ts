@@ -41,4 +41,20 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.project.analysis.TopBar.gender',
     defaultMessage: 'Gender',
   },
+  domicile: {
+    id: 'app.containers.AdminPage.projects.project.analysis.TopBar.domicile',
+    defaultMessage: 'Domicile',
+  },
+  birthyear: {
+    id: 'app.containers.AdminPage.projects.project.analysis.TopBar.birthyear',
+    defaultMessage: 'Birthyear',
+  },
+  from: {
+    id: 'app.containers.AdminPage.projects.project.analysis.TopBar.from',
+    defaultMessage: 'From',
+  },
+  to: {
+    id: 'app.containers.AdminPage.projects.project.analysis.TopBar.to',
+    defaultMessage: 'To',
+  },
 });
