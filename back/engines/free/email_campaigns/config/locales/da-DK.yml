@@ -419,7 +419,7 @@ da:
       preheader: 'En administrator af %{organizationName}s deltagelsesplatform har lige gjort dig til projektleder for følgende projekt'
       subject: 'Du blev projektleder på platformen for %{organizationName}'
       text_design_participatory_process: 'Som projektmoderator har du mulighed for at konfigurere hvordan brugere interagerer med dit projekt. Du kan tilføje nye faser ved at bruge tidslinjen. Hver af disse faser kan have sin egen adfærd med hensyn til idéopslag, kommentering og afstemning.'
-      text_moderate_analyse_input: 'Når projektet er lanceret, vil de første idéer komme ind. Du vil modtage ugentlige rapporter med alle vigtige aktiviteter, så du kan bevare overblikket. Idéoversigten i din projektlederoversigt vil hjælpe dig med at forstå hvilke idéer der får flest ja- og nej-stemmer.'
+      text_moderate_analyse_input: 'Når projektet er lanceret, vil dine første idéer komme ind. Du vil modtage ugentlige rapporter med alle vigtige aktiviteter, så du kan bevare overblikket over tingene. Idéoversigten i din projektlederoversigt vil hjælpe dig med at forstå hvilke idéer der får flest ja- og nej-stemmer.'
       text_share_project_information: 'For at øge kvaliteten af de idéer du modtager, er det vigtigt at dele tilstrækkeligt med information: tilføj en projektbeskrivelse, vedhæft billeder (inkl. skitser og planer) og fortæl om alle relaterede begivenheder der foregår. Husk: god information kommer forud for god deltagelse!'
       title_design_participatory_process: 'Design deltagelsesprocessen'
       title_moderate_analyse_input: 'Moderér og analyser input'
