@@ -4,9 +4,17 @@ import moment, { Moment } from 'moment';
 import { isEmpty } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
 
-// Services
+// Api
 import { IPhaseFiles } from 'api/phase_files/types';
 import eventEmitter from 'utils/eventEmitter';
+import useAddPhaseFile from 'api/phase_files/useAddPhaseFile';
+import useDeletePhaseFile from 'api/phase_files/useDeletePhaseFile';
+import usePhaseFiles from 'api/phase_files/usePhaseFiles';
+import usePhases from 'api/phases/usePhases';
+import usePhase from 'api/phases/usePhase';
+import useAddPhase from 'api/phases/useAddPhase';
+import useUpdatePhase from 'api/phases/useUpdatePhase';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // Components
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
@@ -32,20 +40,14 @@ import messages from './messages';
 
 // Typings
 import { CLErrors, UploadFile, Multiloc } from 'typings';
+import { IPhase, IPhaseData, IUpdatedPhaseProperties } from 'api/phases/types';
 
 // Resources
 import { FileType } from 'components/UI/FileUploader/FileDisplay';
 import { useParams } from 'react-router-dom';
-import usePhases from 'api/phases/usePhases';
-import usePhase from 'api/phases/usePhase';
-import useAddPhase from 'api/phases/useAddPhase';
-import useUpdatePhase from 'api/phases/useUpdatePhase';
-import { IPhase, IPhaseData, IUpdatedPhaseProperties } from 'api/phases/types';
 
+// utils
 import { isNilOrError } from 'utils/helperUtils';
-import useAddPhaseFile from 'api/phase_files/useAddPhaseFile';
-import useDeletePhaseFile from 'api/phase_files/useDeletePhaseFile';
-import usePhaseFiles from 'api/phase_files/usePhaseFiles';
 import useCampaigns from 'api/campaigns/useCampaigns';
 import CampaignRow from './CampaignRow';
 import useLocalize from 'hooks/useLocalize';
@@ -75,6 +77,7 @@ const convertToFileType = (phaseFiles: IPhaseFiles | undefined) => {
 const CONFIGURABLE_CAMPAIGN_NAMES: CampaignName[] = ['project_phase_started'];
 
 const AdminProjectTimelineEdit = () => {
+  const { data: appConfig } = useAppConfiguration();
   const { mutateAsync: addPhaseFile } = useAddPhaseFile();
   const { mutateAsync: deletePhaseFile } = useDeletePhaseFile();
   const { projectId, id: phaseId } = useParams() as {
@@ -366,12 +369,24 @@ const AdminProjectTimelineEdit = () => {
           {/* TODO: After ParticipationContext refactor, it doesn't refetch phase service anymore
             This caused a bug where phase data was not being used after fetching. This is a temporary fix.
             ParticipationContext needs to be refactored to functional component. */}
-          <ParticipationContext
-            phase={phase}
-            onSubmit={handleParticipationContextOnSubmit}
-            onChange={handleParticipationContextOnChange}
-            apiErrors={errors}
-          />
+          {phase && (
+            <ParticipationContext
+              phase={phase}
+              onSubmit={handleParticipationContextOnSubmit}
+              onChange={handleParticipationContextOnChange}
+              apiErrors={errors}
+              appConfig={appConfig}
+            />
+          )}
+          {!phase && (
+            <ParticipationContext
+              phase={undefined}
+              onSubmit={handleParticipationContextOnSubmit}
+              onChange={handleParticipationContextOnChange}
+              apiErrors={errors}
+              appConfig={appConfig}
+            />
+          )}
           <SectionField>
             <SubSectionTitle>
               <FormattedMessage {...messages.datesLabel} />

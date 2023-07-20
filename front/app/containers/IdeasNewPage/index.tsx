@@ -16,7 +16,7 @@ import { colors } from 'utils/styleUtils';
 // hooks
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 import usePhases from 'api/phases/usePhases';
-import { getParticipationMethod } from 'utils/participationMethodUtils';
+import { getParticipationMethod } from 'utils/configs/participationMethodConfig';
 
 // utils
 import { isUnauthorizedRQ } from 'utils/errorUtils';

@@ -10,7 +10,7 @@ interface Props {
     | 'ideation'
     | 'information'
     | 'survey'
-    | 'budgeting'
+    | 'voting'
     | 'poll';
   assigneeId?: string;
   surveyUrl?: string;
