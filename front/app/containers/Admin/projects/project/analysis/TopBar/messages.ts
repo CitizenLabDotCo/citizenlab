@@ -37,4 +37,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.project.analysis.TopBar.numberOfReactions',
     defaultMessage: 'Number of reactions',
   },
+  gender: {
+    id: 'app.containers.AdminPage.projects.project.analysis.TopBar.gender',
+    defaultMessage: 'Gender',
+  },
 });

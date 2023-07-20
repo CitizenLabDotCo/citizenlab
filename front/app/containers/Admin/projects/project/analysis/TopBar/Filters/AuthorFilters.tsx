@@ -6,9 +6,12 @@ import useLocalize from 'hooks/useLocalize';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { useSearchParams } from 'react-router-dom';
+import { useIntl } from 'utils/cl-intl';
+import messages from '../messages';
 
 const AuthorFilters = () => {
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
   const [searchParams] = useSearchParams();
   const { data: customFields } = useUserCustomFields();
 
@@ -51,7 +54,7 @@ const AuthorFilters = () => {
       {genderOptions && (
         <Select
           id="gender"
-          label="Gender"
+          label={formatMessage(messages.gender)}
           options={genderOptions.data.map((option) => ({
             label: localize(option.attributes.title_multiloc),
             value: option.attributes.key,
@@ -65,7 +68,7 @@ const AuthorFilters = () => {
       {domicileOptions && (
         <MultipleSelect
           inputId="domicile"
-          label="Domicile"
+          label={messages.domicile}
           options={domicileOptions.data.map((option) => ({
             label: localize(option.attributes.title_multiloc),
             value: option.attributes.key,
@@ -82,12 +85,12 @@ const AuthorFilters = () => {
       )}
       {birthyearField && (
         <Box>
-          <Label>Birthyear</Label>
+          <Label>{formatMessage(messages.birthyear)}</Label>
           <Box display="flex" gap="24px" w="100%">
             <Box w="50%">
               <Select
                 id="birthyear_from"
-                label="From"
+                label={formatMessage(messages.from)}
                 options={yearOptions}
                 onChange={(option) =>
                   updateSearchParams({
@@ -100,7 +103,7 @@ const AuthorFilters = () => {
             <Box w="50%">
               <Select
                 id="birthyear_to"
-                label="To"
+                label={formatMessage(messages.to)}
                 options={yearOptions}
                 onChange={(option) =>
                   updateSearchParams({
