@@ -8,6 +8,7 @@ import {
 } from 'services/participationContexts';
 import { Keys } from 'utils/cl-react-query/types';
 import phasesKeys from './keys';
+import { CampaignName } from 'api/campaigns/types';
 
 export type PhasesKeys = Keys<typeof phasesKeys>;
 
@@ -33,6 +34,7 @@ export interface IPhaseData {
 export interface IPhaseAttributes extends ParticipationContext {
   start_at: string;
   end_at: string;
+  campaigns_settings: { [key in CampaignName]?: boolean };
 }
 
 export interface IPhases {
@@ -67,6 +69,7 @@ export interface IUpdatedPhaseProperties {
   poll_anonymous?: boolean;
   ideas_order?: IdeaDefaultSortMethod;
   document_annotation_embed_url?: string | null;
+  campaigns_settings?: object;
 }
 export interface AddPhaseObject extends IUpdatedPhaseProperties {
   projectId: string;

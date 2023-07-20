@@ -131,3 +131,20 @@ export const isIdeaInParticipationContext = (
     (phase) => participationContext.id === phase.id
   );
 };
+
+const pastOrPresent = new Set(['past', 'present']);
+const presentOrFuture = new Set(['present', 'future']);
+
+export const isCurrentPhase = (phase: IPhaseData) => {
+  const phaseStartPeriod = pastPresentOrFuture(phase.attributes.start_at);
+  const phaseEndPeriod = pastPresentOrFuture(phase.attributes.end_at);
+
+  if (
+    pastOrPresent.has(phaseStartPeriod) &&
+    presentOrFuture.has(phaseEndPeriod)
+  ) {
+    return true;
+  }
+
+  return false;
+};
