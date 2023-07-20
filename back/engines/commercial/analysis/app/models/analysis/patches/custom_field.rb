@@ -6,5 +6,4 @@ module Analysis::Patches::CustomField
       has_many :analyses_custom_fields, class_name: 'Analysis::AnalysesCustomField', dependent: :destroy
     end
   end
-
 end

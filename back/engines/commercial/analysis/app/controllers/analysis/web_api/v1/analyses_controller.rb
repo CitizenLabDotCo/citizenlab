@@ -12,6 +12,12 @@ module Analysis
           @analyses = paginate(@analyses)
           @analyses = @analyses.includes(:custom_fields)
 
+          if params[:project_id]
+            @analyses = @analyses.where(project_id: params[:project_id])
+          elsif params[:phase_id]
+            @analyses = @analyses.where(phase_id: params[:phase_id])
+          end
+
           render json: linked_json(
             @analyses,
             WebApi::V1::AnalysisSerializer,
@@ -21,7 +27,11 @@ module Analysis
         end
 
         def show
-          render json: WebApi::V1::AnalysisSerializer.new(@analysis, params: jsonapi_serializer_params).serializable_hash
+          render json: WebApi::V1::AnalysisSerializer.new(
+            @analysis,
+            params: jsonapi_serializer_params,
+            include: [:custom_fields]
+          ).serializable_hash
         end
 
         def create
@@ -32,7 +42,8 @@ module Analysis
             side_fx_service.after_create(@analysis, current_user)
             render json: WebApi::V1::AnalysisSerializer.new(
               @analysis,
-              params: jsonapi_serializer_params
+              params: jsonapi_serializer_params,
+              include: [:custom_fields]
             ).serializable_hash, status: :created
           else
             render json: { errors: @analysis.errors.details }, status: :unprocessable_entity

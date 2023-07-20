@@ -21,8 +21,8 @@ resource 'Analyses' do
     end
 
     before do
-      survey_analysis = create(:survey_analysis)
-      ideation_analysis = create(:ideation_analysis)
+      @survey_analysis = create(:survey_analysis)
+      @ideation_analysis = create(:ideation_analysis)
     end
 
     example_request 'List all analyses' do
@@ -30,14 +30,16 @@ resource 'Analyses' do
       expect(response_data.size).to eq 2
     end
 
-    example_request 'List ideation analyses', document: false do
+    example 'List analyses linked to project (ideation)', document: false do
+      do_request(project_id: @ideation_analysis.project_id)
       expect(response_data.size).to eq 1
-      expect(response_data[0][:id]).to eq ideation_analysis.id
+      expect(response_data[0][:id]).to eq @ideation_analysis.id
     end
 
-    example_request 'List survey analyses', document: false do
+    example 'List analyses linked to phase (survey)', document: false do
+      do_request(phase_id: @survey_analysis.phase_id)
       expect(response_data.size).to eq 1
-      expect(response_data[0][:id]).to eq survey_analysis.id
+      expect(response_data[0][:id]).to eq @survey_analysis.id
     end
   end
 
@@ -54,7 +56,7 @@ resource 'Analyses' do
         created_at: kind_of(String)
       })
       expect(response_data.dig(:relationships, :custom_fields, :data, 0, :id)).to eq analysis.custom_fields.first.id
-      expect(response_data.dig(:included, 0, :id)).to eq analysis.custom_fields.first.id
+      expect(json_response_body.dig(:included, 0, :id)).to eq analysis.custom_fields.first.id
     end
   end
 
@@ -67,7 +69,7 @@ resource 'Analyses' do
     ValidationErrorHelper.new.error_fields(self, Analysis::Analysis)
 
     describe do
-      let(:project) { build(:project_with_active_ideation_phase) }
+      let(:project) { create(:project_with_active_ideation_phase) }
       let(:project_id) { project.id }
 
       example_request 'Create an analysis (ideation phase)' do
