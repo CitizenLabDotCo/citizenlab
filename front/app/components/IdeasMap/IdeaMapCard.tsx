@@ -4,7 +4,6 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import CloseIconButton from 'components/UI/CloseIconButton';
 import { Icon, useWindowSize, Box } from '@citizenlab/cl2-component-library';
-import ReadMoreButton from 'components/IdeaCard/Footer/ReadMoreButton';
 
 // events
 import {
@@ -39,6 +38,9 @@ import {
   viewportWidths,
 } from 'utils/styleUtils';
 import { darken } from 'polished';
+
+// utils
+import { isCurrentPhase } from 'api/phases/utils';
 
 // typings
 import { IIdeaMarkerData } from 'api/idea_markers/types';
@@ -94,12 +96,12 @@ const Title = styled.h3<{ height: string }>`
 const Footer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
 `;
 
 const FooterItem = styled.div`
   display: flex;
   align-items: center;
+  margin-right: 20px;
 `;
 
 const MoneybagIcon = styled(Icon)`
@@ -220,7 +222,11 @@ const IdeaMapCard = memo<Props>(
       const projectHasComments = project.data.attributes.comments_count > 0;
       const showCommentCount = commentingEnabled || projectHasComments;
 
-      const showVoteInput = votingMethodConfig && participationContext;
+      const phaseButNotCurrentPhase =
+        participationContext?.type === 'phase' &&
+        !isCurrentPhase(participationContext);
+      const showVoteInput =
+        votingMethodConfig && participationContext && !phaseButNotCurrentPhase;
 
       return (
         <Container
@@ -281,9 +287,6 @@ const IdeaMapCard = memo<Props>(
                 )}
               </>
             )}
-            <FooterItem>
-              <ReadMoreButton slug={ideaMarker.attributes.slug} />
-            </FooterItem>
             {showCommentCount && (
               <FooterItem>
                 <CommentIcon name="comments" />
