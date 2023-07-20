@@ -102,11 +102,16 @@ describe('Idea budgeting permissions test with verified users', () => {
     cy.wait(1000);
     cy.get('#e2e-ideas-container')
       .find('.e2e-assign-budget-button')
+      .first()
       .should('have.class', 'not-in-basket');
-    cy.get('#e2e-ideas-container').find('.e2e-assign-budget-button').click();
+    cy.get('#e2e-ideas-container')
+      .find('.e2e-assign-budget-button')
+      .first()
+      .click();
     cy.wait(2000);
     cy.get('#e2e-ideas-container')
       .find('.e2e-assign-budget-button')
+      .first()
       .should('have.class', 'in-basket');
   });
 
