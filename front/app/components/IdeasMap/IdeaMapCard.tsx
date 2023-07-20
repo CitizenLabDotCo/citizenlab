@@ -211,15 +211,18 @@ const IdeaMapCard = memo<Props>(
       const ideaBudget = ideaMarker.attributes?.budget;
       const reactingActionDescriptor =
         project.data.attributes.action_descriptor.reacting_idea;
+
       const showDislike =
         reactingActionDescriptor.down.enabled === true ||
         (reactingActionDescriptor.down.enabled === false &&
           reactingActionDescriptor.down.disabled_reason !==
             'disliking_disabled');
+
       const commentingEnabled =
         project.data.attributes.action_descriptor.commenting_idea.enabled;
 
       const projectHasComments = project.data.attributes.comments_count > 0;
+
       const showCommentCount = commentingEnabled || projectHasComments;
 
       const phaseButNotCurrentPhase =
@@ -272,24 +275,27 @@ const IdeaMapCard = memo<Props>(
                   </FooterValue>
                 </FooterItem>
               )}
-            {!isParticipatoryBudgetContext && !isVotingContext && (
-              <>
-                <FooterItem>
-                  <LikeIcon name="vote-up" />
-                  <FooterValue id="e2e-map-card-like-count">
-                    {ideaMarker.attributes.likes_count}
-                  </FooterValue>
-                </FooterItem>
-                {showDislike && (
+            {!isParticipatoryBudgetContext &&
+              !isVotingContext &&
+              reactingActionDescriptor.enabled && (
+                <>
                   <FooterItem>
-                    <DislikeIcon name="vote-down" />
-                    <FooterValue id="e2e-map-card-dislike-count">
-                      {ideaMarker.attributes.dislikes_count}
+                    <LikeIcon name="vote-up" />
+                    <FooterValue id="e2e-map-card-like-count">
+                      {ideaMarker.attributes.likes_count}
                     </FooterValue>
                   </FooterItem>
-                )}
-              </>
-            )}
+
+                  {showDislike && (
+                    <FooterItem>
+                      <DislikeIcon name="vote-down" />
+                      <FooterValue id="e2e-map-card-dislike-count">
+                        {ideaMarker.attributes.dislikes_count}
+                      </FooterValue>
+                    </FooterItem>
+                  )}
+                </>
+              )}
             {showCommentCount && (
               <FooterItem>
                 <CommentIcon name="comments" />
