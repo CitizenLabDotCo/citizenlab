@@ -95,7 +95,7 @@ const IdeasContainer = memo<InnerProps>(({ project, className }) => {
 
     return (
       <Container
-        id="e2e-continuos-project-idea-cards"
+        id="e2e-continuous-project-idea-cards"
         className={className || ''}
       >
         <StyledContentContainer id="project-ideas" maxWidth={maxPageWidth}>
