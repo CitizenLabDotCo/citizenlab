@@ -67,19 +67,13 @@ module Notifications
       service = ParticipationContextService.new
       phase = activity.item
 
-      if phase.project
-        user_scope = ParticipantsService.new.projects_participants(Project.where(id: phase.project_id))
-        ProjectPolicy::InverseScope.new(phase.project, user_scope).resolve.filter_map do |recipient|
-          next unless service.participation_possible_for_context? phase, recipient
+      participants = ParticipantsService.new.project_participants phase.project
+      followers = phase.project.followers
+      recipients = participants.or(User.where(id: User.joins(:follows).where(follows: followers)))
+      ProjectPolicy::InverseScope.new(phase.project, recipients).resolve.filter_map do |recipient|
+        next if !service.participation_possible_for_context? phase, recipient # TODO: Do we still want to filter this?
 
-          new(
-            recipient: recipient,
-            phase: phase,
-            project: phase.project
-          )
-        end
-      else
-        []
+        new(recipient: recipient, phase: phase, project: phase.project)
       end
     end
   end

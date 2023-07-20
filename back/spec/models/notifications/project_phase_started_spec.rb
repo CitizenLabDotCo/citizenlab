@@ -7,7 +7,8 @@ RSpec.describe Notifications::ProjectPhaseStarted do
     let(:project) { create(:project_with_current_phase) }
     let(:activity) { create(:activity, item: project.phases[2], action: 'started') }
 
-    it 'only notifies users who participated in project' do
+    it 'only notifies participants and followers of the project' do
+      follower = create(:follower, followable: project)
       participant = create(:user)
       _non_participant = create(:user)
 
@@ -15,7 +16,7 @@ RSpec.describe Notifications::ProjectPhaseStarted do
       create(:activity, item: idea, user_id: participant.id, action: 'published')
 
       notifications = described_class.make_notifications_on activity
-      expect(notifications.map(&:recipient_id)).to match_array [participant.id]
+      expect(notifications.map(&:recipient_id)).to contain_exactly follower.user_id, participant.id
     end
 
     it 'only notifies users who can participate in project' do
@@ -31,7 +32,10 @@ RSpec.describe Notifications::ProjectPhaseStarted do
       create(:activity, item: idea2, user_id: other_user.id, action: 'published')
 
       notifications = described_class.make_notifications_on(activity)
-      expect(notifications.map(&:recipient_id)).to match_array [group_member.id]
+      expect(notifications.map(&:recipient_id)).to contain_exactly group_member.id
     end
+
+    # TODO: spec does not include followers and participants who have no access to the project
+    # TDOD: spec does not include users who cannot participate
   end
 end
