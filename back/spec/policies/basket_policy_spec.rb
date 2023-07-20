@@ -5,7 +5,8 @@ require 'rails_helper'
 describe BasketPolicy do
   subject { described_class.new(user, basket) }
 
-  let(:basket) { create(:basket, participation_context: create(:continuous_budgeting_project)) }
+  let(:context) { create(:continuous_budgeting_project) }
+  let(:basket) { create(:basket, participation_context: context) }
 
   context 'for a visitor' do
     let(:user) { nil }
@@ -44,10 +45,10 @@ describe BasketPolicy do
   context 'for an admin' do
     let(:user) { create(:admin) }
 
-    it { is_expected.to permit(:show)    }
-    it { is_expected.to permit(:create)  }
-    it { is_expected.to permit(:update)  }
-    it { is_expected.to permit(:destroy) }
+    it { is_expected.not_to permit(:show)    }
+    it { is_expected.not_to permit(:create)  }
+    it { is_expected.not_to permit(:update)  }
+    it { is_expected.not_to permit(:destroy) }
   end
 
   context "for a user on a basket in a private groups project where she's not member of a manual group with access" do
@@ -75,16 +76,26 @@ describe BasketPolicy do
   context 'for a moderator of the project to which the basket belongs' do
     let(:user) { create(:project_moderator, projects: [basket.participation_context.project]) }
 
-    it { is_expected.to permit(:show)    }
-    it { is_expected.to permit(:create)  }
-    it { is_expected.to permit(:update)  }
-    it { is_expected.to permit(:destroy) }
+    it { is_expected.not_to permit(:show)    }
+    it { is_expected.not_to permit(:create)  }
+    it { is_expected.not_to permit(:update)  }
+    it { is_expected.not_to permit(:destroy) }
   end
 
   context 'for a moderator of another project' do
     let(:user) { create(:project_moderator, projects: [create(:project)]) }
 
     it { is_expected.not_to permit(:show)    }
+    it { is_expected.not_to permit(:create)  }
+    it { is_expected.not_to permit(:update)  }
+    it { is_expected.not_to permit(:destroy) }
+  end
+
+  context 'for a moderator after the voting phase finished' do
+    let(:user) { create(:admin) }
+    let(:context) { create(:budgeting_phase, end_at: Date.yesterday) }
+
+    it { is_expected.not_to permit(:show) }
     it { is_expected.not_to permit(:create)  }
     it { is_expected.not_to permit(:update)  }
     it { is_expected.not_to permit(:destroy) }

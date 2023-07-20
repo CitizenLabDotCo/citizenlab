@@ -36,7 +36,7 @@ export const StyledSectionField = styled(SectionField)`
 `;
 
 export const ParticipationContextWrapper = styled.div`
-  width: 497px;
+  width: 800px;
   position: relative;
   padding: 30px;
   padding-bottom: 15px;

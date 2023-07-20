@@ -101,6 +101,14 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
+            path: 'timeline/:id/ideas',
+            element: (
+              <PageLoading>
+                <AdminProjectIdeas />
+              </PageLoading>
+            ),
+          },
+          {
             path: 'timeline/:id',
             element: (
               <PageLoading>

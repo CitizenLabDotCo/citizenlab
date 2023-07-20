@@ -186,29 +186,29 @@ export default defineMessages({
     id: 'app.components.admin.UserFilterConditions.predicate_not_commented_in',
     defaultMessage: "didn't comment",
   },
-  predicate_voted_input_in: {
-    id: 'app.components.admin.UserFilterConditions.predicate_voted_input_in',
-    defaultMessage: 'voted on input',
+  predicate_reacted_input_in: {
+    id: 'app.components.admin.UserFilterConditions.predicate_reacted_input_in',
+    defaultMessage: 'reacted to input',
   },
-  predicate_not_voted_input_in: {
-    id: 'app.components.admin.UserFilterConditions.predicate_not_voted_input_in',
-    defaultMessage: "didn't vote on input",
+  predicate_not_reacted_input_in: {
+    id: 'app.components.admin.UserFilterConditions.predicate_not_reacted_input_in',
+    defaultMessage: "didn't react to input",
   },
-  predicate_voted_comment_in: {
-    id: 'app.components.admin.UserFilterConditions.predicate_voted_comment_in',
-    defaultMessage: 'voted on comment',
+  predicate_reacted_comment_in: {
+    id: 'app.components.admin.UserFilterConditions.predicate_reacted_comment_in',
+    defaultMessage: 'reacted to comment',
   },
-  predicate_not_voted_comment_in: {
-    id: 'app.components.admin.UserFilterConditions.predicate_not_voted_comment_in',
-    defaultMessage: "didn't vote on comment",
+  predicate_not_reacted_comment_in: {
+    id: 'app.components.admin.UserFilterConditions.predicate_not_reacted_comment_in',
+    defaultMessage: "didn't react to comment",
   },
-  predicate_budgeted_in: {
-    id: 'app.components.admin.UserFilterConditions.predicate_budgeted_in',
-    defaultMessage: 'spent budget',
+  predicate_voted_in: {
+    id: 'app.components.admin.UserFilterConditions.predicate_voted_in3',
+    defaultMessage: 'participated in voting',
   },
-  predicate_not_budgeted_in: {
-    id: 'app.components.admin.UserFilterConditions.predicate_not_budgeted_in',
-    defaultMessage: "didn't spend budget",
+  predicate_not_voted_in: {
+    id: 'app.components.admin.UserFilterConditions.predicate_not_voted_in3',
+    defaultMessage: "didn't participate in voting",
   },
   predicate_volunteered_in: {
     id: 'app.components.admin.UserFilterConditions.predicate_volunteered_in',

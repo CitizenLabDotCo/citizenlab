@@ -124,7 +124,6 @@ export interface IAppConfigurationSettings {
   project_reports?: AppConfigurationFeature;
   private_projects?: AppConfigurationFeature;
   maps?: AppConfigurationMapSettings;
-  participatory_budgeting?: AppConfigurationFeature;
   initiatives?: ProposalsSettings;
   fragments?: {
     allowed: boolean;
