@@ -419,7 +419,7 @@ pt:
       preheader: 'Um administrador da plataforma %{organizationName} acabou de fazer você gestor do seguinte projeto'
       subject: 'Você se tornou o gestor de projeto da plataforma de %{organizationName}'
       text_design_participatory_process: 'Como administrador do projeto, você pode configurar como os usuários interagem com o seu projeto. Você pode adicionar novas fases usando a linha do tempo. Cada uma destas fases pode ter o seu próprio comportamento com relação à publicação de idéias, comentários e votação.'
-      text_moderate_analyse_input: 'Assim que o projeto for lançado, surgirão as primeiras ideias. Receberá relatórios semanais com todas as actividades principais para que se mantenha a par de tudo. A visão geral das ideias na vista do gestor de projectos ajudá-lo-á a compreender quais as ideias que tiveram mais gostos e desgostos.'
+      text_moderate_analyse_input: 'Uma vez lançado o projeto, as primeiras ideias chegarão. Você receberá relatórios semanais com todas as atividades chave para que você fique a par das coisas. A visão geral das ideias irá ajudá-lo a compreender quais obtiveram mais votos favoráveis e desfavoráveis.'
       text_share_project_information: 'A fim de aumentar a qualidade das idéias que você está recebendo, é fundamental compartilhar informações: adicionar a descrição do projeto, anexar imagens (incluindo esboços e planos), e comunicar todos os eventos que estão acontecendo. Lembre-se: uma boa informação antecede uma boa participação!'
       title_design_participatory_process: 'Desenhar o processo participativo'
       title_moderate_analyse_input: 'Moderar e analisar os dados introduzidos'
