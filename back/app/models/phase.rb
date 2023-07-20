@@ -66,7 +66,6 @@ class Phase < ApplicationRecord
 
   before_validation :sanitize_description_multiloc
   before_validation :strip_title
-  before_validation :temporary_validation_fix
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify
 
@@ -123,17 +122,6 @@ class Phase < ApplicationRecord
     )
     self.description_multiloc = service.remove_multiloc_empty_trailing_tags(description_multiloc)
     self.description_multiloc = service.linkify_multiloc(description_multiloc)
-  end
-
-  # Temporary fix for new toggle of project_phase_started campaign at phase-level.
-  # I merged BE work for this feature too soon, and we need to wait for FE part (awaiting translations).
-  # This fix will be removed as soon as FE part is merged. [Simon T., 14/07/2021]
-  def temporary_validation_fix
-    return if campaigns_settings.present?
-
-    enabled = EmailCampaigns::Campaign.find_by(type: 'EmailCampaigns::Campaigns::ProjectPhaseStarted')&.enabled
-
-    self.campaigns_settings = { project_phase_started: enabled }
   end
 
   def validate_campaigns_settings_keys_and_values
