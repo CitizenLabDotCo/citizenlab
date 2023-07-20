@@ -28,11 +28,11 @@ module Analysis
     end
 
     def create?
-      active? && (admin? || can_moderate?(object.hosting_project))
+      active? && can_moderate?(object.hosting_project)
     end
 
     def show?
-      active? && (admin? || can_moderate?(object.hosting_project))
+      active? && can_moderate?(object.hosting_project)
     end
 
     def destroy?
