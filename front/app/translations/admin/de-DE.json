@@ -988,7 +988,7 @@
   "app.containers.AdminPage.DashboardPage.timelineType": "Zeitleiste",
   "app.containers.AdminPage.DashboardPage.titleDashboard": "Dashboard",
   "app.containers.AdminPage.DashboardPage.total": "Gesamt",
-  "app.containers.AdminPage.DashboardPage.totalForPeriod": "Aktuelle/r/s {period}",
+  "app.containers.AdminPage.DashboardPage.totalForPeriod": "Aktuelle/r {period}",
   "app.containers.AdminPage.DashboardPage.true": "wahr",
   "app.containers.AdminPage.DashboardPage.unspecified": "divers",
   "app.containers.AdminPage.DashboardPage.users": "Nutzer*innen",
