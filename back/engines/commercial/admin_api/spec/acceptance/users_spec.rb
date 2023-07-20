@@ -115,7 +115,10 @@ resource 'User', admin_api: true do
 
       example_request 'Create a user with a confirmed email' do
         expect(response_status).to eq 201
-        expect(User.find_by(email: email).email_confirmed_at).to be_present
+        user = User.find_by(email: email)
+
+        expect(user.email_confirmed_at).to be_present
+        expect(user.confirmation_required?).to be false
       end
     end
   end
