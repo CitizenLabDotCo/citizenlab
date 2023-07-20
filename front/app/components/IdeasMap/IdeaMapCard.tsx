@@ -3,7 +3,8 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import CloseIconButton from 'components/UI/CloseIconButton';
-import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
+import { Icon, useWindowSize, Box } from '@citizenlab/cl2-component-library';
+import ReadMoreButton from 'components/IdeaCard/Footer/ReadMoreButton';
 
 // events
 import {
@@ -26,6 +27,9 @@ import T from 'components/T';
 import FormattedBudget from 'utils/currency/FormattedBudget';
 import messages from './messages';
 
+// config
+import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
+
 // styling
 import styled from 'styled-components';
 import {
@@ -33,9 +37,7 @@ import {
   fontSizes,
   colors,
   viewportWidths,
-  media,
 } from 'utils/styleUtils';
-
 import { darken } from 'polished';
 
 // typings
@@ -70,9 +72,9 @@ const StyledCloseIconButton = styled(CloseIconButton)`
   }
 `;
 
-const Title = styled.h3`
-  height: 46px;
-  max-height: 46px;
+const Title = styled.h3<{ height: string }>`
+  height: ${({ height }) => height};
+  max-height: ${({ height }) => height};
   color: ${(props) => props.theme.colors.tenantText};
   font-size: 18px;
   font-weight: 600;
@@ -87,22 +89,17 @@ const Title = styled.h3`
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
-
-  /* ${media.tablet`
-    width: calc(100% - 22px);
-    margin-bottom: 25px;
-  `} */
 `;
 
 const Footer = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
 `;
 
 const FooterItem = styled.div`
   display: flex;
   align-items: center;
-  margin-right: 25px;
 `;
 
 const MoneybagIcon = styled(Icon)`
@@ -150,16 +147,16 @@ const IdeaMapCard = memo<Props>(
     const { windowWidth } = useWindowSize();
     const tablet = windowWidth <= viewportWidths.tablet;
 
-    const participationContext = phase || project;
+    const participationContext = phase?.data || project?.data;
 
     const [hovered, setHovered] = useState(false);
 
+    const votingMethodConfig = getVotingMethodConfig(
+      participationContext?.attributes.voting_method
+    );
+    const isVotingContext = !!votingMethodConfig;
     const isParticipatoryBudgetContext =
-      participationContext?.data.attributes.participation_method === 'voting' &&
-      participationContext?.data.attributes.voting_method === 'budgeting';
-
-    const isVotingContext =
-      participationContext?.data.attributes.participation_method === 'voting';
+      participationContext?.attributes.voting_method === 'budgeting';
 
     useEffect(() => {
       const subscriptions = [
@@ -223,6 +220,8 @@ const IdeaMapCard = memo<Props>(
       const projectHasComments = project.data.attributes.comments_count > 0;
       const showCommentCount = commentingEnabled || projectHasComments;
 
+      const showVoteInput = votingMethodConfig && participationContext;
+
       return (
         <Container
           className={`${className || ''} ${hovered ? 'hover' : ''}`}
@@ -244,9 +243,17 @@ const IdeaMapCard = memo<Props>(
               iconColorOnHover={darken(0.2, colors.textSecondary)}
             />
           )}
-          <Title>
+          <Title height={showVoteInput ? '28px' : '44px'}>
             <T value={ideaMarker.attributes.title_multiloc} />
           </Title>
+          {showVoteInput && (
+            <Box mb="20px">
+              {votingMethodConfig.getIdeaCardVoteInput({
+                ideaId: ideaMarker.id,
+                participationContext,
+              })}
+            </Box>
+          )}
           <Footer>
             {isParticipatoryBudgetContext && tenantCurrency && ideaBudget && (
               <FooterItem>
@@ -274,6 +281,9 @@ const IdeaMapCard = memo<Props>(
                 )}
               </>
             )}
+            <FooterItem>
+              <ReadMoreButton slug={ideaMarker.attributes.slug} />
+            </FooterItem>
             {showCommentCount && (
               <FooterItem>
                 <CommentIcon name="comments" />
