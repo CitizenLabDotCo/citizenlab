@@ -419,7 +419,7 @@ lv:
       preheader: '%{organizationName} līdzdalības platformas administrators tikko iecēla jūs par šā projekta vadītāju'
       subject: 'Jūs kļuvāt par projektu vadītāju %{organizationName} platformā.'
       text_design_participatory_process: 'Būdams projekta vadītājs, varat konfigurēt lietotāju mijiedarbību projektā. Jūs varat pievienot jaunus posmus, izmantojot laika grafiku. Katram no šiem posmiem var būt sava uzvedība attiecībā uz ideju publicēšanu, komentēšanu un balsošanu.'
-      text_moderate_analyse_input: 'Tiklīdz projekts tiks uzsākts, tiks saņemtas pirmās idejas. Jūs saņemsiet iknedēļas pārskatus ar visām galvenajām darbībām, lai jūs būtu lietas kursā. Ideju pārskats jūsu projekta vadītāja skatā palīdzēs jums saprast, kuras idejas ir saņēmušas visvairāk simpātiju un kuras ne.'
+      text_moderate_analyse_input: 'Tiklīdz projekts ir uzsākts, tiks saņemtas pirmās idejas. Jūs saņemsiet nedēļas pārskatus ar visām galvenajām darbībām, lai jūs būtu lietas kursā. Ideju pārskats projekta vadītāja skatā palīdzēs jums saprast, kuras idejas ir saņēmušas visvairāk pozitīvo un negatīvo balsu.'
       text_share_project_information: 'Lai uzlabotu iegūto ideju kvalitāti, ir svarīgi dalīties ar pietiekamu informāciju: pievienot projekta aprakstu, pievienot attēlus (tostarp skices un plānus) un informēt par visiem saistītajiem notikumiem. Atcerieties: laba informācija ir priekšnoteikums labai līdzdalībai!'
       title_design_participatory_process: 'Izstrādāt līdzdalības procesu'
       title_moderate_analyse_input: 'Moderēt un analizēt ievadītos datus'
