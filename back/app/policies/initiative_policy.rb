@@ -10,7 +10,17 @@ class InitiativePolicy < ApplicationPolicy
     end
 
     def resolve
-      scope.where(publication_status: %w[published closed])
+      not_draft = scope.where(publication_status: %w[published closed])
+
+      if user&.admin?
+        not_draft
+      else
+        not_draft.left_outer_joins(:initiative_initiative_status)
+          .where.not(initiative_initiative_statuses: {
+            initiative_status_id: InitiativeStatus.where(code: %w[approval_pending approval_rejected]).select(:id)
+          })
+          .or(not_draft.where(author: user))
+      end
     end
   end
 
