@@ -201,7 +201,6 @@ pl:
       comments_count: 'Komentarze'
       likes_count: 'Lubi'
       dislikes_count: 'Nie lubi'
-      baskets_count: 'Koszyki'
       input_url: 'URL'
       project: 'Projekt'
       status: 'Status'

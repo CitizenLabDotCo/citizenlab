@@ -201,7 +201,6 @@ ca:
       comments_count: 'Comentaris'
       likes_count: 'M''agrada'
       dislikes_count: 'No li agrada'
-      baskets_count: 'Cistelles'
       input_url: 'URL'
       project: 'Projecte'
       status: 'Estat'

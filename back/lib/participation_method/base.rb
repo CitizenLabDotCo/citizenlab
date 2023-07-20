@@ -41,7 +41,23 @@ module ParticipationMethod
       false
     end
 
+    def author_in_form?(_user)
+      false
+    end
+
+    def budget_in_form?(_user)
+      false
+    end
+
+    def allowed_ideas_orders
+      []
+    end
+
     def never_show?
+      false
+    end
+
+    def posting_allowed?
       false
     end
 
@@ -49,8 +65,12 @@ module ParticipationMethod
       false
     end
 
-    def form_in_phase?
+    def creation_phase?
       false
+    end
+
+    def custom_form
+      participation_context.project.custom_form || CustomForm.new(participation_context: participation_context.project)
     end
 
     def edit_custom_form_allowed?
@@ -69,6 +89,10 @@ module ParticipationMethod
       'custom_forms.categories.extra.title'
     end
 
+    def supports_exports?
+      false
+    end
+
     def supports_publication?
       false
     end
@@ -78,14 +102,6 @@ module ParticipationMethod
     end
 
     def supports_reacting?
-      false
-    end
-
-    def supports_baskets?
-      false
-    end
-
-    def supports_budget?
       false
     end
 
@@ -105,10 +121,6 @@ module ParticipationMethod
       true
     end
 
-    def include_author_budget_in_schema?
-      false
-    end
-
     def supports_answer_visible_to?
       false
     end
@@ -116,6 +128,10 @@ module ParticipationMethod
     # Should an admin be able to set permissions for disabled actions?
     def return_disabled_actions?
       false
+    end
+
+    def additional_export_columns
+      []
     end
 
     private

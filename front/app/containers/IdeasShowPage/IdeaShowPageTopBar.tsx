@@ -1,17 +1,18 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
 import useAuthUser from 'api/me/useAuthUser';
+import useIdeaById from 'api/ideas/useIdeaById';
 
 // i18n
 import useLocalize from 'hooks/useLocalize';
 
 // components
-import ReactionControl from 'components/ReactionControl';
 import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
+import ReactionControl from 'components/ReactionControl';
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
@@ -28,9 +29,13 @@ import { lighten } from 'polished';
 // utils
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
+import { isIdeaInParticipationContext } from 'api/phases/utils';
 
 // typings
 import { IdeaReactingDisabledReason } from 'api/ideas/types';
+import { IProjectData } from 'api/projects/types';
+import { IPhaseData } from 'api/phases/types';
 
 const Container = styled.div`
   flex: 0 0 ${(props) => props.theme.mobileTopBarHeight}px;
@@ -67,6 +72,7 @@ interface Props {
   projectId: string;
   deselectIdeaOnMap?: () => void;
   className?: string;
+  participationContext?: IProjectData | IPhaseData;
 }
 
 const IdeaShowPageTopBar = ({
@@ -74,20 +80,28 @@ const IdeaShowPageTopBar = ({
   projectId,
   className,
   deselectIdeaOnMap,
+  participationContext,
 }: Props) => {
   const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
+  const { data: idea } = useIdeaById(ideaId);
+  const isSmallerThanTablet = useBreakpoint('tablet');
 
-  const [goBack, setGoBack] = useState(false);
   const [searchParams] = useSearchParams();
-  const goBackParameter = searchParams.get('go_back');
+  const [goBack] = useState(searchParams.get('go_back'));
+
+  const votingConfig = getVotingMethodConfig(
+    participationContext?.attributes.voting_method
+  );
+
+  const ideaIsInParticipationContext =
+    participationContext && idea
+      ? isIdeaInParticipationContext(idea, participationContext)
+      : undefined;
 
   useEffect(() => {
-    if (isString(goBackParameter)) {
-      setGoBack(true);
-      removeSearchParams(['go_back']);
-    }
-  }, [goBackParameter]);
+    removeSearchParams(['go_back']);
+  }, []);
 
   const localize = useLocalize();
 
@@ -105,7 +119,6 @@ const IdeaShowPageTopBar = ({
           : 'phase';
       const pcId =
         project.data.relationships?.current_phase?.data?.id || project.data.id;
-
       if (pcId && pcType) {
         triggerAuthenticationFlow({
           context: {
@@ -138,16 +151,31 @@ const IdeaShowPageTopBar = ({
             text={
               project ? localize(project.data.attributes.title_multiloc) : ''
             }
+            iconSize={isSmallerThanTablet ? '42px' : undefined}
             onClick={handleGoBack}
           />
         </Left>
         <Right>
-          <ReactionControl
-            size="1"
-            styleType="border"
-            ideaId={ideaId}
-            disabledReactionClick={onDisabledReactClick}
-          />
+          {/* Only visible if not voting */}
+          {participationContext?.attributes.participation_method !==
+            'voting' && (
+            <ReactionControl
+              size="1"
+              styleType="border"
+              ideaId={ideaId}
+              disabledReactionClick={onDisabledReactClick}
+            />
+          )}
+          {/* Only visible if voting */}
+          {ideaId && participationContext && ideaIsInParticipationContext && (
+            <Box mr="8px">
+              {votingConfig?.getIdeaPageVoteInput({
+                ideaId,
+                participationContext,
+                compact: true,
+              })}
+            </Box>
+          )}
         </Right>
       </TopBarInner>
     </Container>

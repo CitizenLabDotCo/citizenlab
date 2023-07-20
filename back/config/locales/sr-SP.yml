@@ -201,7 +201,6 @@ sr-Cyrl:
       comments_count: 'Коментари'
       likes_count: 'Свиђа'
       dislikes_count: 'Не свиђа ми се'
-      baskets_count: 'Баскетс'
       input_url: 'УРЛ'
       project: 'Пројекат'
       status: 'Статус'

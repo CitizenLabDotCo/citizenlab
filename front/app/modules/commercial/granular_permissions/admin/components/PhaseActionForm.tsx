@@ -5,7 +5,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import ActionsForm from '../containers/Granular/ActionsForm';
 import { Box } from '@citizenlab/cl2-component-library';
 import { HandlePermissionChangeProps } from '../containers/Granular/utils';
-import { getMethodConfig } from 'utils/participationMethodUtils';
+import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
 type PhaseActionFormProps = {
   phase: IPhaseData;

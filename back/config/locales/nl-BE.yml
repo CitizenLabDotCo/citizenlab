@@ -201,7 +201,6 @@ nl-BE:
       comments_count: 'Reacties'
       likes_count: 'Likes'
       dislikes_count: 'Dislikes'
-      baskets_count: 'Manden'
       input_url: 'URL'
       project: 'Project'
       status: 'Status'
