@@ -419,7 +419,7 @@
       preheader: 'En administrator på deltakelsesplattformen til %{organizationName} gjorde deg nettopp til moderator for det følgende prosjektet'
       subject: 'Du har blitt moderator på plattformen til %{organizationName}'
       text_design_participatory_process: 'Som prosjektmoderator kan du konfigurere hvordan brukere samhandler på prosjektet ditt. Du kan legge til nye faser ved bruk av tidslinjen. Hver av disse fasene kan ha sin egen atferd når det gjelder å legge ut ideer, kommentere og stemme.'
-      text_moderate_analyse_input: 'Når prosjektet er lansert, vil de første ideene komme inn. Du vil motta ukentlige rapporter med alle nøkkelaktiviteter slik at du holder deg oppdatert. Ideeoversikten i prosjektledervisningen din vil hjelpe deg å forstå hvilke ideer som har fått flest likes og misliker.'
+      text_moderate_analyse_input: 'Så snart prosjektet er lansert, vil de første ideene komme inn. Du vil motta ukentlige rapporter med alle nøkkelaktivitetene, slik at du holder deg à jour. Idéoversikten i prosjektmoderatorvisningen vil hjelpe deg med å forstå hvilke ideer som fikk flest opp-stemmer og ned-stemmer.'
       text_share_project_information: 'For å øke kvaliteten på ideene du får, er det avgjørende at du deler nok informasjon: Legg til en prosjektbeskrivelse, legg ved bilder (inkl. skisser og planer) og kommuniser alle relaterte arrangementer som pågår. Husk: God informasjon fører til god deltakelse!'
       title_design_participatory_process: 'Utform deltakelsesprosessen'
       title_moderate_analyse_input: 'Moderer og analyser innspillene'
