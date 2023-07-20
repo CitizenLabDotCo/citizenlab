@@ -23,9 +23,6 @@ import useProjectById from 'api/projects/useProjectById';
 import usePhase from 'api/phases/usePhase';
 import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
 
-// services
-import { getIdeaPostingRules } from 'services/actionTakingRules';
-
 // router
 import { useSearchParams } from 'react-router-dom';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
@@ -215,7 +212,6 @@ const initialInnerContainerLeftMargin = getInnerContainerLeftMargin(
 const IdeasMap = memo<Props>((props) => {
   const { projectId, phaseId, className, id, ariaLabelledBy, tabIndex } = props;
   const [searchParams] = useSearchParams();
-  const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
   const { windowWidth } = useWindowSize();
@@ -254,14 +250,9 @@ const IdeasMap = memo<Props>((props) => {
     topics,
   });
 
-  const ideaPostingRules = getIdeaPostingRules({
-    project: project?.data,
-    phase: phase?.data,
-    authUser: authUser?.data,
-  });
-
-  const isIdeaPostingEnabled =
-    ideaPostingRules.show && ideaPostingRules.enabled === true;
+  const ideaPostingActionDescriptor =
+    project?.data.attributes.action_descriptor.posting_idea;
+  const isIdeaPostingEnabled = ideaPostingActionDescriptor?.enabled === true;
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useLayoutEffect(() => {
