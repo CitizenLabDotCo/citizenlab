@@ -1786,6 +1786,7 @@
   "app.containers.AdminPage.projects.project.analysis.TopBar.below": "Below",
   "app.containers.AdminPage.projects.project.analysis.TopBar.engagement": "Engagement",
   "app.containers.AdminPage.projects.project.analysis.TopBar.filters": "Filters",
+  "app.containers.AdminPage.projects.project.analysis.TopBar.gender": "Gender",
   "app.containers.AdminPage.projects.project.analysis.TopBar.input": "Input",
   "app.containers.AdminPage.projects.project.analysis.TopBar.numberOfComments": "Number of comments",
   "app.containers.AdminPage.projects.project.analysis.TopBar.numberOfReactions": "Number of reactions",
