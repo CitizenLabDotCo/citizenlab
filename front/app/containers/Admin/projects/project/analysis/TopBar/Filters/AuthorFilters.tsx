@@ -4,9 +4,12 @@ import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCu
 import { Box, Select } from '@citizenlab/cl2-component-library';
 import useLocalize from 'hooks/useLocalize';
 import MultipleSelect from 'components/UI/MultipleSelect';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { useSearchParams } from 'react-router-dom';
 
 const AuthorFilters = () => {
   const localize = useLocalize();
+  const [searchParams] = useSearchParams();
   const { data: customFields } = useUserCustomFields();
 
   const genderField = customFields?.data.find(
@@ -22,7 +25,9 @@ const AuthorFilters = () => {
     domicileField?.id
   );
 
-  console.log(genderOptions);
+  const genderUrlQueryParamKey = `author_custom_${genderField?.id}`;
+  const domicileUrlQueryParamKey = `author_custom_${domicileField?.id}`;
+
   return (
     <Box display="flex" flexDirection="column" gap="12px">
       {genderOptions && (
@@ -33,7 +38,10 @@ const AuthorFilters = () => {
             label: localize(option.attributes.title_multiloc),
             value: option.attributes.key,
           }))}
-          onChange={(value) => console.log(value)}
+          onChange={(option) =>
+            updateSearchParams({ [genderUrlQueryParamKey]: option.value })
+          }
+          value={searchParams.get(genderUrlQueryParamKey)}
         />
       )}
       {domicileOptions && (
@@ -44,8 +52,14 @@ const AuthorFilters = () => {
             label: localize(option.attributes.title_multiloc),
             value: option.attributes.key,
           }))}
-          onChange={(value) => console.log(value)}
-          value={[]}
+          onChange={(selectedOptions) => {
+            updateSearchParams({
+              [domicileUrlQueryParamKey]: selectedOptions.map(
+                (option) => option.value
+              ),
+            });
+          }}
+          value={JSON.parse(searchParams.get(domicileUrlQueryParamKey) || '[]')}
         />
       )}
     </Box>
