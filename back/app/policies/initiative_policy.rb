@@ -12,7 +12,7 @@ class InitiativePolicy < ApplicationPolicy
     def resolve
       not_draft = scope.where(publication_status: %w[published closed])
 
-      if user&.admin?
+      if UserRoleService.new.can_moderate_initiatives?(user)
         not_draft
       else
         not_draft.left_outer_joins(:initiative_initiative_status)
