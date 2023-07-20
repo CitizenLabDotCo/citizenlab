@@ -419,7 +419,7 @@ sr-Latn:
       preheader: 'Administrator %{organizationName} participativne platforme vas je postavio za menadžera sledećeg projekta'
       subject: 'Postali ste menadžer projekta na %{organizationName} platformi '
       text_design_participatory_process: 'Kao menadžer projekta, možete da odredite kako će korisnici učestvovati u okviru njega. Pomoću vremenske linije možete dodati nove faze. Svaka od ovih faza može imati svoje specifičnosti u pogledu objavljivanja ideja, komentara i glasanja.'
-      text_moderate_analyse_input: 'Када се пројекат покрене, прве идеје ће се појавити. Добићете недељне извештаје са свим кључним активностима како бисте били у току. Преглед идеја у приказу менаџера пројекта ће вам помоћи да разумете које су идеје добиле највише свиђања, а које не.'
+      text_moderate_analyse_input: 'Kada je projekat pokrenut, prve ideje će se pojaviti. Primaćete nedeljne izveštaje kako biste bili u toku sa svim ključnim aktivnostima. Pregled ideja će vam pomoći da saznate koje ideje su imale najviše glasova za ili protiv.'
       text_share_project_information: 'Da biste poboljšali kvalitet ideja koje dobijate, važno je da omogućite dovoljno informacija: dodajte opis projekta, postavite slike (uključujući skice i planove) i najavite događaje. Zapamtite: kvalitetne informacije su osnova dobrog učešća!'
       title_design_participatory_process: 'Kreirajte participativni proces'
       title_moderate_analyse_input: 'Moderirajte i analizirajte unos'
