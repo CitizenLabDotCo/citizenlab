@@ -7,7 +7,8 @@ module XlsxExport
     def initialize(custom_field, scope = nil)
       @custom_field = custom_field
       @scope = scope
-      @multiloc_service = MultilocService.new
+      @app_configuration = AppConfiguration.instance
+      @multiloc_service = MultilocService.new(app_configuration: @app_configuration)
     end
 
     def column_header
@@ -19,7 +20,7 @@ module XlsxExport
         model = model.public_send(scope)
         return unless model
       end
-      visitor = ValueVisitor.new(model, option_index)
+      visitor = ValueVisitor.new(model, option_index, app_configuration: @app_configuration)
       visitor.visit self
     end
 
