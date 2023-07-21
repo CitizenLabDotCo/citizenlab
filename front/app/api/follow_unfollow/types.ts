@@ -1,8 +1,4 @@
-import { Keys } from 'utils/cl-react-query/types';
 import { IRelationship } from 'typings';
-import followerKeys from './keys';
-
-export type FollowerKeys = Keys<typeof followerKeys>;
 
 export interface IFollowerData {
   id: string;

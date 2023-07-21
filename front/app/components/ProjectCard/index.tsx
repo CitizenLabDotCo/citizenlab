@@ -741,27 +741,6 @@ const ProjectCard = memo<Props>(
                         userCount={project.data.attributes.participants_count}
                       />
                     )}
-                    <AvatarBubbles
-                      size={32}
-                      limit={3}
-                      userCountBgColor={theme.colors.tenantPrimary}
-                      avatarIds={['avatarIds']}
-                      userCount={project.data.attributes.participants_count}
-                    />
-                    <AvatarBubbles
-                      size={32}
-                      limit={3}
-                      userCountBgColor={theme.colors.tenantPrimary}
-                      avatarIds={['avatarIds']}
-                      userCount={project.data.attributes.participants_count}
-                    />
-                    <AvatarBubbles
-                      size={32}
-                      limit={3}
-                      userCountBgColor={theme.colors.tenantPrimary}
-                      avatarIds={['avatarIds']}
-                      userCount={project.data.attributes.participants_count}
-                    />
                   </Box>
 
                   <Box h="100%" display="flex" alignItems="center">
