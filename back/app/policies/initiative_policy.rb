@@ -15,7 +15,7 @@ class InitiativePolicy < ApplicationPolicy
       if user && UserRoleService.new.can_moderate_initiatives?(user)
         not_draft
       else
-        not_draft.with_status_code(InitiativeStatus::CODES - InitiativeStatus::NOT_PUBLICLY_VISIBLE_CODES)
+        not_draft.with_status_code(InitiativeStatus::NOT_APPROVAL_CODES)
           .or(not_draft.where(author: user))
       end
     end
