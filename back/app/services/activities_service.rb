@@ -61,7 +61,7 @@ class ActivitiesService
 
   def create_basket_not_submitted_activities(now)
     Basket.not_submitted.each do |basket|
-      if Activity.find_by(item: basket, action: 'not_submitted').nil? && basket.baskets_ideas.order(:updated_at).last.updated_at <= now - 1.day
+      if Activity.find_by(item: basket, action: 'not_submitted').nil? && basket.baskets_ideas.present? && basket.baskets_ideas.order(:updated_at).last.updated_at <= now - 1.day
         LogActivityJob.perform_later(basket, 'not_submitted', nil, now.to_i)
       end
     end

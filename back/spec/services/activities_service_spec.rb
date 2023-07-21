@@ -125,7 +125,7 @@ describe ActivitiesService do
 
     describe '#create_basket_not_submitted_activities' do
       let(:updated_at) { Time.parse '2022-07-01 10:00:00 +0000' }
-      let(:basket) { create(:basket, submitted_at: nil) }
+      let!(:basket) { create(:basket, submitted_at: nil) }
 
       it 'logs basket not submitted activity when a basket has not been submitted and the last item in the basket was updated over 1 day ago' do
         create(:baskets_idea, idea: create(:idea), basket: basket, created_at: updated_at, updated_at: updated_at)
@@ -146,6 +146,12 @@ describe ActivitiesService do
       it 'does not log an activity when a basket has been updated less than 1 day ago' do
         create(:baskets_idea, idea: create(:idea), basket: basket, created_at: updated_at, updated_at: updated_at)
         now = updated_at + 5.hours
+        expect { service.create_periodic_activities(now: now) }
+          .not_to have_enqueued_job(LogActivityJob)
+      end
+
+      it 'does not log an activity when a basket has no ideas' do
+        now = updated_at + 1.day
         expect { service.create_periodic_activities(now: now) }
           .not_to have_enqueued_job(LogActivityJob)
       end
