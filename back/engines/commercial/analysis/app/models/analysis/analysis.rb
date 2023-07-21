@@ -35,7 +35,7 @@ module Analysis
     end
 
     # We don't call this `project` to not collide with the project association
-    def hosting_project
+    def source_project
       project || phase&.project
     end
 
