@@ -31,3 +31,9 @@ export type FollowerAdd = {
   followableType: FollowableType;
   followableId: string;
 };
+
+export type FollowerDelete = {
+  followerId: string;
+  followableId: string;
+  followableType: FollowableType;
+};
