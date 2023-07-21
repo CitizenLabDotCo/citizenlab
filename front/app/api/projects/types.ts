@@ -138,6 +138,7 @@ export interface IProjectAttributes {
   ideas_count: number;
   comments_count: number;
   avatars_count: number;
+  followers_count: number;
   created_at: string;
   updated_at: string;
   visible_to: Visibility;
