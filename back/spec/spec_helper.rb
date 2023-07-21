@@ -122,6 +122,7 @@ RSpec.configure do |config|
   # from https://github.com/influitive/apartment/wiki/Testing-Your-Application
   config.before(:suite) do
     require './engines/commercial/public_api/spec/factories/api_clients'
+    require './engines/commercial/analysis/spec/factories/analyses'
     require './engines/free/email_campaigns/spec/factories/campaigns'
     require './engines/free/email_campaigns/spec/factories/campaigns_groups'
     require './engines/free/email_campaigns/spec/factories/consents'
