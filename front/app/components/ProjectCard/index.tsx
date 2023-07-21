@@ -514,7 +514,6 @@ const ProjectCard = memo<Props>(
       let ctaMessage: JSX.Element | null = null;
       const processType = project.data.attributes.process_type;
       const inputTerm = getInputTerm(processType, project.data, phases?.data);
-      console.log('project', project);
 
       if (isArchived) {
         countdown = (
@@ -807,9 +806,12 @@ const ProjectCard = memo<Props>(
             </Box>
             <Box borderRadius={theme.borderRadius}>
               <FollowUnfollow
-                followableType="project"
+                followableType="projects"
                 followableId={project.data.id}
                 followersCount={project.data.attributes.followers_count}
+                isCurrentUserFollowing={
+                  !!project.data.relationships.user_follower.data
+                }
               />
             </Box>
           </ProjectContent>
