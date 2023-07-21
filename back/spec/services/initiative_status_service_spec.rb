@@ -83,7 +83,7 @@ describe InitiativeStatusService do
       expect(service.transition_type(status_approval_rejected)).to eq 'manual'
     end
 
-    context 'when approval feature is fully activated' do
+    context 'when the initiative approval feature is fully activated' do
       before do
         SettingsService.new.activate_feature! 'initiative_approval'
 
@@ -105,7 +105,7 @@ describe InitiativeStatusService do
       end
     end
 
-    context 'when approval feature is not fully activated' do
+    context 'when the initiative approval feature is not fully activated' do
       it 'labels the proposed status as automatic' do
         expect(Initiative.approval_required?).to be false
         expect(service.transition_type(status_proposed)).to eq 'automatic'

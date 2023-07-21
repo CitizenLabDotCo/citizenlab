@@ -157,6 +157,71 @@ resource 'Initiatives' do
       expect(json_response[:data].filter_map { |d| d[:relationships][:user_reaction][:data] }.first[:id]).to eq reaction.id
       expect(json_response[:included].pluck(:id)).to include reaction.id
     end
+
+    context 'when approval_pending and approval_rejected initiatives exist' do
+      before do
+        @author = create(:user)
+        @approval_pending_initiative = create(:initiative)
+        @approval_rejected_initiative = create(:initiative)
+        @proposed_initiative = create(:initiative)
+        create(
+          :initiative_status_change,
+          initiative: @approval_pending_initiative, initiative_status: create(:initiative_status_approval_pending)
+        )
+        create(
+          :initiative_status_change,
+          initiative: @approval_rejected_initiative, initiative_status: create(:initiative_status_approval_rejected)
+        )
+        create(
+          :initiative_status_change,
+          initiative: @proposed_initiative, initiative_status: create(:initiative_status_proposed)
+        )
+      end
+
+      context 'when the user is an admin' do
+        before do
+          admin = create(:admin)
+          header_token_for admin
+        end
+
+        example 'List all initiatives includes initiatives regardless of status', document: false do
+          do_request
+          json_response = json_parse(response_body)
+
+          expect(json_response[:data].pluck(:id)).to include @approval_pending_initiative.id
+          expect(json_response[:data].pluck(:id)).to include @approval_rejected_initiative.id
+          expect(json_response[:data].pluck(:id)).to include @proposed_initiative.id
+        end
+      end
+
+      context 'when the user is not author of approval_pending and approval_rejected initiatives' do
+        example 'List all initiatives excludes initiatives with approval_pending or approval_rejected statuses',
+          document: false do
+          do_request
+          json_response = json_parse(response_body)
+
+          expect(json_response[:data].pluck(:id)).not_to include @approval_pending_initiative.id
+          expect(json_response[:data].pluck(:id)).not_to include @approval_rejected_initiative.id
+          expect(json_response[:data].pluck(:id)).to include @proposed_initiative.id
+        end
+      end
+
+      context 'when the user is author of approval_pending and approval_rejected initiatives' do
+        before do
+          @approval_pending_initiative.update!(author: @user)
+          @approval_rejected_initiative.update!(author: @user)
+        end
+
+        example "List all initiatives includes author's initiatives regardless of status", document: false do
+          do_request
+          json_response = json_parse(response_body)
+
+          expect(json_response[:data].pluck(:id)).to include @approval_pending_initiative.id
+          expect(json_response[:data].pluck(:id)).to include @approval_rejected_initiative.id
+          expect(json_response[:data].pluck(:id)).to include @proposed_initiative.id
+        end
+      end
+    end
   end
 
   get 'web_api/v1/initiatives/as_markers' do
