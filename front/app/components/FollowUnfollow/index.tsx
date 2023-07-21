@@ -4,33 +4,47 @@ import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 import { FollowableType } from 'api/follow_unfollow/types';
 import useAddFollower from 'api/follow_unfollow/useAddFollower';
+import useDeleteFollower from 'api/follow_unfollow/useDeleteFollower';
 
 type Props = {
   followableType: FollowableType;
   followableId: string; // id of the project, folder, idea or proposal
   followersCount?: number;
-  isCurrentUserFollowing: boolean;
+  followerId?: string; // id of the follower object
 };
 
 const FollowUnfollow = ({
   followableType,
   followableId,
   followersCount,
-  isCurrentUserFollowing,
+  followerId,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const { mutateAsync: addFollower, isLoading } = useAddFollower();
-  const handleOnClick = async () => {
-    const response = await addFollower({
-      followableType,
-      followableId,
-    });
-    console.log('response', response);
+  const { mutate: addFollower, isLoading: isAddingFollower } = useAddFollower();
+  const { mutate: deleteFollower, isLoading: isDeletingFollower } =
+    useDeleteFollower();
+
+  // If the follower id is present, then the user is following
+  const isFollowing = !!followerId;
+  const followUnfollowText = isFollowing
+    ? formatMessage(messages.unFollow)
+    : formatMessage(messages.follow);
+  const isLoading = isAddingFollower || isDeletingFollower;
+
+  const handleOnClick = () => {
+    if (isFollowing) {
+      deleteFollower({
+        followerId,
+        followableId,
+        followableType,
+      });
+    } else {
+      addFollower({
+        followableType,
+        followableId,
+      });
+    }
   };
-  const text = isCurrentUserFollowing ? messages.unFollow : messages.follow;
-  const followText = followersCount
-    ? `${formatMessage(text)} (${followersCount})`
-    : formatMessage(text);
 
   return (
     <Button
@@ -39,7 +53,9 @@ const FollowUnfollow = ({
       onClick={handleOnClick}
       processing={isLoading}
     >
-      {followText}
+      {followersCount
+        ? `${followUnfollowText} (${followersCount})`
+        : followUnfollowText}
     </Button>
   );
 };
