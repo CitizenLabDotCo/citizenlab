@@ -26,7 +26,6 @@ class UserRoleService
   end
 
   def can_moderate_initiatives?(user)
-    # random comment
     user&.admin?
   end
 
