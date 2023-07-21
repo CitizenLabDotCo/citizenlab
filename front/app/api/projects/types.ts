@@ -220,6 +220,9 @@ export interface IProjectData {
     admin_publication: {
       data: IRelationship | null;
     };
+    user_follower: {
+      data: IRelationship | null;
+    };
   };
 }
 

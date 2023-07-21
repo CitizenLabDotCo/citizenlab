@@ -140,6 +140,9 @@ export const project1: IProjectData = {
     user_basket: {
       data: null,
     },
+    user_follower: {
+      data: null,
+    },
     default_assignee: {
       data: null,
     },
@@ -273,6 +276,9 @@ export const project2: IProjectData = {
       ],
     },
     user_basket: {
+      data: null,
+    },
+    user_follower: {
       data: null,
     },
     default_assignee: {
