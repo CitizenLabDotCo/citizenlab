@@ -9,9 +9,7 @@ describe InitiativePolicy do
 
   context 'for an approval_pending initiative' do
     let(:author) { create(:user) }
-    let(:initiative) {
-      create(:initiative, author: author)
-    }
+    let(:initiative) { create(:initiative, author: author) }
 
     before do
       create(
