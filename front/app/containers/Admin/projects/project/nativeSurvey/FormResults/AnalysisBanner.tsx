@@ -77,7 +77,10 @@ const CreateAnalysisModal = ({ onClose }: { onClose: () => void }) => {
           </ListItem>
         );
       })}
-      <Box display="flex" justifyContent="flex-end" mt="48px">
+      <Box display="flex" justifyContent="flex-end" mt="48px" gap="24px">
+        <Button buttonStyle="secondary" onClick={onClose}>
+          {formatMessage(messages.cancel)}
+        </Button>
         <Button
           buttonStyle="admin-dark"
           onClick={handleCreateAnalysis}
