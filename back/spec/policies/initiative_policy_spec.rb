@@ -9,14 +9,7 @@ describe InitiativePolicy do
 
   context 'for an approval_pending initiative' do
     let(:author) { create(:user) }
-    let(:initiative) { create(:initiative, author: author) }
-
-    before do
-      create(
-        :initiative_status_change,
-        initiative: initiative, initiative_status: create(:initiative_status_approval_pending)
-      )
-    end
+    let!(:initiative) { create(:initiative, author: author, initiative_status: create(:initiative_status_approval_pending)) }
 
     context 'for an admin' do
       let(:user) { create(:admin) }
@@ -27,7 +20,7 @@ describe InitiativePolicy do
       it { is_expected.to permit(:update)  }
       it { is_expected.to permit(:destroy) }
 
-      it 'indexes the initiatives, regardless of status' do
+      it 'indexes the initiative, regardless of status' do
         expect(scope.resolve.size).to eq 1
       end
     end
@@ -43,6 +36,20 @@ describe InitiativePolicy do
 
       it 'does not index the initiative' do
         expect(scope.resolve.size).to eq 0
+      end
+    end
+
+    context 'for a user who is author of the initiative' do
+      let(:user) { author }
+
+      it { is_expected.to permit(:show) }
+      it { is_expected.to permit(:by_slug) }
+      it { is_expected.to permit(:create) }
+      it { is_expected.to permit(:update)  }
+      it { is_expected.to permit(:destroy) }
+
+      it 'indexes the initiative, regardless of status' do
+        expect(scope.resolve.size).to eq 1
       end
     end
   end

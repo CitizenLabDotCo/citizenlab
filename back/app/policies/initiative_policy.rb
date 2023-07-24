@@ -35,7 +35,7 @@ class InitiativePolicy < ApplicationPolicy
   end
 
   def show?
-    return false if !can_moderate? && InitiativeStatus::APPROVAL_CODES.include?(record.initiative_status.code)
+    return false if !can_moderate? && !owner? && InitiativeStatus::APPROVAL_CODES.include?(record.initiative_status.code)
     return true if active? && owner?
     return true if active? && can_moderate?
 
