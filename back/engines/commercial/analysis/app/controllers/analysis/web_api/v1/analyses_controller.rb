@@ -67,7 +67,7 @@ module Analysis
         end
 
         def analysis_params
-          params.require(:analysis).permit(:project_id, :phase_id, custom_fields_ids: [])
+          params.require(:analysis).permit(:project_id, :phase_id, custom_field_ids: [])
         end
 
         def side_fx_service

@@ -64,7 +64,7 @@ resource 'Analyses' do
     with_options scope: :analysis do
       parameter :project_id, 'The project to analyze, only in case of ideation or continuous survey. Mandatory to pass either project_id or phase_id.', required: false
       parameter :phase_id, 'The phase to analyze, only in case of survey. Mandatory to pass either project_id or phase_id.', required: false
-      parameter :custom_fields_ids, 'Custom fields that should be part of the analysis. Must be textual fields. If not passed, all textual fields will be analyzed.', required: false
+      parameter :custom_field_ids, 'Custom fields that should be part of the analysis. Must be textual fields. If not passed, all textual fields will be analyzed.', required: false
     end
     ValidationErrorHelper.new.error_fields(self, Analysis::Analysis)
 
@@ -74,8 +74,8 @@ resource 'Analyses' do
 
       example_request 'Create an analysis (ideation phase)' do
         expect(response_status).to eq 201
-        # If no custom_fields are passed, all must be added automatically
-        expect(response_data.dig(:relationships, :custom_fields, :data)).to_not be_empty
+        # If no custom_fields are passed, all textual fields must be added automatically
+        expect(response_data.dig(:relationships, :custom_fields, :data)).not_to be_empty
       end
     end
 
@@ -85,12 +85,12 @@ resource 'Analyses' do
       let(:phase_id) { phase.id }
       let(:form) { create(:custom_form, participation_context: phase) }
       let(:custom_field) { create(:custom_field, resource: form) }
-      let(:custom_fields_ids) { [custom_field.id] }
+      let(:custom_field_ids) { [custom_field.id] }
 
       example_request 'Create an analysis (survey phase) with specific custom_fields' do
         expect(response_status).to eq 201
         expect(response_data.dig(:relationships, :custom_fields, :data).size).to eq 1
-        expect(response_data.dig(:relationships, :custom_fields, :data, 0, :id)).to eq analysis.custom_fields.first.id
+        expect(response_data.dig(:relationships, :custom_fields, :data, 0, :id)).to eq custom_field.id
       end
     end
 
