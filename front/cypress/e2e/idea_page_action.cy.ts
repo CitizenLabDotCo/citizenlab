@@ -61,6 +61,11 @@ describe('Idea show page actions', () => {
         );
       });
 
+      it('is an ideation project', () => {
+        cy.visit(`/admin/projects/${projectId}`);
+        cy.get('#participationmethod-ideation').should('be.checked');
+      });
+
       it('displays correct likes and dislikes on map idea card', () => {
         cy.visit(`/projects/${projectSlug}`);
         cy.get('#view-tab-2').should('exist');
