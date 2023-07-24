@@ -128,6 +128,10 @@ class User < ApplicationRecord
     AppConfiguration.instance.feature_activated?('abbreviated_user_names') ? by_first_name(username) : by_full_name(username)
   }
 
+  scope :from_follows, (proc do |follows|
+    where(id: joins(:follows).where(follows: follows))
+  end)
+
   has_many :ideas, foreign_key: :author_id, dependent: :nullify
   has_many :initiatives, foreign_key: :author_id, dependent: :nullify
   has_many :assigned_initiatives, class_name: 'Initiative', foreign_key: :assignee_id, dependent: :nullify
