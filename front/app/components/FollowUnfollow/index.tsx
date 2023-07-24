@@ -1,5 +1,9 @@
 import React from 'react';
-import { Button, BoxPaddingProps } from '@citizenlab/cl2-component-library';
+import {
+  Button,
+  BoxPaddingProps,
+  ButtonStyles,
+} from '@citizenlab/cl2-component-library';
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 import { FollowableType } from 'api/follow_unfollow/types';
@@ -11,6 +15,7 @@ interface Props extends BoxPaddingProps {
   followableId: string; // id of the project, folder, idea or proposal
   followersCount?: number;
   followerId?: string; // id of the follower object
+  buttonStyle?: ButtonStyles;
 }
 
 const FollowUnfollow = ({
@@ -18,6 +23,7 @@ const FollowUnfollow = ({
   followableId,
   followersCount,
   followerId,
+  buttonStyle = 'primary-outlined',
   ...paddingProps
 }: Props) => {
   const { formatMessage } = useIntl();
@@ -49,7 +55,7 @@ const FollowUnfollow = ({
 
   return (
     <Button
-      buttonStyle="primary-outlined"
+      buttonStyle={buttonStyle}
       icon="notification"
       onClick={handleOnClick}
       processing={isLoading}
