@@ -74,6 +74,8 @@ resource 'Analyses' do
 
       example_request 'Create an analysis (ideation phase)' do
         expect(response_status).to eq 201
+        # If no custom_fields are passed, all must be added automatically
+        expect(response_data.dig(:relationships, :custom_fields, :data)).to_not be_empty
       end
     end
 
@@ -81,9 +83,14 @@ resource 'Analyses' do
       let(:project) { create(:project_with_active_native_survey_phase) }
       let(:phase) { project.phases.first }
       let(:phase_id) { phase.id }
+      let(:form) { create(:custom_form, participation_context: phase) }
+      let(:custom_field) { create(:custom_field, resource: form) }
+      let(:custom_fields_ids) { [custom_field.id] }
 
-      example_request 'Create an analysis (survey phase)' do
+      example_request 'Create an analysis (survey phase) with specific custom_fields' do
         expect(response_status).to eq 201
+        expect(response_data.dig(:relationships, :custom_fields, :data).size).to eq 1
+        expect(response_data.dig(:relationships, :custom_fields, :data, 0, :id)).to eq analysis.custom_fields.first.id
       end
     end
 
