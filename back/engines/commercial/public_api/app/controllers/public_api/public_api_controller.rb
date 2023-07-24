@@ -24,7 +24,7 @@ module PublicApi
       render json: problem_details, status: :bad_request
     end
 
-    def list_items(base_query, serializer)
+    def list_items(base_query, serializer, root_key: nil)
       @items = base_query
         .order(created_at: :desc)
         .page(params[:page_number])
@@ -34,6 +34,7 @@ module PublicApi
       render json: @items,
         each_serializer: serializer,
         adapter: :json,
+        root: root_key,
         meta: meta_properties(@items)
     end
 

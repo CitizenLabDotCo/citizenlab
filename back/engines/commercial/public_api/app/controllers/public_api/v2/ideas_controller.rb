@@ -2,6 +2,8 @@
 
 module PublicApi
   class V2::IdeasController < PublicApiController
+    include DeletedItemsAction
+
     def index
       ideas = IdeasFinder.new(
         Idea.includes(:idea_images, :project, :idea_status).order(created_at: :desc),

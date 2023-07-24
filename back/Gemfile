@@ -163,6 +163,7 @@ commercial_engines = [
   'multi_tenancy',
 
   'admin_api',
+  'analysis',
   'analytics',
   'bulk_import_ideas',
   'content_builder',
