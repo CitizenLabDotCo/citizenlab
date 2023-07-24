@@ -3,9 +3,10 @@ import { get, isString } from 'lodash-es';
 
 // components
 import Card from 'components/UI/Card';
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, Box } from '@citizenlab/cl2-component-library';
 import Author from 'components/Author';
 import ReactionIndicator from './ReactionIndicator';
+import FollowUnfollow from 'components/FollowUnfollow';
 
 // i18n
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
@@ -112,25 +113,34 @@ const InitiativeCard = ({
         />
       }
       footer={
-        <FooterInner>
-          <ReactionIndicator initiativeId={initiativeId} />
-          <Spacer />
-          <CommentInfo>
-            <CommentIcon name="comments" ariaHidden />
-            <CommentCount
-              aria-hidden
-              className="e2e-initiativecard-comment-count"
-            >
-              {commentsCount}
-            </CommentCount>
-            <ScreenReaderOnly>
-              <FormattedMessage
-                {...messages.xComments}
-                values={{ commentsCount }}
-              />
-            </ScreenReaderOnly>
-          </CommentInfo>
-        </FooterInner>
+        <>
+          <FooterInner>
+            <ReactionIndicator initiativeId={initiativeId} />
+            <Spacer />
+            <CommentInfo>
+              <CommentIcon name="comments" ariaHidden />
+              <CommentCount
+                aria-hidden
+                className="e2e-initiativecard-comment-count"
+              >
+                {commentsCount}
+              </CommentCount>
+              <ScreenReaderOnly>
+                <FormattedMessage
+                  {...messages.xComments}
+                  values={{ commentsCount }}
+                />
+              </ScreenReaderOnly>
+            </CommentInfo>
+          </FooterInner>
+          <Box p="8px" width="auto">
+            <FollowUnfollow
+              followableType="proposals"
+              followableId={initiative.data.id}
+              followersCount={6}
+            />
+          </Box>
+        </>
       }
     />
   );
