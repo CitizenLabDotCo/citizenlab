@@ -70,6 +70,7 @@ resource 'Analyses' do
 
     describe do
       let(:project) { create(:project_with_active_ideation_phase) }
+      let!(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
       let(:project_id) { project.id }
 
       example_request 'Create an analysis (ideation phase)' do
@@ -83,8 +84,8 @@ resource 'Analyses' do
       let(:project) { create(:project_with_active_native_survey_phase) }
       let(:phase) { project.phases.first }
       let(:phase_id) { phase.id }
-      let(:form) { create(:custom_form, participation_context: phase) }
-      let(:custom_field) { create(:custom_field, resource: form) }
+      let(:custom_form) { create(:custom_form, participation_context: phase) }
+      let(:custom_field) { create(:custom_field, resource: custom_form) }
       let(:custom_field_ids) { [custom_field.id] }
 
       example_request 'Create an analysis (survey phase) with specific custom_fields' do
@@ -96,6 +97,7 @@ resource 'Analyses' do
 
     describe do
       let(:project) { create(:continuous_native_survey_project) }
+      let!(:custom_form) { create(:custom_form, participation_context: project) }
       let(:project_id) { project.id }
 
       example_request 'Create an analysis (continuous survey project)' do
