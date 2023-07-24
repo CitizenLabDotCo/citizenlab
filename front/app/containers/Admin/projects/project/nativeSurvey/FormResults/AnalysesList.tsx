@@ -29,6 +29,11 @@ const AnalysesList = () => {
     phaseId,
   });
 
+  const handleDeleteAnalysis = (analysisId: string) => {
+    if (window.confirm(formatMessage(messages.deleteAnalysisConfirmation))) {
+      deleteAnalysis(analysisId);
+    }
+  };
   return (
     <div>
       {analyses?.data.map((analysis) => {
@@ -64,7 +69,7 @@ const AnalysesList = () => {
                 {formatMessage(messages.viewAnalysis)}
               </Button>
               <Button
-                onClick={() => deleteAnalysis(analysis.id)}
+                onClick={() => handleDeleteAnalysis(analysis.id)}
                 icon="delete"
                 buttonStyle="secondary"
               >

@@ -34,4 +34,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.survey.deleteAnalysis',
     defaultMessage: 'Delete',
   },
+  deleteAnalysisConfirmation: {
+    id: 'app.containers.Admin.projects.project.survey.deleteAnalysisConfirmation',
+    defaultMessage:
+      'Are you sure you want to delete this analysis? This action cannot be undone.',
+  },
 });
