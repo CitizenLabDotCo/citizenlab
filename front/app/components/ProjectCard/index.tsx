@@ -788,7 +788,7 @@ const ProjectCard = memo<Props>(
                 followableType="projects"
                 followableId={project.data.id}
                 followersCount={project.data.attributes.followers_count}
-                followerId={project.data.relationships.user_follower.data?.id}
+                followerId={project.data.relationships.user_follower?.data?.id}
               />
             </Box>
           </ProjectContent>

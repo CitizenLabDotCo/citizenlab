@@ -115,7 +115,7 @@ const ProjectHeader = memo<Props & WrappedComponentProps>(
                       followableId={project.data.id}
                       followersCount={project.data.attributes.followers_count}
                       followerId={
-                        project.data.relationships.user_follower.data?.id
+                        project.data.relationships.user_follower?.data?.id
                       }
                       padding="5px 8px"
                     />
