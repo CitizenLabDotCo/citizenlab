@@ -2,6 +2,8 @@
 
 module PublicApi
   class V2::ProjectsController < PublicApiController
+    include DeletedItemsAction
+
     def index
       projects = ProjectsFinder.new(
         Project.includes(:project_images).includes(:map_config).order(created_at: :desc),
