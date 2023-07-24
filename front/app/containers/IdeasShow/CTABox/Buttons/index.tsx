@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import GoToCommentsButton from '../../Buttons/GoToCommentsButton';
 import { isNilOrError } from 'utils/helperUtils';
 import useIdeaById from 'api/ideas/useIdeaById';
+import FollowUnfollow from 'components/FollowUnfollow';
 
 const Container = styled.div``;
 
@@ -26,6 +27,11 @@ const IdeaCTAButtons = ({ ideaId, className }: Props) => {
     return (
       <Container className={className || ''}>
         {commentingEnabled && <StyledGoToCommentsButton />}
+        <FollowUnfollow
+          followableType="ideas"
+          followableId={ideaId}
+          followersCount={8}
+        />
       </Container>
     );
   }
