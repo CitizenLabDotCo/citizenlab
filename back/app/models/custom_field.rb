@@ -80,7 +80,6 @@ class CustomField < ApplicationRecord
   scope :hidden, -> { where(hidden: true) }
   scope :support_multiple_values, -> { where(input_type: 'multiselect') }
   scope :support_single_value, -> { where.not(input_type: 'multiselect') }
-  scope :support_free_text_value, -> { where(input_type: %w[text multiline_text text_multiloc multiline_text_multiloc html_multiloc]) }
 
   def logic?
     logic.present? && logic != { 'rules' => [] }
@@ -88,6 +87,10 @@ class CustomField < ApplicationRecord
 
   def support_options?
     %w[select multiselect].include?(input_type)
+  end
+
+  def support_free_text_value?
+    %w[text multiline_text text_multiloc multiline_text_multiloc html_multiloc].include?(input_type)
   end
 
   def built_in?

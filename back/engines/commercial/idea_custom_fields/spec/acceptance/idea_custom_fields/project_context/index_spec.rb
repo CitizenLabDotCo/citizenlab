@@ -51,6 +51,14 @@ resource 'Idea Custom Fields' do
         expect(json_response[:data].map { |d| d.dig(:attributes, :key) }).to include custom_field.key
         expect(json_response[:data].map { |d| d.dig(:attributes, :key) }).not_to include cf_number.key
       end
+
+      example 'List all allowed custom fields for a project that has no custom_form', document: false do
+        form.destroy!
+        do_request(support_free_text_value: true)
+        assert_status 200
+        json_response = json_parse response_body
+        expect(json_response[:data].map { |d| d.dig(:attributes, :key) }).not_to be_empty 
+      end
     end
   end
 end
