@@ -249,7 +249,7 @@ const createAdminProjectsRoutes = () => {
             element: <AdminAllowedTopicsComponent />,
           },
           {
-            path: 'analysis/:id',
+            path: 'analysis/:analysisId',
             element: (
               <PageLoading>
                 <AdminProjectAnalysis />
