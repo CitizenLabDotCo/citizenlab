@@ -57,7 +57,7 @@ resource 'Idea Custom Fields' do
         do_request(support_free_text_value: true)
         assert_status 200
         json_response = json_parse response_body
-        expect(json_response[:data].map { |d| d.dig(:attributes, :key) }).not_to be_empty 
+        expect(json_response[:data].map { |d| d.dig(:attributes, :key) }).not_to be_empty
       end
     end
   end
