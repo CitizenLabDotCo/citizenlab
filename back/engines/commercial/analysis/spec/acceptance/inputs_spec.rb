@@ -71,6 +71,8 @@ resource 'Inputs' do
         expect(json_response_body[:included].pluck(:id)).to include(*inputs.map(&:author_id))
       end
 
+      # We smoke test a few filters, more extensive coverage is taken care of by the filter service spec
+
       example 'supports text search', document: false do
         idea = create(:idea, title_multiloc: { en: 'Love & Peace' }, project: analysis.source_project)
         do_request(search: 'peace')
@@ -83,6 +85,17 @@ resource 'Inputs' do
         do_request(published_at_to: '2001-01-01')
         expect(status).to eq(200)
         expect(response_data.pluck(:id)).to eq([idea.id])
+      end
+
+      example 'supports custom_author_<uuid>[] filter', document: false do
+        cf = create(:custom_field_number)
+        author1 = create(:user, custom_field_values: { cf.key => 7 })
+        author2 = create(:user, custom_field_values: { cf.key => 8 })
+        idea1 = create(:idea, project: analysis.source_project, author: author1)
+        _idea2 = create(:idea, project: analysis.source_project, author: author2)
+        do_request("author_custom_#{cf.id}": ['7'])
+        expect(status).to eq(200)
+        expect(response_data.pluck(:id)).to eq([idea1.id])
       end
     end
   end

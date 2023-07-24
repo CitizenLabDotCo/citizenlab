@@ -18,8 +18,8 @@ module Analysis
       inputs = filter_reactions(inputs)
       inputs = filter_comments(inputs)
       inputs = filter_votes(inputs)
-      inputs = filter_custom_field_select(inputs)
-      inputs = filter_custom_field_numeric(inputs)
+      inputs = filter_custom_field_in(inputs)
+      inputs = filter_custom_field_range(inputs)
       search(inputs)
     end
 
@@ -67,10 +67,10 @@ module Analysis
       inputs.search_by_all(search)
     end
 
-    def filter_custom_field_select(inputs)
+    def filter_custom_field_in(inputs)
       scope = inputs
 
-      decode_author_select_custom_keys.each do |(custom_field_id, value)|
+      decode_author_in_custom_keys.each do |(custom_field_id, value)|
         raise ArgumentError, "value specified for author_custom_#{custom_field_id} must be an array" unless value.is_a? Array
 
         cf = CustomField.find(custom_field_id)
@@ -101,9 +101,9 @@ module Analysis
       scope
     end
 
-    def filter_custom_field_numeric(inputs)
+    def filter_custom_field_range(inputs)
       scope = inputs
-      decode_author_numeric_custom_keys.each do |(custom_field_id, predicate, value)|
+      decode_author_range_custom_keys.each do |(custom_field_id, predicate, value)|
         cf = CustomField.find(custom_field_id)
 
         scope = if predicate == 'from'
@@ -117,7 +117,7 @@ module Analysis
       scope
     end
 
-    def decode_author_select_custom_keys
+    def decode_author_in_custom_keys
       params.filter_map do |key, value|
         matches = key.to_s.match(/^author_custom_([a-f0-9-]+)$/)
         # return pair [custom_field_id, value]
@@ -125,10 +125,10 @@ module Analysis
       end
     end
 
-    def decode_author_numeric_custom_keys
+    def decode_author_range_custom_keys
       params.filter_map do |key, value|
         matches = key.to_s.match(/^author_custom_([a-f0-9-]+)_(from|to)$/)
-        # return pair [custom_field_id, value]
+        # return triplet [custom_field_id, predicate, value]
         matches && [matches[1], matches[2], value]
       end
     end

@@ -9,7 +9,7 @@ module Analysis
 
         def index
           # index is not policy scoped, instead the analysis is authorized.
-          @inputs = InputsFinder.new(@analysis, params).execute
+          @inputs = InputsFinder.new(@analysis, input_filter_params.to_h).execute
           @inputs = paginate @inputs
 
           render json: linked_json(
@@ -25,6 +25,33 @@ module Analysis
         def set_analysis
           @analysis = Analysis.find(params[:analysis_id])
           authorize(@analysis, :show?)
+        end
+
+        def input_filter_params
+          permitted_dynamic_keys = []
+          permitted_dynamic_array_keys = {}
+
+          params.each_key do |key|
+            if key.match?(/^author_custom_([a-f0-9-]+)_(from|to)$/)
+              permitted_dynamic_keys << key
+            elsif key.match?(/^author_custom_([a-f0-9-]+)$/)
+              permitted_dynamic_array_keys[key] = []
+            end
+          end
+
+          params.permit(
+            :search,
+            :published_at_from,
+            :published_at_to,
+            :reactions_from,
+            :reactions_to,
+            :votes_from,
+            :votes_to,
+            :comments_from,
+            :comments_to,
+            *permitted_dynamic_keys,
+            **permitted_dynamic_array_keys
+          )
         end
       end
     end
