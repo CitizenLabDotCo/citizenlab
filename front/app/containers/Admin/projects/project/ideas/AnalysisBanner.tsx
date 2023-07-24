@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import {
@@ -13,11 +13,24 @@ import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 import { useParams } from 'react-router-dom';
 import clHistory from 'utils/cl-router/history';
+import useAnalyses from 'api/analyses/useAnalyses';
+import useAddAnalysis from 'api/analyses/useAddAnalysis';
 
 const AnalysisBanner = () => {
   const { projectId } = useParams() as { projectId: string };
+  const { data: analyses } = useAnalyses({ projectId });
+  const { mutate: createAnalysis } = useAddAnalysis();
+
   const { formatMessage } = useIntl();
+
   const analysisEnabled = useFeatureFlag({ name: 'analysis' });
+
+  useEffect(() => {
+    if (analyses && analyses.data.length === 0) {
+      createAnalysis({ projectId });
+    }
+  }, [analyses, createAnalysis, projectId]);
+
   if (!analysisEnabled) return null;
   return (
     <Box
@@ -41,7 +54,9 @@ const AnalysisBanner = () => {
       <Button
         buttonStyle="admin-dark"
         onClick={() => {
-          clHistory.push(`/admin/projects/${projectId}/analysis/id`);
+          clHistory.push(
+            `/admin/projects/${projectId}/analysis/${analyses?.data[0].id}`
+          );
         }}
       >
         {formatMessage(messages.analysisButton)}

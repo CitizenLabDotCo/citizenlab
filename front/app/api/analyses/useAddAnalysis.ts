@@ -8,7 +8,13 @@ const addAnalysis = async (requestBody: IAddAnalysis) =>
   fetcher<IAnalysis>({
     path: '/analyses',
     action: 'post',
-    body: { analysis: requestBody },
+    body: {
+      analysis: {
+        project_id: requestBody.projectId,
+        phase_id: requestBody.phaseId,
+        custom_field_ids: requestBody.customFieldIds,
+      },
+    },
   });
 
 const useAddAnalysis = () => {
