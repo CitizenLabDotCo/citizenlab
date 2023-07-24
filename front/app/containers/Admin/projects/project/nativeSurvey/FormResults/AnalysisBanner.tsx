@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import {
   Icon,
@@ -11,27 +10,32 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import clHistory from 'utils/cl-router/history';
 import useAnalyses from 'api/analyses/useAnalyses';
 import useAddAnalysis from 'api/analyses/useAddAnalysis';
+import useFormCustomFields from 'hooks/useFormCustomFields';
 
 const AnalysisBanner = () => {
   const { projectId } = useParams() as { projectId: string };
   const { data: analyses } = useAnalyses({ projectId });
   const { mutate: createAnalysis } = useAddAnalysis();
 
+  const [urlParams] = useSearchParams();
+  const phaseId = urlParams.get('phase_id') || undefined;
+  const formCustomFields = useFormCustomFields({
+    projectId,
+    phaseId,
+  });
+
+  console.log(formCustomFields);
   const { formatMessage } = useIntl();
 
-  const analysisEnabled = useFeatureFlag({ name: 'analysis' });
-
   useEffect(() => {
-    if (analysisEnabled && analyses && analyses.data.length === 0) {
+    if (analyses && analyses.data.length === 0) {
       createAnalysis({ projectId });
     }
-  }, [analyses, createAnalysis, projectId, analysisEnabled]);
-
-  if (!analysisEnabled) return null;
+  }, [analyses, createAnalysis, projectId]);
 
   return (
     <Box
