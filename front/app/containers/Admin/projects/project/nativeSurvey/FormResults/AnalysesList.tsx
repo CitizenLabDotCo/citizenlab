@@ -11,7 +11,10 @@ const AnalysesList = () => {
 
   const [urlParams] = useSearchParams();
   const phaseId = urlParams.get('phase_id') || undefined;
-  const { data: analyses } = useAnalyses({ projectId, phaseId });
+  const { data: analyses } = useAnalyses({
+    projectId: phaseId ? undefined : projectId,
+    phaseId,
+  });
 
   console.log(analyses);
   return (
