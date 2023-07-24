@@ -695,7 +695,7 @@ GEM
       net-imap
       net-pop
       net-smtp
-    mailgun-ruby (1.2.8)
+    mailgun-ruby (1.2.10)
       rest-client (>= 2.0.2)
     marcel (1.0.2)
     memoist (0.16.2)
@@ -1171,7 +1171,7 @@ DEPENDENCIES
   liquid (~> 5.4)
   listen (>= 3.0.5, < 4.0)
   machine_translations!
-  mailgun-ruby (~> 1.2.8)
+  mailgun-ruby (~> 1.2.10)
   matomo!
   mini_magick (~> 4.12)
   mjml-rails (~> 4.9)
