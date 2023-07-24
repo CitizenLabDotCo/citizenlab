@@ -1,8 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import fetcher from 'utils/cl-react-query/fetcher';
-import followUnfollowKeys from './keys';
-import projectsKeys from 'api/projects/keys';
 import { FollowerDelete } from './types';
+import { invalidateFollowQueries } from './utils';
 
 const deleteFollower = ({ followerId }: FollowerDelete) =>
   fetcher({
@@ -15,16 +14,12 @@ const useDeleteFollow = () => {
 
   return useMutation({
     mutationFn: deleteFollower,
-    onSuccess: (_data, variables) => {
-      queryClient.invalidateQueries({
-        queryKey: followUnfollowKeys.all(),
-      });
-
-      if (variables.followableType === 'projects') {
-        queryClient.invalidateQueries({
-          queryKey: projectsKeys.item({ id: variables.followableId }),
-        });
-      }
+    onSuccess: async (_data, variables) => {
+      invalidateFollowQueries(
+        queryClient,
+        variables.followableType,
+        variables.followableId
+      );
     },
   });
 };
