@@ -19,23 +19,14 @@ RSpec.describe Notifications::ProjectPhaseStarted do
       expect(notifications.map(&:recipient_id)).to contain_exactly follower.user_id, participant.id
     end
 
-    it 'only notifies users who can participate in project' do
+    it 'only notifies users who have access to the project' do
       project.update!(visible_to: 'groups', groups: [create(:group)])
 
-      group_member = create(:user, manual_groups: [project.groups.first])
-      other_user = create(:user)
+      included_follower = create(:follower, followable: project, user: create(:user, manual_groups: [project.groups.first]))
+      _excluded_follower = create(:follower, followable: project, user: create(:user))
 
-      # Both users participate in project and an activity exists for each participation event.
-      idea1 = create(:idea, project_id: project.id, author_id: group_member.id)
-      idea2 = create(:idea, project_id: project.id, author_id: other_user.id)
-      create(:activity, item: idea1, user_id: group_member.id, action: 'published')
-      create(:activity, item: idea2, user_id: other_user.id, action: 'published')
-
-      notifications = described_class.make_notifications_on(activity)
-      expect(notifications.map(&:recipient_id)).to contain_exactly group_member.id
+      notifications = described_class.make_notifications_on activity
+      expect(notifications.map(&:recipient_id)).to contain_exactly included_follower.user_id
     end
-
-    # TODO: spec does not include followers and participants who have no access to the project
-    # TDOD: spec does not include users who cannot participate
   end
 end

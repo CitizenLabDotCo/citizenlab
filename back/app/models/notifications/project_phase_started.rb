@@ -68,7 +68,7 @@ module Notifications
 
       participants = ParticipantsService.new.project_participants phase.project
       followers = phase.project.followers
-      recipients = participants.or(User.where(id: User.joins(:follows).where(follows: followers)))
+      recipients = participants.or(User.from_follows(followers))
       ProjectPolicy::InverseScope.new(phase.project, recipients).resolve.map do |recipient|
         new(recipient: recipient, phase: phase, project: phase.project)
       end
