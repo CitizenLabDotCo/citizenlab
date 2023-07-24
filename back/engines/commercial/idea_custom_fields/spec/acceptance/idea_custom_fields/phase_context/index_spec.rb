@@ -9,7 +9,6 @@ resource 'Idea Custom Fields' do
   before { header 'Content-Type', 'application/json' }
 
   get 'web_api/v1/admin/phases/:phase_id/custom_fields' do
-
     parameter :support_free_text_value, 'Only return custom fields that have a freely written textual answer', type: :boolean, required: false
 
     let(:context) { create(:phase, participation_method: 'native_survey') }
