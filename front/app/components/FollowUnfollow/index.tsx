@@ -5,19 +5,21 @@ import messages from './messages';
 import { FollowableType } from 'api/follow_unfollow/types';
 import useAddFollower from 'api/follow_unfollow/useAddFollower';
 import useDeleteFollower from 'api/follow_unfollow/useDeleteFollower';
+import { BoxPaddingProps } from '@citizenlab/cl2-component-library';
 
-type Props = {
+interface Props extends BoxPaddingProps {
   followableType: FollowableType;
   followableId: string; // id of the project, folder, idea or proposal
   followersCount?: number;
   followerId?: string; // id of the follower object
-};
+}
 
 const FollowUnfollow = ({
   followableType,
   followableId,
   followersCount,
   followerId,
+  ...paddingProps
 }: Props) => {
   const { formatMessage } = useIntl();
   const { mutate: addFollower, isLoading: isAddingFollower } = useAddFollower();
@@ -52,6 +54,7 @@ const FollowUnfollow = ({
       icon="notification"
       onClick={handleOnClick}
       processing={isLoading}
+      {...paddingProps}
     >
       {followersCount
         ? `${followUnfollowText} (${followersCount})`
