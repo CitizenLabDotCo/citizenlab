@@ -2,10 +2,13 @@ import React from 'react';
 import useAnalyses from 'api/analyses/useAnalyses';
 import useDeleteAnalysis from 'api/analyses/useDeleteAnalysis';
 import { useParams, useSearchParams } from 'react-router-dom';
-import { IconButton, ListItem } from '@citizenlab/cl2-component-library';
-import clHistory from 'utils/cl-router/history';
+import { ListItem, Box } from '@citizenlab/cl2-component-library';
+import Button from 'components/UI/Button';
+import { useIntl } from 'utils/cl-intl';
+import messages from './messages';
 
 const AnalysesList = () => {
+  const { formatMessage } = useIntl();
   const { projectId } = useParams() as { projectId: string };
   const { mutate: deleteAnalysis } = useDeleteAnalysis();
 
@@ -16,32 +19,34 @@ const AnalysesList = () => {
     phaseId,
   });
 
-  console.log(analyses);
   return (
     <div>
       {analyses?.data.map((analysis) => {
         return (
-          <ListItem key={analysis.id}>
+          <ListItem
+            key={analysis.id}
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            py="16px"
+          >
             {analysis.id}
-            <IconButton
-              iconName="eye"
-              iconColor="#000"
-              iconColorOnHover="blue"
-              onClick={() => {
-                clHistory.push(
-                  `/admin/projects/${projectId}/analysis/${analysis.id}`
-                );
-              }}
-              a11y_buttonActionMessage="View analysis"
-            />
-
-            <IconButton
-              iconName="delete"
-              iconColor="#000"
-              iconColorOnHover="red"
-              onClick={() => deleteAnalysis(analysis.id)}
-              a11y_buttonActionMessage="Delete analysis"
-            />
+            <Box display="flex" gap="24px">
+              <Button
+                linkTo={`/admin/projects/${projectId}/analysis/${analysis.id}`}
+                icon="eye"
+                buttonStyle="secondary"
+              >
+                {formatMessage(messages.viewAnalysis)}
+              </Button>
+              <Button
+                onClick={() => deleteAnalysis(analysis.id)}
+                icon="delete"
+                buttonStyle="secondary"
+              >
+                {formatMessage(messages.deleteAnalysis)}
+              </Button>
+            </Box>
           </ListItem>
         );
       })}

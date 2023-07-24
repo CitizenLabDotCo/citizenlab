@@ -22,4 +22,16 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.survey.createAnalysis',
     defaultMessage: 'Create analysis',
   },
+  cancel: {
+    id: 'app.containers.Admin.projects.project.survey.cancel',
+    defaultMessage: 'Cancel',
+  },
+  viewAnalysis: {
+    id: 'app.containers.Admin.projects.project.survey.viewAnalysis',
+    defaultMessage: 'View',
+  },
+  deleteAnalysis: {
+    id: 'app.containers.Admin.projects.project.survey.deleteAnalysis',
+    defaultMessage: 'Delete',
+  },
 });
