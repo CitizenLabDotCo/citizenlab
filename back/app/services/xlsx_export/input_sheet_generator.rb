@@ -10,7 +10,7 @@ module XlsxExport
       @include_private_attributes = include_private_attributes
       @participation_method = Factory.instance.participation_method_for participation_context
       @fields_in_form = IdeaCustomFieldsService.new(participation_method.custom_form).reportable_fields
-      @multiloc_service = MultilocService.new
+      @multiloc_service = MultilocService.new(app_configuration: AppConfiguration.instance)
       @url_service = Frontend::UrlService.new
     end
 

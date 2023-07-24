@@ -2,11 +2,11 @@
 
 module XlsxExport
   class ValueVisitor < FieldVisitorService
-    def initialize(model, option_index)
+    def initialize(model, option_index, app_configuration: nil)
       super()
       @model = model
       @option_index = option_index
-      @multiloc_service = MultilocService.new
+      @multiloc_service = MultilocService.new(app_configuration: app_configuration)
     end
 
     def default(field)

@@ -34,8 +34,8 @@ const AuthorFilters = () => {
 
   const genderUrlQueryParamKey = `author_custom_${genderField?.id}`;
   const domicileUrlQueryParamKey = `author_custom_${domicileField?.id}`;
-  const birthyearUrlQueryParamFromKey = `author_custom_from_${birthyearField?.id}`;
-  const birthyearUrlQueryParamToKey = `author_custom_to_${birthyearField?.id}`;
+  const birthyearUrlQueryParamFromKey = `author_custom_${birthyearField?.id}_from`;
+  const birthyearUrlQueryParamToKey = `author_custom_${birthyearField?.id}_to`;
 
   const yearOptions = useMemo(
     () =>

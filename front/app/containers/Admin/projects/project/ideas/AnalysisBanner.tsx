@@ -14,7 +14,7 @@ import messages from './messages';
 import { useParams } from 'react-router-dom';
 import clHistory from 'utils/cl-router/history';
 
-const Analysis = () => {
+const AnalysisBanner = () => {
   const { projectId } = useParams() as { projectId: string };
   const { formatMessage } = useIntl();
   const analysisEnabled = useFeatureFlag({ name: 'analysis' });
@@ -50,4 +50,4 @@ const Analysis = () => {
   );
 };
 
-export default Analysis;
+export default AnalysisBanner;
