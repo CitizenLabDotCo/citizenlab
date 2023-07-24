@@ -95,10 +95,7 @@ class Initiative < ApplicationRecord
     where(id: with_dups)
   end)
 
-  scope :with_status_code, (proc do |code|
-    left_outer_joins(:initiative_initiative_status)
-      .where(initiative_initiative_statuses: { initiative_status_id: InitiativeStatus.where(code: code) })
-  end)
+  scope :with_status_code, proc { |code| joins(:initiative_status).where(initiative_status: { code: code }) }
 
   scope :order_status, lambda { |direction = :asc|
     joins('LEFT OUTER JOIN initiative_initiative_statuses ON initiatives.id = initiative_initiative_statuses.initiative_id')
