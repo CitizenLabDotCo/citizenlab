@@ -12,7 +12,7 @@ const addAnalysis = async (requestBody: IAddAnalysis) =>
       analysis: {
         project_id: requestBody.projectId,
         phase_id: requestBody.phaseId,
-        custom_field_ids: requestBody.customFieldIds,
+        custom_fields_ids: requestBody.customFieldIds,
       },
     },
   });
