@@ -33,12 +33,17 @@ class FollowerPolicy < ApplicationPolicy
     return false if !user
 
     if user.active? && record.user_id == user.id
-      case record.followable_type
+      policy_class = case record.followable_type
       when 'Project'
-        ProjectPolicy.new(user, record.followable).show?
+        ProjectPolicy
+      when 'ProjectFolders::Folder'
+        ProjectFolders::FolderPolicy
+      when 'Initiative'
+        InitiativePolicy
       else
         raise "Unsupported followable type: #{record.followable_type}"
       end
+      policy_class.new(user, record.followable).show?
     else
       false
     end

@@ -14,7 +14,8 @@
 #
 # Indexes
 #
-#  index_baskets_on_user_id  (user_id)
+#  index_baskets_on_submitted_at  (submitted_at)
+#  index_baskets_on_user_id       (user_id)
 #
 # Foreign Keys
 #

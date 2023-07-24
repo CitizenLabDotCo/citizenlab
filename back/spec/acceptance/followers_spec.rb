@@ -29,6 +29,7 @@ resource 'Followers' do
       expect(json_response[:data].size).to eq 2
       expect(json_response[:data].pluck(:id)).to match_array followers.map(&:id)
       expect(json_response[:included].select { |included| included[:type] == 'project' }.pluck(:id)).to match_array followers.map(&:followable_id)
+      # TODO: add a follower to a proposal and a folder
     end
   end
 
@@ -47,13 +48,44 @@ resource 'Followers' do
 
     let(:project_id) { create(:project).id }
 
-    example_request 'Create a follower' do
+    example_request 'Create a follower of a project' do
       assert_status 201
       json_response = json_parse response_body
       expect(json_response.dig(:data, :relationships)).to match({
         user: { data: { id: user.id, type: 'user' } },
         followable: { data: { id: project_id, type: 'project' } }
       })
+    end
+  end
+
+  post 'web_api/v1/initiatives/:initiative_id/followers' do
+    ValidationErrorHelper.new.error_fields self, Follower
+
+    let(:initiative_id) { create(:initiative).id }
+
+    example_request 'Create a follower of a proposal' do
+      assert_status 201
+      json_response = json_parse response_body
+      expect(json_response.dig(:data, :relationships)).to match({
+        user: { data: { id: user.id, type: 'user' } },
+        followable: { data: { id: initiative_id, type: 'initiative' } }
+      })
+    end
+  end
+
+  post 'web_api/v1/project_folders/:folder_id/followers' do
+    ValidationErrorHelper.new.error_fields self, Follower
+
+    let(:folder_id) { create(:project_folder).id }
+
+    example_request 'Create a follower of a folder' do
+      assert_status 201
+      json_response = json_parse response_body
+      expect(json_response.dig(:data, :relationships)).to match({
+        user: { data: { id: user.id, type: 'user' } },
+        followable: { data: { id: folder_id, type: 'folder' } }
+      })
+      # TODO: verify that projects are also automatically followed
     end
   end
 
@@ -65,5 +97,7 @@ resource 'Followers' do
       expect { do_request }.to change(Follower, :count).by(-1)
       assert_status 200
     end
+
+    # TODO: when unfollowing a folder, also unfollow the projects
   end
 end

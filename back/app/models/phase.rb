@@ -21,13 +21,13 @@
 #  survey_embed_url              :string
 #  survey_service                :string
 #  presentation_mode             :string           default("card")
-#  max_budget                    :integer
+#  voting_max_total              :integer
 #  poll_anonymous                :boolean          default(FALSE), not null
 #  reacting_dislike_enabled      :boolean          default(TRUE), not null
 #  ideas_count                   :integer          default(0), not null
 #  ideas_order                   :string
 #  input_term                    :string           default("idea")
-#  min_budget                    :integer          default(0)
+#  voting_min_total              :integer          default(0)
 #  reacting_dislike_method       :string           default("unlimited"), not null
 #  reacting_dislike_limited_max  :integer          default(10)
 #  posting_method                :string           default("unlimited"), not null
@@ -35,6 +35,12 @@
 #  document_annotation_embed_url :string
 #  allow_anonymous_participation :boolean          default(FALSE), not null
 #  campaigns_settings            :jsonb
+#  voting_method                 :string
+#  voting_max_votes_per_idea     :integer
+#  voting_term_singular_multiloc :jsonb
+#  voting_term_plural_multiloc   :jsonb
+#  baskets_count                 :integer          default(0), not null
+#  votes_count                   :integer          default(0), not null
 #
 # Indexes
 #

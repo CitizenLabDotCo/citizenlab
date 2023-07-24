@@ -9,11 +9,12 @@
 #  idea_id    :uuid
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  votes      :integer          default(1), not null
 #
 # Indexes
 #
-#  index_baskets_ideas_on_basket_id  (basket_id)
-#  index_baskets_ideas_on_idea_id    (idea_id)
+#  index_baskets_ideas_on_basket_id_and_idea_id  (basket_id,idea_id) UNIQUE
+#  index_baskets_ideas_on_idea_id                (idea_id)
 #
 # Foreign Keys
 #
