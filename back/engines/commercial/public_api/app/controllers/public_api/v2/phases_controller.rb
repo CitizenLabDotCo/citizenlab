@@ -2,6 +2,8 @@
 
 module PublicApi
   class V2::PhasesController < PublicApiController
+    include DeletedItemsAction
+
     def index
       list_phases Phase.all
     end

@@ -149,6 +149,4 @@ resource 'Reactions' do
     include_examples 'filtering_by_date', :reaction2, :created_at, :reaction
     include_examples 'filtering_by_date', :reaction2, :updated_at, :reaction
   end
-
-  include_examples '/api/v2/.../deleted', :reactions
 end

@@ -2,8 +2,6 @@
 
 module PublicApi
   class PublicApiController < ActionController::API
-    include DeletedItemsAction
-
     include ::AuthToken::Authenticable
     include ::Pundit::Authorization
 
