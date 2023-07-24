@@ -4,7 +4,7 @@ import analysisKeys from './keys';
 
 const deleteAnalysis = (id: string) =>
   fetcher({
-    path: `/analysis/${id}`,
+    path: `/analyses/${id}`,
     action: 'delete',
   });
 
