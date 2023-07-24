@@ -1,11 +1,10 @@
 import React from 'react';
-import { Button } from '@citizenlab/cl2-component-library';
+import { Button, BoxPaddingProps } from '@citizenlab/cl2-component-library';
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 import { FollowableType } from 'api/follow_unfollow/types';
 import useAddFollower from 'api/follow_unfollow/useAddFollower';
 import useDeleteFollower from 'api/follow_unfollow/useDeleteFollower';
-import { BoxPaddingProps } from '@citizenlab/cl2-component-library';
 
 interface Props extends BoxPaddingProps {
   followableType: FollowableType;
