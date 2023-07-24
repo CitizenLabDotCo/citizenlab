@@ -75,7 +75,7 @@ module Analysis
 
         cf = CustomField.find(custom_field_id)
         case cf.input_type
-        when 'select'
+        when 'select', 'date'
           scope = if value.empty?
             scope.joins(:author).where("users.custom_field_values->>'#{cf.key}' IS NULL")
           else
@@ -87,8 +87,14 @@ module Analysis
           else
             scope.joins(:author).where("(users.custom_field_values->>'#{cf.key}')::jsonb ?| array[:value]", value: value)
           end
+        when 'number'
+          scope = if value.empty?
+            scope.joins(:author).where("users.custom_field_values->>'#{cf.key}' IS NULL")
+          else
+            scope.joins(:author).where("(users.custom_field_values->'#{cf.key}')::numeric IN (?)", value)
+          end
         else
-          raise ArugmentError, "author_custom_<uuid>[] filter on custom field of type #{cf.input_type} is not supported"
+          raise ArgumentError, "author_custom_<uuid>[] filter on custom field of type #{cf.input_type} is not supported"
         end
       end
 
@@ -112,19 +118,19 @@ module Analysis
     end
 
     def decode_author_select_custom_keys
-      params.map do |key, value|
+      params.filter_map do |key, value|
         matches = key.to_s.match(/^author_custom_([a-f0-9-]+)$/)
         # return pair [custom_field_id, value]
         matches && [matches[1], value]
-      end.compact
+      end
     end
 
     def decode_author_numeric_custom_keys
-      params.map do |key, value|
+      params.filter_map do |key, value|
         matches = key.to_s.match(/^author_custom_([a-f0-9-]+)_(from|to)$/)
         # return pair [custom_field_id, value]
         matches && [matches[1], matches[2], value]
-      end.compact
+      end
     end
   end
 end

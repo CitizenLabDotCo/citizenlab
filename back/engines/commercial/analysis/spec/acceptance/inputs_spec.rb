@@ -68,7 +68,7 @@ resource 'Inputs' do
           updated_at: kind_of(String),
           votes_count: 0
         })
-        expect(json_response_body[:included].pluck(:id)).to include(*inputs.map { |i| i.author_id })
+        expect(json_response_body[:included].pluck(:id)).to include(*inputs.map(&:author_id))
       end
 
       example 'supports text search', document: false do
