@@ -15,6 +15,8 @@
 #
 class InitiativeStatus < ApplicationRecord
   CODES = %w[approval_pending approval_rejected proposed expired threshold_reached answered ineligible custom]
+  NOT_PUBLICLY_VISIBLE_CODES = %w[approval_pending approval_rejected].freeze
+
   APPROVAL_CODES = %w[approval_pending approval_rejected].freeze
   NOT_APPROVAL_CODES = (CODES - APPROVAL_CODES).freeze
 
