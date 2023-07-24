@@ -18,9 +18,9 @@ export interface IAnalysisData {
     participation_method: string;
   };
   relationships: {
-    project: IRelationship | null;
-    phase: IRelationship | null;
-    custom_fields: IRelationship[];
+    project: { data: IRelationship } | null;
+    phase: { data: IRelationship } | null;
+    custom_fields: { data: IRelationship[] };
   };
 }
 

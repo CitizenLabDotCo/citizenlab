@@ -5,7 +5,7 @@ import analysesKeys from './keys';
 import { IAnalysis, AnalysesKeys } from './types';
 
 const fetchAnalysis = ({ id }: { id: string }) =>
-  fetcher<IAnalysis>({ path: `/analysis/${id}`, action: 'get' });
+  fetcher<IAnalysis>({ path: `/analyses/${id}`, action: 'get' });
 
 const useAnalysis = (id: string) => {
   return useQuery<IAnalysis, CLErrors, IAnalysis, AnalysesKeys>({
