@@ -4,7 +4,7 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Inputs' do
-  explanation 'Inputs (ideas and survey responses) in the context of an analysis'
+  explanation 'Inputs (inputs and survey responses) in the context of an analysis'
 
   before { header 'Content-Type', 'application/json' }
 
@@ -32,7 +32,7 @@ resource 'Inputs' do
 
     let_it_be(:analysis) { create(:analysis) }
     let_it_be(:id) { analysis.id }
-    let_it_be(:ideas) { create_list(:idea, 5, project: analysis.source_project) }
+    let_it_be(:inputs) { create_list(:idea, 3, project: analysis.source_project) }
 
     context 'when visitor' do
       example 'unauthorized', document: false do
@@ -55,8 +55,20 @@ resource 'Inputs' do
 
       example_request 'lists all inputs in the analysis' do
         expect(status).to eq(200)
-        expect(response_data.pluck(:id)).to match_array(ideas.pluck(:id))
-        expect(json_response_body[:included].pluck(:id)).to include(*ideas.pluck(:id))
+        expect(response_data.pluck(:id)).to match_array(inputs.pluck(:id))
+        expect(response_data.dig(0, :type)).to eq 'analysis_input'
+        expect(response_data.dig(0, :attributes)).to match({
+          title_multiloc: { en: 'Plant more trees', 'nl-BE': 'Plant meer bomen' },
+          body_multiloc: { en: '<p>It would improve the air quality!</p>', 'nl-BE': '<p>De luchtkwaliteit zou er gevoelig op vooruitgaan!</p>' },
+          comments_count: 0,
+          custom_field_values: {},
+          dislikes_count: 0,
+          likes_count: 0,
+          published_at: kind_of(String),
+          updated_at: kind_of(String),
+          votes_count: 0
+        })
+        expect(json_response_body[:included].pluck(:id)).to include(*inputs.map { |i| i.author_id })
       end
 
       example 'supports text search', document: false do

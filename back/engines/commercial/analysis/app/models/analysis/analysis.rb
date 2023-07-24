@@ -30,6 +30,17 @@ module Analysis
 
     validate :project_xor_phase_present
 
+    def inputs
+      scope = Idea.published
+      if phase_id
+        scope.in_phase(phase_id)
+      elsif project.timeline? # must be ideation
+        scope.where(project_id: project_id, creation_phase: nil)
+      elsif analysis.project.continuous?
+        scope.where(project_id: analysis.project_id)
+      end
+    end
+
     def participation_method
       phase&.participation_method || project&.participation_method
     end
