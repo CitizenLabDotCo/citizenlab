@@ -97,9 +97,7 @@ class Initiative < ApplicationRecord
 
   scope :with_status_code, (proc do |code|
     left_outer_joins(:initiative_initiative_status)
-      .where(initiative_initiative_statuses: {
-        initiative_status_id: InitiativeStatus.where(code: code).select(:id)
-      })
+      .where(initiative_initiative_statuses: { initiative_status_id: InitiativeStatus.where(code: code) })
   end)
 
   scope :order_status, lambda { |direction = :asc|
