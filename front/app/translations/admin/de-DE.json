@@ -845,7 +845,7 @@
   "app.containers.Admin.tools.apiTokens.link": "API-Dokumentation",
   "app.containers.Admin.tools.apiTokens.linkUrl": "https://developers.citizenlab.co/reference-api-docs/",
   "app.containers.Admin.tools.apiTokens.name": "Name",
-  "app.containers.Admin.tools.apiTokens.noTokens": "Sie haben noch keine Token.",
+  "app.containers.Admin.tools.apiTokens.noTokens": "Sie haben noch keine Münzen.",
   "app.containers.Admin.tools.apiTokens.title": "Öffentliche API-Tokens",
   "app.containers.Admin.tools.learnMore": "Mehr erfahren",
   "app.containers.Admin.tools.managePublicAPIKeys": "API-Schlüssel verwalten",
