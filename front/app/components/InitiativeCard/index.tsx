@@ -133,7 +133,7 @@ const InitiativeCard = ({
               </ScreenReaderOnly>
             </CommentInfo>
           </FooterInner>
-          <Box p="8px" width="auto">
+          <Box p="8px">
             <FollowUnfollow
               followableType="proposals"
               followableId={initiative.data.id}
