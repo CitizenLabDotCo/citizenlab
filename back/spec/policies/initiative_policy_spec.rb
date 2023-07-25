@@ -20,7 +20,7 @@ describe InitiativePolicy do
       it { is_expected.to permit(:update)  }
       it { is_expected.to permit(:destroy) }
 
-      it 'indexes the initiative, regardless of status' do
+      it 'indexes the initiative' do
         expect(scope.resolve.size).to eq 1
       end
     end
@@ -45,12 +45,29 @@ describe InitiativePolicy do
       it { is_expected.to permit(:show) }
       it { is_expected.to permit(:by_slug) }
       it { is_expected.to permit(:create) }
-      it { is_expected.to permit(:update)  }
+      it { is_expected.to permit(:update)  } # <- tie this to the specific status
       it { is_expected.to permit(:destroy) }
 
-      it 'indexes the initiative, regardless of status' do
+      it 'indexes the initiative' do
         expect(scope.resolve.size).to eq 1
       end
     end
+
+    context 'for a visitor' do
+      let(:user) { nil }
+
+      it { is_expected.not_to permit(:show) }
+      it { is_expected.not_to permit(:by_slug) }
+      it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
+      it { expect { policy.update? }.to raise_error(Pundit::NotAuthorizedError) }
+      it { expect { policy.destroy? }.to raise_error(Pundit::NotAuthorizedError) }
+
+      it 'does not index the initiative' do
+        expect(scope.resolve.size).to eq 0
+      end
+    end
   end
+
+  # feature on / off for statuses beyond approval
+  # maybe iterate over all such statuses and test them
 end
