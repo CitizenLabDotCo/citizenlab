@@ -17,10 +17,8 @@ class InitiativeStatusPolicy < ApplicationPolicy
 
     # This method handles the case when approval was turned on,
     # some initiatives were created, and then approval was turned off.
-    # We still want to show statuses of all initiatives after that.
+    # We still want to show statuses of all used initiatives after that.
     def filter_out_approval_statuses
-      initiatives = InitiativePolicy::Scope.new(user, Initiative).resolve
-
       if UserRoleService.new.can_moderate_initiatives?(user)
         if Initiative.approval_required?
           scope.all
@@ -34,11 +32,15 @@ class InitiativeStatusPolicy < ApplicationPolicy
           end
         end
       else
-        codes = InitiativeStatus::NOT_APPROVAL_CODES
+        public_codes = InitiativeStatus::NOT_APPROVAL_CODES
         # We want to show only statuses of initiatives available to the current user.
         user_codes = initiatives.joins(:initiative_status).distinct.pluck('initiative_statuses.code')
-        scope.where(code: (codes + user_codes).uniq)
+        scope.where(code: (public_codes + user_codes).uniq)
       end
+    end
+
+    def initiatives
+      InitiativePolicy::Scope.new(user, Initiative).resolve
     end
   end
 
