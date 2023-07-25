@@ -187,6 +187,7 @@ const UserFieldSelection = ({
                   disabled={!permissionsCustomFieldsEnabled || !userIsAdmin}
                   onChange={() => {
                     onChange({
+                      phaseId,
                       permission,
                       groupIds,
                       globalCustomFields:
@@ -205,6 +206,7 @@ const UserFieldSelection = ({
                         <FormattedMessage
                           {...messages.useExistingRegistrationQuestions}
                         />
+                        polop
                       </span>
                       {permissionsCustomFieldsEnabled && (
                         <IconTooltip
