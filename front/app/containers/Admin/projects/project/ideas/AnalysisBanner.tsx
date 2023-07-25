@@ -13,12 +13,41 @@ import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 import { useParams } from 'react-router-dom';
 import clHistory from 'utils/cl-router/history';
+import useAnalyses from 'api/analyses/useAnalyses';
+import useAddAnalysis from 'api/analyses/useAddAnalysis';
 
 const AnalysisBanner = () => {
   const { projectId } = useParams() as { projectId: string };
+  const { data: analyses, isLoading: isLoadingAnalyses } = useAnalyses({
+    projectId,
+  });
+  const { mutate: createAnalysis, isLoading } = useAddAnalysis();
+
   const { formatMessage } = useIntl();
+
   const analysisEnabled = useFeatureFlag({ name: 'analysis' });
-  if (!analysisEnabled) return null;
+
+  const handleGoToAnalysis = () => {
+    if (analyses?.data.length) {
+      clHistory.push(
+        `/admin/projects/${projectId}/analysis/${analyses?.data[0].id}`
+      );
+    } else {
+      createAnalysis(
+        { projectId },
+        {
+          onSuccess: (analysis) => {
+            clHistory.push(
+              `/admin/projects/${projectId}/analysis/${analysis.data.id}`
+            );
+          },
+        }
+      );
+    }
+  };
+
+  if (!analysisEnabled || isLoadingAnalyses) return null;
+
   return (
     <Box
       display="flex"
@@ -40,9 +69,8 @@ const AnalysisBanner = () => {
       </Box>
       <Button
         buttonStyle="admin-dark"
-        onClick={() => {
-          clHistory.push(`/admin/projects/${projectId}/analysis/id`);
-        }}
+        onClick={handleGoToAnalysis}
+        processing={isLoading}
       >
         {formatMessage(messages.analysisButton)}
       </Button>
