@@ -17,17 +17,26 @@ import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import Filters from './Filters';
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
+import useAnalysis from 'api/analyses/useAnalysis';
 
 const TopBar = () => {
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
-  const { projectId } = useParams() as { projectId: string };
+  const { projectId, analysisId } = useParams() as {
+    projectId: string;
+    analysisId: string;
+  };
   const { data: project } = useProjectById(projectId);
+  const { data: analysis } = useAnalysis(analysisId);
   const projectTitle = project?.data.attributes.title_multiloc;
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
   const goBack = () => {
-    clHistory.push(`/admin/projects/${projectId}/ideas`);
+    if (analysis?.data.attributes.participation_method === 'survey') {
+      clHistory.push(`/admin/projects/${projectId}/native-survey/results`);
+    } else {
+      clHistory.push(`/admin/projects/${projectId}/ideas`);
+    }
   };
 
   const toggleFilters = () => {

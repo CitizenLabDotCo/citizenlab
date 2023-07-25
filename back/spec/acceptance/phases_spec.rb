@@ -436,11 +436,10 @@ resource 'Phases' do
         let(:ideas) { create_list(:idea, 2, project: @project) }
         let(:phase) { create(:phase, project: @project, participation_method: 'ideation', ideas: ideas) }
         let(:participation_method) { 'information' }
-        let(:ideas_order) { nil }
 
         example 'Make a phase with ideas an information phase' do
           do_request
-          expect(response_status).to eq 200
+          assert_status 200
         end
       end
 
@@ -454,7 +453,6 @@ resource 'Phases' do
 
         let(:ideas_phase) { phase.ideas[0].ideas_phases.first }
         let(:participation_method) { 'poll' }
-        let(:ideas_order) { nil }
 
         example 'Existing related ideas_phase remains valid' do
           expect(ideas_phase.valid?).to be true

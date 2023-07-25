@@ -602,7 +602,7 @@ de:
       body_1: 'Die Abstimmungsphase für das Projekt %{projectTitle} geht morgen um Mitternacht zu Ende.'
       body_2: 'Die Zeit läuft ab und wir haben festgestellt, dass Sie Ihre Stimme noch nicht abgegeben haben! Klicken Sie auf den Button unten und machen Sie mit.'
       body_3: 'Auf diese Weise erhalten Sie Zugang zu einer Reihe von Optionen und haben die Möglichkeit, Ihre Stimme abzugeben, die für die Entscheidung über die Zukunft dieses Projekts entscheidend ist.'
-      cta_vote: 'Stimme'
+      cta_vote: 'Abstimmen'
     voting_results:
       subject: '%{organizationName}: %{phaseTitle} Abstimmungsergebnisse veröffentlicht!'
       preheader: '%{phaseTitle} Abstimmungsergebnisse auf der Beteiligungsplattform von %{organizationName} veröffentlicht'
