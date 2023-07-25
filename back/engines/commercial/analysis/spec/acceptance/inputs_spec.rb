@@ -68,6 +68,14 @@ resource 'Inputs' do
           updated_at: kind_of(String),
           votes_count: 0
         })
+        expect(response_data.dig(0, :relationships, :author, :data)).to match({
+          type: 'user',
+          id: kind_of(String)
+        })
+        expect(response_data.dig(0, :relationships, :idea, :data)).to match({
+          type: 'idea',
+          id: response_data.dig(0, :id)
+        })
         expect(json_response_body[:included].pluck(:id)).to include(*inputs.map(&:author_id))
       end
 
