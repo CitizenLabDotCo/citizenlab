@@ -111,7 +111,7 @@ module Analysis
         elsif predicate == 'to'
           scope.joins(:author).where("(users.custom_field_values->'#{cf.key}')::numeric <= ?", value)
         else
-          raise ArgumentError, "ivalid predicate #{predicate}"
+          raise ArgumentError, "invalid predicate #{predicate}"
         end
       end
       scope

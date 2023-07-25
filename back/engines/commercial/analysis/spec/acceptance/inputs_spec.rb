@@ -19,7 +19,7 @@ resource 'Inputs' do
       parameter :tag_id, 'Filter inputs by analysis_tags (union)', type: :array
       parameter :'author_custom_<uuid>_from', 'Filter by custom field value of the author for numerical or date fields, larger than or equal to. Replace <uuid> with the custom_field id'
       parameter :'author_custom_<uuid>_to', 'Filter by custom field value of the author for numerical or date fields, smaller than or equal to. Replace <uuid> with the custom_field id'
-      parameter :'author_custom_<uuid>', 'Filter by custom field value of the author, for select and multi-select fields (union). Replace <uuid> with the custom_field id', type: :array
+      parameter :'author_custom_<uuid>', 'Filter by custom field value of the author, for select, multiselect, date and number fields (union). Replace <uuid> with the custom_field id', type: :array
       parameter :published_at_from, 'Filter by input publication date, after or equal to', type: :date
       parameter :published_at_to, 'Filter by input publication date, before or equal to', type: :date
       parameter :reactions_from, 'Filter by number of reactions on the input, larger than or equal to', type: :integer
