@@ -170,6 +170,10 @@ describe('Idea show page actions', () => {
         );
       });
 
+      after(() => {
+        cy.apiRemoveIdea(ideaId2);
+      });
+
       beforeEach(() => {
         cy.setLoginCookie(email, password);
         cy.reload();
