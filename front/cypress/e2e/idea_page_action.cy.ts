@@ -1,9 +1,40 @@
 import { randomString, randomEmail } from '../support/commands';
 
 describe('Idea show page actions', () => {
+  let projectId = '';
+  let projectSlug = '';
+  let ideaId = '';
+  let ideaSlug = '';
+
+  before(() => {
+    cy.apiCreateProject({
+      type: 'continuous',
+      title: randomString(20),
+      descriptionPreview: randomString(),
+      description: randomString(),
+      publicationStatus: 'published',
+      participationMethod: 'ideation',
+    }).then((project) => {
+      projectId = project.body.data.id;
+      projectSlug = project.body.data.attributes.slug;
+
+      cy.apiCreateIdea(projectId, randomString(20), randomString()).then(
+        (idea) => {
+          ideaId = idea.body.data.id;
+          ideaSlug = idea.body.data.attributes.slug;
+        }
+      );
+    });
+  });
+
+  after(() => {
+    cy.apiRemoveIdea(ideaId);
+    cy.apiRemoveProject(projectId);
+  });
+
   describe('not logged in', () => {
     before(() => {
-      cy.visit('/ideas/controversial-idea');
+      cy.visit(`/ideas/${ideaSlug}`);
       cy.get('#e2e-idea-show');
       cy.acceptCookies();
     });
@@ -15,9 +46,13 @@ describe('Idea show page actions', () => {
   });
 
   describe('logged in as admin', () => {
-    before(() => {
+    beforeEach(() => {
       cy.setAdminLoginCookie();
-      cy.visit('/ideas/controversial-idea');
+      cy.reload();
+    });
+
+    before(() => {
+      cy.visit(`/ideas/${ideaSlug}`);
       cy.get('#e2e-idea-show');
       cy.acceptCookies();
     });
@@ -43,24 +78,6 @@ describe('Idea show page actions', () => {
     });
 
     describe('Map idea card', () => {
-      const ideaTitle = randomString();
-      let ideaId: string;
-      let projectId: string;
-      let projectSlug: string;
-      const ideaContent = randomString();
-
-      before(() => {
-        cy.getProjectBySlug('an-idea-bring-it-to-your-council').then(
-          (project) => {
-            projectSlug = project.body.data.attributes.slug;
-            projectId = project.body.data.id;
-            cy.apiCreateIdea(projectId, ideaTitle, ideaContent).then((idea) => {
-              ideaId = idea.body.data.id;
-            });
-          }
-        );
-      });
-
       it('displays correct likes and dislikes on map idea card', () => {
         cy.visit(`/projects/${projectSlug}`);
         cy.get('#view-tab-2').should('exist');
@@ -77,38 +94,20 @@ describe('Idea show page actions', () => {
 
   describe('logged in as normal user', () => {
     describe('Reaction', () => {
-      const ideaTitle = randomString();
-      let ideaId: string;
-      let projectId: string;
-      const ideaContent = randomString();
-
-      before(() => {
+      beforeEach(() => {
         const firstName = randomString();
         const lastName = randomString();
         const email = randomEmail();
         const password = randomString();
 
-        cy.getProjectBySlug('an-idea-bring-it-to-your-council').then(
-          (project) => {
-            projectId = project.body.data.id;
-            cy.apiCreateIdea(projectId, ideaTitle, ideaContent).then((idea) => {
-              ideaId = idea.body.data.id;
-            });
-            cy.apiSignup(firstName, lastName, email, password);
-            cy.setLoginCookie(email, password);
-          }
-        );
-      });
-
-      after(() => {
-        if (ideaId) {
-          cy.apiRemoveIdea(ideaId);
-        }
+        cy.apiSignup(firstName, lastName, email, password);
+        cy.setLoginCookie(email, password);
+        cy.reload();
       });
 
       it('has working up and dislike buttons', () => {
-        cy.visit(`/ideas/${ideaTitle}`);
-        cy.intercept(`**/ideas/by_slug/${ideaTitle}`).as('ideaRequest');
+        cy.visit(`/ideas/${ideaSlug}`);
+        cy.intercept(`**/ideas/by_slug/${ideaSlug}`).as('ideaRequest');
 
         cy.wait('@ideaRequest');
         cy.get('#e2e-idea-show').should('exist');
@@ -153,15 +152,32 @@ describe('Idea show page actions', () => {
       const email = randomEmail();
       const password = randomString();
 
+      let ideaId2 = '';
+      let ideaSlug2 = '';
+
       before(() => {
         const firstName = randomString();
         const lastName = randomString();
         cy.apiSignup(firstName, lastName, email, password);
+
+        cy.apiCreateIdea(projectId, randomString(20), randomString()).then(
+          (idea) => {
+            ideaId2 = idea.body.data.id;
+            ideaSlug2 = idea.body.data.attributes.slug;
+
+            cy.apiAddComment(ideaId2, 'idea', randomString());
+          }
+        );
+      });
+
+      after(() => {
+        cy.apiRemoveIdea(ideaId2);
       });
 
       beforeEach(() => {
         cy.setLoginCookie(email, password);
-        cy.visit('/ideas/controversial-idea');
+        cy.reload();
+        cy.visit(`/ideas/${ideaSlug2}`);
         cy.acceptCookies();
         cy.get('#e2e-idea-show');
       });
@@ -176,7 +192,7 @@ describe('Idea show page actions', () => {
       describe('Comment', () => {
         it('lets a logged in user reply to a parent comment', () => {
           const commentBody = randomString();
-          cy.get('.e2e-comment-reply-button').first().click();
+          cy.get('.e2e-comment-reply-button').first().click({ force: true });
           cy.wait(1000);
           cy.get('.e2e-childcomment-form textarea').first().type(commentBody);
           cy.get('.e2e-submit-childcomment').first().click();
