@@ -6,6 +6,7 @@ describe InitiativePolicy do
   subject(:policy) { described_class.new(user, initiative) }
 
   let(:scope) { InitiativePolicy::Scope.new(user, Initiative) }
+  let(:author) { create(:user) }
 
   # We need to consider 4 main scenarios:
   # 1. When approval feature is NOT active, and
@@ -27,7 +28,6 @@ describe InitiativePolicy do
     context 'for initiatives with APPROVAL_CODES statuses' do
       InitiativeStatus::APPROVAL_CODES.each do |code|
         context "for an initiative with #{code} status" do
-          let(:author) { create(:user) }
           let!(:initiative) do
             create(:initiative, author: author, initiative_status: create("initiative_status_#{code}".to_sym))
           end
@@ -66,7 +66,6 @@ describe InitiativePolicy do
     context 'for initiatives with NOT_APPROVAL_CODES statuses' do
       (InitiativeStatus::NOT_APPROVAL_CODES - ['custom']).each do |code|
         context "for an initiative with #{code} status" do
-          let(:author) { create(:user) }
           let!(:initiative) do
             create(:initiative, author: author, initiative_status: create("initiative_status_#{code}".to_sym))
           end
@@ -106,7 +105,6 @@ describe InitiativePolicy do
     context "for initiatives with any status code (except 'custom')" do
       (InitiativeStatus::CODES - ['custom']).each do |code|
         context "for an initiative with #{code} status" do
-          let(:author) { create(:user) }
           let!(:initiative) do
             create(:initiative, author: author, initiative_status: create("initiative_status_#{code}".to_sym))
           end
@@ -171,7 +169,6 @@ describe InitiativePolicy do
     context 'for initiatives with APPROVAL_CODES statuses' do
       InitiativeStatus::APPROVAL_CODES.each do |code|
         context "for an initiative with #{code} status" do
-          let(:author) { create(:user) }
           let!(:initiative) do
             create(:initiative, author: author, initiative_status: create("initiative_status_#{code}".to_sym))
           end
@@ -225,7 +222,6 @@ describe InitiativePolicy do
     context 'for initiatives with NOT_APPROVAL_CODES statuses' do
       (InitiativeStatus::NOT_APPROVAL_CODES - ['custom']).each do |code|
         context "for an initiative with #{code} status" do
-          let(:author) { create(:user) }
           let!(:initiative) do
             create(:initiative, author: author, initiative_status: create("initiative_status_#{code}".to_sym))
           end
@@ -280,7 +276,6 @@ describe InitiativePolicy do
     context "for initiatives with any status code (except 'custom')" do
       (InitiativeStatus::CODES - ['custom']).each do |code|
         context "for an initiative with #{code} status" do
-          let(:author) { create(:user) }
           let!(:initiative) do
             create(:initiative, author: author, initiative_status: create("initiative_status_#{code}".to_sym))
           end
