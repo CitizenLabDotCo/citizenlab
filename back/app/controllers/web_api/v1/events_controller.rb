@@ -15,12 +15,14 @@ class WebApi::V1::EventsController < ApplicationController
   end
 
   def create
-    event = Event.new(event_params)
-    event.project_id = params[:project_id]
+
+    event = Event.new(
+      event_params.merge(project_id: params[:project_id])
+    )
 
     SideFxEventService.new.before_create(event, current_user)
 
-    authorize event
+    authorize(event)
 
     if event.save
       SideFxEventService.new.after_create(event, current_user)
@@ -64,9 +66,22 @@ class WebApi::V1::EventsController < ApplicationController
       :project_id,
       :start_at,
       :end_at,
+      :location_description,
+      location_point_geojson: [:type, { coordinates: [] }],
       location_multiloc: CL2_SUPPORTED_LOCALES,
       title_multiloc: CL2_SUPPORTED_LOCALES,
       description_multiloc: CL2_SUPPORTED_LOCALES
-    )
+    ).tap do |p|
+      # Set default location_description if not provided and location_multiloc is
+      # provided. This will be removed once the location_multiloc parameter is removed.
+      next if p[:location_multiloc].blank?
+
+      p[:location_description] ||= p.dig(:location_multiloc, default_locale)
+      p[:location_description] ||= p[:location_multiloc].values.first
+    end
+  end
+
+  def default_locale
+    AppConfiguration.instance.settings('core', 'locales').first
   end
 end

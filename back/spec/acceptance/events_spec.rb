@@ -96,12 +96,19 @@ resource 'Events' do
 
     post 'web_api/v1/projects/:project_id/events' do
       with_options scope: :event do
-        parameter :title_multiloc, 'The title of the event in multiple locales', required: true
-        parameter :description_multiloc, 'The description of the event in multiple languages. Supports basic HTML.', required: false
-        parameter :location_multiloc, 'The location of the event. Textual', required: false
-        parameter :start_at, 'The start datetime of the event', required: true
-        parameter :end_at, 'The end datetime of the event', required: true
+        with_options required: true do
+          parameter :title_multiloc, 'The title of the event in multiple locales'
+          parameter :start_at, 'The start datetime of the event'
+          parameter :end_at, 'The end datetime of the event'
+        end
+
+        # Optional parameters
+        parameter :description_multiloc, 'The description of the event in multiple languages. Supports basic HTML.'
+        parameter :location_multiloc, '[DEPRECATED] The location of the event. Textual'
+        parameter :location_point_geojson, 'A GeoJSON point that indicates where the event takes place.'
+        parameter :location_description, 'A human-readable description of the event location of the event.'
       end
+
       ValidationErrorHelper.new.error_fields(self, Event)
       response_field :start_at, "Array containing objects with signature {error: 'after_end_at'}", scope: :errors
 
@@ -145,10 +152,13 @@ resource 'Events' do
         parameter :project_id, 'The id of the project this event belongs to'
         parameter :title_multiloc, 'The title of the event in multiple locales'
         parameter :description_multiloc, 'The description of the event in multiple languages. Supports basic HTML.'
-        parameter :location_multiloc, 'The location of the event. Textual'
+        parameter :location_multiloc, '[DEPRECATED] The location of the event. Textual'
+        parameter :location_point_geojson, 'A GeoJSON point that indicates where the event takes place.'
+        parameter :location_description, 'A human-readable description of the event location of the event.'
         parameter :start_at, 'The start datetime of the event'
         parameter :end_at, 'The end datetime of the event'
       end
+
       ValidationErrorHelper.new.error_fields(self, Event)
 
       let(:event) { create(:event, project: @project) }
