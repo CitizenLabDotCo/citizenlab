@@ -37,6 +37,7 @@ Rails.application.routes.draw do
         end
         get 'comments/as_xlsx', on: :collection, to: 'comments#index_xlsx'
         resources :official_feedback, shallow: true
+        resources :followers, only: [:create]
       end
       concern :spam_reportable do
         resources :spam_reports, shallow: true
@@ -44,7 +45,7 @@ Rails.application.routes.draw do
 
       resources :ideas,
         concerns: %i[reactable spam_reportable post],
-        defaults: { reactable: 'Idea', spam_reportable: 'Idea', post: 'Idea' } do
+        defaults: { reactable: 'Idea', spam_reportable: 'Idea', post: 'Idea', followable: 'Idea' } do
         resources :images, defaults: { container_type: 'Idea' }
         resources :files, defaults: { container_type: 'Idea' }
 
@@ -63,7 +64,6 @@ Rails.application.routes.draw do
         resources :files, defaults: { container_type: 'Initiative' }
 
         resources :initiative_status_changes, shallow: true, except: %i[update destroy]
-        resources :followers, only: [:create]
 
         get :as_xlsx, on: :collection, action: 'index_xlsx'
         get 'by_slug/:slug', on: :collection, to: 'initiatives#by_slug'

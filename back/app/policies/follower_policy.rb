@@ -40,6 +40,8 @@ class FollowerPolicy < ApplicationPolicy
         ProjectFolders::FolderPolicy
       when 'Initiative'
         InitiativePolicy
+      when 'Idea'
+        IdeaPolicy
       else
         raise "Unsupported followable type: #{record.followable_type}"
       end
