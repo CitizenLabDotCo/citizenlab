@@ -269,6 +269,19 @@ module ParticipationMethod
       'section'
     end
 
+    def create_default_form!
+      form = CustomForm.create(participation_context: participation_context)
+
+      default_fields(form).reverse_each do |field|
+        field.save!
+        field.move_to_top
+      end
+
+      participation_context.reload
+
+      form
+    end
+
     def validate_built_in_fields?
       true
     end

@@ -70,10 +70,21 @@ resource 'Analyses' do
 
     describe do
       let(:project) { create(:project_with_active_ideation_phase) }
+      let(:project_id) { project.id }
+
+      example_request 'Create an analysis (ideation phase) when no custom_form exists' do
+        expect(response_status).to eq 201
+        # If no custom_fields are passed, all textual fields must be added automatically
+        expect(response_data.dig(:relationships, :custom_fields, :data)).not_to be_empty
+      end
+    end
+
+    describe do
+      let(:project) { create(:project_with_active_ideation_phase) }
       let!(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
       let(:project_id) { project.id }
 
-      example_request 'Create an analysis (ideation phase)' do
+      example_request 'Create an analysis (ideation phase) when the custom_form already exists' do
         expect(response_status).to eq 201
         # If no custom_fields are passed, all textual fields must be added automatically
         expect(response_data.dig(:relationships, :custom_fields, :data)).not_to be_empty
