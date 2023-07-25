@@ -188,7 +188,6 @@ describe('Idea show page actions', () => {
       describe('Comment', () => {
         it('lets a logged in user reply to a parent comment', () => {
           const commentBody = randomString();
-          // cy.get('#submit-comment').focus();
           cy.get('.e2e-comment-reply-button').first().click({ force: true });
           cy.wait(1000);
           cy.get('.e2e-childcomment-form textarea').first().type(commentBody);
