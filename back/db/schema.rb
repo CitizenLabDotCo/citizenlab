@@ -555,6 +555,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_19_221540) do
     t.boolean "anonymous", default: false, null: false
     t.integer "internal_comments_count", default: 0, null: false
     t.integer "votes_count", default: 0, null: false
+    t.integer "followers_count", default: 0, null: false
     t.index "((to_tsvector('simple'::regconfig, COALESCE((title_multiloc)::text, ''::text)) || to_tsvector('simple'::regconfig, COALESCE((body_multiloc)::text, ''::text))))", name: "index_ideas_search", using: :gin
     t.index ["author_hash"], name: "index_ideas_on_author_hash"
     t.index ["author_id"], name: "index_ideas_on_author_id"
