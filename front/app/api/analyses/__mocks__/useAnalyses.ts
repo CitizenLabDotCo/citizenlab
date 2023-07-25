@@ -16,12 +16,6 @@ export const analysesData: IAnalysisData[] = [
           type: 'project',
         },
       },
-      phase: {
-        data: {
-          id: '1',
-          type: 'phase',
-        },
-      },
       custom_fields: {
         data: [
           {

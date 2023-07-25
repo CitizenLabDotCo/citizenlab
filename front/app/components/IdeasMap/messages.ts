@@ -33,6 +33,16 @@ export default defineMessages({
     id: 'app.components.IdeasMap.tapOnMapToAdd',
     defaultMessage: 'Tap on the map to add your input',
   },
+  clickOnMapToAddAdmin: {
+    id: 'app.components.IdeasMap.clickOnMapToAddAdmin',
+    defaultMessage:
+      'As an admin, you can click on the map to add your input, even though this phase is not active.',
+  },
+  tapOnMapToAddAdmin: {
+    id: 'app.components.IdeasMap.tapOnMapToAddAdmin',
+    defaultMessage:
+      'As an admin, you can tap on the map to add your input, even though this phase is not active.',
+  },
   a11y_hideIdeaCard: {
     id: 'app.components.IdeasMap.a11y_hideIdeaCard',
     defaultMessage: 'Hide idea card.',

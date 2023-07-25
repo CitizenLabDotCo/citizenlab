@@ -76,4 +76,6 @@ resource 'Project Folders' do
       expect(json_response_body[:'project_folders/folder']).to include({ id: id })
     end
   end
+
+  include_examples '/api/v2/.../deleted', :project_folders
 end
