@@ -36,9 +36,9 @@ const AnalysisBanner = () => {
       createAnalysis(
         { projectId },
         {
-          onSuccess: () => {
+          onSuccess: (analysis) => {
             clHistory.push(
-              `/admin/projects/${projectId}/analysis/${analyses?.data[0].id}`
+              `/admin/projects/${projectId}/analysis/${analysis.data.id}`
             );
           },
         }
