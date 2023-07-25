@@ -13,5 +13,3 @@ class CreateAnalysisTags < ActiveRecord::Migration[7.0]
       end
     end
   end
-  
-  # docker-compose run -e ENABLE_SPRING=true web /bin/bash
