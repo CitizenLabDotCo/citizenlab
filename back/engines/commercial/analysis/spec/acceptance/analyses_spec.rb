@@ -76,6 +76,7 @@ resource 'Analyses' do
         expect(response_status).to eq 201
         # If no custom_fields are passed, all textual fields must be added automatically
         expect(response_data.dig(:relationships, :custom_fields, :data)).not_to be_empty
+        expect(json_response_body[:included].map { |d| d[:attributes][:code] }).to match_array(%w[title_multiloc body_multiloc location_description])
       end
     end
 
@@ -88,6 +89,7 @@ resource 'Analyses' do
         expect(response_status).to eq 201
         # If no custom_fields are passed, all textual fields must be added automatically
         expect(response_data.dig(:relationships, :custom_fields, :data)).not_to be_empty
+        expect(json_response_body[:included].map { |d| d[:attributes][:code] }).to match_array(%w[title_multiloc body_multiloc location_description])
       end
     end
 

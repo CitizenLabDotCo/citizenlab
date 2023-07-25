@@ -83,7 +83,7 @@ module Analysis
 
           custom_fields = IdeaCustomFieldsService.new(custom_form).all_fields
           # custom fields can be an array or a scope
-          custom_fields.respond_to?(:ids) ? custom_fields.ids : custom_fields.map(&:id)
+          custom_fields.filter(&:support_free_text_value?).map(&:id)
         end
       end
     end
