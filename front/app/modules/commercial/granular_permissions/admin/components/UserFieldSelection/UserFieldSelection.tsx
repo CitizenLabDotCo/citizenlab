@@ -206,7 +206,6 @@ const UserFieldSelection = ({
                         <FormattedMessage
                           {...messages.useExistingRegistrationQuestions}
                         />
-                        polop
                       </span>
                       {permissionsCustomFieldsEnabled && (
                         <IconTooltip
