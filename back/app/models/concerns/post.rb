@@ -4,6 +4,7 @@ require 'active_support/concern'
 
 module Post
   include PgSearch::Model
+  include GeoJsonHelpers
   extend ActiveSupport::Concern
 
   PUBLICATION_STATUSES = %w[draft published closed spam].freeze
@@ -62,14 +63,6 @@ module Post
     scope :order_author_name, lambda { |direction = :desc|
       includes(:author).order('users.first_name' => direction, 'users.last_name' => direction)
     }
-
-    def location_point_geojson
-      RGeo::GeoJSON.encode(location_point) if location_point.present?
-    end
-
-    def location_point_geojson=(geojson_point)
-      self.location_point = RGeo::GeoJSON.decode(geojson_point)
-    end
 
     def draft?
       publication_status == 'draft'

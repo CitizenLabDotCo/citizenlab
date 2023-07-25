@@ -26,6 +26,8 @@
 #  fk_rails_...  (project_id => projects.id)
 #
 class Event < ApplicationRecord
+  include GeoJsonHelpers
+
   belongs_to :project
   has_many :event_files, -> { order(:ordering) }, dependent: :destroy
   has_many :text_images, as: :imageable, dependent: :destroy
