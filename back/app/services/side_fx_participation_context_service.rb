@@ -15,7 +15,12 @@ class SideFxParticipationContextService
     )
   end
 
-  def before_update(pc, user); end
+  def before_update(pc, _user)
+    method = Factory.instance.participation_method_for pc
+    if method.allowed_ideas_orders.exclude? pc.ideas_order
+      pc.ideas_order = method.allowed_ideas_orders.first
+    end
+  end
 
   def after_update(pc, _user)
     Surveys::WebhookManagerJob.perform_later(
