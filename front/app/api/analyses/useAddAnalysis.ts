@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
-import areaKeys from './keys';
+import analysesKeys from './keys';
 import { IAnalysis, IAddAnalysis } from './types';
 
 const addAnalysis = async (requestBody: IAddAnalysis) =>
@@ -22,7 +22,7 @@ const useAddAnalysis = () => {
   return useMutation<IAnalysis, CLErrors, IAddAnalysis>({
     mutationFn: addAnalysis,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: areaKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: analysesKeys.lists() });
     },
   });
 };

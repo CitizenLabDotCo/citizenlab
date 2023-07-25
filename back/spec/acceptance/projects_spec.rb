@@ -646,6 +646,15 @@ resource 'Projects' do
           expect(json_response.dig(:data, :attributes, :voting_term_singular_multiloc, :en)).to eq 'Grocery shopping'
           expect(json_response.dig(:data, :attributes, :voting_term_plural_multiloc, :en)).to eq 'Groceries shoppings'
         end
+
+        describe do
+          let(:participation_method) { 'volunteering' }
+
+          example 'Change the participation method from voting to volunteering', document: false do
+            do_request
+            assert_status 200
+          end
+        end
       end
 
       example 'Log activities', document: false do

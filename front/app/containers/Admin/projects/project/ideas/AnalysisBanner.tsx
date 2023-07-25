@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import {
@@ -18,20 +18,35 @@ import useAddAnalysis from 'api/analyses/useAddAnalysis';
 
 const AnalysisBanner = () => {
   const { projectId } = useParams() as { projectId: string };
-  const { data: analyses } = useAnalyses({ projectId });
-  const { mutate: createAnalysis } = useAddAnalysis();
+  const { data: analyses, isLoading: isLoadingAnalyses } = useAnalyses({
+    projectId,
+  });
+  const { mutate: createAnalysis, isLoading } = useAddAnalysis();
 
   const { formatMessage } = useIntl();
 
   const analysisEnabled = useFeatureFlag({ name: 'analysis' });
 
-  useEffect(() => {
-    if (analysisEnabled && analyses && analyses.data.length === 0) {
-      createAnalysis({ projectId });
+  const handleGoToAnalysis = () => {
+    if (analyses?.data.length) {
+      clHistory.push(
+        `/admin/projects/${projectId}/analysis/${analyses?.data[0].id}`
+      );
+    } else {
+      createAnalysis(
+        { projectId },
+        {
+          onSuccess: (analysis) => {
+            clHistory.push(
+              `/admin/projects/${projectId}/analysis/${analysis.data.id}`
+            );
+          },
+        }
+      );
     }
-  }, [analyses, createAnalysis, projectId, analysisEnabled]);
+  };
 
-  if (!analysisEnabled) return null;
+  if (!analysisEnabled || isLoadingAnalyses) return null;
 
   return (
     <Box
@@ -54,11 +69,8 @@ const AnalysisBanner = () => {
       </Box>
       <Button
         buttonStyle="admin-dark"
-        onClick={() => {
-          clHistory.push(
-            `/admin/projects/${projectId}/analysis/${analyses?.data[0].id}`
-          );
-        }}
+        onClick={handleGoToAnalysis}
+        processing={isLoading}
       >
         {formatMessage(messages.analysisButton)}
       </Button>

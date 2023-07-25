@@ -5,6 +5,7 @@ Analysis::Engine.routes.draw do
     namespace :v1 do
       resources :analyses, except: %i[update] do
         resources :tags, except: %i[show]
+        resources :inputs, only: [:index]
       end
     end
   end
