@@ -58,6 +58,21 @@ resource 'Followers' do
     end
   end
 
+  post 'web_api/v1/ideas/:idea_id/followers' do
+    ValidationErrorHelper.new.error_fields self, Follower
+
+    let(:idea_id) { create(:idea).id }
+
+    example_request 'Create a follower of a proposal' do
+      assert_status 201
+      json_response = json_parse response_body
+      expect(json_response.dig(:data, :relationships)).to match({
+        user: { data: { id: user.id, type: 'user' } },
+        followable: { data: { id: idea_id, type: 'idea' } }
+      })
+    end
+  end
+
   post 'web_api/v1/initiatives/:initiative_id/followers' do
     ValidationErrorHelper.new.error_fields self, Follower
 
