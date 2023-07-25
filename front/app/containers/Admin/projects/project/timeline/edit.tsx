@@ -115,6 +115,16 @@ const AdminProjectTimelineEdit = () => {
     return null;
   }
 
+  const flatCampaigns = campaigns.pages.flatMap((page) => page.data);
+  const initialCampaignsSettings = flatCampaigns.reduce((acc, campaign) => {
+    acc[campaign.attributes.campaign_name] = campaign.attributes.enabled;
+    return acc;
+  }, {});
+
+  const phaseAttrs = phase
+    ? { ...phase.data.attributes, ...attributeDiff }
+    : { campaigns_settings: initialCampaignsSettings, ...attributeDiff };
+
   const handleTitleMultilocOnChange = (title_multiloc: Multiloc) => {
     setSubmitState('enabled');
     setAttributeDiff({
@@ -319,16 +329,6 @@ const AdminProjectTimelineEdit = () => {
     return startDate;
   };
 
-  const flatCampaigns = campaigns.pages.flatMap((page) => page.data);
-  const initialCampaignsSettings = flatCampaigns.reduce((acc, campaign) => {
-    acc[campaign.attributes.campaign_name] = campaign.attributes.enabled;
-    return acc;
-  }, {});
-
-  const phaseAttrs = phase
-    ? { ...phase.data.attributes, ...attributeDiff }
-    : { campaigns_settings: initialCampaignsSettings, ...attributeDiff };
-
   const startDate = getStartDate();
   const endDate = phaseAttrs.end_at ? moment(phaseAttrs.end_at) : null;
 
@@ -426,26 +426,28 @@ const AdminProjectTimelineEdit = () => {
             />
           </SectionField>
 
-          <SectionField>
-            <SubSectionTitle>
-              <FormattedMessage {...messages.automatedEmails} />
-            </SubSectionTitle>
-            <Text color="coolGrey600" mt="0px" fontSize="m">
-              <FormattedMessage {...messages.automatedEmailsDescription} />
-            </Text>
-            {flatCampaigns.map((campaign) => (
-              <CampaignRow
-                campaign={stringifyCampaignFields(campaign, localize)}
-                checked={
-                  phaseAttrs.campaigns_settings?.[
-                    campaign.attributes.campaign_name
-                  ]
-                }
-                key={campaign.id}
-                handleOnEnabledToggle={handleCampaignEnabledOnChange}
-              />
-            ))}
-          </SectionField>
+          {Object.keys(flatCampaigns).length > 0 && (
+            <SectionField>
+              <SubSectionTitle>
+                <FormattedMessage {...messages.automatedEmails} />
+              </SubSectionTitle>
+              <Text color="coolGrey600" mt="0px" fontSize="m">
+                <FormattedMessage {...messages.automatedEmailsDescription} />
+              </Text>
+              {flatCampaigns.map((campaign) => (
+                <CampaignRow
+                  campaign={stringifyCampaignFields(campaign, localize)}
+                  checked={
+                    phaseAttrs.campaigns_settings?.[
+                      campaign.attributes.campaign_name
+                    ]
+                  }
+                  key={campaign.id}
+                  handleOnEnabledToggle={handleCampaignEnabledOnChange}
+                />
+              ))}
+            </SectionField>
+          )}
 
           {errors && errors.project && (
             <SectionField>
