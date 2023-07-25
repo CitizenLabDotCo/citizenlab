@@ -790,7 +790,7 @@
   "app.containers.Admin.projects.project.survey.analysisTitle": "KI-gestützte Analyse",
   "app.containers.Admin.projects.project.survey.cancel": "Abbrechen",
   "app.containers.Admin.projects.project.survey.createAnalysis": "Analyse erstellen",
-  "app.containers.Admin.projects.project.survey.deleteAnalysis": "Abbrechen",
+  "app.containers.Admin.projects.project.survey.deleteAnalysis": "Löschen",
   "app.containers.Admin.projects.project.survey.deleteAnalysisConfirmation": "Sind Sie sicher, dass Sie diese Analyse löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
   "app.containers.Admin.projects.project.survey.viewAnalysis": "Vorschau",
   "app.containers.Admin.reporting.chartsSection": "CHARTS",
