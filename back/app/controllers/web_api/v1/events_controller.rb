@@ -15,18 +15,18 @@ class WebApi::V1::EventsController < ApplicationController
   end
 
   def create
-    @event = Event.new(event_params)
-    @event.project_id = params[:project_id]
+    event = Event.new(event_params)
+    event.project_id = params[:project_id]
 
-    SideFxEventService.new.before_create(@event, current_user)
+    SideFxEventService.new.before_create(event, current_user)
 
-    authorize @event
+    authorize event
 
-    if @event.save
-      SideFxEventService.new.after_create(@event, current_user)
-      render json: WebApi::V1::EventSerializer.new(@event, params: jsonapi_serializer_params).serializable_hash, status: :created
+    if event.save
+      SideFxEventService.new.after_create(event, current_user)
+      render json: WebApi::V1::EventSerializer.new(event, params: jsonapi_serializer_params).serializable_hash, status: :created
     else
-      render json: { errors: @event.errors.details }, status: :unprocessable_entity
+      render json: { errors: event.errors.details }, status: :unprocessable_entity
     end
   end
 
