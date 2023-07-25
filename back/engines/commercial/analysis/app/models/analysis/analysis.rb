@@ -45,6 +45,16 @@ module Analysis
       end
     end
 
+    def participation_method
+      if phase
+        phase.participation_method
+      elsif project&.continuous?
+        project.participation_method
+      elsif project&.timeline?
+        'ideation'
+      end
+    end
+
     # We don't call this `project` to not collide with the project association
     def source_project
       project || phase&.project
