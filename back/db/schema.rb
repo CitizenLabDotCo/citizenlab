@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_19_221540) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_25_084253) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -52,6 +52,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_19_221540) do
     t.index ["parent_id"], name: "index_admin_publications_on_parent_id"
     t.index ["publication_type", "publication_id"], name: "index_admin_publications_on_publication_type_and_publication_id"
     t.index ["rgt"], name: "index_admin_publications_on_rgt"
+  end
+
+  create_table "analyses_tags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false
+    t.uuid "analysis_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["analysis_id", "name"], name: "index_analyses_tags_on_analysis_id_and_name", unique: true
+    t.index ["analysis_id"], name: "index_analyses_tags_on_analysis_id"
   end
 
   create_table "analysis_analyses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1458,6 +1467,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_19_221540) do
   end
 
   add_foreign_key "activities", "users"
+  add_foreign_key "analyses_tags", "analysis_analyses", column: "analysis_id"
   add_foreign_key "analysis_analyses", "phases"
   add_foreign_key "analysis_analyses", "projects"
   add_foreign_key "analysis_analyses_custom_fields", "analysis_analyses", column: "analysis_id"
