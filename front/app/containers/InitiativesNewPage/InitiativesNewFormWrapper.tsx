@@ -30,7 +30,7 @@ import { trackEventByName } from 'utils/analytics';
 
 // api
 import useAddInitiative from 'api/initiatives/useAddInitiative';
-import { IInitiativeAdd } from 'api/initiatives/types';
+import { IInitiativeAdd, IInitiativeCosponsor } from 'api/initiatives/types';
 import useAddInitiativeImage from 'api/initiative_images/useAddInitiativeImage';
 import useDeleteInitiativeImage from 'api/initiative_images/useDeleteInitiativeImage';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -76,6 +76,7 @@ const InitiativesNewFormWrapper = ({
     body_multiloc: undefined,
     topic_ids: [],
     position: location_description,
+    cosponsors: [],
   };
   const [postAnonymously, setPostAnonymously] = useState(false);
   const [formValues, setFormValues] = useState<SimpleFormValues>(initialValues);
@@ -142,7 +143,7 @@ const InitiativesNewFormWrapper = ({
     banner: UploadFile | undefined | null
   ) => {
     // build API readable object
-    const { title_multiloc, body_multiloc, topic_ids, position } =
+    const { title_multiloc, body_multiloc, topic_ids, position, cosponsors } =
       changedValues;
 
     const positionInfo = await parsePosition(position ?? location_description);
@@ -153,6 +154,7 @@ const InitiativesNewFormWrapper = ({
         body_multiloc,
         topic_ids,
         ...positionInfo,
+        cosponsors,
       },
       (entry) => entry === undefined
     );
@@ -345,6 +347,13 @@ const InitiativesNewFormWrapper = ({
     }));
   };
 
+  const onChangeCosponsors = (cosponsors: IInitiativeCosponsor[]) => {
+    setFormValues((formValues) => ({
+      ...formValues,
+      cosponsors,
+    }));
+  };
+
   const onChangeBanner = (newValue: UploadFile | null) => {
     setBanner(newValue);
     setHasBannerChanged(true);
@@ -468,6 +477,7 @@ const InitiativesNewFormWrapper = ({
         onChangeBody={onChangeBody}
         onChangeTopics={onChangeTopics}
         onChangePosition={onChangePosition}
+        onChangeCosponsors={onChangeCosponsors}
         onChangeBanner={onChangeBanner}
         onChangeImage={onChangeImage}
         onAddFile={onAddFile}

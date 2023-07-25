@@ -37,6 +37,11 @@ export type InitiativePublicationStatus =
   | 'archived'
   | 'spam';
 
+export interface IInitiativeCosponsor {
+  id: string;
+  display: string;
+}
+
 export interface IInitiativeData {
   id: string;
   type: 'initiative';
@@ -58,6 +63,7 @@ export interface IInitiativeData {
     header_bg: ImageSizes;
     expires_at: string;
     anonymous: boolean;
+    cosponsors: IInitiativeCosponsor[];
   };
   relationships: {
     topics: {

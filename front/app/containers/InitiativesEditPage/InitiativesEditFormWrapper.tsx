@@ -29,7 +29,11 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAddInitiativeFile from 'api/initiative_files/useAddInitiativeFile';
 import useDeleteInitiativeFile from 'api/initiative_files/useDeleteInitiativeFile';
 import useUpdateInitiative from 'api/initiatives/useUpdateInitiative';
-import { IInitiativeAdd, IInitiativeData } from 'api/initiatives/types';
+import {
+  IInitiativeAdd,
+  IInitiativeCosponsor,
+  IInitiativeData,
+} from 'api/initiatives/types';
 import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
 import useTopics from 'api/topics/useTopics';
 
@@ -66,6 +70,7 @@ const InitiativesEditFormWrapper = ({
     body_multiloc: initiative.attributes.body_multiloc,
     position: initiative.attributes.location_description,
     topic_ids: initiative.relationships.topics.data.map((topic) => topic.id),
+    cosponsors: initiative.attributes.cosponsors,
   };
 
   const [formValues, setFormValues] = useState<SimpleFormValues>(initialValues);
@@ -365,6 +370,13 @@ const InitiativesEditFormWrapper = ({
     }));
   };
 
+  const onChangeCosponsors = (cosponsors: IInitiativeCosponsor[]) => {
+    setFormValues((formValues) => ({
+      ...formValues,
+      cosponsors,
+    }));
+  };
+
   const onChangeBanner = (newValue: UploadFile | null) => {
     setBanner(newValue);
     setHasBannerChanged(true);
@@ -416,6 +428,7 @@ const InitiativesEditFormWrapper = ({
         onChangeBody={onChangeBody}
         onChangeTopics={onChangeTopics}
         onChangePosition={onChangePosition}
+        onChangeCosponsors={onChangeCosponsors}
         onChangeBanner={onChangeBanner}
         onChangeImage={onChangeImage}
         onAddFile={onAddFile}

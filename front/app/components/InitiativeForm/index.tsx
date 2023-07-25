@@ -15,7 +15,12 @@ import {
 } from 'components/UI/FormComponents';
 import { SectionField } from 'components/admin/Section';
 import TopicsPicker from 'components/UI/TopicsPicker';
-import { Box, Input, LocationInput } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Input,
+  LocationInput,
+  Text,
+} from '@citizenlab/cl2-component-library';
 import QuillEditor from 'components/UI/QuillEditor';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import FileUploader from 'components/UI/FileUploader';
@@ -31,6 +36,8 @@ import { Multiloc, Locale, UploadFile } from 'typings';
 import { ITopicData } from 'api/topics/types';
 import { FormSubmitFooter } from './SubmitFooter';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import MentionsTextArea from 'components/UI/MentionsTextArea';
+import { IInitiativeCosponsor } from 'api/initiatives/types';
 
 const Form = styled.form`
   display: flex;
@@ -51,6 +58,7 @@ export interface SimpleFormValues {
   body_multiloc: Multiloc | undefined | null;
   topic_ids: string[];
   position: string | undefined | null;
+  cosponsors: IInitiativeCosponsor[];
 }
 
 export interface FormValues extends SimpleFormValues {
@@ -71,6 +79,7 @@ interface Props extends FormValues, FormProps {
   onChangeBody: (newValue: Multiloc) => void;
   onChangeTopics: (newValue: string[]) => void;
   onChangePosition: (newValue: string) => void;
+  onChangeCosponsors: (cosponsors: IInitiativeCosponsor[]) => void;
   onChangeBanner: (newValue: UploadFile | null) => void;
   onChangeImage: (newValue: UploadFile | null) => void;
   onAddFile: (newValue: UploadFile) => void;
@@ -92,6 +101,7 @@ const InitiativeForm = ({
   title_multiloc,
   body_multiloc,
   topic_ids,
+  cosponsors,
   image,
   onSave,
   onPublish,
@@ -102,6 +112,7 @@ const InitiativeForm = ({
   onChangeBody,
   position,
   onChangePosition,
+  onChangeCosponsors,
   banner,
   files,
   onAddFile,
@@ -122,6 +133,13 @@ const InitiativeForm = ({
   const [errors, setErrors] = useState<{
     [key in keyof FormValues]?: { message: MessageDescriptor } | undefined;
   }>({});
+  const initialCosponsorsText = cosponsors.reduce(
+    (acc, cosponsor) => `${acc}@[${cosponsor.display}](${cosponsor.id}) `,
+    ''
+  );
+  const [cosponsorsText, setCosponsorsText] = useState<string>(
+    initialCosponsorsText
+  );
 
   const { formatMessage } = useIntl();
   const titleMinLength = 10;
@@ -394,6 +412,24 @@ const InitiativeForm = ({
               </FormLabel>
             </SectionField>
           )}
+        </StyledFormSection>
+        <StyledFormSection>
+          <FormSectionTitle message={messages.cosponsorSectionTitle} />
+          <Text>
+            {formatMessage(messages.cosponsorSubtextBeforeInput, {
+              cosponsorsNumber: 1,
+            })}
+          </Text>
+          <MentionsTextArea
+            name="cosponsors"
+            rows={1}
+            value={cosponsorsText}
+            onChange={setCosponsorsText}
+            onChangeMentions={onChangeCosponsors}
+            trigger=""
+            onBlur={onBlur('cosponsors')}
+          />
+          <Text>{formatMessage(messages.cosponsorSubtextAfterInput)}</Text>
         </StyledFormSection>
         <StyledFormSection>
           <FormSectionTitle message={messages.formAttachmentsSectionTitle} />

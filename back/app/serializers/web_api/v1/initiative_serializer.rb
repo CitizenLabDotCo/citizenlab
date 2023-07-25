@@ -35,6 +35,13 @@ class WebApi::V1::InitiativeSerializer < WebApi::V1::BaseSerializer
     can_moderate?(object, params)
   }
 
+  attribute :cosponsors do |_object|
+    [
+      { id: 'malik-beier', display: 'Malik Beier' },
+      { id: 'anjana-stolpe', display: 'Anjana Stolpe' }
+    ]
+  end
+
   has_many :initiative_images, serializer: WebApi::V1::ImageSerializer
   has_many :topics
   has_many :areas

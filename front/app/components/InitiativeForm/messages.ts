@@ -114,6 +114,20 @@ export default defineMessages({
     id: 'app.components.InitiativeForm.locationPlaceholder',
     defaultMessage: 'Type an address',
   },
+  cosponsorSectionTitle: {
+    id: 'app.components.InitiativeForm.cosponsorSectionTitle',
+    defaultMessage: 'Co-sponsors needed for review',
+  },
+  cosponsorSubtextBeforeInput: {
+    id: 'app.components.InitiativeForm.cosponsorSubtextBeforeInput',
+    defaultMessage:
+      "It's required that you have {cosponsorsNumber, plural, one {1 co-sponsor} other {# co-sponsors}} on your proposals. Add your co-sponsors' names below:",
+  },
+  cosponsorSubtextAfterInput: {
+    id: 'app.components.InitiativeForm.cosponsorSubtextAfterInput',
+    defaultMessage:
+      'Your co-sponsors will get an email to validate your proposal.',
+  },
   formAttachmentsSectionTitle: {
     id: 'app.components.InitiativeForm.formAttachmentsSectionTitle',
     defaultMessage: 'Images and attachments',

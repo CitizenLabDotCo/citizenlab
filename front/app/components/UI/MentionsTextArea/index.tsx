@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { isString, isEmpty, capitalize } from 'lodash-es';
 
 // libraries
-import { MentionsInput, Mention } from 'react-mentions';
+import { MentionsInput, Mention, MentionItem } from 'react-mentions';
 
 // components
 import Error from 'components/UI/Error';
@@ -63,6 +63,7 @@ export interface Props {
   postType?: 'idea' | 'initiative';
   error?: JSX.Element | string | null;
   onChange?: (arg: string, locale: Locale | undefined) => void;
+  onChangeMentions?: (mentions: MentionItem[]) => void;
   onFocus?: () => void;
   onBlur?: () => void;
   getTextareaRef?: (element: HTMLTextAreaElement) => void;
@@ -78,6 +79,7 @@ export interface Props {
   ariaLabel?: string;
   children?: React.ReactNode;
   roles?: MentionRoles[];
+  trigger?: string;
 }
 
 const MentionsTextArea = ({
@@ -92,6 +94,7 @@ const MentionsTextArea = ({
   background = '#fff',
   rows,
   onChange,
+  onChangeMentions,
   onBlur,
   onFocus,
   locale,
@@ -107,6 +110,7 @@ const MentionsTextArea = ({
   error,
   children,
   roles,
+  trigger = '@',
 }: Props) => {
   const textareaElement = useRef<HTMLTextAreaElement | null>(null);
   const theme = useTheme();
@@ -178,7 +182,7 @@ const MentionsTextArea = ({
   };
 
   const mentionDisplayTransform = (_id, display) => {
-    return `@${display}`;
+    return `${trigger}${display}`;
   };
 
   const handleOnChange = (event) => {
@@ -210,7 +214,7 @@ const MentionsTextArea = ({
         mention: query.toLowerCase(),
         post_id: postId,
         post_type: capitalize(postType) as 'Idea' | 'Initiative',
-        roles: roles,
+        roles,
       };
 
       const response = await getMentions(queryParameters);
@@ -242,7 +246,10 @@ const MentionsTextArea = ({
           value={value || ''}
           placeholder={placeholder}
           markup={'@[__display__](__id__)'}
-          onChange={handleOnChange}
+          onChange={(event, _newValue, _newPlainTextValue, mentions) => {
+            handleOnChange(event);
+            onChangeMentions?.(mentions);
+          }}
           onFocus={handleOnFocus}
           onBlur={handleOnBlur}
           aria-label={ariaLabel}
@@ -251,7 +258,7 @@ const MentionsTextArea = ({
           autoFocus={false}
         >
           <Mention
-            trigger="@"
+            trigger={trigger}
             data={getUsers}
             appendSpaceOnAdd={true}
             style={mentionStyle}
