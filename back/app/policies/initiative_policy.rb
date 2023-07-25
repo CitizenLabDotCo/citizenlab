@@ -31,7 +31,11 @@ class InitiativePolicy < ApplicationPolicy
     reason = posting_denied_reason user
     raise_not_authorized reason if reason
 
-    active? && owner?
+    if active? && owner?
+      return false if approval_required?
+
+      true
+    end
   end
 
   def show?
@@ -51,7 +55,7 @@ class InitiativePolicy < ApplicationPolicy
   end
 
   def destroy?
-    update?
+    create?
   end
 
   def allowed_transitions?
@@ -82,6 +86,10 @@ class InitiativePolicy < ApplicationPolicy
 
   def owner?
     user && record.author_id == user.id
+  end
+
+  def approval_required?
+    Initiative.approval_required?
   end
 end
 
