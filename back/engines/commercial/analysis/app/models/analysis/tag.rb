@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: analysis_tags
@@ -19,14 +21,13 @@
 #  fk_rails_...  (analysis_id => analysis_analyses.id)
 #
 module Analysis
-    class Tag < ::ApplicationRecord
+  class Tag < ::ApplicationRecord
+    TAG_TYPES = %w[custom language platform_topic nlp_topic sentiment controversial]
 
-      TAG_TYPES = %w[custom language platform_topic nlp_topic sentiment controversial]
-  
-      belongs_to :analysis
-  
-      validates :name, presence: true, uniqueness: { scope: :analysis_id }
-      validates :analysis, presence: true
-      validates :tag_type, inclusion: { in: TAG_TYPES }, allow_blank: false
-    end
+    belongs_to :analysis
+
+    validates :name, presence: true, uniqueness: { scope: :analysis_id }
+    validates :analysis, presence: true
+    validates :tag_type, inclusion: { in: TAG_TYPES }, allow_blank: false
   end
+end

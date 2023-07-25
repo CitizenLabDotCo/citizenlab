@@ -158,5 +158,4 @@ resource 'Tags' do
 
     include_examples 'unauthorized requests'
   end
-
 end
