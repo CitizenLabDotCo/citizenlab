@@ -93,4 +93,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.emptyNameError',
     defaultMessage: 'Add name',
   },
+  allTags: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Tags.allTags',
+    defaultMessage: 'All tags',
+  },
+  noTags: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Tags.noTags',
+    defaultMessage: 'Input without tags',
+  },
 });

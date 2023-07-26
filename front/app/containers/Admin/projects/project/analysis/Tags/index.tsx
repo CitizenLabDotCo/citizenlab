@@ -6,6 +6,7 @@ import {
   Button,
   IconButton,
   colors,
+  stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 
@@ -13,17 +14,39 @@ import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
 import useAddAnalysisTag from 'api/analysis_tags/useAddAnalysisTag';
 import useDeleteAnalysisTag from 'api/analysis_tags/useDeleteAnalysisTag';
 
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 import messages from '../messages';
 import { useIntl } from 'utils/cl-intl';
 import Modal from 'components/UI/Modal';
 import RenameTagModal from './RenameTagModal';
 import Tag from './Tag';
+import styled from 'styled-components';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+
+const TagContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  padding: 8px;
+  border: 1px solid transparent;
+  border-radius: ${stylingConsts.borderRadius};
+  &:hover {
+    background-color: ${colors.grey300};
+    border: 1px solid ${colors.borderLight};
+  }
+  &.selected {
+    background-color: ${colors.grey300};
+    border: 1px solid ${colors.borderLight};
+  }
+`;
 
 const Tags = () => {
   const [name, setName] = useState('');
   const [renameTagModalOpenedId, setRenameTagModalOpenedId] = useState('');
+  const [search] = useSearchParams();
 
   const { formatMessage } = useIntl();
 
@@ -66,6 +89,14 @@ const Tags = () => {
     setRenameTagModalOpenedId('');
   };
 
+  const selectTag = (id: string) => {
+    updateSearchParams({ tags_ids: [id] });
+  };
+
+  const selectedTags = search.get('tags_ids')
+    ? JSON.parse(search.get('tags_ids') as string)
+    : undefined;
+
   return (
     <div>
       <Box>
@@ -98,14 +129,26 @@ const Tags = () => {
         </div>
       </Box>
       <Box>
+        <TagContainer
+          tabIndex={0}
+          onClick={() => removeSearchParams(['tags_ids'])}
+          className={!selectedTags ? 'selected' : ''}
+        >
+          {formatMessage(messages.allTags)}
+        </TagContainer>
+        <TagContainer
+          tabIndex={0}
+          onClick={() => updateSearchParams({ tags_ids: [] })}
+          className={selectedTags?.length === 0 ? 'selected' : ''}
+        >
+          {formatMessage(messages.noTags)}
+        </TagContainer>
         {tags?.data.map((tag) => (
-          <Box
+          <TagContainer
             key={tag.id}
-            display="flex"
-            alignItems="center"
-            justifyContent="space-between"
-            mb="8px"
-            p="8px"
+            tabIndex={0}
+            onClick={() => selectTag(tag.id)}
+            className={selectedTags?.includes(tag.id) ? 'selected' : ''}
           >
             <Tag
               name={tag.attributes.name}
@@ -138,7 +181,7 @@ const Tags = () => {
                 analysisId={analysisId}
               />
             </Modal>
-          </Box>
+          </TagContainer>
         ))}
       </Box>
     </div>
