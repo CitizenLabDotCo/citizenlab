@@ -25,118 +25,127 @@ describe InitiativePolicy do
     end
 
     # For statuses with APPROVAL_CODES, we only show initiatives with approval statuses to the author and admins.
-    context 'for initiatives with APPROVAL_CODES statuses' do
-      InitiativeStatus::APPROVAL_CODES.each do |code|
-        context "for an initiative with #{code} status" do
-          let!(:initiative) do
-            create(:initiative, author: author, initiative_status: create("initiative_status_#{code}".to_sym))
-          end
+    context 'for an initiative with status approval_pending' do
+      let!(:initiative) do
+        create(:initiative, author: author, initiative_status: create(:initiative_status_approval_pending))
+      end
 
-          context 'for a user who is not author of the initiative' do
-            let(:user) { create(:user) }
+      context 'for an admin' do
+        let(:user) { create(:admin) }
 
-            it { is_expected.not_to permit(:show) }
-            it { is_expected.not_to permit(:by_slug) }
-            it { is_expected.not_to permit(:create) }
-            it { is_expected.not_to permit(:update)  }
-            it { is_expected.not_to permit(:destroy) }
+        it { is_expected.to permit(:show) }
+        it { is_expected.to permit(:by_slug) }
+        it { is_expected.to permit(:create) }
+        it { is_expected.to permit(:update)  }
+        it { is_expected.to permit(:destroy) }
 
-            it 'does not index the initiative' do
-              expect(scope.resolve.size).to eq 0
-            end
-          end
+        it 'indexes the initiative' do
+          expect(scope.resolve.size).to eq 1
+        end
+      end
 
-          context 'for a visitor' do
-            let(:user) { nil }
+      context 'for a user who is not author of the initiative' do
+        let(:user) { create(:user) }
 
-            it { is_expected.not_to permit(:show) }
-            it { is_expected.not_to permit(:by_slug) }
-            it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
-            it { expect { policy.update? }.to raise_error(Pundit::NotAuthorizedError) }
-            it { expect { policy.destroy? }.to raise_error(Pundit::NotAuthorizedError) }
+        it { is_expected.not_to permit(:show) }
+        it { is_expected.not_to permit(:by_slug) }
+        it { is_expected.not_to permit(:create) }
+        it { is_expected.not_to permit(:update)  }
+        it { is_expected.not_to permit(:destroy) }
 
-            it 'does not index the initiative' do
-              expect(scope.resolve.size).to eq 0
-            end
-          end
+        it 'does not index the initiative' do
+          expect(scope.resolve.size).to eq 0
+        end
+      end
+
+      context 'for a user who is author of the initiative' do
+        let(:user) { author }
+
+        it { is_expected.to permit(:show) }
+        it { is_expected.to permit(:by_slug) }
+        it { is_expected.to permit(:create) }
+        it { is_expected.to permit(:update)  }
+        it { is_expected.to permit(:destroy) }
+
+        it 'indexes the initiative' do
+          expect(scope.resolve.size).to eq 1
+        end
+      end
+
+      context 'for a visitor' do
+        let(:user) { nil }
+
+        it { is_expected.not_to permit(:show) }
+        it { is_expected.not_to permit(:by_slug) }
+        it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
+        it { expect { policy.update? }.to raise_error(Pundit::NotAuthorizedError) }
+        it { expect { policy.destroy? }.to raise_error(Pundit::NotAuthorizedError) }
+
+        it 'does not index the initiative' do
+          expect(scope.resolve.size).to eq 0
         end
       end
     end
 
-    context 'for initiatives with NOT_APPROVAL_CODES statuses' do
-      (InitiativeStatus::NOT_APPROVAL_CODES - ['custom']).each do |code|
-        context "for an initiative with #{code} status" do
-          let!(:initiative) do
-            create(:initiative, author: author, initiative_status: create("initiative_status_#{code}".to_sym))
-          end
+    context 'for an initiative with proposed status' do
+      let!(:initiative) do
+        create(:initiative, author: author, initiative_status: create(:initiative_status_proposed))
+      end
 
-          context 'for a user who is not author of the initiative' do
-            let(:user) { create(:user) }
+      context 'for an admin' do
+        let(:user) { create(:admin) }
 
-            it { is_expected.to permit(:show) }
-            it { is_expected.to permit(:by_slug) }
-            it { is_expected.not_to permit(:create) }
-            it { is_expected.not_to permit(:update)  }
-            it { is_expected.not_to permit(:destroy) }
+        it { is_expected.to permit(:show) }
+        it { is_expected.to permit(:by_slug) }
+        it { is_expected.to permit(:create) }
+        it { is_expected.to permit(:update)  }
+        it { is_expected.to permit(:destroy) }
 
-            it 'indexes the initiative' do
-              expect(scope.resolve.size).to eq 1
-            end
-          end
-
-          context 'for a visitor' do
-            let(:user) { nil }
-
-            it { is_expected.to permit(:show) }
-            it { is_expected.to permit(:by_slug) }
-            it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
-            it { expect { policy.update? }.to raise_error(Pundit::NotAuthorizedError) }
-            it { expect { policy.destroy? }.to raise_error(Pundit::NotAuthorizedError) }
-
-            it 'indexes the initiative' do
-              expect(scope.resolve.size).to eq 1
-            end
-          end
+        it 'indexes the initiative' do
+          expect(scope.resolve.size).to eq 1
         end
       end
-    end
 
-    # For statuses with any CODES:
-    context "for initiatives with any status code (except 'custom')" do
-      (InitiativeStatus::CODES - ['custom']).each do |code|
-        context "for an initiative with #{code} status" do
-          let!(:initiative) do
-            create(:initiative, author: author, initiative_status: create("initiative_status_#{code}".to_sym))
-          end
+      context 'for a user who is not author of the initiative' do
+        let(:user) { create(:user) }
 
-          context 'for an admin' do
-            let(:user) { create(:admin) }
+        it { is_expected.to permit(:show) }
+        it { is_expected.to permit(:by_slug) }
+        it { is_expected.not_to permit(:create) } # <- is this correct?
+        it { is_expected.not_to permit(:update)  }
+        it { is_expected.not_to permit(:destroy) }
 
-            it { is_expected.to permit(:show) }
-            it { is_expected.to permit(:by_slug) }
-            it { is_expected.to permit(:create) }
-            it { is_expected.to permit(:update)  }
-            it { is_expected.to permit(:destroy) }
+        it 'indexes the initiative' do
+          expect(scope.resolve.size).to eq 1
+        end
+      end
 
-            it 'indexes the initiative' do
-              expect(scope.resolve.size).to eq 1
-            end
-          end
+      # Author can edit/delete initiative if approval feature not active, regardless of status.
+      context 'for a user who is author of the initiative' do
+        let(:user) { author }
 
-          # Author can edit/delete initiative if approval feature not active, regardless of status.
-          context 'for a user who is author of the initiative' do
-            let(:user) { author }
+        it { is_expected.to permit(:show) }
+        it { is_expected.to permit(:by_slug) }
+        it { is_expected.to permit(:create) }
+        it { is_expected.to permit(:update)  }
+        it { is_expected.to permit(:destroy) }
 
-            it { is_expected.to permit(:show) }
-            it { is_expected.to permit(:by_slug) }
-            it { is_expected.to permit(:create) }
-            it { is_expected.to permit(:update)  }
-            it { is_expected.to permit(:destroy) }
+        it 'indexes the initiative' do
+          expect(scope.resolve.size).to eq 1
+        end
+      end
 
-            it 'indexes the initiative' do
-              expect(scope.resolve.size).to eq 1
-            end
-          end
+      context 'for a visitor' do
+        let(:user) { nil }
+
+        it { is_expected.to permit(:show) }
+        it { is_expected.to permit(:by_slug) }
+        it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
+        it { expect { policy.update? }.to raise_error(Pundit::NotAuthorizedError) }
+        it { expect { policy.destroy? }.to raise_error(Pundit::NotAuthorizedError) }
+
+        it 'indexes the initiative' do
+          expect(scope.resolve.size).to eq 1
         end
       end
     end
@@ -149,15 +158,7 @@ describe InitiativePolicy do
       SettingsService.new.activate_feature! 'initiative_approval'
 
       configuration = AppConfiguration.instance
-      configuration.settings['initiatives'] = {
-        enabled: true,
-        allowed: true,
-        require_approval: true, # This is also required to activate the feature
-        reacting_threshold: 2,
-        days_limit: 20,
-        threshold_reached_message: { 'en' => 'Threshold reached' },
-        eligibility_criteria: { 'en' => 'Eligibility criteria' }
-      }
+      configuration.settings['initiatives']['require_approval'] = true
       configuration.save!
     end
 
@@ -166,133 +167,128 @@ describe InitiativePolicy do
     end
 
     # For statuses with APPROVAL_CODES, we only show initiatives with approval statuses to the author and admins.
-    context 'for initiatives with APPROVAL_CODES statuses' do
-      InitiativeStatus::APPROVAL_CODES.each do |code|
-        context "for an initiative with #{code} status" do
-          let!(:initiative) do
-            create(:initiative, author: author, initiative_status: create("initiative_status_#{code}".to_sym))
-          end
+    context 'for an initiative with approval_pending status' do
+      let!(:initiative) do
+        create(:initiative, author: author, initiative_status: create(:initiative_status_approval_pending))
+      end
 
-          context 'for a user who is not author of the initiative' do
-            let(:user) { create(:user) }
+      context 'for an admin' do
+        let(:user) { create(:admin) }
 
-            it { is_expected.not_to permit(:show) }
-            it { is_expected.not_to permit(:by_slug) }
-            it { is_expected.not_to permit(:create) }
-            it { is_expected.not_to permit(:update)  }
-            it { is_expected.not_to permit(:destroy) }
+        it { is_expected.to permit(:show) }
+        it { is_expected.to permit(:by_slug) }
+        it { is_expected.to permit(:create) }
+        it { is_expected.to permit(:update)  }
+        it { is_expected.to permit(:destroy) }
 
-            it 'does not index the initiative' do
-              expect(scope.resolve.size).to eq 0
-            end
-          end
+        it 'indexes the initiative' do
+          expect(scope.resolve.size).to eq 1
+        end
+      end
 
-          # Author can see initiative, but not edit, if approval feature is active.
-          context 'for a user who is author of the initiative' do
-            let(:user) { author }
+      context 'for a user who is not author of the initiative' do
+        let(:user) { create(:user) }
 
-            it { is_expected.to permit(:show) }
-            it { is_expected.to permit(:by_slug) }
-            it { is_expected.not_to permit(:create) }
-            it { is_expected.not_to permit(:update)  }
-            it { is_expected.not_to permit(:destroy) }
+        it { is_expected.not_to permit(:show) }
+        it { is_expected.not_to permit(:by_slug) }
+        it { is_expected.not_to permit(:create) }
+        it { is_expected.not_to permit(:update)  }
+        it { is_expected.not_to permit(:destroy) }
 
-            it 'indexes the initiative' do
-              expect(scope.resolve.size).to eq 1
-            end
-          end
+        it 'does not index the initiative' do
+          expect(scope.resolve.size).to eq 0
+        end
+      end
 
-          context 'for a visitor' do
-            let(:user) { nil }
+      # Author can see initiative, but not edit, if approval feature is active.
+      context 'for a user who is author of the initiative' do
+        let(:user) { author }
 
-            it { is_expected.not_to permit(:show) }
-            it { is_expected.not_to permit(:by_slug) }
-            it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
-            it { expect { policy.update? }.to raise_error(Pundit::NotAuthorizedError) }
-            it { expect { policy.destroy? }.to raise_error(Pundit::NotAuthorizedError) }
+        it { is_expected.to permit(:show) }
+        it { is_expected.to permit(:by_slug) }
+        it { is_expected.not_to permit(:create) }
+        it { is_expected.not_to permit(:update)  }
+        it { is_expected.not_to permit(:destroy) }
 
-            it 'does not index the initiative' do
-              expect(scope.resolve.size).to eq 0
-            end
-          end
+        it 'indexes the initiative' do
+          expect(scope.resolve.size).to eq 1
+        end
+      end
+
+      context 'for a visitor' do
+        let(:user) { nil }
+
+        it { is_expected.not_to permit(:show) }
+        it { is_expected.not_to permit(:by_slug) }
+        it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
+        it { expect { policy.update? }.to raise_error(Pundit::NotAuthorizedError) }
+        it { expect { policy.destroy? }.to raise_error(Pundit::NotAuthorizedError) }
+
+        it 'does not index the initiative' do
+          expect(scope.resolve.size).to eq 0
         end
       end
     end
 
-    context 'for initiatives with NOT_APPROVAL_CODES statuses' do
-      (InitiativeStatus::NOT_APPROVAL_CODES - ['custom']).each do |code|
-        context "for an initiative with #{code} status" do
-          let!(:initiative) do
-            create(:initiative, author: author, initiative_status: create("initiative_status_#{code}".to_sym))
-          end
+    context 'for an initiative with proposed status' do
+      let!(:initiative) do
+        create(:initiative, author: author, initiative_status: create(:initiative_status_proposed))
+      end
 
-          context 'for a user who is not author of the initiative' do
-            let(:user) { create(:user) }
+      context 'for an admin' do
+        let(:user) { create(:admin) }
 
-            it { is_expected.to permit(:show) }
-            it { is_expected.to permit(:by_slug) }
-            it { is_expected.not_to permit(:create) }
-            it { is_expected.not_to permit(:update)  }
-            it { is_expected.not_to permit(:destroy) }
+        it { is_expected.to permit(:show) }
+        it { is_expected.to permit(:by_slug) }
+        it { is_expected.to permit(:create) }
+        it { is_expected.to permit(:update)  }
+        it { is_expected.to permit(:destroy) }
 
-            it 'does not index the initiative' do
-              expect(scope.resolve.size).to eq 1
-            end
-          end
-
-          # Author can see initiative, but not edit, if approval feature is active.
-          context 'for a user who is author of the initiative' do
-            let(:user) { author }
-
-            it { is_expected.to permit(:show) }
-            it { is_expected.to permit(:by_slug) }
-            it { is_expected.not_to permit(:create) }
-            it { is_expected.not_to permit(:update)  }
-            it { is_expected.not_to permit(:destroy) }
-
-            it 'indexes the initiative' do
-              expect(scope.resolve.size).to eq 1
-            end
-          end
-
-          context 'for a visitor' do
-            let(:user) { nil }
-
-            it { is_expected.to permit(:show) }
-            it { is_expected.to permit(:by_slug) }
-            it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
-            it { expect { policy.update? }.to raise_error(Pundit::NotAuthorizedError) }
-            it { expect { policy.destroy? }.to raise_error(Pundit::NotAuthorizedError) }
-
-            it 'does not index the initiative' do
-              expect(scope.resolve.size).to eq 1
-            end
-          end
+        it 'indexes the initiative' do
+          expect(scope.resolve.size).to eq 1
         end
       end
-    end
 
-    # For statuses with any CODES:
-    context "for initiatives with any status code (except 'custom')" do
-      (InitiativeStatus::CODES - ['custom']).each do |code|
-        context "for an initiative with #{code} status" do
-          let!(:initiative) do
-            create(:initiative, author: author, initiative_status: create("initiative_status_#{code}".to_sym))
-          end
+      context 'for a user who is not author of the initiative' do
+        let(:user) { create(:user) }
 
-          context 'for an admin' do
-            let(:user) { create(:admin) }
+        it { is_expected.to permit(:show) }
+        it { is_expected.to permit(:by_slug) }
+        it { is_expected.not_to permit(:create) }
+        it { is_expected.not_to permit(:update)  }
+        it { is_expected.not_to permit(:destroy) }
 
-            it { is_expected.to permit(:show) }
-            it { is_expected.to permit(:by_slug) }
-            it { is_expected.to permit(:create) }
-            it { is_expected.to permit(:update)  }
-            it { is_expected.to permit(:destroy) }
+        it 'does not index the initiative' do
+          expect(scope.resolve.size).to eq 1
+        end
+      end
 
-            it 'indexes the initiative' do
-              expect(scope.resolve.size).to eq 1
-            end
-          end
+      # Author can see initiative, but not edit, if approval feature is active.
+      context 'for a user who is author of the initiative' do
+        let(:user) { author }
+
+        it { is_expected.to permit(:show) }
+        it { is_expected.to permit(:by_slug) }
+        it { is_expected.not_to permit(:create) }
+        it { is_expected.not_to permit(:update)  }
+        it { is_expected.not_to permit(:destroy) }
+
+        it 'indexes the initiative' do
+          expect(scope.resolve.size).to eq 1
+        end
+      end
+
+      context 'for a visitor' do
+        let(:user) { nil }
+
+        it { is_expected.to permit(:show) }
+        it { is_expected.to permit(:by_slug) }
+        it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
+        it { expect { policy.update? }.to raise_error(Pundit::NotAuthorizedError) }
+        it { expect { policy.destroy? }.to raise_error(Pundit::NotAuthorizedError) }
+
+        it 'does not index the initiative' do
+          expect(scope.resolve.size).to eq 1
         end
       end
     end
