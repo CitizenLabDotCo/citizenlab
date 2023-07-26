@@ -16,7 +16,7 @@ const server = setupServer(
   })
 );
 
-describe('useAddArea', () => {
+describe('useAddFollower', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
