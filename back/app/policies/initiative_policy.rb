@@ -39,7 +39,7 @@ class InitiativePolicy < ApplicationPolicy
   end
 
   def show?
-    return false if !can_moderate? && !owner? && record.approval_feature_status?
+    return false if !can_moderate? && !owner? && record.approval_status?
     return true if active? && (owner? || can_moderate?)
 
     %w[draft published closed].include?(record.publication_status)

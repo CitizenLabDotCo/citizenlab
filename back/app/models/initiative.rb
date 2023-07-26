@@ -143,7 +143,7 @@ class Initiative < ApplicationRecord
     app_config.feature_activated?('initiative_approval') && require_approval
   end
 
-  def approval_feature_status?
+  def approval_status?
     InitiativeStatus::APPROVAL_CODES.include? initiative_status&.code
   end
 
