@@ -69,9 +69,9 @@ export const data: IIdeaData[] = [
           disabled_reason: null,
           future_enabled: null,
         },
-        budgeting: {
+        voting: {
           enabled: false,
-          disabled_reason: 'not_budgeting',
+          disabled_reason: 'not_voting',
           future_enabled: null,
         },
       },

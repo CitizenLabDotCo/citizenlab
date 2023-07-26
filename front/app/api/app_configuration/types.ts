@@ -124,7 +124,6 @@ export interface IAppConfigurationSettings {
   project_reports?: AppConfigurationFeature;
   private_projects?: AppConfigurationFeature;
   maps?: AppConfigurationMapSettings;
-  participatory_budgeting?: AppConfigurationFeature;
   initiatives?: ProposalsSettings;
   fragments?: {
     allowed: boolean;
@@ -224,6 +223,7 @@ export interface IAppConfigurationSettings {
   internal_commenting?: AppConfigurationFeature;
   konveio_document_annotation?: AppConfigurationFeature;
   public_api_tokens?: AppConfigurationFeature;
+  analysis?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

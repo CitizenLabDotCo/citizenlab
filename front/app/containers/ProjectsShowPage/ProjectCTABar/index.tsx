@@ -20,7 +20,7 @@ import { viewportWidths } from 'utils/styleUtils';
 import {
   getMethodConfig,
   getParticipationMethod,
-} from 'utils/participationMethodUtils';
+} from 'utils/configs/participationMethodConfig';
 import { isNilOrError } from 'utils/helperUtils';
 
 type ProjectCTABarProps = {

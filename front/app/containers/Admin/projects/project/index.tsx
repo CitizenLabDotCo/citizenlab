@@ -47,7 +47,7 @@ import {
   getAllParticipationMethods,
   getMethodConfig,
   showInputManager,
-} from 'utils/participationMethodUtils';
+} from 'utils/configs/participationMethodConfig';
 
 const TopContainer = styled.div`
   width: 100%;
@@ -267,13 +267,13 @@ export class AdminProjectsProjectIndex extends PureComponent<
           const hideTab =
             (processType === 'continuous' &&
               participationMethod !== 'ideation' &&
-              participationMethod !== 'budgeting') ||
+              participationMethod !== 'voting') ||
             (processType === 'timeline' &&
               phases &&
               phases.filter((phase) => {
                 return (
                   phase.attributes.participation_method === 'ideation' ||
-                  phase.attributes.participation_method === 'budgeting'
+                  phase.attributes.participation_method === 'voting'
                 );
               }).length === 0);
 

@@ -4,11 +4,13 @@
 #
 # Table name: ideas_phases
 #
-#  id         :uuid             not null, primary key
-#  idea_id    :uuid
-#  phase_id   :uuid
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id            :uuid             not null, primary key
+#  idea_id       :uuid
+#  phase_id      :uuid
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  baskets_count :integer          default(0), not null
+#  votes_count   :integer          default(0), not null
 #
 # Indexes
 #

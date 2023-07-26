@@ -29,14 +29,14 @@ ca:
       "new_comment_for_admin": Nou comentari en un projecte que modero
       "new_comment_on_commented_idea": Nou comentari sobre una idea que vaig comentar
       "new_comment_on_commented_initiative": Nou comentari a una proposta que vaig comentar
-      "new_comment_on_voted_idea": Nou comentari sobre una idea que vaig votar
-      "new_comment_on_voted_initiative": Nou comentari sobre una proposta que he votat
+      "new_comment_on_reacted_idea": Nou comentari sobre una idea a la qual vaig reaccionar
+      "new_comment_on_reacted_initiative": Nou comentari sobre una proposta que he votat
       "new_idea_for_admin": Nova idea en un projecte que modero
       "new_initiative_for_admin": Nova proposta
       "official_feedback_on_commented_idea": Actualització d'una idea que vaig comentar
       "official_feedback_on_commented_initiative": Actualització d'una proposta que vaig comentar
-      "official_feedback_on_voted_idea": Actualització d'una idea que vaig votar
-      "official_feedback_on_voted_initiative": Actualització d'una proposta que vaig votar
+      "official_feedback_on_reacted_idea": Actualització d'una idea a la qual vaig reaccionar
+      "official_feedback_on_reacted_initiative": Actualització d'una proposta que vaig votar
       "official_feedback_on_your_idea": Actualització de la meva idea
       "official_feedback_on_your_initiative": Actualització de la meva proposta
       "password_reset": Restabliu la contrasenya
@@ -46,8 +46,8 @@ ca:
       "project_phase_upcoming": Pròxima nova fase del projecte
       "status_change_of_commented_idea": Canvi d'estat d'una idea que vaig comentar
       "status_change_of_commented_initiative": Canvi d'estat d'una proposta que vaig comentar
-      "status_change_of_voted_idea": Canvi d'estat d'una idea que vaig votar
-      "status_change_of_voted_initiative": Canvi d'estat d'una proposta que he votat
+      "status_change_of_reacted_idea": Canvi d'estat d'una idea a la qual vaig reaccionar
+      "status_change_of_reacted_initiative": Canvi d'estat d'una proposta per la qual vaig reaccionar
       "status_change_of_your_idea": Canvi d'estat de la meva idea
       "status_change_of_your_initiative": Canvi d'estat de la meva proposta
       "threshold_reached_for_admin": La proposta ha arribat al llindar de votació
@@ -56,6 +56,10 @@ ca:
       "moderator_digest": Visió general setmanal per a gestors de projectes
       "assignee_digest": Visió general setmanal de les idees assignades
       "user_digest": Resum setmanal
+      "voting_basket_submitted": Confirmació de la votació
+      "voting_basket_not_submitted": Vots no enviats
+      "voting_last_chance": Última oportunitat per votar
+      "voting_results": Resultats de les votacions
       "your_proposed_initiatives_digest": Resum setmanal de les vostres propostes
     schedules:
       weekly:
@@ -270,21 +274,21 @@ ca:
       main_header: '%{authorName} han comentat la teva idea'
       subject: 'Has rebut un comentari a la plataforma de %{organizationName}'
       preheader: '%{authorName} ha deixat un comentari sobre la teva idea per a %{organizationName}'
-    new_comment_on_voted_initiative:
+    new_comment_on_reacted_initiative:
       commented: '%{commentAuthor} va escriure:'
       cta_reply_to: 'Consulta aquesta proposta'
       event_description: '%{commentAuthor} ha comentat la proposta ''%{initiativeTitle}'' sobre la qual heu votat. Uneix-te a la discussió a la plataforma de %{organizationName}!'
       main_header: '%{firstName}, hi ha un nou comentari sobre la proposta que has votat'
       subject: 'Hi ha un nou comentari sobre la proposta que heu votat'
       preheader: '%{commentAuthor} ha deixat un comentari sobre la proposta que has votat a la plataforma de %{organizationName}'
-    new_comment_on_voted_idea:
+    new_comment_on_reacted_idea:
       commented: '%{commentAuthor} ha comentat:'
       cta_reply_to: 'Respon a %{commentAuthor}'
       days_ago: 'fa %{numberOfDays} dies'
-      event_description: '%{commentAuthor} ha comentat la idea ''%{ideaTitle}'' sobre la qual has votat. Uneix-te a la discussió a la plataforma de %{organizationName}!'
-      main_header: '%{firstName}, hi ha un nou comentari sobre la idea que has votat'
-      subject: 'Hi ha un nou comentari sobre la idea que has votat'
-      preheader: '%{commentAuthor} ha deixat un comentari sobre la idea que has votat a la plataforma de %{organizationName}'
+      event_description: '%{commentAuthor} ha comentat la idea ''%{ideaTitle}'' sobre la qual has reaccionat. Uneix-te a la discussió a la plataforma de %{organizationName}!'
+      main_header: '%{firstName}, hi ha un nou comentari sobre la idea a la qual has reaccionat'
+      subject: 'Hi ha un nou comentari sobre la idea a la qual has reaccionat'
+      preheader: '%{commentAuthor} va deixar un comentari sobre la idea a la qual has reaccionat a la plataforma d'' %{organizationName}'
       today: Avui
       yesterday: Ahir
     new_initiative_for_admin:
@@ -369,13 +373,13 @@ ca:
       main_header: 'Hi ha una actualització sobre una proposta que has comentat'
       subject: 'Una proposta que vau comentar ha rebut una actualització oficial a la plataforma de %{organizationName}'
       preheader: '%{officialName} va deixar una actualització oficial sobre una proposta que vau comentar'
-    official_feedback_on_voted_idea:
+    official_feedback_on_reacted_idea:
       by_author: 'per %{authorName}'
       updated: '%{officialName} va escriure:'
       cta_view: 'Aneu a aquesta idea'
       event_description: '%{officialName} va actualitzar la idea "%{ideaTitle}". Feu clic al botó següent per entrar a la conversa amb %{officialName}.'
-      subject: 'Una idea que heu votat ha rebut una actualització a la plataforma de %{organizationName}'
-      preheader: '%{officialName} ha deixat una actualització sobre una idea que has votat'
+      subject: 'Una idea a la qual vau reaccionar ha rebut una actualització a la plataforma de %{organizationName}'
+      preheader: '%{officialName} ha deixat una actualització d''una idea a la qual has reaccionat'
       main_header: ""
     official_feedback_on_commented_idea:
       by_author: 'per %{authorName}'
@@ -393,7 +397,7 @@ ca:
       main_header: 'Heu rebut una actualització de %{organizationName}'
       subject: 'Heu rebut una actualització de %{organizationName}'
       preheader: '%{officialName} va deixar una actualització oficial de la teva idea'
-    official_feedback_on_voted_initiative:
+    official_feedback_on_reacted_initiative:
       by_author: 'per %{authorName}'
       updated: '%{officialName} va escriure:'
       cta_view: 'Aneu a aquesta proposta'
@@ -468,14 +472,14 @@ ca:
       main_header: 'La teva idea té un nou estatus'
       subject: 'S''ha canviat l''estat de la teva idea'
       preheader: '%{organizationName} ha canviat l''estat de la teva idea'
-    status_change_of_voted_idea:
+    status_change_of_reacted_idea:
       status_change: 'El nou estat d''aquesta idea és "%{ideaStatus}"'
       cta_view_idea: 'Aneu a aquesta idea'
       event_description: '%{organizationName} ha actualitzat l''estat de la idea ''%{ideaTitle}'' a la seva plataforma de participació digital.'
-      main_header: 'Una idea que heu votat té un nou estatus'
-      subject: 'S''ha canviat l''estat d''una idea que heu votat'
-      preheader: '%{organizationName} ha canviat l''estat d''una idea que has votat'
-    status_change_of_voted_initiative:
+      main_header: 'Una idea a la qual has reaccionat té un nou estat'
+      subject: 'S''ha canviat l''estat d''una idea a la qual heu reaccionat'
+      preheader: '%{organizationName} ha canviat l''estat d''una idea a la qual has reaccionat'
+    status_change_of_reacted_initiative:
       status_change: 'El nou estat d''aquesta proposta és "%{initiativeStatus}"'
       cta_view_initiative: 'Aneu a aquesta proposta'
       event_description: 'S''ha actualitzat l''estat de la proposta ''%{initiativeTitle}'' a la plataforma de participació digital de l'' %{organizationName}.'
@@ -577,6 +581,42 @@ ca:
       new_votes: 'Nous vots'
       remaining_votes: 'Vots restants'
       remaining_days: 'Dies restants'
+    voting_basket_submitted:
+      subject: '%{organizationName}: has votat correctament'
+      preheader: 'Heu votat amb èxit a la plataforma de participació de %{organizationName}'
+      title_basket_submitted: 'Has votat correctament'
+      event_description: 'Gràcies per participar. Els vostres vots s''han registrat. Visiteu la plataforma de %{organizationName} per veure i gestionar els vostres vots.'
+      cta_see_votes_submitted: 'Veure vots enviats'
+      cta_message: 'Feu clic al botó següent per participar'
+    voting_basket_not_submitted:
+      subject: '%{organizationName}: no heu enviat els vostres vots'
+      preheader: 'No heu enviat els vostres vots a la plataforma de participació de %{organizationName}'
+      title_basket_not_submitted: 'No heu enviat els vostres vots'
+      event_description: 'Heu seleccionat algunes opcions per a %{contextTitle} , però no heu enviat la vostra selecció.'
+      cta_view_options_and_vote: 'Veure opcions i votar'
+      cta_message: 'Feu clic al botó següent per enviar les opcions seleccionades'
+    voting_last_chance:
+      subject: '%{organizationName}: última oportunitat per votar %{phaseTitle}'
+      preheader: 'Última oportunitat per votar %{phaseTitle} a la plataforma de participació de %{organizationName}'
+      title_last_chance: 'Última oportunitat per votar %{phaseTitle}'
+      body_1: 'La fase de votació del projecte %{projectTitle} s''acaba demà, a mitjanit.'
+      body_2: 'El temps s''acaba i ens hem adonat que encara no has votat! Actua ara fent clic al botó següent per participar.'
+      body_3: 'En fer-ho, tindreu accés a una sèrie d''opcions i tindreu l''oportunitat de donar la vostra aportació, que és crucial per decidir el futur d''aquest projecte.'
+      cta_vote: 'Vota'
+    voting_results:
+      subject: '%{organizationName}: %{phaseTitle} resultats de vots revelats!'
+      preheader: '%{phaseTitle} resultats de votació revelats a la plataforma de participació d'' %{organizationName}'
+      title_results: 'S''han revelat els resultats de %{phaseTitle} vots!'
+      body_1: 'Ja tenim els resultats!'
+      body_2: 'S''han publicat els resultats de la votació %{phaseTitle} a la plataforma %{organizationName}!'
+      body_3: 'Us animem a revisar els resultats i estar atents per a més actualitzacions sobre els passos següents.'
+      cta_see_results: 'Veure resultats a la plataforma'
+    voting_phase_started:
+      subject: '%{organizationName}: la fase de votació va començar per a %{projectName}'
+      preheader: 'La fase de votació va començar per %{projectName} a la plataforma de participació de l'' %{organizationName}'
+      event_description: 'El projecte "%{projectName}" us demana que voteu entre %{numIdeas} opcions:'
+      cta_message: 'Feu clic al botó següent per participar'
+      cta_vote: 'Aneu a la plataforma per votar'
     admin_labels:
       recipient_role:
         admins: 'Als administradors'
@@ -605,6 +645,9 @@ ca:
         users_who_engaged_with_the_input: 'Usuaris que han interaccionat amb l''entrada'
         users_who_engaged_with_the_project: 'Usuaris que han participat amb el projecte'
         users_who_engaged_with_the_proposal: 'Usuaris que han interaccionat amb la proposta'
+        user_who_voted: 'Usuari que ha votat'
+        user_with_unsubmitted_votes: 'Usuari que no ha enviat els seus vots'
+        users_who_engaged_but_not_voted: 'Usuaris que s''han implicat amb el projecte però no han votat'
       content_type:
         comments: 'Comentaris'
         content_moderation: 'Moderació de continguts'
@@ -614,7 +657,8 @@ ca:
         permissions: 'Permisos'
         projects: 'Projectes'
         proposals: 'Propostes'
-        votes: 'Vots'
+        reactions: 'Reaccions'
+        voting: 'Votació'
       trigger:
         comment_is_deleted: 'S''ha suprimit el comentari'
         comment_is_flagged_as_spam: 'El comentari està marcat com a correu brossa'
@@ -652,5 +696,9 @@ ca:
         user_registers_for_the_first_time: 'L''usuari es registra per primera vegada'
         user_replies_to_comment: 'L''usuari respon al comentari'
         user_replies_to_internal_comment: 'L''usuari respon al comentari intern'
+        voting_2_days_before_phase_closes: '2 dies abans del tancament de la fase de votació'
+        voting_1_day_after_last_votes: '1 dia després de la darrera votació de l''usuari'
+        voting_phase_ended: 'S''ha acabat la fase de votació'
+        voting_basket_submitted: 'Es presenten els vots'
         7_days_after_invite_is_sent: '7 dies després de l''enviament de la invitació'
         7_days_before_the_project_changes_phase: '7 dies abans del canvi de fase del projecte'

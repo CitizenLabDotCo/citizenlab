@@ -25,9 +25,9 @@ class ParticipationContextService
     idea_not_in_current_phase: 'idea_not_in_current_phase'
   }.freeze
 
-  BUDGETING_DISABLED_REASONS = {
+  VOTING_DISABLED_REASONS = {
     project_inactive: 'project_inactive',
-    not_budgeting: 'not_budgeting',
+    not_voting: 'not_voting',
     idea_not_in_current_phase: 'idea_not_in_current_phase'
   }.freeze
 
@@ -71,18 +71,6 @@ class ParticipationContextService
     end
   end
 
-  def participation_possible_for_context?(context, user)
-    return true if context.information?
-
-    !(posting_idea_disabled_reason_for_context(context, user) \
-    && commenting_idea_disabled_reason_for_context(context, user) \
-    && idea_reacting_disabled_reason_for(context, user) \
-    && annotating_document_disabled_reason_for_context(context, user) \
-    && taking_survey_disabled_reason_for_context(context, user) \
-    && taking_poll_disabled_reason_for_context(context, user) \
-    && budgeting_disabled_reason_for_context(context, user))
-  end
-
   def posting_idea_disabled_reason_for_project(project, user)
     context = project && get_participation_context(project)
     posting_idea_disabled_reason_for_context context, user
@@ -91,7 +79,7 @@ class ParticipationContextService
   def posting_idea_disabled_reason_for_context(context, user)
     if !context
       POSTING_DISABLED_REASONS[:project_inactive]
-    elsif !context.ideation? && !context.native_survey?
+    elsif !Factory.instance.participation_method_for(context).posting_allowed?
       POSTING_DISABLED_REASONS[:not_ideation] # TODO: (native surveys) change reason code?
     elsif !context.posting_enabled
       POSTING_DISABLED_REASONS[:posting_disabled]
@@ -236,22 +224,27 @@ class ParticipationContextService
     end
   end
 
-  def budgeting_disabled_reason_for_idea(idea, user)
+  def voting_disabled_reason_for_project(project, user)
+    context = get_participation_context project
+    voting_disabled_reason_for_context context, user
+  end
+
+  def voting_disabled_reason_for_idea(idea, user)
     context = get_participation_context idea.project
     if context && !in_current_context?(idea, context)
-      BUDGETING_DISABLED_REASONS[:idea_not_in_current_phase]
+      VOTING_DISABLED_REASONS[:idea_not_in_current_phase]
     else
-      budgeting_disabled_reason_for_context context, user
+      voting_disabled_reason_for_context context, user
     end
   end
 
-  def budgeting_disabled_reason_for_context(context, user)
+  def voting_disabled_reason_for_context(context, user)
     if !context
-      BUDGETING_DISABLED_REASONS[:project_inactive]
-    elsif !context.budgeting?
-      BUDGETING_DISABLED_REASONS[:not_budgeting]
+      VOTING_DISABLED_REASONS[:project_inactive]
+    elsif !context.voting?
+      VOTING_DISABLED_REASONS[:not_voting]
     else
-      permission_denied_reason(user, 'budgeting', context)
+      permission_denied_reason(user, 'voting', context)
     end
   end
 
@@ -275,8 +268,8 @@ class ParticipationContextService
     future_commenting_idea_enabled_phase(project, user, time)
   end
 
-  def future_budgeting_enabled_phase(project, user, time = Time.zone.now)
-    future_phases(project, time).find { |phase| !budgeting_disabled_reason_for_context(phase, user) }
+  def future_voting_enabled_phase(project, user, time = Time.zone.now)
+    future_phases(project, time).find { |phase| !voting_disabled_reason_for_context(phase, user) }
   end
 
   def moderating_participation_context_ids(user)

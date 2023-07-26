@@ -29,6 +29,9 @@ import useEvents from 'api/events/useEvents';
 import useAuthUser from 'api/me/useAuthUser';
 import { useIntl } from 'utils/cl-intl';
 
+// context
+import { VotingContext } from 'api/baskets_ideas/useVoting';
+
 // i18n
 import messages from 'utils/messages';
 
@@ -270,7 +273,11 @@ const ProjectsShowPageWrapper = () => {
 
   if (!project) return null;
 
-  return <ProjectsShowPage project={project.data} />;
+  return (
+    <VotingContext projectId={project.data.id}>
+      <ProjectsShowPage project={project.data} />
+    </VotingContext>
+  );
 };
 
 export default () => (

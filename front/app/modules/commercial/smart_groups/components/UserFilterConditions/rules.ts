@@ -104,8 +104,8 @@ type TParticipatedInProjectPredicate =
   | 'not_reacted_idea_in'
   | 'reacted_comment_in'
   | 'not_reacted_comment_in'
-  | 'budgeted_in'
-  | 'not_budgeted_in'
+  | 'voted_in'
+  | 'not_voted_in'
   | 'volunteered_in'
   | 'not_volunteered_in';
 
@@ -358,7 +358,7 @@ export type TRule =
         | 'not_commented_in'
         | 'not_reacted_idea_in'
         | 'not_reacted_comment_in'
-        | 'not_budgeted_in'
+        | 'not_voted_in'
         | 'not_volunteered_in';
 
       /**
@@ -374,7 +374,7 @@ export type TRule =
         | 'commented_in'
         | 'reacted_idea_in'
         | 'reacted_comment_in'
-        | 'budgeted_in'
+        | 'voted_in'
         | 'volunteered_in';
 
       /**
@@ -525,8 +525,8 @@ export const ruleTypeConstraints = {
     not_reacted_idea_in: ProjectValueSelector,
     reacted_comment_in: ProjectValuesSelector,
     not_reacted_comment_in: ProjectValueSelector,
-    budgeted_in: ProjectValuesSelector,
-    not_budgeted_in: ProjectValueSelector,
+    voted_in: ProjectValuesSelector,
+    not_voted_in: ProjectValueSelector,
     volunteered_in: ProjectValuesSelector,
     not_volunteered_in: ProjectValueSelector,
   },
