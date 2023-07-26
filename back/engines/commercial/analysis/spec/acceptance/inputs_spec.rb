@@ -109,9 +109,12 @@ resource 'Inputs' do
   end
 
   get 'web_api/v1/analyses/:analysis_id/inputs/:id' do
+    before { admin_header_token }
 
     let(:analysis) { create(:analysis) }
-    let(:input) { create(:idea, project: analysis.project )}
+    let(:analysis_id) { analysis.id }
+    let(:input) { create(:idea, project: analysis.project) }
+    let(:id) { input.id }
     example_request 'get one inputs in the analysis by id' do
       expect(status).to eq(200)
     end
