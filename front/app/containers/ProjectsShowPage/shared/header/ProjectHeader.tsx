@@ -15,6 +15,8 @@ import {
   HeaderImage,
   HeaderImageContainer,
 } from 'components/ProjectableHeader';
+import FollowUnfollow from 'components/FollowUnfollow';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
@@ -57,7 +59,6 @@ const TopBar = styled.div`
 
 const EditButton = styled(Button)`
   display: table;
-  margin: 0 0 10px auto;
 
   ${isRtl`
     margin: 0 0 auto 10px;
@@ -107,16 +108,29 @@ const ProjectHeader = memo<Props & WrappedComponentProps>(
                     projectFolderId={projectFolderId}
                   />
                 )}
-                {userCanEditProject && (
-                  <EditButton
-                    icon="edit"
-                    linkTo={adminProjectsProjectPath(project.data.id)}
-                    buttonStyle="secondary"
-                    padding="5px 8px"
-                  >
-                    {formatMessage(messages.editProject)}
-                  </EditButton>
-                )}
+                <Box m="0 0 10px auto" display="flex">
+                  <Box mr="8px">
+                    <FollowUnfollow
+                      followableType="projects"
+                      followableId={project.data.id}
+                      followersCount={project.data.attributes.followers_count}
+                      followerId={
+                        project.data.relationships.user_follower?.data?.id
+                      }
+                      padding="5px 8px"
+                    />
+                  </Box>
+                  {userCanEditProject && (
+                    <EditButton
+                      icon="edit"
+                      linkTo={adminProjectsProjectPath(project.data.id)}
+                      buttonStyle="secondary"
+                      padding="5px 8px"
+                    >
+                      {formatMessage(messages.editProject)}
+                    </EditButton>
+                  )}
+                </Box>
               </TopBar>
             )}
             {projectHeaderImageLargeUrl && (

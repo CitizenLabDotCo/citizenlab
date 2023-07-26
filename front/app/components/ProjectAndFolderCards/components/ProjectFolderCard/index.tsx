@@ -8,7 +8,7 @@ import { TLayout } from 'components/ProjectAndFolderCards';
 import Link from 'utils/cl-router/Link';
 
 // components
-import { Icon, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Icon, useBreakpoint, Box } from '@citizenlab/cl2-component-library';
 import Image from 'components/UI/Image';
 
 // i18n
@@ -279,16 +279,13 @@ const FolderDescription = styled.div`
 `;
 
 const ContentFooter = styled.div`
-  height: 45px;
   flex-shrink: 0;
   flex-grow: 0;
   flex-basis: 45px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 16px;
-  margin-top: 30px;
-  border-top: solid 1px #e0e0e0;
+  margin-bottom: 8px;
 
   &.hidden {
     border: none;
@@ -307,16 +304,6 @@ const ContentFooter = styled.div`
     }
   }
 `;
-
-const ContentFooterSection = styled.div`
-  height: 100%;
-  display: flex;
-  align-items: center;
-`;
-
-const ContentFooterLeft = styled(ContentFooterSection)``;
-
-const ContentFooterRight = styled(ContentFooterSection)``;
 
 const ProjectMetaItems = styled.div`
   height: 100%;
@@ -525,55 +512,59 @@ const ProjectFolderCard = memo<Props>(
               }}
             </T>
           </ContentBody>
-          <ContentFooter className={`${size} ${!showFooter ? 'hidden' : ''}`}>
-            <ContentFooterLeft>
-              {showAvatarBubbles && (
-                <AvatarBubbles
-                  size={32}
-                  limit={3}
-                  userCountBgColor={theme.colors.tenantPrimary}
-                  avatarIds={avatarIds}
-                  userCount={projectFolder?.data.attributes.participants_count}
-                />
-              )}
-            </ContentFooterLeft>
-
-            <ContentFooterRight>
-              <ProjectMetaItems>
-                {showIdeasCount && ideasCount && (
-                  <MetaItem className="first">
-                    <Icon
-                      height="23px"
-                      width="23px"
-                      fill={theme.colors.tenantPrimary}
-                      ariaHidden
-                      name="idea"
-                    />
-                    <MetaItemText aria-hidden>{ideasCount}</MetaItemText>
-                    <ScreenReaderOnly>
-                      {formatMessage(messages.xInputs, { ideasCount })}
-                    </ScreenReaderOnly>
-                  </MetaItem>
+          <Box borderTop={`1px solid ${colors.divider}`} pt="16px" mt="30px">
+            <ContentFooter className={`${size} ${!showFooter ? 'hidden' : ''}`}>
+              <Box h="100%" display="flex" alignItems="center">
+                {showAvatarBubbles && (
+                  <AvatarBubbles
+                    size={32}
+                    limit={3}
+                    userCountBgColor={theme.colors.tenantPrimary}
+                    avatarIds={avatarIds}
+                    userCount={
+                      projectFolder?.data.attributes.participants_count
+                    }
+                  />
                 )}
+              </Box>
 
-                {showCommentsCount && commentsCount && (
-                  <MetaItem>
-                    <Icon
-                      height="23px"
-                      width="23px"
-                      fill={theme.colors.tenantPrimary}
-                      ariaHidden
-                      name="comments"
-                    />
-                    <MetaItemText aria-hidden>{commentsCount}</MetaItemText>
-                    <ScreenReaderOnly>
-                      {formatMessage(messages.xComments, { commentsCount })}
-                    </ScreenReaderOnly>
-                  </MetaItem>
-                )}
-              </ProjectMetaItems>
-            </ContentFooterRight>
-          </ContentFooter>
+              <Box h="100%" display="flex" alignItems="center">
+                <ProjectMetaItems>
+                  {showIdeasCount && ideasCount && (
+                    <MetaItem className="first">
+                      <Icon
+                        height="23px"
+                        width="23px"
+                        fill={theme.colors.tenantPrimary}
+                        ariaHidden
+                        name="idea"
+                      />
+                      <MetaItemText aria-hidden>{ideasCount}</MetaItemText>
+                      <ScreenReaderOnly>
+                        {formatMessage(messages.xInputs, { ideasCount })}
+                      </ScreenReaderOnly>
+                    </MetaItem>
+                  )}
+
+                  {showCommentsCount && commentsCount && (
+                    <MetaItem>
+                      <Icon
+                        height="23px"
+                        width="23px"
+                        fill={theme.colors.tenantPrimary}
+                        ariaHidden
+                        name="comments"
+                      />
+                      <MetaItemText aria-hidden>{commentsCount}</MetaItemText>
+                      <ScreenReaderOnly>
+                        {formatMessage(messages.xComments, { commentsCount })}
+                      </ScreenReaderOnly>
+                    </MetaItem>
+                  )}
+                </ProjectMetaItems>
+              </Box>
+            </ContentFooter>
+          </Box>
         </FolderContent>
       </Container>
     );
