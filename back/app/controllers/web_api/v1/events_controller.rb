@@ -15,10 +15,8 @@ class WebApi::V1::EventsController < ApplicationController
   end
 
   def create
-
-    event = Event.new(
-      event_params.merge(project_id: params[:project_id])
-    )
+    event = Event.new(event_params)
+    event.project_id = params[:project_id]
 
     SideFxEventService.new.before_create(event, current_user)
 
