@@ -2,7 +2,7 @@ import { IRelationship } from 'typings';
 
 export interface IFollowerData {
   id: string;
-  type: string;
+  type: 'follower';
   attributes: {
     created_at: string;
     updated_at: string;
@@ -30,12 +30,10 @@ export type FollowableType =
 export type FollowerAdd = {
   followableType: FollowableType;
   followableId: string;
-  slug?: string;
 };
 
 export type FollowerDelete = {
   followerId: string;
   followableId: string;
   followableType: FollowableType;
-  slug?: string;
 };
