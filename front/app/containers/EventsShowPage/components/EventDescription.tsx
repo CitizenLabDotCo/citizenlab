@@ -2,7 +2,7 @@ import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import ReadMoreWrapper from 'containers/ProjectsShowPage/shared/header/ReadMoreWrapper';
+import ReadMoreWrapper from 'components/ReadMoreWrapper/ReadMoreWrapper';
 
 // typings
 import { IEventData } from 'api/events/types';
