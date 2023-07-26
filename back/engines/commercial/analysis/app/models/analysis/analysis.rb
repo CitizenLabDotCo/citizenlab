@@ -28,6 +28,7 @@ module Analysis
     has_many :analyses_custom_fields, class_name: 'Analysis::AnalysesCustomField', dependent: :destroy
     has_many :custom_fields, through: :analyses_custom_fields
     has_many :tags, class_name: 'Analysis::Tag', dependent: :destroy
+    has_many :taggings, class_name: 'Analysis::Tagging', through: :tags
 
     validate :project_xor_phase_present
     validate :project_or_phase_form_context, on: :create
