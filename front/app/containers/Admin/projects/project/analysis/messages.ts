@@ -69,4 +69,28 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.deleteTag',
     defaultMessage: 'Delete tag',
   },
+  editTag: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Tags.editTag',
+    defaultMessage: 'Edit tag',
+  },
+  renameTagModalTitle: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Tags.renameTagModalTitle',
+    defaultMessage: 'Rename tag',
+  },
+  renameTagModalNameLabel: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Tags.renameTagModalNameLabel',
+    defaultMessage: 'Name',
+  },
+  renameTagModalSave: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Tags.renameTagModalSave',
+    defaultMessage: 'Save',
+  },
+  renameTagModalCancel: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Tags.renameTagModalCancel',
+    defaultMessage: 'Cancel',
+  },
+  emptyNameError: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Tags.emptyNameError',
+    defaultMessage: 'Add name',
+  },
 });

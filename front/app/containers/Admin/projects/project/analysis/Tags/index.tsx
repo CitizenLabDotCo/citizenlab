@@ -17,9 +17,12 @@ import { useParams } from 'react-router-dom';
 
 import messages from '../messages';
 import { useIntl } from 'utils/cl-intl';
+import Modal from 'components/UI/Modal';
+import RenameTagModal from './RenameTagModal';
 
 const Tags = () => {
   const [name, setName] = useState('');
+  const [renameTagModalOpenedId, setRenameTagModalOpenedId] = useState('');
 
   const { formatMessage } = useIntl();
 
@@ -57,6 +60,11 @@ const Tags = () => {
       });
     }
   };
+
+  const closeTagRenameModal = () => {
+    setRenameTagModalOpenedId('');
+  };
+
   return (
     <div>
       <Box>
@@ -101,10 +109,10 @@ const Tags = () => {
             <span>{tag.attributes.name}</span>
             <IconButton
               iconName="edit"
-              onClick={() => handleTagDelete(tag.id)}
+              onClick={() => setRenameTagModalOpenedId(tag.id)}
               iconColor={colors.black}
               iconColorOnHover={colors.black}
-              a11y_buttonActionMessage={formatMessage(messages.deleteTag)}
+              a11y_buttonActionMessage={formatMessage(messages.editTag)}
             />
             <IconButton
               iconName="delete"
@@ -113,6 +121,17 @@ const Tags = () => {
               iconColorOnHover={colors.red600}
               a11y_buttonActionMessage={formatMessage(messages.deleteTag)}
             />
+            <Modal
+              opened={renameTagModalOpenedId === tag.id}
+              close={closeTagRenameModal}
+            >
+              <RenameTagModal
+                closeRenameModal={closeTagRenameModal}
+                originalTagName={tag.attributes.name}
+                id={tag.id}
+                analysisId={analysisId}
+              />
+            </Modal>
           </Box>
         ))}
       </Box>
