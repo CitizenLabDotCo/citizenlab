@@ -22,15 +22,15 @@ const Analysis = () => {
     >
       <FocusOn>
         <TopBar />
-      </FocusOn>
-      <Box mt="100px" display="flex" w="100" alignItems="stretch" gap="20px">
-        <Box flexGrow={1}>Insights</Box>
-        <Box w="300px">Tags</Box>
-        <Box flexGrow={1}>
-          <InputsList />
+        <Box mt="100px" display="flex" w="100" alignItems="stretch" gap="20px">
+          <Box flexGrow={1}>Insights</Box>
+          <Box w="300px">Tags</Box>
+          <Box flexGrow={1}>
+            <InputsList />
+          </Box>
+          <Box flexGrow={1}>Preview</Box>
         </Box>
-        <Box flexGrow={1}>Preview</Box>
-      </Box>
+      </FocusOn>
     </Box>,
     modalPortalElement
   );
