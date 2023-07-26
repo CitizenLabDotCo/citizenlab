@@ -12,6 +12,7 @@ import ReactionControl from 'components/ReactionControl';
 import Buttons from 'containers/IdeasShow/components/CTABox/Buttons';
 import IdeaSharingButton from '../Buttons/IdeaSharingButton';
 import SharingButtonComponent from '../Buttons/SharingButtonComponent';
+import FollowUnfollow from 'components/FollowUnfollow';
 
 // styling
 import styled from 'styled-components';
@@ -57,6 +58,8 @@ const RightColumnDesktop = ({
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
   const { data: idea } = useIdeaById(ideaId);
+
+  if (!idea) return null;
 
   const participationContext = getCurrentParticipationContext(
     project?.data,
@@ -108,6 +111,12 @@ const RightColumnDesktop = ({
                 })}
             </Box>
             {commentingEnabled && <Buttons />}
+            <FollowUnfollow
+              followableType="ideas"
+              followableId={ideaId}
+              followersCount={idea.data.attributes.followers_count}
+              followerId={idea.data.relationships.user_follower?.data?.id}
+            />
           </Box>
         )}
         <Box mb="16px">
