@@ -59,6 +59,8 @@ const RightColumnDesktop = ({
   const { data: phases } = usePhases(projectId);
   const { data: idea } = useIdeaById(ideaId);
 
+  if (!idea) return null;
+
   const participationContext = getCurrentParticipationContext(
     project?.data,
     phases?.data
@@ -112,7 +114,8 @@ const RightColumnDesktop = ({
             <FollowUnfollow
               followableType="ideas"
               followableId={ideaId}
-              followersCount={8}
+              followersCount={idea.data.attributes.followers_count}
+              followerId={idea.data.relationships.user_follower?.data?.id}
             />
           </Box>
         )}
