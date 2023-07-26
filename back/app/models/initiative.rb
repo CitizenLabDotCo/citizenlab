@@ -103,22 +103,14 @@ class Initiative < ApplicationRecord
       .order("initiative_statuses.ordering #{direction}, initiatives.published_at #{direction}, initiatives.id")
   }
 
-  scope :feedback_needed, lambda {
-    joins('LEFT OUTER JOIN initiative_initiative_statuses ON initiatives.id = initiative_initiative_statuses.initiative_id')
-      .joins('LEFT OUTER JOIN initiative_statuses ON initiative_statuses.id = initiative_initiative_statuses.initiative_status_id')
-      .with_status_code('threshold_reached')
-  }
+  scope :feedback_needed, -> { with_status_code('threshold_reached') }
 
   scope :no_feedback_needed, lambda {
     includes(initiative_initiative_status: :initiative_status)
       .where.not(initiative_statuses: { code: 'threshold_reached' })
   }
 
-  scope :proposed, lambda {
-    joins('LEFT OUTER JOIN initiative_initiative_statuses ON initiatives.id = initiative_initiative_statuses.initiative_id')
-      .joins('LEFT OUTER JOIN initiative_statuses ON initiative_statuses.id = initiative_initiative_statuses.initiative_status_id')
-      .with_status_code('proposed')
-  }
+  scope :proposed, -> { with_status_code('proposed') }
 
   def reactions_needed(configuration = AppConfiguration.instance)
     [configuration.settings('initiatives', 'reacting_threshold') - likes_count, 0].max
