@@ -46,7 +46,19 @@ class WebApi::V1::FollowersController < ApplicationController
   end
 
   def followable_id
-    @followable_id ||= params[:"#{followable_type.underscore}_id"]
+    params_key = case followable_type
+    when 'Project'
+      :project_id
+    when 'ProjectFolders::Folder'
+      :project_folder_id
+    when 'Initiative'
+      :initiative_id
+    when 'Idea'
+      :idea_id
+    else
+      raise "Unsupported followable type #{followable_type}"
+    end
+    @followable_id ||= params[params_key]
   end
 
   def sidefx

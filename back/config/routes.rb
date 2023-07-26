@@ -37,6 +37,7 @@ Rails.application.routes.draw do
         end
         get 'comments/as_xlsx', on: :collection, to: 'comments#index_xlsx'
         resources :official_feedback, shallow: true
+        resources :followers, only: [:create]
       end
       concern :spam_reportable do
         resources :spam_reports, shallow: true
@@ -44,7 +45,7 @@ Rails.application.routes.draw do
 
       resources :ideas,
         concerns: %i[reactable spam_reportable post],
-        defaults: { reactable: 'Idea', spam_reportable: 'Idea', post: 'Idea' } do
+        defaults: { reactable: 'Idea', spam_reportable: 'Idea', post: 'Idea', followable: 'Idea' } do
         resources :images, defaults: { container_type: 'Idea' }
         resources :files, defaults: { container_type: 'Idea' }
 
@@ -58,7 +59,7 @@ Rails.application.routes.draw do
 
       resources :initiatives,
         concerns: %i[reactable spam_reportable post],
-        defaults: { reactable: 'Initiative', spam_reportable: 'Initiative', post: 'Initiative' } do
+        defaults: { reactable: 'Initiative', spam_reportable: 'Initiative', post: 'Initiative', followable: 'Initiative' } do
         resources :images, defaults: { container_type: 'Initiative' }
         resources :files, defaults: { container_type: 'Initiative' }
 
@@ -144,7 +145,7 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :projects, defaults: { followable: 'Project' } do
+      resources :projects do
         resources :events, only: %i[new create]
         resources :projects_allowed_input_topics, only: [:index]
         resources :phases, only: %i[index new create]
@@ -160,7 +161,7 @@ Rails.application.routes.draw do
           get :users_search, on: :collection
         end
 
-        resources :followers, only: [:create]
+        resources :followers, only: [:create], defaults: { followable: 'Project' }
 
         post 'copy', on: :member
         get 'by_slug/:slug', on: :collection, to: 'projects#by_slug'
@@ -184,6 +185,7 @@ Rails.application.routes.draw do
 
         resources :images, controller: '/web_api/v1/images', defaults: { container_type: 'ProjectFolder' }
         resources :files, controller: '/web_api/v1/files', defaults: { container_type: 'ProjectFolder' }
+        resources :followers, only: [:create], defaults: { followable: 'ProjectFolders::Folder' }
         get 'by_slug/:slug', on: :collection, to: 'folders#by_slug'
       end
 

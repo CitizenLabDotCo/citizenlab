@@ -555,6 +555,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_19_221540) do
     t.boolean "anonymous", default: false, null: false
     t.integer "internal_comments_count", default: 0, null: false
     t.integer "votes_count", default: 0, null: false
+    t.integer "followers_count", default: 0, null: false
     t.index "((to_tsvector('simple'::regconfig, COALESCE((title_multiloc)::text, ''::text)) || to_tsvector('simple'::regconfig, COALESCE((body_multiloc)::text, ''::text))))", name: "index_ideas_search", using: :gin
     t.index ["author_hash"], name: "index_ideas_on_author_hash"
     t.index ["author_id"], name: "index_ideas_on_author_id"
@@ -672,6 +673,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_19_221540) do
     t.string "author_hash"
     t.boolean "anonymous", default: false, null: false
     t.integer "internal_comments_count", default: 0, null: false
+    t.integer "followers_count", default: 0, null: false
     t.index "((to_tsvector('simple'::regconfig, COALESCE((title_multiloc)::text, ''::text)) || to_tsvector('simple'::regconfig, COALESCE((body_multiloc)::text, ''::text))))", name: "index_initiatives_search", using: :gin
     t.index ["author_id"], name: "index_initiatives_on_author_id"
     t.index ["location_point"], name: "index_initiatives_on_location_point", using: :gist
@@ -1120,6 +1122,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_19_221540) do
     t.string "slug"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "followers_count", default: 0, null: false
     t.index ["slug"], name: "index_project_folders_folders_on_slug"
   end
 
