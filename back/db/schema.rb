@@ -54,15 +54,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_25_121109) do
     t.index ["rgt"], name: "index_admin_publications_on_rgt"
   end
 
-  create_table "analyses_tags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name", null: false
-    t.uuid "analysis_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["analysis_id", "name"], name: "index_analyses_tags_on_analysis_id_and_name", unique: true
-    t.index ["analysis_id"], name: "index_analyses_tags_on_analysis_id"
-  end
-
   create_table "analysis_analyses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "project_id"
     t.uuid "phase_id"
@@ -1477,7 +1468,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_25_121109) do
   end
 
   add_foreign_key "activities", "users"
-  add_foreign_key "analyses_tags", "analysis_analyses", column: "analysis_id"
   add_foreign_key "analysis_analyses", "phases"
   add_foreign_key "analysis_analyses", "projects"
   add_foreign_key "analysis_analyses_custom_fields", "analysis_analyses", column: "analysis_id"

@@ -8,8 +8,6 @@ resource 'Tags' do
 
   before { header 'Content-Type', 'application/json' }
 
-  let(:json_response) { json_parse(response_body) }
-
   shared_examples 'unauthorized requests' do
     context 'when visitor' do
       example 'unauthorized', document: false do
@@ -49,7 +47,7 @@ resource 'Tags' do
 
       example_request 'lists all tags of an analysis' do
         assert_status 200
-        expect(json_response[:data].pluck(:id)).to match_array(tags.pluck(:id))
+        expect(json_response_body[:data].pluck(:id)).to match_array(tags.pluck(:id))
       end
 
       example 'returns 404 if the analysis does not exist', document: false do
@@ -82,9 +80,9 @@ resource 'Tags' do
       let(:expected_response) do
         {
           data: {
-            id: anything,
+            id: kind_of(String),
             type: 'tag',
-            attributes: { name: name, tag_type: 'custom', created_at: anything, updated_at: anything },
+            attributes: { name: name, tag_type: 'custom', created_at: kind_of(String), updated_at: kind_of(String) },
             relationships: { analysis: { data: { id: analysis_id, type: 'analysis' } } }
           }
         }
@@ -92,7 +90,7 @@ resource 'Tags' do
 
       example_request 'creates a new tag' do
         expect(status).to eq(201)
-        expect(json_response).to match(expected_response)
+        expect(json_response_body).to match(expected_response)
       end
 
       include_examples 'unprocessable entity'
@@ -133,7 +131,7 @@ resource 'Tags' do
       example_request 'updates a tag' do
         expect(name).not_to eq(previous_name) # making sure we didn't reuse the same name by mistake
         assert_status 200
-        expect(json_response).to match(expected_response)
+        expect(json_response_body).to match(expected_response)
       end
 
       include_examples 'unprocessable entity'

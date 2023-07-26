@@ -27,7 +27,6 @@ module Analysis
     belongs_to :analysis
 
     validates :name, presence: true, uniqueness: { scope: :analysis_id }
-    validates :analysis, presence: true
     validates :tag_type, inclusion: { in: TAG_TYPES }, allow_blank: false
   end
 end
