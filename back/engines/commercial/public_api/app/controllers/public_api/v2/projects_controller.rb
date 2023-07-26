@@ -2,6 +2,8 @@
 
 module PublicApi
   class V2::ProjectsController < PublicApiController
+    include DeletedItemsAction
+
     def index
       projects = ProjectsFinder.new(
         Project.includes(:project_images).includes(:map_config).order(created_at: :desc),
@@ -19,7 +21,7 @@ module PublicApi
     private
 
     def finder_params
-      params.permit(:folder_id, :publication_status).to_h.tap do |params|
+      params.permit(:folder_id, :publication_status, topic_ids: []).to_h.tap do |params|
         if params[:publication_status]
           validate_publication_status!(params[:publication_status])
         end

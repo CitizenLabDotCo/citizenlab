@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
-  include WebApi::V1::ParticipationContextSerializer
-
+class WebApi::V1::PhaseSerializer < WebApi::V1::ParticipationContextSerializer
   attributes :title_multiloc, :start_at, :end_at, :created_at, :updated_at, :ideas_count, :campaigns_settings
 
   attribute :description_multiloc do |object|

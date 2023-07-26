@@ -201,7 +201,9 @@ lb:
       comments_count: 'Kommentaren'
       likes_count: 'Gefällt'
       dislikes_count: 'Net gär'
-      baskets_count: 'Kierf'
+      picks: 'Wielt'
+      participants: 'Participanten'
+      votes_count: 'Stëmmen'
       input_url: 'URL'
       project: 'Projet'
       status: 'Status'
@@ -247,3 +249,6 @@ lb:
     formats:
       hour_of_day: "%H:%M"
     pm: pm
+  voting_method:
+    default_voting_term_singular: "stëmmen"
+    default_voting_term_plural: "Stëmmen"

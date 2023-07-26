@@ -125,6 +125,13 @@ FactoryBot.define do
       required { false }
       input_type { 'multiselect' }
       enabled { true }
+
+      trait :with_options do
+        after(:create) do |cf|
+          create(:custom_field_option, custom_field: cf, key: 'option1')
+          create(:custom_field_option, custom_field: cf, key: 'option2')
+        end
+      end
     end
 
     factory :custom_field_checkbox do

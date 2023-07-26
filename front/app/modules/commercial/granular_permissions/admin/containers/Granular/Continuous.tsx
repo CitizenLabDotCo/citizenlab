@@ -13,7 +13,7 @@ import useUpdateProjectPermission from 'api/project_permissions/useUpdateProject
 import {
   getMethodConfig,
   ParticipationMethodConfig,
-} from 'utils/participationMethodUtils';
+} from 'utils/configs/participationMethodConfig';
 import { isNilOrError } from 'utils/helperUtils';
 import { HandlePermissionChangeProps } from './utils';
 

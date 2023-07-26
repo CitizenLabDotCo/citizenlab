@@ -64,4 +64,6 @@ resource 'Users' do
       end
     end
   end
+
+  include_examples '/api/v2/.../deleted', :users
 end
