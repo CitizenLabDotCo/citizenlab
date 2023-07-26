@@ -16,7 +16,7 @@ import SearchInput from 'components/UI/SearchInput';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import Filters from './Filters';
 import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 import useAnalysis from 'api/analyses/useAnalysis';
 
 const TopBar = () => {

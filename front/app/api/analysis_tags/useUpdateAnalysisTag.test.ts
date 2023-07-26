@@ -8,7 +8,7 @@ import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-const apiPath = '*analyses/:projectId/tags/:id';
+const apiPath = '*analyses/:analysisId/tags/:id';
 const server = setupServer(
   rest.patch(apiPath, (_req, res, ctx) => {
     return res(ctx.status(200), ctx.json({ data: tagsData[0] }));
@@ -27,7 +27,7 @@ describe('useUpdateAnalysisTag', () => {
     act(() => {
       result.current.mutate({
         id: 'id',
-        projectId: '1',
+        analysisId: '1',
         name: 'test',
       });
     });
@@ -49,7 +49,7 @@ describe('useUpdateAnalysisTag', () => {
     act(() => {
       result.current.mutate({
         id: 'id',
-        projectId: '1',
+        analysisId: '1',
         name: 'test',
       });
     });

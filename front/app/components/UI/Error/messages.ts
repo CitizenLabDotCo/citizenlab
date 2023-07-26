@@ -235,6 +235,10 @@ export default defineMessages({
     id: 'app.errors.category_name_taken',
     defaultMessage: 'A category with this name already exists',
   },
+  tag_name_taken: {
+    id: 'app.errors.tag_name_taken',
+    defaultMessage: 'A tag with this name already exists',
+  },
   bulk_import_ideas_maximum_ideas_exceeded: {
     id: 'app.errors.bulk_import_ideas_maximum_ideas_exceeded',
     defaultMessage: 'The maximum of {value} ideas has been exceeded.',

@@ -4,7 +4,7 @@ import tagsKeys from './keys';
 export type TagsKeys = Keys<typeof tagsKeys>;
 
 export interface ITagParams {
-  projectId: string;
+  analysisId: string;
 }
 
 type TagTypes = 'custom';
@@ -37,12 +37,12 @@ export interface ITag {
 }
 
 export interface ITagAdd {
-  projectId: string;
+  analysisId: string;
   name: string;
 }
 
 export interface ITagUpdate {
   id: string;
-  projectId: string;
+  analysisId: string;
   name: string;
 }

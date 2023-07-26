@@ -57,4 +57,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.project.analysis.TopBar.to',
     defaultMessage: 'To',
   },
+  addTag: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Tags.addTag',
+    defaultMessage: 'Add tag',
+  },
 });

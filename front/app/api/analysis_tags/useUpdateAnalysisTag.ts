@@ -4,9 +4,9 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import analysesKeys from './keys';
 import { ITag, ITagUpdate } from './types';
 
-const updateTag = ({ id, projectId, name }: ITagUpdate) =>
+const updateTag = ({ id, analysisId, name }: ITagUpdate) =>
   fetcher<ITag>({
-    path: `/analyses/${projectId}/tags/${id}`,
+    path: `/analyses/${analysisId}/tags/${id}`,
     action: 'patch',
     body: { name },
   });

@@ -8,7 +8,7 @@ import { rest } from 'msw';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { tagsData } from './__mocks__/useAnalysisTags';
 
-const apiPath = '*analyses/:projectId/tags';
+const apiPath = '*analyses/:analysisId/tags';
 
 const server = setupServer(
   rest.post(apiPath, (_req, res, ctx) => {
@@ -27,7 +27,7 @@ describe('useAddAnalysisTag', () => {
 
     act(() => {
       result.current.mutate({
-        projectId: '1',
+        analysisId: '1',
         name: 'test',
       });
     });
@@ -49,7 +49,7 @@ describe('useAddAnalysisTag', () => {
 
     act(() => {
       result.current.mutate({
-        projectId: '1',
+        analysisId: '1',
         name: 'test',
       });
     });

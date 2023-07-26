@@ -4,9 +4,9 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import tagsKeys from './keys';
 import { ITags, TagsKeys, ITagParams } from './types';
 
-const fetchTags = ({ projectId }: ITagParams) => {
+const fetchTags = ({ analysisId }: ITagParams) => {
   return fetcher<ITags>({
-    path: `/analyses/${projectId}/tags`,
+    path: `/analyses/${analysisId}/tags`,
     action: 'get',
   });
 };

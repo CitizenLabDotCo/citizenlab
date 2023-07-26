@@ -4,9 +4,9 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import tagsKeys from './keys';
 import { ITag, ITagAdd } from './types';
 
-const addAnalysisTag = async ({ name, projectId }: ITagAdd) =>
+const addAnalysisTag = async ({ name, analysisId }: ITagAdd) =>
   fetcher<ITag>({
-    path: `/analyses/${projectId}/tags`,
+    path: `/analyses/${analysisId}/tags`,
     action: 'post',
     body: { name },
   });

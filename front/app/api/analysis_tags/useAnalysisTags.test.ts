@@ -9,10 +9,10 @@ import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { tagsData } from './__mocks__/useAnalysisTags';
 import { ITagParams } from './types';
 
-const apiPath = '*/analyses/:projectId/tags';
+const apiPath = '*/analyses/:analysisId/tags';
 
 const params: ITagParams = {
-  projectId: '1',
+  analysisId: '1',
 };
 
 const server = setupServer(
