@@ -1,4 +1,4 @@
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import { Box, colors, stylingConsts } from '@citizenlab/cl2-component-library';
 import React from 'react';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
@@ -18,17 +18,33 @@ const Analysis = () => {
       position="fixed"
       bgColor={colors.background}
       h="100vh"
-      data-testid="contentBuilderPage"
     >
       <FocusOn>
         <TopBar />
-        <Box mt="100px" display="flex" w="100" alignItems="stretch" gap="20px">
-          <Box flexGrow={1}>Insights</Box>
-          <Box w="300px">
+        <Box
+          display="flex"
+          w="100"
+          alignItems="stretch"
+          gap="20px"
+          pt={`${stylingConsts.mobileMenuHeight}px`}
+        >
+          <Box flexGrow={1} p="12px">
+            Insights
+          </Box>
+          <Box
+            w="300px"
+            overflow="auto"
+            h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
+            p="12px"
+          >
             <Tags />
           </Box>
-          <Box flexGrow={1}>Inputs </Box>
-          <Box flexGrow={1}>Preview</Box>
+          <Box flexGrow={1} p="12px">
+            Inputs
+          </Box>
+          <Box flexGrow={1} p="12px">
+            Preview
+          </Box>
         </Box>
       </FocusOn>
     </Box>,
