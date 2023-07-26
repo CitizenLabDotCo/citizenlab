@@ -160,6 +160,18 @@ describe TimelineService do
     end
   end
 
+  describe 'phase_number' do
+    it 'returns the phase number' do
+      project = create(:project)
+      future_phase = create(:phase, project: project, start_at: (Time.zone.today + 20.days), end_at: (Time.zone.today + 25.days))
+      past_phase = create(:phase, project: project, start_at: (Time.zone.today - 15.days), end_at: (Time.zone.today - 10.days))
+      current_phase = create(:phase, project: project, start_at: (Time.zone.today - 2.days), end_at: (Time.zone.today + 3.days))
+      expect(service.phase_number(past_phase.reload)).to eq 1
+      expect(service.phase_number(current_phase.reload)).to eq 2
+      expect(service.phase_number(future_phase.reload)).to eq 3
+    end
+  end
+
   def create_active_phase(project, factory: :phase)
     now = Time.now.in_time_zone(AppConfiguration.instance.settings('core', 'timezone')).to_date
     create(factory, project: project, start_at: now - 2.weeks, end_at: now)
