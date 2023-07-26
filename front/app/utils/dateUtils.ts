@@ -2,6 +2,7 @@ import moment, { unitOfTime } from 'moment';
 import { isString } from 'lodash-es';
 import { Locale } from 'typings';
 import { IResolution } from 'components/admin/ResolutionControl';
+import messages from './messages';
 
 export function getIsoDateForToday(): string {
   // this is based on the user's timezone in moment, so
@@ -123,6 +124,26 @@ export function convertSecondsToDDHHMM(seconds: number) {
   const formattedMinutesLeft =
     minutesLeft < 10 ? `0${minutesLeft}` : minutesLeft;
   return `${formattedDaysLeft}:${formattedHoursLeft}:${formattedMinutesLeft}`;
+}
+
+export function getDayName(dayInWeek: number) {
+  switch (dayInWeek) {
+    case 0:
+      return messages.sunday;
+    case 1:
+      return messages.monday;
+    case 2:
+      return messages.tuesday;
+    case 3:
+      return messages.wednesday;
+    case 4:
+      return messages.thursday;
+    case 5:
+      return messages.friday;
+    case 6:
+      return messages.saturday;
+  }
+  return null;
 }
 
 export function toThreeLetterMonth(date: string, resolution: IResolution) {
