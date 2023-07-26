@@ -10,6 +10,7 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
     :comments_count,
     :internal_comments_count,
     :official_feedbacks_count,
+    :followers_count,
     :location_point_geojson,
     :location_description,
     :created_at,
