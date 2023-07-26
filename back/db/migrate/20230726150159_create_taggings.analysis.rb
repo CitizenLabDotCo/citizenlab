@@ -7,6 +7,8 @@ class CreateTaggings < ActiveRecord::Migration[7.0]
       t.references :tag, type: :uuid, null: false, index: true, foreign_key: { to_table: :analysis_tags }
       t.references :input, type: :uuid, null: false, index: true, foreign_key: { to_table: :ideas }
 
+      t.timestamps
+
       t.index %i[tag_id input_id], unique: true
     end
   end
