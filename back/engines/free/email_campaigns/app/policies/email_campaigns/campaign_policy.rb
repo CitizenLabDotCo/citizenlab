@@ -16,7 +16,7 @@ module EmailCampaigns
         elsif user&.active? && user&.project_moderator?
           projects = Project.where(id: user.moderatable_project_ids)
           if projects.any? { |p| p.visible_to == 'public' }
-            scope.where(type: EmailCampaigns::Campaigns::Manual.name)
+            scope.all
           else
             accessible_group_ids = GroupPolicy::Scope.new(user, Group).resolve.ids
             campaigns_with_wrong_groups = CampaignsGroup
@@ -27,7 +27,6 @@ module EmailCampaigns
               .where(email_campaigns_campaigns_groups: { id: nil })
               .ids
             scope
-              .where(type: EmailCampaigns::Campaigns::Manual.name)
               .where.not(id: [*campaigns_with_wrong_groups, *campaigns_without_groups].uniq)
           end
         else
