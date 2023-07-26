@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, colors } from '@citizenlab/cl2-component-library';
-import useInfiniteInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
+import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
 import { useSearchParams, useParams } from 'react-router-dom';
 import T from 'components/T';
 import Button from 'components/UI/Button';
@@ -22,10 +22,10 @@ const InputsList = () => {
     'comments_to',
   ]);
 
-  const { data, fetchNextPage, hasNextPage } = useInfiniteInputs(
+  const { data, fetchNextPage, hasNextPage } = useInfiniteAnalysisInputs({
     analysisId,
-    filters
-  );
+    queryParams: filters,
+  });
 
   const inputs = data?.pages.map((page) => page.data).flat();
 

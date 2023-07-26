@@ -5,7 +5,7 @@ import { getPageNumberFromUrl } from 'utils/paginationUtils';
 import inputsKeys from './keys';
 import { IInputs, IInputsQueryParams, InputsKeys } from './types';
 
-const defaultPageSize = 1;
+const defaultPageSize = 50;
 const fetchInfiniteInputs = (
   analysisId: string,
   { pageNumber, pageSize, ...queryParams }: IInputsQueryParams
@@ -20,7 +20,7 @@ const fetchInfiniteInputs = (
     },
   });
 
-const useInfiniteInputs = (
+const useInfiniteAnalysisInputs = (
   analysisId: string,
   queryParams: IInputsQueryParams
 ) => {
@@ -40,4 +40,4 @@ const useInfiniteInputs = (
   });
 };
 
-export default useInfiniteInputs;
+export default useInfiniteAnalysisInputs;

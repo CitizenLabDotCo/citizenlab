@@ -13,14 +13,11 @@ const inputsKeys = {
     analysisId: string;
     filters?: IInputsQueryParams;
   }) => [
-    { ...baseKey, operation: 'list', analysisId, parameters: { ...filters } },
-  ],
-  items: () => [{ ...baseKey, operation: 'item' }],
-  item: ({ id }: { id: string }) => [
     {
       ...baseKey,
-      operation: 'item',
-      parameters: { id },
+      operation: 'list',
+      analysisId,
+      parameters: { analysisId, ...filters },
     },
   ],
 } satisfies QueryKeys;

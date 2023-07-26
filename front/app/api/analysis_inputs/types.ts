@@ -12,7 +12,7 @@ export type IInputsQueryParams = {
   pageNumber?: number;
   pageSize?: number;
   search?: string;
-  tag_id?: string[];
+  tag_ids?: string[];
   published_at_from?: string;
   published_at_to?: string;
   reactions_from?: string | number;
@@ -21,12 +21,9 @@ export type IInputsQueryParams = {
   votes_to?: string | number;
   comments_from?: string | number;
   comments_to?: string | number;
-  // [K in  AuthorCustomFromFilterKey]: string;
-  // [K in AuthorCustomToFilterKey]: string;
-  // [K in AuthorCustomInFilterKey]: string[];
-} & { [K in AuthorCustomFromFilterKey]: string } & {
-  [K in AuthorCustomToFilterKey]: string;
-} & { [K in AuthorCustomInFilterKey]: string[] };
+} & { [K in AuthorCustomFromFilterKey]?: string } & {
+  [K in AuthorCustomToFilterKey]?: string;
+} & { [K in AuthorCustomInFilterKey]?: string[] };
 
 export interface IInputsData {
   id: string;
