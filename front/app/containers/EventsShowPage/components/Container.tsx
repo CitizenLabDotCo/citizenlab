@@ -1,12 +1,7 @@
 import React from 'react';
 
 // styling
-import {
-  contentFadeInDelay,
-  contentFadeInDuration,
-  contentFadeInEasing,
-  pageContentMaxWidth,
-} from '../styleConstants';
+import { pageContentMaxWidth } from '../styleConstants';
 import styled from 'styled-components';
 
 const Main = styled.main`
@@ -20,29 +15,6 @@ const Main = styled.main`
   margin-right: auto;
   background: #fff;
   gap: 40px;
-
-  &.loading {
-    flex: 1;
-    justify-content: center;
-  }
-
-  &.isLoaded {
-    opacity: 0;
-
-    &.content-enter {
-      opacity: 0;
-
-      &.content-enter-active {
-        opacity: 1;
-        transition: opacity ${contentFadeInDuration}ms ${contentFadeInEasing}
-          ${contentFadeInDelay}ms;
-      }
-    }
-
-    &.content-enter-done {
-      opacity: 1;
-    }
-  }
 `;
 
 interface Props {

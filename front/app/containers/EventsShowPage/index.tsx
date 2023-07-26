@@ -54,7 +54,6 @@ const InnerContainer = styled(Box)`
     padding-right: 15px;
   `}
 `;
-
 const EventsShowPage = () => {
   const isSmallerThanTablet = useBreakpoint('tablet');
   const locale = useLocale();
