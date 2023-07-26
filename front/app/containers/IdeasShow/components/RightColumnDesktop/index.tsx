@@ -12,6 +12,7 @@ import ReactionControl from 'components/ReactionControl';
 import Buttons from 'containers/IdeasShow/components/CTABox/Buttons';
 import IdeaSharingButton from '../Buttons/IdeaSharingButton';
 import SharingButtonComponent from '../Buttons/SharingButtonComponent';
+import FollowUnfollow from 'components/FollowUnfollow';
 
 // styling
 import styled from 'styled-components';
@@ -108,6 +109,11 @@ const RightColumnDesktop = ({
                 })}
             </Box>
             {commentingEnabled && <Buttons />}
+            <FollowUnfollow
+              followableType="ideas"
+              followableId={ideaId}
+              followersCount={8}
+            />
           </Box>
         )}
         <Box mb="16px">
