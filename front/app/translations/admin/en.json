@@ -1827,6 +1827,7 @@
   "app.containers.AdminPage.projects.all.existingProjects": "Existing projects",
   "app.containers.AdminPage.projects.all.newProjectFolder": "Create a project folder",
   "app.containers.AdminPage.projects.all.projectsAndFolders": "Projects and folders",
+  "app.containers.AdminPage.projects.project.analysis.Tags.addTag": "Add tag",
   "app.containers.AdminPage.projects.project.analysis.TopBar.above": "Above",
   "app.containers.AdminPage.projects.project.analysis.TopBar.author": "Author",
   "app.containers.AdminPage.projects.project.analysis.TopBar.below": "Below",
