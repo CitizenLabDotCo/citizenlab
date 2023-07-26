@@ -1,12 +1,15 @@
 import { Box, colors } from '@citizenlab/cl2-component-library';
-import React from 'react';
+import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import TopBar from './TopBar';
 import InputsList from './InputsList';
+import InputPreview from './InputPreview';
 
 const Analysis = () => {
   const modalPortalElement = document.getElementById('modal-portal');
+
+  const [selectedInputId, setSelectedInputId] = useState<string | null>(null);
   if (!modalPortalElement) return null;
 
   return createPortal(
@@ -23,12 +26,17 @@ const Analysis = () => {
       <FocusOn>
         <TopBar />
         <Box mt="100px" display="flex" w="100" alignItems="stretch" gap="20px">
-          <Box flexGrow={1}>Insights</Box>
+          <Box flex="1">Insights</Box>
           <Box w="300px">Tags</Box>
-          <Box flexGrow={1}>
-            <InputsList />
+          <Box flex="1">
+            <InputsList
+              onSelectInput={(inputId) => setSelectedInputId(inputId)}
+              selectedInputId={selectedInputId}
+            />
           </Box>
-          <Box flexGrow={1}>Preview</Box>
+          <Box flex="1">
+            {selectedInputId && <InputPreview inputId={selectedInputId} />}
+          </Box>
         </Box>
       </FocusOn>
     </Box>,

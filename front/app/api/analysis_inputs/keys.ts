@@ -20,6 +20,14 @@ const inputsKeys = {
       parameters: { analysisId, ...filters },
     },
   ],
+  items: () => [{ ...baseKey, operation: 'item' }],
+  item: ({ analysisId, id }: { analysisId: string; id?: string }) => [
+    {
+      ...baseKey,
+      operation: 'item',
+      parameters: { id, analysisId },
+    },
+  ],
 } satisfies QueryKeys;
 
 export default inputsKeys;

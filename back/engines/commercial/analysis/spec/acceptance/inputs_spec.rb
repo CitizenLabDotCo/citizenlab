@@ -107,4 +107,13 @@ resource 'Inputs' do
       end
     end
   end
+
+  get 'web_api/v1/analyses/:analysis_id/inputs/:id' do
+
+    let(:analysis) { create(:analysis) }
+    let(:input) { create(:idea, project: analysis.project )}
+    example_request 'get one inputs in the analysis by id' do
+      expect(status).to eq(200)
+    end
+  end
 end

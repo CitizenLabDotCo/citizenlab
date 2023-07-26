@@ -55,3 +55,7 @@ export interface IInputs {
   data: IInputsData[];
   links: ILinks;
 }
+
+export interface IInput {
+  data: IInputsData;
+}

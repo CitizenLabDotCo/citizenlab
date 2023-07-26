@@ -20,6 +20,11 @@ module Analysis
           )
         end
 
+        def show
+          @input = @analysis.inputs.find(params[:id])
+          render json: InputSerializer.new(@input, params: jsonapi_serializer_params, include: [:author]).serializable_hash
+        end
+
         private
 
         def set_analysis

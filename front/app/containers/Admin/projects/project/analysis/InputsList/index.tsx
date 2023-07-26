@@ -2,10 +2,16 @@ import React from 'react';
 import { Box, colors } from '@citizenlab/cl2-component-library';
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
 import { useSearchParams, useParams } from 'react-router-dom';
-import T from 'components/T';
 import Button from 'components/UI/Button';
 import { pick } from 'lodash-es';
-const InputsList = () => {
+import InputListItem from './InputListItem';
+
+interface Props {
+  onSelectInput: (inputId: string) => void;
+  selectedInputId: string | null;
+}
+
+const InputsList = ({ onSelectInput, selectedInputId }: Props) => {
   const { analysisId } = useParams() as { analysisId: string };
   const [searchParams] = useSearchParams();
 
@@ -32,10 +38,14 @@ const InputsList = () => {
   return (
     <Box bg={colors.white} w="100%" p="24px">
       {inputs?.map((input) => (
-        <div key={input.id}>
-          <T value={input.attributes.title_multiloc} />
-        </div>
+        <InputListItem
+          key={input.id}
+          input={input}
+          onSelect={() => onSelectInput(input.id)}
+          selected={input.id === selectedInputId}
+        />
       ))}
+      {/* Should become infinite list, temporary button */}
       {hasNextPage && <Button onClick={() => fetchNextPage()}>More</Button>}
     </Box>
   );
