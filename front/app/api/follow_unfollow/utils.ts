@@ -4,10 +4,11 @@ import ideasKeys from 'api/ideas/keys';
 import initiativesKeys from 'api/initiatives/keys';
 import projectFoldersKeys from 'api/project_folders/keys';
 import followUnfollowKeys from './keys';
+import { FollowableType } from './types';
 
 export const invalidateFollowQueries = (
   queryClient: QueryClient,
-  followableType: string,
+  followableType: FollowableType,
   followableId: string
 ) => {
   queryClient.invalidateQueries({ queryKey: followUnfollowKeys.all() });
@@ -18,7 +19,7 @@ export const invalidateFollowQueries = (
     case 'ideas':
       queryClient.invalidateQueries(ideasKeys.item({ id: followableId }));
       break;
-    case 'proposals':
+    case 'initiatives':
       queryClient.invalidateQueries(initiativesKeys.item({ id: followableId }));
       break;
     case 'folders':

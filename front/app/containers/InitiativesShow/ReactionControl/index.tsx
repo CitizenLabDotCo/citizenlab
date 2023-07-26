@@ -226,9 +226,10 @@ const ReactionControl = ({
       />
       <Box mt="8px">
         <FollowUnfollow
-          followableType="proposals"
+          followableType="initiatives"
           followableId={initiative.data.id}
-          followersCount={6}
+          followersCount={initiative.data.attributes.followers_count}
+          followerId={initiative.data.relationships.user_follower?.data?.id}
         />
       </Box>
     </Container>

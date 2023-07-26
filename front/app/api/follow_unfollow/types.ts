@@ -21,7 +21,7 @@ export interface IFollower {
   data: IFollowerData;
 }
 
-export type FollowableType = 'projects' | 'folders' | 'ideas' | 'proposals';
+export type FollowableType = 'projects' | 'folders' | 'ideas' | 'initiatives';
 
 export type FollowerAdd = {
   followableType: FollowableType;
