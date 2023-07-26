@@ -18,18 +18,33 @@ resource 'Followers' do
       parameter :number, 'Page number'
       parameter :size, 'Number of followers per page'
     end
+    parameter :followable_type, 'One of: "Project", "ProjectFolders::Folder", "Initiative", "Idea"', required: false
 
-    example 'List all followers' do
-      followers = create_list(:follower, 2, user: user)
-      create(:follower, user: create(:user))
+    describe do
+      let!(:project_follows) { create_list(:project, 2).map { |project| create(:follower, user: user, followable: project) } }
+      let!(:other_follow) { create(:follower, user: create(:user)) }
+      let!(:folder_follows) { create_list(:project_folder, 2).map { |project| create(:follower, user: user, followable: project) } }
+      let!(:idea_follows) { [create(:follower, user: user, followable: create(:idea))] }
+      let!(:initiative_follows) { [create(:follower, user: user, followable: create(:initiative))] }
 
-      do_request
-      assert_status 200
-      json_response = json_parse response_body
-      expect(json_response[:data].size).to eq 2
-      expect(json_response[:data].pluck(:id)).to match_array followers.map(&:id)
-      expect(json_response[:included].select { |included| included[:type] == 'project' }.pluck(:id)).to match_array followers.map(&:followable_id)
-      # TODO: add a follower to a proposal and a folder
+      example_request 'List all followers' do
+        assert_status 200
+        json_response = json_parse response_body
+        expect(json_response[:data].size).to eq 6
+        expect(json_response[:data].pluck(:id)).to match_array (project_follows + folder_follows + idea_follows + initiative_follows).map(&:id)
+      end
+
+      describe do
+        let(:followable_type) { 'Project' }
+
+        example_request 'List all followers by followable type' do
+          assert_status 200
+          json_response = json_parse response_body
+          expect(json_response[:data].size).to eq 2
+          expect(json_response[:data].pluck(:id)).to match_array project_follows.map(&:id)
+          expect(json_response[:included].select { |included| included[:type] == 'project' }.pluck(:id)).to match_array project_follows.map(&:followable_id)
+        end
+      end
     end
   end
 

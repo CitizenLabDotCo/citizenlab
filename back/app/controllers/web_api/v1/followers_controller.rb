@@ -2,7 +2,9 @@
 
 class WebApi::V1::FollowersController < ApplicationController
   def index
-    followers = paginate policy_scope(current_user.follows.includes(:followable)).order(created_at: :desc)
+    followers = policy_scope current_user.follows.includes(:followable)
+    followers = followers.where(followable_type: params[:followable_type]) if params.key? :followable_type
+    followers = paginate followers.order(created_at: :desc)
     render json: linked_json(followers, WebApi::V1::FollowerSerializer, params: jsonapi_serializer_params, include: [:followable])
   end
 
