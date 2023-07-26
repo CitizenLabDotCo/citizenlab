@@ -345,6 +345,10 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
           enabled: false,
           allowed: false
         }
+        follow: {
+          enabled: true,
+          allowed: true
+        }
       }
     )
 

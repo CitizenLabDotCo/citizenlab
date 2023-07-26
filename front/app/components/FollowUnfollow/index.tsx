@@ -9,6 +9,7 @@ import messages from './messages';
 import { FollowableType } from 'api/follow_unfollow/types';
 import useAddFollower from 'api/follow_unfollow/useAddFollower';
 import useDeleteFollower from 'api/follow_unfollow/useDeleteFollower';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 interface Props extends BoxPaddingProps {
   followableType: FollowableType;
@@ -26,10 +27,15 @@ const FollowUnfollow = ({
   buttonStyle = 'primary-outlined',
   ...paddingProps
 }: Props) => {
+  const isFollowingEnabled = useFeatureFlag({
+    name: 'follow',
+  });
   const { formatMessage } = useIntl();
   const { mutate: addFollower, isLoading: isAddingFollower } = useAddFollower();
   const { mutate: deleteFollower, isLoading: isDeletingFollower } =
     useDeleteFollower();
+
+  if (!isFollowingEnabled) return null;
 
   // If the follower id is present, then the user is following
   const isFollowing = !!followerId;
