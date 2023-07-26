@@ -11,7 +11,7 @@ const fetchInfiniteInputs = (
   { pageNumber, pageSize, ...queryParams }: IInputsQueryParams
 ) =>
   fetcher<IInputs>({
-    path: `/analysis/${analysisId}/inputs`,
+    path: `/analyses/${analysisId}/inputs`,
     action: 'get',
     queryParams: {
       'page[number]': pageNumber || 1,

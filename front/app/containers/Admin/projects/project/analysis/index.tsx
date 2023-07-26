@@ -3,6 +3,7 @@ import React from 'react';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import TopBar from './TopBar';
+import InputsList from './InputsList';
 
 const Analysis = () => {
   const modalPortalElement = document.getElementById('modal-portal');
@@ -22,6 +23,14 @@ const Analysis = () => {
       <FocusOn>
         <TopBar />
       </FocusOn>
+      <Box mt="100px" display="flex" w="100" alignItems="stretch" gap="20px">
+        <Box flexGrow={1}>Insights</Box>
+        <Box w="300px">Tags</Box>
+        <Box flexGrow={1}>
+          <InputsList />
+        </Box>
+        <Box flexGrow={1}>Preview</Box>
+      </Box>
     </Box>,
     modalPortalElement
   );
