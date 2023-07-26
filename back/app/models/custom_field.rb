@@ -89,6 +89,10 @@ class CustomField < ApplicationRecord
     %w[select multiselect].include?(input_type)
   end
 
+  def support_free_text_value?
+    %w[text multiline_text text_multiloc multiline_text_multiloc html_multiloc].include?(input_type)
+  end
+
   def built_in?
     !!code
   end
