@@ -55,9 +55,10 @@ const ProjectFolderHeader = memo<Props>(({ projectFolder, className }) => {
         >
           <Box mr="8px">
             <FollowUnfollow
-              followableType="folders"
+              followableType="project_folders"
               followableId={projectFolder.id}
-              followersCount={2}
+              followersCount={projectFolder.attributes.followers_count}
+              followerId={projectFolder.relationships.user_follower?.data?.id}
               padding="6px 13px"
               buttonStyle="white"
             />

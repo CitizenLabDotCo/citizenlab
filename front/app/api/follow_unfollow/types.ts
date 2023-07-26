@@ -21,15 +21,21 @@ export interface IFollower {
   data: IFollowerData;
 }
 
-export type FollowableType = 'projects' | 'folders' | 'ideas' | 'initiatives';
+export type FollowableType =
+  | 'projects'
+  | 'project_folders'
+  | 'ideas'
+  | 'initiatives';
 
 export type FollowerAdd = {
   followableType: FollowableType;
   followableId: string;
+  slug?: string;
 };
 
 export type FollowerDelete = {
   followerId: string;
   followableId: string;
   followableType: FollowableType;
+  slug?: string;
 };

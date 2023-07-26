@@ -22,7 +22,7 @@ export const invalidateFollowQueries = (
     case 'initiatives':
       queryClient.invalidateQueries(initiativesKeys.item({ id: followableId }));
       break;
-    case 'folders':
+    case 'project_folders':
       queryClient.invalidateQueries(
         projectFoldersKeys.item({ id: followableId })
       );
