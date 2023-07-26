@@ -13,7 +13,6 @@ import Link from 'utils/cl-router/Link';
 import { Icon, Box } from '@citizenlab/cl2-component-library';
 import Image from 'components/UI/Image';
 import AvatarBubbles from 'components/AvatarBubbles';
-import FollowUnfollow from 'components/FollowUnfollow';
 
 // services
 import { getProjectUrl } from 'api/projects/utils';
@@ -31,9 +30,7 @@ import useProjectImages, {
 
 // i18n
 import T from 'components/T';
-import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage } from 'utils/cl-intl';
-import injectIntl from 'utils/cl-intl/injectIntl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // tracking
@@ -417,17 +414,9 @@ export interface InputProps {
   className?: string;
 }
 
-interface Props extends InputProps, WrappedComponentProps {}
-
-const ProjectCard = memo<Props>(
-  ({
-    projectId,
-    size,
-    layout,
-    hideDescriptionPreview,
-    className,
-    intl: { formatMessage },
-  }) => {
+const ProjectCard = memo<InputProps>(
+  ({ projectId, size, layout, hideDescriptionPreview, className }) => {
+    const { formatMessage } = useIntl();
     const { data: project } = useProjectById(projectId);
     const { data: authUser } = useAuthUser();
     const { data: projectImages } = useProjectImages(projectId);
@@ -726,8 +715,12 @@ const ProjectCard = memo<Props>(
               )}
             </ContentBody>
 
-            <Box borderTop={`1px solid ${colors.divider}`} pt="16px" mt="30px">
-              {(hasAvatars || showIdeasCount || showCommentsCount) && (
+            {(hasAvatars || showIdeasCount || showCommentsCount) && (
+              <Box
+                borderTop={`1px solid ${colors.divider}`}
+                pt="16px"
+                mt="30px"
+              >
                 <ContentFooter
                   className={`${size} ${!showFooter ? 'hidden' : ''}`}
                 >
@@ -781,16 +774,8 @@ const ProjectCard = memo<Props>(
                     </ProjectMetaItems>
                   </Box>
                 </ContentFooter>
-              )}
-            </Box>
-            <Box borderRadius={theme.borderRadius}>
-              <FollowUnfollow
-                followableType="projects"
-                followableId={project.data.id}
-                followersCount={project.data.attributes.followers_count}
-                followerId={project.data.relationships.user_follower?.data?.id}
-              />
-            </Box>
+              </Box>
+            )}
           </ProjectContent>
         </Container>
       );
@@ -800,4 +785,4 @@ const ProjectCard = memo<Props>(
   }
 );
 
-export default injectIntl(ProjectCard);
+export default ProjectCard;

@@ -10,7 +10,6 @@ import Link from 'utils/cl-router/Link';
 // components
 import { Icon, useBreakpoint, Box } from '@citizenlab/cl2-component-library';
 import Image from 'components/UI/Image';
-import FollowUnfollow from 'components/FollowUnfollow';
 
 // i18n
 import T from 'components/T';
@@ -565,13 +564,6 @@ const ProjectFolderCard = memo<Props>(
                 </ProjectMetaItems>
               </Box>
             </ContentFooter>
-          </Box>
-          <Box borderRadius={theme.borderRadius}>
-            <FollowUnfollow
-              followableType="folders"
-              followableId={publication.id}
-              followersCount={6}
-            />
           </Box>
         </FolderContent>
       </Container>
