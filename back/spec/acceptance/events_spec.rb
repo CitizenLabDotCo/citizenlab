@@ -145,6 +145,49 @@ resource 'Events' do
           expect(json_response).to include_response_error(:start_at, 'after_end_at')
         end
       end
+
+      example 'Create an event with a location using location_multiloc parameter', document: false do
+        location_description = 'event-location'
+
+        do_request(
+          project_id: @project.id,
+          event: {
+            title_multiloc: event.title_multiloc,
+            start_at: event.start_at,
+            end_at: event.end_at,
+            location_multiloc: { en: location_description }
+          }
+        )
+
+        expect(status).to eq 201
+        expect(response_data.dig(:attributes, :location_multiloc, :en)).to eq(location_description)
+        expect(response_data.dig(:attributes, :location_description)).to eq(location_description)
+
+        event = Event.find(response_data[:id])
+        expect(event.location_description).to eq(location_description)
+      end
+
+      example 'Create an event with a location using location_point_geojson parameter', document: false do
+        geojson_point = { 'type' => 'Point', 'coordinates' => [10, 20] }
+
+        do_request(
+          project_id: @project.id,
+          event: {
+            title_multiloc: event.title_multiloc,
+            start_at: event.start_at,
+            end_at: event.end_at,
+            location_point_geojson: geojson_point
+          }
+        )
+
+        expect(status).to eq 201
+        expect(response_data.dig(:attributes, :location_point_geojson).with_indifferent_access)
+          .to eq(geojson_point)
+
+        event = Event.find(response_data[:id])
+        expect(event.location_point_geojson).to eq(geojson_point)
+        expect(event.location_point.coordinates).to eq(geojson_point['coordinates'])
+      end
     end
 
     patch 'web_api/v1/events/:id' do
