@@ -28,11 +28,11 @@ module Analysis
     end
 
     def create?
-      active? && can_moderate?(record.hosting_project)
+      active? && can_moderate?(record.source_project)
     end
 
     def show?
-      active? && can_moderate?(record.hosting_project)
+      active? && can_moderate?(record.source_project)
     end
 
     def destroy?
