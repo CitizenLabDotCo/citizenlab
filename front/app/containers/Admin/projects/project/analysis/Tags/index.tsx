@@ -100,13 +100,7 @@ const Tags = () => {
   return (
     <div>
       <Box>
-        <Box
-          display="flex"
-          alignItems="center"
-          mb="8px"
-          as="form"
-          className="intercom-insights-edit-add-tag-form"
-        >
+        <Box display="flex" alignItems="center" mb="8px" as="form">
           <Input
             type="text"
             value={name}
