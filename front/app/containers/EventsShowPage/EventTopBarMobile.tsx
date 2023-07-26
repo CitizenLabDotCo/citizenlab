@@ -8,7 +8,7 @@ import useLocalize from 'hooks/useLocalize';
 
 // components
 import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
+import { useBreakpoint, Box } from '@citizenlab/cl2-component-library';
 
 // routing
 import clHistory from 'utils/cl-router/history';
@@ -16,13 +16,12 @@ import clHistory from 'utils/cl-router/history';
 // styling
 import styled from 'styled-components';
 import { media, colors } from 'utils/styleUtils';
-import { lighten } from 'polished';
 
 const Container = styled.div`
   flex: 0 0 ${(props) => props.theme.mobileTopBarHeight}px;
   height: ${(props) => props.theme.mobileTopBarHeight}px;
   background-color: #fff;
-  border-bottom: solid 1px ${lighten(0.3, colors.textSecondary)};
+  border-bottom: solid 1px ${colors.coolGrey300};
   position: sticky;
   top: 0;
   z-index: 2000;
@@ -42,14 +41,6 @@ const TopBarInner = styled.div`
     padding-right: 30px;
   `}
 `;
-
-const Left = styled.div`
-  height: 48px;
-  align-items: center;
-  display: flex;
-`;
-
-const Right = styled.div``;
 
 interface Props {
   projectId?: string;
@@ -72,7 +63,7 @@ const EventTopBarMobile = ({ projectId }: Props) => {
   return (
     <Container>
       <TopBarInner>
-        <Left>
+        <Box height="48px" alignItems="center" display="flex">
           <GoBackButtonSolid
             text={
               project ? localize(project.data.attributes.title_multiloc) : ''
@@ -80,8 +71,7 @@ const EventTopBarMobile = ({ projectId }: Props) => {
             iconSize={isSmallerThanTablet ? '42px' : undefined}
             onClick={handleGoBack}
           />
-        </Left>
-        <Right />
+        </Box>
       </TopBarInner>
     </Container>
   );
