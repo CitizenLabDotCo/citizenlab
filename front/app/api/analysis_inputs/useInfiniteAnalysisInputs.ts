@@ -20,10 +20,13 @@ const fetchInfiniteInputs = (
     },
   });
 
-const useInfiniteAnalysisInputs = (
-  analysisId: string,
-  queryParams: IInputsQueryParams
-) => {
+const useInfiniteAnalysisInputs = ({
+  analysisId,
+  queryParams,
+}: {
+  analysisId: string;
+  queryParams: IInputsQueryParams;
+}) => {
   return useInfiniteQuery<IInputs, CLErrors, IInputs, InputsKeys>({
     queryKey: inputsKeys.list({ analysisId, filters: queryParams }),
     queryFn: ({ pageParam }) =>
