@@ -7,14 +7,14 @@ export interface ITagParams {
   analysisId: string;
 }
 
-type TagTypes = 'custom';
+export type TagType = 'custom';
 
 export interface ITagData {
   id: string;
   type: 'tag';
   attributes: {
     name: string;
-    tag_type: TagTypes;
+    tag_type: TagType;
     created_at: string;
     updated_at: string;
   };

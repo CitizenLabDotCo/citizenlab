@@ -19,6 +19,7 @@ import messages from '../messages';
 import { useIntl } from 'utils/cl-intl';
 import Modal from 'components/UI/Modal';
 import RenameTagModal from './RenameTagModal';
+import Tag from './Tag';
 
 const Tags = () => {
   const [name, setName] = useState('');
@@ -106,21 +107,26 @@ const Tags = () => {
             mb="8px"
             p="8px"
           >
-            <span>{tag.attributes.name}</span>
-            <IconButton
-              iconName="edit"
-              onClick={() => setRenameTagModalOpenedId(tag.id)}
-              iconColor={colors.black}
-              iconColorOnHover={colors.black}
-              a11y_buttonActionMessage={formatMessage(messages.editTag)}
+            <Tag
+              name={tag.attributes.name}
+              tag_type={tag.attributes.tag_type}
             />
-            <IconButton
-              iconName="delete"
-              onClick={() => handleTagDelete(tag.id)}
-              iconColor={colors.red600}
-              iconColorOnHover={colors.red600}
-              a11y_buttonActionMessage={formatMessage(messages.deleteTag)}
-            />
+            <Box display="flex" gap="0px">
+              <IconButton
+                iconName="edit"
+                onClick={() => setRenameTagModalOpenedId(tag.id)}
+                iconColor={colors.grey700}
+                iconColorOnHover={colors.grey700}
+                a11y_buttonActionMessage={formatMessage(messages.editTag)}
+              />
+              <IconButton
+                iconName="delete"
+                onClick={() => handleTagDelete(tag.id)}
+                iconColor={colors.red600}
+                iconColorOnHover={colors.red600}
+                a11y_buttonActionMessage={formatMessage(messages.deleteTag)}
+              />
+            </Box>
             <Modal
               opened={renameTagModalOpenedId === tag.id}
               close={closeTagRenameModal}
