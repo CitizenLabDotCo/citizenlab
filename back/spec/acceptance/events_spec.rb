@@ -206,12 +206,44 @@ resource 'Events' do
 
       let(:event) { create(:event, project: @project) }
       let(:id) { event.id }
-      let(:location_multiloc) { build(:event).location_multiloc }
 
-      example_request 'Update an event' do
+      example 'Update an event' do
+        location_multiloc = build(:event).location_multiloc
+        do_request(event: { location_multiloc: location_multiloc })
+
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :attributes, :location_multiloc).stringify_keys).to match location_multiloc
+      end
+
+      example 'Update event location using location_multiloc parameter', document: false do
+        location_description = 'event-location'
+        location_multiloc = { en: location_description }
+
+        do_request(event: { location_multiloc: location_multiloc })
+
+        expect(status).to eq 200
+        expect(response_data.dig(:attributes, :location_multiloc)).to include(location_multiloc)
+        expect(response_data.dig(:attributes, :location_description)).to eq(location_description)
+
+        event.reload
+        expect(event.location_description).to eq(location_description)
+      end
+
+      example 'Update event location using location_point_geojson parameter', document: false do
+        geojson_point = { 'type' => 'Point', 'coordinates' => [10, 20] }
+
+        expect(event.location_point).to be_nil # sanity check
+
+        do_request(event: { location_point_geojson: geojson_point })
+
+        expect(status).to eq 200
+        expect(response_data.dig(:attributes, :location_point_geojson).with_indifferent_access)
+          .to eq(geojson_point)
+
+        event.reload
+        expect(event.location_point_geojson).to eq(geojson_point)
+        expect(event.location_point.coordinates).to eq(geojson_point['coordinates'])
       end
     end
 
