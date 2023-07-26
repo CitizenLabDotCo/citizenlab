@@ -106,7 +106,7 @@ class Initiative < ApplicationRecord
   scope :feedback_needed, lambda {
     joins('LEFT OUTER JOIN initiative_initiative_statuses ON initiatives.id = initiative_initiative_statuses.initiative_id')
       .joins('LEFT OUTER JOIN initiative_statuses ON initiative_statuses.id = initiative_initiative_statuses.initiative_status_id')
-      .where(initiative_statuses: { code: 'threshold_reached' })
+      .with_status_code('threshold_reached')
   }
 
   scope :no_feedback_needed, lambda {
@@ -117,7 +117,7 @@ class Initiative < ApplicationRecord
   scope :proposed, lambda {
     joins('LEFT OUTER JOIN initiative_initiative_statuses ON initiatives.id = initiative_initiative_statuses.initiative_id')
       .joins('LEFT OUTER JOIN initiative_statuses ON initiative_statuses.id = initiative_initiative_statuses.initiative_status_id')
-      .where(initiative_statuses: { code: 'proposed' })
+      .with_status_code('proposed')
   }
 
   def reactions_needed(configuration = AppConfiguration.instance)
