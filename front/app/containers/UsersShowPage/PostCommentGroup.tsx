@@ -194,9 +194,9 @@ const PostCommentGroup = ({ postType, comments, userId, postId }: Props) => {
                 </ReactionCount>
                 <ScreenReaderOnly>
                   <FormattedMessage
-                    {...messages.a11y_upvotesCount}
+                    {...messages.a11y_likesCount}
                     values={{
-                      upvotesCount: comment.attributes.likes_count,
+                      likesCount: comment.attributes.likes_count,
                     }}
                   />
                 </ScreenReaderOnly>

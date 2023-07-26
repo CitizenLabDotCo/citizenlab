@@ -1187,6 +1187,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_19_221540) do
     t.integer "baskets_count", default: 0, null: false
     t.integer "votes_count", default: 0, null: false
     t.integer "followers_count", default: 0, null: false
+    t.string "voting_method"
+    t.integer "voting_max_votes_per_idea"
+    t.jsonb "voting_term_singular_multiloc", default: {}
+    t.jsonb "voting_term_plural_multiloc", default: {}
+    t.integer "baskets_count", default: 0, null: false
+    t.integer "votes_count", default: 0, null: false
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 

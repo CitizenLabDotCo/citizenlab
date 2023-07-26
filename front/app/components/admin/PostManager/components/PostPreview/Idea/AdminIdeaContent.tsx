@@ -3,9 +3,9 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Title from 'components/PostShowComponents/Title';
-import PostedBy from 'containers/IdeasShow/PostedBy';
+import PostedBy from 'containers/IdeasShow/components/MetaInformation/PostedBy';
 import Body from 'components/PostShowComponents/Body';
-import IdeaProposedBudget from 'containers/IdeasShow/IdeaProposedBudget';
+import IdeaProposedBudget from 'containers/IdeasShow/components/ProposedBudget/IdeaProposedBudget';
 import DropdownMap from 'components/PostShowComponents/DropdownMap';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import CommentsSection from 'components/PostShowComponents/Comments';
@@ -194,7 +194,7 @@ const AdminIdeaContent = ({ handleClickEdit, closePreview, ideaId }: Props) => {
     idea.data.attributes.location_point_geojson
   );
   // AuthorId can be null if user has been deleted
-  const authorId = idea.data.relationships.author.data?.id || null;
+  const authorId = idea.data.relationships.author?.data?.id || null;
   const proposedBudget = idea.data.attributes.proposed_budget;
   const processType = project.data.attributes.process_type;
   const allowAnonymousParticipation =

@@ -47,6 +47,12 @@
 #  baskets_count                 :integer          default(0), not null
 #  votes_count                   :integer          default(0), not null
 #  followers_count               :integer          default(0), not null
+#  voting_method                 :string
+#  voting_max_votes_per_idea     :integer
+#  voting_term_singular_multiloc :jsonb
+#  voting_term_plural_multiloc   :jsonb
+#  baskets_count                 :integer          default(0), not null
+#  votes_count                   :integer          default(0), not null
 #
 # Indexes
 #
@@ -136,6 +142,10 @@ class Project < ApplicationRecord
     where.not(process_type: 'timeline')
   }
 
+  scope :is_timeline, lambda {
+    where(process_type: 'timeline')
+  }
+
   scope :ordered, lambda {
     includes(:admin_publication).order('admin_publications.ordering')
   }
@@ -169,10 +179,6 @@ class Project < ApplicationRecord
 
   def timeline?
     process_type == 'timeline'
-  end
-
-  def native_survey?
-    participation_method == 'native_survey'
   end
 
   def project

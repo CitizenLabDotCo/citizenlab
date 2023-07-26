@@ -1,77 +1,77 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  votingDisabledProjectInactive: {
-    id: 'app.components.VoteControl.votingDisabledProjectInactive',
-    defaultMessage: 'You can no longer vote on ideas in {projectName}',
+  reactingDisabledProjectInactive: {
+    id: 'app.components.ReactionControl.reactingDisabledProjectInactive',
+    defaultMessage: 'You can no longer react to ideas in {projectName}',
   },
-  votingDisabledPhaseOver: {
-    id: 'app.components.VoteControl.votingDisabledPhaseOver',
-    defaultMessage: "It's no longer possible to vote in this phase",
+  reactingDisabledPhaseOver: {
+    id: 'app.components.ReactionControl.reactingDisabledPhaseOver',
+    defaultMessage: "It's no longer possible to react in this phase",
   },
-  votingDisabledFutureEnabled: {
-    id: 'app.components.VoteControl.votingDisabledFutureEnabled',
-    defaultMessage: 'Voting will be enabled once this phase starts',
+  reactingDisabledFutureEnabled: {
+    id: 'app.components.ReactionControl.reactingDisabledFutureEnabled',
+    defaultMessage: 'Reacting will be enabled once this phase starts',
   },
-  votingPossibleLater: {
-    id: 'app.components.VoteControl.votingPossibleLater',
-    defaultMessage: 'Voting will start on {enabledFromDate}',
+  reactingPossibleLater: {
+    id: 'app.components.ReactionControl.reactingPossibleLater',
+    defaultMessage: 'Reacting will start on {enabledFromDate}',
   },
-  votingNotEnabled: {
-    id: 'app.components.VoteControl.votingNotEnabled',
-    defaultMessage: 'Voting is currently not enabled for this project',
+  reactingNotEnabled: {
+    id: 'app.components.ReactionControl.reactingNotEnabled',
+    defaultMessage: 'Reacting is currently not enabled for this project',
   },
-  votingNotSignedIn: {
-    id: 'app.components.VoteControl.votingNotSignedIn',
-    defaultMessage: 'Sign in to vote.',
+  reactingNotSignedIn: {
+    id: 'app.components.ReactionControl.reactingNotSignedIn',
+    defaultMessage: 'Sign in to react.',
   },
-  upvotingDisabledMaxReached: {
-    id: 'app.components.VoteControl.upvotingDisabledMaxReached',
+  likingDisabledMaxReached: {
+    id: 'app.components.ReactionControl.likingDisabledMaxReached',
     defaultMessage:
-      "You've reached your maximum number of upvotes in {projectName}",
+      "You've reached your maximum number of likes in {projectName}",
   },
-  downvotingDisabledMaxReached: {
-    id: 'app.components.VoteControl.downvotingDisabledMaxReached',
+  dislikingDisabledMaxReached: {
+    id: 'app.components.ReactionControl.dislikingDisabledMaxReached',
     defaultMessage:
-      "You've reached your maximum number of downvotes in {projectName}",
+      "You've reached your maximum number of dislikes in {projectName}",
   },
-  votingNotPermitted: {
-    id: 'app.components.VoteControl.votingNotPermitted',
-    defaultMessage: 'Voting is only enabled for certain groups',
+  reactingNotPermitted: {
+    id: 'app.components.ReactionControl.reactingNotPermitted',
+    defaultMessage: 'Reacting is only enabled for certain groups',
   },
-  completeProfileToVote: {
-    id: 'app.components.VoteControl.completeProfileToVote',
-    defaultMessage: 'Complete your profile to vote',
+  completeProfileToReact: {
+    id: 'app.components.ReactionControl.completeProfileToReact',
+    defaultMessage: 'Complete your profile to react',
   },
-  votingVerifyToVote: {
-    id: 'app.components.VoteControl.votingVerifyToVote',
-    defaultMessage: 'Verify your identity in order to vote.',
+  reactingVerifyToReact: {
+    id: 'app.components.ReactionControl.reactingVerifyToReact',
+    defaultMessage: 'Verify your identity in order to react.',
   },
-  upvote: {
-    id: 'app.components.VoteControl.upvote',
-    defaultMessage: 'Upvote',
+  like: {
+    id: 'app.components.ReactionControl.like',
+    defaultMessage: 'Like',
   },
-  downvote: {
-    id: 'app.components.VoteControl.downvote',
-    defaultMessage: 'Downvote',
+  dislike: {
+    id: 'app.components.ReactionControl.dislike',
+    defaultMessage: 'Dislike',
   },
-  a11y_upvotesDownvotes: {
-    id: 'app.containers.VoteControl.a11y_upvotesDownvotes',
+  a11y_likesDislikes: {
+    id: 'app.containers.ReactionControl.a11y_likesDislikes',
     defaultMessage:
-      'Total upvotes: {upvotesCount}, total downvotes: {downvotesCount}',
+      'Total likes: {likesCount}, total dislikes: {dislikesCount}',
   },
-  voteSuccessTitle: {
-    id: 'app.containers.VoteControl.voteSuccessTitle',
-    defaultMessage: 'Your vote was successfully registered!',
+  reactionSuccessTitle: {
+    id: 'app.containers.ReactionControl.reactionSuccessTitle',
+    defaultMessage: 'Your reaction was successfully registered!',
   },
-  voteErrorTitle: {
+  reactionErrorTitle: {
     id: 'app.containers.VoteControl.voteErrorTitle',
     defaultMessage: 'Something went wrong',
   },
-  voteErrorSubTitle: {
-    id: 'app.containers.VoteControl.voteErrorSubTitle',
+  reactionErrorSubTitle: {
+    id: 'app.containers.ReactionControl.reactionErrorSubTitle',
     defaultMessage:
-      'Due to an error your vote could not being registered. Please try again in a few minutes.',
+      'Due to an error your reaction could not being registered. Please try again in a few minutes.',
   },
   close: {
     id: 'app.containers.VoteControl.close',

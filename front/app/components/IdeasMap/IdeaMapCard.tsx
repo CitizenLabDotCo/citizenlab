@@ -3,7 +3,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import CloseIconButton from 'components/UI/CloseIconButton';
-import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
+import { Icon, useWindowSize, Box } from '@citizenlab/cl2-component-library';
 
 // events
 import {
@@ -26,6 +26,9 @@ import T from 'components/T';
 import FormattedBudget from 'utils/currency/FormattedBudget';
 import messages from './messages';
 
+// config
+import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
+
 // styling
 import styled from 'styled-components';
 import {
@@ -33,10 +36,11 @@ import {
   fontSizes,
   colors,
   viewportWidths,
-  media,
 } from 'utils/styleUtils';
-
 import { darken } from 'polished';
+
+// utils
+import { isCurrentPhase } from 'api/phases/utils';
 
 // typings
 import { IIdeaMarkerData } from 'api/idea_markers/types';
@@ -70,9 +74,9 @@ const StyledCloseIconButton = styled(CloseIconButton)`
   }
 `;
 
-const Title = styled.h3`
-  height: 46px;
-  max-height: 46px;
+const Title = styled.h3<{ height: string }>`
+  height: ${({ height }) => height};
+  max-height: ${({ height }) => height};
   color: ${(props) => props.theme.colors.tenantText};
   font-size: 18px;
   font-weight: 600;
@@ -87,11 +91,6 @@ const Title = styled.h3`
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
-
-  /* ${media.tablet`
-    width: calc(100% - 22px);
-    margin-bottom: 25px;
-  `} */
 `;
 
 const Footer = styled.div`
@@ -102,7 +101,7 @@ const Footer = styled.div`
 const FooterItem = styled.div`
   display: flex;
   align-items: center;
-  margin-right: 25px;
+  margin-right: 20px;
 `;
 
 const MoneybagIcon = styled(Icon)`
@@ -150,17 +149,16 @@ const IdeaMapCard = memo<Props>(
     const { windowWidth } = useWindowSize();
     const tablet = windowWidth <= viewportWidths.tablet;
 
+    const participationContext = phase?.data || project?.data;
+
     const [hovered, setHovered] = useState(false);
 
-    const isParticipatoryBudgetProject =
-      project?.data.attributes.process_type === 'continuous' &&
-      project?.data.attributes.participation_method === 'budgeting';
-
-    const isParticipatoryBudgetPhase =
-      phase && phase.data.attributes.participation_method === 'budgeting';
-    const isParticipatoryBudgetIdea = phase
-      ? isParticipatoryBudgetProject
-      : isParticipatoryBudgetPhase;
+    const votingMethodConfig = getVotingMethodConfig(
+      participationContext?.attributes.voting_method
+    );
+    const isVotingContext = !!votingMethodConfig;
+    const isParticipatoryBudgetContext =
+      participationContext?.attributes.voting_method === 'budgeting';
 
     useEffect(() => {
       const subscriptions = [
@@ -213,16 +211,25 @@ const IdeaMapCard = memo<Props>(
       const ideaBudget = ideaMarker.attributes?.budget;
       const reactingActionDescriptor =
         project.data.attributes.action_descriptor.reacting_idea;
+
       const showDislike =
         reactingActionDescriptor.down.enabled === true ||
         (reactingActionDescriptor.down.enabled === false &&
           reactingActionDescriptor.down.disabled_reason !==
             'disliking_disabled');
+
       const commentingEnabled =
         project.data.attributes.action_descriptor.commenting_idea.enabled;
 
       const projectHasComments = project.data.attributes.comments_count > 0;
+
       const showCommentCount = commentingEnabled || projectHasComments;
+
+      const phaseButNotCurrentPhase =
+        participationContext?.type === 'phase' &&
+        !isCurrentPhase(participationContext);
+      const showVoteInput =
+        votingMethodConfig && participationContext && !phaseButNotCurrentPhase;
 
       return (
         <Container
@@ -245,36 +252,50 @@ const IdeaMapCard = memo<Props>(
               iconColorOnHover={darken(0.2, colors.textSecondary)}
             />
           )}
-          <Title>
+          <Title height={showVoteInput ? '28px' : '44px'}>
             <T value={ideaMarker.attributes.title_multiloc} />
           </Title>
+          {showVoteInput && (
+            <Box mb="20px">
+              {votingMethodConfig.getIdeaCardVoteInput({
+                ideaId: ideaMarker.id,
+                participationContext,
+              })}
+            </Box>
+          )}
           <Footer>
-            {isParticipatoryBudgetIdea && tenantCurrency && ideaBudget && (
-              <FooterItem>
-                <MoneybagIcon name="coin-stack" />
-                <FooterValue>
-                  <FormattedBudget value={ideaBudget} />
-                </FooterValue>
-              </FooterItem>
-            )}
-            {!isParticipatoryBudgetIdea && (
-              <>
+            {isParticipatoryBudgetContext &&
+              tenantCurrency &&
+              ideaBudget &&
+              !showVoteInput && (
                 <FooterItem>
-                  <LikeIcon name="vote-up" />
-                  <FooterValue id="e2e-map-card-like-count">
-                    {ideaMarker.attributes.likes_count}
+                  <MoneybagIcon name="coin-stack" />
+                  <FooterValue>
+                    <FormattedBudget value={ideaBudget} />
                   </FooterValue>
                 </FooterItem>
-                {showDislike && (
+              )}
+            {!isParticipatoryBudgetContext &&
+              !isVotingContext &&
+              reactingActionDescriptor.enabled && (
+                <>
                   <FooterItem>
-                    <DislikeIcon name="vote-down" />
-                    <FooterValue id="e2e-map-card-dislike-count">
-                      {ideaMarker.attributes.dislikes_count}
+                    <LikeIcon name="vote-up" />
+                    <FooterValue id="e2e-map-card-like-count">
+                      {ideaMarker.attributes.likes_count}
                     </FooterValue>
                   </FooterItem>
-                )}
-              </>
-            )}
+
+                  {showDislike && (
+                    <FooterItem>
+                      <DislikeIcon name="vote-down" />
+                      <FooterValue id="e2e-map-card-dislike-count">
+                        {ideaMarker.attributes.dislikes_count}
+                      </FooterValue>
+                    </FooterItem>
+                  )}
+                </>
+              )}
             {showCommentCount && (
               <FooterItem>
                 <CommentIcon name="comments" />

@@ -16,7 +16,7 @@ interface Props extends InputProps {}
 const ContinuousProject = ({ project }: Props) => (
   <>
     {(project.attributes.participation_method === 'ideation' ||
-      project.attributes.participation_method === 'budgeting') && (
+      project.attributes.participation_method === 'voting') && (
       <li>
         <Link to={`/projects/${project.attributes.slug}`}>
           <FormattedMessage

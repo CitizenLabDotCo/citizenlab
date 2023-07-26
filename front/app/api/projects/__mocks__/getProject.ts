@@ -43,7 +43,6 @@ export function getProject(
       presentation_mode: 'card', // PresentationMode = 'map' | 'card' cf real project.ts
       internal_role: null, // 'open_idea_box' | null,
       publication_status: 'published', // PublicationStatus = 'draft' | 'published' | 'archived' cf real project.ts
-      // max_budget?: number,
       survey_service: surveyService,
       survey_embed_url: `mockProject${id}${surveyService}Url`,
       ordering: 0,

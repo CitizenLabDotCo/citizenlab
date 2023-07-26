@@ -18,13 +18,10 @@ import IdeaMapCard from './IdeaMapCard';
 import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
 
 // hooks
-import useAuthUser from 'api/me/useAuthUser';
 import useProjectById from 'api/projects/useProjectById';
 import usePhase from 'api/phases/usePhase';
 import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
-
-// services
-import { getIdeaPostingRules } from 'services/actionTakingRules';
+import useAuthUser from 'api/me/useAuthUser';
 
 // router
 import { useSearchParams } from 'react-router-dom';
@@ -47,6 +44,9 @@ import styled from 'styled-components';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 import { media, viewportWidths, colors, fontSizes } from 'utils/styleUtils';
+
+// utils
+import { isAdmin, isProjectModerator } from 'services/permissions/roles';
 
 // typings
 import { IIdeaMarkerData } from 'api/idea_markers/types';
@@ -215,11 +215,11 @@ const initialInnerContainerLeftMargin = getInnerContainerLeftMargin(
 const IdeasMap = memo<Props>((props) => {
   const { projectId, phaseId, className, id, ariaLabelledBy, tabIndex } = props;
   const [searchParams] = useSearchParams();
-  const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
   const { windowWidth } = useWindowSize();
   const tablet = windowWidth <= viewportWidths.tablet;
+  const { data: authUser } = useAuthUser();
 
   // refs
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -254,14 +254,15 @@ const IdeasMap = memo<Props>((props) => {
     topics,
   });
 
-  const ideaPostingRules = getIdeaPostingRules({
-    project: project?.data,
-    phase: phase?.data,
-    authUser: authUser?.data,
-  });
+  const ideaPostingActionDescriptor =
+    project?.data.attributes.action_descriptor.posting_idea;
+
+  const isAdminOrModerator = authUser
+    ? isAdmin(authUser) || isProjectModerator(authUser)
+    : false;
 
   const isIdeaPostingEnabled =
-    ideaPostingRules.show && ideaPostingRules.enabled === true;
+    ideaPostingActionDescriptor?.enabled === true || isAdminOrModerator;
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useLayoutEffect(() => {
@@ -391,11 +392,19 @@ const IdeasMap = memo<Props>((props) => {
             <InfoOverlayInner>
               <InfoOverlayIcon name="info-outline" />
               <InfoOverlayText>
-                <FormattedMessage
-                  {...(tablet
-                    ? messages.tapOnMapToAdd
-                    : messages.clickOnMapToAdd)}
-                />
+                {!isAdminOrModerator ? (
+                  <FormattedMessage
+                    {...(tablet
+                      ? messages.tapOnMapToAdd
+                      : messages.clickOnMapToAdd)}
+                  />
+                ) : (
+                  <FormattedMessage
+                    {...(tablet
+                      ? messages.tapOnMapToAddAdmin
+                      : messages.clickOnMapToAddAdmin)}
+                  />
+                )}
               </InfoOverlayText>
             </InfoOverlayInner>
           </InfoOverlay>

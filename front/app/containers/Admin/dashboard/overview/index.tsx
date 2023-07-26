@@ -54,7 +54,7 @@ const OverviewDashboard = ({ projects }: DataProps) => {
     () => [
       { value: 'ideas', label: formatMessage(messages.inputs) },
       { value: 'comments', label: formatMessage(messages.comments) },
-      { value: 'reactions', label: formatMessage(messages.votes) },
+      { value: 'reactions', label: formatMessage(messages.reactions) },
     ],
     [formatMessage]
   );
