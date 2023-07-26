@@ -16,7 +16,7 @@ import PageNotFound from 'components/PageNotFound';
 import VerticalCenterer from 'components/VerticalCenterer';
 import EventTopBarMobile from './EventTopBarMobile';
 import EventDescription from './components/EventDescription';
-import InformationSectionMobile from './components/InformationColumnMobile';
+import InformationSectionMobile from './components/InformationSectionMobile';
 
 // styling
 import styled from 'styled-components';

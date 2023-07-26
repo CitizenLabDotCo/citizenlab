@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
@@ -12,15 +12,11 @@ import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // routing
 import clHistory from 'utils/cl-router/history';
-import { useSearchParams } from 'react-router-dom';
 
 // styling
 import styled from 'styled-components';
 import { media, colors } from 'utils/styleUtils';
 import { lighten } from 'polished';
-
-// utils
-import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 const Container = styled.div`
   flex: 0 0 ${(props) => props.theme.mobileTopBarHeight}px;
@@ -61,27 +57,17 @@ interface Props {
 
 const EventTopBarMobile = ({ projectId }: Props) => {
   const { data: project } = useProjectById(projectId);
-
   const isSmallerThanTablet = useBreakpoint('tablet');
-
-  const [searchParams] = useSearchParams();
-  const [goBack] = useState(searchParams.get('go_back'));
-
-  useEffect(() => {
-    removeSearchParams(['go_back']);
-  }, []);
 
   const localize = useLocalize();
 
   const handleGoBack = useCallback(() => {
-    if (goBack) {
-      clHistory.back();
-    } else if (project) {
+    if (project) {
       clHistory.push(`/projects/${project.data.attributes.slug}`);
     } else {
       clHistory.push('/');
     }
-  }, [goBack, project]);
+  }, [project]);
 
   return (
     <Container>
