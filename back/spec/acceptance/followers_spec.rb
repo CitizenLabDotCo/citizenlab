@@ -58,64 +58,41 @@ resource 'Followers' do
     end
   end
 
-  post 'web_api/v1/projects/:project_id/followers' do
-    ValidationErrorHelper.new.error_fields self, Follower
+  [
+    {
+      type: 'folder',
+      resource: 'project_folders',
+      factory: 'project_folder'
+    },
+    {
+      type: 'project',
+      resource: 'projects',
+      factory: 'project'
+    },
+    {
+      type: 'idea',
+      resource: 'ideas',
+      factory: 'idea'
+    },
+    {
+      type: 'initiative',
+      resource: 'initiatives',
+      factory: 'initiative'
+    }
+  ].each do |followable_mapper|
+    post "web_api/v1/#{followable_mapper[:resource]}/:followable_id/followers" do
+      ValidationErrorHelper.new.error_fields self, Follower
 
-    let(:project_id) { create(:project).id }
+      let(:followable_id) { create(followable_mapper[:factory]).id }
 
-    example_request 'Create a follower of a project' do
-      assert_status 201
-      json_response = json_parse response_body
-      expect(json_response.dig(:data, :relationships)).to match({
-        user: { data: { id: user.id, type: 'user' } },
-        followable: { data: { id: project_id, type: 'project' } }
-      })
-    end
-  end
-
-  post 'web_api/v1/ideas/:idea_id/followers' do
-    ValidationErrorHelper.new.error_fields self, Follower
-
-    let(:idea_id) { create(:idea).id }
-
-    example_request 'Create a follower of a proposal' do
-      assert_status 201
-      json_response = json_parse response_body
-      expect(json_response.dig(:data, :relationships)).to match({
-        user: { data: { id: user.id, type: 'user' } },
-        followable: { data: { id: idea_id, type: 'idea' } }
-      })
-    end
-  end
-
-  post 'web_api/v1/initiatives/:initiative_id/followers' do
-    ValidationErrorHelper.new.error_fields self, Follower
-
-    let(:initiative_id) { create(:initiative).id }
-
-    example_request 'Create a follower of a proposal' do
-      assert_status 201
-      json_response = json_parse response_body
-      expect(json_response.dig(:data, :relationships)).to match({
-        user: { data: { id: user.id, type: 'user' } },
-        followable: { data: { id: initiative_id, type: 'initiative' } }
-      })
-    end
-  end
-
-  post 'web_api/v1/project_folders/:folder_id/followers' do
-    ValidationErrorHelper.new.error_fields self, Follower
-
-    let(:folder_id) { create(:project_folder).id }
-
-    example_request 'Create a follower of a folder' do
-      assert_status 201
-      json_response = json_parse response_body
-      expect(json_response.dig(:data, :relationships)).to match({
-        user: { data: { id: user.id, type: 'user' } },
-        followable: { data: { id: folder_id, type: 'folder' } }
-      })
-      # TODO: verify that projects are also automatically followed
+      example_request "Create a follower of a #{followable_mapper[:type]}" do
+        assert_status 201
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :relationships)).to match({
+          user: { data: { id: user.id, type: 'user' } },
+          followable: { data: { id: followable_id, type: followable_mapper[:type] } }
+        })
+      end
     end
   end
 
@@ -123,11 +100,9 @@ resource 'Followers' do
     let(:follower) { create(:follower, user: user) }
     let!(:id) { follower.id }
 
-    example 'Delete a follower' do
+    example 'Delete a follower (unfollow)' do
       expect { do_request }.to change(Follower, :count).by(-1)
       assert_status 200
     end
-
-    # TODO: when unfollowing a folder, also unfollow the projects
   end
 end
