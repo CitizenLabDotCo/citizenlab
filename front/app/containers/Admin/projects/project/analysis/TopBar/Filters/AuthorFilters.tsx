@@ -7,7 +7,7 @@ import MultipleSelect from 'components/UI/MultipleSelect';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { useSearchParams } from 'react-router-dom';
 import { useIntl } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from '../../messages';
 
 const AuthorFilters = () => {
   const localize = useLocalize();

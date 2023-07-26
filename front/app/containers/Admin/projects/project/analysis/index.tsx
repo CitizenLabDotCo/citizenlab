@@ -1,8 +1,9 @@
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import { Box, colors, stylingConsts } from '@citizenlab/cl2-component-library';
 import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import TopBar from './TopBar';
+import Tags from './Tags';
 import InputsList from './InputsList';
 import InputPreview from './InputPreview';
 
@@ -21,13 +22,28 @@ const Analysis = () => {
       position="fixed"
       bgColor={colors.background}
       h="100vh"
-      data-testid="contentBuilderPage"
     >
       <FocusOn>
         <TopBar />
-        <Box mt="100px" display="flex" w="100" alignItems="stretch" gap="20px">
-          <Box flex="1">Insights</Box>
-          <Box w="300px">Tags</Box>
+        <Box
+          display="flex"
+          w="100"
+          alignItems="stretch"
+          gap="20px"
+          pt={`${stylingConsts.mobileMenuHeight}px`}
+        >
+          <Box flexGrow={1} p="12px">
+            Insights
+          </Box>
+          <Box
+            w="300px"
+            overflow="auto"
+            h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
+            p="12px"
+          >
+            <Tags />
+          </Box>
+
           <Box flex="1">
             <InputsList
               onSelectInput={(inputId) => setSelectedInputId(inputId)}
