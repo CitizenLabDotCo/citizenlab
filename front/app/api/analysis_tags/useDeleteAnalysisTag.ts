@@ -2,9 +2,9 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import fetcher from 'utils/cl-react-query/fetcher';
 import analysisKeys from './keys';
 
-const deleteTag = ({ projectId, id }: { projectId: string; id: string }) =>
+const deleteTag = ({ analysisId, id }: { analysisId: string; id: string }) =>
   fetcher({
-    path: `/analyses/${projectId}/tags/${id}`,
+    path: `/analyses/${analysisId}/tags/${id}`,
     action: 'delete',
   });
 

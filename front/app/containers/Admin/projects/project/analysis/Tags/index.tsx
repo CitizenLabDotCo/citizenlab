@@ -1,10 +1,17 @@
 import React, { useState } from 'react';
 
-import { Box, Input, Button } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Input,
+  Button,
+  IconButton,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 
 import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
 import useAddAnalysisTag from 'api/analysis_tags/useAddAnalysisTag';
+import useDeleteAnalysisTag from 'api/analysis_tags/useDeleteAnalysisTag';
 
 import { useParams } from 'react-router-dom';
 
@@ -22,6 +29,7 @@ const Tags = () => {
     analysisId,
   });
   const { mutate: addTag, isLoading, error } = useAddAnalysisTag();
+  const { mutate: deleteTag } = useDeleteAnalysisTag();
 
   const onChangeName = (name: string) => {
     setName(name);
@@ -41,6 +49,14 @@ const Tags = () => {
     );
   };
 
+  const handleTagDelete = (id: string) => {
+    if (window.confirm(formatMessage(messages.deleteTagConfirmation))) {
+      deleteTag({
+        analysisId,
+        id,
+      });
+    }
+  };
   return (
     <div>
       <Box>
@@ -83,6 +99,20 @@ const Tags = () => {
             p="8px"
           >
             <span>{tag.attributes.name}</span>
+            <IconButton
+              iconName="edit"
+              onClick={() => handleTagDelete(tag.id)}
+              iconColor={colors.black}
+              iconColorOnHover={colors.black}
+              a11y_buttonActionMessage={formatMessage(messages.deleteTag)}
+            />
+            <IconButton
+              iconName="delete"
+              onClick={() => handleTagDelete(tag.id)}
+              iconColor={colors.red600}
+              iconColorOnHover={colors.red600}
+              a11y_buttonActionMessage={formatMessage(messages.deleteTag)}
+            />
           </Box>
         ))}
       </Box>

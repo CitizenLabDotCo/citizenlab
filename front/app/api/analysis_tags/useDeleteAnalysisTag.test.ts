@@ -6,7 +6,7 @@ import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-const apiPath = '*analyses/:projectId/tags/:id';
+const apiPath = '*analyses/:analysisId/tags/:id';
 
 const server = setupServer(
   rest.delete(apiPath, (_req, res, ctx) => {
@@ -25,7 +25,7 @@ describe('useDeleteAnalysisTag', () => {
 
     act(() => {
       result.current.mutate({
-        projectId: '1',
+        analysisId: '1',
         id: '1',
       });
     });
@@ -46,7 +46,7 @@ describe('useDeleteAnalysisTag', () => {
 
     act(() => {
       result.current.mutate({
-        projectId: '1',
+        analysisId: '1',
         id: '1',
       });
     });

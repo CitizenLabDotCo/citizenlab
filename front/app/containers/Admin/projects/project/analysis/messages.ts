@@ -61,4 +61,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.addTag',
     defaultMessage: 'Add tag',
   },
+  deleteTagConfirmation: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Tags.deleteTagConfirmation',
+    defaultMessage: 'Are you sure you want to delete this tag?',
+  },
+  deleteTag: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Tags.deleteTag',
+    defaultMessage: 'Delete tag',
+  },
 });
