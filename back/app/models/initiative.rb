@@ -104,12 +104,7 @@ class Initiative < ApplicationRecord
   }
 
   scope :feedback_needed, -> { with_status_code('threshold_reached') }
-
-  scope :no_feedback_needed, lambda {
-    includes(initiative_initiative_status: :initiative_status)
-      .where.not(initiative_statuses: { code: 'threshold_reached' })
-  }
-
+  scope :no_feedback_needed, -> { with_status_code(InitiativeStatus::CODES - ['threshold_reached']) }
   scope :proposed, -> { with_status_code('proposed') }
 
   def reactions_needed(configuration = AppConfiguration.instance)
