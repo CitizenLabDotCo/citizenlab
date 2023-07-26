@@ -4,7 +4,10 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import { FollowerAdd, IFollower } from './types';
 import { invalidateFollowQueries } from './utils';
 
-const addFollower = async ({ followableType, followableId }: FollowerAdd) =>
+export const addFollower = async ({
+  followableType,
+  followableId,
+}: FollowerAdd) =>
   fetcher<IFollower>({
     path: `/${followableType}/${followableId}/followers`,
     action: 'post',

@@ -3,6 +3,7 @@ import keys from './keys';
 import { Keys } from 'utils/cl-react-query/types';
 import { GLOBAL_CONTEXT } from './constants';
 import { IParticipationContextPermissionAction } from 'services/actionPermissions';
+import { IFollowingAction } from 'api/follow_unfollow/types';
 
 interface InitiativeContext {
   type: 'initiative';
@@ -11,13 +12,13 @@ interface InitiativeContext {
 
 export interface ProjectContext {
   type: 'project' | 'phase';
-  action: IParticipationContextPermissionAction;
+  action: IParticipationContextPermissionAction | IFollowingAction;
   id: string /* project or phase id, depending on type attribute */;
 }
 
 interface IdeaContext {
   type: 'idea';
-  action: IParticipationContextPermissionAction;
+  action: IParticipationContextPermissionAction | IFollowingAction;
   id: string /* idea id */;
 }
 

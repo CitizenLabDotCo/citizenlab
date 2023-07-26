@@ -20,7 +20,8 @@ export default function useParticipationConditions(
 
   useEffect(() => {
     const stream: Observable<Response | null> =
-      props?.type === 'project' || props?.type === 'phase'
+      (props?.type === 'project' || props?.type === 'phase') &&
+      props.action !== 'following'
         ? getPCParticipationConditions(props.id, props.type, props.action)
             .observable
         : props?.type === 'initiative'

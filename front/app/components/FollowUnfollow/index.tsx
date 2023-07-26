@@ -10,6 +10,9 @@ import { FollowableType } from 'api/follow_unfollow/types';
 import useAddFollower from 'api/follow_unfollow/useAddFollower';
 import useDeleteFollower from 'api/follow_unfollow/useDeleteFollower';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
+import useAuthUser from 'api/me/useAuthUser';
 
 interface Props extends BoxPaddingProps {
   followableType: FollowableType;
@@ -18,6 +21,17 @@ interface Props extends BoxPaddingProps {
   followerId?: string; // id of the follower object
   buttonStyle?: ButtonStyles;
 }
+
+type ContextType = {
+  [K in FollowableType]: 'initiative' | 'project' | 'idea' | 'project';
+};
+
+const contextType: ContextType = {
+  initiatives: 'initiative',
+  projects: 'project',
+  ideas: 'idea',
+  project_folders: 'project',
+};
 
 const FollowUnfollow = ({
   followableType,
@@ -31,6 +45,7 @@ const FollowUnfollow = ({
     name: 'follow',
   });
   const { formatMessage } = useIntl();
+  const { data: authUser } = useAuthUser();
   const { mutate: addFollower, isLoading: isAddingFollower } = useAddFollower();
   const { mutate: deleteFollower, isLoading: isDeletingFollower } =
     useDeleteFollower();
@@ -44,7 +59,7 @@ const FollowUnfollow = ({
     : formatMessage(messages.follow);
   const isLoading = isAddingFollower || isDeletingFollower;
 
-  const handleOnClick = () => {
+  const followOrUnfollow = () => {
     if (isFollowing) {
       deleteFollower({
         followerId,
@@ -59,11 +74,37 @@ const FollowUnfollow = ({
     }
   };
 
+  const loginAndFollow = () => {
+    const context = {
+      type: contextType[followableType],
+      action: 'following',
+      id: followableId,
+    } as const;
+
+    const successAction: SuccessAction = {
+      name: 'follow',
+      params: { followableType, followableId },
+    };
+
+    triggerAuthenticationFlow({
+      flow: 'signup',
+      context,
+      successAction,
+    });
+  };
+
+  const handleButtonClick = () => {
+    if (authUser) {
+      followOrUnfollow();
+    }
+    loginAndFollow();
+  };
+
   return (
     <Button
       buttonStyle={buttonStyle}
       icon="notification"
-      onClick={handleOnClick}
+      onClick={handleButtonClick}
       processing={isLoading}
       {...paddingProps}
     >

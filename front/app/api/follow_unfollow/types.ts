@@ -37,3 +37,5 @@ export type FollowerDelete = {
   followableId: string;
   followableType: FollowableType;
 };
+
+export type IFollowingAction = 'following';
