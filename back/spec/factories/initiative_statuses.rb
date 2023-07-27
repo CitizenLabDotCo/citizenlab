@@ -18,14 +18,14 @@ FactoryBot.define do
       }
     end
 
-    factory :initiative_status_approval_pending do
-      code { 'approval_pending' }
-      title_multiloc { { 'en' => 'approval_pending' } }
+    factory :initiative_status_review_pending do
+      code { 'review_pending' }
+      title_multiloc { { 'en' => 'review_pending' } }
     end
 
-    factory :initiative_status_approval_rejected do
-      code { 'approval_rejected' }
-      title_multiloc { { 'en' => 'approval_rejected' } }
+    factory :initiative_status_rejected_on_review do
+      code { 'rejected_on_review' }
+      title_multiloc { { 'en' => 'rejected_on_review' } }
     end
 
     factory :initiative_status_proposed do

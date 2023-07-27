@@ -15,6 +15,7 @@
 #
 class InitiativeStatus < ApplicationRecord
   CODES = %w[review_pending rejected_on_review proposed expired threshold_reached answered ineligible custom].freeze
+
   REVIEW_CODES = %w[review_pending rejected_on_review].freeze
   NOT_REVIEW_CODES = (CODES - REVIEW_CODES).freeze
 

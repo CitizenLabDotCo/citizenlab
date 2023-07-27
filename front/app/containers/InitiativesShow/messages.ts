@@ -96,7 +96,7 @@ export default defineMessages({
   createdModalTitle: {
     id: 'app.components.InitiativesShow.createdModalTitle',
     defaultMessage:
-      'Congratulations, your proposal has been submitted for approval!',
+      'Congratulations, your proposal has been submitted for review!',
   },
   createdModalSubtitle: {
     id: 'app.components.InitiativesShow.createdModalSubtitle',

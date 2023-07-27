@@ -25,6 +25,7 @@
 #  author_hash              :string
 #  anonymous                :boolean          default(FALSE), not null
 #  internal_comments_count  :integer          default(0), not null
+#  editing_locked           :boolean          default(FALSE), not null
 #
 # Indexes
 #

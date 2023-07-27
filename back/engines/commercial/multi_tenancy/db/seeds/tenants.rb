@@ -285,7 +285,7 @@ module MultiTenancy
             initiatives: {
               enabled: true,
               allowed: true,
-              require_approval: true,
+              require_review: true,
               reacting_threshold: 20,
               days_limit: 5,
               threshold_reached_message: MultilocService.new.i18n_to_multiloc(
@@ -297,7 +297,7 @@ module MultiTenancy
                 locales: CL2_SUPPORTED_LOCALES
               )
             },
-            initiative_approval: {
+            initiative_review: {
               enabled: true,
               allowed: true
             },

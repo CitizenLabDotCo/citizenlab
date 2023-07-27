@@ -602,9 +602,9 @@
         "properties": {
           "allowed": { "type": "boolean", "default": true },
           "enabled": { "type": "boolean", "default": true },
-          "require_approval":{
-            "title": "Require Approval",
-            "description": "Require Approval. If enabled, proposals will need to be approved by an admin before they are visible to the public.",
+          "require_review":{
+            "title": "Require Review",
+            "description": "Require Review. If enabled, proposals will need to be approved by an admin before they are visible to the public.",
             "type": "boolean",
             "default": false
           },
@@ -656,10 +656,10 @@
         }
       },
 
-      "initiative_approval": {
+      "initiative_review": {
         "type": "object",
-        "title": "Proposal Approval",
-        "description":  "Allow proposal approval. When this is enabled, the feature is activated. When disabled the require_approval toggle in the BO & Proposal settings here will be ignored.",
+        "title": "Proposal Review",
+        "description":  "Allow proposal review. When this is enabled, the feature is activated. When disabled the require_review toggle in the BO & Proposal settings here will be ignored.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {

@@ -11,11 +11,11 @@ interface Props {
   onChange: (value: boolean) => void;
 }
 
-const RequireApprovalToggle = ({ value, onChange }: Props) => {
-  const initiativeApprovalEnabled = useFeatureFlag({
-    name: 'initiative_approval',
+const RequireReviewToggle = ({ value, onChange }: Props) => {
+  const initiativeReviewEnabled = useFeatureFlag({
+    name: 'initiative_review',
   });
-  if (!initiativeApprovalEnabled) return null;
+  if (!initiativeReviewEnabled) return null;
 
   return (
     <SectionField>
@@ -34,12 +34,12 @@ const RequireApprovalToggle = ({ value, onChange }: Props) => {
                 fontSize="m"
                 style={{ fontWeight: 600 }}
               >
-                <FormattedMessage {...messages.requireApprovalLabel} />
+                <FormattedMessage {...messages.requireReviewLabel} />
               </Text>
             </Box>
 
             <Text color="coolGrey600" mt="0px" fontSize="m">
-              <FormattedMessage {...messages.requireApprovalInfo} />
+              <FormattedMessage {...messages.requireReviewInfo} />
             </Text>
           </Box>
         }
@@ -48,4 +48,4 @@ const RequireApprovalToggle = ({ value, onChange }: Props) => {
   );
 };
 
-export default RequireApprovalToggle;
+export default RequireReviewToggle;

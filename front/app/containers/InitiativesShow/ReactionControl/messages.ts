@@ -48,25 +48,24 @@ export default defineMessages({
     id: 'app.containers.InitiativesShow.VoteControl.ineligibleStatusExplanationBold',
     defaultMessage: 'to be eligible',
   },
-  approvalPendingStatusExplanationBold: {
-    id: 'app.containers.InitiativesShow.VoteControl.approvalPendingStatusExplanationBold',
-    defaultMessage:
-      'The city received this proposal and will now need to approve it.',
+  reviewPendingStatusExplanationBold: {
+    id: 'app.containers.InitiativesShow.VoteControl.reviewPendingStatusExplanationBold',
+    defaultMessage: 'The city received this proposal and will review it.',
   },
-  approvalPendingStatusExplanationSentenceTwo: {
-    id: 'app.containers.InitiativesShow.VoteControl.approvalPendingStatusExplanationSentenceTwo',
-    defaultMessage: "You will receive an email once it's approved.",
+  reviewPendingStatusExplanationSentenceTwo: {
+    id: 'app.containers.InitiativesShow.VoteControl.reviewPendingStatusExplanationSentenceTwo',
+    defaultMessage: "You will receive an email once it's reviewed.",
   },
-  approvalPendingStatusExplanationSentenceThree: {
-    id: 'app.containers.InitiativesShow.VoteControl.approvalPendingStatusExplanationSentenceThree',
-    defaultMessage: "The proposal can't be shared until it's approved.",
+  reviewPendingStatusExplanationSentenceThree: {
+    id: 'app.containers.InitiativesShow.VoteControl.reviewPendingStatusExplanationSentenceThree',
+    defaultMessage: "The proposal can't be shared until it's reviewed.",
   },
-  approvalRejectedStatusExplanationBold: {
-    id: 'app.containers.InitiativesShow.VoteControl.approvalRejectedStatusExplanationBold',
-    defaultMessage: 'The city rejected this proposal.',
+  rejectedOnReviewStatusExplanationBold: {
+    id: 'app.containers.InitiativesShow.VoteControl.rejectedOnReviewStatusExplanationBold',
+    defaultMessage: 'This proposal was rejected after review.',
   },
-  approvalRejectedStatusExplanationSentenceTwo: {
-    id: 'app.containers.InitiativesShow.VoteControl.approvalRejectedStatusExplanationSentenceTwo',
+  rejectedOnReviewStatusExplanationSentenceTwo: {
+    id: 'app.containers.InitiativesShow.VoteControl.rejectedOnReviewStatusExplanationSentenceTwo',
     defaultMessage:
       'Check the official update for an explanation of this decision.',
   },

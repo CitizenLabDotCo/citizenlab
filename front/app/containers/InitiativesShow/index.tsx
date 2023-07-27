@@ -79,7 +79,7 @@ import useInitiativeById from 'api/initiatives/useInitiativeById';
 
 // types
 import { IInitiativeData } from 'api/initiatives/types';
-import useInitiativeApprovalRequired from 'hooks/useInitiativeApprovalRequired';
+import useInitiativeReviewRequired from 'hooks/useInitiativeReviewRequired';
 import InitiativeCreatedModalContent from './InitiativeCreatedModalContent';
 
 const contentFadeInDuration = 250;
@@ -352,7 +352,7 @@ const InitiativesShow = ({
   ] = useState(false);
   const officialFeedbackElement = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout>();
-  const initiativeApprovalRequired = useInitiativeApprovalRequired();
+  const initiativeReviewRequired = useInitiativeReviewRequired();
 
   const { data: initiativeFiles } = useInitiativeFiles(initiativeId);
   const { data: initiative } = useInitiativeById(initiativeId);
@@ -706,7 +706,7 @@ const InitiativesShow = ({
           skipText={<FormattedMessage {...messages.skipSharing} />}
         >
           {initiativeIdForSocialSharing &&
-            (initiativeApprovalRequired ? (
+            (initiativeReviewRequired ? (
               <InitiativeCreatedModalContent />
             ) : (
               <SharingModalContent

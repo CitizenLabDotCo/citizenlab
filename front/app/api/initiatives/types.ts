@@ -58,6 +58,7 @@ export interface IInitiativeData {
     header_bg: ImageSizes;
     expires_at: string;
     anonymous: boolean;
+    editing_locked: boolean;
   };
   relationships: {
     topics: {
