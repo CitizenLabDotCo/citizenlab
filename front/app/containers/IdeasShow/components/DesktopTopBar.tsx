@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -6,8 +6,6 @@ import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
 import IdeaMoreActions from './IdeaMoreActions';
 
 // router
-import { useSearchParams } from 'react-router-dom';
-import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import clHistory from 'utils/cl-router/history';
 
 // i18n
@@ -39,23 +37,13 @@ interface Props {
 const TopBar = ({ project, idea }: Props) => {
   const localize = useLocalize();
 
-  const [searchParams] = useSearchParams();
-  const goBackParameter = searchParams.get('go_back');
-  const [goBack] = useState(goBackParameter === 'true');
-
-  useEffect(() => {
-    removeSearchParams(['go_back']);
-  }, []);
-
   const handleGoBack = useCallback(() => {
-    if (goBack) {
-      clHistory.back();
-    } else if (project) {
+    if (project) {
       clHistory.push(`/projects/${project.attributes.slug}`);
     } else {
       clHistory.push('/');
     }
-  }, [goBack, project]);
+  }, [project]);
 
   return (
     <Bar>
