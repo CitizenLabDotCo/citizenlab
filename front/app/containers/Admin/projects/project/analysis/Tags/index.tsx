@@ -98,7 +98,7 @@ const Tags = () => {
     : undefined;
 
   return (
-    <div>
+    <Box>
       <Box>
         <Box display="flex" alignItems="center" mb="8px" as="form">
           <Input
@@ -175,7 +175,7 @@ const Tags = () => {
           </TagContainer>
         ))}
       </Box>
-    </div>
+    </Box>
   );
 };
 

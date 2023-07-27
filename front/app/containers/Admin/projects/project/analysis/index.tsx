@@ -40,6 +40,7 @@ const Analysis = () => {
             overflow="auto"
             h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
             p="12px"
+            bg={colors.white}
           >
             <Tags />
           </Box>
