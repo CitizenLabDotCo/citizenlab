@@ -50,7 +50,7 @@ const Import = () => {
 
   return (
     <Box background={colors.white} p="40px">
-      <Title>
+      <Title color="primary">
         <FormattedMessage {...messages.importInputs} />
       </Title>
       <Text color="primary" fontSize="base">

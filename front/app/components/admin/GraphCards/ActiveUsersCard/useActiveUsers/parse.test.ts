@@ -51,7 +51,7 @@ describe('parseTimeSeries', () => {
 
 describe('parseStats', () => {
   it('works', () => {
-    const responseData: Response['data'] = [
+    const responseData: Response['data']['attributes'] = [
       [
         {
           first_dimension_date_created_date: '2022-09-02',
@@ -87,7 +87,7 @@ describe('parseStats', () => {
   });
 
   it('works with last query response as empty array', () => {
-    const responseData: Response['data'] = [
+    const responseData: Response['data']['attributes'] = [
       [
         {
           first_dimension_date_created_date: '2022-11-09',

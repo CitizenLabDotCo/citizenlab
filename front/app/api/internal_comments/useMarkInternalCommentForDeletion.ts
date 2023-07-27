@@ -6,6 +6,7 @@ import { IInternalComment } from './types';
 import userCommentsCount from 'api/user_comments_count/keys';
 import ideasKeys from 'api/ideas/keys';
 import initiativesKeys from 'api/initiatives/keys';
+import commentsKeys from 'api/comments/keys';
 
 interface MarkInternalCommentForDeletion {
   commentId: string;
@@ -23,9 +24,11 @@ const markInternalCommentForDeletion = async ({
 const useMarkInternalCommentForDeletion = ({
   ideaId,
   initiativeId,
+  parentCommentId,
 }: {
   ideaId?: string;
   initiativeId?: string;
+  parentCommentId?: string;
 }) => {
   const queryClient = useQueryClient();
   return useMutation<
@@ -46,6 +49,12 @@ const useMarkInternalCommentForDeletion = ({
         // We invalidate the idea because the number of internal comments is on the idea
         queryClient.invalidateQueries({
           queryKey: ideasKeys.item({ id: ideaId }),
+        });
+      }
+
+      if (parentCommentId) {
+        queryClient.invalidateQueries({
+          queryKey: commentsKeys.list({ commentId: parentCommentId }),
         });
       }
 

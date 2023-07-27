@@ -7,7 +7,7 @@ import { API_PATH } from 'containers/App/constants';
 import { ImageSizes, Multiloc, Locale, UploadFile } from 'typings';
 import { TCategory } from 'components/ConsentManager/destinations';
 export const currentAppConfigurationEndpoint = `${API_PATH}/app_configuration`;
-import { THomepageSettingKeyMap } from 'services/homepageSettings';
+import { THomepageSettingKeyMap } from 'api/home_page/types';
 
 interface AppConfigurationFeature {
   allowed: boolean;
@@ -124,7 +124,6 @@ export interface IAppConfigurationSettings {
   project_reports?: AppConfigurationFeature;
   private_projects?: AppConfigurationFeature;
   maps?: AppConfigurationMapSettings;
-  participatory_budgeting?: AppConfigurationFeature;
   initiatives?: ProposalsSettings;
   fragments?: {
     allowed: boolean;
@@ -223,6 +222,8 @@ export interface IAppConfigurationSettings {
   seat_based_billing?: AppConfigurationFeature;
   internal_commenting?: AppConfigurationFeature;
   konveio_document_annotation?: AppConfigurationFeature;
+  public_api_tokens?: AppConfigurationFeature;
+  analysis?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

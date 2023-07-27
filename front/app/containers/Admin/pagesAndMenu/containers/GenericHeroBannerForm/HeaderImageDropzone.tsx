@@ -11,11 +11,11 @@ import { viewportWidths } from '@citizenlab/cl2-component-library';
 import {
   ICustomPageAttributes,
   TCustomPageBannerLayout,
-} from 'services/customPages';
+} from 'api/custom_pages/types';
 import {
   IHomepageSettingsAttributes,
   THomepageBannerLayout,
-} from 'services/homepageSettings';
+} from 'api/home_page/types';
 import { UploadFile } from 'typings';
 
 const HeaderImageOverlay = styled.div<{

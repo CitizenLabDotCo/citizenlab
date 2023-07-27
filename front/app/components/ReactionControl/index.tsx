@@ -172,15 +172,15 @@ const ReactionControl = ({
   const participationContext = isContinuousProject
     ? project.data || null
     : latestRelevantIdeaPhase;
-  const isPBContext =
-    participationContext?.attributes.participation_method === 'budgeting';
+  const isVotingContext =
+    participationContext?.attributes.participation_method === 'voting';
 
   // Reactions count
   const likesCount = ideaAttributes.likes_count;
   const dislikesCount = ideaAttributes.dislikes_count;
 
   const showReactionControl = !!(
-    !isPBContext &&
+    !isVotingContext &&
     (reactingActionDescriptor.enabled ||
       isFixableByAuthentication(reactingActionDescriptor.disabled_reason) ||
       cancellingEnabled ||

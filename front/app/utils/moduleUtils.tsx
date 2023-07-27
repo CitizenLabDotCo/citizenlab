@@ -169,13 +169,13 @@ export interface OutletsPropertyMap {
   };
   'app.components.Map.leafletConfig': {
     onLeafletConfigChange: (newLeafletConfig: ILeafletMapConfig) => void;
-    projectId?: string | null;
+    projectId?: string;
     centerLatLng?: LatLngTuple;
     zoomLevel?: number;
     points?: Point[];
   };
   'app.components.Map.Legend': {
-    projectId?: string | null;
+    projectId?: string;
     className?: string;
   };
   'app.components.VerificationModal.buttons': {

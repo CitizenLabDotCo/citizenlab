@@ -15,7 +15,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { object } from 'yup';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
-import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 import Feedback from 'components/HookForm/Feedback';
 
 // typings
@@ -24,7 +23,6 @@ import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 export interface FormValues {
   title_multiloc: Multiloc;
-  description_multiloc: Multiloc;
 }
 
 type Props = {
@@ -69,13 +67,6 @@ const AreaForm = ({
               type="text"
               name="title_multiloc"
               labelTooltipText={formatMessage(messages.fieldTitleTooltip)}
-            />
-          </SectionField>
-          <SectionField>
-            <QuillMultilocWithLocaleSwitcher
-              name="description_multiloc"
-              label={formatMessage(messages.fieldDescription)}
-              labelTooltipText={formatMessage(messages.fieldDescriptionTooltip)}
             />
           </SectionField>
           <Box display="flex">

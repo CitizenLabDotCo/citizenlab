@@ -36,6 +36,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IGroupData } from 'api/groups/types';
 import useGroups from 'api/groups/useGroups';
+import { getFullName } from 'utils/textUtils';
 
 const StyledSection = styled(Section)`
   margin-bottom: 2.5rem;
@@ -120,9 +121,7 @@ const CampaignForm = ({
     return [
       {
         value: 'author',
-        label: !isNilOrError(user)
-          ? `${user.data.attributes.first_name} ${user.data.attributes.last_name}`
-          : '',
+        label: !isNilOrError(user) ? getFullName(user.data) : '',
       },
       {
         value: 'organization',

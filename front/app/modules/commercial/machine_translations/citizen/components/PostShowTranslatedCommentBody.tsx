@@ -1,8 +1,7 @@
-import GetMachineTranslation from 'modules/commercial/machine_translations/resources/GetMachineTranslation';
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { CommentText } from 'components/PostShowComponents/Comments/Comment/CommentBody';
 import { Locale } from 'typings';
+import useMachineTranslationByCommentId from 'modules/commercial/machine_translations/api/useMachineTranslationByCommentId';
+import { CommentText } from 'components/PostShowComponents/Comments/Comment/CommentBody';
 
 interface Props {
   translateButtonClicked: boolean;
@@ -17,31 +16,29 @@ const PostShowTranslatedCommentBody = ({
   locale,
   commentId,
 }: Props) => {
-  if (translateButtonClicked) {
-    return (
-      <GetMachineTranslation
-        attributeName="body_multiloc"
-        localeTo={locale}
-        id={commentId}
-        context="comment"
-      >
-        {(translation) => {
-          let text: string = commentContent;
+  const { data: translation } = useMachineTranslationByCommentId({
+    commentId,
+    machine_translation: {
+      locale_to: locale,
+      attribute_name: 'body_multiloc',
+    },
+    enabled: true,
+  });
+  const showTranslatedContent = translateButtonClicked && translation;
+  const content = showTranslatedContent
+    ? translation.data.attributes.translation.replace(
+        /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi,
+        '<a class="mention" data-link="/profile/$2" href="/profile/$2">$3</a>'
+      )
+    : commentContent;
 
-          if (!isNilOrError(translation)) {
-            text = translation.attributes.translation.replace(
-              /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi,
-              '<a class="mention" data-link="/profile/$2" href="/profile/$2">$3</a>'
-            );
-          }
-
-          return <CommentText dangerouslySetInnerHTML={{ __html: text }} />;
-        }}
-      </GetMachineTranslation>
-    );
-  }
-
-  return <CommentText dangerouslySetInnerHTML={{ __html: commentContent }} />;
+  return (
+    <CommentText
+      dangerouslySetInnerHTML={{
+        __html: content,
+      }}
+    />
+  );
 };
 
 export default PostShowTranslatedCommentBody;

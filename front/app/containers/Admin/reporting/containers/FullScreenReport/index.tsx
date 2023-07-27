@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { LocaleSubject } from 'services/locale';
 
 // hooks
-import useReportLayout from 'hooks/useReportLayout';
+import useReportLayout from 'api/report_layout/useReportLayout';
 import { useParams } from 'react-router-dom';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
@@ -43,8 +43,8 @@ interface Props {
 
 const FullScreenReport = ({ reportId }: Props) => {
   const [draftData, setDraftData] = useState<SerializedNodes | undefined>();
-  const reportLayout = useReportLayout(reportId);
-  const reportLocale = useReportLocale(reportLayout);
+  const { data: reportLayout } = useReportLayout(reportId);
+  const reportLocale = useReportLocale(reportLayout?.data);
   const platformLocale = useLocale();
 
   useEffect(() => {
@@ -60,7 +60,7 @@ const FullScreenReport = ({ reportId }: Props) => {
   const isLoadingLayout = reportLayout === undefined;
 
   const savedEditorData = !isNilOrError(reportLayout)
-    ? reportLayout.attributes.craftjs_jsonmultiloc[reportLocale]
+    ? reportLayout.data.attributes.craftjs_jsonmultiloc[reportLocale]
     : undefined;
 
   const editorData = draftData || savedEditorData;

@@ -174,7 +174,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
   end
 
   def active_users_by_time
-    render json: { series: { users: active_users_by_time_serie } }
+    render json: raw_json({ series: { users: active_users_by_time_serie } })
   end
 
   def active_users_by_time_as_xlsx

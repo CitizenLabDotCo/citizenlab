@@ -7,36 +7,45 @@ import {
   CONTENT_BUILDER_ERROR_EVENT,
 } from 'components/admin/ContentBuilder/constants';
 
-import { IProjectDescriptionBuilderData } from '../../services/projectDescriptionBuilder';
 import eventEmitter from 'utils/eventEmitter';
 
-const mockEditorData: IProjectDescriptionBuilderData = {
-  id: '2',
-  type: 'content_builder_layout',
-  attributes: {
-    craftjs_jsonmultiloc: {
-      en: {
-        nodeId: {
-          custom: {},
-          displayName: 'div',
-          hidden: false,
-          isCanvas: true,
-          linkedNodes: {},
-          nodes: [],
-          type: 'div',
-          props: {},
-          parent: 'ROOT',
+const DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA = {
+  data: {
+    id: '2',
+    type: 'content_builder_layout',
+    attributes: {
+      craftjs_jsonmultiloc: {
+        en: {
+          nodeId: {
+            custom: {},
+            displayName: 'div',
+            hidden: false,
+            isCanvas: true,
+            linkedNodes: {},
+            nodes: [],
+            type: 'div',
+            props: {},
+            parent: 'ROOT',
+          },
         },
       },
+      code: 'project_description',
+      enabled: true,
     },
-    code: 'project_description',
-    enabled: true,
   },
 };
 
-jest.mock('../../hooks/useProjectDescriptionBuilderLayout', () => {
-  return jest.fn(() => ({ data: mockEditorData }));
-});
+const mockProjectDescriptionBuilderLayoutData: typeof DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA =
+  DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA;
+
+jest.mock(
+  'modules/commercial/project_description_builder/api/useProjectDescriptionBuilderLayout',
+  () => () => {
+    return {
+      data: mockProjectDescriptionBuilderLayoutData,
+    };
+  }
+);
 
 jest.mock('hooks/useAppConfigurationLocales', () =>
   jest.fn(() => ['en', 'fr-FR'])
@@ -54,6 +63,20 @@ jest.mock('react-router-dom', () => {
     }),
   };
 });
+
+const mockProjectData = {
+  id: '2',
+  type: 'project',
+  attributes: {
+    title_multiloc: { en: 'Test Project' },
+    slug: 'test',
+    uses_content_builder: true,
+  },
+};
+
+jest.mock('api/projects/useProjectById', () =>
+  jest.fn(() => ({ data: { data: mockProjectData } }))
+);
 
 jest.mock('hooks/useFeatureFlag', () => jest.fn(() => true));
 

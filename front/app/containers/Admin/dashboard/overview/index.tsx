@@ -2,10 +2,6 @@ import React, { useState, useCallback, useMemo } from 'react';
 import moment, { Moment } from 'moment';
 
 // services
-import {
-  activeUsersByTimeStream,
-  activeUsersByTimeXlsxEndpoint,
-} from 'services/stats';
 
 // resources
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
@@ -42,6 +38,7 @@ import tracks from '../tracks';
 import { PublicationStatus } from 'api/projects/types';
 import { IResolution } from 'components/admin/ResolutionControl';
 import { isNilOrError } from 'utils/helperUtils';
+import { activeUsersByTimeXlsxEndpoint } from 'api/active_users_by_time/util';
 
 interface DataProps {
   projects: GetProjectsChildProps;
@@ -50,14 +47,14 @@ interface DataProps {
 export type IResource = 'ideas' | 'comments' | 'reactions';
 
 const OverviewDashboard = ({ projects }: DataProps) => {
-  const user = useAuthUser();
+  const { data: user } = useAuthUser();
   const { formatMessage } = useIntl();
 
   const resourceOptions = useMemo(
     () => [
       { value: 'ideas', label: formatMessage(messages.inputs) },
       { value: 'comments', label: formatMessage(messages.comments) },
-      { value: 'reactions', label: formatMessage(messages.votes) },
+      { value: 'reactions', label: formatMessage(messages.reactions) },
     ],
     [formatMessage]
   );
@@ -162,7 +159,6 @@ const OverviewDashboard = ({ projects }: DataProps) => {
             graphUnitMessageKey="activeUsers"
             graphTitle={formatMessage(messages.activeUsersByTimeTitle)}
             xlsxEndpoint={activeUsersByTimeXlsxEndpoint}
-            stream={activeUsersByTimeStream}
             infoMessage={formatMessage(
               messages.numberOfActiveParticipantsDescription
             )}

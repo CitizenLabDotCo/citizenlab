@@ -1,19 +1,17 @@
-import useHomepageSettings from 'hooks/useHomepageSettings';
+import useHomepageSettings from 'api/home_page/useHomepageSettings';
 import React from 'react';
-import { WrappedComponentProps } from 'react-intl';
-import {
-  IHomepageSettingsAttributes,
-  updateHomepageSettings,
-} from 'services/homepageSettings';
-import { injectIntl } from 'utils/cl-intl';
+import { IHomepageSettingsAttributes } from 'api/home_page/types';
+import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { homeBreadcrumb } from '../../breadcrumbs';
 import GenericBottomInfoSection from 'containers/Admin/pagesAndMenu/containers/GenericBottomInfoSection';
+import useUpdateHomepageSettings from 'api/home_page/useUpdateHomepageSettings';
 
-const BottomInfoSection = ({
-  intl: { formatMessage },
-}: WrappedComponentProps) => {
-  const homepageSettings = useHomepageSettings();
+const BottomInfoSection = () => {
+  const { formatMessage } = useIntl();
+  const { data: homepageSettings } = useHomepageSettings();
+  const { mutateAsync: updateHomepageSettings } = useUpdateHomepageSettings();
+
   if (isNilOrError(homepageSettings)) {
     return null;
   }
@@ -29,7 +27,7 @@ const BottomInfoSection = ({
 
   return (
     <GenericBottomInfoSection
-      pageData={homepageSettings}
+      pageData={homepageSettings.data}
       updatePage={(data) => updateHomepageSettings(data)}
       updatePageAndEnableSection={(data) =>
         updateHomepageAndEnableSection(data)
@@ -44,4 +42,4 @@ const BottomInfoSection = ({
   );
 };
 
-export default injectIntl(BottomInfoSection);
+export default BottomInfoSection;

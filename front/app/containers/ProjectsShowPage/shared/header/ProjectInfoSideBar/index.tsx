@@ -32,6 +32,7 @@ import { Box, Icon, IconTooltip } from '@citizenlab/cl2-component-library';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { scrollToElement } from 'utils/scroll';
 import { hasEmbeddedSurvey, hasSurveyWithAnyonePermissions } from '../utils';
+import setPhaseUrl from 'containers/ProjectsShowPage/timeline/setPhaseURL';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -42,7 +43,6 @@ import FormattedBudget from 'utils/currency/FormattedBudget';
 // style
 import styled from 'styled-components';
 import { fontSizes, colors, isRtl, media } from 'utils/styleUtils';
-import { selectPhase } from 'containers/ProjectsShowPage/timeline/events';
 
 const Container = styled.div``;
 
@@ -159,14 +159,17 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
     (id: string, shouldSelectCurrentPhase = true) =>
       (event: FormEvent) => {
         event.preventDefault();
+        if (!phases || !project) return;
 
-        currentPhase && shouldSelectCurrentPhase && selectPhase(currentPhase);
+        if (currentPhase && shouldSelectCurrentPhase) {
+          setPhaseUrl(currentPhase.id, phases.data, project.data);
+        }
 
         setTimeout(() => {
           scrollToElement({ id, shouldFocus: true });
         }, 100);
       },
-    [currentPhase]
+    [currentPhase, phases, project]
   );
 
   const openShareModal = useCallback((event: FormEvent) => {
@@ -187,8 +190,8 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
     const projectType = project.data.attributes.process_type;
     const projectParticipantsCount = project.data.attributes.participants_count;
     const maxBudget =
-      currentPhase?.attributes?.max_budget ||
-      project.data.attributes?.max_budget ||
+      currentPhase?.attributes?.voting_max_total ||
+      project.data.attributes?.voting_max_total ||
       null;
     const hasProjectEnded = currentPhase
       ? pastPresentOrFuture([
@@ -213,6 +216,13 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
       projectType === 'continuous'
         ? messages.oneDocToReview
         : messages.oneDocToReviewInCurrentPhase;
+
+    const isParticipatoryBudgeting =
+      projectType === 'continuous'
+        ? project.data.attributes.participation_method === 'voting' &&
+          project.data.attributes.voting_method === 'budgeting'
+        : currentPhase?.attributes.participation_method === 'voting' &&
+          currentPhase?.attributes.voting_method === 'budgeting';
 
     return (
       <Container id="e2e-project-sidebar" className={className || ''}>
@@ -380,15 +390,12 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                   </ListItem>
                 </Box>
               )}
-            {((projectType === 'continuous' &&
-              projectParticipationMethod === 'budgeting') ||
-              currentPhase?.attributes.participation_method === 'budgeting') &&
-              maxBudget && (
-                <ListItem id="e2e-project-sidebar-pb-budget">
-                  <ListItemIcon ariaHidden name="coin-stack" />
-                  <FormattedBudget value={maxBudget} />
-                </ListItem>
-              )}
+            {isParticipatoryBudgeting && maxBudget && (
+              <ListItem id="e2e-project-sidebar-pb-budget">
+                <ListItemIcon ariaHidden name="coin-stack" />
+                <FormattedBudget value={maxBudget} />
+              </ListItem>
+            )}
             {((projectType === 'continuous' &&
               projectParticipationMethod === 'survey') ||
               currentPhaseParticipationMethod === 'survey') &&

@@ -21,7 +21,7 @@ import { WrappedComponentProps } from 'react-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 // utils
-import { stripHtml } from 'utils/textUtils';
+import { getFullName, stripHtml } from 'utils/textUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { imageSizes } from 'utils/fileUtils';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
@@ -78,7 +78,7 @@ const InitiativeMeta = memo<Props & WrappedComponentProps & InjectedLocalized>(
       initiativeTitle: localizedTitle,
     });
     const initiativeAuthorName = author
-      ? `${author.data.attributes.first_name} ${author.data.attributes.last_name}`
+      ? getFullName(author.data)
       : 'anonymous';
 
     const articleJson = {

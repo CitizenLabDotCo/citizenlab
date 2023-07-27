@@ -8,7 +8,7 @@ import {
 import useLocalize from 'hooks/useLocalize';
 import React from 'react';
 import BannerButton from 'components/LandingPages/citizen/BannerButton';
-import { ICustomPageAttributes } from 'services/customPages';
+import { ICustomPageAttributes } from 'api/custom_pages/types';
 
 interface Props {
   fontColors: 'light' | 'dark';

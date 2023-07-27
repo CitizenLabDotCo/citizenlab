@@ -244,20 +244,20 @@ export class PostManager extends React.PureComponent<Props, State> {
       const posts = this.props.posts as GetInitiativesChildProps;
       return {
         onChangePhase: undefined,
-        selectedPhase: undefined,
+        selectedPhaseId: undefined,
         selectedStatus: posts.queryParameters.initiative_status,
       };
     } else if (type === 'AllIdeas' || type === 'ProjectIdeas') {
       const posts = this.props.posts as GetIdeasChildProps;
       return {
         onChangePhase: posts.onChangePhase,
-        selectedPhase: posts.queryParameters.phase,
+        selectedPhaseId: posts.queryParameters.phase,
         selectedStatus: posts.queryParameters.idea_status,
       };
     }
     return {
       onChangePhase: () => {},
-      selectedPhase: null,
+      selectedPhaseId: null,
       selectedStatus: null,
     };
   };
@@ -294,9 +294,9 @@ export class PostManager extends React.PureComponent<Props, State> {
     const selectedAssignee = queryParameters.assignee;
     const feedbackNeeded = queryParameters.feedback_needed || false;
 
-    const selectedProject = this.getSelectedProject();
+    const selectedProjectId = this.getSelectedProject();
 
-    const { onChangePhase, selectedPhase, selectedStatus } =
+    const { onChangePhase, selectedPhaseId, selectedStatus } =
       this.getNonSharedParams();
 
     if (!isNilOrError(topics)) {
@@ -314,8 +314,8 @@ export class PostManager extends React.PureComponent<Props, State> {
               type={type}
               value={feedbackNeeded}
               onChange={onChangeFeedbackFilter}
-              project={selectedProject}
-              phase={selectedPhase}
+              project={selectedProjectId}
+              phase={selectedPhaseId}
               topics={selectedTopics}
               status={selectedStatus}
               assignee={selectedAssignee}
@@ -324,7 +324,7 @@ export class PostManager extends React.PureComponent<Props, State> {
             <StyledExportMenu
               type={type}
               selection={selection}
-              selectedProject={selectedProject}
+              selectedProject={selectedProjectId}
             />
           </TopActionBar>
 
@@ -351,8 +351,8 @@ export class PostManager extends React.PureComponent<Props, State> {
                   feedbackNeeded={
                     feedbackNeeded === true ? feedbackNeeded : undefined
                   }
-                  project={selectedProject}
-                  phase={selectedPhase ?? undefined}
+                  project={selectedProjectId}
+                  phase={selectedPhaseId ?? undefined}
                   topics={selectedTopics ?? undefined}
                   ideaStatusId={selectedStatus ?? undefined}
                   search={searchTerm}
@@ -366,6 +366,7 @@ export class PostManager extends React.PureComponent<Props, State> {
             <LeftColumn>
               <Sticky>
                 <FilterSidebar
+                  type={type}
                   activeFilterMenu={activeFilterMenu}
                   visibleFilterMenus={visibleFilterMenus}
                   onChangeActiveFilterMenu={this.handleChangeActiveFilterMenu}
@@ -373,10 +374,10 @@ export class PostManager extends React.PureComponent<Props, State> {
                   projects={!isNilOrError(projects) ? projects : undefined}
                   statuses={!isNilOrError(postStatuses) ? postStatuses : []}
                   topics={topics}
-                  selectedPhase={selectedPhase}
+                  selectedPhase={selectedPhaseId}
                   selectedTopics={selectedTopics}
                   selectedStatus={selectedStatus}
-                  selectedProject={selectedProject}
+                  selectedProject={selectedProjectId}
                   onChangePhaseFilter={onChangePhase}
                   onChangeTopicsFilter={onChangeTopics}
                   onChangeStatusFilter={onChangeStatus}
@@ -395,6 +396,8 @@ export class PostManager extends React.PureComponent<Props, State> {
                 phases={!isNilOrError(phases) ? phases : undefined}
                 statuses={!isNilOrError(postStatuses) ? postStatuses : []}
                 selection={selection}
+                selectedPhaseId={selectedPhaseId}
+                selectedProjectId={selectedProjectId}
                 onChangeSelection={this.handleChangeSelection}
                 currentPageNumber={posts.currentPage}
                 lastPageNumber={posts.lastPage}

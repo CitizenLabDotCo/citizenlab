@@ -47,6 +47,7 @@ import events, {
 // hooks
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useUpdateInitiative from 'api/initiatives/useUpdateInitiative';
+import { getFullName } from 'utils/textUtils';
 
 const StyledLabel = styled(Label)`
   margin-top: 20px;
@@ -137,7 +138,7 @@ const FeedbackSettings = ({
     if (!isNilOrError(prospectAssignees.usersList)) {
       const assigneeOptions = prospectAssignees.usersList.map((assignee) => ({
         value: assignee.id,
-        label: `${assignee.attributes.first_name} ${assignee.attributes.last_name}`,
+        label: getFullName(assignee),
       }));
       assigneeOptions.push({
         value: 'unassigned',

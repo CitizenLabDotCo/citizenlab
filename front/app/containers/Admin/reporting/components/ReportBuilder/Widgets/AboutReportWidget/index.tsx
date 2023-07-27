@@ -13,7 +13,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 import PageBreakBox from '../../../../../../../components/admin/ContentBuilder/Widgets/PageBreakBox';
 
 // hooks
-import useReport from 'hooks/useReport';
+import useReport from 'api/reports/useReport';
 import useUserById from 'api/users/useUserById';
 import useProjectById from 'api/projects/useProjectById';
 import useLocalize from 'hooks/useLocalize';
@@ -22,6 +22,7 @@ import useLocalize from 'hooks/useLocalize';
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import moment from 'moment';
+import { getFullName } from 'utils/textUtils';
 
 type Props = {
   startAt?: string;
@@ -43,17 +44,15 @@ const AboutReportWidget = ({ reportId, projectId, startAt, endAt }: Props) => {
   const localize = useLocalize();
 
   // Title
-  const report = useReport(reportId);
-  const reportTitle = isNilOrError(report) ? null : report.attributes.name;
+  const { data: report } = useReport(reportId);
+  const reportTitle = isNilOrError(report) ? null : report.data.attributes.name;
 
   // Project mod
   const userId = isNilOrError(report)
     ? null
-    : report.relationships.owner.data.id;
+    : report.data.relationships.owner.data.id;
   const { data: user } = useUserById(userId);
-  const projectModerator = !user
-    ? null
-    : `${user.data.attributes.first_name} ${user.data.attributes.last_name}`;
+  const projectModerator = !user ? null : getFullName(user.data);
 
   // Project name & time period
   const { data: project } = useProjectById(projectId);

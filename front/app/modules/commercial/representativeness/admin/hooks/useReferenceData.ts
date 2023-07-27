@@ -45,8 +45,9 @@ function useReferenceData(
   const { data: usersByCustomField } = useUsersByCustomField({
     project: projectId,
     id: userCustomField.id,
-    enabled: !code,
+    enabled: !code || code === 'domicile',
   });
+
   const locale = useLocale();
 
   useEffect(() => {
@@ -60,6 +61,7 @@ function useReferenceData(
 
     if (code === 'gender') {
       handleRegFieldResponse(usersByGender, setters);
+      return;
     }
 
     if (code === 'birthyear') {
@@ -77,6 +79,7 @@ function useReferenceData(
       setReferenceData(ageFieldToReferenceData(usersByAge, locale));
       setIncludedUsers(ageFieldToIncludedUsers(usersByAge));
       setReferenceDataUploaded(true);
+      return;
     }
 
     handleRegFieldResponse(usersByCustomField, setters);

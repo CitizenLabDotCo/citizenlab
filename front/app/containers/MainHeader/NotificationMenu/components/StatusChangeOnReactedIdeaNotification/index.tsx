@@ -20,7 +20,7 @@ const StatusChangeOnReactedIdeaNotification = memo<Props>((props) => {
   const { data: idea } = useIdeaBySlug(notification.attributes.post_slug);
   const projectId = !isNilOrError(idea)
     ? idea.data.relationships.project.data.id
-    : null;
+    : undefined;
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
 
@@ -39,12 +39,12 @@ const StatusChangeOnReactedIdeaNotification = memo<Props>((props) => {
       >
         <FormattedMessage
           {...getInputTermMessage(inputTerm, {
-            idea: messages.statusChangeOnVotedIdea,
-            option: messages.statusChangeOnVotedOption,
-            project: messages.statusChangeOnVotedProject,
-            question: messages.statusChangeOnVotedQuestion,
-            issue: messages.statusChangeOnVotedIssue,
-            contribution: messages.statusChangeOnVotedContribution,
+            idea: messages.statusChangeOnReactedIdea,
+            option: messages.statusChangeOnReactedOption,
+            project: messages.statusChangeOnReactedProject,
+            question: messages.statusChangeOnReactedQuestion,
+            issue: messages.statusChangeOnReactedIssue,
+            contribution: messages.statusChangeOnReactedContribution,
           })}
           values={{
             status: (

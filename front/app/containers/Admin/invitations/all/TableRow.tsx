@@ -16,6 +16,7 @@ import { colors } from 'utils/styleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import { FormattedDate } from 'react-intl';
 import messages from '../messages';
+import { getFullName } from 'utils/textUtils';
 
 interface InputProps {
   invite: IInviteData;
@@ -41,9 +42,7 @@ const TableRow = (inputProps: InputProps) => {
     >
       <Td>{user.data.attributes.email}</Td>
       <Td>
-        <span>
-          {user.data.attributes.first_name} {user.data.attributes.last_name}
-        </span>
+        <span>{getFullName(user.data)}</span>
       </Td>
       <Td>
         <FormattedDate value={inputProps.invite.attributes.created_at} />

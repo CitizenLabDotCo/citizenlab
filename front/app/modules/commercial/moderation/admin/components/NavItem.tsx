@@ -15,7 +15,7 @@ const NavItemComponent: FC<ITabsOutlet> = ({
           url: '/admin/dashboard/moderation',
           feature: 'moderation',
         },
-        insertAfterName: 'overview',
+        insertAfterName: 'visitors',
       }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []

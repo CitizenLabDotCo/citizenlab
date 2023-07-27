@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 // hooks
-import useReferenceDistribution from '../../hooks/useReferenceDistribution';
+import useReferenceDistributionData from '../../api/reference_distribution/useReferenceDistributionData';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -23,7 +23,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { isSubmittingAllowed, FormValues } from '../../utils/form';
 
 // typings
-import { Bins } from '../../services/referenceDistribution';
+import { Bins } from '../../api/reference_distribution/types';
 
 interface Props {
   userCustomFieldId: string;
@@ -51,7 +51,8 @@ const FieldContent = ({
   onSubmit,
 }: Props) => {
   const [binModalOpen, setBinModalOpen] = useState(false);
-  const { referenceDataUploaded } = useReferenceDistribution(userCustomFieldId);
+  const { referenceDataUploaded } =
+    useReferenceDistributionData(userCustomFieldId);
 
   if (referenceDataUploaded === undefined) {
     return null;

@@ -47,7 +47,7 @@ resource 'Analytics - FactParticipations' do
         }
       })
       assert_status 200
-      expect(response_data).to match_array([
+      expect(response_data[:attributes]).to match_array([
         { 'dimension_date_created.month': '2022-09', count: 2 },
         { 'dimension_date_created.month': '2022-10', count: 2 }
       ])
@@ -67,7 +67,7 @@ resource 'Analytics - FactParticipations' do
         }
       })
       assert_status 200
-      expect(response_data).to match_array([{ count: 1 }])
+      expect(response_data[:attributes]).to match_array([{ count: 1 }])
     end
 
     example 'filter participations by project' do
@@ -83,7 +83,7 @@ resource 'Analytics - FactParticipations' do
         }
       })
       assert_status 200
-      expect(response_data).to match_array([{ count: 3 }])
+      expect(response_data[:attributes]).to match_array([{ count: 3 }])
     end
   end
 end

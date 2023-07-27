@@ -822,7 +822,7 @@ models:
     reacting_enabled: true
     reacting_like_method: unlimited
     reacting_like_limited_max: 10
-    max_budget:
+    voting_max_total:
     title_multiloc:
       en: An idea? Bring it to your council!
       da-DK: An idea? Bring it to your council!
@@ -1085,7 +1085,7 @@ models:
     reacting_enabled: true
     reacting_like_method: unlimited
     reacting_like_limited_max: 10
-    max_budget:
+    voting_max_total:
     title_multiloc:
       en: Quas et alias animi.
       nl-BE: Velit ratione modi eos.
@@ -1115,7 +1115,7 @@ models:
     reacting_enabled: true
     reacting_like_method: unlimited
     reacting_like_limited_max: 10
-    max_budget:
+    voting_max_total:
     title_multiloc:
       en: Ut optio facilis est.
       nl-BE: Quasi vel qui rerum.
@@ -1145,7 +1145,7 @@ models:
     reacting_enabled: false
     reacting_like_method: unlimited
     reacting_like_limited_max: 5
-    max_budget:
+    voting_max_total:
     title_multiloc:
       en: Aut cum ipsam enim.
       nl-BE: Animi aliquid laudantium quaerat.
@@ -1175,7 +1175,7 @@ models:
     reacting_enabled: true
     reacting_like_method: unlimited
     reacting_like_limited_max: 10
-    max_budget:
+    voting_max_total:
     title_multiloc:
       en: Blanditiis facere voluptatem libero.
       nl-BE: Nam ut voluptate cum.
@@ -1205,7 +1205,7 @@ models:
     reacting_enabled: true
     reacting_like_method: unlimited
     reacting_like_limited_max: 10
-    max_budget:
+    voting_max_total:
     title_multiloc:
       en: Quaerat ut molestiae numquam.
       nl-BE: Ut voluptatum consequatur aut.
@@ -1237,7 +1237,7 @@ models:
     reacting_enabled: false
     reacting_like_method: unlimited
     reacting_like_limited_max: 13
-    max_budget:
+    voting_max_total:
     project_ref: *5
     title_multiloc:
       en: Tempora perferendis in soluta.
@@ -1260,7 +1260,7 @@ models:
     reacting_enabled: true
     reacting_like_method: unlimited
     reacting_like_limited_max: 13
-    max_budget:
+    voting_max_total:
     project_ref: *5
     title_multiloc:
       en: Architecto animi culpa ipsam.
@@ -1283,7 +1283,7 @@ models:
     reacting_enabled: false
     reacting_like_method: unlimited
     reacting_like_limited_max: 13
-    max_budget:
+    voting_max_total:
     project_ref: *5
     title_multiloc:
       en: Est voluptatem rerum quas.
@@ -1306,7 +1306,7 @@ models:
     reacting_enabled: true
     reacting_like_method: unlimited
     reacting_like_limited_max: 10
-    max_budget:
+    voting_max_total:
     project_ref: *5
     title_multiloc:
       en: Sunt natus consectetur blanditiis.
@@ -1330,7 +1330,7 @@ models:
     reacting_enabled: true
     reacting_like_method: limited
     reacting_like_limited_max: 13
-    max_budget:
+    voting_max_total:
     project_ref: *6
     title_multiloc:
       en: Optio et eos ratione.
@@ -1354,7 +1354,7 @@ models:
     reacting_enabled: true
     reacting_like_method: limited
     reacting_like_limited_max: 14
-    max_budget:
+    voting_max_total:
     project_ref: *6
     title_multiloc:
       en: Exercitationem sit doloribus velit.
@@ -1377,7 +1377,7 @@ models:
     reacting_enabled: true
     reacting_like_method: unlimited
     reacting_like_limited_max: 10
-    max_budget:
+    voting_max_total:
     project_ref: *6
     title_multiloc:
       en: Vel accusamus voluptatem quos.
@@ -1402,7 +1402,7 @@ models:
     reacting_enabled: true
     reacting_like_method: unlimited
     reacting_like_limited_max: 6
-    max_budget:
+    voting_max_total:
     project_ref: *6
     title_multiloc:
       en: Odit ut est et.
@@ -1426,7 +1426,7 @@ models:
     reacting_enabled: true
     reacting_like_method: unlimited
     reacting_like_limited_max: 2
-    max_budget:
+    voting_max_total:
     project_ref: *6
     title_multiloc:
       en: Explicabo excepturi ullam voluptates.
@@ -1449,7 +1449,7 @@ models:
     reacting_enabled: true
     reacting_like_method: unlimited
     reacting_like_limited_max: 10
-    max_budget:
+    voting_max_total:
     project_ref: *6
     title_multiloc:
       en: Nesciunt molestias nihil nostrum.
@@ -1473,7 +1473,7 @@ models:
     reacting_enabled: true
     reacting_like_method: unlimited
     reacting_like_limited_max: 10
-    max_budget:
+    voting_max_total:
     project_ref: *6
     title_multiloc:
       en: Ut aspernatur eius ipsa.
@@ -1496,7 +1496,7 @@ models:
     reacting_enabled: true
     reacting_like_method: unlimited
     reacting_like_limited_max: 10
-    max_budget:
+    voting_max_total:
     project_ref: *7
     title_multiloc:
       en: Qui nihil sint eum.
@@ -1520,7 +1520,7 @@ models:
     reacting_enabled: false
     reacting_like_method: unlimited
     reacting_like_limited_max: 10
-    max_budget:
+    voting_max_total:
     project_ref: *7
     title_multiloc:
       en: Quos quaerat sit dignissimos.
@@ -1543,7 +1543,7 @@ models:
     reacting_enabled: true
     reacting_like_method: unlimited
     reacting_like_limited_max: 10
-    max_budget:
+    voting_max_total:
     project_ref: *7
     title_multiloc:
       en: Velit qui reprehenderit magni.
@@ -1567,7 +1567,7 @@ models:
     reacting_enabled: true
     reacting_like_method: unlimited
     reacting_like_limited_max: 7
-    max_budget:
+    voting_max_total:
     project_ref: *7
     title_multiloc:
       en: Ducimus nihil quae expedita.
@@ -1590,7 +1590,7 @@ models:
     reacting_enabled: true
     reacting_like_method: unlimited
     reacting_like_limited_max: 8
-    max_budget:
+    voting_max_total:
     project_ref: *8
     title_multiloc:
       en: Non dolor molestiae officiis.

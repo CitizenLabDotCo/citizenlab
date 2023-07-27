@@ -568,18 +568,6 @@
         }
       },
 
-      "participatory_budgeting": {
-        "type": "object",
-        "title": "Participatory Budgeting",
-        "description":  "Allow participatory budgeting.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
       "polls": {
         "type": "object",
         "title": "Polls",
@@ -1212,6 +1200,18 @@
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "public_api_tokens": {
+        "type": "object",
+        "title": "Public API tokens",
+        "description": "Enables the ability to create API tokens for the public API.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
           "enabled": { "type": "boolean", "default": false }
         }
       }

@@ -4,13 +4,13 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import userCustomFieldsOptionsKeys from './keys';
 import { IUserCustomFieldOptions, UserCustomFieldsOptionsKeys } from './types';
 
-const fetchOptions = ({ customFieldId }: { customFieldId: string }) =>
+const fetchOptions = ({ customFieldId }: { customFieldId?: string }) =>
   fetcher<IUserCustomFieldOptions>({
     path: `/users/custom_fields/${customFieldId}/custom_field_options`,
     action: 'get',
   });
 
-const useUserCustomFieldsOptions = (customFieldId: string) => {
+const useUserCustomFieldsOptions = (customFieldId?: string) => {
   return useQuery<
     IUserCustomFieldOptions,
     CLErrors,
@@ -19,6 +19,7 @@ const useUserCustomFieldsOptions = (customFieldId: string) => {
   >({
     queryKey: userCustomFieldsOptionsKeys.list({ customFieldId }),
     queryFn: () => fetchOptions({ customFieldId }),
+    enabled: !!customFieldId,
   });
 };
 

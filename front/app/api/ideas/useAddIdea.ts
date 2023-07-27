@@ -5,12 +5,11 @@ import ideaImagesKeys from 'api/idea_images/keys';
 import ideaMarkersKeys from 'api/idea_markers/keys';
 import userIdeaCountKeys from 'api/user_ideas_count/keys';
 import projectsKeys from 'api/projects/keys';
-import { API_PATH } from 'containers/App/constants';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
-import streams from 'utils/streams';
 import ideasKeys from './keys';
 import { IIdea, IIdeaAdd } from './types';
+import analyticsKeys from 'api/analytics/keys';
 
 const addIdea = async (requestBody: IIdeaAdd) =>
   fetcher<IIdea>({
@@ -44,8 +43,8 @@ const useAddIdea = () => {
         });
       }
 
-      streams.fetchAllWith({
-        apiEndpoint: [`${API_PATH}/analytics`],
+      queryClient.invalidateQueries({
+        queryKey: analyticsKeys.all(),
       });
     },
   });

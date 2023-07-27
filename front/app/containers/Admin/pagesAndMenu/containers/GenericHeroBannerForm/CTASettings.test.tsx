@@ -2,7 +2,7 @@
 // @ts-nocheck
 import React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
-import { IHomepageSettingsAttributes } from 'services/homepageSettings';
+import { IHomepageSettingsAttributes } from 'api/home_page/types';
 
 import CTASettings from './CTASettings';
 

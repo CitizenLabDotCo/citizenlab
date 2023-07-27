@@ -1,4 +1,4 @@
-import { Bins } from '../services/referenceDistribution';
+import { Bins } from '../api/reference_distribution/types';
 import { indices } from 'utils/helperUtils';
 import { isEqual, isNumber } from 'lodash-es';
 

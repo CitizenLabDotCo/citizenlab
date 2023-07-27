@@ -38,6 +38,7 @@ import useCampaign from 'api/campaigns/useCampaign';
 import useLocalize from 'hooks/useLocalize';
 import useSendCampaign from 'api/campaigns/useSendCampaign';
 import useSendCampaignPreview from 'api/campaigns/useSendCampaignPreview';
+import { getFullName } from 'utils/textUtils';
 
 const PageHeader = styled.div`
   display: flex;
@@ -175,7 +176,7 @@ const Show = () => {
     let senderName: string | null = null;
 
     if (senderType === 'author' && !isNilOrError(user)) {
-      senderName = `${user?.data.attributes.first_name} ${user?.data.attributes.last_name}`;
+      senderName = getFullName(user.data);
     } else if (senderType === 'organization' && !isNilOrError(tenant)) {
       senderName = localize(
         tenant?.data.attributes.settings.core.organization_name

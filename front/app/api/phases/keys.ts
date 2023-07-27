@@ -5,7 +5,7 @@ const baseKey = { type: 'phase' };
 const phasesKeys = {
   all: () => [baseKey],
   lists: () => [{ ...baseKey, operation: 'list' }],
-  list: ({ projectId }: { projectId: string }) => [
+  list: ({ projectId }: { projectId: string | undefined }) => [
     { ...baseKey, operation: 'list', parameters: { projectId } },
   ],
   items: () => [{ ...baseKey, operation: 'item' }],

@@ -36,6 +36,31 @@ resource 'Posts' do
 
     include_context 'common_list_params'
 
+    parameter(
+      :author_id,
+      'Filter by author ID',
+      required: false,
+      type: :string,
+      in: :query
+    )
+
+    parameter(
+      :project_id,
+      'Filter by project ID',
+      required: false,
+      type: :string,
+      in: :query
+    )
+
+    parameter(
+      :topic_ids,
+      'List only the ideas that have all of the specified topics',
+      required: false,
+      type: :array,
+      items: { type: :string },
+      in: :query
+    )
+
     context 'when the page size is smaller than the total number of ideas' do
       let(:page_size) { 2 }
 
@@ -45,6 +70,44 @@ resource 'Posts' do
 
         total_pages = (ideas.size.to_f / page_size).ceil
         expect(json_response_body[:meta]).to eq({ total_pages: total_pages, current_page: 1 })
+      end
+    end
+
+    context 'when filtering by author id' do
+      let(:author_id) { ideas.first.author_id }
+
+      example_request 'List only the ideas of the specified user' do
+        assert_status 200
+        expect(json_response_body[:ideas].size).to eq(1)
+        expect(json_response_body[:ideas].first[:author_id]).to eq(author_id)
+      end
+    end
+
+    context 'when filtering by project id' do
+      let(:project_id) { ideas.first.project_id }
+
+      example_request 'List only the ideas of the specified project' do
+        assert_status 200
+        expect(json_response_body[:ideas].size).to eq(1)
+        expect(json_response_body[:ideas].first[:project_id]).to eq(project_id)
+      end
+    end
+
+    context 'when filtering by topic ids' do
+      let(:idea) { create(:idea_with_topics, topics_count: 3) }
+      let(:topics) { idea.topics.take(2) }
+      let(:topic_ids) { topics.pluck(:id) }
+
+      before do
+        # This idea should not be returned because it only has one of the requested
+        # topics.
+        create(:idea, project_id: idea.project_id).topics << topics.first
+      end
+
+      example_request 'List only the ideas that have all of the specified topics' do
+        assert_status 200
+        expect(json_response_body[:ideas].size).to eq(1)
+        expect(json_response_body[:ideas].pluck(:id)).to eq [idea.id]
       end
     end
 
@@ -86,4 +149,6 @@ resource 'Posts' do
       end
     end
   end
+
+  include_examples '/api/v2/.../deleted', :ideas
 end

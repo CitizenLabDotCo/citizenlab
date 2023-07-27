@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import EventsWidget from 'components/LandingPages/citizen/EventsWidget';
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
-import { ICustomPageData } from 'services/customPages';
+import { ICustomPageData } from 'api/custom_pages/types';
 import ContentContainer from 'components/ContentContainer';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import { PublicationStatus } from 'api/projects/types';

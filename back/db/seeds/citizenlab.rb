@@ -51,10 +51,6 @@ AppConfiguration.create!(
       },
       zoom_level: ENV.fetch('CL_SETTINGS_MAPS_ZOOM_LEVEL', '12')&.to_i
     },
-    participatory_budgeting: {
-      enabled: true,
-      allowed: true
-    },
     polls: {
       enabled: true,
       allowed: true
@@ -176,6 +172,14 @@ AppConfiguration.create!(
     user_confirmation: {
       allowed: true,
       enabled: false
+    },
+    public_api_tokens: {
+      enabled: true,
+      allowed: true
+    },
+    analysis: {
+      enabled: true,
+      allowed: true
     }
   })
 )

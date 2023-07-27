@@ -100,10 +100,6 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
           allowed: true,
           enabled: true
         },
-        participatory_budgeting: {
-          enabled: true,
-          allowed: true
-        },
         similar_ideas: {
           enabled: false,
           allowed: true
@@ -338,6 +334,10 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
           duration: 90
         },
         seat_based_billing: {
+          enabled: true,
+          allowed: true
+        },
+        public_api_tokens: {
           enabled: true,
           allowed: true
         },

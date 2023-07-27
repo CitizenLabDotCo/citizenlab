@@ -73,7 +73,7 @@ export default class MultipleSelect extends React.PureComponent<Props, State> {
     autoBlur = isBoolean(autoBlur) ? autoBlur : false;
 
     return (
-      <>
+      <div>
         {label && <Label htmlFor={inputId}>{label}</Label>}
         <ReactSelect
           id={id}
@@ -93,7 +93,7 @@ export default class MultipleSelect extends React.PureComponent<Props, State> {
           styles={selectStyles}
           menuPlacement="auto"
         />
-      </>
+      </div>
     );
   }
 }

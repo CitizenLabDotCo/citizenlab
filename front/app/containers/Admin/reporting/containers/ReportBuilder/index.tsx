@@ -3,7 +3,7 @@ import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import useReportLayout from 'hooks/useReportLayout';
+import useReportLayout from 'api/report_layout/useReportLayout';
 import useReportLocale from '../../hooks/useReportLocale';
 
 // components
@@ -51,8 +51,8 @@ const ReportBuilder = ({ reportId }: Props) => {
   const [imageUploading, setImageUploading] = useState(false);
   const [selectedLocale, setSelectedLocale] = useState<Locale | undefined>();
   const [draftData, setDraftData] = useState<Record<string, SerializedNodes>>();
-  const reportLayout = useReportLayout(reportId);
-  const reportLocale = useReportLocale(reportLayout);
+  const { data: reportLayout } = useReportLayout(reportId);
+  const reportLocale = useReportLocale(reportLayout?.data);
   const platformLocale = useLocale();
   const [initialized, setInitialized] = useState(false);
   const [initialData, setInitialData] = useState<SerializedNodes | undefined>();
@@ -113,7 +113,7 @@ const ReportBuilder = ({ reportId }: Props) => {
 
     if (!isNilOrError(reportLayout)) {
       setInitialData(
-        reportLayout.attributes.craftjs_jsonmultiloc[selectedLocale]
+        reportLayout.data.attributes.craftjs_jsonmultiloc[selectedLocale]
       );
     }
 

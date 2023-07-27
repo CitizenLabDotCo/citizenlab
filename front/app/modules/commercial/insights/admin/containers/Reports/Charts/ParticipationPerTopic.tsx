@@ -1,19 +1,9 @@
 import React from 'react';
-import { adopt } from 'react-adopt';
 import { map, sortBy } from 'lodash-es';
 import styled from 'styled-components';
 
 // resources
-import GetSerieFromStream from 'resources/GetSerieFromStream';
-import {
-  IIdeasByTopic,
-  ideasByTopicStream,
-  ICommentsByTopic,
-  commentsByTopicStream,
-  IReactionsByTopic,
-  reactionsByTopicStream,
-} from 'services/stats';
-import { IParticipationByTopic } from 'typings';
+
 import { fontSizes, colors } from 'utils/styleUtils';
 
 // i18n
@@ -28,24 +18,18 @@ import {
   NoDataContainer,
 } from 'components/admin/GraphWrappers';
 import { isNilOrError } from 'utils/helperUtils';
+import useIdeasByTopic from 'api/ideas_by_topic/useIdeasByTopic';
+import useCommentsByTopic from 'api/comments_by_topic/useCommentsByTopic';
+import useReactionsByTopic from 'api/reactions_by_topic/useReactionsByTopic';
+import { IIdeasByTopic } from 'api/ideas_by_topic/types';
+import { IReactionsByTopic } from 'api/reactions_by_topic/types';
+import { ICommentsByTopic } from 'api/comments_by_topic/types';
 
-interface InputProps {
+interface Props {
   projectId: string | null;
   startAt: string | null;
   endAt: string | null;
   className?: string;
-}
-
-interface DataProps {
-  ideasByTopic: {
-    serie: IParticipationByTopic;
-  };
-  commentsByTopic: {
-    serie: IParticipationByTopic;
-  };
-  reactionsByTopic: {
-    serie: IParticipationByTopic;
-  };
 }
 
 const cellWidth = '100px';
@@ -113,10 +97,32 @@ const getCellColor = (value, participationType) => {
   return `hsl(185, ${saturation}%, ${luminosity}%)`;
 };
 
-interface Props extends InputProps, DataProps {}
+const ParticipationPerTopic = ({ endAt, projectId, className }: Props) => {
+  const { data: ideasByTopic } = useIdeasByTopic({
+    end_at: endAt,
+    project: projectId ?? undefined,
+    enabled: true,
+  });
 
-const ParticipationPerTopic = (props: Props) => {
-  const { reactionsByTopic, commentsByTopic, ideasByTopic, className } = props;
+  const { data: commentsByTopic } = useCommentsByTopic({
+    end_at: endAt,
+    project: projectId ?? undefined,
+    enabled: true,
+  });
+
+  const { data: reactionsByTopic } = useReactionsByTopic({
+    end_at: endAt,
+    project: projectId ?? undefined,
+    enabled: true,
+  });
+
+  const ideasByTopicSerie =
+    ideasByTopic && convertToGraphFormat('ideas')(ideasByTopic);
+  const commentsByTopicSerie =
+    commentsByTopic && convertToGraphFormat('comments')(commentsByTopic);
+  const reactionsByTopicSerie =
+    reactionsByTopic && convertToGraphFormat('total')(reactionsByTopic);
+
   const localize = useLocalize();
   return (
     <>
@@ -137,8 +143,8 @@ const ParticipationPerTopic = (props: Props) => {
             <Row>
               <Column>
                 <ParticipationType />
-                {ideasByTopic.serie &&
-                  ideasByTopic.serie.map((topic, index) => (
+                {ideasByTopicSerie &&
+                  ideasByTopicSerie.map((topic, index) => (
                     <TopicName key={index}>
                       {localize(topic.nameMultiloc)}
                     </TopicName>
@@ -148,8 +154,8 @@ const ParticipationPerTopic = (props: Props) => {
                 <ParticipationType>
                   <FormattedMessage {...messages.inputs} />
                 </ParticipationType>
-                {ideasByTopic.serie &&
-                  ideasByTopic.serie.map((topic, index) => (
+                {ideasByTopicSerie &&
+                  ideasByTopicSerie.map((topic, index) => (
                     <Cell
                       key={index}
                       cellColor={getCellColor(topic.value, 'ideas')}
@@ -162,8 +168,8 @@ const ParticipationPerTopic = (props: Props) => {
                 <ParticipationType>
                   <FormattedMessage {...messages.comments} />
                 </ParticipationType>
-                {commentsByTopic.serie &&
-                  commentsByTopic.serie.map((topic, index) => (
+                {commentsByTopicSerie &&
+                  commentsByTopicSerie.map((topic, index) => (
                     <Cell
                       key={index}
                       cellColor={getCellColor(topic.value, 'comments')}
@@ -174,10 +180,10 @@ const ParticipationPerTopic = (props: Props) => {
               </Column>
               <Column>
                 <ParticipationType>
-                  <FormattedMessage {...messages.votes} />
+                  <FormattedMessage {...messages.reactions} />
                 </ParticipationType>
-                {reactionsByTopic.serie &&
-                  reactionsByTopic.serie.map((topic, index) => (
+                {reactionsByTopicSerie &&
+                  reactionsByTopicSerie.map((topic, index) => (
                     <Cell
                       key={index}
                       cellColor={getCellColor(topic.value, 'total')}
@@ -217,43 +223,4 @@ const convertToGraphFormat =
     return res.length > 0 ? res : null;
   };
 
-const Data = adopt<DataProps, InputProps>({
-  ideasByTopic: ({ projectId, endAt, render }) => (
-    <GetSerieFromStream
-      currentProjectFilter={projectId}
-      stream={ideasByTopicStream}
-      endAt={endAt}
-      convertToGraphFormat={convertToGraphFormat('ideas')}
-    >
-      {render}
-    </GetSerieFromStream>
-  ),
-  commentsByTopic: ({ projectId, endAt, render }) => (
-    <GetSerieFromStream
-      currentProjectFilter={projectId}
-      stream={commentsByTopicStream}
-      endAt={endAt}
-      convertToGraphFormat={convertToGraphFormat('comments')}
-    >
-      {render}
-    </GetSerieFromStream>
-  ),
-  reactionsByTopic: ({ projectId, endAt, render }) => (
-    <GetSerieFromStream
-      currentProjectFilter={projectId}
-      stream={reactionsByTopicStream}
-      endAt={endAt}
-      convertToGraphFormat={convertToGraphFormat('total')}
-    >
-      {render}
-    </GetSerieFromStream>
-  ),
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(serie) => {
-      return <ParticipationPerTopic {...serie} {...inputProps} />;
-    }}
-  </Data>
-);
+export default ParticipationPerTopic;

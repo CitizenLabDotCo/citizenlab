@@ -33,6 +33,7 @@ import { colors } from 'utils/styleUtils';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAuthUser from 'api/me/useAuthUser';
 import useUserBySlug from 'api/users/useUserBySlug';
+import { getFullName } from 'utils/textUtils';
 
 const BlockUser = React.lazy(
   () => import('components/admin/UserBlockModals/BlockUser')
@@ -137,7 +138,7 @@ const UserHeader = ({ userSlug }: Props) => {
         )}
         <Box display="flex" alignItems="center" color="tenantText">
           <Title id="e2e-usersshowpage-fullname" color="tenantText" mr="10px">
-            {user.data.attributes.first_name} {user.data.attributes.last_name}
+            {getFullName(user.data)}
           </Title>
           {isCurrentUserAdmin && canBlock && (
             <MoreActionsMenu

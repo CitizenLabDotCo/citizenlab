@@ -1,7 +1,7 @@
 import BannerButton, {
   BannerButtonStyle,
 } from 'components/LandingPages/citizen/BannerButton';
-import useHomepageSettings from 'hooks/useHomepageSettings';
+import useHomepageSettings from 'api/home_page/useHomepageSettings';
 import useLocalize from 'hooks/useLocalize';
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
@@ -12,16 +12,16 @@ interface Props {
 
 const CTA = ({ buttonStyle }: Props) => {
   const localize = useLocalize();
-  const homepageSettings = useHomepageSettings();
+  const { data: homepageSettings } = useHomepageSettings();
 
   if (!isNilOrError(homepageSettings)) {
-    const ctaType = homepageSettings.attributes.banner_cta_signed_in_type;
+    const ctaType = homepageSettings.data.attributes.banner_cta_signed_in_type;
 
     const customButtonText =
-      homepageSettings.attributes.banner_cta_signed_in_text_multiloc;
+      homepageSettings.data.attributes.banner_cta_signed_in_text_multiloc;
 
     const customButtonUrl =
-      homepageSettings.attributes.banner_cta_signed_in_url;
+      homepageSettings.data.attributes.banner_cta_signed_in_url;
 
     switch (ctaType) {
       case 'customized_button':

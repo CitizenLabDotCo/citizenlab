@@ -6,7 +6,7 @@ import {
 } from 'components/LandingPages/citizen/TwoRowLayout';
 import { homepageBannerLayoutHeights } from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/HeaderImageDropzone';
 import React from 'react';
-import { ICustomPageData } from 'services/customPages';
+import { ICustomPageData } from 'api/custom_pages/types';
 import AdminCustomPageEditButton from './AdminCustomPageEditButton';
 import HeaderContent from './HeaderContent';
 

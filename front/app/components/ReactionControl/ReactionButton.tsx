@@ -346,33 +346,33 @@ const ReactionButton = ({
   ) => {
     if (disabledReason === 'project_inactive') {
       return futureEnabled
-        ? messages.votingPossibleLater
-        : messages.votingDisabledProjectInactive;
+        ? messages.reactingPossibleLater
+        : messages.reactingDisabledProjectInactive;
     } else if (disabledReason === 'not_in_group') {
       return globalMessages.notInGroup;
     } else if (disabledReason === 'reacting_disabled' && futureEnabled) {
-      return messages.votingPossibleLater;
+      return messages.reactingPossibleLater;
     } else if (disabledReason === 'reacting_like_limited_max_reached') {
-      return messages.upvotingDisabledMaxReached;
+      return messages.likingDisabledMaxReached;
     } else if (disabledReason === 'reacting_dislike_limited_max_reached') {
-      return messages.downvotingDisabledMaxReached;
+      return messages.dislikingDisabledMaxReached;
     } else if (disabledReason === 'idea_not_in_current_phase') {
       return futureEnabled
-        ? messages.votingDisabledFutureEnabled
-        : messages.votingDisabledPhaseOver;
+        ? messages.reactingDisabledFutureEnabled
+        : messages.reactingDisabledPhaseOver;
     } else if (disabledReason === 'not_permitted') {
-      return messages.votingNotPermitted;
+      return messages.reactingNotPermitted;
     } else if (
       (authUser && disabledReason === 'not_active') ||
       disabledReason === 'missing_data'
     ) {
-      return messages.completeProfileToVote;
+      return messages.completeProfileToReact;
     } else if (disabledReason === 'not_signed_in') {
-      return messages.votingNotSignedIn;
+      return messages.reactingNotSignedIn;
     } else if (authUser && disabledReason === 'not_verified') {
-      return messages.votingVerifyToVote;
+      return messages.reactingVerifyToReact;
     } else {
-      return messages.votingNotEnabled;
+      return messages.reactingNotEnabled;
     }
   };
 
@@ -461,7 +461,7 @@ const ReactionButton = ({
             />
             <ScreenReaderOnly>
               <FormattedMessage
-                {...{ up: messages.upvote, down: messages.downvote }[
+                {...{ up: messages.like, down: messages.dislike }[
                   buttonReactionMode
                 ]}
               />

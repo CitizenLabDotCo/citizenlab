@@ -1,4 +1,4 @@
-import { IMapLayerAttributes } from '../../../services/mapLayers';
+import { IMapLayerAttributes } from 'modules/commercial/custom_maps/api/map_layers/types';
 
 export interface IMapLayerAttributesWithOrdering extends IMapLayerAttributes {
   attributes: {

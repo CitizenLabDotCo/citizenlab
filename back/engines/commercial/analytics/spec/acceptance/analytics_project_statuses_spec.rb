@@ -29,7 +29,7 @@ resource 'Analytics - ProjectStatus' do
       })
 
       assert_status 200
-      expect(response_data).to match_array([
+      expect(response_data[:attributes]).to match_array([
         { status: 'draft', count: 1 },
         { status: 'published', count: 2 },
         { status: 'archived', count: 1 }
@@ -50,7 +50,7 @@ resource 'Analytics - ProjectStatus' do
       })
 
       assert_status 200
-      expect(response_data).to eq([
+      expect(response_data[:attributes]).to eq([
         { count: 2 }
       ])
     end
@@ -70,7 +70,7 @@ resource 'Analytics - ProjectStatus' do
       })
 
       assert_status 200
-      expect(response_data).to eq([
+      expect(response_data[:attributes]).to eq([
         { count: 1 }
       ])
     end

@@ -4,13 +4,17 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import phasesKeys from './keys';
 import { IPhase, PhasesKeys } from './types';
 
-const fetchPhase = ({ phaseId }: { phaseId: string | undefined | null }) =>
+export const fetchPhase = ({
+  phaseId,
+}: {
+  phaseId: string | undefined | null;
+}) =>
   fetcher<IPhase>({
     path: `/phases/${phaseId}`,
     action: 'get',
   });
 
-const usePhases = (phaseId: string | undefined | null) => {
+const usePhase = (phaseId: string | undefined | null) => {
   return useQuery<IPhase, CLErrors, IPhase, PhasesKeys>({
     queryKey: phasesKeys.item({ phaseId }),
     queryFn: () => fetchPhase({ phaseId }),
@@ -18,4 +22,4 @@ const usePhases = (phaseId: string | undefined | null) => {
   });
 };
 
-export default usePhases;
+export default usePhase;

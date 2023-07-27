@@ -1,7 +1,6 @@
 import React, { memo } from 'react';
 import styled from 'styled-components';
 import useLocalize from 'hooks/useLocalize';
-import useMapConfig from 'modules/commercial/custom_maps/hooks/useMapConfig';
 import {
   media,
   isRtl,
@@ -16,6 +15,7 @@ import {
 } from 'modules/commercial/custom_maps/utils/map';
 import { Icon, IconNames } from '@citizenlab/cl2-component-library';
 import bowser from 'bowser';
+import useMapConfig from 'modules/commercial/custom_maps/api/map_config/useMapConfig';
 
 const Container = styled.div`
   padding: 25px;
@@ -86,7 +86,7 @@ const StyledIcon = styled(Icon)<{ color: string }>`
 `;
 
 interface Props {
-  projectId?: string | null;
+  projectId?: string;
   className?: string;
 }
 
@@ -97,25 +97,26 @@ interface ILegendItem {
 }
 
 const Legend = memo<Props>(({ projectId, className }) => {
-  if (!projectId) {
-    return null;
-  }
-
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const mapConfig = useMapConfig({ projectId });
-  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const { data: mapConfig } = useMapConfig(projectId);
   const localize = useLocalize();
   let hasCustomLegend = false;
   let legend: ILegendItem[] = [];
 
-  if (mapConfig?.attributes?.legend && mapConfig.attributes.legend.length > 0) {
-    hasCustomLegend = true;
-    legend = mapConfig.attributes.legend;
-  } else if (
-    mapConfig?.attributes?.layers &&
-    mapConfig.attributes.layers.length > 0
+  if (!projectId) {
+    return null;
+  }
+
+  if (
+    mapConfig?.data?.attributes?.legend &&
+    mapConfig.data.attributes.legend.length > 0
   ) {
-    legend = mapConfig.attributes.layers.map((layer) => ({
+    hasCustomLegend = true;
+    legend = mapConfig.data.attributes.legend;
+  } else if (
+    mapConfig?.data?.attributes?.layers &&
+    mapConfig.data.attributes.layers.length > 0
+  ) {
+    legend = mapConfig.data.attributes.layers.map((layer) => ({
       title_multiloc: layer.title_multiloc,
       color: getLayerColor(layer),
       iconName: getLayerIcon(layer),

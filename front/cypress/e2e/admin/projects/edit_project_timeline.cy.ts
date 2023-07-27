@@ -47,14 +47,16 @@ describe('Project timeline page', () => {
           phaseTwoTitle,
           '2025-01-02',
           '2025-01-25',
-          'budgeting',
+          'voting',
           true,
           true,
           true,
           'description',
           undefined,
           undefined,
-          400
+          400,
+          false,
+          'budgeting'
         );
       });
   });

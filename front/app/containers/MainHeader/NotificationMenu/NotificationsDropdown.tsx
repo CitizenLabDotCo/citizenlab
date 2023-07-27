@@ -16,7 +16,6 @@ const NotificationsDropdown = ({ onClickOutside, dropdownOpened }: Props) => {
         mobileWidth="220px"
         top="42px"
         right="-5px"
-        mobileRight="-15px"
         opened={dropdownOpened}
         onClickOutside={onClickOutside}
         content={<Notifications />}

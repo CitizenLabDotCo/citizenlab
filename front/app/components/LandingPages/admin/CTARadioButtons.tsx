@@ -2,8 +2,8 @@ import { Box, Input, Label, Radio } from '@citizenlab/cl2-component-library';
 import Error, { TFieldName } from 'components/UI/Error';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import React from 'react';
-import { TCustomPageCTAType } from 'services/customPages';
-import { CTASignedInType, CTASignedOutType } from 'services/homepageSettings';
+import { CTASignedInType, CTASignedOutType } from 'api/home_page/types';
+import { TCustomPageCTAType } from 'api/custom_pages/types';
 import { CLErrors, Multiloc } from 'typings';
 
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';

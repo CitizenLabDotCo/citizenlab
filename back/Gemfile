@@ -97,7 +97,7 @@ gem 'fog-aws', '~> 3.19'
 
 gem 'api-pagination', '~> 5.0.0'
 gem 'kaminari', '~> 1.2'
-gem 'rails-i18n', '~> 7.0.6'
+gem 'rails-i18n', '~> 7.0.7'
 gem 'awesome_nested_set', '~> 3.5.0'
 gem 'axlsx', '3.0.0.pre'
 gem 'counter_culture', '~> 3.3'
@@ -152,7 +152,18 @@ gem 'intercom', '~> 4.2'
 gem 'mjml-rails', '~> 4.9'
 gem 'cloudfront-rails', '~> 0.4'
 
-Dir.children('engines/free').each do |engine_name|
+free_engines = %w[
+  document_annotation
+  email_campaigns
+  frontend
+  onboarding
+  polls
+  seo
+  surveys
+  volunteering
+]
+
+free_engines.each do |engine_name|
   path = "engines/free/#{engine_name}"
   gem engine_name, path: path if File.directory?(path)
 end
@@ -163,6 +174,7 @@ commercial_engines = [
   'multi_tenancy',
 
   'admin_api',
+  'analysis',
   'analytics',
   'bulk_import_ideas',
   'content_builder',

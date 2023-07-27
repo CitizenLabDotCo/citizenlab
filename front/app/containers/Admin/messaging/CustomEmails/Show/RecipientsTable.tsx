@@ -9,6 +9,7 @@ import messages from '../../messages';
 import Pagination from 'components/admin/Pagination';
 import Avatar from 'components/Avatar';
 import useUserById from 'api/users/useUserById';
+import { getFullName } from 'utils/textUtils';
 
 const statusColorMapping: {
   [k in IDeliveryData['attributes']['delivery_status']]: string;
@@ -45,9 +46,7 @@ const TableRow = ({
       <TextCell>
         <Avatar userId={userId} size={30} />
       </TextCell>
-      <TextCell>
-        {user.data.attributes.first_name} {user.data.attributes.last_name}
-      </TextCell>
+      <TextCell>{getFullName(user.data)}</TextCell>
       <TextCell className="expand">{user.data.attributes.email}</TextCell>
       <StatusLabel
         backgroundColor={

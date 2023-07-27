@@ -110,7 +110,12 @@ const AuthProviders = memo<Props>(
       claveUnicaLoginEnabled;
 
     return (
-      <Container id="e2e-sign-up-container" className={className}>
+      <Container
+        id={
+          flow === 'signup' ? 'e2e-sign-up-container' : 'e2e-sign-in-container'
+        }
+        className={className}
+      >
         {showFCButton && (
           <FranceConnectButton
             onClick={handleOnFranceConnectSelected}

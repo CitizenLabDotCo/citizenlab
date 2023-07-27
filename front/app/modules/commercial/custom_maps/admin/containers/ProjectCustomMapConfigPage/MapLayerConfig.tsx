@@ -2,15 +2,10 @@ import React, { memo, useEffect, useState } from 'react';
 import { isEmpty, cloneDeep, forOwn } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
-// services
-import {
-  updateProjectMapLayer,
-  IMapLayerAttributes,
-} from '../../../services/mapLayers';
+import useUpdateMapLayer from 'modules/commercial/custom_maps/api/map_layers/useUpdateMapLayer';
 
 // hooks
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useMapConfig from '../../../hooks/useMapConfig';
 
 // components
 import {
@@ -41,6 +36,8 @@ import styled from 'styled-components';
 
 // typing
 import { Multiloc, IOption } from 'typings';
+import { IMapLayerAttributes } from 'modules/commercial/custom_maps/api/map_layers/types';
+import useMapConfig from 'modules/commercial/custom_maps/api/map_config/useMapConfig';
 
 const Container = styled.div`
   display: flex;
@@ -114,12 +111,14 @@ const getEditableTitleMultiloc = (
 
 const MapLayerConfig = memo<Props & WrappedComponentProps>(
   ({ projectId, mapLayerId, className, onClose, intl: { formatMessage } }) => {
+    const { mutateAsync: updateProjectMapLayer } = useUpdateMapLayer();
     const tenantLocales = useAppConfigurationLocales();
-    const mapConfig = useMapConfig({ projectId });
+    const { data: mapConfig } = useMapConfig(projectId);
 
     const mapLayer =
-      mapConfig?.attributes?.layers?.find((layer) => layer.id === mapLayerId) ||
-      undefined;
+      mapConfig?.data?.attributes?.layers?.find(
+        (layer) => layer.id === mapLayerId
+      ) || undefined;
     const type = getLayerType(mapLayer);
 
     const [touched, setTouched] = useState(false);
@@ -194,7 +193,7 @@ const MapLayerConfig = memo<Props & WrappedComponentProps>(
 
     const formError = (errorResponse) => {
       setProcessing(false);
-      setErrors(errorResponse?.json?.errors || 'unknown error');
+      setErrors(errorResponse?.errors || 'unknown error');
     };
 
     const handleOnCancel = () => {
@@ -241,7 +240,9 @@ const MapLayerConfig = memo<Props & WrappedComponentProps>(
         });
 
         try {
-          await updateProjectMapLayer(projectId, mapLayer.id, {
+          await updateProjectMapLayer({
+            projectId,
+            id: mapLayer.id,
             title_multiloc,
             geojson,
           });

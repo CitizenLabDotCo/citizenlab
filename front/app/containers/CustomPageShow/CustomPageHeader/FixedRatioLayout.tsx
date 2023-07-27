@@ -11,7 +11,7 @@ import {
 } from 'components/LandingPages/citizen/FixedRatioLayout';
 import HeaderContent from './HeaderContent';
 
-import { ICustomPageData } from 'services/customPages';
+import { ICustomPageData } from 'api/custom_pages/types';
 import AdminCustomPageEditButton from './AdminCustomPageEditButton';
 import { colors, stylingConsts } from 'utils/styleUtils';
 import styled from 'styled-components';
@@ -25,7 +25,7 @@ const CustomPageLayoutContainer = styled(Container)`
 `;
 
 const CustomPageLayoutHeader = styled(Header)`
-  max-width: ${stylingConsts.maxPageWidth}px; ;
+  max-width: ${stylingConsts.maxPageWidth}px;
 `;
 
 const FixedRatioLayout = ({ pageData }: Props) => {

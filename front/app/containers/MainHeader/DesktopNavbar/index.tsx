@@ -1,8 +1,8 @@
 import React from 'react';
 
 // hooks
-import useNavbarItems from 'hooks/useNavbarItems';
-import useCustomPageSlugById from 'hooks/useCustomPageSlugById';
+import useNavbarItems from 'api/navbar/useNavbarItems';
+import useCustomPageSlugById from 'api/custom_pages/useCustomPageSlugById';
 
 // components
 import DesktopNavbarItem from './DesktopNavbarItem';
@@ -46,13 +46,13 @@ const NavbarItems = styled.ul`
 `;
 
 const DesktopNavbar = ({ intl: { formatMessage } }: WrappedComponentProps) => {
-  const navbarItems = useNavbarItems();
+  const { data: navbarItems } = useNavbarItems();
   const pageSlugById = useCustomPageSlugById();
 
   if (isNilOrError(navbarItems) || isNilOrError(pageSlugById)) return null;
 
   const navbarItemPropsArray = getNavbarItemPropsArray(
-    navbarItems,
+    navbarItems.data,
     pageSlugById
   );
 

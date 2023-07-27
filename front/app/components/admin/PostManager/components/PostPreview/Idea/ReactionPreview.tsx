@@ -85,7 +85,7 @@ const ReactionPreview = ({ ideaId, className }: Props) => {
     return (
       <Container className={className}>
         <Label>
-          <FormattedMessage {...messages.voteCounts} />
+          <FormattedMessage {...messages.reactionCounts} />
         </Label>
         <Block>
           <LikesContainer>

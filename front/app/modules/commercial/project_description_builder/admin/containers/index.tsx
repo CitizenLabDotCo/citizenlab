@@ -22,9 +22,10 @@ import ContentBuilderSettings from 'components/admin/ContentBuilder/Settings';
 
 // hooks
 import useLocale from 'hooks/useLocale';
-import useProjectDescriptionBuilderLayout from '../../hooks/useProjectDescriptionBuilderLayout';
+import useProjectDescriptionBuilderLayout from 'modules/commercial/project_description_builder/api/useProjectDescriptionBuilderLayout';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useProjectById from 'api/projects/useProjectById';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -48,8 +49,9 @@ const ProjectDescriptionBuilderPage = () => {
   });
   const locale = useLocale();
   const locales = useAppConfigurationLocales();
-  const projectDescriptionBuilderLayout =
+  const { data: projectDescriptionBuilderLayout } =
     useProjectDescriptionBuilderLayout(projectId);
+  const { data: project } = useProjectById(projectId);
 
   useEffect(() => {
     if (!isNilOrError(locale)) {
@@ -88,13 +90,12 @@ const ProjectDescriptionBuilderPage = () => {
   };
 
   const getEditorData = () => {
-    if (!isNilOrError(projectDescriptionBuilderLayout) && selectedLocale) {
+    if (projectDescriptionBuilderLayout && selectedLocale) {
       if (draftData && draftData[selectedLocale]) {
         return draftData[selectedLocale];
-      } else {
-        return projectDescriptionBuilderLayout.data.attributes
-          .craftjs_jsonmultiloc[selectedLocale];
       }
+      return projectDescriptionBuilderLayout.data.attributes
+        .craftjs_jsonmultiloc[selectedLocale];
     } else return undefined;
   };
 
@@ -124,6 +125,10 @@ const ProjectDescriptionBuilderPage = () => {
 
     setSelectedLocale(locale);
   };
+
+  if (!project || (project && !project.data.attributes.uses_content_builder)) {
+    return null;
+  }
 
   return (
     <FullscreenContentBuilder

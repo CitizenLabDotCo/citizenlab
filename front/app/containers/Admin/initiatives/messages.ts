@@ -109,8 +109,8 @@ export default defineMessages({
     id: 'app.containers.Admin.initiatives.enableProposals',
     defaultMessage: 'Enable proposals',
   },
-  proposals: {
-    id: 'app.containers.Admin.initiatives.proposals',
-    defaultMessage: 'Proposals',
+  overviewTab: {
+    id: 'app.containers.Admin.initiatives.overviewTab',
+    defaultMessage: 'Overview',
   },
 });

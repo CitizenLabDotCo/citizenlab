@@ -1,3 +1,4 @@
+import { IUserData } from 'api/users/types';
 import { Multiloc } from 'typings';
 
 export function truncate(str: string, length?: number) {
@@ -32,4 +33,8 @@ export const slugRegEx = RegExp(
 
 export function validateSlug(slug: string) {
   return slugRegEx.test(slug);
+}
+
+export function getFullName(user: IUserData) {
+  return `${user.attributes.first_name} ${user.attributes.last_name}`;
 }

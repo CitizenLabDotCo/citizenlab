@@ -50,7 +50,11 @@ const ClaveUnicaEmail = ({ loading, setError, onSubmit }: Props) => {
         return;
       }
 
-      setError('account_creation_failed');
+      if (e.email?.[0]?.error === 'taken') {
+        setError('email_taken_and_user_can_be_verified');
+      } else {
+        setError('account_creation_failed');
+      }
     }
   };
   return (

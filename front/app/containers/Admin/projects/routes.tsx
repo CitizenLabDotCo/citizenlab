@@ -34,6 +34,8 @@ const AdminAllowedTopicsComponent = React.lazy(
   () => import('./project/topics')
 );
 
+const AdminProjectAnalysis = lazy(() => import('./project/analysis'));
+
 export function adminProjectsProjectPath(projectId: string) {
   return `/admin/projects/${projectId}`;
 }
@@ -95,6 +97,14 @@ const createAdminProjectsRoutes = () => {
             element: (
               <PageLoading>
                 <AdminProjectTimelineNewAndEdit />
+              </PageLoading>
+            ),
+          },
+          {
+            path: 'timeline/:id/ideas',
+            element: (
+              <PageLoading>
+                <AdminProjectIdeas />
               </PageLoading>
             ),
           },
@@ -237,6 +247,14 @@ const createAdminProjectsRoutes = () => {
           {
             path: 'allowed-input-topics',
             element: <AdminAllowedTopicsComponent />,
+          },
+          {
+            path: 'analysis/:analysisId',
+            element: (
+              <PageLoading>
+                <AdminProjectAnalysis />
+              </PageLoading>
+            ),
           },
           ...moduleConfiguration.routes['admin.projects.project'],
         ],

@@ -9,7 +9,10 @@ export type QueryParameters = ProjectId & Dates & Resolution;
 
 // Response
 export type Response = {
-  data: [TimeSeriesResponse | [], [InputsCountRow] | []];
+  data: {
+    type: 'analytics';
+    attributes: [TimeSeriesResponse | [], [InputsCountRow] | []];
+  };
 };
 
 type TimeSeriesResponse = TimeSeriesResponseRow[];

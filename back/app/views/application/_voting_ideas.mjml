@@ -1,0 +1,24 @@
+<mj-section padding="0 25px 0">
+  <mj-column>
+    <mj-raw><% ideas.each do |idea| %></mj-raw>
+    <mj-table cellpadding="10" padding-top="20px">
+      <tr style="border:1px solid #ecedee; background-color: #FFFFFF">
+        <td width="96">
+          <a style="font-size: 14px; font-weight: 700; color: #000; text-decoration: none;" href="<%= idea.url %>">
+            <mj-raw><% if idea.images.size > 0 %></mj-raw>
+            <img width="80px" src="<%= idea.images&.first&.versions&.small %>">
+            <mj-raw><% else %></mj-raw>
+            <img width="80px" src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/icons/icon_idea_grey.png">
+            <mj-raw><% end %></mj-raw>
+          </a>
+        </td>
+        <td style="text-align: left; vertical-align: top;">
+          <a style="font-size: 14px; font-weight: 700; color: #000; text-decoration: none;" href="<%= idea.url %>">
+            <%= localize_for_recipient(idea.title_multiloc) %>
+          </a>
+        </td>
+      </tr>
+    </mj-table>
+    <mj-raw><% end %></mj-raw>
+  </mj-column>
+</mj-section>

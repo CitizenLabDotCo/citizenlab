@@ -27,7 +27,7 @@ resource 'Initiatives' do
     parameter :assignee, 'Filter by assignee (user id)', required: false
     parameter :search, 'Filter by searching in title and body', required: false
     parameter :feedback_needed, 'Filter out initiatives that need feedback', required: false
-    parameter :sort, "Either 'new', '-new', 'author_name', '-author_name', 'likes_count', '-likes_count', 'status', '-status', 'random'", required: false
+    parameter :sort, "Either 'trending' (default), 'new', '-new', 'author_name', '-author_name', 'likes_count', '-likes_count', 'status', '-status', 'random'", required: false
 
     example_request 'List all published initiatives (default behaviour)' do
       expect(status).to eq(200)

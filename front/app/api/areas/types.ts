@@ -38,7 +38,6 @@ export interface IArea {
 
 export interface IAreaAdd {
   title_multiloc: Multiloc;
-  description_multiloc: Multiloc;
 }
 
 export interface IAreaUpdate {

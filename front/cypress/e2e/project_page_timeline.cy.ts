@@ -196,6 +196,31 @@ describe('New timeline project', () => {
     cy.get('[data-testid="EventInformation"]').should('exist');
   });
 
+  it('correctly handles phaseNumber URL parameter', () => {
+    const pathWithLocale = `/en/projects/${projectSlug}`;
+
+    cy.location('pathname').should('eq', pathWithLocale);
+
+    // visit first (past phase)
+    cy.visit(`${pathWithLocale}/1`);
+
+    cy.get('.e2e-phases').find('.selectedPhase').contains(phasePastTitle);
+
+    // go to next (current) phase
+    cy.get('.e2e-next-phase').click();
+
+    cy.location('pathname').should('eq', pathWithLocale);
+
+    cy.get('.e2e-phases').find('.selectedPhase').contains(phaseCurrentTitle);
+
+    // go to next (last) phase
+    cy.get('.e2e-next-phase').click();
+
+    cy.location('pathname').should('eq', `${pathWithLocale}/3`);
+
+    cy.get('.e2e-phases').find('.selectedPhase').contains(phaseFutureTitle);
+  });
+
   after(() => {
     apiRemoveProject(projectId);
   });

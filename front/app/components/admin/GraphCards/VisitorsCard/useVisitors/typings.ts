@@ -4,7 +4,10 @@ export type QueryParameters = ProjectId & Dates & Resolution;
 
 // Response
 export type Response = {
-  data: [[TotalsRow] | [], [TotalsRow] | [], TimeSeriesResponse | []];
+  data: {
+    type: 'analytics';
+    attributes: [[TotalsRow] | [], [TotalsRow] | [], TimeSeriesResponse | []];
+  };
 };
 
 interface BaseRow {

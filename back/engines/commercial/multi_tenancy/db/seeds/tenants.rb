@@ -180,10 +180,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            participatory_budgeting: {
-              enabled: true,
-              allowed: true
-            },
             machine_translations: {
               enabled: true,
               allowed: true
@@ -422,6 +418,10 @@ module MultiTenancy
               allowed: true
             },
             seat_based_billing: {
+              enabled: true,
+              allowed: true
+            },
+            public_api_tokens: {
               enabled: true,
               allowed: true
             }

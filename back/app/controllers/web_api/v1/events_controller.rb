@@ -6,6 +6,7 @@ class WebApi::V1::EventsController < ApplicationController
 
   def index
     events = EventsFinder.new(params, scope: policy_scope(Event), current_user: current_user).find_records
+    events = paginate SortByParamsService.new.sort_events(events, params)
     render json: linked_json(events, WebApi::V1::EventSerializer, params: jsonapi_serializer_params)
   end
 

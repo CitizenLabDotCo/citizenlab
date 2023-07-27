@@ -35,7 +35,7 @@ RSpec.describe Factory do
       'ideation' => ParticipationMethod::Ideation,
       'document_annotation' => ParticipationMethod::DocumentAnnotation,
       'survey' => ParticipationMethod::Survey,
-      'budgeting' => ParticipationMethod::Budgeting,
+      'voting' => ParticipationMethod::Voting,
       'poll' => ParticipationMethod::Poll,
       'volunteering' => ParticipationMethod::Volunteering,
       'native_survey' => ParticipationMethod::NativeSurvey

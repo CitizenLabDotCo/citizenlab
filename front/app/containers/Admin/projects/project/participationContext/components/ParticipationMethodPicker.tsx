@@ -1,25 +1,35 @@
 import React from 'react';
+
+// hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+// components
 import {
   IconTooltip,
   Radio,
   Text,
   Box,
 } from '@citizenlab/cl2-component-library';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
-import { LabelHeaderDescription } from './labels';
-import { ParticipationMethodRadio } from './styling';
+import { LabelHeaderDescription } from './shared/labels';
+import { ParticipationMethodRadio } from './shared/styling';
+import Warning from 'components/UI/Warning';
+import Tippy from '@tippyjs/react';
+
+// i18n
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../../messages';
+
+// utils
+import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+import { isNilOrError } from 'utils/helperUtils';
+
+// typings
 import { ParticipationMethod } from 'services/participationContexts';
 import { ApiErrors } from '..';
-import { getMethodConfig } from 'utils/participationMethodUtils';
-import { isNilOrError } from 'utils/helperUtils';
 import { IPhase } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
-import Warning from 'components/UI/Warning';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import Tippy from '@tippyjs/react';
 
 interface Props {
   participation_method: ParticipationMethod;
@@ -47,9 +57,6 @@ const ParticipationMethodPicker = ({
   });
   const documentAnnotationEnabled = useFeatureFlag({
     name: 'konveio_document_annotation',
-  });
-  const participatoryBudgetingEnabled = useFeatureFlag({
-    name: 'participatory_budgeting',
   });
   const pollsEnabled = useFeatureFlag({
     name: 'polls',
@@ -118,29 +125,27 @@ const ParticipationMethodPicker = ({
               />
             }
           />
-          {participatoryBudgetingEnabled && (
-            <ParticipationMethodRadio
-              onChange={handleParticipationMethodOnChange}
-              currentValue={participation_method}
-              value="budgeting"
-              name="participationmethod"
-              id="participationmethod-budgeting"
-              label={
-                <LabelHeaderDescription
-                  header={
-                    <FormattedMessage
-                      {...messages.conductParticipatoryBudgetingText}
-                    />
-                  }
-                  description={
-                    <FormattedMessage
-                      {...messages.conductParticipatoryBudgetingDescriptionText}
-                    />
-                  }
-                />
-              }
-            />
-          )}
+          <ParticipationMethodRadio
+            onChange={handleParticipationMethodOnChange}
+            currentValue={participation_method}
+            value="voting"
+            name="participationmethod"
+            id="participationmethod-voting"
+            label={
+              <LabelHeaderDescription
+                header={
+                  <FormattedMessage
+                    {...messages.conductVotingOrPrioritizationText}
+                  />
+                }
+                description={
+                  <FormattedMessage
+                    {...messages.conductVotingOrPrioritizationDescriptionText}
+                  />
+                }
+              />
+            }
+          />
           {pollsEnabled && (
             <ParticipationMethodRadio
               onChange={handleParticipationMethodOnChange}

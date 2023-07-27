@@ -1,7 +1,5 @@
-import { useState, useEffect } from 'react';
-
 // services
-import { analyticsStream, Query, QuerySchema } from 'services/analyticsFacts';
+import { Query, QuerySchema } from 'api/analytics/types';
 
 // i18n
 import useLocalize from 'hooks/useLocalize';
@@ -22,7 +20,6 @@ import {
 } from './parse';
 
 // utils
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { isEmptyResponse } from './utils';
 import {
   getProjectFilter,
@@ -30,12 +27,8 @@ import {
 } from 'components/admin/GraphCards/_utils/query';
 
 // typings
-import {
-  QueryParameters,
-  PostFeedback,
-  Response,
-  EmptyResponse,
-} from './typings';
+import { QueryParameters, Response } from './typings';
+import useAnalytics from 'api/analytics/useAnalytics';
 
 const query = ({
   projectId,
@@ -82,82 +75,64 @@ export default function usePostsFeedback({
   startAtMoment,
   endAtMoment,
 }: QueryParameters) {
+  const { data: analytics } = useAnalytics<Response>(
+    query({
+      projectId,
+      startAtMoment,
+      endAtMoment,
+    })
+  );
+
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
-  const [postsWithFeedback, setPostsWithFeedback] = useState<
-    PostFeedback | NilOrError
-  >(undefined);
+  if (!analytics || isEmptyResponse(analytics)) {
+    return null;
+  }
+  const [feedbackRows, statusRows] = analytics.data.attributes;
 
-  useEffect(() => {
-    const { observable } = analyticsStream<Response | EmptyResponse>(
-      query({ projectId, startAtMoment, endAtMoment })
-    );
-    const subscription = observable.subscribe(
-      (response: Response | EmptyResponse | NilOrError) => {
-        if (isNilOrError(response)) {
-          setPostsWithFeedback(response);
-          return;
-        }
+  const feedbackRow = feedbackRows[0];
 
-        if (isEmptyResponse(response)) {
-          setPostsWithFeedback(null);
-          return;
-        }
+  const translations = getTranslations(formatMessage);
 
-        const [feedbackRows, statusRows] = response.data;
-        const feedbackRow = feedbackRows[0];
+  const pieData = parsePieData(feedbackRow);
+  const progressBarsData = parseProgressBarsData(feedbackRow, translations);
 
-        const translations = getTranslations(formatMessage);
+  const stackedBarsData = parseStackedBarsData(statusRows);
 
-        const pieData = parsePieData(feedbackRow);
-        const progressBarsData = parseProgressBarsData(
-          feedbackRow,
-          translations
-        );
+  const pieCenterValue = getPieCenterValue(feedbackRow);
 
-        const stackedBarsData = parseStackedBarsData(statusRows);
+  const days = getDays(feedbackRow);
 
-        const pieCenterValue = getPieCenterValue(feedbackRow);
+  const statusColorById = getStatusColorById(statusRows);
+  const stackedBarColumns = statusRows.map((row) => row['dimension_status.id']);
+  const stackedBarPercentages = parseStackedBarsPercentages(statusRows);
 
-        const days = getDays(feedbackRow);
+  const stackedBarsLegendItems = parseStackedBarsLegendItems(
+    statusRows,
+    localize
+  );
 
-        const statusColorById = getStatusColorById(statusRows);
-        const stackedBarColumns = statusRows.map(
-          (row) => row['dimension_status.id']
-        );
-        const stackedBarPercentages = parseStackedBarsPercentages(statusRows);
+  const xlsxData = parseExcelData(
+    feedbackRow,
+    statusRows,
+    stackedBarPercentages,
+    translations,
+    localize
+  );
 
-        const stackedBarsLegendItems = parseStackedBarsLegendItems(
-          statusRows,
-          localize
-        );
-
-        const xlsxData = parseExcelData(
-          feedbackRow,
-          statusRows,
-          stackedBarPercentages,
-          translations,
-          localize
-        );
-
-        setPostsWithFeedback({
-          pieData,
-          progressBarsData,
-          stackedBarsData,
-          pieCenterValue,
-          days,
-          stackedBarColumns,
-          statusColorById,
-          stackedBarPercentages,
-          stackedBarsLegendItems,
-          xlsxData,
-        });
-      }
-    );
-
-    return () => subscription.unsubscribe();
-  }, [projectId, startAtMoment, endAtMoment, formatMessage, localize]);
+  const postsWithFeedback = {
+    pieData,
+    progressBarsData,
+    stackedBarsData,
+    pieCenterValue,
+    days,
+    stackedBarColumns,
+    statusColorById,
+    stackedBarPercentages,
+    stackedBarsLegendItems,
+    xlsxData,
+  };
 
   return postsWithFeedback;
 }

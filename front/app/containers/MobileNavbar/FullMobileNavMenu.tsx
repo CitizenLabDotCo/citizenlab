@@ -3,8 +3,8 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // hooks
-import useNavbarItems from 'hooks/useNavbarItems';
-import useCustomPageSlugById from 'hooks/useCustomPageSlugById';
+import useNavbarItems from 'api/navbar/useNavbarItems';
+import useCustomPageSlugById from 'api/custom_pages/useCustomPageSlugById';
 import useLocalize from 'hooks/useLocalize';
 
 // components
@@ -127,14 +127,14 @@ const FullMobileNavMenu = ({
   isFullMenuOpened,
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
-  const navbarItems = useNavbarItems();
+  const { data: navbarItems } = useNavbarItems();
   const pageSlugById = useCustomPageSlugById();
   const localize = useLocalize();
 
   if (isNilOrError(navbarItems) || isNilOrError(pageSlugById)) return null;
 
   const navbarItemPropsArray = getNavbarItemPropsArray(
-    navbarItems,
+    navbarItems.data,
     pageSlugById
   ).filter(({ linkTo }) => linkTo !== '/projects'); // /projects is already in the 'outer' fixed menu
 

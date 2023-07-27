@@ -79,7 +79,37 @@ export default defineMessages({
     defaultMessage: 'View project',
   },
   // edit - participationContext -----------------------------------------------
-  noVotingLimitErrorMessage: {
+  optionAnalysisLinkText: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.optionAnalysisLinkText',
+    defaultMessage: 'Option analysis overview',
+  },
+  learnMoreVotingMethod: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.learnMoreVotingMethod',
+    defaultMessage:
+      'Learn more about when to use <b> {voteTypeDescription} </b> in our {optionAnalysisArticleLink}.',
+  },
+  multipleVotesPerOption: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.multipleVotesPerOption2',
+    defaultMessage: 'multiple votes per option',
+  },
+  singleVotePerOption: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.singleVotePerOption2',
+    defaultMessage: 'single vote per option',
+  },
+  budgetAllocation: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.budgetAllocation2',
+    defaultMessage: 'budget allocation',
+  },
+  maxVotesPerOptionErrorText: {
+    id: 'app.containers.AdminPage.ProjectEdit.maxVotesPerOptionErrorText',
+    defaultMessage:
+      'Maximum number of votes per option must be less than or equal to total number of votes',
+  },
+  voteTermError: {
+    id: 'app.containers.AdminPage.ProjectEdit.voteTermError',
+    defaultMessage: 'Vote terms must be specified for all locales',
+  },
+  noReactingLimitErrorMessage: {
     id: 'app.containers.AdminPage.ProjectEdit.noVotingLimitErrorMessage',
     defaultMessage: 'Not a valid number',
   },
@@ -118,9 +148,9 @@ export default defineMessages({
     defaultMessage: 'Collect input and feedback',
   },
   inputAndFeedbackDescription: {
-    id: 'app.containers.AdminPage.ProjectEdit.inputAndFeedbackDescription',
+    id: 'app.containers.AdminPage.ProjectEdit.inputAndFeedbackDescription2',
     defaultMessage:
-      'Create or collect inputs, votes and/or comments. Pick between different types of inputs: idea collection, option analysis, question and answer, issue identification and more.',
+      'Create or collect inputs, reactions and/or comments. Pick between different types of inputs: idea collection, option analysis, question and answer, issue identification and more.',
   },
   createExternalSurveyText: {
     id: 'app.containers.AdminPage.ProjectEdit.createExternalSurveyText',
@@ -131,14 +161,14 @@ export default defineMessages({
     defaultMessage:
       'Embed a Typeform, Google Form, Enalyzer, SurveyXact, Qualtrics, SmartSurvey, Snap Survey or Microsoft Forms survey.',
   },
-  conductParticipatoryBudgetingText: {
-    id: 'app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgetingText',
-    defaultMessage: 'Conduct a budget allocation exercise',
+  conductVotingOrPrioritizationText: {
+    id: 'app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationText',
+    defaultMessage: 'Conduct a voting or prioritization exercise',
   },
-  conductParticipatoryBudgetingDescriptionText: {
-    id: 'app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgetingDescriptionText',
+  conductVotingOrPrioritizationDescriptionText: {
+    id: 'app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationDescriptionText2',
     defaultMessage:
-      'Assign a budget to projects and ask participants to select their preferred projects that fit within a total budget.',
+      'Select a voting method, and have users prioritize between a few different options.',
   },
   createNativeSurvey: {
     id: 'app.containers.AdminPage.ProjectEdit.createNativeSurvey',
@@ -199,51 +229,66 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.inputCommentingEnabled',
     defaultMessage: 'Commenting on inputs',
   },
-  inputVotingEnabled: {
-    id: 'app.containers.AdminPage.ProjectEdit.inputVotingEnabled',
-    defaultMessage: 'Voting on inputs',
+  inputReactingEnabled: {
+    id: 'app.containers.AdminPage.ProjectEdit.inputReactingEnabled',
+    defaultMessage: 'Reacting to inputs',
   },
-  upvotingMethodTitle: {
-    id: 'app.containers.AdminPage.ProjectEdit.upvotingMethodTitle',
-    defaultMessage: 'Number of upvotes per participant',
+  likingMethodTitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.likingMethodTitle',
+    defaultMessage: 'Number of likes per participant',
   },
-  downvotingMethodTitle: {
-    id: 'app.containers.AdminPage.ProjectEdit.downvotingMethodTitle',
-    defaultMessage: 'Number of downvotes per participant',
+  dislikingMethodTitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.dislikingMethodTitle',
+    defaultMessage: 'Number of dislikes per participant',
   },
-  maxUpvotes: {
-    id: 'app.containers.AdminPage.ProjectEdit.maxUpvotes',
-    defaultMessage: 'Maximum upvotes',
+  maxLikes: {
+    id: 'app.containers.AdminPage.ProjectEdit.maxLikes',
+    defaultMessage: 'Maximum likes',
   },
-  maxDownvotes: {
-    id: 'app.containers.AdminPage.ProjectEdit.maxDownvotes',
-    defaultMessage: 'Maximum downvotes',
+  maxDislikes: {
+    id: 'app.containers.AdminPage.ProjectEdit.maxDislikes',
+    defaultMessage: 'Maximum dislikes',
   },
-  downvotingPosts: {
-    id: 'app.containers.AdminPage.ProjectEdit.downvotingPosts',
-    defaultMessage: 'Enable downvoting',
+  dislikingPosts: {
+    id: 'app.containers.AdminPage.ProjectEdit.dislikingPosts',
+    defaultMessage: 'Enable disliking',
   },
-  disableDownvotingTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.disableDownvotingTooltip',
+  disableDislikingTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.disableDislikingTooltip',
     defaultMessage:
-      'This will disable downvoting, but upvoting will still be enabled. You can disable voting completely in the Actions section of this tab.',
+      'This will disable disliking, but liking will still be enabled. You can disable reacting completely in the Actions section of this tab.',
   },
-  downvotingDisabled: {
+  dislikingDisabled: {
     id: 'app.containers.AdminPage.ProjectEdit.downvotingDisabled',
     defaultMessage: 'Disabled',
   },
-  downvotingEnabled: {
+  dislikingEnabled: {
     id: 'app.containers.AdminPage.ProjectEdit.downvotingEnabled',
     defaultMessage: 'Enabled',
   },
-  phasePermissions: {
-    id: 'app.containers.AdminPage.ProjectEdit.phasePermissions',
-    defaultMessage: 'Enabled actions',
+  enabledActionsForUsers: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.enabledActionsForUsers',
+    defaultMessage: 'Actions for users',
   },
-  phasePermissionsTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.phasePermissionsTooltip',
-    defaultMessage:
-      'Select what participative action users can take during this ideation phase.',
+  enabledActionsForUsersDescription: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.enabledActionsForUsersDescription',
+    defaultMessage: 'Select what additional actions users can take.',
+  },
+  defaultViewOptions: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.defaultViewOptions',
+    defaultMessage: 'Default view of options',
+  },
+  optionsToVoteOn: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.optionsToVoteOn',
+    defaultMessage: 'Options to vote on',
+  },
+  commentingBias: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.commentingBias',
+    defaultMessage: 'Allowing users to comment can bias the voting process.',
+  },
+  enabledActionsTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.enabledActionsTooltip2',
+    defaultMessage: 'Select what participative actions users can take.',
   },
   unlimited: {
     id: 'app.containers.AdminPage.ProjectEdit.unlimited',
@@ -305,8 +350,8 @@ export default defineMessages({
     defaultMessage: 'Random',
   },
   popularSortingMethod: {
-    id: 'app.containers.AdminPage.ProjectEdit.popularSortingMethod',
-    defaultMessage: 'Most voted',
+    id: 'app.containers.AdminPage.ProjectEdit.popularSortingMethod2',
+    defaultMessage: 'Most reactions',
   },
   newestSortingMethod: {
     id: 'app.containers.AdminPage.ProjectEdit.newestFirstSortingMethod',
@@ -458,14 +503,32 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel',
     defaultMessage: 'What should an input be called?',
   },
+  minTotalVotesLargerThanMaxError: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.minTotalVotesLargerThanMaxError',
+    defaultMessage:
+      "The minimum number of votes can't be larger than the maximum number",
+  },
   minBudgetLargerThanMaxError: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.minBudgetLargerThanMaxError',
     defaultMessage:
       "The minimum budget can't be larger than the maximum budget",
   },
+  maxVotesPerOptionError: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.maxVotesPerOptionError',
+    defaultMessage:
+      'Maximum number of votes per option must be less than or equal to total number of votes',
+  },
+  minVotesRequired: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.minVotesRequired',
+    defaultMessage: 'A minimum number of votes is required',
+  },
   minBudgetRequired: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.minBudgetRequired',
     defaultMessage: 'A minimum budget is required',
+  },
+  maxVotesRequired: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.maxVotesRequired',
+    defaultMessage: 'A maximum number of votes is required',
   },
   maxBudgetRequired: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.maxBudgetRequired',
@@ -503,5 +566,13 @@ export default defineMessages({
   konveioSupportArticle: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.konveioSupportArticle',
     defaultMessage: 'support article',
+  },
+  optionsToVoteOnDescription: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescription2',
+    defaultMessage: 'Configure the voting options in the {optionsPageLink}.',
+  },
+  optionsPageText: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.optionsPageText2',
+    defaultMessage: 'Input Manager tab',
   },
 });

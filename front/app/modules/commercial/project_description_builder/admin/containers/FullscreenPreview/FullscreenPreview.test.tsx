@@ -21,9 +21,11 @@ let mockProjectDescriptionBuilderLayoutData:
   | Error = DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA;
 
 jest.mock(
-  'modules/commercial/project_description_builder/hooks/useProjectDescriptionBuilderLayout',
-  () => {
-    return jest.fn(() => mockProjectDescriptionBuilderLayoutData);
+  'modules/commercial/project_description_builder/api/useProjectDescriptionBuilderLayout',
+  () => () => {
+    return {
+      data: mockProjectDescriptionBuilderLayoutData,
+    };
   }
 );
 

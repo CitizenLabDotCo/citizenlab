@@ -1,14 +1,10 @@
-import React from 'react';
-import { Subscription } from 'rxjs';
+import React, { useRef } from 'react';
 import { isEmpty } from 'lodash-es';
 
 // intl
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
 
 // typings
-import { IStreamParams, IStream } from 'utils/streams';
-import { IUsersByTime } from 'services/stats';
+import { IActiveUsersByTime } from 'api/active_users_by_time/types';
 
 // components
 import { IconTooltip, Text } from '@citizenlab/cl2-component-library';
@@ -26,12 +22,7 @@ import { IResolution } from 'components/admin/ResolutionControl';
 // utils
 import { toThreeLetterMonth, toFullMonth } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
-
-type Row = { name: string; code: string; value: number };
-
-type State = {
-  serie: Row[] | null;
-};
+import useActiveUsersByTime from 'api/active_users_by_time/useActiveUsersByTime';
 
 type Props = {
   className?: string;
@@ -44,7 +35,6 @@ type Props = {
   currentProjectFilter?: string | undefined;
   currentGroupFilter?: string | undefined;
   currentTopicFilter?: string | undefined;
-  stream: (streamParams?: IStreamParams | null) => IStream<IUsersByTime>;
   infoMessage?: string;
   currentProjectFilterLabel?: string | undefined;
   currentGroupFilterLabel?: string | undefined;
@@ -52,177 +42,90 @@ type Props = {
   xlsxEndpoint: string;
 };
 
-class BarChartActiveUsersByTime extends React.PureComponent<
-  Props & WrappedComponentProps,
-  State
-> {
-  subscription: Subscription;
-  currentChart: React.RefObject<any>;
+const BarChartActiveUsersByTime = (props: Props) => {
+  const currentChart = useRef();
+  const { data: activeUsersByTime } = useActiveUsersByTime({
+    start_at: props.startAt,
+    end_at: props.endAt,
+    project: props.currentProjectFilter,
+    group: props.currentGroupFilter,
+    topic: props.currentTopicFilter,
+    interval: props.resolution,
+  });
 
-  constructor(props: Props & WrappedComponentProps) {
-    super(props);
-    this.state = {
-      serie: null,
-    };
+  const convertToGraphFormat = (data: IActiveUsersByTime) => {
+    const { graphUnit } = props;
 
-    this.currentChart = React.createRef();
-  }
-
-  componentDidMount() {
-    const {
-      startAt,
-      endAt,
-      resolution,
-      currentGroupFilter,
-      currentTopicFilter,
-      currentProjectFilter,
-    } = this.props;
-    this.resubscribe(
-      startAt,
-      endAt,
-      resolution,
-      currentProjectFilter,
-      currentGroupFilter,
-      currentTopicFilter
-    );
-  }
-
-  componentDidUpdate(prevProps: Props) {
-    const {
-      startAt,
-      endAt,
-      resolution,
-      currentGroupFilter,
-      currentTopicFilter,
-      currentProjectFilter,
-    } = this.props;
-
-    if (
-      startAt !== prevProps.startAt ||
-      endAt !== prevProps.endAt ||
-      resolution !== prevProps.resolution ||
-      currentGroupFilter !== prevProps.currentGroupFilter ||
-      currentTopicFilter !== prevProps.currentTopicFilter ||
-      currentProjectFilter !== prevProps.currentProjectFilter
-    ) {
-      this.resubscribe(
-        startAt,
-        endAt,
-        resolution,
-        currentProjectFilter,
-        currentGroupFilter,
-        currentTopicFilter
+    if (!isEmpty(data.data.attributes.series[graphUnit])) {
+      return Object.entries(data.data.attributes.series[graphUnit]).map(
+        ([key, value]) => ({
+          value: value as number,
+          name: key,
+          code: key,
+        })
       );
-    }
-  }
-
-  componentWillUnmount() {
-    this.subscription.unsubscribe();
-  }
-
-  convertToGraphFormat = (data: IUsersByTime) => {
-    const { graphUnit } = this.props;
-
-    if (!isEmpty(data.series[graphUnit])) {
-      return Object.entries(data.series[graphUnit]).map(([key, value]) => ({
-        value: value as number,
-        name: key,
-        code: key,
-      }));
     }
 
     return null;
   };
 
-  resubscribe(
-    startAt: string | null | undefined,
-    endAt: string | null,
-    resolution: IResolution,
-    currentProjectFilter: string | undefined,
-    currentGroupFilter: string | undefined,
-    currentTopicFilter: string | undefined
-  ) {
-    const { stream } = this.props;
-
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-
-    this.subscription = stream({
-      queryParameters: {
-        start_at: startAt,
-        end_at: endAt,
-        interval: resolution,
-        project: currentProjectFilter,
-        group: currentGroupFilter,
-        topic: currentTopicFilter,
-      },
-    }).observable.subscribe((serie) => {
-      const convertedSerie = this.convertToGraphFormat(serie);
-      this.setState({ serie: convertedSerie });
-    });
-  }
-
-  formatTick = (date: string) => {
-    return toThreeLetterMonth(date, this.props.resolution);
+  const formatTick = (date: string) => {
+    return toThreeLetterMonth(date, props.resolution);
   };
 
-  formatLabel = (date: string) => {
-    return toFullMonth(date, this.props.resolution);
+  const formatLabel = (date: string) => {
+    return toFullMonth(date, props.resolution);
   };
 
-  render() {
-    const { className, graphTitle, infoMessage } = this.props;
-    const { serie } = this.state;
+  const serie = activeUsersByTime && convertToGraphFormat(activeUsersByTime);
 
-    const noData =
-      isNilOrError(serie) ||
-      serie.every((item) => isEmpty(item)) ||
-      serie.length <= 0;
+  const { className, graphTitle, infoMessage } = props;
 
-    return (
-      <GraphCard className={className}>
-        <GraphCardInnerClean>
-          <GraphCardHeader>
-            <GraphCardTitle>
-              {graphTitle}
-              {infoMessage && (
-                <IconTooltip
-                  content={
-                    <Text m="0px" mb="0px" fontSize="s">
-                      {infoMessage}
-                    </Text>
-                  }
-                  ml="8px"
-                  transform="translate(0,-1)"
-                  theme="light"
-                />
-              )}
-            </GraphCardTitle>
-            {!noData && (
-              <ReportExportMenu
-                svgNode={this.currentChart}
-                name={graphTitle}
-                {...this.props}
+  const noData =
+    isNilOrError(serie) ||
+    serie.every((item) => isEmpty(item)) ||
+    serie.length <= 0;
+
+  return (
+    <GraphCard className={className}>
+      <GraphCardInnerClean>
+        <GraphCardHeader>
+          <GraphCardTitle>
+            {graphTitle}
+            {infoMessage && (
+              <IconTooltip
+                content={
+                  <Text m="0px" mb="0px" fontSize="s">
+                    {infoMessage}
+                  </Text>
+                }
+                ml="8px"
+                transform="translate(0,-1)"
+                theme="light"
               />
             )}
-          </GraphCardHeader>
-          <BarChart
-            data={serie}
-            mapping={{
-              category: 'name',
-              length: 'value',
-            }}
-            innerRef={this.currentChart}
-            xaxis={{ tickFormatter: this.formatTick }}
-            tooltip={{ labelFormatter: this.formatLabel }}
-          />
-        </GraphCardInnerClean>
-      </GraphCard>
-    );
-  }
-}
+          </GraphCardTitle>
+          {!noData && (
+            <ReportExportMenu
+              svgNode={currentChart}
+              name={graphTitle}
+              {...props}
+            />
+          )}
+        </GraphCardHeader>
+        <BarChart
+          data={serie}
+          mapping={{
+            category: 'name',
+            length: 'value',
+          }}
+          innerRef={currentChart}
+          xaxis={{ tickFormatter: formatTick }}
+          tooltip={{ labelFormatter: formatLabel }}
+        />
+      </GraphCardInnerClean>
+    </GraphCard>
+  );
+};
 
-export default injectIntl<Props & WrappedComponentProps>(
-  BarChartActiveUsersByTime
-);
+export default BarChartActiveUsersByTime;
