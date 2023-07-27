@@ -29,7 +29,7 @@ const EventDescription = ({ event }: Props) => {
         />
 
         {eventFiles && eventFiles.data.length > 0 && (
-          <Box mt="28px" mb="25px" maxWidth="450px">
+          <Box mt="28px" mb="24px" maxWidth="452px">
             <FileAttachments files={eventFiles.data} />
           </Box>
         )}
