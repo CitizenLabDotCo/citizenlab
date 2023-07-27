@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_25_121109) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_26_160134) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -416,6 +416,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_25_121109) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.index ["project_id"], name: "index_events_on_project_id"
+  end
+
+  create_table "events_attendances", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "attendee_id", null: false
+    t.uuid "event_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["attendee_id"], name: "index_events_attendances_on_attendee_id"
+    t.index ["event_id"], name: "index_events_attendances_on_event_id"
   end
 
   create_table "experiments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1500,6 +1509,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_25_121109) do
   add_foreign_key "email_campaigns_examples", "users", column: "recipient_id"
   add_foreign_key "event_files", "events"
   add_foreign_key "events", "projects"
+  add_foreign_key "events_attendances", "events"
+  add_foreign_key "events_attendances", "users", column: "attendee_id"
   add_foreign_key "groups_permissions", "groups"
   add_foreign_key "groups_permissions", "permissions"
   add_foreign_key "groups_projects", "groups"
