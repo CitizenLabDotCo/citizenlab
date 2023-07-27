@@ -1524,7 +1524,6 @@
   "app.containers.eventspage.noUpcomingOrOngoingEvents": "Inga kommande eller pågående evenemang är för närvarande schemalagda.",
   "app.containers.eventspage.pastEvents": "Tidigare evenemang",
   "app.containers.eventspage.upcomingAndOngoingEvents": "Kommande och pågående evenemang",
-  "app.containers.eventsshowpage.attend": "Deltagande",
   "app.containers.footer.accessibility-statement": "Tillgänglighetsförklaring",
   "app.containers.footer.ariaLabel": "Sekundär",
   "app.containers.footer.cookie-policy": "Policy webbkakor",
