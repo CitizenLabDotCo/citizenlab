@@ -24,6 +24,7 @@ import RenameTagModal from './RenameTagModal';
 import Tag from './Tag';
 import styled from 'styled-components';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { handleArraySearchParam } from '../util';
 
 const TagContainer = styled.div`
   display: flex;
@@ -91,10 +92,7 @@ const Tags = () => {
     updateSearchParams({ tag_ids: [id] });
   };
 
-  const selectedTags = search.get('tag_ids')
-    ? JSON.parse(search.get('tag_ids') as string)
-    : undefined;
-
+  const selectedTags = handleArraySearchParam(search, 'tag_ids');
   return (
     <Box>
       <Box>

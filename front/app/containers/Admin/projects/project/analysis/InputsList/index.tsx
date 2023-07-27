@@ -5,6 +5,7 @@ import { useSearchParams, useParams } from 'react-router-dom';
 import Button from 'components/UI/Button';
 import { pick } from 'lodash-es';
 import InputListItem from './InputListItem';
+import { handleArraySearchParam } from '../util';
 
 interface Props {
   onSelectInput: (inputId: string) => void;
@@ -28,9 +29,11 @@ const InputsList = ({ onSelectInput, selectedInputId }: Props) => {
     'comments_to',
   ]);
 
+  const selectedTags = handleArraySearchParam(searchParams, 'tag_ids');
+
   const { data, fetchNextPage, hasNextPage } = useInfiniteAnalysisInputs({
     analysisId,
-    queryParams: filters,
+    queryParams: { ...filters, tag_ids: selectedTags },
   });
 
   const inputs = data?.pages.map((page) => page.data).flat();
