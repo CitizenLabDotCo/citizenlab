@@ -2,6 +2,9 @@ import { Box, colors, Title, Button } from '@citizenlab/cl2-component-library';
 import { TagType, tagTypes } from 'api/analysis_tags/types';
 import React from 'react';
 
+import useLaunchAnalysisAutotagging from 'api/analysis_background_tasks/useLaunchAnalysisAutotagging';
+import { useParams } from 'react-router-dom';
+
 const TagTypeColorMap: Record<
   TagType,
   {
@@ -35,7 +38,9 @@ const TagTypeColorMap: Record<
   },
 };
 
-const AutotaggingModal = () => {
+const AutotaggingModal = ({ onCloseModal }: { onCloseModal: () => void }) => {
+  const { analysisId } = useParams() as { analysisId: string };
+  const { mutate: launchTagging, isLoading } = useLaunchAnalysisAutotagging();
   return (
     <Box>
       <Title>Autotagging modal</Title>
@@ -46,6 +51,17 @@ const AutotaggingModal = () => {
               <Button
                 bgColor={TagTypeColorMap[tagType]?.background}
                 textColor={TagTypeColorMap[tagType]?.text}
+                processing={isLoading}
+                onClick={() =>
+                  launchTagging(
+                    { analysisId, autoTaggingMethod: tagType },
+                    {
+                      onSuccess: () => {
+                        onCloseModal();
+                      },
+                    }
+                  )
+                }
               >
                 {tagType}
               </Button>

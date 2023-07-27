@@ -187,7 +187,9 @@ const Tags = () => {
         opened={autotaggingModalIsOpened}
         close={() => setAutotaggingModalIsOpened(false)}
       >
-        <AutotaggingModal />
+        <AutotaggingModal
+          onCloseModal={() => setAutotaggingModalIsOpened(false)}
+        />
       </Modal>
     </Box>
   );
