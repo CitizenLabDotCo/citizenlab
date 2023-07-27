@@ -6,6 +6,7 @@ import Divider from 'components/admin/Divider';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import Taggings from '../Taggings';
+import Tasks from './Tasks';
 
 interface Props {
   inputId: string;
@@ -21,6 +22,7 @@ const InputListItem = ({ inputId }: Props) => {
 
   return (
     <Box bg={colors.white} w="100%" p="24px">
+      <Tasks />
       <Title variant="h3">
         <T value={input.data.attributes.title_multiloc} />
       </Title>

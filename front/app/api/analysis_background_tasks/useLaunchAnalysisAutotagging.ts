@@ -15,7 +15,7 @@ const launchAutoTagging = async ({
   autoTaggingMethod,
 }: IAddAnalysis) =>
   fetcher<IBackgroundTask>({
-    path: `/analyses/${analysisId}/auto_tagging`,
+    path: `/analyses/${analysisId}/auto_taggings`,
     action: 'post',
     body: {
       auto_tagging: {

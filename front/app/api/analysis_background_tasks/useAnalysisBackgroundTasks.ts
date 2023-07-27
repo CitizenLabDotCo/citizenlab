@@ -21,6 +21,7 @@ const useAnalysisBackgroundTasks = (analysisId: string) => {
     queryKey: backgroundTasksKeys.list({ analysisId }),
     queryFn: () => fetchBackgroundTasks(analysisId),
     refetchInterval: 5000,
+    keepPreviousData: false,
   });
 };
 
