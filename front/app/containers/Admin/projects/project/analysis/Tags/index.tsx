@@ -34,11 +34,9 @@ const TagContainer = styled.div`
   border: 1px solid transparent;
   border-radius: ${stylingConsts.borderRadius};
   &:hover {
-    background-color: ${colors.grey300};
     border: 1px solid ${colors.borderLight};
   }
   &.selected {
-    background-color: ${colors.grey300};
     border: 1px solid ${colors.borderLight};
   }
 `;
