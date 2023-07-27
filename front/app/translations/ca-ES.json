@@ -1524,7 +1524,6 @@
   "app.containers.eventspage.noUpcomingOrOngoingEvents": "Actualment no hi ha esdeveniments propers o en curs programats.",
   "app.containers.eventspage.pastEvents": "Esdeveniments passats",
   "app.containers.eventspage.upcomingAndOngoingEvents": "Esdeveniments propers i en curs",
-  "app.containers.eventsshowpage.attend": "assistir",
   "app.containers.footer.accessibility-statement": "Declaració d'accessibilitat",
   "app.containers.footer.ariaLabel": "Secundària",
   "app.containers.footer.cookie-policy": "Política de galetes",
