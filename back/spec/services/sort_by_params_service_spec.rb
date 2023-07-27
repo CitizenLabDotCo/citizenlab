@@ -105,19 +105,19 @@ describe SortByParamsService do
 
     describe 'trending' do
       let(:sort) { 'trending' }
+      let(:expected_record_ids) { [ideas[0].id, ideas[2].id, ideas[1].id] }
 
       it 'returns the ids in trending order' do
-        allow_any_instance_of(TrendingIdeaService).to receive(:sort_trending).with(ideas).and_return ideas
-        expect(result_record_ids).to eq ideas.map(&:id)
+        expect(result_record_ids).to eq expected_record_ids
       end
     end
 
     describe '-trending' do
       let(:sort) { '-trending' }
+      let(:expected_record_ids) { [ideas[1].id, ideas[2].id, ideas[0].id] }
 
       it 'returns the ids in reverse trending order' do
-        allow_any_instance_of(TrendingIdeaService).to receive(:sort_trending).with(ideas).and_return ideas
-        expect(result_record_ids).to eq ideas.map(&:id).reverse
+        expect(result_record_ids).to eq expected_record_ids
       end
     end
 
