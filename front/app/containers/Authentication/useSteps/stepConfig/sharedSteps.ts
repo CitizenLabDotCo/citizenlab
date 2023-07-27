@@ -113,6 +113,21 @@ export const sharedSteps = (
           token: null,
           prefilledBuiltInFields: null,
         });
+        const {
+          context: { action },
+        } = getAuthenticationData();
+
+        if (action === 'following') {
+          const authUser = await getAuthUser();
+
+          if (authUser) {
+            setCurrentStep('light-flow:email-confirmation');
+            return;
+          }
+
+          setCurrentStep('light-flow:email');
+          return;
+        }
 
         const { requirements } = await getRequirements();
 
@@ -170,22 +185,6 @@ export const sharedSteps = (
             : setCurrentStep('sign-up:email-password');
           return;
         }
-      },
-
-      TRIGGER_FOLLOW_FLOW: async () => {
-        updateState({
-          email: null,
-          token: null,
-          prefilledBuiltInFields: null,
-        });
-        const authUser = await getAuthUser();
-
-        if (authUser) {
-          setCurrentStep('light-flow:email-confirmation');
-          return;
-        }
-
-        setCurrentStep('light-flow:email');
       },
 
       TRIGGER_VERIFICATION_ONLY: () => {
