@@ -1524,7 +1524,6 @@
   "app.containers.eventspage.noUpcomingOrOngoingEvents": "Şu an için, planlanmış yaklaşan veya devam eden bir etkinlik yok.",
   "app.containers.eventspage.pastEvents": "Geçmiş etkinlikler",
   "app.containers.eventspage.upcomingAndOngoingEvents": "Yaklaşan ve devam eden etkinlikler",
-  "app.containers.eventsshowpage.attend": "Katılmak",
   "app.containers.footer.accessibility-statement": "Erişilebilirlik beyanı",
   "app.containers.footer.ariaLabel": "İkincil",
   "app.containers.footer.cookie-policy": "Çerez politikası",
