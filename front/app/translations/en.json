@@ -989,7 +989,7 @@
   "app.containers.InitiativesShow.VoteControl.a11y_xVotesOfRequiredY": "{xVotes} out of {votingThreshold} required votes",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanation": "{answeredStatusExplanationBold} Voting remains open.",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanationBold": "{orgName} received the proposal and gave an official answer.",
-  "app.containers.InitiativesShow.VoteControl.reviewPendingStatusExplanationBold": "The city received this proposal and will review it.",
+  "app.containers.InitiativesShow.VoteControl.reviewPendingStatusExplanationBold": "This proposal has been submitted for review.",
   "app.containers.InitiativesShow.VoteControl.reviewPendingStatusExplanationSentenceThree": "The proposal can't be shared until it's reviewed.",
   "app.containers.InitiativesShow.VoteControl.reviewPendingStatusExplanationSentenceTwo": "You will receive an email once it's reviewed.",
   "app.containers.InitiativesShow.VoteControl.reviewRejectedStatusExplanationBold": "The city rejected this proposal.",
