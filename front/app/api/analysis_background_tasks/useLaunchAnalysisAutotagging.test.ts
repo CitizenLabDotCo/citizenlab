@@ -7,7 +7,7 @@ import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-const apiPath = '*analyses/:analysisId/auto_tagging';
+const apiPath = '*analyses/:analysisId/auto_taggings';
 
 const server = setupServer(
   rest.post(apiPath, (_req, res, ctx) => {
@@ -50,6 +50,13 @@ describe('useLaunchAnalysisAutotagging', () => {
         wrapper: createQueryClientWrapper(),
       }
     );
+
+    act(() => {
+      result.current.mutate({
+        analysisId: 'id',
+        autoTaggingMethod: 'nlp_topic',
+      });
+    });
 
     await waitFor(() => expect(result.current.isError).toBe(true));
     expect(result.current.error).toBeDefined();
