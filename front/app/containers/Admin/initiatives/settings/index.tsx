@@ -29,6 +29,9 @@ import PageBody from './PageBody';
 import SubmitButton from './SubmitButton';
 import { AnonymousPostingToggle } from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
 import { Box, Title } from '@citizenlab/cl2-component-library';
+import RequireReviewToggle from './RequireReviewToggle';
+import RequireCosponsorsToggle from './RequireCosponsorsToggle';
+import CosponsorsNumber from './CosponsorsNumber';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -40,7 +43,6 @@ import { colors } from 'utils/styleUtils';
 
 // typings
 import { Multiloc } from 'typings';
-import RequireReviewToggle from './RequireReviewToggle';
 
 export const StyledWarning = styled(Warning)`
   margin-bottom: 7px;
@@ -246,6 +248,17 @@ const InitiativesSettingsPage = () => {
           <RequireReviewToggle
             value={localProposalsSettings.require_review}
             onChange={updateProposalsSetting('require_review')}
+          />
+
+          <RequireCosponsorsToggle
+            value={localProposalsSettings.require_cosponsors}
+            onChange={updateProposalsSetting('require_cosponsors')}
+          />
+
+          <CosponsorsNumber
+            value={localProposalsSettings.cosponsors_number}
+            onChange={updateProposalsSetting('cosponsors_number')}
+            disabled={!localProposalsSettings.require_cosponsors}
           />
 
           <ReactingThreshold

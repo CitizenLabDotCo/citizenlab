@@ -28,7 +28,7 @@ export default defineMessages({
   },
   warningTresholdSettings: {
     id: 'app.containers.Admin.initiatives.warningTresholdSettings',
-    defaultMessage: 'Changing this will impact all active initiatives',
+    defaultMessage: 'Changing this will impact all active proposals',
   },
   requireReviewLabel: {
     id: 'app.containers.Admin.initiatives.requireReviewLabel',
@@ -37,6 +37,23 @@ export default defineMessages({
   requireReviewInfo: {
     id: 'app.containers.Admin.initiatives.requireReviewInfo',
     defaultMessage: "Proposals won't be visible until an admin reviews them",
+  },
+  requireCosponsorsLabel: {
+    id: 'app.containers.Admin.initiatives.requireCosponsorsLabel',
+    defaultMessage: 'Require cosponsors per proposal',
+  },
+  requireCosponsorsInfo: {
+    id: 'app.containers.Admin.initiatives.requireCosponsorsInfo',
+    defaultMessage:
+      "Proposals won't be visible until a number of cosponsors has been reached",
+  },
+  cosponsorsNumberLabel: {
+    id: 'app.containers.Admin.initiatives.cosponsorsNumberLabel',
+    defaultMessage: 'Number of cosponsors',
+  },
+  cosponsorsNumberMinError: {
+    id: 'app.containers.Admin.initiatives.cosponsorsNumberMinError',
+    defaultMessage: 'Number of cosponsors needs to be at least 1',
   },
   fieldVotingThreshold: {
     id: 'app.containers.Admin.initiatives.fieldVotingThreshold',
