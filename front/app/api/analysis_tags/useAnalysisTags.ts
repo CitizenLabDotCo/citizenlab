@@ -11,11 +11,11 @@ const fetchTags = ({ analysisId }: ITagParams) => {
   });
 };
 
-const AnalysisuseTags = (queryParams: ITagParams) => {
+const useAnalysisTags = (queryParams: ITagParams) => {
   return useQuery<ITags, CLErrors, ITags, TagsKeys>({
     queryKey: tagsKeys.list(queryParams),
     queryFn: () => fetchTags(queryParams),
   });
 };
 
-export default AnalysisuseTags;
+export default useAnalysisTags;
