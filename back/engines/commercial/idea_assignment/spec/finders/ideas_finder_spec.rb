@@ -9,7 +9,7 @@ describe IdeasFinder do
   let(:result_record_ids) { result.find_records.pluck(:id) }
   let(:assignee) { create(:admin) }
   let!(:unassigned_ideas) { create_list(:idea, 2) }
-  let!(:assigned_ideas) { create_list(:assigned_idea, 3, assignee: assignee) }
+  let!(:assigned_ideas) { create_list(:idea, 3, assignee: assignee) }
 
   describe '#assignee_condition' do
     describe 'filtering on an assignee ID' do
