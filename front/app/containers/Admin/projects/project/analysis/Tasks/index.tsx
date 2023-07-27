@@ -6,7 +6,7 @@ const Tasks = () => {
   const { analysisId } = useParams() as { analysisId: string };
   const { data: tasks } = useAnalysisBackgroundTasks(analysisId);
   console.log(tasks);
-  return <div>Tasks</div>;
+  return <div />;
 };
 
 export default Tasks;

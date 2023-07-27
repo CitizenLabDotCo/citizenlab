@@ -6,6 +6,7 @@ import TopBar from './TopBar';
 import Tags from './Tags';
 import InputsList from './InputsList';
 import InputPreview from './InputPreview';
+import Tasks from './Tasks';
 
 const Analysis = () => {
   const modalPortalElement = document.getElementById('modal-portal');
@@ -46,6 +47,7 @@ const Analysis = () => {
           </Box>
 
           <Box flex="1">
+            <Tasks />
             <InputsList
               onSelectInput={(inputId) => setSelectedInputId(inputId)}
               selectedInputId={selectedInputId}
