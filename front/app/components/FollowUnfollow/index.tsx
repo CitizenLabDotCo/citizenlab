@@ -99,7 +99,7 @@ const FollowUnfollow = ({
 
   const handleButtonClick = () => {
     if (authUser) {
-      followOrUnfollow();
+      return followOrUnfollow();
     }
     loginAndFollow();
   };
