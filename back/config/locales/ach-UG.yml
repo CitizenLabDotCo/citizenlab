@@ -1,0 +1,254 @@
+ach:
+  symbols:
+    outside: crwdns814665:0crwdne814665:0
+  idea_statuses:
+    proposed: crwdns814667:0crwdne814667:0
+    proposed_description: crwdns814669:0crwdne814669:0
+    viewed: crwdns814671:0crwdne814671:0
+    viewed_description: crwdns814673:0crwdne814673:0
+    under_consideration: crwdns814675:0crwdne814675:0
+    under_consideration_description: crwdns814677:0crwdne814677:0
+    accepted: crwdns814679:0crwdne814679:0
+    accepted_description: crwdns814681:0crwdne814681:0
+    implemented: crwdns814683:0crwdne814683:0
+    implemented_description: crwdns814685:0crwdne814685:0
+    rejected: crwdns814687:0crwdne814687:0
+    rejected_description: crwdns814689:0crwdne814689:0
+  initiative_statuses:
+    proposed: crwdns814691:0crwdne814691:0
+    proposed_description: crwdns814693:0crwdne814693:0
+    expired: crwdns814695:0crwdne814695:0
+    expired_description: crwdns814697:0crwdne814697:0
+    threshold_reached: crwdns814699:0crwdne814699:0
+    threshold_reached_description: crwdns814701:0crwdne814701:0
+    answered: crwdns814703:0crwdne814703:0
+    answered_description: crwdns814705:0crwdne814705:0
+    ineligible: crwdns814707:0crwdne814707:0
+    ineligible_description: crwdns814709:0crwdne814709:0
+  topics:
+    nature: crwdns814711:0crwdne814711:0
+    nature_description: crwdns814713:0crwdne814713:0
+    waste: crwdns814715:0crwdne814715:0
+    waste_description: crwdns814717:0crwdne814717:0
+    sustainability: crwdns814719:0crwdne814719:0
+    sustainability_description: crwdns814721:0crwdne814721:0
+    mobility: crwdns814723:0crwdne814723:0
+    mobility_description: crwdns814725:0crwdne814725:0
+    technology: crwdns814727:0crwdne814727:0
+    technology_description: crwdns814729:0crwdne814729:0
+    economy: crwdns814731:0crwdne814731:0
+    economy_description: crwdns814733:0crwdne814733:0
+    housing: crwdns814735:0crwdne814735:0
+    housing_description: crwdns814737:0crwdne814737:0
+    public_space: crwdns814739:0crwdne814739:0
+    public_space_description: crwdns814741:0crwdne814741:0
+    safety: crwdns814743:0crwdne814743:0
+    safety_description: crwdns814745:0crwdne814745:0
+    education: crwdns814747:0crwdne814747:0
+    education_description: crwdns814749:0crwdne814749:0
+    culture: crwdns814751:0crwdne814751:0
+    culture_description: crwdns814753:0crwdne814753:0
+    health: crwdns814755:0crwdne814755:0
+    health_description: crwdns814757:0crwdne814757:0
+    inclusion: crwdns814759:0crwdne814759:0
+    inclusion_description: crwdns814761:0crwdne814761:0
+    community: crwdns814763:0crwdne814763:0
+    community_description: crwdns814765:0crwdne814765:0
+    services: crwdns814767:0crwdne814767:0
+    services_description: crwdns814769:0crwdne814769:0
+    other: crwdns814771:0crwdne814771:0
+    other_description: crwdns814773:0crwdne814773:0
+  static_pages:
+    terms_and_conditions_title: crwdns814775:0crwdne814775:0
+    terms_and_conditions_body: >
+      crwdns814777:0crwdne814777:0
+    privacy_policy_title: crwdns814779:0crwdne814779:0
+    privacy_policy_body: >
+      crwdns814781:0crwdne814781:0
+    infopage_title: crwdns814783:0crwdne814783:0
+    infopage_body: "crwdns814785:0crwdne814785:0"
+    faq_title: crwdns814787:0crwdne814787:0
+    faq_body: "crwdns814789:0crwdne814789:0"
+    initiatives_title: crwdns814791:0crwdne814791:0
+    initiatives_body: >
+      crwdns814793:0crwdne814793:0
+  nav_bar_items:
+    home:
+      title: crwdns814795:0crwdne814795:0
+    projects:
+      title: crwdns814797:0crwdne814797:0
+    all_input:
+      title: crwdns814799:0crwdne814799:0
+    proposals:
+      title: crwdns814801:0crwdne814801:0
+    events:
+      title: crwdns814803:0crwdne814803:0
+    about:
+      title: crwdns814805:0crwdne814805:0
+    faq:
+      title: crwdns814807:0crwdne814807:0
+  projects:
+    open_idea_project_title: crwdns814809:0crwdne814809:0
+    open_idea_project_description_preview: crwdns814811:0crwdne814811:0
+    open_idea_project_description: >
+      crwdns814813:0crwdne814813:0
+  events:
+    council_meeting_title: crwdns814815:0crwdne814815:0
+    council_meeting_description: >
+      crwdns814817:0crwdne814817:0
+  custom_fields:
+    users:
+      gender:
+        title: crwdns814819:0crwdne814819:0
+      birthyear:
+        title: crwdns814821:0crwdne814821:0
+      domicile:
+        title: crwdns814823:0crwdne814823:0
+      education:
+        title: crwdns814825:0crwdne814825:0
+    ideas:
+      title:
+        title: crwdns814827:0crwdne814827:0
+        description: crwdns814829:0crwdne814829:0
+      body:
+        title: crwdns814831:0crwdne814831:0
+        description: crwdns814833:0crwdne814833:0
+      author_id:
+        title: crwdns814835:0crwdne814835:0
+      topic_ids:
+        title: crwdns814837:0crwdne814837:0
+        description: crwdns814839:0crwdne814839:0
+      location:
+        title: crwdns814841:0crwdne814841:0
+        description: crwdns814843:0crwdne814843:0
+      proposed_budget:
+        title: crwdns814845:0crwdne814845:0
+        description: crwdns814847:0crwdne814847:0
+      budget:
+        title: crwdns814849:0crwdne814849:0
+      images:
+        title: crwdns814851:0crwdne814851:0
+        description: crwdns814853:0crwdne814853:0
+      attachments:
+        title: crwdns814855:0crwdne814855:0
+        description: crwdns814857:0crwdne814857:0
+      section1:
+        description: crwdns814859:0crwdne814859:0
+      section2:
+        title: crwdns814861:0crwdne814861:0
+        description: crwdns814863:0crwdne814863:0
+      section3:
+        title: crwdns814865:0crwdne814865:0
+        description: crwdns814867:0crwdne814867:0
+  custom_forms:
+    categories:
+      main_content:
+        idea:
+          title: crwdns814869:0crwdne814869:0
+        question:
+          title: crwdns814871:0crwdne814871:0
+        contribution:
+          title: crwdns814873:0crwdne814873:0
+        project:
+          title: crwdns814875:0crwdne814875:0
+        issue:
+          title: crwdns814877:0crwdne814877:0
+        option:
+          title: crwdns814879:0crwdne814879:0
+      details:
+        title: crwdns814881:0crwdne814881:0
+      attachements:
+        title: crwdns814883:0crwdne814883:0
+      extra:
+        title: crwdns814885:0crwdne814885:0
+  custom_field_options:
+    gender:
+      male: crwdns814887:0crwdne814887:0
+      female: crwdns814889:0crwdne814889:0
+      unspecified: crwdns814891:0crwdne814891:0
+    domicile:
+      outside: crwdns814893:0crwdne814893:0
+    education:
+      ISCED2: crwdns814895:0crwdne814895:0
+      ISCED3: crwdns814897:0crwdne814897:0
+      ISCED4: crwdns814899:0crwdne814899:0
+      ISCED5: crwdns814901:0crwdne814901:0
+      ISCED6: crwdns814903:0crwdne814903:0
+      ISCED7: crwdns814905:0crwdne814905:0
+      ISCED8: crwdns814907:0crwdne814907:0
+  initiatives:
+    default_threshold_reached_message: >
+      crwdns814909:0crwdne814909:0
+    default_eligibility_criteria: >
+      crwdns814911:0crwdne814911:0
+  reset_password_mailer:
+    send_reset_password:
+      cta_reset_password: 'crwdns814913:0crwdne814913:0'
+      message_you_reset_your_password: 'crwdns814915:0%{organizationName}crwdne814915:0'
+      subject: 'crwdns814917:0%{organizationName}crwdne814917:0'
+      title_reset_your_password: 'crwdns814919:0crwdne814919:0'
+  xlsx_export:
+    column_headers:
+      input_id: 'crwdns814921:0crwdne814921:0'
+      latitude: 'crwdns814923:0crwdne814923:0'
+      longitude: 'crwdns814925:0crwdne814925:0'
+      author_fullname: 'crwdns814927:0crwdne814927:0'
+      author_email: 'crwdns814929:0crwdne814929:0'
+      author_id: 'crwdns814931:0crwdne814931:0'
+      budget: 'crwdns814933:0crwdne814933:0'
+      created_at: 'crwdns814935:0crwdne814935:0'
+      published_at: 'crwdns814937:0crwdne814937:0'
+      comments_count: 'crwdns814939:0crwdne814939:0'
+      likes_count: 'crwdns814941:0crwdne814941:0'
+      dislikes_count: 'crwdns814943:0crwdne814943:0'
+      picks: 'crwdns814945:0crwdne814945:0'
+      participants: 'crwdns814947:0crwdne814947:0'
+      votes_count: 'crwdns814949:0crwdne814949:0'
+      input_url: 'crwdns814951:0crwdne814951:0'
+      project: 'crwdns814953:0crwdne814953:0'
+      status: 'crwdns814955:0crwdne814955:0'
+      assignee_fullname: 'crwdns814957:0crwdne814957:0'
+      assignee_email: 'crwdns814959:0crwdne814959:0'
+    anonymous: 'crwdns814961:0crwdne814961:0'
+  form_builder:
+    default_select_field:
+      title: 'crwdns814963:0crwdne814963:0'
+      option1: 'crwdns814965:0crwdne814965:0'
+      option2: 'crwdns814967:0crwdne814967:0'
+    survey_end_page:
+      title: 'crwdns814969:0crwdne814969:0'
+      description: "crwdns814971:0crwdne814971:0"
+  project_copy:
+    title_suffix: 'crwdns814973:0crwdne814973:0'
+  confirmations_mailer:
+    send_confirmation_code:
+      subject: "crwdns814975:0%{organizationName}crwdne814975:0"
+      header: "crwdns814977:0crwdne814977:0"
+      header_message: "crwdns814979:0%{firstName}crwdne814979:0"
+      confirm_email_address: "crwdns814981:0crwdne814981:0"
+      thanks_for_signing_up: "crwdns814983:0%{organizationName}crwdne814983:0"
+      best_regards: "crwdns814985:0crwdne814985:0"
+      ignore_email: "crwdns814987:0crwdne814987:0"
+      expire_code: "crwdns814989:0crwdne814989:0"
+      24_hours: "crwdns814991:0crwdne814991:0"
+      copy_paste_the_link_below: "crwdns814993:0crwdne814993:0"
+      the_link_is_valid_for: "crwdns814995:0%{link}crwdne814995:0"
+      did_you_receive_this_email_in_error: "crwdns814997:0%{link}crwdne814997:0"
+  user_blocked_mailer:
+    send_user_blocked_email:
+      subject: 'crwdns814999:0crwdne814999:0'
+      title_user_blocked: 'crwdns815001:0crwdne815001:0'
+      paragraph_1_without_reason: "crwdns815003:0%{organizationName}crwdne815003:0"
+      paragraph_1_with_reason: "crwdns815005:0%{organizationName}crwdne815005:0"
+      for_more_information: "crwdns815007:0%{termsAndConditionsPage}crwdne815007:0"
+      you_can_sign_in_again_from: "crwdns815009:0%{date}crwdne815009:0"
+  user:
+    anon_first_name: "crwdns815011:0crwdne815011:0"
+  time:
+    am: crwdns815013:0crwdne815013:0
+    formats:
+      hour_of_day: "crwdns815015:0%lcrwdnd815015:0%pcrwdne815015:0"
+    pm: crwdns815017:0crwdne815017:0
+  voting_method:
+    default_voting_term_singular: "crwdns815019:0crwdne815019:0"
+    default_voting_term_plural: "crwdns815021:0crwdne815021:0"
