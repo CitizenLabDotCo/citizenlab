@@ -1,11 +1,10 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
 
 // router
-import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import clHistory from 'utils/cl-router/history';
 
 // i18n
@@ -33,10 +32,6 @@ interface Props {
 
 const TopBar = ({ project }: Props) => {
   const localize = useLocalize();
-
-  useEffect(() => {
-    removeSearchParams(['go_back']);
-  }, []);
 
   const handleGoBack = useCallback(() => {
     if (project) {
