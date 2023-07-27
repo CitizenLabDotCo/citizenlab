@@ -73,7 +73,7 @@ AppConfiguration.create!(
         locales: CL2_SUPPORTED_LOCALES
       )
     },
-    initiative_approval: {
+    initiative_review: {
       enabled: false,
       allowed: true
     },
@@ -252,18 +252,18 @@ end
 # Creates initiative statuses.
 [
   {
-    title_multiloc: 'initiative_statuses.approval_pending',
+    title_multiloc: 'initiative_statuses.review_pending',
     ordering: 50,
-    code: 'approval_pending',
+    code: 'review_pending',
     color: '#CC9331',
-    description_multiloc: 'initiative_statuses.approval_pending_description'
+    description_multiloc: 'initiative_statuses.review_pending_description'
   },
   {
-    title_multiloc: 'initiative_statuses.approval_rejected',
+    title_multiloc: 'initiative_statuses.rejected_on_review',
     ordering: 100,
-    code: 'approval_rejected',
+    code: 'rejected_on_review',
     color: '#CC317E',
-    description_multiloc: 'initiative_statuses.approval_rejected_description'
+    description_multiloc: 'initiative_statuses.rejected_on_review_description'
   },
   {
     title_multiloc: 'initiative_statuses.proposed',

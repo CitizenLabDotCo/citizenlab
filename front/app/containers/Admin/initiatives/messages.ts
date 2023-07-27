@@ -30,13 +30,13 @@ export default defineMessages({
     id: 'app.containers.Admin.initiatives.warningTresholdSettings',
     defaultMessage: 'Changing this will impact all active initiatives',
   },
-  requireApprovalLabel: {
-    id: 'app.containers.Admin.initiatives.requireApprovalLabel',
-    defaultMessage: 'Require pre-approval of proposals',
+  requireReviewLabel: {
+    id: 'app.containers.Admin.initiatives.requireReviewLabel',
+    defaultMessage: 'Require review of proposals',
   },
-  requireApprovalInfo: {
-    id: 'app.containers.Admin.initiatives.requireApprovalInfo',
-    defaultMessage: "Proposals won't be visible until an admin approves them",
+  requireReviewInfo: {
+    id: 'app.containers.Admin.initiatives.requireReviewInfo',
+    defaultMessage: "Proposals won't be visible until an admin reviews them",
   },
   fieldVotingThreshold: {
     id: 'app.containers.Admin.initiatives.fieldVotingThreshold',

@@ -6,8 +6,8 @@ import initiativeStatusesKeys from './keys';
 export type InitiativeStatusesKeys = Keys<typeof initiativeStatusesKeys>;
 
 export type InitiativeStatusCode =
-  | 'approval_pending'
-  | 'approval_rejected'
+  | 'review_pending'
+  | 'rejected_on_review'
   | 'proposed'
   | 'expired'
   | 'threshold_reached'
