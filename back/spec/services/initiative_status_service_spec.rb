@@ -5,8 +5,8 @@ require 'rails_helper'
 describe InitiativeStatusService do
   let(:service) { described_class.new }
 
-  let!(:status_approval_pending) { create(:initiative_status_approval_pending) }
-  let!(:status_approval_rejected) { create(:initiative_status_approval_rejected) }
+  let!(:status_review_pending) { create(:initiative_status_review_pending) }
+  let!(:status_rejected_on_review) { create(:initiative_status_rejected_on_review) }
   let!(:status_proposed) { create(:initiative_status_proposed) }
   let!(:status_expired) { create(:initiative_status_expired) }
   let!(:status_threshold_reached) { create(:initiative_status_threshold_reached) }
@@ -75,23 +75,23 @@ describe InitiativeStatusService do
       expect(service.transition_type(status_ineligible)).to eq 'manual'
     end
 
-    it 'labels the approval_pending status as manual' do
-      expect(service.transition_type(status_approval_pending)).to eq 'manual'
+    it 'labels the review_pending status as manual' do
+      expect(service.transition_type(status_review_pending)).to eq 'manual'
     end
 
-    it 'labels the approval_rejected status as manual' do
-      expect(service.transition_type(status_approval_rejected)).to eq 'manual'
+    it 'labels the rejected_on_review status as manual' do
+      expect(service.transition_type(status_rejected_on_review)).to eq 'manual'
     end
 
-    context 'when the initiative approval feature is fully activated' do
+    context 'when the initiative review feature is fully activated' do
       before do
-        SettingsService.new.activate_feature! 'initiative_approval'
+        SettingsService.new.activate_feature! 'initiative_review'
 
         configuration = AppConfiguration.instance
         configuration.settings['initiatives'] = {
           enabled: true,
           allowed: true,
-          require_approval: true, # This is also required to activate the feature
+          require_review: true, # This is also required to activate the feature
           reacting_threshold: 2,
           days_limit: 20,
           threshold_reached_message: { 'en' => 'Threshold reached' },
@@ -105,9 +105,9 @@ describe InitiativeStatusService do
       end
     end
 
-    context 'when the initiative approval feature is not fully activated' do
+    context 'when the initiative review feature is not fully activated' do
       it 'labels the proposed status as automatic' do
-        expect(Initiative.approval_required?).to be false
+        expect(Initiative.review_required?).to be false
         expect(service.transition_type(status_proposed)).to eq 'automatic'
       end
     end

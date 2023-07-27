@@ -15,7 +15,7 @@ class InitiativePolicy < ApplicationPolicy
       if UserRoleService.new.can_moderate_initiatives?(user)
         not_draft
       else
-        not_draft.with_status_code(InitiativeStatus::NOT_APPROVAL_CODES)
+        not_draft.with_status_code(InitiativeStatus::NOT_REVIEW_CODES)
           .or(not_draft.where(author: user))
       end
     end
@@ -32,14 +32,14 @@ class InitiativePolicy < ApplicationPolicy
     raise_not_authorized reason if reason
 
     if active? && owner?
-      return false if approval_required?
+      return false if review_required?
 
       true
     end
   end
 
   def show?
-    return false if !can_moderate? && !owner? && record.approval_status?
+    return false if !can_moderate? && !owner? && record.review_status?
     return true if active? && (owner? || can_moderate?)
 
     %w[draft published closed].include?(record.publication_status)
@@ -87,8 +87,8 @@ class InitiativePolicy < ApplicationPolicy
     user && record.author_id == user.id
   end
 
-  def approval_required?
-    Initiative.approval_required?
+  def review_required?
+    Initiative.review_required?
   end
 end
 

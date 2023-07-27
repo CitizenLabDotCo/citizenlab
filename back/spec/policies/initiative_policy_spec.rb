@@ -9,25 +9,25 @@ describe InitiativePolicy do
   let(:author) { create(:user) }
 
   # We need to consider 4 main scenarios:
-  # 1. When approval feature is NOT active, and
-  # 2. When approval feature is active
-  # a). When initiative has approval_pending or approval_rejected status
-  # b). when initiative has status other than approval_pending or approval_rejected
+  # 1. When review feature is NOT active, and
+  # 2. When review feature is active
+  # a). When initiative has review_pending or review_rejected status
+  # b). when initiative has status other than review_pending or review_rejected
   # 1a + 1b + 2a + 2b = 4 scenarios
   #
   # We avoid testing initiatives with 'custom' status, as it is not used and not adequately considered in the codebase.
 
-  # ------------------- 1. Approval feature is NOT active ------------------
+  # ------------------- 1. Review feature is NOT active ------------------
 
-  context 'when approval feature is NOT fully active' do
+  context 'when review feature is NOT fully active' do
     it 'is not active' do
-      expect(Initiative.approval_required?).to be false
+      expect(Initiative.review_required?).to be false
     end
 
-    # For statuses with APPROVAL_CODES, we only show initiatives with approval statuses to the author and admins.
-    context 'for an initiative with status approval_pending' do
+    # For statuses with REVIEW_CODES, we only show initiatives with review statuses to the author and admins.
+    context 'for an initiative with status review_pending' do
       let!(:initiative) do
-        create(:initiative, author: author, initiative_status: create(:initiative_status_approval_pending))
+        create(:initiative, author: author, initiative_status: create(:initiative_status_review_pending))
       end
 
       context 'for an admin' do
@@ -120,7 +120,7 @@ describe InitiativePolicy do
         end
       end
 
-      # Author can edit/delete initiative if approval feature not active, regardless of status.
+      # Author can edit/delete initiative if review feature not active, regardless of status.
       context 'for a user who is author of the initiative' do
         let(:user) { author }
 
@@ -151,25 +151,25 @@ describe InitiativePolicy do
     end
   end
 
-  # ------------------- 2. Approval feature IS active ----------------------
+  # ------------------- 2. Review feature IS active ----------------------
 
-  context 'when approval feature IS fully active' do
+  context 'when review feature IS fully active' do
     before do
-      SettingsService.new.activate_feature! 'initiative_approval'
+      SettingsService.new.activate_feature! 'initiative_review'
 
       configuration = AppConfiguration.instance
-      configuration.settings['initiatives']['require_approval'] = true
+      configuration.settings['initiatives']['require_review'] = true
       configuration.save!
     end
 
     it 'is active' do
-      expect(Initiative.approval_required?).to be true
+      expect(Initiative.review_required?).to be true
     end
 
-    # For statuses with APPROVAL_CODES, we only show initiatives with approval statuses to the author and admins.
-    context 'for an initiative with approval_pending status' do
+    # For statuses with REVIEW_CODES, we only show initiatives with review statuses to the author and admins.
+    context 'for an initiative with review_pending status' do
       let!(:initiative) do
-        create(:initiative, author: author, initiative_status: create(:initiative_status_approval_pending))
+        create(:initiative, author: author, initiative_status: create(:initiative_status_review_pending))
       end
 
       context 'for an admin' do
@@ -200,7 +200,7 @@ describe InitiativePolicy do
         end
       end
 
-      # Author can see initiative, but not edit, if approval feature is active.
+      # Author can see initiative, but not edit, if review feature is active.
       context 'for a user who is author of the initiative' do
         let(:user) { author }
 
@@ -263,7 +263,7 @@ describe InitiativePolicy do
         end
       end
 
-      # Author can see initiative, but not edit, if approval feature is active.
+      # Author can see initiative, but not edit, if review feature is active.
       context 'for a user who is author of the initiative' do
         let(:user) { author }
 
