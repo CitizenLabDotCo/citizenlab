@@ -131,6 +131,7 @@ Rails.application.routes.draw do
         resources :files, defaults: { container_type: 'Event' }, shallow: false
         resources :attendances, module: 'events', only: %i[create]
       end
+      resources :event_attendances, only: %i[destroy], controller: 'events/attendances'
 
       resources :phases, only: %i[show edit update destroy] do
         resources :files, defaults: { container_type: 'Phase' }, shallow: false

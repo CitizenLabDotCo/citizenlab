@@ -19,6 +19,6 @@ class Events::AttendancePolicy < ApplicationPolicy
   end
 
   def destroy?
-    (raise NotImplementedError)
+    active? && user.id == record.attendee_id
   end
 end
