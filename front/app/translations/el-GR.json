@@ -1524,7 +1524,6 @@
   "app.containers.eventspage.noUpcomingOrOngoingEvents": "Προς το παρόν δεν έχουν προγραμματιστεί επερχόμενες ή τρέχουσες εκδηλώσεις.",
   "app.containers.eventspage.pastEvents": "Προηγούμενες εκδηλώσεις",
   "app.containers.eventspage.upcomingAndOngoingEvents": "Επικείμενες και τρέχουσες εκδηλώσεις",
-  "app.containers.eventsshowpage.attend": "Παρακολουθήστε το",
   "app.containers.footer.accessibility-statement": "Δήλωση προσβασιμότητας",
   "app.containers.footer.ariaLabel": "Δευτερεύον",
   "app.containers.footer.cookie-policy": "Πολιτική cookie",
