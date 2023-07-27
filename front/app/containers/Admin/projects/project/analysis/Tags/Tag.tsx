@@ -77,7 +77,7 @@ const Tag = ({ name, tagType, tagginsConfig }: TagProps) => {
       <Box color={TagTypeColorMap[tagType]?.text}>{name}</Box>
       {tagginsConfig?.isSelectedAsTagging === true && (
         <Icon
-          name="plus"
+          name="minus"
           fill={TagTypeColorMap[tagType]?.text}
           width="16px"
           height="16px"
@@ -85,7 +85,7 @@ const Tag = ({ name, tagType, tagginsConfig }: TagProps) => {
       )}
       {tagginsConfig?.isSelectedAsTagging === false && (
         <Icon
-          name="minus"
+          name="plus"
           width="16px"
           height="16px"
           fill={TagTypeColorMap[tagType]?.text}
