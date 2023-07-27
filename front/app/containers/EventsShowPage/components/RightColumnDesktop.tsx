@@ -12,6 +12,7 @@ import { IEventData } from 'api/events/types';
 import EventDateStylized from './MetadataInformation/EventDateStylized';
 import Location from './MetadataInformation/Location';
 import FullEventTime from './MetadataInformation/EventTimeTextual';
+import EventSharingButtons from './EventSharingButtons';
 
 interface Props {
   event: IEventData;
@@ -52,6 +53,9 @@ const RightColumnDesktop = ({ event, className }: Props) => {
             </Box>
           </Box>
         </Box>
+      </Box>
+      <Box mb="16px">
+        <EventSharingButtons event={event} />
       </Box>
     </Box>
   );
