@@ -1524,7 +1524,6 @@
   "app.containers.eventspage.noUpcomingOrOngoingEvents": "لم تتم جدولة أي أحداث قادمة أو جارية حاليًا.",
   "app.containers.eventspage.pastEvents": "أحداث سابقة",
   "app.containers.eventspage.upcomingAndOngoingEvents": "أحداث قادمة وجارية",
-  "app.containers.eventsshowpage.attend": "يحضر",
   "app.containers.footer.accessibility-statement": "بيان إمكانية الوصول",
   "app.containers.footer.ariaLabel": "احتياطي",
   "app.containers.footer.cookie-policy": "سياسة ملفات تعريف الارتباط",
