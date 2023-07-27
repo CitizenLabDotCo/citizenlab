@@ -59,6 +59,7 @@ const ProjectFolderHeader = memo<Props>(({ projectFolder, className }) => {
               followableId={projectFolder.id}
               followersCount={projectFolder.attributes.followers_count}
               followerId={projectFolder.relationships.user_follower?.data?.id}
+              followableSlug={projectFolder.attributes.slug}
               padding="6px 13px"
               buttonStyle="white"
             />

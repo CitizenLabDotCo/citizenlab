@@ -19,6 +19,7 @@ interface Props extends BoxPaddingProps {
   followableId: string; // id of the project, folder, idea or proposal
   followersCount?: number;
   followerId?: string; // id of the follower object
+  followableSlug?: string;
   buttonStyle?: ButtonStyles;
 }
 
@@ -38,6 +39,7 @@ const FollowUnfollow = ({
   followableId,
   followersCount,
   followerId,
+  followableSlug,
   buttonStyle = 'primary-outlined',
   ...paddingProps
 }: Props) => {
@@ -65,11 +67,13 @@ const FollowUnfollow = ({
         followerId,
         followableId,
         followableType,
+        followableSlug,
       });
     } else {
       addFollower({
         followableType,
         followableId,
+        followableSlug,
       });
     }
   };

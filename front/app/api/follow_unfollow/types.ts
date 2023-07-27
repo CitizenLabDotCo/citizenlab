@@ -30,12 +30,14 @@ export type FollowableType =
 export type FollowerAdd = {
   followableType: FollowableType;
   followableId: string;
+  followableSlug?: string;
 };
 
 export type FollowerDelete = {
   followerId: string;
   followableId: string;
   followableType: FollowableType;
+  followableSlug?: string;
 };
 
 export type IFollowingAction = 'following';
