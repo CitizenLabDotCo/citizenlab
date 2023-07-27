@@ -1524,7 +1524,6 @@
   "app.containers.eventspage.noUpcomingOrOngoingEvents": "Er zijn momenteel geen aankomende of gestarte activiteiten.",
   "app.containers.eventspage.pastEvents": "Afgelopen activiteiten",
   "app.containers.eventspage.upcomingAndOngoingEvents": "Aankomende en gestarte activiteiten",
-  "app.containers.eventsshowpage.attend": "Ga naar",
   "app.containers.footer.accessibility-statement": "Toegankelijkheidsverklaring",
   "app.containers.footer.ariaLabel": "Secundair",
   "app.containers.footer.cookie-policy": "Cookiebeleid",
