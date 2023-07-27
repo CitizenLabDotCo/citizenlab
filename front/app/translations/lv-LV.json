@@ -1524,7 +1524,6 @@
   "app.containers.eventspage.noUpcomingOrOngoingEvents": "Šobrīd grafikā nav iekļauti gaidāmie vai aktuālie notikumi.",
   "app.containers.eventspage.pastEvents": "Pagātnes notikumi",
   "app.containers.eventspage.upcomingAndOngoingEvents": "Gaidāmie un aktuālie notikumi",
-  "app.containers.eventsshowpage.attend": "Apmeklējiet",
   "app.containers.footer.accessibility-statement": "Paziņojums par pieejamību",
   "app.containers.footer.ariaLabel": "Sekundārais",
   "app.containers.footer.cookie-policy": "Sīkdatņu politika",
