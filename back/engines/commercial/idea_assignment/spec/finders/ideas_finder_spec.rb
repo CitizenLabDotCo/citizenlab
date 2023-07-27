@@ -21,7 +21,7 @@ describe IdeasFinder do
     end
 
     describe 'filtering on unassigned' do
-      let(:params) { { assignee: nil } }
+      let(:params) { { assignee: 'unassigned' } }
 
       it 'returns the correct records' do
         expect(result_record_ids).to match_array unassigned_ideas.map(&:id)
