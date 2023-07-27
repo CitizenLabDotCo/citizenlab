@@ -19,6 +19,6 @@ class Events::AttendancePolicy < ApplicationPolicy
   end
 
   def destroy?
-    active? && user.id == record.attendee_id
+    active? && (admin? || user.id == record.attendee_id)
   end
 end

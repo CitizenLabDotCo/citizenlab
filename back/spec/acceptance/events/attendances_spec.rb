@@ -28,6 +28,10 @@ resource 'Event attendances' do
         expect(response_data.dig(:relationships, :event, :data, :id)).to eq event_id
       end
     end
+
+    context 'when the user is an admin' do
+      example_request 'Register another user to an event', pending: 'TODO'
+    end
   end
 
   delete 'web_api/v1/event_attendances/:id' do
@@ -59,6 +63,13 @@ resource 'Event attendances' do
       end
     end
 
-    context 'when the user is an admin'
+    context 'when the user is an admin' do
+      before { admin_header_token }
+
+      example_request 'Unregister another user from an event' do
+        expect(status).to eq(204)
+        expect { attendance.reload }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
   end
 end
