@@ -11,8 +11,8 @@ describe InitiativeStatusPolicy do
     end
 
     context 'with default statuses' do
-      let!(:status_approval_pending) { create(:initiative_status_approval_pending) }
-      let!(:status_approval_rejected) { create(:initiative_status_approval_rejected) }
+      let!(:status_review_pending) { create(:initiative_status_review_pending) }
+      let!(:status_rejected_on_review) { create(:initiative_status_rejected_on_review) }
       let!(:status_proposed) { create(:initiative_status_proposed) }
       let!(:status_expired) { create(:initiative_status_expired) }
       let!(:status_threshold_reached) { create(:initiative_status_threshold_reached) }
@@ -20,33 +20,33 @@ describe InitiativeStatusPolicy do
       let!(:status_ineligible) { create(:initiative_status_ineligible) }
 
       let!(:default_codes) { InitiativeStatus::CODES - ['custom'] }
-      let!(:not_approval_codes) { InitiativeStatus::NOT_APPROVAL_CODES - ['custom'] }
+      let!(:not_review_codes) { InitiativeStatus::NOT_REVIEW_CODES - ['custom'] }
 
       context 'when admin' do
         let(:user) { create(:admin) }
 
-        context 'when approval feature is not fully activated' do
-          it 'does not return approval statuses if no approval initiative exists' do
-            expect(scope.pluck(:code)).to match_array not_approval_codes
+        context 'when review feature is not fully activated' do
+          it 'does not return review statuses if no review initiative exists' do
+            expect(scope.pluck(:code)).to match_array not_review_codes
           end
 
-          it 'returns all statuses if at least one approval_pending initiative exists' do
-            create_initiative_status_change(status_approval_pending)
+          it 'returns all statuses if at least one review_pending initiative exists' do
+            create_initiative_status_change(status_review_pending)
             expect(scope.pluck(:code)).to match_array default_codes
           end
 
-          it 'returns all statuses if at least one approval_rejected initiative exists' do
-            create_initiative_status_change(status_approval_rejected)
+          it 'returns all statuses if at least one rejected_on_review initiative exists' do
+            create_initiative_status_change(status_rejected_on_review)
             expect(scope.pluck(:code)).to match_array default_codes
           end
         end
 
-        context 'when approval feature is fully activated' do
+        context 'when review feature is fully activated' do
           before do
-            SettingsService.new.activate_feature! 'initiative_approval'
+            SettingsService.new.activate_feature! 'initiative_review'
 
             configuration = AppConfiguration.instance
-            configuration.settings['initiatives']['require_approval'] = true
+            configuration.settings['initiatives']['require_review'] = true
             configuration.save!
           end
 
@@ -59,20 +59,20 @@ describe InitiativeStatusPolicy do
       context 'when normal user' do
         let(:user) { create(:user) }
 
-        it 'does not return approval statuses if user authored no approval initiatives' do
-          create_initiative_status_change(status_approval_pending)
-          create_initiative_status_change(status_approval_rejected)
-          expect(scope.pluck(:code)).to match_array not_approval_codes
+        it 'does not return review statuses if user authored no review initiatives' do
+          create_initiative_status_change(status_review_pending)
+          create_initiative_status_change(status_rejected_on_review)
+          expect(scope.pluck(:code)).to match_array not_review_codes
         end
 
-        it 'returns approval_pending status if user authored an approval_pending initiative' do
-          create_initiative_status_change(status_approval_pending, initiative: build(:initiative, author: user))
-          expect(scope.pluck(:code)).to match_array not_approval_codes + ['approval_pending']
+        it 'returns review_pending status if user authored an review_pending initiative' do
+          create_initiative_status_change(status_review_pending, initiative: build(:initiative, author: user))
+          expect(scope.pluck(:code)).to match_array not_review_codes + ['review_pending']
         end
 
-        it 'returns approval_rejected status if user authored an approval_rejected initiative' do
-          create_initiative_status_change(status_approval_rejected, initiative: build(:initiative, author: user))
-          expect(scope.pluck(:code)).to match_array not_approval_codes + ['approval_rejected']
+        it 'returns rejected_on_review status if user authored an rejected_on_review initiative' do
+          create_initiative_status_change(status_rejected_on_review, initiative: build(:initiative, author: user))
+          expect(scope.pluck(:code)).to match_array not_review_codes + ['rejected_on_review']
         end
       end
     end

@@ -40,7 +40,7 @@ import { colors } from 'utils/styleUtils';
 
 // typings
 import { Multiloc } from 'typings';
-import RequireApprovalToggle from './RequireApprovalToggle';
+import RequireReviewToggle from './RequireReviewToggle';
 
 export const StyledWarning = styled(Warning)`
   margin-bottom: 7px;
@@ -243,9 +243,9 @@ const InitiativesSettingsPage = () => {
               }
             />
           )}
-          <RequireApprovalToggle
-            value={localProposalsSettings.require_approval}
-            onChange={updateProposalsSetting('require_approval')}
+          <RequireReviewToggle
+            value={localProposalsSettings.require_review}
+            onChange={updateProposalsSetting('require_review')}
           />
 
           <ReactingThreshold

@@ -26,7 +26,7 @@ interface Props {
   initiativeStatus: IInitiativeStatusData;
 }
 
-const ApprovalPending = ({ initiativeStatus }: Props) => {
+const ReviewPending = ({ initiativeStatus }: Props) => {
   return (
     <Container>
       <StatusWrapper>
@@ -35,16 +35,14 @@ const ApprovalPending = ({ initiativeStatus }: Props) => {
       <StatusIcon ariaHidden name="clock" />
       <StatusExplanation>
         <b>
-          <FormattedMessage
-            {...messages.approvalPendingStatusExplanationBold}
-          />
+          <FormattedMessage {...messages.reviewPendingStatusExplanationBold} />
         </b>{' '}
         <FormattedMessage
-          {...messages.approvalPendingStatusExplanationSentenceTwo}
+          {...messages.reviewPendingStatusExplanationSentenceTwo}
         />
         <Box mt="20px">
           <FormattedMessage
-            {...messages.approvalPendingStatusExplanationSentenceThree}
+            {...messages.reviewPendingStatusExplanationSentenceThree}
           />
         </Box>
       </StatusExplanation>
@@ -52,4 +50,4 @@ const ApprovalPending = ({ initiativeStatus }: Props) => {
   );
 };
 
-export default ApprovalPending;
+export default ReviewPending;

@@ -2,16 +2,16 @@
 
 class InitiativeStatusService
   MANUAL_TRANSITIONS = {
-    'approval_pending' => {
+    'review_pending' => {
       'proposed' => {
         feedback_required: true
       },
-      'approval_rejected' => {
+      'rejected_on_review' => {
         feedback_required: true
       }
     },
-    'approval_rejected' => {
-      'approval_pending' => {
+    'rejected_on_review' => {
+      'review_pending' => {
         feedback_required: true
       },
       'proposed' => {
@@ -123,7 +123,7 @@ class InitiativeStatusService
 
   def manual_status_ids
     statuses = InitiativeStatus.where(code: MANUAL_TRANSITIONS.values.map(&:keys).flatten.uniq)
-    statuses = statuses.where.not(code: 'proposed') unless Initiative.approval_required?
+    statuses = statuses.where.not(code: 'proposed') unless Initiative.review_required?
 
     statuses.ids
   end

@@ -15,10 +15,10 @@ en:
     rejected: rejected
     rejected_description: This idea has been rejected
   initiative_statuses:
-    approval_pending: approval pending
-    approval_pending_description: approval pending
-    approval_rejected: approval rejected
-    approval_rejected_description: approval rejected
+    review_pending: review pending
+    review_pending_description: review pending
+    rejected_on_review: rejected on review
+    rejected_on_review_description: rejected on review
     proposed: proposed
     proposed_description: proposed
     expired: expired
