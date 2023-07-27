@@ -1524,7 +1524,6 @@
   "app.containers.eventspage.noUpcomingOrOngoingEvents": "Тренутно нису заказани предстојећи или текући догађаји.",
   "app.containers.eventspage.pastEvents": "Прошли догађаји",
   "app.containers.eventspage.upcomingAndOngoingEvents": "Предстојећи и текући догађаји",
-  "app.containers.eventsshowpage.attend": "Присуствујте",
   "app.containers.footer.accessibility-statement": "Изјава о приступачности",
   "app.containers.footer.ariaLabel": "Секундарни",
   "app.containers.footer.cookie-policy": "Политика колачића",
