@@ -65,10 +65,6 @@ const EventsShowPage = () => {
     event?.data.relationships.project.data.id
   );
 
-  if (isNilOrError(locale) || !project) {
-    return null;
-  }
-
   if (status === 'loading') {
     return (
       <VerticalCenterer>
@@ -84,6 +80,10 @@ const EventsShowPage = () => {
     return <PageNotFound />;
   }
 
+  if (isNilOrError(locale) || !project) {
+    return null;
+  }
+
   return (
     <>
       {isSmallerThanTablet && (
@@ -97,7 +97,7 @@ const EventsShowPage = () => {
 
           <Box display="flex" id="e2e-idea-show-page-content">
             <Box flex="1 1 100%">
-              <Title variant="h1">
+              <Title id="e2e-event-title" variant="h1">
                 {event?.data.attributes.title_multiloc[locale]}
               </Title>
               <Box mb="40px">
