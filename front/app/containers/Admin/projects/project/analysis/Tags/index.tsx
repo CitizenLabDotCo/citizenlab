@@ -144,10 +144,7 @@ const Tags = () => {
             onClick={() => selectTag(tag.id)}
             className={selectedTags?.includes(tag.id) ? 'selected' : ''}
           >
-            <Tag
-              name={tag.attributes.name}
-              tag_type={tag.attributes.tag_type}
-            />
+            <Tag name={tag.attributes.name} tagType={tag.attributes.tag_type} />
             <Box display="flex" gap="0px">
               <IconButton
                 iconName="edit"

@@ -6,7 +6,7 @@ import { ITaggings, TaggingsKeys } from './types';
 
 const fetchTaggings = (analysisId: string) => {
   return fetcher<ITaggings>({
-    path: `/analyses/${analysisId}/tags`,
+    path: `/analyses/${analysisId}/taggings`,
     action: 'get',
   });
 };
