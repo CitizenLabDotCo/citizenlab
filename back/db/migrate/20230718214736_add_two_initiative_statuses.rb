@@ -16,23 +16,23 @@ class AddTwoInitiativeStatuses < ActiveRecord::Migration[7.0]
         proposed.ordering = 150
         proposed.save!
 
-        ap = StubInitiativeStatus.find_or_initialize_by(code: 'approval_pending')
+        ap = StubInitiativeStatus.find_or_initialize_by(code: 'review_pending')
         ap.title_multiloc = service.i18n_to_multiloc(
-          'initiative_statuses.approval_pending', locales: CL2_SUPPORTED_LOCALES
+          'initiative_statuses.review_pending', locales: CL2_SUPPORTED_LOCALES
         )
         ap.description_multiloc = service.i18n_to_multiloc(
-          'initiative_statuses.approval_pending_description', locales: CL2_SUPPORTED_LOCALES
+          'initiative_statuses.review_pending_description', locales: CL2_SUPPORTED_LOCALES
         )
         ap.ordering = 50
         ap.color = '#CC9331'
         ap.save!
 
-        ar = StubInitiativeStatus.find_or_initialize_by(code: 'approval_rejected')
+        ar = StubInitiativeStatus.find_or_initialize_by(code: 'rejected_on_review')
         ar.title_multiloc = service.i18n_to_multiloc(
-          'initiative_statuses.approval_rejected', locales: CL2_SUPPORTED_LOCALES
+          'initiative_statuses.rejected_on_review', locales: CL2_SUPPORTED_LOCALES
         )
         ar.description_multiloc = service.i18n_to_multiloc(
-          'initiative_statuses.approval_rejected_description', locales: CL2_SUPPORTED_LOCALES
+          'initiative_statuses.rejected_on_review_description', locales: CL2_SUPPORTED_LOCALES
         )
         ar.ordering = 100
         ar.color = '#CC317E'
