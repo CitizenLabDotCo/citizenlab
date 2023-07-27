@@ -12,7 +12,7 @@ type TagProps = {
   };
 };
 
-const TagTypeColorMap: Record<
+export const TagTypeColorMap: Record<
   TagType,
   {
     background: string;
