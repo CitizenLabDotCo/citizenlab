@@ -18,7 +18,8 @@ const useDeleteFollow = () => {
       invalidateFollowQueries(
         queryClient,
         variables.followableType,
-        variables.followableId
+        variables.followableId,
+        variables.followableSlug
       );
     },
   });

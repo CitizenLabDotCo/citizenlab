@@ -9,7 +9,8 @@ import { FollowableType } from './types';
 export const invalidateFollowQueries = (
   queryClient: QueryClient,
   followableType: FollowableType,
-  followableId: string
+  followableId: string,
+  followableSlug?: string
 ) => {
   queryClient.invalidateQueries({ queryKey: followUnfollowKeys.all() });
   switch (followableType) {
@@ -24,7 +25,7 @@ export const invalidateFollowQueries = (
       break;
     case 'project_folders':
       queryClient.invalidateQueries(
-        projectFoldersKeys.item({ id: followableId })
+        projectFoldersKeys.item({ slug: followableSlug })
       );
       break;
     default:
