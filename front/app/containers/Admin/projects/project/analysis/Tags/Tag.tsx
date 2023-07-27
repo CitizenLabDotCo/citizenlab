@@ -1,4 +1,4 @@
-import { Box, Button, colors } from '@citizenlab/cl2-component-library';
+import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
 import { TagType } from 'api/analysis_tags/types';
 import React from 'react';
 
@@ -32,17 +32,44 @@ const Tag = ({ name, tagType, tagginsConfig }: TagProps) => {
       px="12px"
       py="4px"
       opacity={tagginsConfig?.isSelectedAsTagging === false ? 0.5 : 1}
+      display="flex"
+      alignItems="center"
+      justifyContent="space-between"
+      borderRadius="3px"
+      gap="4px"
+      as={tagginsConfig ? 'button' : 'div'}
+      onClick={
+        tagginsConfig
+          ? () => {
+              if (tagginsConfig?.isSelectedAsTagging === true) {
+                tagginsConfig.onDeleteTagging();
+              } else if (tagginsConfig?.isSelectedAsTagging === false) {
+                tagginsConfig.onAddTagging();
+              }
+            }
+          : undefined
+      }
+      tabIndex={tagginsConfig ? 0 : undefined}
+      style={{
+        cursor: tagginsConfig ? 'pointer' : undefined,
+      }}
     >
       <Box color={TagTypeColorMap[tagType]?.text}>{name}</Box>
       {tagginsConfig?.isSelectedAsTagging === true && (
-        <Button onClick={tagginsConfig.onDeleteTagging}>
-          <Box color={TagTypeColorMap[tagType]?.text}>Remove</Box>
-        </Button>
+        <Icon
+          name="plus"
+          fill={TagTypeColorMap[tagType]?.text}
+          width="16px"
+          height="16px"
+        />
       )}
       {tagginsConfig?.isSelectedAsTagging === false && (
-        <Button onClick={tagginsConfig.onAddTagging}>
-          <Box color={TagTypeColorMap[tagType]?.text}>Add</Box>
-        </Button>
+        <Icon
+          name="minus"
+          width="16px"
+          height="16px"
+          fill={TagTypeColorMap[tagType]?.text}
+        />
       )}
     </Box>
   );
