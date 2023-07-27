@@ -1524,7 +1524,6 @@
   "app.containers.eventspage.noUpcomingOrOngoingEvents": "Ingen kommende eller pågående hendelser er planlagt.",
   "app.containers.eventspage.pastEvents": "Tidligere hendelser",
   "app.containers.eventspage.upcomingAndOngoingEvents": "Kommende og pågående hendelser",
-  "app.containers.eventsshowpage.attend": "Delta",
   "app.containers.footer.accessibility-statement": "Beskrivelse av tilgjengelighet",
   "app.containers.footer.ariaLabel": "Andrevalg",
   "app.containers.footer.cookie-policy": "Retningslinjer for informasjonskapsler",
