@@ -41,12 +41,18 @@ const Analysis = () => {
             overflow="auto"
             h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
             p="12px"
+            mt="12px"
             bg={colors.white}
           >
             <Tags />
           </Box>
 
-          <Box flex="1">
+          <Box
+            flex="1"
+            overflow="auto"
+            h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
+            p="12px"
+          >
             <Tasks />
             <InputsList
               onSelectInput={(inputId) => setSelectedInputId(inputId)}
