@@ -90,11 +90,11 @@ const Tags = () => {
   };
 
   const selectTag = (id: string) => {
-    updateSearchParams({ tags_ids: [id] });
+    updateSearchParams({ tag_ids: [id] });
   };
 
-  const selectedTags = search.get('tags_ids')
-    ? JSON.parse(search.get('tags_ids') as string)
+  const selectedTags = search.get('tag_ids')
+    ? JSON.parse(search.get('tag_ids') as string)
     : undefined;
 
   return (
@@ -125,14 +125,14 @@ const Tags = () => {
       <Box>
         <TagContainer
           tabIndex={0}
-          onClick={() => removeSearchParams(['tags_ids'])}
+          onClick={() => removeSearchParams(['tag_ids'])}
           className={!selectedTags ? 'selected' : ''}
         >
           {formatMessage(messages.allTags)}
         </TagContainer>
         <TagContainer
           tabIndex={0}
-          onClick={() => updateSearchParams({ tags_ids: [] })}
+          onClick={() => updateSearchParams({ tag_ids: [] })}
           className={selectedTags?.length === 0 ? 'selected' : ''}
         >
           {formatMessage(messages.noTags)}
