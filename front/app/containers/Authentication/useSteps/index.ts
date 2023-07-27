@@ -166,7 +166,12 @@ export default function useSteps() {
       if (currentStep !== 'closed') return;
 
       authenticationDataRef.current = event.eventValue;
-      transition(currentStep, 'TRIGGER_AUTHENTICATION_FLOW')();
+
+      if (event.eventValue.context.action === 'following') {
+        transition(currentStep, 'TRIGGER_FOLLOW_FLOW')();
+      } else {
+        transition(currentStep, 'TRIGGER_AUTHENTICATION_FLOW')();
+      }
     });
 
     return () => subscription.unsubscribe();

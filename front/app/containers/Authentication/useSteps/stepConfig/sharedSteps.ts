@@ -2,6 +2,7 @@ import { parse } from 'qs';
 
 // api
 import getUserDataFromToken from 'api/authentication/getUserDataFromToken';
+import getAuthUser from 'api/authentication/auth_user/getAuthUser';
 
 // cache
 import streams from 'utils/streams';
@@ -169,6 +170,22 @@ export const sharedSteps = (
             : setCurrentStep('sign-up:email-password');
           return;
         }
+      },
+
+      TRIGGER_FOLLOW_FLOW: async () => {
+        updateState({
+          email: null,
+          token: null,
+          prefilledBuiltInFields: null,
+        });
+        const authUser = await getAuthUser();
+
+        if (authUser) {
+          setCurrentStep('light-flow:email-confirmation');
+          return;
+        }
+
+        setCurrentStep('light-flow:email');
       },
 
       TRIGGER_VERIFICATION_ONLY: () => {

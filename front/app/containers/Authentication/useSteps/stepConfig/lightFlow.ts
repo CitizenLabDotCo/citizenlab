@@ -166,6 +166,14 @@ export const lightFlow = (
       },
       SUBMIT_CODE: async (code: string) => {
         await confirmEmail({ code });
+        const {
+          context: { action },
+        } = getAuthenticationData();
+
+        if (action === 'following') {
+          setCurrentStep('success');
+          return;
+        }
 
         const { requirements } = await getRequirements();
 
