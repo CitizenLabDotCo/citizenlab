@@ -1,0 +1,13 @@
+ach:
+  email_campaigns:
+    campaign_type_description:
+      "idea_assigned_to_you": crwdns797041:0crwdne797041:0
+    admin_campaign_type_description:
+      "idea_assigned_to_you": crwdns797043:0crwdne797043:0
+    idea_assigned_to_you:
+      by_author: 'crwdns797045:0%{authorName}crwdne797045:0'
+      cta_reply_to: 'crwdns797047:0%{authorName}crwdne797047:0'
+      event_description_idea: 'crwdns797049:0crwdne797049:0'
+      main_header: 'crwdns797051:0%{firstName}crwdne797051:0'
+      subject: 'crwdns797053:0%{organizationName}crwdne797053:0'
+      preheader_idea: 'crwdns797055:0%{authorName}crwdne797055:0'
