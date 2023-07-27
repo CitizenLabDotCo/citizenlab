@@ -1524,7 +1524,6 @@
   "app.containers.eventspage.noUpcomingOrOngoingEvents": "Al momento non sono programmati eventi imminenti o in corso.",
   "app.containers.eventspage.pastEvents": "Eventi passati",
   "app.containers.eventspage.upcomingAndOngoingEvents": "Eventi imminenti e in corso",
-  "app.containers.eventsshowpage.attend": "Partecipa",
   "app.containers.footer.accessibility-statement": "Dichiarazione di accessibilità",
   "app.containers.footer.ariaLabel": "Secondario",
   "app.containers.footer.cookie-policy": "Politica dei cookie",
