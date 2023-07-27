@@ -7,6 +7,7 @@ class CreateBackgroundTasks < ActiveRecord::Migration[7.0]
       t.string :type, null: false
       t.string :state, null: false
       t.float :progress, null: true
+      t.datetime :started_at, null: true
       t.datetime :ended_at, null: true
       t.string :auto_tagging_method, null: true
       t.timestamps

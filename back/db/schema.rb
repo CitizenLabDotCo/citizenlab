@@ -78,6 +78,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_27_090914) do
     t.string "type", null: false
     t.string "state", null: false
     t.float "progress"
+    t.datetime "started_at"
     t.datetime "ended_at"
     t.string "auto_tagging_method"
     t.datetime "created_at", null: false

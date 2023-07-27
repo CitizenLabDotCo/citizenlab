@@ -5,7 +5,10 @@ module Analysis
     THRESHOLD = 0.4
     TAG_TYPE = 'controversial'
 
-    def execute
+    protected
+
+    # Use `execute` on the parent class to actually use the method
+    def run
       tag = Tag.find_or_create_by!(name: 'Controversial', tag_type: TAG_TYPE, analysis: analysis)
 
       @analysis.inputs
