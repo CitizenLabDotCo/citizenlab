@@ -35,7 +35,7 @@ resource 'Ideas' do
         create(:idea, assignee: create(:admin))
         ideas = create_list(:idea, 2, assignee: nil)
 
-        do_request assignee: nil
+        do_request assignee: 'unassigned'
 
         assert_status 200
         json_response = json_parse response_body
