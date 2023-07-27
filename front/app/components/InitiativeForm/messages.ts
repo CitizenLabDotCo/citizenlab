@@ -36,6 +36,19 @@ export default defineMessages({
     defaultMessage:
       'Add relevant attachments, such as videos, inspiring examples, technical details or plans.',
   },
+  makeSureReadyToBePublic: {
+    id: 'app.containers.InitiativesNewPage.makeSureReadyToBePublic',
+    defaultMessage: 'Make sure the proposal is ready to be public.',
+  },
+  notEditableOnceReviewed: {
+    id: 'app.containers.InitiativesNewPage.notEditableOnceReviewed',
+    defaultMessage: "It won't be possible to edit it as soon as it's reviewed.",
+  },
+  notEditableOnceVoted: {
+    id: 'app.containers.InitiativesNewPage.notEditableOnceVoted',
+    defaultMessage:
+      "It won't be possible to edit it as soon as somebody voted for it.",
+  },
   shareSocialMedia: {
     id: 'app.containers.InitiativesNewPage.shareSocialMedia',
     defaultMessage:
