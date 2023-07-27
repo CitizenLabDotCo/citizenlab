@@ -6,6 +6,44 @@ require 'rspec_api_documentation/dsl'
 resource 'Event attendances' do
   explanation 'Attendances represent the fact that a user is registered to an event.'
 
+  get 'web_api/v1/events/:event_id/attendances' do
+    let_it_be(:event) { create(:event) }
+    let_it_be(:event_id) { event.id }
+    let_it_be(:attendances) { create_list(:event_attendance, 2, event: event) }
+
+    before_all do
+      # Attendances that should not be returned
+      create_list(:event_attendance, 2)
+    end
+
+    context 'when the user is not logged in' do
+      example_request 'Listing fails', document: false do
+        expect(status).to eq(401)
+      end
+    end
+
+    context 'when the user is a regular user' do
+      before { resident_header_token }
+
+      example_request 'Listing fails', document: false do
+        expect(status).to eq(401)
+      end
+    end
+
+    context 'when the user is an admin' do
+      before { admin_header_token }
+
+      example_request 'Listing attendances of an event' do
+        expect(status).to eq(200)
+        expect(response_data.size).to eq 2
+        expect(response_data.pluck(:id)).to match_array attendances.map(&:id)
+
+        created_at_values = response_data.map { |item| item.dig(:attributes, :created_at) }
+        expect(created_at_values).to eq created_at_values.sort
+      end
+    end
+  end
+
   post 'web_api/v1/events/:event_id/attendances' do
     context 'when the user is not logged in' do
       let(:event_id) { create(:event).id }

@@ -9,8 +9,10 @@ class Events::AttendancePolicy < ApplicationPolicy
       @scope = scope
     end
 
-    def resolve(_event)
-      (raise NotImplementedError)
+    def resolve
+      raise Pundit::NotAuthorizedError unless user&.active? && user&.admin?
+
+      scope.all
     end
   end
 

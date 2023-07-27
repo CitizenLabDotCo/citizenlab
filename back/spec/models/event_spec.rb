@@ -9,6 +9,15 @@ RSpec.describe Event do
     end
   end
 
+  describe 'associations' do
+    subject(:event) { build(:event) }
+
+    it { is_expected.to belong_to(:project) }
+    it { is_expected.to have_many(:attendances).dependent(:destroy) }
+    it { is_expected.to have_many(:event_files).dependent(:destroy) }
+    it { is_expected.to have_many(:text_images).dependent(:destroy) }
+  end
+
   describe 'description sanitizer' do
     it 'sanitizes script tags in the description' do
       event = create(:event, description_multiloc: {
