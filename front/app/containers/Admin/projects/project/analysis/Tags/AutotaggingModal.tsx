@@ -13,29 +13,31 @@ const AutotaggingModal = ({ onCloseModal }: { onCloseModal: () => void }) => {
     <Box>
       <Title>Autotagging modal</Title>
       <Box display="flex" flexWrap="wrap" justifyContent="space-between">
-        {tagTypes.map((tagType) => {
-          return (
-            <Box w="50%" key={tagType} p="4px">
-              <Button
-                bgColor={TagTypeColorMap[tagType]?.background}
-                textColor={TagTypeColorMap[tagType]?.text}
-                processing={isLoading}
-                onClick={() =>
-                  launchTagging(
-                    { analysisId, autoTaggingMethod: tagType },
-                    {
-                      onSuccess: () => {
-                        onCloseModal();
-                      },
-                    }
-                  )
-                }
-              >
-                {tagType}
-              </Button>
-            </Box>
-          );
-        })}
+        {tagTypes
+          .filter((tagTypes) => tagTypes !== 'custom')
+          .map((tagType) => {
+            return (
+              <Box w="50%" key={tagType} p="4px">
+                <Button
+                  bgColor={TagTypeColorMap[tagType]?.background}
+                  textColor={TagTypeColorMap[tagType]?.text}
+                  processing={isLoading}
+                  onClick={() =>
+                    launchTagging(
+                      { analysisId, autoTaggingMethod: tagType },
+                      {
+                        onSuccess: () => {
+                          onCloseModal();
+                        },
+                      }
+                    )
+                  }
+                >
+                  {tagType}
+                </Button>
+              </Box>
+            );
+          })}
       </Box>
     </Box>
   );
