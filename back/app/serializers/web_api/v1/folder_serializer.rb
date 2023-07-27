@@ -36,6 +36,12 @@ class WebApi::V1::FolderSerializer < WebApi::V1::BaseSerializer
     @participants_service.folder_participants_count(object)
   end
 
+  has_one :user_follower, record_type: :follower, if: proc { |object, params|
+    signed_in? object, params
+  } do |object, params|
+    user_follower object, params
+  end
+
   has_one :admin_publication, serializer: ::WebApi::V1::AdminPublicationSerializer
 
   has_many :images, serializer: ::WebApi::V1::ImageSerializer
@@ -48,5 +54,15 @@ class WebApi::V1::FolderSerializer < WebApi::V1::BaseSerializer
     # TODO: call only once (not a second time for counts)
     @participants_service ||= ParticipantsService.new
     AvatarsService.new(@participants_service).avatars_for_folder(object, limit: 3)
+  end
+
+  def self.user_follower(object, params)
+    if params[:user_followers]
+      params.dig(:user_followers, [object.id, 'ProjectFolders::Folder'])&.first
+    else
+      current_user(params)&.follows&.find do |follow|
+        follow.followable_id == object.id && follow.followable_type == 'ProjectFolders::Folder'
+      end
+    end
   end
 end
