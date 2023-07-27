@@ -24,7 +24,7 @@ const InputListItem = ({ inputId }: Props) => {
       <Title variant="h3">
         <T value={input.data.attributes.title_multiloc} />
       </Title>
-      <T value={input.data.attributes.body_multiloc} />
+      <T value={input.data.attributes.body_multiloc} supportHtml={true} />
       <Divider />
       <Taggings inputId={inputId} />
     </Box>
