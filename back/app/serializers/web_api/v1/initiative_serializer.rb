@@ -16,7 +16,8 @@ class WebApi::V1::InitiativeSerializer < WebApi::V1::BaseSerializer
     :expires_at,
     :reactions_needed,
     :anonymous,
-    :author_hash
+    :author_hash,
+    :editing_locked
 
   attribute :author_name do |object, params|
     name_service = UserDisplayNameService.new(AppConfiguration.instance, current_user(params))
