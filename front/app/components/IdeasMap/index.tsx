@@ -21,6 +21,7 @@ import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
 import useProjectById from 'api/projects/useProjectById';
 import usePhase from 'api/phases/usePhase';
 import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
+import useAuthUser from 'api/me/useAuthUser';
 
 // router
 import { useSearchParams } from 'react-router-dom';
@@ -43,6 +44,9 @@ import styled from 'styled-components';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 import { media, viewportWidths, colors, fontSizes } from 'utils/styleUtils';
+
+// utils
+import { isAdmin, isProjectModerator } from 'services/permissions/roles';
 
 // typings
 import { IIdeaMarkerData } from 'api/idea_markers/types';
@@ -215,6 +219,7 @@ const IdeasMap = memo<Props>((props) => {
   const { data: phase } = usePhase(phaseId);
   const { windowWidth } = useWindowSize();
   const tablet = windowWidth <= viewportWidths.tablet;
+  const { data: authUser } = useAuthUser();
 
   // refs
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -251,7 +256,13 @@ const IdeasMap = memo<Props>((props) => {
 
   const ideaPostingActionDescriptor =
     project?.data.attributes.action_descriptor.posting_idea;
-  const isIdeaPostingEnabled = ideaPostingActionDescriptor?.enabled === true;
+
+  const isAdminOrModerator = authUser
+    ? isAdmin(authUser) || isProjectModerator(authUser)
+    : false;
+
+  const isIdeaPostingEnabled =
+    ideaPostingActionDescriptor?.enabled === true || isAdminOrModerator;
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useLayoutEffect(() => {
@@ -381,11 +392,19 @@ const IdeasMap = memo<Props>((props) => {
             <InfoOverlayInner>
               <InfoOverlayIcon name="info-outline" />
               <InfoOverlayText>
-                <FormattedMessage
-                  {...(tablet
-                    ? messages.tapOnMapToAdd
-                    : messages.clickOnMapToAdd)}
-                />
+                {!isAdminOrModerator ? (
+                  <FormattedMessage
+                    {...(tablet
+                      ? messages.tapOnMapToAdd
+                      : messages.clickOnMapToAdd)}
+                  />
+                ) : (
+                  <FormattedMessage
+                    {...(tablet
+                      ? messages.tapOnMapToAddAdmin
+                      : messages.clickOnMapToAddAdmin)}
+                  />
+                )}
               </InfoOverlayText>
             </InfoOverlayInner>
           </InfoOverlay>
