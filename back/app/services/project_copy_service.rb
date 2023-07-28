@@ -165,6 +165,9 @@ class ProjectCopyService < TemplateService
         'maximum' => field.maximum,
         'minimum_label_multiloc' => field.minimum_label_multiloc,
         'maximum_label_multiloc' => field.maximum_label_multiloc,
+        'select_count_enabled' => field.select_count_enabled,
+        'maximum_select_count' => field.maximum_select_count,
+        'minimum_select_count' => field.minimum_select_count,
         'text_images_attributes' => field.text_images.map do |text_image|
           {
             'imageable_field' => text_image.imageable_field,

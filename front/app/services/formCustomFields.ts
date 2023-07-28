@@ -66,6 +66,9 @@ export interface IAttributes {
   minimum_label_multiloc: Multiloc;
   maximum_label_multiloc: Multiloc;
   maximum: number;
+  minimum_select_count?: number;
+  maximum_select_count?: number;
+  select_count_enabled?: boolean;
 }
 
 export interface ICustomFieldResponse {

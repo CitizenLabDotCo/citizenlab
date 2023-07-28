@@ -13,6 +13,7 @@ import styled from 'styled-components';
 // intl
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
+import { Controller, useFormContext } from 'react-hook-form';
 
 const StyledLabel = styled(Label)`
   height: 100%;
@@ -20,37 +21,80 @@ const StyledLabel = styled(Label)`
   margin-bottom: auto;
 `;
 
-const MultiselectSettings = () => {
+type Props = {
+  minimumSelectCountName: string;
+  maximumSelectCountName: string;
+  selectCountToggleName: string;
+};
+
+const MultiselectSettings = ({
+  minimumSelectCountName,
+  maximumSelectCountName,
+  selectCountToggleName,
+}: Props) => {
   const { formatMessage } = useIntl();
-  const [checked, setChecked] = React.useState(false);
+  const { control, setValue, trigger, watch } = useFormContext();
 
   return (
     <Box mb="24px">
       <Box mb="16px">
-        <Toggle
-          checked={checked}
-          onChange={() => setChecked(!checked)}
-          label={
-            <Box display="flex">
-              {formatMessage(messages.limitNumberAnswers)}
-              <Box pl="4px">
-                <IconTooltip
-                  placement="top-start"
-                  content={formatMessage(messages.limitNumberAnswersTooltip)}
-                />
-              </Box>
-            </Box>
-          }
+        <Controller
+          name={selectCountToggleName}
+          control={control}
+          defaultValue={false}
+          render={({ field: { ref: _ref, value } }) => {
+            return (
+              <Toggle
+                checked={value}
+                onChange={() => {
+                  setValue(selectCountToggleName, !value);
+                  trigger();
+                }}
+                label={
+                  <Box display="flex">
+                    {formatMessage(messages.limitNumberAnswers)}
+                    <Box pl="4px">
+                      <IconTooltip
+                        placement="top-start"
+                        content={formatMessage(
+                          messages.limitNumberAnswersTooltip
+                        )}
+                      />
+                    </Box>
+                  </Box>
+                }
+              />
+            );
+          }}
         />
       </Box>
 
-      {checked && (
+      {watch(selectCountToggleName) && (
         <Box ml="16px">
           <Box mb="8px" display="flex">
             <Box minWidth="100px" my="auto">
               <StyledLabel htmlFor="minimumInput" value="Minimum" />
             </Box>
-            <Input id="minimumInput" type="number" size="small" />
+            <Controller
+              name={minimumSelectCountName}
+              control={control}
+              defaultValue={[]}
+              render={({ field: { ref: _ref, value } }) => {
+                return (
+                  <Input
+                    value={value}
+                    name={minimumSelectCountName}
+                    id="minimumInput"
+                    type="number"
+                    size="small"
+                    onChange={(value) => {
+                      setValue(minimumSelectCountName, value);
+                      trigger();
+                    }}
+                  />
+                );
+              }}
+            />
           </Box>
           <Box display="flex">
             <Box minWidth="100px" my="auto">
@@ -59,7 +103,26 @@ const MultiselectSettings = () => {
                 value={formatMessage(messages.maximum)}
               />
             </Box>
-            <Input id="maximumInput" type="number" size="small" />
+            <Controller
+              name={maximumSelectCountName}
+              control={control}
+              defaultValue={[]}
+              render={({ field: { ref: _ref, value } }) => {
+                return (
+                  <Input
+                    value={value}
+                    name={maximumSelectCountName}
+                    id="maximumInput"
+                    type="number"
+                    size="small"
+                    onChange={(value) => {
+                      setValue(maximumSelectCountName, value);
+                      trigger();
+                    }}
+                  />
+                );
+              }}
+            />
           </Box>
         </Box>
       )}

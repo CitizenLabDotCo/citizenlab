@@ -195,6 +195,9 @@ export const FormEdit = ({
           field.input_type === 'select') && {
           // TODO: This will get messy with more field types, abstract this in some way
           options: field.options || {},
+          maximum_select_count: field.maximum_select_count,
+          minimum_select_count: field.minimum_select_count,
+          select_count_enabled: field.select_count_enabled,
         }),
         ...(field.input_type === 'linear_scale' && {
           minimum_label_multiloc: field.minimum_label_multiloc || {},
@@ -202,6 +205,7 @@ export const FormEdit = ({
           maximum: field.maximum.toString(),
         }),
       }));
+
       await updateFormCustomFields(
         projectId,
         finalResponseArray,

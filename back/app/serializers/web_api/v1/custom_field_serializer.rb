@@ -28,5 +28,9 @@ class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
     object.input_type == 'linear_scale'
   }
 
+  attributes :select_count_enabled, :maximum_select_count, :minimum_select_count, if: proc { |object, _params|
+    object.input_type == 'multiselect'
+  }
+
   has_many :options, record_type: :custom_field_option, serializer: ::WebApi::V1::CustomFieldOptionSerializer
 end

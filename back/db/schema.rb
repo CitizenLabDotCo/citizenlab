@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_25_121109) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_28_130913) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -296,6 +296,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_25_121109) do
     t.jsonb "maximum_label_multiloc", default: {}, null: false
     t.jsonb "logic", default: {}, null: false
     t.string "answer_visible_to"
+    t.boolean "select_count_enabled", default: false, null: false
+    t.integer "maximum_select_count"
+    t.integer "minimum_select_count"
     t.index ["resource_type", "resource_id"], name: "index_custom_fields_on_resource_type_and_resource_id"
   end
 
