@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_25_121109) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_25_142113) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -415,6 +415,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_25_121109) do
     t.datetime "end_at", precision: nil
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+    t.geography "location_point", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}
+    t.string "location_description"
+    t.index ["location_point"], name: "index_events_on_location_point", using: :gist
     t.index ["project_id"], name: "index_events_on_project_id"
   end
 
