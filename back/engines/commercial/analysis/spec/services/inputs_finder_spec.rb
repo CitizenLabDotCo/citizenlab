@@ -7,6 +7,33 @@ describe Analysis::InputsFinder do
   let(:service) { described_class.new(analysis, @params) }
   let(:output) { service.execute }
 
+  describe 'tags' do
+    it 'filters correctly on a tag array' do
+      tag1 = create(:tag, analysis: analysis)
+      tag2 = create(:tag, analysis: analysis)
+      tag3 = create(:tag, analysis: analysis)
+      idea1 = create(:idea, project: analysis.project)
+      idea2 = create(:idea, project: analysis.project)
+      idea3 = create(:idea, project: analysis.project)
+      _idea4 = create(:idea, project: analysis.project)
+      create(:tagging, input: idea1, tag: tag1)
+      create(:tagging, input: idea2, tag: tag1)
+      create(:tagging, input: idea2, tag: tag2)
+      create(:tagging, input: idea3, tag: tag3)
+      @params = { tag_ids: [tag1.id, tag2.id] }
+      expect(output).to contain_exactly(idea1, idea2)
+    end
+
+    it 'filters correctly on the empty array' do
+      tag1 = create(:tag, analysis: analysis)
+      idea1 = create(:idea, project: analysis.project)
+      idea2 = create(:idea, project: analysis.project)
+      create(:tagging, input: idea1, tag: tag1)
+      @params = { tag_ids: [] }
+      expect(output).to contain_exactly(idea2)
+    end
+  end
+
   describe 'search' do
     it 'filters correctly' do
       idea1 = create(:idea, project: analysis.source_project, title_multiloc: { en: 'some needle in a haystack' })
