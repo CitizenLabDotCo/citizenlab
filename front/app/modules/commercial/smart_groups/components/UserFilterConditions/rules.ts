@@ -33,6 +33,7 @@ export type TRuleType = TStaticRuleType | TCustomRuleType;
 
 export type TStaticRuleType =
   | 'email'
+  | 'follow'
   | 'lives_in'
   | 'registration_completed_at'
   | 'role'
@@ -435,6 +436,37 @@ export type TRule =
       value?: string[];
     }
   | {
+      ruleType?: 'follow';
+      predicate?: 'something' | 'nothing';
+      value?: undefined;
+    }
+  | {
+      ruleType?: 'follow';
+      predicate?:
+        | 'is_not_project'
+        | 'is_not_folder'
+        | 'is_not_idea'
+        | 'is_not_initiative';
+
+      /**
+       * The id of a followable
+       */
+      value?: string;
+    }
+  | {
+      ruleType?: 'follow';
+      predicate?:
+        | 'is_one_of_projects'
+        | 'is_one_of_folders'
+        | 'is_one_of_ideas'
+        | 'is_one_of_initiatives';
+
+      /**
+       * The IDs of followables
+       */
+      value?: string[];
+    }
+  | {
       ruleType?: 'verified';
       predicate?: 'is_verified' | 'not_is_verified';
     };
@@ -490,6 +522,18 @@ export const ruleTypeConstraints = {
     not_begins_with: TextValueSelector,
     ends_on: TextValueSelector,
     not_ends_on: TextValueSelector,
+  },
+  follow: {
+    is_one_of_projects: ProjectValuesSelector,
+    is_not_project: ProjectValueSelector,
+    is_one_of_folders: TextValueSelector,
+    is_not_folder: TextValueSelector,
+    is_one_of_ideas: TextValueSelector,
+    is_not_idea: TextValueSelector,
+    is_one_of_initiatives: TextValueSelector,
+    is_not_initiative: TextValueSelector,
+    something: null,
+    nothing: null,
   },
   lives_in: {
     has_value: AreaValueSelector,
