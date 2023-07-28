@@ -11,11 +11,16 @@ import SingleDateStylized from './SingleDateStylized';
 // utils
 import { toThreeLetterMonth } from 'utils/dateUtils';
 
+// api
+import { useTheme } from 'styled-components';
+
 interface Props {
   event: IEventData;
 }
 
 const EventDateStylized = ({ event }: Props) => {
+  const theme = useTheme();
+
   const startAtMoment = moment(event.attributes.start_at);
   const endAtMoment = moment(event.attributes.end_at);
   const startDateMonth = toThreeLetterMonth(event.attributes.start_at, 'month');
@@ -27,7 +32,11 @@ const EventDateStylized = ({ event }: Props) => {
   )}`;
 
   return (
-    <Box display="flex" justifyContent="center">
+    <Box
+      display="flex"
+      flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
+      justifyContent="center"
+    >
       <SingleDateStylized
         day={startAtMoment.format('DD')}
         month={startDateMonth}
@@ -41,7 +50,7 @@ const EventDateStylized = ({ event }: Props) => {
         <>
           <Box mx="16px" my="auto">
             <Text m="0px" fontWeight="bold" fontSize="xxl">
-              →
+              {theme.isRtl ? '←' : '→'}
             </Text>
           </Box>
           <SingleDateStylized

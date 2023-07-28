@@ -14,7 +14,7 @@ import DesktopTopBar from './components/DesktopTopBar';
 import Unauthorized from 'components/Unauthorized';
 import PageNotFound from 'components/PageNotFound';
 import VerticalCenterer from 'components/VerticalCenterer';
-import EventTopBarMobile from './EventTopBarMobile';
+import EventTopBarMobile from './components/EventTopBarMobile';
 import EventDescription from './components/EventDescription';
 import InformationSectionMobile from './components/InformationSectionMobile';
 
