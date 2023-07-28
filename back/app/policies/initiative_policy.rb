@@ -46,7 +46,9 @@ class InitiativePolicy < ApplicationPolicy
   end
 
   def update?
-    create?
+    # return false if record.editing_locked
+
+    create? && !record.editing_locked
   end
 
   def destroy?
@@ -81,10 +83,6 @@ class InitiativePolicy < ApplicationPolicy
 
   def owner?
     user && record.author_id == user.id
-  end
-
-  def review_required?
-    Initiative.review_required?
   end
 end
 

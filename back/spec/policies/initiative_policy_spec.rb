@@ -24,7 +24,7 @@ describe InitiativePolicy do
       expect(Initiative.review_required?).to be false
     end
 
-    # For statuses with REVIEW_CODES, we only show initiatives with review statuses to the author and admins.
+    # For statuses with REVIEW_CODES, we only show/index initiatives with review statuses to the author and admins.
     context 'for an initiative with status review_pending' do
       let!(:initiative) do
         create(:initiative, author: author, initiative_status: create(:initiative_status_review_pending))
@@ -111,7 +111,7 @@ describe InitiativePolicy do
 
         it { is_expected.to permit(:show) }
         it { is_expected.to permit(:by_slug) }
-        it { is_expected.not_to permit(:create) } # <- is this correct?
+        it { is_expected.not_to permit(:create) }
         it { is_expected.not_to permit(:update) }
         it { is_expected.not_to permit(:destroy) }
 
@@ -120,7 +120,6 @@ describe InitiativePolicy do
         end
       end
 
-      # Author can edit/delete initiative if review feature not active, regardless of status.
       context 'for a user who is author of the initiative' do
         let(:user) { author }
 
@@ -200,7 +199,7 @@ describe InitiativePolicy do
         end
       end
 
-      # Author can see initiative, but not edit, if review feature is active.
+      # Author can still see their own initiative if review feature is active.
       context 'for a user who is author of the initiative' do
         let(:user) { author }
 
@@ -290,6 +289,41 @@ describe InitiativePolicy do
         it 'does not index the initiative' do
           expect(scope.resolve.size).to eq 1
         end
+      end
+    end
+  end
+
+  # Nobody cannot edit initiative if editing is locked, including admins and authors
+  context 'when editing is locked for the initiative' do
+    let!(:initiative) do
+      create(:initiative, author: author, editing_locked: true, initiative_status: create(:initiative_status_proposed))
+    end
+
+    context 'for an admin' do
+      let(:user) { create(:admin) }
+
+      it { is_expected.to permit(:show) }
+      it { is_expected.to permit(:by_slug) }
+      it { is_expected.to permit(:create) }
+      it { is_expected.not_to permit(:update) }
+      it { is_expected.to permit(:destroy) }
+
+      it 'indexes the initiative' do
+        expect(scope.resolve.size).to eq 1
+      end
+    end
+
+    context 'for a user who is author of the initiative' do
+      let(:user) { author }
+
+      it { is_expected.to permit(:show) }
+      it { is_expected.to permit(:by_slug) }
+      it { is_expected.to permit(:create) }
+      it { is_expected.not_to permit(:update) }
+      it { is_expected.to permit(:destroy) }
+
+      it 'indexes the initiative' do
+        expect(scope.resolve.size).to eq 1
       end
     end
   end
