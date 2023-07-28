@@ -31,11 +31,7 @@ class InitiativePolicy < ApplicationPolicy
     reason = posting_denied_reason user
     raise_not_authorized reason if reason
 
-    if active? && owner?
-      return false if review_required?
-
-      true
-    end
+    active? && owner?
   end
 
   def show?
@@ -50,12 +46,7 @@ class InitiativePolicy < ApplicationPolicy
   end
 
   def update?
-    return true if active? && can_moderate?
-
-    reason = posting_denied_reason user
-    raise_not_authorized reason if reason
-
-    active? && owner?
+    create?
   end
 
   def destroy?

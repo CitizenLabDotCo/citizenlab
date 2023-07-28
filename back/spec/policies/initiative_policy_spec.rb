@@ -206,9 +206,9 @@ describe InitiativePolicy do
 
         it { is_expected.to permit(:show) }
         it { is_expected.to permit(:by_slug) }
-        it { is_expected.not_to permit(:create) }
-        it { is_expected.to permit(:update)  }
-        it { is_expected.not_to permit(:destroy) }
+        it { is_expected.to permit(:create) }
+        it { is_expected.to permit(:update) }
+        it { is_expected.to permit(:destroy) }
 
         it 'indexes the initiative' do
           expect(scope.resolve.size).to eq 1
@@ -269,9 +269,9 @@ describe InitiativePolicy do
 
         it { is_expected.to permit(:show) }
         it { is_expected.to permit(:by_slug) }
-        it { is_expected.not_to permit(:create) }
+        it { is_expected.to permit(:create) }
         it { is_expected.to permit(:update) }
-        it { is_expected.not_to permit(:destroy) }
+        it { is_expected.to permit(:destroy) }
 
         it 'indexes the initiative' do
           expect(scope.resolve.size).to eq 1
