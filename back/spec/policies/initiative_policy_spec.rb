@@ -50,7 +50,7 @@ describe InitiativePolicy do
         it { is_expected.not_to permit(:show) }
         it { is_expected.not_to permit(:by_slug) }
         it { is_expected.not_to permit(:create) }
-        it { is_expected.not_to permit(:update)  }
+        it { is_expected.not_to permit(:update) }
         it { is_expected.not_to permit(:destroy) }
 
         it 'does not index the initiative' do
@@ -64,7 +64,7 @@ describe InitiativePolicy do
         it { is_expected.to permit(:show) }
         it { is_expected.to permit(:by_slug) }
         it { is_expected.to permit(:create) }
-        it { is_expected.to permit(:update)  }
+        it { is_expected.to permit(:update) }
         it { is_expected.to permit(:destroy) }
 
         it 'indexes the initiative' do
@@ -98,7 +98,7 @@ describe InitiativePolicy do
         it { is_expected.to permit(:show) }
         it { is_expected.to permit(:by_slug) }
         it { is_expected.to permit(:create) }
-        it { is_expected.to permit(:update)  }
+        it { is_expected.to permit(:update) }
         it { is_expected.to permit(:destroy) }
 
         it 'indexes the initiative' do
@@ -112,7 +112,7 @@ describe InitiativePolicy do
         it { is_expected.to permit(:show) }
         it { is_expected.to permit(:by_slug) }
         it { is_expected.not_to permit(:create) } # <- is this correct?
-        it { is_expected.not_to permit(:update)  }
+        it { is_expected.not_to permit(:update) }
         it { is_expected.not_to permit(:destroy) }
 
         it 'indexes the initiative' do
@@ -127,7 +127,7 @@ describe InitiativePolicy do
         it { is_expected.to permit(:show) }
         it { is_expected.to permit(:by_slug) }
         it { is_expected.to permit(:create) }
-        it { is_expected.to permit(:update)  }
+        it { is_expected.to permit(:update) }
         it { is_expected.to permit(:destroy) }
 
         it 'indexes the initiative' do
@@ -178,7 +178,7 @@ describe InitiativePolicy do
         it { is_expected.to permit(:show) }
         it { is_expected.to permit(:by_slug) }
         it { is_expected.to permit(:create) }
-        it { is_expected.to permit(:update)  }
+        it { is_expected.to permit(:update) }
         it { is_expected.to permit(:destroy) }
 
         it 'indexes the initiative' do
@@ -192,7 +192,7 @@ describe InitiativePolicy do
         it { is_expected.not_to permit(:show) }
         it { is_expected.not_to permit(:by_slug) }
         it { is_expected.not_to permit(:create) }
-        it { is_expected.not_to permit(:update)  }
+        it { is_expected.not_to permit(:update) }
         it { is_expected.not_to permit(:destroy) }
 
         it 'does not index the initiative' do
@@ -207,7 +207,7 @@ describe InitiativePolicy do
         it { is_expected.to permit(:show) }
         it { is_expected.to permit(:by_slug) }
         it { is_expected.not_to permit(:create) }
-        it { is_expected.not_to permit(:update)  }
+        it { is_expected.to permit(:update)  }
         it { is_expected.not_to permit(:destroy) }
 
         it 'indexes the initiative' do
@@ -241,7 +241,7 @@ describe InitiativePolicy do
         it { is_expected.to permit(:show) }
         it { is_expected.to permit(:by_slug) }
         it { is_expected.to permit(:create) }
-        it { is_expected.to permit(:update)  }
+        it { is_expected.to permit(:update) }
         it { is_expected.to permit(:destroy) }
 
         it 'indexes the initiative' do
@@ -255,7 +255,7 @@ describe InitiativePolicy do
         it { is_expected.to permit(:show) }
         it { is_expected.to permit(:by_slug) }
         it { is_expected.not_to permit(:create) }
-        it { is_expected.not_to permit(:update)  }
+        it { is_expected.not_to permit(:update) }
         it { is_expected.not_to permit(:destroy) }
 
         it 'does not index the initiative' do
@@ -270,7 +270,7 @@ describe InitiativePolicy do
         it { is_expected.to permit(:show) }
         it { is_expected.to permit(:by_slug) }
         it { is_expected.not_to permit(:create) }
-        it { is_expected.not_to permit(:update)  }
+        it { is_expected.to permit(:update) }
         it { is_expected.not_to permit(:destroy) }
 
         it 'indexes the initiative' do

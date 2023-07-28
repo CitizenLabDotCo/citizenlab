@@ -50,7 +50,12 @@ class InitiativePolicy < ApplicationPolicy
   end
 
   def update?
-    create?
+    return true if active? && can_moderate?
+
+    reason = posting_denied_reason user
+    raise_not_authorized reason if reason
+
+    active? && owner?
   end
 
   def destroy?
