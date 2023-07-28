@@ -2,7 +2,7 @@
 
 module Analysis
   class AutoTaggingMethod::Base
-    attr_reader :analysis
+    attr_reader :analysis, :task
 
     class AutoTaggingFailedError < StandardError; end
 
@@ -21,19 +21,19 @@ module Analysis
     end
 
     def execute
-      @task.set_in_progress!
+      task.set_in_progress!
       begin
         run
-        @task.set_succeeded!
+        task.set_succeeded!
       rescue AutoTaggingFailedError => _e
-        @task.set_failed!
+        task.set_failed!
       end
     end
 
     protected
 
     def update_progress(progress)
-      @task.update!(progress: progress)
+      task.update!(progress: progress)
     end
   end
 end

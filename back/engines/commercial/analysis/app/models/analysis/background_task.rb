@@ -3,7 +3,6 @@
 module Analysis
   class BackgroundTask < ::ApplicationRecord
     TYPES = ['Analysis::AutoTaggingTask']
-    # auto_tagging_method_map =
     STATES = %w[queued in_progress succeeded failed]
 
     belongs_to :analysis
