@@ -123,6 +123,8 @@ RSpec.configure do |config|
   config.before(:suite) do
     require './engines/commercial/public_api/spec/factories/api_clients'
     require './engines/commercial/analysis/spec/factories/analyses'
+    require './engines/commercial/analysis/spec/factories/taggings'
+    require './engines/commercial/analysis/spec/factories/tags'
     require './engines/free/email_campaigns/spec/factories/campaigns'
     require './engines/free/email_campaigns/spec/factories/campaigns_groups'
     require './engines/free/email_campaigns/spec/factories/consents'
