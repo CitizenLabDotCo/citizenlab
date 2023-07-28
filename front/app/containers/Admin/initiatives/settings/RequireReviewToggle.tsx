@@ -4,7 +4,12 @@ import { SectionField } from 'components/admin/Section';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import { Box, Toggle, Text } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Toggle,
+  Text,
+  IconTooltip,
+} from '@citizenlab/cl2-component-library';
 
 interface Props {
   value: boolean;
@@ -36,6 +41,14 @@ const RequireReviewToggle = ({ value, onChange }: Props) => {
               >
                 <FormattedMessage {...messages.requireReviewLabel} />
               </Text>
+              <Box ml="4px" mt="16px">
+                <IconTooltip
+                  placement="top-start"
+                  content={
+                    <FormattedMessage {...messages.requireReviewTooltip} />
+                  }
+                />
+              </Box>
             </Box>
 
             <Text color="coolGrey600" mt="0px" fontSize="m">
