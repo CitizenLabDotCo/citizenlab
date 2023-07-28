@@ -49,6 +49,7 @@ const ReportPrintPage = lazy(
   () => import('containers/Admin/reporting/containers/PrintReport')
 );
 const DisabledAccount = lazy(() => import('containers/DisabledAccount'));
+const IdeaFormPrintable = lazy(() => import('containers/IdeasNewPage/print'));
 
 export default function createRoutes() {
   return [
@@ -345,6 +346,14 @@ export default function createRoutes() {
           element: (
             <PageLoading>
               <DisabledAccount />
+            </PageLoading>
+          ),
+        },
+        {
+          path: 'admin/survey/:projectId/print',
+          element: (
+            <PageLoading>
+              <IdeaFormPrintable />
             </PageLoading>
           ),
         },
