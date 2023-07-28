@@ -38,16 +38,17 @@ export default defineMessages({
   },
   makeSureReadyToBePublic: {
     id: 'app.containers.InitiativesNewPage.makeSureReadyToBePublic',
-    defaultMessage: 'Make sure the proposal is ready to be public.',
+    defaultMessage: 'Make sure the proposal is ready to be published.',
   },
   notEditableOnceReviewed: {
     id: 'app.containers.InitiativesNewPage.notEditableOnceReviewed',
-    defaultMessage: "It won't be possible to edit it as soon as it's reviewed.",
+    defaultMessage:
+      "It won't be possible to edit it once it's reviewed and approved.",
   },
   notEditableOnceVoted: {
     id: 'app.containers.InitiativesNewPage.notEditableOnceVoted',
     defaultMessage:
-      "It won't be possible to edit it as soon as somebody voted for it.",
+      "It won't be possible to edit it once somebody votes for it.",
   },
   shareSocialMedia: {
     id: 'app.containers.InitiativesNewPage.shareSocialMedia',

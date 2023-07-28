@@ -36,11 +36,13 @@ export default defineMessages({
   },
   requireReviewTooltip: {
     id: 'app.containers.Admin.initiatives.requireReviewTooltip',
-    defaultMessage: "It's impossible to edit proposals once they're reviewed",
+    defaultMessage:
+      "It's impossible to edit proposals once they're reviewed and approved",
   },
   requireReviewInfo: {
     id: 'app.containers.Admin.initiatives.requireReviewInfo',
-    defaultMessage: "Proposals won't be visible until an admin reviews them",
+    defaultMessage:
+      "Proposals won't be visible until an admin reviews and approves them",
   },
   fieldVotingThreshold: {
     id: 'app.containers.Admin.initiatives.fieldVotingThreshold',
