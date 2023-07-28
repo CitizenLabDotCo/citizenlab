@@ -148,7 +148,7 @@ const FormActions = ({
         <Box mt="12px" w="100%" display="flex">
           <Button
             linkTo={`/admin/survey/${projectId}/print${
-              phaseId ? `phase_id=${phaseId}` : ''
+              phaseId ? `?phase_id=${phaseId}` : ''
             }`}
             icon="survey"
             openLinkInNewTab

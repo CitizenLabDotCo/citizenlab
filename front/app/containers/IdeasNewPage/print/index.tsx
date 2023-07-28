@@ -19,7 +19,13 @@ const IdeaFormPrintable = () => {
     phaseId,
   });
 
-  return <Box>Blablablalb</Box>;
+  return (
+    <Box>
+      Blablablalb
+      <Box>{projectId}</Box>
+      <Box>{phaseId}</Box>
+    </Box>
+  );
 };
 
 export default IdeaFormPrintable;
