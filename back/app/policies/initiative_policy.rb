@@ -46,8 +46,6 @@ class InitiativePolicy < ApplicationPolicy
   end
 
   def update?
-    # return false if record.editing_locked
-
     create? && !record.editing_locked
   end
 
