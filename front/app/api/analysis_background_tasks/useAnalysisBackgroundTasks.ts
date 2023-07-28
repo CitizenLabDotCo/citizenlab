@@ -27,7 +27,21 @@ const useAnalysisBackgroundTasks = (analysisId: string) => {
       queryClient.invalidateQueries({ queryKey: tagsKeys.lists() });
       queryClient.invalidateQueries({ queryKey: taggingKeys.lists() });
     },
-    refetchInterval: 5000,
+    // Refetch every 5 seconds when tasks are active
+    refetchInterval: (data) => {
+      const activeTask = data?.data.find((task) => {
+        const { updated_at, state } = task.attributes;
+        // Updated in the last 2 minutes?
+        const up_date = Date.parse(updated_at);
+        const now = Date.now();
+        const recently_updated = now - up_date < 2 * 60 * 1000;
+
+        return (
+          state === 'queued' || state === 'in_progress' || recently_updated
+        );
+      });
+      return activeTask ? 5000 : false;
+    },
     keepPreviousData: false,
   });
 };

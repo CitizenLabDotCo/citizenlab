@@ -3,17 +3,28 @@ import backgroundTasksKeys from './keys';
 
 export type BackgroundTasksKeys = Keys<typeof backgroundTasksKeys>;
 
+type SharedAttributes = {
+  type: string;
+  progress: number | null;
+  created_at: string;
+  updated_at: string;
+  started_at: string | null;
+  ended_at: string | null;
+  state: 'queued' | 'in_progress' | 'succeeded' | 'failed';
+};
+type AutoTaggingAttributes = SharedAttributes & {
+  type: 'auto_tagging_task';
+  auto_tagging_method: 'controversial';
+};
+
+type SummarizingAttributes = SharedAttributes & {
+  type: 'summarizing_task';
+};
+
 export interface IBackgroundTaskData {
   id: string;
   type: 'analysis_background_task';
-  attributes: {
-    progress: number | null;
-    type: 'auto_tagging' | 'summarizing';
-    auto_tagging_method: string;
-    created_at: string;
-    ended_at: string;
-    state: 'queued' | 'in_progress' | 'succeeded' | 'failed';
-  };
+  attributes: AutoTaggingAttributes | SummarizingAttributes;
 }
 
 export interface IBackgroundTasks {

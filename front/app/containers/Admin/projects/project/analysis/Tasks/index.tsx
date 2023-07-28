@@ -15,10 +15,14 @@ const Tasks = () => {
             return (
               <Box p="24px" key={task.id}>
                 <div>{task.attributes.type}</div>
+                {task.attributes.type === 'auto_tagging_task' && (
+                  <div>{task.attributes.auto_tagging_method}</div>
+                )}
                 <div>{task.attributes.progress}</div>
                 <div>{task.attributes.state}</div>
-                <div>{task.attributes.created_at}</div>
-                <div>{task.attributes?.auto_tagging_method}</div>
+                <div>Triggered: {task.attributes.created_at}</div>
+                <div>Started: {task.attributes.started_at}</div>
+                <div>Ended: {task.attributes.ended_at}</div>
               </Box>
             );
           })}

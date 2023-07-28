@@ -13,10 +13,12 @@ module Analysis
 
       @analysis.inputs
         .order(published_at: :asc)
-        .each do |input|
+        .each.with_index do |input, _i|
         score = controversy_score(input)
         Tagging.find_or_create_by!(input_id: input.id, tag: tag) if score > THRESHOLD
       end
+    rescue StandardError => e
+      raise AutoTaggingFailedError, e
     end
 
     private

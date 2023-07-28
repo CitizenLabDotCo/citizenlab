@@ -25,7 +25,8 @@ module Analysis
       begin
         run
         task.set_succeeded!
-      rescue AutoTaggingFailedError => _e
+      rescue AutoTaggingFailedError => e
+        ErrorReporter.report(e)
         task.set_failed!
       end
     end

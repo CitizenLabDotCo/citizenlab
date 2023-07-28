@@ -19,6 +19,7 @@ module Analysis
     def set_in_progress!
       self.state = 'in_progress'
       self.started_at = Time.now
+      save!
     end
 
     def set_succeeded!
@@ -35,10 +36,14 @@ module Analysis
       save!
     end
 
+    def task_type
+      self.class.name.demodulize.underscore
+    end
+
     private
 
     def progress_nil_when_not_in_progress
-      if state == 'in_progress' && !progress.nil?
+      if state != 'in_progress' && !progress.nil?
         errors.add(:progress, :cant_be_set_if_not_in_progress, message: 'Progress can\'t be a number while the task is not in progress')
       end
     end
