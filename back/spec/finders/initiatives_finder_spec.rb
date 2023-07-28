@@ -9,9 +9,7 @@ describe InitiativesFinder do
   let(:options) { {} }
   let(:params) { {} }
 
-  before_all do
-    create_list(:initiative, 3)
-  end
+  before { create_list(:initiative, 3, assignee: create(:admin)) }
 
   context 'without passing params' do
     it 'returns all initiatives' do
@@ -60,14 +58,24 @@ describe InitiativesFinder do
   end
 
   describe '#assignee_condition' do
-    let(:assignee_id) { create(:user).id }
+    let(:assignee) { create(:admin) }
+    let!(:unassigned_initiatives) { create_list(:initiative, 2, assignee: nil) }
+    let!(:assigned_initiatives) { create_list(:initiative, 3, assignee: assignee) }
 
-    before do
-      params[:assignee] = assignee_id
+    describe 'filtering on an assignee ID' do
+      let(:params) { { assignee: assignee.id } }
+
+      it 'returns the correct records' do
+        expect(record_ids).to match_array assigned_initiatives.map(&:id)
+      end
     end
 
-    it 'filters by assignee' do
-      expect(record_ids).to eq Initiative.where(assignee_id: assignee_id).pluck(:id)
+    describe 'filtering on unassigned' do
+      let(:params) { { assignee: 'unassigned' } }
+
+      it 'returns the correct records' do
+        expect(record_ids).to match_array unassigned_initiatives.map(&:id)
+      end
     end
   end
 

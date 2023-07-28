@@ -5,25 +5,27 @@ require 'rails_helper'
 describe IdeasFinder do
   subject(:result) { described_class.new(params, **options) }
 
-  let(:params) { {} }
   let(:options) { {} }
   let(:result_record_ids) { result.find_records.pluck(:id) }
   let(:assignee) { create(:admin) }
-
-  before do
-    create_list(:idea, 5)
-    create_list(:assigned_idea, 3, assignee: assignee)
-  end
+  let!(:unassigned_ideas) { create_list(:idea, 2) }
+  let!(:assigned_ideas) { create_list(:idea, 3, assignee: assignee) }
 
   describe '#assignee_condition' do
-    let(:expected_record_ids) { Idea.where(assignee_id: assignee.id).pluck(:id) }
+    describe 'filtering on an assignee ID' do
+      let(:params) { { assignee: assignee.id } }
 
-    before do
-      params[:assignee] = assignee.id
+      it 'returns the correct records' do
+        expect(result_record_ids).to match_array assigned_ideas.map(&:id)
+      end
     end
 
-    it 'returns the correct records' do
-      expect(result_record_ids).to match_array expected_record_ids
+    describe 'filtering on unassigned' do
+      let(:params) { { assignee: 'unassigned' } }
+
+      it 'returns the correct records' do
+        expect(result_record_ids).to match_array unassigned_ideas.map(&:id)
+      end
     end
   end
 end
