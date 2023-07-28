@@ -47,7 +47,8 @@ describe SortByParamsService do
         create(:idea, project: timeline_project, **attributes)
       end
     end
-    let(:result_record_ids) { service.sort_ideas(Idea.where(id: ideas.map(&:id)), params, user).pluck(:id) }
+    let(:idea_scope) { Idea.where(id: ideas) }
+    let(:result_record_ids) { service.sort_ideas(idea_scope, params, user).pluck(:id) }
 
     describe 'new' do
       let(:sort) { 'new' }
@@ -105,19 +106,23 @@ describe SortByParamsService do
 
     describe 'trending' do
       let(:sort) { 'trending' }
-      let(:expected_record_ids) { [ideas[0].id, ideas[2].id, ideas[1].id] }
 
       it 'returns the ids in trending order' do
-        expect(result_record_ids).to eq expected_record_ids
+        sorted_scope = idea_scope.order(created_at: :desc)
+        expect_any_instance_of(TrendingIdeaService)
+          .to receive(:sort_trending).with(idea_scope).and_return(sorted_scope)
+        expect(result_record_ids).to eq(sorted_scope.ids)
       end
     end
 
     describe '-trending' do
       let(:sort) { '-trending' }
-      let(:expected_record_ids) { [ideas[1].id, ideas[2].id, ideas[0].id] }
 
       it 'returns the ids in reverse trending order' do
-        expect(result_record_ids).to eq expected_record_ids
+        sorted_scope = idea_scope.order(created_at: :desc)
+        expect_any_instance_of(TrendingIdeaService)
+          .to receive(:sort_trending).with(idea_scope).and_return(sorted_scope)
+        expect(result_record_ids).to eq(sorted_scope.ids.reverse)
       end
     end
 
