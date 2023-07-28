@@ -7,7 +7,15 @@ export interface ITagParams {
   analysisId: string;
 }
 
-export type TagType = 'custom';
+export const tagTypes = [
+  'custom',
+  'language',
+  'platform_topic',
+  'nlp_topic',
+  'sentiment',
+  'controversial',
+] as const;
+export type TagType = (typeof tagTypes)[number];
 
 export interface ITagData {
   id: string;

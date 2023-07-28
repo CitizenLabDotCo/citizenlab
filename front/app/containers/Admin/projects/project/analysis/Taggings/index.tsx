@@ -25,7 +25,7 @@ const Taggings = ({ inputId }: { inputId: string }) => {
   );
 
   return (
-    <Box display="flex" gap="8px">
+    <Box display="flex" gap="8px" flexWrap="wrap">
       {tags?.data?.map((tag) => {
         const taggingForTag = taggingsForInput?.find(
           (tagging) => tagging.relationships.tag.data.id === tag.id

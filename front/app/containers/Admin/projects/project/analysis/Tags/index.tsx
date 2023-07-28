@@ -24,6 +24,8 @@ import RenameTagModal from './RenameTagModal';
 import Tag from './Tag';
 import styled from 'styled-components';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { handleArraySearchParam } from '../util';
+import AutotaggingModal from './AutotaggingModal';
 
 const TagContainer = styled.div`
   display: flex;
@@ -44,6 +46,8 @@ const TagContainer = styled.div`
 const Tags = () => {
   const [name, setName] = useState('');
   const [renameTagModalOpenedId, setRenameTagModalOpenedId] = useState('');
+  const [autotaggingModalIsOpened, setAutotaggingModalIsOpened] =
+    useState(false);
   const [search] = useSearchParams();
 
   const { formatMessage } = useIntl();
@@ -91,13 +95,19 @@ const Tags = () => {
     updateSearchParams({ tag_ids: [id] });
   };
 
-  const selectedTags = search.get('tag_ids')
-    ? JSON.parse(search.get('tag_ids') as string)
-    : undefined;
-
+  const selectedTags = handleArraySearchParam(search, 'tag_ids');
   return (
     <Box>
       <Box>
+        <Button
+          onClick={() => setAutotaggingModalIsOpened(true)}
+          icon="flash"
+          mb="12px"
+          size="s"
+          buttonStyle="secondary-outlined"
+        >
+          Auto-tagging
+        </Button>
         <Box display="flex" alignItems="center" mb="8px" as="form">
           <Input
             type="text"
@@ -173,6 +183,14 @@ const Tags = () => {
           </TagContainer>
         ))}
       </Box>
+      <Modal
+        opened={autotaggingModalIsOpened}
+        close={() => setAutotaggingModalIsOpened(false)}
+      >
+        <AutotaggingModal
+          onCloseModal={() => setAutotaggingModalIsOpened(false)}
+        />
+      </Modal>
     </Box>
   );
 };

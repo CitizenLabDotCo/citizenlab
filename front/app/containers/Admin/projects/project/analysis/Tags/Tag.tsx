@@ -12,7 +12,7 @@ type TagProps = {
   };
 };
 
-const TagTypeColorMap: Record<
+export const TagTypeColorMap: Record<
   TagType,
   {
     background: string;
@@ -22,6 +22,26 @@ const TagTypeColorMap: Record<
   custom: {
     background: colors.green100,
     text: colors.green700,
+  },
+  controversial: {
+    background: colors.red100,
+    text: colors.red600,
+  },
+  language: {
+    background: colors.teal100,
+    text: colors.teal700,
+  },
+  nlp_topic: {
+    background: colors.grey100,
+    text: colors.grey700,
+  },
+  platform_topic: {
+    background: colors.coolGrey300,
+    text: colors.coolGrey700,
+  },
+  sentiment: {
+    background: colors.black,
+    text: colors.white,
   },
 };
 
