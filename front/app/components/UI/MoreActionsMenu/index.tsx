@@ -116,6 +116,7 @@ export interface Props {
   className?: string;
   color?: string;
   id?: string;
+  'data-cy'?: string;
 }
 
 const MoreActionsMenu = (props: Props) => {
@@ -198,6 +199,7 @@ const MoreActionsMenu = (props: Props) => {
           onClick={toggleMenu}
           aria-expanded={visible}
           id={id}
+          data-cy={props['data-cy']}
           className="e2e-more-actions"
           data-testid="moreOptionsButton"
         >

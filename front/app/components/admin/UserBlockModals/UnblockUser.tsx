@@ -11,6 +11,7 @@ import messages from './messages';
 // services
 import { IUserData } from 'api/users/types';
 import useUnblockUser from 'api/blocked_users/useUnblockUser';
+import { getFullName } from 'utils/textUtils';
 
 type Props = {
   open: boolean;
@@ -33,7 +34,7 @@ export default ({ open, setClose, user }: Props) => {
     <Modal width={400} close={setClose} opened={open}>
       <Title variant="h3" m="35px 0 30px">
         {formatMessage(messages.confirmUnblock, {
-          name: `${user.attributes.first_name} ${user.attributes.last_name}`,
+          name: getFullName(user),
         })}
       </Title>
       <Button mb="20px" data-testid="unblockBtn" onClick={handleOnClick}>

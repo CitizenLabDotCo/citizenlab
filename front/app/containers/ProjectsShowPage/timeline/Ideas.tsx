@@ -74,8 +74,10 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
   );
 
   const participationMethod = phase.attributes.participation_method;
+  const isVotingContext = participationMethod === 'voting';
+
   if (
-    !(participationMethod === 'ideation' || participationMethod === 'budgeting')
+    !(participationMethod === 'ideation' || participationMethod === 'voting')
   ) {
     return null;
   }
@@ -87,18 +89,20 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
       id="project-ideas"
       className={`e2e-timeline-project-idea-cards ${className || ''}`}
     >
-      <StyledProjectPageSectionTitle>
-        <FormattedMessage
-          {...getInputTermMessage(inputTerm, {
-            idea: messages.ideas,
-            option: messages.options,
-            project: messages.projects,
-            question: messages.questions,
-            issue: messages.issues,
-            contribution: messages.contributions,
-          })}
-        />
-      </StyledProjectPageSectionTitle>
+      {!isVotingContext && (
+        <StyledProjectPageSectionTitle>
+          <FormattedMessage
+            {...getInputTermMessage(inputTerm, {
+              idea: messages.ideas,
+              option: messages.options,
+              project: messages.projects,
+              question: messages.questions,
+              issue: messages.issues,
+              contribution: messages.contributions,
+            })}
+          />
+        </StyledProjectPageSectionTitle>
+      )}
       <IdeaCardsWithoutFiltersSidebar
         ideaQueryParameters={ideaQueryParameters}
         onUpdateQuery={updateSearchParams}
@@ -107,11 +111,10 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
         showViewToggle={true}
         defaultSortingMethod={ideaQueryParameters.sort || null}
         defaultView={phase.attributes.presentation_mode}
-        participationMethod={participationMethod}
-        participationContextId={phase.id}
-        participationContextType="phase"
         invisibleTitleMessage={messages.a11y_titleInputsPhase}
         phaseId={phase.id}
+        showDropdownFilters={isVotingContext ? false : true}
+        showSearchbar={isVotingContext ? false : true}
       />
     </Container>
   );

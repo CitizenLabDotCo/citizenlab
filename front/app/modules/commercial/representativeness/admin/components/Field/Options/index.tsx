@@ -26,7 +26,7 @@ import {
 
 // typings
 import { FormValues } from '../../../utils/form';
-import { Bins } from '../../../services/referenceDistribution';
+import { Bins } from '../../../api/reference_distribution/types';
 
 interface Props {
   userCustomFieldId: string;

@@ -8,7 +8,9 @@ import { categoricalColorScheme } from 'components/admin/Graphs/styling';
 // utils
 import { roundPercentages } from 'utils/math';
 
-export const parsePieData = (data: Response['data']): PieRow[] | null => {
+export const parsePieData = (
+  data: Response['data']['attributes']
+): PieRow[] | null => {
   if (data.length === 0) return null;
 
   const percentages = roundPercentages(
@@ -24,7 +26,7 @@ export const parsePieData = (data: Response['data']): PieRow[] | null => {
 };
 
 export const parseExcelData = (
-  data: Response['data'],
+  data: Response['data']['attributes'],
   translations: Translations
 ): XlsxData | null => {
   if (data.length === 0) return null;

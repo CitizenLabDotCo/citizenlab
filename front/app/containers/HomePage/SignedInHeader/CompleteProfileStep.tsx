@@ -8,7 +8,7 @@ import { Left, Right, Text, HeaderContent, Icons, StyledAvatar } from './';
 import { Icon } from '@citizenlab/cl2-component-library';
 
 // services
-import { OnboardingCampaignName } from 'services/onboardingCampaigns';
+import { OnboardingCampaignName } from 'api/onboarding_campaigns/types';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';

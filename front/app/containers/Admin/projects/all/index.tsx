@@ -15,9 +15,9 @@ import { isProjectFolderModerator } from 'services/permissions/rules/projectFold
 // components
 import CreateProject from './CreateProject';
 import PageWrapper from 'components/admin/PageWrapper';
-import { PageTitle, SectionDescription } from 'components/admin/Section';
+import { SectionDescription } from 'components/admin/Section';
 import HasPermission from 'components/HasPermission';
-import { Spinner } from '@citizenlab/cl2-component-library';
+import { Spinner, Title } from '@citizenlab/cl2-component-library';
 import Outlet from 'components/Outlet';
 
 const ModeratorProjectList = React.lazy(
@@ -78,9 +78,9 @@ const AdminProjectsList = memo(({ className }: Props) => {
       <CreateAndEditProjectsContainer
         className={containerOutletRendered ? 'hidden' : ''}
       >
-        <PageTitle>
+        <Title color="primary">
           <FormattedMessage {...messages.overviewPageTitle} />
-        </PageTitle>
+        </Title>
 
         <SectionDescription>
           <HasPermission

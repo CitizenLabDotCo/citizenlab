@@ -705,7 +705,7 @@ models:
       en: Test group permissions with me Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
     presentation_mode: card
-    participation_method: budgeting
+    participation_method: voting
     process_type: continuous
     admin_publication_attributes:
       publication_status: published
@@ -716,7 +716,8 @@ models:
     reacting_enabled: true
     reacting_like_method: unlimited
     reacting_like_limited_max: 10
-    max_budget: 100000
+    voting_method: budgeting
+    voting_max_total: 100000
   - &charliesPb
     title_multiloc:
       en: Charlie Participatory Budgeting
@@ -731,7 +732,7 @@ models:
       en: Test group permissions with me Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
     presentation_mode: card
-    participation_method: budgeting
+    participation_method: voting
     process_type: continuous
     admin_publication_attributes:
       publication_status: published
@@ -742,7 +743,8 @@ models:
     reacting_enabled: true
     reacting_like_method: unlimited
     reacting_like_limited_max: 10
-    max_budget: 100000
+    voting_method: budgeting
+    voting_max_total: 100000
   - &verifiedPb
     title_multiloc:
       en: Verified Participatory Budgeting
@@ -757,7 +759,7 @@ models:
       en: Test group permissions with me Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
     presentation_mode: card
-    participation_method: budgeting
+    participation_method: voting
     process_type: continuous
     admin_publication_attributes:
       publication_status: published
@@ -768,7 +770,8 @@ models:
     reacting_enabled: true
     reacting_like_method: unlimited
     reacting_like_limited_max: 10
-    max_budget: 100000
+    voting_method: budgeting
+    voting_max_total: 100000
   - &project2
     title_multiloc:
       en: Test project 2 timeline
@@ -7172,6 +7175,8 @@ models:
     start_at_timediff: -1440
     end_at_timediff: 1440
     participation_method: ideation
+    campaigns_settings:
+      project_phase_started: true
     created_at: '2018-03-28 13:35:05'
     updated_at: '2018-03-28 13:35:05'
     posting_enabled: true
@@ -7202,6 +7207,8 @@ models:
     start_at_timediff: -4320
     end_at_timediff: -2880
     participation_method: ideation
+    campaigns_settings:
+      project_phase_started: true
     created_at: '2018-03-28 13:35:05'
     updated_at: '2018-03-28 13:35:05'
     posting_enabled: false
@@ -7231,6 +7238,8 @@ models:
     start_at_timediff: -6226
     end_at_timediff: -5978
     participation_method: survey
+    campaigns_settings:
+      project_phase_started: true
     created_at: '2018-03-28 13:35:05'
     updated_at: '2018-03-28 13:35:05'
     posting_enabled: true
@@ -7263,7 +7272,9 @@ models:
     project_ref: *project1
     start_at_timediff: -5678
     end_at_timediff: -4760
-    participation_method: budgeting
+    participation_method: voting
+    campaigns_settings:
+      project_phase_started: true
     created_at: '2018-03-28 13:35:05'
     updated_at: '2018-03-28 13:35:05'
     posting_enabled: false
@@ -7271,7 +7282,8 @@ models:
     reacting_enabled: false
     reacting_like_method: unlimited
     reacting_like_limited_max: 10
-    max_budget: 100000
+    voting_method: budgeting
+    voting_max_total: 100000
   - &project1futureIdeation
     title_multiloc:
       en: Future Ideation
@@ -7292,6 +7304,8 @@ models:
     start_at_timediff: 2280
     end_at_timediff: 3798
     participation_method: ideation
+    campaigns_settings:
+      project_phase_started: true
     created_at: '2018-03-28 13:35:05'
     updated_at: '2018-03-28 13:35:05'
     posting_enabled: true
@@ -7310,6 +7324,8 @@ models:
     start_at: 2018-06-22
     end_at: 2018-08-21
     participation_method: poll
+    campaigns_settings:
+      project_phase_started: true
     created_at: '2018-03-28 13:35:05'
     updated_at: '2018-03-28 13:35:05'
   - &42
@@ -7335,6 +7351,8 @@ models:
     start_at: 2017-10-22
     end_at: 2017-10-28
     participation_method: ideation
+    campaigns_settings:
+      project_phase_started: true
     created_at: '2018-03-28 13:35:07'
     updated_at: '2018-03-28 13:35:07'
     posting_enabled: false
@@ -7366,6 +7384,8 @@ models:
     start_at_timediff: -1440
     end_at_timediff: 1440
     participation_method: ideation
+    campaigns_settings:
+      project_phase_started: true
     created_at: '2018-03-28 13:35:07'
     updated_at: '2018-03-28 13:35:07'
     posting_enabled: true
@@ -7392,6 +7412,8 @@ models:
     start_at: 2017-11-20
     end_at: 2017-12-12
     participation_method: information
+    campaigns_settings:
+      project_phase_started: true
     created_at: '2018-03-28 13:35:07'
     updated_at: '2018-03-28 13:35:07'
     posting_enabled: true
@@ -7420,6 +7442,8 @@ models:
     start_at: 2017-12-13
     end_at: 2017-12-25
     participation_method: ideation
+    campaigns_settings:
+      project_phase_started: true
     created_at: '2018-03-28 13:35:08'
     updated_at: '2018-03-28 13:35:08'
     posting_enabled: true
@@ -7452,6 +7476,8 @@ models:
     start_at: 2017-12-26
     end_at: 2018-01-12
     participation_method: ideation
+    campaigns_settings:
+      project_phase_started: true
     created_at: '2018-03-28 13:35:08'
     updated_at: '2018-03-28 13:35:08'
     posting_enabled: true
@@ -7479,6 +7505,8 @@ models:
     start_at: 2018-01-13
     end_at: 2018-02-12
     participation_method: information
+    campaigns_settings:
+      project_phase_started: true
     created_at: '2018-03-28 13:35:08'
     updated_at: '2018-03-28 13:35:08'
     posting_enabled: true
@@ -7507,6 +7535,8 @@ models:
     start_at: 2018-02-13
     end_at: 2018-03-15
     participation_method: ideation
+    campaigns_settings:
+      project_phase_started: true
     created_at: '2018-03-28 13:35:08'
     updated_at: '2018-03-28 13:35:08'
     posting_enabled: true
@@ -7532,6 +7562,8 @@ models:
     start_at: 2018-03-16
     end_at: 2018-04-06
     participation_method: ideation
+    campaigns_settings:
+      project_phase_started: true
     created_at: '2018-03-28 13:35:08'
     updated_at: '2018-03-28 13:35:08'
     posting_enabled: true
@@ -7560,6 +7592,8 @@ models:
     start_at: 2018-04-07
     end_at: 2018-04-20
     participation_method: ideation
+    campaigns_settings:
+      project_phase_started: true
     created_at: '2018-03-28 13:35:08'
     updated_at: '2018-03-28 13:35:08'
     posting_enabled: false
@@ -7587,6 +7621,8 @@ models:
     start_at: 2018-04-21
     end_at: 2018-04-26
     participation_method: ideation
+    campaigns_settings:
+      project_phase_started: true
     created_at: '2018-03-28 13:35:08'
     updated_at: '2018-03-28 13:35:08'
     posting_enabled: true
@@ -7614,6 +7650,8 @@ models:
     start_at: 2018-02-09
     end_at: 2018-02-25
     participation_method: information
+    campaigns_settings:
+      project_phase_started: true
     created_at: '2018-03-28 13:35:09'
     updated_at: '2018-03-28 13:35:09'
     posting_enabled: true
@@ -7644,6 +7682,8 @@ models:
     start_at: 2018-02-26
     end_at: 2018-03-18
     participation_method: information
+    campaigns_settings:
+      project_phase_started: true
     created_at: '2018-03-28 13:35:09'
     updated_at: '2018-03-28 13:35:09'
     posting_enabled: true
@@ -7673,6 +7713,8 @@ models:
     start_at: 2018-03-19
     end_at: 2018-04-08
     participation_method: ideation
+    campaigns_settings:
+      project_phase_started: true
     created_at: '2018-03-28 13:35:09'
     updated_at: '2018-03-28 13:35:09'
     posting_enabled: true
@@ -8014,7 +8056,7 @@ models:
       permitted_by: groups
       permission_scope_ref: *verifiedPoll
     - &114
-      action: budgeting
+      action: voting
       permitted_by: groups
       permission_scope_ref: *verifiedPb
     - &115
@@ -8034,7 +8076,7 @@ models:
       permitted_by: everyone_confirmed_email
       permission_scope_ref: *charliesIdeation
     - &1114
-      action: budgeting
+      action: voting
       permitted_by: groups
       permission_scope_ref: *charliesPb
     - &1115

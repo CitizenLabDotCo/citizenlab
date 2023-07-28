@@ -31,6 +31,9 @@ module IdeaCustomFields
     def index
       authorize CustomField.new(resource: @custom_form), :index?, policy_class: IdeaCustomFieldPolicy
       fields = IdeaCustomFieldsService.new(@custom_form).all_fields
+
+      fields = fields.filter(&:support_free_text_value?) if params[:support_free_text_value].present?
+
       render json: ::WebApi::V1::CustomFieldSerializer.new(
         fields,
         params: serializer_params(@custom_form),
@@ -94,7 +97,7 @@ module IdeaCustomFields
             option_temp_ids_to_ids_mapping_in_field_logic = update_options! field, options_params, errors, index
             option_temp_ids_to_ids_mapping.merge! option_temp_ids_to_ids_mapping_in_field_logic
           end
-          field.move_to_bottom
+          field.set_list_position(index)
         end
         raise UpdateAllFailedError, errors if errors.present?
       end

@@ -7,19 +7,25 @@ export type QueryParameters = ProjectId & Dates;
 
 // Response
 export type Response = {
-  data: [[FeedbackRow], StatusRow[]];
+  data: {
+    type: 'analytics';
+    attributes: [[FeedbackRow], StatusRow[]];
+  };
 };
 
 export type EmptyResponse = {
-  data: [
-    {
-      sum_feedback_none: null;
-      sum_feedback_official: null;
-      sum_feedback_status_change: null;
-      avg_feedback_time_taken: null;
-    },
-    []
-  ];
+  data: {
+    type: 'analytics';
+    attributes: [
+      {
+        sum_feedback_none: null;
+        sum_feedback_official: null;
+        sum_feedback_status_change: null;
+        avg_feedback_time_taken: null;
+      },
+      []
+    ];
+  };
 };
 
 export interface FeedbackRow {

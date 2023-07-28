@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
 
-// services
-import { createReport } from 'services/reports';
-
 // components
 import Modal from 'components/UI/Modal';
 import {
@@ -28,6 +25,7 @@ import messages from './messages';
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { IOption } from 'typings';
 
+import useAddReport from 'api/reports/useAddReport';
 interface Props {
   open: boolean;
   onClose: () => void;
@@ -46,14 +44,15 @@ const RadioLabel = ({ message }: RadioLabelProps) => (
 );
 
 const reportTitleIsTaken = (error: any) => {
-  return error?.json?.errors?.name?.[0]?.error === 'taken';
+  return error?.errors?.name?.[0]?.error === 'taken';
 };
 
 const CreateReportModal = ({ open, onClose }: Props) => {
+  const { mutate: createReport, isLoading } = useAddReport();
   const [reportTitle, setReportTitle] = useState('');
   const [template, setTemplate] = useState<Template>('blank');
   const [selectedProject, setSelectedProject] = useState<string | undefined>();
-  const [loading, setLoading] = useState(false);
+
   const [errorMessage, setErrorMessage] = useState<string | undefined>();
   const { formatMessage } = useIntl();
   const reportTitleTooShort = reportTitle.length <= 2;
@@ -72,30 +71,30 @@ const CreateReportModal = ({ open, onClose }: Props) => {
 
   const onCreateReport = async () => {
     if (blockSubmit) return;
-    setLoading(true);
     setErrorMessage(undefined);
 
-    try {
-      const report = await createReport(reportTitle);
-      setLoading(false);
+    createReport(
+      { name: reportTitle },
+      {
+        onSuccess: (report) => {
+          const route = '/admin/reporting/report-builder';
+          const path = `${route}/${report.data.id}/editor`;
+          const params =
+            template === 'project' && selectedProject
+              ? `?projectId=${selectedProject}`
+              : '';
 
-      const route = '/admin/reporting/report-builder';
-      const path = `${route}/${report.data.id}/editor`;
-      const params =
-        template === 'project' && selectedProject
-          ? `?projectId=${selectedProject}`
-          : '';
-
-      clHistory.push(path + params);
-    } catch (e) {
-      if (reportTitleIsTaken(e)) {
-        setErrorMessage(formatMessage(messages.reportTitleAlreadyExists));
-      } else {
-        setErrorMessage(formatMessage(messages.anErrorOccurred));
+          clHistory.push(path + params);
+        },
+        onError: (e) => {
+          if (reportTitleIsTaken(e)) {
+            setErrorMessage(formatMessage(messages.reportTitleAlreadyExists));
+          } else {
+            setErrorMessage(formatMessage(messages.anErrorOccurred));
+          }
+        },
       }
-
-      setLoading(false);
-    }
+    );
   };
 
   return (
@@ -118,7 +117,7 @@ const CreateReportModal = ({ open, onClose }: Props) => {
           type="text"
           label={formatMessage(messages.createReportModalInputLabel)}
           onChange={setReportTitle}
-          disabled={loading}
+          disabled={isLoading}
         />
         <Box as="fieldset" border="0px" width="100%" p="0px" mt="28px">
           <Label>{formatMessage(messages.reportTemplate)}</Label>
@@ -160,8 +159,8 @@ const CreateReportModal = ({ open, onClose }: Props) => {
           width="auto"
           mt="40px"
           mb="40px"
-          disabled={blockSubmit || loading}
-          processing={loading}
+          disabled={blockSubmit || isLoading}
+          processing={isLoading}
           data-testid="create-report-button"
           onClick={onCreateReport}
         >

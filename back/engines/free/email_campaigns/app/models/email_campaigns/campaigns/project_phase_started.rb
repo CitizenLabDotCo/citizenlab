@@ -36,6 +36,8 @@ module EmailCampaigns
     include LifecycleStageRestrictable
     allow_lifecycle_stages only: ['active']
 
+    before_send :campaign_enabled_for_phase?
+
     recipient_filter :filter_notification_recipient
 
     def mailer_class
@@ -68,18 +70,29 @@ module EmailCampaigns
 
     def generate_commands(recipient:, activity:, time: nil)
       notification = activity.item
-      [{
-        event_payload: {
-          phase_title_multiloc: notification.phase.title_multiloc,
-          phase_description_multiloc: notification.phase.description_multiloc,
-          phase_start_at: notification.phase.start_at.iso8601,
-          phase_end_at: notification.phase.end_at.iso8601,
-          phase_url: Frontend::UrlService.new.model_to_url(notification.phase, locale: recipient.locale),
-          project_title_multiloc: notification.project.title_multiloc,
-          project_description_preview_multiloc: notification.project.description_preview_multiloc
-        },
-        delay: 8.hours.to_i
-      }]
+      if notification.phase.voting?
+        # NOTE: Voting phases send a different email
+        []
+      else
+        [{
+          event_payload: {
+            phase_title_multiloc: notification.phase.title_multiloc,
+            phase_description_multiloc: notification.phase.description_multiloc,
+            phase_start_at: notification.phase.start_at.iso8601,
+            phase_end_at: notification.phase.end_at.iso8601,
+            phase_url: Frontend::UrlService.new.model_to_url(notification.phase, locale: recipient.locale),
+            project_title_multiloc: notification.project.title_multiloc,
+            project_description_preview_multiloc: notification.project.description_preview_multiloc
+          },
+          delay: 8.hours.to_i
+        }]
+      end
+    end
+
+    private
+
+    def campaign_enabled_for_phase?(activity:, time: nil)
+      activity.item.phase.campaigns_settings['project_phase_started']
     end
   end
 end

@@ -4,7 +4,7 @@ export type QueryParameters = ProjectId & Dates;
 
 // Response
 export interface Response {
-  data: TrafficSourcesRow[];
+  data: { type: 'analytics'; attributes: TrafficSourcesRow[] };
 }
 
 export interface TrafficSourcesRow {

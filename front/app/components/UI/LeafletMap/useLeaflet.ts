@@ -205,6 +205,17 @@ export default function useLeaflet(
       map.on('click', (event: L.LeafletMouseEvent) => {
         setLeafletMapClicked(event.latlng);
       });
+      map.on('moveend', (event: L.LeafletEvent) => {
+        const newCenter = event.target.getCenter() as L.LatLng;
+        const newCenterLat = newCenter.lat;
+        const newCenterLng = newCenter.lng;
+        setLeafletMapCenter([newCenterLat, newCenterLng]);
+      });
+
+      map.on('zoomend', (event: L.LeafletEvent) => {
+        const newZoom = event.target.getZoom() as number;
+        setLeafletMapZoom(newZoom);
+      });
     }
 
     return () => {

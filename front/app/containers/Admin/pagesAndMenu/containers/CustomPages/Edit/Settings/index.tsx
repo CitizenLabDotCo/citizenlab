@@ -1,14 +1,13 @@
 import React from 'react';
 import CustomPageSettingsForm from '../../CustomPageSettingsForm';
-import useCustomPage from 'hooks/useCustomPage';
+import useCustomPageById from 'api/custom_pages/useCustomPageById';
 import { useParams } from 'react-router-dom';
 import { isNilOrError } from 'utils/helperUtils';
-import { TCustomPageCode, updateCustomPage } from 'services/customPages';
+import { TCustomPageCode } from 'api/custom_pages/types';
 import { FormValues } from 'containers/Admin/pagesAndMenu/containers/CustomPages/CustomPageSettingsForm';
-import streams from 'utils/streams';
-import { apiEndpoint as navbarItemsEndpoint } from 'services/navbar';
 import { omit } from 'lodash-es';
 
+import useUpdateCustomPage from 'api/custom_pages/useUpdateCustomPage';
 // Pages which are not allowed to have their slug edited are linked to internally.
 // Changing them would break these links.
 // E.g. 'faq'. Search for '/pages/faq' in the front codebase to find out.
@@ -23,11 +22,12 @@ const customPageSlugAllowedToEdit: { [key in TCustomPageCode]: boolean } = {
 };
 
 const EditCustomPageSettings = () => {
+  const { mutateAsync: updateCustomPage } = useUpdateCustomPage();
   const { customPageId } = useParams() as { customPageId: string };
-  const customPage = useCustomPage({ customPageId });
+  const { data: customPage } = useCustomPageById(customPageId);
 
   if (!isNilOrError(customPage)) {
-    const hasNavbarItem = !!customPage.relationships.nav_bar_item.data?.id;
+    const hasNavbarItem = !!customPage.data.relationships.nav_bar_item.data?.id;
 
     const handleOnSubmit = async (formValues: FormValues) => {
       // the form returns one area_id as a string,
@@ -38,20 +38,16 @@ const EditCustomPageSettings = () => {
           area_ids: [formValues.area_id],
         }),
       };
-      await updateCustomPage(customPageId, omit(newFormValues, 'area_id'));
-      // navbar items are a separate stream, so manually refresh on title update
-      // to reflect changes in the user's navbar
-      if (hasNavbarItem) {
-        streams.fetchAllWith({
-          apiEndpoint: [navbarItemsEndpoint],
-        });
-      }
+      await updateCustomPage({
+        id: customPageId,
+        ...omit(newFormValues, 'area_id'),
+      });
     };
 
-    const topicIds = customPage.relationships.topics.data.map(
+    const topicIds = customPage.data.relationships.topics.data.map(
       (topicRelationship) => topicRelationship.id
     );
-    const areaIds = customPage.relationships.areas.data.map(
+    const areaIds = customPage.data.relationships.areas.data.map(
       (areaRelationship) => areaRelationship.id
     );
 
@@ -59,19 +55,19 @@ const EditCustomPageSettings = () => {
       <CustomPageSettingsForm
         mode="edit"
         defaultValues={{
-          title_multiloc: customPage.attributes.title_multiloc,
+          title_multiloc: customPage.data.attributes.title_multiloc,
           ...(hasNavbarItem && {
             nav_bar_item_title_multiloc:
-              customPage.attributes.nav_bar_item_title_multiloc,
+              customPage.data.attributes.nav_bar_item_title_multiloc,
           }),
-          slug: customPage.attributes.slug,
-          projects_filter_type: customPage.attributes.projects_filter_type,
+          slug: customPage.data.attributes.slug,
+          projects_filter_type: customPage.data.attributes.projects_filter_type,
           topic_ids: topicIds,
           area_id: areaIds[0],
         }}
         showNavBarItemTitle={hasNavbarItem}
         onSubmit={handleOnSubmit}
-        hideSlug={!customPageSlugAllowedToEdit[customPage.attributes.code]}
+        hideSlug={!customPageSlugAllowedToEdit[customPage.data.attributes.code]}
       />
     );
   }

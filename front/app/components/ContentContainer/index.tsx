@@ -33,7 +33,7 @@ const Inner = styled.div<{ maxWidth?: string | number }>`
   }
 `;
 
-interface Props {
+export interface Props {
   children?: any;
   id?: string;
   className?: string;

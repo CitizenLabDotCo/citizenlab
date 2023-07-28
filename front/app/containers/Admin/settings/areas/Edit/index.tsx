@@ -47,7 +47,6 @@ const Edit = () => {
         <AreaForm
           defaultValues={{
             title_multiloc: area.data.attributes.title_multiloc,
-            description_multiloc: area.data.attributes.description_multiloc,
           }}
           onSubmit={handleSubmit}
         />

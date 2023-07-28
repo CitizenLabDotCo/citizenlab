@@ -2,7 +2,7 @@
 
 class Cl2DataListingService
   def cl2_global_models
-    [PublicApi::ApiClient, Tenant]
+    [Tenant]
   end
 
   def cl2_schema_root_models
@@ -28,7 +28,6 @@ class Cl2DataListingService
     ActiveRecord::Base.descendants.select do |claz|
       [
         *ActiveRecord::Base.subclasses.map(&:name),
-        PublicApi::ApiClient.name,
         Tenant.name
       ].exclude? claz.name
     end.select do |claz|

@@ -76,7 +76,7 @@ export const parseStats = ([
   totalEmailsDeliveries,
   customEmailsDeliveries,
   automatedEmailsDeliveries,
-]: Response['data']): Stats => ({
+]: Response['data']['attributes']): Stats => ({
   total: totalEmailsDeliveries[0]?.count,
   custom: customEmailsDeliveries[0]?.count,
   customCampaigns: customEmailsDeliveries[0]?.count_campaign_id,

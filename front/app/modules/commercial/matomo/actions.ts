@@ -61,7 +61,7 @@ export const trackPageChange = async (path: string) => {
 
   // Sort out path and params for this pathname
   const routeMatch = matchPath(path, {
-    path: allAppPaths,
+    paths: allAppPaths,
     exact: true,
   });
 

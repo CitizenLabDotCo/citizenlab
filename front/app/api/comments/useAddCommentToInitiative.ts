@@ -25,7 +25,7 @@ const useAddCommentToInitiative = () => {
         queryKey: commentKeys.list({ initiativeId: variables.initiativeId }),
       });
       queryClient.invalidateQueries({
-        queryKey: commentKeys.list({ userId: variables.author_id }),
+        queryKey: commentKeys.list({ authorId: variables.author_id }),
       });
       queryClient.invalidateQueries({
         queryKey: initiativesKeys.item({ id: variables.initiativeId }),

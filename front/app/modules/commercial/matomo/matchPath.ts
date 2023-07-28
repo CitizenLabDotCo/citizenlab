@@ -8,7 +8,13 @@ const cache = {};
 const cacheLimit = 10000;
 let cacheCount = 0;
 
-function compilePath(path, options) {
+interface CompilePathOptions {
+  strict: boolean;
+  sensitive: boolean;
+  end: boolean;
+}
+
+function compilePath(path: string, options: CompilePathOptions) {
   const cacheKey = `${options.end}${options.strict}${options.sensitive}`;
   const pathCache = cache[cacheKey] || (cache[cacheKey] = {});
 
@@ -29,23 +35,19 @@ function compilePath(path, options) {
 /**
  * Public API for matching a URL pathname to a path.
  */
-function matchPath(pathname, options = {} as any) {
-  if (typeof options === 'string' || Array.isArray(options)) {
-    // eslint-disable-next-line no-param-reassign
-    options = { path: options };
-  }
+interface MatchPathOptions {
+  paths: string[];
+  exact: boolean;
+}
 
-  const { path, exact = false, strict = false, sensitive = false } = options;
-
-  const paths = [].concat(path);
-
+function matchPath(pathname: string, { paths, exact }: MatchPathOptions) {
   return paths.reduce((matched, path) => {
     if (!path && path !== '') return null;
     if (matched) return matched;
 
     const { regexp, keys } = compilePath(path, {
-      strict,
-      sensitive,
+      strict: false,
+      sensitive: false,
       end: exact,
     });
     const match = regexp.exec(pathname);
@@ -69,8 +71,8 @@ function matchPath(pathname, options = {} as any) {
   }, null);
 }
 
-export function getAllPathsFromRoutes(route) {
-  const res = [] as string[];
+export function getAllPathsFromRoutes(route: RouteConfiguration) {
+  const res: string[] = [];
   function makeRoute(head: string, path: string | undefined) {
     if (path?.startsWith('/')) {
       return path;

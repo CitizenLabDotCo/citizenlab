@@ -1,5 +1,5 @@
 import React from 'react';
-import { ICustomPageData } from 'services/customPages';
+import { ICustomPageData } from 'api/custom_pages/types';
 import FullWidthBannerLayout from './FullWidthBannerLayout';
 import TwoColumnLayout from './TwoColumnLayout';
 import TwoRowLayout from './TwoRowLayout';

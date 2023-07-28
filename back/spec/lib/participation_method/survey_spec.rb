@@ -11,10 +11,16 @@ RSpec.describe ParticipationMethod::Survey do
   describe '#assign_defaults_for_participation_context' do
     let(:project) { build(:continuous_project) }
 
-    it 'does not change the participation context' do
+    it 'does not change the posting_method' do
       expect do
         participation_method.assign_defaults_for_participation_context
       end.not_to change(project, :posting_method)
+    end
+
+    it 'does not change the ideas_order' do
+      expect do
+        participation_method.assign_defaults_for_participation_context
+      end.not_to change(project, :ideas_order)
     end
   end
 
@@ -45,6 +51,19 @@ RSpec.describe ParticipationMethod::Survey do
     end
   end
 
+  describe '#author_in_form?' do
+    it 'returns false for a moderator when idea_author_change is activated' do
+      SettingsService.new.activate_feature! 'idea_author_change'
+      expect(participation_method.author_in_form?(create(:admin))).to be false
+    end
+  end
+
+  describe '#budget_in_form?' do
+    it 'returns false for a moderator' do
+      expect(participation_method.budget_in_form?(create(:admin))).to be false
+    end
+  end
+
   describe '#assign_defaults' do
     it 'does not change the input' do
       participation_method.assign_defaults input
@@ -58,15 +77,31 @@ RSpec.describe ParticipationMethod::Survey do
     end
   end
 
+  describe '#posting_allowed?' do
+    it 'returns false' do
+      expect(participation_method.posting_allowed?).to be false
+    end
+  end
+
   describe '#never_update?' do
     it 'returns false' do
       expect(participation_method.never_update?).to be false
     end
   end
 
-  describe '#form_in_phase?' do
+  describe '#creation_phase?' do
     it 'returns false' do
-      expect(participation_method.form_in_phase?).to be false
+      expect(participation_method.creation_phase?).to be false
+    end
+  end
+
+  describe '#custom_form' do
+    let(:project) { context.project }
+    let(:project_form) { create(:custom_form, participation_context: context.project) }
+    let(:context) { create(:survey_phase) }
+
+    it 'returns the custom form of the project' do
+      expect(participation_method.custom_form.participation_context_id).to eq project.id
     end
   end
 
@@ -106,12 +141,13 @@ RSpec.describe ParticipationMethod::Survey do
     end
   end
 
+  its(:allowed_ideas_orders) { is_expected.to be_empty }
+  its(:supports_exports?) { is_expected.to be false }
   its(:supports_publication?) { is_expected.to be false }
   its(:supports_commenting?) { is_expected.to be false }
   its(:supports_reacting?) { is_expected.to be false }
-  its(:supports_baskets?) { is_expected.to be false }
-  its(:supports_budget?) { is_expected.to be false }
   its(:supports_status?) { is_expected.to be false }
   its(:supports_assignment?) { is_expected.to be false }
   its(:return_disabled_actions?) { is_expected.to be false }
+  its(:additional_export_columns) { is_expected.to eq [] }
 end

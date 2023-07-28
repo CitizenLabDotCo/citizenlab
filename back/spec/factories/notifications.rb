@@ -266,4 +266,25 @@ FactoryBot.define do
       notification.post.initiative_status_changes.create!(initiative_status: notification.post_status)
     end
   end
+
+  factory :voting_basket_submitted, parent: :notification, class: 'Notifications::VotingBasketSubmitted' do
+    project
+    basket
+  end
+
+  factory :voting_basket_not_submitted, parent: :notification, class: 'Notifications::VotingBasketNotSubmitted' do
+    project
+    phase
+    basket
+  end
+
+  factory :voting_last_chance, parent: :notification, class: 'Notifications::VotingLastChance' do
+    project
+    phase
+  end
+
+  factory :voting_results_published, parent: :notification, class: 'Notifications::VotingResultsPublished' do
+    project
+    phase
+  end
 end

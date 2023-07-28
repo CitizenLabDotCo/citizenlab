@@ -36,6 +36,15 @@ module AdminApi
 
       if @user.save
         SideFxUserService.new.after_create @user, nil
+
+        # The validations and hooks on the user model don't allow us to set
+        # confirm before save on creation, they'll get reset. So we're forced to
+        # do a 2nd save operation.
+        if [true, 'TRUE', 'true', '1', 1].include?(params[:confirm_email])
+          @user.confirm
+          @user.save
+        end
+
         # This uses default model serialization
         render json: @user, status: :created
       else

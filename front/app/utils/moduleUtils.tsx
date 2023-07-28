@@ -27,7 +27,6 @@ import { TVerificationStep } from 'containers/Authentication/steps/Verification/
 import { TTabName } from 'containers/Admin/projects/all/CreateProject';
 import { NavItem } from 'containers/Admin/sideBar/navItems';
 import { LatLngTuple } from 'leaflet';
-import { GetIdeaByIdChildProps } from 'resources/GetIdeaById';
 import { GetLocaleChildProps } from 'resources/GetLocale';
 import { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 import { IGroupDataAttributes, MembershipType } from 'api/groups/types';
@@ -49,6 +48,7 @@ import {
   ProjectId,
   Resolution,
 } from 'components/admin/GraphCards/typings';
+import { IIdeaData } from 'api/ideas/types';
 
 export type StatCardProps = ProjectId & Dates & Resolution;
 
@@ -169,13 +169,13 @@ export interface OutletsPropertyMap {
   };
   'app.components.Map.leafletConfig': {
     onLeafletConfigChange: (newLeafletConfig: ILeafletMapConfig) => void;
-    projectId?: string | null;
+    projectId?: string;
     centerLatLng?: LatLngTuple;
     zoomLevel?: number;
     points?: Point[];
   };
   'app.components.Map.Legend': {
-    projectId?: string | null;
+    projectId?: string;
     className?: string;
   };
   'app.components.VerificationModal.buttons': {
@@ -207,8 +207,8 @@ export interface OutletsPropertyMap {
   'app.containers.IdeasShow.left': {
     translateButtonClicked: boolean;
     onClick: () => void;
-    idea: GetIdeaByIdChildProps;
-    locale: GetLocaleChildProps;
+    idea: IIdeaData;
+    locale: Locale;
   };
   'app.components.PostShowComponents.CommentBody.translation': {
     translateButtonClicked: boolean;

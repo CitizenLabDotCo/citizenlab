@@ -33,12 +33,12 @@ resource 'Users' do
                                        '(who can, in fact, moderate the project), ' \
                                        'OR All admins + users with project moderator role ' \
                                        '(if no project ID provided)', required: false
-      parameter :is_not_project_moderator, 'Users who are not admins, nor project moderator of project, ' \
+      parameter :is_not_project_moderator, 'Users who are not project moderators of project, ' \
                                            'nor folder moderator of folder containing project (by project id), ' \
-                                           'OR Users who are not admins, nor have project moderator role ' \
+                                           'OR Users who do not have project moderator role ' \
                                            '(if no project ID provided)', required: false
-      parameter :is_not_folder_moderator, 'Users who are not admins, nor folder moderator of folder (by folder id), ' \
-                                          'OR Users who are not admins, nor have folder moderator role ' \
+      parameter :is_not_folder_moderator, 'Users who are not folder moderators of folder (by folder id), ' \
+                                          'OR Users who do not have folder moderator role ' \
                                           '(if no folder ID provided)', required: false
       example_request '[error] List all users' do
         assert_status 401
@@ -522,7 +522,7 @@ resource 'Users' do
 
             user_ids = json_parse(response_body)[:data].pluck(:id)
             expect(user_ids).to include(@user.id, @moderator_of_other_project.id, @moderator_of_other_folder.id)
-            expect(user_ids).not_to include(@admin.id, @project_moderator.id, @project_folder_moderator.id)
+            expect(user_ids).not_to include(@project_moderator.id, @project_folder_moderator.id)
           end
 
           example 'List only users who cannot moderate a specific folder' do
@@ -533,7 +533,7 @@ resource 'Users' do
             expect(user_ids).to include(
               @user.id, @project_moderator.id, @moderator_of_other_project.id, @moderator_of_other_folder.id
             )
-            expect(user_ids).not_to include(@admin.id, @project_folder_moderator.id)
+            expect(user_ids).not_to include(@project_folder_moderator.id)
           end
         end
 

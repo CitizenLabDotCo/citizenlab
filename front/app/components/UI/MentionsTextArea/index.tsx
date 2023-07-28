@@ -4,8 +4,6 @@ import { isString, isEmpty, capitalize } from 'lodash-es';
 // libraries
 import { MentionsInput, Mention } from 'react-mentions';
 
-// services
-
 // components
 import Error from 'components/UI/Error';
 
@@ -16,6 +14,8 @@ import { transparentize } from 'polished';
 
 // typings
 import { Locale } from 'typings';
+import { MentionRoles } from 'api/mentions/types';
+
 import getMentions from 'api/mentions/getMentions';
 
 const Container = styled.div`
@@ -77,6 +77,7 @@ export interface Props {
   background?: string;
   ariaLabel?: string;
   children?: React.ReactNode;
+  roles?: MentionRoles[];
 }
 
 const MentionsTextArea = ({
@@ -105,6 +106,7 @@ const MentionsTextArea = ({
   name,
   error,
   children,
+  roles,
 }: Props) => {
   const textareaElement = useRef<HTMLTextAreaElement | null>(null);
   const theme = useTheme();
@@ -208,6 +210,7 @@ const MentionsTextArea = ({
         mention: query.toLowerCase(),
         post_id: postId,
         post_type: capitalize(postType) as 'Idea' | 'Initiative',
+        roles: roles,
       };
 
       const response = await getMentions(queryParameters);

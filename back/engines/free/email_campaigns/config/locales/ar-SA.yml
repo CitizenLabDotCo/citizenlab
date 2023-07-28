@@ -16,18 +16,27 @@ ar:
       "initiative_published": نشر مُقترحي
       "invite_received": دعوة
       "invite_reminder": تذكير بالدعوة
+      "internal_comment_on_idea_assigned_to_you": تعليق داخلي على المدخلات المخصصة لي
+      "internal_comment_on_idea_you_commented_internally_on": تعليق داخلي على المدخلات التي علقت عليها داخليًا
+      "internal_comment_on_idea_you_moderate": تعليق داخلي على الإدخال في المشروع أو المجلد الذي أديره
+      "internal_comment_on_initiative_assigned_to_you": تعليق داخلي على الاقتراح المخصص لي
+      "internal_comment_on_initiative_you_commented_internally_on": تعليق داخلي على الاقتراح الذي علقت عليه داخليًا
+      "internal_comment_on_unassigned_initiative": تعليق داخلي على اقتراح غير مخصص
+      "internal_comment_on_unassigned_unmoderated_idea": تعليق داخلي على المدخلات غير المعينة في مشروع غير مُدار
+      "internal_comment_on_your_internal_comment": تعليق داخلي على تعليقي الداخلي
       "mention_in_official_feedback": ذكر في تحديث
+      "mention_in_internal_comment": أذكر في تعليق داخلي
       "new_comment_for_admin": تعليق جديد في مشروع أُشرف عليه
       "new_comment_on_commented_idea": تعليق جديد على فكرة علّقت عليها
       "new_comment_on_commented_initiative": تعليق جديد على مُقترح علّقت عليه
-      "new_comment_on_voted_idea": تعليق جديد على فكرة صوتّ لها
-      "new_comment_on_voted_initiative": تعليق جديد على مُقترح صوتّ له
+      "new_comment_on_reacted_idea": تعليق جديد على فكرة تفاعلت معها
+      "new_comment_on_reacted_initiative": تعليق جديد على اقتراح قمت بالتصويت عليه
       "new_idea_for_admin": فكرة جديدة في مشروع أُشرف عليه
       "new_initiative_for_admin": مُقترح جديد
       "official_feedback_on_commented_idea": تحديث على فكرة علقت عليها
       "official_feedback_on_commented_initiative": تحديث على مُقترح علقت عليه
-      "official_feedback_on_voted_idea": تحديث على فكرة صوتّ لها
-      "official_feedback_on_voted_initiative": تحديث على مُقترح صوتّ له
+      "official_feedback_on_reacted_idea": تحديث عن فكرة قمت بالرد عليها
+      "official_feedback_on_reacted_initiative": تحديث لمقترح قمت بالتصويت عليه
       "official_feedback_on_your_idea": تحديث على فكرتي
       "official_feedback_on_your_initiative": تحديث على مُقترحي
       "password_reset": تمت إعادة تعيين كلمة المرور
@@ -37,8 +46,8 @@ ar:
       "project_phase_upcoming": مرحلة مشروع جديدة قادمة
       "status_change_of_commented_idea": تغيرت حالة فكرة كنت قد علقت عليها
       "status_change_of_commented_initiative": تغيرت حالة مُقترح كنت قد علقت عليه
-      "status_change_of_voted_idea": تغيرت حالة فكرة كنت قد صوتّ لها
-      "status_change_of_voted_initiative": تغيرت حالة مُقترح كنت قد صوتّ له
+      "status_change_of_reacted_idea": تغيير حالة فكرة قمت بالرد عليها
+      "status_change_of_reacted_initiative": تغيير حالة اقتراح قمت بالرد عليه
       "status_change_of_your_idea": تغيرت حالة فكرتي
       "status_change_of_your_initiative": تغيرت حالة مُقترحي
       "threshold_reached_for_admin": بلغ المُقترح حد التصويت المطلوب
@@ -47,6 +56,10 @@ ar:
       "moderator_digest": نظرة عامة أسبوعية لمديري المشاريع
       "assignee_digest": نظرة عامة أسبوعية على الأفكار المعيّنة
       "user_digest": نظرة عامة أسبوعية
+      "voting_basket_submitted": تأكيد التصويت
+      "voting_basket_not_submitted": لم يتم تقديم الأصوات
+      "voting_last_chance": آخر فرصة للتصويت
+      "voting_results": نتائج التصويت
       "your_proposed_initiatives_digest": نظرة عامة أسبوعية على مُقترحاتك
     schedules:
       weekly:
@@ -215,6 +228,12 @@ ar:
       main_header: 'يتحدث الناس عنك'
       subject: 'ذكرك شخص على المنصة الخاصة بـ %{organizationName}'
       preheader: 'ذكرك %{commentAuthor} في تعليق'
+    mention_in_internal_comment:
+      cta_reply_to: 'عرض تعليق %{firstName}'
+      event_description: '%{authorNameFull} ذكرك في تعليق داخلي.'
+      subject: '%{firstName} ذكرك في تعليق داخلي.'
+      main_header: '%{authorNameFirst} ذكرك في تعليق داخلي.'
+      preheader: '%{authorNameFull} ذكرك في تعليق داخلي.'
     moderator_digest:
       subject: 'تقرير مدير المشروع الأسبوعي الخاص بك لـ%{time}'
       preheader: 'ملخص مدير المشروع لـ %{organizationName}'
@@ -255,23 +274,23 @@ ar:
       main_header: 'علّق %{authorName} على فكرتك'
       subject: 'لقد استلمت تعليقًا على المنصة الخاصة بـ %{organizationName}'
       preheader: 'ترك %{authorName} تعليقًا على فكرتك لـ %{organizationName}'
-    new_comment_on_voted_initiative:
-      commented: 'كتب %{commentAuthor}:'
-      cta_reply_to: 'اعرض هذا المُقترح'
-      event_description: 'علق %{commentAuthor} على المُقترح ''%{initiativeTitle}'' والتي قمت بالتصويت لها. انضم للنقاش على منصة %{organizationName}!'
-      main_header: '%{firstName}، هناك تعليق جديد على المُقترح التي صوّت له'
-      subject: 'هناك تعليق جديد على المُقترح التي صوّت له'
-      preheader: 'ترك %{commentAuthor} تعليقًا على المُقترح الذي قمت بالتصويت له على منصة %{organizationName}'
-    new_comment_on_voted_idea:
-      commented: 'علّق %{commentAuthor}:'
+    new_comment_on_reacted_initiative:
+      commented: '%{commentAuthor} كتب:'
+      cta_reply_to: 'اعرض هذا الاقتراح'
+      event_description: 'قام %{commentAuthor} بالتعليق على الاقتراح "%{initiativeTitle}" الذي قمت بالتصويت عليه. انضم إلى المناقشة على منصة %{organizationName}!'
+      main_header: '%{firstName}، هناك تعليق جديد على الاقتراح الذي قمت بالتصويت عليه'
+      subject: 'هناك تعليق جديد على الاقتراح الذي قمت بالتصويت عليه'
+      preheader: '%{commentAuthor} ترك تعليقًا على الاقتراح الذي قمت بالتصويت عليه على منصة %{organizationName}'
+    new_comment_on_reacted_idea:
+      commented: '%{commentAuthor} علق:'
       cta_reply_to: 'الرد على %{commentAuthor}'
       days_ago: 'قبل %{numberOfDays} يوم'
-      event_description: 'علق %{commentAuthor} على الفكرة ''%{ideaTitle}'' والتي قمت بالتصويت لها. انضم للنقاش على منصة %{organizationName}!'
-      main_header: '%{firstName}، هناك تعليق جديد على الفكرة التي صوّت لصالحها'
-      subject: 'هناك تعليق جديد على الفكرة التي صوّت لصالحها'
-      preheader: 'ترك %{commentAuthor} تعليقًا على الفكرة التي قمت بالتصويت لها على منصة %{organizationName}'
+      event_description: 'لقد علق %{commentAuthor} على الفكرة "%{ideaTitle}" التي تفاعلت معها. انضم إلى المناقشة على منصة %{organizationName}!'
+      main_header: '%{firstName}، هناك تعليق جديد على الفكرة التي تفاعلت معها'
+      subject: 'هناك تعليق جديد على الفكرة التي تفاعلت معها'
+      preheader: '%{commentAuthor} ترك تعليقًا على الفكرة التي تفاعلت معها على منصة %{organizationName}'
       today: اليوم
-      yesterday: الأمس
+      yesterday: أمس
     new_initiative_for_admin:
       by_author: 'بواسطة %{authorName}'
       commented: 'كتب %{authorFirstName}:'
@@ -298,6 +317,54 @@ ar:
       main_header: 'ردّ %{authorName} على تعليقك'
       preheader: 'رد %{authorName} على تعليقك على منصة %{organizationName}'
       replied: 'كتب %{authorFirstName}:'
+    internal_comment_on_your_internal_comment:
+      cta_reply_to: 'عرض تعليق %{firstName}'
+      event_description: '%{authorNameFull} علق على تعليقك الداخلي.'
+      subject: 'لقد تلقيت تعليقًا على تعليقك الداخلي على "%{post}"'
+      main_header: 'لقد تلقيت تعليقًا على تعليقك الداخلي على "%{post}"'
+      preheader: '%{authorName} رد على تعليقك الداخلي على ''%{post}'''
+    internal_comment_on_idea_assigned_to_you:
+      cta_reply_to: 'عرض تعليق %{firstName}'
+      event_description: '%{authorNameFull} علق داخليًا على إدخال مخصص لك.'
+      subject: '"%{post}" لديه تعليق داخلي جديد'
+      main_header: '"%{post}" لديه تعليق داخلي جديد'
+      preheader: '"%{post}" لديه تعليق داخلي جديد'
+    internal_comment_on_idea_you_commented_internally_on:
+      cta_reply_to: 'عرض تعليق %{firstName}'
+      event_description: '%{authorNameFull} علق داخليًا على إدخال قمت بالتعليق عليه داخليًا.'
+      subject: '"%{post}" لديه تعليق داخلي جديد'
+      main_header: '"%{post}" لديه تعليق داخلي جديد'
+      preheader: '"%{post}" لديه تعليق داخلي جديد'
+    internal_comment_on_idea_you_moderate:
+      cta_reply_to: 'عرض تعليق %{firstName}'
+      event_description: '%{authorNameFull} علق داخليًا على إدخال في مشروع أو مجلد تديره.'
+      subject: '"%{post}" لديه تعليق داخلي جديد'
+      main_header: '"%{post}" لديه تعليق داخلي جديد'
+      preheader: '"%{post}" لديه تعليق داخلي جديد'
+    internal_comment_on_initiative_assigned_to_you:
+      cta_reply_to: 'عرض تعليق %{firstName}'
+      event_description: '%{authorNameFull} علق داخليًا على اقتراح مخصص لك.'
+      subject: '"%{post}" لديه تعليق داخلي جديد'
+      main_header: '"%{post}" لديه تعليق داخلي جديد'
+      preheader: '"%{post}" لديه تعليق داخلي جديد'
+    internal_comment_on_initiative_you_commented_internally_on:
+      cta_reply_to: 'عرض تعليق %{firstName}'
+      event_description: '%{authorNameFull} علق داخليًا على اقتراح قمت بالتعليق عليه داخليًا.'
+      subject: '"%{post}" لديه تعليق داخلي جديد'
+      main_header: '"%{post}" لديه تعليق داخلي جديد'
+      preheader: '"%{post}" لديه تعليق داخلي جديد'
+    internal_comment_on_unassigned_initiative:
+      cta_reply_to: 'عرض تعليق %{firstName}'
+      event_description: '%{authorNameFull} علق داخليًا على اقتراح غير مخصص.'
+      subject: '"%{post}" لديه تعليق داخلي جديد'
+      main_header: '"%{post}" لديه تعليق داخلي جديد'
+      preheader: '"%{post}" لديه تعليق داخلي جديد'
+    internal_comment_on_unassigned_unmoderated_idea:
+      cta_reply_to: 'عرض تعليق %{firstName}'
+      event_description: '%{authorNameFull} علق داخليًا على إدخال غير محدد في مشروع غير مُدار.'
+      subject: '"%{post}" لديه تعليق داخلي جديد'
+      main_header: '"%{post}" لديه تعليق داخلي جديد'
+      preheader: '"%{post}" لديه تعليق داخلي جديد'
     official_feedback_on_commented_initiative:
       by_author: 'بواسطة %{authorName}'
       updated: 'كتب %{officialName}:'
@@ -306,13 +373,13 @@ ar:
       main_header: 'هناك تحديث على مُقترح قد علقت عليه'
       subject: 'تلقى مُقترح كنت قد علقت عليه تحديثًا رسميًا على المنصة الخاصة بـ %{organizationName}'
       preheader: 'ترك %{officialName} تحديثًا رسميًا حول مُقترح علقت عليه'
-    official_feedback_on_voted_idea:
-      by_author: 'بواسطة %{authorName}'
-      updated: 'كتب %{officialName}:'
+    official_feedback_on_reacted_idea:
+      by_author: 'بمقدار %{authorName}'
+      updated: '%{officialName} كتب:'
       cta_view: 'اذهب إلى هذه الفكرة'
-      event_description: 'أعطى %{officialName} تحديثًا على الفكرة ''%{ideaTitle}''. انقر الزر أدناه لمتابعة الحوار مع %{officialName}.'
-      subject: 'تلقت فكرة كنت قد صوتّ لها تحديثًا رسميًا على المنصة الخاصة بـ %{organizationName}'
-      preheader: 'ترك %{officialName} تحديثًا حول فكرة قد صوتّ لها'
+      event_description: '%{officialName} قدم تحديثًا عن فكرة "%{ideaTitle}". انقر فوق الزر أدناه للدخول إلى المحادثة مع %{officialName}.'
+      subject: 'تلقت إحدى الأفكار التي قمت بالرد عليها تحديثًا على النظام الأساسي لـ %{organizationName}'
+      preheader: 'ترك %{officialName} تحديثًا لفكرة تفاعلت معها'
       main_header: ""
     official_feedback_on_commented_idea:
       by_author: 'بواسطة %{authorName}'
@@ -330,14 +397,14 @@ ar:
       main_header: 'استلمت تحديثًا من %{organizationName}'
       subject: 'استلمت تحديثًا من %{organizationName}'
       preheader: 'ترك %{officialName} تحديثًا رسميًا حول فكرتك'
-    official_feedback_on_voted_initiative:
-      by_author: 'بواسطة %{authorName}'
-      updated: 'كتب %{officialName}:'
-      cta_view: 'اذهب إلى هذا المُقترح'
-      event_description: 'أعطى %{officialName} تحديثًا على المُقترح ''%{initiativeTitle}''. انقر الزر أدناه لمتابعة الحوار مع %{organizationName}.'
-      main_header: 'هناك تحديث على مُقترح قد صوتّ له'
-      subject: 'تلقى مُقترح كنت قد صوتّ له تحديثًا رسميًا على المنصة الخاصة بـ %{organizationName}'
-      preheader: 'ترك %{officialName} تحديثًا رسميًا حول مُقترح كنت قد صوتّ له'
+    official_feedback_on_reacted_initiative:
+      by_author: 'بمقدار %{authorName}'
+      updated: '%{officialName} كتب:'
+      cta_view: 'اذهب إلى هذا الاقتراح'
+      event_description: 'قدم %{officialName} تحديثًا للاقتراح "%{initiativeTitle}". انقر فوق الزر أدناه للدخول إلى المحادثة مع %{organizationName}.'
+      main_header: 'هناك تحديث لمقترح قمت بالتصويت عليه'
+      subject: 'تلقى الاقتراح الذي قمت بالتصويت عليه تحديثًا رسميًا على منصة %{organizationName}'
+      preheader: '%{officialName} ترك تحديثًا رسميًا لاقتراح قمت بالتصويت عليه'
     official_feedback_on_your_initiative:
       updated: 'كتب %{officialName}:'
       cta_view: 'اذهب إلى مُقترحك'
@@ -405,20 +472,20 @@ ar:
       main_header: 'لدى فكرتك حالة جديدة'
       subject: 'تم تغيير حالة فكرتك'
       preheader: 'قامت %{organizationName} بتغيير حالة فكرتك'
-    status_change_of_voted_idea:
-      status_change: 'الحالة الجديدة لهذه الفكرة هي ''%{ideaStatus}'''
+    status_change_of_reacted_idea:
+      status_change: 'الوضع الجديد لهذه الفكرة هو "%{ideaStatus}"'
       cta_view_idea: 'اذهب إلى هذه الفكرة'
-      event_description: 'قامت %{organizationName} بتحديث حالة الفكرة ''%{ideaTitle}'' على منصة المشاركة الرقمية الخاصة بها.'
-      main_header: 'تم تغيير حالة فكرة كنت قد صوتّ لها'
-      subject: 'تغيرت حالة فكرة قمت بالتصويت لها'
-      preheader: 'قامت %{organizationName} بتغيير حالة فكرة قد صوتّ لها'
-    status_change_of_voted_initiative:
-      status_change: 'الحالة الجديدة لهذا المُقترح هي ''%{initiativeStatus}'''
-      cta_view_initiative: 'اذهب إلى هذا المُقترح'
-      event_description: 'تم تحديث حالة المُقترح ''%{initiativeTitle}'' على منصة المشاركة الرقمية الخاصة بـ %{organizationName}.'
-      main_header: 'تم تغيير حالة مُقترح كنت قد صوتّ له'
-      subject: 'تغيرت حالة مُقترح قمت بالتصويت له'
-      preheader: 'تغيرت حالة مُقترح قمت بالتصويت له'
+      event_description: '%{organizationName} تحديث حالة الفكرة "%{ideaTitle}" على منصة المشاركة الرقمية الخاصة بهم.'
+      main_header: 'أصبح للفكرة التي قمت بالرد عليها مكانة جديدة'
+      subject: 'تم تغيير حالة الفكرة التي تتفاعل معها'
+      preheader: '%{organizationName} غيّر حالة الفكرة التي تفاعلت معها'
+    status_change_of_reacted_initiative:
+      status_change: 'الوضع الجديد لهذا الاقتراح هو "%{initiativeStatus}"'
+      cta_view_initiative: 'اذهب إلى هذا الاقتراح'
+      event_description: 'تم تحديث حالة الاقتراح "%{initiativeTitle}" على منصة المشاركة الرقمية %{organizationName}.'
+      main_header: 'الاقتراح الذي قمت بالتصويت عليه له وضع جديد'
+      subject: 'تم تغيير حالة الاقتراح الذي قمت بالتصويت عليه'
+      preheader: 'تم تغيير حالة الاقتراح الذي قمت بالتصويت عليه'
     status_change_of_commented_initiative:
       status_change: 'الحالة الجديدة لهذا المُقترح هي ''%{initiativeStatus}'''
       cta_view_initiative: 'اذهب إلى هذا المُقترح'
@@ -514,14 +581,53 @@ ar:
       new_votes: 'الأصوات الجديدة'
       remaining_votes: 'الأصوات المتبقية'
       remaining_days: 'الأيام المتبقية'
+    voting_basket_submitted:
+      subject: '%{organizationName}: لقد قمت بالتصويت بنجاح'
+      preheader: 'لقد قمت بالتصويت بنجاح على منصة المشاركة %{organizationName}'
+      title_basket_submitted: 'لقد قمت بالتصويت بنجاح'
+      event_description: 'شكرا على المشاركة. تم تسجيل تصويتك. قم بزيارة منصة %{organizationName} لرؤية وإدارة أصواتك.'
+      cta_see_votes_submitted: 'انظر التصويتات المقدمة'
+      cta_message: 'انقر فوق الزر أدناه للمشاركة'
+    voting_basket_not_submitted:
+      subject: '%{organizationName}: أنت لم ترسل أصواتك'
+      preheader: 'لم ترسل أصواتك على منصة المشاركة %{organizationName}'
+      title_basket_not_submitted: 'لم ترسل أصواتك'
+      event_description: 'لقد حددت بعض الخيارات لـ %{contextTitle} ولكنك لم ترسل اختيارك.'
+      cta_view_options_and_vote: 'عرض الخيارات والتصويت'
+      cta_message: 'انقر فوق الزر أدناه لتقديم الخيارات المحددة الخاصة بك'
+    voting_last_chance:
+      subject: '%{organizationName}: آخر فرصة للتصويت لـ %{phaseTitle}'
+      preheader: 'آخر فرصة للتصويت لـ %{phaseTitle} على منصة المشاركة %{organizationName}'
+      title_last_chance: 'آخر فرصة للتصويت لـ %{phaseTitle}'
+      body_1: 'تنتهي مرحلة التصويت على مشروع %{projectTitle} غدًا ، في منتصف الليل.'
+      body_2: 'الوقت ينفد ، ولاحظنا أنك لم تدلي بصوتك بعد! تصرف الآن بمجرد النقر فوق الزر أدناه للمشاركة.'
+      body_3: 'من خلال القيام بذلك ، ستتمكن من الوصول إلى مجموعة من الخيارات وستتاح لك الفرصة لتقديم مدخلاتك ، وهو أمر حاسم في تحديد مستقبل هذا المشروع.'
+      cta_vote: 'تصويت'
+    voting_results:
+      subject: '%{organizationName}: %{phaseTitle} تم الكشف عن نتائج التصويت!'
+      preheader: 'تم الكشف عن نتائج تصويت %{phaseTitle} على منصة المشاركة %{organizationName}'
+      title_results: 'تم الكشف عن %{phaseTitle} نتيجة تصويت!'
+      body_1: 'النتائج متوفرة!'
+      body_2: 'تم نشر نتائج التصويت %{phaseTitle} في منصة %{organizationName}!'
+      body_3: 'نحن نشجعك على مراجعة النتائج ومتابعة المزيد من التحديثات حول الخطوات التالية.'
+      cta_see_results: 'رؤية النتائج في النظام الأساسي'
+    voting_phase_started:
+      subject: '%{organizationName}: بدأت مرحلة التصويت لـ %{projectName}'
+      preheader: 'بدأت مرحلة التصويت لـ %{projectName} على منصة المشاركة %{organizationName}'
+      event_description: 'يطلب منك المشروع "%{projectName}" التصويت بين %{numIdeas}:'
+      cta_message: 'انقر فوق الزر أدناه للمشاركة'
+      cta_vote: 'اذهب إلى المنصة للتصويت'
     admin_labels:
       recipient_role:
+        admins: 'للمسؤولين'
         admins_and_managers: 'للمسؤولين والمديرين'
+        managers: 'للمديرين'
         registered_users: 'للمستخدمين المسجلين'
       recipient_segment:
         admins: 'المشرفون'
         admins_and_managers: 'المسؤولون والمديرون'
         admins_and_managers_managing_the_project: 'المسؤولون والمديرون الذين يديرون المشروع'
+        managers_managing_the_project: 'المدراء الذين يديرون المشروع'
         all_users: 'جميع المستخدمين'
         all_users_who_uploaded_proposals: 'جميع المستخدمين الذين قاموا بتحميل المقترحات'
         managers: 'المديرين'
@@ -539,15 +645,20 @@ ar:
         users_who_engaged_with_the_input: 'المستخدمون الذين تفاعلوا مع المدخلات'
         users_who_engaged_with_the_project: 'المستخدمون الذين شاركوا في المشروع'
         users_who_engaged_with_the_proposal: 'المستخدمون الذين تفاعلوا مع الاقتراح'
+        user_who_voted: 'المستخدم الذي صوت'
+        user_with_unsubmitted_votes: 'المستخدم الذي لم يقدم أصواتهم'
+        users_who_engaged_but_not_voted: 'المستخدمون الذين شاركوا في المشروع لكنهم لم يصوتوا'
       content_type:
         comments: 'تعليقات'
         content_moderation: 'تعديل المحتوى'
         general: 'عام'
         inputs: 'المدخلات'
+        internal_comments: 'التعليقات الداخلية'
         permissions: 'أذونات'
         projects: 'المشاريع'
         proposals: 'اقتراحات'
-        votes: 'الأصوات'
+        reactions: 'تفاعلات'
+        voting: 'التصويت'
       trigger:
         comment_is_deleted: 'تم حذف التعليق'
         comment_is_flagged_as_spam: 'تم وضع علامة على التعليق على أنه بريد عشوائي'
@@ -556,6 +667,15 @@ ar:
         input_is_flagged_as_spam: 'تم وضع علامة على الإدخال على أنه بريد عشوائي'
         input_is_updated: 'تم تحديث الإدخال'
         input_status_changes: 'تغييرات حالة الإدخال'
+        internal_comment_is_posted_on_idea_assigned_to_user: 'يتم نشر التعليق الداخلي على الإدخال المخصص للمستخدم'
+        internal_comment_is_posted_on_initiative_assigned_to_user: 'يتم نشر التعليق الداخلي على الاقتراح المخصص للمستخدم'
+        internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'يتم نشر التعليق الداخلي على الإدخال في مشروع أو مجلد يديره المستخدم'
+        internal_comment_is_posted_on_idea_user_has_commented_internally_on: 'يتم نشر التعليق الداخلي على الإدخال الذي قام المستخدم بالتعليق عليه داخليًا على'
+        internal_comment_is_posted_on_idea_user_moderates: 'يتم نشر التعليق الداخلي على مدخلات المستخدم المعتدل'
+        internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'يتم نشر التعليق الداخلي على الاقتراح الذي علق عليه المستخدم داخليًا على'
+        internal_comment_is_posted_on_unassigned_initiative: 'تم نشر التعليق الداخلي على اقتراح غير محدد'
+        internal_comment_is_posted_on_unassigned_unmoderated_idea: 'يتم نشر التعليق الداخلي على المدخلات غير المعينة في مشروع غير مُدار'
+        user_is_mentioned_in_internal_comment: 'تم ذكر المستخدم في التعليق الداخلي'
         new_input_is_published: 'تم نشر مدخلات جديدة'
         new_proposal_is_posted: 'تم نشر اقتراح جديد'
         project_phase_changes: 'تغييرات مرحلة المشروع'
@@ -575,5 +695,10 @@ ar:
         proposal_is_published: 'تم نشر الاقتراح'
         user_registers_for_the_first_time: 'يسجل المستخدم لأول مرة'
         user_replies_to_comment: 'يرد المستخدم على التعليق'
+        user_replies_to_internal_comment: 'ردود المستخدم على التعليق الداخلي'
+        voting_2_days_before_phase_closes: 'قبل يومين من انتهاء مرحلة التصويت'
+        voting_1_day_after_last_votes: 'يوم واحد بعد آخر تصويت للمستخدم'
+        voting_phase_ended: 'انتهت مرحلة التصويت'
+        voting_basket_submitted: 'يتم إرسال الأصوات'
         7_days_after_invite_is_sent: '7 أيام بعد إرسال الدعوة'
         7_days_before_the_project_changes_phase: '7 أيام قبل مرحلة تغييرات المشروع'

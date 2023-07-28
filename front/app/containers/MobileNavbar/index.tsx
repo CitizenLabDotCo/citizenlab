@@ -10,7 +10,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
-import useNavbarItems from 'hooks/useNavbarItems';
+import useNavbarItems from 'api/navbar/useNavbarItems';
 import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled.nav`
@@ -89,16 +89,16 @@ const MobileNavigation = ({
   className,
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
-  const navbarItems = useNavbarItems();
+  const { data: navbarItems } = useNavbarItems();
   const [isFullMenuOpened, setIsFullMenuOpened] = useState(false);
   const containerRef = useRef<HTMLElement>(null);
 
   if (isNilOrError(navbarItems)) return null;
 
-  const homeItem = navbarItems.find(
+  const homeItem = navbarItems.data.find(
     (navbarItem) => navbarItem.attributes.code === 'home'
   );
-  const projectsItem = navbarItems.find(
+  const projectsItem = navbarItems.data.find(
     (navbarItem) => navbarItem.attributes.code === 'projects'
   );
 

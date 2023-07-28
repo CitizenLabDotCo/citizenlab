@@ -3,28 +3,38 @@ import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWi
 import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
-import useCustomPage from 'hooks/useCustomPage';
+import useCustomPageById from 'api/custom_pages/useCustomPageById';
 import { isNilOrError } from 'utils/helperUtils';
-import { isPolicyPageSlug } from 'services/customPages';
+
 import { SectionField } from 'components/admin/Section';
-import useNavbarItem from 'hooks/useNavbarItem';
+import useNavbarItems from 'api/navbar/useNavbarItems';
+import { POLICY_PAGE, TPolicyPage } from 'api/custom_pages/types';
 
 type Props = {
   pageId: string | null;
   navbarItemId: string | null;
 };
 
+function isPolicyPageSlug(slug: string): slug is TPolicyPage {
+  const termsAndConditionsSlug: TPolicyPage = POLICY_PAGE.termsAndConditions;
+  const privacyPolicySlug: TPolicyPage = POLICY_PAGE.privacyPolicy;
+
+  return slug === termsAndConditionsSlug || slug === privacyPolicySlug;
+}
+
 const NavbarTitleField = ({
   pageId,
   navbarItemId,
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
-  const page = useCustomPage({ customPageId: pageId });
-  const navbarItem = useNavbarItem({ navbarItemId });
+  const { data: page } = useCustomPageById(pageId ?? undefined);
+  const { data: navbarItems } = useNavbarItems();
+
+  const navbarItem = navbarItems?.data.find((item) => item.id === navbarItemId);
 
   if (
     isNilOrError(page) ||
-    isPolicyPageSlug(page.attributes.slug) ||
+    isPolicyPageSlug(page.data.attributes.slug) ||
     isNilOrError(navbarItem)
   ) {
     return null;

@@ -1,6 +1,6 @@
-import 'services/homepageSettings';
+import 'api/home_page/types';
 
-declare module 'services/homepageSettings' {
+declare module 'api/home_page/types' {
   interface THomepageSettingKeyMap {
     events_widget: 'events_widget';
   }

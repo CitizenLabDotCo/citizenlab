@@ -15,12 +15,11 @@ module ParticipationContext
   include Surveys::SurveyParticipationContext
   include Volunteering::VolunteeringParticipationContext
 
-  PARTICIPATION_METHODS = %w[information ideation survey budgeting poll volunteering native_survey document_annotation].freeze
+  PARTICIPATION_METHODS = %w[information ideation survey voting poll volunteering native_survey document_annotation].freeze
+  VOTING_METHODS        = %w[budgeting multiple_voting single_voting].freeze
   PRESENTATION_MODES    = %w[card map].freeze
   POSTING_METHODS       = %w[unlimited limited].freeze
-  REACTING_METHODS = %w[unlimited limited].freeze
-  IDEAS_ORDERS = %w[trending random popular -new new].freeze
-  IDEAS_ORDERS_BUDGETING_EXCLUDE = %w[trending popular].freeze
+  REACTING_METHODS      = %w[unlimited limited].freeze
   INPUT_TERMS           = %w[idea question contribution project issue option].freeze
   DEFAULT_INPUT_TERM    = 'idea'
 
@@ -38,7 +37,7 @@ module ParticipationContext
       before_validation :set_participation_method_defaults, on: :create
       before_validation :set_presentation_mode, on: :create
 
-      # ideation? or budgeting?
+      # ideation? or voting?
       with_options if: :can_contain_ideas? do
         validates :presentation_mode,
           inclusion: { in: PRESENTATION_MODES }, allow_nil: true
@@ -50,12 +49,15 @@ module ParticipationContext
         validates :reacting_like_method, presence: true, inclusion: { in: REACTING_METHODS }
         validates :reacting_dislike_enabled, inclusion: { in: [true, false] }
         validates :reacting_dislike_method, presence: true, inclusion: { in: REACTING_METHODS }
-        validates :ideas_order, inclusion: { in: IDEAS_ORDERS }, allow_nil: true
         validates :input_term, inclusion: { in: INPUT_TERMS }
 
-        before_validation :set_ideas_order
         before_validation :set_input_term
       end
+      validates :ideas_order, inclusion: {
+        in: lambda do |pc|
+          Factory.instance.participation_method_for(pc).allowed_ideas_orders
+        end
+      }, allow_nil: true
       validates :posting_limited_max, presence: true,
         numericality: { only_integer: true, greater_than: 0 },
         if: %i[can_contain_input? posting_limited?]
@@ -72,18 +74,25 @@ module ParticipationContext
         validates :presentation_mode, presence: true
       end
 
-      # budgeting?
-      with_options if: :budgeting? do
-        validates :min_budget, presence: true
-        validates :max_budget, presence: true
-        # validates :ideas_order, exclusion: { in: IDEAS_ORDERS_BUDGETING_EXCLUDE }, allow_nil: true
+      # voting?
+      with_options if: :voting? do
+        validates :voting_method, presence: true, inclusion: { in: VOTING_METHODS }
+        validate :validate_voting
+        validates :voting_term_singular_multiloc, multiloc: { presence: false }
+        validates :voting_term_plural_multiloc, multiloc: { presence: false }
       end
-      validates :min_budget,
-        numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: :max_budget,
-                        if: %i[budgeting? max_budget] }
-      validates :max_budget,
-        numericality: { greater_than_or_equal_to: :min_budget,
-                        if: %i[budgeting? min_budget] }
+      validates :voting_min_total,
+        numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: :voting_max_total,
+                        if: %i[voting? voting_max_total],
+                        allow_nil: true }
+      validates :voting_max_total,
+        numericality: { greater_than_or_equal_to: :voting_min_total,
+                        if: %i[voting? voting_min_total],
+                        allow_nil: true }
+      validates :voting_max_votes_per_idea,
+        numericality: { greater_than_or_equal_to: 1, less_than_or_equal_to: :voting_max_total,
+                        if: %i[voting? voting_max_total],
+                        allow_nil: true }
     end
   end
 
@@ -95,12 +104,12 @@ module ParticipationContext
     participation_method == 'information'
   end
 
-  def budgeting?
-    participation_method == 'budgeting'
+  def voting?
+    participation_method == 'voting'
   end
 
   def can_contain_ideas?
-    ideation? || budgeting?
+    ideation? || voting?
   end
 
   def can_contain_input?
@@ -131,6 +140,22 @@ module ParticipationContext
     participation_method == 'native_survey'
   end
 
+  def phase?
+    instance_of?(Phase)
+  end
+
+  def voting_term_singular_multiloc_with_fallback
+    MultilocService.new.i18n_to_multiloc('voting_method.default_voting_term_singular').merge(
+      voting_term_singular_multiloc || {}
+    )
+  end
+
+  def voting_term_plural_multiloc_with_fallback
+    MultilocService.new.i18n_to_multiloc('voting_method.default_voting_term_plural').merge(
+      voting_term_plural_multiloc || {}
+    )
+  end
+
   private
 
   def timeline_project?
@@ -149,10 +174,6 @@ module ParticipationContext
     self.presentation_mode ||= 'card'
   end
 
-  def set_ideas_order
-    self.ideas_order ||= budgeting? ? 'random' : 'trending'
-  end
-
   def set_input_term
     self.input_term ||= DEFAULT_INPUT_TERM
   end
@@ -163,6 +184,10 @@ module ParticipationContext
     return if participation_method_was != 'native_survey' && participation_method != 'native_survey'
 
     errors.add :participation_method, :change_not_permitted, message: 'change is not permitted'
+  end
+
+  def validate_voting
+    Factory.instance.voting_method_for(self).validate_participation_context
   end
 end
 # rubocop:enable Metrics/ModuleLength

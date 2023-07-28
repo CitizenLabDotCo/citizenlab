@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -81,7 +81,7 @@ const CommentReplyButton = ({
   const authorLastName = author?.data.attributes.last_name;
   const authorSlug = author?.data.attributes.slug;
 
-  const reply = useCallback(() => {
+  const reply = () => {
     commentReplyButtonClicked({
       commentId,
       parentCommentId,
@@ -89,9 +89,9 @@ const CommentReplyButton = ({
       authorLastName,
       authorSlug,
     });
-  }, [commentId, parentCommentId, authorFirstName, authorLastName, authorSlug]);
+  };
 
-  const onReply = useCallback(() => {
+  const onReply = () => {
     const successAction: SuccessAction = {
       name: 'replyToComment',
       params: {
@@ -152,19 +152,7 @@ const CommentReplyButton = ({
         reply();
       }
     }
-  }, [
-    idea,
-    postType,
-    authUser,
-    commentType,
-    commentingPermissionInitiative,
-    reply,
-    commentId,
-    parentCommentId,
-    authorFirstName,
-    authorLastName,
-    authorSlug,
-  ]);
+  };
 
   const ideaCommentingDisabledReason =
     idea?.attributes.action_descriptor.commenting_idea.disabled_reason;

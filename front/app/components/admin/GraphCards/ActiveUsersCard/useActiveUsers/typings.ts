@@ -9,13 +9,16 @@ export type QueryParameters = ProjectId & Dates & Resolution;
 
 // Response
 export interface Response {
-  data: [
-    TimeSeriesResponse | [],
-    [ActiveUsersRow] | [],
-    [ActiveUsersRow] | [],
-    [VisitorsRow] | [],
-    [VisitorsRow] | []
-  ];
+  data: {
+    type: 'analytics';
+    attributes: [
+      TimeSeriesResponse | [],
+      [ActiveUsersRow] | [],
+      [ActiveUsersRow] | [],
+      [VisitorsRow] | [],
+      [VisitorsRow] | []
+    ];
+  };
 }
 
 type TimeSeriesResponse = TimeSeriesResponseRow[];

@@ -1,6 +1,6 @@
 import React, { memo, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { isEmpty, get, isNumber, round } from 'lodash-es';
+import { isEmpty, isNumber, round } from 'lodash-es';
 import moment from 'moment';
 import Observer from '@researchgate/react-intersection-observer';
 import bowser from 'bowser';
@@ -52,7 +52,7 @@ import {
 import { ScreenReaderOnly } from 'utils/a11y';
 import { rgba, darken } from 'polished';
 import { getInputTermMessage } from 'utils/i18n';
-import { getMethodConfig } from 'utils/participationMethodUtils';
+import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
 const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
   width: calc(33% - 12px);
@@ -509,6 +509,10 @@ const ProjectCard = memo<Props>(
       const participationMethod = phase
         ? phase.data.attributes.participation_method
         : project.data.attributes.participation_method;
+      const votingMethod = phase
+        ? phase.data.attributes.voting_method
+        : project.data.attributes.voting_method;
+
       const canPost = !!postingPermission.enabled;
       const canReact =
         project.data.attributes.action_descriptor.reacting_idea.enabled;
@@ -541,8 +545,8 @@ const ProjectCard = memo<Props>(
         project.data.relationships.avatars.data
           ? project.data.relationships.avatars.data.map((avatar) => avatar.id)
           : [];
-      const startAt = get(phase?.data, 'attributes.start_at');
-      const endAt = get(phase?.data, 'attributes.end_at');
+      const startAt = phase?.data.attributes.start_at;
+      const endAt = phase?.data.attributes.end_at;
       const timeRemaining = endAt
         ? moment.duration(moment(endAt).endOf('day').diff(moment())).humanize()
         : null;
@@ -596,7 +600,7 @@ const ProjectCard = memo<Props>(
           ) : null;
       }
 
-      if (participationMethod === 'budgeting') {
+      if (participationMethod === 'voting' && votingMethod === 'budgeting') {
         ctaMessage = <FormattedMessage {...messages.allocateYourBudget} />;
       } else if (participationMethod === 'information') {
         ctaMessage = <FormattedMessage {...messages.learnMore} />;
@@ -623,7 +627,7 @@ const ProjectCard = memo<Props>(
           />
         );
       } else if (participationMethod === 'ideation' && canReact) {
-        ctaMessage = <FormattedMessage {...messages.vote} />;
+        ctaMessage = <FormattedMessage {...messages.reaction} />;
       } else if (participationMethod === 'ideation' && canComment) {
         ctaMessage = <FormattedMessage {...messages.comment} />;
       } else if (participationMethod === 'ideation') {

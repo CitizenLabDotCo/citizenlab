@@ -4,10 +4,13 @@ import { ImageSizes } from 'typings';
 
 export type MentionsKeys = Keys<typeof mentionsKeys>;
 
+export type MentionRoles = 'admin' | 'moderator';
+
 export type IQueryParameters = {
   mention: string;
   post_id?: string;
   post_type?: 'Idea' | 'Initiative';
+  roles?: MentionRoles[];
 };
 
 export interface IMentionData {

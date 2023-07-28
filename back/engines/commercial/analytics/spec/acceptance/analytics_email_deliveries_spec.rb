@@ -32,7 +32,7 @@ resource 'Analytics - FactEmailDeliveries model' do
       })
 
       assert_status 200
-      expect(response_data).to eq([{ count: 4 }])
+      expect(response_data[:attributes]).to eq([{ count: 4 }])
     end
 
     example 'count custom email deliveries' do
@@ -49,7 +49,7 @@ resource 'Analytics - FactEmailDeliveries model' do
       })
 
       assert_status 200
-      expect(response_data).to eq([{ count: 1 }])
+      expect(response_data[:attributes]).to eq([{ count: 1 }])
     end
 
     example 'count email campaigns' do
@@ -63,7 +63,7 @@ resource 'Analytics - FactEmailDeliveries model' do
       })
 
       assert_status 200
-      expect(response_data).to eq([{ count_campaign_id: 3 }])
+      expect(response_data[:attributes]).to eq([{ count_campaign_id: 3 }])
     end
   end
 end

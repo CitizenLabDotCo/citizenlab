@@ -36,6 +36,10 @@ module ContentBuilder
         pg_search_scope :search_by_content_layouts, associated_against: {
           content_builder_layouts: [Arel.sql(CRAFTJS_TEXT_QUERY)]
         }, using: { tsearch: { prefix: true } }
+
+        def uses_content_builder?
+          content_builder_layouts.any?(&:enabled)
+        end
       end
 
       class_methods do

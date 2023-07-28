@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import { isDraft } from 'services/campaigns';
+import { isDraft } from 'api/campaigns/util';
 
 import { FormattedMessage } from 'utils/cl-intl';
 

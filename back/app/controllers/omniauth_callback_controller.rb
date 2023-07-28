@@ -33,7 +33,7 @@ class OmniauthCallbackController < ApplicationController
 
     url = auth_service.logout_url(provider, user)
 
-    redirect_to url
+    redirect_to url, allow_other_host: true
   rescue ActiveRecord::RecordNotFound
     redirect_to Frontend::UrlService.new.home_url
   end
@@ -43,7 +43,7 @@ class OmniauthCallbackController < ApplicationController
   # Currently, only FranceConnect and ClaveUnica use this method (support both verification and authentication).
   def auth_or_verification_callback(verify:, authver_method:)
     # If token is present, the user is already logged in, which means they try to verify not authenticate.
-    if request.env['omniauth.params']['token'] && authver_method.verification_prioritized?
+    if request.env['omniauth.params']['token'].present? && authver_method.verification_prioritized?
       # We need it only for ClaveUnica. For FC, we never verify, only authenticate (even when user clicks "verify").
       verification_callback(verify)
       # Apart from verification, we also create an identity to be able to authenticate with this provider.

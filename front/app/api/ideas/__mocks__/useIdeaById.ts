@@ -19,6 +19,7 @@ export const ideaData: IIdeaData[] = [
       likes_count: 10,
       dislikes_count: 1,
       comments_count: 2,
+      internal_comments_count: 2,
       official_feedbacks_count: 0,
       location_point_geojson: {
         type: 'Point',
@@ -57,7 +58,7 @@ export const ideaData: IIdeaData[] = [
           disabled_reason: null,
           future_enabled: null,
         },
-        budgeting: {
+        voting: {
           enabled: false,
           disabled_reason: 'not_permitted',
           future_enabled: null,
@@ -115,6 +116,7 @@ export const ideaData: IIdeaData[] = [
       likes_count: 10,
       dislikes_count: 1,
       comments_count: 2,
+      internal_comments_count: 2,
       official_feedbacks_count: 0,
       location_point_geojson: {
         type: 'Point',
@@ -153,7 +155,7 @@ export const ideaData: IIdeaData[] = [
           disabled_reason: null,
           future_enabled: null,
         },
-        budgeting: {
+        voting: {
           enabled: false,
           disabled_reason: 'not_permitted',
           future_enabled: null,

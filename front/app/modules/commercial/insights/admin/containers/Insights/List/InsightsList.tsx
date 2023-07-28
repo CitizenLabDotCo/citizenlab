@@ -6,7 +6,7 @@ import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 
 // components
-import PageTitle from 'components/admin/PageTitle';
+import { PageTitle } from 'components/admin/Section';
 import Button from 'components/UI/Button';
 import Divider from 'components/admin/Divider';
 

@@ -26,12 +26,15 @@
 #  project_folder_id             :uuid
 #  inappropriate_content_flag_id :uuid
 #  internal_comment_id           :uuid
+#  basket_id                     :uuid
 #
 # Indexes
 #
+#  index_notifications_on_basket_id                            (basket_id)
 #  index_notifications_on_created_at                           (created_at)
 #  index_notifications_on_inappropriate_content_flag_id        (inappropriate_content_flag_id)
 #  index_notifications_on_initiating_user_id                   (initiating_user_id)
+#  index_notifications_on_internal_comment_id                  (internal_comment_id)
 #  index_notifications_on_invite_id                            (invite_id)
 #  index_notifications_on_official_feedback_id                 (official_feedback_id)
 #  index_notifications_on_phase_id                             (phase_id)
@@ -44,6 +47,7 @@
 #
 # Foreign Keys
 #
+#  fk_rails_...  (basket_id => baskets.id)
 #  fk_rails_...  (comment_id => comments.id)
 #  fk_rails_...  (inappropriate_content_flag_id => flag_inappropriate_content_inappropriate_content_flags.id)
 #  fk_rails_...  (initiating_user_id => users.id)

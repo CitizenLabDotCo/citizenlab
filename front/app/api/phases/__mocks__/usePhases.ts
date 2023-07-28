@@ -24,6 +24,7 @@ export const phasesData: IPhaseData[] = [
       input_term: 'idea',
       presentation_mode: 'card',
       ideas_count: 3,
+      campaigns_settings: { project_phase_started: true },
     },
     relationships: {
       permissions: {
@@ -58,12 +59,13 @@ export const phasesData: IPhaseData[] = [
       reacting_like_method: 'limited',
       reacting_like_limited_max: 0,
       presentation_mode: 'card',
-      max_budget: 3,
+      voting_max_total: 3,
       reacting_dislike_method: 'limited',
       input_term: 'idea',
       reacting_dislike_enabled: false,
       reacting_dislike_limited_max: 0,
       ideas_count: 3,
+      campaigns_settings: { project_phase_started: true },
     },
     relationships: {
       permissions: {
@@ -100,6 +102,7 @@ export const phasesData: IPhaseData[] = [
       reacting_dislike_limited_max: 0,
       input_term: 'idea',
       ideas_count: 3,
+      campaigns_settings: { project_phase_started: true },
     },
     relationships: {
       permissions: {

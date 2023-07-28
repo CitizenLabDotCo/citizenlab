@@ -6,7 +6,12 @@ import messages from './messages';
 // typings
 import { ITabsOutlet } from 'utils/moduleUtils';
 
+import { isAdmin } from 'services/permissions/roles';
+import useAuthUser from 'api/me/useAuthUser';
+
 const Tab = ({ onData, formatMessage }: ITabsOutlet) => {
+  const { data: authUser } = useAuthUser();
+
   useEffect(
     () =>
       onData({
@@ -16,10 +21,10 @@ const Tab = ({ onData, formatMessage }: ITabsOutlet) => {
           url: '/admin/dashboard/representation',
           feature: 'representativeness',
         },
-        insertAfterName: 'users',
+        insertAfterName: isAdmin(authUser) ? 'users' : 'overview',
       }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [authUser]
   );
 
   return null;

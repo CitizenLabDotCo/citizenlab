@@ -45,7 +45,7 @@ resource 'Analytics - FactPosts model' do
         }
       })
       assert_status 200
-      expect(response_data).to match_array([
+      expect(response_data[:attributes]).to match_array([
         { 'dimension_date_created.month': '2022-09', count: 2 },
         { 'dimension_date_created.month': '2022-10', count: 1 }
       ])
@@ -65,7 +65,7 @@ resource 'Analytics - FactPosts model' do
         }
       })
       assert_status 200
-      expect(response_data).to match_array([
+      expect(response_data[:attributes]).to match_array([
         { 'dimension_date_created.month': '2022-09', count: 1 }
       ])
     end

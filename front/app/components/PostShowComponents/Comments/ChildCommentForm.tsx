@@ -2,7 +2,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, isPage } from 'utils/helperUtils';
+import { useLocation } from 'react-router-dom';
 
 // services
 import { canModerateProject } from 'services/permissions/rules/projectPermissions';
@@ -25,7 +26,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // events
@@ -115,6 +116,8 @@ const ChildCommentForm = ({
   const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser } = useAuthUser();
   const smallerThanTablet = useBreakpoint('tablet');
+  const { pathname } = useLocation();
+  const isAdminPage = isPage('admin', pathname);
 
   const {
     mutate: addCommentToIdeaComment,
@@ -130,6 +133,7 @@ const ChildCommentForm = ({
   const [profanityApiError, setProfanityApiError] = useState(false);
   const [hasApiError, setHasApiError] = useState(false);
   const [postAnonymously, setPostAnonymously] = useState(false);
+  const [tagValue, setTagValue] = useState('');
   const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
     useState(false);
   const textareaElement = useRef<HTMLTextAreaElement | null>(null);
@@ -149,6 +153,7 @@ const ChildCommentForm = ({
           const { authorFirstName, authorLastName, authorSlug } = eventValue;
           if (authorFirstName && authorLastName && authorSlug) {
             const tag = `@[${authorFirstName} ${authorLastName}](${authorSlug}) `;
+            setTagValue(tag);
             setInputValue(tag);
           }
           setFocused(true);
@@ -159,6 +164,10 @@ const ChildCommentForm = ({
       subscriptions.forEach((subscription) => subscription.unsubscribe());
     };
   }, [parentId]);
+
+  if (!authUser || isNilOrError(locale)) {
+    return null;
+  }
 
   const setCaretAtEnd = (element: HTMLTextAreaElement) => {
     if (element.setSelectionRange && element.textContent) {
@@ -203,7 +212,7 @@ const ChildCommentForm = ({
   };
 
   const continueSubmission = async () => {
-    if (!isNilOrError(locale) && !isNilOrError(authUser) && canSubmit) {
+    if (canSubmit) {
       const commentBodyMultiloc = {
         [locale]: inputValue.replace(/@\[(.*?)\]\((.*?)\)/gi, '@$2'),
       };
@@ -251,7 +260,7 @@ const ChildCommentForm = ({
                   profaneMessage: commentBodyMultiloc[locale],
                   location: 'Idea Child Comment Form (citizen side)',
                   userId: authUser.data.id,
-                  host: !isNilOrError(appConfiguration)
+                  host: appConfiguration
                     ? appConfiguration.data.attributes.host
                     : null,
                 });
@@ -295,7 +304,7 @@ const ChildCommentForm = ({
                   profaneMessage: commentBodyMultiloc[locale],
                   location: 'Initiative Child Comment Form (citizen side)',
                   userId: authUser.data.id,
-                  host: !isNilOrError(appConfiguration)
+                  host: appConfiguration
                     ? appConfiguration.data.attributes.host
                     : null,
                 });
@@ -320,16 +329,16 @@ const ChildCommentForm = ({
       });
 
       setTimeout(() => {
-        textareaElement?.current?.focus();
+        textareaElement.current?.focus();
       }, 100);
 
-      setTimeout(() => {
-        textareaElement?.current && setCaretAtEnd(textareaElement.current);
-      }, 200);
+      if (tagValue === inputValue) {
+        setTimeout(() => {
+          textareaElement.current && setCaretAtEnd(textareaElement.current);
+        }, 200);
+      }
     }
   };
-
-  const placeholder = formatMessage(messages.childCommentBodyPlaceholder);
 
   const getErrorMessage = () => {
     if (hasApiError) {
@@ -357,9 +366,11 @@ const ChildCommentForm = ({
     return null;
   };
 
-  if (!isNilOrError(authUser) && focused) {
-    const isModerator =
-      !isNilOrError(authUser) && canModerateProject(projectId, authUser);
+  if (focused) {
+    const isModerator = canModerateProject(projectId, authUser);
+    const postButtonText: MessageDescriptor = isAdminPage
+      ? messages.postPublicComment
+      : messages.publishComment;
 
     return (
       <Container className={`${className || ''} e2e-childcomment-form`}>
@@ -381,7 +392,9 @@ const ChildCommentForm = ({
               <MentionsTextArea
                 className={`childcommentform-${parentId}`}
                 name="comment"
-                placeholder={placeholder}
+                placeholder={formatMessage(
+                  messages.childCommentBodyPlaceholder
+                )}
                 rows={3}
                 postId={ideaId || initiativeId}
                 postType={postType}
@@ -437,8 +450,9 @@ const ChildCommentForm = ({
                   onClick={onSubmit}
                   disabled={!canSubmit}
                   padding={smallerThanTablet ? '6px 12px' : undefined}
+                  icon={isAdminPage ? 'users' : undefined}
                 >
-                  <FormattedMessage {...messages.publishComment} />
+                  <FormattedMessage {...postButtonText} />
                 </Button>
               </ButtonWrapper>
             </label>

@@ -117,7 +117,16 @@ module Verification
     private
 
     def make_verification(user:, method_name:, uid:)
-      raise VerificationTakenError if taken?(user, uid, method_name)
+      existing_users = existing_verified_users(user, uid, method_name)
+      taken = existing_users.present?
+
+      if taken
+        if existing_users.all?(&:blank_and_can_be_deleted?)
+          existing_users.each { |u| DeleteUserJob.perform_now(u) }
+        else
+          raise VerificationTakenError
+        end
+      end
 
       verification = ::Verification::Verification.new(
         method_name: method_name,
@@ -135,13 +144,13 @@ module Verification
       verification
     end
 
-    def taken?(user, uid, method_name)
+    def existing_verified_users(user, uid, method_name)
       ::Verification::Verification.where(
         active: true,
         hashed_uid: hashed_uid(uid, method_name)
       )
         .where.not(user: user)
-        .exists?
+        .includes(:user).map(&:user)
     end
 
     def hashed_uid(uid, method_name)

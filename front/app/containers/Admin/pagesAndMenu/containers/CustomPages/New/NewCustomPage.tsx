@@ -1,11 +1,14 @@
 import React from 'react';
 import CustomPageSettingsForm from '../CustomPageSettingsForm';
 import { FormValues } from 'containers/Admin/pagesAndMenu/containers/CustomPages/CustomPageSettingsForm';
-import { createCustomPage } from 'services/customPages';
+
 import clHistory from 'utils/cl-router/history';
 import { omit } from 'lodash-es';
 
+import useAddCustomPage from 'api/custom_pages/useAddCustomPage';
+
 const NewCustomPage = () => {
+  const { mutateAsync: createCustomPage } = useAddCustomPage();
   const handleOnSubmit = async (formValues: FormValues) => {
     // the form returns one area_id as a string,
     // the backend expects an array of area_ids
@@ -35,6 +38,7 @@ const NewCustomPage = () => {
         area_id: null,
         topic_ids: [],
       }}
+      hideSlug
     />
   );
 };

@@ -21,8 +21,8 @@ export const project1: IProjectData = {
     reacting_dislike_method: 'unlimited',
     reacting_dislike_limited_max: 10,
     presentation_mode: 'card',
-    min_budget: 0,
-    max_budget: null,
+    voting_min_total: 0,
+    voting_max_total: null,
     ideas_order: 'trending',
     input_term: 'idea',
     description_preview_multiloc: {
@@ -97,6 +97,7 @@ export const project1: IProjectData = {
     participants_count: 8,
     // MISMATCH: this attribute doesn't exist on our type
     // allocated_budget: 0
+    uses_content_builder: false,
   },
   relationships: {
     admin_publication: {
@@ -166,8 +167,8 @@ export const project2: IProjectData = {
     reacting_dislike_method: 'unlimited',
     reacting_dislike_limited_max: 10,
     presentation_mode: 'card',
-    min_budget: 0,
-    max_budget: null,
+    voting_min_total: 0,
+    voting_max_total: null,
     ideas_order: 'trending',
     input_term: 'idea',
     description_preview_multiloc: {},
@@ -239,6 +240,7 @@ export const project2: IProjectData = {
     participants_count: 6,
     // MISMATCH: doesn't seem to exist on our type
     // allocated_budget: 0
+    uses_content_builder: false,
   },
   relationships: {
     admin_publication: {

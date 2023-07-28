@@ -4,12 +4,15 @@ export type QueryParameters = Dates & Resolution;
 
 // Response
 export type Response = {
-  data: [
-    [StatRow] | [],
-    [StatRow] | [],
-    [StatRow] | [],
-    TimeSeriesResponse | []
-  ];
+  data: {
+    type: 'analytics';
+    attributes: [
+      [StatRow] | [],
+      [StatRow] | [],
+      [StatRow] | [],
+      TimeSeriesResponse | []
+    ];
+  };
 };
 
 export interface BaseRow {

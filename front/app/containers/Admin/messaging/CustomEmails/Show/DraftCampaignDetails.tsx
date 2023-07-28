@@ -1,6 +1,6 @@
 import React from 'react';
-import { deleteCampaign } from 'services/campaigns';
 import { ICampaignData } from 'api/campaigns/types';
+import useDeleteCampaign from 'api/campaigns/useDeleteCampaign';
 import clHistory from 'utils/cl-router/history';
 
 import { useIntl } from 'utils/cl-intl';
@@ -29,12 +29,15 @@ interface Props extends InputProps, DataProps {}
 
 const DraftCampaignDetails = ({ campaign }: Props) => {
   const { formatMessage } = useIntl();
+  const { mutate: deleteCampaign, isLoading } = useDeleteCampaign();
 
   const handleDelete = () => {
     const deleteMessage = formatMessage(messages.campaignDeletionConfirmation);
     if (window.confirm(deleteMessage)) {
-      deleteCampaign(campaign.id).then(() => {
-        clHistory.push('/admin/messaging/emails/custom');
+      deleteCampaign(campaign.id, {
+        onSuccess: () => {
+          clHistory.push('/admin/messaging/emails/custom');
+        },
       });
     }
   };
@@ -43,7 +46,12 @@ const DraftCampaignDetails = ({ campaign }: Props) => {
     <>
       <PreviewFrame campaignId={campaign.id} />
       <ButtonWrapper>
-        <Button buttonStyle="delete" icon="delete" onClick={handleDelete}>
+        <Button
+          buttonStyle="delete"
+          icon="delete"
+          onClick={handleDelete}
+          processing={isLoading}
+        >
           {formatMessage(messages.deleteCampaignButton)}
         </Button>
       </ButtonWrapper>

@@ -16,16 +16,16 @@ import { canAccessRoute } from 'services/permissions/rules/routePermissions';
 
 // hooks
 import useAuthUser from 'api/me/useAuthUser';
-import useHomepageSettings from 'hooks/useHomepageSettings';
+import useHomepageSettings from 'api/home_page/useHomepageSettings';
 import useKeyPress from 'hooks/useKeyPress';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-export const adminRedirectPath = '/admin/dashboard';
+export const adminRedirectPath = '/admin/dashboard/visitors';
 
 const HomePage = () => {
-  const homepageSettings = useHomepageSettings();
+  const { data: homepageSettings } = useHomepageSettings();
   const { data: authUser } = useAuthUser();
   const { data: appConfiguration } = useAppConfiguration();
   const pressedLetterAKey = useKeyPress('a');
@@ -57,21 +57,21 @@ const HomePage = () => {
 
         <Content>
           <Suspense fallback={<LoadingBox />}>
-            {homepageSettings.attributes.top_info_section_enabled && (
+            {homepageSettings.data.attributes.top_info_section_enabled && (
               // top info section
               <InfoSection
                 multilocContent={
-                  homepageSettings.attributes.top_info_section_multiloc
+                  homepageSettings.data.attributes.top_info_section_multiloc
                 }
                 fragmentName="pages/homepage_info/top-content"
               />
             )}
             <MainContent />
-            {homepageSettings.attributes.bottom_info_section_enabled && (
+            {homepageSettings.data.attributes.bottom_info_section_enabled && (
               // bottom info section
               <InfoSection
                 multilocContent={
-                  homepageSettings.attributes.bottom_info_section_multiloc
+                  homepageSettings.data.attributes.bottom_info_section_multiloc
                 }
                 fragmentName="pages/homepage_info/content"
               />

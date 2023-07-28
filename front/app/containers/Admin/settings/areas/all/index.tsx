@@ -21,7 +21,7 @@ import Link from 'utils/cl-router/Link';
 // resources
 import useAreas from 'api/areas/useAreas';
 import useDeleteArea from 'api/areas/useDeleteArea';
-import useCustomPages from 'hooks/useCustomPages';
+import useCustomPages from 'api/custom_pages/useCustomPages';
 import useUpdateArea from 'api/areas/useUpdateArea';
 import AreaTermConfig from './AreaTermConfig';
 
@@ -136,7 +136,10 @@ const AreaListRow = ({
   const staticPageIds = item.relationships.static_pages.data.map(
     (page) => page.id
   );
-  const staticPages = useCustomPages({ ids: staticPageIds });
+  const { data: pages } = useCustomPages();
+
+  const staticPages =
+    pages?.data.filter((page) => staticPageIds.includes(page.id)) || [];
 
   return (
     <SortableRow

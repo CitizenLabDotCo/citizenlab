@@ -37,6 +37,11 @@ export default defineMessages({
     id: 'app.containers.SignIn.signInError',
     defaultMessage: 'No account was found for the provided credentials',
   },
+  emailTakenAndUserCanBeVerified: {
+    id: 'app.containers.AuthProviders.emailTakenAndUserCanBeVerified',
+    defaultMessage:
+      'An account with this email already exists. You can sign out, log in with this email address and verify your account on the settings page.',
+  },
   franceConnectMergingFailed: {
     id: 'app.components.AuthProviders.franceConnectMergingFailed',
     defaultMessage:

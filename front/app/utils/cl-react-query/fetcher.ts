@@ -19,6 +19,12 @@ interface Get {
 interface Patch {
   path: Path;
   action: 'patch';
+  body?: Record<string, any>;
+  queryParams?: never;
+}
+interface Put {
+  path: Path;
+  action: 'put';
   body: Record<string, any>;
   queryParams?: never;
 }
@@ -35,11 +41,11 @@ interface Delete {
   queryParams?: never;
 }
 
-type FetcherArgs = Get | Patch | Post | Delete;
+type FetcherArgs = Get | Patch | Put | Post | Delete;
 
 type BaseData = { id?: string; type: string };
 
-type BaseResponseData =
+export type BaseResponseData =
   | { data: BaseData; included?: BaseData[] }
   | { data: BaseData[]; included?: BaseData[] };
 
@@ -55,6 +61,7 @@ async function fetcher({ path, action, body, queryParams }) {
     patch: 'PATCH',
     post: 'POST',
     delete: 'DELETE',
+    put: 'PUT',
   };
   const jwt = getJwt();
   // Remove query parameters that have an empty value from query object in order to keep

@@ -21,6 +21,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import useUpdateProject from 'api/projects/useUpdateProject';
 import useProjectById from 'api/projects/useProjectById';
+import { getFullName } from 'utils/textUtils';
 
 const StyledSelect = styled(Select)`
   width: 300px;
@@ -49,7 +50,7 @@ const IdeaAssignment = ({ adminsAndMods, projectId }: Props) => {
       projectAssigneeOptions = prospectAssignees.map((prospectAssignee) => {
         return {
           value: prospectAssignee.id,
-          label: `${prospectAssignee.attributes.first_name} ${prospectAssignee.attributes.last_name}`,
+          label: getFullName(prospectAssignee),
         };
       });
     }

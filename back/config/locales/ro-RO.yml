@@ -201,7 +201,6 @@ ro:
       comments_count: 'Comentarii'
       upvotes_count: 'Upvotes'
       downvotes_count: 'Downvotes'
-      baskets_count: 'Coșuri'
       input_url: 'URL'
       project: 'Proiect'
       status: 'Stare'

@@ -23,9 +23,6 @@ import { requestBlob } from 'utils/request';
 import { reportError } from 'utils/loggingUtils';
 import { truncate } from 'utils/textUtils';
 
-// typings
-import { OneOf } from 'typings';
-
 const DropdownButton = styled(Button)``;
 
 const Container = styled.div`
@@ -58,9 +55,7 @@ export interface ReportExportMenuProps {
   xlsx?: XlsxConfig;
 }
 
-type XlsxConfig = OneOf<
-  [XlsxConfigEndpoint, XlsxConfigData, XlsxConfigOnDownload]
->;
+type XlsxConfig = XlsxConfigEndpoint | XlsxConfigData | XlsxConfigOnDownload;
 
 interface XlsxConfigEndpoint {
   endpoint: string;
@@ -223,7 +218,7 @@ const ReportExportMenu = ({
   const downloadXlsx = async () => {
     setExportingXls(true);
 
-    if (xlsx?.endpoint) {
+    if (xlsx && 'endpoint' in xlsx) {
       const { endpoint } = xlsx;
 
       try {
@@ -248,11 +243,11 @@ const ReportExportMenu = ({
       } catch (error) {
         reportError(error);
       }
-    } else if (xlsx?.data) {
+    } else if (xlsx && 'data' in xlsx) {
       const { data } = xlsx;
 
       downloadXlsxData(data, fileName);
-    } else if (xlsx?.onDownload) {
+    } else if (xlsx && 'onDownload' in xlsx) {
       const xlsxData = await xlsx.onDownload();
 
       downloadXlsxData(xlsxData, fileName);

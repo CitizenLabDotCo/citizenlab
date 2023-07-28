@@ -3,6 +3,7 @@ import moduleConfiguration from 'modules';
 import PageLoading from 'components/UI/PageLoading';
 import IdeaFormBuilder from './project/inputForm/IdeaFormBuilder';
 import SurveyFormBuilder from './project/nativeSurvey/SurveyFormBuilder';
+import AdminProjectIdeaPreviewIndex from './AdminProjectIdeaPreviewIndex';
 
 const AdminProjectsAndFolders = lazy(() => import('.'));
 const AdminProjectsList = lazy(() => import('./all'));
@@ -33,6 +34,8 @@ const AdminAllowedTopicsComponent = React.lazy(
   () => import('./project/topics')
 );
 
+const AdminProjectAnalysis = lazy(() => import('./project/analysis'));
+
 export function adminProjectsProjectPath(projectId: string) {
   return `/admin/projects/${projectId}`;
 }
@@ -56,6 +59,14 @@ const createAdminProjectsRoutes = () => {
       },
       ...moduleConfiguration.routes['admin.project_templates'],
       ...moduleConfiguration.routes['admin.projects'],
+      {
+        path: ':projectId/ideas/:ideaId',
+        element: (
+          <PageLoading>
+            <AdminProjectIdeaPreviewIndex />
+          </PageLoading>
+        ),
+      },
       {
         path: ':projectId',
         element: (
@@ -86,6 +97,14 @@ const createAdminProjectsRoutes = () => {
             element: (
               <PageLoading>
                 <AdminProjectTimelineNewAndEdit />
+              </PageLoading>
+            ),
+          },
+          {
+            path: 'timeline/:id/ideas',
+            element: (
+              <PageLoading>
+                <AdminProjectIdeas />
               </PageLoading>
             ),
           },
@@ -228,6 +247,14 @@ const createAdminProjectsRoutes = () => {
           {
             path: 'allowed-input-topics',
             element: <AdminAllowedTopicsComponent />,
+          },
+          {
+            path: 'analysis/:analysisId',
+            element: (
+              <PageLoading>
+                <AdminProjectAnalysis />
+              </PageLoading>
+            ),
           },
           ...moduleConfiguration.routes['admin.projects.project'],
         ],

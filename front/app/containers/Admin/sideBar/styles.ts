@@ -24,6 +24,6 @@ export const ItemMenu = styled(Button)`
 export const StyledBox = styled(Box)`
   cursor: pointer;
   &:hover {
-    background: rgba(0, 0, 0, 0.36);
+    background: rgba(0, 0, 0, 0.7);
   }
 `;

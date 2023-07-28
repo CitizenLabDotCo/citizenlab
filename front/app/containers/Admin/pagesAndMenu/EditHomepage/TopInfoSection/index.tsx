@@ -1,17 +1,17 @@
-import useHomepageSettings from 'hooks/useHomepageSettings';
+import useHomepageSettings from 'api/home_page/useHomepageSettings';
 import React from 'react';
-import { WrappedComponentProps } from 'react-intl';
-import {
-  IHomepageSettingsAttributes,
-  updateHomepageSettings,
-} from 'services/homepageSettings';
-import { injectIntl } from 'utils/cl-intl';
+import { IHomepageSettingsAttributes } from 'api/home_page/types';
 import { isNilOrError } from 'utils/helperUtils';
 import { homeBreadcrumb } from '../../breadcrumbs';
 import GenericTopInfoSection from 'containers/Admin/pagesAndMenu/containers/GenericTopInfoSection';
+import useUpdateHomepageSettings from 'api/home_page/useUpdateHomepageSettings';
+import { useIntl } from 'utils/cl-intl';
 
-const TopInfoSection = ({ intl: { formatMessage } }: WrappedComponentProps) => {
-  const homepageSettings = useHomepageSettings();
+const TopInfoSection = () => {
+  const { formatMessage } = useIntl();
+  const { data: homepageSettings } = useHomepageSettings();
+  const { mutateAsync: updateHomepageSettings } = useUpdateHomepageSettings();
+
   if (isNilOrError(homepageSettings)) {
     return null;
   }
@@ -27,7 +27,7 @@ const TopInfoSection = ({ intl: { formatMessage } }: WrappedComponentProps) => {
 
   return (
     <GenericTopInfoSection
-      pageData={homepageSettings}
+      pageData={homepageSettings.data}
       updatePage={(data) => updateHomepageSettings(data)}
       updatePageAndEnableSection={(data) =>
         updateHomepageAndEnableSection(data)
@@ -42,4 +42,4 @@ const TopInfoSection = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   );
 };
 
-export default injectIntl(TopInfoSection);
+export default TopInfoSection;

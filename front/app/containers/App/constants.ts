@@ -165,7 +165,7 @@ export const shortenedAppLocalePairs = {
 // https://github.com/moment/moment/tree/develop/locale lists the supported locales by moment.js
 export const appLocalesMomentPairs = {
   'ar-MA': 'ar-ma',
-  'ar-SA': 'ar',
+  'ar-SA': 'ar-sa',
   'ca-ES': 'ca',
   'da-DK': 'da',
   'de-DE': 'de',
@@ -184,10 +184,10 @@ export const appLocalesMomentPairs = {
   'lv-LV': 'lv',
   mi: 'mi',
   'nb-NO': 'nb',
-  'nl-BE': 'nl',
+  'nl-BE': 'nl-be',
   'nl-NL': 'nl',
   'pl-PL': 'pl',
-  'pt-BR': 'pt',
+  'pt-BR': 'pt-br',
   'ro-RO': 'ro',
   'sr-Latn': 'sr',
   'sr-SP': 'sr',

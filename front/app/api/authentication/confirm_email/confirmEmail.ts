@@ -3,6 +3,7 @@ import streams from 'utils/streams';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import requirementsKeys from 'api/authentication/authentication_requirements/keys';
 import meKeys from 'api/me/keys';
+import onboardingCampaignsKeys from 'api/onboarding_campaigns/keys';
 
 const confirmationApiEndpoint = `${API_PATH}/user/confirm`;
 
@@ -21,10 +22,7 @@ export default async function confirmEmail(
 
     queryClient.invalidateQueries({ queryKey: requirementsKeys.all() });
     queryClient.invalidateQueries({ queryKey: meKeys.all() });
-
-    await streams.fetchAllWith({
-      apiEndpoint: [`${API_PATH}/onboarding_campaigns/current`],
-    });
+    queryClient.invalidateQueries({ queryKey: onboardingCampaignsKeys.all() });
 
     return true;
   } catch (errors) {

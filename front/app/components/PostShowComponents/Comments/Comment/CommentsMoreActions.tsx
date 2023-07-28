@@ -20,7 +20,7 @@ import { deleteCommentModalClosed } from '../events';
 import styled from 'styled-components';
 import { isRtl } from 'utils/styleUtils';
 
-import useMarkCommentForDeletion from 'api/comments/useMarkForDeletion';
+import useMarkCommentForDeletion from 'api/comments/useMarkCommentForDeletion';
 import { DeleteReason, ICommentData } from 'api/comments/types';
 
 const Container = styled.div`
@@ -73,9 +73,11 @@ const CommentsMoreActions = ({
   ideaId,
   initiativeId,
 }: Props) => {
+  const parentCommentId = comment.relationships?.parent?.data?.id;
   const { mutate: markForDeletion, isLoading } = useMarkCommentForDeletion({
     ideaId,
     initiativeId,
+    parentCommentId,
   });
 
   const [modalVisible_spam, setModalVisible_spam] = useState(false);
@@ -154,13 +156,10 @@ const CommentsMoreActions = ({
 
   const deleteComment = async (reason?: DeleteReason) => {
     const commentId = comment.id;
-    const authorId = comment.relationships.author.data?.id;
 
     markForDeletion(
       {
         commentId,
-        authorId,
-        projectId,
         reason,
       },
       {
@@ -201,7 +200,7 @@ const CommentsMoreActions = ({
             <AcceptButton
               buttonStyle="primary"
               processing={isLoading}
-              className="e2e-confirm-deletion"
+              className="e2e-confirm-internal-comment-deletion"
               onClick={handleDeleteClick}
             >
               <FormattedMessage {...messages.commentDeletionConfirmButton} />

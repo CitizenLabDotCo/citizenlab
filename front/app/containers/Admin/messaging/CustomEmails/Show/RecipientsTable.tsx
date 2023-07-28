@@ -1,17 +1,15 @@
 import React from 'react';
-import GetCampaignRecipients, {
-  GetCampaignDeliveriesChildProps,
-} from 'resources/GetCampaignDeliveries';
 import { isNilOrError } from 'utils/helperUtils';
 import { List, Row, TextCell } from 'components/admin/ResourceList';
 import { StatusLabel } from '@citizenlab/cl2-component-library';
-import { IDeliveryData } from 'services/campaigns';
+import { IDeliveryData } from 'api/campaign_deliveries/types';
 import { colors } from 'utils/styleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 import Pagination from 'components/admin/Pagination';
 import Avatar from 'components/Avatar';
 import useUserById from 'api/users/useUserById';
+import { getFullName } from 'utils/textUtils';
 
 const statusColorMapping: {
   [k in IDeliveryData['attributes']['delivery_status']]: string;
@@ -25,14 +23,14 @@ const statusColorMapping: {
   clicked: colors.success,
 };
 
-interface InputProps {
+interface Props {
   campaignId: string;
   className?: string;
+  deliveries: IDeliveryData[] | null;
+  currentPage: number;
+  lastPage: number;
+  onChangePage: (pageNumber: number) => void;
 }
-
-interface DataProps extends GetCampaignDeliveriesChildProps {}
-
-interface Props extends InputProps, DataProps {}
 
 const TableRow = ({
   userId,
@@ -48,9 +46,7 @@ const TableRow = ({
       <TextCell>
         <Avatar userId={userId} size={30} />
       </TextCell>
-      <TextCell>
-        {user.data.attributes.first_name} {user.data.attributes.last_name}
-      </TextCell>
+      <TextCell>{getFullName(user.data)}</TextCell>
       <TextCell className="expand">{user.data.attributes.email}</TextCell>
       <StatusLabel
         backgroundColor={
@@ -69,11 +65,11 @@ const TableRow = ({
 };
 
 const RecipientsTable = ({
-  deliveries,
   className,
   currentPage,
   lastPage,
   onChangePage,
+  deliveries,
 }: Props) => {
   if (isNilOrError(deliveries)) {
     return null;
@@ -97,8 +93,4 @@ const RecipientsTable = ({
   );
 };
 
-export default (inputProps: InputProps) => (
-  <GetCampaignRecipients campaignId={inputProps.campaignId} pageSize={15}>
-    {(deliveries) => <RecipientsTable {...inputProps} {...deliveries} />}
-  </GetCampaignRecipients>
-);
+export default RecipientsTable;

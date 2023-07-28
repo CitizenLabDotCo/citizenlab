@@ -1,7 +1,5 @@
 import { isNilOrError } from 'utils/helperUtils';
-import { IMapConfigState } from '../hooks/useMapConfig';
 import { IAppConfigurationData } from 'api/app_configuration/types';
-import { IMapLayerAttributes } from '../services/mapLayers';
 import { Locale } from 'typings';
 import { LatLngTuple } from 'leaflet';
 import { isNumber } from 'lodash-es';
@@ -15,11 +13,13 @@ import {
   MAPTILER_DEFAULT_OPTIONS,
   BASEMAP_AT_DEFAULT_OPTIONS,
 } from './tileProviderDefaultOptions';
+import { IMapLayerAttributes } from '../api/map_layers/types';
+import { IMapConfigData } from '../api/map_config/types';
 
 export const getCenter = (
   centerLatLng: LatLngTuple | null | undefined,
   appConfig: IAppConfigurationData | undefined,
-  mapConfig: IMapConfigState
+  mapConfig: IMapConfigData | undefined
 ) => {
   const mapConfigLat = !isNilOrError(mapConfig)
     ? mapConfig?.attributes.center_geojson?.coordinates[1]
@@ -40,7 +40,7 @@ export const getCenter = (
 export const getZoomLevel = (
   zoom: number | undefined,
   appConfig: IAppConfigurationData | undefined | null | Error,
-  mapConfig: IMapConfigState
+  mapConfig: IMapConfigData | undefined
 ) => {
   const mapConfigZoom = !isNilOrError(mapConfig)
     ? mapConfig?.attributes.zoom_level
@@ -57,7 +57,7 @@ export const getZoomLevel = (
 
 export const getTileProvider = (
   appConfig: IAppConfigurationData | undefined | null | Error,
-  mapConfig: IMapConfigState
+  mapConfig: IMapConfigData | undefined
 ) => {
   const mapConfigTileProvider = !isNilOrError(mapConfig)
     ? mapConfig?.attributes.tile_provider

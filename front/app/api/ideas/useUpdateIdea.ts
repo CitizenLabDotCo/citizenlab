@@ -4,12 +4,11 @@ import ideasCountKeys from 'api/idea_count/keys';
 import ideaImagesKeys from 'api/idea_images/keys';
 import ideaMarkersKeys from 'api/idea_markers/keys';
 import projectsKeys from 'api/projects/keys';
-import { API_PATH } from 'containers/App/constants';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
-import streams from 'utils/streams';
 import ideasKeys from './keys';
 import { IIdea, IIdeaUpdate } from './types';
+import analyticsKeys from 'api/analytics/keys';
 
 type IUpdateIdeaObject = {
   id: string;
@@ -46,9 +45,8 @@ const useUpdateIdea = () => {
           queryKey: projectsKeys.item({ id: projectId }),
         });
       }
-
-      streams.fetchAllWith({
-        apiEndpoint: [`${API_PATH}/analytics`],
+      queryClient.invalidateQueries({
+        queryKey: analyticsKeys.all(),
       });
     },
   });

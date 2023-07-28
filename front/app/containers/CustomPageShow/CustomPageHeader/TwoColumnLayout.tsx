@@ -3,7 +3,7 @@ import {
   HeaderImage,
 } from 'components/LandingPages/citizen/TwoColumnLayout';
 import React from 'react';
-import { ICustomPageData } from 'services/customPages';
+import { ICustomPageData } from 'api/custom_pages/types';
 import AdminCustomPageEditButton from './AdminCustomPageEditButton';
 import HeaderContent from './HeaderContent';
 import { Box } from '@citizenlab/cl2-component-library';

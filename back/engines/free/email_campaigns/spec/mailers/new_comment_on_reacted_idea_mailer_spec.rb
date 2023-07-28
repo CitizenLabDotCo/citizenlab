@@ -29,7 +29,7 @@ RSpec.describe EmailCampaigns::NewCommentOnReactedIdeaMailer do
     before_all { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
 
     it 'renders the subject' do
-      expect(mail.subject).to start_with('There\'s a new comment on the idea you\'ve voted on')
+      expect(mail.subject).to start_with('There\'s a new comment on the idea you\'ve reacted to')
     end
 
     it 'renders the sender email' do

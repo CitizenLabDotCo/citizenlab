@@ -4,11 +4,10 @@ import ideasCountKeys from 'api/idea_count/keys';
 import userIdeaCountKeys from 'api/user_ideas_count/keys';
 import ideaImagesKeys from 'api/idea_images/keys';
 import ideaMarkersKeys from 'api/idea_markers/keys';
-import { API_PATH } from 'containers/App/constants';
 import fetcher from 'utils/cl-react-query/fetcher';
-import streams from 'utils/streams';
 import ideasKeys from './keys';
 import projectsKeys from 'api/projects/keys';
+import analyticsKeys from 'api/analytics/keys';
 
 const deleteIdea = (id: string) =>
   fetcher({
@@ -36,8 +35,8 @@ const useDeleteIdea = () => {
         queryKey: ideaImagesKeys.item({ ideaId }),
       });
       queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
-      streams.fetchAllWith({
-        apiEndpoint: [`${API_PATH}/analytics`],
+      queryClient.invalidateQueries({
+        queryKey: analyticsKeys.all(),
       });
     },
   });

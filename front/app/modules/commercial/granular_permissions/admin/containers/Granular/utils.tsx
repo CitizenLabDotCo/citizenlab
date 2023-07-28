@@ -38,11 +38,11 @@ export const getPermissionActionSectionSubtitle = ({
         postType === 'nativeSurvey'
           ? messages.permissionAction_take_survey_subtitle
           : messages.permissionAction_submit_input_subtitle,
-      reacting_idea: messages.permissionAction_vote_input_subtitle,
+      reacting_idea: messages.permissionAction_reaction_input_subtitle,
       commenting_idea: messages.permissionAction_comment_input_subtitle,
       taking_survey: messages.permissionAction_take_survey_subtitle,
       taking_poll: messages.permissionAction_take_poll_subtitle,
-      budgeting: messages.permissionAction_budgeting_subtitle,
+      voting: messages.permissionAction_voting_subtitle,
       annotating_document:
         messages.permissionAction_annotating_document_subtitle,
     };

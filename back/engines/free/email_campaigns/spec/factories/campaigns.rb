@@ -234,6 +234,22 @@ FactoryBot.define do
     enabled { true }
     schedule { weekly_schedule }
   end
+
+  factory :voting_basket_submitted_campaign, class: EmailCampaigns::Campaigns::VotingBasketSubmitted do
+    enabled { true }
+  end
+
+  factory :voting_basket_not_submitted_campaign, class: EmailCampaigns::Campaigns::VotingBasketNotSubmitted do
+    enabled { true }
+  end
+
+  factory :voting_last_chance_campaign, class: EmailCampaigns::Campaigns::VotingLastChance do
+    enabled { true }
+  end
+
+  factory :voting_phase_started_campaign, class: EmailCampaigns::Campaigns::VotingPhaseStarted do
+    enabled { true }
+  end
 end
 
 def weekly_schedule

@@ -32,6 +32,7 @@ export const data: IIdeaData[] = [
       likes_count: 1,
       dislikes_count: 0,
       comments_count: 1,
+      internal_comments_count: 1,
       official_feedbacks_count: 0,
       location_point_geojson: null,
       location_description: null,
@@ -68,9 +69,9 @@ export const data: IIdeaData[] = [
           disabled_reason: null,
           future_enabled: null,
         },
-        budgeting: {
+        voting: {
           enabled: false,
-          disabled_reason: 'not_budgeting',
+          disabled_reason: 'not_voting',
           future_enabled: null,
         },
       },

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_20_114801) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_25_121109) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -52,6 +52,35 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_20_114801) do
     t.index ["parent_id"], name: "index_admin_publications_on_parent_id"
     t.index ["publication_type", "publication_id"], name: "index_admin_publications_on_publication_type_and_publication_id"
     t.index ["rgt"], name: "index_admin_publications_on_rgt"
+  end
+
+  create_table "analysis_analyses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "project_id"
+    t.uuid "phase_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["phase_id"], name: "index_analysis_analyses_on_phase_id"
+    t.index ["project_id"], name: "index_analysis_analyses_on_project_id"
+  end
+
+  create_table "analysis_analyses_custom_fields", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "analysis_id"
+    t.uuid "custom_field_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["analysis_id", "custom_field_id"], name: "index_analysis_analyses_custom_fields", unique: true
+    t.index ["analysis_id"], name: "index_analysis_analyses_custom_fields_on_analysis_id"
+    t.index ["custom_field_id"], name: "index_analysis_analyses_custom_fields_on_custom_field_id"
+  end
+
+  create_table "analysis_tags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false
+    t.string "tag_type", null: false
+    t.uuid "analysis_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["analysis_id", "name"], name: "index_analysis_tags_on_analysis_id_and_name", unique: true
+    t.index ["analysis_id"], name: "index_analysis_tags_on_analysis_id"
   end
 
   create_table "analytics_dimension_dates", primary_key: "date", id: :date, force: :cascade do |t|
@@ -174,6 +203,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_20_114801) do
     t.string "participation_context_type"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+    t.index ["submitted_at"], name: "index_baskets_on_submitted_at"
     t.index ["user_id"], name: "index_baskets_on_user_id"
   end
 
@@ -182,7 +212,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_20_114801) do
     t.uuid "idea_id"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
-    t.index ["basket_id"], name: "index_baskets_ideas_on_basket_id"
+    t.integer "votes", default: 1, null: false
+    t.index ["basket_id", "idea_id"], name: "index_baskets_ideas_on_basket_id_and_idea_id", unique: true
     t.index ["idea_id"], name: "index_baskets_ideas_on_idea_id"
   end
 
@@ -391,8 +422,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_20_114801) do
     t.string "name", null: false
     t.string "treatment", null: false
     t.string "action", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "flag_inappropriate_content_inappropriate_content_flags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -523,6 +554,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_20_114801) do
     t.string "author_hash"
     t.boolean "anonymous", default: false, null: false
     t.integer "internal_comments_count", default: 0, null: false
+    t.integer "votes_count", default: 0, null: false
     t.index "((to_tsvector('simple'::regconfig, COALESCE((title_multiloc)::text, ''::text)) || to_tsvector('simple'::regconfig, COALESCE((body_multiloc)::text, ''::text))))", name: "index_ideas_search", using: :gin
     t.index ["author_hash"], name: "index_ideas_on_author_hash"
     t.index ["author_id"], name: "index_ideas_on_author_id"
@@ -537,6 +569,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_20_114801) do
     t.uuid "phase_id"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+    t.integer "baskets_count", default: 0, null: false
+    t.integer "votes_count", default: 0, null: false
     t.index ["idea_id", "phase_id"], name: "index_ideas_phases_on_idea_id_and_phase_id", unique: true
     t.index ["idea_id"], name: "index_ideas_phases_on_idea_id"
     t.index ["phase_id"], name: "index_ideas_phases_on_phase_id"
@@ -895,6 +929,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_20_114801) do
     t.uuid "project_folder_id"
     t.uuid "inappropriate_content_flag_id"
     t.uuid "internal_comment_id"
+    t.uuid "basket_id"
+    t.index ["basket_id"], name: "index_notifications_on_basket_id"
     t.index ["created_at"], name: "index_notifications_on_created_at"
     t.index ["inappropriate_content_flag_id"], name: "index_notifications_on_inappropriate_content_flag_id"
     t.index ["initiating_user_id"], name: "index_notifications_on_initiating_user_id"
@@ -982,19 +1018,26 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_20_114801) do
     t.string "survey_embed_url"
     t.string "survey_service"
     t.string "presentation_mode", default: "card"
-    t.integer "max_budget"
+    t.integer "voting_max_total"
     t.boolean "poll_anonymous", default: false, null: false
     t.boolean "reacting_dislike_enabled", default: true, null: false
     t.integer "ideas_count", default: 0, null: false
     t.string "ideas_order"
     t.string "input_term", default: "idea"
-    t.integer "min_budget", default: 0
+    t.integer "voting_min_total", default: 0
     t.string "reacting_dislike_method", default: "unlimited", null: false
     t.integer "reacting_dislike_limited_max", default: 10
     t.string "posting_method", default: "unlimited", null: false
     t.integer "posting_limited_max", default: 1
     t.string "document_annotation_embed_url"
     t.boolean "allow_anonymous_participation", default: false, null: false
+    t.jsonb "campaigns_settings", default: {}
+    t.string "voting_method"
+    t.integer "voting_max_votes_per_idea"
+    t.jsonb "voting_term_singular_multiloc", default: {}
+    t.jsonb "voting_term_plural_multiloc", default: {}
+    t.integer "baskets_count", default: 0, null: false
+    t.integer "votes_count", default: 0, null: false
     t.index ["project_id"], name: "index_phases_on_project_id"
   end
 
@@ -1119,14 +1162,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_20_114801) do
     t.string "internal_role"
     t.string "survey_embed_url"
     t.string "survey_service"
-    t.integer "max_budget"
+    t.integer "voting_max_total"
     t.integer "comments_count", default: 0, null: false
     t.uuid "default_assignee_id"
     t.boolean "poll_anonymous", default: false, null: false
     t.boolean "reacting_dislike_enabled", default: true, null: false
     t.string "ideas_order"
     t.string "input_term", default: "idea"
-    t.integer "min_budget", default: 0
+    t.integer "voting_min_total", default: 0
     t.string "reacting_dislike_method", default: "unlimited", null: false
     t.integer "reacting_dislike_limited_max", default: 10
     t.boolean "include_all_areas", default: false, null: false
@@ -1134,6 +1177,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_20_114801) do
     t.integer "posting_limited_max", default: 1
     t.string "document_annotation_embed_url"
     t.boolean "allow_anonymous_participation", default: false, null: false
+    t.string "voting_method"
+    t.integer "voting_max_votes_per_idea"
+    t.jsonb "voting_term_singular_multiloc", default: {}
+    t.jsonb "voting_term_plural_multiloc", default: {}
+    t.integer "baskets_count", default: 0, null: false
+    t.integer "votes_count", default: 0, null: false
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 
@@ -1158,11 +1207,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_20_114801) do
 
   create_table "public_api_api_clients", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
-    t.string "secret"
-    t.uuid "tenant_id"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
-    t.index ["tenant_id"], name: "index_public_api_api_clients_on_tenant_id"
+    t.datetime "last_used_at"
+    t.string "secret_digest", null: false
+    t.string "secret_postfix", null: false
   end
 
   create_table "que_jobs", comment: "4", force: :cascade do |t|
@@ -1419,6 +1468,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_20_114801) do
   end
 
   add_foreign_key "activities", "users"
+  add_foreign_key "analysis_analyses", "phases"
+  add_foreign_key "analysis_analyses", "projects"
+  add_foreign_key "analysis_analyses_custom_fields", "analysis_analyses", column: "analysis_id"
+  add_foreign_key "analysis_analyses_custom_fields", "custom_fields"
+  add_foreign_key "analysis_tags", "analysis_analyses", column: "analysis_id"
   add_foreign_key "analytics_dimension_locales_fact_visits", "analytics_dimension_locales", column: "dimension_locale_id"
   add_foreign_key "analytics_dimension_locales_fact_visits", "analytics_fact_visits", column: "fact_visit_id"
   add_foreign_key "analytics_dimension_projects_fact_visits", "analytics_fact_visits", column: "fact_visit_id"
@@ -1485,6 +1539,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_20_114801) do
   add_foreign_key "memberships", "groups"
   add_foreign_key "memberships", "users"
   add_foreign_key "nav_bar_items", "static_pages"
+  add_foreign_key "notifications", "baskets"
   add_foreign_key "notifications", "comments"
   add_foreign_key "notifications", "flag_inappropriate_content_inappropriate_content_flags", column: "inappropriate_content_flag_id"
   add_foreign_key "notifications", "internal_comments"
@@ -1513,7 +1568,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_20_114801) do
   add_foreign_key "projects_allowed_input_topics", "topics"
   add_foreign_key "projects_topics", "projects"
   add_foreign_key "projects_topics", "topics"
-  add_foreign_key "public_api_api_clients", "tenants"
   add_foreign_key "reactions", "users"
   add_foreign_key "report_builder_reports", "users", column: "owner_id"
   add_foreign_key "spam_reports", "users"

@@ -231,6 +231,18 @@
         }
       },
 
+      "internal_commenting": {
+        "type": "object",
+        "title": "Internal commenting",
+        "description": "Admins and managers can comment internally on ideas and proposals.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "jsonforms_custom_fields": {
         "type": "object",
         "title": "Rework of user custom fields (experimental)",
@@ -553,18 +565,6 @@
             "pattern": "^(UA|YT|MO)\-[0-9]+\-[0-9]+$",
             "default": "<%= ENV.fetch('DEFAULT_GA_TRACKING_ID', '')%>"
           }
-        }
-      },
-
-      "participatory_budgeting": {
-        "type": "object",
-        "title": "Participatory Budgeting",
-        "description":  "Allow participatory budgeting.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
         }
       },
 
@@ -1200,6 +1200,18 @@
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "public_api_tokens": {
+        "type": "object",
+        "title": "Public API tokens",
+        "description": "Enables the ability to create API tokens for the public API.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
           "enabled": { "type": "boolean", "default": false }
         }
       }

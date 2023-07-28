@@ -17,6 +17,7 @@ import {
 } from 'services/permissions/roles';
 import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
 import { ModuleConfiguration } from 'utils/moduleUtils';
+import { getFullName } from 'utils/textUtils';
 
 declare module 'components/ConsentManager/destinations' {
   export interface IDestinationMap {
@@ -67,7 +68,7 @@ const configuration: ModuleConfiguration = {
               ? {
                   userId: user.data.id,
                   traits: {
-                    name: `${user.data.attributes.first_name} + ${user.data.attributes.last_name}`,
+                    name: getFullName(user.data),
                     email: user.data.attributes.email,
                     createdAt: user.data.attributes.created_at,
                   },

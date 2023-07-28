@@ -1,18 +1,14 @@
 import React, { useMemo } from 'react';
 
 // services
-import { getNavbarItemSlug, addNavbarItem } from 'services/navbar';
-import {
-  deleteCustomPage,
-  ICustomPageData,
-  TCustomPageCode,
-} from 'services/customPages';
+import useAddNavbarItem from 'api/navbar/useAddNavbarItem';
+import { ICustomPageData, TCustomPageCode } from 'api/custom_pages/types';
+import useDeleteCustomPage from 'api/custom_pages/useDeleteCustomPage';
 
 // hooks
-import useNavbarItems from 'hooks/useNavbarItems';
-import useCustomPages from 'hooks/useCustomPages';
-import useCustomPageSlugById from 'hooks/useCustomPageSlugById';
-import useRemovedDefaultNavbarItems from 'hooks/useRemovedDefaultNavbarItems';
+import useNavbarItems from 'api/navbar/useNavbarItems';
+import useCustomPages from 'api/custom_pages/useCustomPages';
+import useCustomPageSlugById from 'api/custom_pages/useCustomPageSlugById';
 
 // components
 import { List, Row } from 'components/admin/ResourceList';
@@ -29,6 +25,7 @@ import { ADMIN_PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 import getItemsNotInNavbar, { IItemNotInNavbar } from 'utils/navbar';
+import { getNavbarItemSlug } from 'api/navbar/util';
 
 const FIXED_PAGES_SET = new Set<TCustomPageCode>([
   'terms-and-conditions',
@@ -41,9 +38,14 @@ const isNotFixedPage = (page: ICustomPageData) =>
 const HiddenNavbarItemList = ({
   intl: { formatMessage },
 }: WrappedComponentProps) => {
-  const navbarItems = useNavbarItems();
-  const removedDefaultNavbarItems = useRemovedDefaultNavbarItems();
-  const pages = useCustomPages();
+  const { mutate: deleteCustomPage } = useDeleteCustomPage();
+  const { mutate: addNavbarItem } = useAddNavbarItem();
+  const { data: navbarItems } = useNavbarItems();
+  const { data: removedDefaultNavbarItems } = useNavbarItems({
+    onlyRemovedDefaultItems: true,
+  });
+
+  const { data: pages } = useCustomPages();
   const pageSlugById = useCustomPageSlugById();
 
   const notAllHooksRendered =
@@ -56,9 +58,9 @@ const HiddenNavbarItemList = ({
     if (notAllHooksRendered) return null;
 
     return getItemsNotInNavbar(
-      navbarItems,
-      removedDefaultNavbarItems,
-      pages.filter(isNotFixedPage)
+      navbarItems.data,
+      removedDefaultNavbarItems.data,
+      pages.data.filter(isNotFixedPage)
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [notAllHooksRendered, navbarItems, removedDefaultNavbarItems, pages]);
@@ -113,7 +115,7 @@ const HiddenNavbarItemList = ({
               viewButtonLink={getViewButtonLink(item)}
               onClickEditButton={handleClickEditButton(item)}
               onClickAddButton={handleClickAdd(item)}
-              addButtonDisabled={navbarItems.length >= 7}
+              addButtonDisabled={navbarItems.data.length >= 7}
               onClickDeleteButton={handleClickDelete(
                 item.type === 'page' ? item.pageId : undefined
               )}

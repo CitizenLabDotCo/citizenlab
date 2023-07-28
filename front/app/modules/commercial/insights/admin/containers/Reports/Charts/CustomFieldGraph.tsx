@@ -173,9 +173,9 @@ const CustomFieldsGraph = ({
     },
   };
 
-  const totalSerie = code && serieMap[code].totalSeries;
+  const totalSerie = code && serieMap[code]?.totalSeries;
 
-  const participantSerie = code && serieMap[code].participantSeries;
+  const participantSerie = code && serieMap[code]?.participantSeries;
 
   const serie: TOutput | undefined =
     code &&

@@ -38,6 +38,14 @@ export default defineMessages({
     id: 'app.containers.Comments.publishComment',
     defaultMessage: 'Post comment',
   },
+  postInternalComment: {
+    id: 'app.containers.Comments.postInternalComment',
+    defaultMessage: 'Post internal comment',
+  },
+  postPublicComment: {
+    id: 'app.containers.Comments.postPublicComment',
+    defaultMessage: 'Post public comment',
+  },
   commentDeletedPlaceholder: {
     id: 'app.containers.Comments.commentDeletedPlaceholder',
     defaultMessage: 'This comment has been deleted.',
@@ -163,19 +171,19 @@ export default defineMessages({
     id: 'app.components.Comments.mostRecent',
     defaultMessage: 'Most recent',
   },
-  mostUpvoted: {
-    id: 'app.components.Comments.mostUpvoted',
-    defaultMessage: 'Most voted',
+  mostLiked: {
+    id: 'app.components.Comments.mostLiked',
+    defaultMessage: 'Most reactions',
   },
-  upvoteComment: {
-    id: 'app.components.Comments.upvoteComment',
-    defaultMessage: 'Upvote this comment',
+  likeComment: {
+    id: 'app.components.Comments.likeComment',
+    defaultMessage: 'Like this comment',
   },
-  commentUpvote: {
-    id: 'app.containers.Comments.commentUpvote',
-    defaultMessage: 'Upvote',
+  commentLike: {
+    id: 'app.containers.Comments.commentLike',
+    defaultMessage: 'Like',
   },
-  commentCancelUpvote: {
+  commentCancelLike: {
     id: 'app.containers.Comments.commentCancelUpvote',
     defaultMessage: 'Cancel',
   },
@@ -243,14 +251,14 @@ export default defineMessages({
     id: 'app.containers.Comments.a11y_commentDeleted',
     defaultMessage: 'Comment deleted',
   },
-  a11y_upvoteCount: {
-    id: 'app.containers.Comments.a11y_upvoteCount',
+  a11y_likeCount: {
+    id: 'app.containers.Comments.a11y_likeCount',
     defaultMessage:
-      '{upvoteCount, plural, =0 {no upvotes} one {1 upvote} other {# upvotes}}',
+      '{likeCount, plural, =0 {no likes} one {1 like} other {# likes}}',
   },
-  a11y_undoUpvote: {
-    id: 'app.containers.Comments.a11y_undoUpvote',
-    defaultMessage: 'Undo upvote',
+  a11y_undoLike: {
+    id: 'app.containers.Comments.a11y_undoLike',
+    defaultMessage: 'Undo like',
   },
   profanityError: {
     id: 'app.containers.Comments.profanityError',
@@ -260,5 +268,25 @@ export default defineMessages({
   guidelinesLinkText: {
     id: 'app.containers.Comments.guidelinesLinkText',
     defaultMessage: 'our guidelines',
+  },
+  publicDiscussion: {
+    id: 'app.containers.Comments.publicDiscussion',
+    defaultMessage: 'Public discussion',
+  },
+  internalConversation: {
+    id: 'app.containers.Comments.internalConversation',
+    defaultMessage: 'Internal conversation',
+  },
+  visibleToUsersWarning: {
+    id: 'app.containers.Comments.visibleToUsersWarning',
+    defaultMessage: 'Comments posted here will be visible to regular users.',
+  },
+  notVisibleToUsersPlaceholder: {
+    id: 'app.containers.Comments.notVisibleToUsersPlaceholder',
+    defaultMessage: 'This comment is not visible to regular users',
+  },
+  visibleToUsersPlaceholder: {
+    id: 'app.containers.Comments.visibleToUsersPlaceholder',
+    defaultMessage: 'This comment is visible to regular users',
   },
 });

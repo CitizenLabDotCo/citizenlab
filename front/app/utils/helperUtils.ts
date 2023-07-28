@@ -206,20 +206,9 @@ export function isDesktop(windowWidth: number) {
 }
 
 export const keys = <T extends object>(obj: T) =>
-  Object.keys(obj) as Array<keyof T>;
+  obj && (Object.keys(obj) as Array<keyof T>);
+
 export const get = <T, K extends keyof T>(obj: T, key: K) => obj[key];
-
-export const reduceErrors =
-  <T>(setter: (data: T[] | NilOrError) => void) =>
-  (data: (NilOrError | T)[] | NilOrError) => {
-    if (isNilOrError(data)) {
-      setter(data);
-      return;
-    }
-
-    const nilOrErrorData = data.filter(isNilOrError);
-    nilOrErrorData.length > 0 ? setter(nilOrErrorData[0]) : setter(data as T[]);
-  };
 
 interface ObjectWithId {
   id: string;

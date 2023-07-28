@@ -14,6 +14,7 @@ import InitiativeAssignedToYouNotification from '../InitiativeAssignedToYouNotif
 import InitiativeMarkedAsSpamNotification from '../InitiativeMarkedAsSpamNotification';
 import InviteAcceptedNotification from '../InviteAcceptedNotification';
 import MentionInCommentNotification from '../MentionInCommentNotification';
+import InternalCommentNotification from '../InternalCommentNotification';
 import MentionInOfficialFeedbackNotification from '../MentionInOfficialFeedbackNotification';
 import OfficialFeedbackOnCommentedIdeaNotification from '../OfficialFeedbackOnCommentedIdeaNotification';
 import OfficialFeedbackOnCommentedInitiativeNotification from '../OfficialFeedbackOnCommentedInitiativeNotification';
@@ -32,6 +33,10 @@ import StatusChangeOnReactedIdeaNotification from '../StatusChangeOnReactedIdeaN
 import StatusChangeOnReactedInitiativeNotification from '../StatusChangeOnReactedInitiativeNotification';
 import ThresholdReachedForAdminNotification from '../ThresholdReachedForAdminNotification';
 import ProjectFolderModerationRightsReceivedNotification from '../ProjectFolderModerationRightsReceivedNotification';
+import VotingBasketSubmittedNotification from '../VotingBasketSubmittedNotification';
+import VotingBasketNotSubmittedNotification from '../VotingBasketNotSubmittedNotification';
+import VotingLastChanceNotification from '../VotingLastChanceNotification';
+import VotingResultsNotification from '../VotingResultsNotification';
 
 import {
   TNotificationData,
@@ -47,6 +52,7 @@ import {
   IInitiativeMarkedAsSpamNotificationData,
   IInviteAcceptedNotificationData,
   IMentionInCommentNotificationData,
+  IInternalCommentNotificationData,
   IMentionInOfficialFeedbackNotificationData,
   IOfficialFeedbackOnCommentedIdeaNotificationData,
   IOfficialFeedbackOnCommentedInitiativeNotificationData,
@@ -65,6 +71,10 @@ import {
   IStatusChangeOnReactedInitiativeNotificationData,
   IThresholdReachedForAdminNotificationData,
   IProjectFolderModerationRightsReceivedNotificationData,
+  IVotingBasketSubmittedNotificationData,
+  IVotingBasketNotSubmittedNotificationData,
+  IVotingLastChanceNotificationData,
+  IVotingResultsNotificationData,
 } from 'api/notifications/types';
 import styled from 'styled-components';
 import Outlet from 'components/Outlet';
@@ -155,6 +165,20 @@ const Notification = ({ notification }: Props) => {
       return (
         <MentionInCommentNotification
           notification={notification as IMentionInCommentNotificationData}
+        />
+      );
+    case 'mention_in_internal_comment':
+    case 'internal_comment_on_your_internal_comment':
+    case 'internal_comment_on_idea_assigned_to_you':
+    case 'internal_comment_on_initiative_assigned_to_you':
+    case 'internal_comment_on_idea_you_moderate':
+    case 'internal_comment_on_idea_you_commented_internally_on':
+    case 'internal_comment_on_initiative_you_commented_internally_on':
+    case 'internal_comment_on_unassigned_unmoderated_idea':
+    case 'internal_comment_on_unassigned_initiative':
+      return (
+        <InternalCommentNotification
+          notification={notification as IInternalCommentNotificationData}
         />
       );
     case 'mention_in_official_feedback':
@@ -299,6 +323,32 @@ const Notification = ({ notification }: Props) => {
       } else {
         return null;
       }
+    case 'voting_basket_submitted':
+      return (
+        <VotingBasketSubmittedNotification
+          notification={notification as IVotingBasketSubmittedNotificationData}
+        />
+      );
+    case 'voting_basket_not_submitted':
+      return (
+        <VotingBasketNotSubmittedNotification
+          notification={
+            notification as IVotingBasketNotSubmittedNotificationData
+          }
+        />
+      );
+    case 'voting_last_chance':
+      return (
+        <VotingLastChanceNotification
+          notification={notification as IVotingLastChanceNotificationData}
+        />
+      );
+    case 'voting_results':
+      return (
+        <VotingResultsNotification
+          notification={notification as IVotingResultsNotificationData}
+        />
+      );
     default:
       return (
         <Outlet
