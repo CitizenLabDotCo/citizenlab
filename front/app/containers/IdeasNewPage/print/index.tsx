@@ -1,5 +1,8 @@
 import React from 'react';
 
+// components
+import { Box } from '@citizenlab/cl2-component-library';
+
 // api
 import useInputSchema from 'hooks/useInputSchema';
 
@@ -16,7 +19,7 @@ const IdeaFormPrintable = () => {
     phaseId,
   });
 
-  return <>{schema}</>;
+  return <Box>Blablablalb</Box>;
 };
 
 export default IdeaFormPrintable;

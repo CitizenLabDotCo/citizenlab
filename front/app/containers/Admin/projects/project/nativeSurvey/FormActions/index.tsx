@@ -145,6 +145,18 @@ const FormActions = ({
             {formatMessage(messages.viewSurveyText2)}
           </Button>
         </Box>
+        <Box mt="12px" w="100%" display="flex">
+          <Button
+            linkTo={`/admin/survey/${projectId}/print`}
+            icon="survey"
+            openLinkInNewTab
+            buttonStyle="cl-blue"
+            width="auto"
+            minWidth="312px"
+          >
+            {formatMessage(messages.printSurvey)}
+          </Button>
+        </Box>
         {haveSubmissionsComeIn && (
           <Box
             display="flex"
