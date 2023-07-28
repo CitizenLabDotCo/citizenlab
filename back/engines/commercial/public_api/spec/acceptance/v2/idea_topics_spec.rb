@@ -13,8 +13,24 @@ resource 'Idea topics' do
 
   include_context 'common_auth'
 
+  parameter(
+    :idea_id,
+    'Filter by idea ID',
+    required: false,
+    type: :string,
+    in: :query
+  )
+
+  parameter(
+    :topic_id,
+    'Filter by topic ID',
+    required: false,
+    type: :string,
+    in: :query
+  )
+
   get '/api/v2/idea_topics' do
-    let!(:idea_topics) do
+    let_it_be(:idea_topics) do
       2.times do |index|
         create(:idea_with_topics, topics_count: index + 1)
       end
@@ -33,6 +49,39 @@ resource 'Idea topics' do
       end
 
       expect(json_response_body[:idea_topics]).to match_array(expected_idea_topics)
+    end
+
+    describe 'when filtering by idea ID' do
+      let(:idea) { create(:idea_with_topics, topics_count: 2) }
+      let(:idea_id) { idea.id }
+
+      example_request 'List only idea-topic associations for the specified idea', document: false do
+        assert_status 200
+
+        expected_idea_topics = idea.topic_ids.map do |topic_id|
+          { topic_id: topic_id, idea_id: idea_id }
+        end
+
+        expect(json_response_body[:idea_topics]).to match_array(expected_idea_topics)
+      end
+    end
+
+    describe 'when filtering by topic ID' do
+      let(:topic) { create(:topic) }
+      let(:topic_id) { topic.id }
+      let!(:ideas) do
+        create_list(:idea, 2).each { |idea| idea.topics << topic }
+      end
+
+      example_request 'List only idea-topic associations for the specified topic', document: false do
+        assert_status 200
+
+        expected_idea_topics = ideas.map do |idea|
+          { topic_id: topic_id, idea_id: idea.id }
+        end
+
+        expect(json_response_body[:idea_topics]).to match_array(expected_idea_topics)
+      end
     end
   end
 end
