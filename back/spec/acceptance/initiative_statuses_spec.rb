@@ -8,7 +8,8 @@ resource 'InitiativeStatuses' do
 
   before do
     header 'Content-Type', 'application/json'
-    @statuses = create_list(:initiative_status, 3)
+    codes = InitiativeStatus::CODES[3..5] # 3..5 are indices that avoid statuses that are conditionally returned
+    @statuses = codes.map { |code| create(:initiative_status, code: code) }
   end
 
   get 'web_api/v1/initiative_statuses' do

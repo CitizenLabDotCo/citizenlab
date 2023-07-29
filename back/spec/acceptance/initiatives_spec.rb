@@ -87,7 +87,7 @@ resource 'Initiatives' do
     end
 
     example 'List all initiatives for an initiative status', document: false do
-      status = create(:initiative_status)
+      status = create(:initiative_status_ineligible)
       i = create(:initiative, initiative_status: status)
 
       do_request initiative_status: status.id
@@ -233,8 +233,8 @@ resource 'Initiatives' do
       @t2 = create(:topic)
       @a1 = create(:area)
       @a2 = create(:area)
-      @s1 = create(:initiative_status)
-      @s2 = create(:initiative_status)
+      @s1 = create(:initiative_status_ineligible)
+      @s2 = create(:initiative_status_expired)
       @i1 = create(:initiative, topics: [@t1, @t2], areas: [@a1], initiative_status: @s1)
       @i2 = create(:initiative, topics: [@t1], areas: [@a1, @a2], initiative_status: @s2)
       @i3 = create(:initiative, topics: [@t2], areas: [], initiative_status: @s2)
@@ -315,10 +315,6 @@ resource 'Initiatives' do
   end
 
   post 'web_api/v1/initiatives' do
-    before do
-      create(:initiative_status, code: 'proposed')
-    end
-
     with_options scope: :initiative do
       parameter :author_id, 'The user id of the user owning the initiative. This can only be specified by moderators and is inferred from the JWT token for residents.'
       parameter :publication_status, 'Publication status', required: true, extra: "One of #{Post::PUBLICATION_STATUSES.join(',')}"
@@ -447,10 +443,7 @@ resource 'Initiatives' do
   end
 
   patch 'web_api/v1/initiatives/:id' do
-    before do
-      create(:initiative_status, code: 'proposed')
-      @initiative = create(:initiative, author: @user)
-    end
+    before { @initiative = create(:initiative, author: @user) }
 
     with_options scope: :initiative do
       parameter :author_id, 'The user id of the user owning the initiative. This can only be specified by moderators and is inferred from the JWT token for residents.'

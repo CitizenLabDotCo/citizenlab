@@ -9,7 +9,10 @@ resource 'InitiativeStatusChange' do
   before do
     header 'Content-Type', 'application/json'
     @initiative = create(:initiative)
-    @changes = create_list(:initiative_status_change, 2, initiative: @initiative)
+
+    codes = InitiativeStatus::CODES[3..4] # 3..4 are indices that avoid statuses that are conditionally returned
+    statuses = codes.map { |code| create(:initiative_status, code: code) }
+    @changes = statuses.map { |status| create(:initiative_status_change, initiative_status: status, initiative: @initiative) }
   end
 
   get 'web_api/v1/initiatives/:initiative_id/initiative_status_changes' do
@@ -46,16 +49,18 @@ resource 'InitiativeStatusChange' do
     before do
       @user = create(:admin)
       header_token_for @user
+    end
 
-      @status_proposed = create(:initiative_status_proposed)
-      @status_expired = create(:initiative_status_expired)
-      @status_threshold_reached = create(:initiative_status_threshold_reached)
-      @status_answered = create(:initiative_status_answered)
-      @status_ineligible = create(:initiative_status_ineligible)
+    let(:status_proposed) { create(:initiative_status_proposed) }
+    let(:status_expired) { create(:initiative_status_expired) }
+    let(:status_threshold_reached) { create(:initiative_status_threshold_reached) }
+    let(:status_answered) { create(:initiative_status_answered) }
+    let(:status_ineligible) { create(:initiative_status_ineligible) }
 
+    let(:_initiative_status_change) do
       create(
         :initiative_status_change,
-        initiative: @initiative, initiative_status: @status_threshold_reached
+        initiative: @initiative, initiative_status: status_threshold_reached
       )
     end
 
@@ -72,7 +77,7 @@ resource 'InitiativeStatusChange' do
       ValidationErrorHelper.new.error_fields(self, InitiativeStatusChange)
 
       let(:initiative_id) { @initiative.id }
-      let(:initiative_status_id) { @status_answered.id }
+      let(:initiative_status_id) { status_answered.id }
       let(:feedback) { build(:official_feedback) }
       let(:body_multiloc) { feedback.body_multiloc }
       let(:author_multiloc) { feedback.author_multiloc }
@@ -105,7 +110,7 @@ resource 'InitiativeStatusChange' do
       end
 
       describe do
-        let(:initiative_status_id) { @status_expired.id }
+        let(:initiative_status_id) { InitiativeStatus.find_by(code: 'expired').id }
 
         example_request '[error] Create a status change through an invalid transition' do
           assert_status 422
@@ -115,7 +120,7 @@ resource 'InitiativeStatusChange' do
       end
 
       describe do
-        let(:initiative_status_id) { @status_threshold_reached.id }
+        let(:initiative_status_id) { InitiativeStatus.find_by(code: 'threshold_reached').id }
 
         example_request '[error] Create a status change to the same status' do
           assert_status 422
@@ -127,18 +132,15 @@ resource 'InitiativeStatusChange' do
   end
 
   context 'when resident' do
-    before do
-      resident_header_token
+    before { resident_header_token }
 
-      @status_proposed = create(:initiative_status_proposed)
-      @status_expired = create(:initiative_status_expired)
-      @status_threshold_reached = create(:initiative_status_threshold_reached)
-      @status_answered = create(:initiative_status_answered)
-      @status_ineligible = create(:initiative_status_ineligible)
+    let(:status_threshold_reached) { create(:initiative_status_threshold_reached) }
+    let(:status_answered) { create(:initiative_status_answered) }
 
+    let(:_initiative_status_change) do
       create(
         :initiative_status_change,
-        initiative: @initiative, initiative_status: @status_threshold_reached
+        initiative: @initiative, initiative_status: status_threshold_reached
       )
     end
 
@@ -155,7 +157,7 @@ resource 'InitiativeStatusChange' do
       ValidationErrorHelper.new.error_fields(self, InitiativeStatusChange)
 
       let(:initiative_id) { @initiative.id }
-      let(:initiative_status_id) { @status_answered.id }
+      let(:initiative_status_id) { status_answered.id }
       let(:feedback) { build(:official_feedback) }
       let(:body_multiloc) { feedback.body_multiloc }
       let(:author_multiloc) { feedback.author_multiloc }

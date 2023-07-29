@@ -172,8 +172,8 @@ describe InitiativesFinder do
   end
 
   describe '#feedback_needed_condition' do
-    let(:initiative_status) { create(:initiative_status) }
-    let(:feedback_needed_initiative_status) { create(:initiative_status, code: 'threshold_reached') }
+    let(:initiative_status) { create(:initiative_status_answered) }
+    let(:feedback_needed_initiative_status) { create(:initiative_status_threshold_reached) }
 
     context 'when true' do
       before do
