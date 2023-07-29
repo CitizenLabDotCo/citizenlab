@@ -169,6 +169,10 @@ export default defineMessages({
     id: 'app.components.InitiativeForm.publishButton',
     defaultMessage: 'Publish your initiative',
   },
+  submitButton: {
+    id: 'app.components.InitiativeForm.submitButton',
+    defaultMessage: 'Submit your proposal',
+  },
   submitApiError: {
     id: 'app.components.InitiativeForm.submitApiError',
     defaultMessage:
