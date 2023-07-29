@@ -543,7 +543,7 @@
   "app.components.anonymousParticipationModal.participateAnonymously": "Deltag anonymt",
   "app.components.anonymousParticipationModal.participateAnonymouslyModalText4": "Dette vil sikkert <b>skjule din profil</b> for administratorer, moderatorer og andre borgere for dette specifikke bidrag, så ingen er i stand til at linke dette bidrag til dig. Anonyme bidrag kan ikke redigeres og betragtes som endelige.",
   "app.components.anonymousParticipationModal.participateAnonymouslyModalTextSection2": "At gøre vores platform sikker for alle brugere er en topprioritet for os. Ord betyder noget, så vær venlige over for hinanden.",
-  "app.components.follow": "Følg efter",
+  "app.components.follow": "Følg",
   "app.components.form.ErrorDisplay.guidelinesLinkText": "vores retningslinjer",
   "app.components.form.ErrorDisplay.next": "Næste",
   "app.components.form.ErrorDisplay.previous": "Tidligere",
