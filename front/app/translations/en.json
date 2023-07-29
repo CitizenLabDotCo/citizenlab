@@ -197,6 +197,7 @@
   "app.components.InitiativeForm.profanityError": "Oops! It looks like your post contains some language that doesn’t meet {guidelinesLink}. We try to keep this a safe space for everyone. Please edit your input and try again.",
   "app.components.InitiativeForm.publishButton": "Publish your proposal",
   "app.components.InitiativeForm.submitApiError": "There was an issue submitting the form. Please check for any errors and try again.",
+  "app.components.InitiativeForm.submitButton": "Submit your proposal",
   "app.components.InitiativeForm.titleEmptyError": "Please provide a title",
   "app.components.InitiativeForm.titleLabel": "Title",
   "app.components.InitiativeForm.titleLabelSubtext2": "Choose a descriptive, yet concise title (min. 10 characters, max. 72 characters)",
