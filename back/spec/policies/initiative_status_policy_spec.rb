@@ -19,8 +19,8 @@ describe InitiativeStatusPolicy do
       let!(:status_answered) { create(:initiative_status_answered) }
       let!(:status_ineligible) { create(:initiative_status_ineligible) }
 
-      let!(:default_codes) { InitiativeStatus::CODES - ['custom'] }
-      let!(:not_review_codes) { InitiativeStatus::NOT_REVIEW_CODES - ['custom'] }
+      let!(:default_codes) { InitiativeStatus::CODES }
+      let!(:not_review_codes) { InitiativeStatus::NOT_REVIEW_CODES }
 
       context 'when admin' do
         let(:user) { create(:admin) }

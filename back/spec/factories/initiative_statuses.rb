@@ -9,7 +9,7 @@ FactoryBot.define do
       }
     end
     ordering { 2 }
-    code { 'custom' }
+    code { 'proposed' }
     color { '#AABBCC' }
     description_multiloc do
       {
