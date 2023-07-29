@@ -1828,7 +1828,7 @@
   "app.containers.AdminPage.projects.all.newProjectFolder": "Opret en projektmappe",
   "app.containers.AdminPage.projects.all.projectsAndFolders": "Projekter og mapper",
   "app.containers.AdminPage.projects.project.analysis.Tags.addTag": "Tilføj tag",
-  "app.containers.AdminPage.projects.project.analysis.Tags.allTags": "Alle mærker",
+  "app.containers.AdminPage.projects.project.analysis.Tags.allTags": "Alle tags",
   "app.containers.AdminPage.projects.project.analysis.Tags.deleteTag": "Slet tag",
   "app.containers.AdminPage.projects.project.analysis.Tags.deleteTagConfirmation": "Er du sikker på, at du ønsker at slette dette tag?",
   "app.containers.AdminPage.projects.project.analysis.Tags.editTag": "Rediger tag",
