@@ -5,8 +5,9 @@ class WebApi::V1::HandwrittenIdeasController < ApplicationController
   vision_client = Google::Cloud::Vision.image_annotator
 
   def create
-    # vision_client.document_text_detection(
-    #   image: 
-    # )
+    render json: vision_client.document_text_detection(
+      image: params[:file],
+      async: false
+    )
   end
 end
