@@ -293,7 +293,7 @@ describe InitiativePolicy do
     end
   end
 
-  # Nobody cannot edit initiative if editing is locked, including admins and authors
+  # Nobody can edit initiative if editing is locked, including admins and authors
   context 'when editing is locked for the initiative' do
     let!(:initiative) do
       create(:initiative, author: author, editing_locked: true, initiative_status: create(:initiative_status_proposed))
