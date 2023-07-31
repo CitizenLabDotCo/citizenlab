@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :custom_field do
+  factory :custom_field, aliases: [:custom_field_text] do
     resource_type { 'User' }
     sequence(:key) { |n| "field_#{n}" }
     title_multiloc do

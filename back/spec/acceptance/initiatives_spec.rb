@@ -9,7 +9,7 @@ resource 'Initiatives' do
   before do
     header 'Content-Type', 'application/json'
     @first_admin = create(:admin)
-    @initiatives = %w[published published draft published spam published published].map { |ps| create(:initiative, publication_status: ps) }
+    @initiatives = %w[published published draft published spam published published].map { |ps| create(:initiative, publication_status: ps, assignee: create(:admin)) }
     @user = create(:user)
     header_token_for @user
   end
@@ -106,6 +106,18 @@ resource 'Initiatives' do
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 1
       expect(json_response[:data][0][:id]).to eq i.id
+    end
+
+    example 'List all unassigned initiatives' do
+      create(:initiative, assignee: create(:admin))
+      initiatives = create_list(:initiative, 2, assignee: nil)
+
+      do_request assignee: 'unassigned'
+
+      assert_status 200
+      json_response = json_parse response_body
+      expect(json_response[:data].size).to eq 2
+      expect(json_response[:data].pluck(:id)).to match_array initiatives.map(&:id)
     end
 
     example 'List all initiatives that need feedback', document: false do
