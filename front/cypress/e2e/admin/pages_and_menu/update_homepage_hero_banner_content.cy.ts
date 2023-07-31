@@ -94,6 +94,7 @@ describe('Admin: update Hero Banner content', () => {
     cy.get('[data-cy="e2e-overlay-toggle"]').should('exist');
     cy.get('.e2e-submit-wrapper-button').click();
     cy.wait('@saveHomePage');
+    cy.wait(2000);
     cy.get('.e2e-submit-wrapper-button').contains('Success');
     // Should exist after saving
     cy.get('[data-cy="e2e-overlay-toggle"]').should('exist');
