@@ -82,6 +82,8 @@ resource 'User', admin_api: true do
       parameter :roles, 'The roles of the user'
       parameter :remote_avatar_url, 'The user avatar'
     end
+    parameter :confirm_email, 'Should the email already be verified?', required: false, default: false
+
     ValidationErrorHelper.new.error_fields(self, User)
 
     let(:first_name) { 'Jaak' }
@@ -95,6 +97,28 @@ resource 'User', admin_api: true do
         expect(response_status).to eq 201
         json_response = json_parse(response_body)
         expect(json_response[:last_name]).to eq 'Brijl'
+        expect(User.find_by(email: email).email_confirmed_at).to be_blank
+      end
+    end
+
+    describe do
+      before do
+        configuration = AppConfiguration.instance
+        configuration.settings['user_confirmation'] = {
+          allowed: true,
+          enabled: true
+        }
+        configuration.save!
+      end
+
+      let(:confirm_email) { true }
+
+      example_request 'Create a user with a confirmed email' do
+        expect(response_status).to eq 201
+        user = User.find_by(email: email)
+
+        expect(user.email_confirmed_at).to be_present
+        expect(user.confirmation_required?).to be false
       end
     end
   end

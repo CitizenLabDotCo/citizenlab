@@ -92,9 +92,9 @@ export default defineMessages({
     id: 'app.components.ProjectCard.contributeYourInput',
     defaultMessage: 'Contribute your input',
   },
-  vote: {
-    id: 'app.components.ProjectCard.vote',
-    defaultMessage: 'Vote',
+  reaction: {
+    id: 'app.components.ProjectCard.reaction',
+    defaultMessage: 'Reaction',
   },
   comment: {
     id: 'app.components.ProjectCard.comment',

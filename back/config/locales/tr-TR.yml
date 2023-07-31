@@ -201,7 +201,9 @@ tr:
       comments_count: 'Yorumlar'
       likes_count: 'Beğeniler'
       dislikes_count: 'Sevmediğim'
-      baskets_count: 'Sepetler'
+      picks: 'Seçimler'
+      participants: 'Katılımcılar'
+      votes_count: 'Oylar'
       input_url: 'URL'
       project: 'Proje'
       status: 'Durum'
@@ -247,3 +249,6 @@ tr:
     formats:
       hour_of_day: "%H:%M"
     pm: pm
+  voting_method:
+    default_voting_term_singular: "oylama"
+    default_voting_term_plural: "oylar"

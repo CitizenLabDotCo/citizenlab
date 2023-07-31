@@ -52,10 +52,10 @@ describe('Admin project participation method settings', () => {
     cy.get('#participationmethod-poll').should('be.checked');
 
     // Budgeting
-    cy.get('#participationmethod-budgeting').click({ force: true });
+    cy.get('#participationmethod-voting').click({ force: true });
     cy.get('.e2e-submit-wrapper-button').find('button').click();
     cy.visit(`admin/projects/${projectIdContinuous}`);
-    cy.get('#participationmethod-budgeting').should('be.checked');
+    cy.get('#participationmethod-voting').should('be.checked');
 
     // Volunteering
     cy.get('#participationmethod-volunteering').click({ force: true });

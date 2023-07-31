@@ -263,7 +263,10 @@ Rails.application.routes.draw do
         get 'initiatives'
       end
 
-      resources :baskets, except: [:index]
+      resources :baskets, except: [:index] do
+        resources :baskets_ideas, shallow: true
+      end
+      put 'baskets/ideas/:idea_id', to: 'baskets_ideas#upsert'
 
       resources :avatars, only: %i[index show]
     end

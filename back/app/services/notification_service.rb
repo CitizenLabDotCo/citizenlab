@@ -39,7 +39,11 @@ class NotificationService
     Notifications::StatusChangeOnCommentedInitiative,
     Notifications::StatusChangeOnReactedIdea,
     Notifications::StatusChangeOnReactedInitiative,
-    Notifications::ThresholdReachedForAdmin
+    Notifications::ThresholdReachedForAdmin,
+    Notifications::VotingBasketSubmitted,
+    Notifications::VotingBasketNotSubmitted,
+    Notifications::VotingLastChance,
+    Notifications::VotingResultsPublished
   ].freeze
 
   def notification_classes

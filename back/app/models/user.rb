@@ -162,7 +162,8 @@ class User < ApplicationRecord
   has_many :memberships, dependent: :destroy
   has_many :manual_groups, class_name: 'Group', source: 'group', through: :memberships
   has_many :campaign_email_commands, class_name: 'EmailCampaigns::CampaignEmailCommand', foreign_key: :recipient_id, dependent: :destroy
-  has_many :baskets, dependent: :destroy
+  has_many :baskets
+  before_destroy :destroy_baskets
   has_many :initiative_status_changes, dependent: :nullify
 
   store_accessor :custom_field_values, :gender, :birthyear, :domicile, :education
@@ -659,6 +660,10 @@ class User < ApplicationRecord
 
   def use_fake_code?
     Rails.env.development?
+  end
+
+  def destroy_baskets
+    baskets.each(&:destroy_or_keep!)
   end
 end
 

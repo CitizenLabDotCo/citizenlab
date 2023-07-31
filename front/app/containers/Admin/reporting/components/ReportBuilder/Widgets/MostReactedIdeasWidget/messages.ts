@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  mostVotedIdeas: {
-    id: 'app.containers.admin.ReportBuilder.MostVotedIdeasWidget.mostVotedIeas',
-    defaultMessage: 'Most voted ideas',
+  mostReactedIdeas: {
+    id: 'app.containers.admin.ReportBuilder.MostReactedIdeasWidget.mostReactedIdeas',
+    defaultMessage: 'Most reacted ideas',
   },
   totalIdeas: {
     id: 'app.containers.admin.ReportBuilder.MostVotedIdeasWidget.totalIdeas',
@@ -32,7 +32,7 @@ export default defineMessages({
   noProjectSelected: {
     id: 'app.containers.admin.ReportBuilder.MostVotedIdeasWidget.noProjectSelected',
     defaultMessage:
-      'No project was selected. Please select a project to see the most voted ideas.',
+      'No project was selected. Please select a project to see the most reacted ideas.',
   },
   noIdeasAvailable: {
     id: 'app.containers.admin.ReportBuilder.MostVotedIdeasWidget.noIdeasAvailable',

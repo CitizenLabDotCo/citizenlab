@@ -100,7 +100,7 @@ class UserPolicy < ApplicationPolicy
     else
       record
     end
-    (user && (instance&.id == user.id || user.admin?)) || instance&.invite_pending?
+    !!((user && (instance&.id == user.id || user.admin?)) || instance&.invite_pending?)
   end
 
   def permitted_attributes

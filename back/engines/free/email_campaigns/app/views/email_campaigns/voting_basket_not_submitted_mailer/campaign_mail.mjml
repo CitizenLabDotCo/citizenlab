@@ -1,0 +1,9 @@
+<!-- CTA button -->
+<mj-section padding="0 25px">
+  <mj-column>
+    <mj-text>
+      <p><%= format_message('cta_message') %></p>
+    </mj-text>
+  </mj-column>
+</mj-section>
+<%= render partial: 'application/cta_button', locals: { href: event.project_url, message: format_message('cta_view_options_and_vote') } %>

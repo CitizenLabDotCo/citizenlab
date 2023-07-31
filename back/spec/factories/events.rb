@@ -21,6 +21,8 @@ FactoryBot.define do
         'nl-BE' => 'Vogelstraat 4, om de hoek'
       }
     end
+    location_description { location_multiloc.values.first }
+
     start_at { '2017-05-01 20:00' }
     end_at { '2017-05-01 22:00' }
   end

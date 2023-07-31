@@ -201,7 +201,9 @@ sv:
       comments_count: 'Kommentarer'
       likes_count: 'Gillar'
       dislikes_count: 'Ogillar'
-      baskets_count: 'Korgar'
+      picks: 'Val'
+      participants: 'Deltagare'
+      votes_count: 'Röster'
       input_url: 'Webbadress'
       project: 'Projekt'
       status: 'Status'
@@ -247,3 +249,6 @@ sv:
     formats:
       hour_of_day: "%H:%M"
     pm: pm
+  voting_method:
+    default_voting_term_singular: "omröstning"
+    default_voting_term_plural: "röster"

@@ -27,7 +27,7 @@ const CommentSorting = ({
     // 'new' = most recent (date posted, ascending)
     new: messages.mostRecent,
     // '-likes_count' = most reactions (reactions, descending)
-    '-likes_count': messages.mostUpvoted,
+    '-likes_count': messages.mostLiked,
   };
 
   const getSortOptions = () => {

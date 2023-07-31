@@ -1,18 +1,6 @@
 # frozen_string_literal: true
 
 class InitiativesFinder < ApplicationFinder
-  default_sort 'new'
-
-  sort_scope 'new',          order_new: :desc
-  sort_scope '-new',         order_new: :asc
-  sort_scope 'status',       order_status: :asc
-  sort_scope '-status',      order_status: :desc
-  sort_scope 'random',       :order_random
-  sort_scope 'author_name',  ['users.first_name ASC', 'users.last_name ASC']
-  sort_scope '-author_name', ['users.first_name DESC', 'users.last_name DESC']
-
-  sortable_attributes :likes_count
-
   private
 
   def topics_condition(topics)
@@ -29,6 +17,7 @@ class InitiativesFinder < ApplicationFinder
   end
 
   def assignee_condition(assignee_id)
+    assignee_id = nil if assignee_id == 'unassigned'
     where(assignee_id: assignee_id)
   end
 

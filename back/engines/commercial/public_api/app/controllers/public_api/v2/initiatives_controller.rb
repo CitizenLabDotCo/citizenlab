@@ -2,6 +2,8 @@
 
 module PublicApi
   class V2::InitiativesController < PublicApiController
+    include DeletedItemsAction
+
     def index
       initiatives = Initiative
         .order(created_at: :desc)

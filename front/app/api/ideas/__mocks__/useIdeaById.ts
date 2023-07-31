@@ -58,7 +58,7 @@ export const ideaData: IIdeaData[] = [
           disabled_reason: null,
           future_enabled: null,
         },
-        budgeting: {
+        voting: {
           enabled: false,
           disabled_reason: 'not_permitted',
           future_enabled: null,
@@ -155,7 +155,7 @@ export const ideaData: IIdeaData[] = [
           disabled_reason: null,
           future_enabled: null,
         },
-        budgeting: {
+        voting: {
           enabled: false,
           disabled_reason: 'not_permitted',
           future_enabled: null,
