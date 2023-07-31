@@ -1072,6 +1072,7 @@
   "app.containers.Navbar.confirmEmail": "Confirmar endereço de e-mail",
   "app.containers.Navbar.unverified": "Não verificado",
   "app.containers.Navbar.verified": "Verificado",
+  "app.containers.NewAuthModal.beforeYouFollow": "Antes de seguir",
   "app.containers.NewAuthModal.beforeYouParticipate": "Antes de participar",
   "app.containers.NewAuthModal.completeYourProfile": "Preencher o seu perfil",
   "app.containers.NewAuthModal.confirmYourEmail": "Confirme o seu e-mail",
