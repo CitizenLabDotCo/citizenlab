@@ -23,17 +23,6 @@ interface Props extends BoxPaddingProps {
   buttonStyle?: ButtonStyles;
 }
 
-type ContextType = {
-  [K in FollowableType]: 'initiative' | 'project' | 'idea' | 'project';
-};
-
-const contextType: ContextType = {
-  initiatives: 'initiative',
-  projects: 'project',
-  ideas: 'idea',
-  project_folders: 'project',
-};
-
 const FollowUnfollow = ({
   followableType,
   followableId,
@@ -80,7 +69,7 @@ const FollowUnfollow = ({
 
   const loginAndFollow = () => {
     const context = {
-      type: contextType[followableType],
+      type: 'follow',
       action: 'following',
       id: followableId,
     } as const;

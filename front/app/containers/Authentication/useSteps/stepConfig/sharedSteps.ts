@@ -2,7 +2,6 @@ import { parse } from 'qs';
 
 // api
 import getUserDataFromToken from 'api/authentication/getUserDataFromToken';
-import getAuthUser from 'api/authentication/auth_user/getAuthUser';
 
 // cache
 import streams from 'utils/streams';
@@ -113,21 +112,6 @@ export const sharedSteps = (
           token: null,
           prefilledBuiltInFields: null,
         });
-        const {
-          context: { action },
-        } = getAuthenticationData();
-
-        if (action === 'following') {
-          const authUser = await getAuthUser();
-
-          if (authUser) {
-            setCurrentStep('light-flow:email-confirmation');
-            return;
-          }
-
-          setCurrentStep('light-flow:email');
-          return;
-        }
 
         const { requirements } = await getRequirements();
 

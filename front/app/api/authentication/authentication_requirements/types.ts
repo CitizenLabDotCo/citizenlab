@@ -3,22 +3,28 @@ import keys from './keys';
 import { Keys } from 'utils/cl-react-query/types';
 import { GLOBAL_CONTEXT } from './constants';
 import { IParticipationContextPermissionAction } from 'services/actionPermissions';
-import { IFollowingAction } from 'api/follow_unfollow/types';
 
 interface InitiativeContext {
   type: 'initiative';
   action: IInitiativeAction;
 }
 
+export type IFollowingAction = 'following';
+
+interface IFollowContext {
+  type: 'follow';
+  action: IFollowingAction;
+}
+
 export interface ProjectContext {
   type: 'project' | 'phase';
-  action: IParticipationContextPermissionAction | IFollowingAction;
+  action: IParticipationContextPermissionAction;
   id: string /* project or phase id, depending on type attribute */;
 }
 
 interface IdeaContext {
   type: 'idea';
-  action: IParticipationContextPermissionAction | IFollowingAction;
+  action: IParticipationContextPermissionAction;
   id: string /* idea id */;
 }
 
@@ -26,7 +32,8 @@ export type AuthenticationContext =
   | typeof GLOBAL_CONTEXT
   | InitiativeContext
   | ProjectContext
-  | IdeaContext;
+  | IdeaContext
+  | IFollowContext;
 
 export interface AuthenticationRequirementsResponse {
   data: {

@@ -1,6 +1,5 @@
 import { Keys } from 'utils/cl-react-query/types';
 import initiativeActionDescriptorsKeys from './keys';
-import { IFollowingAction } from 'api/follow_unfollow/types';
 
 export type InitiativeActionDescriptorsKeys = Keys<
   typeof initiativeActionDescriptorsKeys
@@ -9,8 +8,7 @@ export type InitiativeActionDescriptorsKeys = Keys<
 export type IInitiativeAction =
   | 'posting_initiative'
   | 'commenting_initiative'
-  | 'reacting_initiative'
-  | IFollowingAction;
+  | 'reacting_initiative';
 
 export type InitiativeDisabledReason =
   | 'not_permitted'

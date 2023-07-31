@@ -41,6 +41,7 @@ import VerificationSuccess from './steps/VerificationSuccess';
 import T from 'components/T';
 import { IInitiativeAction } from 'api/initiative_action_descriptors/types';
 import { IParticipationContextPermissionAction } from 'services/actionPermissions';
+import { IFollowingAction } from 'api/authentication/authentication_requirements/types';
 
 type Step = ReturnType<typeof useSteps>['currentStep'];
 
@@ -88,7 +89,11 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
 
 const getHeaderMessage = (
   step: Step,
-  action: 'visiting' | IInitiativeAction | IParticipationContextPermissionAction
+  action:
+    | 'visiting'
+    | IInitiativeAction
+    | IParticipationContextPermissionAction
+    | IFollowingAction
 ) => {
   if (action === 'following') {
     return messages.beforeYouFollow;
