@@ -1072,6 +1072,7 @@
   "app.containers.Navbar.confirmEmail": "Bekreft e-postadresse",
   "app.containers.Navbar.unverified": "Ikke bekreftet",
   "app.containers.Navbar.verified": "Bekreftet",
+  "app.containers.NewAuthModal.beforeYouFollow": "Før du følger etter",
   "app.containers.NewAuthModal.beforeYouParticipate": "Før du deltar",
   "app.containers.NewAuthModal.completeYourProfile": "Fullfør profilen din",
   "app.containers.NewAuthModal.confirmYourEmail": "Bekreft e-postadressen din",
