@@ -32,8 +32,9 @@ RSpec.describe ParticipationMethod::Voting do
   end
 
   describe '#create_default_form!' do
-    it 'does not create a default form' do
-      expect { participation_method.create_default_form! }.not_to change(CustomForm, :count)
+    it 'creates a default form' do
+      expect { participation_method.create_default_form! }.to change(CustomForm, :count)
+      expect { participation_method.create_default_form! }.to change(CustomField, :count)
     end
   end
 

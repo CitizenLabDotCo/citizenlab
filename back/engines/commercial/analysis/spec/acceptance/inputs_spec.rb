@@ -16,7 +16,7 @@ resource 'Inputs' do
 
     with_options required: false do
       parameter :search, 'Filter by searching in title and body'
-      parameter :tag_id, 'Filter inputs by analysis_tags (union)', type: :array
+      parameter :tag_ids, 'Filter inputs by analysis_tags (union)', type: :array
       parameter :'author_custom_<uuid>_from', 'Filter by custom field value of the author for numerical or date fields, larger than or equal to. Replace <uuid> with the custom_field id'
       parameter :'author_custom_<uuid>_to', 'Filter by custom field value of the author for numerical or date fields, smaller than or equal to. Replace <uuid> with the custom_field id'
       parameter :'author_custom_<uuid>', 'Filter by custom field value of the author, for select, multiselect, date and number fields (union). Replace <uuid> with the custom_field id', type: :array
@@ -105,6 +105,18 @@ resource 'Inputs' do
         expect(status).to eq(200)
         expect(response_data.pluck(:id)).to eq([idea1.id])
       end
+    end
+  end
+
+  get 'web_api/v1/analyses/:analysis_id/inputs/:id' do
+    before { admin_header_token }
+
+    let(:analysis) { create(:analysis) }
+    let(:analysis_id) { analysis.id }
+    let(:input) { create(:idea, project: analysis.project) }
+    let(:id) { input.id }
+    example_request 'get one inputs in the analysis by id' do
+      expect(status).to eq(200)
     end
   end
 end

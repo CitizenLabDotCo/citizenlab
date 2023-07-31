@@ -64,7 +64,7 @@ resource 'Analyses' do
     with_options scope: :analysis do
       parameter :project_id, 'The project to analyze, only in case of ideation or continuous survey. Mandatory to pass either project_id or phase_id.', required: false
       parameter :phase_id, 'The phase to analyze, only in case of survey. Mandatory to pass either project_id or phase_id.', required: false
-      parameter :custom_fields_ids, 'Custom fields that should be part of the analysis. Must be textual fields. If not passed, all textual fields will be analyzed.', required: false
+      parameter :custom_field_ids, 'Custom fields that should be part of the analysis. Must be textual fields. If not passed, all textual fields will be analyzed.', required: false
     end
     ValidationErrorHelper.new.error_fields(self, Analysis::Analysis)
 
@@ -72,8 +72,24 @@ resource 'Analyses' do
       let(:project) { create(:project_with_active_ideation_phase) }
       let(:project_id) { project.id }
 
-      example_request 'Create an analysis (ideation phase)' do
+      example_request 'Create an analysis (ideation phase) when no custom_form exists' do
         expect(response_status).to eq 201
+        # If no custom_fields are passed, all textual fields must be added automatically
+        expect(response_data.dig(:relationships, :custom_fields, :data)).not_to be_empty
+        expect(json_response_body[:included].map { |d| d[:attributes][:code] }).to match_array(%w[title_multiloc body_multiloc location_description])
+      end
+    end
+
+    describe do
+      let(:project) { create(:project_with_active_ideation_phase) }
+      let!(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
+      let(:project_id) { project.id }
+
+      example_request 'Create an analysis (ideation phase) when the custom_form already exists' do
+        expect(response_status).to eq 201
+        # If no custom_fields are passed, all textual fields must be added automatically
+        expect(response_data.dig(:relationships, :custom_fields, :data)).not_to be_empty
+        expect(json_response_body[:included].map { |d| d[:attributes][:code] }).to match_array(%w[title_multiloc body_multiloc location_description])
       end
     end
 
@@ -81,14 +97,20 @@ resource 'Analyses' do
       let(:project) { create(:project_with_active_native_survey_phase) }
       let(:phase) { project.phases.first }
       let(:phase_id) { phase.id }
+      let(:custom_form) { create(:custom_form, participation_context: phase) }
+      let(:custom_field) { create(:custom_field, resource: custom_form) }
+      let(:custom_field_ids) { [custom_field.id] }
 
-      example_request 'Create an analysis (survey phase)' do
+      example_request 'Create an analysis (survey phase) with specific custom_fields' do
         expect(response_status).to eq 201
+        expect(response_data.dig(:relationships, :custom_fields, :data).size).to eq 1
+        expect(response_data.dig(:relationships, :custom_fields, :data, 0, :id)).to eq custom_field.id
       end
     end
 
     describe do
       let(:project) { create(:continuous_native_survey_project) }
+      let!(:custom_form) { create(:custom_form, participation_context: project) }
       let(:project_id) { project.id }
 
       example_request 'Create an analysis (continuous survey project)' do
