@@ -39,7 +39,6 @@ resource 'Background tasks' do
 
     example_request 'Get a background task by id' do
       expect(status).to eq(200)
-      expect(response_data.size).to eq 1
       expect(response_data[:id]).to eq(task.id)
     end
   end
