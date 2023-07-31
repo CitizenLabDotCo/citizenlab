@@ -1072,6 +1072,7 @@
   "app.containers.Navbar.confirmEmail": "crwdns799215:0crwdne799215:0",
   "app.containers.Navbar.unverified": "crwdns799217:0crwdne799217:0",
   "app.containers.Navbar.verified": "crwdns799219:0crwdne799219:0",
+  "app.containers.NewAuthModal.beforeYouFollow": "crwdns825975:0crwdne825975:0",
   "app.containers.NewAuthModal.beforeYouParticipate": "crwdns799221:0crwdne799221:0",
   "app.containers.NewAuthModal.completeYourProfile": "crwdns799223:0crwdne799223:0",
   "app.containers.NewAuthModal.confirmYourEmail": "crwdns799225:0crwdne799225:0",
