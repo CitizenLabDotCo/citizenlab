@@ -1072,6 +1072,7 @@
   "app.containers.Navbar.confirmEmail": "Επιβεβαίωση διεύθυνσης email",
   "app.containers.Navbar.unverified": "Μη επαληθευμένος",
   "app.containers.Navbar.verified": "Επαληθευμένος",
+  "app.containers.NewAuthModal.beforeYouFollow": "Πριν ακολουθήσετε",
   "app.containers.NewAuthModal.beforeYouParticipate": "Πριν από τη συμμετοχή σας",
   "app.containers.NewAuthModal.completeYourProfile": "Συμπληρώστε το προφίλ σας",
   "app.containers.NewAuthModal.confirmYourEmail": "Επιβεβαιώστε το email σας",
