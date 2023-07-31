@@ -20,6 +20,11 @@ module Analysis
           )
         end
 
+        def show
+          @input = @analysis.inputs.find(params[:id])
+          render json: InputSerializer.new(@input, params: jsonapi_serializer_params, include: [:author]).serializable_hash
+        end
+
         private
 
         def set_analysis
@@ -29,7 +34,7 @@ module Analysis
 
         def input_filter_params
           permitted_dynamic_keys = []
-          permitted_dynamic_array_keys = {}
+          permitted_dynamic_array_keys = { tag_ids: [] }
 
           params.each_key do |key|
             if key.match?(/^author_custom_([a-f0-9-]+)_(from|to)$/)

@@ -152,7 +152,18 @@ gem 'intercom', '~> 4.2'
 gem 'mjml-rails', '~> 4.9'
 gem 'cloudfront-rails', '~> 0.4'
 
-Dir.children('engines/free').each do |engine_name|
+free_engines = %w[
+  document_annotation
+  email_campaigns
+  frontend
+  onboarding
+  polls
+  seo
+  surveys
+  volunteering
+]
+
+free_engines.each do |engine_name|
   path = "engines/free/#{engine_name}"
   gem engine_name, path: path if File.directory?(path)
 end

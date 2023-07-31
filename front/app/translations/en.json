@@ -1627,6 +1627,7 @@
   "app.errors.password_invalid": "Please check your current password again.",
   "app.errors.password_too_short": "The password must be at least 8 characters long",
   "app.errors.slug_taken": "This project URL already exists. Please change the project slug to something else.",
+  "app.errors.tag_name_taken": "A tag with this name already exists",
   "app.errors.title_multiloc_blank": "The title cannot be empty.",
   "app.errors.token_invalid": "Password reset links can only be used once and are valid for one hour after being sent. {passwordResetLink}.",
   "app.errors.too_common": "This password can be easily guessed. Please choose a stronger password.",
