@@ -5,6 +5,7 @@ export const summariesData: ISummary['data'][] = [
     id: '1',
     type: 'summary',
     attributes: {
+      summary: 'I want to see more ponds in the park',
       filters: {
         comments_from: 5,
       },

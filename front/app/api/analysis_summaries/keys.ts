@@ -1,7 +1,7 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
 import { ISummaryParams } from './types';
 
-const baseKey = { type: 'tag' };
+const baseKey = { type: 'summary' };
 
 const summariesKeys = {
   all: () => [baseKey],

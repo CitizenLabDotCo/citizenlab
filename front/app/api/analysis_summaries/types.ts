@@ -13,6 +13,7 @@ export interface ISummaryParam {
   type: 'summary';
   attributes: {
     filters: IInputsFilterParams;
+    summary: string | null;
     created_at: string;
     updated_at: string;
   };

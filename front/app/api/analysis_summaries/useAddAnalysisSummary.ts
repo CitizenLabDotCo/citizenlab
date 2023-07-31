@@ -4,6 +4,8 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import summariesKeys from './keys';
 import { ISummary, ISummaryAdd } from './types';
 
+import backgroundTasksKeys from 'api/analysis_background_tasks/keys';
+
 const addAnalysisSummary = async ({ analysisId, filters }: ISummaryAdd) =>
   fetcher<ISummary>({
     path: `/analyses/${analysisId}/summaries`,
@@ -17,6 +19,7 @@ const useAddAnalysisSummary = () => {
     mutationFn: addAnalysisSummary,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: summariesKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: backgroundTasksKeys.lists() });
     },
   });
 };
