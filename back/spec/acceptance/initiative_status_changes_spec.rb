@@ -123,6 +123,37 @@ resource 'InitiativeStatusChange' do
           expect(json_response).to include_response_error(:base, 'initiative_status_transition_without_change')
         end
       end
+
+      context 'when the review feature is fully active and the status change is to the proposed status' do
+        before do
+          SettingsService.new.activate_feature! 'initiative_review'
+
+          configuration = AppConfiguration.instance
+          configuration.settings['initiatives']['require_review'] = true
+          configuration.save!
+        end
+
+        let(:new_initiative) { create(:initiative) }
+        let!(:_initiative_status_change) do
+          create(
+            :initiative_status_change,
+            initiative: new_initiative, initiative_status: create(:initiative_status_review_pending)
+          )
+        end
+
+        let(:initiative_id) { new_initiative.id }
+        let(:initiative_status_id) { @status_proposed.id }
+
+        example 'Create a status change to the proposed status' do
+          expect(Initiative.review_required?).to be true
+          expect(Initiative.find(initiative_id).editing_locked).to be false
+
+          do_request
+          assert_status 201
+
+          expect(Initiative.find(initiative_id).editing_locked).to be true
+        end
+      end
     end
   end
 
