@@ -5,7 +5,7 @@ module SmartGroups::Rules
     include ActiveModel::Validations
     include DescribableRule
 
-    PREDICATE_VALUES = %w[is_one_of_projects is_not_project is_one_of_folders is_not_folder is_one_of_ideas is_not_idea is_one_of_initiatives is_not_initiative]
+    PREDICATE_VALUES = %w[something nothing is_one_of_projects is_not_project is_one_of_folders is_not_folder is_one_of_ideas is_not_idea is_one_of_initiatives is_not_initiative]
     MULTIVALUE_PREDICATES = %w[is_one_of_projects is_one_of_folders is_one_of_ideas is_one_of_initiatives]
     VALUELESS_PREDICATES = %w[something nothing]
 
@@ -87,9 +87,9 @@ module SmartGroups::Rules
       new(json['predicate'], json['value'])
     end
 
-    def initialize(predicate, value)
+    def initialize(predicate, value = nil)
       self.predicate = predicate
-      self.value = value
+      self.value = value if value
     end
 
     # The filter queries more than just the `users` table, so we cannot cache the result via the users scope.
@@ -101,17 +101,21 @@ module SmartGroups::Rules
       MULTIVALUE_PREDICATES.include? predicate
     end
 
+    def singlevalue_predicate?
+      (PREDICATE_VALUES - (VALUELESS_PREDICATES + MULTIVALUE_PREDICATES)).include? predicate
+    end
+
     def filter(users_scope)
       case predicate
       when 'something'
-        users_scope.from_follows(Follower.all)
+        users_scope.from_follows(Follower.all) # where.associated returns duplicates and does not seem very well supported: https://github.com/rails/rails/issues/40719
       when 'nothing'
-        users_scope.left_join(:follows).where(follows: { id: nil })
+        users_scope.where.missing(:follows)
       when 'is_one_of_projects', 'is_one_of_folders', 'is_one_of_ideas', 'is_one_of_initiatives'
         followers = Follower.where(followable_id: value)
         users_scope.from_follows(followers)
       when 'is_not_project', 'is_not_folder', 'is_not_idea', 'is_not_initiative'
-        followers = Follower.where(followable_id: value)
+        followers = Follower.where(followable_id: value, followable_type: followable_type.name)
         users_scope.where.not(id: users_scope.from_follows(followers))
       else
         raise "Unsupported predicate #{predicate}"
@@ -123,7 +127,7 @@ module SmartGroups::Rules
         value.map do |v|
           followable_type.find(v).title_multiloc[locale]
         end.join ', '
-      else
+      elsif singlevalue_predicate?
         followable_type.find(value).title_multiloc[locale]
       end
     end
@@ -137,7 +141,7 @@ module SmartGroups::Rules
     def validate_value_inclusion
       if multivalue_predicate?
         errors.add(:value, :has_invalid_followable) unless (value - followable_type.ids).empty?
-      else
+      elsif singlevalue_predicate?
         errors.add(:value, :has_invalid_followable) unless followable_type.ids.include?(value)
       end
     end
