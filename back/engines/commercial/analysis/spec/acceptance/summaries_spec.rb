@@ -20,6 +20,7 @@ resource 'Summaries' do
     example_request 'List all summaries of an analysis' do
       assert_status 200
       expect(response_data.pluck(:id)).to match_array(summaries.pluck(:id))
+      expect(json_response_body[:included].pluck(:id)).to include(summaries.map { |s| s.background_task.id })
     end
   end
 
