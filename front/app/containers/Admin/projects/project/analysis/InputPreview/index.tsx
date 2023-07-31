@@ -2,8 +2,10 @@ import { Box, Title, colors } from '@citizenlab/cl2-component-library';
 import useAnalysis from 'api/analyses/useAnalysis';
 import useAnalysisInput from 'api/analysis_inputs/useAnalysisInput';
 import T from 'components/T';
+import Divider from 'components/admin/Divider';
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import Taggings from '../Taggings';
 
 interface Props {
   inputId: string;
@@ -22,7 +24,9 @@ const InputListItem = ({ inputId }: Props) => {
       <Title variant="h3">
         <T value={input.data.attributes.title_multiloc} />
       </Title>
-      <T value={input.data.attributes.body_multiloc} />
+      <T value={input.data.attributes.body_multiloc} supportHtml={true} />
+      <Divider />
+      <Taggings inputId={inputId} />
     </Box>
   );
 };

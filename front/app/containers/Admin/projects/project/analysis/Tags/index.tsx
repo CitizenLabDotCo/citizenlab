@@ -24,6 +24,8 @@ import RenameTagModal from './RenameTagModal';
 import Tag from './Tag';
 import styled from 'styled-components';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { handleArraySearchParam } from '../util';
+import AutotaggingModal from './AutotaggingModal';
 
 const TagContainer = styled.div`
   display: flex;
@@ -34,11 +36,9 @@ const TagContainer = styled.div`
   border: 1px solid transparent;
   border-radius: ${stylingConsts.borderRadius};
   &:hover {
-    background-color: ${colors.grey300};
     border: 1px solid ${colors.borderLight};
   }
   &.selected {
-    background-color: ${colors.grey300};
     border: 1px solid ${colors.borderLight};
   }
 `;
@@ -46,6 +46,8 @@ const TagContainer = styled.div`
 const Tags = () => {
   const [name, setName] = useState('');
   const [renameTagModalOpenedId, setRenameTagModalOpenedId] = useState('');
+  const [autotaggingModalIsOpened, setAutotaggingModalIsOpened] =
+    useState(false);
   const [search] = useSearchParams();
 
   const { formatMessage } = useIntl();
@@ -90,16 +92,22 @@ const Tags = () => {
   };
 
   const selectTag = (id: string) => {
-    updateSearchParams({ tags_ids: [id] });
+    updateSearchParams({ tag_ids: [id] });
   };
 
-  const selectedTags = search.get('tags_ids')
-    ? JSON.parse(search.get('tags_ids') as string)
-    : undefined;
-
+  const selectedTags = handleArraySearchParam(search, 'tag_ids');
   return (
-    <div>
+    <Box>
       <Box>
+        <Button
+          onClick={() => setAutotaggingModalIsOpened(true)}
+          icon="flash"
+          mb="12px"
+          size="s"
+          buttonStyle="secondary-outlined"
+        >
+          Auto-tagging
+        </Button>
         <Box display="flex" alignItems="center" mb="8px" as="form">
           <Input
             type="text"
@@ -125,14 +133,14 @@ const Tags = () => {
       <Box>
         <TagContainer
           tabIndex={0}
-          onClick={() => removeSearchParams(['tags_ids'])}
+          onClick={() => removeSearchParams(['tag_ids'])}
           className={!selectedTags ? 'selected' : ''}
         >
           {formatMessage(messages.allTags)}
         </TagContainer>
         <TagContainer
           tabIndex={0}
-          onClick={() => updateSearchParams({ tags_ids: [] })}
+          onClick={() => updateSearchParams({ tag_ids: [] })}
           className={selectedTags?.length === 0 ? 'selected' : ''}
         >
           {formatMessage(messages.noTags)}
@@ -144,10 +152,7 @@ const Tags = () => {
             onClick={() => selectTag(tag.id)}
             className={selectedTags?.includes(tag.id) ? 'selected' : ''}
           >
-            <Tag
-              name={tag.attributes.name}
-              tag_type={tag.attributes.tag_type}
-            />
+            <Tag name={tag.attributes.name} tagType={tag.attributes.tag_type} />
             <Box display="flex" gap="0px">
               <IconButton
                 iconName="edit"
@@ -178,7 +183,15 @@ const Tags = () => {
           </TagContainer>
         ))}
       </Box>
-    </div>
+      <Modal
+        opened={autotaggingModalIsOpened}
+        close={() => setAutotaggingModalIsOpened(false)}
+      >
+        <AutotaggingModal
+          onCloseModal={() => setAutotaggingModalIsOpened(false)}
+        />
+      </Modal>
+    </Box>
   );
 };
 

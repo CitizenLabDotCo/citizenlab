@@ -25,6 +25,7 @@ module Analysis
     TAG_TYPES = %w[custom language platform_topic nlp_topic sentiment controversial]
 
     belongs_to :analysis
+    has_many :taggings, class_name: 'Analysis::Tagging', dependent: :destroy
 
     validates :name, presence: true, uniqueness: { scope: :analysis_id }
     validates :tag_type, inclusion: { in: TAG_TYPES }, allow_blank: false

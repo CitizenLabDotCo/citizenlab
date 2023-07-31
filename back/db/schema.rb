@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_25_142113) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_27_090914) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -71,6 +71,27 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_25_142113) do
     t.index ["analysis_id", "custom_field_id"], name: "index_analysis_analyses_custom_fields", unique: true
     t.index ["analysis_id"], name: "index_analysis_analyses_custom_fields_on_analysis_id"
     t.index ["custom_field_id"], name: "index_analysis_analyses_custom_fields_on_custom_field_id"
+  end
+
+  create_table "analysis_background_tasks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "analysis_id", null: false
+    t.string "type", null: false
+    t.string "state", null: false
+    t.float "progress"
+    t.datetime "started_at"
+    t.datetime "ended_at"
+    t.string "auto_tagging_method"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["analysis_id"], name: "index_analysis_background_tasks_on_analysis_id"
+  end
+
+  create_table "analysis_taggings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "tag_id", null: false
+    t.uuid "input_id", null: false
+    t.index ["input_id"], name: "index_analysis_taggings_on_input_id"
+    t.index ["tag_id", "input_id"], name: "index_analysis_taggings_on_tag_id_and_input_id", unique: true
+    t.index ["tag_id"], name: "index_analysis_taggings_on_tag_id"
   end
 
   create_table "analysis_tags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1475,6 +1496,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_25_142113) do
   add_foreign_key "analysis_analyses", "projects"
   add_foreign_key "analysis_analyses_custom_fields", "analysis_analyses", column: "analysis_id"
   add_foreign_key "analysis_analyses_custom_fields", "custom_fields"
+  add_foreign_key "analysis_background_tasks", "analysis_analyses", column: "analysis_id"
+  add_foreign_key "analysis_taggings", "analysis_tags", column: "tag_id"
+  add_foreign_key "analysis_taggings", "ideas", column: "input_id"
   add_foreign_key "analysis_tags", "analysis_analyses", column: "analysis_id"
   add_foreign_key "analytics_dimension_locales_fact_visits", "analytics_dimension_locales", column: "dimension_locale_id"
   add_foreign_key "analytics_dimension_locales_fact_visits", "analytics_fact_visits", column: "fact_visit_id"
