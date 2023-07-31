@@ -131,6 +131,8 @@ const fileAccept = [
 
   '.mkv',
   'video/x-matroska',
+
+  '.jpg',
 ];
 
 interface Props {

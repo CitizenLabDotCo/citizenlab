@@ -18,9 +18,6 @@ const addHandwrittenIdea = async (requestBody: RequestBody) =>
 const useAddHandwrittenIdea = () => {
   return useMutation<any, CLErrors, RequestBody>({
     mutationFn: addHandwrittenIdea,
-    onSuccess: (data) => {
-      console.log(data);
-    },
   });
 };
 

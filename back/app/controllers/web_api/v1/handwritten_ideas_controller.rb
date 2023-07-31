@@ -2,12 +2,14 @@
 require "google/cloud/vision"
 
 class WebApi::V1::HandwrittenIdeasController < ApplicationController
-  vision_client = Google::Cloud::Vision.image_annotator
+  @vision_client = Google::Cloud::Vision.image_annotator
 
   def create
-    render json: vision_client.document_text_detection(
+    @result = @vision_client.document_text_detection(
       image: params[:file],
       async: false
     )
+
+    puts @result
   end
 end

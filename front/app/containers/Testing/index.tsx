@@ -26,7 +26,7 @@ const Testing = () => {
       <Title>Hello world!</Title>
       <Box>
         <FileUploader
-          id=""
+          id="rjferiugp"
           onFileAdd={onAddFile}
           onFileRemove={onRemoveFile}
           files={null}
