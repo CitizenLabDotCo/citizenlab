@@ -4,6 +4,7 @@ import { IOption } from 'typings';
 import { Select } from '@citizenlab/cl2-component-library';
 import useLocalize from 'hooks/useLocalize';
 import useIdeas from 'api/ideas/useIdeas';
+import { generateOptions } from './utils';
 
 export interface Props {
   rule: TRule;
@@ -15,18 +16,6 @@ const IdeaValueSelector = ({ value, onChange }: Props) => {
   const { data: ideas } = useIdeas({ sort: 'random' });
   const localize = useLocalize();
 
-  const generateOptions = (): IOption[] => {
-    if (ideas?.data) {
-      return ideas.data.map((idea) => {
-        return {
-          value: idea.id,
-          label: localize(idea.attributes.title_multiloc),
-        };
-      });
-    }
-    return [];
-  };
-
   const handleOnChange = (option: IOption) => {
     onChange(option.value);
   };
@@ -34,7 +23,7 @@ const IdeaValueSelector = ({ value, onChange }: Props) => {
   return (
     <Select
       value={value}
-      options={generateOptions()}
+      options={generateOptions(localize, ideas?.data)}
       onChange={handleOnChange}
     />
   );

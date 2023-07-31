@@ -4,6 +4,7 @@ import { IOption } from 'typings';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import useLocalize from 'hooks/useLocalize';
 import useProjectFolders from 'api/project_folders/useProjectFolders';
+import { generateOptions } from './utils';
 
 export interface Props {
   rule: TRule;
@@ -15,18 +16,6 @@ const ProjectFolderValuesSelector = ({ value, onChange }: Props) => {
   const { data: projectFolders } = useProjectFolders({});
   const localize = useLocalize();
 
-  const generateOptions = (): IOption[] => {
-    if (projectFolders?.data) {
-      return projectFolders.data.map((projectFolder) => {
-        return {
-          value: projectFolder.id,
-          label: localize(projectFolder.attributes.title_multiloc),
-        };
-      });
-    }
-    return [];
-  };
-
   const handleOnChange = (options: IOption[]) => {
     const optionIds = options.map((o) => o.value);
     onChange(optionIds);
@@ -35,7 +24,7 @@ const ProjectFolderValuesSelector = ({ value, onChange }: Props) => {
   return (
     <MultipleSelect
       value={value}
-      options={generateOptions()}
+      options={generateOptions(localize, projectFolders?.data)}
       onChange={handleOnChange}
     />
   );

@@ -4,6 +4,7 @@ import { IOption } from 'typings';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import useLocalize from 'hooks/useLocalize';
 import useInitiatives from 'api/initiatives/useInitiatives';
+import { generateOptions } from './utils';
 
 export interface Props {
   rule: TRule;
@@ -15,18 +16,6 @@ const InitiativeValuesSelector = ({ value, onChange }: Props) => {
   const { data: initiatives } = useInitiatives({});
   const localize = useLocalize();
 
-  const generateOptions = (): IOption[] => {
-    if (initiatives?.data) {
-      return initiatives.data.map((initiative) => {
-        return {
-          value: initiative.id,
-          label: localize(initiative.attributes.title_multiloc),
-        };
-      });
-    }
-    return [];
-  };
-
   const handleOnChange = (options: IOption[]) => {
     const optionIds = options.map((o) => o.value);
     onChange(optionIds);
@@ -35,7 +24,7 @@ const InitiativeValuesSelector = ({ value, onChange }: Props) => {
   return (
     <MultipleSelect
       value={value}
-      options={generateOptions()}
+      options={generateOptions(localize, initiatives?.data)}
       onChange={handleOnChange}
     />
   );

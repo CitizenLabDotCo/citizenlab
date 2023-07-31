@@ -4,6 +4,7 @@ import { IOption } from 'typings';
 import { Select } from '@citizenlab/cl2-component-library';
 import useLocalize from 'hooks/useLocalize';
 import useProjectFolders from 'api/project_folders/useProjectFolders';
+import { generateOptions } from './utils';
 
 export interface Props {
   rule: TRule;
@@ -15,18 +16,6 @@ const ProjectFolderValueSelector = ({ value, onChange }: Props) => {
   const { data: projectFolders } = useProjectFolders({});
   const localize = useLocalize();
 
-  const generateOptions = (): IOption[] => {
-    if (projectFolders?.data) {
-      return projectFolders.data.map((projectFolder) => {
-        return {
-          value: projectFolder.id,
-          label: localize(projectFolder.attributes.title_multiloc),
-        };
-      });
-    }
-    return [];
-  };
-
   const handleOnChange = (option: IOption) => {
     onChange(option.value);
   };
@@ -34,7 +23,7 @@ const ProjectFolderValueSelector = ({ value, onChange }: Props) => {
   return (
     <Select
       value={value}
-      options={generateOptions()}
+      options={generateOptions(localize, projectFolders?.data)}
       onChange={handleOnChange}
     />
   );
