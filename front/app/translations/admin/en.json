@@ -1457,6 +1457,7 @@
   "app.containers.AdminPage.ProjectEvents.fileUploadLabel": "Attachments (max 50MB)",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabelTooltip": "Attachments are shown below the event description.",
   "app.containers.AdminPage.ProjectEvents.locationLabel": "Location",
+  "app.containers.AdminPage.ProjectEvents.mapSelectionLabel": "Refine the coordinates of your location by clicking on the map:",
   "app.containers.AdminPage.ProjectEvents.newEventTitle": "Create a new event",
   "app.containers.AdminPage.ProjectEvents.saveButtonLabel": "Save",
   "app.containers.AdminPage.ProjectEvents.saveErrorMessage": "We could not save your changes, please try again.",
