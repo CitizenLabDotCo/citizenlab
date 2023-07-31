@@ -1626,6 +1626,7 @@
   "app.errors.password_invalid": "Proverite ponovo svoju trenutnu lozinku.",
   "app.errors.password_too_short": "Dužina lozinke mora biti najmanje 8 karaktera",
   "app.errors.slug_taken": "Ovaj URL projekta već postoji. Molimo vas izmenite slug projekta.",
+  "app.errors.tag_name_taken": "A tag with this name already exists",
   "app.errors.title_multiloc_blank": "Naziv ne može biti prazan.",
   "app.errors.token_invalid": "Linkovi za resetovanje šifre mogu se koristiti samo jednom i važe jedan sat nakon što su poslati. {passwordResetLink}.",
   "app.errors.too_common": "Ovu lozinku je moguće lako pogoditi. Molimo vas izaberite snažniju lozinku.",
