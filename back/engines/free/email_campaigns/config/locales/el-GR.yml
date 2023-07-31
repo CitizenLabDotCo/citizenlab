@@ -29,14 +29,14 @@ el:
       "new_comment_for_admin": Νέο σχόλιο σε ένα έργο που συντονίζω
       "new_comment_on_commented_idea": Νέο σχόλιο σε μια ιδέα που σχολίασα
       "new_comment_on_commented_initiative": Νέο σχόλιο για μια πρόταση που σχολίασα
-      "new_comment_on_voted_idea": Νέο σχόλιο για μια ιδέα που ψήφισα
-      "new_comment_on_voted_initiative": Νέο σχόλιο για μια πρόταση που ψήφισα
+      "new_comment_on_reacted_idea": Νέο σχόλιο σε μια ιδέα στην οποία αντέδρασα
+      "new_comment_on_reacted_initiative": Νέο σχόλιο για μια πρόταση που ψήφισα
       "new_idea_for_admin": Νέα ιδέα σε ένα έργο που συντονίζω
       "new_initiative_for_admin": Νέα πρόταση
       "official_feedback_on_commented_idea": Ενημέρωση σχετικά με μια ιδέα που σχολίασα
       "official_feedback_on_commented_initiative": Ενημέρωση σχετικά με μια πρόταση που σχολίασα
-      "official_feedback_on_voted_idea": Ενημέρωση σχετικά με μια ιδέα που ψήφισα
-      "official_feedback_on_voted_initiative": Ενημέρωση σχετικά με μια πρόταση που ψήφισα
+      "official_feedback_on_reacted_idea": Ενημέρωση για μια ιδέα στην οποία αντέδρασα
+      "official_feedback_on_reacted_initiative": Ενημέρωση σχετικά με μια πρόταση που ψήφισα
       "official_feedback_on_your_idea": Ενημέρωση για την ιδέα μου
       "official_feedback_on_your_initiative": Ενημέρωση για την πρότασή μου
       "password_reset": Επαναφορά κωδικού πρόσβασης
@@ -46,8 +46,8 @@ el:
       "project_phase_upcoming": Επόμενη νέα φάση έργου
       "status_change_of_commented_idea": Αλλαγή κατάστασης μιας ιδέας που σχολίασα
       "status_change_of_commented_initiative": Αλλαγή της κατάστασης μιας πρότασης που σχολίασα
-      "status_change_of_voted_idea": Αλλαγή κατάστασης μιας ιδέας που ψήφισα
-      "status_change_of_voted_initiative": Αλλαγή της κατάστασης μιας πρότασης που ψήφισα
+      "status_change_of_reacted_idea": Αλλαγή κατάστασης μιας ιδέας στην οποία αντέδρασα
+      "status_change_of_reacted_initiative": Αλλαγή κατάστασης μιας πρότασης για την οποία αντέδρασα
       "status_change_of_your_idea": Αλλαγή κατάστασης της ιδέας μου
       "status_change_of_your_initiative": Αλλαγή κατάστασης της πρότασής μου
       "threshold_reached_for_admin": Η πρόταση έφθασε το κατώτατο όριο ψήφου
@@ -56,6 +56,10 @@ el:
       "moderator_digest": Εβδομαδιαία επισκόπηση για τους διαχειριστές έργων
       "assignee_digest": Εβδομαδιαία επισκόπηση των ιδεών που έχουν ανατεθεί
       "user_digest": Εβδομαδιαία επισκόπηση
+      "voting_basket_submitted": Επιβεβαίωση της ψηφοφορίας
+      "voting_basket_not_submitted": Ψήφοι που δεν υποβλήθηκαν
+      "voting_last_chance": Τελευταία ευκαιρία να ψηφίσετε
+      "voting_results": Αποτελέσματα ψηφοφορίας
       "your_proposed_initiatives_digest": Εβδομαδιαία επισκόπηση των προτάσεών σας
     schedules:
       weekly:
@@ -270,21 +274,21 @@ el:
       main_header: '%{authorName} σχολίασε την ιδέα σας'
       subject: 'Έχετε λάβει ένα σχόλιο στην πλατφόρμα %{organizationName}''s'
       preheader: '%{authorName} άφησε ένα σχόλιο για την ιδέα σας για το %{organizationName}'
-    new_comment_on_voted_initiative:
+    new_comment_on_reacted_initiative:
       commented: '%{commentAuthor} έγραψε:'
       cta_reply_to: 'Προβολή αυτής της πρότασης'
       event_description: '%{commentAuthor} σχολίασε την πρόταση "%{initiativeTitle}" επί της οποίας ψηφίσατε. Συμμετέχετε στη συζήτηση στην πλατφόρμα %{organizationName}!'
       main_header: '%{firstName}, υπάρχει ένα νέο σχόλιο για την πρόταση που ψηφίσατε'
       subject: 'Υπάρχει ένα νέο σχόλιο για την πρόταση που έχετε ψηφίσει'
       preheader: '%{commentAuthor} άφησε ένα σχόλιο σχετικά με την πρόταση που ψηφίσατε στην πλατφόρμα του %{organizationName}'
-    new_comment_on_voted_idea:
+    new_comment_on_reacted_idea:
       commented: '%{commentAuthor} σχολίασε:'
       cta_reply_to: 'Απάντηση στο %{commentAuthor}'
       days_ago: '%{numberOfDays} ημέρες πριν'
-      event_description: '%{commentAuthor} έχει σχολιάσει την ιδέα ''%{ideaTitle}'' για την οποία έχετε ψηφίσει. Πάρτε μέρος στη συζήτηση στην πλατφόρμα του %{organizationName}!'
-      main_header: '%{firstName}, υπάρχει ένα νέο σχόλιο για την ιδέα που ψηφίσατε'
-      subject: 'Υπάρχει ένα νέο σχόλιο για την ιδέα που έχετε ψηφίσει'
-      preheader: '%{commentAuthor} άφησε ένα σχόλιο σχετικά με την ιδέα που ψηφίσατε στην πλατφόρμα του %{organizationName}'
+      event_description: '%{commentAuthor} σχολίασε την ιδέα ''%{ideaTitle}'' στην οποία αντιδράσατε. Πάρτε μέρος στη συζήτηση στην πλατφόρμα του %{organizationName}!'
+      main_header: '%{firstName}, υπάρχει ένα νέο σχόλιο για την ιδέα στην οποία αντιδράσατε'
+      subject: 'Υπάρχει ένα νέο σχόλιο για την ιδέα στην οποία αντιδράσατε'
+      preheader: '%{commentAuthor} άφησε ένα σχόλιο για την ιδέα στην οποία αντιδράσατε στην πλατφόρμα του %{organizationName}'
       today: Σήμερα
       yesterday: Χθες
     new_initiative_for_admin:
@@ -369,13 +373,13 @@ el:
       main_header: 'Υπάρχει μια ενημέρωση σχετικά με μια πρόταση που σχολιάσατε'
       subject: 'Μια πρόταση που σχολιάσατε έλαβε επίσημη ενημέρωση στην πλατφόρμα %{organizationName}'
       preheader: '%{officialName} αφήσατε μια επίσημη ενημέρωση για μια πρόταση που σχολιάσατε'
-    official_feedback_on_voted_idea:
+    official_feedback_on_reacted_idea:
       by_author: 'από %{authorName}'
       updated: '%{officialName} έγραψε:'
       cta_view: 'Πηγαίνετε σε αυτή την ιδέα'
       event_description: '%{officialName} ενημέρωσε για την ιδέα ''%{ideaTitle}''. Κάντε κλικ στο παρακάτω κουμπί για να μπείτε στη συζήτηση με το %{officialName}.'
-      subject: 'Μια ιδέα για την οποία ψηφίσατε έχει λάβει ενημέρωση στην πλατφόρμα %{organizationName}'
-      preheader: '%{officialName} άφησε μια ενημέρωση για μια ιδέα που ψηφίσατε'
+      subject: 'Μια ιδέα στην οποία αντιδράσατε έχει λάβει ενημέρωση στην πλατφόρμα %{organizationName}.'
+      preheader: '%{officialName} άφησε μια ενημέρωση για μια ιδέα στην οποία αντιδράσατε'
       main_header: ""
     official_feedback_on_commented_idea:
       by_author: 'από %{authorName}'
@@ -393,13 +397,13 @@ el:
       main_header: 'Λάβατε μια ενημέρωση από το %{organizationName}'
       subject: 'Λάβατε μια ενημέρωση από το %{organizationName}'
       preheader: '%{officialName} άφησε μια επίσημη ενημέρωση για την ιδέα σας'
-    official_feedback_on_voted_initiative:
+    official_feedback_on_reacted_initiative:
       by_author: 'από %{authorName}'
       updated: '%{officialName} έγραψε:'
       cta_view: 'Μεταβείτε στην παρούσα πρόταση'
-      event_description: '%{officialName} ενημέρωσε σχετικά με την πρόταση "%{initiativeTitle}". Πατήστε το παρακάτω κουμπί για να μπείτε στη συζήτηση με το %{organizationName}.'
+      event_description: '%{officialName} ενημέρωσε σχετικά με την πρόταση "%{initiativeTitle}". Κάντε κλικ στο παρακάτω κουμπί για να μπείτε στη συζήτηση με το %{organizationName}.'
       main_header: 'Υπάρχει μια ενημέρωση σχετικά με μια πρόταση που ψηφίσατε'
-      subject: 'Μια πρόταση για την οποία ψηφίσατε έχει λάβει επίσημη ενημέρωση στην πλατφόρμα %{organizationName}'
+      subject: 'Μια πρόταση για την οποία ψηφίσατε έχει λάβει επίσημη ενημέρωση στην πλατφόρμα %{organizationName}.'
       preheader: '%{officialName} άφησε επίσημη ενημέρωση για μια πρόταση που ψήφισε'
     official_feedback_on_your_initiative:
       updated: '%{officialName} έγραψε:'
@@ -468,14 +472,14 @@ el:
       main_header: 'Η ιδέα σας έχει μια νέα κατάσταση'
       subject: 'Η κατάσταση της ιδέας σας έχει αλλάξει'
       preheader: '%{organizationName} άλλαξε την κατάσταση της ιδέας σας'
-    status_change_of_voted_idea:
+    status_change_of_reacted_idea:
       status_change: 'Η νέα κατάσταση αυτής της ιδέας είναι ''%{ideaStatus}'''
       cta_view_idea: 'Πηγαίνετε σε αυτή την ιδέα'
       event_description: '%{organizationName} ενημέρωσε την κατάσταση της ιδέας "%{ideaTitle}" στην ψηφιακή πλατφόρμα συμμετοχής τους.'
-      main_header: 'Μια ιδέα που ψηφίσατε έχει νέα κατάσταση'
-      subject: 'Η κατάσταση μιας ιδέας για την οποία ψηφίσατε έχει αλλάξει'
-      preheader: '%{organizationName} άλλαξε την κατάσταση μιας ιδέας που ψηφίσατε'
-    status_change_of_voted_initiative:
+      main_header: 'Μια ιδέα στην οποία αντιδράσατε έχει νέα κατάσταση'
+      subject: 'Η κατάσταση μιας ιδέας στην οποία αντιδράσατε έχει αλλάξει'
+      preheader: '%{organizationName} αλλάξατε την κατάσταση μιας ιδέας στην οποία αντιδράσατε'
+    status_change_of_reacted_initiative:
       status_change: 'Η νέα κατάσταση της πρότασης αυτής είναι "%{initiativeStatus}".'
       cta_view_initiative: 'Μεταβείτε στην παρούσα πρόταση'
       event_description: 'Η κατάσταση της πρότασης "%{initiativeTitle}" ενημερώθηκε στην ψηφιακή πλατφόρμα συμμετοχής της %{organizationName}.'
@@ -577,6 +581,42 @@ el:
       new_votes: 'Νέες ψηφοφορίες'
       remaining_votes: 'Υπολειπόμενες ψήφοι'
       remaining_days: 'Ημέρες που απομένουν'
+    voting_basket_submitted:
+      subject: '%{organizationName}: Ψηφίσατε με επιτυχία'
+      preheader: 'Ψηφίσατε με επιτυχία στην πλατφόρμα συμμετοχής του %{organizationName}'
+      title_basket_submitted: 'Ψηφίσατε με επιτυχία'
+      event_description: 'Ευχαριστώ για τη συμμετοχή σας. Οι ψήφοι σας έχουν καταγραφεί. Επισκεφθείτε την πλατφόρμα %{organizationName} για να δείτε και να διαχειριστείτε τις ψήφους σας.'
+      cta_see_votes_submitted: 'Δείτε τις υποβληθείσες ψήφους'
+      cta_message: 'Κάντε κλικ στο παρακάτω κουμπί για να συμμετάσχετε'
+    voting_basket_not_submitted:
+      subject: '%{organizationName}: Δεν υποβάλατε τις ψήφους σας'
+      preheader: 'Δεν καταθέσατε την ψήφο σας στην πλατφόρμα συμμετοχής του %{organizationName}'
+      title_basket_not_submitted: 'Δεν υποβάλατε τις ψήφους σας'
+      event_description: 'Επιλέξατε μερικές επιλογές για το %{contextTitle} , αλλά δεν υποβάλατε την επιλογή σας.'
+      cta_view_options_and_vote: 'Προβολή επιλογών και ψηφοφορία'
+      cta_message: 'Κάντε κλικ στο παρακάτω κουμπί για να υποβάλετε τις επιλεγμένες επιλογές σας'
+    voting_last_chance:
+      subject: '%{organizationName}: Τελευταία ευκαιρία να ψηφίσετε για το %{phaseTitle}'
+      preheader: 'Τελευταία ευκαιρία να ψηφίσετε για το %{phaseTitle} στην πλατφόρμα συμμετοχής του %{organizationName}'
+      title_last_chance: 'Τελευταία ευκαιρία να ψηφίσετε για το %{phaseTitle}'
+      body_1: 'Η φάση της ψηφοφορίας για το έργο %{projectTitle} ολοκληρώνεται αύριο, τα μεσάνυχτα.'
+      body_2: 'Ο χρόνος τελειώνει και παρατηρήσαμε ότι δεν έχετε ψηφίσει ακόμα! Ενεργήστε τώρα κάνοντας απλά κλικ στο παρακάτω κουμπί για να συμμετάσχετε.'
+      body_3: 'Με τον τρόπο αυτό, θα αποκτήσετε πρόσβαση σε μια σειρά επιλογών και θα έχετε την ευκαιρία να δώσετε τη συμβολή σας, η οποία είναι ζωτικής σημασίας για τη λήψη αποφάσεων σχετικά με το μέλλον αυτού του έργου.'
+      cta_vote: 'Ψηφίστε'
+    voting_results:
+      subject: '%{organizationName}: Αποκαλύφθηκαν τα αποτελέσματα της ψηφοφορίας στο %{phaseTitle} !'
+      preheader: '%{phaseTitle} τα αποτελέσματα της ψηφοφορίας αποκαλύφθηκαν στην πλατφόρμα συμμετοχής του %{organizationName}'
+      title_results: '%{phaseTitle} τα αποτελέσματα της ψηφοφορίας αποκαλύφθηκαν!'
+      body_1: 'Τα αποτελέσματα είναι έτοιμα!'
+      body_2: 'Τα αποτελέσματα της ψηφοφορίας %{phaseTitle} στην πλατφόρμα %{organizationName} έχουν δημοσιευθεί!'
+      body_3: 'Σας ενθαρρύνουμε να εξετάσετε τα αποτελέσματα και να μείνετε συντονισμένοι για περαιτέρω ενημερώσεις σχετικά με τα επόμενα βήματα.'
+      cta_see_results: 'Δείτε τα αποτελέσματα στην πλατφόρμα'
+    voting_phase_started:
+      subject: '%{organizationName}: Ξεκίνησε η φάση της ψηφοφορίας για το %{projectName}'
+      preheader: 'Η φάση της ψηφοφορίας ξεκίνησε για το %{projectName} στην πλατφόρμα συμμετοχής του %{organizationName}.'
+      event_description: 'Το πρόγραμμα "%{projectName}" σας ζητά να ψηφίσετε μεταξύ των επιλογών %{numIdeas} :'
+      cta_message: 'Κάντε κλικ στο παρακάτω κουμπί για να συμμετάσχετε'
+      cta_vote: 'Πηγαίνετε στην πλατφόρμα για να ψηφίσετε'
     admin_labels:
       recipient_role:
         admins: 'Προς τους διαχειριστές'
@@ -605,6 +645,9 @@ el:
         users_who_engaged_with_the_input: 'Χρήστες που ασχολήθηκαν με την εισαγωγή'
         users_who_engaged_with_the_project: 'Χρήστες που ασχολήθηκαν με το έργο'
         users_who_engaged_with_the_proposal: 'Χρήστες που ασχολήθηκαν με την πρόταση'
+        user_who_voted: 'Χρήστης που ψήφισε'
+        user_with_unsubmitted_votes: 'Χρήστης που δεν έχει υποβάλει την ψήφο του'
+        users_who_engaged_but_not_voted: 'Χρήστες που ασχολήθηκαν με το έργο αλλά δεν ψήφισαν'
       content_type:
         comments: 'Σχόλια'
         content_moderation: 'Μετριασμός περιεχομένου'
@@ -614,7 +657,8 @@ el:
         permissions: 'Δικαιώματα'
         projects: 'Έργα'
         proposals: 'Προτάσεις'
-        votes: 'Ψήφοι'
+        reactions: 'Αντιδράσεις'
+        voting: 'Ψηφοφορία'
       trigger:
         comment_is_deleted: 'Το σχόλιο διαγράφεται'
         comment_is_flagged_as_spam: 'Το σχόλιο επισημαίνεται ως spam'
@@ -652,5 +696,9 @@ el:
         user_registers_for_the_first_time: 'Ο χρήστης εγγράφεται για πρώτη φορά'
         user_replies_to_comment: 'Ο χρήστης απαντά στο σχόλιο'
         user_replies_to_internal_comment: 'Ο χρήστης απαντά στο εσωτερικό σχόλιο'
+        voting_2_days_before_phase_closes: '2 ημέρες πριν από τη λήξη της φάσης ψηφοφορίας'
+        voting_1_day_after_last_votes: '1 ημέρα μετά την τελευταία ψηφοφορία του χρήστη'
+        voting_phase_ended: 'Η φάση της ψηφοφορίας ολοκληρώθηκε'
+        voting_basket_submitted: 'Υποβάλλονται οι ψήφοι'
         7_days_after_invite_is_sent: '7 ημέρες μετά την αποστολή της πρόσκλησης'
         7_days_before_the_project_changes_phase: '7 ημέρες πριν από τη φάση αλλαγής του έργου'

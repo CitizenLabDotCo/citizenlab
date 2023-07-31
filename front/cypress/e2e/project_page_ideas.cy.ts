@@ -31,7 +31,7 @@ import { randomString, randomEmail } from '../support/commands';
 //   });
 
 //   it('shows the idea cards', () => {
-//     cy.get('#e2e-continuos-project-idea-cards');
+//     cy.get('#e2e-continuous-project-idea-cards');
 //     cy.get('#e2e-ideas-list');
 //     cy.get('.e2e-idea-card');
 //   });
@@ -372,7 +372,7 @@ describe('Ideation CTA bar', () => {
           description,
           publicationStatus: 'published',
           participationMethod: 'ideation',
-          maxBudget: 100,
+          votingMaxTotal: 100,
         })
           .then((project) => {
             projectId = project.body.data.id;
@@ -392,7 +392,7 @@ describe('Ideation CTA bar', () => {
               description,
               publicationStatus: 'published',
               participationMethod: 'ideation',
-              maxBudget: 100,
+              votingMaxTotal: 100,
               postingEnabled: false,
             });
           })

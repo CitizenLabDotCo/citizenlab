@@ -4,7 +4,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import ideasKeys from './keys';
 import { IIdea, IdeasKeys } from './types';
 
-const fetchIdea = ({ id }: { id?: string }) =>
+export const fetchIdea = ({ id }: { id?: string }) =>
   fetcher<IIdea>({ path: `/ideas/${id}`, action: 'get' });
 
 const useIdeaById = (id?: string) => {

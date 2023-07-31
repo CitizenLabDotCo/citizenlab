@@ -3,16 +3,17 @@
 require 'rails_helper'
 
 RSpec.describe ParticipationMethod::Ideation do
-  subject(:participation_method) { described_class.new project }
+  subject(:participation_method) { described_class.new context }
 
-  let(:project) { create(:continuous_project) }
+  let(:context) { create(:continuous_project) }
 
   describe '#assign_defaults_for_participation_context' do
-    let(:project) { build(:continuous_project) }
+    let(:context) { build(:continuous_project) }
 
     it 'sets the posting method to unlimited' do
       participation_method.assign_defaults_for_participation_context
-      expect(project.posting_method).to eq 'unlimited'
+      expect(context.posting_method).to eq 'unlimited'
+      expect(context.ideas_order).to eq 'trending'
     end
   end
 
@@ -29,15 +30,16 @@ RSpec.describe ParticipationMethod::Ideation do
   end
 
   describe '#create_default_form!' do
-    it 'does not create a default form' do
-      expect { participation_method.create_default_form! }.not_to change(CustomForm, :count)
+    it 'creates a default form' do
+      expect { participation_method.create_default_form! }.to change(CustomForm, :count)
+      expect { participation_method.create_default_form! }.to change(CustomField, :count)
     end
   end
 
   describe '#default_fields' do
     it 'returns the default ideation fields' do
       expect(
-        participation_method.default_fields(create(:custom_form, participation_context: project)).map(&:code)
+        participation_method.default_fields(create(:custom_form, participation_context: context)).map(&:code)
       ).to eq %w[
         ideation_section1
         title_multiloc
@@ -56,6 +58,67 @@ RSpec.describe ParticipationMethod::Ideation do
   describe '#validate_built_in_fields?' do
     it 'returns true' do
       expect(participation_method.validate_built_in_fields?).to be true
+    end
+  end
+
+  describe '#author_in_form?' do
+    it 'returns false for a visitor when idea_author_change is activated' do
+      SettingsService.new.activate_feature! 'idea_author_change'
+      expect(participation_method.author_in_form?(nil)).to be false
+    end
+
+    it 'returns false for a resident when idea_author_change is activated' do
+      SettingsService.new.activate_feature! 'idea_author_change'
+      expect(participation_method.author_in_form?(create(:user))).to be false
+    end
+
+    it 'returns false for a moderator when idea_author_change is deactivated' do
+      SettingsService.new.deactivate_feature! 'idea_author_change'
+      expect(participation_method.author_in_form?(create(:admin))).to be false
+    end
+
+    it 'returns true for a moderator when idea_author_change is activated' do
+      SettingsService.new.activate_feature! 'idea_author_change'
+      expect(participation_method.author_in_form?(create(:admin))).to be true
+    end
+  end
+
+  describe '#budget_in_form?' do
+    let(:c) { { participation_method: 'voting', voting_method: 'budgeting' } }
+    let(:context) do
+      project = create(
+        :project_with_current_phase,
+        phases_config: {
+          sequence: 'xc',
+          x: { participation_method: 'ideation' },
+          c: c
+        }
+      )
+      project.phases.first
+    end
+
+    it 'returns false for a resident and a timeline project with a budgeting phase' do
+      expect(participation_method.budget_in_form?(create(:user))).to be false
+    end
+
+    describe do
+      let(:context) { create(:continuous_project, participation_method: 'ideation') }
+
+      it 'returns false for a moderator and a timeline project without a budgeting phase' do
+        expect(participation_method.budget_in_form?(create(:admin))).to be false
+      end
+    end
+
+    describe do
+      let(:c) { { participation_method: 'ideation' } }
+
+      it 'returns false for a moderator and a timeline project without a budgeting phase' do
+        expect(participation_method.budget_in_form?(create(:admin))).to be false
+      end
+    end
+
+    it 'returns true for a moderator and a timeline project with a budgeting phase' do
+      expect(participation_method.budget_in_form?(create(:admin))).to be true
     end
   end
 
@@ -99,15 +162,31 @@ RSpec.describe ParticipationMethod::Ideation do
     end
   end
 
+  describe '#posting_allowed?' do
+    it 'returns true' do
+      expect(participation_method.posting_allowed?).to be true
+    end
+  end
+
   describe '#never_update?' do
     it 'returns false' do
       expect(participation_method.never_update?).to be false
     end
   end
 
-  describe '#form_in_phase?' do
+  describe '#creation_phase?' do
     it 'returns false' do
-      expect(participation_method.form_in_phase?).to be false
+      expect(participation_method.creation_phase?).to be false
+    end
+  end
+
+  describe '#custom_form' do
+    let(:project) { create(:project_with_active_ideation_phase) }
+    let(:project_form) { create(:custom_form, participation_context: project) }
+    let(:context) { project.phases.first }
+
+    it 'returns the custom form of the project' do
+      expect(participation_method.custom_form.participation_context_id).to eq project.id
     end
   end
 
@@ -171,12 +250,13 @@ RSpec.describe ParticipationMethod::Ideation do
     end
   end
 
+  its(:allowed_ideas_orders) { is_expected.to eq %w[trending random popular -new new] }
+  its(:supports_exports?) { is_expected.to be true }
   its(:supports_publication?) { is_expected.to be true }
   its(:supports_commenting?) { is_expected.to be true }
   its(:supports_reacting?) { is_expected.to be true }
-  its(:supports_baskets?) { is_expected.to be true }
-  its(:supports_budget?) { is_expected.to be true }
   its(:supports_status?) { is_expected.to be true }
   its(:supports_assignment?) { is_expected.to be true }
   its(:return_disabled_actions?) { is_expected.to be false }
+  its(:additional_export_columns) { is_expected.to eq [] }
 end

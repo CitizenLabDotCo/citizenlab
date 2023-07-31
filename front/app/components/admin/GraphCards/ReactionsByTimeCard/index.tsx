@@ -41,7 +41,7 @@ const ReactionsByTimeCard = ({
       resolution,
     });
 
-  const cardTitle = formatMessage(messages.votes);
+  const cardTitle = formatMessage(messages.reactions);
   const startAt = startAtMoment?.toISOString();
   const endAt = endAtMoment?.toISOString();
 

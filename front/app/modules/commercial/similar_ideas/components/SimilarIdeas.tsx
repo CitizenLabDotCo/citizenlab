@@ -1,6 +1,9 @@
 import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { Header, Item } from 'components/IdeasShowComponents/MetaInfoStyles';
+import {
+  Header,
+  Item,
+} from 'containers/IdeasShow/components/MetaInformation/MetaInfoStyles';
 
 // styles
 import styled from 'styled-components';

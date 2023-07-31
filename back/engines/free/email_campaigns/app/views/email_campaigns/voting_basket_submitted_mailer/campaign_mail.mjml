@@ -1,0 +1,12 @@
+<!-- Voted ideas -->
+<%= render partial: 'application/voting_ideas', locals: { ideas: event.voted_ideas } %>
+
+<!-- CTA button -->
+<mj-section padding="10px 25px 0">
+  <mj-column>
+    <mj-text>
+      <p><%= format_message('cta_message') %></p>
+    </mj-text>
+  </mj-column>
+</mj-section>
+<%= render partial: 'application/cta_button', locals: { href: event.project_url, message: format_message('cta_see_votes_submitted') } %>

@@ -15,6 +15,8 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
+import AnalysisBanner from './AnalysisBanner';
+import AnalysesList from './AnalysesList';
 
 // i18n
 import messages from '../messages';
@@ -30,6 +32,7 @@ import usePhase from 'api/phases/usePhase';
 // Services
 import { downloadSurveyResults } from 'services/formCustomFields';
 import FormResultsQuestion from './FormResultsQuestion';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const FormResults = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   const { projectId } = useParams() as {
@@ -45,6 +48,8 @@ const FormResults = ({ intl: { formatMessage } }: WrappedComponentProps) => {
     projectId,
     phaseId,
   });
+
+  const analysisEnabled = useFeatureFlag({ name: 'analysis' });
 
   if (isNilOrError(formResults) || isNilOrError(locale) || !project) {
     return null;
@@ -94,30 +99,6 @@ const FormResults = ({ intl: { formatMessage } }: WrappedComponentProps) => {
         </Box>
       </Box>
 
-      <Box
-        bgColor={colors.teal100}
-        borderRadius="3px"
-        px="12px"
-        py="4px"
-        mt="0px"
-        mb="32px"
-        role="alert"
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-      >
-        <Box display="flex" gap="16px" alignItems="center">
-          <Icon
-            name="info-outline"
-            width="24px"
-            height="24px"
-            fill="textSecondary"
-          />
-          <Text variant="bodyM" color="textSecondary">
-            {formatMessage(messages.informationText2)}
-          </Text>
-        </Box>
-      </Box>
       <Box maxWidth="524px">
         {results.map(
           (
@@ -138,6 +119,38 @@ const FormResults = ({ intl: { formatMessage } }: WrappedComponentProps) => {
           }
         )}
       </Box>
+
+      {analysisEnabled ? (
+        <>
+          <AnalysisBanner />
+          <AnalysesList />
+        </>
+      ) : (
+        <Box
+          bgColor={colors.teal100}
+          borderRadius="3px"
+          px="12px"
+          py="4px"
+          mt="0px"
+          mb="32px"
+          role="alert"
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <Box display="flex" gap="16px" alignItems="center">
+            <Icon
+              name="info-outline"
+              width="24px"
+              height="24px"
+              fill="textSecondary"
+            />
+            <Text variant="bodyM" color="textSecondary">
+              {formatMessage(messages.informationText2)}
+            </Text>
+          </Box>
+        </Box>
+      )}
     </Box>
   );
 };
