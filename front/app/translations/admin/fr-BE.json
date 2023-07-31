@@ -786,7 +786,7 @@
   "app.containers.Admin.projects.project.ideas.analysisTitle": "Analyse assistée par IA",
   "app.containers.Admin.projects.project.survey.analysisButton": "Créer une analyse",
   "app.containers.Admin.projects.project.survey.analysisSelectQuestions": "Sélectionner les questions à analyser",
-  "app.containers.Admin.projects.project.survey.analysisSubtitle": "Débloquez des résumés automatisés et posez des questions sur les contributions soumises pour votre projet.",
+  "app.containers.Admin.projects.project.survey.analysisSubtitle": "Activez les résumés automatisés et posez des questions à propos des contributions soumises pour votre projet.",
   "app.containers.Admin.projects.project.survey.analysisTitle": "Analyse assistée par IA",
   "app.containers.Admin.projects.project.survey.cancel": "Annuler",
   "app.containers.Admin.projects.project.survey.createAnalysis": "Créer une analyse",
