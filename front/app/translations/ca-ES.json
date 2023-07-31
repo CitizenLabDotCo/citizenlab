@@ -1624,6 +1624,7 @@
   "app.errors.password_invalid": "Si us plau, torneu a comprovar la vostra contrasenya actual.",
   "app.errors.password_too_short": "La contrasenya ha de tenir almenys 8 caràcters",
   "app.errors.slug_taken": "Aquest URL del projecte ja existeix. Si us plau, canvieu el Identificador d’URL del projecte per una altra cosa.",
+  "app.errors.tag_name_taken": "Ja existeix una etiqueta amb aquest nom",
   "app.errors.title_multiloc_blank": "El títol no pot estar buit.",
   "app.errors.token_invalid": "Els enllaços de restabliment de la contrasenya només es poden utilitzar una vegada i són vàlids durant una hora després de ser enviats. {passwordResetLink}.",
   "app.errors.too_common": "Aquesta contrasenya es pot endevinar fàcilment. Si us plau, trieu una contrasenya més segura.",
