@@ -1072,6 +1072,7 @@
   "app.containers.Navbar.confirmEmail": "Potvrdi email adresu",
   "app.containers.Navbar.unverified": "Nepotvrđeno",
   "app.containers.Navbar.verified": "Potvrđeno",
+  "app.containers.NewAuthModal.beforeYouFollow": "Prije nego što slijedite",
   "app.containers.NewAuthModal.beforeYouParticipate": "Prije vašeg sudjelovanja",
   "app.containers.NewAuthModal.completeYourProfile": "Ispunite svoj profil",
   "app.containers.NewAuthModal.confirmYourEmail": "Potvrdite svoju e-poštu",
