@@ -101,38 +101,40 @@ const ProjectHeader = memo<Props & WrappedComponentProps>(
       return (
         <Container className={className || ''}>
           <ContentContainer maxWidth={maxPageWidth}>
-            {(projectFolderId || userCanEditProject) && (
-              <TopBar>
-                {projectFolderId && isProjectFoldersEnabled && (
-                  <ProjectFolderGoBackButton
-                    projectFolderId={projectFolderId}
-                  />
-                )}
-                <Box m="0 0 10px auto" display="flex">
-                  <Box mr="8px">
-                    <FollowUnfollow
-                      followableType="projects"
-                      followableId={project.data.id}
-                      followersCount={project.data.attributes.followers_count}
-                      followerId={
-                        project.data.relationships.user_follower?.data?.id
-                      }
-                      padding="5px 8px"
+            <TopBar>
+              {(projectFolderId || userCanEditProject) && (
+                <Box w="100%" display="flex" justifyContent="space-between">
+                  {projectFolderId && isProjectFoldersEnabled && (
+                    <ProjectFolderGoBackButton
+                      projectFolderId={projectFolderId}
                     />
-                  </Box>
-                  {userCanEditProject && (
-                    <EditButton
-                      icon="edit"
-                      linkTo={adminProjectsProjectPath(project.data.id)}
-                      buttonStyle="secondary"
-                      padding="5px 8px"
-                    >
-                      {formatMessage(messages.editProject)}
-                    </EditButton>
                   )}
+                  <Box mr="8px" display="flex">
+                    {userCanEditProject && (
+                      <EditButton
+                        icon="edit"
+                        linkTo={adminProjectsProjectPath(project.data.id)}
+                        buttonStyle="secondary"
+                        padding="5px 8px"
+                      >
+                        {formatMessage(messages.editProject)}
+                      </EditButton>
+                    )}
+                  </Box>
                 </Box>
-              </TopBar>
-            )}
+              )}
+              <Box ml="auto">
+                <FollowUnfollow
+                  followableType="projects"
+                  followableId={project.data.id}
+                  followersCount={project.data.attributes.followers_count}
+                  followerId={
+                    project.data.relationships.user_follower?.data?.id
+                  }
+                  padding="5px 8px"
+                />
+              </Box>
+            </TopBar>
             {projectHeaderImageLargeUrl && (
               <HeaderImageContainer id="e2e-project-header-image">
                 <HeaderImage
