@@ -1,10 +1,11 @@
 import React from 'react';
 
-// components
-import { Box } from '@citizenlab/cl2-component-library';
-
 // api
 import useInputSchema from 'hooks/useInputSchema';
+import useProjectById from 'api/projects/useProjectById';
+
+// components
+import { Box } from '@citizenlab/cl2-component-library';
 
 // router
 import { useParams, useSearchParams } from 'react-router-dom';
@@ -14,17 +15,26 @@ const IdeaFormPrintable = () => {
   const [searchParams] = useSearchParams();
   const phaseId = searchParams.get('phase_id');
 
-  const { schema /* uiSchema, inputSchemaError */ } = useInputSchema({
+  const { data: project } = useProjectById(projectId);
+
+  const { uiSchema } = useInputSchema({
     projectId,
     phaseId,
   });
 
+  if (!uiSchema || !project) return null;
+  console.log(uiSchema);
+
   return (
-    <Box>
-      Blablablalb
-      <Box>{projectId}</Box>
-      <Box>{phaseId}</Box>
-    </Box>
+    <>
+      {uiSchema.elements.map((page, i) => (
+        <Box key={i} w="100%" h="500px" m="100px">
+          {(page as any).elements.map((element) => (
+            <>bla</>
+          ))}
+        </Box>
+      ))}
+    </>
   );
 };
 
