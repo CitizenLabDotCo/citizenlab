@@ -71,7 +71,6 @@ const FollowUnfollow = ({
     const context = {
       type: 'follow',
       action: 'following',
-      id: followableId,
     } as const;
 
     const successAction: SuccessAction = {
