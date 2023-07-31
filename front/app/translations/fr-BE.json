@@ -632,7 +632,7 @@
   "app.components.formBuilder.tags": "Étiquettes",
   "app.components.formBuilder.title": "Titre",
   "app.components.formBuilder.toLabel": "à",
-  "app.components.unFollow": "Non suivi",
+  "app.components.unFollow": "Ne plus suivre",
   "app.container.InitiativeForm.fileUploadLabel": "Pièces jointes",
   "app.container.InitiativeForm.fileUploadLabelSubtext": "Télécharger des fichiers pour ajouter d'autres type informations et contexte",
   "app.container.InitiativeForm.imageDropzonePlaceholder": "Déposez votre image ici",
