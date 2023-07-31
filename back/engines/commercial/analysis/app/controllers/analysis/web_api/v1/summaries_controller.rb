@@ -6,6 +6,7 @@ module Analysis
       class SummariesController < ApplicationController
         skip_after_action :verify_policy_scoped # The analysis is authorized instead.
         before_action :set_analysis
+        before_action :set_summary, only: [:destroy]
 
         def index
           summaries = @analysis.summaries.includes(:background_task)
@@ -24,6 +25,7 @@ module Analysis
             **summary_params
           )
           if @summary.save
+            side_fx_service.after_create(@summary, current_user)
             SummarizationJob.perform_later(@summary.background_task)
             render json: WebApi::V1::SummarySerializer.new(
               @summary,
@@ -35,11 +37,24 @@ module Analysis
           end
         end
 
+        def destroy
+          if @summary.destroy
+            side_fx_service.after_destroy(@summary, current_user)
+            head :ok
+          else
+            render json: { errors: @summary.errors.details }, status: :unprocessable_entity
+          end
+        end
+
         private
 
         def set_analysis
           @analysis = Analysis.find(params[:analysis_id])
           authorize(@analysis, :show?)
+        end
+
+        def set_summary
+          @summary = @analysis.summaries.find(params[:id])
         end
 
         def summary_params
@@ -67,6 +82,10 @@ module Analysis
             *permitted_dynamic_filter_keys,
             **permitted_dynamic_filter_array_keys
           ])
+        end
+
+        def side_fx_service
+          @side_fx_service ||= SideFxSummaryService.new
         end
       end
     end

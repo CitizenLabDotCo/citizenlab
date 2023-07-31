@@ -43,14 +43,17 @@
         ]
       },
       "^author_custom_([a-f0-9-]+)$": {
-        "anyOf": [
-          {
-            "type": "string"
-          },
-          {
-            "type": "number"
-          }
-        ]
+        "type": "array",
+        "items": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        }
       }
     }
   }

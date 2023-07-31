@@ -85,4 +85,16 @@ resource 'Summaries' do
       })
     end
   end
+
+  delete 'web_api/v1/analyses/:analysis_id/summaries/:id' do
+    let!(:summary) { create(:summary) }
+    let(:analysis_id) { summary.analysis_id }
+    let(:id) { summary.id }
+
+    example 'Delete a summary' do
+      expect { do_request }.to change(Analysis::Summary, :count).from(1).to(0)
+      expect(response_status).to eq 200
+      expect { Analysis::Summary.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+    end
+  end
 end
