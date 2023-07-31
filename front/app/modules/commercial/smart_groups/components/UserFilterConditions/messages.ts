@@ -243,8 +243,8 @@ export default defineMessages({
     defaultMessage: 'one of the projects',
   },
   predicate_is_not_project: {
-    id: 'app.components.admin.UserFilterConditions.predicate_is_one_of_projects',
-    defaultMessage: 'not the project',
+    id: 'app.components.admin.UserFilterConditions.predicate_is_not_project',
+    defaultMessage: 'excludes project',
   },
   predicate_is_one_of_folders: {
     id: 'app.components.admin.UserFilterConditions.predicate_is_one_of_folders',
@@ -252,7 +252,7 @@ export default defineMessages({
   },
   predicate_is_not_folder: {
     id: 'app.components.admin.UserFilterConditions.predicate_is_one_of_folders',
-    defaultMessage: 'not the folder',
+    defaultMessage: 'excludes folder',
   },
   predicate_is_one_of_ideas: {
     id: 'app.components.admin.UserFilterConditions.predicate_is_one_of_ideas',
@@ -260,7 +260,7 @@ export default defineMessages({
   },
   predicate_is_not_idea: {
     id: 'app.components.admin.UserFilterConditions.predicate_is_one_of_ideas',
-    defaultMessage: 'not the idea',
+    defaultMessage: 'excludes idea',
   },
   predicate_is_one_of_initiatives: {
     id: 'app.components.admin.UserFilterConditions.predicate_is_one_of_initiatives',
@@ -268,7 +268,7 @@ export default defineMessages({
   },
   predicate_is_not_initiative: {
     id: 'app.components.admin.UserFilterConditions.predicate_is_one_of_initiatives',
-    defaultMessage: 'not the proposal',
+    defaultMessage: 'excludes proposal',
   },
 
   rulesFormLabelField: {
