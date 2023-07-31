@@ -1072,6 +1072,7 @@
   "app.containers.Navbar.confirmEmail": "E-mail Adress bestätegen",
   "app.containers.Navbar.unverified": "Net iwwerpréift",
   "app.containers.Navbar.verified": "Iwwerpréift",
+  "app.containers.NewAuthModal.beforeYouFollow": "Ier Dir verfollegt",
   "app.containers.NewAuthModal.beforeYouParticipate": "Virun datt Dir deelhuelt",
   "app.containers.NewAuthModal.completeYourProfile": "Fëllt Äre Profil aus",
   "app.containers.NewAuthModal.confirmYourEmail": "Bestätegt Är E-Mail",
