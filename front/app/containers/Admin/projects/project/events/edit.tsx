@@ -10,7 +10,13 @@ import DateTimePicker from 'components/admin/DateTimePicker';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import FileUploader from 'components/UI/FileUploader';
-import { IconTooltip, Label, Spinner } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  IconTooltip,
+  Label,
+  LocationInput,
+  Spinner,
+} from '@citizenlab/cl2-component-library';
 
 // router
 import clHistory from 'utils/cl-router/history';
@@ -97,11 +103,11 @@ const AdminProjectEventEdit = ({ params }: Props) => {
     });
   };
 
-  const handleLocationMultilocOnChange = (locationMultiloc: Multiloc) => {
+  const handleLocationDescriptionOnChange = async (location: string) => {
     setSubmitState('enabled');
     setAttributeDiff({
       ...attributeDiff,
-      location_multiloc: locationMultiloc,
+      location_description: location,
     });
   };
 
@@ -294,14 +300,28 @@ const AdminProjectEventEdit = ({ params }: Props) => {
             </SectionField>
 
             <SectionField>
-              <InputMultilocWithLocaleSwitcher
-                id="location"
-                label={<FormattedMessage {...messages.locationLabel} />}
-                type="text"
-                valueMultiloc={eventAttrs.location_multiloc}
-                onChange={handleLocationMultilocOnChange}
+              <LocationInput
+                id="initiative-location-picker"
+                className="e2e-initiative-location-input"
+                value={eventAttrs.location_description || ''}
+                onChange={handleLocationDescriptionOnChange}
+                placeholder={'Temp placeholder'}
               />
-              <ErrorComponent apiErrors={get(errors, 'location_multiloc')} />
+              {eventAttrs.location_point?.coordinates}
+              <Box>
+                {/* <Map
+                  initialSelectedPointId={initiallySelectedMarkerId ?? undefined}
+                  centerLatLng={initialMapCenter}
+                  onInit={handleMapOnInit}
+                  projectId={projectId}
+                  points={points}
+                  mapHeight={tablet ? mapHeightMobile : mapHeightDesktop}
+                  noMarkerClustering={false}
+                  zoomControlPosition={tablet ? 'topleft' : 'topright'}
+                  layersControlPosition={tablet ? 'topright' : 'bottomright'}
+              /> */}
+              </Box>
+              <ErrorComponent apiErrors={get(errors, 'location_description')} />
             </SectionField>
 
             <SectionField>

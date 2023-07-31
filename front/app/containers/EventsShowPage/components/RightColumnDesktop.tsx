@@ -47,7 +47,7 @@ const RightColumnDesktop = ({ event, className }: Props) => {
             >
               <EventDateStylized event={event} />
               <Box borderBottom={`solid 1px ${colors.divider}`}>
-                <Location location={event.attributes.location_multiloc} />
+                <Location location={event.attributes.location_description} />
               </Box>
               <FullEventTime event={event} />
             </Box>

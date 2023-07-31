@@ -1,5 +1,4 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { isEmpty, every } from 'lodash-es';
 import moment from 'moment';
 
 // components
@@ -184,7 +183,7 @@ const EventInformation = ({
 
   const { data: eventFiles } = useEventFiles(event.id);
 
-  const hasLocation = !every(event.attributes.location_multiloc, isEmpty);
+  const hasLocation = !isNilOrError(event.attributes.location_description);
   const eventDateTime = isMultiDayEvent
     ? `${startAtMoment.format('LLL')} - ${endAtMoment.format('LLL')}`
     : `${startAtMoment.format('LL')} • ${startAtMoment.format(
@@ -272,7 +271,7 @@ const EventInformation = ({
           {hasLocation && showLocation && (
             <Location>
               <StyledIcon name="position" marginRight="6px" />
-              <T value={event.attributes.location_multiloc} />
+              {event.attributes.location_description}
             </Location>
           )}
         </EventTimeAndLocationContainer>

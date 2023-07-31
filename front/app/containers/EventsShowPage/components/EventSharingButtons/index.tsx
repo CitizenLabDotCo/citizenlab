@@ -28,7 +28,7 @@ const EventSharingButtons = ({ event }: Props) => {
   if (!isNilOrError(event)) {
     const eventUrl = `${location.origin}/events/${event.id}`;
     const eventTitle = localize(event.attributes.title_multiloc);
-    const eventLocation = localize(event.attributes.location_multiloc);
+    const eventLocation = event.attributes.location_description;
     const utmParams = !isNilOrError(authUser)
       ? {
           source: 'share_event',
@@ -44,21 +44,23 @@ const EventSharingButtons = ({ event }: Props) => {
       eventTitle,
     });
 
-    return (
-      <SharingButtons
-        url={eventUrl}
-        facebookMessage={shareEventMessage}
-        whatsAppMessage={shareEventMessage}
-        twitterMessage={shareEventMessage}
-        emailSubject={shareEventMessage}
-        emailBody={formatMessage(messages.emailSharingBody, {
-          eventTitle,
-          eventLocation,
-        })}
-        utmParams={utmParams}
-        context={'event'}
-      />
-    );
+    if (eventLocation) {
+      return (
+        <SharingButtons
+          url={eventUrl}
+          facebookMessage={shareEventMessage}
+          whatsAppMessage={shareEventMessage}
+          twitterMessage={shareEventMessage}
+          emailSubject={shareEventMessage}
+          emailBody={formatMessage(messages.emailSharingBody, {
+            eventTitle,
+            eventLocation,
+          })}
+          utmParams={utmParams}
+          context={'event'}
+        />
+      );
+    }
   }
 
   return null;

@@ -1264,10 +1264,7 @@ export function apiCreateEvent({
             en: description,
             'nl-BE': description,
           },
-          location_multiloc: {
-            en: location,
-            'nl-BE': location,
-          },
+          location_description: location,
           start_at: startDate.toJSON(),
           end_at: endDate.toJSON(),
         },

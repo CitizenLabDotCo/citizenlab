@@ -35,7 +35,7 @@ jest.mock('utils/cl-router/withRouter');
 
 const createEvent = (description) => ({
   attributes: {
-    location_multiloc: { en: 'Test Location' },
+    location_description: 'Test Location',
     title_multiloc: { en: 'Test Event ' },
     description_multiloc: { en: description },
   },

@@ -6,31 +6,18 @@ import { Text } from '@citizenlab/cl2-component-library';
 // styling
 import { Container, Content, StyledIcon } from './MetadataInformationStyles';
 
-// typings
-import { Multiloc } from 'typings';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
-// api
-import useLocalize from 'hooks/useLocalize';
-import useLocale from 'hooks/useLocale';
-
 export interface Props {
-  location: Multiloc;
+  location?: string | null;
 }
 
 const Location = ({ location }: Props) => {
-  const currentLocale = useLocale();
-  const localize = useLocalize();
-
-  if (location && !isNilOrError(currentLocale)) {
+  if (location) {
     return (
       <Container>
         <StyledIcon name="position" ariaHidden />
         <Content>
           <Text color="coolGrey600" fontSize="s">
-            {localize(location)}
+            {location}
           </Text>
         </Content>
       </Container>
