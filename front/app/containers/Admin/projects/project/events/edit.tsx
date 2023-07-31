@@ -17,6 +17,8 @@ import {
   LocationInput,
   Spinner,
 } from '@citizenlab/cl2-component-library';
+import Map from './components/map';
+import { leafletMapClicked$ } from 'components/UI/LeafletMap/events';
 
 // router
 import clHistory from 'utils/cl-router/history';
@@ -43,6 +45,7 @@ import { Multiloc, CLError, UploadFile } from 'typings';
 import { withRouter } from 'utils/cl-router/withRouter';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import { geocode } from 'utils/locationTools';
 
 interface Props {
   params: Record<string, string>;
@@ -77,9 +80,39 @@ const AdminProjectEventEdit = ({ params }: Props) => {
   const [submitState, setSubmitState] = useState<SubmitState>('disabled');
   const [eventFiles, setEventFiles] = useState<UploadFile[]>([]);
   const [attributeDiff, setAttributeDiff] = useState<IEventProperties>({});
+  const [locationPoint, setLocationPoint] = useState<GeoJSON.Point | null>(
+    event?.data.attributes.location_point_geojson || null
+  );
   const [eventFilesToRemove, setEventFilesToRemove] = useState<UploadFile[]>(
     []
   );
+
+  useEffect(() => {
+    const subscriptions = [
+      leafletMapClicked$.subscribe((latLng) => {
+        const selectedPoint = {
+          type: 'Point',
+          coordinates: [latLng.lng, latLng.lat],
+        } as GeoJSON.Point;
+        setLocationPoint(selectedPoint);
+      }),
+    ];
+
+    return () => {
+      subscriptions.forEach((subscription) => subscription.unsubscribe());
+    };
+  }, []);
+
+  const [locationDescription, setLocationDescription] = useState('');
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(async () => {
+      const point = await geocode(locationDescription);
+      setLocationPoint(point);
+    }, 500);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [locationDescription, attributeDiff]);
 
   useEffect(() => {
     if (!isNilOrError(remoteEventFiles)) {
@@ -219,7 +252,10 @@ const AdminProjectEventEdit = ({ params }: Props) => {
             updateEvent(
               {
                 eventId: event?.data.id,
-                event: attributeDiff,
+                event: {
+                  ...attributeDiff,
+                  location_point_geojson: locationPoint,
+                },
               },
               {
                 onSuccess: async (data) => {
@@ -298,29 +334,27 @@ const AdminProjectEventEdit = ({ params }: Props) => {
               />
               <ErrorComponent apiErrors={get(errors, 'title_multiloc')} />
             </SectionField>
-
             <SectionField>
-              <LocationInput
-                id="initiative-location-picker"
-                className="e2e-initiative-location-input"
-                value={eventAttrs.location_description || ''}
-                onChange={handleLocationDescriptionOnChange}
-                placeholder={'Temp placeholder'}
-              />
-              {eventAttrs.location_point?.coordinates}
-              <Box>
-                {/* <Map
-                  initialSelectedPointId={initiallySelectedMarkerId ?? undefined}
-                  centerLatLng={initialMapCenter}
-                  onInit={handleMapOnInit}
-                  projectId={projectId}
-                  points={points}
-                  mapHeight={tablet ? mapHeightMobile : mapHeightDesktop}
-                  noMarkerClustering={false}
-                  zoomControlPosition={tablet ? 'topleft' : 'topright'}
-                  layersControlPosition={tablet ? 'topright' : 'bottomright'}
-              /> */}
+              <Box zIndex="90000">
+                <LocationInput
+                  id="event-location-picker"
+                  className="e2e-event-location-input"
+                  value={eventAttrs.location_description || ''}
+                  onChange={(value) => {
+                    handleLocationDescriptionOnChange(value);
+                    setLocationDescription(value);
+                  }}
+                  placeholder={'Search for a location...'} // TODO: Replace with message
+                />
               </Box>
+              {locationPoint && (
+                <Box mt="12px">
+                  <Label>
+                    <FormattedMessage {...messages.mapSelectionLabel} />
+                  </Label>
+                  <Map position={locationPoint} projectId={params.projectId} />
+                </Box>
+              )}
               <ErrorComponent apiErrors={get(errors, 'location_description')} />
             </SectionField>
 
