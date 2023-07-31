@@ -1626,6 +1626,7 @@
   "app.errors.password_invalid": "Wgl. iwwerpréift Äert neit Passwuert nach eng Kéier.",
   "app.errors.password_too_short": "D’Passwuert muss mindestens 8 Zeechen hunn",
   "app.errors.slug_taken": "Dës Projets-URL existéiert schonn. Ännert wgl. de Projet-Slug.",
+  "app.errors.tag_name_taken": "En Tag mat dësem Numm gëtt et schonn",
   "app.errors.title_multiloc_blank": "Den Titel dierf net eidel sinn.",
   "app.errors.token_invalid": "D'Linke fir d'Passwuert zréckzesetzen kennen nëmmen eemol benotzt ginn a si just eng Stonn nodeems se verschéckt goufe valabel. {passwordResetLink}. ",
   "app.errors.too_common": "Dëst Passwuert ass liicht ze erroden. Wielt wgl. e méi séchert Passwuert.",
