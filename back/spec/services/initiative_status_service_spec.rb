@@ -113,7 +113,6 @@ describe InitiativeStatusService do
       end
     end
 
-
     context 'when the initiative review feature is not fully activated' do
       it 'is not active' do
         expect(Initiative.review_required?).to be false
