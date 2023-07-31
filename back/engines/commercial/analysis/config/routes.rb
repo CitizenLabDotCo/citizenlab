@@ -9,6 +9,7 @@ Analysis::Engine.routes.draw do
         resources :taggings, only: %i[index create destroy]
         resources :auto_taggings, only: [:create]
         resources :background_tasks, only: [:index]
+        resources :summaries, only: %i[index create]
       end
     end
   end

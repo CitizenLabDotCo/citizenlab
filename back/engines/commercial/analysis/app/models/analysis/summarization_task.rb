@@ -24,14 +24,13 @@
 #  fk_rails_...  (analysis_id => analysis_analyses.id)
 #
 module Analysis
-  class AutoTaggingTask < BackgroundTask
-    AUTO_TAGGING_METHODS = %w[language platform_topic nlp_topic sentiment controversial]
-
-    validates :auto_tagging_method, inclusion: { in: AUTO_TAGGING_METHODS }
+  class SummarizationTask < BackgroundTask
+    belongs_to :analysis, class_name: 'Analysis::Analysis'
+    has_one :summary, class_name: 'Analysis::Summary', foreign_key: :background_task_id
 
     def execute
-      atm = AutoTaggingMethod::Base.for_auto_tagging_method(auto_tagging_method, self)
-      atm.execute
+      sm = SummarizationMethod::Base.for_summarization_method(summary.summarization_method, self)
+      sm.execute
     end
   end
 end

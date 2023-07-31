@@ -51,21 +51,21 @@ resource 'Summaries' do
         .to have_enqueued_job(Analysis::SummarizationJob)
         .and change(Analysis::BackgroundTask, :count).from(0).to(1)
       expect(status).to eq 201
-      expect(json_response_body).to match({
-        data: {
-          id: kind_of(String),
-          type: 'summary',
-          attributes: {
-            summary: String,
-            filters: {
-              reactions_from: 7,
-              tag_ids: [tag.id]
-            },
-            created_at: kind_of(String),
-            updated_at: kindof(String)
+      expect(response_data).to match({
+        id: kind_of(String),
+        type: 'summary',
+        attributes: {
+          summary: nil,
+          filters: {
+            reactions_from: 7,
+            tag_ids: [tag.id]
           },
-          relationships: {
-            background_task: {
+          created_at: kind_of(String),
+          updated_at: kind_of(String)
+        },
+        relationships: {
+          background_task: {
+            data: {
               type: 'background_task',
               id: kind_of(String)
             }
