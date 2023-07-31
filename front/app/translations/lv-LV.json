@@ -1072,6 +1072,7 @@
   "app.containers.Navbar.confirmEmail": "Apstiprināt e-pasta adresi",
   "app.containers.Navbar.unverified": "Nepārbaudīts",
   "app.containers.Navbar.verified": "Pārbaudīts",
+  "app.containers.NewAuthModal.beforeYouFollow": "Pirms sekojat",
   "app.containers.NewAuthModal.beforeYouParticipate": "Pirms dalības",
   "app.containers.NewAuthModal.completeYourProfile": "Aizpildiet savu profilu",
   "app.containers.NewAuthModal.confirmYourEmail": "Apstipriniet savu e-pasta adresi",
