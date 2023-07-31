@@ -1626,6 +1626,7 @@
   "app.errors.password_invalid": "crwdns800323:0crwdne800323:0",
   "app.errors.password_too_short": "crwdns800325:0crwdne800325:0",
   "app.errors.slug_taken": "crwdns800327:0crwdne800327:0",
+  "app.errors.tag_name_taken": "crwdns825973:0crwdne825973:0",
   "app.errors.title_multiloc_blank": "crwdns800329:0crwdne800329:0",
   "app.errors.token_invalid": "crwdns800331:0{passwordResetLink}crwdne800331:0",
   "app.errors.too_common": "crwdns800333:0crwdne800333:0",
