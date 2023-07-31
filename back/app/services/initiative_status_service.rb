@@ -123,7 +123,9 @@ class InitiativeStatusService
 
   def manual_status_ids
     statuses = InitiativeStatus.where(code: MANUAL_TRANSITIONS.values.map(&:keys).flatten.uniq)
-    statuses = statuses.where.not(code: 'proposed') unless Initiative.review_required?
+
+    status_when_published = Initiative.review_required? ? 'review_pending' : 'proposed'
+    statuses = statuses.where.not(code: status_when_published)
 
     statuses.ids
   end
