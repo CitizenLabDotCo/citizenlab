@@ -72,4 +72,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.Voting.ifLeftEmpty',
     defaultMessage: 'If left empty, this will default to "vote".',
   },
+  fixedAmount: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.fixedAmount',
+    defaultMessage: 'Fixed amount',
+  },
+  unlimited: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.unlimited',
+    defaultMessage: 'Unlimited',
+  },
 });

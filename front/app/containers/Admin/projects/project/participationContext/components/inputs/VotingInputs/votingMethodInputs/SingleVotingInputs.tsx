@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 // intl
 import messages from '../messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 // components
 import { Input, Box, Radio } from '@citizenlab/cl2-component-library';
@@ -29,6 +29,7 @@ const SingleVotingInputs = ({
   apiErrors,
   maxTotalVotesError,
 }: Props) => {
+  const { formatMessage } = useIntl();
   const [maxVotesType, setMaxVotesType] = useState<'limited' | 'unlimited'>(
     voting_max_total ? 'limited' : 'unlimited'
   );
@@ -52,7 +53,7 @@ const SingleVotingInputs = ({
             value={'unlimited'}
             id="unlimited"
             name={'maxVotesFieldset'}
-            label={'Unlimited'}
+            label={formatMessage(messages.unlimited)}
           />
           <Radio
             onChange={() => {
@@ -63,7 +64,7 @@ const SingleVotingInputs = ({
             value={'limited'}
             id="limited"
             name={'maxVotesFieldset'}
-            label={'Fixed amount'}
+            label={formatMessage(messages.fixedAmount)}
           />
           {maxVotesType === 'limited' && (
             <Box ml="30px" maxWidth="100px">
