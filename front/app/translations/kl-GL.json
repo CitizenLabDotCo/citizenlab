@@ -1626,6 +1626,7 @@
   "app.errors.password_invalid": "Please check your current password again.",
   "app.errors.password_too_short": "Kode isissutissaq minnerpaamik 8-nik naqinneqassaaq.",
   "app.errors.slug_taken": "URL taanna atorneqareerpoq. Inussiarnersumik suliniutip slugia allanngortiguk.",
+  "app.errors.tag_name_taken": "A tag with this name already exists",
   "app.errors.title_multiloc_blank": "Atorfiup taaguutaa allanneqassaaq",
   "app.errors.token_invalid": "Nutaamik isertaatiliornissamut iserfissaq ataasiaannaq atorneqarsinnaavoq nassiutereerneratalu kingorna akunneq ataaseq atuussinnaalluni. {passwordResetLink}.",
   "app.errors.too_common": "This password can be easily guessed. Please choose a stronger password.",
