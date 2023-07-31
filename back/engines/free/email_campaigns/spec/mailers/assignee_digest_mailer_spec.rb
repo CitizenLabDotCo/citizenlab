@@ -7,10 +7,10 @@ RSpec.describe EmailCampaigns::AssigneeDigestMailer do
     let_it_be(:recipient) { create(:admin, locale: 'en') }
     let_it_be(:campaign) { EmailCampaigns::Campaigns::AssigneeDigest.create! }
     let_it_be(:assigned_at) { Time.now }
-    let_it_be(:ideas) { create_list(:assigned_idea, 3, assigned_at: assigned_at) }
+    let_it_be(:ideas) { create_list(:idea, 3, assignee: create(:admin), assigned_at: assigned_at) }
     let_it_be(:command) do
       name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
-      initiatives = create_list(:assigned_initiative, 3, assigned_at: assigned_at)
+      initiatives = create_list(:initiative, 3, assignee: create(:admin), assigned_at: assigned_at)
 
       {
         recipient: recipient,

@@ -14,6 +14,7 @@ module Analysis
     def execute
       inputs = analysis.inputs
 
+      inputs = filter_tags(inputs)
       inputs = filter_published_at(inputs)
       inputs = filter_reactions(inputs)
       inputs = filter_comments(inputs)
@@ -24,6 +25,18 @@ module Analysis
     end
 
     private
+
+    def filter_tags(inputs)
+      return inputs unless params[:tag_ids]
+
+      raise ArgumentError, 'value specified for tag_ids must be an array' unless params[:tag_ids].is_a? Array
+
+      if params[:tag_ids].empty?
+        inputs.where.missing(:taggings)
+      else
+        inputs.joins(:taggings).where(taggings: { tag_id: params[:tag_ids] }).distinct
+      end
+    end
 
     def filter_published_at(inputs)
       scope = inputs
