@@ -1072,6 +1072,7 @@
   "app.containers.Navbar.confirmEmail": "Confirmi l'adreça electrònica",
   "app.containers.Navbar.unverified": "Sense verificar",
   "app.containers.Navbar.verified": "Verificat",
+  "app.containers.NewAuthModal.beforeYouFollow": "Abans de seguir",
   "app.containers.NewAuthModal.beforeYouParticipate": "Abans de participar",
   "app.containers.NewAuthModal.completeYourProfile": "Completa el teu perfil",
   "app.containers.NewAuthModal.confirmYourEmail": "Confirmeu el vostre correu electrònic",
