@@ -335,8 +335,8 @@ class Project < ApplicationRecord
   end
 end
 
+Project.include(SmartGroups::Concerns::ValueReferenceable)
 Project.include(CustomMaps::Extensions::Project)
 Project.include(IdeaAssignment::Extensions::Project)
 Project.include(Insights::Patches::Project)
-Project.include(SmartGroups::Patches::Project)
 Project.include(ContentBuilder::Patches::Project)

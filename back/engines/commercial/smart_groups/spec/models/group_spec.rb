@@ -108,6 +108,7 @@ RSpec.describe Group, type: :model do
           value: 'high' },
         { ruleType: 'role', predicate: 'is_admin' },
         { ruleType: 'email', predicate: 'ends_on', value: '@citizenlab.co' },
+        { ruleType: 'follow', predicate: 'anything' },
         { ruleType: 'lives_in', predicate: 'has_value', value: create(:area).id },
         { ruleType: 'custom_field_checkbox', customFieldId: create(:custom_field_checkbox).id,
           predicate: 'is_checked' },

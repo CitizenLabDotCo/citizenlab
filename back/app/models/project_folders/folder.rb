@@ -121,3 +121,5 @@ module ProjectFolders
     end
   end
 end
+
+ProjectFolders::Folder.include(SmartGroups::Concerns::ValueReferenceable)
