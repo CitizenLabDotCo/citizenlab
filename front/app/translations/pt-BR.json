@@ -1626,6 +1626,7 @@
   "app.errors.password_invalid": "Verifique novamente a sua senha atual.",
   "app.errors.password_too_short": "A sua senha deve conter pelo menos 8 caracteres",
   "app.errors.slug_taken": "Este URL de projeto já existe. Altere o slug do projeto para outra coisa.",
+  "app.errors.tag_name_taken": "Já existe uma tag com este nome",
   "app.errors.title_multiloc_blank": "O título não pode ficar vazio.",
   "app.errors.token_invalid": "Os links de redefinição de senha só podem ser usados uma vez e são válidos por uma hora após terem sido enviados. {passwordResetLink}.",
   "app.errors.too_common": "Essa senha não é segura. Por favor escolha uma senha mais segura.",
