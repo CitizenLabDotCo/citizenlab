@@ -16,6 +16,7 @@ import {
   Label,
   LocationInput,
   Spinner,
+  Title,
 } from '@citizenlab/cl2-component-library';
 import Map from './components/map';
 import { leafletMapClicked$ } from 'components/UI/LeafletMap/events';
@@ -24,7 +25,7 @@ import { leafletMapClicked$ } from 'components/UI/LeafletMap/events';
 import clHistory from 'utils/cl-router/history';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // react query
@@ -66,6 +67,7 @@ type ApiErrorType =
     };
 
 const AdminProjectEventEdit = ({ params }: Props) => {
+  const { formatMessage } = useIntl();
   const { mutate: addEvent } = useAddEvent();
   const { data: event, isInitialLoading } = useEvent(params.id);
   const { mutate: updateEvent } = useUpdateEvent();
@@ -334,8 +336,61 @@ const AdminProjectEventEdit = ({ params }: Props) => {
               />
               <ErrorComponent apiErrors={get(errors, 'title_multiloc')} />
             </SectionField>
+
+            <SectionField className="fullWidth">
+              <QuillMultilocWithLocaleSwitcher
+                id="description"
+                label={descriptionLabel}
+                valueMultiloc={eventAttrs.description_multiloc}
+                onChange={handleDescriptionMultilocOnChange}
+                withCTAButton
+              />
+              <ErrorComponent apiErrors={get(errors, 'description_multiloc')} />
+            </SectionField>
+
+            <Title
+              variant="h4"
+              fontWeight="bold"
+              color="primary"
+              style={{ fontWeight: '600' }}
+            >
+              {formatMessage(messages.eventDates)}
+            </Title>
+            <Box display="flex" gap="32px">
+              <SectionField style={{ width: 'auto' }}>
+                <Label>
+                  <FormattedMessage {...messages.dateStartLabel} />
+                </Label>
+                <DateTimePicker
+                  value={eventAttrs.start_at}
+                  onChange={handleDateTimePickerOnChange('start_at')}
+                />
+                <ErrorComponent apiErrors={get(errors, 'start_at')} />
+              </SectionField>
+
+              <SectionField>
+                <Label>
+                  <FormattedMessage {...messages.datesEndLabel} />
+                </Label>
+                <DateTimePicker
+                  value={eventAttrs.end_at}
+                  onChange={handleDateTimePickerOnChange('end_at')}
+                />
+                <ErrorComponent apiErrors={get(errors, 'end_at')} />
+              </SectionField>
+            </Box>
+
+            <Title
+              variant="h4"
+              fontWeight="bold"
+              color="primary"
+              style={{ fontWeight: '600' }}
+            >
+              {formatMessage(messages.eventLocation)}
+            </Title>
             <SectionField>
-              <Box zIndex="90000">
+              <Box zIndex="1000">
+                <Label value={formatMessage(messages.mapCoordinatesLabel)} />
                 <LocationInput
                   id="event-location-picker"
                   className="e2e-event-location-input"
@@ -358,39 +413,14 @@ const AdminProjectEventEdit = ({ params }: Props) => {
               <ErrorComponent apiErrors={get(errors, 'location_description')} />
             </SectionField>
 
-            <SectionField>
-              <Label>
-                <FormattedMessage {...messages.dateStartLabel} />
-              </Label>
-              <DateTimePicker
-                value={eventAttrs.start_at}
-                onChange={handleDateTimePickerOnChange('start_at')}
-              />
-              <ErrorComponent apiErrors={get(errors, 'start_at')} />
-            </SectionField>
-
-            <SectionField>
-              <Label>
-                <FormattedMessage {...messages.datesEndLabel} />
-              </Label>
-              <DateTimePicker
-                value={eventAttrs.end_at}
-                onChange={handleDateTimePickerOnChange('end_at')}
-              />
-              <ErrorComponent apiErrors={get(errors, 'end_at')} />
-            </SectionField>
-
-            <SectionField className="fullWidth">
-              <QuillMultilocWithLocaleSwitcher
-                id="description"
-                label={descriptionLabel}
-                valueMultiloc={eventAttrs.description_multiloc}
-                onChange={handleDescriptionMultilocOnChange}
-                withCTAButton
-              />
-              <ErrorComponent apiErrors={get(errors, 'description_multiloc')} />
-            </SectionField>
-
+            <Title
+              variant="h4"
+              fontWeight="bold"
+              color="primary"
+              style={{ fontWeight: '600' }}
+            >
+              {formatMessage(messages.additionalInformation)}
+            </Title>
             <SectionField>
               <Label>
                 <FormattedMessage {...messages.fileUploadLabel} />

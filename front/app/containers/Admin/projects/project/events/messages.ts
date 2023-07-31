@@ -89,4 +89,20 @@ export default defineMessages({
     defaultMessage:
       'Refine the coordinates of your location by clicking on the map:',
   },
+  mapCoordinatesLabel: {
+    id: 'app.containers.AdminPage.ProjectEvents.mapCoordinatesLabel',
+    defaultMessage: 'Add map coordinates',
+  },
+  eventDates: {
+    id: 'app.containers.AdminPage.ProjectEvents.eventDates',
+    defaultMessage: 'Event dates',
+  },
+  eventLocation: {
+    id: 'app.containers.AdminPage.ProjectEvents.eventLocation',
+    defaultMessage: 'Event location',
+  },
+  additionalInformation: {
+    id: 'app.containers.AdminPage.ProjectEvents.additionalInformation',
+    defaultMessage: 'Additional information',
+  },
 });
