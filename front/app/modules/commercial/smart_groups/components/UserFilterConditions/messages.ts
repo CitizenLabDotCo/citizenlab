@@ -251,7 +251,7 @@ export default defineMessages({
     defaultMessage: 'one of the folders',
   },
   predicate_is_not_folder: {
-    id: 'app.components.admin.UserFilterConditions.predicate_is_one_of_folders',
+    id: 'app.components.admin.UserFilterConditions.predicate_is_not_folder',
     defaultMessage: 'excludes folder',
   },
   predicate_is_one_of_ideas: {
@@ -259,7 +259,7 @@ export default defineMessages({
     defaultMessage: 'one of the ideas',
   },
   predicate_is_not_idea: {
-    id: 'app.components.admin.UserFilterConditions.predicate_is_one_of_ideas',
+    id: 'app.components.admin.UserFilterConditions.predicate_is_not_idea',
     defaultMessage: 'excludes idea',
   },
   predicate_is_one_of_initiatives: {
@@ -267,7 +267,7 @@ export default defineMessages({
     defaultMessage: 'one of the proposals',
   },
   predicate_is_not_initiative: {
-    id: 'app.components.admin.UserFilterConditions.predicate_is_one_of_initiatives',
+    id: 'app.components.admin.UserFilterConditions.predicate_is_not_initiative',
     defaultMessage: 'excludes proposal',
   },
 
