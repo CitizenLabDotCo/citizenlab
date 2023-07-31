@@ -4,6 +4,12 @@ import AreaValueSelector from './ValueSelector/AreaValueSelector';
 import AreaValuesSelector from './ValueSelector/AreaValuesSelector';
 import ProjectValueSelector from './ValueSelector/ProjectValueSelector';
 import ProjectValuesSelector from './ValueSelector/ProjectValuesSelector';
+import IdeaValueSelector from './ValueSelector/IdeaValueSelector';
+import IdeaValuesSelector from './ValueSelector/IdeaValuesSelector';
+import InitiativeValuesSelector from './ValueSelector/InitiativeValuesSelector';
+import InitiativeValueSelector from './ValueSelector/InitiativeValueSelector';
+import ProjectFolderValueSelector from './ValueSelector/ProjectFolderValueSelector';
+import ProjectFolderValuesSelector from './ValueSelector/ProjectFolderValuesSelector';
 import NumberValueSelector from './ValueSelector/NumberValueSelector';
 
 import CustomFieldOptionValueSelector from './ValueSelector/CustomFieldOptionValueSelector';
@@ -59,7 +65,20 @@ type TStaticPredicate =
   | TParticipatedInProjectPredicate
   | TParticipatedInTopicPredicate
   | TParticipatedInStatusPredicate
-  | TVerifiedPredicate;
+  | TVerifiedPredicate
+  | TFollowPredicate;
+
+type TFollowPredicate =
+  | 'something'
+  | 'nothing'
+  | 'is_not_project'
+  | 'is_not_folder'
+  | 'is_not_initiative'
+  | 'is_not_idea'
+  | 'is_one_of_projects'
+  | 'is_one_of_folders'
+  | 'is_one_of_ideas'
+  | 'is_one_of_initiatives';
 
 type TRolePredicate =
   | 'is_admin'
@@ -437,34 +456,18 @@ export type TRule =
     }
   | {
       ruleType?: 'follow';
-      predicate?: 'something' | 'nothing';
-      value?: undefined;
-    }
-  | {
-      ruleType?: 'follow';
       predicate?:
+        | 'something'
+        | 'nothing'
         | 'is_not_project'
         | 'is_not_folder'
+        | 'is_not_initiative'
         | 'is_not_idea'
-        | 'is_not_initiative';
-
-      /**
-       * The id of a followable
-       */
-      value?: string;
-    }
-  | {
-      ruleType?: 'follow';
-      predicate?:
         | 'is_one_of_projects'
         | 'is_one_of_folders'
         | 'is_one_of_ideas'
         | 'is_one_of_initiatives';
-
-      /**
-       * The IDs of followables
-       */
-      value?: string[];
+      value?: string | string[];
     }
   | {
       ruleType?: 'verified';
@@ -526,12 +529,12 @@ export const ruleTypeConstraints = {
   follow: {
     is_one_of_projects: ProjectValuesSelector,
     is_not_project: ProjectValueSelector,
-    is_one_of_folders: TextValueSelector,
-    is_not_folder: TextValueSelector,
-    is_one_of_ideas: TextValueSelector,
-    is_not_idea: TextValueSelector,
-    is_one_of_initiatives: TextValueSelector,
-    is_not_initiative: TextValueSelector,
+    is_one_of_folders: ProjectFolderValuesSelector,
+    is_not_folder: ProjectFolderValueSelector,
+    is_one_of_ideas: IdeaValuesSelector,
+    is_not_idea: IdeaValueSelector,
+    is_one_of_initiatives: InitiativeValuesSelector,
+    is_not_initiative: InitiativeValueSelector,
     something: null,
     nothing: null,
   },
