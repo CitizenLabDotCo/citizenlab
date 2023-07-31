@@ -1626,6 +1626,7 @@
   "app.errors.password_invalid": "Kontroller venligst din nuværende adgangskode igen.",
   "app.errors.password_too_short": "Adgangskoden skal være på mindst 8 tegn",
   "app.errors.slug_taken": "Denne projekt-URL findes allerede. Ændr venligst projektets slug til noget andet.",
+  "app.errors.tag_name_taken": "Der findes allerede et tag med dette navn",
   "app.errors.title_multiloc_blank": "Titlen skal være udfyldt",
   "app.errors.token_invalid": "Links til nulstilling af adgangskode kan kun bruges en gang og er gyldige i en time efter afsendelse. {passwordResetLink}.",
   "app.errors.too_common": "Det er for nemt at gætte",
