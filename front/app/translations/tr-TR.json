@@ -1072,6 +1072,7 @@
   "app.containers.Navbar.confirmEmail": "E-posta adresini onayla",
   "app.containers.Navbar.unverified": "Doğrulanmadı",
   "app.containers.Navbar.verified": "Doğrulandı",
+  "app.containers.NewAuthModal.beforeYouFollow": "Takip etmeden önce",
   "app.containers.NewAuthModal.beforeYouParticipate": "Katılmadan önce",
   "app.containers.NewAuthModal.completeYourProfile": "Profilinizi tamamlayın",
   "app.containers.NewAuthModal.confirmYourEmail": "E-postanızı onaylayın",
