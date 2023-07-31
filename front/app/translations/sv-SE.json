@@ -1072,6 +1072,7 @@
   "app.containers.Navbar.confirmEmail": "Bekräfta e-postadress",
   "app.containers.Navbar.unverified": "Ej verifierad",
   "app.containers.Navbar.verified": "Verifierad",
+  "app.containers.NewAuthModal.beforeYouFollow": "Innan du följer",
   "app.containers.NewAuthModal.beforeYouParticipate": "Innan du deltar",
   "app.containers.NewAuthModal.completeYourProfile": "Komplettera din profil",
   "app.containers.NewAuthModal.confirmYourEmail": "Bekräfta din e-postadress",
