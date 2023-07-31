@@ -96,7 +96,6 @@ const PredicateSelector = memo(
       if (ruleType) {
         const ruleTypePredicates = keys(ruleTypeConstraints[ruleType]);
         return ruleTypePredicates.map((predicate) => {
-          console.log('predicate', predicate);
           const message = getMessage(predicate as TPredicate);
           return {
             value: predicate,
