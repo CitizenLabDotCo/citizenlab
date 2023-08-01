@@ -68,23 +68,18 @@ module EmailCampaigns
 
     def generate_commands(recipient:, activity:)
       initiative = activity.item.post
-      status = initiative.initiative_status
+      name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
+
       [{
         event_payload: {
-          post_id: initiative.id,
           post_title_multiloc: initiative.title_multiloc,
           post_body_multiloc: initiative.body_multiloc,
+          post_author_name: name_service.display_name!(initiative.author),
+          post_published_at: initiative.published_at.iso8601,
           post_url: Frontend::UrlService.new.model_to_url(initiative, locale: recipient.locale),
-          post_images: initiative.initiative_images.map do |image|
-            {
-              ordering: image.ordering,
-              versions: image.image.versions.to_h { |k, v| [k.to_s, v.url] }
-            }
-          end,
-          initiative_status_id: status.id,
-          initiative_status_title_multiloc: status.title_multiloc,
-          initiative_status_code: status.code,
-          initiative_status_color: status.color
+          post_assigned_at: initiative.assigned_at&.iso8601,
+          initiative_reactions_needed: initiative.reactions_needed,
+          initiative_expires_at: initiative.expires_at.iso8601
         }
       }]
     end
