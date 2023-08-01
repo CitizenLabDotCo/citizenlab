@@ -1072,7 +1072,7 @@
   "app.containers.Navbar.confirmEmail": "Bevestig e-mailadres",
   "app.containers.Navbar.unverified": "Niet geverifieerd",
   "app.containers.Navbar.verified": "Geverifieerd",
-  "app.containers.NewAuthModal.beforeYouFollow": "Voordat je",
+  "app.containers.NewAuthModal.beforeYouFollow": "Voordat je volgt",
   "app.containers.NewAuthModal.beforeYouParticipate": "Voordat je deelneemt",
   "app.containers.NewAuthModal.completeYourProfile": "Vul je profiel verder aan",
   "app.containers.NewAuthModal.confirmYourEmail": "Bevestig je e-mail",
