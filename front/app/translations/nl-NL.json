@@ -508,7 +508,7 @@
   "app.components.admin.UserFilterConditions.predicate_is_not_folder": "sluit map uit",
   "app.components.admin.UserFilterConditions.predicate_is_not_idea": "sluit idee uit",
   "app.components.admin.UserFilterConditions.predicate_is_not_initiative": "sluit voorstel uit",
-  "app.components.admin.UserFilterConditions.predicate_is_not_project": "exclusief project",
+  "app.components.admin.UserFilterConditions.predicate_is_not_project": "sluit project uit",
   "app.components.admin.UserFilterConditions.predicate_is_one_of": "is een van",
   "app.components.admin.UserFilterConditions.predicate_is_one_of_folders": "een van de mappen",
   "app.components.admin.UserFilterConditions.predicate_is_one_of_ideas": "een van de ideeën",
