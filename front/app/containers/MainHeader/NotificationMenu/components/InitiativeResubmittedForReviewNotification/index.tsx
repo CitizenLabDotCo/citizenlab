@@ -1,39 +1,48 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { IInitiativeResubmittedForReviewNotificationData } from 'api/notifications/types';
+
+// i18n
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
-import T from 'components/T';
+
+// components
 import NotificationWrapper from '../NotificationWrapper';
+import T from 'components/T';
 
-interface Props {
+type Props = {
   notification: IInitiativeResubmittedForReviewNotificationData;
-}
+};
 
-const InitiativeResubmittedForReviewNotification = memo<Props>((props) => {
-  const { notification } = props;
+const InitiativeResubmittedForReviewNotification = ({
+  notification,
+}: Props) => {
+  const getNotificationMessage = (): JSX.Element => {
+    const sharedValues = {
+      initiativeTitle: (
+        <T value={notification.attributes.post_title_multiloc} />
+      ),
+    };
+
+    return (
+      <FormattedMessage
+        {...messages.initiativeResubmittedForReview}
+        values={{
+          ...sharedValues,
+        }}
+      />
+    );
+  };
 
   return (
     <NotificationWrapper
-      linkTo={`/initiatives/${notification.attributes.post_slug}`}
+      linkTo={'/admin/initiatives'}
       timing={notification.attributes.created_at}
-      icon="label"
+      icon="initiatives"
       isRead={!!notification.attributes.read_at}
     >
-      <FormattedMessage
-        {...messages.statusChangedOfInitiative}
-        values={{
-          // status: (
-          //   <T
-          //     value={notification.attributes.initiative_status_title_multiloc}
-          //   />
-          // ),
-          initiativeTitle: (
-            <T value={notification.attributes.post_title_multiloc} />
-          ),
-        }}
-      />
+      {getNotificationMessage()}
     </NotificationWrapper>
   );
-});
+};
 
 export default InitiativeResubmittedForReviewNotification;

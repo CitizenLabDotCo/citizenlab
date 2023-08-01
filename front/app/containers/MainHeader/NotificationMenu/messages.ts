@@ -64,7 +64,7 @@ export default defineMessages({
   },
   initiativeResubmittedForReview: {
     id: 'app.containers.NotificationMenu.initiativeResubmittedForReview',
-    defaultMessage: '{initiativeTitle} resubmitted for review',
+    defaultMessage: '"{initiativeTitle}" resubmitted for review',
   },
   internalCommentOnYourInternalComment: {
     id: 'app.containers.NotificationMenu.internalCommentOnYourInternalComment',
