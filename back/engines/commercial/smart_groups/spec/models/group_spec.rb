@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Group, type: :model do
+RSpec.describe Group do
   describe 'Default factory' do
     it 'is valid' do
       expect(build(:group)).to be_valid
@@ -20,13 +20,13 @@ RSpec.describe Group, type: :model do
       expect { g.remove_member create(:user) }.to raise_error(RuntimeError)
     end
 
-    it 'has consistent responses between member and member_ids for rules groups' do
+    it 'has consistent responses between member and member_ids for manual groups' do
       g1 = create(:group)
       g1.members << create_list(:user, 5)
       expect(g1.member_ids).to match g1.members.map(&:id)
     end
 
-    it 'has consistent responses between member and member_ids for rules groups' do
+    it 'has consistent responses between member and member_ids for smart groups' do
       g1 = create(:smart_group)
       create(:user, email: 'u1@test.com')
       create(:user, email: 'u2@test.com')
