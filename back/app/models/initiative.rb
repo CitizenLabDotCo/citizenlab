@@ -182,6 +182,7 @@ class Initiative < ApplicationRecord
   end
 end
 
+Initiative.include(SmartGroups::Concerns::ValueReferenceable)
 Initiative.include(FlagInappropriateContent::Concerns::Flaggable)
 Initiative.include(Moderation::Concerns::Moderatable)
 Initiative.include(MachineTranslations::Concerns::Translatable)
