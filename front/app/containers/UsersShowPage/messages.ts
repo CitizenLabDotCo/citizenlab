@@ -42,6 +42,10 @@ export default defineMessages({
     id: 'app.containers.UsersShowPage.initiatives',
     defaultMessage: 'Initiatives',
   },
+  projectFolders: {
+    id: 'app.containers.UsersShowPage.projectFolders',
+    defaultMessage: 'Project folders',
+  },
   emptyInfoText: {
     id: 'app.containers.UsersShowPage.emptyInfoText',
     defaultMessage:

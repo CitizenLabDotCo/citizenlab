@@ -8,11 +8,21 @@ import ProjectCard from 'components/ProjectCard';
 import FilterSelector from 'components/FilterSelector';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import ProjectFolderCard from 'components/ProjectAndFolderCards/components/ProjectFolderCard';
 
-const options = [
+interface IFilterOption {
+  text: JSX.Element;
+  value: FollowableObject;
+}
+
+const options: IFilterOption[] = [
   { text: <FormattedMessage {...messages.projects} />, value: 'Project' },
   { text: <FormattedMessage {...messages.initiatives} />, value: 'Initiative' },
   { text: <FormattedMessage {...messages.ideas} />, value: 'Idea' },
+  {
+    text: <FormattedMessage {...messages.projectFolders} />,
+    value: 'ProjectFolders::Folder',
+  },
 ];
 
 const Following = () => {
@@ -21,7 +31,7 @@ const Following = () => {
   const { data: followers, isLoading } = useFollowers({
     followableObject: selectedValue,
   });
-  const handleOnChange = (selectedValue) => {
+  const handleOnChange = (selectedValue: [FollowableObject]) => {
     setSelectedValue(selectedValue[0]);
   };
 
@@ -68,6 +78,14 @@ const Following = () => {
                 <ProjectCard
                   projectId={follower.relationships.followable.data.id}
                   size="small"
+                  showFollowButton
+                />
+              )}
+              {follower.relationships.followable.data.type === 'folder' && (
+                <ProjectFolderCard
+                  folderId={follower.relationships.followable.data.id}
+                  size="small"
+                  layout="threecolumns"
                   showFollowButton
                 />
               )}

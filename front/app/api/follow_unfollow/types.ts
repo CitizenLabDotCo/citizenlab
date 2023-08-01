@@ -38,7 +38,7 @@ export type FollowableType =
 export type FollowableObject =
   | 'Idea'
   | 'Initiative'
-  | 'ProjectFolders'
+  | 'ProjectFolders::Folder'
   | 'Project';
 
 export type FollowerAdd = {
