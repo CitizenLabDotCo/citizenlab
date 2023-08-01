@@ -1,4 +1,8 @@
+import { Keys } from 'utils/cl-react-query/types';
 import { IRelationship } from 'typings';
+import followUnfollowKeys from './keys';
+
+export type FollowUnfollowKeys = Keys<typeof followUnfollowKeys>;
 
 export interface IFollowerData {
   id: string;
@@ -21,11 +25,21 @@ export interface IFollower {
   data: IFollowerData;
 }
 
+export interface IFollowers {
+  data: IFollowerData[];
+}
+
 export type FollowableType =
   | 'projects'
   | 'project_folders'
   | 'ideas'
   | 'initiatives';
+
+export type FollowableObject =
+  | 'Idea'
+  | 'Initiative'
+  | 'ProjectFolders'
+  | 'Project';
 
 export type FollowerAdd = {
   followableType: FollowableType;
@@ -39,3 +53,7 @@ export type FollowerDelete = {
   followableType: FollowableType;
   followableSlug?: string;
 };
+
+export interface IParameters {
+  followableObject?: FollowableObject;
+}
