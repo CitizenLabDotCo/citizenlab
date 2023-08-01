@@ -19,6 +19,7 @@ import messages from './messages';
 
 // hooks
 import useUserBySlug from 'api/users/useUserBySlug';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // style
 import styled from 'styled-components';
@@ -104,6 +105,9 @@ interface QueryParameters {
 export const UsersShowPage = memo<InnerProps>(({ className, user }) => {
   const [currentTab, setCurrentTab] = useState<UserTab>('ideas');
   const [savedScrollIndex, setSavedScrollIndex] = useState<number>(0);
+  const isFollowingEnabled = useFeatureFlag({
+    name: 'follow',
+  });
 
   const [searchParams] = useSearchParams();
   const sortParam = searchParams.get('sort') as Sort | null;
@@ -155,7 +159,7 @@ export const UsersShowPage = memo<InnerProps>(({ className, user }) => {
           )}
 
           {currentTab === 'comments' && <UserComments userId={user.id} />}
-          {currentTab === 'following' && <Following />}
+          {currentTab === 'following' && isFollowingEnabled && <Following />}
         </StyledContentContainer>
       </Container>
     </>
