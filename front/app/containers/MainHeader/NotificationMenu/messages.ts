@@ -103,12 +103,12 @@ export default defineMessages({
     defaultMessage: '{name} commented internally on an unassigned proposal',
   },
   userReportedCommentAsSpam: {
-    id: 'app.containers.NotificationMenu.userReportedCommentAsSpam',
-    defaultMessage: "{name} reported a comment on '{postTitle}' as spam",
+    id: 'app.containers.NotificationMenu.userReportedCommentAsSpam1',
+    defaultMessage: '{name} reported a comment on "{postTitle}" as spam',
   },
   userMarkedPostAsSpam: {
-    id: 'app.containers.NotificationMenu.userMarkedPostAsSpam',
-    defaultMessage: "{name} reported '{postTitle}' as spam",
+    id: 'app.containers.NotificationMenu.userMarkedPostAsSpam1',
+    defaultMessage: '{name} reported "{postTitle}" as spam',
   },
   statusChangedOfIdea: {
     id: 'app.containers.NotificationMenu.statusChangedOfIdea',
@@ -195,8 +195,8 @@ export default defineMessages({
     defaultMessage: '{name} accepted your invitation',
   },
   commentDeletedByAdminFor: {
-    id: 'app.containers.NotificationMenu.commentDeletedByAdminFor',
-    defaultMessage: `Your comment on '{postTitle}' has been deleted by an admin because
+    id: 'app.containers.NotificationMenu.commentDeletedByAdminFor1',
+    defaultMessage: `Your comment on "{postTitle}" has been deleted by an admin because
       {reasonCode, select,
         irrelevant {it is irrelevant}
         inappropriate {its content is inappropriate}
