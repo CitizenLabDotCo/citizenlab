@@ -17,7 +17,7 @@ describe InitiativePolicy do
   #
   # We avoid testing initiatives with 'custom' status, as it is not used and not adequately considered in the codebase.
 
-  # ------------------- 1. Review feature is NOT active ------------------
+  # ------------------- 1. Review feature is NOT active -------------------
 
   context 'when review feature is NOT fully active' do
     it 'is not active' do
