@@ -1624,6 +1624,7 @@
   "app.errors.password_invalid": "Kontroller det nåværende passordet på nytt.",
   "app.errors.password_too_short": "Passordet må inneholde minst 8 tegn",
   "app.errors.slug_taken": "Denne prosjekt URL eksisterer allerede. Gjør vennligst prosjekt URLen om til noe annet.",
+  "app.errors.tag_name_taken": "En tag med dette navnet finnes allerede",
   "app.errors.title_multiloc_blank": "Tittelen kan ikke være tom.",
   "app.errors.token_invalid": "Lenker for tilbakestilling av passord kan bare brukes en gang, og er gyldige i en time etter at de er sendt. {passwordResetLink}.",
   "app.errors.too_common": "Passordet ditt er for lett å gjette. Velg et sterkere passord.",

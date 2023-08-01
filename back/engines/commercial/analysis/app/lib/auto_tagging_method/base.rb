@@ -15,8 +15,8 @@ module Analysis
       end
     end
 
-    def initialize(analysis, auto_tagging_task)
-      @analysis = analysis
+    def initialize(auto_tagging_task)
+      @analysis = auto_tagging_task.analysis
       @task = auto_tagging_task
     end
 
