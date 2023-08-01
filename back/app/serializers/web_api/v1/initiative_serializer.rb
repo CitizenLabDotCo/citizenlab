@@ -17,7 +17,8 @@ class WebApi::V1::InitiativeSerializer < WebApi::V1::BaseSerializer
     :reactions_needed,
     :anonymous,
     :author_hash,
-    :editing_locked
+    :editing_locked,
+    :public
 
   attribute :author_name do |object, params|
     name_service = UserDisplayNameService.new(AppConfiguration.instance, current_user(params))
@@ -35,6 +36,10 @@ class WebApi::V1::InitiativeSerializer < WebApi::V1::BaseSerializer
   attribute :internal_comments_count, if: proc { |object, params|
     can_moderate?(object, params)
   }
+
+  attribute :public do |object|
+    object.initiative_status.public?
+  end
 
   has_many :initiative_images, serializer: WebApi::V1::ImageSerializer
   has_many :topics
