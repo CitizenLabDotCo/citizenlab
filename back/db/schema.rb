@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_01_095755) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_01_135355) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -197,6 +197,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_01_095755) do
     t.datetime "updated_at", precision: nil, null: false
     t.integer "ordering"
     t.uuid "custom_field_option_id"
+    t.integer "followers_count", default: 0, null: false
     t.index ["custom_field_option_id"], name: "index_areas_on_custom_field_option_id"
   end
 
@@ -1441,6 +1442,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_01_095755) do
     t.datetime "updated_at", precision: nil, null: false
     t.integer "ordering"
     t.string "code", default: "custom", null: false
+    t.integer "followers_count", default: 0, null: false
   end
 
   create_table "user_custom_fields_representativeness_ref_distributions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
