@@ -1,0 +1,28 @@
+# frozen_string_literal: true
+
+# == Schema Information
+#
+# Table name: cosponsors_initiatives
+#
+#  id            :uuid             not null, primary key
+#  user_id       :uuid
+#  initiative_id :uuid
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#
+# Indexes
+#
+#  index_cosponsors_initiatives_on_initiative_id  (initiative_id)
+#  index_cosponsors_initiatives_on_user_id        (user_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (initiative_id => initiatives.id)
+#  fk_rails_...  (user_id => users.id)
+#
+class CosponsorsInitiative < ApplicationRecord
+  belongs_to :user
+  belongs_to :initiative
+
+  validates :user, :initiative, presence: true
+end
