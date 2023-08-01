@@ -25,7 +25,7 @@ RSpec.describe Events::AttendancePolicy do
       it { is_expected.to permit(:destroy) }
     end
 
-    specify do
+    it 'scopes are not filtered' do
       create_list(:event_attendance, 2)
       expect(scope.resolve.count).to eq(2)
     end
@@ -58,6 +58,10 @@ RSpec.describe Events::AttendancePolicy do
       it { is_expected.to permit(:destroy) }
     end
 
-    it { expect { scope.resolve.count }.to raise_error(Pundit::NotAuthorizedError) }
+    it "scopes only include the user's own attendances" do
+      create_list(:event_attendance, 2)
+      create(:event_attendance, attendee: user)
+      expect(scope.resolve.count).to eq(1)
+    end
   end
 end

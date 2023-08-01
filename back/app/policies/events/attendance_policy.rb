@@ -10,9 +10,9 @@ class Events::AttendancePolicy < ApplicationPolicy
     end
 
     def resolve
-      raise Pundit::NotAuthorizedError unless user&.active? && user&.admin?
+      raise Pundit::NotAuthorizedError if user.nil? || !user.active?
 
-      scope.all
+      user.admin? ? scope.all : scope.where(attendee: user)
     end
   end
 
