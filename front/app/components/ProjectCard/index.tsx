@@ -13,6 +13,7 @@ import Link from 'utils/cl-router/Link';
 import { Icon, Box } from '@citizenlab/cl2-component-library';
 import Image from 'components/UI/Image';
 import AvatarBubbles from 'components/AvatarBubbles';
+import FollowUnfollow from 'components/FollowUnfollow';
 
 // services
 import { getProjectUrl } from 'api/projects/utils';
@@ -412,10 +413,18 @@ export interface InputProps {
   layout?: TLayout;
   hideDescriptionPreview?: boolean;
   className?: string;
+  showFollowButton?: boolean;
 }
 
 const ProjectCard = memo<InputProps>(
-  ({ projectId, size, layout, hideDescriptionPreview, className }) => {
+  ({
+    projectId,
+    size,
+    layout,
+    hideDescriptionPreview,
+    className,
+    showFollowButton,
+  }) => {
     const { formatMessage } = useIntl();
     const { data: project } = useProjectById(projectId);
     const { data: authUser } = useAuthUser();
@@ -778,6 +787,19 @@ const ProjectCard = memo<InputProps>(
                     </ProjectMetaItems>
                   </Box>
                 </ContentFooter>
+              </Box>
+            )}
+            {showFollowButton && (
+              <Box display="flex" justifyContent="flex-end">
+                <FollowUnfollow
+                  followableType="projects"
+                  followableId={project.data.id}
+                  followersCount={project.data.attributes.followers_count}
+                  followerId={
+                    project.data.relationships.user_follower?.data?.id
+                  }
+                  py="2px"
+                />
               </Box>
             )}
           </ProjectContent>
