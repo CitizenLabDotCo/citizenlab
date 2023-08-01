@@ -12,14 +12,15 @@ class WebApi::V1::HandwrittenIdeasController < ApplicationController
       requests: [
         {
           image: {
-            content: Base64.decode64(params[:file][:file])
+            content: Base64.decode64(
+              remove_data_url_prefix(params[:file][:file])
+            )
           },
           image_context: {
             language_hints: ["en"]
           },
           features: [
-            { type: "DOCUMENT_TEXT_DETECTION", model: 'builtin/latest' },
-            { type: "IMAGE_PROPERTIES" }
+            { type: "DOCUMENT_TEXT_DETECTION", model: 'builtin/latest' }
           ]
         }
       ]
@@ -33,5 +34,9 @@ class WebApi::V1::HandwrittenIdeasController < ApplicationController
 
   def image_annotator
     @image_annotator ||= Google::Cloud::Vision.image_annotator
+  end
+
+  def remove_data_url_prefix(data_url)
+    data_url.gsub("data:image/jpeg;base64,", "")
   end
 end
