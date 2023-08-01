@@ -125,7 +125,7 @@
     "react-range": "1.8.14",
     "react-resize-detector": "8.0.3",
     "react-router-dom": "^6.3.0",
-    "react-select": "4.3.1",
+    "react-select": "5.7.4",
     "react-share": "^4.4.1",
     "react-transition-group": "4.4.5",
     "recharts": "^2.5.0",
