@@ -42,6 +42,11 @@ export default defineMessages({
     id: 'app.containers.UsersShowPage.initiatives',
     defaultMessage: 'Initiatives',
   },
+  emptyInfoText: {
+    id: 'app.containers.UsersShowPage.emptyInfoText',
+    defaultMessage:
+      'You are not following any items of the specified filter above.',
+  },
   loadingComments: {
     id: 'app.containers.UsersShowPage.loadingComments',
     defaultMessage: 'Loading user comments...',
