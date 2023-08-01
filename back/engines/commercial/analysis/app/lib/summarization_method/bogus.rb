@@ -2,8 +2,8 @@
 
 module Analysis
   # A fake offline summarization method, used for development and testing
-  # purposes, that takes a random word from each inputs and concatenates them.
-  # Saves times x100.
+  # purposes, that takes a random word from each input and concatenates them.
+  # Revolutionary method that saves times x100.
   class SummarizationMethod::Bogus < SummarizationMethod::Base
     protected
 
@@ -11,10 +11,8 @@ module Analysis
     def run
       total_inputs = filtered_inputs.size
       filtered_inputs.each_with_index.inject('') do |memo, (input, i)|
-        # TODO: base on custom_fields in analysis
-        random_word = MultilocService.new.t(input.title_multiloc).split.sample
+        random_word = input_to_text.execute(input).values.join.split.sample
         memo += " #{random_word}"
-
         update_summary(memo)
         update_progress(i / total_inputs.to_f)
 

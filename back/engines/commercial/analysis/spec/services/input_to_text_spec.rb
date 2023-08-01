@@ -36,4 +36,32 @@ describe Analysis::InputToText do
       })
     end
   end
+
+  describe '#formatted' do
+    it 'generates a sensible text representation from the custom_fields' do
+      custom_fields = [
+        build(:custom_field_text, title_multiloc: { en: 'Where did you hear from us?' }),
+        build(:custom_field_text, title_multiloc: { en: 'Would you recommend us to a friend?' })
+      ]
+      service = described_class.new(custom_fields)
+
+      input = build(
+        :idea,
+        custom_field_values: {
+          custom_fields[0].key => 'Newspaper',
+          custom_fields[1].key => 'Yes, I would'
+        }
+      )
+
+      expect(service.formatted(input)).to eq(
+        <<~TEXT
+          ### Where did you hear from us?
+          Newspaper
+          
+          ### Would you recommend us to a friend?
+          Yes, I would
+        TEXT
+      )
+    end
+  end
 end

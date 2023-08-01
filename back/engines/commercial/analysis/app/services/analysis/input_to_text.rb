@@ -22,5 +22,11 @@ module Analysis
         obj[key] = value
       end
     end
+
+    def formatted(input)
+      execute(input).map do |label, value|
+        "### #{label}\n#{value}\n"
+      end.join("\n")
+    end
   end
 end
