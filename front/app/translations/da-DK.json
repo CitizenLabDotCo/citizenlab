@@ -1499,7 +1499,7 @@
   "app.containers.UsersShowPage.a11y_postCommentPostedIn": "Idé, hvoraf denne kommentar blev slået op:",
   "app.containers.UsersShowPage.commentsWithCount": "Kommentarer ({commentsCount}) ",
   "app.containers.UsersShowPage.editProfile": "Rediger min profil ",
-  "app.containers.UsersShowPage.following": "Følgende",
+  "app.containers.UsersShowPage.following": "Følger",
   "app.containers.UsersShowPage.goBackToPreviousPage": "Gå tilbage til den foregående side",
   "app.containers.UsersShowPage.ideas": "Idéer",
   "app.containers.UsersShowPage.initiatives": "Borgerforslag",
