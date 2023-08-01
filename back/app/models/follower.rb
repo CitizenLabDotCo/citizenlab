@@ -28,4 +28,5 @@ class Follower < ApplicationRecord
   validates :user_id, uniqueness: { scope: %i[followable_type followable_id] }
 
   counter_culture :followable, column_name: :followers_count
+  counter_culture :user, column_name: :followings_count
 end

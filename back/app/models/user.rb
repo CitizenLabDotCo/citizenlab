@@ -32,6 +32,7 @@
 #  block_reason                        :string
 #  block_end_at                        :datetime
 #  new_email                           :string
+#  followings_count                    :integer          default(0), not null
 #
 # Indexes
 #
