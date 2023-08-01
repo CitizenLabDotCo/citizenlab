@@ -11,6 +11,7 @@ import { IdeaCardsWithoutFiltersSidebar } from 'components/IdeaCards';
 import ContentContainer from 'components/ContentContainer';
 import UsersShowPageMeta from './UsersShowPageMeta';
 import Button from 'components/UI/Button';
+import Following from './Following';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -82,7 +83,7 @@ const UserIdeas = styled.div`
   justify-content: center;
 `;
 
-export type UserTab = 'ideas' | 'comments';
+export type UserTab = 'ideas' | 'comments' | 'following';
 
 interface InnerProps {
   className?: string;
@@ -154,6 +155,7 @@ export const UsersShowPage = memo<InnerProps>(({ className, user }) => {
           )}
 
           {currentTab === 'comments' && <UserComments userId={user.id} />}
+          {currentTab === 'following' && <Following />}
         </StyledContentContainer>
       </Container>
     </>

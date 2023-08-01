@@ -148,6 +148,17 @@ const UserNavbar = memo<Props>(({ currentTab, selectTab, userId }) => {
           />
         )}
       </UserNavbarButton>
+      <UserNavbarButton
+        onMouseDown={removeFocusAfterMouseClick}
+        onClick={selectTab('following')}
+        className={currentTab === 'following' ? 'active' : ''}
+        role="tab"
+        aria-selected={currentTab === 'following'}
+      >
+        <Border aria-hidden />
+        <TabIcon name="notification-outline" ariaHidden />
+        {commentsCount && <FormattedMessage {...messages.following} />}
+      </UserNavbarButton>
     </UserNavbarWrapper>
   );
 });

@@ -26,6 +26,22 @@ export default defineMessages({
     id: 'app.containers.UsersShowPage.commentsWithCount',
     defaultMessage: 'Comments ({commentsCount})',
   },
+  following: {
+    id: 'app.containers.UsersShowPage.following',
+    defaultMessage: 'Following',
+  },
+  ideas: {
+    id: 'app.containers.UsersShowPage.ideas',
+    defaultMessage: 'Ideas',
+  },
+  projects: {
+    id: 'app.containers.UsersShowPage.projects',
+    defaultMessage: 'Projects',
+  },
+  initiatives: {
+    id: 'app.containers.UsersShowPage.initiatives',
+    defaultMessage: 'Initiatives',
+  },
   loadingComments: {
     id: 'app.containers.UsersShowPage.loadingComments',
     defaultMessage: 'Loading user comments...',
