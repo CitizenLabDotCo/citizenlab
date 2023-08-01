@@ -40,12 +40,6 @@
 #  posting_limited_max           :integer          default(1)
 #  document_annotation_embed_url :string
 #  allow_anonymous_participation :boolean          default(FALSE), not null
-#  voting_method                 :string
-#  voting_max_votes_per_idea     :integer
-#  voting_term_singular_multiloc :jsonb
-#  voting_term_plural_multiloc   :jsonb
-#  baskets_count                 :integer          default(0), not null
-#  votes_count                   :integer          default(0), not null
 #  followers_count               :integer          default(0), not null
 #  voting_method                 :string
 #  voting_max_votes_per_idea     :integer
