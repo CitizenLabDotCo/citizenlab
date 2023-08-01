@@ -13,7 +13,7 @@ module Analysis
           render json: WebApi::V1::SummarySerializer.new(
             summaries,
             params: jsonapi_serializer_params,
-            inclde: [:background_task]
+            include: [:background_task]
           ).serializable_hash
         end
 
