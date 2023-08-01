@@ -31,4 +31,15 @@ resource 'Background tasks' do
       })
     end
   end
+
+  get 'web_api/v1/analyses/:analysis_id/background_tasks/:id' do
+    let(:task) { create(:auto_tagging_task) }
+    let(:analysis_id) { task.analysis_id }
+    let(:id) { task.id }
+
+    example_request 'Get a background task by id' do
+      expect(status).to eq(200)
+      expect(response_data[:id]).to eq(task.id)
+    end
+  end
 end
