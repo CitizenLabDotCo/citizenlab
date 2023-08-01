@@ -15,6 +15,7 @@ import PostManager, { TFilterMenu } from 'components/admin/PostManager';
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
 import AnalysisBanner from './AnalysisBanner';
+import WrittenIdeasBanner from './WrittenIdeasBanner';
 
 const StyledDiv = styled.div`
   margin-bottom: 30px;
@@ -49,6 +50,8 @@ const AdminProjectIdeas = () => {
       </StyledDiv>
 
       <AnalysisBanner />
+      <WrittenIdeasBanner />
+
       {project && (
         <PostManager
           type="ProjectIdeas"

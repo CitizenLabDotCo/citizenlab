@@ -50,8 +50,6 @@ const ReportPrintPage = lazy(
 );
 const DisabledAccount = lazy(() => import('containers/DisabledAccount'));
 
-const Testing = lazy(() => import('containers/Testing'));
-
 export default function createRoutes() {
   return [
     {
@@ -347,14 +345,6 @@ export default function createRoutes() {
           element: (
             <PageLoading>
               <DisabledAccount />
-            </PageLoading>
-          ),
-        },
-        {
-          path: 'testing',
-          element: (
-            <PageLoading>
-              <Testing />
             </PageLoading>
           ),
         },

@@ -22,8 +22,8 @@ const Testing = () => {
   const onRemoveFile = () => {};
 
   return (
-    <Box m="100px" w="800px">
-      <Title>Hello world!</Title>
+    <Box mx="100px" w="800px">
+      <Title>Written idea importer</Title>
       <Box>
         <FileUploader
           id="rjferiugp"
