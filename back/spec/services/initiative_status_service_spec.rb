@@ -83,7 +83,7 @@ describe InitiativeStatusService do
       expect(service.transition_type(status_rejected_on_review)).to eq 'manual'
     end
 
-    context 'when review feature is fully activated' do
+    context 'when the initiative review feature is fully activated' do
       before do
         SettingsService.new.activate_feature! 'initiative_review'
 
@@ -113,7 +113,7 @@ describe InitiativeStatusService do
       end
     end
 
-    context 'when review feature is not fully activated' do
+    context 'when the initiative review feature is not fully activated' do
       it 'is not active' do
         expect(Initiative.review_required?).to be false
       end

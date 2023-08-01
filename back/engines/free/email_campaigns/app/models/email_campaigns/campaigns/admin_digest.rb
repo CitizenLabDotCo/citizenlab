@@ -222,7 +222,7 @@ module EmailCampaigns
         .published
         .joins(initiative_status_changes: :initiative_status)
         .includes(:initiative_images)
-        .where(initiative_statuses: { code: 'threshold_reached' })
+        .with_status_code('threshold_reached')
         .where('initiative_status_changes.created_at > ?', time - 1.week)
         .feedback_needed
         .map { |initiative| serialize_initiative(initiative) }

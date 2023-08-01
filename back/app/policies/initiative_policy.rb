@@ -15,10 +15,7 @@ class InitiativePolicy < ApplicationPolicy
       if UserRoleService.new.can_moderate_initiatives?(user)
         not_draft
       else
-        not_draft.left_outer_joins(:initiative_initiative_status)
-          .where.not(initiative_initiative_statuses: {
-            initiative_status_id: InitiativeStatus.where(code: InitiativeStatus::NOT_PUBLICLY_VISIBLE_CODES).select(:id)
-          })
+        not_draft.with_status_code(InitiativeStatus::NOT_REVIEW_CODES)
           .or(not_draft.where(author: user))
       end
     end
@@ -38,8 +35,8 @@ class InitiativePolicy < ApplicationPolicy
   end
 
   def show?
-    return true if active? && owner?
-    return true if active? && can_moderate?
+    return true if active? && (owner? || can_moderate?)
+    return false if record.review_status?
 
     %w[draft published closed].include?(record.publication_status)
   end
@@ -49,11 +46,11 @@ class InitiativePolicy < ApplicationPolicy
   end
 
   def update?
-    create?
+    create? && !record.editing_locked
   end
 
   def destroy?
-    update?
+    create?
   end
 
   def allowed_transitions?

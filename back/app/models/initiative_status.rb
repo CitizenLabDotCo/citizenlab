@@ -14,8 +14,7 @@
 #  updated_at           :datetime         not null
 #
 class InitiativeStatus < ApplicationRecord
-  CODES = %w[review_pending rejected_on_review proposed expired threshold_reached answered ineligible custom]
-  NOT_PUBLICLY_VISIBLE_CODES = %w[review_pending rejected_on_review].freeze
+  CODES = %w[review_pending rejected_on_review proposed expired threshold_reached answered ineligible custom].freeze
 
   REVIEW_CODES = %w[review_pending rejected_on_review].freeze
   NOT_REVIEW_CODES = (CODES - REVIEW_CODES).freeze

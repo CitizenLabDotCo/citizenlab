@@ -34,7 +34,7 @@ class InitiativeStatusPolicy < ApplicationPolicy
       else
         public_codes = InitiativeStatus::NOT_REVIEW_CODES
         # We want to show only statuses of initiatives available to the current user.
-        user_codes = initiatives.joins(:initiative_status).distinct.pluck('initiative_statuses.code')
+        user_codes = initiatives.joins(:initiative_status).distinct.pluck('initiative_status.code')
         scope.where(code: (public_codes + user_codes).uniq)
       end
     end

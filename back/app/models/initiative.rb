@@ -96,11 +96,7 @@ class Initiative < ApplicationRecord
     where(id: with_dups)
   end)
 
-  scope :with_status_code, (proc do |code|
-    joins('LEFT OUTER JOIN initiative_initiative_statuses ON initiatives.id = initiative_initiative_statuses.initiative_id')
-      .joins('LEFT OUTER JOIN initiative_statuses ON initiative_statuses.id = initiative_initiative_statuses.initiative_status_id')
-      .where(initiative_statuses: { code: code })
-  end)
+  scope :with_status_code, proc { |code| joins(:initiative_status).where(initiative_status: { code: code }) }
 
   scope :order_status, lambda { |direction = :asc|
     joins('LEFT OUTER JOIN initiative_initiative_statuses ON initiatives.id = initiative_initiative_statuses.initiative_id')
@@ -108,22 +104,9 @@ class Initiative < ApplicationRecord
       .order("initiative_statuses.ordering #{direction}, initiatives.published_at #{direction}, initiatives.id")
   }
 
-  scope :feedback_needed, lambda {
-    joins('LEFT OUTER JOIN initiative_initiative_statuses ON initiatives.id = initiative_initiative_statuses.initiative_id')
-      .joins('LEFT OUTER JOIN initiative_statuses ON initiative_statuses.id = initiative_initiative_statuses.initiative_status_id')
-      .where(initiative_statuses: { code: 'threshold_reached' })
-  }
-
-  scope :no_feedback_needed, lambda {
-    includes(initiative_initiative_status: :initiative_status)
-      .where.not(initiative_statuses: { code: 'threshold_reached' })
-  }
-
-  scope :proposed, lambda {
-    joins('LEFT OUTER JOIN initiative_initiative_statuses ON initiatives.id = initiative_initiative_statuses.initiative_id')
-      .joins('LEFT OUTER JOIN initiative_statuses ON initiative_statuses.id = initiative_initiative_statuses.initiative_status_id')
-      .where(initiative_statuses: { code: 'proposed' })
-  }
+  scope :feedback_needed, -> { with_status_code('threshold_reached') }
+  scope :no_feedback_needed, -> { with_status_code(InitiativeStatus::CODES - ['threshold_reached']) }
+  scope :proposed, -> { with_status_code('proposed') }
 
   def reactions_needed(configuration = AppConfiguration.instance)
     [configuration.settings('initiatives', 'reacting_threshold') - likes_count, 0].max
@@ -146,6 +129,10 @@ class Initiative < ApplicationRecord
     require_review = app_config.settings('initiatives', 'require_review')
 
     app_config.feature_activated?('initiative_review') && require_review
+  end
+
+  def review_status?
+    InitiativeStatus::REVIEW_CODES.include? initiative_status&.code
   end
 
   private
