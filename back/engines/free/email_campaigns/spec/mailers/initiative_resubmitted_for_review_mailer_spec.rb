@@ -10,15 +10,10 @@ RSpec.describe EmailCampaigns::InitiativeResubmittedForReviewMailer do
     let_it_be(:campaign) { EmailCampaigns::Campaigns::InitiativeResubmittedForReview.create! }
     let_it_be(:author_name) { UserDisplayNameService.new(AppConfiguration.instance, author).display_name!(initiative.author) }
     let_it_be(:command) do
-      {
-        recipient: recipient,
-        event_payload: {
-          post_id: initiative.id,
-          post_title_multiloc: initiative.title_multiloc,
-          post_body_multiloc: initiative.body_multiloc,
-          post_url: Frontend::UrlService.new.model_to_url(initiative, locale: recipient.locale)
-        }
-      }
+      item = Notifications::InitiativeResubmittedForReview.new(post: initiative)
+      activity = Activity.new(item: item)
+      commands = EmailCampaigns::Campaigns::InitiativeResubmittedForReview.new.generate_commands(recipient: recipient, activity: activity)
+      commands[0].merge({ recipient: recipient })
     end
 
     let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
