@@ -1118,6 +1118,7 @@
   "app.containers.NotificationMenu.commentDeletedByAdminFor": "Your comment on '{postTitle}' has been deleted by an admin because: {reasonCode, select, irrelevant {it is irrelevant} inappropriate {its content is inappropriate} other {{otherReason}}}",
   "app.containers.NotificationMenu.deletedUser": "Unknown author",
   "app.containers.NotificationMenu.error": "Couldn't load notifications",
+  "app.containers.NotificationMenu.initiativeResubmittedForReview": "{initiativeTitle} resubmitted for review",
   "app.containers.NotificationMenu.internalCommentOnIdeaAssignedToYou": "{name} commented internally on an input assigned to you",
   "app.containers.NotificationMenu.internalCommentOnIdeaYouCommentedInternallyOn": "{name} commented internally on an input that you commented on internally",
   "app.containers.NotificationMenu.internalCommentOnIdeaYouModerate": "{name} commented internally on an input in a project you manage",
