@@ -163,6 +163,17 @@ export interface IInitiativeMarkedAsSpamNotificationData
   };
 }
 
+export interface IInitiativeResubmittedForReviewNotificationData
+  extends IBaseNotificationData {
+  attributes: {
+    type: 'initiative_resubmitted_for_review';
+    read_at: string | null;
+    created_at: string;
+    post_title_multiloc: Multiloc;
+    post_slug: string;
+  };
+}
+
 export interface IInviteAcceptedNotificationData extends IBaseNotificationData {
   attributes: {
     type: 'invite_accepted';
@@ -481,6 +492,7 @@ export interface INotificationDataMap {
   IIdeaMarkedAsSpamNotificationData: IIdeaMarkedAsSpamNotificationData;
   IInitiativeAssignedToYouNotificationData: IInitiativeAssignedToYouNotificationData;
   IInitiativeMarkedAsSpamNotificationData: IInitiativeMarkedAsSpamNotificationData;
+  IInitiativeResubmittedForReviewNotificationData: IInitiativeResubmittedForReviewNotificationData;
   IInviteAcceptedNotificationData: IInviteAcceptedNotificationData;
   IMentionInCommentNotificationData: IMentionInCommentNotificationData;
   IInternalCommentNotificationData: IInternalCommentNotificationData;

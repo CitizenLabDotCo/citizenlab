@@ -62,6 +62,10 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.mentionInInternalComment',
     defaultMessage: '{name} mentioned you in an internal comment',
   },
+  initiativeResubmittedForReview: {
+    id: 'app.containers.NotificationMenu.initiativeResubmittedForReview',
+    defaultMessage: '{initiativeTitle} resubmitted for review',
+  },
   internalCommentOnYourInternalComment: {
     id: 'app.containers.NotificationMenu.internalCommentOnYourInternalComment',
     defaultMessage: '{name} commented on your internal comment',
