@@ -135,6 +135,8 @@ class User < ApplicationRecord
   has_many :internal_comments, foreign_key: :author_id, dependent: :nullify
   has_many :official_feedbacks, dependent: :nullify
   has_many :reactions, dependent: :nullify
+  has_many :cosponsors_initiatives, dependent: :destroy
+  has_many :cosponsored_initiatives, through: :cosponsors_initiatives, source: :initiative
 
   after_initialize do
     next unless has_attribute?('roles')
