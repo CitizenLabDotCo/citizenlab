@@ -40,6 +40,7 @@ export interface IInputsData {
     dislikes_count: number;
     comments_count: number;
     votes_count: number;
+    location_description?: string;
     custom_field_values: {
       [key: string]: any;
     };

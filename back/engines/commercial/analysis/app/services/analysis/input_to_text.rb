@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Analysis
   # Convert an input to a simple string hash of {label => value} entries, based on the
   # passed list of custom fields
