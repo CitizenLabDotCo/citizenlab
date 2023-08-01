@@ -108,7 +108,7 @@ RSpec.describe Group, type: :model do
           value: 'high' },
         { ruleType: 'role', predicate: 'is_admin' },
         { ruleType: 'email', predicate: 'ends_on', value: '@citizenlab.co' },
-        { ruleType: 'follow', predicate: 'anything' },
+        { ruleType: 'follow', predicate: 'something' },
         { ruleType: 'lives_in', predicate: 'has_value', value: create(:area).id },
         { ruleType: 'custom_field_checkbox', customFieldId: create(:custom_field_checkbox).id,
           predicate: 'is_checked' },
@@ -117,9 +117,9 @@ RSpec.describe Group, type: :model do
         { ruleType: 'registration_completed_at', predicate: 'is_before', value: (Date.today - 1.day) },
         { ruleType: 'custom_field_number', customFieldId: create(:custom_field_number).id, predicate: 'is_smaller_than',
           value: 42 },
-        { ruleType: 'participated_in_project', predicate: 'in', value: create(:project).id },
-        { ruleType: 'participated_in_topic', predicate: 'in', value: create(:topic).id },
-        { ruleType: 'participated_in_idea_status', predicate: 'in', value: create(:idea_status).id },
+        { ruleType: 'participated_in_project', predicate: 'in', value: [create(:project).id] },
+        { ruleType: 'participated_in_topic', predicate: 'in', value: [create(:topic).id] },
+        { ruleType: 'participated_in_idea_status', predicate: 'in', value: [create(:idea_status).id] },
         { ruleType: 'verified', predicate: 'not_is_verified' }
       ])
     end
