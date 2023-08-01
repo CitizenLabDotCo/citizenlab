@@ -133,6 +133,7 @@ const fileAccept = [
   'video/x-matroska',
 
   '.jpg',
+  '.png',
 ];
 
 interface Props {

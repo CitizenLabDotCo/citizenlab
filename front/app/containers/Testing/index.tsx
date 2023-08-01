@@ -10,12 +10,16 @@ import FileUploader from 'components/UI/FileUploader';
 // typings
 import { UploadFile } from 'typings';
 
+const stripImageType = (base64str: string) => {
+  return base64str.replace('data:image/jpeg;base64,', '');
+};
+
 const Testing = () => {
   const { mutate: addHandwrittenIdea } = useAddHandwrittenIdea();
 
   const onAddFile = (file: UploadFile) => {
     addHandwrittenIdea({
-      file: { file: file.base64 },
+      file: { file: stripImageType(file.base64) },
     });
   };
 
