@@ -41,13 +41,17 @@ const Following = () => {
           <>
             {follower.relationships.followable.data.type === 'idea' && (
               <Box width="calc(50% - 20px)">
-                <IdeaCard ideaId={follower.relationships.followable.data.id} />
+                <IdeaCard
+                  ideaId={follower.relationships.followable.data.id}
+                  showFollowButton
+                />
               </Box>
             )}
             {follower.relationships.followable.data.type === 'initiative' && (
               <Box width="calc(100% * (1 / 3) - 26px)">
                 <InitiativeCard
                   initiativeId={follower.relationships.followable.data.id}
+                  showFollowButton
                 />
               </Box>
             )}
@@ -55,6 +59,7 @@ const Following = () => {
               <ProjectCard
                 projectId={follower.relationships.followable.data.id}
                 size="small"
+                showFollowButton
               />
             )}
           </>

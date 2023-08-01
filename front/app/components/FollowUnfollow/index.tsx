@@ -3,6 +3,7 @@ import {
   Button,
   BoxPaddingProps,
   ButtonStyles,
+  BoxWidthProps,
 } from '@citizenlab/cl2-component-library';
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
@@ -14,7 +15,7 @@ import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import useAuthUser from 'api/me/useAuthUser';
 
-interface Props extends BoxPaddingProps {
+interface Props extends BoxPaddingProps, BoxWidthProps {
   followableType: FollowableType;
   followableId: string; // id of the project, folder, idea or proposal
   followersCount?: number;
@@ -30,7 +31,7 @@ const FollowUnfollow = ({
   followerId,
   followableSlug,
   buttonStyle = 'primary-outlined',
-  ...paddingProps
+  ...otherButtonProps
 }: Props) => {
   const isFollowingEnabled = useFeatureFlag({
     name: 'follow',
@@ -98,7 +99,7 @@ const FollowUnfollow = ({
       icon="notification"
       onClick={handleButtonClick}
       processing={isLoading}
-      {...paddingProps}
+      {...otherButtonProps}
     >
       {followersCount
         ? `${followUnfollowText} (${followersCount})`
