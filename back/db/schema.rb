@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_27_090914) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_28_160743) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -84,6 +84,19 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_27_090914) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["analysis_id"], name: "index_analysis_background_tasks_on_analysis_id"
+  end
+
+  create_table "analysis_summaries", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "analysis_id", null: false
+    t.uuid "background_task_id", null: false
+    t.text "summary"
+    t.text "prompt"
+    t.string "summarization_method", null: false
+    t.jsonb "filters", default: {}, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["analysis_id"], name: "index_analysis_summaries_on_analysis_id"
+    t.index ["background_task_id"], name: "index_analysis_summaries_on_background_task_id"
   end
 
   create_table "analysis_taggings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1497,6 +1510,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_27_090914) do
   add_foreign_key "analysis_analyses_custom_fields", "analysis_analyses", column: "analysis_id"
   add_foreign_key "analysis_analyses_custom_fields", "custom_fields"
   add_foreign_key "analysis_background_tasks", "analysis_analyses", column: "analysis_id"
+  add_foreign_key "analysis_summaries", "analysis_analyses", column: "analysis_id"
+  add_foreign_key "analysis_summaries", "analysis_background_tasks", column: "background_task_id"
   add_foreign_key "analysis_taggings", "analysis_tags", column: "tag_id"
   add_foreign_key "analysis_taggings", "ideas", column: "input_id"
   add_foreign_key "analysis_tags", "analysis_analyses", column: "analysis_id"
