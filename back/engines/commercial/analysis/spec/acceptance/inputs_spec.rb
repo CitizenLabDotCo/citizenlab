@@ -60,6 +60,7 @@ resource 'Inputs' do
         expect(response_data.dig(0, :attributes)).to match({
           title_multiloc: { en: 'Plant more trees', 'nl-BE': 'Plant meer bomen' },
           body_multiloc: { en: '<p>It would improve the air quality!</p>', 'nl-BE': '<p>De luchtkwaliteit zou er gevoelig op vooruitgaan!</p>' },
+          location_description: 'Some road',
           comments_count: 0,
           custom_field_values: {},
           dislikes_count: 0,
