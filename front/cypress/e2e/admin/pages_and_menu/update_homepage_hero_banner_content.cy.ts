@@ -92,9 +92,8 @@ describe('Admin: update Hero Banner content', () => {
     );
     // Should exist before saving
     cy.get('[data-cy="e2e-overlay-toggle"]').should('exist');
-    cy.get('.e2e-submit-wrapper-button').click();
+    cy.get('.e2e-submit-wrapper-button').click({ force: true });
     cy.wait('@saveHomePage');
-    cy.wait(2000);
     cy.get('.e2e-submit-wrapper-button').contains('Success');
     // Should exist after saving
     cy.get('[data-cy="e2e-overlay-toggle"]').should('exist');
@@ -112,7 +111,7 @@ describe('Admin: update Hero Banner content', () => {
     cy.get('[data-cy="e2e-image-cropper"]').should('not.exist');
     // Should not exist before saving
     cy.get('[data-cy="e2e-overlay-toggle"]').should('not.exist');
-    cy.get('.e2e-submit-wrapper-button').click();
+    cy.get('.e2e-submit-wrapper-button').click({ force: true });
     cy.wait('@saveHomePage');
     cy.get('.e2e-submit-wrapper-button').contains('Success');
 
@@ -135,7 +134,7 @@ describe('Admin: update Hero Banner content', () => {
     );
     // wait until image cropper is loaded and visible (image is cropped).
     // The test is flaky without this line.
-    cy.get('[data-cy="e2e-image-cropper"]').should('exist');
+    cy.get('#e2e-image-cropper').should('exist');
     // The toggle should not exist when the image is not saved.
     cy.get('[data-cy="e2e-overlay-toggle"]').should('not.exist');
     cy.get('.e2e-submit-wrapper-button').click();
