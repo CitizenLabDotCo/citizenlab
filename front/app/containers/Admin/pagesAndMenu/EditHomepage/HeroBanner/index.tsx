@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { CLErrors } from 'typings';
 
 // components
@@ -48,6 +48,12 @@ const EditHomepageHeroBannerForm = ({ homepageSettings }: Props) => {
   const [localSettings, setLocalSettings] =
     useState<IHomepageSettingsAttributes>(homepageSettings.data.attributes);
   const { mutateAsync: updateHomepageSettings } = useUpdateHomepageSettings();
+
+  useEffect(() => {
+    if (homepageSettings) {
+      setLocalSettings(homepageSettings.data.attributes);
+    }
+  }, [homepageSettings]);
 
   const handleSave = async () => {
     if (localSettings.header_bg === null) {

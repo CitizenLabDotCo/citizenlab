@@ -149,7 +149,7 @@ describe('Admin: update Hero Banner content', () => {
       });
     });
     cy.get('.e2e-submit-wrapper-button').contains('Success');
-    // Image cropper should not exist after saving the image
+    // // Image cropper should not exist after saving the image
     cy.get('[data-cy="e2e-image-cropper"]').should('not.exist');
     // The toggle should only be there when the image is saved.
     cy.get('[data-cy="e2e-overlay-toggle"]').should('exist');
