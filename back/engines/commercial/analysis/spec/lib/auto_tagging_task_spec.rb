@@ -17,7 +17,7 @@ RSpec.describe Analysis::AutoTaggingTask do
         state: 'succeeded',
         progress: nil
       })
-      controversial_tag = Analysis::Tag.find_by(tag_type: AutoTaggingMethod::Controversial::TAG_TYPE)
+      controversial_tag = Analysis::Tag.find_by(tag_type: Analysis::AutoTaggingMethod::Controversial::TAG_TYPE)
       expect(controversial_tag).to be_present
       expect(idea1.tags).to include(controversial_tag)
       expect(idea2.tags).not_to include(controversial_tag)
@@ -49,6 +49,45 @@ RSpec.describe Analysis::AutoTaggingTask do
       expect(idea1.tags).to include(Analysis::Tag.find_by(name: shared_topic.title_multiloc.values))
       expect(idea1.tags).to include(Analysis::Tag.find_by(name: topic1.title_multiloc.values))
       expect(idea1.tags).not_to include(Analysis::Tag.find_by(name: topic2.title_multiloc.values))
+    end
+  end
+
+  describe 'Sentiment auto_tagging' do
+    it 'works' do
+      project = create(:project)
+      custom_form = create(:custom_form, :with_default_fields, participation_context: project)
+      analysis = create(:analysis, custom_fields: custom_form.custom_fields, project: project)
+      att = create(:auto_tagging_task, analysis: analysis, state: 'queued', auto_tagging_method: 'sentiment')
+      idea = create(:idea, project: project, title_multiloc: { 'nl-NL' => 'Heel erg slecht' })
+
+      positive_tag = create(:tag, tag_type: 'sentiment', analysis: analysis, name: 'sentiment +')
+
+      mock_nlp_client = double
+      expect(mock_nlp_client).to receive(:sentiment).and_return({
+        'scored_labels' => [
+          { 'label' => 'NEGATIVE', 'score' => 0.99 }
+        ]
+      })
+      expect_any_instance_of(Analysis::AutoTaggingMethod::Sentiment)
+        .to receive(:nlp_cloud_client_for)
+        .with(any, 'nl-NL')
+        .and_return(
+          mock_nlp_client
+        )
+
+      expect { att.execute }
+        .to change(Analysis::Tag, :count).from(1).to(2)
+
+      expect(att.reload).to have_attributes({
+        state: 'succeeded',
+        progress: nil
+      })
+
+      negative_tag = Analysis::Tag.find_by(analysis: analysis, name: 'sentiment -')
+      expect(negative_tag).to be_present
+      expect(positive_tag.reload).to be_present
+
+      expect(idea.tags).to match_array([negative_tag])
     end
   end
 end
