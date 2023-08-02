@@ -59,3 +59,5 @@ class Topic < ApplicationRecord
     end
   end
 end
+
+Topic.include(SmartGroups::Concerns::ValueReferenceable)

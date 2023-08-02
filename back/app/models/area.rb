@@ -137,3 +137,5 @@ class Area < ApplicationRecord
     end
   end
 end
+
+Area.include(SmartGroups::Concerns::ValueReferenceable)
