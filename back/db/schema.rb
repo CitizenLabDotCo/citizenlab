@@ -288,6 +288,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_01_141534) do
   end
 
   create_table "cosponsors_initiatives", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "status"
     t.uuid "user_id"
     t.uuid "initiative_id"
     t.datetime "created_at", null: false
