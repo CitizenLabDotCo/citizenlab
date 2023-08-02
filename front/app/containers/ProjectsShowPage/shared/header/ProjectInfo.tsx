@@ -5,7 +5,7 @@ import Fragment from 'components/Fragment';
 import FileAttachments from 'components/UI/FileAttachments';
 import ProjectInfoSideBar from './ProjectInfoSideBar';
 import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
-import ReadMoreWrapper from 'containers/ProjectsShowPage/shared/header/ReadMoreWrapper';
+import ReadMoreWrapper from 'components/ReadMoreWrapper/ReadMoreWrapper';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
