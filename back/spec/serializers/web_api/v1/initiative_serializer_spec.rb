@@ -67,7 +67,14 @@ describe WebApi::V1::InitiativeSerializer do
     let(:initiative) { create(:initiative) }
     let(:user) { create(:user) }
     let(:cosponsor) { create(:user) }
+    let(:name_service) { UserDisplayNameService.new(AppConfiguration.instance, user) }
+    let(:cosponsor_display_name) { name_service.display_name!(cosponsor) }
     let!(:_cosponsorship) { create(:cosponsors_initiative, initiative: initiative, user: cosponsor) }
+
+    it 'should include cosponsorships' do
+      expect(cosponsorships(initiative, user).first[:user_id]).to eq cosponsor.id
+      expect(cosponsorships(initiative, user).first[:name]).to eq cosponsor_display_name
+    end
 
     it 'should include cosponsors' do
       expect(cosponsors(initiative, user).size).to eq 1
@@ -87,5 +94,12 @@ describe WebApi::V1::InitiativeSerializer do
       .new(initiative, params: { current_user: current_user })
       .serializable_hash
       .dig(:data, :relationships, :cosponsors, :data)
+  end
+
+  def cosponsorships(initiative, current_user)
+    described_class
+      .new(initiative, params: { current_user: current_user })
+      .serializable_hash
+      .dig(:data, :attributes, :cosponsorships)
   end
 end
