@@ -14,7 +14,7 @@ class WebApi::V1::InitiativesController < ApplicationController
       params,
       current_user: current_user,
       scope: policy_scope(Initiative),
-      includes: %i[author cosponsors assignee topics areas]
+      includes: %i[author assignee topics areas]
     ).find_records
     initiatives = paginate SortByParamsService.new.sort_initiatives(initiatives, params, current_user)
     render json: linked_json(initiatives, WebApi::V1::InitiativeSerializer, serialization_options_for(initiatives))
@@ -36,7 +36,7 @@ class WebApi::V1::InitiativesController < ApplicationController
       params,
       current_user: current_user,
       scope: policy_scope(Initiative).where(publication_status: 'published'),
-      includes: %i[author cosponsors initiative_status topics areas]
+      includes: %i[author initiative_status topics areas]
     ).find_records
     initiatives = SortByParamsService.new.sort_initiatives(initiatives, params, current_user)
 
