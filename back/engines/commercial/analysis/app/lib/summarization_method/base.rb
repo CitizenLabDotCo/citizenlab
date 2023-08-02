@@ -2,7 +2,7 @@
 
 module Analysis
   class SummarizationMethod::Base
-    attr_reader :analysis, :task, :summary
+    attr_reader :analysis, :task, :summary, :input_to_text
 
     class SummarizationFailedError < StandardError; end
 
@@ -21,6 +21,7 @@ module Analysis
       @analysis = summarization_task.analysis
       @task = summarization_task
       @summary = summarization_task.summary
+      @input_to_text = InputToText.new(@analysis.custom_fields)
     end
 
     def execute

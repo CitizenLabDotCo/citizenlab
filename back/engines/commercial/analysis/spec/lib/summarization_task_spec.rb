@@ -5,10 +5,18 @@ require 'rails_helper'
 RSpec.describe Analysis::SummarizationTask do
   describe 'Bogus summarization' do
     it 'works' do
+      analysis = create(:analysis, custom_fields: [create(
+        :custom_field,
+        :for_custom_form,
+        code: 'title_multiloc',
+        key: 'title_multiloc'
+      )])
+
       summarization_task = create(
         :summarization_task,
+        analysis: analysis,
         state: 'queued',
-        summary: create(:summary, summary: nil, summarization_method: 'bogus', filters: { comments_from: 5 })
+        summary: create(:summary, analysis: analysis, summary: nil, summarization_method: 'bogus', filters: { comments_from: 5 })
       )
       with_options project: summarization_task.analysis.project do
         create(:idea, comments_count: 5)
