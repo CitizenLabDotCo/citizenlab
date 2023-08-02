@@ -22,7 +22,7 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class CosponsorsInitiative < ApplicationRecord
-  STATUSES = %w[pending accepted declined].freeze
+  STATUSES = %w[pending accepted].freeze
 
   belongs_to :user
   belongs_to :initiative
