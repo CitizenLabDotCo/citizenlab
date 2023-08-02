@@ -26,12 +26,14 @@ resource 'Followers' do
       let!(:folder_follows) { create_list(:project_folder, 2).map { |project| create(:follower, user: user, followable: project) } }
       let!(:idea_follows) { [create(:follower, user: user, followable: create(:idea))] }
       let!(:initiative_follows) { [create(:follower, user: user, followable: create(:initiative))] }
+      let!(:topic_follows) { [create(:follower, user: user, followable: create(:topic))] }
+      let!(:area_follows) { [create(:follower, user: user, followable: create(:area))] }
 
       example_request 'List all followers' do
         assert_status 200
         json_response = json_parse response_body
-        expect(json_response[:data].size).to eq 6
-        expect(json_response[:data].pluck(:id)).to match_array (project_follows + folder_follows + idea_follows + initiative_follows).map(&:id)
+        expect(json_response[:data].size).to eq 8
+        expect(json_response[:data].pluck(:id)).to match_array (project_follows + folder_follows + idea_follows + initiative_follows + topic_follows + area_follows).map(&:id)
       end
 
       describe do
@@ -51,7 +53,7 @@ resource 'Followers' do
   get 'web_api/v1/followers/:id' do
     let(:id) { create(:follower, user: user).id }
 
-    example_request 'Get one follower by id' do
+    example_request 'Get one follower by ID' do
       assert_status 200
       json_response = json_parse response_body
       expect(json_response.dig(:data, :id)).to eq id
@@ -78,6 +80,16 @@ resource 'Followers' do
       type: 'initiative',
       resource: 'initiatives',
       factory: 'initiative'
+    },
+    {
+      type: 'topic',
+      resource: 'topics',
+      factory: 'topic'
+    },
+    {
+      type: 'area',
+      resource: 'areas',
+      factory: 'area'
     }
   ].each do |followable_mapper|
     post "web_api/v1/#{followable_mapper[:resource]}/:followable_id/followers" do
