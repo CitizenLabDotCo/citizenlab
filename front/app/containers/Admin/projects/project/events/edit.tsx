@@ -12,6 +12,7 @@ import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import FileUploader from 'components/UI/FileUploader';
 import {
   Box,
+  Button,
   IconTooltip,
   Label,
   LocationInput,
@@ -47,6 +48,7 @@ import { withRouter } from 'utils/cl-router/withRouter';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { geocode } from 'utils/locationTools';
+import Modal from 'components/UI/Modal';
 
 interface Props {
   params: Record<string, string>;
@@ -82,20 +84,28 @@ const AdminProjectEventEdit = ({ params }: Props) => {
   const [submitState, setSubmitState] = useState<SubmitState>('disabled');
   const [eventFiles, setEventFiles] = useState<UploadFile[]>([]);
   const [attributeDiff, setAttributeDiff] = useState<IEventProperties>({});
-  const [locationPoint, setLocationPoint] = useState<GeoJSON.Point | null>(
-    event?.data.attributes.location_point_geojson || null
-  );
+  const [mapModalVisible, setMapModalVisible] = useState(false);
+  const remoteLocationPoint = event?.data.attributes.location_point_geojson;
+  const [locationPoint, setLocationPoint] = useState<
+    GeoJSON.Point | null | undefined
+  >(undefined);
+  const [locationDescription, setLocationDescription] = useState('');
   const [eventFilesToRemove, setEventFilesToRemove] = useState<UploadFile[]>(
     []
   );
 
   useEffect(() => {
+    setLocationPoint(remoteLocationPoint);
+  }, [remoteLocationPoint]);
+
+  useEffect(() => {
     const subscriptions = [
-      leafletMapClicked$.subscribe((latLng) => {
+      leafletMapClicked$.subscribe(async (latLng) => {
         const selectedPoint = {
           type: 'Point',
           coordinates: [latLng.lng, latLng.lat],
         } as GeoJSON.Point;
+        setSubmitState('enabled');
         setLocationPoint(selectedPoint);
       }),
     ];
@@ -105,15 +115,16 @@ const AdminProjectEventEdit = ({ params }: Props) => {
     };
   }, []);
 
-  const [locationDescription, setLocationDescription] = useState('');
-
   useEffect(() => {
-    const delayDebounceFn = setTimeout(async () => {
-      const point = await geocode(locationDescription);
-      setLocationPoint(point);
-    }, 500);
+    if (locationDescription) {
+      const delayDebounceFn = setTimeout(async () => {
+        const point = await geocode(locationDescription);
+        setLocationPoint(point);
+      }, 500);
 
-    return () => clearTimeout(delayDebounceFn);
+      return () => clearTimeout(delayDebounceFn);
+    }
+    return;
   }, [locationDescription, attributeDiff]);
 
   useEffect(() => {
@@ -135,6 +146,14 @@ const AdminProjectEventEdit = ({ params }: Props) => {
     setAttributeDiff({
       ...attributeDiff,
       title_multiloc: titleMultiloc,
+    });
+  };
+
+  const handleLocationMultilocOnChange = (locationMultiloc: Multiloc) => {
+    setSubmitState('enabled');
+    setAttributeDiff({
+      ...attributeDiff,
+      location_multiloc: locationMultiloc,
     });
   };
 
@@ -389,8 +408,29 @@ const AdminProjectEventEdit = ({ params }: Props) => {
               {formatMessage(messages.eventLocation)}
             </Title>
             <SectionField>
-              <Box zIndex="1000">
-                <Label value={formatMessage(messages.mapCoordinatesLabel)} />
+              <Box maxWidth="400px">
+                <InputMultilocWithLocaleSwitcher
+                  id="event-location"
+                  label={formatMessage(messages.eventLocationLabel)}
+                  type="text"
+                  valueMultiloc={eventAttrs.location_multiloc}
+                  onChange={handleLocationMultilocOnChange}
+                  labelTooltipText={formatMessage(
+                    messages.eventLocationTooltip
+                  )}
+                  placeholder={formatMessage(messages.eventLocationPlaceholder)}
+                />
+              </Box>
+              <ErrorComponent apiErrors={get(errors, 'title_multiloc')} />
+            </SectionField>
+            <SectionField>
+              <Box zIndex="1000" maxWidth="400px">
+                <Label>
+                  {formatMessage(messages.streetAddressLabel)}
+                  <IconTooltip
+                    content={formatMessage(messages.streetAddressTooltip)}
+                  />
+                </Label>
                 <LocationInput
                   id="event-location-picker"
                   className="e2e-event-location-input"
@@ -399,17 +439,18 @@ const AdminProjectEventEdit = ({ params }: Props) => {
                     handleLocationDescriptionOnChange(value);
                     setLocationDescription(value);
                   }}
-                  placeholder={'Search for a location...'} // TODO: Replace with message
+                  placeholder={formatMessage(messages.searchForLocation)}
                 />
+                <Button
+                  mt="8px"
+                  icon="position"
+                  onClick={() => {
+                    setMapModalVisible(true);
+                  }}
+                >
+                  {formatMessage(messages.refineOnMap)}
+                </Button>
               </Box>
-              {locationPoint && (
-                <Box mt="12px">
-                  <Label>
-                    <FormattedMessage {...messages.mapSelectionLabel} />
-                  </Label>
-                  <Map position={locationPoint} projectId={params.projectId} />
-                </Box>
-              )}
               <ErrorComponent apiErrors={get(errors, 'location_description')} />
             </SectionField>
 
@@ -418,6 +459,7 @@ const AdminProjectEventEdit = ({ params }: Props) => {
               fontWeight="bold"
               color="primary"
               style={{ fontWeight: '600' }}
+              mt="48px"
             >
               {formatMessage(messages.additionalInformation)}
             </Title>
@@ -451,6 +493,26 @@ const AdminProjectEventEdit = ({ params }: Props) => {
             }}
           />
         </form>
+        <Modal
+          opened={mapModalVisible}
+          close={() => {
+            setMapModalVisible(false);
+          }}
+          className="e2e-comment-deletion-modal"
+          header={formatMessage(messages.refineLocationCoordinates)}
+          width={'900px'}
+        >
+          <Box p="16px">
+            {locationPoint && (
+              <Box>
+                <Label>
+                  <FormattedMessage {...messages.mapSelectionLabel} />
+                </Label>
+                <Map position={locationPoint} projectId={params.projectId} />
+              </Box>
+            )}
+          </Box>
+        </Modal>
       </>
     );
   }

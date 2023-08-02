@@ -24,7 +24,7 @@ const MapComponent = memo<Props>(({ position, projectId }) => {
       points={points}
       centerLatLng={centerLatLng}
       projectId={projectId}
-      mapHeight="300px"
+      mapHeight="600px"
       noMarkerClustering={false}
       zoomLevel={20}
     />

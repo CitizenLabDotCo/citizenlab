@@ -85,13 +85,17 @@ export default defineMessages({
       'Add offline events or meetings that are linked to your project here. Upcoming and past events are always shown immediately under your project.',
   },
   mapSelectionLabel: {
-    id: 'app.containers.AdminPage.ProjectEvents.mapSelectionLabel',
+    id: 'app.containers.AdminPage.ProjectEvents.mapSelectionLabel2',
     defaultMessage:
-      'Refine the coordinates of your location by clicking on the map:',
+      'Refine where your event location marker is shown by clicking on the map:',
   },
-  mapCoordinatesLabel: {
-    id: 'app.containers.AdminPage.ProjectEvents.mapCoordinatesLabel',
-    defaultMessage: 'Add map coordinates',
+  eventLocationLabel: {
+    id: 'app.containers.AdminPage.ProjectEvents.eventLocationLabel',
+    defaultMessage: 'Location',
+  },
+  streetAddressLabel: {
+    id: 'app.containers.AdminPage.ProjectEvents.streetAddressLabel',
+    defaultMessage: 'Street address',
   },
   eventDates: {
     id: 'app.containers.AdminPage.ProjectEvents.eventDates',
@@ -99,10 +103,40 @@ export default defineMessages({
   },
   eventLocation: {
     id: 'app.containers.AdminPage.ProjectEvents.eventLocation',
-    defaultMessage: 'Event location',
+    defaultMessage: 'Event Location',
+  },
+  eventLocationPlaceholder: {
+    id: 'app.containers.AdminPage.ProjectEvents.eventLocationPlaceholder',
+    defaultMessage: 'Pacheco Building, Floor 3 Door 2',
   },
   additionalInformation: {
     id: 'app.containers.AdminPage.ProjectEvents.additionalInformation',
     defaultMessage: 'Additional information',
+  },
+  refineOnMap: {
+    id: 'app.containers.AdminPage.ProjectEvents.refineOnMap',
+    defaultMessage: 'Refine location on map',
+  },
+  searchForLocation: {
+    id: 'app.containers.AdminPage.ProjectEvents.searchForLocation',
+    defaultMessage: 'Search for a location',
+  },
+  searchForLocationOrClick: {
+    id: 'app.containers.AdminPage.ProjectEvents.searchForLocationOrClick',
+    defaultMessage: 'Search for a location or click on the map',
+  },
+  refineLocationCoordinates: {
+    id: 'app.containers.AdminPage.ProjectEvents.searchForLocationOrClick',
+    defaultMessage: 'Refine map location',
+  },
+  streetAddressTooltip: {
+    id: 'app.containers.AdminPage.ProjectEvents.streetAddressTooltip',
+    defaultMessage:
+      'The street address will be used when displaying the location on the map. If the event location is empty, the street address will also be shown to the user as the event location.',
+  },
+  eventLocationTooltip: {
+    id: 'app.containers.AdminPage.ProjectEvents.eventLocationTooltip',
+    defaultMessage:
+      'The event location will be used when displaying the location to the user. If you would like to just display the street address, you may leave this field empty.',
   },
 });
