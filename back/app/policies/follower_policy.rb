@@ -24,7 +24,9 @@ class FollowerPolicy < ApplicationPolicy
     private
 
     def filter_followables
-      [Project, ProjectFolders::Folder, Idea, Initiative].each do |followable_class|
+      followable_classes = [Project, ProjectFolders::Folder, Idea, Initiative, Topic, Area]
+      @scope = scope.where(followable_type: followable_classes.map(&:name))
+      followable_classes.each do |followable_class|
         visible_records = Pundit.policy_scope user, followable_class
         @scope = scope.where(followable: visible_records).or(scope.where.not(followable_type: followable_class.name))
       end
@@ -44,6 +46,10 @@ class FollowerPolicy < ApplicationPolicy
         InitiativePolicy
       when 'Idea'
         IdeaPolicy
+      when 'Topic'
+        TopicPolicy
+      when 'Area'
+        AreaPolicy
       else
         raise "Unsupported followable type: #{record.followable_type}"
       end

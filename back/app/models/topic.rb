@@ -12,6 +12,7 @@
 #  updated_at           :datetime         not null
 #  ordering             :integer
 #  code                 :string           default("custom"), not null
+#  followers_count      :integer          default(0), not null
 #
 class Topic < ApplicationRecord
   DEFAULT_CODES = %w[nature waste sustainability mobility technology economy housing public_space safety education culture health inclusion community services other].freeze
@@ -27,6 +28,7 @@ class Topic < ApplicationRecord
   has_many :ideas, through: :ideas_topics
   has_many :initiatives_topics, dependent: :destroy
   has_many :initiatives, through: :initiatives_topics
+  has_many :followers, as: :followable, dependent: :destroy
 
   has_many :static_pages_topics, dependent: :restrict_with_error
   has_many :static_pages, through: :static_pages_topics
@@ -57,3 +59,5 @@ class Topic < ApplicationRecord
     end
   end
 end
+
+Topic.include(SmartGroups::Concerns::ValueReferenceable)

@@ -11,6 +11,7 @@
 #  updated_at             :datetime         not null
 #  ordering               :integer
 #  custom_field_option_id :uuid
+#  followers_count        :integer          default(0), not null
 #
 # Indexes
 #
@@ -28,6 +29,7 @@ class Area < ApplicationRecord
   has_many :projects, through: :areas_projects
   has_many :areas_initiatives, dependent: :destroy
   has_many :initiatives, through: :areas_initiatives
+  has_many :followers, as: :followable, dependent: :destroy
 
   has_many :areas_static_pages, dependent: :restrict_with_error
   has_many :static_pages, through: :areas_static_pages
@@ -135,3 +137,5 @@ class Area < ApplicationRecord
     end
   end
 end
+
+Area.include(SmartGroups::Concerns::ValueReferenceable)

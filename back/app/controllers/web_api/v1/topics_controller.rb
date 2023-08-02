@@ -23,13 +23,19 @@ class WebApi::V1::TopicsController < ApplicationController
     @topics = paginate @topics
 
     include_static_pages = params[:include]&.split(',')&.include?('static_pages')
+    user_followers = current_user&.follows
+      &.where(followable_type: 'Topic')
+      &.group_by do |follower|
+        [follower.followable_id, follower.followable_type]
+      end
+    user_followers ||= {}
 
     if include_static_pages
       render json: linked_json(
         @topics.includes(:static_pages),
         WebApi::V1::TopicSerializer,
         include: [:static_pages],
-        params: jsonapi_serializer_params(include_static_pages: true)
+        params: jsonapi_serializer_params(include_static_pages: true, user_followers: user_followers)
       )
       return
     end

@@ -69,6 +69,8 @@ describe SmartGroups::Rules::Follow do
       @idea1 = create(:idea)
       @idea2 = create(:idea)
       @initiative = create(:initiative)
+      @topic = create(:topic)
+      @area = create(:area)
       @user1, @user2, @user3, @user4, @user5, @user6, @user7 = create_list(:user, 7)
       create(:follower, followable: @project1, user: @user1)
       create(:follower, followable: @project1, user: @user2)
@@ -78,6 +80,8 @@ describe SmartGroups::Rules::Follow do
       create(:follower, followable: @idea1, user: @user4)
       create(:follower, followable: @idea2, user: @user5)
       create(:follower, followable: @initiative, user: @user6)
+      create(:follower, followable: @topic, user: @user5)
+      create(:follower, followable: @area, user: @user6)
     end
 
     let(:users_scope) { User.where(id: [@user1.id, @user2.id, @user3.id, @user4.id, @user5.id, @user6.id, @user7.id]) }
@@ -136,8 +140,32 @@ describe SmartGroups::Rules::Follow do
       expect(@ids).to contain_exactly @user6.id
     end
 
+    it "correctly filters on 'is_not_topic' predicate" do
+      rule = described_class.new('is_not_topic', @topic.id)
+      expect { @ids = rule.filter(users_scope).ids }.not_to exceed_query_limit(1)
+      expect(@ids).to contain_exactly @user1.id, @user2.id, @user3.id, @user4.id, @user6.id, @user7.id
+    end
+
+    it "correctly filters on 'is_one_of_topics' predicate" do
+      rule = described_class.new('is_one_of_topics', [@topic.id])
+      expect { @ids = rule.filter(users_scope).ids }.not_to exceed_query_limit(1)
+      expect(@ids).to contain_exactly @user5.id
+    end
+
     it "correctly filters on 'is_not_initiative' predicate" do
       rule = described_class.new('is_not_initiative', @initiative.id)
+      expect { @ids = rule.filter(users_scope).ids }.not_to exceed_query_limit(1)
+      expect(@ids).to contain_exactly @user1.id, @user2.id, @user3.id, @user4.id, @user5.id, @user7.id
+    end
+
+    it "correctly filters on 'is_one_of_areas' predicate" do
+      rule = described_class.new('is_one_of_areas', [@area.id])
+      expect { @ids = rule.filter(users_scope).ids }.not_to exceed_query_limit(1)
+      expect(@ids).to contain_exactly @user6.id
+    end
+
+    it "correctly filters on 'is_not_area' predicate" do
+      rule = described_class.new('is_not_area', @area.id)
       expect { @ids = rule.filter(users_scope).ids }.not_to exceed_query_limit(1)
       expect(@ids).to contain_exactly @user1.id, @user2.id, @user3.id, @user4.id, @user5.id, @user7.id
     end
@@ -177,6 +205,20 @@ describe SmartGroups::Rules::Follow do
         'en' => 'My initiative',
         'fr-FR' => 'Mon initiatif',
         'nl-NL' => 'Mijn initiatief'
+      })
+    end
+    let(:topic) do
+      create(:topic, title_multiloc: {
+        'en' => 'My topic',
+        'fr-FR' => 'Mon sujet',
+        'nl-NL' => 'Mijn onderwerp'
+      })
+    end
+    let(:area) do
+      create(:area, title_multiloc: {
+        'en' => 'My area',
+        'fr-FR' => 'Ma zone',
+        'nl-NL' => 'Mijn gebied'
       })
     end
 
@@ -248,6 +290,34 @@ describe SmartGroups::Rules::Follow do
         'value' => initiative.id
       })
     end
+    let(:follow_is_one_of_topics) do
+      described_class.from_json({
+        'ruleType' => 'follow',
+        'predicate' => 'is_one_of_topics',
+        'value' => [topic.id]
+      })
+    end
+    let(:follow_is_not_topic) do
+      described_class.from_json({
+        'ruleType' => 'follow',
+        'predicate' => 'is_not_topic',
+        'value' => topic.id
+      })
+    end
+    let(:follow_is_one_of_areas) do
+      described_class.from_json({
+        'ruleType' => 'follow',
+        'predicate' => 'is_one_of_areas',
+        'value' => [area.id]
+      })
+    end
+    let(:follow_is_not_area) do
+      described_class.from_json({
+        'ruleType' => 'follow',
+        'predicate' => 'is_not_area',
+        'value' => area.id
+      })
+    end
 
     it 'successfully translates different combinations of rules' do
       expect(follow_something.description_multiloc).to eq({
@@ -299,6 +369,26 @@ describe SmartGroups::Rules::Follow do
         'en' => 'Does not follow initiative My initiative',
         'fr-FR' => 'Ne suit pas la proposition Mon initiatif',
         'nl-NL' => 'Volgt dit voorstel niet Mijn initiatief'
+      })
+      expect(follow_is_one_of_topics.description_multiloc).to eq({
+        'en' => 'Follows one of the following topics My topic',
+        'fr-FR' => 'Suit une des sujets Mon sujet',
+        'nl-NL' => 'Volgt één van deze onderwerpen Mijn onderwerp'
+      })
+      expect(follow_is_not_topic.description_multiloc).to eq({
+        'en' => 'Does not follow topic My topic',
+        'fr-FR' => 'Ne suit pas le sujet Mon sujet',
+        'nl-NL' => 'Volgt dit onderwerp niet Mijn onderwerp'
+      })
+      expect(follow_is_one_of_areas.description_multiloc).to eq({
+        'en' => 'Follows one of the following areas My area',
+        'fr-FR' => 'Suit une des zones Ma zone',
+        'nl-NL' => 'Volgt één van deze gebieden Mijn gebied'
+      })
+      expect(follow_is_not_area.description_multiloc).to eq({
+        'en' => 'Does not follow area My area',
+        'fr-FR' => 'Ne suit pas la zone Ma zone',
+        'nl-NL' => 'Volgt dit gebied niet Mijn gebied'
       })
     end
   end
