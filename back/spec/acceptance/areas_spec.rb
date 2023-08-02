@@ -35,7 +35,27 @@ resource 'Areas' do
   end
 
   context 'when admin' do
-    before { admin_header_token }
+    before { header_token_for user }
+
+    let(:user) { create(:admin) }
+
+    get 'web_api/v1/areas/:id' do
+      let(:area) { create(:area) }
+      let!(:followers) do
+        [user, create(:user)].map do |user|
+          create(:follower, followable: area, user: user)
+        end
+      end
+      let(:id) { area.id }
+
+      example_request 'Get one area by ID' do
+        assert_status 200
+
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :attributes, :followers_count)).to eq 2
+        expect(json_response.dig(:data, :relationships, :user_follower, :data, :id)).to eq followers.first.id
+      end
+    end
 
     post 'web_api/v1/areas' do
       with_options scope: :area do

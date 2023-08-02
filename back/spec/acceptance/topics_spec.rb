@@ -68,14 +68,34 @@ resource 'Topics' do
     let(:topic) { create(:topic) }
     let(:id) { topic.id }
 
-    example_request 'Get one topic by id' do
-      assert_status(200)
-      expect(response_data[:id]).to eq(id)
+    example_request 'Get one topic by ID' do
+      assert_status 200
+      expect(response_data[:id]).to eq id
     end
   end
 
   context 'when admin' do
-    before { admin_header_token }
+    before { header_token_for user }
+
+    let(:user) { create(:admin) }
+
+    get 'web_api/v1/topics/:id' do
+      let(:topic) { create(:topic) }
+      let!(:followers) do
+        [user, create(:user)].map do |user|
+          create(:follower, followable: topic, user: user)
+        end
+      end
+      let(:id) { topic.id }
+
+      example_request 'Get one topic by ID' do
+        assert_status 200
+
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :attributes, :followers_count)).to eq 2
+        expect(json_response.dig(:data, :relationships, :user_follower, :data, :id)).to eq followers.first.id
+      end
+    end
 
     post 'web_api/v1/topics' do
       with_options scope: :topic do
