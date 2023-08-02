@@ -36,6 +36,14 @@ class WebApi::V1::InitiativeSerializer < WebApi::V1::BaseSerializer
     can_moderate?(object, params)
   }
 
+  attribute :cosponsorships do |object, params|
+    name_service = UserDisplayNameService.new(AppConfiguration.instance, current_user(params))
+
+    object&.cosponsors_initiatives&.map do |ci|
+      { user_id: ci.user_id, name: name_service.display_name!(ci.user), status: ci.status }
+    end
+  end
+
   has_many :initiative_images, serializer: WebApi::V1::ImageSerializer
   has_many :topics
   has_many :areas
