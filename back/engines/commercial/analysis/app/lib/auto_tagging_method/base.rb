@@ -10,6 +10,8 @@ module Analysis
       case auto_tagging_method
       when 'controversial'
         AutoTaggingMethod::Controversial.new(*params)
+      when 'platform_topic'
+        AutoTaggingMethod::PlatformTopic.new(*params)
       else
         raise ArgumentError, "Unsupported auto_tagging_method #{auto_tagging_method}"
       end
