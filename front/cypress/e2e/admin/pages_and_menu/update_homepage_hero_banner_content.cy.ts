@@ -124,6 +124,9 @@ describe('Admin: update Hero Banner content', () => {
   });
 
   it.only('uploads, crops, and displays banner image (fixed ratio)', () => {
+    cy.intercept('PATCH', '**/home_page').as('saveHomePage');
+    cy.setConsentAndAdminLoginCookies();
+
     cy.visit('admin/pages-menu/homepage/homepage-banner/');
     cy.get('[data-cy="e2e-fixed-ratio-layout-option"]').click();
     cy.get('[data-cy="e2e-remove-image-button"]').click();
