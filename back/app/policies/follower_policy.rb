@@ -17,15 +17,17 @@ class FollowerPolicy < ApplicationPolicy
       # don't expose private information. This is because the followable is
       # included. It's fine to allow show? in this case, as we don't include
       # the followable in this case.
-      filter_projects
+      filter_followables
       scope
     end
 
     private
 
-    def filter_projects
-      visible_projects = Pundit.policy_scope user, Project
-      @scope = scope.where(followable: visible_projects).or(scope.where.not(followable_type: 'Project'))
+    def filter_followables
+      [Project, ProjectFolders::Folder, Idea, Initiative].each do |followable_class|
+        visible_records = Pundit.policy_scope user, followable_class
+        @scope = scope.where(followable: visible_records).or(scope.where.not(followable_type: followable_class.name))
+      end
     end
   end
 
