@@ -33,6 +33,29 @@ describe SideFxCommentService do
       expectation.to enqueue_job(LogActivityJob).with(comment, 'mentioned', user, created_at, payload: { mentioned_user: u1.id }, project_id: project_id)
       expectation.to enqueue_job(LogActivityJob).with(comment, 'mentioned', user, created_at, payload: { mentioned_user: u2.id }, project_id: project_id)
     end
+
+    it 'creates a follower' do
+      initiative = create(:initiative)
+      comment = create(:comment, post: initiative)
+
+      expect do
+        service.after_create comment, user
+      end.to change(Follower, :count).from(0).to(1)
+
+      follower = Follower.first
+      expect(follower.user_id).to eq user.id
+      expect(follower.followable_id).to eq initiative.id
+    end
+
+    it 'does not create a follower if the user already follows the post' do
+      idea = create(:idea)
+      comment = create(:comment, post: idea)
+      create(:follower, followable: idea, user: user)
+
+      expect do
+        service.after_create comment, user
+      end.not_to change(Follower, :count)
+    end
   end
 
   describe 'after_update' do

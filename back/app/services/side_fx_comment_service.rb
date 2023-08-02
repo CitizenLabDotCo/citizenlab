@@ -13,6 +13,7 @@ class SideFxCommentService
   def after_create(comment, user)
     LogActivityJob.perform_later(comment, 'created', user_for_activity_on_anonymizable_item(comment, user), comment.created_at.to_i)
     notify_mentioned_users(comment, user)
+    Follower.find_or_create_by(followable: comment.post, user: user)
   end
 
   def before_update(comment, _user)
