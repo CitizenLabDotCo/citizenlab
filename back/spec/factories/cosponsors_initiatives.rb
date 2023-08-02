@@ -4,5 +4,6 @@ FactoryBot.define do
   factory :cosponsors_initiative do
     user
     initiative
+    status { 'pending' }
   end
 end
