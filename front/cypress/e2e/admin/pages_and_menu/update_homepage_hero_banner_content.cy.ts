@@ -123,7 +123,7 @@ describe('Admin: update Hero Banner content', () => {
     cy.get('[data-cy="e2e-signed-in-header-image"]').should('exist');
   });
 
-  it.only('uploads, crops, and displays banner image (fixed ratio)', () => {
+  it('uploads, crops, and displays banner image (fixed ratio)', () => {
     cy.intercept('PATCH', '**/home_page').as('saveHomePage');
     cy.setConsentAndAdminLoginCookies();
 
