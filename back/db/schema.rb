@@ -288,9 +288,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_01_141534) do
   end
 
   create_table "cosponsors_initiatives", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "status"
-    t.uuid "user_id"
-    t.uuid "initiative_id"
+    t.string "status", null: false
+    t.uuid "user_id", null: false
+    t.uuid "initiative_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["initiative_id"], name: "index_cosponsors_initiatives_on_initiative_id"

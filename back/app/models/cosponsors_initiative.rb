@@ -5,9 +5,9 @@
 # Table name: cosponsors_initiatives
 #
 #  id            :uuid             not null, primary key
-#  status        :string
-#  user_id       :uuid
-#  initiative_id :uuid
+#  status        :string           not null
+#  user_id       :uuid             not null
+#  initiative_id :uuid             not null
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #
