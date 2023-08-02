@@ -77,13 +77,10 @@ describe('Admin: update Hero Banner content', () => {
     );
   });
 
-  it('uploads, crops, and displays banner image', () => {
+  it('uploads, crops, and displays banner image (full width)', () => {
     cy.intercept('PATCH', '**/home_page').as('saveHomePage');
     cy.setConsentAndAdminLoginCookies();
 
-    /* ========================
-       Full-width banner layout
-    ========================= */
     cy.visit('admin/pages-menu/homepage/homepage-banner/');
     cy.get('[data-cy="e2e-full-width-banner-layout-option"]').click();
     cy.get('[data-cy="e2e-remove-image-button"]').click();
@@ -97,10 +94,12 @@ describe('Admin: update Hero Banner content', () => {
     cy.get('.e2e-submit-wrapper-button').contains('Success');
     // Should exist after saving
     cy.get('[data-cy="e2e-overlay-toggle"]').should('exist');
+  });
 
-    /* ==================
-       Two-row layout
-    ================== */
+  it('uploads, crops, and displays banner image (two-row layout)', () => {
+    cy.intercept('PATCH', '**/home_page').as('saveHomePage');
+    cy.setConsentAndAdminLoginCookies();
+
     cy.visit('admin/pages-menu/homepage/homepage-banner/');
     cy.get('[data-cy="e2e-two-row-layout-option"]').click();
     cy.get('[data-cy="e2e-remove-image-button"]').click();
@@ -122,10 +121,9 @@ describe('Admin: update Hero Banner content', () => {
     cy.visit('/');
     cy.get('[data-cy="e2e-signed-in-header-image-parent"]'); // without this line, the next one always passes
     cy.get('[data-cy="e2e-signed-in-header-image"]').should('exist');
+  });
 
-    /* ==================
-     Fixed-ratio layout
-    ================== */
+  it.only('uploads, crops, and displays banner image (fixed ratio)', () => {
     cy.visit('admin/pages-menu/homepage/homepage-banner/');
     cy.get('[data-cy="e2e-fixed-ratio-layout-option"]').click();
     cy.get('[data-cy="e2e-remove-image-button"]').click();
