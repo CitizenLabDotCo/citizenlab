@@ -57,6 +57,7 @@ class Initiative < ApplicationRecord
   has_one :initiative_status, through: :initiative_initiative_status
   has_many :text_images, as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :text_images
+  has_many :followers, as: :followable, dependent: :destroy
 
   belongs_to :assignee, class_name: 'User', optional: true
 
