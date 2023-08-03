@@ -15,7 +15,8 @@ module BulkImportIdeas
     DEFAULT_MAX_IDEAS = 500
     DATE_FORMAT_REGEX = /^(0[1-9]|[1|2][0-9]|3[0|1])-(0[1-9]|1[0-2])-([0-9]{4})$/ # After https://stackoverflow.com/a/47218282/3585671
 
-    def initialize
+    def initialize(locale: AppConfiguration.instance.settings('core', 'locales').first)
+      @locale = locale
       @all_projects = Project.all
       @all_topics = Topic.all
     end
@@ -145,10 +146,16 @@ module BulkImportIdeas
     end
 
     def add_author(idea_row, idea_attributes)
-      raise Error.new 'bulk_import_ideas_blank_email', row: idea_row[:id] if idea_row[:user_email].blank?
-
-      author = User.find_by_cimail idea_row[:user_email]
-      raise Error.new 'bulk_import_ideas_email_not_found', value: idea_row[:user_email], row: idea_row[:id] unless author
+      if idea_row[:user_email].blank?
+        author = User.new(unique_code: SecureRandom.uuid, locale: @locale)
+        author.save!
+      else
+        author = User.find_by_cimail idea_row[:user_email]
+        unless author
+          author = User.new(email: idea_row[:user_email], locale: @locale)
+          author.save!
+        end
+      end
 
       idea_attributes[:author] = author
     end
