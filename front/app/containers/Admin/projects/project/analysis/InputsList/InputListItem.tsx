@@ -29,7 +29,7 @@ interface Props {
 }
 
 const InputListItem = ({ input, onSelect, selected }: Props) => {
-  const { data: author } = useUserById(input.relationships.author.data.id);
+  const { data: author } = useUserById(input.relationships.author.data?.id);
 
   if (!input) return null;
 
@@ -40,7 +40,7 @@ const InputListItem = ({ input, onSelect, selected }: Props) => {
       <Box display="flex" alignItems="center" gap="8px" mb="5px">
         <Box visibility={selected ? 'visible' : 'hidden'}>✅</Box>
         {!title_multiloc ||
-          (isEmpty(title_multiloc) && (
+          (isEmpty(title_multiloc) && author && (
             <Box>
               <AvatarImageBubble
                 size={26}
@@ -50,6 +50,8 @@ const InputListItem = ({ input, onSelect, selected }: Props) => {
               {author?.data.attributes.last_name}
             </Box>
           ))}
+        {!title_multiloc ||
+          (isEmpty(title_multiloc) && !author && <Box>Anonymous input</Box>)}
         {title_multiloc && <T value={title_multiloc} />}
       </Box>
       <Taggings inputId={input.id} />
