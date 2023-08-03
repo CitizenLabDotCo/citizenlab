@@ -77,6 +77,7 @@ class SideFxIdeaService
 
   def after_publish(idea, user)
     add_autoreaction idea
+    create_followers idea, user
     log_activity_jobs_after_published idea, user
   end
 
@@ -97,6 +98,14 @@ class SideFxIdeaService
     url = Frontend::UrlService.new.model_to_url(idea)
     url_with_utm = "#{url}?utm_source=share_idea&utm_campaign=share_content&utm_medium=facebook"
     Seo::ScrapeFacebookJob.perform_later(url_with_utm)
+  end
+
+  def create_followers(idea, user)
+    Follower.find_or_create_by(followable: idea, user: user)
+    Follower.find_or_create_by(followable: idea.project, user: user)
+    return if !idea.project.in_folder?
+
+    Follower.find_or_create_by(followable: idea.project.folder, user: user)
   end
 end
 

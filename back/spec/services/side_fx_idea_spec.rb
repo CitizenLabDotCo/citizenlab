@@ -22,6 +22,18 @@ describe SideFxIdeaService do
       expect { service.after_create(idea, user) }
         .not_to enqueue_job(LogActivityJob)
     end
+
+    it 'creates a follower' do
+      project = create(:project)
+      folder = create(:project_folder, projects: [project])
+      idea = create(:idea, project: project)
+
+      expect do
+        service.after_create idea.reload, user
+      end.to change(Follower, :count).from(0).to(3)
+
+      expect(user.follows.pluck(:followable_id)).to contain_exactly idea.id, project.id, folder.id
+    end
   end
 
   describe 'after_update' do
