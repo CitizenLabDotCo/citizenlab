@@ -41,7 +41,7 @@ module Analysis
     def inputs
       scope = Idea.published
       if phase_id
-        scope.in_phase(phase_id)
+        scope.where(creation_phase_id: phase_id)
       elsif project.timeline?
         scope.where(project_id: project_id, creation_phase: nil)
       elsif project.continuous?
