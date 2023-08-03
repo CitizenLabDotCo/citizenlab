@@ -35,22 +35,22 @@ describe SideFxCommentService do
     end
 
     it 'creates a follower' do
-      initiative = create(:initiative)
-      comment = create(:comment, post: initiative)
+      project = create(:project)
+      folder = create(:project_folder, projects: [project])
+      idea = create(:idea, project: project)
+      comment = create(:comment, post: idea)
 
       expect do
-        service.after_create comment, user
-      end.to change(Follower, :count).from(0).to(1)
+        service.after_create comment.reload, user
+      end.to change(Follower, :count).from(0).to(3)
 
-      follower = Follower.first
-      expect(follower.user_id).to eq user.id
-      expect(follower.followable_id).to eq initiative.id
+      expect(user.follows.pluck(:followable_id)).to contain_exactly idea.id, project.id, folder.id
     end
 
     it 'does not create a follower if the user already follows the post' do
-      idea = create(:idea)
-      comment = create(:comment, post: idea)
-      create(:follower, followable: idea, user: user)
+      initiative = create(:initiative)
+      comment = create(:comment, post: initiative)
+      create(:follower, followable: initiative, user: user)
 
       expect do
         service.after_create comment, user

@@ -16,7 +16,6 @@ class WebApi::V1::FollowersController < ApplicationController
     follower = Follower.new followable_type: followable_type, followable_id: followable_id, user: current_user
     authorize follower
 
-    sidefx.before_create follower, current_user
     if follower.save
       sidefx.after_create follower, current_user
       render json: WebApi::V1::FollowerSerializer.new(follower, params: jsonapi_serializer_params).serializable_hash, status: :created
@@ -26,7 +25,6 @@ class WebApi::V1::FollowersController < ApplicationController
   end
 
   def destroy
-    sidefx.before_destroy follower, current_user
     if follower.destroy
       sidefx.after_destroy follower, current_user
       head :ok

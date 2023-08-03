@@ -12,6 +12,7 @@ class SideFxReactionService
 
     action = "#{reactable_type(reaction)}_#{reaction.mode == 'up' ? 'liked' : 'disliked'}" # TODO: Action name
     log_activity_job(reaction, action, current_user)
+    create_followers reaction, current_user
   end
 
   def before_destroy(reaction, current_user); end
@@ -37,5 +38,15 @@ class SideFxReactionService
       Time.now.to_i,
       payload: { reaction: serialized_reaction }
     )
+  end
+
+  def create_followers(reaction, user)
+    Follower.find_or_create_by(followable: reaction.reactable, user: user)
+    return if reaction.reactable_type != 'Idea'
+
+    Follower.find_or_create_by(followable: reaction.reactable.project, user: user)
+    return if !reaction.reactable.project.in_folder?
+
+    Follower.find_or_create_by(followable: reaction.reactable.project.folder, user: user)
   end
 end

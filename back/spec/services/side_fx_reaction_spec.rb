@@ -34,6 +34,29 @@ describe SideFxReactionService do
       service.after_create(reaction, user)
       expect(Activity.where(action: 'initiative_liked').first).to be_present
     end
+
+    it 'creates a follower' do
+      project = create(:project)
+      folder = create(:project_folder, projects: [project])
+      idea = create(:idea, project: project)
+      reaction = create(:reaction, reactable: idea)
+
+      expect do
+        service.after_create reaction.reload, user
+      end.to change(Follower, :count).from(0).to(3)
+
+      expect(user.follows.pluck(:followable_id)).to contain_exactly idea.id, project.id, folder.id
+    end
+
+    it 'does not create a follower if the user already follows the post' do
+      initiative = create(:initiative)
+      reaction = create(:reaction, reactable: initiative)
+      create(:follower, followable: initiative, user: user)
+
+      expect do
+        service.after_create reaction, user
+      end.not_to change(Follower, :count)
+    end
   end
 
   describe 'after_destroy' do
