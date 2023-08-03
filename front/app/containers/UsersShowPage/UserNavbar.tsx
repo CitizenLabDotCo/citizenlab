@@ -21,6 +21,7 @@ import useUserCommentsCount from 'api/user_comments_count/useUserCommentsCount';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useAuthUser from 'api/me/useAuthUser';
 
 const UserNavbarWrapper = styled.div`
   width: 100%;
@@ -117,6 +118,11 @@ const UserNavbar = memo<Props>(({ currentTab, selectTab, userId }) => {
   const isFollowingEnabled = useFeatureFlag({
     name: 'follow',
   });
+  const { data: authUser } = useAuthUser();
+  console.log(
+    'authUser?.data.attributes.followings_count',
+    authUser?.data.attributes.followings_count
+  );
 
   return (
     <UserNavbarWrapper role="tablist">
@@ -164,7 +170,12 @@ const UserNavbar = memo<Props>(({ currentTab, selectTab, userId }) => {
         >
           <Border aria-hidden />
           <TabIcon name="notification-outline" ariaHidden />
-          {commentsCount && <FormattedMessage {...messages.following} />}
+          <FormattedMessage
+            {...messages.followingWithCount}
+            values={{
+              followingCount: authUser?.data.attributes.followings_count,
+            }}
+          />
         </UserNavbarButton>
       )}
     </UserNavbarWrapper>

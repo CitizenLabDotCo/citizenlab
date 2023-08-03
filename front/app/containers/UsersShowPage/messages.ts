@@ -26,9 +26,9 @@ export default defineMessages({
     id: 'app.containers.UsersShowPage.commentsWithCount',
     defaultMessage: 'Comments ({commentsCount})',
   },
-  following: {
-    id: 'app.containers.UsersShowPage.following',
-    defaultMessage: 'Following',
+  followingWithCount: {
+    id: 'app.containers.UsersShowPage.followingWithCount',
+    defaultMessage: 'Following ({followingCount})',
   },
   ideas: {
     id: 'app.containers.UsersShowPage.ideas',
