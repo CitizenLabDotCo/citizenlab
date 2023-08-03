@@ -4,6 +4,7 @@ import ideasKeys from 'api/ideas/keys';
 import initiativesKeys from 'api/initiatives/keys';
 import projectFoldersKeys from 'api/project_folders/keys';
 import topicsKeys from 'api/topics/keys';
+import areasKeys from 'api/areas/keys';
 import followUnfollowKeys from './keys';
 import { FollowableType } from './types';
 
@@ -31,6 +32,9 @@ export const invalidateFollowQueries = (
       break;
     case 'topics':
       queryClient.invalidateQueries(topicsKeys.list({}));
+      break;
+    case 'areas':
+      queryClient.invalidateQueries(areasKeys.list({}));
       break;
     default:
       break;
