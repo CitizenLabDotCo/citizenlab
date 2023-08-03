@@ -34,7 +34,7 @@ const Topic = ({ topic }: Props) => {
   };
 
   return (
-    <Badge color={color} onClick={handleFollowOrUnfollow} key={topic.id}>
+    <Badge color={color} onClick={handleFollowOrUnfollow}>
       <Button
         buttonStyle="text"
         icon={iconName}

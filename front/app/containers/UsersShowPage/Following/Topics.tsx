@@ -9,7 +9,7 @@ const Topics = () => {
   return (
     <Box display="flex" gap="20px" width="100%" flexWrap="wrap">
       {topics?.data.map((topic) => (
-        <Topic topic={topic} />
+        <Topic topic={topic} key={topic.id} />
       ))}
     </Box>
   );

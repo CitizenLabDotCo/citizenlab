@@ -34,7 +34,7 @@ const Area = ({ area }: Props) => {
   };
 
   return (
-    <Badge color={color} onClick={handleFollowOrUnfollow} key={area.id}>
+    <Badge color={color} onClick={handleFollowOrUnfollow}>
       <Button
         buttonStyle="text"
         icon={iconName}

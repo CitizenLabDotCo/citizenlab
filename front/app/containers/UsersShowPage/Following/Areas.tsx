@@ -9,7 +9,7 @@ const Areas = () => {
   return (
     <Box display="flex" gap="20px" width="100%" flexWrap="wrap">
       {areas?.data.map((area) => (
-        <Area area={area} />
+        <Area area={area} key={area.id} />
       ))}
     </Box>
   );
