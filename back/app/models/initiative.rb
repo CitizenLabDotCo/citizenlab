@@ -114,9 +114,9 @@ class Initiative < ApplicationRecord
   end
 
   def expires_at(configuration = AppConfiguration.instance)
-    return nil unless published?
+    return nil unless voting_started_at
 
-    published_at + configuration.settings('initiatives', 'days_limit').days
+    voting_started_at + configuration.settings('initiatives', 'days_limit').days
   end
 
   def threshold_reached_at
