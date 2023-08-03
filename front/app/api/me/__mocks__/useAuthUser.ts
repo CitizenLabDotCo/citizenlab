@@ -25,6 +25,7 @@ export const mockAuthUserData: IUserData = {
     unread_notifications: 5,
     confirmation_required: false,
     verified: false,
+    followings_count: 2,
   },
 };
 
