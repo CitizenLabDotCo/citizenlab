@@ -9,7 +9,7 @@ resource 'Initiatives' do
   before do
     header 'Content-Type', 'application/json'
     @first_admin = create(:admin)
-    @initiatives = %w[published published draft published spam published published].map { |ps| create(:initiative, publication_status: ps, assignee: create(:admin)) }
+    @initiatives = %w[published published draft published published published].map { |ps| create(:initiative, publication_status: ps, assignee: create(:admin)) }
     @user = create(:user)
     header_token_for @user
   end
@@ -200,8 +200,8 @@ resource 'Initiatives' do
 
       expect(status).to eq(200)
       json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 5
-      expect(json_response[:data].map { |d| d.dig(:attributes, :title_multiloc, :en) }.sort).to match %w[Ghent Brussels Liège Meise Mons].sort
+      expect(json_response[:data].size).to eq 4
+      expect(json_response[:data].map { |d| d.dig(:attributes, :title_multiloc, :en) }.sort).to match %w[Brussels Liège Meise Mons].sort
     end
   end
 
