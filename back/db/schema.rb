@@ -697,6 +697,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_27_145653) do
     t.boolean "anonymous", default: false, null: false
     t.integer "internal_comments_count", default: 0, null: false
     t.boolean "editing_locked", default: false, null: false
+    t.datetime "voting_started_at"
     t.index "((to_tsvector('simple'::regconfig, COALESCE((title_multiloc)::text, ''::text)) || to_tsvector('simple'::regconfig, COALESCE((body_multiloc)::text, ''::text))))", name: "index_initiatives_search", using: :gin
     t.index ["author_id"], name: "index_initiatives_on_author_id"
     t.index ["location_point"], name: "index_initiatives_on_location_point", using: :gist
