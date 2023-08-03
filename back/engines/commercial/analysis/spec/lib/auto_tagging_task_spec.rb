@@ -134,4 +134,38 @@ RSpec.describe Analysis::AutoTaggingTask do
       expect(idea.tags).to match_array([nl_tag, fr_tag])
     end
   end
+
+  describe 'NlpTopic auto_tagging' do
+    it 'works' do
+      project = create(:project)
+      custom_form = create(:custom_form, :with_default_fields, participation_context: project)
+      analysis = create(:analysis, custom_fields: custom_form.custom_fields, project: project)
+      att = create(:auto_tagging_task, analysis: analysis, state: 'queued', auto_tagging_method: 'nlp_topic')
+      idea = create(:idea, project: project, title_multiloc: { en: 'Footbal is the greatest sport in the world' })
+
+      mock_nlp_client = double
+      expect(mock_nlp_client).to receive(:classification).and_return({
+        'labels' => %w[job space sport],
+        'scores' => [0.2258800745010376, 0.1938474327325821, 0.910988450609147549]
+      })
+      expect_any_instance_of(Analysis::AutoTaggingMethod::NLPTopic)
+        .to receive(:nlp_cloud_client_for)
+        .and_return(
+          mock_nlp_client
+        )
+
+      expect { att.execute }
+        .to change(Analysis::Tag, :count).from(0).to(1)
+
+      expect(att.reload).to have_attributes({
+        state: 'succeeded',
+        progress: nil
+      })
+
+      sport_tag = Analysis::Tag.find_by(analysis: analysis, name: 'sport')
+      expect(sport_tag).to be_present
+
+      expect(idea.tags).to eq([sport_tag])
+    end
+  end
 end

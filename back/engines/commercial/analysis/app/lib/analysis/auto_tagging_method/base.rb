@@ -16,6 +16,8 @@ module Analysis
         AutoTaggingMethod::Sentiment.new(*params)
       when 'language'
         AutoTaggingMethod::Language.new(*params)
+      when 'nlp_topic'
+        AutoTaggingMethod::NLPTopic.new(*params)
       else
         raise ArgumentError, "Unsupported auto_tagging_method #{auto_tagging_method}"
       end

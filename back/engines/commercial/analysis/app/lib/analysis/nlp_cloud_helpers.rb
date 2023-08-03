@@ -54,13 +54,13 @@ module Analysis
       LOCALE_MAPPING[cl_locale]
     end
 
-    def nlp_cloud_client_for(model, locale=nil)
+    def nlp_cloud_client_for(model, locale = nil, **options)
       @nlp_clients ||= {}
       lang = locale && cl_to_nlpc_locale(locale)
       @nlp_clients[locale] ||= NLPCloud::Client.new(
         model,
         ENV.fetch('NLPCLOUD_TOKEN'),
-        **(lang ? { lang: lang } : {})
+        **options.merge(lang ? { lang: lang } : {})
       )
     end
   end
