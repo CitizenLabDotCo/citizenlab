@@ -196,6 +196,16 @@ RSpec.describe User do
       expect(u1).to be_invalid
       expect(u1.errors.details[:email]).to eq [{ error: :domain_blacklisted, value: '039b1ee.netsolhost.com' }]
     end
+
+    it 'is required when a unique code is not present' do
+      u1 = build(:user, email: nil)
+      expect(u1).to be_invalid
+    end
+
+    it 'is not required when a unique code is present' do
+      u1 = build(:user, email: nil, unique_code: '1234abcd')
+      expect(u1).to be_valid
+    end
   end
 
   describe 'new_email' do
@@ -219,6 +229,13 @@ RSpec.describe User do
       expect(user).to be_invalid
       expect(user.errors.details[:new_email]).not_to be_present
       expect(user.errors.details[:email]).to eq [{ error: :taken, value: 'kOeN@citizenlab.co' }]
+    end
+  end
+
+  describe 'unique_code' do
+    it 'returns an error if it already exists' do
+      create(:user, unique_code: '1234abcd')
+      expect { create(:user, unique_code: '1234abcd') }.to raise_error(ActiveRecord::RecordNotUnique)
     end
   end
 
