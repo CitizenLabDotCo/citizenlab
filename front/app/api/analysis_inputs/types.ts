@@ -47,7 +47,7 @@ export interface IInputsData {
   };
   relationships: {
     author: {
-      data: IRelationship;
+      data: IRelationship | null;
     };
     idea: {
       data: IRelationship;
