@@ -6,9 +6,14 @@ import useProjectById from 'api/projects/useProjectById';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
+import Text from './formElements/Text';
 
 // router
 import { useParams, useSearchParams } from 'react-router-dom';
+
+// typings
+import { Layout } from '@jsonforms/core';
+import { Element } from './typings';
 
 const IdeaFormPrintable = () => {
   const { projectId } = useParams<{ projectId: string }>();
@@ -23,14 +28,30 @@ const IdeaFormPrintable = () => {
   });
 
   if (!uiSchema || !project) return null;
-  console.log(uiSchema);
 
   return (
     <>
-      {uiSchema.elements.map((page, i) => (
-        <Box key={i} w="100%" h="500px" m="100px">
-          {(page as any).elements.map((element) => (
-            <>bla</>
+      {uiSchema.elements.map((page: Layout, pageIndex) => (
+        <Box key={pageIndex} w="100%" h="500px" m="100px">
+          {page.elements.map((element: Element, elementIndex) => (
+            <Box key={`${pageIndex}-${elementIndex}`} mb="60px">
+              {element.options.input_type === 'select' && (
+                // <SingleChoice element={element} />
+                <>Select</>
+              )}
+
+              {element.options.input_type === 'multiselect' && (
+                <>Multi select</>
+              )}
+
+              {element.options.input_type === 'text' && (
+                <Text element={element} lines={1} />
+              )}
+
+              {element.options.input_type === 'multiline_text' && (
+                <Text element={element} lines={4} />
+              )}
+            </Box>
           ))}
         </Box>
       ))}
