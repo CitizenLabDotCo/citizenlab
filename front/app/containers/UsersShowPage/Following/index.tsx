@@ -5,6 +5,7 @@ import FilterSelector from 'components/FilterSelector';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import Topics from './Topics';
+import Areas from './Areas';
 import UserFollowingList from './UserFollowingList';
 
 type FollowableValue = FollowableObject | 'Topics' | 'Areas';
@@ -47,6 +48,7 @@ const Following = () => {
         />
       </Box>
       {selectedValue === 'Topics' && <Topics />}
+      {selectedValue === 'Areas' && <Areas />}
       {selectedValue !== 'Topics' && selectedValue !== 'Areas' && (
         <UserFollowingList value={selectedValue} />
       )}
