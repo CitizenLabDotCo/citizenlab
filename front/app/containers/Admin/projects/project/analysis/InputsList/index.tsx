@@ -1,10 +1,11 @@
 import React from 'react';
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import { Box, colors, Button } from '@citizenlab/cl2-component-library';
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
 import { useSearchParams, useParams } from 'react-router-dom';
-import Button from 'components/UI/Button';
 import { pick } from 'lodash-es';
 import InputListItem from './InputListItem';
+import { handleArraySearchParam } from '../util';
+import useAddAnalysisSummary from 'api/analysis_summaries/useAddAnalysisSummary';
 
 interface Props {
   onSelectInput: (inputId: string) => void;
@@ -28,15 +29,37 @@ const InputsList = ({ onSelectInput, selectedInputId }: Props) => {
     'comments_to',
   ]);
 
+  const selectedTags = handleArraySearchParam(searchParams, 'tag_ids');
+
   const { data, fetchNextPage, hasNextPage } = useInfiniteAnalysisInputs({
     analysisId,
-    queryParams: filters,
+    queryParams: { ...filters, tag_ids: selectedTags },
   });
+  const { mutate: addsummary, isLoading } = useAddAnalysisSummary();
 
   const inputs = data?.pages.map((page) => page.data).flat();
 
+  const handleSummaryCreate = () => {
+    addsummary({
+      analysisId,
+      filters: { ...filters, tag_ids: selectedTags },
+    });
+  };
+
   return (
     <Box bg={colors.white} w="100%" p="24px">
+      <Box display="flex" justifyContent="flex-end">
+        <Button
+          icon="pen"
+          size="s"
+          mb="12px"
+          buttonStyle="primary"
+          onClick={handleSummaryCreate}
+          disabled={isLoading}
+        >
+          Summarize
+        </Button>
+      </Box>
       {inputs?.map((input) => (
         <InputListItem
           key={input.id}

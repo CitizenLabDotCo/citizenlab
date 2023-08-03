@@ -7,6 +7,7 @@ front-secret.env
 .env-front
 
 back/engines/ee
+back/config/tenant_templates/private/*.yml
 node_modules
 
 *.DS_Store

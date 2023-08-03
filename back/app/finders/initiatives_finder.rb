@@ -17,6 +17,7 @@ class InitiativesFinder < ApplicationFinder
   end
 
   def assignee_condition(assignee_id)
+    assignee_id = nil if assignee_id == 'unassigned'
     where(assignee_id: assignee_id)
   end
 
