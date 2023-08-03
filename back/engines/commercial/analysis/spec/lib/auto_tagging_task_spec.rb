@@ -58,7 +58,7 @@ RSpec.describe Analysis::AutoTaggingTask do
       custom_form = create(:custom_form, :with_default_fields, participation_context: project)
       analysis = create(:analysis, custom_fields: custom_form.custom_fields, project: project)
       att = create(:auto_tagging_task, analysis: analysis, state: 'queued', auto_tagging_method: 'sentiment')
-      idea = create(:idea, project: project, title_multiloc: { 'nl-NL' => 'Heel erg slecht' })
+      idea = create(:idea, author: create(:user, locale: 'nl-NL'), project: project, title_multiloc: { 'nl-NL' => 'Heel erg slecht' })
 
       positive_tag = create(:tag, tag_type: 'sentiment', analysis: analysis, name: 'sentiment +')
 
@@ -70,7 +70,7 @@ RSpec.describe Analysis::AutoTaggingTask do
       })
       expect_any_instance_of(Analysis::AutoTaggingMethod::Sentiment)
         .to receive(:nlp_cloud_client_for)
-        .with(any, 'nl-NL')
+        .with(anything, 'nl-NL')
         .and_return(
           mock_nlp_client
         )
@@ -88,6 +88,50 @@ RSpec.describe Analysis::AutoTaggingTask do
       expect(positive_tag.reload).to be_present
 
       expect(idea.tags).to match_array([negative_tag])
+    end
+  end
+
+  describe 'Language detection auto_tagging' do
+    it 'works' do
+      project = create(:project)
+      custom_form = create(:custom_form, :with_default_fields, participation_context: project)
+      analysis = create(:analysis, custom_fields: custom_form.custom_fields, project: project)
+      att = create(:auto_tagging_task, analysis: analysis, state: 'queued', auto_tagging_method: 'language')
+      idea = create(:idea, project: project, title_multiloc: { en: 'Dit is niet echt in het Engels, mais en Nederlands' })
+      fr_tag = create(:tag, name: 'fr', tag_type: 'language', analysis: analysis)
+
+      mock_nlp_client = double
+      expect(mock_nlp_client).to receive(:langdetection).and_return({
+        'languages' => [
+          {
+            'nl' => 0.9142834369645996
+          },
+          {
+            'pl' => 0.1142834369645996
+          },
+          {
+            'fr' => 0.828571521669868466
+          }
+        ]
+      })
+      expect_any_instance_of(Analysis::AutoTaggingMethod::Language)
+        .to receive(:nlp_cloud_client_for)
+        .and_return(
+          mock_nlp_client
+        )
+
+      expect { att.execute }
+        .to change(Analysis::Tag, :count).from(1).to(2)
+
+      expect(att.reload).to have_attributes({
+        state: 'succeeded',
+        progress: nil
+      })
+
+      nl_tag = Analysis::Tag.find_by(analysis: analysis, name: 'nl')
+      expect(nl_tag).to be_present
+
+      expect(idea.tags).to match_array([nl_tag, fr_tag])
     end
   end
 end

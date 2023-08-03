@@ -66,8 +66,8 @@ module Analysis
 
     def sentiment_tags
       [
-        Tag.find_or_create_by!(name: POSITIVE_NAME, tag_type: 'sentiment', analysis: analysis),
-        Tag.find_or_create_by!(name: NEGATIVE_NAME, tag_type: 'sentiment', analysis: analysis)
+        Tag.find_or_create_by!(name: POSITIVE_NAME, tag_type: TAG_TYPE, analysis: analysis),
+        Tag.find_or_create_by!(name: NEGATIVE_NAME, tag_type: TAG_TYPE, analysis: analysis)
       ]
     end
   end

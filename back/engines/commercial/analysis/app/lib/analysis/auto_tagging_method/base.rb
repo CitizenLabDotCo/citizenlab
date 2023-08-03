@@ -14,6 +14,8 @@ module Analysis
         AutoTaggingMethod::PlatformTopic.new(*params)
       when 'sentiment'
         AutoTaggingMethod::Sentiment.new(*params)
+      when 'language'
+        AutoTaggingMethod::Language.new(*params)
       else
         raise ArgumentError, "Unsupported auto_tagging_method #{auto_tagging_method}"
       end
