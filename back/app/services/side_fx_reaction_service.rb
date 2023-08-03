@@ -41,12 +41,18 @@ class SideFxReactionService
   end
 
   def create_followers(reaction, user)
-    Follower.find_or_create_by(followable: reaction.reactable, user: user)
-    return if reaction.reactable_type != 'Idea'
+    post = case reaction.reactable_type
+    when 'Comment'
+      reaction.reactable.post
+    when 'Idea', 'Initiative'
+      reaction.reactable
+    end
+    Follower.find_or_create_by(followable: post, user: user)
+    return if !post.is_a? Idea
 
-    Follower.find_or_create_by(followable: reaction.reactable.project, user: user)
-    return if !reaction.reactable.project.in_folder?
+    Follower.find_or_create_by(followable: post.project, user: user)
+    return if !post.project.in_folder?
 
-    Follower.find_or_create_by(followable: reaction.reactable.project.folder, user: user)
+    Follower.find_or_create_by(followable: post.project.folder, user: user)
   end
 end
