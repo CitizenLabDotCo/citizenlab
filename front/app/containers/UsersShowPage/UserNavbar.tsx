@@ -119,10 +119,6 @@ const UserNavbar = memo<Props>(({ currentTab, selectTab, userId }) => {
     name: 'follow',
   });
   const { data: authUser } = useAuthUser();
-  console.log(
-    'authUser?.data.attributes.followings_count',
-    authUser?.data.attributes.followings_count
-  );
 
   return (
     <UserNavbarWrapper role="tablist">
