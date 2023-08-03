@@ -3,6 +3,7 @@ import projectsKeys from 'api/projects/keys';
 import ideasKeys from 'api/ideas/keys';
 import initiativesKeys from 'api/initiatives/keys';
 import projectFoldersKeys from 'api/project_folders/keys';
+import topicsKeys from 'api/topics/keys';
 import followUnfollowKeys from './keys';
 import { FollowableType } from './types';
 
@@ -27,6 +28,9 @@ export const invalidateFollowQueries = (
       queryClient.invalidateQueries(
         projectFoldersKeys.item({ slug: followableSlug })
       );
+      break;
+    case 'topics':
+      queryClient.invalidateQueries(topicsKeys.list({}));
       break;
     default:
       break;
