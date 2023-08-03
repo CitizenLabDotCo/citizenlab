@@ -19,10 +19,14 @@ export interface IAreaData {
     description_multiloc: Multiloc;
     ordering: number;
     static_page_ids: string[];
+    followers_count: number;
   };
   relationships: {
     static_pages: {
       data: IRelationship[];
+    };
+    user_follower: {
+      data: IRelationship | null;
     };
   };
 }
