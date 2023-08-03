@@ -15,6 +15,7 @@ export const topicsData: ITopicData[] = [
       code: 'custom',
       ordering: 1,
       static_page_ids: ['1'],
+      followers_count: 2,
     },
     relationships: {
       static_pages: {
@@ -24,6 +25,9 @@ export const topicsData: ITopicData[] = [
             id: '1',
           },
         ],
+      },
+      user_follower: {
+        data: null,
       },
     },
   },
@@ -41,6 +45,7 @@ export const topicsData: ITopicData[] = [
       code: 'custom',
       ordering: 2,
       static_page_ids: ['2'],
+      followers_count: 2,
     },
     relationships: {
       static_pages: {
@@ -50,6 +55,9 @@ export const topicsData: ITopicData[] = [
             id: '2',
           },
         ],
+      },
+      user_follower: {
+        data: null,
       },
     },
   },
