@@ -7,6 +7,7 @@ import topicsKeys from 'api/topics/keys';
 import areasKeys from 'api/areas/keys';
 import followUnfollowKeys from './keys';
 import { FollowableType } from './types';
+import meKeys from 'api/me/keys';
 
 export const invalidateFollowQueries = (
   queryClient: QueryClient,
@@ -15,6 +16,7 @@ export const invalidateFollowQueries = (
   followableSlug?: string
 ) => {
   queryClient.invalidateQueries({ queryKey: followUnfollowKeys.all() });
+  queryClient.invalidateQueries({ queryKey: meKeys.all() });
   switch (followableType) {
     case 'projects':
       queryClient.invalidateQueries(projectsKeys.item({ id: followableId }));
