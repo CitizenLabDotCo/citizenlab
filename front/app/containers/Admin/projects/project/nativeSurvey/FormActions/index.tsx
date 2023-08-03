@@ -19,10 +19,12 @@ import { Multiloc } from 'typings';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { saveSurveyToPDF } from './saveSurveyToPDF';
 
 // hooks
 import { useParams } from 'react-router-dom';
 import useFormSubmissionCount from 'hooks/useFormSubmissionCount';
+import useInputSchema from 'hooks/useInputSchema';
 
 // styles
 import { colors } from 'utils/styleUtils';
@@ -58,6 +60,8 @@ const FormActions = ({
     projectId,
     phaseId,
   });
+  const { uiSchema } = useInputSchema({ projectId, phaseId });
+
   const closeModal = () => {
     setShowDeleteModal(false);
   };
@@ -67,6 +71,11 @@ const FormActions = ({
   const deleteResults = async () => {
     await deleteFormResults(projectId, phaseId);
     closeModal();
+  };
+
+  const saveSurvey = () => {
+    if (!uiSchema) return;
+    saveSurveyToPDF(uiSchema as any);
   };
 
   if (!isNilOrError(submissionCount)) {
@@ -145,20 +154,20 @@ const FormActions = ({
             {formatMessage(messages.viewSurveyText2)}
           </Button>
         </Box>
-        <Box mt="12px" w="100%" display="flex">
-          <Button
-            linkTo={`/admin/survey/${projectId}/print${
-              phaseId ? `?phase_id=${phaseId}` : ''
-            }`}
-            icon="survey"
-            openLinkInNewTab
-            buttonStyle="cl-blue"
-            width="auto"
-            minWidth="312px"
-          >
-            {formatMessage(messages.printSurvey)}
-          </Button>
-        </Box>
+        {uiSchema && (
+          <Box mt="12px" w="100%" display="flex">
+            <Button
+              icon="survey"
+              openLinkInNewTab
+              buttonStyle="cl-blue"
+              width="auto"
+              minWidth="312px"
+              onClick={saveSurvey}
+            >
+              {formatMessage(messages.printSurvey)}
+            </Button>
+          </Box>
+        )}
         {haveSubmissionsComeIn && (
           <Box
             display="flex"
