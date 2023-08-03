@@ -1,0 +1,60 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "Schema for validating the filters associated with a summary",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "search": {
+      "type": "string"
+    },
+    "reactions_from": {
+      "type": "number"
+    },
+    "reactions_to": {
+      "type": "number"
+    },
+    "votes_from": {
+      "type": "number"
+    },
+    "votes_to": {
+      "type": "number"
+    },
+    "comments_from": {
+      "type": "number"
+    },
+    "comments_to": {
+      "type": "number"
+    },
+    "tag_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "patternProperties": {
+      "^author_custom_([a-f0-9-]+)_(from|to)$": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "^author_custom_([a-f0-9-]+)$": {
+        "type": "array",
+        "items": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

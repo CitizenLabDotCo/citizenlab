@@ -7,4 +7,10 @@ FactoryBot.define do
     started_at { Time.now }
     auto_tagging_method { 'controversial' }
   end
+
+  factory :summarization_task, class: 'Analysis::SummarizationTask' do
+    analysis
+    state { 'in_progress' }
+    started_at { Time.now }
+  end
 end
