@@ -1,34 +1,41 @@
 import React, { memo } from 'react';
-import { LatLngTuple } from 'leaflet';
 import Map from 'components/Map';
 import styled from 'styled-components';
+import { LatLngTuple } from 'leaflet';
 
 export interface Props {
   position: GeoJSON.Point;
   projectId?: string | null;
+  mapHeight?: string;
+  hideLegend?: boolean;
+  singleClickEnabled?: boolean;
 }
 
 const StyledMap = styled(Map)`
   .leaflet-container {
     cursor: pointer !important;
+    interactive: false !important;
   }
 `;
 
-const MapComponent = memo<Props>(({ position, projectId }) => {
-  const points: any = [{ ...position }];
-  const center = position.coordinates;
-  const centerLatLng = [center[1], center[0]] as LatLngTuple;
+const MapComponent = memo<Props>(
+  ({ position, projectId, mapHeight, hideLegend, singleClickEnabled }) => {
+    const center = position.coordinates;
+    const centerLatLng = [center[1], center[0]] as LatLngTuple;
 
-  return (
-    <StyledMap
-      points={points}
-      centerLatLng={centerLatLng}
-      projectId={projectId}
-      mapHeight="600px"
-      noMarkerClustering={false}
-      zoomLevel={20}
-    />
-  );
-});
+    return (
+      <StyledMap
+        points={[{ ...position, id: 'markerPosition' }]}
+        centerLatLng={centerLatLng}
+        projectId={projectId}
+        mapHeight={mapHeight ? mapHeight : '600px'}
+        noMarkerClustering={false}
+        zoomLevel={20}
+        hideLegend={hideLegend}
+        singleClickEnabled={singleClickEnabled}
+      />
+    );
+  }
+);
 
 export default MapComponent;

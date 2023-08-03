@@ -36,7 +36,10 @@ const InformationSectionMobile = ({ event }: Props) => {
             >
               <EventDateStylized event={event} />
               <Box borderBottom={`solid 1px ${colors.divider}`}>
-                <Location location={event.attributes.location_description} />
+                <Location
+                  location={event.attributes.location_description}
+                  event={event}
+                />
               </Box>
               <FullEventTime event={event} />
             </Box>

@@ -253,6 +253,8 @@ const AdminProjectEventEdit = ({ params }: Props) => {
   };
 
   const handleOnSubmit = async (e) => {
+    const locationPointChanged = locationPoint !== remoteLocationPoint;
+
     e.preventDefault();
     if (!isNilOrError(params.projectId)) {
       const { projectId } = params;
@@ -267,7 +269,7 @@ const AdminProjectEventEdit = ({ params }: Props) => {
         }
 
         // non-file input fields have changed
-        if (!isEmpty(attributeDiff)) {
+        if (!isEmpty(attributeDiff) || locationPointChanged) {
           // event already exists (in the state)
           if (event) {
             updateEvent(
@@ -357,13 +359,16 @@ const AdminProjectEventEdit = ({ params }: Props) => {
             </SectionField>
 
             <SectionField className="fullWidth">
-              <QuillMultilocWithLocaleSwitcher
-                id="description"
-                label={descriptionLabel}
-                valueMultiloc={eventAttrs.description_multiloc}
-                onChange={handleDescriptionMultilocOnChange}
-                withCTAButton
-              />
+              <Box width="860px">
+                <QuillMultilocWithLocaleSwitcher
+                  id="description"
+                  label={descriptionLabel}
+                  valueMultiloc={eventAttrs.description_multiloc}
+                  onChange={handleDescriptionMultilocOnChange}
+                  withCTAButton
+                />
+              </Box>
+
               <ErrorComponent apiErrors={get(errors, 'description_multiloc')} />
             </SectionField>
 
@@ -407,30 +412,18 @@ const AdminProjectEventEdit = ({ params }: Props) => {
             >
               {formatMessage(messages.eventLocation)}
             </Title>
-            <SectionField>
-              <Box maxWidth="400px">
-                <InputMultilocWithLocaleSwitcher
-                  id="event-location"
-                  label={formatMessage(messages.eventLocationLabel)}
-                  type="text"
-                  valueMultiloc={eventAttrs.location_multiloc}
-                  onChange={handleLocationMultilocOnChange}
-                  labelTooltipText={formatMessage(
-                    messages.eventLocationTooltip
-                  )}
-                  placeholder={formatMessage(messages.eventLocationPlaceholder)}
-                />
-              </Box>
-              <ErrorComponent apiErrors={get(errors, 'title_multiloc')} />
-            </SectionField>
+
             <SectionField>
               <Box zIndex="1000" maxWidth="400px">
-                <Label>
-                  {formatMessage(messages.streetAddressLabel)}
-                  <IconTooltip
-                    content={formatMessage(messages.streetAddressTooltip)}
-                  />
-                </Label>
+                <Box mb="8px">
+                  <Label>
+                    {formatMessage(messages.addressOneLabel)}
+                    <IconTooltip
+                      content={formatMessage(messages.addressOneTooltip)}
+                    />
+                  </Label>
+                </Box>
+
                 <LocationInput
                   id="event-location-picker"
                   className="e2e-event-location-input"
@@ -441,19 +434,45 @@ const AdminProjectEventEdit = ({ params }: Props) => {
                   }}
                   placeholder={formatMessage(messages.searchForLocation)}
                 />
-                <Button
-                  mt="8px"
-                  icon="position"
-                  onClick={() => {
-                    setMapModalVisible(true);
-                  }}
-                >
-                  {formatMessage(messages.refineOnMap)}
-                </Button>
+                <ErrorComponent
+                  apiErrors={get(errors, 'location_description')}
+                />
+                <Box my="20px">
+                  <InputMultilocWithLocaleSwitcher
+                    id="event-location"
+                    label={formatMessage(messages.addressTwoLabel)}
+                    type="text"
+                    valueMultiloc={eventAttrs.location_multiloc}
+                    onChange={handleLocationMultilocOnChange}
+                    labelTooltipText={formatMessage(messages.addressTwoTooltip)}
+                    placeholder={formatMessage(messages.addressTwoPlaceholder)}
+                  />
+                </Box>
+                {locationPoint && (
+                  <Box maxWidth="400px">
+                    <Box>
+                      <Map
+                        position={locationPoint}
+                        projectId={params.projectId}
+                        mapHeight="160px"
+                        hideLegend={true}
+                        singleClickEnabled={false}
+                      />
+                    </Box>
+                    <Button
+                      mt="8px"
+                      icon="position"
+                      buttonStyle="secondary"
+                      onClick={() => {
+                        setMapModalVisible(true);
+                      }}
+                    >
+                      {formatMessage(messages.refineOnMap)}
+                    </Button>
+                  </Box>
+                )}
               </Box>
-              <ErrorComponent apiErrors={get(errors, 'location_description')} />
             </SectionField>
-
             <Title
               variant="h4"
               fontWeight="bold"
@@ -500,7 +519,7 @@ const AdminProjectEventEdit = ({ params }: Props) => {
           }}
           className="e2e-comment-deletion-modal"
           header={formatMessage(messages.refineLocationCoordinates)}
-          width={'900px'}
+          width={'800px'}
         >
           <Box p="16px">
             {locationPoint && (
@@ -508,7 +527,11 @@ const AdminProjectEventEdit = ({ params }: Props) => {
                 <Label>
                   <FormattedMessage {...messages.mapSelectionLabel} />
                 </Label>
-                <Map position={locationPoint} projectId={params.projectId} />
+                <Map
+                  position={locationPoint}
+                  projectId={params.projectId}
+                  mapHeight="400px"
+                />
               </Box>
             )}
           </Box>

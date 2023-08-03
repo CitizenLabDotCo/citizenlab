@@ -89,13 +89,13 @@ export default defineMessages({
     defaultMessage:
       'Refine where your event location marker is shown by clicking on the map:',
   },
-  eventLocationLabel: {
-    id: 'app.containers.AdminPage.ProjectEvents.eventLocationLabel',
-    defaultMessage: 'Location',
+  addressOneLabel: {
+    id: 'app.containers.AdminPage.ProjectEvents.addressOneLabel',
+    defaultMessage: 'Address 1',
   },
-  streetAddressLabel: {
-    id: 'app.containers.AdminPage.ProjectEvents.streetAddressLabel',
-    defaultMessage: 'Street address',
+  addressTwoLabel: {
+    id: 'app.containers.AdminPage.ProjectEvents.addressTwoLabel',
+    defaultMessage: 'Address 2',
   },
   eventDates: {
     id: 'app.containers.AdminPage.ProjectEvents.eventDates',
@@ -105,9 +105,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEvents.eventLocation',
     defaultMessage: 'Event Location',
   },
-  eventLocationPlaceholder: {
-    id: 'app.containers.AdminPage.ProjectEvents.eventLocationPlaceholder',
-    defaultMessage: 'Pacheco Building, Floor 3 Door 2',
+  addressTwoPlaceholder: {
+    id: 'app.containers.AdminPage.ProjectEvents.addressTwoPlaceholder',
+    defaultMessage: 'E.g. Apt, Suite, Building',
   },
   additionalInformation: {
     id: 'app.containers.AdminPage.ProjectEvents.additionalInformation',
@@ -129,14 +129,13 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEvents.searchForLocationOrClick',
     defaultMessage: 'Refine map location',
   },
-  streetAddressTooltip: {
-    id: 'app.containers.AdminPage.ProjectEvents.streetAddressTooltip',
-    defaultMessage:
-      'The street address will be used when displaying the location on the map. If the event location is empty, the street address will also be shown to the user as the event location.',
+  addressOneTooltip: {
+    id: 'app.containers.AdminPage.ProjectEvents.addressOneTooltip',
+    defaultMessage: 'Street address of the event location',
   },
-  eventLocationTooltip: {
-    id: 'app.containers.AdminPage.ProjectEvents.eventLocationTooltip',
+  addressTwoTooltip: {
+    id: 'app.containers.AdminPage.ProjectEvents.addressTwoTooltip',
     defaultMessage:
-      'The event location will be used when displaying the location to the user. If you would like to just display the street address, you may leave this field empty.',
+      'Additional address information that could help identify the location such as a building name, floor number, etc.',
   },
 });
