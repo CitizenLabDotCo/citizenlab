@@ -65,6 +65,7 @@ class SideFxInitiativeService
   def after_publish(initiative, user)
     add_autoreaction initiative
     log_activity_jobs_after_published initiative, user
+    create_followers initiative, user
   end
 
   def set_assignee(initiative)
@@ -82,6 +83,10 @@ class SideFxInitiativeService
 
   def log_activity_jobs_after_published(initiative, user)
     LogActivityJob.set(wait: 20.seconds).perform_later(initiative, 'published', user_for_activity_on_anonymizable_item(initiative, user), initiative.published_at.to_i)
+  end
+
+  def create_followers(initiative, user)
+    Follower.find_or_create_by(followable: initiative, user: user)
   end
 end
 
