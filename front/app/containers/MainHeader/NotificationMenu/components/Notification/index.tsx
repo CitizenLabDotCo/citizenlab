@@ -12,6 +12,7 @@ import IdeaAssignedToYouNotification from '../IdeaAssignedToYouNotification';
 import IdeaMarkedAsSpamNotification from '../IdeaMarkedAsSpamNotification';
 import InitiativeAssignedToYouNotification from '../InitiativeAssignedToYouNotification';
 import InitiativeMarkedAsSpamNotification from '../InitiativeMarkedAsSpamNotification';
+import InitiativeResubmittedForReviewNotification from '../InitiativeResubmittedForReviewNotification';
 import InviteAcceptedNotification from '../InviteAcceptedNotification';
 import MentionInCommentNotification from '../MentionInCommentNotification';
 import InternalCommentNotification from '../InternalCommentNotification';
@@ -50,6 +51,7 @@ import {
   IIdeaMarkedAsSpamNotificationData,
   IInitiativeAssignedToYouNotificationData,
   IInitiativeMarkedAsSpamNotificationData,
+  IInitiativeResubmittedForReviewNotificationData,
   IInviteAcceptedNotificationData,
   IMentionInCommentNotificationData,
   IInternalCommentNotificationData,
@@ -153,6 +155,14 @@ const Notification = ({ notification }: Props) => {
       return (
         <InitiativeMarkedAsSpamNotification
           notification={notification as IInitiativeMarkedAsSpamNotificationData}
+        />
+      );
+    case 'initiative_resubmitted_for_review':
+      return (
+        <InitiativeResubmittedForReviewNotification
+          notification={
+            notification as IInitiativeResubmittedForReviewNotificationData
+          }
         />
       );
     case 'invite_accepted':

@@ -90,17 +90,21 @@ class InitiativeStatusService
         status_id_to = InitiativeStatus.find_by(code: status_code_to)&.id
         next unless status_id_to
 
-        changes = InitiativeStatusChange.create!(initiatives.ids.map do |id|
-          {
-            initiative_id: id,
-            initiative_status_id: status_id_to
-          }
-        end)
-        # Log the status change activities.
-        InitiativeStatusChange.where(id: changes.map(&:id)).includes(:initiative, :initiative_status).each do |change|
-          log_status_change change
-        end
+        transition!(initiatives.ids, status_id_to)
       end
+    end
+  end
+
+  def transition!(initiative_ids, status_id_to)
+    changes = InitiativeStatusChange.create!(initiative_ids.map do |id|
+      {
+        initiative_id: id,
+        initiative_status_id: status_id_to
+      }
+    end)
+    # Log the status change activities.
+    InitiativeStatusChange.where(id: changes.map(&:id)).includes(:initiative, :initiative_status).each do |change|
+      log_status_change change
     end
   end
 

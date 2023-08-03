@@ -26,6 +26,7 @@ class SideFxInitiativeService
   end
 
   def after_update(initiative, user)
+    transition_to_review_pending_if_required(initiative, user)
     remove_user_from_past_activities_with_item(initiative, user) if initiative.anonymous_previously_changed?(to: true)
 
     if initiative.publication_status_previous_change == %w[draft published]
@@ -57,6 +58,13 @@ class SideFxInitiativeService
   end
 
   private
+
+  def transition_to_review_pending_if_required(initiative, user)
+    if initiative.initiative_status.code == 'rejected_on_review' && user == initiative.author
+      status_id_to = InitiativeStatus.find_by(code: 'review_pending')&.id
+      InitiativeStatusService.new.transition!([initiative.id], status_id_to)
+    end
+  end
 
   def before_publish(initiative, _user)
     set_assignee initiative
