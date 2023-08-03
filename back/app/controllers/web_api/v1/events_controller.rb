@@ -7,7 +7,15 @@ class WebApi::V1::EventsController < ApplicationController
   def index
     events = EventsFinder.new(params, scope: policy_scope(Event), current_user: current_user).find_records
     events = paginate SortByParamsService.new.sort_events(events, params)
-    render json: linked_json(events, WebApi::V1::EventSerializer, params: jsonapi_serializer_params)
+
+    serializer_params = jsonapi_serializer_params
+      .merge(current_user_attendances: current_user_attendances(events))
+
+    render json: linked_json(
+      events,
+      WebApi::V1::EventSerializer,
+      params: serializer_params
+    )
   end
 
   def show
@@ -53,6 +61,14 @@ class WebApi::V1::EventsController < ApplicationController
   end
 
   private
+
+  def current_user_attendances(events)
+    return {} unless current_user
+
+    Events::Attendance
+      .where(event: events, attendee: current_user)
+      .index_by(&:event_id)
+  end
 
   def set_event
     @event = Event.find(params[:id])

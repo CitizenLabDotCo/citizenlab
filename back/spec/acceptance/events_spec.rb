@@ -53,6 +53,39 @@ resource 'Events' do
       example_request 'List all events' do
         assert_status 200
         expect(response_data.size).to eq 4
+
+        user_attendances = response_data.map do |event_data|
+          event_data.dig(:relationships, :user_attendance, :data)
+        end
+        # User attendances are always nil for visitors as they cannot register to
+        # events.
+        expect(user_attendances).to all(be_nil)
+      end
+    end
+
+    context 'when the user registered to some events' do
+      before { header_token_for(user) }
+
+      let(:user) { create(:user) }
+      let!(:user_attendances) do
+        @events.map { |event| create(:event_attendance, event: event, attendee: user) }
+      end
+
+      example_request <<~DESC, document: false do
+        user_attendance relationships reference the user attendances
+      DESC
+        expected_attendance_ids = user_attendances.to_h do |attendance|
+          [attendance.event_id, attendance.id]
+        end
+
+        actual_attendance_ids = response_data.to_h do |event_data|
+          [
+            event_data[:id],
+            event_data.dig(:relationships, :user_attendance, :data, :id)
+          ]
+        end.compact
+
+        expect(actual_attendance_ids).to eq expected_attendance_ids
       end
     end
 
@@ -82,12 +115,30 @@ resource 'Events' do
   end
 
   get 'web_api/v1/events/:id' do
-    let(:id) { @events.first.id }
+    let(:event) { @events.first }
+    let(:id) { event.id }
 
     example_request 'Get one event by id' do
       expect(status).to eq 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :id)).to eq @events.first.id
+    end
+
+    context 'when the user registered to the event' do
+      before { header_token_for(user) }
+
+      let(:user) { create(:user) }
+      let!(:user_attendance) do
+        create(:event_attendance, event: event, attendee: user)
+      end
+
+      example_request <<~DESC, document: false do
+        user_attendance relationship references the user attendance
+      DESC
+        expect(
+          response_data.dig(:relationships, :user_attendance, :data, :id)
+        ).to eq user_attendance.id
+      end
     end
   end
 
