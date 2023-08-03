@@ -13,10 +13,13 @@
 #  end_at               :datetime
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
+#  location_point       :geography        point, 4326
+#  location_description :string
 #
 # Indexes
 #
-#  index_events_on_project_id  (project_id)
+#  index_events_on_location_point  (location_point) USING gist
+#  index_events_on_project_id      (project_id)
 #
 # Foreign Keys
 #
