@@ -401,12 +401,10 @@ const AdminProjectEventEdit = ({ params }: Props) => {
                 <Label>
                   <FormattedMessage {...messages.datesEndLabel} />
                 </Label>
-                <Box zIndex="1000">
-                  <DateTimePicker
-                    value={eventAttrs.end_at}
-                    onChange={handleDateTimePickerOnChange('end_at')}
-                  />
-                </Box>
+                <DateTimePicker
+                  value={eventAttrs.end_at}
+                  onChange={handleDateTimePickerOnChange('end_at')}
+                />
 
                 <ErrorComponent apiErrors={get(errors, 'end_at')} />
               </SectionField>
