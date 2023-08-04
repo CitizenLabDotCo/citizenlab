@@ -40,16 +40,16 @@ class ParticipantsService
   def initiatives_participants(initiatives)
     participants = User.none
     # Posting
-    participants = participants.or(User.where(id: initiatives.select(:author_id)))
+    participants = participants.or(User.where(id: initiatives.pluck(:author_id)))
     # Commenting
     comments = Comment.where(post: initiatives)
-    participants = participants.or(User.where(id: comments.select(:author_id)))
+    participants = participants.or(User.where(id: comments.pluck(:author_id)))
     # Initiative reacting
     reactions = Reaction.where(reactable: initiatives)
-    participants = participants.or(User.where(id: reactions.select(:user_id)))
+    participants = participants.or(User.where(id: reactions.pluck(:user_id)))
     # Comment reacting
     reactions = Reaction.where(reactable: comments)
-    participants.or(User.where(id: reactions.select(:user_id)))
+    participants.or(User.where(id: reactions.pluck(:user_id)))
   end
 
   def ideas_participants(ideas, options = {})
@@ -63,7 +63,7 @@ class ParticipantsService
       else
         ideas
       end
-      participants = participants.or(User.where(id: ideas_since.select(:author_id)))
+      participants = participants.or(User.where(id: ideas_since.pluck(:author_id)))
     end
     # Commenting
     comments = Comment.where(post_id: ideas)
@@ -73,19 +73,19 @@ class ParticipantsService
       else
         comments
       end
-      participants = participants.or(User.where(id: comments_since.select(:author_id)))
+      participants = participants.or(User.where(id: comments_since.pluck(:author_id)))
     end
     # Idea reacting
     if actions.include? :idea_reacting
       reactions = Reaction.where(reactable_id: ideas)
       reactions = reactions.where('created_at::date >= (?)::date', since) if since
-      participants = participants.or(User.where(id: reactions.select(:user_id)))
+      participants = participants.or(User.where(id: reactions.pluck(:user_id)))
     end
     # Comment reacting
     if actions.include? :comment_reacting
       reactions = Reaction.where(reactable_id: comments)
       reactions = reactions.where('created_at::date >= (?)::date', since) if since
-      participants = participants.or(User.where(id: reactions.select(:user_id)))
+      participants = participants.or(User.where(id: reactions.pluck(:user_id)))
     end
     participants
   end
