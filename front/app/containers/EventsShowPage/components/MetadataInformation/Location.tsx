@@ -32,18 +32,33 @@ const Location = ({ location, event }: Props) => {
           {/* <Text color="coolGrey600" fontSize="s">
             {location}
           </Text> */}
-          <Button
-            fontSize="s"
-            buttonStyle="text"
-            onClick={() => {
-              setMapModalVisible(true);
-            }}
-            pl="0px"
-            pt="12px"
-            style={{ justifyContent: 'left' }}
-          >
-            <span style={{ textDecoration: 'underline' }}>{location}</span>
-          </Button>
+          <Box display="flex">
+            <Button
+              fontSize="s"
+              buttonStyle="text"
+              onClick={() => {
+                setMapModalVisible(true);
+              }}
+              pl="0px"
+              pt="12px"
+              style={{ justifyContent: 'left', textAlign: 'left' }}
+            >
+              <Box
+                maxWidth="200px" // TODO : Code cleanup in this file
+                display="flex"
+                flexWrap="wrap"
+                ml="0px"
+                pl="0px"
+                style={{
+                  textDecoration: 'underline',
+                  justifyContent: 'left',
+                  textAlign: 'left',
+                }}
+              >
+                {location.slice(0, location.indexOf(','))}
+              </Box>
+            </Button>
+          </Box>
         </Content>
 
         <Modal

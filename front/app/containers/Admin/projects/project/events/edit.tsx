@@ -124,6 +124,9 @@ const AdminProjectEventEdit = ({ params }: Props) => {
 
       return () => clearTimeout(delayDebounceFn);
     }
+    if (locationDescription === '') {
+      setLocationPoint(undefined);
+    }
     return;
   }, [locationDescription, attributeDiff]);
 
