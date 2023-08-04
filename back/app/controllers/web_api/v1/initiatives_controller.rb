@@ -169,7 +169,6 @@ class WebApi::V1::InitiativesController < ApplicationController
   def destroy
     service = SideFxInitiativeService.new
 
-    service.before_destroy(@initiative, current_user)
     initiative = @initiative.destroy
     if initiative.destroyed?
       service.after_destroy(initiative, current_user)

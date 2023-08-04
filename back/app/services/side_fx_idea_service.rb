@@ -62,8 +62,6 @@ class SideFxIdeaService
     end
   end
 
-  def before_destroy(idea, _user); end
-
   def after_destroy(frozen_idea, user)
     serialized_idea = clean_time_attributes(frozen_idea.attributes)
     serialized_idea['location_point'] = serialized_idea['location_point'].to_s

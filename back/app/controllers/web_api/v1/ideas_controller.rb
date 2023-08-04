@@ -243,7 +243,6 @@ class WebApi::V1::IdeasController < ApplicationController
   def destroy
     input = Idea.find params[:id]
     authorize input
-    service.before_destroy(input, current_user)
     input = input.destroy
     if input.destroyed?
       service.after_destroy(input, current_user)

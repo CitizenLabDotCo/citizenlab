@@ -48,8 +48,6 @@ class SideFxInitiativeService
     LogActivityJob.perform_later(initiative, 'changed_body', user_for_activity_on_anonymizable_item(initiative, user), initiative.updated_at.to_i, payload: { change: initiative.body_multiloc_previous_change })
   end
 
-  def before_destroy(initiative, user); end
-
   def after_destroy(frozen_initiative, user)
     serialized_initiative = clean_time_attributes(frozen_initiative.attributes)
     serialized_initiative['location_point'] = serialized_initiative['location_point'].to_s

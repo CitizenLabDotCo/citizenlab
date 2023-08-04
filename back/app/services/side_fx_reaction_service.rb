@@ -3,8 +3,6 @@
 class SideFxReactionService
   include SideFxHelper
 
-  def before_create(reaction, current_user); end
-
   def after_create(reaction, current_user)
     if reaction.reactable_type == 'Initiative'
       AutomatedTransitionJob.perform_now
@@ -14,8 +12,6 @@ class SideFxReactionService
     log_activity_job(reaction, action, current_user)
     create_followers reaction, current_user
   end
-
-  def before_destroy(reaction, current_user); end
 
   def after_destroy(reaction, current_user)
     action = "canceled_#{reactable_type(reaction)}_#{reaction.mode == 'up' ? 'liked' : 'disliked'}" # TODO: Action name
