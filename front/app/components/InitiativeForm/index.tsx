@@ -39,6 +39,9 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 import { IInitiativeCosponsor } from 'api/initiatives/types';
 
+// hooks
+import useInitiativeCosponsorsRequired from 'hooks/useInitiativeCosponsorsRequired';
+
 const Form = styled.form`
   display: flex;
   flex-direction: column;
@@ -145,6 +148,8 @@ const InitiativeForm = ({
   const titleMinLength = 10;
   const titleMaxLength = 72;
   const bodyMinLength = process.env.NODE_ENV === 'development' ? 10 : 30;
+
+  const initiativeCosponsorsRequired = useInitiativeCosponsorsRequired();
 
   useEffect(() => {
     const requiredFields = ['title_multiloc', 'body_multiloc', 'topic_ids'];
@@ -413,24 +418,27 @@ const InitiativeForm = ({
             </SectionField>
           )}
         </StyledFormSection>
-        <StyledFormSection>
-          <FormSectionTitle message={messages.cosponsorSectionTitle} />
-          <Text>
-            {formatMessage(messages.cosponsorSubtextBeforeInput, {
-              cosponsorsNumber: 1,
-            })}
-          </Text>
-          <MentionsTextArea
-            name="cosponsors"
-            rows={1}
-            value={cosponsorsText}
-            onChange={setCosponsorsText}
-            onChangeMentions={onChangeCosponsors}
-            trigger=""
-            onBlur={onBlur('cosponsors')}
-          />
-          <Text>{formatMessage(messages.cosponsorSubtextAfterInput)}</Text>
-        </StyledFormSection>
+        {initiativeCosponsorsRequired && (
+          <StyledFormSection>
+            <FormSectionTitle message={messages.cosponsorSectionTitle} />
+            <Text>
+              {formatMessage(messages.cosponsorSubtextBeforeInput, {
+                cosponsorsNumber: 1,
+              })}
+            </Text>
+            <MentionsTextArea
+              name="cosponsors"
+              rows={1}
+              value={cosponsorsText}
+              onChange={setCosponsorsText}
+              onChangeMentions={onChangeCosponsors}
+              trigger=""
+              onBlur={onBlur('cosponsors')}
+              idAttribute="id"
+            />
+            <Text>{formatMessage(messages.cosponsorSubtextAfterInput)}</Text>
+          </StyledFormSection>
+        )}
         <StyledFormSection>
           <FormSectionTitle message={messages.formAttachmentsSectionTitle} />
           <SectionField id="e2e-iniatiative-banner-dropzone">

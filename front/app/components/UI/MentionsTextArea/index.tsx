@@ -80,6 +80,7 @@ export interface Props {
   children?: React.ReactNode;
   roles?: MentionRoles[];
   trigger?: string;
+  idAttribute: 'slug' | 'id';
 }
 
 const MentionsTextArea = ({
@@ -111,6 +112,7 @@ const MentionsTextArea = ({
   children,
   roles,
   trigger = '@',
+  idAttribute = 'slug',
 }: Props) => {
   const textareaElement = useRef<HTMLTextAreaElement | null>(null);
   const theme = useTheme();
@@ -224,7 +226,7 @@ const MentionsTextArea = ({
           display: `${user.attributes.first_name} ${
             user.attributes.last_name ? user.attributes.last_name : ''
           }`,
-          id: user.attributes.slug,
+          id: idAttribute === 'slug' ? user.attributes.slug : user.id,
         }));
       }
 
