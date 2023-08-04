@@ -38,7 +38,7 @@ class WebApi::V1::InitiativeSerializer < WebApi::V1::BaseSerializer
   }
 
   attribute :public do |object|
-    object.initiative_status.public?
+    object.initiative_status ? object.initiative_status.public? : false
   end
 
   has_many :initiative_images, serializer: WebApi::V1::ImageSerializer
