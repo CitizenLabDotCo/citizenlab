@@ -9,7 +9,7 @@ describe EventsFinder do
   let(:options) { {} }
   let(:result_record_ids) { finder.find_records.pluck(:id) }
 
-  before do
+  before_all do
     create_list(:event, 5)
   end
 
