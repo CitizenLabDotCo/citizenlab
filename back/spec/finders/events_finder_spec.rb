@@ -9,9 +9,7 @@ describe EventsFinder do
   let(:options) { {} }
   let(:result_record_ids) { finder.find_records.pluck(:id) }
 
-  before_all do
-    create_list(:event, 5)
-  end
+  let_it_be(:initial_events) { create_list(:event, 5) }
 
   context 'when no params or options are received' do
     it 'returns all' do
@@ -71,6 +69,21 @@ describe EventsFinder do
       create_list(:event, 5, start_at: Time.zone.today - 1.week, end_at: Time.zone.today - 1.week + 1.day)
       create_list(:event, 5, start_at: Time.zone.today + 1.week, end_at: Time.zone.today + 1.week + 1.day)
       params[:ends_on_or_after_date] = Time.zone.now
+    end
+
+    it 'returns the correct records' do
+      expect(result_record_ids).to match_array expected_record_ids
+    end
+  end
+
+  describe '#attendee_id_condition' do
+    let(:attendee) { create(:user) }
+    let(:params) { { attendee_id: attendee.id } }
+    let(:expected_record_ids) do
+      initial_events.take(2).map do |event|
+        event.attendees << attendee
+        event.id
+      end
     end
 
     it 'returns the correct records' do
