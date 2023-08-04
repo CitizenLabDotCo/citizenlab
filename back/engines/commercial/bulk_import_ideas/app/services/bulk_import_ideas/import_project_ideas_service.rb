@@ -4,7 +4,7 @@ module BulkImportIdeas
   class ImportProjectIdeasService < ImportIdeasService
 
     def initialize(project_id)
-      @project_id = project_id
+      @project = Project.find(project_id)
       super()
     end
 
