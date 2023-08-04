@@ -164,7 +164,7 @@ const UserNavbar = memo<Props>(({ currentTab, selectTab, userId }) => {
         >
           <Border aria-hidden />
           <TabIcon name="notification-outline" ariaHidden />
-          {commentsCount && <FormattedMessage {...messages.following} />}
+          <FormattedMessage {...messages.following} />
         </UserNavbarButton>
       )}
     </UserNavbarWrapper>
