@@ -1,5 +1,4 @@
-import { PDFDocument } from 'pdf-lib';
-import { saveAs } from 'file-saver';
+// import { saveAs } from 'file-saver';
 
 interface Schema {
   type: 'Categorization';
@@ -36,35 +35,14 @@ interface Question {
   };
 }
 
-// const A4_WIDTH_MM = 210;
-const A4_HEIGHT_MM = 297;
-const A4_MARGIN_MM = 10;
-
-function mmToPixels(mm: number) {
-  return mm * 3.7795;
-}
-
-const FONT_SIZE_PX = 24;
-
-const LEFT_TOP_PX = mmToPixels(A4_HEIGHT_MM - A4_MARGIN_MM) - FONT_SIZE_PX;
-console.log(LEFT_TOP_PX);
-
 export async function saveSurveyToPDF(uiSchema: Schema) {
-  const pdfDoc = await PDFDocument.create();
-
   for (const page of uiSchema.elements) {
     if (page.elements.length === 0) continue;
 
-    const pdfPage = pdfDoc.addPage();
-
     for (const question of page.elements) {
-      pdfPage.moveTo(mmToPixels(A4_MARGIN_MM), LEFT_TOP_PX);
-      pdfPage.drawText(question.label);
+      console.log(question);
     }
   }
 
-  const bytes = await pdfDoc.save();
-  const blob = new Blob([bytes.buffer], { type: 'application/pdf' });
-
-  saveAs(blob, 'survey.pdf');
+  // saveAs(blob, 'survey.pdf');
 }
