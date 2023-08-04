@@ -116,17 +116,17 @@ export default defineMessages({
   },
   cosponsorSectionTitle: {
     id: 'app.components.InitiativeForm.cosponsorSectionTitle',
-    defaultMessage: 'Co-sponsors needed for review',
+    defaultMessage: 'Cosponsors needed for review',
   },
   cosponsorSubtextBeforeInput: {
     id: 'app.components.InitiativeForm.cosponsorSubtextBeforeInput',
     defaultMessage:
-      "It's required that you have {cosponsorsNumber, plural, one {1 co-sponsor} other {# co-sponsors}} on your proposals. Add your co-sponsors' names below:",
+      "It's required that you have {cosponsorsNumber, plural, one {1 cosponsor} other {# cosponsors}} on your proposals. Add your cosponsors' names below:",
   },
   cosponsorSubtextAfterInput: {
     id: 'app.components.InitiativeForm.cosponsorSubtextAfterInput',
     defaultMessage:
-      'Your co-sponsors will get an email to validate your proposal.',
+      'Your cosponsors will get an email to validate your proposal.',
   },
   formAttachmentsSectionTitle: {
     id: 'app.components.InitiativeForm.formAttachmentsSectionTitle',
