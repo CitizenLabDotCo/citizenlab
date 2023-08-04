@@ -280,7 +280,9 @@ const AdminProjectEventEdit = ({ params }: Props) => {
                 eventId: event?.data.id,
                 event: {
                   ...attributeDiff,
-                  location_point_geojson: locationPoint,
+                  location_point_geojson: locationDescription
+                    ? locationPoint
+                    : null,
                 },
               },
               {
@@ -399,10 +401,13 @@ const AdminProjectEventEdit = ({ params }: Props) => {
                 <Label>
                   <FormattedMessage {...messages.datesEndLabel} />
                 </Label>
-                <DateTimePicker
-                  value={eventAttrs.end_at}
-                  onChange={handleDateTimePickerOnChange('end_at')}
-                />
+                <Box zIndex="1000">
+                  <DateTimePicker
+                    value={eventAttrs.end_at}
+                    onChange={handleDateTimePickerOnChange('end_at')}
+                  />
+                </Box>
+
                 <ErrorComponent apiErrors={get(errors, 'end_at')} />
               </SectionField>
             </Box>
@@ -417,7 +422,7 @@ const AdminProjectEventEdit = ({ params }: Props) => {
             </Title>
 
             <SectionField>
-              <Box zIndex="1000" maxWidth="400px">
+              <Box maxWidth="400px">
                 <Box mb="8px">
                   <Label>
                     {formatMessage(messages.addressOneLabel)}
@@ -437,6 +442,7 @@ const AdminProjectEventEdit = ({ params }: Props) => {
                   }}
                   placeholder={formatMessage(messages.searchForLocation)}
                 />
+
                 <ErrorComponent
                   apiErrors={get(errors, 'location_description')}
                 />
@@ -452,7 +458,7 @@ const AdminProjectEventEdit = ({ params }: Props) => {
                   />
                 </Box>
                 {locationPoint && (
-                  <Box maxWidth="400px">
+                  <Box maxWidth="400px" zIndex="0">
                     <Box>
                       <Map
                         position={locationPoint}

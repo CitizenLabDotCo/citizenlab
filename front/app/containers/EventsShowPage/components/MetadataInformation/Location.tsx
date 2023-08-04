@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 
 // components
-import { Box, Button } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Button,
+  Text,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
 import Map from 'components/Map';
 
@@ -19,6 +24,7 @@ export interface Props {
 
 const Location = ({ location, event }: Props) => {
   const [mapModalVisible, setMapModalVisible] = useState(false);
+  const isMobile = useBreakpoint('phone');
   const projectId = event?.relationships.project.data.id;
   const position = event?.attributes.location_point_geojson;
   const center = position?.coordinates;
@@ -29,26 +35,16 @@ const Location = ({ location, event }: Props) => {
       <Container>
         <StyledIcon name="position" ariaHidden />
         <Content>
-          {/* <Text color="coolGrey600" fontSize="s">
-            {location}
-          </Text> */}
-          <Box display="flex">
-            <Button
-              fontSize="s"
-              buttonStyle="text"
-              onClick={() => {
-                setMapModalVisible(true);
-              }}
-              pl="0px"
-              pt="12px"
-              style={{ justifyContent: 'left', textAlign: 'left' }}
-            >
-              <Box
-                maxWidth="200px" // TODO : Code cleanup in this file
-                display="flex"
-                flexWrap="wrap"
-                ml="0px"
+          {position ? (
+            <Box display="flex">
+              <Button
+                fontSize="s"
+                buttonStyle="text"
+                onClick={() => {
+                  setMapModalVisible(true);
+                }}
                 pl="0px"
+                pt="12px"
                 style={{
                   textDecoration: 'underline',
                   justifyContent: 'left',
@@ -56,9 +52,13 @@ const Location = ({ location, event }: Props) => {
                 }}
               >
                 {location.slice(0, location.indexOf(','))}
-              </Box>
-            </Button>
-          </Box>
+              </Button>
+            </Box>
+          ) : (
+            <Text color="coolGrey600" fontSize="s">
+              {location}
+            </Text>
+          )}
         </Content>
 
         <Modal
@@ -79,9 +79,9 @@ const Location = ({ location, event }: Props) => {
                 points={[{ ...position, id: 'markerPosition' }]}
                 centerLatLng={centerLatLng}
                 projectId={projectId}
-                mapHeight="600px"
+                mapHeight={isMobile ? '460px' : '600px'}
                 noMarkerClustering={false}
-                zoomLevel={20}
+                zoomLevel={19}
               />
             )}
           </Box>
