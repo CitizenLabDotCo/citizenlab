@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Analysis
   # Light wrapper around the openai-ruby gem, mostly to help with test mocking
   class OpenaiApi

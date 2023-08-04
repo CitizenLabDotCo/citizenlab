@@ -8,6 +8,7 @@ import { ISummary } from 'api/analysis_summaries/types';
 
 import {
   Box,
+  Icon,
   IconButton,
   Spinner,
   colors,
@@ -20,6 +21,11 @@ import styled from 'styled-components';
 
 const StyledSummaryText = styled.div`
   white-space: pre-wrap;
+`;
+
+const StyledButton = styled.button`
+  padding: 0px;
+  cursor: pointer;
 `;
 
 type Props = {
@@ -54,9 +60,9 @@ const Summary = ({ summary, onSelectInput }: Props) => {
       summary,
       /\[?([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})\]?/g,
       (match) => (
-        <a onClick={() => onSelectInput(match)} role="button">
-          📃
-        </a>
+        <StyledButton onClick={() => onSelectInput(match)}>
+          <Icon name="search" />
+        </StyledButton>
       )
     );
   };
@@ -67,17 +73,17 @@ const Summary = ({ summary, onSelectInput }: Props) => {
     <Box
       key={summary.id}
       bgColor={colors.teal100}
-      p="30px"
+      p="16px"
       mb="8px"
       borderRadius={stylingConsts.borderRadius}
     >
-      <Box>
+      <Box p="16px">
         <Box
           display="flex"
           alignItems="center"
           flexWrap="wrap"
           gap="4px"
-          mb="6px"
+          mb="12px"
         >
           {hasFilters && (
             <>
@@ -103,12 +109,12 @@ const Summary = ({ summary, onSelectInput }: Props) => {
             </>
           )}
         </Box>
-      </Box>
-      <Box>
-        <StyledSummaryText>
-          {replaceIdRefsWithLinks(summary.attributes.summary)}
-        </StyledSummaryText>
-        {processing && <Spinner />}
+        <Box>
+          <StyledSummaryText>
+            {replaceIdRefsWithLinks(summary.attributes.summary)}
+          </StyledSummaryText>
+          {processing && <Spinner />}
+        </Box>
       </Box>
       <Box display="flex" flexDirection="row-reverse" gap="2px">
         <IconButton
