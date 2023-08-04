@@ -59,6 +59,7 @@ export interface IInitiativeData {
     expires_at: string;
     anonymous: boolean;
     editing_locked: boolean;
+    public: boolean;
   };
   relationships: {
     topics: {
