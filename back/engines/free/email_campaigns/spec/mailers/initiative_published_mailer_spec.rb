@@ -25,7 +25,7 @@ RSpec.describe EmailCampaigns::InitiativePublishedMailer do
             versions: initiative.header_bg.versions.to_h { |k, v| [k.to_s, v.url] }
           },
           initiative_reactions_needed: initiative.reactions_needed,
-          initiative_expires_at: initiative.expires_at.iso8601
+          initiative_expires_at: initiative.expires_at&.iso8601
         }
       }
     end

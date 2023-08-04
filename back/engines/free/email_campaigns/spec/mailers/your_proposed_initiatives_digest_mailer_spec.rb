@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe EmailCampaigns::YourProposedInitiativesDigestMailer do
   describe 'YourProposedInitiativesDigest' do
     let_it_be(:recipient) { create(:admin, locale: 'en') }
-    let_it_be(:initiatives) { create_list(:initiative, 3) }
+    let_it_be(:initiatives) { create_list(:initiative, 3, voting_started_at: Time.now) }
     let_it_be(:campaign) { EmailCampaigns::Campaigns::YourProposedInitiativesDigest.create! }
     let_it_be(:command) do
       {
@@ -21,7 +21,7 @@ RSpec.describe EmailCampaigns::YourProposedInitiativesDigestMailer do
               reactions_needed: initiative.reactions_needed,
               reactions_this_week: initiative.likes.where('created_at > ?', 1.week.ago).count,
               comments_count: initiative.comments_count,
-              expires_at: initiative.expires_at.iso8601,
+              expires_at: initiative.expires_at&.iso8601,
               status_code: initiative.initiative_status.code,
               images: initiative.initiative_images.map do |image|
                 {

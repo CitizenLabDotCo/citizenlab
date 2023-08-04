@@ -20,7 +20,7 @@ RSpec.describe EmailCampaigns::InitiativeAssignedToYouMailer do
           post_url: Frontend::UrlService.new.model_to_url(initiative, locale: recipient.locale),
           post_assigned_at: (initiative.assigned_at&.iso8601 || Time.now.iso8601),
           initiative_reactions_needed: initiative.reactions_needed,
-          initiative_expires_at: initiative.expires_at.iso8601
+          initiative_expires_at: initiative.expires_at&.iso8601
         }
       }
     end
