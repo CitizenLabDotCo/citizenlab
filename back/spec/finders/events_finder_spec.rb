@@ -79,7 +79,7 @@ describe EventsFinder do
   describe '#attendee_id_condition' do
     let(:attendee) { create(:user) }
     let(:params) { { attendee_id: attendee.id } }
-    let(:expected_record_ids) do
+    let!(:expected_record_ids) do
       initial_events.take(2).map do |event|
         event.attendees << attendee
         event.id
