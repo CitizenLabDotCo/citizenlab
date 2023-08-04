@@ -146,8 +146,6 @@ const EventsWidget = ({ staticPageId }: Props) => {
                     event={event}
                     key={event.id}
                     titleFontSize={18}
-                    showProjectTitle
-                    onClickTitleGoToProjectAndScrollToEvent
                   />
                 ))}
               </CardsContainer>

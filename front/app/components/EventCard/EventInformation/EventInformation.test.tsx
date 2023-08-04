@@ -92,7 +92,6 @@ describe('<EventInformation />', () => {
       <EventInformation
         {...defaultProps}
         event={eventWithShortDescription}
-        onClickTitleGoToProjectAndScrollToEvent={true}
         showProjectTitle={true}
       />
     );
@@ -108,12 +107,7 @@ describe('<EventInformation />', () => {
 
   it('does not render project title as link if onClickTitleGoToProjectAndScrollToEvent={false}', () => {
     render(
-      <EventInformation
-        {...defaultProps}
-        event={eventWithShortDescription}
-        onClickTitleGoToProjectAndScrollToEvent={false}
-        showProjectTitle={true}
-      />
+      <EventInformation {...defaultProps} event={eventWithShortDescription} />
     );
     expect(
       screen.getByText(mockProjectData.attributes.title_multiloc.en)

@@ -1,8 +1,10 @@
 import React, { useCallback } from 'react';
 
 // components
-import { Button, Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Button } from '@citizenlab/cl2-component-library';
 import { ScreenReaderOnly } from 'utils/a11y';
+import { useIntl } from 'utils/cl-intl';
+import messages from './messages';
 
 interface Props {
   text: string;
@@ -10,9 +12,8 @@ interface Props {
   onClick: (event: React.MouseEvent) => void;
 }
 
-const GoBackButtonSolid = ({ text, iconSize = '26px', onClick }: Props) => {
-  const isSmallerThanPhone = useBreakpoint('phone');
-
+const GoBackButtonSolid = ({ iconSize = '26px', onClick }: Props) => {
+  const { formatMessage } = useIntl();
   const handleClick = useCallback(
     (event: React.MouseEvent) => {
       event.preventDefault();
@@ -32,14 +33,9 @@ const GoBackButtonSolid = ({ text, iconSize = '26px', onClick }: Props) => {
       whiteSpace="normal"
       onClick={handleClick}
     >
-      <Box
-        as="span"
-        display={isSmallerThanPhone ? 'none' : 'block'}
-        aria-hidden
-      >
-        {text}
-      </Box>
-      <ScreenReaderOnly>{text}</ScreenReaderOnly>
+      <ScreenReaderOnly>
+        {formatMessage(messages.goBackToPreviousPage)}
+      </ScreenReaderOnly>
     </Button>
   );
 };

@@ -41,7 +41,6 @@ interface Props {
   eventsTime: 'past' | 'currentAndFuture';
   className?: string;
   projectId?: string;
-  onClickTitleGoToProjectAndScrollToEvent?: boolean;
   hideSectionIfNoEvents?: boolean;
   showProjectFilter: boolean;
   projectPublicationStatuses: PublicationStatus[];
@@ -53,7 +52,6 @@ const EventsViewer = ({
   eventsTime,
   className,
   projectId,
-  onClickTitleGoToProjectAndScrollToEvent,
   hideSectionIfNoEvents,
   showProjectFilter,
   projectPublicationStatuses,
@@ -115,10 +113,6 @@ const EventsViewer = ({
               <StyledEventCard
                 id={event.id}
                 event={event}
-                showProjectTitle
-                onClickTitleGoToProjectAndScrollToEvent={
-                  onClickTitleGoToProjectAndScrollToEvent
-                }
                 showLocation
                 showDescription
                 showAttachments

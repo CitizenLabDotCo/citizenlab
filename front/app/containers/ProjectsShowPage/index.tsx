@@ -167,7 +167,6 @@ const ProjectsShowPage = ({ project }: Props) => {
             eventsTime="currentAndFuture"
             title={formatMessage(messages.upcomingAndOngoingEvents)}
             fallbackMessage={messages.noUpcomingOrOngoingEvents}
-            onClickTitleGoToProjectAndScrollToEvent={false}
             hideSectionIfNoEvents={true}
             projectPublicationStatuses={['published', 'draft', 'archived']}
           />
@@ -177,7 +176,6 @@ const ProjectsShowPage = ({ project }: Props) => {
             eventsTime="past"
             title={formatMessage(messages.pastEvents)}
             fallbackMessage={messages.noPastEvents}
-            onClickTitleGoToProjectAndScrollToEvent={false}
             hideSectionIfNoEvents={true}
             projectPublicationStatuses={['published', 'draft', 'archived']}
           />

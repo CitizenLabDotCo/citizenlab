@@ -12,7 +12,6 @@ export default injectIntl<WrappedComponentProps>(({ intl }) => (
     title={intl.formatMessage(messages.pastEvents)}
     fallbackMessage={messages.noPastEvents}
     eventsTime="past"
-    onClickTitleGoToProjectAndScrollToEvent={true}
     projectPublicationStatuses={['published']}
   />
 ));

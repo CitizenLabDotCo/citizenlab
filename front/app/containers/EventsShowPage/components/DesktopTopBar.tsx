@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -33,20 +33,14 @@ interface Props {
 const TopBar = ({ project }: Props) => {
   const localize = useLocalize();
 
-  const handleGoBack = useCallback(() => {
-    if (project) {
-      clHistory.push(`/projects/${project.attributes.slug}`);
-    } else {
-      clHistory.push('/');
-    }
-  }, [project]);
-
   return (
     <Bar>
       <Box mb="40px">
         <GoBackButtonSolid
           text={localize(project.attributes.title_multiloc)}
-          onClick={handleGoBack}
+          onClick={() => {
+            clHistory.back();
+          }}
         />
       </Box>
     </Bar>
