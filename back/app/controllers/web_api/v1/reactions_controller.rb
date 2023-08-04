@@ -90,8 +90,6 @@ class WebApi::V1::ReactionsController < ApplicationController
         )
         authorize @new_reaction, policy_class: @policy_class
 
-        SideFxReactionService.new.before_create(@new_reaction, current_user)
-
         if @new_reaction.save
           SideFxReactionService.new.after_create(@new_reaction, current_user)
           render json: WebApi::V1::ReactionSerializer.new(
