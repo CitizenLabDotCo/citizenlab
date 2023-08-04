@@ -27,5 +27,7 @@ module Events
     belongs_to :attendee, class_name: 'User'
 
     validates :attendee, uniqueness: { scope: :event_id }
+
+    counter_culture :event, column_name: 'attendees_count'
   end
 end

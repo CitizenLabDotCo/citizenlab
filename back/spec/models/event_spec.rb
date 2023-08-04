@@ -48,4 +48,19 @@ RSpec.describe Event do
       expect(event).to be_invalid
     end
   end
+
+  describe 'attendees_count' do
+    let(:event) { create(:event) }
+
+    it 'is incremented when an attendance is created' do
+      expect { create(:event_attendance, event: event) }
+        .to change { event.reload.attendees_count }.by(1)
+    end
+
+    it 'is decremented when an attendance is destroyed' do
+      attendance = create(:event_attendance, event: event)
+      expect { attendance.destroy }
+        .to change { event.reload.attendees_count }.by(-1)
+    end
+  end
 end

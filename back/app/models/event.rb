@@ -15,6 +15,7 @@
 #  updated_at           :datetime         not null
 #  location_point       :geography        point, 4326
 #  location_description :string
+#  attendees_count      :integer          default(0), not null
 #
 # Indexes
 #
