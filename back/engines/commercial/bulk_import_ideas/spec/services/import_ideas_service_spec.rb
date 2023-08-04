@@ -312,10 +312,10 @@ describe BulkImportIdeas::ImportIdeasService do
     it 'converts uploaded XLSX to more parseable format for the idea import method' do
       xlsx_array = [
         {
-          'Title_nl-BE' => 'Mijn idee titel',
-          'Title_fr-BE' => 'Mon idée titre',
-          'Body_nl-BE' => 'Mijn idee inhoud',
-          'Body_fr-BE' => 'Mon idée contenu',
+          'Title_nl-NL' => 'Mijn idee titel',
+          'Title_fr-FR' => 'Mon idée titre',
+          'Body_nl-NL' => 'Mijn idee inhoud',
+          'Body_fr-FR' => 'Mon idée contenu',
           'Email' => 'moderator@citizenlab.co',
           'Project' => 'Project 1',
           'Phase' => 2,
@@ -340,8 +340,8 @@ describe BulkImportIdeas::ImportIdeasService do
       expect(idea_rows).to eq [
         {
           id: nil,
-          title_multiloc: { 'nl-BE' => 'Mijn idee titel', 'fr-BE' => 'Mon idée titre' },
-          body_multiloc: { 'nl-BE' => 'Mijn idee inhoud', 'fr-BE' => 'Mon idée contenu' },
+          title_multiloc: { 'nl-NL' => 'Mijn idee titel', 'fr-FR' => 'Mon idée titre' },
+          body_multiloc: { 'nl-NL' => 'Mijn idee inhoud', 'fr-FR' => 'Mon idée contenu' },
           user_email: 'moderator@citizenlab.co',
           project_title: 'Project 1',
           phase_rank: 2,
@@ -367,6 +367,28 @@ describe BulkImportIdeas::ImportIdeasService do
           image_url: nil
         }
       ]
+    end
+
+    it 'throws an error if imported locales do not match any on the tenant' do
+      xlsx_array = [
+        {
+          'Title_nl-BE' => 'Mijn idee titel',
+          'Body_nl-BE' => 'Mijn idee inhoud',
+          'Email' => 'moderator@citizenlab.co',
+          'Project' => 'Project 1',
+          'Phase' => 2,
+          'Date (dd-mm-yyyy)' => '18-07-2022',
+          'Topics' => 'topic 1;topic 2 ; topic 3',
+          'Latitude' => 50.5035,
+          'Longitude' => 6.0944,
+          'Location Description' => 'Panorama sur les Hautes Fagnes / Hohes Venn',
+          'Image URL' => 'https://images.com/image.png'
+        }
+      ]
+
+      expect { service.xlsx_to_idea_rows xlsx_array }.to raise_error(
+        an_instance_of(BulkImportIdeas::Error).and(having_attributes(key: 'bulk_import_ideas_locale_not_valid', params: { value: 'nl-BE' }))
+      )
     end
   end
 end

@@ -65,6 +65,8 @@ module BulkImportIdeas
           next unless key.include? '_'
 
           field, locale = key.split '_'
+          raise Error.new 'bulk_import_ideas_locale_not_valid', value: locale if AppConfiguration.instance.settings('core', 'locales').exclude?(locale)
+
           case field
           when 'Title'
             title_multiloc[locale] = value
