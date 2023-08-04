@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
-import causesKeys from './keys';
+import topicsKeys from './keys';
 import { ITopics, TopicsKeys, ITopicsQueryParams } from './types';
 
 const fetchTopics = ({
@@ -25,7 +25,7 @@ const fetchTopics = ({
 
 const useTopics = (queryParameters?: ITopicsQueryParams) => {
   return useQuery<ITopics, CLErrors, ITopics, TopicsKeys>({
-    queryKey: causesKeys.list(queryParameters || {}),
+    queryKey: topicsKeys.list(queryParameters || {}),
     queryFn: () => fetchTopics(queryParameters || {}),
   });
 };

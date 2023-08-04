@@ -33,7 +33,9 @@ export type FollowableType =
   | 'projects'
   | 'project_folders'
   | 'ideas'
-  | 'initiatives';
+  | 'initiatives'
+  | 'topics'
+  | 'areas';
 
 export type FollowableObject =
   | 'Idea'

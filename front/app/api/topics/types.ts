@@ -34,10 +34,14 @@ export interface ITopicData {
     ordering: number;
     code: Code;
     static_page_ids: string[];
+    followers_count: number;
   };
   relationships: {
     static_pages: {
       data: IRelationship[];
+    };
+    user_follower: {
+      data: IRelationship | null;
     };
   };
 }

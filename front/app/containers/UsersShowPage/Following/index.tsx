@@ -1,0 +1,59 @@
+import React, { useState } from 'react';
+import { Box } from '@citizenlab/cl2-component-library';
+import { FollowableObject } from 'api/follow_unfollow/types';
+import FilterSelector from 'components/FilterSelector';
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from '../messages';
+import Topics from './Topics';
+import Areas from './Areas';
+import UserFollowingList from './UserFollowingList';
+
+type FollowableValue = FollowableObject | 'Topics' | 'Areas';
+
+interface IFilterOption {
+  text: JSX.Element;
+  value: FollowableValue;
+}
+
+const options: IFilterOption[] = [
+  { text: <FormattedMessage {...messages.projects} />, value: 'Project' },
+  { text: <FormattedMessage {...messages.initiatives} />, value: 'Initiative' },
+  { text: <FormattedMessage {...messages.ideas} />, value: 'Idea' },
+  {
+    text: <FormattedMessage {...messages.projectFolders} />,
+    value: 'ProjectFolders::Folder',
+  },
+  { text: <FormattedMessage {...messages.topics} />, value: 'Topics' },
+  { text: <FormattedMessage {...messages.areas} />, value: 'Areas' },
+];
+
+const Following = () => {
+  const [selectedValue, setSelectedValue] =
+    useState<FollowableValue>('Project');
+  const handleOnChange = (selectedValue: [FollowableValue]) => {
+    setSelectedValue(selectedValue[0]);
+  };
+
+  return (
+    <Box display="flex" w="100%" flexDirection="column">
+      <Box mb="16px" w="100%" display="flex" justifyContent="flex-end">
+        <FilterSelector
+          title={<FormattedMessage {...messages.projects} />}
+          name="sort"
+          selected={[selectedValue]}
+          values={options}
+          onChange={handleOnChange}
+          multipleSelectionAllowed={false}
+          width="180px"
+        />
+      </Box>
+      {selectedValue === 'Topics' && <Topics />}
+      {selectedValue === 'Areas' && <Areas />}
+      {selectedValue !== 'Topics' && selectedValue !== 'Areas' && (
+        <UserFollowingList value={selectedValue} />
+      )}
+    </Box>
+  );
+};
+
+export default Following;

@@ -1,53 +1,25 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 import useFollowers from 'api/follow_unfollow/useFollowers';
 import IdeaCard from 'components/IdeaCard';
 import { FollowableObject } from 'api/follow_unfollow/types';
 import InitiativeCard from 'components/InitiativeCard';
 import ProjectCard from 'components/ProjectCard';
-import FilterSelector from 'components/FilterSelector';
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 import ProjectFolderCard from 'components/ProjectAndFolderCards/components/ProjectFolderCard';
 
-interface IFilterOption {
-  text: JSX.Element;
+interface Props {
   value: FollowableObject;
 }
 
-const options: IFilterOption[] = [
-  { text: <FormattedMessage {...messages.projects} />, value: 'Project' },
-  { text: <FormattedMessage {...messages.initiatives} />, value: 'Initiative' },
-  { text: <FormattedMessage {...messages.ideas} />, value: 'Idea' },
-  {
-    text: <FormattedMessage {...messages.projectFolders} />,
-    value: 'ProjectFolders::Folder',
-  },
-];
-
-const Following = () => {
-  const [selectedValue, setSelectedValue] =
-    useState<FollowableObject>('Project');
+const UserFollowingList = ({ value }: Props) => {
   const { data: followers, isLoading } = useFollowers({
-    followableObject: selectedValue,
+    followableObject: value,
   });
-  const handleOnChange = (selectedValue: [FollowableObject]) => {
-    setSelectedValue(selectedValue[0]);
-  };
 
   return (
     <Box display="flex" w="100%" flexDirection="column">
-      <Box mb="16px" w="100%" display="flex" justifyContent="flex-end">
-        <FilterSelector
-          title={<FormattedMessage {...messages.projects} />}
-          name="sort"
-          selected={[selectedValue]}
-          values={options}
-          onChange={handleOnChange}
-          multipleSelectionAllowed={false}
-          width="180px"
-        />
-      </Box>
       {!isLoading && followers?.data.length === 0 ? (
         <Box background={colors.white} p="36px">
           <Text variant="bodyL">
@@ -97,4 +69,4 @@ const Following = () => {
   );
 };
 
-export default Following;
+export default UserFollowingList;

@@ -50,6 +50,7 @@ export interface IUserAttributes {
   verified?: boolean;
   no_name?: boolean;
   no_password?: boolean;
+  followings_count: number;
 }
 
 export interface IUserData {
