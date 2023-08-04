@@ -22,6 +22,8 @@ export interface ITagData {
   type: 'tag';
   attributes: {
     name: string;
+    total_input_count: number;
+    filtered_input_count: number;
     tag_type: TagType;
     created_at: string;
     updated_at: string;

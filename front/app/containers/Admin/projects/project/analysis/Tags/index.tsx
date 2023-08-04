@@ -41,6 +41,7 @@ const TagContainer = styled.div`
   &.selected {
     border: 1px solid ${colors.borderLight};
   }
+  cursor: pointer;
 `;
 
 const Tags = () => {
@@ -153,6 +154,8 @@ const Tags = () => {
             className={selectedTags?.includes(tag.id) ? 'selected' : ''}
           >
             <Tag name={tag.attributes.name} tagType={tag.attributes.tag_type} />
+            {tag.attributes.filtered_input_count}/
+            {tag.attributes.total_input_count}
             <Box display="flex" gap="0px">
               <IconButton
                 iconName="edit"
