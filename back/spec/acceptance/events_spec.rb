@@ -6,8 +6,9 @@ require 'rspec_api_documentation/dsl'
 resource 'Events' do
   explanation 'Events organized in the city, related to a project.'
 
-  before do
-    header 'Content-Type', 'application/json'
+  header 'Content-Type', 'application/json'
+
+  before_all do
     @project = create(:project)
     @project2 = create(:project)
     @events = create_list(:event, 2, project: @project)
@@ -221,5 +222,51 @@ resource 'Events' do
         expect { Event.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
+  end
+
+  get 'web_api/v1/users/:user_id/events' do
+    route_summary 'List all events to which a user is registered'
+
+    let_it_be(:user) { create(:user) }
+    let_it_be(:user_id) { user.id }
+
+    let_it_be(:user_events) do
+      [@events.first, @other_events.first].tap do |events|
+        events.each { |event| create(:event_attendance, event: event, attendee: user) }
+      end
+    end
+
+    shared_examples 'authorized' do
+      example_request 'List all events of a user' do
+        expect(status).to eq 200
+        expect(response_ids).to match_array user_events.map(&:id)
+      end
+    end
+
+    shared_examples 'unauthorized' do
+      example_request 'Unauthorized (401)', document: false do
+        expect(status).to eq 401
+      end
+    end
+
+    context 'when admin' do
+      before { admin_header_token }
+
+      include_examples 'authorized'
+    end
+
+    context "when 'user_id' corresponds to the current user" do
+      before { header_token_for(user) }
+
+      include_examples 'authorized'
+    end
+
+    context "when 'user_id' does not correspond to the current user" do
+      before { resident_header_token }
+
+      include_examples 'unauthorized'
+    end
+
+    context('when visitor') { include_examples 'unauthorized' }
   end
 end
