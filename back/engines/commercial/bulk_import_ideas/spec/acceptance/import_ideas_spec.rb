@@ -42,6 +42,12 @@ resource 'BulkImportIdeasImportIdeas' do
       end
     end
 
+    get 'web_api/v1/import_ideas/1234/example_xlsx' do
+      example_request 'Get the example xlsx for a project' do
+        assert_status 200
+      end
+    end
+
     post 'web_api/v1/import_ideas/bulk_create_xlsx' do
       parameter(
         :xlsx,

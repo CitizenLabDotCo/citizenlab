@@ -38,7 +38,7 @@ module BulkImportIdeas
     end
 
     def import_ideas_service
-      @import_ideas_service ||= ImportIdeasService.new
+      @import_ideas_service ||= params[:project_id] ? ImportProjectIdeasService.new(params[:project_id]) : ImportIdeasService.new
     end
 
     def authorize_bulk_import_ideas
