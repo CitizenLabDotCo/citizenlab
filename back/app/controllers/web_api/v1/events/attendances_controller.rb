@@ -18,6 +18,7 @@ module WebApi::V1
 
         authorize(attendance)
         attendance.save!
+        side_fx.after_create(attendance, current_user)
 
         render(
           json: WebApi::V1::Events::AttendanceSerializer.new(attendance).serializable_hash,
@@ -30,8 +31,15 @@ module WebApi::V1
 
         authorize(attendance)
         attendance.destroy!
+        side_fx.after_destroy(attendance, current_user)
 
         head :no_content
+      end
+
+      private
+
+      def side_fx
+        @side_fx ||= ::Events::SideFxAttendanceService.new
       end
     end
   end
