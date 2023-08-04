@@ -1,5 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import reactStringReplace from 'react-string-replace';
 
 import useDeleteAnalysisSummary from 'api/analysis_summaries/useDeleteAnalysisSummary';
 import useAnalysisBackgroundTask from 'api/analysis_background_tasks/useAnalysisBackgroundTask';
@@ -15,11 +16,18 @@ import {
 
 import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
+import styled from 'styled-components';
+
+const StyledSummaryText = styled.div`
+  white-space: pre-wrap;
+`;
 
 type Props = {
   summary: ISummary['data'];
+  onSelectInput: (inputId: string) => void;
 };
-const Summary = ({ summary }: Props) => {
+
+const Summary = ({ summary, onSelectInput }: Props) => {
   const { formatMessage } = useIntl();
   const { analysisId } = useParams() as { analysisId: string };
   const { mutate: deleteSummary } = useDeleteAnalysisSummary();
@@ -41,13 +49,25 @@ const Summary = ({ summary }: Props) => {
     }
   };
 
+  const replaceIdRefsWithLinks = (summary) => {
+    return reactStringReplace(
+      summary,
+      /\[?([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})\]?/g,
+      (match) => (
+        <a onClick={() => onSelectInput(match)} role="button">
+          📃
+        </a>
+      )
+    );
+  };
+
   const hasFilters = !!Object.keys(summary.attributes.filters).length;
 
   return (
     <Box
       key={summary.id}
       bgColor={colors.teal100}
-      p="16px"
+      p="30px"
       mb="8px"
       borderRadius={stylingConsts.borderRadius}
     >
@@ -85,7 +105,9 @@ const Summary = ({ summary }: Props) => {
         </Box>
       </Box>
       <Box>
-        {summary.attributes.summary}
+        <StyledSummaryText>
+          {replaceIdRefsWithLinks(summary.attributes.summary)}
+        </StyledSummaryText>
         {processing && <Spinner />}
       </Box>
       <Box display="flex" flexDirection="row-reverse" gap="2px">

@@ -8,7 +8,10 @@ import { useParams } from 'react-router-dom';
 
 import Summary from './Summary';
 
-const Insights = () => {
+type Props = {
+  onSelectInput: (inputId: string) => void;
+};
+const Insights = ({ onSelectInput }: Props) => {
   const { analysisId } = useParams() as { analysisId: string };
   const { data: summaries } = useAnalysisSummaries({
     analysisId,
@@ -17,7 +20,11 @@ const Insights = () => {
   return (
     <Box>
       {summaries?.data.map((summary) => (
-        <Summary key={summary.id} summary={summary} />
+        <Summary
+          key={summary.id}
+          summary={summary}
+          onSelectInput={onSelectInput}
+        />
       ))}
     </Box>
   );
