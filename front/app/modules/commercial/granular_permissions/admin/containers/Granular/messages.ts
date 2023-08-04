@@ -64,6 +64,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.permissions.permissionAction_take_poll_subtitle',
     defaultMessage: 'Who can take the poll?',
   },
+  permissionAction_volunteering_subtitle: {
+    id: 'app.containers.AdminPage.groups.permissions.permissionAction_volunteering_subtitle',
+    defaultMessage: 'Who can volunteer?',
+  },
   permissionAction_voting_subtitle: {
     id: 'app.containers.AdminPage.groups.permissions.permissionAction_voting_subtitle',
     defaultMessage: 'Who can vote?',

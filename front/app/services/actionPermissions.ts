@@ -33,6 +33,7 @@ export type IParticipationContextPermissionAction =
   | 'commenting_idea'
   | 'taking_survey'
   | 'taking_poll'
+  | 'volunteering'
   | 'voting'
   | 'annotating_document';
 

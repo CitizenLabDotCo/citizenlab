@@ -42,6 +42,7 @@ export const getPermissionActionSectionSubtitle = ({
       commenting_idea: messages.permissionAction_comment_input_subtitle,
       taking_survey: messages.permissionAction_take_survey_subtitle,
       taking_poll: messages.permissionAction_take_poll_subtitle,
+      volunteering: messages.permissionAction_volunteering_subtitle,
       voting: messages.permissionAction_voting_subtitle,
       annotating_document:
         messages.permissionAction_annotating_document_subtitle,
