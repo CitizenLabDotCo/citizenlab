@@ -16,7 +16,7 @@ module BulkImportIdeas
     DATE_FORMAT_REGEX = /^(0[1-9]|[1|2][0-9]|3[0|1])-(0[1-9]|1[0-2])-([0-9]{4})$/ # After https://stackoverflow.com/a/47218282/3585671
 
     def initialize
-      @locale = AppConfiguration.instance.settings('core', 'locales').first
+      @locale = AppConfiguration.instance.settings('core', 'locales').first # Default locale for any new users created
       @all_projects = Project.all
       @all_topics = Topic.all
     end
