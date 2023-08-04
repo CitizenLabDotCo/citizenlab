@@ -124,34 +124,47 @@ resource 'InitiativeStatusChange' do
         end
       end
 
-      context 'when the review feature is fully active and the status change is to the proposed status' do
-        before do
-          SettingsService.new.activate_feature! 'initiative_review'
-
-          configuration = AppConfiguration.instance
-          configuration.settings['initiatives']['require_review'] = true
-          configuration.save!
-        end
-
-        let(:new_initiative) { create(:initiative) }
+      context 'when status change is to the proposed status' do
+        let(:initiative) { create(:initiative) }
         let!(:_initiative_status_change) do
           create(
             :initiative_status_change,
-            initiative: new_initiative, initiative_status: create(:initiative_status_review_pending)
+            initiative: initiative, initiative_status: create(:initiative_status_review_pending)
           )
         end
 
-        let(:initiative_id) { new_initiative.id }
+        let(:initiative_id) { initiative.id }
         let(:initiative_status_id) { @status_proposed.id }
 
-        example 'Create a status change to the proposed status' do
-          expect(Initiative.review_required?).to be true
-          expect(Initiative.find(initiative_id).editing_locked).to be false
+        example 'a voting period is defined' do
+          expect(initiative.voting_started_at).to be_nil
+          expect(initiative.expires_at).to be_nil
 
           do_request
           assert_status 201
 
-          expect(Initiative.find(initiative_id).editing_locked).to be true
+          expect(initiative.reload.voting_started_at).to be_present
+          expect(initiative.reload.expires_at).to be_present
+        end
+
+        context 'when the review feature is fully active' do
+          before do
+            SettingsService.new.activate_feature! 'initiative_review'
+
+            configuration = AppConfiguration.instance
+            configuration.settings['initiatives']['require_review'] = true
+            configuration.save!
+          end
+
+          example 'editing is locked' do
+            expect(Initiative.review_required?).to be true
+            expect(initiative.editing_locked).to be false
+
+            do_request
+            assert_status 201
+
+            expect(initiative.reload.editing_locked).to be true
+          end
         end
       end
     end
