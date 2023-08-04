@@ -24,7 +24,7 @@ namespace :fix_existing_tenants do
 
   def migrate_idea_followers!
     Idea.all.each do |idea|
-      participants_service.ideas_participants([idea]).each do |participant|
+      participants_service.ideas_participants(Idea.where(id: idea)).each do |participant|
         Follower.find_or_create_by(followable: idea, user: participant)
       end
     end
@@ -32,7 +32,7 @@ namespace :fix_existing_tenants do
 
   def migrate_initiative_followers!
     Initiative.all.each do |initiative|
-      participants_service.initiatives_participants([initiative]).each do |participant|
+      participants_service.initiatives_participants(Initiative.where(id: initiative)).each do |participant|
         Follower.find_or_create_by(followable: initiative, user: participant)
       end
     end
