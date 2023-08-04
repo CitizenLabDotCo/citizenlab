@@ -16,6 +16,7 @@ module BulkImportIdeas
     DATE_FORMAT_REGEX = /^(0[1-9]|[1|2][0-9]|3[0|1])-(0[1-9]|1[0-2])-([0-9]{4})$/ # After https://stackoverflow.com/a/47218282/3585671
 
     def initialize
+      @locale = AppConfiguration.instance.settings('core', 'locales').first # Default locale for any new users created
       @all_projects = Project.all
       @all_topics = Topic.all
     end
@@ -64,6 +65,8 @@ module BulkImportIdeas
           next unless key.include? '_'
 
           field, locale = key.split '_'
+          raise Error.new 'bulk_import_ideas_locale_not_valid', value: locale if AppConfiguration.instance.settings('core', 'locales').exclude?(locale)
+
           case field
           when 'Title'
             title_multiloc[locale] = value
@@ -145,10 +148,16 @@ module BulkImportIdeas
     end
 
     def add_author(idea_row, idea_attributes)
-      raise Error.new 'bulk_import_ideas_blank_email', row: idea_row[:id] if idea_row[:user_email].blank?
-
-      author = User.find_by_cimail idea_row[:user_email]
-      raise Error.new 'bulk_import_ideas_email_not_found', value: idea_row[:user_email], row: idea_row[:id] unless author
+      if idea_row[:user_email].blank?
+        author = User.new(unique_code: SecureRandom.uuid, locale: @locale)
+        author.save!
+      else
+        author = User.find_by_cimail idea_row[:user_email]
+        unless author
+          author = User.new(email: idea_row[:user_email], locale: @locale)
+          author.save!
+        end
+      end
 
       idea_attributes[:author] = author
     end
@@ -161,7 +170,6 @@ module BulkImportIdeas
         return
       end
 
-      published_at = nil
       invalid_date_error = Error.new(
         'bulk_import_ideas_publication_date_invalid_format',
         value: idea_row[:published_at],
@@ -191,8 +199,6 @@ module BulkImportIdeas
         raise Error.new 'bulk_import_ideas_location_point_blank_coordinate', value: "(#{idea_row[:latitude]}, #{idea_row[:longitude]})", row: idea_row[:id]
       end
 
-      lat = nil
-      lon = nil
       begin
         lat = Float idea_row[:latitude]
         lon = Float idea_row[:longitude]
@@ -210,7 +216,6 @@ module BulkImportIdeas
     def add_phase(idea_row, idea_attributes)
       return if idea_row[:phase_rank].blank?
 
-      phase_rank = nil
       begin
         phase_rank = Integer idea_row[:phase_rank]
       rescue ArgumentError => _e

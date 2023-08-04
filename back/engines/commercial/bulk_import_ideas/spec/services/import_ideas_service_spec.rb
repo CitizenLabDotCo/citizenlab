@@ -8,7 +8,7 @@ describe BulkImportIdeas::ImportIdeasService do
   describe 'import_ideas' do
     before { create(:idea_status, code: 'proposed') }
 
-    it 'imports multiple ideas' do
+    it 'imports multiple ideas to existing authors' do
       project1 = create(:project, title_multiloc: { 'fr-BE' => 'Projet un', 'en' => 'Project 1' })
       project2 = create(:project, title_multiloc: { 'nl-BE' => 'Project twee', 'en' => 'Project 2' })
       create(:idea, project: project2)
@@ -42,6 +42,56 @@ describe BulkImportIdeas::ImportIdeasService do
       expect(idea2.project_id).to eq project2.id
       expect(idea2.title_multiloc).to eq({ 'en' => 'My idea title 2' })
       expect(idea2.body_multiloc).to eq({ 'en' => 'My idea description 2' })
+    end
+
+    it 'imports multiple ideas and creates new authors - with or without email addresses' do
+      project1 = create(:project, title_multiloc: { 'fr-BE' => 'Projet un', 'en' => 'Project 1' })
+      project2 = create(:project, title_multiloc: { 'nl-BE' => 'Project twee', 'en' => 'Project 2' })
+      project3 = create(:project, title_multiloc: { 'fr-BE' => 'Projet trois', 'en' => 'Project 3' })
+
+      idea_rows = [
+        {
+          title_multiloc: { 'en' => 'My idea title' },
+          body_multiloc: { 'en' => 'My idea description' },
+          project_title: 'Project 1',
+          user_email: 'userimport1@citizenlab.co'
+        },
+        {
+          title_multiloc: { 'en' => 'My idea title 2' },
+          body_multiloc: { 'en' => 'My idea description 2' },
+          project_title: 'Project 2',
+          user_email: nil
+        },
+        {
+          title_multiloc: { 'en' => 'My idea title 3' },
+          body_multiloc: { 'en' => 'My idea description 3' },
+          project_title: 'Project 3',
+          user_email: 'userimport1@citizenlab.co'
+        }
+      ]
+      service.import_ideas idea_rows
+
+      expect(project1.reload.ideas_count).to eq 1
+      idea1 = project1.ideas.first
+      expect(idea1.project_id).to eq project1.id
+      expect(idea1.title_multiloc).to eq({ 'en' => 'My idea title' })
+      expect(idea1.body_multiloc).to eq({ 'en' => 'My idea description' })
+      expect(idea1.author[:email]).to eq 'userimport1@citizenlab.co'
+
+      expect(project2.reload.ideas_count).to eq 1
+      idea2 = project2.ideas.first
+      expect(idea2.project_id).to eq project2.id
+      expect(idea2.title_multiloc).to eq({ 'en' => 'My idea title 2' })
+      expect(idea2.body_multiloc).to eq({ 'en' => 'My idea description 2' })
+      expect(idea2.author.email).to be_nil
+      expect(idea2.author.unique_code).not_to be_nil
+
+      expect(project3.reload.ideas_count).to eq 1
+      idea3 = project3.ideas.first
+      expect(idea3.project_id).to eq project3.id
+      expect(idea3.title_multiloc).to eq({ 'en' => 'My idea title 3' })
+      expect(idea3.body_multiloc).to eq({ 'en' => 'My idea description 3' })
+      expect(idea3.author).to eq idea1.author
     end
 
     it 'imports ideas with publication info' do
@@ -262,10 +312,10 @@ describe BulkImportIdeas::ImportIdeasService do
     it 'converts uploaded XLSX to more parseable format for the idea import method' do
       xlsx_array = [
         {
-          'Title_nl-BE' => 'Mijn idee titel',
-          'Title_fr-BE' => 'Mon idée titre',
-          'Body_nl-BE' => 'Mijn idee inhoud',
-          'Body_fr-BE' => 'Mon idée contenu',
+          'Title_nl-NL' => 'Mijn idee titel',
+          'Title_fr-FR' => 'Mon idée titre',
+          'Body_nl-NL' => 'Mijn idee inhoud',
+          'Body_fr-FR' => 'Mon idée contenu',
           'Email' => 'moderator@citizenlab.co',
           'Project' => 'Project 1',
           'Phase' => 2,
@@ -290,8 +340,8 @@ describe BulkImportIdeas::ImportIdeasService do
       expect(idea_rows).to eq [
         {
           id: nil,
-          title_multiloc: { 'nl-BE' => 'Mijn idee titel', 'fr-BE' => 'Mon idée titre' },
-          body_multiloc: { 'nl-BE' => 'Mijn idee inhoud', 'fr-BE' => 'Mon idée contenu' },
+          title_multiloc: { 'nl-NL' => 'Mijn idee titel', 'fr-FR' => 'Mon idée titre' },
+          body_multiloc: { 'nl-NL' => 'Mijn idee inhoud', 'fr-FR' => 'Mon idée contenu' },
           user_email: 'moderator@citizenlab.co',
           project_title: 'Project 1',
           phase_rank: 2,
@@ -317,6 +367,28 @@ describe BulkImportIdeas::ImportIdeasService do
           image_url: nil
         }
       ]
+    end
+
+    it 'throws an error if imported locales do not match any on the tenant' do
+      xlsx_array = [
+        {
+          'Title_nl-BE' => 'Mijn idee titel',
+          'Body_nl-BE' => 'Mijn idee inhoud',
+          'Email' => 'moderator@citizenlab.co',
+          'Project' => 'Project 1',
+          'Phase' => 2,
+          'Date (dd-mm-yyyy)' => '18-07-2022',
+          'Topics' => 'topic 1;topic 2 ; topic 3',
+          'Latitude' => 50.5035,
+          'Longitude' => 6.0944,
+          'Location Description' => 'Panorama sur les Hautes Fagnes / Hohes Venn',
+          'Image URL' => 'https://images.com/image.png'
+        }
+      ]
+
+      expect { service.xlsx_to_idea_rows xlsx_array }.to raise_error(
+        an_instance_of(BulkImportIdeas::Error).and(having_attributes(key: 'bulk_import_ideas_locale_not_valid', params: { value: 'nl-BE' }))
+      )
     end
   end
 end
