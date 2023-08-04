@@ -35,14 +35,4 @@ interface Question {
   };
 }
 
-export async function saveSurveyToPDF(uiSchema: Schema) {
-  for (const page of uiSchema.elements) {
-    if (page.elements.length === 0) continue;
-
-    for (const question of page.elements) {
-      console.log(question);
-    }
-  }
-
-  // saveAs(blob, 'survey.pdf');
-}
+export async function saveSurveyToPDF(_uiSchema: Schema) {}
