@@ -29,7 +29,7 @@ const EventSharingButtons = ({ event }: Props) => {
     const eventUrl = `${location.origin}/events/${event.id}`;
     const eventTitle = localize(event.attributes.title_multiloc);
     const eventLocation = event.attributes.location_description;
-    const utmParams = !isNilOrError(authUser)
+    const utmParams = authUser
       ? {
           source: 'share_event',
           campaign: 'share_content',

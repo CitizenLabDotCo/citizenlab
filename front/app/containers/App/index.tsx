@@ -291,7 +291,7 @@ const App = ({ children }: Props) => {
     !isInitiativeEditPage;
   const { pathname } = removeLocale(location.pathname);
   const showFrontOfficeNavbar =
-    (isEventPage && !isSmallerThanTablet) ||
+    (isEventPage && !isSmallerThanTablet) || // Don't show the navbar on (mobile) event page
     (!isAdminPage && !isEventPage) ||
     isPagesAndMenuPage;
 

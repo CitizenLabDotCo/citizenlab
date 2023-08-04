@@ -2,7 +2,7 @@
 
 module Analysis
   class AutoTaggingMethod::Base
-    attr_reader :analysis, :task
+    attr_reader :analysis, :task, :input_to_text
 
     class AutoTaggingFailedError < StandardError; end
 
@@ -15,9 +15,10 @@ module Analysis
       end
     end
 
-    def initialize(analysis, auto_tagging_task)
-      @analysis = analysis
+    def initialize(auto_tagging_task)
+      @analysis = auto_tagging_task.analysis
       @task = auto_tagging_task
+      @input_to_text = InputToText.new(@analysis.custom_fields)
     end
 
     def execute

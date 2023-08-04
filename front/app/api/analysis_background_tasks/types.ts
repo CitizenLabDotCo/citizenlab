@@ -23,7 +23,7 @@ type SummarizingAttributes = SharedAttributes & {
 
 export interface IBackgroundTaskData {
   id: string;
-  type: 'analysis_background_task';
+  type: 'background_task';
   attributes: AutoTaggingAttributes | SummarizingAttributes;
 }
 
