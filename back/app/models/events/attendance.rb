@@ -24,7 +24,7 @@
 module Events
   class Attendance < Base
     belongs_to :event
-    belongs_to :attendee, class_name: 'User', foreign_key: 'attendee_id'
+    belongs_to :attendee, class_name: 'User'
 
     validates :attendee, uniqueness: { scope: :event_id }
   end
