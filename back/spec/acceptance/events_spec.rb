@@ -232,7 +232,7 @@ resource 'Events' do
 
     let_it_be(:user_events) do
       [@events.first, @other_events.first].tap do |events|
-        events.each { |event| create(:event_attendance, event: event, attendee: user) }
+        events.each { |event| event.attendees << user }
       end
     end
 

@@ -14,6 +14,7 @@ RSpec.describe Event do
 
     it { is_expected.to belong_to(:project) }
     it { is_expected.to have_many(:attendances).dependent(:destroy) }
+    it { is_expected.to have_many(:attendees).through(:attendances) }
     it { is_expected.to have_many(:event_files).dependent(:destroy) }
     it { is_expected.to have_many(:text_images).dependent(:destroy) }
   end

@@ -28,6 +28,7 @@
 class Event < ApplicationRecord
   belongs_to :project
   has_many :attendances, class_name: 'Events::Attendance', dependent: :destroy
+  has_many :attendees, through: :attendances
   has_many :event_files, -> { order(:ordering) }, dependent: :destroy
   has_many :text_images, as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :text_images
