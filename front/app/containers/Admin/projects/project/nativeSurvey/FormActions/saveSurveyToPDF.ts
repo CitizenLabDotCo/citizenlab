@@ -1,4 +1,3 @@
-import { jsPDF } from 'jspdf';
 // import { saveAs } from 'file-saver';
 
 interface Schema {
@@ -36,31 +35,4 @@ interface Question {
   };
 }
 
-const MARGIN_MM = 10;
-const A4_WIDTH_MM = 210;
-
-export async function saveSurveyToPDF(_uiSchema: Schema) {
-  const doc = new jsPDF({
-    orientation: 'portrait',
-    unit: 'mm',
-    format: 'a4',
-  });
-
-  const test = `
-    <div style="font-size: 40px; line-height: 50px;">
-      A little bit of text. Why does it look so messed up?
-      A little bit of text. Why does it look so messed up?
-      A little bit of text. Why does it look so messed up?
-    </div>
-  `;
-
-  doc.html(test, {
-    x: MARGIN_MM,
-    y: MARGIN_MM,
-    width: A4_WIDTH_MM - 2 * MARGIN_MM,
-    windowWidth: 793,
-    callback: (doc) => {
-      doc.save('survey.pdf');
-    },
-  });
-}
+export async function saveSurveyToPDF(_uiSchema: Schema) {}
