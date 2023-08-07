@@ -11,14 +11,13 @@ import CopyLink from '../buttons/CopyLink';
 
 // i18n
 import messages from '../messages';
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
 import { getUrlWithUtm, UtmParams, Medium } from '../utils';
 
 interface Props {
-  context: 'idea' | 'project' | 'initiative' | 'folder';
+  context: 'idea' | 'project' | 'initiative' | 'folder' | 'event';
   url: string;
   twitterMessage: string;
   facebookMessage: string;
@@ -40,7 +39,7 @@ const SharingButtons = memo(
     id,
     url,
     utmParams,
-  }: Props & WrappedComponentProps) => {
+  }: Props) => {
     const isSmallerThanTablet = useBreakpoint('tablet');
 
     const getUrl = (medium: Medium) => {
@@ -51,6 +50,7 @@ const SharingButtons = memo(
       project: <FormattedMessage {...messages.shareThisProject} />,
       initiative: <FormattedMessage {...messages.shareThisInitiative} />,
       folder: <FormattedMessage {...messages.shareThisFolder} />,
+      event: <FormattedMessage {...messages.shareThisEvent} />,
     }[context];
 
     return (
@@ -92,4 +92,4 @@ const SharingButtons = memo(
   }
 );
 
-export default injectIntl(SharingButtons);
+export default SharingButtons;
