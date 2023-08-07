@@ -51,6 +51,7 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
           pdf.move_down 5.mm
 
           paragraphs = parse_html_tags(description)
+          puts paragraphs
 
           paragraphs.each do |paragraph|
             pdf.text(paragraph, inline_format: true)
