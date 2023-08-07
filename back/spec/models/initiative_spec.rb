@@ -57,7 +57,7 @@ RSpec.describe Initiative do
       travel_to t
       initiative = create(:initiative, publication_status: 'published')
       travel_to t + 1.week
-      initiative.update(publication_status: 'closed')
+      initiative.update(publication_status: 'draft')
       travel_to t + 1.week
       initiative.update(publication_status: 'published')
       expect(initiative.published_at.to_i).to eq t.to_i
