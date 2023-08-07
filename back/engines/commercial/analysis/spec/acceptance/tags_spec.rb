@@ -53,14 +53,13 @@ resource 'Tags' do
       parameter :comments_to, 'Filter by number of comments on the input, smaller than or equal to', type: :integer
     end
 
-    let(:analysis) { create(:analysis) }
-    let(:analysis_id) { analysis.id }
-    let(:comments_from) { 5 }
-    let!(:tags) { create_list(:tag, 3, analysis: analysis) }
-    let!(:input1) { create(:idea, project: analysis.project, comments_count: 2) }
-    let!(:input2) { create(:idea, project: analysis.project, comments_count: 5) }
-    let!(:input3) { create(:idea, project: analysis.project, comments_count: 5) }
-    let!(:taggings) do
+    let_it_be(:analysis) { create(:analysis) }
+    let_it_be(:analysis_id) { analysis.id }
+    let_it_be(:tags) { create_list(:tag, 3, analysis: analysis) }
+    let_it_be(:input1) { create(:idea, project: analysis.project, comments_count: 2) }
+    let_it_be(:input2) { create(:idea, project: analysis.project, comments_count: 5) }
+    let_it_be(:input3) { create(:idea, project: analysis.project, comments_count: 5) }
+    let_it_be(:taggings) do
       create(:tagging, input: input1, tag: tags[0])
       create(:tagging, input: input1, tag: tags[1])
       create(:tagging, input: input2, tag: tags[1])
@@ -72,6 +71,12 @@ resource 'Tags' do
       example_request 'lists all tags of an analysis' do
         assert_status 200
         expect(response_data.pluck(:id)).to match_array(tags.pluck(:id))
+      end
+
+      example 'lists filtered tags of analysis (comments > 5), with correct counts', document: false do
+        do_request(comments_from: 5)
+        assert_status 200
+
         expect(response_data.find { |d| d[:id] == tags[0].id }[:attributes][:total_input_count]).to eq 1
         expect(response_data.find { |d| d[:id] == tags[1].id }[:attributes][:total_input_count]).to eq 2
         expect(response_data.find { |d| d[:id] == tags[2].id }[:attributes][:total_input_count]).to eq 0
