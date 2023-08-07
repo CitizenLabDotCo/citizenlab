@@ -25,6 +25,9 @@ import { colors } from 'utils/styleUtils';
 // other
 import DateBlocks from '../DateBlocks';
 import messages from '../messages';
+import useEventAttendances from 'api/event_attendance/useEventAttendances';
+import useAddEventAttendance from 'api/event_attendance/useAddEventAttendance';
+import useAuthUser from 'api/me/useAuthUser';
 
 const EventInformationContainer = styled.div`
   flex: 1;
@@ -51,6 +54,10 @@ const EventInformation = ({
   titleFontSize,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const { data: eventAttendances } = useEventAttendances(event.id);
+  const { mutate: addEventAttendance } = useAddEventAttendance();
+  const { data: user } = useAuthUser();
+
   const isMobile = useBreakpoint('phone');
   const locationDescription = event?.attributes?.location_description;
 
@@ -59,6 +66,15 @@ const EventInformation = ({
     : `${startAtMoment.format('LL')} • ${startAtMoment.format(
         'LT'
       )} - ${endAtMoment.format('LT')}`;
+
+  const registerAttendance = () => {
+    console.log('Register attendance functiony');
+    if (user) {
+      addEventAttendance({ eventId: event.id, attendeeId: user.data?.id });
+    }
+  };
+
+  console.log(eventAttendances?.data);
 
   return (
     <EventInformationContainer data-testid="EventInformation">
@@ -116,6 +132,10 @@ const EventInformation = ({
         width={isMobile ? '100%' : '320px'}
         iconPos="right"
         icon="plus"
+        onClick={(event) => {
+          event.preventDefault();
+          registerAttendance();
+        }}
       >
         {formatMessage(messages.attend)}
       </Button>
