@@ -10,13 +10,13 @@ class InitiativePolicy < ApplicationPolicy
     end
 
     def resolve
-      not_draft = scope.where(publication_status: %w[published closed])
+      published = scope.where(publication_status: 'published')
 
       if UserRoleService.new.can_moderate_initiatives?(user)
-        not_draft
+        published
       else
-        not_draft.with_status_code(InitiativeStatus::NOT_REVIEW_CODES)
-          .or(not_draft.where(author: user))
+        published.with_status_code(InitiativeStatus::NOT_REVIEW_CODES)
+          .or(published.where(author: user))
       end
     end
   end
@@ -38,7 +38,7 @@ class InitiativePolicy < ApplicationPolicy
     return true if active? && (owner? || can_moderate?)
     return false if record.review_status?
 
-    %w[draft published closed].include?(record.publication_status)
+    record.publication_status == 'published'
   end
 
   def by_slug?
