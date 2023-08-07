@@ -38,7 +38,7 @@ class InitiativePolicy < ApplicationPolicy
     return true if active? && (owner? || can_moderate?)
     return false if record.review_status?
 
-    record.publication_status == 'published'
+    %w[draft published].include?(record.publication_status)
   end
 
   def by_slug?
