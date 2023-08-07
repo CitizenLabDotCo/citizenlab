@@ -69,11 +69,17 @@ export default function request<T>(
 }
 
 // we use xhr rather than fetch API, to enforce response type
-export function requestBlob(url, type, queryParametersObject?): Promise<Blob> {
-  const urlParams = stringify(queryParametersObject, {
-    arrayFormat: 'brackets',
-    addQueryPrefix: true,
-  });
+export function requestBlob(
+  url: string,
+  type: string,
+  queryParametersObject?: Record<string, any>
+): Promise<Blob> {
+  const urlParams = queryParametersObject
+    ? stringify(queryParametersObject, {
+        arrayFormat: 'brackets',
+        addQueryPrefix: true,
+      })
+    : '';
   const urlWithParams = `${url}${urlParams}`;
 
   return new Promise((resolve, reject) => {

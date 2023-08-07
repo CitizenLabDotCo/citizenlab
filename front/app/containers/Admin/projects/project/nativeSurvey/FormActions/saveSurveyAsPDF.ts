@@ -1,3 +1,4 @@
+import { API_PATH } from 'containers/App/constants';
 import { requestBlob } from 'utils/request';
 import { saveAs } from 'file-saver';
 import { reportError } from 'utils/loggingUtils';
@@ -9,7 +10,7 @@ interface Params {
 export async function saveSurveyAsPDF({ projectId }: Params) {
   try {
     const blob = await requestBlob(
-      `/projects/${projectId}/custom_fields/to_pdf`,
+      `${API_PATH}/projects/${projectId}/custom_fields/to_pdf`,
       'application/pdf'
     );
 

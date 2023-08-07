@@ -24,7 +24,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // api
 import useFormSubmissionCount from 'hooks/useFormSubmissionCount';
 import useInputSchema from 'hooks/useInputSchema';
-import { printSurvey } from 'api/idea_json_form_schema/printSurvey';
+import { saveSurveyAsPDF } from './saveSurveyAsPDF';
 
 // styles
 import { colors } from 'utils/styleUtils';
@@ -75,7 +75,7 @@ const FormActions = ({
 
   const saveSurvey = async () => {
     if (!uiSchema) return;
-    await printSurvey({ projectId });
+    await saveSurveyAsPDF({ projectId });
   };
 
   if (!isNilOrError(submissionCount)) {

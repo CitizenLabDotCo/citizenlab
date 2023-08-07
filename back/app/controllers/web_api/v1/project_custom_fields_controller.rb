@@ -19,11 +19,10 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
     pdf = Prawn::Document.new
     pdf.text "Hellow World!"
 
-    send_data (
+    send_data(
       pdf.render,
       type: 'application/pdf',
-      filename: 'survey.pdf',
-      disposition: 'inline'
+      filename: 'survey.pdf'
     )
   end
 
