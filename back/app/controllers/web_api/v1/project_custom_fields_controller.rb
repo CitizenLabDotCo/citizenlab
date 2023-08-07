@@ -8,7 +8,7 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
   skip_before_action :authenticate_user
 
   QUESTION_TYPES = %w[select]
-  FORBIDDEN_HTML_TAGS_REGEX = /<\/?(p|div|span|ul|ol|li|em|img|a){1}[^>]*\/?>/
+  FORBIDDEN_HTML_TAGS_REGEX = /<\/?(div|span|ul|ol|li|em|img|a){1}[^>]*\/?>/
 
   def json_forms_schema
     if project && participation_context
@@ -49,10 +49,12 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
  
         unless description.nil? then
           pdf.move_down 5.mm
-          pdf.text(
-            convert_html_tags(description),
-            inline_format: true
-          )
+
+          paragraphs = parse_html_tags(description)
+
+          paragraphs.each do |paragraph|
+            pdf.text(paragraph, inline_format: true)
+          end
         end
 
 
@@ -88,9 +90,11 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
     IdeaCustomFieldsService.new(Factory.instance.participation_method_for(participation_context).custom_form).enabled_fields
   end
 
-  def convert_html_tags(string)
+  def parse_html_tags(string)
     string
       .gsub(FORBIDDEN_HTML_TAGS_REGEX, '')
-      .gsub(/<\/?(br){1}[^>]*\/?>/, '\n')
+      .gsub('</p>', '')
+      .split(/<(p|br)>/)
+      .filter { |str| !(%w[p br].include? str) }
   end
 end
