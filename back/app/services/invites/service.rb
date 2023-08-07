@@ -164,13 +164,7 @@ class Invites::Service
   def save_invitees(invitees)
     ActiveRecord::Base.transaction do
       invitees.each do |invitee|
-        if @run_side_fx
-          if invitee.new_record?
-            SideFxUserService.new.before_create(invitee, @inviter)
-          else
-            SideFxUserService.new.before_update(invitee, @inviter)
-          end
-        end
+        SideFxUserService.new.before_update(invitee, @inviter) if @run_side_fx && !invitee.new_record?
         invitee.save!
       end
     end
