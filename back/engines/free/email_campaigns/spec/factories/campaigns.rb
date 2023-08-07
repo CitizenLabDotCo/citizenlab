@@ -70,6 +70,10 @@ FactoryBot.define do
     enabled { true }
   end
 
+  factory :initiative_resubmitted_for_review_campaign, class: EmailCampaigns::Campaigns::InitiativeResubmittedForReview do
+    enabled { true }
+  end
+
   factory :internal_comment_on_idea_assigned_to_you_campaign, class: EmailCampaigns::Campaigns::InternalCommentOnIdeaAssignedToYou do
     enabled { true }
   end

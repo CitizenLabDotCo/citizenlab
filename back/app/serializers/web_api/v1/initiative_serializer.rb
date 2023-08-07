@@ -17,7 +17,8 @@ class WebApi::V1::InitiativeSerializer < WebApi::V1::BaseSerializer
     :reactions_needed,
     :anonymous,
     :author_hash,
-    :editing_locked
+    :editing_locked,
+    :public
 
   attribute :author_name do |object, params|
     name_service = UserDisplayNameService.new(AppConfiguration.instance, current_user(params))
@@ -42,6 +43,10 @@ class WebApi::V1::InitiativeSerializer < WebApi::V1::BaseSerializer
     object.cosponsors_initiatives.includes(:user).map do |ci|
       { user_id: ci.user_id, name: name_service.display_name!(ci.user), status: ci.status }
     end
+  end
+
+  attribute :public do |object|
+    object.initiative_status ? object.initiative_status.public? : false
   end
 
   has_many :initiative_images, serializer: WebApi::V1::ImageSerializer

@@ -41,6 +41,7 @@ export const data: IInitiativeData = {
       large: 'http://localhost:3000/system/images/1/large/test.jpg',
     },
     editing_locked: false,
+    public: true,
   },
   relationships: {
     topics: {

@@ -357,6 +357,10 @@ const InitiativesShow = ({
   const { data: initiativeFiles } = useInitiativeFiles(initiativeId);
   const { data: initiative } = useInitiativeById(initiativeId);
 
+  const showSharingOptions = initiativeReviewRequired
+    ? initiative?.data.attributes.public
+    : true;
+
   useEffect(() => {
     if (isString(newInitiativeId)) {
       setTimeout(() => {
@@ -600,7 +604,7 @@ const InitiativesShow = ({
                 />
               </div>
 
-              {isNotDesktop && (
+              {isNotDesktop && showSharingOptions && (
                 <SharingButtonsMobile
                   context="initiative"
                   url={initiativeUrl}
@@ -639,31 +643,39 @@ const InitiativesShow = ({
                     onScrollToOfficialFeedback={onScrollToOfficialFeedback}
                     id="e2e-initiative-reaction-control"
                   />
-                  <SharingWrapper>
-                    <SharingButtons
-                      id="e2e-initiative-sharing-component"
-                      context="initiative"
-                      url={initiativeUrl}
-                      facebookMessage={formatMessage(messages.facebookMessage, {
-                        initiativeTitle,
-                      })}
-                      twitterMessage={formatMessage(messages.twitterMessage, {
-                        initiativeTitle,
-                      })}
-                      whatsAppMessage={formatMessage(messages.whatsAppMessage, {
-                        initiativeTitle,
-                      })}
-                      emailSubject={formatMessage(
-                        messages.emailSharingSubject,
-                        { initiativeTitle }
-                      )}
-                      emailBody={formatMessage(messages.emailSharingBody, {
-                        initiativeUrl,
-                        initiativeTitle,
-                      })}
-                      utmParams={utmParams}
-                    />
-                  </SharingWrapper>
+                  {showSharingOptions && (
+                    <SharingWrapper>
+                      <SharingButtons
+                        id="e2e-initiative-sharing-component"
+                        context="initiative"
+                        url={initiativeUrl}
+                        facebookMessage={formatMessage(
+                          messages.facebookMessage,
+                          {
+                            initiativeTitle,
+                          }
+                        )}
+                        twitterMessage={formatMessage(messages.twitterMessage, {
+                          initiativeTitle,
+                        })}
+                        whatsAppMessage={formatMessage(
+                          messages.whatsAppMessage,
+                          {
+                            initiativeTitle,
+                          }
+                        )}
+                        emailSubject={formatMessage(
+                          messages.emailSharingSubject,
+                          { initiativeTitle }
+                        )}
+                        emailBody={formatMessage(messages.emailSharingBody, {
+                          initiativeUrl,
+                          initiativeTitle,
+                        })}
+                        utmParams={utmParams}
+                      />
+                    </SharingWrapper>
+                  )}
                 </MetaContent>
               </RightColumnDesktop>
             )}

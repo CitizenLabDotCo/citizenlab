@@ -33,6 +33,10 @@ class InitiativeStatus < ApplicationRecord
   validates :code, uniqueness: true, unless: :custom?
   validates :description_multiloc, presence: true, multiloc: { presence: true }
 
+  def public?
+    code.in?(NOT_REVIEW_CODES)
+  end
+
   def custom?
     code == 'custom'
   end
