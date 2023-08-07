@@ -89,36 +89,38 @@ const RightColumnDesktop = ({
       className={className}
     >
       <InnerContainer>
-        {showGreyBox && (
-          <Box
-            padding="20px"
-            borderRadius="3px"
-            background={colors.background}
-            mb="12px"
-          >
-            <StyledReactionControl
-              styleType="shadow"
-              ideaId={ideaId}
-              size="4"
-            />
-            <Box pb="23px" mb="23px" borderBottom="solid 1px #ccc">
-              {participationContext &&
-                ideaIsInParticipationContext &&
-                votingConfig?.getIdeaPageVoteInput({
-                  ideaId,
-                  participationContext,
-                  compact: false,
-                })}
-            </Box>
-            {commentingEnabled && <Buttons />}
-            <FollowUnfollow
-              followableType="ideas"
-              followableId={ideaId}
-              followersCount={idea.data.attributes.followers_count}
-              followerId={idea.data.relationships.user_follower?.data?.id}
-            />
-          </Box>
-        )}
+        <Box
+          padding="20px"
+          borderRadius="3px"
+          background={colors.background}
+          mb="12px"
+        >
+          {showGreyBox && (
+            <>
+              <StyledReactionControl
+                styleType="shadow"
+                ideaId={ideaId}
+                size="4"
+              />
+              <Box pb="23px" mb="23px" borderBottom="solid 1px #ccc">
+                {participationContext &&
+                  ideaIsInParticipationContext &&
+                  votingConfig?.getIdeaPageVoteInput({
+                    ideaId,
+                    participationContext,
+                    compact: false,
+                  })}
+              </Box>
+              {commentingEnabled && <Buttons />}
+            </>
+          )}
+          <FollowUnfollow
+            followableType="ideas"
+            followableId={ideaId}
+            followersCount={idea.data.attributes.followers_count}
+            followerId={idea.data.relationships.user_follower?.data?.id}
+          />
+        </Box>
         <Box mb="16px">
           <IdeaSharingButton
             ideaId={ideaId}
