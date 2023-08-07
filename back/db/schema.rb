@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_27_145653) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_01_141534) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -285,6 +285,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_27_145653) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["content_buildable_type", "content_buildable_id", "code"], name: "index_content_builder_layouts_content_buidable_type_id_code", unique: true
+  end
+
+  create_table "cosponsors_initiatives", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "status", default: "pending", null: false
+    t.uuid "user_id", null: false
+    t.uuid "initiative_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["initiative_id"], name: "index_cosponsors_initiatives_on_initiative_id"
+    t.index ["user_id"], name: "index_cosponsors_initiatives_on_user_id"
   end
 
   create_table "custom_field_options", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1520,6 +1530,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_27_145653) do
   add_foreign_key "baskets_ideas", "baskets"
   add_foreign_key "baskets_ideas", "ideas"
   add_foreign_key "comments", "users", column: "author_id"
+  add_foreign_key "cosponsors_initiatives", "initiatives"
+  add_foreign_key "cosponsors_initiatives", "users"
   add_foreign_key "custom_field_options", "custom_fields"
   add_foreign_key "email_campaigns_campaign_email_commands", "users", column: "recipient_id"
   add_foreign_key "email_campaigns_campaigns", "users", column: "author_id"
