@@ -27,7 +27,7 @@
 #  fk_rails_...  (author_id => users.id)
 #
 module EmailCampaigns
-  class Campaigns::OfficialFeedbackOnReactedInitiative < Campaign
+  class Campaigns::OfficialFeedbackOnInitiativeYouFollow < Campaign
     include Consentable
     include ActivityTriggerable
     include RecipientConfigurable
@@ -39,11 +39,11 @@ module EmailCampaigns
     recipient_filter :filter_notification_recipient
 
     def mailer_class
-      OfficialFeedbackOnReactedInitiativeMailer
+      OfficialFeedbackOnInitiativeYouFollowMailer
     end
 
     def activity_triggers
-      { 'Notifications::OfficialFeedbackOnReactedInitiative' => { 'created' => true } }
+      { 'Notifications::OfficialFeedbackOnInitiativeYouFollow' => { 'created' => true } }
     end
 
     def filter_notification_recipient(users_scope, activity:, time: nil)
@@ -55,7 +55,7 @@ module EmailCampaigns
     end
 
     def self.recipient_segment_multiloc_key
-      'email_campaigns.admin_labels.recipient_segment.users_who_engaged_with_the_proposal'
+      'email_campaigns.admin_labels.recipient_segment.user_who_published_the_proposal'
     end
 
     def self.content_type_multiloc_key

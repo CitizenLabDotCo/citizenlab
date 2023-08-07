@@ -60,34 +60,25 @@
 #  fk_rails_...  (spam_report_id => spam_reports.id)
 #
 module Notifications
-  class OfficialFeedbackOnReactedInitiative < Notification
-    validates :initiating_user, :official_feedback, :post, presence: true
-    validates :post_type, inclusion: { in: ['Initiative'] }
+  class OfficialFeedbackOnIdeaYouFollow < Notification
+    validates :initiating_user, :official_feedback, :post, :project, presence: true
+    validates :post_type, inclusion: { in: ['Idea'] }
 
     ACTIVITY_TRIGGERS = { 'OfficialFeedback' => { 'created' => true } }
-    EVENT_NAME = 'Official feedback on reacted initiative'
+    EVENT_NAME = 'Official feedback on idea you follow'
 
     def self.make_notifications_on(activity)
       official_feedback = activity.item
       initiator_id = official_feedback.user_id
 
-      if official_feedback.post_type == 'Initiative' && initiator_id && !InitiativeStatusChange.exists?(official_feedback: official_feedback)
-        comment_author_ids = User.active
-          .joins(:comments).merge(Comment.published)
-          .where(comments: { post: official_feedback.post })
-          .distinct
-          .ids
-        reactor_ids = User.active
-          .joins(:reactions).where(reactions: { reactable: official_feedback.post })
-          .distinct
-          .ids
-
-        (reactor_ids - [initiator_id, *comment_author_ids, official_feedback.post.author_id]).map do |recipient_id|
+      if official_feedback.post_type == 'Idea' && initiator_id
+        User.from_follows(official_feedback.post.followers).where.not(id: initiator_id).map do |recipient_id|
           new(
             recipient_id: recipient_id,
             initiating_user_id: initiator_id,
             post: official_feedback.post,
-            official_feedback: official_feedback
+            official_feedback: official_feedback,
+            project_id: official_feedback.post.project_id
           )
         end
       else

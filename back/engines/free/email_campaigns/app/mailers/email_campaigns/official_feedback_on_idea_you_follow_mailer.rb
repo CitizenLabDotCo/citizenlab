@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module EmailCampaigns
-  class OfficialFeedbackOnYourIdeaMailer < ApplicationMailer
+  class OfficialFeedbackOnIdeaYouFollowMailer < ApplicationMailer
     private
 
     helper_method :author_name
