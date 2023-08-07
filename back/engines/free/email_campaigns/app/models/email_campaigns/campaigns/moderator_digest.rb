@@ -77,7 +77,7 @@ module EmailCampaigns
         next unless project
 
         statistics = statistics project
-        next unless nonzero_statistics? statistics
+        next unless nonzero_statistics?(statistics) && !project.admin_publication.archived?
 
         project_name = project.title_multiloc[recipient.locale] || project.title_multiloc[I18n.default_locale]
         top_ideas = top_ideas project, name_service
