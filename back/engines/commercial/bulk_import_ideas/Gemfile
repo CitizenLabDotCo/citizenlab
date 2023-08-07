@@ -2,5 +2,5 @@
 
 source 'https://rubygems.org'
 
+# TODO: Why does this not work from the engine
 gem 'google-cloud-document_ai'
-gem 'googleauth'

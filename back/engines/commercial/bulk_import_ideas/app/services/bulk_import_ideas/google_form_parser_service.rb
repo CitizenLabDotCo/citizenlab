@@ -6,53 +6,50 @@ module BulkImportIdeas
   class GoogleFormParserService
     def initialize(pdf_path)
       @pdf_path = pdf_path
-      @credentials = 'config/google_cloud.json' # Replace with the path to your Google Cloud credentials JSON file
     end
 
     def parse_form_fields
-      client = Google::Cloud::DocumentAI.document_processor_v1beta3
+      client = Google::Cloud::DocumentAI.document_processor_service
 
-      client.configure do |config|
-        config.credentials = @credentials
-      end
 
-      parent = "projects/thematic-axle-394913/locations/eu" # Replace with your Google Cloud Project ID and location
+      # Build the resource name from the project.
+      name = client.processor_path(
+        project: 'thematic-axle-394913',
+        location: 'us', # Invalid location: 'eu' must match the server deployment 'us'
+        processor: 'e894aff43df677e0' # TODO: An ID, but where do we create this? Probably need to do with API
+      )
 
-      input_config = {
-        gcs_source: {
-          uri: @pdf_path
-        },
-        mime_type: 'application/pdf'
-      }
+      # Read the bytes into memory
+      content = File.binread @pdf_path
 
-      form_parser_params = {
+      # Create request
+      request = Google::Cloud::DocumentAI::V1::ProcessRequest.new(
+        skip_human_review: true,
+        name: name,
         raw_document: {
-          source: input_config
+          content: content,
+          mime_type: 'application/pdf'
         }
-      }
+      )
 
-      request = {
-        form_parser_params: form_parser_params
-      }
+      # Process document
+      response = client.process_document request
 
-      operation = client.process_document(parent: parent, document: request)
+      # Handle response
+      puts response.document.text
 
-      operation.wait_until_done!
 
-      if operation.error?
-        raise operation.error
-      end
 
       # Extract and format the parsed fields
-      parsed_fields = operation.response.form_parser.extracted_form_fields.map do |field|
-        {
-          type: field.field_name.type,
-          label: field.field_name.display_name,
-          value: field.field_value.text_anchor.text
-        }
-      end
-
-      parsed_fields
+      # parsed_fields = operation.response.form_parser.extracted_form_fields.map do |field|
+      #   {
+      #     type: field.field_name.type,
+      #     label: field.field_name.display_name,
+      #     value: field.field_value.text_anchor.text
+      #   }
+      # end
+      #
+      # parsed_fields
     end
   end
 end

@@ -151,6 +151,7 @@ gem 'rack-attack', '~> 6'
 gem 'intercom', '~> 4.2'
 gem 'mjml-rails', '~> 4.9'
 gem 'cloudfront-rails', '~> 0.4'
+gem 'google-cloud-document_ai'
 
 free_engines = %w[
   document_annotation
