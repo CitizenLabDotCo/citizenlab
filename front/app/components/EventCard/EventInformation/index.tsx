@@ -60,6 +60,10 @@ const EventInformation = ({
         'LT'
       )} - ${endAtMoment.format('LT')}`;
 
+  const registerAttendance = () => {
+    console.log('Register attendance functiony');
+  };
+
   return (
     <EventInformationContainer data-testid="EventInformation">
       <Box>
@@ -116,6 +120,10 @@ const EventInformation = ({
         width={isMobile ? '100%' : '320px'}
         iconPos="right"
         icon="plus"
+        onClick={(event) => {
+          event.preventDefault();
+          registerAttendance();
+        }}
       >
         {formatMessage(messages.attend)}
       </Button>
