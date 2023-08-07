@@ -44,8 +44,6 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
 
         # Write description if it exists
         description = custom_field.description_multiloc[locale]
-
-        puts description
  
         unless description.nil? then
           pdf.move_down 5.mm
@@ -94,8 +92,7 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
   def parse_html_tags(string)
     string
       .gsub(FORBIDDEN_HTML_TAGS_REGEX, '')
-      .gsub('</p>', '')
-      .split(/<(p|br)>/)
-      .filter { |str| !(%w[p br].include? str) }
+      .gsub('<p>', '')
+      .split('</p>')
   end
 end
