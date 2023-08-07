@@ -1,10 +1,12 @@
 # frozen_string_literal: true
-require "prawn"
+require 'prawn'
 
 class WebApi::V1::ProjectCustomFieldsController < ApplicationController
   skip_after_action :verify_policy_scoped
   skip_after_action :verify_authorized
   skip_before_action :authenticate_user
+
+  QUESTION_TYPES = %w[select]
 
   def json_forms_schema
     if project && participation_context
@@ -14,10 +16,29 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
     end
   end
 
-  # https://www.grzegorowski.com/using-prawn-gem-for-generating-pdfs-in-rails-5
   def to_pdf
     pdf = Prawn::Document.new
-    pdf.text "Hellow World!"
+    pdf.text 'Hellow World!'
+
+    custom_fields.each_with_index do |custom_field, i|
+      # First custom_field should always be a page.
+      # Since the pdf already has a page when it's
+      # created we can skip this.
+      next if i == 0
+
+      if custom_field.input_type == 'page' then
+        pdf.start_new_page
+        next
+      end
+      
+      if QUESTION_TYPES.include? custom_field.input_type then
+        puts custom_field.input_type
+      else
+        puts custom_field.input_type
+        # TODO throw error or something once we have covered all the fields
+      end
+    end
+
 
     send_data(
       pdf.render,
