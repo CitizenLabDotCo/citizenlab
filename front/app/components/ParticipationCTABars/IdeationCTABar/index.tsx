@@ -55,7 +55,7 @@ export const IdeationCTABar = ({ phases, project }: CTABarProps) => {
     scrollToElement({ id: 'project-ideas', shouldFocus: true });
   };
 
-  let CTAButton: React.ReactNode = null;
+  let CTAButton: React.ReactNode | null = null;
 
   if (hasUserParticipated) {
     CTAButton = null;
