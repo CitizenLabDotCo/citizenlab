@@ -47,6 +47,7 @@ export const IdeationCTABar = ({ phases, project }: CTABarProps) => {
     phase: currentPhase,
     authUser: authUser?.data,
   });
+
   const hasUserParticipated = disabledReason === 'postingLimitedMaxReached';
 
   const scrollToIdeas = (event: FormEvent) => {
