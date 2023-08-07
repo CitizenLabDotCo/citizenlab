@@ -18,7 +18,6 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
 
   def to_pdf
     pdf = Prawn::Document.new
-    pdf.text 'Hellow World!'
 
     custom_fields.each_with_index do |custom_field, i|
       # First custom_field should always be a page.
@@ -32,7 +31,8 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
       end
       
       if QUESTION_TYPES.include? custom_field.input_type then
-        puts custom_field.input_type
+        # Write title
+        pdf.text custom_field.title_multiloc[params[:locale]]
       else
         puts custom_field.input_type
         # TODO throw error or something once we have covered all the fields

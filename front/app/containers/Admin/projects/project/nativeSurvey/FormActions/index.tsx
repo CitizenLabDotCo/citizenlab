@@ -21,16 +21,17 @@ import { Multiloc } from 'typings';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
-// api
+// hooks
 import useFormSubmissionCount from 'hooks/useFormSubmissionCount';
 import useInputSchema from 'hooks/useInputSchema';
-import { saveSurveyAsPDF } from './saveSurveyAsPDF';
+import useLocale from 'hooks/useLocale';
 
 // styles
 import { colors } from 'utils/styleUtils';
 
 // services
 import { deleteFormResults } from 'services/formCustomFields';
+import { saveSurveyAsPDF } from './saveSurveyAsPDF';
 
 type FormActionsProps = {
   phaseId?: string;
@@ -61,6 +62,7 @@ const FormActions = ({
     phaseId,
   });
   const { uiSchema } = useInputSchema({ projectId, phaseId });
+  const locale = useLocale();
 
   const closeModal = () => {
     setShowDeleteModal(false);
@@ -74,8 +76,8 @@ const FormActions = ({
   };
 
   const saveSurvey = async () => {
-    if (!uiSchema) return;
-    await saveSurveyAsPDF({ projectId });
+    if (!uiSchema || isNilOrError(locale)) return;
+    await saveSurveyAsPDF({ projectId, locale });
   };
 
   if (!isNilOrError(submissionCount)) {
