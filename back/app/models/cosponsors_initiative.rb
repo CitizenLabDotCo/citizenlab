@@ -5,7 +5,7 @@
 # Table name: cosponsors_initiatives
 #
 #  id            :uuid             not null, primary key
-#  status        :string           not null
+#  status        :string           default("pending"), not null
 #  user_id       :uuid             not null
 #  initiative_id :uuid             not null
 #  created_at    :datetime         not null
