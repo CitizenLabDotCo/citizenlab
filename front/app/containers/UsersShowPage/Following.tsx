@@ -9,6 +9,8 @@ import FilterSelector from 'components/FilterSelector';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import ProjectFolderCard from 'components/ProjectAndFolderCards/components/ProjectFolderCard';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useAuthUser from 'api/me/useAuthUser';
 
 interface IFilterOption {
   text: JSX.Element;
@@ -25,7 +27,11 @@ const options: IFilterOption[] = [
   },
 ];
 
-const Following = () => {
+interface Props {
+  userId: string;
+}
+
+const Following = ({ userId }: Props) => {
   const [selectedValue, setSelectedValue] =
     useState<FollowableObject>('Project');
   const { data: followers, isLoading } = useFollowers({
@@ -34,6 +40,13 @@ const Following = () => {
   const handleOnChange = (selectedValue: [FollowableObject]) => {
     setSelectedValue(selectedValue[0]);
   };
+  const isFollowingEnabled = useFeatureFlag({
+    name: 'follow',
+  });
+  const { data: authUser } = useAuthUser();
+  const showFollowing = isFollowingEnabled && authUser?.data?.id === userId;
+
+  if (!showFollowing) return null;
 
   return (
     <Box display="flex" w="100%" flexDirection="column">
