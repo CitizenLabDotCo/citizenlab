@@ -119,6 +119,7 @@ const UserNavbar = memo<Props>(({ currentTab, selectTab, userId }) => {
     name: 'follow',
   });
   const { data: authUser } = useAuthUser();
+  const showFollowingTab = isFollowingEnabled && authUser?.data?.id === userId;
 
   return (
     <UserNavbarWrapper role="tablist">
@@ -156,7 +157,7 @@ const UserNavbar = memo<Props>(({ currentTab, selectTab, userId }) => {
           />
         )}
       </UserNavbarButton>
-      {isFollowingEnabled && (
+      {showFollowingTab && (
         <UserNavbarButton
           onMouseDown={removeFocusAfterMouseClick}
           onClick={selectTab('following')}
