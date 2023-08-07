@@ -17,7 +17,7 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
   end
 
   def to_pdf
-    pdf = Prawn::Document.new
+    pdf = Prawn::Document.new(page_size: 'A4')
 
     custom_fields.each_with_index do |custom_field, i|
       # First custom_field should always be a page.
@@ -26,7 +26,7 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
       next if i == 0
 
       if custom_field.input_type == 'page' then
-        pdf.start_new_page
+        pdf.start_new_page(size: 'A4')
         next
       end
       
