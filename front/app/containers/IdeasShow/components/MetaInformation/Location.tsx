@@ -6,7 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { isNil } from 'lodash-es';
 
 // components
-import { Icon, colors } from '@citizenlab/cl2-component-library';
+import { Icon, Text, colors } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
 import Map, { Point } from 'components/Map';
 import {
@@ -122,15 +122,28 @@ const Location = memo<Props>(({ projectId, ideaId, compact, className }) => {
     setIsOpened(true);
   };
 
-  if (address && points) {
+  if (address) {
     return (
       <Item className={className || ''} compact={compact}>
         <Header>{formatMessage(messages.location)}</Header>
         <Container>
           <StyledIcon name="position" ariaHidden />
-          <OpenMapModalButton id="e2e-map-popup" onClick={openModal}>
-            {address}
-          </OpenMapModalButton>
+          {point && (
+            <OpenMapModalButton id="e2e-map-popup" onClick={openModal}>
+              {address}
+            </OpenMapModalButton>
+          )}
+          {!point && (
+            <Text
+              m="0px"
+              p="0px"
+              id="e2e-address-text-only"
+              color="coolGrey600"
+              fontSize="s"
+            >
+              {address}
+            </Text>
+          )}
         </Container>
         <Modal
           opened={isOpened}

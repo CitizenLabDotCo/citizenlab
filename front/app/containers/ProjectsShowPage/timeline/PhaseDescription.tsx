@@ -5,7 +5,7 @@ import { isEmpty } from 'lodash-es';
 // components
 import FileAttachments from 'components/UI/FileAttachments';
 import PhaseTitle from './PhaseTitle';
-import ReadMoreWrapper from 'containers/ProjectsShowPage/shared/header/ReadMoreWrapper';
+import ReadMoreWrapper from 'components/ReadMoreWrapper/ReadMoreWrapper';
 
 // hooks
 import useLocalize from 'hooks/useLocalize';

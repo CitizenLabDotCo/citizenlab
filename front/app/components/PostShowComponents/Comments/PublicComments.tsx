@@ -51,6 +51,8 @@ const StyledCommentSorting = styled(CommentSorting)`
   width: 100%;
 
   ${media.phone`
+    margin-left: 16px;
+    margin-top: 4px;
     justify-content: flex-start;
   `}
 `;
