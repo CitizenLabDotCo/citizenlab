@@ -121,7 +121,6 @@ resource 'Events' do
 
     example_request 'Get one event by id' do
       expect(status).to eq 200
-      json_response = json_parse(response_body)
       expect(response_data.with_indifferent_access).to include(
         id: event.id,
         type: 'event',

@@ -2,12 +2,10 @@
 
 module Events
   class SideFxAttendanceService < BaseSideFxService
-
     private
 
     def resource_name
-      :"events/attendance"
+      :'events/attendance'
     end
   end
 end
-

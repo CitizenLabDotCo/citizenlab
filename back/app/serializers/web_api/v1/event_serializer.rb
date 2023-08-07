@@ -8,7 +8,7 @@ class WebApi::V1::EventSerializer < WebApi::V1::BaseSerializer
     :start_at,
     :end_at,
     :created_at,
-    :updated_at,
+    :updated_at
   )
 
   attribute :description_multiloc do |object|
