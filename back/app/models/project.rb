@@ -202,7 +202,7 @@ class Project < ApplicationRecord
     admin_publication&.parent&.publication_id
   end
 
-  def folder?
+  def in_folder?
     !!folder_id
   end
 

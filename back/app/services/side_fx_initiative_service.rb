@@ -48,8 +48,6 @@ class SideFxInitiativeService
     LogActivityJob.perform_later(initiative, 'changed_body', user_for_activity_on_anonymizable_item(initiative, user), initiative.updated_at.to_i, payload: { change: initiative.body_multiloc_previous_change })
   end
 
-  def before_destroy(initiative, user); end
-
   def after_destroy(frozen_initiative, user)
     serialized_initiative = clean_time_attributes(frozen_initiative.attributes)
     serialized_initiative['location_point'] = serialized_initiative['location_point'].to_s
@@ -65,6 +63,7 @@ class SideFxInitiativeService
   def after_publish(initiative, user)
     add_autoreaction initiative
     log_activity_jobs_after_published initiative, user
+    create_followers initiative, user
   end
 
   def set_assignee(initiative)
@@ -82,6 +81,10 @@ class SideFxInitiativeService
 
   def log_activity_jobs_after_published(initiative, user)
     LogActivityJob.set(wait: 20.seconds).perform_later(initiative, 'published', user_for_activity_on_anonymizable_item(initiative, user), initiative.published_at.to_i)
+  end
+
+  def create_followers(initiative, user)
+    Follower.find_or_create_by(followable: initiative, user: user)
   end
 end
 
