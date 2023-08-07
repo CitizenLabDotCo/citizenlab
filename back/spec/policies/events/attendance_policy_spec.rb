@@ -61,7 +61,7 @@ RSpec.describe Events::AttendancePolicy do
     it "scopes only include the user's own attendances" do
       create_list(:event_attendance, 2)
       create(:event_attendance, attendee: user)
-      expect(scope.resolve.count).to eq(1)
+      expect { scope.resolve.count }.to raise_error(Pundit::NotAuthorizedError)
     end
   end
 end
