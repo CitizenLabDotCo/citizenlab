@@ -13,6 +13,7 @@ PATH
   remote: engines/commercial/analysis
   specs:
     analysis (0.1.0)
+      nlpcloud (~> 1.0)
       rails (~> 7.0)
 
 PATH
@@ -728,6 +729,8 @@ GEM
       net-protocol
     netrc (0.11.0)
     nio4r (2.5.9)
+    nlpcloud (1.0.43)
+      rest-client (~> 2.1)
     nokogiri (1.14.5-aarch64-linux)
       racc (~> 1.4)
     nokogiri (1.14.5-arm64-darwin)
