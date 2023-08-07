@@ -39,19 +39,15 @@ module Analysis
     }.with_indifferent_access.freeze
 
     def retry_rate_limit(retry_count = 10, interval = 5)
-      retry_count.times do |r|
-        yield(r)
-        break
+      retry_count.times do |retry_attempt_no|
+        break yield(retry_attempt_no)
       rescue RestClient::TooManyRequests
-        puts "NLPCloud 429: Too many requests. Retrying in #{interval}s (attempt #{r + 1}/#{retry_count})"
-        sleep 5
+        puts "NLPCloud 429: Too many requests. Retrying in #{interval}s (attempt #{retry_attempt_no + 1}/#{retry_count})"
+        sleep interval
       rescue Errno::ENETUNREACH
-        puts "NLPCloud unreachable. Retrying in #{interval}s (attempt #{r + 1}/#{retry_count})"
+        puts "NLPCloud unreachable. Retrying in #{interval}s (attempt #{retry_attempt_no + 1}/#{retry_count})"
+        sleep interval
       end
-    end
-
-    def cl_to_nlpc_locale(cl_locale)
-      LOCALE_MAPPING[cl_locale]
     end
 
     def nlp_cloud_client_for(model, locale = nil, **options)
@@ -62,6 +58,12 @@ module Analysis
         ENV.fetch('NLPCLOUD_TOKEN'),
         **options.merge(lang ? { lang: lang } : {})
       )
+    end
+
+    private
+
+    def cl_to_nlpc_locale(cl_locale)
+      LOCALE_MAPPING[cl_locale]
     end
   end
 end
