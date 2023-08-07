@@ -54,8 +54,6 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
             pdf.text(paragraph, inline_format: true)
           end
         end
-
-
       else
         puts custom_field.input_type
         # TODO throw error or something once we have covered all the fields
