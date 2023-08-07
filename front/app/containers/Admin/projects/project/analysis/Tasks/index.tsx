@@ -1,7 +1,12 @@
 import React from 'react';
 import useAnalysisBackgroundTasks from 'api/analysis_background_tasks/useAnalysisBackgroundTasks';
 import { useParams } from 'react-router-dom';
-import { Accordion, Box, colors } from '@citizenlab/cl2-component-library';
+import {
+  Accordion,
+  Box,
+  Spinner,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import ProgressBar from 'components/UI/ProgressBar';
 import styled from 'styled-components';
 
@@ -14,9 +19,24 @@ const Tasks = () => {
   const { analysisId } = useParams() as { analysisId: string };
   const { data: tasks } = useAnalysisBackgroundTasks(analysisId);
 
+  const anythingInProgress = tasks?.data.find(
+    (t) =>
+      t.attributes.state === 'in_progress' || t.attributes.state === 'queued'
+  );
+
   return (
     <Box bg="white" mb="8px">
-      <Accordion title={<Box p="24px">Recent tasks</Box>}>
+      <Accordion
+        title={
+          <Box p="24px">
+            {anythingInProgress ? (
+              <Spinner size="20px" />
+            ) : (
+              'Recent background jobs'
+            )}
+          </Box>
+        }
+      >
         <Box>
           {tasks?.data.map((task) => {
             return (

@@ -31,17 +31,18 @@ const InputsList = ({ onSelectInput, selectedInputId }: Props) => {
   };
 
   return (
-    <Box bg={colors.white} w="100%" p="24px">
+    <Box bg={colors.white} w="100%">
       <Box display="flex" justifyContent="flex-end">
         <Button
-          icon="pen"
-          size="s"
+          icon="flash"
           mb="12px"
-          buttonStyle="primary"
+          size="s"
+          w="100%"
+          buttonStyle="secondary-outlined"
           onClick={handleSummaryCreate}
           disabled={isLoading}
         >
-          Summarize
+          Auto-summarize {inputs?.length} inputs
         </Button>
       </Box>
       {inputs?.map((input) => (

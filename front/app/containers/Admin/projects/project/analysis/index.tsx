@@ -62,8 +62,9 @@ const Analysis = () => {
             overflow="auto"
             h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
             p="12px"
+            mt="12px"
+            bg={colors.white}
           >
-            <Tasks />
             <InputsList
               onSelectInput={(inputId) => setSelectedInputId(inputId)}
               selectedInputId={selectedInputId}
@@ -74,8 +75,15 @@ const Analysis = () => {
             overflow="auto"
             h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
             p="12px"
+            display="flex"
+            flexDirection="column"
           >
-            {selectedInputId && <InputPreview inputId={selectedInputId} />}
+            <Box flex="1">
+              {selectedInputId && <InputPreview inputId={selectedInputId} />}
+            </Box>
+            <Box h="60px">
+              <Tasks />
+            </Box>
           </Box>
         </Box>
       </FocusOn>
