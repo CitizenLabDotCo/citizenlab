@@ -12,6 +12,7 @@
 #  updated_at           :datetime         not null
 #  ordering             :integer
 #  code                 :string           default("custom"), not null
+#  followers_count      :integer          default(0), not null
 #
 class Topic < ApplicationRecord
   DEFAULT_CODES = %w[nature waste sustainability mobility technology economy housing public_space safety education culture health inclusion community services other].freeze
