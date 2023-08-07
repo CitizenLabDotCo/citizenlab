@@ -7,7 +7,28 @@ class WebApi::V1::EventsController < ApplicationController
   def index
     events = EventsFinder.new(params, scope: policy_scope(Event), current_user: current_user).find_records
     events = paginate SortByParamsService.new.sort_events(events, params)
-    render json: linked_json(events, WebApi::V1::EventSerializer, params: jsonapi_serializer_params)
+
+    serializer_params = jsonapi_serializer_params
+      .merge(current_user_attendances: current_user_attendances(events))
+
+    render json: linked_json(
+      events,
+      WebApi::V1::EventSerializer,
+      params: serializer_params
+    )
+  end
+
+  def index_by_attendee
+    # Here, we used `Pundit` in an unconventional manner by passing the `attendee_id`
+    # parameter instead of an Event instance. The first thing to note is that this is an
+    # index action. So, it is not about a single Event instance, but rather a collection
+    # of them. But, most importantly, what we are checking here is not whether the
+    # current user is permitted to view the events (since most events are public and
+    # visible to anyone). Instead, we are verifying whether the current user is allowed
+    # to view the events to which the attendee is registered. The events are scoped down
+    # as a second step in `#index` to which this action delegates.
+    authorize(params[:attendee_id], policy_class: EventPolicy)
+    index
   end
 
   def show
@@ -53,6 +74,14 @@ class WebApi::V1::EventsController < ApplicationController
   end
 
   private
+
+  def current_user_attendances(events)
+    return {} unless current_user
+
+    Events::Attendance
+      .where(event: events, attendee: current_user)
+      .index_by(&:event_id)
+  end
 
   def set_event
     @event = Event.find(params[:id])

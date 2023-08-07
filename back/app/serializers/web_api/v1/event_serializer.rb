@@ -17,4 +17,16 @@ class WebApi::V1::EventSerializer < WebApi::V1::BaseSerializer
   end
 
   belongs_to :project
+
+  belongs_to(
+    :user_attendance,
+    record_type: WebApi::V1::Events::AttendanceSerializer.record_type,
+    serializer: WebApi::V1::Events::AttendanceSerializer
+  ) do |event, params|
+    if (attendances = params[:current_user_attendances])
+      attendances[event.id]
+    elsif signed_in?(event, params)
+      event.attendances.find_by(attendee: params[:current_user])
+    end
+  end
 end

@@ -12,6 +12,7 @@ class BaseSideFxService
   end
 
   def after_destroy(frozen_resource, user)
+    require 'pry'; binding.pry
     serialized_resource = clean_time_attributes(frozen_resource.attributes)
     LogActivityJob.perform_later(
       encode_frozen_resource(frozen_resource),
