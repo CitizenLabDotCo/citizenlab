@@ -151,7 +151,7 @@ module EmailCampaigns
          (statistics.dig(:users, :new_visitors, :increase) == 0) &&
          (statistics.dig(:users, :new_users, :increase) == 0) &&
          (statistics.dig(:users, :active_users, :increase) == 0)
-       )
+      )
     end
 
     def days_ago
