@@ -406,53 +406,21 @@ en:
       subject: 'You have received a comment on your internal comment on ''%{post}'''
       main_header: 'You have received a comment on your internal comment on ''%{post}'''
       preheader: '%{authorName} replied to your internal comment on ''%{post}'''
-    official_feedback_on_commented_initiative:
-      by_author: 'by %{authorName}'
-      updated: '%{officialName} wrote:'
-      cta_view: 'Go to this proposal'
-      event_description: '%{officialName} gave an update on the proposal ''%{initiativeTitle}''. Click the button below to enter the conversation with %{organizationName}.'
-      main_header: 'There''s an update on an proposal you commented on'
-      subject: 'A proposal you commented on has received an official update on the platform of %{organizationName}'
-      preheader: '%{officialName} left an official update on an proposal you commented on'
-    official_feedback_on_voted_idea:
+    official_feedback_on_idea_you_follow:
       by_author: 'by %{authorName}'
       updated: '%{officialName} wrote:'
       cta_view: 'Go to this idea'
       event_description: '%{officialName} gave an update on the idea ''%{ideaTitle}''. Click the button below to enter the conversation with %{officialName}.'
-      subject: 'An idea you voted on has received an update on the platform of %{organizationName}'
-      preheader: '%{officialName} left an update on an idea you voted on'
-      main_header: ""
-    official_feedback_on_commented_idea:
-      by_author: 'by %{authorName}'
-      updated: '%{officialName} wrote:'
-      cta_view: 'Go to this idea'
-      event_description: '%{officialName} gave an update on the idea ''%{ideaTitle}''. Click the button below to enter the conversation with %{officialName}.'
-      main_header: 'There''s an update on an idea you commented on'
-      subject: 'An idea you commented on has received an official update on the platform of %{organizationName}'
-      preheader: '%{officialName} left an official update on an idea you commented on'
-    official_feedback_on_your_idea:
-      by_author: 'by %{authorName}'
-      updated: '%{officialName} wrote:'
-      cta_view: 'Go to your idea'
-      event_description: '%{officialName} gave an update on your idea ''%{ideaTitle}''. Click the button below to enter the conversation with %{officialName}.'
       main_header: 'You received an update from %{organizationName}'
       subject: 'You received an update from %{organizationName}'
-      preheader: '%{officialName} left an official update on your idea'
-    official_feedback_on_voted_initiative:
-      by_author: 'by %{authorName}'
+      preheader: '%{officialName} left an official update on an idea you follow'
+    official_feedback_on_initiative_you_follow:
       updated: '%{officialName} wrote:'
       cta_view: 'Go to this proposal'
       event_description: '%{officialName} gave an update on the proposal ''%{initiativeTitle}''. Click the button below to enter the conversation with %{organizationName}.'
-      main_header: 'There''s an update on an proposal you voted on'
-      subject: 'A proposal you voted on has received an official update on the platform of %{organizationName}'
-      preheader: '%{officialName} left an official update on a proposal you voted on'
-    official_feedback_on_your_initiative:
-      updated: '%{officialName} wrote:'
-      cta_view: 'Go to your proposal'
-      event_description: '%{officialName} gave an update on your proposal ''%{initiativeTitle}''. Click the button below to enter the conversation with %{organizationName}.'
       main_header: 'You received an update from %{officialName}'
       subject: 'You''ve received an official update on the platform of %{organizationName}'
-      preheader: '%{officialName} left an official update on your proposal'
+      preheader: '%{officialName} left an official update on a proposal you follow'
     project_moderation_rights_received:
       cta_moderate_project: 'Moderate this project'
       message_you_became_moderator: 'An adminstrator of the participation platform of %{organizationName} just made you project manager of the following project:'
