@@ -32,7 +32,14 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
       
       if QUESTION_TYPES.include? custom_field.input_type then
         # Write title
-        pdf.text custom_field.title_multiloc[params[:locale]]
+        pdf.text(
+          "<b>#{custom_field.title_multiloc[params[:locale]]}</b>",
+          size: 20,
+          inline_format: true
+        )
+
+        # Write description
+        # TODO
       else
         puts custom_field.input_type
         # TODO throw error or something once we have covered all the fields
