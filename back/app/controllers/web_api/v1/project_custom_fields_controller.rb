@@ -8,6 +8,7 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
   skip_before_action :authenticate_user
 
   QUESTION_TYPES = %w[select]
+  FORBIDDEN_HTML_TAGS_REGEX = /<\/?(p|div|span|ul|ol|li|em|img|a){1}[^>]*\/?>/
 
   def json_forms_schema
     if project && participation_context
@@ -43,11 +44,13 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
 
         # Write description if it exists
         description = custom_field.description_multiloc[locale]
+
+        puts description
  
         unless description.nil? then
           pdf.move_down 5.mm
           pdf.text(
-            description,
+            convert_html_tags(description),
             inline_format: true
           )
         end
@@ -83,5 +86,11 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
 
   def custom_fields
     IdeaCustomFieldsService.new(Factory.instance.participation_method_for(participation_context).custom_form).enabled_fields
+  end
+
+  def convert_html_tags(string)
+    string
+      .gsub(FORBIDDEN_HTML_TAGS_REGEX, '')
+      .gsub(/<\/?(br){1}[^>]*\/?>/, '\n')
   end
 end
