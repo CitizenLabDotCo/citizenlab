@@ -39,7 +39,7 @@ class WebApi::V1::InitiativeSerializer < WebApi::V1::BaseSerializer
   attribute :cosponsorships do |object, params|
     name_service = UserDisplayNameService.new(AppConfiguration.instance, current_user(params))
 
-    object&.cosponsors_initiatives&.map do |ci|
+    object.cosponsors_initiatives.includes(:user).map do |ci|
       { user_id: ci.user_id, name: name_service.display_name!(ci.user), status: ci.status }
     end
   end
