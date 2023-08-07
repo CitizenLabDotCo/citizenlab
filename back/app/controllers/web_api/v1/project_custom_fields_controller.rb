@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 require 'prawn'
+require 'prawn/measurement_extensions'
 
 class WebApi::V1::ProjectCustomFieldsController < ApplicationController
   skip_after_action :verify_policy_scoped
@@ -29,17 +30,29 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
         pdf.start_new_page(size: 'A4')
         next
       end
+
+      locale = params[:locale]
       
       if QUESTION_TYPES.include? custom_field.input_type then
         # Write title
         pdf.text(
-          "<b>#{custom_field.title_multiloc[params[:locale]]}</b>",
+          "<b>#{custom_field.title_multiloc[locale]}</b>",
           size: 20,
           inline_format: true
         )
 
-        # Write description
-        # TODO
+        # Write description if it exists
+        description = custom_field.description_multiloc[locale]
+ 
+        unless description.nil? then
+          pdf.move_down 5.mm
+          pdf.text(
+            description,
+            inline_format: true
+          )
+        end
+
+
       else
         puts custom_field.input_type
         # TODO throw error or something once we have covered all the fields
