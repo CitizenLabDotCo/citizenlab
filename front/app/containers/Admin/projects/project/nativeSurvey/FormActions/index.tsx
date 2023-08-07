@@ -12,6 +12,7 @@ import DeleteFormResultsNotice from '../DeleteFormResultsNotice';
 
 // routing
 import clHistory from 'utils/cl-router/history';
+import { useParams } from 'react-router-dom';
 
 // i18n
 import messages from '../messages';
@@ -20,10 +21,10 @@ import { Multiloc } from 'typings';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
-// hooks
-import { useParams } from 'react-router-dom';
+// api
 import useFormSubmissionCount from 'hooks/useFormSubmissionCount';
 import useInputSchema from 'hooks/useInputSchema';
+import { printSurvey } from 'api/idea_json_form_schema/printSurvey';
 
 // styles
 import { colors } from 'utils/styleUtils';
@@ -72,9 +73,9 @@ const FormActions = ({
     closeModal();
   };
 
-  const saveSurvey = () => {
+  const saveSurvey = async () => {
     if (!uiSchema) return;
-    // TODO
+    await printSurvey({ projectId });
   };
 
   if (!isNilOrError(submissionCount)) {

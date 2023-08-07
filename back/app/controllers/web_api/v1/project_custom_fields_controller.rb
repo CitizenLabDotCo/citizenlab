@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require "prawn"
 
 class WebApi::V1::ProjectCustomFieldsController < ApplicationController
   skip_after_action :verify_policy_scoped
@@ -11,6 +12,19 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
     else
       send_not_found
     end
+  end
+
+  # https://www.grzegorowski.com/using-prawn-gem-for-generating-pdfs-in-rails-5
+  def to_pdf
+    pdf = Prawn::Document.new
+    pdf.text "Hellow World!"
+
+    send_data (
+      pdf.render,
+      type: 'application/pdf',
+      filename: 'survey.pdf',
+      disposition: 'inline'
+    )
   end
 
   private
