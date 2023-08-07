@@ -138,27 +138,11 @@ FactoryBot.define do
     enabled { true }
   end
 
-  factory :official_feedback_on_commented_idea_campaign, class: EmailCampaigns::Campaigns::OfficialFeedbackOnCommentedIdea do
+  factory :official_feedback_on_idea_you_follow_campaign, class: EmailCampaigns::Campaigns::OfficialFeedbackOnIdeaYouFollow do
     enabled { true }
   end
 
-  factory :official_feedback_on_commented_initiative_campaign, class: EmailCampaigns::Campaigns::OfficialFeedbackOnCommentedInitiative do
-    enabled { true }
-  end
-
-  factory :official_feedback_on_reacted_idea_campaign, class: EmailCampaigns::Campaigns::OfficialFeedbackOnReactedIdea do
-    enabled { true }
-  end
-
-  factory :official_feedback_on_reacted_initiative_campaign, class: EmailCampaigns::Campaigns::OfficialFeedbackOnReactedInitiative do
-    enabled { true }
-  end
-
-  factory :official_feedback_on_your_idea_campaign, class: EmailCampaigns::Campaigns::OfficialFeedbackOnYourIdea do
-    enabled { true }
-  end
-
-  factory :official_feedback_on_your_initiative_campaign, class: EmailCampaigns::Campaigns::OfficialFeedbackOnYourInitiative do
+  factory :official_feedback_on_initiative_you_follow_campaign, class: EmailCampaigns::Campaigns::OfficialFeedbackOnInitiativeYouFollow do
     enabled { true }
   end
 

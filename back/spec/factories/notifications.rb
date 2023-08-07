@@ -149,40 +149,14 @@ FactoryBot.define do
     association :post, factory: :idea
   end
 
-  factory :official_feedback_on_commented_idea, parent: :notification, class: 'Notifications::OfficialFeedbackOnCommentedIdea' do
+  factory :official_feedback_on_idea_you_follow, parent: :notification, class: 'Notifications::OfficialFeedbackOnIdeaYouFollow' do
     initiating_user
     official_feedback
     association :post, factory: :idea
     project
   end
 
-  factory :official_feedback_on_commented_initiative, parent: :notification, class: 'Notifications::OfficialFeedbackOnCommentedInitiative' do
-    initiating_user
-    official_feedback
-    association :post, factory: :initiative
-  end
-
-  factory :official_feedback_on_reacted_idea, parent: :notification, class: 'Notifications::OfficialFeedbackOnReactedIdea' do
-    initiating_user
-    official_feedback
-    association :post, factory: :idea
-    project
-  end
-
-  factory :official_feedback_on_reacted_initiative, parent: :notification, class: 'Notifications::OfficialFeedbackOnReactedInitiative' do
-    initiating_user
-    official_feedback
-    association :post, factory: :initiative
-  end
-
-  factory :official_feedback_on_your_idea, parent: :notification, class: 'Notifications::OfficialFeedbackOnYourIdea' do
-    initiating_user
-    official_feedback
-    association :post, factory: :idea
-    project
-  end
-
-  factory :official_feedback_on_your_initiative, parent: :notification, class: 'Notifications::OfficialFeedbackOnYourInitiative' do
+  factory :official_feedback_on_initiative_you_follow, parent: :notification, class: 'Notifications::OfficialFeedbackOnInitiativeYouFollow' do
     initiating_user
     official_feedback
     association :post, factory: :initiative

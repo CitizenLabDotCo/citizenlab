@@ -33,12 +33,8 @@ en:
       "new_comment_on_reacted_initiative": New comment on a proposal I voted for
       "new_idea_for_admin": New idea in a project I moderate
       "new_initiative_for_admin": New proposal
-      "official_feedback_on_commented_idea": Update on an idea I commented on
-      "official_feedback_on_commented_initiative": Update on a proposal I commented on
-      "official_feedback_on_reacted_idea": Update on an idea I reacted to
-      "official_feedback_on_reacted_initiative": Update on a proposal I voted on
-      "official_feedback_on_your_idea": Update on my idea
-      "official_feedback_on_your_initiative": Update on my proposal
+      "official_feedback_on_idea_you_follow": Update on an idea that you follow
+      "official_feedback_on_initiative_you_follow": Update on a proposal that you follow
       "password_reset": Password reset
       "project_moderation_rights_received": Project moderation rights received
       "project_folder_moderation_rights_received": Folder manager rights received
