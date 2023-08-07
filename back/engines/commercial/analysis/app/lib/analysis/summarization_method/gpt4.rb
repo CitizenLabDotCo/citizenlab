@@ -19,7 +19,7 @@ module Analysis
 
     # Use `execute` on the parent class to actually use the method
     def run
-      summary.update(prompt: prompt)
+      summary.update!(prompt: prompt)
 
       @openai_api.chat(
         parameters: {
