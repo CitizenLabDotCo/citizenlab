@@ -19,7 +19,6 @@ import { Multiloc } from 'typings';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { saveSurveyToPDF } from './saveSurveyToPDF';
 
 // hooks
 import { useParams } from 'react-router-dom';
@@ -75,7 +74,7 @@ const FormActions = ({
 
   const saveSurvey = () => {
     if (!uiSchema) return;
-    saveSurveyToPDF(uiSchema as any);
+    // TODO
   };
 
   if (!isNilOrError(submissionCount)) {
