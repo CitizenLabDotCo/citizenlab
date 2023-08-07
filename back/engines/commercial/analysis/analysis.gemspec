@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'rails', '~> 7.0'
   s.add_dependency 'nlpcloud', '~> 1.0'
+  s.add_dependency 'ruby-openai', '~> 4.2'
 
   s.add_development_dependency 'rspec_api_documentation'
   s.add_development_dependency 'rspec-rails'

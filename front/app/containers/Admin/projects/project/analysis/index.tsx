@@ -42,7 +42,9 @@ const Analysis = () => {
             h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
             bg={colors.white}
           >
-            <Insights />
+            <Insights
+              onSelectInput={(inputId) => setSelectedInputId(inputId)}
+            />
           </Box>
           <Box
             w="300px"
