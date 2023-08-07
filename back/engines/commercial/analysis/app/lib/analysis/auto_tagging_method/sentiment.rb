@@ -27,22 +27,21 @@ module Analysis
           locale
         )
 
-        result = nil
-
         text = input_to_text.execute(input).values.join("\n")
         next if text.strip.empty?
 
         # We retry 10 times due to rate limiting
-        retry_rate_limit(10, 2) do
-          result = nlp.sentiment(text)
+        result = retry_rate_limit(10, 2) do
+          nlp.sentiment(text)
         end
 
-        case response_sentiment(result)
+        tag = case response_sentiment(result)
         when :positive
-          Tagging.find_or_create_by!(input_id: input.id, tag: positive_tag)
+          positive_tag
         when :negative
-          Tagging.find_or_create_by!(input_id: input.id, tag: negative_tag)
+          negative_tag
         end
+        Tagging.find_or_create_by!(input_id: input.id, tag: tag)
       end
     rescue StandardError => e
       raise AutoTaggingFailedError, e

@@ -20,14 +20,12 @@ module Analysis
           'python-langdetect'
         )
 
-        result = nil
-
         text = input_to_text.execute(input).values.join("\n")
         next if text.strip.empty?
 
         # We retry 10 times due to rate limiting
-        retry_rate_limit(10, 2) do
-          result = nlp.langdetection(text)
+        result = retry_rate_limit(10, 2) do
+          nlp.langdetection(text)
         end
 
         result['languages'].map(&:first).each do |(language, score)|
@@ -44,17 +42,11 @@ module Analysis
     private
 
     def find_or_create_tag(language)
-      if tags_by_name[language]
-        tags_by_name[language]
-      else
-        tag = Tag.find_or_create_by!(name: language, tag_type: TAG_TYPE, analysis: analysis)
-        tags_by_name[language] = tag
-        tag
-      end
+      tags_by_name[language] ||= Tag.find_or_create_by!(name: language, tag_type: TAG_TYPE, analysis: analysis)
     end
 
     def tags_by_name
-      @tags_by_name ||= analysis.tags.where(tag_type: TAG_TYPE).all.group_by(&:name).transform_values(&:first)
+      @tags_by_name ||= analysis.tags.where(tag_type: TAG_TYPE).all.index_by(&:name)
     end
   end
 end

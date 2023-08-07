@@ -22,14 +22,12 @@ module Analysis
           gpu: true
         )
 
-        result = nil
-
         text = input_to_text.execute(input).values.join("\n")
         next if text.strip.empty?
 
         # We retry 10 times due to rate limiting
-        retry_rate_limit(10, 2) do
-          result = nlp.classification(text, multi_class: true)
+        result = retry_rate_limit(10, 2) do
+          nlp.classification(text, multi_class: true)
         end
 
         result['labels']
