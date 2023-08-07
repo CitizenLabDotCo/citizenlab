@@ -34,7 +34,7 @@ const ProjectLink = ({
             eventTitle: projectTitleLocalized,
           })}
         </Text>
-        <Link to={projectSlug}>
+        <Link to={`/projects/${projectSlug}`}>
           <Text
             fontSize="s"
             p="0px"
