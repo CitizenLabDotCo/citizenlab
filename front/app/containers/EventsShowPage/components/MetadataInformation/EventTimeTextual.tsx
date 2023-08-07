@@ -13,7 +13,7 @@ import { IEventData } from 'api/events/types';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { getDayName } from 'utils/dateUtils';
+import { capitalizeDates, getDayName } from 'utils/dateUtils';
 import { useIntl } from 'utils/cl-intl';
 
 export interface Props {
@@ -27,7 +27,6 @@ const FullEventTime = ({ event }: Props) => {
   const endAtMoment = moment(event.attributes.end_at);
   const isEventMultipleDays =
     startAtMoment.dayOfYear() !== endAtMoment.dayOfYear();
-
   const startAtWeekday = getDayName(startAtMoment.weekday());
   const endAtWeekday = getDayName(endAtMoment.weekday());
 
@@ -46,8 +45,10 @@ const FullEventTime = ({ event }: Props) => {
       <Container>
         <StyledIcon name="calendar" ariaHidden />
         <Content>
-          <Text color="coolGrey600" fontSize="s">
-            {eventDateTime}
+          <Text mt="12px" color="coolGrey600" fontSize="s">
+            {capitalizeDates(currentLocale)
+              ? eventDateTime
+              : eventDateTime.toLowerCase()}
           </Text>
         </Content>
       </Container>

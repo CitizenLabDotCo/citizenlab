@@ -126,6 +126,14 @@ export function convertSecondsToDDHHMM(seconds: number) {
   return `${formattedDaysLeft}:${formattedHoursLeft}:${formattedMinutesLeft}`;
 }
 
+export function capitalizeDates(locale: Locale) {
+  const localesWithCapitalizedWeekdays = ['en', 'de'];
+  if (localesWithCapitalizedWeekdays.includes(locale)) {
+    return true;
+  }
+  return false;
+}
+
 export function getDayName(dayInWeek: number) {
   switch (dayInWeek) {
     case 0:
