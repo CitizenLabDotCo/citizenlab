@@ -7,7 +7,7 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
   skip_after_action :verify_authorized
   skip_before_action :authenticate_user
 
-  QUESTION_TYPES = %w[select]
+  QUESTION_TYPES = %w[select multiselect]
   FORBIDDEN_HTML_TAGS_REGEX = /<\/?(div|span|ul|ol|li|em|img|a){1}[^>]*\/?>/
 
   def json_forms_schema
@@ -45,8 +45,19 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
 
         if field_type == 'select' then
           custom_field.options.each do |option|
-            # pdf.text "#{pdf.cursor} #{option.title_multiloc[params[:locale]]}"
             pdf.stroke_circle [3.mm, pdf.cursor], 5
+
+            pdf.bounding_box([7.mm, pdf.cursor + 4], width: 180.mm, height: 10.mm) do
+              pdf.text option.title_multiloc[params[:locale]]
+            end
+          end
+        end
+
+        if field_type == 'multiselect' then
+          custom_field.options.each do |option|
+            pdf.stroke do
+              pdf.rectangle([1.5.mm, pdf.cursor + 1.5.mm], 10, 10)
+            end
 
             pdf.bounding_box([7.mm, pdf.cursor + 4], width: 180.mm, height: 10.mm) do
               pdf.text option.title_multiloc[params[:locale]]
@@ -56,7 +67,7 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
 
         pdf.move_down 6.mm
       else
-        # TODO throw error or something once we have covered all the fields
+        # TODO throw error?
       end
     end
 
