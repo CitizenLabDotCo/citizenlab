@@ -469,6 +469,8 @@
   "app.components.VoteControl.budgetingNotPermitted": "Партиципативно буџетирање тренутно није омогућено.",
   "app.components.VoteControl.budgetingNotPossible": "Уношење промена у буџет тренутно није могуће.",
   "app.components.VoteControl.budgetingNotVerified": "Молимо {verifyAccountLink} за наставак.",
+  "app.components.VoteInputs._shared.currencyLeft": "Остало вам је {budgetLeft} / {totalBudget} {currency}",
+  "app.components.VoteInputs._shared.votesLeft": "Остало вам је {votesLeft} / {totalNumberOfVotes} {termForVotes}",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmitted": "Већ сте послали свој буџет. Кликните на „Измени буџет“ да бисте променили буџет.",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage": "Већ сте послали свој буџет. Да бисте променили буџет, вратите се на страницу пројекта и кликните на „Измени буџет“.",
   "app.components.admin.SlugInput.resultingURL": "Резултат УРЛ",
