@@ -469,6 +469,8 @@
   "app.components.VoteControl.budgetingNotPermitted": "Deltagandebudgetering är för närvarande inte aktiverad.",
   "app.components.VoteControl.budgetingNotPossible": "Det är inte möjligt att göra ändringar i din budget just nu.",
   "app.components.VoteControl.budgetingNotVerified": "{verifyAccountLink} om du vill fortsätta.",
+  "app.components.VoteInputs._shared.currencyLeft": "Du har {budgetLeft} / {totalBudget} {currency} kvar",
+  "app.components.VoteInputs._shared.votesLeft": "Du har {votesLeft} / {totalNumberOfVotes} {termForVotes} kvar",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmitted": "Du har redan skickat in din budget. Klicka på \"Ändra din budget\" för att ändra din budget.",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage": "Du har redan skickat in din budget. Om du vill ändra din budget går du tillbaka till projektsidan och klickar på \"Ändra din budget\".",
   "app.components.admin.SlugInput.resultingURL": "Resulterande webbadress",
