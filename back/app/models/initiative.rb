@@ -114,7 +114,7 @@ class Initiative < ApplicationRecord
     return unless ids
 
     current_ids = cosponsors.pluck(:id)
-    return if current_ids - ids.uniq == []
+    return if current_ids.uniq.sort == ids.uniq.sort
 
     cosponsors_initiatives.where.not(user_id: ids.uniq).destroy_all
 
