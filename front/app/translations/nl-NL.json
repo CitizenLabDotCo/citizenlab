@@ -556,7 +556,7 @@
   "app.components.anonymousParticipationModal.participateAnonymouslyModalText4": "Dit zal veilig <b>je profiel verbergen</b> voor beheerders en andere bewoners voor deze specifieke bijdrage, zodat niemand deze bijdrage aan jou kan linken. Anonieme bijdragen kunnen niet bewerkt worden, en worden als definitief beschouwd.",
   "app.components.anonymousParticipationModal.participateAnonymouslyModalTextSection2": "Ons platform veilig maken voor elke gebruiker is voor ons een topprioriteit. Woorden doen ertoe, dus wees alsjeblieft aardig voor elkaar.",
   "app.components.followUnfollow.follow": "Volgen",
-  "app.components.followUnfollow.unFollow": "Stoppen met volgen",
+  "app.components.followUnfollow.unFollow": "Ontvolgen",
   "app.components.form.ErrorDisplay.guidelinesLinkText": "Onze richtlijnen",
   "app.components.form.ErrorDisplay.next": "Volgende",
   "app.components.form.ErrorDisplay.previous": "Vorige",
