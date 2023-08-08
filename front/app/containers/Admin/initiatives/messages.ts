@@ -152,9 +152,9 @@ export default defineMessages({
     id: 'app.containers.Admin.initiatives.feature',
     defaultMessage: 'Feature',
   },
-  preApproval: {
-    id: 'app.containers.Admin.initiatives.preApproval',
-    defaultMessage: 'Pre-approval',
+  review: {
+    id: 'app.containers.Admin.initiatives.review',
+    defaultMessage: 'Review',
   },
   cosponsors: {
     id: 'app.containers.Admin.initiatives.cosponsors',

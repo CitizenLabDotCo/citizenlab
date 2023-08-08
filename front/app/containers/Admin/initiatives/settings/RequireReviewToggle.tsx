@@ -25,7 +25,7 @@ const RequireReviewToggle = ({ value, onChange }: Props) => {
   return (
     <SectionField>
       <SubSectionTitle style={{ marginBottom: '0px' }}>
-        <FormattedMessage {...messages.preApproval} />
+        <FormattedMessage {...messages.review} />
       </SubSectionTitle>
       <Toggle
         checked={value}
