@@ -30,8 +30,7 @@ import SubmitButton from './SubmitButton';
 import { AnonymousPostingToggle } from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
 import { Box, Title } from '@citizenlab/cl2-component-library';
 import RequireReviewToggle from './RequireReviewToggle';
-import RequireCosponsorsToggle from './RequireCosponsorsToggle';
-import CosponsorsNumber from './CosponsorsNumber';
+import Cosponsors from './Cosponsors';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -250,15 +249,15 @@ const InitiativesSettingsPage = () => {
             onChange={updateProposalsSetting('require_review')}
           />
 
-          <RequireCosponsorsToggle
-            value={localProposalsSettings.require_cosponsors}
-            onChange={updateProposalsSetting('require_cosponsors')}
-          />
-
-          <CosponsorsNumber
-            value={localProposalsSettings.cosponsors_number}
-            onChange={updateProposalsSetting('cosponsors_number')}
-            disabled={!localProposalsSettings.require_cosponsors}
+          <Cosponsors
+            requireCosponsors={localProposalsSettings.require_cosponsors}
+            onChangeRequireSponsors={updateProposalsSetting(
+              'require_cosponsors'
+            )}
+            cosponsorsNumber={localProposalsSettings.cosponsors_number}
+            onChangeCosponsorsNumber={updateProposalsSetting(
+              'cosponsors_number'
+            )}
           />
 
           <ReactingThreshold
