@@ -469,6 +469,8 @@
   "app.components.VoteControl.budgetingNotPermitted": "El presupuesto participativo solo está habilitado para ciertos grupos.",
   "app.components.VoteControl.budgetingNotPossible": "No es posible realizar cambios en tu presupuesto en este momento.",
   "app.components.VoteControl.budgetingNotVerified": "{VerifyAccountLink} para continuar.",
+  "app.components.VoteInputs._shared.currencyLeft": "Te queda {budgetLeft} / {totalBudget} {currency}",
+  "app.components.VoteInputs._shared.votesLeft": "Te queda {votesLeft} / {totalNumberOfVotes} {termForVotes}",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmitted": "Ya has enviado tu presupuesto. Haz clic en \"Modificar tu presupuesto\" para cambiar tu presupuesto.",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage": "Ya has enviado tu presupuesto. Para modificar tu presupuesto, vuelve a la página del proyecto y haz clic en \"Modificar tu presupuesto\".",
   "app.components.admin.SlugInput.resultingURL": "URL resultante",
