@@ -113,12 +113,13 @@ class Initiative < ApplicationRecord
   def cosponsor_ids=(ids)
     return unless ids
 
-    current_ids = cosponsors.pluck(:id)
-    return if current_ids.uniq.sort == ids.uniq.sort
+    ids = ids.uniq
+    current_ids = cosponsors.pluck(:id).uniq
+    return if current_ids.sort == ids.sort
 
-    cosponsors_initiatives.where.not(user_id: ids.uniq).destroy_all
+    cosponsors_initiatives.where.not(user_id: ids).destroy_all
 
-    (ids.uniq - current_ids).each do |id|
+    (ids - current_ids).each do |id|
       cosponsors_initiatives.create(user_id: id)
     end
   end
