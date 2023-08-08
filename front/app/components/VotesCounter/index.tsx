@@ -8,10 +8,10 @@ import useVoting from 'api/baskets_ideas/useVoting';
 import useLocalize from 'hooks/useLocalize';
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
-import { IProjectData } from 'api/projects/types';
-import { IPhaseData } from 'api/phases/types';
 
 // typings
+import { IProjectData } from 'api/projects/types';
+import { IPhaseData } from 'api/phases/types';
 
 interface Props {
   participationContext: IProjectData | IPhaseData;
