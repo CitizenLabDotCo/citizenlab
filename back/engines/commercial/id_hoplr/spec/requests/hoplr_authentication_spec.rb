@@ -54,6 +54,7 @@ describe 'hoplr authentication' do
     settings['hoplr_login'] = {
       allowed: true,
       enabled: true,
+      environment: 'test',
       client_id: 'fakeid',
       client_secret: 'fakesecret'
     }

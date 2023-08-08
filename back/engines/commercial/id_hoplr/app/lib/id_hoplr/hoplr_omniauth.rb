@@ -22,6 +22,7 @@ module IdHoplr
 
       options = env['omniauth.strategy'].options
       options[:scope] = %i[openid email profile]
+      # it gets configuration from https://test.hoplr.com/.well-known/openid-configuration
       options[:discovery] = true
 
       options[:response_type] = :code
@@ -40,7 +41,10 @@ module IdHoplr
     end
 
     def host
-      'test.hoplr.com'
+      case AppConfiguration.instance.settings('hoplr_login', 'environment')
+      when 'test'       then 'test.hoplr.com'
+      when 'production' then 'hoplr.com'
+      end
     end
 
     def issuer

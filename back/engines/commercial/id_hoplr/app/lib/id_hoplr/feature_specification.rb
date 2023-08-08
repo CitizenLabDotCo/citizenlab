@@ -26,6 +26,15 @@ module IdHoplr
       false
     end
 
+    add_setting 'environment', required: true, schema: {
+      type: 'string',
+      title: 'Environment',
+      description: 'Live on the production environment or still testing on their test environment?',
+      enum: %w[test production],
+      default: 'production',
+      private: true
+    }
+
     add_setting 'client_id', required: true, schema: {
       title: 'Client ID',
       type: 'string',
