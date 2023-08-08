@@ -469,6 +469,8 @@
   "app.components.VoteControl.budgetingNotPermitted": "Katılım için bütçe ayırma şu an için etkin değil.",
   "app.components.VoteControl.budgetingNotPossible": "Bütçenizde değişiklik yapmanız şu an için mümkün değil.",
   "app.components.VoteControl.budgetingNotVerified": "Devam etmek için lütfen {verifyAccountLink}.",
+  "app.components.VoteInputs._shared.currencyLeft": "{budgetLeft} / {totalBudget} {currency} adresiniz kaldı",
+  "app.components.VoteInputs._shared.votesLeft": "{votesLeft} / {totalNumberOfVotes} {termForVotes} adresiniz kaldı",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmitted": "Bütçenizi zaten gönderdiniz. Bütçenizi değiştirmek için \"Bütçenizi değiştirin\" seçeneğine tıklayın.",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage": "Bütçenizi zaten gönderdiniz. Bütçenizi değiştirmek için proje sayfasına geri dönün ve \"Bütçenizi değiştirin\" seçeneğine tıklayın.",
   "app.components.admin.SlugInput.resultingURL": "Sonuçlanan URL",
