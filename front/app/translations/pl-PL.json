@@ -469,6 +469,8 @@
   "app.components.VoteControl.budgetingNotPermitted": "Budżet obywatelski jest włączone tylko dla niektórych grup.",
   "app.components.VoteControl.budgetingNotPossible": "Dokonywanie zmian w budżecie nie jest w tej chwili możliwe.",
   "app.components.VoteControl.budgetingNotVerified": "Proszę {verifyAccountLink} aby kontynuować.",
+  "app.components.VoteInputs._shared.currencyLeft": "Masz jeszcze {budgetLeft} / {totalBudget} {currency}",
+  "app.components.VoteInputs._shared.votesLeft": "Masz jeszcze {votesLeft} / {totalNumberOfVotes} {termForVotes}",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmitted": "Przesłałeś już swój budżet. Kliknij \"Modyfikuj budżet\", aby go zmienić.",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage": "Przesłałeś już swój budżet. Aby zmienić budżet, wróć do strony projektu i kliknij \"Modyfikuj budżet\".",
   "app.components.admin.SlugInput.resultingURL": "Wynikowy adres URL",
