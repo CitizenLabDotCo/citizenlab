@@ -7,7 +7,7 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
   skip_after_action :verify_authorized
   skip_before_action :authenticate_user
 
-  QUESTION_TYPES = %w[select multiselect text]
+  QUESTION_TYPES = %w[select multiselect text multiline_text]
   FORBIDDEN_HTML_TAGS_REGEX = /<\/?(div|span|ul|ol|li|em|img|a){1}[^>]*\/?>/
 
   def json_forms_schema
@@ -33,53 +33,67 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
         pdf.start_new_page(size: 'A4')
         next
       end
+
+      # Skip unsupported question types
+      next unless QUESTION_TYPES.include? field_type
       
-      if QUESTION_TYPES.include? field_type then
-        # Write title
-        write_title(pdf, custom_field)
+      # Write title
+      write_title(pdf, custom_field)
 
-        # Write description if it exists
-        write_description(pdf, custom_field)
+      # Write description if it exists
+      write_description(pdf, custom_field)
 
-        pdf.move_down 7.mm
+      pdf.move_down 7.mm
 
-        if field_type == 'select' then
-          custom_field.options.each do |option|
-            pdf.stroke_color '000000'
-            pdf.stroke_circle [3.mm, pdf.cursor], 5
+      if field_type == 'select' then
+        custom_field.options.each do |option|
+          pdf.stroke_color '000000'
+          pdf.stroke_circle [3.mm, pdf.cursor], 5
 
-            pdf.bounding_box([7.mm, pdf.cursor + 4], width: 180.mm, height: 10.mm) do
-              pdf.text option.title_multiloc[params[:locale]]
-            end
+          pdf.bounding_box([7.mm, pdf.cursor + 4], width: 180.mm, height: 10.mm) do
+            pdf.text option.title_multiloc[params[:locale]]
           end
         end
+      end
 
-        if field_type == 'multiselect' then
-          custom_field.options.each do |option|
-            pdf.stroke do
-              pdf.stroke_color '000000'
-              pdf.rectangle([1.5.mm, pdf.cursor + 1.5.mm], 10, 10)
-            end
-
-            pdf.bounding_box([7.mm, pdf.cursor + 4], width: 180.mm, height: 10.mm) do
-              pdf.text option.title_multiloc[params[:locale]]
-            end
-          end
-        end
-
-        if field_type == 'text' then
-          pdf.move_down 5.mm
-
+      if field_type == 'multiselect' then
+        custom_field.options.each do |option|
           pdf.stroke do
-            pdf.stroke_color 'EBEBEB'
+            pdf.stroke_color '000000'
+            pdf.rectangle([1.5.mm, pdf.cursor + 1.5.mm], 10, 10)
+          end
+
+          pdf.bounding_box([7.mm, pdf.cursor + 4], width: 180.mm, height: 10.mm) do
+            pdf.text option.title_multiloc[params[:locale]]
+          end
+        end
+      end
+
+      if field_type == 'text' then
+        pdf.move_down 4.mm
+
+        pdf.stroke do
+          pdf.stroke_color 'EBEBEB'
+          pdf.horizontal_rule
+        end
+
+        pdf.move_down 4.mm
+      end
+
+      if field_type == 'multiline_text' then
+        pdf.move_down 4.mm
+        pdf.stroke_color 'EBEBEB'
+
+        (1..7).each do
+          pdf.stroke do
             pdf.horizontal_rule
           end
-        end
 
-        pdf.move_down 6.mm
-      else
-        # TODO throw error?
+          pdf.move_down 10.mm
+        end
       end
+
+      pdf.move_down 6.mm
     end
 
 
