@@ -25,5 +25,17 @@ module IdHoplr
     def self.enabled_by_default
       false
     end
+
+    add_setting 'client_id', required: true, schema: {
+      title: 'Client ID',
+      type: 'string',
+      private: true
+    }
+
+    add_setting 'client_secret', required: true, schema: {
+      title: 'Client Secret',
+      type: 'string',
+      private: true
+    }
   end
 end

@@ -140,12 +140,12 @@ const AuthProviders = memo<Props>(
 
         {hoplrLoginEnabled && (
           <StyledAuthProviderButton
-            // icon="hoplr"
+            icon="hoplr"
             flow={flow}
             authProvider="hoplr"
             onContinue={onSelectAuthProvider}
           >
-            <FormattedMessage {...messages.continueWithFacebook} />
+            <FormattedMessage {...messages.continueWithHoplr} />
           </StyledAuthProviderButton>
         )}
 
