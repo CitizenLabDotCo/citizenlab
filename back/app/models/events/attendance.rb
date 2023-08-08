@@ -26,7 +26,10 @@ module Events
     belongs_to :event
     belongs_to :attendee, class_name: 'User'
 
-    validates :attendee, uniqueness: { scope: :event_id }
+    validates :attendee, uniqueness: {
+      scope: :event_id,
+      message: 'is already registered to this event' # rubocop:disable Rails/I18nLocaleTexts
+    }
 
     counter_culture :event, column_name: 'attendees_count'
   end

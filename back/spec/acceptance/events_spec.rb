@@ -121,8 +121,20 @@ resource 'Events' do
 
     example_request 'Get one event by id' do
       expect(status).to eq 200
-      json_response = json_parse(response_body)
-      expect(json_response.dig(:data, :id)).to eq @events.first.id
+      expect(response_data.with_indifferent_access).to include(
+        id: event.id,
+        type: 'event',
+        attributes: {
+          title_multiloc: event.title_multiloc,
+          description_multiloc: event.description_multiloc,
+          location_multiloc: event.location_multiloc,
+          start_at: event.start_at.iso8601(3),
+          end_at: event.end_at.iso8601(3),
+          created_at: event.created_at.iso8601(3),
+          updated_at: event.updated_at.iso8601(3),
+          attendees_count: event.attendees_count
+        }
+      )
     end
 
     context 'when the user registered to the event' do

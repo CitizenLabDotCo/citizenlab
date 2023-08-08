@@ -10,7 +10,12 @@ RSpec.describe Events::Attendance do
   end
 
   it { is_expected.to belong_to(:event) }
-  it { is_expected.to belong_to(:attendee).class_name('User').with_foreign_key('attendee_id') }
+  it { is_expected.to belong_to(:attendee).class_name('User') }
 
-  it { is_expected.to validate_uniqueness_of(:attendee).scoped_to(:event_id) }
+  specify do
+    expect(attendance)
+      .to validate_uniqueness_of(:attendee)
+      .scoped_to(:event_id)
+      .with_message('is already registered to this event')
+  end
 end

@@ -65,6 +65,14 @@ resource 'Event attendances' do
         expect(response_data.dig(:relationships, :attendee, :data, :id)).to eq user.id
         expect(response_data.dig(:relationships, :event, :data, :id)).to eq event_id
       end
+
+      example 'Registering oneself to an event twice fails', document: false do
+        create(:event_attendance, event_id: event_id, attendee_id: user.id)
+        do_request
+        expect(status).to eq(422)
+        expect(json_response_body)
+          .to match(errors: ['Attendee is already registered to this event'])
+      end
     end
 
     context 'when the user is an admin' do

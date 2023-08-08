@@ -75,6 +75,13 @@ class WebApi::V1::EventsController < ApplicationController
 
   private
 
+  # Given a collection of events, returns a mapping of event ids to attendances of the
+  # current user. The returned mapping includes only the events for which the current
+  # user is registered.
+  #
+  # @param [Enumerable<Event>] events A collection of events
+  # @return [Hash{String => Events::Attendance}] A mapping of event ids to attendances
+  #   of the current user.
   def current_user_attendances(events)
     return {} unless current_user
 
