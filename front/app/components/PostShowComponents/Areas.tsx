@@ -3,8 +3,10 @@ import useAreas from 'api/areas/useAreas';
 import useLocalize from 'hooks/useLocalize';
 import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
+import { useIntl } from 'utils/cl-intl';
 import { transparentize } from 'polished';
 import { IAreaData } from 'api/areas/types';
+import messages from './messages';
 
 interface Props {
   areaIds: string[];
@@ -13,15 +15,16 @@ interface Props {
 const Areas = ({ areaIds }: Props) => {
   const theme = useTheme();
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
   const { data: areas } = useAreas({});
   const filteredAreas =
     areas?.data.filter((area) => areaIds.includes(area.id)) || [];
 
-  if (!areaIds || areaIds.length === 0) return null;
+  if (!areaIds || filteredAreas.length === 0) return null;
 
   return (
     <Box display="flex" flexDirection="column">
-      <Title variant="h3">Areas</Title>
+      <Title variant="h3">{formatMessage(messages.areas)}</Title>
       <Box display="flex" flexWrap="wrap">
         {filteredAreas.map((area: IAreaData) => {
           return (
