@@ -39,12 +39,15 @@ const Testing = () => {
   return (
     <Box mx="100px" w="800px">
       <Title>Written idea importer</Title>
-      <Box>
-        Upload a PDF file of scanned forms. Max 40 pages. Click here to print
-        the form for this project.
+      <Box pb="10px">
+        Upload a PDF file of scanned forms. Max 40 pages. The PDF must use a
+        form printed from this project.
       </Box>
       {numIdeasAdded && (
-        <Box>{numIdeasAdded} ideas extracted and uploaded.</Box>
+        <Box pb="10px">
+          {numIdeasAdded} ideas extracted and uploaded. Go to the input manager
+          to view and approve these ideas.
+        </Box>
       )}
       <Box>
         {isLoading ? (
