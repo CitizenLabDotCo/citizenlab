@@ -24,14 +24,17 @@ module BulkImportIdeas
     def import_ideas(idea_rows, max_ideas: DEFAULT_MAX_IDEAS)
       raise Error.new 'bulk_import_ideas_maximum_ideas_exceeded', value: max_ideas if idea_rows.size > max_ideas
 
+      ideas = []
       ActiveRecord::Base.transaction do
         idea_rows.each do |idea_row|
           idea = import_idea idea_row
           Rails.logger.info { "Created #{idea.id}" }
+          ideas << idea
         end
       end
 
       DumpTenantJob.perform_later Tenant.current
+      ideas
     end
 
     def generate_example_xlsx

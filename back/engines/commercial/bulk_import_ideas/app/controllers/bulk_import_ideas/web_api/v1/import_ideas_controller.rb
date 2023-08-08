@@ -25,9 +25,13 @@ module BulkImportIdeas
     private
 
     def bulk_create(idea_rows)
-      import_ideas_service.import_ideas idea_rows
+      ideas = import_ideas_service.import_ideas idea_rows
       sidefx.after_success current_user
-      head :ok
+      render json: ::WebApi::V1::IdeaSerializer.new(
+        ideas,
+        params: jsonapi_serializer_params,
+        include: %i[author]
+      ).serializable_hash, status: :created
     rescue BulkImportIdeas::Error => e
       sidefx.after_failure current_user
       render json: { file: [{ error: e.key, **e.params }] }, status: :unprocessable_entity
