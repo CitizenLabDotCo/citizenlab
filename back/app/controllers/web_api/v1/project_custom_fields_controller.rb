@@ -27,35 +27,26 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
       # created we can skip this.
       next if i == 0
 
-      if custom_field.input_type == 'page' then
+      field_type = custom_field.input_type
+
+      if field_type == 'page' then
         pdf.start_new_page(size: 'A4')
         next
       end
-
-      locale = params[:locale]
       
-      if QUESTION_TYPES.include? custom_field.input_type then
+      if QUESTION_TYPES.include? field_type then
         # Write title
-        pdf.text(
-          "<b>#{custom_field.title_multiloc[locale]}</b>",
-          size: 20,
-          inline_format: true
-        )
+        write_title(pdf, custom_field)
 
         # Write description if it exists
-        description = custom_field.description_multiloc[locale]
- 
-        unless description.nil? then
-          pdf.move_down 5.mm
+        write_description(pdf, custom_field)
 
-          paragraphs = parse_html_tags(description)
-
-          paragraphs.each do |paragraph|
-            pdf.text(paragraph, inline_format: true)
+        if field_type == 'select' then
+          custom_field.options.each do |option|
+            pdf.text "▢ #{option.title_multiloc[params[:locale]]}"
           end
         end
       else
-        puts custom_field.input_type
         # TODO throw error or something once we have covered all the fields
       end
     end
@@ -84,6 +75,30 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
 
   def custom_fields
     IdeaCustomFieldsService.new(Factory.instance.participation_method_for(participation_context).custom_form).enabled_fields
+  end
+
+  def write_title(pdf, custom_field)
+    pdf.text(
+      "<b>#{custom_field.title_multiloc[params[:locale]]}</b>",
+      size: 20,
+      inline_format: true
+    )
+
+    pdf.move_down 5.mm
+  end
+
+  def write_description(pdf, custom_field)
+    description = custom_field.description_multiloc[params[:locale]]
+ 
+    unless description.nil? then
+      paragraphs = parse_html_tags(description)
+
+      paragraphs.each do |paragraph|
+        pdf.text(paragraph, inline_format: true)
+      end
+
+      pdf.move_down 5.mm
+    end
   end
 
   def parse_html_tags(string)
