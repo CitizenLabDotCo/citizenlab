@@ -41,11 +41,20 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
         # Write description if it exists
         write_description(pdf, custom_field)
 
+        pdf.move_down 7.mm
+
         if field_type == 'select' then
           custom_field.options.each do |option|
-            pdf.text "▢ #{option.title_multiloc[params[:locale]]}"
+            # pdf.text "#{pdf.cursor} #{option.title_multiloc[params[:locale]]}"
+            pdf.stroke_circle [3.mm, pdf.cursor], 5
+
+            pdf.bounding_box([7.mm, pdf.cursor + 4], width: 180.mm, height: 10.mm) do
+              pdf.text option.title_multiloc[params[:locale]]
+            end
           end
         end
+
+        pdf.move_down 6.mm
       else
         # TODO throw error or something once we have covered all the fields
       end
@@ -83,21 +92,18 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
       size: 20,
       inline_format: true
     )
-
-    pdf.move_down 5.mm
   end
 
   def write_description(pdf, custom_field)
     description = custom_field.description_multiloc[params[:locale]]
  
     unless description.nil? then
+      pdf.move_down 3.mm
       paragraphs = parse_html_tags(description)
 
       paragraphs.each do |paragraph|
         pdf.text(paragraph, inline_format: true)
       end
-
-      pdf.move_down 5.mm
     end
   end
 
