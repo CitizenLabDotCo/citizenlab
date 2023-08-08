@@ -142,6 +142,13 @@ PATH
       verification
 
 PATH
+  remote: engines/commercial/id_hoplr
+  specs:
+    id_hoplr (0.1.0)
+      omniauth_openid_connect
+      rails (~> 7.0)
+
+PATH
   remote: engines/commercial/id_id_card_lookup
   specs:
     id_id_card_lookup (0.1.0)
@@ -1160,6 +1167,7 @@ DEPENDENCIES
   id_cow!
   id_franceconnect!
   id_gent_rrn!
+  id_hoplr!
   id_id_card_lookup!
   id_oostende_rrn!
   id_vienna_saml!
