@@ -27,7 +27,11 @@ const options: IFilterOption[] = [
   { text: <FormattedMessage {...messages.areas} />, value: 'Areas' },
 ];
 
-const Following = () => {
+interface Props {
+  userId: string;
+}
+
+const Following = ({ userId }: Props) => {
   const [selectedValue, setSelectedValue] =
     useState<FollowableValue>('Project');
   const handleOnChange = (selectedValue: [FollowableValue]) => {
@@ -50,7 +54,7 @@ const Following = () => {
       {selectedValue === 'Topics' && <Topics />}
       {selectedValue === 'Areas' && <Areas />}
       {selectedValue !== 'Topics' && selectedValue !== 'Areas' && (
-        <UserFollowingList value={selectedValue} />
+        <UserFollowingList value={selectedValue} userId={userId} />
       )}
     </Box>
   );
