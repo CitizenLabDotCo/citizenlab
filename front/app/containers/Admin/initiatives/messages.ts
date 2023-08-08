@@ -138,4 +138,16 @@ export default defineMessages({
     id: 'app.containers.Admin.initiatives.overviewTab',
     defaultMessage: 'Overview',
   },
+  feature: {
+    id: 'app.containers.Admin.initiatives.feature',
+    defaultMessage: 'Feature',
+  },
+  preApproval: {
+    id: 'app.containers.Admin.initiatives.preApproval',
+    defaultMessage: 'Pre-approval',
+  },
+  cosponsors: {
+    id: 'app.containers.Admin.initiatives.cosponsors',
+    defaultMessage: 'Cosponsors',
+  },
 });

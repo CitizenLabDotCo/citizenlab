@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { SectionField } from 'components/admin/Section';
+import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -20,6 +20,9 @@ const RequireCosponsorsToggle = ({ value, onChange }: Props) => {
 
   return (
     <SectionField>
+      <SubSectionTitle style={{ marginBottom: '0px' }}>
+        <FormattedMessage {...messages.cosponsors} />
+      </SubSectionTitle>
       <Toggle
         checked={value}
         onChange={() => {
