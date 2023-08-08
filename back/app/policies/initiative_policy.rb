@@ -63,6 +63,7 @@ class InitiativePolicy < ApplicationPolicy
       :location_description,
       :header_bg,
       :anonymous,
+      { cosponsor_ids: [] },
       { location_point_geojson: [:type, { coordinates: [] }],
         title_multiloc: CL2_SUPPORTED_LOCALES,
         body_multiloc: CL2_SUPPORTED_LOCALES,
