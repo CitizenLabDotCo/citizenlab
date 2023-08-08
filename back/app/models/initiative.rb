@@ -112,17 +112,17 @@ class Initiative < ApplicationRecord
 
   def cosponsor_ids=(ids)
     return unless ids
-  
+
     current_ids = cosponsors.pluck(:id)
     return if current_ids - ids.uniq == []
-  
+
     cosponsors_initiatives.where.not(user_id: ids.uniq).destroy_all
-  
+
     (ids.uniq - current_ids).each do |id|
       cosponsors_initiatives.create(user_id: id)
     end
   end
-  
+
   def reactions_needed(configuration = AppConfiguration.instance)
     [configuration.settings('initiatives', 'reacting_threshold') - likes_count, 0].max
   end
