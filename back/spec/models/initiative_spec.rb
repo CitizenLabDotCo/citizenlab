@@ -239,6 +239,12 @@ RSpec.describe Initiative do
       expect(initiative.reload.cosponsors).to be_empty
     end
 
+    it 'handles duplicate IDs' do
+      initiative.update!(cosponsor_ids: [cosponsor1.id, cosponsor1.id])
+
+      expect(initiative.reload.cosponsors).to match_array [cosponsor1]
+    end
+
     it 'does nothing when given nil' do
       initiative.update!(cosponsor_ids: nil)
 
