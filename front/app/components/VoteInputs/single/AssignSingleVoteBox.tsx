@@ -3,6 +3,7 @@ import React, { memo } from 'react';
 // api
 import useIdeaById from 'api/ideas/useIdeaById';
 import useBasket from 'api/baskets/useBasket';
+import useVoting from 'api/baskets_ideas/useVoting';
 
 // styles
 import { colors } from 'utils/styleUtils';
@@ -10,7 +11,6 @@ import { colors } from 'utils/styleUtils';
 // components
 import WhiteBox from '../_shared/WhiteBox';
 import AssignSingleVoteButton from 'components/VoteInputs/single/AssignSingleVoteButton';
-import VotesCounter from 'components/VotesCounter';
 import { Box } from '@citizenlab/cl2-component-library';
 
 // intl
@@ -29,12 +29,17 @@ interface Props {
 const AssignSingleVoteBox = memo(({ ideaId, participationContext }: Props) => {
   const { formatMessage } = useIntl();
   const { data: idea } = useIdeaById(ideaId);
+  const { numberOfVotesCast } = useVoting();
 
   const { data: basket } = useBasket(
     participationContext.relationships?.user_basket?.data?.id
   );
   const actionDescriptor = idea?.data.attributes.action_descriptor.voting;
+  const { voting_max_total } = participationContext.attributes;
+
   if (!actionDescriptor) return null;
+
+  const votesLeft = (voting_max_total ?? 0) - (numberOfVotesCast ?? 0);
 
   const totalVotes = basket?.data?.attributes?.total_votes;
   const totalVotesGreaterThanZero = totalVotes !== undefined && totalVotes > 0;
@@ -46,7 +51,7 @@ const AssignSingleVoteBox = memo(({ ideaId, participationContext }: Props) => {
         participationContext={participationContext}
         buttonStyle="primary"
       />
-      {participationContext?.attributes.voting_max_total && (
+      {voting_max_total && (
         <Box
           color={colors.grey700}
           mt="8px"
@@ -54,10 +59,14 @@ const AssignSingleVoteBox = memo(({ ideaId, participationContext }: Props) => {
           width="100%"
           justifyContent="center"
         >
-          <FormattedMessage {...messages.youHave} />
-          <Box ml="4px">
-            <VotesCounter participationContext={participationContext} />
-          </Box>
+          <FormattedMessage
+            {...messages.votesLeft}
+            values={{
+              votesLeft: votesLeft.toLocaleString(),
+              totalNumberOfVotes: voting_max_total.toLocaleString(),
+              termForVotes: formatMessage(messages.votes),
+            }}
+          />
         </Box>
       )}
       {!participationContext?.attributes.voting_max_total && (

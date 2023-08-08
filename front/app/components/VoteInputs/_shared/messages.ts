@@ -21,4 +21,17 @@ export default defineMessages({
     id: 'app.components.AssignVoteControl.voteForAtLeastOne',
     defaultMessage: 'Vote for at least 1 option',
   },
+  currencyLeft: {
+    id: 'app.components.VoteInputs._shared.currencyLeft',
+    defaultMessage: 'You have {budgetLeft} / {totalBudget} {currency} left',
+  },
+  votesLeft: {
+    id: 'app.components.VoteInputs._shared.votesLeft',
+    defaultMessage:
+      'You have {votesLeft} / {totalNumberOfVotes} {termForVotes} left',
+  },
+  votes: {
+    id: 'app.components.ParticipationCTABars.votesCounter.votes',
+    defaultMessage: 'votes',
+  },
 });
