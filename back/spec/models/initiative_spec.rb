@@ -251,12 +251,10 @@ RSpec.describe Initiative do
       expect(initiative.reload.cosponsors).to match_array [cosponsor1]
     end
 
-    # it 'does nothing if update validation fails' do
-    #   initiative.update(cosponsor_ids: [], anonymous: nil)
-    #   expect(initiative.reload.cosponsors).to be_present
-    #   # expect do
-    #   #   initiative.update(cosponsor_ids: [nil])
-    #   # end.not_to change { initiative.reload.cosponsors }
-    # end
+    it 'does nothing if update validation fails' do
+      initiative.update(cosponsor_ids: [], anonymous: nil)
+
+      expect(initiative.reload.cosponsors).to be_present
+    end
   end
 end
