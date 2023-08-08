@@ -50,12 +50,13 @@ const Location = ({ location, event }: Props) => {
                   justifyContent: 'left',
                   textAlign: 'left',
                 }}
+                my="4px"
               >
                 {location.slice(0, location.indexOf(','))}
               </Button>
             </Box>
           ) : (
-            <Text color="coolGrey600" fontSize="s">
+            <Text my="4px" color="coolGrey600" fontSize="s">
               {location}
             </Text>
           )}

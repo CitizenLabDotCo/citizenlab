@@ -4,6 +4,7 @@ import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import eventsAttendancesKeys from './keys';
 import { IAddEventAttendanceProperties, IEventAttendance } from './types';
+import eventsKeys from 'api/events/keys';
 
 const addEventAttendance = async (
   requestBody: IAddEventAttendanceProperties
@@ -23,6 +24,9 @@ const useAddEventAttendance = (eventId: string) => {
       onSuccess: () => {
         queryClient.invalidateQueries({
           queryKey: eventsAttendancesKeys.list({ eventId }),
+        });
+        queryClient.invalidateQueries({
+          queryKey: eventsKeys.item({ eventId }),
         });
       },
     }

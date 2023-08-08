@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import fetcher from 'utils/cl-react-query/fetcher';
 import { IDeleteEventAttendanceProperties } from './types';
 import eventsAttendancesKeys from './keys';
+import eventsKeys from 'api/events/keys';
 
 const deleteEventAttendance = (properties: IDeleteEventAttendanceProperties) =>
   fetcher({
@@ -17,6 +18,9 @@ const useDeleteEventAttendance = (eventId: string) => {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: eventsAttendancesKeys.list({ eventId }),
+      });
+      queryClient.invalidateQueries({
+        queryKey: eventsKeys.item({ eventId }),
       });
     },
   });

@@ -2,6 +2,11 @@ import React from 'react';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
+import EventAttendanceButton from 'components/EventAttendanceButton';
+import EventDateStylized from './MetadataInformation/EventDateStylized';
+import Location from './MetadataInformation/Location';
+import FullEventTime from './MetadataInformation/EventTimeTextual';
+import EventSharingButtons from './EventSharingButtons';
 
 // styling
 import { colors } from 'utils/styleUtils';
@@ -9,17 +14,19 @@ import { rightColumnWidthDesktop } from '../styleConstants';
 
 // typing
 import { IEventData } from 'api/events/types';
-import EventDateStylized from './MetadataInformation/EventDateStylized';
-import Location from './MetadataInformation/Location';
-import FullEventTime from './MetadataInformation/EventTimeTextual';
-import EventSharingButtons from './EventSharingButtons';
+
+// utils
+import moment from 'moment';
+import ParticipantsCount from './MetadataInformation/ParticipantsCount';
 
 interface Props {
   event: IEventData;
   className?: string;
 }
 
-const RightColumnDesktop = ({ event, className }: Props) => {
+const InformationColumnDesktop = ({ event, className }: Props) => {
+  const isPastEvent = moment().isAfter(moment(event.attributes.end_at));
+
   return (
     <Box
       flex={`0 0 ${rightColumnWidthDesktop}px`}
@@ -46,14 +53,27 @@ const RightColumnDesktop = ({ event, className }: Props) => {
               py="12px"
             >
               <EventDateStylized event={event} />
-              <Box borderBottom={`solid 1px ${colors.divider}`}>
-                {event.attributes.location_description && (
+              <>
+                {!isPastEvent && (
+                  <Box mt="12px">
+                    <EventAttendanceButton event={event} />
+                  </Box>
+                )}
+                {event.attributes.attendees_count > 0 && (
+                  <ParticipantsCount count={event.attributes.attendees_count} />
+                )}
+                <Box borderBottom={`solid 1px ${colors.divider}`} />
+              </>
+
+              {event.attributes.location_description && (
+                <>
                   <Location
                     location={event.attributes.location_description}
                     event={event}
                   />
-                )}
-              </Box>
+                  <Box borderBottom={`solid 1px ${colors.divider}`} />
+                </>
+              )}
               <FullEventTime event={event} />
             </Box>
           </Box>
@@ -66,4 +86,4 @@ const RightColumnDesktop = ({ event, className }: Props) => {
   );
 };
 
-export default RightColumnDesktop;
+export default InformationColumnDesktop;

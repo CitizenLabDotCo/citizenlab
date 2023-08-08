@@ -11,12 +11,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import DateBlocks from '../DateBlocks';
 
-// api
-import useEventAttendances from 'api/event_attendance/useEventAttendances';
-import useAddEventAttendance from 'api/event_attendance/useAddEventAttendance';
-import useAuthUser from 'api/me/useAuthUser';
-import useDeleteEventAttendance from 'api/event_attendance/useDeleteEventAttendance';
-
 // types
 import { IEventData } from 'api/events/types';
 
@@ -31,6 +25,7 @@ import { colors } from 'utils/styleUtils';
 
 // utils
 import clHistory from 'utils/cl-router/history';
+import EventAttendanceButton from 'components/EventAttendanceButton';
 
 const EventInformationContainer = styled.div`
   flex: 1;
@@ -57,46 +52,16 @@ const EventInformation = ({
   titleFontSize,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const { data: user } = useAuthUser();
   const theme = useTheme();
 
-  // Attendance api
-  const { data: eventAttendances } = useEventAttendances(event.id);
-  const { mutate: addEventAttendance, isLoading: isAddingAttendance } =
-    useAddEventAttendance(event.id);
-  const { mutate: deleteEventAttendance, isLoading: isRemovingAttendance } =
-    useDeleteEventAttendance(event.id);
-
-  // Attendance
-  const eventAttendanceUserIds = eventAttendances?.data?.map(
-    (eventAttendance) => eventAttendance.relationships.attendee.data.id
-  );
-  const userIsAttending =
-    user && eventAttendanceUserIds?.includes(user.data.id);
-  const locationDescription = event?.attributes?.location_description;
-  const attendanceId = eventAttendances?.data?.find(
-    (eventAttendance) =>
-      eventAttendance.relationships.attendee.data.id === user?.data?.id
-  )?.id;
-
   const isPastEvent = moment().isAfter(endAtMoment);
-  const isLoading = isAddingAttendance || isRemovingAttendance;
+  const locationDescription = event?.attributes?.location_description;
 
   const eventDateTime = isMultiDayEvent
     ? `${startAtMoment.format('LLL')} - ${endAtMoment.format('LLL')}`
     : `${startAtMoment.format('LL')} • ${startAtMoment.format(
         'LT'
       )} - ${endAtMoment.format('LT')}`;
-
-  const registerAttendance = () => {
-    if (userIsAttending && attendanceId) {
-      deleteEventAttendance({
-        attendanceId,
-      });
-    } else if (user) {
-      addEventAttendance({ eventId: event.id, attendeeId: user.data?.id });
-    }
-  };
 
   return (
     <EventInformationContainer data-testid="EventInformation">
@@ -106,6 +71,7 @@ const EventInformation = ({
             variant="h4"
             style={{ fontSize: titleFontSize, fontWeight: '600' }}
             pr="8px"
+            color="tenantText"
           >
             <T value={event.attributes.title_multiloc} />
           </Title>
@@ -157,29 +123,11 @@ const EventInformation = ({
           onClick={() => {
             clHistory.push(`/events/${event.id}`);
           }}
-          processing={isLoading}
         >
           {formatMessage(messages.readMore)}
         </Button>
       ) : (
-        <Button
-          ml="auto"
-          width={'100%'}
-          iconPos={userIsAttending ? 'left' : 'right'}
-          icon={userIsAttending ? 'check' : 'plus'}
-          bgColor={
-            userIsAttending ? colors.success : theme.colors.tenantPrimary
-          }
-          onClick={(event) => {
-            event.preventDefault();
-            registerAttendance();
-          }}
-          processing={isLoading}
-        >
-          {userIsAttending
-            ? formatMessage(messages.attending)
-            : formatMessage(messages.attend)}
-        </Button>
+        <EventAttendanceButton event={event} />
       )}
     </EventInformationContainer>
   );

@@ -45,7 +45,7 @@ const FullEventTime = ({ event }: Props) => {
       <Container>
         <StyledIcon name="calendar" ariaHidden />
         <Content>
-          <Text mt="12px" color="coolGrey600" fontSize="s">
+          <Text my="4px" color="coolGrey600" fontSize="s">
             {capitalizeDates(currentLocale)
               ? eventDateTime
               : eventDateTime.toLowerCase()}

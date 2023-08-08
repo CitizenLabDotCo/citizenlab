@@ -9,7 +9,7 @@ import {
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import Container from './components/Container';
-import RightColumnDesktop from './components/RightColumnDesktop';
+import InformationColumnDesktop from './components/InformationColumnDesktop';
 import DesktopTopBar from './components/DesktopTopBar';
 import Unauthorized from 'components/Unauthorized';
 import PageNotFound from 'components/PageNotFound';
@@ -122,7 +122,7 @@ const EventsShowPage = () => {
               </Box>
             </Box>
             {!isSmallerThanTablet && event && (
-              <RightColumnDesktop event={event.data} />
+              <InformationColumnDesktop event={event.data} />
             )}
           </Box>
         </InnerContainer>

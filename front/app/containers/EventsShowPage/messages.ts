@@ -9,4 +9,9 @@ export default defineMessages({
     id: 'app.containers.EventsShow.goToProject',
     defaultMessage: 'Go to the project',
   },
+  xParticipants: {
+    id: 'app.containers.EventsShow.xParticipants',
+    defaultMessage:
+      '{count, plural, one {# participant} other {# participants}}',
+  },
 });
