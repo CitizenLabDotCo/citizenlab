@@ -29,4 +29,8 @@ export default defineMessages({
     id: 'app.components.EventCard.readMore',
     defaultMessage: 'Read more',
   },
+  attending: {
+    id: 'app.containers.EventsShow.attending',
+    defaultMessage: 'attending',
+  },
 });

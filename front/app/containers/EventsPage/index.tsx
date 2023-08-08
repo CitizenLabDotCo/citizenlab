@@ -6,9 +6,16 @@ import SectionContainer from 'components/SectionContainer';
 import CurrentAndUpcomingEvents from './CurrentAndUpcomingEvents';
 import PastEvents from './PastEvents';
 import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
+
+// intl
+import { useIntl } from 'utils/cl-intl';
+import messages from './messages';
+
+// utils
 import { useTheme } from 'styled-components';
 
 const EventsPage = () => {
+  const { formatMessage } = useIntl();
   const isTabletOrSmaller = useBreakpoint('tablet');
   const theme = useTheme();
 
@@ -20,15 +27,15 @@ const EventsPage = () => {
         bgColor={theme.colors.tenantPrimary}
       >
         <Title
-          px="24px"
+          px={'16px'}
           maxWidth="1100px"
           color="white"
-          style={{ fontSize: isTabletOrSmaller ? '64px' : '74px' }}
+          style={{ fontSize: isTabletOrSmaller ? '72px' : '110px' }}
           zIndex="10000"
           mx="auto"
-          pt={isTabletOrSmaller ? '72px' : '156px'}
+          pt={isTabletOrSmaller ? '62px' : '96px'}
         >
-          Events
+          {formatMessage(messages.events)}
         </Title>
       </Box>
       <EventsPageMeta />

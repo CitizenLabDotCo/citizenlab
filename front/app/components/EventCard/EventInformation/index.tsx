@@ -113,6 +113,21 @@ const EventInformation = ({
               </Text>
             </Box>
           )}
+          {event.attributes.attendees_count > 0 && (
+            <Box display="flex" mb="12px">
+              <Icon
+                my="auto"
+                fill={colors.coolGrey300}
+                name="user"
+                ariaHidden
+                mr="8px"
+              />
+              <Text m="0px" color={'coolGrey700'} fontSize="s">
+                {event.attributes.attendees_count}{' '}
+                {formatMessage(messages.attending)}
+              </Text>
+            </Box>
+          )}
         </Box>
       </Box>
       {isPastEvent ? (

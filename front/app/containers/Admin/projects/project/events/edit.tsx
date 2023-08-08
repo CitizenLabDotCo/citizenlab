@@ -405,7 +405,6 @@ const AdminProjectEventEdit = ({ params }: Props) => {
                   value={eventAttrs.end_at}
                   onChange={handleDateTimePickerOnChange('end_at')}
                 />
-
                 <ErrorComponent apiErrors={get(errors, 'end_at')} />
               </SectionField>
             </Box>

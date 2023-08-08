@@ -35,4 +35,8 @@ export default defineMessages({
     defaultMessage:
       'An error occurred while loading events. Please try reloading the page.',
   },
+  events: {
+    id: 'app.containers.eventspage.events',
+    defaultMessage: 'Events',
+  },
 });

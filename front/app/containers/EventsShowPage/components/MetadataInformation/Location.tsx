@@ -38,19 +38,19 @@ const Location = ({ location, event }: Props) => {
           {position ? (
             <Box display="flex">
               <Button
+                m="0px"
+                p="0px"
                 fontSize="s"
                 buttonStyle="text"
                 onClick={() => {
                   setMapModalVisible(true);
                 }}
                 pl="0px"
-                pt="12px"
                 style={{
                   textDecoration: 'underline',
                   justifyContent: 'left',
                   textAlign: 'left',
                 }}
-                my="4px"
               >
                 {location.slice(0, location.indexOf(','))}
               </Button>
