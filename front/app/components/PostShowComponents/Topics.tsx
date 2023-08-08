@@ -4,6 +4,7 @@ import React, { memo } from 'react';
 import useTopics from 'api/topics/useTopics';
 import useLocalize from 'hooks/useLocalize';
 import { useTheme } from 'styled-components';
+import { useIntl } from 'utils/cl-intl';
 
 // styling
 import styled from 'styled-components';
@@ -14,7 +15,10 @@ import { transparentize } from 'polished';
 import { ITopicData } from 'api/topics/types';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Title } from '@citizenlab/cl2-component-library';
+
+// i18n
+import messages from './messages';
 
 const Topic = styled.div`
   color: ${({ theme }) => theme.colors.tenantSecondary};
@@ -37,17 +41,24 @@ interface Props {
   topicIds: string[];
   className?: string;
   postType: 'idea' | 'initiative';
+  showTitle?: boolean;
 }
 
-const Topics = memo<Props>(({ topicIds, className, postType }) => {
+const Topics = memo<Props>(({ topicIds, className, postType, showTitle }) => {
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
   const theme = useTheme();
   const { data: topics } = useTopics();
   const filteredTopics =
     topics?.data.filter((topic) => topicIds.includes(topic.id)) || [];
 
-  if (topics && filteredTopics.length > 0) {
-    return (
+  if (!topics || filteredTopics.length === 0) return null;
+
+  return (
+    <Box display="flex" flexDirection="column">
+      {showTitle && (
+        <Title variant="h3">{formatMessage(messages.topics)}</Title>
+      )}
       <Box
         id={`e2e-${postType}-topics`}
         className={className}
@@ -63,10 +74,8 @@ const Topics = memo<Props>(({ topicIds, className, postType }) => {
           );
         })}
       </Box>
-    );
-  }
-
-  return null;
+    </Box>
+  );
 });
 
 export default Topics;
