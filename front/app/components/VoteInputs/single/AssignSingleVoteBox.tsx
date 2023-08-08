@@ -69,7 +69,7 @@ const AssignSingleVoteBox = memo(({ ideaId, participationContext }: Props) => {
           />
         </Box>
       )}
-      {!participationContext?.attributes.voting_max_total && (
+      {!voting_max_total && (
         <Box
           color={colors.grey700}
           mt="8px"
