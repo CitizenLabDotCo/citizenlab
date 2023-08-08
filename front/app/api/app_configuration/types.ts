@@ -58,11 +58,11 @@ export type TSeatNumber = number | null | undefined;
 export type ProposalsSettings = {
   allowed: boolean;
   enabled: boolean;
-  require_review: boolean;
-  require_cosponsors: boolean;
-  cosponsors_number: number;
+  require_review?: boolean;
+  require_cosponsors?: boolean;
+  cosponsors_number?: number;
   days_limit: number;
-  allow_anonymous_participation: boolean;
+  allow_anonymous_participation?: boolean;
   eligibility_criteria: Multiloc;
   threshold_reached_message: Multiloc;
   reacting_threshold: number;

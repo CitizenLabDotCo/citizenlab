@@ -243,20 +243,25 @@ const InitiativesSettingsPage = () => {
               }
             />
           )}
-          <RequireReviewToggle
-            value={localProposalsSettings.require_review}
-            onChange={updateProposalsSetting('require_review')}
-          />
-          <Cosponsors
-            requireCosponsors={localProposalsSettings.require_cosponsors}
-            onChangeRequireSponsors={updateProposalsSetting(
-              'require_cosponsors'
+          {typeof localProposalsSettings.require_review === 'boolean' && (
+            <RequireReviewToggle
+              value={localProposalsSettings.require_review}
+              onChange={updateProposalsSetting('require_review')}
+            />
+          )}
+          {typeof localProposalsSettings.require_cosponsors === 'boolean' &&
+            typeof localProposalsSettings.cosponsors_number === 'number' && (
+              <Cosponsors
+                requireCosponsors={localProposalsSettings.require_cosponsors}
+                onChangeRequireSponsors={updateProposalsSetting(
+                  'require_cosponsors'
+                )}
+                cosponsorsNumber={localProposalsSettings.cosponsors_number}
+                onChangeCosponsorsNumber={updateProposalsSetting(
+                  'cosponsors_number'
+                )}
+              />
             )}
-            cosponsorsNumber={localProposalsSettings.cosponsors_number}
-            onChangeCosponsorsNumber={updateProposalsSetting(
-              'cosponsors_number'
-            )}
-          />
           <Thresholds
             numberOfVotesThreshold={localProposalsSettings.reacting_threshold}
             onChangeNumberOfVotesThreshold={updateProposalsSetting(
