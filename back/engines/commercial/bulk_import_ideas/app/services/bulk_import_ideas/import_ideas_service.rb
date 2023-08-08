@@ -130,15 +130,19 @@ module BulkImportIdeas
     end
 
     def add_project(idea_row, idea_attributes)
-      raise Error.new 'bulk_import_ideas_blank_project', row: idea_row[:id] if idea_row[:project_title].blank?
+      raise Error.new 'bulk_import_ideas_blank_project', row: idea_row[:id] if idea_row[:project_title].blank? && idea_row[:project_id].blank?
 
-      project_title = idea_row[:project_title].downcase.strip
-      project = all_projects.find do |find_project|
-        find_project
-          .title_multiloc
-          .values
-          .map { |title| title.downcase.strip }
-          .include? project_title
+      if idea_row[:project_id]
+        project = Project.find(idea_row[:project_id])
+      else
+        project_title = idea_row[:project_title].downcase.strip
+        project = all_projects.find do |find_project|
+          find_project
+            .title_multiloc
+            .values
+            .map { |title| title.downcase.strip }
+            .include? project_title
+        end
       end
       unless project
         raise Error.new 'bulk_import_ideas_project_not_found', value: idea_row[:project_title], row: idea_row[:id]
@@ -150,16 +154,27 @@ module BulkImportIdeas
     def add_author(idea_row, idea_attributes)
       if idea_row[:user_email].blank?
         author = User.new(unique_code: SecureRandom.uuid, locale: @locale)
+        author = add_author_name author, idea_row
         author.save!
       else
         author = User.find_by_cimail idea_row[:user_email]
         unless author
           author = User.new(email: idea_row[:user_email], locale: @locale)
+          author = add_author_name author, idea_row
           author.save!
         end
       end
 
       idea_attributes[:author] = author
+    end
+
+    def add_author_name(author, idea_row)
+      if idea_row[:user_name]
+        name = idea_row[:user_name].split(' ', 2)
+        author.first_name = name[0] if name[0].present?
+        author.last_name = name[1] if name[1].present?
+      end
+      author
     end
 
     def add_published_at(idea_row, idea_attributes)

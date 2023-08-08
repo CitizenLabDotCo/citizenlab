@@ -95,7 +95,6 @@ describe BulkImportIdeas::ImportProjectIdeasService do
       # )
       # expect(Idea.count).to eq 0
     end
-
   end
 
   describe 'xlsx_to_idea_rows' do
@@ -186,8 +185,39 @@ describe BulkImportIdeas::ImportProjectIdeasService do
     it 'produces an xlsx file with all the fields for a project' do
       xlsx = service.generate_example_xlsx
       # binding.pry
-      # TODO: Test phase only appears if timeline project
-      # TODO: Test all custom fields appear
+      # TODO: Test that phase only appears if timeline project
+      # TODO: Test that all custom fields appear
+    end
+  end
+
+  describe 'paper_forms_to_idea_rows' do
+    it 'converts the output from GoogleFormParser into idea rows' do
+      docs = [
+        {
+          'No' => { value: nil, type: 'unfilled_checkbox' },
+          'Title:' => { value: "Free donuts for all", type: '' },
+          'Name:' => { value: 'John Rambo', type: '' },
+          'Email:' => { value: 'john_rambo@gravy.com', type: '' },
+          'Yes' => { value: nil, type: 'filled_checkbox' },
+          'Body:' => { value: 'Give them all donuts', type: '' }
+        },
+        {
+          'Yes' => { value: '', type: 'filled_checkbox' },
+          'No' => { value: '', type: 'unfilled_checkbox' },
+          'Title:' => { value: 'New Wrestling Arena needed', type: '' },
+          'Email:' => { value: 'ned@simpsons.com', type: '' },
+          'Name:' => { value: 'Ned Flanders', type: '' },
+          'Body:' => { value: "I'm convinced that if we do not get something we will struggle", type: '' }
+        }
+      ]
+      rows = service.paper_docs_to_idea_rows docs
+
+      expect(rows.count).to eq 2
+      expect(rows[0][:title_multiloc]).to eq({ en: 'Free donuts for all' })
+      expect(rows[0][:body_multiloc]).to eq({ en: 'Give them all donuts' })
+      expect(rows[0][:user_email]).to eq 'john_rambo@gravy.com'
+      expect(rows[0][:user_name]).to eq 'John Rambo'
+      expect(rows[0][:project_id]).to eq project.id
     end
   end
 end

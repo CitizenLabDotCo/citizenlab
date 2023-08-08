@@ -44,7 +44,7 @@ describe BulkImportIdeas::ImportIdeasService do
       expect(idea2.body_multiloc).to eq({ 'en' => 'My idea description 2' })
     end
 
-    it 'imports multiple ideas and creates new authors - with or without email addresses' do
+    it 'imports multiple ideas and creates new authors - with or without email addresses & names' do
       project1 = create(:project, title_multiloc: { 'fr-BE' => 'Projet un', 'en' => 'Project 1' })
       project2 = create(:project, title_multiloc: { 'nl-BE' => 'Project twee', 'en' => 'Project 2' })
       project3 = create(:project, title_multiloc: { 'fr-BE' => 'Projet trois', 'en' => 'Project 3' })
@@ -54,7 +54,8 @@ describe BulkImportIdeas::ImportIdeasService do
           title_multiloc: { 'en' => 'My idea title' },
           body_multiloc: { 'en' => 'My idea description' },
           project_title: 'Project 1',
-          user_email: 'userimport1@citizenlab.co'
+          user_email: 'userimport1@citizenlab.co',
+          user_name: 'Gary Import'
         },
         {
           title_multiloc: { 'en' => 'My idea title 2' },
@@ -77,6 +78,8 @@ describe BulkImportIdeas::ImportIdeasService do
       expect(idea1.title_multiloc).to eq({ 'en' => 'My idea title' })
       expect(idea1.body_multiloc).to eq({ 'en' => 'My idea description' })
       expect(idea1.author[:email]).to eq 'userimport1@citizenlab.co'
+      expect(idea1.author[:first_name]).to eq 'Gary'
+      expect(idea1.author[:last_name]).to eq 'Import' # TODO: Get this working
 
       expect(project2.reload.ideas_count).to eq 1
       idea2 = project2.ideas.first
@@ -92,6 +95,33 @@ describe BulkImportIdeas::ImportIdeasService do
       expect(idea3.title_multiloc).to eq({ 'en' => 'My idea title 3' })
       expect(idea3.body_multiloc).to eq({ 'en' => 'My idea description 3' })
       expect(idea3.author).to eq idea1.author
+    end
+
+    it 'imports multiple ideas using project IDs' do
+      project = create(:project, title_multiloc: { 'fr-BE' => 'Projet un', 'en' => 'Project 1' })
+
+      idea_rows = [
+        {
+          title_multiloc: { 'en' => 'My idea title' },
+          body_multiloc: { 'en' => 'My idea description' },
+          project_id: project.id,
+          user_email: 'userimport@citizenlab.co'
+        },
+        {
+          title_multiloc: { 'en' => 'My idea title 2' },
+          body_multiloc: { 'en' => 'My idea description 2' },
+          project_id: project.id,
+          user_email: 'userimport@citizenlab.co'
+        }
+      ]
+      service.import_ideas idea_rows
+
+      expect(project.reload.ideas_count).to eq 2
+      idea1 = project.ideas.first
+      expect(idea1.project_id).to eq project.id
+
+      idea2 = project.ideas.first
+      expect(idea2.project_id).to eq project.id
     end
 
     it 'imports ideas with publication info' do

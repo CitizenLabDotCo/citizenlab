@@ -3,12 +3,15 @@
 require 'rails_helper'
 
 describe BulkImportIdeas::GoogleFormParserService do
-  let(:service) { described_class.new '/cl2_back/engines/commercial/bulk_import_ideas/spec/fixtures/example_forms.pdf' }
+  # let(:service) { described_class.new '/cl2_back/engines/commercial/bulk_import_ideas/spec/fixtures/example_forms.pdf' }
 
-  it 'gets data from the PDF file' do
-    form_fields = service.parse_form_fields
+  it 'gets idea rows from the PDF file' do
+    file_content = File.binread '/cl2_back/engines/commercial/bulk_import_ideas/spec/fixtures/testscan.pdf'
+    service = described_class.new file_content
+    docs = service.parse_paper_form
 
-    binding.pry
+    pp docs
+    # binding.pry
 
     # Usage
     # pdf_parser = DocumentAIPDFParserService.new('path_to_your_pdf.pdf')

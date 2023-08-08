@@ -7,6 +7,7 @@ BulkImportIdeas::Engine.routes.draw do
         post :bulk_create_xlsx, on: :collection
         get :example_xlsx, on: :collection
         post ':project_id/bulk_create_xlsx', on: :collection, action: 'bulk_create_xlsx'
+        post ':project_id/bulk_create_pdf', on: :collection, action: 'bulk_create_pdf'
         get ':project_id/example_xlsx', on: :collection, action: 'example_xlsx'
       end
     end

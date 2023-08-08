@@ -4,9 +4,12 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'BulkImportIdeasImportIdeas' do
-  explanation 'Create many ideas at once by importing an XLSX sheet.'
+  explanation 'Create many ideas at once by importing an XLSX sheet or a scanned PDF of multiple ideas.'
 
-  before { header 'Content-Type', 'application/json' }
+  before do
+    create(:idea_status, code: 'proposed')
+    header 'Content-Type', 'application/json'
+  end
 
   context 'when not authorized' do
     get 'web_api/v1/import_ideas/example_xlsx' do
@@ -82,8 +85,24 @@ resource 'BulkImportIdeasImportIdeas' do
 
         let(:xlsx) { create_bulk_import_ideas_xlsx }
 
-        example 'Bulk import ideas' do
+        example 'Bulk import ideas from .xlsx' do
           expect_any_instance_of(BulkImportIdeas::ImportIdeasService).to receive :import_ideas
+          do_request
+          assert_status 200
+        end
+      end
+
+      post 'web_api/v1/import_ideas/:project_id/bulk_create_pdf' do
+        parameter(
+          :pdf,
+          'Scanned PDF of ideas. Must be from the version of the form downloaded from the site.',
+          scope: :import_ideas,
+          required: true
+        )
+
+        let(:pdf) { create_project_bulk_import_ideas_pdf }
+
+        example 'Bulk import ideas from scanned .pdf' do
           do_request
           assert_status 200
         end
@@ -117,6 +136,11 @@ resource 'BulkImportIdeasImportIdeas' do
     xlsx_stringio = XlsxService.new.hash_array_to_xlsx hash_array
     base_64_content = Base64.encode64 xlsx_stringio.read
     "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,#{base_64_content}"
+  end
+
+  def create_project_bulk_import_ideas_pdf
+    base_64_content = Base64.encode64 File.open('/cl2_back/engines/commercial/bulk_import_ideas/spec/fixtures/testscan.pdf').read
+    "data:application/pdf;base64,#{base_64_content}"
   end
 
 end

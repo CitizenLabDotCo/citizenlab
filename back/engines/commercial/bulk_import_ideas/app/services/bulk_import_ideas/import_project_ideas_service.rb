@@ -29,9 +29,25 @@ module BulkImportIdeas
       columns['Image URL'] = 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png'
       columns['Topics'] = 'Mobility; Health and welfare'
 
-      binding.pry
+      # binding.pry
 
       XlsxService.new.hash_array_to_xlsx [columns]
     end
+
+    # docs is the output from google form parser
+    def paper_docs_to_idea_rows(docs)
+      project_id = @project.id
+      docs.map do |doc|
+        idea_row = {}
+        idea_row[:project_id] = project_id
+        idea_row[:title_multiloc] = { en: doc['Title:'][:value] }
+        idea_row[:body_multiloc] = { en: doc['Body:'][:value] }
+        idea_row[:user_email] = doc['Email:'][:value]
+        idea_row[:user_name] = doc['Name:'][:value]
+        idea_row
+        # TODO: Custom fields
+      end
+    end
+
   end
 end

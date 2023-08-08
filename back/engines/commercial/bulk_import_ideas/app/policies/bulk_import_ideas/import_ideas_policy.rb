@@ -6,6 +6,10 @@ module BulkImportIdeas
       active_admin?
     end
 
+    def bulk_create_pdf?
+      active_admin?
+    end
+
     def example_xlsx?
       active_admin?
     end
