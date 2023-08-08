@@ -17,6 +17,7 @@ import {
   IconButton,
   colors,
   stylingConsts,
+  Text,
 } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 import Modal from 'components/UI/Modal';
@@ -115,7 +116,7 @@ const Tags = () => {
           size="s"
           buttonStyle="secondary-outlined"
         >
-          Auto-tagging
+          Auto-tag
         </Button>
         <Box display="flex" alignItems="center" mb="8px" as="form">
           <Input
@@ -145,15 +146,20 @@ const Tags = () => {
           onClick={() => removeSearchParams(['tag_ids'])}
           className={!selectedTags ? 'selected' : ''}
         >
-          {formatMessage(messages.allTags)}
+          All inputs
         </TagContainer>
         <TagContainer
           tabIndex={0}
           onClick={() => updateSearchParams({ tag_ids: [] })}
           className={selectedTags?.length === 0 ? 'selected' : ''}
         >
-          {formatMessage(messages.noTags)}
+          Inputs without tags
         </TagContainer>
+        {!isLoading && tags?.data.length === 0 && (
+          <Text p="6px" color="grey400">
+            <p>You do not have any tags yet.</p>
+          </Text>
+        )}
         {tags?.data.map((tag) => (
           <TagContainer
             key={tag.id}

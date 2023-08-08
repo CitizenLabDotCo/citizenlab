@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 
 import useAnalysisSummaries from 'api/analysis_summaries/useAnalysisSummaries';
 
@@ -13,12 +13,21 @@ type Props = {
 };
 const Insights = ({ onSelectInput }: Props) => {
   const { analysisId } = useParams() as { analysisId: string };
-  const { data: summaries } = useAnalysisSummaries({
+  const { data: summaries, isLoading } = useAnalysisSummaries({
     analysisId,
   });
 
   return (
     <Box>
+      {!isLoading && summaries?.data?.length === 0 && (
+        <Text p="24px" color="grey400">
+          <p>
+            Your text summaries will be displayed here, but you currently do not
+            have any yet.
+          </p>
+          <p>Start by adding some tags.</p>
+        </Text>
+      )}
       {summaries?.data.map((summary) => (
         <Summary
           key={summary.id}
