@@ -7,7 +7,6 @@ import {
   Button,
   Box,
   Title,
-  useBreakpoint,
   Text,
 } from '@citizenlab/cl2-component-library';
 import DateBlocks from '../DateBlocks';
@@ -59,7 +58,6 @@ const EventInformation = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const { data: user } = useAuthUser();
-  const isMobile = useBreakpoint('phone');
 
   // Attendance api
   const { data: eventAttendances } = useEventAttendances(event.id);
