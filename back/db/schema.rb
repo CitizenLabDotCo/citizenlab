@@ -102,8 +102,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_01_135355) do
   create_table "analysis_taggings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "tag_id", null: false
     t.uuid "input_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.index ["input_id"], name: "index_analysis_taggings_on_input_id"
     t.index ["tag_id", "input_id"], name: "index_analysis_taggings_on_tag_id_and_input_id", unique: true
     t.index ["tag_id"], name: "index_analysis_taggings_on_tag_id"
@@ -1230,13 +1228,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_01_135355) do
     t.integer "posting_limited_max", default: 1
     t.string "document_annotation_embed_url"
     t.boolean "allow_anonymous_participation", default: false, null: false
-    t.integer "followers_count", default: 0, null: false
     t.string "voting_method"
     t.integer "voting_max_votes_per_idea"
     t.jsonb "voting_term_singular_multiloc", default: {}
     t.jsonb "voting_term_plural_multiloc", default: {}
     t.integer "baskets_count", default: 0, null: false
     t.integer "votes_count", default: 0, null: false
+    t.integer "followers_count", default: 0, null: false
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 
