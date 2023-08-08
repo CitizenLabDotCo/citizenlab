@@ -176,7 +176,7 @@ const IdeaCard = memo<IdeaCardProps>(
                   followableId={idea.data.id}
                   followersCount={idea.data.attributes.followers_count}
                   followerId={idea.data.relationships.user_follower?.data?.id}
-                  py="2px"
+                  py="4px"
                   w="auto"
                 />
               </Box>
