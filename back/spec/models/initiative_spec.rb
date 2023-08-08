@@ -252,8 +252,8 @@ RSpec.describe Initiative do
     end
 
     it 'does nothing if update validation fails' do
-      initiative.update(cosponsor_ids: [], anonymous: nil)
-
+      saved = initiative.update(cosponsor_ids: [], title_multiloc: {})
+      expect(saved).to be false
       expect(initiative.reload.cosponsors).to be_present
     end
   end
