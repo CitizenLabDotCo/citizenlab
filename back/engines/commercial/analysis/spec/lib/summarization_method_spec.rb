@@ -62,13 +62,14 @@ RSpec.describe Analysis::SummarizationMethod do
         create(:idea, comments_count: 10)
       end
 
-      mock_openai_api = instance_double(Analysis::OpenaiApi)
+      mock_openai_api = Analysis::OpenaiApi.new
       summarization_method = Analysis::SummarizationMethod::Base.for_summarization_method(
         'gpt4',
         summarization_task,
         openai_api: mock_openai_api
       )
 
+      expect(mock_openai_api).to receive(:token_count).and_call_original
       expect(mock_openai_api).to receive(:chat).with(anything) do |value|
         expect(value.dig(:parameters, :messages, 0, :content)).to include(idea3.id)
         value[:parameters][:stream].call({
@@ -94,6 +95,37 @@ RSpec.describe Analysis::SummarizationMethod do
       expect(summarization_task).to have_attributes({
         state: 'succeeded',
         progress: nil
+      })
+    end
+
+    it 'raises an error on too many tokens' do
+      analysis = create(:analysis, custom_fields: [create(
+        :custom_field,
+        :for_custom_form,
+        code: 'title_multiloc',
+        key: 'title_multiloc'
+      )])
+
+      summarization_task = create(
+        :summarization_task,
+        analysis: analysis,
+        state: 'queued',
+        summary: create(:summary, analysis: analysis, summary: nil, summarization_method: 'gpt4')
+      )
+      mock_openai_api = Analysis::OpenaiApi.new
+      summarization_method = Analysis::SummarizationMethod::Base.for_summarization_method(
+        'gpt4',
+        summarization_task,
+        openai_api: mock_openai_api
+      )
+      create(:idea, project: summarization_task.analysis.project, title_multiloc: { en: 'token ' * 10_000 })
+
+      expect(mock_openai_api).to receive(:token_count).and_call_original
+
+      summarization_method.execute
+
+      expect(summarization_task).to have_attributes({
+        state: 'failed'
       })
     end
   end

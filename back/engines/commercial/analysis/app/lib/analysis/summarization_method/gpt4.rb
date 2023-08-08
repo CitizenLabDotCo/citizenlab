@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'openai'
-
 module Analysis
   class SummarizationMethod::Gpt4 < SummarizationMethod::Base
     SUMMARY_TYPE = 'gpt4'
@@ -19,6 +17,8 @@ module Analysis
 
     # Use `execute` on the parent class to actually use the method
     def run
+      check_prompt_length
+
       summary.update!(prompt: prompt)
 
       @openai_api.chat(
@@ -61,6 +61,13 @@ module Analysis
       filtered_inputs
         .map { |input| input_to_text.formatted(input, include_id: true) }
         .join('\n-----\n')
+    end
+
+    def check_prompt_length
+      token_count = @openai_api.token_count(prompt)
+      if token_count > 7500
+        raise SummarizationFailedError, "The prompt exceeds the maximum token count. Using #{token_count}, with a 7500 limit"
+      end
     end
   end
 end
