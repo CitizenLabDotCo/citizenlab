@@ -3,11 +3,10 @@ import React, { memo } from 'react';
 // hooks
 import useTopics from 'api/topics/useTopics';
 import useLocalize from 'hooks/useLocalize';
-import { useTheme } from 'styled-components';
 import { useIntl } from 'utils/cl-intl';
 
 // styling
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { fontSizes, isRtl } from 'utils/styleUtils';
 import { transparentize } from 'polished';
 
