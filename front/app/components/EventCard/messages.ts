@@ -29,4 +29,8 @@ export default defineMessages({
     id: 'app.components.EventCard.attend',
     defaultMessage: 'Attend',
   },
+  attending: {
+    id: 'app.components.EventCard.attending',
+    defaultMessage: 'Attending',
+  },
 });

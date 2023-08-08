@@ -16,14 +16,14 @@ export interface IEventAttendanceData {
   id: string;
   type: string;
   attributes: {
-    file: {
-      url: string;
-    };
-    ordering: string | null;
-    name: string;
-    size: number;
     created_at: string;
-    updated_at: string;
+  };
+  relationships: {
+    attendee: {
+      data: {
+        id: string;
+      };
+    };
   };
 }
 
@@ -36,6 +36,5 @@ export interface IEventAttendances {
 }
 
 export interface IDeleteEventAttendanceProperties {
-  eventId: string;
   attendanceId?: string;
 }

@@ -28,6 +28,7 @@ import messages from '../messages';
 import useEventAttendances from 'api/event_attendance/useEventAttendances';
 import useAddEventAttendance from 'api/event_attendance/useAddEventAttendance';
 import useAuthUser from 'api/me/useAuthUser';
+import useDeleteEventAttendance from 'api/event_attendance/useDeleteEventAttendance';
 
 const EventInformationContainer = styled.div`
   flex: 1;
@@ -55,11 +56,26 @@ const EventInformation = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const { data: eventAttendances } = useEventAttendances(event.id);
-  const { mutate: addEventAttendance } = useAddEventAttendance();
-  const { data: user } = useAuthUser();
+  const { mutate: addEventAttendance, isLoading: isAddingAttendance } =
+    useAddEventAttendance(event.id);
+  const { mutate: deleteEventAttendance, isLoading: isRemovingAttendance } =
+    useDeleteEventAttendance(event.id);
 
+  const { data: user } = useAuthUser();
   const isMobile = useBreakpoint('phone');
+
+  const eventAttendanceUserIds = eventAttendances?.data?.map(
+    (eventAttendance) => eventAttendance.relationships.attendee.data.id
+  );
+  const userIsAttending =
+    user && eventAttendanceUserIds?.includes(user.data.id);
   const locationDescription = event?.attributes?.location_description;
+  const attendanceId = eventAttendances?.data?.find(
+    (eventAttendance) =>
+      eventAttendance.relationships.attendee.data.id === user?.data?.id
+  )?.id;
+
+  const isLoading = isAddingAttendance || isRemovingAttendance;
 
   const eventDateTime = isMultiDayEvent
     ? `${startAtMoment.format('LLL')} - ${endAtMoment.format('LLL')}`
@@ -68,13 +84,14 @@ const EventInformation = ({
       )} - ${endAtMoment.format('LT')}`;
 
   const registerAttendance = () => {
-    console.log('Register attendance functiony');
-    if (user) {
+    if (userIsAttending && attendanceId) {
+      deleteEventAttendance({
+        attendanceId,
+      });
+    } else if (user) {
       addEventAttendance({ eventId: event.id, attendeeId: user.data?.id });
     }
   };
-
-  console.log(eventAttendances?.data);
 
   return (
     <EventInformationContainer data-testid="EventInformation">
@@ -130,14 +147,18 @@ const EventInformation = ({
       <Button
         ml="auto"
         width={isMobile ? '100%' : '320px'}
-        iconPos="right"
-        icon="plus"
+        iconPos={userIsAttending ? 'left' : 'right'}
+        icon={userIsAttending ? 'check' : 'plus'}
+        bgColor={userIsAttending ? colors.success : colors.primary}
         onClick={(event) => {
           event.preventDefault();
           registerAttendance();
         }}
+        processing={isLoading}
       >
-        {formatMessage(messages.attend)}
+        {userIsAttending
+          ? formatMessage(messages.attending)
+          : formatMessage(messages.attend)}
       </Button>
     </EventInformationContainer>
   );

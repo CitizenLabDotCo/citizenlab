@@ -15,14 +15,14 @@ const addEventAttendance = async (
   });
 };
 
-const useAddEventAttendance = () => {
+const useAddEventAttendance = (eventId: string) => {
   const queryClient = useQueryClient();
   return useMutation<IEventAttendance, CLErrors, IAddEventAttendanceProperties>(
     {
       mutationFn: addEventAttendance,
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: eventsAttendancesKeys.lists(),
+          queryKey: eventsAttendancesKeys.list({ eventId }),
         });
       },
     }

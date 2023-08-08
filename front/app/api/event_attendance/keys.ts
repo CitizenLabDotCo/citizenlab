@@ -1,7 +1,7 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
 import { InputParameters } from './types';
 
-const baseKey = { type: 'eventattendance', variant: 'event' };
+const baseKey = { type: 'attendance' };
 
 const eventsAttendancesKeys = {
   all: () => [baseKey],
