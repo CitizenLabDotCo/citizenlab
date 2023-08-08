@@ -70,32 +70,17 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
       end
 
       if field_type == 'text' then
-        pdf.move_down 4.mm
-
-        pdf.stroke do
-          pdf.stroke_color 'EBEBEB'
-          pdf.horizontal_rule
-        end
-
-        pdf.move_down 4.mm
+        draw_text_line(pdf)
       end
 
       if field_type == 'multiline_text' then
-        pdf.move_down 4.mm
-        pdf.stroke_color 'EBEBEB'
-
         (1..7).each do
-          pdf.stroke do
-            pdf.horizontal_rule
-          end
-
-          pdf.move_down 10.mm
+          draw_text_line(pdf)
         end
       end
 
       pdf.move_down 6.mm
     end
-
 
     send_data(
       pdf.render,
@@ -140,6 +125,8 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
       paragraphs.each do |paragraph|
         pdf.text(paragraph, inline_format: true)
       end
+
+      pdf.move_down 2.mm
     end
   end
 
@@ -148,5 +135,9 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
       .gsub(FORBIDDEN_HTML_TAGS_REGEX, '')
       .gsub('<p>', '')
       .split('</p>')
+  end
+
+  def draw_text_line(pdf)
+    pdf.text '_' * 47, color: 'EBEBEB', size: 20
   end
 end
