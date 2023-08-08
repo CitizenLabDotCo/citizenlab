@@ -3,7 +3,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-describe 'hoplr authentication' do
+context 'hoplr authentication' do
   before do
     OmniAuth.config.test_mode = true
     OmniAuth.config.mock_auth[:hoplr] = OmniAuth::AuthHash.new(
