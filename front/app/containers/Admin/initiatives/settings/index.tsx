@@ -21,8 +21,7 @@ import {
 } from 'components/admin/Section';
 import Warning from 'components/UI/Warning';
 import ProposalsFeatureToggle from './ProposalsFeatureToggle';
-import ReactingThreshold from './ReactingThreshold';
-import ReactingLimit from './ReactingLimit';
+import Thresholds from './Thresholds';
 import ThresholdReachedMessage from './ThresholdReachedMessage';
 import EligibilityCriteria from './EligibilityCriteria';
 import PageBody from './PageBody';
@@ -248,7 +247,6 @@ const InitiativesSettingsPage = () => {
             value={localProposalsSettings.require_review}
             onChange={updateProposalsSetting('require_review')}
           />
-
           <Cosponsors
             requireCosponsors={localProposalsSettings.require_cosponsors}
             onChangeRequireSponsors={updateProposalsSetting(
@@ -259,27 +257,22 @@ const InitiativesSettingsPage = () => {
               'cosponsors_number'
             )}
           />
-
-          <ReactingThreshold
-            value={localProposalsSettings.reacting_threshold}
-            onChange={updateProposalsSetting('reacting_threshold')}
+          <Thresholds
+            numberOfVotesThreshold={localProposalsSettings.reacting_threshold}
+            onChangeNumberOfVotesThreshold={updateProposalsSetting(
+              'reacting_threshold'
+            )}
+            numberOfDaysThreshold={localProposalsSettings.days_limit}
+            onChangeNumberOfDaysThreshold={updateProposalsSetting('days_limit')}
           />
-
-          <ReactingLimit
-            value={localProposalsSettings.days_limit}
-            onChange={updateProposalsSetting('days_limit')}
-          />
-
-          <ThresholdReachedMessage
-            value={localProposalsSettings.threshold_reached_message}
-            onChange={updateProposalsSetting('threshold_reached_message')}
-          />
-
           <EligibilityCriteria
             value={localProposalsSettings.eligibility_criteria}
             onChange={updateProposalsSetting('eligibility_criteria')}
           />
-
+          <ThresholdReachedMessage
+            value={localProposalsSettings.threshold_reached_message}
+            onChange={updateProposalsSetting('threshold_reached_message')}
+          />
           <PageBody
             value={newProposalsPageBody}
             onChange={updateProposalsPageBody}

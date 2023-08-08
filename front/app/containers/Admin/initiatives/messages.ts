@@ -61,13 +61,13 @@ export default defineMessages({
     defaultMessage:
       "Proposals won't be visible until an admin reviews and approves them.",
   },
-  fieldVotingThreshold: {
-    id: 'app.containers.Admin.initiatives.fieldVotingThreshold',
-    defaultMessage: 'Voting threshold',
+  numberOfVotesThreshold: {
+    id: 'app.containers.Admin.initiatives.numberOfVotesThreshold',
+    defaultMessage: 'Minimum number of votes to be considered',
   },
-  fieldVotingDaysLimit: {
-    id: 'app.containers.Admin.initiatives.fieldVotingDaysLimit',
-    defaultMessage: 'Days to reach voting threshold',
+  numberOfDaysThreshold: {
+    id: 'app.containers.Admin.initiatives.numberOfDaysThreshold',
+    defaultMessage: 'Number of days to reach minimum number of votes',
   },
   proposalEligibilityCriteria: {
     id: 'app.containers.Admin.initiatives.proposalEligibilityCriteria',
@@ -155,5 +155,9 @@ export default defineMessages({
   cosponsors: {
     id: 'app.containers.Admin.initiatives.cosponsors',
     defaultMessage: 'Cosponsors',
+  },
+  thresholds: {
+    id: 'app.containers.Admin.initiatives.thresholds',
+    defaultMessage: 'Thresholds',
   },
 });
