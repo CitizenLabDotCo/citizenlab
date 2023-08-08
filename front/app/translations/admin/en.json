@@ -731,7 +731,7 @@
   "app.containers.Admin.initiatives.addNewProposal": "Add a proposal",
   "app.containers.Admin.initiatives.cosponsors": "Cosponsors",
   "app.containers.Admin.initiatives.cosponsorsNumberLabel": "Number of cosponsors",
-  "app.containers.Admin.initiatives.cosponsorsNumberMinError": "Number of cosponsors needs to be at least 1",
+  "app.containers.Admin.initiatives.cosponsorsNumberMinError1": "The number of cosponsors needs to be at least 1.",
   "app.containers.Admin.initiatives.enableProposals": "Enable proposals",
   "app.containers.Admin.initiatives.feature": "Feature",
   "app.containers.Admin.initiatives.fieldPostingEnabled": "Proposal submission",
