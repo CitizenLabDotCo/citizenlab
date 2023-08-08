@@ -72,11 +72,11 @@ module Notifications
       initiator_id = official_feedback.user_id
 
       if official_feedback.post_type == 'Initiative' && initiator_id
-        User.from_follows(official_feedback.post.followers).where.not(id: initiator_id).map do |recipient_id|
+        User.from_follows(official_feedback.post.followers).where.not(id: initiator_id).filter_map do |recipient|
           next if InitiativeStatusChange.exists?(official_feedback: official_feedback)
 
           new(
-            recipient_id: recipient_id,
+            recipient_id: recipient.id,
             initiating_user_id: initiator_id,
             post: official_feedback.post,
             official_feedback: official_feedback
