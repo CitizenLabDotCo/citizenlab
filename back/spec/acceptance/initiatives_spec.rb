@@ -30,7 +30,7 @@ resource 'Initiatives' do
     parameter :sort, "Either 'trending' (default), 'new', '-new', 'author_name', '-author_name', 'likes_count', '-likes_count', 'status', '-status', 'random'", required: false
 
     example_request 'List all published initiatives (default behaviour)' do
-      expect(status).to eq(200)
+      assert_status 200
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 5
       expect(json_response[:data].map { |d| d.dig(:attributes, :publication_status) }).to all(eq 'published')
@@ -198,7 +198,7 @@ resource 'Initiatives' do
     example 'List all markers within a bounding box' do
       do_request(bounding_box: '[51.208758,3.224363,50.000667,5.715281]') # Bruges-Bastogne
 
-      expect(status).to eq(200)
+      assert_status 200
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 4
       expect(json_response[:data].map { |d| d.dig(:attributes, :title_multiloc, :en) }.sort).to match %w[Brussels Liège Meise Mons].sort
@@ -476,6 +476,7 @@ resource 'Initiatives' do
       parameter :area_ids, 'Array of ids of the associated areas'
       parameter :assignee_id, 'The user id of the admin that takes ownership. Only allowed for admins.'
       parameter :anonymous, 'Post this initiative anonymously - true/false'
+      parameter :cosponsor_ids, 'Array of user ids of the desired cosponsors'
     end
     ValidationErrorHelper.new.error_fields(self, Initiative)
 
@@ -657,7 +658,7 @@ resource 'Initiatives' do
         let(:publication_status) { 'published' }
 
         example_request 'Change the publication status' do
-          expect(response_status).to eq 200
+          assert_status 200
           expect(response_data.dig(:attributes, :publication_status)).to eq 'published'
         end
       end
@@ -672,6 +673,19 @@ resource 'Initiatives' do
           expect(json_response_body.dig(:errors, :base, 0, :error)).to eq 'Unauthorized!'
         end
       end
+
+      describe 'cosponsor_ids' do
+        let(:id) { @initiative.id }
+        let(:cosponsor) { create(:user) }
+        let(:cosponsor_ids) { [cosponsor.id] }
+
+        example_request 'Update the cosponsors of an initiative' do
+          assert_status 200
+          json_response = json_parse(response_body)
+
+          expect(json_response.dig(:data, :relationships, :cosponsors, :data).pluck(:id)).to match_array cosponsor_ids
+        end
+      end
     end
   end
 
@@ -683,7 +697,7 @@ resource 'Initiatives' do
     let(:id) { @initiative.id }
 
     example_request 'Delete an initiative' do
-      expect(response_status).to eq 200
+      assert_status 200
       expect { Initiative.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
