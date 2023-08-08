@@ -159,7 +159,9 @@ export const UsersShowPage = memo<InnerProps>(({ className, user }) => {
           )}
 
           {currentTab === 'comments' && <UserComments userId={user.id} />}
-          {currentTab === 'following' && isFollowingEnabled && <Following />}
+          {currentTab === 'following' && isFollowingEnabled && (
+            <Following userId={user.id} />
+          )}
         </StyledContentContainer>
       </Container>
     </>

@@ -95,7 +95,17 @@ const getHeaderMessage = (
     | IParticipationContextPermissionAction
     | IFollowingAction
 ) => {
-  if (action === 'following') {
+  if (
+    action === 'following' &&
+    [
+      'light-flow:email',
+      'light-flow:email-policies',
+      'light-flow:google-policies',
+      'light-flow:facebook-policies',
+      'light-flow:azure-ad-policies',
+      'light-flow:france-connect-login',
+    ].includes(step)
+  ) {
     return messages.beforeYouFollow;
   }
   return HEADER_MESSAGES[step];
