@@ -12,10 +12,10 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 interface Props {
-  numberOfVotesThreshold: number | undefined;
-  onChangeNumberOfVotesThreshold: (value: number | undefined) => void;
-  numberOfDaysThreshold: number | undefined;
-  onChangeNumberOfDaysThreshold: (value: number | undefined) => void;
+  numberOfVotesThreshold: number;
+  onChangeNumberOfVotesThreshold: (value: number) => void;
+  numberOfDaysThreshold: number;
+  onChangeNumberOfDaysThreshold: (value: number) => void;
 }
 
 const Thresholds = ({
@@ -31,22 +31,12 @@ const Thresholds = ({
     useState(false);
 
   const handleDaysLimitOnChange = (numberOfDaysStr: string) => {
-    // parseInt on empty string results in NaN
-    const numberOfDays = isNaN(parseInt(numberOfDaysStr, 10))
-      ? undefined
-      : parseInt(numberOfDaysStr, 10);
-
-    onChangeNumberOfDaysThreshold(numberOfDays);
+    onChangeNumberOfDaysThreshold(parseInt(numberOfDaysStr, 10));
     setNumberOfDaysThresholdChanged(true);
   };
 
   const handleReactingTresholdOnChange = (numberOfVotesStr: string) => {
-    // parseInt on empty string results in NaN
-    const numberOfVotes = isNaN(parseInt(numberOfVotesStr, 10))
-      ? undefined
-      : parseInt(numberOfVotesStr, 10);
-
-    onChangeNumberOfVotesThreshold(numberOfVotes);
+    onChangeNumberOfVotesThreshold(parseInt(numberOfVotesStr, 10));
     setNumberOfVotesThresholdChanged(true);
   };
 
@@ -59,10 +49,8 @@ const Thresholds = ({
           name="reacting_threshold"
           type="number"
           min="2"
-          required={true}
-          value={
-            numberOfVotesThreshold ? numberOfVotesThreshold.toString() : null
-          }
+          required
+          value={numberOfVotesThreshold.toString()}
           onChange={handleReactingTresholdOnChange}
           label={formatMessage(messages.numberOfVotesThreshold)}
         />
@@ -71,19 +59,12 @@ const Thresholds = ({
             {formatMessage(messages.warningTresholdSettings)}
           </StyledWarning>
         )}
-
-        {typeof numberOfVotesThreshold !== 'number' && (
+        {Number.isNaN(numberOfVotesThreshold) && (
           <Error text={formatMessage(errorMessages.blank)} />
         )}
-
-        {typeof numberOfVotesThreshold === 'number' &&
-          numberOfVotesThreshold < 2 && (
-            <Error
-              text={formatMessage(
-                messages.initiativeSettingsVotingThresholdError
-              )}
-            />
-          )}
+        {numberOfVotesThreshold < 2 && (
+          <Error text={formatMessage(messages.initiativeMinimumVotesError)} />
+        )}
       </Box>
       <>
         <Input
@@ -92,9 +73,7 @@ const Thresholds = ({
           type="number"
           min="1"
           required
-          value={
-            numberOfDaysThreshold ? numberOfDaysThreshold.toString() : null
-          }
+          value={numberOfDaysThreshold.toString()}
           onChange={handleDaysLimitOnChange}
           label={formatMessage(messages.numberOfDaysThreshold)}
         />
@@ -103,8 +82,11 @@ const Thresholds = ({
             {formatMessage(messages.warningTresholdSettings)}
           </StyledWarning>
         )}
-        {typeof numberOfDaysThreshold !== 'number' && (
+        {Number.isNaN(numberOfDaysThreshold) && (
           <Error text={formatMessage(errorMessages.blank)} />
+        )}
+        {numberOfDaysThreshold < 1 && (
+          <Error text={formatMessage(messages.initiativeMinimumDaysError)} />
         )}
       </>
     </SectionField>

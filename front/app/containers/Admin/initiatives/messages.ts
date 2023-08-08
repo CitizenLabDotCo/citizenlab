@@ -90,9 +90,13 @@ export default defineMessages({
     id: 'app.containers.Admin.initiatives.initiativeSettingsFormError',
     defaultMessage: 'Something went wrong. Please try again.',
   },
-  initiativeSettingsVotingThresholdError: {
-    id: 'app.containers.Admin.initiatives.initiativeSettingsVotingThresholdError',
-    defaultMessage: 'The voting treshold needs to be at least 2',
+  initiativeMinimumVotesError: {
+    id: 'app.containers.Admin.initiatives.initiativeMinimumVotesError',
+    defaultMessage: 'The minimum number of votes needs to be at least 2.',
+  },
+  initiativeMinimumDaysError: {
+    id: 'app.containers.Admin.initiatives.initiativeMinimumDaysError',
+    defaultMessage: 'The minimum number of days needs to be at least 1.',
   },
   initiativeSettingsFormSuccess: {
     id: 'app.containers.Admin.initiatives.initiativeSettingsFormSuccess',
