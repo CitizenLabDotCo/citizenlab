@@ -679,8 +679,7 @@ resource 'Initiatives' do
         let(:cosponsor) { create(:user) }
         let(:cosponsor_ids) { [cosponsor.id] }
 
-        example 'Update the cosponsors of an initiative', document: false do
-          do_request
+        example_request 'Update the cosponsors of an initiative' do
           assert_status 200
           json_response = json_parse(response_body)
 
