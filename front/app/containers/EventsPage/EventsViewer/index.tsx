@@ -21,14 +21,22 @@ import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 import { PublicationStatus } from 'api/projects/types';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, media } from '@citizenlab/cl2-component-library';
 
 interface IStyledEventCard {
   last: boolean;
 }
 
 const StyledEventCard = styled(EventCard)<IStyledEventCard>`
-  max-width: 360px;
+  width: 32.3%;
+
+  ${media.tablet`
+    width: 48.8%;
+  `}
+
+  ${media.phone`
+    width: 100%;
+  `}
 `;
 
 const StyledPagination = styled(Pagination)`

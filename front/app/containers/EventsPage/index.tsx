@@ -12,7 +12,13 @@ const EventsPage = () => (
     <EventsPageMeta />
     <Box as="main">
       <SectionContainer>
-        <Box id="e2e-events-container" mx="auto" maxWidth="1100px">
+        <Box
+          id="e2e-events-container"
+          mx="auto"
+          px="24px"
+          width="100%"
+          maxWidth="1100px"
+        >
           <CurrentAndUpcomingEvents />
           <PastEvents />
         </Box>

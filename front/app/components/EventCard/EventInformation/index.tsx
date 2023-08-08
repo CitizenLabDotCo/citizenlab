@@ -10,25 +10,28 @@ import {
   useBreakpoint,
   Text,
 } from '@citizenlab/cl2-component-library';
+import DateBlocks from '../DateBlocks';
 
-// services
+// api
+import useEventAttendances from 'api/event_attendance/useEventAttendances';
+import useAddEventAttendance from 'api/event_attendance/useAddEventAttendance';
+import useAuthUser from 'api/me/useAuthUser';
+import useDeleteEventAttendance from 'api/event_attendance/useDeleteEventAttendance';
+
+// types
 import { IEventData } from 'api/events/types';
 
 // i18n
 import T from 'components/T';
 import { useIntl } from 'utils/cl-intl';
+import messages from '../messages';
 
 // styling
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
-// other
-import DateBlocks from '../DateBlocks';
-import messages from '../messages';
-import useEventAttendances from 'api/event_attendance/useEventAttendances';
-import useAddEventAttendance from 'api/event_attendance/useAddEventAttendance';
-import useAuthUser from 'api/me/useAuthUser';
-import useDeleteEventAttendance from 'api/event_attendance/useDeleteEventAttendance';
+// utils
+import clHistory from 'utils/cl-router/history';
 
 const EventInformationContainer = styled.div`
   flex: 1;
@@ -55,15 +58,17 @@ const EventInformation = ({
   titleFontSize,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const { data: user } = useAuthUser();
+  const isMobile = useBreakpoint('phone');
+
+  // Attendance api
   const { data: eventAttendances } = useEventAttendances(event.id);
   const { mutate: addEventAttendance, isLoading: isAddingAttendance } =
     useAddEventAttendance(event.id);
   const { mutate: deleteEventAttendance, isLoading: isRemovingAttendance } =
     useDeleteEventAttendance(event.id);
 
-  const { data: user } = useAuthUser();
-  const isMobile = useBreakpoint('phone');
-
+  // Attendance
   const eventAttendanceUserIds = eventAttendances?.data?.map(
     (eventAttendance) => eventAttendance.relationships.attendee.data.id
   );
@@ -75,6 +80,7 @@ const EventInformation = ({
       eventAttendance.relationships.attendee.data.id === user?.data?.id
   )?.id;
 
+  const isPastEvent = moment().isAfter(endAtMoment);
   const isLoading = isAddingAttendance || isRemovingAttendance;
 
   const eventDateTime = isMultiDayEvent
@@ -100,6 +106,7 @@ const EventInformation = ({
           <Title
             variant="h4"
             style={{ fontSize: titleFontSize, fontWeight: '600' }}
+            pr="8px"
           >
             <T value={event.attributes.title_multiloc} />
           </Title>
@@ -143,22 +150,37 @@ const EventInformation = ({
           )}
         </Box>
       </Box>
-      <Button
-        ml="auto"
-        width={isMobile ? '100%' : '320px'}
-        iconPos={userIsAttending ? 'left' : 'right'}
-        icon={userIsAttending ? 'check' : 'plus'}
-        bgColor={userIsAttending ? colors.success : colors.primary}
-        onClick={(event) => {
-          event.preventDefault();
-          registerAttendance();
-        }}
-        processing={isLoading}
-      >
-        {userIsAttending
-          ? formatMessage(messages.attending)
-          : formatMessage(messages.attend)}
-      </Button>
+      {isPastEvent ? (
+        <Button
+          ml="auto"
+          width={'100%'}
+          bgColor={colors.primary}
+          onClick={(event) => {
+            event.preventDefault();
+            clHistory.push(`/events/${event.id}`);
+          }}
+          processing={isLoading}
+        >
+          {formatMessage(messages.readMore)}
+        </Button>
+      ) : (
+        <Button
+          ml="auto"
+          width={'100%'}
+          iconPos={userIsAttending ? 'left' : 'right'}
+          icon={userIsAttending ? 'check' : 'plus'}
+          bgColor={userIsAttending ? colors.success : colors.primary}
+          onClick={(event) => {
+            event.preventDefault();
+            registerAttendance();
+          }}
+          processing={isLoading}
+        >
+          {userIsAttending
+            ? formatMessage(messages.attending)
+            : formatMessage(messages.attend)}
+        </Button>
+      )}
     </EventInformationContainer>
   );
 };
