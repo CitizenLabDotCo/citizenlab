@@ -753,7 +753,7 @@
   "app.containers.Admin.initiatives.proposalsPageBody": "Proposals information page",
   "app.containers.Admin.initiatives.proposalsPageBodyInfo": "Change the content of the {proposalsPageLink}.",
   "app.containers.Admin.initiatives.proposalsPageLinkText": "proposals information page",
-  "app.containers.Admin.initiatives.requireCosponsorsInfo": "Proposals won't be visible until a number of cosponsors has been reached",
+  "app.containers.Admin.initiatives.requireCosponsorsInfo1": "Proposals won't be visible until a number of cosponsors has been reached.",
   "app.containers.Admin.initiatives.requireCosponsorsLabel": "Require cosponsors per proposal",
   "app.containers.Admin.initiatives.requireReviewInfo": "Proposals won't be visible until an admin reviews and approves them",
   "app.containers.Admin.initiatives.requireReviewLabel": "Require review of proposals",
