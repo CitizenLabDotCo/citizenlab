@@ -35,17 +35,17 @@ export default defineMessages({
     defaultMessage: 'Require review of proposals',
   },
   requireReviewInfo: {
-    id: 'app.containers.Admin.initiatives.requireReviewInfo',
-    defaultMessage: "Proposals won't be visible until an admin reviews them",
+    id: 'app.containers.Admin.initiatives.requireReviewInfo1',
+    defaultMessage: "Proposals won't be visible until an admin reviews them.",
   },
   requireCosponsorsLabel: {
     id: 'app.containers.Admin.initiatives.requireCosponsorsLabel',
     defaultMessage: 'Require cosponsors per proposal',
   },
   requireCosponsorsInfo: {
-    id: 'app.containers.Admin.initiatives.requireCosponsorsInfo',
+    id: 'app.containers.Admin.initiatives.requireCosponsorsInfo1',
     defaultMessage:
-      "Proposals won't be visible until a number of cosponsors has been reached",
+      "Proposals won't be visible until a number of cosponsors has been reached.",
   },
   cosponsorsNumberLabel: {
     id: 'app.containers.Admin.initiatives.cosponsorsNumberLabel',
