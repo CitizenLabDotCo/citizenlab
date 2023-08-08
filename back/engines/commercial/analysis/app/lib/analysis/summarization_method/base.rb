@@ -6,18 +6,18 @@ module Analysis
 
     class SummarizationFailedError < StandardError; end
 
-    def self.for_summarization_method summarization_method, *params
+    def self.for_summarization_method summarization_method, *params, **kwargs
       case summarization_method
       when 'gpt4'
-        SummarizationMethod::Gpt4.new(*params)
+        SummarizationMethod::Gpt4.new(*params, **kwargs)
       when 'bogus'
-        SummarizationMethod::Bogus.new(*params)
+        SummarizationMethod::Bogus.new(*params, **kwargs)
       else
         raise ArgumentError, "Unsupported summarization_method #{summarization_method}"
       end
     end
 
-    def initialize(summarization_task)
+    def initialize(summarization_task, *_args, **_kwargs)
       @analysis = summarization_task.analysis
       @task = summarization_task
       @summary = summarization_task.summary

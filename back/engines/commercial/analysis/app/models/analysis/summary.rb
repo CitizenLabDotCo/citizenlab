@@ -7,7 +7,7 @@ module Analysis
     FILTERS_JSON_SCHEMA = JSON.parse(FILTERS_JSON_SCHEMA_STR)
 
     belongs_to :analysis, class_name: 'Analysis::Analysis'
-    belongs_to :background_task, class_name: 'Analysis::SummarizationTask'
+    belongs_to :background_task, class_name: 'Analysis::SummarizationTask', dependent: :destroy
 
     validates :summarization_method, inclusion: { in: SUMMARIZATION_METHODS }
     validates :filters, json: { schema: FILTERS_JSON_SCHEMA }
