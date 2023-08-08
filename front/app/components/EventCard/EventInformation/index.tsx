@@ -26,7 +26,7 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 // styling
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 // utils
@@ -58,6 +58,7 @@ const EventInformation = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const { data: user } = useAuthUser();
+  const theme = useTheme();
 
   // Attendance api
   const { data: eventAttendances } = useEventAttendances(event.id);
@@ -152,9 +153,8 @@ const EventInformation = ({
         <Button
           ml="auto"
           width={'100%'}
-          bgColor={colors.primary}
-          onClick={(event) => {
-            event.preventDefault();
+          bgColor={theme.colors.tenantPrimary}
+          onClick={() => {
             clHistory.push(`/events/${event.id}`);
           }}
           processing={isLoading}
@@ -167,7 +167,9 @@ const EventInformation = ({
           width={'100%'}
           iconPos={userIsAttending ? 'left' : 'right'}
           icon={userIsAttending ? 'check' : 'plus'}
-          bgColor={userIsAttending ? colors.success : colors.primary}
+          bgColor={
+            userIsAttending ? colors.success : theme.colors.tenantPrimary
+          }
           onClick={(event) => {
             event.preventDefault();
             registerAttendance();

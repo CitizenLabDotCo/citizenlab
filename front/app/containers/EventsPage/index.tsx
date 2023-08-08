@@ -5,22 +5,19 @@ import EventsPageMeta from './EventsPageMeta';
 import SectionContainer from 'components/SectionContainer';
 import CurrentAndUpcomingEvents from './CurrentAndUpcomingEvents';
 import PastEvents from './PastEvents';
-import {
-  Box,
-  Title,
-  colors,
-  useBreakpoint,
-} from '@citizenlab/cl2-component-library';
+import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { useTheme } from 'styled-components';
 
 const EventsPage = () => {
   const isTabletOrSmaller = useBreakpoint('tablet');
+  const theme = useTheme();
 
   return (
     <>
       <Box
         width="100vw"
         height={isTabletOrSmaller ? '180px' : '280px'}
-        bgColor={colors.primary}
+        bgColor={theme.colors.tenantPrimary}
       >
         <Title
           px="24px"
