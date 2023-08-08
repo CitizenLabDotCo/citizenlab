@@ -469,6 +469,8 @@
   "app.components.VoteControl.budgetingNotPermitted": "D'partizipativ Budgetéierung ass momentan net aktivéiert.",
   "app.components.VoteControl.budgetingNotPossible": "Et ass momentan net méiglech, Äre Budget ze änneren.",
   "app.components.VoteControl.budgetingNotVerified": "Wgl. {verifyAccountLink}, fir weider ze fueren. ",
+  "app.components.VoteInputs._shared.currencyLeft": "Dir {currency} {totalBudget} {budgetLeft}",
+  "app.components.VoteInputs._shared.votesLeft": "Dir {termForVotes} {totalNumberOfVotes} {votesLeft}",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmitted": "Dir hutt Äre Budget scho virgeluecht. Klickt op \"Ännere Budget änneren\" fir Äre Budget z'änneren.",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage": "Dir hutt Äre Budget scho virgeluecht. Fir Äert Budget z'änneren, gitt zréck op d'Projet Säit a klickt \"Ännere Budget änneren\".",
   "app.components.admin.SlugInput.resultingURL": "Resultéierend URL",
