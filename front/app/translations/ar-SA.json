@@ -469,6 +469,8 @@
   "app.components.VoteControl.budgetingNotPermitted": "يُمكن تفعيل إعداد الميزانية القائمة على المشاركة لمجموعات مُعينة فقط. ",
   "app.components.VoteControl.budgetingNotPossible": "لا يُمكن إجراء تغييرات في ميزانيتك في الوقت الحالي. ",
   "app.components.VoteControl.budgetingNotVerified": "يُرجى {verifyAccountLink} للاستمرار. ",
+  "app.components.VoteInputs._shared.currencyLeft": "لديك {budgetLeft} {totalBudget} {currency}",
+  "app.components.VoteInputs._shared.votesLeft": "لديك {votesLeft} {totalNumberOfVotes} {termForVotes}",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmitted": "لقد قدمت بالفعل ميزانيتك. انقر فوق \"تعديل ميزانيتك\" لتغيير ميزانيتك.",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage": "لقد قدمت بالفعل ميزانيتك. لتغيير ميزانيتك ، ارجع إلى صفحة المشروع وانقر على \"تعديل ميزانيتك\".",
   "app.components.admin.SlugInput.resultingURL": "عنوان URL الناتج",
