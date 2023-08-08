@@ -149,7 +149,7 @@ RSpec.describe Notification do
 
   it 'deleting an official feedback also deletes notifications requiring that official feedback' do
     official_feedback = create(:official_feedback)
-    create(:official_feedback_on_your_idea, official_feedback: official_feedback)
+    create(:official_feedback_on_idea_you_follow, official_feedback: official_feedback)
     count = described_class.count
     official_feedback.destroy!
     expect(described_class.count).to eq(count - 1)
