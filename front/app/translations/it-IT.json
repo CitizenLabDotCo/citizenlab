@@ -469,6 +469,8 @@
   "app.components.VoteControl.budgetingNotPermitted": "Il bilancio partecipativo non è attualmente abilitato.",
   "app.components.VoteControl.budgetingNotPossible": "In questo momento non è possibile apportare modifiche al tuo budget.",
   "app.components.VoteControl.budgetingNotVerified": "Si prega di {verifyAccountLink} per continuare.",
+  "app.components.VoteInputs._shared.currencyLeft": "Ti rimane {budgetLeft} / {totalBudget} {currency}",
+  "app.components.VoteInputs._shared.votesLeft": "Ti rimane {votesLeft} / {totalNumberOfVotes} {termForVotes}",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmitted": "Hai già inviato il tuo budget. Clicca su \"Modifica il tuo budget\" per modificarlo.",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage": "Hai già inviato il tuo budget. Per modificare il tuo budget, torna alla pagina del progetto e clicca su \"Modifica il tuo budget\".",
   "app.components.admin.SlugInput.resultingURL": "URL risultante",
