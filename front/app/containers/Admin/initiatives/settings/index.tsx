@@ -14,11 +14,7 @@ import { ProposalsSettings } from 'api/app_configuration/types';
 import useUpdateAppConfiguration from 'api/app_configuration/useUpdateAppConfiguration';
 
 // components
-import {
-  SectionTitle,
-  SectionDescription,
-  Section,
-} from 'components/admin/Section';
+import { SectionTitle, SectionDescription } from 'components/admin/Section';
 import Warning from 'components/UI/Warning';
 import ProposalsFeatureToggle from './ProposalsFeatureToggle';
 import Thresholds from './Thresholds';
@@ -228,7 +224,7 @@ const InitiativesSettingsPage = () => {
         <StyledSectionTitle>
           <FormattedMessage {...messages.settingsTabTitle} />
         </StyledSectionTitle>
-        <Section>
+        <Box mb="16px">
           <ProposalsFeatureToggle
             enabled={localProposalsSettings.enabled}
             onToggle={onToggle}
@@ -249,19 +245,17 @@ const InitiativesSettingsPage = () => {
               onChange={updateProposalsSetting('require_review')}
             />
           )}
-          {typeof localProposalsSettings.require_cosponsors === 'boolean' &&
-            typeof localProposalsSettings.cosponsors_number === 'number' && (
-              <Cosponsors
-                requireCosponsors={localProposalsSettings.require_cosponsors}
-                onChangeRequireSponsors={updateProposalsSetting(
-                  'require_cosponsors'
-                )}
-                cosponsorsNumber={localProposalsSettings.cosponsors_number}
-                onChangeCosponsorsNumber={updateProposalsSetting(
-                  'cosponsors_number'
-                )}
-              />
+
+          <Cosponsors
+            requireCosponsors={localProposalsSettings.require_cosponsors}
+            onChangeRequireSponsors={updateProposalsSetting(
+              'require_cosponsors'
             )}
+            cosponsorsNumber={localProposalsSettings.cosponsors_number}
+            onChangeCosponsorsNumber={updateProposalsSetting(
+              'cosponsors_number'
+            )}
+          />
           <Thresholds
             numberOfVotesThreshold={localProposalsSettings.reacting_threshold}
             onChangeNumberOfVotesThreshold={updateProposalsSetting(
@@ -282,7 +276,7 @@ const InitiativesSettingsPage = () => {
             value={newProposalsPageBody}
             onChange={updateProposalsPageBody}
           />
-        </Section>
+        </Box>
 
         <SubmitButton
           disabled={!validate()}

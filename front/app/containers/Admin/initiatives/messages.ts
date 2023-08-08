@@ -53,8 +53,8 @@ export default defineMessages({
     defaultMessage: 'Number of cosponsors',
   },
   cosponsorsNumberMinError: {
-    id: 'app.containers.Admin.initiatives.cosponsorsNumberMinError',
-    defaultMessage: 'Number of cosponsors needs to be at least 1',
+    id: 'app.containers.Admin.initiatives.cosponsorsNumberMinError1',
+    defaultMessage: 'The number of cosponsors needs to be at least 1.',
   },
   requireReviewInfo: {
     id: 'app.containers.Admin.initiatives.requireReviewInfo1',

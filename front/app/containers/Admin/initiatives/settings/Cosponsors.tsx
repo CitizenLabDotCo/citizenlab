@@ -10,8 +10,8 @@ import Error from 'components/UI/Error';
 import errorMessages from 'components/UI/Error/messages';
 
 interface Props {
-  requireCosponsors: boolean;
-  cosponsorsNumber: number;
+  requireCosponsors: boolean | undefined;
+  cosponsorsNumber: number | undefined;
   onChangeRequireSponsors: (value: boolean) => void;
   onChangeCosponsorsNumber: (value: number) => void;
 }
@@ -41,7 +41,9 @@ const Cosponsors = ({
       </SubSectionTitle>
       <Box mb={requireCosponsors ? '8px' : '0'}>
         <Toggle
-          checked={requireCosponsors}
+          checked={
+            typeof requireCosponsors === 'boolean' ? requireCosponsors : false
+          }
           onChange={() => {
             onChangeRequireSponsors(!requireCosponsors);
           }}
@@ -79,11 +81,10 @@ const Cosponsors = ({
               label={formatMessage(messages.cosponsorsNumberLabel)}
             />
           </Box>
-          {isNaN(cosponsorsNumber) && (
+          {Number.isNaN(cosponsorsNumber) && (
             <Error text={formatMessage(errorMessages.blank)} />
           )}
-
-          {!isNaN(cosponsorsNumber) && cosponsorsNumber < 1 && (
+          {typeof cosponsorsNumber === 'number' && cosponsorsNumber < 1 && (
             <Error text={formatMessage(messages.cosponsorsNumberMinError)} />
           )}
         </>
