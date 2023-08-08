@@ -1,5 +1,4 @@
 import React, { memo, useState } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { isEmpty, isNumber, round } from 'lodash-es';
 import moment from 'moment';
 import Observer from '@researchgate/react-intersection-observer';
@@ -466,7 +465,7 @@ const ProjectCard = memo<InputProps>(
       const postingPermission = getIdeaPostingRules({
         project: project?.data,
         phase: phase?.data,
-        authUser: !isNilOrError(authUser) ? authUser.data : null,
+        authUser: authUser?.data,
       });
       const participationMethod = phase
         ? phase.data.attributes.participation_method

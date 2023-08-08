@@ -10,6 +10,14 @@ module Analysis
       case auto_tagging_method
       when 'controversial'
         AutoTaggingMethod::Controversial.new(*params)
+      when 'platform_topic'
+        AutoTaggingMethod::PlatformTopic.new(*params)
+      when 'sentiment'
+        AutoTaggingMethod::Sentiment.new(*params)
+      when 'language'
+        AutoTaggingMethod::Language.new(*params)
+      when 'nlp_topic'
+        AutoTaggingMethod::NLPTopic.new(*params)
       else
         raise ArgumentError, "Unsupported auto_tagging_method #{auto_tagging_method}"
       end
@@ -36,6 +44,13 @@ module Analysis
 
     def update_progress(progress)
       task.update!(progress: progress)
+    end
+
+    def deduct_locale(input)
+      input.author&.locale ||
+        input.title_multiloc&.keys&.first ||
+        input.body_multiloc&.keys&.first ||
+        AppConfiguration.instance.settings('core', 'locales').first
     end
   end
 end

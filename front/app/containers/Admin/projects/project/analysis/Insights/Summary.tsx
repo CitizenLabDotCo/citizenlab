@@ -1,5 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import reactStringReplace from 'react-string-replace';
 
 import useDeleteAnalysisSummary from 'api/analysis_summaries/useDeleteAnalysisSummary';
 import useAnalysisBackgroundTask from 'api/analysis_background_tasks/useAnalysisBackgroundTask';
@@ -7,6 +8,7 @@ import { ISummary } from 'api/analysis_summaries/types';
 
 import {
   Box,
+  Icon,
   IconButton,
   Spinner,
   colors,
@@ -15,11 +17,23 @@ import {
 
 import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
+import styled from 'styled-components';
+
+const StyledSummaryText = styled.div`
+  white-space: pre-wrap;
+`;
+
+const StyledButton = styled.button`
+  padding: 0px;
+  cursor: pointer;
+`;
 
 type Props = {
   summary: ISummary['data'];
+  onSelectInput: (inputId: string) => void;
 };
-const Summary = ({ summary }: Props) => {
+
+const Summary = ({ summary, onSelectInput }: Props) => {
   const { formatMessage } = useIntl();
   const { analysisId } = useParams() as { analysisId: string };
   const { mutate: deleteSummary } = useDeleteAnalysisSummary();
@@ -41,6 +55,18 @@ const Summary = ({ summary }: Props) => {
     }
   };
 
+  const replaceIdRefsWithLinks = (summary) => {
+    return reactStringReplace(
+      summary,
+      /\[?([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})\]?/g,
+      (match) => (
+        <StyledButton onClick={() => onSelectInput(match)}>
+          <Icon name="search" />
+        </StyledButton>
+      )
+    );
+  };
+
   const hasFilters = !!Object.keys(summary.attributes.filters).length;
 
   return (
@@ -51,13 +77,13 @@ const Summary = ({ summary }: Props) => {
       mb="8px"
       borderRadius={stylingConsts.borderRadius}
     >
-      <Box>
+      <Box p="16px">
         <Box
           display="flex"
           alignItems="center"
           flexWrap="wrap"
           gap="4px"
-          mb="6px"
+          mb="12px"
         >
           {hasFilters && (
             <>
@@ -83,10 +109,12 @@ const Summary = ({ summary }: Props) => {
             </>
           )}
         </Box>
-      </Box>
-      <Box>
-        {summary.attributes.summary}
-        {processing && <Spinner />}
+        <Box>
+          <StyledSummaryText>
+            {replaceIdRefsWithLinks(summary.attributes.summary)}
+          </StyledSummaryText>
+          {processing && <Spinner />}
+        </Box>
       </Box>
       <Box display="flex" flexDirection="row-reverse" gap="2px">
         <IconButton
