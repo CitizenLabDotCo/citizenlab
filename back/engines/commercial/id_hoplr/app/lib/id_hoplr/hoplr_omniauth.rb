@@ -60,7 +60,8 @@ module IdHoplr
         redirect: Frontend::UrlService.new.home_url
       }
 
-      "https://#{host}/api/v1/accounts/app/logout?#{url_params.to_query}"
+      # Not sure how to properly get it from openid-configuration URL
+      "https://#{host}/connect/logout?#{url_params.to_query}"
     end
 
     def email_always_present?
