@@ -2,7 +2,7 @@ import React from 'react';
 
 // api
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useCumulativeVoting from 'api/baskets_ideas/useVoting';
+import useVoting from 'api/baskets_ideas/useVoting';
 
 // i18n
 import useLocalize from 'hooks/useLocalize';
@@ -19,7 +19,7 @@ interface Props {
 
 const VotesCounter = ({ participationContext }: Props) => {
   const { data: appConfig } = useAppConfiguration();
-  const { numberOfVotesCast } = useCumulativeVoting();
+  const { numberOfVotesCast } = useVoting();
 
   const localize = useLocalize();
   const { formatMessage } = useIntl();
