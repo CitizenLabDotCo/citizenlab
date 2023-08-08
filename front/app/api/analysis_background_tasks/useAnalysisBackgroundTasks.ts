@@ -30,20 +30,13 @@ const useAnalysisBackgroundTasks = (analysisId: string) => {
       queryClient.invalidateQueries({ queryKey: summariesKeys.lists() });
       queryClient.invalidateQueries({ queryKey: backgroundTasksKeys.items() });
     },
-    // Refetch every 5 seconds when tasks are active
+    // Refetch every 2 seconds when tasks are active
     refetchInterval: (data) => {
       const activeTask = data?.data.find((task) => {
-        const { updated_at, state } = task.attributes;
-        // Updated in the last 2 minutes?
-        const up_date = Date.parse(updated_at);
-        const now = Date.now();
-        const recently_updated = now - up_date < 2 * 60 * 1000;
-
-        return (
-          state === 'queued' || state === 'in_progress' || recently_updated
-        );
+        const { state } = task.attributes;
+        return state === 'queued' || state === 'in_progress';
       });
-      return activeTask ? 5000 : false;
+      return activeTask ? 2000 : false;
     },
     keepPreviousData: false,
   });

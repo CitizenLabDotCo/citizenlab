@@ -160,6 +160,12 @@ const ideationConfig: ParticipationMethodConfig = {
   },
   postSortingOptions: defaultSortingOptions,
   hideAuthorOnIdeas: false,
+  useProjectClosedCTABarStyle: (participationContext) => {
+    const { commenting_enabled, reacting_enabled, posting_enabled } =
+      participationContext.attributes;
+
+    return !commenting_enabled && !reacting_enabled && !posting_enabled;
+  },
 };
 
 const nativeSurveyConfig: ParticipationMethodConfig = {

@@ -35,6 +35,12 @@ describe Analysis::InputToText do
         'Where did you hear from us?' => 'Newspaper'
       })
     end
+
+    it 'includes the id when passed the `include_id: true` option' do
+      service = described_class.new([])
+      input = build(:idea)
+      expect(service.execute(input, include_id: true)).to eq({ 'ID' => input.id })
+    end
   end
 
   describe '#formatted' do
@@ -63,5 +69,16 @@ describe Analysis::InputToText do
         TEXT
       )
     end
+  end
+
+  it 'includes the id when passed the `include_id: true` option' do
+    service = described_class.new([])
+    input = build(:idea)
+    expect(service.formatted(input, include_id: true)).to eq(
+      <<~TEXT
+        ### ID
+        #{input.id}
+      TEXT
+    )
   end
 end

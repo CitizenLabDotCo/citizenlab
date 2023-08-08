@@ -1,10 +1,12 @@
 import { Keys } from 'utils/cl-react-query/types';
 import tagsKeys from './keys';
+import { IInputsFilterParams } from 'api/analysis_inputs/types';
 
 export type TagsKeys = Keys<typeof tagsKeys>;
 
 export interface ITagParams {
   analysisId: string;
+  filters?: Omit<IInputsFilterParams, 'tag_ids'>;
 }
 
 export const tagTypes = [
@@ -22,6 +24,8 @@ export interface ITagData {
   type: 'tag';
   attributes: {
     name: string;
+    total_input_count: number;
+    filtered_input_count: number;
     tag_type: TagType;
     created_at: string;
     updated_at: string;
