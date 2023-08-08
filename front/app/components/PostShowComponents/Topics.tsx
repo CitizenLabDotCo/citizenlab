@@ -2,9 +2,8 @@ import React, { memo } from 'react';
 
 // hooks
 import useTopics from 'api/topics/useTopics';
-
-// i18n
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
+import useLocalize from 'hooks/useLocalize';
+import { useTheme } from 'styled-components';
 
 // styling
 import styled from 'styled-components';
@@ -14,14 +13,8 @@ import { transparentize } from 'polished';
 // typings
 import { ITopicData } from 'api/topics/types';
 
-const Container = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-
-  ${isRtl`
-    flex-direction: row-reverse;
-  `}
-`;
+// components
+import { Box } from '@citizenlab/cl2-component-library';
 
 const Topic = styled.div`
   color: ${({ theme }) => theme.colors.tenantSecondary};
@@ -46,30 +39,34 @@ interface Props {
   postType: 'idea' | 'initiative';
 }
 
-const Topics = memo<Props & InjectedLocalized>(
-  ({ topicIds, className, postType, localize }) => {
-    const { data: topics } = useTopics();
-    const filteredTopics =
-      topics?.data.filter((topic) => topicIds.includes(topic.id)) || [];
+const Topics = memo<Props>(({ topicIds, className, postType }) => {
+  const localize = useLocalize();
+  const theme = useTheme();
+  const { data: topics } = useTopics();
+  const filteredTopics =
+    topics?.data.filter((topic) => topicIds.includes(topic.id)) || [];
 
-    if (topics && filteredTopics.length > 0) {
-      return (
-        <Container id={`e2e-${postType}-topics`} className={className}>
-          {filteredTopics.map((topic: ITopicData) => {
-            return (
-              <Topic key={topic.id} className={`e2e-${postType}-topic`}>
-                {localize(topic.attributes.title_multiloc)}
-              </Topic>
-            );
-          })}
-        </Container>
-      );
-    }
-
-    return null;
+  if (topics && filteredTopics.length > 0) {
+    return (
+      <Box
+        id={`e2e-${postType}-topics`}
+        className={className}
+        display="flex"
+        flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
+        flexWrap="wrap"
+      >
+        {filteredTopics.map((topic: ITopicData) => {
+          return (
+            <Topic key={topic.id} className={`e2e-${postType}-topic`}>
+              {localize(topic.attributes.title_multiloc)}
+            </Topic>
+          );
+        })}
+      </Box>
+    );
   }
-);
 
-const TopicsWithHoCs = injectLocalize<Props>(Topics);
+  return null;
+});
 
-export default TopicsWithHoCs;
+export default Topics;
