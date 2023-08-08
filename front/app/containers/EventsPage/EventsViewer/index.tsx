@@ -21,13 +21,14 @@ import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 import { PublicationStatus } from 'api/projects/types';
+import { Box } from '@citizenlab/cl2-component-library';
 
 interface IStyledEventCard {
   last: boolean;
 }
 
 const StyledEventCard = styled(EventCard)<IStyledEventCard>`
-  margin-bottom: ${({ last }) => (last ? 0 : 39)}px;
+  max-width: 360px;
 `;
 
 const StyledPagination = styled(Pagination)`
@@ -95,7 +96,7 @@ const EventsViewer = ({
   };
 
   return (
-    <div className={className} id="project-events">
+    <Box className={className} id="project-events">
       <TopBar
         showProjectFilter={showProjectFilter}
         title={title}
@@ -108,18 +109,20 @@ const EventsViewer = ({
 
       {!isNilOrError(events) && (
         <>
-          {events.data.length > 0 &&
-            events.data.map((event, i) => (
-              <StyledEventCard
-                id={event.id}
-                event={event}
-                showLocation
-                showDescription
-                showAttachments
-                last={events.data.length - 1 === i}
-                key={event.id}
-              />
-            ))}
+          <Box display="flex" flexWrap="wrap" gap="16px">
+            {events.data.length > 0 &&
+              events.data.map((event, i) => (
+                <StyledEventCard
+                  id={event.id}
+                  event={event}
+                  showLocation
+                  showDescription
+                  showAttachments
+                  last={events.data.length - 1 === i}
+                  key={event.id}
+                />
+              ))}
+          </Box>
 
           {events.data.length === 0 && (
             <EventsMessage message={fallbackMessage} />
@@ -133,7 +136,7 @@ const EventsViewer = ({
           />
         </>
       )}
-    </div>
+    </Box>
   );
 };
 

@@ -18,7 +18,6 @@ import clHistory from 'utils/cl-router/history';
 
 const Container = styled.div<{ clickable?: boolean }>`
   ${defaultCardStyle};
-  width: 100%;
   padding: 16px;
   display: flex;
   box-shadow: none;

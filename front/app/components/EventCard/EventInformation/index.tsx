@@ -110,39 +110,38 @@ const EventInformation = ({
           />
         </Box>
       </Box>
-      <Box
-        mt="16px"
-        marginBottom="16px"
-        pt="12px"
-        background={colors.grey100}
-        px="16px"
-      >
-        <Box display="flex" mb="12px">
-          <Icon
-            my="auto"
-            fill={colors.coolGrey300}
-            name="clock"
-            ariaHidden
-            mr="8px"
-          />
-          <Text m="0px" color={'coolGrey700'} fontSize="s">
-            {eventDateTime}
-          </Text>
-        </Box>{' '}
-        {locationDescription && (
+      <Box height="100%">
+        <Box my="16px" pt="12px" pb="4px" background={colors.grey100} px="16px">
           <Box display="flex" mb="12px">
             <Icon
               my="auto"
               fill={colors.coolGrey300}
-              name="position"
+              name="clock"
               ariaHidden
               mr="8px"
             />
             <Text m="0px" color={'coolGrey700'} fontSize="s">
-              {locationDescription?.slice(0, locationDescription.indexOf(','))}
+              {eventDateTime}
             </Text>
-          </Box>
-        )}
+          </Box>{' '}
+          {locationDescription && (
+            <Box display="flex" mb="12px">
+              <Icon
+                my="auto"
+                fill={colors.coolGrey300}
+                name="position"
+                ariaHidden
+                mr="8px"
+              />
+              <Text m="0px" color={'coolGrey700'} fontSize="s">
+                {locationDescription?.slice(
+                  0,
+                  locationDescription.indexOf(',')
+                )}
+              </Text>
+            </Box>
+          )}
+        </Box>
       </Box>
       <Button
         ml="auto"
