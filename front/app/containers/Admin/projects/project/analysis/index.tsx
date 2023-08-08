@@ -35,18 +35,6 @@ const Analysis = () => {
           pt={`${stylingConsts.mobileMenuHeight}px`}
         >
           <Box
-            flex="1"
-            p="12px"
-            mt="12px"
-            overflow="auto"
-            h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
-            bg={colors.white}
-          >
-            <Insights
-              onSelectInput={(inputId) => setSelectedInputId(inputId)}
-            />
-          </Box>
-          <Box
             w="300px"
             overflow="auto"
             h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
@@ -84,6 +72,18 @@ const Analysis = () => {
             <Box h="60px">
               <Tasks />
             </Box>
+          </Box>
+          <Box
+            flex="1"
+            p="12px"
+            mt="12px"
+            overflow="auto"
+            h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
+            bg={colors.white}
+          >
+            <Insights
+              onSelectInput={(inputId) => setSelectedInputId(inputId)}
+            />
           </Box>
         </Box>
       </FocusOn>
