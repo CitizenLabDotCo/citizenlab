@@ -27,6 +27,9 @@ import FileUploader from 'components/UI/FileUploader';
 import Error from 'components/UI/Error';
 import ProfileVisiblity from 'components/ProfileVisibility';
 
+// hooks
+import useInitiativeReviewRequired from 'hooks/useInitiativeReviewRequired';
+
 // intl
 import messages from './messages';
 import { MessageDescriptor, FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -278,6 +281,7 @@ const InitiativeForm = ({
     appConfiguration.data?.data.attributes.settings.initiatives
       ?.allow_anonymous_participation;
   const mapsLoaded = window.googleMaps;
+  const initiativeReviewRequired = useInitiativeReviewRequired();
 
   if (!isNilOrError(topics)) {
     const availableTopics = topics.filter((topic) => !isNilOrError(topic));
@@ -513,7 +517,11 @@ const InitiativeForm = ({
 
         <FormSubmitFooter
           className="e2e-initiative-publish-button"
-          message={messages.publishButton}
+          message={
+            initiativeReviewRequired
+              ? messages.submitButton
+              : messages.publishButton
+          }
           error={publishError}
           errorMessage={messages.submitApiError}
           processing={publishing}

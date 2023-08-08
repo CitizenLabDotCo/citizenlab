@@ -49,7 +49,7 @@ MostReactedIdeasWidget.craft = {
     settings: Settings,
   },
   custom: {
-    title: messages.mostVotedIdeas,
+    title: messages.mostReactedIdeas,
   },
 };
 

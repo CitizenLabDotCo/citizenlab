@@ -107,7 +107,7 @@ RSpec.describe Idea do
       let(:project) { create(:project_with_active_ideation_phase) }
       let(:phase) { project.phases.first }
       let!(:project_form) { create(:custom_form, participation_context: project) }
-      let(:idea) { build(:idea, project: project, creation_phase: phase) }
+      let(:idea) { build(:idea, project: project) }
 
       it 'returns the form of the phase in which the input was created' do
         expect(idea.custom_form).to eq project_form
@@ -117,7 +117,7 @@ RSpec.describe Idea do
     context 'in a timeline project when created in an ideation phase and a form has not been defined yet' do
       let(:project) { create(:project_with_active_ideation_phase) }
       let(:phase) { project.phases.first }
-      let(:idea) { build(:idea, project: project, creation_phase: phase) }
+      let(:idea) { build(:idea, project: project) }
 
       it 'returns a new form' do
         form = idea.custom_form
@@ -425,7 +425,7 @@ RSpec.describe Idea do
       travel_to t
       idea = create(:idea, publication_status: 'published')
       travel_to t + 1.week
-      idea.update(publication_status: 'closed')
+      idea.update(publication_status: 'draft')
       travel_to t + 1.week
       idea.update(publication_status: 'published')
       expect(idea.published_at.to_i).to eq t.to_i

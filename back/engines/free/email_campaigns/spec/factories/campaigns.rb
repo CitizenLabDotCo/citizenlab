@@ -70,6 +70,10 @@ FactoryBot.define do
     enabled { true }
   end
 
+  factory :initiative_resubmitted_for_review_campaign, class: EmailCampaigns::Campaigns::InitiativeResubmittedForReview do
+    enabled { true }
+  end
+
   factory :internal_comment_on_idea_assigned_to_you_campaign, class: EmailCampaigns::Campaigns::InternalCommentOnIdeaAssignedToYou do
     enabled { true }
   end
@@ -233,6 +237,22 @@ FactoryBot.define do
   factory :your_proposed_initiatives_digest_campaign, class: EmailCampaigns::Campaigns::YourProposedInitiativesDigest do
     enabled { true }
     schedule { weekly_schedule }
+  end
+
+  factory :voting_basket_submitted_campaign, class: EmailCampaigns::Campaigns::VotingBasketSubmitted do
+    enabled { true }
+  end
+
+  factory :voting_basket_not_submitted_campaign, class: EmailCampaigns::Campaigns::VotingBasketNotSubmitted do
+    enabled { true }
+  end
+
+  factory :voting_last_chance_campaign, class: EmailCampaigns::Campaigns::VotingLastChance do
+    enabled { true }
+  end
+
+  factory :voting_phase_started_campaign, class: EmailCampaigns::Campaigns::VotingPhaseStarted do
+    enabled { true }
   end
 end
 

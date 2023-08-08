@@ -64,6 +64,8 @@ export interface IInitiativeData {
     expires_at: string;
     anonymous: boolean;
     cosponsors: IInitiativeCosponsor[];
+    editing_locked: boolean;
+    public: boolean;
   };
   relationships: {
     topics: {

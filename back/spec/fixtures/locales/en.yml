@@ -63,3 +63,27 @@ en:
     anon_first_name: "User"
   xlsx_export:
     anonymous: "Anonymous"
+    column_headers:
+      input_id: 'ID'
+      latitude: 'Latitude'
+      longitude: 'Longitude'
+      author_fullname: 'Author name'
+      author_email: 'Author email'
+      author_id: 'Author ID'
+      budget: 'Budget'
+      created_at: 'Submitted at'
+      published_at: 'Published at'
+      comments_count: 'Comments'
+      likes_count: 'Likes'
+      dislikes_count: 'Dislikes'
+      picks: 'Picks'
+      participants: 'Participants'
+      votes_count: 'Votes'
+      input_url: 'URL'
+      project: 'Project'
+      status: 'Status'
+      assignee_fullname: 'Assignee'
+      assignee_email: 'Assignee email'
+  voting_method:
+    default_voting_term_singular: vote
+    default_voting_term_plural: votes

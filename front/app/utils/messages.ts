@@ -194,9 +194,9 @@ export default defineMessages({
     id: 'app.utils.IdeaCards.random',
     defaultMessage: 'Random',
   },
-  mostVoted: {
-    id: 'app.utils.IdeaCards.mostVoted',
-    defaultMessage: 'Most voted',
+  mostReacted: {
+    id: 'app.utils.IdeaCards.mostReacted',
+    defaultMessage: 'Most reactions',
   },
   newest: {
     id: 'app.utils.IdeaCards.newest',

@@ -45,7 +45,7 @@ class ResolveTextVariables extends PureComponent<Props> {
           );
         }
 
-        textVariables.initiativesVotingThreshold =
+        textVariables.initiativesReactingThreshold =
           initiatives.reacting_threshold.toString();
         textVariables.initiativesDaysLimit = initiatives.days_limit.toString();
       }

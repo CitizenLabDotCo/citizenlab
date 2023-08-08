@@ -8,6 +8,9 @@ import messages from './messages';
 import styled, { withTheme } from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
+// hooks
+import useInitiativeReviewRequired from 'hooks/useInitiativeReviewRequired';
+
 const Container = styled.div`
   color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
@@ -28,6 +31,8 @@ interface Props {
 }
 
 const TipsContent = memo<Props>((_props) => {
+  const initiativeReviewRequired = useInitiativeReviewRequired();
+
   return (
     <Container>
       <TipsList>
@@ -42,6 +47,14 @@ const TipsContent = memo<Props>((_props) => {
         </Tip>
         <Tip>
           <FormattedMessage {...messages.relevantAttachments} />
+        </Tip>
+        <Tip>
+          <FormattedMessage {...messages.makeSureReadyToBePublic} />{' '}
+          {initiativeReviewRequired ? (
+            <FormattedMessage {...messages.notEditableOnceReviewed} />
+          ) : (
+            <FormattedMessage {...messages.notEditableOnceVoted} />
+          )}
         </Tip>
         <Tip>
           <FormattedMessage {...messages.shareSocialMedia} />

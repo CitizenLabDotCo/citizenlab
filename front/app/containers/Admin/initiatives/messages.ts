@@ -34,9 +34,10 @@ export default defineMessages({
     id: 'app.containers.Admin.initiatives.requireReviewLabel',
     defaultMessage: 'Require review of proposals',
   },
-  requireReviewInfo: {
-    id: 'app.containers.Admin.initiatives.requireReviewInfo1',
-    defaultMessage: "Proposals won't be visible until an admin reviews them.",
+  requireReviewTooltip: {
+    id: 'app.containers.Admin.initiatives.requireReviewTooltip',
+    defaultMessage:
+      "It's impossible to edit proposals once they're reviewed and approved",
   },
   requireCosponsorsLabel: {
     id: 'app.containers.Admin.initiatives.requireCosponsorsLabel',
@@ -54,6 +55,11 @@ export default defineMessages({
   cosponsorsNumberMinError: {
     id: 'app.containers.Admin.initiatives.cosponsorsNumberMinError',
     defaultMessage: 'Number of cosponsors needs to be at least 1',
+  },
+  requireReviewInfo: {
+    id: 'app.containers.Admin.initiatives.requireReviewInfo1',
+    defaultMessage:
+      "Proposals won't be visible until an admin reviews and approves them.",
   },
   fieldVotingThreshold: {
     id: 'app.containers.Admin.initiatives.fieldVotingThreshold',

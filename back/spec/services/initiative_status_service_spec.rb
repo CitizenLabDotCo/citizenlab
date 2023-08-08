@@ -83,7 +83,7 @@ describe InitiativeStatusService do
       expect(service.transition_type(status_rejected_on_review)).to eq 'manual'
     end
 
-    context 'when review feature is fully activated' do
+    context 'when the initiative review feature is fully activated' do
       before do
         SettingsService.new.activate_feature! 'initiative_review'
 
@@ -100,14 +100,29 @@ describe InitiativeStatusService do
         configuration.save!
       end
 
+      it 'is active' do
+        expect(Initiative.review_required?).to be true
+      end
+
+      it 'labels the review_pending status as automatic' do
+        expect(service.transition_type(status_review_pending)).to eq 'automatic'
+      end
+
       it 'labels the proposed status as manual' do
         expect(service.transition_type(status_proposed)).to eq 'manual'
       end
     end
 
-    context 'when review feature is not fully activated' do
-      it 'labels the proposed status as automatic' do
+    context 'when the initiative review feature is not fully activated' do
+      it 'is not active' do
         expect(Initiative.review_required?).to be false
+      end
+
+      it 'labels the review_pending status as manual' do
+        expect(service.transition_type(status_review_pending)).to eq 'manual'
+      end
+
+      it 'labels the proposed status as automatic' do
         expect(service.transition_type(status_proposed)).to eq 'automatic'
       end
     end

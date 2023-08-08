@@ -2,26 +2,30 @@
 
 module PublicApi
   class V2::IdeasController < PublicApiController
+    include DeletedItemsAction
+
     def index
-      ideas = Idea
-        .order(created_at: :desc)
-        .includes(:idea_images, :project, :idea_status)
-        .page(params[:page_number])
-        .per(num_per_page)
+      ideas = IdeasFinder.new(
+        Idea.includes(:idea_images, :project, :idea_status).order(created_at: :desc),
+        **finder_params
+      ).execute
 
-      ideas = common_date_filters(ideas)
-
-      # TODO: Add filter by project_id, user_id, topic_name
       # TODO: Only return ideas, separate endpoint for survey responses
 
-      render json: ideas,
-        each_serializer: V2::IdeaSerializer,
-        adapter: :json,
-        meta: meta_properties(ideas)
+      list_items(ideas, V2::IdeaSerializer)
     end
 
     def show
       show_item Idea.find(params[:id]), V2::IdeaSerializer
+    end
+
+    private
+
+    def finder_params
+      params
+        .permit(:author_id, :project_id, topic_ids: [])
+        .to_h
+        .symbolize_keys
     end
   end
 end

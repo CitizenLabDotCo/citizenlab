@@ -27,13 +27,13 @@ const RenderOnHideTabCondition = (props: RenderOnHideTabConditionProps) => {
   const hideTab =
     (processType === 'continuous' &&
       participationMethod !== 'ideation' &&
-      participationMethod !== 'budgeting') ||
+      participationMethod !== 'voting') ||
     (processType === 'timeline' &&
       !isNilOrError(phases) &&
       phases.filter((phase) => {
         return (
           phase.attributes.participation_method === 'ideation' ||
-          phase.attributes.participation_method === 'budgeting'
+          phase.attributes.participation_method === 'voting'
         );
       }).length === 0);
 

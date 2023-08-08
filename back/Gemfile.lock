@@ -10,6 +10,12 @@ PATH
       ros-apartment (>= 2.9.0)
 
 PATH
+  remote: engines/commercial/analysis
+  specs:
+    analysis (0.1.0)
+      rails (~> 7.0)
+
+PATH
   remote: engines/commercial/analytics
   specs:
     analytics (0.1.0)
@@ -264,7 +270,7 @@ PATH
     texting (0.1.0)
       rails (~> 7.0)
       smstools (~> 0.2.2)
-      twilio-ruby (>= 5.77, < 6.1)
+      twilio-ruby (>= 5.77, < 6.4)
 
 PATH
   remote: engines/commercial/user_custom_fields
@@ -456,8 +462,8 @@ GEM
     awesome_nested_set (3.5.0)
       activerecord (>= 4.0.0, < 7.1)
     aws-eventstream (1.2.0)
-    aws-partitions (1.760.0)
-    aws-sdk-core (3.171.1)
+    aws-partitions (1.786.0)
+    aws-sdk-core (3.178.0)
       aws-eventstream (~> 1, >= 1.0.2)
       aws-partitions (~> 1, >= 1.651.0)
       aws-sigv4 (~> 1.5)
@@ -465,14 +471,14 @@ GEM
     aws-sdk-kms (1.64.0)
       aws-sdk-core (~> 3, >= 3.165.0)
       aws-sigv4 (~> 1.1)
-    aws-sdk-route53 (1.71.0)
-      aws-sdk-core (~> 3, >= 3.165.0)
+    aws-sdk-route53 (1.76.0)
+      aws-sdk-core (~> 3, >= 3.177.0)
       aws-sigv4 (~> 1.1)
     aws-sdk-s3 (1.122.0)
       aws-sdk-core (~> 3, >= 3.165.0)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.4)
-    aws-sigv4 (1.5.2)
+    aws-sigv4 (1.6.0)
       aws-eventstream (~> 1, >= 1.0.2)
     axlsx (3.0.0.pre)
       htmlentities (~> 4.3, >= 4.3.4)
@@ -549,7 +555,7 @@ GEM
       railties (>= 5.0.0)
     faker (3.2.0)
       i18n (>= 1.8.11, < 2)
-    faraday (2.7.4)
+    faraday (2.7.10)
       faraday-net_http (>= 2.0, < 3.1)
       ruby2_keywords (>= 0.0.4)
     faraday-follow_redirects (0.3.0)
@@ -860,7 +866,7 @@ GEM
     rails-html-sanitizer (1.6.0)
       loofah (~> 2.21)
       nokogiri (~> 1.14)
-    rails-i18n (7.0.6)
+    rails-i18n (7.0.7)
       i18n (>= 0.7, < 2)
       railties (>= 6.0.0, < 8)
     rails_semantic_logger (4.12.0)
@@ -1049,7 +1055,7 @@ GEM
     timeout (0.4.0)
     tomlrb (2.0.3)
     trailblazer-option (0.1.2)
-    twilio-ruby (6.0.1)
+    twilio-ruby (6.3.0)
       faraday (>= 0.9, < 3.0)
       jwt (>= 1.5, < 3.0)
       nokogiri (>= 1.6, < 2.0)
@@ -1104,6 +1110,7 @@ DEPENDENCIES
   activerecord-postgis-adapter (~> 8.0)
   acts_as_list (~> 1.1)
   admin_api!
+  analysis!
   analytics!
   annotate
   api-pagination (~> 5.0.0)
@@ -1199,7 +1206,7 @@ DEPENDENCIES
   rack-cors
   rack-mini-profiler
   rails (~> 7.0)
-  rails-i18n (~> 7.0.6)
+  rails-i18n (~> 7.0.7)
   rails_semantic_logger
   redcarpet
   remove_vendor_branding!

@@ -2,6 +2,8 @@
 
 module PublicApi
   class V2::UsersController < PublicApiController
+    include DeletedItemsAction
+
     before_action :set_user, only: [:show]
 
     def index

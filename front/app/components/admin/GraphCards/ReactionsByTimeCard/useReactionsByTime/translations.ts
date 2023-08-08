@@ -21,8 +21,8 @@ export const getTranslations = (
   formatMessage: FormatMessage
 ): Translations => ({
   date: formatMessage(moduleMessages.date),
-  likes: formatMessage(dashboardMessages.numberOfVotesUp),
-  dislikes: formatMessage(dashboardMessages.numberOfVotesDown),
+  likes: formatMessage(dashboardMessages.numberOfLikes),
+  dislikes: formatMessage(dashboardMessages.numberOfDislikes),
   timeSeries: formatMessage(messages.timeSeries),
   ...getTimePeriodTranslations(formatMessage),
 });

@@ -25,7 +25,7 @@ describe('Continuous ideation with anonymous participation allowed', () => {
           publicationStatus: 'published',
           assigneeId: user.body.data.id,
           participationMethod: 'ideation',
-          maxBudget: 400,
+          votingMaxTotal: 400,
           allow_anonymous_participation: true,
         });
       })

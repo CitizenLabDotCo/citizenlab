@@ -4,9 +4,17 @@ import moment, { Moment } from 'moment';
 import { isEmpty } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
 
-// Services
+// Api
 import { IPhaseFiles } from 'api/phase_files/types';
 import eventEmitter from 'utils/eventEmitter';
+import useAddPhaseFile from 'api/phase_files/useAddPhaseFile';
+import useDeletePhaseFile from 'api/phase_files/useDeletePhaseFile';
+import usePhaseFiles from 'api/phase_files/usePhaseFiles';
+import usePhases from 'api/phases/usePhases';
+import usePhase from 'api/phases/usePhase';
+import useAddPhase from 'api/phases/useAddPhase';
+import useUpdatePhase from 'api/phases/useUpdatePhase';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // Components
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
@@ -32,20 +40,14 @@ import messages from './messages';
 
 // Typings
 import { CLErrors, UploadFile, Multiloc } from 'typings';
+import { IPhase, IPhaseData, IUpdatedPhaseProperties } from 'api/phases/types';
 
 // Resources
 import { FileType } from 'components/UI/FileUploader/FileDisplay';
 import { useParams } from 'react-router-dom';
-import usePhases from 'api/phases/usePhases';
-import usePhase from 'api/phases/usePhase';
-import useAddPhase from 'api/phases/useAddPhase';
-import useUpdatePhase from 'api/phases/useUpdatePhase';
-import { IPhase, IPhaseData, IUpdatedPhaseProperties } from 'api/phases/types';
 
+// utils
 import { isNilOrError } from 'utils/helperUtils';
-import useAddPhaseFile from 'api/phase_files/useAddPhaseFile';
-import useDeletePhaseFile from 'api/phase_files/useDeletePhaseFile';
-import usePhaseFiles from 'api/phase_files/usePhaseFiles';
 import useCampaigns from 'api/campaigns/useCampaigns';
 import CampaignRow from './CampaignRow';
 import useLocalize from 'hooks/useLocalize';
@@ -75,6 +77,7 @@ const convertToFileType = (phaseFiles: IPhaseFiles | undefined) => {
 const CONFIGURABLE_CAMPAIGN_NAMES: CampaignName[] = ['project_phase_started'];
 
 const AdminProjectTimelineEdit = () => {
+  const { data: appConfig } = useAppConfiguration();
   const { mutateAsync: addPhaseFile } = useAddPhaseFile();
   const { mutateAsync: deletePhaseFile } = useDeletePhaseFile();
   const { projectId, id: phaseId } = useParams() as {
@@ -111,6 +114,16 @@ const AdminProjectTimelineEdit = () => {
   if (!campaigns) {
     return null;
   }
+
+  const flatCampaigns = campaigns.pages.flatMap((page) => page.data);
+  const initialCampaignsSettings = flatCampaigns.reduce((acc, campaign) => {
+    acc[campaign.attributes.campaign_name] = campaign.attributes.enabled;
+    return acc;
+  }, {});
+
+  const phaseAttrs = phase
+    ? { ...phase.data.attributes, ...attributeDiff }
+    : { campaigns_settings: initialCampaignsSettings, ...attributeDiff };
 
   const handleTitleMultilocOnChange = (title_multiloc: Multiloc) => {
     setSubmitState('enabled');
@@ -316,16 +329,6 @@ const AdminProjectTimelineEdit = () => {
     return startDate;
   };
 
-  const flatCampaigns = campaigns.pages.flatMap((page) => page.data);
-  const initialCampaignsSettings = flatCampaigns.reduce((acc, campaign) => {
-    acc[campaign.attributes.campaign_name] = campaign.attributes.enabled;
-    return acc;
-  }, {});
-
-  const phaseAttrs = phase
-    ? { ...phase.data.attributes, ...attributeDiff }
-    : { campaigns_settings: initialCampaignsSettings, ...attributeDiff };
-
   const startDate = getStartDate();
   const endDate = phaseAttrs.end_at ? moment(phaseAttrs.end_at) : null;
 
@@ -366,12 +369,24 @@ const AdminProjectTimelineEdit = () => {
           {/* TODO: After ParticipationContext refactor, it doesn't refetch phase service anymore
             This caused a bug where phase data was not being used after fetching. This is a temporary fix.
             ParticipationContext needs to be refactored to functional component. */}
-          <ParticipationContext
-            phase={phase}
-            onSubmit={handleParticipationContextOnSubmit}
-            onChange={handleParticipationContextOnChange}
-            apiErrors={errors}
-          />
+          {phase && (
+            <ParticipationContext
+              phase={phase}
+              onSubmit={handleParticipationContextOnSubmit}
+              onChange={handleParticipationContextOnChange}
+              apiErrors={errors}
+              appConfig={appConfig}
+            />
+          )}
+          {!phase && (
+            <ParticipationContext
+              phase={undefined}
+              onSubmit={handleParticipationContextOnSubmit}
+              onChange={handleParticipationContextOnChange}
+              apiErrors={errors}
+              appConfig={appConfig}
+            />
+          )}
           <SectionField>
             <SubSectionTitle>
               <FormattedMessage {...messages.datesLabel} />
@@ -411,26 +426,28 @@ const AdminProjectTimelineEdit = () => {
             />
           </SectionField>
 
-          <SectionField>
-            <SubSectionTitle>
-              <FormattedMessage {...messages.automatedEmails} />
-            </SubSectionTitle>
-            <Text color="coolGrey600" mt="0px" fontSize="m">
-              <FormattedMessage {...messages.automatedEmailsDescription} />
-            </Text>
-            {flatCampaigns.map((campaign) => (
-              <CampaignRow
-                campaign={stringifyCampaignFields(campaign, localize)}
-                checked={
-                  phaseAttrs.campaigns_settings?.[
-                    campaign.attributes.campaign_name
-                  ]
-                }
-                key={campaign.id}
-                handleOnEnabledToggle={handleCampaignEnabledOnChange}
-              />
-            ))}
-          </SectionField>
+          {Object.keys(flatCampaigns).length > 0 && (
+            <SectionField>
+              <SubSectionTitle>
+                <FormattedMessage {...messages.automatedEmails} />
+              </SubSectionTitle>
+              <Text color="coolGrey600" mt="0px" fontSize="m">
+                <FormattedMessage {...messages.automatedEmailsDescription} />
+              </Text>
+              {flatCampaigns.map((campaign) => (
+                <CampaignRow
+                  campaign={stringifyCampaignFields(campaign, localize)}
+                  checked={
+                    phaseAttrs.campaigns_settings?.[
+                      campaign.attributes.campaign_name
+                    ]
+                  }
+                  key={campaign.id}
+                  handleOnEnabledToggle={handleCampaignEnabledOnChange}
+                />
+              ))}
+            </SectionField>
+          )}
 
           {errors && errors.project && (
             <SectionField>

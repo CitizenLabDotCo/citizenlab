@@ -102,10 +102,14 @@ const InitiativeMoreActions = ({
                 label: <FormattedMessage {...messages.reportAsSpam} />,
                 handler: openSpamModal,
               },
-              {
-                label: <FormattedMessage {...messages.editInitiative} />,
-                handler: onEditInitiative,
-              },
+              ...(initiative.attributes.editing_locked
+                ? []
+                : [
+                    {
+                      label: <FormattedMessage {...messages.editInitiative} />,
+                      handler: onEditInitiative,
+                    },
+                  ]),
               {
                 label: <FormattedMessage {...messages.deleteInitiative} />,
                 handler: onDeleteInitiative(initiative.id),

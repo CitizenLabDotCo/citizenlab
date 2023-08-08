@@ -163,6 +163,17 @@ export interface IInitiativeMarkedAsSpamNotificationData
   };
 }
 
+export interface IInitiativeResubmittedForReviewNotificationData
+  extends IBaseNotificationData {
+  attributes: {
+    type: 'initiative_resubmitted_for_review';
+    read_at: string | null;
+    created_at: string;
+    post_title_multiloc: Multiloc;
+    post_slug: string;
+  };
+}
+
 export interface IInviteAcceptedNotificationData extends IBaseNotificationData {
   attributes: {
     type: 'invite_accepted';
@@ -426,6 +437,50 @@ export interface IProjectFolderModerationRightsReceivedNotificationData
   };
 }
 
+export interface IVotingBasketSubmittedNotificationData
+  extends IBaseNotificationData {
+  attributes: {
+    type: 'voting_basket_submitted';
+    read_at: string | null;
+    created_at: string;
+    project_slug: string;
+    project_title_multiloc: Multiloc;
+  };
+}
+
+export interface IVotingBasketNotSubmittedNotificationData
+  extends IBaseNotificationData {
+  attributes: {
+    type: 'voting_basket_not_submitted';
+    read_at: string | null;
+    created_at: string;
+    project_slug: string;
+    project_title_multiloc: Multiloc;
+    phase_title_multiloc: Multiloc;
+  };
+}
+
+export interface IVotingLastChanceNotificationData
+  extends IBaseNotificationData {
+  attributes: {
+    type: 'voting_last_chance';
+    read_at: string | null;
+    created_at: string;
+    project_slug: string;
+    phase_title_multiloc: Multiloc;
+  };
+}
+
+export interface IVotingResultsNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'voting_results';
+    read_at: string | null;
+    created_at: string;
+    project_slug: string;
+    phase_title_multiloc: Multiloc;
+  };
+}
+
 export interface INotificationDataMap {
   IAdminRightsReceivedNotificationData: IAdminRightsReceivedNotificationData;
   ICommentDeletedByAdminNotificationData: ICommentDeletedByAdminNotificationData;
@@ -437,6 +492,7 @@ export interface INotificationDataMap {
   IIdeaMarkedAsSpamNotificationData: IIdeaMarkedAsSpamNotificationData;
   IInitiativeAssignedToYouNotificationData: IInitiativeAssignedToYouNotificationData;
   IInitiativeMarkedAsSpamNotificationData: IInitiativeMarkedAsSpamNotificationData;
+  IInitiativeResubmittedForReviewNotificationData: IInitiativeResubmittedForReviewNotificationData;
   IInviteAcceptedNotificationData: IInviteAcceptedNotificationData;
   IMentionInCommentNotificationData: IMentionInCommentNotificationData;
   IInternalCommentNotificationData: IInternalCommentNotificationData;
@@ -458,6 +514,10 @@ export interface INotificationDataMap {
   IStatusChangeOnReactedInitiativeNotificationData: IStatusChangeOnReactedInitiativeNotificationData;
   IThresholdReachedForAdminNotificationData: IThresholdReachedForAdminNotificationData;
   IProjectFolderModerationRightsReceivedNotificationData: IProjectFolderModerationRightsReceivedNotificationData;
+  IVotingBasketSubmittedNotificationData: IVotingBasketSubmittedNotificationData;
+  IVotingBasketNotSubmittedNotificationData: IVotingBasketNotSubmittedNotificationData;
+  IVotingLastChanceNotificationData: IVotingLastChanceNotificationData;
+  IVotingResultsNotificationData: IVotingResultsNotificationData;
 }
 
 export type TNotificationData =

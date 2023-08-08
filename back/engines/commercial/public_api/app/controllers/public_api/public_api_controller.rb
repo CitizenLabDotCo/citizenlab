@@ -24,7 +24,7 @@ module PublicApi
       render json: problem_details, status: :bad_request
     end
 
-    def list_items(base_query, serializer)
+    def list_items(base_query, serializer, root_key: nil)
       @items = base_query
         .order(created_at: :desc)
         .page(params[:page_number])
@@ -34,6 +34,7 @@ module PublicApi
       render json: @items,
         each_serializer: serializer,
         adapter: :json,
+        root: root_key,
         meta: meta_properties(@items)
     end
 
@@ -66,7 +67,7 @@ module PublicApi
       "#{date_field} BETWEEN '#{start_date}' AND '#{end_date}'"
     end
 
-    # Default per page is 12, maximum is 24
+    # Default per page is 25, maximum is 100
     def num_per_page
       [params[:page_size]&.to_i || 25, 100].min
     end

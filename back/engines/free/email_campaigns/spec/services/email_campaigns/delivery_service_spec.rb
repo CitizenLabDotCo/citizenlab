@@ -41,8 +41,7 @@ describe EmailCampaigns::DeliveryService do
     it 'returns campaign_types that all have at least 1 campaign_type_description translation defined' do
       multiloc_service = MultilocService.new
       service.campaign_types.each do |campaign_type|
-        # TODO: .sub is a temporary fix until we deploy the copy changes to the front-end
-        campaign_name = campaign_type.constantize.campaign_name.sub 'reacted', 'voted'
+        campaign_name = campaign_type.constantize.campaign_name
         expect { multiloc_service.i18n_to_multiloc("email_campaigns.campaign_type_description.#{campaign_name}") }
           .not_to raise_error
       end

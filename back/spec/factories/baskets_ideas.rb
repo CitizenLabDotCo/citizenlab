@@ -2,6 +2,7 @@
 
 FactoryBot.define do
   factory :baskets_idea do
+    votes { 1 }
     basket
     idea
   end

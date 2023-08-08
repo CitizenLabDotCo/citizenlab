@@ -43,7 +43,7 @@ describe PermissionsService do
     context 'when unverified resident, belonging to the other group' do
       let(:user) { create(:user, verified: false, manual_groups: [groups.first]) }
 
-      it { expect(service.denied_reason_for_permission(group_permission, user)).to eq 'missing_data' }
+      it { expect(service.denied_reason_for_permission(group_permission, user)).to be_nil }
     end
   end
 

@@ -90,17 +90,21 @@ class InitiativeStatusService
         status_id_to = InitiativeStatus.find_by(code: status_code_to)&.id
         next unless status_id_to
 
-        changes = InitiativeStatusChange.create!(initiatives.ids.map do |id|
-          {
-            initiative_id: id,
-            initiative_status_id: status_id_to
-          }
-        end)
-        # Log the status change activities.
-        InitiativeStatusChange.where(id: changes.map(&:id)).includes(:initiative, :initiative_status).each do |change|
-          log_status_change change
-        end
+        transition!(initiatives.ids, status_id_to)
       end
+    end
+  end
+
+  def transition!(initiative_ids, status_id_to)
+    changes = InitiativeStatusChange.create!(initiative_ids.map do |id|
+      {
+        initiative_id: id,
+        initiative_status_id: status_id_to
+      }
+    end)
+    # Log the status change activities.
+    InitiativeStatusChange.where(id: changes.map(&:id)).includes(:initiative, :initiative_status).each do |change|
+      log_status_change change
     end
   end
 
@@ -123,7 +127,9 @@ class InitiativeStatusService
 
   def manual_status_ids
     statuses = InitiativeStatus.where(code: MANUAL_TRANSITIONS.values.map(&:keys).flatten.uniq)
-    statuses = statuses.where.not(code: 'proposed') unless Initiative.review_required?
+
+    status_when_published = Initiative.review_required? ? 'review_pending' : 'proposed'
+    statuses = statuses.where.not(code: status_when_published)
 
     statuses.ids
   end

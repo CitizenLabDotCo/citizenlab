@@ -16,6 +16,7 @@ class WebApi::V1::InitiativesController < ApplicationController
       scope: policy_scope(Initiative),
       includes: %i[author assignee topics areas]
     ).find_records
+    initiatives = paginate SortByParamsService.new.sort_initiatives(initiatives, params, current_user)
     render json: linked_json(initiatives, WebApi::V1::InitiativeSerializer, serialization_options_for(initiatives))
   end
 
@@ -25,6 +26,7 @@ class WebApi::V1::InitiativesController < ApplicationController
       current_user: current_user,
       scope: policy_scope(Initiative)
     ).find_records
+    initiatives = paginate SortByParamsService.new.sort_initiatives(initiatives, params, current_user)
     render json: linked_json(initiatives, WebApi::V1::PostMarkerSerializer, params: jsonapi_serializer_params)
   end
 
@@ -34,9 +36,9 @@ class WebApi::V1::InitiativesController < ApplicationController
       params,
       current_user: current_user,
       scope: policy_scope(Initiative).where(publication_status: 'published'),
-      includes: %i[author initiative_status topics areas],
-      paginate: false
+      includes: %i[author cosponsors initiative_status topics areas]
     ).find_records
+    initiatives = SortByParamsService.new.sort_initiatives(initiatives, params, current_user)
 
     I18n.with_locale(current_user&.locale) do
       xlsx = XlsxService.new.generate_initiatives_xlsx initiatives,
@@ -81,7 +83,7 @@ class WebApi::V1::InitiativesController < ApplicationController
     render json: WebApi::V1::InitiativeSerializer.new(
       @initiative,
       params: jsonapi_serializer_params,
-      include: %i[author topics areas user_reaction initiative_images]
+      include: %i[author cosponsors topics areas user_reaction initiative_images]
     ).serializable_hash
   end
 
@@ -114,7 +116,7 @@ class WebApi::V1::InitiativesController < ApplicationController
         render json: WebApi::V1::InitiativeSerializer.new(
           @initiative.reload,
           params: jsonapi_serializer_params,
-          include: %i[author topics areas user_reaction initiative_images]
+          include: %i[author cosponsors topics areas user_reaction initiative_images]
         ).serializable_hash, status: :created
       else
         render json: { errors: @initiative.errors.details }, status: :unprocessable_entity
@@ -156,7 +158,7 @@ class WebApi::V1::InitiativesController < ApplicationController
       render json: WebApi::V1::InitiativeSerializer.new(
         @initiative.reload,
         params: jsonapi_serializer_params,
-        include: %i[author topics areas user_reaction initiative_images]
+        include: %i[author cosponsors topics areas user_reaction initiative_images]
       ).serializable_hash, status: :ok
     else
       render json: { errors: @initiative.errors.details }, status: :unprocessable_entity
@@ -196,7 +198,7 @@ class WebApi::V1::InitiativesController < ApplicationController
         reactable_id: initiatives.pluck(:id),
         reactable_type: 'Initiative'
       ).index_by(&:reactable_id)
-      { params: default_params.merge(vbii: reactions), include: %i[author user_reaction initiative_images assignee] }
+      { params: default_params.merge(vbii: reactions), include: %i[author cosponsors user_reaction initiative_images assignee] }
     else
       { params: default_params, include: %i[author initiative_images] }
     end

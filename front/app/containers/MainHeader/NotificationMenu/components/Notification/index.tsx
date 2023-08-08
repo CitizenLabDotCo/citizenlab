@@ -12,6 +12,7 @@ import IdeaAssignedToYouNotification from '../IdeaAssignedToYouNotification';
 import IdeaMarkedAsSpamNotification from '../IdeaMarkedAsSpamNotification';
 import InitiativeAssignedToYouNotification from '../InitiativeAssignedToYouNotification';
 import InitiativeMarkedAsSpamNotification from '../InitiativeMarkedAsSpamNotification';
+import InitiativeResubmittedForReviewNotification from '../InitiativeResubmittedForReviewNotification';
 import InviteAcceptedNotification from '../InviteAcceptedNotification';
 import MentionInCommentNotification from '../MentionInCommentNotification';
 import InternalCommentNotification from '../InternalCommentNotification';
@@ -33,6 +34,10 @@ import StatusChangeOnReactedIdeaNotification from '../StatusChangeOnReactedIdeaN
 import StatusChangeOnReactedInitiativeNotification from '../StatusChangeOnReactedInitiativeNotification';
 import ThresholdReachedForAdminNotification from '../ThresholdReachedForAdminNotification';
 import ProjectFolderModerationRightsReceivedNotification from '../ProjectFolderModerationRightsReceivedNotification';
+import VotingBasketSubmittedNotification from '../VotingBasketSubmittedNotification';
+import VotingBasketNotSubmittedNotification from '../VotingBasketNotSubmittedNotification';
+import VotingLastChanceNotification from '../VotingLastChanceNotification';
+import VotingResultsNotification from '../VotingResultsNotification';
 
 import {
   TNotificationData,
@@ -46,6 +51,7 @@ import {
   IIdeaMarkedAsSpamNotificationData,
   IInitiativeAssignedToYouNotificationData,
   IInitiativeMarkedAsSpamNotificationData,
+  IInitiativeResubmittedForReviewNotificationData,
   IInviteAcceptedNotificationData,
   IMentionInCommentNotificationData,
   IInternalCommentNotificationData,
@@ -67,6 +73,10 @@ import {
   IStatusChangeOnReactedInitiativeNotificationData,
   IThresholdReachedForAdminNotificationData,
   IProjectFolderModerationRightsReceivedNotificationData,
+  IVotingBasketSubmittedNotificationData,
+  IVotingBasketNotSubmittedNotificationData,
+  IVotingLastChanceNotificationData,
+  IVotingResultsNotificationData,
 } from 'api/notifications/types';
 import styled from 'styled-components';
 import Outlet from 'components/Outlet';
@@ -145,6 +155,14 @@ const Notification = ({ notification }: Props) => {
       return (
         <InitiativeMarkedAsSpamNotification
           notification={notification as IInitiativeMarkedAsSpamNotificationData}
+        />
+      );
+    case 'initiative_resubmitted_for_review':
+      return (
+        <InitiativeResubmittedForReviewNotification
+          notification={
+            notification as IInitiativeResubmittedForReviewNotificationData
+          }
         />
       );
     case 'invite_accepted':
@@ -315,6 +333,32 @@ const Notification = ({ notification }: Props) => {
       } else {
         return null;
       }
+    case 'voting_basket_submitted':
+      return (
+        <VotingBasketSubmittedNotification
+          notification={notification as IVotingBasketSubmittedNotificationData}
+        />
+      );
+    case 'voting_basket_not_submitted':
+      return (
+        <VotingBasketNotSubmittedNotification
+          notification={
+            notification as IVotingBasketNotSubmittedNotificationData
+          }
+        />
+      );
+    case 'voting_last_chance':
+      return (
+        <VotingLastChanceNotification
+          notification={notification as IVotingLastChanceNotificationData}
+        />
+      );
+    case 'voting_results':
+      return (
+        <VotingResultsNotification
+          notification={notification as IVotingResultsNotificationData}
+        />
+      );
     default:
       return (
         <Outlet

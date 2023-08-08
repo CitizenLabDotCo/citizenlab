@@ -2,6 +2,8 @@
 
 module PublicApi
   class V2::TopicsController < PublicApiController
+    include DeletedItemsAction
+
     def index
       list_items Topic.all, V2::TopicSerializer
     end
