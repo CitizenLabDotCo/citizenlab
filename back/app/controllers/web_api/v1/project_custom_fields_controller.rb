@@ -7,7 +7,7 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
   skip_after_action :verify_authorized
   skip_before_action :authenticate_user
 
-  QUESTION_TYPES = %w[select multiselect text multiline_text]
+  QUESTION_TYPES = %w[select multiselect text multiline_text linear_scale]
   FORBIDDEN_HTML_TAGS_REGEX = /<\/?(div|span|ul|ol|li|em|img|a){1}[^>]*\/?>/
 
   def json_forms_schema
@@ -31,7 +31,6 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
 
       if field_type == 'page' then
         pdf.start_new_page(size: 'A4')
-        next
       end
 
       # Skip unsupported question types
@@ -77,6 +76,32 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
         (1..7).each do
           draw_text_line(pdf)
         end
+      end
+
+      if field_type == 'linear_scale' then
+        max_index = custom_field.maximum - 1
+
+        (0..max_index).each do |i|
+          pdf.stroke_color '000000'
+          pdf.stroke_circle(
+            [
+              3.mm + ((i.to_f / max_index) * 100.mm), 
+              pdf.cursor
+            ],
+            5
+          )
+        end
+
+        pdf.move_down 4.mm
+
+        pdf.text custom_field.minimum_label_multiloc[params[:locale]]
+
+        pdf.bounding_box([100.mm, pdf.cursor + 5.1.mm], width: 80.mm, height: 10.mm) do
+          pdf.text custom_field.maximum_label_multiloc[params[:locale]]
+        end
+        # puts custom_field.maximum (min 2, max 7)
+        # puts custom_field.minimum_label_multiloc
+        # puts custom_field.maximum_label_multiloc
       end
 
       pdf.move_down 6.mm
