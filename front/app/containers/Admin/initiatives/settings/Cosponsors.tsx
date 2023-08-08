@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -27,19 +27,11 @@ const Cosponsors = ({
     onlyCheckAllowed: true,
   });
   const { formatMessage } = useIntl();
-  const [changed, setChanged] = useState(false);
-
-  useEffect(() => {
-    if (isNaN(cosponsorsNumber) && !changed) {
-      onChangeCosponsorsNumber(3); // default value
-    }
-  }, [onChangeCosponsorsNumber, cosponsorsNumber, changed]);
 
   if (!initiativeCosponsorsAllowed) return null;
 
   const handleReactingTresholdOnChange = (value: string) => {
     onChangeCosponsorsNumber(parseInt(value, 10));
-    setChanged(true);
   };
 
   return (
@@ -75,25 +67,26 @@ const Cosponsors = ({
         />
       </Box>
       {requireCosponsors && (
-        <Box mb="10px">
-          <Input
-            name="cosponsors_number"
-            type="number"
-            min="1"
-            required
-            value={cosponsorsNumber?.toString()}
-            onChange={handleReactingTresholdOnChange}
-            label={formatMessage(messages.cosponsorsNumberLabel)}
-          />
-        </Box>
-      )}
+        <>
+          <Box mb="10px">
+            <Input
+              name="cosponsors_number"
+              type="number"
+              min="1"
+              required
+              value={cosponsorsNumber?.toString()}
+              onChange={handleReactingTresholdOnChange}
+              label={formatMessage(messages.cosponsorsNumberLabel)}
+            />
+          </Box>
+          {isNaN(cosponsorsNumber) && (
+            <Error text={formatMessage(errorMessages.blank)} />
+          )}
 
-      {isNaN(cosponsorsNumber) && (
-        <Error text={formatMessage(errorMessages.blank)} />
-      )}
-
-      {!isNaN(cosponsorsNumber) && cosponsorsNumber < 1 && (
-        <Error text={formatMessage(messages.cosponsorsNumberMinError)} />
+          {!isNaN(cosponsorsNumber) && cosponsorsNumber < 1 && (
+            <Error text={formatMessage(messages.cosponsorsNumberMinError)} />
+          )}
+        </>
       )}
     </SectionField>
   );
