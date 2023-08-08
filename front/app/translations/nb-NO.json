@@ -469,6 +469,8 @@
   "app.components.VoteControl.budgetingNotPermitted": "Deltakende budsjettering er kun tilgjengelig for utvalgte grupper.",
   "app.components.VoteControl.budgetingNotPossible": "Det er for øyeblikket ikke mulig å gjøre endringer i budsjettet ditt.",
   "app.components.VoteControl.budgetingNotVerified": "Vennligst {verifyAccountLink} for å fortsette.",
+  "app.components.VoteInputs._shared.currencyLeft": "Du har {budgetLeft} / {totalBudget} {currency} igjen",
+  "app.components.VoteInputs._shared.votesLeft": "Du har {votesLeft} / {totalNumberOfVotes} {termForVotes} igjen",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmitted": "Du har allerede sendt inn budsjettet ditt. Klikk på «Endre budsjettet» for å endre budsjettet.",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage": "Du har allerede sendt inn budsjettet ditt. For å endre budsjettet, gå tilbake til prosjektsiden og klikk \"Endre budsjettet\".",
   "app.components.admin.SlugInput.resultingURL": "Resultater URL",
