@@ -27,12 +27,12 @@ class AddTwoInitiativeStatuses < ActiveRecord::Migration[7.0]
         ap.color = '#CC9331'
         ap.save!
 
-        ar = StubInitiativeStatus.find_or_initialize_by(code: 'requires_changes')
+        ar = StubInitiativeStatus.find_or_initialize_by(code: 'changes_requested')
         ar.title_multiloc = service.i18n_to_multiloc(
-          'initiative_statuses.requires_changes', locales: CL2_SUPPORTED_LOCALES
+          'initiative_statuses.changes_requested', locales: CL2_SUPPORTED_LOCALES
         )
         ar.description_multiloc = service.i18n_to_multiloc(
-          'initiative_statuses.requires_changes_description', locales: CL2_SUPPORTED_LOCALES
+          'initiative_statuses.changes_requested_description', locales: CL2_SUPPORTED_LOCALES
         )
         ar.ordering = 100
         ar.color = '#CC317E'

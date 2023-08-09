@@ -45,7 +45,7 @@ import {
 } from 'api/initiative_statuses/types';
 import { IAppConfigurationSettings } from 'api/app_configuration/types';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
-import RequiresChanges from './RequiresChanges';
+import ChangesRequested from './ChangesRequested';
 
 const Container = styled.div`
   ${media.desktop`
@@ -89,9 +89,9 @@ const componentMap: TComponentMap = {
     reacted: Expired,
     notReacted: Expired,
   },
-  requires_changes: {
-    reacted: RequiresChanges,
-    notReacted: RequiresChanges,
+  changes_requested: {
+    reacted: ChangesRequested,
+    notReacted: ChangesRequested,
   },
   review_pending: {
     reacted: ReviewPending,

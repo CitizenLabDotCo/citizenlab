@@ -23,7 +23,7 @@ interface Props {
   initiativeStatus: IInitiativeStatusData;
 }
 
-const RequiresChanges = ({ initiativeStatus }: Props) => {
+const ChangesRequested = ({ initiativeStatus }: Props) => {
   return (
     <Container>
       <StatusWrapper>
@@ -33,15 +33,15 @@ const RequiresChanges = ({ initiativeStatus }: Props) => {
       <StatusExplanation>
         <b>
           <FormattedMessage
-            {...messages.requiresChangesStatusExplanationBold}
+            {...messages.changesRequestedStatusExplanationBold}
           />
         </b>{' '}
         <FormattedMessage
-          {...messages.requiresChangesStatusExplanationSentenceTwo}
+          {...messages.changesRequestedStatusExplanationSentenceTwo}
         />
       </StatusExplanation>
     </Container>
   );
 };
 
-export default RequiresChanges;
+export default ChangesRequested;

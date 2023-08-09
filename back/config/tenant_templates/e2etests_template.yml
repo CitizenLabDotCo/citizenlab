@@ -49,12 +49,12 @@ models:
       code: review_pending
       color: '#CC9331'
       description_multiloc: initiative_statuses.review_pending_description
-    - &requires_changes
-      title_multiloc: initiative_statuses.requires_changes
+    - &changes_requested
+      title_multiloc: initiative_statuses.changes_requested
       ordering: 100
-      code: requires_changes
+      code: changes_requested
       color: '#CC317E'
-      description_multiloc: initiative_statuses.requires_changes_description
+      description_multiloc: initiative_statuses.changes_requested_description
     - &initiative_proposed
       title_multiloc: initiative_statuses.proposed
       ordering: 150

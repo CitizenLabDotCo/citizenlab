@@ -60,7 +60,7 @@ class SideFxInitiativeService
   private
 
   def transition_to_review_pending_if_required(initiative, user)
-    if initiative.initiative_status&.code == 'requires_changes' && user == initiative.author
+    if initiative.initiative_status&.code == 'changes_requested' && user == initiative.author
       status_id_to = InitiativeStatus.find_by(code: 'review_pending')&.id
       InitiativeStatusService.new.transition!([initiative.id], status_id_to)
     end
