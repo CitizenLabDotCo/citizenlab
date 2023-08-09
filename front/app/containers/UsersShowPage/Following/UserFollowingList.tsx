@@ -41,7 +41,7 @@ const UserFollowingList = ({ userId, value }: Props) => {
 
   followers?.data.forEach((follower) => {
     const type = follower.relationships.followable.data.type;
-    if (categorizedFollowers.hasOwnProperty(type)) {
+    if (Object.prototype.hasOwnProperty.call(categorizedFollowers, type)) {
       categorizedFollowers[type].push(follower);
     }
   });
