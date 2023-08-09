@@ -474,7 +474,7 @@
   "app.components.VoteInputs._shared.votesLeft2": "Vous avez {votesLeft} / {totalNumberOfVotes} {votesLeft, plural, =0 {{votesTerm}} one {{voteTerm}} other {{votesTerm}}} gauche",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmitted": "Vous avez déjà soumis votre budget. Pour le modifier, cliquez sur \"Modifier votre budget\".",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage": "Vous avez déjà soumis votre budget. Pour le modifier, retournez sur la page du projet et cliquez sur \"Modifier votre budget\".",
-  "app.components.VoteInputs.single.youHaveVotedForX": "Vous avez voté pour {votes, plural, =0 {options} one {option} other {options}}",
+  "app.components.VoteInputs.single.youHaveVotedForX2": "Vous avez voté pour {votes, plural, =0 {# options} one {# option} other {# options}}",
   "app.components.admin.SlugInput.resultingURL": "URL résultant",
   "app.components.admin.SlugInput.slugTooltip": "Le slug est l'ensemble unique de mots qui se trouve à la fin de l'adresse web, ou de l'URL, d'une page.",
   "app.components.admin.SlugInput.urlSlugBrokenLinkWarning": "Si vous modifiez l'URL, les liens vers la page utilisant l'ancienne URL ne fonctionneront plus.",
