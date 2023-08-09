@@ -62,12 +62,13 @@ export default defineMessages({
   },
   requiresChangesStatusExplanationBold: {
     id: 'app.containers.InitiativesShow.VoteControl.requiresChangesStatusExplanationBold',
-    defaultMessage: 'This proposal was rejected after review.',
+    defaultMessage:
+      'This proposal needs some changes before it can be approved.',
   },
   requiresChangesStatusExplanationSentenceTwo: {
     id: 'app.containers.InitiativesShow.VoteControl.requiresChangesStatusExplanationSentenceTwo',
     defaultMessage:
-      'Check the official update for an explanation of this decision.',
+      'Check the official update for an explanation of the required changes.',
   },
   expiredStatusExplanation: {
     id: 'app.containers.InitiativesShow.VoteControl.expiredStatusExplanation',
