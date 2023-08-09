@@ -28,6 +28,23 @@ const UserFollowingList = ({ userId, value }: Props) => {
 
   if (!showFollowing) return null;
 
+  const followedIdeas =
+    followers?.data.filter(
+      (follower) => follower.relationships.followable.data.type === 'idea'
+    ) || [];
+  const followedInitiatives =
+    followers?.data.filter(
+      (follower) => follower.relationships.followable.data.type === 'initiative'
+    ) || [];
+  const followedProjects =
+    followers?.data.filter(
+      (follower) => follower.relationships.followable.data.type === 'project'
+    ) || [];
+  const followedFolders =
+    followers?.data.filter(
+      (follower) => follower.relationships.followable.data.type === 'folder'
+    ) || [];
+
   return (
     <Box display="flex" w="100%" flexDirection="column">
       {!isLoading && followers?.data.length === 0 ? (
@@ -37,41 +54,48 @@ const UserFollowingList = ({ userId, value }: Props) => {
           </Text>
         </Box>
       ) : (
-        <Box display="flex" flexWrap="wrap" gap="20px">
-          {followers?.data.map((follower) => (
-            <>
-              {follower.relationships.followable.data.type === 'idea' && (
-                <Box width="calc(50% - 20px)">
-                  <IdeaCard
-                    ideaId={follower.relationships.followable.data.id}
-                    showFollowButton
-                  />
-                </Box>
-              )}
-              {follower.relationships.followable.data.type === 'initiative' && (
-                <Box width="calc(100% * (1 / 3) - 26px)">
-                  <InitiativeCard
-                    initiativeId={follower.relationships.followable.data.id}
-                    showFollowButton
-                  />
-                </Box>
-              )}
-              {follower.relationships.followable.data.type === 'project' && (
-                <ProjectCard
-                  projectId={follower.relationships.followable.data.id}
-                  size="small"
+        <Box display="flex" flexWrap="wrap" gap="20px" w="100%">
+          {followedIdeas.map((follower) => (
+            <Box key={follower.id} display="flex" flex="1 0 calc(50% - 20px)">
+              <Box width="100%">
+                <IdeaCard
+                  ideaId={follower.relationships.followable.data.id}
                   showFollowButton
                 />
-              )}
-              {follower.relationships.followable.data.type === 'folder' && (
-                <ProjectFolderCard
-                  folderId={follower.relationships.followable.data.id}
-                  size="small"
-                  layout="threecolumns"
-                  showFollowButton
-                />
-              )}
-            </>
+              </Box>
+            </Box>
+          ))}
+
+          {followedInitiatives.map((follower) => (
+            <Box
+              key={follower.id}
+              display="flex"
+              flex="1 0 calc(100% * (1 / 3) - 26px)"
+            >
+              <InitiativeCard
+                initiativeId={follower.relationships.followable.data.id}
+                showFollowButton
+              />
+            </Box>
+          ))}
+
+          {followedProjects.map((follower) => (
+            <ProjectCard
+              key={follower.id}
+              projectId={follower.relationships.followable.data.id}
+              size="small"
+              showFollowButton
+            />
+          ))}
+
+          {followedFolders.map((follower) => (
+            <ProjectFolderCard
+              key={follower.id}
+              folderId={follower.relationships.followable.data.id}
+              size="small"
+              layout="threecolumns"
+              showFollowButton
+            />
           ))}
         </Box>
       )}
