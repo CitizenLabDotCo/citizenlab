@@ -17,7 +17,7 @@ resource 'CosponsorsInitiatives' do
     let(:id) { @cosponsors_initiative.id }
 
     example_request 'Accept an invitation to cosponsor an initiative' do
-      assert_status 200
+      assert_status 204
     end
   end
 end
