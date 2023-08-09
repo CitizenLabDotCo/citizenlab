@@ -474,7 +474,7 @@
   "app.components.VoteInputs._shared.votesLeft2": "Έχετε {votesLeft} / {totalNumberOfVotes} {votesLeft, plural, =0 {{votesTerm}} one {{voteTerm}} other {{votesTerm}}} αριστερά",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmitted": "Έχετε ήδη υποβάλει τον προϋπολογισμό σας. Κάντε κλικ στο \"Τροποποίηση του προϋπολογισμού σας\" για να αλλάξετε τον προϋπολογισμό σας.",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage": "Έχετε ήδη υποβάλει τον προϋπολογισμό σας. Για να αλλάξετε τον προϋπολογισμό σας, επιστρέψτε στη σελίδα του έργου και κάντε κλικ στην επιλογή \"Τροποποίηση του προϋπολογισμού σας\".",
-  "app.components.VoteInputs.single.youHaveVotedForX": "Ψηφίσατε {votes, plural, =0 {επιλογές} one {επιλογή} other {επιλογές}}",
+  "app.components.VoteInputs.single.youHaveVotedForX2": "Ψηφίσατε {votes, plural, =0 {# options} one {# option} other {# options}}",
   "app.components.admin.SlugInput.resultingURL": "Παραγόμενο URL",
   "app.components.admin.SlugInput.slugTooltip": "Το slug (μοναδικό αναγνωριστικό πηγής) είναι το μοναδικό σύνολο λέξεων στο τέλος της διεύθυνσης web της σελίδας ή του URL.",
   "app.components.admin.SlugInput.urlSlugBrokenLinkWarning": "Εάν αλλάξετε τη διεύθυνση URL, οι σύνδεσμοι προς τη σελίδα που χρησιμοποιούν την παλιά διεύθυνση URL δεν θα λειτουργούν πλέον.",
