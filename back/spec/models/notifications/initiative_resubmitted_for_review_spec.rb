@@ -4,10 +4,10 @@ require 'rails_helper'
 
 RSpec.describe Notifications::InitiativeResubmittedForReview do
   describe '.make_notifications_on' do
-    it 'makes a notification on changed_status activity, when status changes from rejected_on_review to review_pending' do
+    it 'makes a notification on changed_status activity, when status changes from requires_changes to review_pending' do
       assignee = create(:admin)
       initiative = create(:initiative, assignee: assignee)
-      create(:initiative_status_change, initiative: initiative, initiative_status: create(:initiative_status, code: 'rejected_on_review'))
+      create(:initiative_status_change, initiative: initiative, initiative_status: create(:initiative_status, code: 'requires_changes'))
       create(:initiative_status_change, initiative: initiative, initiative_status: create(:initiative_status, code: 'review_pending'))
       activity = create(:activity, item: initiative, action: 'changed_status')
 

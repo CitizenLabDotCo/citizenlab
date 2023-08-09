@@ -49,11 +49,11 @@ models:
       color: '#CC9331'
       description_multiloc: initiative_statuses.review_pending_description
     -
-      title_multiloc: initiative_statuses.rejected_on_review
+      title_multiloc: initiative_statuses.requires_changes
       ordering: 100
-      code: rejected_on_review
+      code: requires_changes
       color: '#CC317E'
-      description_multiloc: initiative_statuses.rejected_on_review_description
+      description_multiloc: initiative_statuses.requires_changes_description
     -
       title_multiloc: initiative_statuses.proposed
       ordering: 150

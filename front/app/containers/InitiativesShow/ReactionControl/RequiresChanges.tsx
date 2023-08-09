@@ -23,7 +23,7 @@ interface Props {
   initiativeStatus: IInitiativeStatusData;
 }
 
-const RejectedOnReview = ({ initiativeStatus }: Props) => {
+const RequiresChanges = ({ initiativeStatus }: Props) => {
   return (
     <Container>
       <StatusWrapper>
@@ -33,15 +33,15 @@ const RejectedOnReview = ({ initiativeStatus }: Props) => {
       <StatusExplanation>
         <b>
           <FormattedMessage
-            {...messages.rejectedOnReviewStatusExplanationBold}
+            {...messages.requiresChangesStatusExplanationBold}
           />
         </b>{' '}
         <FormattedMessage
-          {...messages.rejectedOnReviewStatusExplanationSentenceTwo}
+          {...messages.requiresChangesStatusExplanationSentenceTwo}
         />
       </StatusExplanation>
     </Container>
   );
 };
 
-export default RejectedOnReview;
+export default RequiresChanges;

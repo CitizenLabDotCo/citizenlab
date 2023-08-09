@@ -6,11 +6,11 @@ class InitiativeStatusService
       'proposed' => {
         feedback_required: true
       },
-      'rejected_on_review' => {
+      'requires_changes' => {
         feedback_required: true
       }
     },
-    'rejected_on_review' => {
+    'requires_changes' => {
       'review_pending' => {
         feedback_required: true
       },

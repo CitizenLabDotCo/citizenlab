@@ -12,7 +12,7 @@ describe InitiativeStatusPolicy do
 
     context 'with default statuses' do
       let!(:status_review_pending) { create(:initiative_status_review_pending) }
-      let!(:status_rejected_on_review) { create(:initiative_status_rejected_on_review) }
+      let!(:status_requires_changes) { create(:initiative_status_requires_changes) }
       let!(:status_proposed) { create(:initiative_status_proposed) }
       let!(:status_expired) { create(:initiative_status_expired) }
       let!(:status_threshold_reached) { create(:initiative_status_threshold_reached) }
@@ -35,8 +35,8 @@ describe InitiativeStatusPolicy do
             expect(scope.pluck(:code)).to match_array default_codes
           end
 
-          it 'returns all statuses if at least one rejected_on_review initiative exists' do
-            create_initiative_status_change(status_rejected_on_review)
+          it 'returns all statuses if at least one requires_changes initiative exists' do
+            create_initiative_status_change(status_requires_changes)
             expect(scope.pluck(:code)).to match_array default_codes
           end
         end
@@ -61,7 +61,7 @@ describe InitiativeStatusPolicy do
 
         it 'does not return review statuses if user authored no review initiatives' do
           create_initiative_status_change(status_review_pending)
-          create_initiative_status_change(status_rejected_on_review)
+          create_initiative_status_change(status_requires_changes)
           expect(scope.pluck(:code)).to match_array not_review_codes
         end
 
@@ -70,9 +70,9 @@ describe InitiativeStatusPolicy do
           expect(scope.pluck(:code)).to match_array not_review_codes + ['review_pending']
         end
 
-        it 'returns rejected_on_review status if user authored an rejected_on_review initiative' do
-          create_initiative_status_change(status_rejected_on_review, initiative: build(:initiative, author: user))
-          expect(scope.pluck(:code)).to match_array not_review_codes + ['rejected_on_review']
+        it 'returns requires_changes status if user authored an requires_changes initiative' do
+          create_initiative_status_change(status_requires_changes, initiative: build(:initiative, author: user))
+          expect(scope.pluck(:code)).to match_array not_review_codes + ['requires_changes']
         end
       end
     end

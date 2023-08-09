@@ -17,8 +17,8 @@ en:
   initiative_statuses:
     review_pending: review pending
     review_pending_description: review pending
-    requires_changes: rejected on review
-    requires_changes_description: rejected on review
+    requires_changes: requires changes
+    requires_changes_description: requires changes
     proposed: proposed
     proposed_description: proposed
     expired: expired
