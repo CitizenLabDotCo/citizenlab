@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
 class WebApi::V1::CosponsorsInitiativesController < ApplicationController
-  skip_before_action :authenticate_user
-  skip_after_action :verify_authorized
-
   def show
     @cosponsors_initiative = CosponsorsInitiative.find(params[:id])
     authorize @cosponsors_initiative

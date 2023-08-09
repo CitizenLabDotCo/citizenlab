@@ -19,6 +19,12 @@ class CosponsorsInitiativePolicy < ApplicationPolicy
   end
 
   def accept_invite?
-    true
+    active? && cosponsor?
+  end
+
+  private
+
+  def cosponsor?
+    user && record.user_id == user.id
   end
 end
