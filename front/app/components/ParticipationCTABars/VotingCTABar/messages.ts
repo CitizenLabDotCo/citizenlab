@@ -11,11 +11,6 @@ export default defineMessages({
     id: 'app.components.ParticipationCTABars.VotingCTABar.noVotesCast',
     defaultMessage: 'You need to vote before you can submit your votes.',
   },
-  minVotesRequiredNotReached: {
-    id: 'app.components.ParticipationCTABars.VotingCTABar.minVotesRequiredNotReached',
-    defaultMessage:
-      'You need to cast a minimum of {votesMinimum} votes before you can submit your votes.',
-  },
 
   // budgeting disabled explanations
   budgetExceedsLimit: {

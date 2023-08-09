@@ -19,14 +19,7 @@ export const getDisabledExplanation = (
   numberOfVotesCast: number
 ) => {
   const { voting_method } = participationContext.attributes;
-  const minVotes = participationContext.attributes.voting_min_total ?? 0;
   const maxVotes = participationContext.attributes.voting_max_total;
-
-  const minVotesRequired = minVotes > 0;
-  const minVotesReached =
-    numberOfVotesCast !== undefined ? numberOfVotesCast >= minVotes : false;
-
-  const minVotesRequiredNotReached = minVotesRequired && !minVotesReached;
 
   const votesExceedLimit =
     maxVotes && numberOfVotesCast !== undefined
@@ -44,12 +37,6 @@ export const getDisabledExplanation = (
     }
 
     if (numberOfVotesCast === 0) return formatMessage(messages.noVotesCast);
-
-    if (minVotesRequiredNotReached) {
-      return formatMessage(messages.minVotesRequiredNotReached, {
-        votesMinimum: minVotes.toLocaleString(),
-      });
-    }
   }
 
   if (voting_method === 'multiple_voting') {
@@ -63,12 +50,6 @@ export const getDisabledExplanation = (
     }
 
     if (numberOfVotesCast === 0) return formatMessage(messages.noVotesCast);
-
-    if (minVotesRequiredNotReached) {
-      return formatMessage(messages.minVotesRequiredNotReached, {
-        votesMinimum: minVotes.toLocaleString(),
-      });
-    }
   }
 
   if (voting_method === 'budgeting') {
@@ -83,9 +64,16 @@ export const getDisabledExplanation = (
 
     if (numberOfVotesCast === 0) return formatMessage(messages.nothingInBasket);
 
-    if (minVotesRequiredNotReached) {
+    const minBudget = participationContext.attributes.voting_min_total ?? 0;
+    const minBudgetRequired = minBudget > 0;
+    const minBudgetReached =
+      numberOfVotesCast !== undefined ? numberOfVotesCast >= minBudget : false;
+
+    const minBudgetRequiredNotReached = minBudgetRequired && !minBudgetReached;
+
+    if (minBudgetRequiredNotReached) {
       return formatMessage(messages.minBudgetNotReached, {
-        votesMinimum: minVotes.toLocaleString(),
+        votesMinimum: minBudget.toLocaleString(),
       });
     }
   }
