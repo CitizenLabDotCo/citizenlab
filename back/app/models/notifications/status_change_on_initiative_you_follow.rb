@@ -60,26 +60,25 @@
 #  fk_rails_...  (spam_report_id => spam_reports.id)
 #
 module Notifications
-  class StatusChangeOfYourInitiative < Notification
+  class StatusChangeOnInitiativeYouFollow < Notification
     validates :post_status, :post, presence: true
     validates :post_type, inclusion: { in: ['Initiative'] }
 
     ACTIVITY_TRIGGERS = { 'Initiative' => { 'changed_status' => true } }
-    EVENT_NAME = 'Status change of your initiative'
+    EVENT_NAME = 'Status change on initiative you follow'
 
     def self.make_notifications_on(activity)
+      initiator_id = activity.user_id
       initiative = activity.item
-      recipient_id = initiative&.author_id
+      return [] if !initiative
 
-      if initiative && recipient_id
-        [new(
-          recipient_id: recipient_id,
-          initiating_user_id: activity.user_id,
+      User.from_follows(initiative.followers).where.not(id: initiator_id).map do |recipient|
+        new(
+          recipient_id: recipient.id,
+          initiating_user_id: initiator_id,
           post: initiative,
-          post_status: initiative.initiative_status
-        )]
-      else
-        []
+          post_status_id: initiative.initiative_status_id
+        )
       end
     end
   end

@@ -60,31 +60,27 @@
 #  fk_rails_...  (spam_report_id => spam_reports.id)
 #
 module Notifications
-  class StatusChangeOnReactedInitiative < Notification
-    validates :post_status, :post, presence: true
-    validates :post_type, inclusion: { in: ['Initiative'] }
+  class StatusChangeOnIdeaYouFollow < Notification
+    validates :post_status, :post, :project, presence: true
+    validates :post_type, inclusion: { in: ['Idea'] }
 
-    ACTIVITY_TRIGGERS = { 'Initiative' => { 'changed_status' => true } }
-    EVENT_NAME = 'Status change on reacted initiative'
+    ACTIVITY_TRIGGERS = { 'Idea' => { 'changed_status' => true } }
+    EVENT_NAME = 'Status change on idea you follow'
 
     def self.make_notifications_on(activity)
-      initiative = activity.item
+      initiator_id = activity.user_id
+      idea = activity.item
+      return [] if !idea
 
-      if initiative.present?
-        comment_author_ids = User.joins(:comments).where(comments: { post: initiative }).distinct.ids
-        User.joins(:reactions).where(reactions: { reactable: initiative }).distinct.ids.map do |recipient_id|
-          next if (comment_author_ids + [initiative.author_id]).include?(recipient_id)
-
-          new(
-            recipient_id: recipient_id,
-            initiating_user_id: activity.user_id,
-            post: initiative,
-            post_status: initiative.initiative_status
-          )
-        end
-      else
-        []
-      end.compact
+      User.from_follows(idea.followers).where.not(id: initiator_id).map do |recipient|
+        new(
+          recipient_id: recipient.id,
+          initiating_user_id: initiator_id,
+          post: idea,
+          project_id: idea.project_id,
+          post_status_id: idea.idea_status_id
+        )
+      end
     end
   end
 end

@@ -4,9 +4,9 @@ require 'rails_helper'
 
 RSpec.describe EmailCampaigns::OfficialFeedbackOnIdeaYouFollowMailer do
   describe 'campaign_mail' do
-    let_it_be(:recipient) { create(:user, locale: 'en') }
-    let_it_be(:campaign) { EmailCampaigns::Campaigns::OfficialFeedbackOnIdeaYouFollow.create! }
-    let_it_be(:command) do
+    let(:recipient) { create(:user, locale: 'en') }
+    let(:campaign) { EmailCampaigns::Campaigns::OfficialFeedbackOnIdeaYouFollow.create! }
+    let(:command) do
       {
         recipient: recipient,
         event_payload: {
@@ -20,12 +20,12 @@ RSpec.describe EmailCampaigns::OfficialFeedbackOnIdeaYouFollowMailer do
       }
     end
 
-    let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+    let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
 
-    before_all { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
+    before { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
 
     it 'renders the subject' do
-      expect(mail.subject).to start_with('You received an update')
+      expect(mail.subject).to start_with('An idea you follow has received an official update')
     end
 
     it 'renders the sender email' do

@@ -10,3 +10,5 @@
     </mj-text>
   </mj-column>
 </mj-section>
+
+<%= render partial: 'application/cta_button', locals: { href: event.post_url , message: format_message('cta_view_idea') } %>

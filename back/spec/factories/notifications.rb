@@ -182,7 +182,7 @@ FactoryBot.define do
     phase
   end
 
-  factory :status_change_on_commented_idea, parent: :notification, class: 'Notifications::StatusChangeOnCommentedIdea' do
+  factory :status_change_on_idea_you_follow, parent: :notification, class: 'Notifications::StatusChangeOnIdeaYouFollow' do
     association :post, factory: :idea
     project
     association :post_status, factory: :idea_status
@@ -191,41 +191,7 @@ FactoryBot.define do
     end
   end
 
-  factory :status_change_on_commented_initiative, parent: :notification, class: 'Notifications::StatusChangeOnCommentedInitiative' do
-    association :post, factory: :initiative
-    association :post_status, factory: :initiative_status
-    before(:create) do |notification|
-      notification.post.initiative_status_changes.create!(initiative_status: notification.post_status)
-    end
-  end
-
-  factory :status_change_on_reacted_idea, parent: :notification, class: 'Notifications::StatusChangeOnReactedIdea' do
-    association :post, factory: :idea
-    project
-    association :post_status, factory: :idea_status
-    before(:create) do |notification|
-      notification.post.idea_status = notification.post_status
-    end
-  end
-
-  factory :status_change_on_reacted_initiative, parent: :notification, class: 'Notifications::StatusChangeOnReactedInitiative' do
-    association :post, factory: :initiative
-    association :post_status, factory: :initiative_status
-    before(:create) do |notification|
-      notification.post.initiative_status_changes.create!(initiative_status: notification.post_status)
-    end
-  end
-
-  factory :status_change_of_your_idea, parent: :notification, class: 'Notifications::StatusChangeOfYourIdea' do
-    association :post, factory: :idea
-    project
-    association :post_status, factory: :idea_status
-    before(:create) do |notification|
-      notification.post.idea_status = notification.post_status
-    end
-  end
-
-  factory :status_change_of_your_initiative, parent: :notification, class: 'Notifications::StatusChangeOfYourInitiative' do
+  factory :status_change_on_initiative_you_follow, parent: :notification, class: 'Notifications::StatusChangeOnInitiativeYouFollow' do
     association :post, factory: :initiative
     association :post_status, factory: :initiative_status
     before(:create) do |notification|

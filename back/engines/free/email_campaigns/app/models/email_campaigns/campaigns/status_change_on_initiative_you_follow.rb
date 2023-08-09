@@ -27,7 +27,7 @@
 #  fk_rails_...  (author_id => users.id)
 #
 module EmailCampaigns
-  class Campaigns::StatusChangeOfYourInitiative < Campaign
+  class Campaigns::StatusChangeOnInitiativeYouFollow < Campaign
     include Consentable
     include ActivityTriggerable
     include RecipientConfigurable
@@ -39,15 +39,15 @@ module EmailCampaigns
     recipient_filter :filter_notification_recipient
 
     def mailer_class
-      StatusChangeOfYourInitiativeMailer
+      StatusChangeOnInitiativeYouFollowMailer
     end
 
     def activity_triggers
-      { 'Notifications::StatusChangeOfYourInitiative' => { 'created' => true } }
+      { 'Notifications::StatusChangeOnInitiativeYouFollow' => { 'created' => true } }
     end
 
     def filter_notification_recipient(users_scope, activity:, time: nil)
-      users_scope.where(id: activity.item.recipient.id)
+      users_scope.where(id: activity.item.recipient_id)
     end
 
     def self.recipient_role_multiloc_key

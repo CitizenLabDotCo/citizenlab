@@ -162,27 +162,11 @@ FactoryBot.define do
     enabled { true }
   end
 
-  factory :status_change_of_commented_idea_campaign, class: EmailCampaigns::Campaigns::StatusChangeOfCommentedIdea do
+  factory :status_change_on_idea_you_follow_campaign, class: EmailCampaigns::Campaigns::StatusChangeOnIdeaYouFollow do
     enabled { true }
   end
 
-  factory :status_change_of_commented_initiative_campaign, class: EmailCampaigns::Campaigns::StatusChangeOfCommentedInitiative do
-    enabled { true }
-  end
-
-  factory :status_change_of_reacted_idea_campaign, class: EmailCampaigns::Campaigns::StatusChangeOfReactedIdea do
-    enabled { true }
-  end
-
-  factory :status_change_of_reacted_initiative_campaign, class: EmailCampaigns::Campaigns::StatusChangeOfReactedInitiative do
-    enabled { true }
-  end
-
-  factory :status_change_of_your_idea_campaign, class: EmailCampaigns::Campaigns::StatusChangeOfYourIdea do
-    enabled { true }
-  end
-
-  factory :status_change_of_your_initiative_campaign, class: EmailCampaigns::Campaigns::StatusChangeOfYourInitiative do
+  factory :status_change_on_initiative_you_follow_campaign, class: EmailCampaigns::Campaigns::StatusChangeOnInitiativeYouFollow do
     enabled { true }
   end
 

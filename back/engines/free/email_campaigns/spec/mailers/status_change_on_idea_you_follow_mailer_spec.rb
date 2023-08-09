@@ -2,13 +2,14 @@
 
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::StatusChangeOfReactedIdeaMailer do
+RSpec.describe EmailCampaigns::StatusChangeOnIdeaYouFollowMailer do
   describe 'campaign_mail' do
-    let_it_be(:recipient) { create(:user, locale: 'en') }
-    let_it_be(:campaign) { EmailCampaigns::Campaigns::StatusChangeOfReactedIdea.create! }
-    let_it_be(:idea) { create(:idea) }
-    let_it_be(:status) { idea.idea_status }
-    let_it_be(:command) do
+    let(:recipient) { create(:user, locale: 'en') }
+    let(:campaign) { EmailCampaigns::Campaigns::StatusChangeOnIdeaYouFollow.create! }
+    let(:command) do
+      idea = create(:idea)
+      status = idea.idea_status
+
       {
         recipient: recipient,
         event_payload: {
@@ -30,12 +31,12 @@ RSpec.describe EmailCampaigns::StatusChangeOfReactedIdeaMailer do
       }
     end
 
-    let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+    let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
 
-    before_all { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
+    before { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
 
     it 'renders the subject' do
-      expect(mail.subject).to start_with('The status of an idea you reacted to has been changed')
+      expect(mail.subject).to start_with('The status of an idea you follow has been changed')
     end
 
     it 'renders the sender email' do

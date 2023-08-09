@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class WebApi::V1::Notifications::StatusChangeOnCommentedIdeaSerializer < WebApi::V1::Notifications::NotificationSerializer
+class WebApi::V1::Notifications::StatusChangeOnIdeaYouFollowSerializer < WebApi::V1::Notifications::NotificationSerializer
   attribute :post_title_multiloc do |object|
     object.post&.title_multiloc
   end

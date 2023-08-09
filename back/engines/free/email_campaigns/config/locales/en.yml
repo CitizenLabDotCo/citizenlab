@@ -366,15 +366,15 @@ en:
       updated: '%{officialName} wrote:'
       cta_view: 'Go to this idea'
       event_description: '%{officialName} gave an update on the idea ''%{ideaTitle}''. Click the button below to enter the conversation with %{officialName}.'
-      main_header: 'You received an update from %{organizationName}'
-      subject: 'You received an update from %{organizationName}'
+      main_header: 'There''s an update on an idea you follow'
+      subject: 'An idea you follow has received an official update on the platform of %{organizationName}'
       preheader: '%{officialName} left an official update on an idea you follow'
     official_feedback_on_initiative_you_follow:
       updated: '%{officialName} wrote:'
       cta_view: 'Go to this proposal'
       event_description: '%{officialName} gave an update on the proposal ''%{initiativeTitle}''. Click the button below to enter the conversation with %{organizationName}.'
-      main_header: 'You received an update from %{officialName}'
-      subject: 'You''ve received an official update on the platform of %{organizationName}'
+      main_header: 'There''s an update on a proposal you follow'
+      subject: 'A proposal you follow has received an official update on the platform of %{organizationName}'
       preheader: '%{officialName} left an official update on a proposal you follow'
     project_moderation_rights_received:
       cta_manage_project: 'Manage this project'
@@ -422,48 +422,20 @@ en:
       new_phase: 'The project will enter the phase ''%{phaseTitle}'''
       subject: 'Get everything set up for the new phase of %{projectName}'
       preheader: 'A new phase will start soon for %{projectName}'
-    status_change_of_commented_idea:
+    status_change_on_idea_you_follow:
       status_change: 'The new status of this idea is ''%{ideaStatus}'''
       cta_view_idea: 'Go to this idea'
       event_description: '%{organizationName} updated the status of the idea ''%{ideaTitle}'' on their digital participation platform.'
-      main_header: 'An idea you commented on has a new status'
-      subject: 'The status of an idea you commented on has been changed'
-      preheader: '%{organizationName} changed the status of an idea you commented on'
-    status_change_of_your_idea:
-      status_change: 'The new status of your idea is ''%{ideaStatus}'''
-      cta_view_idea: 'Go to your idea'
-      event_description: '%{organizationName} updated the status of your idea ''%{ideaTitle}'' on their digital participation platform.'
-      main_header: 'Your idea has a new status'
-      subject: 'The status of your idea has been changed'
-      preheader: '%{organizationName} changed the status of your idea'
-    status_change_of_reacted_idea:
-      status_change: 'The new status of this idea is ''%{ideaStatus}'''
-      cta_view_idea: 'Go to this idea'
-      event_description: '%{organizationName} updated the status of the idea ''%{ideaTitle}'' on their digital participation platform.'
-      main_header: 'An idea you reacted to has a new status'
-      subject: 'The status of an idea you reacted to has been changed'
-      preheader: '%{organizationName} changed the status of an idea you reacted to'
-    status_change_of_reacted_initiative:
+      main_header: 'An idea you follow has a new status'
+      subject: 'The status of an idea you follow has been changed'
+      preheader: '%{organizationName} changed the status of an idea you follow'
+    status_change_on_initiative_you_follow:
       status_change: 'The new status of this proposal is ''%{initiativeStatus}'''
       cta_view_initiative: 'Go to this proposal'
       event_description: 'The status of the proposal ''%{initiativeTitle}'' has been updated on the digital participation platform of %{organizationName}.'
-      main_header: 'A proposal you voted on has a new status'
-      subject: 'The status of a proposal you voted on has changed'
-      preheader: 'The status of a proposal you voted on changed'
-    status_change_of_commented_initiative:
-      status_change: 'The new status of this proposal is ''%{initiativeStatus}'''
-      cta_view_initiative: 'Go to this proposal'
-      event_description: 'The status of the proposal ''%{initiativeTitle}'' has been updated on the digital participation platform of %{organizationName}.'
-      main_header: 'A proposal you commented on has a new status'
-      subject: 'The status of a proposal you commented on has changed'
-      preheader: 'The status of a proposal you commented on has changed'
-    status_change_of_your_initiative:
-      status_change: 'The new status of your proposal is ''%{initiativeStatus}'''
-      cta_view_initiative: 'Go to your proposal'
-      event_description: 'The status of the proposal ''%{initiativeTitle}'' has been updated on the digital participation platform of %{organizationName}.'
-      main_header: 'Your proposal has a new status'
-      subject: 'The status of your proposal has changed'
-      preheader: 'The status of your proposal has changed'
+      main_header: 'A proposal you follow has a new status'
+      subject: 'The status of a proposal you follow has changed'
+      preheader: 'The status of a proposal you follow has changed'
     user_digest:
       subject: "Your activity on the participation platform of %{organizationName}"
       commented: "%{authorFirstName} commented:"

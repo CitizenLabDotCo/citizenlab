@@ -2,13 +2,14 @@
 
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::StatusChangeOfCommentedInitiativeMailer do
+RSpec.describe EmailCampaigns::StatusChangeOnInitiativeYouFollowMailer do
   describe 'campaign_mail' do
-    let_it_be(:recipient) { create(:user, locale: 'en') }
-    let_it_be(:campaign) { EmailCampaigns::Campaigns::StatusChangeOfCommentedInitiative.create! }
-    let_it_be(:initiative) { create(:initiative) }
-    let_it_be(:status) { initiative.initiative_status }
-    let_it_be(:command) do
+    let(:recipient) { create(:user, locale: 'en') }
+    let(:campaign) { EmailCampaigns::Campaigns::StatusChangeOnInitiativeYouFollow.create! }
+    let(:command) do
+      initiative = create(:initiative)
+      status = initiative.initiative_status
+
       {
         recipient: recipient,
         event_payload: {
@@ -30,12 +31,12 @@ RSpec.describe EmailCampaigns::StatusChangeOfCommentedInitiativeMailer do
       }
     end
 
-    let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+    let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
 
-    before_all { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
+    before { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
 
     it 'renders the subject' do
-      expect(mail.subject).to start_with('The status of a proposal you commented on has changed')
+      expect(mail.subject).to start_with('The status of a proposal you follow has changed')
     end
 
     it 'renders the sender email' do

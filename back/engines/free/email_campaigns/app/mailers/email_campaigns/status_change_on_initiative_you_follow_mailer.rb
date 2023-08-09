@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module EmailCampaigns
-  class StatusChangeOfReactedIdeaMailer < ApplicationMailer
+  class StatusChangeOnInitiativeYouFollowMailer < ApplicationMailer
     private
 
     def subject
@@ -16,7 +16,7 @@ module EmailCampaigns
       format_message(
         'event_description',
         values: {
-          ideaTitle: localize_for_recipient(event.post_title_multiloc),
+          initiativeTitle: localize_for_recipient(event.post_title_multiloc),
           organizationName: organization_name
         }
       )
