@@ -21,13 +21,18 @@ const useAddEventAttendance = (eventId: string) => {
   return useMutation<IEventAttendance, CLErrors, IAddEventAttendanceProperties>(
     {
       mutationFn: addEventAttendance,
-      onSuccess: () => {
+      onSuccess: (_data, params) => {
         queryClient.invalidateQueries({
           queryKey: eventsAttendancesKeys.list({ eventId }),
         });
         queryClient.invalidateQueries({
           queryKey: eventsKeys.item({ eventId }),
         });
+        if (params.attendeeId) {
+          queryClient.invalidateQueries({
+            queryKey: eventsKeys.list({ attendeeId: params.attendeeId }),
+          });
+        }
       },
     }
   );

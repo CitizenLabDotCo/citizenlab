@@ -8,7 +8,6 @@ import { IEventData } from 'api/events/types';
 
 // api
 import useAuthUser from 'api/me/useAuthUser';
-import useEventAttendances from 'api/event_attendance/useEventAttendances';
 import useAddEventAttendance from 'api/event_attendance/useAddEventAttendance';
 import useDeleteEventAttendance from 'api/event_attendance/useDeleteEventAttendance';
 
@@ -18,8 +17,8 @@ import { useIntl } from 'utils/cl-intl';
 
 // style
 import { useTheme } from 'styled-components';
-import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+import useEventsByUserId from 'api/events/useEventsByUserId';
 
 type EventAttendanceButtonProps = {
   event: IEventData;
@@ -31,46 +30,35 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
   const { formatMessage } = useIntl();
 
   // Attendance API
-  const { data: eventAttendances } = useEventAttendances(event.id);
+  const { data: eventsAttending } = useEventsByUserId({
+    attendeeId: user?.data?.id,
+  });
   const { mutate: addEventAttendance, isLoading: isAddingAttendance } =
     useAddEventAttendance(event.id);
   const { mutate: deleteEventAttendance, isLoading: isRemovingAttendance } =
-    useDeleteEventAttendance(event.id);
+    useDeleteEventAttendance(event.id, user?.data?.id);
 
   // Attendance
-  const eventAttendanceUserIds = eventAttendances?.data?.map(
-    (eventAttendance) => eventAttendance.relationships.attendee.data.id
+
+  const userAttendingEventObject = eventsAttending?.data?.find(
+    (eventAttending) => eventAttending.id === event.id
   );
-  const userIsAttending =
-    user && eventAttendanceUserIds?.includes(user.data.id);
-  const attendanceId = eventAttendances?.data?.find(
-    (eventAttendance) =>
-      eventAttendance.relationships.attendee.data.id === user?.data?.id
-  )?.id;
 
-  const loginAndRegisterAttendance = () => {
-    const context = {
-      type: 'project',
-      action: 'attend_event',
-    } as const;
+  const userIsAttending = !!userAttendingEventObject;
 
-    const successAction: SuccessAction = {
-      name: 'attendEvent',
-      params: { eventId, userId },
-    };
-
-    triggerAuthenticationFlow({
-      flow: 'signup',
-      context,
-      successAction,
-    });
-  };
+  const attendanceId =
+    userAttendingEventObject?.relationships.user_attendance.data.id || null;
 
   const handleClick = () => {
     if (user) {
-      return registerAttendance();
+      registerAttendance();
+    } else {
+      // Currently there are no granular permission for event attendance (I.e. requirements endpoint fails).
+      // As such, our only option at this point is to trigger the flow without a success action.
+      triggerAuthenticationFlow({
+        flow: 'signin',
+      });
     }
-    loginAndRegisterAttendance();
   };
 
   const registerAttendance = () => {

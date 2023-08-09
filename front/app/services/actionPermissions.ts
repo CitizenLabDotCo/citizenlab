@@ -34,8 +34,7 @@ export type IParticipationContextPermissionAction =
   | 'taking_survey'
   | 'taking_poll'
   | 'voting'
-  | 'annotating_document'
-  | 'attend_event';
+  | 'annotating_document';
 
 interface IParticipationContextPermissionData {
   id: string;

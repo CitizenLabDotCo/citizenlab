@@ -10,7 +10,7 @@ const deleteEventAttendance = (properties: IDeleteEventAttendanceProperties) =>
     action: 'delete',
   });
 
-const useDeleteEventAttendance = (eventId: string) => {
+const useDeleteEventAttendance = (eventId: string, userId?: string) => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -22,6 +22,11 @@ const useDeleteEventAttendance = (eventId: string) => {
       queryClient.invalidateQueries({
         queryKey: eventsKeys.item({ eventId }),
       });
+      if (userId) {
+        queryClient.invalidateQueries({
+          queryKey: eventsKeys.list({ attendeeId: userId }),
+        });
+      }
     },
   });
 };

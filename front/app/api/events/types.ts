@@ -26,6 +26,12 @@ export interface IEventData {
         type: string;
       };
     };
+    user_attendance: {
+      data: {
+        id: string;
+        type: string;
+      };
+    };
   };
 }
 
