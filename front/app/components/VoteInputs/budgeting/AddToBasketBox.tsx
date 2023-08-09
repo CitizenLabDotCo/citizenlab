@@ -12,7 +12,7 @@ import { Box, Text } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../_shared/messages';
+import messages from './messages';
 import FormattedBudget from 'utils/currency/FormattedBudget';
 
 // styles
