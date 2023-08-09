@@ -42,6 +42,7 @@ export const data: IInitiativeData = {
     },
     editing_locked: false,
     public: true,
+    cosponsors: [{ id: '1', display: 'Cosponsor 1' }],
   },
   relationships: {
     topics: {
