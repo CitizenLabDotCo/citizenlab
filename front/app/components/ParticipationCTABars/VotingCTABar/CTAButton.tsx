@@ -19,7 +19,7 @@ import messages from '../messages';
 // utils
 import JSConfetti from 'js-confetti';
 import { scrollToElement } from 'utils/scroll';
-import { getDisabledMessage } from './utils';
+import { getDisabledExplanation } from './utils';
 
 // typings
 import { IProjectData } from 'api/projects/types';
@@ -45,34 +45,11 @@ const CTAButton = ({ participationContext }: Props) => {
   const votingMethod = participationContext.attributes.voting_method;
   if (!votingMethod || numberOfVotesCast === undefined) return null;
 
-  const minVotes = participationContext.attributes.voting_min_total ?? 0;
-  const maxVotes = participationContext.attributes.voting_max_total;
-
-  const minVotesRequired = minVotes > 0;
-  const minVotesReached =
-    numberOfVotesCast !== undefined ? numberOfVotesCast >= minVotes : false;
-
-  const minVotesRequiredNotReached = minVotesRequired && !minVotesReached;
-
-  const votesExceedLimit =
-    maxVotes && numberOfVotesCast !== undefined
-      ? numberOfVotesCast > maxVotes
-      : false;
-
-  const disabledMessage = getDisabledMessage(
-    votingMethod,
-    votesExceedLimit,
-    numberOfVotesCast,
-    minVotesRequiredNotReached
+  const disabledExplanation = getDisabledExplanation(
+    formatMessage,
+    participationContext,
+    numberOfVotesCast
   );
-
-  const disabledExplanation = disabledMessage
-    ? formatMessage(disabledMessage, {
-        votesCast: numberOfVotesCast,
-        votesLimit: maxVotes || 0,
-        votesMinimum: minVotes,
-      })
-    : undefined;
 
   const handleSubmitOnClick = () => {
     if (basket) {

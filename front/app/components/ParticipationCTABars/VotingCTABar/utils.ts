@@ -6,30 +6,97 @@ import voteInputMessages from 'components/VoteInputs/_shared/messages';
 import { isNil } from 'utils/helperUtils';
 
 // typings
-import { VotingMethod } from 'services/participationContexts';
 import { IProjectData } from 'api/projects/types';
 import { IPhaseData } from 'api/phases/types';
 import { TCurrency } from 'api/app_configuration/types';
 import { FormatMessage } from 'typings';
 import { Localize } from 'hooks/useLocalize';
 
-export const getDisabledMessage = (
-  votingMethod: VotingMethod,
-  votesExceedLimit: boolean,
-  numberOfVotesCast: number,
-  minVotesRequiredNotReached: boolean
+export const getDisabledExplanation = (
+  formatMessage: FormatMessage,
+  // localize: Localize,
+  participationContext: IProjectData | IPhaseData,
+  numberOfVotesCast: number
 ) => {
-  if (votingMethod === 'budgeting') {
-    if (votesExceedLimit) return messages.budgetExceedsLimit;
-    if (numberOfVotesCast === 0) return messages.nothingInBasket;
-    if (minVotesRequiredNotReached) return messages.minBudgetNotReached;
-    return undefined;
-  } else {
-    if (votesExceedLimit) return messages.votesExceedLimit;
-    if (numberOfVotesCast === 0) return messages.noVotesCast;
-    if (minVotesRequiredNotReached) return messages.minVotesRequiredNotReached;
-    return undefined;
+  const { voting_method } = participationContext.attributes;
+  const minVotes = participationContext.attributes.voting_min_total ?? 0;
+  const maxVotes = participationContext.attributes.voting_max_total;
+
+  const minVotesRequired = minVotes > 0;
+  const minVotesReached =
+    numberOfVotesCast !== undefined ? numberOfVotesCast >= minVotes : false;
+
+  const minVotesRequiredNotReached = minVotesRequired && !minVotesReached;
+
+  const votesExceedLimit =
+    maxVotes && numberOfVotesCast !== undefined
+      ? numberOfVotesCast > maxVotes
+      : false;
+
+  if (voting_method === 'single_voting') {
+    if (votesExceedLimit) {
+      if (isNil(maxVotes)) return;
+
+      return formatMessage(messages.votesExceedLimit, {
+        votesCast: numberOfVotesCast.toLocaleString(),
+        votesLimit: maxVotes.toLocaleString(),
+      });
+    }
+
+    if (numberOfVotesCast === 0) return formatMessage(messages.noVotesCast);
+
+    if (minVotesRequiredNotReached) {
+      return formatMessage(messages.minVotesRequiredNotReached, {
+        votesMinimum: minVotes.toLocaleString(),
+      });
+    }
+
+    return;
   }
+
+  if (voting_method === 'multiple_voting') {
+    if (votesExceedLimit) {
+      if (isNil(maxVotes)) return;
+
+      return formatMessage(messages.votesExceedLimit, {
+        votesCast: numberOfVotesCast.toLocaleString(),
+        votesLimit: maxVotes.toLocaleString(),
+      });
+    }
+
+    if (numberOfVotesCast === 0) return formatMessage(messages.noVotesCast);
+
+    if (minVotesRequiredNotReached) {
+      return formatMessage(messages.minVotesRequiredNotReached, {
+        votesMinimum: minVotes.toLocaleString(),
+      });
+    }
+
+    return;
+  }
+
+  if (voting_method === 'budgeting') {
+    if (votesExceedLimit) {
+      if (isNil(maxVotes)) return;
+
+      return formatMessage(messages.budgetExceedsLimit, {
+        votesCast: numberOfVotesCast.toLocaleString(),
+        votesLimit: maxVotes.toLocaleString(),
+      });
+    }
+
+    if (numberOfVotesCast === 0) return formatMessage(messages.nothingInBasket);
+
+    if (minVotesRequiredNotReached) {
+      return formatMessage(messages.minBudgetNotReached, {
+        votesMinimum: minVotes.toLocaleString(),
+      });
+    }
+
+    return;
+  }
+
+  return;
 };
 
 export const getVotesCounter = (
