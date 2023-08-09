@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import useBasket from 'api/baskets/useBasket';
 import useUpdateBasket from 'api/baskets/useUpdateBasket';
 import useVoting from 'api/baskets_ideas/useVoting';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // components
 import { Box, Text, Icon, Button } from '@citizenlab/cl2-component-library';
@@ -40,6 +41,7 @@ const CTAButton = ({ participationContext }: Props) => {
   const { data: basket } = useBasket(basketId);
   const { mutate: updateBasket } = useUpdateBasket();
   const { numberOfVotesCast, processing: votingProcessing } = useVoting();
+  const { data: appConfig } = useAppConfiguration();
   const theme = useTheme();
   const { formatMessage } = useIntl();
   const localize = useLocalize();
@@ -47,11 +49,14 @@ const CTAButton = ({ participationContext }: Props) => {
   const votingMethod = participationContext.attributes.voting_method;
   if (!votingMethod || numberOfVotesCast === undefined) return null;
 
+  const currency = appConfig?.data.attributes.settings.core.currency;
+
   const disabledExplanation = getDisabledExplanation(
     formatMessage,
     localize,
     participationContext,
-    numberOfVotesCast
+    numberOfVotesCast,
+    currency
   );
 
   const handleSubmitOnClick = () => {

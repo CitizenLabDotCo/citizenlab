@@ -16,7 +16,8 @@ export const getDisabledExplanation = (
   formatMessage: FormatMessage,
   localize: Localize,
   participationContext: IProjectData | IPhaseData,
-  numberOfVotesCast: number
+  numberOfVotesCast: number,
+  currency: TCurrency | undefined
 ) => {
   const { voting_method } = participationContext.attributes;
   const maxVotes = participationContext.attributes.voting_max_total;
@@ -88,6 +89,7 @@ export const getDisabledExplanation = (
     if (minBudgetRequiredNotReached) {
       return formatMessage(messages.minBudgetNotReached, {
         votesMinimum: minBudget.toLocaleString(),
+        currency,
       });
     }
   }
