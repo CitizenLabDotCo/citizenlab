@@ -77,8 +77,6 @@ const RightColumnDesktop = ({
   const commentingEnabled =
     !!idea?.data.attributes.action_descriptor.commenting_idea.enabled;
 
-  const showGreyBox = ideaIsInParticipationContext || commentingEnabled;
-
   return (
     <Box
       flex={`0 0 ${rightColumnWidthDesktop}px`}
@@ -95,25 +93,26 @@ const RightColumnDesktop = ({
           background={colors.background}
           mb="12px"
         >
-          {showGreyBox && (
-            <>
-              <StyledReactionControl
-                styleType="shadow"
-                ideaId={ideaId}
-                size="4"
-              />
-              <Box pb="23px" mb="23px" borderBottom="solid 1px #ccc">
-                {participationContext &&
-                  ideaIsInParticipationContext &&
-                  votingConfig?.getIdeaPageVoteInput({
-                    ideaId,
-                    participationContext,
-                    compact: false,
-                  })}
-              </Box>
-              {commentingEnabled && <Buttons />}
-            </>
-          )}
+          {ideaIsInParticipationContext ||
+            (commentingEnabled && (
+              <>
+                <StyledReactionControl
+                  styleType="shadow"
+                  ideaId={ideaId}
+                  size="4"
+                />
+                <Box pb="23px" mb="23px" borderBottom="solid 1px #ccc">
+                  {participationContext &&
+                    ideaIsInParticipationContext &&
+                    votingConfig?.getIdeaPageVoteInput({
+                      ideaId,
+                      participationContext,
+                      compact: false,
+                    })}
+                </Box>
+                {commentingEnabled && <Buttons />}
+              </>
+            ))}
           <FollowUnfollow
             followableType="ideas"
             followableId={ideaId}
