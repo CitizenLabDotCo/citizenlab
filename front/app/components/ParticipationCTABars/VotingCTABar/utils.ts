@@ -14,7 +14,7 @@ import { Localize } from 'hooks/useLocalize';
 
 export const getDisabledExplanation = (
   formatMessage: FormatMessage,
-  // localize: Localize,
+  localize: Localize,
   participationContext: IProjectData | IPhaseData,
   numberOfVotesCast: number
 ) => {
@@ -36,7 +36,11 @@ export const getDisabledExplanation = (
       });
     }
 
-    if (numberOfVotesCast === 0) return formatMessage(messages.noVotesCast);
+    if (numberOfVotesCast === 0) {
+      return formatMessage(messages.noVotesCast, {
+        votesTerm: formatMessage(voteInputMessages.votes),
+      });
+    }
   }
 
   if (voting_method === 'multiple_voting') {
@@ -49,7 +53,17 @@ export const getDisabledExplanation = (
       });
     }
 
-    if (numberOfVotesCast === 0) return formatMessage(messages.noVotesCast);
+    if (numberOfVotesCast === 0) {
+      const { voting_term_plural_multiloc } = participationContext.attributes;
+
+      const votesTerm = voting_term_plural_multiloc
+        ? localize(voting_term_plural_multiloc)
+        : formatMessage(voteInputMessages.votes);
+
+      return formatMessage(messages.noVotesCast, {
+        votesTerm,
+      });
+    }
   }
 
   if (voting_method === 'budgeting') {

@@ -2,14 +2,15 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   // voting disabled explanations
+  // votesExceedLimit probably can't ever happen
   votesExceedLimit: {
     id: 'app.components.ParticipationCTABars.VotingCTABar.votesExceedLimit',
     defaultMessage:
       'You cast {votesCast} votes, which exceeds the limit of {votesLimit}. Please remove some votes and try again.',
   },
   noVotesCast: {
-    id: 'app.components.ParticipationCTABars.VotingCTABar.noVotesCast',
-    defaultMessage: 'You need to vote before you can submit your votes.',
+    id: 'app.components.ParticipationCTABars.VotingCTABar.noVotesCast2',
+    defaultMessage: 'You need to vote before you can submit your {votesTerm}.',
   },
 
   // budgeting disabled explanations

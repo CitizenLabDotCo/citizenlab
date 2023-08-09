@@ -15,6 +15,7 @@ import { useTheme } from 'styled-components';
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
+import useLocalize from 'hooks/useLocalize';
 
 // utils
 import JSConfetti from 'js-confetti';
@@ -41,12 +42,14 @@ const CTAButton = ({ participationContext }: Props) => {
   const { numberOfVotesCast, processing: votingProcessing } = useVoting();
   const theme = useTheme();
   const { formatMessage } = useIntl();
+  const localize = useLocalize();
 
   const votingMethod = participationContext.attributes.voting_method;
   if (!votingMethod || numberOfVotesCast === undefined) return null;
 
   const disabledExplanation = getDisabledExplanation(
     formatMessage,
+    localize,
     participationContext,
     numberOfVotesCast
   );
