@@ -72,6 +72,7 @@ const Following = ({ userId }: Props) => {
           onChange={handleOnChange}
           multipleSelectionAllowed={false}
           width="180px"
+          right="0px"
         />
       </Box>
       {selectedValue === 'Topics' && <Topics />}
