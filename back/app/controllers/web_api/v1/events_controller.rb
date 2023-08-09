@@ -25,8 +25,9 @@ class WebApi::V1::EventsController < ApplicationController
     # of them. But, most importantly, what we are checking here is not whether the
     # current user is permitted to view the events (since most events are public and
     # visible to anyone). Instead, we are verifying whether the current user is allowed
-    # to view the events to which the attendee is registered. The events are scoped down
-    # as a second step in `#index` to which this action delegates.
+    # to view the list of events to which the attendee passed in parameter is registered.
+    # (As a second step, the events are scoped down by the policy — as usual for
+    # collections — in `#index` to which this action delegates.)
     authorize(params[:attendee_id], policy_class: EventPolicy)
     index
   end
