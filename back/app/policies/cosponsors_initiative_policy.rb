@@ -14,10 +14,6 @@ class CosponsorsInitiativePolicy < ApplicationPolicy
     end
   end
 
-  def show?
-    true
-  end
-
   def accept_invite?
     active? && cosponsor?
   end
