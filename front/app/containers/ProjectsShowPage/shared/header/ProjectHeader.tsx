@@ -17,15 +17,16 @@ import {
 } from 'components/ProjectableHeader';
 import FollowUnfollow from 'components/FollowUnfollow';
 import { Box } from '@citizenlab/cl2-component-library';
+import Topics from 'components/PostShowComponents/Topics';
+import Areas from 'components/PostShowComponents/Areas';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
 import useAuthUser from 'api/me/useAuthUser';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import { useIntl } from 'utils/cl-intl';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
 import messages from 'containers/ProjectsShowPage/messages';
 
 // style
@@ -81,88 +82,94 @@ interface Props {
   className?: string;
 }
 
-const ProjectHeader = memo<Props & WrappedComponentProps>(
-  ({ projectId, className, intl: { formatMessage } }) => {
-    const projectDescriptionBuilderEnabled = useFeatureFlag({
-      name: 'project_description_builder',
-    });
-    const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
-    const { data: project } = useProjectById(projectId);
-    const { data: authUser } = useAuthUser();
-    const projectFolderId = project?.data.attributes.folder_id;
+const ProjectHeader = memo<Props>(({ projectId, className }) => {
+  const { formatMessage } = useIntl();
+  const projectDescriptionBuilderEnabled = useFeatureFlag({
+    name: 'project_description_builder',
+  });
+  const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
+  const { data: project } = useProjectById(projectId);
+  const { data: authUser } = useAuthUser();
+  const projectFolderId = project?.data.attributes.folder_id;
 
-    if (project) {
-      const projectHeaderImageLargeUrl =
-        project.data.attributes?.header_bg?.large;
-      const userCanEditProject =
-        !isNilOrError(authUser) &&
-        canModerateProject(project.data.id, authUser);
+  if (project) {
+    const topicIds = project.data.relationships.topics.data.map(
+      (topic) => topic.id
+    );
+    const areaIds = project.data.relationships.areas.data.map(
+      (area) => area.id
+    );
+    const projectHeaderImageLargeUrl =
+      project.data.attributes?.header_bg?.large;
+    const userCanEditProject =
+      !isNilOrError(authUser) && canModerateProject(project.data.id, authUser);
 
-      return (
-        <Container className={className || ''}>
-          <ContentContainer maxWidth={maxPageWidth}>
-            <TopBar>
-              {(projectFolderId || userCanEditProject) && (
-                <Box w="100%" display="flex" justifyContent="space-between">
-                  {projectFolderId && isProjectFoldersEnabled && (
-                    <ProjectFolderGoBackButton
-                      projectFolderId={projectFolderId}
-                    />
+    return (
+      <Container className={className || ''}>
+        <ContentContainer maxWidth={maxPageWidth}>
+          <TopBar>
+            {(projectFolderId || userCanEditProject) && (
+              <Box w="100%" display="flex" justifyContent="space-between">
+                {projectFolderId && isProjectFoldersEnabled && (
+                  <ProjectFolderGoBackButton
+                    projectFolderId={projectFolderId}
+                  />
+                )}
+                <Box mr="8px" display="flex">
+                  {userCanEditProject && (
+                    <EditButton
+                      icon="edit"
+                      linkTo={adminProjectsProjectPath(project.data.id)}
+                      buttonStyle="secondary"
+                      padding="5px 8px"
+                    >
+                      {formatMessage(messages.editProject)}
+                    </EditButton>
                   )}
-                  <Box mr="8px" display="flex">
-                    {userCanEditProject && (
-                      <EditButton
-                        icon="edit"
-                        linkTo={adminProjectsProjectPath(project.data.id)}
-                        buttonStyle="secondary"
-                        padding="5px 8px"
-                      >
-                        {formatMessage(messages.editProject)}
-                      </EditButton>
-                    )}
-                  </Box>
                 </Box>
-              )}
-              <Box ml="auto">
-                <FollowUnfollow
-                  followableType="projects"
-                  followableId={project.data.id}
-                  followersCount={project.data.attributes.followers_count}
-                  followerId={
-                    project.data.relationships.user_follower?.data?.id
-                  }
-                  padding="5px 8px"
-                />
               </Box>
-            </TopBar>
-            {projectHeaderImageLargeUrl && (
-              <HeaderImageContainer id="e2e-project-header-image">
-                <HeaderImage
-                  id="e2e-project-header-image"
-                  src={projectHeaderImageLargeUrl}
-                  cover={true}
-                  fadeIn={false}
-                  isLazy={false}
-                  placeholderBg="transparent"
-                  alt=""
-                />
-              </HeaderImageContainer>
             )}
-            <StyledProjectArchivedIndicator
-              projectId={projectId}
-              hasHeaderImage={!!projectHeaderImageLargeUrl}
-            />
-            {!projectDescriptionBuilderEnabled && (
-              <ProjectInfo projectId={projectId} />
-            )}
-            <Outlet id="app.ProjectsShowPage.shared.header.ProjectInfo.projectDescriptionBuilder" />
-          </ContentContainer>
-        </Container>
-      );
-    }
-
-    return null;
+            <Box ml="auto">
+              <FollowUnfollow
+                followableType="projects"
+                followableId={project.data.id}
+                followersCount={project.data.attributes.followers_count}
+                followerId={project.data.relationships.user_follower?.data?.id}
+                padding="5px 8px"
+              />
+            </Box>
+          </TopBar>
+          {projectHeaderImageLargeUrl && (
+            <HeaderImageContainer id="e2e-project-header-image">
+              <HeaderImage
+                id="e2e-project-header-image"
+                src={projectHeaderImageLargeUrl}
+                cover={true}
+                fadeIn={false}
+                isLazy={false}
+                placeholderBg="transparent"
+                alt=""
+              />
+            </HeaderImageContainer>
+          )}
+          <StyledProjectArchivedIndicator
+            projectId={projectId}
+            hasHeaderImage={!!projectHeaderImageLargeUrl}
+          />
+          {!projectDescriptionBuilderEnabled && (
+            <ProjectInfo projectId={projectId} />
+          )}
+          <Outlet id="app.ProjectsShowPage.shared.header.ProjectInfo.projectDescriptionBuilder" />
+          <Box my="16px">
+            <Topics postType="initiative" topicIds={topicIds} showTitle />
+            <Areas areaIds={areaIds} />
+          </Box>
+        </ContentContainer>
+      </Container>
+    );
   }
-);
 
-export default injectIntl(ProjectHeader);
+  return null;
+});
+
+export default ProjectHeader;
