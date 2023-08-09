@@ -7,11 +7,10 @@ import ProjectFolderDescription from './ProjectFolderDescription';
 import ProjectFolderProjectCards from './ProjectFolderProjectCards';
 import Button from 'components/UI/Button';
 import PageNotFound from 'components/PageNotFound';
-import { Spinner, useWindowSize } from '@citizenlab/cl2-component-library';
+import { Box, Spinner, useWindowSize } from '@citizenlab/cl2-component-library';
 import ContentContainer from 'components/ContentContainer';
 import Centerer from 'components/UI/Centerer';
 import FollowUnfollow from 'components/FollowUnfollow';
-import { Box } from '@citizenlab/cl2-component-library';
 
 // hooks
 import useAuthUser from 'api/me/useAuthUser';
