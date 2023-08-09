@@ -40,12 +40,8 @@ en:
       "project_folder_moderation_rights_received": Folder manager rights received
       "project_phase_started": New project phase
       "project_phase_upcoming": Upcoming new project phase
-      "status_change_of_commented_idea": Status change of an idea I commented on
-      "status_change_of_commented_initiative": Status change of a proposal I commented on
-      "status_change_of_reacted_idea": Status change of an idea I reacted to
-      "status_change_of_reacted_initiative": Status change of a proposal I reacted for
-      "status_change_of_your_idea": Status change of my idea
-      "status_change_of_your_initiative": Status change of my proposal
+      "status_change_on_idea_you_follow": Status change of an idea that you follow
+      "status_change_on_initiative_you_follow": Status change of a proposal that you follow
       "threshold_reached_for_admin": Proposal reached the voting threshold
       "welcome": After registration
       "admin_digest": Weekly overview for admins
