@@ -7,7 +7,7 @@ RSpec.describe EmailCampaigns::InitiativeAssignedToYouMailer do
     let_it_be(:recipient) { create(:user, locale: 'en') }
     let_it_be(:campaign) { EmailCampaigns::Campaigns::InitiativeAssignedToYou.create! }
     let_it_be(:assigned_at) { Time.zone.now }
-    let_it_be(:initiative) { create(:assigned_initiative, author: recipient, assigned_at: assigned_at) }
+    let_it_be(:initiative) { create(:initiative, author: recipient, assignee: create(:admin), assigned_at: assigned_at) }
     let_it_be(:author_name) { UserDisplayNameService.new(AppConfiguration.instance, recipient).display_name!(initiative.author) }
     let_it_be(:command) do
       {

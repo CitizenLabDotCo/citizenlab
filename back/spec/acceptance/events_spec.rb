@@ -160,12 +160,19 @@ resource 'Events' do
 
     post 'web_api/v1/projects/:project_id/events' do
       with_options scope: :event do
-        parameter :title_multiloc, 'The title of the event in multiple locales', required: true
-        parameter :description_multiloc, 'The description of the event in multiple languages. Supports basic HTML.', required: false
-        parameter :location_multiloc, 'The location of the event. Textual', required: false
-        parameter :start_at, 'The start datetime of the event', required: true
-        parameter :end_at, 'The end datetime of the event', required: true
+        with_options required: true do
+          parameter :title_multiloc, 'The title of the event in multiple locales'
+          parameter :start_at, 'The start datetime of the event'
+          parameter :end_at, 'The end datetime of the event'
+        end
+
+        # Optional parameters
+        parameter :description_multiloc, 'The description of the event in multiple languages. Supports basic HTML.'
+        parameter :location_multiloc, '[DEPRECATED] The location of the event. Textual'
+        parameter :location_point_geojson, 'A GeoJSON point that indicates where the event takes place.'
+        parameter :location_description, 'A human-readable description of the event location of the event.'
       end
+
       ValidationErrorHelper.new.error_fields(self, Event)
       response_field :start_at, "Array containing objects with signature {error: 'after_end_at'}", scope: :errors
 
@@ -202,6 +209,49 @@ resource 'Events' do
           expect(json_response).to include_response_error(:start_at, 'after_end_at')
         end
       end
+
+      example 'Create an event with a location using location_multiloc parameter', document: false do
+        location_description = 'event-location'
+
+        do_request(
+          project_id: @project.id,
+          event: {
+            title_multiloc: event.title_multiloc,
+            start_at: event.start_at,
+            end_at: event.end_at,
+            location_multiloc: { en: location_description }
+          }
+        )
+
+        expect(status).to eq 201
+        expect(response_data.dig(:attributes, :location_multiloc, :en)).to eq(location_description)
+        expect(response_data.dig(:attributes, :location_description)).to eq(location_description)
+
+        event = Event.find(response_data[:id])
+        expect(event.location_description).to eq(location_description)
+      end
+
+      example 'Create an event with a location using location_point_geojson parameter', document: false do
+        geojson_point = { 'type' => 'Point', 'coordinates' => [10, 20] }
+
+        do_request(
+          project_id: @project.id,
+          event: {
+            title_multiloc: event.title_multiloc,
+            start_at: event.start_at,
+            end_at: event.end_at,
+            location_point_geojson: geojson_point
+          }
+        )
+
+        expect(status).to eq 201
+        expect(response_data.dig(:attributes, :location_point_geojson).with_indifferent_access)
+          .to eq(geojson_point)
+
+        event = Event.find(response_data[:id])
+        expect(event.location_point_geojson).to eq(geojson_point)
+        expect(event.location_point.coordinates).to eq(geojson_point['coordinates'])
+      end
     end
 
     patch 'web_api/v1/events/:id' do
@@ -209,20 +259,68 @@ resource 'Events' do
         parameter :project_id, 'The id of the project this event belongs to'
         parameter :title_multiloc, 'The title of the event in multiple locales'
         parameter :description_multiloc, 'The description of the event in multiple languages. Supports basic HTML.'
-        parameter :location_multiloc, 'The location of the event. Textual'
+        parameter :location_multiloc, '[DEPRECATED] The location of the event. Textual'
+        parameter :location_point_geojson, 'A GeoJSON point that indicates where the event takes place.'
+        parameter :location_description, 'A human-readable description of the event location of the event.'
         parameter :start_at, 'The start datetime of the event'
         parameter :end_at, 'The end datetime of the event'
       end
+
       ValidationErrorHelper.new.error_fields(self, Event)
 
       let(:event) { create(:event, project: @project) }
       let(:id) { event.id }
-      let(:location_multiloc) { build(:event).location_multiloc }
 
-      example_request 'Update an event' do
+      example 'Update an event' do
+        location_multiloc = build(:event).location_multiloc
+        do_request(event: { location_multiloc: location_multiloc })
+
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :attributes, :location_multiloc).stringify_keys).to match location_multiloc
+      end
+
+      example 'Update event location using location_multiloc parameter', document: false do
+        location_description = 'event-location'
+        location_multiloc = { en: location_description }
+
+        do_request(event: { location_multiloc: location_multiloc })
+
+        expect(status).to eq 200
+        expect(response_data.dig(:attributes, :location_multiloc)).to include(location_multiloc)
+        expect(response_data.dig(:attributes, :location_description)).to eq(location_description)
+
+        event.reload
+        expect(event.location_description).to eq(location_description)
+      end
+
+      example 'Update event location using location_point_geojson parameter', document: false do
+        geojson_point = { 'type' => 'Point', 'coordinates' => [10, 20] }
+
+        expect(event.location_point).to be_nil # sanity check
+
+        do_request(event: { location_point_geojson: geojson_point })
+
+        expect(status).to eq 200
+        expect(response_data.dig(:attributes, :location_point_geojson).with_indifferent_access)
+          .to eq(geojson_point)
+
+        event.reload
+        expect(event.location_point_geojson).to eq(geojson_point)
+        expect(event.location_point.coordinates).to eq(geojson_point['coordinates'])
+      end
+
+      example 'Remove event location_point_geojson', document: false do
+        event.update!(location_point_geojson: { 'type' => 'Point', 'coordinates' => [10, 20] })
+
+        do_request(event: { location_point_geojson: nil })
+
+        expect(status).to eq 200
+        expect(response_data.dig(:attributes, :location_point_geojson)).to be_nil
+
+        event.reload
+        expect(event.location_point_geojson).to be_nil
+        expect(event.location_point).to be_nil
       end
     end
 

@@ -77,7 +77,7 @@ module EmailCampaigns
         next unless project
 
         statistics = statistics project
-        next unless nonzero_statistics? statistics
+        next if project.admin_publication.archived? || zero_statistics?(statistics)
 
         project_name = project.title_multiloc[recipient.locale] || project.title_multiloc[I18n.default_locale]
         top_ideas = top_ideas project, name_service
@@ -145,13 +145,13 @@ module EmailCampaigns
       }
     end
 
-    def nonzero_statistics?(statistics)
-      !((statistics.dig(:activities, :new_ideas, :increase) == 0) &&
+    def zero_statistics?(statistics)
+      ((statistics.dig(:activities, :new_ideas, :increase) == 0) &&
          (statistics.dig(:activities, :new_comments, :increase) == 0) &&
          (statistics.dig(:users, :new_visitors, :increase) == 0) &&
          (statistics.dig(:users, :new_users, :increase) == 0) &&
          (statistics.dig(:users, :active_users, :increase) == 0)
-       )
+      )
     end
 
     def days_ago

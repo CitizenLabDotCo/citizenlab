@@ -1,0 +1,39 @@
+# frozen_string_literal: true
+
+# == Schema Information
+#
+# Table name: analysis_summaries
+#
+#  id                   :uuid             not null, primary key
+#  analysis_id          :uuid             not null
+#  background_task_id   :uuid             not null
+#  summary              :text
+#  prompt               :text
+#  summarization_method :string           not null
+#  filters              :jsonb            not null
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#
+# Indexes
+#
+#  index_analysis_summaries_on_analysis_id         (analysis_id)
+#  index_analysis_summaries_on_background_task_id  (background_task_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (analysis_id => analysis_analyses.id)
+#  fk_rails_...  (background_task_id => analysis_background_tasks.id)
+#
+module Analysis
+  class Summary < ::ApplicationRecord
+    SUMMARIZATION_METHODS = %w[gpt4 bogus]
+    FILTERS_JSON_SCHEMA_STR = Rails.root.join('engines/commercial/analysis/config/schemas/filters.json_schema').read
+    FILTERS_JSON_SCHEMA = JSON.parse(FILTERS_JSON_SCHEMA_STR)
+
+    belongs_to :analysis, class_name: 'Analysis::Analysis'
+    belongs_to :background_task, class_name: 'Analysis::SummarizationTask', dependent: :destroy
+
+    validates :summarization_method, inclusion: { in: SUMMARIZATION_METHODS }
+    validates :filters, json: { schema: FILTERS_JSON_SCHEMA }
+  end
+end

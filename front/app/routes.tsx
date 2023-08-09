@@ -29,6 +29,7 @@ const ProjectFolderShowPage = lazy(
   () => import('containers/ProjectFolderShowPage')
 );
 const EventsPage = lazy(() => import('containers/EventsPage'));
+const EventsShowPage = lazy(() => import('containers/EventsShowPage'));
 const CookiePolicy = lazy(() => import('containers/CookiePolicy'));
 const AccessibilityStatement = lazy(
   () => import('containers/AccessibilityStatement')
@@ -264,6 +265,14 @@ export default function createRoutes() {
           element: (
             <PageLoading>
               <EventsPage />
+            </PageLoading>
+          ),
+        },
+        {
+          path: 'events/:eventId',
+          element: (
+            <PageLoading>
+              <EventsShowPage />
             </PageLoading>
           ),
         },

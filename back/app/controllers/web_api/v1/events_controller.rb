@@ -36,18 +36,18 @@ class WebApi::V1::EventsController < ApplicationController
   end
 
   def create
-    @event = Event.new(event_params)
-    @event.project_id = params[:project_id]
+    event = Event.new(event_params)
+    event.project_id = params[:project_id]
 
-    SideFxEventService.new.before_create(@event, current_user)
+    SideFxEventService.new.before_create(event, current_user)
 
-    authorize @event
+    authorize(event)
 
-    if @event.save
-      SideFxEventService.new.after_create(@event, current_user)
-      render json: WebApi::V1::EventSerializer.new(@event, params: jsonapi_serializer_params).serializable_hash, status: :created
+    if event.save
+      SideFxEventService.new.after_create(event, current_user)
+      render json: WebApi::V1::EventSerializer.new(event, params: jsonapi_serializer_params).serializable_hash, status: :created
     else
-      render json: { errors: @event.errors.details }, status: :unprocessable_entity
+      render json: { errors: event.errors.details }, status: :unprocessable_entity
     end
   end
 
@@ -100,9 +100,27 @@ class WebApi::V1::EventsController < ApplicationController
       :project_id,
       :start_at,
       :end_at,
+      :location_description,
+      location_point_geojson: [:type, { coordinates: [] }],
       location_multiloc: CL2_SUPPORTED_LOCALES,
       title_multiloc: CL2_SUPPORTED_LOCALES,
       description_multiloc: CL2_SUPPORTED_LOCALES
-    )
+    ).tap do |p|
+      # Allow removing the location point.
+      if params[:event].key?(:location_point_geojson) && params.dig(:event, :location_point_geojson).nil?
+        p[:location_point_geojson] = nil
+      end
+
+      # Set default location_description if not provided and location_multiloc is
+      # provided. This will be removed once the location_multiloc parameter is removed.
+      if p[:location_multiloc].present?
+        p[:location_description] ||= p.dig(:location_multiloc, default_locale)
+        p[:location_description] ||= p[:location_multiloc].values.first
+      end
+    end
+  end
+
+  def default_locale
+    AppConfiguration.instance.settings('core', 'locales').first
   end
 end

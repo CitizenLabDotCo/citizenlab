@@ -27,6 +27,8 @@
 #  fk_rails_...  (project_id => projects.id)
 #
 class Event < ApplicationRecord
+  include GeoJsonHelpers
+
   belongs_to :project
   has_many :attendances, class_name: 'Events::Attendance', dependent: :destroy
   has_many :attendees, through: :attendances

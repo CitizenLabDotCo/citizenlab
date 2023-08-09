@@ -4,6 +4,8 @@ class WebApi::V1::EventSerializer < WebApi::V1::BaseSerializer
   attributes(
     :title_multiloc,
     :location_multiloc,
+    :location_description,
+    :location_point_geojson,
     :attendees_count,
     :start_at,
     :end_at,

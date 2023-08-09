@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { CLErrors } from 'typings';
 
 // components
@@ -18,6 +18,7 @@ import useHomepageSettings from 'api/home_page/useHomepageSettings';
 import {
   IHomepageSettingsAttributes,
   THomepageBannerLayout,
+  IHomepageSettings,
 } from 'api/home_page/types';
 
 // i18n
@@ -28,16 +29,25 @@ import CTASettings from '../../containers/GenericHeroBannerForm//CTASettings';
 import LayoutSettingField from '../../containers/GenericHeroBannerForm/LayoutSettingField';
 import useUpdateHomepageSettings from 'api/home_page/useUpdateHomepageSettings';
 
-const EditHomepageHeroBannerForm = () => {
+const EditHomepageHeroBannerFormWrapper = () => {
+  const { data: homepageSettings } = useHomepageSettings();
+  if (!homepageSettings) return null;
+
+  return <EditHomepageHeroBannerForm homepageSettings={homepageSettings} />;
+};
+
+interface Props {
+  homepageSettings: IHomepageSettings;
+}
+
+const EditHomepageHeroBannerForm = ({ homepageSettings }: Props) => {
   const { formatMessage } = useIntl();
   const [isLoading, setIsLoading] = useState(false);
   const [apiErrors, setApiErrors] = useState<CLErrors | null>(null);
   const [formStatus, setFormStatus] = useState<ISubmitState>('enabled');
   const [localSettings, setLocalSettings] =
-    useState<IHomepageSettingsAttributes | null>(null);
-
-  const { data: homepageSettings } = useHomepageSettings();
-  const { mutate: updateHomepageSettings } = useUpdateHomepageSettings();
+    useState<IHomepageSettingsAttributes>(homepageSettings.data.attributes);
+  const { mutateAsync: updateHomepageSettings } = useUpdateHomepageSettings();
 
   useEffect(() => {
     if (homepageSettings) {
@@ -45,12 +55,8 @@ const EditHomepageHeroBannerForm = () => {
     }
   }, [homepageSettings]);
 
-  if (!homepageSettings || !localSettings) {
-    return null;
-  }
-
   const handleSave = async () => {
-    if (localSettings?.header_bg == null) {
+    if (localSettings.header_bg === null) {
       setFormStatus('error');
       return;
     }
@@ -75,7 +81,7 @@ const EditHomepageHeroBannerForm = () => {
     setIsLoading(true);
     setApiErrors(null);
     try {
-      updateHomepageSettings(localSettings);
+      await updateHomepageSettings(localSettings);
       setIsLoading(false);
       setFormStatus('success');
     } catch (error) {
@@ -238,4 +244,4 @@ const EditHomepageHeroBannerForm = () => {
   );
 };
 
-export default EditHomepageHeroBannerForm;
+export default EditHomepageHeroBannerFormWrapper;
