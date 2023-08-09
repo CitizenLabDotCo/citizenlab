@@ -16,7 +16,8 @@ resource 'CosponsorsInitiatives' do
   patch '/web_api/v1/cosponsors_initiatives/:id/accept_invite' do
     let(:id) { @cosponsors_initiative.id }
 
-    example_request 'Accept an invitation to cosponsor an initiative' do
+    example 'Accept an invitation to cosponsor an initiative' do
+      expect { do_request }.to change { @cosponsors_initiative.reload.status }.from('pending').to('accepted')
       assert_status 204
     end
   end
