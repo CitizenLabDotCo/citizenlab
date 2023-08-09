@@ -18,6 +18,8 @@ import { useIntl } from 'utils/cl-intl';
 
 // style
 import { useTheme } from 'styled-components';
+import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 type EventAttendanceButtonProps = {
   event: IEventData;
@@ -46,6 +48,31 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
       eventAttendance.relationships.attendee.data.id === user?.data?.id
   )?.id;
 
+  const loginAndRegisterAttendance = () => {
+    const context = {
+      type: 'project',
+      action: 'attend_event',
+    } as const;
+
+    const successAction: SuccessAction = {
+      name: 'attendEvent',
+      params: { eventId, userId },
+    };
+
+    triggerAuthenticationFlow({
+      flow: 'signup',
+      context,
+      successAction,
+    });
+  };
+
+  const handleClick = () => {
+    if (user) {
+      return registerAttendance();
+    }
+    loginAndRegisterAttendance();
+  };
+
   const registerAttendance = () => {
     if (userIsAttending && attendanceId) {
       deleteEventAttendance({
@@ -68,7 +95,7 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
       bgColor={userIsAttending ? colors.success : theme.colors.tenantPrimary}
       onClick={(event) => {
         event.preventDefault();
-        registerAttendance();
+        handleClick();
       }}
       processing={isLoading}
     >

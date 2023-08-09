@@ -19,6 +19,7 @@ import messages from './messages';
 import useUserIdeasCount from 'api/user_ideas_count/useUserIdeasCount';
 import useUserCommentsCount from 'api/user_comments_count/useUserCommentsCount';
 import useEventsByUserId from 'api/events/useEventsByUserId';
+import useAuthUser from 'api/me/useAuthUser';
 
 const UserNavbarWrapper = styled.div`
   width: 100%;
@@ -113,7 +114,10 @@ const UserNavbar = memo<Props>(({ currentTab, selectTab, userId }) => {
     userId,
   });
   const { data: events } = useEventsByUserId({ attendeeId: userId });
+  const { data: authUser } = useAuthUser();
+
   const eventsCount = events?.data.length;
+  const showEventTab = authUser?.data?.id === userId;
 
   return (
     <UserNavbarWrapper role="tablist">
@@ -151,7 +155,7 @@ const UserNavbar = memo<Props>(({ currentTab, selectTab, userId }) => {
           />
         )}
       </UserNavbarButton>
-      {eventsCount && (
+      {showEventTab && eventsCount && (
         <UserNavbarButton
           onMouseDown={removeFocusAfterMouseClick}
           onClick={selectTab('events')}
