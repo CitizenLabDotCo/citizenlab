@@ -50,8 +50,6 @@ export const getDisabledExplanation = (
         votesMinimum: minVotes.toLocaleString(),
       });
     }
-
-    return;
   }
 
   if (voting_method === 'multiple_voting') {
@@ -71,8 +69,6 @@ export const getDisabledExplanation = (
         votesMinimum: minVotes.toLocaleString(),
       });
     }
-
-    return;
   }
 
   if (voting_method === 'budgeting') {
@@ -92,8 +88,6 @@ export const getDisabledExplanation = (
         votesMinimum: minVotes.toLocaleString(),
       });
     }
-
-    return;
   }
 
   return;
