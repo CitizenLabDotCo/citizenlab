@@ -255,42 +255,42 @@ end
     title_multiloc: 'initiative_statuses.review_pending',
     ordering: 50,
     code: 'review_pending',
-    color: '#CC9331',
+    color: '#767676',
     description_multiloc: 'initiative_statuses.review_pending_description'
   },
   {
     title_multiloc: 'initiative_statuses.changes_requested',
     ordering: 100,
     code: 'changes_requested',
-    color: '#CC317E',
+    color: '#BDBDBD',
     description_multiloc: 'initiative_statuses.changes_requested_description'
   },
   {
     title_multiloc: 'initiative_statuses.proposed',
     ordering: 150,
     code: 'proposed',
-    color: '#687782',
+    color: '#BEE7EB',
     description_multiloc: 'initiative_statuses.proposed_description'
   },
   {
     title_multiloc: 'initiative_statuses.expired',
     ordering: 200,
     code: 'expired',
-    color: '#01A1B1',
+    color: '#FF672F',
     description_multiloc: 'initiative_statuses.expired'
   },
   {
     title_multiloc: 'initiative_statuses.threshold_reached',
     ordering: 300,
     code: 'threshold_reached',
-    color: '#04884C',
+    color: '#40B8C5',
     description_multiloc: 'initiative_statuses.threshold_reached_description'
   },
   {
     title_multiloc: 'initiative_statuses.answered',
     ordering: 500,
     code: 'answered',
-    color: '#04884C',
+    color: '#147985',
     description_multiloc: 'initiative_statuses.answered_description'
   },
   {
