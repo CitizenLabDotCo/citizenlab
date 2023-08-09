@@ -34,7 +34,7 @@ export default defineMessages({
       'You need to spend a minimum of {votesMinimum} votes before you can submit your basket.',
   },
 
-  // currency or votes left
+  // votes count
   currencyLeft: {
     id: 'app.components.ParticipationCTABars.VotingCTABar.currencyLeft',
     defaultMessage: '{budgetLeft} / {totalBudget} {currency} left',
@@ -43,5 +43,10 @@ export default defineMessages({
     id: 'app.components.ParticipationCTABars.VotingCTABar.votesLeft',
     defaultMessage:
       '{votesLeft} / {totalNumberOfVotes} {votesLeft, plural, =0 {{votesTerm}} one {{voteTerm}} other {{votesTerm}}} left',
+  },
+  votesCast: {
+    id: 'app.components.ParticipationCTABars.VotingCTABar.votesCast',
+    defaultMessage:
+      '{votes, plural, =0 {# votes} one {# vote} other {# votes}} cast',
   },
 });
