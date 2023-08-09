@@ -120,16 +120,27 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
       })
     : undefined;
 
-  // const votesLeft = (maxVotes ?? 0) - (numberOfVotesCast ?? 0);
-  // const currency = appConfig?.data.attributes.settings.core.currency;
+  const getVotesLeftMessage = () => {
+    if (votingMethod === 'single_voting') {
+      return maxVotes
+        ? formatMessage(ownMessages.votesLeft, {
+            // TODO
+          })
+        : formatMessage;
+    }
 
-  // const getVotesLeftMessage = () => {
-  //   if (votingMethod === 'budgeting') {
-  //     return formatMessage(ownMessages.currencyLeft, {
+    const votesLeft = (maxVotes ?? 0) - (numberOfVotesCast ?? 0);
 
-  //     })
-  //   }
-  // }
+    if (votingMethod === 'multiple_voting') {
+      return; // TODO
+    }
+
+    if (votingMethod === 'budgeting') {
+      const currency = appConfig?.data.attributes.settings.core.currency;
+
+      return formatMessage(ownMessages.currencyLeft, {});
+    }
+  };
 
   const CTAButton = hasUserParticipated ? (
     <Box display="flex">
