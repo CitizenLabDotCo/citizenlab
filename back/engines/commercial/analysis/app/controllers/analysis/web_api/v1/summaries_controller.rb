@@ -9,7 +9,9 @@ module Analysis
         before_action :set_summary, only: [:destroy]
 
         def index
-          summaries = @analysis.summaries.includes(:background_task)
+          summaries = @analysis.summaries
+            .order(created_at: :asc)
+            .includes(:background_task)
           render json: WebApi::V1::SummarySerializer.new(
             summaries,
             params: jsonapi_serializer_params,
@@ -20,7 +22,7 @@ module Analysis
         def create
           @summary = Summary.new(
             analysis: @analysis,
-            summarization_method: 'bogus',
+            summarization_method: 'gpt4',
             background_task: SummarizationTask.new(analysis: @analysis),
             **summary_params
           )

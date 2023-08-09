@@ -5,7 +5,8 @@ module Analysis
     queue_as :default
 
     def run(summarization_task)
-      summarization_task.execute
+      sm = SummarizationMethod::Base.for_summarization_method(summarization_task.summary.summarization_method, summarization_task)
+      sm.execute
     end
   end
 end

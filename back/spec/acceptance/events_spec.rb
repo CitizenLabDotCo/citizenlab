@@ -309,6 +309,19 @@ resource 'Events' do
         expect(event.location_point_geojson).to eq(geojson_point)
         expect(event.location_point.coordinates).to eq(geojson_point['coordinates'])
       end
+
+      example 'Remove event location_point_geojson', document: false do
+        event.update!(location_point_geojson: { 'type' => 'Point', 'coordinates' => [10, 20] })
+
+        do_request(event: { location_point_geojson: nil })
+
+        expect(status).to eq 200
+        expect(response_data.dig(:attributes, :location_point_geojson)).to be_nil
+
+        event.reload
+        expect(event.location_point_geojson).to be_nil
+        expect(event.location_point).to be_nil
+      end
     end
 
     delete 'web_api/v1/events/:id' do
