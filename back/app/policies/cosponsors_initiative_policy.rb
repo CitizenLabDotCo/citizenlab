@@ -17,4 +17,8 @@ class CosponsorsInitiativePolicy < ApplicationPolicy
   def show?
     true
   end
+
+  def accept_invite?
+    true
+  end
 end

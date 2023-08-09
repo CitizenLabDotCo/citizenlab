@@ -73,7 +73,10 @@ Rails.application.routes.draw do
 
       resources :idea_statuses, only: %i[index show]
       resources :initiative_statuses, only: %i[index show]
-      resources :cosponsors_initiatives, only: %i[show]
+
+      resources :cosponsors_initiatives, only: %i[show] do
+        patch :accept_invite, on: :member
+      end
 
       # auth
       post 'user_token' => 'user_token#create'
