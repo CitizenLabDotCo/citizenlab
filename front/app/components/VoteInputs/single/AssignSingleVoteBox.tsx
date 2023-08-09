@@ -15,6 +15,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 // intl
 import messages from '../_shared/messages';
+import ownMessages from './messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 // typings
@@ -79,14 +80,14 @@ const AssignSingleVoteBox = memo(({ ideaId, participationContext }: Props) => {
           justifyContent="center"
         >
           {!totalVotesGreaterThanZero && (
-            <Box ml="4px">{formatMessage(messages.voteForAtLeastOne)}</Box>
+            <Box ml="4px">{formatMessage(ownMessages.voteForAtLeastOne)}</Box>
           )}
-          {totalVotesGreaterThanZero && totalVotes > 0 && (
-            <Box ml="4px">{`${formatMessage(
-              messages.haveVotedFor
-            )} ${totalVotes} ${formatMessage(messages.xOptions, {
-              votes: totalVotes,
-            })}`}</Box>
+          {totalVotesGreaterThanZero && (
+            <Box ml="4px">
+              {formatMessage(ownMessages.youHaveVotedForX, {
+                votes: totalVotes,
+              })}
+            </Box>
           )}
         </Box>
       )}
