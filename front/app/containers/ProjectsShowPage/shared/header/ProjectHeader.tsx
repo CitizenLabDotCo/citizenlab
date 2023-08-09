@@ -16,7 +16,7 @@ import {
   HeaderImageContainer,
 } from 'components/ProjectableHeader';
 import FollowUnfollow from 'components/FollowUnfollow';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
@@ -29,7 +29,7 @@ import { WrappedComponentProps } from 'react-intl';
 import messages from 'containers/ProjectsShowPage/messages';
 
 // style
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { media, isRtl } from 'utils/styleUtils';
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 
@@ -43,17 +43,6 @@ const Container = styled.div`
   ${media.phone`
     padding-top: 30px;
     padding-bottom: 35px;
-  `}
-`;
-
-const TopBar = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-
-  ${isRtl`
-    flex-direction: row-reverse;
   `}
 `;
 
@@ -83,6 +72,8 @@ interface Props {
 
 const ProjectHeader = memo<Props & WrappedComponentProps>(
   ({ projectId, className, intl: { formatMessage } }) => {
+    const theme = useTheme();
+    const isSmallerThanPhone = useBreakpoint('phone');
     const projectDescriptionBuilderEnabled = useFeatureFlag({
       name: 'project_description_builder',
     });
@@ -97,11 +88,18 @@ const ProjectHeader = memo<Props & WrappedComponentProps>(
       const userCanEditProject =
         !isNilOrError(authUser) &&
         canModerateProject(project.data.id, authUser);
+      const rowDirection = theme.isRtl ? 'row-reverse' : 'row';
 
       return (
         <Container className={className || ''}>
           <ContentContainer maxWidth={maxPageWidth}>
-            <TopBar>
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              mb="20px"
+              flexDirection={isSmallerThanPhone ? 'column' : rowDirection}
+            >
               {(projectFolderId || userCanEditProject) && (
                 <Box w="100%" display="flex" justifyContent="space-between">
                   {projectFolderId && isProjectFoldersEnabled && (
@@ -109,7 +107,7 @@ const ProjectHeader = memo<Props & WrappedComponentProps>(
                       projectFolderId={projectFolderId}
                     />
                   )}
-                  <Box mr="8px" display="flex">
+                  <Box mr={isSmallerThanPhone ? '0px' : '8px'} display="flex">
                     {userCanEditProject && (
                       <EditButton
                         icon="edit"
@@ -123,7 +121,10 @@ const ProjectHeader = memo<Props & WrappedComponentProps>(
                   </Box>
                 </Box>
               )}
-              <Box ml="auto">
+              <Box
+                ml={isSmallerThanPhone ? '8px' : 'auto'}
+                mt={isSmallerThanPhone ? '16px' : '0px'}
+              >
                 <FollowUnfollow
                   followableType="projects"
                   followableId={project.data.id}
@@ -134,7 +135,7 @@ const ProjectHeader = memo<Props & WrappedComponentProps>(
                   padding="5px 8px"
                 />
               </Box>
-            </TopBar>
+            </Box>
             {projectHeaderImageLargeUrl && (
               <HeaderImageContainer id="e2e-project-header-image">
                 <HeaderImage
