@@ -64,6 +64,7 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
       width={'100%'}
       iconPos={userIsAttending ? 'left' : 'right'}
       icon={userIsAttending ? 'check' : 'plus-circle'}
+      iconSize="20px"
       bgColor={userIsAttending ? colors.success : theme.colors.tenantPrimary}
       onClick={(event) => {
         event.preventDefault();

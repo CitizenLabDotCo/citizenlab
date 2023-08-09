@@ -35,6 +35,7 @@ import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
 // typings
 import { IUserData } from 'api/users/types';
 import { Sort } from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
+import UserEvents from './UserEvents';
 
 const NotFoundContainer = styled.main`
   min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px - 4rem);
@@ -82,7 +83,7 @@ const UserIdeas = styled.div`
   justify-content: center;
 `;
 
-export type UserTab = 'ideas' | 'comments';
+export type UserTab = 'ideas' | 'comments' | 'events';
 
 interface InnerProps {
   className?: string;
@@ -103,7 +104,6 @@ interface QueryParameters {
 export const UsersShowPage = memo<InnerProps>(({ className, user }) => {
   const [currentTab, setCurrentTab] = useState<UserTab>('ideas');
   const [savedScrollIndex, setSavedScrollIndex] = useState<number>(0);
-
   const [searchParams] = useSearchParams();
   const sortParam = searchParams.get('sort') as Sort | null;
   const searchParam = searchParams.get('search');
@@ -154,6 +154,7 @@ export const UsersShowPage = memo<InnerProps>(({ className, user }) => {
           )}
 
           {currentTab === 'comments' && <UserComments userId={user.id} />}
+          {currentTab === 'events' && <UserEvents userId={user.id} />}
         </StyledContentContainer>
       </Container>
     </>

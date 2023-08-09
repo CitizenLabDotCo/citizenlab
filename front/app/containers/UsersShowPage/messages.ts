@@ -26,9 +26,17 @@ export default defineMessages({
     id: 'app.containers.UsersShowPage.commentsWithCount',
     defaultMessage: 'Comments ({commentsCount})',
   },
+  eventsWithCount: {
+    id: 'app.containers.UsersShowPage.eventsWithCount',
+    defaultMessage: 'Events ({eventsCount})',
+  },
   loadingComments: {
     id: 'app.containers.UsersShowPage.loadingComments',
     defaultMessage: 'Loading user comments...',
+  },
+  loadingEvents: {
+    id: 'app.containers.UsersShowPage.loadingEvents',
+    defaultMessage: 'Loading events...',
   },
   tryAgain: {
     id: 'app.containers.UsersShowPage.tryAgain',
@@ -41,6 +49,10 @@ export default defineMessages({
   noCommentsForUser: {
     id: 'app.containers.UsersShowPage.noCommentsForUser',
     defaultMessage: 'This user has not posted any comment yet.',
+  },
+  noEvents: {
+    id: 'app.containers.UsersShowPage.noEventsForUser',
+    defaultMessage: 'You have not attended any events yet.',
   },
   seePost: {
     id: 'app.containers.UsersShowPage.seePost',

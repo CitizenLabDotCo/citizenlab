@@ -53,6 +53,7 @@ interface Props {
   hideSectionIfNoEvents?: boolean;
   showProjectFilter: boolean;
   projectPublicationStatuses: PublicationStatus[];
+  attendeeId?: string;
 }
 
 const EventsViewer = ({
@@ -64,6 +65,7 @@ const EventsViewer = ({
   hideSectionIfNoEvents,
   showProjectFilter,
   projectPublicationStatuses,
+  attendeeId,
 }: Props) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [projectIdList, setProjectIdList] = useState<string[] | undefined>(
@@ -87,6 +89,7 @@ const EventsViewer = ({
     pastOnly: eventsTime === 'past',
     sort: eventsTime === 'past' ? 'start_at' : '-start_at',
     pageNumber: currentPage,
+    attendeeId,
   });
   const lastPageNumber =
     (events && getPageNumberFromUrl(events.links?.last)) ?? 1;

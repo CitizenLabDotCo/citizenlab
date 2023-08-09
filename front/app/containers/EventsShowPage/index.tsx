@@ -67,7 +67,6 @@ const EventsShowPage = () => {
   const { data: project } = useProjectById(
     event?.data.relationships.project.data.id
   );
-
   const projectTitleLocalized = localize(
     project?.data.attributes.title_multiloc
   );

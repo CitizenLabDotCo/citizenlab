@@ -18,6 +18,7 @@ import messages from './messages';
 // api
 import useUserIdeasCount from 'api/user_ideas_count/useUserIdeasCount';
 import useUserCommentsCount from 'api/user_comments_count/useUserCommentsCount';
+import useEventsByUserId from 'api/events/useEventsByUserId';
 
 const UserNavbarWrapper = styled.div`
   width: 100%;
@@ -111,6 +112,8 @@ const UserNavbar = memo<Props>(({ currentTab, selectTab, userId }) => {
   const { data: commentsCount } = useUserCommentsCount({
     userId,
   });
+  const { data: events } = useEventsByUserId({ attendeeId: userId });
+  const eventsCount = events?.data.length;
 
   return (
     <UserNavbarWrapper role="tablist">
@@ -148,6 +151,24 @@ const UserNavbar = memo<Props>(({ currentTab, selectTab, userId }) => {
           />
         )}
       </UserNavbarButton>
+      {eventsCount && (
+        <UserNavbarButton
+          onMouseDown={removeFocusAfterMouseClick}
+          onClick={selectTab('events')}
+          className={`e2e-events-nav ${
+            currentTab === 'events' ? 'active' : ''
+          }`}
+          role="tab"
+          aria-selected={currentTab === 'events'}
+        >
+          <Border aria-hidden />
+          <TabIcon name="calendar" ariaHidden />
+          <FormattedMessage
+            {...messages.eventsWithCount}
+            values={{ eventsCount }}
+          />
+        </UserNavbarButton>
+      )}
     </UserNavbarWrapper>
   );
 });

@@ -42,6 +42,7 @@ export interface InputParameters {
   pageNumber?: number;
   sort?: SortType;
   projectPublicationStatuses?: PublicationStatus[];
+  attendeeId?: string;
 }
 
 export interface IEvent {
