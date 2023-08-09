@@ -5,7 +5,6 @@ import JSConfetti from 'js-confetti';
 import { Button, Icon, Box, Text } from '@citizenlab/cl2-component-library';
 import { ParticipationCTAContent } from 'components/ParticipationCTABars/ParticipationCTAContent';
 import ErrorToast from 'components/ErrorToast';
-// import VotesCounter from 'components/VotesCounter';
 import Tippy from '@tippyjs/react';
 
 // hooks
@@ -13,6 +12,7 @@ import { useTheme } from 'styled-components';
 import useBasket from 'api/baskets/useBasket';
 import useUpdateBasket from 'api/baskets/useUpdateBasket';
 import useVoting from 'api/baskets_ideas/useVoting';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // utils
 import {
@@ -27,6 +27,7 @@ import { scrollToElement } from 'utils/scroll';
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
+import ownMessages from './messages';
 
 const confetti = new JSConfetti();
 
@@ -35,6 +36,7 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
   const { numberOfVotesCast, processing: votingProcessing } = useVoting();
   const { formatMessage } = useIntl();
+  const { data: appConfig } = useAppConfiguration();
 
   const currentPhase = useMemo(() => {
     return getCurrentPhase(phases) || getLastPhase(phases);
@@ -117,6 +119,17 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
         votesMinimum: minVotes,
       })
     : undefined;
+
+  // const votesLeft = (maxVotes ?? 0) - (numberOfVotesCast ?? 0);
+  // const currency = appConfig?.data.attributes.settings.core.currency;
+
+  // const getVotesLeftMessage = () => {
+  //   if (votingMethod === 'budgeting') {
+  //     return formatMessage(ownMessages.currencyLeft, {
+
+  //     })
+  //   }
+  // }
 
   const CTAButton = hasUserParticipated ? (
     <Box display="flex">
