@@ -64,7 +64,8 @@ const AssignSingleVoteBox = memo(({ ideaId, participationContext }: Props) => {
             values={{
               votesLeft: votesLeft.toLocaleString(),
               totalNumberOfVotes: voting_max_total.toLocaleString(),
-              termForVotes: formatMessage(messages.votes),
+              voteTerm: formatMessage(messages.vote),
+              votesTerm: formatMessage(messages.votes),
             }}
           />
         </Box>

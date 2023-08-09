@@ -5,7 +5,7 @@ import JSConfetti from 'js-confetti';
 import { Button, Icon, Box, Text } from '@citizenlab/cl2-component-library';
 import { ParticipationCTAContent } from 'components/ParticipationCTABars/ParticipationCTAContent';
 import ErrorToast from 'components/ErrorToast';
-import VotesCounter from 'components/VotesCounter';
+// import VotesCounter from 'components/VotesCounter';
 import Tippy from '@tippyjs/react';
 
 // hooks
@@ -171,7 +171,7 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
               textAlign="left"
               aria-live="polite"
             >
-              <VotesCounter participationContext={participationContext} />
+              {/* <VotesCounter participationContext={participationContext} /> */}
             </Text>
           )
         }

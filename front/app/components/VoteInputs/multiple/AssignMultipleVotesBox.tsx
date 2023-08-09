@@ -11,7 +11,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 // i18n
 import messages from '../_shared/messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import useLocalize from 'hooks/useLocalize';
 
 // styles
@@ -34,20 +34,26 @@ const AssignMultipleVotesBox = memo(
     const { data: idea } = useIdeaById(ideaId);
     const { numberOfVotesCast } = useVoting();
     const localize = useLocalize();
+    const { formatMessage } = useIntl();
 
     const actionDescriptor = idea?.data.attributes.action_descriptor.voting;
-    const { voting_max_total, voting_term_plural_multiloc } =
-      participationContext.attributes;
+    const {
+      voting_max_total,
+      voting_term_singular_multiloc,
+      voting_term_plural_multiloc,
+    } = participationContext.attributes;
 
-    if (
-      !actionDescriptor ||
-      isNil(voting_max_total) ||
-      isNil(voting_term_plural_multiloc)
-    ) {
+    if (!actionDescriptor || isNil(voting_max_total)) {
       return null;
     }
 
     const votesLeft = voting_max_total - (numberOfVotesCast ?? 0);
+    const voteTerm = voting_term_singular_multiloc
+      ? localize(voting_term_singular_multiloc)
+      : formatMessage(messages.vote);
+    const votesTerm = voting_term_plural_multiloc
+      ? localize(voting_term_plural_multiloc)
+      : formatMessage(messages.votes);
 
     return (
       <WhiteBox>
@@ -68,7 +74,8 @@ const AssignMultipleVotesBox = memo(
             values={{
               votesLeft: votesLeft.toLocaleString(),
               totalNumberOfVotes: voting_max_total.toLocaleString(),
-              termForVotes: localize(voting_term_plural_multiloc),
+              voteTerm,
+              votesTerm,
             }}
           />
         </Box>
