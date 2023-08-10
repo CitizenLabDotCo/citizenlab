@@ -17,7 +17,7 @@ import useAuthUser from 'api/me/useAuthUser';
 
 interface Props extends BoxPaddingProps, BoxWidthProps {
   followableType: FollowableType;
-  followableId: string; // id of the project, folder, idea or proposal
+  followableId: string; // id of the project, folder, idea, proposal or anything to be followed
   followersCount?: number;
   followerId?: string; // id of the follower object
   followableSlug?: string;
@@ -100,6 +100,7 @@ const FollowUnfollow = ({
       onClick={handleButtonClick}
       processing={isLoading}
       {...otherButtonProps}
+      data-cy={isFollowing ? 'e2e-unfollow-button' : 'e2e-follow-button'}
     >
       {followersCount
         ? `${followUnfollowText} (${followersCount})`

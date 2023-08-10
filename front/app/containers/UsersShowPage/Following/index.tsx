@@ -73,6 +73,7 @@ const Following = ({ userId }: Props) => {
           multipleSelectionAllowed={false}
           width="180px"
           right="0px"
+          id="e2e-user-following-filter-selector"
         />
       </Box>
       {selectedValue === 'Topics' && <Topics />}
