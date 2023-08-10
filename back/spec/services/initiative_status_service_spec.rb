@@ -6,7 +6,7 @@ describe InitiativeStatusService do
   let(:service) { described_class.new }
 
   let!(:status_review_pending) { create(:initiative_status_review_pending) }
-  let!(:status_rejected_on_review) { create(:initiative_status_rejected_on_review) }
+  let!(:status_changes_requested) { create(:initiative_status_changes_requested) }
   let!(:status_proposed) { create(:initiative_status_proposed) }
   let!(:status_expired) { create(:initiative_status_expired) }
   let!(:status_threshold_reached) { create(:initiative_status_threshold_reached) }
@@ -79,8 +79,8 @@ describe InitiativeStatusService do
       expect(service.transition_type(status_review_pending)).to eq 'manual'
     end
 
-    it 'labels the rejected_on_review status as manual' do
-      expect(service.transition_type(status_rejected_on_review)).to eq 'manual'
+    it 'labels the changes_requested status as manual' do
+      expect(service.transition_type(status_changes_requested)).to eq 'manual'
     end
 
     context 'when the initiative review feature is fully activated' do

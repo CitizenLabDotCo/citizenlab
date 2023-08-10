@@ -7,7 +7,7 @@ export type InitiativeStatusesKeys = Keys<typeof initiativeStatusesKeys>;
 
 export type InitiativeStatusCode =
   | 'review_pending'
-  | 'rejected_on_review'
+  | 'changes_requested'
   | 'proposed'
   | 'expired'
   | 'threshold_reached'

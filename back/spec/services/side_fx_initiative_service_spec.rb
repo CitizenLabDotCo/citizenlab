@@ -7,11 +7,11 @@ describe SideFxInitiativeService do
   let(:user) { create(:user) }
 
   describe '#after_update' do
-    context 'when initiative is rejected_on_review' do
+    context 'when initiative is changes_requested' do
       let(:initiative) do
         create(:initiative_status_review_pending)
-        rejected_on_review = create(:initiative_status_rejected_on_review)
-        create(:initiative, initiative_status: rejected_on_review, author: user)
+        changes_requested = create(:initiative_status_changes_requested)
+        create(:initiative, initiative_status: changes_requested, author: user)
       end
 
       it 'changes initiative status to review_pending' do
