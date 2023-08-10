@@ -5,40 +5,24 @@ describe('Follow project', () => {
   const lastName = randomString();
   const email = randomEmail();
   const password = randomString();
-  const projectTitle1 = randomString();
-  const projectTitle2 = randomString();
+  const projectTitle = randomString();
   let userId: string;
-  let projectId1: string;
-  let projectSlug1: string;
-  let projectId2: string;
-  let projectSlug2: string;
+  let projectId: string;
+  let projectSlug: string;
   let userSlug: string;
 
   before(() => {
     cy.apiCreateProject({
       type: 'continuous',
-      title: projectTitle1,
+      title: projectTitle,
       descriptionPreview: '',
       description: '',
       publicationStatus: 'published',
       allow_anonymous_participation: true,
       participationMethod: 'ideation',
     }).then((project) => {
-      projectId1 = project.body.data.id;
-      projectSlug1 = project.body.data.attributes.slug;
-    });
-
-    cy.apiCreateProject({
-      type: 'continuous',
-      title: projectTitle2,
-      descriptionPreview: '',
-      description: '',
-      publicationStatus: 'published',
-      allow_anonymous_participation: true,
-      participationMethod: 'ideation',
-    }).then((project) => {
-      projectId2 = project.body.data.id;
-      projectSlug2 = project.body.data.attributes.slug;
+      projectId = project.body.data.id;
+      projectSlug = project.body.data.attributes.slug;
     });
 
     cy.apiSignup(firstName, lastName, email, password).then((response) => {
@@ -51,20 +35,17 @@ describe('Follow project', () => {
     if (userId) {
       cy.apiRemoveUser(userId);
     }
-    if (projectId1) {
-      cy.apiRemoveProject(projectId1);
-    }
-    if (projectId2) {
-      cy.apiRemoveProject(projectId2);
+    if (projectId) {
+      cy.apiRemoveProject(projectId);
     }
   });
 
   it('shows a follow option to a new user and shows the project in the activity following page after following where it can be unfollowed', () => {
     cy.setLoginCookie(email, password);
 
-    cy.visit(`/projects/${projectSlug2}`);
+    cy.visit(`/projects/${projectSlug}`);
     cy.acceptCookies();
-    cy.get('#e2e-project-page').contains(projectTitle2);
+    cy.get('#e2e-project-page').contains(projectTitle);
 
     // Follow
     cy.get('[data-cy="e2e-follow-button"]').should('exist');
@@ -79,7 +60,7 @@ describe('Follow project', () => {
     cy.get('#e2e-user-following-filter-selector').click();
 
     cy.get('.e2e-sort-items').find('.e2e-sort-item-Project').click();
-    cy.get('.e2e-project-card-project-title').contains(projectTitle2);
+    cy.get('.e2e-project-card-project-title').contains(projectTitle);
 
     cy.get('[data-cy="e2e-unfollow-button"]').should('exist');
     cy.get('[data-cy="e2e-unfollow-button"]').click();
