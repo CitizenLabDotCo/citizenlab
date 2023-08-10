@@ -23,9 +23,9 @@ FactoryBot.define do
       title_multiloc { { 'en' => 'review_pending' } }
     end
 
-    factory :initiative_status_rejected_on_review do
-      code { 'rejected_on_review' }
-      title_multiloc { { 'en' => 'rejected_on_review' } }
+    factory :initiative_status_changes_requested do
+      code { 'changes_requested' }
+      title_multiloc { { 'en' => 'changes_requested' } }
     end
 
     factory :initiative_status_proposed do
