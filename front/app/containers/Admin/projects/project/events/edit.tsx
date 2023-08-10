@@ -85,18 +85,23 @@ const AdminProjectEventEdit = ({ params }: Props) => {
   const [eventFiles, setEventFiles] = useState<UploadFile[]>([]);
   const [attributeDiff, setAttributeDiff] = useState<IEventProperties>({});
   const [mapModalVisible, setMapModalVisible] = useState(false);
-  const remoteLocationPoint = event?.data.attributes.location_point_geojson;
-  const [locationPoint, setLocationPoint] = useState<
-    GeoJSON.Point | null | undefined
-  >(undefined);
+  const [locationPoint, setLocationPoint] = useState<GeoJSON.Point | null>(
+    null
+  );
   const [locationDescription, setLocationDescription] = useState('');
   const [eventFilesToRemove, setEventFilesToRemove] = useState<UploadFile[]>(
     []
   );
+  const [successfulGeocode, setSuccessfulGeocode] = useState(false);
+
+  const remotePoint = event?.data?.attributes?.location_point_geojson;
 
   useEffect(() => {
-    setLocationPoint(remoteLocationPoint);
-  }, [remoteLocationPoint]);
+    if (!isNilOrError(remotePoint)) {
+      setLocationPoint(() => remotePoint);
+      setSuccessfulGeocode(true);
+    }
+  }, [remotePoint]);
 
   useEffect(() => {
     const subscriptions = [
@@ -120,12 +125,10 @@ const AdminProjectEventEdit = ({ params }: Props) => {
       const delayDebounceFn = setTimeout(async () => {
         const point = await geocode(locationDescription);
         setLocationPoint(point);
+        point ? setSuccessfulGeocode(true) : setSuccessfulGeocode(false);
       }, 500);
 
       return () => clearTimeout(delayDebounceFn);
-    }
-    if (locationDescription === '') {
-      setLocationPoint(undefined);
     }
     return;
   }, [locationDescription, attributeDiff]);
@@ -256,7 +259,8 @@ const AdminProjectEventEdit = ({ params }: Props) => {
   };
 
   const handleOnSubmit = async (e) => {
-    const locationPointChanged = locationPoint !== remoteLocationPoint;
+    const locationPointChanged =
+      locationPoint !== event?.data.attributes.location_point_geojson;
 
     e.preventDefault();
     if (!isNilOrError(params.projectId)) {
@@ -280,9 +284,10 @@ const AdminProjectEventEdit = ({ params }: Props) => {
                 eventId: event?.data.id,
                 event: {
                   ...attributeDiff,
-                  location_point_geojson: locationDescription
-                    ? locationPoint
-                    : null,
+                  location_point_geojson:
+                    locationDescription && successfulGeocode
+                      ? locationPoint
+                      : null,
                 },
               },
               {
@@ -454,29 +459,31 @@ const AdminProjectEventEdit = ({ params }: Props) => {
                     placeholder={formatMessage(messages.addressTwoPlaceholder)}
                   />
                 </Box>
-                {locationPoint && (
-                  <Box maxWidth="400px" zIndex="0">
-                    <Box>
-                      <Map
-                        position={locationPoint}
-                        projectId={params.projectId}
-                        mapHeight="160px"
-                        hideLegend={true}
-                        singleClickEnabled={false}
-                      />
+                {locationPoint &&
+                  eventAttrs.location_description &&
+                  successfulGeocode && (
+                    <Box maxWidth="400px" zIndex="0">
+                      <Box>
+                        <Map
+                          position={locationPoint}
+                          projectId={params.projectId}
+                          mapHeight="160px"
+                          hideLegend={true}
+                          singleClickEnabled={false}
+                        />
+                      </Box>
+                      <Button
+                        mt="8px"
+                        icon="position"
+                        buttonStyle="secondary"
+                        onClick={() => {
+                          setMapModalVisible(true);
+                        }}
+                      >
+                        {formatMessage(messages.refineOnMap)}
+                      </Button>
                     </Box>
-                    <Button
-                      mt="8px"
-                      icon="position"
-                      buttonStyle="secondary"
-                      onClick={() => {
-                        setMapModalVisible(true);
-                      }}
-                    >
-                      {formatMessage(messages.refineOnMap)}
-                    </Button>
-                  </Box>
-                )}
+                  )}
               </Box>
             </SectionField>
             <Title
