@@ -19,7 +19,12 @@ const ParticipantsCount = ({ count }: Props) => {
     <Container>
       <StyledIcon name="user" ariaHidden />
       <Content>
-        <Text my="4px" color="coolGrey600" fontSize="s">
+        <Text
+          id="e2e-participants-count"
+          my="4px"
+          color="coolGrey600"
+          fontSize="s"
+        >
           {formatMessage(messages.xParticipants, { count })}
         </Text>
       </Content>

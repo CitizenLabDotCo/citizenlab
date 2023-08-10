@@ -51,12 +51,18 @@ const Location = ({ location, event }: Props) => {
                   justifyContent: 'left',
                   textAlign: 'left',
                 }}
+                id="e2e-location-with-coordinates-button"
               >
                 {location.slice(0, location.indexOf(','))}
               </Button>
             </Box>
           ) : (
-            <Text my="4px" color="coolGrey600" fontSize="s">
+            <Text
+              id="e2e-text-only-location"
+              my="4px"
+              color="coolGrey600"
+              fontSize="s"
+            >
               {location}
             </Text>
           )}
@@ -74,7 +80,7 @@ const Location = ({ location, event }: Props) => {
           }
           width={900}
         >
-          <Box p="12px">
+          <Box p="12px" id="e2e-event-map-modal">
             {position && projectId && centerLatLng && (
               <Map
                 points={[{ ...position, id: 'markerPosition' }]}

@@ -6,7 +6,6 @@ import {
 } from '../../app/services/participationContexts';
 import { IUserUpdate } from '../../app/api/users/types';
 import jwtDecode from 'jwt-decode';
-
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
@@ -1232,6 +1231,7 @@ export function apiCreateEvent({
   projectId,
   title,
   description,
+  includeLocation,
   location,
   startDate,
   endDate,
@@ -1242,6 +1242,7 @@ export function apiCreateEvent({
   location: string;
   startDate: Date;
   endDate: Date;
+  includeLocation?: boolean;
 }) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -1265,6 +1266,12 @@ export function apiCreateEvent({
             'nl-BE': description,
           },
           location_description: location,
+          location_point_geojson: includeLocation
+            ? {
+                type: 'Point',
+                coordinates: [4.418731568531502, 50.86899604801978],
+              }
+            : undefined,
           start_at: startDate.toJSON(),
           end_at: endDate.toJSON(),
         },

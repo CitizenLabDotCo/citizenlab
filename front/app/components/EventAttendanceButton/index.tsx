@@ -86,6 +86,7 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
         handleClick();
       }}
       processing={isLoading}
+      id="e2e-event-attendance-button"
     >
       {userIsAttending
         ? formatMessage(messages.attending)
