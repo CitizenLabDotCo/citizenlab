@@ -44,7 +44,6 @@ describe('Follow idea', () => {
     });
 
     cy.apiSignup(firstName, lastName, email, password).then((response) => {
-      console.log('response', response);
       userId = response.body.data.id;
       userSlug = response.body.data.attributes.slug;
     });
@@ -59,6 +58,9 @@ describe('Follow idea', () => {
     }
     if (ideaId2) {
       cy.apiRemoveIdea(ideaId2);
+    }
+    if (projectId) {
+      cy.apiRemoveProject(projectId);
     }
   });
 
