@@ -441,23 +441,29 @@ const InitiativeForm = ({
                 }}
               />
             </Text>
-            <Text>
-              <Warning>
-                {formatMessage(messages.cosponsorSubtextBeforeInputNote)}
-              </Warning>
-            </Text>
-            <MentionsTextArea
-              name="cosponsors"
-              rows={1}
-              value={cosponsorsText}
-              onChange={setCosponsorsText}
-              onChangeMentions={onChangeCosponsors}
-              trigger=""
-              onBlur={onBlur('cosponsors')}
-              idAttribute="id"
-              padding="8px 8px 12px"
-              placeholder={formatMessage(messages.cosponsorsPlaceholder)}
-            />
+            <FormLabel
+              labelMessage={messages.cosponsorsLabel}
+              htmlFor="cosponsors-input"
+            >
+              <Box mb="12px">
+                <Warning>
+                  {formatMessage(messages.cosponsorSubtextBeforeInputNote)}
+                </Warning>
+              </Box>
+              <MentionsTextArea
+                id="cosponsors-input"
+                name="cosponsors"
+                rows={1}
+                value={cosponsorsText}
+                onChange={setCosponsorsText}
+                onChangeMentions={onChangeCosponsors}
+                trigger=""
+                onBlur={onBlur('cosponsors')}
+                idAttribute="id"
+                padding="8px 8px 12px"
+                placeholder={formatMessage(messages.cosponsorsPlaceholder)}
+              />
+            </FormLabel>
           </SectionField>
         </StyledFormSection>
       )}

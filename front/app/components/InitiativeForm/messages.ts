@@ -133,9 +133,9 @@ export default defineMessages({
     defaultMessage: 'Cosponsors needed for review',
   },
   cosponsorSubtextBeforeInput: {
-    id: 'app.components.InitiativeForm.cosponsorSubtextBeforeInput1',
+    id: 'app.components.InitiativeForm.cosponsorSubtextBeforeInput',
     defaultMessage:
-      "It's required that you have {noOfCosponsorsText} on your proposals. Add their names in the field below to invite them to cosponsor this proposal. The invited cosponsors will receive an email.",
+      "It's required that you have at least {noOfCosponsorsText} on your proposal. Invite cosponsors through the field below. The invited cosponsor(s) will receive an email.",
   },
   noOfCosponsorsText: {
     id: 'app.components.InitiativeForm.noOfCosponsorsText',
@@ -217,5 +217,9 @@ export default defineMessages({
   cosponsorsPlaceholder: {
     id: 'app.components.InitiativeForm.cosponsorsPlaceholder',
     defaultMessage: 'Start typing a name to search',
+  },
+  cosponsorsLabel: {
+    id: 'app.components.InitiativeForm.cosponsorsLabel',
+    defaultMessage: 'Cosponsors',
   },
 });
