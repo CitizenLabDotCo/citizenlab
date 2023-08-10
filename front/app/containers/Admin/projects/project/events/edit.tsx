@@ -130,6 +130,7 @@ const AdminProjectEventEdit = ({ params }: Props) => {
 
       return () => clearTimeout(delayDebounceFn);
     }
+    setSuccessfulGeocode(false);
     return;
   }, [locationDescription, attributeDiff]);
 
@@ -285,7 +286,7 @@ const AdminProjectEventEdit = ({ params }: Props) => {
                 event: {
                   ...attributeDiff,
                   location_point_geojson:
-                    locationDescription && successfulGeocode
+                    locationDescription || successfulGeocode
                       ? locationPoint
                       : null,
                 },
