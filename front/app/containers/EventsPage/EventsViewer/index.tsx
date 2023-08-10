@@ -28,14 +28,14 @@ interface IStyledEventCard {
 }
 
 const StyledEventCard = styled(EventCard)<IStyledEventCard>`
-  width: 32.3%;
+  flex: 0 0 32.3%;
 
   ${media.tablet`
-    width: 48.8%;
+  flex: 0 0 48.6%;
   `}
 
   ${media.phone`
-    width: 100%;
+  flex: 0 0 100%;
   `}
 `;
 
