@@ -80,7 +80,8 @@ export interface Props {
   children?: React.ReactNode;
   roles?: MentionRoles[];
   trigger?: string;
-  idAttribute: 'slug' | 'id';
+  // Needs explanation
+  idAttribute?: 'slug' | 'id';
 }
 
 const MentionsTextArea = ({
@@ -247,7 +248,6 @@ const MentionsTextArea = ({
           rows={rows}
           value={value || ''}
           placeholder={placeholder}
-          markup={'@[__display__](__id__)'}
           onChange={(event, _newValue, _newPlainTextValue, mentions) => {
             handleOnChange(event);
             onChangeMentions?.(mentions);
@@ -265,6 +265,7 @@ const MentionsTextArea = ({
             appendSpaceOnAdd={true}
             style={mentionStyle}
             displayTransform={mentionDisplayTransform}
+            markup={'@[__display__](__id__)'}
           />
         </StyledMentionsInput>
         {children}
