@@ -126,7 +126,7 @@ export default defineMessages({
     defaultMessage: 'Search for a location or click on the map',
   },
   refineLocationCoordinates: {
-    id: 'app.containers.AdminPage.ProjectEvents.searchForLocationOrClick',
+    id: 'app.containers.AdminPage.ProjectEvents.refineLocationCoordinates',
     defaultMessage: 'Refine map location',
   },
   addressOneTooltip: {
