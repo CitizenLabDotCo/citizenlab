@@ -11,35 +11,19 @@ class AddTwoInitiativeStatusesAndUpdateColors < ActiveRecord::Migration[7.0]
         service = MultilocService.new
 
         proposed = StubInitiativeStatus.find_by(code: 'proposed')
-        return unless proposed
-
-        proposed.ordering = 150
-        proposed.color = '#BEE7EB'
-        proposed.save!
+        proposed&.update!(ordering: 150)
+        proposed.update!(color: '#BEE7EB') if proposed&.color == '#687782'
 
         threshold_reached = StubInitiativeStatus.find_by(code: 'threshold_reached')
-        return unless threshold_reached
-
-        threshold_reached.color = '#40B8C5'
-        threshold_reached.save!
+        threshold_reached.update!(color: '#40B8C5') if threshold_reached&.color == '#04884C'
 
         expired = StubInitiativeStatus.find_by(code: 'expired')
-        return unless expired
-
-        expired.color = '#FF672F'
-        expired.save!
+        expired.update!(color: '#FF672F') if expired&.color == '#01A1B1'
 
         answered = StubInitiativeStatus.find_by(code: 'answered')
-        return unless answered
+        answered.update!(color: '#147985') if answered&.color == '#04884C'
 
-        answered.color = '#147985'
-        answered.save!
-
-        ineligible = StubInitiativeStatus.find_by(code: 'ineligible')
-        return unless ineligible
-
-        ineligible.color = '#E52516'
-        ineligible.save!
+        # We don't update the color of the 'ineligible' status, because the deault color remains in use
 
         rp = StubInitiativeStatus.find_or_initialize_by(code: 'review_pending')
         rp.title_multiloc = service.i18n_to_multiloc(
