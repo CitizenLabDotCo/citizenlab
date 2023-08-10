@@ -15,6 +15,26 @@ module Analysis
       )
     end
 
+    def pre_check
+      model, truncate_values = gpt_model
+
+      quality = if model.include?('gpt-4') && truncate_values.nil?
+        :high
+      elsif model.include?('gpt-3')
+        :low
+      else
+        :medium
+      end
+
+      SummaryPreCheck.new(
+        quality: quality
+      )
+    rescue TooManyInputs
+      SummaryPreCheck.new(
+        impossible_reason: :too_many_inputs
+      )
+    end
+
     protected
 
     # Use `execute` on the parent class to actually use the method
@@ -37,13 +57,6 @@ module Analysis
       )
     rescue StandardError => e
       raise SummarizationFailedError, e
-    end
-
-    def pre_check
-      gpt_model
-      true
-    rescue TooManyInputs
-      :too_many_inputs
     end
 
     private

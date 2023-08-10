@@ -19,6 +19,20 @@ module Analysis
           ).serializable_hash
         end
 
+        # Used to check whether a summary is possible with the given filters,
+        # front-end should call this before initiating the summary
+        def pre_check
+          @summary = Summary.new(
+            analysis: @analysis,
+            summarization_method: 'gpt',
+            **summary_params
+          )
+          background_task = SummarizationTask.new(analysis: @analysis, summary: @summary)
+          sum_method = SummarizationMethod::Base.for_summarization_method('gpt', background_task)
+          summary_pre_check = sum_method.pre_check
+          render json: WebApi::V1::SummaryPreCheckSerializer.new(summary_pre_check, params: jsonapi_serializer_params).serializable_hash
+        end
+
         def create
           @summary = Summary.new(
             analysis: @analysis,

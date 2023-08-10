@@ -26,9 +26,8 @@ module Analysis
     end
 
     # Before calling `execute`, this method can be used to check whether the
-    # method is able to process the request. Returns nil if all is fine, or one
-    # of the following error symbols if it's not:
-    # - :too_many_inputs
+    # method is able to process the request. Should return an instance of
+    # Analysis::SummaryPreCheck
     def pre_check
       raise NotImplementedError
     end

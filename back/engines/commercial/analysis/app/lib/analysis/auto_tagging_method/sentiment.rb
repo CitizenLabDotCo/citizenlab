@@ -27,7 +27,7 @@ module Analysis
           locale
         )
 
-        text = input_to_text.execute(input).values.join("\n")
+        text = input_to_text.execute(input).values.join("\n").truncate(1500)
         next if text.strip.empty?
 
         # We retry 10 times due to rate limiting
