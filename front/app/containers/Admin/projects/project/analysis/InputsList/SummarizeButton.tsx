@@ -48,6 +48,7 @@ const SummarizeButton = ({ inputsCount }: Props) => {
         buttonStyle="secondary-outlined"
         onClick={handleSummaryCreate}
         disabled={isLoadingSummary || isLoadingPreCheck || !summaryPossible}
+        processing={isLoadingPreCheck || isLoadingSummary}
       >
         {summaryPossible
           ? `Auto-summarize ${inputsCount} inputs (${summaryQuality} quality)`
