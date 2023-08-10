@@ -31,6 +31,10 @@ PublicApi::Engine.routes.draw do
         resources :phases, only: %i[index]
       end
     end
+
+    # Association endpoints
+    resources :idea_topics, only: %i[index]
+    resources :project_topics, only: %i[index]
   end
 end
 

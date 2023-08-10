@@ -30,7 +30,7 @@ module Analysis
     validates :auto_tagging_method, inclusion: { in: AUTO_TAGGING_METHODS }
 
     def execute
-      atm = AutoTaggingMethod::Base.for_auto_tagging_method(auto_tagging_method, analysis, self)
+      atm = AutoTaggingMethod::Base.for_auto_tagging_method(auto_tagging_method, self)
       atm.execute
     end
   end

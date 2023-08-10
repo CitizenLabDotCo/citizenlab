@@ -37,6 +37,10 @@ export default defineMessages({
     id: 'app.components.Sharing.shareThisFolder',
     defaultMessage: 'Share this folder',
   },
+  shareThisEvent: {
+    id: 'app.components.Sharing.shareThisEvent',
+    defaultMessage: 'Share this event',
+  },
   share: {
     id: 'app.components.Sharing.share',
     defaultMessage: 'Share',

@@ -7,6 +7,7 @@ import Tags from './Tags';
 import InputsList from './InputsList';
 import InputPreview from './InputPreview';
 import Tasks from './Tasks';
+import Insights from './Insights';
 
 const Analysis = () => {
   const modalPortalElement = document.getElementById('modal-portal');
@@ -33,9 +34,6 @@ const Analysis = () => {
           gap="20px"
           pt={`${stylingConsts.mobileMenuHeight}px`}
         >
-          <Box flexGrow={1} p="12px">
-            Insights
-          </Box>
           <Box
             w="300px"
             overflow="auto"
@@ -52,15 +50,40 @@ const Analysis = () => {
             overflow="auto"
             h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
             p="12px"
+            mt="12px"
+            bg={colors.white}
           >
-            <Tasks />
             <InputsList
               onSelectInput={(inputId) => setSelectedInputId(inputId)}
               selectedInputId={selectedInputId}
             />
           </Box>
-          <Box flex="1">
-            {selectedInputId && <InputPreview inputId={selectedInputId} />}
+          <Box
+            flex="1"
+            overflow="auto"
+            h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
+            p="12px"
+            display="flex"
+            flexDirection="column"
+          >
+            <Box flex="1">
+              {selectedInputId && <InputPreview inputId={selectedInputId} />}
+            </Box>
+            <Box h="60px">
+              <Tasks />
+            </Box>
+          </Box>
+          <Box
+            flex="1"
+            p="12px"
+            mt="12px"
+            overflow="auto"
+            h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
+            bg={colors.white}
+          >
+            <Insights
+              onSelectInput={(inputId) => setSelectedInputId(inputId)}
+            />
           </Box>
         </Box>
       </FocusOn>
