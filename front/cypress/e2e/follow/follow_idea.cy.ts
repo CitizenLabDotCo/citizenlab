@@ -109,4 +109,30 @@ describe('Follow idea', () => {
 
     cy.get('.e2e-card-title').should('not.exist');
   });
+
+  it('uses a light login flow when a user is not looged in and follows after', () => {
+    cy.visit(`/ideas/${ideaSlug1}`);
+    cy.acceptCookies();
+    cy.get('#e2e-idea-title').contains(ideaTitle1);
+
+    // Follow
+    cy.get('[data-cy="e2e-follow-button"]').should('exist');
+    cy.get('[data-cy="e2e-follow-button"]').click();
+
+    cy.get('input#email').focus().type(randomEmail());
+    cy.get('#e2e-light-flow-email-submit').click();
+
+    cy.get('#e2e-terms-conditions-container .e2e-checkbox').click();
+    cy.get('#e2e-privacy-policy-container .e2e-checkbox').click();
+    cy.get('#e2e-policies-continue').click();
+
+    cy.get('input#code').focus().type('1234');
+    cy.get('#e2e-verify-email-button').click();
+
+    cy.get('#e2e-success-continue-button').click();
+
+    // Check that it shows unfollow after logging in
+    cy.get('[data-cy="e2e-unfollow-button"]').should('exist');
+    cy.get('[data-cy="e2e-follow-button"]').should('not.exist');
+  });
 });
