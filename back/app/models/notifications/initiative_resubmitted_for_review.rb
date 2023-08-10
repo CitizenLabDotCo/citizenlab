@@ -88,7 +88,7 @@ module Notifications
 
       def transitioned_from_rejected_to_pending?(initiative)
         previous_change = initiative.initiative_status_changes.order(created_at: :asc)[-2]
-        previous_change && previous_change.initiative_status.code == 'rejected_on_review' && initiative.initiative_status.code == 'review_pending'
+        previous_change && previous_change.initiative_status.code == 'changes_requested' && initiative.initiative_status.code == 'review_pending'
       end
     end
   end

@@ -203,4 +203,58 @@ RSpec.describe Initiative do
       end
     end
   end
+
+  describe 'cosponsor_ids=' do
+    let(:initiative) { create(:initiative) }
+    let(:cosponsor1) { create(:user) }
+    let!(:cosponsors_initiative) { create(:cosponsors_initiative, user_id: cosponsor1.id, initiative_id: initiative.id) }
+
+    it 'adds cosponsor when given array of user IDs including new ID' do
+      expect(initiative.reload.cosponsors).to match_array [cosponsor1]
+
+      cosponsor2 = create(:user)
+      initiative.update!(cosponsor_ids: [cosponsor2.id, cosponsor1.id])
+
+      expect(initiative.reload.cosponsors).to match_array [cosponsor1, cosponsor2]
+    end
+
+    it 'removes cosponsor when given array of user IDs excluding ID of existing cosponsor' do
+      cosponsor2 = create(:user)
+      initiative.update!(cosponsor_ids: [cosponsor2.id])
+
+      expect(initiative.reload.cosponsors).to match_array [cosponsor2]
+    end
+
+    it 'can add and remove cosponsors at the same time' do
+      cosponsor2 = create(:user)
+      cosponsor3 = create(:user)
+      initiative.update!(cosponsor_ids: [cosponsor2.id, cosponsor3.id])
+
+      expect(initiative.reload.cosponsors).to match_array [cosponsor2, cosponsor3]
+    end
+
+    it 'removes all cosponsors when given empty array' do
+      initiative.update!(cosponsor_ids: [])
+
+      expect(initiative.reload.cosponsors).to be_empty
+    end
+
+    it 'handles duplicate IDs' do
+      initiative.update!(cosponsor_ids: [cosponsor1.id, cosponsor1.id])
+
+      expect(initiative.reload.cosponsors).to match_array [cosponsor1]
+    end
+
+    it 'does nothing when given nil' do
+      initiative.update!(cosponsor_ids: nil)
+
+      expect(initiative.reload.cosponsors).to match_array [cosponsor1]
+    end
+
+    it 'does nothing if update validation fails' do
+      saved = initiative.update(cosponsor_ids: [], title_multiloc: {})
+      expect(saved).to be false
+      expect(initiative.reload.cosponsors).to be_present
+    end
+  end
 end

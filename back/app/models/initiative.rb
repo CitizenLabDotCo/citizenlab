@@ -110,6 +110,12 @@ class Initiative < ApplicationRecord
   scope :no_feedback_needed, -> { with_status_code(InitiativeStatus::CODES - ['threshold_reached']) }
   scope :proposed, -> { with_status_code('proposed') }
 
+  def cosponsor_ids=(ids)
+    return unless ids
+
+    super(ids.uniq)
+  end
+
   def reactions_needed(configuration = AppConfiguration.instance)
     [configuration.settings('initiatives', 'reacting_threshold') - likes_count, 0].max
   end

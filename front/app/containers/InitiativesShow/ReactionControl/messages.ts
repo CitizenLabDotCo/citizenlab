@@ -60,14 +60,15 @@ export default defineMessages({
     id: 'app.containers.InitiativesShow.VoteControl.reviewPendingStatusExplanationSentenceThree',
     defaultMessage: "The proposal can't be shared until it's reviewed.",
   },
-  rejectedOnReviewStatusExplanationBold: {
-    id: 'app.containers.InitiativesShow.VoteControl.rejectedOnReviewStatusExplanationBold',
-    defaultMessage: 'This proposal was rejected after review.',
-  },
-  rejectedOnReviewStatusExplanationSentenceTwo: {
-    id: 'app.containers.InitiativesShow.VoteControl.rejectedOnReviewStatusExplanationSentenceTwo',
+  changesRequestedStatusExplanationBold: {
+    id: 'app.containers.InitiativesShow.VoteControl.changesRequestedStatusExplanationBold',
     defaultMessage:
-      'Check the official update for an explanation of this decision.',
+      'This proposal needs some changes before it can be approved.',
+  },
+  changesRequestedStatusExplanationSentenceTwo: {
+    id: 'app.containers.InitiativesShow.VoteControl.changesRequestedStatusExplanationSentenceTwo',
+    defaultMessage:
+      'Check the official update for an explanation of the requested changes.',
   },
   expiredStatusExplanation: {
     id: 'app.containers.InitiativesShow.VoteControl.expiredStatusExplanation',
