@@ -134,7 +134,8 @@ const InitiativeForm = ({
   postAnonymously,
 }: Props) => {
   const { data: appConfiguration } = useAppConfiguration();
-  const initiativeCosponsorsRequired = useInitiativeCosponsorsRequired();
+  // const initiativeCosponsorsRequired = useInitiativeCosponsorsRequired();
+  const initiativeCosponsorsRequired = true;
   const initiativeReviewRequired = useInitiativeReviewRequired();
   const { formatMessage } = useIntl();
   const [touched, setTouched] = useState<{
@@ -426,37 +427,39 @@ const InitiativeForm = ({
       {initiativeCosponsorsRequired && typeof cosponsorsNumber === 'number' && (
         <StyledFormSection>
           <FormSectionTitle message={messages.cosponsorSectionTitle} />
-          <Text>
-            <FormattedMessage
-              {...messages.cosponsorSubtextBeforeInput}
-              values={{
-                noOfCosponsorsText: (
-                  <b>
-                  {formatMessage(messages.noOfCosponsorsText, {
-                      cosponsorsNumber,
-            })}
-                  </b>
-                ),
-              }}
+          <SectionField>
+            <Text>
+              <FormattedMessage
+                {...messages.cosponsorSubtextBeforeInput}
+                values={{
+                  noOfCosponsorsText: (
+                    <b>
+                      {formatMessage(messages.noOfCosponsorsText, {
+                        cosponsorsNumber,
+                      })}
+                    </b>
+                  ),
+                }}
+              />
+            </Text>
+            <Text>
+              <Warning>
+                {formatMessage(messages.cosponsorSubtextBeforeInputNote)}
+              </Warning>
+            </Text>
+            <MentionsTextArea
+              name="cosponsors"
+              rows={1}
+              value={cosponsorsText}
+              onChange={setCosponsorsText}
+              onChangeMentions={onChangeCosponsors}
+              trigger=""
+              onBlur={onBlur('cosponsors')}
+              idAttribute="id"
+              padding="8px 8px 12px"
+              placeholder={formatMessage(messages.cosponsorsPlaceholder)}
             />
-          </Text>
-          <Text>
-            <Warning>
-              {formatMessage(messages.cosponsorSubtextBeforeInputNote)}
-            </Warning>
-          </Text>
-          <MentionsTextArea
-            name="cosponsors"
-            rows={1}
-            value={cosponsorsText}
-            onChange={setCosponsorsText}
-            onChangeMentions={onChangeCosponsors}
-            trigger=""
-            onBlur={onBlur('cosponsors')}
-            idAttribute="id"
-            padding="8px 8px 12px"
-            placeholder={formatMessage(messages.cosponsorsPlaceholder)}
-          />
+          </SectionField>
         </StyledFormSection>
       )}
       <StyledFormSection>
