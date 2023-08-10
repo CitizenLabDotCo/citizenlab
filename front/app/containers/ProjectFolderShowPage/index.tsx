@@ -177,7 +177,7 @@ const ProjectFolderShowPage = memo<{
                         projectFolder.relationships.user_follower?.data?.id
                       }
                       followableSlug={projectFolder.attributes.slug}
-                      padding="5px 8px"
+                      padding="4px 8px"
                       w="auto"
                     />
                   </Box>
