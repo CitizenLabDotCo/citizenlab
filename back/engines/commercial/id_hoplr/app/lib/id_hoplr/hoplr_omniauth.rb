@@ -55,15 +55,6 @@ module IdHoplr
       %i[first_name last_name]
     end
 
-    def logout_url(_user)
-      url_params = {
-        redirect: Frontend::UrlService.new.home_url
-      }
-
-      # Not sure how to properly get it from openid-configuration URL
-      "https://#{host}/connect/logout?#{url_params.to_query}"
-    end
-
     def email_always_present?
       false
     end
