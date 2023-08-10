@@ -59,10 +59,6 @@ export default defineMessages({
     id: 'app.containers.InitiativesIndexPage.footer',
     defaultMessage: 'Start your own initiative and make your voice heard',
   },
-  footerPostingDisabled: {
-    id: 'app.containers.InitiativesIndexPage.footerPostingDisabled',
-    defaultMessage: 'Support citizen proposals and make your voice heard!',
-  },
   postingDisabledExplanation: {
     id: 'app.containers.InitiativesIndexPage.postingDisabledExplanation',
     defaultMessage:
