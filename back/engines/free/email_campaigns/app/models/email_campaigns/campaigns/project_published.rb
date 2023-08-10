@@ -27,7 +27,7 @@
 #  fk_rails_...  (author_id => users.id)
 #
 module EmailCampaigns
-  class Campaigns::OfficialFeedbackOnIdeaYouFollow < Campaign
+  class Campaigns::ProjectPublished < Campaign
     include Consentable
     include ActivityTriggerable
     include RecipientConfigurable
@@ -39,15 +39,15 @@ module EmailCampaigns
     recipient_filter :filter_notification_recipient
 
     def mailer_class
-      OfficialFeedbackOnIdeaYouFollowMailer
+      ProjectPublishedMailer
     end
 
     def activity_triggers
-      { 'Notifications::OfficialFeedbackOnIdeaYouFollow' => { 'created' => true } }
+      { 'Notifications::ProjectPublished' => { 'created' => true } }
     end
 
     def filter_notification_recipient(users_scope, activity:, time: nil)
-      users_scope.where(id: activity.item.recipient.id)
+      users_scope.where(id: activity.item.recipient_id)
     end
 
     def self.recipient_role_multiloc_key
@@ -55,28 +55,24 @@ module EmailCampaigns
     end
 
     def self.recipient_segment_multiloc_key
-      'email_campaigns.admin_labels.recipient_segment.user_who_follow_the_input'
+      'email_campaigns.admin_labels.recipient_segment.users_who_follow_the_project'
     end
 
     def self.content_type_multiloc_key
-      'email_campaigns.admin_labels.content_type.inputs'
+      'email_campaigns.admin_labels.content_type.projects'
     end
 
     def self.trigger_multiloc_key
-      'email_campaigns.admin_labels.trigger.input_is_updated'
+      'email_campaigns.admin_labels.trigger.project_published'
     end
 
-    def generate_commands(recipient:, activity:, time: nil)
-      notification = activity.item
-      name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
+    def generate_commands(recipient:, activity:)
+      project = activity.item.project
       [{
         event_payload: {
-          official_feedback_author_multiloc: notification.official_feedback.author_multiloc,
-          official_feedback_body_multiloc: notification.official_feedback.body_multiloc,
-          official_feedback_url: Frontend::UrlService.new.model_to_url(notification.official_feedback, locale: recipient.locale),
-          post_published_at: notification.post.published_at.iso8601,
-          post_title_multiloc: notification.post.title_multiloc,
-          post_author_name: name_service.display_name!(notification.post.author)
+          project_title_multiloc: project.title_multiloc,
+          project_ideas_count: project.ideas_count,
+          project_url: Frontend::UrlService.model_to_path(project)
         }
       }]
     end

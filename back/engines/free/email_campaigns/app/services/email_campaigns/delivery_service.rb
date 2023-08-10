@@ -43,6 +43,7 @@ module EmailCampaigns
       Campaigns::ProjectModerationRightsReceived,
       Campaigns::ProjectPhaseStarted,
       Campaigns::ProjectPhaseUpcoming,
+      Campaigns::ProjectPublished,
       Campaigns::StatusChangeOnIdeaYouFollow,
       Campaigns::StatusChangeOnInitiativeYouFollow,
       Campaigns::ThresholdReachedForAdmin,

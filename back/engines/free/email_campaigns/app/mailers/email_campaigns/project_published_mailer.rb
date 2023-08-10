@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 module EmailCampaigns
-  class StatusChangeOnInitiativeYouFollowMailer < ApplicationMailer
+  class ProjectPublishedMailer < ApplicationMailer
     private
 
     def subject
-      format_message('subject')
+      format_message('subject', values: { organizationName: organization_name })
     end
 
     def header_title
@@ -16,7 +16,7 @@ module EmailCampaigns
       format_message(
         'header_message',
         values: {
-          initiativeTitle: localize_for_recipient(event.post_title_multiloc),
+          ideaTitle: localize_for_recipient(event.post_title_multiloc),
           organizationName: organization_name
         }
       )

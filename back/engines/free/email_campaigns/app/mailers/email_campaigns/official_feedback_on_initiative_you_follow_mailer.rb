@@ -15,22 +15,18 @@ module EmailCampaigns
     end
 
     def header_title
-      format_message('main_header', values: { officialName: organization_name })
+      format_message('header_title', values: { officialName: organization_name })
     end
 
     def header_message
       format_message(
-        'event_description',
+        'header_message',
         values: {
           initiativeTitle: localize_for_recipient(event.post_title_multiloc),
           officialName: localize_for_recipient(event.official_feedback_author_multiloc),
           organizationName: organization_name
         }
       )
-    end
-
-    def preheader
-      format_message('preheader', values: { officialName: author_name })
     end
   end
 end

@@ -55,7 +55,7 @@ module EmailCampaigns
     end
 
     def self.recipient_segment_multiloc_key
-      'email_campaigns.admin_labels.recipient_segment.user_who_published_the_input'
+      'email_campaigns.admin_labels.recipient_segment.user_who_follow_the_input'
     end
 
     def self.content_type_multiloc_key
