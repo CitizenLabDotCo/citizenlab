@@ -999,7 +999,6 @@
   "app.containers.InitiativesIndexPage.explanationContent": "Masz propozycję, którą chcesz złożyć i jesteś ciekaw, czy inni ludzie też ją popierają? Umieść ją tutaj, udowodnij, że ma ona poparcie poprzez zebranie {constraints}, a {orgName} zwróci się do Ciebie. {link}",
   "app.containers.InitiativesIndexPage.explanationTitle": "Jak to działa?",
   "app.containers.InitiativesIndexPage.footer": "Zgłoś swoją propozycją i spraw, by inni się o niej dowiedzieli",
-  "app.containers.InitiativesIndexPage.footerPostingDisabled": "Popieraj propozycje obywatelskie i spraw, by twój głos został dostrzeżony!",
   "app.containers.InitiativesIndexPage.header": "Opublikuj swoją propozycję tutaj i umieść ją w porządku dziennym {styledOrgName}",
   "app.containers.InitiativesIndexPage.headerPostingProposalDisabled": "Zapoznaj się z propozycjami {styledOrgName}",
   "app.containers.InitiativesIndexPage.invisibleInitiativesPageTitle": "Zapoznaj się z propozycjami",

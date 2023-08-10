@@ -999,7 +999,6 @@
   "app.containers.InitiativesIndexPage.explanationContent": "Sie haben einen Vorschlag, den Sie bei {orgName} einreichen möchten, und sind neugierig, ob er auch von anderen unterstützt wird? Stellen Sie ihn hier ein, weisen Sie nach, dass er durch das Sammeln von {constraints} unterstützt wird, und {orgName} wird sich bei Ihnen melden. {link}",
   "app.containers.InitiativesIndexPage.explanationTitle": "Wie funktioniert es?",
   "app.containers.InitiativesIndexPage.footer": "Reiche einen Vorschlag ein und gib deiner Meinung eine Stimme",
-  "app.containers.InitiativesIndexPage.footerPostingDisabled": "Unterstützen Sie die Vorschläge der Bürger:innen und verschaffen Sie Ihrer Stimme Gehör!",
   "app.containers.InitiativesIndexPage.header": "Veröffentlichen Sie Ihren Vorschlag hier und setzen Sie ihn auf die Tagesordnung von {styledOrgName}",
   "app.containers.InitiativesIndexPage.headerPostingProposalDisabled": "Untersuchen Sie Bürgervorschläge für {styledOrgName}",
   "app.containers.InitiativesIndexPage.invisibleInitiativesPageTitle": "Vorschläge entdecken",

@@ -999,7 +999,6 @@
   "app.containers.InitiativesIndexPage.explanationContent": "Имате предлог који желите да поднесете {orgName}, и радознали сте да видите да ли га подржавају и други људи? Објавите га овде, докажите да је подржано прикупљањем {constraints}, а {orgName} ће вам се вратити. {link}",
   "app.containers.InitiativesIndexPage.explanationTitle": "Како то функционише?",
   "app.containers.InitiativesIndexPage.footer": "Започните свој предлог и нека се ваш глас чује",
-  "app.containers.InitiativesIndexPage.footerPostingDisabled": "Подржите предлоге других и нека се ваш глас чује!",
   "app.containers.InitiativesIndexPage.header": "Поставите свој предлог овде и ставите га на дневни ред {styledOrgName}",
   "app.containers.InitiativesIndexPage.headerPostingProposalDisabled": "Истражите предлоге за {styledOrgName}",
   "app.containers.InitiativesIndexPage.invisibleInitiativesPageTitle": "Откријте предлоге",

@@ -999,7 +999,6 @@
   "app.containers.InitiativesIndexPage.explanationContent": "Você tem uma proposta que deseja enviar para {orgName}, e está curioso para ver se outras pessoas também a apoiam? Coloque-a aqui, prove que ela é suportada coletando {constraints}, e {orgName} irá retornar para você. {link}",
   "app.containers.InitiativesIndexPage.explanationTitle": "Como é que funciona?",
   "app.containers.InitiativesIndexPage.footer": "Comece a sua própria proposta e faça ouvir a sua voz",
-  "app.containers.InitiativesIndexPage.footerPostingDisabled": "Apoie as propostas dos cidadãos e faça ouvir a sua voz!",
   "app.containers.InitiativesIndexPage.header": "Publique aqui a sua proposta e coloque-a na agenda de {styledOrgName}",
   "app.containers.InitiativesIndexPage.headerPostingProposalDisabled": "Explore propostas de cidadãos para {styledOrgName}",
   "app.containers.InitiativesIndexPage.invisibleInitiativesPageTitle": "Descobrir propostas",

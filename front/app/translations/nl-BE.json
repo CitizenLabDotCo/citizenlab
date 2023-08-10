@@ -999,7 +999,6 @@
   "app.containers.InitiativesIndexPage.explanationContent": "Je hebt een voorstel dat je wil voorleggen aan {orgName} en je bent benieuwd of andere mensen het ook steunen? Plaats het hier, verzamel {constraints} om te tonen dat het draagkracht heeft en {orgName} komt bij je terug. {link}",
   "app.containers.InitiativesIndexPage.explanationTitle": "Hoe werkt het?",
   "app.containers.InitiativesIndexPage.footer": "Start je eigen voorstel en laat je stem horen",
-  "app.containers.InitiativesIndexPage.footerPostingDisabled": "Steun de voorstellen van burgers en laat je stem horen!",
   "app.containers.InitiativesIndexPage.header": "Plaats je voorstel hier en breng het op de agenda van {styledOrgName}",
   "app.containers.InitiativesIndexPage.headerPostingProposalDisabled": "Ontdek de burgervoorstellen van {styledOrgName}",
   "app.containers.InitiativesIndexPage.invisibleInitiativesPageTitle": "Ontdek de voorstellen",

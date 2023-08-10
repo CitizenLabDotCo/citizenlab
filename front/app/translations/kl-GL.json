@@ -871,7 +871,6 @@
   "app.containers.InitiativesIndexPage.explanationContent": "Nassiunniakkannik siunnersuutissaqarputit uunga {orgName}, takorusuppallu innuttaasut allat aamma tapersersorneraat? Ugguuna nassiutiguk, taava {constraints}-imik pissaasit, unalu {orgName} ilinnut uterumaarpoq. {link} ",
   "app.containers.InitiativesIndexPage.explanationTitle": "Qanoq ingerlasarpa?",
   "app.containers.InitiativesIndexPage.footer": "Nammineq innuttaasutut siunnersuusiorit nipillu tusaatillugu.",
-  "app.containers.InitiativesIndexPage.footerPostingDisabled": "Support citizen proposals and make your voice heard!",
   "app.containers.InitiativesIndexPage.header": "Siunnersuutit uunga allaguk, uanilu {styledOrgName} oqaluuserisassanngortillugu",
   "app.containers.InitiativesIndexPage.headerPostingProposalDisabled": "Explore citizen proposals for {styledOrgName}",
   "app.containers.InitiativesIndexPage.invisibleInitiativesPageTitle": "Innuttaasut siunnersuutaat misissukkit",

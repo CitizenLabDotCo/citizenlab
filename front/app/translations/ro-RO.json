@@ -865,7 +865,6 @@
   "app.containers.InitiativesIndexPage.explanationContent": "Ai o propunere pe care dorești sa o trimiți {orgName} și ești curios să vezi dacă și alte persoane îți împărtășesc opinia? O poți posta aici pentru a strânge minimul de {constraints} și {orgName} te va contacta.",
   "app.containers.InitiativesIndexPage.explanationTitle": "Cum funcționează?",
   "app.containers.InitiativesIndexPage.footer": "Scrie propria ta propunere și fă-te astfel auzit în comunitatea ta!",
-  "app.containers.InitiativesIndexPage.footerPostingDisabled": "Sprijină propunerile concetățenilor tăi și fă-ți vocea auzită!",
   "app.containers.InitiativesIndexPage.header": "Postează aici propunerea ta și pune-o pe ordinea de zi a {styledOrgName}",
   "app.containers.InitiativesIndexPage.headerPostingProposalDisabled": "Explorați propunerile cetățenilor pentru {styledOrgName}",
   "app.containers.InitiativesIndexPage.invisibleInitiativesPageTitle": "Descoperă propuneri",

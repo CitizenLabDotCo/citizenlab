@@ -999,7 +999,6 @@
   "app.containers.InitiativesIndexPage.explanationContent": "Har du ett förslag som du vill skicka till {orgName} och är nyfiken på om andra personer också stödjer det? Publicera det här, bevisa att det stöds genom att samla in {constraints}, så återkommer {orgName} till dig. {link}",
   "app.containers.InitiativesIndexPage.explanationTitle": "Hur fungerar det?",
   "app.containers.InitiativesIndexPage.footer": "Starta ditt eget förslag och gör din röst hörd",
-  "app.containers.InitiativesIndexPage.footerPostingDisabled": "Stöd andras förslag och gör din röst hörd!",
   "app.containers.InitiativesIndexPage.header": "Publicera ditt förslag här och sätt upp det på dagordningen för {styledOrgName}",
   "app.containers.InitiativesIndexPage.headerPostingProposalDisabled": "Upptäck förslag till {styledOrgName}",
   "app.containers.InitiativesIndexPage.invisibleInitiativesPageTitle": "Upptäck förslag",

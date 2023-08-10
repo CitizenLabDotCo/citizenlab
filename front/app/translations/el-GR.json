@@ -999,7 +999,6 @@
   "app.containers.InitiativesIndexPage.explanationContent": "Έχετε μια πρόταση που θέλετε να υποβάλετε στο {orgName} και είστε περίεργοι να δείτε αν την υποστηρίζουν και άλλοι; Δημοσιεύστε την εδώ, αποδείξτε ότι υποστηρίζεται συλλέγοντας {constraints}, και ο {orgName} θα επικοινωνήσει μαζί σας. {link}",
   "app.containers.InitiativesIndexPage.explanationTitle": "Πώς λειτουργεί;",
   "app.containers.InitiativesIndexPage.footer": "Ξεκινήστε τη δική σας πρόταση και κάντε τη φωνή σας να ακουστεί",
-  "app.containers.InitiativesIndexPage.footerPostingDisabled": "Υποστηρίξτε τις προτάσεις άλλων και κάντε τη φωνή σας να ακουστεί!",
   "app.containers.InitiativesIndexPage.header": "Δημοσιεύστε την πρότασή σας εδώ και βάλτε την στην ημερήσια διάταξη του {styledOrgName}",
   "app.containers.InitiativesIndexPage.headerPostingProposalDisabled": "Εξερευνήστε προτάσεις για το {styledOrgName}",
   "app.containers.InitiativesIndexPage.invisibleInitiativesPageTitle": "Ανακαλύψτε προτάσεις",

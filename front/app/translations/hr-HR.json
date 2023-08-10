@@ -999,7 +999,6 @@
   "app.containers.InitiativesIndexPage.explanationContent": "Imate prijedlog koji biste željeli predati {orgName} i zanima vas bi li ga i drugi podržali? Objavite ga ovdje i pokažite da ima podršku sakupljajući {constraints}, a {orgName} će vas kontaktirati. {link}",
   "app.containers.InitiativesIndexPage.explanationTitle": "Kako funkcionira?",
   "app.containers.InitiativesIndexPage.footer": "Pokrenite svoj prijedlog i neka se vaš glas čuje!",
-  "app.containers.InitiativesIndexPage.footerPostingDisabled": "Podržite prijedloge drugih i učinite da se vaš glas čuje!",
   "app.containers.InitiativesIndexPage.header": "Objavite svoj prijedlog i stavite ga na dnevni red {styledOrgName}",
   "app.containers.InitiativesIndexPage.headerPostingProposalDisabled": "Istražite prijedloge koje su građani uputili organizaciji {styledOrgName}",
   "app.containers.InitiativesIndexPage.invisibleInitiativesPageTitle": "Otkrijte prijedloge",

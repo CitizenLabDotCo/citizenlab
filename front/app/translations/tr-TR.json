@@ -999,7 +999,6 @@
   "app.containers.InitiativesIndexPage.explanationContent": "{orgName} için sunmak istediğiniz bir öneriniz var ve başkalarının da bunu destekleyip desteklemediğini mi merak ediyorsunuz? Burada yayınlayın ve {constraints} toplayarak önerinizin desteklendiğini kanıtlayın, {orgName} sizinle iletişim kuracaktır. {link}",
   "app.containers.InitiativesIndexPage.explanationTitle": "İşleyiş şekli nedir?",
   "app.containers.InitiativesIndexPage.footer": "Sesinizi kendi önerinizi başlatarak duyurun",
-  "app.containers.InitiativesIndexPage.footerPostingDisabled": "Sesinizi başkalarının önerilerini destekleyerek duyurun.",
   "app.containers.InitiativesIndexPage.header": "Önerinizi burada yayınlayın ve {styledOrgName} gündemine taşıyın",
   "app.containers.InitiativesIndexPage.headerPostingProposalDisabled": "{styledOrgName} için olan önerileri inceleyin",
   "app.containers.InitiativesIndexPage.invisibleInitiativesPageTitle": "Önerileri keşfedin",
