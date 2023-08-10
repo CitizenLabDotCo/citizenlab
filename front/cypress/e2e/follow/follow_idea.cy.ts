@@ -80,7 +80,7 @@ describe('Follow idea', () => {
     cy.get('[data-cy="e2e-follow-button"]').should('exist');
   });
 
-  it('shows a follow option to a new user and shows the idea in the activity following page after following', () => {
+  it('shows a follow option to a new user and shows the idea in the activity following page after following where it can be unfollowed', () => {
     cy.setLoginCookie(email, password);
 
     cy.visit(`/ideas/${ideaSlug2}`);
@@ -101,5 +101,10 @@ describe('Follow idea', () => {
 
     cy.get('.e2e-sort-items').find('.e2e-sort-item-Idea').click();
     cy.get('.e2e-card-title').contains(ideaTitle2);
+
+    cy.get('[data-cy="e2e-unfollow-button"]').should('exist');
+    cy.get('[data-cy="e2e-unfollow-button"]').click();
+
+    cy.get('.e2e-card-title').should('not.exist');
   });
 });
