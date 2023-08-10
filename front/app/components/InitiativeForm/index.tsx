@@ -134,8 +134,7 @@ const InitiativeForm = ({
   postAnonymously,
 }: Props) => {
   const { data: appConfiguration } = useAppConfiguration();
-  // const initiativeCosponsorsRequired = useInitiativeCosponsorsRequired();
-  const initiativeCosponsorsRequired = true;
+  const initiativeCosponsorsRequired = useInitiativeCosponsorsRequired();
   const initiativeReviewRequired = useInitiativeReviewRequired();
   const { formatMessage } = useIntl();
   const [touched, setTouched] = useState<{
