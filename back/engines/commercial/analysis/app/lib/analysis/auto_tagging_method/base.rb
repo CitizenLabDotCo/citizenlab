@@ -2,7 +2,7 @@
 
 module Analysis
   class AutoTaggingMethod::Base
-    attr_reader :analysis, :task
+    attr_reader :analysis, :task, :input_to_text
 
     class AutoTaggingFailedError < StandardError; end
 
@@ -10,14 +10,23 @@ module Analysis
       case auto_tagging_method
       when 'controversial'
         AutoTaggingMethod::Controversial.new(*params)
+      when 'platform_topic'
+        AutoTaggingMethod::PlatformTopic.new(*params)
+      when 'sentiment'
+        AutoTaggingMethod::Sentiment.new(*params)
+      when 'language'
+        AutoTaggingMethod::Language.new(*params)
+      when 'nlp_topic'
+        AutoTaggingMethod::NLPTopic.new(*params)
       else
         raise ArgumentError, "Unsupported auto_tagging_method #{auto_tagging_method}"
       end
     end
 
-    def initialize(analysis, auto_tagging_task)
-      @analysis = analysis
+    def initialize(auto_tagging_task)
+      @analysis = auto_tagging_task.analysis
       @task = auto_tagging_task
+      @input_to_text = InputToText.new(@analysis.custom_fields)
     end
 
     def execute
@@ -35,6 +44,13 @@ module Analysis
 
     def update_progress(progress)
       task.update!(progress: progress)
+    end
+
+    def deduct_locale(input)
+      input.author&.locale ||
+        input.title_multiloc&.keys&.first ||
+        input.body_multiloc&.keys&.first ||
+        AppConfiguration.instance.settings('core', 'locales').first
     end
   end
 end
