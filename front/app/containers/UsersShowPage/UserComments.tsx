@@ -5,8 +5,7 @@ import { groupBy } from 'lodash-es';
 // components
 import PostCommentGroup from './PostCommentGroup';
 import Button from 'components/UI/Button';
-
-// resources
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // style
 import styled, { useTheme } from 'styled-components';
@@ -19,6 +18,9 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import useComments from 'api/comments/useComments';
 import useAuthUser from 'api/me/useAuthUser';
+
+// hooks
+import useUserCommentsCount from 'api/user_comments_count/useUserCommentsCount';
 
 const Container = styled.div`
   display: flex;
@@ -58,6 +60,10 @@ interface Props {
 export const UserComments = ({ userId }: Props) => {
   const theme = useTheme();
   const { data: authUser } = useAuthUser();
+  const isSmallerThanPhone = useBreakpoint('phone');
+  const { data: commentsCount } = useUserCommentsCount({
+    userId,
+  });
   const {
     data: comments,
     hasNextPage,
@@ -107,6 +113,19 @@ export const UserComments = ({ userId }: Props) => {
             {...messages.invisibleTitleUserComments}
           />
         </ScreenReaderOnly>
+        {commentsCount && isSmallerThanPhone && (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            mb="16px"
+          >
+            <FormattedMessage
+              {...messages.commentsWithCount}
+              values={{ commentsCount: commentsCount.data.attributes.count }}
+            />
+          </Box>
+        )}
         <>
           {Object.keys(commentGroups).map((postId) => {
             const commentGroup = commentGroups[postId];

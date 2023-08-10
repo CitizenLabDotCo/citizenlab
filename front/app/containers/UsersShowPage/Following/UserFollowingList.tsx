@@ -37,42 +37,64 @@ const UserFollowingList = ({ userId, value }: Props) => {
           </Text>
         </Box>
       ) : (
-        <Box display="flex" flexWrap="wrap" gap="20px">
-          {followers?.data.map((follower) => (
-            <>
-              {follower.relationships.followable.data.type === 'idea' && (
-                <Box width="calc(50% - 20px)">
-                  <IdeaCard
-                    ideaId={follower.relationships.followable.data.id}
-                    showFollowButton
-                  />
+        <Box display="flex" flexWrap="wrap" gap="20px" w="100%">
+          {followers?.data.map((follower) => {
+            if (follower.relationships.followable.data.type === 'idea') {
+              return (
+                <Box
+                  key={follower.id}
+                  display="flex"
+                  flex="1 0 calc(50% - 20px)"
+                >
+                  <Box width="100%">
+                    <IdeaCard
+                      ideaId={follower.relationships.followable.data.id}
+                      showFollowButton
+                    />
+                  </Box>
                 </Box>
-              )}
-              {follower.relationships.followable.data.type === 'initiative' && (
-                <Box width="calc(100% * (1 / 3) - 26px)">
+              );
+            } else if (
+              follower.relationships.followable.data.type === 'initiative'
+            ) {
+              return (
+                <Box
+                  key={follower.id}
+                  display="flex"
+                  flex="1 0 calc(100% * (1 / 3) - 26px)"
+                >
                   <InitiativeCard
                     initiativeId={follower.relationships.followable.data.id}
                     showFollowButton
                   />
                 </Box>
-              )}
-              {follower.relationships.followable.data.type === 'project' && (
+              );
+            } else if (
+              follower.relationships.followable.data.type === 'project'
+            ) {
+              return (
                 <ProjectCard
+                  key={follower.id}
                   projectId={follower.relationships.followable.data.id}
                   size="small"
                   showFollowButton
                 />
-              )}
-              {follower.relationships.followable.data.type === 'folder' && (
+              );
+            } else if (
+              follower.relationships.followable.data.type === 'folder'
+            ) {
+              return (
                 <ProjectFolderCard
+                  key={follower.id}
                   folderId={follower.relationships.followable.data.id}
                   size="small"
                   layout="threecolumns"
                   showFollowButton
                 />
-              )}
-            </>
-          ))}
+              );
+            }
+            return null;
+          })}
         </Box>
       )}
     </Box>
