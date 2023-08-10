@@ -41,7 +41,7 @@ module Analysis
         when :negative
           negative_tag
         end
-        Tagging.find_or_create_by!(input_id: input.id, tag: tag)
+        Tagging.find_or_create_by!(input_id: input.id, tag: tag) if tag
       end
     rescue StandardError => e
       raise AutoTaggingFailedError, e

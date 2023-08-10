@@ -2,7 +2,7 @@
 
 module Analysis
   class Summary < ::ApplicationRecord
-    SUMMARIZATION_METHODS = %w[gpt4 bogus]
+    SUMMARIZATION_METHODS = %w[gpt bogus]
     FILTERS_JSON_SCHEMA_STR = Rails.root.join('engines/commercial/analysis/config/schemas/filters.json_schema').read
     FILTERS_JSON_SCHEMA = JSON.parse(FILTERS_JSON_SCHEMA_STR)
 

@@ -41,7 +41,7 @@ RSpec.describe Analysis::SummarizationMethod do
     end
   end
 
-  describe 'Gpt4 summarization' do
+  describe 'Gpt summarization' do
     it 'works' do
       analysis = create(:analysis, custom_fields: [create(
         :custom_field,
@@ -54,7 +54,7 @@ RSpec.describe Analysis::SummarizationMethod do
         :summarization_task,
         analysis: analysis,
         state: 'queued',
-        summary: create(:summary, analysis: analysis, summary: nil, summarization_method: 'gpt4', filters: { comments_from: 5 })
+        summary: create(:summary, analysis: analysis, summary: nil, summarization_method: 'gpt', filters: { comments_from: 5 })
       )
       idea3 = with_options project: summarization_task.analysis.project do
         create(:idea, comments_count: 5)
@@ -64,7 +64,7 @@ RSpec.describe Analysis::SummarizationMethod do
 
       mock_openai_api = Analysis::OpenaiApi.new
       summarization_method = Analysis::SummarizationMethod::Base.for_summarization_method(
-        'gpt4',
+        'gpt',
         summarization_task,
         openai_api: mock_openai_api
       )
@@ -110,11 +110,11 @@ RSpec.describe Analysis::SummarizationMethod do
         :summarization_task,
         analysis: analysis,
         state: 'queued',
-        summary: create(:summary, analysis: analysis, summary: nil, summarization_method: 'gpt4')
+        summary: create(:summary, analysis: analysis, summary: nil, summarization_method: 'gpt')
       )
       mock_openai_api = Analysis::OpenaiApi.new
       summarization_method = Analysis::SummarizationMethod::Base.for_summarization_method(
-        'gpt4',
+        'gpt',
         summarization_task,
         openai_api: mock_openai_api
       )

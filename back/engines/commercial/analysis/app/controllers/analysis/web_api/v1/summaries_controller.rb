@@ -22,7 +22,7 @@ module Analysis
         def create
           @summary = Summary.new(
             analysis: @analysis,
-            summarization_method: 'gpt4',
+            summarization_method: 'gpt',
             background_task: SummarizationTask.new(analysis: @analysis),
             **summary_params
           )

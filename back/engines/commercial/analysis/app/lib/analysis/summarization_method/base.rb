@@ -5,11 +5,12 @@ module Analysis
     attr_reader :analysis, :task, :summary, :input_to_text
 
     class SummarizationFailedError < StandardError; end
+    class TooManyInputs < SummarizationFailedError; end
 
     def self.for_summarization_method summarization_method, *params, **kwargs
       case summarization_method
-      when 'gpt4'
-        SummarizationMethod::Gpt4.new(*params, **kwargs)
+      when 'gpt'
+        SummarizationMethod::Gpt.new(*params, **kwargs)
       when 'bogus'
         SummarizationMethod::Bogus.new(*params, **kwargs)
       else
@@ -22,6 +23,14 @@ module Analysis
       @task = summarization_task
       @summary = summarization_task.summary
       @input_to_text = InputToText.new(@analysis.custom_fields)
+    end
+
+    # Before calling `execute`, this method can be used to check whether the
+    # method is able to process the request. Returns nil if all is fine, or one
+    # of the following error symbols if it's not:
+    # - :too_many_inputs
+    def pre_check
+      raise NotImplementedError
     end
 
     def execute
