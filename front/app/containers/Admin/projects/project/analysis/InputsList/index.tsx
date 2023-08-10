@@ -3,8 +3,8 @@ import { Box, colors, Button } from '@citizenlab/cl2-component-library';
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
 import { useParams } from 'react-router-dom';
 import InputListItem from './InputListItem';
-import useAddAnalysisSummary from 'api/analysis_summaries/useAddAnalysisSummary';
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
+import SummarizeButton from './SummarizeButton';
 
 interface Props {
   onSelectInput: (inputId: string) => void;
@@ -19,32 +19,13 @@ const InputsList = ({ onSelectInput, selectedInputId }: Props) => {
     analysisId,
     queryParams: filters,
   });
-  const { mutate: addsummary, isLoading } = useAddAnalysisSummary();
 
   const inputs = data?.pages.map((page) => page.data).flat();
 
-  const handleSummaryCreate = () => {
-    addsummary({
-      analysisId,
-      filters,
-    });
-  };
-
   return (
     <Box bg={colors.white} w="100%">
-      <Box display="flex" justifyContent="flex-end">
-        <Button
-          icon="flash"
-          mb="12px"
-          size="s"
-          w="100%"
-          buttonStyle="secondary-outlined"
-          onClick={handleSummaryCreate}
-          disabled={isLoading}
-        >
-          Auto-summarize {inputs?.length} inputs
-        </Button>
-      </Box>
+      <SummarizeButton inputsCount={inputs?.length} />
+
       {inputs?.map((input) => (
         <InputListItem
           key={input.id}
