@@ -21,13 +21,23 @@ describe SideFxProjectService do
       service.after_create(continuous_project, user)
     end
 
-    it "doesn't call after_create on SideFxParticipationContextService for a timeline project" do
-      service.after_create(project, user)
-    end
-
     it 'runs the description through the text image service' do
       expect_any_instance_of(TextImageService).to receive(:swap_data_images).with(project, :description_multiloc).and_return(project.description_multiloc)
       service.after_create(project, user)
+    end
+
+    it "logs a 'published' action when a published project is created" do
+      expect { service.after_create(project, user) }
+        .to have_enqueued_job(LogActivityJob)
+        .with(project, 'published', user, project.updated_at.to_i, anything)
+    end
+
+    it "does not log a 'published' action when a draft project is created" do
+      project.admin_publication.update!(publication_status: 'draft')
+
+      expect { service.after_create(project, user) }
+        .not_to have_enqueued_job(LogActivityJob)
+        .with(project, 'published', user, project.updated_at.to_i, anything)
     end
   end
 
@@ -36,24 +46,38 @@ describe SideFxProjectService do
       expect_any_instance_of(TextImageService).to receive(:swap_data_images).with(project, :description_multiloc).and_return(project.description_multiloc)
       service.before_update(project, user)
     end
-  end
-
-  describe 'after_update' do
-    it "logs a 'changed' action job when the project has changed" do
-      project.update(title_multiloc: { en: 'changed' })
-      expect { service.after_update(project, user) }
-        .to have_enqueued_job(LogActivityJob)
-        .with(project, 'changed', user, project.updated_at.to_i, project_id: project.id)
-    end
 
     it 'calls before_update on SideFxParticipationContextService for a continuous project' do
       continuous_project = build(:continuous_project)
       expect(sfx_pc).to receive(:before_update).with(continuous_project, user)
       service.before_update(continuous_project, user)
     end
+  end
 
-    it "doesn't call before_update on SideFxParticipationContextService for a timeline project" do
-      service.before_update(project, user)
+  describe 'after_update' do
+    it "logs a 'changed' action job when the project has changed" do
+      project.update!(title_multiloc: { en: 'changed' })
+      expect { service.after_update(project, user) }
+        .to have_enqueued_job(LogActivityJob)
+        .with(project, 'changed', user, project.updated_at.to_i, project_id: project.id)
+    end
+
+    it "logs a 'published' action when a draft project is published" do
+      project.admin_publication.update!(publication_status: 'draft')
+      project.admin_publication.update!(publication_status: 'published')
+
+      expect { service.after_update(project, user) }
+        .to have_enqueued_job(LogActivityJob)
+        .with(project, 'published', user, project.updated_at.to_i, anything)
+    end
+
+    it "does not log a 'published' action when a draft project is archived" do
+      project.admin_publication.update!(publication_status: 'draft')
+      project.admin_publication.update!(publication_status: 'archived')
+
+      expect { service.after_update(project, user) }
+        .not_to have_enqueued_job(LogActivityJob)
+        .with(project, 'published', user, project.updated_at.to_i, anything)
     end
   end
 
@@ -62,10 +86,6 @@ describe SideFxProjectService do
       continuous_project = build(:continuous_project)
       expect(sfx_pc).to receive(:before_destroy).with(continuous_project, user)
       service.before_destroy(continuous_project, user)
-    end
-
-    it "doesn't call before_destroy on SideFxParticipationContextService for a timeline project" do
-      service.before_destroy(project, user)
     end
   end
 

@@ -21,6 +21,7 @@ class SideFxProjectService
     log_publication_status_change(project, user, change: [nil, project.admin_publication.publication_status])
 
     @sfx_pc.after_create project, user if project.participation_context?
+    after_publish project, user if project.admin_publication.published?
   end
 
   def after_copy(source_project, copied_project, user, start_time)
@@ -49,6 +50,7 @@ class SideFxProjectService
 
     after_folder_changed project, user if @folder_id_was != project.folder_id
     @sfx_pc.after_update project, user if project.participation_context?
+    after_publish project, user if project.admin_publication.published? && project.admin_publication.publication_status_was != 'published'
   end
 
   def before_destroy(project, user)
@@ -83,6 +85,10 @@ class SideFxProjectService
     LogActivityJob
       .set(wait: 20.seconds)
       .perform_later(project, change.last, user, Time.now.to_i, payload: change)
+  end
+
+  def after_publish(project, user)
+    LogActivityJob.perform_later project, 'published', user, project.updated_at.to_i
   end
 
   def after_folder_changed(project, current_user)
