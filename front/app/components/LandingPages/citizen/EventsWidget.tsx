@@ -26,34 +26,14 @@ const CardsContainer = styled.div`
   flex-direction: row;
   justify-content: space-between;
 
-  > * {
-    margin: 0px 19px;
-  }
-  > :first-child {
-    margin-left: 0px;
-  }
-  > :last-child {
-    margin-right: 0px;
-  }
-
   ${media.tablet`
     flex-direction: column;
-
-    > * {
-      margin: 19px 0px;
-    }
-    > :first-child {
-      margin-top: 0px;
-    }
-    > :last-child {
-      margin-bottom: 0px;
-    }
+    gap: 16px;
   `}
 `;
 
 const StyledEventCard = styled(EventCard)`
-  border-radius: 3px;
-  padding: 20px;
+  flex: 0 0 32.3%;
 `;
 
 const Header = styled.div`
