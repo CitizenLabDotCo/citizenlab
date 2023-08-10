@@ -28,7 +28,7 @@ interface Props {
 
 export const UserEvents = ({ userId }: Props) => {
   return (
-    <Container className="e2e-profile-comments">
+    <Container className="e2e-profile-events">
       <ScreenReaderOnly>
         <FormattedMessage
           tagName="h2"
