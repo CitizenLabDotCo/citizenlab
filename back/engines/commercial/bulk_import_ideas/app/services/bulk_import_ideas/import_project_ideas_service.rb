@@ -43,22 +43,23 @@ module BulkImportIdeas
         idea_row[:body_multiloc] = { @locale.to_sym => doc['Body:'][:value] }
         idea_row[:user_email] = doc['Email:'][:value]
         idea_row[:user_name] = doc['Name:'][:value]
-        idea_row[:custom_field_values] = add_custom_fields(doc)
+        idea_row[:custom_field_values] = process_custom_fields(doc)
         idea_row
         # TODO: Custom fields
       end
     end
 
     # Do this lookup for all fields, not just custom
-    def add_custom_fields(doc)
+    def process_custom_fields(doc)
       participation_method = Factory.instance.participation_method_for(@project)
       custom_form = @project.custom_form || participation_method.create_default_form!
 
       custom_fields = {}
 
       # Text fields
+      text_field_types = %w[text multiline_text]
       text_fields = IdeaCustomFieldsService.new(custom_form).all_fields.filter_map do |field|
-        next unless field[:input_type] == 'text'
+        next unless text_field_types.include? field[:input_type]
 
         { name: field[:title_multiloc][@locale], key: field[:key] }
       end
