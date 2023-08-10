@@ -33,7 +33,7 @@ const InputListItem = ({ inputId }: Props) => {
         />
       ))}
       <Divider />
-      <Taggings inputId={inputId} />
+      <Taggings inputId={inputId} onlyShowTagged={false} />
     </Box>
   );
 };

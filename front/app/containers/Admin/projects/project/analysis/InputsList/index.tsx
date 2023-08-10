@@ -1,11 +1,10 @@
 import React from 'react';
 import { Box, colors, Button } from '@citizenlab/cl2-component-library';
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
-import { useSearchParams, useParams } from 'react-router-dom';
-import { pick } from 'lodash-es';
+import { useParams } from 'react-router-dom';
 import InputListItem from './InputListItem';
-import { handleArraySearchParam } from '../util';
 import useAddAnalysisSummary from 'api/analysis_summaries/useAddAnalysisSummary';
+import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 
 interface Props {
   onSelectInput: (inputId: string) => void;
@@ -14,26 +13,11 @@ interface Props {
 
 const InputsList = ({ onSelectInput, selectedInputId }: Props) => {
   const { analysisId } = useParams() as { analysisId: string };
-  const [searchParams] = useSearchParams();
-
-  const allParams = Object.fromEntries(searchParams.entries());
-  const filters = pick(allParams, [
-    'search',
-    'published_at_from',
-    'published_at_to',
-    'reactions_from',
-    'reactions_to',
-    'votes_from',
-    'votes_to',
-    'comments_from',
-    'comments_to',
-  ]);
-
-  const selectedTags = handleArraySearchParam(searchParams, 'tag_ids');
+  const filters = useAnalysisFilterParams();
 
   const { data, fetchNextPage, hasNextPage } = useInfiniteAnalysisInputs({
     analysisId,
-    queryParams: { ...filters, tag_ids: selectedTags },
+    queryParams: filters,
   });
   const { mutate: addsummary, isLoading } = useAddAnalysisSummary();
 
@@ -42,22 +26,23 @@ const InputsList = ({ onSelectInput, selectedInputId }: Props) => {
   const handleSummaryCreate = () => {
     addsummary({
       analysisId,
-      filters: { ...filters, tag_ids: selectedTags },
+      filters,
     });
   };
 
   return (
-    <Box bg={colors.white} w="100%" p="24px">
+    <Box bg={colors.white} w="100%">
       <Box display="flex" justifyContent="flex-end">
         <Button
-          icon="pen"
-          size="s"
+          icon="flash"
           mb="12px"
-          buttonStyle="primary"
+          size="s"
+          w="100%"
+          buttonStyle="secondary-outlined"
           onClick={handleSummaryCreate}
           disabled={isLoading}
         >
-          Summarize
+          Auto-summarize {inputs?.length} inputs
         </Button>
       </Box>
       {inputs?.map((input) => (
