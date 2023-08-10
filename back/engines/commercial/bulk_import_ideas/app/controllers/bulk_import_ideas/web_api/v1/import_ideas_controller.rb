@@ -15,7 +15,7 @@ module BulkImportIdeas
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'ideas.xlsx'
     end
 
-    # Note: This will only work on a project endpoint
+    # NOTE: This will only work on a project endpoint
     def bulk_create_pdf
       docs = parse_pdf
       idea_rows = import_ideas_service.paper_docs_to_idea_rows docs
@@ -46,7 +46,7 @@ module BulkImportIdeas
     def bulk_create_pdf_params
       params
         .require(:import_ideas)
-        .permit(:pdf)
+        .permit(%i[pdf locale])
     end
 
     def parse_xlsx
@@ -68,7 +68,8 @@ module BulkImportIdeas
     end
 
     def import_ideas_service
-      @import_ideas_service ||= params[:project_id] ? ImportProjectIdeasService.new(params[:project_id]) : ImportIdeasService.new
+      locale = params[:import_ideas] ? bulk_create_pdf_params[:locale] : current_user.locale
+      @import_ideas_service ||= params[:project_id] ? ImportProjectIdeasService.new(params[:project_id], locale) : ImportIdeasService.new
     end
 
     def authorize_bulk_import_ideas

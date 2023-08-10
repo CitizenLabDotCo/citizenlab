@@ -40,15 +40,10 @@ const Testing = () => {
     <Box mx="100px" w="800px">
       <Title>Written idea importer</Title>
       <Box pb="10px">
-        Upload a PDF file of scanned forms. Max 40 pages. The PDF must use a
-        form printed from this project.
+        Upload a <strong>PDF file of scanned forms</strong>. The PDF must use a
+        form printed from this project available here.
       </Box>
-      {numIdeasAdded && (
-        <Box pb="10px">
-          {numIdeasAdded} ideas extracted and uploaded. Go to the input manager
-          to view and approve these ideas.
-        </Box>
-      )}
+
       <Box>
         {isLoading ? (
           <Spinner />
@@ -61,6 +56,13 @@ const Testing = () => {
           />
         )}
       </Box>
+      {numIdeasAdded && (
+        <Box pb="10px">
+          {numIdeasAdded} ideas extracted and uploaded. Handwriting scanning is
+          not 100% accurate so you must review and approved before they are
+          imported.
+        </Box>
+      )}
     </Box>
   );
 };

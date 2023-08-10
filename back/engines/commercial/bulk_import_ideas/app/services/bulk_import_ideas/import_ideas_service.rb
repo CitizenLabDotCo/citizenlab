@@ -109,6 +109,7 @@ module BulkImportIdeas
       add_location idea_row, idea_attributes
       add_phase idea_row, idea_attributes
       add_topics idea_row, idea_attributes
+      add_custom_fields idea_row, idea_attributes
 
       idea = Idea.new idea_attributes
       raise Error.new 'bulk_import_ideas_idea_not_valid', value: idea.errors.messages unless idea.valid?
@@ -275,6 +276,10 @@ module BulkImportIdeas
       rescue StandardError => _e
         raise Error.new 'bulk_import_ideas_image_url_not_valid', value: idea_row[:image_url], row: idea_row[:id]
       end
+    end
+
+    def add_custom_fields(idea_row, idea_attributes)
+      idea_attributes[:custom_field_values] = idea_row[:custom_field_values] || {}
     end
   end
 end

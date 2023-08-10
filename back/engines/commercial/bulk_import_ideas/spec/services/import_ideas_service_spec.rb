@@ -120,8 +120,37 @@ describe BulkImportIdeas::ImportIdeasService do
       idea1 = project.ideas.first
       expect(idea1.project_id).to eq project.id
 
-      idea2 = project.ideas.first
+      idea2 = project.ideas.last
       expect(idea2.project_id).to eq project.id
+    end
+
+    it 'imports multiple ideas with custom fields' do
+      project = create(:project, title_multiloc: { 'fr-BE' => 'Projet un', 'en' => 'Project 1' })
+      custom_form = create(:custom_form, :with_default_fields, participation_context: project)
+      create(:custom_field, resource: custom_form, key: 'custom_text_field', title_multiloc: { 'en' => 'Custom text field:' }, enabled: true)
+
+      idea_rows = [
+        {
+          title_multiloc: { 'en' => 'My idea title' },
+          body_multiloc: { 'en' => 'My idea description' },
+          custom_field_values: { text_field: 'custom text field content' },
+          project_id: project.id,
+          user_email: 'userimport@citizenlab.co'
+        },
+        {
+          title_multiloc: { 'en' => 'My idea title 2' },
+          body_multiloc: { 'en' => 'My idea description 2' },
+          custom_field_values: { text_field: 'custom text field content 2' },
+          project_id: project.id,
+          user_email: 'userimport@citizenlab.co'
+        }
+      ]
+      service.import_ideas idea_rows
+
+      expect(project.reload.ideas_count).to eq 2
+      expect(project.reload.ideas.pluck(:custom_field_values)).to match(
+        [{ 'text_field' => 'custom text field content' }, { 'text_field' => 'custom text field content 2' }]
+      )
     end
 
     it 'imports ideas with publication info' do

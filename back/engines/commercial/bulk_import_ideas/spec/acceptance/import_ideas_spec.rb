@@ -59,7 +59,7 @@ resource 'BulkImportIdeasImportIdeas' do
         example 'Bulk import ideas' do
           expect_any_instance_of(BulkImportIdeas::ImportIdeasService).to receive :import_ideas
           do_request
-          assert_status 200
+          assert_status 201
         end
       end
     end
@@ -88,7 +88,7 @@ resource 'BulkImportIdeasImportIdeas' do
         example 'Bulk import ideas from .xlsx' do
           expect_any_instance_of(BulkImportIdeas::ImportIdeasService).to receive :import_ideas
           do_request
-          assert_status 200
+          assert_status 201
         end
       end
 
@@ -99,12 +99,33 @@ resource 'BulkImportIdeasImportIdeas' do
           scope: :import_ideas,
           required: true
         )
+        parameter(:locale, 'Locale of the ideas being imported.', scope: :import_ideas, required: true)
 
         let(:pdf) { create_project_bulk_import_ideas_pdf }
+        let(:locale) { 'en' }
 
         example 'Bulk import ideas from scanned .pdf' do
+          # Stubbed to avoid call to google webservice
+          expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:parse_paper_form).and_return(
+            [
+              {
+                'Name:' => { value: 'Bob Test', type: '' },
+                'Email:' => { value: 'bob@test.com', type: '' },
+                'Title:' => { value: 'This is really a great title', type: '' },
+                'Body:' => { value: 'And this is the body', type: '' },
+                'Yes' => { value: nil, type: 'filled_checkbox' },
+                'No' => { value: nil, type: 'unfilled_checkbox' }
+              }
+            ]
+          )
+
           do_request
-          assert_status 200
+
+          assert_status 201
+          expect(response_data.count).to eq 2
+          expect(response_data.first[:attributes][:title_multiloc][:en]).to eq 'This is really a great title'
+          expect(User.all.count).to eq 3 # 2 new users created
+          expect(Idea.all.count).to eq 2
         end
       end
     end
@@ -139,8 +160,7 @@ resource 'BulkImportIdeasImportIdeas' do
   end
 
   def create_project_bulk_import_ideas_pdf
-    base_64_content = Base64.encode64 File.open('/cl2_back/engines/commercial/bulk_import_ideas/spec/fixtures/testscan.pdf').read
+    base_64_content = Base64.encode64 File.read('/cl2_back/engines/commercial/bulk_import_ideas/spec/fixtures/testscan.pdf')
     "data:application/pdf;base64,#{base_64_content}"
   end
-
 end
