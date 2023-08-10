@@ -44,6 +44,7 @@ import { IInitiativeCosponsor } from 'api/initiatives/types';
 
 // hooks
 import useInitiativeCosponsorsRequired from 'hooks/useInitiativeCosponsorsRequired';
+import Warning from 'components/UI/Warning';
 
 const Form = styled.form`
   display: flex;
@@ -426,9 +427,23 @@ const InitiativeForm = ({
         <StyledFormSection>
           <FormSectionTitle message={messages.cosponsorSectionTitle} />
           <Text>
-            {formatMessage(messages.cosponsorSubtextBeforeInput, {
-              cosponsorsNumber,
+            <FormattedMessage
+              {...messages.cosponsorSubtextBeforeInput}
+              values={{
+                noOfCosponsorsText: (
+                  <b>
+                  {formatMessage(messages.noOfCosponsorsText, {
+                      cosponsorsNumber,
             })}
+                  </b>
+                ),
+              }}
+            />
+          </Text>
+          <Text>
+            <Warning>
+              {formatMessage(messages.cosponsorSubtextBeforeInputNote)}
+            </Warning>
           </Text>
           <MentionsTextArea
             name="cosponsors"
@@ -439,8 +454,9 @@ const InitiativeForm = ({
             trigger=""
             onBlur={onBlur('cosponsors')}
             idAttribute="id"
+            padding="8px 8px 12px"
+            placeholder={formatMessage(messages.cosponsorsPlaceholder)}
           />
-          <Text>{formatMessage(messages.cosponsorSubtextAfterInput)}</Text>
         </StyledFormSection>
       )}
       <StyledFormSection>
