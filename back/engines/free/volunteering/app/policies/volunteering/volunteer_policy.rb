@@ -28,6 +28,7 @@ module Volunteering
     end
 
     def create?
+      # TODO: Don't allow volunteering if not allowed by participation context service
       user&.active? &&
         (record.user_id == user.id) &&
         ProjectPolicy.new(user, record.cause.participation_context.project).show?

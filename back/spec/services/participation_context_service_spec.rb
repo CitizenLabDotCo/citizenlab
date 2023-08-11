@@ -729,6 +729,41 @@ describe ParticipationContextService do
     end
   end
 
+  describe 'volunteeringing_disabled_reason_for_project' do
+    context 'for timeline projects' do
+      it 'returns nil when the current phase is a volunteering phase' do
+        project = create(
+          :project_with_current_phase,
+          phases_config: { sequence: 'xxcxx' },
+          current_phase_attrs: { participation_method: 'volunteering' }
+        )
+        expect(service.volunteering_disabled_reason_for_project(project, create(:user))).to be_nil
+      end
+
+      it "returns 'project_inactive' when the timeline is over" do
+        project = create(:project_with_past_phases)
+        expect(service.volunteering_disabled_reason_for_project(project, create(:user))).to eq 'project_inactive'
+      end
+    end
+
+    context 'continuous project' do
+      it 'returns nil when volunteering is permitted in a continuous project' do
+        project = create(:continuous_volunteering_project)
+        expect(service.volunteering_disabled_reason_for_project(project, create(:user))).to be_nil
+      end
+
+      it "returns 'project_inactive' when the project is archived" do
+        project = create(:continuous_volunteering_project, admin_publication_attributes: { publication_status: 'archived' })
+        expect(service.volunteering_disabled_reason_for_project(project, create(:user))).to eq 'project_inactive'
+      end
+
+      it "returns `not_volunteering` when we're not in a voluneering context" do
+        project = create(:continuous_poll_project)
+        expect(service.volunteering_disabled_reason_for_project(project, create(:user))).to eq 'not_volunteering'
+      end
+    end
+  end
+
   describe 'future_posting_enabled_phase' do
     it 'returns the first upcoming phase that has posting enabled' do
       project = create(

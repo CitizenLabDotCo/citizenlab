@@ -31,6 +31,11 @@ class ParticipationContextService
     idea_not_in_current_phase: 'idea_not_in_current_phase'
   }.freeze
 
+  VOLUNTEERING_DISABLED_REASONS = {
+    project_inactive: 'project_inactive',
+    not_volunteering: 'not_volunteering'
+  }.freeze
+
   ANNOTATING_DOCUMENT_DISABLED_REASONS = {
     project_inactive: 'project_inactive',
     not_document_annotation: 'not_document_annotation'
@@ -257,6 +262,21 @@ class ParticipationContextService
       VOTING_DISABLED_REASONS[:not_voting]
     else
       permission_denied_reason(user, 'voting', context)
+    end
+  end
+
+  def volunteering_disabled_reason_for_project(project, user)
+    context = get_participation_context project
+    volunteering_disabled_reason_for_context context, user
+  end
+
+  def volunteering_disabled_reason_for_context(context, user)
+    if !context
+      VOLUNTEERING_DISABLED_REASONS[:project_inactive]
+    elsif !context.volunteering?
+      VOLUNTEERING_DISABLED_REASONS[:not_volunteering]
+    else
+      permission_denied_reason(user, 'volunteering', context)
     end
   end
 

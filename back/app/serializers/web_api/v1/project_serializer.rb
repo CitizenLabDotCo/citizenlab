@@ -43,6 +43,7 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::ParticipationContextSerializer
     taking_survey_disabled_reason = @participation_context_service.taking_survey_disabled_reason_for_project object, user
     taking_poll_disabled_reason = @participation_context_service.taking_poll_disabled_reason_for_project object, user
     voting_disabled_reason = @participation_context_service.voting_disabled_reason_for_project object, user
+    volunteering_disabled_reason = @participation_context_service.volunteering_disabled_reason_for_project object, user
     {
       posting_idea: {
         enabled: !posting_disabled_reason,
@@ -85,6 +86,10 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::ParticipationContextSerializer
       voting: {
         enabled: !voting_disabled_reason,
         disabled_reason: voting_disabled_reason
+      },
+      volunteering: {
+        enabled: !volunteering_disabled_reason,
+        disabled_reason: volunteering_disabled_reason
       }
     }
   end
