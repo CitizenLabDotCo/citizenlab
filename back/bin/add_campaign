@@ -31,21 +31,10 @@ def includes_campaign?(content, example_campaign)
 end
 
 FileUtils.chdir APP_ROOT do
-  new_files = %w[
-    back/app/models/notifications/%{underscored}.rb
-    back/engines/free/email_campaigns/app/mailers/email_campaigns/%{underscored}_mailer.rb
-    back/engines/free/email_campaigns/app/models/email_campaigns/campaigns/%{underscored}.rb
-    back/engines/free/email_campaigns/app/views/email_campaigns/%{underscored}_mailer/campaign_mail.mjml
-    back/engines/free/email_campaigns/spec/mailers/%{underscored}_mailer_spec.rb
-    back/engines/free/email_campaigns/spec/mailers/previews/email_campaigns/%{underscored}_mailer_preview.rb
-    back/spec/models/notifications/%{underscored}_spec.rb
+  new_files = `git ls-files`.split("\n").select { |file| includes_campaign?(file, example_campaign) }
 
-    front/app/containers/MainHeader/NotificationMenu/components/%{camelcased}Notification/index.tsx
-  ]
-
-  new_files.each do |file|
-    example_file = file % { underscored: example_campaign, camelcased: example_campaign.camelize }
-    result_file = file % { underscored: result_campaign, camelcased: result_campaign.camelize }
+  new_files.each do |example_file|
+    result_file = replace_campaign(example_file, example_campaign, result_campaign)
     FileUtils.mkdir_p File.dirname(result_file)
 
     result_content = replace_campaign(File.read(example_file), example_campaign, result_campaign)
