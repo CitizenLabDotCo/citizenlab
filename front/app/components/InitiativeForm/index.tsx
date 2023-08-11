@@ -40,7 +40,10 @@ import { ITopicData } from 'api/topics/types';
 import { FormSubmitFooter } from './SubmitFooter';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
-import { IInitiativeCosponsor } from 'api/initiatives/types';
+import {
+  IInitiativeCosponsor,
+  IInitiativeCosponsorship,
+} from 'api/initiatives/types';
 
 // hooks
 import useInitiativeCosponsorsRequired from 'hooks/useInitiativeCosponsorsRequired';
@@ -65,7 +68,7 @@ export interface SimpleFormValues {
   body_multiloc: Multiloc | undefined | null;
   topic_ids: string[];
   position: string | undefined | null;
-  cosponsors: IInitiativeCosponsor[];
+  cosponsor_ids: string[];
 }
 
 export interface FormValues extends SimpleFormValues {
@@ -100,6 +103,7 @@ interface Props extends FormValues, FormProps {
   postAnonymously: boolean;
   setPostAnonymously: (newValue: boolean) => void;
   publishedAnonymously?: boolean;
+  cosponsorships?: IInitiativeCosponsorship[];
 }
 
 const InitiativeForm = ({
@@ -108,7 +112,7 @@ const InitiativeForm = ({
   title_multiloc,
   body_multiloc,
   topic_ids,
-  cosponsors,
+  cosponsorships,
   image,
   onSave,
   onPublish,
@@ -143,11 +147,14 @@ const InitiativeForm = ({
   const [errors, setErrors] = useState<{
     [key in keyof FormValues]?: { message: MessageDescriptor } | undefined;
   }>({});
-  const initialCosponsorsText = cosponsors.reduce(
-    (acc, cosponsor) => `${acc}@[${cosponsor.display}](${cosponsor.id}) `,
-    ''
-  );
-  const [cosponsorsText, setCosponsorsText] = useState<string>(
+  const initialCosponsorsText = cosponsorships
+    ? cosponsorships.reduce(
+        (acc, cosponsorship) =>
+          `${acc}@[${cosponsorship.name}](${cosponsorship.user_id}) `,
+        ''
+      )
+    : null;
+  const [cosponsorsText, setCosponsorsText] = useState<string | null>(
     initialCosponsorsText
   );
 

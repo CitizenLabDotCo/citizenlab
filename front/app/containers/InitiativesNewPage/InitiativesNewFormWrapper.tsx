@@ -76,7 +76,7 @@ const InitiativesNewFormWrapper = ({
     body_multiloc: undefined,
     topic_ids: [],
     position: location_description,
-    cosponsors: [],
+    cosponsor_ids: [],
   };
   const [postAnonymously, setPostAnonymously] = useState(false);
   const [formValues, setFormValues] = useState<SimpleFormValues>(initialValues);
@@ -143,8 +143,13 @@ const InitiativesNewFormWrapper = ({
     banner: UploadFile | undefined | null
   ) => {
     // build API readable object
-    const { title_multiloc, body_multiloc, topic_ids, position, cosponsors } =
-      changedValues;
+    const {
+      title_multiloc,
+      body_multiloc,
+      topic_ids,
+      position,
+      cosponsor_ids,
+    } = changedValues;
 
     const positionInfo = await parsePosition(position ?? location_description);
     // removes undefined values, not null values that are used to remove previously used values
@@ -154,7 +159,7 @@ const InitiativesNewFormWrapper = ({
         body_multiloc,
         topic_ids,
         ...positionInfo,
-        cosponsors,
+        cosponsor_ids,
       },
       (entry) => entry === undefined
     );
@@ -348,9 +353,11 @@ const InitiativesNewFormWrapper = ({
   };
 
   const onChangeCosponsors = (cosponsors: IInitiativeCosponsor[]) => {
+    const cosponsor_ids = cosponsors.map((cosponsor) => cosponsor.id);
+
     setFormValues((formValues) => ({
       ...formValues,
-      cosponsors,
+      cosponsor_ids,
     }));
   };
 

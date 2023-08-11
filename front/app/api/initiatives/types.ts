@@ -29,6 +29,7 @@ export interface IQueryParameters {
   bounding_box?: number[] | undefined | null;
   assignee?: string | undefined | null;
   feedback_needed?: boolean | undefined | null;
+  cosponsor_ids?: string[];
 }
 
 export type InitiativePublicationStatus =
@@ -40,6 +41,12 @@ export type InitiativePublicationStatus =
 export interface IInitiativeCosponsor {
   id: string;
   display: string;
+}
+
+export interface IInitiativeCosponsorship {
+  name: string;
+  status: 'pending' | 'accepted';
+  user_id: string;
 }
 
 export interface IInitiativeData {
@@ -63,7 +70,7 @@ export interface IInitiativeData {
     header_bg: ImageSizes;
     expires_at: string;
     anonymous: boolean;
-    cosponsors: IInitiativeCosponsor[];
+    cosponsorships?: IInitiativeCosponsorship[];
     editing_locked: boolean;
     public: boolean;
   };
@@ -85,6 +92,12 @@ export interface IInitiativeData {
     };
     user_reaction?: {
       data: IRelationship | null;
+    };
+    cosponsors?: {
+      data: {
+        type: 'user';
+        id: string;
+      }[];
     };
   };
 }
@@ -111,6 +124,7 @@ export interface IInitiativeAdd {
   phase_ids?: string[] | null;
   location_point_geojson?: GeoJSON.Point | null;
   location_description?: string | null;
+  cosponsor_ids?: string[];
 }
 
 export interface IUpdateInitiativeObject {
