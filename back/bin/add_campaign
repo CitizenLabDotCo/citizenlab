@@ -1,7 +1,13 @@
 #!/usr/bin/env ruby
 
+# Requirements:
+# Ruby with installed activesupport gem
+#
+# Usage:
+# cd citizenlab
+# back/bin/add_campaign initiative_resubmitted_for_review new_cosponsor_added
+
 require 'fileutils'
-include FileUtils
 require 'active_support/all'
 
 # path to your application root.
@@ -14,7 +20,17 @@ end
 example_campaign = ARGV[0] # underscored
 result_campaign = ARGV[1] # underscored
 
-chdir APP_ROOT do
+def replace_campaign(content, example_campaign, result_campaign)
+  content.gsub(example_campaign, result_campaign)
+    .gsub(example_campaign.camelize, result_campaign.camelize)
+    .gsub(example_campaign.camelize(:lower), result_campaign.camelize(:lower))
+end
+
+def includes_campaign?(content, example_campaign)
+  content.match?(/#{example_campaign}|#{example_campaign.camelize}|#{example_campaign.camelize(:lower)}/)
+end
+
+FileUtils.chdir APP_ROOT do
   new_files = %w[
     back/app/models/notifications/%{underscored}.rb
     back/engines/free/email_campaigns/app/mailers/email_campaigns/%{underscored}_mailer.rb
@@ -30,22 +46,32 @@ chdir APP_ROOT do
   new_files.each do |file|
     example_file = file % { underscored: example_campaign, camelcased: example_campaign.camelize }
     result_file = file % { underscored: result_campaign, camelcased: result_campaign.camelize }
-    mkdir_p File.dirname(result_file)
-    cp example_file, result_file
+    FileUtils.mkdir_p File.dirname(result_file)
 
-    content = File.read(result_file)
-    File.write(result_file, content.gsub(example_campaign, result_campaign).gsub(example_campaign.camelize, result_campaign.camelize))
+    result_content = replace_campaign(File.read(example_file), example_campaign, result_campaign)
+
+    File.write(result_file, result_content)
   end
 
   edited_files = %w[
     back/app/services/notification_service.rb
     back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb
-    back/engines/free/email_campaigns/config/locales/en.yml # 3 occurrences
+    back/engines/free/email_campaigns/config/locales/en.yml
     back/engines/free/email_campaigns/spec/factories/campaigns.rb
     back/spec/factories/notifications.rb
 
-    front/app/api/notifications/types.ts # 2 occurrences
-    front/app/containers/MainHeader/NotificationMenu/components/Notification/index.tsx # 3 occurrences
+    front/app/api/notifications/types.ts
+    front/app/containers/MainHeader/NotificationMenu/components/Notification/index.tsx
     front/app/containers/MainHeader/NotificationMenu/messages.ts
   ]
+
+  edited_files.each do |file|
+    lines = File.read(file).split("\n")
+    content = lines.each_with_index do |line, i|
+      if includes_campaign?(line, example_campaign)
+        lines[i] = [replace_campaign(line, example_campaign, result_campaign), line].join("\n")
+      end
+    end.join("\n") + "\n"
+    File.write(file, content)
+  end
 end
