@@ -25,18 +25,6 @@ describe('Follow folder', () => {
       folderSlug = folder.body.data.attributes.slug;
     });
 
-    cy.apiCreateFolder({
-      type: 'continuous',
-      title: folderTitle,
-      descriptionPreview: folderShortDescription,
-      description: randomString(),
-      publicationStatus: 'published',
-      projectIds: [],
-    }).then((folder) => {
-      folderId = folder.body.data.id;
-      folderSlug = folder.body.data.attributes.slug;
-    });
-
     cy.apiSignup(firstName, lastName, email, password).then((response) => {
       userId = response.body.data.id;
       userSlug = response.body.data.attributes.slug;

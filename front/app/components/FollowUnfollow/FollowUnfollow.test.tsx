@@ -3,6 +3,7 @@ import { render, screen, waitFor, userEvent } from 'utils/testUtils/rtl';
 import { mockAuthUserData } from 'api/me/__mocks__/useAuthUser';
 import FollowUnfollow from './index';
 import { IUser } from 'api/users/types';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 let mockAuthUser: IUser | undefined = { data: mockAuthUserData };
 jest.mock('api/me/useAuthUser', () => () => ({
@@ -20,6 +21,10 @@ jest.mock('api/follow_unfollow/useDeleteFollower', () =>
 );
 
 jest.mock('hooks/useFeatureFlag', () => jest.fn(() => true));
+
+jest.mock('containers/Authentication/events', () => ({
+  triggerAuthenticationFlow: jest.fn(),
+}));
 
 describe('FollowUnfollow', () => {
   it('renders the component', () => {
@@ -68,9 +73,6 @@ describe('FollowUnfollow', () => {
   it('triggers authentication flow when user is not logged in', async () => {
     mockAuthUser = undefined;
     const user = userEvent.setup();
-    const mockTriggerAuthFlow = jest.fn();
-    require('containers/Authentication/events').triggerAuthenticationFlow =
-      mockTriggerAuthFlow;
 
     render(
       <FollowUnfollow
@@ -83,7 +85,7 @@ describe('FollowUnfollow', () => {
 
     await user.click(followButton);
     await waitFor(() =>
-      expect(mockTriggerAuthFlow).toHaveBeenCalledWith({
+      expect(triggerAuthenticationFlow).toHaveBeenCalledWith({
         flow: 'signup',
         context: { type: 'follow', action: 'following' },
         successAction: {
