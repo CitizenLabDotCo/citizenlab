@@ -8,11 +8,11 @@ module BulkImportIdeas
       @pdf_file_content = pdf_file_content
     end
 
+    # TODO: Might need to get the vector stuff properly so that the text appears in the right order
     def parse_paper_form
-      document = process_upload
+      # return dummy_data unless ENV.fetch('GOOGLE_DOCUMENT_AI_PROJECT', false) # Temp for development
 
-      # TODO: Need to get the vector stuff properly so that the text appears in the right order
-      # TODO: Checkbox names
+      document = process_upload
 
       # Gets an array of all fields on all pages
       fields = []
@@ -88,14 +88,25 @@ module BulkImportIdeas
       response.document
     end
 
-    # TODO: This is not used at the moment - might need a version to get more accurate text scanning
-    def layout_to_text(layout, text)
-      # If a text segment spans several lines, it will
-      # be stored in different text segments.
-
-      layout.text_anchor.text_segments.map do |segment|
-        text[segment.start_index..segment.end_index]
-      end.join
+    # NOTE: For DEVELOPMENT ONLY when Google API not configured
+    def dummy_data
+      [
+        {
+          # User details
+          'Name:' => { value: Faker::FunnyName.name, type: '' },
+          'Email:' => { value: Faker::Internet.email, type: '' },
+          # Core fields
+          'Title:' => { value: Faker::Quote.yoda, type: '' },
+          'Body:' => { value: Faker::Hipster.paragraph, type: '' },
+          # Select fields
+          'Yes' => { value: nil, type: %w[filled_checkbox unfilled_checkbox].sample },
+          'No' => { value: nil, type: %w[filled_checkbox unfilled_checkbox].sample },
+          'This' => { value: nil, type: %w[filled_checkbox unfilled_checkbox].sample },
+          'That' => { value: nil, type: %w[filled_checkbox unfilled_checkbox].sample },
+          # Custom text field
+          'Title:' => { value: Faker::Quote.robin, type: '' }
+        }
+      ]
     end
   end
 end
