@@ -127,7 +127,8 @@ resource 'Events' do
         attributes: {
           title_multiloc: event.title_multiloc,
           description_multiloc: event.description_multiloc,
-          location_description: event.location_description,
+          address_1: event.address_1,
+          address_2_multiloc: event.address_2_multiloc,
           location_multiloc: event.location_multiloc,
           location_point_geojson: event.location_point_geojson,
           start_at: event.start_at.iso8601(3),
@@ -170,9 +171,10 @@ resource 'Events' do
 
         # Optional parameters
         parameter :description_multiloc, 'The description of the event in multiple languages. Supports basic HTML.'
-        parameter :location_multiloc, '[DEPRECATED] The location of the event. Textual'
-        parameter :location_point_geojson, 'A GeoJSON point that indicates where the event takes place.'
-        parameter :location_description, 'A human-readable description of the event location of the event.'
+        parameter :location_multiloc, 'The location of the event in text format, , in multiple languages. [DEPRECATED]'
+        parameter :location_point_geojson, 'A GeoJSON point representing the event location.'
+        parameter :address_1, 'A human-readable primary address for the event location.'
+        parameter :address_2_multiloc, 'Additional address details, such as floor or room number, in multiple languages.'
       end
 
       ValidationErrorHelper.new.error_fields(self, Event)
@@ -213,7 +215,7 @@ resource 'Events' do
       end
 
       example 'Create an event with a location using location_multiloc parameter', document: false do
-        location_description = 'event-location'
+        address_1 = 'event-location'
 
         do_request(
           project_id: @project.id,
@@ -221,16 +223,16 @@ resource 'Events' do
             title_multiloc: event.title_multiloc,
             start_at: event.start_at,
             end_at: event.end_at,
-            location_multiloc: { en: location_description }
+            location_multiloc: { en: address_1 }
           }
         )
 
         expect(status).to eq 201
-        expect(response_data.dig(:attributes, :location_multiloc, :en)).to eq(location_description)
-        expect(response_data.dig(:attributes, :location_description)).to eq(location_description)
+        expect(response_data.dig(:attributes, :location_multiloc, :en)).to eq(address_1)
+        expect(response_data.dig(:attributes, :address_1)).to eq(address_1)
 
         event = Event.find(response_data[:id])
-        expect(event.location_description).to eq(location_description)
+        expect(event.address_1).to eq(address_1)
       end
 
       example 'Create an event with a location using location_point_geojson parameter', document: false do
@@ -254,6 +256,33 @@ resource 'Events' do
         expect(event.location_point_geojson).to eq(geojson_point)
         expect(event.location_point.coordinates).to eq(geojson_point['coordinates'])
       end
+
+      example 'Create an event with a location using address_1 and address_2_multiloc parameters', document: false do
+        address_1 = 'event-location'
+        address_2_multiloc = { 'en' => 'event-location-details' }
+
+        do_request(
+          project_id: @project.id,
+          event: {
+            title_multiloc: event.title_multiloc,
+            start_at: event.start_at,
+            end_at: event.end_at,
+            address_1: address_1,
+            address_2_multiloc: address_2_multiloc
+          }
+        )
+
+        expect(status).to eq 201
+        # with deep indifferent access
+        attributes = response_data[:attributes].with_indifferent_access
+        expect(attributes[:address_1]).to eq(address_1)
+        expect(attributes[:address_2_multiloc]).to eq(address_2_multiloc)
+
+        event = Event.find(response_data[:id])
+        expect(event.address_1).to eq(address_1)
+        expect(event.address_2_multiloc).to eq(address_2_multiloc)
+        expect(event.location_multiloc).to eq({})
+      end
     end
 
     patch 'web_api/v1/events/:id' do
@@ -261,9 +290,10 @@ resource 'Events' do
         parameter :project_id, 'The id of the project this event belongs to'
         parameter :title_multiloc, 'The title of the event in multiple locales'
         parameter :description_multiloc, 'The description of the event in multiple languages. Supports basic HTML.'
-        parameter :location_multiloc, '[DEPRECATED] The location of the event. Textual'
-        parameter :location_point_geojson, 'A GeoJSON point that indicates where the event takes place.'
-        parameter :location_description, 'A human-readable description of the event location of the event.'
+        parameter :location_multiloc, 'The location of the event in text format, , in multiple languages. [DEPRECATED]'
+        parameter :location_point_geojson, 'A GeoJSON point representing the event location.'
+        parameter :address_1, 'A human-readable primary address for the event location.'
+        parameter :address_2_multiloc, 'Additional address details, such as floor or room number, in multiple languages.'
         parameter :start_at, 'The start datetime of the event'
         parameter :end_at, 'The end datetime of the event'
       end
@@ -274,26 +304,33 @@ resource 'Events' do
       let(:id) { event.id }
 
       example 'Update an event' do
-        location_multiloc = build(:event).location_multiloc
-        do_request(event: { location_multiloc: location_multiloc })
+        address_1 = "#{event.address_1} (updated)"
+        address_2_multiloc = event.address_2_multiloc.transform_values { |v| "#{v} (updated)" }
+
+        do_request(event: {
+          address_1: address_1,
+          address_2_multiloc: address_2_multiloc
+        })
 
         assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :attributes, :location_multiloc).stringify_keys).to match location_multiloc
+
+        attributes = response_data.dig(:attributes).with_indifferent_access
+        expect(attributes[:address_1]).to eq(address_1)
+        expect(attributes[:address_2_multiloc]).to eq(address_2_multiloc)
       end
 
       example 'Update event location using location_multiloc parameter', document: false do
-        location_description = 'event-location'
-        location_multiloc = { en: location_description }
+        address_1 = 'event-location'
+        location_multiloc = { en: address_1 }
 
         do_request(event: { location_multiloc: location_multiloc })
 
         expect(status).to eq 200
         expect(response_data.dig(:attributes, :location_multiloc)).to include(location_multiloc)
-        expect(response_data.dig(:attributes, :location_description)).to eq(location_description)
+        expect(response_data.dig(:attributes, :address_1)).to eq(address_1)
 
         event.reload
-        expect(event.location_description).to eq(location_description)
+        expect(event.address_1).to eq(address_1)
       end
 
       example 'Update event location using location_point_geojson parameter', document: false do
