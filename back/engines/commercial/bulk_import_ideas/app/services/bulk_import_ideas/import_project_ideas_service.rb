@@ -45,35 +45,61 @@ module BulkImportIdeas
         idea_row[:user_name] = doc['Name:'][:value]
         idea_row[:custom_field_values] = process_custom_fields(doc)
         idea_row
-        # TODO: Custom fields
       end
     end
 
-    # Do this lookup for all fields, not just custom
+    # Match custom fields by the text of their label in the specified locale
+    # Do this lookup for all fields, not just custom?
     def process_custom_fields(doc)
       participation_method = Factory.instance.participation_method_for(@project)
       custom_form = @project.custom_form || participation_method.create_default_form!
 
+      # Get the keys for the field/option names in the import locale
+      text_field_types = %w[text multiline_text]
+      select_field_types = %w[select multiselect]
+      text_fields = []
+      select_options = []
+      IdeaCustomFieldsService.new(custom_form).all_fields.each do |field|
+        if text_field_types.include? field[:input_type]
+          text_fields << { name: field[:title_multiloc][@locale], key: field[:key] }
+        elsif select_field_types.include? field[:input_type]
+          field.options.each do |option|
+            select_options << { name: option[:title_multiloc][@locale], key: option[:key], field_key: field[:key], field_type: field[:input_type] }
+          end
+        end
+      end
+
       custom_fields = {}
 
       # Text fields
-      text_field_types = %w[text multiline_text]
-      text_fields = IdeaCustomFieldsService.new(custom_form).all_fields.filter_map do |field|
-        next unless text_field_types.include? field[:input_type]
-
-        { name: field[:title_multiloc][@locale], key: field[:key] }
-      end
       text_fields.each do |field|
-        custom_fields[field[:key].to_sym] = doc[field[:name]][:value] if doc[field[:name]]
+        if doc[field[:name]]
+          custom_fields[field[:key].to_sym] = doc[field[:name]][:value]
+          doc.delete(field[:name]) # Remove fields from the doc once they have been added
+        end
       end
 
-      # TODO: Remove fields from the doc once they have been added
-      # idea_row[:custom_something] if field['']
-      # doc.each do |field|
-      #
-      #
-      #   # binding.pry
-      # end
+      # Select fields
+      # As we don't have a title for each select question we
+      # loop through options in order they appear on the form and
+      # remove so that fields with the same values don't get picked up
+      select_options.each do |option|
+        if doc[option[:name]] && doc[option[:name]][:type].include?('checkbox')
+          field_key = option[:field_key].to_sym
+          checked = doc[option[:name]][:type] == 'filled_checkbox'
+          if option[:field_type] == 'multiselect' && checked
+            custom_fields[field_key] = custom_fields[field_key] || []
+            custom_fields[field_key] << option[:key]
+          elsif checked && !custom_fields[field_key]
+            # Only use the first selected option for a single select
+            custom_fields[field_key] = option[:key]
+          end
+
+          doc.delete(option[:name])
+        end
+      end
+
+      # TODO: Display back to the user any fields that haven't been added?
 
       custom_fields
     end
