@@ -5,13 +5,31 @@ class WebApi::V1::EventsController < ApplicationController
   skip_before_action :authenticate_user
 
   def index
-    events = EventsFinder.new(params, scope: policy_scope(Event), current_user: current_user).find_records
+    scope = EventPolicy::Scope.new(current_user, Event, params[:attendee_id]).resolve
+    # Necessary because we instantiate the scope directly instead of using Pundit's
+    # `policy_scope` method.
+    skip_policy_scope
+
+    events = EventsFinder
+      .new(params, scope: scope, current_user: current_user)
+      .find_records
+
     events = paginate SortByParamsService.new.sort_events(events, params)
-    render json: linked_json(events, WebApi::V1::EventSerializer, params: jsonapi_serializer_params)
+
+    serializer_params = jsonapi_serializer_params
+      .merge(current_user_attendances: current_user_attendances(events))
+
+    render json: linked_json(
+      events,
+      WebApi::V1::EventSerializer,
+      params: serializer_params
+    )
   end
 
   def show
-    render json: WebApi::V1::EventSerializer.new(@event, params: jsonapi_serializer_params).serializable_hash
+    render json: WebApi::V1::EventSerializer
+      .new(@event, params: jsonapi_serializer_params)
+      .serializable_hash
   end
 
   def create
@@ -53,6 +71,21 @@ class WebApi::V1::EventsController < ApplicationController
   end
 
   private
+
+  # Given a collection of events, returns a mapping of event ids to attendances of the
+  # current user. The returned mapping includes only the events for which the current
+  # user is registered.
+  #
+  # @param [Enumerable<Event>] events A collection of events
+  # @return [Hash{String => Events::Attendance}] A mapping of event ids to attendances
+  #   of the current user.
+  def current_user_attendances(events)
+    return {} unless current_user
+
+    Events::Attendance
+      .where(event: events, attendee: current_user)
+      .index_by(&:event_id)
+  end
 
   def set_event
     @event = Event.find(params[:id])
