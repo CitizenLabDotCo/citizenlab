@@ -149,6 +149,7 @@ class PrintCustomFieldsService
 
     pdf.move_down 7.mm
 
+    # Draw min and max labels
     save_cursor pdf
 
     pdf.indent(1.8.mm) do
