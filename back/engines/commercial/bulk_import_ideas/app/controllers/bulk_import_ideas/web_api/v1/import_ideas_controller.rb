@@ -64,7 +64,7 @@ module BulkImportIdeas
       pdf_base64 = pdf_base64[(start + 8)..] if start
       pdf_io = Base64.decode64(pdf_base64)
       google_forms_service = GoogleFormParserService.new pdf_io
-      google_forms_service.parse_paper_form
+      google_forms_service.parse_pdf
     end
 
     def import_ideas_service

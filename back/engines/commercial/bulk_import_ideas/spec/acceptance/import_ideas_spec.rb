@@ -107,7 +107,7 @@ resource 'BulkImportIdeasImportIdeas' do
 
         example 'Bulk import ideas from scanned .pdf' do
           # Stubbed to avoid call to google webservice
-          expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:parse_paper_form).and_return(
+          expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:parse_pdf).and_return(
             [
               {
                 'Name:' => { value: 'Bob Test', type: '' },
