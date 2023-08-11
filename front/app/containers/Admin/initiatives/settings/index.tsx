@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { isEmpty, isNaN, isEqual } from 'lodash-es';
+import { isEmpty, isEqual } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
@@ -133,9 +133,21 @@ const InitiativesSettingsPage = () => {
       validated = true;
 
       if (
-        isNaN(localProposalsSettings.reacting_threshold) ||
+        /* require_cosponsors: if the cosponsors feature is enabled for the first time,
+          cosponsors_number is undefined, hence the check to see if it's a number. If you erase
+          a number you already filled in, our code in Cosponsors.tsx will convert the empty string this
+          erasing produces to NaN, which qualifies as a number but is not a value we want.
+          To find the relevant code search for the comment hash below.
+          Using a fallback number value if parseInt produces NaN is not desirable either, because
+          that causes strange behavior in the UI.
+          Comment hash: #6bcea39
+        */
+        (localProposalsSettings.require_cosponsors &&
+          (typeof localProposalsSettings.cosponsors_number !== 'number' ||
+            Number.isNaN(localProposalsSettings.cosponsors_number))) ||
+        Number.isNaN(localProposalsSettings.reacting_threshold) ||
         localProposalsSettings.reacting_threshold < 2 ||
-        isNaN(localProposalsSettings.days_limit) ||
+        Number.isNaN(localProposalsSettings.days_limit) ||
         localProposalsSettings.days_limit < 1
       ) {
         validated = false;
@@ -229,9 +241,15 @@ const InitiativesSettingsPage = () => {
             allow_anonymous_participation={
               localProposalsSettings.allow_anonymous_participation
             }
-            handleAllowAnonymousParticipationOnChange={
-              onAnonymousPostingToggle
+            handleAllowAnonymousParticipationOnChange={onAnonymousPostingToggle}
+          />
+          <RequireReviewToggle
+            value={
+              typeof localProposalsSettings.require_review === 'boolean'
+                ? localProposalsSettings.require_review
+                : false
             }
+            onChange={updateProposalsSetting('require_review')}
           />
 
           <Cosponsors

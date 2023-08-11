@@ -8,6 +8,7 @@ import { Box, Toggle, Text, Input } from '@citizenlab/cl2-component-library';
 
 import Error from 'components/UI/Error';
 import errorMessages from 'components/UI/Error/messages';
+import { isNil } from 'utils/helperUtils';
 
 interface Props {
   requireCosponsors: boolean | undefined;
@@ -31,6 +32,7 @@ const Cosponsors = ({
   if (!initiativeCosponsorsAllowed) return null;
 
   const handleReactingTresholdOnChange = (value: string) => {
+    // A comment refers to this code. Comment hash: #6bcea39
     onChangeCosponsorsNumber(parseInt(value, 10));
   };
 
@@ -81,7 +83,8 @@ const Cosponsors = ({
               label={formatMessage(messages.cosponsorsNumberLabel)}
             />
           </Box>
-          {Number.isNaN(cosponsorsNumber) && (
+          {/* Why these checks? Search for the comment hash. Comment hash: #6bcea39 */}
+          {(isNil(cosponsorsNumber) || Number.isNaN(cosponsorsNumber)) && (
             <Error text={formatMessage(errorMessages.blank)} />
           )}
           {typeof cosponsorsNumber === 'number' && cosponsorsNumber < 1 && (
