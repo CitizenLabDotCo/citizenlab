@@ -10,7 +10,7 @@ module BulkImportIdeas
 
     # TODO: Might need to get the vector stuff properly so that the text appears in the right order
     def parse_pdf
-      # return dummy_data unless ENV.fetch('GOOGLE_DOCUMENT_AI_PROJECT', false) # Temp for development
+      return dummy_data unless ENV.fetch('GOOGLE_DOCUMENT_AI_PROJECT', false) # Temp for development
 
       document = process_upload
 
