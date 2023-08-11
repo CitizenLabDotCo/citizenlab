@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_03_112021) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_04_142723) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -451,8 +451,21 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_03_112021) do
     t.datetime "updated_at", precision: nil, null: false
     t.geography "location_point", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}
     t.string "location_description"
+    t.integer "attendees_count", default: 0, null: false
     t.index ["location_point"], name: "index_events_on_location_point", using: :gist
     t.index ["project_id"], name: "index_events_on_project_id"
+  end
+
+  create_table "events_attendances", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "attendee_id", null: false
+    t.uuid "event_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["attendee_id", "event_id"], name: "index_events_attendances_on_attendee_id_and_event_id", unique: true
+    t.index ["attendee_id"], name: "index_events_attendances_on_attendee_id"
+    t.index ["created_at"], name: "index_events_attendances_on_created_at"
+    t.index ["event_id"], name: "index_events_attendances_on_event_id"
+    t.index ["updated_at"], name: "index_events_attendances_on_updated_at"
   end
 
   create_table "experiments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1464,12 +1477,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_03_112021) do
     t.string "block_reason"
     t.datetime "block_end_at", precision: nil
     t.string "new_email"
-    t.string "unique_code"
     t.index "lower((email)::text)", name: "users_unique_lower_email_idx", unique: true
     t.index ["email"], name: "index_users_on_email"
     t.index ["registration_completed_at"], name: "index_users_on_registration_completed_at"
     t.index ["slug"], name: "index_users_on_slug", unique: true
-    t.index ["unique_code"], name: "index_users_on_unique_code", unique: true
   end
 
   create_table "verification_verifications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1544,6 +1555,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_03_112021) do
   add_foreign_key "email_campaigns_examples", "users", column: "recipient_id"
   add_foreign_key "event_files", "events"
   add_foreign_key "events", "projects"
+  add_foreign_key "events_attendances", "events"
+  add_foreign_key "events_attendances", "users", column: "attendee_id"
   add_foreign_key "groups_permissions", "groups"
   add_foreign_key "groups_permissions", "permissions"
   add_foreign_key "groups_projects", "groups"

@@ -27,10 +27,5 @@ module Analysis
   class SummarizationTask < BackgroundTask
     belongs_to :analysis, class_name: 'Analysis::Analysis'
     has_one :summary, class_name: 'Analysis::Summary', foreign_key: :background_task_id
-
-    def execute
-      sm = SummarizationMethod::Base.for_summarization_method(summary.summarization_method, self)
-      sm.execute
-    end
   end
 end

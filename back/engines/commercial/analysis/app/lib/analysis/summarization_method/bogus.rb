@@ -16,7 +16,7 @@ module Analysis
         update_summary(memo)
         update_progress(i / total_inputs.to_f)
 
-        sleep(2) unless Rails.env.test?
+        sleep(0.25) unless Rails.env.test?
         memo
       end
     rescue StandardError => e
