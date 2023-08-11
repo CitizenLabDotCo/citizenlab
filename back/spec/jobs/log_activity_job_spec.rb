@@ -181,6 +181,7 @@ RSpec.describe LogActivityJob do
         Notifications::ProjectModerationRightsReceived,
         Notifications::ProjectPhaseStarted,
         Notifications::ProjectPhaseUpcoming,
+        Notifications::ProjectPublished,
         Notifications::StatusChangeOnIdeaYouFollow,
         Notifications::StatusChangeOnInitiativeYouFollow,
         Notifications::ThresholdReachedForAdmin,

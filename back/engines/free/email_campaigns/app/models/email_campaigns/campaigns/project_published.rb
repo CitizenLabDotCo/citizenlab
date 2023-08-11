@@ -72,7 +72,7 @@ module EmailCampaigns
         event_payload: {
           project_title_multiloc: project.title_multiloc,
           project_ideas_count: project.ideas_count,
-          project_url: Frontend::UrlService.model_to_path(project)
+          project_url: Frontend::UrlService.new.model_to_path(project)
         }
       }]
     end

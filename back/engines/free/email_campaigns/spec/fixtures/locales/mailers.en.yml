@@ -40,6 +40,7 @@ en:
       "project_folder_moderation_rights_received": Project folder moderation rights received
       "project_phase_started": New project phase
       "project_phase_upcoming": Upcoming new project phase
+      "project_published": Project published
       "status_change_on_idea_you_follow": Status change of an idea that you follow
       "status_change_on_initiative_you_follow": Status change of a proposal that you follow
       "threshold_reached_for_admin": Proposal reached the voting threshold
@@ -469,6 +470,13 @@ en:
       new_phase: 'The project will enter the phase ''%{phaseTitle}'''
       subject: 'Get everything set up for the new phase of %{projectName}'
       preheader: 'A new phase will start soon for %{projectName}'
+    project_published:
+      subject: 'A new project was published on the platform of %{organizationName}'
+      header_title: 'A new project was published'
+      header_message: 'The participation platform of %{organizationName} just published the following project:'
+      x_ideas: '%{numberOfIdeas} ideas'
+      no_ideas: 'No ideas yet'
+      cta_view_project: 'See this project'
     status_change_on_idea_you_follow:
       status_change: 'The new status of this idea is ''%{ideaStatus}'''
       cta_view_idea: 'Go to this idea'

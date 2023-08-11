@@ -182,6 +182,11 @@ FactoryBot.define do
     phase
   end
 
+  factory :project_published, parent: :notification, class: 'Notifications::ProjectPublished' do
+    initiating_user
+    project
+  end
+
   factory :status_change_on_idea_you_follow, parent: :notification, class: 'Notifications::StatusChangeOnIdeaYouFollow' do
     association :post, factory: :idea
     project

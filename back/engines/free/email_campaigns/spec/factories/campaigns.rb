@@ -162,6 +162,10 @@ FactoryBot.define do
     enabled { true }
   end
 
+  factory :project_published_campaign, class: EmailCampaigns::Campaigns::ProjectPublished do
+    enabled { true }
+  end
+
   factory :status_change_on_idea_you_follow_campaign, class: EmailCampaigns::Campaigns::StatusChangeOnIdeaYouFollow do
     enabled { true }
   end
