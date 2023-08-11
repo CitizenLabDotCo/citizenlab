@@ -10,9 +10,13 @@ class Events::AttendancePolicy < ApplicationPolicy
     end
 
     def resolve
-      raise Pundit::NotAuthorizedError unless user&.active? && user&.admin?
+      raise Pundit::NotAuthorizedError unless user&.active?
 
-      scope.all
+      role_service = UserRoleService.new
+      raise Pundit::NotAuthorizedError unless role_service.moderates_something?(user)
+
+      moderated_projects = role_service.moderatable_projects(user)
+      scope.joins(:event).where(events: { project_id: moderated_projects })
     end
   end
 
@@ -21,6 +25,9 @@ class Events::AttendancePolicy < ApplicationPolicy
   end
 
   def destroy?
-    active? && (admin? || user.id == record.attendee_id)
+    active? && (
+      user.id == record.attendee_id ||
+      ProjectPolicy.new(user, record.event.project).update?
+    )
   end
 end
