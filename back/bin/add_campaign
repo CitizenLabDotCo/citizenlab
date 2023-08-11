@@ -1,11 +1,18 @@
 #!/usr/bin/env ruby
 
-# Requirements:
-# Ruby with installed activesupport gem
-#
 # Usage:
-# cd citizenlab
 # back/bin/add_campaign initiative_resubmitted_for_review new_cosponsor_added
+#
+# First argument is the name of a campaign (underscored) that should be used as an example.
+# Second argument is the name of a campaign (underscored) that should be added.
+#
+# This script copies all git-added files containing the name of the example campaign
+# and replaces the example campaign name with the result campaign name.
+# In all git-added files that contain a line with the example campaign name, it adds the same line,
+# but with the result campaign name.
+#
+# Requirements:
+# Ruby and installed activesupport gem
 
 require 'fileutils'
 require 'active_support/all'
@@ -26,12 +33,18 @@ def replace_campaign(content, example_campaign, result_campaign)
     .gsub(example_campaign.camelize(:lower), result_campaign.camelize(:lower))
 end
 
-def includes_campaign?(content, example_campaign)
-  content.match?(/#{example_campaign}|#{example_campaign.camelize}|#{example_campaign.camelize(:lower)}/)
+def example_campaign_regex_string(campaign)
+  "#{campaign}|#{campaign.camelize}|#{campaign.camelize(:lower)}"
 end
 
+def includes_campaign?(content, campaign)
+  content.match?(Regexp.new(example_campaign_regex_string(campaign)))
+end
+
+example_campaign_regex = example_campaign_regex_string(example_campaign)
+
 FileUtils.chdir APP_ROOT do
-  new_files = `git ls-files`.split("\n").select { |file| includes_campaign?(file, example_campaign) }
+  new_files = `git ls-files | grep -E "#{example_campaign_regex}"`.split("\n")
 
   new_files.each do |example_file|
     result_file = replace_campaign(example_file, example_campaign, result_campaign)
@@ -42,19 +55,10 @@ FileUtils.chdir APP_ROOT do
     File.write(result_file, result_content)
   end
 
-  edited_files = %w[
-    back/app/services/notification_service.rb
-    back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb
-    back/engines/free/email_campaigns/config/locales/en.yml
-    back/engines/free/email_campaigns/spec/factories/campaigns.rb
-    back/spec/factories/notifications.rb
+  files_to_edit = `git ls-files | grep -vE "#{example_campaign_regex}" | xargs grep -lE "#{example_campaign_regex}"`
+  files_to_edit = files_to_edit.split("\n") - [$0] # exclude this script
 
-    front/app/api/notifications/types.ts
-    front/app/containers/MainHeader/NotificationMenu/components/Notification/index.tsx
-    front/app/containers/MainHeader/NotificationMenu/messages.ts
-  ]
-
-  edited_files.each do |file|
+  files_to_edit.each do |file|
     lines = File.read(file).split("\n")
     content = lines.each_with_index do |line, i|
       if includes_campaign?(line, example_campaign)
