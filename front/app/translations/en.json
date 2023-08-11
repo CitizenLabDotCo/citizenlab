@@ -562,6 +562,7 @@
   "app.components.anonymousParticipationModal.participateAnonymouslyModalText4": "This will safely <b>hide your profile</b> from admins, moderators and other residents for this specific contribution so that nobody is able to link this contribution to you. Anonymous contributions cannot be edited, and are considered final.",
   "app.components.anonymousParticipationModal.participateAnonymouslyModalTextSection2": "Making our platform safe for every user is a top priority for us. Words matter, so please be kind to each other.",
   "app.components.followUnfollow.follow": "Follow",
+  "app.components.followUnfollow.followADiscussion": "Follow the discussion",
   "app.components.followUnfollow.unFollow": "Unfollow",
   "app.components.form.ErrorDisplay.guidelinesLinkText": "our guidelines",
   "app.components.form.ErrorDisplay.next": "Next",
