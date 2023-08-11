@@ -5,7 +5,6 @@ require 'rails_helper'
 describe CosponsorsInitiativePolicy do
   subject(:policy) { described_class.new(user, cosponsors_initiative) }
 
-  let(:scope) { CosponsorsInitiativePolicy::Scope.new(user, CosponsorsInitiative) }
   let(:cosponsor) { create(:user) }
   let(:initiative) { create(:initiative) }
   let(:cosponsors_initiative) { create(:cosponsors_initiative, user: cosponsor, initiative: initiative) }
