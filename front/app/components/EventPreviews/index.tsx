@@ -36,7 +36,9 @@ const EventPreviewContainer = styled(Box)`
 
 const EventPreviews = ({ projectId }: EventPreviewsProps) => {
   const { formatMessage } = useIntl();
-  const isMobile = useBreakpoint('phone');
+  const isSmallerThanPhone = useBreakpoint('phone');
+  const isTabletOrSmaller = useBreakpoint('tablet');
+
   const theme = useTheme();
   const { data: phases } = usePhases(projectId);
   const ref = useRef<HTMLDivElement>(null);
@@ -48,7 +50,13 @@ const EventPreviews = ({ projectId }: EventPreviewsProps) => {
   const [atScrollStart, setAtScrollStart] = useState(true);
   const [atScrollEnd, setAtScrollEnd] = useState(false);
 
+  const numberOfEvents = ref.current?.children.length;
   const currentPhase = getCurrentPhase(phases?.data);
+  const showArrowButtons =
+    numberOfEvents &&
+    ((!isTabletOrSmaller && numberOfEvents > 3) ||
+      (isSmallerThanPhone && numberOfEvents > 1) ||
+      (isTabletOrSmaller && numberOfEvents > 2));
 
   const lateralScroll = (scrollOffset: number) => {
     if (!ref?.current) return;
@@ -56,25 +64,32 @@ const EventPreviews = ({ projectId }: EventPreviewsProps) => {
   };
 
   const onScroll = () => {
+    // Update scroll states
     if (!ref?.current) return;
     setAtScrollStart(ref.current.scrollLeft === 0);
     const maxScrollLeft = ref.current.scrollWidth - ref.current.clientWidth;
-
     setAtScrollEnd(ref.current.scrollLeft >= maxScrollLeft);
   };
 
   if (events && events?.data?.length > 0) {
     return (
       <>
-        <Title mt="36px" mb="8px" variant="h5" style={{ fontWeight: 600 }}>
-          {formatMessage(messages.eventPreviewSectionTitle)}:
-        </Title>
+        {!!(numberOfEvents && numberOfEvents > 0) && (
+          <Title mt="36px" mb="8px" variant="h5" style={{ fontWeight: 600 }}>
+            {formatMessage(messages.eventPreviewSectionTitle)}:
+          </Title>
+        )}
+
         <Box display="flex" flexDirection={theme.isRtl ? 'row-reverse' : 'row'}>
-          <Box aria-hidden="true" my="auto">
+          <Box
+            aria-hidden="true"
+            my="auto"
+            display={showArrowButtons ? 'inherit' : 'none'}
+          >
             <Button
               disabled={atScrollStart}
               onClick={() => {
-                lateralScroll(isMobile ? -200 : -350);
+                lateralScroll(isSmallerThanPhone ? -200 : -350);
               }}
               icon={theme.isRtl ? 'chevron-right' : 'chevron-left'}
               buttonStyle="text"
@@ -106,11 +121,15 @@ const EventPreviews = ({ projectId }: EventPreviewsProps) => {
               />
             ))}
           </EventPreviewContainer>
-          <Box aria-hidden="true" my="auto">
+          <Box
+            aria-hidden="true"
+            my="auto"
+            display={showArrowButtons ? 'inherit' : 'none'}
+          >
             <Button
               disabled={atScrollEnd}
               onClick={() => {
-                lateralScroll(isMobile ? 200 : 350);
+                lateralScroll(isSmallerThanPhone ? 200 : 350);
               }}
               icon={theme.isRtl ? 'chevron-left' : 'chevron-right'}
               buttonStyle="text"

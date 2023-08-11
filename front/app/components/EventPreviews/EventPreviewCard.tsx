@@ -59,6 +59,8 @@ const eventOccursInPhase = (event, phase) => {
 
 const EventPreviewCard = ({ currentPhase, event }: EventPreviewCardProps) => {
   const isMobile = useBreakpoint('phone');
+  const isTablet = useBreakpoint('tablet');
+
   const localize = useLocalize();
   const theme = useTheme();
 
@@ -73,7 +75,7 @@ const EventPreviewCard = ({ currentPhase, event }: EventPreviewCardProps) => {
         borderRight={
           theme.isRtl ? `4px solid ${theme.colors.tenantPrimary}` : undefined
         }
-        w={isMobile ? '350px' : '350px'}
+        w={isTablet ? (isMobile ? '100%' : '300px') : '340px'}
         role="button"
         h="58px"
         onClick={() => {
