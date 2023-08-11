@@ -165,6 +165,7 @@ const UserNavbar = memo<Props>(({ currentTab, selectTab, userId }) => {
           className={currentTab === 'following' ? 'active' : ''}
           role="tab"
           aria-selected={currentTab === 'following'}
+          data-cy="e2e-following-tab"
         >
           <Border aria-hidden />
           <TabIcon name="notification-outline" ariaHidden />

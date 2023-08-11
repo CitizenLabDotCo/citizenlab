@@ -43,6 +43,9 @@ const Topic = ({ topic }: Props) => {
         padding="0px"
         my="0px"
         processing={isLoading}
+        data-cy={
+          isFollowing ? 'e2e-unfollow-topic-button' : 'e2e-follow-topic-button'
+        }
       >
         <T value={topic.attributes.title_multiloc} />
       </Button>
