@@ -314,7 +314,7 @@ resource 'Events' do
 
         assert_status 200
 
-        attributes = response_data.dig(:attributes).with_indifferent_access
+        attributes = response_data[:attributes].with_indifferent_access
         expect(attributes[:address_1]).to eq(address_1)
         expect(attributes[:address_2_multiloc]).to eq(address_2_multiloc)
       end
