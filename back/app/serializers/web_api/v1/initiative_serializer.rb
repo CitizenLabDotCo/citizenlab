@@ -36,7 +36,7 @@ class WebApi::V1::InitiativeSerializer < WebApi::V1::BaseSerializer
   attribute :internal_comments_count, if: proc { |object, params|
     can_moderate?(object, params)
   }
-  
+
   attribute :cosponsorships do |object, params|
     name_service = UserDisplayNameService.new(AppConfiguration.instance, current_user(params))
 
