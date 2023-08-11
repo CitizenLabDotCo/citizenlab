@@ -37,7 +37,7 @@ const SummarizeButton = ({ inputsCount }: Props) => {
   }, [analysisId, jsonFilters, addSummaryPreCheck]);
 
   const summaryPossible = !preCheck?.data.attributes.impossible_reason;
-  const summaryQuality = preCheck?.data.attributes.quality;
+  const summaryAccuracy = preCheck?.data.attributes.accuracy;
   return (
     <Box display="flex" justifyContent="flex-end">
       <Button
@@ -51,7 +51,7 @@ const SummarizeButton = ({ inputsCount }: Props) => {
         processing={isLoadingPreCheck || isLoadingSummary}
       >
         {summaryPossible
-          ? `Auto-summarize ${inputsCount} inputs (${summaryQuality} quality)`
+          ? `Auto-summarize ${inputsCount} inputs (${summaryAccuracy} accuracy)`
           : `Too many inputs to summarize`}
       </Button>
     </Box>

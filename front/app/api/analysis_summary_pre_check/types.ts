@@ -8,7 +8,7 @@ export interface ISummaryPreCheckParam {
   id: string;
   type: 'summary_pre_check';
   attributes: {
-    quality: 'low' | 'medium' | 'high' | null;
+    accuracy: 'low' | 'medium' | 'high' | null;
     impossible_reason: 'too_many_inputs' | null;
   };
 }

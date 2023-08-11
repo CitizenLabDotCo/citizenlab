@@ -22,21 +22,19 @@ module Analysis
         # Used to check whether a summary is possible with the given filters,
         # front-end should call this before initiating the summary
         def pre_check
-          @summary = Summary.new(
-            analysis: @analysis,
-            summarization_method: 'gpt',
-            **summary_params
-          )
-          background_task = SummarizationTask.new(analysis: @analysis, summary: @summary)
-          sum_method = SummarizationMethod::Base.for_summarization_method('gpt', background_task)
-          summary_pre_check = sum_method.pre_check
-          render json: WebApi::V1::SummaryPreCheckSerializer.new(summary_pre_check, params: jsonapi_serializer_params).serializable_hash
+          filtered_inputs = InputsFinder.new(@analysis, summary_params[:filters].to_h).execute
+          plan = SummarizationPlanner.new(@analysis, filtered_inputs).execute
+
+          render json: WebApi::V1::SummaryPreCheckSerializer.new(
+            plan,
+            params: jsonapi_serializer_params
+          ).serializable_hash
         end
 
         def create
           @summary = Summary.new(
             analysis: @analysis,
-            summarization_method: 'gpt',
+            summarization_method: 'one_pass_llm',
             background_task: SummarizationTask.new(analysis: @analysis),
             **summary_params
           )

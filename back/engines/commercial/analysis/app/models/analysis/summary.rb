@@ -2,7 +2,7 @@
 
 module Analysis
   class Summary < ::ApplicationRecord
-    SUMMARIZATION_METHODS = %w[gpt bogus]
+    SUMMARIZATION_METHODS = %w[gpt one_pass_llm bogus] # gpt is legacy value
     FILTERS_JSON_SCHEMA_STR = Rails.root.join('engines/commercial/analysis/config/schemas/filters.json_schema').read
     FILTERS_JSON_SCHEMA = JSON.parse(FILTERS_JSON_SCHEMA_STR)
 

@@ -9,8 +9,8 @@ module Analysis
 
     def self.for_summarization_method summarization_method, *params, **kwargs
       case summarization_method
-      when 'gpt'
-        SummarizationMethod::Gpt.new(*params, **kwargs)
+      when 'one_pass_llm'
+        SummarizationMethod::OnePassLLM.new(*params, **kwargs)
       when 'bogus'
         SummarizationMethod::Bogus.new(*params, **kwargs)
       else

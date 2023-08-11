@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
 module Analysis
-  class SummarizationMethod::Gpt < SummarizationMethod::Base
-    SUMMARY_TYPE = 'gpt'
-    GPT4_32K_SUPPORT = false
+  # The OnePassLLM summarization method sends a single request to the LLM, which
+  # includes all the inputs and the request to summarize them
+  class SummarizationMethod::OnePassLLM < SummarizationMethod::Base
+    SUMMARY_TYPE = 'one_pass_llm'
+    GPT_4_32k_SUPPORT = false
     TOKENS_FOR_RESPONSE = 600
     TOKENS_FOR_STATIC_PROMPT = 200
 
@@ -40,7 +42,8 @@ module Analysis
     # Use `execute` on the parent class to actually use the method
     def run
       model, truncation_point = gpt_model
-      prompt = prompt(truncate_values: truncation_point)
+      inputs_text = prompt_inputs_text(truncate_values: truncation_point)
+      prompt = self.class.prompt(analysis.project, inputs_text, truncate_values: truncation_point)
 
       summary.update!(prompt: prompt)
 
@@ -59,24 +62,24 @@ module Analysis
       raise SummarizationFailedError, e
     end
 
-    private
-
-    def prompt(truncate_values: nil)
-      project_title = MultilocService.new.t(analysis.source_project.title_multiloc)
+    def self.prompt(project, inputs_text)
+      project_title = MultilocService.new.t(project.title_multiloc)
       @prompt = <<~GPT_PROMPT
         At the end of this message is a list of form responses filled out by citizens in the context of an online participation project titled '#{project_title}'. The responses are separated by lines.
-
+        
         Summarize what citizens have proposed in a few paragraphs. Be as complete as possible and put the most emphasis on things that were mentioned most often.
         The goal is for the reader to get an understanding of what citizens have been talking about, without having to read through it all. Focus more on the trends across the ideas, than on individual ideas.
-
+        
         You can refer to individual responses within the summary where relevant as example, by adding their ID between square brackets. E.g. [52247442-b9a9-4a74-a6a1-898e9d6e2da7].
-
+        
         Write the summary in the same language as the majority of the responses.
-
-        #{prompt_inputs_text(truncate_values: truncate_values)}
+        
+        #{inputs_text}
 
       GPT_PROMPT
     end
+
+    private
 
     def prompt_inputs_text(truncate_values: nil)
       input_to_text.format_all(filtered_inputs, include_id: true, shorten_labels: true, truncate_values: truncate_values)
@@ -88,11 +91,11 @@ module Analysis
 
       if token_count_wo_trunc <= (8192 - TOKENS_FOR_RESPONSE)
         ['gpt-4', nil]
-      elsif GPT4_32K_SUPPORT && token_count_wo_trunc <= (32_768 - TOKENS_FOR_RESPONSE)
+      elsif GPT_4_32k_SUPPORT && token_count_wo_trunc <= (32_768 - TOKENS_FOR_RESPONSE)
         ['gpt-4-32k', nil]
       elsif token_count_wo_trunc <= (16_384 - TOKENS_FOR_RESPONSE)
         ['gpt-3.5-turbo-16k', nil]
-      elsif GPT4_32K_SUPPORT
+      elsif GPT_4_32k_SUPPORT
         truncation_point = find_truncation_point(filtered_inputs, 32_768 - TOKENS_FOR_RESPONSE - TOKENS_FOR_STATIC_PROMPT)
         ['gpt-4-32k', truncation_point]
       else

@@ -109,6 +109,7 @@ resource 'Summaries' do
     let(:reactions_from) { 7 }
     let(:tag) { create(:tag, analysis: analysis) }
     let(:tag_ids) { [tag.id] }
+    let!(:idea) { create(:idea, project: analysis.source_project) }
 
     example_request 'Pre-check whether the summary with specified filters is possible' do
       expect(status).to eq 200
@@ -116,7 +117,7 @@ resource 'Summaries' do
         id: kind_of(String),
         type: 'summary_pre_check',
         attributes: {
-          quality: 'high',
+          accuracy: 'high',
           impossible_reason: nil
         }
       })
