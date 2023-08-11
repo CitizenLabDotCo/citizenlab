@@ -50,7 +50,7 @@ class SideFxProjectService
 
     after_folder_changed project, user if @folder_id_was != project.folder_id
     @sfx_pc.after_update project, user if project.participation_context?
-    after_publish project, user if project.admin_publication.published? && project.admin_publication.publication_status_was != 'published'
+    after_publish project, user if project.admin_publication.publication_status_changed?(to: 'published')
   end
 
   def before_destroy(project, user)

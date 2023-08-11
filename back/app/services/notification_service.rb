@@ -29,6 +29,7 @@ class NotificationService
     Notifications::ProjectModerationRightsReceived,
     Notifications::ProjectPhaseStarted,
     Notifications::ProjectPhaseUpcoming,
+    Notifications::ProjectPublished,
     Notifications::StatusChangeOnIdeaYouFollow,
     Notifications::StatusChangeOnInitiativeYouFollow,
     Notifications::ThresholdReachedForAdmin,
