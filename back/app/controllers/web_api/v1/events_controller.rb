@@ -27,7 +27,9 @@ class WebApi::V1::EventsController < ApplicationController
   end
 
   def show
-    render json: WebApi::V1::EventSerializer.new(@event, params: jsonapi_serializer_params).serializable_hash
+    render json: WebApi::V1::EventSerializer
+      .new(@event, params: jsonapi_serializer_params)
+      .serializable_hash
   end
 
   def create

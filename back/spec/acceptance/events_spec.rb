@@ -127,7 +127,9 @@ resource 'Events' do
         attributes: {
           title_multiloc: event.title_multiloc,
           description_multiloc: event.description_multiloc,
+          location_description: event.location_description,
           location_multiloc: event.location_multiloc,
+          location_point_geojson: event.location_point_geojson,
           start_at: event.start_at.iso8601(3),
           end_at: event.end_at.iso8601(3),
           created_at: event.created_at.iso8601(3),
