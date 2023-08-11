@@ -6,7 +6,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useNavbarItems from 'api/navbar/useNavbarItems';
 import useCustomPageBySlug from 'api/custom_pages/useCustomPageBySlug';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useUpdateCustomPage from 'api/custom_pages/useUpdateCustomPage';
 
 // services
@@ -22,7 +21,7 @@ import ThresholdReachedMessage from './ThresholdReachedMessage';
 import EligibilityCriteria from './EligibilityCriteria';
 import PageBody from './PageBody';
 import SubmitButton from './SubmitButton';
-import { AnonymousPostingToggle } from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
+import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
 import { Box, Title } from '@citizenlab/cl2-component-library';
 import RequireReviewToggle from './RequireReviewToggle';
 import Cosponsors from './Cosponsors';
@@ -62,9 +61,6 @@ const InitiativesSettingsPage = () => {
     reset,
   } = useUpdateCustomPage();
   const { data: appConfiguration } = useAppConfiguration();
-  const hasAnonymousParticipationEnabled = useFeatureFlag({
-    name: 'anonymous_participation',
-  });
   const {
     mutate: updateAppConfiguration,
     isLoading: isAppConfigurationLoading,
@@ -229,22 +225,14 @@ const InitiativesSettingsPage = () => {
             enabled={localProposalsSettings.enabled}
             onToggle={onToggle}
           />
-          {hasAnonymousParticipationEnabled && (
-            <AnonymousPostingToggle
-              allow_anonymous_participation={
-                localProposalsSettings.allow_anonymous_participation
-              }
-              handleAllowAnonymousParticipationOnChange={
-                onAnonymousPostingToggle
-              }
-            />
-          )}
-          {typeof localProposalsSettings.require_review === 'boolean' && (
-            <RequireReviewToggle
-              value={localProposalsSettings.require_review}
-              onChange={updateProposalsSetting('require_review')}
-            />
-          )}
+          <AnonymousPostingToggle
+            allow_anonymous_participation={
+              localProposalsSettings.allow_anonymous_participation
+            }
+            handleAllowAnonymousParticipationOnChange={
+              onAnonymousPostingToggle
+            }
+          />
 
           <Cosponsors
             requireCosponsors={localProposalsSettings.require_cosponsors}
