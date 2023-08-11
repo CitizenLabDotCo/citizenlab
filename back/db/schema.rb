@@ -1477,10 +1477,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_04_142723) do
     t.string "block_reason"
     t.datetime "block_end_at", precision: nil
     t.string "new_email"
+    t.string "unique_code"
     t.index "lower((email)::text)", name: "users_unique_lower_email_idx", unique: true
     t.index ["email"], name: "index_users_on_email"
     t.index ["registration_completed_at"], name: "index_users_on_registration_completed_at"
     t.index ["slug"], name: "index_users_on_slug", unique: true
+    t.index ["unique_code"], name: "index_users_on_unique_code", unique: true
   end
 
   create_table "verification_verifications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
