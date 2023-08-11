@@ -1,0 +1,51 @@
+#!/usr/bin/env ruby
+
+require 'fileutils'
+include FileUtils
+require 'active_support/all'
+
+# path to your application root.
+APP_ROOT = File.expand_path('../..', __dir__)
+
+def system!(*args)
+  system(*args) || abort("\n== Command #{args} failed ==")
+end
+
+example_campaign = ARGV[0] # underscored
+result_campaign = ARGV[1] # underscored
+
+chdir APP_ROOT do
+  new_files = %w[
+    back/app/models/notifications/%{underscored}.rb
+    back/engines/free/email_campaigns/app/mailers/email_campaigns/%{underscored}_mailer.rb
+    back/engines/free/email_campaigns/app/models/email_campaigns/campaigns/%{underscored}.rb
+    back/engines/free/email_campaigns/app/views/email_campaigns/%{underscored}_mailer/campaign_mail.mjml
+    back/engines/free/email_campaigns/spec/mailers/%{underscored}_mailer_spec.rb
+    back/engines/free/email_campaigns/spec/mailers/previews/email_campaigns/%{underscored}_mailer_preview.rb
+    back/spec/models/notifications/%{underscored}_spec.rb
+
+    front/app/containers/MainHeader/NotificationMenu/components/%{camelcased}Notification/index.tsx
+  ]
+
+  new_files.each do |file|
+    example_file = file % { underscored: example_campaign, camelcased: example_campaign.camelize }
+    result_file = file % { underscored: result_campaign, camelcased: result_campaign.camelize }
+    mkdir_p File.dirname(result_file)
+    cp example_file, result_file
+
+    content = File.read(result_file)
+    File.write(result_file, content.gsub(example_campaign, result_campaign).gsub(example_campaign.camelize, result_campaign.camelize))
+  end
+
+  edited_files = %w[
+    back/app/services/notification_service.rb
+    back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb
+    back/engines/free/email_campaigns/config/locales/en.yml # 3 occurrences
+    back/engines/free/email_campaigns/spec/factories/campaigns.rb
+    back/spec/factories/notifications.rb
+
+    front/app/api/notifications/types.ts # 2 occurrences
+    front/app/containers/MainHeader/NotificationMenu/components/Notification/index.tsx # 3 occurrences
+    front/app/containers/MainHeader/NotificationMenu/messages.ts
+  ]
+end
