@@ -60,7 +60,7 @@ RSpec.describe Notification do
     end
 
     it 'makes a status change on idea you follow notification on status changed' do
-      idea = create(:idea, author: recipient)
+      idea = create(:idea)
       create(:follower, followable: idea)
       activity = create(:activity, item: idea, action: 'changed_status')
 
