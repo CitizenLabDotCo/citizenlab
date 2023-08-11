@@ -29,9 +29,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.downloadResults2',
     defaultMessage: 'Download survey results',
   },
-  printSurvey: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.printSurvey',
-    defaultMessage: 'Print survey',
+  downloadSurvey: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.downloadSurvey',
+    defaultMessage: 'Download survey as pdf',
   },
   informationText2: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.informationText2',

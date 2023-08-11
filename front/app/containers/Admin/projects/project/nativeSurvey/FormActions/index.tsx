@@ -159,14 +159,13 @@ const FormActions = ({
         {uiSchema && (
           <Box mt="12px" w="100%" display="flex">
             <Button
-              icon="survey"
-              openLinkInNewTab
+              icon="download"
               buttonStyle="cl-blue"
               width="auto"
               minWidth="312px"
               onClick={saveSurvey}
             >
-              {formatMessage(messages.printSurvey)}
+              {formatMessage(messages.downloadSurvey)}
             </Button>
           </Box>
         )}

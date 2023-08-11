@@ -1,11 +1,9 @@
-import { Button, Box } from '@citizenlab/cl2-component-library';
 import React from 'react';
 
 // components
+import Button from 'components/UI/Button';
+import { Box } from '@citizenlab/cl2-component-library';
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
-
-// router
-import clHistory from 'utils/cl-router/history';
 
 // i18n
 import messages from './messages';
@@ -14,7 +12,14 @@ import { FormattedMessage } from 'utils/cl-intl';
 // hooks
 import { useParams } from 'react-router-dom';
 import usePhases from 'api/phases/usePhases';
+import useLocale from 'hooks/useLocale';
+
+// utils
 import { getCurrentPhase } from 'api/phases/utils';
+import { saveIdeaFormAsPDF } from './IdeaFormBuilder/saveIdeaFormAsPDF';
+import { isNilOrError } from 'utils/helperUtils';
+
+// typings
 import { IPhaseData } from 'api/phases/types';
 import { ParticipationMethod } from 'services/participationContexts';
 
@@ -23,11 +28,19 @@ export const IdeaForm = () => {
     projectId: string;
   };
 
+  const locale = useLocale();
   const { data: phases } = usePhases(projectId);
-  let phaseToUse;
-  if (phases) {
-    phaseToUse = getCurrentOrLastIdeationPhase(phases.data);
-  }
+
+  const phaseToUse = phases ? getCurrentOrLastIdeationPhase(phases.data) : null;
+
+  const ideaFormLink = phaseToUse
+    ? `/admin/projects/${projectId}/phases/${phaseToUse.id}/ideaform/edit`
+    : `/admin/projects/${projectId}/ideaform/edit`;
+
+  const saveIdeaForm = async () => {
+    if (isNilOrError(locale)) return;
+    await saveIdeaFormAsPDF({ projectId, locale });
+  };
 
   return (
     <Box gap="0px" flexWrap="wrap" width="100%" display="flex">
@@ -39,21 +52,25 @@ export const IdeaForm = () => {
           <FormattedMessage {...messages.inputFormDescription} />
         </SectionDescription>
       </Box>
-      <Box>
+      <Box display="flex" flexDirection="row">
         <Button
-          onClick={() => {
-            phaseToUse
-              ? clHistory.push(
-                  `/admin/projects/${projectId}/phases/${phaseToUse.id}/ideaform/edit`
-                )
-              : clHistory.push(`/admin/projects/${projectId}/ideaform/edit`);
-          }}
+          linkTo={ideaFormLink}
           width="auto"
           icon="edit"
           data-cy="e2e-edit-input-form"
         >
           <FormattedMessage {...messages.editInputForm} />
         </Button>
+        <Box ml="8px">
+          <Button
+            onClick={saveIdeaForm}
+            width="auto"
+            icon="download"
+            data-cy="e2e-save-input-form-pdf"
+          >
+            <FormattedMessage {...messages.downloadInputForm} />
+          </Button>
+        </Box>
       </Box>
     </Box>
   );
