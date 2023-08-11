@@ -39,16 +39,8 @@ export type FormBuilderConfig = {
 
   goBackUrl?: string;
   groupingType: 'page' | 'section';
-};
 
-export const getUpdatedConfiguration = (
-  config: FormBuilderConfig,
-  formCustomFields?: IFlatCustomField[] | undefined | Error,
-  goBackUrl?: string | undefined
-) => {
-  config.goBackUrl = goBackUrl;
-  config.formCustomFields = formCustomFields;
-  return config;
+  onDownloadPDF?: () => Promise<void>;
 };
 
 export const getIsPostingEnabled = (

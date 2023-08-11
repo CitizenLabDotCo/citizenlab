@@ -31,7 +31,7 @@ import { colors } from 'utils/styleUtils';
 
 // services
 import { deleteFormResults } from 'services/formCustomFields';
-import { saveSurveyAsPDF } from './saveSurveyAsPDF';
+import { saveSurveyAsPDF } from '../saveSurveyAsPDF';
 
 type FormActionsProps = {
   phaseId?: string;

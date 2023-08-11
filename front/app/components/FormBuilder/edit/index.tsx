@@ -324,6 +324,7 @@ export const FormEdit = ({
 type FormBuilderPageProps = {
   builderConfig: FormBuilderConfig;
 };
+
 const FormBuilderPage = ({ builderConfig }: FormBuilderPageProps) => {
   const intl = useIntl();
   const modalPortalElement = document.getElementById('modal-portal');

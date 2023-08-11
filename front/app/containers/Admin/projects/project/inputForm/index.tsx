@@ -16,7 +16,7 @@ import useLocale from 'hooks/useLocale';
 
 // utils
 import { getCurrentPhase } from 'api/phases/utils';
-import { saveIdeaFormAsPDF } from './IdeaFormBuilder/saveIdeaFormAsPDF';
+import { saveIdeaFormAsPDF } from './saveIdeaFormAsPDF';
 import { isNilOrError } from 'utils/helperUtils';
 
 // typings
