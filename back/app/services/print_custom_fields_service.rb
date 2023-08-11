@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class PrintCustomFieldsService
-  attr_reader :custom_fields, :params
+  attr_reader :custom_fields, :params, :previous_cursor
 
   QUESTION_TYPES = %w[select multiselect text multiline_text linear_scale]
   FORBIDDEN_HTML_TAGS_REGEX = /<\/?(div|span|ul|ol|li|em|img|a){1}[^>]*\/?>/
@@ -9,6 +9,7 @@ class PrintCustomFieldsService
   def initialize(custom_fields, params)
     @custom_fields = custom_fields
     @params = params
+    @previous_cursor = nil
   end
 
   def create_pdf
@@ -38,27 +39,11 @@ class PrintCustomFieldsService
       pdf.move_down 7.mm
 
       if field_type == 'select' then
-        custom_field.options.each do |option|
-          pdf.stroke_color '000000'
-          pdf.stroke_circle [3.mm, pdf.cursor], 5
-
-          pdf.bounding_box([7.mm, pdf.cursor + 4], width: 180.mm, height: 10.mm) do
-            pdf.text option.title_multiloc[params[:locale]]
-          end
-        end
+        draw_single_choice(pdf, custom_field)
       end
 
       if field_type == 'multiselect' then
-        custom_field.options.each do |option|
-          pdf.stroke do
-            pdf.stroke_color '000000'
-            pdf.rectangle([1.5.mm, pdf.cursor + 1.5.mm], 10, 10)
-          end
-
-          pdf.bounding_box([7.mm, pdf.cursor + 4], width: 180.mm, height: 10.mm) do
-            pdf.text option.title_multiloc[params[:locale]]
-          end
-        end
+        draw_multiple_choice(pdf, custom_field)
       end
 
       if field_type == 'text' then
@@ -72,29 +57,7 @@ class PrintCustomFieldsService
       end
 
       if field_type == 'linear_scale' then
-        max_index = custom_field.maximum - 1
-
-        (0..max_index).each do |i|
-          pdf.stroke_color '000000'
-          pdf.stroke_circle(
-            [
-              3.mm + ((i.to_f / max_index) * 100.mm), 
-              pdf.cursor
-            ],
-            5
-          )
-        end
-
-        pdf.move_down 4.mm
-
-        pdf.text custom_field.minimum_label_multiloc[params[:locale]]
-
-        pdf.bounding_box([100.mm, pdf.cursor + 5.1.mm], width: 80.mm, height: 10.mm) do
-          pdf.text custom_field.maximum_label_multiloc[params[:locale]]
-        end
-        # puts custom_field.maximum (min 2, max 7)
-        # puts custom_field.minimum_label_multiloc
-        # puts custom_field.maximum_label_multiloc
+        draw_linear_scale(pdf, custom_field)
       end
 
       pdf.move_down 6.mm
@@ -128,6 +91,77 @@ class PrintCustomFieldsService
     end
   end
 
+  def draw_single_choice(pdf, custom_field)
+    custom_field.options.each do |option|
+      pdf.stroke_color '000000'
+      pdf.stroke_circle [3.mm, pdf.cursor], 5
+
+      pdf.bounding_box([7.mm, pdf.cursor + 4], width: 180.mm, height: 10.mm) do
+        pdf.text option.title_multiloc[params[:locale]]
+      end
+    end
+  end
+
+  def draw_multiple_choice(pdf, custom_field)
+    custom_field.options.each do |option|
+      pdf.stroke do
+        pdf.stroke_color '000000'
+        pdf.rectangle([1.5.mm, pdf.cursor + 1.5.mm], 10, 10)
+      end
+
+      pdf.bounding_box([7.mm, pdf.cursor + 4], width: 180.mm, height: 10.mm) do
+        pdf.text option.title_multiloc[params[:locale]]
+      end
+    end
+  end
+
+  def draw_text_line(pdf)
+    pdf.text '_' * 47, color: 'EBEBEB', size: 20
+  end
+
+  def draw_linear_scale(pdf, custom_field)
+    max_index = custom_field.maximum - 1
+
+    # Draw number labels
+    (0..max_index).each do |i|
+      pdf.indent((i.to_f / max_index) * 100.mm + 1.8.mm) do
+        save_cursor pdf
+
+        pdf.text((i + 1).to_s)
+
+        reset_cursor pdf
+      end
+    end
+
+    pdf.move_down 7.mm
+
+    # Draw checkboxes
+    (0..max_index).each do |i|
+      pdf.stroke_color '000000'
+      pdf.stroke_circle(
+        [
+          3.mm + ((i.to_f / max_index) * 100.mm), 
+          pdf.cursor
+        ],
+        5
+      )
+    end
+
+    pdf.move_down 7.mm
+
+    save_cursor pdf
+
+    pdf.indent(1.8.mm) do
+      pdf.text custom_field.minimum_label_multiloc[params[:locale]]
+    end
+
+    reset_cursor pdf
+
+    pdf.indent(101.mm) do
+      pdf.text custom_field.maximum_label_multiloc[params[:locale]]
+    end
+  end
+
   def parse_html_tags(string)
     string
       .gsub(FORBIDDEN_HTML_TAGS_REGEX, '')
@@ -135,7 +169,11 @@ class PrintCustomFieldsService
       .split('</p>')
   end
 
-  def draw_text_line(pdf)
-    pdf.text '_' * 47, color: 'EBEBEB', size: 20
+  def save_cursor(pdf)
+    @previous_cursor = pdf.cursor
+  end
+
+  def reset_cursor(pdf)
+    pdf.move_down pdf.cursor - previous_cursor
   end
 end
