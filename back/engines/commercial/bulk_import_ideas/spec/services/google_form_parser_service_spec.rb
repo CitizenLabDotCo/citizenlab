@@ -20,7 +20,7 @@ describe BulkImportIdeas::GoogleFormParserService do
 
   it 'gets idea rows from the PDF file' do
     # Comment this stub out to use the actual Google service - used for now as VCR not working
-    expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:parse_paper_form).and_return(
+    expect_any_instance_of(described_class).to receive(:parse_paper_form).and_return(
       [
         {
           'Name:' => { value: 'John Rambo', type: '' },

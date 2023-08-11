@@ -22,7 +22,6 @@ module BulkImportIdeas
     end
 
     def import_ideas(idea_rows, import_as_draft: false)
-
       raise Error.new 'bulk_import_ideas_maximum_ideas_exceeded', value: max_ideas if idea_rows.size > DEFAULT_MAX_IDEAS
 
       ideas = []
