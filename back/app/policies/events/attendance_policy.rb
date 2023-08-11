@@ -21,7 +21,9 @@ class Events::AttendancePolicy < ApplicationPolicy
   end
 
   def create?
-    active? && user.id == record.attendee_id
+    active? &&
+      user.id == record.attendee_id &&
+      ProjectPolicy.new(user, record.event.project).show?
   end
 
   def destroy?

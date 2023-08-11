@@ -81,7 +81,18 @@ RSpec.describe Events::AttendancePolicy do
     context 'when attendee is the current user' do
       let(:attendee) { user }
 
-      it { is_expected.to permit(:create) }
+      context 'and is allowed to view the project the event belongs to' do
+        it { is_expected.to permit(:create) }
+      end
+
+      context 'and is not allowed to view the project the event belongs to' do
+        before do
+          attendance.event.project.update!(visible_to: :admins)
+        end
+
+        it { is_expected.not_to permit(:create)}
+      end
+
       it { is_expected.to permit(:destroy) }
     end
 
