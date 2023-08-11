@@ -24,6 +24,7 @@ import clHistory from 'utils/cl-router/history';
 // typing
 import { IEventData } from 'api/events/types';
 import { IPhaseData } from 'api/phases/types';
+import { ProcessType } from 'api/projects/types';
 
 const EventCard = styled(Box)`
   ${defaultCardStyle};
@@ -48,23 +49,28 @@ const StyledEventTitle = styled(Text)`
 type EventPreviewCardProps = {
   currentPhase?: IPhaseData;
   event: IEventData;
+  projectType?: ProcessType;
 };
 
-const eventOccursInPhase = (event, phase) => {
+const eventOccursInPhase = (event: IEventData, phase?: IPhaseData) => {
   return moment(event.attributes.start_at).isBetween(
     moment(phase?.attributes.start_at),
     moment(phase?.attributes.end_at).add(1, 'day')
   );
 };
 
-const EventPreviewCard = ({ currentPhase, event }: EventPreviewCardProps) => {
+const EventPreviewCard = ({
+  currentPhase,
+  event,
+  projectType,
+}: EventPreviewCardProps) => {
   const isMobile = useBreakpoint('phone');
   const isTablet = useBreakpoint('tablet');
 
   const localize = useLocalize();
   const theme = useTheme();
 
-  if (eventOccursInPhase(event, currentPhase)) {
+  if (eventOccursInPhase(event, currentPhase) || projectType === 'continuous') {
     return (
       <EventCard
         display="flex"

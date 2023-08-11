@@ -1,8 +1,12 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  eventPreviewSectionTitle: {
-    id: 'app.components.EventPreviews.eventPreviewSectionTitle',
-    defaultMessage: 'Events happening during this phase',
+  eventPreviewTimelineTitle: {
+    id: 'app.components.EventPreviews.eventPreviewTimelineTitle',
+    defaultMessage: 'Upcoming events in this phase',
+  },
+  eventPreviewContinuousTitle: {
+    id: 'app.components.EventPreviews.eventPreviewContinuousTitle',
+    defaultMessage: 'Upcoming events in this project',
   },
 });

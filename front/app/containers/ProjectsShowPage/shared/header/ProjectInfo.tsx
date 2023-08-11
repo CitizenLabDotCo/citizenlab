@@ -18,6 +18,7 @@ import T from 'components/T';
 // style
 import styled from 'styled-components';
 import { media, isRtl } from 'utils/styleUtils';
+import EventPreviews from 'components/EventPreviews';
 
 const Container = styled.div`
   display: flex;
@@ -98,6 +99,11 @@ const ProjectInfo = ({ projectId, className }: Props) => {
             {projectFiles && projectFiles.data.length > 0 && (
               <Box mb="24px">
                 <FileAttachments files={projectFiles.data} />
+              </Box>
+            )}
+            {project?.data.attributes.process_type === 'continuous' && (
+              <Box maxWidth={isSmallerThanTablet ? '100%' : '800px'}>
+                <EventPreviews />
               </Box>
             )}
           </Left>
