@@ -90,7 +90,7 @@ RSpec.describe Events::AttendancePolicy do
           attendance.event.project.update!(visible_to: :admins)
         end
 
-        it { is_expected.not_to permit(:create)}
+        it { is_expected.not_to permit(:create) }
       end
 
       it { is_expected.to permit(:destroy) }
