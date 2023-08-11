@@ -15,6 +15,7 @@ import usePhase from 'api/phases/usePhase';
 import styled from 'styled-components';
 import { defaultCardStyle, media } from 'utils/styleUtils';
 import usePhaseFiles from 'api/phase_files/usePhaseFiles';
+import EventPreviews from 'components/EventPreviews';
 
 const Container = styled.div`
   padding: 30px;
@@ -57,33 +58,36 @@ const PhaseDescription = ({
   const descriptionHasContent = !contentIsEmpty || !isEmpty(phaseFiles);
 
   return (
-    <Container
-      className={`e2e-phase-description ${className || ''}`}
-      role="tabpanel"
-      tabIndex={0}
-      id={`phase-description-panel-${phaseNumber}`}
-      aria-labelledby={`phase-tab-${phaseNumber}`}
-      hidden={hidden}
-    >
-      <PhaseTitle
-        phaseNumber={phaseNumber}
-        phaseId={phaseId}
-        descriptionHasContent={descriptionHasContent}
-      />
-      {phase && descriptionHasContent && (
-        <>
-          <ReadMoreWrapper
-            fontSize="base"
-            contentId="phase-description"
-            value={phase.data.attributes?.description_multiloc}
-          />
+    <>
+      <Container
+        className={`e2e-phase-description ${className || ''}`}
+        role="tabpanel"
+        tabIndex={0}
+        id={`phase-description-panel-${phaseNumber}`}
+        aria-labelledby={`phase-tab-${phaseNumber}`}
+        hidden={hidden}
+      >
+        <PhaseTitle
+          phaseNumber={phaseNumber}
+          phaseId={phaseId}
+          descriptionHasContent={descriptionHasContent}
+        />
+        {phase && descriptionHasContent && (
+          <>
+            <ReadMoreWrapper
+              fontSize="base"
+              contentId="phase-description"
+              value={phase.data.attributes?.description_multiloc}
+            />
 
-          {!isNilOrError(phaseFiles) && !isEmpty(phaseFiles) && (
-            <StyledFileAttachments files={phaseFiles.data} />
-          )}
-        </>
-      )}
-    </Container>
+            {!isNilOrError(phaseFiles) && !isEmpty(phaseFiles) && (
+              <StyledFileAttachments files={phaseFiles.data} />
+            )}
+          </>
+        )}
+        <EventPreviews projectId={phase?.data.relationships.project.data.id} />
+      </Container>
+    </>
   );
 };
 
