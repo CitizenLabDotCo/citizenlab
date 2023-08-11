@@ -67,7 +67,8 @@ resource 'BulkImportIdeasImportIdeas' do
     context 'project import' do
       parameter(:project_id, 'ID of the project to import these ideas to', required: true)
 
-      let(:project_id) { create(:project).id }
+      let(:project) { create(:project) }
+      let(:project_id) { project.id }
 
       get 'web_api/v1/import_ideas/:project_id/example_xlsx' do
         example_request 'Get the example xlsx for a project' do
@@ -122,10 +123,12 @@ resource 'BulkImportIdeasImportIdeas' do
           do_request
 
           assert_status 201
-          expect(response_data.count).to eq 2
+          expect(response_data.count).to eq 1
           expect(response_data.first[:attributes][:title_multiloc][:en]).to eq 'This is really a great title'
-          expect(User.all.count).to eq 3 # 2 new users created
-          expect(Idea.all.count).to eq 2
+          expect(response_data.first[:attributes][:publication_status]).to eq 'draft'
+          expect(User.all.count).to eq 2 # 1 new user created
+          expect(Idea.all.count).to eq 1
+          expect(project.reload.ideas_count).to eq 0 # Draft ideas should not be counted
         end
       end
     end

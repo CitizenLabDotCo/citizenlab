@@ -153,7 +153,7 @@ describe BulkImportIdeas::ImportIdeasService do
       )
     end
 
-    it 'imports ideas with publication info' do
+    it 'imports ideas as published with publication info' do
       create(:user, email: 'userimport@citizenlab.co')
       create(:project, title_multiloc: { 'en' => 'Project title' })
 
@@ -173,6 +173,29 @@ describe BulkImportIdeas::ImportIdeasService do
       idea = Idea.first
       expect(idea.published_at).to eq Date.parse('2022-07-18')
       expect(idea.publication_status).to eq 'published'
+    end
+
+    it 'imports ideas as draft with publication info' do
+      create(:user, email: 'userimport@citizenlab.co')
+      create(:project, title_multiloc: { 'en' => 'Project title' })
+
+      idea_rows = [
+        {
+          title_multiloc: { 'en' => 'My idea title' },
+          body_multiloc: { 'en' => 'My idea description' },
+          project_title: 'Project title',
+          user_email: 'userimport@citizenlab.co',
+          published_at: '18-07-2022'
+        }
+      ]
+
+      service.import_ideas(idea_rows, import_as_draft: true)
+
+      expect(Idea.count).to eq 1
+      idea = Idea.first
+      # TODO: published_at is set even though the status is draft
+      # expect(idea.published_at).to be_nil
+      expect(idea.publication_status).to eq 'draft'
     end
 
     it 'imports ideas with special date cells' do

@@ -21,13 +21,14 @@ module BulkImportIdeas
       @all_topics = Topic.all
     end
 
-    def import_ideas(idea_rows, max_ideas: DEFAULT_MAX_IDEAS)
-      raise Error.new 'bulk_import_ideas_maximum_ideas_exceeded', value: max_ideas if idea_rows.size > max_ideas
+    def import_ideas(idea_rows, import_as_draft: false)
+
+      raise Error.new 'bulk_import_ideas_maximum_ideas_exceeded', value: max_ideas if idea_rows.size > DEFAULT_MAX_IDEAS
 
       ideas = []
       ActiveRecord::Base.transaction do
         idea_rows.each do |idea_row|
-          idea = import_idea idea_row
+          idea = import_idea idea_row, import_as_draft
           Rails.logger.info { "Created #{idea.id}" }
           ideas << idea
         end
@@ -98,14 +99,14 @@ module BulkImportIdeas
 
     attr_reader :all_projects, :all_topics
 
-    def import_idea(idea_row)
+    def import_idea(idea_row, import_as_draft)
       idea_attributes = {}
       add_title_multiloc idea_row, idea_attributes
       add_body_multiloc idea_row, idea_attributes
       add_project idea_row, idea_attributes
       add_author idea_row, idea_attributes
       add_published_at idea_row, idea_attributes
-      add_publication_status idea_row, idea_attributes
+      add_publication_status idea_row, idea_attributes, import_as_draft
       add_location idea_row, idea_attributes
       add_phase idea_row, idea_attributes
       add_topics idea_row, idea_attributes
@@ -205,8 +206,8 @@ module BulkImportIdeas
       idea_attributes[:published_at] = published_at
     end
 
-    def add_publication_status(_idea_row, idea_attributes)
-      idea_attributes[:publication_status] = 'published'
+    def add_publication_status(_idea_row, idea_attributes, draft)
+      idea_attributes[:publication_status] = draft ? 'draft' : 'published'
     end
 
     def add_location(idea_row, idea_attributes)

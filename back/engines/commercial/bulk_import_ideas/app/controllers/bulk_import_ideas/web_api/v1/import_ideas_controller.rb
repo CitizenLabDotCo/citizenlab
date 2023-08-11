@@ -7,7 +7,7 @@ module BulkImportIdeas
     def bulk_create_xlsx
       xlsx = parse_xlsx
       idea_rows = import_ideas_service.xlsx_to_idea_rows xlsx
-      bulk_create idea_rows
+      bulk_create idea_rows, false
     end
 
     def example_xlsx
@@ -19,13 +19,13 @@ module BulkImportIdeas
     def bulk_create_pdf
       docs = parse_pdf
       idea_rows = import_ideas_service.paper_docs_to_idea_rows docs
-      bulk_create idea_rows
+      bulk_create idea_rows, true
     end
 
     private
 
-    def bulk_create(idea_rows)
-      ideas = import_ideas_service.import_ideas idea_rows
+    def bulk_create(idea_rows, draft)
+      ideas = import_ideas_service.import_ideas idea_rows, import_as_draft: draft
       sidefx.after_success current_user
       render json: ::WebApi::V1::IdeaSerializer.new(
         ideas,
