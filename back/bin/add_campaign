@@ -33,18 +33,13 @@ def replace_campaign(content, example_campaign, result_campaign)
     .gsub(example_campaign.camelize(:lower), result_campaign.camelize(:lower))
 end
 
-def example_campaign_regex_string(campaign)
-  "#{campaign}|#{campaign.camelize}|#{campaign.camelize(:lower)}"
-end
-
 def includes_campaign?(content, campaign)
-  content.match?(Regexp.new(example_campaign_regex_string(campaign)))
+  content.match?(/#{campaign}|#{campaign.camelize}|#{campaign.camelize(:lower)}/)
 end
-
-example_campaign_regex = example_campaign_regex_string(example_campaign)
 
 FileUtils.chdir APP_ROOT do
-  new_files = `git ls-files | grep -E "#{example_campaign_regex}"`.split("\n")
+  all_files = `git ls-files`.split("\n")
+  new_files = all_files.select { |file| includes_campaign?(file, example_campaign) }
 
   new_files.each do |example_file|
     result_file = replace_campaign(example_file, example_campaign, result_campaign)
@@ -55,8 +50,7 @@ FileUtils.chdir APP_ROOT do
     File.write(result_file, result_content)
   end
 
-  files_to_edit = `git ls-files | grep -vE "#{example_campaign_regex}" | xargs grep -lE "#{example_campaign_regex}"`
-  files_to_edit = files_to_edit.split("\n") - [$0] # exclude this script
+  files_to_edit = (all_files - new_files).select { |file| includes_campaign?(File.read(file), example_campaign) rescue false } - [$0]
 
   files_to_edit.each do |file|
     lines = File.read(file).split("\n")
