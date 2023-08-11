@@ -29,13 +29,10 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAddInitiativeFile from 'api/initiative_files/useAddInitiativeFile';
 import useDeleteInitiativeFile from 'api/initiative_files/useDeleteInitiativeFile';
 import useUpdateInitiative from 'api/initiatives/useUpdateInitiative';
-import {
-  IInitiativeAdd,
-  IInitiativeCosponsor,
-  IInitiativeData,
-} from 'api/initiatives/types';
+import { IInitiativeAdd, IInitiativeData } from 'api/initiatives/types';
 import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
 import useTopics from 'api/topics/useTopics';
+import { MentionItem } from 'react-mentions';
 
 interface Props {
   locale: Locale;
@@ -381,7 +378,7 @@ const InitiativesEditFormWrapper = ({
     }));
   };
 
-  const onChangeCosponsors = (cosponsors: IInitiativeCosponsor[]) => {
+  const onChangeCosponsors = (cosponsors: MentionItem[]) => {
     const cosponsor_ids = cosponsors.map((cosponsor) => cosponsor.id);
 
     setFormValues((formValues) => ({

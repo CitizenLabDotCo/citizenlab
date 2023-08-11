@@ -30,7 +30,7 @@ import { trackEventByName } from 'utils/analytics';
 
 // api
 import useAddInitiative from 'api/initiatives/useAddInitiative';
-import { IInitiativeAdd, IInitiativeCosponsor } from 'api/initiatives/types';
+import { IInitiativeAdd } from 'api/initiatives/types';
 import useAddInitiativeImage from 'api/initiative_images/useAddInitiativeImage';
 import useDeleteInitiativeImage from 'api/initiative_images/useDeleteInitiativeImage';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -38,6 +38,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import useUpdateInitiative from 'api/initiatives/useUpdateInitiative';
 import useAddInitiativeFile from 'api/initiative_files/useAddInitiativeFile';
 import useDeleteInitiativeFile from 'api/initiative_files/useDeleteInitiativeFile';
+import { MentionItem } from 'react-mentions';
 
 const StyledInitiativeForm = styled(InitiativeForm)`
   width: 100%;
@@ -352,7 +353,7 @@ const InitiativesNewFormWrapper = ({
     }));
   };
 
-  const onChangeCosponsors = (cosponsors: IInitiativeCosponsor[]) => {
+  const onChangeCosponsors = (cosponsors: MentionItem[]) => {
     const cosponsor_ids = cosponsors.map((cosponsor) => cosponsor.id);
 
     setFormValues((formValues) => ({

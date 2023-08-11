@@ -38,11 +38,6 @@ export type InitiativePublicationStatus =
   | 'archived'
   | 'spam';
 
-export interface IInitiativeCosponsor {
-  id: string;
-  display: string;
-}
-
 export interface IInitiativeCosponsorship {
   name: string;
   status: 'pending' | 'accepted';

@@ -40,14 +40,12 @@ import { ITopicData } from 'api/topics/types';
 import { FormSubmitFooter } from './SubmitFooter';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
-import {
-  IInitiativeCosponsor,
-  IInitiativeCosponsorship,
-} from 'api/initiatives/types';
+import { IInitiativeCosponsorship } from 'api/initiatives/types';
 
 // hooks
 import useInitiativeCosponsorsRequired from 'hooks/useInitiativeCosponsorsRequired';
 import Warning from 'components/UI/Warning';
+import { MentionItem } from 'react-mentions';
 
 const Form = styled.form`
   display: flex;
@@ -89,7 +87,7 @@ interface Props extends FormValues, FormProps {
   onChangeBody: (newValue: Multiloc) => void;
   onChangeTopics: (newValue: string[]) => void;
   onChangePosition: (newValue: string) => void;
-  onChangeCosponsors: (cosponsors: IInitiativeCosponsor[]) => void;
+  onChangeCosponsors: (cosponsors: MentionItem[]) => void;
   onChangeBanner: (newValue: UploadFile | null) => void;
   onChangeImage: (newValue: UploadFile | null) => void;
   onAddFile: (newValue: UploadFile) => void;
