@@ -90,7 +90,7 @@ module BulkImportIdeas
 
     # NOTE: For DEVELOPMENT ONLY when Google API not configured
     def dummy_data
-      [
+      Array.new(rand(1..8)) do
         {
           # User details
           'Name:' => { value: Faker::FunnyName.name, type: '' },
@@ -106,7 +106,7 @@ module BulkImportIdeas
           # Custom text field
           'Title:' => { value: Faker::Quote.robin, type: '' }
         }
-      ]
+      end
     end
   end
 end
