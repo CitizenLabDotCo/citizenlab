@@ -24,6 +24,21 @@ module BulkImportIdeas
 
     private
 
+    def upload_pdf
+
+
+      # Do it like layout image but as part of the IdeaImport model
+
+      # file is uploaded at a project level not idea
+      # file = FileUpload.create!(
+      #   idea: input,
+      #   file_by_content: {
+      #     name: params_for_files_field['name'],
+      #     content: bulk_create_pdf_params[:pdf]
+      #   }
+      # )
+    end
+
     def bulk_create(idea_rows, draft)
       ideas = import_ideas_service.import_ideas idea_rows, import_as_draft: draft
       sidefx.after_success current_user
