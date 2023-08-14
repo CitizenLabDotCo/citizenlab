@@ -102,7 +102,7 @@ const ProjectInfo = ({ projectId, className }: Props) => {
               </Box>
             )}
             {project?.data.attributes.process_type === 'continuous' && (
-              <Box maxWidth={isSmallerThanTablet ? '100%' : '800px'}>
+              <Box maxWidth={isSmallerThanTablet ? '100%' : '700px'}>
                 <EventPreviews />
               </Box>
             )}

@@ -13,6 +13,7 @@ import EventPreviewCard from './EventPreviewCard';
 import useEvents from 'api/events/useEvents';
 import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
+import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 // style
 import styled, { useTheme } from 'styled-components';
@@ -20,8 +21,9 @@ import styled, { useTheme } from 'styled-components';
 // intl
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
+
+// router
 import { useParams } from 'react-router-dom';
-import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 type EventPreviewsProps = {
   projectId?: string;
@@ -49,20 +51,22 @@ const EventPreviews = ({ projectId }: EventPreviewsProps) => {
   const { data: phases } = usePhases(projectIdToUse);
   const { data: events } = useEvents({
     projectIds: projectIdToUse ? [projectIdToUse] : undefined,
+    currentAndFutureOnly: true,
     sort: '-start_at',
   });
 
   // scrolling
   const [atScrollStart, setAtScrollStart] = useState(true);
   const [atScrollEnd, setAtScrollEnd] = useState(false);
-  const [showArrowButtons, setShowArrowButtons] = useState(false);
+  const showArrows =
+    ref?.current && ref.current.scrollWidth > ref.current.clientWidth;
+  const [showArrowButtons, setShowArrowButtons] = useState(showArrows);
 
-  // initial lateral scroll arrow state
   useEffect(() => {
-    if (ref?.current) {
-      setShowArrowButtons(ref.current.scrollWidth > ref.current.clientWidth);
-    }
-  }, []);
+    setShowArrowButtons(
+      ref?.current && ref.current.scrollWidth > ref.current.clientWidth
+    );
+  }, [showArrows]);
 
   const projectType = project?.data.attributes.process_type;
   const currentPhase = getCurrentPhase(phases?.data);
@@ -106,7 +110,6 @@ const EventPreviews = ({ projectId }: EventPreviewsProps) => {
               my="auto"
             />
           </Box>
-
           <EventPreviewContainer
             py="8px"
             display="flex"
@@ -130,6 +133,7 @@ const EventPreviews = ({ projectId }: EventPreviewsProps) => {
               />
             ))}
           </EventPreviewContainer>
+
           <Box
             aria-hidden="true"
             my="auto"

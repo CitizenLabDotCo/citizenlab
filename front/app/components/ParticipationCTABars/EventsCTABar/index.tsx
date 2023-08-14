@@ -45,7 +45,7 @@ export const EventsCTABar = ({ phases, project }: CTABarProps) => {
           padding="6px 12px"
           fontSize="14px"
         >
-          <FormattedMessage {...messages.seeUpcomingEvents} />
+          <FormattedMessage {...messages.seeEvents} />
         </Button>
       }
     />

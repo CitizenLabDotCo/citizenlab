@@ -61,7 +61,7 @@ const eventOccursInPhase = (event: IEventData, phase?: IPhaseData) => {
 
   const phaseRange = [
     moment(phase?.attributes.start_at),
-    moment(phase?.attributes.end_at),
+    moment(phase?.attributes.end_at).add(1, 'day'),
   ];
 
   return timeRangesOverlap(eventRange, phaseRange);
