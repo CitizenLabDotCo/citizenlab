@@ -29,7 +29,20 @@ class PrintCustomFieldsService
 
       # Skip unsupported question types
       next unless QUESTION_TYPES.include? field_type
-      
+
+      render_field(pdf, custom_field)
+      pdf.move_down 6.mm
+    end
+
+    return pdf
+  end
+
+  private
+
+  def render_field(pdf, custom_field)
+    field_type = custom_field.input_type
+
+    pdf.group do |pdf|
       # Write title
       write_title(pdf, custom_field)
 
@@ -57,14 +70,8 @@ class PrintCustomFieldsService
       if field_type == 'linear_scale' then
         draw_linear_scale(pdf, custom_field)
       end
-
-      pdf.move_down 6.mm
     end
-
-    return pdf
   end
-
-  private
 
   def write_title(pdf, custom_field)
     pdf.text(
