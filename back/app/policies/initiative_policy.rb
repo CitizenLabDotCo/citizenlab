@@ -53,6 +53,10 @@ class InitiativePolicy < ApplicationPolicy
     create?
   end
 
+  def accept_invite?
+    true
+  end
+
   def allowed_transitions?
     can_moderate?
   end

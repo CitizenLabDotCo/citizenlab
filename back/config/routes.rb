@@ -69,6 +69,7 @@ Rails.application.routes.draw do
         get :as_markers, on: :collection, action: 'index_initiative_markers'
         get :filter_counts, on: :collection
         get :allowed_transitions, on: :member
+        patch :accept_invite, on: :member
       end
 
       resources :idea_statuses, only: %i[index show]
