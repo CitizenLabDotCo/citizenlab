@@ -132,6 +132,7 @@ gem 'order_as_specified'
 gem 'scenic'
 gem 'ice_cube', '~> 0.16'
 gem 'prawn', '~> 2.4'
+gem 'prawn-grouping', '~> 0.2.0'
 
 # Also required here to be able to initialize Mailgun in
 # e.g. production.rb, which would otherwise result in an

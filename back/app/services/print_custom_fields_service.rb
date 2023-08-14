@@ -114,7 +114,7 @@ class PrintCustomFieldsService
   end
 
   def draw_text_lines(pdf, lines)
-    (1..lines).each do
+    lines.times do
       pdf.text '_' * 47, color: 'EBEBEB', size: 20
     end
   end
