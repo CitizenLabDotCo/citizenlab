@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe BulkImportIdeas::ImportIdeasService do
-  let(:service) { described_class.new }
+  let(:service) { described_class.new(create(:admin)) }
 
   describe 'import_ideas' do
     before { create(:idea_status, code: 'proposed') }
@@ -36,12 +36,14 @@ describe BulkImportIdeas::ImportIdeasService do
       expect(idea1.project_id).to eq project1.id
       expect(idea1.title_multiloc).to eq({ 'en' => 'My idea title' })
       expect(idea1.body_multiloc).to eq({ 'en' => 'My idea description' })
+      expect(idea1.idea_import.user_created).to be false
 
       expect(project2.reload.ideas_count).to eq 2
       idea2 = user2.ideas.first
       expect(idea2.project_id).to eq project2.id
       expect(idea2.title_multiloc).to eq({ 'en' => 'My idea title 2' })
       expect(idea2.body_multiloc).to eq({ 'en' => 'My idea description 2' })
+      expect(idea2.idea_import.user_created).to be false
     end
 
     it 'imports multiple ideas and creates new authors - with or without email addresses & names' do
@@ -79,7 +81,8 @@ describe BulkImportIdeas::ImportIdeasService do
       expect(idea1.body_multiloc).to eq({ 'en' => 'My idea description' })
       expect(idea1.author[:email]).to eq 'userimport1@citizenlab.co'
       expect(idea1.author[:first_name]).to eq 'Gary'
-      expect(idea1.author[:last_name]).to eq 'Import' # TODO: Get this working
+      expect(idea1.author[:last_name]).to eq 'Import'
+      expect(idea1.idea_import.user_created).to be true
 
       expect(project2.reload.ideas_count).to eq 1
       idea2 = project2.ideas.first
@@ -88,6 +91,7 @@ describe BulkImportIdeas::ImportIdeasService do
       expect(idea2.body_multiloc).to eq({ 'en' => 'My idea description 2' })
       expect(idea2.author.email).to be_nil
       expect(idea2.author.unique_code).not_to be_nil
+      expect(idea2.idea_import.user_created).to be true
 
       expect(project3.reload.ideas_count).to eq 1
       idea3 = project3.ideas.first
@@ -95,6 +99,7 @@ describe BulkImportIdeas::ImportIdeasService do
       expect(idea3.title_multiloc).to eq({ 'en' => 'My idea title 3' })
       expect(idea3.body_multiloc).to eq({ 'en' => 'My idea description 3' })
       expect(idea3.author).to eq idea1.author
+      expect(idea3.idea_import.user_created).to be false
     end
 
     it 'imports multiple ideas using project IDs' do

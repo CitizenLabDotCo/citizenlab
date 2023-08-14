@@ -84,7 +84,11 @@ module BulkImportIdeas
 
     def import_ideas_service
       locale = params[:import_ideas] ? bulk_create_pdf_params[:locale] : current_user.locale
-      @import_ideas_service ||= params[:project_id] ? ImportProjectIdeasService.new(params[:project_id], locale) : ImportIdeasService.new
+      @import_ideas_service ||= if params[:project_id]
+        ImportProjectIdeasService.new(current_user, params[:project_id], locale)
+      else
+        ImportIdeasService.new(current_user)
+      end
     end
 
     def authorize_bulk_import_ideas

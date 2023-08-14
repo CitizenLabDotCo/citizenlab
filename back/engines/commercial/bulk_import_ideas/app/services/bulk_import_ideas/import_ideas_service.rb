@@ -15,10 +15,12 @@ module BulkImportIdeas
     DEFAULT_MAX_IDEAS = 500
     DATE_FORMAT_REGEX = /^(0[1-9]|[1|2][0-9]|3[0|1])-(0[1-9]|1[0-2])-([0-9]{4})$/ # After https://stackoverflow.com/a/47218282/3585671
 
-    def initialize
+    def initialize(current_user)
       @locale = AppConfiguration.instance.settings('core', 'locales').first # Default locale for any new users created
       @all_projects = Project.all
       @all_topics = Topic.all
+      @import_user = current_user
+      @file_path = 'test.pdf'
     end
 
     def import_ideas(idea_rows, import_as_draft: false)
@@ -103,13 +105,13 @@ module BulkImportIdeas
       add_title_multiloc idea_row, idea_attributes
       add_body_multiloc idea_row, idea_attributes
       add_project idea_row, idea_attributes
-      add_author idea_row, idea_attributes
       add_published_at idea_row, idea_attributes
       add_publication_status idea_row, idea_attributes, import_as_draft
       add_location idea_row, idea_attributes
       add_phase idea_row, idea_attributes
       add_topics idea_row, idea_attributes
       add_custom_fields idea_row, idea_attributes
+      user_created = add_author idea_row, idea_attributes
 
       idea = Idea.new idea_attributes
       raise Error.new 'bulk_import_ideas_idea_not_valid', value: idea.errors.messages unless idea.valid?
@@ -117,6 +119,7 @@ module BulkImportIdeas
       idea.save!
 
       create_idea_image idea_row, idea
+      create_idea_import idea, user_created
 
       idea
     end
@@ -156,20 +159,24 @@ module BulkImportIdeas
     end
 
     def add_author(idea_row, idea_attributes)
+      user_created = false
       if idea_row[:user_email].blank?
         author = User.new(unique_code: SecureRandom.uuid, locale: @locale)
         author = add_author_name author, idea_row
         author.save!
+        user_created = true
       else
         author = User.find_by_cimail idea_row[:user_email]
         unless author
           author = User.new(email: idea_row[:user_email], locale: @locale)
           author = add_author_name author, idea_row
           author.save!
+          user_created = true
         end
       end
 
       idea_attributes[:author] = author
+      user_created
     end
 
     def add_author_name(author, idea_row)
@@ -268,6 +275,10 @@ module BulkImportIdeas
       idea_attributes[:topic_ids] = topics_ids
     end
 
+    def add_custom_fields(idea_row, idea_attributes)
+      idea_attributes[:custom_field_values] = idea_row[:custom_field_values] || {}
+    end
+
     def create_idea_image(idea_row, idea)
       return if idea_row[:image_url].blank?
 
@@ -278,8 +289,18 @@ module BulkImportIdeas
       end
     end
 
-    def add_custom_fields(idea_row, idea_attributes)
-      idea_attributes[:custom_field_values] = idea_row[:custom_field_values] || {}
+    def create_idea_import(idea, user_created)
+      # Add import metadata
+      # TODO: Get page into this - no point in doing until we have refactored the parsed doc object
+      idea_import = IdeaImport.new(
+        idea: idea,
+        page_range: [1, 2],
+        import_user: @import_user,
+        user_created: user_created,
+        file_path: @file_path,
+        file_type: 'pdf'
+      )
+      idea_import.save
     end
   end
 end

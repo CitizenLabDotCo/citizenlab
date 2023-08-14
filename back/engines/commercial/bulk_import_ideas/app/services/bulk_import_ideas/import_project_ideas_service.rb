@@ -2,11 +2,11 @@
 
 module BulkImportIdeas
   class ImportProjectIdeasService < ImportIdeasService
-    def initialize(project_id, locale)
+    def initialize(current_user, project_id, locale)
       @project = Project.find(project_id)
       @project_fields = IdeaCustomFieldsService.new(Factory.instance.participation_method_for(@project).custom_form).enabled_fields
       @locale = locale # TODO: Initialise with default locale for the platform
-      super()
+      super(current_user)
     end
 
     def generate_example_xlsx

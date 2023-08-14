@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe BulkImportIdeas::ImportProjectIdeasService do
   let(:project) { create(:continuous_project) }
-  let(:service) { described_class.new project.id, 'en' }
+  let(:service) { described_class.new create(:admin), project.id, 'en' }
 
   describe 'generate_example_xlsx' do
     it 'produces an xlsx file with all the fields for a project' do
