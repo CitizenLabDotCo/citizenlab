@@ -34,6 +34,7 @@ import { useLocation } from 'react-router-dom';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 import { scrollTo } from 'containers/Authentication/SuccessActions/actions/scrollTo';
+import useEvents from 'api/events/useEvents';
 
 const Container = styled.div``;
 
@@ -51,6 +52,12 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
   const { data: phases } = usePhases(projectId);
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
   const { pathname, hash: divId } = useLocation();
+  const { data: events } = useEvents({
+    projectIds: [projectId],
+    projectPublicationStatuses: ['published'],
+    currentAndFutureOnly: true,
+    sort: 'start_at',
+  });
 
   useEffect(() => {
     setCurrentPhase(
@@ -198,8 +205,24 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     isParticipationMethodDocumentAnnotation &&
     !hasCurrentPhaseEnded;
 
+  const showEventsCTAButton = !!events?.data?.length;
+
   return (
     <Container className={className || ''}>
+      {showEventsCTAButton && (
+        <Button
+          id="e2e-project-see-events-button"
+          buttonStyle="secondary"
+          onClick={() => {
+            scrollToElementWithId('project-events');
+          }}
+          fontWeight="500"
+          mb="8px"
+        >
+          <FormattedMessage {...messages.seeUpcomingEvents} />
+        </Button>
+      )}
+
       {showSeeIdeasButton && (
         <SeeIdeasButton
           id="e2e-project-see-ideas-button"

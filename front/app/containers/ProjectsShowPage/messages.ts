@@ -53,6 +53,10 @@ export default defineMessages({
     id: 'app.containers.Projects.upcomingEvents',
     defaultMessage: 'Upcoming events',
   },
+  seeUpcomingEvents: {
+    id: 'app.containers.Projects.seeUpcomingEvents',
+    defaultMessage: 'See upcoming events',
+  },
   location: {
     id: 'app.containers.Projects.location',
     defaultMessage: 'Location:',

@@ -17,6 +17,9 @@ import { defaultCardStyle, media } from 'utils/styleUtils';
 import usePhaseFiles from 'api/phase_files/usePhaseFiles';
 import EventPreviews from 'components/EventPreviews';
 
+// utils
+import { isCurrentPhase } from 'api/phases/utils';
+
 const Container = styled.div`
   padding: 30px;
   padding-bottom: 35px;
@@ -49,6 +52,7 @@ const PhaseDescription = ({
   const localize = useLocalize();
   const { data: phase } = usePhase(phaseId);
   const { data: phaseFiles } = usePhaseFiles(phaseId);
+  const isActivePhase = phase?.data && isCurrentPhase(phase?.data);
 
   const content = phase
     ? localize(phase.data.attributes.description_multiloc)
@@ -85,7 +89,11 @@ const PhaseDescription = ({
             )}
           </>
         )}
-        <EventPreviews projectId={phase?.data.relationships.project.data.id} />
+        {isActivePhase && (
+          <EventPreviews
+            projectId={phase?.data.relationships.project.data.id}
+          />
+        )}
       </Container>
     </>
   );

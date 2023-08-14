@@ -152,34 +152,37 @@ const ProjectsShowPage = ({ project }: Props) => {
             <TimelineContainer projectId={projectId} />
           )}
         </div>
-        <Box
-          display="flex"
-          flexDirection="column"
-          gap="48px"
-          mx="auto"
-          my="48px"
-          maxWidth="1166px"
-          padding={isSmallerThanTablet ? '20px' : '0px'}
-        >
-          <EventsViewer
-            showProjectFilter={false}
-            projectId={projectId}
-            eventsTime="currentAndFuture"
-            title={formatMessage(messages.upcomingAndOngoingEvents)}
-            fallbackMessage={messages.noUpcomingOrOngoingEvents}
-            hideSectionIfNoEvents={true}
-            projectPublicationStatuses={['published', 'draft', 'archived']}
-          />
-          <EventsViewer
-            showProjectFilter={false}
-            projectId={projectId}
-            eventsTime="past"
-            title={formatMessage(messages.pastEvents)}
-            fallbackMessage={messages.noPastEvents}
-            hideSectionIfNoEvents={true}
-            projectPublicationStatuses={['published', 'draft', 'archived']}
-          />
-        </Box>
+        {!!events?.data.length && (
+          <Box
+            display="flex"
+            flexDirection="column"
+            gap="48px"
+            mx="auto"
+            my="48px"
+            maxWidth="1166px"
+            padding={isSmallerThanTablet ? '20px' : '0px'}
+          >
+            <EventsViewer
+              showProjectFilter={false}
+              projectId={projectId}
+              eventsTime="currentAndFuture"
+              title={formatMessage(messages.upcomingAndOngoingEvents)}
+              fallbackMessage={messages.noUpcomingOrOngoingEvents}
+              hideSectionIfNoEvents={true}
+              projectPublicationStatuses={['published', 'draft', 'archived']}
+            />
+            <EventsViewer
+              showProjectFilter={false}
+              projectId={projectId}
+              eventsTime="past"
+              title={formatMessage(messages.pastEvents)}
+              fallbackMessage={messages.noPastEvents}
+              hideSectionIfNoEvents={true}
+              projectPublicationStatuses={['published', 'draft', 'archived']}
+            />
+          </Box>
+        )}
+
         <SuccessModal projectId={projectId} />
       </ContentWrapper>
     );
