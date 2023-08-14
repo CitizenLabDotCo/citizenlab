@@ -40,7 +40,7 @@ export type FormBuilderConfig = {
   goBackUrl?: string;
   groupingType: 'page' | 'section';
 
-  onDownloadPDF?: () => Promise<void>;
+  onDownloadPDF?: () => void;
 };
 
 export const getIsPostingEnabled = (

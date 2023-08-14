@@ -1,9 +1,12 @@
-import React, { lazy } from 'react';
+import React, { useState, lazy } from 'react';
 
 // hooks
 import useFormCustomFields from 'hooks/useFormCustomFields';
 import { useParams } from 'react-router-dom';
 import useLocale from 'hooks/useLocale';
+
+// components
+import PDFExportModal from 'containers/Admin/projects/components/PDFExportModal';
 
 // utils
 import { ideationConfig } from '../utils';
@@ -13,6 +16,8 @@ import { isNilOrError } from 'utils/helperUtils';
 const FormBuilder = lazy(() => import('components/FormBuilder/edit'));
 
 const IdeaFormBuilder = () => {
+  const [exportModalOpen, setExportModalOpen] = useState(false);
+
   const { projectId } = useParams() as {
     projectId: string;
   };
@@ -23,20 +28,35 @@ const IdeaFormBuilder = () => {
 
   const goBackUrl = `/admin/projects/${projectId}/ideaform`;
 
-  const onDownloadPDF = async () => {
+  const handleDownloadPDF = () => setExportModalOpen(true);
+
+  const handleExportPDF = async ({
+    name,
+    email,
+  }: {
+    name: boolean;
+    email: boolean;
+  }) => {
     if (isNilOrError(locale)) return;
-    await saveIdeaFormAsPDF({ projectId, locale, name: true, email: true });
+    await saveIdeaFormAsPDF({ projectId, locale, name, email });
   };
 
   return (
-    <FormBuilder
-      builderConfig={{
-        ...ideationConfig,
-        formCustomFields,
-        goBackUrl,
-        onDownloadPDF,
-      }}
-    />
+    <>
+      <FormBuilder
+        builderConfig={{
+          ...ideationConfig,
+          formCustomFields,
+          goBackUrl,
+          onDownloadPDF: handleDownloadPDF,
+        }}
+      />
+      <PDFExportModal
+        open={exportModalOpen}
+        onClose={() => setExportModalOpen(false)}
+        onExport={handleExportPDF}
+      />
+    </>
   );
 };
 
