@@ -66,7 +66,11 @@ const EventInformation = ({
   return (
     <EventInformationContainer data-testid="EventInformation">
       <Box>
-        <Box display="flex" justifyContent="space-between">
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
+        >
           <Title
             variant="h4"
             style={{ fontSize: titleFontSize, fontWeight: '600' }}
@@ -84,26 +88,36 @@ const EventInformation = ({
       </Box>
       <Box height="100%">
         <Box my="16px" pt="12px" pb="4px" background={colors.grey100} px="16px">
-          <Box display="flex" mb="12px">
+          <Box
+            display="flex"
+            mb="12px"
+            flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
+          >
             <Icon
               my="auto"
               fill={colors.coolGrey300}
               name="clock"
               ariaHidden
-              mr="8px"
+              mr={theme.isRtl ? '0px' : '8px'}
+              ml={theme.isRtl ? '8px' : '0px'}
             />
             <Text m="0px" color={'coolGrey700'} fontSize="s">
               {eventDateTime}
             </Text>
           </Box>{' '}
           {locationDescription && (
-            <Box display="flex" mb="12px">
+            <Box
+              display="flex"
+              mb="12px"
+              flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
+            >
               <Icon
                 my="auto"
                 fill={colors.coolGrey300}
                 name="position"
                 ariaHidden
-                mr="8px"
+                mr={theme.isRtl ? '0px' : '8px'}
+                ml={theme.isRtl ? '8px' : '0px'}
               />
               <Text m="0px" color={'coolGrey700'} fontSize="s">
                 {locationDescription?.slice(
@@ -114,13 +128,18 @@ const EventInformation = ({
             </Box>
           )}
           {event.attributes.attendees_count > 0 && (
-            <Box display="flex" mb="12px">
+            <Box
+              display="flex"
+              mb="12px"
+              flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
+            >
               <Icon
                 my="auto"
                 fill={colors.coolGrey300}
                 name="user"
                 ariaHidden
-                mr="8px"
+                mr={theme.isRtl ? '0px' : '8px'}
+                ml={theme.isRtl ? '8px' : '0px'}
               />
               <Text m="0px" color={'coolGrey700'} fontSize="s">
                 {event.attributes.attendees_count}{' '}
