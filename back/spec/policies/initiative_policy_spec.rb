@@ -72,6 +72,21 @@ describe InitiativePolicy do
         end
       end
 
+      context 'for a user who is cosponsor of the initiative' do
+        let(:user) { create(:user) }
+        let!(:cosponsors_initiative) { create(:cosponsors_initiative, user: user, initiative: initiative) }
+
+        it { is_expected.to permit(:show) }
+        it { is_expected.to permit(:by_slug) }
+        it { is_expected.not_to permit(:create) }
+        it { is_expected.not_to permit(:update) }
+        it { is_expected.not_to permit(:destroy) }
+
+        it 'indexes the initiative' do
+          expect(scope.resolve.size).to eq 1
+        end
+      end
+
       context 'for a visitor' do
         let(:user) { nil }
 
@@ -128,6 +143,21 @@ describe InitiativePolicy do
         it { is_expected.to permit(:create) }
         it { is_expected.to permit(:update) }
         it { is_expected.to permit(:destroy) }
+
+        it 'indexes the initiative' do
+          expect(scope.resolve.size).to eq 1
+        end
+      end
+
+      context 'for a user who is cosponsor of the initiative' do
+        let(:user) { create(:user) }
+        let!(:cosponsors_initiative) { create(:cosponsors_initiative, user: user, initiative: initiative) }
+
+        it { is_expected.to permit(:show) }
+        it { is_expected.to permit(:by_slug) }
+        it { is_expected.not_to permit(:create) }
+        it { is_expected.not_to permit(:update) }
+        it { is_expected.not_to permit(:destroy) }
 
         it 'indexes the initiative' do
           expect(scope.resolve.size).to eq 1
@@ -199,7 +229,8 @@ describe InitiativePolicy do
         end
       end
 
-      # Author can still see their own initiative if review feature is active.
+      # Author can still see their own initiative if review feature is active,
+      # even when status in InitiativeStatus::REVIEW_CODES.
       context 'for a user who is author of the initiative' do
         let(:user) { author }
 
@@ -208,6 +239,23 @@ describe InitiativePolicy do
         it { is_expected.to permit(:create) }
         it { is_expected.to permit(:update) }
         it { is_expected.to permit(:destroy) }
+
+        it 'indexes the initiative' do
+          expect(scope.resolve.size).to eq 1
+        end
+      end
+
+      # Cosponsor can still see an initiative thaye are a cosponsor of if review feature is active,
+      # even when status in InitiativeStatus::REVIEW_CODES.
+      context 'for a user who is cosponsor of the initiative' do
+        let(:user) { create(:user) }
+        let!(:cosponsors_initiative) { create(:cosponsors_initiative, user: user, initiative: initiative) }
+
+        it { is_expected.to permit(:show) }
+        it { is_expected.to permit(:by_slug) }
+        it { is_expected.not_to permit(:create) }
+        it { is_expected.not_to permit(:update) }
+        it { is_expected.not_to permit(:destroy) }
 
         it 'indexes the initiative' do
           expect(scope.resolve.size).to eq 1
@@ -262,15 +310,31 @@ describe InitiativePolicy do
         end
       end
 
-      # Author can see initiative, but not edit, if review feature is active.
+      # Author can see initiative, but not edit, if review feature is active,
+      # and when status in InitiativeStatus::NOT_REVIEW_CODES
       context 'for a user who is author of the initiative' do
         let(:user) { author }
 
         it { is_expected.to permit(:show) }
         it { is_expected.to permit(:by_slug) }
         it { is_expected.to permit(:create) }
-        it { is_expected.to permit(:update) }
+        it { is_expected.to permit(:update) } # TODO: This should be failing (editing_locked)!
         it { is_expected.to permit(:destroy) }
+
+        it 'indexes the initiative' do
+          expect(scope.resolve.size).to eq 1
+        end
+      end
+
+      context 'for a user who is cosponsor of the initiative' do
+        let(:user) { create(:user) }
+        let!(:cosponsors_initiative) { create(:cosponsors_initiative, user: user, initiative: initiative) }
+
+        it { is_expected.to permit(:show) }
+        it { is_expected.to permit(:by_slug) }
+        it { is_expected.not_to permit(:create) }
+        it { is_expected.not_to permit(:update) }
+        it { is_expected.not_to permit(:destroy) }
 
         it 'indexes the initiative' do
           expect(scope.resolve.size).to eq 1

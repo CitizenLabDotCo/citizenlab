@@ -14,10 +14,12 @@ class InitiativePolicy < ApplicationPolicy
 
       if UserRoleService.new.can_moderate_initiatives?(user)
         published
-      else
+      elsif user&.active?
         published.left_outer_joins(:cosponsors_initiatives).with_status_code(InitiativeStatus::NOT_REVIEW_CODES)
           .or(published.where(author: user))
-          .or(published.where(cosponsors_initiatives: { user_id: user.id }))
+          .or(published.where(cosponsors_initiatives: { user: user }))
+      else
+        published.with_status_code(InitiativeStatus::NOT_REVIEW_CODES)
       end
     end
   end
