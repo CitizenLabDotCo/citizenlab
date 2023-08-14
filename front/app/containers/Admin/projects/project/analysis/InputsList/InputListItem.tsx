@@ -43,7 +43,6 @@ const InputListItem = ({ input, onSelect, selected }: Props) => {
       50
     );
 
-  console.log('customFieldValue', customFieldValue);
   return (
     <>
       <Box
