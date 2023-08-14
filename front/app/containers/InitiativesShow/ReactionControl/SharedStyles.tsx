@@ -3,7 +3,6 @@ import { fontSizes, colors, media } from 'utils/styleUtils';
 
 export const StatusWrapper = styled.div`
   display: flex;
-  flex-direction: row-reverse;
   font-size: ${fontSizes.s}px;
   text-transform: uppercase;
   color: ${colors.coolGrey600};

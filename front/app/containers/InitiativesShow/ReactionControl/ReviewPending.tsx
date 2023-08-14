@@ -11,8 +11,6 @@ import T from 'components/T';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-const Container = styled.div``;
-
 const StatusIcon = styled(Icon)`
   path {
     fill: ${colors.coolGrey600};
@@ -28,10 +26,12 @@ interface Props {
 
 const ReviewPending = ({ initiativeStatus }: Props) => {
   return (
-    <Container>
-      <StatusWrapper>
-        <T value={initiativeStatus.attributes.title_multiloc} />
-      </StatusWrapper>
+    <Box>
+      <Box mb="16px">
+        <StatusWrapper>
+          <T value={initiativeStatus.attributes.title_multiloc} />
+        </StatusWrapper>
+      </Box>
       <StatusIcon ariaHidden name="clock" />
       <StatusExplanation>
         <b>
@@ -46,7 +46,7 @@ const ReviewPending = ({ initiativeStatus }: Props) => {
           />
         </Box>
       </StatusExplanation>
-    </Container>
+    </Box>
   );
 };
 
