@@ -35,5 +35,14 @@ module Analysis
 
     validates :summarization_method, inclusion: { in: SUMMARIZATION_METHODS }
     validates :filters, json: { schema: FILTERS_JSON_SCHEMA }
+
+    scope :filters_with_tag_id, ->(tag_id) { where("filters->'tag_ids' ? :tag_id", tag_id: tag_id) }
+
+    def self.delete_tag_references!(tag_id)
+      filters_with_tag_id(tag_id).each do |summary|
+        summary.filters['tag_ids'].delete(tag_id)
+        summary.save!
+      end
+    end
   end
 end

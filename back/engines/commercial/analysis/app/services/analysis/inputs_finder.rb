@@ -87,6 +87,7 @@ module Analysis
         raise ArgumentError, "value specified for author_custom_#{custom_field_id} must be an array" unless value.is_a? Array
 
         cf = CustomField.find(custom_field_id)
+        
         case cf.input_type
         when 'select', 'date'
           scope = if value.empty?
