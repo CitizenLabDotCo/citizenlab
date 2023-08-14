@@ -5,17 +5,14 @@ module EmailCampaigns
     include EmailCampaigns::MailerPreviewRecipient
 
     def campaign_mail
+      project = Project.find_by(internal_role: 'open_idea_box')
+      activity = Activity.new(item: project, action: 'published')
+
       campaign = EmailCampaigns::Campaigns::ProjectPublished.first
-
-      command = {
-        recipient: recipient_user,
-        event_payload: {
-          project_title_multiloc: { 'en' => 'Parks Renewal Project' },
-          project_ideas_count: 81,
-          project_url: 'http://localhost:4000/en/projects/parks-renewal-project'
-        }
-      }
-
+      command = campaign.generate_commands(
+        activity: activity,
+        recipient: recipient_user
+      ).first.merge({ recipient: recipient_user })
       campaign.mailer_class.with(campaign: campaign, command: command).campaign_mail
     end
   end

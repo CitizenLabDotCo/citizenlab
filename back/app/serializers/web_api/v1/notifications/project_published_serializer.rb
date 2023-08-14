@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class WebApi::V1::Notifications::ProjectPublishedSerializer < WebApi::V1::Notifications::NotificationSerializer
-  attribute :project_id
-
   attribute :project_title_multiloc do |object|
     object.project&.title_multiloc
   end

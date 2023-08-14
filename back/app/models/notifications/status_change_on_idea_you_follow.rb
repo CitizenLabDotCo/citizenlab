@@ -78,7 +78,7 @@ module Notifications
           initiating_user_id: initiator_id,
           post: idea,
           project_id: idea.project_id,
-          post_status_id: idea.idea_status_id
+          post_status: idea.idea_status
         )
       end
     end

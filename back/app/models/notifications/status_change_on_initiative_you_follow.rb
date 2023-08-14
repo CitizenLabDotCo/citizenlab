@@ -77,7 +77,7 @@ module Notifications
           recipient_id: recipient.id,
           initiating_user_id: initiator_id,
           post: initiative,
-          post_status_id: initiative.initiative_status_id
+          post_status: initiative.initiative_status
         )
       end
     end
