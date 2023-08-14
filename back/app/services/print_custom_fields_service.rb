@@ -42,6 +42,9 @@ class PrintCustomFieldsService
   def render_field(pdf, custom_field)
     field_type = custom_field.input_type
 
+    # The .group block makes sure that everything
+    # inside of it will be on a new page if there
+    # is not enough space on the current page
     pdf.group do |pdf|
       # Write title
       write_title(pdf, custom_field)
