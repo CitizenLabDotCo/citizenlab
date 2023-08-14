@@ -391,6 +391,7 @@ describe InitiativePolicy do
       it { is_expected.to permit(:create) }
       it { is_expected.not_to permit(:update) }
       it { is_expected.to permit(:destroy) }
+      it { is_expected.not_to permit(:accept_invite) }
 
       it 'indexes the initiative' do
         expect(scope.resolve.size).to eq 1
@@ -405,6 +406,7 @@ describe InitiativePolicy do
       it { is_expected.to permit(:create) }
       it { is_expected.not_to permit(:update) }
       it { is_expected.to permit(:destroy) }
+      it { is_expected.not_to permit(:accept_invite) }
 
       it 'indexes the initiative' do
         expect(scope.resolve.size).to eq 1
