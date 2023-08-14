@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
@@ -41,7 +41,7 @@ const Buttons = styled.div`
   }
 `;
 
-interface InputProps {
+interface Props {
   initiative: IInitiativeData;
   initiativeStatus: IInitiativeStatusData;
   initiativeSettings: NonNullable<IAppConfigurationSettings['initiatives']>;
@@ -49,77 +49,65 @@ interface InputProps {
   onReaction: () => void;
   onScrollToOfficialFeedback: () => void;
 }
-interface DataProps {}
 
-interface Props extends InputProps, DataProps {}
-
-interface State {}
-
-class Answered extends PureComponent<Props, State> {
-  handleOnReaction = () => {
-    this.props.onReaction();
+const Answered = (props: Props) => {
+  const handleOnReaction = () => {
+    props.onReaction();
   };
 
-  handleOnReadAnswer = () => {
-    this.props.onScrollToOfficialFeedback();
+  const handleOnReadAnswer = () => {
+    props.onScrollToOfficialFeedback();
   };
 
-  render() {
-    const { initiative, initiativeStatus, userReacted } = this.props;
+  const { initiative, initiativeStatus, userReacted } = props;
 
-    const reactionCount = initiative.attributes.likes_count;
+  const reactionCount = initiative.attributes.likes_count;
 
-    return (
-      <Container>
-        <StatusWrapper>
-          <T value={initiativeStatus.attributes.title_multiloc} />
-        </StatusWrapper>
-        <StatusIcon name="email-check" />
-        <StatusExplanation>
-          <FormattedMessage
-            {...messages.answeredStatusExplanation}
-            values={{
-              answeredStatusExplanationBold: (
-                <b>
-                  <FormattedMessage
-                    {...messages.answeredStatusExplanationBold}
-                  />
-                </b>
-              ),
-            }}
-          />
-        </StatusExplanation>
-        <ReactionText>
-          <FormattedMessage
-            {...messages.xPeopleVoted}
-            values={{
-              xPeople: (
-                <b>
-                  <FormattedMessage
-                    {...messages.xPeople}
-                    values={{ count: reactionCount }}
-                  />
-                </b>
-              ),
-            }}
-          />
-        </ReactionText>
-        <Buttons>
-          <Button onClick={this.handleOnReadAnswer}>
-            <FormattedMessage {...messages.readAnswer} />
+  return (
+    <Container>
+      <StatusWrapper>
+        <T value={initiativeStatus.attributes.title_multiloc} />
+      </StatusWrapper>
+      <StatusIcon name="email-check" />
+      <StatusExplanation>
+        <FormattedMessage
+          {...messages.answeredStatusExplanation}
+          values={{
+            answeredStatusExplanationBold: (
+              <b>
+                <FormattedMessage {...messages.answeredStatusExplanationBold} />
+              </b>
+            ),
+          }}
+        />
+      </StatusExplanation>
+      <ReactionText>
+        <FormattedMessage
+          {...messages.xPeopleVoted}
+          values={{
+            xPeople: (
+              <b>
+                <FormattedMessage
+                  {...messages.xPeople}
+                  values={{ count: reactionCount }}
+                />
+              </b>
+            ),
+          }}
+        />
+      </ReactionText>
+      <Buttons>
+        <Button onClick={handleOnReadAnswer}>
+          <FormattedMessage {...messages.readAnswer} />
+        </Button>
+        {!userReacted && (
+          <Button buttonStyle="primary-outlined" onClick={handleOnReaction}>
+            <FormattedMessage {...messages.vote} />
           </Button>
-          {!userReacted && (
-            <Button
-              buttonStyle="primary-outlined"
-              onClick={this.handleOnReaction}
-            >
-              <FormattedMessage {...messages.vote} />
-            </Button>
-          )}
-        </Buttons>
-      </Container>
-    );
-  }
-}
+        )}
+      </Buttons>
+    </Container>
+  );
+};
 
 export default Answered;

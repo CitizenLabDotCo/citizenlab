@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 
 import styled from 'styled-components';
 import { fontSizes, media } from 'utils/styleUtils';
@@ -63,56 +63,54 @@ interface DataProps {}
 
 interface Props extends InputProps, DataProps {}
 
-class Custom extends PureComponent<Props & { theme: any }> {
-  handleOnReaction = () => {
-    this.props.onReaction();
+const Custom = (props: Props) => {
+  const handleOnReaction = () => {
+    props.onReaction();
   };
 
-  render() {
-    const {
-      initiative,
-      initiativeStatus,
-      initiativeSettings: { reacting_threshold },
-      userReacted,
-    } = this.props;
-    const reactionCount = initiative.attributes.likes_count;
-    const reactionLimit = reacting_threshold;
+  const {
+    initiative,
+    initiativeStatus,
+    initiativeSettings: { reacting_threshold },
+    userReacted,
+  } = props;
+  const reactionCount = initiative.attributes.likes_count;
+  const reactionLimit = reacting_threshold;
 
-    return (
-      <Container>
-        <CountDownWrapper>
-          <CountDown targetTime={initiative.attributes.expires_at} />
-        </CountDownWrapper>
-        <StatusExplanation>
-          <T value={initiativeStatus.attributes.description_multiloc} />
-        </StatusExplanation>
-        <ReactionCounter>
-          <ReactionText aria-hidden={true}>
-            <ReactionTextLeft>
-              <FormattedMessage
-                {...messages.xVotes}
-                values={{ count: reactionCount }}
-              />
-            </ReactionTextLeft>
-            <ReactionTextRight>{reactionLimit}</ReactionTextRight>
-          </ReactionText>
-          <ProposalProgressBar
-            reactionCount={reactionCount}
-            reactionLimit={reactionLimit}
-          />
-        </ReactionCounter>
-        {!userReacted && (
-          <StyledButton
-            icon="vote-up"
-            buttonStyle="primary"
-            onClick={this.handleOnReaction}
-          >
-            <FormattedMessage {...messages.vote} />
-          </StyledButton>
-        )}
-      </Container>
-    );
-  }
-}
+  return (
+    <Container>
+      <CountDownWrapper>
+        <CountDown targetTime={initiative.attributes.expires_at} />
+      </CountDownWrapper>
+      <StatusExplanation>
+        <T value={initiativeStatus.attributes.description_multiloc} />
+      </StatusExplanation>
+      <ReactionCounter>
+        <ReactionText aria-hidden={true}>
+          <ReactionTextLeft>
+            <FormattedMessage
+              {...messages.xVotes}
+              values={{ count: reactionCount }}
+            />
+          </ReactionTextLeft>
+          <ReactionTextRight>{reactionLimit}</ReactionTextRight>
+        </ReactionText>
+        <ProposalProgressBar
+          reactionCount={reactionCount}
+          reactionLimit={reactionLimit}
+        />
+      </ReactionCounter>
+      {!userReacted && (
+        <StyledButton
+          icon="vote-up"
+          buttonStyle="primary"
+          onClick={handleOnReaction}
+        >
+          <FormattedMessage {...messages.vote} />
+        </StyledButton>
+      )}
+    </Container>
+  );
+};
 
 export default Custom;

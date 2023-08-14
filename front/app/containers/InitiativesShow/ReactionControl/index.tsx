@@ -135,21 +135,20 @@ const ReactionControl = ({
 }: Props) => {
   const { data: appConfiguration } = useAppConfiguration();
   const { data: initiative } = useInitiativeById(initiativeId);
+  const { data: initiativeStatus } = useInitiativeStatus(
+    initiative?.data.relationships.initiative_status?.data?.id
+  );
+  const reactingPermission = useInitiativesPermissions('reacting_initiative');
   const { mutate: addReaction } = useAddInitiativeReaction();
   const { mutate: deleteReaction } = useDeleteInitiativeReaction();
+
+  if (!initiative) return null;
 
   const reaction = () => {
     if (initiative) {
       addReaction({ initiativeId: initiative.data.id, mode: 'up' });
     }
   };
-
-  const { data: initiativeStatus } = useInitiativeStatus(
-    initiative?.data.relationships.initiative_status?.data?.id
-  );
-  const reactingPermission = useInitiativesPermissions('reacting_initiative');
-
-  if (!initiative) return null;
 
   const handleOnreaction = () => {
     const authenticationRequirements =
