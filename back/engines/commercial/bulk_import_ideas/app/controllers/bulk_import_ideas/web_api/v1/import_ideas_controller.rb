@@ -24,7 +24,7 @@ module BulkImportIdeas
 
     private
 
-    def upload_pdf
+    def upload_file
 
 
       # Do it like layout image but as part of the IdeaImport model
@@ -45,7 +45,7 @@ module BulkImportIdeas
       render json: ::WebApi::V1::IdeaSerializer.new(
         ideas,
         params: jsonapi_serializer_params,
-        include: %i[author]
+        include: %i[author idea_import]
       ).serializable_hash, status: :created
     rescue BulkImportIdeas::Error => e
       sidefx.after_failure current_user

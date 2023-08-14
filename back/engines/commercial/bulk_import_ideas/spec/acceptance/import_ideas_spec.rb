@@ -130,6 +130,10 @@ resource 'BulkImportIdeasImportIdeas' do
           expect(Idea.all.count).to eq 1
           expect(BulkImportIdeas::IdeaImport.all.count).to eq 1
           expect(project.reload.ideas_count).to eq 0 # Draft ideas should not be counted
+
+          # Relationships
+          expect(response_data.first.dig(:relationships, :idea_import, :data)).not_to be_nil
+          expect(json_response_body[:included].pluck(:type)).to include 'idea_import'
         end
       end
     end
