@@ -53,6 +53,10 @@ class InitiativePolicy < ApplicationPolicy
     create?
   end
 
+  def accept_invite?
+    cosponsor?
+  end
+
   def allowed_transitions?
     can_moderate?
   end
@@ -82,6 +86,10 @@ class InitiativePolicy < ApplicationPolicy
 
   def owner?
     user && record.author_id == user.id
+  end
+
+  def cosponsor?
+    user && record&.cosponsors&.include?(user)
   end
 end
 

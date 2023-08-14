@@ -69,14 +69,11 @@ Rails.application.routes.draw do
         get :as_markers, on: :collection, action: 'index_initiative_markers'
         get :filter_counts, on: :collection
         get :allowed_transitions, on: :member
+        patch :accept_invite, on: :member
       end
 
       resources :idea_statuses, only: %i[index show]
       resources :initiative_statuses, only: %i[index show]
-
-      resources :cosponsors_initiatives, only: [] do
-        patch :accept_invite, on: :member
-      end
 
       # auth
       post 'user_token' => 'user_token#create'

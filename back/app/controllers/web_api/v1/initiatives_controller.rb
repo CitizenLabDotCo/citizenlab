@@ -3,7 +3,7 @@
 class WebApi::V1::InitiativesController < ApplicationController
   include BlockingProfanity
 
-  before_action :set_initiative, only: %i[show update destroy allowed_transitions]
+  before_action :set_initiative, only: %i[show update destroy allowed_transitions accept_invite]
   skip_before_action :authenticate_user
   skip_after_action :verify_authorized, only: %i[index_xlsx index_initiative_markers filter_counts]
 
@@ -176,6 +176,11 @@ class WebApi::V1::InitiativesController < ApplicationController
     else
       head :internal_server_error
     end
+  end
+
+  def accept_invite
+    @cosponsors_initiative = @initiative.cosponsors_initiatives.find_by(user_id: current_user.id)
+    @cosponsors_initiative.update!(status: 'accepted')
   end
 
   def allowed_transitions
