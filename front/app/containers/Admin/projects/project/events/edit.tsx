@@ -95,6 +95,14 @@ const AdminProjectEventEdit = ({ params }: Props) => {
   const [successfulGeocode, setSuccessfulGeocode] = useState(false);
 
   const remotePoint = event?.data?.attributes?.location_point_geojson;
+  const remoteLocationDescription =
+    event?.data?.attributes?.location_description;
+
+  useEffect(() => {
+    if (!isNilOrError(remoteLocationDescription)) {
+      setLocationDescription(() => remoteLocationDescription);
+    }
+  }, [remoteLocationDescription]);
 
   useEffect(() => {
     if (!isNilOrError(remotePoint)) {
@@ -121,7 +129,7 @@ const AdminProjectEventEdit = ({ params }: Props) => {
   }, []);
 
   useEffect(() => {
-    if (locationDescription) {
+    if (locationDescription !== event?.data.attributes.location_description) {
       const delayDebounceFn = setTimeout(async () => {
         const point = await geocode(locationDescription);
         setLocationPoint(point);
@@ -132,7 +140,7 @@ const AdminProjectEventEdit = ({ params }: Props) => {
     }
     setSuccessfulGeocode(false);
     return;
-  }, [locationDescription, attributeDiff]);
+  }, [locationDescription, event, attributeDiff]);
 
   useEffect(() => {
     if (!isNilOrError(remoteEventFiles)) {
@@ -263,6 +271,9 @@ const AdminProjectEventEdit = ({ params }: Props) => {
     const locationPointChanged =
       locationPoint !== event?.data.attributes.location_point_geojson;
 
+    const locationPointUpdated =
+      locationDescription || successfulGeocode ? locationPoint : null;
+
     e.preventDefault();
     if (!isNilOrError(params.projectId)) {
       const { projectId } = params;
@@ -285,10 +296,9 @@ const AdminProjectEventEdit = ({ params }: Props) => {
                 eventId: event?.data.id,
                 event: {
                   ...attributeDiff,
-                  location_point_geojson:
-                    locationDescription || successfulGeocode
-                      ? locationPoint
-                      : null,
+                  location_point_geojson: locationPointChanged
+                    ? locationPointUpdated
+                    : event?.data.attributes.location_point_geojson,
                 },
               },
               {
@@ -460,31 +470,29 @@ const AdminProjectEventEdit = ({ params }: Props) => {
                     placeholder={formatMessage(messages.addressTwoPlaceholder)}
                   />
                 </Box>
-                {locationPoint &&
-                  eventAttrs.location_description &&
-                  successfulGeocode && (
-                    <Box maxWidth="400px" zIndex="0">
-                      <Box>
-                        <Map
-                          position={locationPoint}
-                          projectId={params.projectId}
-                          mapHeight="160px"
-                          hideLegend={true}
-                          singleClickEnabled={false}
-                        />
-                      </Box>
-                      <Button
-                        mt="8px"
-                        icon="position"
-                        buttonStyle="secondary"
-                        onClick={() => {
-                          setMapModalVisible(true);
-                        }}
-                      >
-                        {formatMessage(messages.refineOnMap)}
-                      </Button>
+                {locationPoint && (
+                  <Box maxWidth="400px" zIndex="0">
+                    <Box>
+                      <Map
+                        position={locationPoint}
+                        projectId={params.projectId}
+                        mapHeight="160px"
+                        hideLegend={true}
+                        singleClickEnabled={false}
+                      />
                     </Box>
-                  )}
+                    <Button
+                      mt="8px"
+                      icon="position"
+                      buttonStyle="secondary"
+                      onClick={() => {
+                        setMapModalVisible(true);
+                      }}
+                    >
+                      {formatMessage(messages.refineOnMap)}
+                    </Button>
+                  </Box>
+                )}
               </Box>
             </SectionField>
             <Title
