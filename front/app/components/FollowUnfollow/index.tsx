@@ -14,6 +14,8 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import useAuthUser from 'api/me/useAuthUser';
+import useABTest from 'api/experiments/useABTest';
+import useLocale from 'hooks/useLocale';
 
 interface Props extends BoxPaddingProps, BoxWidthProps {
   followableType: FollowableType;
@@ -36,19 +38,29 @@ const FollowUnfollow = ({
   const isFollowingEnabled = useFeatureFlag({
     name: 'follow',
   });
+  const locale = useLocale();
   const { formatMessage } = useIntl();
   const { data: authUser } = useAuthUser();
   const { mutate: addFollower, isLoading: isAddingFollower } = useAddFollower();
   const { mutate: deleteFollower, isLoading: isDeletingFollower } =
     useDeleteFollower();
+  const { treatment, send } = useABTest({
+    experiment: `Following an idea text(${locale})`,
+    treatments: [
+      formatMessage(messages.followADiscussion),
+      formatMessage(messages.follow),
+    ],
+  });
 
   if (!isFollowingEnabled) return null;
 
   // If the follower id is present, then the user is following
+  let followText =
+    followableType === 'ideas' ? treatment : formatMessage(messages.follow);
   const isFollowing = !!followerId;
   const followUnfollowText = isFollowing
     ? formatMessage(messages.unFollow)
-    : formatMessage(messages.follow);
+    : followText;
   const isLoading = isAddingFollower || isDeletingFollower;
 
   const followOrUnfollow = () => {
@@ -65,6 +77,10 @@ const FollowUnfollow = ({
         followableId,
         followableSlug,
       });
+
+      if (followableType === 'ideas') {
+        send?.('Follow Button clicked');
+      }
     }
   };
 
