@@ -63,7 +63,6 @@ export interface Props {
   postType?: 'idea' | 'initiative';
   error?: JSX.Element | string | null;
   onChange?: (arg: string, locale: Locale | undefined) => void;
-  onChangeMentions?: (mentions: MentionItem[]) => void;
   onFocus?: () => void;
   onBlur?: () => void;
   getTextareaRef?: (element: HTMLTextAreaElement) => void;
@@ -80,8 +79,10 @@ export interface Props {
   children?: React.ReactNode;
   roles?: MentionRoles[];
   trigger?: string;
-  // Needs explanation
-  idAttribute?: 'slug' | 'id';
+  onChangeMentions?: (mentions: MentionItem[]) => void;
+  // Determines whether we get back the user id or slug
+  // in mention of onChangeMentions
+  userReferenceType?: 'slug' | 'id';
 }
 
 const MentionsTextArea = ({
@@ -113,7 +114,7 @@ const MentionsTextArea = ({
   children,
   roles,
   trigger = '@',
-  idAttribute = 'slug',
+  userReferenceType = 'slug',
 }: Props) => {
   const textareaElement = useRef<HTMLTextAreaElement | null>(null);
   const theme = useTheme();
@@ -227,7 +228,7 @@ const MentionsTextArea = ({
           display: `${user.attributes.first_name} ${
             user.attributes.last_name ? user.attributes.last_name : ''
           }`,
-          id: idAttribute === 'slug' ? user.attributes.slug : user.id,
+          id: userReferenceType === 'slug' ? user.attributes.slug : user.id,
         }));
       }
 

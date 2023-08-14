@@ -464,7 +464,7 @@ const InitiativeForm = ({
                 onChangeMentions={onChangeCosponsors}
                 trigger=""
                 onBlur={onBlur('cosponsors')}
-                idAttribute="id"
+                userReferenceType="id"
                 padding="8px 8px 12px"
                 placeholder={formatMessage(messages.cosponsorsPlaceholder)}
               />
