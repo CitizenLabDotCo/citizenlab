@@ -6,7 +6,7 @@ class CreateEventsAttendances < ActiveRecord::Migration[7.0]
       t.references :attendee, null: false, foreign_key: { to_table: :users }, type: :uuid, index: true
       t.references :event, null: false, foreign_key: true, type: :uuid, index: true
 
-      t.timestamps
+      t.timestamps index: true
       t.index %i[attendee_id event_id], unique: true
     end
   end
