@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Box, colors, Button } from '@citizenlab/cl2-component-library';
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
 import { useParams } from 'react-router-dom';
 import InputListItem from './InputListItem';
 import useAddAnalysisSummary from 'api/analysis_summaries/useAddAnalysisSummary';
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
+import Observer from '@researchgate/react-intersection-observer';
 
 interface Props {
   onSelectInput: (inputId: string) => void;
@@ -15,10 +16,11 @@ const InputsList = ({ onSelectInput, selectedInputId }: Props) => {
   const { analysisId } = useParams() as { analysisId: string };
   const filters = useAnalysisFilterParams();
 
-  const { data, fetchNextPage, hasNextPage } = useInfiniteAnalysisInputs({
-    analysisId,
-    queryParams: filters,
-  });
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useInfiniteAnalysisInputs({
+      analysisId,
+      queryParams: filters,
+    });
   const { mutate: addsummary, isLoading } = useAddAnalysisSummary();
 
   const inputs = data?.pages.map((page) => page.data).flat();
@@ -29,6 +31,16 @@ const InputsList = ({ onSelectInput, selectedInputId }: Props) => {
       filters,
     });
   };
+
+  const handleIntersection = useCallback(
+    (event: IntersectionObserverEntry, unobserve: () => void) => {
+      if (event.isIntersecting && hasNextPage) {
+        fetchNextPage();
+        unobserve();
+      }
+    },
+    [fetchNextPage, hasNextPage]
+  );
 
   return (
     <Box bg={colors.white} w="100%">
@@ -45,16 +57,26 @@ const InputsList = ({ onSelectInput, selectedInputId }: Props) => {
           Auto-summarize {inputs?.length} inputs
         </Button>
       </Box>
-      {inputs?.map((input) => (
-        <InputListItem
-          key={input.id}
-          input={input}
-          onSelect={() => onSelectInput(input.id)}
-          selected={input.id === selectedInputId}
-        />
+
+      {data?.pages.map((page, i) => (
+        <>
+          {hasNextPage &&
+            !isFetchingNextPage &&
+            data?.pages.length === i + 1 && (
+              <Observer onChange={handleIntersection} rootMargin="100px">
+                <Box w="100%" />
+              </Observer>
+            )}
+          {page.data.map((input) => (
+            <InputListItem
+              key={input.id}
+              input={input}
+              onSelect={() => onSelectInput(input.id)}
+              selected={input.id === selectedInputId}
+            />
+          ))}
+        </>
       ))}
-      {/* Should become infinite list, temporary button */}
-      {hasNextPage && <Button onClick={() => fetchNextPage()}>More</Button>}
     </Box>
   );
 };
