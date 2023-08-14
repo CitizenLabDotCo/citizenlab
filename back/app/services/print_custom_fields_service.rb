@@ -15,6 +15,14 @@ class PrintCustomFieldsService
   def create_pdf
     pdf = Prawn::Document.new(page_size: 'A4')
 
+    if params[:name] then
+      render_text_field_with_name(pdf, 'Full name')
+    end
+
+    if params[:email] then
+      render_text_field_with_name(pdf, 'Email')
+    end
+
     custom_fields.each_with_index do |custom_field, i|
       # First custom_field should always be a page.
       # Since the pdf already has a page when it's
@@ -29,15 +37,25 @@ class PrintCustomFieldsService
 
       # Skip unsupported question types
       next unless QUESTION_TYPES.include? field_type
-
       render_field(pdf, custom_field)
-      pdf.move_down 6.mm
     end
 
     return pdf
   end
 
   private
+
+  def render_text_field_with_name(pdf, name)
+    title_multiloc = {}
+    title_multiloc[locale] = name
+
+    text_field = CustomField.new({
+      input_type: 'text',
+      title_multiloc: title_multiloc
+    })
+
+    render_field(pdf, text_field)
+  end
 
   def render_field(pdf, custom_field)
     field_type = custom_field.input_type
@@ -74,18 +92,20 @@ class PrintCustomFieldsService
         draw_linear_scale(pdf, custom_field)
       end
     end
+
+    pdf.move_down 6.mm
   end
 
   def write_title(pdf, custom_field)
     pdf.text(
-      "<b>#{custom_field.title_multiloc[params[:locale]]}</b>",
+      "<b>#{custom_field.title_multiloc[locale]}</b>",
       size: 20,
       inline_format: true
     )
   end
 
   def write_description(pdf, custom_field)
-    description = custom_field.description_multiloc[params[:locale]]
+    description = custom_field.description_multiloc[locale]
  
     unless description.nil? then
       pdf.move_down 3.mm
@@ -105,7 +125,7 @@ class PrintCustomFieldsService
       pdf.stroke_circle [3.mm, pdf.cursor], 5
 
       pdf.bounding_box([7.mm, pdf.cursor + 4], width: 180.mm, height: 10.mm) do
-        pdf.text option.title_multiloc[params[:locale]]
+        pdf.text option.title_multiloc[locale]
       end
     end
   end
@@ -118,7 +138,7 @@ class PrintCustomFieldsService
       end
 
       pdf.bounding_box([7.mm, pdf.cursor + 4], width: 180.mm, height: 10.mm) do
-        pdf.text option.title_multiloc[params[:locale]]
+        pdf.text option.title_multiloc[locale]
       end
     end
   end
@@ -163,13 +183,13 @@ class PrintCustomFieldsService
     save_cursor pdf
 
     pdf.indent(1.8.mm) do
-      pdf.text custom_field.minimum_label_multiloc[params[:locale]]
+      pdf.text custom_field.minimum_label_multiloc[locale]
     end
 
     reset_cursor pdf
 
     pdf.indent(101.mm) do
-      pdf.text custom_field.maximum_label_multiloc[params[:locale]]
+      pdf.text custom_field.maximum_label_multiloc[locale]
     end
   end
 
@@ -186,5 +206,9 @@ class PrintCustomFieldsService
 
   def reset_cursor(pdf)
     pdf.move_down pdf.cursor - previous_cursor
+  end
+  
+  def locale
+    params[:locale]
   end
 end

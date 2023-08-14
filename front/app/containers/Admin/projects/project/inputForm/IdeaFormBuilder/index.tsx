@@ -25,7 +25,7 @@ const IdeaFormBuilder = () => {
 
   const onDownloadPDF = async () => {
     if (isNilOrError(locale)) return;
-    await saveIdeaFormAsPDF({ projectId, locale });
+    await saveIdeaFormAsPDF({ projectId, locale, name: true, email: true });
   };
 
   return (

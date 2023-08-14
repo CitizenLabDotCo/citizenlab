@@ -7,14 +7,21 @@ import { Locale } from 'typings';
 interface Params {
   locale: Locale;
   projectId: string;
+  name?: boolean;
+  email?: boolean;
 }
 
-export async function saveIdeaFormAsPDF({ projectId, locale }: Params) {
+export async function saveIdeaFormAsPDF({
+  projectId,
+  locale,
+  name,
+  email,
+}: Params) {
   try {
     const blob = await requestBlob(
       `${API_PATH}/projects/${projectId}/custom_fields/to_pdf`,
       'application/pdf',
-      { locale }
+      { locale, name, email }
     );
 
     saveAs(blob, 'idea_form.pdf');
