@@ -98,6 +98,7 @@ class Initiative < ApplicationRecord
     where(id: with_dups)
   end)
 
+  scope :with_cosponsor, proc { |user_id| joins(:cosponsors_initiatives).where(cosponsors_initiatives: { user_id: user_id }) }
   scope :with_status_code, proc { |code| joins(:initiative_status).where(initiative_status: { code: code }) }
 
   scope :order_status, lambda { |direction = :asc|

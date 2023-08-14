@@ -17,6 +17,7 @@ class InitiativePolicy < ApplicationPolicy
       else
         published.with_status_code(InitiativeStatus::NOT_REVIEW_CODES)
           .or(published.where(author: user))
+          .or(published.with_cosponsor(user))
       end
     end
   end
@@ -35,7 +36,7 @@ class InitiativePolicy < ApplicationPolicy
   end
 
   def show?
-    return true if active? && (owner? || can_moderate?)
+    return true if active? && (owner? || cosponsor? || can_moderate?)
     return false if record.review_status?
 
     %w[draft published].include?(record.publication_status)
