@@ -16,11 +16,17 @@ class PrintCustomFieldsService
     pdf = Prawn::Document.new(page_size: 'A4')
 
     if params[:name] then
-      render_text_field_with_name(pdf, 'Full name')
+      render_text_field_with_name(
+        pdf,
+        I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.full_name') }
+      )
     end
 
     if params[:email] then
-      render_text_field_with_name(pdf, 'Email')
+      render_text_field_with_name(
+        pdf,
+        I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.email_address') }
+      )
     end
 
     custom_fields.each_with_index do |custom_field, i|
