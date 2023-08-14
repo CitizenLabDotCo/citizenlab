@@ -3,7 +3,7 @@
 class PrintCustomFieldsService
   attr_reader :custom_fields, :params, :previous_cursor
 
-  QUESTION_TYPES = %w[select multiselect text multiline_text linear_scale]
+  QUESTION_TYPES = %w[select multiselect text text_multiloc multiline_text linear_scale]
   FORBIDDEN_HTML_TAGS_REGEX = /<\/?(div|span|ul|ol|li|em|img|a){1}[^>]*\/?>/
 
   def initialize(custom_fields, params)
@@ -46,7 +46,7 @@ class PrintCustomFieldsService
         draw_multiple_choice(pdf, custom_field)
       end
 
-      if field_type == 'text' then
+      if ['text', 'text_multiloc'].include? field_type then
         draw_text_line(pdf)
       end
 
