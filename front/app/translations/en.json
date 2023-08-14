@@ -270,6 +270,7 @@
   "app.components.ParticipationCTABars.projectOpenForSubmission": "This project is currently open for participation.",
   "app.components.ParticipationCTABars.reviewDocument": "Review the document",
   "app.components.ParticipationCTABars.seeIdeas": "See ideas",
+  "app.components.ParticipationCTABars.seeUpcomingEvents": "See upcoming events",
   "app.components.ParticipationCTABars.submit": "Submit",
   "app.components.ParticipationCTABars.submitted": "Submitted",
   "app.components.ParticipationCTABars.takeTheSurvey": "Take the survey",
