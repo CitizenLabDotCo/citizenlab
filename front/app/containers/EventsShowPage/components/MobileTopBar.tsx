@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
@@ -46,19 +46,11 @@ interface Props {
   projectId?: string;
 }
 
-const EventTopBarMobile = ({ projectId }: Props) => {
+const MobileTopBar = ({ projectId }: Props) => {
   const { data: project } = useProjectById(projectId);
   const isSmallerThanTablet = useBreakpoint('tablet');
 
   const localize = useLocalize();
-
-  const handleGoBack = useCallback(() => {
-    if (project) {
-      clHistory.push(`/projects/${project.data.attributes.slug}`);
-    } else {
-      clHistory.push('/');
-    }
-  }, [project]);
 
   return (
     <Container>
@@ -69,7 +61,7 @@ const EventTopBarMobile = ({ projectId }: Props) => {
               project ? localize(project.data.attributes.title_multiloc) : ''
             }
             iconSize={isSmallerThanTablet ? '42px' : undefined}
-            onClick={handleGoBack}
+            onClick={() => clHistory.back()}
           />
         </Box>
       </TopBarInner>
@@ -77,4 +69,4 @@ const EventTopBarMobile = ({ projectId }: Props) => {
   );
 };
 
-export default EventTopBarMobile;
+export default MobileTopBar;

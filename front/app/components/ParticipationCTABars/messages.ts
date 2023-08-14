@@ -34,6 +34,10 @@ export default defineMessages({
     defaultMessage:
       '{timeLeft, plural, =0 {Less than a day} one {# day} other {# days}} left',
   },
+  seeUpcomingEvents: {
+    id: 'app.components.ParticipationCTABars.seeUpcomingEvents',
+    defaultMessage: 'See upcoming events',
+  },
   allocateBudget: {
     id: 'app.components.ParticipationCTABars.allocateBudget',
     defaultMessage: 'Allocate your budget',

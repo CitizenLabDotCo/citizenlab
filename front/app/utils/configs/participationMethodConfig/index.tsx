@@ -29,6 +29,7 @@ import { CTABarProps } from 'components/ParticipationCTABars/utils';
 import { isNilOrError, NilOrError } from '../../helperUtils';
 import clHistory from 'utils/cl-router/history';
 import { IIdea } from 'api/ideas/types';
+import { EventsCTABar } from 'components/ParticipationCTABars/EventsCTABar';
 
 export const defaultSortingOptions = [
   { text: <FormattedMessage {...messages.trending} />, value: 'trending' },
@@ -225,8 +226,8 @@ const informationConfig: ParticipationMethodConfig = {
   postType: 'defaultInput',
   showInputManager: false,
   isMethodLocked: false,
-  renderCTABar: () => {
-    return null;
+  renderCTABar: (props: CTABarProps) => {
+    return <EventsCTABar project={props.project} phases={props.phases} />;
   },
 };
 
