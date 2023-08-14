@@ -82,6 +82,7 @@ import { IInitiativeData } from 'api/initiatives/types';
 import useInitiativeReviewRequired from 'hooks/useInitiativeReviewRequired';
 import InitiativeCreatedModalContent from './InitiativeCreatedModalContent';
 import RequestToCosponsor from './RequestToCosponsor';
+import ListOfCosponsors from './ListOfCosponsors';
 
 const contentFadeInDuration = 250;
 const contentFadeInEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -645,7 +646,7 @@ const InitiativesShow = ({
                     id="e2e-initiative-reaction-control"
                   />
                   <RequestToCosponsor initiativeId={initiativeId} />
-                  {/* <ListOfCosponsors /> */}
+                  <ListOfCosponsors initiativeId={initiativeId} />
                   {showSharingOptions && (
                     <SharingWrapper>
                       <SharingButtons
