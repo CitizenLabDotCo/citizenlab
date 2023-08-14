@@ -148,6 +148,8 @@ class Idea < ApplicationRecord
       .where('ideas.id NOT IN (SELECT DISTINCT(post_id) FROM official_feedbacks)')
   }
 
+  scope :draft, -> { where(publication_status: 'draft') }
+
   def just_published?
     publication_status_previous_change == %w[draft published] || publication_status_previous_change == [nil, 'published']
   end

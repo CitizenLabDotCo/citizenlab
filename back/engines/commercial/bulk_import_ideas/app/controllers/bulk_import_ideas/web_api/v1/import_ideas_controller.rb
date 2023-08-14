@@ -22,6 +22,17 @@ module BulkImportIdeas
       bulk_create idea_rows, true
     end
 
+    def draft_ideas
+      ideas = Idea.draft.where(project_id: params[:project_id])
+
+      # TODO: Paging?
+      render json: ::WebApi::V1::IdeaSerializer.new(
+        ideas,
+        params: jsonapi_serializer_params,
+        include: %i[author idea_import]
+      ).serializable_hash, status: :ok
+    end
+
     private
 
     def upload_file

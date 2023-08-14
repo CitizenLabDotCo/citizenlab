@@ -76,6 +76,28 @@ resource 'BulkImportIdeasImportIdeas' do
         end
       end
 
+      get 'web_api/v1/import_ideas/:project_id/draft_ideas' do
+        let!(:draft_ideas) do
+          create_list(:idea, 5, project: project, publication_status: 'draft').each do |idea|
+            idea.update! idea_import: create(:idea_import, idea: idea)
+          end
+        end
+        let!(:published_ideas) { create_list(:idea, 2, project: project) }
+
+        example_request 'Get the imported draft ideas for a project' do
+          assert_status 200
+          expect(response_data.count).to eq 5
+
+          # Should return only draft ideas and ignore published ideas
+          expect(response_data.pluck(:id)).to match_array draft_ideas.pluck(:id)
+          expect(response_data.pluck(:id)).not_to match_array published_ideas.pluck(:id)
+
+          # Relationships
+          expect(response_data.first.dig(:relationships, :idea_import, :data)).not_to be_nil
+          expect(json_response_body[:included].pluck(:type)).to include 'idea_import'
+        end
+      end
+
       post 'web_api/v1/import_ideas/:project_id/bulk_create_xlsx' do
         parameter(
           :xlsx,

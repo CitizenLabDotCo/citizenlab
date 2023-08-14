@@ -14,6 +14,10 @@ module BulkImportIdeas
       active_admin?
     end
 
+    def draft_ideas?
+      active_admin?
+    end
+
     private
 
     def active_admin?
