@@ -58,10 +58,9 @@ const InputsList = ({ onSelectInput, selectedInputId }: Props) => {
           inputs && inputs.findIndex((input) => input.id === selectedInput);
 
         const previousInput =
-          selectedInputIndex !== 0 && inputs && selectedInputIndex
+          selectedInputIndex !== 0 && inputs && selectedInputIndex !== undefined
             ? inputs[selectedInputIndex - 1]?.id
             : null;
-
         return previousInput;
       });
     }
@@ -76,7 +75,7 @@ const InputsList = ({ onSelectInput, selectedInputId }: Props) => {
         const nextInput =
           inputs &&
           selectedInputIndex !== inputs.length - 1 &&
-          selectedInputIndex
+          selectedInputIndex !== undefined
             ? inputs[selectedInputIndex + 1]?.id
             : null;
 

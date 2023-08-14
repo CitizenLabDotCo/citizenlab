@@ -11,7 +11,10 @@ import Divider from 'components/admin/Divider';
 import T from 'components/T';
 import { useIntl } from 'utils/cl-intl';
 import Avatar from 'components/Avatar';
-import { getFullName } from 'utils/textUtils';
+import { getFullName, truncate } from 'utils/textUtils';
+import { useParams } from 'react-router-dom';
+import useAnalysis from 'api/analyses/useAnalysis';
+import useIdeaCustomField from 'api/idea_custom_fields/useIdeaCustomField';
 
 interface Props {
   input: IInputsData;
@@ -20,13 +23,27 @@ interface Props {
 }
 
 const InputListItem = ({ input, onSelect, selected }: Props) => {
+  const { analysisId } = useParams() as { analysisId: string };
+  const { data: analysis } = useAnalysis(analysisId);
   const { data: author } = useUserById(input.relationships.author.data?.id);
+  const { data: customField } = useIdeaCustomField({
+    customFieldId: analysis?.data.relationships.custom_fields.data[0].id,
+    projectId: analysis?.data.relationships.project?.data?.id,
+    phaseId: analysis?.data.relationships.phase?.data?.id,
+  });
   const { formatDate } = useIntl();
 
   if (!input) return null;
 
-  const { title_multiloc } = input.attributes;
+  const { title_multiloc, custom_field_values } = input.attributes;
+  const customFieldValue =
+    customField &&
+    truncate(
+      custom_field_values[customField.data.attributes.key] || 'No answer',
+      50
+    );
 
+  console.log('customFieldValue', customFieldValue);
   return (
     <>
       <Box
@@ -46,7 +63,7 @@ const InputListItem = ({ input, onSelect, selected }: Props) => {
         >
           {!title_multiloc ||
             (isEmpty(title_multiloc) && author && (
-              <Box display="flex" alignItems="center">
+              <Box display="flex" alignItems="flex-start">
                 <Avatar userId={author.data.id} size={24} />
                 <Text m="0px">{getFullName(author.data)}</Text>
               </Box>
@@ -89,6 +106,11 @@ const InputListItem = ({ input, onSelect, selected }: Props) => {
               <Icon width="20px" height="20px" name="comments" />
               <span> {input.attributes.comments_count}</span>
             </Box>
+          )}
+          {!!customFieldValue && (
+            <Text fontSize="s" m="0px">
+              {customFieldValue}
+            </Text>
           )}
         </Box>
 
