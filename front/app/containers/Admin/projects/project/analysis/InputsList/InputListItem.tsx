@@ -1,6 +1,5 @@
 import React from 'react';
 import { isEmpty } from 'lodash-es';
-import styled from 'styled-components';
 
 import { IInputsData } from 'api/analysis_inputs/types';
 import useUserById from 'api/users/useUserById';
@@ -11,17 +10,8 @@ import Divider from 'components/admin/Divider';
 
 import T from 'components/T';
 import { useIntl } from 'utils/cl-intl';
-
-const AvatarImageBubble = styled.img<{
-  size: number;
-}>`
-  width: ${(props) => props.size}px;
-  height: ${(props) => props.size}px;
-  border-radius: 50%;
-  border: solid 2px #fff;
-  object-fit: cover;
-  object-position: center;
-`;
+import Avatar from 'components/Avatar';
+import { getFullName } from 'utils/textUtils';
 
 interface Props {
   input: IInputsData;
@@ -56,13 +46,9 @@ const InputListItem = ({ input, onSelect, selected }: Props) => {
         >
           {!title_multiloc ||
             (isEmpty(title_multiloc) && author && (
-              <Box>
-                <AvatarImageBubble
-                  size={26}
-                  src={author?.data.attributes.avatar?.small || undefined}
-                />
-                {author?.data.attributes.first_name}&nbsp;
-                {author?.data.attributes.last_name}
+              <Box display="flex" alignItems="center">
+                <Avatar userId={author.data.id} size={24} />
+                <Text m="0px">{getFullName(author.data)}</Text>
               </Box>
             ))}
           {!title_multiloc ||

@@ -73,11 +73,9 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
             <T value={customField.data.attributes.title_multiloc} />
           </Title>
           <Box>
-            {
-              input.data.attributes.custom_field_values[
-                customField.data.attributes.key
-              ]
-            }
+            {input.data.attributes.custom_field_values[
+              customField.data.attributes.key
+            ] || 'No answer'}
           </Box>
         </Box>
       );
