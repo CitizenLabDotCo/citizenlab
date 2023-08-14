@@ -5,10 +5,16 @@ module Analysis
   # purposes, that takes a random word from each input and concatenates them.
   # Revolutionary method that saves times x100.
   class SummarizationMethod::Bogus < SummarizationMethod::Base
+    def generate_plan
+      SummarizationPlan.new(
+        accuracy: :low
+      )
+    end
+
     protected
 
     # Use `execute` on the parent class to actually use the method
-    def run
+    def run(_plan)
       total_inputs = filtered_inputs.size
       filtered_inputs.each_with_index.inject('') do |memo, (input, i)|
         random_word = input_to_text.execute(input).values.join.split.sample

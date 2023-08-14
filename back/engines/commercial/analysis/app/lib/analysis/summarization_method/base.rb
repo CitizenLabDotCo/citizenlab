@@ -4,43 +4,46 @@ module Analysis
   class SummarizationMethod::Base
     attr_reader :analysis, :task, :summary, :input_to_text
 
+    SUMMARIZATION_METHOD_CLASSES = [
+      SummarizationMethod::OnePassLLM
+    ]
+
+    LLMS = [
+      LLM::GPT48k.new,
+      LLM::GPT432k.new,
+      LLM::GPT3516k.new
+    ]
+
     class SummarizationFailedError < StandardError; end
     class TooManyInputs < SummarizationFailedError; end
 
-    def self.for_summarization_method summarization_method, *params, **kwargs
-      case summarization_method
-      when 'one_pass_llm'
-        SummarizationMethod::OnePassLLM.new(*params, **kwargs)
-      when 'bogus'
-        SummarizationMethod::Bogus.new(*params, **kwargs)
-      else
-        raise ArgumentError, "Unsupported summarization_method #{summarization_method}"
-      end
+    def self.plan(summary)
+      SummarizationMethod::OnePassLLM.new(summary).generate_plan || SummarizationPlan.new(
+        impossible_reason: :too_many_inputs
+      )
     end
 
-    def initialize(summarization_task, *_args, **_kwargs)
-      @analysis = summarization_task.analysis
-      @task = summarization_task
-      @summary = summarization_task.summary
+    def initialize(summary, *_args, **_kwargs)
+      @summary = summary
+      @task = summary.background_task
+      @analysis = summary.analysis
       @input_to_text = InputToText.new(@analysis.custom_fields)
     end
 
-    # Before calling `execute`, this method can be used to check whether the
-    # method is able to process the request. Should return an instance of
-    # Analysis::SummaryPreCheck
-    def pre_check
-      raise NotImplementedError
-    end
-
-    def execute
+    def execute(plan)
       task.set_in_progress!
       begin
-        run
+        run(plan)
         task.set_succeeded!
       rescue SummarizationFailedError => e
         ErrorReporter.report(e)
         task.set_failed!
       end
+    end
+
+    # Should be implemente by subclasses and return a SummarizationPlan or nil
+    def generate_plan
+      raise NotImplementedError
     end
 
     protected
@@ -55,6 +58,15 @@ module Analysis
 
     def update_summary(new_summary)
       summary.update(summary: new_summary)
+    end
+
+    def enabled_llms
+      LLMS.select(&:enabled?)
+    end
+
+    # For now, we assume GPT tokenization for all llms
+    def token_count(str)
+      LLM::OpenAIGPT.token_count(str)
     end
   end
 end

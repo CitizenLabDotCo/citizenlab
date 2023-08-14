@@ -18,6 +18,10 @@ module Analysis
       def accuracy_score
         8
       end
+
+      def gpt_model
+        'gpt-4-32k'
+      end
     end
   end
 end

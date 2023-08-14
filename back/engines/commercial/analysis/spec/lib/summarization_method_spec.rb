@@ -24,12 +24,13 @@ RSpec.describe Analysis::SummarizationMethod do
         create(:idea, comments_count: 0)
       end
 
-      summarization_method = Analysis::SummarizationMethod::Base.for_summarization_method(
-        'bogus',
-        summarization_task
+      plan = Analysis::SummarizationPlan.new(
+        summarization_method_class: Analysis::SummarizationMethod::Bogus
       )
 
-      expect { summarization_method.execute }
+      summarization_method = Analysis::SummarizationMethod::Bogus.new(summarization_task.summary)
+
+      expect { summarization_method.execute(plan) }
         .to change { summarization_task.summary.summary }.from(nil).to(kind_of(String))
 
       summarization_task.reload
@@ -56,43 +57,36 @@ RSpec.describe Analysis::SummarizationMethod do
         state: 'queued',
         summary: create(:summary, analysis: analysis, summary: nil, summarization_method: 'one_pass_llm', filters: { comments_from: 5 })
       )
+      summary = summarization_task.summary
       idea3 = with_options project: summarization_task.analysis.project do
         create(:idea, comments_count: 5)
         create(:idea, comments_count: 0)
         create(:idea, comments_count: 10)
       end
 
-      mock_openai_api = Analysis::OpenaiApi.new
-      summarization_method = Analysis::SummarizationMethod::Base.for_summarization_method(
-        'one_pass_llm',
-        summarization_task,
-        openai_api: mock_openai_api
-      )
+      mock_llm = instance_double(Analysis::LLM::GPT48k)
+      plan = Analysis::SummarizationMethod::OnePassLLM.new(summary).generate_plan
 
-      expect(mock_openai_api).to receive(:token_count).and_call_original
-      expect(mock_openai_api).to receive(:chat).with(anything) do |value|
-        expect(value.dig(:parameters, :messages, 0, :content)).to include(idea3.id)
-        value[:parameters][:stream].call({
-          'choices' => [
-            'delta' => {
-              'content' => 'Complete'
-            }
-          ]
-        })
-        value[:parameters][:stream].call({
-          'choices' => [
-            'delta' => {
-              'content' => ' summary'
-            }
-          ]
-        })
+      expect(plan).to have_attributes({
+        summarization_method_class: Analysis::SummarizationMethod::OnePassLLM,
+        llm: kind_of(Analysis::LLM::Base),
+        accuracy: :high,
+        include_id: true,
+        shorten_labels: false
+      })
+      plan.llm = mock_llm
+
+      expect(mock_llm).to receive(:chat_async).with(kind_of(String)) do |prompt, &block|
+        expect(prompt).to include(idea3.id)
+        block.call 'Complete'
+        block.call ' summary'
       end
 
-      expect { summarization_method.execute }
+      expect { plan.summarization_method_class.new(summary).execute(plan) }
         .to change { summarization_task.summary.summary }.from(nil).to('Complete summary')
         .and change { summarization_task.summary.prompt }.from(nil).to(kind_of(String))
 
-      expect(summarization_task).to have_attributes({
+      expect(summarization_task.reload).to have_attributes({
         state: 'succeeded',
         progress: nil
       })

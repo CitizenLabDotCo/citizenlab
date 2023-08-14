@@ -14,6 +14,10 @@ module Analysis
       def accuracy_score
         5
       end
+
+      def gpt_model
+        'gpt-3.5-turbo-16k'
+      end
     end
   end
 end
