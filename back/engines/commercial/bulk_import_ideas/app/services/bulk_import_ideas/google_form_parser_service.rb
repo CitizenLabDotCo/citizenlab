@@ -91,21 +91,21 @@ module BulkImportIdeas
     # NOTE: For DEVELOPMENT ONLY when Google API not configured
     def dummy_data
       Array.new(rand(1..8)) do
-        {
+        [
           # User details
-          'Name:' => { value: Faker::FunnyName.name, type: '' },
-          'Email:' => { value: Faker::Internet.email, type: '' },
+          { name: 'Name:', value: Faker::FunnyName.name, type: '', page: 1, x: 0.09, y: 1.16 },
+          { name: 'Email:', value: Faker::Internet.email, type: '', page: 1, x: 0.09, y: 1.24 },
           # Core fields
-          'Title:' => { value: Faker::Quote.yoda, type: '' },
-          'Body:' => { value: Faker::Hipster.paragraph, type: '' },
+          { name: 'Title:', value: Faker::Quote.yoda, type: '', page: 1, x: 0.09, y: 1.34 },
+          { name: 'Body:', value: Faker::Hipster.paragraph, type: '', page: 1, x: 0.09, y: 1.41 },
           # Select fields
-          'Yes' => { value: nil, type: %w[filled_checkbox unfilled_checkbox].sample },
-          'No' => { value: nil, type: %w[filled_checkbox unfilled_checkbox].sample },
-          'This' => { value: nil, type: %w[filled_checkbox unfilled_checkbox].sample },
-          'That' => { value: nil, type: %w[filled_checkbox unfilled_checkbox].sample },
+          { name: 'Yes:', value: nil, type: %w[filled_checkbox unfilled_checkbox].sample, page: 1, x: 0.11, y: 1.66 },
+          { name: 'No:', value: nil, type: %w[filled_checkbox unfilled_checkbox].sample, page: 1, x: 0.45, y: 1.66 },
+          { name: 'This:', value: nil, type: %w[filled_checkbox unfilled_checkbox].sample, page: 1, x: 0.11, y: 1.86 },
+          { name: 'That:', value: nil, type: %w[filled_checkbox unfilled_checkbox].sample, page: 1, x: 0.45, y: 1.86 },
           # Custom text field
-          'Title:' => { value: Faker::Quote.robin, type: '' }
-        }
+          { name: 'Another field:', value: Faker::Quote.robin, type: '', page: 2, x: 0.09, y: 2.12 }
+        ]
       end
     end
   end

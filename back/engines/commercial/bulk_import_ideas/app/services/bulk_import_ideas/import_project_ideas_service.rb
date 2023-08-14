@@ -39,10 +39,12 @@ module BulkImportIdeas
       parsed_docs.map do |doc|
         idea_row = {}
         idea_row[:project_id] = @project.id
-        idea_row[:title_multiloc] = { @locale.to_sym => doc['Title:'][:value] }
-        idea_row[:body_multiloc] = { @locale.to_sym => doc['Body:'][:value] }
-        idea_row[:user_email] = doc['Email:'][:value]
-        idea_row[:user_name] = doc['Name:'][:value]
+        ## TODO: This won't currently allow for Title, Body, Email or Name to appear multiple times
+        idea_row[:title_multiloc] = { @locale.to_sym => find_field(doc, 'Title:')[:value] }
+        idea_row[:body_multiloc] = { @locale.to_sym => find_field(doc, 'Body:')[:value] }
+        idea_row[:user_email] = find_field(doc, 'Email:')[:value]
+        idea_row[:user_name] = find_field(doc, 'Name:')[:value]
+
         idea_row[:custom_field_values] = process_custom_fields(doc)
         idea_row
       end
@@ -73,9 +75,12 @@ module BulkImportIdeas
 
       # Text fields
       text_fields.each do |field|
-        if doc[field[:name]]
-          custom_fields[field[:key].to_sym] = doc[field[:name]][:value]
-          doc.delete(field[:name]) # Remove fields from the doc once they have been added
+        if find_field(doc, field[:name])
+          custom_fields[field[:key].to_sym] = find_field(doc, field[:name])[:value]
+          # Remove fields from the doc once they have been added
+          # so they don't get confused with later fields with same name
+          # and TODO: we can also display back any unmatched fields
+          doc.delete_if { |f| f[:name] == field[:name] }
         end
       end
 
@@ -84,9 +89,10 @@ module BulkImportIdeas
       # loop through options in order they appear on the form and
       # remove so that fields with the same values don't get picked up
       select_options.each do |option|
-        if doc[option[:name]] && doc[option[:name]][:type].include?('checkbox')
+        option_field = find_field(doc, option[:name])
+        if option_field && option_field[:type].include?('checkbox')
           field_key = option[:field_key].to_sym
-          checked = doc[option[:name]][:type] == 'filled_checkbox'
+          checked = option_field[:type] == 'filled_checkbox'
           if option[:field_type] == 'multiselect' && checked
             custom_fields[field_key] = custom_fields[field_key] || []
             custom_fields[field_key] << option[:key]
@@ -95,13 +101,15 @@ module BulkImportIdeas
             custom_fields[field_key] = option[:key]
           end
 
-          doc.delete(option[:name])
+          doc.delete_if { |f| f[:name] == option[:name] }
         end
       end
 
-      # TODO: Display back to the user any fields that haven't been added?
-
       custom_fields
+    end
+
+    def find_field(doc, name)
+      doc.find { |f| f[:name] == name }
     end
   end
 end

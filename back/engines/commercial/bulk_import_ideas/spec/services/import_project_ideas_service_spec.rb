@@ -28,33 +28,32 @@ describe BulkImportIdeas::ImportProjectIdeasService do
       create(:custom_field_option, custom_field: multiselect_field, key: 'that', title_multiloc: { 'en' => 'That' })
     end
 
-    ## TODO: Cannot have the same value for different select boxes - because we're using the text key!!
     let(:docs) do
       [
-        {
-          'Name:' => { name: 'Name:', value: 'John Rambo', type: '', page: 1, x: 0.09, y: 1.16 },
-          'Email:' => { name: 'Email:', value: 'john_rambo@gravy.com', type: '', page: 1, x: 0.09, y: 1.24 },
-          'Title:' => { name: 'Title:', value: 'Free donuts for all', type: '', page: 1, x: 0.09, y: 1.34 },
-          'Body:' => { name: 'Body:', value: 'Give them all donuts', type: '', page: 1, x: 0.09, y: 1.41 },
-          'Yes' => { name: 'Yes', value: nil, type: 'filled_checkbox', page: 1, x: 0.11, y: 1.66 },
-          'No' => { name: 'No', value: nil, type: 'filled_checkbox', page: 1, x: 0.45, y: 1.66 },
-          'This' => { name: 'This', value: nil, type: 'filled_checkbox', page: 1, x: 0.11, y: 1.86 },
-          'That' => { name: 'That', value: nil, type: 'filled_checkbox', page: 1, x: 0.45, y: 1.86 },
-          'Another field:' => { name: 'Another field:', value: 'Not much to say', type: '', page: 2, x: 0.09, y: 2.12 },
-          'Ignored field' => { name: 'Ignored field', value: 'Ignored value', type: 'filled_checkbox', page: 2, x: 0.45, y: 2.23 }
-        },
-        {
-          'Name:' => { name: 'Name:', value: 'Ned Flanders', type: '', page: 1, x: 0.09, y: 1.16 },
-          'Email:' => { name: 'Email:', value: 'ned@simpsons.com', type: '', page: 1, x: 0.09, y: 1.24 },
-          'Title:' => { name: 'Title:', value: 'New Wrestling Arena needed', type: '', page: 1, x: 0.09, y: 1.34 },
-          'Body:' => { name: 'Body:', value: 'I am convinced that if we do not get this we will be sad.', type: '', page: 1, x: 0.09, y: 1.41 },
-          'Yes' => { name: 'Yes', value: nil, type: 'unfilled_checkbox', page: 1, x: 0.11, y: 1.66 },
-          'No' => { name: 'No', value: nil, type: 'filled_checkbox', page: 1, x: 0.45, y: 1.66 },
-          'This' => { name: 'This', value: nil, type: 'unfilled_checkbox', page: 1, x: 0.11, y: 1.86 },
-          'That' => { name: 'That', value: nil, type: 'filled_checkbox', page: 1, x: 0.45, y: 1.86 },
-          'Another field:' => { name: 'Another field:', value: 'Something else', type: '', page: 2, x: 0.09, y: 2.12 },
-          'Ignored option' => { name: 'Ignored option', value: nil, type: 'filled_checkbox', page: 2, x: 0.45, y: 2.23 }
-        }
+        [
+          { name: 'Name:', value: 'John Rambo', type: '', page: 1, x: 0.09, y: 1.16 },
+          { name: 'Email:', value: 'john_rambo@gravy.com', type: '', page: 1, x: 0.09, y: 1.24 },
+          { name: 'Title:', value: 'Free donuts for all', type: '', page: 1, x: 0.09, y: 1.34 },
+          { name: 'Body:', value: 'Give them all donuts', type: '', page: 1, x: 0.09, y: 1.41 },
+          { name: 'Yes', value: nil, type: 'filled_checkbox', page: 1, x: 0.11, y: 1.66 },
+          { name: 'No', value: nil, type: 'filled_checkbox', page: 1, x: 0.45, y: 1.66 },
+          { name: 'This', value: nil, type: 'filled_checkbox', page: 1, x: 0.11, y: 1.86 },
+          { name: 'That', value: nil, type: 'filled_checkbox', page: 1, x: 0.45, y: 1.86 },
+          { name: 'Another field:', value: 'Not much to say', type: '', page: 2, x: 0.09, y: 2.12 },
+          { name: 'Ignored field', value: 'Ignored value', type: 'filled_checkbox', page: 2, x: 0.45, y: 2.23 }
+        ],
+        [
+          { name: 'Name:', value: 'Ned Flanders', type: '', page: 1, x: 0.09, y: 1.16 },
+          { name: 'Email:', value: 'ned@simpsons.com', type: '', page: 1, x: 0.09, y: 1.24 },
+          { name: 'Title:', value: 'New Wrestling Arena needed', type: '', page: 1, x: 0.09, y: 1.34 },
+          { name: 'Body:', value: 'I am convinced that if we do not get this we will be sad.', type: '', page: 1, x: 0.09, y: 1.41 },
+          { name: 'Yes', value: nil, type: 'unfilled_checkbox', page: 1, x: 0.11, y: 1.66 },
+          { name: 'No', value: nil, type: 'filled_checkbox', page: 1, x: 0.45, y: 1.66 },
+          { name: 'This', value: nil, type: 'unfilled_checkbox', page: 1, x: 0.11, y: 1.86 },
+          { name: 'That', value: nil, type: 'filled_checkbox', page: 1, x: 0.45, y: 1.86 },
+          { name: 'Another field:', value: 'Something else', type: '', page: 2, x: 0.09, y: 2.12 },
+          { name: 'Ignored option', value: nil, type: 'filled_checkbox', page: 2, x: 0.45, y: 2.23 }
+        ]
       ]
     end
 
