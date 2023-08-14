@@ -147,6 +147,7 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Folder title:",
   "app.components.FolderFolderCard.archived": "Archived",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# projects} one {# project} other {# projects}}",
+  "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Download as pdf",
   "app.components.GoBackButton.group.edit.goBack": "Go back",
   "app.components.HookForm.Feedback.errorTitle": "There is a problem",
   "app.components.HookForm.Feedback.submissionError": "Try again. If the issue persists, contact us",
