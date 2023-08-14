@@ -9,7 +9,7 @@ import Observer from '@researchgate/react-intersection-observer';
 import useKeyPress from 'hooks/useKeyPress';
 
 interface Props {
-  onSelectInput: (inputId: string) => void;
+  onSelectInput: React.Dispatch<React.SetStateAction<string | null>>;
   selectedInputId: string | null;
 }
 
@@ -25,7 +25,7 @@ const InputsList = ({ onSelectInput, selectedInputId }: Props) => {
   const { mutate: addsummary, isLoading } = useAddAnalysisSummary();
 
   const inputs = useMemo(
-    () => data?.pages.map((page) => page.data).flat(),
+    () => data && data.pages.map((page) => page.data).flat(),
     [data]
   );
 
@@ -52,36 +52,38 @@ const InputsList = ({ onSelectInput, selectedInputId }: Props) => {
   const downArrow = useKeyPress('ArrowDown');
 
   useEffect(() => {
-    if (inputs && upArrow && selectedInputId) {
-      const selectedInputIndex = inputs.findIndex(
-        (input) => input.id === selectedInputId
-      );
+    if (upArrow) {
+      onSelectInput((selectedInput) => {
+        const selectedInputIndex =
+          inputs && inputs.findIndex((input) => input.id === selectedInput);
 
-      const previousInput =
-        selectedInputIndex !== 0 ? inputs[selectedInputIndex - 1]?.id : 0;
+        const previousInput =
+          selectedInputIndex !== 0 && inputs && selectedInputIndex
+            ? inputs[selectedInputIndex - 1]?.id
+            : null;
 
-      if (previousInput) {
-        onSelectInput(previousInput);
-      }
+        return previousInput;
+      });
     }
-  }, [upArrow, selectedInputId, inputs, onSelectInput]);
+  }, [upArrow, inputs, onSelectInput]);
 
   useEffect(() => {
-    if (inputs && downArrow && selectedInputId) {
-      const selectedInputIndex = inputs.findIndex(
-        (input) => input.id === selectedInputId
-      );
+    if (downArrow) {
+      onSelectInput((selectedInput) => {
+        const selectedInputIndex =
+          inputs && inputs.findIndex((input) => input.id === selectedInput);
 
-      const nextInput =
-        selectedInputIndex !== inputs.length - 1
-          ? inputs[selectedInputIndex + 1]?.id
-          : 0;
+        const nextInput =
+          inputs &&
+          selectedInputIndex !== inputs.length - 1 &&
+          selectedInputIndex
+            ? inputs[selectedInputIndex + 1]?.id
+            : null;
 
-      if (nextInput) {
-        onSelectInput(nextInput);
-      }
+        return nextInput;
+      });
     }
-  }, [downArrow, selectedInputId, inputs, onSelectInput]);
+  }, [downArrow, inputs, onSelectInput]);
 
   return (
     <Box bg={colors.white} w="100%">

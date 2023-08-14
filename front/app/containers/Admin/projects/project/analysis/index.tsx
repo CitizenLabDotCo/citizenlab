@@ -13,6 +13,7 @@ const Analysis = () => {
   const modalPortalElement = document.getElementById('modal-portal');
 
   const [selectedInputId, setSelectedInputId] = useState<string | null>(null);
+
   if (!modalPortalElement) return null;
 
   return createPortal(
@@ -54,7 +55,7 @@ const Analysis = () => {
             bg={colors.white}
           >
             <InputsList
-              onSelectInput={(inputId) => setSelectedInputId(inputId)}
+              onSelectInput={setSelectedInputId}
               selectedInputId={selectedInputId}
             />
           </Box>
@@ -81,9 +82,7 @@ const Analysis = () => {
             h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
             bg={colors.white}
           >
-            <Insights
-              onSelectInput={(inputId) => setSelectedInputId(inputId)}
-            />
+            <Insights onSelectInput={setSelectedInputId} />
           </Box>
         </Box>
       </FocusOn>
