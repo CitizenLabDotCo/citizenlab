@@ -1,10 +1,6 @@
 import { IInputsFilterParams } from 'api/analysis_inputs/types';
 
-export interface ISummaryPreCheckParams {
-  analysisId: string;
-}
-
-export interface ISummaryPreCheckParam {
+export interface ISummaryPreCheckData {
   id: string;
   type: 'summary_pre_check';
   attributes: {
@@ -14,7 +10,7 @@ export interface ISummaryPreCheckParam {
 }
 
 export interface ISummaryPreCheck {
-  data: ISummaryPreCheckParam;
+  data: ISummaryPreCheckData;
 }
 
 export interface ISummaryPreCheckAdd {
