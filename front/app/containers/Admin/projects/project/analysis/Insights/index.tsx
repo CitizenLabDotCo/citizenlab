@@ -20,13 +20,15 @@ const Insights = ({ onSelectInput }: Props) => {
   return (
     <Box>
       {!isLoading && summaries?.data?.length === 0 && (
-        <Text p="24px" color="grey400">
-          <p>
+        <>
+          <Text px="24px" color="grey400">
             Your text summaries will be displayed here, but you currently do not
             have any yet.
-          </p>
-          <p>Start by adding some tags.</p>
-        </Text>
+          </Text>
+          <Text px="24px" color="grey400">
+            Start by adding some tags.
+          </Text>
+        </>
       )}
       {summaries?.data.map((summary) => (
         <Summary
