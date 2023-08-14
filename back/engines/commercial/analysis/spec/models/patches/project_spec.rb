@@ -3,8 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe Phase do
-  subject { create(:phase) }
-
   describe 'Deleting a project' do
     it 'deletes its analyses' do
       analysis = create(:analysis)
