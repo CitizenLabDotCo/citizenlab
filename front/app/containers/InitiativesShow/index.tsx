@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { isUndefined, isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
-import { adopt } from 'react-adopt';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
@@ -14,7 +13,7 @@ import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 // components
 import Modal from 'components/UI/Modal';
 import FileAttachments from 'components/UI/FileAttachments';
-import { Spinner, Box } from '@citizenlab/cl2-component-library';
+import { Spinner, Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import SharingButtons from 'components/Sharing/SharingButtons';
 import FeatureFlag from 'components/FeatureFlag';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
@@ -34,22 +33,6 @@ import ReactionControl from './ReactionControl';
 import InitiativeMoreActions from './ActionBar/InitiativeMoreActions';
 import Outlet from 'components/Outlet';
 
-// resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetInitiativeImages, {
-  GetInitiativeImagesChildProps,
-} from 'resources/GetInitiativeImages';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetWindowSize, {
-  GetWindowSizeChildProps,
-} from 'resources/GetWindowSize';
-import GetPermission, {
-  GetPermissionChildProps,
-} from 'resources/GetPermission';
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
-
 // utils
 import { getAddressOrFallbackDMS } from 'utils/map';
 
@@ -63,7 +46,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import { media, viewportWidths } from 'utils/styleUtils';
+import { media } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import {
   columnsGapDesktop,
@@ -78,11 +61,15 @@ import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 
 // types
-import { IInitiativeData } from 'api/initiatives/types';
 import useInitiativeReviewRequired from 'hooks/useInitiativeReviewRequired';
 import InitiativeCreatedModalContent from './InitiativeCreatedModalContent';
 import RequestToCosponsor from './RequestToCosponsor';
 import ListOfCosponsors from './ListOfCosponsors';
+import useLocale from 'hooks/useLocale';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAuthUser from 'api/me/useAuthUser';
+import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
+import { usePermission } from 'services/permissions';
 
 const contentFadeInDuration = 250;
 const contentFadeInEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -307,38 +294,23 @@ const StyledReactionControl = styled(ReactionControl)`
   padding: 25px;
 `;
 
-interface DataProps {
-  locale: GetLocaleChildProps;
-  initiativeImages: GetInitiativeImagesChildProps;
-  authUser: GetAuthUserChildProps;
-  windowSize: GetWindowSizeChildProps;
-  postOfficialFeedbackPermission: GetPermissionChildProps;
-  tenant: GetAppConfigurationChildProps;
-}
-
-interface IntiativeInputProps {
-  initiative: IInitiativeData;
-}
-
-interface InputProps {
+interface Props {
   initiativeId: string;
   className?: string;
 }
 
-interface Props extends DataProps, InputProps {}
-
-const InitiativesShow = ({
-  locale,
-  initiativeImages,
-  authUser,
-  windowSize,
-  className,
-  postOfficialFeedbackPermission,
-  tenant,
-  initiativeId,
-}: Props) => {
+const InitiativesShow = ({ className, initiativeId }: Props) => {
+  const locale = useLocale();
+  const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
   const localize = useLocalize();
+  const { data: appConfiguration } = useAppConfiguration();
+  const { data: initiativeImages } = useInitiativeImages(initiativeId);
+  const { data: initiative } = useInitiativeById(initiativeId);
+  const postOfficialFeedbackPermission = usePermission({
+    item: !isNilOrError(initiative) ? initiative.data : null,
+    action: 'moderate',
+  });
   const [searchParams] = useSearchParams();
   const newInitiativeId = searchParams.get('new_initiative_id');
 
@@ -355,7 +327,6 @@ const InitiativesShow = ({
   const initiativeReviewRequired = useInitiativeReviewRequired();
 
   const { data: initiativeFiles } = useInitiativeFiles(initiativeId);
-  const { data: initiative } = useInitiativeById(initiativeId);
 
   const showSharingOptions = initiativeReviewRequired
     ? initiative?.data.attributes.public
@@ -375,7 +346,7 @@ const InitiativesShow = ({
     if (!loaded && !isUndefined(initiativeImages)) {
       setLoaded(true);
     }
-  }, [initiative, initiativeImages, loaded]);
+  }, [initiativeImages, loaded]);
 
   useEffect(() => {
     if (a11y_pronounceLatestOfficialFeedbackPost) {
@@ -415,8 +386,8 @@ const InitiativesShow = ({
     setA11y_pronounceLatestOfficialFeedbackPost(true);
   };
 
-  const initiativeSettings = !isNilOrError(tenant)
-    ? tenant.attributes.settings.initiatives
+  const initiativeSettings = !isNilOrError(appConfiguration)
+    ? appConfiguration.data.attributes.settings.initiatives
     : null;
 
   const reactingThreshold = initiativeSettings
@@ -452,15 +423,12 @@ const InitiativesShow = ({
       initiative.data.relationships?.topics?.data?.map((item) => item.id) || [];
     const initiativeUrl = location.href;
     const initiativeBody = localize(initiative.data.attributes?.body_multiloc);
-    const isDesktop = windowSize ? windowSize > viewportWidths.tablet : true;
-    const isNotDesktop = windowSize
-      ? windowSize <= viewportWidths.tablet
-      : false;
+    const isSmallerThanTablet = useBreakpoint('tablet');
     const utmParams = !isNilOrError(authUser)
       ? {
           source: 'share_initiative',
           campaign: 'share_content',
-          content: authUser.id,
+          content: authUser.data.id,
         }
       : {
           source: 'share_initiative',
@@ -471,7 +439,7 @@ const InitiativesShow = ({
       <>
         <InitiativeMeta initiativeId={initiativeId} />
 
-        {isDesktop && initiativeHeaderImageLarge && (
+        {!isSmallerThanTablet && initiativeHeaderImageLarge && (
           <InitiativeBannerContainer>
             {initiativeHeaderImageLarge && (
               <InitiativeBannerImage src={initiativeHeaderImageLarge} />
@@ -479,7 +447,7 @@ const InitiativesShow = ({
           </InitiativeBannerContainer>
         )}
 
-        {isNotDesktop && (
+        {isSmallerThanTablet && (
           <InitiativeBannerContainer>
             {initiativeHeaderImageLarge && (
               <>
@@ -509,7 +477,7 @@ const InitiativesShow = ({
           </InitiativeBannerContainer>
         )}
 
-        {isDesktop && (
+        {!isSmallerThanTablet && (
           <ActionBar
             initiativeId={initiativeId}
             translateButtonClicked={translateButtonClicked}
@@ -517,7 +485,7 @@ const InitiativesShow = ({
           />
         )}
 
-        {isNotDesktop && (
+        {isSmallerThanTablet && (
           <StyledReactionControl
             initiativeId={initiativeId}
             onScrollToOfficialFeedback={onScrollToOfficialFeedback}
@@ -529,7 +497,7 @@ const InitiativesShow = ({
             <LeftColumn>
               <StyledTopics postType="initiative" topicIds={topicIds} />
 
-              {isDesktop && (
+              {!isSmallerThanTablet && (
                 <InitiativeHeader>
                   <Title
                     postType="initiative"
@@ -541,7 +509,7 @@ const InitiativesShow = ({
                 </InitiativeHeader>
               )}
 
-              {isDesktop && (
+              {!isSmallerThanTablet && (
                 <PostedBy
                   anonymous={initiative.data.attributes.anonymous}
                   authorId={authorId}
@@ -559,7 +527,6 @@ const InitiativesShow = ({
 
               <Outlet
                 id="app.containers.InitiativesShow.left"
-                windowSize={windowSize}
                 translateButtonClicked={translateButtonClicked}
                 onClick={onTranslateInitiative}
                 initiative={initiative.data}
@@ -604,7 +571,7 @@ const InitiativesShow = ({
                 />
               </div>
 
-              {isNotDesktop && showSharingOptions && (
+              {isSmallerThanTablet && showSharingOptions && (
                 <SharingButtonsMobile
                   context="initiative"
                   url={initiativeUrl}
@@ -629,7 +596,7 @@ const InitiativesShow = ({
               )}
             </LeftColumn>
 
-            {isDesktop && (
+            {!isSmallerThanTablet && (
               <RightColumnDesktop>
                 <MetaContent>
                   <ScreenReaderOnly>
@@ -739,34 +706,4 @@ const InitiativesShow = ({
   );
 };
 
-const Data = adopt<DataProps, InputProps & IntiativeInputProps>({
-  locale: <GetLocale />,
-  tenant: <GetAppConfiguration />,
-  authUser: <GetAuthUser />,
-  windowSize: <GetWindowSize />,
-  initiativeImages: ({ initiativeId, render }) => (
-    <GetInitiativeImages initiativeId={initiativeId}>
-      {render}
-    </GetInitiativeImages>
-  ),
-  postOfficialFeedbackPermission: ({ initiative, render }) => (
-    <GetPermission
-      item={!isNilOrError(initiative) ? initiative : null}
-      action="moderate"
-    >
-      {render}
-    </GetPermission>
-  ),
-});
-
-export default (inputProps: InputProps) => {
-  // TODO: Move this logic to InitiativesShow after working on the officialFeedbacks. It's dependency here is why we need to pass in the initiative to the Data component
-  const { data: initiative } = useInitiativeById(inputProps.initiativeId);
-  if (!initiative) return null;
-
-  return (
-    <Data {...inputProps} initiative={initiative.data}>
-      {(dataProps) => <InitiativesShow {...inputProps} {...dataProps} />}
-    </Data>
-  );
-};
+export default InitiativesShow;
