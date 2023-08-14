@@ -6,7 +6,6 @@ module Analysis
   # LLM to use
   class SummarizationPlan
     include ActiveModel::API
-    QUALITIES = %i[low medium high]
     IMPOSSIBLE_REASONS = [:too_many_inputs]
 
     attr_accessor :summarization_method_class, :llm, :truncate_values, :include_id, :shorten_labels, :accuracy, :impossible_reason
@@ -17,7 +16,7 @@ module Analysis
       validates :truncate_values, numericality: { only_integer: true }, allow_blank: true
       validates :include_id, inclusion: { in: [true, false] }, allow_blank: true
       validates :shorten_labels, inclusion: { in: [true, false] }, allow_blank: true
-      validates :accuracy, inclusion: { in: QUALITIES }
+      validates :accuracy, numericality: { in: 0..1 }, allow_blank: true
     end
 
     validates :impossible_reason, inclusion: { in: IMPOSSIBLE_REASONS }, allow_blank: true

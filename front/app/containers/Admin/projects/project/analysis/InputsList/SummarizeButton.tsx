@@ -50,9 +50,15 @@ const SummarizeButton = ({ inputsCount }: Props) => {
         disabled={!summaryPossible}
         processing={isLoadingPreCheck || isLoadingSummary}
       >
-        {summaryPossible
-          ? `Auto-summarize ${inputsCount} inputs (${summaryAccuracy} accuracy)`
-          : `Too many inputs to summarize`}
+        {summaryPossible &&
+          summaryAccuracy &&
+          `Auto-summarize ${inputsCount} inputs (${
+            summaryAccuracy * 100
+          }% accuracy)`}
+        {summaryPossible &&
+          !summaryAccuracy &&
+          `Auto-summarize ${inputsCount} inputs`}
+        {!summaryPossible && `Too many inputs to summarize`}
       </Button>
     </Box>
   );

@@ -11,6 +11,8 @@ module Analysis
         raise NotImplementedError
       end
 
+      # Float in 0..1 that denotes how relatively accurate the llm is. 1 would
+      # be perfect accuracy.
       def accuracy
         raise NotImplementedError
       end

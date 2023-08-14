@@ -28,7 +28,7 @@ module Analysis
 
         # Is there an LLM that can handle the prompt size?
         selected_llm = enabled_llms
-          .sort_by { |llm| -llm.accuracy_score }
+          .sort_by { |llm| -llm.accuracy }
           .find { |llm| llm.context_window >= complete_token_count }
 
         # If yes, let's define the plan

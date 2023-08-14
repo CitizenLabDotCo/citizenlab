@@ -8,11 +8,7 @@ module Analysis
       end
 
       def accuracy
-        :medium
-      end
-
-      def accuracy_score
-        5
+        0.5
       end
 
       def gpt_model

@@ -61,6 +61,7 @@ resource 'Summaries' do
             reactions_from: 7,
             tag_ids: [tag.id]
           },
+          accuracy: 0.8,
           created_at: kind_of(String),
           updated_at: kind_of(String)
         },
@@ -117,7 +118,7 @@ resource 'Summaries' do
         id: kind_of(String),
         type: 'summary_pre_check',
         attributes: {
-          accuracy: 'high',
+          accuracy: 0.8,
           impossible_reason: nil
         }
       })

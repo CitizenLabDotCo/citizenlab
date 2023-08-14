@@ -58,10 +58,12 @@ RSpec.describe Analysis::SummarizationMethod do
         summary: create(:summary, analysis: analysis, summary: nil, summarization_method: 'one_pass_llm', filters: { comments_from: 5 })
       )
       summary = summarization_task.summary
-      idea3 = with_options project: summarization_task.analysis.project do
-        create(:idea, comments_count: 5)
-        create(:idea, comments_count: 0)
-        create(:idea, comments_count: 10)
+      inputs = with_options project: summarization_task.analysis.project do
+        [
+          create(:idea, comments_count: 0),
+          create(:idea, comments_count: 5),
+          create(:idea, comments_count: 10)
+        ]
       end
 
       mock_llm = instance_double(Analysis::LLM::GPT48k)
@@ -70,14 +72,14 @@ RSpec.describe Analysis::SummarizationMethod do
       expect(plan).to have_attributes({
         summarization_method_class: Analysis::SummarizationMethod::OnePassLLM,
         llm: kind_of(Analysis::LLM::Base),
-        accuracy: :high,
+        accuracy: 0.8,
         include_id: true,
         shorten_labels: false
       })
       plan.llm = mock_llm
 
       expect(mock_llm).to receive(:chat_async).with(kind_of(String)) do |prompt, &block|
-        expect(prompt).to include(idea3.id)
+        expect(prompt).to include(inputs[2].id)
         block.call 'Complete'
         block.call ' summary'
       end
@@ -85,6 +87,8 @@ RSpec.describe Analysis::SummarizationMethod do
       expect { plan.summarization_method_class.new(summary).execute(plan) }
         .to change { summarization_task.summary.summary }.from(nil).to('Complete summary')
         .and change { summarization_task.summary.prompt }.from(nil).to(kind_of(String))
+        .and change { summarization_task.summary.accuracy }.from(nil).to(0.8)
+        .and change { summarization_task.summary.inputs_ids }.from(nil).to(match_array([inputs[1].id, inputs[2].id]))
 
       expect(summarization_task.reload).to have_attributes({
         state: 'succeeded',

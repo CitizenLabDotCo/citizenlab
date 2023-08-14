@@ -42,6 +42,7 @@ module Analysis
           )
           plan = SummarizationMethod::Base.plan(@summary)
           @summary.summarization_method = plan.summarization_method_class::SUMMARIZATION_METHOD
+          @summary.accuracy = plan.accuracy
 
           if @summary.save && plan.possible?
             side_fx_service.after_create(@summary, current_user)
