@@ -56,7 +56,6 @@ const EventPreviews = ({ projectId }: EventPreviewsProps) => {
   const [atScrollStart, setAtScrollStart] = useState(true);
   const [atScrollEnd, setAtScrollEnd] = useState(false);
   const [showArrowButtons, setShowArrowButtons] = useState(false);
-  //   const [numberOfEvents, setNumberOfEvents] = useState(0);
 
   // initial lateral scroll arrow state
   useEffect(() => {

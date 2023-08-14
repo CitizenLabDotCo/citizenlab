@@ -25,6 +25,7 @@ import clHistory from 'utils/cl-router/history';
 import { IEventData } from 'api/events/types';
 import { IPhaseData } from 'api/phases/types';
 import { ProcessType } from 'api/projects/types';
+import { timeRangesOverlap } from 'utils/dateUtils';
 
 const EventCard = styled(Box)`
   ${defaultCardStyle};
@@ -53,10 +54,17 @@ type EventPreviewCardProps = {
 };
 
 const eventOccursInPhase = (event: IEventData, phase?: IPhaseData) => {
-  return moment(event.attributes.start_at).isBetween(
+  const eventRange = [
+    moment(event.attributes.start_at),
+    moment(event.attributes.end_at),
+  ];
+
+  const phaseRange = [
     moment(phase?.attributes.start_at),
-    moment(phase?.attributes.end_at).add(1, 'day')
-  );
+    moment(phase?.attributes.end_at),
+  ];
+
+  return timeRangesOverlap(eventRange, phaseRange);
 };
 
 const EventPreviewCard = ({
