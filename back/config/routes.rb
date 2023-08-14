@@ -96,7 +96,7 @@ Rails.application.routes.draw do
         resources :comments, only: [:index], controller: 'user_comments'
       end
 
-      get 'users/:attendee_id/events', to: 'events#index_by_attendee'
+      get 'users/:attendee_id/events', to: 'events#index'
       get 'users/:id', to: 'users#show', constraints: { id: /\b(?!custom_fields|me)\b\S+/ }
 
       scope path: 'user' do

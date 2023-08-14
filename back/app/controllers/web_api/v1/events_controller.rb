@@ -5,7 +5,15 @@ class WebApi::V1::EventsController < ApplicationController
   skip_before_action :authenticate_user
 
   def index
-    events = EventsFinder.new(params, scope: policy_scope(Event), current_user: current_user).find_records
+    scope = EventPolicy::Scope.new(current_user, Event, params[:attendee_id]).resolve
+    # Necessary because we instantiate the scope directly instead of using Pundit's
+    # `policy_scope` method.
+    skip_policy_scope
+
+    events = EventsFinder
+      .new(params, scope: scope, current_user: current_user)
+      .find_records
+
     events = paginate SortByParamsService.new.sort_events(events, params)
 
     serializer_params = jsonapi_serializer_params
@@ -18,21 +26,10 @@ class WebApi::V1::EventsController < ApplicationController
     )
   end
 
-  def index_by_attendee
-    # Here, we used `Pundit` in an unconventional manner by passing the `attendee_id`
-    # parameter instead of an Event instance. The first thing to note is that this is an
-    # index action. So, it is not about a single Event instance, but rather a collection
-    # of them. But, most importantly, what we are checking here is not whether the
-    # current user is permitted to view the events (since most events are public and
-    # visible to anyone). Instead, we are verifying whether the current user is allowed
-    # to view the events to which the attendee is registered. The events are scoped down
-    # as a second step in `#index` to which this action delegates.
-    authorize(params[:attendee_id], policy_class: EventPolicy)
-    index
-  end
-
   def show
-    render json: WebApi::V1::EventSerializer.new(@event, params: jsonapi_serializer_params).serializable_hash
+    render json: WebApi::V1::EventSerializer
+      .new(@event, params: jsonapi_serializer_params)
+      .serializable_hash
   end
 
   def create
