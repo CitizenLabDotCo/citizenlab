@@ -7,7 +7,7 @@ module Analysis
   class SummarizationMethod::Bogus < SummarizationMethod::Base
     def generate_plan
       SummarizationPlan.new(
-        accuracy: :low
+        accuracy: 0.1
       )
     end
 
