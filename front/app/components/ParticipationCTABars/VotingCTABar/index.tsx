@@ -56,14 +56,16 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
   const hasUserParticipated = !!submittedAt;
 
   const minVotes = participationContext.attributes.voting_min_total ?? 0;
-  const maxVotes = participationContext.attributes.voting_max_total ?? 0;
+  const maxVotes = participationContext.attributes.voting_max_total;
 
   const minVotesRequired = minVotes > 0;
   const minVotesReached =
     numberOfVotesCast !== undefined ? numberOfVotesCast >= minVotes : false;
   const minVotesRequiredNotReached = minVotesRequired && !minVotesReached;
   const votesExceedLimit =
-    numberOfVotesCast !== undefined ? numberOfVotesCast > maxVotes : false;
+    maxVotes && numberOfVotesCast !== undefined
+      ? numberOfVotesCast > maxVotes
+      : false;
 
   const handleSubmitOnClick = () => {
     if (!isNilOrError(basket)) {
@@ -111,7 +113,7 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
   const disabledExplanation = disabledMessage
     ? formatMessage(disabledMessage, {
         votesCast: numberOfVotesCast,
-        votesLimit: maxVotes,
+        votesLimit: maxVotes || 0,
         votesMinimum: minVotes,
       })
     : undefined;

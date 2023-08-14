@@ -69,15 +69,18 @@ module Notifications
 
     def self.make_notifications_on(activity)
       initiative = activity.item
-      recipient_id = initiative&.author_id
+      cosponsors_ids = initiative.cosponsors_initiatives.where(status: 'accepted').pluck(:user_id)
+      recipient_ids = [initiative&.author_id] + cosponsors_ids
 
-      if initiative && recipient_id
-        [new(
-          recipient_id: recipient_id,
-          initiating_user_id: activity.user_id,
-          post: initiative,
-          post_status: initiative.initiative_status
-        )]
+      if initiative && recipient_ids
+        recipient_ids.map do |recipient_id|
+          new(
+            recipient_id: recipient_id,
+            initiating_user_id: activity.user_id,
+            post: initiative,
+            post_status: initiative.initiative_status
+          )
+        end
       else
         []
       end
