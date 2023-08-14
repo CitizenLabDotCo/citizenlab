@@ -3,7 +3,7 @@
 class PrintCustomFieldsService
   attr_reader :custom_fields, :params, :previous_cursor
 
-  QUESTION_TYPES = %w[select multiselect text text_multiloc multiline_text linear_scale]
+  QUESTION_TYPES = %w[select multiselect text text_multiloc multiline_text html_multiloc linear_scale]
   FORBIDDEN_HTML_TAGS_REGEX = /<\/?(div|span|ul|ol|li|em|img|a){1}[^>]*\/?>/
 
   def initialize(custom_fields, params)
@@ -47,13 +47,11 @@ class PrintCustomFieldsService
       end
 
       if ['text', 'text_multiloc'].include? field_type then
-        draw_text_line(pdf)
+        draw_text_lines(pdf, 1)
       end
 
-      if field_type == 'multiline_text' then
-        (1..7).each do
-          draw_text_line(pdf)
-        end
+      if ['multiline_text', 'html_multiloc'].include? field_type then
+        draw_text_lines(pdf, 7)
       end
 
       if field_type == 'linear_scale' then
@@ -115,8 +113,10 @@ class PrintCustomFieldsService
     end
   end
 
-  def draw_text_line(pdf)
-    pdf.text '_' * 47, color: 'EBEBEB', size: 20
+  def draw_text_lines(pdf, lines)
+    (1..lines).each do
+      pdf.text '_' * 47, color: 'EBEBEB', size: 20
+    end
   end
 
   def draw_linear_scale(pdf, custom_field)
