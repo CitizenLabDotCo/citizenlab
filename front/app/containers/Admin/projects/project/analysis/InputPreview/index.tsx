@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 
 import useAnalysis from 'api/analyses/useAnalysis';
 import useAnalysisInput from 'api/analysis_inputs/useAnalysisInput';
@@ -8,6 +8,9 @@ import useAnalysisInput from 'api/analysis_inputs/useAnalysisInput';
 import Divider from 'components/admin/Divider';
 import Taggings from '../Taggings';
 import FieldValue from './FieldValue';
+import Avatar from 'components/Avatar';
+import useUserById from 'api/users/useUserById';
+import { getFullName } from 'utils/textUtils';
 
 interface Props {
   inputId: string;
@@ -16,8 +19,10 @@ interface Props {
 const InputListItem = ({ inputId }: Props) => {
   const { analysisId } = useParams() as { analysisId: string };
   const { data: input } = useAnalysisInput(analysisId, inputId);
-
   const { data: analysis } = useAnalysis(analysisId);
+  const { data: author } = useUserById(
+    input?.data.relationships.author.data?.id
+  );
 
   if (!analysis || !input) return null;
 
@@ -32,6 +37,12 @@ const InputListItem = ({ inputId }: Props) => {
           phaseId={analysis.data.relationships.phase?.data?.id}
         />
       ))}
+      {author && (
+        <Box mt="20px" display="flex" alignItems="center">
+          <Avatar size={40} userId={author.data.id} />
+          <Text m="0px">{getFullName(author?.data)}</Text>
+        </Box>
+      )}
       <Divider />
       <Taggings inputId={inputId} onlyShowTagged={false} />
     </Box>

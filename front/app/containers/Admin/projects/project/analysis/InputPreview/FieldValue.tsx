@@ -3,7 +3,7 @@ import React from 'react';
 import { IInput } from 'api/analysis_inputs/types';
 import useIdeaCustomField from 'api/idea_custom_fields/useIdeaCustomField';
 
-import { Box, Title } from '@citizenlab/cl2-component-library';
+import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 
 import T from 'components/T';
 
@@ -46,12 +46,12 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
       );
     case 'body_multiloc':
       return (
-        <Box>
+        <Text>
           <T
             value={input.data.attributes[customField.data.attributes.key]}
             supportHtml={true}
           />
-        </Box>
+        </Text>
       );
     case 'location_description':
       if (input.data.attributes.location_description) {
@@ -60,7 +60,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
             <Title variant="h5">
               <T value={customField.data.attributes.title_multiloc} />
             </Title>
-            <Box>{input.data.attributes.location_description}</Box>
+            <Text>{input.data.attributes.location_description}</Text>
           </Box>
         );
       } else {
@@ -72,11 +72,11 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
           <Title variant="h5">
             <T value={customField.data.attributes.title_multiloc} />
           </Title>
-          <Box>
+          <Text>
             {input.data.attributes.custom_field_values[
               customField.data.attributes.key
             ] || 'No answer'}
-          </Box>
+          </Text>
         </Box>
       );
     default:
