@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 
 import useAnalysis from 'api/analyses/useAnalysis';
 import useAnalysisInput from 'api/analysis_inputs/useAnalysisInput';
@@ -22,7 +22,7 @@ const InputListItem = ({ inputId }: Props) => {
   if (!analysis || !input) return null;
 
   return (
-    <Box bg={colors.white} w="100%" p="24px">
+    <Box>
       {analysis.data.relationships.custom_fields.data.map((customField) => (
         <FieldValue
           key={customField.id}

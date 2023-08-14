@@ -32,7 +32,7 @@ const Analysis = () => {
           display="flex"
           w="100"
           alignItems="stretch"
-          gap="20px"
+          gap="8px"
           pt={`${stylingConsts.mobileMenuHeight}px`}
         >
           <Box
@@ -64,8 +64,10 @@ const Analysis = () => {
             overflow="auto"
             h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
             p="12px"
+            mt="12px"
             display="flex"
             flexDirection="column"
+            bg={colors.white}
           >
             <Box flex="1">
               {selectedInputId && <InputPreview inputId={selectedInputId} />}

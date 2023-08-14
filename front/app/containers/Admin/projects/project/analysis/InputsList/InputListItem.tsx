@@ -56,13 +56,13 @@ const InputListItem = ({ input, onSelect, selected }: Props) => {
       >
         <Box
           display="flex"
-          alignItems="center"
+          alignItems="flex-start"
           gap="8px"
           justifyContent="space-between"
         >
           {!title_multiloc ||
             (isEmpty(title_multiloc) && author && (
-              <Box display="flex" alignItems="flex-start">
+              <Box display="flex" alignItems="center">
                 <Avatar userId={author.data.id} size={24} />
                 <Text m="0px">{getFullName(author.data)}</Text>
               </Box>
@@ -106,11 +106,12 @@ const InputListItem = ({ input, onSelect, selected }: Props) => {
               <span> {input.attributes.comments_count}</span>
             </Box>
           )}
-          {!!customFieldValue && (
-            <Text fontSize="s" m="0px">
-              {customFieldValue}
-            </Text>
-          )}
+          {!!customFieldValue &&
+            analysis?.data.attributes.participation_method === 'survey' && (
+              <Text fontSize="s" m="0px">
+                {customFieldValue}
+              </Text>
+            )}
         </Box>
 
         <Taggings inputId={input.id} />
