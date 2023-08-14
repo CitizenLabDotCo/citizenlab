@@ -180,7 +180,6 @@ class WebApi::V1::InitiativesController < ApplicationController
 
   def accept_invite
     @cosponsors_initiative = @initiative.cosponsors_initiatives.find_by(user_id: current_user.id)
-    authorize @cosponsors_initiative
     @cosponsors_initiative.update!(status: 'accepted')
   end
 
