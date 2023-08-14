@@ -7,7 +7,7 @@ export const analysesData: IAnalysisData[] = [
     attributes: {
       created_at: '2021-06-01T08:00:00.000Z',
       updated_at: '2021-06-01T08:00:00.000Z',
-      participation_method: 'survey',
+      participation_method: 'native_survey',
     },
     relationships: {
       project: {
