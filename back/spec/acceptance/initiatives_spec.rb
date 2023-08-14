@@ -689,6 +689,21 @@ resource 'Initiatives' do
     end
   end
 
+  patch 'web_api/v1/initiatives/:id/accept_invite' do
+    before do
+      @initiative = create(:initiative)
+      create(:cosponsors_initiative, initiative: @initiative, user: @user)
+    end
+
+    describe 'for initiative with associated cosponsor' do
+      let(:id) { @initiative.id }
+
+      example_request 'cosponsor accepts invitation' do
+        assert_status 204
+      end
+    end
+  end
+
   delete 'web_api/v1/initiatives/:id' do
     before do
       @initiative = create(:initiative_with_topics, author: @user, publication_status: 'published')
