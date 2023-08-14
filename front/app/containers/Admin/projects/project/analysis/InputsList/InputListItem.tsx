@@ -6,10 +6,11 @@ import { IInputsData } from 'api/analysis_inputs/types';
 import useUserById from 'api/users/useUserById';
 
 import Taggings from '../Taggings';
-import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
+import { Box, Icon, colors, Text } from '@citizenlab/cl2-component-library';
 import Divider from 'components/admin/Divider';
 
 import T from 'components/T';
+import { useIntl } from 'utils/cl-intl';
 
 const AvatarImageBubble = styled.img<{
   size: number;
@@ -30,6 +31,7 @@ interface Props {
 
 const InputListItem = ({ input, onSelect, selected }: Props) => {
   const { data: author } = useUserById(input.relationships.author.data?.id);
+  const { formatDate } = useIntl();
 
   if (!input) return null;
 
@@ -46,7 +48,12 @@ const InputListItem = ({ input, onSelect, selected }: Props) => {
         gap="8px"
         style={{ cursor: 'pointer' }}
       >
-        <Box display="flex" alignItems="center" gap="8px" mb="5px">
+        <Box
+          display="flex"
+          alignItems="center"
+          gap="8px"
+          justifyContent="space-between"
+        >
           {!title_multiloc ||
             (isEmpty(title_multiloc) && author && (
               <Box>
@@ -59,8 +66,18 @@ const InputListItem = ({ input, onSelect, selected }: Props) => {
               </Box>
             ))}
           {!title_multiloc ||
-            (isEmpty(title_multiloc) && !author && <Box>Anonymous input</Box>)}
-          {title_multiloc && <T value={title_multiloc} />}
+            (isEmpty(title_multiloc) && !author && (
+              <Text m="0px">Anonymous input</Text>
+            ))}
+          {title_multiloc && (
+            <Text m="0px">
+              <T value={title_multiloc} />
+            </Text>
+          )}
+          <Text color="textSecondary" fontSize="s" m="0px">
+            {input.attributes.published_at &&
+              formatDate(input.attributes.published_at)}
+          </Text>
         </Box>
         <Box display="flex" gap="8px">
           {!!input.attributes.likes_count && (
