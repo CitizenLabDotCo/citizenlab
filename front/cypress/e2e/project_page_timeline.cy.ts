@@ -162,6 +162,11 @@ describe('New timeline project', () => {
       .click();
   });
 
+  it('shows the event CTA button', () => {
+    // Shows the event CTA when there is an upcoming event
+    cy.get('#e2e-project-see-events-button').should('exist');
+  });
+
   it('shows the previous phase', () => {
     cy.get('.e2e-previous-phase').click();
     cy.get('.e2e-previous-phase').should('have.attr', 'disabled');
