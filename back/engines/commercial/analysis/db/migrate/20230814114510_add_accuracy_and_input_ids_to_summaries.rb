@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddAccuracyAndInputIdsToSummaries < ActiveRecord::Migration[7.0]
   def change
     add_column :analysis_summaries, :accuracy, :float
