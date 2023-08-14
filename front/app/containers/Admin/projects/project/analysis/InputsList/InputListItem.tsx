@@ -6,7 +6,7 @@ import { IInputsData } from 'api/analysis_inputs/types';
 import useUserById from 'api/users/useUserById';
 
 import Taggings from '../Taggings';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
 import Divider from 'components/admin/Divider';
 
 import T from 'components/T';
@@ -36,27 +36,63 @@ const InputListItem = ({ input, onSelect, selected }: Props) => {
   const { title_multiloc } = input.attributes;
 
   return (
-    <Box onClick={() => onSelect()} my="12px">
-      <Box display="flex" alignItems="center" gap="8px" mb="5px">
-        <Box visibility={selected ? 'visible' : 'hidden'}>✅</Box>
-        {!title_multiloc ||
-          (isEmpty(title_multiloc) && author && (
-            <Box>
-              <AvatarImageBubble
-                size={26}
-                src={author?.data.attributes.avatar?.small || undefined}
-              />
-              {author?.data.attributes.first_name}&nbsp;
-              {author?.data.attributes.last_name}
+    <>
+      <Box
+        onClick={() => onSelect()}
+        bg={selected ? colors.background : colors.white}
+        p="12px"
+        display="flex"
+        flexDirection="column"
+        gap="8px"
+        style={{ cursor: 'pointer' }}
+      >
+        <Box display="flex" alignItems="center" gap="8px" mb="5px">
+          {!title_multiloc ||
+            (isEmpty(title_multiloc) && author && (
+              <Box>
+                <AvatarImageBubble
+                  size={26}
+                  src={author?.data.attributes.avatar?.small || undefined}
+                />
+                {author?.data.attributes.first_name}&nbsp;
+                {author?.data.attributes.last_name}
+              </Box>
+            ))}
+          {!title_multiloc ||
+            (isEmpty(title_multiloc) && !author && <Box>Anonymous input</Box>)}
+          {title_multiloc && <T value={title_multiloc} />}
+        </Box>
+        <Box display="flex" gap="8px">
+          {!!input.attributes.likes_count && (
+            <Box display="flex" gap="4px">
+              <Icon width="20px" height="20px" name="vote-up" />
+              <span> {input.attributes.likes_count}</span>
             </Box>
-          ))}
-        {!title_multiloc ||
-          (isEmpty(title_multiloc) && !author && <Box>Anonymous input</Box>)}
-        {title_multiloc && <T value={title_multiloc} />}
+          )}
+          {!!input.attributes.dislikes_count && (
+            <Box display="flex" gap="4px">
+              <Icon width="20px" height="20px" name="vote-down" />
+              <span> {input.attributes.dislikes_count}</span>
+            </Box>
+          )}
+          {!!input.attributes.votes_count && (
+            <Box display="flex" gap="4px">
+              <Icon width="20px" height="20px" name="vote-ballot" />
+              <span> {input.attributes.votes_count}</span>
+            </Box>
+          )}
+          {!!input.attributes.comments_count && (
+            <Box display="flex" gap="4px">
+              <Icon width="20px" height="20px" name="comments" />
+              <span> {input.attributes.comments_count}</span>
+            </Box>
+          )}
+        </Box>
+
+        <Taggings inputId={input.id} />
       </Box>
-      <Taggings inputId={input.id} />
-      <Divider />
-    </Box>
+      <Divider m="0px" />
+    </>
   );
 };
 
