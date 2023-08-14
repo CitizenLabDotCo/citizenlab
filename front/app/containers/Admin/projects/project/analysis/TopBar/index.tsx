@@ -32,7 +32,7 @@ const TopBar = () => {
   const { formatMessage } = useIntl();
 
   const goBack = () => {
-    if (analysis?.data.attributes.participation_method === 'survey') {
+    if (analysis?.data.attributes.participation_method === 'native_survey') {
       clHistory.push(`/admin/projects/${projectId}/native-survey/results`);
     } else {
       clHistory.push(`/admin/projects/${projectId}/ideas`);

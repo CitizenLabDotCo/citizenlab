@@ -107,7 +107,8 @@ const InputListItem = ({ input, onSelect, selected }: Props) => {
             </Box>
           )}
           {!!customFieldValue &&
-            analysis?.data.attributes.participation_method === 'survey' && (
+            analysis?.data.attributes.participation_method ===
+              'native_survey' && (
               <Text fontSize="s" m="0px">
                 {customFieldValue}
               </Text>
