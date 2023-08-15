@@ -96,7 +96,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_14_115846) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.float "accuracy"
-    t.jsonb "inputs_ids"
+    t.jsonb "inputs_ids", default: []
     t.index ["analysis_id"], name: "index_analysis_summaries_on_analysis_id"
     t.index ["background_task_id"], name: "index_analysis_summaries_on_background_task_id"
   end

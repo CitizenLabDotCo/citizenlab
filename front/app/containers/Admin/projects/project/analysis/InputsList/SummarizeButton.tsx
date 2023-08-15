@@ -24,17 +24,16 @@ const SummarizeButton = ({ inputsCount }: Props) => {
   };
 
   const [preCheck, setPreCheck] = useState<ISummaryPreCheck | null>(null);
-  const jsonFilters = JSON.stringify(filters);
   useEffect(() => {
     addSummaryPreCheck(
-      { analysisId, filters: JSON.parse(jsonFilters) },
+      { analysisId, filters },
       {
         onSuccess: (preCheck) => {
           setPreCheck(preCheck);
         },
       }
     );
-  }, [analysisId, jsonFilters, addSummaryPreCheck]);
+  }, [analysisId, filters, addSummaryPreCheck]);
 
   const summaryPossible = !preCheck?.data.attributes.impossible_reason;
   const summaryAccuracy = preCheck?.data.attributes.accuracy;
