@@ -30,7 +30,11 @@ const Cosponsors = ({ initiativeId }: Props) => {
       <Title variant="h5" as="h2">
         Cosponsors of this proposal
       </Title>
-      <ListOfCosponsors cosponsorships={cosponsorships} />
+      <ListOfCosponsors
+        cosponsorships={cosponsorships.filter(
+          (cosponsorship) => cosponsorship.status === 'accepted'
+        )}
+      />
     </Box>
   );
 };
