@@ -56,7 +56,7 @@ class InitiativePolicy < ApplicationPolicy
     create?
   end
 
-  def accept_invite?
+  def accept_cosponsorship_invite?
     cosponsor?
   end
 

@@ -38,7 +38,7 @@ describe InitiativePolicy do
         it { is_expected.to permit(:create) }
         it { is_expected.to permit(:update)  }
         it { is_expected.to permit(:destroy) }
-        it { is_expected.not_to permit(:accept_invite) }
+        it { is_expected.not_to permit(:accept_cosponsorship_invite) }
 
         it 'indexes the initiative' do
           expect(scope.resolve.size).to eq 1
@@ -53,7 +53,7 @@ describe InitiativePolicy do
         it { is_expected.not_to permit(:create) }
         it { is_expected.not_to permit(:update) }
         it { is_expected.not_to permit(:destroy) }
-        it { is_expected.not_to permit(:accept_invite) }
+        it { is_expected.not_to permit(:accept_cosponsorship_invite) }
 
         it 'does not index the initiative' do
           expect(scope.resolve.size).to eq 0
@@ -68,7 +68,7 @@ describe InitiativePolicy do
         it { is_expected.to permit(:create) }
         it { is_expected.to permit(:update) }
         it { is_expected.to permit(:destroy) }
-        it { is_expected.not_to permit(:accept_invite) }
+        it { is_expected.not_to permit(:accept_cosponsorship_invite) }
 
         it 'indexes the initiative' do
           expect(scope.resolve.size).to eq 1
@@ -84,7 +84,7 @@ describe InitiativePolicy do
         it { is_expected.not_to permit(:create) }
         it { is_expected.not_to permit(:update) }
         it { is_expected.not_to permit(:destroy) }
-        it { is_expected.to permit(:accept_invite) }
+        it { is_expected.to permit(:accept_cosponsorship_invite) }
 
         it 'indexes the initiative' do
           expect(scope.resolve.size).to eq 1
@@ -99,7 +99,7 @@ describe InitiativePolicy do
         it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
         it { expect { policy.update? }.to raise_error(Pundit::NotAuthorizedError) }
         it { expect { policy.destroy? }.to raise_error(Pundit::NotAuthorizedError) }
-        it { is_expected.not_to permit(:accept_invite) }
+        it { is_expected.not_to permit(:accept_cosponsorship_invite) }
 
         it 'does not index the initiative' do
           expect(scope.resolve.size).to eq 0
@@ -120,7 +120,7 @@ describe InitiativePolicy do
         it { is_expected.to permit(:create) }
         it { is_expected.to permit(:update) }
         it { is_expected.to permit(:destroy) }
-        it { is_expected.not_to permit(:accept_invite) }
+        it { is_expected.not_to permit(:accept_cosponsorship_invite) }
 
         it 'indexes the initiative' do
           expect(scope.resolve.size).to eq 1
@@ -135,7 +135,7 @@ describe InitiativePolicy do
         it { is_expected.not_to permit(:create) }
         it { is_expected.not_to permit(:update) }
         it { is_expected.not_to permit(:destroy) }
-        it { is_expected.not_to permit(:accept_invite) }
+        it { is_expected.not_to permit(:accept_cosponsorship_invite) }
 
         it 'indexes the initiative' do
           expect(scope.resolve.size).to eq 1
@@ -150,7 +150,7 @@ describe InitiativePolicy do
         it { is_expected.to permit(:create) }
         it { is_expected.to permit(:update) }
         it { is_expected.to permit(:destroy) }
-        it { is_expected.not_to permit(:accept_invite) }
+        it { is_expected.not_to permit(:accept_cosponsorship_invite) }
 
         it 'indexes the initiative' do
           expect(scope.resolve.size).to eq 1
@@ -166,7 +166,7 @@ describe InitiativePolicy do
         it { is_expected.not_to permit(:create) }
         it { is_expected.not_to permit(:update) }
         it { is_expected.not_to permit(:destroy) }
-        it { is_expected.to permit(:accept_invite) }
+        it { is_expected.to permit(:accept_cosponsorship_invite) }
 
         it 'indexes the initiative' do
           expect(scope.resolve.size).to eq 1
@@ -181,7 +181,7 @@ describe InitiativePolicy do
         it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
         it { expect { policy.update? }.to raise_error(Pundit::NotAuthorizedError) }
         it { expect { policy.destroy? }.to raise_error(Pundit::NotAuthorizedError) }
-        it { is_expected.not_to permit(:accept_invite) }
+        it { is_expected.not_to permit(:accept_cosponsorship_invite) }
 
         it 'indexes the initiative' do
           expect(scope.resolve.size).to eq 1
@@ -219,7 +219,7 @@ describe InitiativePolicy do
         it { is_expected.to permit(:create) }
         it { is_expected.to permit(:update) }
         it { is_expected.to permit(:destroy) }
-        it { is_expected.not_to permit(:accept_invite) }
+        it { is_expected.not_to permit(:accept_cosponsorship_invite) }
 
         it 'indexes the initiative' do
           expect(scope.resolve.size).to eq 1
@@ -234,7 +234,7 @@ describe InitiativePolicy do
         it { is_expected.not_to permit(:create) }
         it { is_expected.not_to permit(:update) }
         it { is_expected.not_to permit(:destroy) }
-        it { is_expected.not_to permit(:accept_invite) }
+        it { is_expected.not_to permit(:accept_cosponsorship_invite) }
 
         it 'does not index the initiative' do
           expect(scope.resolve.size).to eq 0
@@ -251,7 +251,7 @@ describe InitiativePolicy do
         it { is_expected.to permit(:create) }
         it { is_expected.to permit(:update) }
         it { is_expected.to permit(:destroy) }
-        it { is_expected.not_to permit(:accept_invite) }
+        it { is_expected.not_to permit(:accept_cosponsorship_invite) }
 
         it 'indexes the initiative' do
           expect(scope.resolve.size).to eq 1
@@ -269,7 +269,7 @@ describe InitiativePolicy do
         it { is_expected.not_to permit(:create) }
         it { is_expected.not_to permit(:update) }
         it { is_expected.not_to permit(:destroy) }
-        it { is_expected.to permit(:accept_invite) }
+        it { is_expected.to permit(:accept_cosponsorship_invite) }
 
         it 'indexes the initiative' do
           expect(scope.resolve.size).to eq 1
@@ -284,7 +284,7 @@ describe InitiativePolicy do
         it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
         it { expect { policy.update? }.to raise_error(Pundit::NotAuthorizedError) }
         it { expect { policy.destroy? }.to raise_error(Pundit::NotAuthorizedError) }
-        it { is_expected.not_to permit(:accept_invite) }
+        it { is_expected.not_to permit(:accept_cosponsorship_invite) }
 
         it 'does not index the initiative' do
           expect(scope.resolve.size).to eq 0
@@ -305,7 +305,7 @@ describe InitiativePolicy do
         it { is_expected.to permit(:create) }
         it { is_expected.to permit(:update) }
         it { is_expected.to permit(:destroy) }
-        it { is_expected.not_to permit(:accept_invite) }
+        it { is_expected.not_to permit(:accept_cosponsorship_invite) }
 
         it 'indexes the initiative' do
           expect(scope.resolve.size).to eq 1
@@ -320,7 +320,7 @@ describe InitiativePolicy do
         it { is_expected.not_to permit(:create) }
         it { is_expected.not_to permit(:update) }
         it { is_expected.not_to permit(:destroy) }
-        it { is_expected.not_to permit(:accept_invite) }
+        it { is_expected.not_to permit(:accept_cosponsorship_invite) }
 
         it 'does not index the initiative' do
           expect(scope.resolve.size).to eq 1
@@ -337,7 +337,7 @@ describe InitiativePolicy do
         it { is_expected.to permit(:create) }
         it { is_expected.to permit(:update) } # TODO: This is confusing, as editing_locked should be true when status proposed!
         it { is_expected.to permit(:destroy) }
-        it { is_expected.not_to permit(:accept_invite) }
+        it { is_expected.not_to permit(:accept_cosponsorship_invite) }
 
         it 'indexes the initiative' do
           expect(scope.resolve.size).to eq 1
@@ -353,7 +353,7 @@ describe InitiativePolicy do
         it { is_expected.not_to permit(:create) }
         it { is_expected.not_to permit(:update) }
         it { is_expected.not_to permit(:destroy) }
-        it { is_expected.to permit(:accept_invite) }
+        it { is_expected.to permit(:accept_cosponsorship_invite) }
 
         it 'indexes the initiative' do
           expect(scope.resolve.size).to eq 1
@@ -368,7 +368,7 @@ describe InitiativePolicy do
         it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
         it { expect { policy.update? }.to raise_error(Pundit::NotAuthorizedError) }
         it { expect { policy.destroy? }.to raise_error(Pundit::NotAuthorizedError) }
-        it { is_expected.not_to permit(:accept_invite) }
+        it { is_expected.not_to permit(:accept_cosponsorship_invite) }
 
         it 'does not index the initiative' do
           expect(scope.resolve.size).to eq 1
@@ -391,7 +391,7 @@ describe InitiativePolicy do
       it { is_expected.to permit(:create) }
       it { is_expected.not_to permit(:update) }
       it { is_expected.to permit(:destroy) }
-      it { is_expected.not_to permit(:accept_invite) }
+      it { is_expected.not_to permit(:accept_cosponsorship_invite) }
 
       it 'indexes the initiative' do
         expect(scope.resolve.size).to eq 1
@@ -406,7 +406,7 @@ describe InitiativePolicy do
       it { is_expected.to permit(:create) }
       it { is_expected.not_to permit(:update) }
       it { is_expected.to permit(:destroy) }
-      it { is_expected.not_to permit(:accept_invite) }
+      it { is_expected.not_to permit(:accept_cosponsorship_invite) }
 
       it 'indexes the initiative' do
         expect(scope.resolve.size).to eq 1
