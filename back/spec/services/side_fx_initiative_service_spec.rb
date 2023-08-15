@@ -15,7 +15,7 @@ describe SideFxInitiativeService do
       end
 
       it 'changes initiative status to review_pending' do
-        service.after_update(initiative, user, _cosponsors_ids = [])
+        service.after_update(initiative, user, _cosponsor_ids = [])
         expect(initiative.reload.initiative_status.code).to eq 'review_pending'
       end
     end
@@ -25,12 +25,12 @@ describe SideFxInitiativeService do
       let(:cosponsor1) { create(:user) }
       let(:cosponsor2) { create(:user) }
 
-      it "logs a CosponsorsInitiative 'created' action job" do
+      it "logs CosponsorsInitiative 'created' action jobs" do
         initiative.update!(cosponsor_ids: [cosponsor1.id, cosponsor2.id])
         cosponsors_initiatives =
           CosponsorsInitiative.where(initiative: initiative).where(user_id: [cosponsor1.id, cosponsor2.id])
 
-        expect { service.after_update(initiative, user, _old_cosponsors_ids = []) }
+        expect { service.after_update(initiative, user, _old_cosponsor_ids = []) }
           .to enqueue_job(LogActivityJob)
           .with(cosponsors_initiatives[0], 'created', user, cosponsors_initiatives[0].created_at.to_i)
           .exactly(1).times

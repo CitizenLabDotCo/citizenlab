@@ -25,8 +25,8 @@ class SideFxInitiativeService
     before_publish initiative, user
   end
 
-  def after_update(initiative, user, old_cosponsors_ids)
-    log_activities_if_cosponsors_added(initiative, user, old_cosponsors_ids)
+  def after_update(initiative, user, old_cosponsor_ids)
+    log_activities_if_cosponsors_added(initiative, user, old_cosponsor_ids)
     transition_to_review_pending_if_required(initiative, user)
     remove_user_from_past_activities_with_item(initiative, user) if initiative.anonymous_previously_changed?(to: true)
 
@@ -70,8 +70,8 @@ class SideFxInitiativeService
 
   private
 
-  def log_activities_if_cosponsors_added(initiative, user, old_cosponsors_ids)
-    added_ids = initiative.cosponsors.map(&:id) - old_cosponsors_ids
+  def log_activities_if_cosponsors_added(initiative, user, old_cosponsor_ids)
+    added_ids = initiative.cosponsors.map(&:id) - old_cosponsor_ids
 
     if added_ids.present?
       new_cosponsors_initiatives = initiative.cosponsors_initiatives.where(user_id: added_ids)
