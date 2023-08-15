@@ -132,8 +132,6 @@ class WebApi::V1::InitiativesController < ApplicationController
     @initiative.assign_attributes(initiative_params)
     remove_image_if_requested!(@initiative, initiative_params, :header_bg)
 
-    puts "cosponsors_ids_test: #{cosponsors_ids}"
-
     authorize @initiative
     if anonymous_not_allowed?
       render json: { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }, status: :unprocessable_entity
