@@ -32,4 +32,8 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.copyProjectButton',
     defaultMessage: 'Copy project',
   },
+  exportAsPDF: {
+    id: 'app.containers.Admin.projects.all.exportAsPDF',
+    defaultMessage: 'Export as pdf',
+  },
 });
