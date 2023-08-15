@@ -1,4 +1,6 @@
 # frozen_string_literal: true
+require 'prawn'
+require 'prawn/measurement_extensions'
 
 class PrintCustomFieldsService
   attr_reader :custom_fields, :params, :previous_cursor

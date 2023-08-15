@@ -1,6 +1,4 @@
 # frozen_string_literal: true
-require 'prawn'
-require 'prawn/measurement_extensions'
 
 class WebApi::V1::ProjectCustomFieldsController < ApplicationController
   skip_after_action :verify_policy_scoped
