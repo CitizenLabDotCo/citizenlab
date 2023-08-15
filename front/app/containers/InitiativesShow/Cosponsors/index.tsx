@@ -16,9 +16,13 @@ interface Props {
 const Cosponsors = ({ initiativeId }: Props) => {
   const theme = useTheme();
   const { data: initiative } = useInitiativeById(initiativeId);
-  const cosponsorships = initiative?.data.attributes.cosponsorships;
+  const acceptedCosponsorships =
+    initiative?.data.attributes.cosponsorships.filter(
+      (c) => c.status === 'accepted'
+    );
 
-  if (!cosponsorships || cosponsorships.length === 0) return null;
+  if (!acceptedCosponsorships || acceptedCosponsorships.length === 0)
+    return null;
 
   return (
     <Box
@@ -30,11 +34,7 @@ const Cosponsors = ({ initiativeId }: Props) => {
       <Title variant="h5" as="h2">
         Cosponsors of this proposal
       </Title>
-      <ListOfCosponsors
-        cosponsorships={cosponsorships.filter(
-          (cosponsorship) => cosponsorship.status === 'accepted'
-        )}
-      />
+      <ListOfCosponsors cosponsorships={acceptedCosponsorships} />
     </Box>
   );
 };
