@@ -380,7 +380,7 @@ const InitiativesShow = ({ className, initiativeId }: Props) => {
   const authorId = initiative.data.relationships.author.data?.id;
   const initiativeTitle = localize(initiative.data.attributes.title_multiloc);
   const initiativeImageLarge =
-    initiativeImages.data[0].attributes.versions.large;
+    initiativeImages.data[0]?.attributes.versions.large;
   const initiativeGeoPosition =
     initiative.data.attributes.location_point_geojson;
   const initiativeAddress = getAddressOrFallbackDMS(
