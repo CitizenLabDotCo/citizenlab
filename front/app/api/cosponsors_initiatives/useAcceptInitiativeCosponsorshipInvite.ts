@@ -7,11 +7,12 @@ const acceptInitiativeCosponsorshipInvite = ({
   initiativeId,
 }: {
   initiativeId: string;
-}) =>
-  fetcher<{ data: [{ type: '' }] }>({
+}) => {
+  return fetcher<{ data: [{ type: '' }] }>({
     path: `/initiatives/${initiativeId}/accept_cosponsorship_invite`,
     action: 'patch',
   });
+};
 
 const useAcceptInitiativeCosponsorshipInvite = () => {
   const queryClient = useQueryClient();

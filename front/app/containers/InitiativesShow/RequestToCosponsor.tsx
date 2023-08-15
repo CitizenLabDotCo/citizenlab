@@ -48,7 +48,7 @@ const RequestToCosponsor = ({ className, id, initiativeId }: Props) => {
   if (!cosponsorsRequired) return null;
 
   const handleOnClickCosponsor = () => {
-    acceptInitiativeConsponsorshipInvite(initiativeId);
+    acceptInitiativeConsponsorshipInvite({ initiativeId });
   };
 
   return (
