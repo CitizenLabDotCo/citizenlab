@@ -154,6 +154,7 @@ const ProjectsShowPage = ({ project }: Props) => {
         </div>
         {!!events?.data.length && (
           <Box
+            id="e2e-events-section-project-page"
             display="flex"
             flexDirection="column"
             gap="48px"

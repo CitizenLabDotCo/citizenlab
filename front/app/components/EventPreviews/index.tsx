@@ -93,7 +93,11 @@ const EventPreviews = ({ projectId }: EventPreviewsProps) => {
             : formatMessage(messages.eventPreviewTimelineTitle)}
           :
         </Title>
-        <Box display="flex" flexDirection={theme.isRtl ? 'row-reverse' : 'row'}>
+        <Box
+          id="e2e-event-previews"
+          display="flex"
+          flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
+        >
           <Box
             aria-hidden="true"
             my="auto"
@@ -108,6 +112,7 @@ const EventPreviews = ({ projectId }: EventPreviewsProps) => {
               buttonStyle="text"
               p="0px"
               my="auto"
+              id="e2e-event-previews-scroll-left"
             />
           </Box>
           <EventPreviewContainer
@@ -147,6 +152,7 @@ const EventPreviews = ({ projectId }: EventPreviewsProps) => {
               icon={theme.isRtl ? 'chevron-left' : 'chevron-right'}
               buttonStyle="text"
               p="0px"
+              id="e2e-event-previews-scroll-right"
             />
           </Box>
         </Box>
