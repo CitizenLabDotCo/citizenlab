@@ -63,7 +63,7 @@ import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useInitiativeReviewRequired from 'hooks/useInitiativeReviewRequired';
 import InitiativeCreatedModalContent from './InitiativeCreatedModalContent';
 import RequestToCosponsor from './RequestToCosponsor';
-import ListOfCosponsors from './ListOfCosponsors';
+import Cosponsors from './Cosponsors';
 import useLocale from 'hooks/useLocale';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
@@ -619,7 +619,7 @@ const InitiativesShow = ({ className, initiativeId }: Props) => {
                         id="e2e-initiative-reaction-control"
                       />
                       <RequestToCosponsor initiativeId={initiativeId} />
-                      <ListOfCosponsors initiativeId={initiativeId} />
+                      <Cosponsors initiativeId={initiativeId} />
                       {showSharingOptions && (
                         <SharingWrapper>
                           <SharingButtons
