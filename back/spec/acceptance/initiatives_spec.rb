@@ -689,7 +689,7 @@ resource 'Initiatives' do
     end
   end
 
-  patch 'web_api/v1/initiatives/:id/accept_invite' do
+  patch 'web_api/v1/initiatives/:id/accept_cosponsorship_invite' do
     before do
       @initiative = create(:initiative)
       @cosponsors_initiative = create(:cosponsors_initiative, initiative: @initiative, user: @user)
