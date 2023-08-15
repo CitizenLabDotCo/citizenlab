@@ -98,6 +98,7 @@ class WebApi::V1::EventsController < ApplicationController
       :start_at,
       :end_at,
       :location_description,
+      :online_link,
       location_point_geojson: [:type, { coordinates: [] }],
       location_multiloc: CL2_SUPPORTED_LOCALES,
       title_multiloc: CL2_SUPPORTED_LOCALES,

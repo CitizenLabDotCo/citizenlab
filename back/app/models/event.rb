@@ -9,6 +9,7 @@
 #  title_multiloc       :jsonb
 #  description_multiloc :jsonb
 #  location_multiloc    :jsonb
+#  online_link          :string
 #  start_at             :datetime
 #  end_at               :datetime
 #  created_at           :datetime         not null

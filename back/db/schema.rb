@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_04_142723) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_15_119289) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -102,6 +102,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_04_142723) do
   create_table "analysis_taggings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "tag_id", null: false
     t.uuid "input_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["input_id"], name: "index_analysis_taggings_on_input_id"
     t.index ["tag_id", "input_id"], name: "index_analysis_taggings_on_tag_id_and_input_id", unique: true
     t.index ["tag_id"], name: "index_analysis_taggings_on_tag_id"
@@ -452,6 +454,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_04_142723) do
     t.geography "location_point", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}
     t.string "location_description"
     t.integer "attendees_count", default: 0, null: false
+    t.string "online_link"
     t.index ["location_point"], name: "index_events_on_location_point", using: :gist
     t.index ["project_id"], name: "index_events_on_project_id"
   end
@@ -463,9 +466,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_04_142723) do
     t.datetime "updated_at", null: false
     t.index ["attendee_id", "event_id"], name: "index_events_attendances_on_attendee_id_and_event_id", unique: true
     t.index ["attendee_id"], name: "index_events_attendances_on_attendee_id"
-    t.index ["created_at"], name: "index_events_attendances_on_created_at"
     t.index ["event_id"], name: "index_events_attendances_on_event_id"
-    t.index ["updated_at"], name: "index_events_attendances_on_updated_at"
   end
 
   create_table "experiments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
