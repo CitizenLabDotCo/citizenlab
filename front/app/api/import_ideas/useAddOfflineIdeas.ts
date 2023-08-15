@@ -1,7 +1,8 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors, Locale } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import { IIdeas } from 'api/ideas/types';
+import importedIdeaKeys from './keys';
 
 interface RequestParams {
   project_id: string;
@@ -17,8 +18,15 @@ const addOfflineIdeas = async (requestParams: RequestParams) =>
   });
 
 const useAddOfflineIdeas = () => {
+  const queryClient = useQueryClient();
+
   return useMutation<IIdeas, CLErrors, RequestParams>({
     mutationFn: addOfflineIdeas,
+    onSuccess: (_, params) => {
+      queryClient.invalidateQueries({
+        queryKey: importedIdeaKeys.list({ projectId: params.project_id }),
+      });
+    },
   });
 };
 
