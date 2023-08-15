@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, Suspense, lazy } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // analytics
@@ -10,11 +10,9 @@ import { useSearchParams } from 'react-router-dom';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 // components
-import Modal from 'components/UI/Modal';
 import FileAttachments from 'components/UI/FileAttachments';
 import { Spinner, Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import SharingButtons from 'components/Sharing/SharingButtons';
-import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 
 import Topics from 'components/PostShowComponents/Topics';
 import Title from 'components/PostShowComponents/Title';
@@ -30,6 +28,7 @@ import ActionBar from './ActionBar';
 import ReactionControl from './ReactionControl';
 import InitiativeMoreActions from './ActionBar/InitiativeMoreActions';
 import Outlet from 'components/Outlet';
+const Modals = lazy(() => import('./modals'));
 
 // utils
 import { getAddressOrFallbackDMS } from 'utils/map';
@@ -60,15 +59,12 @@ import useInitiativeById from 'api/initiatives/useInitiativeById';
 
 // types
 import useInitiativeReviewRequired from 'hooks/useInitiativeReviewRequired';
-import InitiativeCreatedModalContent from './InitiativeCreatedModalContent';
 import RequestToCosponsor from './RequestToCosponsor';
 import Cosponsors from './Cosponsors';
 import useLocale from 'hooks/useLocale';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
 import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
 import { usePermission } from 'services/permissions';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const contentFadeInDuration = 250;
 const contentFadeInEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -304,7 +300,6 @@ const InitiativesShow = ({ className, initiativeId }: Props) => {
   const locale = useLocale();
   const isSmallerThanTablet = useBreakpoint('tablet');
   const { data: authUser } = useAuthUser();
-  const { data: appConfiguration } = useAppConfiguration();
   const { data: initiativeImages } = useInitiativeImages(initiativeId);
   const { data: initiative, isLoading: isLoadingInitiative } =
     useInitiativeById(initiativeId);
@@ -314,9 +309,6 @@ const InitiativesShow = ({ className, initiativeId }: Props) => {
     action: 'moderate',
   });
   const [searchParams] = useSearchParams();
-  const initiativeFlowSocialSharingEnabled = useFeatureFlag({
-    name: 'initiativeflow_social_sharing',
-  });
   const newInitiativeId = searchParams.get('new_initiative_id');
 
   const [initiativeIdForSocialSharing, setInitiativeIdForSocialSharing] =
@@ -384,17 +376,7 @@ const InitiativesShow = ({ className, initiativeId }: Props) => {
     setA11y_pronounceLatestOfficialFeedbackPost(true);
   };
 
-  const initiativeSettings = !isNilOrError(appConfiguration)
-    ? appConfiguration.data.attributes.settings.initiatives
-    : null;
-
-  if (
-    initiativeSettings &&
-    !isNilOrError(initiative) &&
-    !isNilOrError(locale)
-  ) {
-    const reactingThreshold = initiativeSettings.reacting_threshold;
-    const daysLimit = initiativeSettings.days_limit.toString();
+  if (!isNilOrError(initiative) && !isNilOrError(locale)) {
     const initiativeHeaderImageLarge =
       initiative.data.attributes?.header_bg?.large;
     const authorId = initiative.data.relationships?.author?.data?.id;
@@ -672,29 +654,14 @@ const InitiativesShow = ({ className, initiativeId }: Props) => {
           </Container>
         </CSSTransition>
 
-        {initiativeFlowSocialSharingEnabled && (
-          <Modal
-            opened={!!initiativeIdForSocialSharing}
-            close={closeInitiativeSocialSharingModal}
-            hasSkipButton={true}
-            skipText={<FormattedMessage {...messages.skipSharing} />}
-          >
-            {initiativeIdForSocialSharing &&
-              (initiativeReviewRequired ? (
-                <InitiativeCreatedModalContent />
-              ) : (
-                <SharingModalContent
-                  postType="initiative"
-                  postId={initiativeIdForSocialSharing}
-                  title={formatMessage(messages.shareTitle)}
-                  subtitle={formatMessage(messages.shareSubtitle, {
-                    votingThreshold: reactingThreshold,
-                    daysLimit,
-                  })}
-                />
-              ))}
-          </Modal>
-        )}
+        <Suspense fallback={null}>
+          <Modals
+            closeInitiativeSocialSharingModal={
+              closeInitiativeSocialSharingModal
+            }
+            initiativeIdForSocialSharing={initiativeIdForSocialSharing}
+          />
+        </Suspense>
       </>
     );
   }
