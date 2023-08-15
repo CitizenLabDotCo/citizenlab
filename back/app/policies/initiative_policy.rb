@@ -14,9 +14,12 @@ class InitiativePolicy < ApplicationPolicy
 
       if UserRoleService.new.can_moderate_initiatives?(user)
         published
+      elsif user&.active?
+        published.left_outer_joins(:cosponsors_initiatives).with_status_code(InitiativeStatus::NOT_REVIEW_CODES)
+          .or(published.where(author: user))
+          .or(published.where(cosponsors_initiatives: { user: user }))
       else
         published.with_status_code(InitiativeStatus::NOT_REVIEW_CODES)
-          .or(published.where(author: user))
       end
     end
   end
@@ -35,7 +38,7 @@ class InitiativePolicy < ApplicationPolicy
   end
 
   def show?
-    return true if active? && (owner? || can_moderate?)
+    return true if active? && (owner? || cosponsor? || can_moderate?)
     return false if record.review_status?
 
     %w[draft published].include?(record.publication_status)
