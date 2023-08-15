@@ -506,11 +506,13 @@ const AdminProjectEventEdit = ({ params }: Props) => {
                   <Box mt="16px" maxWidth="400px">
                     <Input
                       id="event-location"
-                      label={'Online event link'}
+                      label={formatMessage(messages.onlineEventLinkLabel)}
                       type="text"
                       value={eventAttrs.online_link}
                       onChange={handleOnlineLinkOnChange}
-                      labelTooltipText={'Label tooltip text'}
+                      labelTooltipText={formatMessage(
+                        messages.onlineEventLinkTooltip
+                      )}
                       placeholder={'https://zoom.us/j/1234567890'}
                     />
                   </Box>
