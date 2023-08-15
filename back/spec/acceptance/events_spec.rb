@@ -186,6 +186,7 @@ resource 'Events' do
         let(:description_multiloc) { event.description_multiloc }
         let(:start_at) { event.start_at }
         let(:end_at) { event.end_at }
+        let(:online_link) {'https://example.com'}
 
         example_request 'Create an event for a project' do
           assert_status 201
@@ -194,6 +195,7 @@ resource 'Events' do
           expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
           expect(json_response.dig(:data, :attributes, :start_at)).to eq start_at.iso8601(3)
           expect(json_response.dig(:data, :attributes, :end_at)).to eq end_at.iso8601(3)
+          expect(json_response.dig(:data, :attributes, :online_link)).to match online_link
           expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
         end
       end
@@ -203,12 +205,14 @@ resource 'Events' do
         let(:title_multiloc) { { 'en' => '' } }
         let(:start_at) { event.start_at }
         let(:end_at) { event.start_at - 1.day }
+        let(:online_link) {'not a url'}
 
         example_request '[error] Create an invalid event' do
           assert_status 422
           json_response = json_parse response_body
           expect(json_response).to include_response_error(:title_multiloc, 'blank')
           expect(json_response).to include_response_error(:start_at, 'after_end_at')
+          expect(json_response).to include_response_error(:online_link, 'url')
         end
       end
 
