@@ -7,6 +7,8 @@ import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 // api
 import useImportedIdeas from 'api/import_ideas/useImportedIdeas';
+import useImportedIdeaMetadata from 'api/import_ideas/useImportedIdeaMetadata';
+import useIdeaById from 'api/ideas/useIdeaById';
 
 // i18n
 import useLocalize from 'hooks/useLocalize';
@@ -35,6 +37,12 @@ const ReviewSection = () => {
   const ideaId = searchParams.get('idea_id');
 
   const { data: ideas, isLoading } = useImportedIdeas({ projectId });
+  const { data: idea } = useIdeaById(ideaId ?? undefined);
+
+  const { data: ideaMetadata } = useImportedIdeaMetadata({
+    id: idea?.data.relationships.idea_import?.data?.id,
+  });
+
   const localize = useLocalize();
 
   if (isLoading) {
@@ -83,7 +91,7 @@ const ReviewSection = () => {
         <Box w="35%" borderRight={`1px ${colors.grey400} solid`}>
           Idea form
         </Box>
-        <Box w="40%">PDF preview</Box>
+        <Box w="40%">{ideaMetadata?.data.id}</Box>
       </Box>
     </Box>
   );

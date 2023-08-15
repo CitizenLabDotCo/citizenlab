@@ -1,16 +1,25 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
-import { QueryParams } from './types';
+import { QueryParams, ImportedIdeaMetadataQueryParams } from './types';
 
-const baseKey = {
+const baseImportedIdeaKey = {
   type: 'imported_idea',
 };
 
-const importedIdeaKeys = {
-  all: () => [baseKey],
-  lists: () => [{ ...baseKey, operation: 'list' }],
+export const importedIdeasKeys = {
+  all: () => [baseImportedIdeaKey],
+  lists: () => [{ ...baseImportedIdeaKey, operation: 'list' }],
   list: (parameters: QueryParams) => [
-    { ...baseKey, operation: 'list', parameters },
+    { ...baseImportedIdeaKey, operation: 'list', parameters },
   ],
 } satisfies QueryKeys;
 
-export default importedIdeaKeys;
+const baseImportedIdeaMetadataKey = {
+  type: 'idea_import',
+};
+
+export const importedIdeaMetadataKeys = {
+  all: () => [baseImportedIdeaMetadataKey],
+  item: (parameters: ImportedIdeaMetadataQueryParams) => [
+    { ...baseImportedIdeaMetadataKey, operation: 'item', parameters },
+  ],
+} satisfies QueryKeys;
