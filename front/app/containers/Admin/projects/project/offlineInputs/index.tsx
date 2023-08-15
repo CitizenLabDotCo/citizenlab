@@ -1,64 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 
-// hooks
-import useAddHandwrittenIdeas from 'api/handwritten_ideas/useAddHandwrittenIdeas';
-import useLocale from 'hooks/useLocale';
-
-// router
-import { useParams } from 'react-router-dom';
-
 // components
-import { Title, Box, Spinner } from '@citizenlab/cl2-component-library';
-import FileUploader from 'components/UI/FileUploader';
+import { Box } from '@citizenlab/cl2-component-library';
 import TopBar from './TopBar';
+import ImportSection from './ImportSection';
+import ReviewSection from './ReviewSection';
 
 // styling
-import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
-// typings
-import { UploadFile } from 'typings';
-import { isNilOrError } from 'utils/helperUtils';
-
-const TextButton = styled.button`
-  all: unset;
-  display: inline;
-  cursor: pointer;
-  text-decoration-line: underline;
-
-  &:hover {
-    color: ${colors.black};
-  }
-`;
-
 const OfflineInputImporter = () => {
-  const { projectId } = useParams() as { projectId: string };
-  const { mutate: addHandwrittenIdeas, isLoading } = useAddHandwrittenIdeas();
-  const [numIdeasAdded, setNumIdeasAdded] = useState<number | null>(null);
-  const locale = useLocale();
-
-  if (isNilOrError(locale)) return null;
-
-  const onAddFile = (file: UploadFile) => {
-    addHandwrittenIdeas(
-      {
-        project_id: projectId,
-        file: file.base64,
-        locale: 'en',
-      },
-      {
-        onSuccess: (data) => {
-          setNumIdeasAdded(data.data.length);
-          // console.log(data);
-        },
-      }
-    );
-  };
-
-  const onRemoveFile = () => {};
-
   return (
     <Box
       display="flex"
@@ -71,45 +24,8 @@ const OfflineInputImporter = () => {
     >
       <FocusOn>
         <TopBar />
-        <Box
-          w="100%"
-          display="flex"
-          justifyContent="center"
-          bgColor={colors.white}
-        >
-          <Box p="20px" w="800px">
-            <Title variant="h1" color="primary" fontWeight="normal" mb="20px">
-              Written idea importer
-            </Title>
-            <Box mb="28px">
-              Upload a <strong>PDF file of scanned forms</strong>. The PDF must
-              use a form printed from this project available{' '}
-              <TextButton>here</TextButton>.
-            </Box>
-
-            <Box>
-              {isLoading ? (
-                <Spinner />
-              ) : (
-                <Box w="700px">
-                  <FileUploader
-                    id="written-ideas-importer"
-                    onFileAdd={onAddFile}
-                    onFileRemove={onRemoveFile}
-                    files={null}
-                  />
-                </Box>
-              )}
-            </Box>
-            {numIdeasAdded && (
-              <Box pb="10px">
-                {numIdeasAdded} ideas extracted and uploaded. Handwriting
-                scanning is not 100% accurate so you must review and approved
-                before they are imported.
-              </Box>
-            )}
-          </Box>
-        </Box>
+        <ImportSection />
+        <ReviewSection />
       </FocusOn>
     </Box>
   );
