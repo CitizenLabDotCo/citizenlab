@@ -1,19 +1,13 @@
 import React from 'react';
-import useInitiativeById from 'api/initiatives/useInitiativeById';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import Avatar from 'components/Avatar';
+import { IInitiativeCosponsorship } from 'api/initiatives/types';
 
 interface Props {
-  initiativeId: string;
+  cosponsorships: IInitiativeCosponsorship[];
 }
 
-const ListOfCosponsors = ({ initiativeId }: Props) => {
-  const { data: initiative } = useInitiativeById(initiativeId);
-  const cosponsorships = initiative?.data.attributes.cosponsorships;
-  // const acceptedCosponsorships = initiative.data.attributes.cosponsorships?.filter(co => co.status === 'accepted');
-
-  if (!cosponsorships) return null;
-
+const ListOfCosponsors = ({ cosponsorships }: Props) => {
   return (
     <>
       {cosponsorships.map((cosponsorship) => {

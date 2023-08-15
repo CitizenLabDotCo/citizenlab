@@ -7,6 +7,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 import ListOfCosponsors from './ListOfCosponsors';
+import useInitiativeById from 'api/initiatives/useInitiativeById';
 
 interface Props {
   initiativeId: string;
@@ -14,6 +15,10 @@ interface Props {
 
 const Cosponsors = ({ initiativeId }: Props) => {
   const theme = useTheme();
+  const { data: initiative } = useInitiativeById(initiativeId);
+  const cosponsorships = initiative?.data.attributes.cosponsorships;
+
+  if (!cosponsorships || cosponsorships.length === 0) return null;
 
   return (
     <Box
@@ -25,7 +30,7 @@ const Cosponsors = ({ initiativeId }: Props) => {
       <Title variant="h5" as="h2">
         Cosponsors of this proposal
       </Title>
-      <ListOfCosponsors initiativeId={initiativeId} />
+      <ListOfCosponsors cosponsorships={cosponsorships} />
     </Box>
   );
 };
