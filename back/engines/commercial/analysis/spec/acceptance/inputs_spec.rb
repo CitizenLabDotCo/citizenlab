@@ -78,6 +78,10 @@ resource 'Inputs' do
           id: response_data.dig(0, :id)
         })
         expect(json_response_body[:included].pluck(:id)).to include(*inputs.map(&:author_id))
+        expect(json_response_body[:meta]).to match({
+          total_count: 3,
+          filtered_count: 3
+        })
       end
 
       # We smoke test a few filters, more extensive coverage is taken care of by the filter service spec
@@ -87,6 +91,10 @@ resource 'Inputs' do
         do_request(search: 'peace')
         expect(status).to eq(200)
         expect(response_data.pluck(:id)).to eq([idea.id])
+        expect(json_response_body[:meta]).to match({
+          total_count: 4,
+          filtered_count: 1
+        })
       end
 
       example 'supports published_at_to filter', document: false do
