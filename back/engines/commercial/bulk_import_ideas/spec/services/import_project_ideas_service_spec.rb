@@ -48,16 +48,16 @@ describe BulkImportIdeas::ImportProjectIdeasService do
           { name: 'No', value: nil, type: 'filled_checkbox', page: 2, x: 0.45, y: 2.66 }
         ],
         [
-          { name: 'Name:', value: 'Ned Flanders', type: '', page: 1, x: 0.09, y: 1.16 },
-          { name: 'Email:', value: 'ned@simpsons.com', type: '', page: 1, x: 0.09, y: 1.24 },
-          { name: 'Title:', value: 'New Wrestling Arena needed', type: '', page: 1, x: 0.09, y: 1.34 },
-          { name: 'Body:', value: 'I am convinced that if we do not get this we will be sad.', type: '', page: 1, x: 0.09, y: 1.41 },
-          { name: 'Yes', value: nil, type: 'unfilled_checkbox', page: 1, x: 0.11, y: 1.66 },
-          { name: 'No', value: nil, type: 'filled_checkbox', page: 1, x: 0.45, y: 1.66 },
-          { name: 'This', value: nil, type: 'unfilled_checkbox', page: 1, x: 0.11, y: 1.86 },
-          { name: 'That', value: nil, type: 'filled_checkbox', page: 1, x: 0.45, y: 1.86 },
-          { name: 'Another field:', value: 'Something else', type: '', page: 2, x: 0.09, y: 2.12 },
-          { name: 'Ignored option', value: nil, type: 'filled_checkbox', page: 2, x: 0.45, y: 2.23 }
+          { name: 'Name:', value: 'Ned Flanders', type: '', page: 3, x: 0.09, y: 3.16 },
+          { name: 'Email:', value: 'ned@simpsons.com', type: '', page: 3, x: 0.09, y: 3.24 },
+          { name: 'Title:', value: 'New Wrestling Arena needed', type: '', page: 3, x: 0.09, y: 3.34 },
+          { name: 'Body:', value: 'I am convinced that if we do not get this we will be sad.', type: '', page: 3, x: 0.09, y: 3.41 },
+          { name: 'Yes', value: nil, type: 'unfilled_checkbox', page: 3, x: 0.11, y: 3.66 },
+          { name: 'No', value: nil, type: 'filled_checkbox', page: 3, x: 0.45, y: 3.66 },
+          { name: 'This', value: nil, type: 'unfilled_checkbox', page: 3, x: 0.11, y: 3.86 },
+          { name: 'That', value: nil, type: 'filled_checkbox', page: 3, x: 0.45, y: 3.86 },
+          { name: 'Another field:', value: 'Something else', type: '', page: 4, x: 0.09, y: 4.12 },
+          { name: 'Ignored option', value: nil, type: 'filled_checkbox', page: 4, x: 0.45, y: 4.23 }
         ]
       ]
     end
@@ -101,6 +101,11 @@ describe BulkImportIdeas::ImportProjectIdeasService do
       expect(rows.inspect).to include 'John Rambo'
       expect(rows.inspect).not_to include 'Ignored value'
       expect(rows.inspect).not_to include 'Ignored option'
+    end
+
+    it 'lists the correct pages for the document' do
+      expect(rows[0][:pages]).to eq [1, 2]
+      expect(rows[1][:pages]).to eq [3, 4]
     end
   end
 end

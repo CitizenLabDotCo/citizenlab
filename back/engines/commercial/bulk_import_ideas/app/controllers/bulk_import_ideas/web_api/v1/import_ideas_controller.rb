@@ -7,7 +7,7 @@ module BulkImportIdeas
     def bulk_create_xlsx
       xlsx = parse_xlsx
       idea_rows = import_ideas_service.xlsx_to_idea_rows xlsx
-      bulk_create idea_rows, false
+      bulk_create idea_rows, false, bulk_create_params[:xlsx]
     end
 
     def example_xlsx
@@ -15,12 +15,11 @@ module BulkImportIdeas
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'ideas.xlsx'
     end
 
-    # NOTE: This will only work on a project endpoint
+    # NOTE: This endpoint only works on a project endpoint
     def bulk_create_pdf
-      file = upload_file
       docs = parse_pdf
       idea_rows = import_ideas_service.paper_docs_to_idea_rows docs
-      bulk_create idea_rows, true
+      bulk_create idea_rows, true, bulk_create_params[:pdf]
     end
 
     def draft_ideas
@@ -36,7 +35,8 @@ module BulkImportIdeas
 
     private
 
-    def bulk_create(idea_rows, draft)
+    def bulk_create(idea_rows, draft, file)
+      import_ideas_service.upload_file file
       ideas = import_ideas_service.import_ideas idea_rows, import_as_draft: draft
       sidefx.after_success current_user
       render json: ::WebApi::V1::IdeaSerializer.new(
@@ -49,42 +49,32 @@ module BulkImportIdeas
       render json: { file: [{ error: e.key, **e.params }] }, status: :unprocessable_entity
     end
 
-    def bulk_create_xlsx_params
+    def bulk_create_params
       params
         .require(:import_ideas)
-        .permit(:xlsx)
-    end
-
-    def bulk_create_pdf_params
-      params
-        .require(:import_ideas)
-        .permit(%i[pdf locale])
+        .permit(%i[xlsx pdf locale])
     end
 
     def parse_xlsx
-      xlsx_base64 = bulk_create_xlsx_params[:xlsx]
-      start = xlsx_base64.index ';base64,'
-      xlsx_base64 = xlsx_base64[(start + 8)..] if start
-
-      xlsx_io = StringIO.new Base64.decode64(xlsx_base64)
-      XlsxService.new.xlsx_to_hash_array xlsx_io
+      # TODO: Is StringIO needed here?
+      xlsx_file = StringIO.new decode_base64(bulk_create_params[:xlsx])
+      XlsxService.new.xlsx_to_hash_array xlsx_file
     end
 
     def parse_pdf
-      pdf_base64 = bulk_create_pdf_params[:pdf]
-      start = pdf_base64.index ';base64,'
-      pdf_base64 = pdf_base64[(start + 8)..] if start
-      pdf_io = Base64.decode64(pdf_base64)
-      google_forms_service = GoogleFormParserService.new pdf_io
+      pdf_file = decode_base64 bulk_create_params[:pdf]
+      google_forms_service = GoogleFormParserService.new pdf_file
       google_forms_service.parse_pdf
     end
 
-    def upload_file
-      import_ideas_service.upload_file bulk_create_pdf_params[:pdf]
+    def decode_base64(base64_file)
+      start = base64_file.index ';base64,'
+      base64_file = base64_file[(start + 8)..] if start
+      Base64.decode64(base64_file)
     end
 
     def import_ideas_service
-      locale = params[:import_ideas] ? bulk_create_pdf_params[:locale] : current_user.locale
+      locale = params[:import_ideas] ? bulk_create_params[:locale] : current_user.locale
       @import_ideas_service ||= if params[:project_id]
         ImportProjectIdeasService.new(current_user, params[:project_id], locale)
       else
