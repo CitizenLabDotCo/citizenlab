@@ -32,6 +32,14 @@ describe Analysis::InputsFinder do
       @params = { tag_ids: [] }
       expect(output).to contain_exactly(idea2)
     end
+
+    it 'combines with search filter' do
+      tag1 = create(:tag, analysis: analysis)
+      idea1 = create(:idea, project: analysis.project, title_multiloc: { en: 'woof woof dog dog' })
+      create(:tagging, input: idea1, tag: tag1)
+      @params = { tag_ids: [tag1], search: 'dog' }
+      expect(output).to contain_exactly(idea1)
+    end
   end
 
   describe 'search' do
