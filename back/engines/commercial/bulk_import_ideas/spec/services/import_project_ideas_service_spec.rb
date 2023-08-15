@@ -26,6 +26,9 @@ describe BulkImportIdeas::ImportProjectIdeasService do
       multiselect_field = create(:custom_field, resource: custom_form, key: 'multiselect_field', title_multiloc: { 'en' => 'Multi select field:' }, input_type: 'multiselect', enabled: true)
       create(:custom_field_option, custom_field: multiselect_field, key: 'this', title_multiloc: { 'en' => 'This' })
       create(:custom_field_option, custom_field: multiselect_field, key: 'that', title_multiloc: { 'en' => 'That' })
+      another_select_field = create(:custom_field, resource: custom_form, key: 'another_select_field', title_multiloc: { 'en' => 'Another select field:' }, input_type: 'select', enabled: true)
+      create(:custom_field_option, custom_field: another_select_field, key: 'yes', title_multiloc: { 'en' => 'Yes' })
+      create(:custom_field_option, custom_field: another_select_field, key: 'no', title_multiloc: { 'en' => 'No' })
     end
 
     let(:docs) do
@@ -40,7 +43,9 @@ describe BulkImportIdeas::ImportProjectIdeasService do
           { name: 'This', value: nil, type: 'filled_checkbox', page: 1, x: 0.11, y: 1.86 },
           { name: 'That', value: nil, type: 'filled_checkbox', page: 1, x: 0.45, y: 1.86 },
           { name: 'Another field:', value: 'Not much to say', type: '', page: 2, x: 0.09, y: 2.12 },
-          { name: 'Ignored field', value: 'Ignored value', type: 'filled_checkbox', page: 2, x: 0.45, y: 2.23 }
+          { name: 'Ignored field', value: 'Ignored value', type: 'filled_checkbox', page: 2, x: 0.45, y: 2.23 },
+          { name: 'Yes', value: nil, type: 'unfilled_checkbox', page: 2, x: 0.11, y: 2.66 },
+          { name: 'No', value: nil, type: 'filled_checkbox', page: 2, x: 0.45, y: 2.66 }
         ],
         [
           { name: 'Name:', value: 'Ned Flanders', type: '', page: 1, x: 0.09, y: 1.16 },
@@ -56,9 +61,9 @@ describe BulkImportIdeas::ImportProjectIdeasService do
         ]
       ]
     end
+    let(:rows) { service.paper_docs_to_idea_rows docs }
 
     it 'converts the output from GoogleFormParser into idea rows' do
-      rows = service.paper_docs_to_idea_rows docs
       expect(rows.count).to eq 2
       expect(rows[0][:title_multiloc]).to eq({ en: 'Free donuts for all' })
       expect(rows[0][:body_multiloc]).to eq({ en: 'Give them all donuts' })
@@ -68,21 +73,23 @@ describe BulkImportIdeas::ImportProjectIdeasService do
     end
 
     it 'converts text custom fields' do
-      rows = service.paper_docs_to_idea_rows docs
       expect(rows.count).to eq 2
       expect(rows[0][:custom_field_values][:another_field]).to eq 'Not much to say'
       expect(rows[1][:custom_field_values][:another_field]).to eq 'Something else'
     end
 
     it 'converts single select custom fields and only uses the first checked value' do
-      rows = service.paper_docs_to_idea_rows docs
       expect(rows.count).to eq 2
       expect(rows[0][:custom_field_values][:select_field]).to eq 'yes'
       expect(rows[1][:custom_field_values][:select_field]).to eq 'no'
     end
 
+    it 'correctly imports different select fields with the same option values' do
+      expect(rows.count).to eq 2
+      expect(rows[0][:custom_field_values][:another_select_field]).to eq 'no'
+    end
+
     it 'converts multi-select custom fields' do
-      rows = service.paper_docs_to_idea_rows docs
       expect(rows.count).to eq 2
       expect(rows[0][:custom_field_values][:multiselect_field]).to match_array %w[this that]
       expect(rows[1][:custom_field_values][:multiselect_field]).to match_array ['that']
@@ -90,7 +97,6 @@ describe BulkImportIdeas::ImportProjectIdeasService do
 
     it 'ignores fields/options that it cannot find in the form' do
       # check that option name or field value does not appear in a text representation of the rows object
-      rows = service.paper_docs_to_idea_rows docs
       expect(rows.count).to eq 2
       expect(rows.inspect).to include 'John Rambo'
       expect(rows.inspect).not_to include 'Ignored value'

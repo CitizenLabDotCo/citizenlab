@@ -44,7 +44,6 @@ module BulkImportIdeas
         idea_row[:body_multiloc] = { @locale.to_sym => find_field(doc, 'Body:')[:value] }
         idea_row[:user_email] = find_field(doc, 'Email:')[:value]
         idea_row[:user_name] = find_field(doc, 'Name:')[:value]
-
         idea_row[:custom_field_values] = process_custom_fields(doc)
         idea_row
       end
@@ -75,12 +74,13 @@ module BulkImportIdeas
 
       # Text fields
       text_fields.each do |field|
-        if find_field(doc, field[:name])
-          custom_fields[field[:key].to_sym] = find_field(doc, field[:name])[:value]
+        text_field = find_field(doc, field[:name])
+        if text_field
+          custom_fields[field[:key].to_sym] = text_field[:value]
           # Remove fields from the doc once they have been added
           # so they don't get confused with later fields with same name
           # and TODO: we can also display back any unmatched fields
-          doc.delete_if { |f| f[:name] == field[:name] }
+          doc.delete_if { |f| f == text_field }
         end
       end
 
@@ -89,6 +89,7 @@ module BulkImportIdeas
       # loop through options in order they appear on the form and
       # remove so that fields with the same values don't get picked up
       select_options.each do |option|
+
         option_field = find_field(doc, option[:name])
         if option_field && option_field[:type].include?('checkbox')
           field_key = option[:field_key].to_sym
@@ -100,8 +101,7 @@ module BulkImportIdeas
             # Only use the first selected option for a single select
             custom_fields[field_key] = option[:key]
           end
-
-          doc.delete_if { |f| f[:name] == option[:name] }
+          doc.delete_if { |f| f == option_field }
         end
       end
 
