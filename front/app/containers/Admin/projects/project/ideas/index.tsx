@@ -1,6 +1,5 @@
 // Libraries
 import React from 'react';
-import styled from 'styled-components';
 import messages from '../messages';
 import { useParams } from 'react-router-dom';
 
@@ -8,7 +7,7 @@ import { useParams } from 'react-router-dom';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // Components
-import { SectionTitle, SectionDescription } from 'components/admin/Section';
+import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 import PostManager, { TFilterMenu } from 'components/admin/PostManager';
 
 // resources
@@ -17,37 +16,33 @@ import usePhases from 'api/phases/usePhases';
 import AnalysisBanner from './AnalysisBanner';
 import WrittenIdeasBanner from './WrittenIdeasBanner';
 
-const StyledDiv = styled.div`
-  margin-bottom: 30px;
-`;
+const defaultTimelineProjectVisibleFilterMenu = 'phases';
+const defaultContinuousProjectVisibleFilterMenu = 'statuses';
+const timelineProjectVisibleFilterMenus: TFilterMenu[] = [
+  defaultTimelineProjectVisibleFilterMenu,
+  'statuses',
+  'topics',
+];
+const continuousProjectVisibleFilterMenus: TFilterMenu[] = [
+  defaultContinuousProjectVisibleFilterMenu,
+  'topics',
+];
 
 const AdminProjectIdeas = () => {
   const { projectId } = useParams() as { projectId: string };
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
 
-  const defaultTimelineProjectVisibleFilterMenu = 'phases';
-  const defaultContinuousProjectVisibleFilterMenu = 'statuses';
-  const timelineProjectVisibleFilterMenus: TFilterMenu[] = [
-    defaultTimelineProjectVisibleFilterMenu,
-    'statuses',
-    'topics',
-  ];
-  const continuousProjectVisibleFilterMenus: TFilterMenu[] = [
-    defaultContinuousProjectVisibleFilterMenu,
-    'topics',
-  ];
-
   return (
     <>
-      <StyledDiv>
-        <SectionTitle>
+      <Box mb="30px">
+        <Title variant="h2" color="primary" fontWeight="normal">
           <FormattedMessage {...messages.titleInputManager} />
-        </SectionTitle>
-        <SectionDescription>
+        </Title>
+        <Text color="textSecondary">
           <FormattedMessage {...messages.subtitleInputManager} />
-        </SectionDescription>
-      </StyledDiv>
+        </Text>
+      </Box>
 
       <AnalysisBanner />
       <WrittenIdeasBanner />
