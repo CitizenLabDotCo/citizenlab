@@ -47,7 +47,7 @@ const AdminProjectIdeas = () => {
           <Button
             width="auto"
             bgColor={colors.primary}
-            linkTo={`/admin/projects/${projectId}/ideas/written-ideas-import`}
+            linkTo={`/admin/projects/${projectId}/offline-inputs`}
             icon="page"
           >
             Add offline inputs

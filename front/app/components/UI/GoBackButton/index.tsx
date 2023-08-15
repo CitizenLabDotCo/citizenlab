@@ -9,12 +9,13 @@ const Container = styled.div`
 `;
 
 type Props = {
-  onClick: (arg: FormEvent) => void;
+  onClick?: (arg: FormEvent) => void;
   className?: string;
   customMessage?: MessageDescriptor;
+  linkTo?: string;
 };
 
-const GoBackButton = ({ onClick, className, customMessage }: Props) => {
+const GoBackButton = ({ onClick, className, customMessage, linkTo }: Props) => {
   return (
     <Container className={className || ''}>
       <Button
@@ -26,6 +27,7 @@ const GoBackButton = ({ onClick, className, customMessage }: Props) => {
         padding="0px"
         text={<FormattedMessage {...(customMessage || messages.goBack)} />}
         data-testid="goBackButton"
+        linkTo={linkTo}
       />
     </Container>
   );
