@@ -34,7 +34,7 @@ const CookiePolicy = memo((props: WrappedComponentProps) => {
 
       <PageContent>
         <StyledContentContainer>
-          <Fragment name="pages/cookie-policy/content">
+          <Fragment name="pages/accessibility-statement">
             <PageTitle>
               <FormattedMessage {...messages.title} />
             </PageTitle>
