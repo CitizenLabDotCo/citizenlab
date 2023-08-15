@@ -31,6 +31,7 @@
   "app.components.AuthProviders.continueWithAzure": "crwdns212832:0{azureProviderName}crwdne212832:0",
   "app.components.AuthProviders.continueWithFacebook": "crwdns212834:0crwdne212834:0",
   "app.components.AuthProviders.continueWithGoogle": "crwdns212836:0crwdne212836:0",
+  "app.components.AuthProviders.continueWithHoplr": "crwdns836121:0crwdne836121:0",
   "app.components.AuthProviders.continueWithLoginMechanism": "crwdns594887:0{loginMechanismName}crwdne594887:0",
   "app.components.AuthProviders.franceConnectMergingFailed": "crwdns212838:0{br}crwdnd212838:0{br}crwdnd212838:0{br}crwdnd212838:0{br}crwdne212838:0",
   "app.components.AuthProviders.goToLogIn": "crwdns212840:0{goToOtherFlowLink}crwdne212840:0",
