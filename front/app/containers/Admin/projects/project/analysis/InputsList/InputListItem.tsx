@@ -11,7 +11,7 @@ import Divider from 'components/admin/Divider';
 import T from 'components/T';
 import { useIntl } from 'utils/cl-intl';
 import Avatar from 'components/Avatar';
-import { getFullName, truncate } from 'utils/textUtils';
+import { getFullName } from 'utils/textUtils';
 import { useParams } from 'react-router-dom';
 import useAnalysis from 'api/analyses/useAnalysis';
 import useIdeaCustomField from 'api/idea_custom_fields/useIdeaCustomField';
@@ -37,11 +37,8 @@ const InputListItem = ({ input, onSelect, selected }: Props) => {
 
   const { title_multiloc, custom_field_values } = input.attributes;
   const customFieldValue =
-    customField &&
-    truncate(
-      custom_field_values[customField.data.attributes.key] || 'No answer',
-      50
-    );
+    (customField && custom_field_values[customField.data.attributes.key]) ||
+    'No answer';
 
   return (
     <>
@@ -109,7 +106,13 @@ const InputListItem = ({ input, onSelect, selected }: Props) => {
           {!!customFieldValue &&
             analysis?.data.attributes.participation_method ===
               'native_survey' && (
-              <Text fontSize="s" m="0px">
+              <Text
+                fontSize="s"
+                m="0px"
+                textOverflow="ellipsis"
+                overflow="hidden"
+                whiteSpace="nowrap"
+              >
                 {customFieldValue}
               </Text>
             )}

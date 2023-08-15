@@ -9,7 +9,7 @@ import {
 import GoBackButton from 'components/UI/GoBackButton';
 import clHistory from 'utils/cl-router/history';
 import useProjectById from 'api/projects/useProjectById';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import useLocalize from 'hooks/useLocalize';
 import SearchInput from 'components/UI/SearchInput';
 
@@ -20,6 +20,9 @@ import messages from '../messages';
 import useAnalysis from 'api/analyses/useAnalysis';
 
 const TopBar = () => {
+  const [urlParams] = useSearchParams();
+  const phaseId = urlParams.get('phase_id') || undefined;
+
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const { projectId, analysisId } = useParams() as {
     projectId: string;
@@ -33,7 +36,11 @@ const TopBar = () => {
 
   const goBack = () => {
     if (analysis?.data.attributes.participation_method === 'native_survey') {
-      clHistory.push(`/admin/projects/${projectId}/native-survey/results`);
+      clHistory.push(
+        `/admin/projects/${projectId}/native-survey/results${
+          phaseId ? `?phase_id=${phaseId}` : ''
+        }`
+      );
     } else {
       clHistory.push(`/admin/projects/${projectId}/ideas`);
     }
