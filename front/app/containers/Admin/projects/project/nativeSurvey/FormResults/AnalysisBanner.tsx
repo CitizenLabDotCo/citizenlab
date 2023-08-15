@@ -68,6 +68,8 @@ const CreateAnalysisModal = ({ onClose }: { onClose: () => void }) => {
           );
         } else if (field.input_type === 'section') {
           return null;
+        } else if (field.input_type === 'file_upload') {
+          return null;
         } else {
           return (
             <ListItem key={field.id} py="16px">

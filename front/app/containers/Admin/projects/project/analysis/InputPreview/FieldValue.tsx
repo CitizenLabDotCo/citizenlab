@@ -3,15 +3,31 @@ import React from 'react';
 import { IInput } from 'api/analysis_inputs/types';
 import useIdeaCustomField from 'api/idea_custom_fields/useIdeaCustomField';
 
-import { Box, Title, Text } from '@citizenlab/cl2-component-library';
+import { Box, Title, Text, Checkbox } from '@citizenlab/cl2-component-library';
 
 import T from 'components/T';
+import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
+import { FormattedDate } from 'react-intl';
 
 type Props = {
   customFieldId: string;
   input: IInput;
   projectId?: string;
   phaseId?: string;
+};
+
+const SelectOptionText = ({
+  customFieldId,
+  selectedOptionKey,
+}: {
+  customFieldId: string;
+  selectedOptionKey: string;
+}) => {
+  const { data: options } = useUserCustomFieldsOptions(customFieldId);
+  const option = options?.data.find(
+    (option) => option.attributes.key === selectedOptionKey
+  );
+  return option ? <T value={option.attributes.title_multiloc} /> : null;
 };
 
 /**
@@ -66,19 +82,117 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
       } else {
         return null;
       }
-    case null:
-      return (
-        <Box>
-          <Title variant="h5">
-            <T value={customField.data.attributes.title_multiloc} />
-          </Title>
-          <Text>
-            {input.data.attributes.custom_field_values[
-              customField.data.attributes.key
-            ] || 'No answer'}
-          </Text>
-        </Box>
-      );
+    case null: {
+      const rawValue =
+        input.data.attributes.custom_field_values[
+          customField.data.attributes.key
+        ];
+      switch (customField.data.attributes.input_type) {
+        case 'text':
+        case 'number':
+        case 'linear_scale': {
+          return (
+            <Box>
+              <Title variant="h5">
+                <T value={customField.data.attributes.title_multiloc} />
+              </Title>
+              <Text>
+                {input.data.attributes.custom_field_values[
+                  customField.data.attributes.key
+                ] || 'No answer'}
+              </Text>
+            </Box>
+          );
+        }
+        case 'multiline_text': {
+          return (
+            <Box>
+              <Title variant="h5">
+                <T value={customField.data.attributes.title_multiloc} />
+              </Title>
+              <Text whiteSpace="pre-line">
+                {input.data.attributes.custom_field_values[
+                  customField.data.attributes.key
+                ] || 'No answer'}
+              </Text>
+            </Box>
+          );
+        }
+        case 'select': {
+          return (
+            <Box>
+              <Title variant="h5">
+                <T value={customField.data.attributes.title_multiloc} />
+              </Title>
+              <Text>
+                <SelectOptionText
+                  customFieldId={customField.data.id}
+                  selectedOptionKey={rawValue}
+                />
+              </Text>
+            </Box>
+          );
+        }
+        case 'multiselect': {
+          return (
+            <Box>
+              <Title variant="h5">
+                <T value={customField.data.attributes.title_multiloc} />
+              </Title>
+              <Text>
+                {(rawValue as string[]).map((optionKey, index) => (
+                  <>
+                    {index !== 0 && ', '}
+                    <SelectOptionText
+                      key={`${optionKey}-${index}`}
+                      customFieldId={customField.data.id}
+                      selectedOptionKey={optionKey}
+                    />
+                  </>
+                ))}
+              </Text>
+            </Box>
+          );
+        }
+        case 'checkbox': {
+          return (
+            <Box>
+              <Title variant="h5">
+                <T value={customField.data.attributes.title_multiloc} />
+              </Title>
+              <Text>
+                {rawValue === true || rawValue === false ? (
+                  <Checkbox disabled checked={rawValue} onChange={() => {}} />
+                ) : (
+                  'No answer'
+                )}
+              </Text>
+            </Box>
+          );
+        }
+        case 'date': {
+          return (
+            <Box>
+              <Title variant="h5">
+                <T value={customField.data.attributes.title_multiloc} />
+              </Title>
+              <Text>
+                {rawValue ? <FormattedDate value={rawValue} /> : 'No answer'}
+              </Text>
+            </Box>
+          );
+        }
+        case 'file_upload': {
+          // We don't support file upload fields in an analysis at the moment
+          return null;
+        }
+        default: {
+          // Makes TS throw a compile error in case we're not covering for an input_type
+          const exhaustiveCheck: never = customField.data.attributes.input_type;
+          return exhaustiveCheck;
+        }
+      }
+    }
     default:
       return null;
   }
