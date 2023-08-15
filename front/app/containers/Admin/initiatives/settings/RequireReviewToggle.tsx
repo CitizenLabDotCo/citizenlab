@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { SectionField } from 'components/admin/Section';
+import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -24,6 +24,9 @@ const RequireReviewToggle = ({ value, onChange }: Props) => {
 
   return (
     <SectionField>
+      <SubSectionTitle style={{ marginBottom: '0px' }}>
+        <FormattedMessage {...messages.review} />
+      </SubSectionTitle>
       <Toggle
         checked={value}
         onChange={() => {

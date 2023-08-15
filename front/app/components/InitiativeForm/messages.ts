@@ -128,6 +128,25 @@ export default defineMessages({
     id: 'app.components.InitiativeForm.locationPlaceholder',
     defaultMessage: 'Type an address',
   },
+  cosponsorSectionTitle: {
+    id: 'app.components.InitiativeForm.cosponsorSectionTitle',
+    defaultMessage: 'Cosponsors needed for review',
+  },
+  cosponsorSubtextBeforeInput: {
+    id: 'app.components.InitiativeForm.cosponsorSubtextBeforeInput',
+    defaultMessage:
+      "It's required that you have at least {noOfCosponsorsText} on your proposal. Invite cosponsors through the field below. The invited cosponsor(s) will receive an email.",
+  },
+  noOfCosponsorsText: {
+    id: 'app.components.InitiativeForm.noOfCosponsorsText',
+    defaultMessage:
+      '{cosponsorsNumber, plural, one {1 cosponsor} other {# cosponsors}}',
+  },
+  cosponsorSubtextBeforeInputNote: {
+    id: 'app.components.InitiativeForm.cosponsorSubtextBeforeInputNote',
+    defaultMessage:
+      "Your cosponsors need an account on this website before they'll appear in this list.",
+  },
   formAttachmentsSectionTitle: {
     id: 'app.components.InitiativeForm.formAttachmentsSectionTitle',
     defaultMessage: 'Images and attachments',
@@ -194,5 +213,13 @@ export default defineMessages({
   buttonEnabled: {
     id: 'UI.FormComponents.buttonEnabled',
     defaultMessage: 'Submit button enabled',
+  },
+  cosponsorsPlaceholder: {
+    id: 'app.components.InitiativeForm.cosponsorsPlaceholder',
+    defaultMessage: 'Start typing a name to search',
+  },
+  cosponsorsLabel: {
+    id: 'app.components.InitiativeForm.cosponsorsLabel',
+    defaultMessage: 'Cosponsors',
   },
 });
