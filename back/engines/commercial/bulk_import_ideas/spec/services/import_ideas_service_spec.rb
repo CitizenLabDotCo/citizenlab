@@ -5,6 +5,14 @@ require 'rails_helper'
 describe BulkImportIdeas::ImportIdeasService do
   let(:service) { described_class.new(create(:admin)) }
 
+  describe 'upload_file' do
+    it 'uploads a file successfully' do
+      base_64_content = Base64.encode64 File.read('/cl2_back/engines/commercial/bulk_import_ideas/spec/fixtures/testscan.pdf')
+      file = service.upload_file "data:application/pdf;base64,#{base_64_content}"
+      expect(file).not_to be_nil
+    end
+  end
+
   describe 'import_ideas' do
     before { create(:idea_status, code: 'proposed') }
 
@@ -478,4 +486,5 @@ describe BulkImportIdeas::ImportIdeasService do
       )
     end
   end
+
 end

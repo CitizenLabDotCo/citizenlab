@@ -4,7 +4,12 @@ module BulkImportIdeas
   module WebApi
     module V1
       class IdeaImportSerializer < ::WebApi::V1::BaseSerializer
-        attributes :user_created, :file_path, :file_type, :created_at, :updated_at
+        # TODO: Add file attributes to this serializer
+        attributes :user_created, :created_at, :updated_at
+
+        attribute :file do |object|
+          object.file.file
+        end
       end
     end
   end
