@@ -5,6 +5,8 @@ module Analysis
   # purposes, that takes a random word from each input and concatenates them.
   # Revolutionary method that saves times x100.
   class SummarizationMethod::Bogus < SummarizationMethod::Base
+    SUMMARIZATION_METHOD = 'bogus'
+
     def generate_plan
       SummarizationPlan.new(
         accuracy: 0.1
