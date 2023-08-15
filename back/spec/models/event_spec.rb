@@ -49,6 +49,20 @@ RSpec.describe Event do
     end
   end
 
+  describe 'online_link' do
+    it 'succeeds when online link is a valid url' do
+      event = build(:event)
+      event.online_link = 'https://www.example.com'
+      expect(event).to be_valid
+    end
+
+    it 'fails when online link is not a valid url' do
+      event = build(:event)
+      event.online_link = 'not valid url'
+      expect(event).to be_invalid
+    end
+  end
+
   describe 'attendees_count' do
     let(:event) { create(:event) }
 
