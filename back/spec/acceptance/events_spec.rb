@@ -11,7 +11,7 @@ resource 'Events' do
   before_all do
     @project = create(:project)
     @project2 = create(:project)
-    @events = create_list(:event, 2, project: @project)
+    @events = create_list(:event, 2, project: @project, online_link: 'https://example.com')
     @other_events = create_list(:event, 2, project: @project2)
   end
 
