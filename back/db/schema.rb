@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_01_141534) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_15_182301) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -980,7 +980,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_01_141534) do
     t.uuid "inappropriate_content_flag_id"
     t.uuid "internal_comment_id"
     t.uuid "basket_id"
+    t.uuid "cosponsors_initiative_id"
     t.index ["basket_id"], name: "index_notifications_on_basket_id"
+    t.index ["cosponsors_initiative_id"], name: "index_notifications_on_cosponsors_initiative_id"
     t.index ["created_at"], name: "index_notifications_on_created_at"
     t.index ["inappropriate_content_flag_id"], name: "index_notifications_on_inappropriate_content_flag_id"
     t.index ["initiating_user_id"], name: "index_notifications_on_initiating_user_id"
@@ -1598,6 +1600,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_01_141534) do
   add_foreign_key "nav_bar_items", "static_pages"
   add_foreign_key "notifications", "baskets"
   add_foreign_key "notifications", "comments"
+  add_foreign_key "notifications", "cosponsors_initiatives"
   add_foreign_key "notifications", "flag_inappropriate_content_inappropriate_content_flags", column: "inappropriate_content_flag_id"
   add_foreign_key "notifications", "internal_comments"
   add_foreign_key "notifications", "invites"
