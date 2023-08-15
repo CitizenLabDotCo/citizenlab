@@ -62,6 +62,7 @@ import useLocale from 'hooks/useLocale';
 import useAuthUser from 'api/me/useAuthUser';
 import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
 import { usePermission } from 'services/permissions';
+import LoadingComments from 'components/PostShowComponents/Comments/LoadingComments';
 
 const contentFadeInDuration = 250;
 const contentFadeInEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -636,7 +637,9 @@ const InitiativesShow = ({ className, initiativeId }: Props) => {
               </Content>
             </InitiativeContainer>
 
-            <Footer postId={initiativeId} postType="initiative" />
+            <Suspense fallback={<LoadingComments />}>
+              <Footer postId={initiativeId} postType="initiative" />
+            </Suspense>
           </Container>
         )}
 
