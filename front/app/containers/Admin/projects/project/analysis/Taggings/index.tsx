@@ -9,7 +9,13 @@ import { useParams } from 'react-router-dom';
 import Tag from '../Tags/Tag';
 import { Box } from '@citizenlab/cl2-component-library';
 
-const Taggings = ({ inputId }: { inputId: string }) => {
+const Taggings = ({
+  inputId,
+  onlyShowTagged = true,
+}: {
+  inputId: string;
+  onlyShowTagged?: boolean;
+}) => {
   const { analysisId } = useParams() as { analysisId: string };
 
   const { data: tags } = useAnalysisTags({
@@ -30,6 +36,7 @@ const Taggings = ({ inputId }: { inputId: string }) => {
         const taggingForTag = taggingsForInput?.find(
           (tagging) => tagging.relationships.tag.data.id === tag.id
         );
+        if (onlyShowTagged && !taggingForTag) return null;
         return (
           <Tag
             key={tag.id}

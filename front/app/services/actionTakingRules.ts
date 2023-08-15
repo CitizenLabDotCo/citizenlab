@@ -1,7 +1,5 @@
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { IProjectData, PostingDisabledReason } from 'api/projects/types';
-import { isNilOrError } from 'utils/helperUtils';
-import { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import { isAdmin, isProjectModerator } from 'services/permissions/roles';
 import { IUserData } from 'api/users/types';
 import { IPhaseData } from 'api/phases/types';
@@ -138,15 +136,16 @@ export const getIdeaPostingRules = ({
 }: {
   project: IProjectData | null | undefined;
   phase: IPhaseData | undefined;
-  authUser: GetAuthUserChildProps | IUserData | undefined;
+  authUser: IUserData | undefined;
 }): ActionPermission<IIdeaPostingDisabledReason> => {
-  const signedIn = !isNilOrError(authUser);
-  if (!isNilOrError(project)) {
+  const signedIn = !!authUser;
+
+  if (project) {
     const { disabled_reason, future_enabled, enabled } =
       project.attributes.action_descriptor.posting_idea;
 
     if (
-      !isNilOrError(authUser) &&
+      signedIn &&
       (isAdmin({ data: authUser }) || isProjectModerator({ data: authUser }))
     ) {
       return {

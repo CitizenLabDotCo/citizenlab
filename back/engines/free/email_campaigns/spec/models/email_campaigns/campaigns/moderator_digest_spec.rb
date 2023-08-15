@@ -73,6 +73,12 @@ RSpec.describe 'EmailCampaigns::Campaigns::ModeratorDigest', skip: skip_reason d
         commands.flat_map { |command| command.dig(:event_payload, :top_ideas).pluck(:id) }
       ).not_to include response.id
     end
+
+    it 'does not generate a command for archived projects' do
+      project.admin_publication.update! publication_status: 'archived'
+      commands = campaign.generate_commands(recipient: moderator).first
+      expect(commands).to be_blank
+    end
   end
 
   describe 'apply_recipient_filters' do
