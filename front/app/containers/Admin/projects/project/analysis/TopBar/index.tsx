@@ -18,6 +18,7 @@ import Filters from './Filters';
 import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import useAnalysis from 'api/analyses/useAnalysis';
+import Tasks from '../Tasks';
 
 const TopBar = () => {
   const [urlParams] = useSearchParams();
@@ -88,6 +89,7 @@ const TopBar = () => {
           a11y_numberOfSearchResults={0}
         />
       </Box>
+      <Tasks />
       {isFiltersOpen && <Filters />}
     </Box>
   );
