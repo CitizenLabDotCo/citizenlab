@@ -180,7 +180,10 @@ class WebApi::V1::InitiativesController < ApplicationController
 
   def accept_cosponsorship_invite
     @cosponsors_initiative = @initiative.cosponsors_initiatives.find_by(user_id: current_user.id)
-    @cosponsors_initiative.update!(status: 'accepted')
+
+    if @cosponsors_initiative.update!(status: 'accepted')
+      SideFxInitiativeService.new.after_accept_cosponsorship_invite(@cosponsors_initiative, current_user)
+    end
   end
 
   def allowed_transitions
