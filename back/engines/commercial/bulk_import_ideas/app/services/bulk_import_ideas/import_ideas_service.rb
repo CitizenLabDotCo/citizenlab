@@ -131,7 +131,7 @@ module BulkImportIdeas
       idea.save!
 
       create_idea_image idea_row, idea
-      create_idea_import idea, user_created
+      create_idea_import idea, user_created, idea_row[:pages]
 
       idea
     end
@@ -301,17 +301,16 @@ module BulkImportIdeas
       end
     end
 
-    def create_idea_import(idea, user_created)
+    def create_idea_import(idea, user_created, page_range)
       # Add import metadata
-      # TODO: Get page range into this - no point in doing until we have refactored the parsed doc object
       idea_import = IdeaImport.new(
         idea: idea,
-        page_range: [1, 2],
+        page_range: page_range,
         import_user: @import_user,
         user_created: user_created,
         file: @file
       )
-      idea_import.save
+      idea_import.save!
     end
   end
 end

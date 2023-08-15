@@ -40,6 +40,7 @@ module BulkImportIdeas
     def paper_docs_to_idea_rows(parsed_docs)
       parsed_docs.map do |doc|
         idea_row = {}
+        idea_row[:pages] = doc.pluck(:page).uniq
         idea_row[:project_id] = @project.id
         ## TODO: This won't currently allow for Title, Body, Email or Name to appear multiple times
         idea_row[:title_multiloc] = { @locale.to_sym => find_field(doc, 'Title:')[:value] }

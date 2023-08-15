@@ -166,6 +166,35 @@ describe BulkImportIdeas::ImportIdeasService do
       )
     end
 
+    it 'imports ideas with idea import meta data' do
+      project = create(:project)
+
+      idea_rows = [
+        {
+          title_multiloc: { 'en' => 'My idea title' },
+          body_multiloc: { 'en' => 'My idea description' },
+          project_id: project.id,
+          pages: [1, 2],
+          user_email: 'userimport@citizenlab.co'
+        },
+        {
+          title_multiloc: { 'en' => 'My idea title 2' },
+          body_multiloc: { 'en' => 'My idea description 2' },
+          project_id: project.id,
+          pages: [3, 4],
+          user_email: 'userimport@citizenlab.co'
+        }
+      ]
+      service.import_ideas idea_rows
+
+      ideas = project.reload.ideas
+      expect(project.reload.ideas_count).to eq 2
+      expect(ideas[0].idea_import).not_to be_nil
+      expect(ideas[0].idea_import.page_range).to eq %w[1 2]
+      expect(ideas[1].idea_import).not_to be_nil
+      expect(ideas[1].idea_import.page_range).to eq %w[3 4]
+    end
+
     it 'imports ideas as published with publication info' do
       create(:user, email: 'userimport@citizenlab.co')
       create(:project, title_multiloc: { 'en' => 'Project title' })

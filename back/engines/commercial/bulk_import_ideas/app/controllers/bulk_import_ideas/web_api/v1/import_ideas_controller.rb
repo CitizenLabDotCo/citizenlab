@@ -17,7 +17,6 @@ module BulkImportIdeas
 
     # NOTE: This will only work on a project endpoint
     def bulk_create_pdf
-      file = upload_file
       docs = parse_pdf
       idea_rows = import_ideas_service.paper_docs_to_idea_rows docs
       bulk_create idea_rows, true
@@ -37,6 +36,7 @@ module BulkImportIdeas
     private
 
     def bulk_create(idea_rows, draft)
+      import_ideas_service.upload_file bulk_create_pdf_params[:pdf]
       ideas = import_ideas_service.import_ideas idea_rows, import_as_draft: draft
       sidefx.after_success current_user
       render json: ::WebApi::V1::IdeaSerializer.new(
@@ -77,10 +77,6 @@ module BulkImportIdeas
       pdf_io = Base64.decode64(pdf_base64)
       google_forms_service = GoogleFormParserService.new pdf_io
       google_forms_service.parse_pdf
-    end
-
-    def upload_file
-      import_ideas_service.upload_file bulk_create_pdf_params[:pdf]
     end
 
     def import_ideas_service
