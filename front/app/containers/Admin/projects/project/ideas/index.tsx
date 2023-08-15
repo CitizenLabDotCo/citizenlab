@@ -1,20 +1,24 @@
-// Libraries
 import React from 'react';
-import messages from '../messages';
+
+// routing
 import { useParams } from 'react-router-dom';
 
-// Utils
+// i18n
+import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// Components
+// components
 import { Box, Title, Text } from '@citizenlab/cl2-component-library';
+import Button from 'components/UI/Button';
 import PostManager, { TFilterMenu } from 'components/admin/PostManager';
+import AnalysisBanner from './AnalysisBanner';
 
-// resources
+// hooks
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
-import AnalysisBanner from './AnalysisBanner';
-import WrittenIdeasBanner from './WrittenIdeasBanner';
+
+// styling
+import { colors } from 'utils/styleUtils';
 
 const defaultTimelineProjectVisibleFilterMenu = 'phases';
 const defaultContinuousProjectVisibleFilterMenu = 'statuses';
@@ -36,16 +40,25 @@ const AdminProjectIdeas = () => {
   return (
     <>
       <Box mb="30px">
-        <Title variant="h2" color="primary" fontWeight="normal">
-          <FormattedMessage {...messages.titleInputManager} />
-        </Title>
+        <Box display="flex" flexDirection="row" justifyContent="space-between">
+          <Title variant="h2" color="primary" fontWeight="normal" mt="16px">
+            <FormattedMessage {...messages.titleInputManager} />
+          </Title>
+          <Button
+            width="auto"
+            bgColor={colors.primary}
+            linkTo={`/admin/projects/${projectId}/ideas/written-ideas-import`}
+            icon="page"
+          >
+            Add offline inputs
+          </Button>
+        </Box>
         <Text color="textSecondary">
           <FormattedMessage {...messages.subtitleInputManager} />
         </Text>
       </Box>
 
       <AnalysisBanner />
-      <WrittenIdeasBanner />
 
       {project && (
         <PostManager
