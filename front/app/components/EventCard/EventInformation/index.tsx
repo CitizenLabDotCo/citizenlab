@@ -56,6 +56,7 @@ const EventInformation = ({
 
   const isPastEvent = moment().isAfter(endAtMoment);
   const locationDescription = event?.attributes?.location_description;
+  const onlineLink = event?.attributes?.online_link;
 
   const eventDateTime = isMultiDayEvent
     ? `${startAtMoment.format('LLL')} - ${endAtMoment.format('LLL')}`
@@ -95,7 +96,7 @@ const EventInformation = ({
             <Text m="0px" color={'coolGrey700'} fontSize="s">
               {eventDateTime}
             </Text>
-          </Box>{' '}
+          </Box>
           {locationDescription && (
             <Box display="flex" mb="12px">
               <Icon
@@ -110,6 +111,31 @@ const EventInformation = ({
                   0,
                   locationDescription.indexOf(',')
                 )}
+              </Text>
+            </Box>
+          )}
+          {onlineLink && (
+            <Box display="flex" mb="12px">
+              <Icon
+                my="auto"
+                fill={colors.coolGrey300}
+                name="link"
+                ariaHidden
+                mr="8px"
+              />
+              <Text
+                m="0px"
+                color={'coolGrey700'}
+                fontSize="s"
+                role="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  window.open(onlineLink, '_blank');
+                }}
+                style={{ textDecoration: 'underline' }}
+              >
+                {formatMessage(messages.online)}
               </Text>
             </Box>
           )}

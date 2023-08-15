@@ -14,6 +14,7 @@ import {
   Box,
   Button,
   IconTooltip,
+  Input,
   Label,
   LocationInput,
   Spinner,
@@ -170,6 +171,15 @@ const AdminProjectEventEdit = ({ params }: Props) => {
       ...attributeDiff,
       location_multiloc: locationMultiloc,
     });
+  };
+
+  const handleOnlineLinkOnChange = async (onlineLink: string) => {
+    setSubmitState('enabled');
+    setAttributeDiff({
+      ...attributeDiff,
+      online_link: onlineLink,
+    });
+    setErrors({});
   };
 
   const handleLocationDescriptionOnChange = async (location: string) => {
@@ -444,7 +454,6 @@ const AdminProjectEventEdit = ({ params }: Props) => {
                     />
                   </Label>
                 </Box>
-
                 <LocationInput
                   id="event-location-picker"
                   className="e2e-event-location-input"
@@ -493,6 +502,20 @@ const AdminProjectEventEdit = ({ params }: Props) => {
                     </Button>
                   </Box>
                 )}
+                <SectionField>
+                  <Box mt="16px" maxWidth="400px">
+                    <Input
+                      id="event-location"
+                      label={'Online event link'}
+                      type="text"
+                      value={eventAttrs.online_link}
+                      onChange={handleOnlineLinkOnChange}
+                      labelTooltipText={'Label tooltip text'}
+                      placeholder={'https://zoom.us/j/1234567890'}
+                    />
+                  </Box>
+                  <ErrorComponent apiErrors={get(errors, 'online_link')} />
+                </SectionField>
               </Box>
             </SectionField>
             <Title

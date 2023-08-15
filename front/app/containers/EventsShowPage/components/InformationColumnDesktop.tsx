@@ -7,6 +7,8 @@ import EventDateStylized from './MetadataInformation/EventDateStylized';
 import Location from './MetadataInformation/Location';
 import FullEventTime from './MetadataInformation/EventTimeTextual';
 import EventSharingButtons from './EventSharingButtons';
+import OnlineLink from './MetadataInformation/OnlineLink';
+import ParticipantsCount from './MetadataInformation/ParticipantsCount';
 
 // styling
 import { colors } from 'utils/styleUtils';
@@ -17,7 +19,6 @@ import { IEventData } from 'api/events/types';
 
 // utils
 import moment from 'moment';
-import ParticipantsCount from './MetadataInformation/ParticipantsCount';
 
 interface Props {
   event: IEventData;
@@ -71,6 +72,12 @@ const InformationColumnDesktop = ({ event, className }: Props) => {
                     location={event.attributes.location_description}
                     event={event}
                   />
+                  <Box borderBottom={`solid 1px ${colors.divider}`} />
+                </>
+              )}
+              {event.attributes.location_description && (
+                <>
+                  <OnlineLink link={event.attributes.online_link} />
                   <Box borderBottom={`solid 1px ${colors.divider}`} />
                 </>
               )}

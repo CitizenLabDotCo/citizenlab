@@ -14,4 +14,8 @@ export default defineMessages({
     defaultMessage:
       '{count, plural, one {# participant} other {# participants}}',
   },
+  linkToOnlineEvent: {
+    id: 'app.containers.EventsShow.linkToOnlineEvent',
+    defaultMessage: 'Link to online event',
+  },
 });
