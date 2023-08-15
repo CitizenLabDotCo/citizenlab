@@ -17,19 +17,7 @@ module IdNemlogIn
     end
 
     def config_parameters
-      %i[]
-    end
-
-    def profile_to_uid(auth)
-      # auth['uid'] || auth.dig('extra', 'raw_info', 'RolUnico', 'numero')
-    end
-
-    def locked_attributes
-      %i[first_name last_name]
-    end
-
-    def locked_custom_fields
-      []
+      %i[environment certificate private_key]
     end
   end
 end

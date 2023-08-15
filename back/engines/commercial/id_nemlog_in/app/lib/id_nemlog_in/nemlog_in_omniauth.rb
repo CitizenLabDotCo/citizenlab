@@ -1,89 +1,97 @@
 # frozen_string_literal: true
 
 module IdNemlogIn
-  # Provides a SAML Omniauth configuration for Vienna's StandardPortal, a citizen SSO method.
   class NemlogInOmniauth < OmniauthMethods::Base
     include NemlogInVerification
 
     ENVIRONMENTS = {
-      test: {
+      pre_production_integration: {
         issuer: 'https://nemlogin-k3kd.loca.lt',
-        # copied from https://github.com/digst/OIOSAML.Net/blob/master/src/dk.nita.saml20/WebsiteDemo/idp-metadata/test-devtest4-idp-metadata.xml
-        metadata_xml_file: File.join(IdNemlogIn::Engine.root, 'config', 'saml', 'idp_metadata_test.xml')
+        # https://www.nemlog-in.dk/vejledningertiltestmiljo/forside/test-som-tjenesteudbyder-eller-broker/
+        metadata_xml_file: File.join(IdNemlogIn::Engine.root, 'config', 'saml', 'idp_metadata', 'pre_production_integration.xml')
+      },
+      production_integration: {
+        issuer: 'https://kobenhavntaler.kk.dk',
+        # https://tu.nemlog-in.dk/oprettelse-og-administration-af-tjenester/log-in/dokumentation.og.guides/integrationstestmiljo/
+        metadata_xml_file: File.join(IdNemlogIn::Engine.root, 'config', 'saml', 'production_integration.xml')
       },
       production: {
-        issuer: 'CitizenLabWien',
-        metadata_xml_file: File.join(IdNemlogIn::Engine.root, 'config', 'saml', 'idp_metadata_production.xml')
+        issuer: 'https://kobenhavntaler.kk.dk',
+        # https://tu.nemlog-in.dk/oprettelse-og-administration-af-tjenester/log-in/dokumentation.og.guides/produktionsmiljo/
+        metadata_xml_file: File.join(IdNemlogIn::Engine.root, 'config', 'saml', 'idp_metadata', 'production.xml')
       }
-    }.freeze
+    }.deep_stringify_keys.freeze
 
-    # Extracts user attributes from the Omniauth response auth.
-    # @param [OmniAuth::AuthHash] auth
-    # @return [Hash] The user attributes
     def profile_to_user_attrs(auth)
-      attrs = auth.dig(:extra, :raw_info).to_h
-      email = attrs.fetch('urn:oid:0.9.2342.19200300.100.1.3').first
-      placeholder_name = generate_placeholder_name_from_email(email)
-      locale = AppConfiguration.instance.settings.dig('core', 'locales').first
-      first_name = attrs['urn:oid:2.5.4.42']&.first || placeholder_name[:first_name]
-      last_name = attrs['urn:oid:1.2.40.0.10.2.1.1.261.20']&.first || placeholder_name[:last_name]
+      first_name = auth.extra.raw_info['https://data.gov.dk/model/core/eid/firstName']
+      last_name = auth.extra.raw_info['https://data.gov.dk/model/core/eid/lastName']
+      date_of_birth = auth.extra.raw_info['https://data.gov.dk/model/core/eid/dateOfBirth'] # "01-02-1999"
+      cpr_number = auth.extra.raw_info['https://data.gov.dk/model/core/eid/cprNumber']
+      # age = auth.extra.raw_info['https://data.gov.dk/model/core/eid/age']
 
       {
-        email: email,
         first_name: first_name,
         last_name: last_name,
-        locale: locale
+        custom_field_values: {
+          municipality_code: fetch_municipality_code(cpr_number),
+          date_of_birth: date_of_birth
+          # age: age
+        }
       }
     end
 
-    # Configures the SAML endpoint to authenticate with Vienna's StandardPortal
-    # if the feature is enabled.
-    # Most of the settings are read from the XML file that Vienna shared with us.
-    # @param [AppConfiguration] configuration
-    def omniauth_setup(configuration, env)
+    def profile_to_uid(auth)
+      auth.extra.raw_info['https://data.gov.dk/model/core/eid/cprUuid']
+    end
+
+    def omniauth_setup(_configuration, env)
       # return unless configuration.feature_activated?('vienna_citizen_login')
 
-      metadata_file = ENVIRONMENTS.dig(:test, :metadata_xml_file)
-      issuer = ENVIRONMENTS.dig(:test, :issuer)
+      ver_config = config
+
+      metadata_file = ENVIRONMENTS.dig(ver_config[:environment], 'metadata_xml_file')
+      issuer = ENVIRONMENTS.dig(ver_config[:environment], 'issuer')
 
       idp_metadata_parser = OneLogin::RubySaml::IdpMetadataParser.new
       idp_metadata = idp_metadata_parser.parse_to_hash(File.read(metadata_file))
 
-      metadata = idp_metadata.merge({ issuer: issuer })
+      metadata = idp_metadata.merge({
+        issuer: issuer,
+        assertion_consumer_service_url: nil,
+        idp_cert: ver_config[:certificate],
+        private_key: ver_config[:private_key],
+        security: {
+          authn_requests_signed: true,
+          signature_method: 'http://www.w3.org/2001/04/xmldsig-more#rsa-sha256',
+        }
+      })
 
       env['omniauth.strategy'].options.merge!(metadata)
-      # env['omniauth.strategy'].options.merge!(issuer: 'CitizenLab')
     end
 
-    # @return [Array<Symbol>] Returns a list of attributes that can be updated from the auth response hash
     def updateable_user_attrs
-      %i[first_name last_name]
+      %i[first_name last_name custom_field_values]
     end
 
-    # @return [Boolean] If existing user attributes should be overwritten
-    def overwrite_user_attrs?
-      false
+    def locked_custom_fields
+      %i[municipality_code date_of_birth]
     end
 
-    # Removes the response object because it produces a Stacklevel too deep error when converting to JSON
-    # @param [OmniAuth::AuthHash] auth
-    # @return [Hash] The filtered hash that will be persisted in the database
-    def filter_auth_to_persist(auth)
-      auth_to_persist = auth.deep_dup
-      auth_to_persist.tap { |h| h[:extra].delete(:response_object) }
+    def locked_attributes
+      %i[]
     end
+
+    # TODO: implement
+    def logout_url; end
 
     private
 
-    # @param [AppConfiguration] configuration
-    # @return [String] The path to the callback URL
-    def redirect_uri(configuration)
-      "#{configuration.base_backend_uri}/auth/nemlog_in/callback"
+    def fetch_municipality_code(_cpr_number)
+      '0101'
     end
 
-    # @return [Symbol] The configured Vienna Login environment as a symbol
-    def vienna_login_env
-      AppConfiguration.instance.settings('vienna_citizen_login', 'environment').to_sym
+    def redirect_uri(configuration)
+      "#{configuration.base_backend_uri}/auth/nemlog_in/callback"
     end
   end
 end
