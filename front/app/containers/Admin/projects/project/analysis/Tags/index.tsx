@@ -157,7 +157,7 @@ const Tags = () => {
         </TagContainer>
         {!isLoading && tags?.data.length === 0 && (
           <Text p="6px" color="grey400">
-            <p>You do not have any tags yet.</p>
+            You do not have any tags yet.
           </Text>
         )}
         {tags?.data.map((tag) => (
