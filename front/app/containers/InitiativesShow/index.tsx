@@ -14,7 +14,6 @@ import Modal from 'components/UI/Modal';
 import FileAttachments from 'components/UI/FileAttachments';
 import { Spinner, Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import SharingButtons from 'components/Sharing/SharingButtons';
-import FeatureFlag from 'components/FeatureFlag';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 
 import Topics from 'components/PostShowComponents/Topics';
@@ -69,6 +68,7 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
 import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
 import { usePermission } from 'services/permissions';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const contentFadeInDuration = 250;
 const contentFadeInEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -314,6 +314,9 @@ const InitiativesShow = ({ className, initiativeId }: Props) => {
     action: 'moderate',
   });
   const [searchParams] = useSearchParams();
+  const initiativeFlowSocialSharingEnabled = useFeatureFlag({
+    name: 'initiativeflow_social_sharing',
+  });
   const newInitiativeId = searchParams.get('new_initiative_id');
 
   const [initiativeIdForSocialSharing, setInitiativeIdForSocialSharing] =
@@ -669,7 +672,7 @@ const InitiativesShow = ({ className, initiativeId }: Props) => {
           </Container>
         </CSSTransition>
 
-        <FeatureFlag name="initiativeflow_social_sharing">
+        {initiativeFlowSocialSharingEnabled && (
           <Modal
             opened={!!initiativeIdForSocialSharing}
             close={closeInitiativeSocialSharingModal}
@@ -691,7 +694,7 @@ const InitiativesShow = ({ className, initiativeId }: Props) => {
                 />
               ))}
           </Modal>
-        </FeatureFlag>
+        )}
       </>
     );
   }
