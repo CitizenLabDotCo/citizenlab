@@ -50,6 +50,16 @@ class SideFxInitiativeService
     LogActivityJob.perform_later(initiative, 'changed_body', user_for_activity_on_anonymizable_item(initiative, user), initiative.updated_at.to_i, payload: { change: initiative.body_multiloc_previous_change })
   end
 
+  def after_accept_cosponsorship_invite(cosponsors_initiative, user)
+    LogActivityJob.perform_later(
+      cosponsors_initiative,
+      'cosponsorship_accepted',
+      user, # We don't want anonymized users being cosponsors
+      cosponsors_initiative.updated_at.to_i,
+      payload: { change: cosponsors_initiative.status_previous_change }
+    )
+  end
+
   def before_destroy(initiative, user); end
 
   def after_destroy(frozen_initiative, user)
@@ -75,16 +85,6 @@ class SideFxInitiativeService
         )
       end
     end
-  end
-
-  def after_accept_cosponsorship_invite(cosponsors_initiative, user)
-    LogActivityJob.perform_later(
-      cosponsors_initiative,
-      'cosponsorship_accepted',
-      user, # We don't want anonymized users being cosponsors
-      cosponsors_initiative.updated_at.to_i,
-      payload: { change: cosponsors_initiative.status_previous_change }
-    )
   end
 
   def transition_to_review_pending_if_required(initiative, user)
