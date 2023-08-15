@@ -13,6 +13,7 @@ const Analysis = () => {
   const modalPortalElement = document.getElementById('modal-portal');
 
   const [selectedInputId, setSelectedInputId] = useState<string | null>(null);
+
   if (!modalPortalElement) return null;
 
   return createPortal(
@@ -31,7 +32,7 @@ const Analysis = () => {
           display="flex"
           w="100"
           alignItems="stretch"
-          gap="20px"
+          gap="8px"
           pt={`${stylingConsts.mobileMenuHeight}px`}
         >
           <Box
@@ -54,7 +55,7 @@ const Analysis = () => {
             bg={colors.white}
           >
             <InputsList
-              onSelectInput={(inputId) => setSelectedInputId(inputId)}
+              onSelectInput={setSelectedInputId}
               selectedInputId={selectedInputId}
             />
           </Box>
@@ -63,8 +64,10 @@ const Analysis = () => {
             overflow="auto"
             h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
             p="12px"
+            mt="12px"
             display="flex"
             flexDirection="column"
+            bg={colors.white}
           >
             <Box flex="1">
               {selectedInputId && <InputPreview inputId={selectedInputId} />}
@@ -81,9 +84,7 @@ const Analysis = () => {
             h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
             bg={colors.white}
           >
-            <Insights
-              onSelectInput={(inputId) => setSelectedInputId(inputId)}
-            />
+            <Insights onSelectInput={setSelectedInputId} />
           </Box>
         </Box>
       </FocusOn>
