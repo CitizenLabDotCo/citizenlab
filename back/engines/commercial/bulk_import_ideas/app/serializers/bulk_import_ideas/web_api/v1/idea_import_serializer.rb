@@ -7,7 +7,7 @@ module BulkImportIdeas
         attributes :user_created, :created_at, :updated_at
 
         attribute :file do |object|
-          object.file.file
+          object.file&.file
         end
       end
     end
