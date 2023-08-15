@@ -186,7 +186,7 @@ resource 'Events' do
         let(:description_multiloc) { event.description_multiloc }
         let(:start_at) { event.start_at }
         let(:end_at) { event.end_at }
-        let(:online_link) {'https://example.com'}
+        let(:online_link) { 'https://example.com' }
 
         example_request 'Create an event for a project' do
           assert_status 201
@@ -205,7 +205,7 @@ resource 'Events' do
         let(:title_multiloc) { { 'en' => '' } }
         let(:start_at) { event.start_at }
         let(:end_at) { event.start_at - 1.day }
-        let(:online_link) {'not a url'}
+        let(:online_link) { 'not a url' }
 
         example_request '[error] Create an invalid event' do
           assert_status 422
