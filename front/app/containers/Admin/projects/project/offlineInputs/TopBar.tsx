@@ -20,13 +20,14 @@ const TopBar = () => {
   const localize = useLocalize();
   const { projectId } = useParams() as {
     projectId: string;
-    analysisId: string;
   };
   const { data: project } = useProjectById(projectId);
   const projectTitle = project?.data.attributes.title_multiloc;
 
   return (
     <Box
+      position="fixed"
+      zIndex="10001"
       alignItems="center"
       w="100%"
       h={`${stylingConsts.menuHeight}px`}

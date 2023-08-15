@@ -9,7 +9,7 @@ import ImportSection from './ImportSection';
 import ReviewSection from './ReviewSection';
 
 // styling
-import { colors } from 'utils/styleUtils';
+import { colors, stylingConsts } from 'utils/styleUtils';
 
 const OfflineInputImporter = () => {
   return (
@@ -24,8 +24,14 @@ const OfflineInputImporter = () => {
     >
       <FocusOn>
         <TopBar />
-        <ImportSection />
-        <ReviewSection />
+        <Box
+          mt={`${stylingConsts.mobileMenuHeight}px`}
+          overflowY="scroll"
+          h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
+        >
+          <ImportSection />
+          <ReviewSection />
+        </Box>
       </FocusOn>
     </Box>
   );

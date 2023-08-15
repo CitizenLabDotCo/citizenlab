@@ -57,7 +57,7 @@ const ImportSection = () => {
   return (
     <Box w="100%" display="flex" justifyContent="center" bgColor={colors.white}>
       <Box p="20px" w="800px">
-        <Title variant="h1" color="primary" fontWeight="normal" mb="20px">
+        <Title variant="h1" color="primary" mb="20px">
           Written idea importer
         </Title>
         <Box mb="28px">
