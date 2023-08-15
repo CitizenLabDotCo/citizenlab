@@ -1,5 +1,4 @@
 import React from 'react';
-import { isError } from 'lodash-es';
 
 // components
 import PageNotFound from 'components/PageNotFound';
@@ -32,7 +31,7 @@ const InitiativesShowPage = () => {
 
   const { data: initiative } = useInitiativeBySlug(slug);
 
-  if (!initiativesEnabled || isError(initiative)) {
+  if (!initiativesEnabled) {
     return <PageNotFound />;
   }
 
