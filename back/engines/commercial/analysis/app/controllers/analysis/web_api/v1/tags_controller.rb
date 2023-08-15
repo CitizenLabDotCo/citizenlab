@@ -10,15 +10,26 @@ module Analysis
         def index
           @tags = @analysis.tags
 
-          total_input_counts = TagCounter.new(@analysis, tags: @tags).execute
-          filtered_input_counts = TagCounter.new(@analysis, tags: @tags, filters: filter_params.to_h).execute
+          inputs_count_by_tag = TagCounter.new(@analysis, tags: @tags).counts_by_tag
+          filtered_inputs_count_by_tag = TagCounter.new(@analysis, tags: @tags, filters: filter_params.to_h).counts_by_tag
+
+          inputs_total = TagCounter.new(@analysis, tags: @tags, filters: {}).total_count
+          filtered_inputs_total = TagCounter.new(@analysis, tags: @tags, filters: filter_params.to_h).total_count
+          inputs_without_tags = TagCounter.new(@analysis, tags: @tags, filters: { tag_ids: [] }).total_count
+          filtered_inputs_without_tags = TagCounter.new(@analysis, tags: @tags, filters: filter_params.to_h.merge(tag_ids: [])).total_count
 
           render json: WebApi::V1::TagSerializer.new(
             @tags,
             params: {
-              total_input_counts: total_input_counts,
-              filtered_input_counts: filtered_input_counts,
+              inputs_count_by_tag: inputs_count_by_tag,
+              filtered_inputs_count_by_tag: filtered_inputs_count_by_tag,
               **jsonapi_serializer_params
+            },
+            meta: {
+              inputs_total: inputs_total,
+              filtered_inputs_total: filtered_inputs_total,
+              inputs_without_tags: inputs_without_tags,
+              filtered_inputs_without_tags: filtered_inputs_without_tags
             }
           ).serializable_hash
         end
@@ -31,8 +42,8 @@ module Analysis
             render json: WebApi::V1::TagSerializer.new(
               @tag,
               params: {
-                filtered_input_counts: { @tag.id => 0 },
-                total_input_counts: { @tag.id => 0 },
+                filtered_inputs_count_by_tag: { @tag.id => 0 },
+                inputs_count_by_tag: { @tag.id => 0 },
                 **jsonapi_serializer_params
               }
             ).serializable_hash, status: :created
@@ -47,14 +58,14 @@ module Analysis
           if @tag.update(tag_params)
             side_fx_service.after_update(@tag, current_user)
 
-            total_input_counts = TagCounter.new(@analysis, tags: [@tag]).execute
-            filtered_input_counts = TagCounter.new(@analysis, tags: [@tag], filters: filter_params.to_h).execute
+            inputs_count_by_tag = TagCounter.new(@analysis, tags: [@tag]).counts_by_tag
+            filtered_inputs_count_by_tag = TagCounter.new(@analysis, tags: [@tag], filters: filter_params.to_h).counts_by_tag
 
             render json: WebApi::V1::TagSerializer.new(
               @tag,
               params: {
-                total_input_counts: total_input_counts,
-                filtered_input_counts: filtered_input_counts,
+                inputs_count_by_tag: inputs_count_by_tag,
+                filtered_inputs_count_by_tag: filtered_inputs_count_by_tag,
                 **jsonapi_serializer_params
               }
             ).serializable_hash, status: :ok

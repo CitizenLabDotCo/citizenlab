@@ -71,6 +71,12 @@ resource 'Tags' do
       example_request 'lists all tags of an analysis' do
         assert_status 200
         expect(response_data.pluck(:id)).to match_array(tags.pluck(:id))
+        expect(json_response_body[:meta]).to eq({
+          inputs_total: 3,
+          filtered_inputs_total: 3,
+          inputs_without_tags: 1,
+          filtered_inputs_without_tags: 1
+        })
       end
 
       example 'lists filtered tags of analysis (comments > 5), with correct counts', document: false do
@@ -84,6 +90,13 @@ resource 'Tags' do
         expect(response_data.find { |d| d[:id] == tags[0].id }[:attributes][:filtered_input_count]).to eq 0
         expect(response_data.find { |d| d[:id] == tags[1].id }[:attributes][:filtered_input_count]).to eq 1
         expect(response_data.find { |d| d[:id] == tags[2].id }[:attributes][:filtered_input_count]).to eq 0
+
+        expect(json_response_body[:meta]).to eq({
+          inputs_total: 3,
+          filtered_inputs_total: 2,
+          inputs_without_tags: 1,
+          filtered_inputs_without_tags: 1
+        })
       end
 
       example 'returns 404 if the analysis does not exist', document: false do

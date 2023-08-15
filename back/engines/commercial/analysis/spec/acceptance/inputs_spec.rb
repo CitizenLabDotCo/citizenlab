@@ -79,7 +79,6 @@ resource 'Inputs' do
         })
         expect(json_response_body[:included].pluck(:id)).to include(*inputs.map(&:author_id))
         expect(json_response_body[:meta]).to match({
-          total_count: 3,
           filtered_count: 3
         })
       end
@@ -92,7 +91,6 @@ resource 'Inputs' do
         expect(status).to eq(200)
         expect(response_data.pluck(:id)).to eq([idea.id])
         expect(json_response_body[:meta]).to match({
-          total_count: 4,
           filtered_count: 1
         })
       end

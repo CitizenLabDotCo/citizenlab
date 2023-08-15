@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { max, omit } from 'lodash-es';
+import { omit } from 'lodash-es';
 
 import { useParams } from 'react-router-dom';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
@@ -24,7 +24,7 @@ import Modal from 'components/UI/Modal';
 import RenameTagModal from './RenameTagModal';
 import Tag from './Tag';
 import AutotaggingModal from './AutotaggingModal';
-import ProgressBar from 'components/UI/ProgressBar';
+import TagCount from './TagCount';
 
 import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
@@ -41,11 +41,6 @@ const TagContainer = styled.div`
     border: 1px solid ${colors.borderLight};
   }
   cursor: pointer;
-`;
-
-const StyledProgressBar = styled(ProgressBar)<{ width: number }>`
-  height: 5px;
-  width: ${({ width }) => width * 100}%;
 `;
 
 const Tags = () => {
@@ -66,6 +61,12 @@ const Tags = () => {
   });
   const { mutate: addTag, isLoading, error } = useAddAnalysisTag();
   const { mutate: deleteTag } = useDeleteAnalysisTag();
+
+  const inputsTotal = tags?.meta.inputs_total || 1;
+  const filteredInputsTotal = tags?.meta.filtered_inputs_total || 1;
+  const inputsWithoutTags = tags?.meta.inputs_without_tags || 1;
+  const filteredInputsWithoutTags =
+    tags?.meta.filtered_inputs_without_tags || 1;
 
   const onChangeName = (name: string) => {
     setName(name);
@@ -101,9 +102,6 @@ const Tags = () => {
   const selectTag = (id: string) => {
     updateSearchParams({ tag_ids: [id] });
   };
-
-  const maxTotalCount =
-    max(tags?.data?.map((t) => t.attributes.total_input_count)) || 1;
 
   const selectedTags = filters.tag_ids;
   return (
@@ -147,6 +145,11 @@ const Tags = () => {
           className={!selectedTags ? 'selected' : ''}
         >
           All inputs
+          <TagCount
+            count={inputsTotal}
+            totalCount={inputsTotal}
+            filteredCount={filteredInputsTotal}
+          />
         </TagContainer>
         <TagContainer
           tabIndex={0}
@@ -154,6 +157,11 @@ const Tags = () => {
           className={selectedTags?.length === 0 ? 'selected' : ''}
         >
           Inputs without tags
+          <TagCount
+            count={inputsWithoutTags}
+            totalCount={inputsTotal}
+            filteredCount={filteredInputsWithoutTags}
+          />
         </TagContainer>
         {!isLoading && tags?.data.length === 0 && (
           <Text p="6px" color="grey400">
@@ -194,23 +202,11 @@ const Tags = () => {
                 />
               </Box>
             </Box>
-            <Box display="flex" alignItems="center">
-              <StyledProgressBar
-                width={tag.attributes.total_input_count / maxTotalCount}
-                progress={
-                  tag.attributes.filtered_input_count /
-                  tag.attributes.total_input_count
-                }
-                color={colors.blue700}
-                bgColor={colors.coolGrey300}
-              />
-              <Box w="50px" ml="5px">
-                {tag.attributes.filtered_input_count ===
-                tag.attributes.total_input_count
-                  ? tag.attributes.total_input_count
-                  : `${tag.attributes.filtered_input_count}/${tag.attributes.total_input_count}`}
-              </Box>
-            </Box>
+            <TagCount
+              count={tag.attributes.total_input_count}
+              totalCount={inputsTotal}
+              filteredCount={tag.attributes.filtered_input_count}
+            />
             <Modal
               opened={renameTagModalOpenedId === tag.id}
               close={closeTagRenameModal}

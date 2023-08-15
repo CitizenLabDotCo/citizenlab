@@ -28,6 +28,8 @@ const InputsList = ({ onSelectInput, selectedInputId }: Props) => {
     [data]
   );
 
+  const totalCount = data?.pages[0].meta.filtered_count;
+
   const handleIntersection = useCallback(
     (event: IntersectionObserverEntry, unobserve: () => void) => {
       if (event.isIntersecting && hasNextPage) {
@@ -78,7 +80,7 @@ const InputsList = ({ onSelectInput, selectedInputId }: Props) => {
 
   return (
     <Box bg={colors.white} w="100%">
-      <SummarizeButton inputsCount={inputs?.length} />
+      <SummarizeButton inputsCount={totalCount} />
 
       {data?.pages.map((page, i) => (
         <Fragment key={i}>

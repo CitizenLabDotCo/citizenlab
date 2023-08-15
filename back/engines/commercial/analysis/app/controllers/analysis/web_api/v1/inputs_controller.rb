@@ -15,15 +15,12 @@ module Analysis
           @inputs = @inputs.includes(:author)
           @inputs = paginate @inputs
 
-          total_count = @analysis.inputs.count
-
           render json: linked_json(
             @inputs,
             InputSerializer,
             params: jsonapi_serializer_params,
             include: [:author],
             meta: {
-              total_count: total_count,
               filtered_count: filtered_count
             }
           )
