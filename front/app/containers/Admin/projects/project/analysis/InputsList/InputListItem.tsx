@@ -14,7 +14,7 @@ import Avatar from 'components/Avatar';
 import { getFullName } from 'utils/textUtils';
 import { useParams } from 'react-router-dom';
 import useAnalysis from 'api/analyses/useAnalysis';
-import useIdeaCustomField from 'api/idea_custom_fields/useIdeaCustomField';
+import ShortFieldValue from './ShortFieldValue';
 
 interface Props {
   input: IInputsData;
@@ -26,19 +26,11 @@ const InputListItem = ({ input, onSelect, selected }: Props) => {
   const { analysisId } = useParams() as { analysisId: string };
   const { data: analysis } = useAnalysis(analysisId);
   const { data: author } = useUserById(input.relationships.author.data?.id);
-  const { data: customField } = useIdeaCustomField({
-    customFieldId: analysis?.data.relationships.custom_fields.data[0].id,
-    projectId: analysis?.data.relationships.project?.data?.id,
-    phaseId: analysis?.data.relationships.phase?.data?.id,
-  });
   const { formatDate } = useIntl();
 
-  if (!input) return null;
+  if (!analysis || !input) return null;
 
-  const { title_multiloc, custom_field_values } = input.attributes;
-  const customFieldValue =
-    (customField && custom_field_values[customField.data.attributes.key]) ||
-    'No answer';
+  const { title_multiloc } = input.attributes;
 
   return (
     <>
@@ -103,19 +95,27 @@ const InputListItem = ({ input, onSelect, selected }: Props) => {
               <span> {input.attributes.comments_count}</span>
             </Box>
           )}
-          {!!customFieldValue &&
-            analysis?.data.attributes.participation_method ===
-              'native_survey' && (
-              <Text
-                fontSize="s"
-                m="0px"
-                textOverflow="ellipsis"
-                overflow="hidden"
-                whiteSpace="nowrap"
-              >
-                {customFieldValue}
-              </Text>
+          <Box>
+            {analysis.data.relationships.custom_fields.data.map(
+              (customField) => (
+                <Text
+                  key={customField.id}
+                  fontSize="s"
+                  m="0px"
+                  textOverflow="ellipsis"
+                  overflow="hidden"
+                  whiteSpace="nowrap"
+                >
+                  <ShortFieldValue
+                    customFieldId={customField.id}
+                    input={input}
+                    projectId={analysis.data.relationships.project?.data?.id}
+                    phaseId={analysis.data.relationships.phase?.data?.id}
+                  />
+                </Text>
+              )
             )}
+          </Box>
         </Box>
 
         <Taggings inputId={input.id} />

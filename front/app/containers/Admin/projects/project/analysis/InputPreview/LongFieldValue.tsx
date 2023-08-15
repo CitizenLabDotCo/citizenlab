@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { IInput } from 'api/analysis_inputs/types';
+import { IInputsData } from 'api/analysis_inputs/types';
 import useIdeaCustomField from 'api/idea_custom_fields/useIdeaCustomField';
 
 import { Box, Title, Text, Checkbox } from '@citizenlab/cl2-component-library';
@@ -11,7 +11,7 @@ import { FormattedDate } from 'react-intl';
 
 type Props = {
   customFieldId: string;
-  input: IInput;
+  input: IInputsData;
   projectId?: string;
   phaseId?: string;
 };
@@ -31,8 +31,8 @@ const SelectOptionText = ({
 };
 
 /**
- * Given a custom_field definition and an input, render a textual representation
- * of the value of the custom field for that input
+ * Given a custom_field definition and an input, render a multiline
+ * representation of the value of the custom field for that input
  */
 const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
   const containerId: { projectId?: string; phaseId?: string } = {};
@@ -54,7 +54,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
         <Box>
           <Title variant="h3">
             <T
-              value={input.data.attributes[customField.data.attributes.key]}
+              value={input.attributes[customField.data.attributes.key]}
               supportHtml={true}
             />
           </Title>
@@ -64,19 +64,19 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
       return (
         <Text>
           <T
-            value={input.data.attributes[customField.data.attributes.key]}
+            value={input.attributes[customField.data.attributes.key]}
             supportHtml={true}
           />
         </Text>
       );
     case 'location_description':
-      if (input.data.attributes.location_description) {
+      if (input.attributes.location_description) {
         return (
           <Box>
             <Title variant="h5">
               <T value={customField.data.attributes.title_multiloc} />
             </Title>
-            <Text>{input.data.attributes.location_description}</Text>
+            <Text>{input.attributes.location_description}</Text>
           </Box>
         );
       } else {
@@ -84,9 +84,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
       }
     case null: {
       const rawValue =
-        input.data.attributes.custom_field_values[
-          customField.data.attributes.key
-        ];
+        input.attributes.custom_field_values[customField.data.attributes.key];
       switch (customField.data.attributes.input_type) {
         case 'text':
         case 'number':
@@ -97,7 +95,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
                 <T value={customField.data.attributes.title_multiloc} />
               </Title>
               <Text>
-                {input.data.attributes.custom_field_values[
+                {input.attributes.custom_field_values[
                   customField.data.attributes.key
                 ] || 'No answer'}
               </Text>
@@ -111,7 +109,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
                 <T value={customField.data.attributes.title_multiloc} />
               </Title>
               <Text whiteSpace="pre-line">
-                {input.data.attributes.custom_field_values[
+                {input.attributes.custom_field_values[
                   customField.data.attributes.key
                 ] || 'No answer'}
               </Text>
