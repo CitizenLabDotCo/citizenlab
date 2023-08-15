@@ -10,9 +10,9 @@ interface Props {
 const ListOfCosponsors = ({ cosponsorships }: Props) => {
   return (
     <>
-      {cosponsorships.map((cosponsorship) => {
+      {cosponsorships.map((cosponsorship, index) => {
         return (
-          <Box display="flex" alignItems="center">
+          <Box key={index} display="flex" alignItems="center">
             <Box mr="4px">
               <Avatar userId={cosponsorship.user_id} size={32} />
             </Box>
