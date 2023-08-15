@@ -9,6 +9,7 @@ import { useParams } from 'react-router-dom';
 // components
 import { Title, Box, Spinner } from '@citizenlab/cl2-component-library';
 import FileUploader from 'components/UI/FileUploader';
+import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
 
 // typings
 import { UploadFile } from 'typings';
@@ -37,9 +38,17 @@ const Testing = () => {
   const onRemoveFile = () => {};
 
   return (
-    <Box mx="100px" w="800px">
-      <Title>Written idea importer</Title>
-      <Box pb="10px">
+    <Box>
+      <Box w="100%" display="flex">
+        <GoBackButtonSolid
+          text="Back to input manager"
+          linkTo={`/admin/projects/${projectId}/ideas`}
+        />
+      </Box>
+      <Title variant="h2" color="primary" fontWeight="normal" mb="20px">
+        Written idea importer
+      </Title>
+      <Box mb="28px">
         Upload a <strong>PDF file of scanned forms</strong>. The PDF must use a
         form printed from this project available here.
       </Box>
@@ -48,12 +57,14 @@ const Testing = () => {
         {isLoading ? (
           <Spinner />
         ) : (
-          <FileUploader
-            id="written-ideas-importer"
-            onFileAdd={onAddFile}
-            onFileRemove={onRemoveFile}
-            files={null}
-          />
+          <Box w="700px">
+            <FileUploader
+              id="written-ideas-importer"
+              onFileAdd={onAddFile}
+              onFileRemove={onRemoveFile}
+              files={null}
+            />
+          </Box>
         )}
       </Box>
       {numIdeasAdded && (
