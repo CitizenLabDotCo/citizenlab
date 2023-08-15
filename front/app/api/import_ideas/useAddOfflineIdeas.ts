@@ -9,17 +9,17 @@ interface RequestParams {
   locale: Locale;
 }
 
-const addHandwrittenIdeas = async (requestParams: RequestParams) =>
+const addOfflineIdeas = async (requestParams: RequestParams) =>
   fetcher<IIdeas>({
     path: `/import_ideas/${requestParams.project_id}/bulk_create_pdf`,
     action: 'post',
     body: { import_ideas: { pdf: requestParams.file } },
   });
 
-const useAddHandwrittenIdeas = () => {
+const useAddOfflineIdeas = () => {
   return useMutation<IIdeas, CLErrors, RequestParams>({
-    mutationFn: addHandwrittenIdeas,
+    mutationFn: addOfflineIdeas,
   });
 };
 
-export default useAddHandwrittenIdeas;
+export default useAddOfflineIdeas;

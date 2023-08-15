@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 // hooks
-import useAddHandwrittenIdeas from 'api/handwritten_ideas/useAddHandwrittenIdeas';
+import useAddOfflineIdeas from 'api/import_ideas/useAddOfflineIdeas';
 import useLocale from 'hooks/useLocale';
 
 // router
@@ -32,18 +32,18 @@ const TextButton = styled.button`
 
 const ImportSection = () => {
   const { projectId } = useParams() as { projectId: string };
-  const { mutate: addHandwrittenIdeas, isLoading } = useAddHandwrittenIdeas();
+  const { mutate: addOfflineIdeas, isLoading } = useAddOfflineIdeas();
   const [numIdeasAdded, setNumIdeasAdded] = useState<number | null>(null);
   const locale = useLocale();
 
   if (isNilOrError(locale)) return null;
 
   const onAddFile = (file: UploadFile) => {
-    addHandwrittenIdeas(
+    addOfflineIdeas(
       {
         project_id: projectId,
         file: file.base64,
-        locale: 'en',
+        locale,
       },
       {
         onSuccess: (data) => {
