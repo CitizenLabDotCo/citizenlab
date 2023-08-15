@@ -1235,6 +1235,7 @@ export function apiCreateEvent({
   location,
   startDate,
   endDate,
+  onlineLink,
 }: {
   projectId: string;
   title: string;
@@ -1243,6 +1244,7 @@ export function apiCreateEvent({
   startDate: Date;
   endDate: Date;
   includeLocation?: boolean;
+  onlineLink?: string;
 }) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -1274,6 +1276,7 @@ export function apiCreateEvent({
             : undefined,
           start_at: startDate.toJSON(),
           end_at: endDate.toJSON(),
+          online_link: onlineLink,
         },
       },
     });

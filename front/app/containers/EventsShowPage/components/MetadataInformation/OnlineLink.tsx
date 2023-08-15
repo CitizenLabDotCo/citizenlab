@@ -16,7 +16,7 @@ const OnlineLink = ({ link }: Props) => {
   const { formatMessage } = useIntl();
 
   return (
-    <Container>
+    <Container id="e2e-event-online-link">
       <StyledIcon name="link" ariaHidden />
       <Content>
         <Box display="flex">
