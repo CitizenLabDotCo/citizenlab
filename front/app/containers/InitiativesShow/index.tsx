@@ -550,12 +550,14 @@ const InitiativesShow = ({ className, initiativeId }: Props) => {
                     />
                   </ScreenReaderOnly>
 
-                  <Body
-                    postId={initiativeId}
-                    postType="initiative"
-                    body={initiativeBody}
-                    translateButtonClicked={translateButtonClicked}
-                  />
+                  <Box mb="40px">
+                    <Body
+                      postId={initiativeId}
+                      postType="initiative"
+                      body={initiativeBody}
+                      translateButtonClicked={translateButtonClicked}
+                    />
+                  </Box>
 
                   {!isNilOrError(initiativeFiles) && (
                     <Box mb="25px">
