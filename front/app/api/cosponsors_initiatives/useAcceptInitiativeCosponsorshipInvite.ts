@@ -9,7 +9,7 @@ const acceptInitiativeCosponsorshipInvite = ({
   initiativeId: string;
 }) =>
   fetcher<{ data: [{ type: '' }] }>({
-    path: `/initiatives/${initiativeId}/accept_invite`,
+    path: `/initiatives/${initiativeId}/accept_cosponsorship_invite`,
     action: 'patch',
   });
 
