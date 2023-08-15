@@ -7,7 +7,7 @@ import {
   StatusWrapper,
   StatusExplanation,
 } from './ReactionControl/SharedStyles';
-import useAcceptInitiativeCosponsorshipInvite from 'api/cosponsors_initiatives/useUpdateInitiativeCosponsors';
+import useAcceptInitiativeCosponsorshipInvite from 'api/cosponsors_initiatives/useAcceptInitiativeCosponsorshipInvite';
 import useInitiativeCosponsorsRequired from 'hooks/useInitiativeCosponsorsRequired';
 
 const Container = styled.div``;
