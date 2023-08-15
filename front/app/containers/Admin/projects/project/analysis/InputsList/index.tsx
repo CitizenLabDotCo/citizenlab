@@ -1,12 +1,12 @@
 import React, { Fragment, useCallback, useEffect, useMemo } from 'react';
-import { Box, colors, Button } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
 import { useParams } from 'react-router-dom';
 import InputListItem from './InputListItem';
-import useAddAnalysisSummary from 'api/analysis_summaries/useAddAnalysisSummary';
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 import Observer from '@researchgate/react-intersection-observer';
 import useKeyPress from 'hooks/useKeyPress';
+import SummarizeButton from './SummarizeButton';
 
 interface Props {
   onSelectInput: React.Dispatch<React.SetStateAction<string | null>>;
@@ -22,19 +22,11 @@ const InputsList = ({ onSelectInput, selectedInputId }: Props) => {
       analysisId,
       queryParams: filters,
     });
-  const { mutate: addsummary, isLoading } = useAddAnalysisSummary();
 
   const inputs = useMemo(
     () => data && data.pages.map((page) => page.data).flat(),
     [data]
   );
-
-  const handleSummaryCreate = () => {
-    addsummary({
-      analysisId,
-      filters,
-    });
-  };
 
   const handleIntersection = useCallback(
     (event: IntersectionObserverEntry, unobserve: () => void) => {
@@ -86,19 +78,7 @@ const InputsList = ({ onSelectInput, selectedInputId }: Props) => {
 
   return (
     <Box bg={colors.white} w="100%">
-      <Box display="flex" justifyContent="flex-end">
-        <Button
-          icon="flash"
-          mb="12px"
-          size="s"
-          w="100%"
-          buttonStyle="secondary-outlined"
-          onClick={handleSummaryCreate}
-          disabled={isLoading}
-        >
-          Auto-summarize {inputs?.length} inputs
-        </Button>
-      </Box>
+      <SummarizeButton inputsCount={inputs?.length} />
 
       {data?.pages.map((page, i) => (
         <Fragment key={i}>

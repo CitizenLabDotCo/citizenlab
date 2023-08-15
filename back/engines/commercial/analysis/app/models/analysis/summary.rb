@@ -13,6 +13,8 @@
 #  filters              :jsonb            not null
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
+#  accuracy             :float
+#  inputs_ids           :jsonb
 #
 # Indexes
 #
@@ -26,7 +28,7 @@
 #
 module Analysis
   class Summary < ::ApplicationRecord
-    SUMMARIZATION_METHODS = %w[gpt4 bogus]
+    SUMMARIZATION_METHODS = %w[gpt one_pass_llm bogus] # gpt is legacy value
     FILTERS_JSON_SCHEMA_STR = Rails.root.join('engines/commercial/analysis/config/schemas/filters.json_schema').read
     FILTERS_JSON_SCHEMA = JSON.parse(FILTERS_JSON_SCHEMA_STR)
 
@@ -35,5 +37,15 @@ module Analysis
 
     validates :summarization_method, inclusion: { in: SUMMARIZATION_METHODS }
     validates :filters, json: { schema: FILTERS_JSON_SCHEMA }
+    validates :accuracy, numericality: { in: 0..1 }, allow_blank: true
+    validate :inputs_ids_unique
+
+    def inputs_ids_unique
+      return if inputs_ids.blank?
+
+      if inputs_ids.uniq != inputs_ids
+        errors.add(:inputs_ids, :should_have_unique_ids, message: 'The log of inputs_ids associated with the summary contains duplicate ids')
+      end
+    end
   end
 end

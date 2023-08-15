@@ -116,7 +116,12 @@ const Summary = ({ summary, onSelectInput }: Props) => {
           {processing && <Spinner />}
         </Box>
       </Box>
-      <Box display="flex" flexDirection="row-reverse" gap="2px">
+      <Box
+        display="flex"
+        flexDirection="row-reverse"
+        gap="4px"
+        alignItems="center"
+      >
         <IconButton
           iconName="delete"
           onClick={() => handleSummaryDelete(summary.id)}
@@ -124,6 +129,11 @@ const Summary = ({ summary, onSelectInput }: Props) => {
           iconColorOnHover={colors.teal700}
           a11y_buttonActionMessage={formatMessage(messages.deleteSummary)}
         />
+        {summary.attributes.accuracy && (
+          <Box color={colors.teal700}>
+            Accuracy {summary.attributes.accuracy * 100}%
+          </Box>
+        )}
       </Box>
     </Box>
   );
