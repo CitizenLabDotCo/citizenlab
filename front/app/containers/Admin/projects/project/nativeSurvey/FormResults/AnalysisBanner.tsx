@@ -19,6 +19,7 @@ import useFormCustomFields from 'hooks/useFormCustomFields';
 import Modal from 'components/UI/Modal';
 import { isNilOrError } from 'utils/helperUtils';
 import useLocalize from 'hooks/useLocalize';
+import T from 'components/T';
 
 const CreateAnalysisModal = ({ onClose }: { onClose: () => void }) => {
   const { formatMessage } = useIntl();
@@ -33,12 +34,6 @@ const CreateAnalysisModal = ({ onClose }: { onClose: () => void }) => {
     projectId,
     phaseId,
   });
-  const textCustomFields = !isNilOrError(formCustomFields)
-    ? formCustomFields.filter(
-        (field) =>
-          field.input_type === 'text' || field.input_type === 'multiline_text'
-      )
-    : [];
 
   const handleCreateAnalysis = () => {
     createAnalysis(
@@ -55,27 +50,43 @@ const CreateAnalysisModal = ({ onClose }: { onClose: () => void }) => {
     );
   };
 
+  if (isNilOrError(formCustomFields)) return null;
+
   return (
     <Box px="48px">
-      <Title mb="48px">{formatMessage(messages.analysisSelectQuestions)}</Title>
-      {textCustomFields?.map((field) => {
-        return (
-          <ListItem key={field.id} py="16px">
-            <Checkbox
-              label={localize(field.title_multiloc)}
-              checked={selectdQuestions.includes(field.id)}
-              onChange={(e) => {
-                if (e.target.checked) {
-                  setSelectedQuestions([...selectdQuestions, field.id]);
-                } else {
-                  setSelectedQuestions(
-                    selectdQuestions.filter((id) => id !== field.id)
-                  );
-                }
-              }}
-            />
-          </ListItem>
-        );
+      <Title>{formatMessage(messages.analysisSelectQuestions)}</Title>
+      <Text>
+        Which questions do you want to analyze simultaneously? You can always
+        create a new analysis with different questions later.
+      </Text>
+      {formCustomFields?.map((field) => {
+        if (field.input_type === 'page') {
+          return (
+            <Title variant="h5" key={field.id}>
+              <T value={field.title_multiloc} />
+            </Title>
+          );
+        } else if (field.input_type === 'section') {
+          return null;
+        } else {
+          return (
+            <ListItem key={field.id} py="16px">
+              <Checkbox
+                label={localize(field.title_multiloc)}
+                checked={selectdQuestions.includes(field.id)}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    setSelectedQuestions([...selectdQuestions, field.id]);
+                  } else {
+                    setSelectedQuestions(
+                      selectdQuestions.filter((id) => id !== field.id)
+                    );
+                  }
+                }}
+              />
+            </ListItem>
+          );
+        }
       })}
       <Box display="flex" justifyContent="flex-end" mt="48px" gap="24px">
         <Button buttonStyle="secondary" onClick={onClose}>
