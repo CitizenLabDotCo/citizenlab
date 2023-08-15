@@ -71,14 +71,15 @@ module Notifications
 
     def self.make_notifications_on(activity)
       cosponsors_initiative = activity&.item
-      recipient_id = cosponsors_initiative&.user_id
       initiating_user = activity&.user
+      recipient_id = cosponsors_initiative&.user_id
       initiative = cosponsors_initiative&.initiative
 
       if recipient_id && initiating_user && initiative
         [new(
           recipient_id: recipient_id,
           initiating_user: initiating_user,
+          cosponsors_initiative: cosponsors_initiative,
           post: initiative
         )]
       else
