@@ -38,6 +38,7 @@ describe('Information with events CTA', () => {
     cy.acceptCookies();
     cy.get('#e2e-project-see-events-button').should('not.exist');
     cy.get('#e2e-event-previews').should('not.exist');
+    cy.get('#e2e-cta-bar-see-events').should('not.exist');
     cy.get('#e2e-events-section-project-page').should('not.exist');
   });
 
@@ -54,6 +55,7 @@ describe('Information with events CTA', () => {
       cy.visit(`/en/projects/${projectSlug}`);
       cy.acceptCookies();
       cy.get('#e2e-project-see-events-button').should('exist');
+      cy.get('#e2e-cta-bar-see-events').should('exist');
       cy.get('#e2e-event-previews').should('exist');
       cy.get('#e2e-events-section-project-page').should('exist');
     });
