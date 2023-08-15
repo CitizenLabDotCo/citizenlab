@@ -61,15 +61,19 @@ module BulkImportIdeas
       ]
     end
 
-    # TODO: Deal with xlsx too
+    # TODO: Deal with xls files too and reject any that don't match
     def upload_file(file_content)
+      mime_type = file_content[/data:(.*);/, 1]
+      file_type = mime_type.include?('pdf') ? 'pdf' : 'xlsx'
       @file = IdeaImportFile.create!(
         file_by_content: {
-          name: 'import.pdf',
+          name: "import.#{file_type}",
+          import_type: file_type,
           project: @project,
           content: file_content # base64
         }
       )
+      file_type
     end
 
     def xlsx_to_idea_rows(xlsx)
