@@ -75,10 +75,24 @@ const PDFExportModal = ({ open, onClose, onExport }: Props) => {
               nisi ut aliquip ex ea commodo consequat.
             </Text>
             <Box mb="12px">
-              <Checkbox name="name" label={<>Name</>} />
+              <Checkbox
+                name="name"
+                label={
+                  <Text m="0">
+                    <FormattedMessage {...messages.includeFullName} />
+                  </Text>
+                }
+              />
             </Box>
             <Box mb="24px">
-              <Checkbox name="email" label={<>Email</>} />
+              <Checkbox
+                name="email"
+                label={
+                  <Text m="0">
+                    <FormattedMessage {...messages.includeEmail} />
+                  </Text>
+                }
+              />
             </Box>
             <Box w="100%" display="flex">
               <Button width="auto" type="submit" processing={loading}>
