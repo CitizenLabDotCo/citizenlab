@@ -45,7 +45,7 @@ module IdNemlogIn
     end
 
     def omniauth_setup(_configuration, env)
-      # return unless configuration.feature_activated?('vienna_citizen_login')
+      return unless Verification::VerificationService.new.active?(configuration, name)
 
       ver_config = config
 
@@ -58,8 +58,8 @@ module IdNemlogIn
       metadata = idp_metadata.merge({
         issuer: issuer,
         assertion_consumer_service_url: nil,
-        idp_cert: ver_config[:certificate],
-        private_key: ver_config[:private_key],
+        idp_cert: ver_config[:certificate], # can start with "Bag Attributes"
+        private_key: ver_config[:private_key], # should start with "-----BEGIN PRIVATE KEY-----" not "Bag Attributes"
         security: {
           authn_requests_signed: true,
           signature_method: 'http://www.w3.org/2001/04/xmldsig-more#rsa-sha256',
