@@ -50,7 +50,7 @@ const InitiativeMeta = ({ initiativeId }: Props) => {
   const initiativeDescription = stripHtml(localize(body_multiloc), 250);
   const initiativeImage =
     !isNilOrError(initiativeImages) && initiativeImages.data.length > 0
-      ? initiativeImages[0].attributes.versions.fb
+      ? initiativeImages.data[0].attributes.versions.fb
       : null;
   const initiativeUrl = window.location.href;
   const initiativeOgTitle = formatMessage(messages.metaOgTitle, {
