@@ -15,7 +15,7 @@ describe SideFxInitiativeService do
       end
 
       it 'changes initiative status to review_pending' do
-        service.after_update(initiative, user)
+        service.after_update(initiative, user, _cosponsors_ids = [])
         expect(initiative.reload.initiative_status.code).to eq 'review_pending'
       end
     end
