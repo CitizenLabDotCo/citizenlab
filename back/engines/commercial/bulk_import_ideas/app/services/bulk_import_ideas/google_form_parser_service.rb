@@ -99,12 +99,12 @@ module BulkImportIdeas
           { name: 'Title:', value: Faker::Quote.yoda, type: '', page: 1, x: 0.09, y: 1.34 },
           { name: 'Body:', value: Faker::Hipster.paragraph, type: '', page: 1, x: 0.09, y: 1.41 },
           # Select fields
-          { name: 'Yes:', value: nil, type: %w[filled_checkbox unfilled_checkbox].sample, page: 1, x: 0.11, y: 1.66 },
-          { name: 'No:', value: nil, type: %w[filled_checkbox unfilled_checkbox].sample, page: 1, x: 0.45, y: 1.66 },
-          { name: 'This:', value: nil, type: %w[filled_checkbox unfilled_checkbox].sample, page: 1, x: 0.11, y: 1.86 },
-          { name: 'That:', value: nil, type: %w[filled_checkbox unfilled_checkbox].sample, page: 1, x: 0.45, y: 1.86 },
+          { name: 'Yes', value: nil, type: %w[filled_checkbox unfilled_checkbox].sample, page: 1, x: 0.11, y: 1.66 },
+          { name: 'No', value: nil, type: %w[filled_checkbox unfilled_checkbox].sample, page: 1, x: 0.45, y: 1.66 },
+          { name: 'This', value: nil, type: %w[filled_checkbox unfilled_checkbox].sample, page: 1, x: 0.11, y: 1.86 },
+          { name: 'That', value: nil, type: %w[filled_checkbox unfilled_checkbox].sample, page: 1, x: 0.45, y: 1.86 },
           # Custom text field
-          { name: 'Another field:', value: Faker::Quote.robin, type: '', page: 2, x: 0.09, y: 2.12 }
+          { name: 'Another field', value: Faker::Quote.robin, type: '', page: 2, x: 0.09, y: 2.12 }
         ]
       end
     end
