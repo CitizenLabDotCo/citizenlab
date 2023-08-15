@@ -61,10 +61,11 @@ module BulkImportIdeas
       ]
     end
 
+    # TODO: Deal with xlsx too
     def upload_file(file_content)
       @file = IdeaImportFile.create!(
         file_by_content: {
-          name: 'test.pdf',
+          name: 'import.pdf',
           project: @project,
           content: file_content # base64
         }
