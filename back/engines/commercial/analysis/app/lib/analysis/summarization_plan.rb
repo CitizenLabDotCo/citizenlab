@@ -10,6 +10,10 @@ module Analysis
 
     attr_accessor :summarization_method_class, :llm, :truncate_values, :include_id, :shorten_labels, :accuracy, :impossible_reason
 
+    # These validations are not being used the model is not persisted and
+    # `validate` is not triggered. Consider them extra documentation to
+    # understand the data attributes, potentially useful in the future when we
+    # do decide to persist
     with_options unless: -> { impossible_reason } do
       validates :summarization_method_class, inclusion: { in: SummarizationMethod::Base::SUMMARIZATION_METHOD_CLASSES }
       validates :llm, inclusion: { in: SummarizationMethod::Base::LLMS }
