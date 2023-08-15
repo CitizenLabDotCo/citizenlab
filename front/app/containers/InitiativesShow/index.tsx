@@ -38,9 +38,6 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 import useLocalize from 'hooks/useLocalize';
 
-// animations
-import CSSTransition from 'react-transition-group/CSSTransition';
-
 // style
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
@@ -408,22 +405,11 @@ const InitiativesShow = ({ className, initiativeId }: Props) => {
 
     return (
       <>
-        {isLoadingInitiative && (
+        {isLoadingInitiative ? (
           <Loading>
             <Spinner />
           </Loading>
-        )}
-
-        <CSSTransition
-          classNames="content"
-          in={!isLoadingInitiative}
-          timeout={{
-            enter: contentFadeInDuration + contentFadeInDelay,
-            exit: 0,
-          }}
-          enter={true}
-          exit={false}
-        >
+        ) : (
           <Container id="e2e-initiative-show" className={className}>
             <InitiativeMeta initiativeId={initiativeId} />
 
@@ -652,7 +638,7 @@ const InitiativesShow = ({ className, initiativeId }: Props) => {
 
             <Footer postId={initiativeId} postType="initiative" />
           </Container>
-        </CSSTransition>
+        )}
 
         <Suspense fallback={null}>
           <Modals
