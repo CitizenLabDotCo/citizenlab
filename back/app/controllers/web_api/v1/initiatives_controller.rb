@@ -127,9 +127,12 @@ class WebApi::V1::InitiativesController < ApplicationController
   def update
     service = SideFxInitiativeService.new
 
+    cosponsors_ids = @initiative.cosponsors.map(&:id)
     initiative_params = permitted_attributes(@initiative)
     @initiative.assign_attributes(initiative_params)
     remove_image_if_requested!(@initiative, initiative_params, :header_bg)
+
+    puts "cosponsors_ids_test: #{cosponsors_ids}"
 
     authorize @initiative
     if anonymous_not_allowed?
@@ -146,7 +149,7 @@ class WebApi::V1::InitiativesController < ApplicationController
     ActiveRecord::Base.transaction do
       saved = @initiative.save save_options
       if saved
-        service.after_update(@initiative, current_user)
+        service.after_update(@initiative, current_user, cosponsors_ids)
       end
     end
 
