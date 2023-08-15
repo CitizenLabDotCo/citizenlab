@@ -37,7 +37,7 @@ const InitiativesTranslateButton = ({
 
   if (
     machineTranslationsEnabled &&
-    !isSmallerThanTablet &&
+    isSmallerThanTablet &&
     showTranslateButton
   ) {
     return (
