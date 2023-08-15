@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_13_073007) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_15_085922) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -566,17 +566,27 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_13_073007) do
     t.index ["idea_id"], name: "index_idea_images_on_idea_id"
   end
 
+  create_table "idea_import_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "project_id"
+    t.string "file"
+    t.string "name"
+    t.string "import_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_idea_import_files_on_project_id"
+  end
+
   create_table "idea_imports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "idea_id"
     t.uuid "import_user_id"
+    t.uuid "file_id"
     t.boolean "user_created", default: false
     t.boolean "required", default: false
     t.datetime "approved_at", precision: nil
     t.text "page_range", default: [], array: true
-    t.string "file_path"
-    t.string "file_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["file_id"], name: "index_idea_imports_on_file_id"
     t.index ["idea_id"], name: "index_idea_imports_on_idea_id"
     t.index ["import_user_id"], name: "index_idea_imports_on_import_user_id"
   end
@@ -1580,6 +1590,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_13_073007) do
   add_foreign_key "groups_projects", "projects"
   add_foreign_key "idea_files", "ideas"
   add_foreign_key "idea_images", "ideas"
+  add_foreign_key "idea_import_files", "projects"
+  add_foreign_key "idea_imports", "idea_import_files", column: "file_id"
   add_foreign_key "idea_imports", "ideas"
   add_foreign_key "idea_imports", "users", column: "import_user_id"
   add_foreign_key "ideas", "idea_statuses"

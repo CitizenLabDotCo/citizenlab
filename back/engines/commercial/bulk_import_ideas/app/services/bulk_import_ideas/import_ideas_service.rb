@@ -20,7 +20,8 @@ module BulkImportIdeas
       @all_projects = Project.all
       @all_topics = Topic.all
       @import_user = current_user
-      @file_path = 'test.pdf'
+      @project = nil
+      @file = nil
     end
 
     def import_ideas(idea_rows, import_as_draft: false)
@@ -58,6 +59,17 @@ module BulkImportIdeas
           'Location Description' => 'Panorama sur les Hautes Fagnes / Hohes Venn'
         }
       ]
+    end
+
+    # TODO: Deal with xlsx too
+    def upload_file(file_content)
+      @file = IdeaImportFile.create!(
+        file_by_content: {
+          name: 'import.pdf',
+          project: @project,
+          content: file_content # base64
+        }
+      )
     end
 
     def xlsx_to_idea_rows(xlsx)
@@ -291,14 +303,13 @@ module BulkImportIdeas
 
     def create_idea_import(idea, user_created)
       # Add import metadata
-      # TODO: Get page into this - no point in doing until we have refactored the parsed doc object
+      # TODO: Get page range into this - no point in doing until we have refactored the parsed doc object
       idea_import = IdeaImport.new(
         idea: idea,
         page_range: [1, 2],
         import_user: @import_user,
         user_created: user_created,
-        file_path: @file_path,
-        file_type: 'pdf'
+        file: @file
       )
       idea_import.save
     end
