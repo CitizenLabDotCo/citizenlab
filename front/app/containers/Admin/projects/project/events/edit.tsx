@@ -513,7 +513,7 @@ const AdminProjectEventEdit = ({ params }: Props) => {
                       labelTooltipText={formatMessage(
                         messages.onlineEventLinkTooltip
                       )}
-                      placeholder={'https://zoom.us/j/1234567890'}
+                      placeholder={'https://...'}
                     />
                   </Box>
                   <ErrorComponent apiErrors={get(errors, 'online_link')} />
