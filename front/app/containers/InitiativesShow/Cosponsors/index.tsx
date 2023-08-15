@@ -6,12 +6,13 @@ import {
   defaultStyles,
 } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
+import ListOfCosponsors from './ListOfCosponsors';
 
 interface Props {
   initiativeId: string;
 }
 
-const ListOfCosponsors = ({ initiativeId }: Props) => {
+const Cosponsors = ({ initiativeId }: Props) => {
   const theme = useTheme();
 
   return (
@@ -29,4 +30,4 @@ const ListOfCosponsors = ({ initiativeId }: Props) => {
   );
 };
 
-export default ListOfCosponsors;
+export default Cosponsors;
