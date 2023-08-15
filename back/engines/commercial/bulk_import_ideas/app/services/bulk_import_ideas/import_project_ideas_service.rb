@@ -14,24 +14,34 @@ module BulkImportIdeas
     def generate_example_xlsx
       columns = {
         'ID' => '1',
-        'Locale' => 'en',
-        'Email' => 'moderator@citizenlab.co',
-        'Date (dd-mm-yyyy)' => '18-07-2022'
+        'Locale' => @locale,
+        'Name' => 'Bill Test',
+        'Email' => 'bill@citizenlab.co',
+        'Date Published (dd-mm-yyyy)' => '18-07-2022'
       }
       columns['Phase'] = 1 if @project.timeline? # Only if there are phases in the project
 
-      ignore_columns = %w[topic_ids idea_files_attributes idea_images_attributes]
+      ignore_columns = %w[idea_files_attributes idea_images_attributes]
       @project_fields.each do |field|
-        next if field.input_type == 'section'
-        next if ignore_columns.include? field.code
+        next if field.input_type == 'section' || field.input_type == 'page' || ignore_columns.include?(field.code)
 
-        columns[field.code] = 'test'
+        column_name = field.title_multiloc[@locale]
+        value = case field.input_type
+
+        # TODO: Add other field types
+        when 'select'
+          field.options.first.title_multiloc[@locale]
+        when 'multiselect'
+          field.options.map { |o| o.title_multiloc[@locale] }.join '; '
+        when 'topic_ids'
+          @project.allowed_input_topics.map { |t| t.title_multiloc[@locale] }.join '; '
+        else
+          'Some text'
+        end
+        columns[column_name] = value
       end
 
       columns['Image URL'] = 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png'
-      columns['Topics'] = 'Mobility; Health and welfare'
-
-      # binding.pry
 
       XlsxService.new.hash_array_to_xlsx [columns]
     end
@@ -43,11 +53,36 @@ module BulkImportIdeas
         idea_row[:pages] = doc.pluck(:page).uniq
         idea_row[:project_id] = @project.id
         ## TODO: This won't currently allow for Title, Body, Email or Name to appear multiple times
-        idea_row[:title_multiloc] = { @locale.to_sym => find_field(doc, 'Title:')[:value] }
-        idea_row[:body_multiloc] = { @locale.to_sym => find_field(doc, 'Body:')[:value] }
-        idea_row[:user_email] = find_field(doc, 'Email:')[:value]
-        idea_row[:user_name] = find_field(doc, 'Name:')[:value]
+        idea_row[:title_multiloc] = { @locale.to_sym => find_field(doc, 'Title')[:value] }
+        idea_row[:body_multiloc] = { @locale.to_sym => find_field(doc, 'Body')[:value] }
+        idea_row[:user_email] = find_field(doc, 'Email')[:value]
+        idea_row[:user_name] = find_field(doc, 'Name')[:value]
         idea_row[:custom_field_values] = process_custom_fields(doc)
+        idea_row
+      end
+    end
+
+    def xlsx_to_idea_rows(xlsx)
+      xlsx.map do |xlsx_row|
+        idea_row = {}
+        idea_row[:id]                   = xlsx_row['ID']
+        idea_row[:project_id]        = idea_row[:project_id] = @project.id # TODO: Share this with doc import
+        idea_row[:user_email]           = xlsx_row['Email']
+        idea_row[:image_url]            = xlsx_row['Image URL']
+        idea_row[:published_at]         = xlsx_row['Date (dd-mm-yyyy)']
+
+        # TODO: All These should be done by the custom form mapping
+        idea_row[:title_multiloc] = { @locale.to_sym => xlsx_row['Title'] }
+        idea_row[:body_multiloc] = { @locale.to_sym => xlsx_row['Description'] }
+        idea_row[:topic_titles]         = (xlsx_row['Topics'] || '').split(';').map(&:strip).select(&:present?)
+
+        # idea_row[:phase_rank]           = xlsx_row['Phase']
+        idea_row[:published_at]         = xlsx_row['Date (dd-mm-yyyy)']
+        # idea_row[:latitude]             = xlsx_row['Latitude']
+        # idea_row[:longitude]            = xlsx_row['Longitude']
+        # idea_row[:location_description] = xlsx_row['Location Description']
+        idea_row[:id]                   = xlsx_row['ID']
+        # TODO: Map the doc type to a row so we can use the custom_field thing
         idea_row
       end
     end
@@ -55,15 +90,12 @@ module BulkImportIdeas
     # Match custom fields by the text of their label in the specified locale
     # Do this lookup for all fields, not just custom?
     def process_custom_fields(doc)
-      participation_method = Factory.instance.participation_method_for(@project)
-      custom_form = @project.custom_form || participation_method.create_default_form!
-
       # Get the keys for the field/option names in the import locale
       text_field_types = %w[text multiline_text]
       select_field_types = %w[select multiselect]
       text_fields = []
       select_options = []
-      IdeaCustomFieldsService.new(custom_form).all_fields.each do |field|
+      @project_fields.each do |field|
         if text_field_types.include? field[:input_type]
           text_fields << { name: field[:title_multiloc][@locale], key: field[:key] }
         elsif select_field_types.include? field[:input_type]

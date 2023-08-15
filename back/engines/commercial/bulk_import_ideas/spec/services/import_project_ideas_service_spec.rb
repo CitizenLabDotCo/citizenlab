@@ -6,6 +6,25 @@ describe BulkImportIdeas::ImportProjectIdeasService do
   let(:project) { create(:continuous_project) }
   let(:service) { described_class.new create(:admin), project.id, 'en' }
 
+  before do
+    # Topics for project
+    project.allowed_input_topics << create(:topic_economy)
+    project.allowed_input_topics << create(:topic_waste)
+
+    # Custom fields
+    custom_form = create(:custom_form, :with_default_fields, participation_context: project)
+    create(:custom_field, resource: custom_form, key: 'another_field', title_multiloc: { 'en' => 'Another field' }, enabled: true)
+    select_field = create(:custom_field, resource: custom_form, key: 'select_field', title_multiloc: { 'en' => 'Select field' }, input_type: 'select', enabled: true)
+    create(:custom_field_option, custom_field: select_field, key: 'yes', title_multiloc: { 'en' => 'Yes' })
+    create(:custom_field_option, custom_field: select_field, key: 'no', title_multiloc: { 'en' => 'No' })
+    multiselect_field = create(:custom_field, resource: custom_form, key: 'multiselect_field', title_multiloc: { 'en' => 'Multi select field' }, input_type: 'multiselect', enabled: true)
+    create(:custom_field_option, custom_field: multiselect_field, key: 'this', title_multiloc: { 'en' => 'This' })
+    create(:custom_field_option, custom_field: multiselect_field, key: 'that', title_multiloc: { 'en' => 'That' })
+    another_select_field = create(:custom_field, resource: custom_form, key: 'another_select_field', title_multiloc: { 'en' => 'Another select field' }, input_type: 'select', enabled: true)
+    create(:custom_field_option, custom_field: another_select_field, key: 'yes', title_multiloc: { 'en' => 'Yes' })
+    create(:custom_field_option, custom_field: another_select_field, key: 'no', title_multiloc: { 'en' => 'No' })
+  end
+
   describe 'generate_example_xlsx' do
     it 'produces an xlsx file with all the fields for a project' do
       xlsx = service.generate_example_xlsx
@@ -17,46 +36,32 @@ describe BulkImportIdeas::ImportProjectIdeasService do
   end
 
   describe 'paper_docs_to_idea_rows' do
-    before do
-      custom_form = create(:custom_form, :with_default_fields, participation_context: project)
-      create(:custom_field, resource: custom_form, key: 'another_field', title_multiloc: { 'en' => 'Another field:' }, enabled: true)
-      select_field = create(:custom_field, resource: custom_form, key: 'select_field', title_multiloc: { 'en' => 'Select field:' }, input_type: 'select', enabled: true)
-      create(:custom_field_option, custom_field: select_field, key: 'yes', title_multiloc: { 'en' => 'Yes' })
-      create(:custom_field_option, custom_field: select_field, key: 'no', title_multiloc: { 'en' => 'No' })
-      multiselect_field = create(:custom_field, resource: custom_form, key: 'multiselect_field', title_multiloc: { 'en' => 'Multi select field:' }, input_type: 'multiselect', enabled: true)
-      create(:custom_field_option, custom_field: multiselect_field, key: 'this', title_multiloc: { 'en' => 'This' })
-      create(:custom_field_option, custom_field: multiselect_field, key: 'that', title_multiloc: { 'en' => 'That' })
-      another_select_field = create(:custom_field, resource: custom_form, key: 'another_select_field', title_multiloc: { 'en' => 'Another select field:' }, input_type: 'select', enabled: true)
-      create(:custom_field_option, custom_field: another_select_field, key: 'yes', title_multiloc: { 'en' => 'Yes' })
-      create(:custom_field_option, custom_field: another_select_field, key: 'no', title_multiloc: { 'en' => 'No' })
-    end
-
     let(:docs) do
       [
         [
-          { name: 'Name:', value: 'John Rambo', type: '', page: 1, x: 0.09, y: 1.16 },
-          { name: 'Email:', value: 'john_rambo@gravy.com', type: '', page: 1, x: 0.09, y: 1.24 },
-          { name: 'Title:', value: 'Free donuts for all', type: '', page: 1, x: 0.09, y: 1.34 },
-          { name: 'Body:', value: 'Give them all donuts', type: '', page: 1, x: 0.09, y: 1.41 },
+          { name: 'Name', value: 'John Rambo', type: '', page: 1, x: 0.09, y: 1.16 },
+          { name: 'Email', value: 'john_rambo@gravy.com', type: '', page: 1, x: 0.09, y: 1.24 },
+          { name: 'Title', value: 'Free donuts for all', type: '', page: 1, x: 0.09, y: 1.34 },
+          { name: 'Body', value: 'Give them all donuts', type: '', page: 1, x: 0.09, y: 1.41 },
           { name: 'Yes', value: nil, type: 'filled_checkbox', page: 1, x: 0.11, y: 1.66 },
           { name: 'No', value: nil, type: 'filled_checkbox', page: 1, x: 0.45, y: 1.66 },
           { name: 'This', value: nil, type: 'filled_checkbox', page: 1, x: 0.11, y: 1.86 },
           { name: 'That', value: nil, type: 'filled_checkbox', page: 1, x: 0.45, y: 1.86 },
-          { name: 'Another field:', value: 'Not much to say', type: '', page: 2, x: 0.09, y: 2.12 },
+          { name: 'Another field', value: 'Not much to say', type: '', page: 2, x: 0.09, y: 2.12 },
           { name: 'Ignored field', value: 'Ignored value', type: 'filled_checkbox', page: 2, x: 0.45, y: 2.23 },
           { name: 'Yes', value: nil, type: 'unfilled_checkbox', page: 2, x: 0.11, y: 2.66 },
           { name: 'No', value: nil, type: 'filled_checkbox', page: 2, x: 0.45, y: 2.66 }
         ],
         [
-          { name: 'Name:', value: 'Ned Flanders', type: '', page: 3, x: 0.09, y: 3.16 },
-          { name: 'Email:', value: 'ned@simpsons.com', type: '', page: 3, x: 0.09, y: 3.24 },
-          { name: 'Title:', value: 'New Wrestling Arena needed', type: '', page: 3, x: 0.09, y: 3.34 },
-          { name: 'Body:', value: 'I am convinced that if we do not get this we will be sad.', type: '', page: 3, x: 0.09, y: 3.41 },
+          { name: 'Name', value: 'Ned Flanders', type: '', page: 3, x: 0.09, y: 3.16 },
+          { name: 'Email', value: 'ned@simpsons.com', type: '', page: 3, x: 0.09, y: 3.24 },
+          { name: 'Title', value: 'New Wrestling Arena needed', type: '', page: 3, x: 0.09, y: 3.34 },
+          { name: 'Body', value: 'I am convinced that if we do not get this we will be sad.', type: '', page: 3, x: 0.09, y: 3.41 },
           { name: 'Yes', value: nil, type: 'unfilled_checkbox', page: 3, x: 0.11, y: 3.66 },
           { name: 'No', value: nil, type: 'filled_checkbox', page: 3, x: 0.45, y: 3.66 },
           { name: 'This', value: nil, type: 'unfilled_checkbox', page: 3, x: 0.11, y: 3.86 },
           { name: 'That', value: nil, type: 'filled_checkbox', page: 3, x: 0.45, y: 3.86 },
-          { name: 'Another field:', value: 'Something else', type: '', page: 4, x: 0.09, y: 4.12 },
+          { name: 'Another field', value: 'Something else', type: '', page: 4, x: 0.09, y: 4.12 },
           { name: 'Ignored option', value: nil, type: 'filled_checkbox', page: 4, x: 0.45, y: 4.23 }
         ]
       ]
@@ -106,6 +111,13 @@ describe BulkImportIdeas::ImportProjectIdeasService do
     it 'lists the correct pages for the document' do
       expect(rows[0][:pages]).to eq [1, 2]
       expect(rows[1][:pages]).to eq [3, 4]
+    end
+  end
+
+  describe 'xlsx_to_idea_rows' do
+    it 'converts xlsx to rows' do
+      # TODO: Complete this
+      expect(project).not_to be_nil
     end
   end
 end

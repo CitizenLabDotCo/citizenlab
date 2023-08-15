@@ -132,12 +132,12 @@ resource 'BulkImportIdeasImportIdeas' do
           expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:parse_pdf).and_return(
             [
               [
-                { name: 'Name:', value: 'Bob Test', type: '', page: 1, x: 0.09, y: 1.16 },
-                { name: 'Email:', value: 'bob@test.com', type: '', page: 1, x: 0.09, y: 1.24 },
-                { name: 'Title:', value: 'This is really a great title', type: '', page: 1, x: 0.09, y: 1.34 },
-                { name: 'Body:', value: 'And this is the body', type: '', page: 1, x: 0.09, y: 1.41 },
-                { name: 'Yes:', value: nil, type: 'filled_checkbox', page: 1, x: 0.11, y: 1.66 },
-                { name: 'No:', value: nil, type: 'unfilled_checkbox', page: 1, x: 0.45, y: 1.66 }
+                { name: 'Name', value: 'Bob Test', type: '', page: 1, x: 0.09, y: 1.16 },
+                { name: 'Email', value: 'bob@test.com', type: '', page: 1, x: 0.09, y: 1.24 },
+                { name: 'Title', value: 'This is really a great title', type: '', page: 1, x: 0.09, y: 1.34 },
+                { name: 'Body', value: 'And this is the body', type: '', page: 1, x: 0.09, y: 1.41 },
+                { name: 'Yes', value: nil, type: 'filled_checkbox', page: 1, x: 0.11, y: 1.66 },
+                { name: 'No', value: nil, type: 'unfilled_checkbox', page: 1, x: 0.45, y: 1.66 }
               ]
             ]
           )
