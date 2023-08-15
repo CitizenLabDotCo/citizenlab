@@ -25,7 +25,8 @@ class SideFxInitiativeService
     before_publish initiative, user
   end
 
-  def after_update(initiative, user)
+  def after_update(initiative, user, old_cosponsor_ids)
+    log_activities_if_cosponsors_added(initiative, user, old_cosponsor_ids)
     transition_to_review_pending_if_required(initiative, user)
     remove_user_from_past_activities_with_item(initiative, user) if initiative.anonymous_previously_changed?(to: true)
 
@@ -49,6 +50,16 @@ class SideFxInitiativeService
     LogActivityJob.perform_later(initiative, 'changed_body', user_for_activity_on_anonymizable_item(initiative, user), initiative.updated_at.to_i, payload: { change: initiative.body_multiloc_previous_change })
   end
 
+  def after_accept_cosponsorship_invite(cosponsors_initiative, user)
+    LogActivityJob.perform_later(
+      cosponsors_initiative,
+      'cosponsorship_accepted',
+      user, # We don't want anonymized users being cosponsors
+      cosponsors_initiative.updated_at.to_i,
+      payload: { change: cosponsors_initiative.status_previous_change }
+    )
+  end
+
   def before_destroy(initiative, user); end
 
   def after_destroy(frozen_initiative, user)
@@ -58,6 +69,23 @@ class SideFxInitiativeService
   end
 
   private
+
+  def log_activities_if_cosponsors_added(initiative, user, old_cosponsor_ids)
+    added_ids = initiative.cosponsors.map(&:id) - old_cosponsor_ids
+
+    if added_ids.present?
+      new_cosponsors_initiatives = initiative.cosponsors_initiatives.where(user_id: added_ids)
+
+      new_cosponsors_initiatives.each do |cosponsors_initiative|
+        LogActivityJob.perform_later(
+          cosponsors_initiative,
+          'created',
+          user, # We don't want anonymized authors when cosponsors feature in use
+          cosponsors_initiative.updated_at.to_i
+        )
+      end
+    end
+  end
 
   def transition_to_review_pending_if_required(initiative, user)
     if initiative.initiative_status&.code == 'changes_requested' && user == initiative.author
