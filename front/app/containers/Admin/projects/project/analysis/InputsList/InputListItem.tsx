@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { isEmpty } from 'lodash-es';
 
 import { IInputsData } from 'api/analysis_inputs/types';
@@ -18,11 +18,11 @@ import ShortFieldValue from './ShortFieldValue';
 
 interface Props {
   input: IInputsData;
-  onSelect: () => void;
+  onSelect: (id: string) => void;
   selected: boolean;
 }
 
-const InputListItem = ({ input, onSelect, selected }: Props) => {
+const InputListItem = memo(({ input, onSelect, selected }: Props) => {
   const { analysisId } = useParams() as { analysisId: string };
   const { data: analysis } = useAnalysis(analysisId);
   const { data: author } = useUserById(input.relationships.author.data?.id);
@@ -35,7 +35,7 @@ const InputListItem = ({ input, onSelect, selected }: Props) => {
   return (
     <>
       <Box
-        onClick={() => onSelect()}
+        onClick={() => onSelect(input.id)}
         bg={selected ? colors.background : colors.white}
         p="12px"
         display="flex"
@@ -95,27 +95,30 @@ const InputListItem = ({ input, onSelect, selected }: Props) => {
               <span> {input.attributes.comments_count}</span>
             </Box>
           )}
-          <Box>
-            {analysis.data.relationships.custom_fields.data.map(
-              (customField) => (
-                <Text
-                  key={customField.id}
-                  fontSize="s"
-                  m="0px"
-                  textOverflow="ellipsis"
-                  overflow="hidden"
-                  whiteSpace="nowrap"
-                >
-                  <ShortFieldValue
-                    customFieldId={customField.id}
-                    input={input}
-                    projectId={analysis.data.relationships.project?.data?.id}
-                    phaseId={analysis.data.relationships.phase?.data?.id}
-                  />
-                </Text>
-              )
-            )}
-          </Box>
+          {(!title_multiloc || isEmpty(title_multiloc)) && (
+            <Box flex="1">
+              {analysis.data.relationships.custom_fields.data
+                .slice(0, 3)
+                .map((customField) => (
+                  <Text
+                    key={customField.id}
+                    fontSize="s"
+                    color="textSecondary"
+                    m="0px"
+                    textOverflow="ellipsis"
+                    overflow="hidden"
+                    whiteSpace="nowrap"
+                  >
+                    <ShortFieldValue
+                      customFieldId={customField.id}
+                      input={input}
+                      projectId={analysis.data.relationships.project?.data?.id}
+                      phaseId={analysis.data.relationships.phase?.data?.id}
+                    />
+                  </Text>
+                ))}
+            </Box>
+          )}
         </Box>
 
         <Taggings inputId={input.id} />
@@ -123,6 +126,6 @@ const InputListItem = ({ input, onSelect, selected }: Props) => {
       <Divider m="0px" />
     </>
   );
-};
+});
 
 export default InputListItem;
