@@ -302,6 +302,7 @@ const InitiativesShow = ({ className, initiativeId }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const locale = useLocale();
+  const isSmallerThanTablet = useBreakpoint('tablet');
   const { data: authUser } = useAuthUser();
   const { data: appConfiguration } = useAppConfiguration();
   const { data: initiativeImages } = useInitiativeImages(initiativeId);
@@ -409,7 +410,6 @@ const InitiativesShow = ({ className, initiativeId }: Props) => {
       initiative.data.relationships?.topics?.data?.map((item) => item.id) || [];
     const initiativeUrl = location.href;
     const initiativeBody = localize(initiative.data.attributes?.body_multiloc);
-    const isSmallerThanTablet = useBreakpoint('tablet');
     const utmParams = !isNilOrError(authUser)
       ? {
           source: 'share_initiative',
