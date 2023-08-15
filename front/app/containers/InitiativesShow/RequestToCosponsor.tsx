@@ -1,14 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
 import { media, defaultCardStyle } from 'utils/styleUtils';
-import { colors } from 'utils/styleUtils';
-import { Box, Button, Icon } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Button,
+  Icon,
+  Text,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import {
   StatusWrapper,
   StatusExplanation,
 } from './ReactionControl/SharedStyles';
 import useAcceptInitiativeCosponsorshipInvite from 'api/cosponsors_initiatives/useAcceptInitiativeCosponsorshipInvite';
 import useInitiativeCosponsorsRequired from 'hooks/useInitiativeCosponsorsRequired';
+import useInitiativeById from 'api/initiatives/useInitiativeById';
+import useAuthUser from 'api/me/useAuthUser';
 
 const Container = styled.div``;
 
@@ -42,15 +49,59 @@ interface Props {
 
 const RequestToCosponsor = ({ className, id, initiativeId }: Props) => {
   const cosponsorsRequired = useInitiativeCosponsorsRequired();
+  const {
+    mutate: acceptInitiativeConsponsorshipInvite,
+    isLoading,
   const { mutate: acceptInitiativeConsponsorshipInvite } =
     useAcceptInitiativeCosponsorshipInvite();
+  } = useAcceptInitiativeCosponsorshipInvite();
+  const { data: initiative } = useInitiativeById(initiativeId);
+  const { data: authUser } = useAuthUser();
 
-  if (!cosponsorsRequired) return null;
+  if (!cosponsorsRequired || !initiative || !authUser) return null;
 
   const handleOnClickCosponsor = () => {
-    acceptInitiativeConsponsorshipInvite({ initiativeId });
+    acceptInitiativeConsponsorshipInvite(initiativeId);
   };
 
+  const authUserId = authUser.data.id;
+  const cosponsorships = initiative.data.attributes.cosponsorships;
+  const authUserHasCosponsored = cosponsorships
+    .filter((c) => c.status === 'accepted')
+    .map((cosponsorship) => cosponsorship.user_id)
+    .includes(authUserId);
+  const authUserIsInvitedToCosponsor = cosponsorships
+    .filter((c) => c.status === 'pending')
+    .map((c) => c.user_id)
+    .includes(authUserId);
+  const authUserIsAuthor =
+    initiative.data.relationships.author.data?.id === authUserId;
+
+  if (
+    authUserIsInvitedToCosponsor &&
+    !authUserHasCosponsored &&
+    !authUserIsAuthor
+  ) {
+    return (
+      <Container id={id} className={className || ''} aria-live="polite">
+        <Container2>
+          <Box mb="16px">
+            <StatusWrapper>Cosponsor</StatusWrapper>
+          </Box>
+          <StatusIcon ariaHidden name="user" />
+          <Box mb="24px">
+            <StatusExplanation>
+              <b>Filler.</b> Filler.
+              <Box mt="20px">Filler.</Box>
+            </StatusExplanation>
+          </Box>
+          <Button
+            icon="volunteer"
+            onClick={handleOnClickCosponsor}
+            processing={isLoading}
+          >
+            Cosponsor
+          </Button>
   return (
     <Container id={id} className={className || ''} aria-live="polite">
       <Container2>
@@ -70,6 +121,12 @@ const RequestToCosponsor = ({ className, id, initiativeId }: Props) => {
       </Container2>
     </Container>
   );
+        </Container2>
+      </Container>
+    );
+  }
+
+  return null;
 };
 
 export default RequestToCosponsor;
