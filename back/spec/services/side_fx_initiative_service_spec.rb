@@ -25,7 +25,7 @@ describe SideFxInitiativeService do
       let(:cosponsor1) { create(:user) }
       let(:cosponsor2) { create(:user) }
 
-      it "logs CosponsorsInitiative 'created' action jobs" do
+      it "logs CosponsorsInitiative 'created' activity jobs" do
         initiative.update!(cosponsor_ids: [cosponsor1.id, cosponsor2.id])
         cosponsors_initiatives =
           CosponsorsInitiative.where(initiative: initiative).where(user_id: [cosponsor1.id, cosponsor2.id])
@@ -38,6 +38,25 @@ describe SideFxInitiativeService do
           .with(cosponsors_initiatives[1], 'created', user, cosponsors_initiatives[1].created_at.to_i)
           .exactly(1).times
       end
+    end
+  end
+
+  describe '#after_accept_cosponsorship_invite' do
+    let(:cosponsors_initiative) { create(:cosponsors_initiative) }
+
+    it 'logs a cosponsorship_accepted activity job' do
+      cosponsors_initiative.update!(status: 'accepted')
+
+      expect { service.after_accept_cosponsorship_invite(cosponsors_initiative, user) }
+        .to enqueue_job(LogActivityJob)
+        .with(
+          cosponsors_initiative,
+          'cosponsorship_accepted',
+          user,
+          cosponsors_initiative.updated_at.to_i,
+          payload: { change: %w[pending accepted] }
+        )
+        .exactly(1).times
     end
   end
 end
