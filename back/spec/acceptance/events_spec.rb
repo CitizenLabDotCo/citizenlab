@@ -134,7 +134,8 @@ resource 'Events' do
           end_at: event.end_at.iso8601(3),
           created_at: event.created_at.iso8601(3),
           updated_at: event.updated_at.iso8601(3),
-          attendees_count: event.attendees_count
+          attendees_count: event.attendees_count,
+          online_link: event.online_link
         }
       )
     end
