@@ -146,6 +146,9 @@ class PermissionsService
         email: 'dont_ask'
       },
       custom_fields: requirements_fields(permission).to_h { |field| [field.key, 'dont_ask'] },
+      onboarding: {
+        topics_and_areas: 'ask'
+      },
       special: {
         password: 'dont_ask',
         confirmation: 'dont_ask',
