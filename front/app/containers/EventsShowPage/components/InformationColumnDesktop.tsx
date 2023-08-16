@@ -7,6 +7,7 @@ import EventDateStylized from './MetadataInformation/EventDateStylized';
 import Location from './MetadataInformation/Location';
 import FullEventTime from './MetadataInformation/EventTimeTextual';
 import EventSharingButtons from './EventSharingButtons';
+import ParticipantsCount from './MetadataInformation/ParticipantsCount';
 
 // styling
 import { colors } from 'utils/styleUtils';
@@ -17,7 +18,6 @@ import { IEventData } from 'api/events/types';
 
 // utils
 import moment from 'moment';
-import ParticipantsCount from './MetadataInformation/ParticipantsCount';
 
 interface Props {
   event: IEventData;

@@ -22,6 +22,7 @@ type InputProps = {
   textColor?: string;
   filterSelectorStyle?: 'button' | 'text';
   listTop?: string;
+  mobileLeft?: string;
 };
 
 type Props = InputProps & DataProps;
@@ -34,6 +35,7 @@ const ProjectFilterDropdown = ({
   textColor,
   filterSelectorStyle,
   listTop,
+  mobileLeft,
 }: Props) => {
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
   const localize = useLocalize();
@@ -63,7 +65,7 @@ const ProjectFilterDropdown = ({
           onChange={handleOnChange}
           multipleSelectionAllowed={true}
           right="-10px"
-          mobileLeft="-5px"
+          mobileLeft={mobileLeft ? mobileLeft : '-5px'}
           textColor={textColor}
           filterSelectorStyle={filterSelectorStyle}
           top={listTop}

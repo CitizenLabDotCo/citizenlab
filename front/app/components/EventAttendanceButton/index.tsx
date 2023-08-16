@@ -10,6 +10,7 @@ import { IEventData } from 'api/events/types';
 import useAuthUser from 'api/me/useAuthUser';
 import useAddEventAttendance from 'api/event_attendance/useAddEventAttendance';
 import useDeleteEventAttendance from 'api/event_attendance/useDeleteEventAttendance';
+import useEventsByUserId from 'api/events/useEventsByUserId';
 
 // intl
 import messages from './messages';
@@ -18,7 +19,6 @@ import { useIntl } from 'utils/cl-intl';
 // style
 import { useTheme } from 'styled-components';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-import useEventsByUserId from 'api/events/useEventsByUserId';
 
 type EventAttendanceButtonProps = {
   event: IEventData;
@@ -39,13 +39,10 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
     useDeleteEventAttendance(event.id, user?.data?.id);
 
   // Attendance
-
   const userAttendingEventObject = eventsAttending?.data?.find(
     (eventAttending) => eventAttending.id === event.id
   );
-
   const userIsAttending = !!userAttendingEventObject;
-
   const attendanceId =
     userAttendingEventObject?.relationships.user_attendance.data.id || null;
 

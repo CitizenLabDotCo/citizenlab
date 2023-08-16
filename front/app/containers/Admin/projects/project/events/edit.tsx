@@ -21,6 +21,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import Map from './components/map';
 import { leafletMapClicked$ } from 'components/UI/LeafletMap/events';
+import Modal from 'components/UI/Modal';
 
 // router
 import clHistory from 'utils/cl-router/history';
@@ -48,7 +49,6 @@ import { withRouter } from 'utils/cl-router/withRouter';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { geocode } from 'utils/locationTools';
-import Modal from 'components/UI/Modal';
 
 interface Props {
   params: Record<string, string>;
@@ -539,7 +539,6 @@ const AdminProjectEventEdit = ({ params }: Props) => {
           close={() => {
             setMapModalVisible(false);
           }}
-          className="e2e-comment-deletion-modal"
           header={formatMessage(messages.refineLocationCoordinates)}
           width={'800px'}
         >

@@ -38,9 +38,6 @@ interface Props {
   startAtMoment: moment.Moment;
   endAtMoment: moment.Moment;
   isMultiDayEvent: boolean;
-  showLocation?: boolean;
-  showDescription?: boolean;
-  showAttachments?: boolean;
   titleFontSize?: number;
 }
 

@@ -35,9 +35,6 @@ interface Props {
   event: IEventData;
   className?: string;
   id?: string;
-  showLocation?: boolean;
-  showDescription?: boolean;
-  showAttachments?: boolean;
   titleFontSize?: number;
 }
 
