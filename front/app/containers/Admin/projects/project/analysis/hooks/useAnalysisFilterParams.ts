@@ -21,16 +21,36 @@ const useAnalysisFilterParams = () => {
     'comments_to',
   ]);
 
+  const tag_ids = handleArraySearchParam(searchParams, 'tag_ids');
+
   const arrayFilters = {
-    tag_ids: handleArraySearchParam(searchParams, 'tag_ids'),
+    ...(tag_ids
+      ? { tag_ids: handleArraySearchParam(searchParams, 'tag_ids') }
+      : {}),
   };
+
+  const authorCustomArrayFilters = {};
+  const authorCustomScalarFilters = {};
+
+  for (const key in allParams) {
+    if (key.match(/^author_custom_([a-f0-9-]+)$/)) {
+      authorCustomArrayFilters[key] = handleArraySearchParam(searchParams, key);
+    } else if (key.match(/^author_custom_([a-f0-9-]+)_(from|to)$/)) {
+      authorCustomScalarFilters[key] = allParams[key];
+    }
+  }
 
   // Let's make sure this hook returns a stable reference: The object stays the
   // same if the filter params don't change
   const filters = {
     ...scalarFilters,
+    ...authorCustomScalarFilters,
     ...arrayFilters,
+    ...authorCustomArrayFilters,
   };
+
+  console.log(filters);
+
   const jsonFilters = JSON.stringify(filters);
   const stableFilters = useMemo(() => {
     return JSON.parse(jsonFilters);

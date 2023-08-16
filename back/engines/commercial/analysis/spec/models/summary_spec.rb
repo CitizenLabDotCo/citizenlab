@@ -28,7 +28,9 @@ RSpec.describe Analysis::Summary do
         'votes_to' => 2,
         'comments_from' => 0,
         'comments_to' => 100,
-        'tag_ids' => [SecureRandom.uuid]
+        'tag_ids' => [SecureRandom.uuid],
+        'published_at_from' => '2023-04-06',
+        'published_at_to' => '2023-06-30'
       }
       expect(summary).to be_valid
     end
