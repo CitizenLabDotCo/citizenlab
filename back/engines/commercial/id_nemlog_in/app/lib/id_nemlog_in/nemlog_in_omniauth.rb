@@ -8,6 +8,7 @@ module IdNemlogIn
       pre_production_integration: {
         issuer: 'https://nemlogin-k3kd.loca.lt',
         # https://www.nemlog-in.dk/vejledningertiltestmiljo/forside/test-som-tjenesteudbyder-eller-broker/
+        # But the certificates from `production_integration` are used, because the ones from `pre_production_integration` give "Invalid Signature on SAML Response"
         metadata_xml_file: File.join(IdNemlogIn::Engine.root, 'config', 'saml', 'idp_metadata', 'pre_production_integration.xml')
       },
       production_integration: {
