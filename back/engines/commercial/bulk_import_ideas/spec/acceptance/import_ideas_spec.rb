@@ -171,7 +171,7 @@ resource 'BulkImportIdeasImportIdeas' do
 
         example_request 'Get the import meta data for an idea' do
           assert_status 200
-          binding.pry
+          expect(response_data[:type]).to eq 'idea_import'
         end
       end
     end
