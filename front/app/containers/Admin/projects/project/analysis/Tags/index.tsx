@@ -148,13 +148,15 @@ const Tags = () => {
           buttonStyle="secondary-outlined"
         >
           Auto-tag
-          <BlickingIcon
-            name={'dot'}
-            width="16px"
-            height="16px"
-            fill={colors.primary}
-            ml="8px"
-          />
+          {!tags?.data.length && (
+            <BlickingIcon
+              name={'dot'}
+              width="16px"
+              height="16px"
+              fill={colors.primary}
+              ml="8px"
+            />
+          )}
         </Button>
         <Box display="flex" alignItems="center" mb="8px" as="form">
           <Input
