@@ -19,6 +19,7 @@ const AutoTagOptionContainer = styled.div`
     box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
       rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
   }
+  min-height: 90px;
 `;
 
 const AutoTagOption = ({
@@ -39,12 +40,13 @@ const AutoTagOption = ({
         background={TagTypeColorMap[tagType].background}
         px="12px"
         py="4px"
-        flex="0 0 120px"
-        mx="-10px"
+        flex="0 0 160px"
+        ml="-14px"
+        boxShadow="rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px;"
       >
         {title}
       </Box>
-      <Text px="12px">{children}</Text>
+      <Text px="20px">{children}</Text>
     </AutoTagOptionContainer>
   );
 };
@@ -65,12 +67,12 @@ const AutotaggingModal = ({ onCloseModal }: { onCloseModal: () => void }) => {
   };
   return (
     <Box px="24px">
-      <Title>What tags do you want to add?</Title>
-      <Text>
+      <Title mb="32px">What tags do you want to add?</Title>
+      <Text mb="32px">
         Auto-tags are automatically derived by the computer. You can change or
         remove them at all times.
       </Text>
-      <Box display="flex" flexDirection="column" gap="12px">
+      <Box display="flex" flexDirection="column" gap="16px">
         <AutoTagOption
           tagType="sentiment"
           title="Sentiment"
