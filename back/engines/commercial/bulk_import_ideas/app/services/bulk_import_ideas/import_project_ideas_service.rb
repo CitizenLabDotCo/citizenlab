@@ -47,7 +47,7 @@ module BulkImportIdeas
     end
 
     # parsed_docs is the output from google form parser
-    def paper_docs_to_idea_rows(parsed_docs)
+    def pdf_to_idea_rows(parsed_docs)
       parsed_docs.map do |doc|
         idea_row = {}
         idea_row[:pages] = doc.pluck(:page).uniq

@@ -35,7 +35,7 @@ describe BulkImportIdeas::ImportProjectIdeasService do
     end
   end
 
-  describe 'paper_docs_to_idea_rows' do
+  describe 'pdf_to_idea_rows' do
     let(:docs) do
       [
         [
@@ -66,7 +66,7 @@ describe BulkImportIdeas::ImportProjectIdeasService do
         ]
       ]
     end
-    let(:rows) { service.paper_docs_to_idea_rows docs }
+    let(:rows) { service.pdf_to_idea_rows docs }
 
     it 'converts the output from GoogleFormParser into idea rows' do
       expect(rows.count).to eq 2

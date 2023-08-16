@@ -13,7 +13,7 @@ module BulkImportIdeas
       import_ideas_service.upload_file file, file_type
 
       idea_rows = if file_type == 'pdf'
-        import_ideas_service.paper_docs_to_idea_rows(parse_pdf)
+        import_ideas_service.pdf_to_idea_rows(parse_pdf)
       else
         import_ideas_service.xlsx_to_idea_rows(parse_xlsx)
       end
@@ -67,7 +67,7 @@ module BulkImportIdeas
       @import_ideas_service ||= if params[:id]
         ImportProjectIdeasService.new(current_user, params[:id], locale)
       else
-        ImportIdeasService.new(current_user)
+        ImportGlobalIdeasService.new(current_user)
       end
     end
 
