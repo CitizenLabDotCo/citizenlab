@@ -421,8 +421,6 @@ en:
       subject: 'A new project was published on the platform of %{organizationName}'
       header_title: 'A new project was published'
       header_message: 'The participation platform of %{organizationName} just published the following project:'
-      x_ideas: '%{numberOfIdeas} ideas'
-      no_ideas: 'No ideas yet'
       cta_view_project: 'See this project'
       preheader: 'A new project was published'
     status_change_on_idea_you_follow:
