@@ -210,6 +210,46 @@ export const signUpFlow = (
       },
     },
 
+    'sign-up:onboarding': {
+      CLOSE: () => {
+        setCurrentStep('closed');
+        trackEventByName(tracks.signUpCustomFieldsStepExited);
+      },
+      SUBMIT: (userId: string, formData: FormData) => {
+        updateUser(
+          { userId, custom_field_values: formData },
+          {
+            onSuccess: async () => {
+              const { requirements } = await getRequirements();
+
+              if (requirements.special.group_membership === 'require') {
+                setCurrentStep('closed');
+                return;
+              }
+
+              setCurrentStep('success');
+              trackEventByName(tracks.signUpCustomFieldsStepCompleted);
+            },
+            onError: (e) => {
+              trackEventByName(tracks.signUpCustomFieldsStepFailed);
+              throw e;
+            },
+          }
+        );
+      },
+      SKIP: async () => {
+        const { requirements } = await getRequirements();
+
+        if (requirements.special.group_membership === 'require') {
+          setCurrentStep('closed');
+          return;
+        }
+
+        setCurrentStep('success');
+        trackEventByName(tracks.signUpCustomFieldsStepSkipped);
+      },
+    },
+
     'sign-up:invite': {
       CLOSE: () => setCurrentStep('closed'),
       SUBMIT: async (token: string) => {
