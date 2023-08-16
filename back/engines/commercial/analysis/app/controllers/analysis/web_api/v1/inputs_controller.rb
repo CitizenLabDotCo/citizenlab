@@ -9,7 +9,8 @@ module Analysis
 
         def index
           # index is not policy scoped, instead the analysis is authorized.
-          @inputs = InputsFinder.new(@analysis, input_filter_params.to_h).execute
+          filters = correct_array_null_values(input_filter_params.to_h)
+          @inputs = InputsFinder.new(@analysis, filters).execute
           @inputs = @inputs.order(published_at: :asc)
           @inputs = @inputs.includes(:author)
           @inputs = paginate @inputs
@@ -59,6 +60,20 @@ module Analysis
             *permitted_dynamic_keys,
             **permitted_dynamic_array_keys
           )
+        end
+
+        # Rails interprets the url query param `?tag_ids[]=` as `tag_ids: [""]`
+        # Both the FE and the back-end use an internal representation
+        # of this filter of `tag_ids: [nil]` (or null in JS), meaning all inputs wihtout tags.
+        # This function converts the empty string to `nil` within the given hash of params
+        def correct_array_null_values(params_hash)
+          params_hash.transform_values do |value|
+            if value.is_a?(Array)
+              value.map { |item| item == '' ? nil : item }
+            else
+              value
+            end
+          end
         end
       end
     end
