@@ -102,6 +102,10 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.internalCommentOnUnassignedInitiative',
     defaultMessage: '{name} commented internally on an unassigned proposal',
   },
+  invitationToCosponsorInitiative: {
+    id: 'app.containers.NotificationMenu.invitationToCosponsorInitiative',
+    defaultMessage: '{name} invited you to cosponsor a proposal',
+  },
   userReportedCommentAsSpam: {
     id: 'app.containers.NotificationMenu.userReportedCommentAsSpam1',
     defaultMessage: '{name} reported a comment on "{postTitle}" as spam',

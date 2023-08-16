@@ -185,6 +185,19 @@ export interface IInviteAcceptedNotificationData extends IBaseNotificationData {
   };
 }
 
+export interface IInvitationToCosponsorInitiativeNotificationData
+  extends IBaseNotificationData {
+  attributes: {
+    type: 'invitation_to_cosponsor_initiative';
+    read_at: string | null;
+    created_at: string;
+    initiating_user_first_name: string | null;
+    initiating_user_last_name: string | null;
+    initiating_user_slug: string | null;
+    post_slug: string | null;
+  };
+}
+
 export interface IMentionInCommentNotificationData
   extends IBaseNotificationData {
   attributes: {
@@ -494,6 +507,7 @@ export interface INotificationDataMap {
   IInitiativeMarkedAsSpamNotificationData: IInitiativeMarkedAsSpamNotificationData;
   IInitiativeResubmittedForReviewNotificationData: IInitiativeResubmittedForReviewNotificationData;
   IInviteAcceptedNotificationData: IInviteAcceptedNotificationData;
+  IInvitationToCosponsorInitiativeNotificationData: IInvitationToCosponsorInitiativeNotificationData;
   IMentionInCommentNotificationData: IMentionInCommentNotificationData;
   IInternalCommentNotificationData: IInternalCommentNotificationData;
   IMentionInOfficialFeedbackNotificationData: IMentionInOfficialFeedbackNotificationData;

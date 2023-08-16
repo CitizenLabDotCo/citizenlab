@@ -14,6 +14,7 @@ import InitiativeAssignedToYouNotification from '../InitiativeAssignedToYouNotif
 import InitiativeMarkedAsSpamNotification from '../InitiativeMarkedAsSpamNotification';
 import InitiativeResubmittedForReviewNotification from '../InitiativeResubmittedForReviewNotification';
 import InviteAcceptedNotification from '../InviteAcceptedNotification';
+import InvitationToCosponsorInitiativeNotification from '../InvitationToCosponsorInitiativeNotification';
 import MentionInCommentNotification from '../MentionInCommentNotification';
 import InternalCommentNotification from '../InternalCommentNotification';
 import MentionInOfficialFeedbackNotification from '../MentionInOfficialFeedbackNotification';
@@ -53,6 +54,7 @@ import {
   IInitiativeMarkedAsSpamNotificationData,
   IInitiativeResubmittedForReviewNotificationData,
   IInviteAcceptedNotificationData,
+  IInvitationToCosponsorInitiativeNotificationData,
   IMentionInCommentNotificationData,
   IInternalCommentNotificationData,
   IMentionInOfficialFeedbackNotificationData,
@@ -169,6 +171,14 @@ const Notification = ({ notification }: Props) => {
       return (
         <InviteAcceptedNotification
           notification={notification as IInviteAcceptedNotificationData}
+        />
+      );
+    case 'invitation_to_cosponsor_initiative':
+      return (
+        <InvitationToCosponsorInitiativeNotification
+          notification={
+            notification as IInvitationToCosponsorInitiativeNotificationData
+          }
         />
       );
     case 'mention_in_comment':
