@@ -174,6 +174,7 @@ class User < ApplicationRecord
   has_many :initiative_status_changes, dependent: :nullify
 
   store_accessor :custom_field_values, :gender, :birthyear, :domicile, :education
+  store_accessor :onboarding, :topics_and_areas
 
   validates :email, presence: true, unless: -> { invite_pending? || (sso? && identities.none?(&:email_always_present?)) }
   validates :locale, presence: true, unless: :invite_pending?
