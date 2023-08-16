@@ -11,20 +11,21 @@ import FieldValue from './FieldValue';
 import Avatar from 'components/Avatar';
 import useUserById from 'api/users/useUserById';
 import { getFullName } from 'utils/textUtils';
+import { useSelectedInputContext } from '../SelectedInputContext';
 
-interface Props {
-  inputId: string;
-}
-
-const InputListItem = ({ inputId }: Props) => {
+const InputListItem = () => {
+  const { selectedInputId } = useSelectedInputContext();
   const { analysisId } = useParams() as { analysisId: string };
-  const { data: input } = useAnalysisInput(analysisId, inputId);
+  const { data: input } = useAnalysisInput(
+    analysisId,
+    selectedInputId ?? undefined
+  );
   const { data: analysis } = useAnalysis(analysisId);
   const { data: author } = useUserById(
     input?.data.relationships.author.data?.id
   );
 
-  if (!analysis || !input) return null;
+  if (!analysis || !input || !selectedInputId) return null;
 
   return (
     <Box>
@@ -44,7 +45,7 @@ const InputListItem = ({ inputId }: Props) => {
         </Box>
       )}
       <Divider />
-      <Taggings inputId={inputId} onlyShowTagged={false} />
+      <Taggings onlyShowTagged={false} inputId={selectedInputId} />
     </Box>
   );
 };
