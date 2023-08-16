@@ -18,6 +18,7 @@ import {
   colors,
   stylingConsts,
   Text,
+  Icon,
 } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 import Modal from 'components/UI/Modal';
@@ -31,6 +32,26 @@ import messages from '../messages';
 
 import { useQueryClient } from '@tanstack/react-query';
 import inputsKeys from 'api/analysis_inputs/keys';
+
+const BlickingIcon = styled(Icon)`
+  animation-name: blink-animation;
+  animation-duration: 1.8s;
+  animation-delay: 1s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+
+  @keyframes blink-animation {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+`;
 
 const TagContainer = styled.div`
   margin-bottom: 8px;
@@ -127,6 +148,13 @@ const Tags = () => {
           buttonStyle="secondary-outlined"
         >
           Auto-tag
+          <BlickingIcon
+            name={'dot'}
+            width="16px"
+            height="16px"
+            fill={colors.primary}
+            ml="8px"
+          />
         </Button>
         <Box display="flex" alignItems="center" mb="8px" as="form">
           <Input
