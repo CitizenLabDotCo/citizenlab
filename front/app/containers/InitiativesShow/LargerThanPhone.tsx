@@ -3,9 +3,8 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import FileAttachments from 'components/UI/FileAttachments';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, media } from '@citizenlab/cl2-component-library';
 import SharingButtons from 'components/Sharing/SharingButtons';
-
 import Topics from 'components/PostShowComponents/Topics';
 import Title from 'components/PostShowComponents/Title';
 import DropdownMap from 'components/PostShowComponents/DropdownMap';
@@ -31,6 +30,7 @@ import styled from 'styled-components';
 import { ScreenReaderOnly } from 'utils/a11y';
 import {
   columnsGapDesktop,
+  columnsGapTablet,
   rightColumnWidthDesktop,
   pageContentMaxWidth,
 } from './styleConstants';
@@ -102,6 +102,10 @@ const LeftColumn = styled.div`
   margin: 0;
   padding: 0;
   padding-right: ${columnsGapDesktop}px;
+
+  ${media.tablet`
+    padding-right: ${columnsGapTablet}px;
+  `}
 `;
 
 const StyledTopics = styled(Topics)`
@@ -151,7 +155,6 @@ const SharingWrapper = styled.div`
 const StyledOfficialFeedback = styled(OfficialFeedback)`
   margin-top: 80px;
 `;
-
 interface Props {
   initiativeId: string;
   className?: string;
@@ -161,7 +164,7 @@ interface Props {
   a11y_pronounceLatestOfficialFeedbackPost: boolean;
 }
 
-const Desktop = ({
+const LargerThanPhone = ({
   className,
   initiativeId,
   translateButtonClicked,
@@ -360,4 +363,4 @@ const Desktop = ({
   );
 };
 
-export default Desktop;
+export default LargerThanPhone;

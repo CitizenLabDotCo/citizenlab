@@ -13,8 +13,8 @@ import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
 import InitiativeMeta from './InitiativeMeta';
 const Modals = lazy(() => import('./modals'));
-import Mobile from './Mobile';
-import Desktop from './Desktop';
+import Phone from './Phone';
+import LargerThanPhone from './LargerThanPhone';
 
 export const contentFadeInDuration = 250;
 export const contentFadeInEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -93,7 +93,7 @@ const InitiativesShow = ({ initiativeId }: Props) => {
     <>
       <InitiativeMeta initiativeId={initiativeId} />
       {isSmallerThanPhone ? (
-        <Mobile
+        <Phone
           initiativeId={initiativeId}
           translateButtonClicked={translateButtonClicked}
           a11y_pronounceLatestOfficialFeedbackPost={
@@ -103,7 +103,7 @@ const InitiativesShow = ({ initiativeId }: Props) => {
           onTranslateInitiative={onTranslateInitiative}
         />
       ) : (
-        <Desktop
+        <LargerThanPhone
           initiativeId={initiativeId}
           translateButtonClicked={translateButtonClicked}
           a11y_pronounceLatestOfficialFeedbackPost={

@@ -5,7 +5,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import FileAttachments from 'components/UI/FileAttachments';
 import { Box } from '@citizenlab/cl2-component-library';
 import SharingButtons from 'components/Sharing/SharingButtons';
-
 import Topics from 'components/PostShowComponents/Topics';
 import Title from 'components/PostShowComponents/Title';
 import DropdownMap from 'components/PostShowComponents/DropdownMap';
@@ -28,7 +27,6 @@ import useLocalize from 'hooks/useLocalize';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { pageContentMaxWidth } from './styleConstants';
 
@@ -50,6 +48,10 @@ import {
 } from '.';
 import InitiativeBannerImage from './InitiativeBannerImage';
 import useInitiativeOfficialFeedback from 'api/initiative_official_feedback/useInitiativeOfficialFeedback';
+import RequestToCosponsor from './RequestToCosponsor';
+import Cosponsors from './Cosponsors';
+
+const paddingSide = '32px';
 
 const Container = styled.main`
   display: flex;
@@ -84,15 +86,9 @@ const InitiativeContainer = styled.div`
   margin-right: auto;
   margin-bottom: 28px;
   padding: 0;
-  padding-top: 35px;
-  padding-left: 60px;
-  padding-right: 60px;
-
-  ${media.phone`
-    padding-top: 25px;
-    padding-left: 15px;
-    padding-right: 15px;
-  `}
+  padding-top: 25px;
+  padding-left: ${paddingSide};
+  padding-right: ${paddingSide};
 `;
 
 const InitiativeBannerContainer = styled.div`
@@ -102,10 +98,7 @@ const InitiativeBannerContainer = styled.div`
   align-items: stretch;
   position: relative;
   background: ${({ theme }) => theme.colors.tenantPrimary};
-
-  ${media.phone`
-    min-height: 200px;
-  `}
+  min-height: 200px;
 `;
 
 const InitiativeHeaderOverlay = styled.div`
@@ -159,7 +152,7 @@ interface Props {
   a11y_pronounceLatestOfficialFeedbackPost: boolean;
 }
 
-const Mobile = ({
+const Phone = ({
   className,
   initiativeId,
   translateButtonClicked,
@@ -235,18 +228,21 @@ const Mobile = ({
               color="white"
             />
           </MobileMoreActionContainer>
-          <Box mb="8px">
-            <Title
-              postId={initiativeId}
-              postType="initiative"
-              title={initiativeTitle}
-              locale={locale}
-              translateButtonClicked={translateButtonClicked}
-              color="white"
-              align="left"
-            />
+          {/* Z-index is needed for when we have a banner image */}
+          <Box position="absolute" zIndex="1">
+            <Box mb="8px">
+              <Title
+                postId={initiativeId}
+                postType="initiative"
+                title={initiativeTitle}
+                locale={locale}
+                translateButtonClicked={translateButtonClicked}
+                color="white"
+                align="left"
+              />
+            </Box>
+            <PostedByMobile authorId={authorId} />
           </Box>
-          <PostedByMobile authorId={authorId} />
         </InitiativeBannerContent>
       </InitiativeBannerContainer>
       <InitiativeContainer>
@@ -326,11 +322,17 @@ const Mobile = ({
           />
         )}
       </InitiativeContainer>
-      <Box p="0 60px">
+      <Box px={paddingSide}>
         <ReactionControl
           initiativeId={initiativeId}
           onScrollToOfficialFeedback={onScrollToOfficialFeedback}
         />
+      </Box>
+      <Box px={paddingSide}>
+        <RequestToCosponsor initiativeId={initiativeId} />
+      </Box>
+      <Box px={paddingSide}>
+        <Cosponsors initiativeId={initiativeId} />
       </Box>
       <Suspense fallback={<LoadingComments />}>
         <Footer postId={initiativeId} postType="initiative" />
@@ -339,4 +341,4 @@ const Mobile = ({
   );
 };
 
-export default Mobile;
+export default Phone;
