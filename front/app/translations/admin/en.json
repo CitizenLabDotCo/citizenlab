@@ -1476,7 +1476,6 @@
   "app.containers.AdminPage.ProjectEvents.saveSuccessLabel": "Success!",
   "app.containers.AdminPage.ProjectEvents.saveSuccessMessage": "Your changes have been saved.",
   "app.containers.AdminPage.ProjectEvents.searchForLocation": "Search for a location",
-  "app.containers.AdminPage.ProjectEvents.searchForLocationOrClick": "Search for a location or click on the map",
   "app.containers.AdminPage.ProjectEvents.subtitleEvents": "Link upcoming events to this projects and show them on the project's event page.",
   "app.containers.AdminPage.ProjectEvents.titleColumnHeader": "Title and dates",
   "app.containers.AdminPage.ProjectEvents.titleEvents": "Project events",
