@@ -1,6 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
-import { media, defaultCardStyle } from 'utils/styleUtils';
 import {
   Box,
   Button,
@@ -16,38 +14,13 @@ import useAcceptInitiativeCosponsorshipInvite from 'api/cosponsors_initiatives/u
 import useInitiativeCosponsorsRequired from 'hooks/useInitiativeCosponsorsRequired';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useAuthUser from 'api/me/useAuthUser';
-
-const Container = styled.div``;
-
-const StatusIcon = styled(Icon)`
-  path {
-    fill: ${colors.coolGrey600};
-  }
-  width: 30px;
-  height: 30px;
-  margin-bottom: 20px;
-`;
-
-const Container2 = styled.div`
-  ${media.desktop`
-    margin-bottom: 45px;
-    padding: 35px;
-    border: 1px solid #e0e0e0;
-    ${defaultCardStyle};
-  `}
-
-  ${media.tablet`
-    padding: 15px;
-  `}
-`;
+import BorderContainer from './BorderContainer';
 
 interface Props {
   initiativeId: string;
-  className?: string;
-  id?: string;
 }
 
-const RequestToCosponsor = ({ className, id, initiativeId }: Props) => {
+const RequestToCosponsor = ({ initiativeId }: Props) => {
   const cosponsorsRequired = useInitiativeCosponsorsRequired();
   const {
     mutate: acceptInitiativeConsponsorshipInvite,
@@ -81,33 +54,39 @@ const RequestToCosponsor = ({ className, id, initiativeId }: Props) => {
     (authUserIsInvitedToCosponsor || authUserHasCosponsored)
   ) {
     return (
-      <Container id={id} className={className || ''} aria-live="polite">
-        <Container2>
-          <Box mb="16px">
-            <StatusWrapper>Cosponsor</StatusWrapper>
-          </Box>
-          <StatusIcon ariaHidden name="user" />
-          <Box mb="24px">
-            <StatusExplanation>
-              <b>Filler.</b> Filler.
-              <Box mt="20px">Filler.</Box>
-            </StatusExplanation>
-          </Box>
-          <Button
-            icon="volunteer"
-            onClick={handleOnClickCosponsor}
-            processing={isLoading}
-            disabled={authUserHasCosponsored}
-          >
-            Cosponsor
-          </Button>
-          {isSuccess && (
-            <Text color="success">
-              You've succesfully cosponsored this proposal!
-            </Text>
-          )}
-        </Container2>
-      </Container>
+      <BorderContainer>
+        <Box mb="16px">
+          <StatusWrapper>Cosponsor</StatusWrapper>
+        </Box>
+        <Box mb="20px">
+          <Icon
+            ariaHidden
+            name="user"
+            fill={colors.coolGrey600}
+            width="30px"
+            height="30px"
+          />
+        </Box>
+        <Box mb="24px">
+          <StatusExplanation>
+            <b>Filler.</b> Filler.
+            <Box mt="20px">Filler.</Box>
+          </StatusExplanation>
+        </Box>
+        <Button
+          icon="volunteer"
+          onClick={handleOnClickCosponsor}
+          processing={isLoading}
+          disabled={authUserHasCosponsored}
+        >
+          Cosponsor
+        </Button>
+        {isSuccess && (
+          <Text color="success">
+            You've succesfully cosponsored this proposal!
+          </Text>
+        )}
+      </BorderContainer>
     );
   }
 

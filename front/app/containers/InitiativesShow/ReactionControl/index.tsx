@@ -24,10 +24,6 @@ import useInitiativesPermissions, {
 import useAddInitiativeReaction from 'api/initiative_reactions/useAddInitiativeReaction';
 import useDeleteInitiativeReaction from 'api/initiative_reactions/useDeleteInitiativeReaction';
 
-// styling
-import styled from 'styled-components';
-import { defaultCardStyle } from 'utils/styleUtils';
-
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
@@ -46,13 +42,7 @@ import {
 import { IAppConfigurationSettings } from 'api/app_configuration/types';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import ChangesRequested from './ChangesRequested';
-
-const Container = styled.div`
-  margin-bottom: 45px;
-  padding: 35px;
-  border: 1px solid #e0e0e0;
-  ${defaultCardStyle};
-`;
+import BorderContainer from '../BorderContainer';
 
 interface ReactionControlComponentProps {
   initiative: IInitiativeData;
@@ -211,7 +201,7 @@ const ReactionControl = ({
     appConfiguration.data.attributes.settings.initiatives;
 
   return (
-    <Container id={id} className={className || ''} aria-live="polite">
+    <BorderContainer>
       <ScreenReaderOnly>
         <FormattedMessage tagName="h3" {...messages.invisibleTitle} />
       </ScreenReaderOnly>
@@ -225,7 +215,7 @@ const ReactionControl = ({
         onScrollToOfficialFeedback={onScrollToOfficialFeedback}
         disabledReason={reactingPermission?.disabledReason}
       />
-    </Container>
+    </BorderContainer>
   );
 };
 
