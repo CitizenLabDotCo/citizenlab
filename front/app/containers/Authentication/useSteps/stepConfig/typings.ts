@@ -18,6 +18,9 @@ export type Step =
   | 'clave-unica:email'
   | 'clave-unica:email-confirmation'
 
+  // onboarding sign up flow
+  | 'sign-up:onboarding'
+
   // light flow
   | 'light-flow:email'
   | 'light-flow:email-policies'
@@ -34,6 +37,9 @@ export type Step =
   | 'missing-data:change-email'
   | 'missing-data:verification'
   | 'missing-data:custom-fields'
+
+  // missing data (if signed in already) for onboarding
+  | 'missing-data:onboarding'
 
   // verification only (for onboarding and re-verification)
   | 'verification-only'
