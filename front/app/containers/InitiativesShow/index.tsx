@@ -286,6 +286,7 @@ const InitiativesShow = ({ className, initiativeId }: Props) => {
 
   return (
     <>
+      <InitiativeMeta initiativeId={initiativeId} />
       {isSmallerThanTablet ? (
         <Mobile
           initiativeId={initiativeId}
@@ -298,7 +299,6 @@ const InitiativesShow = ({ className, initiativeId }: Props) => {
         />
       ) : (
         <Container id="e2e-initiative-show" className={className}>
-          <InitiativeMeta initiativeId={initiativeId} />
           {initiativeHeaderImageLarge && (
             <InitiativeBannerContainer>
               <InitiativeBannerImage src={initiativeHeaderImageLarge} />
