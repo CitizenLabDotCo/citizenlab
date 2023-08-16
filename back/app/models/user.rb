@@ -33,6 +33,7 @@
 #  block_end_at                        :datetime
 #  new_email                           :string
 #  followings_count                    :integer          default(0), not null
+#  onboarding                          :jsonb            not null
 #
 # Indexes
 #
