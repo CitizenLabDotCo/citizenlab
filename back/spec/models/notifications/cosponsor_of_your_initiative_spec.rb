@@ -10,7 +10,7 @@ RSpec.describe Notifications::CosponsorOfYourInitiative do
       activity = create(
         :activity,
         item: cosponsors_initiative,
-        user_id: initiative.author.id,
+        user_id: cosponsors_initiative.user_id,
         action: 'cosponsorship_accepted'
       )
 

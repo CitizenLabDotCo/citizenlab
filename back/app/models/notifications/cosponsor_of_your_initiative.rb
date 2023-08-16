@@ -71,7 +71,7 @@ module Notifications
 
     def self.make_notifications_on(activity)
       cosponsors_initiative = activity&.item
-      initiating_user = cosponsors_initiative&.user
+      initiating_user = activity&.user
       initiative = cosponsors_initiative&.initiative
       recipient_id = initiative&.author_id
 
