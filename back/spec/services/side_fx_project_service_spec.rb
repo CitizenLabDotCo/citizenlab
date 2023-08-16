@@ -26,12 +26,11 @@ describe SideFxProjectService do
       service.after_create(project, user)
     end
 
-    # TODO: rspec thinks it's enqueued twice???
-    # it "logs a 'published' action when a published project is created" do
-    #   expect { service.after_create(project, user) }
-    #     .to have_enqueued_job(LogActivityJob)
-    #     .with(project, 'published', user, project.updated_at.to_i, anything)
-    # end
+    it "logs a 'published' action when a published project is created" do
+      expect { service.after_create(project, user) }
+        .to have_enqueued_job(LogActivityJob)
+        .with(project, 'published', user, project.updated_at.to_i, anything)
+    end
 
     it "does not log a 'published' action when a draft project is created" do
       project.admin_publication.update!(publication_status: 'draft')
@@ -65,6 +64,7 @@ describe SideFxProjectService do
 
     it "logs a 'published' action when a draft project is published" do
       project.admin_publication.update!(publication_status: 'draft')
+      service.before_update project, user
       project.admin_publication.update!(publication_status: 'published')
 
       expect { service.after_update(project, user) }
@@ -72,9 +72,10 @@ describe SideFxProjectService do
         .with(project, 'published', user, project.updated_at.to_i, anything)
     end
 
-    it "does not log a 'published' action when a draft project is archived" do
-      project.admin_publication.update!(publication_status: 'draft')
+    it "does not log a 'published' action when a archived project is republished" do
       project.admin_publication.update!(publication_status: 'archived')
+      service.before_update project, user
+      project.admin_publication.update!(publication_status: 'published')
 
       expect { service.after_update(project, user) }
         .not_to have_enqueued_job(LogActivityJob)
