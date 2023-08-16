@@ -54,9 +54,8 @@ export interface AuthenticationRequirements {
       last_name: RequirementStatus;
       email: RequirementStatus;
     };
-
     custom_fields: Record<string, RequirementStatus>;
-
+    onboarding: Record<string, RequirementStatus>;
     special: {
       password: RequirementStatus;
       confirmation: RequirementStatus;
