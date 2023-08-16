@@ -1,43 +1,121 @@
-import { Box, Title, Button } from '@citizenlab/cl2-component-library';
-import { tagTypes } from 'api/analysis_tags/types';
-import React from 'react';
+import { Box, Title, Text, colors } from '@citizenlab/cl2-component-library';
+import { TagType } from 'api/analysis_tags/types';
+import React, { ReactNode } from 'react';
 
 import useLaunchAnalysisAutotagging from 'api/analysis_background_tasks/useLaunchAnalysisAutotagging';
 import { useParams } from 'react-router-dom';
 import { TagTypeColorMap } from './Tag';
+import styled from 'styled-components';
+
+const AutoTagOptionContainer = styled.div`
+  cursor: pointer;
+  background-color: ${colors.grey100};
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  &:hover {
+    border: 1px black;
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+      rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+  }
+`;
+
+const AutoTagOption = ({
+  children,
+  tagType,
+  title,
+  onSelect,
+}: {
+  children: ReactNode;
+  tagType: TagType;
+  title: string;
+  onSelect: () => void;
+}) => {
+  return (
+    <AutoTagOptionContainer onClick={() => onSelect()}>
+      <Box
+        color={TagTypeColorMap[tagType].text}
+        background={TagTypeColorMap[tagType].background}
+        px="12px"
+        py="4px"
+        flex="0 0 120px"
+        mx="-10px"
+      >
+        {title}
+      </Box>
+      <Text px="12px">{children}</Text>
+    </AutoTagOptionContainer>
+  );
+};
 
 const AutotaggingModal = ({ onCloseModal }: { onCloseModal: () => void }) => {
   const { analysisId } = useParams() as { analysisId: string };
-  const { mutate: launchTagging, isLoading } = useLaunchAnalysisAutotagging();
+  const { mutate: launchTagging } = useLaunchAnalysisAutotagging();
+
+  const handleOnSelectMethod = (tagType) => () => {
+    launchTagging(
+      { analysisId, autoTaggingMethod: tagType },
+      {
+        onSuccess: () => {
+          onCloseModal();
+        },
+      }
+    );
+  };
   return (
-    <Box>
-      <Title>Autotagging modal</Title>
-      <Box display="flex" flexWrap="wrap" justifyContent="space-between">
-        {tagTypes
-          .filter((tagTypes) => tagTypes !== 'custom')
-          .map((tagType) => {
-            return (
-              <Box w="50%" key={tagType} p="4px">
-                <Button
-                  bgColor={TagTypeColorMap[tagType]?.background}
-                  textColor={TagTypeColorMap[tagType]?.text}
-                  processing={isLoading}
-                  onClick={() =>
-                    launchTagging(
-                      { analysisId, autoTaggingMethod: tagType },
-                      {
-                        onSuccess: () => {
-                          onCloseModal();
-                        },
-                      }
-                    )
-                  }
-                >
-                  {tagType}
-                </Button>
-              </Box>
-            );
-          })}
+    <Box px="24px">
+      <Title>What tags do you want to add?</Title>
+      <Text>
+        Auto-tags are automatically derived by the computer. You can change or
+        remove them at all times.
+      </Text>
+      <Box display="flex" flexDirection="column" gap="12px">
+        <AutoTagOption
+          tagType="sentiment"
+          title="Sentiment"
+          onSelect={handleOnSelectMethod('sentiment')}
+        >
+          <>
+            Assign a positive or negative sentiment to each input, derived from
+            the text
+          </>
+        </AutoTagOption>
+
+        <AutoTagOption
+          tagType="nlp_topic"
+          title="AI tags"
+          onSelect={handleOnSelectMethod('nlp_topic')}
+        >
+          <>Assign new tags, based on topics derived from the text</>
+        </AutoTagOption>
+
+        <AutoTagOption
+          tagType="language"
+          title="Language"
+          onSelect={handleOnSelectMethod('language')}
+        >
+          <>Detect the language of each input</>
+        </AutoTagOption>
+
+        <AutoTagOption
+          tagType="controversial"
+          title="Controversial"
+          onSelect={handleOnSelectMethod('controversial')}
+        >
+          <>Detect inputs with a significant dislikes/likes ratio</>
+        </AutoTagOption>
+
+        <AutoTagOption
+          tagType="platform_topic"
+          title="Platform tags"
+          onSelect={handleOnSelectMethod('platform_topic')}
+        >
+          <>
+            Assign the existing platform tags that the author picked when
+            posting
+          </>
+        </AutoTagOption>
       </Box>
     </Box>
   );
