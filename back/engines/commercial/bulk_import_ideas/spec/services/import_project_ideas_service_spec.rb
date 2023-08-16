@@ -14,6 +14,7 @@ describe BulkImportIdeas::ImportProjectIdeasService do
     # Custom fields
     custom_form = create(:custom_form, :with_default_fields, participation_context: project)
     create(:custom_field, resource: custom_form, key: 'another_field', title_multiloc: { 'en' => 'Another field' }, enabled: true)
+    create(:custom_field, resource: custom_form, key: 'number_field', title_multiloc: { 'en' => 'Number field' }, input_type: 'number', enabled: true)
     select_field = create(:custom_field, resource: custom_form, key: 'select_field', title_multiloc: { 'en' => 'Select field' }, input_type: 'select', enabled: true)
     create(:custom_field_option, custom_field: select_field, key: 'yes', title_multiloc: { 'en' => 'Yes' })
     create(:custom_field_option, custom_field: select_field, key: 'no', title_multiloc: { 'en' => 'No' })
@@ -23,6 +24,7 @@ describe BulkImportIdeas::ImportProjectIdeasService do
     another_select_field = create(:custom_field, resource: custom_form, key: 'another_select_field', title_multiloc: { 'en' => 'Another select field' }, input_type: 'select', enabled: true)
     create(:custom_field_option, custom_field: another_select_field, key: 'yes', title_multiloc: { 'en' => 'Yes' })
     create(:custom_field_option, custom_field: another_select_field, key: 'no', title_multiloc: { 'en' => 'No' })
+
   end
 
   describe 'generate_example_xlsx' do
@@ -39,10 +41,10 @@ describe BulkImportIdeas::ImportProjectIdeasService do
     let(:docs) do
       [
         [
-          { name: 'Name', value: 'John Rambo', type: '', page: 1, x: 0.09, y: 1.16 },
-          { name: 'Email', value: 'john_rambo@gravy.com', type: '', page: 1, x: 0.09, y: 1.24 },
+          { name: 'Full name', value: 'John Rambo', type: '', page: 1, x: 0.09, y: 1.16 },
+          { name: 'Email address', value: 'john_rambo@gravy.com', type: '', page: 1, x: 0.09, y: 1.24 },
           { name: 'Title', value: 'Free donuts for all', type: '', page: 1, x: 0.09, y: 1.34 },
-          { name: 'Body', value: 'Give them all donuts', type: '', page: 1, x: 0.09, y: 1.41 },
+          { name: 'Description', value: 'Give them all donuts', type: '', page: 1, x: 0.09, y: 1.41 },
           { name: 'Yes', value: nil, type: 'filled_checkbox', page: 1, x: 0.11, y: 1.66 },
           { name: 'No', value: nil, type: 'filled_checkbox', page: 1, x: 0.45, y: 1.66 },
           { name: 'This', value: nil, type: 'filled_checkbox', page: 1, x: 0.11, y: 1.86 },
@@ -50,19 +52,22 @@ describe BulkImportIdeas::ImportProjectIdeasService do
           { name: 'Another field', value: 'Not much to say', type: '', page: 2, x: 0.09, y: 2.12 },
           { name: 'Ignored field', value: 'Ignored value', type: 'filled_checkbox', page: 2, x: 0.45, y: 2.23 },
           { name: 'Yes', value: nil, type: 'unfilled_checkbox', page: 2, x: 0.11, y: 2.66 },
-          { name: 'No', value: nil, type: 'filled_checkbox', page: 2, x: 0.45, y: 2.66 }
+          { name: 'No', value: nil, type: 'filled_checkbox', page: 2, x: 0.45, y: 2.66 },
+          { name: 'Number field', value: '22', type: '', page: 2, x: 0.11, y: 2.86 }
         ],
         [
-          { name: 'Name', value: 'Ned Flanders', type: '', page: 3, x: 0.09, y: 3.16 },
-          { name: 'Email', value: 'ned@simpsons.com', type: '', page: 3, x: 0.09, y: 3.24 },
+          { name: 'Full name', value: 'Ned Flanders', type: '', page: 3, x: 0.09, y: 3.16 },
+          { name: 'Email address', value: 'ned@simpsons.com', type: '', page: 3, x: 0.09, y: 3.24 },
           { name: 'Title', value: 'New Wrestling Arena needed', type: '', page: 3, x: 0.09, y: 3.34 },
-          { name: 'Body', value: 'I am convinced that if we do not get this we will be sad.', type: '', page: 3, x: 0.09, y: 3.41 },
+          { name: 'Description', value: 'I am convinced that if we do not get this we will be sad.', type: '', page: 3, x: 0.09, y: 3.41 },
+          { name: 'Location', value: 'Behind the sofa', type: '', page: 3, x: 0.11, y: 3.52 },
           { name: 'Yes', value: nil, type: 'unfilled_checkbox', page: 3, x: 0.11, y: 3.66 },
           { name: 'No', value: nil, type: 'filled_checkbox', page: 3, x: 0.45, y: 3.66 },
           { name: 'This', value: nil, type: 'unfilled_checkbox', page: 3, x: 0.11, y: 3.86 },
           { name: 'That', value: nil, type: 'filled_checkbox', page: 3, x: 0.45, y: 3.86 },
           { name: 'Another field', value: 'Something else', type: '', page: 4, x: 0.09, y: 4.12 },
-          { name: 'Ignored option', value: nil, type: 'filled_checkbox', page: 4, x: 0.45, y: 4.23 }
+          { name: 'Ignored option', value: nil, type: 'filled_checkbox', page: 4, x: 0.45, y: 4.23 },
+          { name: 'Number field', value: '28', type: '', page: 4, x: 0.11, y: 4.86 }
         ]
       ]
     end
@@ -75,12 +80,15 @@ describe BulkImportIdeas::ImportProjectIdeasService do
       expect(rows[0][:user_email]).to eq 'john_rambo@gravy.com'
       expect(rows[0][:user_name]).to eq 'John Rambo'
       expect(rows[0][:project_id]).to eq project.id
+      expect(rows[1][:location_description]).to eq 'Behind the sofa'
     end
 
-    it 'converts text custom fields' do
+    it 'converts text & number custom fields' do
       expect(rows.count).to eq 2
       expect(rows[0][:custom_field_values][:another_field]).to eq 'Not much to say'
       expect(rows[1][:custom_field_values][:another_field]).to eq 'Something else'
+      expect(rows[0][:custom_field_values][:number_field]).to eq 22
+      expect(rows[1][:custom_field_values][:number_field]).to eq 28
     end
 
     it 'converts single select custom fields and only uses the first checked value' do
@@ -118,8 +126,8 @@ describe BulkImportIdeas::ImportProjectIdeasService do
     it 'converts uploaded project XLSX to more parseable format for the idea import method' do
       xlsx_array = [
         {
-          'Name' => 'Bob Test',
-          'Email' => 'bob@citizenlab.co',
+          'Full name' => 'Bob Test',
+          'Email address' => 'bob@citizenlab.co',
           'Date Published (dd-mm-yyyy)' => '15-08-2023',
           'Title' => 'A title',
           'Description' => 'A description',
@@ -130,12 +138,12 @@ describe BulkImportIdeas::ImportProjectIdeasService do
           'Location Description' => 'A location'
         },
         {
-          'Name' => 'Ned Test',
-          'Email' => 'ned@citizenlab.co',
+          'Full name' => 'Ned Test',
+          'Email address' => 'ned@citizenlab.co',
           'Date Published (dd-mm-yyyy)' => '16-08-2023',
           'Title' => 'Another title',
           'Description' => 'Another description',
-          'Topics' => 'topic 1; topic 2',
+          'Tags' => 'topic 1; topic 2',
           'Image URL' => 'https://images.com/image.png'
         }
       ]
