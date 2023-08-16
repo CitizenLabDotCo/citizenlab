@@ -8,12 +8,15 @@ import {
   Dropdown,
   Button,
   Text,
+  Spinner,
 } from '@citizenlab/cl2-component-library';
 import ProgressBar from 'components/UI/ProgressBar';
 import styled from 'styled-components';
-import { useIntl } from 'utils/cl-intl';
 import Divider from 'components/admin/Divider';
 import { TagTypeColorMap } from '../Tags/Tag';
+import { timeAgo } from 'utils/dateUtils';
+import useLocale from 'hooks/useLocale';
+import { isNilOrError } from 'utils/helperUtils';
 
 const StyledProgressBar = styled(ProgressBar)`
   height: 8px;
@@ -33,23 +36,29 @@ const Tasks = () => {
   const { analysisId } = useParams() as { analysisId: string };
   const { data: tasks } = useAnalysisBackgroundTasks(analysisId);
 
-  const { formatTime, formatDate } = useIntl();
+  const locale = useLocale();
 
   const anythingInProgress = tasks?.data.find(
     (t) =>
       t.attributes.state === 'in_progress' || t.attributes.state === 'queued'
   );
 
+  if (isNilOrError(locale)) {
+    return null;
+  }
+
   return (
     <Box display="flex" w="32px" h="32px">
       {anythingInProgress ? (
         <Button
-          processing={true}
           buttonStyle="text"
           width="24px"
           height="24px"
           aria-label="background jobs"
-        />
+          onClick={() => setIsDropdownOpened(!isDropdownOpened)}
+        >
+          <Spinner />
+        </Button>
       ) : (
         <IconButton
           iconName="book"
@@ -136,22 +145,21 @@ const Tasks = () => {
                   <Box display="flex" justifyContent="space-between">
                     <span> Triggered at</span>
                     <span>
-                      {formatDate(task.attributes.created_at)}{' '}
-                      {formatTime(task.attributes.created_at)}
+                      {timeAgo(Date.parse(task.attributes.created_at), locale)}
                     </span>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
                     <span>Started at </span>
                     <span>
-                      {formatDate(task.attributes.started_at ?? undefined)}{' '}
-                      {formatTime(task.attributes.started_at ?? undefined)}
+                      {task.attributes.started_at &&
+                        timeAgo(Date.parse(task.attributes.started_at), locale)}
                     </span>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
                     <span>Ended at </span>
                     <span>
-                      {formatDate(task.attributes.ended_at ?? undefined)}{' '}
-                      {formatTime(task.attributes.ended_at ?? undefined)}
+                      {task.attributes.ended_at &&
+                        timeAgo(Date.parse(task.attributes.ended_at), locale)}
                     </span>
                   </Box>
 

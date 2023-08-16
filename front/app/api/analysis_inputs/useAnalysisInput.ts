@@ -12,7 +12,7 @@ const fetchInput = (analysisId: string, id: string) =>
 
 const useAnalysisInput = (analysisId: string, inputId: string) => {
   return useQuery<IInput, CLErrors, IInput, InputsKeys>({
-    queryKey: inputsKeys.item({ analysisId, id: inputId }),
+    queryKey: inputsKeys.item({ id: inputId }),
     queryFn: () => fetchInput(analysisId, inputId),
   });
 };
