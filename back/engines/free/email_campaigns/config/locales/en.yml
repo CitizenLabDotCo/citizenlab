@@ -14,6 +14,7 @@ en:
       "initiative_assigned_to_you": Assignment of a proposal to me
       "initiative_marked_as_spam": Proposal spam report
       "initiative_published": Publication of my proposal
+      "invitation_to_cosponsor_initiative": Invitation to cosponsor a proposal
       "initiative_resubmitted_for_review": Proposal resubmitted for review
       "invite_received": Invitation
       "invite_reminder": Invitation reminder
@@ -179,6 +180,15 @@ en:
       main_header: '%{firstName}, you have a new assignment'
       subject: 'You have an assignment on the platform of %{organizationName}'
       preheader_initiative: 'The proposal of %{authorName} has been assigned to you'
+    invitation_to_cosponsor_initiative:
+      by_author: 'by %{authorName}'
+      cta_reply_to: 'Co-sponsor this proposal'
+      event_description_initiative: '%{authorName} has created a new proposal and would like you to co-sponsor it.'
+      event_description_cosponsoring: 'Co-sponsoring a proposal means that <strong>your name will be displayed</strong> with the names of other co-sponsors of the proposal.'
+      event_description_action: 'Click below to read the proposal.'
+      main_header: 'You have been invited to co-sponsor a proposal'
+      subject: 'You have been invited to co-sponsor a proposal'
+      preheader_initiative: 'You have been invited to cosponsor the proposal of %{authorName}'
     initiative_resubmitted_for_review:
       by_author: 'by %{authorName}'
       cta_reply_to: 'Give feedback to %{authorName}'
@@ -641,6 +651,7 @@ en:
         managers: 'Managers'
         admins_assigned_to_a_proposal: 'Admins assigned to a proposal'
         admins_and_managers_assigned_to_the_input: 'Admins & managers assigned to the input'
+        user_who_is_invited_to_cosponsor_a_proposal: 'User who is invited to cosponsor a proposal'
         user_who_is_receiving_admin_rights: 'User who is receiving admin rights'
         user_who_is_receiving_folder_moderator_rights: 'User who is receiving folder moderator rights'
         user_who_is_receiving_project_moderator_rights: 'User who is receiving project moderator rights'
@@ -675,6 +686,7 @@ en:
         input_is_flagged_as_spam: 'Input is flagged as spam'
         input_is_updated: 'Input is updated'
         input_status_changes: 'Input status changes'
+        new_test_campaign: 'Proposal resubmitted for review'
         initiative_resubmitted_for_review: 'Proposal resubmitted for review'
         internal_comment_is_posted_on_idea_assigned_to_user: 'Internal comment is posted on input assigned to user'
         internal_comment_is_posted_on_initiative_assigned_to_user: 'Internal comment is posted on proposal assigned to user'
@@ -684,6 +696,7 @@ en:
         internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'Internal comment is posted on proposal user commented internally on'
         internal_comment_is_posted_on_unassigned_initiative: 'Internal comment is posted on unassigned proposal'
         internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Internal comment is posted on unassigned input in unmanaged project'
+        user_is_invited_to_cosponsor_a_proposal: 'User is invited to cosponsor a proposal'
         user_is_mentioned_in_internal_comment: 'User is mentioned in internal comment'
         new_input_is_published: 'New input is published'
         new_proposal_is_posted: 'New proposal is posted'

@@ -16,6 +16,7 @@ module EmailCampaigns
       Campaigns::InitiativeAssignedToYou,
       Campaigns::InitiativeMarkedAsSpam,
       Campaigns::InitiativePublished,
+      Campaigns::InvitationToCosponsorInitiative,
       Campaigns::InitiativeResubmittedForReview,
       Campaigns::InternalCommentOnIdeaAssignedToYou,
       Campaigns::InternalCommentOnIdeaYouCommentedInternallyOn,

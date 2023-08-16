@@ -24,6 +24,7 @@ en:
       "internal_comment_on_your_internal_comment": Internal comment on my internal comment
       "invite_received": Invitation
       "invite_reminder": Invitation reminder
+      "invitation_to_cosponsor_initiative": Invitation to cosponsor a proposal
       "mention_in_internal_comment": Mention in an internal comment
       "mention_in_official_feedback": Mention in an update
       "new_comment_for_admin": New comment in a project I moderate
@@ -81,6 +82,7 @@ en:
       "internal_comment_on_your_internal_comment": Internal comment on your internal comment - admins and project managers
       "invite_received": Invitation - all users
       "invite_reminder": Invitation reminder - all users
+      "invitation_to_cosponsor_initiative": Invitation to cosponsor a proposal - all users
       "mention_in_comment": Mention in a comment - all users
       "mention_in_internal_comment": Mention in an internal comment - admins and project managers
       "mention_in_official_feedback": Mention in an update - all users
@@ -235,6 +237,15 @@ en:
       invitation_header_message: '%{organizationName} invited you to their participation platform.'
       preheader: '%{organizationName} sent you an invite to join their participation platform.'
       subject: 'You are invited to join the platform of %{organizationName}'
+    invitation_to_cosponsor_initative:
+      by_author: 'by %{authorName}'
+      cta_reply_to: 'Co-sponsor this proposal'
+      event_description_initiative: '%{authorName} has created a new proposal and would like you to co-sponsor it.'
+      event_description_cosponsoring: 'Co-sponsoring a proposal means that <strong>your name will be displayed</strong> with the names of other co-sponsors of the proposal'
+      event_description_action: 'Click below to read the proposal'
+      main_header: 'You have been invited to co-sponsor a proposal'
+      subject: 'You have been invited to co-sponsor a proposal'
+      preheader_initiative: 'You have been invited to cosponsor the proposal of %{authorName}'
     initiative_published:
       action_add_image: '%{addImageLink} to increase visibility'
       action_published_initiative: 'Published proposal'
