@@ -176,9 +176,9 @@ export const missingDataFlow = (
 
     'missing-data:onboarding': {
       CLOSE: () => setCurrentStep('closed'),
-      SUBMIT: async (userId: string, formData: FormData) => {
+      SUBMIT: async (userId: string) => {
         updateUser(
-          { userId, custom_field_values: formData },
+          { userId, onboarding: { topics_and_areas: 'satisfied' } },
           {
             onSuccess: async () => {
               const { requirements } = await getRequirements();
