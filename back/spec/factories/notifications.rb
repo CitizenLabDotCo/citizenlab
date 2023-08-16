@@ -31,6 +31,12 @@ FactoryBot.define do
     association :post, factory: :idea
   end
 
+  factory :cosponsor_of_your_initiative, parent: :notification, class: 'Notifications::CosponsorOfYourInitiative' do
+    association :post, factory: :initiative
+    cosponsors_initiative
+    initiating_user
+  end
+
   factory :internal_comment_on_idea_assigned_to_you,
     parent: :notification,
     class: 'Notifications::InternalComments::InternalCommentOnIdeaAssignedToYou' do
