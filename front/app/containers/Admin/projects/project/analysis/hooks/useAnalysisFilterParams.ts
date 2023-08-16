@@ -49,8 +49,6 @@ const useAnalysisFilterParams = () => {
     ...authorCustomArrayFilters,
   };
 
-  console.log(filters);
-
   const jsonFilters = JSON.stringify(filters);
   const stableFilters = useMemo(() => {
     return JSON.parse(jsonFilters);
