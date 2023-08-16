@@ -59,8 +59,8 @@ const Summary = ({ summary, onSelectInput }: Props) => {
     return reactStringReplace(
       summary,
       /\[?([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})\]?/g,
-      (match) => (
-        <StyledButton onClick={() => onSelectInput(match)}>
+      (match, i) => (
+        <StyledButton onClick={() => onSelectInput(match)} key={i}>
           <Icon name="search" />
         </StyledButton>
       )
