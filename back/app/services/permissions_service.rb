@@ -147,7 +147,7 @@ class PermissionsService
       },
       custom_fields: requirements_fields(permission).to_h { |field| [field.key, 'dont_ask'] },
       onboarding: {
-        topics_and_areas: 'ask'
+        topics_and_areas: (permission.permitted_by == 'everyone_confirmed_email' ? 'dont_ask' : 'ask')
       },
       special: {
         password: 'dont_ask',
@@ -193,6 +193,9 @@ class PermissionsService
     end
     requirements[:custom_fields]&.each_key do |key|
       requirements[:custom_fields][key] = 'satisfied' if user.custom_field_values.key?(key)
+    end
+    %w[topics_and_areas].each do |onboarding_key|
+      requirements[:onboarding][onboarding_key] = 'satisfied' if user.onboarding[onboarding_key] == 'satisfied'
     end
     requirements[:special]&.each_key do |special_key|
       is_satisfied = case special_key
