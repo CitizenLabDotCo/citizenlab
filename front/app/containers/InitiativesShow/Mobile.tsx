@@ -48,6 +48,7 @@ import {
   contentFadeInDuration,
   contentFadeInEasing,
 } from '.';
+import InitiativeBannerImage from './InitiativeBannerImage';
 
 const Container = styled.main`
   display: flex;
@@ -117,18 +118,6 @@ const InitiativeBannerContainer = styled.div`
   ${media.phone`
     min-height: 200px;
   `}
-`;
-
-const InitiativeBannerImage = styled.div<{ src: string }>`
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-  background-image: url(${(props) => props.src});
 `;
 
 const InitiativeHeaderOverlay = styled.div`

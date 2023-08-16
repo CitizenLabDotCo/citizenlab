@@ -53,6 +53,7 @@ import {
   contentFadeInDuration,
   contentFadeInEasing,
 } from '.';
+import InitiativeBannerImage from './InitiativeBannerImage';
 
 const Container = styled.main`
   display: flex;
@@ -119,18 +120,6 @@ const InitiativeBannerContainer = styled.div`
   align-items: stretch;
   position: relative;
   background: ${({ theme }) => theme.colors.tenantPrimary};
-`;
-
-const InitiativeBannerImage = styled.div<{ src: string }>`
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-  background-image: url(${(props) => props.src});
 `;
 
 const StyledDropdownMap = styled(DropdownMap)`
