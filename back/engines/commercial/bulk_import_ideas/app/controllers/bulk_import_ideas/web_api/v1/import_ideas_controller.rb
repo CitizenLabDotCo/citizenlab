@@ -23,13 +23,21 @@ module BulkImportIdeas
     end
 
     def draft_ideas
-      ideas = Idea.draft.where(project_id: params[:project_id])
+      ideas = Idea.draft.where(project_id: params[:id])
       render json: linked_json(
         paginate(ideas),
         ::WebApi::V1::IdeaSerializer,
         include: %i[author idea_import],
         params: jsonapi_serializer_params
       )
+    end
+
+    def idea_import
+      idea_import = IdeaImport.where(idea_id: params[:id])
+      render json: WebApi::V1::IdeaImportSerializer.new(
+        idea_import,
+        params: jsonapi_serializer_params
+      ).serializable_hash
     end
 
     private
@@ -75,8 +83,8 @@ module BulkImportIdeas
 
     def import_ideas_service
       locale = params[:import_ideas] ? bulk_create_params[:locale] : current_user.locale
-      @import_ideas_service ||= if params[:project_id]
-        ImportProjectIdeasService.new(current_user, params[:project_id], locale)
+      @import_ideas_service ||= if params[:id]
+        ImportProjectIdeasService.new(current_user, params[:id], locale)
       else
         ImportIdeasService.new(current_user)
       end

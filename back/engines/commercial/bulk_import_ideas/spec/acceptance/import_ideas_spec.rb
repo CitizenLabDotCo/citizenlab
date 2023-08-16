@@ -68,15 +68,15 @@ resource 'BulkImportIdeasImportIdeas' do
       parameter(:project_id, 'ID of the project to import these ideas to', required: true)
 
       let(:project) { create(:project) }
-      let(:project_id) { project.id }
+      let(:id) { project.id }
 
-      get 'web_api/v1/import_ideas/:project_id/example_xlsx' do
+      get 'web_api/v1/projects/:id/import_ideas/example_xlsx' do
         example_request 'Get the example xlsx for a project' do
           assert_status 200
         end
       end
 
-      get 'web_api/v1/import_ideas/:project_id/draft_ideas' do
+      get 'web_api/v1/projects/:id/import_ideas/draft_ideas' do
         let!(:draft_ideas) do
           create_list(:idea, 5, project: project, publication_status: 'draft').each do |idea|
             idea.update! idea_import: create(:idea_import, idea: idea)
@@ -98,7 +98,7 @@ resource 'BulkImportIdeasImportIdeas' do
         end
       end
 
-      post 'web_api/v1/import_ideas/:project_id/bulk_create_xlsx' do
+      post 'web_api/v1/projects/:id/import_ideas/bulk_create_xlsx' do
         parameter(
           :xlsx,
           'Base64 encoded xlsx file with ideas details. See web_api/v1/import_ideas/example_xlsx for the format',
@@ -115,7 +115,7 @@ resource 'BulkImportIdeasImportIdeas' do
         end
       end
 
-      post 'web_api/v1/import_ideas/:project_id/bulk_create_pdf' do
+      post 'web_api/v1/projects/:id/import_ideas/bulk_create_pdf' do
         parameter(
           :pdf,
           'Scanned PDF of ideas. Must be from the version of the form downloaded from the site.',
@@ -157,6 +157,21 @@ resource 'BulkImportIdeasImportIdeas' do
           # Relationships
           expect(response_data.first.dig(:relationships, :idea_import, :data)).not_to be_nil
           expect(json_response_body[:included].pluck(:type)).to include 'idea_import'
+        end
+      end
+    end
+
+    context 'idea import metadata' do
+      get 'web_api/v1/ideas/:id/idea_import' do
+        let(:id) do
+          idea = create(:idea)
+          idea.update! idea_import: create(:idea_import, idea: idea)
+          idea.id
+        end
+
+        example_request 'Get the import meta data for an idea' do
+          assert_status 200
+          binding.pry
         end
       end
     end
