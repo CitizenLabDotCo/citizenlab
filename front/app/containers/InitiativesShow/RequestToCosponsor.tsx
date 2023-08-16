@@ -52,8 +52,7 @@ const RequestToCosponsor = ({ className, id, initiativeId }: Props) => {
   const {
     mutate: acceptInitiativeConsponsorshipInvite,
     isLoading,
-  const { mutate: acceptInitiativeConsponsorshipInvite } =
-    useAcceptInitiativeCosponsorshipInvite();
+    isSuccess,
   } = useAcceptInitiativeCosponsorshipInvite();
   const { data: initiative } = useInitiativeById(initiativeId);
   const { data: authUser } = useAuthUser();
