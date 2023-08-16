@@ -24,7 +24,6 @@ describe BulkImportIdeas::ImportProjectIdeasService do
     another_select_field = create(:custom_field, resource: custom_form, key: 'another_select_field', title_multiloc: { 'en' => 'Another select field' }, input_type: 'select', enabled: true)
     create(:custom_field_option, custom_field: another_select_field, key: 'yes', title_multiloc: { 'en' => 'Yes' })
     create(:custom_field_option, custom_field: another_select_field, key: 'no', title_multiloc: { 'en' => 'No' })
-
   end
 
   describe 'generate_example_xlsx' do
@@ -163,22 +162,21 @@ describe BulkImportIdeas::ImportProjectIdeasService do
         location_description: 'A location',
         image_url: 'https://images.com/image.png'
       })
-        #
-        # {
-        #   id: 'c891c58b-a0d7-42f5-9262-9f3031d70a39',
-        #   title_multiloc: { 'en' => 'My wonderful idea title' },
-        #   body_multiloc: { 'en' => 'My wonderful idea content' },
-        #   user_name: 'Ned test',
-        #   user_email: 'ned@citizenlab.co',
-        #   project_id: project.id,
-        #   topic_titles: [],
-        #   published_at: nil,
-        #   # latitude: nil,
-        #   # longitude: nil,
-        #   # location_description: nil,
-        #   image_url: nil
-        # }
-
+      #
+      # {
+      #   id: 'c891c58b-a0d7-42f5-9262-9f3031d70a39',
+      #   title_multiloc: { 'en' => 'My wonderful idea title' },
+      #   body_multiloc: { 'en' => 'My wonderful idea content' },
+      #   user_name: 'Ned test',
+      #   user_email: 'ned@citizenlab.co',
+      #   project_id: project.id,
+      #   topic_titles: [],
+      #   published_at: nil,
+      #   # latitude: nil,
+      #   # longitude: nil,
+      #   # location_description: nil,
+      #   image_url: nil
+      # }
     end
   end
 end

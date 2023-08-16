@@ -26,9 +26,9 @@ module BulkImportIdeas
         params: jsonapi_serializer_params,
         include: %i[author idea_import]
       ).serializable_hash, status: :created
-      rescue BulkImportIdeas::Error => e
-        sidefx.after_failure current_user
-        render json: { file: [{ error: e.key, **e.params }] }, status: :unprocessable_entity
+    rescue BulkImportIdeas::Error => e
+      sidefx.after_failure current_user
+      render json: { file: [{ error: e.key, **e.params }] }, status: :unprocessable_entity
     end
 
     def example_xlsx

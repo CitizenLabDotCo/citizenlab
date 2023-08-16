@@ -15,4 +15,3 @@ module BulkImportIdeas
     end
   end
 end
-

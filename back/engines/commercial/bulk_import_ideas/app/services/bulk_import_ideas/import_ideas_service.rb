@@ -52,11 +52,11 @@ module BulkImportIdeas
       file_type
     end
 
-    def xlsx_to_idea_rows(xlsx)
+    def xlsx_to_idea_rows(_xlsx)
       []
     end
 
-    def pdf_to_idea_rows(xlsx)
+    def pdf_to_idea_rows(_xlsx)
       []
     end
 

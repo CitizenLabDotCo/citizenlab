@@ -36,6 +36,5 @@ module BulkImportIdeas
     belongs_to :import_user, class_name: 'User', optional: true
 
     # TODO: Patch idea
-
   end
 end
