@@ -9,7 +9,11 @@ import { IUser, IUserUpdate } from 'api/users/types';
 import { CLErrorsJSON } from 'typings';
 
 // utils
-import { requiredCustomFields, requiredBuiltInFields } from './utils';
+import {
+  requiredCustomFields,
+  requiredBuiltInFields,
+  hasRequiredOnboardingStep,
+} from './utils';
 
 // typings
 import { GetRequirements } from 'containers/Authentication/typings';
@@ -49,6 +53,11 @@ export const missingDataFlow = (
 
         if (requiredCustomFields(requirements.custom_fields)) {
           setCurrentStep('missing-data:custom-fields');
+          return;
+        }
+
+        if (hasRequiredOnboardingStep(requirements.onboarding)) {
+          setCurrentStep('missing-data:onboarding');
           return;
         }
 
@@ -97,6 +106,11 @@ export const missingDataFlow = (
                 return;
               }
 
+              if (hasRequiredOnboardingStep(requirements.onboarding)) {
+                setCurrentStep('missing-data:onboarding');
+                return;
+              }
+
               if (requirements.special.group_membership === 'require') {
                 setCurrentStep('closed');
                 return;
@@ -117,6 +131,11 @@ export const missingDataFlow = (
           return;
         }
 
+        if (hasRequiredOnboardingStep(requirements.onboarding)) {
+          setCurrentStep('missing-data:onboarding');
+          return;
+        }
+
         if (requirements.special.group_membership === 'require') {
           setCurrentStep('closed');
           return;
@@ -134,6 +153,11 @@ export const missingDataFlow = (
           {
             onSuccess: async () => {
               const { requirements } = await getRequirements();
+
+              if (hasRequiredOnboardingStep(requirements.onboarding)) {
+                setCurrentStep('missing-data:onboarding');
+                return;
+              }
 
               if (requirements.special.group_membership === 'require') {
                 setCurrentStep('closed');

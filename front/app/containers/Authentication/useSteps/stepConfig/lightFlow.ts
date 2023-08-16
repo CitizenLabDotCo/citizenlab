@@ -26,7 +26,12 @@ import {
 } from '../../typings';
 import { Step } from './typings';
 import { Locale } from 'typings';
-import { askCustomFields, requiredCustomFields, showOnboarding } from './utils';
+import {
+  askCustomFields,
+  requiredCustomFields,
+  showOnboarding,
+  hasRequiredOnboardingStep,
+} from './utils';
 
 export const lightFlow = (
   getAuthenticationData: () => AuthenticationData,
@@ -207,6 +212,11 @@ export const lightFlow = (
 
         if (requiredCustomFields(requirements.custom_fields)) {
           setCurrentStep('missing-data:custom-fields');
+          return;
+        }
+
+        if (hasRequiredOnboardingStep(requirements.onboarding)) {
+          setCurrentStep('missing-data:onboarding');
           return;
         }
 
