@@ -33,6 +33,10 @@ export default defineMessages({
     id: 'app.containers.NewAuthModal.completeYourProfile',
     defaultMessage: 'Complete your profile',
   },
+  completeOnboarding: {
+    id: 'app.containers.NewAuthModal.completeOnboarding',
+    defaultMessage: 'Personalize your experience',
+  },
   unknownError: {
     id: 'app.containers.SignUp.unknownError',
     defaultMessage: 'Something went wrong. Please try again later.',
