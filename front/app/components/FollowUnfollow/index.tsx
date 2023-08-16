@@ -55,7 +55,7 @@ const FollowUnfollow = ({
   if (!isFollowingEnabled) return null;
 
   // If the follower id is present, then the user is following
-  let followText =
+  const followText =
     followableType === 'ideas' ? treatment : formatMessage(messages.follow);
   const isFollowing = !!followerId;
   const followUnfollowText = isFollowing
