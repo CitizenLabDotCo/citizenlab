@@ -18,6 +18,7 @@ import {
 import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import styled from 'styled-components';
+import { useSelectedInputContext } from '../SelectedInputContext';
 
 const StyledSummaryText = styled.div`
   white-space: pre-wrap;
@@ -30,10 +31,10 @@ const StyledButton = styled.button`
 
 type Props = {
   summary: ISummary['data'];
-  onSelectInput: (inputId: string) => void;
 };
 
-const Summary = ({ summary, onSelectInput }: Props) => {
+const Summary = ({ summary }: Props) => {
+  const { setSelectedInputId } = useSelectedInputContext();
   const { formatMessage } = useIntl();
   const { analysisId } = useParams() as { analysisId: string };
   const { mutate: deleteSummary } = useDeleteAnalysisSummary();
@@ -60,7 +61,7 @@ const Summary = ({ summary, onSelectInput }: Props) => {
       summary,
       /\[?([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})\]?/g,
       (match) => (
-        <StyledButton onClick={() => onSelectInput(match)}>
+        <StyledButton onClick={() => setSelectedInputId(match)}>
           <Icon name="search" />
         </StyledButton>
       )

@@ -7,10 +7,8 @@ import useAnalysisSummaries from 'api/analysis_summaries/useAnalysisSummaries';
 import { useParams } from 'react-router-dom';
 
 import Summary from './Summary';
-import { useSelectedInputContext } from '../SelectedInputContext';
 
 const Insights = () => {
-  const { setSelectedInputId } = useSelectedInputContext();
   const { analysisId } = useParams() as { analysisId: string };
   const { data: summaries, isLoading } = useAnalysisSummaries({
     analysisId,
@@ -30,11 +28,7 @@ const Insights = () => {
         </>
       )}
       {summaries?.data.map((summary) => (
-        <Summary
-          key={summary.id}
-          summary={summary}
-          onSelectInput={setSelectedInputId}
-        />
+        <Summary key={summary.id} summary={summary} />
       ))}
     </Box>
   );
