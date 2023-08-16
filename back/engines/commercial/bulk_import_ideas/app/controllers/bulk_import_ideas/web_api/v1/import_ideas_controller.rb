@@ -24,13 +24,12 @@ module BulkImportIdeas
 
     def draft_ideas
       ideas = Idea.draft.where(project_id: params[:project_id])
-
-      # TODO: Paging?
-      render json: ::WebApi::V1::IdeaSerializer.new(
-        ideas,
-        params: jsonapi_serializer_params,
-        include: %i[author idea_import]
-      ).serializable_hash, status: :ok
+      render json: linked_json(
+        paginate(ideas),
+        ::WebApi::V1::IdeaSerializer,
+        include: %i[author idea_import],
+        params: jsonapi_serializer_params
+      )
     end
 
     private
@@ -39,6 +38,7 @@ module BulkImportIdeas
       import_ideas_service.upload_file file
       ideas = import_ideas_service.import_ideas idea_rows, import_as_draft: draft
       sidefx.after_success current_user
+
       render json: ::WebApi::V1::IdeaSerializer.new(
         ideas,
         params: jsonapi_serializer_params,
