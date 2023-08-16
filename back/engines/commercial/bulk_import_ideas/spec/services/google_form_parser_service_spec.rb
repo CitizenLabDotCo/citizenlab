@@ -32,7 +32,7 @@ describe BulkImportIdeas::GoogleFormParserService do
         ]
       ]
     )
-    file_content = File.binread '/cl2_back/engines/commercial/bulk_import_ideas/spec/fixtures/testscan.pdf'
+    file_content = File.binread '/cl2_back/engines/commercial/bulk_import_ideas/spec/fixtures/testscan2.pdf'
     service = described_class.new file_content
     docs = service.parse_pdf
 

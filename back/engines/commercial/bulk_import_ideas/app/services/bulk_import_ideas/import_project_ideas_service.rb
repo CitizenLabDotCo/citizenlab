@@ -14,8 +14,8 @@ module BulkImportIdeas
     def generate_example_xlsx
       # TODO: Translations for these columns?
       columns = {
-        'Name' => 'Bill Test',
-        'Email' => 'bill@citizenlab.co',
+        'Full name' => 'Bill Test',
+        'Email address' => 'bill@citizenlab.co',
         'Date Published (dd-mm-yyyy)' => '18-07-2022'
       }
 
@@ -53,12 +53,13 @@ module BulkImportIdeas
         idea_row = {}
         idea_row[:pages] = doc.pluck(:page).uniq
         idea_row[:project_id] = @project.id
-        idea_row[:user_name] = find_field(doc, 'Name')[:value]
-        idea_row[:user_email] = find_field(doc, 'Email')[:value]
+        idea_row[:user_name] = find_field(doc, 'Full name')[:value]
+        idea_row[:user_email] = find_field(doc, 'Email address')[:value]
 
-        ## TODO: This won't currently allow for Title, Body, Email or Name to appear multiple times
+        # TODO: This won't currently allow for Title, Body, Email or Name to appear multiple times
+        # TODO: Ensure find_field copes with nulls
         idea_row[:title_multiloc] = { @locale.to_sym => find_field(doc, 'Title')[:value] }
-        idea_row[:body_multiloc] = { @locale.to_sym => find_field(doc, 'Body')[:value] }
+        idea_row[:body_multiloc] = { @locale.to_sym => find_field(doc, 'Description')[:value] }
         idea_row = process_custom_fields(doc, idea_row)
         idea_row
       end
@@ -68,8 +69,8 @@ module BulkImportIdeas
       xlsx.map do |xlsx_row|
         idea_row = {}
         idea_row[:project_id]           = @project.id
-        idea_row[:user_name]            = xlsx_row['Name']
-        idea_row[:user_email]           = xlsx_row['Email']
+        idea_row[:user_name]            = xlsx_row['Full name']
+        idea_row[:user_email]           = xlsx_row['Email address']
         idea_row[:published_at]         = xlsx_row['Date Published (dd-mm-yyyy)']
         idea_row[:image_url]            = xlsx_row['Image URL']
         idea_row[:latitude]             = xlsx_row['Latitude']

@@ -37,13 +37,13 @@ module BulkImportIdeas
 
       # Then split into separate docs based on the first field
       docs = []
-      doc = {}
+      doc = []
       fields.each do |field|
         if field[:name] == fields.first[:name] && field != fields.first
           docs << doc
-          doc = {}
+          doc = []
         end
-        doc[field[:name]] = field
+        doc << field
       end
       docs << doc
       docs
@@ -52,7 +52,7 @@ module BulkImportIdeas
     private
 
     def format_value(name, value)
-      if name == 'Email:'
+      if name == 'Email address'
         value = value.delete(' ').downcase
       end
       value
