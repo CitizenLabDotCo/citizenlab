@@ -40,6 +40,7 @@ export interface IUserAttributes {
   invite_status: 'pending' | 'accepted' | null;
   confirmation_required: boolean;
   custom_field_values?: Record<string, any>;
+  onboarding?: Record<string, any>;
   avatar?: ImageSizes;
   roles?: TRole[];
   email?: string;
@@ -88,6 +89,7 @@ export interface IUserUpdate {
   roles?: TRole[];
   bio_multiloc?: Multiloc;
   custom_field_values?: Record<string, any>;
+  onboarding?: Record<string, any>;
 }
 
 export interface IChangePassword {
