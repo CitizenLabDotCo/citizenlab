@@ -93,11 +93,11 @@ module BulkImportIdeas
       Array.new(rand(1..8)) do
         [
           # User details
-          { name: 'Name:', value: Faker::FunnyName.name, type: '', page: 1, x: 0.09, y: 1.16 },
-          { name: 'Email:', value: Faker::Internet.email, type: '', page: 1, x: 0.09, y: 1.24 },
+          { name: 'Full name', value: Faker::FunnyName.name, type: '', page: 1, x: 0.09, y: 1.16 },
+          { name: 'Email address', value: Faker::Internet.email, type: '', page: 1, x: 0.09, y: 1.24 },
           # Core fields
-          { name: 'Title:', value: Faker::Quote.yoda, type: '', page: 1, x: 0.09, y: 1.34 },
-          { name: 'Body:', value: Faker::Hipster.paragraph, type: '', page: 1, x: 0.09, y: 1.41 },
+          { name: 'Title', value: Faker::Quote.yoda, type: '', page: 1, x: 0.09, y: 1.34 },
+          { name: 'Description', value: Faker::Hipster.paragraph, type: '', page: 1, x: 0.09, y: 1.41 },
           # Select fields
           { name: 'Yes', value: nil, type: %w[filled_checkbox unfilled_checkbox].sample, page: 1, x: 0.11, y: 1.66 },
           { name: 'No', value: nil, type: %w[filled_checkbox unfilled_checkbox].sample, page: 1, x: 0.45, y: 1.66 },
