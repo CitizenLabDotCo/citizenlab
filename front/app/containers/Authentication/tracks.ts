@@ -19,6 +19,7 @@ export default {
   signUpCustomFieldsStepExited: 'Sign up - custom fields step exited',
   signUpCustomFieldsStepCompleted: 'Sign up - custom fields step completed',
   signUpCustomFieldsStepSkipped: 'Sign up - custom fields step skipped',
+  signUpOnboardingStepSkipped: 'Sign up - onboarding step skipped',
   signUpCustomFieldsStepFailed: 'Sign up - custom fields step failed',
 
   signUpFlowCompleted: 'Sign up flow completed',
