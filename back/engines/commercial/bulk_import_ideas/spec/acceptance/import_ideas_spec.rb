@@ -98,65 +98,64 @@ resource 'BulkImportIdeasImportIdeas' do
         end
       end
 
-      post 'web_api/v1/projects/:id/import_ideas/bulk_create_xlsx' do
+      post 'web_api/v1/projects/:id/import_ideas/bulk_create' do
         parameter(
           :xlsx,
           'Base64 encoded xlsx file with ideas details. See web_api/v1/import_ideas/example_xlsx for the format',
-          scope: :import_ideas,
-          required: true
+          scope: :import_ideas
         )
-
-        let(:xlsx) { create_bulk_import_ideas_xlsx }
-
-        example 'Bulk import ideas from .xlsx' do
-          expect_any_instance_of(BulkImportIdeas::ImportIdeasService).to receive :import_ideas
-          do_request
-          assert_status 201
-        end
-      end
-
-      post 'web_api/v1/projects/:id/import_ideas/bulk_create_pdf' do
         parameter(
           :pdf,
-          'Scanned PDF of ideas. Must be from the version of the form downloaded from the site.',
-          scope: :import_ideas,
-          required: true
+          'Base64 encoded scanned PDF of ideas. Must be from the version of the form downloaded from the site.',
+          scope: :import_ideas
         )
-        parameter(:locale, 'Locale of the ideas being imported.', scope: :import_ideas, required: true)
+        parameter(:locale, 'Locale of the ideas being imported.', scope: :import_ideas)
 
-        let(:pdf) { create_project_bulk_import_ideas_pdf }
-        let(:locale) { 'en' }
+        context 'xlsx import' do
+          let(:xlsx) { create_bulk_import_ideas_xlsx }
 
-        example 'Bulk import ideas from scanned .pdf' do
-          # Stubbed to avoid call to google webservice
-          expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:parse_pdf).and_return(
-            [
+          example 'Bulk import ideas from .xlsx' do
+            expect_any_instance_of(BulkImportIdeas::ImportIdeasService).to receive :import_ideas
+            do_request
+            assert_status 201
+          end
+        end
+
+        context 'pdf import' do
+          let(:pdf) { create_project_bulk_import_ideas_pdf }
+          let(:locale) { 'en' }
+
+          example 'Bulk import ideas from scanned .pdf' do
+            # Stubbed to avoid call to google webservice
+            expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:parse_pdf).and_return(
               [
-                { name: 'Name', value: 'Bob Test', type: '', page: 1, x: 0.09, y: 1.16 },
-                { name: 'Email', value: 'bob@test.com', type: '', page: 1, x: 0.09, y: 1.24 },
-                { name: 'Title', value: 'This is really a great title', type: '', page: 1, x: 0.09, y: 1.34 },
-                { name: 'Body', value: 'And this is the body', type: '', page: 1, x: 0.09, y: 1.41 },
-                { name: 'Yes', value: nil, type: 'filled_checkbox', page: 1, x: 0.11, y: 1.66 },
-                { name: 'No', value: nil, type: 'unfilled_checkbox', page: 1, x: 0.45, y: 1.66 }
+                [
+                  { name: 'Name', value: 'Bob Test', type: '', page: 1, x: 0.09, y: 1.16 },
+                  { name: 'Email', value: 'bob@test.com', type: '', page: 1, x: 0.09, y: 1.24 },
+                  { name: 'Title', value: 'This is really a great title', type: '', page: 1, x: 0.09, y: 1.34 },
+                  { name: 'Body', value: 'And this is the body', type: '', page: 1, x: 0.09, y: 1.41 },
+                  { name: 'Yes', value: nil, type: 'filled_checkbox', page: 1, x: 0.11, y: 1.66 },
+                  { name: 'No', value: nil, type: 'unfilled_checkbox', page: 1, x: 0.45, y: 1.66 }
+                ]
               ]
-            ]
-          )
+            )
 
-          do_request
+            do_request
 
-          assert_status 201
-          expect(response_data.count).to eq 1
-          expect(response_data.first[:attributes][:title_multiloc][:en]).to eq 'This is really a great title'
-          expect(response_data.first[:attributes][:publication_status]).to eq 'draft'
-          expect(User.all.count).to eq 2 # 1 new user created
-          expect(Idea.all.count).to eq 1
-          expect(BulkImportIdeas::IdeaImport.all.count).to eq 1
-          expect(BulkImportIdeas::IdeaImportFile.all.count).to eq 1
-          expect(project.reload.ideas_count).to eq 0 # Draft ideas should not be counted
+            assert_status 201
+            expect(response_data.count).to eq 1
+            expect(response_data.first[:attributes][:title_multiloc][:en]).to eq 'This is really a great title'
+            expect(response_data.first[:attributes][:publication_status]).to eq 'draft'
+            expect(User.all.count).to eq 2 # 1 new user created
+            expect(Idea.all.count).to eq 1
+            expect(BulkImportIdeas::IdeaImport.all.count).to eq 1
+            expect(BulkImportIdeas::IdeaImportFile.all.count).to eq 1
+            expect(project.reload.ideas_count).to eq 0 # Draft ideas should not be counted
 
-          # Relationships
-          expect(response_data.first.dig(:relationships, :idea_import, :data)).not_to be_nil
-          expect(json_response_body[:included].pluck(:type)).to include 'idea_import'
+            # Relationships
+            expect(response_data.first.dig(:relationships, :idea_import, :data)).not_to be_nil
+            expect(json_response_body[:included].pluck(:type)).to include 'idea_import'
+          end
         end
       end
     end
