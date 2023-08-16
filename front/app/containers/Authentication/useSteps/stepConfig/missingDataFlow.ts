@@ -149,5 +149,29 @@ export const missingDataFlow = (
         setCurrentStep('success');
       },
     },
+
+    'missing-data:onboarding': {
+      CLOSE: () => setCurrentStep('closed'),
+      SUBMIT: async (userId: string, formData: FormData) => {
+        updateUser(
+          { userId, custom_field_values: formData },
+          {
+            onSuccess: async () => {
+              const { requirements } = await getRequirements();
+
+              if (requirements.special.group_membership === 'require') {
+                setCurrentStep('closed');
+                return;
+              }
+
+              setCurrentStep('success');
+            },
+          }
+        );
+      },
+      SKIP: async () => {
+        setCurrentStep('success');
+      },
+    },
   };
 };
