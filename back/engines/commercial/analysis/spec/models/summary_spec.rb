@@ -11,6 +11,13 @@ RSpec.describe Analysis::Summary do
     it { is_expected.to be_valid }
   end
 
+  describe 'FILTERS_JSON_SCHEMA' do
+    it 'is a valid JSON schema' do
+      metaschema = JSON::Validator.validator_for_name('draft6').metaschema
+      expect(JSON::Validator.validate!(metaschema, Analysis::Summary::FILTERS_JSON_SCHEMA)).to be true
+    end
+  end
+
   describe 'filters' do
     it 'is valid when all static properties are set' do
       summary.filters = {
@@ -22,6 +29,14 @@ RSpec.describe Analysis::Summary do
         'comments_from' => 0,
         'comments_to' => 100,
         'tag_ids' => [SecureRandom.uuid]
+      }
+      expect(summary).to be_valid
+    end
+
+    it 'is valid with array nil values' do
+      summary.filters = {
+        "author_custom_#{SecureRandom.uuid}" => [nil],
+        'tag_ids' => [nil]
       }
       expect(summary).to be_valid
     end

@@ -28,7 +28,14 @@
     "tag_ids": {
       "type": "array",
       "items": {
-        "type": "string"
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
       }
     }
   },
@@ -52,6 +59,9 @@
           },
           {
             "type": "number"
+          },
+          {
+            "type": "null"
           }
         ]
       }
