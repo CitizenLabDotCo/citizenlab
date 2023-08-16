@@ -76,6 +76,13 @@ const InputsList = ({ onSelectInput, selectedInputId }: Props) => {
     }
   }, [downArrow, inputs, onSelectInput]);
 
+  const handleOnSelect = useCallback(
+    (inputId) => {
+      onSelectInput(inputId);
+    },
+    [onSelectInput]
+  );
+
   return (
     <Box bg={colors.white} w="100%">
       <SummarizeButton inputsCount={inputs?.length} />
@@ -93,7 +100,7 @@ const InputsList = ({ onSelectInput, selectedInputId }: Props) => {
             <InputListItem
               key={input.id}
               input={input}
-              onSelect={() => onSelectInput(input.id)}
+              onSelect={handleOnSelect}
               selected={input.id === selectedInputId}
             />
           ))}
