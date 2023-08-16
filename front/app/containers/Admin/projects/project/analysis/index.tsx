@@ -6,7 +6,6 @@ import TopBar from './TopBar';
 import Tags from './Tags';
 import InputsList from './InputsList';
 import InputPreview from './InputPreview';
-import Tasks from './Tasks';
 import Insights from './Insights';
 
 const Analysis = () => {
@@ -71,9 +70,6 @@ const Analysis = () => {
           >
             <Box flex="1">
               {selectedInputId && <InputPreview inputId={selectedInputId} />}
-            </Box>
-            <Box h="60px">
-              <Tasks />
             </Box>
           </Box>
           <Box
