@@ -1,12 +1,17 @@
 import React, { memo } from 'react';
 import { isNilOrError, stopPropagation } from 'utils/helperUtils';
-import { IInvitationToCosponsorInitiativeNotificationData } from 'api/notifications/types';
+
+// i18n
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
+// components
 import NotificationWrapper from '../NotificationWrapper';
 import { DeletedUser } from '../Notification';
 import Link from 'utils/cl-router/Link';
+
+// services
+import { IInvitationToCosponsorInitiativeNotificationData } from 'api/notifications/types';
 
 interface Props {
   notification: IInvitationToCosponsorInitiativeNotificationData;
