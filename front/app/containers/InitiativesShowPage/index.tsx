@@ -4,6 +4,9 @@ import React from 'react';
 import PageNotFound from 'components/PageNotFound';
 import InitiativesShow from 'containers/InitiativesShow';
 import InitiativeShowPageTopBar from './InitiativeShowPageTopBar';
+import Unauthorized from 'components/Unauthorized';
+import VerticalCenterer from 'components/VerticalCenterer';
+import { Spinner } from '@citizenlab/cl2-component-library';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -12,6 +15,7 @@ import { useParams } from 'react-router-dom';
 
 // style
 import styled from 'styled-components';
+import { isUnauthorizedRQ } from 'utils/errorUtils';
 
 const Container = styled.div`
   background: #fff;
@@ -29,7 +33,21 @@ const InitiativesShowPage = () => {
   const initiativesEnabled = useFeatureFlag({ name: 'initiatives' });
   const { slug } = useParams() as { slug: string };
 
-  const { data: initiative } = useInitiativeBySlug(slug);
+  const { data: initiative, status, error } = useInitiativeBySlug(slug);
+
+  if (status === 'loading') {
+    return (
+      <VerticalCenterer>
+        <Spinner />
+      </VerticalCenterer>
+    );
+  }
+
+  if (status === 'error') {
+    if (isUnauthorizedRQ(error)) {
+      return <Unauthorized />;
+    }
+  }
 
   if (!initiativesEnabled) {
     return <PageNotFound />;
