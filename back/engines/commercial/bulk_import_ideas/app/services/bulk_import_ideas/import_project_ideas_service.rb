@@ -59,7 +59,7 @@ module BulkImportIdeas
         ## TODO: This won't currently allow for Title, Body, Email or Name to appear multiple times
         idea_row[:title_multiloc] = { @locale.to_sym => find_field(doc, 'Title')[:value] }
         idea_row[:body_multiloc] = { @locale.to_sym => find_field(doc, 'Body')[:value] }
-        idea_row[:custom_field_values] = process_custom_fields(doc)
+        idea_row = process_custom_fields(doc, idea_row)
         idea_row
       end
     end
@@ -82,13 +82,16 @@ module BulkImportIdeas
         idea_row[:body_multiloc] = { @locale.to_sym => xlsx_row['Description'] }
         idea_row[:topic_titles]  = (xlsx_row['Tags'] || '').split(';').map(&:strip).select(&:present?)
 
+        # TODO: Convert xlsx row into the same format as doc or vice versa
+        # idea_row = process_custom_fields(doc, idea_row)
+
         idea_row
       end
     end
 
     # Match custom fields by the text of their label in the specified locale
     # Do this lookup for all fields, not just custom?
-    def process_custom_fields(doc)
+    def process_custom_fields(doc, idea_row)
       # Get the keys for the field/option names in the import locale
       text_field_types = %w[text multiline_text]
       select_field_types = %w[select multiselect]
@@ -139,7 +142,8 @@ module BulkImportIdeas
         end
       end
 
-      custom_fields
+      idea_row[:custom_field_values] = custom_fields
+      idea_row
     end
 
     def find_field(doc, name)

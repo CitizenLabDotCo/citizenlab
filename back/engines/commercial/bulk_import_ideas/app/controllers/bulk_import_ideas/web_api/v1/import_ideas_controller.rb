@@ -57,6 +57,7 @@ module BulkImportIdeas
     private
 
     def bulk_create_params
+      # TODO: Add other params in here, phase, tags, user custom fields?
       params
         .require(:import_ideas)
         .permit(%i[xlsx pdf locale])
