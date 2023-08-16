@@ -13,9 +13,9 @@ import Body from 'components/PostShowComponents/Body';
 import Image from 'components/PostShowComponents/Image';
 import Footer from 'components/PostShowComponents/Footer';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
-import PostedByMobile from './PostedByMobile';
+import PostedBy from './PostedBy';
+import ActionBar from './ActionBar';
 import ReactionControl from './ReactionControl';
-import InitiativeMoreActions from './ActionBar/InitiativeMoreActions';
 import Outlet from 'components/Outlet';
 
 // utils
@@ -28,9 +28,12 @@ import useLocalize from 'hooks/useLocalize';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
-import { columnsGapTablet, pageContentMaxWidth } from './styleConstants';
+import {
+  columnsGapDesktop,
+  rightColumnWidthDesktop,
+  pageContentMaxWidth,
+} from './styleConstants';
 
 // hooks
 import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
@@ -38,6 +41,8 @@ import useInitiativeById from 'api/initiatives/useInitiativeById';
 
 // types
 import useInitiativeReviewRequired from 'hooks/useInitiativeReviewRequired';
+import RequestToCosponsor from './RequestToCosponsor';
+import Cosponsors from './Cosponsors';
 import useLocale from 'hooks/useLocale';
 import useAuthUser from 'api/me/useAuthUser';
 import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
@@ -52,10 +57,9 @@ import {
 const Container = styled.main`
   display: flex;
   flex-direction: column;
-
-  ${(props) => `
-    min-height: calc(100vh - ${props.theme.mobileMenuHeight}px - ${props.theme.mobileTopBarHeight}px);
-  `}
+  min-height: calc(
+    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+  );
 
   &.content-enter {
     opacity: 0;
@@ -81,29 +85,31 @@ const InitiativeContainer = styled.div`
   margin-left: auto;
   margin-right: auto;
   padding: 0;
-  padding-top: 35px;
+  padding-top: 60px;
   padding-left: 60px;
   padding-right: 60px;
   position: relative;
-
-  ${media.phone`
-    padding-top: 25px;
-    padding-left: 15px;
-    padding-right: 15px;
-  `}
 `;
 
 const Content = styled.div`
-  display: block;
+  width: 100%;
+  display: flex;
 `;
 
 const LeftColumn = styled.div`
-  padding-right: ${columnsGapTablet}px;
+  flex: 2;
+  margin: 0;
   padding: 0;
+  padding-right: ${columnsGapDesktop}px;
 `;
 
 const StyledTopics = styled(Topics)`
-  margin-bottom: 5px;
+  margin-bottom: 30px;
+`;
+
+const InitiativeHeader = styled.div`
+  margin-top: -5px;
+  margin-bottom: 28px;
 `;
 
 const InitiativeBannerContainer = styled.div`
@@ -113,10 +119,6 @@ const InitiativeBannerContainer = styled.div`
   align-items: stretch;
   position: relative;
   background: ${({ theme }) => theme.colors.tenantPrimary};
-
-  ${media.phone`
-    min-height: 200px;
-  `}
 `;
 
 const InitiativeBannerImage = styled.div<{ src: string }>`
@@ -131,55 +133,34 @@ const InitiativeBannerImage = styled.div<{ src: string }>`
   background-image: url(${(props) => props.src});
 `;
 
-const InitiativeHeaderOverlay = styled.div`
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: linear-gradient(
-      0deg,
-      rgba(0, 0, 0, 0.5) 0%,
-      rgba(0, 0, 0, 0) 100%
-    ),
-    linear-gradient(0deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3));
+const StyledDropdownMap = styled(DropdownMap)`
+  margin-bottom: 40px;
 `;
 
-const InitiativeBannerContent = styled.div`
+const RightColumn = styled.div`
+  flex: 1;
+  margin: 0;
+  padding: 0;
+`;
+
+const RightColumnDesktop = styled(RightColumn)`
+  flex: 0 0 ${rightColumnWidthDesktop}px;
+  width: ${rightColumnWidthDesktop}px;
+`;
+
+const MetaContent = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding-left: 20px;
-  padding-right: 20px;
-  padding-top: 40px;
-  padding-bottom: 40px;
-  z-index: 1;
 `;
 
-const MobileMoreActionContainer = styled.div`
-  position: absolute;
-  top: 10px;
-  right: 10px;
-`;
-
-const StyledDropdownMap = styled(DropdownMap)`
-  margin-bottom: 20px;
-`;
-
-const SharingButtonsMobile = styled(SharingButtons)`
-  padding: 0;
-  margin: 0;
-  margin-top: 40px;
+const SharingWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 
 const StyledOfficialFeedback = styled(OfficialFeedback)`
   margin-top: 80px;
-`;
-
-const StyledReactionControl = styled(ReactionControl)`
-  box-shadow: 1px 0px 15px rgba(0, 0, 0, 0.06);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-  padding: 25px;
 `;
 
 interface Props {
@@ -191,7 +172,7 @@ interface Props {
   a11y_pronounceLatestOfficialFeedbackPost: boolean;
 }
 
-const Mobile = ({
+const Desktop = ({
   className,
   initiativeId,
   translateButtonClicked,
@@ -211,6 +192,7 @@ const Mobile = ({
     action: 'moderate',
   });
   const officialFeedbackElement = useRef<HTMLDivElement>(null);
+
   const initiativeReviewRequired = useInitiativeReviewRequired();
 
   const showSharingOptions = initiativeReviewRequired
@@ -244,39 +226,16 @@ const Mobile = ({
 
   return (
     <Container id="e2e-initiative-show" className={className}>
-      <InitiativeBannerContainer>
-        {initiativeHeaderImageLarge && (
-          <>
-            <InitiativeBannerImage src={initiativeHeaderImageLarge} />
-            <InitiativeHeaderOverlay />
-          </>
-        )}
-        <InitiativeBannerContent>
-          <MobileMoreActionContainer>
-            <InitiativeMoreActions
-              initiative={initiative.data}
-              id="e2e-initiative-more-actions-mobile"
-              color="white"
-            />
-          </MobileMoreActionContainer>
-          <Title
-            postId={initiativeId}
-            postType="initiative"
-            title={initiativeTitle}
-            locale={locale}
-            translateButtonClicked={translateButtonClicked}
-            color="white"
-            align="left"
-          />
-          <PostedByMobile authorId={authorId} />
-        </InitiativeBannerContent>
-      </InitiativeBannerContainer>
-
-      <StyledReactionControl
+      {initiativeHeaderImageLarge && (
+        <InitiativeBannerContainer>
+          <InitiativeBannerImage src={initiativeHeaderImageLarge} />
+        </InitiativeBannerContainer>
+      )}
+      <ActionBar
         initiativeId={initiativeId}
-        onScrollToOfficialFeedback={onScrollToOfficialFeedback}
+        translateButtonClicked={translateButtonClicked}
+        onTranslateInitiative={onTranslateInitiative}
       />
-
       <InitiativeContainer>
         <Content>
           <LeftColumn>
@@ -288,7 +247,20 @@ const Mobile = ({
                 ) || []
               }
             />
-
+            <InitiativeHeader>
+              <Title
+                postType="initiative"
+                postId={initiativeId}
+                title={initiativeTitle}
+                locale={locale}
+                translateButtonClicked={translateButtonClicked}
+              />
+            </InitiativeHeader>
+            <PostedBy
+              anonymous={initiative.data.attributes.anonymous}
+              authorId={authorId}
+              showAboutInitiatives
+            />
             {initiativeImageLarge && (
               <Image
                 src={initiativeImageLarge}
@@ -296,7 +268,6 @@ const Mobile = ({
                 id="e2e-initiative-image"
               />
             )}
-
             <Outlet
               id="app.containers.InitiativesShow.left"
               translateButtonClicked={translateButtonClicked}
@@ -304,21 +275,18 @@ const Mobile = ({
               initiative={initiative.data}
               locale={locale}
             />
-
             {initiativeGeoPosition && initiativeAddress && (
               <StyledDropdownMap
                 address={initiativeAddress}
                 position={initiativeGeoPosition}
               />
             )}
-
             <ScreenReaderOnly>
               <FormattedMessage
                 tagName="h2"
                 {...messages.invisibleTitleContent}
               />
             </ScreenReaderOnly>
-
             <Box mb="40px">
               <Body
                 postId={initiativeId}
@@ -327,13 +295,11 @@ const Mobile = ({
                 translateButtonClicked={translateButtonClicked}
               />
             </Box>
-
             {!isNilOrError(initiativeFiles) && (
               <Box mb="25px">
                 <FileAttachments files={initiativeFiles.data} />
               </Box>
             )}
-
             <div ref={officialFeedbackElement}>
               <StyledOfficialFeedback
                 postId={initiativeId}
@@ -344,34 +310,50 @@ const Mobile = ({
                 }
               />
             </div>
-
-            {showSharingOptions && (
-              <SharingButtonsMobile
-                context="initiative"
-                url={initiativeUrl}
-                twitterMessage={formatMessage(messages.twitterMessage, {
-                  initiativeTitle,
-                })}
-                facebookMessage={formatMessage(messages.facebookMessage, {
-                  initiativeTitle,
-                })}
-                whatsAppMessage={formatMessage(messages.whatsAppMessage, {
-                  initiativeTitle,
-                })}
-                emailSubject={formatMessage(messages.emailSharingSubject, {
-                  initiativeTitle,
-                })}
-                emailBody={formatMessage(messages.emailSharingBody, {
-                  initiativeUrl,
-                  initiativeTitle,
-                })}
-                utmParams={utmParams}
-              />
-            )}
           </LeftColumn>
+
+          <RightColumnDesktop>
+            <MetaContent>
+              <ScreenReaderOnly>
+                <FormattedMessage tagName="h2" {...messages.a11y_voteControl} />
+              </ScreenReaderOnly>
+              <ReactionControl
+                initiativeId={initiativeId}
+                onScrollToOfficialFeedback={onScrollToOfficialFeedback}
+                id="e2e-initiative-reaction-control"
+              />
+              <RequestToCosponsor initiativeId={initiativeId} />
+              <Cosponsors initiativeId={initiativeId} />
+              {showSharingOptions && (
+                <SharingWrapper>
+                  <SharingButtons
+                    id="e2e-initiative-sharing-component"
+                    context="initiative"
+                    url={initiativeUrl}
+                    facebookMessage={formatMessage(messages.facebookMessage, {
+                      initiativeTitle,
+                    })}
+                    twitterMessage={formatMessage(messages.twitterMessage, {
+                      initiativeTitle,
+                    })}
+                    whatsAppMessage={formatMessage(messages.whatsAppMessage, {
+                      initiativeTitle,
+                    })}
+                    emailSubject={formatMessage(messages.emailSharingSubject, {
+                      initiativeTitle,
+                    })}
+                    emailBody={formatMessage(messages.emailSharingBody, {
+                      initiativeUrl,
+                      initiativeTitle,
+                    })}
+                    utmParams={utmParams}
+                  />
+                </SharingWrapper>
+              )}
+            </MetaContent>
+          </RightColumnDesktop>
         </Content>
       </InitiativeContainer>
-
       <Suspense fallback={<LoadingComments />}>
         <Footer postId={initiativeId} postType="initiative" />
       </Suspense>
@@ -379,4 +361,4 @@ const Mobile = ({
   );
 };
 
-export default Mobile;
+export default Desktop;
