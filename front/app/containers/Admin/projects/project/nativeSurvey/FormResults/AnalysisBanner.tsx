@@ -19,7 +19,6 @@ import useFormCustomFields from 'hooks/useFormCustomFields';
 import Modal from 'components/UI/Modal';
 import { isNilOrError } from 'utils/helperUtils';
 import useLocalize from 'hooks/useLocalize';
-import T from 'components/T';
 
 const CreateAnalysisModal = ({ onClose }: { onClose: () => void }) => {
   const { formatMessage } = useIntl();
@@ -50,6 +49,17 @@ const CreateAnalysisModal = ({ onClose }: { onClose: () => void }) => {
     );
   };
 
+  const handleOnChangeCheck =
+    (customFieldId: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+      if (event.target.checked) {
+        setSelectedQuestions([...selectdQuestions, customFieldId]);
+      } else {
+        setSelectedQuestions(
+          selectdQuestions.filter((id) => id !== customFieldId)
+        );
+      }
+    };
+
   if (isNilOrError(formCustomFields)) return null;
 
   return (
@@ -63,7 +73,7 @@ const CreateAnalysisModal = ({ onClose }: { onClose: () => void }) => {
         if (field.input_type === 'page') {
           return (
             <Title variant="h5" key={field.id}>
-              <T value={field.title_multiloc} />
+              {localize(field.title_multiloc)}
             </Title>
           );
         } else if (field.input_type === 'section') {
@@ -76,15 +86,7 @@ const CreateAnalysisModal = ({ onClose }: { onClose: () => void }) => {
               <Checkbox
                 label={localize(field.title_multiloc)}
                 checked={selectdQuestions.includes(field.id)}
-                onChange={(e) => {
-                  if (e.target.checked) {
-                    setSelectedQuestions([...selectdQuestions, field.id]);
-                  } else {
-                    setSelectedQuestions(
-                      selectdQuestions.filter((id) => id !== field.id)
-                    );
-                  }
-                }}
+                onChange={handleOnChangeCheck(field.id)}
               />
             </ListItem>
           );
