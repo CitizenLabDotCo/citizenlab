@@ -700,7 +700,9 @@ resource 'Initiatives' do
 
       example 'cosponsor accepts invitation' do
         expect { do_request }.to change { @cosponsors_initiative.reload.status }.from('pending').to('accepted')
-        assert_status 204
+        assert_status 200
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data, :attributes, :slug)).to eq @initiative.slug
       end
     end
   end
