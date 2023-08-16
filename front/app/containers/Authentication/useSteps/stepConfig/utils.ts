@@ -1,12 +1,12 @@
 import { AuthenticationRequirements } from 'api/authentication/authentication_requirements/types';
 
-export const askCustomFields = (
-  customFieldRequirements: AuthenticationRequirements['requirements']['custom_fields']
+export const showOnboarding = (
+  onboardingRequirements: AuthenticationRequirements['requirements']['onboarding']
 ) => {
-  for (const fieldName in customFieldRequirements) {
+  for (const fieldName in onboardingRequirements) {
     if (
-      customFieldRequirements[fieldName] === 'ask' ||
-      customFieldRequirements[fieldName] === 'require'
+      onboardingRequirements[fieldName] === 'ask' ||
+      onboardingRequirements[fieldName] === 'require'
     ) {
       return true;
     }
@@ -15,13 +15,25 @@ export const askCustomFields = (
   return false;
 };
 
-export const showOnboarding = (
-  onboardingRequirements: AuthenticationRequirements['requirements']['onboarding']
+export const hasRequiredOnboardingStep = (
+  customFieldRequirements: AuthenticationRequirements['requirements']['onboarding']
 ) => {
-  for (const fieldName in onboardingRequirements) {
+  for (const fieldName in customFieldRequirements) {
+    if (customFieldRequirements[fieldName] === 'require') {
+      return true;
+    }
+  }
+
+  return false;
+};
+
+export const askCustomFields = (
+  customFieldRequirements: AuthenticationRequirements['requirements']['custom_fields']
+) => {
+  for (const fieldName in customFieldRequirements) {
     if (
-      onboardingRequirements[fieldName] === 'ask' ||
-      onboardingRequirements[fieldName] === 'require'
+      customFieldRequirements[fieldName] === 'ask' ||
+      customFieldRequirements[fieldName] === 'require'
     ) {
       return true;
     }
