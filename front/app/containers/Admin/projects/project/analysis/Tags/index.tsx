@@ -29,6 +29,9 @@ import ProgressBar from 'components/UI/ProgressBar';
 import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
+import { useQueryClient } from '@tanstack/react-query';
+import inputsKeys from 'api/analysis_inputs/keys';
+
 const TagContainer = styled.div`
   margin-bottom: 8px;
   padding: 8px;
@@ -60,6 +63,7 @@ const Tags = () => {
 
   const { analysisId } = useParams() as { analysisId: string };
 
+  const queryClient = useQueryClient();
   const { data: tags } = useAnalysisTags({
     analysisId,
     filters: omit(filters, 'tag_ids'),
@@ -106,6 +110,12 @@ const Tags = () => {
     max(tags?.data?.map((t) => t.attributes.total_input_count)) || 1;
 
   const selectedTags = filters.tag_ids;
+
+  const handleTagClick = (id: string) => {
+    selectTag(id);
+    queryClient.invalidateQueries(inputsKeys.lists());
+  };
+
   return (
     <Box>
       <Box>
@@ -164,7 +174,7 @@ const Tags = () => {
           <TagContainer
             key={tag.id}
             tabIndex={0}
-            onClick={() => selectTag(tag.id)}
+            onClick={() => handleTagClick(tag.id)}
             className={selectedTags?.includes(tag.id) ? 'selected' : ''}
           >
             <Box
