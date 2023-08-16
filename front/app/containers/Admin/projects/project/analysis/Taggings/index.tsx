@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
 import useAnalysisTaggings from 'api/analysis_taggings/useAnalysisTaggings';
@@ -26,8 +26,12 @@ const Taggings = ({
 
   const { data: taggings } = useAnalysisTaggings(analysisId);
 
-  const taggingsForInput = taggings?.data?.filter(
-    (tagging) => tagging.relationships.input.data.id === inputId
+  const taggingsForInput = useMemo(
+    () =>
+      taggings?.data?.filter(
+        (tagging) => tagging.relationships.input.data.id === inputId
+      ),
+    [taggings, inputId]
   );
 
   return (
