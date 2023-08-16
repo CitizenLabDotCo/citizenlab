@@ -184,6 +184,14 @@ class WebApi::V1::InitiativesController < ApplicationController
 
     if @cosponsors_initiative.update!(status: 'accepted')
       SideFxInitiativeService.new.after_accept_cosponsorship_invite(@cosponsors_initiative, current_user)
+
+      render json: WebApi::V1::InitiativeSerializer.new(
+        @initiative.reload,
+        params: jsonapi_serializer_params,
+        include: %i[author cosponsors topics areas user_reaction initiative_images]
+      ).serializable_hash, status: :ok
+    else
+      render json: { errors: @initiative.errors.details }, status: :unprocessable_entity
     end
   end
 
