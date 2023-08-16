@@ -15,30 +15,35 @@ interface Get {
   action: 'get';
   queryParams?: Record<string, any>;
   body?: never;
+  disableCacheOptimization?: boolean;
 }
 interface Patch {
   path: Path;
   action: 'patch';
   body?: Record<string, any>;
   queryParams?: never;
+  disableCacheOptimization?: never;
 }
 interface Put {
   path: Path;
   action: 'put';
   body: Record<string, any>;
   queryParams?: never;
+  disableCacheOptimization?: never;
 }
 interface Post {
   path: Path;
   action: 'post';
   body: Record<string, any> | null;
   queryParams?: never;
+  disableCacheOptimization?: never;
 }
 interface Delete {
   path: Path;
   action: 'delete';
   body?: Record<string, any> | null;
   queryParams?: never;
+  disableCacheOptimization?: never;
 }
 
 type FetcherArgs = Get | Patch | Put | Post | Delete;
@@ -55,7 +60,13 @@ function fetcher<TResponseData extends BaseResponseData>(
   ? null
   : Promise<Omit<TResponseData, 'included'>>;
 
-async function fetcher({ path, action, body, queryParams }) {
+async function fetcher({
+  path,
+  action,
+  body,
+  queryParams,
+  disableCacheOptimization,
+}) {
   const methodMap = {
     get: 'GET',
     patch: 'PATCH',
@@ -127,20 +138,22 @@ async function fetcher({ path, action, body, queryParams }) {
   } else {
     if (data) {
       if (isArray(data.data)) {
-        data.data.forEach((entry) => {
-          if (entry.id) {
-            queryClient.setQueryData(
-              [
-                {
-                  type: entry.type,
-                  parameters: { id: entry.id },
-                  operation: 'item',
-                },
-              ],
-              () => ({ data: entry })
-            );
-          }
-        });
+        if (!disableCacheOptimization) {
+          data.data.forEach((entry) => {
+            if (entry.id) {
+              queryClient.setQueryData(
+                [
+                  {
+                    type: entry.type,
+                    parameters: { id: entry.id },
+                    operation: 'item',
+                  },
+                ],
+                () => ({ data: entry })
+              );
+            }
+          });
+        }
       } else if (action === 'post' || action === 'patch') {
         if (data.data.id) {
           queryClient.setQueryData(
@@ -156,20 +169,22 @@ async function fetcher({ path, action, body, queryParams }) {
         }
       }
       if (data.included) {
-        data.included.forEach((entry) => {
-          if (entry.id) {
-            queryClient.setQueryData(
-              [
-                {
-                  type: entry.type,
-                  parameters: { id: entry.id },
-                  operation: 'item',
-                },
-              ],
-              () => ({ data: entry })
-            );
-          }
-        });
+        if (!disableCacheOptimization) {
+          data.included.forEach((entry) => {
+            if (entry.id) {
+              queryClient.setQueryData(
+                [
+                  {
+                    type: entry.type,
+                    parameters: { id: entry.id },
+                    operation: 'item',
+                  },
+                ],
+                () => ({ data: entry })
+              );
+            }
+          });
+        }
       }
     }
   }
