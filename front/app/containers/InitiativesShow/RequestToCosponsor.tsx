@@ -78,9 +78,8 @@ const RequestToCosponsor = ({ className, id, initiativeId }: Props) => {
     initiative.data.relationships.author.data?.id === authUserId;
 
   if (
-    authUserIsInvitedToCosponsor &&
-    !authUserHasCosponsored &&
-    !authUserIsAuthor
+    !authUserIsAuthor &&
+    (authUserIsInvitedToCosponsor || authUserHasCosponsored)
   ) {
     return (
       <Container id={id} className={className || ''} aria-live="polite">
@@ -99,28 +98,15 @@ const RequestToCosponsor = ({ className, id, initiativeId }: Props) => {
             icon="volunteer"
             onClick={handleOnClickCosponsor}
             processing={isLoading}
+            disabled={authUserHasCosponsored}
           >
             Cosponsor
           </Button>
-  return (
-    <Container id={id} className={className || ''} aria-live="polite">
-      <Container2>
-        <Box mb="16px">
-          <StatusWrapper>Cosponsor</StatusWrapper>
-        </Box>
-        <StatusIcon ariaHidden name="user" />
-        <Box mb="24px">
-          <StatusExplanation>
-            <b>Filler.</b> Filler.
-            <Box mt="20px">Filler.</Box>
-          </StatusExplanation>
-        </Box>
-        <Button icon="volunteer" onClick={handleOnClickCosponsor}>
-          Cosponsor
-        </Button>
-      </Container2>
-    </Container>
-  );
+          {isSuccess && (
+            <Text color="success">
+              You've succesfully cosponsored this proposal!
+            </Text>
+          )}
         </Container2>
       </Container>
     );
