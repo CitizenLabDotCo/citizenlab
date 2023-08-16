@@ -6,6 +6,7 @@ import { isEmpty } from 'lodash-es';
 import FileAttachments from 'components/UI/FileAttachments';
 import PhaseTitle from './PhaseTitle';
 import ReadMoreWrapper from 'components/ReadMoreWrapper/ReadMoreWrapper';
+import EventPreviews from 'components/EventPreviews';
 
 // hooks
 import useLocalize from 'hooks/useLocalize';
@@ -15,7 +16,6 @@ import usePhase from 'api/phases/usePhase';
 import styled from 'styled-components';
 import { defaultCardStyle, media } from 'utils/styleUtils';
 import usePhaseFiles from 'api/phase_files/usePhaseFiles';
-import EventPreviews from 'components/EventPreviews';
 
 // utils
 import { isCurrentPhase } from 'api/phases/utils';

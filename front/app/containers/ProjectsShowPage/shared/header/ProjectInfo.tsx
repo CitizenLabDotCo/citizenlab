@@ -6,6 +6,7 @@ import FileAttachments from 'components/UI/FileAttachments';
 import ProjectInfoSideBar from './ProjectInfoSideBar';
 import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 import ReadMoreWrapper from 'components/ReadMoreWrapper/ReadMoreWrapper';
+import EventPreviews from 'components/EventPreviews';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
@@ -18,7 +19,6 @@ import T from 'components/T';
 // style
 import styled from 'styled-components';
 import { media, isRtl } from 'utils/styleUtils';
-import EventPreviews from 'components/EventPreviews';
 
 const Container = styled.div`
   display: flex;

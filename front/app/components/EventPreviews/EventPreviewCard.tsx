@@ -20,12 +20,12 @@ import moment from 'moment';
 
 // utils
 import clHistory from 'utils/cl-router/history';
+import { timeRangesOverlap } from 'utils/dateUtils';
 
 // typing
 import { IEventData } from 'api/events/types';
 import { IPhaseData } from 'api/phases/types';
 import { ProcessType } from 'api/projects/types';
-import { timeRangesOverlap } from 'utils/dateUtils';
 
 const EventCard = styled(Box)`
   ${defaultCardStyle};
