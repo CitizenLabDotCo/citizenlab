@@ -338,7 +338,10 @@ const AuthModal = ({ setModalOpen }: Props) => {
         )}
 
         {currentStep === 'sign-up:onboarding' && (
-          <TopicsAndAreas onSkip={transition(currentStep, 'SKIP')} />
+          <TopicsAndAreas
+            onSubmit={transition(currentStep, 'SUBMIT')}
+            onSkip={transition(currentStep, 'SKIP')}
+          />
         )}
 
         {currentStep === 'sign-up:invite' && (
@@ -478,7 +481,10 @@ const AuthModal = ({ setModalOpen }: Props) => {
         )}
 
         {currentStep === 'missing-data:onboarding' && (
-          <TopicsAndAreas onSkip={transition(currentStep, 'SKIP')} />
+          <TopicsAndAreas
+            onSubmit={transition(currentStep, 'SUBMIT')}
+            onSkip={transition(currentStep, 'SKIP')}
+          />
         )}
 
         {/* verification only */}

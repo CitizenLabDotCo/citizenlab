@@ -9,8 +9,12 @@ export default defineMessages({
     id: 'app.containers.SignUp.topicsAndAreas.areasOfFocus',
     defaultMessage: 'Explore areas of focus',
   },
-  skip: {
-    id: 'app.containers.SignUp.topicsAndAreas.skip',
-    defaultMessage: 'Skip',
+  skipForNow: {
+    id: 'app.containers.SignUp.topicsAndAreas.skipForNow',
+    defaultMessage: 'Skip for now',
+  },
+  savePreferences: {
+    id: 'app.containers.SignUp.topicsAndAreas.savePreferences',
+    defaultMessage: 'Save preferences',
   },
 });

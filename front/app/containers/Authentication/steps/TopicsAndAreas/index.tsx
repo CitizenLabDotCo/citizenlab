@@ -1,35 +1,45 @@
 import React from 'react';
-
-// components
 import { Box, Title } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import Topics from 'containers/UsersShowPage/Following/Topics';
 import Areas from 'containers/UsersShowPage/Following/Areas';
-
-// i18n
 import { useIntl } from 'utils/cl-intl';
+import useAuthUser from 'api/me/useAuthUser';
 import messages from './messages';
 
 interface Props {
+  onSubmit: (id: string) => void;
   onSkip: () => void;
 }
 
-const TopicsAndAreas = ({ onSkip }: Props) => {
+const TopicsAndAreas = ({ onSubmit, onSkip }: Props) => {
   const { formatMessage } = useIntl();
+  const { data: authUser } = useAuthUser();
+
+  if (!authUser) return null;
+
+  const handleSubmit = () => {
+    onSubmit(authUser.data.id);
+  };
 
   return (
     <>
-      <Box>
+      <Box maxHeight="350px" overflowY="scroll">
         <Title variant="h4">{formatMessage(messages.topicsOfInterest)}</Title>
         <Topics />
       </Box>
-      <Box>
+      <Box maxHeight="150px" overflowY="scroll">
         <Title variant="h4">{formatMessage(messages.areasOfFocus)}</Title>
         <Areas />
       </Box>
-      <Button onClick={onSkip} my="20px" w="auto">
-        {formatMessage(messages.skip)}
-      </Button>
+      <Box display="flex" justifyContent="flex-end">
+        <Box my="20px" w="auto" display="flex" alignSelf="flex-end" gap="8px">
+          <Button onClick={onSkip}>{formatMessage(messages.skipForNow)}</Button>
+          <Button onClick={handleSubmit}>
+            {formatMessage(messages.savePreferences)}
+          </Button>
+        </Box>
+      </Box>
     </>
   );
 };
