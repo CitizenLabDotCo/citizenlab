@@ -8,6 +8,7 @@ import CommentMarkedAsSpamNotification from '../CommentMarkedAsSpamNotification'
 import CommentOnYourCommentNotification from '../CommentOnYourCommentNotification';
 import CommentOnYourIdeaNotification from '../CommentOnYourIdeaNotification';
 import CommentOnYourInitiativeNotification from '../CommentOnYourInitiativeNotification';
+import CosponsorOfYourInitiativeNotification from '../CosponsorOfYourInitiativeNotification';
 import IdeaAssignedToYouNotification from '../IdeaAssignedToYouNotification';
 import IdeaMarkedAsSpamNotification from '../IdeaMarkedAsSpamNotification';
 import InitiativeAssignedToYouNotification from '../InitiativeAssignedToYouNotification';
@@ -48,6 +49,7 @@ import {
   ICommentOnYourCommentNotificationData,
   ICommentOnYourIdeaNotificationData,
   ICommentOnYourInitiativeNotificationData,
+  ICosponsorOfYourInitiativeNotificationData,
   IIdeaAssignedToYouNotificationData,
   IIdeaMarkedAsSpamNotificationData,
   IInitiativeAssignedToYouNotificationData,
@@ -130,6 +132,14 @@ const Notification = ({ notification }: Props) => {
         <CommentOnYourInitiativeNotification
           notification={
             notification as ICommentOnYourInitiativeNotificationData
+          }
+        />
+      );
+    case 'cosponsor_of_your_initiative':
+      return (
+        <CosponsorOfYourInitiativeNotification
+          notification={
+            notification as ICosponsorOfYourInitiativeNotificationData
           }
         />
       );

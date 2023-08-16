@@ -107,6 +107,19 @@ export interface ICommentOnYourInitiativeNotificationData
   };
 }
 
+export interface ICosponsorOfYourInitiativeNotificationData
+  extends IBaseNotificationData {
+  attributes: {
+    type: 'cosponsor_of_your_initiative';
+    read_at: string | null;
+    created_at: string;
+    initiating_user_first_name: string | null;
+    initiating_user_last_name: string | null;
+    initiating_user_slug: string | null;
+    post_slug: string | null;
+  };
+}
+
 export interface IIdeaAssignedToYouNotificationData
   extends IBaseNotificationData {
   attributes: {
@@ -501,6 +514,7 @@ export interface INotificationDataMap {
   ICommentOnYourCommentNotificationData: ICommentOnYourCommentNotificationData;
   ICommentOnYourIdeaNotificationData: ICommentOnYourIdeaNotificationData;
   ICommentOnYourInitiativeNotificationData: ICommentOnYourInitiativeNotificationData;
+  ICosponsorOfYourInitiativeNotificationData: ICosponsorOfYourInitiativeNotificationData;
   IIdeaAssignedToYouNotificationData: IIdeaAssignedToYouNotificationData;
   IIdeaMarkedAsSpamNotificationData: IIdeaMarkedAsSpamNotificationData;
   IInitiativeAssignedToYouNotificationData: IInitiativeAssignedToYouNotificationData;

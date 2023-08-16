@@ -22,6 +22,10 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.noNotifications',
     defaultMessage: "You don't have any notifications yet",
   },
+  cosponsorOfYourInitiative: {
+    id: 'app.containers.NotificationMenu.cosponsorOfYourInitiative',
+    defaultMessage: '{name} cosponsored your proposal',
+  },
   userCommentedOnYourIdea: {
     id: 'app.containers.NotificationMenu.userCommentedOnYourIdea',
     defaultMessage: '{name} commented on your idea',
