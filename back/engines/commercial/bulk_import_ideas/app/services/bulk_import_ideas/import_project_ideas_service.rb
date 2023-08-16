@@ -12,14 +12,12 @@ module BulkImportIdeas
     end
 
     def generate_example_xlsx
+      # TODO: Translations for these columns?
       columns = {
-        'ID' => '1',
-        'Locale' => @locale,
         'Name' => 'Bill Test',
         'Email' => 'bill@citizenlab.co',
         'Date Published (dd-mm-yyyy)' => '18-07-2022'
       }
-      columns['Phase'] = 1 if @project.timeline? # Only if there are phases in the project
 
       ignore_columns = %w[idea_files_attributes idea_images_attributes]
       @project_fields.each do |field|
@@ -36,12 +34,15 @@ module BulkImportIdeas
         when 'topic_ids'
           @project.allowed_input_topics.map { |t| t.title_multiloc[@locale] }.join '; '
         else
-          'Some text'
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
         end
         columns[column_name] = value
       end
 
       columns['Image URL'] = 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png'
+      columns['Latitude'] = 50.5035
+      columns['Longitude'] = 6.0944
+      columns['Location Description'] = 'Panorama sur les Hautes Fagnes / Hohes Venn'
 
       XlsxService.new.hash_array_to_xlsx [columns]
     end
@@ -52,11 +53,12 @@ module BulkImportIdeas
         idea_row = {}
         idea_row[:pages] = doc.pluck(:page).uniq
         idea_row[:project_id] = @project.id
+        idea_row[:user_name] = find_field(doc, 'Name')[:value]
+        idea_row[:user_email] = find_field(doc, 'Email')[:value]
+
         ## TODO: This won't currently allow for Title, Body, Email or Name to appear multiple times
         idea_row[:title_multiloc] = { @locale.to_sym => find_field(doc, 'Title')[:value] }
         idea_row[:body_multiloc] = { @locale.to_sym => find_field(doc, 'Body')[:value] }
-        idea_row[:user_email] = find_field(doc, 'Email')[:value]
-        idea_row[:user_name] = find_field(doc, 'Name')[:value]
         idea_row[:custom_field_values] = process_custom_fields(doc)
         idea_row
       end
@@ -65,24 +67,21 @@ module BulkImportIdeas
     def xlsx_to_idea_rows(xlsx)
       xlsx.map do |xlsx_row|
         idea_row = {}
-        idea_row[:id]                   = xlsx_row['ID']
-        idea_row[:project_id]        = idea_row[:project_id] = @project.id # TODO: Share this with doc import
+        idea_row[:project_id]           = @project.id
+        idea_row[:user_name]            = xlsx_row['Name']
         idea_row[:user_email]           = xlsx_row['Email']
+        idea_row[:published_at]         = xlsx_row['Date Published (dd-mm-yyyy)']
         idea_row[:image_url]            = xlsx_row['Image URL']
-        idea_row[:published_at]         = xlsx_row['Date (dd-mm-yyyy)']
+        idea_row[:latitude]             = xlsx_row['Latitude']
+        idea_row[:longitude]            = xlsx_row['Longitude']
+        idea_row[:location_description] = xlsx_row['Location Description']
 
-        # TODO: All These should be done by the custom form mapping
+        # TODO: Add custom fields in here by refactoring process_custom_fields()
+        # All the following fields should also be done by the custom form mapping
         idea_row[:title_multiloc] = { @locale.to_sym => xlsx_row['Title'] }
         idea_row[:body_multiloc] = { @locale.to_sym => xlsx_row['Description'] }
-        idea_row[:topic_titles]         = (xlsx_row['Topics'] || '').split(';').map(&:strip).select(&:present?)
+        idea_row[:topic_titles]  = (xlsx_row['Tags'] || '').split(';').map(&:strip).select(&:present?)
 
-        # idea_row[:phase_rank]           = xlsx_row['Phase']
-        idea_row[:published_at]         = xlsx_row['Date (dd-mm-yyyy)']
-        # idea_row[:latitude]             = xlsx_row['Latitude']
-        # idea_row[:longitude]            = xlsx_row['Longitude']
-        # idea_row[:location_description] = xlsx_row['Location Description']
-        idea_row[:id]                   = xlsx_row['ID']
-        # TODO: Map the doc type to a row so we can use the custom_field thing
         idea_row
       end
     end

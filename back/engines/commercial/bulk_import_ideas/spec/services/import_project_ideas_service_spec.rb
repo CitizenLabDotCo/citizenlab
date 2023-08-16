@@ -115,9 +115,62 @@ describe BulkImportIdeas::ImportProjectIdeasService do
   end
 
   describe 'xlsx_to_idea_rows' do
-    it 'converts xlsx to rows' do
-      # TODO: Complete this
-      expect(project).not_to be_nil
+    it 'converts uploaded project XLSX to more parseable format for the idea import method' do
+      xlsx_array = [
+        {
+          'Name' => 'Bob Test',
+          'Email' => 'bob@citizenlab.co',
+          'Date Published (dd-mm-yyyy)' => '15-08-2023',
+          'Title' => 'A title',
+          'Description' => 'A description',
+          'Tags' => 'topic 1; topic 2; topic 3',
+          'Image URL' => 'https://images.com/image.png',
+          'Latitude' => 50.5035,
+          'Longitude' => 6.0944,
+          'Location Description' => 'A location'
+        },
+        {
+          'Name' => 'Ned Test',
+          'Email' => 'ned@citizenlab.co',
+          'Date Published (dd-mm-yyyy)' => '16-08-2023',
+          'Title' => 'Another title',
+          'Description' => 'Another description',
+          'Topics' => 'topic 1; topic 2',
+          'Image URL' => 'https://images.com/image.png'
+        }
+      ]
+
+      idea_rows = service.xlsx_to_idea_rows xlsx_array
+
+      expect(idea_rows[0]).to match({
+        title_multiloc: { en: 'A title' },
+        body_multiloc: { en: 'A description' },
+        user_name: 'Bob Test',
+        user_email: 'bob@citizenlab.co',
+        project_id: project.id,
+        topic_titles: ['topic 1', 'topic 2', 'topic 3'],
+        published_at: '15-08-2023',
+        latitude: 50.5035,
+        longitude: 6.0944,
+        location_description: 'A location',
+        image_url: 'https://images.com/image.png'
+      })
+        #
+        # {
+        #   id: 'c891c58b-a0d7-42f5-9262-9f3031d70a39',
+        #   title_multiloc: { 'en' => 'My wonderful idea title' },
+        #   body_multiloc: { 'en' => 'My wonderful idea content' },
+        #   user_name: 'Ned test',
+        #   user_email: 'ned@citizenlab.co',
+        #   project_id: project.id,
+        #   topic_titles: [],
+        #   published_at: nil,
+        #   # latitude: nil,
+        #   # longitude: nil,
+        #   # location_description: nil,
+        #   image_url: nil
+        # }
+
     end
   end
 end
