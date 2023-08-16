@@ -1385,7 +1385,6 @@
   "app.containers.SignIn.useFranceConnectToLoginCreateOrVerifyYourAccount": "Utilice FranceConnect para conectarse, inscribirse o verificar su cuenta.",
   "app.containers.SignIn.whatIsFranceConnect": "¿Qué es France Connect?",
   "app.containers.SignUp.backToSignUpOptions": "Volver a las opciones de registro",
-  "app.containers.SignUp.completeSignUp": "Inscripción completa",
   "app.containers.SignUp.emailConsent": "Al registrarse, aceptas recibir correos electrónicos de esta plataforma. Puedes seleccionar los correos electrónicos que deseas recibir desde tu configuración de usuario.",
   "app.containers.SignUp.emptyFirstNameError": "Introduzca su nombre",
   "app.containers.SignUp.emptyLastNameError": "Introduzca su apellido",

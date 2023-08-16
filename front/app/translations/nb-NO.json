@@ -1385,7 +1385,6 @@
   "app.containers.SignIn.useFranceConnectToLoginCreateOrVerifyYourAccount": "Bruk FranceConnect for å logge inn, registrere deg eller verifisering av din konto.",
   "app.containers.SignIn.whatIsFranceConnect": "Hva er France Connect?",
   "app.containers.SignUp.backToSignUpOptions": "Gå tilbake til innstillinger for registrering",
-  "app.containers.SignUp.completeSignUp": "Fullfør registreringen",
   "app.containers.SignUp.emailConsent": "Når du registrerer deg, aksepterer du å motta e-poster oss. Under kontoinnstillinger kan du velge hvilke e-poster du vil motta. ",
   "app.containers.SignUp.emptyFirstNameError": "Oppgi fornavnet ditt",
   "app.containers.SignUp.emptyLastNameError": "Oppgi ditt etternavn",

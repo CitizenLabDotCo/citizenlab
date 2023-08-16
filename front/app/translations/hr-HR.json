@@ -1385,7 +1385,6 @@
   "app.containers.SignIn.useFranceConnectToLoginCreateOrVerifyYourAccount": "Koristite FranceConnect kako biste se prijavili, prijavili ili potvrdili svoj račun.",
   "app.containers.SignIn.whatIsFranceConnect": "Što je FranceConnect?",
   "app.containers.SignUp.backToSignUpOptions": "Vrati se na opcije registracije",
-  "app.containers.SignUp.completeSignUp": "Završi registraciju",
   "app.containers.SignUp.emailConsent": "Kad se registrirate, time dajete suglasnost za primanje obavijesti e-poštom s ove platforme. Na stranici „Moje postavke“ možete odabrati koje obavijesti želite primati.",
   "app.containers.SignUp.emptyFirstNameError": "Unesite ime",
   "app.containers.SignUp.emptyLastNameError": "Unesite prezime",

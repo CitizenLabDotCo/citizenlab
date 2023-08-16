@@ -1385,7 +1385,6 @@
   "app.containers.SignIn.useFranceConnectToLoginCreateOrVerifyYourAccount": "Benotzt FranceConnect fir Iech anzeloggen, unzemellen oder Äre Kont ze verifizéieren.",
   "app.containers.SignIn.whatIsFranceConnect": "Wat ass France Connect?",
   "app.containers.SignUp.backToSignUpOptions": "Zeréck bei d'Umeldungsoptiounen",
-  "app.containers.SignUp.completeSignUp": "Aschreiwung ofschléissen",
   "app.containers.SignUp.emailConsent": "Mat Ärer Umeldung erkläert Dir Iech averstanen, E-Maile vun dëser Plattform ze kréien. Dir kënnt op der Säit 'Meng Astellungen' auswielen, wat fir E-Mailen Dir kréie wëllt.",
   "app.containers.SignUp.emptyFirstNameError": "Gitt Äre Virnumm an",
   "app.containers.SignUp.emptyLastNameError": "Gitt Äre Familljennumm an",

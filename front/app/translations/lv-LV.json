@@ -1385,7 +1385,6 @@
   "app.containers.SignIn.useFranceConnectToLoginCreateOrVerifyYourAccount": "Izmantot FranceConnect, lai pierakstītos, reģistrētos vai pārbaudītu savu kontu.",
   "app.containers.SignIn.whatIsFranceConnect": "Kas ir France Connect?",
   "app.containers.SignUp.backToSignUpOptions": "Atgriezties pie reģistrēšanās iespējām",
-  "app.containers.SignUp.completeSignUp": "Pabeigt reģistrēšanos",
   "app.containers.SignUp.emailConsent": "Reģistrējoties jūs piekrītat saņemt e-pasta ziņojumus no šīs platformas. Lapā \"Mani iestatījumi\" jūs varat izvēlēties, kurus e-pastus vēlaties saņemt.",
   "app.containers.SignUp.emptyFirstNameError": "Ievadiet savu vārdu",
   "app.containers.SignUp.emptyLastNameError": "Ievadiet savu uzvārdu",

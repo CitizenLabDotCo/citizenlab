@@ -1385,7 +1385,6 @@
   "app.containers.SignIn.useFranceConnectToLoginCreateOrVerifyYourAccount": "Oturum açmak, kaydolmak veya hesabınızı doğrulamak için FranceConnect'i kullanın.",
   "app.containers.SignIn.whatIsFranceConnect": "FranceConnect nedir?",
   "app.containers.SignUp.backToSignUpOptions": "Kaydolma seçeneklerine dönün",
-  "app.containers.SignUp.completeSignUp": "Kaydolma işlemini tamamlayın",
   "app.containers.SignUp.emailConsent": "Kaydolduğunuzda bu platformdan e-postalar almayı kabul etmiş olursunuz. Hangi e-postaları almak istediğinizi 'Ayarlarım' sayfasından belirleyebilirsiniz.",
   "app.containers.SignUp.emptyFirstNameError": "Adınızı girin",
   "app.containers.SignUp.emptyLastNameError": "Soyadınızı girin",

@@ -1385,7 +1385,6 @@
   "app.containers.SignIn.useFranceConnectToLoginCreateOrVerifyYourAccount": "Gebruik FranceConnect om in te loggen, je aan te melden of jouw account te verifiëren.",
   "app.containers.SignIn.whatIsFranceConnect": "Wat is France Connect?",
   "app.containers.SignUp.backToSignUpOptions": "Ga terug naar de registratieopties",
-  "app.containers.SignUp.completeSignUp": "Voltooi je registratie",
   "app.containers.SignUp.emailConsent": "Door je te registreren, ga je ermee akkoord e-mails van dit platform te ontvangen. Je kunt aanduiden welke e-mails je wil ontvangen op je profielpagina.",
   "app.containers.SignUp.emptyFirstNameError": "Vul je voornaam in",
   "app.containers.SignUp.emptyLastNameError": "Vul je achternaam in",
