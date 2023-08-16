@@ -63,14 +63,28 @@
 #  fk_rails_...  (spam_report_id => spam_reports.id)
 #
 module Notifications
-  class InternalComments::InternalCommentOnIdeaAssignedToYou < Notification
-    validates :initiating_user, :internal_comment, :post, presence: true
+  class InvitationToCosponsorInitiative < Notification
+    validates :initiating_user, :cosponsors_initiative, presence: true
 
-    ACTIVITY_TRIGGERS = { 'InternalComment' => { 'created' => true } }
-    EVENT_NAME = 'Internal comment on idea assigned to you'
+    ACTIVITY_TRIGGERS = { 'CosponsorsInitiative' => { 'created' => true } }
+    EVENT_NAME = 'Invitation to cosponsor an initiative'
 
     def self.make_notifications_on(activity)
-      InternalComments::InternalCommentOnIdeaAssignedToYouBuilder.new(activity).build_notifications
+      cosponsors_initiative = activity&.item
+      initiating_user = activity&.user
+      recipient_id = cosponsors_initiative&.user_id
+      initiative = cosponsors_initiative&.initiative
+
+      if recipient_id && initiating_user && initiative
+        [new(
+          recipient_id: recipient_id,
+          initiating_user: initiating_user,
+          cosponsors_initiative: cosponsors_initiative,
+          post: initiative
+        )]
+      else
+        []
+      end
     end
   end
 end
