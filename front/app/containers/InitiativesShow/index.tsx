@@ -26,7 +26,7 @@ interface Props {
 }
 
 const InitiativesShow = ({ initiativeId }: Props) => {
-  const isSmallerThanTablet = useBreakpoint('tablet');
+  const isSmallerThanPhone = useBreakpoint('phone');
   const [searchParams] = useSearchParams();
   const newInitiativeId = searchParams.get('new_initiative_id');
 
@@ -92,7 +92,7 @@ const InitiativesShow = ({ initiativeId }: Props) => {
   return (
     <>
       <InitiativeMeta initiativeId={initiativeId} />
-      {isSmallerThanTablet ? (
+      {isSmallerThanPhone ? (
         <Mobile
           initiativeId={initiativeId}
           translateButtonClicked={translateButtonClicked}
