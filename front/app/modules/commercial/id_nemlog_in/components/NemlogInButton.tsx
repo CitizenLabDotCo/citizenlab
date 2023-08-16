@@ -19,7 +19,7 @@ interface Props {
   onClick: (method: TVerificationMethod) => void;
 }
 
-const NemLogInButton = ({ method, last, onClick }: Props) => {
+const NemlogInButton = ({ method, last, onClick }: Props) => {
   const handleOnClick = () => {
     onClick(method);
 
@@ -30,14 +30,10 @@ const NemLogInButton = ({ method, last, onClick }: Props) => {
   };
 
   return (
-    <VerificationMethodButton
-      // id="e2e-nemlog_in-button"
-      last={last}
-      onClick={handleOnClick}
-    >
+    <VerificationMethodButton last={last} onClick={handleOnClick}>
       <FormattedMessage {...messages.verifyNemLogIn} />
     </VerificationMethodButton>
   );
 };
 
-export default NemLogInButton;
+export default NemlogInButton;
