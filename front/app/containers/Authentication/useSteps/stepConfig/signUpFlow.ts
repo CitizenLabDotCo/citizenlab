@@ -235,9 +235,9 @@ export const signUpFlow = (
         setCurrentStep('closed');
         trackEventByName(tracks.signUpCustomFieldsStepExited);
       },
-      SUBMIT: (userId: string, formData: FormData) => {
+      SUBMIT: (userId: string) => {
         updateUser(
-          { userId, custom_field_values: formData },
+          { userId, onboarding: { topics_and_areas: 'satisfied' } },
           {
             onSuccess: async () => {
               const { requirements } = await getRequirements();
