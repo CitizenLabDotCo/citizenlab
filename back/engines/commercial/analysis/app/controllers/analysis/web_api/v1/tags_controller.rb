@@ -65,6 +65,7 @@ module Analysis
 
         def destroy
           @tag = @analysis.tags.find(params[:id])
+          side_fx_service.before_destroy(@tag, current_user)
           if @tag.destroy
             side_fx_service.after_destroy(@tag, current_user)
             head :ok

@@ -1,5 +1,5 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$schema": "http://json-schema.org/draft-06/schema#",
   "description": "Schema for validating the filters associated with a summary",
   "type": "object",
   "additionalProperties": false,
@@ -30,9 +30,22 @@
       "items": {
         "type": "string"
       }
+    }
+  },
+  "patternProperties": {
+    "^author_custom_([a-f0-9\-]+)_(from|to)$": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "number"
+        }
+      ]
     },
-    "patternProperties": {
-      "^author_custom_([a-f0-9-]+)_(from|to)$": {
+    "^author_custom_([a-f0-9\-]+)$": {
+      "type": "array",
+      "items": {
         "anyOf": [
           {
             "type": "string"
@@ -41,19 +54,6 @@
             "type": "number"
           }
         ]
-      },
-      "^author_custom_([a-f0-9-]+)$": {
-        "type": "array",
-        "items": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "number"
-            }
-          ]
-        }
       }
     }
   }
