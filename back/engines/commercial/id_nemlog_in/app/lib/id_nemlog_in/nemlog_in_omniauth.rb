@@ -57,12 +57,22 @@ module IdNemlogIn
 
       metadata = idp_metadata.merge({
         issuer: issuer,
-        assertion_consumer_service_url: nil,
-        idp_cert: ver_config[:certificate], # can start with "Bag Attributes"
-        private_key: ver_config[:private_key], # should start with "-----BEGIN PRIVATE KEY-----" not "Bag Attributes"
+
+        # without it (or with assertion_consumer_service_url: nil), I get "502 Bad Gateway nginx/1.17.9"
+        # after clicking "Verify with MitID" on https://nemlogin-k3kd.loca.lt/auth/nemlog_in?token=eyJhbGc...
+        # Probably, because the request has a token and so the size of request is too big
+        # <samlp:AuthnRequest AssertionConsumerServiceURL='https://nemlogin-k3kd.loca.lt/auth/nemlog_in/callback?token=eyJhbG
+        assertion_consumer_service_url: 'https://nemlogin-k3kd.loca.lt/auth/nemlog_in/callback',
+
+        # certificate: ver_config[:certificate], # not required as it's used in our SP metadata file, which is uploaded to NemLog-in
+        private_key: ver_config[:private_key], # should start with "-----BEGIN PRIVATE KEY-----". "Bag Attributes" part should be removed
+
         security: {
-          authn_requests_signed: true,
-          signature_method: 'http://www.w3.org/2001/04/xmldsig-more#rsa-sha256',
+          authn_requests_signed: true, # using false gives "A technical error has occurred" on https://test-devtest4-nemlog-in.pp.mitid.dk/
+          signature_method: 'http://www.w3.org/2001/04/xmldsig-more#rsa-sha256'
+          # Any of these gives "A technical error has occurred" on https://test-devtest4-nemlog-in.pp.mitid.dk/
+          # digest_method: 'http://www.w3.org/2000/09/xmldsig#sha1',
+          # signature_method: 'http://www.w3.org/2000/09/xmldsig#rsa-sha1'
         }
       })
 
