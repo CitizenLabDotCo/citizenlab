@@ -15,6 +15,7 @@ import EmailAndPassword from './steps/EmailAndPassword';
 import EmailConfirmation from './steps/EmailConfirmation';
 import Verification from './steps/Verification';
 import CustomFields from './steps/CustomFields';
+import TopicsAndAreas from './steps/TopicsAndAreas';
 import Invitation from './steps/Invitation';
 import ChangeEmail from './steps/ChangeEmail';
 import LightFlowStart from './steps/LightFlowStart';
@@ -61,6 +62,7 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   'sign-up:change-email': messages.signUp,
   'sign-up:verification': messages.verifyYourIdentity,
   'sign-up:custom-fields': messages.completeYourProfile,
+  'sign-up:onboarding': messages.completeOnboarding,
   'sign-up:invite': messages.signUp,
   'clave-unica:email': messages.signUp,
   'clave-unica:email-confirmation': messages.confirmYourEmail,
@@ -81,6 +83,7 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   'missing-data:change-email': messages.confirmYourEmail,
   'missing-data:verification': messages.verifyYourIdentity,
   'missing-data:custom-fields': messages.completeYourProfile,
+  'missing-data:onboarding': messages.completeOnboarding,
 
   // verification only
   'verification-only': messages.verifyYourIdentity,
@@ -334,6 +337,10 @@ const AuthModal = ({ setModalOpen }: Props) => {
           />
         )}
 
+        {currentStep === 'sign-up:onboarding' && (
+          <TopicsAndAreas onSkip={transition(currentStep, 'SKIP')} />
+        )}
+
         {currentStep === 'sign-up:invite' && (
           <Invitation
             loading={loading}
@@ -468,6 +475,10 @@ const AuthModal = ({ setModalOpen }: Props) => {
             onSubmit={transition(currentStep, 'SUBMIT')}
             onSkip={transition(currentStep, 'SKIP')}
           />
+        )}
+
+        {currentStep === 'missing-data:onboarding' && (
+          <TopicsAndAreas onSkip={transition(currentStep, 'SKIP')} />
         )}
 
         {/* verification only */}
