@@ -19,6 +19,7 @@ import {
   requiredCustomFields,
   requiredBuiltInFields,
   askCustomFields,
+  showOnboarding,
 } from './utils';
 
 // typings
@@ -85,6 +86,11 @@ export const sharedSteps = (
 
           if (askCustomFields(requirements.custom_fields)) {
             setCurrentStep('sign-up:custom-fields');
+            return;
+          }
+
+          if (showOnboarding(requirements.onboarding)) {
+            setCurrentStep('sign-up:onboarding');
             return;
           }
 

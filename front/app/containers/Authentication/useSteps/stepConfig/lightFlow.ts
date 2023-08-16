@@ -26,7 +26,7 @@ import {
 } from '../../typings';
 import { Step } from './typings';
 import { Locale } from 'typings';
-import { askCustomFields, requiredCustomFields } from './utils';
+import { askCustomFields, requiredCustomFields, showOnboarding } from './utils';
 
 export const lightFlow = (
   getAuthenticationData: () => AuthenticationData,
@@ -171,6 +171,11 @@ export const lightFlow = (
 
         if (askCustomFields(requirements.custom_fields)) {
           setCurrentStep('sign-up:custom-fields');
+          return;
+        }
+
+        if (showOnboarding(requirements.onboarding)) {
+          setCurrentStep('sign-up:onboarding');
           return;
         }
 

@@ -12,7 +12,7 @@ import tracks from '../../tracks';
 import { trackEventByName } from 'utils/analytics';
 
 // utils
-import { askCustomFields } from './utils';
+import { askCustomFields, showOnboarding } from './utils';
 
 // typings
 import {
@@ -98,6 +98,11 @@ export const signUpFlow = (
             return;
           }
 
+          if (showOnboarding(requirements.onboarding)) {
+            setCurrentStep('sign-up:onboarding');
+            return;
+          }
+
           if (requirements.special.group_membership === 'require') {
             setCurrentStep('closed');
             return;
@@ -131,6 +136,11 @@ export const signUpFlow = (
           return;
         }
 
+        if (showOnboarding(requirements.onboarding)) {
+          setCurrentStep('sign-up:onboarding');
+          return;
+        }
+
         if (requirements.special.group_membership === 'require') {
           setCurrentStep('closed');
           return;
@@ -161,6 +171,11 @@ export const signUpFlow = (
           return;
         }
 
+        if (showOnboarding(requirements.onboarding)) {
+          setCurrentStep('sign-up:onboarding');
+          return;
+        }
+
         if (requirements.special.group_membership === 'require') {
           setCurrentStep('closed');
           return;
@@ -181,6 +196,11 @@ export const signUpFlow = (
           {
             onSuccess: async () => {
               const { requirements } = await getRequirements();
+
+              if (showOnboarding(requirements.onboarding)) {
+                setCurrentStep('sign-up:onboarding');
+                return;
+              }
 
               if (requirements.special.group_membership === 'require') {
                 setCurrentStep('closed');
@@ -246,7 +266,7 @@ export const signUpFlow = (
         }
 
         setCurrentStep('success');
-        trackEventByName(tracks.signUpCustomFieldsStepSkipped);
+        trackEventByName(tracks.signUpOnboardingStepSkipped);
       },
     },
 
