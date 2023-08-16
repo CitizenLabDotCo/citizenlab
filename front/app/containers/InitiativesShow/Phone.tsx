@@ -46,10 +46,10 @@ import {
   contentFadeInDuration,
   contentFadeInEasing,
 } from '.';
-import InitiativeBannerImage from './InitiativeBannerImage';
 import useInitiativeOfficialFeedback from 'api/initiative_official_feedback/useInitiativeOfficialFeedback';
 import RequestToCosponsor from './RequestToCosponsor';
 import Cosponsors from './Cosponsors';
+import InitiativeBanner from './InitiativeBanner';
 
 const paddingSide = '32px';
 
@@ -89,30 +89,6 @@ const InitiativeContainer = styled.div`
   padding-top: 25px;
   padding-left: ${paddingSide};
   padding-right: ${paddingSide};
-`;
-
-const InitiativeBannerContainer = styled.div`
-  width: 100%;
-  height: 163px;
-  display: flex;
-  align-items: stretch;
-  position: relative;
-  background: ${({ theme }) => theme.colors.tenantPrimary};
-  min-height: 200px;
-`;
-
-const InitiativeHeaderOverlay = styled.div`
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: linear-gradient(
-      0deg,
-      rgba(0, 0, 0, 0.5) 0%,
-      rgba(0, 0, 0, 0) 100%
-    ),
-    linear-gradient(0deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3));
 `;
 
 const InitiativeBannerContent = styled.div`
@@ -213,13 +189,7 @@ const Phone = ({
 
   return (
     <Container id="e2e-initiative-show" className={className}>
-      <InitiativeBannerContainer>
-        {initiativeHeaderImageLarge && (
-          <>
-            <InitiativeBannerImage src={initiativeHeaderImageLarge} />
-            <InitiativeHeaderOverlay />
-          </>
-        )}
+      <InitiativeBanner initiativeHeaderImageLarge={initiativeHeaderImageLarge}>
         <InitiativeBannerContent>
           <MobileMoreActionContainer>
             <InitiativeMoreActions
@@ -244,7 +214,7 @@ const Phone = ({
             <PostedByMobile authorId={authorId} />
           </Box>
         </InitiativeBannerContent>
-      </InitiativeBannerContainer>
+      </InitiativeBanner>
       <InitiativeContainer>
         <Box mb="24px">
           <Topics

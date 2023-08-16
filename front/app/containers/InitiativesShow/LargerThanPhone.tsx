@@ -53,8 +53,8 @@ import {
   contentFadeInDuration,
   contentFadeInEasing,
 } from '.';
-import InitiativeBannerImage from './InitiativeBannerImage';
 import useInitiativeOfficialFeedback from 'api/initiative_official_feedback/useInitiativeOfficialFeedback';
+import InitiativeBanner from './InitiativeBanner';
 
 const Container = styled.main`
   display: flex;
@@ -117,15 +117,6 @@ const InitiativeHeader = styled.div`
   margin-bottom: 28px;
 `;
 
-const InitiativeBannerContainer = styled.div`
-  width: 100%;
-  height: 163px;
-  display: flex;
-  align-items: stretch;
-  position: relative;
-  background: ${({ theme }) => theme.colors.tenantPrimary};
-`;
-
 const StyledDropdownMap = styled(DropdownMap)`
   margin-bottom: 40px;
 `;
@@ -155,6 +146,7 @@ const SharingWrapper = styled.div`
 const StyledOfficialFeedback = styled(OfficialFeedback)`
   margin-top: 80px;
 `;
+
 interface Props {
   initiativeId: string;
   className?: string;
@@ -227,9 +219,9 @@ const LargerThanPhone = ({
   return (
     <Container id="e2e-initiative-show" className={className}>
       {initiativeHeaderImageLarge && (
-        <InitiativeBannerContainer>
-          <InitiativeBannerImage src={initiativeHeaderImageLarge} />
-        </InitiativeBannerContainer>
+        <InitiativeBanner
+          initiativeHeaderImageLarge={initiativeHeaderImageLarge}
+        />
       )}
       <ActionBar
         initiativeId={initiativeId}
