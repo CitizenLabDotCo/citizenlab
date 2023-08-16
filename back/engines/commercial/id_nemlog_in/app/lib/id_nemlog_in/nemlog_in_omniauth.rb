@@ -44,7 +44,7 @@ module IdNemlogIn
       auth.extra.raw_info['https://data.gov.dk/model/core/eid/cprUuid']
     end
 
-    def omniauth_setup(_configuration, env)
+    def omniauth_setup(configuration, env)
       return unless Verification::VerificationService.new.active?(configuration, name)
 
       ver_config = config
