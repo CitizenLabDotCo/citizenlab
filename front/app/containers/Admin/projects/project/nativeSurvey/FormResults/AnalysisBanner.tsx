@@ -19,6 +19,7 @@ import useFormCustomFields from 'hooks/useFormCustomFields';
 import Modal from 'components/UI/Modal';
 import { isNilOrError } from 'utils/helperUtils';
 import useLocalize from 'hooks/useLocalize';
+import clHistory from 'utils/cl-router/history';
 
 const CreateAnalysisModal = ({ onClose }: { onClose: () => void }) => {
   const { formatMessage } = useIntl();
@@ -48,7 +49,12 @@ const CreateAnalysisModal = ({ onClose }: { onClose: () => void }) => {
         customFieldIds: selectdQuestions,
       },
       {
-        onSuccess: () => {
+        onSuccess: (analysis) => {
+          clHistory.push(
+            `/admin/projects/${projectId}/analysis/${
+              analysis.data.id
+            }?showLaunchModal=true${phaseId ? `&phase_id=${phaseId}` : ''}`
+          );
           onClose();
         },
       }
