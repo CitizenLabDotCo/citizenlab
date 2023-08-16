@@ -4,8 +4,8 @@
     text-align="left">
     <mj-column border-radius="5px" background-color="#F2F6F8" padding="25px" vertical-align="middle" >
       <mj-text font-size="14px">
-        <%= format_message('commented', values: {
-          authorFirstName: "<span style=\"font-weight:bold; color: #000;\">
+        <%= format_message('author_wrote', component: 'general', values: {
+          authorName: "<span style=\"font-weight:bold; color: #000;\">
             #{event.initiating_user_first_name&.upcase}
           </span>"
         }).html_safe %>

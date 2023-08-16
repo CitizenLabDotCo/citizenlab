@@ -54,6 +54,12 @@ en:
       "voting_last_chance": Last chance to vote
       "voting_results": Voting results
       "your_proposed_initiatives_digest": Weekly overview of your proposals
+    general:
+      by_author: 'by %{authorName}'
+      author_wrote: '%{authorName} wrote:'
+      cta_goto_idea: 'Go to this idea'
+      cta_goto_proposal: 'Go to this proposal'
+      cta_goto_project: 'Go to this project'
     schedules:
       weekly:
         "0": "Weekly, on Sundays at %{hourOfDay}"
@@ -125,7 +131,6 @@ en:
       wrong_content: 'The comment is not relevant.'
       yesterday: Yesterday
     comment_on_your_initiative:
-      commented: '%{authorFirstName} wrote:'
       cta_reply_to: 'Reply to %{commentAuthor}'
       event_description: '%{authorNameFull} placed a reaction on your initiative ''%{initiativeTitle}''. Click the button below to continue the conversation with %{authorName}.'
       main_header: '%{commentAuthor} commented on your initiative'
@@ -147,7 +152,6 @@ en:
       title_initiatives_past_week: 'New proposals assigned to you'
       title_successful_initiatives_past_week: 'Proposals assigned to you that reached the threshold'
     idea_marked_as_spam:
-      by_author: 'by %{authorName}'
       cta_review_idea: 'Review idea'
       report_inappropriate_offensive_content: 'I find this content inappropriate or offensive.'
       report_not_an_idea: 'This content is not an idea and does not belong here.'
@@ -156,7 +160,6 @@ en:
       reported_this_because: '%{reporterFirstName} reported this because:'
       title_spam_report: '%{firstName} %{lastName} reported spam'
     initiative_marked_as_spam:
-      by_author: 'by %{authorName}'
       cta_review_initiative: 'Review proposal'
       report_inappropriate_offensive_content: 'I find this content inappropriate or offensive.'
       report_not_an_initiative: 'This content is not a proposal and does not belong here.'
@@ -165,7 +168,6 @@ en:
       reported_this_because: '%{reporterFirstName} reported this because:'
       title_spam_report: '%{firstName} %{lastName} reported spam'
     initiative_assigned_to_you:
-      by_author: 'by %{authorName}'
       cta_reply_to: 'Give feedback to %{authorName}'
       event_description_initiative: 'An proposal has been assigned to you. Give feedback by writing an official update or by changing its status.'
       main_header: '%{firstName}, you have a new assignment'
@@ -190,7 +192,6 @@ en:
       action_share_fb: 'Let your friends know on %{fbLink}'
       action_share_link: 'Share it via any channel by copying the %{link}'
       action_share_twitter: 'Inform your followers on %{twitterLink}'
-      cta_view_initiative: 'Go to your proposal'
       link: link
       main_header: 'You posted a proposal! Let''s gather support for it.'
       message_next_steps: '%{userFirstName}, your proposal has successfully been published on the participation platform of %{organizationName}. You will be notified when people interact with your proposal. Find out what next steps you can take below.'
@@ -198,24 +199,13 @@ en:
       preheader: 'Thank you for sharing your proposal %{initiativeTitle} for %{organizationName}. The next step is to get support for your proposal by sharing it across your network.'
       send_email: email
       subject: 'Your proposal was published on the platform of %{organizationName}'
-    mention_in_official_feedback:
-      by_author: 'by %{authorName}'
-      commented: '%{organizationName} wrote:'
-      cta_reply_to: 'Reply to %{organizationName}'
-      event_description: '%{organizationName} mentioned you in their feedback on the idea ''%{post}‘. Click the link below to enter the conversation with %{organizationName}'
-      main_header: 'You have been mentioned'
-      subject: '%{organizationName} mentioned you in their feedback'
-      preheader: '%{commentAuthor} mentioned you in feedback'
     new_comment_on_commented_idea:
-      commented: '%{commentAuthor} wrote:'
       cta_reply_to: 'Reply to %{commentAuthor}'
       event_description: '%{commentAuthorFull} also wrote a comment on the idea ''%{ideaTitle}'' on the participation platform of %{organizationName}. Click the button below to start the conversation with %{commentAuthor}.'
       main_header: '%{commentAuthor} wrote a comment on the same idea'
       subject: 'There''s another comment on the idea you commented on'
       preheader: '%{commentAuthor} also left a comment on an idea for %{organizationName}'
     mention_in_comment:
-      by_author: 'by %{authorName}'
-      commented: '%{commentAuthor} wrote:'
       cta_reply_to: 'Reply to %{commentAuthor}'
       event_description: '%{commentAuthorFull} has mentioned you in his comment on the idea ''%{post}‘. Click the link below to enter the conversation with %{commentAuthor}'
       main_header: 'People are talking about you'
@@ -249,7 +239,6 @@ en:
       subject: 'There''s another comment on the proposal you commented on'
       preheader: '%{commentAuthor} also left a comment on an proposal for %{organizationName}'
     new_comment_for_admin:
-      by_author: 'by %{authorName}'
       commented: '%{authorFirstName} commented:'
       cta_reply_to: 'View %{commentAuthor}''s comment'
       days_ago: '%{numberOfDays} days ago'
@@ -260,8 +249,6 @@ en:
       today: Today
       yesterday: Yesterday
     comment_on_your_idea:
-      by_author: 'by %{authorName}'
-      commented: '%{authorFirstName} wrote:'
       cta_reply_to: 'Reply to %{commentAuthor}'
       event_description: '%{authorNameFull} placed a reaction on your idea ''%{ideaTitle}''. Click the button below to continu the conversation with %{authorName}.'
       main_header: '%{authorName} commented on your idea'
@@ -275,7 +262,7 @@ en:
       subject: 'There''s a new comment on the proposal you''ve voted on'
       preheader: '%{commentAuthor} left a comment on the proposal you''ve voted on on the platform of %{organizationName}'
     new_comment_on_reacted_idea:
-      commented: '%{commentAuthor} commented:'
+      commented: '%{commentAuthor} wrote:'
       cta_reply_to: 'Reply to %{commentAuthor}'
       days_ago: '%{numberOfDays} days ago'
       event_description: '%{commentAuthor} has commented on the idea ''%{ideaTitle}'' on which you''ve reacted. Join the discussion on the platform of %{organizationName}!'
@@ -285,15 +272,12 @@ en:
       today: Today
       yesterday: Yesterday
     new_initiative_for_admin:
-      by_author: 'by %{authorName}'
-      commented: '%{authorFirstName} wrote:'
       cta_reply_to: 'Give feedback to %{authorName}'
       event_description: '%{authorName} has published a new proposal on your platform. Discover it now, give some feedback or change its status!'
       main_header: '%{firstName}, a new proposal has been published on your platform'
       subject: 'Someone published a new proposal on the platform of %{organizationName}'
       preheader: '%{authorName} published a new proposal on your platform'
     new_idea_for_admin:
-      by_author: 'by %{authorName}'
       commented: '%{authorFirstName} commented:'
       cta_reply_to: 'Give feedback to %{authorName}'
       days_ago: '%{numberOfDays} days ago'
@@ -359,20 +343,21 @@ en:
       main_header: '''%{post}'' has a new internal comment'
       preheader: '''%{post}'' has a new internal comment'
     official_feedback_on_idea_you_follow:
-      by_author: 'by %{authorName}'
-      updated: '%{officialName} wrote:'
-      cta_view: 'Go to this idea'
       header_message: '%{officialName} gave an update on the idea ''%{ideaTitle}''. Click the button below to enter the conversation with %{officialName}.'
       header_title: 'There''s an update on an idea you follow'
       subject: 'An idea you follow has received an official update on the platform of %{organizationName}'
       preheader: 'There''s an update on an idea you follow'
     official_feedback_on_initiative_you_follow:
-      updated: '%{officialName} wrote:'
-      cta_view: 'Go to this proposal'
       header_message: '%{officialName} gave an update on the proposal ''%{initiativeTitle}''. Click the button below to enter the conversation with %{organizationName}.'
       header_title: 'There''s an update on a proposal you follow'
       subject: 'A proposal you follow has received an official update on the platform of %{organizationName}'
       preheader: 'There''s an update on a proposal you follow'
+    mention_in_official_feedback:
+      cta_reply_to: 'Reply to %{organizationName}'
+      event_description: '%{organizationName} mentioned you in their feedback on the idea ''%{post}‘. Click the link below to enter the conversation with %{organizationName}'
+      main_header: 'You have been mentioned'
+      subject: '%{organizationName} mentioned you in their feedback'
+      preheader: '%{commentAuthor} mentioned you in feedback'
     project_moderation_rights_received:
       cta_manage_project: 'Manage this project'
       message_you_became_moderator: 'An adminstrator of the participation platform of %{organizationName} just made you project manager of the following project:'
@@ -391,7 +376,7 @@ en:
       cta_view_folder_button: 'View this folder'
       message_added_as_folderadmin: 'You''ve been given folder manager rights on %{organizationName}''s participation platform for the following folder:'
       no_projects: 'No projects yet'
-
+      preheader: 'An administrator of the participation platform of %{organizationName} just made you a manager of the following folder'
       subject: 'You became a project folder manager on the participation platform of %{organizationName}'
       text_manage_folder: 'A folder is way to organize several participation projects together. As a folder manager, you can edit the folder and folder description and create new projects (to delete projects, contact your platform administrator). You will also have project management rights over all projects within the folder, allowing you to edit the projects, manage the inputs and email participants.'
       text_moderate_analyse_input: 'Once the projects are launched, the first inputs will start coming in. You''ll receive weekly reports with the key activities so that you can stay on top of what’s happening. The Input Manager in your ''Manage Platform'' panel allows you to see and manage the input, including assigning statuses and responding to posts and comments.'
@@ -421,18 +406,15 @@ en:
       subject: 'A new project was published on the platform of %{organizationName}'
       header_title: 'A new project was published'
       header_message: 'The participation platform of %{organizationName} just published the following project:'
-      cta_view_project: 'See this project'
       preheader: 'A new project was published'
     status_change_on_idea_you_follow:
       status_change: 'The new status of this idea is ''%{ideaStatus}'''
-      cta_view_idea: 'Go to this idea'
       header_message: '%{organizationName} updated the status of the idea ''%{ideaTitle}'' on their digital participation platform.'
       header_title: 'An idea you follow has a new status'
       subject: 'The status of an idea you follow has been changed'
       preheader: 'An idea you follow has a new status'
     status_change_on_initiative_you_follow:
       status_change: 'The new status of this proposal is ''%{initiativeStatus}'''
-      cta_view_initiative: 'Go to this proposal'
       header_message: 'The status of the proposal ''%{initiativeTitle}'' has been updated on the digital participation platform of %{organizationName}.'
       header_title: 'A proposal you follow has a new status'
       subject: 'The status of a proposal you follow has changed'
@@ -460,7 +442,6 @@ en:
       no_unread_notifications: "You don't have any unread notifications. Visit the platform to contribute your input and generate new notifications!"
       unread_notifications: "You have unread notifications. Visit the platform to discover what's happening!"
     threshold_reached_for_admin:
-      by_author: 'by %{authorName}'
       cta_process_initiative: 'Take this initiative to the next steps'
       event_description: 'An initiative reached the voting threshold on your platform. Click the button below to take it to the next steps!'
       main_header: 'An initiative reached the voting threshold!'
@@ -614,6 +595,7 @@ en:
         new_input_is_published: 'New input is published'
         new_proposal_is_posted: 'New proposal is posted'
         project_phase_changes: 'Project phase changes'
+        project_published: 'Project published'
         proposal_gets_reported_as_spam: 'Proposal gets reported as spam'
         proposal_is_assigned_to_admin: 'Proposal is assigned to admin'
         proposal_is_updated: 'Proposal is updated'

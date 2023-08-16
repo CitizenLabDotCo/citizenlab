@@ -1,10 +1,30 @@
+<!-- Idea/initiative box -->
+<mj-section padding="0 25px 25px"
+            background-color="#fff"
+            text-align="left">
+  <mj-column border="1px solid #eaeaea" padding="20px 25px" background-color="#fff">
+    <mj-text>
+      <h2 style="font-size: 18px; margin-top: 10px; margin-bottom: 10px;">
+        <%= localize_for_recipient(event.post_title_multiloc) %>
+      </h2>
+      <p style="margin-top: 10px; color: #84939E;">
+        <%= localize_for_recipient(event.post_body_multiloc) %>
+      </p>
+      <p style="margin-top: 10px; color: #84939E;">
+        <%= format_message('by_author', component: 'general', values: { authorName: event.post_author_name }) %>
+      </p>
+    </mj-text>
+  </mj-column>
+</mj-section>
+
+<!-- Update box -->
 <mj-section
   padding="25px"
   text-align="left"
   border-radius="5px">
   <mj-column background-color="#F2F6F8" padding="25px">
     <mj-text font-size="14px">
-      <%= format_message('updated', values: { officialName: author_name }) %>
+      <%= format_message('author_wrote', component: 'general', values: { authorName: author_name }) %>
       <p style="margin: 15px 0 0;">
         <%= localize_for_recipient(event.official_feedback_body_multiloc).first(140) %>
       </p>

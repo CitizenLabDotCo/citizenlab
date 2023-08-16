@@ -10,7 +10,7 @@
         <%= localize_for_recipient(event.post_title_multiloc) %>
       </h2>
       <p style="margin-top: 10px; color: #84939E;">
-        <%= format_message('by_author', values: { authorName: event.post_author_name }) %>
+        <%= format_message('by_author', component: 'general', values: { authorName: event.post_author_name }) %>
       </p>
     </mj-text>
   </mj-column>
