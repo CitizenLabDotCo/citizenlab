@@ -24,13 +24,11 @@ const Content = styled.div`
   max-width: ${postPageContentMaxWidth}px;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 50px;
   padding-left: 60px;
   padding-right: 60px;
   padding-bottom: 80px;
 
   ${media.phone`
-    margin-top: 30px;
     padding-left: 15px;
     padding-right: 15px;
     padding-bottom: 30px;

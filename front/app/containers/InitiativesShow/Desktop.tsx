@@ -54,6 +54,7 @@ import {
   contentFadeInEasing,
 } from '.';
 import InitiativeBannerImage from './InitiativeBannerImage';
+import useInitiativeOfficialFeedback from 'api/initiative_official_feedback/useInitiativeOfficialFeedback';
 
 const Container = styled.main`
   display: flex;
@@ -89,7 +90,6 @@ const InitiativeContainer = styled.div`
   padding-top: 60px;
   padding-left: 60px;
   padding-right: 60px;
-  position: relative;
 `;
 
 const Content = styled.div`
@@ -180,6 +180,14 @@ const Desktop = ({
     item: !isNilOrError(initiative) ? initiative.data : null,
     action: 'moderate',
   });
+  const { data: initiativeFeedbacks } = useInitiativeOfficialFeedback({
+    initiativeId,
+    pageSize: 1,
+  });
+  const officialFeedbacksList =
+    initiativeFeedbacks?.pages.flatMap((page) => page.data) || [];
+  const hasOfficialFeedback = officialFeedbacksList.length > 0;
+
   const officialFeedbackElement = useRef<HTMLDivElement>(null);
 
   const initiativeReviewRequired = useInitiativeReviewRequired();
@@ -284,21 +292,23 @@ const Desktop = ({
                 translateButtonClicked={translateButtonClicked}
               />
             </Box>
-            {!isNilOrError(initiativeFiles) && (
+            {initiativeFiles && initiativeFiles.data.length > 0 && (
               <Box mb="25px">
                 <FileAttachments files={initiativeFiles.data} />
               </Box>
             )}
-            <div ref={officialFeedbackElement}>
-              <StyledOfficialFeedback
-                postId={initiativeId}
-                postType="initiative"
-                permissionToPost={postOfficialFeedbackPermission}
-                a11y_pronounceLatestOfficialFeedbackPost={
-                  a11y_pronounceLatestOfficialFeedbackPost
-                }
-              />
-            </div>
+            {hasOfficialFeedback && (
+              <div ref={officialFeedbackElement}>
+                <StyledOfficialFeedback
+                  postId={initiativeId}
+                  postType="initiative"
+                  permissionToPost={postOfficialFeedbackPermission}
+                  a11y_pronounceLatestOfficialFeedbackPost={
+                    a11y_pronounceLatestOfficialFeedbackPost
+                  }
+                />
+              </div>
+            )}
           </LeftColumn>
 
           <RightColumnDesktop>

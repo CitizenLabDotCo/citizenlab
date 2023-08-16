@@ -26,7 +26,7 @@ import useDeleteInitiativeReaction from 'api/initiative_reactions/useDeleteIniti
 
 // styling
 import styled from 'styled-components';
-import { media, defaultCardStyle } from 'utils/styleUtils';
+import { defaultCardStyle } from 'utils/styleUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -48,16 +48,10 @@ import { SuccessAction } from 'containers/Authentication/SuccessActions/actions'
 import ChangesRequested from './ChangesRequested';
 
 const Container = styled.div`
-  ${media.desktop`
-    margin-bottom: 45px;
-    padding: 35px;
-    border: 1px solid #e0e0e0;
-    ${defaultCardStyle};
-  `}
-
-  ${media.tablet`
-    padding: 15px;
-  `}
+  margin-bottom: 45px;
+  padding: 35px;
+  border: 1px solid #e0e0e0;
+  ${defaultCardStyle};
 `;
 
 interface ReactionControlComponentProps {

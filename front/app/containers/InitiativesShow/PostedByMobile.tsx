@@ -14,8 +14,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 const Container = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 7px;
-  margin-bottom: 25px;
 `;
 
 const PostedByText = styled.span`

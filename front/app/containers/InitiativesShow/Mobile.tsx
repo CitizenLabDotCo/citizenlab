@@ -30,7 +30,7 @@ import useLocalize from 'hooks/useLocalize';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
-import { columnsGapTablet, pageContentMaxWidth } from './styleConstants';
+import { pageContentMaxWidth } from './styleConstants';
 
 // hooks
 import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
@@ -49,6 +49,7 @@ import {
   contentFadeInEasing,
 } from '.';
 import InitiativeBannerImage from './InitiativeBannerImage';
+import useInitiativeOfficialFeedback from 'api/initiative_official_feedback/useInitiativeOfficialFeedback';
 
 const Container = styled.main`
   display: flex;
@@ -81,30 +82,17 @@ const InitiativeContainer = styled.div`
   margin: 0;
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: 28px;
   padding: 0;
   padding-top: 35px;
   padding-left: 60px;
   padding-right: 60px;
-  position: relative;
 
   ${media.phone`
     padding-top: 25px;
     padding-left: 15px;
     padding-right: 15px;
   `}
-`;
-
-const Content = styled.div`
-  display: block;
-`;
-
-const LeftColumn = styled.div`
-  padding-right: ${columnsGapTablet}px;
-  padding: 0;
-`;
-
-const StyledTopics = styled(Topics)`
-  margin-bottom: 5px;
 `;
 
 const InitiativeBannerContainer = styled.div`
@@ -138,17 +126,14 @@ const InitiativeBannerContent = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding-left: 20px;
-  padding-right: 20px;
-  padding-top: 40px;
-  padding-bottom: 40px;
-  z-index: 1;
+  padding-left: 60px;
+  padding-right: 60px;
 `;
 
 const MobileMoreActionContainer = styled.div`
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 40px;
+  right: 60px;
 `;
 
 const StyledDropdownMap = styled(DropdownMap)`
@@ -163,12 +148,6 @@ const SharingButtonsMobile = styled(SharingButtons)`
 
 const StyledOfficialFeedback = styled(OfficialFeedback)`
   margin-top: 80px;
-`;
-
-const StyledReactionControl = styled(ReactionControl)`
-  box-shadow: 1px 0px 15px rgba(0, 0, 0, 0.06);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-  padding: 25px;
 `;
 
 interface Props {
@@ -199,6 +178,14 @@ const Mobile = ({
     item: !isNilOrError(initiative) ? initiative.data : null,
     action: 'moderate',
   });
+  const { data: initiativeFeedbacks } = useInitiativeOfficialFeedback({
+    initiativeId,
+    pageSize: 1,
+  });
+  const officialFeedbacksList =
+    initiativeFeedbacks?.pages.flatMap((page) => page.data) || [];
+  const hasOfficialFeedback = officialFeedbacksList.length > 0;
+
   const officialFeedbackElement = useRef<HTMLDivElement>(null);
   const initiativeReviewRequired = useInitiativeReviewRequired();
 
@@ -248,119 +235,103 @@ const Mobile = ({
               color="white"
             />
           </MobileMoreActionContainer>
-          <Title
-            postId={initiativeId}
-            postType="initiative"
-            title={initiativeTitle}
-            locale={locale}
-            translateButtonClicked={translateButtonClicked}
-            color="white"
-            align="left"
-          />
+          <Box mb="8px">
+            <Title
+              postId={initiativeId}
+              postType="initiative"
+              title={initiativeTitle}
+              locale={locale}
+              translateButtonClicked={translateButtonClicked}
+              color="white"
+              align="left"
+            />
+          </Box>
           <PostedByMobile authorId={authorId} />
         </InitiativeBannerContent>
       </InitiativeBannerContainer>
-
-      <StyledReactionControl
-        initiativeId={initiativeId}
-        onScrollToOfficialFeedback={onScrollToOfficialFeedback}
-      />
-
       <InitiativeContainer>
-        <Content>
-          <LeftColumn>
-            <StyledTopics
+        <Box mb="24px">
+          <Topics
+            postType="initiative"
+            topicIds={
+              initiative.data.relationships?.topics?.data?.map(
+                (item) => item.id
+              ) || []
+            }
+          />
+        </Box>
+        {initiativeImageLarge && (
+          <Image src={initiativeImageLarge} alt="" id="e2e-initiative-image" />
+        )}
+        <Outlet
+          id="app.containers.InitiativesShow.left"
+          translateButtonClicked={translateButtonClicked}
+          onClick={onTranslateInitiative}
+          initiative={initiative.data}
+          locale={locale}
+        />
+        {initiativeGeoPosition && initiativeAddress && (
+          <StyledDropdownMap
+            address={initiativeAddress}
+            position={initiativeGeoPosition}
+          />
+        )}
+        <ScreenReaderOnly>
+          <FormattedMessage tagName="h2" {...messages.invisibleTitleContent} />
+        </ScreenReaderOnly>
+        <Body
+          postId={initiativeId}
+          postType="initiative"
+          body={localize(initiative.data.attributes?.body_multiloc)}
+          translateButtonClicked={translateButtonClicked}
+        />
+        {initiativeFiles && initiativeFiles.data.length > 0 && (
+          <Box mb="25px">
+            <FileAttachments files={initiativeFiles.data} />
+          </Box>
+        )}
+        {hasOfficialFeedback && (
+          <div ref={officialFeedbackElement}>
+            <StyledOfficialFeedback
+              postId={initiativeId}
               postType="initiative"
-              topicIds={
-                initiative.data.relationships?.topics?.data?.map(
-                  (item) => item.id
-                ) || []
+              permissionToPost={postOfficialFeedbackPermission}
+              a11y_pronounceLatestOfficialFeedbackPost={
+                a11y_pronounceLatestOfficialFeedbackPost
               }
             />
-
-            {initiativeImageLarge && (
-              <Image
-                src={initiativeImageLarge}
-                alt=""
-                id="e2e-initiative-image"
-              />
-            )}
-
-            <Outlet
-              id="app.containers.InitiativesShow.left"
-              translateButtonClicked={translateButtonClicked}
-              onClick={onTranslateInitiative}
-              initiative={initiative.data}
-              locale={locale}
-            />
-
-            {initiativeGeoPosition && initiativeAddress && (
-              <StyledDropdownMap
-                address={initiativeAddress}
-                position={initiativeGeoPosition}
-              />
-            )}
-
-            <ScreenReaderOnly>
-              <FormattedMessage
-                tagName="h2"
-                {...messages.invisibleTitleContent}
-              />
-            </ScreenReaderOnly>
-
-            <Box mb="40px">
-              <Body
-                postId={initiativeId}
-                postType="initiative"
-                body={localize(initiative.data.attributes?.body_multiloc)}
-                translateButtonClicked={translateButtonClicked}
-              />
-            </Box>
-
-            {!isNilOrError(initiativeFiles) && (
-              <Box mb="25px">
-                <FileAttachments files={initiativeFiles.data} />
-              </Box>
-            )}
-
-            <div ref={officialFeedbackElement}>
-              <StyledOfficialFeedback
-                postId={initiativeId}
-                postType="initiative"
-                permissionToPost={postOfficialFeedbackPermission}
-                a11y_pronounceLatestOfficialFeedbackPost={
-                  a11y_pronounceLatestOfficialFeedbackPost
-                }
-              />
-            </div>
-
-            {showSharingOptions && (
-              <SharingButtonsMobile
-                context="initiative"
-                url={initiativeUrl}
-                twitterMessage={formatMessage(messages.twitterMessage, {
-                  initiativeTitle,
-                })}
-                facebookMessage={formatMessage(messages.facebookMessage, {
-                  initiativeTitle,
-                })}
-                whatsAppMessage={formatMessage(messages.whatsAppMessage, {
-                  initiativeTitle,
-                })}
-                emailSubject={formatMessage(messages.emailSharingSubject, {
-                  initiativeTitle,
-                })}
-                emailBody={formatMessage(messages.emailSharingBody, {
-                  initiativeUrl,
-                  initiativeTitle,
-                })}
-                utmParams={utmParams}
-              />
-            )}
-          </LeftColumn>
-        </Content>
+          </div>
+        )}
+        {showSharingOptions && (
+          <SharingButtonsMobile
+            context="initiative"
+            url={initiativeUrl}
+            twitterMessage={formatMessage(messages.twitterMessage, {
+              initiativeTitle,
+            })}
+            facebookMessage={formatMessage(messages.facebookMessage, {
+              initiativeTitle,
+            })}
+            whatsAppMessage={formatMessage(messages.whatsAppMessage, {
+              initiativeTitle,
+            })}
+            emailSubject={formatMessage(messages.emailSharingSubject, {
+              initiativeTitle,
+            })}
+            emailBody={formatMessage(messages.emailSharingBody, {
+              initiativeUrl,
+              initiativeTitle,
+            })}
+            utmParams={utmParams}
+          />
+        )}
       </InitiativeContainer>
-
+      <Box p="0 60px">
+        <ReactionControl
+          initiativeId={initiativeId}
+          onScrollToOfficialFeedback={onScrollToOfficialFeedback}
+        />
+      </Box>
       <Suspense fallback={<LoadingComments />}>
         <Footer postId={initiativeId} postType="initiative" />
       </Suspense>
