@@ -17,6 +17,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import BorderContainer from './BorderContainer';
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 interface Props {
   initiativeId: string;
@@ -31,9 +32,11 @@ const RequestToCosponsor = ({ initiativeId }: Props) => {
   } = useAcceptInitiativeCosponsorshipInvite();
   const { data: initiative } = useInitiativeById(initiativeId);
   const { data: authUser } = useAuthUser();
+  const { data: appConfiguration } = useAppConfiguration();
   const { formatMessage } = useIntl();
 
-  if (!cosponsorsRequired || !initiative || !authUser) return null;
+  if (!cosponsorsRequired || !initiative || !authUser || !appConfiguration)
+    return null;
 
   const handleOnClickCosponsor = () => {
     acceptInitiativeConsponsorshipInvite(initiativeId);
@@ -51,6 +54,9 @@ const RequestToCosponsor = ({ initiativeId }: Props) => {
     .includes(authUserId);
   const authUserIsAuthor =
     initiative.data.relationships.author.data?.id === authUserId;
+  const authorName = initiative.data.attributes.author_name;
+  const requiredNumberOfCosponsors =
+    appConfiguration.data.attributes.settings.initiatives?.cosponsors_number;
 
   if (
     !authUserIsAuthor &&
@@ -59,7 +65,7 @@ const RequestToCosponsor = ({ initiativeId }: Props) => {
     return (
       <BorderContainer>
         <Box mb="16px">
-          <StatusWrapper>Cosponsor</StatusWrapper>
+          <StatusWrapper>{formatMessage(messages.cosponsor)}</StatusWrapper>
         </Box>
         <Box mb="20px">
           <Icon
@@ -72,8 +78,18 @@ const RequestToCosponsor = ({ initiativeId }: Props) => {
         </Box>
         <Box mb="24px">
           <StatusExplanation>
-            <b>Filler.</b> Filler.
-            <Box mt="20px">Filler.</Box>
+            <b>
+              {formatMessage(messages.youWereInvitedToConsponsorBy, {
+                authorName,
+              })}
+            </b>
+            {typeof requiredNumberOfCosponsors === 'number' && (
+              <Box mt="20px">
+                {formatMessage(messages.cosponsorRequirementInfo, {
+                  requiredNumberOfCosponsors,
+                })}
+              </Box>
+            )}
           </StatusExplanation>
         </Box>
         <Button
@@ -82,7 +98,7 @@ const RequestToCosponsor = ({ initiativeId }: Props) => {
           processing={isLoading}
           disabled={authUserHasCosponsored}
         >
-          Cosponsor
+          {formatMessage(messages.cosponsorCTA)}
         </Button>
         {isSuccess && (
           <Text color="success">
