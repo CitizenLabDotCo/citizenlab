@@ -25,6 +25,7 @@ import { Step } from './typings';
 import { UseMutateFunction } from '@tanstack/react-query';
 import { IUser, IUserUpdate } from 'api/users/types';
 import { CLErrorsJSON } from 'typings';
+import { RequirementStatus } from 'api/authentication/authentication_requirements/types';
 
 export const signUpFlow = (
   getAuthenticationData: () => AuthenticationData,
@@ -235,9 +236,12 @@ export const signUpFlow = (
         setCurrentStep('closed');
         trackEventByName(tracks.signUpCustomFieldsStepExited);
       },
-      SUBMIT: (userId: string) => {
+      SUBMIT: (
+        userId: string,
+        onboarding: Record<string, RequirementStatus>
+      ) => {
         updateUser(
-          { userId, onboarding: { topics_and_areas: 'satisfied' } },
+          { userId, onboarding },
           {
             onSuccess: async () => {
               const { requirements } = await getRequirements();

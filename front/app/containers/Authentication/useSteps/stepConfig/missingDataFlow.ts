@@ -18,6 +18,7 @@ import {
 // typings
 import { GetRequirements } from 'containers/Authentication/typings';
 import { Step, BuiltInFieldsUpdate } from './typings';
+import { RequirementStatus } from 'api/authentication/authentication_requirements/types';
 
 export const missingDataFlow = (
   getRequirements: GetRequirements,
@@ -176,9 +177,12 @@ export const missingDataFlow = (
 
     'missing-data:onboarding': {
       CLOSE: () => setCurrentStep('closed'),
-      SUBMIT: async (userId: string) => {
+      SUBMIT: async (
+        userId: string,
+        onboarding: Record<string, RequirementStatus>
+      ) => {
         updateUser(
-          { userId, onboarding: { topics_and_areas: 'satisfied' } },
+          { userId, onboarding },
           {
             onSuccess: async () => {
               const { requirements } = await getRequirements();

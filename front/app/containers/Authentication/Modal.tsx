@@ -15,7 +15,7 @@ import EmailAndPassword from './steps/EmailAndPassword';
 import EmailConfirmation from './steps/EmailConfirmation';
 import Verification from './steps/Verification';
 import CustomFields from './steps/CustomFields';
-import TopicsAndAreas from './steps/TopicsAndAreas';
+import Onboarding from './steps/Onboarding';
 import Invitation from './steps/Invitation';
 import ChangeEmail from './steps/ChangeEmail';
 import LightFlowStart from './steps/LightFlowStart';
@@ -338,7 +338,8 @@ const AuthModal = ({ setModalOpen }: Props) => {
         )}
 
         {currentStep === 'sign-up:onboarding' && (
-          <TopicsAndAreas
+          <Onboarding
+            authenticationData={authenticationData}
             onSubmit={transition(currentStep, 'SUBMIT')}
             onSkip={transition(currentStep, 'SKIP')}
           />
@@ -481,7 +482,8 @@ const AuthModal = ({ setModalOpen }: Props) => {
         )}
 
         {currentStep === 'missing-data:onboarding' && (
-          <TopicsAndAreas
+          <Onboarding
+            authenticationData={authenticationData}
             onSubmit={transition(currentStep, 'SUBMIT')}
             onSkip={transition(currentStep, 'SKIP')}
           />

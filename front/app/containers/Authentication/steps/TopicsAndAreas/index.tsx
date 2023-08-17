@@ -6,9 +6,10 @@ import Areas from 'containers/UsersShowPage/Following/Areas';
 import { useIntl } from 'utils/cl-intl';
 import useAuthUser from 'api/me/useAuthUser';
 import messages from './messages';
+import { RequirementStatus } from 'api/authentication/authentication_requirements/types';
 
 interface Props {
-  onSubmit: (id: string) => void;
+  onSubmit: (id: string, onboarding: Record<string, RequirementStatus>) => void;
   onSkip: () => void;
 }
 
@@ -19,7 +20,7 @@ const TopicsAndAreas = ({ onSubmit, onSkip }: Props) => {
   if (!authUser) return null;
 
   const handleSubmit = () => {
-    onSubmit(authUser.data.id);
+    onSubmit(authUser.data.id, { topics_and_areas: 'satisfied' });
   };
 
   return (
