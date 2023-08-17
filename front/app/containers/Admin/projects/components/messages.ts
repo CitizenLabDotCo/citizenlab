@@ -32,4 +32,16 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.copyProjectButton',
     defaultMessage: 'Copy project',
   },
+  exportAsPDF: {
+    id: 'app.containers.Admin.projects.all.exportAsPDF',
+    defaultMessage: 'Export as pdf',
+  },
+  includeFullName: {
+    id: 'app.containers.Admin.projects.all.includeFullName',
+    defaultMessage: 'Include full name',
+  },
+  includeEmail: {
+    id: 'app.containers.Admin.projects.all.includeEmail',
+    defaultMessage: 'Include email',
+  },
 });

@@ -156,6 +156,7 @@ Rails.application.routes.draw do
 
         resources :custom_fields, controller: 'project_custom_fields', only: %i[] do
           get 'json_forms_schema', on: :collection
+          get 'to_pdf', on: :collection
         end
 
         resources :moderators, controller: 'project_moderators', except: [:update] do

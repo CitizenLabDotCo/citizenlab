@@ -28,6 +28,7 @@ import {
 
 // i18n
 import messages from '../messages';
+import ownMessages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // routing
@@ -127,11 +128,20 @@ const FormBuilderTopBar = ({
             )}
           </Box>
         </Box>
-        <Box ml="24px" />
+        {builderConfig.onDownloadPDF && (
+          <Button
+            buttonStyle="secondary"
+            icon="eye"
+            mr="20px"
+            onClick={builderConfig.onDownloadPDF}
+          >
+            <FormattedMessage {...ownMessages.downloadPDF} />
+          </Button>
+        )}
         <Button
           buttonStyle="secondary"
           icon="eye"
-          mx="20px"
+          mr="20px"
           disabled={!project}
           linkTo={viewFormLink}
           openLinkInNewTab
