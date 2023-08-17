@@ -8,7 +8,6 @@ module BulkImportIdeas
       @pdf_file_content = pdf_file_content
     end
 
-    # TODO: Might need to get the vector stuff properly so that the text appears in the right order
     def parse_pdf
       return dummy_data unless ENV.fetch('GOOGLE_DOCUMENT_AI_PROJECT', false) # Temp for development
 
@@ -51,12 +50,12 @@ module BulkImportIdeas
 
     private
 
-    # Utility to correct common issues
+    # Utility to correct common issues - ie remove new lines as they don't seem that accurate
     def format_value(name, value)
       if name == 'Email address'
-        value = value.delete(' ').downcase
+        value = value.squish.delete(' ').downcase
       end
-      value
+      value&.squish
     end
 
     def format_name(name)
