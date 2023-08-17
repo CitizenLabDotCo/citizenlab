@@ -14,6 +14,8 @@ module BulkImportIdeas
 
       document = process_upload
 
+      binding.pry
+
       # Gets an array of all fields on all pages
       fields = []
       document.pages.each do |page|
@@ -51,6 +53,7 @@ module BulkImportIdeas
 
     private
 
+    # Utility to correct common issues
     def format_value(name, value)
       if name == 'Email address'
         value = value.delete(' ').downcase
@@ -108,5 +111,11 @@ module BulkImportIdeas
         ]
       end
     end
+
+    # If a text segment spans several lines, it may be stored in different text segments.
+    # Doesn't seem to be the case with our forms, so not used for now
+    # def layout_to_text(layout, text)
+    #   layout.text_anchor.text_segments.each { |segment| text[segment.start_index.to_i..segment.end_index.to_i] }.join
+    # end
   end
 end
