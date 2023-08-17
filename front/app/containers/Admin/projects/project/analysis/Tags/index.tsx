@@ -189,7 +189,7 @@ const Tags = () => {
         </TagContainer>
         <TagContainer
           tabIndex={0}
-          onClick={() => updateSearchParams({ tag_ids: [] })}
+          onClick={() => updateSearchParams({ tag_ids: [null] })}
           className={selectedTags?.length === 0 ? 'selected' : ''}
         >
           Inputs without tags

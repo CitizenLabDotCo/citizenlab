@@ -86,6 +86,33 @@ resource 'Tags' do
         expect(response_data.find { |d| d[:id] == tags[2].id }[:attributes][:filtered_input_count]).to eq 0
       end
 
+      example 'properly interprets array filter params that filter for absent values', document: false do
+        custom_field = create(:custom_field_select, :with_options)
+        input4 = create(:idea, project: analysis.source_project,
+          author: create(:user, custom_field_values: { custom_field.key => custom_field.options.first.key }))
+        create(:tagging, input: input4, tag: tags[0])
+
+        # What the front-end passes to its request framework
+        #  -> `author_custom_uuid: [null]`
+        # How it gets encoded in url parameters
+        #  -> `?author_custom_uuid[]=`
+        # How rails interprets this and passed it in the params object
+        #  -> `author_custom_uuid: [""]`
+
+        # do_request bypasses first 2 layers, so we feed it the rails
+        # interpretations immediately
+        do_request({ "author_custom_#{custom_field.id}" => [''] })
+        expect(status).to eq 200
+
+        expect(response_data.find { |d| d[:id] == tags[0].id }[:attributes][:total_input_count]).to eq 2
+        expect(response_data.find { |d| d[:id] == tags[1].id }[:attributes][:total_input_count]).to eq 2
+        expect(response_data.find { |d| d[:id] == tags[2].id }[:attributes][:total_input_count]).to eq 0
+
+        expect(response_data.find { |d| d[:id] == tags[0].id }[:attributes][:filtered_input_count]).to eq 1
+        expect(response_data.find { |d| d[:id] == tags[1].id }[:attributes][:filtered_input_count]).to eq 2
+        expect(response_data.find { |d| d[:id] == tags[2].id }[:attributes][:filtered_input_count]).to eq 0
+      end
+
       example 'returns 404 if the analysis does not exist', document: false do
         do_request(analysis_id: 'bad-uuid')
         assert_status 404
