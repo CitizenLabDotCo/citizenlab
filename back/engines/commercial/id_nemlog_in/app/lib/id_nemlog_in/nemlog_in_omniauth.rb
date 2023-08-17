@@ -45,7 +45,10 @@ module IdNemlogIn
     def replace_token_param!(env)
       request = Rack::Request.new(env)
       if request.path == '/auth/nemlog_in'
-        user = AuthToken::AuthToken.new(token: request.params['token']).entity_for(User)
+        token = request.params['token']
+        return if token.blank?
+
+        user = AuthToken::AuthToken.new(token: token).entity_for(User)
         short_token_payload = user.to_token_payload.except(:roles, :cluster, :tenant)
         short_token = AuthToken::AuthToken.new(payload: short_token_payload).token
 
@@ -86,11 +89,12 @@ module IdNemlogIn
       metadata = idp_metadata.merge({
         issuer: verification_config[:issuer],
 
-        # without it (or with assertion_consumer_service_url: nil), I get "502 Bad Gateway nginx/1.17.9"
+        # without it (or with assertion_consumer_service_url: nil), localtunnes gives "502 Bad Gateway nginx/1.17.9"
         # after clicking "Verify with MitID" on https://nemlogin-k3kd.loca.lt/auth/nemlog_in?token=eyJhbGc...
         # Probably, because the request has a token and so the size of request is too big
         # <samlp:AuthnRequest AssertionConsumerServiceURL='https://nemlogin-k3kd.loca.lt/auth/nemlog_in/callback?token=eyJhbG
-        # assertion_consumer_service_url: 'https://nemlogin-k3kd.loca.lt/auth/nemlog_in/callback',
+        # Nemlog-in also fails without this line.
+        assertion_consumer_service_url: redirect_uri(configuration),
 
         # certificate: verification_config[:certificate], # not required as it's used in our SP metadata file, which is uploaded to NemLog-in
         private_key: verification_config[:private_key], # should start with "-----BEGIN PRIVATE KEY-----". "Bag Attributes" part should be removed
