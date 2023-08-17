@@ -111,7 +111,7 @@ const ReviewSection = () => {
           {ideaMetadata && pages && (
             <PDFViewer
               file={ideaMetadata.data.attributes.file.url}
-              currentPage={1}
+              pages={pages}
             />
           )}
         </Box>

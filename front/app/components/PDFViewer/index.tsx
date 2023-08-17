@@ -6,7 +6,8 @@ import 'react-pdf/dist/Page/TextLayer.css';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
+import Button from 'components/UI/Button';
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   'pdfjs-dist/build/pdf.worker.min.js',
@@ -15,21 +16,36 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 
 interface Props {
   file: string;
-  currentPage: number;
+  // currentPage: number;
+  pages: number[];
 }
 
-const PDFViewer = ({ file, currentPage }: Props) => {
+const PDFViewer = ({ file, pages }: Props) => {
+  const [currentPageIndex, setCurrentPageIndex] = useState(0);
   const [pagesInDocument, setPagesInDocument] = useState<number | null>(null);
 
   const handleLoadSuccess = ({ numPages }: { numPages: number }) => {
     setPagesInDocument(numPages);
   };
 
+  const currentPage = pages[currentPageIndex];
+
+  const hasPreviousPage = pages.length > 1 && currentPageIndex !== 0;
+  const hasNextPage = pages.length > 1 && currentPageIndex !== pages.length - 1;
+
+  const goToPreviousPage = () => {
+    setCurrentPageIndex((index) => index - 1);
+  };
+
+  const goToNextPage = () => {
+    setCurrentPageIndex((index) => index + 1);
+  };
+
   return (
     <Box w="100%" h="100%" position="relative">
       <Box w="100%" h="100%" overflowY="scroll">
         <Document file={file} onLoadSuccess={handleLoadSuccess}>
-          {pagesInDocument && currentPage <= pagesInDocument && (
+          {currentPage && pagesInDocument && currentPage <= pagesInDocument && (
             <Page pageNumber={currentPage} />
           )}
         </Document>
@@ -41,11 +57,27 @@ const PDFViewer = ({ file, currentPage }: Props) => {
         w="100%"
         h="100%"
         display="flex"
-        justifyContent="center"
+        justifyContent="space-between"
         alignItems="flex-end"
         pb="32px"
+        px="12px"
       >
-        Overlay
+        <Box zIndex="10002">
+          <Button
+            icon="arrow-left"
+            disabled={!hasPreviousPage}
+            bgColor={colors.primary}
+            onClick={goToPreviousPage}
+          />
+        </Box>
+        <Box zIndex="10002">
+          <Button
+            icon="arrow-right"
+            disabled={!hasNextPage}
+            bgColor={colors.primary}
+            onClick={goToNextPage}
+          />
+        </Box>
       </Box>
     </Box>
   );
