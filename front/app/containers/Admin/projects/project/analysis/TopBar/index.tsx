@@ -21,6 +21,8 @@ import useAnalysis from 'api/analyses/useAnalysis';
 import Tasks from '../Tasks';
 import LaunchModal from '../LaunchModal';
 import Modal from 'components/UI/Modal';
+import FilterItems from '../FilterItems';
+import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 
 const TopBar = () => {
   const [urlParams] = useSearchParams();
@@ -35,6 +37,8 @@ const TopBar = () => {
   };
   const { data: project } = useProjectById(projectId);
   const { data: analysis } = useAnalysis(analysisId);
+
+  const filters = useAnalysisFilterParams();
   const projectTitle = project?.data.attributes.title_multiloc;
   const localize = useLocalize();
   const { formatMessage } = useIntl();
@@ -85,7 +89,7 @@ const TopBar = () => {
       >
         {formatMessage(messages.filters)}
       </Button>
-
+      <FilterItems filters={filters} />
       <Box marginLeft="auto">
         <SearchInput
           onChange={handleSearch}
