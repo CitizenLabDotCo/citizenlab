@@ -15,9 +15,5 @@ module IdNemlogIn
     def name
       'nemlog_in'
     end
-
-    def config_parameters
-      %i[environment certificate private_key]
-    end
   end
 end
