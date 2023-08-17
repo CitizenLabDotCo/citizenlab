@@ -16,7 +16,6 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 
 interface Props {
   file: string;
-  // currentPage: number;
   pages: number[];
 }
 
