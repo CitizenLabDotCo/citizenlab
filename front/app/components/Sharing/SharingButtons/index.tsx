@@ -55,7 +55,7 @@ const SharingButtons = ({
   return (
     <>
       <Title
-        textAlign={'center'}
+        textAlign={isSmallerThanTablet ? 'center' : 'inherit'}
         mb="20px"
         color="textPrimary"
         variant="h3"
@@ -65,11 +65,11 @@ const SharingButtons = ({
       </Title>
       <Box
         id={id}
-        alignItems={'center'}
+        alignItems={isSmallerThanTablet ? 'center' : 'flex-start'}
         display="flex"
         gap="5px"
         flexWrap="wrap"
-        flexDirection="column"
+        flexDirection={isSmallerThanTablet ? 'column' : 'row'}
       >
         <Box display="flex" gap="4px">
           <Facebook
@@ -88,9 +88,11 @@ const SharingButtons = ({
             isDropdownStyle={false}
           />
         </Box>
-        <Box justifyContent="center">
-          <FormattedMessage {...messages.or} />
-        </Box>
+        {isSmallerThanTablet && (
+          <Box justifyContent="center">
+            <FormattedMessage {...messages.or} />
+          </Box>
+        )}
         <CopyLink copyLink={url} />
       </Box>
     </>
