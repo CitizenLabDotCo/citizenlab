@@ -11,7 +11,7 @@ module EmailCampaigns
     end
 
     def comment_author_full
-      [comment_author, event.initiating_user_last_name.capitalize].join(' ')
+      [author_name, event.initiating_user_last_name.capitalize].join(' ')
     end
 
     def subject
