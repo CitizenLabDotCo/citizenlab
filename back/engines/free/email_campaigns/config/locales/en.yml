@@ -15,7 +15,7 @@ en:
       "initiative_assigned_to_you": Assignment of a proposal to me
       "initiative_marked_as_spam": Proposal spam report
       "initiative_published": Publication of my proposal
-      "invitation_to_cosponsor_initiative": Invitation to cosponsor a proposal
+      "invitation_to_cosponsor_initiative": Invitation to co-sponsor a proposal
       "initiative_resubmitted_for_review": Proposal resubmitted for review
       "invite_received": Invitation
       "invite_reminder": Invitation reminder
@@ -195,7 +195,7 @@ en:
       event_description_action: 'Click below to read the proposal.'
       main_header: 'You have been invited to co-sponsor a proposal'
       subject: 'You have been invited to co-sponsor a proposal'
-      preheader_initiative: 'You have been invited to cosponsor the proposal of %{authorName}'
+      preheader_initiative: 'You have been invited to co-sponsor the proposal of %{authorName}'
     initiative_resubmitted_for_review:
       by_author: 'by %{authorName}'
       cta_reply_to: 'Give feedback to %{authorName}'
@@ -658,7 +658,7 @@ en:
         managers: 'Managers'
         admins_assigned_to_a_proposal: 'Admins assigned to a proposal'
         admins_and_managers_assigned_to_the_input: 'Admins & managers assigned to the input'
-        user_who_is_invited_to_cosponsor_a_proposal: 'User who is invited to cosponsor a proposal'
+        user_who_is_invited_to_cosponsor_a_proposal: 'User who is invited to co-sponsor a proposal'
         user_who_is_receiving_admin_rights: 'User who is receiving admin rights'
         user_who_is_receiving_folder_moderator_rights: 'User who is receiving folder moderator rights'
         user_who_is_receiving_project_moderator_rights: 'User who is receiving project moderator rights'
@@ -693,7 +693,6 @@ en:
         input_is_flagged_as_spam: 'Input is flagged as spam'
         input_is_updated: 'Input is updated'
         input_status_changes: 'Input status changes'
-        new_test_campaign: 'Proposal resubmitted for review'
         initiative_resubmitted_for_review: 'Proposal resubmitted for review'
         internal_comment_is_posted_on_idea_assigned_to_user: 'Internal comment is posted on input assigned to user'
         internal_comment_is_posted_on_initiative_assigned_to_user: 'Internal comment is posted on proposal assigned to user'

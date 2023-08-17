@@ -218,7 +218,7 @@ RSpec.describe Initiative do
       expect(initiative.reload.cosponsors).to match_array [cosponsor1, cosponsor2]
     end
 
-    it 'removes cosponsors_initiative when given array of user IDs excluding ID of existing cosponsor' do
+    it 'removes cosponsors_initiative when given array of user IDs excluding ID of existing co-sponsor' do
       cosponsor2 = create(:user)
       initiative.update!(cosponsor_ids: [cosponsor2.id])
 

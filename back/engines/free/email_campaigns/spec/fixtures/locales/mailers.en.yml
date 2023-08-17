@@ -25,7 +25,7 @@ en:
       "internal_comment_on_your_internal_comment": Internal comment on my internal comment
       "invite_received": Invitation
       "invite_reminder": Invitation reminder
-      "invitation_to_cosponsor_initiative": Invitation to cosponsor a proposal
+      "invitation_to_cosponsor_initiative": Invitation to co-sponsor a proposal
       "mention_in_internal_comment": Mention in an internal comment
       "mention_in_official_feedback": Mention in an update
       "new_comment_for_admin": New comment in a project I moderate
@@ -67,7 +67,7 @@ en:
       "comment_on_your_comment": Reply on your comment - all users
       "comment_on_your_idea": Comment on your idea - all users
       "comment_on_your_initiative": Comment on your proposal - all users
-      "cosponsor_of_your_initiative": A user accepts your invitation to co-sponor yourmy proposal - all users
+      "cosponsor_of_your_initiative": A user accepts your invitation to co-sponor your proposal - all users
       "first_idea_published": Publication of your first idea - all users
       "idea_marked_as_spam": Idea spam report - admins and project managers
       "idea_published": Publication of your idea - all users
@@ -84,7 +84,7 @@ en:
       "internal_comment_on_your_internal_comment": Internal comment on your internal comment - admins and project managers
       "invite_received": Invitation - all users
       "invite_reminder": Invitation reminder - all users
-      "invitation_to_cosponsor_initiative": Invitation to cosponsor a proposal - all users
+      "invitation_to_cosponsor_initiative": Invitation to co-sponsor a proposal - all users
       "mention_in_comment": Mention in a comment - all users
       "mention_in_internal_comment": Mention in an internal comment - admins and project managers
       "mention_in_official_feedback": Mention in an update - all users
@@ -253,7 +253,7 @@ en:
       event_description_action: 'Click below to read the proposal'
       main_header: 'You have been invited to co-sponsor a proposal'
       subject: 'You have been invited to co-sponsor a proposal'
-      preheader_initiative: 'You have been invited to cosponsor the proposal of %{authorName}'
+      preheader_initiative: 'You have been invited to co-sponsor the proposal of %{authorName}'
     initiative_published:
       action_add_image: '%{addImageLink} to increase visibility'
       action_published_initiative: 'Published proposal'
