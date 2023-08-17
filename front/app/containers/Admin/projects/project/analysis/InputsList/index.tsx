@@ -7,13 +7,10 @@ import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 import Observer from '@researchgate/react-intersection-observer';
 import useKeyPress from 'hooks/useKeyPress';
 import SummarizeButton from './SummarizeButton';
+import { useSelectedInputContext } from '../SelectedInputContext';
 
-interface Props {
-  onSelectInput: React.Dispatch<React.SetStateAction<string | null>>;
-  selectedInputId: string | null;
-}
-
-const InputsList = ({ onSelectInput, selectedInputId }: Props) => {
+const InputsList = () => {
+  const { selectedInputId, setSelectedInputId } = useSelectedInputContext();
   const { analysisId } = useParams() as { analysisId: string };
   const filters = useAnalysisFilterParams();
 
@@ -45,7 +42,7 @@ const InputsList = ({ onSelectInput, selectedInputId }: Props) => {
 
   useEffect(() => {
     if (upArrow) {
-      onSelectInput((selectedInput) => {
+      setSelectedInputId((selectedInput) => {
         const selectedInputIndex =
           inputs && inputs.findIndex((input) => input.id === selectedInput);
 
@@ -56,11 +53,11 @@ const InputsList = ({ onSelectInput, selectedInputId }: Props) => {
         return previousInput;
       });
     }
-  }, [upArrow, inputs, onSelectInput]);
+  }, [upArrow, inputs, setSelectedInputId]);
 
   useEffect(() => {
     if (downArrow) {
-      onSelectInput((selectedInput) => {
+      setSelectedInputId((selectedInput) => {
         const selectedInputIndex =
           inputs && inputs.findIndex((input) => input.id === selectedInput);
 
@@ -74,14 +71,7 @@ const InputsList = ({ onSelectInput, selectedInputId }: Props) => {
         return nextInput;
       });
     }
-  }, [downArrow, inputs, onSelectInput]);
-
-  const handleOnSelect = useCallback(
-    (inputId) => {
-      onSelectInput(inputId);
-    },
-    [onSelectInput]
-  );
+  }, [downArrow, inputs, setSelectedInputId]);
 
   return (
     <Box bg={colors.white} w="100%">
@@ -100,7 +90,7 @@ const InputsList = ({ onSelectInput, selectedInputId }: Props) => {
             <InputListItem
               key={input.id}
               input={input}
-              onSelect={handleOnSelect}
+              onSelect={() => setSelectedInputId(input.id)}
               selected={input.id === selectedInputId}
             />
           ))}
