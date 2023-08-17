@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe BulkImportIdeas::IdeaImport, type: :model do
+RSpec.describe BulkImportIdeas::IdeaImport do
   subject { build(:idea_import) }
 
   describe 'validations' do

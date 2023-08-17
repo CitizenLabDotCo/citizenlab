@@ -21,6 +21,7 @@ module BulkImportIdeas
       @all_topics = Topic.all
       @import_user = current_user
       @project = nil
+      @phase = nil
       @file = nil
     end
 
@@ -40,31 +41,7 @@ module BulkImportIdeas
       ideas
     end
 
-    def generate_example_xlsx
-      XlsxService.new.hash_array_to_xlsx [
-        {
-          'ID' => '1',
-          'Title_nl-BE' => 'Mijn idee titel',
-          'Title_fr-BE' => 'Mon idée titre',
-          'Body_nl-BE' => 'Mijn idee inhoud',
-          'Body_fr-BE' => 'Mon idée contenu',
-          'Email' => 'moderator@citizenlab.co',
-          'Project' => 'Project 1',
-          'Phase' => 1,
-          'Image URL' => 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png',
-          'Date (dd-mm-yyyy)' => '18-07-2022',
-          'Topics' => 'Mobility; Health and welfare',
-          'Latitude' => 50.5035,
-          'Longitude' => 6.0944,
-          'Location Description' => 'Panorama sur les Hautes Fagnes / Hohes Venn'
-        }
-      ]
-    end
-
-    # TODO: Deal with xls files too and reject any that don't match
-    def upload_file(file_content)
-      mime_type = file_content[/data:(.*);/, 1]
-      file_type = mime_type.include?('pdf') ? 'pdf' : 'xlsx'
+    def upload_file(file_content, file_type)
       @file = IdeaImportFile.create!(
         file_by_content: {
           name: "import.#{file_type}",
@@ -76,40 +53,16 @@ module BulkImportIdeas
       file_type
     end
 
-    def xlsx_to_idea_rows(xlsx)
-      xlsx.map do |xlsx_row|
-        idea_row = {}
+    def xlsx_to_idea_rows(_xlsx)
+      []
+    end
 
-        title_multiloc = {}
-        body_multiloc  = {}
-        xlsx_row.each do |key, value|
-          next unless key.include? '_'
+    def pdf_to_idea_rows(_xlsx)
+      []
+    end
 
-          field, locale = key.split '_'
-          raise Error.new 'bulk_import_ideas_locale_not_valid', value: locale if AppConfiguration.instance.settings('core', 'locales').exclude?(locale)
-
-          case field
-          when 'Title'
-            title_multiloc[locale] = value
-          when 'Body'
-            body_multiloc[locale] = value
-          end
-        end
-
-        idea_row[:title_multiloc]       = title_multiloc
-        idea_row[:body_multiloc]        = body_multiloc
-        idea_row[:topic_titles]         = (xlsx_row['Topics'] || '').split(';').map(&:strip).select(&:present?)
-        idea_row[:project_title]        = xlsx_row['Project']
-        idea_row[:user_email]           = xlsx_row['Email']
-        idea_row[:image_url]            = xlsx_row['Image URL']
-        idea_row[:phase_rank]           = xlsx_row['Phase']
-        idea_row[:published_at]         = xlsx_row['Date (dd-mm-yyyy)']
-        idea_row[:latitude]             = xlsx_row['Latitude']
-        idea_row[:longitude]            = xlsx_row['Longitude']
-        idea_row[:location_description] = xlsx_row['Location Description']
-        idea_row[:id]                   = xlsx_row['ID']
-        idea_row
-      end
+    def generate_example_xlsx
+      nil
     end
 
     private
@@ -256,21 +209,25 @@ module BulkImportIdeas
     end
 
     def add_phase(idea_row, idea_attributes)
-      return if idea_row[:phase_rank].blank?
+      if idea_row[:phase_id]
+        phase = Phase.find(idea_row[:phase_id])
+      else
+        return if idea_row[:phase_rank].blank?
 
-      begin
-        phase_rank = Integer idea_row[:phase_rank]
-      rescue ArgumentError => _e
-        raise Error.new 'bulk_import_ideas_non_numeric_phase_rank', value: idea_row[:phase_rank], row: idea_row[:id]
+        begin
+          phase_rank = Integer idea_row[:phase_rank]
+        rescue ArgumentError => _e
+          raise Error.new 'bulk_import_ideas_non_numeric_phase_rank', value: idea_row[:phase_rank], row: idea_row[:id]
+        end
+
+        project_phases = Phase.where(project: idea_attributes[:project])
+        if phase_rank > project_phases.size
+          raise Error.new 'bulk_import_ideas_maximum_phase_rank_exceeded', value: phase_rank, row: idea_row[:id]
+        end
+
+        phase = project_phases.order(:start_at).all[phase_rank - 1]
+        raise Error.new 'bulk_import_ideas_project_phase_not_found', value: phase_rank, row: idea_row[:id] unless phase
       end
-
-      project_phases = Phase.where(project: idea_attributes[:project])
-      if phase_rank > project_phases.size
-        raise Error.new 'bulk_import_ideas_maximum_phase_rank_exceeded', value: phase_rank, row: idea_row[:id]
-      end
-
-      phase = project_phases.order(:start_at).all[phase_rank - 1]
-      raise Error.new 'bulk_import_ideas_project_phase_not_found', value: phase_rank, row: idea_row[:id] unless phase
 
       idea_attributes[:phases] = [phase]
     end

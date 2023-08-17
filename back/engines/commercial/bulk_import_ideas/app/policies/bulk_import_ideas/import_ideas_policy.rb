@@ -2,11 +2,7 @@
 
 module BulkImportIdeas
   class ImportIdeasPolicy < ApplicationPolicy
-    def bulk_create_xlsx?
-      active_admin?
-    end
-
-    def bulk_create_pdf?
+    def bulk_create?
       active_admin?
     end
 
@@ -15,6 +11,10 @@ module BulkImportIdeas
     end
 
     def draft_ideas?
+      active_admin?
+    end
+
+    def idea_import?
       active_admin?
     end
 

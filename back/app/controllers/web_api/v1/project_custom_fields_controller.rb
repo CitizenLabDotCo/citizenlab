@@ -13,6 +13,19 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
     end
   end
 
+  def to_pdf
+    pdf = PrintCustomFieldsService.new(
+      custom_fields,
+      params
+    ).create_pdf
+
+    send_data(
+      pdf.render,
+      type: 'application/pdf',
+      filename: 'survey.pdf'
+    )
+  end
+
   private
 
   def project

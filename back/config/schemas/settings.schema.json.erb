@@ -1214,6 +1214,18 @@
           "allowed": { "type": "boolean", "default": true },
           "enabled": { "type": "boolean", "default": false }
         }
+      },
+
+      "import_printed_forms": {
+        "type": "object",
+        "title": "Import printed forms",
+        "description": "Enables the importing from handwritten idea and surveys on printed forms.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
       }
     },
   "dependencies": {

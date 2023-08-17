@@ -218,6 +218,9 @@ en:
     survey_end_page:
       title: 'Survey end'
       description: "Please submit your answers by selecting 'Submit survey' below."
+    pdf_export:
+      full_name: 'Full name'
+      email_address: 'Email address'
   project_copy:
     title_suffix: 'Copy'
   confirmations_mailer:
