@@ -15,6 +15,8 @@ import useInitiativeCosponsorsRequired from 'hooks/useInitiativeCosponsorsRequir
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useAuthUser from 'api/me/useAuthUser';
 import BorderContainer from './BorderContainer';
+import { useIntl } from 'utils/cl-intl';
+import messages from './messages';
 
 interface Props {
   initiativeId: string;
@@ -29,6 +31,7 @@ const RequestToCosponsor = ({ initiativeId }: Props) => {
   } = useAcceptInitiativeCosponsorshipInvite();
   const { data: initiative } = useInitiativeById(initiativeId);
   const { data: authUser } = useAuthUser();
+  const { formatMessage } = useIntl();
 
   if (!cosponsorsRequired || !initiative || !authUser) return null;
 
@@ -83,7 +86,7 @@ const RequestToCosponsor = ({ initiativeId }: Props) => {
         </Button>
         {isSuccess && (
           <Text color="success">
-            You've succesfully cosponsored this proposal!
+            {formatMessage(messages.cosponsorshipSuccess)}
           </Text>
         )}
       </BorderContainer>

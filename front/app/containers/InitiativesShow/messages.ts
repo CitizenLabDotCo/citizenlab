@@ -107,4 +107,8 @@ export default defineMessages({
     id: 'app.containers.InitiativesShow.a11y_voteControl',
     defaultMessage: 'Voting and status',
   },
+  cosponsorshipSuccess: {
+    id: 'app.containers.InitiativesShow.cosponsorshipSuccess',
+    defaultMessage: "You've succesfully cosponsored this proposal!",
+  },
 });

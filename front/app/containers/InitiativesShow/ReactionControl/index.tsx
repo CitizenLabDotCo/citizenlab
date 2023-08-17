@@ -112,9 +112,7 @@ const context = {
 } as const;
 
 const ReactionControl = ({
-  className,
   onScrollToOfficialFeedback,
-  id,
   initiativeId,
 }: Props) => {
   const { data: appConfiguration } = useAppConfiguration();
