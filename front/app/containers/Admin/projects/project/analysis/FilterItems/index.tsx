@@ -3,15 +3,15 @@ import { IInputsFilterParams } from 'api/analysis_inputs/types';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
 import useLocalize from 'hooks/useLocalize';
+import { isArray, isString } from 'lodash-es';
 import React from 'react';
-import { useIntl } from 'utils/cl-intl';
 
 type FilterItemsProps = {
   filters: IInputsFilterParams;
 };
+
 const FilterItems = ({ filters }: FilterItemsProps) => {
   const localize = useLocalize();
-  const { formatDate } = useIntl();
   const { data: customFields } = useUserCustomFields();
 
   const genderField = customFields?.data.find(
@@ -52,74 +52,61 @@ const FilterItems = ({ filters }: FilterItemsProps) => {
     [birthyearUrlQueryParamToKey]: 'Birthyear <',
   };
 
-  //   {k === genderUrlQueryParamKey
-  //     ? v.map((value: string) =>
-  //         localize(
-  //           genderOptions?.data.find((option) => {
-  //             return option.attributes.key === value;
-  //           })?.attributes.title_multiloc
-  //         )
-  //       )
-  //     : k === domicileUrlQueryParamKey
-  //     ? v.map((value: string) =>
-  //         localize(
-  //           domicileOptions?.data.find(
-  //             (option) => option.attributes.key === value
-  //           )?.attributes.title_multiloc
-  //         )
-  //       )
-  //     : k === birthyearUrlQueryParamFromKey ||
-  //       k === birthyearUrlQueryParamToKey
-  //     ? new Date(v).getFullYear()
-  //     : v}
+  const filterEntries = Object.entries(filters).filter(
+    ([key]) => key !== 'tag_ids'
+  );
 
-  // convert the above to a switch statement
-
-  const filterItems = (k, v) => {
-    switch (k) {
+  const filterItemDisplayValue = (
+    key: string,
+    value: string | string[] | undefined | number
+  ) => {
+    switch (key) {
       case genderUrlQueryParamKey:
-        return v.map((value: string) =>
-          localize(
-            genderOptions?.data.find((option) => {
-              return option.attributes.key === value;
-            })?.attributes.title_multiloc
+        return (
+          isArray(value) &&
+          value.map((value: string) =>
+            localize(
+              genderOptions?.data.find((option) => {
+                return option.attributes.key === value;
+              })?.attributes.title_multiloc
+            )
           )
         );
       case domicileUrlQueryParamKey:
-        return v.map((value: string) =>
-          localize(
-            domicileOptions?.data.find(
-              (option) => option.attributes.key === value
-            )?.attributes.title_multiloc
+        return (
+          isArray(value) &&
+          value.map((value: string) =>
+            localize(
+              domicileOptions?.data.find(
+                (option) => option.attributes.key === value
+              )?.attributes.title_multiloc
+            )
           )
         );
       case birthyearUrlQueryParamFromKey:
       case birthyearUrlQueryParamToKey:
-        return new Date(v).getFullYear();
+        return isString(value) && new Date(value).getFullYear();
       default:
-        return v;
+        return value;
     }
   };
 
-  console.log(genderOptions);
   return (
     <Box display="flex" flexWrap="wrap" gap="4px">
-      {Object.entries(filters)
-        .filter(([k]) => k !== 'tag_ids')
-        .map(([k, v]) => (
-          <Box
-            key={k}
-            py="4px"
-            px="8px"
-            borderRadius={stylingConsts.borderRadius}
-            bgColor={colors.successLight}
-            color={colors.success}
-          >
-            {translationKeys[k]}
-            {': '}
-            {filterItems(k, v)}
-          </Box>
-        ))}
+      {filterEntries.map(([key, value]) => (
+        <Box
+          key={key}
+          py="4px"
+          px="8px"
+          borderRadius={stylingConsts.borderRadius}
+          bgColor={colors.successLight}
+          color={colors.success}
+        >
+          {translationKeys[key]}
+          {': '}
+          {filterItemDisplayValue(key, value)}
+        </Box>
+      ))}
     </Box>
   );
 };
