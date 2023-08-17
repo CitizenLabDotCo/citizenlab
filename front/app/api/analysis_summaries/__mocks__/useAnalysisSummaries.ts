@@ -6,6 +6,7 @@ export const summariesData: ISummary['data'][] = [
     type: 'summary',
     attributes: {
       summary: 'I want to see more ponds in the park',
+      accuracy: 0.5,
       filters: {
         comments_from: 5,
       },

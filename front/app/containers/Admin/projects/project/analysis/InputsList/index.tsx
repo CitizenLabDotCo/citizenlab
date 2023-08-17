@@ -1,19 +1,16 @@
 import React, { Fragment, useCallback, useEffect, useMemo } from 'react';
-import { Box, colors, Button } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
 import { useParams } from 'react-router-dom';
 import InputListItem from './InputListItem';
-import useAddAnalysisSummary from 'api/analysis_summaries/useAddAnalysisSummary';
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 import Observer from '@researchgate/react-intersection-observer';
 import useKeyPress from 'hooks/useKeyPress';
+import SummarizeButton from './SummarizeButton';
+import { useSelectedInputContext } from '../SelectedInputContext';
 
-interface Props {
-  onSelectInput: React.Dispatch<React.SetStateAction<string | null>>;
-  selectedInputId: string | null;
-}
-
-const InputsList = ({ onSelectInput, selectedInputId }: Props) => {
+const InputsList = () => {
+  const { selectedInputId, setSelectedInputId } = useSelectedInputContext();
   const { analysisId } = useParams() as { analysisId: string };
   const filters = useAnalysisFilterParams();
 
@@ -22,19 +19,13 @@ const InputsList = ({ onSelectInput, selectedInputId }: Props) => {
       analysisId,
       queryParams: filters,
     });
-  const { mutate: addsummary, isLoading } = useAddAnalysisSummary();
 
   const inputs = useMemo(
     () => data && data.pages.map((page) => page.data).flat(),
     [data]
   );
 
-  const handleSummaryCreate = () => {
-    addsummary({
-      analysisId,
-      filters,
-    });
-  };
+  const totalCount = data?.pages[0].meta.filtered_count;
 
   const handleIntersection = useCallback(
     (event: IntersectionObserverEntry, unobserve: () => void) => {
@@ -53,7 +44,7 @@ const InputsList = ({ onSelectInput, selectedInputId }: Props) => {
 
   useEffect(() => {
     if (upArrow) {
-      onSelectInput((selectedInput) => {
+      setSelectedInputId((selectedInput) => {
         const selectedInputIndex =
           inputs && inputs.findIndex((input) => input.id === selectedInput);
 
@@ -64,11 +55,11 @@ const InputsList = ({ onSelectInput, selectedInputId }: Props) => {
         return previousInput;
       });
     }
-  }, [upArrow, inputs, onSelectInput]);
+  }, [upArrow, inputs, setSelectedInputId]);
 
   useEffect(() => {
     if (downArrow) {
-      onSelectInput((selectedInput) => {
+      setSelectedInputId((selectedInput) => {
         const selectedInputIndex =
           inputs && inputs.findIndex((input) => input.id === selectedInput);
 
@@ -82,23 +73,11 @@ const InputsList = ({ onSelectInput, selectedInputId }: Props) => {
         return nextInput;
       });
     }
-  }, [downArrow, inputs, onSelectInput]);
+  }, [downArrow, inputs, setSelectedInputId]);
 
   return (
     <Box bg={colors.white} w="100%">
-      <Box display="flex" justifyContent="flex-end">
-        <Button
-          icon="flash"
-          mb="12px"
-          size="s"
-          w="100%"
-          buttonStyle="secondary-outlined"
-          onClick={handleSummaryCreate}
-          disabled={isLoading}
-        >
-          Auto-summarize {inputs?.length} inputs
-        </Button>
-      </Box>
+      <SummarizeButton inputsCount={totalCount} />
 
       {data?.pages.map((page, i) => (
         <Fragment key={i}>
@@ -113,7 +92,7 @@ const InputsList = ({ onSelectInput, selectedInputId }: Props) => {
             <InputListItem
               key={input.id}
               input={input}
-              onSelect={() => onSelectInput(input.id)}
+              onSelect={() => setSelectedInputId(input.id)}
               selected={input.id === selectedInputId}
             />
           ))}
