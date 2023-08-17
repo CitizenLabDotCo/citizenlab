@@ -26,6 +26,10 @@ export default defineMessages({
     id: 'app.containers.Navbar.completeProfile',
     defaultMessage: 'Complete profile',
   },
+  completeOnboarding: {
+    id: 'app.containers.Navbar.completeOnboarding',
+    defaultMessage: 'Complete onboarding',
+  },
   admin: {
     id: 'app.containers.app.navbar.admin',
     defaultMessage: 'Admin',
