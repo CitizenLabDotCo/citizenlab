@@ -70,7 +70,7 @@ describe('fetcher', () => {
       const result = await fetcher({
         path: '/path',
         action: 'get',
-        disableCacheOptimization: true,
+        cacheIndividualItems: false,
       });
 
       expect(result).toEqual(baseDataArray);
