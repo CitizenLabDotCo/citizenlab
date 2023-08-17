@@ -324,4 +324,8 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.participants',
     defaultMessage: 'Participants',
   },
+  cosponsors: {
+    id: 'app.components.admin.PostManager.cosponsors',
+    defaultMessage: 'Cosponsors',
+  },
 });
