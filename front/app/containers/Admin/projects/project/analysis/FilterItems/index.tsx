@@ -1,16 +1,23 @@
-import { Box, stylingConsts, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  stylingConsts,
+  colors,
+  IconButton,
+} from '@citizenlab/cl2-component-library';
 import { IInputsFilterParams } from 'api/analysis_inputs/types';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
 import useLocalize from 'hooks/useLocalize';
 import { isArray, isString } from 'lodash-es';
 import React from 'react';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 type FilterItemsProps = {
   filters: IInputsFilterParams;
+  isEditable?: boolean;
 };
 
-const FilterItems = ({ filters }: FilterItemsProps) => {
+const FilterItems = ({ filters, isEditable }: FilterItemsProps) => {
   const localize = useLocalize();
   const { data: customFields } = useUserCustomFields();
 
@@ -101,10 +108,25 @@ const FilterItems = ({ filters }: FilterItemsProps) => {
           borderRadius={stylingConsts.borderRadius}
           bgColor={colors.successLight}
           color={colors.success}
+          display="flex"
         >
           {translationKeys[key]}
           {': '}
           {filterItemDisplayValue(key, value)}
+
+          {isEditable && (
+            <IconButton
+              iconName="close"
+              iconColor={colors.success}
+              iconColorOnHover={colors.success}
+              iconWidth="16px"
+              iconHeight="16px"
+              onClick={() => {
+                removeSearchParams([key]);
+              }}
+              a11y_buttonActionMessage="Remove filter"
+            />
+          )}
         </Box>
       ))}
     </Box>

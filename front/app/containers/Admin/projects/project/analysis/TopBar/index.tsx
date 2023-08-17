@@ -89,7 +89,7 @@ const TopBar = () => {
       >
         {formatMessage(messages.filters)}
       </Button>
-      <FilterItems filters={filters} />
+      <FilterItems filters={filters} isEditable />
       <Box marginLeft="auto">
         <SearchInput
           onChange={handleSearch}
