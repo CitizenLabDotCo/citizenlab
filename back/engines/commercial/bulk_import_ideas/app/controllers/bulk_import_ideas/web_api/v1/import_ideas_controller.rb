@@ -57,16 +57,18 @@ module BulkImportIdeas
     private
 
     def bulk_create_params
-      # TODO: Add other params in here, phase, tags, user custom fields?
+      # TODO: Add other params in here: tags/topics, user custom fields?
       params
         .require(:import_ideas)
-        .permit(%i[xlsx pdf locale])
+        .permit(%i[xlsx pdf locale phase_id])
     end
 
     def import_ideas_service
       locale = params[:import_ideas] ? bulk_create_params[:locale] : current_user.locale
-      @import_ideas_service ||= if params[:id]
-        ImportProjectIdeasService.new(current_user, params[:id], locale)
+      project_id = params[:id]
+      @import_ideas_service ||= if project_id
+        phase_id = params[:import_ideas] ? bulk_create_params[:phase_id] : nil
+        ImportProjectIdeasService.new(current_user, project_id, locale, phase_id)
       else
         ImportGlobalIdeasService.new(current_user)
       end

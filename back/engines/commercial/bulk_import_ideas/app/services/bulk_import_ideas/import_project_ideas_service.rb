@@ -2,11 +2,15 @@
 
 module BulkImportIdeas
   class ImportProjectIdeasService < ImportIdeasService
-    def initialize(current_user, project_id, locale)
+    def initialize(current_user, project_id, locale, phase_id)
       super(current_user)
       @project = Project.find(project_id)
-      # TODO: Should look at phase here?
-      @project_fields = IdeaCustomFieldsService.new(Factory.instance.participation_method_for(@project).custom_form).enabled_fields
+      # TODO: Find phase in project - not globally
+      # project.phases.find do |phase|
+      #       phase.start_at <= date && phase.end_at >= date
+      #     end
+      @phase = phase_id ? Phase.find(phase_id) : TimelineService.new.current_phase(@project)
+      @form_fields = IdeaCustomFieldsService.new(Factory.instance.participation_method_for(@phase || @project).custom_form).enabled_fields
       @locale = locale || @locale
       # TODO: Document how locale works
     end
@@ -20,7 +24,7 @@ module BulkImportIdeas
       }
 
       ignore_columns = %w[idea_files_attributes idea_images_attributes]
-      @project_fields.each do |field|
+      @form_fields.each do |field|
         next if field.input_type == 'section' || field.input_type == 'page' || ignore_columns.include?(field.code)
 
         column_name = field.title_multiloc[@locale]
@@ -53,6 +57,7 @@ module BulkImportIdeas
         idea_row = {}
         idea_row[:pages] = doc.pluck(:page).uniq
         idea_row[:project_id] = @project.id
+        idea_row[:phase_id] = @phase.id if @phase
         idea_row[:user_name] = find_field(doc, 'Full name')[:value]
         idea_row[:user_email] = find_field(doc, 'Email address')[:value]
 
@@ -67,6 +72,7 @@ module BulkImportIdeas
       xlsx.map do |xlsx_row|
         idea_row = {}
         idea_row[:project_id]           = @project.id
+        idea_row[:phase_id]             = @phase.id if @phase
         idea_row[:user_name]            = xlsx_row['Full name']
         idea_row[:user_email]           = xlsx_row['Email address']
         idea_row[:published_at]         = xlsx_row['Date Published (dd-mm-yyyy)']
@@ -98,7 +104,7 @@ module BulkImportIdeas
       core_fields = []
       text_fields = []
       select_options = []
-      @project_fields.each do |field|
+      @form_fields.each do |field|
         if core_field_codes.include? field[:code]
           core_fields << { name: field[:title_multiloc][@locale], code: field[:code], type: field[:input_type] }
         elsif text_field_types.include? field[:input_type]
@@ -136,7 +142,7 @@ module BulkImportIdeas
         end
       end
 
-      # Select fields
+      # Select fields - For PDF import
       # As we don't have a title for each select question we
       # loop through options in order they appear on the form and
       # remove so that fields with the same values don't get picked up
@@ -155,6 +161,9 @@ module BulkImportIdeas
           doc.delete_if { |f| f == option_field }
         end
       end
+
+      # Select fields for xlsx import - we have the title so done differently
+      # TODO
 
       idea_row[:custom_field_values] = custom_fields
       idea_row

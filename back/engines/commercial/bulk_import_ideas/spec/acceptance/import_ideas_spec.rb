@@ -67,7 +67,7 @@ resource 'BulkImportIdeasImportIdeas' do
     context 'project import' do
       parameter(:project_id, 'ID of the project to import these ideas to', required: true)
 
-      let(:project) { create(:project) }
+      let(:project) { create(:continuous_project) }
       let(:id) { project.id }
 
       get 'web_api/v1/projects/:id/import_ideas/example_xlsx' do
@@ -110,6 +110,7 @@ resource 'BulkImportIdeasImportIdeas' do
           scope: :import_ideas
         )
         parameter(:locale, 'Locale of the ideas being imported.', scope: :import_ideas)
+        parameter(:phase_id, 'ID of the phase to import these ideas to', scope: :import_ideas)
 
         context 'xlsx import' do
           let(:xlsx) { create_bulk_import_ideas_xlsx }
@@ -125,7 +126,7 @@ resource 'BulkImportIdeasImportIdeas' do
           let(:pdf) { create_project_bulk_import_ideas_pdf }
           let(:locale) { 'en' }
 
-          example 'Bulk import ideas from scanned .pdf' do
+          before do
             # Stubbed to avoid call to google webservice
             expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:parse_pdf).and_return(
               [
@@ -139,25 +140,62 @@ resource 'BulkImportIdeasImportIdeas' do
                 ]
               ]
             )
+          end
 
-            do_request
+          context 'continuous projects' do
+            example_request 'Bulk import ideas from scanned .pdf' do
+              assert_status 201
+              expect(response_data.count).to eq 1
+              expect(response_data.first[:attributes][:title_multiloc][:en]).to eq 'This is really a great title'
+              expect(response_data.first[:attributes][:publication_status]).to eq 'draft'
+              expect(User.all.count).to eq 2 # 1 new user created
+              expect(Idea.all.count).to eq 1
+              expect(BulkImportIdeas::IdeaImport.all.count).to eq 1
+              expect(BulkImportIdeas::IdeaImportFile.all.count).to eq 1
+              expect(project.reload.ideas_count).to eq 0 # Draft ideas should not be counted
 
-            assert_status 201
-            expect(response_data.count).to eq 1
-            expect(response_data.first[:attributes][:title_multiloc][:en]).to eq 'This is really a great title'
-            expect(response_data.first[:attributes][:publication_status]).to eq 'draft'
-            expect(User.all.count).to eq 2 # 1 new user created
-            expect(Idea.all.count).to eq 1
-            expect(BulkImportIdeas::IdeaImport.all.count).to eq 1
-            expect(BulkImportIdeas::IdeaImportFile.all.count).to eq 1
-            expect(project.reload.ideas_count).to eq 0 # Draft ideas should not be counted
+              # Relationships
+              expect(response_data.first.dig(:relationships, :idea_import, :data)).not_to be_nil
+              expect(json_response_body[:included].pluck(:type)).to include 'idea_import'
+            end
+          end
 
-            # Relationships
-            expect(response_data.first.dig(:relationships, :idea_import, :data)).not_to be_nil
-            expect(json_response_body[:included].pluck(:type)).to include 'idea_import'
+          context 'timeline projects' do
+            let(:project) { create(:project_with_current_phase) }
+            let(:current_phase) { TimelineService.new.current_phase(project) }
+
+            let(:id) { project.id }
+
+            context 'current phase' do
+              example_request 'Bulk import ideas from scanned .pdf to current phase' do
+                assert_status 201
+                expect(response_data.count).to eq 1
+                expect(Idea.all.count).to eq 1
+                expect(BulkImportIdeas::IdeaImport.all.count).to eq 1
+                expect(BulkImportIdeas::IdeaImportFile.all.count).to eq 1
+                expect(Idea.all.first.phases.count).to eq 1
+                expect(Idea.all.first.phases.first).to eq current_phase
+              end
+            end
+
+            context 'specified phase' do
+              let(:phase_id) { project.phases.first.id }
+
+              example_request 'Bulk import ideas from scanned .pdf to a specified phase' do
+                assert_status 201
+                expect(response_data.count).to eq 1
+                expect(Idea.all.count).to eq 1
+                expect(BulkImportIdeas::IdeaImport.all.count).to eq 1
+                expect(BulkImportIdeas::IdeaImportFile.all.count).to eq 1
+                expect(Idea.all.first.phases.count).to eq 1
+                expect(Idea.all.first.phases.first).to eq project.phases.first
+                expect(Idea.all.first.phases.first).not_to eq current_phase
+              end
+            end
           end
         end
       end
+
     end
 
     context 'idea import metadata' do

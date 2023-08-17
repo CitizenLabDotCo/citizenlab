@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe BulkImportIdeas::ImportProjectIdeasService do
   let(:project) { create(:continuous_project) }
-  let(:service) { described_class.new create(:admin), project.id, 'en' }
+  let(:service) { described_class.new create(:admin), project.id, 'en', nil }
 
   before do
     # Topics for project

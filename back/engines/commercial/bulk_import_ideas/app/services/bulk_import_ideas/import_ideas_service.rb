@@ -21,6 +21,7 @@ module BulkImportIdeas
       @all_topics = Topic.all
       @import_user = current_user
       @project = nil
+      @phase = nil
       @file = nil
     end
 
@@ -208,21 +209,25 @@ module BulkImportIdeas
     end
 
     def add_phase(idea_row, idea_attributes)
-      return if idea_row[:phase_rank].blank?
+      if idea_row[:phase_id]
+        phase = Phase.find(idea_row[:phase_id])
+      else
+        return if idea_row[:phase_rank].blank?
 
-      begin
-        phase_rank = Integer idea_row[:phase_rank]
-      rescue ArgumentError => _e
-        raise Error.new 'bulk_import_ideas_non_numeric_phase_rank', value: idea_row[:phase_rank], row: idea_row[:id]
+        begin
+          phase_rank = Integer idea_row[:phase_rank]
+        rescue ArgumentError => _e
+          raise Error.new 'bulk_import_ideas_non_numeric_phase_rank', value: idea_row[:phase_rank], row: idea_row[:id]
+        end
+
+        project_phases = Phase.where(project: idea_attributes[:project])
+        if phase_rank > project_phases.size
+          raise Error.new 'bulk_import_ideas_maximum_phase_rank_exceeded', value: phase_rank, row: idea_row[:id]
+        end
+
+        phase = project_phases.order(:start_at).all[phase_rank - 1]
+        raise Error.new 'bulk_import_ideas_project_phase_not_found', value: phase_rank, row: idea_row[:id] unless phase
       end
-
-      project_phases = Phase.where(project: idea_attributes[:project])
-      if phase_rank > project_phases.size
-        raise Error.new 'bulk_import_ideas_maximum_phase_rank_exceeded', value: phase_rank, row: idea_row[:id]
-      end
-
-      phase = project_phases.order(:start_at).all[phase_rank - 1]
-      raise Error.new 'bulk_import_ideas_project_phase_not_found', value: phase_rank, row: idea_row[:id] unless phase
 
       idea_attributes[:phases] = [phase]
     end
