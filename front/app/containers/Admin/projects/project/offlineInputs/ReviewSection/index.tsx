@@ -15,11 +15,13 @@ import useLocalize from 'hooks/useLocalize';
 
 // components
 import { Box, Spinner, Title, Text } from '@citizenlab/cl2-component-library';
+import IdeaForm from './IdeaForm';
 import PDFViewer from 'components/PDFViewer';
 
 // styling
 import styled from 'styled-components';
 import { colors, stylingConsts } from 'utils/styleUtils';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 // TODO move to component library
 const TEAL50 = '#EDF8FA';
@@ -87,7 +89,12 @@ const ReviewSection = () => {
               style={{ cursor: 'pointer' }}
               bgColor={idea.id === ideaId ? TEAL50 : undefined}
               onClick={() => {
-                updateSearchParams({ idea_id: idea.id });
+                // horrible hack to make this work. TODO fix
+                removeSearchParams(['idea_id']);
+
+                setTimeout(() => {
+                  updateSearchParams({ idea_id: idea.id });
+                }, 200);
               }}
             >
               <Text
@@ -105,7 +112,14 @@ const ReviewSection = () => {
           ))}
         </Box>
         <Box w="35%" borderRight={`1px ${colors.grey400} solid`}>
-          <Box ml="20px">Idea form</Box>
+          {idea && ideaId && (
+            <IdeaForm
+              projectId={projectId}
+              ideaId={idea.data.id}
+              title_multiloc={idea.data.attributes.title_multiloc}
+              body_multiloc={idea.data.attributes.body_multiloc}
+            />
+          )}
         </Box>
         <Box w="40%">
           {ideaMetadata && pages && (
