@@ -42,15 +42,14 @@ module BulkImportIdeas
     end
 
     def upload_file(file_content, file_type)
-      @file = IdeaImportFile.create!(
+      IdeaImportFile.create!(
+        import_type: file_type,
+        project: @project,
         file_by_content: {
           name: "import.#{file_type}",
-          import_type: file_type,
-          project: @project,
           content: file_content # base64
         }
       )
-      file_type
     end
 
     def xlsx_to_idea_rows(_xlsx)

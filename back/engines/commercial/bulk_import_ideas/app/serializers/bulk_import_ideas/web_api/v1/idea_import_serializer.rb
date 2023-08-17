@@ -9,6 +9,10 @@ module BulkImportIdeas
         attribute :file do |object|
           object.file&.file
         end
+
+        attribute :import_type do |object|
+          object.file&.import_type
+        end
       end
     end
   end
