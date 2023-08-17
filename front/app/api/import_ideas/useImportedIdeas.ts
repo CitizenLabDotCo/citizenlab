@@ -7,7 +7,7 @@ import { IIdeas } from 'api/ideas/types';
 
 const fetchImportedIdeas = ({ projectId }: QueryParams) =>
   fetcher<IIdeas>({
-    path: `/import_ideas/${projectId}/draft_ideas`,
+    path: `/projects/${projectId}/import_ideas/draft_ideas`,
     action: 'get',
   });
 

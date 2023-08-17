@@ -73,7 +73,12 @@ const ReviewSection = () => {
         px="40px"
         justifyContent="space-between"
       >
-        <Box w="25%" borderRight={`1px ${colors.grey400} solid`} pr="8px">
+        <Box
+          w="25%"
+          borderRight={`1px ${colors.grey400} solid`}
+          pr="8px"
+          overflowY="scroll"
+        >
           {ideas.data.map((idea) => (
             <StyledBox
               key={idea.id}

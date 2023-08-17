@@ -12,7 +12,7 @@ interface RequestParams {
 
 const addOfflineIdeas = async (requestParams: RequestParams) =>
   fetcher<IIdeas>({
-    path: `/import_ideas/${requestParams.project_id}/bulk_create_pdf`,
+    path: `/projects/${requestParams.project_id}/import_ideas/bulk_create`,
     action: 'post',
     body: { import_ideas: { pdf: requestParams.file } },
   });
