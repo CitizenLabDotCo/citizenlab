@@ -49,7 +49,7 @@ module IdNemlogIn
         return if token.blank?
 
         user = AuthToken::AuthToken.new(token: token).entity_for(User)
-        short_token_payload = user.to_token_payload.except(:roles, :cluster, :tenant)
+        short_token_payload = user.to_token_payload.slice(:sub, :exp)
         short_token = AuthToken::AuthToken.new(payload: short_token_payload).token
 
         env['rack.request.query_hash']['token'] = short_token
