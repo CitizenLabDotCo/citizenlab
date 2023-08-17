@@ -42,6 +42,12 @@ export interface ITagData {
 
 export interface ITags {
   data: ITagData[];
+  meta: {
+    inputs_total: number;
+    filtered_inputs_total: number;
+    inputs_without_tags: number;
+    filtered_inputs_without_tags: number;
+  };
 }
 
 export interface ITag {

@@ -6,8 +6,9 @@ require 'rspec_api_documentation/dsl'
 resource 'Events' do
   explanation 'Events organized in the city, related to a project.'
 
-  before do
-    header 'Content-Type', 'application/json'
+  header 'Content-Type', 'application/json'
+
+  before_all do
     @project = create(:project)
     @project2 = create(:project)
     @events = create_list(:event, 2, project: @project)
@@ -53,6 +54,39 @@ resource 'Events' do
       example_request 'List all events' do
         assert_status 200
         expect(response_data.size).to eq 4
+
+        user_attendances = response_data.map do |event_data|
+          event_data.dig(:relationships, :user_attendance, :data)
+        end
+        # User attendances are always nil for visitors as they cannot register to
+        # events.
+        expect(user_attendances).to all(be_nil)
+      end
+    end
+
+    context 'when the user registered to some events' do
+      before { header_token_for(user) }
+
+      let(:user) { create(:user) }
+      let!(:user_attendances) do
+        @events.map { |event| create(:event_attendance, event: event, attendee: user) }
+      end
+
+      example_request <<~DESC, document: false do
+        user_attendance relationships reference the user attendances
+      DESC
+        expected_attendance_ids = user_attendances.to_h do |attendance|
+          [attendance.event_id, attendance.id]
+        end
+
+        actual_attendance_ids = response_data.to_h do |event_data|
+          [
+            event_data[:id],
+            event_data.dig(:relationships, :user_attendance, :data, :id)
+          ]
+        end.compact
+
+        expect(actual_attendance_ids).to eq expected_attendance_ids
       end
     end
 
@@ -82,12 +116,44 @@ resource 'Events' do
   end
 
   get 'web_api/v1/events/:id' do
-    let(:id) { @events.first.id }
+    let(:event) { @events.first }
+    let(:id) { event.id }
 
     example_request 'Get one event by id' do
       expect(status).to eq 200
-      json_response = json_parse(response_body)
-      expect(json_response.dig(:data, :id)).to eq @events.first.id
+      expect(response_data.with_indifferent_access).to include(
+        id: event.id,
+        type: 'event',
+        attributes: {
+          title_multiloc: event.title_multiloc,
+          description_multiloc: event.description_multiloc,
+          location_description: event.location_description,
+          location_multiloc: event.location_multiloc,
+          location_point_geojson: event.location_point_geojson,
+          start_at: event.start_at.iso8601(3),
+          end_at: event.end_at.iso8601(3),
+          created_at: event.created_at.iso8601(3),
+          updated_at: event.updated_at.iso8601(3),
+          attendees_count: event.attendees_count
+        }
+      )
+    end
+
+    context 'when the user registered to the event' do
+      before { header_token_for(user) }
+
+      let(:user) { create(:user) }
+      let!(:user_attendance) do
+        create(:event_attendance, event: event, attendee: user)
+      end
+
+      example_request <<~DESC, document: false do
+        user_attendance relationship references the user attendance
+      DESC
+        expect(
+          response_data.dig(:relationships, :user_attendance, :data, :id)
+        ).to eq user_attendance.id
+      end
     end
   end
 
@@ -245,6 +311,19 @@ resource 'Events' do
         expect(event.location_point_geojson).to eq(geojson_point)
         expect(event.location_point.coordinates).to eq(geojson_point['coordinates'])
       end
+
+      example 'Remove event location_point_geojson', document: false do
+        event.update!(location_point_geojson: { 'type' => 'Point', 'coordinates' => [10, 20] })
+
+        do_request(event: { location_point_geojson: nil })
+
+        expect(status).to eq 200
+        expect(response_data.dig(:attributes, :location_point_geojson)).to be_nil
+
+        event.reload
+        expect(event.location_point_geojson).to be_nil
+        expect(event.location_point).to be_nil
+      end
     end
 
     delete 'web_api/v1/events/:id' do
@@ -255,5 +334,51 @@ resource 'Events' do
         expect { Event.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
+  end
+
+  get 'web_api/v1/users/:user_id/events' do
+    route_summary 'List all events to which a user is registered'
+
+    let_it_be(:user) { create(:user) }
+    let_it_be(:user_id) { user.id }
+
+    let_it_be(:user_events) do
+      [@events.first, @other_events.first].tap do |events|
+        events.each { |event| event.attendees << user }
+      end
+    end
+
+    shared_examples 'authorized' do
+      example_request 'List all events of a user' do
+        expect(status).to eq 200
+        expect(response_ids).to match_array user_events.map(&:id)
+      end
+    end
+
+    shared_examples 'unauthorized' do
+      example_request 'Unauthorized (401)', document: false do
+        expect(status).to eq 401
+      end
+    end
+
+    context 'when admin' do
+      before { admin_header_token }
+
+      include_examples 'authorized'
+    end
+
+    context "when 'user_id' corresponds to the current user" do
+      before { header_token_for(user) }
+
+      include_examples 'authorized'
+    end
+
+    context "when 'user_id' does not correspond to the current user" do
+      before { resident_header_token }
+
+      include_examples 'unauthorized'
+    end
+
+    context('when visitor') { include_examples 'unauthorized' }
   end
 end
