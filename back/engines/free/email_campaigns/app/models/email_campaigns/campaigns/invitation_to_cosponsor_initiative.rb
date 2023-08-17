@@ -81,14 +81,11 @@ module EmailCampaigns
       }]
     end
 
-    def serialize_medium_image(image)
-      image.image.versions[:medium].url if image&.image&.versions
-    end
-
     private
 
     def post_image_medium_url(initiative)
-      serialize_medium_image(initiative&.initiative_images&.first)
+      image = initiative&.initiative_images&.first
+      image.image.versions[:medium].url if image&.image&.versions
     end
   end
 end
