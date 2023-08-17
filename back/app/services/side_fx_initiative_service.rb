@@ -71,7 +71,8 @@ class SideFxInitiativeService
   private
 
   def log_activities_if_cosponsors_added(initiative, user, old_cosponsor_ids)
-    added_ids = initiative.cosponsors.map(&:id) - old_cosponsor_ids
+    new_cosponsor_ids = Initiative.find(initiative.id).cosponsors.map(&:id)
+    added_ids = new_cosponsor_ids - old_cosponsor_ids
 
     if added_ids.present?
       new_cosponsors_initiatives = initiative.cosponsors_initiatives.where(user_id: added_ids)
