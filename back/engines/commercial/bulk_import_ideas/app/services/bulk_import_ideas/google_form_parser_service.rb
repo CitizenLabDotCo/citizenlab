@@ -14,8 +14,6 @@ module BulkImportIdeas
 
       document = process_upload
 
-      binding.pry
-
       # Gets an array of all fields on all pages
       fields = []
       document.pages.each do |page|
