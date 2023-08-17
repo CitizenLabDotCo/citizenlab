@@ -111,4 +111,8 @@ export default defineMessages({
     id: 'app.containers.InitiativesShow.cosponsorshipSuccess',
     defaultMessage: "You've succesfully cosponsored this proposal!",
   },
+  titleCosponsorsTile: {
+    id: 'app.containers.InitiativesShow.titleCosponsorsTile',
+    defaultMessage: 'Cosponsors of this proposal',
+  },
 });
