@@ -1086,6 +1086,7 @@
   "app.containers.InitiativesShow.postedBy": "Proposal posted by {authorName}",
   "app.containers.InitiativesShow.postedByShort": "Posted by {authorName}",
   "app.containers.InitiativesShow.reportAsSpamModalTitle": "Why do you want to report this as spam?",
+  "app.containers.InitiativesShow.titleCosponsorsTile": "Cosponsors of this proposal",
   "app.containers.InitiativesShow.twitterMessage": "Vote for {initiativeTitle} on",
   "app.containers.InitiativesShow.whatsAppMessage": "{initiativeTitle} | from the participation platform of {orgName}",
   "app.containers.Navbar.completeProfile": "Complete profile",
