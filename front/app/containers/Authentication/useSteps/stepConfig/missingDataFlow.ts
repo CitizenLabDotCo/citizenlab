@@ -12,7 +12,7 @@ import { CLErrorsJSON } from 'typings';
 import {
   requiredCustomFields,
   requiredBuiltInFields,
-  hasRequiredOnboardingStep,
+  showOnboarding,
 } from './utils';
 
 // typings
@@ -57,7 +57,7 @@ export const missingDataFlow = (
           return;
         }
 
-        if (hasRequiredOnboardingStep(requirements.onboarding)) {
+        if (showOnboarding(requirements.onboarding)) {
           setCurrentStep('missing-data:onboarding');
           return;
         }
@@ -107,7 +107,7 @@ export const missingDataFlow = (
                 return;
               }
 
-              if (hasRequiredOnboardingStep(requirements.onboarding)) {
+              if (showOnboarding(requirements.onboarding)) {
                 setCurrentStep('missing-data:onboarding');
                 return;
               }
@@ -132,7 +132,7 @@ export const missingDataFlow = (
           return;
         }
 
-        if (hasRequiredOnboardingStep(requirements.onboarding)) {
+        if (showOnboarding(requirements.onboarding)) {
           setCurrentStep('missing-data:onboarding');
           return;
         }
@@ -155,7 +155,7 @@ export const missingDataFlow = (
             onSuccess: async () => {
               const { requirements } = await getRequirements();
 
-              if (hasRequiredOnboardingStep(requirements.onboarding)) {
+              if (showOnboarding(requirements.onboarding)) {
                 setCurrentStep('missing-data:onboarding');
                 return;
               }

@@ -10,7 +10,7 @@ import tracks from '../../tracks';
 import { trackEventByName } from 'utils/analytics';
 
 // utils
-import { requiredCustomFields, hasRequiredOnboardingStep } from './utils';
+import { requiredCustomFields, showOnboarding } from './utils';
 
 // typings
 import {
@@ -92,7 +92,7 @@ export const signInFlow = (
             return;
           }
 
-          if (hasRequiredOnboardingStep(requirements.onboarding)) {
+          if (showOnboarding(requirements.onboarding)) {
             setCurrentStep('missing-data:onboarding');
             return;
           }
