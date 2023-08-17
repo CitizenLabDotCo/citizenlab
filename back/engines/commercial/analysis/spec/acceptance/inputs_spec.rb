@@ -102,6 +102,26 @@ resource 'Inputs' do
         expect(response_data.pluck(:id)).to eq([idea.id])
       end
 
+      example 'supports tag_ids empty filtering', document: false do
+        tagged_idea = create(:idea, project: analysis.source_project)
+        tag = create(:tag, analysis: analysis)
+        create(:tagging, input: tagged_idea, tag: tag)
+
+        # What the front-end passes to its request framework
+        #  -> `tag_ids: [null]`
+        # How it gets encoded in url parameters
+        #  -> `?tag_ids[]=`
+        # How rails interprets this and passed it in the params object
+        #  -> `tag_ids: [""]`
+
+        # do_request bypasses first 2 layers, so we feed it the rails
+        # interpretations immediately
+        do_request('tag_ids' => [''])
+
+        expect(status).to eq(200)
+        expect(response_data.pluck(:id)).to match_array(inputs.pluck(:id))
+      end
+
       example 'supports custom_author_<uuid>[] filter', document: false do
         cf = create(:custom_field_number)
         author1 = create(:user, custom_field_values: { cf.key => 7 })
