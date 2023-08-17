@@ -5,7 +5,7 @@ import Topics from 'containers/UsersShowPage/Following/Topics';
 import Areas from 'containers/UsersShowPage/Following/Areas';
 import { useIntl } from 'utils/cl-intl';
 import useAuthUser from 'api/me/useAuthUser';
-import messages from './messages';
+import messages from '../messages';
 import { RequirementStatus } from 'api/authentication/authentication_requirements/types';
 
 interface Props {

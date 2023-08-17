@@ -1,7 +1,7 @@
 import React from 'react';
 import { AuthenticationData } from 'containers/Authentication/typings';
 import useAuthenticationRequirements from 'api/authentication/authentication_requirements/useAuthenticationRequirements';
-import TopicsAndAreas from '../TopicsAndAreas';
+import TopicsAndAreas from './TopicsAndAreas';
 import { RequirementStatus } from 'api/authentication/authentication_requirements/types';
 
 interface Props {
