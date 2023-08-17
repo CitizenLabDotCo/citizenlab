@@ -79,7 +79,7 @@ export type VotingMethodConfig = {
     compact,
     participationContext,
   }: IdeaPageVoteInputProps) => JSX.Element | null;
-  getSubmissionTerm?: (form: 'singular' | 'plural') => MessageDescriptor;
+  getSubmissionTerm: (form: 'singular' | 'plural') => MessageDescriptor;
   preSubmissionWarning: () => MessageDescriptor;
   useVoteTerm: boolean;
 };

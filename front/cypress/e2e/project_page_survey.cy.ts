@@ -106,19 +106,19 @@ describe('Timeline project with survey phase', () => {
       projectId = project.body.data.id;
       projectSlug = project.body.data.attributes.slug;
 
-      return cy.apiCreatePhase(
+      return cy.apiCreatePhase({
         projectId,
-        phaseTitle,
-        '2018-03-01',
-        '2025-01-01',
-        'survey',
-        true,
-        true,
-        true,
-        'description',
-        'https://citizenlabco.typeform.com/to/Yv6B7V',
-        'typeform'
-      );
+        title: phaseTitle,
+        startAt: '2018-03-01',
+        endAt: '2025-01-01',
+        participationMethod: 'survey',
+        canComment: true,
+        canPost: true,
+        canReact: true,
+        description: 'description',
+        surveyUrl: 'https://citizenlabco.typeform.com/to/Yv6B7V',
+        surveyService: 'typeform',
+      });
     });
   });
 
@@ -165,19 +165,19 @@ describe('Timeline project with survey phase but not active', () => {
       projectId = project.body.data.id;
       projectSlug = project.body.data.attributes.slug;
 
-      return cy.apiCreatePhase(
+      return cy.apiCreatePhase({
         projectId,
-        phaseTitle,
-        '2018-03-01',
-        '2019-01-01',
-        'survey',
-        true,
-        true,
-        true,
-        'description',
-        'https://citizenlabco.typeform.com/to/Yv6B7V',
-        'typeform'
-      );
+        title: phaseTitle,
+        startAt: '2018-03-01',
+        endAt: '2019-01-01',
+        participationMethod: 'survey',
+        canComment: true,
+        canPost: true,
+        canReact: true,
+        description: 'description',
+        surveyUrl: 'https://citizenlabco.typeform.com/to/Yv6B7V',
+        surveyService: 'typeform',
+      });
     });
   });
 

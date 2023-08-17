@@ -62,7 +62,9 @@ const AnalysesList = () => {
 
             <Box display="flex" gap="24px">
               <Button
-                linkTo={`/admin/projects/${projectId}/analysis/${analysis.id}`}
+                linkTo={`/admin/projects/${projectId}/analysis/${analysis.id}${
+                  phaseId ? `?phase_id=${phaseId}` : ''
+                }`}
                 icon="eye"
                 buttonStyle="secondary"
               >

@@ -292,7 +292,7 @@ export type TAppConfigurationSettingWithEnabled = Exclude<
   THomepageSetting
 >;
 
-type TCurrency = TCustomCurrency | TCountryCurrency;
+export type TCurrency = TCustomCurrency | TCountryCurrency;
 type TCustomCurrency =
   // token, credit
   'TOK' | 'CRE';

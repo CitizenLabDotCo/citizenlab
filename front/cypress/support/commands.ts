@@ -1116,22 +1116,37 @@ export function apiAddPoll(
   });
 }
 
-export function apiCreatePhase(
-  projectId: string,
-  title: string,
-  startAt: string,
-  endAt: string,
-  participationMethod: ParticipationMethod,
-  canPost: boolean,
-  canReact: boolean,
-  canComment: boolean,
-  description?: string,
-  surveyUrl?: string,
-  surveyService?: 'typeform' | 'survey_monkey' | 'google_forms',
-  votingMaxTotal?: number,
-  allow_anonymous_participation?: boolean,
-  votingMethod?: VotingMethod
-) {
+export function apiCreatePhase({
+  projectId,
+  title,
+  startAt,
+  endAt,
+  participationMethod,
+  canPost,
+  canReact,
+  canComment,
+  description,
+  surveyUrl,
+  surveyService,
+  votingMaxTotal,
+  allow_anonymous_participation,
+  votingMethod,
+}: {
+  projectId: string;
+  title: string;
+  startAt: string;
+  endAt: string;
+  participationMethod: ParticipationMethod;
+  canPost: boolean;
+  canReact: boolean;
+  canComment: boolean;
+  description?: string;
+  surveyUrl?: string;
+  surveyService?: 'typeform' | 'survey_monkey' | 'google_forms';
+  votingMaxTotal?: number;
+  allow_anonymous_participation?: boolean;
+  votingMethod?: VotingMethod;
+}) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 

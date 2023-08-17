@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_11_123114) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_14_115846) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -95,6 +95,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_11_123114) do
     t.jsonb "filters", default: {}, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.float "accuracy"
+    t.jsonb "inputs_ids"
     t.index ["analysis_id"], name: "index_analysis_summaries_on_analysis_id"
     t.index ["background_task_id"], name: "index_analysis_summaries_on_background_task_id"
   end

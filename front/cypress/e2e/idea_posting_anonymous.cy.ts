@@ -137,21 +137,17 @@ describe('Timeline ideation with anonymous participation allowed', () => {
       }).then((project) => {
         projectId = project.body.data.id;
         projectSlug = project.body.data.attributes.slug;
-        cy.apiCreatePhase(
+        cy.apiCreatePhase({
           projectId,
-          'phaseTitle',
-          moment().subtract(2, 'month').format('DD/MM/YYYY'),
-          moment().add(2, 'days').format('DD/MM/YYYY'),
-          'ideation',
-          true,
-          true,
-          true,
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          true
-        );
+          title: 'phaseTitle',
+          startAt: moment().subtract(2, 'month').format('DD/MM/YYYY'),
+          endAt: moment().add(2, 'days').format('DD/MM/YYYY'),
+          participationMethod: 'ideation',
+          canComment: true,
+          canPost: true,
+          canReact: true,
+          allow_anonymous_participation: true,
+        });
       });
     });
   });

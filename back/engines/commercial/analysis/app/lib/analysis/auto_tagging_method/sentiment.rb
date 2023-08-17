@@ -27,7 +27,7 @@ module Analysis
           locale
         )
 
-        text = input_to_text.execute(input).values.join("\n")
+        text = input_to_text.execute(input).values.join("\n").truncate(1500)
         next if text.strip.empty?
 
         # We retry 10 times due to rate limiting
@@ -41,7 +41,7 @@ module Analysis
         when :negative
           negative_tag
         end
-        Tagging.find_or_create_by!(input_id: input.id, tag: tag)
+        Tagging.find_or_create_by!(input_id: input.id, tag: tag) if tag
       end
     rescue StandardError => e
       raise AutoTaggingFailedError, e
