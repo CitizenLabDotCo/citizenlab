@@ -119,6 +119,8 @@ class Initiative < ApplicationRecord
 
     cosponsors_initiatives.where.not(user_id: ids).destroy_all
     (ids - current_ids).each { |id| cosponsors_initiatives.create(user_id: id) }
+
+    # super(ids.uniq)
   end
 
   def reactions_needed(configuration = AppConfiguration.instance)

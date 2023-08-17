@@ -81,7 +81,7 @@ class SideFxInitiativeService
           cosponsors_initiative,
           'created',
           user, # We don't want anonymized authors when cosponsors feature in use
-          cosponsors_initiative.updated_at.to_i
+          cosponsors_initiative.created_at.to_i
         )
       end
     end
