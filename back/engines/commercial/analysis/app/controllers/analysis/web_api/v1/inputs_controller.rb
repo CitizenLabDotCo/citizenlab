@@ -11,6 +11,7 @@ module Analysis
         def index
           # index is not policy scoped, instead the analysis is authorized.
           @inputs = InputsFinder.new(@analysis, filters).execute
+          filtered_count = @inputs.count
           @inputs = @inputs.order(published_at: :asc)
           @inputs = @inputs.includes(:author)
           @inputs = paginate @inputs
@@ -19,7 +20,10 @@ module Analysis
             @inputs,
             InputSerializer,
             params: jsonapi_serializer_params,
-            include: [:author]
+            include: [:author],
+            meta: {
+              filtered_count: filtered_count
+            }
           )
         end
 
