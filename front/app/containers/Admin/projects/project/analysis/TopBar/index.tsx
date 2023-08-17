@@ -94,7 +94,9 @@ const TopBar = () => {
         />
       </Box>
       <Tasks />
-      {isFiltersOpen && <Filters />}
+      <Box visibility={isFiltersOpen ? 'visible' : 'hidden'}>
+        <Filters onClose={() => setIsFiltersOpen(false)} />
+      </Box>
       <Modal
         opened={showLaunchModal}
         close={() => updateSearchParams({ showLaunchModal: false })}

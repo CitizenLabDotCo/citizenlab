@@ -19,6 +19,8 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import styled from 'styled-components';
 import { useSelectedInputContext } from '../SelectedInputContext';
+import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
+import Tag from '../Tags/Tag';
 
 const StyledSummaryText = styled.div`
   white-space: pre-wrap;
@@ -38,6 +40,7 @@ const Summary = ({ summary }: Props) => {
   const { formatMessage } = useIntl();
   const { analysisId } = useParams() as { analysisId: string };
   const { mutate: deleteSummary } = useDeleteAnalysisSummary();
+  const { data: tags } = useAnalysisTags({ analysisId });
 
   const { data: backgroundTask } = useAnalysisBackgroundTask(
     analysisId,
@@ -69,7 +72,13 @@ const Summary = ({ summary }: Props) => {
   };
 
   const hasFilters = !!Object.keys(summary.attributes.filters).length;
+  const tagId = summary.attributes.filters.tag_ids
+    ? summary.attributes.filters.tag_ids[0]
+    : null;
 
+  const tag = tags?.data.find((tag) => tag.id === tagId);
+  console.log(tag);
+  console.log(summary.attributes.filters);
   return (
     <Box
       key={summary.id}
@@ -88,25 +97,33 @@ const Summary = ({ summary }: Props) => {
         >
           {hasFilters && (
             <>
-              <Box>Summary for</Box>
-              {Object.entries(summary.attributes.filters).map(([k, v]) => (
-                <Box
-                  key={k}
-                  bgColor={colors.teal200}
-                  color={colors.teal700}
-                  py="2px"
-                  px="4px"
-                  borderRadius={stylingConsts.borderRadius}
-                >
-                  {k}: {v}
-                </Box>
-              ))}
+              <Box>Summary for:</Box>
+              {tag && (
+                <Tag
+                  name={tag.attributes.name}
+                  tagType={tag.attributes.tag_type}
+                />
+              )}
+              {Object.entries(summary.attributes.filters)
+                .filter(([k]) => k !== 'tag_ids')
+                .map(([k, v]) => (
+                  <Box
+                    key={k}
+                    bgColor={colors.teal200}
+                    color={colors.teal700}
+                    py="2px"
+                    px="4px"
+                    borderRadius={stylingConsts.borderRadius}
+                  >
+                    {k}: {v}
+                  </Box>
+                ))}
             </>
           )}
 
           {!hasFilters && (
             <>
-              <Box>Summary</Box>
+              <Box>Summary for all input</Box>
             </>
           )}
         </Box>
