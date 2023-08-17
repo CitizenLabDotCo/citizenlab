@@ -35,6 +35,13 @@ const InitiativesShowPage = () => {
 
   const { data: initiative, status, error } = useInitiativeBySlug(slug);
 
+  if (!initiativesEnabled) {
+    // Ideally, this is covered by status === 'error' but currently there
+    // a bug (in the BE?) that still shows this page to people with URL, even
+    // if the feature is disabled.
+    return <PageNotFound />;
+  }
+
   if (status === 'loading') {
     return (
       <VerticalCenterer>
@@ -47,9 +54,7 @@ const InitiativesShowPage = () => {
     if (isUnauthorizedRQ(error)) {
       return <Unauthorized />;
     }
-  }
 
-  if (!initiativesEnabled) {
     return <PageNotFound />;
   }
 
