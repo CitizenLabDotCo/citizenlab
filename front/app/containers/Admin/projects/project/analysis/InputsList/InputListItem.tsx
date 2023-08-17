@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { isEmpty } from 'lodash-es';
 
 import { IInputsData } from 'api/analysis_inputs/types';
@@ -14,36 +14,28 @@ import Avatar from 'components/Avatar';
 import { getFullName } from 'utils/textUtils';
 import { useParams } from 'react-router-dom';
 import useAnalysis from 'api/analyses/useAnalysis';
-import useIdeaCustomField from 'api/idea_custom_fields/useIdeaCustomField';
+import ShortFieldValue from './ShortFieldValue';
 
 interface Props {
   input: IInputsData;
-  onSelect: () => void;
+  onSelect: (id: string) => void;
   selected: boolean;
 }
 
-const InputListItem = ({ input, onSelect, selected }: Props) => {
+const InputListItem = memo(({ input, onSelect, selected }: Props) => {
   const { analysisId } = useParams() as { analysisId: string };
   const { data: analysis } = useAnalysis(analysisId);
   const { data: author } = useUserById(input.relationships.author.data?.id);
-  const { data: customField } = useIdeaCustomField({
-    customFieldId: analysis?.data.relationships.custom_fields.data[0].id,
-    projectId: analysis?.data.relationships.project?.data?.id,
-    phaseId: analysis?.data.relationships.phase?.data?.id,
-  });
   const { formatDate } = useIntl();
 
-  if (!input) return null;
+  if (!analysis || !input) return null;
 
-  const { title_multiloc, custom_field_values } = input.attributes;
-  const customFieldValue =
-    (customField && custom_field_values[customField.data.attributes.key]) ||
-    'No answer';
+  const { title_multiloc } = input.attributes;
 
   return (
     <>
       <Box
-        onClick={() => onSelect()}
+        onClick={() => onSelect(input.id)}
         bg={selected ? colors.background : colors.white}
         p="12px"
         display="flex"
@@ -103,19 +95,30 @@ const InputListItem = ({ input, onSelect, selected }: Props) => {
               <span> {input.attributes.comments_count}</span>
             </Box>
           )}
-          {!!customFieldValue &&
-            analysis?.data.attributes.participation_method ===
-              'native_survey' && (
-              <Text
-                fontSize="s"
-                m="0px"
-                textOverflow="ellipsis"
-                overflow="hidden"
-                whiteSpace="nowrap"
-              >
-                {customFieldValue}
-              </Text>
-            )}
+          {(!title_multiloc || isEmpty(title_multiloc)) && (
+            <Box flex="1">
+              {analysis.data.relationships.custom_fields.data
+                .slice(0, 3)
+                .map((customField) => (
+                  <Text
+                    key={customField.id}
+                    fontSize="s"
+                    color="textSecondary"
+                    m="0px"
+                    textOverflow="ellipsis"
+                    overflow="hidden"
+                    whiteSpace="nowrap"
+                  >
+                    <ShortFieldValue
+                      customFieldId={customField.id}
+                      input={input}
+                      projectId={analysis.data.relationships.project?.data?.id}
+                      phaseId={analysis.data.relationships.phase?.data?.id}
+                    />
+                  </Text>
+                ))}
+            </Box>
+          )}
         </Box>
 
         <Taggings inputId={input.id} />
@@ -123,6 +126,6 @@ const InputListItem = ({ input, onSelect, selected }: Props) => {
       <Divider m="0px" />
     </>
   );
-};
+});
 
 export default InputListItem;

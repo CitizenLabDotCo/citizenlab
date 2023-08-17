@@ -7,7 +7,7 @@ import useAnalysisInput from 'api/analysis_inputs/useAnalysisInput';
 
 import Divider from 'components/admin/Divider';
 import Taggings from '../Taggings';
-import FieldValue from './FieldValue';
+import LongFieldValue from './LongFieldValue';
 import Avatar from 'components/Avatar';
 import useUserById from 'api/users/useUserById';
 import { getFullName } from 'utils/textUtils';
@@ -30,10 +30,10 @@ const InputListItem = () => {
   return (
     <Box>
       {analysis.data.relationships.custom_fields.data.map((customField) => (
-        <FieldValue
+        <LongFieldValue
           key={customField.id}
           customFieldId={customField.id}
-          input={input}
+          input={input.data}
           projectId={analysis.data.relationships.project?.data?.id}
           phaseId={analysis.data.relationships.phase?.data?.id}
         />
