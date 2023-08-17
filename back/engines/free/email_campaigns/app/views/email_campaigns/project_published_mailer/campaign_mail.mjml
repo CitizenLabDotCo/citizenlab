@@ -22,6 +22,6 @@
       background-color="#044D6C"
       color="#fff"
       width="100%"
-      padding="0 25px"><%= format_message('cta_view_project') %></mj-button>
+      padding="0 25px"><%= format_message('cta_goto_project', component: 'general') %></mj-button>
   </mj-column>
 </mj-section>

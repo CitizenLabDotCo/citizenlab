@@ -362,6 +362,7 @@ en:
       cta_manage_project: 'Manage this project'
       message_you_became_moderator: 'An adminstrator of the participation platform of %{organizationName} just made you project manager of the following project:'
       no_ideas: 'No ideas yet'
+      preheader: 'An adminstrator of the participation platform of %{organizationName} just made you a project manager of the following project'
       subject: 'You became a project manager on the platform of %{organizationName}'
       text_design_participatory_process: 'As a project manager, you can configure how users interact within your project. You can add new phases using the timeline. Each of these phases can have its own behaviour with regards to idea posting, commenting, and voting.'
       text_moderate_analyse_input: 'Once the project is launched, the first ideas will come in. You will receive weekly reports with all key activities so that you stay on top of things. The ideas overview in your project manager view will help you understand which ideas got the most likes and dislikes.'
@@ -402,6 +403,7 @@ en:
       subtitle: 'About ''%{projectName}'''
       new_phase: 'The project will enter the phase ''%{phaseTitle}'''
       subject: 'Get everything set up for the new phase of %{projectName}'
+      preheader: 'A new phase will start soon for %{projectName}'
     project_published:
       subject: 'A new project was published on the platform of %{organizationName}'
       header_title: 'A new project was published'
