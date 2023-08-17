@@ -25,7 +25,7 @@ type Props = {
   selectedStatus?: string;
   statuses: IInitiativeStatusData[];
   onUpdateStatus: (statusId: string) => void;
-  allowedTransitions: IInitiativeAllowedTransitions;
+  allowedTransitions: IInitiativeAllowedTransitions | null;
 };
 
 const InitiativesStatusSelector = ({
@@ -39,6 +39,8 @@ const InitiativesStatusSelector = ({
   };
 
   const isAllowed = (statusId: string) => {
+    if (allowedTransitions === null) return false;
+
     return allowedTransitions.data.attributes[statusId] !== undefined;
   };
 

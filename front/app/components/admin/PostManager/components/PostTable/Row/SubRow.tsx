@@ -31,7 +31,7 @@ interface Props {
   onUpdatePhases: (id: string[]) => void;
   onUpdateTopics: (id: string[]) => void;
   onUpdateStatus: (id: string) => void;
-  allowedTransitions: IInitiativeAllowedTransitions;
+  allowedTransitions: IInitiativeAllowedTransitions | null;
   /* set allowedTransitions to null to allow all */
   postType: 'idea' | 'initiative';
 }
