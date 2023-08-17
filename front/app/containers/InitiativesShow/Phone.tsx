@@ -84,7 +84,6 @@ const InitiativeContainer = styled.div`
   margin: 0;
   margin-left: auto;
   margin-right: auto;
-  margin-bottom: 28px;
   padding: 0;
   padding-top: 25px;
   padding-left: ${paddingSide};
@@ -106,13 +105,7 @@ const MobileMoreActionContainer = styled.div`
 `;
 
 const StyledDropdownMap = styled(DropdownMap)`
-  margin-bottom: 20px;
-`;
-
-const SharingButtonsMobile = styled(SharingButtons)`
-  padding: 0;
-  margin: 0;
-  margin-top: 40px;
+  margin-bottom: 32px;
 `;
 
 const StyledOfficialFeedback = styled(OfficialFeedback)`
@@ -216,7 +209,7 @@ const Phone = ({
         </InitiativeBannerContent>
       </InitiativeBanner>
       <InitiativeContainer>
-        <Box mb="24px">
+        <Box mb="20px">
           <Topics
             postType="initiative"
             topicIds={
@@ -245,14 +238,16 @@ const Phone = ({
         <ScreenReaderOnly>
           <FormattedMessage tagName="h2" {...messages.invisibleTitleContent} />
         </ScreenReaderOnly>
-        <Body
-          postId={initiativeId}
-          postType="initiative"
-          body={localize(initiative.data.attributes?.body_multiloc)}
-          translateButtonClicked={translateButtonClicked}
-        />
+        <Box mb="32px">
+          <Body
+            postId={initiativeId}
+            postType="initiative"
+            body={localize(initiative.data.attributes?.body_multiloc)}
+            translateButtonClicked={translateButtonClicked}
+          />
+        </Box>
         {initiativeFiles && initiativeFiles.data.length > 0 && (
-          <Box mb="25px">
+          <Box mb="20px">
             <FileAttachments files={initiativeFiles.data} />
           </Box>
         )}
@@ -269,27 +264,29 @@ const Phone = ({
           </div>
         )}
         {showSharingOptions && (
-          <SharingButtonsMobile
-            context="initiative"
-            url={initiativeUrl}
-            twitterMessage={formatMessage(messages.twitterMessage, {
-              initiativeTitle,
-            })}
-            facebookMessage={formatMessage(messages.facebookMessage, {
-              initiativeTitle,
-            })}
-            whatsAppMessage={formatMessage(messages.whatsAppMessage, {
-              initiativeTitle,
-            })}
-            emailSubject={formatMessage(messages.emailSharingSubject, {
-              initiativeTitle,
-            })}
-            emailBody={formatMessage(messages.emailSharingBody, {
-              initiativeUrl,
-              initiativeTitle,
-            })}
-            utmParams={utmParams}
-          />
+          <Box mb="48px">
+            <SharingButtons
+              context="initiative"
+              url={initiativeUrl}
+              twitterMessage={formatMessage(messages.twitterMessage, {
+                initiativeTitle,
+              })}
+              facebookMessage={formatMessage(messages.facebookMessage, {
+                initiativeTitle,
+              })}
+              whatsAppMessage={formatMessage(messages.whatsAppMessage, {
+                initiativeTitle,
+              })}
+              emailSubject={formatMessage(messages.emailSharingSubject, {
+                initiativeTitle,
+              })}
+              emailBody={formatMessage(messages.emailSharingBody, {
+                initiativeUrl,
+                initiativeTitle,
+              })}
+              utmParams={utmParams}
+            />
+          </Box>
         )}
       </InitiativeContainer>
       <Box px={paddingSide}>
