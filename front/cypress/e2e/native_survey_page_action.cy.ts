@@ -71,17 +71,17 @@ describe('Native survey project page actions', () => {
     }).then((project) => {
       projectIdTimeline = project.body.data.id;
       projectSlugTimeline = project.body.data.attributes.slug;
-      cy.apiCreatePhase(
-        projectIdTimeline,
-        'Future ',
-        inTwoDays,
-        inTwoMonths,
-        'native_survey',
-        true,
-        true,
-        true,
-        `description ${phaseFutureTitle}`
-      );
+      cy.apiCreatePhase({
+        projectId: projectIdTimeline,
+        title: 'Future ',
+        startAt: inTwoDays,
+        endAt: inTwoMonths,
+        participationMethod: 'native_survey',
+        canComment: true,
+        canPost: true,
+        canReact: true,
+        description: `description ${phaseFutureTitle}`,
+      });
     });
 
     // create a regular user

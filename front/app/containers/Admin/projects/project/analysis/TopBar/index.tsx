@@ -18,10 +18,15 @@ import Filters from './Filters';
 import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import useAnalysis from 'api/analyses/useAnalysis';
+import Tasks from '../Tasks';
+import LaunchModal from '../LaunchModal';
+import Modal from 'components/UI/Modal';
 
 const TopBar = () => {
   const [urlParams] = useSearchParams();
   const phaseId = urlParams.get('phase_id') || undefined;
+
+  const showLaunchModal = urlParams.get('showLaunchModal') === 'true';
 
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const { projectId, analysisId } = useParams() as {
@@ -88,7 +93,16 @@ const TopBar = () => {
           a11y_numberOfSearchResults={0}
         />
       </Box>
+      <Tasks />
       {isFiltersOpen && <Filters />}
+      <Modal
+        opened={showLaunchModal}
+        close={() => updateSearchParams({ showLaunchModal: false })}
+      >
+        <LaunchModal
+          onClose={() => updateSearchParams({ showLaunchModal: false })}
+        />
+      </Modal>
     </Box>
   );
 };

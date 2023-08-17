@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { max, omit } from 'lodash-es';
+import { omit } from 'lodash-es';
 
 import { useParams } from 'react-router-dom';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
@@ -18,34 +18,52 @@ import {
   colors,
   stylingConsts,
   Text,
+  Icon,
+  ListItem,
 } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 import Modal from 'components/UI/Modal';
 import RenameTagModal from './RenameTagModal';
 import Tag from './Tag';
 import AutotaggingModal from './AutotaggingModal';
-import ProgressBar from 'components/UI/ProgressBar';
+import TagCount from './TagCount';
 
 import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
-const TagContainer = styled.div`
-  margin-bottom: 8px;
-  padding: 8px;
-  border: 1px solid transparent;
-  border-radius: ${stylingConsts.borderRadius};
-  &:hover {
-    border: 1px solid ${colors.borderLight};
+import { useQueryClient } from '@tanstack/react-query';
+import inputsKeys from 'api/analysis_inputs/keys';
+
+const BlickingIcon = styled(Icon)`
+  animation-name: blink-animation;
+  animation-duration: 1.8s;
+  animation-delay: 1s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+
+  @keyframes blink-animation {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
   }
-  &.selected {
-    border: 1px solid ${colors.borderLight};
-  }
-  cursor: pointer;
 `;
 
-const StyledProgressBar = styled(ProgressBar)<{ width: number }>`
-  height: 5px;
-  width: ${({ width }) => width * 100}%;
+const TagContainer = styled(ListItem)`
+  padding: 8px 4px;
+  border-radius: ${stylingConsts.borderRadius};
+  &:hover {
+    background-color: ${colors.background};
+  }
+  &.selected {
+    background-color: ${colors.background};
+  }
+  cursor: pointer;
 `;
 
 const Tags = () => {
@@ -60,12 +78,19 @@ const Tags = () => {
 
   const { analysisId } = useParams() as { analysisId: string };
 
+  const queryClient = useQueryClient();
   const { data: tags } = useAnalysisTags({
     analysisId,
     filters: omit(filters, 'tag_ids'),
   });
   const { mutate: addTag, isLoading, error } = useAddAnalysisTag();
   const { mutate: deleteTag } = useDeleteAnalysisTag();
+
+  const inputsTotal = tags?.meta.inputs_total || 1;
+  const filteredInputsTotal = tags?.meta.filtered_inputs_total || 1;
+  const inputsWithoutTags = tags?.meta.inputs_without_tags || 1;
+  const filteredInputsWithoutTags =
+    tags?.meta.filtered_inputs_without_tags || 1;
 
   const onChangeName = (name: string) => {
     setName(name);
@@ -102,10 +127,13 @@ const Tags = () => {
     updateSearchParams({ tag_ids: [id] });
   };
 
-  const maxTotalCount =
-    max(tags?.data?.map((t) => t.attributes.total_input_count)) || 1;
-
   const selectedTags = filters.tag_ids;
+
+  const handleTagClick = (id: string) => {
+    selectTag(id);
+    queryClient.invalidateQueries(inputsKeys.lists());
+  };
+
   return (
     <Box>
       <Box>
@@ -117,6 +145,15 @@ const Tags = () => {
           buttonStyle="secondary-outlined"
         >
           Auto-tag
+          {!tags?.data.length && (
+            <BlickingIcon
+              name={'dot'}
+              width="16px"
+              height="16px"
+              fill={colors.primary}
+              ml="8px"
+            />
+          )}
         </Button>
         <Box display="flex" alignItems="center" mb="8px" as="form">
           <Input
@@ -147,13 +184,23 @@ const Tags = () => {
           className={!selectedTags ? 'selected' : ''}
         >
           All inputs
+          <TagCount
+            count={inputsTotal}
+            totalCount={inputsTotal}
+            filteredCount={filteredInputsTotal}
+          />
         </TagContainer>
         <TagContainer
           tabIndex={0}
-          onClick={() => updateSearchParams({ tag_ids: [] })}
+          onClick={() => updateSearchParams({ tag_ids: [null] })}
           className={selectedTags?.length === 0 ? 'selected' : ''}
         >
           Inputs without tags
+          <TagCount
+            count={inputsWithoutTags}
+            totalCount={inputsTotal}
+            filteredCount={filteredInputsWithoutTags}
+          />
         </TagContainer>
         {!isLoading && tags?.data.length === 0 && (
           <Text p="6px" color="grey400">
@@ -164,26 +211,27 @@ const Tags = () => {
           <TagContainer
             key={tag.id}
             tabIndex={0}
-            onClick={() => selectTag(tag.id)}
+            onClick={() => handleTagClick(tag.id)}
             className={selectedTags?.includes(tag.id) ? 'selected' : ''}
           >
             <Box
               display="flex"
               alignItems="center"
               justifyContent="space-between"
-              mb="3px"
             >
               <Tag
                 name={tag.attributes.name}
                 tagType={tag.attributes.tag_type}
               />
-              <Box display="flex" gap="0px">
+              <Box display="flex">
                 <IconButton
                   iconName="edit"
                   onClick={() => setRenameTagModalOpenedId(tag.id)}
                   iconColor={colors.grey700}
                   iconColorOnHover={colors.grey700}
                   a11y_buttonActionMessage={formatMessage(messages.editTag)}
+                  iconWidth="20px"
+                  iconHeight="20px"
                 />
                 <IconButton
                   iconName="delete"
@@ -191,26 +239,16 @@ const Tags = () => {
                   iconColor={colors.red600}
                   iconColorOnHover={colors.red600}
                   a11y_buttonActionMessage={formatMessage(messages.deleteTag)}
+                  iconWidth="20px"
+                  iconHeight="20px"
                 />
               </Box>
             </Box>
-            <Box display="flex" alignItems="center">
-              <StyledProgressBar
-                width={tag.attributes.total_input_count / maxTotalCount}
-                progress={
-                  tag.attributes.filtered_input_count /
-                  tag.attributes.total_input_count
-                }
-                color={colors.blue700}
-                bgColor={colors.coolGrey300}
-              />
-              <Box w="50px" ml="5px">
-                {tag.attributes.filtered_input_count ===
-                tag.attributes.total_input_count
-                  ? tag.attributes.total_input_count
-                  : `${tag.attributes.filtered_input_count}/${tag.attributes.total_input_count}`}
-              </Box>
-            </Box>
+            <TagCount
+              count={tag.attributes.total_input_count}
+              totalCount={inputsTotal}
+              filteredCount={tag.attributes.filtered_input_count}
+            />
             <Modal
               opened={renameTagModalOpenedId === tag.id}
               close={closeTagRenameModal}

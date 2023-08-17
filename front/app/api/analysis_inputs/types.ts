@@ -58,6 +58,9 @@ export interface IInputsData {
 export interface IInputs {
   data: IInputsData[];
   links: ILinks;
+  meta: {
+    filtered_count: number;
+  };
 }
 
 export interface IInput {
