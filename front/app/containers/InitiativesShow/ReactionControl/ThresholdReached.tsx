@@ -7,7 +7,7 @@ import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 import { IAppConfigurationSettings } from 'api/app_configuration/types';
 
 // components
-import { Icon, IconTooltip } from '@citizenlab/cl2-component-library';
+import { Box, Icon, IconTooltip } from '@citizenlab/cl2-component-library';
 import { StatusWrapper, StatusExplanation } from './SharedStyles';
 import Button from 'components/UI/Button';
 
@@ -25,8 +25,8 @@ const StatusIcon = styled(Icon)`
   path {
     fill: ${(props) => props.theme.colors.tenantText};
   }
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   margin-bottom: 20px;
 `;
 
@@ -65,9 +65,11 @@ const ThresholdReached = (props: Props) => {
 
   return (
     <Container>
-      <StatusWrapper>
-        <T value={initiativeStatus.attributes.title_multiloc} />
-      </StatusWrapper>
+      <Box mb="16px">
+        <StatusWrapper>
+          <T value={initiativeStatus.attributes.title_multiloc} />
+        </StatusWrapper>
+      </Box>
       <StatusIcon ariaHidden name="email-check" />
       <StatusExplanation>
         <FormattedMessage

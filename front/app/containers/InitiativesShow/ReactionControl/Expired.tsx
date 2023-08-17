@@ -5,7 +5,7 @@ import { colors, fontSizes, media } from 'utils/styleUtils';
 import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 import { IAppConfigurationSettings } from 'api/app_configuration/types';
 
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Box, Icon } from '@citizenlab/cl2-component-library';
 import { StatusWrapper, StatusExplanation } from './SharedStyles';
 import ProposalProgressBar from './ProposalProgressBar';
 import Button from 'components/UI/Button';
@@ -69,9 +69,11 @@ const Expired = (props: Props) => {
 
   return (
     <Container>
-      <StatusWrapper>
-        <T value={initiativeStatus.attributes.title_multiloc} />
-      </StatusWrapper>
+      <Box mb="16px">
+        <StatusWrapper>
+          <T value={initiativeStatus.attributes.title_multiloc} />
+        </StatusWrapper>
+      </Box>
       <StatusIcon ariaHidden name="clock" />
       <StatusExplanation>
         <FormattedMessage

@@ -5,7 +5,7 @@ import { colors, fontSizes, media } from 'utils/styleUtils';
 import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 import { IAppConfigurationSettings } from 'api/app_configuration/types';
 
-import { Icon, IconTooltip } from '@citizenlab/cl2-component-library';
+import { Box, Icon, IconTooltip } from '@citizenlab/cl2-component-library';
 import { StatusWrapper, StatusExplanation } from './SharedStyles';
 
 import ProposalProgressBar from './ProposalProgressBar';
@@ -15,8 +15,6 @@ import T from 'components/T';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { IInitiativeData } from 'api/initiatives/types';
-
-const Container = styled.div``;
 
 const StatusIcon = styled(Icon)`
   path {
@@ -73,10 +71,12 @@ const Ineligible = (props: Props) => {
   const reactionLimit = reacting_threshold;
 
   return (
-    <Container>
-      <StatusWrapper>
-        <T value={initiativeStatus.attributes.title_multiloc} />
-      </StatusWrapper>
+    <Box>
+      <Box mb="16px">
+        <StatusWrapper>
+          <T value={initiativeStatus.attributes.title_multiloc} />
+        </StatusWrapper>
+      </Box>
       <StatusIcon ariaHidden name="halt" />
       <StatusExplanation>
         <FormattedMessage
@@ -126,7 +126,7 @@ const Ineligible = (props: Props) => {
       <StyledButton onClick={handleOnReadAnswer}>
         <FormattedMessage {...messages.readAnswer} />
       </StyledButton>
-    </Container>
+    </Box>
   );
 };
 

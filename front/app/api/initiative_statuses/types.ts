@@ -12,8 +12,7 @@ export type InitiativeStatusCode =
   | 'expired'
   | 'threshold_reached'
   | 'answered'
-  | 'ineligible'
-  | 'custom';
+  | 'ineligible';
 
 export interface IInitiativeStatusData {
   id: string;

@@ -8,7 +8,6 @@ import Expired from './Expired';
 import ThresholdReached from './ThresholdReached';
 import Answered from './Answered';
 import Ineligible from './Ineligible';
-import Custom from './Custom';
 import ReviewPending from './ReviewPending';
 
 // events
@@ -92,10 +91,6 @@ const componentMap: TComponentMap = {
   ineligible: {
     reacted: Ineligible,
     notReacted: Ineligible,
-  },
-  custom: {
-    reacted: Custom,
-    notReacted: Custom,
   },
 };
 

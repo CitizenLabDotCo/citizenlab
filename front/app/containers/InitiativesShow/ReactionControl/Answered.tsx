@@ -5,7 +5,7 @@ import { fontSizes } from 'utils/styleUtils';
 import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 import { IAppConfigurationSettings } from 'api/app_configuration/types';
 
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Box, Icon } from '@citizenlab/cl2-component-library';
 import { StatusWrapper, StatusExplanation } from './SharedStyles';
 import Button from 'components/UI/Button';
 
@@ -14,14 +14,12 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { IInitiativeData } from 'api/initiatives/types';
 
-const Container = styled.div``;
-
 const StatusIcon = styled(Icon)`
   path {
     fill: ${(props) => props.theme.colors.tenantText};
   }
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   margin-bottom: 20px;
 `;
 
@@ -64,10 +62,12 @@ const Answered = (props: Props) => {
   const reactionCount = initiative.attributes.likes_count;
 
   return (
-    <Container>
-      <StatusWrapper>
-        <T value={initiativeStatus.attributes.title_multiloc} />
-      </StatusWrapper>
+    <Box>
+      <Box mb="16px">
+        <StatusWrapper>
+          <T value={initiativeStatus.attributes.title_multiloc} />
+        </StatusWrapper>
+      </Box>
       <StatusIcon name="email-check" />
       <StatusExplanation>
         <FormattedMessage
@@ -106,7 +106,7 @@ const Answered = (props: Props) => {
           </Button>
         )}
       </Buttons>
-    </Container>
+    </Box>
   );
 };
 

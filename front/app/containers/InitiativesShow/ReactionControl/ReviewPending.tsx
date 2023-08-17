@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 import { IInitiativeStatusData } from 'api/initiative_statuses/types';
@@ -10,15 +9,6 @@ import { StatusWrapper, StatusExplanation } from './SharedStyles';
 import T from 'components/T';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
-
-const StatusIcon = styled(Icon)`
-  path {
-    fill: ${colors.coolGrey600};
-  }
-  width: 30px;
-  height: 30px;
-  margin-bottom: 20px;
-`;
 
 interface Props {
   initiativeStatus: IInitiativeStatusData;
@@ -32,7 +22,14 @@ const ReviewPending = ({ initiativeStatus }: Props) => {
           <T value={initiativeStatus.attributes.title_multiloc} />
         </StatusWrapper>
       </Box>
-      <StatusIcon ariaHidden name="clock" />
+      <Icon
+        ariaHidden
+        name="clock"
+        fill={colors.coolGrey600}
+        width="30px"
+        height="30px"
+        mb="20px"
+      />
       <StatusExplanation>
         <b>
           <FormattedMessage {...messages.reviewPendingStatusExplanationBold} />
