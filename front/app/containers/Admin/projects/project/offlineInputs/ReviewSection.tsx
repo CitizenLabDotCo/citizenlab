@@ -19,7 +19,7 @@ import PDFViewer from 'components/PDFViewer';
 
 // styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { colors, stylingConsts } from 'utils/styleUtils';
 
 // TODO move to component library
 const TEAL50 = '#EDF8FA';
@@ -61,12 +61,18 @@ const ReviewSection = () => {
   );
 
   return (
-    <Box mt="40px" w="100%" bgColor={colors.white} py="32px">
+    <Box mt="40px" w="100%" bgColor={colors.white} pt="20px">
       <Title variant="h2" color="primary" px="52px" mb="40px">
         Ideas imported
       </Title>
 
-      <Box display="flex" w="100%" px="52px" justifyContent="space-between">
+      <Box
+        display="flex"
+        w="100%"
+        h={`calc(100vh - ${stylingConsts.mobileMenuHeight + 20}px)`}
+        px="40px"
+        justifyContent="space-between"
+      >
         <Box w="25%" borderRight={`1px ${colors.grey400} solid`} pr="8px">
           {ideas.data.map((idea) => (
             <StyledBox
@@ -94,7 +100,7 @@ const ReviewSection = () => {
           ))}
         </Box>
         <Box w="35%" borderRight={`1px ${colors.grey400} solid`}>
-          Idea form
+          <Box ml="20px">Idea form</Box>
         </Box>
         <Box w="40%">
           {ideaMetadata && pages && (
