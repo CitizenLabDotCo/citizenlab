@@ -15,18 +15,6 @@ export const showOnboarding = (
   return false;
 };
 
-export const hasRequiredOnboardingStep = (
-  customFieldRequirements: AuthenticationRequirements['requirements']['onboarding']
-) => {
-  for (const fieldName in customFieldRequirements) {
-    if (customFieldRequirements[fieldName] === 'require') {
-      return true;
-    }
-  }
-
-  return false;
-};
-
 export const askCustomFields = (
   customFieldRequirements: AuthenticationRequirements['requirements']['custom_fields']
 ) => {
