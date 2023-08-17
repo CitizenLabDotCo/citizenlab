@@ -10,6 +10,7 @@ module Analysis
         def index
           # index is not policy scoped, instead the analysis is authorized.
           @inputs = InputsFinder.new(@analysis, input_filter_params.to_h).execute
+          @inputs = @inputs.order(published_at: :asc)
           @inputs = @inputs.includes(:author)
           @inputs = paginate @inputs
 

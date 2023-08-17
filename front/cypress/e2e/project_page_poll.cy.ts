@@ -135,17 +135,17 @@ describe('Timeline project with poll phase', () => {
         projectId = project.body.data.id;
         projectSlug = project.body.data.attributes.slug;
 
-        return cy.apiCreatePhase(
+        return cy.apiCreatePhase({
           projectId,
-          phaseTitle,
-          '2018-03-01',
-          '2025-01-01',
-          'poll',
-          true,
-          true,
-          true,
-          'description'
-        );
+          title: phaseTitle,
+          startAt: '2018-03-01',
+          endAt: '2025-01-01',
+          participationMethod: 'poll',
+          canComment: true,
+          canPost: true,
+          canReact: true,
+          description: 'description',
+        });
       })
       .then((phase) => {
         phaseId = phase.body.data.id;

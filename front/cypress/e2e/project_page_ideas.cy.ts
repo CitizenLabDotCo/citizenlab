@@ -140,28 +140,28 @@ describe('New timeline project with active ideation phase', () => {
           endDate: moment().add(1, 'day').toDate(),
         });
 
-        return cy.apiCreatePhase(
+        return cy.apiCreatePhase({
           projectId,
-          'phaseTitle',
-          '2018-03-01',
-          '2025-01-01',
-          'ideation',
-          true,
-          true,
-          true
-        );
+          title: 'phaseTitle',
+          startAt: '2018-03-01',
+          endAt: '2025-01-01',
+          participationMethod: 'ideation',
+          canComment: true,
+          canPost: true,
+          canReact: true,
+        });
       })
       .then(() => {
-        return cy.apiCreatePhase(
+        return cy.apiCreatePhase({
           projectId,
-          'phaseTitle',
-          '2025-01-02',
-          '2025-01-25',
-          'ideation',
-          true,
-          true,
-          true
-        );
+          title: 'phaseTitle',
+          startAt: '2025-01-02',
+          endAt: '2025-01-25',
+          participationMethod: 'ideation',
+          canComment: true,
+          canPost: true,
+          canReact: true,
+        });
       })
       .then(() => {
         return cy.apiCreateIdea(projectId, ideaTitle, ideaContent);
@@ -244,28 +244,28 @@ describe('Archived timeline project with ideation phase', () => {
       })
       .then((project) => {
         projectId = project.body.data.id;
-        return cy.apiCreatePhase(
+        return cy.apiCreatePhase({
           projectId,
-          'phaseTitle',
-          '2018-03-01',
-          '2025-01-01',
-          'ideation',
-          true,
-          true,
-          true
-        );
+          title: 'phaseTitle',
+          startAt: '2018-03-01',
+          endAt: '2025-01-01',
+          participationMethod: 'ideation',
+          canComment: true,
+          canPost: true,
+          canReact: true,
+        });
       })
       .then(() => {
-        return cy.apiCreatePhase(
+        return cy.apiCreatePhase({
           projectId,
-          'phaseTitle',
-          '2025-01-02',
-          '2025-01-25',
-          'ideation',
-          true,
-          true,
-          true
-        );
+          title: 'phaseTitle',
+          startAt: '2025-01-02',
+          endAt: '2025-01-25',
+          participationMethod: 'ideation',
+          canComment: true,
+          canPost: true,
+          canReact: true,
+        });
       })
       .then(() => {
         return cy.apiCreateIdea(projectId, ideaTitle, ideaContent);
@@ -319,16 +319,16 @@ describe('timeline project with no active ideation phase', () => {
       })
       .then((project) => {
         projectId = project.body.data.id;
-        return cy.apiCreatePhase(
+        return cy.apiCreatePhase({
           projectId,
-          'phaseTitle',
-          '2018-03-01',
-          '2019-01-01',
-          'ideation',
-          true,
-          true,
-          true
-        );
+          title: 'phaseTitle',
+          startAt: '2018-03-01',
+          endAt: '2019-01-01',
+          participationMethod: 'ideation',
+          canComment: true,
+          canPost: true,
+          canReact: true,
+        });
       })
       .then(() => {
         cy.setAdminLoginCookie();

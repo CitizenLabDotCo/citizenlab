@@ -1,6 +1,7 @@
 import { pick } from 'lodash-es';
 import { useSearchParams } from 'react-router-dom';
 import { handleArraySearchParam } from '../util';
+import { useMemo } from 'react';
 
 /** Hook that extracts and returns all filter params used in the analysis,
  * extracted from the url */
@@ -24,10 +25,18 @@ const useAnalysisFilterParams = () => {
     tag_ids: handleArraySearchParam(searchParams, 'tag_ids'),
   };
 
-  return {
+  // Let's make sure this hook returns a stable reference: The object stays the
+  // same if the filter params don't change
+  const filters = {
     ...scalarFilters,
     ...arrayFilters,
   };
+  const jsonFilters = JSON.stringify(filters);
+  const stableFilters = useMemo(() => {
+    return JSON.parse(jsonFilters);
+  }, [jsonFilters]);
+
+  return stableFilters;
 };
 
 export default useAnalysisFilterParams;

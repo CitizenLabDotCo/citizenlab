@@ -74,17 +74,17 @@ describe('Timeline project with native survey phase', () => {
       projectId = project.body.data.id;
       projectSlug = project.body.data.attributes.slug;
 
-      return cy.apiCreatePhase(
+      return cy.apiCreatePhase({
         projectId,
-        phaseTitle,
-        '2018-03-01',
-        '5025-01-01',
-        'native_survey',
-        true,
-        true,
-        true,
-        'description'
-      );
+        title: phaseTitle,
+        startAt: '2018-03-01',
+        endAt: '5025-01-01',
+        participationMethod: 'native_survey',
+        canComment: true,
+        canPost: true,
+        canReact: true,
+        description: 'description',
+      });
     });
   });
 
@@ -126,17 +126,17 @@ describe('Timeline project with native survey phase but not active', () => {
       projectId = project.body.data.id;
       projectSlug = project.body.data.attributes.slug;
 
-      return cy.apiCreatePhase(
+      return cy.apiCreatePhase({
         projectId,
-        phaseTitle,
-        '2018-03-01',
-        '2019-01-01',
-        'native_survey',
-        true,
-        true,
-        true,
-        'description'
-      );
+        title: phaseTitle,
+        startAt: '2018-03-01',
+        endAt: '2019-01-01',
+        participationMethod: 'native_survey',
+        canComment: true,
+        canPost: true,
+        canReact: true,
+        description: 'description',
+      });
     });
   });
 
