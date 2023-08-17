@@ -15,6 +15,7 @@ import useLocalize from 'hooks/useLocalize';
 
 // components
 import { Box, Spinner, Title, Text } from '@citizenlab/cl2-component-library';
+import PDFViewer from 'components/PDFViewer';
 
 // styling
 import styled from 'styled-components';
@@ -55,6 +56,10 @@ const ReviewSection = () => {
 
   if (ideas === undefined || ideas.data.length === 0) return null;
 
+  const pages = ideaMetadata?.data.attributes.page_range.map((page) =>
+    Number(page)
+  );
+
   return (
     <Box mt="40px" w="100%" bgColor={colors.white} py="32px">
       <Title variant="h2" color="primary" px="52px" mb="40px">
@@ -91,7 +96,14 @@ const ReviewSection = () => {
         <Box w="35%" borderRight={`1px ${colors.grey400} solid`}>
           Idea form
         </Box>
-        <Box w="40%">{ideaMetadata?.data.id}</Box>
+        <Box w="40%">
+          {ideaMetadata && pages && (
+            <PDFViewer
+              file={ideaMetadata.data.attributes.file.url}
+              currentPage={1}
+            />
+          )}
+        </Box>
       </Box>
     </Box>
   );
