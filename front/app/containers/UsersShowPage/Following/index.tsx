@@ -4,8 +4,8 @@ import { FollowableObject } from 'api/follow_unfollow/types';
 import FilterSelector from 'components/FilterSelector';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
-import Topics from './Topics';
-import Areas from './Areas';
+import Topics from 'components/Topics';
+import Areas from 'components/Areas';
 import UserFollowingList from './UserFollowingList';
 import useAuthUser from 'api/me/useAuthUser';
 

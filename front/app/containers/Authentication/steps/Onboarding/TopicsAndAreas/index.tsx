@@ -1,8 +1,8 @@
 import React from 'react';
 import { Box, Title } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
-import Topics from 'containers/UsersShowPage/Following/Topics';
-import Areas from 'containers/UsersShowPage/Following/Areas';
+import Topics from 'components/Topics';
+import Areas from 'components/Areas';
 import { useIntl } from 'utils/cl-intl';
 import useAuthUser from 'api/me/useAuthUser';
 import messages from '../messages';
