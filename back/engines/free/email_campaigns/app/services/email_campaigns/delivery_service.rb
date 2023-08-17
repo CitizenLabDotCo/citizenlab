@@ -11,6 +11,7 @@ module EmailCampaigns
       Campaigns::CommentOnYourComment,
       Campaigns::CommentOnYourIdea,
       Campaigns::CommentOnYourInitiative,
+      Campaigns::CosponsorOfYourInitiative,
       Campaigns::IdeaMarkedAsSpam,
       Campaigns::IdeaPublished,
       Campaigns::InitiativeAssignedToYou,
