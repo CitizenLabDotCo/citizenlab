@@ -15,6 +15,8 @@ import InitiativeMeta from './InitiativeMeta';
 const Modals = lazy(() => import('./modals'));
 import Phone from './Phone';
 import LargerThanPhone from './LargerThanPhone';
+import Footer from 'components/PostShowComponents/Footer';
+import LoadingComments from 'components/PostShowComponents/Comments/LoadingComments';
 
 export const contentFadeInDuration = 250;
 export const contentFadeInEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -113,6 +115,9 @@ const InitiativesShow = ({ initiativeId }: Props) => {
           onTranslateInitiative={onTranslateInitiative}
         />
       )}
+      <Suspense fallback={<LoadingComments />}>
+        <Footer postId={initiativeId} postType="initiative" />
+      </Suspense>
       <Suspense fallback={null}>
         <Modals
           closeInitiativeSocialSharingModal={closeInitiativeSocialSharingModal}

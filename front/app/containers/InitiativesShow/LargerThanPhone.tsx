@@ -1,4 +1,4 @@
-import React, { useRef, Suspense } from 'react';
+import React, { useRef } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -10,7 +10,6 @@ import Title from 'components/PostShowComponents/Title';
 import DropdownMap from 'components/PostShowComponents/DropdownMap';
 import Body from 'components/PostShowComponents/Body';
 import Image from 'components/PostShowComponents/Image';
-import Footer from 'components/PostShowComponents/Footer';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import PostedBy from './PostedBy';
 import ActionBar from './ActionBar';
@@ -47,7 +46,6 @@ import useLocale from 'hooks/useLocale';
 import useAuthUser from 'api/me/useAuthUser';
 import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
 import { usePermission } from 'services/permissions';
-import LoadingComments from 'components/PostShowComponents/Comments/LoadingComments';
 import {
   contentFadeInDelay,
   contentFadeInDuration,
@@ -179,14 +177,11 @@ const LargerThanPhone = ({
     initiativeId,
     pageSize: 1,
   });
+  const officialFeedbackElement = useRef<HTMLDivElement>(null);
+  const initiativeReviewRequired = useInitiativeReviewRequired();
   const officialFeedbacksList =
     initiativeFeedbacks?.pages.flatMap((page) => page.data) || [];
   const hasOfficialFeedback = officialFeedbacksList.length > 0;
-
-  const officialFeedbackElement = useRef<HTMLDivElement>(null);
-
-  const initiativeReviewRequired = useInitiativeReviewRequired();
-
   const showSharingOptions = initiativeReviewRequired
     ? initiative?.data.attributes.public
     : true;
@@ -305,7 +300,6 @@ const LargerThanPhone = ({
               </div>
             )}
           </LeftColumn>
-
           <RightColumnDesktop>
             <MetaContent>
               <ScreenReaderOnly>
@@ -348,9 +342,6 @@ const LargerThanPhone = ({
           </RightColumnDesktop>
         </Content>
       </InitiativeContainer>
-      <Suspense fallback={<LoadingComments />}>
-        <Footer postId={initiativeId} postType="initiative" />
-      </Suspense>
     </Container>
   );
 };
