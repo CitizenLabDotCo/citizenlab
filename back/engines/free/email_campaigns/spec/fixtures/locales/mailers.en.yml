@@ -247,7 +247,6 @@ en:
       preheader: '%{organizationName} sent you an invite to join their participation platform.'
       subject: 'You are invited to join the platform of %{organizationName}'
     invitation_to_cosponsor_initative:
-      by_author: 'by %{authorName}'
       cta_reply_to: 'Co-sponsor this proposal'
       event_description_initiative: '%{authorName} has created a new proposal and would like you to co-sponsor it.'
       event_description_cosponsoring: 'Co-sponsoring a proposal means that <strong>your name will be displayed</strong> with the names of other co-sponsors of the proposal'

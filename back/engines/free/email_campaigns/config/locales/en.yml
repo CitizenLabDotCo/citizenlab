@@ -189,7 +189,6 @@ en:
       subject: 'You have an assignment on the platform of %{organizationName}'
       preheader_initiative: 'The proposal of %{authorName} has been assigned to you'
     invitation_to_cosponsor_initiative:
-      by_author: 'by %{authorName}'
       cta_reply_to: 'Co-sponsor this proposal'
       event_description_initiative: '%{authorName} has created a new proposal and would like you to co-sponsor it.'
       event_description_cosponsoring: 'Co-sponsoring a proposal means that <strong>your name will be displayed</strong> with the names of other co-sponsors of the proposal.'
