@@ -26,7 +26,6 @@ class SideFxInitiativeService
   end
 
   def after_update(initiative, user, old_cosponsor_ids)
-    log_activities_if_cosponsors_added(initiative, user, old_cosponsor_ids)
     transition_to_review_pending_if_required(initiative, user)
     remove_user_from_past_activities_with_item(initiative, user) if initiative.anonymous_previously_changed?(to: true)
 
@@ -44,6 +43,8 @@ class SideFxInitiativeService
     if initiative.title_multiloc_previously_changed?
       LogActivityJob.perform_later(initiative, 'changed_title', user_for_activity_on_anonymizable_item(initiative, user), initiative.updated_at.to_i, payload: { change: initiative.title_multiloc_previous_change })
     end
+
+    log_activities_if_cosponsors_added(initiative, user, old_cosponsor_ids)
 
     return unless initiative.body_multiloc_previously_changed?
 
