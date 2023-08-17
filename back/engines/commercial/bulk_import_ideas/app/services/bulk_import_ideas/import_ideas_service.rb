@@ -42,7 +42,7 @@ module BulkImportIdeas
     end
 
     def upload_file(file_content, file_type)
-      IdeaImportFile.create!(
+      @file = IdeaImportFile.create!(
         import_type: file_type,
         project: @project,
         file_by_content: {
@@ -128,7 +128,8 @@ module BulkImportIdeas
 
     def add_author(idea_row, idea_attributes)
       user_created = false
-      if idea_row[:user_email].blank?
+      # TEMP CHANGE FOR DEMO
+      if idea_row[:user_email].blank? || idea_row[:user_email].exclude?('@')
         author = User.new(unique_code: SecureRandom.uuid, locale: @locale)
         author = add_author_name author, idea_row
         author.save!
