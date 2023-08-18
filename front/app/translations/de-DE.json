@@ -465,6 +465,7 @@
   "app.components.VerificationModal.toParticipateInThisProject": "um an diesem Projekt teilzunehmen.",
   "app.components.VerificationModal.verifyBOSA": "Mit itsme oder eID verifizieren",
   "app.components.VerificationModal.verifyClaveUnica": "Mit Clave Unica verifizieren",
+  "app.components.VerificationModal.verifyNemLogIn": "Überprüfen Sie mit MitID",
   "app.components.VerificationModal.verifyYourIdentity": "Werden Sie verifizierte:r Bürger:in",
   "app.components.VoteControl.budgetingFutureEnabled": "Sie können Ihr Budget ab {enabledFromDate} zuweisen.\n",
   "app.components.VoteControl.budgetingNotPermitted": "Ein Bürgerhaushalt ist derzeit nicht möglich.",
