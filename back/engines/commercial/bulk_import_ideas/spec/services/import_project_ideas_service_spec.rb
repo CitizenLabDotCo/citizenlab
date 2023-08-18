@@ -13,7 +13,7 @@ describe BulkImportIdeas::ImportProjectIdeasService do
 
     # Custom fields
     custom_form = create(:custom_form, :with_default_fields, participation_context: project)
-    create(:custom_field, resource: custom_form, key: 'another_field', title_multiloc: { 'en' => 'Another field' }, enabled: true)
+    create(:custom_field, resource: custom_form, key: 'a_text_field', title_multiloc: { 'en' => 'A text field' }, enabled: true)
     create(:custom_field, resource: custom_form, key: 'number_field', title_multiloc: { 'en' => 'Number field' }, input_type: 'number', enabled: true)
     select_field = create(:custom_field, resource: custom_form, key: 'select_field', title_multiloc: { 'en' => 'Select field' }, input_type: 'select', enabled: true)
     create(:custom_field_option, custom_field: select_field, key: 'yes', title_multiloc: { 'en' => 'Yes' })
@@ -29,10 +29,27 @@ describe BulkImportIdeas::ImportProjectIdeasService do
   describe 'generate_example_xlsx' do
     it 'produces an xlsx file with all the fields for a project' do
       xlsx = service.generate_example_xlsx
+      xlsx_hash = XlsxService.new.xlsx_to_hash_array xlsx
+
       expect(xlsx).not_to be_nil
-      # TODO: Better tests for this
-      # TODO: Test that phase only appears if timeline project
-      # TODO: Test that all custom fields appear
+      expect(xlsx_hash.count).to eq 1
+      expect(xlsx_hash[0].keys).to match_array([
+        'Full name',
+        'Email address',
+        'Date Published (dd-mm-yyyy)',
+        'Title',
+        'Description',
+        'Tags',
+        'Location',
+        'A text field',
+        'Number field',
+        'Select field',
+        'Multi select field',
+        'Another select field',
+        'Image URL',
+        'Latitude',
+        'Longitude'
+      ])
     end
   end
 
@@ -48,7 +65,7 @@ describe BulkImportIdeas::ImportProjectIdeasService do
           { name: 'No', value: nil, type: 'filled_checkbox', page: 1, x: 0.45, y: 1.66 },
           { name: 'This', value: nil, type: 'filled_checkbox', page: 1, x: 0.11, y: 1.86 },
           { name: 'That', value: nil, type: 'filled_checkbox', page: 1, x: 0.45, y: 1.86 },
-          { name: 'Another field', value: 'Not much to say', type: '', page: 2, x: 0.09, y: 2.12 },
+          { name: 'A text field', value: 'Not much to say', type: '', page: 2, x: 0.09, y: 2.12 },
           { name: 'Ignored field', value: 'Ignored value', type: 'filled_checkbox', page: 2, x: 0.45, y: 2.23 },
           { name: 'Yes', value: nil, type: 'unfilled_checkbox', page: 2, x: 0.11, y: 2.66 },
           { name: 'No', value: nil, type: 'filled_checkbox', page: 2, x: 0.45, y: 2.66 },
@@ -64,7 +81,7 @@ describe BulkImportIdeas::ImportProjectIdeasService do
           { name: 'No', value: nil, type: 'filled_checkbox', page: 3, x: 0.45, y: 3.66 },
           { name: 'This', value: nil, type: 'unfilled_checkbox', page: 3, x: 0.11, y: 3.86 },
           { name: 'That', value: nil, type: 'filled_checkbox', page: 3, x: 0.45, y: 3.86 },
-          { name: 'Another field', value: 'Something else', type: '', page: 4, x: 0.09, y: 4.12 },
+          { name: 'A text field', value: 'Something else', type: '', page: 4, x: 0.09, y: 4.12 },
           { name: 'Ignored option', value: nil, type: 'filled_checkbox', page: 4, x: 0.45, y: 4.23 },
           { name: 'Number field', value: '28', type: '', page: 4, x: 0.11, y: 4.86 }
         ]
@@ -84,8 +101,8 @@ describe BulkImportIdeas::ImportProjectIdeasService do
 
     it 'converts text & number custom fields' do
       expect(rows.count).to eq 2
-      expect(rows[0][:custom_field_values][:another_field]).to eq 'Not much to say'
-      expect(rows[1][:custom_field_values][:another_field]).to eq 'Something else'
+      expect(rows[0][:custom_field_values][:a_text_field]).to eq 'Not much to say'
+      expect(rows[1][:custom_field_values][:a_text_field]).to eq 'Something else'
       expect(rows[0][:custom_field_values][:number_field]).to eq 22
       expect(rows[1][:custom_field_values][:number_field]).to eq 28
     end
@@ -122,61 +139,51 @@ describe BulkImportIdeas::ImportProjectIdeasService do
   end
 
   describe 'xlsx_to_idea_rows' do
-    it 'converts uploaded project XLSX to more parseable format for the idea import method' do
-      xlsx_array = [
+    let(:xlsx_array) do
+      [
         {
-          'Full name' => 'Bob Test',
-          'Email address' => 'bob@citizenlab.co',
+          'Full name' => 'Bill Test',
+          'Email address' => 'bill@citizenlab.co',
           'Date Published (dd-mm-yyyy)' => '15-08-2023',
           'Title' => 'A title',
           'Description' => 'A description',
-          'Tags' => 'topic 1; topic 2; topic 3',
+          'Tags' => 'Economy; Waste',
+          'Location' => 'Somewhere',
+          'A text field' => 'Loads to say here',
+          'Number field' => 5,
+          'Select field' => 'Yes',
+          'Multi select field' => 'This; That',
+          'Another select field' => 'No',
           'Image URL' => 'https://images.com/image.png',
           'Latitude' => 50.5035,
-          'Longitude' => 6.0944,
-          'Location Description' => 'A location'
-        },
-        {
-          'Full name' => 'Ned Test',
-          'Email address' => 'ned@citizenlab.co',
-          'Date Published (dd-mm-yyyy)' => '16-08-2023',
-          'Title' => 'Another title',
-          'Description' => 'Another description',
-          'Tags' => 'topic 1; topic 2',
-          'Image URL' => 'https://images.com/image.png'
+          'Longitude' => 6.0944
         }
       ]
+    end
+    let(:rows) { service.xlsx_to_idea_rows xlsx_array }
 
-      idea_rows = service.xlsx_to_idea_rows xlsx_array
-
-      expect(idea_rows[0]).to match({
+    it 'converts parsed XLSX core fields into idea rows' do
+      expect(rows[0]).to include({
         title_multiloc: { en: 'A title' },
         body_multiloc: { en: 'A description' },
-        user_name: 'Bob Test',
-        user_email: 'bob@citizenlab.co',
+        user_name: 'Bill Test',
+        user_email: 'bill@citizenlab.co',
         project_id: project.id,
-        topic_titles: ['topic 1', 'topic 2', 'topic 3'],
+        topic_titles: %w[Economy Waste],
         published_at: '15-08-2023',
         latitude: 50.5035,
         longitude: 6.0944,
-        location_description: 'A location',
+        location_description: 'Somewhere',
         image_url: 'https://images.com/image.png'
       })
-      #
-      # {
-      #   id: 'c891c58b-a0d7-42f5-9262-9f3031d70a39',
-      #   title_multiloc: { 'en' => 'My wonderful idea title' },
-      #   body_multiloc: { 'en' => 'My wonderful idea content' },
-      #   user_name: 'Ned test',
-      #   user_email: 'ned@citizenlab.co',
-      #   project_id: project.id,
-      #   topic_titles: [],
-      #   published_at: nil,
-      #   # latitude: nil,
-      #   # longitude: nil,
-      #   # location_description: nil,
-      #   image_url: nil
-      # }
+    end
+
+    it 'converts parsed XLSX custom fields into idea rows' do
+      expect(rows[0][:custom_field_values][:a_text_field]).to eq 'Loads to say here'
+      expect(rows[0][:custom_field_values][:number_field]).to eq 5
+      expect(rows[0][:custom_field_values][:select_field]).to eq 'yes'
+      expect(rows[0][:custom_field_values][:another_select_field]).to eq 'no'
+      expect(rows[0][:custom_field_values][:multiselect_field]).to match_array %w[this that]
     end
   end
 end
