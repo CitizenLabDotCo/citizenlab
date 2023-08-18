@@ -59,15 +59,13 @@ module IdNemlogIn
     def profile_to_user_attrs(auth)
       first_name    = auth.extra.raw_info['https://data.gov.dk/model/core/eid/firstName']
       last_name     = auth.extra.raw_info['https://data.gov.dk/model/core/eid/lastName']
-      date_of_birth = auth.extra.raw_info['https://data.gov.dk/model/core/eid/dateOfBirth'] # "01-02-1999"
       cpr_number    = auth.extra.raw_info['https://data.gov.dk/model/core/eid/cprNumber']
 
       {
         first_name: first_name,
         last_name: last_name,
         custom_field_values: {
-          municipality_code: fetch_municipality_code(cpr_number),
-          date_of_birth: date_of_birth
+          municipality_code: fetch_municipality_code(cpr_number)
         }
       }
     end
@@ -119,7 +117,7 @@ module IdNemlogIn
     end
 
     def locked_custom_fields
-      %i[municipality_code date_of_birth]
+      %i[municipality_code]
     end
 
     def locked_attributes

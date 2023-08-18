@@ -66,6 +66,7 @@ describe IdNemlogIn::NemlogInOmniauth do
       first_name: 'Terje',
       last_name: 'Hermansen'
     })
+    expect(user.custom_field_values).to have_key('municipality_code')
     expect(user.verifications.first).to have_attributes({
       method_name: 'nemlog_in',
       user_id: user.id,
