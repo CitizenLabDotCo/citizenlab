@@ -9,4 +9,16 @@ export default defineMessages({
     id: 'app.components.EventAttendanceButton.attending',
     defaultMessage: 'Attending',
   },
+  seeYouThereName: {
+    id: 'app.components.EventAttendanceButton.seeYouThereName',
+    defaultMessage: 'See you there, {userFirstName}!',
+  },
+  seeYouThere: {
+    id: 'app.components.EventAttendanceButton.seeYouThere',
+    defaultMessage: 'See you there!',
+  },
+  forwardToFriend: {
+    id: 'app.components.EventAttendanceButton.forwardToFriend',
+    defaultMessage: 'Forward to a friend',
+  },
 });

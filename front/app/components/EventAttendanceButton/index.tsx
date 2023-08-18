@@ -1,7 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // components
-import { Button, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Button,
+  Title,
+  colors,
+  Text,
+} from '@citizenlab/cl2-component-library';
+import EventSharingButtons from 'containers/EventsShowPage/components/EventSharingButtons';
+import Modal from 'components/UI/Modal';
+import { EventModalConfetti } from './EventModalConfetti';
 
 // types
 import { IEventData } from 'api/events/types';
@@ -15,10 +24,16 @@ import useEventsByUserId from 'api/events/useEventsByUserId';
 // intl
 import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
+import useLocalize from 'hooks/useLocalize';
+import useLocale from 'hooks/useLocale';
 
 // style
 import { useTheme } from 'styled-components';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+
+// utils
+import { capitalizeDates, getEventDateWithWeekdays } from 'utils/dateUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 type EventAttendanceButtonProps = {
   event: IEventData;
@@ -28,6 +43,10 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
   const theme = useTheme();
   const { data: user } = useAuthUser();
   const { formatMessage } = useIntl();
+  const currentLocale = useLocale();
+  const localize = useLocalize();
+  const [confirmationModalVisible, setConfirmationModalVisible] =
+    useState(false);
 
   // Attendance API
   const { data: eventsAttending } = useEventsByUserId({
@@ -65,30 +84,79 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
       });
     } else if (user) {
       addEventAttendance({ eventId: event.id, attendeeId: user.data?.id });
+      setConfirmationModalVisible(true);
     }
   };
 
   const isLoading = isAddingAttendance || isRemovingAttendance;
+  const eventDateTime = getEventDateWithWeekdays(event, formatMessage);
 
   return (
-    <Button
-      ml="auto"
-      width={'100%'}
-      iconPos={userIsAttending ? 'left' : 'right'}
-      icon={userIsAttending ? 'check' : 'plus-circle'}
-      iconSize="20px"
-      bgColor={userIsAttending ? colors.success : theme.colors.tenantPrimary}
-      onClick={(event) => {
-        event.preventDefault();
-        handleClick();
-      }}
-      processing={isLoading}
-      id="e2e-event-attendance-button"
-    >
-      {userIsAttending
-        ? formatMessage(messages.attending)
-        : formatMessage(messages.attend)}
-    </Button>
+    <>
+      <Button
+        ml="auto"
+        width={'100%'}
+        iconPos={userIsAttending ? 'left' : 'right'}
+        icon={userIsAttending ? 'check' : 'plus-circle'}
+        iconSize="20px"
+        bgColor={userIsAttending ? colors.success : theme.colors.tenantPrimary}
+        onClick={(event) => {
+          event.preventDefault();
+          handleClick();
+        }}
+        processing={isLoading}
+        id="e2e-event-attendance-button"
+      >
+        {userIsAttending
+          ? formatMessage(messages.attending)
+          : formatMessage(messages.attend)}
+      </Button>
+      <Modal
+        opened={confirmationModalVisible}
+        close={() => {
+          setConfirmationModalVisible(false);
+        }}
+        header={
+          <Title my="8px" variant="h3" style={{ fontWeight: 600 }}>
+            {user?.data?.attributes?.first_name
+              ? formatMessage(messages.seeYouThereName, {
+                  userFirstName: user?.data?.attributes?.first_name,
+                })
+              : formatMessage(messages.seeYouThere)}
+          </Title>
+        }
+        width={'520px'}
+      >
+        <EventModalConfetti />
+        <Box pt="0px" p="36px">
+          <Title variant="h4" style={{ fontWeight: 600 }}>
+            {localize(event?.attributes?.title_multiloc)}
+          </Title>
+          <Text my="4px" color="coolGrey600" fontSize="m">
+            {!isNilOrError(currentLocale) && capitalizeDates(currentLocale)
+              ? eventDateTime
+              : eventDateTime.toLowerCase()}
+          </Text>
+          {event && (
+            <Box mt="16px" width="100%" mx="auto">
+              <Text
+                textAlign="center"
+                width="100%"
+                mb="8px"
+                style={{ fontWeight: 600 }}
+              >
+                {formatMessage(messages.forwardToFriend)}
+              </Text>
+              <EventSharingButtons
+                event={event}
+                hideTitle={true}
+                justifyContent="center"
+              />
+            </Box>
+          )}
+        </Box>
+      </Modal>
+    </>
   );
 };
 
