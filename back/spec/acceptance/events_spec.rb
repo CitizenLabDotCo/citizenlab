@@ -6,8 +6,9 @@ require 'rspec_api_documentation/dsl'
 resource 'Events' do
   explanation 'Events organized in the city, related to a project.'
 
-  before do
-    header 'Content-Type', 'application/json'
+  header 'Content-Type', 'application/json'
+
+  before_all do
     @project = create(:project)
     @project2 = create(:project)
     @events = create_list(:event, 2, project: @project)
@@ -53,6 +54,39 @@ resource 'Events' do
       example_request 'List all events' do
         assert_status 200
         expect(response_data.size).to eq 4
+
+        user_attendances = response_data.map do |event_data|
+          event_data.dig(:relationships, :user_attendance, :data)
+        end
+        # User attendances are always nil for visitors as they cannot register to
+        # events.
+        expect(user_attendances).to all(be_nil)
+      end
+    end
+
+    context 'when the user registered to some events' do
+      before { header_token_for(user) }
+
+      let(:user) { create(:user) }
+      let!(:user_attendances) do
+        @events.map { |event| create(:event_attendance, event: event, attendee: user) }
+      end
+
+      example_request <<~DESC, document: false do
+        user_attendance relationships reference the user attendances
+      DESC
+        expected_attendance_ids = user_attendances.to_h do |attendance|
+          [attendance.event_id, attendance.id]
+        end
+
+        actual_attendance_ids = response_data.to_h do |event_data|
+          [
+            event_data[:id],
+            event_data.dig(:relationships, :user_attendance, :data, :id)
+          ]
+        end.compact
+
+        expect(actual_attendance_ids).to eq expected_attendance_ids
       end
     end
 
@@ -82,12 +116,45 @@ resource 'Events' do
   end
 
   get 'web_api/v1/events/:id' do
-    let(:id) { @events.first.id }
+    let(:event) { @events.first }
+    let(:id) { event.id }
 
     example_request 'Get one event by id' do
       expect(status).to eq 200
-      json_response = json_parse(response_body)
-      expect(json_response.dig(:data, :id)).to eq @events.first.id
+      expect(response_data.with_indifferent_access).to include(
+        id: event.id,
+        type: 'event',
+        attributes: {
+          title_multiloc: event.title_multiloc,
+          description_multiloc: event.description_multiloc,
+          address_1: event.address_1,
+          address_2_multiloc: event.address_2_multiloc,
+          location_multiloc: event.location_multiloc,
+          location_point_geojson: event.location_point_geojson,
+          start_at: event.start_at.iso8601(3),
+          end_at: event.end_at.iso8601(3),
+          created_at: event.created_at.iso8601(3),
+          updated_at: event.updated_at.iso8601(3),
+          attendees_count: event.attendees_count
+        }
+      )
+    end
+
+    context 'when the user registered to the event' do
+      before { header_token_for(user) }
+
+      let(:user) { create(:user) }
+      let!(:user_attendance) do
+        create(:event_attendance, event: event, attendee: user)
+      end
+
+      example_request <<~DESC, document: false do
+        user_attendance relationship references the user attendance
+      DESC
+        expect(
+          response_data.dig(:relationships, :user_attendance, :data, :id)
+        ).to eq user_attendance.id
+      end
     end
   end
 
@@ -96,12 +163,20 @@ resource 'Events' do
 
     post 'web_api/v1/projects/:project_id/events' do
       with_options scope: :event do
-        parameter :title_multiloc, 'The title of the event in multiple locales', required: true
-        parameter :description_multiloc, 'The description of the event in multiple languages. Supports basic HTML.', required: false
-        parameter :location_multiloc, 'The location of the event. Textual', required: false
-        parameter :start_at, 'The start datetime of the event', required: true
-        parameter :end_at, 'The end datetime of the event', required: true
+        with_options required: true do
+          parameter :title_multiloc, 'The title of the event in multiple locales'
+          parameter :start_at, 'The start datetime of the event'
+          parameter :end_at, 'The end datetime of the event'
+        end
+
+        # Optional parameters
+        parameter :description_multiloc, 'The description of the event in multiple languages. Supports basic HTML.'
+        parameter :location_multiloc, 'The location of the event in text format, , in multiple languages. [DEPRECATED]'
+        parameter :location_point_geojson, 'A GeoJSON point representing the event location.'
+        parameter :address_1, 'A human-readable primary address for the event location.'
+        parameter :address_2_multiloc, 'Additional address details, such as floor or room number, in multiple languages.'
       end
+
       ValidationErrorHelper.new.error_fields(self, Event)
       response_field :start_at, "Array containing objects with signature {error: 'after_end_at'}", scope: :errors
 
@@ -138,6 +213,76 @@ resource 'Events' do
           expect(json_response).to include_response_error(:start_at, 'after_end_at')
         end
       end
+
+      example 'Create an event with a location using location_multiloc parameter', document: false do
+        address_1 = 'event-location'
+
+        do_request(
+          project_id: @project.id,
+          event: {
+            title_multiloc: event.title_multiloc,
+            start_at: event.start_at,
+            end_at: event.end_at,
+            location_multiloc: { en: address_1 }
+          }
+        )
+
+        expect(status).to eq 201
+        expect(response_data.dig(:attributes, :location_multiloc, :en)).to eq(address_1)
+        expect(response_data.dig(:attributes, :address_1)).to eq(address_1)
+
+        event = Event.find(response_data[:id])
+        expect(event.address_1).to eq(address_1)
+      end
+
+      example 'Create an event with a location using location_point_geojson parameter', document: false do
+        geojson_point = { 'type' => 'Point', 'coordinates' => [10, 20] }
+
+        do_request(
+          project_id: @project.id,
+          event: {
+            title_multiloc: event.title_multiloc,
+            start_at: event.start_at,
+            end_at: event.end_at,
+            location_point_geojson: geojson_point
+          }
+        )
+
+        expect(status).to eq 201
+        expect(response_data.dig(:attributes, :location_point_geojson).with_indifferent_access)
+          .to eq(geojson_point)
+
+        event = Event.find(response_data[:id])
+        expect(event.location_point_geojson).to eq(geojson_point)
+        expect(event.location_point.coordinates).to eq(geojson_point['coordinates'])
+      end
+
+      example 'Create an event with a location using address_1 and address_2_multiloc parameters', document: false do
+        address_1 = 'event-location'
+        address_2_multiloc = { 'en' => 'event-location-details' }
+
+        do_request(
+          project_id: @project.id,
+          event: {
+            title_multiloc: event.title_multiloc,
+            start_at: event.start_at,
+            end_at: event.end_at,
+            address_1: address_1,
+            address_2_multiloc: address_2_multiloc
+          }
+        )
+
+        expect(status).to eq 201
+        # with deep indifferent access
+        attributes = response_data[:attributes].with_indifferent_access
+        expect(attributes[:address_1]).to eq(address_1)
+        expect(attributes[:address_2_multiloc]).to eq(address_2_multiloc)
+
+        event = Event.find(response_data[:id])
+        expect(event.address_1).to eq(address_1)
+        expect(event.address_2_multiloc).to eq(address_2_multiloc)
+        expect(event.location_multiloc).to eq({})
+      end
     end
 
     patch 'web_api/v1/events/:id' do
@@ -145,20 +290,76 @@ resource 'Events' do
         parameter :project_id, 'The id of the project this event belongs to'
         parameter :title_multiloc, 'The title of the event in multiple locales'
         parameter :description_multiloc, 'The description of the event in multiple languages. Supports basic HTML.'
-        parameter :location_multiloc, 'The location of the event. Textual'
+        parameter :location_multiloc, 'The location of the event in text format, , in multiple languages. [DEPRECATED]'
+        parameter :location_point_geojson, 'A GeoJSON point representing the event location.'
+        parameter :address_1, 'A human-readable primary address for the event location.'
+        parameter :address_2_multiloc, 'Additional address details, such as floor or room number, in multiple languages.'
         parameter :start_at, 'The start datetime of the event'
         parameter :end_at, 'The end datetime of the event'
       end
+
       ValidationErrorHelper.new.error_fields(self, Event)
 
       let(:event) { create(:event, project: @project) }
       let(:id) { event.id }
-      let(:location_multiloc) { build(:event).location_multiloc }
 
-      example_request 'Update an event' do
+      example 'Update an event' do
+        address_1 = "#{event.address_1} (updated)"
+        address_2_multiloc = event.address_2_multiloc.transform_values { |v| "#{v} (updated)" }
+
+        do_request(event: {
+          address_1: address_1,
+          address_2_multiloc: address_2_multiloc
+        })
+
         assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :attributes, :location_multiloc).stringify_keys).to match location_multiloc
+
+        attributes = response_data[:attributes].with_indifferent_access
+        expect(attributes[:address_1]).to eq(address_1)
+        expect(attributes[:address_2_multiloc]).to eq(address_2_multiloc)
+      end
+
+      example 'Update event location using location_multiloc parameter', document: false do
+        address_1 = 'event-location'
+        location_multiloc = { en: address_1 }
+
+        do_request(event: { location_multiloc: location_multiloc })
+
+        expect(status).to eq 200
+        expect(response_data.dig(:attributes, :location_multiloc)).to include(location_multiloc)
+        expect(response_data.dig(:attributes, :address_1)).to eq(address_1)
+
+        event.reload
+        expect(event.address_1).to eq(address_1)
+      end
+
+      example 'Update event location using location_point_geojson parameter', document: false do
+        geojson_point = { 'type' => 'Point', 'coordinates' => [10, 20] }
+
+        expect(event.location_point).to be_nil # sanity check
+
+        do_request(event: { location_point_geojson: geojson_point })
+
+        expect(status).to eq 200
+        expect(response_data.dig(:attributes, :location_point_geojson).with_indifferent_access)
+          .to eq(geojson_point)
+
+        event.reload
+        expect(event.location_point_geojson).to eq(geojson_point)
+        expect(event.location_point.coordinates).to eq(geojson_point['coordinates'])
+      end
+
+      example 'Remove event location_point_geojson', document: false do
+        event.update!(location_point_geojson: { 'type' => 'Point', 'coordinates' => [10, 20] })
+
+        do_request(event: { location_point_geojson: nil })
+
+        expect(status).to eq 200
+        expect(response_data.dig(:attributes, :location_point_geojson)).to be_nil
+
+        event.reload
+        expect(event.location_point_geojson).to be_nil
+        expect(event.location_point).to be_nil
       end
     end
 
@@ -170,5 +371,51 @@ resource 'Events' do
         expect { Event.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
+  end
+
+  get 'web_api/v1/users/:user_id/events' do
+    route_summary 'List all events to which a user is registered'
+
+    let_it_be(:user) { create(:user) }
+    let_it_be(:user_id) { user.id }
+
+    let_it_be(:user_events) do
+      [@events.first, @other_events.first].tap do |events|
+        events.each { |event| event.attendees << user }
+      end
+    end
+
+    shared_examples 'authorized' do
+      example_request 'List all events of a user' do
+        expect(status).to eq 200
+        expect(response_ids).to match_array user_events.map(&:id)
+      end
+    end
+
+    shared_examples 'unauthorized' do
+      example_request 'Unauthorized (401)', document: false do
+        expect(status).to eq 401
+      end
+    end
+
+    context 'when admin' do
+      before { admin_header_token }
+
+      include_examples 'authorized'
+    end
+
+    context "when 'user_id' corresponds to the current user" do
+      before { header_token_for(user) }
+
+      include_examples 'authorized'
+    end
+
+    context "when 'user_id' does not correspond to the current user" do
+      before { resident_header_token }
+
+      include_examples 'unauthorized'
+    end
+
+    context('when visitor') { include_examples 'unauthorized' }
   end
 end

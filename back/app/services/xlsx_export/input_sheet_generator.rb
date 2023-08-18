@@ -26,16 +26,12 @@ module XlsxExport
         workbook.add_worksheet(name: sheetname) do |sheet|
           sheet.add_row all_column_headers, style: column_header
           inputs.each do |input|
-            values = all_report_field_values_for input
-            sheet.add_row do |row|
-              values.each do |value|
-                options = {}
-                if value.is_a?(ActiveSupport::TimeWithZone)
-                  options[:style] = date_time
-                end
-                row.add_cell(value, options)
-              end
+            values = all_report_field_values_for(input)
+            styles = values.map do |value|
+              value.is_a?(ActiveSupport::TimeWithZone) ? date_time : nil
             end
+
+            sheet.add_row(values, style: styles)
           end
           hyperlink_indexes = all_report_fields.each_index.select do |idx|
             all_report_fields[idx].hyperlink?

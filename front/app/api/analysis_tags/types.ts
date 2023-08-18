@@ -1,19 +1,31 @@
 import { Keys } from 'utils/cl-react-query/types';
 import tagsKeys from './keys';
+import { IInputsFilterParams } from 'api/analysis_inputs/types';
 
 export type TagsKeys = Keys<typeof tagsKeys>;
 
 export interface ITagParams {
   analysisId: string;
+  filters?: Omit<IInputsFilterParams, 'tag_ids'>;
 }
 
-export type TagType = 'custom';
+export const tagTypes = [
+  'custom',
+  'language',
+  'platform_topic',
+  'nlp_topic',
+  'sentiment',
+  'controversial',
+] as const;
+export type TagType = (typeof tagTypes)[number];
 
 export interface ITagData {
   id: string;
   type: 'tag';
   attributes: {
     name: string;
+    total_input_count: number;
+    filtered_input_count: number;
     tag_type: TagType;
     created_at: string;
     updated_at: string;
@@ -30,6 +42,12 @@ export interface ITagData {
 
 export interface ITags {
   data: ITagData[];
+  meta: {
+    inputs_total: number;
+    filtered_inputs_total: number;
+    inputs_without_tags: number;
+    filtered_inputs_without_tags: number;
+  };
 }
 
 export interface ITag {

@@ -7,6 +7,41 @@ describe Analysis::InputsFinder do
   let(:service) { described_class.new(analysis, @params) }
   let(:output) { service.execute }
 
+  describe 'tags' do
+    it 'filters correctly on a tag array' do
+      tag1 = create(:tag, analysis: analysis)
+      tag2 = create(:tag, analysis: analysis)
+      tag3 = create(:tag, analysis: analysis)
+      idea1 = create(:idea, project: analysis.project)
+      idea2 = create(:idea, project: analysis.project)
+      idea3 = create(:idea, project: analysis.project)
+      _idea4 = create(:idea, project: analysis.project)
+      create(:tagging, input: idea1, tag: tag1)
+      create(:tagging, input: idea2, tag: tag1)
+      create(:tagging, input: idea2, tag: tag2)
+      create(:tagging, input: idea3, tag: tag3)
+      @params = { tag_ids: [tag1.id, tag2.id] }
+      expect(output).to contain_exactly(idea1, idea2)
+    end
+
+    it 'filters correctly on the nil value, meaning inputs without tags' do
+      tag1 = create(:tag, analysis: analysis)
+      idea1 = create(:idea, project: analysis.project)
+      idea2 = create(:idea, project: analysis.project)
+      create(:tagging, input: idea1, tag: tag1)
+      @params = { tag_ids: [nil] }
+      expect(output).to contain_exactly(idea2)
+    end
+
+    it 'combines with search filter' do
+      tag1 = create(:tag, analysis: analysis)
+      idea1 = create(:idea, project: analysis.project, title_multiloc: { en: 'woof woof dog dog' })
+      create(:tagging, input: idea1, tag: tag1)
+      @params = { tag_ids: [tag1], search: 'dog' }
+      expect(output).to contain_exactly(idea1)
+    end
+  end
+
   describe 'search' do
     it 'filters correctly' do
       idea1 = create(:idea, project: analysis.source_project, title_multiloc: { en: 'some needle in a haystack' })
@@ -113,40 +148,40 @@ describe Analysis::InputsFinder do
       expect { output }.to raise_error(ArgumentError)
     end
 
-    it 'returns items with no value on an empty array with input type select' do
+    it 'returns items with no value on an array with a nil value with input type select' do
       cf = create(:custom_field_date)
       author1 = create(:user, custom_field_values: { cf.key => '2021-01-01' })
       author2 = create(:user, custom_field_values: { cf.key => nil })
       _idea1 = create(:idea, project: analysis.source_project, author: author1)
       idea2 = create(:idea, project: analysis.source_project, author: author2)
       idea3 = create(:idea, project: analysis.source_project)
-      @params = { "author_custom_#{cf.id}": [] }
+      @params = { "author_custom_#{cf.id}": [nil] }
       expect(output).to contain_exactly(idea2, idea3)
     end
 
-    it 'returns items with no value on an empty array with input type date' do
+    it 'returns items with no value on an array with a nil value with input type date' do
       cf = create(:custom_field_select, :with_options)
       author1 = create(:user, custom_field_values: { cf.key => cf.options[0] })
       author2 = create(:user, custom_field_values: { cf.key => nil })
       _idea1 = create(:idea, project: analysis.source_project, author: author1)
       idea2 = create(:idea, project: analysis.source_project, author: author2)
       idea3 = create(:idea, project: analysis.source_project)
-      @params = { "author_custom_#{cf.id}": [] }
+      @params = { "author_custom_#{cf.id}": [nil] }
       expect(output).to contain_exactly(idea2, idea3)
     end
 
-    it 'returns items with no values on an empty array with input type multiselect' do
+    it 'returns items with no values on an array with a nil value with input type multiselect' do
       cf = create(:custom_field_multiselect, :with_options)
       author1 = create(:user, custom_field_values: { cf.key => [cf.options[0].key, cf.options[1].key] })
       author2 = create(:user, custom_field_values: { cf.key => [] })
       _idea1 = create(:idea, project: analysis.source_project, author: author1)
       idea2 = create(:idea, project: analysis.source_project, author: author2)
       idea3 = create(:idea, project: analysis.source_project)
-      @params = { "author_custom_#{cf.id}": [] }
+      @params = { "author_custom_#{cf.id}": [nil] }
       expect(output).to contain_exactly(idea2, idea3)
     end
 
-    it 'returns items with no value on an empty array with input type number' do
+    it 'returns items with no value on on an array with a nil value with input type number' do
       cf = create(:custom_field_number)
       author1 = create(:user, custom_field_values: { cf.key => 1 })
       author2 = create(:user, custom_field_values: { cf.key => nil })
@@ -154,7 +189,7 @@ describe Analysis::InputsFinder do
       _idea1 = create(:idea, project: analysis.source_project, author: author1)
       idea2 = create(:idea, project: analysis.source_project, author: author2)
       idea3 = create(:idea, project: analysis.source_project, author: author3)
-      @params = { "author_custom_#{cf.id}": [] }
+      @params = { "author_custom_#{cf.id}": [nil] }
       expect(output).to contain_exactly(idea2, idea3)
     end
   end

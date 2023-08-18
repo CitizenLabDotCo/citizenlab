@@ -113,6 +113,10 @@ export interface IAppConfigurationSettings {
     allowed: boolean;
     enabled: boolean;
   };
+  hoplr_login?: {
+    allowed: boolean;
+    enabled: boolean;
+  };
   custom_accessibility_statement_link: {
     allowed: boolean;
     enabled: boolean;
@@ -288,7 +292,7 @@ export type TAppConfigurationSettingWithEnabled = Exclude<
   THomepageSetting
 >;
 
-type TCurrency = TCustomCurrency | TCountryCurrency;
+export type TCurrency = TCustomCurrency | TCountryCurrency;
 type TCustomCurrency =
   // token, credit
   'TOK' | 'CRE';

@@ -4,18 +4,19 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import tagsKeys from './keys';
 import { ITags, TagsKeys, ITagParams } from './types';
 
-const fetchTags = ({ analysisId }: ITagParams) => {
+const fetchTags = ({ analysisId, filters }: ITagParams) => {
   return fetcher<ITags>({
     path: `/analyses/${analysisId}/tags`,
     action: 'get',
+    queryParams: filters,
   });
 };
 
-const AnalysisuseTags = (queryParams: ITagParams) => {
+const useAnalysisTags = (queryParams: ITagParams) => {
   return useQuery<ITags, CLErrors, ITags, TagsKeys>({
     queryKey: tagsKeys.list(queryParams),
     queryFn: () => fetchTags(queryParams),
   });
 };
 
-export default AnalysisuseTags;
+export default useAnalysisTags;

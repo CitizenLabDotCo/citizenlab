@@ -25,6 +25,10 @@ export default defineMessages({
     id: 'app.components.AuthProviders.continueWithFacebook',
     defaultMessage: 'Continue with Facebook',
   },
+  continueWithHoplr: {
+    id: 'app.components.AuthProviders.continueWithHoplr',
+    defaultMessage: 'Continue with Hoplr',
+  },
   continueWithAzure: {
     id: 'app.components.AuthProviders.continueWithAzure',
     defaultMessage: 'Continue with {azureProviderName}',

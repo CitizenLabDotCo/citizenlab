@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_28_130913) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_14_115846) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -71,6 +71,42 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_28_130913) do
     t.index ["analysis_id", "custom_field_id"], name: "index_analysis_analyses_custom_fields", unique: true
     t.index ["analysis_id"], name: "index_analysis_analyses_custom_fields_on_analysis_id"
     t.index ["custom_field_id"], name: "index_analysis_analyses_custom_fields_on_custom_field_id"
+  end
+
+  create_table "analysis_background_tasks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "analysis_id", null: false
+    t.string "type", null: false
+    t.string "state", null: false
+    t.float "progress"
+    t.datetime "started_at"
+    t.datetime "ended_at"
+    t.string "auto_tagging_method"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["analysis_id"], name: "index_analysis_background_tasks_on_analysis_id"
+  end
+
+  create_table "analysis_summaries", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "analysis_id", null: false
+    t.uuid "background_task_id", null: false
+    t.text "summary"
+    t.text "prompt"
+    t.string "summarization_method", null: false
+    t.jsonb "filters", default: {}, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.float "accuracy"
+    t.jsonb "inputs_ids"
+    t.index ["analysis_id"], name: "index_analysis_summaries_on_analysis_id"
+    t.index ["background_task_id"], name: "index_analysis_summaries_on_background_task_id"
+  end
+
+  create_table "analysis_taggings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "tag_id", null: false
+    t.uuid "input_id", null: false
+    t.index ["input_id"], name: "index_analysis_taggings_on_input_id"
+    t.index ["tag_id", "input_id"], name: "index_analysis_taggings_on_tag_id_and_input_id", unique: true
+    t.index ["tag_id"], name: "index_analysis_taggings_on_tag_id"
   end
 
   create_table "analysis_tags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -418,7 +454,24 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_28_130913) do
     t.datetime "end_at", precision: nil
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+    t.geography "location_point", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}
+    t.string "address_1"
+    t.integer "attendees_count", default: 0, null: false
+    t.jsonb "address_2_multiloc", default: {}, null: false
+    t.index ["location_point"], name: "index_events_on_location_point", using: :gist
     t.index ["project_id"], name: "index_events_on_project_id"
+  end
+
+  create_table "events_attendances", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "attendee_id", null: false
+    t.uuid "event_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["attendee_id", "event_id"], name: "index_events_attendances_on_attendee_id_and_event_id", unique: true
+    t.index ["attendee_id"], name: "index_events_attendances_on_attendee_id"
+    t.index ["created_at"], name: "index_events_attendances_on_created_at"
+    t.index ["event_id"], name: "index_events_attendances_on_event_id"
+    t.index ["updated_at"], name: "index_events_attendances_on_updated_at"
   end
 
   create_table "experiments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1475,6 +1528,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_28_130913) do
   add_foreign_key "analysis_analyses", "projects"
   add_foreign_key "analysis_analyses_custom_fields", "analysis_analyses", column: "analysis_id"
   add_foreign_key "analysis_analyses_custom_fields", "custom_fields"
+  add_foreign_key "analysis_background_tasks", "analysis_analyses", column: "analysis_id"
+  add_foreign_key "analysis_summaries", "analysis_analyses", column: "analysis_id"
+  add_foreign_key "analysis_summaries", "analysis_background_tasks", column: "background_task_id"
+  add_foreign_key "analysis_taggings", "analysis_tags", column: "tag_id"
+  add_foreign_key "analysis_taggings", "ideas", column: "input_id"
   add_foreign_key "analysis_tags", "analysis_analyses", column: "analysis_id"
   add_foreign_key "analytics_dimension_locales_fact_visits", "analytics_dimension_locales", column: "dimension_locale_id"
   add_foreign_key "analytics_dimension_locales_fact_visits", "analytics_fact_visits", column: "fact_visit_id"
@@ -1503,6 +1561,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_28_130913) do
   add_foreign_key "email_campaigns_examples", "users", column: "recipient_id"
   add_foreign_key "event_files", "events"
   add_foreign_key "events", "projects"
+  add_foreign_key "events_attendances", "events"
+  add_foreign_key "events_attendances", "users", column: "attendee_id"
   add_foreign_key "groups_permissions", "groups"
   add_foreign_key "groups_permissions", "permissions"
   add_foreign_key "groups_projects", "groups"

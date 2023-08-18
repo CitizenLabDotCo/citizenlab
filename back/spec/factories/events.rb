@@ -15,12 +15,19 @@ FactoryBot.define do
         'nl-BE' => '<p>Kom en ontdek de toekomst!</p>'
       }
     end
+
     location_multiloc do
+      %w[en nl-BE].index_with { |locale| "#{address_1} (#{locale})" }
+    end
+
+    address_1 { 'Atomiumsquare 1, 1020 Brussels, Belgium' }
+    address_2_multiloc do
       {
-        'en' => 'Vogelstraat 4, around the corner',
-        'nl-BE' => 'Vogelstraat 4, om de hoek'
+        'en' => 'Sphere 1',
+        'nl-BE' => 'Bol 1'
       }
     end
+
     start_at { '2017-05-01 20:00' }
     end_at { '2017-05-01 22:00' }
   end

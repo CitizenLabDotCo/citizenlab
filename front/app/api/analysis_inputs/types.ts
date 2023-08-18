@@ -8,9 +8,7 @@ type AuthorCustomFromFilterKey = `author_custom_${string}_from`;
 type AuthorCustomToFilterKey = `author_custom_${string}_to`;
 type AuthorCustomInFilterKey = `author_custom_${string}_in`;
 
-export type IInputsQueryParams = {
-  pageNumber?: number;
-  pageSize?: number;
+export type IInputsFilterParams = {
   search?: string;
   tag_ids?: string[];
   published_at_from?: string;
@@ -25,6 +23,11 @@ export type IInputsQueryParams = {
   [K in AuthorCustomToFilterKey]?: string;
 } & { [K in AuthorCustomInFilterKey]?: string[] };
 
+export type IInputsQueryParams = {
+  pageNumber?: number;
+  pageSize?: number;
+} & IInputsFilterParams;
+
 export interface IInputsData {
   id: string;
   type: 'analysis_input';
@@ -37,13 +40,14 @@ export interface IInputsData {
     dislikes_count: number;
     comments_count: number;
     votes_count: number;
+    location_description?: string;
     custom_field_values: {
       [key: string]: any;
     };
   };
   relationships: {
     author: {
-      data: IRelationship;
+      data: IRelationship | null;
     };
     idea: {
       data: IRelationship;
@@ -54,6 +58,9 @@ export interface IInputsData {
 export interface IInputs {
   data: IInputsData[];
   links: ILinks;
+  meta: {
+    filtered_count: number;
+  };
 }
 
 export interface IInput {

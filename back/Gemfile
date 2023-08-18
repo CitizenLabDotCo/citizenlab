@@ -212,9 +212,10 @@ commercial_engines = [
   'id_gent_rrn',
   'id_id_card_lookup',
   'id_oostende_rrn',
-  # The `id_vienna_saml` engine actually registers an authentication method rather
+  # Some engines actually register an authentication method rather
   # than a verification method, so the constraint does not apply. However, we still
-  # group it with the other "id_" engines.
+  # group them with the other "id_" engines.
+  'id_hoplr',
   'id_vienna_saml',
   'verification'
 ]
