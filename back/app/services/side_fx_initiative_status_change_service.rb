@@ -11,7 +11,7 @@ class SideFxInitiativeStatusChangeService
     InitiativeStatusService.new.log_status_change change, user: user
 
     if change.initiative_status.code == 'proposed'
-      InitiativeService.new.log_proposed(change.initiative, user, change.created_at)
+      LogActivityJob.perform_later(change.initiative, 'proposed', user, change.created_at.to_i)
     end
   end
 
