@@ -192,6 +192,7 @@ const Form = memo(
         submissionData,
         customAjv
       );
+
       if (
         customAjv.validate(
           schemaToUse,
