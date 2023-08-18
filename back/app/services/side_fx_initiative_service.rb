@@ -118,9 +118,21 @@ class SideFxInitiativeService
   end
 
   def log_activity_jobs_after_published(initiative, user)
-    LogActivityJob.set(wait: 20.seconds).perform_later(initiative, 'published', user_for_activity_on_anonymizable_item(initiative, user), initiative.published_at.to_i)
+    LogActivityJob.set(wait: 20.seconds).perform_later(
+      initiative,
+      'published',
+      user_for_activity_on_anonymizable_item(initiative, user),
+      initiative.published_at.to_i
+    )
 
-    LogActivityJob.perform_later(initiative, 'proposed', user, initiative.updated_at.to_i) if initiative.initiative_status.code == 'proposed'
+    if initiative.initiative_status.code == 'proposed'
+      LogActivityJob.perform_later(
+        initiative,
+        'proposed',
+        user_for_activity_on_anonymizable_item(initiative, user),
+        initiative.updated_at.to_i
+      )
+    end
   end
 end
 
