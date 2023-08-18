@@ -227,8 +227,7 @@ describe BulkImportIdeas::ImportIdeasService do
           title_multiloc: { 'en' => 'My idea title' },
           body_multiloc: { 'en' => 'My idea description' },
           project_title: 'Project title',
-          user_email: 'userimport@citizenlab.co',
-          published_at: '18-07-2022'
+          user_email: 'userimport@citizenlab.co'
         }
       ]
 
@@ -236,7 +235,7 @@ describe BulkImportIdeas::ImportIdeasService do
 
       expect(Idea.count).to eq 1
       idea = Idea.first
-      # expect(idea.published_at).to be_nil
+      expect(idea.published_at).to be_nil
       expect(idea.publication_status).to eq 'draft'
     end
 
@@ -332,7 +331,7 @@ describe BulkImportIdeas::ImportIdeasService do
       expect(idea.topic_ids).to match_array [topic1.id, topic2.id]
     end
 
-    it 'can imports completely blank ideas when importing as draft' do
+    it 'can import completely blank ideas when importing as draft' do
       project = create(:project)
       idea_rows = [
         {
@@ -346,8 +345,7 @@ describe BulkImportIdeas::ImportIdeasService do
       ]
       service.import_ideas(idea_rows, import_as_draft: true)
 
-      expect(project.reload.ideas_count).to eq 2
-
+      expect(project.reload.ideas.count).to eq 2
     end
 
     # TODO: Cannot be enabled because mocking image URLs is not working.

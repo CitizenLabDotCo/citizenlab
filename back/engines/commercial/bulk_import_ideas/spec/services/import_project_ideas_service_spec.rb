@@ -140,8 +140,7 @@ describe BulkImportIdeas::ImportProjectIdeasService do
     it 'does not return an email if it does not validate' do
       docs = [[{ name: 'Full name', value: 'John Rambo' }, { name: 'Email address', value: 'john_rambo.com' }]]
       rows = service.pdf_to_idea_rows docs
-      binding.pry
-      expect(rows[0][:pages]).to eq [1, 2]
+      expect(rows[0].keys).not_to include :user_email
     end
   end
 

@@ -175,11 +175,12 @@ module BulkImportIdeas
     end
 
     def find_user_details(doc, idea_row)
-      name = find_field(doc, 'Full name')[:value]
+      name = find_field(doc, 'Full name')
       idea_row[:user_name] = name[:value] if name
 
+      # Ignore any emails that don't validate
       email = find_field(doc, 'Email address')
-      idea_row[:user_email] = email[:value] if email
+      idea_row[:user_email] = email[:value] if email && email[:value].match(User::EMAIL_REGEX)
 
       idea_row
     end
