@@ -39,10 +39,9 @@ import useLocale from 'hooks/useLocale';
 import { useIntl, MessageDescriptor } from 'utils/cl-intl';
 
 // utils
-import { forOwn } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { selectRenderers } from './formConfig';
-import { getFormSchemaAndData } from './utils';
+import { sanitizeFormData, isValidData } from './utils';
 import { getDefaultAjvErrorMessage } from 'utils/errorUtils';
 
 // typings
@@ -180,34 +179,22 @@ const Form = memo(
       }
     }, [locale, processingInitialMultiloc, schema]);
 
+    const isSurvey = config === 'survey';
+    const showSubmitButton = !isSurvey;
+
     const handleSubmit = async (formData?: any) => {
       // Any specified formData has priority over data attribute
       const submissionData = formData && formData.data ? formData.data : data;
+      const sanitizedFormData = sanitizeFormData(submissionData);
 
-      const sanitizedFormData = {};
-      forOwn(submissionData, (value, key) => {
-        sanitizedFormData[key] =
-          value === null || value === '' || value === false ? undefined : value;
-      });
       setData(sanitizedFormData);
       onChange?.(sanitizedFormData);
       setShowAllErrors(true);
 
-      const [schemaToUse, dataWithoutHiddenFields] = getFormSchemaAndData(
-        schema,
-        uiSchema,
-        submissionData,
-        customAjv
-      );
-      if (
-        customAjv.validate(
-          schemaToUse,
-          config === 'survey' ? dataWithoutHiddenFields : submissionData
-        )
-      ) {
+      if (isValidData(schema, uiSchema, submissionData, customAjv, isSurvey)) {
         setLoading(true);
         try {
-          await onSubmit(submissionData as FormData);
+          await onSubmit(submissionData);
         } catch (e) {
           setApiErrors(e.errors);
         }
@@ -241,9 +228,6 @@ const Form = memo(
       ? 'fullpage'
       : 'inline';
     const renderers = selectRenderers(config || 'default');
-
-    const isSurvey = config === 'survey';
-    const showSubmitButton = !isSurvey;
 
     return (
       <Wrapper
