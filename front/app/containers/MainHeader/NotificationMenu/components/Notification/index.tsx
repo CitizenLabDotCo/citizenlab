@@ -8,12 +8,14 @@ import CommentMarkedAsSpamNotification from '../CommentMarkedAsSpamNotification'
 import CommentOnYourCommentNotification from '../CommentOnYourCommentNotification';
 import CommentOnYourIdeaNotification from '../CommentOnYourIdeaNotification';
 import CommentOnYourInitiativeNotification from '../CommentOnYourInitiativeNotification';
+import CosponsorOfYourInitiativeNotification from '../CosponsorOfYourInitiativeNotification';
 import IdeaAssignedToYouNotification from '../IdeaAssignedToYouNotification';
 import IdeaMarkedAsSpamNotification from '../IdeaMarkedAsSpamNotification';
 import InitiativeAssignedToYouNotification from '../InitiativeAssignedToYouNotification';
 import InitiativeMarkedAsSpamNotification from '../InitiativeMarkedAsSpamNotification';
 import InitiativeResubmittedForReviewNotification from '../InitiativeResubmittedForReviewNotification';
 import InviteAcceptedNotification from '../InviteAcceptedNotification';
+import InvitationToCosponsorInitiativeNotification from '../InvitationToCosponsorInitiativeNotification';
 import MentionInCommentNotification from '../MentionInCommentNotification';
 import InternalCommentNotification from '../InternalCommentNotification';
 import MentionInOfficialFeedbackNotification from '../MentionInOfficialFeedbackNotification';
@@ -47,12 +49,14 @@ import {
   ICommentOnYourCommentNotificationData,
   ICommentOnYourIdeaNotificationData,
   ICommentOnYourInitiativeNotificationData,
+  ICosponsorOfYourInitiativeNotificationData,
   IIdeaAssignedToYouNotificationData,
   IIdeaMarkedAsSpamNotificationData,
   IInitiativeAssignedToYouNotificationData,
   IInitiativeMarkedAsSpamNotificationData,
   IInitiativeResubmittedForReviewNotificationData,
   IInviteAcceptedNotificationData,
+  IInvitationToCosponsorInitiativeNotificationData,
   IMentionInCommentNotificationData,
   IInternalCommentNotificationData,
   IMentionInOfficialFeedbackNotificationData,
@@ -131,6 +135,14 @@ const Notification = ({ notification }: Props) => {
           }
         />
       );
+    case 'cosponsor_of_your_initiative':
+      return (
+        <CosponsorOfYourInitiativeNotification
+          notification={
+            notification as ICosponsorOfYourInitiativeNotificationData
+          }
+        />
+      );
     case 'idea_assigned_to_you':
       return (
         <IdeaAssignedToYouNotification
@@ -169,6 +181,14 @@ const Notification = ({ notification }: Props) => {
       return (
         <InviteAcceptedNotification
           notification={notification as IInviteAcceptedNotificationData}
+        />
+      );
+    case 'invitation_to_cosponsor_initiative':
+      return (
+        <InvitationToCosponsorInitiativeNotification
+          notification={
+            notification as IInvitationToCosponsorInitiativeNotificationData
+          }
         />
       );
     case 'mention_in_comment':

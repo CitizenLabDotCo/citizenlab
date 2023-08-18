@@ -14,11 +14,11 @@ class WebApi::V1::Notifications::InvitationToCosponsorInitiativeSerializer < Web
     object.initiating_user&.slug
   end
 
-  attribute :initative_title_multiloc do |object|
+  attribute :post_title_multiloc do |object|
     object.post&.title_multiloc
   end
 
-  attribute :initative_slug do |object|
+  attribute :post_slug do |object|
     object.post&.slug
   end
 end
