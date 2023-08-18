@@ -180,7 +180,6 @@
   "app.components.admin.PostManager.publication_date": "Yayınlanma tarihi",
   "app.components.admin.PostManager.questionFormTitle": "Soruyu düzenle",
   "app.components.admin.PostManager.reactions": "Tepkiler",
-  "app.components.admin.PostManager.remainingTime": "Kalan Gün Sayısı",
   "app.components.admin.PostManager.resetFiltersButton": "Filtreleri sıfırla",
   "app.components.admin.PostManager.resetInputFiltersDescription": "Tüm girdileri görmek için filtreleri sıfırlayın.",
   "app.components.admin.PostManager.saved": "Kaydedildi",

@@ -122,7 +122,6 @@
   "app.components.admin.PostManager.projectsTab": "المشاريع",
   "app.components.admin.PostManager.projectsTabTooltipContent": "يُمكنك سحب وإسقاط المنشورات لتحريكها من مشروع لآخر. لاحظ أنك لا تزال تحتاج إلى إضافة المنشور إلى مرحلة مُحددة في المشروعات الموجودة بالجدول الزمني.",
   "app.components.admin.PostManager.publication_date": "تم النشر في",
-  "app.components.admin.PostManager.remainingTime": "الأيام المتبقية",
   "app.components.admin.PostManager.resetFiltersButton": "إعادة تعيين عوامل التصفية",
   "app.components.admin.PostManager.resetInputFiltersDescription": "أعد ضبط المُرشحات لتعرض جميع المُدخلات. ",
   "app.components.admin.PostManager.saved": "تم الحفظ",

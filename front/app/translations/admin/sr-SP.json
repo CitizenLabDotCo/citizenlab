@@ -180,7 +180,6 @@
   "app.components.admin.PostManager.publication_date": "Објављено на",
   "app.components.admin.PostManager.questionFormTitle": "Уреди питање",
   "app.components.admin.PostManager.reactions": "Реакције",
-  "app.components.admin.PostManager.remainingTime": "Преостали дана",
   "app.components.admin.PostManager.resetFiltersButton": "Ресетујте филтере",
   "app.components.admin.PostManager.resetInputFiltersDescription": "Ресетујте филтере да бисте видели сав унос.",
   "app.components.admin.PostManager.saved": "Сачувано",

@@ -180,7 +180,6 @@
   "app.components.admin.PostManager.publication_date": "Offentliggjort den",
   "app.components.admin.PostManager.questionFormTitle": "Rediger spørgsmål",
   "app.components.admin.PostManager.reactions": "Stemmer",
-  "app.components.admin.PostManager.remainingTime": "Antal tilbageværende dage",
   "app.components.admin.PostManager.resetFiltersButton": "Nulstil filtre",
   "app.components.admin.PostManager.resetInputFiltersDescription": "Nulstil filtrene for at se alle input.",
   "app.components.admin.PostManager.saved": "Gemte",

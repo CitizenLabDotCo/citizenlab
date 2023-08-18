@@ -180,7 +180,6 @@
   "app.components.admin.PostManager.publication_date": "Veröffentlicht am",
   "app.components.admin.PostManager.questionFormTitle": "Frage bearbeiten",
   "app.components.admin.PostManager.reactions": "Reaktionen",
-  "app.components.admin.PostManager.remainingTime": "Verbleibende Tage",
   "app.components.admin.PostManager.resetFiltersButton": "Filter zurücksetzen",
   "app.components.admin.PostManager.resetInputFiltersDescription": "Setzen Sie die Filter zurück, um alle Beiträge zu sehen.",
   "app.components.admin.PostManager.saved": "Gespeichert",
