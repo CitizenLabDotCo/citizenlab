@@ -6,7 +6,7 @@
 #
 #  id              :uuid             not null, primary key
 #  followable_type :string           not null
-#  followable_id   :bigint           not null
+#  followable_id   :uuid             not null
 #  user_id         :uuid             not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null

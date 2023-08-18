@@ -491,7 +491,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_14_115846) do
 
   create_table "followers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "followable_type", null: false
-    t.bigint "followable_id", null: false
+    t.uuid "followable_id", null: false
     t.uuid "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
