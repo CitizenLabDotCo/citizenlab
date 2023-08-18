@@ -174,6 +174,7 @@ resource 'Events' do
         parameter :location_multiloc, '[DEPRECATED] The location of the event. Textual'
         parameter :location_point_geojson, 'A GeoJSON point that indicates where the event takes place.'
         parameter :location_description, 'A human-readable description of the event location of the event.'
+        parameter :online_link, 'Link to the online event'
       end
 
       ValidationErrorHelper.new.error_fields(self, Event)
