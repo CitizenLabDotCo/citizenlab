@@ -3,7 +3,6 @@
 require 'rails_helper'
 
 describe FollowerPolicy do
-  # TODO: add cases for initiatives and folders
   subject { described_class.new(user, follower) }
 
   let(:following_user) { create(:user) }
