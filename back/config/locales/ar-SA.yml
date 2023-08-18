@@ -15,6 +15,10 @@ ar:
     rejected: تم رفضها
     rejected_description: تم رفض هذه الفكرة
   initiative_statuses:
+    review_pending: المراجعة معلقة
+    review_pending_description: المراجعة معلقة
+    changes_requested: التغييرات المطلوبة
+    changes_requested_description: التغييرات المطلوبة
     proposed: تم اقتراحها
     proposed_description: تم اقتراحها
     expired: انتهت صلاحيتها
