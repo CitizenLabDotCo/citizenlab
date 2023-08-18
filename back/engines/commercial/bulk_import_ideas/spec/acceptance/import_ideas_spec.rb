@@ -195,7 +195,6 @@ resource 'BulkImportIdeasImportIdeas' do
           end
         end
       end
-
     end
 
     context 'idea import metadata' do

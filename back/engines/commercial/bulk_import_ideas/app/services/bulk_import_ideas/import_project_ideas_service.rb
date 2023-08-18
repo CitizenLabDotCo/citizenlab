@@ -82,6 +82,7 @@ module BulkImportIdeas
     end
 
     # Match all fields in the custom field by the text of their label in the specified locale
+    # TODO: Refactor this - too long and difficult to understand
     def process_custom_form_fields(doc, idea_row)
       # Get the keys for the field/option names in the import locale
       core_field_codes = %w[title_multiloc body_multiloc location_description]
@@ -156,8 +157,8 @@ module BulkImportIdeas
             custom_fields[field[:key].to_sym] = option[:key] if option
           else
             options = []
-            select_field[:value].split(';').each do |value|
-              option = select_options.find { |f| f[:field_key] == field[:key] && f[:name] == value.strip }
+            select_field[:value].split(';').each do |select_value|
+              option = select_options.find { |f| f[:field_key] == field[:key] && f[:name] == select_value.strip }
               options << option[:key] if option
             end
             custom_fields[field[:key].to_sym] = options

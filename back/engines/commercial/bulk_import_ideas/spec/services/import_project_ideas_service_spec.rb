@@ -198,9 +198,9 @@ describe BulkImportIdeas::ImportProjectIdeasService do
       xlsx_array[0]['Permission'] = ''
       rows = service.xlsx_to_idea_rows xlsx_array
       expect(rows[0]).not_to include({
-                                   user_name: 'Bill Test',
-                                   user_email: 'bill@citizenlab.co'
-                                 })
+        user_name: 'Bill Test',
+        user_email: 'bill@citizenlab.co'
+      })
     end
 
     it 'converts parsed XLSX custom fields into idea rows' do
