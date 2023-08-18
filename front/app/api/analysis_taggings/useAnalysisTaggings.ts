@@ -8,6 +8,7 @@ const fetchTaggings = (analysisId: string) => {
   return fetcher<ITaggings>({
     path: `/analyses/${analysisId}/taggings`,
     action: 'get',
+    cacheIndividualItems: false,
   });
 };
 

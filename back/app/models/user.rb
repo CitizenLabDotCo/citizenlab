@@ -140,6 +140,7 @@ class User < ApplicationRecord
   has_many :internal_comments, foreign_key: :author_id, dependent: :nullify
   has_many :official_feedbacks, dependent: :nullify
   has_many :reactions, dependent: :nullify
+  has_many :event_attendances, class_name: 'Events::Attendance', foreign_key: :attendee_id, dependent: :destroy
   has_many :follows, class_name: 'Follower', dependent: :destroy
 
   after_initialize do

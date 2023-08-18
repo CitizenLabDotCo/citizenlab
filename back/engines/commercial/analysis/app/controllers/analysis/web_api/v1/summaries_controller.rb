@@ -19,16 +19,34 @@ module Analysis
           ).serializable_hash
         end
 
-        def create
+        # Used to check whether a summary is possible with the given filters,
+        # front-end should call this before initiating the summary
+        def pre_check
           @summary = Summary.new(
             analysis: @analysis,
-            summarization_method: 'gpt4',
             background_task: SummarizationTask.new(analysis: @analysis),
             **summary_params
           )
-          if @summary.save
+          plan = SummarizationMethod::Base.plan(@summary)
+          render json: WebApi::V1::SummaryPreCheckSerializer.new(
+            plan,
+            params: jsonapi_serializer_params
+          ).serializable_hash
+        end
+
+        def create
+          @summary = Summary.new(
+            analysis: @analysis,
+            background_task: SummarizationTask.new(analysis: @analysis),
+            **summary_params
+          )
+          plan = SummarizationMethod::Base.plan(@summary)
+          @summary.summarization_method = plan.summarization_method_class::SUMMARIZATION_METHOD
+          @summary.accuracy = plan.accuracy
+
+          if @summary.save && plan.possible?
             side_fx_service.after_create(@summary, current_user)
-            SummarizationJob.perform_later(@summary.background_task)
+            SummarizationJob.perform_later(@summary)
             render json: WebApi::V1::SummarySerializer.new(
               @summary,
               params: jsonapi_serializer_params,
