@@ -25,22 +25,17 @@ const FormattedMessageComponent = (props: Props) => {
     return null;
   }
 
-  const tenantName = appConfig.data.attributes.name;
-  const orgName = localize(
-    appConfig.data.attributes.settings.core.organization_name
-  );
-
-  const orgType = appConfig.data.attributes.settings.core.organization_type;
-
   return (
     <RtlBox data-cy={props['data-cy']}>
       <OriginalFormattedMessage
         {...props}
         values={{
           ...props.values,
-          tenantName,
-          orgType,
-          orgName,
+          tenantName: appConfig.data.attributes.name,
+          orgType: appConfig.data.attributes.settings.core.organization_type,
+          orgName: localize(
+            appConfig.data.attributes.settings.core.organization_name
+          ),
         }}
       />
     </RtlBox>
