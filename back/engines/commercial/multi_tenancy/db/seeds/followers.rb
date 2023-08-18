@@ -7,7 +7,7 @@ module MultiTenancy
     class Followers < Base
       def run
         Project.not_draft.each do |project|
-          User.not_invited.order(Arel.sql('RANDOM()')).limit(rand(0..8)).each do |user|
+          User.not_invited.order(Arel.sql('RANDOM()')).limit(rand(9)).each do |user|
             project.followers.create(user: user)
           end
         end

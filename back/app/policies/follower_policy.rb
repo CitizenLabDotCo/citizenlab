@@ -24,9 +24,9 @@ class FollowerPolicy < ApplicationPolicy
     private
 
     def filter_followables
-      [Project, ProjectFolders::Folder, Idea, Initiative].each do |followable_class|
-        visible_records = Pundit.policy_scope user, followable_class
-        @scope = scope.where(followable: visible_records).or(scope.where.not(followable_type: followable_class.name))
+      Follower::FOLLOWABLE_TYPES.each do |followable_type|
+        visible_records = Pundit.policy_scope user, followable_type.constantize
+        @scope = scope.where(followable: visible_records).or(scope.where.not(followable_type: followable_type))
       end
     end
   end
