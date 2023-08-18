@@ -136,7 +136,6 @@
   "app.components.admin.PostManager.proposedBudgetTitle": "Bilancio proposto",
   "app.components.admin.PostManager.publication_date": "Pubblicato su",
   "app.components.admin.PostManager.questionFormTitle": "Modifica domanda",
-  "app.components.admin.PostManager.remainingTime": "Giorni rimanenti",
   "app.components.admin.PostManager.resetFiltersButton": "Reset filters",
   "app.components.admin.PostManager.resetInputFiltersDescription": "Resetta i filtri per vedere tutti gli input.",
   "app.components.admin.PostManager.saved": "Salvato",

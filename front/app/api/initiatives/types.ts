@@ -65,7 +65,8 @@ export interface IInitiativeData {
     header_bg: ImageSizes;
     expires_at: string;
     anonymous: boolean;
-    cosponsorships?: IInitiativeCosponsorship[];
+    // BE returns an empty [] if not set yet.
+    cosponsorships: IInitiativeCosponsorship[];
     editing_locked: boolean;
     public: boolean;
   };

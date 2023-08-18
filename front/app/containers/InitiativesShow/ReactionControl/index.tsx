@@ -8,7 +8,6 @@ import Expired from './Expired';
 import ThresholdReached from './ThresholdReached';
 import Answered from './Answered';
 import Ineligible from './Ineligible';
-import Custom from './Custom';
 import ReviewPending from './ReviewPending';
 
 // events
@@ -23,10 +22,6 @@ import useInitiativesPermissions, {
 } from 'hooks/useInitiativesPermissions';
 import useAddInitiativeReaction from 'api/initiative_reactions/useAddInitiativeReaction';
 import useDeleteInitiativeReaction from 'api/initiative_reactions/useDeleteInitiativeReaction';
-
-// styling
-import styled from 'styled-components';
-import { media, defaultCardStyle } from 'utils/styleUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -46,19 +41,7 @@ import {
 import { IAppConfigurationSettings } from 'api/app_configuration/types';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import ChangesRequested from './ChangesRequested';
-
-const Container = styled.div`
-  ${media.desktop`
-    margin-bottom: 45px;
-    padding: 35px;
-    border: 1px solid #e0e0e0;
-    ${defaultCardStyle};
-  `}
-
-  ${media.tablet`
-    padding: 15px;
-  `}
-`;
+import BorderContainer from '../BorderContainer';
 
 interface ReactionControlComponentProps {
   initiative: IInitiativeData;
@@ -109,10 +92,6 @@ const componentMap: TComponentMap = {
     reacted: Ineligible,
     notReacted: Ineligible,
   },
-  custom: {
-    reacted: Custom,
-    notReacted: Custom,
-  },
 };
 
 interface Props {
@@ -128,28 +107,25 @@ const context = {
 } as const;
 
 const ReactionControl = ({
-  className,
   onScrollToOfficialFeedback,
-  id,
   initiativeId,
 }: Props) => {
   const { data: appConfiguration } = useAppConfiguration();
   const { data: initiative } = useInitiativeById(initiativeId);
+  const { data: initiativeStatus } = useInitiativeStatus(
+    initiative?.data.relationships.initiative_status?.data?.id
+  );
+  const reactingPermission = useInitiativesPermissions('reacting_initiative');
   const { mutate: addReaction } = useAddInitiativeReaction();
   const { mutate: deleteReaction } = useDeleteInitiativeReaction();
+
+  if (!initiative) return null;
 
   const reaction = () => {
     if (initiative) {
       addReaction({ initiativeId: initiative.data.id, mode: 'up' });
     }
   };
-
-  const { data: initiativeStatus } = useInitiativeStatus(
-    initiative?.data.relationships.initiative_status?.data?.id
-  );
-  const reactingPermission = useInitiativesPermissions('reacting_initiative');
-
-  if (!initiative) return null;
 
   const handleOnreaction = () => {
     const authenticationRequirements =
@@ -218,7 +194,7 @@ const ReactionControl = ({
     appConfiguration.data.attributes.settings.initiatives;
 
   return (
-    <Container id={id} className={className || ''} aria-live="polite">
+    <BorderContainer>
       <ScreenReaderOnly>
         <FormattedMessage tagName="h3" {...messages.invisibleTitle} />
       </ScreenReaderOnly>
@@ -232,7 +208,7 @@ const ReactionControl = ({
         onScrollToOfficialFeedback={onScrollToOfficialFeedback}
         disabledReason={reactingPermission?.disabledReason}
       />
-    </Container>
+    </BorderContainer>
   );
 };
 

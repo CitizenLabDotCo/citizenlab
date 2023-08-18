@@ -180,7 +180,6 @@
   "app.components.admin.PostManager.publication_date": "Publisert",
   "app.components.admin.PostManager.questionFormTitle": "Rediger spørsmål",
   "app.components.admin.PostManager.reactions": "Reaksjoner",
-  "app.components.admin.PostManager.remainingTime": "Gjenstående dager",
   "app.components.admin.PostManager.resetFiltersButton": "Nullstil filtre",
   "app.components.admin.PostManager.resetInputFiltersDescription": "Tilbakestill filterne for å se alle oppføringer.",
   "app.components.admin.PostManager.saved": "Lagret",

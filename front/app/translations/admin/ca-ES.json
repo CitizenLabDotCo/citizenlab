@@ -136,7 +136,6 @@
   "app.components.admin.PostManager.proposedBudgetTitle": "Proposta de pressupost",
   "app.components.admin.PostManager.publication_date": "Publicat el",
   "app.components.admin.PostManager.questionFormTitle": "Edita la pregunta",
-  "app.components.admin.PostManager.remainingTime": "Dies restants",
   "app.components.admin.PostManager.resetFiltersButton": "Reset filters",
   "app.components.admin.PostManager.resetInputFiltersDescription": "Restableix els filtres per veure totes les entrades.",
   "app.components.admin.PostManager.saved": "Desat",

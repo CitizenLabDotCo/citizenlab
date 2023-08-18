@@ -107,4 +107,29 @@ export default defineMessages({
     id: 'app.containers.InitiativesShow.a11y_voteControl',
     defaultMessage: 'Voting and status',
   },
+  cosponsorshipSuccess: {
+    id: 'app.containers.InitiativesShow.cosponsorshipSuccess',
+    defaultMessage: "You've succesfully cosponsored this proposal!",
+  },
+  titleCosponsorsTile: {
+    id: 'app.containers.InitiativesShow.titleCosponsorsTile',
+    defaultMessage: 'Cosponsors of this proposal',
+  },
+  youWereInvitedToConsponsorBy: {
+    id: 'app.containers.InitiativesShow.youWereInvitedToConsponsorBy',
+    defaultMessage: '{authorName} invited you to cosponsor this proposal.',
+  },
+  cosponsorRequirementInfo: {
+    id: 'app.containers.InitiativesShow.cosponsorRequirementInfo',
+    defaultMessage:
+      '{requiredNumberOfCosponsors, plural, one {At least 1 person needs to cosponsor for the proposal to be considered.} other {At least # people need to cosponsor for the proposal to be considered.}}',
+  },
+  cosponsor: {
+    id: 'app.containers.InitiativesShow.cosponsor',
+    defaultMessage: 'Cosponsor',
+  },
+  cosponsorCTA: {
+    id: 'app.containers.InitiativesShow.cosponsorCTA',
+    defaultMessage: 'Cosponsor this proposal',
+  },
 });

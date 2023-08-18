@@ -180,7 +180,6 @@
   "app.components.admin.PostManager.publication_date": "Geplaatst op",
   "app.components.admin.PostManager.questionFormTitle": "Vraag bewerken",
   "app.components.admin.PostManager.reactions": "Reacties",
-  "app.components.admin.PostManager.remainingTime": "Dagen resterend",
   "app.components.admin.PostManager.resetFiltersButton": "Reset de filters",
   "app.components.admin.PostManager.resetInputFiltersDescription": "Reset de filters om alle bijdragen te zien.",
   "app.components.admin.PostManager.saved": "Opgeslagen",

@@ -1,23 +1,14 @@
 import React from 'react';
-import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Box, Icon } from '@citizenlab/cl2-component-library';
 import { StatusWrapper, StatusExplanation } from './SharedStyles';
 
 import T from 'components/T';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
-
-const Container = styled.div``;
-
-const StatusIcon = styled(Icon)`
-  width: 30px;
-  height: 30px;
-  margin-bottom: 20px;
-`;
 
 interface Props {
   initiativeStatus: IInitiativeStatusData;
@@ -25,11 +16,20 @@ interface Props {
 
 const ChangesRequested = ({ initiativeStatus }: Props) => {
   return (
-    <Container>
-      <StatusWrapper>
-        <T value={initiativeStatus.attributes.title_multiloc} />
-      </StatusWrapper>
-      <StatusIcon ariaHidden name="halt" fill={colors.red600} />
+    <Box>
+      <Box mb="16px">
+        <StatusWrapper>
+          <T value={initiativeStatus.attributes.title_multiloc} />
+        </StatusWrapper>
+      </Box>
+      <Icon
+        ariaHidden
+        name="halt"
+        fill={colors.red600}
+        width="30px"
+        height="30px"
+        mb="20px"
+      />
       <StatusExplanation>
         <b>
           <FormattedMessage
@@ -40,7 +40,7 @@ const ChangesRequested = ({ initiativeStatus }: Props) => {
           {...messages.changesRequestedStatusExplanationSentenceTwo}
         />
       </StatusExplanation>
-    </Container>
+    </Box>
   );
 };
 
