@@ -4,16 +4,17 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import { IInput, InputsKeys } from './types';
 import inputsKeys from './keys';
 
-const fetchInput = (analysisId: string, id: string) =>
+const fetchInput = (analysisId: string, id?: string) =>
   fetcher<IInput>({
     path: `/analyses/${analysisId}/inputs/${id}`,
     action: 'get',
   });
 
-const useAnalysisInput = (analysisId: string, inputId: string) => {
+const useAnalysisInput = (analysisId: string, inputId?: string) => {
   return useQuery<IInput, CLErrors, IInput, InputsKeys>({
-    queryKey: inputsKeys.item({ analysisId, id: inputId }),
+    queryKey: inputsKeys.item({ id: inputId }),
     queryFn: () => fetchInput(analysisId, inputId),
+    enabled: !!inputId,
   });
 };
 

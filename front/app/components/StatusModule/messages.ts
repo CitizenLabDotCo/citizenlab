@@ -5,9 +5,9 @@ export default defineMessages({
     id: 'app.components.StatusModule.submittedUntil2',
     defaultMessage: 'may be submitted until',
   },
-  modifyYour: {
-    id: 'app.components.StatusModule.modifyYour',
-    defaultMessage: 'Modify your',
+  modifyYourSubmission: {
+    id: 'app.components.StatusModule.modifyYourSubmission',
+    defaultMessage: 'Modify your {submissionTerm}',
   },
   futurePhase: {
     id: 'app.components.StatusModule.futurePhase',

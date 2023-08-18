@@ -11,7 +11,9 @@ export type IIdeaCustomFieldInputType =
   | 'select'
   | 'multiselect'
   | 'checkbox'
-  | 'date';
+  | 'date'
+  | 'linear_scale'
+  | 'file_upload';
 
 export type TCustomFieldCode =
   | 'gender'
