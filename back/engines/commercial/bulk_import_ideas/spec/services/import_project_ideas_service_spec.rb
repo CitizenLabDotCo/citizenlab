@@ -36,6 +36,7 @@ describe BulkImportIdeas::ImportProjectIdeasService do
       expect(xlsx_hash[0].keys).to match_array([
         'Full name',
         'Email address',
+        'Permission',
         'Date Published (dd-mm-yyyy)',
         'Title',
         'Description',
@@ -93,10 +94,13 @@ describe BulkImportIdeas::ImportProjectIdeasService do
       expect(rows.count).to eq 2
       expect(rows[0][:title_multiloc]).to eq({ en: 'Free donuts for all' })
       expect(rows[0][:body_multiloc]).to eq({ en: 'Give them all donuts' })
-      expect(rows[0][:user_email]).to eq 'john_rambo@gravy.com'
-      expect(rows[0][:user_name]).to eq 'John Rambo'
       expect(rows[0][:project_id]).to eq project.id
       expect(rows[1][:location_description]).to eq 'Behind the sofa'
+    end
+
+    it 'includes user details when "Permissions" field is not present' do
+      expect(rows[0][:user_email]).to eq 'john_rambo@gravy.com'
+      expect(rows[0][:user_name]).to eq 'John Rambo'
     end
 
     it 'converts text & number custom fields' do
@@ -150,6 +154,7 @@ describe BulkImportIdeas::ImportProjectIdeasService do
         {
           'Full name' => 'Bill Test',
           'Email address' => 'bill@citizenlab.co',
+          'Permission' => 'X',
           'Date Published (dd-mm-yyyy)' => '15-08-2023',
           'Title' => 'A title',
           'Description' => 'A description',
@@ -172,8 +177,6 @@ describe BulkImportIdeas::ImportProjectIdeasService do
       expect(rows[0]).to include({
         title_multiloc: { en: 'A title' },
         body_multiloc: { en: 'A description' },
-        user_name: 'Bill Test',
-        user_email: 'bill@citizenlab.co',
         project_id: project.id,
         topic_titles: %w[Economy Waste],
         published_at: '15-08-2023',
@@ -181,6 +184,22 @@ describe BulkImportIdeas::ImportProjectIdeasService do
         longitude: 6.0944,
         location_description: 'Somewhere',
         image_url: 'https://images.com/image.png'
+      })
+    end
+
+    it 'includes user details when "Permission" is not blank' do
+      expect(rows[0]).to include({
+        user_name: 'Bill Test',
+        user_email: 'bill@citizenlab.co'
+      })
+    end
+
+    it 'does not include user details when "Permission" is blank' do
+      xlsx_array[0]['Permission'] = ''
+      rows = service.xlsx_to_idea_rows xlsx_array
+      expect(rows[0]).not_to include({
+        user_name: 'Bill Test',
+        user_email: 'bill@citizenlab.co'
       })
     end
 

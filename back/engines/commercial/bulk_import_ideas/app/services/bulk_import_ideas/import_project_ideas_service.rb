@@ -14,6 +14,7 @@ module BulkImportIdeas
       columns = {
         'Full name' => 'Bill Test',
         'Email address' => 'bill@citizenlab.co',
+        'Permission' => 'X',
         'Date Published (dd-mm-yyyy)' => '18-07-2022'
       }
 
@@ -52,7 +53,7 @@ module BulkImportIdeas
         idea_row[:project_id] = @project.id
         idea_row[:phase_id] = @phase.id if @phase
 
-        idea_row = find_user_details(doc, idea_row)
+        idea_row = process_user_details(doc, idea_row)
         idea_row = process_custom_form_fields(doc, idea_row)
         idea_row
       end
@@ -65,16 +66,15 @@ module BulkImportIdeas
         # Fields not in custom form
         idea_row[:project_id]           = @project.id
         idea_row[:phase_id]             = @phase.id if @phase
-        idea_row[:user_name]            = xlsx_row['Full name']
-        idea_row[:user_email]           = xlsx_row['Email address']
         idea_row[:published_at]         = xlsx_row['Date Published (dd-mm-yyyy)']
         idea_row[:image_url]            = xlsx_row['Image URL']
         idea_row[:latitude]             = xlsx_row['Latitude']
         idea_row[:longitude]            = xlsx_row['Longitude']
         idea_row[:topic_titles] = (xlsx_row['Tags'] || '').split(';').map(&:strip).select(&:present?)
 
-        # Convert to same format as PDF to convert custom form fields
+        # Convert to same format as PDF to convert custom form fields & user details
         doc = xlsx_row.map { |k, v| { name: k, value: v } }
+        idea_row = process_user_details(doc, idea_row)
         idea_row = process_custom_form_fields(doc, idea_row)
 
         idea_row
@@ -82,6 +82,7 @@ module BulkImportIdeas
     end
 
     # Match all fields in the custom field by the text of their label in the specified locale
+    # TODO: Refactor this - too long and difficult to understand
     def process_custom_form_fields(doc, idea_row)
       # Get the keys for the field/option names in the import locale
       core_field_codes = %w[title_multiloc body_multiloc location_description]
@@ -156,8 +157,8 @@ module BulkImportIdeas
             custom_fields[field[:key].to_sym] = option[:key] if option
           else
             options = []
-            select_field[:value].split(';').each do |value|
-              option = select_options.find { |f| f[:field_key] == field[:key] && f[:name] == value.strip }
+            select_field[:value].split(';').each do |select_value|
+              option = select_options.find { |f| f[:field_key] == field[:key] && f[:name] == select_value.strip }
               options << option[:key] if option
             end
             custom_fields[field[:key].to_sym] = options
@@ -174,13 +175,18 @@ module BulkImportIdeas
       doc.find { |f| f[:name] == name }
     end
 
-    def find_user_details(doc, idea_row)
-      name = find_field(doc, 'Full name')
-      idea_row[:user_name] = name[:value] if name
+    def process_user_details(doc, idea_row)
+      # Do not add any personal details if 'Permission' field is present but it is blank
+      # Currently PDF version will import regardless as there is no 'Permission' field on the printed form
+      permission = find_field(doc, 'Permission')
+      unless permission && permission[:value].blank?
+        name = find_field(doc, 'Full name')
+        idea_row[:user_name] = name[:value] if name
 
-      # Ignore any emails that don't validate
-      email = find_field(doc, 'Email address')
-      idea_row[:user_email] = email[:value] if email && email[:value].match(User::EMAIL_REGEX)
+        # Ignore any emails that don't validate
+        email = find_field(doc, 'Email address')
+        idea_row[:user_email] = email[:value] if email && email[:value].match(User::EMAIL_REGEX)
+      end
 
       idea_row
     end
