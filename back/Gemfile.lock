@@ -159,6 +159,13 @@ PATH
       verification
 
 PATH
+  remote: engines/commercial/id_nemlog_in
+  specs:
+    id_nemlog_in (1.0.0)
+      omniauth-saml (~> 1.10.3)
+      rails (~> 7.0)
+
+PATH
   remote: engines/commercial/id_oostende_rrn
   specs:
     id_oostende_rrn (0.1.0)
@@ -1173,6 +1180,7 @@ DEPENDENCIES
   id_gent_rrn!
   id_hoplr!
   id_id_card_lookup!
+  id_nemlog_in!
   id_oostende_rrn!
   id_vienna_saml!
   idea_assignment!
