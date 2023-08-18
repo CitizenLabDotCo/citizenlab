@@ -43,12 +43,10 @@ resource 'Summaries' do
 
     let(:analysis) { create(:analysis) }
     let(:analysis_id) { analysis.id }
-    let(:reactions_from) { 7 }
     let(:tag) { create(:tag, analysis: analysis) }
-    let(:tag_ids) { [tag.id] }
 
     example 'Generate a summary' do
-      expect { do_request }
+      expect { do_request(filters: { tag_ids: [tag.id], reactions_from: 7 }) }
         .to have_enqueued_job(Analysis::SummarizationJob)
         .and change(Analysis::BackgroundTask, :count).from(0).to(1)
       expect(status).to eq 201
@@ -85,6 +83,12 @@ resource 'Summaries' do
         updated_at: be_present,
         ended_at: nil
       })
+    end
+
+    example 'Generate a summary for inputs without tags (tag_ids: [null] body)', document: false do
+      do_request(filters: { tag_ids: [nil] })
+      expect(status).to eq 201
+      expect(response_data.dig(:attributes, :filters, :tag_ids)).to eq([nil])
     end
   end
 
