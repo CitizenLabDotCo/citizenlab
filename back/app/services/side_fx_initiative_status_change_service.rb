@@ -9,6 +9,10 @@ class SideFxInitiativeStatusChangeService
     lock_initiative_editing_if_required(change)
 
     InitiativeStatusService.new.log_status_change change, user: user
+
+    if change.initiative_status.code == 'proposed'
+      InitiativeService.new.log_proposed(change.initiative, user, change.created_at)
+    end
   end
 
   private
