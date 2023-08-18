@@ -10,7 +10,7 @@ module Analysis
       @multiloc_service = MultilocService.new(app_configuration: @app_configuration)
     end
 
-    def execute(input, include_id: false)
+    def execute(input, include_id: false, truncate_values: nil, override_field_labels: {})
       # We currently piggyback on the XlsxExport::ValueVisitor, which transforms
       # idea fields (built-in and custom) to string values suitable to display
       # in an excel sheet. Our needs are currently very similar (transforming an
@@ -25,9 +25,12 @@ module Analysis
         {}
       end
       @custom_fields.each_with_object(initial_object) do |field, obj|
-        key = @multiloc_service.t(field.title_multiloc)
-        value = field.accept(vv)
-        obj[key] = value
+        label = override_field_labels[field.id] || @multiloc_service.t(field.title_multiloc)
+        full_value = field.accept(vv)
+        next if full_value&.blank? || (full_value.is_a?(String) && full_value.strip.blank?)
+
+        value = truncate_values ? full_value&.truncate(truncate_values) : full_value
+        obj[label] = value
       end
     end
 
@@ -35,6 +38,40 @@ module Analysis
       execute(input, **options).map do |label, value|
         "### #{label}\n#{value}\n"
       end.join("\n")
+    end
+
+    def format_all(inputs, shorten_labels: false, **options)
+      # Replacing the labels of the questions (= custom_fields) in the generated text with
+      # QUESTION_X in order to save on characters, in case the `shorted_label`
+      # option is set
+      override_field_labels = if shorten_labels
+        @custom_fields.sort_by(&:ordering).each_with_object({}) do |field, obj|
+          label = @multiloc_service.t(field.title_multiloc)
+          if label.size > 20
+            obj[field.id] = "QUESTION_#{field.ordering}"
+          end
+        end
+      else
+        {}
+      end
+
+      formatted_inputs = inputs
+        .map { |input| formatted(input, **options.merge(override_field_labels: override_field_labels)) }
+        .reject { |text| text.strip.blank? }
+        .join("\n---\n")
+
+      if override_field_labels.present?
+        <<~__OUTPUT__
+          To shorten the list of responses, some questions are abbreviated with following codes:
+          #{override_field_labels.map do |field_id, abbreviation|
+              "#{abbreviation}: #{@multiloc_service.t(@custom_fields.find { |cf| cf.id == field_id }.title_multiloc)}\n"
+            end.join}
+          
+          #{formatted_inputs}
+        __OUTPUT__
+      else
+        formatted_inputs
+      end
     end
   end
 end

@@ -60,9 +60,11 @@ const AuthorFilters = () => {
             value: option.attributes.key,
           }))}
           onChange={(option) =>
-            updateSearchParams({ [genderUrlQueryParamKey]: option.value })
+            updateSearchParams({ [genderUrlQueryParamKey]: [option.value] })
           }
-          value={searchParams.get(genderUrlQueryParamKey)}
+          value={
+            JSON.parse(searchParams.get(genderUrlQueryParamKey) || '[]')[0]
+          }
         />
       )}
       {domicileOptions && (
