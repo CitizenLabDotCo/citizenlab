@@ -5,8 +5,9 @@ import React, {
   useState,
   useEffect,
 } from 'react';
-import { JsonForms } from '@jsonforms/react';
 
+// jsonforms
+import { JsonForms } from '@jsonforms/react';
 import {
   createAjv,
   JsonSchema7,
@@ -15,31 +16,39 @@ import {
   Translator,
   Layout,
 } from '@jsonforms/core';
+
+// styling
 import styled from 'styled-components';
 
+// components
 import {
   Box,
   fontSizes,
   media,
-  stylingConsts,
-  useBreakpoint,
   Button,
 } from '@citizenlab/cl2-component-library';
+import Wrapper from './Components/Wrapper';
 import ButtonBar from './Components/ButtonBar';
 
+// hooks
 import useObserveEvent from 'hooks/useObserveEvent';
 
-import { CLErrors, Message } from 'typings';
-import { getDefaultAjvErrorMessage } from 'utils/errorUtils';
-import { useIntl, MessageDescriptor } from 'utils/cl-intl';
-import { ErrorObject } from 'ajv';
-import { forOwn } from 'lodash-es';
-import { APIErrorsContext, FormContext } from './contexts';
+// i18n
+import messages from './messages';
 import useLocale from 'hooks/useLocale';
+import { useIntl, MessageDescriptor } from 'utils/cl-intl';
+
+// utils
+import { forOwn } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { selectRenderers } from './formConfig';
 import { getFormSchemaAndData } from './utils';
-import messages from './messages';
+import { getDefaultAjvErrorMessage } from 'utils/errorUtils';
+
+// typings
+import { CLErrors, Message } from 'typings';
+import { ErrorObject } from 'ajv';
+import { APIErrorsContext, FormContext } from './contexts';
 
 // hopefully we can standardize this someday
 const Title = styled.h1`
@@ -123,12 +132,10 @@ const Form = memo(
     const [apiErrors, setApiErrors] = useState<CLErrors | undefined>();
     const [loading, setLoading] = useState(false);
     const [showAllErrors, setShowAllErrors] = useState(false);
-    const [showSubmitButton, setShowSubmitButton] = useState(true);
     const safeApiErrorMessages = useCallback(
       () => (getApiErrorMessage ? getApiErrorMessage : () => undefined),
       [getApiErrorMessage]
     );
-    const isSmallerThanPhone = useBreakpoint('phone');
 
     // To handle multilocs we had the two options of adding one control for each multiloc thing : InputMultiloc, WYSIWYGMultiloc, or have the top-level multiloc object be a custom layout that shows the appropriate field and render the controls inside normally. I went for the second option.
     // Both options limited somehow the validation power, and with this solution, it means that the errors on the layout level are not available (IE this field is required, or this field should have at least one property). So this is a hacky thing to make the current locale required, but we will have to find something better would we want to make all locales required like in the admin side or simply is we would want to have a cleaner form component.
@@ -235,31 +242,14 @@ const Form = memo(
       : 'inline';
     const renderers = selectRenderers(config || 'default');
 
+    const isSurvey = config === 'survey';
+    const showSubmitButton = !isSurvey;
+
     return (
-      <Box
-        as="form"
-        minHeight={
-          isSmallerThanPhone && layoutType === 'fullpage' && config !== 'survey'
-            ? `calc(100vh - ${stylingConsts.menuHeight}px)`
-            : '100%'
-        }
-        height={
-          isSmallerThanPhone
-            ? '100%'
-            : layoutType === 'fullpage' && config !== 'survey'
-            ? '100vh'
-            : '100%'
-        }
-        display="flex"
-        flexDirection="column"
-        maxHeight={
-          layoutType === 'inline'
-            ? 'auto'
-            : isSmallerThanPhone || config === 'survey'
-            ? 'auto'
-            : `calc(100vh - ${stylingConsts.menuHeight}px)`
-        }
+      <Wrapper
         id={uiSchema?.options?.formId}
+        layoutType={layoutType}
+        isSurvey={config === 'survey'}
       >
         <Box
           overflow={layoutType === 'inline' ? 'visible' : 'auto'}
@@ -277,7 +267,6 @@ const Form = memo(
                 getApiErrorMessage: safeApiErrorMessages(),
                 onSubmit: handleSubmit,
                 setShowAllErrors,
-                setShowSubmitButton,
                 formSubmitText,
               }}
             >
@@ -325,7 +314,7 @@ const Form = memo(
             )}
           </>
         )}
-      </Box>
+      </Wrapper>
     );
   }
 );

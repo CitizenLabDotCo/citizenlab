@@ -63,7 +63,7 @@ const CLPageLayout = memo(
     enabled,
     data,
   }: LayoutProps) => {
-    const { setShowSubmitButton, onSubmit, setShowAllErrors, formSubmitText } =
+    const { onSubmit, setShowAllErrors, formSubmitText } =
       useContext(FormContext);
     const topAnchorRef = useRef<HTMLInputElement>(null);
     const [currentStep, setCurrentStep] = useState<number>(0);
@@ -98,8 +98,7 @@ const CLPageLayout = memo(
         return isPageVisible;
       });
       setUiPages(visiblePages);
-      setShowSubmitButton(false);
-    }, [setShowSubmitButton, formState.core?.data, uischema]);
+    }, [formState.core?.data, uischema]);
 
     const scrollToTop = () => {
       if (useTopAnchor) {
