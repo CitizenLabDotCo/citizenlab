@@ -1,5 +1,5 @@
 import React, { MouseEvent, ChangeEvent, ReactNode } from 'react';
-import { uniq, get } from 'lodash-es';
+import { uniq } from 'lodash-es';
 import { useDrag } from 'react-dnd';
 
 // services
@@ -11,7 +11,7 @@ import StyledRow from './StyledRow';
 import { Icon } from 'semantic-ui-react';
 import T from 'components/T';
 import Checkbox from 'components/UI/Checkbox';
-import { Td, StatusLabel } from '@citizenlab/cl2-component-library';
+import { Td } from '@citizenlab/cl2-component-library';
 import SubRow from './SubRow';
 import AssigneeSelect from '../AssigneeSelect';
 
@@ -24,9 +24,6 @@ import tracks from '../../../tracks';
 
 // typings
 import { TFilterMenu, ManagerType } from '../../..';
-
-// resources
-import { getPeriodRemainingUntil } from 'utils/dateUtils';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
@@ -41,7 +38,6 @@ import useUpdateInitiative from 'api/initiatives/useUpdateInitiative';
 // types
 import { IInitiativeData } from 'api/initiatives/types';
 import useInitiativeCosponsorsRequired from 'hooks/useInitiativeCosponsorsRequired';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useInitiativeAllowedTransitions from 'api/initiative_allowed_transitions/useInitiativeAllowedTransitions';
 
 interface Props {
@@ -58,7 +54,7 @@ interface Props {
 }
 
 interface CellProps {
-  onClick?: (event: any) => void;
+  onClick?: (event: MouseEvent) => void;
   children: ReactNode;
 }
 
@@ -80,7 +76,6 @@ const InitiativeRow = ({
 }: Props) => {
   const { data: initiatives } = useInitiatives({});
   const { mutate: updateInitiative } = useUpdateInitiative();
-  const { data: appConfiguration } = useAppConfiguration();
   const { data: allowedTransitions } = useInitiativeAllowedTransitions(
     initiative.id
   );
@@ -180,38 +175,11 @@ const InitiativeRow = ({
     });
   };
 
-  const renderTimingCell = () => {
-    const selectedStatus: string | undefined = get(
-      initiative,
-      'relationships.initiative_status.data.id'
-    );
-    const selectedStatusObject =
-      statuses && statuses.find((status) => status.id === selectedStatus);
-
-    if (
-      selectedStatusObject &&
-      appConfiguration?.data.attributes.settings.initiatives
-    ) {
-      if (selectedStatusObject.attributes.code === 'proposed') {
-        return getPeriodRemainingUntil(initiative.attributes.expires_at);
-      } else {
-        return (
-          <StatusLabel
-            text={<T value={selectedStatusObject.attributes.title_multiloc} />}
-            backgroundColor={selectedStatusObject.attributes.color}
-          />
-        );
-      }
-    }
-
-    return null;
-  };
-
   const selectedStatus = initiative.relationships.initiative_status?.data?.id;
   const selectedTopics = initiative.relationships.topics.data.map((p) => p.id);
   const attrs = initiative.attributes;
   const active = selection.has(initiative.id);
-  const assigneeId = get(initiative, 'relationships.assignee.data.id');
+  const assigneeId = initiative.relationships.assignee.data?.id;
 
   return (
     <>
@@ -238,13 +206,12 @@ const InitiativeRow = ({
             assigneeId={assigneeId}
           />
         </Cell>
-        <Cell>{renderTimingCell()}</Cell>
         <Cell>
           <Icon name="thumbs up" />
           {attrs.likes_count}
         </Cell>
         <Cell>{attrs.comments_count}</Cell>
-        {/* {cosponsorsRequired && <Cell>{attrs.cosponsorships.length}</Cell>} */}
+        {cosponsorsRequired && <Cell>{attrs.cosponsorships.length}</Cell>}
       </StyledRow>
       <SubRow
         {...{

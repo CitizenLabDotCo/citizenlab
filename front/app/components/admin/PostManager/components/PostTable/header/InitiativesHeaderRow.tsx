@@ -55,15 +55,6 @@ const InitiativesHeaderRow = ({
           <FormattedMessage {...messages.assignee} />
         </Th>
         <SortableHeaderCell
-          width={getWidth(2)}
-          sortAttribute={sortAttribute}
-          sortDirection={sortDirection}
-          sortAttributeName="new"
-          onChange={handleSortClick('new')}
-        >
-          <FormattedMessage {...messages.remainingTime} />
-        </SortableHeaderCell>
-        <SortableHeaderCell
           width={getWidth(1)}
           sortAttribute={sortAttribute}
           sortDirection={sortDirection}
@@ -75,11 +66,11 @@ const InitiativesHeaderRow = ({
         <Th width={getWidth(1)}>
           <FormattedMessage {...messages.comments} />
         </Th>
-        {/* {cosponsorsRequired && (
+        {cosponsorsRequired && (
           <Th width={getWidth(1)}>
             <FormattedMessage {...messages.cosponsors} />
           </Th>
-        )} */}
+        )}
       </Tr>
     </Thead>
   );

@@ -70,10 +70,6 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.publication_date',
     defaultMessage: 'Published on',
   },
-  remainingTime: {
-    id: 'app.components.admin.PostManager.remainingTime',
-    defaultMessage: 'Days Remaining',
-  },
   likes: {
     id: 'app.components.admin.PostManager.likes',
     defaultMessage: 'Likes',
