@@ -25,10 +25,25 @@
     "comments_to": {
       "type": "number"
     },
+    "published_at_from": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "published_at_to": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
     "tag_ids": {
       "type": "array",
       "items": {
-        "type": "string"
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
       }
     }
   },
@@ -52,6 +67,9 @@
           },
           {
             "type": "number"
+          },
+          {
+            "type": "null"
           }
         ]
       }

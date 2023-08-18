@@ -169,11 +169,12 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
                 );
               }}
             >
-              {formatMessage(messages.modifyYour)}{' '}
-              {config?.getSubmissionTerm &&
-                formatMessage(
-                  config.getSubmissionTerm('singular')
-                ).toLowerCase()}
+              {config &&
+                formatMessage(messages.modifyYourSubmission, {
+                  submissionTerm: formatMessage(
+                    config.getSubmissionTerm('singular')
+                  ).toLowerCase(),
+                })}
             </Button>
           </Box>
         )}
