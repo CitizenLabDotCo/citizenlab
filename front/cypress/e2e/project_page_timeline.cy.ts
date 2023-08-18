@@ -79,39 +79,39 @@ describe('New timeline project', () => {
       projectId = project.body.data.id;
       projectSlug = project.body.data.attributes.slug;
       // create new phases
-      cy.apiCreatePhase(
+      cy.apiCreatePhase({
         projectId,
-        phasePastTitle,
-        twoMonthsAgo,
-        twoDaysAgo,
-        'ideation',
-        true,
-        true,
-        true,
-        `description ${phasePastTitle}`
-      );
-      cy.apiCreatePhase(
+        title: phasePastTitle,
+        startAt: twoMonthsAgo,
+        endAt: twoDaysAgo,
+        participationMethod: 'ideation',
+        canComment: true,
+        canPost: true,
+        canReact: true,
+        description: `description ${phasePastTitle}`,
+      });
+      cy.apiCreatePhase({
         projectId,
-        phaseCurrentTitle,
-        today,
-        today,
-        'ideation',
-        true,
-        true,
-        true,
-        phaseLongDescription
-      );
-      cy.apiCreatePhase(
+        title: phaseCurrentTitle,
+        startAt: today,
+        endAt: today,
+        participationMethod: 'ideation',
+        canComment: true,
+        canPost: true,
+        canReact: true,
+        description: phaseLongDescription,
+      });
+      cy.apiCreatePhase({
         projectId,
-        phaseFutureTitle,
-        inTwoDays,
-        inTwoMonths,
-        'ideation',
-        true,
-        true,
-        true,
-        `description ${phaseFutureTitle}`
-      );
+        title: phaseFutureTitle,
+        startAt: inTwoDays,
+        endAt: inTwoMonths,
+        participationMethod: 'ideation',
+        canComment: true,
+        canPost: true,
+        canReact: true,
+        description: `description ${phaseFutureTitle}`,
+      });
       return cy.apiCreateEvent({
         projectId,
         title: 'Some event',
