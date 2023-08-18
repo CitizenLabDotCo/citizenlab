@@ -1,9 +1,8 @@
-import React, { useState, useCallback } from 'react';
+import React, { useCallback } from 'react';
 
 // jsonforms
 import { JsonForms } from '@jsonforms/react';
 import {
-  createAjv,
   JsonSchema7,
   UISchemaElement,
   Translator,
@@ -12,23 +11,19 @@ import {
 
 // i18n
 import { useIntl, MessageDescriptor } from 'utils/cl-intl';
-import useLocale from 'hooks/useLocale';
 
 // utils
 import { selectRenderers } from './formConfig';
 import { getDefaultAjvErrorMessage } from 'utils/errorUtils';
-import { parseRequiredMultilocsSchema } from '../../parseRequiredMultilocs';
-import { isNilOrError } from 'utils/helperUtils';
 
 // typings
-import { CLErrors, Locale } from 'typings';
+import { CLErrors } from 'typings';
 import { ApiErrorGetter, AjvErrorGetter, FormData } from '../../typings';
-import { ErrorObject } from 'ajv';
+import Ajv, { ErrorObject } from 'ajv';
 import { APIErrorsContext, FormContext } from '../../contexts';
 
-const customAjv = createAjv({ useDefaults: 'empty', removeAdditional: true });
-
 interface Props {
+  ajv: Ajv;
   data: FormData;
   apiErrors?: CLErrors;
   showAllErrors: boolean;
@@ -44,12 +39,8 @@ interface Props {
   onSubmit: (formData: FormData) => Promise<any>;
 }
 
-interface InnerProps extends Props {
-  locale: Locale;
-}
-
 const Fields = ({
-  locale,
+  ajv,
   data,
   apiErrors,
   showAllErrors,
@@ -63,11 +54,7 @@ const Fields = ({
   config,
   onChange,
   onSubmit,
-}: InnerProps) => {
-  const [parsedSchema] = useState(() => {
-    return parseRequiredMultilocsSchema(schema, locale);
-  });
-
+}: Props) => {
   const { formatMessage } = useIntl();
 
   const safeApiErrorMessages = useCallback(
@@ -108,7 +95,7 @@ const Fields = ({
         }}
       >
         <JsonForms
-          schema={parsedSchema}
+          schema={schema}
           uischema={uiSchema}
           data={data}
           renderers={renderers}
@@ -116,7 +103,7 @@ const Fields = ({
             onChange(data);
           }}
           validationMode="ValidateAndShow"
-          ajv={customAjv}
+          ajv={ajv}
           i18n={{
             translateError,
           }}
@@ -126,11 +113,4 @@ const Fields = ({
   );
 };
 
-const FieldsOuter = (props: Props) => {
-  const locale = useLocale();
-  if (isNilOrError(locale)) return null;
-
-  return <Fields locale={locale} {...props} />;
-};
-
-export default FieldsOuter;
+export default Fields;

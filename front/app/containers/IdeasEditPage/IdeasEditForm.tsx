@@ -5,7 +5,7 @@ import PageContainer from 'components/UI/PageContainer';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
 import { Box } from '@citizenlab/cl2-component-library';
 import ideaFormMessages from 'containers/IdeasNewPage/messages';
-import Form, { AjvErrorGetter, ApiErrorGetter } from 'components/Form';
+import Form from 'components/Form';
 import GoBackToIdeaPage from 'containers/IdeasEditPage/GoBackToIdeaPage';
 import IdeasEditMeta from './IdeasEditMeta';
 import ProfileVisiblity from 'components/ProfileVisibility';
@@ -39,6 +39,7 @@ import { PreviousPathnameContext } from 'context';
 // typings
 import { IIdeaUpdate } from 'api/ideas/types';
 import { Multiloc } from 'typings';
+import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 
 interface FormValues {
   title_multiloc: Multiloc;
