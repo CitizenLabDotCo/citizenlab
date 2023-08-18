@@ -3,7 +3,7 @@
 class CreateFollowers < ActiveRecord::Migration[7.0]
   def change
     create_table :followers, id: :uuid do |t|
-      t.references :followable, polymorphic: true, null: false
+      t.references :followable, polymorphic: true, type: :uuid, null: false
       t.references :user, foreign_key: true, type: :uuid, null: false
 
       t.timestamps
