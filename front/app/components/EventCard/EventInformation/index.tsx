@@ -52,7 +52,7 @@ const EventInformation = ({
   const theme = useTheme();
 
   const isPastEvent = moment().isAfter(endAtMoment);
-  const locationDescription = event?.attributes?.location_description;
+  const address1 = event?.attributes?.address_1;
 
   const eventDateTime = isMultiDayEvent
     ? `${startAtMoment.format('LLL')} - ${endAtMoment.format('LLL')}`
@@ -102,7 +102,7 @@ const EventInformation = ({
               {eventDateTime}
             </Text>
           </Box>{' '}
-          {locationDescription && (
+          {address1 && (
             <Box
               display="flex"
               mb="12px"
@@ -117,10 +117,7 @@ const EventInformation = ({
                 ml={theme.isRtl ? '8px' : '0px'}
               />
               <Text m="0px" color={'coolGrey700'} fontSize="s">
-                {locationDescription?.slice(
-                  0,
-                  locationDescription.indexOf(',')
-                )}
+                {address1?.slice(0, address1.indexOf(','))}
               </Text>
             </Box>
           )}

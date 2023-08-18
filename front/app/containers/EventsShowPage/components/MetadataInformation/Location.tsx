@@ -17,20 +17,33 @@ import { Container, Content, StyledIcon } from './MetadataInformationStyles';
 import { IEventData } from 'api/events/types';
 import { LatLngTuple } from 'leaflet';
 
+// hooks
+import useLocale from 'hooks/useLocale';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+
 export interface Props {
-  location?: string | null;
   event: IEventData | null;
 }
 
-const Location = ({ location, event }: Props) => {
+const Location = ({ event }: Props) => {
   const [mapModalVisible, setMapModalVisible] = useState(false);
+  const currentLocale = useLocale();
   const isMobile = useBreakpoint('phone');
   const projectId = event?.relationships.project.data.id;
   const position = event?.attributes.location_point_geojson;
   const center = position?.coordinates;
   const centerLatLng = center && ([center[1], center[0]] as LatLngTuple);
+  const address1 = event?.attributes?.address_1;
 
-  if (location) {
+  if (isNilOrError(currentLocale) || !address1) {
+    return null;
+  }
+
+  const address2 = event?.attributes?.address_2_multiloc[currentLocale];
+
+  if (address1) {
     return (
       <Container>
         <StyledIcon name="position" ariaHidden />
@@ -40,7 +53,6 @@ const Location = ({ location, event }: Props) => {
               <Button
                 m="0px"
                 p="0px"
-                fontSize="s"
                 buttonStyle="text"
                 onClick={() => {
                   setMapModalVisible(true);
@@ -53,7 +65,9 @@ const Location = ({ location, event }: Props) => {
                 }}
                 id="e2e-location-with-coordinates-button"
               >
-                {location.slice(0, location.indexOf(','))}
+                <Text mt="4px" color="coolGrey600" m="0px" p="0px" fontSize="s">
+                  {address1.slice(0, address1.indexOf(','))}
+                </Text>
               </Button>
             </Box>
           ) : (
@@ -63,7 +77,17 @@ const Location = ({ location, event }: Props) => {
               color="coolGrey600"
               fontSize="s"
             >
-              {location}
+              {address1}
+            </Text>
+          )}
+          {address2 && (
+            <Text
+              id="e2e-text-only-location"
+              my="4px"
+              color="coolGrey600"
+              fontSize="s"
+            >
+              {address2}
             </Text>
           )}
         </Content>
@@ -75,7 +99,7 @@ const Location = ({ location, event }: Props) => {
           }}
           header={
             <Box mt="8px" mb="8px">
-              {location}
+              {address1}
             </Box>
           }
           width={900}

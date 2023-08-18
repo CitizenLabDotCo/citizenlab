@@ -65,12 +65,9 @@ const InformationColumnDesktop = ({ event, className }: Props) => {
                 <Box borderBottom={`solid 1px ${colors.divider}`} />
               </>
 
-              {event.attributes.location_description && (
+              {event.attributes.address_1 && (
                 <>
-                  <Location
-                    location={event.attributes.location_description}
-                    event={event}
-                  />
+                  <Location event={event} />
                   <Box borderBottom={`solid 1px ${colors.divider}`} />
                 </>
               )}

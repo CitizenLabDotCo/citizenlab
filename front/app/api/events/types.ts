@@ -11,7 +11,8 @@ export interface IEventData {
     title_multiloc: Multiloc;
     description_multiloc: Multiloc;
     location_multiloc: Multiloc;
-    location_description: string | null | undefined;
+    address_2_multiloc: Multiloc;
+    address_1: string | null | undefined;
     location_point_geojson: GeoJSON.Point | undefined | null;
     start_at: string;
     end_at: string;
@@ -65,7 +66,8 @@ export interface IEventProperties {
   title_multiloc?: Multiloc;
   description_multiloc?: Multiloc;
   location_multiloc?: Multiloc;
-  location_description?: string | null;
+  address_2_multiloc?: Multiloc;
+  address_1?: string | null;
   location_point_geojson?: GeoJSON.Point | null;
   start_at?: string;
   end_at?: string;
