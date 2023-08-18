@@ -5,14 +5,14 @@ module IdCriipto
     include CriiptoVerification
 
     def profile_to_user_attrs(auth)
-      case config['identity_source']
+      case config[:identity_source]
       when DK_MIT_ID
         custom_field_values = {}
 
         # Handle birthdate
         # birthdate is already in YYYY-MM-DD, tak Denmark
         birthdate = auth.extra.raw_info['birthdate']
-        if (birthday_key = config['birthday_custom_field_key']) && birthdate
+        if (birthday_key = config[:birthday_custom_field_key]) && birthdate
           custom_field_values[birthday_key] = birthdate
         end
 
@@ -21,7 +21,7 @@ module IdCriipto
         municipality_code_i = municipality_code_str.presence&.to_i
         # to_i returns 0 when parsing fails
         municipality_code_i = nil if municipality_code_i == 0
-        if (municipality_code_key = config['municipality_code_custom_field_key']) && municipality_code_i
+        if (municipality_code_key = config[:municipality_code_custom_field_key]) && municipality_code_i
           custom_field_values[municipality_code_key] = municipality_code_i
         end
 
@@ -48,9 +48,10 @@ module IdCriipto
 
       options[:response_type] = :code
       options[:acr_values] = acr_values
+      options[:issuer] = "https://#{config[:domain]}"
       options[:client_options] = {
-        identifier: config['client_id'],
-        secret: config['client_secret'],
+        identifier: config[:client_id],
+        secret: config[:client_secret],
         host: config[:domain],
         redirect_uri: "#{configuration.base_backend_uri}/auth/criipto/callback"
       }
@@ -58,11 +59,11 @@ module IdCriipto
 
     # See https://docs.criipto.com/verify/guides/authorize-url-builder/#auth-methods--acr-values
     def acr_values
-      case config['identity_source']
+      case config[:identity_source]
       when DK_MIT_ID
         'urn:grn:authn:dk:mitid:substantial'
       else
-        raise "Unsupported identity source #{config['identity_source']}"
+        raise "Unsupported identity source #{config[:identity_source]}"
       end
     end
   end
