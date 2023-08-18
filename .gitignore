@@ -13,3 +13,5 @@ node_modules
 *.DS_Store
 .vscode/*
 */.vscode/*
+
+back/config/google_cloud.json
