@@ -76,6 +76,8 @@ en:
       "powered_by": "Powered by"
       "statement": "This e-mail was sent to you by CitizenLab on behalf of %{organizationName}, because you are a registered user of %{organizationLink}. You can %{unsubscribeLink} if you do not want to receive these e-mails in the future."
       "unsubscribe_text": "unsubscribe"
+    follow:
+      "unfollow_here": "You have received this notification because of an item that you follow. <a href=\"%{unfollow_url}\">You can unfollow it here.</a>"
     comment_deleted_by_admin:
       reason: 'The reason why your comment was deleted:'
       cta_view: 'View this idea'

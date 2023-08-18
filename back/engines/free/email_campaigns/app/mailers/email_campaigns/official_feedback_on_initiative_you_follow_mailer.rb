@@ -5,6 +5,7 @@ module EmailCampaigns
     private
 
     helper_method :author_name
+    helper_method :unfollow_url
 
     def author_name
       localize_for_recipient(event.official_feedback_author_multiloc)
@@ -27,6 +28,10 @@ module EmailCampaigns
           organizationName: organization_name
         }
       )
+    end
+
+    def unfollow_url
+      'https://google.com'
     end
   end
 end

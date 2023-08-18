@@ -4,6 +4,8 @@ module EmailCampaigns
   class StatusChangeOnInitiativeYouFollowMailer < ApplicationMailer
     private
 
+    helper_method :unfollow_url
+
     def subject
       format_message('subject')
     end
@@ -20,6 +22,10 @@ module EmailCampaigns
           organizationName: organization_name
         }
       )
+    end
+
+    def unfollow_url
+      'https://google.com'
     end
   end
 end
