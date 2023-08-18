@@ -3,6 +3,6 @@
 FactoryBot.define do
   factory :follower do
     user
-    followable { create(:project) }
+    association :followable, factory: :project
   end
 end

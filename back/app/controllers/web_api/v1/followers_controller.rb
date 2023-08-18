@@ -46,6 +46,8 @@ class WebApi::V1::FollowersController < ApplicationController
   end
 
   def followable_id
+    return @followable_id if @followable_id
+
     params_key = case followable_type
     when 'Project'
       :project_id
@@ -58,7 +60,7 @@ class WebApi::V1::FollowersController < ApplicationController
     else
       raise "Unsupported followable type #{followable_type}"
     end
-    @followable_id ||= params[params_key]
+    @followable_id = params[params_key]
   end
 
   def sidefx
