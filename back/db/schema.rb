@@ -104,8 +104,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_14_115846) do
   create_table "analysis_taggings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "tag_id", null: false
     t.uuid "input_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.index ["input_id"], name: "index_analysis_taggings_on_input_id"
     t.index ["tag_id", "input_id"], name: "index_analysis_taggings_on_tag_id_and_input_id", unique: true
     t.index ["tag_id"], name: "index_analysis_taggings_on_tag_id"
@@ -199,7 +197,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_14_115846) do
     t.datetime "updated_at", precision: nil, null: false
     t.integer "ordering"
     t.uuid "custom_field_option_id"
-    t.integer "followers_count", default: 0, null: false
     t.index ["custom_field_option_id"], name: "index_areas_on_custom_field_option_id"
   end
 
@@ -494,11 +491,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_14_115846) do
 
   create_table "followers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "followable_type", null: false
-    t.uuid "followable_id", null: false
+    t.bigint "followable_id", null: false
     t.uuid "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["followable_id", "followable_type", "user_id"], name: "index_followers_followable_type_id_user_id", unique: true
+    t.index ["followable_type", "followable_id"], name: "index_followers_on_followable"
     t.index ["user_id"], name: "index_followers_on_user_id"
   end
 
@@ -1246,13 +1244,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_14_115846) do
     t.integer "posting_limited_max", default: 1
     t.string "document_annotation_embed_url"
     t.boolean "allow_anonymous_participation", default: false, null: false
-    t.integer "followers_count", default: 0, null: false
     t.string "voting_method"
     t.integer "voting_max_votes_per_idea"
     t.jsonb "voting_term_singular_multiloc", default: {}
     t.jsonb "voting_term_plural_multiloc", default: {}
     t.integer "baskets_count", default: 0, null: false
     t.integer "votes_count", default: 0, null: false
+    t.integer "followers_count", default: 0, null: false
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 
@@ -1458,7 +1456,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_14_115846) do
     t.datetime "updated_at", precision: nil, null: false
     t.integer "ordering"
     t.string "code", default: "custom", null: false
-    t.integer "followers_count", default: 0, null: false
   end
 
   create_table "user_custom_fields_representativeness_ref_distributions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

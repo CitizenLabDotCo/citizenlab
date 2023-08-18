@@ -6,7 +6,7 @@
 #
 #  id              :uuid             not null, primary key
 #  followable_type :string           not null
-#  followable_id   :uuid             not null
+#  followable_id   :bigint           not null
 #  user_id         :uuid             not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
@@ -14,6 +14,7 @@
 # Indexes
 #
 #  index_followers_followable_type_id_user_id  (followable_id,followable_type,user_id) UNIQUE
+#  index_followers_on_followable               (followable_type,followable_id)
 #  index_followers_on_user_id                  (user_id)
 #
 # Foreign Keys

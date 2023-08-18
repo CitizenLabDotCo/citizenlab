@@ -13,6 +13,8 @@
 #  filters              :jsonb            not null
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
+#  accuracy             :float
+#  inputs_ids           :jsonb
 #
 # Indexes
 #
