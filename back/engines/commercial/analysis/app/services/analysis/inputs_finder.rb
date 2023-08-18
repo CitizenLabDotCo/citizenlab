@@ -2,8 +2,6 @@
 
 module Analysis
   class InputsFinder
-    MAX_PER_PAGE = 100
-
     attr_reader :analysis, :params
 
     def initialize(analysis, params = {})
@@ -31,10 +29,15 @@ module Analysis
 
       raise ArgumentError, 'value specified for tag_ids must be an array' unless params[:tag_ids].is_a? Array
 
-      if params[:tag_ids].empty?
+      if params[:tag_ids].include?(nil)
         inputs.where.missing(:taggings)
       else
-        inputs.joins(:taggings).where(taggings: { tag_id: params[:tag_ids] }).distinct
+        # We use a subquery because we need to make sure multiple taggings for
+        # the same inputs don't result in duplication of those inputs in the
+        # final output. Solving this with `distinct` breaks the query in
+        # combination with pg_search, so this is a relatively elegant workaround
+        subquery = inputs.select(:id).joins(:taggings).where(taggings: { tag_id: params[:tag_ids] })
+        inputs.where(id: subquery)
       end
     end
 
@@ -87,21 +90,22 @@ module Analysis
         raise ArgumentError, "value specified for author_custom_#{custom_field_id} must be an array" unless value.is_a? Array
 
         cf = CustomField.find(custom_field_id)
+
         case cf.input_type
         when 'select', 'date'
-          scope = if value.empty?
+          scope = if value.include?(nil)
             scope.joins(:author).where("users.custom_field_values->>'#{cf.key}' IS NULL")
           else
             scope.joins(:author).where("users.custom_field_values->>'#{cf.key}' IN (?)", value)
           end
         when 'multiselect'
-          scope = if value.empty?
+          scope = if value.include?(nil)
             scope.joins(:author).where("users.custom_field_values->>'#{cf.key}' IS NULL OR jsonb_array_length(users.custom_field_values->'#{cf.key}') = 0")
           else
             scope.joins(:author).where("(users.custom_field_values->>'#{cf.key}')::jsonb ?| array[:value]", value: value)
           end
         when 'number'
-          scope = if value.empty?
+          scope = if value.include?(nil)
             scope.joins(:author).where("users.custom_field_values->>'#{cf.key}' IS NULL")
           else
             scope.joins(:author).where("(users.custom_field_values->'#{cf.key}')::numeric IN (?)", value)

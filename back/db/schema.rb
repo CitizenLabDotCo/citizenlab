@@ -95,6 +95,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_15_182301) do
     t.jsonb "filters", default: {}, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.float "accuracy"
+    t.jsonb "inputs_ids"
     t.index ["analysis_id"], name: "index_analysis_summaries_on_analysis_id"
     t.index ["background_task_id"], name: "index_analysis_summaries_on_background_task_id"
   end
@@ -462,9 +464,23 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_15_182301) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.geography "location_point", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}
-    t.string "location_description"
+    t.string "address_1"
+    t.integer "attendees_count", default: 0, null: false
+    t.jsonb "address_2_multiloc", default: {}, null: false
     t.index ["location_point"], name: "index_events_on_location_point", using: :gist
     t.index ["project_id"], name: "index_events_on_project_id"
+  end
+
+  create_table "events_attendances", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "attendee_id", null: false
+    t.uuid "event_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["attendee_id", "event_id"], name: "index_events_attendances_on_attendee_id_and_event_id", unique: true
+    t.index ["attendee_id"], name: "index_events_attendances_on_attendee_id"
+    t.index ["created_at"], name: "index_events_attendances_on_created_at"
+    t.index ["event_id"], name: "index_events_attendances_on_event_id"
+    t.index ["updated_at"], name: "index_events_attendances_on_updated_at"
   end
 
   create_table "experiments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1559,6 +1575,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_15_182301) do
   add_foreign_key "email_campaigns_examples", "users", column: "recipient_id"
   add_foreign_key "event_files", "events"
   add_foreign_key "events", "projects"
+  add_foreign_key "events_attendances", "events"
+  add_foreign_key "events_attendances", "users", column: "attendee_id"
   add_foreign_key "groups_permissions", "groups"
   add_foreign_key "groups_permissions", "permissions"
   add_foreign_key "groups_projects", "groups"

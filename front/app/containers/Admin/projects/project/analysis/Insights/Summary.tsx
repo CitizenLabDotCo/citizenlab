@@ -18,6 +18,7 @@ import {
 import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import styled from 'styled-components';
+import { useSelectedInputContext } from '../SelectedInputContext';
 
 const StyledSummaryText = styled.div`
   white-space: pre-wrap;
@@ -30,10 +31,10 @@ const StyledButton = styled.button`
 
 type Props = {
   summary: ISummary['data'];
-  onSelectInput: (inputId: string) => void;
 };
 
-const Summary = ({ summary, onSelectInput }: Props) => {
+const Summary = ({ summary }: Props) => {
+  const { setSelectedInputId } = useSelectedInputContext();
   const { formatMessage } = useIntl();
   const { analysisId } = useParams() as { analysisId: string };
   const { mutate: deleteSummary } = useDeleteAnalysisSummary();
@@ -59,8 +60,8 @@ const Summary = ({ summary, onSelectInput }: Props) => {
     return reactStringReplace(
       summary,
       /\[?([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})\]?/g,
-      (match) => (
-        <StyledButton onClick={() => onSelectInput(match)}>
+      (match, i) => (
+        <StyledButton onClick={() => setSelectedInputId(match)} key={i}>
           <Icon name="search" />
         </StyledButton>
       )
@@ -116,7 +117,12 @@ const Summary = ({ summary, onSelectInput }: Props) => {
           {processing && <Spinner />}
         </Box>
       </Box>
-      <Box display="flex" flexDirection="row-reverse" gap="2px">
+      <Box
+        display="flex"
+        flexDirection="row-reverse"
+        gap="4px"
+        alignItems="center"
+      >
         <IconButton
           iconName="delete"
           onClick={() => handleSummaryDelete(summary.id)}
@@ -124,6 +130,11 @@ const Summary = ({ summary, onSelectInput }: Props) => {
           iconColorOnHover={colors.teal700}
           a11y_buttonActionMessage={formatMessage(messages.deleteSummary)}
         />
+        {summary.attributes.accuracy && (
+          <Box color={colors.teal700}>
+            Accuracy {summary.attributes.accuracy * 100}%
+          </Box>
+        )}
       </Box>
     </Box>
   );

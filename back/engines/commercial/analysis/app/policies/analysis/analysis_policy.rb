@@ -24,7 +24,7 @@ module Analysis
     end
 
     def index?
-      active? && (admin? || project_moderator? || project_folder_moderator?)
+      active? && (admin? || user.project_folder_moderator? || user.project_moderator?)
     end
 
     def create?

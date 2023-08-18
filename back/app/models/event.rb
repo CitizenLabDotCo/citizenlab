@@ -14,7 +14,9 @@
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
 #  location_point       :geography        point, 4326
-#  location_description :string
+#  address_1            :string
+#  attendees_count      :integer          default(0), not null
+#  address_2_multiloc   :jsonb            not null
 #
 # Indexes
 #
@@ -29,6 +31,8 @@ class Event < ApplicationRecord
   include GeoJsonHelpers
 
   belongs_to :project
+  has_many :attendances, class_name: 'Events::Attendance', dependent: :destroy
+  has_many :attendees, through: :attendances
   has_many :event_files, -> { order(:ordering) }, dependent: :destroy
   has_many :text_images, as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :text_images
@@ -37,6 +41,7 @@ class Event < ApplicationRecord
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, multiloc: { presence: false, html: true }
   validates :location_multiloc, multiloc: { presence: false }
+  validates :address_2_multiloc, multiloc: { presence: false }
   validate :validate_start_at_before_end_at
 
   before_validation :sanitize_description_multiloc
