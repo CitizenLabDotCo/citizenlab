@@ -236,7 +236,6 @@ describe BulkImportIdeas::ImportIdeasService do
 
       expect(Idea.count).to eq 1
       idea = Idea.first
-      # TODO: published_at is set even though the status is draft
       # expect(idea.published_at).to be_nil
       expect(idea.publication_status).to eq 'draft'
     end
@@ -331,6 +330,24 @@ describe BulkImportIdeas::ImportIdeasService do
       expect(Idea.count).to eq 1
       idea = Idea.first
       expect(idea.topic_ids).to match_array [topic1.id, topic2.id]
+    end
+
+    it 'can imports completely blank ideas when importing as draft' do
+      project = create(:project)
+      idea_rows = [
+        {
+          title_multiloc: { 'en' => '' },
+          body_multiloc: { 'en' => '' },
+          project_id: project.id
+        },
+        {
+          project_id: project.id
+        }
+      ]
+      service.import_ideas(idea_rows, import_as_draft: true)
+
+      expect(project.reload.ideas_count).to eq 2
+
     end
 
     # TODO: Cannot be enabled because mocking image URLs is not working.

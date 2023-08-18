@@ -136,6 +136,13 @@ describe BulkImportIdeas::ImportProjectIdeasService do
       expect(rows[0][:pages]).to eq [1, 2]
       expect(rows[1][:pages]).to eq [3, 4]
     end
+
+    it 'does not return an email if it does not validate' do
+      docs = [[{ name: 'Full name', value: 'John Rambo' }, { name: 'Email address', value: 'john_rambo.com' }]]
+      rows = service.pdf_to_idea_rows docs
+      binding.pry
+      expect(rows[0][:pages]).to eq [1, 2]
+    end
   end
 
   describe 'xlsx_to_idea_rows' do

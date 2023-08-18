@@ -8,11 +8,9 @@ module BulkImportIdeas
       @phase = phase_id ? @project.phases.find(phase_id) : TimelineService.new.current_phase(@project)
       @form_fields = IdeaCustomFieldsService.new(Factory.instance.participation_method_for(@phase || @project).custom_form).enabled_fields
       @locale = locale || @locale
-      # TODO: Document how locale works
     end
 
     def generate_example_xlsx
-      # TODO: Translations for these columns?
       columns = {
         'Full name' => 'Bill Test',
         'Email address' => 'bill@citizenlab.co',
@@ -53,10 +51,8 @@ module BulkImportIdeas
         idea_row[:pages] = doc.pluck(:page).uniq
         idea_row[:project_id] = @project.id
         idea_row[:phase_id] = @phase.id if @phase
-        idea_row[:user_name] = find_field(doc, 'Full name')[:value]
-        idea_row[:user_email] = find_field(doc, 'Email address')[:value]
 
-        # TODO: Ensure find_field [:value] copes with nulls
+        idea_row = find_user_details(doc, idea_row)
         idea_row = process_custom_form_fields(doc, idea_row)
         idea_row
       end
@@ -176,6 +172,16 @@ module BulkImportIdeas
 
     def find_field(doc, name)
       doc.find { |f| f[:name] == name }
+    end
+
+    def find_user_details(doc, idea_row)
+      name = find_field(doc, 'Full name')[:value]
+      idea_row[:user_name] = name[:value] if name
+
+      email = find_field(doc, 'Email address')
+      idea_row[:user_email] = email[:value] if email
+
+      idea_row
     end
   end
 end
