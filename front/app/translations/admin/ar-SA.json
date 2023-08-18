@@ -180,7 +180,6 @@
   "app.components.admin.PostManager.publication_date": "تم النشر في",
   "app.components.admin.PostManager.questionFormTitle": "تحرير السؤال",
   "app.components.admin.PostManager.reactions": "تفاعلات",
-  "app.components.admin.PostManager.remainingTime": "الأيام المتبقية",
   "app.components.admin.PostManager.resetFiltersButton": "إعادة تعيين عوامل التصفية",
   "app.components.admin.PostManager.resetInputFiltersDescription": "أعد ضبط المُرشحات لتعرض جميع المُدخلات. ",
   "app.components.admin.PostManager.saved": "تم الحفظ",

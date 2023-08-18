@@ -180,7 +180,6 @@
   "app.components.admin.PostManager.publication_date": "Publicēts",
   "app.components.admin.PostManager.questionFormTitle": "Rediģēt jautājumu",
   "app.components.admin.PostManager.reactions": "Reakcijas",
-  "app.components.admin.PostManager.remainingTime": "Atlikušās dienas",
   "app.components.admin.PostManager.resetFiltersButton": "Atiestatīt filtrus",
   "app.components.admin.PostManager.resetInputFiltersDescription": "Atiestatiet filtrus, lai redzētu visus ievades datus.",
   "app.components.admin.PostManager.saved": "Saglabāts",

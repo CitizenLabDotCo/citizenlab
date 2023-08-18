@@ -122,7 +122,6 @@
   "app.components.admin.PostManager.projectsTab": "Proiecte",
   "app.components.admin.PostManager.projectsTabTooltipContent": "You can drag and drop posts to move them from one project to another. Note that for timeline projects, you will still need to add the post to a specific phase.",
   "app.components.admin.PostManager.publication_date": "Publicat pe",
-  "app.components.admin.PostManager.remainingTime": "Zile Ramase",
   "app.components.admin.PostManager.resetFiltersButton": "Resetați filtrele",
   "app.components.admin.PostManager.resetInputFiltersDescription": "Reset the filters to see all input.",
   "app.components.admin.PostManager.saved": "Saved",
