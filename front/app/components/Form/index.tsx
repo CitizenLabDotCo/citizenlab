@@ -285,15 +285,15 @@ const Form = memo(
                   translateError,
                 }}
               />
-              {footer && (
-                <Box display="flex" flexDirection="row" justifyContent="center">
-                  <Box w="100%" maxWidth="700px" px="20px" mt="0px" mb="40px">
-                    {footer}
-                  </Box>
-                </Box>
-              )}
             </FormContext.Provider>
           </APIErrorsContext.Provider>
+          {footer && (
+            <Box display="flex" flexDirection="row" justifyContent="center">
+              <Box w="100%" maxWidth="700px" px="20px" mt="0px" mb="40px">
+                {footer}
+              </Box>
+            </Box>
+          )}
         </Box>
         {showSubmitButton && (
           <>
