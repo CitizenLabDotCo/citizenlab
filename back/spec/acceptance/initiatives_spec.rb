@@ -679,7 +679,12 @@ resource 'Initiatives' do
         let(:cosponsor) { create(:user) }
         let(:cosponsor_ids) { [cosponsor.id] }
 
-        example_request 'Update the cosponsors of an initiative' do
+        example 'Update the cosponsors of an initiative' do
+          expect { do_request }
+            .to have_enqueued_job(LogActivityJob)
+            .with(instance_of(CosponsorsInitiative), 'created', @user, instance_of(Integer))
+            .exactly(1).times
+
           assert_status 200
           json_response = json_parse(response_body)
 

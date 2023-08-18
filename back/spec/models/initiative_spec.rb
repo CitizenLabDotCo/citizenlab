@@ -209,7 +209,7 @@ RSpec.describe Initiative do
     let(:cosponsor1) { create(:user) }
     let!(:cosponsors_initiative) { create(:cosponsors_initiative, user_id: cosponsor1.id, initiative_id: initiative.id) }
 
-    it 'adds cosponsor when given array of user IDs including new ID' do
+    it 'adds cosponsors_initiative when given array of user IDs including new ID' do
       expect(initiative.reload.cosponsors).to match_array [cosponsor1]
 
       cosponsor2 = create(:user)
@@ -218,14 +218,22 @@ RSpec.describe Initiative do
       expect(initiative.reload.cosponsors).to match_array [cosponsor1, cosponsor2]
     end
 
-    it 'removes cosponsor when given array of user IDs excluding ID of existing cosponsor' do
+    it 'removes cosponsors_initiative when given array of user IDs excluding ID of existing co-sponsor' do
       cosponsor2 = create(:user)
       initiative.update!(cosponsor_ids: [cosponsor2.id])
 
       expect(initiative.reload.cosponsors).to match_array [cosponsor2]
     end
 
-    it 'can add and remove cosponsors at the same time' do
+    it 'removes cosponsors_initiative even when an associated notifcation exists' do
+      cosponsor2 = create(:user)
+      create(:invitation_to_cosponsor_initiative, cosponsors_initiative: cosponsors_initiative)
+      initiative.update!(cosponsor_ids: [cosponsor2.id])
+
+      expect(initiative.reload.cosponsors).to match_array [cosponsor2]
+    end
+
+    it 'can add and remove cosponsors_initiatives at the same time' do
       cosponsor2 = create(:user)
       cosponsor3 = create(:user)
       initiative.update!(cosponsor_ids: [cosponsor2.id, cosponsor3.id])
@@ -233,7 +241,7 @@ RSpec.describe Initiative do
       expect(initiative.reload.cosponsors).to match_array [cosponsor2, cosponsor3]
     end
 
-    it 'removes all cosponsors when given empty array' do
+    it 'removes all cosponsors_initiatives when given empty array' do
       initiative.update!(cosponsor_ids: [])
 
       expect(initiative.reload.cosponsors).to be_empty
