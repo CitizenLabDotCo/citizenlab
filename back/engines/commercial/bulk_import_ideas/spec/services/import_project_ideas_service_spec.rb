@@ -146,6 +146,15 @@ describe BulkImportIdeas::ImportProjectIdeasService do
       rows = service.pdf_to_idea_rows docs
       expect(rows[0].keys).not_to include :user_email
     end
+
+    it 'can convert a document in french' do
+      service = described_class.new create(:admin), project.id, 'fr-BE', nil
+      docs = [[{ name: 'Titre', value: 'Bonjour' }, { name: 'Description complète', value: "Je suis un chien. J'aime les chats." }]]
+      rows = service.pdf_to_idea_rows docs
+
+      expect(rows[0][:title_multiloc]).to eq({ 'fr-BE': 'Bonjour' })
+      expect(rows[0][:body_multiloc]).to eq({ 'fr-BE': "Je suis un chien. J'aime les chats." })
+    end
   end
 
   describe 'xlsx_to_idea_rows' do
