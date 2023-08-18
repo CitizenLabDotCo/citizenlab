@@ -47,6 +47,8 @@ resource 'InitiativeStatusChange' do
       @user = create(:admin)
       header_token_for @user
 
+      @status_review_pending = create(:initiative_status_review_pending)
+      @status_changes_requested = create(:initiative_status_changes_requested)
       @status_proposed = create(:initiative_status_proposed)
       @status_expired = create(:initiative_status_expired)
       @status_threshold_reached = create(:initiative_status_threshold_reached)
@@ -124,34 +126,60 @@ resource 'InitiativeStatusChange' do
         end
       end
 
-      context 'when the review feature is fully active and the status change is to the proposed status' do
-        before do
-          SettingsService.new.activate_feature! 'initiative_review'
-
-          configuration = AppConfiguration.instance
-          configuration.settings['initiatives']['require_review'] = true
-          configuration.save!
-        end
-
+      context 'when the the status change is to the proposed status' do
         let(:new_initiative) { create(:initiative) }
         let!(:_initiative_status_change) do
           create(
             :initiative_status_change,
-            initiative: new_initiative, initiative_status: create(:initiative_status_review_pending)
+            initiative: new_initiative,
+            initiative_status: @status_review_pending
           )
         end
 
         let(:initiative_id) { new_initiative.id }
         let(:initiative_status_id) { @status_proposed.id }
 
-        example 'Create a status change to the proposed status' do
-          expect(Initiative.review_required?).to be true
+        example 'creation results in locked editing' do
           expect(Initiative.find(initiative_id).editing_locked).to be false
 
           do_request
           assert_status 201
-
           expect(Initiative.find(initiative_id).editing_locked).to be true
+        end
+
+        example "creation results in the logging of an Initiative 'proposed' activity" do
+          expect { do_request }
+            .to have_enqueued_job(LogActivityJob)
+            .with(instance_of(Initiative), 'proposed', @user, instance_of(Integer))
+            .exactly(1).times
+        end
+      end
+
+      context 'when the the status change is to the review_pending status' do
+        let(:new_initiative) { create(:initiative) }
+        let!(:_initiative_status_change) do
+          create(
+            :initiative_status_change,
+            initiative: new_initiative,
+            initiative_status: @status_changes_requested
+          )
+        end
+
+        let(:initiative_id) { new_initiative.id }
+        let(:initiative_status_id) { @status_review_pending.id }
+
+        example 'creation does not result in locked editing' do
+          expect(Initiative.find(initiative_id).editing_locked).to be false
+
+          do_request
+          assert_status 201
+          expect(Initiative.find(initiative_id).editing_locked).to be false
+        end
+
+        example "creation does not result in the logging of an Initiative 'proposed' activity" do
+          expect { do_request }
+            .not_to have_enqueued_job(LogActivityJob)
+            .with(instance_of(Initiative), 'proposed', anything, anything)
         end
       end
     end
