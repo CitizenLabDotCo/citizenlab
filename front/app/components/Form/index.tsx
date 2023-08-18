@@ -1,19 +1,10 @@
-import React, {
-  memo,
-  ReactElement,
-  useCallback,
-  useState,
-  useEffect,
-} from 'react';
+import React, { memo, ReactElement, useState } from 'react';
 
 // jsonforms
-import { JsonForms } from '@jsonforms/react';
 import {
   createAjv,
   JsonSchema7,
-  UISchemaElement,
   isCategorization,
-  Translator,
   Layout,
 } from '@jsonforms/core';
 
@@ -28,6 +19,7 @@ import {
   Button,
 } from '@citizenlab/cl2-component-library';
 import Wrapper from './Components/Wrapper';
+import Fields from './Components/Fields';
 import ButtonBar from './Components/ButtonBar';
 
 // hooks
@@ -40,14 +32,12 @@ import { useIntl, MessageDescriptor } from 'utils/cl-intl';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { selectRenderers } from './formConfig';
 import { sanitizeFormData, isValidData } from './utils';
-import { getDefaultAjvErrorMessage } from 'utils/errorUtils';
+import { parseRequiredMultilocsData } from './parseRequiredMultilocs';
 
 // typings
-import { CLErrors, Message } from 'typings';
-import { ErrorObject } from 'ajv';
-import { APIErrorsContext, FormContext } from './contexts';
+import { CLErrors, Locale } from 'typings';
+import { ApiErrorGetter, AjvErrorGetter, FormData } from './typings';
 
 // hopefully we can standardize this someday
 const Title = styled.h1`
@@ -69,25 +59,13 @@ const InvisibleSubmitButton = styled.button`
   visibility: hidden;
 `;
 
-type FormData = Record<string, any> | null | undefined;
-
 const customAjv = createAjv({ useDefaults: 'empty', removeAdditional: true });
-
-export type AjvErrorGetter = (
-  error: ErrorObject,
-  uischema?: UISchemaElement
-) => Message | undefined;
-
-export type ApiErrorGetter = (
-  errorKey: string,
-  fieldName: string
-) => Message | undefined;
 
 interface Props {
   schema: JsonSchema7;
   uiSchema: Layout;
   onSubmit: (formData: FormData) => Promise<any>;
-  initialFormData?: any;
+  initialFormData: FormData;
   title?: ReactElement;
   /** The event name on which the form should automatically submit, as received from the eventEmitter. If this is set, no submit button is displayed. */
   submitOnEvent?: string;
@@ -109,78 +87,51 @@ interface Props {
   footer?: React.ReactNode;
 }
 
+interface InnerProps extends Props {
+  locale: Locale;
+}
+
 const Form = memo(
   ({
+    locale,
     schema,
     uiSchema,
     initialFormData,
-    onSubmit,
     title,
     inputId,
     formSubmitText,
     submitOnEvent,
-    onChange,
     getAjvErrorMessage,
     getApiErrorMessage,
     config,
     layout,
     footer,
-  }: Props) => {
+    onChange,
+    onSubmit,
+  }: InnerProps) => {
     const { formatMessage } = useIntl();
-    const [data, setData] = useState<FormData>(initialFormData);
+
+    const [data, setData] = useState<FormData>(() => {
+      return parseRequiredMultilocsData(schema, locale, initialFormData);
+    });
+
     const [apiErrors, setApiErrors] = useState<CLErrors | undefined>();
     const [loading, setLoading] = useState(false);
     const [showAllErrors, setShowAllErrors] = useState(false);
-    const safeApiErrorMessages = useCallback(
-      () => (getApiErrorMessage ? getApiErrorMessage : () => undefined),
-      [getApiErrorMessage]
-    );
-
-    // To handle multilocs we had the two options of adding one control for each multiloc thing : InputMultiloc, WYSIWYGMultiloc, or have the top-level multiloc object be a custom layout that shows the appropriate field and render the controls inside normally. I went for the second option.
-    // Both options limited somehow the validation power, and with this solution, it means that the errors on the layout level are not available (IE this field is required, or this field should have at least one property). So this is a hacky thing to make the current locale required, but we will have to find something better would we want to make all locales required like in the admin side or simply is we would want to have a cleaner form component.
-    const [processingInitialMultiloc, setProcessingInitialMultiloc] =
-      useState(true);
-    const [fixedSchema, setSchema] = useState(schema);
-
-    const locale = useLocale();
-
-    // Hacky way of handling required multiloc fields
-    useEffect(() => {
-      if (
-        !isNilOrError(locale) &&
-        !isNilOrError(schema) &&
-        processingInitialMultiloc
-      ) {
-        const requiredMultilocFields = schema?.required?.filter((req) =>
-          req.endsWith('_multiloc')
-        );
-        // requiredMultilocFields can only have elements if schema.required's has, can cast type
-        if (requiredMultilocFields && requiredMultilocFields.length > 0) {
-          setSchema((schema) => {
-            const requiredFieldsObject = Object.fromEntries(
-              requiredMultilocFields.map((req) => [
-                req,
-                { ...schema?.properties?.[req], required: [locale] },
-              ])
-            );
-            return {
-              ...schema,
-              properties: { ...schema.properties, ...requiredFieldsObject },
-            };
-          });
-          setData((data) => ({
-            ...Object.fromEntries(
-              requiredMultilocFields.map((req) => [req, { [locale]: '' }])
-            ),
-            ...data,
-          }));
-        }
-        setProcessingInitialMultiloc(false);
-      }
-    }, [locale, processingInitialMultiloc, schema]);
 
     const isSurvey = config === 'survey';
     const showSubmitButton = !isSurvey;
+
+    const layoutType = layout
+      ? layout
+      : isCategorization(uiSchema)
+      ? 'fullpage'
+      : 'inline';
+
+    const handleChange = (data: FormData) => {
+      setData(data);
+      onChange?.(data);
+    };
 
     const handleSubmit = async (formData?: any) => {
       // Any specified formData has priority over data attribute
@@ -204,31 +155,6 @@ const Form = memo(
 
     useObserveEvent(submitOnEvent, handleSubmit);
 
-    const translateError = useCallback(
-      (
-        error: ErrorObject,
-        _translate: Translator,
-        uischema?: UISchemaElement
-      ) => {
-        const message =
-          getAjvErrorMessage?.(error, uischema) ||
-          getDefaultAjvErrorMessage({
-            keyword: error.keyword,
-            format: error?.parentSchema?.format,
-            type: error?.parentSchema?.type,
-          });
-        return formatMessage(message, error.params);
-      },
-      [formatMessage, getAjvErrorMessage]
-    );
-
-    const layoutType = layout
-      ? layout
-      : isCategorization(uiSchema)
-      ? 'fullpage'
-      : 'inline';
-    const renderers = selectRenderers(config || 'default');
-
     return (
       <Wrapper
         id={uiSchema?.options?.formId}
@@ -243,34 +169,21 @@ const Form = memo(
           }
         >
           {title && <Title>{title}</Title>}
-          <APIErrorsContext.Provider value={apiErrors}>
-            <FormContext.Provider
-              value={{
-                showAllErrors,
-                inputId,
-                getApiErrorMessage: safeApiErrorMessages(),
-                onSubmit: handleSubmit,
-                setShowAllErrors,
-                formSubmitText,
-              }}
-            >
-              <JsonForms
-                schema={fixedSchema}
-                uischema={uiSchema}
-                data={data}
-                renderers={renderers}
-                onChange={({ data }) => {
-                  setData(data);
-                  onChange?.(data);
-                }}
-                validationMode="ValidateAndShow"
-                ajv={customAjv}
-                i18n={{
-                  translateError,
-                }}
-              />
-            </FormContext.Provider>
-          </APIErrorsContext.Provider>
+          <Fields
+            data={data}
+            apiErrors={apiErrors}
+            showAllErrors={showAllErrors}
+            setShowAllErrors={setShowAllErrors}
+            schema={schema}
+            uiSchema={uiSchema}
+            getApiErrorMessage={getApiErrorMessage}
+            getAjvErrorMessage={getAjvErrorMessage}
+            inputId={inputId}
+            formSubmitText={formSubmitText}
+            config={config}
+            onChange={handleChange}
+            onSubmit={handleSubmit}
+          />
           {footer && (
             <Box display="flex" flexDirection="row" justifyContent="center">
               <Box w="100%" maxWidth="700px" px="20px" mt="0px" mb="40px">
@@ -303,4 +216,11 @@ const Form = memo(
   }
 );
 
-export default Form;
+const OuterForm = (props: Props) => {
+  const locale = useLocale();
+  if (isNilOrError(locale)) return null;
+
+  return <Form locale={locale} {...props} />;
+};
+
+export default OuterForm;

@@ -1,4 +1,4 @@
-import { JsonSchema, Layout } from '@jsonforms/core';
+import { Layout, JsonSchema7 } from '@jsonforms/core';
 import Ajv from 'ajv';
 import { isEmpty, forOwn } from 'lodash-es';
 import { isVisible } from './Components/Controls/visibilityUtils';
@@ -22,7 +22,7 @@ const iterateSchema = (
 };
 
 export const getFormSchemaAndData = (
-  schema: JsonSchema,
+  schema: JsonSchema7,
   uiSchema: Layout | PageCategorization,
   data: any,
   ajv: Ajv
@@ -72,7 +72,7 @@ export const sanitizeFormData = (data: any) => {
 };
 
 export const isValidData = (
-  schema: JsonSchema,
+  schema: JsonSchema7,
   uiSchema: Layout | PageCategorization,
   data: any,
   ajv: Ajv,
