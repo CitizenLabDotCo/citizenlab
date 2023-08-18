@@ -2,22 +2,7 @@
 
 require 'rails_helper'
 
-# VCR.configure do |config|
-#   config.before_http_request do |req|
-#     puts req.uri
-#     puts req.body
-#   end
-# end
-
 describe BulkImportIdeas::GoogleFormParserService do
-  # TODO: Cannot get this to record the actual response
-  # around do |example|
-  #   cassette_library_dir = BulkImportIdeas::Engine.root / 'spec/fixtures/vcr_cassettes'
-  #   VcrHelper.use_cassette_library_dir(cassette_library_dir) do
-  #     VCR.use_cassette('google_document_ai') { example.run }
-  #   end
-  # end
-
   it 'gets idea rows from the PDF file' do
     # Comment this stub out to use the actual Google service - used for now as VCR not working
     expect_any_instance_of(described_class).to receive(:parse_pdf).and_return(
@@ -32,13 +17,12 @@ describe BulkImportIdeas::GoogleFormParserService do
         ]
       ]
     )
-    # file_content = File.binread '/cl2_back/engines/commercial/bulk_import_ideas/spec/fixtures/testscan2.pdf'
     file_content = nil
+    # file_content = File.binread '/cl2_back/engines/commercial/bulk_import_ideas/spec/fixtures/wider_lines.pdf'
     service = described_class.new file_content
     docs = service.parse_pdf
 
     expect(docs).not_to be_nil
-
     expect(docs[0].find { |doc| doc[:name] == 'Title:' }[:value]).to eq 'Free donuts for all'
   end
 end

@@ -8,8 +8,9 @@ describe BulkImportIdeas::ImportIdeasService do
   describe 'upload_file' do
     it 'uploads a file successfully' do
       base_64_content = Base64.encode64 File.read('/cl2_back/engines/commercial/bulk_import_ideas/spec/fixtures/testscan.pdf')
-      file = service.upload_file "data:application/pdf;base64,#{base_64_content}", 'pdf'
-      expect(file).not_to be_nil
+      service.upload_file "data:application/pdf;base64,#{base_64_content}", 'pdf'
+      expect(BulkImportIdeas::IdeaImportFile.all.count).to eq 1
+      expect(BulkImportIdeas::IdeaImportFile.first.import_type).to eq 'pdf'
     end
   end
 
@@ -226,8 +227,7 @@ describe BulkImportIdeas::ImportIdeasService do
           title_multiloc: { 'en' => 'My idea title' },
           body_multiloc: { 'en' => 'My idea description' },
           project_title: 'Project title',
-          user_email: 'userimport@citizenlab.co',
-          published_at: '18-07-2022'
+          user_email: 'userimport@citizenlab.co'
         }
       ]
 
@@ -235,8 +235,7 @@ describe BulkImportIdeas::ImportIdeasService do
 
       expect(Idea.count).to eq 1
       idea = Idea.first
-      # TODO: published_at is set even though the status is draft
-      # expect(idea.published_at).to be_nil
+      expect(idea.published_at).to be_nil
       expect(idea.publication_status).to eq 'draft'
     end
 
@@ -330,6 +329,23 @@ describe BulkImportIdeas::ImportIdeasService do
       expect(Idea.count).to eq 1
       idea = Idea.first
       expect(idea.topic_ids).to match_array [topic1.id, topic2.id]
+    end
+
+    it 'can import completely blank ideas when importing as draft' do
+      project = create(:project)
+      idea_rows = [
+        {
+          title_multiloc: { 'en' => '' },
+          body_multiloc: { 'en' => '' },
+          project_id: project.id
+        },
+        {
+          project_id: project.id
+        }
+      ]
+      service.import_ideas(idea_rows, import_as_draft: true)
+
+      expect(project.reload.ideas.count).to eq 2
     end
 
     # TODO: Cannot be enabled because mocking image URLs is not working.

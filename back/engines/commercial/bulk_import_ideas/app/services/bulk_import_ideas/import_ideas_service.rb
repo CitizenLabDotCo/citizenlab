@@ -43,14 +43,13 @@ module BulkImportIdeas
 
     def upload_file(file_content, file_type)
       @file = IdeaImportFile.create!(
+        import_type: file_type,
+        project: @project,
         file_by_content: {
           name: "import.#{file_type}",
-          import_type: file_type,
-          project: @project,
           content: file_content # base64
         }
       )
-      file_type
     end
 
     def xlsx_to_idea_rows(_xlsx)
@@ -71,8 +70,8 @@ module BulkImportIdeas
 
     def import_idea(idea_row, import_as_draft)
       idea_attributes = {}
-      add_title_multiloc idea_row, idea_attributes
-      add_body_multiloc idea_row, idea_attributes
+      add_title_multiloc idea_row, idea_attributes, import_as_draft
+      add_body_multiloc idea_row, idea_attributes, import_as_draft
       add_project idea_row, idea_attributes
       add_published_at idea_row, idea_attributes
       add_publication_status idea_row, idea_attributes, import_as_draft
@@ -93,14 +92,14 @@ module BulkImportIdeas
       idea
     end
 
-    def add_title_multiloc(idea_row, idea_attributes)
-      raise Error.new 'bulk_import_ideas_blank_title', row: idea_row[:id] if idea_row[:title_multiloc].blank?
+    def add_title_multiloc(idea_row, idea_attributes, draft)
+      raise Error.new 'bulk_import_ideas_blank_title', row: idea_row[:id] if idea_row[:title_multiloc].blank? && !draft
 
       idea_attributes[:title_multiloc] = idea_row[:title_multiloc]
     end
 
-    def add_body_multiloc(idea_row, idea_attributes)
-      raise Error.new 'bulk_import_ideas_blank_body', row: idea_row[:id] if idea_row[:body_multiloc].blank?
+    def add_body_multiloc(idea_row, idea_attributes, draft)
+      raise Error.new 'bulk_import_ideas_blank_body', row: idea_row[:id] if idea_row[:body_multiloc].blank? && !draft
 
       idea_attributes[:body_multiloc] = idea_row[:body_multiloc]
     end
@@ -129,7 +128,8 @@ module BulkImportIdeas
 
     def add_author(idea_row, idea_attributes)
       user_created = false
-      if idea_row[:user_email].blank?
+      # TEMP CHANGE FOR DEMO
+      if idea_row[:user_email].blank? || idea_row[:user_email].exclude?('@')
         author = User.new(unique_code: SecureRandom.uuid, locale: @locale)
         author = add_author_name author, idea_row
         author.save!
