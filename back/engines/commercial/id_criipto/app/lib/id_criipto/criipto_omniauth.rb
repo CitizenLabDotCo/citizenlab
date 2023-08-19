@@ -26,6 +26,7 @@ module IdCriipto
         end
 
         {
+          birthyear: Time.new(birthdate).year,
           custom_field_values: custom_field_values
         }
       end
