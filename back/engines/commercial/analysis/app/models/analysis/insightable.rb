@@ -5,9 +5,11 @@ module Analysis
     extend ActiveSupport::Concern
 
     included do
-      delegate :analysis, to: :insight
+      delegate :analysis, :filters, :inputs_ids, to: :insight
 
       has_one :insight, as: :insightable, touch: true
+
+      accepts_nested_attributes_for :insight
     end
   end
 end
