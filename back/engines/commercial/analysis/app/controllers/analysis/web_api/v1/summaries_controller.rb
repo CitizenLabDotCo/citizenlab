@@ -9,7 +9,9 @@ module Analysis
         before_action :set_summary, only: [:destroy]
 
         def index
-          summaries = @analysis.summaries
+          summaries = Summary
+            .joins(:insight)
+            .where(insight: { analysis: @analysis })
             .order(created_at: :asc)
             .includes(:background_task)
           render json: WebApi::V1::SummarySerializer.new(
@@ -23,9 +25,12 @@ module Analysis
         # front-end should call this before initiating the summary
         def pre_check
           @summary = Summary.new(
-            analysis: @analysis,
             background_task: SummarizationTask.new(analysis: @analysis),
-            **summary_params
+            **summary_params.except(:filters),
+            insight_attributes: {
+              analysis: @analysis,
+              **summary_params.slice(:filters)
+            }
           )
           plan = SummarizationMethod::Base.plan(@summary)
           render json: WebApi::V1::SummaryPreCheckSerializer.new(
@@ -36,9 +41,12 @@ module Analysis
 
         def create
           @summary = Summary.new(
-            analysis: @analysis,
             background_task: SummarizationTask.new(analysis: @analysis),
-            **summary_params
+            **summary_params.except(:filters),
+            insight_attributes: {
+              analysis: @analysis,
+              **summary_params.slice(:filters)
+            }
           )
           plan = SummarizationMethod::Base.plan(@summary)
           @summary.summarization_method = plan.summarization_method_class::SUMMARIZATION_METHOD
@@ -74,7 +82,10 @@ module Analysis
         end
 
         def set_summary
-          @summary = @analysis.summaries.find(params[:id])
+          @summary = Summary
+            .joins(:insight)
+            .where(insight: { analysis: @analysis })
+            .find(params[:id])
         end
 
         def summary_params
