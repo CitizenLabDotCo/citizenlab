@@ -24,6 +24,7 @@ import impactTrackingConfiguration from './commercial/impact_tracking';
 
 import idAuth0Configuration from './commercial/id_auth0';
 import idBosaFasConfiguration from './commercial/id_bosa_fas';
+import idNemLogInConfiguration from './commercial/id_nemlog_in';
 import idCowConfiguration from './commercial/id_cow';
 import idBogusConfiguration from './commercial/id_bogus';
 import idIdCardLookupConfiguration from './commercial/id_id_card_lookup';
@@ -101,6 +102,9 @@ export default loadModules([
   },
   {
     configuration: idBosaFasConfiguration,
+  },
+  {
+    configuration: idNemLogInConfiguration,
   },
   {
     configuration: idCowConfiguration,
