@@ -126,6 +126,9 @@ resource 'InitiativeStatusChange' do
         end
       end
 
+      # If the review feature is off, the initiative_status_change with code 'proposed'
+      # is created at the model level when the initiative is published.
+      # Thus, this POST request can only happen when the review feature is on.
       context 'when the the status change is to the proposed status' do
         let(:new_initiative) { create(:initiative) }
         let!(:_initiative_status_change) do
@@ -155,7 +158,7 @@ resource 'InitiativeStatusChange' do
         end
       end
 
-      context 'when the the status change is to the review_pending status' do
+      context 'when the the status change is to the changes_requested status' do
         let(:new_initiative) { create(:initiative) }
         let!(:_initiative_status_change) do
           create(
