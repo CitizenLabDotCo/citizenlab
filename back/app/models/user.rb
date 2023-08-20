@@ -278,6 +278,14 @@ class User < ApplicationRecord
     project_moderator.or(User.project_folder_moderator).where.not(id: admin).not_citizenlab_member
   }
 
+  def update_merging_custom_fields!(attributes)
+    attributes = attributes.deep_stringify_keys
+    update!(
+      **attributes,
+      custom_field_values: custom_field_values.merge(attributes['custom_field_values'] || {})
+    )
+  end
+
   def assign_email_or_phone
     # Hack to embed phone numbers in email
     email_or_embedded_phone = PhoneService.new.emailize_email_or_phone(email)
