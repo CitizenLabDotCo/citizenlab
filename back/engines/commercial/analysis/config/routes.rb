@@ -12,6 +12,7 @@ Analysis::Engine.routes.draw do
         resources :summaries, only: %i[index create destroy] do
           post :pre_check, on: :collection
         end
+        resources :insights, only: %i[index destroy]
       end
     end
   end

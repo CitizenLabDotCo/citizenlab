@@ -6,7 +6,7 @@ module Analysis
     FILTERS_JSON_SCHEMA = JSON.parse(FILTERS_JSON_SCHEMA_STR)
 
     belongs_to :analysis, class_name: 'Analysis::Analysis'
-    delegated_type :insightable, types: %w[Summary Question]
+    delegated_type :insightable, types: %w[Analysis::Summary Analysis::Question], dependent: :destroy
 
     validates :filters, json: { schema: FILTERS_JSON_SCHEMA }
     validate :inputs_ids_unique

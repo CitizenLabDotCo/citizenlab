@@ -128,6 +128,7 @@ RSpec.configure do |config|
     require './engines/commercial/analysis/spec/factories/summaries'
     require './engines/commercial/analysis/spec/factories/taggings'
     require './engines/commercial/analysis/spec/factories/tags'
+    require './engines/commercial/analysis/spec/factories/questions'
     require './engines/free/email_campaigns/spec/factories/campaigns'
     require './engines/free/email_campaigns/spec/factories/campaigns_groups'
     require './engines/free/email_campaigns/spec/factories/consents'
