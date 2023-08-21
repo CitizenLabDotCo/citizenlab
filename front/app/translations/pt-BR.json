@@ -1513,7 +1513,6 @@
   "app.containers.UsersShowPage.a11y_likesCount": "{likesCount, plural, =0 {sem gostos} one {1 gosto} other {# likes}}",
   "app.containers.UsersShowPage.a11y_postCommentPostedIn": "Publicação em que este comentário foi publicado:",
   "app.containers.UsersShowPage.commentsWithCount": "Comentários ({commentsCount})",
-  "app.containers.UsersShowPage.displayCountMobile": "({count})",
   "app.containers.UsersShowPage.editProfile": "Editar meu perfil.",
   "app.containers.UsersShowPage.emptyInfoText": "Você não está seguindo nenhum item do filtro especificado acima.",
   "app.containers.UsersShowPage.eventsWithCount": "Eventos ({eventsCount})",
