@@ -33,16 +33,16 @@ de:
       "new_comment_on_reacted_initiative": Neuer Kommentar zu einem Vorschlag, für den ich gestimmt habe
       "new_idea_for_admin": Neuer Beitrag zu einem Projekt, das moderiert wird
       "new_initiative_for_admin": Neuer Vorschlag
-      "official_feedback_on_idea_you_follow": Aktualisieren Sie eine Idee, die Sie verfolgen
-      "official_feedback_on_initiative_you_follow": Update zu einem Vorschlag, den Sie verfolgen
+      "official_feedback_on_idea_you_follow": Offizielles Update zu einer Idee, der Sie folgen
+      "official_feedback_on_initiative_you_follow": Offizielles Update zu einem Vorschlag, dem Sie folgen
       "password_reset": Zurücksetzen des Passworts
       "project_moderation_rights_received": Projektmanagementrechte erhalten
       "project_folder_moderation_rights_received": Ordnermanagementrechte erhalten
       "project_phase_started": Neue Projektphase
       "project_phase_upcoming": Bevorstehende neue Projektphase
       "project_published": Projekt veröffentlicht
-      "status_change_on_idea_you_follow": Statusänderung einer Idee, die Sie verfolgen
-      "status_change_on_initiative_you_follow": Statusänderung eines Vorschlags, den Sie verfolgen
+      "status_change_on_idea_you_follow": Statusänderung einer Idee, der Sie folgen
+      "status_change_on_initiative_you_follow": Statusänderung eines Vorschlags, dem Sie folgen
       "threshold_reached_for_admin": Vorschlag hat die Abstimmungsschwelle erreicht
       "welcome": Nach der Registrierung
       "admin_digest": Wöchentliche Übersicht für Admins
@@ -59,7 +59,7 @@ de:
       author_wrote: '%{authorName} schrieb:'
       cta_goto_idea: 'Zum Beitrag'
       cta_goto_proposal: 'Zum Vorschlag'
-      cta_goto_project: 'Zu diesem Projekt gehen'
+      cta_goto_project: 'Zum Projekt'
     schedules:
       weekly:
         "0": "Wöchentlich, sonntags um %{hourOfDay}"
@@ -77,7 +77,7 @@ de:
       "statement": "Diese E-Mail wurde Ihnen von CitizenLab im Namen von %{organizationName} zugesandt, da Sie ein*e registrierte*r Nutzer*in von %{organizationLink} sind. Hier können Sie diese und andere E-Mails %{unsubscribeLink}, wenn Sie in Zukunft keine Benachrichtigungen mehr erhalten möchten."
       "unsubscribe_text": "abbestellen"
     follow:
-      "unfollow_here": "Sie haben diese Benachrichtigung wegen eines Artikels erhalten, dem Sie folgen. <a href=\"%{unfollow_url}\">Sie können das Verfolgen hier aufheben.</a>"
+      "unfollow_here": "Sie haben diese Benachrichtigung wegen eines Elementes erhalten, dem Sie folgen. <a href=\"%{unfollow_url}\">Sie können hier aufhören diesem zu folgen.</a>"
     comment_deleted_by_admin:
       reason: 'Der Grund, warum Ihr Kommentar gelöscht wurde:'
       cta_view: 'Zur Plattform'
@@ -345,15 +345,15 @@ de:
       main_header: '''%{post}'' hat einen neuen internen Kommentar erhalten'
       preheader: '''%{post}'' hat einen neuen internen Kommentar erhalten'
     official_feedback_on_idea_you_follow:
-      header_message: '%{officialName} hat ein Update zu der Idee ''%{ideaTitle}'' gegeben. Klicke auf den Button unten, um auf %{officialName} zu reagieren.'
-      header_title: 'Es gibt ein Update zu einer Idee, die Sie verfolgen'
-      subject: 'Eine Idee, der Sie folgen, hat ein offizielles Update auf der Plattform von %{organizationName}erhalten.'
-      preheader: 'Es gibt ein Update zu einer Idee, die Sie verfolgen'
+      header_message: '%{officialName} hat ein offizielles Update zu der Idee ''%{ideaTitle}'' gegeben. Klicke auf den Button unten, um auf %{officialName} zu reagieren.'
+      header_title: 'Es gibt ein offizielles Update zu einer Idee, der Sie folgen'
+      subject: 'Eine Idee, der Sie folgen, hat ein offizielles Update auf der Plattform von %{organizationName} erhalten'
+      preheader: 'Es gibt ein offizielles Update zu einer Idee, der Sie folgen'
     official_feedback_on_initiative_you_follow:
-      header_message: '%{officialName} hat ein Update zum Vorschlag ''%{initiativeTitle}'' gegeben. Klicke auf den Button unten, um auf %{organizationName} zu reagieren.'
-      header_title: 'Es gibt ein Update zu einem Vorschlag, dem Sie folgen'
-      subject: 'Ein Vorschlag, dem Sie folgen, hat ein offizielles Update auf der Plattform von %{organizationName}erhalten.'
-      preheader: 'Es gibt ein Update zu einem Vorschlag, dem Sie folgen'
+      header_message: '%{officialName} hat ein offizielles Update zum Vorschlag ''%{initiativeTitle}'' gegeben. Klicke auf den Button unten, um auf %{organizationName} zu reagieren.'
+      header_title: 'Es gibt ein offizielles Update zu einem Vorschlag, dem Sie folgen'
+      subject: 'Ein Vorschlag, dem Sie folgen, hat ein offizielles Update auf der Plattform von %{organizationName} erhalten'
+      preheader: 'Es gibt ein offizielles Update zu einem Vorschlag, dem Sie folgen'
     mention_in_official_feedback:
       cta_reply_to: '%{organizationName} antworten'
       event_description: '%{organizationName} hat dich in seinem Feedback zu der Idee ''%{post}'' erwähnt. Klicke auf den unten stehenden Link, um mit %{organizationName} zu interagieren'
@@ -407,16 +407,16 @@ de:
       subject: 'Richten Sie alles für die neue Phase von %{projectName} ein'
       preheader: 'Bald beginnt eine neue Phase für %{projectName}'
     project_published:
-      subject: 'Ein neues Projekt wurde auf der Plattform von %{organizationName}veröffentlicht.'
+      subject: 'Ein neues Projekt wurde auf der Plattform von %{organizationName} veröffentlicht'
       header_title: 'Ein neues Projekt wurde veröffentlicht'
       header_message: 'Die Beteiligungsplattform von %{organizationName} hat gerade das folgende Projekt veröffentlicht:'
       preheader: 'Ein neues Projekt wurde veröffentlicht'
     status_change_on_idea_you_follow:
       status_change: 'Der neue Status dieses Beitrags ist ''%{ideaStatus}'''
       header_message: '%{organizationName} hat den Status der Idee „%{ideaTitle}“ auf ihrer digitalen Beteiligungsplattform aktualisiert.'
-      header_title: 'Eine Idee, die Sie verfolgen, hat einen neuen Status'
+      header_title: 'Eine Idee, der Sie folgen, hat einen neuen Status'
       subject: 'Der Status einer Idee, der Sie folgen, wurde geändert'
-      preheader: 'Eine Idee, die Sie verfolgen, hat einen neuen Status'
+      preheader: 'Eine Idee, der Sie folgen, hat einen neuen Status'
     status_change_on_initiative_you_follow:
       status_change: 'Der neue Status des Vorschlags ist ''%{initiativeStatus}'''
       header_message: 'Der Status des Vorschlags ''%{initiativeTitle}'' wurde auf der digitalen Beteiligungsplattform von %{organizationName} aktualisiert.'
