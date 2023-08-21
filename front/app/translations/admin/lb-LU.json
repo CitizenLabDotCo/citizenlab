@@ -2017,6 +2017,7 @@
   "app.containers.admin.ideas.all.inputManagerPageTitle": "Input Manager",
   "app.containers.admin.ideas.all.tabOverview": "Iwwersiicht",
   "app.containers.admin.import.downloadTemplate": "Download template",
+  "app.containers.admin.import.ideasBeingImported": "Är Iddien ginn importéiert. Dëst kann eng Zäit huelen. Maacht w.e.g. dës Säit net zou bis den Import erfollegräich ofgeschloss ass - mir wäerten Iech matdeelen wann et ass.",
   "app.containers.admin.import.importDescription": "Import existing inputs from an Excel file.",
   "app.containers.admin.import.importInput": "Import input",
   "app.containers.admin.import.importInputs": "Import inputs",
