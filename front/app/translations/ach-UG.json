@@ -465,6 +465,7 @@
   "app.components.VerificationModal.toParticipateInThisProject": "crwdns798005:0crwdne798005:0",
   "app.components.VerificationModal.verifyBOSA": "crwdns798007:0crwdne798007:0",
   "app.components.VerificationModal.verifyClaveUnica": "crwdns798009:0crwdne798009:0",
+  "app.components.VerificationModal.verifyNemLogIn": "crwdns855759:0crwdne855759:0",
   "app.components.VerificationModal.verifyYourIdentity": "crwdns798011:0crwdne798011:0",
   "app.components.VoteControl.budgetingFutureEnabled": "crwdns798013:0{enabledFromDate}crwdne798013:0",
   "app.components.VoteControl.budgetingNotPermitted": "crwdns798015:0crwdne798015:0",
