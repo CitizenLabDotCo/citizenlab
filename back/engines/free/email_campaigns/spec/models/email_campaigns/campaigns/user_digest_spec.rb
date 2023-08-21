@@ -20,6 +20,13 @@ RSpec.describe EmailCampaigns::Campaigns::UserDigest do
     let!(:top_comment) { create(:comment, post: top_idea, created_at: Time.now - 3.minutes) }
     let!(:comments) { create_list(:comment, 3, post: top_idea, parent: top_comment) + create_list(:comment, 5, post: top_idea) + [top_comment] }
     let!(:draft_project) { create(:project, admin_publication_attributes: { publication_status: 'draft' }, created_at: Time.now - 2.minutes) }
+    # let!(:old_initiative) { create(:initiative) }
+    # let!(:old_initiative_status_change) do
+    #   create(:initiative_status_change,
+    #     initiative: old_initiative,
+    #     initiative_status: create(:initiative_status_proposed),
+    #     created_at: Time.now - 2.days)
+    # end
 
     it 'generates a command with the desired payload and tracked content' do
       command = campaign.generate_commands(recipient: user).first
@@ -62,6 +69,30 @@ RSpec.describe EmailCampaigns::Campaigns::UserDigest do
 
       command = campaign.generate_commands(recipient: user).first
       expect(command.dig(:tracked_content, :idea_ids)).not_to include response.id
+    end
+
+    it "only includes 'new' initiatives" do
+      proposed_status = create(:initiative_status_proposed)
+
+      old_initiative = create(:initiative)
+      _old_initiative_status_change = create(
+        :initiative_status_change,
+        initiative: old_initiative,
+        initiative_status: proposed_status,
+        created_at: 8.days.ago # more than 1 week ago
+      )
+
+      new_initiative = create(:initiative)
+      _new_initiative_status_change = create(
+        :initiative_status_change,
+        initiative: new_initiative,
+        initiative_status: proposed_status,
+        created_at: 6.days.ago # less than 1 week ago
+      )
+
+      command = campaign.generate_commands(recipient: user).first
+
+      expect(command.dig(:event_payload, :new_initiatives).pluck(:id)).to match_array [new_initiative.id]
     end
   end
 
