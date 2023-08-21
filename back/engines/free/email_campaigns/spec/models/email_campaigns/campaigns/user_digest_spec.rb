@@ -20,13 +20,6 @@ RSpec.describe EmailCampaigns::Campaigns::UserDigest do
     let!(:top_comment) { create(:comment, post: top_idea, created_at: Time.now - 3.minutes) }
     let!(:comments) { create_list(:comment, 3, post: top_idea, parent: top_comment) + create_list(:comment, 5, post: top_idea) + [top_comment] }
     let!(:draft_project) { create(:project, admin_publication_attributes: { publication_status: 'draft' }, created_at: Time.now - 2.minutes) }
-    # let!(:old_initiative) { create(:initiative) }
-    # let!(:old_initiative_status_change) do
-    #   create(:initiative_status_change,
-    #     initiative: old_initiative,
-    #     initiative_status: create(:initiative_status_proposed),
-    #     created_at: Time.now - 2.days)
-    # end
 
     it 'generates a command with the desired payload and tracked content' do
       command = campaign.generate_commands(recipient: user).first
