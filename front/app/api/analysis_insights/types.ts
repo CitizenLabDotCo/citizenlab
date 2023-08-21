@@ -1,0 +1,42 @@
+import { Keys } from 'utils/cl-react-query/types';
+import summariesKeys from './keys';
+import { IInputsFilterParams } from 'api/analysis_inputs/types';
+
+export type InsightsKeys = Keys<typeof summariesKeys>;
+
+export interface IInsightsParams {
+  analysisId: string;
+}
+
+export interface IInsightData {
+  id: string;
+  type: 'insight';
+
+  relationships: {
+    background_task: {
+      data: {
+        id: string;
+        type: 'background_task';
+      };
+    };
+    insightable: {
+      data: {
+        id: string;
+        type: 'summary' | 'analysis_question';
+      };
+    };
+  };
+}
+
+export interface IInsights {
+  data: IInsightData[];
+}
+
+export interface IInsight {
+  data: IInsightData;
+}
+
+export interface IInsightAdd {
+  analysisId: string;
+  filters: IInputsFilterParams;
+}

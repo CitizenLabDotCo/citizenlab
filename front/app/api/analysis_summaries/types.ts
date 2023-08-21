@@ -6,9 +6,10 @@ export type SummariesKeys = Keys<typeof summariesKeys>;
 
 export interface ISummaryParams {
   analysisId: string;
+  id: string;
 }
 
-export interface ISummaryParam {
+export interface ISummaryData {
   id: string;
   type: 'summary';
   attributes: {
@@ -31,11 +32,11 @@ export interface ISummaryParam {
 }
 
 export interface ISummaries {
-  data: ISummaryParam[];
+  data: ISummaryData[];
 }
 
 export interface ISummary {
-  data: ISummaryParam;
+  data: ISummaryData;
 }
 
 export interface ISummaryAdd {

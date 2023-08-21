@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
 
-import useAnalysisSummaries from 'api/analysis_summaries/useAnalysisSummaries';
+import useAnalysisInsights from 'api/analysis_insights/useAnalysisInsights';
 
 import { useParams } from 'react-router-dom';
 
@@ -10,13 +10,13 @@ import Summary from './Summary';
 
 const Insights = () => {
   const { analysisId } = useParams() as { analysisId: string };
-  const { data: summaries, isLoading } = useAnalysisSummaries({
+  const { data: insights, isLoading } = useAnalysisInsights({
     analysisId,
   });
 
   return (
     <Box>
-      {!isLoading && summaries?.data?.length === 0 && (
+      {!isLoading && insights?.data?.length === 0 && (
         <>
           <Text px="24px" color="grey400">
             Your text summaries will be displayed here, but you currently do not
@@ -27,8 +27,8 @@ const Insights = () => {
           </Text>
         </>
       )}
-      {summaries?.data.map((summary) => (
-        <Summary key={summary.id} summary={summary} />
+      {insights?.data.map((insight) => (
+        <Summary key={insight.id} insight={insight} />
       ))}
     </Box>
   );

@@ -2,9 +2,9 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import reactStringReplace from 'react-string-replace';
 
-import useDeleteAnalysisSummary from 'api/analysis_summaries/useDeleteAnalysisSummary';
+import useDeleteAnalysisInsight from 'api/analysis_insights/useDeleteAnalysisInsight';
 import useAnalysisBackgroundTask from 'api/analysis_background_tasks/useAnalysisBackgroundTask';
-import { ISummary } from 'api/analysis_summaries/types';
+import { IInsightData } from 'api/analysis_insights/types';
 
 import {
   Box,
@@ -19,6 +19,7 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import styled from 'styled-components';
 import { useSelectedInputContext } from '../SelectedInputContext';
+import useAnalysisSummary from 'api/analysis_summaries/useAnalysisSummary';
 
 const StyledSummaryText = styled.div`
   white-space: pre-wrap;
@@ -30,18 +31,22 @@ const StyledButton = styled.button`
 `;
 
 type Props = {
-  summary: ISummary['data'];
+  insight: IInsightData;
 };
 
-const Summary = ({ summary }: Props) => {
+const Summary = ({ insight }: Props) => {
   const { setSelectedInputId } = useSelectedInputContext();
   const { formatMessage } = useIntl();
   const { analysisId } = useParams() as { analysisId: string };
-  const { mutate: deleteSummary } = useDeleteAnalysisSummary();
+  const { mutate: deleteSummary } = useDeleteAnalysisInsight();
+  const { data: summary } = useAnalysisSummary({
+    analysisId,
+    id: insight.relationships.insightable.data.id,
+  });
 
   const { data: backgroundTask } = useAnalysisBackgroundTask(
     analysisId,
-    summary.relationships.background_task.data.id
+    summary?.data.relationships.background_task.data.id
   );
   const processing =
     backgroundTask?.data.attributes.state === 'in_progress' ||
@@ -68,11 +73,12 @@ const Summary = ({ summary }: Props) => {
     );
   };
 
-  const hasFilters = !!Object.keys(summary.attributes.filters).length;
+  if (!summary) return null;
+  const hasFilters = !!Object.keys(summary.data.attributes.filters).length;
 
   return (
     <Box
-      key={summary.id}
+      key={summary.data.id}
       bgColor={colors.teal100}
       p="16px"
       mb="8px"
@@ -89,7 +95,7 @@ const Summary = ({ summary }: Props) => {
           {hasFilters && (
             <>
               <Box>Summary for</Box>
-              {Object.entries(summary.attributes.filters).map(([k, v]) => (
+              {Object.entries(summary.data.attributes.filters).map(([k, v]) => (
                 <Box
                   key={k}
                   bgColor={colors.teal200}
@@ -112,7 +118,7 @@ const Summary = ({ summary }: Props) => {
         </Box>
         <Box>
           <StyledSummaryText>
-            {replaceIdRefsWithLinks(summary.attributes.summary)}
+            {replaceIdRefsWithLinks(summary.data.attributes.summary)}
           </StyledSummaryText>
           {processing && <Spinner />}
         </Box>
@@ -125,14 +131,14 @@ const Summary = ({ summary }: Props) => {
       >
         <IconButton
           iconName="delete"
-          onClick={() => handleSummaryDelete(summary.id)}
+          onClick={() => handleSummaryDelete(insight.id)}
           iconColor={colors.teal400}
           iconColorOnHover={colors.teal700}
           a11y_buttonActionMessage={formatMessage(messages.deleteSummary)}
         />
-        {summary.attributes.accuracy && (
+        {summary.data.attributes.accuracy && (
           <Box color={colors.teal700}>
-            Accuracy {summary.attributes.accuracy * 100}%
+            Accuracy {summary.data.attributes.accuracy * 100}%
           </Box>
         )}
       </Box>
