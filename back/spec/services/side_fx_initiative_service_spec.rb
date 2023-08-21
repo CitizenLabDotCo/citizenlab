@@ -11,7 +11,7 @@ describe SideFxInitiativeService do
       initiative = create(:initiative, publication_status: 'draft', author: user)
       initiative.update!(publication_status: 'published')
 
-      expect { service.after_update(initiative, user) }
+      expect { service.after_update(initiative, user, _cosponsor_ids = []) }
         .to enqueue_job(LogActivityJob)
         .with(initiative, 'published', user, initiative.published_at.to_i)
         .exactly(1).times
@@ -20,7 +20,7 @@ describe SideFxInitiativeService do
     it "logs a 'changed' action job when the initiative has changed" do
       initiative = create(:initiative)
       initiative.update!(title_multiloc: { en: 'something else' })
-      expect { service.after_update(initiative, user) }
+      expect { service.after_update(initiative, user, _cosponsor_ids = []) }
         .to enqueue_job(LogActivityJob).with(initiative, 'changed', any_args).exactly(1).times
     end
 
@@ -29,7 +29,7 @@ describe SideFxInitiativeService do
       old_initiative_title = initiative.title_multiloc
       initiative.update!(title_multiloc: { en: 'changed' })
 
-      expect { service.after_update(initiative, user) }
+      expect { service.after_update(initiative, user, _cosponsor_ids = []) }
         .to enqueue_job(LogActivityJob).with(
           initiative,
           'changed_title',
@@ -43,7 +43,7 @@ describe SideFxInitiativeService do
       old_initiative_body = initiative.body_multiloc
       initiative.update!(body_multiloc: { en: 'changed' })
 
-      expect { service.after_update(initiative, user) }
+      expect { service.after_update(initiative, user, _cosponsor_ids = []) }
         .to enqueue_job(LogActivityJob).with(
           initiative,
           'changed_body',
@@ -51,7 +51,7 @@ describe SideFxInitiativeService do
           payload: { change: [old_initiative_body, initiative.body_multiloc] }
         )
     end
-    
+
     context 'when initiative is changes_requested' do
       let(:initiative) do
         create(:initiative_status_review_pending)
@@ -104,7 +104,7 @@ describe SideFxInitiativeService do
         .exactly(1).times
     end
   end
-  
+
   describe 'after_create' do
     it "logs a 'published' action job when publication_state is published" do
       initiative = create(:initiative, publication_status: 'published', author: user)

@@ -45,7 +45,6 @@ class SideFxInitiativeService
     end
 
     log_activities_if_cosponsors_added(initiative, user, old_cosponsor_ids)
-
     return unless initiative.body_multiloc_previously_changed?
 
     LogActivityJob.perform_later(initiative, 'changed_body', user_for_activity_on_anonymizable_item(initiative, user), initiative.updated_at.to_i, payload: { change: initiative.body_multiloc_previous_change })
