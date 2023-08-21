@@ -2017,6 +2017,7 @@
   "app.containers.admin.ideas.all.inputManagerPageTitle": "Indatahanteraren",
   "app.containers.admin.ideas.all.tabOverview": "Översikt",
   "app.containers.admin.import.downloadTemplate": "Ladda ner mall",
+  "app.containers.admin.import.ideasBeingImported": "Dina idéer importeras. Detta kan ta en stund. Stäng inte den här sidan förrän importen har slutförts - vi meddelar dig när det har skett.",
   "app.containers.admin.import.importDescription": "Importera befintliga indata från en Excel-fil.",
   "app.containers.admin.import.importInput": "Importera indata",
   "app.containers.admin.import.importInputs": "Importera indata",
