@@ -17,7 +17,7 @@ const useUpdateEvent = () => {
     mutationFn: updateEvent,
     onSuccess: (result) => {
       queryClient.invalidateQueries({
-        queryKey: eventsKeys.item({ eventId: result.data.id }),
+        queryKey: eventsKeys.item({ id: result.data.id }),
       });
       queryClient.invalidateQueries({ queryKey: eventsKeys.lists() });
     },
