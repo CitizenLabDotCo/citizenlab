@@ -761,7 +761,7 @@
   "app.containers.Admin.initiatives.requireReviewInfo1": "Las propuestas no serán visibles hasta que un administrador las revise y apruebe.",
   "app.containers.Admin.initiatives.requireReviewLabel": "Exigir la revisión de las propuestas",
   "app.containers.Admin.initiatives.requireReviewTooltip": "Es imposible editar las propuestas una vez revisadas y aprobadas",
-  "app.containers.Admin.initiatives.review": "Revisa",
+  "app.containers.Admin.initiatives.review": "Revisión",
   "app.containers.Admin.initiatives.settingsTab": "Ajustes",
   "app.containers.Admin.initiatives.settingsTabTitle": "Configure sus propuestas",
   "app.containers.Admin.initiatives.showProposalEnabled": "Propuestas",
