@@ -465,6 +465,7 @@
   "app.components.VerificationModal.toParticipateInThisProject": "for at deltage i dette projekt",
   "app.components.VerificationModal.verifyBOSA": "Verificer med itsme eller eID",
   "app.components.VerificationModal.verifyClaveUnica": "Verificer med Clave Unica",
+  "app.components.VerificationModal.verifyNemLogIn": "Bekræft med MitID",
   "app.components.VerificationModal.verifyYourIdentity": "{tenantName, select, DeloitteDK {Bekræft din bruger} other {Bekræft din identitet}}",
   "app.components.VoteControl.budgetingFutureEnabled": "Du kan tildele dit budget startende fra {enabledFromDate}.",
   "app.components.VoteControl.budgetingNotPermitted": "Deltagende budgettering er kun aktiveret for bestemte grupper.",
