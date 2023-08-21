@@ -2017,6 +2017,7 @@
   "app.containers.admin.ideas.all.inputManagerPageTitle": "Ievades datu pārvaldnieks",
   "app.containers.admin.ideas.all.tabOverview": "Pārskats",
   "app.containers.admin.import.downloadTemplate": "Lejupielādēt veidni",
+  "app.containers.admin.import.ideasBeingImported": "Jūsu idejas tiek importētas. Tas var aizņemt kādu laiku. Lūdzu, neaizveriet šo lapu, kamēr importēšana nav sekmīgi pabeigta - mēs jūs par to informēsim.",
   "app.containers.admin.import.importDescription": "Importēt esošos ievades datus no Excel faila.",
   "app.containers.admin.import.importInput": "Importēt ievadi",
   "app.containers.admin.import.importInputs": "Importēt ievades datus",
