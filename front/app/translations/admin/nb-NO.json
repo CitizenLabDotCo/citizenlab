@@ -2017,6 +2017,7 @@
   "app.containers.admin.ideas.all.inputManagerPageTitle": "Innspillsadministrator",
   "app.containers.admin.ideas.all.tabOverview": "Oversikt",
   "app.containers.admin.import.downloadTemplate": "Last ned malen",
+  "app.containers.admin.import.ideasBeingImported": "Ideene dine blir importert. Dette kan ta en stund. Vennligst ikke lukk denne siden før importen er fullført – vi vil gi deg beskjed når den er.",
   "app.containers.admin.import.importDescription": "Importer eksisterende oppføringer fra en Excel-fil.",
   "app.containers.admin.import.importInput": "Importer oppføring",
   "app.containers.admin.import.importInputs": "Importer oppføringer",
