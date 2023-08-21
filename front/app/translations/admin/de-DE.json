@@ -2017,6 +2017,7 @@
   "app.containers.admin.ideas.all.inputManagerPageTitle": "Beitragsmanager",
   "app.containers.admin.ideas.all.tabOverview": "Übersicht",
   "app.containers.admin.import.downloadTemplate": "Vorlage herunterladen",
+  "app.containers.admin.import.ideasBeingImported": "Ihre Ideen werden importiert. Dies kann eine Weile dauern. Bitte schließen Sie diese Seite erst, wenn der Import erfolgreich abgeschlossen ist - wir informieren Sie, wenn dies der Fall ist.",
   "app.containers.admin.import.importDescription": "Importieren Sie analog gesammelte Beiträge aus einer Excel-Datei.",
   "app.containers.admin.import.importInput": "Beiträge importieren",
   "app.containers.admin.import.importInputs": "Beiträge importieren",
