@@ -22,7 +22,7 @@ class Permission < ApplicationRecord
   PERMITTED_BIES = %w[everyone everyone_confirmed_email users groups admins_moderators].freeze
   ACTIONS = {
     # NOTE: Order of actions in each array is used when using :order_by_action
-    nil => %w[visiting posting_initiative commenting_initiative reacting_initiative],
+    nil => %w[visiting following posting_initiative commenting_initiative reacting_initiative],
     'information' => [],
     'ideation' => %w[posting_idea commenting_idea reacting_idea],
     'native_survey' => %w[posting_idea],
@@ -87,7 +87,11 @@ class Permission < ApplicationRecord
   private
 
   def set_permitted_by_and_global_custom_fields
-    self.permitted_by ||= 'users'
+    self.permitted_by ||= if action == 'following'
+      'everyone_confirmed_email'
+    else
+      'users'
+    end
     self.global_custom_fields ||= (permitted_by == 'users')
   end
 

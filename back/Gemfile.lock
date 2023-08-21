@@ -128,6 +128,14 @@ PATH
       verification
 
 PATH
+  remote: engines/commercial/id_criipto
+  specs:
+    id_criipto (0.1.0)
+      omniauth_openid_connect (~> 0.7.1)
+      rails (~> 7.0)
+      verification
+
+PATH
   remote: engines/commercial/id_franceconnect
   specs:
     id_franceconnect (0.1.0)
@@ -157,6 +165,13 @@ PATH
       rails (~> 7.0)
       savon (~> 2.12.0)
       verification
+
+PATH
+  remote: engines/commercial/id_nemlog_in
+  specs:
+    id_nemlog_in (1.0.0)
+      omniauth-saml (~> 1.10.3)
+      rails (~> 7.0)
 
 PATH
   remote: engines/commercial/id_oostende_rrn
@@ -830,7 +845,7 @@ GEM
       interception (>= 0.5)
       pry (>= 0.12.0)
     public_suffix (4.0.7)
-    puma (6.2.2)
+    puma (6.3.1)
       nio4r (~> 2.0)
     pundit (2.3.0)
       activesupport (>= 3.0.0)
@@ -1169,10 +1184,12 @@ DEPENDENCIES
   id_bosa_fas!
   id_clave_unica!
   id_cow!
+  id_criipto!
   id_franceconnect!
   id_gent_rrn!
   id_hoplr!
   id_id_card_lookup!
+  id_nemlog_in!
   id_oostende_rrn!
   id_vienna_saml!
   idea_assignment!
@@ -1217,7 +1234,7 @@ DEPENDENCIES
   pry-rails
   pry-rescue
   public_api!
-  puma (~> 6.2.2)
+  puma (~> 6.3.1)
   pundit (~> 2.3.0)
   que (~> 1.4.1)
   que-web (~> 0.10.0)
