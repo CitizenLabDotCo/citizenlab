@@ -23,7 +23,6 @@ import PDFViewer from 'components/PDFViewer';
 // styling
 import styled from 'styled-components';
 import { colors, stylingConsts } from 'utils/styleUtils';
-import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 // typings
 import { FormData } from 'components/Form/typings';
@@ -42,7 +41,7 @@ interface Props {
   setFormData: (formData: FormData) => void;
 }
 
-const ReviewSection = (props: Props) => {
+const ReviewSection = ({ formData, setFormData }: Props) => {
   const { projectId } = useParams() as {
     projectId: string;
   };
@@ -141,12 +140,7 @@ const ReviewSection = (props: Props) => {
               style={{ cursor: 'pointer' }}
               bgColor={idea.id === ideaId ? TEAL50 : undefined}
               onClick={() => {
-                // horrible hack to make this work. TODO fix
-                removeSearchParams(['idea_id']);
-
-                setTimeout(() => {
-                  updateSearchParams({ idea_id: idea.id });
-                }, 200);
+                updateSearchParams({ idea_id: idea.id });
               }}
             >
               <Text
@@ -171,7 +165,13 @@ const ReviewSection = (props: Props) => {
           justifyContent="center"
           px="12px"
         >
-          {idea && <IdeaForm projectId={projectId} {...props} />}
+          {idea && (
+            <IdeaForm
+              projectId={projectId}
+              formData={formData}
+              setFormData={setFormData}
+            />
+          )}
         </Box>
         <Box w="40%">
           {ideaMetadata && pages && (

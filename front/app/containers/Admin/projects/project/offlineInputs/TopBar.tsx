@@ -57,7 +57,12 @@ const TopBar = ({ onApproveIdea, onClickPDFImport }: Props) => {
 
       <Box display="flex">
         {onApproveIdea && (
-          <Button icon="check" onClick={onApproveIdea} marginRight="20px">
+          <Button
+            icon="check"
+            onClick={onApproveIdea}
+            marginRight="20px"
+            bgColor={colors.success}
+          >
             <FormattedMessage {...messages.approve} />
           </Button>
         )}
