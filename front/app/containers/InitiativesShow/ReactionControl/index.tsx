@@ -9,7 +9,6 @@ import ThresholdReached from './ThresholdReached';
 import Answered from './Answered';
 import Ineligible from './Ineligible';
 import ReviewPending from './ReviewPending';
-import Custom from './Custom';
 import FollowUnfollow from 'components/FollowUnfollow';
 import { Box } from '@citizenlab/cl2-component-library';
 
