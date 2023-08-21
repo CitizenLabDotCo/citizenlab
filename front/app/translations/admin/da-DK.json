@@ -2017,6 +2017,7 @@
   "app.containers.admin.ideas.all.inputManagerPageTitle": "Idéoverblik",
   "app.containers.admin.ideas.all.tabOverview": "Oversigt",
   "app.containers.admin.import.downloadTemplate": "Download skabelon",
+  "app.containers.admin.import.ideasBeingImported": "Dine ideer er ved at blive importeret. Det kan tage et stykke tid. Luk venligst ikke denne side, før importen er gennemført - vi giver dig besked, når det er sket.",
   "app.containers.admin.import.importDescription": "Import af eksisterende input fra en Excel-fil.",
   "app.containers.admin.import.importInput": "Import af input",
   "app.containers.admin.import.importInputs": "Import af input",
