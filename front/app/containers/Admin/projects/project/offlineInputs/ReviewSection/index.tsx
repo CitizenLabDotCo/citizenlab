@@ -111,7 +111,14 @@ const ReviewSection = () => {
             </StyledBox>
           ))}
         </Box>
-        <Box w="35%" borderRight={`1px ${colors.grey400} solid`}>
+        <Box
+          w="35%"
+          borderRight={`1px ${colors.grey400} solid`}
+          overflowY="scroll"
+          display="flex"
+          justifyContent="center"
+          px="12px"
+        >
           {idea && ideaId && (
             <IdeaForm
               projectId={projectId}

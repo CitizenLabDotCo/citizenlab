@@ -109,7 +109,7 @@ const CLPageLayout = memo(
     };
 
     const handleNextAndSubmit = async () => {
-      if (showSubmit) {
+      if (showSubmit && onSubmit) {
         setIsLoading(true);
         await onSubmit(getFilteredDataForUserPath(userPagePath, data));
         return;

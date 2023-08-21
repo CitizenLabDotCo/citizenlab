@@ -62,7 +62,10 @@ const InvisibleSubmitButton = styled.button`
   visibility: hidden;
 `;
 
-const customAjv = createAjv({ useDefaults: 'empty', removeAdditional: true });
+export const customAjv = createAjv({
+  useDefaults: 'empty',
+  removeAdditional: true,
+});
 
 interface Props {
   schema: JsonSchema7;

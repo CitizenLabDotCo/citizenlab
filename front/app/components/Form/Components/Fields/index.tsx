@@ -31,12 +31,12 @@ interface Props {
   schema: JsonSchema7;
   uiSchema: Layout;
   getApiErrorMessage?: ApiErrorGetter;
-  getAjvErrorMessage: AjvErrorGetter;
+  getAjvErrorMessage?: AjvErrorGetter;
   inputId?: string;
   formSubmitText?: MessageDescriptor;
   config?: 'default' | 'input' | 'survey';
   onChange: (formData: FormData) => void;
-  onSubmit: (formData: FormData) => Promise<any>;
+  onSubmit?: (formData: FormData) => Promise<any>;
 }
 
 const Fields = ({

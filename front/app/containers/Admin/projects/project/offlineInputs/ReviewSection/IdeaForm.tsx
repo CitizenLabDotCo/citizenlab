@@ -1,15 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // hooks
 import useInputSchema from 'hooks/useInputSchema';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
-import Form from 'components/Form';
+import { Box, Button } from '@citizenlab/cl2-component-library';
+import Fields from 'components/Form/Components/Fields';
 
 // routing
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+
+// utils
+import { customAjv } from 'components/Form';
 
 // typings
 import { Multiloc } from 'typings';
@@ -27,7 +30,10 @@ const IdeaForm = ({
   title_multiloc,
   body_multiloc,
 }: Props) => {
-  const initialFormData = { title_multiloc, body_multiloc }; // TODO
+  const [showAllErrors, setShowAllErrors] = useState(false);
+  const [formData, setFormData] = useState<Record<string, any> | null>(null);
+  const visibleData = formData || { title_multiloc, body_multiloc };
+
   const { mutateAsync: updateIdea } = useUpdateIdea();
 
   const { schema, uiSchema } = useInputSchema({
@@ -37,7 +43,9 @@ const IdeaForm = ({
 
   if (!schema || !uiSchema) return null;
 
-  const onSubmit = async ({ title_multiloc, body_multiloc }) => {
+  const onSubmit = async () => {
+    const { title_multiloc, body_multiloc } = visibleData;
+
     await updateIdea({
       id: ideaId,
       requestBody: {
@@ -52,37 +60,33 @@ const IdeaForm = ({
 
   return (
     <Box w="90%">
-      <Form
+      <Fields
+        ajv={customAjv}
+        showAllErrors={showAllErrors}
+        setShowAllErrors={setShowAllErrors}
         schema={schema}
         uiSchema={filterUiSchema(uiSchema)}
-        onSubmit={onSubmit}
-        initialFormData={initialFormData}
-        getAjvErrorMessage={(() => {}) as any}
-        // getApiErrorMessage={getApiErrorMessage}
-        inputId={undefined}
+        data={visibleData}
+        onChange={setFormData}
         config="input"
       />
     </Box>
   );
 };
 
+const NOT_SUPPORTED_SCOPES = new Set([
+  '#/properties/idea_images_attributes',
+  '#/properties/idea_files_attributes',
+  '#/properties/topic_ids',
+]);
+
 const filterUiSchema = (uiSchema) => {
   return {
-    ...uiSchema,
+    options: uiSchema.options,
+    type: 'VerticalLayout',
     elements: uiSchema.elements
-      .filter((element) => element.label !== 'Images and attachments')
-      .map((element) => {
-        if (element.label === 'Details') {
-          return {
-            ...element,
-            elements: element.elements.filter((subElement) => {
-              return subElement.label !== 'Tags';
-            }),
-          };
-        } else {
-          return element;
-        }
-      }),
+      .flatMap((category) => category.elements)
+      .filter((element) => !NOT_SUPPORTED_SCOPES.has(element.scope)),
   };
 };
 
