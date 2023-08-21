@@ -279,6 +279,8 @@ export interface Props {
   withCTAButton?: boolean;
 }
 
+Quill.debug('error');
+
 Quill.register('modules/blotFormatter', BlotFormatter);
 
 // BEGIN allow video resizing styles

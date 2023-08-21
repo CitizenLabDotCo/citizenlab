@@ -94,7 +94,10 @@ const InternalCommentBody = ({
 
   useEffect(() => {
     if (comment && !commentContent) {
-      setCommentContent(getCommentContent(comment.data.attributes.body));
+      getCommentContent(comment.data.attributes.body).then((commentContent) => {
+        setCommentContent(commentContent);
+      });
+
       setEditableCommentContent(
         getEditableCommentContent(comment.data.attributes.body)
       );

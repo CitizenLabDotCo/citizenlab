@@ -4,7 +4,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import usersKeys from './keys';
 import { IUser, UsersKeys } from './types';
 
-const fetchUserById = ({ id }: { id?: string | null }) =>
+export const fetchUserById = ({ id }: { id?: string | null }) =>
   fetcher<IUser>({
     path: `/users/${id}`,
     action: 'get',

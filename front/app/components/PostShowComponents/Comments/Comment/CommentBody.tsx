@@ -104,7 +104,11 @@ const CommentBody = ({
       const localizedEditableCommentContent = localize(
         comment.data.attributes.body_multiloc
       );
-      setCommentContent(getCommentContent(localizedCommentContent));
+
+      getCommentContent(localizedCommentContent).then((commentContent) => {
+        setCommentContent(commentContent);
+      });
+
       setEditableCommentContent(
         getEditableCommentContent(localizedEditableCommentContent)
       );
