@@ -6,20 +6,6 @@ module Analysis
       class SummariesController < ApplicationController
         skip_after_action :verify_policy_scoped # The analysis is authorized instead.
         before_action :set_analysis
-        before_action :set_summary, only: [:destroy]
-
-        def index
-          summaries = Summary
-            .joins(:insight)
-            .where(insight: { analysis: @analysis })
-            .order(created_at: :asc)
-            .includes(:background_task)
-          render json: WebApi::V1::SummarySerializer.new(
-            summaries,
-            params: jsonapi_serializer_params,
-            include: [:background_task]
-          ).serializable_hash
-        end
 
         # Used to check whether a summary is possible with the given filters,
         # front-end should call this before initiating the summary
@@ -65,27 +51,11 @@ module Analysis
           end
         end
 
-        def destroy
-          if @summary.destroy
-            side_fx_service.after_destroy(@summary, current_user)
-            head :ok
-          else
-            render json: { errors: @summary.errors.details }, status: :unprocessable_entity
-          end
-        end
-
         private
 
         def set_analysis
           @analysis = Analysis.find(params[:analysis_id])
           authorize(@analysis, :show?)
-        end
-
-        def set_summary
-          @summary = Summary
-            .joins(:insight)
-            .where(insight: { analysis: @analysis })
-            .find(params[:id])
         end
 
         def summary_params

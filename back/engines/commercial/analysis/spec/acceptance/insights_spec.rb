@@ -32,11 +32,6 @@ resource 'Insights' do
       expect(response_data[1]).to match({
         id: summary.insight_id,
         type: 'insight',
-        attributes: {
-          filters: {},
-          created_at: kind_of(String),
-          updated_at: kind_of(String)
-        },
         relationships: {
           insightable: {
             data: {
