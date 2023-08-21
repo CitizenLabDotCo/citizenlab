@@ -56,6 +56,9 @@ module IdNemlogIn
     end
 
     def profile_to_user_attrs(auth)
+      puts 'Decrypted auth document:'
+      puts auth.extra['response_object'].decrypted_document
+
       first_name    = auth.extra.raw_info['https://data.gov.dk/model/core/eid/firstName']
       last_name     = auth.extra.raw_info['https://data.gov.dk/model/core/eid/lastName']
       cpr_number    = auth.extra.raw_info['https://data.gov.dk/model/core/eid/cprNumber']
@@ -74,7 +77,9 @@ module IdNemlogIn
       }
     end
 
-    # copied from back/engines/commercial/id_vienna_saml/app/lib/id_vienna_saml/citizen_saml_omniauth.rb
+    # TODO: do not store auth_hash
+    # We don't want to store any PII, but also raises Stacklevel too deep error as here
+    # back/engines/commercial/id_vienna_saml/app/lib/id_vienna_saml/citizen_saml_omniauth.rb
     def filter_auth_to_persist(auth)
       auth_to_persist = auth.deep_dup
       auth_to_persist.tap { |h| h[:extra].delete(:response_object) }
@@ -105,6 +110,8 @@ module IdNemlogIn
         # Transform `token` param to `RelayState`, which is preserved by SAML.
         # Nemlog-in gives error if it's longer than 512 chars.
         idp_sso_target_url_runtime_params: { token: :RelayState },
+        # it's idp_slo_service_url in newest version of omniauth-saml
+        idp_slo_target_url: idp_metadata[:idp_slo_service_url],
 
         security: {
           authn_requests_signed: true, # using false gives "A technical error has occurred" on https://test-devtest4-nemlog-in.pp.mitid.dk/
@@ -130,10 +137,16 @@ module IdNemlogIn
       %i[]
     end
 
-    def logout_url; end
+    def logout_url(_user)
+      URI.join(Frontend::UrlService.new.home_url, '/auth/nemlog_in/spslo').to_s
+    end
 
     def email_always_present?
       false
+    end
+
+    def verification_prioritized?
+      true
     end
 
     private
