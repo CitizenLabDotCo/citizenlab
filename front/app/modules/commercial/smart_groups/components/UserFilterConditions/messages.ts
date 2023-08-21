@@ -9,6 +9,10 @@ export default defineMessages({
     id: 'app.components.admin.UserFilterConditions.field_email',
     defaultMessage: 'Email',
   },
+  field_follow: {
+    id: 'app.components.admin.UserFilterConditions.field_follow',
+    defaultMessage: 'Follow',
+  },
   field_lives_in: {
     id: 'app.components.admin.UserFilterConditions.field_lives_in',
     defaultMessage: 'Lives in',
@@ -225,6 +229,46 @@ export default defineMessages({
   predicate_not_is_verified: {
     id: 'app.components.admin.UserFilterConditions.predicate_not_is_verified',
     defaultMessage: 'is not verified',
+  },
+  predicate_something: {
+    id: 'app.components.admin.UserFilterConditions.predicate_something',
+    defaultMessage: 'something',
+  },
+  predicate_nothing: {
+    id: 'app.components.admin.UserFilterConditions.predicate_nothing',
+    defaultMessage: 'nothing',
+  },
+  predicate_is_one_of_projects: {
+    id: 'app.components.admin.UserFilterConditions.predicate_is_one_of_projects',
+    defaultMessage: 'one of the projects',
+  },
+  predicate_is_not_project: {
+    id: 'app.components.admin.UserFilterConditions.predicate_is_not_project',
+    defaultMessage: 'excludes project',
+  },
+  predicate_is_one_of_folders: {
+    id: 'app.components.admin.UserFilterConditions.predicate_is_one_of_folders',
+    defaultMessage: 'one of the folders',
+  },
+  predicate_is_not_folder: {
+    id: 'app.components.admin.UserFilterConditions.predicate_is_not_folder',
+    defaultMessage: 'excludes folder',
+  },
+  predicate_is_one_of_ideas: {
+    id: 'app.components.admin.UserFilterConditions.predicate_is_one_of_ideas',
+    defaultMessage: 'one of the ideas',
+  },
+  predicate_is_not_idea: {
+    id: 'app.components.admin.UserFilterConditions.predicate_is_not_idea',
+    defaultMessage: 'excludes idea',
+  },
+  predicate_is_one_of_initiatives: {
+    id: 'app.components.admin.UserFilterConditions.predicate_is_one_of_initiatives',
+    defaultMessage: 'one of the proposals',
+  },
+  predicate_is_not_initiative: {
+    id: 'app.components.admin.UserFilterConditions.predicate_is_not_initiative',
+    defaultMessage: 'excludes proposal',
   },
 
   rulesFormLabelField: {

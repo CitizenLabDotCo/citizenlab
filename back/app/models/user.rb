@@ -32,6 +32,7 @@
 #  block_reason                        :string
 #  block_end_at                        :datetime
 #  new_email                           :string
+#  followings_count                    :integer          default(0), not null
 #
 # Indexes
 #
@@ -128,6 +129,10 @@ class User < ApplicationRecord
     AppConfiguration.instance.feature_activated?('abbreviated_user_names') ? by_first_name(username) : by_full_name(username)
   }
 
+  scope :from_follows, (proc do |follows|
+    where(id: joins(:follows).where(follows: follows))
+  end)
+
   has_many :ideas, foreign_key: :author_id, dependent: :nullify
   has_many :initiatives, foreign_key: :author_id, dependent: :nullify
   has_many :assigned_initiatives, class_name: 'Initiative', foreign_key: :assignee_id, dependent: :nullify
@@ -136,6 +141,7 @@ class User < ApplicationRecord
   has_many :official_feedbacks, dependent: :nullify
   has_many :reactions, dependent: :nullify
   has_many :event_attendances, class_name: 'Events::Attendance', foreign_key: :attendee_id, dependent: :destroy
+  has_many :follows, class_name: 'Follower', dependent: :destroy
 
   after_initialize do
     next unless has_attribute?('roles')

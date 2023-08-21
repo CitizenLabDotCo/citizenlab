@@ -18,6 +18,7 @@ const folderPublication: IAdminPublicationData = {
     publication_description_multiloc: {},
     publication_description_preview_multiloc: {},
     publication_slug: 'folder_1',
+    followers_count: 3,
   },
   relationships: {
     children: { data: [] },
@@ -27,6 +28,9 @@ const folderPublication: IAdminPublicationData = {
         id: folderId,
         type: 'folder',
       },
+    },
+    user_follower: {
+      data: null,
     },
   },
 };

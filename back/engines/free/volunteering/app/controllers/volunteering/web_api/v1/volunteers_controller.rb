@@ -40,7 +40,6 @@ module Volunteering
           @volunteer = Volunteer.new(cause: @cause, user: current_user)
           authorize @volunteer
 
-          SideFxVolunteerService.new.before_create(@volunteer, current_user)
           if @volunteer.save
             SideFxVolunteerService.new.after_create(@volunteer, current_user)
             render json: WebApi::V1::VolunteerSerializer.new(
@@ -56,7 +55,6 @@ module Volunteering
           @volunteer = Volunteer.find_by!(user: current_user, cause: @cause)
           authorize(@volunteer)
 
-          SideFxVolunteerService.new.before_destroy(@volunteer, current_user)
           volunteer = @volunteer.destroy
           if volunteer.destroyed?
             SideFxVolunteerService.new.after_destroy(volunteer, current_user)

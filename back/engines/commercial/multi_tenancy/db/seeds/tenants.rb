@@ -417,6 +417,10 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            follow: {
+              enabled: true,
+              allowed: true
+            },
             seat_based_billing: {
               enabled: true,
               allowed: true

@@ -11,6 +11,7 @@ import { IdeaCardsWithoutFiltersSidebar } from 'components/IdeaCards';
 import ContentContainer from 'components/ContentContainer';
 import UsersShowPageMeta from './UsersShowPageMeta';
 import Button from 'components/UI/Button';
+import Following from './Following';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -18,6 +19,7 @@ import messages from './messages';
 
 // hooks
 import useUserBySlug from 'api/users/useUserBySlug';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // style
 import styled from 'styled-components';
@@ -82,7 +84,7 @@ const UserIdeas = styled.div`
   justify-content: center;
 `;
 
-export type UserTab = 'ideas' | 'comments';
+export type UserTab = 'ideas' | 'comments' | 'following';
 
 interface InnerProps {
   className?: string;
@@ -103,6 +105,9 @@ interface QueryParameters {
 export const UsersShowPage = memo<InnerProps>(({ className, user }) => {
   const [currentTab, setCurrentTab] = useState<UserTab>('ideas');
   const [savedScrollIndex, setSavedScrollIndex] = useState<number>(0);
+  const isFollowingEnabled = useFeatureFlag({
+    name: 'follow',
+  });
 
   const [searchParams] = useSearchParams();
   const sortParam = searchParams.get('sort') as Sort | null;
@@ -154,6 +159,9 @@ export const UsersShowPage = memo<InnerProps>(({ className, user }) => {
           )}
 
           {currentTab === 'comments' && <UserComments userId={user.id} />}
+          {currentTab === 'following' && isFollowingEnabled && (
+            <Following userId={user.id} />
+          )}
         </StyledContentContainer>
       </Container>
     </>

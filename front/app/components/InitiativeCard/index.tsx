@@ -3,9 +3,10 @@ import { get, isString } from 'lodash-es';
 
 // components
 import Card from 'components/UI/Card';
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Box, Icon } from '@citizenlab/cl2-component-library';
 import Author from 'components/Author';
 import ReactionIndicator from './ReactionIndicator';
+import FollowUnfollow from 'components/FollowUnfollow';
 
 // i18n
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
@@ -62,12 +63,14 @@ const CommentInfo = styled.div`
 export interface Props {
   initiativeId: string;
   className?: string;
+  showFollowButton?: boolean;
 }
 
 const InitiativeCard = ({
   localize,
   className,
   initiativeId,
+  showFollowButton,
 }: Props & InjectedLocalized) => {
   const { data: initiative } = useInitiativeById(initiativeId);
   const authorId = get(initiative, 'data.relationships.author.data.id');
@@ -112,25 +115,40 @@ const InitiativeCard = ({
         />
       }
       footer={
-        <FooterInner>
-          <ReactionIndicator initiativeId={initiativeId} />
-          <Spacer />
-          <CommentInfo>
-            <CommentIcon name="comments" ariaHidden />
-            <CommentCount
-              aria-hidden
-              className="e2e-initiativecard-comment-count"
-            >
-              {commentsCount}
-            </CommentCount>
-            <ScreenReaderOnly>
-              <FormattedMessage
-                {...messages.xComments}
-                values={{ commentsCount }}
+        <>
+          <FooterInner>
+            <ReactionIndicator initiativeId={initiativeId} />
+            <Spacer />
+            <CommentInfo>
+              <CommentIcon name="comments" ariaHidden />
+              <CommentCount
+                aria-hidden
+                className="e2e-initiativecard-comment-count"
+              >
+                {commentsCount}
+              </CommentCount>
+              <ScreenReaderOnly>
+                <FormattedMessage
+                  {...messages.xComments}
+                  values={{ commentsCount }}
+                />
+              </ScreenReaderOnly>
+            </CommentInfo>
+          </FooterInner>
+          {showFollowButton && (
+            <Box p="8px" display="flex" justifyContent="flex-end">
+              <FollowUnfollow
+                followableType="initiatives"
+                followableId={initiative.data.id}
+                followersCount={initiative.data.attributes.followers_count}
+                followerId={
+                  initiative.data.relationships.user_follower?.data?.id
+                }
+                py="2px"
               />
-            </ScreenReaderOnly>
-          </CommentInfo>
-        </FooterInner>
+            </Box>
+          )}
+        </>
       }
     />
   );
