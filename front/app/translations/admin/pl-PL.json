@@ -2017,6 +2017,7 @@
   "app.containers.admin.ideas.all.inputManagerPageTitle": "Zarządzanie inicjatywami",
   "app.containers.admin.ideas.all.tabOverview": "Przegląd",
   "app.containers.admin.import.downloadTemplate": "Pobierz szablon",
+  "app.containers.admin.import.ideasBeingImported": "Twoje pomysły są importowane. Może to trochę potrwać. Nie zamykaj tej strony, dopóki import nie zostanie pomyślnie zakończony - poinformujemy Cię o tym.",
   "app.containers.admin.import.importDescription": "Importuj istniejące dane wejściowe z pliku Excel.",
   "app.containers.admin.import.importInput": "Importuj dane wejściowe",
   "app.containers.admin.import.importInputs": "Importuj dane wejściowe",
