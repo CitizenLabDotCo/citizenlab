@@ -6,7 +6,7 @@ export type QuestionsKeys = Keys<typeof questionsKeys>;
 
 export interface IQuestionParams {
   analysisId: string;
-  id?: string;
+  id: string;
 }
 
 export interface IQuestionData {

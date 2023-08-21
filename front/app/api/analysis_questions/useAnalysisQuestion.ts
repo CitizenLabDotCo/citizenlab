@@ -15,7 +15,6 @@ const useAnalysisQuestion = (params: IQuestionParams) => {
   return useQuery<IQuestion, CLErrors, IQuestion, QuestionsKeys>({
     queryKey: questionsKeys.item({ id: params.id }),
     queryFn: () => fetchQuestion(params),
-    enabled: !!params.id,
   });
 };
 

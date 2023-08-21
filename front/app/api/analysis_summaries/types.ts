@@ -6,7 +6,7 @@ export type SummariesKeys = Keys<typeof summariesKeys>;
 
 export interface ISummaryParams {
   analysisId: string;
-  id?: string;
+  id: string;
 }
 
 export interface ISummaryData {

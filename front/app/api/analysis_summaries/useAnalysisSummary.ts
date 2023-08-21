@@ -15,7 +15,6 @@ const useAnalysisSummary = (params: ISummaryParams) => {
   return useQuery<ISummary, CLErrors, ISummary, SummariesKeys>({
     queryKey: summariesKeys.item({ id: params.id }),
     queryFn: () => fetchSummary(params),
-    enabled: !!params.id,
   });
 };
 
