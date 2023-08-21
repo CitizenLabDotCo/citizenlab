@@ -2017,6 +2017,7 @@
   "app.containers.admin.ideas.all.inputManagerPageTitle": "Менаџер уноса",
   "app.containers.admin.ideas.all.tabOverview": "Преглед",
   "app.containers.admin.import.downloadTemplate": "Преузмите шаблон",
+  "app.containers.admin.import.ideasBeingImported": "Ваше идеје се увозе. Ово може потрајати. Молимо вас да не затварате ову страницу док се увоз успешно не заврши - обавестићемо вас када буде.",
   "app.containers.admin.import.importDescription": "Увезите постојеће уносе из Екцел датотеке.",
   "app.containers.admin.import.importInput": "Увезите унос",
   "app.containers.admin.import.importInputs": "Увезите улазе",
