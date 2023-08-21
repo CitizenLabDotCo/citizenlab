@@ -75,6 +75,9 @@ const AuthProviders = memo<Props>(
     const hoplrLoginEnabled = useFeatureFlag({
       name: 'hoplr_login',
     });
+    const nemlogInLoginEnabled = useFeatureFlag({
+      name: 'nemlog_in_login',
+    });
 
     const azureProviderName =
       tenantSettings?.azure_ad_login?.login_mechanism_name;
@@ -111,7 +114,8 @@ const AuthProviders = memo<Props>(
       azureAdLoginEnabled ||
       viennaCitizenLoginEnabled ||
       claveUnicaLoginEnabled ||
-      hoplrLoginEnabled;
+      hoplrLoginEnabled ||
+      nemlogInLoginEnabled;
 
     return (
       <Container
@@ -146,6 +150,16 @@ const AuthProviders = memo<Props>(
             onContinue={onSelectAuthProvider}
           >
             <FormattedMessage {...messages.continueWithHoplr} />
+          </StyledAuthProviderButton>
+        )}
+
+        {nemlogInLoginEnabled && (
+          <StyledAuthProviderButton
+            flow={flow}
+            authProvider="nemlog_in"
+            onContinue={onSelectAuthProvider}
+          >
+            <FormattedMessage {...messages.continueWithNemlogIn} />
           </StyledAuthProviderButton>
         )}
 

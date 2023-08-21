@@ -14,6 +14,7 @@ export interface SSOProviderMap {
   google: 'google';
   clave_unica: 'clave_unica';
   hoplr: 'hoplr';
+  nemlog_in: 'nemlog_in';
 }
 
 export type SSOProvider = SSOProviderMap[keyof SSOProviderMap];

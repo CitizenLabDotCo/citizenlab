@@ -59,14 +59,25 @@ module IdNemlogIn
       first_name    = auth.extra.raw_info['https://data.gov.dk/model/core/eid/firstName']
       last_name     = auth.extra.raw_info['https://data.gov.dk/model/core/eid/lastName']
       cpr_number    = auth.extra.raw_info['https://data.gov.dk/model/core/eid/cprNumber']
+      email         = auth.extra.raw_info['https://data.gov.dk/model/core/eid/email']
+      locale = AppConfiguration.instance.settings.dig('core', 'locales').first
 
       {
         first_name: first_name,
         last_name: last_name,
+        locale: locale,
+        email: email,
+
         custom_field_values: {
           municipality_code: fetch_municipality_code(cpr_number)
         }
       }
+    end
+
+    # copied from back/engines/commercial/id_vienna_saml/app/lib/id_vienna_saml/citizen_saml_omniauth.rb
+    def filter_auth_to_persist(auth)
+      auth_to_persist = auth.deep_dup
+      auth_to_persist.tap { |h| h[:extra].delete(:response_object) }
     end
 
     def omniauth_setup(configuration, env)
@@ -120,6 +131,10 @@ module IdNemlogIn
     end
 
     def logout_url; end
+
+    def email_always_present?
+      false
+    end
 
     private
 
