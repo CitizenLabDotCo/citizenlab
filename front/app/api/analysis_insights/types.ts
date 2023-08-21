@@ -1,8 +1,8 @@
 import { Keys } from 'utils/cl-react-query/types';
-import summariesKeys from './keys';
+import insightsKeys from './keys';
 import { IInputsFilterParams } from 'api/analysis_inputs/types';
 
-export type InsightsKeys = Keys<typeof summariesKeys>;
+export type InsightsKeys = Keys<typeof insightsKeys>;
 
 export interface IInsightsParams {
   analysisId: string;

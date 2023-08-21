@@ -9,6 +9,7 @@ import { useParams } from 'react-router-dom';
 import Summary from './Summary';
 import SummarizeButton from './SummarizeButton';
 import QuestionButton from './QuestionButton';
+import QuestionInput from './QuestionInput';
 
 const Insights = () => {
   const [isQuestionInputOpen, setIsQuestionInputOpen] = useState(false);
@@ -34,6 +35,7 @@ const Insights = () => {
           </Text>
         </>
       )}
+      {isQuestionInputOpen && <QuestionInput />}
       {insights?.data.map((insight) => (
         <Summary key={insight.id} insight={insight} />
       ))}
