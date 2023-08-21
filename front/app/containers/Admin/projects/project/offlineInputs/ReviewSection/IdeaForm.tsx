@@ -59,6 +59,8 @@ const IdeaForm = ({
     removeSearchParams(['idea_id']);
   };
 
+  onSubmit;
+
   return (
     <Box w="90%">
       <Fields

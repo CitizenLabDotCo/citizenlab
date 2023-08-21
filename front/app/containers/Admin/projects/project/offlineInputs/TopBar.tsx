@@ -46,7 +46,7 @@ const TopBar = ({ onClickPDFImport }: Props) => {
       <Box display="flex">
         <GoBackButton linkTo={`/admin/projects/${projectId}/ideas`} />
         <Box ml="24px">
-          <Title variant="h4" m="0px">
+          <Title variant="h4" m="0px" mt="1px">
             {localize(projectTitle)}
           </Title>
         </Box>

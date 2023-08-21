@@ -12,6 +12,8 @@ import useIdeaById from 'api/ideas/useIdeaById';
 
 // i18n
 import useLocalize from 'hooks/useLocalize';
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from '../messages';
 
 // components
 import { Box, Spinner, Title, Text } from '@citizenlab/cl2-component-library';
@@ -56,7 +58,42 @@ const ReviewSection = () => {
     );
   }
 
-  if (ideas === undefined || ideas.data.length === 0) return null;
+  if (ideas === undefined) return null;
+
+  if (ideas.data.length === 0) {
+    return (
+      <Box
+        w="100%"
+        h="100%"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        px="50px"
+      >
+        <Box
+          w="100%"
+          maxWidth="500px"
+          h="200px"
+          bgColor={colors.white}
+          borderRadius={stylingConsts.borderRadius}
+          boxShadow={`0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)`}
+          px="20px"
+        >
+          <Title variant="h1" color="primary">
+            <FormattedMessage {...messages.ideaImporter} />
+          </Title>
+          <Text>
+            <FormattedMessage
+              {...messages.noIdeasYet}
+              values={{
+                importPdf: <FormattedMessage {...messages.importPdf} />,
+              }}
+            />
+          </Text>
+        </Box>
+      </Box>
+    );
+  }
 
   const pages = ideaMetadata?.data.attributes.page_range.map((page) =>
     Number(page)
@@ -73,7 +110,7 @@ const ReviewSection = () => {
       flexDirection="column"
     >
       <Title variant="h2" color="primary" px="40px" mb="40px">
-        Ideas imported
+        <FormattedMessage {...messages.importedIdeas} />
       </Title>
 
       <Box
