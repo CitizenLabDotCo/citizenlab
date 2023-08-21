@@ -1513,7 +1513,6 @@
   "app.containers.UsersShowPage.a11y_likesCount": "{likesCount, plural, =0 {ingen likes} one {1 like} other {# likes}}",
   "app.containers.UsersShowPage.a11y_postCommentPostedIn": "Idé, hvoraf denne kommentar blev slået op:",
   "app.containers.UsersShowPage.commentsWithCount": "Kommentarer ({commentsCount}) ",
-  "app.containers.UsersShowPage.displayCountMobile": "({count})",
   "app.containers.UsersShowPage.editProfile": "Rediger min profil ",
   "app.containers.UsersShowPage.emptyInfoText": "Du følger ikke nogen elementer i det angivne filter ovenfor.",
   "app.containers.UsersShowPage.eventsWithCount": "Begivenheder ({eventsCount})",
