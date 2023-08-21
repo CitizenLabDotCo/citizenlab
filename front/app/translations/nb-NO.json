@@ -1513,7 +1513,6 @@
   "app.containers.UsersShowPage.a11y_likesCount": "{likesCount, plural, =0 {ingen liker} one {1 liker} other {#liker}}",
   "app.containers.UsersShowPage.a11y_postCommentPostedIn": "Innlegg hvor denne kommentaren ble publisert:",
   "app.containers.UsersShowPage.commentsWithCount": "Kommentarer ({commentsCount})",
-  "app.containers.UsersShowPage.displayCountMobile": "({count})",
   "app.containers.UsersShowPage.editProfile": "Rediger profilen min",
   "app.containers.UsersShowPage.emptyInfoText": "Du følger ingen elementer i det angitte filteret ovenfor.",
   "app.containers.UsersShowPage.eventsWithCount": "Hendelser ({eventsCount})",
