@@ -1513,7 +1513,6 @@
   "app.containers.UsersShowPage.a11y_likesCount": "{likesCount, plural, =0 {beğeni yok} one {1 beğeni} other {# beğeni}}",
   "app.containers.UsersShowPage.a11y_postCommentPostedIn": "Bu yorumun yanıt olarak yayınlandığı girdi:",
   "app.containers.UsersShowPage.commentsWithCount": "Yorum Sayısı ({commentsCount})",
-  "app.containers.UsersShowPage.displayCountMobile": "({count})",
   "app.containers.UsersShowPage.editProfile": "Profilimi düzenle",
   "app.containers.UsersShowPage.emptyInfoText": "Yukarıda belirtilen filtrenin hiçbir öğesini takip etmiyorsunuz.",
   "app.containers.UsersShowPage.eventsWithCount": "Etkinlikler ({eventsCount})",
