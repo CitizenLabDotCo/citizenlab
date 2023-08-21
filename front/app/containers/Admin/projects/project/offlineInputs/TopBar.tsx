@@ -7,16 +7,22 @@ import { useParams } from 'react-router-dom';
 import useProjectById from 'api/projects/useProjectById';
 
 // components
-import { Box, Title } from '@citizenlab/cl2-component-library';
+import { Box, Title, Button } from '@citizenlab/cl2-component-library';
 import GoBackButton from 'components/UI/GoBackButton';
 
 // i18n
 import useLocalize from 'hooks/useLocalize';
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 // styling
 import { stylingConsts, colors } from 'utils/styleUtils';
 
-const TopBar = () => {
+interface Props {
+  onClickPDFImport: () => void;
+}
+
+const TopBar = ({ onClickPDFImport }: Props) => {
   const localize = useLocalize();
   const { projectId } = useParams() as {
     projectId: string;
@@ -29,24 +35,27 @@ const TopBar = () => {
       position="fixed"
       zIndex="10001"
       alignItems="center"
+      justifyContent="space-between"
       w="100%"
       h={`${stylingConsts.menuHeight}px`}
       display="flex"
       background={`${colors.white}`}
       borderBottom={`1px solid ${colors.grey500}`}
-      alignContent="center"
-      gap="24px"
       px="24px"
     >
-      <Box position="fixed">
+      <Box display="flex">
         <GoBackButton linkTo={`/admin/projects/${projectId}/ideas`} />
-      </Box>
-      <Box w="100%" display="flex" justifyContent="center">
-        <Box w="800px" px="20px">
+        <Box ml="24px">
           <Title variant="h4" m="0px">
             {localize(projectTitle)}
           </Title>
         </Box>
+      </Box>
+
+      <Box>
+        <Button icon="page" onClick={onClickPDFImport}>
+          <FormattedMessage {...messages.importPdf} />
+        </Button>
       </Box>
     </Box>
   );

@@ -5,7 +5,7 @@ import useInputSchema from 'hooks/useInputSchema';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
 
 // components
-import { Box, Button } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import Fields from 'components/Form/Components/Fields';
 
 // routing
@@ -16,6 +16,7 @@ import { customAjv } from 'components/Form';
 
 // typings
 import { Multiloc } from 'typings';
+import { FormData } from 'components/Form/typings';
 
 interface Props {
   projectId: string;
@@ -31,7 +32,7 @@ const IdeaForm = ({
   body_multiloc,
 }: Props) => {
   const [showAllErrors, setShowAllErrors] = useState(false);
-  const [formData, setFormData] = useState<Record<string, any> | null>(null);
+  const [formData, setFormData] = useState<FormData | null>(null);
   const visibleData = formData || { title_multiloc, body_multiloc };
 
   const { mutateAsync: updateIdea } = useUpdateIdea();

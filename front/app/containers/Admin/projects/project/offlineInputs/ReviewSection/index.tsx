@@ -50,7 +50,7 @@ const ReviewSection = () => {
 
   if (isLoading) {
     return (
-      <Box w="100%" mt="60px" display="flex" justifyContent="center">
+      <Box w="100%" mt="160px" display="flex" justifyContent="center">
         <Spinner />
       </Box>
     );
@@ -63,15 +63,22 @@ const ReviewSection = () => {
   );
 
   return (
-    <Box mt="40px" w="100%" bgColor={colors.white} pt="20px">
-      <Title variant="h2" color="primary" px="52px" mb="40px">
+    <Box
+      mt="40px"
+      w="100%"
+      bgColor={colors.white}
+      pt="20px"
+      h="100%"
+      display="flex"
+      flexDirection="column"
+    >
+      <Title variant="h2" color="primary" px="40px" mb="40px">
         Ideas imported
       </Title>
 
       <Box
+        h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px - 140px)`}
         display="flex"
-        w="100%"
-        h={`calc(100vh - ${stylingConsts.mobileMenuHeight + 20}px)`}
         px="40px"
         justifyContent="space-between"
       >

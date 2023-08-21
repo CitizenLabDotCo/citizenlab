@@ -1,39 +1,45 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 import TopBar from './TopBar';
-import ImportSection from './ImportSection';
+import ImportModal from './ImportModal';
 import ReviewSection from './ReviewSection';
 
 // styling
 import { colors, stylingConsts } from 'utils/styleUtils';
 
 const OfflineInputImporter = () => {
+  const [importModalOpen, setImportModalOpen] = useState(false);
+
+  const openImportModal = () => setImportModalOpen(true);
+  const closeImportModal = () => setImportModalOpen(false);
+
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      w="100%"
-      zIndex="10000"
-      position="fixed"
-      bgColor={colors.background}
-      h="100vh"
-    >
-      <FocusOn>
-        <TopBar />
-        <Box
-          mt={`${stylingConsts.mobileMenuHeight}px`}
-          overflowY="scroll"
-          h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
-        >
-          <ImportSection />
-          <ReviewSection />
-        </Box>
-      </FocusOn>
-    </Box>
+    <>
+      <Box
+        display="flex"
+        flexDirection="column"
+        w="100%"
+        zIndex="10000"
+        position="fixed"
+        bgColor={colors.background}
+        h="100vh"
+      >
+        <FocusOn>
+          <TopBar onClickPDFImport={openImportModal} />
+          <Box
+            mt={`${stylingConsts.mobileMenuHeight}px`}
+            h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
+          >
+            <ReviewSection />
+          </Box>
+        </FocusOn>
+      </Box>
+      <ImportModal open={importModalOpen} onClose={closeImportModal} />
+    </>
   );
 };
 
