@@ -1,3 +1,4 @@
+import moment = require('moment');
 import { randomEmail, randomString } from '../support/commands';
 
 describe('Existing continuous project with poll', () => {
@@ -55,6 +56,16 @@ describe('New continuous project with poll', () => {
           ['Yes', 'No', 'I decline to answer'],
         ]
       );
+
+      cy.apiCreateEvent({
+        projectId,
+        title: 'Event title',
+        location: 'Event location',
+        includeLocation: true,
+        description: 'Event description',
+        startDate: moment().subtract(1, 'day').toDate(),
+        endDate: moment().add(1, 'day').toDate(),
+      });
     });
   });
 
@@ -86,6 +97,9 @@ describe('New continuous project with poll', () => {
 
   it('shows the CTA button on visting the project page of an active poll project', () => {
     cy.get('#e2e-participation-cta-poll').should('exist');
+
+    // Shows the event CTA when there is an upcoming event
+    cy.get('#e2e-project-see-events-button').should('exist');
   });
 
   after(() => {
@@ -121,17 +135,17 @@ describe('Timeline project with poll phase', () => {
         projectId = project.body.data.id;
         projectSlug = project.body.data.attributes.slug;
 
-        return cy.apiCreatePhase(
+        return cy.apiCreatePhase({
           projectId,
-          phaseTitle,
-          '2018-03-01',
-          '2025-01-01',
-          'poll',
-          true,
-          true,
-          true,
-          'description'
-        );
+          title: phaseTitle,
+          startAt: '2018-03-01',
+          endAt: '2025-01-01',
+          participationMethod: 'poll',
+          canComment: true,
+          canPost: true,
+          canReact: true,
+          description: 'description',
+        });
       })
       .then((phase) => {
         phaseId = phase.body.data.id;

@@ -1,4 +1,4 @@
-import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
+import { Box, Icon } from '@citizenlab/cl2-component-library';
 import { TagType } from 'api/analysis_tags/types';
 import React from 'react';
 
@@ -20,28 +20,28 @@ export const TagTypeColorMap: Record<
   }
 > = {
   custom: {
-    background: colors.green100,
-    text: colors.green700,
+    background: '#F6EAD3',
+    text: '#D49210',
   },
   controversial: {
-    background: colors.red100,
-    text: colors.red600,
+    background: '#FDE9E8',
+    text: '#DF4237',
   },
   language: {
-    background: colors.teal100,
-    text: colors.teal700,
+    background: '#E4F7EF',
+    text: '#024D2B',
   },
   nlp_topic: {
-    background: colors.grey100,
-    text: colors.grey700,
+    background: '#BEE7EB',
+    text: '#0A5159',
   },
   platform_topic: {
-    background: colors.coolGrey300,
-    text: colors.coolGrey700,
+    background: '#E4E7EF',
+    text: '#515BA1',
   },
   sentiment: {
-    background: colors.black,
-    text: colors.white,
+    background: '#43515D',
+    text: '#FFFFFF',
   },
 };
 
@@ -77,7 +77,7 @@ const Tag = ({ name, tagType, tagginsConfig }: TagProps) => {
       <Box color={TagTypeColorMap[tagType]?.text}>{name}</Box>
       {tagginsConfig?.isSelectedAsTagging === true && (
         <Icon
-          name="minus"
+          name="close"
           fill={TagTypeColorMap[tagType]?.text}
           width="16px"
           height="16px"

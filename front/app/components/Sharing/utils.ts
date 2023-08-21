@@ -39,3 +39,13 @@ export function clickSocialSharingLink(href: string) {
   document.body.appendChild(a);
   a.click();
 }
+
+export type FlexContent =
+  | 'flex-start'
+  | 'flex-end'
+  | 'center'
+  | 'space-between'
+  | 'space-around'
+  | 'space-evenly'
+  | 'initial'
+  | 'inherit';

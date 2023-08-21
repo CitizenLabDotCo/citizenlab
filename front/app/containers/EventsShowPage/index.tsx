@@ -14,7 +14,7 @@ import DesktopTopBar from './components/DesktopTopBar';
 import Unauthorized from 'components/Unauthorized';
 import PageNotFound from 'components/PageNotFound';
 import VerticalCenterer from 'components/VerticalCenterer';
-import EventTopBarMobile from './components/EventTopBarMobile';
+import MobileTopBar from './components/MobileTopBar';
 import EventDescription from './components/EventDescription';
 import InformationSectionMobile from './components/InformationSectionMobile';
 
@@ -94,9 +94,7 @@ const EventsShowPage = () => {
   return (
     <>
       {isSmallerThanTablet && (
-        <EventTopBarMobile
-          projectId={event?.data.relationships.project.data.id}
-        />
+        <MobileTopBar projectId={event?.data.relationships.project.data.id} />
       )}
       <Container>
         <InnerContainer>

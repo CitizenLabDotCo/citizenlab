@@ -95,6 +95,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_15_119289) do
     t.jsonb "filters", default: {}, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.float "accuracy"
+    t.jsonb "inputs_ids"
     t.index ["analysis_id"], name: "index_analysis_summaries_on_analysis_id"
     t.index ["background_task_id"], name: "index_analysis_summaries_on_background_task_id"
   end
@@ -452,9 +454,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_15_119289) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.geography "location_point", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}
-    t.string "location_description"
+    t.string "address_1"
     t.integer "attendees_count", default: 0, null: false
     t.string "online_link"
+    t.jsonb "address_2_multiloc", default: {}, null: false
     t.index ["location_point"], name: "index_events_on_location_point", using: :gist
     t.index ["project_id"], name: "index_events_on_project_id"
   end

@@ -8,10 +8,7 @@ import { useParams } from 'react-router-dom';
 
 import Summary from './Summary';
 
-type Props = {
-  onSelectInput: (inputId: string) => void;
-};
-const Insights = ({ onSelectInput }: Props) => {
+const Insights = () => {
   const { analysisId } = useParams() as { analysisId: string };
   const { data: summaries, isLoading } = useAnalysisSummaries({
     analysisId,
@@ -20,20 +17,18 @@ const Insights = ({ onSelectInput }: Props) => {
   return (
     <Box>
       {!isLoading && summaries?.data?.length === 0 && (
-        <Text p="24px" color="grey400">
-          <p>
+        <>
+          <Text px="24px" color="grey400">
             Your text summaries will be displayed here, but you currently do not
             have any yet.
-          </p>
-          <p>Start by adding some tags.</p>
-        </Text>
+          </Text>
+          <Text px="24px" color="grey400">
+            Start by adding some tags.
+          </Text>
+        </>
       )}
       {summaries?.data.map((summary) => (
-        <Summary
-          key={summary.id}
-          summary={summary}
-          onSelectInput={onSelectInput}
-        />
+        <Summary key={summary.id} summary={summary} />
       ))}
     </Box>
   );

@@ -126,9 +126,6 @@ const EventsViewer = ({
                 <StyledEventCard
                   id={event.id}
                   event={event}
-                  showLocation
-                  showDescription
-                  showAttachments
                   last={events.data.length - 1 === i}
                   key={event.id}
                 />

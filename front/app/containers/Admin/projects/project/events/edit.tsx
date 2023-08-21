@@ -22,6 +22,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import Map from './components/map';
 import { leafletMapClicked$ } from 'components/UI/LeafletMap/events';
+import Modal from 'components/UI/Modal';
 
 // router
 import clHistory from 'utils/cl-router/history';
@@ -49,7 +50,6 @@ import { withRouter } from 'utils/cl-router/withRouter';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { geocode } from 'utils/locationTools';
-import Modal from 'components/UI/Modal';
 
 interface Props {
   params: Record<string, string>;
@@ -89,21 +89,20 @@ const AdminProjectEventEdit = ({ params }: Props) => {
   const [locationPoint, setLocationPoint] = useState<GeoJSON.Point | null>(
     null
   );
-  const [locationDescription, setLocationDescription] = useState('');
+  const [address1, setAddress1] = useState('');
   const [eventFilesToRemove, setEventFilesToRemove] = useState<UploadFile[]>(
     []
   );
   const [successfulGeocode, setSuccessfulGeocode] = useState(false);
 
   const remotePoint = event?.data?.attributes?.location_point_geojson;
-  const remoteLocationDescription =
-    event?.data?.attributes?.location_description;
+  const remoteAddress1 = event?.data?.attributes?.address_1;
 
   useEffect(() => {
-    if (!isNilOrError(remoteLocationDescription)) {
-      setLocationDescription(() => remoteLocationDescription);
+    if (!isNilOrError(remoteAddress1)) {
+      setAddress1(() => remoteAddress1);
     }
-  }, [remoteLocationDescription]);
+  }, [remoteAddress1]);
 
   useEffect(() => {
     if (!isNilOrError(remotePoint)) {
@@ -130,9 +129,9 @@ const AdminProjectEventEdit = ({ params }: Props) => {
   }, []);
 
   useEffect(() => {
-    if (locationDescription !== event?.data.attributes.location_description) {
+    if (address1 !== event?.data.attributes.address_1) {
       const delayDebounceFn = setTimeout(async () => {
-        const point = await geocode(locationDescription);
+        const point = await geocode(address1);
         setLocationPoint(point);
         point ? setSuccessfulGeocode(true) : setSuccessfulGeocode(false);
       }, 500);
@@ -141,7 +140,7 @@ const AdminProjectEventEdit = ({ params }: Props) => {
     }
     setSuccessfulGeocode(false);
     return;
-  }, [locationDescription, event, attributeDiff]);
+  }, [address1, event, attributeDiff]);
 
   useEffect(() => {
     if (!isNilOrError(remoteEventFiles)) {
@@ -165,11 +164,11 @@ const AdminProjectEventEdit = ({ params }: Props) => {
     });
   };
 
-  const handleLocationMultilocOnChange = (locationMultiloc: Multiloc) => {
+  const handleAddress2OnChange = (address2: Multiloc) => {
     setSubmitState('enabled');
     setAttributeDiff({
       ...attributeDiff,
-      location_multiloc: locationMultiloc,
+      address_2_multiloc: address2,
     });
   };
 
@@ -182,11 +181,11 @@ const AdminProjectEventEdit = ({ params }: Props) => {
     setErrors({});
   };
 
-  const handleLocationDescriptionOnChange = async (location: string) => {
+  const handleAddress1OnChange = async (location: string) => {
     setSubmitState('enabled');
     setAttributeDiff({
       ...attributeDiff,
-      location_description: location,
+      address_1: location,
     });
   };
 
@@ -282,7 +281,7 @@ const AdminProjectEventEdit = ({ params }: Props) => {
       locationPoint !== event?.data.attributes.location_point_geojson;
 
     const locationPointUpdated =
-      locationDescription || successfulGeocode ? locationPoint : null;
+      address1 || successfulGeocode ? locationPoint : null;
 
     e.preventDefault();
     if (!isNilOrError(params.projectId)) {
@@ -457,24 +456,22 @@ const AdminProjectEventEdit = ({ params }: Props) => {
                 <LocationInput
                   id="event-location-picker"
                   className="e2e-event-location-input"
-                  value={eventAttrs.location_description || ''}
+                  value={eventAttrs.address_1 || ''}
                   onChange={(value) => {
-                    handleLocationDescriptionOnChange(value);
-                    setLocationDescription(value);
+                    handleAddress1OnChange(value);
+                    setAddress1(value);
                   }}
                   placeholder={formatMessage(messages.searchForLocation)}
                 />
 
-                <ErrorComponent
-                  apiErrors={get(errors, 'location_description')}
-                />
+                <ErrorComponent apiErrors={get(errors, 'address_1')} />
                 <Box my="20px">
                   <InputMultilocWithLocaleSwitcher
-                    id="event-location"
+                    id="event-address-2"
                     label={formatMessage(messages.addressTwoLabel)}
                     type="text"
-                    valueMultiloc={eventAttrs.location_multiloc}
-                    onChange={handleLocationMultilocOnChange}
+                    valueMultiloc={eventAttrs.address_2_multiloc}
+                    onChange={handleAddress2OnChange}
                     labelTooltipText={formatMessage(messages.addressTwoTooltip)}
                     placeholder={formatMessage(messages.addressTwoPlaceholder)}
                   />
@@ -564,7 +561,6 @@ const AdminProjectEventEdit = ({ params }: Props) => {
           close={() => {
             setMapModalVisible(false);
           }}
-          className="e2e-comment-deletion-modal"
           header={formatMessage(messages.refineLocationCoordinates)}
           width={'800px'}
         >

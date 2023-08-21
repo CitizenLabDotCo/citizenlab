@@ -14,7 +14,7 @@ import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
-import { getUrlWithUtm, UtmParams, Medium } from '../utils';
+import { getUrlWithUtm, UtmParams, Medium, FlexContent } from '../utils';
 
 interface Props {
   context: 'idea' | 'project' | 'initiative' | 'folder' | 'event';
@@ -26,6 +26,8 @@ interface Props {
   emailBody?: string;
   utmParams: UtmParams;
   id?: string;
+  hideTitle?: boolean;
+  justifyContent?: FlexContent;
 }
 
 const SharingButtons = memo(
@@ -39,6 +41,8 @@ const SharingButtons = memo(
     id,
     url,
     utmParams,
+    hideTitle,
+    justifyContent,
   }: Props) => {
     const isSmallerThanTablet = useBreakpoint('tablet');
 
@@ -55,17 +59,21 @@ const SharingButtons = memo(
 
     return (
       <>
-        <Title
-          textAlign={isSmallerThanTablet ? 'center' : 'inherit'}
-          mb="12px"
-          color="textPrimary"
-          variant="h3"
-        >
-          {titleMessage}
-        </Title>
+        {!hideTitle && (
+          <Title
+            textAlign={isSmallerThanTablet ? 'center' : 'inherit'}
+            mb="12px"
+            color="textPrimary"
+            variant="h3"
+          >
+            {titleMessage}
+          </Title>
+        )}
         <Box
           id={id}
-          justifyContent={isSmallerThanTablet ? 'center' : 'flex-start'}
+          justifyContent={
+            justifyContent || (isSmallerThanTablet ? 'center' : 'flex-start')
+          }
           display="flex"
           gap="5px"
           flexWrap="wrap"

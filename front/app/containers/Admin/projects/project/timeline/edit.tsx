@@ -397,6 +397,7 @@ const AdminProjectTimelineEdit = () => {
               startDate={startDate}
               endDate={endDate}
               onDatesChange={handleDateUpdate}
+              minimumNights={0}
             />
             <Error apiErrors={errors && errors.start_at} />
             <Error apiErrors={errors && errors.end_at} />

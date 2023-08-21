@@ -1,6 +1,12 @@
 import React, { memo } from 'react';
+
+// components
 import Map from 'components/Map';
+
+// styles
 import styled from 'styled-components';
+
+// types
 import { LatLngTuple } from 'leaflet';
 
 export interface Props {

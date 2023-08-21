@@ -97,23 +97,25 @@ class WebApi::V1::EventsController < ApplicationController
       :project_id,
       :start_at,
       :end_at,
-      :location_description,
       :online_link,
       location_point_geojson: [:type, { coordinates: [] }],
+      :address_1,
+      address_2_multiloc: CL2_SUPPORTED_LOCALES,
       location_multiloc: CL2_SUPPORTED_LOCALES,
       title_multiloc: CL2_SUPPORTED_LOCALES,
-      description_multiloc: CL2_SUPPORTED_LOCALES
+      description_multiloc: CL2_SUPPORTED_LOCALES,
+      location_point_geojson: [:type, { coordinates: [] }]
     ).tap do |p|
       # Allow removing the location point.
       if params[:event].key?(:location_point_geojson) && params.dig(:event, :location_point_geojson).nil?
         p[:location_point_geojson] = nil
       end
 
-      # Set default location_description if not provided and location_multiloc is
-      # provided. This will be removed once the location_multiloc parameter is removed.
+      # Set default `address_1` if not provided and location_multiloc is provided. This
+      # will be removed once the location_multiloc parameter is removed.
       if p[:location_multiloc].present?
-        p[:location_description] ||= p.dig(:location_multiloc, default_locale)
-        p[:location_description] ||= p[:location_multiloc].values.first
+        p[:address_1] ||= p.dig(:location_multiloc, default_locale)
+        p[:address_1] ||= p[:location_multiloc].values.first
       end
     end
   end

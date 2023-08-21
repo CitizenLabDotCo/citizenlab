@@ -1,7 +1,13 @@
-import { Box, Text, Icon, colors } from '@citizenlab/cl2-component-library';
 import React from 'react';
+
+// components
+import { Box, Text, Icon, colors } from '@citizenlab/cl2-component-library';
+
+// intl
 import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
+
+// router
 import Link from 'utils/cl-router/Link';
 
 type ProjectLinkProps = {

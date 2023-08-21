@@ -5,6 +5,7 @@ import SharingButtons from 'components/Sharing/SharingButtons';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
+import messages from './messages';
 
 // hooks
 import useLocalize from 'hooks/useLocalize';
@@ -12,14 +13,18 @@ import useAuthUser from 'api/me/useAuthUser';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { FlexContent } from 'components/Sharing/utils';
+
+// types
 import { IEventData } from 'api/events/types';
-import messages from './messages';
 
 interface Props {
   event: IEventData;
+  hideTitle?: boolean;
+  justifyContent?: FlexContent;
 }
 
-const EventSharingButtons = ({ event }: Props) => {
+const EventSharingButtons = ({ event, hideTitle, justifyContent }: Props) => {
   const { formatMessage } = useIntl();
 
   const { data: authUser } = useAuthUser();
@@ -28,7 +33,6 @@ const EventSharingButtons = ({ event }: Props) => {
   if (!isNilOrError(event)) {
     const eventUrl = `${location.origin}/events/${event.id}`;
     const eventTitle = localize(event.attributes.title_multiloc);
-    const eventLocation = event.attributes.location_description;
     const utmParams = authUser
       ? {
           source: 'share_event',
@@ -44,7 +48,7 @@ const EventSharingButtons = ({ event }: Props) => {
       eventTitle,
     });
 
-    if (eventLocation) {
+    if (eventTitle && eventUrl) {
       return (
         <SharingButtons
           url={eventUrl}
@@ -54,10 +58,12 @@ const EventSharingButtons = ({ event }: Props) => {
           emailSubject={shareEventMessage}
           emailBody={formatMessage(messages.emailSharingBody, {
             eventTitle,
-            eventLocation,
+            eventUrl,
           })}
           utmParams={utmParams}
           context={'event'}
+          hideTitle={hideTitle}
+          justifyContent={justifyContent}
         />
       );
     }

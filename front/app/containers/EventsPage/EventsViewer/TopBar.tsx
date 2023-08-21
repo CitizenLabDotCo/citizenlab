@@ -7,7 +7,7 @@ import messages from '../messages';
 
 // components
 import ProjectFilterDropdown from 'components/ProjectFilterDropdown';
-import { Title } from '@citizenlab/cl2-component-library';
+import { Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // styling
 import styled, { useTheme } from 'styled-components';
@@ -39,6 +39,7 @@ interface Props {
 const TopBar = memo<Props & WrappedComponentProps>(
   ({ title, showProjectFilter, setProjectIds, intl }) => {
     const theme = useTheme();
+    const isMobileOrSmaller = useBreakpoint('phone');
 
     return (
       <Container>
@@ -54,6 +55,7 @@ const TopBar = memo<Props & WrappedComponentProps>(
                 textColor={theme.colors.tenantText}
                 filterSelectorStyle="button"
                 listTop="44px"
+                mobileLeft={isMobileOrSmaller ? '-70px' : 'auto'}
               />
             </>
           )}

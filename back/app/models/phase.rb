@@ -171,3 +171,5 @@ class Phase < ApplicationRecord
     end
   end
 end
+
+Phase.include(Analysis::Patches::Phase)

@@ -53,12 +53,9 @@ const InformationSectionMobile = ({ event }: Props) => {
                   <ParticipantsCount count={event.attributes.attendees_count} />
                 )}
               </Box>
-              {event.attributes.location_description && (
+              {event.attributes.address_1 && (
                 <Box pb="16px" borderBottom={`solid 1px ${colors.divider}`}>
-                  <Location
-                    location={event.attributes.location_description}
-                    event={event}
-                  />
+                  <Location event={event} />
                 </Box>
               )}
               {event.attributes.online_link && (

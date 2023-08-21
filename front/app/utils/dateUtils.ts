@@ -1,8 +1,10 @@
-import moment, { unitOfTime } from 'moment';
+import moment, { Moment, unitOfTime } from 'moment';
 import { isString } from 'lodash-es';
 import { Locale } from 'typings';
 import { IResolution } from 'components/admin/ResolutionControl';
 import messages from './messages';
+import { IEventData } from 'api/events/types';
+import { MessageDescriptor } from 'react-intl';
 
 export function getIsoDateForToday(): string {
   // this is based on the user's timezone in moment, so
@@ -28,6 +30,26 @@ type RelativeTimeFormatUnit =
   | 'minutes'
   | 'second'
   | 'seconds';
+
+// this function calculates whether there is any overlap between two time ranges.
+// Ref: https://stackoverflow.com/a/74363870
+export const timeRangesOverlap = (
+  timeRange1: Moment[],
+  timeRange2: Moment[]
+) => {
+  const [start1, end1] = timeRange1;
+  const [start2, end2] = timeRange2;
+
+  // Check if range1 is between range2
+  const startFirst = start1.isBetween(start2, end2);
+  const endFirst = end1.isBetween(start2, end2);
+
+  // Check if range2 is between range1
+  const startLast = start2.isBetween(start1, end1);
+  const endLast = end2.isBetween(start1, end1);
+
+  return startFirst || endFirst || startLast || endLast;
+};
 
 // this function returns a string representing "time since" the input date in the appropriate format.
 // Relative Time Format is used for internationalization.
@@ -186,3 +208,32 @@ export function toFullMonth(date: string, resolution: IResolution) {
     .utc(date, 'YYYY-MM-DD')
     .format(resolution === 'month' ? 'MMMM YYYY' : 'MMMM DD, YYYY');
 }
+
+// This function is used to display event start/end times with weekday names
+export const getEventDateWithWeekdays = (
+  event: IEventData,
+  formatMessage: (
+    messageDescriptor: MessageDescriptor,
+    values?:
+      | {
+          [key: string]: string | number | boolean | Date;
+        }
+      | undefined
+  ) => string
+) => {
+  const startAtMoment = moment(event.attributes.start_at);
+  const endAtMoment = moment(event.attributes.end_at);
+  const isEventMultipleDays =
+    startAtMoment.dayOfYear() !== endAtMoment.dayOfYear();
+  const startAtWeekday = getDayName(startAtMoment.weekday());
+  const endAtWeekday = getDayName(endAtMoment.weekday());
+  return isEventMultipleDays
+    ? `${
+        startAtWeekday && formatMessage(startAtWeekday)
+      }, ${startAtMoment.format('LLL')} - ${
+        endAtWeekday && formatMessage(endAtWeekday)
+      }, ${endAtMoment.format('LLL')}`
+    : `${startAtMoment.format('LL')} • ${startAtMoment.format(
+        'LT'
+      )} - ${endAtMoment.format('LT')}`;
+};

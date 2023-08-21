@@ -1,3 +1,4 @@
+import moment = require('moment');
 import { randomString, randomEmail } from '../support/commands';
 import { skipOn } from '@cypress/skip-test';
 
@@ -53,6 +54,16 @@ describe('New continuous project with survey', () => {
     }).then((project) => {
       projectId = project.body.data.id;
       projectSlug = project.body.data.attributes.slug;
+
+      cy.apiCreateEvent({
+        projectId,
+        title: 'Event title',
+        location: 'Event location',
+        includeLocation: true,
+        description: 'Event description',
+        startDate: moment().subtract(1, 'day').toDate(),
+        endDate: moment().add(1, 'day').toDate(),
+      });
     });
   });
 
@@ -66,6 +77,11 @@ describe('New continuous project with survey', () => {
     cy.get('#e2e-project-description');
     cy.get('#e2e-project-sidebar');
     cy.get('#e2e-project-sidebar-share-button');
+  });
+
+  it('shows event CTA button', () => {
+    // Shows the event CTA when there is an upcoming event
+    cy.get('#e2e-project-see-events-button').should('exist');
   });
 
   it('shows the survey', () => {
@@ -106,19 +122,19 @@ describe('Timeline project with survey phase', () => {
       projectId = project.body.data.id;
       projectSlug = project.body.data.attributes.slug;
 
-      return cy.apiCreatePhase(
+      return cy.apiCreatePhase({
         projectId,
-        phaseTitle,
-        '2018-03-01',
-        '2025-01-01',
-        'survey',
-        true,
-        true,
-        true,
-        'description',
-        'https://citizenlabco.typeform.com/to/Yv6B7V',
-        'typeform'
-      );
+        title: phaseTitle,
+        startAt: '2018-03-01',
+        endAt: '2025-01-01',
+        participationMethod: 'survey',
+        canComment: true,
+        canPost: true,
+        canReact: true,
+        description: 'description',
+        surveyUrl: 'https://citizenlabco.typeform.com/to/Yv6B7V',
+        surveyService: 'typeform',
+      });
     });
   });
 
@@ -165,19 +181,19 @@ describe('Timeline project with survey phase but not active', () => {
       projectId = project.body.data.id;
       projectSlug = project.body.data.attributes.slug;
 
-      return cy.apiCreatePhase(
+      return cy.apiCreatePhase({
         projectId,
-        phaseTitle,
-        '2018-03-01',
-        '2019-01-01',
-        'survey',
-        true,
-        true,
-        true,
-        'description',
-        'https://citizenlabco.typeform.com/to/Yv6B7V',
-        'typeform'
-      );
+        title: phaseTitle,
+        startAt: '2018-03-01',
+        endAt: '2019-01-01',
+        participationMethod: 'survey',
+        canComment: true,
+        canPost: true,
+        canReact: true,
+        description: 'description',
+        surveyUrl: 'https://citizenlabco.typeform.com/to/Yv6B7V',
+        surveyService: 'typeform',
+      });
     });
   });
 
