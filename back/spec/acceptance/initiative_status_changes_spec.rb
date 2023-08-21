@@ -142,19 +142,17 @@ resource 'InitiativeStatusChange' do
         let(:initiative_id) { new_initiative.id }
         let(:initiative_status_id) { @status_proposed.id }
 
-        example 'creation results in locked editing' do
+        example 'creation of status change record' do
           expect(Initiative.find(initiative_id).editing_locked).to be false
 
-          do_request
-          assert_status 201
-          expect(Initiative.find(initiative_id).editing_locked).to be true
-        end
-
-        example "creation results in the logging of an Initiative 'proposed' activity" do
+          # results in the logging of an Initiative 'proposed' activity
           expect { do_request }
             .to have_enqueued_job(LogActivityJob)
             .with(instance_of(Initiative), 'proposed', @user, instance_of(Integer))
             .exactly(1).times
+          assert_status 201
+          # results in the setting of editing_locked: true
+          expect(Initiative.find(initiative_id).editing_locked).to be true
         end
       end
 
@@ -171,18 +169,16 @@ resource 'InitiativeStatusChange' do
         let(:initiative_id) { new_initiative.id }
         let(:initiative_status_id) { @status_review_pending.id }
 
-        example 'creation does not result in locked editing' do
+        example 'creation of status change record' do
           expect(Initiative.find(initiative_id).editing_locked).to be false
 
-          do_request
-          assert_status 201
-          expect(Initiative.find(initiative_id).editing_locked).to be false
-        end
-
-        example "creation does not result in the logging of an Initiative 'proposed' activity" do
+          # does not result in the logging of an Initiative 'proposed' activity
           expect { do_request }
             .not_to have_enqueued_job(LogActivityJob)
             .with(instance_of(Initiative), 'proposed', anything, anything)
+          assert_status 201
+          # does not result in locked editing
+          expect(Initiative.find(initiative_id).editing_locked).to be false
         end
       end
     end
