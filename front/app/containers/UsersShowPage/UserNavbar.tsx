@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import { rgba } from 'polished';
 
 // components
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { UserTab } from './';
 
 // i18n
@@ -18,9 +18,9 @@ import messages from './messages';
 // hooks
 import useUserIdeasCount from 'api/user_ideas_count/useUserIdeasCount';
 import useUserCommentsCount from 'api/user_comments_count/useUserCommentsCount';
-import useEventsByUserId from 'api/events/useEventsByUserId';
-import useAuthUser from 'api/me/useAuthUser';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useAuthUser from 'api/me/useAuthUser';
+import useEventsByUserId from 'api/events/useEventsByUserId';
 
 const UserNavbarWrapper = styled.div`
   width: 100%;
@@ -111,6 +111,7 @@ interface Props {
 
 const UserNavbar = memo<Props>(({ currentTab, selectTab, userId }) => {
   const { data: ideasCount } = useUserIdeasCount({ userId });
+  const isSmallerThanPhone = useBreakpoint('phone');
   const { data: commentsCount } = useUserCommentsCount({
     userId,
   });
@@ -122,7 +123,6 @@ const UserNavbar = memo<Props>(({ currentTab, selectTab, userId }) => {
   const isFollowingEnabled = useFeatureFlag({
     name: 'follow',
   });
-
   const showFollowingTab = isFollowingEnabled && authUser?.data?.id === userId;
 
   return (
@@ -136,7 +136,7 @@ const UserNavbar = memo<Props>(({ currentTab, selectTab, userId }) => {
       >
         <Border aria-hidden />
         <TabIcon name="idea" ariaHidden />
-        {ideasCount && (
+        {ideasCount && !isSmallerThanPhone && (
           <FormattedMessage
             {...messages.postsWithCount}
             values={{ ideasCount: ideasCount.data.attributes.count }}
@@ -154,7 +154,7 @@ const UserNavbar = memo<Props>(({ currentTab, selectTab, userId }) => {
       >
         <Border aria-hidden />
         <TabIcon name="comments" ariaHidden />
-        {commentsCount && (
+        {commentsCount && !isSmallerThanPhone && (
           <FormattedMessage
             {...messages.commentsWithCount}
             values={{ commentsCount: commentsCount.data.attributes.count }}
@@ -168,10 +168,11 @@ const UserNavbar = memo<Props>(({ currentTab, selectTab, userId }) => {
           className={currentTab === 'following' ? 'active' : ''}
           role="tab"
           aria-selected={currentTab === 'following'}
+          data-cy="e2e-following-tab"
         >
           <Border aria-hidden />
           <TabIcon name="notification-outline" ariaHidden />
-          <FormattedMessage {...messages.following} />
+          {!isSmallerThanPhone && <FormattedMessage {...messages.following} />}
         </UserNavbarButton>
       )}
       {showEventTab && eventsCount && (
@@ -186,10 +187,12 @@ const UserNavbar = memo<Props>(({ currentTab, selectTab, userId }) => {
         >
           <Border aria-hidden />
           <TabIcon name="calendar" ariaHidden />
-          <FormattedMessage
-            {...messages.eventsWithCount}
-            values={{ eventsCount }}
-          />
+          {!isSmallerThanPhone && (
+            <FormattedMessage
+              {...messages.eventsWithCount}
+              values={{ eventsCount }}
+            />
+          )}
         </UserNavbarButton>
       )}
     </UserNavbarWrapper>

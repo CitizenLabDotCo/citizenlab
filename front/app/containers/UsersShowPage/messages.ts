@@ -126,4 +126,8 @@ export default defineMessages({
     defaultMessage:
       '{likesCount, plural, =0 {no likes} one {1 like} other {# likes}}',
   },
+  displayCountMobile: {
+    id: 'app.containers.UsersShowPage.displayCountMobile',
+    defaultMessage: '({count})',
+  },
 });
