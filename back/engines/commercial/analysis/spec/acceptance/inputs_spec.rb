@@ -78,6 +78,9 @@ resource 'Inputs' do
           id: response_data.dig(0, :id)
         })
         expect(json_response_body[:included].pluck(:id)).to include(*inputs.map(&:author_id))
+        expect(json_response_body[:meta]).to match({
+          filtered_count: 3
+        })
       end
 
       # We smoke test a few filters, more extensive coverage is taken care of by the filter service spec
@@ -87,6 +90,9 @@ resource 'Inputs' do
         do_request(search: 'peace')
         expect(status).to eq(200)
         expect(response_data.pluck(:id)).to eq([idea.id])
+        expect(json_response_body[:meta]).to match({
+          filtered_count: 1
+        })
       end
 
       example 'supports published_at_to filter', document: false do
@@ -94,6 +100,26 @@ resource 'Inputs' do
         do_request(published_at_to: '2001-01-01')
         expect(status).to eq(200)
         expect(response_data.pluck(:id)).to eq([idea.id])
+      end
+
+      example 'supports tag_ids empty filtering', document: false do
+        tagged_idea = create(:idea, project: analysis.source_project)
+        tag = create(:tag, analysis: analysis)
+        create(:tagging, input: tagged_idea, tag: tag)
+
+        # What the front-end passes to its request framework
+        #  -> `tag_ids: [null]`
+        # How it gets encoded in url parameters
+        #  -> `?tag_ids[]=`
+        # How rails interprets this and passed it in the params object
+        #  -> `tag_ids: [""]`
+
+        # do_request bypasses first 2 layers, so we feed it the rails
+        # interpretations immediately
+        do_request('tag_ids' => [''])
+
+        expect(status).to eq(200)
+        expect(response_data.pluck(:id)).to match_array(inputs.pluck(:id))
       end
 
       example 'supports custom_author_<uuid>[] filter', document: false do

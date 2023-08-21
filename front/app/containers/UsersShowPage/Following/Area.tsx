@@ -43,6 +43,9 @@ const Area = ({ area }: Props) => {
         padding="0px"
         my="0px"
         processing={isLoading}
+        data-cy={
+          isFollowing ? 'e2e-unfollow-area-button' : 'e2e-follow-area-button'
+        }
       >
         <T value={area.attributes.title_multiloc} />
       </Button>

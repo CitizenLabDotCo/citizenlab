@@ -8,6 +8,7 @@ import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 // components
 import { IdeaCardsWithoutFiltersSidebar } from 'components/IdeaCards';
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import ContentContainer from 'components/ContentContainer';
 import UsersShowPageMeta from './UsersShowPageMeta';
 import Button from 'components/UI/Button';
@@ -20,6 +21,7 @@ import messages from './messages';
 // hooks
 import useUserBySlug from 'api/users/useUserBySlug';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useUserIdeasCount from 'api/user_ideas_count/useUserIdeasCount';
 
 // style
 import styled from 'styled-components';
@@ -78,12 +80,6 @@ const StyledContentContainer = styled(ContentContainer)`
   `}
 `;
 
-const UserIdeas = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-`;
-
 export type UserTab = 'ideas' | 'comments' | 'following';
 
 interface InnerProps {
@@ -108,10 +104,12 @@ export const UsersShowPage = memo<InnerProps>(({ className, user }) => {
   const isFollowingEnabled = useFeatureFlag({
     name: 'follow',
   });
-
+  const isSmallerThanPhone = useBreakpoint('phone');
+  const { data: ideasCount } = useUserIdeasCount({ userId: user.id });
   const [searchParams] = useSearchParams();
   const sortParam = searchParams.get('sort') as Sort | null;
   const searchParam = searchParams.get('search');
+  const { formatMessage } = useIntl();
 
   const ideaQueryParameters = useMemo<QueryParameters>(
     () => ({
@@ -145,17 +143,31 @@ export const UsersShowPage = memo<InnerProps>(({ className, user }) => {
 
         <StyledContentContainer maxWidth={maxPageWidth}>
           {currentTab === 'ideas' && (
-            <UserIdeas>
-              <IdeaCardsWithoutFiltersSidebar
-                defaultSortingMethod={ideaQueryParameters.sort}
-                ideaQueryParameters={ideaQueryParameters}
-                onUpdateQuery={updateSearchParams}
-                invisibleTitleMessage={messages.invisibleTitlePostsList}
-                showSearchbar={true}
-                showDropdownFilters={true}
-                goBackMode="goToProject"
-              />
-            </UserIdeas>
+            <Box display="flex" w="100%" flexDirection="column">
+              {ideasCount && isSmallerThanPhone && (
+                <Box
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  mb="16px"
+                >
+                  {formatMessage(messages.postsWithCount, {
+                    ideasCount: ideasCount.data.attributes.count,
+                  })}
+                </Box>
+              )}
+              <Box display="flex" w="100%" justifyContent="center">
+                <IdeaCardsWithoutFiltersSidebar
+                  defaultSortingMethod={ideaQueryParameters.sort}
+                  ideaQueryParameters={ideaQueryParameters}
+                  onUpdateQuery={updateSearchParams}
+                  invisibleTitleMessage={messages.invisibleTitlePostsList}
+                  showSearchbar
+                  showDropdownFilters
+                  goBackMode="goToProject"
+                />
+              </Box>
+            </Box>
           )}
 
           {currentTab === 'comments' && <UserComments userId={user.id} />}

@@ -194,7 +194,7 @@ class OmniauthCallbackController < ApplicationController
     user.confirm! # confirm user email if not already confirmed
 
     if authver_method.overwrite_user_attrs?
-      user.update!(update_hash)
+      user.update_merging_custom_fields!(update_hash)
     else
       update_hash.each_pair do |attr, value|
         user.assign_attributes(attr => value) unless user.attribute_present?(attr)

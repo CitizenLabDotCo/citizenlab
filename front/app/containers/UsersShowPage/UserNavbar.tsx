@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import { rgba } from 'polished';
 
 // components
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { UserTab } from './';
 
 // i18n
@@ -112,6 +112,7 @@ interface Props {
 
 const UserNavbar = memo<Props>(({ currentTab, selectTab, userId }) => {
   const { data: ideasCount } = useUserIdeasCount({ userId });
+  const isSmallerThanPhone = useBreakpoint('phone');
   const { data: commentsCount } = useUserCommentsCount({
     userId,
   });
@@ -132,7 +133,7 @@ const UserNavbar = memo<Props>(({ currentTab, selectTab, userId }) => {
       >
         <Border aria-hidden />
         <TabIcon name="idea" ariaHidden />
-        {ideasCount && (
+        {ideasCount && !isSmallerThanPhone && (
           <FormattedMessage
             {...messages.postsWithCount}
             values={{ ideasCount: ideasCount.data.attributes.count }}
@@ -150,7 +151,7 @@ const UserNavbar = memo<Props>(({ currentTab, selectTab, userId }) => {
       >
         <Border aria-hidden />
         <TabIcon name="comments" ariaHidden />
-        {commentsCount && (
+        {commentsCount && !isSmallerThanPhone && (
           <FormattedMessage
             {...messages.commentsWithCount}
             values={{ commentsCount: commentsCount.data.attributes.count }}
@@ -164,15 +165,18 @@ const UserNavbar = memo<Props>(({ currentTab, selectTab, userId }) => {
           className={currentTab === 'following' ? 'active' : ''}
           role="tab"
           aria-selected={currentTab === 'following'}
+          data-cy="e2e-following-tab"
         >
           <Border aria-hidden />
           <TabIcon name="notification-outline" ariaHidden />
-          <FormattedMessage
-            {...messages.followingWithCount}
-            values={{
-              followingCount: authUser?.data.attributes.followings_count,
-            }}
-          />
+          {!isSmallerThanPhone && (
+            <FormattedMessage
+              {...messages.followingWithCount}
+              values={{
+                followingCount: authUser?.data.attributes.followings_count,
+              }}
+            />
+          )}
         </UserNavbarButton>
       )}
     </UserNavbarWrapper>

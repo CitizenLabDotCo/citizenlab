@@ -33,3 +33,5 @@ class SideFxCustomFieldService
     )
   end
 end
+
+SideFxCustomFieldService.prepend(Analysis::Patches::SideFxCustomFieldService)
