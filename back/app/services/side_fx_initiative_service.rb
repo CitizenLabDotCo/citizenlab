@@ -44,10 +44,11 @@ class SideFxInitiativeService
       LogActivityJob.perform_later(initiative, 'changed_title', user_for_activity_on_anonymizable_item(initiative, user), initiative.updated_at.to_i, payload: { change: initiative.title_multiloc_previous_change })
     end
 
-    log_activities_if_cosponsors_added(initiative, user, old_cosponsor_ids)
-    return unless initiative.body_multiloc_previously_changed?
+    if initiative.body_multiloc_previously_changed?
+      LogActivityJob.perform_later(initiative, 'changed_body', user_for_activity_on_anonymizable_item(initiative, user), initiative.updated_at.to_i, payload: { change: initiative.body_multiloc_previous_change })
+    end
 
-    LogActivityJob.perform_later(initiative, 'changed_body', user_for_activity_on_anonymizable_item(initiative, user), initiative.updated_at.to_i, payload: { change: initiative.body_multiloc_previous_change })
+    log_activities_if_cosponsors_added(initiative, user, old_cosponsor_ids)
   end
 
   def after_accept_cosponsorship_invite(cosponsors_initiative, user)
