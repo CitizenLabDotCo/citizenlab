@@ -2017,6 +2017,7 @@
   "app.containers.admin.ideas.all.inputManagerPageTitle": "Gestion des contributions",
   "app.containers.admin.ideas.all.tabOverview": "Vue d'ensemble",
   "app.containers.admin.import.downloadTemplate": "Télécharger le modèle",
+  "app.containers.admin.import.ideasBeingImported": "Vos idées sont importées. Cela peut prendre un certain temps. Ne fermez pas cette page tant que l'importation n'est pas terminée - nous vous en informerons.",
   "app.containers.admin.import.importDescription": "Importer des entrées existantes à partir d'un fichier Excel.",
   "app.containers.admin.import.importInput": "Entrée d'importation",
   "app.containers.admin.import.importInputs": "Entrées d'importation",
