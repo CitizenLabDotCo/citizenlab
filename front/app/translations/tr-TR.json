@@ -465,6 +465,7 @@
   "app.components.VerificationModal.toParticipateInThisProject": "bu projeye katılmak için",
   "app.components.VerificationModal.verifyBOSA": "Kimliğinizi itsme veya eID ile doğrulayın",
   "app.components.VerificationModal.verifyClaveUnica": "Kimliğinizi Clave Unica ile doğrulayın",
+  "app.components.VerificationModal.verifyNemLogIn": "MitID ile doğrulayın",
   "app.components.VerificationModal.verifyYourIdentity": "Kimliğinizi doğrulayın",
   "app.components.VoteControl.budgetingFutureEnabled": "Bütçenizi {enabledFromDate} tarihinden itibaren ayırabilirsiniz.",
   "app.components.VoteControl.budgetingNotPermitted": "Katılım için bütçe ayırma şu an için etkin değil.",

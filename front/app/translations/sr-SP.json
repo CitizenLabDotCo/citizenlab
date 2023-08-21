@@ -465,6 +465,7 @@
   "app.components.VerificationModal.toParticipateInThisProject": "да учествују у овом пројекту",
   "app.components.VerificationModal.verifyBOSA": "Потврдите са итсме или еИД-ом",
   "app.components.VerificationModal.verifyClaveUnica": "Проверите са Цлаве Уница",
+  "app.components.VerificationModal.verifyNemLogIn": "Проверите помоћу МитИД-а",
   "app.components.VerificationModal.verifyYourIdentity": "Потврдите свој идентитет",
   "app.components.VoteControl.budgetingFutureEnabled": "Можете да доделите свој буџет почевши од {enabledFromDate}.",
   "app.components.VoteControl.budgetingNotPermitted": "Партиципативно буџетирање тренутно није омогућено.",

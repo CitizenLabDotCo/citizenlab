@@ -30,6 +30,31 @@ export default defineMessages({
     id: 'app.containers.UsersShowPage.eventsWithCount',
     defaultMessage: 'Events ({eventsCount})',
   },
+  following: {
+    id: 'app.containers.UsersShowPage.following',
+    defaultMessage: 'Following',
+  },
+  ideas: {
+    id: 'app.containers.UsersShowPage.ideas',
+    defaultMessage: 'Ideas',
+  },
+  projects: {
+    id: 'app.containers.UsersShowPage.projects',
+    defaultMessage: 'Projects',
+  },
+  initiatives: {
+    id: 'app.containers.UsersShowPage.initiatives',
+    defaultMessage: 'Initiatives',
+  },
+  projectFolders: {
+    id: 'app.containers.UsersShowPage.projectFolders',
+    defaultMessage: 'Project folders',
+  },
+  emptyInfoText: {
+    id: 'app.containers.UsersShowPage.emptyInfoText',
+    defaultMessage:
+      'You are not following any items of the specified filter above.',
+  },
   loadingComments: {
     id: 'app.containers.UsersShowPage.loadingComments',
     defaultMessage: 'Loading user comments...',

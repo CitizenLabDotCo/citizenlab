@@ -15,11 +15,12 @@ import { UserTab } from './';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// api
+// hooks
 import useUserIdeasCount from 'api/user_ideas_count/useUserIdeasCount';
 import useUserCommentsCount from 'api/user_comments_count/useUserCommentsCount';
 import useEventsByUserId from 'api/events/useEventsByUserId';
 import useAuthUser from 'api/me/useAuthUser';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const UserNavbarWrapper = styled.div`
   width: 100%;
@@ -118,6 +119,11 @@ const UserNavbar = memo<Props>(({ currentTab, selectTab, userId }) => {
 
   const eventsCount = events?.data.length;
   const showEventTab = authUser?.data?.id === userId;
+  const isFollowingEnabled = useFeatureFlag({
+    name: 'follow',
+  });
+
+  const showFollowingTab = isFollowingEnabled && authUser?.data?.id === userId;
 
   return (
     <UserNavbarWrapper role="tablist">
@@ -155,6 +161,19 @@ const UserNavbar = memo<Props>(({ currentTab, selectTab, userId }) => {
           />
         )}
       </UserNavbarButton>
+      {showFollowingTab && (
+        <UserNavbarButton
+          onMouseDown={removeFocusAfterMouseClick}
+          onClick={selectTab('following')}
+          className={currentTab === 'following' ? 'active' : ''}
+          role="tab"
+          aria-selected={currentTab === 'following'}
+        >
+          <Border aria-hidden />
+          <TabIcon name="notification-outline" ariaHidden />
+          <FormattedMessage {...messages.following} />
+        </UserNavbarButton>
+      )}
       {showEventTab && eventsCount && (
         <UserNavbarButton
           onMouseDown={removeFocusAfterMouseClick}
