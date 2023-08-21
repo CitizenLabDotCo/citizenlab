@@ -31,6 +31,7 @@ describe('useAddAnalysisQuestion', () => {
         filters: {
           comments_from: 4,
         },
+        question: 'What is the meaning of life?',
       });
     });
 
@@ -55,6 +56,7 @@ describe('useAddAnalysisQuestion', () => {
         filters: {
           comments_from: 4,
         },
+        question: 'What is the meaning of life?',
       });
     });
 
