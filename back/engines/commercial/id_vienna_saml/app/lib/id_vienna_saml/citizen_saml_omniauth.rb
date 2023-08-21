@@ -6,7 +6,7 @@ module IdViennaSaml
     # The Issuer is hardcoded on Vienna's side and needs to match exactly.
     ENVIRONMENTS = {
       test: {
-        issuer: 'CitizenLab',
+        issuer: 'citizenlabtest',
         metadata_xml_file: File.join(IdViennaSaml::Engine.root, 'config', 'saml', 'citizen', 'idp_metadata_test.xml')
       },
       production: {

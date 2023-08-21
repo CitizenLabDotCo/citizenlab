@@ -90,7 +90,7 @@ const ProjectsTabPanel = ({
             )}
             {projectOrFolderType === 'folder' && (
               <ProjectFolderCard
-                publication={item}
+                folderId={projectOrFolderId}
                 size={size}
                 layout={layout}
               />

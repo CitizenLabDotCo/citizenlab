@@ -20,7 +20,7 @@ const useDeleteEventAttendance = (eventId: string, userId?: string) => {
         queryKey: eventsAttendancesKeys.list({ eventId }),
       });
       queryClient.invalidateQueries({
-        queryKey: eventsKeys.item({ eventId }),
+        queryKey: eventsKeys.item({ id: eventId }),
       });
       if (userId) {
         queryClient.invalidateQueries({

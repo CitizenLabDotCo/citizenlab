@@ -8,8 +8,9 @@ import { TLayout } from 'components/ProjectAndFolderCards';
 import Link from 'utils/cl-router/Link';
 
 // components
-import { Icon, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Icon, useBreakpoint, Box } from '@citizenlab/cl2-component-library';
 import Image from 'components/UI/Image';
+import FollowUnfollow from 'components/FollowUnfollow';
 
 // i18n
 import T from 'components/T';
@@ -33,13 +34,13 @@ import { ScreenReaderOnly } from 'utils/a11y';
 
 // hooks
 import useProjectFolderImages from 'api/project_folder_images/useProjectFolderImages';
+import useAdminPublication from 'api/admin_publications/useAdminPublication';
 
 // services
 import {
   getCardImageUrl,
   CARD_IMAGE_ASPECT_RATIO,
 } from 'api/project_folder_images/types';
-import { IAdminPublicationData } from 'api/admin_publications/types';
 import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 import AvatarBubbles from 'components/AvatarBubbles';
 
@@ -279,16 +280,13 @@ const FolderDescription = styled.div`
 `;
 
 const ContentFooter = styled.div`
-  height: 45px;
   flex-shrink: 0;
   flex-grow: 0;
   flex-basis: 45px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 16px;
-  margin-top: 30px;
-  border-top: solid 1px #e0e0e0;
+  margin-bottom: 8px;
 
   &.hidden {
     border: none;
@@ -307,16 +305,6 @@ const ContentFooter = styled.div`
     }
   }
 `;
-
-const ContentFooterSection = styled.div`
-  height: 100%;
-  display: flex;
-  align-items: center;
-`;
-
-const ContentFooterLeft = styled(ContentFooterSection)``;
-
-const ContentFooterRight = styled(ContentFooterSection)``;
 
 const ProjectMetaItems = styled.div`
   height: 100%;
@@ -364,21 +352,23 @@ const MapIconDescription = styled.span`
 export type TProjectFolderCardSize = 'small' | 'medium' | 'large';
 
 export interface Props {
-  publication: IAdminPublicationData;
+  folderId: string;
   size: TProjectFolderCardSize;
   layout: TLayout;
   className?: string;
+  showFollowButton?: boolean;
 }
 
 const ProjectFolderCard = memo<Props>(
-  ({ publication, size, layout, className }) => {
+  ({ folderId, size, layout, className, showFollowButton }) => {
     const isSmallerThanPhone = useBreakpoint('phone');
-    const { data: projectFolder } = useProjectFolderById(
-      publication.relationships.publication.data.id
-    );
+    const { data: projectFolder } = useProjectFolderById(folderId);
     const { data: projectFolderImages } = useProjectFolderImages({
-      folderId: publication.relationships.publication.data.id,
+      folderId,
     });
+    const { data: publication } = useAdminPublication(
+      projectFolder?.data.relationships.admin_publication.data?.id || null
+    );
     const theme = useTheme();
     const { formatMessage } = useIntl();
 
@@ -399,6 +389,10 @@ const ProjectFolderCard = memo<Props>(
       },
       []
     );
+
+    if (!publication || !projectFolder) {
+      return null;
+    }
 
     // Footer
     const commentsCount = projectFolder?.data.attributes.comments_count;
@@ -425,11 +419,12 @@ const ProjectFolderCard = memo<Props>(
       ? getCardImageUrl(imageVersions, isSmallerThanPhone, size)
       : null;
 
-    const folderUrl = `/folders/${publication.attributes.publication_slug}`;
+    const folderUrl = `/folders/${publication.data.attributes.publication_slug}`;
     const numberOfProjectsInFolder =
-      publication.attributes.visible_children_count;
+      publication.data.attributes.visible_children_count;
 
-    const isArchived = publication.attributes.publication_status === 'archived';
+    const isArchived =
+      publication.data.attributes.publication_status === 'archived';
     const contentHeader = (
       <ContentHeader className={`${size} hasContent`} hasLabel={isArchived}>
         {isArchived && (
@@ -459,14 +454,15 @@ const ProjectFolderCard = memo<Props>(
       <ScreenReaderOnly>
         <FolderTitle>
           <FormattedMessage {...messages.a11y_folderTitle} />
-          <T value={publication.attributes.publication_title_multiloc} />
+          <T value={publication.data.attributes.publication_title_multiloc} />
         </FolderTitle>
 
         <FolderDescription>
           <FormattedMessage {...messages.a11y_folderDescription} />
           <T
             value={
-              publication.attributes.publication_description_preview_multiloc
+              publication.data.attributes
+                .publication_description_preview_multiloc
             }
           />
         </FolderDescription>
@@ -480,7 +476,7 @@ const ProjectFolderCard = memo<Props>(
         } e2e-folder-card e2e-admin-publication-card`}
         to={folderUrl}
         onClick={handleProjectCardOnClick(
-          publication.relationships.publication.data.id
+          publication.data.relationships.publication.data.id
         )}
       >
         {screenReaderContent}
@@ -500,16 +496,19 @@ const ProjectFolderCard = memo<Props>(
           <ContentBody className={size} aria-hidden>
             <FolderTitle
               onClick={handleProjectTitleOnClick(
-                publication.relationships.publication.data.id
+                publication.data.relationships.publication.data.id
               )}
               className="e2e-folder-card-folder-title"
             >
-              <T value={publication.attributes.publication_title_multiloc} />
+              <T
+                value={publication.data.attributes.publication_title_multiloc}
+              />
             </FolderTitle>
 
             <T
               value={
-                publication.attributes.publication_description_preview_multiloc
+                publication.data.attributes
+                  .publication_description_preview_multiloc
               }
             >
               {(description) => {
@@ -525,55 +524,72 @@ const ProjectFolderCard = memo<Props>(
               }}
             </T>
           </ContentBody>
-          <ContentFooter className={`${size} ${!showFooter ? 'hidden' : ''}`}>
-            <ContentFooterLeft>
-              {showAvatarBubbles && (
-                <AvatarBubbles
-                  size={32}
-                  limit={3}
-                  userCountBgColor={theme.colors.tenantPrimary}
-                  avatarIds={avatarIds}
-                  userCount={projectFolder?.data.attributes.participants_count}
-                />
-              )}
-            </ContentFooterLeft>
-
-            <ContentFooterRight>
-              <ProjectMetaItems>
-                {showIdeasCount && ideasCount && (
-                  <MetaItem className="first">
-                    <Icon
-                      height="23px"
-                      width="23px"
-                      fill={theme.colors.tenantPrimary}
-                      ariaHidden
-                      name="idea"
-                    />
-                    <MetaItemText aria-hidden>{ideasCount}</MetaItemText>
-                    <ScreenReaderOnly>
-                      {formatMessage(messages.xInputs, { ideasCount })}
-                    </ScreenReaderOnly>
-                  </MetaItem>
+          <Box borderTop={`1px solid ${colors.divider}`} pt="16px" mt="30px">
+            <ContentFooter className={`${size} ${!showFooter ? 'hidden' : ''}`}>
+              <Box h="100%" display="flex" alignItems="center">
+                {showAvatarBubbles && (
+                  <AvatarBubbles
+                    size={32}
+                    limit={3}
+                    userCountBgColor={theme.colors.tenantPrimary}
+                    avatarIds={avatarIds}
+                    userCount={
+                      projectFolder?.data.attributes.participants_count
+                    }
+                  />
                 )}
+              </Box>
 
-                {showCommentsCount && commentsCount && (
-                  <MetaItem>
-                    <Icon
-                      height="23px"
-                      width="23px"
-                      fill={theme.colors.tenantPrimary}
-                      ariaHidden
-                      name="comments"
-                    />
-                    <MetaItemText aria-hidden>{commentsCount}</MetaItemText>
-                    <ScreenReaderOnly>
-                      {formatMessage(messages.xComments, { commentsCount })}
-                    </ScreenReaderOnly>
-                  </MetaItem>
-                )}
-              </ProjectMetaItems>
-            </ContentFooterRight>
-          </ContentFooter>
+              <Box h="100%" display="flex" alignItems="center">
+                <ProjectMetaItems>
+                  {showIdeasCount && ideasCount && (
+                    <MetaItem className="first">
+                      <Icon
+                        height="23px"
+                        width="23px"
+                        fill={theme.colors.tenantPrimary}
+                        ariaHidden
+                        name="idea"
+                      />
+                      <MetaItemText aria-hidden>{ideasCount}</MetaItemText>
+                      <ScreenReaderOnly>
+                        {formatMessage(messages.xInputs, { ideasCount })}
+                      </ScreenReaderOnly>
+                    </MetaItem>
+                  )}
+
+                  {showCommentsCount && commentsCount && (
+                    <MetaItem>
+                      <Icon
+                        height="23px"
+                        width="23px"
+                        fill={theme.colors.tenantPrimary}
+                        ariaHidden
+                        name="comments"
+                      />
+                      <MetaItemText aria-hidden>{commentsCount}</MetaItemText>
+                      <ScreenReaderOnly>
+                        {formatMessage(messages.xComments, { commentsCount })}
+                      </ScreenReaderOnly>
+                    </MetaItem>
+                  )}
+                </ProjectMetaItems>
+              </Box>
+            </ContentFooter>
+          </Box>
+          {showFollowButton && (
+            <Box display="flex" justifyContent="flex-end">
+              <FollowUnfollow
+                followableType="projects"
+                followableId={projectFolder.data.id}
+                followersCount={projectFolder.data.attributes.followers_count}
+                followerId={
+                  projectFolder.data.relationships.user_follower?.data?.id
+                }
+                py="2px"
+              />
+            </Box>
+          )}
         </FolderContent>
       </Container>
     );

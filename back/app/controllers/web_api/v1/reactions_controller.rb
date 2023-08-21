@@ -26,8 +26,6 @@ class WebApi::V1::ReactionsController < ApplicationController
     @reaction.user ||= current_user
     authorize @reaction, policy_class: @policy_class
 
-    SideFxReactionService.new.before_create(@reaction, current_user)
-
     begin
       saved = @reaction.save
     rescue ActiveRecord::RecordNotUnique => e
@@ -56,7 +54,6 @@ class WebApi::V1::ReactionsController < ApplicationController
   end
 
   def destroy
-    SideFxReactionService.new.before_destroy(@reaction, current_user)
     frozen_reaction = @reaction.destroy
     if frozen_reaction
       SideFxReactionService.new.after_destroy(frozen_reaction, current_user)
@@ -92,8 +89,6 @@ class WebApi::V1::ReactionsController < ApplicationController
           mode: mode
         )
         authorize @new_reaction, policy_class: @policy_class
-
-        SideFxReactionService.new.before_create(@new_reaction, current_user)
 
         if @new_reaction.save
           SideFxReactionService.new.after_create(@new_reaction, current_user)

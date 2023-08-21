@@ -33,11 +33,34 @@ describe SideFxCommentService do
       expectation.to enqueue_job(LogActivityJob).with(comment, 'mentioned', user, created_at, payload: { mentioned_user: u1.id }, project_id: project_id)
       expectation.to enqueue_job(LogActivityJob).with(comment, 'mentioned', user, created_at, payload: { mentioned_user: u2.id }, project_id: project_id)
     end
+
+    it 'creates a follower' do
+      project = create(:project)
+      folder = create(:project_folder, projects: [project])
+      idea = create(:idea, project: project)
+      comment = create(:comment, post: idea)
+
+      expect do
+        service.after_create comment.reload, user
+      end.to change(Follower, :count).from(0).to(3)
+
+      expect(user.follows.pluck(:followable_id)).to contain_exactly idea.id, project.id, folder.id
+    end
+
+    it 'does not create a follower if the user already follows the post' do
+      initiative = create(:initiative)
+      comment = create(:comment, post: initiative)
+      create(:follower, followable: initiative, user: user)
+
+      expect do
+        service.after_create comment, user
+      end.not_to change(Follower, :count)
+    end
   end
 
   describe 'after_update' do
     it "logs a 'changed' action job when the comment has changed" do
-      comment.update(body_multiloc: { en: 'changed' })
+      comment.update!(body_multiloc: { en: 'changed' })
       expect { service.after_update(comment, user) }
         .to enqueue_job(LogActivityJob)
         .with(comment, 'changed', user, comment.updated_at.to_i, project_id: project_id)
@@ -54,7 +77,7 @@ describe SideFxCommentService do
       u2_mention_expanded = mention_service.add_span_around u2_mention, u2
 
       comment = create(:comment, body_multiloc: { en: u1_mention_expanded.to_s })
-      comment.update(body_multiloc: { en: "Let's mention #{u1_mention_expanded} and #{u2_mention_expanded}" })
+      comment.update!(body_multiloc: { en: "Let's mention #{u1_mention_expanded} and #{u2_mention_expanded}" })
 
       expectation = expect { service.after_update(comment, user) }
       created_at = comment.created_at.to_i

@@ -69,6 +69,7 @@ class ProjectCopyService < TemplateService
       @template['models']['comment']             = yml_comments shift_timestamps: shift_timestamps
       @template['models']['official_feedback']   = yml_official_feedback shift_timestamps: shift_timestamps
       @template['models']['reaction'] = yml_reactions shift_timestamps: shift_timestamps
+      @template['models']['followers'] = yml_followers shift_timestamps: shift_timestamps
     end
 
     @template
@@ -437,6 +438,7 @@ class ProjectCopyService < TemplateService
     participation_context_ids = [@project.id] + @project.phases.ids
     user_ids += Basket.where(participation_context_id: participation_context_ids).pluck(:user_id)
     user_ids += OfficialFeedback.where(post_id: idea_ids, post_type: 'Idea').pluck(:user_id)
+    user_ids += Follower.where(followable_id: ([@project.id] + idea_ids)).pluck(:user_id)
 
     User.where(id: user_ids.uniq).map do |user|
       yml_user = if anonymize_users
@@ -679,6 +681,18 @@ class ProjectCopyService < TemplateService
       }
       store_ref yml_reaction, v.id, :reaction
       yml_reaction
+    end
+  end
+
+  def yml_followers(shift_timestamps: 0)
+    Follower.where(followable_id: ([@project.id] + @project.ideas.published.where.not(author_id: nil).ids))
+    @project.followers.map do |follower|
+      {
+        'followable_ref' => lookup_ref(follower.followable_id, %i[project]),
+        'user_ref' => lookup_ref(follower.user_id, :user),
+        'created_at' => shift_timestamp(follower.created_at, shift_timestamps)&.iso8601,
+        'updated_at' => shift_timestamp(follower.updated_at, shift_timestamps)&.iso8601
+      }
     end
   end
 
