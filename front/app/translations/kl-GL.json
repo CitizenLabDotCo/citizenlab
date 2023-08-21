@@ -465,6 +465,7 @@
   "app.components.VerificationModal.toParticipateInThisProject": "suliami uani peqataaniarluni.",
   "app.components.VerificationModal.verifyBOSA": "Itsme imaluunniit eID atorlugu uppernarsaruk",
   "app.components.VerificationModal.verifyClaveUnica": "Clave Unica atorlugu uppernarsaruk",
+  "app.components.VerificationModal.verifyNemLogIn": "Verify with MitID",
   "app.components.VerificationModal.verifyYourIdentity": "{tenantName, select, DeloitteDK {Atuisuunerit uppernarsaruk} other {Kinaassutsit uppernarsaruk}}",
   "app.components.VoteControl.budgetingFutureEnabled": "Missingersuutitit {enabledFromDate}-imiit agguataarsinnaavatit.",
   "app.components.VoteControl.budgetingNotPermitted": "Missingersuusiornerit peqataasunut eqimattanut aalajangersimasunuinnaq atuuppoq.",
