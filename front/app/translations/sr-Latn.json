@@ -1513,7 +1513,6 @@
   "app.containers.UsersShowPage.a11y_likesCount": "{likesCount, plural, =0 {нема лајкова} one {1 лике} other {# свиђа}}",
   "app.containers.UsersShowPage.a11y_postCommentPostedIn": "Objava u kojoj je ovaj komentar objavljen:",
   "app.containers.UsersShowPage.commentsWithCount": "Komentari ({commentsCount})",
-  "app.containers.UsersShowPage.displayCountMobile": "({count})",
   "app.containers.UsersShowPage.editProfile": "Izmeni moj profil",
   "app.containers.UsersShowPage.emptyInfoText": "You are not following any items of the specified filter above.",
   "app.containers.UsersShowPage.eventsWithCount": "Events ({eventsCount})",
