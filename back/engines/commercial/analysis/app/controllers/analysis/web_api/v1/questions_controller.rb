@@ -6,6 +6,11 @@ module Analysis
       class QuestionsController < ApplicationController
         skip_after_action :verify_policy_scoped # The analysis is authorized instead.
         before_action :set_analysis
+        before_action :set_question, only: [:show]
+
+        def show
+          render json: QuestionSerializer.new(@question, params: jsonapi_serializer_params).serializable_hash
+        end
 
         # Used to check whether a question is possible with the given filters,
         # front-end should call this before initiating the question
@@ -19,7 +24,7 @@ module Analysis
             }
           )
           plan = QAndAMethod::Base.plan(@question)
-          render json: WebApi::V1::QuestionPreCheckSerializer.new(
+          render json: QuestionPreCheckSerializer.new(
             plan,
             params: jsonapi_serializer_params
           ).serializable_hash
@@ -41,7 +46,7 @@ module Analysis
           if @question.save && plan.possible?
             side_fx_service.after_create(@question, current_user)
             QAndAJob.perform_later(@question)
-            render json: WebApi::V1::QuestionSerializer.new(
+            render json: QuestionSerializer.new(
               @question,
               params: jsonapi_serializer_params,
               include: [:background_task]
@@ -56,6 +61,13 @@ module Analysis
         def set_analysis
           @analysis = Analysis.find(params[:analysis_id])
           authorize(@analysis, :show?)
+        end
+
+        def set_question
+          @question = Question
+            .joins(:insight)
+            .where(insight: { analysis: @analysis })
+            .find(params[:id])
         end
 
         def question_params

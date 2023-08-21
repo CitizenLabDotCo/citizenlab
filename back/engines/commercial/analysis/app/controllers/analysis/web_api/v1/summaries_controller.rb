@@ -6,6 +6,11 @@ module Analysis
       class SummariesController < ApplicationController
         skip_after_action :verify_policy_scoped # The analysis is authorized instead.
         before_action :set_analysis
+        before_action :set_summary, only: [:show]
+
+        def show
+          render json: SummarySerializer.new(@summary, params: jsonapi_serializer_params).serializable_hash
+        end
 
         # Used to check whether a summary is possible with the given filters,
         # front-end should call this before initiating the summary
@@ -19,7 +24,7 @@ module Analysis
             }
           )
           plan = SummarizationMethod::Base.plan(@summary)
-          render json: WebApi::V1::SummaryPreCheckSerializer.new(
+          render json: SummaryPreCheckSerializer.new(
             plan,
             params: jsonapi_serializer_params
           ).serializable_hash
@@ -41,7 +46,7 @@ module Analysis
           if @summary.save && plan.possible?
             side_fx_service.after_create(@summary, current_user)
             SummarizationJob.perform_later(@summary)
-            render json: WebApi::V1::SummarySerializer.new(
+            render json: SummarySerializer.new(
               @summary,
               params: jsonapi_serializer_params,
               include: [:background_task]
@@ -56,6 +61,13 @@ module Analysis
         def set_analysis
           @analysis = Analysis.find(params[:analysis_id])
           authorize(@analysis, :show?)
+        end
+
+        def set_summary
+          @summary = Summary
+            .joins(:insight)
+            .where(insight: { analysis: @analysis })
+            .find(params[:id])
         end
 
         def summary_params
