@@ -758,7 +758,7 @@
   "app.containers.Admin.initiatives.proposalsPageLinkText": "página de información sobre las propuestas",
   "app.containers.Admin.initiatives.requireCosponsorsInfo1": "Las propuestas no serán visibles hasta que se haya alcanzado un número de copatrocinadores.",
   "app.containers.Admin.initiatives.requireCosponsorsLabel": "Requerir copatrocinadores por propuesta",
-  "app.containers.Admin.initiatives.requireReviewInfo1": "Las propuestas no serán visibles hasta que un administrador las revise y apruebe.",
+  "app.containers.Admin.initiatives.requireReviewInfo1": "Las propuestas no serán visibles hasta que un administrador las revise y las apruebe.",
   "app.containers.Admin.initiatives.requireReviewLabel": "Requerir revisión de propuestas",
   "app.containers.Admin.initiatives.requireReviewTooltip": "Es imposible editar las propuestas una vez revisadas y aprobadas",
   "app.containers.Admin.initiatives.review": "Revisión",
