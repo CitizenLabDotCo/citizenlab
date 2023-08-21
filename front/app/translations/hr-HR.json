@@ -1513,7 +1513,6 @@
   "app.containers.UsersShowPage.a11y_likesCount": "{likesCount, plural, =0 {nema lajkova} one {1 sviđa mi se} other {# sviđanja}}",
   "app.containers.UsersShowPage.a11y_postCommentPostedIn": "Unos u kojem je ovaj komentar objavljen kao odgovor na:",
   "app.containers.UsersShowPage.commentsWithCount": "Komentari ({commentsCount})",
-  "app.containers.UsersShowPage.displayCountMobile": "({count})",
   "app.containers.UsersShowPage.editProfile": "Uredi svoj profil",
   "app.containers.UsersShowPage.emptyInfoText": "Ne pratite nijednu stavku gore navedenog filtera.",
   "app.containers.UsersShowPage.eventsWithCount": "Događaji ({eventsCount})",
