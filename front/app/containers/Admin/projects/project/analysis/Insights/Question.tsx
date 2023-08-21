@@ -19,9 +19,9 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import styled from 'styled-components';
 import { useSelectedInputContext } from '../SelectedInputContext';
-import useAnalysisSummary from 'api/analysis_summaries/useAnalysisSummary';
+import useAnalysisQuestion from 'api/analysis_questions/useAnalysisQuestion';
 
-const StyledSummaryText = styled.div`
+const StyledQuestionText = styled.div`
   white-space: pre-wrap;
 `;
 
@@ -34,20 +34,14 @@ type Props = {
   insight: IInsightData;
 };
 
-const Summary = ({ insight }: Props) => {
+const Question = ({ insight }: Props) => {
   const { setSelectedInputId } = useSelectedInputContext();
   const { formatMessage } = useIntl();
   const { analysisId } = useParams() as { analysisId: string };
-  const { mutate: deleteSummary } = useDeleteAnalysisInsight();
-
-  const insightType = insight.relationships.insightable.data.type;
-  const insightId =
-    insightType === 'summary'
-      ? insight.relationships.insightable.data.id
-      : undefined;
-  const { data: summary } = useAnalysisSummary({
+  const { mutate: deleteQuestion } = useDeleteAnalysisInsight();
+  const { data: summary } = useAnalysisQuestion({
     analysisId,
-    id: insightId,
+    id: insight.relationships.insightable.data.id,
   });
 
   const { data: backgroundTask } = useAnalysisBackgroundTask(
@@ -58,9 +52,9 @@ const Summary = ({ insight }: Props) => {
     backgroundTask?.data.attributes.state === 'in_progress' ||
     backgroundTask?.data.attributes.state === 'queued';
 
-  const handleSummaryDelete = (id: string) => {
-    if (window.confirm(formatMessage(messages.deleteSummaryConfirmation))) {
-      deleteSummary({
+  const handleQuestionDelete = (id: string) => {
+    if (window.confirm(formatMessage(messages.deleteQuestionConfirmation))) {
+      deleteQuestion({
         analysisId,
         id,
       });
@@ -100,7 +94,7 @@ const Summary = ({ insight }: Props) => {
         >
           {hasFilters && (
             <>
-              <Box>Summary for</Box>
+              <Box>Question for</Box>
               {Object.entries(summary.data.attributes.filters).map(([k, v]) => (
                 <Box
                   key={k}
@@ -118,14 +112,14 @@ const Summary = ({ insight }: Props) => {
 
           {!hasFilters && (
             <>
-              <Box>Summary</Box>
+              <Box>Question</Box>
             </>
           )}
         </Box>
         <Box>
-          <StyledSummaryText>
-            {replaceIdRefsWithLinks(summary.data.attributes.summary)}
-          </StyledSummaryText>
+          <StyledQuestionText>
+            {replaceIdRefsWithLinks(summary.data.attributes.answer)}
+          </StyledQuestionText>
           {processing && <Spinner />}
         </Box>
       </Box>
@@ -137,10 +131,10 @@ const Summary = ({ insight }: Props) => {
       >
         <IconButton
           iconName="delete"
-          onClick={() => handleSummaryDelete(insight.id)}
+          onClick={() => handleQuestionDelete(insight.id)}
           iconColor={colors.teal400}
           iconColorOnHover={colors.teal700}
-          a11y_buttonActionMessage={formatMessage(messages.deleteSummary)}
+          a11y_buttonActionMessage={formatMessage(messages.deleteQuestion)}
         />
         {summary.data.attributes.accuracy && (
           <Box color={colors.teal700}>
@@ -152,4 +146,4 @@ const Summary = ({ insight }: Props) => {
   );
 };
 
-export default Summary;
+export default Question;
