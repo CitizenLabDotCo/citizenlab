@@ -465,6 +465,7 @@
   "app.components.VerificationModal.toParticipateInThisProject": "Para participar en este proyecto",
   "app.components.VerificationModal.verifyBOSA": "Verificar con su nombre o con su Ci",
   "app.components.VerificationModal.verifyClaveUnica": "Verificar con Clave única",
+  "app.components.VerificationModal.verifyNemLogIn": "Verificar con MitID",
   "app.components.VerificationModal.verifyYourIdentity": "Verifica tu identidad",
   "app.components.VoteControl.budgetingFutureEnabled": "Puedes asignar tu presupuesto a partir de {enabledFromDate}.",
   "app.components.VoteControl.budgetingNotPermitted": "El presupuesto participativo solo está habilitado para ciertos grupos.",
