@@ -23,6 +23,9 @@ Rails.application.routes.draw do
           post :down, on: :collection
         end
       end
+      concern :followable do
+        resources :followers, only: [:create]
+      end
       concern :post do
         resources :activities, only: [:index]
         resources :comments, shallow: true,
@@ -37,14 +40,13 @@ Rails.application.routes.draw do
         end
         get 'comments/as_xlsx', on: :collection, to: 'comments#index_xlsx'
         resources :official_feedback, shallow: true
-        resources :followers, only: [:create]
       end
       concern :spam_reportable do
         resources :spam_reports, shallow: true
       end
 
       resources :ideas,
-        concerns: %i[reactable spam_reportable post],
+        concerns: %i[reactable spam_reportable post followable],
         defaults: { reactable: 'Idea', spam_reportable: 'Idea', post: 'Idea', followable: 'Idea' } do
         resources :images, defaults: { container_type: 'Idea' }
         resources :files, defaults: { container_type: 'Idea' }
@@ -58,7 +60,7 @@ Rails.application.routes.draw do
       end
 
       resources :initiatives,
-        concerns: %i[reactable spam_reportable post],
+        concerns: %i[reactable spam_reportable post followable],
         defaults: { reactable: 'Initiative', spam_reportable: 'Initiative', post: 'Initiative', followable: 'Initiative' } do
         resources :images, defaults: { container_type: 'Initiative' }
         resources :files, defaults: { container_type: 'Initiative' }
@@ -96,6 +98,8 @@ Rails.application.routes.draw do
 
         resources :comments, only: [:index], controller: 'user_comments'
       end
+
+      get 'users/:attendee_id/events', to: 'events#index'
       get 'users/:id', to: 'users#show', constraints: { id: /\b(?!custom_fields|me)\b\S+/ }
 
       scope path: 'user' do
@@ -136,7 +140,9 @@ Rails.application.routes.draw do
 
       resources :events, only: %i[index show edit update destroy] do
         resources :files, defaults: { container_type: 'Event' }, shallow: false
+        resources :attendances, module: 'events', only: %i[create index]
       end
+      resources :event_attendances, only: %i[destroy], controller: 'events/attendances'
 
       resources :phases, only: %i[show edit update destroy] do
         resources :files, defaults: { container_type: 'Phase' }, shallow: false
@@ -149,7 +155,7 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :projects do
+      resources :projects, concerns: [:followable], defaults: { followable: 'Project' } do
         resources :events, only: %i[new create]
         resources :projects_allowed_input_topics, only: [:index]
         resources :phases, only: %i[index new create]
@@ -164,8 +170,6 @@ Rails.application.routes.draw do
         resources :moderators, controller: 'project_moderators', except: [:update] do
           get :users_search, on: :collection
         end
-
-        resources :followers, only: [:create], defaults: { followable: 'Project' }
 
         post 'copy', on: :member
         get 'by_slug/:slug', on: :collection, to: 'projects#by_slug'
@@ -184,12 +188,11 @@ Rails.application.routes.draw do
         get 'status_counts', on: :collection
       end
 
-      resources :project_folders, controller: 'folders' do
+      resources :project_folders, controller: 'folders', concerns: [:followable], defaults: { followable: 'ProjectFolders::Folder' } do
         resources :moderators, controller: 'folder_moderators', except: %i[update]
 
         resources :images, controller: '/web_api/v1/images', defaults: { container_type: 'ProjectFolder' }
         resources :files, controller: '/web_api/v1/files', defaults: { container_type: 'ProjectFolder' }
-        resources :followers, only: [:create], defaults: { followable: 'ProjectFolders::Folder' }
         get 'by_slug/:slug', on: :collection, to: 'folders#by_slug'
       end
 

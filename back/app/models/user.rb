@@ -141,6 +141,7 @@ class User < ApplicationRecord
   has_many :internal_comments, foreign_key: :author_id, dependent: :nullify
   has_many :official_feedbacks, dependent: :nullify
   has_many :reactions, dependent: :nullify
+  has_many :event_attendances, class_name: 'Events::Attendance', foreign_key: :attendee_id, dependent: :destroy
   has_many :follows, class_name: 'Follower', dependent: :destroy
 
   after_initialize do
@@ -284,6 +285,14 @@ class User < ApplicationRecord
     # use any conditions before `or` very carefully (inspect the generated SQL)
     project_moderator.or(User.project_folder_moderator).where.not(id: admin).not_citizenlab_member
   }
+
+  def update_merging_custom_fields!(attributes)
+    attributes = attributes.deep_stringify_keys
+    update!(
+      **attributes,
+      custom_field_values: custom_field_values.merge(attributes['custom_field_values'] || {})
+    )
+  end
 
   def assign_email_or_phone
     # Hack to embed phone numbers in email
