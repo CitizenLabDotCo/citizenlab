@@ -25,6 +25,6 @@ FactoryBot.define do
 
     start_at { '2017-05-01 20:00' }
     end_at { '2017-05-01 22:00' }
-    online_link { 'https://example.com' }
+    sequence(:online_link) { |n| "https://example.com/#{n}" }
   end
 end
