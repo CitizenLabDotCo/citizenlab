@@ -2,40 +2,25 @@ import React, { useState } from 'react';
 
 // hooks
 import useInputSchema from 'hooks/useInputSchema';
-import useUpdateIdea from 'api/ideas/useUpdateIdea';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 import Fields from 'components/Form/Components/Fields';
 
-// routing
-import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
-
 // utils
 import { customAjv } from 'components/Form';
 
 // typings
-import { Multiloc } from 'typings';
 import { FormData } from 'components/Form/typings';
 
 interface Props {
   projectId: string;
-  ideaId: string;
-  title_multiloc: Multiloc;
-  body_multiloc: Multiloc;
+  formData: FormData;
+  setFormData: (formData: FormData) => void;
 }
 
-const IdeaForm = ({
-  projectId,
-  ideaId,
-  title_multiloc,
-  body_multiloc,
-}: Props) => {
+const IdeaForm = ({ projectId, formData, setFormData }: Props) => {
   const [showAllErrors, setShowAllErrors] = useState(false);
-  const [formData, setFormData] = useState<FormData | null>(null);
-  const visibleData = formData || { title_multiloc, body_multiloc };
-
-  const { mutateAsync: updateIdea } = useUpdateIdea();
 
   const { schema, uiSchema } = useInputSchema({
     projectId,
@@ -43,23 +28,6 @@ const IdeaForm = ({
   });
 
   if (!schema || !uiSchema) return null;
-
-  const onSubmit = async () => {
-    const { title_multiloc, body_multiloc } = visibleData;
-
-    await updateIdea({
-      id: ideaId,
-      requestBody: {
-        publication_status: 'published',
-        title_multiloc,
-        body_multiloc,
-      },
-    });
-
-    removeSearchParams(['idea_id']);
-  };
-
-  onSubmit;
 
   return (
     <Box w="90%">
@@ -69,7 +37,7 @@ const IdeaForm = ({
         setShowAllErrors={setShowAllErrors}
         schema={schema}
         uiSchema={filterUiSchema(uiSchema)}
-        data={visibleData}
+        data={formData}
         onChange={setFormData}
         config="input"
       />

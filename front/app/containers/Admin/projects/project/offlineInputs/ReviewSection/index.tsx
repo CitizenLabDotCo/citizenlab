@@ -25,6 +25,9 @@ import styled from 'styled-components';
 import { colors, stylingConsts } from 'utils/styleUtils';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
+// typings
+import { FormData } from 'components/Form/typings';
+
 // TODO move to component library
 const TEAL50 = '#EDF8FA';
 
@@ -34,7 +37,12 @@ const StyledBox = styled(Box)`
   }
 `;
 
-const ReviewSection = () => {
+interface Props {
+  formData: FormData;
+  setFormData: (formData: FormData) => void;
+}
+
+const ReviewSection = (props: Props) => {
   const { projectId } = useParams() as {
     projectId: string;
   };
@@ -163,14 +171,7 @@ const ReviewSection = () => {
           justifyContent="center"
           px="12px"
         >
-          {idea && ideaId && (
-            <IdeaForm
-              projectId={projectId}
-              ideaId={idea.data.id}
-              title_multiloc={idea.data.attributes.title_multiloc}
-              body_multiloc={idea.data.attributes.body_multiloc}
-            />
-          )}
+          {idea && <IdeaForm projectId={projectId} {...props} />}
         </Box>
         <Box w="40%">
           {ideaMetadata && pages && (

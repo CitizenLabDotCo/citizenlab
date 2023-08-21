@@ -18,4 +18,8 @@ export default defineMessages({
     defaultMessage:
       'There are no ideas to review yet. Click "{importPdf}" to import a PDF file containing scanned idea forms.',
   },
+  approve: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.approve',
+    defaultMessage: 'Approve',
+  },
 });

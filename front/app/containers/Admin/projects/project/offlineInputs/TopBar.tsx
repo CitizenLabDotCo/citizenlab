@@ -19,15 +19,18 @@ import messages from './messages';
 import { stylingConsts, colors } from 'utils/styleUtils';
 
 interface Props {
+  onApproveIdea?: () => void;
   onClickPDFImport: () => void;
 }
 
-const TopBar = ({ onClickPDFImport }: Props) => {
+const TopBar = ({ onApproveIdea, onClickPDFImport }: Props) => {
   const localize = useLocalize();
   const { projectId } = useParams() as {
     projectId: string;
   };
+
   const { data: project } = useProjectById(projectId);
+
   const projectTitle = project?.data.attributes.title_multiloc;
 
   return (
@@ -52,8 +55,13 @@ const TopBar = ({ onClickPDFImport }: Props) => {
         </Box>
       </Box>
 
-      <Box>
-        <Button icon="page" onClick={onClickPDFImport}>
+      <Box display="flex">
+        {onApproveIdea && (
+          <Button icon="check" onClick={onApproveIdea} marginRight="20px">
+            <FormattedMessage {...messages.approve} />
+          </Button>
+        )}
+        <Button icon="page" onClick={onClickPDFImport} bgColor={colors.primary}>
           <FormattedMessage {...messages.importPdf} />
         </Button>
       </Box>
