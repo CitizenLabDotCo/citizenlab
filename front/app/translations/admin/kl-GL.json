@@ -2017,6 +2017,7 @@
   "app.containers.admin.ideas.all.inputManagerPageTitle": "Input manager",
   "app.containers.admin.ideas.all.tabOverview": "Overview",
   "app.containers.admin.import.downloadTemplate": "Download template",
+  "app.containers.admin.import.ideasBeingImported": "Your ideas are being imported. This can take a while. Please do not close this page until the import is completed successfully- we will let you know when it is.",
   "app.containers.admin.import.importDescription": "Excel-filimeersut ikkullugit.",
   "app.containers.admin.import.importInput": "Import input",
   "app.containers.admin.import.importInputs": "Import inputs",
