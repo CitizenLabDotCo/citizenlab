@@ -93,7 +93,7 @@ const EventInformation = ({
               ariaHidden
               mr="8px"
             />
-            <Text m="0px" color={'coolGrey700'} fontSize="s">
+            <Text m="0px" color="coolGrey700" fontSize="s">
               {eventDateTime}
             </Text>
           </Box>
@@ -106,7 +106,7 @@ const EventInformation = ({
                 ariaHidden
                 mr="8px"
               />
-              <Text m="0px" color={'coolGrey700'} fontSize="s">
+              <Text m="0px" color="coolGrey700" fontSize="s">
                 {locationDescription?.slice(
                   0,
                   locationDescription.indexOf(',')
@@ -125,7 +125,7 @@ const EventInformation = ({
               />
               <Text
                 m="0px"
-                color={'coolGrey700'}
+                color="coolGrey700"
                 fontSize="s"
                 role="button"
                 onClick={(e) => {
@@ -148,7 +148,7 @@ const EventInformation = ({
                 ariaHidden
                 mr="8px"
               />
-              <Text m="0px" color={'coolGrey700'} fontSize="s">
+              <Text m="0px" color="coolGrey700" fontSize="s">
                 {event.attributes.attendees_count}{' '}
                 {formatMessage(messages.attending)}
               </Text>

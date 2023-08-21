@@ -75,7 +75,7 @@ const InformationColumnDesktop = ({ event, className }: Props) => {
                   <Box borderBottom={`solid 1px ${colors.divider}`} />
                 </>
               )}
-              {event.attributes.location_description && (
+              {event.attributes.online_link && (
                 <>
                   <OnlineLink link={event.attributes.online_link} />
                   <Box borderBottom={`solid 1px ${colors.divider}`} />

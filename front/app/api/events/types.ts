@@ -18,7 +18,7 @@ export interface IEventData {
     created_at: string;
     updated_at: string;
     attendees_count: number;
-    online_link: string;
+    online_link?: string;
   };
   relationships: {
     project: {
