@@ -55,7 +55,7 @@ RSpec.describe Analysis::QAndAMethod do
         :q_and_a_task,
         analysis: analysis,
         state: 'queued',
-        question: create(:analysis_question, q_and_a_method: 'one_pass_llm', insight_attributes: { analysis: analysis, filters: { comments_from: 5 } })
+        question: create(:analysis_question, q_and_a_method: 'one_pass_llm', question: 'What is the most popular theme?', insight_attributes: { analysis: analysis, filters: { comments_from: 5 } })
       )
       question = q_and_a_task.question
       inputs = with_options project: q_and_a_task.analysis.project do
@@ -80,6 +80,7 @@ RSpec.describe Analysis::QAndAMethod do
 
       expect(mock_llm).to receive(:chat_async).with(kind_of(String)) do |prompt, &block|
         expect(prompt).to include(inputs[2].id)
+        expect(prompt).to include('What is the most popular theme?')
         block.call 'Nothing'
         block.call ' else'
       end
