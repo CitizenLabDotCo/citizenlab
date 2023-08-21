@@ -126,6 +126,12 @@ module Frontend
       end
     end
 
+    def unfollow_url(user, configuration = app_config_instance)
+      # A future improvement would be to pass the follower as argument
+      # and return e.g. the project page for a project follower.
+      "#{configuration.base_frontend_uri}/profile/#{user.slug}"
+    end
+
     def terms_conditions_url(configuration = app_config_instance)
       "#{configuration.base_frontend_uri}/pages/terms-and-conditions"
     end

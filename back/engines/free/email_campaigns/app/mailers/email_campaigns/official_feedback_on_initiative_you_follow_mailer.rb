@@ -29,9 +29,5 @@ module EmailCampaigns
         }
       )
     end
-
-    def unfollow_url
-      'https://google.com'
-    end
   end
 end
