@@ -533,16 +533,18 @@ const InitiativeForm = ({
           </FormLabel>
         </SectionField>
       </StyledFormSection>
-      {allowAnonymousParticipation && !publishedAnonymously && (
-        <StyledFormSection>
-          <Box mt="-20px">
-            <ProfileVisiblity
-              postAnonymously={postAnonymously}
-              setPostAnonymously={setPostAnonymously}
-            />
-          </Box>
-        </StyledFormSection>
-      )}
+      {allowAnonymousParticipation &&
+        !publishedAnonymously &&
+        !initiativeCosponsorsRequired && (
+          <StyledFormSection>
+            <Box mt="-20px">
+              <ProfileVisiblity
+                postAnonymously={postAnonymously}
+                setPostAnonymously={setPostAnonymously}
+              />
+            </Box>
+          </StyledFormSection>
+        )}
 
       <FormSubmitFooter
         className="e2e-initiative-publish-button"
