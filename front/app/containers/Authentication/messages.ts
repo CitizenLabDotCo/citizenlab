@@ -5,6 +5,10 @@ export default defineMessages({
     id: 'app.containers.NewAuthModal.beforeYouParticipate',
     defaultMessage: 'Before you participate',
   },
+  beforeYouFollow: {
+    id: 'app.containers.NewAuthModal.beforeYouFollow',
+    defaultMessage: 'Before you follow',
+  },
   logIn: {
     id: 'app.containers.NewAuthModal.logIn',
     defaultMessage: 'Log in',
