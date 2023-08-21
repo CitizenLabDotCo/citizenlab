@@ -1,11 +1,11 @@
-import React, { memo } from 'react';
+import React from 'react';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // styles
-import styled, { withTheme } from 'styled-components';
+import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
 // hooks
@@ -26,11 +26,7 @@ const Tip = styled.li`
   margin-bottom: 20px;
 `;
 
-interface Props {
-  theme: any;
-}
-
-const TipsContent = memo<Props>((_props) => {
+const TipsContent = () => {
   const initiativeReviewRequired = useInitiativeReviewRequired();
 
   return (
@@ -62,6 +58,6 @@ const TipsContent = memo<Props>((_props) => {
       </TipsList>
     </Container>
   );
-});
+};
 
-export default withTheme(TipsContent);
+export default TipsContent;
