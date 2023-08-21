@@ -17,8 +17,8 @@ de:
   initiative_statuses:
     review_pending: Überprüfung steht noch aus
     review_pending_description: Überprüfung steht noch aus
-    changes_requested: gewünschte Änderungen
-    changes_requested_description: gewünschte Änderungen
+    changes_requested: Änderungen gewünscht
+    changes_requested_description: Änderungen gewünscht
     proposed: Offen
     proposed_description: eingereicht
     expired: Grenzwert nicht erreicht
