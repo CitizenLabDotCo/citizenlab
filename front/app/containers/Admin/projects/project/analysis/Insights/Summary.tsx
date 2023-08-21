@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import reactStringReplace from 'react-string-replace';
 
 import useDeleteAnalysisSummary from 'api/analysis_summaries/useDeleteAnalysisSummary';
@@ -13,6 +13,7 @@ import {
   Spinner,
   colors,
   stylingConsts,
+  Button,
 } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
@@ -22,6 +23,7 @@ import { useSelectedInputContext } from '../SelectedInputContext';
 import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
 import Tag from '../Tags/Tag';
 import FilterItems from '../FilterItems';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 const StyledSummaryText = styled.div`
   white-space: pre-wrap;
@@ -37,6 +39,7 @@ type Props = {
 };
 
 const Summary = ({ summary }: Props) => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const { setSelectedInputId } = useSelectedInputContext();
   const { formatMessage } = useIntl();
   const { analysisId } = useParams() as { analysisId: string };
@@ -78,6 +81,19 @@ const Summary = ({ summary }: Props) => {
     : null;
 
   const tag = tags?.data.find((tag) => tag.id === tagId);
+
+  const phaseId = searchParams.get('phase_id');
+
+  const handleRestoreFilters = () => {
+    setSearchParams(
+      phaseId
+        ? {
+            phase_id: phaseId,
+          }
+        : {}
+    );
+    updateSearchParams(summary.attributes.filters);
+  };
 
   return (
     <Box
@@ -123,10 +139,18 @@ const Summary = ({ summary }: Props) => {
       </Box>
       <Box
         display="flex"
-        flexDirection="row-reverse"
         gap="4px"
         alignItems="center"
+        justifyContent="space-between"
       >
+        <Button buttonStyle="white" onClick={handleRestoreFilters} p="4px 12px">
+          Restore filters
+        </Button>
+        {summary.attributes.accuracy && (
+          <Box color={colors.teal700}>
+            Accuracy {summary.attributes.accuracy * 100}%
+          </Box>
+        )}
         <IconButton
           iconName="delete"
           onClick={() => handleSummaryDelete(summary.id)}
@@ -134,11 +158,6 @@ const Summary = ({ summary }: Props) => {
           iconColorOnHover={colors.teal700}
           a11y_buttonActionMessage={formatMessage(messages.deleteSummary)}
         />
-        {summary.attributes.accuracy && (
-          <Box color={colors.teal700}>
-            Accuracy {summary.attributes.accuracy * 100}%
-          </Box>
-        )}
       </Box>
     </Box>
   );
