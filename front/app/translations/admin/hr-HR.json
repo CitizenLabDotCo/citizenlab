@@ -2017,6 +2017,7 @@
   "app.containers.admin.ideas.all.inputManagerPageTitle": "Voditelj unosa",
   "app.containers.admin.ideas.all.tabOverview": "Pregled",
   "app.containers.admin.import.downloadTemplate": "Preuzmi predložak",
+  "app.containers.admin.import.ideasBeingImported": "Vaše ideje se uvoze. Ovo može potrajati. Nemojte zatvarati ovu stranicu dok uvoz ne bude uspješno dovršen - obavijestit ćemo vas kada bude.",
   "app.containers.admin.import.importDescription": "Uvezite postojeće unose iz Excel datoteke.",
   "app.containers.admin.import.importInput": "Uvoz unosa",
   "app.containers.admin.import.importInputs": "Uvoz unosa",
