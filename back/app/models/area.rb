@@ -11,6 +11,7 @@
 #  updated_at             :datetime         not null
 #  ordering               :integer
 #  custom_field_option_id :uuid
+#  followers_count        :integer          default(0), not null
 #
 # Indexes
 #
