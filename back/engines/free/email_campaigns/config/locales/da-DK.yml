@@ -409,7 +409,7 @@ da:
     project_published:
       subject: 'Et nyt projekt blev offentliggjort på platformen %{organizationName}'
       header_title: 'Et nyt projekt blev offentliggjort'
-      header_message: 'Deltagelsesplatformen %{organizationName} har netop offentliggjort følgende projekt:'
+      header_message: 'Borgerinddragelsesplatformen %{organizationName} har netop offentliggjort følgende projekt:'
       preheader: 'Et nyt projekt blev offentliggjort'
     status_change_on_idea_you_follow:
       status_change: 'Den nye status for denne idé er ''%{ideaStatus}'''
@@ -419,7 +419,7 @@ da:
       preheader: 'En idé, du følger, har fået en ny status'
     status_change_on_initiative_you_follow:
       status_change: 'Den nye status for dette forslag er ''%{initiativeStatus}'''
-      header_message: 'Status for forslag ''%{initiativeTitle}'' er blevet opdateret på den digitale deltagelsesplatform for %{organizationName}.'
+      header_message: 'Status for forslag ''%{initiativeTitle}'' er blevet opdateret på den digitale borgerinddragelsesplatform for %{organizationName}.'
       header_title: 'Et forslag, du følger, har fået en ny status'
       subject: 'Status for et forslag, du følger, er ændret'
       preheader: 'Et forslag, du følger, har fået en ny status'
@@ -562,9 +562,9 @@ da:
         user_who_is_mentioned: 'Bruger der er nævnt'
         user_who_registers: 'Bruger der registrerer sig'
         user_who_was_invited: 'Bruger der blev inviteret'
-        users_who_follow_the_proposal: 'Bruger, der følger forslaget'
-        users_who_follow_the_input: 'Bruger, der følger input'
-        users_who_follow_the_project: 'Brugere, der følger projektet'
+        users_who_follow_the_proposal: 'Bruger der følger forslaget'
+        users_who_follow_the_input: 'Bruger der følger input'
+        users_who_follow_the_project: 'Brugere der følger projektet'
         user_who_voted: 'Bruger der stemte'
         user_with_unsubmitted_votes: 'Bruger der ikke har afgivet sin stemme'
         users_who_engaged_but_not_voted: 'Brugere der har engageret sig i projektet, men ikke har stemt'
