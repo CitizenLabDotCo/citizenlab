@@ -1513,7 +1513,6 @@
   "app.containers.UsersShowPage.a11y_likesCount": "crwdns868511:0likesCount={likesCount}crwdne868511:0",
   "app.containers.UsersShowPage.a11y_postCommentPostedIn": "crwdns868513:0crwdne868513:0",
   "app.containers.UsersShowPage.commentsWithCount": "crwdns868515:0{commentsCount}crwdne868515:0",
-  "app.containers.UsersShowPage.displayCountMobile": "crwdns868517:0{count}crwdne868517:0",
   "app.containers.UsersShowPage.editProfile": "crwdns868519:0crwdne868519:0",
   "app.containers.UsersShowPage.emptyInfoText": "crwdns868521:0crwdne868521:0",
   "app.containers.UsersShowPage.eventsWithCount": "crwdns868523:0{eventsCount}crwdne868523:0",
