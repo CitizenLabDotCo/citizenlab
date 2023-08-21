@@ -47,6 +47,7 @@ interface Props {
   ) => void;
   onGoBack: () => void;
   onSwitchFlow: () => void;
+  closeModal: () => void;
 }
 
 interface FormValues {
@@ -67,6 +68,7 @@ const EmailAndPassword = ({
   onSubmit,
   onGoBack,
   onSwitchFlow,
+  closeModal,
 }: Props) => {
   const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
   const anySSOEnabled = useAnySSOEnabled();
@@ -179,6 +181,7 @@ const EmailAndPassword = ({
           <TextLink
             to="/password-recovery"
             className="e2e-password-recovery-link"
+            onClick={closeModal}
           >
             {formatMessage(sharedMessages.forgotPassword)}
           </TextLink>
