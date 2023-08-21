@@ -2017,6 +2017,7 @@
   "app.containers.admin.ideas.all.inputManagerPageTitle": "مدير الفكرة",
   "app.containers.admin.ideas.all.tabOverview": "ملخص",
   "app.containers.admin.import.downloadTemplate": "تنزيل القالب",
+  "app.containers.admin.import.ideasBeingImported": "يتم استيراد أفكارك. سوف يأخذ هذا بعض الوقت. الرجاء عدم إغلاق هذه الصفحة حتى يكتمل الاستيراد بنجاح - وسنخبرك عندما يتم ذلك.",
   "app.containers.admin.import.importDescription": "استيراد مدخلات موجودة من ملف Excel.",
   "app.containers.admin.import.importInput": "استيراد مدخل",
   "app.containers.admin.import.importInputs": "استيراد مدخلات",
