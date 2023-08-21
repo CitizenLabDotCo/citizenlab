@@ -47,10 +47,15 @@ module IdCriipto
           type: 'string',
           description: 'The `key` attribute of the custom field where the birthdate should be stored. Leave empty to not store the birthday. If it\'s set, the field will be locked for verified users.'
         },
+        birthyear_custom_field_key: {
+          private: true,
+          type: 'string',
+          description: 'The `key` attribute of the custom field where the birthyear should be stored (`birthyear` by default). Leave empty to not store the birthyear. If it\'s set, the field will be locked for verified users.'
+        },
         municipality_code_custom_field_key: {
           private: true,
           type: 'string',
-          description: 'Only for MitID: The `key` attribute of the custom field where the municipality_key should be stored. Leave empty to not store the municipality_key. Should be a number field. We don\'t lock this field, assuming it is a hidden field.'
+          description: 'Only for MitID: The `key` attribute of the custom field where the municipality_key should be stored. Leave empty to not store the municipality_key. We don\'t lock this field, assuming it is a hidden field.'
         }
       }
     end
@@ -76,7 +81,8 @@ module IdCriipto
 
     def locked_custom_fields
       [
-        config[:birthday_custom_field_key].presence
+        config[:birthday_custom_field_key].presence,
+        config[:birthyear_custom_field_key].presence
       ].compact
     end
 

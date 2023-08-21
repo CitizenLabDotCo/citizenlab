@@ -15,18 +15,17 @@ module IdCriipto
         if (birthday_key = config[:birthday_custom_field_key]) && birthdate
           custom_field_values[birthday_key] = birthdate
         end
+        if (birthyear_key = config[:birthyear_custom_field_key]) && birthdate
+          custom_field_values[birthyear_key] = Time.new(birthdate).year
+        end
 
         # Handle municipality_code
-        municipality_code_str = auth.extra.raw_info.dig('address_details', 'municipality_code')
-        municipality_code_i = municipality_code_str.presence&.to_i
-        # to_i returns 0 when parsing fails
-        municipality_code_i = nil if municipality_code_i == 0
-        if (municipality_code_key = config[:municipality_code_custom_field_key]) && municipality_code_i
-          custom_field_values[municipality_code_key] = municipality_code_i
+        municipality_code = auth.extra.raw_info.dig('address_details', 'municipality_code')
+        if (municipality_code_key = config[:municipality_code_custom_field_key]) && municipality_code.present?
+          custom_field_values[municipality_code_key] = municipality_code
         end
 
         {
-          birthyear: Time.new(birthdate).year,
           custom_field_values: custom_field_values
         }
       end
