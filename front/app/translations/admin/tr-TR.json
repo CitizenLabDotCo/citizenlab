@@ -2017,6 +2017,7 @@
   "app.containers.admin.ideas.all.inputManagerPageTitle": "Girdi yöneticisi",
   "app.containers.admin.ideas.all.tabOverview": "Genel Bakış",
   "app.containers.admin.import.downloadTemplate": "Şablonu indirin",
+  "app.containers.admin.import.ideasBeingImported": "Fikirleriniz içe aktarılıyor. Bu biraz zaman alabilir. Lütfen içe aktarma işlemi başarıyla tamamlanana kadar bu sayfayı kapatmayın; tamamlandığında size haber vereceğiz.",
   "app.containers.admin.import.importDescription": "Mevcut girdileri bir Excel dosyasından içe aktarın.",
   "app.containers.admin.import.importInput": "Girdiyi içe aktar",
   "app.containers.admin.import.importInputs": "Girdileri içe aktar",
