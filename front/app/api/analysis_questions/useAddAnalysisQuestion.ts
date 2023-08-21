@@ -6,11 +6,15 @@ import { IQuestion, IQuestionAdd } from './types';
 
 import backgroundTasksKeys from 'api/analysis_background_tasks/keys';
 
-const addAnalysisQuestion = async ({ analysisId, filters }: IQuestionAdd) =>
+const addAnalysisQuestion = async ({
+  analysisId,
+  filters,
+  question,
+}: IQuestionAdd) =>
   fetcher<IQuestion>({
     path: `/analyses/${analysisId}/questions`,
     action: 'post',
-    body: { question: { filters } },
+    body: { question: { filters, question } },
   });
 
 const useAddAnalysisQuestion = () => {

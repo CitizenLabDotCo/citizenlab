@@ -43,4 +43,5 @@ export interface IQuestion {
 export interface IQuestionAdd {
   analysisId: string;
   filters: IInputsFilterParams;
+  question: string;
 }

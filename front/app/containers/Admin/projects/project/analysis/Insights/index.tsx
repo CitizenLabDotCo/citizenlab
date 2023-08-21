@@ -35,7 +35,9 @@ const Insights = () => {
           </Text>
         </>
       )}
-      {isQuestionInputOpen && <QuestionInput />}
+      {isQuestionInputOpen && (
+        <QuestionInput onClose={() => setIsQuestionInputOpen(false)} />
+      )}
       {insights?.data.map((insight) => (
         <Summary key={insight.id} insight={insight} />
       ))}
