@@ -22,4 +22,8 @@ class EventsFinder < ApplicationFinder
   def ends_on_or_after_date_condition(date)
     where('end_at >= ?', date)
   end
+
+  def attendee_id_condition(attendee_id)
+    records.joins(:attendances).where(attendances: { attendee_id: attendee_id })
+  end
 end

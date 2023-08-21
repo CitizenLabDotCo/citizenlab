@@ -1,18 +1,17 @@
 import { Box, colors, stylingConsts } from '@citizenlab/cl2-component-library';
-import React, { useState } from 'react';
+import React from 'react';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import TopBar from './TopBar';
 import Tags from './Tags';
 import InputsList from './InputsList';
 import InputPreview from './InputPreview';
-import Tasks from './Tasks';
 import Insights from './Insights';
+import SelectedInputContext from './SelectedInputContext';
 
 const Analysis = () => {
   const modalPortalElement = document.getElementById('modal-portal');
 
-  const [selectedInputId, setSelectedInputId] = useState<string | null>(null);
   if (!modalPortalElement) return null;
 
   return createPortal(
@@ -26,66 +25,62 @@ const Analysis = () => {
       h="100vh"
     >
       <FocusOn>
-        <TopBar />
-        <Box
-          display="flex"
-          w="100"
-          alignItems="stretch"
-          gap="20px"
-          pt={`${stylingConsts.mobileMenuHeight}px`}
-        >
+        <SelectedInputContext>
+          <TopBar />
           <Box
-            w="300px"
-            overflow="auto"
-            h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
-            p="12px"
-            mt="12px"
-            bg={colors.white}
-          >
-            <Tags />
-          </Box>
-
-          <Box
-            flex="1"
-            overflow="auto"
-            h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
-            p="12px"
-            mt="12px"
-            bg={colors.white}
-          >
-            <InputsList
-              onSelectInput={(inputId) => setSelectedInputId(inputId)}
-              selectedInputId={selectedInputId}
-            />
-          </Box>
-          <Box
-            flex="1"
-            overflow="auto"
-            h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
-            p="12px"
             display="flex"
-            flexDirection="column"
+            w="100"
+            alignItems="stretch"
+            gap="8px"
+            pt={`${stylingConsts.mobileMenuHeight}px`}
           >
-            <Box flex="1">
-              {selectedInputId && <InputPreview inputId={selectedInputId} />}
+            <Box
+              w="300px"
+              overflow="auto"
+              h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
+              p="12px"
+              mt="12px"
+              bg={colors.white}
+            >
+              <Tags />
             </Box>
-            <Box h="60px">
-              <Tasks />
+
+            <Box
+              flex="1"
+              overflow="auto"
+              h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
+              p="12px"
+              mt="12px"
+              bg={colors.white}
+            >
+              <InputsList />
+            </Box>
+            <Box
+              flex="1"
+              overflow="auto"
+              h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
+              p="12px"
+              mt="12px"
+              display="flex"
+              flexDirection="column"
+              bg={colors.white}
+            >
+              <Box flex="1">
+                <InputPreview />
+              </Box>
+            </Box>
+            <Box
+              flex="1"
+              p="12px"
+              mt="12px"
+              overflow="auto"
+              h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
+              bg={colors.white}
+            >
+              <Insights />
             </Box>
           </Box>
-          <Box
-            flex="1"
-            p="12px"
-            mt="12px"
-            overflow="auto"
-            h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
-            bg={colors.white}
-          >
-            <Insights
-              onSelectInput={(inputId) => setSelectedInputId(inputId)}
-            />
-          </Box>
-        </Box>
+        </SelectedInputContext>
       </FocusOn>
     </Box>,
     modalPortalElement

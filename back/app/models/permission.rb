@@ -87,7 +87,7 @@ class Permission < ApplicationRecord
   private
 
   def set_permitted_by_and_global_custom_fields
-    self.permitted_by ||= if action == 'following' # && AppConfiguration.instance.feature_activated?('permission_option_email_confirmation')
+    self.permitted_by ||= if action == 'following'
       'everyone_confirmed_email'
     else
       'users'

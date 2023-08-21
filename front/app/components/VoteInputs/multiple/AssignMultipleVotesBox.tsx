@@ -2,19 +2,23 @@ import React, { memo } from 'react';
 
 // api
 import useIdeaById from 'api/ideas/useIdeaById';
+import useVoting from 'api/baskets_ideas/useVoting';
 
 // components
 import WhiteBox from '../_shared/WhiteBox';
 import AssignMultipleVotesControl from './AssignMultipleVotesInput';
 import { Box } from '@citizenlab/cl2-component-library';
-import VotesCounter from 'components/VotesCounter';
 
 // i18n
 import messages from '../_shared/messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import useLocalize from 'hooks/useLocalize';
 
 // styles
 import { colors } from 'utils/styleUtils';
+
+// utils
+import { isNil } from 'utils/helperUtils';
 
 // typings
 import { IProjectData } from 'api/projects/types';
@@ -28,11 +32,28 @@ interface Props {
 const AssignMultipleVotesBox = memo(
   ({ ideaId, participationContext }: Props) => {
     const { data: idea } = useIdeaById(ideaId);
-    const actionDescriptor = idea?.data.attributes.action_descriptor.voting;
+    const { numberOfVotesCast } = useVoting();
+    const localize = useLocalize();
+    const { formatMessage } = useIntl();
 
-    if (!actionDescriptor) {
+    const actionDescriptor = idea?.data.attributes.action_descriptor.voting;
+    const {
+      voting_max_total,
+      voting_term_singular_multiloc,
+      voting_term_plural_multiloc,
+    } = participationContext.attributes;
+
+    if (!actionDescriptor || isNil(voting_max_total)) {
       return null;
     }
+
+    const votesLeft = voting_max_total - (numberOfVotesCast ?? 0);
+    const voteTerm = voting_term_singular_multiloc
+      ? localize(voting_term_singular_multiloc)
+      : formatMessage(messages.vote);
+    const votesTerm = voting_term_plural_multiloc
+      ? localize(voting_term_plural_multiloc)
+      : formatMessage(messages.votes);
 
     return (
       <WhiteBox>
@@ -48,10 +69,15 @@ const AssignMultipleVotesBox = memo(
           width="100%"
           justifyContent="center"
         >
-          <FormattedMessage {...messages.youHave} />
-          <Box ml="4px">
-            <VotesCounter participationContext={participationContext} />
-          </Box>
+          <FormattedMessage
+            {...messages.votesLeft}
+            values={{
+              votesLeft: votesLeft.toLocaleString(),
+              totalNumberOfVotes: voting_max_total.toLocaleString(),
+              voteTerm,
+              votesTerm,
+            }}
+          />
         </Box>
       </WhiteBox>
     );

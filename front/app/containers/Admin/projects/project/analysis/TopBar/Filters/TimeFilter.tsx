@@ -19,8 +19,8 @@ const TimeFilter = () => {
     <TimeControl
       onChange={(from, to) => {
         updateSearchParams({
-          published_at_from: from?.toISOString(),
-          published_at_to: to?.toISOString(),
+          published_at_from: from?.format('YYYY-MM-DD'),
+          published_at_to: to?.format('YYYY-MM-DD'),
         });
       }}
       endAtMoment={endAtMoment}

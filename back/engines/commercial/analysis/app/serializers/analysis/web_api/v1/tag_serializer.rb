@@ -5,10 +5,10 @@ class Analysis::WebApi::V1::TagSerializer < WebApi::V1::BaseSerializer
   belongs_to :analysis, class_name: 'Analysis::Analysis'
 
   attribute :total_input_count do |tag, params|
-    params[:total_input_counts][tag.id] || 0
+    params[:inputs_count_by_tag][tag.id] || 0
   end
 
   attribute :filtered_input_count do |tag, params|
-    params[:filtered_input_counts][tag.id] || 0
+    params[:filtered_inputs_count_by_tag][tag.id] || 0
   end
 end
