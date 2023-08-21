@@ -2017,6 +2017,7 @@
   "app.containers.admin.ideas.all.inputManagerPageTitle": "Gestore degli ingressi",
   "app.containers.admin.ideas.all.tabOverview": "Panoramica",
   "app.containers.admin.import.downloadTemplate": "Download template",
+  "app.containers.admin.import.ideasBeingImported": "Le tue idee vengono importate. L'operazione può richiedere un po' di tempo. Ti preghiamo di non chiudere questa pagina fino a quando l'importazione non sarà stata completata con successo - ti informeremo quando lo sarà.",
   "app.containers.admin.import.importDescription": "Import existing inputs from an Excel file.",
   "app.containers.admin.import.importInput": "Import input",
   "app.containers.admin.import.importInputs": "Import inputs",
