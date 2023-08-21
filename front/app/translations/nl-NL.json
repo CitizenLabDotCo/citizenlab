@@ -475,7 +475,7 @@
   "app.components.VerificationModal.toParticipateInThisProject": "om deel te nemen aan dit project",
   "app.components.VerificationModal.verifyBOSA": "Verifieer met itsme of e-ID",
   "app.components.VerificationModal.verifyClaveUnica": "Verifieer met Clave Unica",
-  "app.components.VerificationModal.verifyNemLogIn": "Controleer met MitID",
+  "app.components.VerificationModal.verifyNemLogIn": "Verifieer met MitID",
   "app.components.VerificationModal.verifyYourIdentity": "Verifieer je identiteit",
   "app.components.VoteControl.budgetingFutureEnabled": "Je kan je budget verdelen vanaf {enabledFromDate}.",
   "app.components.VoteControl.budgetingNotPermitted": "Burgerbegroting is momenteel niet mogelijk.",
