@@ -2017,6 +2017,7 @@
   "app.containers.admin.ideas.all.inputManagerPageTitle": "Διαχειριστής εισόδου",
   "app.containers.admin.ideas.all.tabOverview": "Επισκόπηση",
   "app.containers.admin.import.downloadTemplate": "Download template",
+  "app.containers.admin.import.ideasBeingImported": "Οι ιδέες σας εισάγονται. Αυτό μπορεί να πάρει λίγο χρόνο. Παρακαλούμε μην κλείσετε αυτή τη σελίδα μέχρι να ολοκληρωθεί επιτυχώς η εισαγωγή - θα σας ενημερώσουμε όταν ολοκληρωθεί.",
   "app.containers.admin.import.importDescription": "Εισαγωγή υφιστάμενων εισηγήσεων από αρχείο Excel.",
   "app.containers.admin.import.importInput": "Εισαγωγή εισηγήσεων",
   "app.containers.admin.import.importInputs": "Εισαγωγή εισηγήσεων",
