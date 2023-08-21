@@ -1513,7 +1513,6 @@
   "app.containers.UsersShowPage.a11y_likesCount": "{likesCount, plural, =0 {Δεν μου αρέσει} one {1 like} other {# likes}}",
   "app.containers.UsersShowPage.a11y_postCommentPostedIn": "Εισήγηση στην οποία δημοσιεύτηκε αυτό το σχόλιο ως απάντηση:",
   "app.containers.UsersShowPage.commentsWithCount": "Σχόλια ({commentsCount})",
-  "app.containers.UsersShowPage.displayCountMobile": "({count})",
   "app.containers.UsersShowPage.editProfile": "Επεξεργασία του προφίλ μου",
   "app.containers.UsersShowPage.emptyInfoText": "Δεν ακολουθείτε κανένα στοιχείο του καθορισμένου φίλτρου παραπάνω.",
   "app.containers.UsersShowPage.eventsWithCount": "Εκδηλώσεις ({eventsCount})",
