@@ -2017,6 +2017,7 @@
   "app.containers.admin.ideas.all.inputManagerPageTitle": "Gestor d'entrada",
   "app.containers.admin.ideas.all.tabOverview": "Visió general",
   "app.containers.admin.import.downloadTemplate": "Download template",
+  "app.containers.admin.import.ideasBeingImported": "Les teves idees s'estan important. Això pot trigar una estona. Si us plau, no tanqueu aquesta pàgina fins que la importació s'hagi completat correctament; us avisarem quan ho faci.",
   "app.containers.admin.import.importDescription": "Importa les entrades existents des d'un fitxer Excel.",
   "app.containers.admin.import.importInput": "Importa l'entrada",
   "app.containers.admin.import.importInputs": "Importa les entrades",
