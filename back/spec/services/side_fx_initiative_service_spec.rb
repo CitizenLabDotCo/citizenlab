@@ -52,7 +52,7 @@ describe SideFxInitiativeService do
         )
     end
 
-    context 'when initiative is changes_requested' do
+    context 'when initiative status is changes_requested' do
       let(:initiative) do
         create(:initiative_status_review_pending)
         changes_requested = create(:initiative_status_changes_requested)
@@ -82,6 +82,47 @@ describe SideFxInitiativeService do
           .and enqueue_job(LogActivityJob)
           .with(cosponsors_initiatives[1], 'created', user, cosponsors_initiatives[1].created_at.to_i)
           .exactly(1).times
+      end
+    end
+
+    context 'when initiative is published' do
+      let(:initiative) { create(:initiative, author: user, publication_status: 'draft') }
+
+      context "when initiative has status 'proposed'" do
+        let!(:initiative_status_change) do
+          create(
+            :initiative_status_change,
+            initiative: initiative,
+            initiative_status: create(:initiative_status_proposed)
+          )
+        end
+
+        it 'logs a proposed activity job' do
+          initiative.update!(publication_status: 'published')
+
+          expect { service.after_update(initiative, user, _cosponsor_ids = []) }
+            .to enqueue_job(LogActivityJob)
+            .with(initiative, 'proposed', user, initiative.updated_at.to_i)
+            .exactly(1).times
+        end
+      end
+
+      context "when initiative has status 'review_pending'" do
+        let!(:initiative_status_change) do
+          create(
+            :initiative_status_change,
+            initiative: initiative,
+            initiative_status: create(:initiative_status_review_pending)
+          )
+        end
+
+        it "doesn't log a proposed activity job" do
+          initiative.update!(publication_status: 'published')
+
+          expect { service.after_update(initiative, user, _cosponsor_ids = []) }
+            .not_to enqueue_job(LogActivityJob)
+            .with(instance_of(Initiative), 'proposed', anything, anything)
+        end
       end
     end
   end

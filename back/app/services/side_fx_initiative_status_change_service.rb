@@ -6,16 +6,16 @@ class SideFxInitiativeStatusChangeService
   def before_create(change, user); end
 
   def after_create(change, user)
-    lock_initiative_editing_if_required(change)
-
     InitiativeStatusService.new.log_status_change change, user: user
-  end
 
-  private
-
-  def lock_initiative_editing_if_required(change)
-    return unless change.initiative_status.code == 'proposed' && Initiative.review_required?
-
-    change.initiative.update!(editing_locked: true)
+    # Behaviour we want when proposal review feature is on and initiative_status_change is to 'proposed':
+    #   * Create an Initiative 'proposed' activity type, to trigger the InitiativePublished campaign.
+    #   * Lock (prevent) editing of the initiative.
+    # This works because, if the review feature is off, the associated initiative_status_change with code 'proposed'
+    # is created at the model level when the initiative is published, and does not invoke this method.
+    if change.initiative_status.code == 'proposed'
+      SideFxInitiativeService.new.log_initiative_proposed_activity(change.initiative, user)
+      change.initiative.update!(editing_locked: true)
+    end
   end
 end
