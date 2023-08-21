@@ -32,10 +32,6 @@ export interface IQuestionData {
   };
 }
 
-export interface IQuestions {
-  data: IQuestionData[];
-}
-
 export interface IQuestion {
   data: IQuestionData;
 }

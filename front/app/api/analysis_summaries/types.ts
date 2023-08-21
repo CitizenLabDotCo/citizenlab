@@ -31,10 +31,6 @@ export interface ISummaryData {
   };
 }
 
-export interface ISummaries {
-  data: ISummaryData[];
-}
-
 export interface ISummary {
   data: ISummaryData;
 }

@@ -25,17 +25,7 @@ const Insights = () => {
         <SummarizeButton />
         <QuestionButton onClick={() => setIsQuestionInputOpen(true)} />
       </Box>
-      {!isLoading && insights?.data?.length === 0 && (
-        <>
-          <Text px="24px" color="grey400">
-            Your text summaries will be displayed here, but you currently do not
-            have any yet.
-          </Text>
-          <Text px="24px" color="grey400">
-            Start by adding some tags.
-          </Text>
-        </>
-      )}
+
       {isQuestionInputOpen && (
         <QuestionInput onClose={() => setIsQuestionInputOpen(false)} />
       )}
@@ -48,6 +38,17 @@ const Insights = () => {
           )}
         </div>
       ))}
+      {!isLoading && insights?.data?.length === 0 && (
+        <>
+          <Text px="24px" color="grey400">
+            Your text summaries will be displayed here, but you currently do not
+            have any yet.
+          </Text>
+          <Text px="24px" color="grey400">
+            Start by adding some tags.
+          </Text>
+        </>
+      )}
     </Box>
   );
 };
