@@ -1513,7 +1513,6 @@
   "app.containers.UsersShowPage.a11y_likesCount": "{likesCount, plural, =0 {nav patīk} one {1 patīk} other {# patīk}}",
   "app.containers.UsersShowPage.a11y_postCommentPostedIn": "Ievadīts, ka šis komentārs tika publicēts, atbildot uz:",
   "app.containers.UsersShowPage.commentsWithCount": "Komentāri ({commentsCount})",
-  "app.containers.UsersShowPage.displayCountMobile": "({count})",
   "app.containers.UsersShowPage.editProfile": "Rediģēt manu profilu",
   "app.containers.UsersShowPage.emptyInfoText": "Jūs nesekojat nevienam no iepriekš norādītā filtra elementiem.",
   "app.containers.UsersShowPage.eventsWithCount": "Notikumi ({eventsCount})",
