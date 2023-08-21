@@ -29,7 +29,6 @@ module Polls
           @response.participation_context = @participation_context
           authorize @response
 
-          SideFxResponseService.new.before_create(@response, current_user)
           if @response.save(context: :response_submission)
             SideFxResponseService.new.after_create(@response, current_user)
             head :created

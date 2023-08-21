@@ -16,6 +16,7 @@ const publication: IAdminPublicationData = {
     publication_description_multiloc: {},
     publication_description_preview_multiloc: {},
     publication_slug: 'project_1',
+    followers_count: 3,
   },
   relationships: {
     children: { data: [] },
@@ -25,6 +26,9 @@ const publication: IAdminPublicationData = {
         id: '1',
         type: 'project',
       },
+    },
+    user_follower: {
+      data: null,
     },
   },
 };

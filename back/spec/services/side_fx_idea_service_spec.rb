@@ -22,6 +22,18 @@ describe SideFxIdeaService do
       expect { service.after_create(idea, user) }
         .not_to enqueue_job(LogActivityJob)
     end
+
+    it 'creates a follower' do
+      project = create(:project)
+      folder = create(:project_folder, projects: [project])
+      idea = create(:idea, project: project)
+
+      expect do
+        service.after_create idea.reload, user
+      end.to change(Follower, :count).from(0).to(3)
+
+      expect(user.follows.pluck(:followable_id)).to contain_exactly idea.id, project.id, folder.id
+    end
   end
 
   describe 'after_update' do
@@ -37,7 +49,7 @@ describe SideFxIdeaService do
 
     it "logs a 'changed' action job when the idea has changed" do
       idea = create(:idea)
-      idea.update(title_multiloc: { en: 'something else' })
+      idea.update!(title_multiloc: { en: 'something else' })
       expect { service.after_update(idea, user) }
         .to enqueue_job(LogActivityJob).with(idea, 'changed', any_args).exactly(1).times
         .and enqueue_job(Seo::ScrapeFacebookJob).exactly(1).times
@@ -46,7 +58,7 @@ describe SideFxIdeaService do
     it "logs a 'changed_title' action job when the title has changed" do
       idea = create(:idea)
       old_idea_title = idea.title_multiloc
-      idea.update(title_multiloc: { en: 'changed' })
+      idea.update!(title_multiloc: { en: 'changed' })
 
       expect { service.after_update(idea, user) }
         .to enqueue_job(LogActivityJob).with(
@@ -61,7 +73,7 @@ describe SideFxIdeaService do
     it "logs a 'changed_body' action job when the body has changed" do
       idea = create(:idea)
       old_idea_body = idea.body_multiloc
-      idea.update(body_multiloc: { en: 'changed' })
+      idea.update!(body_multiloc: { en: 'changed' })
 
       expect { service.after_update(idea, user) }
         .to enqueue_job(LogActivityJob).with(
@@ -77,7 +89,7 @@ describe SideFxIdeaService do
       idea = create(:idea)
       old_idea_status = idea.idea_status
       new_idea_status = create(:idea_status)
-      idea.update(idea_status: new_idea_status)
+      idea.update!(idea_status: new_idea_status)
 
       expect { service.after_update(idea, user) }
         .to enqueue_job(LogActivityJob).with(

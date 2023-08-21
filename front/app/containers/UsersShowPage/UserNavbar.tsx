@@ -19,6 +19,10 @@ import messages from './messages';
 import useUserIdeasCount from 'api/user_ideas_count/useUserIdeasCount';
 import useUserCommentsCount from 'api/user_comments_count/useUserCommentsCount';
 
+// hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useAuthUser from 'api/me/useAuthUser';
+
 const UserNavbarWrapper = styled.div`
   width: 100%;
   background-color: white;
@@ -111,6 +115,11 @@ const UserNavbar = memo<Props>(({ currentTab, selectTab, userId }) => {
   const { data: commentsCount } = useUserCommentsCount({
     userId,
   });
+  const isFollowingEnabled = useFeatureFlag({
+    name: 'follow',
+  });
+  const { data: authUser } = useAuthUser();
+  const showFollowingTab = isFollowingEnabled && authUser?.data?.id === userId;
 
   return (
     <UserNavbarWrapper role="tablist">
@@ -148,6 +157,19 @@ const UserNavbar = memo<Props>(({ currentTab, selectTab, userId }) => {
           />
         )}
       </UserNavbarButton>
+      {showFollowingTab && (
+        <UserNavbarButton
+          onMouseDown={removeFocusAfterMouseClick}
+          onClick={selectTab('following')}
+          className={currentTab === 'following' ? 'active' : ''}
+          role="tab"
+          aria-selected={currentTab === 'following'}
+        >
+          <Border aria-hidden />
+          <TabIcon name="notification-outline" ariaHidden />
+          <FormattedMessage {...messages.following} />
+        </UserNavbarButton>
+      )}
     </UserNavbarWrapper>
   );
 });
