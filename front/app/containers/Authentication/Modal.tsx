@@ -270,6 +270,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
             onSwitchFlow={transition(currentStep, 'SWITCH_FLOW')}
             onGoBack={transition(currentStep, 'GO_BACK')}
             onSubmit={transition(currentStep, 'SIGN_IN')}
+            closeModal={transition(currentStep, 'CLOSE')}
           />
         )}
 
