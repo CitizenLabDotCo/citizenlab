@@ -465,6 +465,7 @@
   "app.components.VerificationModal.toParticipateInThisProject": "un dësem Projet deelhuelen",
   "app.components.VerificationModal.verifyBOSA": "Mat itsme oder eID verifizéieren",
   "app.components.VerificationModal.verifyClaveUnica": "Mat Clave Unica verifizéieren",
+  "app.components.VerificationModal.verifyNemLogIn": "Verifizéiert mat MitID",
   "app.components.VerificationModal.verifyYourIdentity": "Iwwerpréift Är Identitéit",
   "app.components.VoteControl.budgetingFutureEnabled": "Dir kënnt Äre Budget ab dem {enabledFromDate} verdeelen.",
   "app.components.VoteControl.budgetingNotPermitted": "D'partizipativ Budgetéierung ass momentan net aktivéiert.",

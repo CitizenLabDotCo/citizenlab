@@ -465,6 +465,7 @@
   "app.components.VerificationModal.toParticipateInThisProject": "for å delta i dette prosjektet",
   "app.components.VerificationModal.verifyBOSA": "Verifiser med itsme eller eID",
   "app.components.VerificationModal.verifyClaveUnica": "Verifiser med Clave Unica",
+  "app.components.VerificationModal.verifyNemLogIn": "Bekreft med MitID",
   "app.components.VerificationModal.verifyYourIdentity": "Bekreft identiteten din",
   "app.components.VoteControl.budgetingFutureEnabled": "Du kan fordele ditt budsjett fra den {enabledFromDate}.",
   "app.components.VoteControl.budgetingNotPermitted": "Deltakende budsjettering er kun tilgjengelig for utvalgte grupper.",
