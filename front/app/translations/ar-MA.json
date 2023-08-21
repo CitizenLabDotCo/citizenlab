@@ -1513,7 +1513,6 @@
   "app.containers.UsersShowPage.a11y_likesCount": "{likesCount, plural, =0 {لا يحب} one {1 إعجاب} other {# الإعجابات}}",
   "app.containers.UsersShowPage.a11y_postCommentPostedIn": "المنشور الذي نُشر به هذا التعليق:",
   "app.containers.UsersShowPage.commentsWithCount": "التعليقات ({commentsCount})",
-  "app.containers.UsersShowPage.displayCountMobile": "({count})",
   "app.containers.UsersShowPage.editProfile": "تعديل ملفي الشخصي",
   "app.containers.UsersShowPage.emptyInfoText": "أنت لا تتابع أي عناصر من الفلتر المحدد أعلاه.",
   "app.containers.UsersShowPage.eventsWithCount": "أحداث ({eventsCount})",
