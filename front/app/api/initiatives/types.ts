@@ -58,6 +58,7 @@ export interface IInitiativeData {
     header_bg: ImageSizes;
     expires_at: string;
     anonymous: boolean;
+    followers_count: number;
   };
   relationships: {
     topics: {
@@ -76,6 +77,9 @@ export interface IInitiativeData {
       data: IRelationship | null;
     };
     user_reaction?: {
+      data: IRelationship | null;
+    };
+    user_follower: {
       data: IRelationship | null;
     };
   };

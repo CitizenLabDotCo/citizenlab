@@ -9,6 +9,13 @@ interface InitiativeContext {
   action: IInitiativeAction;
 }
 
+export type IFollowingAction = 'following';
+
+interface IFollowContext {
+  type: 'follow';
+  action: IFollowingAction;
+}
+
 export interface ProjectContext {
   type: 'project' | 'phase';
   action: IParticipationContextPermissionAction;
@@ -25,7 +32,8 @@ export type AuthenticationContext =
   | typeof GLOBAL_CONTEXT
   | InitiativeContext
   | ProjectContext
-  | IdeaContext;
+  | IdeaContext
+  | IFollowContext;
 
 export interface AuthenticationRequirementsResponse {
   data: {

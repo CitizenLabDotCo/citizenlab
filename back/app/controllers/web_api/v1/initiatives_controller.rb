@@ -17,6 +17,7 @@ class WebApi::V1::InitiativesController < ApplicationController
       includes: %i[author assignee topics areas]
     ).find_records
     initiatives = paginate SortByParamsService.new.sort_initiatives(initiatives, params, current_user)
+
     render json: linked_json(initiatives, WebApi::V1::InitiativeSerializer, serialization_options_for(initiatives))
   end
 
@@ -168,7 +169,6 @@ class WebApi::V1::InitiativesController < ApplicationController
   def destroy
     service = SideFxInitiativeService.new
 
-    service.before_destroy(@initiative, current_user)
     initiative = @initiative.destroy
     if initiative.destroyed?
       service.after_destroy(initiative, current_user)
@@ -198,7 +198,13 @@ class WebApi::V1::InitiativesController < ApplicationController
         reactable_id: initiatives.pluck(:id),
         reactable_type: 'Initiative'
       ).index_by(&:reactable_id)
-      { params: default_params.merge(vbii: reactions), include: %i[author user_reaction initiative_images assignee] }
+      user_followers = current_user.follows
+        .where(followable_type: 'Initiative')
+        .group_by do |follower|
+          [follower.followable_id, follower.followable_type]
+        end
+      user_followers ||= {}
+      { params: default_params.merge(vbii: reactions, user_followers: user_followers), include: %i[author user_reaction initiative_images assignee] }
     else
       { params: default_params, include: %i[author initiative_images] }
     end

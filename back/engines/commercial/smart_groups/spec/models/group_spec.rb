@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Group, type: :model do
+RSpec.describe Group do
   describe 'Default factory' do
     it 'is valid' do
       expect(build(:group)).to be_valid
@@ -20,13 +20,13 @@ RSpec.describe Group, type: :model do
       expect { g.remove_member create(:user) }.to raise_error(RuntimeError)
     end
 
-    it 'has consistent responses between member and member_ids for rules groups' do
+    it 'has consistent responses between member and member_ids for manual groups' do
       g1 = create(:group)
       g1.members << create_list(:user, 5)
       expect(g1.member_ids).to match g1.members.map(&:id)
     end
 
-    it 'has consistent responses between member and member_ids for rules groups' do
+    it 'has consistent responses between member and member_ids for smart groups' do
       g1 = create(:smart_group)
       create(:user, email: 'u1@test.com')
       create(:user, email: 'u2@test.com')
@@ -108,17 +108,18 @@ RSpec.describe Group, type: :model do
           value: 'high' },
         { ruleType: 'role', predicate: 'is_admin' },
         { ruleType: 'email', predicate: 'ends_on', value: '@citizenlab.co' },
+        { ruleType: 'follow', predicate: 'something' },
         { ruleType: 'lives_in', predicate: 'has_value', value: create(:area).id },
         { ruleType: 'custom_field_checkbox', customFieldId: create(:custom_field_checkbox).id,
           predicate: 'is_checked' },
         { ruleType: 'custom_field_date', customFieldId: create(:custom_field_date).id, predicate: 'is_before',
-          value: (Date.today - 1.day) },
-        { ruleType: 'registration_completed_at', predicate: 'is_before', value: (Date.today - 1.day) },
+          value: (Time.zone.today - 1.day) },
+        { ruleType: 'registration_completed_at', predicate: 'is_before', value: (Time.zone.today - 1.day) },
         { ruleType: 'custom_field_number', customFieldId: create(:custom_field_number).id, predicate: 'is_smaller_than',
           value: 42 },
-        { ruleType: 'participated_in_project', predicate: 'in', value: create(:project).id },
-        { ruleType: 'participated_in_topic', predicate: 'in', value: create(:topic).id },
-        { ruleType: 'participated_in_idea_status', predicate: 'in', value: create(:idea_status).id },
+        { ruleType: 'participated_in_project', predicate: 'in', value: [create(:project).id] },
+        { ruleType: 'participated_in_topic', predicate: 'in', value: [create(:topic).id] },
+        { ruleType: 'participated_in_idea_status', predicate: 'in', value: [create(:idea_status).id] },
         { ruleType: 'verified', predicate: 'not_is_verified' }
       ])
     end

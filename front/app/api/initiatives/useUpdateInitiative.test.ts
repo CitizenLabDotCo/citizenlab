@@ -40,6 +40,7 @@ export const data: IInitiativeData = {
       medium: 'http://localhost:3000/system/images/1/medium/test.jpg',
       large: 'http://localhost:3000/system/images/1/large/test.jpg',
     },
+    followers_count: 3,
   },
   relationships: {
     topics: {
@@ -69,6 +70,9 @@ export const data: IInitiativeData = {
         id: '1',
         type: 'user',
       },
+    },
+    user_follower: {
+      data: null,
     },
   },
 };
