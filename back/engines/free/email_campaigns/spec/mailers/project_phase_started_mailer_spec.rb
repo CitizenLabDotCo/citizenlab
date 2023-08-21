@@ -44,5 +44,13 @@ RSpec.describe EmailCampaigns::ProjectPhaseStartedMailer do
     it 'assigns cta url' do
       expect(mail.body.encoded).to match(command.dig(:event_payload, :phase_url))
     end
+
+    it 'includes the project title' do
+      expect(mail.body.encoded).to match(project.title_multiloc['en'])
+    end
+
+    it 'includes the unfollow url' do
+      expect(mail.body.encoded).to match(Frontend::UrlService.new.unfollow_url(recipient))
+    end
   end
 end

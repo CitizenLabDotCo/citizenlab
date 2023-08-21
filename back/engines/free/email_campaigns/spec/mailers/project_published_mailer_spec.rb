@@ -6,8 +6,8 @@ RSpec.describe EmailCampaigns::ProjectPublishedMailer do
   describe 'campaign_mail' do
     let(:recipient) { create(:user, locale: 'en') }
     let(:campaign) { EmailCampaigns::Campaigns::ProjectPublished.create! }
+    let(:project) { create(:project) }
     let(:command) do
-      project = create(:project)
       activity = create(:activity, item: project, action: 'published')
       create(:project_published_campaign).generate_commands(
         activity: activity,
@@ -35,6 +35,14 @@ RSpec.describe EmailCampaigns::ProjectPublishedMailer do
       project_url = command.dig(:event_payload, :project_url)
       expect(project_url).to be_present
       expect(mail.body.encoded).to match(project_url)
+    end
+
+    it 'includes the project title' do
+      expect(mail.body.encoded).to match(project.title_multiloc['en'])
+    end
+
+    it 'includes the unfollow url' do
+      expect(mail.body.encoded).to match(Frontend::UrlService.new.unfollow_url(recipient))
     end
   end
 end

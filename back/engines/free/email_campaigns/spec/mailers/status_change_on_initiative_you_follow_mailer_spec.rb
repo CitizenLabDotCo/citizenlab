@@ -6,8 +6,8 @@ RSpec.describe EmailCampaigns::StatusChangeOnInitiativeYouFollowMailer do
   describe 'campaign_mail' do
     let(:recipient) { create(:user, locale: 'en') }
     let(:campaign) { EmailCampaigns::Campaigns::StatusChangeOnInitiativeYouFollow.create! }
+    let(:initiative) { create(:initiative) }
     let(:command) do
-      initiative = create(:initiative)
       status = initiative.initiative_status
 
       {
@@ -49,6 +49,14 @@ RSpec.describe EmailCampaigns::StatusChangeOnInitiativeYouFollowMailer do
 
     it 'assigns cta url' do
       expect(mail.body.encoded).to match(command.dig(:event_payload, :post_url))
+    end
+
+    it 'includes the initiative title' do
+      expect(mail.body.encoded).to match(initiative.title_multiloc['en'])
+    end
+
+    it 'includes the unfollow url' do
+      expect(mail.body.encoded).to match(Frontend::UrlService.new.unfollow_url(recipient))
     end
   end
 end

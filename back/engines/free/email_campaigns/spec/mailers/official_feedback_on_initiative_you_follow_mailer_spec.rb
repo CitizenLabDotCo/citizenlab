@@ -14,7 +14,7 @@ RSpec.describe EmailCampaigns::OfficialFeedbackOnInitiativeYouFollowMailer do
           official_feedback_body_multiloc: { 'en' => 'Nice idea, bruh' },
           official_feedback_url: 'https://demo.stg.citizenlab.co',
           post_published_at: Time.zone.today.prev_week.iso8601,
-          post_title_multiloc: { 'en' => 'My post is great.' },
+          post_title_multiloc: { 'en' => 'Initiative title' },
           post_author_name: 'Chuck Norris'
         }
       }
@@ -38,6 +38,14 @@ RSpec.describe EmailCampaigns::OfficialFeedbackOnInitiativeYouFollowMailer do
 
     it 'assigns cta url' do
       expect(mail.body.encoded).to match(command.dig(:event_payload, :official_feedback_url))
+    end
+
+    it 'includes the initiative title' do
+      expect(mail.body.encoded).to match('Initiative title')
+    end
+
+    it 'includes the unfollow url' do
+      expect(mail.body.encoded).to match(Frontend::UrlService.new.unfollow_url(recipient))
     end
   end
 end
