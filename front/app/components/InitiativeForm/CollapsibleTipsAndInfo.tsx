@@ -11,11 +11,11 @@ import { colors } from 'utils/styleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-export interface Props {
+interface Props {
   className?: string;
 }
 
-const CollapsibleTipsAndInfo = ({ className }) => {
+const CollapsibleTipsAndInfo = ({ className }: Props) => {
   return (
     <CollapsibleBox
       className={className}
