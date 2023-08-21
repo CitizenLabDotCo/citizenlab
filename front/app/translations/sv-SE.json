@@ -1513,7 +1513,6 @@
   "app.containers.UsersShowPage.a11y_likesCount": "{likesCount, plural, =0 {inga likes} one {1 gilla} other {# likes}}",
   "app.containers.UsersShowPage.a11y_postCommentPostedIn": "Indata som den här kommentaren publicerades som svar på:",
   "app.containers.UsersShowPage.commentsWithCount": "Kommentarer ({commentsCount})",
-  "app.containers.UsersShowPage.displayCountMobile": "({count})",
   "app.containers.UsersShowPage.editProfile": "Redigera min profil",
   "app.containers.UsersShowPage.emptyInfoText": "Du följer inte några objekt i det angivna filtret ovan.",
   "app.containers.UsersShowPage.eventsWithCount": "Händelser ({eventsCount})",
