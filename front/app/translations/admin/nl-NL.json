@@ -2017,6 +2017,7 @@
   "app.containers.admin.ideas.all.inputManagerPageTitle": "Beheer bijdragen",
   "app.containers.admin.ideas.all.tabOverview": "Overzicht",
   "app.containers.admin.import.downloadTemplate": "Sjabloon downloaden",
+  "app.containers.admin.import.ideasBeingImported": "Je ideeën worden geïmporteerd. Dit kan even duren. Sluit deze pagina niet totdat het importeren met succes is voltooid - we laten je weten wanneer dit is gebeurd.",
   "app.containers.admin.import.importDescription": "Importeer bestaande invoer uit een Excel-bestand.",
   "app.containers.admin.import.importInput": "Importeer invoer",
   "app.containers.admin.import.importInputs": "Importeer invoeren",
