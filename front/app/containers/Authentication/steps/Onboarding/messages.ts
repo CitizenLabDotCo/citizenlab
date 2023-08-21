@@ -1,13 +1,13 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  topicsOfInterest: {
-    id: 'app.containers.SignUp.onboarding.topicsAndAreas.topicsOfInterest',
-    defaultMessage: 'Topics of interest:',
+  followYourFavoriteTopics: {
+    id: 'app.containers.SignUp.onboarding.topicsAndAreas.followYourFavoriteTopics',
+    defaultMessage: 'Follow your favorite topics to be notified about them:',
   },
-  areasOfFocus: {
-    id: 'app.containers.SignUp.onboarding.topicsAndAreas.areasOfFocus',
-    defaultMessage: 'Explore areas of focus',
+  followAreasOfFocus: {
+    id: 'app.containers.SignUp.onboarding.topicsAndAreas.followAreasOfFocus',
+    defaultMessage: 'Follow your areas of focus to be notified about them:',
   },
   skipForNow: {
     id: 'app.containers.SignUp.onboarding.topicsAndAreas.skipForNow',

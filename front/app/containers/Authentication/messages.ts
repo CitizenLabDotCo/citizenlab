@@ -33,9 +33,9 @@ export default defineMessages({
     id: 'app.containers.NewAuthModal.completeYourProfile',
     defaultMessage: 'Complete your profile',
   },
-  completeOnboarding: {
-    id: 'app.containers.NewAuthModal.completeOnboarding',
-    defaultMessage: 'Personalize your experience',
+  whatAreYouInterestedIn: {
+    id: 'app.containers.NewAuthModal.whatAreYouInterestedIn',
+    defaultMessage: 'What are you interested in?',
   },
   unknownError: {
     id: 'app.containers.SignUp.unknownError',

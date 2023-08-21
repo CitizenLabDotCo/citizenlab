@@ -62,7 +62,7 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   'sign-up:change-email': messages.signUp,
   'sign-up:verification': messages.verifyYourIdentity,
   'sign-up:custom-fields': messages.completeYourProfile,
-  'sign-up:onboarding': messages.completeOnboarding,
+  'sign-up:onboarding': messages.whatAreYouInterestedIn,
   'sign-up:invite': messages.signUp,
   'clave-unica:email': messages.signUp,
   'clave-unica:email-confirmation': messages.confirmYourEmail,
@@ -83,7 +83,7 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   'missing-data:change-email': messages.confirmYourEmail,
   'missing-data:verification': messages.verifyYourIdentity,
   'missing-data:custom-fields': messages.completeYourProfile,
-  'missing-data:onboarding': messages.completeOnboarding,
+  'missing-data:onboarding': messages.whatAreYouInterestedIn,
 
   // verification only
   'verification-only': messages.verifyYourIdentity,

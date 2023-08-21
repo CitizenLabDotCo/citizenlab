@@ -26,16 +26,20 @@ const TopicsAndAreas = ({ onSubmit, onSkip }: Props) => {
   return (
     <>
       <Box maxHeight="350px" overflowY="scroll">
-        <Title variant="h4">{formatMessage(messages.topicsOfInterest)}</Title>
+        <Title variant="h4">
+          {formatMessage(messages.followYourFavoriteTopics)}
+        </Title>
         <Topics />
       </Box>
       <Box maxHeight="150px" overflowY="scroll">
-        <Title variant="h4">{formatMessage(messages.areasOfFocus)}</Title>
+        <Title variant="h4">{formatMessage(messages.followAreasOfFocus)}</Title>
         <Areas />
       </Box>
       <Box display="flex" justifyContent="flex-end">
         <Box my="20px" w="auto" display="flex" alignSelf="flex-end" gap="8px">
-          <Button onClick={onSkip}>{formatMessage(messages.skipForNow)}</Button>
+          <Button onClick={onSkip} buttonStyle="secondary">
+            {formatMessage(messages.skipForNow)}
+          </Button>
           <Button onClick={handleSubmit}>
             {formatMessage(messages.savePreferences)}
           </Button>
