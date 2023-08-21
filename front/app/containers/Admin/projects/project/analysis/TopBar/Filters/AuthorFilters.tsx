@@ -1,9 +1,14 @@
 import React, { useMemo } from 'react';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
-import { Box, Label, Select, Button } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Label,
+  Select,
+  Button,
+  Text,
+} from '@citizenlab/cl2-component-library';
 import useLocalize from 'hooks/useLocalize';
-import MultipleSelect from 'components/UI/MultipleSelect';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { useSearchParams } from 'react-router-dom';
 import { useIntl } from 'utils/cl-intl';
@@ -55,6 +60,11 @@ const AuthorFilters = () => {
     genderUrlQueryParamKey
   );
 
+  const selectedDomicileOptions = handleArraySearchParam(
+    searchParams,
+    domicileUrlQueryParamKey
+  );
+
   const toggleOptionInArray = (array: string[] | undefined, option: string) => {
     if (array?.includes(option)) {
       const arrayWithoutOption = array.filter((el: string) => el !== option);
@@ -65,6 +75,9 @@ const AuthorFilters = () => {
 
   return (
     <Box display="flex" flexDirection="column" gap="12px">
+      <Text color="textSecondary" m="0px">
+        {formatMessage(messages.gender)}
+      </Text>
       <Box display="flex" gap="12px">
         <Button
           buttonStyle={!selectedGenderOptions ? 'admin-dark' : 'secondary'}
@@ -73,6 +86,7 @@ const AuthorFilters = () => {
               [genderUrlQueryParamKey]: undefined,
             })
           }
+          p="4px 12px"
         >
           All
         </Button>
@@ -93,29 +107,50 @@ const AuthorFilters = () => {
                 ),
               })
             }
+            p="4px 8px"
           >
             {localize(option.attributes.title_multiloc)}
           </Button>
         ))}
       </Box>
-      {domicileOptions && (
-        <MultipleSelect
-          inputId="domicile"
-          label={formatMessage(messages.domicile)}
-          options={domicileOptions.data.map((option) => ({
-            label: localize(option.attributes.title_multiloc),
-            value: option.attributes.key,
-          }))}
-          onChange={(selectedOptions) => {
+      <Text color="textSecondary" m="0px">
+        {formatMessage(messages.domicile)}
+      </Text>
+      <Box display="flex" gap="12px">
+        <Button
+          buttonStyle={!selectedDomicileOptions ? 'admin-dark' : 'secondary'}
+          onClick={() =>
             updateSearchParams({
-              [domicileUrlQueryParamKey]: selectedOptions.map(
-                (option) => option.value
-              ),
-            });
-          }}
-          value={JSON.parse(searchParams.get(domicileUrlQueryParamKey) || '[]')}
-        />
-      )}
+              [domicileUrlQueryParamKey]: undefined,
+            })
+          }
+          p="4px 12px"
+        >
+          All
+        </Button>
+
+        {domicileOptions?.data.map((option) => (
+          <Button
+            key={option.id}
+            buttonStyle={
+              selectedDomicileOptions?.includes(option.attributes.key)
+                ? 'admin-dark'
+                : 'secondary'
+            }
+            onClick={() =>
+              updateSearchParams({
+                [domicileUrlQueryParamKey]: toggleOptionInArray(
+                  selectedDomicileOptions,
+                  option.attributes.key
+                ),
+              })
+            }
+            p="4px 8px"
+          >
+            {localize(option.attributes.title_multiloc)}
+          </Button>
+        ))}
+      </Box>
       {birthyearField && (
         <Box>
           <Label>{formatMessage(messages.birthyear)}</Label>
