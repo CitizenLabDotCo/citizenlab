@@ -1513,7 +1513,6 @@
   "app.containers.UsersShowPage.a11y_likesCount": "{likesCount, plural, =0 {no likes} one {1 like} other {# likes}}",
   "app.containers.UsersShowPage.a11y_postCommentPostedIn": "Oqaaseqaatip uuma sumi saqqummiunneqarsimanera pillugu saqqummiussigit:",
   "app.containers.UsersShowPage.commentsWithCount": "Oqaaseqaatit ({commentsCount})",
-  "app.containers.UsersShowPage.displayCountMobile": "({count})",
   "app.containers.UsersShowPage.editProfile": "Profilera aaqqissuunniarpara",
   "app.containers.UsersShowPage.emptyInfoText": "You are not following any items of the specified filter above.",
   "app.containers.UsersShowPage.eventsWithCount": "Events ({eventsCount})",
