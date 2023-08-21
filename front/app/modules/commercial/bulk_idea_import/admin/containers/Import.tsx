@@ -92,6 +92,11 @@ const Import = () => {
             <FormattedMessage {...messages.importInput} />
           </Button>
         </Box>
+        {isLoading && (
+          <Text color="textSecondary">
+            <FormattedMessage {...messages.ideasBeingImported} />
+          </Text>
+        )}
         {!isLoading && isSuccess && (
           <Text color="success">
             <FormattedMessage {...messages.successMessage} />
