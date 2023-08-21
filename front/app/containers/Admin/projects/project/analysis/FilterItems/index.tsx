@@ -71,24 +71,28 @@ const FilterItems = ({ filters, isEditable }: FilterItemsProps) => {
       case genderUrlQueryParamKey:
         return (
           isArray(value) &&
-          value.map((value: string) =>
-            localize(
-              genderOptions?.data.find((option) => {
-                return option.attributes.key === value;
-              })?.attributes.title_multiloc
-            )
-          )
+          value.map((value: string) => (
+            <Box key={value} ml="4px">
+              {localize(
+                genderOptions?.data.find((option) => {
+                  return option.attributes.key === value;
+                })?.attributes.title_multiloc
+              )}
+            </Box>
+          ))
         );
       case domicileUrlQueryParamKey:
         return (
           isArray(value) &&
-          value.map((value: string) =>
-            localize(
-              domicileOptions?.data.find(
-                (option) => option.attributes.key === value
-              )?.attributes.title_multiloc
-            )
-          )
+          value.map((value: string) => (
+            <Box key={value} ml="4px">
+              {localize(
+                domicileOptions?.data.find(
+                  (option) => option.attributes.key === value
+                )?.attributes.title_multiloc
+              )}
+            </Box>
+          ))
         );
       case birthyearUrlQueryParamFromKey:
       case birthyearUrlQueryParamToKey:

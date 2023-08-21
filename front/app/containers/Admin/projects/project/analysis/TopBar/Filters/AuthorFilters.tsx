@@ -1,13 +1,14 @@
 import React, { useMemo } from 'react';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
-import { Box, Label, Select } from '@citizenlab/cl2-component-library';
+import { Box, Label, Select, Button } from '@citizenlab/cl2-component-library';
 import useLocalize from 'hooks/useLocalize';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { useSearchParams } from 'react-router-dom';
 import { useIntl } from 'utils/cl-intl';
 import messages from '../../messages';
+import { handleArraySearchParam } from '../../util';
 
 const AuthorFilters = () => {
   const localize = useLocalize();
@@ -49,24 +50,54 @@ const AuthorFilters = () => {
     []
   );
 
+  const selectedGenderOptions = handleArraySearchParam(
+    searchParams,
+    genderUrlQueryParamKey
+  );
+
+  const toggleOptionInArray = (array: string[] | undefined, option: string) => {
+    if (array?.includes(option)) {
+      const arrayWithoutOption = array.filter((el: string) => el !== option);
+      return arrayWithoutOption.length > 0 ? arrayWithoutOption : undefined;
+    }
+    return array ? [...array, option] : [option];
+  };
+
   return (
     <Box display="flex" flexDirection="column" gap="12px">
-      {genderOptions && (
-        <Select
-          id="gender"
-          label={formatMessage(messages.gender)}
-          options={genderOptions.data.map((option) => ({
-            label: localize(option.attributes.title_multiloc),
-            value: option.attributes.key,
-          }))}
-          onChange={(option) =>
-            updateSearchParams({ [genderUrlQueryParamKey]: [option.value] })
+      <Box display="flex" gap="12px">
+        <Button
+          buttonStyle={!selectedGenderOptions ? 'admin-dark' : 'secondary'}
+          onClick={() =>
+            updateSearchParams({
+              [genderUrlQueryParamKey]: undefined,
+            })
           }
-          value={
-            JSON.parse(searchParams.get(genderUrlQueryParamKey) || '[]')[0]
-          }
-        />
-      )}
+        >
+          All
+        </Button>
+
+        {genderOptions?.data.map((option) => (
+          <Button
+            key={option.id}
+            buttonStyle={
+              selectedGenderOptions?.includes(option.attributes.key)
+                ? 'admin-dark'
+                : 'secondary'
+            }
+            onClick={() =>
+              updateSearchParams({
+                [genderUrlQueryParamKey]: toggleOptionInArray(
+                  selectedGenderOptions,
+                  option.attributes.key
+                ),
+              })
+            }
+          >
+            {localize(option.attributes.title_multiloc)}
+          </Button>
+        ))}
+      </Box>
       {domicileOptions && (
         <MultipleSelect
           inputId="domicile"
