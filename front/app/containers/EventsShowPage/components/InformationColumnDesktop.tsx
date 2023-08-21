@@ -54,7 +54,7 @@ const InformationColumnDesktop = ({ event, className }: Props) => {
               py="12px"
             >
               <EventDateStylized event={event} />
-              <>
+              <Box pb="16px" borderBottom={`solid 1px ${colors.divider}`}>
                 {!isPastEvent && (
                   <Box mt="12px">
                     <EventAttendanceButton event={event} />
@@ -63,23 +63,20 @@ const InformationColumnDesktop = ({ event, className }: Props) => {
                 {event.attributes.attendees_count > 0 && (
                   <ParticipantsCount count={event.attributes.attendees_count} />
                 )}
-                <Box borderBottom={`solid 1px ${colors.divider}`} />
-              </>
+              </Box>
 
               {event.attributes.location_description && (
-                <>
+                <Box pb="16px" borderBottom={`solid 1px ${colors.divider}`}>
                   <Location
                     location={event.attributes.location_description}
                     event={event}
                   />
-                  <Box borderBottom={`solid 1px ${colors.divider}`} />
-                </>
+                </Box>
               )}
               {event.attributes.online_link && (
-                <>
+                <Box pb="16px" borderBottom={`solid 1px ${colors.divider}`}>
                   <OnlineLink link={event.attributes.online_link} />
-                  <Box borderBottom={`solid 1px ${colors.divider}`} />
-                </>
+                </Box>
               )}
               <FullEventTime event={event} />
             </Box>

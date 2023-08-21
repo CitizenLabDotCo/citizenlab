@@ -4,15 +4,16 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import EventAttendanceButton from 'components/EventAttendanceButton';
 import ParticipantsCount from './MetadataInformation/ParticipantsCount';
+import OnlineLink from './MetadataInformation/OnlineLink';
+import FullEventTime from './MetadataInformation/EventTimeTextual';
+import Location from './MetadataInformation/Location';
+import EventDateStylized from './MetadataInformation/EventDateStylized';
 
 // styling
 import { colors } from 'utils/styleUtils';
 
 // typing
 import { IEventData } from 'api/events/types';
-import EventDateStylized from './MetadataInformation/EventDateStylized';
-import Location from './MetadataInformation/Location';
-import FullEventTime from './MetadataInformation/EventTimeTextual';
 
 // utils
 import moment from 'moment';
@@ -42,7 +43,7 @@ const InformationSectionMobile = ({ event }: Props) => {
               py="12px"
             >
               <EventDateStylized event={event} />
-              <>
+              <Box pb="16px" borderBottom={`solid 1px ${colors.divider}`}>
                 {!isPastEvent && (
                   <Box mt="12px">
                     <EventAttendanceButton event={event} />
@@ -51,17 +52,19 @@ const InformationSectionMobile = ({ event }: Props) => {
                 {event.attributes.attendees_count > 0 && (
                   <ParticipantsCount count={event.attributes.attendees_count} />
                 )}
-                <Box borderBottom={`solid 1px ${colors.divider}`} />
-              </>
-
+              </Box>
               {event.attributes.location_description && (
-                <>
+                <Box pb="16px" borderBottom={`solid 1px ${colors.divider}`}>
                   <Location
                     location={event.attributes.location_description}
                     event={event}
                   />
-                  <Box borderBottom={`solid 1px ${colors.divider}`} />
-                </>
+                </Box>
+              )}
+              {event.attributes.online_link && (
+                <Box pb="16px" borderBottom={`solid 1px ${colors.divider}`}>
+                  <OnlineLink link={event.attributes.online_link} />
+                </Box>
               )}
               <FullEventTime event={event} />
             </Box>
