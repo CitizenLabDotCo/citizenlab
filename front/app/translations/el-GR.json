@@ -465,6 +465,7 @@
   "app.components.VerificationModal.toParticipateInThisProject": "για να συμμετάσχετε σε αυτό το έργο",
   "app.components.VerificationModal.verifyBOSA": "Επαλήθευση με itsme ή eID",
   "app.components.VerificationModal.verifyClaveUnica": "Επαλήθευση με Clave Unica",
+  "app.components.VerificationModal.verifyNemLogIn": "Επαλήθευση με το MitID",
   "app.components.VerificationModal.verifyYourIdentity": "Επαληθεύστε την ταυτότητά σας",
   "app.components.VoteControl.budgetingFutureEnabled": "Μπορείτε να διαθέσετε τον προϋπολογισμό σας ξεκινώντας από τις {enabledFromDate}.",
   "app.components.VoteControl.budgetingNotPermitted": "Ο συμμετοχικός προϋπολογισμός δεν είναι προς το παρόν ενεργοποιημένος.",
