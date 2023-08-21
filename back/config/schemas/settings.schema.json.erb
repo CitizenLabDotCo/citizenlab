@@ -243,6 +243,18 @@
         }
       },
 
+      "follow": {
+        "type": "object",
+        "title": "Follow",
+        "description": "Allow users to passively follow and get notifications about some parts of the application",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "jsonforms_custom_fields": {
         "type": "object",
         "title": "Rework of user custom fields (experimental)",

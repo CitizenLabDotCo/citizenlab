@@ -30,7 +30,7 @@ resource 'Initiatives' do
     parameter :sort, "Either 'trending' (default), 'new', '-new', 'author_name', '-author_name', 'likes_count', '-likes_count', 'status', '-status', 'random'", required: false
 
     example_request 'List all published initiatives (default behaviour)' do
-      expect(status).to eq(200)
+      assert_status 200
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 5
       expect(json_response[:data].map { |d| d.dig(:attributes, :publication_status) }).to all(eq 'published')
@@ -38,6 +38,8 @@ resource 'Initiatives' do
 
     example "Don't list drafts (default behaviour)", document: false do
       do_request publication_status: 'draft'
+
+      assert_status 200
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 0
     end
@@ -160,13 +162,15 @@ resource 'Initiatives' do
       expect(json_response[:data].size).to eq 6
     end
 
-    example 'List all initiatives includes the user_reaction', document: false do
+    example 'List all initiatives includes the user_reaction and user_follower', document: false do
       initiative = create(:initiative)
       reaction = create(:reaction, reactable: initiative, user: @user)
+      follower = create(:follower, followable: create(:initiative), user: @user)
 
       do_request
       json_response = json_parse(response_body)
-      expect(json_response[:data].filter_map { |d| d[:relationships][:user_reaction][:data] }.first[:id]).to eq reaction.id
+      expect(json_response[:data].filter_map { |d| d.dig(:relationships, :user_reaction, :data, :id) }.first).to eq reaction.id
+      expect(json_response[:data].filter_map { |d| d.dig(:relationships, :user_follower, :data, :id) }.first).to eq follower.id
       expect(json_response[:included].pluck(:id)).to include reaction.id
     end
   end

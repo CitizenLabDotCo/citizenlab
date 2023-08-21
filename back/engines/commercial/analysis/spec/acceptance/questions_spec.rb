@@ -11,6 +11,36 @@ resource 'Questions' do
     admin_header_token
   end
 
+  get 'web_api/v1/analyses/:analysis_id/questions/:id' do
+    let(:question) { create(:analysis_question) }
+    let(:analysis_id) { question.analysis_id }
+    let(:id) { question.id }
+
+    example_request 'Get one question by id' do
+      expect(status).to eq 200
+      expect(response_data).to match({
+        id: id,
+        type: 'analysis_question',
+        attributes: {
+          question: kind_of(String),
+          answer: nil,
+          filters: {},
+          accuracy: nil,
+          created_at: kind_of(String),
+          updated_at: kind_of(String)
+        },
+        relationships: {
+          background_task: {
+            data: {
+              type: 'background_task',
+              id: kind_of(String)
+            }
+          }
+        }
+      })
+    end
+  end
+
   post 'web_api/v1/analyses/:analysis_id/questions' do
     parameter :question, 'The question posed by the user', required: true, scope: :question
     with_options scope: %i[question filters] do

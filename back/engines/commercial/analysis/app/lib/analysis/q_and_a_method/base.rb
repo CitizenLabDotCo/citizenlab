@@ -32,7 +32,9 @@ module Analysis
 
     def execute(plan)
       task.set_in_progress!
-      question.update!(accuracy: plan.accuracy, inputs_ids: filtered_inputs.ids)
+      question.update!(accuracy: plan.accuracy)
+      question.insight.update!(inputs_ids: filtered_inputs.ids)
+
       begin
         run(plan)
         task.set_succeeded!

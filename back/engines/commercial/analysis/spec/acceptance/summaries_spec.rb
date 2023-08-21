@@ -11,6 +11,35 @@ resource 'Summaries' do
     admin_header_token
   end
 
+  get 'web_api/v1/analyses/:analysis_id/summaries/:id' do
+    let(:summary) { create(:summary) }
+    let(:analysis_id) { summary.analysis_id }
+    let(:id) { summary.id }
+
+    example_request 'Get one summary by id' do
+      expect(status).to eq 200
+      expect(response_data).to match({
+        id: id,
+        type: 'summary',
+        attributes: {
+          summary: kind_of(String),
+          filters: {},
+          accuracy: nil,
+          created_at: kind_of(String),
+          updated_at: kind_of(String)
+        },
+        relationships: {
+          background_task: {
+            data: {
+              type: 'background_task',
+              id: kind_of(String)
+            }
+          }
+        }
+      })
+    end
+  end
+
   post 'web_api/v1/analyses/:analysis_id/summaries' do
     with_options scope: %i[summary filters] do
       parameter :search, 'Filter by searching in title and body'
@@ -115,5 +144,4 @@ resource 'Summaries' do
       })
     end
   end
-
 end

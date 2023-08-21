@@ -1,5 +1,27 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: analysis_insights
+#
+#  id               :uuid             not null, primary key
+#  analysis_id      :uuid             not null
+#  insightable_type :string           not null
+#  insightable_id   :uuid             not null
+#  filters          :jsonb            not null
+#  inputs_ids       :jsonb
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#
+# Indexes
+#
+#  index_analysis_insights_on_analysis_id  (analysis_id)
+#  index_analysis_insights_on_insightable  (insightable_type,insightable_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (analysis_id => analysis_analyses.id)
+#
 module Analysis
   class Insight < ::ApplicationRecord
     FILTERS_JSON_SCHEMA_STR = Rails.root.join('engines/commercial/analysis/config/schemas/filters.json_schema').read
