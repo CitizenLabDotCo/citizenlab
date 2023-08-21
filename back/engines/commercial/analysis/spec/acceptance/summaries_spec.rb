@@ -115,5 +115,4 @@ resource 'Summaries' do
       })
     end
   end
-
 end

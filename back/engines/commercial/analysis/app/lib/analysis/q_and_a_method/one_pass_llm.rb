@@ -61,7 +61,7 @@ module Analysis
       question.update!(prompt: prompt)
 
       plan.llm.chat_async(prompt) do |new_text|
-        update_question([question.question || '', new_text].join)
+        update_answer([question.answer || '', new_text].join)
       end
     rescue StandardError => e
       raise QAndAFailedError, e
