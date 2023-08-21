@@ -10,6 +10,7 @@ import Summary from './Summary';
 import SummarizeButton from './SummarizeButton';
 import QuestionButton from './QuestionButton';
 import QuestionInput from './QuestionInput';
+import Question from './Question';
 
 const Insights = () => {
   const [isQuestionInputOpen, setIsQuestionInputOpen] = useState(false);
@@ -39,7 +40,13 @@ const Insights = () => {
         <QuestionInput onClose={() => setIsQuestionInputOpen(false)} />
       )}
       {insights?.data.map((insight) => (
-        <Summary key={insight.id} insight={insight} />
+        <div key={insight.id}>
+          {insight.relationships.insightable.data.type === 'summary' ? (
+            <Summary insight={insight} />
+          ) : (
+            <Question insight={insight} />
+          )}
+        </div>
       ))}
     </Box>
   );

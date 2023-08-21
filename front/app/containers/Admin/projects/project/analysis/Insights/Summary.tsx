@@ -40,14 +40,9 @@ const Summary = ({ insight }: Props) => {
   const { analysisId } = useParams() as { analysisId: string };
   const { mutate: deleteSummary } = useDeleteAnalysisInsight();
 
-  const insightType = insight.relationships.insightable.data.type;
-  const insightId =
-    insightType === 'summary'
-      ? insight.relationships.insightable.data.id
-      : undefined;
   const { data: summary } = useAnalysisSummary({
     analysisId,
-    id: insightId,
+    id: insight.relationships.insightable.data.id,
   });
 
   const { data: backgroundTask } = useAnalysisBackgroundTask(

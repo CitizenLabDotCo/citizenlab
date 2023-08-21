@@ -13,6 +13,7 @@ import {
   Spinner,
   colors,
   stylingConsts,
+  Text,
 } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
@@ -39,14 +40,15 @@ const Question = ({ insight }: Props) => {
   const { formatMessage } = useIntl();
   const { analysisId } = useParams() as { analysisId: string };
   const { mutate: deleteQuestion } = useDeleteAnalysisInsight();
-  const { data: summary } = useAnalysisQuestion({
+
+  const { data: question } = useAnalysisQuestion({
     analysisId,
     id: insight.relationships.insightable.data.id,
   });
 
   const { data: backgroundTask } = useAnalysisBackgroundTask(
     analysisId,
-    summary?.data.relationships.background_task.data.id
+    question?.data.relationships.background_task.data.id
   );
   const processing =
     backgroundTask?.data.attributes.state === 'in_progress' ||
@@ -61,9 +63,9 @@ const Question = ({ insight }: Props) => {
     }
   };
 
-  const replaceIdRefsWithLinks = (summary) => {
+  const replaceIdRefsWithLinks = (question) => {
     return reactStringReplace(
-      summary,
+      question,
       /\[?([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})\]?/g,
       (match, i) => (
         <StyledButton onClick={() => setSelectedInputId(match)} key={i}>
@@ -73,13 +75,13 @@ const Question = ({ insight }: Props) => {
     );
   };
 
-  if (!summary) return null;
-  const hasFilters = !!Object.keys(summary.data.attributes.filters).length;
+  if (!question) return null;
+  const hasFilters = !!Object.keys(question.data.attributes.filters).length;
 
   return (
     <Box
-      key={summary.data.id}
-      bgColor={colors.teal100}
+      key={question.data.id}
+      bgColor={colors.successLight}
       p="16px"
       mb="8px"
       borderRadius={stylingConsts.borderRadius}
@@ -95,18 +97,20 @@ const Question = ({ insight }: Props) => {
           {hasFilters && (
             <>
               <Box>Question for</Box>
-              {Object.entries(summary.data.attributes.filters).map(([k, v]) => (
-                <Box
-                  key={k}
-                  bgColor={colors.teal200}
-                  color={colors.teal700}
-                  py="2px"
-                  px="4px"
-                  borderRadius={stylingConsts.borderRadius}
-                >
-                  {k}: {v}
-                </Box>
-              ))}
+              {Object.entries(question.data.attributes.filters).map(
+                ([k, v]) => (
+                  <Box
+                    key={k}
+                    bgColor={colors.teal200}
+                    color={colors.teal700}
+                    py="2px"
+                    px="4px"
+                    borderRadius={stylingConsts.borderRadius}
+                  >
+                    {k}: {v}
+                  </Box>
+                )
+              )}
             </>
           )}
 
@@ -116,9 +120,10 @@ const Question = ({ insight }: Props) => {
             </>
           )}
         </Box>
+        <Text fontWeight="bold">{question.data.attributes.question}</Text>
         <Box>
           <StyledQuestionText>
-            {replaceIdRefsWithLinks(summary.data.attributes.answer)}
+            {replaceIdRefsWithLinks(question.data.attributes.answer)}
           </StyledQuestionText>
           {processing && <Spinner />}
         </Box>
@@ -136,9 +141,9 @@ const Question = ({ insight }: Props) => {
           iconColorOnHover={colors.teal700}
           a11y_buttonActionMessage={formatMessage(messages.deleteQuestion)}
         />
-        {summary.data.attributes.accuracy && (
+        {question.data.attributes.accuracy && (
           <Box color={colors.teal700}>
-            Accuracy {summary.data.attributes.accuracy * 100}%
+            Accuracy {question.data.attributes.accuracy * 100}%
           </Box>
         )}
       </Box>
