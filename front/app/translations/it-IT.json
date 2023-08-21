@@ -465,6 +465,7 @@
   "app.components.VerificationModal.toParticipateInThisProject": "per partecipare a questo progetto",
   "app.components.VerificationModal.verifyBOSA": "Verifica con itsme o eID",
   "app.components.VerificationModal.verifyClaveUnica": "Verifica con Clave Unica",
+  "app.components.VerificationModal.verifyNemLogIn": "Verifica con MitID",
   "app.components.VerificationModal.verifyYourIdentity": "Verifica la tua identità",
   "app.components.VoteControl.budgetingFutureEnabled": "Puoi allocare il tuo budget a partire da {enabledFromDate}.",
   "app.components.VoteControl.budgetingNotPermitted": "Il bilancio partecipativo non è attualmente abilitato.",

@@ -26,6 +26,7 @@
 #  anonymous                :boolean          default(FALSE), not null
 #  internal_comments_count  :integer          default(0), not null
 #  editing_locked           :boolean          default(FALSE), not null
+#  followers_count          :integer          default(0), not null
 #
 # Indexes
 #
@@ -59,6 +60,7 @@ class Initiative < ApplicationRecord
   has_one :initiative_status, through: :initiative_initiative_status
   has_many :text_images, as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :text_images
+  has_many :followers, as: :followable, dependent: :destroy
 
   belongs_to :assignee, class_name: 'User', optional: true
 
@@ -190,6 +192,7 @@ class Initiative < ApplicationRecord
   end
 end
 
+Initiative.include(SmartGroups::Concerns::ValueReferenceable)
 Initiative.include(FlagInappropriateContent::Concerns::Flaggable)
 Initiative.include(Moderation::Concerns::Moderatable)
 Initiative.include(MachineTranslations::Concerns::Translatable)

@@ -44,11 +44,11 @@ class SideFxInitiativeService
       LogActivityJob.perform_later(initiative, 'changed_title', user_for_activity_on_anonymizable_item(initiative, user), initiative.updated_at.to_i, payload: { change: initiative.title_multiloc_previous_change })
     end
 
+    if initiative.body_multiloc_previously_changed?
+      LogActivityJob.perform_later(initiative, 'changed_body', user_for_activity_on_anonymizable_item(initiative, user), initiative.updated_at.to_i, payload: { change: initiative.body_multiloc_previous_change })
+    end
+
     log_activities_if_cosponsors_added(initiative, user, old_cosponsor_ids)
-
-    return unless initiative.body_multiloc_previously_changed?
-
-    LogActivityJob.perform_later(initiative, 'changed_body', user_for_activity_on_anonymizable_item(initiative, user), initiative.updated_at.to_i, payload: { change: initiative.body_multiloc_previous_change })
   end
 
   def after_accept_cosponsorship_invite(cosponsors_initiative, user)
@@ -102,6 +102,7 @@ class SideFxInitiativeService
   def after_publish(initiative, user)
     add_autoreaction initiative
     log_activity_jobs_after_published initiative, user
+    create_followers initiative, user
   end
 
   def set_assignee(initiative)
@@ -133,6 +134,10 @@ class SideFxInitiativeService
         initiative.updated_at.to_i
       )
     end
+  end
+
+  def create_followers(initiative, user)
+    Follower.find_or_create_by(followable: initiative, user: user)
   end
 end
 

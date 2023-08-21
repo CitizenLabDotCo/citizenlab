@@ -69,6 +69,7 @@ export interface IInitiativeData {
     cosponsorships: IInitiativeCosponsorship[];
     editing_locked: boolean;
     public: boolean;
+    followers_count: number;
   };
   relationships: {
     topics: {
@@ -94,6 +95,9 @@ export interface IInitiativeData {
         type: 'user';
         id: string;
       }[];
+    };
+    user_follower: {
+      data: IRelationship | null;
     };
   };
 }

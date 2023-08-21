@@ -43,6 +43,7 @@ export const data: IInitiativeData = {
     editing_locked: false,
     public: true,
     cosponsorships: [{ user_id: '1', name: 'Cosponsor 1', status: 'accepted' }],
+    followers_count: 3,
   },
   relationships: {
     topics: {
@@ -72,6 +73,9 @@ export const data: IInitiativeData = {
         id: '1',
         type: 'user',
       },
+    },
+    user_follower: {
+      data: null,
     },
   },
 };

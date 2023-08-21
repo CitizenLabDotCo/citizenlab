@@ -70,22 +70,13 @@ module Notifications
     EVENT_NAME = 'Project phase started'
 
     def self.make_notifications_on(activity)
-      service = ParticipationContextService.new
       phase = activity.item
 
-      if phase.project
-        user_scope = ParticipantsService.new.projects_participants(Project.where(id: phase.project_id))
-        ProjectPolicy::InverseScope.new(phase.project, user_scope).resolve.filter_map do |recipient|
-          next unless service.participation_possible_for_context? phase, recipient
-
-          new(
-            recipient: recipient,
-            phase: phase,
-            project: phase.project
-          )
-        end
-      else
-        []
+      participants = ParticipantsService.new.project_participants phase.project
+      followers = phase.project.followers
+      recipients = participants.or(User.from_follows(followers))
+      ProjectPolicy::InverseScope.new(phase.project, recipients).resolve.map do |recipient|
+        new(recipient: recipient, phase: phase, project: phase.project)
       end
     end
   end

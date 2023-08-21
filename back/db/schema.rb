@@ -501,6 +501,17 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_15_182301) do
     t.index ["flaggable_id", "flaggable_type"], name: "inappropriate_content_flags_flaggable"
   end
 
+  create_table "followers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "followable_type", null: false
+    t.uuid "followable_id", null: false
+    t.uuid "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["followable_id", "followable_type", "user_id"], name: "index_followers_followable_type_id_user_id", unique: true
+    t.index ["followable_type", "followable_id"], name: "index_followers_on_followable"
+    t.index ["user_id"], name: "index_followers_on_user_id"
+  end
+
   create_table "groups", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.jsonb "title_multiloc", default: {}
     t.string "slug"
@@ -620,6 +631,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_15_182301) do
     t.boolean "anonymous", default: false, null: false
     t.integer "internal_comments_count", default: 0, null: false
     t.integer "votes_count", default: 0, null: false
+    t.integer "followers_count", default: 0, null: false
     t.index "((to_tsvector('simple'::regconfig, COALESCE((title_multiloc)::text, ''::text)) || to_tsvector('simple'::regconfig, COALESCE((body_multiloc)::text, ''::text))))", name: "index_ideas_search", using: :gin
     t.index ["author_hash"], name: "index_ideas_on_author_hash"
     t.index ["author_id"], name: "index_ideas_on_author_id"
@@ -738,6 +750,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_15_182301) do
     t.boolean "anonymous", default: false, null: false
     t.integer "internal_comments_count", default: 0, null: false
     t.boolean "editing_locked", default: false, null: false
+    t.integer "followers_count", default: 0, null: false
     t.index "((to_tsvector('simple'::regconfig, COALESCE((title_multiloc)::text, ''::text)) || to_tsvector('simple'::regconfig, COALESCE((body_multiloc)::text, ''::text))))", name: "index_initiatives_search", using: :gin
     t.index ["author_id"], name: "index_initiatives_on_author_id"
     t.index ["location_point"], name: "index_initiatives_on_location_point", using: :gist
@@ -1188,6 +1201,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_15_182301) do
     t.string "slug"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "followers_count", default: 0, null: false
     t.index ["slug"], name: "index_project_folders_folders_on_slug"
   end
 
@@ -1251,6 +1265,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_15_182301) do
     t.jsonb "voting_term_plural_multiloc", default: {}
     t.integer "baskets_count", default: 0, null: false
     t.integer "votes_count", default: 0, null: false
+    t.integer "followers_count", default: 0, null: false
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 
@@ -1495,6 +1510,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_15_182301) do
     t.string "block_reason"
     t.datetime "block_end_at", precision: nil
     t.string "new_email"
+    t.integer "followings_count", default: 0, null: false
     t.index "lower((email)::text)", name: "users_unique_lower_email_idx", unique: true
     t.index ["email"], name: "index_users_on_email"
     t.index ["registration_completed_at"], name: "index_users_on_registration_completed_at"
@@ -1577,6 +1593,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_15_182301) do
   add_foreign_key "events", "projects"
   add_foreign_key "events_attendances", "events"
   add_foreign_key "events_attendances", "users", column: "attendee_id"
+  add_foreign_key "followers", "users"
   add_foreign_key "groups_permissions", "groups"
   add_foreign_key "groups_permissions", "permissions"
   add_foreign_key "groups_projects", "groups"
