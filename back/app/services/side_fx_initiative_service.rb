@@ -69,6 +69,15 @@ class SideFxInitiativeService
     LogActivityJob.perform_later(encode_frozen_resource(frozen_initiative), 'deleted', user, Time.now.to_i, payload: { initiative: serialized_initiative })
   end
 
+  def log_initiative_proposed_activity(initiative, user)
+    LogActivityJob.perform_later(
+      initiative,
+      'proposed',
+      user_for_activity_on_anonymizable_item(initiative, user),
+      initiative.updated_at.to_i
+    )
+  end
+
   private
 
   def log_activities_if_cosponsors_added(initiative, user, old_cosponsor_ids)
@@ -126,14 +135,7 @@ class SideFxInitiativeService
       initiative.published_at.to_i
     )
 
-    if initiative.initiative_status.code == 'proposed'
-      LogActivityJob.perform_later(
-        initiative,
-        'proposed',
-        user_for_activity_on_anonymizable_item(initiative, user),
-        initiative.updated_at.to_i
-      )
-    end
+    log_initiative_proposed_activity(initiative, user) if initiative.initiative_status.code == 'proposed'
   end
 
   def create_followers(initiative, user)

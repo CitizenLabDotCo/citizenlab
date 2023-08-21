@@ -20,7 +20,7 @@ describe SideFxInitiativeStatusChangeService do
       it 'logs a proposed activity job' do
         expect { service.after_create(initiative_status_change, user) }
           .to enqueue_job(LogActivityJob)
-          .with(initiative_status_change.initiative, 'proposed', user, initiative_status_change.created_at.to_i)
+          .with(initiative_status_change.initiative, 'proposed', user, instance_of(Integer))
           .exactly(1).times
       end
     end

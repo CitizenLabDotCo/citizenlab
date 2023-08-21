@@ -14,7 +14,7 @@ class SideFxInitiativeStatusChangeService
     # This works because, if the review feature is off, the associated initiative_status_change with code 'proposed'
     # is created at the model level when the initiative is published, and does not invoke this method.
     if change.initiative_status.code == 'proposed'
-      LogActivityJob.perform_later(change.initiative, 'proposed', user, change.created_at.to_i)
+      SideFxInitiativeService.new.log_initiative_proposed_activity(change.initiative, user)
       change.initiative.update!(editing_locked: true)
     end
   end
