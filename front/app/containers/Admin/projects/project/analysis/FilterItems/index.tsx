@@ -106,7 +106,10 @@ const FilterItems = ({ filters, isEditable }: FilterItemsProps) => {
           py="4px"
           px="8px"
           borderRadius={stylingConsts.borderRadius}
-          bgColor={colors.successLight}
+          borderColor={colors.success}
+          borderWidth="1px"
+          borderStyle="solid"
+          bgColor={colors.white}
           color={colors.success}
           display="flex"
         >
