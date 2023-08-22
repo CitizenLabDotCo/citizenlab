@@ -787,6 +787,7 @@
   "app.containers.Admin.projects.project.ideas.analysisButton": "انتقل إلى التحليل",
   "app.containers.Admin.projects.project.ideas.analysisSubtitle": "افتح الملخصات الآلية واطرح أسئلة حول مدخلات مشروعك.",
   "app.containers.Admin.projects.project.ideas.analysisTitle": "تحليل مدعوم بالذكاء الاصطناعي",
+  "app.containers.Admin.projects.project.offlineInputs.ImportModal.formLanguage": "لغة النموذج",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.here": "هنا",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.uploadAPdfFile": "قم بتحميل ملف <b>PDF للنماذج الممسوحة ضوئيًا</b>. يجب أن يستخدم ملف PDF نموذجًا مطبوعًا من هذا المشروع المتاح {hereLink}.",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.writtenIdeaImporter": "مستورد الفكرة المكتوبة",
