@@ -218,6 +218,9 @@ lv:
     survey_end_page:
       title: 'Aptaujas beigas'
       description: "Lūdzu, iesniedziet savas atbildes, izvēloties \"Iesniegt aptauju\"."
+    pdf_export:
+      full_name: 'Pilns nosaukums'
+      email_address: 'E-pasta adrese'
   project_copy:
     title_suffix: 'Kopija'
   confirmations_mailer:
