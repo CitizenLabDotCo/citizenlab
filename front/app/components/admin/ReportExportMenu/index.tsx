@@ -206,7 +206,8 @@ const ReportExportMenu = ({
 
     Object.entries(data).forEach(([sheet_name, sheet_data]) => {
       // Added after production bug.
-      // Error from XLSX package: sheet names can't contain certain characters
+      // Error from XLSX package: sheet names can't contain characters from the following array:
+      // [':', ']', '[', '*', '?', '/', '\\']
       const sheetNameWithoutForbiddenChars = sheet_name.replace(
         /[:\]\[*?/\\]/g,
         '_'
