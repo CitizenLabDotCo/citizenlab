@@ -24,6 +24,8 @@ import messages from './messages';
 
 // router
 import { useParams } from 'react-router-dom';
+
+// util
 import moment from 'moment';
 
 type EventPreviewsProps = {
@@ -54,11 +56,12 @@ const EventPreviews = ({ projectId }: EventPreviewsProps) => {
     projectIds: projectIdToUse ? [projectIdToUse] : undefined,
     currentAndFutureOnly: true,
     sort: '-start_at',
-    ongoing_between: [
+    ongoing_during: [
       moment(getCurrentPhase(phases?.data)?.attributes.start_at).toString() ||
         null,
-      moment(getCurrentPhase(phases?.data)?.attributes.end_at).toString() ||
-        null,
+      moment(getCurrentPhase(phases?.data)?.attributes.end_at)
+        .add(1, 'day')
+        .toString() || null,
     ],
   });
 
@@ -76,7 +79,6 @@ const EventPreviews = ({ projectId }: EventPreviewsProps) => {
   }, [showArrows]);
 
   const projectType = project?.data.attributes.process_type;
-  const currentPhase = getCurrentPhase(phases?.data);
 
   const lateralScroll = (scrollOffset: number) => {
     if (!ref?.current) return;
@@ -137,12 +139,7 @@ const EventPreviews = ({ projectId }: EventPreviewsProps) => {
             ref={ref}
           >
             {events.data.map((event) => (
-              <EventPreviewCard
-                key={event.id}
-                event={event}
-                currentPhase={currentPhase}
-                projectType={projectType}
-              />
+              <EventPreviewCard key={event.id} event={event} />
             ))}
           </EventPreviewContainer>
 

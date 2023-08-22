@@ -93,14 +93,16 @@ const EventsViewer = ({
   }, [projectId]);
 
   useEffect(() => {
-    if (eventsTime === 'past') {
-      projectIdList?.length
-        ? updateSearchParams({ past_events_project_ids: projectIdList })
-        : updateSearchParams({ past_events_project_ids: null });
-    } else if (eventsTime === 'currentAndFuture') {
-      projectIdList?.length
-        ? updateSearchParams({ ongoing_events_project_ids: projectIdList })
-        : updateSearchParams({ ongoing_events_project_ids: null });
+    if (!location.pathname.includes('/projects')) {
+      if (eventsTime === 'past') {
+        projectIdList?.length
+          ? updateSearchParams({ past_events_project_ids: projectIdList })
+          : updateSearchParams({ past_events_project_ids: null });
+      } else if (eventsTime === 'currentAndFuture') {
+        projectIdList?.length
+          ? updateSearchParams({ ongoing_events_project_ids: projectIdList })
+          : updateSearchParams({ ongoing_events_project_ids: null });
+      }
     }
   }, [eventsTime, projectIdList]);
 

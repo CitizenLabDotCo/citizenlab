@@ -50,7 +50,7 @@ export interface InputParameters {
   sort?: SortType;
   projectPublicationStatuses?: PublicationStatus[];
   attendeeId?: string;
-  ongoing_between?: (string | null)[]; // [startDate, endDate], use null for open ended
+  ongoing_during?: (string | null)[]; // [startDate, endDate], use null for open ended
 }
 export interface IEvent {
   data: IEventData;
