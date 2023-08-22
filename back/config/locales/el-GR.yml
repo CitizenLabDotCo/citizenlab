@@ -218,6 +218,9 @@ el:
     survey_end_page:
       title: 'Τέλος της έρευνας'
       description: "Υποβάλετε τις απαντήσεις σας επιλέγοντας \"Υποβολή έρευνας\" παρακάτω."
+    pdf_export:
+      full_name: 'Ονοματεπώνυμο'
+      email_address: 'Διεύθυνση ηλεκτρονικού ταχυδρομείου'
   project_copy:
     title_suffix: 'Aντίγραφο'
   confirmations_mailer:
