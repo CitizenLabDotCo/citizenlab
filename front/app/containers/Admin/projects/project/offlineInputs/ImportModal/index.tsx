@@ -5,6 +5,10 @@ import Modal from 'components/UI/Modal';
 import { Title } from '@citizenlab/cl2-component-library';
 import ImportSection from './ImportSection';
 
+// i18n
+import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
+
 interface Props {
   open: boolean;
   onClose: () => void;
@@ -19,7 +23,7 @@ const ImportModal = ({ open, onClose }: Props) => {
       close={onClose}
       header={
         <Title variant="h1" color="primary" px="24px" m="0">
-          Written idea importer
+          <FormattedMessage {...messages.writtenIdeaImporter} />
         </Title>
       }
       niceHeader

@@ -8,8 +8,12 @@ import useLocale from 'hooks/useLocale';
 import { useParams } from 'react-router-dom';
 
 // components
-import { Box, Spinner } from '@citizenlab/cl2-component-library';
+import { Box, Text, Spinner } from '@citizenlab/cl2-component-library';
 import FileUploader from 'components/UI/FileUploader';
+
+// i18n
+import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
 
 // styling
 import styled from 'styled-components';
@@ -59,8 +63,21 @@ const ImportSection = ({ onFinishImport }: Props) => {
   return (
     <Box w="100%" p="24px">
       <Box mb="28px">
-        Upload a <strong>PDF file of scanned forms</strong>. The PDF must use a
-        form printed from this project available <TextButton>here</TextButton>.
+        <Text>
+          <FormattedMessage
+            {...messages.uploadAPdfFile}
+            values={{
+              b: (chunks) => (
+                <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+              ),
+              hereLink: (
+                <TextButton>
+                  <FormattedMessage {...messages.here} />
+                </TextButton>
+              ),
+            }}
+          />
+        </Text>
       </Box>
 
       <Box>
