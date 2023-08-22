@@ -27,6 +27,7 @@ import { customAjv } from 'components/Form';
 // typings
 import { FormData } from 'components/Form/typings';
 import { IIdea } from 'api/ideas/types';
+import { CLErrors } from 'typings';
 
 const getFormData = (idea: IIdea) => {
   const { title_multiloc, body_multiloc } = idea.data.attributes;
@@ -44,13 +45,19 @@ const OfflineInputImporter = () => {
   const [search] = useSearchParams();
   const ideaId = search.get('idea_id');
 
+  const [loading, setLoading] = useState(false);
   const [showAllErrors, setShowAllErrors] = useState(false);
+  const [apiErrors, setApiErrors] = useState<CLErrors | undefined>();
   const [importModalOpen, setImportModalOpen] = useState(false);
   const [formStatePerIdea, setFormStatePerIdea] = useState<
     Record<string, FormData>
   >({});
 
-  const { data: idea } = useIdeaById(ideaId ?? undefined);
+  const { data: _idea } = useIdeaById(ideaId ?? undefined);
+  // for some reason, _idea keeps the data of the previous ideaId if
+  // ideaId is undefined. We don't want that.
+  const idea = ideaId ? _idea : undefined;
+
   const { mutateAsync: updateIdea } = useUpdateIdea();
   const { schema, uiSchema } = useInputSchema({
     projectId,
@@ -79,19 +86,26 @@ const OfflineInputImporter = () => {
   const onSubmit = async () => {
     if (!ideaId || !formData || !schema || !uiSchema) return;
     setShowAllErrors(true);
+    setLoading(true);
 
     if (isValidData(schema, uiSchema, formData, customAjv, false)) {
-      await updateIdea({
-        id: ideaId,
-        requestBody: {
-          publication_status: 'published',
-          title_multiloc: formData.title_multiloc,
-          body_multiloc: formData.body_multiloc,
-        },
-      });
+      try {
+        await updateIdea({
+          id: ideaId,
+          requestBody: {
+            publication_status: 'published',
+            title_multiloc: formData.title_multiloc,
+            body_multiloc: formData.body_multiloc,
+          },
+        });
 
-      removeSearchParams(['idea_id']);
+        removeSearchParams(['idea_id']);
+      } catch (e) {
+        setApiErrors(e.errors);
+      }
     }
+
+    setLoading(false);
   };
 
   return (
@@ -107,6 +121,7 @@ const OfflineInputImporter = () => {
       >
         <FocusOn>
           <TopBar
+            loadingApproveIdea={loading}
             onApproveIdea={ideaId ? onSubmit : undefined}
             onClickPDFImport={openImportModal}
           />
@@ -115,6 +130,7 @@ const OfflineInputImporter = () => {
             h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
           >
             <ReviewSection
+              apiErrors={apiErrors}
               showAllErrors={showAllErrors}
               formData={formData}
               setFormData={setFormData}

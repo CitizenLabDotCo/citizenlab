@@ -25,9 +25,12 @@ import PDFViewer from 'components/PDFViewer';
 import styled from 'styled-components';
 import { colors, stylingConsts } from 'utils/styleUtils';
 
+// utils
+import { getFullName } from 'utils/textUtils';
+
 // typings
 import { FormData } from 'components/Form/typings';
-import { getFullName } from 'utils/textUtils';
+import { CLErrors } from 'typings';
 
 // TODO move to component library
 const TEAL50 = '#EDF8FA';
@@ -40,11 +43,17 @@ const StyledBox = styled(Box)`
 
 interface Props {
   showAllErrors: boolean;
+  apiErrors?: CLErrors;
   formData: FormData;
   setFormData: (formData: FormData) => void;
 }
 
-const ReviewSection = ({ showAllErrors, formData, setFormData }: Props) => {
+const ReviewSection = ({
+  showAllErrors,
+  apiErrors,
+  formData,
+  setFormData,
+}: Props) => {
   const { projectId } = useParams() as {
     projectId: string;
   };
@@ -58,7 +67,7 @@ const ReviewSection = ({ showAllErrors, formData, setFormData }: Props) => {
   );
 
   const { data: ideaMetadata } = useImportedIdeaMetadata({
-    id: idea?.data.relationships.idea_import?.data?.id,
+    id: isLoading ? undefined : idea?.data.relationships.idea_import?.data?.id,
   });
 
   const localize = useLocalize();
@@ -189,6 +198,7 @@ const ReviewSection = ({ showAllErrors, formData, setFormData }: Props) => {
             <IdeaForm
               projectId={projectId}
               showAllErrors={showAllErrors}
+              apiErrors={apiErrors}
               formData={formData}
               setFormData={setFormData}
             />

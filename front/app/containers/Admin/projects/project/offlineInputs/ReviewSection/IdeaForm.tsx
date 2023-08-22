@@ -12,10 +12,12 @@ import { customAjv } from 'components/Form';
 
 // typings
 import { FormData } from 'components/Form/typings';
+import { CLErrors } from 'typings';
 
 interface Props {
   projectId: string;
   showAllErrors: boolean;
+  apiErrors?: CLErrors;
   formData: FormData;
   setFormData: (formData: FormData) => void;
 }
@@ -23,6 +25,7 @@ interface Props {
 const IdeaForm = ({
   projectId,
   showAllErrors,
+  apiErrors,
   formData,
   setFormData,
 }: Props) => {
@@ -38,6 +41,7 @@ const IdeaForm = ({
       <Fields
         ajv={customAjv}
         showAllErrors={showAllErrors}
+        apiErrors={apiErrors}
         schema={schema}
         uiSchema={filterUiSchema(uiSchema)}
         data={formData}

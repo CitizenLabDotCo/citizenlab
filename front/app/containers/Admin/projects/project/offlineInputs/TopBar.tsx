@@ -19,11 +19,16 @@ import messages from './messages';
 import { stylingConsts, colors } from 'utils/styleUtils';
 
 interface Props {
+  loadingApproveIdea: boolean;
   onApproveIdea?: () => void;
   onClickPDFImport: () => void;
 }
 
-const TopBar = ({ onApproveIdea, onClickPDFImport }: Props) => {
+const TopBar = ({
+  loadingApproveIdea,
+  onApproveIdea,
+  onClickPDFImport,
+}: Props) => {
   const localize = useLocalize();
   const { projectId } = useParams() as {
     projectId: string;
@@ -62,6 +67,7 @@ const TopBar = ({ onApproveIdea, onClickPDFImport }: Props) => {
             onClick={onApproveIdea}
             marginRight="20px"
             bgColor={colors.success}
+            processing={loadingApproveIdea}
           >
             <FormattedMessage {...messages.approve} />
           </Button>
