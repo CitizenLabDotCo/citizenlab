@@ -111,6 +111,7 @@ const context = {
 const ReactionControl = ({
   onScrollToOfficialFeedback,
   initiativeId,
+  id,
 }: Props) => {
   const { data: appConfiguration } = useAppConfiguration();
   const { data: initiative } = useInitiativeById(initiativeId);
@@ -196,7 +197,7 @@ const ReactionControl = ({
     appConfiguration.data.attributes.settings.initiatives;
 
   return (
-    <BorderContainer>
+    <BorderContainer id={id}>
       <ScreenReaderOnly>
         <FormattedMessage tagName="h3" {...messages.invisibleTitle} />
       </ScreenReaderOnly>
