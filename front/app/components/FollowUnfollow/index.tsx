@@ -16,6 +16,8 @@ import { SuccessAction } from 'containers/Authentication/SuccessActions/actions'
 import useAuthUser from 'api/me/useAuthUser';
 import useABTest from 'api/experiments/useABTest';
 import useLocale from 'hooks/useLocale';
+import tracks from './tracks';
+import { trackEventByName } from 'utils/analytics';
 
 interface Props extends BoxPaddingProps, BoxWidthProps {
   followableType: FollowableType;
@@ -55,7 +57,7 @@ const FollowUnfollow = ({
   if (!isFollowingEnabled) return null;
 
   // If the follower id is present, then the user is following
-  let followText =
+  const followText =
     followableType === 'ideas' ? treatment : formatMessage(messages.follow);
   const isFollowing = !!followerId;
   const followUnfollowText = isFollowing
@@ -71,6 +73,9 @@ const FollowUnfollow = ({
         followableType,
         followableSlug,
       });
+      trackEventByName(tracks.unfollow, {
+        followableType,
+      });
     } else {
       addFollower({
         followableType,
@@ -81,6 +86,9 @@ const FollowUnfollow = ({
       if (followableType === 'ideas') {
         send?.('Follow Button clicked');
       }
+      trackEventByName(tracks.follow, {
+        followableType,
+      });
     }
   };
 
@@ -99,6 +107,9 @@ const FollowUnfollow = ({
       flow: 'signup',
       context,
       successAction,
+    });
+    trackEventByName(tracks.startLightUserRegThroughFollow, {
+      followableType,
     });
   };
 
