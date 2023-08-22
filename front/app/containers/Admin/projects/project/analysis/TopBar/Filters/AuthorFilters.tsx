@@ -50,7 +50,7 @@ const AuthorFilters = () => {
         (_, i) => new Date().getFullYear() - i
       ).map((option) => ({
         label: option.toString(),
-        value: new Date(option, 0, 1).toISOString(),
+        value: option.toString(),
       })),
     []
   );

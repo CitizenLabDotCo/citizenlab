@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   Box,
   stylingConsts,
@@ -23,12 +23,15 @@ import LaunchModal from '../LaunchModal';
 import Modal from 'components/UI/Modal';
 import FilterItems from '../FilterItems';
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import ClickOutside from 'utils/containers/clickOutside';
 
 const TopBar = () => {
   const [urlParams] = useSearchParams();
   const phaseId = urlParams.get('phase_id') || undefined;
 
   const showLaunchModal = urlParams.get('showLaunchModal') === 'true';
+  const resetFilters = urlParams.get('reset_filters') === 'true';
 
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const { projectId, analysisId } = useParams() as {
@@ -39,6 +42,13 @@ const TopBar = () => {
   const { data: analysis } = useAnalysis(analysisId);
 
   const filters = useAnalysisFilterParams();
+
+  useEffect(() => {
+    if (resetFilters) {
+      removeSearchParams(['reset_filters']);
+    }
+  }, [resetFilters]);
+
   const projectTitle = project?.data.attributes.title_multiloc;
   const localize = useLocalize();
   const { formatMessage } = useIntl();
@@ -63,53 +73,59 @@ const TopBar = () => {
     updateSearchParams({ search });
   };
 
+  const closeFilters = useCallback(() => {
+    setIsFiltersOpen(false);
+  }, []);
+
   return (
-    <Box
-      position="fixed"
-      zIndex="3"
-      alignItems="center"
-      w="100%"
-      h={`${stylingConsts.menuHeight}px`}
-      display="flex"
-      background={`${colors.white}`}
-      borderBottom={`1px solid ${colors.grey500}`}
-      alignContent="center"
-      gap="24px"
-      px="24px"
-    >
-      <GoBackButton onClick={goBack} />
-      <Title variant="h4" m="0px">
-        {localize(projectTitle)}
-      </Title>
-      <Button
-        buttonStyle="secondary"
-        icon="filter"
-        size="s"
-        onClick={toggleFilters}
+    <ClickOutside onClickOutside={closeFilters}>
+      <Box
+        position="fixed"
+        zIndex="3"
+        alignItems="center"
+        w="100%"
+        h={`${stylingConsts.menuHeight}px`}
+        display="flex"
+        background={`${colors.white}`}
+        borderBottom={`1px solid ${colors.grey500}`}
+        alignContent="center"
+        gap="24px"
+        px="24px"
       >
-        {formatMessage(messages.filters)}
-      </Button>
-      <FilterItems filters={filters} isEditable />
-      <Box marginLeft="auto">
-        <SearchInput
-          onChange={handleSearch}
-          // TODO: add a11y number of search results
-          a11y_numberOfSearchResults={0}
-        />
+        <GoBackButton onClick={goBack} />
+        <Title variant="h4" m="0px">
+          {localize(projectTitle)}
+        </Title>
+        <Button
+          buttonStyle="secondary"
+          icon="filter"
+          size="s"
+          onClick={toggleFilters}
+        >
+          {formatMessage(messages.filters)}
+        </Button>
+        <FilterItems filters={filters} isEditable />
+        <Box marginLeft="auto">
+          <SearchInput
+            key={urlParams.get('reset_filters')}
+            onChange={handleSearch}
+            // TODO: add a11y number of search results
+            defaultValue={urlParams.get('search') || ''}
+            a11y_numberOfSearchResults={0}
+          />
+        </Box>
+        <Tasks />
+        {isFiltersOpen && <Filters onClose={() => setIsFiltersOpen(false)} />}
+        <Modal
+          opened={showLaunchModal}
+          close={() => updateSearchParams({ showLaunchModal: false })}
+        >
+          <LaunchModal
+            onClose={() => updateSearchParams({ showLaunchModal: false })}
+          />
+        </Modal>
       </Box>
-      <Tasks />
-      <Box visibility={isFiltersOpen ? 'visible' : 'hidden'}>
-        <Filters onClose={() => setIsFiltersOpen(false)} />
-      </Box>
-      <Modal
-        opened={showLaunchModal}
-        close={() => updateSearchParams({ showLaunchModal: false })}
-      >
-        <LaunchModal
-          onClose={() => updateSearchParams({ showLaunchModal: false })}
-        />
-      </Modal>
-    </Box>
+    </ClickOutside>
   );
 };
 
