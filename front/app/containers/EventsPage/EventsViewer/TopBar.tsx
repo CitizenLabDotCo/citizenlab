@@ -56,7 +56,9 @@ const TopBar = memo<Props & WrappedComponentProps>(
                 textColor={theme.colors.tenantText}
                 filterSelectorStyle="button"
                 listTop="44px"
-                mobileLeft={isMobileOrSmaller ? '-70px' : 'auto'}
+                mobileLeft={
+                  isMobileOrSmaller && !theme.isRtl ? '-70px' : 'auto'
+                }
                 eventsTime={eventsTime}
               />
             </>
