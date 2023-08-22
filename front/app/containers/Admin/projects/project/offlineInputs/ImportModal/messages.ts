@@ -14,4 +14,8 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.here',
     defaultMessage: 'here',
   },
+  formLanguage: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.formLanguage',
+    defaultMessage: 'Form language',
+  },
 });

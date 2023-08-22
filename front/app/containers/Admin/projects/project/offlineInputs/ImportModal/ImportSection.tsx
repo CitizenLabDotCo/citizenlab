@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // hooks
 import useAddOfflineIdeas from 'api/import_ideas/useAddOfflineIdeas';
@@ -9,6 +9,7 @@ import { useParams } from 'react-router-dom';
 
 // components
 import { Box, Text, Spinner } from '@citizenlab/cl2-component-library';
+import LocalePicker from './LocalePicker';
 import FileUploader from 'components/UI/FileUploader';
 
 // i18n
@@ -20,7 +21,7 @@ import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 // typings
-import { UploadFile } from 'typings';
+import { UploadFile, Locale } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
 
 const TextButton = styled.button`
@@ -39,11 +40,13 @@ interface Props {
 }
 
 const ImportSection = ({ onFinishImport }: Props) => {
+  const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
   const { projectId } = useParams() as { projectId: string };
   const { mutate: addOfflineIdeas, isLoading } = useAddOfflineIdeas();
-  const locale = useLocale();
+  const platformLocale = useLocale();
 
-  if (isNilOrError(locale)) return null;
+  if (isNilOrError(platformLocale)) return null;
+  const locale = selectedLocale ?? platformLocale;
 
   const onAddFile = (file: UploadFile) => {
     addOfflineIdeas(
@@ -78,6 +81,10 @@ const ImportSection = ({ onFinishImport }: Props) => {
             }}
           />
         </Text>
+      </Box>
+
+      <Box>
+        <LocalePicker locale={locale} onChange={setSelectedLocale} />
       </Box>
 
       <Box>
