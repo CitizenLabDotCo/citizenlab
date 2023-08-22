@@ -23,20 +23,11 @@ import { colors, stylingConsts } from 'utils/styleUtils';
 // utils
 import { isValidData } from 'components/Form/utils';
 import { customAjv } from 'components/Form';
+import { getFormValues } from 'containers/IdeasEditPage/utils';
 
 // typings
 import { FormData } from 'components/Form/typings';
-import { IIdea } from 'api/ideas/types';
 import { CLErrors } from 'typings';
-
-const getFormData = (idea: IIdea) => {
-  const { title_multiloc, body_multiloc } = idea.data.attributes;
-
-  return {
-    title_multiloc,
-    body_multiloc,
-  };
-};
 
 const OfflineInputImporter = () => {
   const { projectId } = useParams() as {
@@ -65,8 +56,8 @@ const OfflineInputImporter = () => {
   const formData =
     ideaId && formStatePerIdea[ideaId]
       ? formStatePerIdea[ideaId]
-      : idea
-      ? getFormData(idea)
+      : idea && schema
+      ? getFormValues(idea, schema)
       : null;
 
   const setFormData = (formData: FormData) => {

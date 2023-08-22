@@ -28,7 +28,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // utils
-import { getLocationGeojson } from './utils';
+import { getLocationGeojson, getFormValues } from './utils';
 import { omit } from 'lodash-es';
 import { isError, isNilOrError } from 'utils/helperUtils';
 import { WithRouterProps } from 'utils/cl-router/withRouter';
@@ -88,34 +88,7 @@ const IdeasEditForm = ({ params: { ideaId } }: WithRouterProps) => {
   const initialFormData =
     isNilOrError(idea) || !schema
       ? null
-      : Object.fromEntries(
-          Object.keys(schema.properties).map((prop) => {
-            if (prop === 'author_id') {
-              return [prop, idea.data.relationships?.author?.data?.id];
-            } else if (idea.data.attributes?.[prop]) {
-              return [prop, idea.data.attributes?.[prop]];
-            } else if (
-              prop === 'topic_ids' &&
-              Array.isArray(idea.data.relationships?.topics?.data)
-            ) {
-              return [
-                prop,
-                idea.data.relationships?.topics?.data.map((rel) => rel.id),
-              ];
-            } else if (
-              prop === 'idea_images_attributes' &&
-              Array.isArray(idea.data.relationships?.idea_images?.data)
-            ) {
-              return [prop, remoteImages?.data];
-            } else if (prop === 'idea_files_attributes') {
-              const attachmentsValue =
-                !isNilOrError(remoteFiles) && remoteFiles.data.length > 0
-                  ? remoteFiles.data
-                  : undefined;
-              return [prop, attachmentsValue];
-            } else return [prop, undefined];
-          })
-        );
+      : getFormValues(idea, schema, remoteImages, remoteFiles);
 
   // Set initial location point if exists
   if (
