@@ -218,6 +218,9 @@ nl-BE:
     survey_end_page:
       title: 'Einde enquête'
       description: "Dien uw antwoorden in door hieronder 'Enquête indienen' te selecteren."
+    pdf_export:
+      full_name: 'Volledige naam'
+      email_address: 'E-mailadres'
   project_copy:
     title_suffix: 'Kopie'
   confirmations_mailer:
