@@ -218,6 +218,9 @@
     survey_end_page:
       title: 'Slutt på spørreundersøkelse'
       description: "Send inn svarene dine ved å velge «Send inn spørreundersøkelse» nedenfor."
+    pdf_export:
+      full_name: 'Fullt navn'
+      email_address: 'Epostadresse'
   project_copy:
     title_suffix: 'Kopi'
   confirmations_mailer:
