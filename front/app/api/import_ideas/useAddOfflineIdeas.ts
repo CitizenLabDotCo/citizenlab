@@ -10,11 +10,11 @@ interface RequestParams {
   locale: Locale;
 }
 
-const addOfflineIdeas = async (requestParams: RequestParams) =>
+const addOfflineIdeas = async ({ project_id, file, locale }: RequestParams) =>
   fetcher<IIdeas>({
-    path: `/projects/${requestParams.project_id}/import_ideas/bulk_create`,
+    path: `/projects/${project_id}/import_ideas/bulk_create`,
     action: 'post',
-    body: { import_ideas: { pdf: requestParams.file } },
+    body: { import_ideas: { pdf: file, locale } },
   });
 
 const useAddOfflineIdeas = () => {
