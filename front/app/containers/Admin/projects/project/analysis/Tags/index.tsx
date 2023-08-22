@@ -128,6 +128,7 @@ const Tags = () => {
   const selectedTags = filters.tag_ids;
 
   const toggleТаgClick = (id: string) => {
+    console.log('toggleТаgClick');
     const nonNullSelectedTags = selectedTags?.filter((tagId) => tagId !== null);
     if (!selectedTags?.includes(id)) {
       updateSearchParams({ tag_ids: [...(nonNullSelectedTags || []), id] });
@@ -219,7 +220,10 @@ const Tags = () => {
           <TagContainer
             key={tag.id}
             tabIndex={0}
-            onClick={() => toggleТаgClick(tag.id)}
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleТаgClick(tag.id);
+            }}
             className={selectedTags?.includes(tag.id) ? 'selected' : ''}
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
@@ -231,7 +235,9 @@ const Tags = () => {
               <Box position="absolute" top="20px">
                 <Checkbox
                   checked={!!selectedTags?.includes(tag.id)}
-                  onChange={() => toggleТаgClick(tag.id)}
+                  onChange={() => {
+                    toggleТаgClick(tag.id);
+                  }}
                   size="20px"
                 />
               </Box>
