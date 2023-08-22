@@ -128,12 +128,12 @@ const CLPageLayout = memo(
           getSanitizedFormData(data)
         )
       ) {
-        setShowAllErrors(false);
+        setShowAllErrors?.(false);
         scrollToTop();
         setCurrentStep(currentStep + 1);
         setIsLoading(false);
       } else {
-        setShowAllErrors(true);
+        setShowAllErrors?.(true);
       }
     };
 

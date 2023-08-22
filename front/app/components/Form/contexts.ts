@@ -7,11 +7,11 @@ export const APIErrorsContext = createContext<CLErrors | undefined>(undefined);
 
 export const FormContext = createContext<{
   showAllErrors: boolean;
-  formSubmitText?: MessageDescriptor;
-  inputId: string | undefined;
   getApiErrorMessage: ApiErrorGetter;
+  formSubmitText?: MessageDescriptor;
+  inputId?: string | undefined;
   onSubmit?: (formData?: any) => void | Promise<void>;
-  setShowAllErrors: (showAllErrors: boolean) => void;
+  setShowAllErrors?: (showAllErrors: boolean) => void;
 }>({
   showAllErrors: false,
   getApiErrorMessage: () => undefined,

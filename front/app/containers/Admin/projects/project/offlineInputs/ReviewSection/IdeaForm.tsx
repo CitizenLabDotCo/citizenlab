@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 // hooks
 import useInputSchema from 'hooks/useInputSchema';
@@ -15,13 +15,17 @@ import { FormData } from 'components/Form/typings';
 
 interface Props {
   projectId: string;
+  showAllErrors: boolean;
   formData: FormData;
   setFormData: (formData: FormData) => void;
 }
 
-const IdeaForm = ({ projectId, formData, setFormData }: Props) => {
-  const [showAllErrors, setShowAllErrors] = useState(false);
-
+const IdeaForm = ({
+  projectId,
+  showAllErrors,
+  formData,
+  setFormData,
+}: Props) => {
   const { schema, uiSchema } = useInputSchema({
     projectId,
     // phaseId, // TODO
@@ -34,7 +38,6 @@ const IdeaForm = ({ projectId, formData, setFormData }: Props) => {
       <Fields
         ajv={customAjv}
         showAllErrors={showAllErrors}
-        setShowAllErrors={setShowAllErrors}
         schema={schema}
         uiSchema={filterUiSchema(uiSchema)}
         data={formData}

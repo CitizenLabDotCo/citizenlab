@@ -27,7 +27,7 @@ interface Props {
   data: FormData;
   apiErrors?: CLErrors;
   showAllErrors: boolean;
-  setShowAllErrors: (showAllErrors: boolean) => void;
+  setShowAllErrors?: (showAllErrors: boolean) => void;
   schema: JsonSchema7;
   uiSchema: Layout;
   getApiErrorMessage?: ApiErrorGetter;

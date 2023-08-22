@@ -5,9 +5,10 @@ import { FocusOn } from 'react-focus-on';
 // api
 import useIdeaById from 'api/ideas/useIdeaById';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
+import useInputSchema from 'hooks/useInputSchema';
 
 // routing
-import { useSearchParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 // components
@@ -18,6 +19,10 @@ import ReviewSection from './ReviewSection';
 
 // styling
 import { colors, stylingConsts } from 'utils/styleUtils';
+
+// utils
+import { isValidData } from 'components/Form/utils';
+import { customAjv } from 'components/Form';
 
 // typings
 import { FormData } from 'components/Form/typings';
@@ -33,9 +38,13 @@ const getFormData = (idea: IIdea) => {
 };
 
 const OfflineInputImporter = () => {
+  const { projectId } = useParams() as {
+    projectId: string;
+  };
   const [search] = useSearchParams();
   const ideaId = search.get('idea_id');
 
+  const [showAllErrors, setShowAllErrors] = useState(false);
   const [importModalOpen, setImportModalOpen] = useState(false);
   const [formStatePerIdea, setFormStatePerIdea] = useState<
     Record<string, FormData>
@@ -43,6 +52,10 @@ const OfflineInputImporter = () => {
 
   const { data: idea } = useIdeaById(ideaId ?? undefined);
   const { mutateAsync: updateIdea } = useUpdateIdea();
+  const { schema, uiSchema } = useInputSchema({
+    projectId,
+    // phaseId, // TODO
+  });
 
   const formData =
     ideaId && formStatePerIdea[ideaId]
@@ -64,18 +77,21 @@ const OfflineInputImporter = () => {
   const closeImportModal = () => setImportModalOpen(false);
 
   const onSubmit = async () => {
-    if (!ideaId || !formData) return;
+    if (!ideaId || !formData || !schema || !uiSchema) return;
+    setShowAllErrors(true);
 
-    await updateIdea({
-      id: ideaId,
-      requestBody: {
-        publication_status: 'published',
-        title_multiloc: formData.title_multiloc,
-        body_multiloc: formData.body_multiloc,
-      },
-    });
+    if (isValidData(schema, uiSchema, formData, customAjv, false)) {
+      await updateIdea({
+        id: ideaId,
+        requestBody: {
+          publication_status: 'published',
+          title_multiloc: formData.title_multiloc,
+          body_multiloc: formData.body_multiloc,
+        },
+      });
 
-    removeSearchParams(['idea_id']);
+      removeSearchParams(['idea_id']);
+    }
   };
 
   return (
@@ -98,7 +114,11 @@ const OfflineInputImporter = () => {
             mt={`${stylingConsts.mobileMenuHeight}px`}
             h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
           >
-            <ReviewSection formData={formData} setFormData={setFormData} />
+            <ReviewSection
+              showAllErrors={showAllErrors}
+              formData={formData}
+              setFormData={setFormData}
+            />
           </Box>
         </FocusOn>
       </Box>

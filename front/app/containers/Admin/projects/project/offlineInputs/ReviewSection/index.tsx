@@ -39,11 +39,12 @@ const StyledBox = styled(Box)`
 `;
 
 interface Props {
+  showAllErrors: boolean;
   formData: FormData;
   setFormData: (formData: FormData) => void;
 }
 
-const ReviewSection = ({ formData, setFormData }: Props) => {
+const ReviewSection = ({ showAllErrors, formData, setFormData }: Props) => {
   const { projectId } = useParams() as {
     projectId: string;
   };
@@ -181,13 +182,13 @@ const ReviewSection = ({ formData, setFormData }: Props) => {
               borderBottom={`1px solid ${colors.borderLight}`}
             >
               {authorEmail && <Text mt="0">{authorEmail}</Text>}
-
               {authorName && <Text>{authorName}</Text>}
             </Box>
           )}
           {idea && (
             <IdeaForm
               projectId={projectId}
+              showAllErrors={showAllErrors}
               formData={formData}
               setFormData={setFormData}
             />
