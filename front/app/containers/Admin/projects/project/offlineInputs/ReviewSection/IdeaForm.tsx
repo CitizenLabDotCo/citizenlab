@@ -46,6 +46,7 @@ const IdeaForm = ({ projectId, formData, setFormData }: Props) => {
 };
 
 const NOT_SUPPORTED_SCOPES = new Set([
+  '#/properties/author_id',
   '#/properties/idea_images_attributes',
   '#/properties/idea_files_attributes',
   '#/properties/topic_ids',
