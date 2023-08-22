@@ -218,6 +218,9 @@ pl:
     survey_end_page:
       title: 'Koniec ankiety'
       description: "Odpowiedzi prosimy przesyłać wybierając poniżej opcję \"Prześlij ankietę\"."
+    pdf_export:
+      full_name: 'Imię i nazwisko'
+      email_address: 'Adres e-mail'
   project_copy:
     title_suffix: 'Kopia'
   confirmations_mailer:
