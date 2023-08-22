@@ -42,7 +42,16 @@ const ConsentModal = ({ onClose }: { onClose: () => void }) => {
 
   return (
     <Box p="24px">
-      <Title>{formatMessage(messages.consentModalTitle)}</Title>
+      <Box display="flex" gap="16px" alignItems="center">
+        <Icon
+          name="alert-circle"
+          fill={colors.red500}
+          width="40px"
+          height="40px"
+        />
+        <Title>{formatMessage(messages.consentModalTitle)}</Title>
+      </Box>
+
       <Divider />
       <Text>{formatMessage(messages.consentModalText1)}</Text>
       <Text>{formatMessage(messages.consentModalText2)}</Text>
