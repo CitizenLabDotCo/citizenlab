@@ -9,6 +9,7 @@ import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import useImportedIdeas from 'api/import_ideas/useImportedIdeas';
 import useImportedIdeaMetadata from 'api/import_ideas/useImportedIdeaMetadata';
 import useIdeaById from 'api/ideas/useIdeaById';
+import useUserById from 'api/users/useUserById';
 
 // i18n
 import useLocalize from 'hooks/useLocalize';
@@ -26,6 +27,7 @@ import { colors, stylingConsts } from 'utils/styleUtils';
 
 // typings
 import { FormData } from 'components/Form/typings';
+import { getFullName } from 'utils/textUtils';
 
 // TODO move to component library
 const TEAL50 = '#EDF8FA';
@@ -50,6 +52,9 @@ const ReviewSection = ({ formData, setFormData }: Props) => {
 
   const { data: ideas, isLoading } = useImportedIdeas({ projectId });
   const { data: idea } = useIdeaById(ideaId ?? undefined);
+  const { data: author } = useUserById(
+    idea?.data.relationships.author?.data?.id
+  );
 
   const { data: ideaMetadata } = useImportedIdeaMetadata({
     id: idea?.data.relationships.idea_import?.data?.id,
@@ -105,6 +110,9 @@ const ReviewSection = ({ formData, setFormData }: Props) => {
   const pages = ideaMetadata?.data.attributes.page_range.map((page) =>
     Number(page)
   );
+
+  const authorEmail = author?.data.attributes.email;
+  const authorName = author ? getFullName(author.data) : undefined;
 
   return (
     <Box
@@ -162,9 +170,21 @@ const ReviewSection = ({ formData, setFormData }: Props) => {
           borderRight={`1px ${colors.grey400} solid`}
           overflowY="scroll"
           display="flex"
-          justifyContent="center"
+          flexDirection="column"
+          alignItems="center"
           px="12px"
         >
+          {(authorEmail || authorName) && (
+            <Box
+              w="90%"
+              mb="20px"
+              borderBottom={`1px solid ${colors.borderLight}`}
+            >
+              {authorEmail && <Text mt="0">{authorEmail}</Text>}
+
+              {authorName && <Text>{authorName}</Text>}
+            </Box>
+          )}
           {idea && (
             <IdeaForm
               projectId={projectId}

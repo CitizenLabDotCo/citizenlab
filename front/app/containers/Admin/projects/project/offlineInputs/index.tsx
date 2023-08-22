@@ -25,7 +25,11 @@ import { IIdea } from 'api/ideas/types';
 
 const getFormData = (idea: IIdea) => {
   const { title_multiloc, body_multiloc } = idea.data.attributes;
-  return { title_multiloc, body_multiloc };
+
+  return {
+    title_multiloc,
+    body_multiloc,
+  };
 };
 
 const OfflineInputImporter = () => {
