@@ -46,13 +46,12 @@ export const getPermissionActionSectionSubtitle = ({
   }
   if (postType === 'initiative') {
     const globalPermissionActionMessages: {
-      [key in IGlobalPermissionAction]: MessageDescriptor;
+      [key in Exclude<IGlobalPermissionAction, 'following'>]: MessageDescriptor;
     } = {
       reacting_initiative: messages.permissionAction_vote_proposals_subtitle,
       commenting_initiative:
         messages.permissionAction_comment_proposals_subtitle,
       posting_initiative: messages.permissionAction_post_proposal_subtitle,
-      following: messages.permissionAction_follow_subtitle,
     };
 
     return globalPermissionActionMessages[permissionAction];
