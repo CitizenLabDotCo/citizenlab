@@ -9,22 +9,15 @@ import useIdeaCustomField from 'api/idea_custom_fields/useIdeaCustomField';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
-import ShortFieldValue from '../components/ShortFieldValue';
-import styled from 'styled-components';
-
-const ElipsisFilterValue = styled.div`
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  min-width: 0;
-  max-width: 90px;
-`;
+import ShortFieldValue from '../components/ShortInputFieldValue';
+import EllipsisFilterValue from './EllipsisFilterValue';
 
 type Props = {
   customFieldId: string;
   filterKey: string;
   filterValue: any;
   isEditable: boolean;
+  predicate: '<' | '>' | '=';
 };
 
 const InputFieldFilterItem = ({
@@ -32,6 +25,7 @@ const InputFieldFilterItem = ({
   filterKey,
   filterValue,
   isEditable = true,
+  predicate,
 }: Props) => {
   const { analysisId } = useParams() as { analysisId: string };
   const { data: analysis } = useAnalysis(analysisId);
@@ -62,22 +56,26 @@ const InputFieldFilterItem = ({
       color={colors.success}
       display="flex"
     >
-      <Box mr="3px">Question {customField?.data.attributes.ordering}:</Box>
-      <ElipsisFilterValue>
+      <Box>Question {customField?.data.attributes.ordering}</Box>
+      <Box mx="3px">{predicate}</Box>
+      <EllipsisFilterValue>
         {Array.isArray(filterValue) &&
           customField.data.attributes.input_type !== 'multiselect' &&
-          filterValue.map((filterItem) => (
-            <ShortFieldValue
-              key={filterItem}
-              customField={customField}
-              rawValue={filterItem}
-            />
+          filterValue.map((filterItem, index) => (
+            <>
+              {index !== 0 && ', '}
+              <ShortFieldValue
+                key={filterItem}
+                customField={customField}
+                rawValue={filterItem}
+              />
+            </>
           ))}
         {(!Array.isArray(filterValue) ||
           customField.data.attributes.input_type === 'multiselect') && (
           <ShortFieldValue customField={customField} rawValue={filterValue} />
         )}
-      </ElipsisFilterValue>
+      </EllipsisFilterValue>
 
       {isEditable && (
         <IconButton

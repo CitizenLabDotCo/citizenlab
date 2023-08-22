@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Box,
   stylingConsts,
@@ -5,13 +6,20 @@ import {
   IconButton,
 } from '@citizenlab/cl2-component-library';
 import { IInputsFilterParams } from 'api/analysis_inputs/types';
-import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
-import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
-import useLocalize from 'hooks/useLocalize';
-import { isArray, isString } from 'lodash-es';
-import React from 'react';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import InputFieldFilterItem from './InputFieldFilterItem';
+import AuthorFieldFilterItem from './AuthorFieldFilterItem';
+import EllipsisFilterValue from './EllipsisFilterValue';
+
+const clauseToPredicate = (clause?: string): '>' | '<' | '=' => {
+  if (clause === 'from') {
+    return '>';
+  } else if (clause === 'to') {
+    return '<';
+  } else {
+    return '=';
+  }
+};
 
 type FilterItemsProps = {
   filters: IInputsFilterParams;
@@ -19,95 +27,58 @@ type FilterItemsProps = {
 };
 
 const FilterItems = ({ filters, isEditable }: FilterItemsProps) => {
-  const localize = useLocalize();
-  const { data: customFields } = useUserCustomFields();
-
-  const genderField = customFields?.data.find(
-    (field) => field.attributes.code === 'gender'
-  );
-
-  const domicileField = customFields?.data.find(
-    (field) => field.attributes.code === 'domicile'
-  );
-
-  const birthyearField = customFields?.data.find(
-    (field) => field.attributes.code === 'birthyear'
-  );
-
-  const { data: genderOptions } = useUserCustomFieldsOptions(genderField?.id);
-  const { data: domicileOptions } = useUserCustomFieldsOptions(
-    domicileField?.id
-  );
-
-  const genderUrlQueryParamKey = `author_custom_${genderField?.id}`;
-  const domicileUrlQueryParamKey = `author_custom_${domicileField?.id}`;
-  const birthyearUrlQueryParamFromKey = `author_custom_${birthyearField?.id}_from`;
-  const birthyearUrlQueryParamToKey = `author_custom_${birthyearField?.id}_to`;
-
-  const translationKeys: Record<string, string> = {
-    search: 'Search',
-    published_at_from: 'Start',
-    published_at_to: 'End',
-    reactions_from: 'Reactions >',
-    reactions_to: 'Reactions <',
-    votes_from: 'Votes >',
-    votes_to: 'Votes <',
-    comments_from: 'Comments >',
-    comments_to: 'Comments <',
-    [genderUrlQueryParamKey]: 'Gender',
-    [domicileUrlQueryParamKey]: 'Domicile',
-    [birthyearUrlQueryParamFromKey]: 'Birthyear >',
-    [birthyearUrlQueryParamToKey]: 'Birthyear <',
+  const translationKeys: Record<
+    string,
+    { translationKey: string; predicate: '>' | '<' | '=' }
+  > = {
+    search: {
+      translationKey: 'Search',
+      predicate: '>',
+    },
+    published_at_from: {
+      translationKey: 'Start',
+      predicate: '>',
+    },
+    published_at_to: {
+      translationKey: 'End',
+      predicate: '<',
+    },
+    reactions_from: {
+      translationKey: 'Reactions',
+      predicate: '>',
+    },
+    reactions_to: {
+      translationKey: 'Reactions',
+      predicate: '<',
+    },
+    votes_from: {
+      translationKey: 'Votes',
+      predicate: '>',
+    },
+    votes_to: {
+      translationKey: 'Votes',
+      predicate: '<',
+    },
+    comments_from: {
+      translationKey: 'Comments',
+      predicate: '>',
+    },
+    comments_to: {
+      translationKey: 'Comments',
+      predicate: '<',
+    },
   };
 
   const filterEntries = Object.entries(filters).filter(
     ([key]) => key !== 'tag_ids'
   );
 
-  const filterItemDisplayValue = (
-    key: string,
-    value: string | string[] | undefined | number
-  ) => {
-    switch (key) {
-      case genderUrlQueryParamKey:
-        return (
-          isArray(value) &&
-          value.map((value: string) => (
-            <Box key={value} ml="4px">
-              {localize(
-                genderOptions?.data.find((option) => {
-                  return option.attributes.key === value;
-                })?.attributes.title_multiloc
-              )}
-            </Box>
-          ))
-        );
-      case domicileUrlQueryParamKey:
-        return (
-          isArray(value) &&
-          value.map((value: string) => (
-            <Box key={value} ml="4px">
-              {localize(
-                domicileOptions?.data.find(
-                  (option) => option.attributes.key === value
-                )?.attributes.title_multiloc
-              )}
-            </Box>
-          ))
-        );
-      case birthyearUrlQueryParamFromKey:
-      case birthyearUrlQueryParamToKey:
-        return isString(value) && new Date(value).getFullYear();
-      default:
-        return value;
-    }
-  };
-
   return (
     <Box display="flex" flexWrap="wrap" gap="4px">
       {filterEntries.map(([key, value]) => {
-        const [_fullKey, subject, customFieldId] =
+        const [_fullKey, subject, customFieldId, _postfix, clause] =
           key.match(/^(author|input)_custom_([a-f0-9-]+)(_(from|to))?$/) || [];
+        const predicate = clauseToPredicate(clause);
         if (subject === 'input') {
           return (
             <InputFieldFilterItem
@@ -115,6 +86,18 @@ const FilterItems = ({ filters, isEditable }: FilterItemsProps) => {
               customFieldId={customFieldId}
               filterKey={key}
               filterValue={value}
+              predicate={predicate}
+              isEditable
+            />
+          );
+        } else if (subject === 'author') {
+          return (
+            <AuthorFieldFilterItem
+              key={key}
+              customFieldId={customFieldId}
+              filterKey={key}
+              filterValue={value}
+              predicate={predicate}
               isEditable
             />
           );
@@ -132,10 +115,9 @@ const FilterItems = ({ filters, isEditable }: FilterItemsProps) => {
               color={colors.success}
               display="flex"
             >
-              {translationKeys[key]}
-              {': '}
-              {filterItemDisplayValue(key, value)}
-
+              <Box>{translationKeys[key].translationKey}</Box>
+              <Box mx="3px">{translationKeys[key].predicate}</Box>
+              <EllipsisFilterValue>{value}</EllipsisFilterValue>
               {isEditable && (
                 <IconButton
                   iconName="close"

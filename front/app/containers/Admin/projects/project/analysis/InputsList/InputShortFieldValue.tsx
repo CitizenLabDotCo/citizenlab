@@ -3,7 +3,7 @@ import React from 'react';
 import { IInputsData } from 'api/analysis_inputs/types';
 import useIdeaCustomField from 'api/idea_custom_fields/useIdeaCustomField';
 
-import ShortFieldValue from '../components/ShortFieldValue';
+import ShortFieldValue from '../components/ShortInputFieldValue';
 
 type Props = {
   customFieldId: string;

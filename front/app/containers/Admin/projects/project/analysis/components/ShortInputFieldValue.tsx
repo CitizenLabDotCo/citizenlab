@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { Checkbox } from '@citizenlab/cl2-component-library';
-
 import T from 'components/T';
 import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
 import { FormattedDate } from 'react-intl';
@@ -33,7 +31,7 @@ const SelectOptionText = ({
  * the custom field for that input. Only renders anything for non-built-in
  * custom fields
  */
-const ShortFieldValue = ({ customField, rawValue }: Props) => {
+const ShortInputFieldValue = ({ customField, rawValue }: Props) => {
   // We only render non-built-in custom fields, assuming the parent has
   // dedicated logic to render the built-in fields
   if (customField.data.attributes.code) return null;
@@ -46,8 +44,17 @@ const ShortFieldValue = ({ customField, rawValue }: Props) => {
     case 'text':
     case 'multiline_text':
     case 'number':
+    case 'checkbox':
     case 'linear_scale': {
-      return <>{rawValue}</>;
+      if (
+        rawValue === null ||
+        typeof rawValue === undefined ||
+        rawValue === ''
+      ) {
+        return <>No Answer</>;
+      } else {
+        return <>{rawValue}</>;
+      }
     }
     case 'select': {
       return (
@@ -73,9 +80,6 @@ const ShortFieldValue = ({ customField, rawValue }: Props) => {
         </>
       );
     }
-    case 'checkbox': {
-      return <Checkbox disabled checked={rawValue} onChange={() => {}} />;
-    }
     case 'date': {
       return <FormattedDate value={rawValue} />;
     }
@@ -91,4 +95,4 @@ const ShortFieldValue = ({ customField, rawValue }: Props) => {
   }
 };
 
-export default ShortFieldValue;
+export default ShortInputFieldValue;
