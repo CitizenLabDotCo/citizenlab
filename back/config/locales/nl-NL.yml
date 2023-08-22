@@ -218,6 +218,9 @@ nl:
     survey_end_page:
       title: 'Einde vragenlijst'
       description: "Dien je antwoorden in door hieronder 'Vragenlijst indienen' te selecteren."
+    pdf_export:
+      full_name: 'Volledige naam'
+      email_address: 'E-mailadres'
   project_copy:
     title_suffix: 'Kopie'
   confirmations_mailer:
