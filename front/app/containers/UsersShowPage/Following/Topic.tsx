@@ -4,6 +4,8 @@ import T from 'components/T';
 import useAddFollower from 'api/follow_unfollow/useAddFollower';
 import useDeleteFollower from 'api/follow_unfollow/useDeleteFollower';
 import { ITopicData } from 'api/topics/types';
+import tracks from 'components/FollowUnfollow/tracks';
+import { trackEventByName } from 'utils/analytics';
 
 interface Props {
   topic: ITopicData;
@@ -25,10 +27,16 @@ const Topic = ({ topic }: Props) => {
         followableId: topic.id,
         followableType: 'topics',
       });
+      trackEventByName(tracks.unfollow, {
+        followableType: 'topics',
+      });
     } else {
       addFollower({
         followableType: 'topics',
         followableId: topic.id,
+      });
+      trackEventByName(tracks.follow, {
+        followableType: 'topics',
       });
     }
   };
