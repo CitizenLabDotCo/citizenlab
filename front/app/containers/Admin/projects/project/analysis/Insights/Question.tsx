@@ -13,15 +13,16 @@ import {
   Spinner,
   colors,
   stylingConsts,
+  Text,
 } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import styled from 'styled-components';
 import { useSelectedInputContext } from '../SelectedInputContext';
-import useAnalysisSummary from 'api/analysis_summaries/useAnalysisSummary';
+import useAnalysisQuestion from 'api/analysis_questions/useAnalysisQuestion';
 
-const StyledSummaryText = styled.div`
+const StyledAnswerText = styled.div`
   white-space: pre-wrap;
   word-break: break-word;
 `;
@@ -35,37 +36,37 @@ type Props = {
   insight: IInsightData;
 };
 
-const Summary = ({ insight }: Props) => {
+const Question = ({ insight }: Props) => {
   const { setSelectedInputId } = useSelectedInputContext();
   const { formatMessage } = useIntl();
   const { analysisId } = useParams() as { analysisId: string };
-  const { mutate: deleteSummary } = useDeleteAnalysisInsight();
+  const { mutate: deleteQuestion } = useDeleteAnalysisInsight();
 
-  const { data: summary } = useAnalysisSummary({
+  const { data: question } = useAnalysisQuestion({
     analysisId,
     id: insight.relationships.insightable.data.id,
   });
 
   const { data: backgroundTask } = useAnalysisBackgroundTask(
     analysisId,
-    summary?.data.relationships.background_task.data.id
+    question?.data.relationships.background_task.data.id
   );
   const processing =
     backgroundTask?.data.attributes.state === 'in_progress' ||
     backgroundTask?.data.attributes.state === 'queued';
 
-  const handleSummaryDelete = (id: string) => {
-    if (window.confirm(formatMessage(messages.deleteSummaryConfirmation))) {
-      deleteSummary({
+  const handleQuestionDelete = (id: string) => {
+    if (window.confirm(formatMessage(messages.deleteQuestionConfirmation))) {
+      deleteQuestion({
         analysisId,
         id,
       });
     }
   };
 
-  const replaceIdRefsWithLinks = (summary) => {
+  const replaceIdRefsWithLinks = (question) => {
     return reactStringReplace(
-      summary,
+      question,
       /\[?([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})\]?/g,
       (match, i) => (
         <StyledButton onClick={() => setSelectedInputId(match)} key={i}>
@@ -75,13 +76,13 @@ const Summary = ({ insight }: Props) => {
     );
   };
 
-  if (!summary) return null;
-  const hasFilters = !!Object.keys(summary.data.attributes.filters).length;
+  if (!question) return null;
+  const hasFilters = !!Object.keys(question.data.attributes.filters).length;
 
   return (
     <Box
-      key={summary.data.id}
-      bgColor={colors.teal100}
+      key={question.data.id}
+      bgColor={colors.successLight}
       p="16px"
       mb="8px"
       borderRadius={stylingConsts.borderRadius}
@@ -96,32 +97,35 @@ const Summary = ({ insight }: Props) => {
         >
           {hasFilters && (
             <>
-              <Box>Summary for</Box>
-              {Object.entries(summary.data.attributes.filters).map(([k, v]) => (
-                <Box
-                  key={k}
-                  bgColor={colors.teal200}
-                  color={colors.teal700}
-                  py="2px"
-                  px="4px"
-                  borderRadius={stylingConsts.borderRadius}
-                >
-                  {k}: {v}
-                </Box>
-              ))}
+              <Box>Question for</Box>
+              {Object.entries(question.data.attributes.filters).map(
+                ([k, v]) => (
+                  <Box
+                    key={k}
+                    bgColor={colors.teal200}
+                    color={colors.teal700}
+                    py="2px"
+                    px="4px"
+                    borderRadius={stylingConsts.borderRadius}
+                  >
+                    {k}: {v}
+                  </Box>
+                )
+              )}
             </>
           )}
 
           {!hasFilters && (
             <>
-              <Box>Summary</Box>
+              <Box>Question</Box>
             </>
           )}
         </Box>
+        <Text fontWeight="bold">{question.data.attributes.question}</Text>
         <Box>
-          <StyledSummaryText>
-            {replaceIdRefsWithLinks(summary.data.attributes.summary)}
-          </StyledSummaryText>
+          <StyledAnswerText>
+            {replaceIdRefsWithLinks(question.data.attributes.answer)}
+          </StyledAnswerText>
           {processing && <Spinner />}
         </Box>
       </Box>
@@ -133,14 +137,14 @@ const Summary = ({ insight }: Props) => {
       >
         <IconButton
           iconName="delete"
-          onClick={() => handleSummaryDelete(insight.id)}
+          onClick={() => handleQuestionDelete(insight.id)}
           iconColor={colors.teal400}
           iconColorOnHover={colors.teal700}
-          a11y_buttonActionMessage={formatMessage(messages.deleteSummary)}
+          a11y_buttonActionMessage={formatMessage(messages.deleteQuestion)}
         />
-        {summary.data.attributes.accuracy && (
+        {question.data.attributes.accuracy && (
           <Box color={colors.teal700}>
-            Accuracy {summary.data.attributes.accuracy * 100}%
+            Accuracy {question.data.attributes.accuracy * 100}%
           </Box>
         )}
       </Box>
@@ -148,4 +152,4 @@ const Summary = ({ insight }: Props) => {
   );
 };
 
-export default Summary;
+export default Question;

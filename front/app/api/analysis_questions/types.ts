@@ -1,21 +1,22 @@
 import { Keys } from 'utils/cl-react-query/types';
-import summariesKeys from './keys';
+import questionsKeys from './keys';
 import { IInputsFilterParams } from 'api/analysis_inputs/types';
 
-export type SummariesKeys = Keys<typeof summariesKeys>;
+export type QuestionsKeys = Keys<typeof questionsKeys>;
 
-export interface ISummaryParams {
+export interface IQuestionParams {
   analysisId: string;
   id: string;
 }
 
-export interface ISummaryData {
+export interface IQuestionData {
   id: string;
-  type: 'summary';
+  type: 'analysis_question';
   attributes: {
     filters: IInputsFilterParams;
-    summary: string | null;
-    /** Number between 0 and 1 to indicate how accurate we estimate the summary
+    question: string;
+    answer: string | null;
+    /** Number between 0 and 1 to indicate how accurate we estimate the answer
      * to be. Can be null if unsure or not known yet */
     accuracy: number | null;
     created_at: string;
@@ -31,11 +32,12 @@ export interface ISummaryData {
   };
 }
 
-export interface ISummary {
-  data: ISummaryData;
+export interface IQuestion {
+  data: IQuestionData;
 }
 
-export interface ISummaryAdd {
+export interface IQuestionAdd {
   analysisId: string;
   filters: IInputsFilterParams;
+  question: string;
 }

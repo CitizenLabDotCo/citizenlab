@@ -1,12 +1,12 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 
-import useDeleteAnalysisSummary from './useDeleteAnalysisSummary';
+import useDeleteAnalysisInsight from './useDeleteAnalysisInsight';
 
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-const apiPath = '*analyses/:analysisId/summaries/:id';
+const apiPath = '*analyses/:analysisId/insights/:id';
 
 const server = setupServer(
   rest.delete(apiPath, (_req, res, ctx) => {
@@ -14,12 +14,12 @@ const server = setupServer(
   })
 );
 
-describe('useDeleteAnalysisSummary', () => {
+describe('useDeleteAnalysisInsight', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useDeleteAnalysisSummary(), {
+    const { result, waitFor } = renderHook(() => useDeleteAnalysisInsight(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -40,7 +40,7 @@ describe('useDeleteAnalysisSummary', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useDeleteAnalysisSummary(), {
+    const { result, waitFor } = renderHook(() => useDeleteAnalysisInsight(), {
       wrapper: createQueryClientWrapper(),
     });
 

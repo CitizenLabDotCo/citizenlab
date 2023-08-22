@@ -1,27 +1,27 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 
-import useAddAnalysisSummary from './useAddAnalysisSummary';
+import useAddAnalysisQuestion from './useAddAnalysisQuestion';
 
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { summaryData } from './__mocks__/useAnalysisSummary';
+import { questionData } from './__mocks__/useAnalysisQuestion';
 
-const apiPath = '*analyses/:analysisId/summaries';
+const apiPath = '*analyses/:analysisId/questions';
 
 const server = setupServer(
   rest.post(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: summaryData }));
+    return res(ctx.status(200), ctx.json({ data: questionData }));
   })
 );
 
-describe('useAddAnalysisSummary', () => {
+describe('useAddAnalysisQuestion', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useAddAnalysisSummary(), {
+    const { result, waitFor } = renderHook(() => useAddAnalysisQuestion(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -31,11 +31,12 @@ describe('useAddAnalysisSummary', () => {
         filters: {
           comments_from: 4,
         },
+        question: 'What is the meaning of life?',
       });
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    expect(result.current.data?.data).toEqual(summaryData);
+    expect(result.current.data?.data).toEqual(questionData);
   });
 
   it('returns error correctly', async () => {
@@ -45,7 +46,7 @@ describe('useAddAnalysisSummary', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useAddAnalysisSummary(), {
+    const { result, waitFor } = renderHook(() => useAddAnalysisQuestion(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -55,6 +56,7 @@ describe('useAddAnalysisSummary', () => {
         filters: {
           comments_from: 4,
         },
+        question: 'What is the meaning of life?',
       });
     });
 

@@ -6,7 +6,6 @@ import InputListItem from './InputListItem';
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 import Observer from '@researchgate/react-intersection-observer';
 import useKeyPress from 'hooks/useKeyPress';
-import SummarizeButton from './SummarizeButton';
 import { useSelectedInputContext } from '../SelectedInputContext';
 
 const InputsList = () => {
@@ -24,8 +23,6 @@ const InputsList = () => {
     () => data && data.pages.map((page) => page.data).flat(),
     [data]
   );
-
-  const totalCount = data?.pages[0].meta.filtered_count;
 
   const handleIntersection = useCallback(
     (event: IntersectionObserverEntry, unobserve: () => void) => {
@@ -77,8 +74,6 @@ const InputsList = () => {
 
   return (
     <Box bg={colors.white} w="100%">
-      <SummarizeButton inputsCount={totalCount} />
-
       {data?.pages.map((page, i) => (
         <Fragment key={i}>
           {hasNextPage &&

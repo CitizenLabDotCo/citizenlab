@@ -1,8 +1,8 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
 
-const baseKey = { type: 'summary' };
+const baseKey = { type: 'analysis_question' };
 
-const summariesKeys = {
+const analysisQuestionsKeys = {
   all: () => [baseKey],
   items: () => [{ ...baseKey, operation: 'item' }],
   item: ({ id }: { id: string }) => [
@@ -10,4 +10,4 @@ const summariesKeys = {
   ],
 } satisfies QueryKeys;
 
-export default summariesKeys;
+export default analysisQuestionsKeys;
