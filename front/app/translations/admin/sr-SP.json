@@ -787,6 +787,7 @@
   "app.containers.Admin.projects.project.ideas.analysisButton": "Иди на анализу",
   "app.containers.Admin.projects.project.ideas.analysisSubtitle": "Откључајте аутоматизоване резимее и постављајте питања о уносу вашег пројекта.",
   "app.containers.Admin.projects.project.ideas.analysisTitle": "Анализа помоћу вештачке интелигенције",
+  "app.containers.Admin.projects.project.offlineInputs.ImportModal.formLanguage": "Језик форме",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.here": "овде",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.uploadAPdfFile": "Отпремите <b>ПДФ датотеку скенираних образаца</b>. ПДФ мора да користи образац одштампан из овог пројекта који је доступан {hereLink}.",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.writtenIdeaImporter": "Увозник писаних идеја",
