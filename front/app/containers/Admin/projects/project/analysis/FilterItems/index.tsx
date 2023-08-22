@@ -8,7 +8,7 @@ import { IInputsFilterParams } from 'api/analysis_inputs/types';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
 import useLocalize from 'hooks/useLocalize';
-import { isArray, isString } from 'lodash-es';
+import { isArray } from 'lodash-es';
 import React from 'react';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
@@ -44,24 +44,23 @@ const FilterItems = ({ filters, isEditable }: FilterItemsProps) => {
   const birthyearUrlQueryParamToKey = `author_custom_${birthyearField?.id}_to`;
 
   const translationKeys: Record<string, string> = {
-    search: 'Search',
-    published_at_from: 'Start',
-    published_at_to: 'End',
-    reactions_from: 'Reactions >',
-    reactions_to: 'Reactions <',
-    votes_from: 'Votes >',
-    votes_to: 'Votes <',
-    comments_from: 'Comments >',
-    comments_to: 'Comments <',
-    [genderUrlQueryParamKey]: 'Gender',
-    [domicileUrlQueryParamKey]: 'Domicile',
-    [birthyearUrlQueryParamFromKey]: 'Birthyear >',
-    [birthyearUrlQueryParamToKey]: 'Birthyear <',
+    published_at_from: 'Start: ',
+    published_at_to: 'End: ',
+    reactions_from: 'Reactions > ',
+    reactions_to: 'Reactions < ',
+    votes_from: 'Votes > ',
+    votes_to: 'Votes < ',
+    comments_from: 'Comments > ',
+    comments_to: 'Comments < ',
+    [genderUrlQueryParamKey]: 'Gender: ',
+    [domicileUrlQueryParamKey]: 'Domicile: ',
+    [birthyearUrlQueryParamFromKey]: 'Birthyear > ',
+    [birthyearUrlQueryParamToKey]: 'Birthyear < ',
   };
 
-  const filterEntries = Object.entries(filters).filter(
-    ([key]) => key !== 'tag_ids'
-  );
+  const filterEntries = Object.entries(filters)
+    .filter(([key]) => key !== 'tag_ids')
+    .filter(([key]) => !(isEditable && key === 'search'));
 
   const filterItemDisplayValue = (
     key: string,
@@ -94,9 +93,7 @@ const FilterItems = ({ filters, isEditable }: FilterItemsProps) => {
             </Box>
           ))
         );
-      case birthyearUrlQueryParamFromKey:
-      case birthyearUrlQueryParamToKey:
-        return isString(value) && new Date(value).getFullYear();
+
       default:
         return value;
     }
@@ -118,7 +115,6 @@ const FilterItems = ({ filters, isEditable }: FilterItemsProps) => {
           display="flex"
         >
           {translationKeys[key]}
-          {': '}
           {filterItemDisplayValue(key, value)}
 
           {isEditable && (

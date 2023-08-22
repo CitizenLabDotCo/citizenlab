@@ -92,8 +92,10 @@ const TopBar = () => {
       <FilterItems filters={filters} isEditable />
       <Box marginLeft="auto">
         <SearchInput
+          key={urlParams.get('search')}
           onChange={handleSearch}
           // TODO: add a11y number of search results
+          defaultValue={urlParams.get('search') || ''}
           a11y_numberOfSearchResults={0}
         />
       </Box>
