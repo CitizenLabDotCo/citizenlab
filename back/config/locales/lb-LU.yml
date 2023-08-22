@@ -218,6 +218,9 @@ lb:
     survey_end_page:
       title: 'Enn vun der Ëmfro'
       description: "Wgl. wielt ‘Ëmfro areechen’ hei ënnendrënner aus, fir Är Äntwert anzereechen."
+    pdf_export:
+      full_name: 'Ganzen numm'
+      email_address: 'E-Mailadress'
   project_copy:
     title_suffix: 'Kopie'
   confirmations_mailer:
