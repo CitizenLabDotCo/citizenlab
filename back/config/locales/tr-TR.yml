@@ -218,6 +218,9 @@ tr:
     survey_end_page:
       title: 'Anket sonu'
       description: "Lütfen cevaplarınızı aşağıdaki 'Anketi gönder' seçeneğini seçerek gönderin."
+    pdf_export:
+      full_name: 'Tam adınız'
+      email_address: 'E-posta adresi'
   project_copy:
     title_suffix: 'Kopya'
   confirmations_mailer:
