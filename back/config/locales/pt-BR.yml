@@ -220,7 +220,7 @@ pt:
       description: "Por favor, submeta as suas respostas, selecionando abaixo 'Submeter pesquisa'."
     pdf_export:
       full_name: 'Nome completo'
-      email_address: 'Endereço de correio eletrónico'
+      email_address: 'Endereço de email'
   project_copy:
     title_suffix: 'Cópia'
   confirmations_mailer:
