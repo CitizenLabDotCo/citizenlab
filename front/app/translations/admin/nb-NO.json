@@ -787,6 +787,7 @@
   "app.containers.Admin.projects.project.ideas.analysisButton": "Gå til analyse",
   "app.containers.Admin.projects.project.ideas.analysisSubtitle": "Lås opp automatiserte sammendrag og still spørsmål om prosjektinnspillet ditt.",
   "app.containers.Admin.projects.project.ideas.analysisTitle": "AI-drevet analyse",
+  "app.containers.Admin.projects.project.offlineInputs.ImportModal.formLanguage": "Formspråk",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.here": "her",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.uploadAPdfFile": "Last opp en <b>PDF-fil med skannede skjemaer</b>. PDF-en må bruke et skjema skrevet ut fra dette prosjektet tilgjengelig {hereLink}.",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.writtenIdeaImporter": "Skriftlig idéimportør",
