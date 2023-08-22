@@ -218,6 +218,9 @@ es:
     survey_end_page:
       title: 'Fin de la encuesta'
       description: "Envíe sus respuestas seleccionando \"Enviar encuesta\" a continuación."
+    pdf_export:
+      full_name: 'Nombre y apellidos'
+      email_address: 'Dirección de correo electrónico'
   project_copy:
     title_suffix: 'Copia'
   confirmations_mailer:
