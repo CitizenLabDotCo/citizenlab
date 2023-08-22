@@ -15,6 +15,7 @@ const fetchEvents = (filters: InputParameters) => {
     projectPublicationStatuses: project_publication_statuses,
     staticPageId: static_page_id,
     attendeeId: attendee_id,
+    ongoing_between,
   } = filters;
   return fetcher<IEvents>({
     path: '/events',
@@ -29,6 +30,7 @@ const fetchEvents = (filters: InputParameters) => {
       'page[size]': pageSize,
       project_publication_statuses,
       attendee_id,
+      ongoing_between,
     },
   });
 };
@@ -45,6 +47,7 @@ const useEvents = ({
   projectPublicationStatuses,
   pageNumber,
   attendeeId,
+  ongoing_between,
 }: InputParameters) => {
   const queryParams: InputParameters = {
     projectPublicationStatuses,
@@ -56,6 +59,7 @@ const useEvents = ({
     projectIds,
     staticPageId,
     attendeeId,
+    ongoing_between,
   };
 
   return useQuery<IEvents, CLErrors, IEvents, EventsKeys>({

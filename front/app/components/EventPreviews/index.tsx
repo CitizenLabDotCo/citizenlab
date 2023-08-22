@@ -24,6 +24,7 @@ import messages from './messages';
 
 // router
 import { useParams } from 'react-router-dom';
+import moment from 'moment';
 
 type EventPreviewsProps = {
   projectId?: string;
@@ -53,6 +54,12 @@ const EventPreviews = ({ projectId }: EventPreviewsProps) => {
     projectIds: projectIdToUse ? [projectIdToUse] : undefined,
     currentAndFutureOnly: true,
     sort: '-start_at',
+    ongoing_between: [
+      moment(getCurrentPhase(phases?.data)?.attributes.start_at).toString() ||
+        null,
+      moment(getCurrentPhase(phases?.data)?.attributes.end_at).toString() ||
+        null,
+    ],
   });
 
   // scrolling
@@ -84,7 +91,7 @@ const EventPreviews = ({ projectId }: EventPreviewsProps) => {
     setAtScrollEnd(ref.current.scrollLeft >= maxScrollLeft);
   };
 
-  if (events && events?.data?.length > 0) {
+  if (events && !!events?.data) {
     return (
       <>
         <Title mt="36px" mb="8px" variant="h5" style={{ fontWeight: 600 }}>
