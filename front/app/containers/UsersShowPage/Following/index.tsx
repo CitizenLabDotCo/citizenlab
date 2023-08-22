@@ -8,6 +8,8 @@ import Topics from './Topics';
 import Areas from './Areas';
 import UserFollowingList from './UserFollowingList';
 import useAuthUser from 'api/me/useAuthUser';
+import tracks from 'components/FollowUnfollow/tracks';
+import { trackEventByName } from 'utils/analytics';
 
 type FollowableValue = FollowableObject | 'Topics' | 'Areas';
 
@@ -40,6 +42,8 @@ const Following = ({ userId }: Props) => {
   };
   const { data: authUser } = useAuthUser();
   const isSmallerThanPhone = useBreakpoint('phone');
+
+  trackEventByName(tracks.browseFollowsInActivityPage);
 
   return (
     <Box display="flex" w="100%" flexDirection="column">
