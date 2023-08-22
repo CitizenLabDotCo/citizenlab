@@ -16,7 +16,7 @@ import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCu
 import { FormattedDate } from 'react-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
-import { isNil, xor } from 'lodash-es';
+import { xor } from 'lodash-es';
 
 type Props = {
   customFieldId: string;
@@ -36,7 +36,11 @@ const SelectOptionText = ({
   const option = options?.data.find(
     (option) => option.attributes.key === selectedOptionKey
   );
-  return option ? <T value={option.attributes.title_multiloc} /> : null;
+  return option ? (
+    <T value={option.attributes.title_multiloc} />
+  ) : (
+    <>No answer</>
+  );
 };
 
 const FilterToggleButton = ({ customFieldId, value }) => {
@@ -130,11 +134,23 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
               <Title variant="h5">
                 <T value={customField.data.attributes.title_multiloc} />
               </Title>
-              <Text>
-                {input.attributes.custom_field_values[
-                  customField.data.attributes.key
-                ] || 'No answer'}
-              </Text>
+              <Box
+                display="flex"
+                justifyContent="flex-start"
+                alignItems="flex-start"
+              >
+                <Text m="0">
+                  {input.attributes.custom_field_values[
+                    customField.data.attributes.key
+                  ] || 'No answer'}
+                </Text>
+                <Box ml="8px">
+                  <FilterToggleButton
+                    customFieldId={customField.data.id}
+                    value={rawValue || null}
+                  />
+                </Box>
+              </Box>
             </Box>
           );
         }
@@ -172,7 +188,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
                 <Box ml="8px">
                   <FilterToggleButton
                     customFieldId={customField.data.id}
-                    value={rawValue}
+                    value={rawValue || null}
                   />
                 </Box>
               </Box>
