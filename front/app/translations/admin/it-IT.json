@@ -787,6 +787,7 @@
   "app.containers.Admin.projects.project.ideas.analysisButton": "Go to analysis",
   "app.containers.Admin.projects.project.ideas.analysisSubtitle": "Unlock automated summaries and ask questions about your project input.",
   "app.containers.Admin.projects.project.ideas.analysisTitle": "AI-powered analysis",
+  "app.containers.Admin.projects.project.offlineInputs.ImportModal.formLanguage": "Linguaggio della forma",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.here": "qui",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.uploadAPdfFile": "Carica un file <b>PDF di moduli scansionati</b>. Il PDF deve utilizzare un modulo stampato da questo progetto disponibile {hereLink}.",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.writtenIdeaImporter": "Importazione di idee scritte",
