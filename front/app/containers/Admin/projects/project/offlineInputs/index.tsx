@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 
 // api
+import useIdeaById from 'api/ideas/useIdeaById';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
 
 // routing
@@ -20,15 +21,40 @@ import { colors, stylingConsts } from 'utils/styleUtils';
 
 // typings
 import { FormData } from 'components/Form/typings';
+import { IIdea } from 'api/ideas/types';
+
+const getFormData = (idea: IIdea) => {
+  const { title_multiloc, body_multiloc } = idea.data.attributes;
+  return { title_multiloc, body_multiloc };
+};
 
 const OfflineInputImporter = () => {
   const [search] = useSearchParams();
   const ideaId = search.get('idea_id');
 
   const [importModalOpen, setImportModalOpen] = useState(false);
-  const [formData, setFormData] = useState<FormData | null>(null);
+  const [formStatePerIdea, setFormStatePerIdea] = useState<
+    Record<string, FormData>
+  >({});
 
+  const { data: idea } = useIdeaById(ideaId ?? undefined);
   const { mutateAsync: updateIdea } = useUpdateIdea();
+
+  const formData =
+    ideaId && formStatePerIdea[ideaId]
+      ? formStatePerIdea[ideaId]
+      : idea
+      ? getFormData(idea)
+      : null;
+
+  const setFormData = (formData: FormData) => {
+    if (!ideaId) return;
+
+    setFormStatePerIdea((formState) => ({
+      ...formState,
+      [ideaId]: formData,
+    }));
+  };
 
   const openImportModal = () => setImportModalOpen(true);
   const closeImportModal = () => setImportModalOpen(false);
