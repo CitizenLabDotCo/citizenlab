@@ -175,7 +175,7 @@ const UserNavbar = memo<Props>(({ currentTab, selectTab, userId }) => {
           {!isSmallerThanPhone && <FormattedMessage {...messages.following} />}
         </UserNavbarButton>
       )}
-      {showEventTab && eventsCount && (
+      {showEventTab && (
         <UserNavbarButton
           onMouseDown={removeFocusAfterMouseClick}
           onClick={selectTab('events')}
@@ -190,7 +190,7 @@ const UserNavbar = memo<Props>(({ currentTab, selectTab, userId }) => {
           {!isSmallerThanPhone && (
             <FormattedMessage
               {...messages.eventsWithCount}
-              values={{ eventsCount }}
+              values={{ eventsCount: eventsCount || '0' }}
             />
           )}
         </UserNavbarButton>
