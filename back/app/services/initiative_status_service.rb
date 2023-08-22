@@ -66,10 +66,7 @@ class InitiativeStatusService
       },
       'expired' => {
         scope_contition: lambda { |initiative_scope|
-          initiative_scope.where(
-            'initiatives.published_at < ?',
-            (Time.now - AppConfiguration.instance.settings('initiatives', 'days_limit').days)
-          )
+          initiative_scope.proposed_before(Time.now - AppConfiguration.instance.settings('initiatives', 'days_limit').days)
         }
       }
     }

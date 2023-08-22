@@ -112,10 +112,15 @@ class Initiative < ApplicationRecord
   scope :no_feedback_needed, -> { with_status_code(InitiativeStatus::CODES - ['threshold_reached']) }
   scope :proposed, -> { with_status_code('proposed') }
 
-  scope :proposed_from_time_ago, (proc do |time_ago|
+  scope :proposed_before, (proc do |time|
+    with_proposed_status_changes.where('initiative_status_changes.created_at < ?', time)
+  end)
+  scope :proposed_after, (proc do |time|
+    with_proposed_status_changes.where('initiative_status_changes.created_at > ?', time)
+  end)
+  scope :with_proposed_status_changes, (proc do
     joins(:initiative_status_changes)
       .where(initiative_status_changes: { initiative_status: InitiativeStatus.find_by(code: 'proposed') })
-      .where('initiative_status_changes.created_at > ?', time_ago)
   end)
 
   def self.review_required?
