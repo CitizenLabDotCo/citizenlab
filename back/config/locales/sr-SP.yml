@@ -218,6 +218,9 @@ sr-Cyrl:
     survey_end_page:
       title: 'Крај анкете'
       description: "Пошаљите своје одговоре тако што ћете изабрати „Пошаљи анкету“ испод."
+    pdf_export:
+      full_name: 'Пуно име'
+      email_address: 'Адреса Е-поште'
   project_copy:
     title_suffix: 'Копирај'
   confirmations_mailer:
