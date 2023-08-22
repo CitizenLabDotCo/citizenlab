@@ -21,6 +21,7 @@ import useUserCommentsCount from 'api/user_comments_count/useUserCommentsCount';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAuthUser from 'api/me/useAuthUser';
 import useEventsByUserId from 'api/events/useEventsByUserId';
+import { ScreenReaderOnly } from 'utils/a11y';
 
 const UserNavbarWrapper = styled.div`
   width: 100%;
@@ -136,11 +137,19 @@ const UserNavbar = memo<Props>(({ currentTab, selectTab, userId }) => {
       >
         <Border aria-hidden />
         <TabIcon name="idea" ariaHidden />
-        {ideasCount && !isSmallerThanPhone && (
+        {!isSmallerThanPhone && (
           <FormattedMessage
             {...messages.postsWithCount}
-            values={{ ideasCount: ideasCount.data.attributes.count }}
+            values={{ ideasCount: ideasCount?.data.attributes.count || '0' }}
           />
+        )}
+        {isSmallerThanPhone && (
+          <ScreenReaderOnly>
+            <FormattedMessage
+              {...messages.postsWithCount}
+              values={{ ideasCount: ideasCount?.data.attributes.count || '0' }}
+            />
+          </ScreenReaderOnly>
         )}
       </UserNavbarButton>
       <UserNavbarButton
@@ -154,11 +163,23 @@ const UserNavbar = memo<Props>(({ currentTab, selectTab, userId }) => {
       >
         <Border aria-hidden />
         <TabIcon name="comments" ariaHidden />
-        {commentsCount && !isSmallerThanPhone && (
+        {!isSmallerThanPhone && (
           <FormattedMessage
             {...messages.commentsWithCount}
-            values={{ commentsCount: commentsCount.data.attributes.count }}
+            values={{
+              commentsCount: commentsCount?.data.attributes.count || '0',
+            }}
           />
+        )}
+        {isSmallerThanPhone && (
+          <ScreenReaderOnly>
+            <FormattedMessage
+              {...messages.commentsWithCount}
+              values={{
+                commentsCount: commentsCount?.data.attributes.count || '0',
+              }}
+            />
+          </ScreenReaderOnly>
         )}
       </UserNavbarButton>
       {showFollowingTab && (
@@ -173,6 +194,11 @@ const UserNavbar = memo<Props>(({ currentTab, selectTab, userId }) => {
           <Border aria-hidden />
           <TabIcon name="notification-outline" ariaHidden />
           {!isSmallerThanPhone && <FormattedMessage {...messages.following} />}
+          {isSmallerThanPhone && (
+            <ScreenReaderOnly>
+              <FormattedMessage {...messages.following} />
+            </ScreenReaderOnly>
+          )}
         </UserNavbarButton>
       )}
       {showEventTab && (
@@ -192,6 +218,14 @@ const UserNavbar = memo<Props>(({ currentTab, selectTab, userId }) => {
               {...messages.eventsWithCount}
               values={{ eventsCount: eventsCount || '0' }}
             />
+          )}
+          {isSmallerThanPhone && (
+            <ScreenReaderOnly>
+              <FormattedMessage
+                {...messages.eventsWithCount}
+                values={{ eventsCount: eventsCount || '0' }}
+              />
+            </ScreenReaderOnly>
           )}
         </UserNavbarButton>
       )}
