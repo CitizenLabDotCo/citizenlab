@@ -6,5 +6,4 @@ export default {
   follow: 'Follow',
   unfollow: 'Unfollow',
   browseFollowsInActivityPage: 'Browse follows from activity page',
-  unFollowFromActivityPage: 'Unfollow from activity page',
 };
