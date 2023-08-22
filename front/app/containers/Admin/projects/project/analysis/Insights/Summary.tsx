@@ -76,11 +76,7 @@ const Summary = ({ summary }: Props) => {
   };
 
   const hasFilters = !!Object.keys(summary.attributes.filters).length;
-  const tagId = summary.attributes.filters.tag_ids
-    ? summary.attributes.filters.tag_ids[0]
-    : null;
-
-  const tag = tags?.data.find((tag) => tag.id === tagId);
+  const tagIds = summary.attributes.filters.tag_ids;
 
   const phaseId = searchParams.get('phase_id');
 
@@ -116,12 +112,15 @@ const Summary = ({ summary }: Props) => {
             <>
               <Box>Summary for:</Box>
               <FilterItems filters={summary.attributes.filters} />
-              {tag && (
-                <Tag
-                  name={tag.attributes.name}
-                  tagType={tag.attributes.tag_type}
-                />
-              )}
+              {tags?.data
+                .filter((tag) => tagIds?.includes(tag.id))
+                .map((tag) => (
+                  <Tag
+                    key={tag.id}
+                    name={tag.attributes.name}
+                    tagType={tag.attributes.tag_type}
+                  />
+                ))}
             </>
           )}
 
