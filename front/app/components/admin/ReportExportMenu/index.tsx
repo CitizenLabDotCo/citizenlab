@@ -205,11 +205,17 @@ const ReportExportMenu = ({
     const workbook = XLSX.utils.book_new();
 
     Object.entries(data).forEach(([sheet_name, sheet_data]) => {
+      // Added after production bug.
+      // Error from XLSX package: sheet names can't contain certain characters
+      const sheetNameWithoutForbiddenChars = sheet_name.replace(
+        /[:[*?/\\]/g,
+        '_'
+      );
       const worksheet = XLSX.utils.json_to_sheet(sheet_data);
       XLSX.utils.book_append_sheet(
         workbook,
         worksheet,
-        truncate(sheet_name, 31)
+        truncate(sheetNameWithoutForbiddenChars, 31)
       );
     });
 
