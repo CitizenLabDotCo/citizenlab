@@ -11,6 +11,7 @@ import useLocalize from 'hooks/useLocalize';
 import { isArray, isString } from 'lodash-es';
 import React from 'react';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import InputFieldFilterItem from './InputFieldFilterItem';
 
 type FilterItemsProps = {
   filters: IInputsFilterParams;
@@ -104,38 +105,54 @@ const FilterItems = ({ filters, isEditable }: FilterItemsProps) => {
 
   return (
     <Box display="flex" flexWrap="wrap" gap="4px">
-      {filterEntries.map(([key, value]) => (
-        <Box
-          key={key}
-          py="4px"
-          px="8px"
-          borderRadius={stylingConsts.borderRadius}
-          borderColor={colors.success}
-          borderWidth="1px"
-          borderStyle="solid"
-          bgColor={colors.white}
-          color={colors.success}
-          display="flex"
-        >
-          {translationKeys[key]}
-          {': '}
-          {filterItemDisplayValue(key, value)}
-
-          {isEditable && (
-            <IconButton
-              iconName="close"
-              iconColor={colors.success}
-              iconColorOnHover={colors.success}
-              iconWidth="16px"
-              iconHeight="16px"
-              onClick={() => {
-                removeSearchParams([key]);
-              }}
-              a11y_buttonActionMessage="Remove filter"
+      {filterEntries.map(([key, value]) => {
+        const [_fullKey, subject, customFieldId] =
+          key.match(/^(author|input)_custom_([a-f0-9-]+)(_(from|to))?$/) || [];
+        if (subject === 'input') {
+          return (
+            <InputFieldFilterItem
+              key={key}
+              customFieldId={customFieldId}
+              filterKey={key}
+              filterValue={value}
+              isEditable
             />
-          )}
-        </Box>
-      ))}
+          );
+        } else {
+          return (
+            <Box
+              key={key}
+              py="4px"
+              px="8px"
+              borderRadius={stylingConsts.borderRadius}
+              borderColor={colors.success}
+              borderWidth="1px"
+              borderStyle="solid"
+              bgColor={colors.white}
+              color={colors.success}
+              display="flex"
+            >
+              {translationKeys[key]}
+              {': '}
+              {filterItemDisplayValue(key, value)}
+
+              {isEditable && (
+                <IconButton
+                  iconName="close"
+                  iconColor={colors.success}
+                  iconColorOnHover={colors.success}
+                  iconWidth="16px"
+                  iconHeight="16px"
+                  onClick={() => {
+                    removeSearchParams([key]);
+                  }}
+                  a11y_buttonActionMessage="Remove filter"
+                />
+              )}
+            </Box>
+          );
+        }
+      })}
     </Box>
   );
 };

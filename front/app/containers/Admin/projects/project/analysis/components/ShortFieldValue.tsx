@@ -1,20 +1,16 @@
 import React from 'react';
 
-import { IInputsData } from 'api/analysis_inputs/types';
-import useIdeaCustomField from 'api/idea_custom_fields/useIdeaCustomField';
-
 import { Checkbox } from '@citizenlab/cl2-component-library';
 
 import T from 'components/T';
 import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
 import { FormattedDate } from 'react-intl';
 import { isNil } from 'lodash-es';
+import { IIdeaCustomField } from 'api/idea_custom_fields/types';
 
 type Props = {
-  customFieldId: string;
-  input: IInputsData;
-  projectId?: string;
-  phaseId?: string;
+  customField: IIdeaCustomField;
+  rawValue?: any;
 };
 
 const SelectOptionText = ({
@@ -32,34 +28,15 @@ const SelectOptionText = ({
 };
 
 /**
- * Given a custom_field definition and an input, render a one-line textual
- * representation of the value of the custom field for that input. Only renders
- * anything for non-built-in custom fields
+ * Given a custom_field definition and the raw value from the
+ * custom_field_values, render a one-line textual representation of the value of
+ * the custom field for that input. Only renders anything for non-built-in
+ * custom fields
  */
-const ShortFieldValue = ({
-  projectId,
-  phaseId,
-  customFieldId,
-  input,
-}: Props) => {
-  const containerId: { projectId?: string; phaseId?: string } = {};
-  if (projectId) {
-    containerId.projectId = projectId;
-  } else {
-    containerId.phaseId = phaseId;
-  }
-  const { data: customField } = useIdeaCustomField({
-    customFieldId,
-    ...containerId,
-  });
-
-  if (!customField) return null;
+const ShortFieldValue = ({ customField, rawValue }: Props) => {
   // We only render non-built-in custom fields, assuming the parent has
   // dedicated logic to render the built-in fields
   if (customField.data.attributes.code) return null;
-
-  const rawValue =
-    input.attributes.custom_field_values[customField.data.attributes.key];
 
   if (isNil(rawValue)) {
     return <>No answer</>;

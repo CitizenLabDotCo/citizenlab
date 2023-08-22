@@ -127,6 +127,18 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
         input.attributes.custom_field_values[customField.data.attributes.key];
       switch (customField.data.attributes.input_type) {
         case 'text':
+          return (
+            <Box>
+              <Title variant="h5">
+                <T value={customField.data.attributes.title_multiloc} />
+              </Title>
+              <Text m="0">
+                {input.attributes.custom_field_values[
+                  customField.data.attributes.key
+                ] || 'No answer'}
+              </Text>
+            </Box>
+          );
         case 'number':
         case 'linear_scale': {
           return (
