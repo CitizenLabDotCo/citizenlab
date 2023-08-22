@@ -1,8 +1,6 @@
 import React, { ReactNode } from 'react';
 import styled from 'styled-components';
-import { useParams } from 'react-router-dom';
 
-import useLaunchAnalysisAutotagging from 'api/analysis_background_tasks/useLaunchAnalysisAutotagging';
 import { TagType } from 'api/analysis_tags/types';
 
 import {
@@ -12,7 +10,8 @@ import {
   colors,
   Spinner,
 } from '@citizenlab/cl2-component-library';
-import Tag from './Tag';
+import Tag from '../Tag';
+import { AutoTaggingMethod } from 'api/analysis_background_tasks/types';
 
 const AutoTagOptionContainer = styled.div<{ disabled: boolean }>`
   background-color: ${colors.grey100};
@@ -60,29 +59,15 @@ const AutoTagOption = ({
   );
 };
 
-const AutotaggingModal = ({ onCloseModal }: { onCloseModal: () => void }) => {
-  const { analysisId } = useParams() as { analysisId: string };
-  const {
-    mutate: launchTagging,
-    isLoading,
-    variables,
-  } = useLaunchAnalysisAutotagging();
+type Props = {
+  onSelectMethod: (tagType: AutoTaggingMethod) => void;
+  isLoading: boolean;
+  loadingMethod?: AutoTaggingMethod;
+};
 
-  const handleOnSelectMethod = (tagType) => () => {
-    if (isLoading) return;
-
-    launchTagging(
-      { analysisId, autoTaggingMethod: tagType },
-      {
-        onSuccess: () => {
-          onCloseModal();
-        },
-      }
-    );
-  };
-
+const Step1 = ({ onSelectMethod, isLoading, loadingMethod }: Props) => {
   return (
-    <Box px="24px">
+    <>
       <Title mb="32px">What tags do you want to add?</Title>
       <Text mb="32px">
         Auto-tags are automatically derived by the computer. You can change or
@@ -97,9 +82,9 @@ const AutotaggingModal = ({ onCloseModal }: { onCloseModal: () => void }) => {
         <AutoTagOption
           tagType="sentiment"
           title="Sentiment"
-          onSelect={handleOnSelectMethod('sentiment')}
+          onSelect={() => onSelectMethod('sentiment')}
           disabled={isLoading}
-          isLoading={isLoading && variables?.autoTaggingMethod === 'sentiment'}
+          isLoading={isLoading && loadingMethod === 'sentiment'}
         >
           <>
             Assign a positive or negative sentiment to each input, derived from
@@ -110,21 +95,31 @@ const AutotaggingModal = ({ onCloseModal }: { onCloseModal: () => void }) => {
         <AutoTagOption
           tagType="nlp_topic"
           title="AI tags"
-          onSelect={handleOnSelectMethod('nlp_topic')}
+          onSelect={() => onSelectMethod('nlp_topic')}
           disabled={isLoading}
-          isLoading={isLoading && variables?.autoTaggingMethod === 'nlp_topic'}
+          isLoading={isLoading && loadingMethod === 'nlp_topic'}
         >
           <>Assign new tags, based on topics derived from the text</>
         </AutoTagOption>
 
         <AutoTagOption
+          tagType="custom"
+          title="Label classification"
+          onSelect={() => onSelectMethod('label_classification')}
+          disabled={isLoading}
+          isLoading={isLoading && loadingMethod === 'label_classification'}
+        >
+          <>
+            Classify inputs between the tags you specify, based on the tag names
+          </>
+        </AutoTagOption>
+
+        <AutoTagOption
           tagType="controversial"
           title="Controversial"
-          onSelect={handleOnSelectMethod('controversial')}
+          onSelect={() => onSelectMethod('controversial')}
           disabled={isLoading}
-          isLoading={
-            isLoading && variables?.autoTaggingMethod === 'controversial'
-          }
+          isLoading={isLoading && loadingMethod === 'controversial'}
         >
           <>Detect inputs with a significant dislikes/likes ratio</>
         </AutoTagOption>
@@ -132,11 +127,9 @@ const AutotaggingModal = ({ onCloseModal }: { onCloseModal: () => void }) => {
         <AutoTagOption
           tagType="platform_topic"
           title="Platform tags"
-          onSelect={handleOnSelectMethod('platform_topic')}
+          onSelect={() => onSelectMethod('platform_topic')}
           disabled={isLoading}
-          isLoading={
-            isLoading && variables?.autoTaggingMethod === 'platform_topic'
-          }
+          isLoading={isLoading && loadingMethod === 'platform_topic'}
         >
           <>
             Assign the existing platform tags that the author picked when
@@ -147,15 +140,15 @@ const AutotaggingModal = ({ onCloseModal }: { onCloseModal: () => void }) => {
         <AutoTagOption
           tagType="language"
           title="Language"
-          onSelect={handleOnSelectMethod('language')}
+          onSelect={() => onSelectMethod('language')}
           disabled={isLoading}
-          isLoading={isLoading && variables?.autoTaggingMethod === 'language'}
+          isLoading={isLoading && loadingMethod === 'language'}
         >
           <>Detect the language of each input</>
         </AutoTagOption>
       </Box>
-    </Box>
+    </>
   );
 };
 
-export default AutotaggingModal;
+export default Step1;

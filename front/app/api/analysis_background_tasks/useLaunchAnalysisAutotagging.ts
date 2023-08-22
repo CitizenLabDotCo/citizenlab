@@ -2,12 +2,11 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import backgroundTasksKeys from './keys';
-import { IBackgroundTask } from './types';
-import { TagType } from 'api/analysis_tags/types';
+import { AutoTaggingMethod, IBackgroundTask } from './types';
 
 interface IAddAnalysis {
   analysisId: string;
-  autoTaggingMethod: TagType;
+  autoTaggingMethod: AutoTaggingMethod;
 }
 
 const launchAutoTagging = async ({

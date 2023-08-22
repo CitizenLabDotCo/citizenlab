@@ -6,13 +6,11 @@ import { useParams } from 'react-router-dom';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
-import useAddAnalysisTag from 'api/analysis_tags/useAddAnalysisTag';
 import useDeleteAnalysisTag from 'api/analysis_tags/useDeleteAnalysisTag';
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 
 import {
   Box,
-  Input,
   Button,
   IconButton,
   colors,
@@ -21,11 +19,10 @@ import {
   Icon,
   ListItem,
 } from '@citizenlab/cl2-component-library';
-import Error from 'components/UI/Error';
 import Modal from 'components/UI/Modal';
 import RenameTagModal from './RenameTagModal';
 import Tag from './Tag';
-import AutotaggingModal from './AutotaggingModal';
+import AutotaggingModal from './AutoTaggingModal';
 import TagCount from './TagCount';
 
 import { useIntl } from 'utils/cl-intl';
@@ -33,6 +30,7 @@ import messages from '../messages';
 
 import { useQueryClient } from '@tanstack/react-query';
 import inputsKeys from 'api/analysis_inputs/keys';
+import AddTag from './AddTag';
 
 const BlickingIcon = styled(Icon)`
   animation-name: blink-animation;
@@ -67,7 +65,6 @@ const TagContainer = styled(ListItem)`
 `;
 
 const Tags = () => {
-  const [name, setName] = useState('');
   const [renameTagModalOpenedId, setRenameTagModalOpenedId] = useState('');
   const [autotaggingModalIsOpened, setAutotaggingModalIsOpened] =
     useState(false);
@@ -79,11 +76,10 @@ const Tags = () => {
   const { analysisId } = useParams() as { analysisId: string };
 
   const queryClient = useQueryClient();
-  const { data: tags } = useAnalysisTags({
+  const { data: tags, isLoading } = useAnalysisTags({
     analysisId,
     filters: omit(filters, 'tag_ids'),
   });
-  const { mutate: addTag, isLoading, error } = useAddAnalysisTag();
   const { mutate: deleteTag } = useDeleteAnalysisTag();
 
   const inputsTotal = tags?.meta.inputs_total || 1;
@@ -91,24 +87,6 @@ const Tags = () => {
   const inputsWithoutTags = tags?.meta.inputs_without_tags || 1;
   const filteredInputsWithoutTags =
     tags?.meta.filtered_inputs_without_tags || 1;
-
-  const onChangeName = (name: string) => {
-    setName(name);
-  };
-
-  const handleTagSubmit = () => {
-    addTag(
-      {
-        analysisId,
-        name,
-      },
-      {
-        onSuccess: () => {
-          setName('');
-        },
-      }
-    );
-  };
 
   const handleTagDelete = (id: string) => {
     if (window.confirm(formatMessage(messages.deleteTagConfirmation))) {
@@ -155,27 +133,7 @@ const Tags = () => {
             />
           )}
         </Button>
-        <Box display="flex" alignItems="center" mb="8px" as="form">
-          <Input
-            type="text"
-            value={name}
-            onChange={onChangeName}
-            placeholder={formatMessage(messages.addTag)}
-            size="small"
-          />
-          <Button
-            ml="4px"
-            p="6px"
-            onClick={handleTagSubmit}
-            disabled={!name || isLoading}
-            icon="plus"
-          />
-        </Box>
-        <div>
-          {error && (
-            <Error apiErrors={error.errors['name']} fieldName="tag_name" />
-          )}
-        </div>
+        <AddTag />
       </Box>
       <Box>
         <TagContainer
