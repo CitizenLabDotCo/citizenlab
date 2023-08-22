@@ -9,8 +9,7 @@ import useInputSchema from 'hooks/useInputSchema';
 import useDeleteIdea from 'api/ideas/useDeleteIdea';
 
 // routing
-import { useParams, useSearchParams } from 'react-router-dom';
-import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { useParams } from 'react-router-dom';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -43,9 +42,8 @@ const OfflineInputImporter = () => {
   const { projectId } = useParams() as {
     projectId: string;
   };
-  const [search] = useSearchParams();
-  const ideaId = search.get('idea_id');
 
+  const [ideaId, setIdeaId] = useState<string | null>(null);
   const [showAllErrors, setShowAllErrors] = useState(false);
   const [apiErrors, setApiErrors] = useState<CLErrors | undefined>();
   const [importModalOpen, setImportModalOpen] = useState(false);
@@ -98,7 +96,7 @@ const OfflineInputImporter = () => {
           },
         });
 
-        removeSearchParams(['idea_id']);
+        setIdeaId(null);
       } catch (e) {
         setApiErrors(e.errors);
       }
@@ -108,6 +106,7 @@ const OfflineInputImporter = () => {
   const onDelete = () => {
     if (!ideaId) return;
     deleteIdea(ideaId);
+    setIdeaId(null);
   };
 
   return (
@@ -134,6 +133,8 @@ const OfflineInputImporter = () => {
             h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
           >
             <ReviewSection
+              ideaId={ideaId}
+              setIdeaId={setIdeaId}
               apiErrors={apiErrors}
               showAllErrors={showAllErrors}
               formData={formData}

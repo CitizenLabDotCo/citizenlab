@@ -2,8 +2,7 @@ import React from 'react';
 import moment from 'moment';
 
 // routing
-import { useParams, useSearchParams } from 'react-router-dom';
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { useParams } from 'react-router-dom';
 
 // api
 import useImportedIdeas from 'api/import_ideas/useImportedIdeas';
@@ -42,6 +41,8 @@ const StyledBox = styled(Box)`
 `;
 
 interface Props {
+  ideaId: string | null;
+  setIdeaId: (id: string) => void;
   showAllErrors: boolean;
   apiErrors?: CLErrors;
   formData: FormData;
@@ -49,6 +50,8 @@ interface Props {
 }
 
 const ReviewSection = ({
+  ideaId,
+  setIdeaId,
   showAllErrors,
   apiErrors,
   formData,
@@ -57,8 +60,6 @@ const ReviewSection = ({
   const { projectId } = useParams() as {
     projectId: string;
   };
-  const [searchParams] = useSearchParams();
-  const ideaId = searchParams.get('idea_id');
 
   const { data: ideas, isLoading } = useImportedIdeas({ projectId });
   const { data: idea } = useIdeaById(ideaId ?? undefined);
@@ -159,7 +160,7 @@ const ReviewSection = ({
               style={{ cursor: 'pointer' }}
               bgColor={idea.id === ideaId ? TEAL50 : undefined}
               onClick={() => {
-                updateSearchParams({ idea_id: idea.id });
+                setIdeaId(idea.id);
               }}
             >
               <Text
