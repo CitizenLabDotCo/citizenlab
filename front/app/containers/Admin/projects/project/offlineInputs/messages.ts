@@ -22,4 +22,8 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.offlineInputs.approve',
     defaultMessage: 'Approve',
   },
+  delete: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.delete',
+    defaultMessage: 'Delete',
+  },
 });

@@ -6,6 +6,7 @@ import { FocusOn } from 'react-focus-on';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
 import useInputSchema from 'hooks/useInputSchema';
+import useDeleteIdea from 'api/ideas/useDeleteIdea';
 
 // routing
 import { useParams, useSearchParams } from 'react-router-dom';
@@ -45,7 +46,6 @@ const OfflineInputImporter = () => {
   const [search] = useSearchParams();
   const ideaId = search.get('idea_id');
 
-  const [loading, setLoading] = useState(false);
   const [showAllErrors, setShowAllErrors] = useState(false);
   const [apiErrors, setApiErrors] = useState<CLErrors | undefined>();
   const [importModalOpen, setImportModalOpen] = useState(false);
@@ -55,7 +55,10 @@ const OfflineInputImporter = () => {
 
   const { data: idea } = useIdeaById(ideaId ?? undefined, false);
 
-  const { mutateAsync: updateIdea } = useUpdateIdea();
+  const { mutateAsync: updateIdea, isLoading: loadingApproveIdea } =
+    useUpdateIdea();
+  const { mutate: deleteIdea, isLoading: loadingDeleteIdea } = useDeleteIdea();
+
   const { schema, uiSchema } = useInputSchema({
     projectId,
     // phaseId, // TODO
@@ -83,7 +86,6 @@ const OfflineInputImporter = () => {
   const onSubmit = async () => {
     if (!ideaId || !formData || !schema || !uiSchema) return;
     setShowAllErrors(true);
-    setLoading(true);
 
     if (isValidData(schema, uiSchema, formData, customAjv, false)) {
       try {
@@ -101,8 +103,11 @@ const OfflineInputImporter = () => {
         setApiErrors(e.errors);
       }
     }
+  };
 
-    setLoading(false);
+  const onDelete = () => {
+    if (!ideaId) return;
+    deleteIdea(ideaId);
   };
 
   return (
@@ -118,8 +123,10 @@ const OfflineInputImporter = () => {
       >
         <FocusOn>
           <TopBar
-            loadingApproveIdea={loading}
+            loadingApproveIdea={loadingApproveIdea}
+            loadingDeleteIdea={loadingDeleteIdea}
             onApproveIdea={ideaId ? onSubmit : undefined}
+            onDeleteIdea={ideaId ? onDelete : undefined}
             onClickPDFImport={openImportModal}
           />
           <Box

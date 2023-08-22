@@ -20,13 +20,17 @@ import { stylingConsts, colors } from 'utils/styleUtils';
 
 interface Props {
   loadingApproveIdea: boolean;
+  loadingDeleteIdea: boolean;
   onApproveIdea?: () => void;
+  onDeleteIdea?: () => void;
   onClickPDFImport: () => void;
 }
 
 const TopBar = ({
   loadingApproveIdea,
+  loadingDeleteIdea,
   onApproveIdea,
+  onDeleteIdea,
   onClickPDFImport,
 }: Props) => {
   const localize = useLocalize();
@@ -70,6 +74,17 @@ const TopBar = ({
             processing={loadingApproveIdea}
           >
             <FormattedMessage {...messages.approve} />
+          </Button>
+        )}
+        {onDeleteIdea && (
+          <Button
+            icon="delete"
+            onClick={onDeleteIdea}
+            marginRight="20px"
+            bgColor={colors.error}
+            processing={loadingDeleteIdea}
+          >
+            <FormattedMessage {...messages.delete} />
           </Button>
         )}
         <Button icon="page" onClick={onClickPDFImport} bgColor={colors.primary}>
