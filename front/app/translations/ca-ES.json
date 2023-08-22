@@ -145,6 +145,7 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Títol de la carpeta:",
   "app.components.FolderFolderCard.archived": "Arxivat",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# projectes} one {# projecte} other {# projectes}}",
+  "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Descarregar com a pdf",
   "app.components.GoBackButton.group.edit.goBack": "Tornar",
   "app.components.HookForm.Feedback.errorTitle": "Hi ha un problema",
   "app.components.HookForm.Feedback.submissionError": "Torneu-ho a provar. Si el problema persisteix, poseu-vos en contacte amb nosaltres",
