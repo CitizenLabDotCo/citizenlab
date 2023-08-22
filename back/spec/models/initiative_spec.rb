@@ -115,6 +115,31 @@ RSpec.describe Initiative do
     end
   end
 
+  describe '#expires_at' do
+    before do
+      allow(Time).to receive(:now).and_return(Time.now)
+      create(:initiative_status_proposed)
+      configuration = AppConfiguration.instance
+      configuration.settings['initiatives'] = {
+        enabled: true,
+        allowed: true,
+        days_limit: 10,
+
+        reacting_threshold: 2,
+        threshold_reached_message: { 'en' => 'Threshold reached' },
+        eligibility_criteria: { 'en' => 'Eligibility criteria' }
+      }
+      configuration.save!
+    end
+
+    let(:initiative) { create(:initiative, build_status_change: false) }
+
+    it 'returns date when initiative is expired' do
+      proposed_at = initiative.initiative_status_changes.first.created_at
+      expect(initiative.expires_at).to be_within(1.second).of(proposed_at + 10.days)
+    end
+  end
+
   describe 'anonymous participation' do
     let(:author) { create(:user) }
 
