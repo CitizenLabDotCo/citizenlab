@@ -787,6 +787,7 @@
   "app.containers.Admin.projects.project.ideas.analysisButton": "Analize git",
   "app.containers.Admin.projects.project.ideas.analysisSubtitle": "Otomatik özetlerin kilidini açın ve proje girdileriniz hakkında sorular sorun.",
   "app.containers.Admin.projects.project.ideas.analysisTitle": "Yapay zeka destekli analiz",
+  "app.containers.Admin.projects.project.offlineInputs.ImportModal.formLanguage": "Form dili",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.here": "Burada",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.uploadAPdfFile": "Taranmış formlardan oluşan bir <b>PDF dosyası yükleyin</b>. PDF, {hereLink}adresinde bulunan bu projeden yazdırılan bir formu kullanmalıdır.",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.writtenIdeaImporter": "Yazılı fikir ithalatçısı",
