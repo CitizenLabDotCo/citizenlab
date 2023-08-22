@@ -18,6 +18,7 @@ import useABTest from 'api/experiments/useABTest';
 import useLocale from 'hooks/useLocale';
 import tracks from './tracks';
 import { trackEventByName } from 'utils/analytics';
+import { useLocation } from 'react-router-dom';
 
 interface Props extends BoxPaddingProps, BoxWidthProps {
   followableType: FollowableType;
@@ -43,6 +44,7 @@ const FollowUnfollow = ({
   const locale = useLocale();
   const { formatMessage } = useIntl();
   const { data: authUser } = useAuthUser();
+  const { pathname } = useLocation();
   const { mutate: addFollower, isLoading: isAddingFollower } = useAddFollower();
   const { mutate: deleteFollower, isLoading: isDeletingFollower } =
     useDeleteFollower();
@@ -75,6 +77,8 @@ const FollowUnfollow = ({
       });
       trackEventByName(tracks.unfollow, {
         followableType,
+        id: followableId,
+        urlPathName: pathname,
       });
     } else {
       addFollower({
@@ -88,6 +92,8 @@ const FollowUnfollow = ({
       }
       trackEventByName(tracks.follow, {
         followableType,
+        id: followableId,
+        urlPathName: pathname,
       });
     }
   };
@@ -110,6 +116,7 @@ const FollowUnfollow = ({
     });
     trackEventByName(tracks.startLightUserRegThroughFollow, {
       followableType,
+      id: followableId,
     });
   };
 

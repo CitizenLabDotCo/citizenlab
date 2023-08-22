@@ -19,6 +19,7 @@ export const follow =
     });
     trackEventByName(tracks.completeLightUserRegThroughFollow, {
       followableType,
+      id: followableId,
     });
 
     invalidateFollowQueries(queryClient, followableType, followableId);

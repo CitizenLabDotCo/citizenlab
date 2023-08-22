@@ -6,6 +6,7 @@ import useDeleteFollower from 'api/follow_unfollow/useDeleteFollower';
 import { IAreaData } from 'api/areas/types';
 import tracks from 'components/FollowUnfollow/tracks';
 import { trackEventByName } from 'utils/analytics';
+import { useLocation } from 'react-router-dom';
 
 interface Props {
   area: IAreaData;
@@ -15,6 +16,7 @@ const Area = ({ area }: Props) => {
   const { mutate: addFollower, isLoading: isAddingFollower } = useAddFollower();
   const { mutate: deleteFollower, isLoading: isDeletingFollower } =
     useDeleteFollower();
+  const { pathname } = useLocation();
   const isLoading = isAddingFollower || isDeletingFollower;
   const followerId = area.relationships.user_follower?.data?.id;
   const isFollowing = !!followerId;
@@ -29,6 +31,8 @@ const Area = ({ area }: Props) => {
       });
       trackEventByName(tracks.unfollow, {
         followableType: 'areas',
+        id: area.id,
+        urlPathName: pathname,
       });
     } else {
       addFollower({
@@ -37,6 +41,8 @@ const Area = ({ area }: Props) => {
       });
       trackEventByName(tracks.follow, {
         followableType: 'areas',
+        id: area.id,
+        urlPathName: pathname,
       });
     }
   };
