@@ -35,7 +35,7 @@ const Filters = ({ onClose }: FilterProps) => {
       pb="24px"
       boxShadow={defaultStyles.boxShadow}
     >
-      <Box alignSelf="flex-end" position="absolute" right="16px" top="16px">
+      <Box position="absolute" right="16px" top="16px">
         <CloseIconButton onClick={onClose} />
       </Box>
       <Box display="flex" gap="32px">
