@@ -4,6 +4,8 @@ import T from 'components/T';
 import useAddFollower from 'api/follow_unfollow/useAddFollower';
 import useDeleteFollower from 'api/follow_unfollow/useDeleteFollower';
 import { IAreaData } from 'api/areas/types';
+import tracks from 'components/FollowUnfollow/tracks';
+import { trackEventByName } from 'utils/analytics';
 
 interface Props {
   area: IAreaData;
@@ -25,10 +27,16 @@ const Area = ({ area }: Props) => {
         followableId: area.id,
         followableType: 'areas',
       });
+      trackEventByName(tracks.unfollow, {
+        followableType: 'areas',
+      });
     } else {
       addFollower({
         followableType: 'areas',
         followableId: area.id,
+      });
+      trackEventByName(tracks.follow, {
+        followableType: 'areas',
       });
     }
   };
