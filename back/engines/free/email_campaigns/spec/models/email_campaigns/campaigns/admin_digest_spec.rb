@@ -49,7 +49,7 @@ RSpec.describe EmailCampaigns::Campaigns::AdminDigest do
       old_initiative = create(:initiative, build_status_change: false)
       old_initiative.initiative_status_changes.first.update!(created_at: 8.days.ago) # more than 1 week ago
 
-      new_initiative = create(:initiative)
+      new_initiative = create(:initiative, build_status_change: false)
       new_initiative.initiative_status_changes.first.update!(created_at: 6.days.ago) # less than 1 week ago
 
       command = campaign.generate_commands(recipient: admin).first
