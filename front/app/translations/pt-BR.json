@@ -1529,7 +1529,7 @@
   "app.containers.UsersShowPage.metaTitle": "Página do perfil de {firstName} {lastName} | CitizenLab",
   "app.containers.UsersShowPage.noCommentsForUser": "Este usuário ainda não fez nenhum comentário.",
   "app.containers.UsersShowPage.noCommentsForYou": "Não há comentários.",
-  "app.containers.UsersShowPage.noEventsForUser": "Ainda não participou em nenhum evento.",
+  "app.containers.UsersShowPage.noEventsForUser": "Você ainda não participou de nenhum evento.",
   "app.containers.UsersShowPage.postsWithCount": "Publicações ({ideasCount})",
   "app.containers.UsersShowPage.projectFolders": "Pasta de projetos",
   "app.containers.UsersShowPage.projects": "Projetos",
