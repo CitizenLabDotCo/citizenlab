@@ -13,10 +13,12 @@ import useUserById from 'api/users/useUserById';
 // i18n
 import useLocalize from 'hooks/useLocalize';
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from './messages';
+import sharedMessages from '../messages';
 
 // components
 import { Box, Spinner, Title, Text } from '@citizenlab/cl2-component-library';
+import AuthorBox from './AuthorBox';
 import IdeaForm from './IdeaForm';
 import PDFViewer from 'components/PDFViewer';
 
@@ -110,7 +112,7 @@ const ReviewSection = ({
             <FormattedMessage
               {...messages.noIdeasYet}
               values={{
-                importPdf: <FormattedMessage {...messages.importPdf} />,
+                importPdf: <FormattedMessage {...sharedMessages.importPdf} />,
               }}
             />
           </Text>
@@ -123,8 +125,8 @@ const ReviewSection = ({
     Number(page)
   );
 
-  const authorEmail = author?.data.attributes.email;
   const authorName = author ? getFullName(author.data) : undefined;
+  const authorEmail = author?.data.attributes.email;
 
   return (
     <Box
@@ -187,14 +189,7 @@ const ReviewSection = ({
           px="12px"
         >
           {(authorEmail || authorName) && (
-            <Box
-              w="90%"
-              mb="20px"
-              borderBottom={`1px solid ${colors.borderLight}`}
-            >
-              {authorEmail && <Text mt="0">{authorEmail}</Text>}
-              {authorName && <Text>{authorName}</Text>}
-            </Box>
+            <AuthorBox authorName={authorName} authorEmail={authorEmail} />
           )}
           {idea && (
             <IdeaForm
