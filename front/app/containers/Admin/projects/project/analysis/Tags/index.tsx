@@ -128,11 +128,12 @@ const Tags = () => {
   const selectedTags = filters.tag_ids;
 
   const toggleТаgClick = (id: string) => {
+    const nonNullSelectedTags = selectedTags?.filter((tagId) => tagId !== null);
     if (!selectedTags?.includes(id)) {
-      updateSearchParams({ tag_ids: [...(selectedTags || []), id] });
+      updateSearchParams({ tag_ids: [...(nonNullSelectedTags || []), id] });
     } else {
       updateSearchParams({
-        tag_ids: selectedTags?.filter((tagId) => tagId !== id),
+        tag_ids: nonNullSelectedTags?.filter((tagId) => tagId !== id),
       });
     }
     queryClient.invalidateQueries(inputsKeys.lists());
