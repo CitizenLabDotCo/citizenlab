@@ -14,7 +14,7 @@ import Avatar from 'components/Avatar';
 import { getFullName } from 'utils/textUtils';
 import { useParams } from 'react-router-dom';
 import useAnalysis from 'api/analyses/useAnalysis';
-import InputShortFieldValue from './InputShortFieldValue';
+import InputShortFieldValue from './FieldValue';
 
 interface Props {
   input: IInputsData;
