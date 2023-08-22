@@ -218,6 +218,9 @@ hr:
     survey_end_page:
       title: 'Završetak upitnika'
       description: "Pošaljite svoje odgovore tako da odaberete „Pošalji anketu“ u nastavku."
+    pdf_export:
+      full_name: 'Puno ime'
+      email_address: 'Email adresa'
   project_copy:
     title_suffix: 'Kopija'
   confirmations_mailer:
