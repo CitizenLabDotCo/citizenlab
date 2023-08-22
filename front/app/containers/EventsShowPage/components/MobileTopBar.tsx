@@ -67,7 +67,6 @@ const MobileTopBar = ({ projectId }: Props) => {
               hasGoBackLink
                 ? clHistory.goBack()
                 : clHistory.push(`/projects/${project?.data.attributes.slug}`);
-              clHistory.back();
             }}
           />
         </Box>
