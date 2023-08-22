@@ -42,6 +42,30 @@ RSpec.describe EmailCampaigns::Campaigns::AdminDigest do
         command.dig(:event_payload, :top_project_ideas).flat_map { |tpi| tpi[:top_ideas].pluck(:id) }
       ).not_to include response.id
     end
+
+    it "only includes 'new' initiatives" do
+      proposed_status = create(:initiative_status_proposed)
+
+      old_initiative = create(:initiative)
+      _old_initiative_status_change = create(
+        :initiative_status_change,
+        initiative: old_initiative,
+        initiative_status: proposed_status,
+        created_at: 8.days.ago # more than 1 week ago
+      )
+
+      new_initiative = create(:initiative)
+      _new_initiative_status_change = create(
+        :initiative_status_change,
+        initiative: new_initiative,
+        initiative_status: proposed_status,
+        created_at: 6.days.ago # less than 1 week ago
+      )
+
+      command = campaign.generate_commands(recipient: admin).first
+
+      expect(command.dig(:event_payload, :new_initiatives).pluck(:id)).to match_array [new_initiative.id]
+    end
   end
 
   describe 'apply_recipient_filters' do

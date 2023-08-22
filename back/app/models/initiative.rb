@@ -112,6 +112,12 @@ class Initiative < ApplicationRecord
   scope :no_feedback_needed, -> { with_status_code(InitiativeStatus::CODES - ['threshold_reached']) }
   scope :proposed, -> { with_status_code('proposed') }
 
+  scope :proposed_from_time_ago, (proc do |time_ago|
+    joins(:initiative_status_changes)
+      .where(initiative_status_changes: { initiative_status: InitiativeStatus.find_by(code: 'proposed') })
+      .where('initiative_status_changes.created_at > ?', time_ago)
+  end)
+
   def cosponsor_ids=(ids)
     return unless ids
 
