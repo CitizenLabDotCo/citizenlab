@@ -63,7 +63,8 @@ const ReviewSection = ({
   const { data: ideas, isLoading } = useImportedIdeas({ projectId });
   const { data: idea } = useIdeaById(ideaId ?? undefined);
   const { data: author } = useUserById(
-    idea?.data.relationships.author?.data?.id
+    idea?.data.relationships.author?.data?.id,
+    false
   );
 
   const { data: ideaMetadata } = useImportedIdeaMetadata({

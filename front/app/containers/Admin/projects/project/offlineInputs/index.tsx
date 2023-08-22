@@ -53,10 +53,7 @@ const OfflineInputImporter = () => {
     Record<string, FormData>
   >({});
 
-  const { data: _idea } = useIdeaById(ideaId ?? undefined);
-  // for some reason, _idea keeps the data of the previous ideaId if
-  // ideaId is undefined. We don't want that.
-  const idea = ideaId ? _idea : undefined;
+  const { data: idea } = useIdeaById(ideaId ?? undefined, false);
 
   const { mutateAsync: updateIdea } = useUpdateIdea();
   const { schema, uiSchema } = useInputSchema({
