@@ -102,9 +102,14 @@ module EmailCampaigns
 
     # @return [Boolean]
     def content_worth_sending?(_)
-      # Check positive? as fetching a non-integer env var would result in zero and this hook would return true,
-      # whilst top_ideas would be limited to zero ideas, possibly resulting in no content being sent.
-      @content_worth_sending ||= trending_ideas.size >= N_TOP_IDEAS && N_TOP_IDEAS.positive?
+      # # Check positive? as fetching a non-integer env var would result in zero and this hook would return true,
+      # # whilst top_ideas would be limited to zero ideas, possibly resulting in no content being sent.
+      # @content_worth_sending ||= trending_ideas.size >= N_TOP_IDEAS && N_TOP_IDEAS.positive?
+      true
+    end
+
+    def filter_campaign_scheduled(time:, activity: nil)
+      true
     end
 
     private

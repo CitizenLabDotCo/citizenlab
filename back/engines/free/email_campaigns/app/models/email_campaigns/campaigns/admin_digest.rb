@@ -115,6 +115,11 @@ module EmailCampaigns
         statistics.dig(:users, :new_users, :increase),
         statistics.dig(:users, :active_users, :increase)
       ].any?(&:positive?)
+      true
+    end
+
+    def filter_campaign_scheduled(time:, activity: nil)
+      true
     end
 
     def statistics
