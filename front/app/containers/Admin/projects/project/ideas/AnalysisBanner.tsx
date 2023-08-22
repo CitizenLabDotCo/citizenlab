@@ -6,8 +6,8 @@ import {
   colors,
   Text,
   Button,
-  Title,
   Box,
+  stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
@@ -53,24 +53,25 @@ const AnalysisBanner = () => {
       display="flex"
       justifyContent="space-between"
       alignItems="center"
-      borderColor={colors.borderLight}
-      borderRadius="3px"
-      borderWidth="1px"
-      borderStyle="solid"
+      borderRadius={stylingConsts.borderRadius}
       p="8px 16px"
       mb="36px"
+      bgColor={colors.errorLight}
     >
       <Box display="flex" gap="16px" alignItems="center">
         <Icon name="flash" width="50px" height="50px" fill={colors.orange} />
-        <Box>
-          <Title variant="h3">{formatMessage(messages.analysisTitle)}</Title>
-          <Text>{formatMessage(messages.analysisSubtitle)}</Text>
-        </Box>
+        <Text fontWeight="bold">
+          {formatMessage(messages.analysisSubtitle)}
+        </Text>
       </Box>
       <Button
-        buttonStyle="admin-dark"
+        buttonStyle="text"
+        textColor={colors.orange}
         onClick={handleGoToAnalysis}
         processing={isLoading}
+        fontWeight="bold"
+        icon="flash"
+        iconColor={colors.orange}
       >
         {formatMessage(messages.analysisButton)}
       </Button>
