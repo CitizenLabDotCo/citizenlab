@@ -787,6 +787,7 @@
   "app.containers.Admin.projects.project.ideas.analysisButton": "Ir para a análise",
   "app.containers.Admin.projects.project.ideas.analysisSubtitle": "Desbloqueie resumos automatizados e faça perguntas sobre a entrada do seu projeto.",
   "app.containers.Admin.projects.project.ideas.analysisTitle": "Análise alimentada por IA",
+  "app.containers.Admin.projects.project.offlineInputs.ImportModal.formLanguage": "Linguagem do formulário",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.here": "aqui",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.uploadAPdfFile": "Carregue um arquivo <b>PDF de formulários digitalizados</b>. O PDF deve utilizar o formulário impresso deste projeto disponível {hereLink}.",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.writtenIdeaImporter": "Importador de ideias escritas",
