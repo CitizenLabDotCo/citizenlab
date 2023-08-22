@@ -787,6 +787,7 @@
   "app.containers.Admin.projects.project.ideas.analysisButton": "Gå til analyse",
   "app.containers.Admin.projects.project.ideas.analysisSubtitle": "Lås op for automatiske oversigter, og stil spørgsmål om dine projektinput.",
   "app.containers.Admin.projects.project.ideas.analysisTitle": "AI-drevet analyse",
+  "app.containers.Admin.projects.project.offlineInputs.ImportModal.formLanguage": "Formsprog",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.here": "learn how to create a workshop",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.uploadAPdfFile": "Upload en <b>PDF-fil af scannede formularer</b>. PDF'en skal bruge en formular, der er udskrevet fra dette projekt, og som er tilgængelig på {hereLink}.",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.writtenIdeaImporter": "Skriftlig idéimportør",
