@@ -218,6 +218,9 @@ ca:
     survey_end_page:
       title: 'Final de l''enquesta'
       description: "Envieu les vostres respostes seleccionant \"Envia l'enquesta\" a continuació."
+    pdf_export:
+      full_name: 'Nom complet'
+      email_address: 'Correu electrònic'
   project_copy:
     title_suffix: 'Còpia'
   confirmations_mailer:
