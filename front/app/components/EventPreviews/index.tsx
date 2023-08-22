@@ -93,7 +93,7 @@ const EventPreviews = ({ projectId }: EventPreviewsProps) => {
     setAtScrollEnd(ref.current.scrollLeft >= maxScrollLeft);
   };
 
-  if (events && !!events?.data) {
+  if (events && events?.data?.length > 0) {
     return (
       <>
         <Title mt="36px" mb="8px" variant="h5" style={{ fontWeight: 600 }}>
