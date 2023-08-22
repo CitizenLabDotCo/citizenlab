@@ -787,6 +787,7 @@
   "app.containers.Admin.projects.project.ideas.analysisButton": "Pārejiet uz analīzi",
   "app.containers.Admin.projects.project.ideas.analysisSubtitle": "Atbloķējiet automatizētus kopsavilkumus un uzdodiet jautājumus par savu projekta ieguldījumu.",
   "app.containers.Admin.projects.project.ideas.analysisTitle": "Ar mākslīgo intelektu darbināta analīze",
+  "app.containers.Admin.projects.project.offlineInputs.ImportModal.formLanguage": "Veidlapu valoda",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.here": "šeit",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.uploadAPdfFile": "Skenētu veidlapu PDF datnes augšupielāde <b></b>. PDF failā jāizmanto veidlapa, kas izdrukāta no šī projekta, kas pieejams {hereLink}.",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.writtenIdeaImporter": "Rakstiskā ideja importētājs",
