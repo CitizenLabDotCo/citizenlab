@@ -787,6 +787,7 @@
   "app.containers.Admin.projects.project.ideas.analysisButton": "Ga naar analyse",
   "app.containers.Admin.projects.project.ideas.analysisSubtitle": "Ontgrendel geautomatiseerde samenvattingen en stel vragen over je projectinput.",
   "app.containers.Admin.projects.project.ideas.analysisTitle": "AI-gestuurde analyse",
+  "app.containers.Admin.projects.project.offlineInputs.ImportModal.formLanguage": "Vormtaal",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.here": "hier",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.uploadAPdfFile": "Upload een <b>PDF-bestand van gescande formulieren</b>. De PDF moet een formulier gebruiken dat is afgedrukt in dit project dat beschikbaar is {hereLink}.",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.writtenIdeaImporter": "Geschreven idee importeur",
