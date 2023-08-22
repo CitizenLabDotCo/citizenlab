@@ -218,6 +218,9 @@ ar:
     survey_end_page:
       title: 'انتهى الاستبيان'
       description: "يرجى إرسال إجاباتك من خلال تحديد \"إرسال الاستبيان\" أدناه."
+    pdf_export:
+      full_name: 'الاسم الكامل'
+      email_address: 'عنوان البريد الإلكتروني'
   project_copy:
     title_suffix: 'نسخة'
   confirmations_mailer:
