@@ -23,6 +23,7 @@ import useAnalysisSummary from 'api/analysis_summaries/useAnalysisSummary';
 
 const StyledSummaryText = styled.div`
   white-space: pre-wrap;
+  word-break: break-word;
 `;
 
 const StyledButton = styled.button`

@@ -4,7 +4,7 @@ export interface IQuestionPreCheckData {
   id: string;
   type: 'question_pre_check';
   attributes: {
-    /** Number between 0 and 1 to indicate how accurate we estimate the question
+    /** Number between 0 and 1 to indicate how accurate we estimate the answer
      * to be. Can be null if unknown */
     accuracy: number | null;
     impossible_reason: 'too_many_inputs' | null;

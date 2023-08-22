@@ -16,7 +16,7 @@ export interface IQuestionData {
     filters: IInputsFilterParams;
     question: string;
     answer: string | null;
-    /** Number between 0 and 1 to indicate how accurate we estimate the summary
+    /** Number between 0 and 1 to indicate how accurate we estimate the answer
      * to be. Can be null if unsure or not known yet */
     accuracy: number | null;
     created_at: string;

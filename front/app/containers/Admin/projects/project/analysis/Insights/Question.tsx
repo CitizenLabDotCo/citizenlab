@@ -22,8 +22,9 @@ import styled from 'styled-components';
 import { useSelectedInputContext } from '../SelectedInputContext';
 import useAnalysisQuestion from 'api/analysis_questions/useAnalysisQuestion';
 
-const StyledQuestionText = styled.div`
+const StyledAnswerText = styled.div`
   white-space: pre-wrap;
+  word-break: break-word;
 `;
 
 const StyledButton = styled.button`
@@ -122,9 +123,9 @@ const Question = ({ insight }: Props) => {
         </Box>
         <Text fontWeight="bold">{question.data.attributes.question}</Text>
         <Box>
-          <StyledQuestionText>
+          <StyledAnswerText>
             {replaceIdRefsWithLinks(question.data.attributes.answer)}
-          </StyledQuestionText>
+          </StyledAnswerText>
           {processing && <Spinner />}
         </Box>
       </Box>

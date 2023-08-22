@@ -7,7 +7,7 @@ import { IQuestionPreCheck } from 'api/analysis_question_pre_check/types';
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
 
 const QuestionButton = ({ onClick }: { onClick: () => void }) => {
-  const { mutate: addSummaryPreCheck, isLoading: isLoadingPreCheck } =
+  const { mutate: addQuestionPreCheck, isLoading: isLoadingPreCheck } =
     useAddAnalysisQuestionPreCheck();
   const { analysisId } = useParams() as { analysisId: string };
   const filters = useAnalysisFilterParams();
@@ -20,7 +20,7 @@ const QuestionButton = ({ onClick }: { onClick: () => void }) => {
 
   const [preCheck, setPreCheck] = useState<IQuestionPreCheck | null>(null);
   useEffect(() => {
-    addSummaryPreCheck(
+    addQuestionPreCheck(
       { analysisId, filters },
       {
         onSuccess: (preCheck) => {
@@ -28,7 +28,7 @@ const QuestionButton = ({ onClick }: { onClick: () => void }) => {
         },
       }
     );
-  }, [analysisId, filters, addSummaryPreCheck]);
+  }, [analysisId, filters, addQuestionPreCheck]);
 
   const questionPossible = !preCheck?.data.attributes.impossible_reason;
   const questionAccuracy = preCheck?.data.attributes.accuracy;
