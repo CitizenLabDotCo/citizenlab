@@ -44,6 +44,7 @@ const FilterItems = ({ filters, isEditable }: FilterItemsProps) => {
   const birthyearUrlQueryParamToKey = `author_custom_${birthyearField?.id}_to`;
 
   const translationKeys: Record<string, string> = {
+    search: 'Search: ',
     published_at_from: 'Start: ',
     published_at_to: 'End: ',
     reactions_from: 'Reactions > ',

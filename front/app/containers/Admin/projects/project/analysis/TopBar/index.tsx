@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   stylingConsts,
@@ -23,12 +23,14 @@ import LaunchModal from '../LaunchModal';
 import Modal from 'components/UI/Modal';
 import FilterItems from '../FilterItems';
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 const TopBar = () => {
   const [urlParams] = useSearchParams();
   const phaseId = urlParams.get('phase_id') || undefined;
 
   const showLaunchModal = urlParams.get('showLaunchModal') === 'true';
+  const resetFilters = urlParams.get('reset_filters') === 'true';
 
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const { projectId, analysisId } = useParams() as {
@@ -39,6 +41,13 @@ const TopBar = () => {
   const { data: analysis } = useAnalysis(analysisId);
 
   const filters = useAnalysisFilterParams();
+
+  useEffect(() => {
+    if (resetFilters) {
+      removeSearchParams(['reset_filters']);
+    }
+  }, [resetFilters]);
+
   const projectTitle = project?.data.attributes.title_multiloc;
   const localize = useLocalize();
   const { formatMessage } = useIntl();
@@ -92,7 +101,7 @@ const TopBar = () => {
       <FilterItems filters={filters} isEditable />
       <Box marginLeft="auto">
         <SearchInput
-          key={urlParams.get('search')}
+          key={urlParams.get('reset_filters')}
           onChange={handleSearch}
           // TODO: add a11y number of search results
           defaultValue={urlParams.get('search') || ''}

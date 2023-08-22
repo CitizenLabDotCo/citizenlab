@@ -85,13 +85,14 @@ const Summary = ({ summary }: Props) => {
   const phaseId = searchParams.get('phase_id');
 
   const handleRestoreFilters = () => {
-    setSearchParams(
-      phaseId
+    setSearchParams({
+      ...(phaseId
         ? {
             phase_id: phaseId,
           }
-        : {}
-    );
+        : {}),
+      reset_filters: 'true',
+    });
     updateSearchParams(summary.attributes.filters);
   };
 
