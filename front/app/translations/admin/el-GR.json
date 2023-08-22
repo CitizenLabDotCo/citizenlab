@@ -787,6 +787,7 @@
   "app.containers.Admin.projects.project.ideas.analysisButton": "Go to analysis",
   "app.containers.Admin.projects.project.ideas.analysisSubtitle": "Unlock automated summaries and ask questions about your project input.",
   "app.containers.Admin.projects.project.ideas.analysisTitle": "AI-powered analysis",
+  "app.containers.Admin.projects.project.offlineInputs.ImportModal.formLanguage": "Γλώσσα μορφής",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.here": "εδώ",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.uploadAPdfFile": "Ανεβάστε ένα αρχείο <b>PDF με σαρωμένα έντυπα</b>. Το PDF πρέπει να χρησιμοποιεί ένα έντυπο εκτυπωμένο από αυτό το έργο που είναι διαθέσιμο {hereLink}.",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.writtenIdeaImporter": "Γραπτός εισαγωγέας ιδεών",
