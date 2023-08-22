@@ -787,6 +787,7 @@
   "app.containers.Admin.projects.project.ideas.analysisButton": "Go to analysis",
   "app.containers.Admin.projects.project.ideas.analysisSubtitle": "Unlock automated summaries and ask questions about your project input.",
   "app.containers.Admin.projects.project.ideas.analysisTitle": "AI-powered analysis",
+  "app.containers.Admin.projects.project.offlineInputs.ImportModal.formLanguage": "Form Sprooch",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.here": "hei",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.uploadAPdfFile": "Eroplueden eng <b>PDF Datei vu gescannte Formen</b>. De PDF muss e Formulaire benotzen deen aus dësem Projet verfügbar ass {hereLink}gedréckt.",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.writtenIdeaImporter": "Geschriwen Iddi Importer",
