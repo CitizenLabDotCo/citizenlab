@@ -31,7 +31,7 @@ interface Props {
 }
 
 export const UserEvents = ({ userId }: Props) => {
-  const { data: events } = useEventsByUserId({ attendeeId: userId });
+  const { data: events } = useEventsByUserId(userId);
   const isMobileOrSmaller = useBreakpoint('phone');
   const eventsCount = events?.data.length;
 
@@ -45,6 +45,7 @@ export const UserEvents = ({ userId }: Props) => {
           />
         </Title>
       )}
+
       <ScreenReaderOnly>
         <FormattedMessage
           tagName="h2"

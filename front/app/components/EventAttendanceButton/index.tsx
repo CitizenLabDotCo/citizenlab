@@ -49,9 +49,7 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
     useState(false);
 
   // Attendance API
-  const { data: eventsAttending } = useEventsByUserId({
-    attendeeId: user?.data?.id,
-  });
+  const { data: eventsAttending } = useEventsByUserId(user?.data?.id);
   const { mutate: addEventAttendance, isLoading: isAddingAttendance } =
     useAddEventAttendance(event.id);
   const { mutate: deleteEventAttendance, isLoading: isRemovingAttendance } =

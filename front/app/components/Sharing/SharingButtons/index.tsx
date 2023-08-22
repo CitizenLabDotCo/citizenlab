@@ -1,7 +1,12 @@
 import React, { memo } from 'react';
 
 // components
-import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  BoxFlexProps,
+  Title,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 import Facebook from '../buttons/Facebook';
 import Twitter from '../buttons/Twitter';
 import Messenger from '../buttons/Messenger';
@@ -14,7 +19,7 @@ import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
-import { getUrlWithUtm, UtmParams, Medium, FlexContent } from '../utils';
+import { getUrlWithUtm, UtmParams, Medium } from '../utils';
 
 interface Props {
   context: 'idea' | 'project' | 'initiative' | 'folder' | 'event';
@@ -27,7 +32,7 @@ interface Props {
   utmParams: UtmParams;
   id?: string;
   hideTitle?: boolean;
-  justifyContent?: FlexContent;
+  justifyContent?: BoxFlexProps['justifyContent'];
 }
 
 const SharingButtons = memo(

@@ -116,7 +116,7 @@ const UserNavbar = memo<Props>(({ currentTab, selectTab, userId }) => {
   const { data: commentsCount } = useUserCommentsCount({
     userId,
   });
-  const { data: events } = useEventsByUserId({ attendeeId: userId });
+  const { data: events } = useEventsByUserId(userId);
   const { data: authUser } = useAuthUser();
 
   const eventsCount = events?.data.length;

@@ -34,10 +34,11 @@ interface Props {
   title: string;
   showProjectFilter: boolean;
   setProjectIds: (projectIds: string[]) => void;
+  eventsTime?: 'past' | 'currentAndFuture';
 }
 
 const TopBar = memo<Props & WrappedComponentProps>(
-  ({ title, showProjectFilter, setProjectIds, intl }) => {
+  ({ title, showProjectFilter, setProjectIds, intl, eventsTime }) => {
     const theme = useTheme();
     const isMobileOrSmaller = useBreakpoint('phone');
 
@@ -56,6 +57,7 @@ const TopBar = memo<Props & WrappedComponentProps>(
                 filterSelectorStyle="button"
                 listTop="44px"
                 mobileLeft={isMobileOrSmaller ? '-70px' : 'auto'}
+                eventsTime={eventsTime}
               />
             </>
           )}

@@ -48,7 +48,7 @@ const useEvents = ({
 }: InputParameters) => {
   const queryParams: InputParameters = {
     projectPublicationStatuses,
-    sort: sort ? sort : currentAndFutureOnly ? 'start_at' : '-start_at',
+    sort: sort || (currentAndFutureOnly ? 'start_at' : '-start_at'),
     endsOnOrAfterDate: currentAndFutureOnly ? newDate : undefined,
     endsBeforeDate: pastOnly ? newDate : undefined,
     pageNumber,

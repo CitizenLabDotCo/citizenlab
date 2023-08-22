@@ -21,15 +21,9 @@ describe('useEventsByUserId', () => {
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(
-      () =>
-        useEventsByUserId({
-          attendeeId: 'dummyId',
-        }),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result, waitFor } = renderHook(() => useEventsByUserId('dummyId'), {
+      wrapper: createQueryClientWrapper(),
+    });
 
     expect(result.current.isLoading).toBe(true);
 
@@ -46,15 +40,9 @@ describe('useEventsByUserId', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(
-      () =>
-        useEventsByUserId({
-          attendeeId: 'dummyId',
-        }),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result, waitFor } = renderHook(() => useEventsByUserId('dummyId'), {
+      wrapper: createQueryClientWrapper(),
+    });
 
     expect(result.current.isLoading).toBe(true);
     await waitFor(() => expect(result.current.isError).toBe(true));

@@ -16,6 +16,7 @@ import { isRtl } from 'utils/styleUtils';
 
 // typings
 import { IProjectData } from 'api/projects/types';
+import { useLocation } from 'react-router-dom';
 
 const Bar = styled.div`
   display: flex;
@@ -32,6 +33,7 @@ interface Props {
 
 const TopBar = ({ project }: Props) => {
   const localize = useLocalize();
+  const location = useLocation();
 
   return (
     <Bar>
@@ -39,7 +41,10 @@ const TopBar = ({ project }: Props) => {
         <GoBackButtonSolid
           text={localize(project.attributes.title_multiloc)}
           onClick={() => {
-            clHistory.back();
+            const hasGoBackLink = location.key !== 'default';
+            hasGoBackLink
+              ? clHistory.goBack()
+              : clHistory.push(`/projects/${project.attributes.slug}`);
           }}
         />
       </Box>
