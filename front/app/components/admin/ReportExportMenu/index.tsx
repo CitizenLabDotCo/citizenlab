@@ -208,7 +208,7 @@ const ReportExportMenu = ({
       // Added after production bug.
       // Error from XLSX package: sheet names can't contain certain characters
       const sheetNameWithoutForbiddenChars = sheet_name.replace(
-        /[:[*?/\\]/g,
+        /[:\]\[*?/\\]/g,
         '_'
       );
       const worksheet = XLSX.utils.json_to_sheet(sheet_data);
