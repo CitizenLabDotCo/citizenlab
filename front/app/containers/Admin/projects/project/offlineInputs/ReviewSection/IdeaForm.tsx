@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
 // hooks
 import useInputSchema from 'hooks/useInputSchema';
+
+// i18n
+import ideaFormMessages from 'containers/IdeasNewPage/messages';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -9,9 +12,14 @@ import Fields from 'components/Form/Components/Fields';
 
 // utils
 import { customAjv } from 'components/Form';
+import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 
 // typings
-import { FormData } from 'components/Form/typings';
+import {
+  FormData,
+  ApiErrorGetter,
+  AjvErrorGetter,
+} from 'components/Form/typings';
 import { CLErrors } from 'typings';
 
 interface Props {
@@ -34,6 +42,40 @@ const IdeaForm = ({
     // phaseId, // TODO
   });
 
+  const getApiErrorMessage: ApiErrorGetter = useCallback(
+    (error) => {
+      return (
+        ideaFormMessages[
+          `api_error_${uiSchema?.options?.inputTerm}_${error}`
+        ] ||
+        ideaFormMessages[`api_error_${error}`] ||
+        ideaFormMessages[`api_error_invalid`]
+      );
+    },
+    [uiSchema]
+  );
+
+  const getAjvErrorMessage: AjvErrorGetter = useCallback(
+    (error) => {
+      return (
+        ideaFormMessages[
+          `ajv_error_${uiSchema?.options?.inputTerm}_${
+            getFieldNameFromPath(error.instancePath) ||
+            error?.params?.missingProperty
+          }_${error.keyword}`
+        ] ||
+        ideaFormMessages[
+          `ajv_error_${
+            getFieldNameFromPath(error.instancePath) ||
+            error?.params?.missingProperty
+          }_${error.keyword}`
+        ] ||
+        undefined
+      );
+    },
+    [uiSchema]
+  );
+
   if (!schema || !uiSchema) return null;
 
   return (
@@ -47,6 +89,8 @@ const IdeaForm = ({
         data={formData}
         onChange={setFormData}
         config="input"
+        getApiErrorMessage={getApiErrorMessage}
+        getAjvErrorMessage={getAjvErrorMessage}
       />
     </Box>
   );
