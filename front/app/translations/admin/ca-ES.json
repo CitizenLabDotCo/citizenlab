@@ -787,6 +787,7 @@
   "app.containers.Admin.projects.project.ideas.analysisButton": "Go to analysis",
   "app.containers.Admin.projects.project.ideas.analysisSubtitle": "Unlock automated summaries and ask questions about your project input.",
   "app.containers.Admin.projects.project.ideas.analysisTitle": "AI-powered analysis",
+  "app.containers.Admin.projects.project.offlineInputs.ImportModal.formLanguage": "Llenguatge de formularis",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.here": "aquí",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.uploadAPdfFile": "Carregueu un fitxer PDF <b>de formularis escanejats</b>. El PDF ha d'utilitzar un formulari imprès d'aquest projecte disponible {hereLink}.",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.writtenIdeaImporter": "Importador d'idees escrites",
