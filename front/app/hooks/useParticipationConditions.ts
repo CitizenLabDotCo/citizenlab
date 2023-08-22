@@ -23,7 +23,7 @@ export default function useParticipationConditions(
       props?.type === 'project' || props?.type === 'phase'
         ? getPCParticipationConditions(props.id, props.type, props.action)
             .observable
-        : props?.type === 'initiative'
+        : props?.type === 'initiative' || props?.type === 'follow'
         ? getGlobalParticipationConditions(props.action).observable
         : of(null);
 

@@ -9,6 +9,8 @@ import ThresholdReached from './ThresholdReached';
 import Answered from './Answered';
 import Ineligible from './Ineligible';
 import Custom from './Custom';
+import FollowUnfollow from 'components/FollowUnfollow';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
@@ -222,6 +224,14 @@ const ReactionControl = ({
         onScrollToOfficialFeedback={onScrollToOfficialFeedback}
         disabledReason={reactingPermission?.disabledReason}
       />
+      <Box mt="8px">
+        <FollowUnfollow
+          followableType="initiatives"
+          followableId={initiative.data.id}
+          followersCount={initiative.data.attributes.followers_count}
+          followerId={initiative.data.relationships.user_follower?.data?.id}
+        />
+      </Box>
     </Container>
   );
 };

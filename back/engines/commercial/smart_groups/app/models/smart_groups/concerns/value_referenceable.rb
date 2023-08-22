@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module SmartGroups
-  module Patches
-    module Project
+  module Concerns
+    module ValueReferenceable
       extend ActiveSupport::Concern
 
       included do
