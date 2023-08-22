@@ -3,11 +3,20 @@ import React from 'react';
 import { IInputsData } from 'api/analysis_inputs/types';
 import useIdeaCustomField from 'api/idea_custom_fields/useIdeaCustomField';
 
-import { Box, Title, Text, Checkbox } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Title,
+  Text,
+  Checkbox,
+  Button,
+} from '@citizenlab/cl2-component-library';
 
 import T from 'components/T';
 import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
 import { FormattedDate } from 'react-intl';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
+import { isNil, xor } from 'lodash-es';
 
 type Props = {
   customFieldId: string;
@@ -28,6 +37,33 @@ const SelectOptionText = ({
     (option) => option.attributes.key === selectedOptionKey
   );
   return option ? <T value={option.attributes.title_multiloc} /> : null;
+};
+
+const FilterToggleButton = ({ customFieldId, value }) => {
+  const filters = useAnalysisFilterParams();
+  const filterValue = filters[`input_custom_${customFieldId}`];
+  const isFilterSet = filterValue?.includes(value);
+
+  const handleToggleFilterOption = (customFieldId, customOptionKey) => () => {
+    const newFilterValue = xor(filterValue, [customOptionKey]);
+    updateSearchParams({
+      [`input_custom_${customFieldId}`]: newFilterValue.length
+        ? newFilterValue
+        : undefined,
+    });
+  };
+
+  return (
+    <Button
+      onClick={handleToggleFilterOption(customFieldId, value)}
+      icon={isFilterSet ? 'close' : 'filter-2'}
+      buttonStyle="secondary"
+      size="s"
+      margin="0"
+      padding="1px"
+      iconSize="18px"
+    />
+  );
 };
 
 /**
@@ -122,12 +158,24 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
               <Title variant="h5">
                 <T value={customField.data.attributes.title_multiloc} />
               </Title>
-              <Text>
-                <SelectOptionText
-                  customFieldId={customField.data.id}
-                  selectedOptionKey={rawValue}
-                />
-              </Text>
+              <Box
+                display="flex"
+                justifyContent="flex-start"
+                alignItems="flex-start"
+              >
+                <Text m="0">
+                  <SelectOptionText
+                    customFieldId={customField.data.id}
+                    selectedOptionKey={rawValue}
+                  />
+                </Text>
+                <Box ml="8px">
+                  <FilterToggleButton
+                    customFieldId={customField.data.id}
+                    value={rawValue}
+                  />
+                </Box>
+              </Box>
             </Box>
           );
         }
@@ -138,15 +186,24 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
                 <T value={customField.data.attributes.title_multiloc} />
               </Title>
               <Text>
-                {(rawValue as string[]).map((optionKey, index) => (
-                  <>
-                    {index !== 0 && ', '}
+                {(rawValue as string[]).map((optionKey) => (
+                  <Box
+                    key={optionKey}
+                    display="flex"
+                    justifyContent="flex-start"
+                    alignItems="flex-start"
+                  >
                     <SelectOptionText
-                      key={`${optionKey}-${index}`}
                       customFieldId={customField.data.id}
                       selectedOptionKey={optionKey}
                     />
-                  </>
+                    <Box ml="8px">
+                      <FilterToggleButton
+                        customFieldId={customField.data.id}
+                        value={optionKey}
+                      />
+                    </Box>
+                  </Box>
                 ))}
               </Text>
             </Box>
