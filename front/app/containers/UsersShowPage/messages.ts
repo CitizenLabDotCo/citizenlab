@@ -96,6 +96,10 @@ export default defineMessages({
     id: 'app.containers.UsersShowPage.loadMoreComments',
     defaultMessage: 'Load more comments',
   },
+  loadMore: {
+    id: 'app.containers.UsersShowPage.loadMore',
+    defaultMessage: 'Load more',
+  },
   memberSince: {
     id: 'app.containers.UsersShowPage.memberSince',
     defaultMessage: 'Member since {date}',
