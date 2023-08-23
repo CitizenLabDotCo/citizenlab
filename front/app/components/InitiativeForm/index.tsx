@@ -37,7 +37,7 @@ import { MessageDescriptor, FormattedMessage, useIntl } from 'utils/cl-intl';
 // typings
 import { Multiloc, Locale, UploadFile } from 'typings';
 import { ITopicData } from 'api/topics/types';
-import { FormSubmitFooter } from './SubmitFooter';
+import FormSubmitFooter from './FormSubmitFooter';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 import { IInitiativeCosponsorship } from 'api/initiatives/types';

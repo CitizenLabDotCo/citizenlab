@@ -61,8 +61,7 @@ const InitiativesNewFormWrapper = ({
   location_description,
 }: Props) => {
   const { data: appConfiguration } = useAppConfiguration();
-  const { mutate: addInitiative, isLoading: isAddingInitiative } =
-    useAddInitiative();
+  const { mutate: addInitiative } = useAddInitiative();
   const { data: authUser } = useAuthUser();
   const {
     mutateAsync: addInitiativeImage,
