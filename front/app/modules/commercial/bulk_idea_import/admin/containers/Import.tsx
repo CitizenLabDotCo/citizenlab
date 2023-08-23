@@ -24,7 +24,13 @@ import useImportIdeas from '../../api/import_ideas/useImportIdeas';
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
-import { isCLErrorsIsh } from 'utils/errorUtils';
+
+// We need a custom function to check this because
+// this endpoint does not respect the conventional
+// error object structure
+const isApiError = (e) => {
+  return Object.keys(e).length === 1 && !!e.file;
+};
 
 const Import = () => {
   const { formatMessage } = useIntl();
@@ -62,7 +68,7 @@ const Import = () => {
         return;
       }
 
-      if (isCLErrorsIsh(e)) {
+      if (isApiError(e)) {
         // this will be handled by the error returned
         // by the hook
         return;
