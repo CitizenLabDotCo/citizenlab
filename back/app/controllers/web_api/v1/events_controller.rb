@@ -11,7 +11,7 @@ class WebApi::V1::EventsController < ApplicationController
     skip_policy_scope
 
     events = EventsFinder
-      .new(params, scope: scope, current_user: current_user)
+      .new(finder_params, scope: scope, current_user: current_user)
       .find_records
 
     events = paginate SortByParamsService.new.sort_events(events, params)
@@ -116,6 +116,39 @@ class WebApi::V1::EventsController < ApplicationController
         p[:address_1] ||= p[:location_multiloc].values.first
       end
     end
+  end
+
+  def finder_params
+    params.tap do |p|
+      if p.key?(:ongoing_during)
+        p[:ongoing_during] = parse_date_range(p[:ongoing_during])
+      end
+    end
+  end
+
+  def parse_date_range(date_range)
+    raise ArgumentError, 'date_range must be a String' unless date_range.is_a?(String)
+
+    date_range = date_range.reverse.chomp('[').reverse.chomp(']')
+    # Ignore extra items if there are more than two. ("Be conservative in what you send,
+    # and liberal in what you accept.", Postel's law — at least for now)
+    start_str, end_str = date_range.split(',')
+
+    start_date = parse_date(start_str)
+    end_date = parse_date(end_str)
+    [start_date, end_date]
+  end
+
+  def parse_date(date_str)
+    date_str = date_str.strip
+    return nil if date_str.in?(['null', ''])
+
+    config_timezone.parse(date_str)
+  end
+
+  def config_timezone
+    timezone_str = AppConfiguration.instance.settings('core', 'timezone')
+    ActiveSupport::TimeZone[timezone_str] || (raise KeyError, timezone_str)
   end
 
   def default_locale

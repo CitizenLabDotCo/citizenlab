@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import reactStringReplace from 'react-string-replace';
 
 import useDeleteAnalysisInsight from 'api/analysis_insights/useDeleteAnalysisInsight';
@@ -14,6 +14,7 @@ import {
   colors,
   stylingConsts,
   Text,
+  Button,
 } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
@@ -21,6 +22,10 @@ import messages from '../messages';
 import styled from 'styled-components';
 import { useSelectedInputContext } from '../SelectedInputContext';
 import useAnalysisQuestion from 'api/analysis_questions/useAnalysisQuestion';
+import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import FilterItems from '../FilterItems';
+import Tag from '../Tags/Tag';
 
 const StyledAnswerText = styled.div`
   white-space: pre-wrap;
@@ -37,10 +42,12 @@ type Props = {
 };
 
 const Question = ({ insight }: Props) => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const { setSelectedInputId } = useSelectedInputContext();
   const { formatMessage } = useIntl();
   const { analysisId } = useParams() as { analysisId: string };
   const { mutate: deleteQuestion } = useDeleteAnalysisInsight();
+  const { data: tags } = useAnalysisTags({ analysisId });
 
   const { data: question } = useAnalysisQuestion({
     analysisId,
@@ -78,6 +85,21 @@ const Question = ({ insight }: Props) => {
 
   if (!question) return null;
   const hasFilters = !!Object.keys(question.data.attributes.filters).length;
+  const tagIds = question.data.attributes.filters.tag_ids;
+
+  const phaseId = searchParams.get('phase_id');
+
+  const handleRestoreFilters = () => {
+    setSearchParams({
+      ...(phaseId
+        ? {
+            phase_id: phaseId,
+          }
+        : {}),
+      reset_filters: 'true',
+    });
+    updateSearchParams(question.data.attributes.filters);
+  };
 
   return (
     <Box
@@ -97,27 +119,23 @@ const Question = ({ insight }: Props) => {
         >
           {hasFilters && (
             <>
-              <Box>Question for</Box>
-              {Object.entries(question.data.attributes.filters).map(
-                ([k, v]) => (
-                  <Box
-                    key={k}
-                    bgColor={colors.teal200}
-                    color={colors.teal700}
-                    py="2px"
-                    px="4px"
-                    borderRadius={stylingConsts.borderRadius}
-                  >
-                    {k}: {v}
-                  </Box>
-                )
-              )}
+              <Box>Summary for:</Box>
+              <FilterItems filters={question.data.attributes.filters} />
+              {tags?.data
+                .filter((tag) => tagIds?.includes(tag.id))
+                .map((tag) => (
+                  <Tag
+                    key={tag.id}
+                    name={tag.attributes.name}
+                    tagType={tag.attributes.tag_type}
+                  />
+                ))}
             </>
           )}
 
           {!hasFilters && (
             <>
-              <Box>Question</Box>
+              <Box>Question for all input</Box>
             </>
           )}
         </Box>
@@ -131,22 +149,25 @@ const Question = ({ insight }: Props) => {
       </Box>
       <Box
         display="flex"
-        flexDirection="row-reverse"
         gap="4px"
         alignItems="center"
+        justifyContent="space-between"
       >
-        <IconButton
-          iconName="delete"
-          onClick={() => handleQuestionDelete(insight.id)}
-          iconColor={colors.teal400}
-          iconColorOnHover={colors.teal700}
-          a11y_buttonActionMessage={formatMessage(messages.deleteQuestion)}
-        />
+        <Button buttonStyle="white" onClick={handleRestoreFilters} p="4px 12px">
+          Restore filters
+        </Button>
         {question.data.attributes.accuracy && (
           <Box color={colors.teal700}>
             Accuracy {question.data.attributes.accuracy * 100}%
           </Box>
         )}
+        <IconButton
+          iconName="delete"
+          onClick={() => handleQuestionDelete(insight.id)}
+          iconColor={colors.teal400}
+          iconColorOnHover={colors.teal700}
+          a11y_buttonActionMessage={formatMessage(messages.deleteSummary)}
+        />
       </Box>
     </Box>
   );
