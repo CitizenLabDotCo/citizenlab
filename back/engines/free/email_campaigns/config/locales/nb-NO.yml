@@ -184,7 +184,7 @@
     initiative_assigned_to_you:
       by_author: 'av %{authorName}'
       cta_reply_to: 'Gi en tilbakemelding til %{authorName}'
-      event_description_initiative: 'Et forslag har blitt tildelt deg. Gi tilbakemelding ved å skrive en offisiell oppdatering eller ved å endre statusen.'
+      event_description_initiative: 'An initiative has been assigned to you. Give feedback by writing an official update or by changing its status.'
       main_header: '%{firstName}, du har en ny oppgave'
       subject: 'Du har en ny oppgave på plattformen til %{organizationName}'
       preheader_initiative: 'The initiative of %{authorName} has been assigned to you'
