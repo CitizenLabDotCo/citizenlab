@@ -1,6 +1,7 @@
 import { useSearchParams } from 'react-router-dom';
 import { handleArraySearchParam } from '../util';
 import { useMemo } from 'react';
+import { IInputsFilterParams } from 'api/analysis_inputs/types';
 
 const STATIC_SCALAR_FILTERS = [
   'search',
@@ -48,7 +49,7 @@ const useAnalysisFilterParams = () => {
     return JSON.parse(jsonFilters);
   }, [jsonFilters]);
 
-  return stableFilters;
+  return stableFilters as IInputsFilterParams;
 };
 
 export default useAnalysisFilterParams;

@@ -48,6 +48,7 @@ const SummarizeButton = ({ inputsCount }: Props) => {
         onClick={handleSummaryCreate}
         disabled={!summaryPossible}
         processing={isLoadingPreCheck || isLoadingSummary}
+        whiteSpace="wrap"
       >
         {summaryPossible &&
           summaryAccuracy &&
