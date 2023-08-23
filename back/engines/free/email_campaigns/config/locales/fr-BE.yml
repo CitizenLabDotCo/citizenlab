@@ -184,7 +184,7 @@ fr-BE:
     initiative_assigned_to_you:
       by_author: 'par %{authorName}'
       cta_reply_to: 'Donner un feedback à %{authorName}'
-      event_description_initiative: 'Une proposition vous a été assignée. Mettez-la à jour en écrivant un commentaire officiel ou en changeant son statut.'
+      event_description_initiative: 'Une initiative vous a été attribuée. Envoyer une mise à jour en écrivant un commentaire officiel ou en changeant son statut.'
       main_header: '%{firstName}, vous avez une nouvelle attribution'
       subject: 'Vous avez une attribution sur la plate-forme de %{organizationName}'
       preheader_initiative: 'L''initiative de %{authorName} vous a été attribuée'
