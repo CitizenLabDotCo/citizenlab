@@ -40,7 +40,6 @@ module IdNemlogIn
     def fetch_token(request)
       super || request.params['RelayState']
     end
-    protected_methods :fetch_token
 
     def replace_token_param!(env)
       request = Rack::Request.new(env)
