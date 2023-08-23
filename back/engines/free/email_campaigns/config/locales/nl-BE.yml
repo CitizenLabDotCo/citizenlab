@@ -77,7 +77,7 @@ nl-BE:
       "statement": "Je kreeg deze e-mail van CitizenLab in naam van %{organizationName} omdat je geregistreerd bent als gebruiker op %{organizationLink}. Je kan je %{unsubscribeLink} als je deze e-mails niet meer wil ontvangen in de toekomst."
       "unsubscribe_text": "uitschrijven"
     follow:
-      "unfollow_here": "Je hebt deze melding ontvangen vanwege een item dat je volgt. <a href=\"%{unfollow_url}\">Je kunt het hier unfollowen.</a>"
+      "unfollow_here": "Je hebt deze melding ontvangen vanwege een item dat je volgt. <a href=\"%{unfollow_url}\">Je kunt het hier ontvolgen.</a>"
     comment_deleted_by_admin:
       reason: 'De reden waarom je reactie is verwijderd:'
       cta_view: 'Bekijk dit idee'
@@ -345,14 +345,14 @@ nl-BE:
       main_header: '''%{post}'' heeft een nieuwe interne reactie'
       preheader: '''%{post}'' heeft een nieuwe interne reactie'
     official_feedback_on_idea_you_follow:
-      header_message: '%{officialName} gaf een update bij het idee ''%{ideaTitle}''. Klik op de onderstaande knop om het gesprek voort te zetten met %{officialName}.'
-      header_title: 'Er is een update van een idee dat je volgt'
-      subject: 'Een idee dat je volgt heeft een officiële update gekregen op het platform van %{organizationName}'
-      preheader: 'Er is een update van een idee dat je volgt'
+      header_message: '%{officialName} gaf een update over het idee ''%{ideaTitle}''. Klik op de onderstaande knop om het gesprek voort te zetten met %{officialName}.'
+      header_title: 'Er is een update over een idee dat je volgt'
+      subject: 'Een idee dat je volgt, heeft een officiële update gekregen op het platform van %{organizationName}'
+      preheader: 'Er is een update over een idee dat je volgt'
     official_feedback_on_initiative_you_follow:
       header_message: '%{officialName} gaf een update over het voorstel ''%{initiativeTitle}''. Klik op de onderstaande knop om het gesprek voort te zetten met %{organizationName}.'
       header_title: 'Er is een update over een voorstel dat je volgt'
-      subject: 'Een voorstel dat je volgt heeft een officiële update gekregen op het platform van %{organizationName}'
+      subject: 'Een voorstel dat je volgt, heeft een officiële update gekregen op het platform van %{organizationName}'
       preheader: 'Er is een update over een voorstel dat je volgt'
     mention_in_official_feedback:
       cta_reply_to: 'Antwoord op %{organizationName}'
@@ -407,22 +407,22 @@ nl-BE:
       subject: 'Zet alles klaar voor de nieuwe fase van %{projectName}'
       preheader: 'Een nieuwe fase gaat binnenkort van start voor %{projectName}'
     project_published:
-      subject: 'Op het platform van %{organizationName}is een nieuw project gepubliceerd.'
+      subject: 'Er is een nieuw project gepubliceerd op het platform van %{organizationName}'
       header_title: 'Er is een nieuw project gepubliceerd'
       header_message: 'Het participatieplatform van %{organizationName} heeft zojuist het volgende project gepubliceerd:'
       preheader: 'Er is een nieuw project gepubliceerd'
     status_change_on_idea_you_follow:
       status_change: 'De nieuwe status van dit idee is ''%{ideaStatus}'''
       header_message: '%{organizationName} heeft de status van het idee ''%{ideaTitle}'' op hun digitale participatieplatform bijgewerkt.'
-      header_title: 'Een idee dat je volgt heeft een nieuwe status'
-      subject: 'De status van een idee dat je volgt is gewijzigd'
-      preheader: 'Een idee dat je volgt heeft een nieuwe status'
+      header_title: 'Een idee dat je volgt, heeft een nieuwe status'
+      subject: 'De status van een idee dat je volgt, is gewijzigd'
+      preheader: 'Een idee dat je volgt, heeft een nieuwe status'
     status_change_on_initiative_you_follow:
       status_change: 'De nieuwe status van dit voorstel is ''%{initiativeStatus}'''
       header_message: 'De status van het voorstel ''%{initiativeTitle}'' is bijgewerkt op het digitale participatieplatform van %{organizationName}.'
-      header_title: 'Een voorstel dat je volgt heeft een nieuwe status'
-      subject: 'De status van een voorstel dat je volgt is gewijzigd'
-      preheader: 'Een voorstel dat je volgt heeft een nieuwe status'
+      header_title: 'Een voorstel dat je volgt, heeft een nieuwe status'
+      subject: 'De status van een voorstel dat je volgt, is gewijzigd'
+      preheader: 'Een voorstel dat je volgt, heeft een nieuwe status'
     user_digest:
       subject: "Wekelijkse update van het participatieplatform van %{organizationName}"
       commented: "%{authorFirstName} schreef:"
@@ -568,7 +568,7 @@ nl-BE:
         users_who_engaged_with_the_project: 'Gebruikers die zich met het project bezighielden'
         users_who_engaged_with_the_proposal: 'Gebruikers die zich met het voorstel bezighielden'
         users_who_follow_the_proposal: 'Gebruiker die het voorstel volgt'
-        users_who_follow_the_input: 'Gebruiker die de invoer volgt'
+        users_who_follow_the_input: 'Gebruiker die de bijdrage volgt'
         users_who_follow_the_project: 'Gebruikers die het project volgen'
         user_who_voted: 'Gebruiker die heeft gestemd'
         user_with_unsubmitted_votes: 'Gebruiker die nog geen stem heeft uitgebracht'
