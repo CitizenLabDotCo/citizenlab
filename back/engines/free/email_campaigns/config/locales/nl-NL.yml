@@ -184,7 +184,7 @@ nl:
     initiative_assigned_to_you:
       by_author: 'door %{authorName}'
       cta_reply_to: 'Geef feedback op %{authorName}'
-      event_description_initiative: 'Een voorstel is aan jou toegewezen. Geef feedback door het schrijven van een officiële update of door het wijzigen van de status van dit voorstel.'
+      event_description_initiative: 'Je kreeg een voorstel toegewezen. Geef feedback door het schrijven van een officiële update of door het wijzigen van de status van dit voorstel.'
       main_header: '%{firstName}, je hebt een nieuwe toewijzing'
       subject: 'Je hebt een toewijzing op het platform van %{organizationName}'
       preheader_initiative: 'Je kreeg het voorstel van %{authorName} toegewezen'
