@@ -6,6 +6,7 @@ import useLocale from 'hooks/useLocale';
 
 // router
 import { useParams } from 'react-router-dom';
+import Link from 'utils/cl-router/Link';
 
 // components
 import { Box, Text, Spinner } from '@citizenlab/cl2-component-library';
@@ -16,24 +17,9 @@ import FileUploader from 'components/UI/FileUploader';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// styling
-import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
-
 // typings
 import { UploadFile, Locale } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
-
-const TextButton = styled.button`
-  all: unset;
-  display: inline;
-  cursor: pointer;
-  text-decoration-line: underline;
-
-  &:hover {
-    color: ${colors.grey600};
-  }
-`;
 
 interface Props {
   onFinishImport: () => void;
@@ -75,9 +61,9 @@ const ImportSection = ({ onFinishImport }: Props) => {
                 <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
               ),
               hereLink: (
-                <TextButton>
+                <Link to={`/admin/projects/${projectId}/ideaform`}>
                   <FormattedMessage {...messages.here} />
-                </TextButton>
+                </Link>
               ),
             }}
           />
