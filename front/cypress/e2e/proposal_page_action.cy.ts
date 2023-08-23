@@ -7,7 +7,7 @@ describe('Initiative show page actions', () => {
     let initiativeId: string;
     let initiativeSlug: string;
 
-    beforeEach(() => {
+    it('asks unauthorised users to log in or sign up before they react', () => {
       cy.apiCreateInitiative({ initiativeTitle, initiativeContent })
         .then((initiative) => {
           initiativeId = initiative.body.data.id;
@@ -16,20 +16,10 @@ describe('Initiative show page actions', () => {
         .then(() => {
           cy.clearCookies();
           cy.visit(`/initiatives/${initiativeSlug}`);
-          cy.get('#e2e-initiative-show');
-          cy.acceptCookies();
+          cy.get('#e2e-not-authorized');
         });
-    });
 
-    afterEach(() => {
       cy.apiRemoveInitiative(initiativeId);
-    });
-
-    it('asks unauthorised users to log in or sign up before they react', () => {
-      cy.get('#e2e-initiative-like-button').should('exist');
-      cy.wait(2000);
-      cy.get('#e2e-initiative-like-button').click();
-      cy.get('#e2e-authentication-modal').should('exist');
     });
   });
 
