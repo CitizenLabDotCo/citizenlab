@@ -14,7 +14,7 @@ import Avatar from 'components/Avatar';
 import { getFullName } from 'utils/textUtils';
 import { useParams } from 'react-router-dom';
 import useAnalysis from 'api/analyses/useAnalysis';
-import ShortFieldValue from './ShortFieldValue';
+import InputShortFieldValue from './FieldValue';
 
 interface Props {
   input: IInputsData;
@@ -108,8 +108,9 @@ const InputListItem = memo(({ input, onSelect, selected }: Props) => {
                     textOverflow="ellipsis"
                     overflow="hidden"
                     whiteSpace="nowrap"
+                    minWidth="0"
                   >
-                    <ShortFieldValue
+                    <InputShortFieldValue
                       customFieldId={customField.id}
                       input={input}
                       projectId={analysis.data.relationships.project?.data?.id}

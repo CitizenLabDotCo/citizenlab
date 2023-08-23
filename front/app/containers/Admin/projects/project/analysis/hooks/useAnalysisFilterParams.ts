@@ -27,12 +27,12 @@ const useAnalysisFilterParams = () => {
   const filters = Object.entries(allParams).reduce(
     (accumulator, [key, value]) => {
       if (
-        key.match(/^author_custom_([a-f0-9-]+)$/) ||
+        key.match(/^(author|input)_custom_([a-f0-9-]+)$/) ||
         STATIC_ARRAY_FILTERS.includes(key)
       ) {
         accumulator[key] = handleArraySearchParam(searchParams, key);
       } else if (
-        key.match(/^author_custom_([a-f0-9-]+)_(from|to)$/) ||
+        key.match(/^(author|input)_custom_([a-f0-9-]+)_(from|to)$/) ||
         STATIC_SCALAR_FILTERS.includes(key)
       ) {
         accumulator[key] = value;
