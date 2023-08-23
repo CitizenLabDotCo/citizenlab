@@ -120,7 +120,10 @@ const Summary = ({ insight }: Props) => {
           {hasFilters && (
             <>
               <Box>Summary for:</Box>
-              <FilterItems filters={summary.data.attributes.filters} />
+              <FilterItems
+                filters={summary.data.attributes.filters}
+                isEditable={false}
+              />
               {tags?.data
                 .filter((tag) => tagIds?.includes(tag.id))
                 .map((tag) => (
