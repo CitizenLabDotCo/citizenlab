@@ -184,7 +184,7 @@ sr-Latn:
     initiative_assigned_to_you:
       by_author: 'od %{authorName}'
       cta_reply_to: 'Pošaljite utiske za %{authorName}'
-      event_description_initiative: 'A proposal has been assigned to you. Give feedback by writing an official update or by changing its status.'
+      event_description_initiative: 'Dodeljen vam je predlog. Ažurirajte informacije pisanjem zvaničnog obaveštenja ili promenom njegovog statusa.'
       main_header: '%{firstName}, imate novi zadatak'
       subject: 'Imate zadatak na %{organizationName} platformi '
       preheader_initiative: 'Dodeljen vam je predlog od %{authorName}'
