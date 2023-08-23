@@ -797,6 +797,8 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPdf": "PDF içe aktar",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedIdeas": "İthal fikirler",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet": "Henüz incelenecek bir fikir yok. Taranmış fikir formlarını içeren bir PDF dosyasını içe aktarmak için \"{importPdf}\" adresini tıklayın.",
+  "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "Bu proje fikir içerebilecek herhangi bir aşama içermemektedir.",
+  "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAnotherPhase": "Lütfen başka bir aşama seçin.",
   "app.containers.Admin.projects.project.offlineInputs.approve": "Onaylamak",
   "app.containers.Admin.projects.project.offlineInputs.delete": "Silme",
   "app.containers.Admin.projects.project.survey.analysisButton": "Analiz oluşturun",
