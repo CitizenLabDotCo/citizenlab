@@ -208,6 +208,7 @@ commercial_engines = [
   'id_bosa_fas',
   'id_clave_unica',
   'id_cow',
+  'id_criipto',
   'id_franceconnect',
   'id_gent_rrn',
   'id_id_card_lookup',

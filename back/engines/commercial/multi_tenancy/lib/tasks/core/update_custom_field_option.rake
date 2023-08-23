@@ -42,4 +42,37 @@ namespace :cl2back do
 
     puts "Updated custom field option value (for specific locale) for #{n} tenants"
   end
+
+  # This task will update ANY existing value for a specific locale, for all tenants.
+  desc 'Update a specific custom field option title_multiloc, from ANY VALUE, for one specific locale, for all tenants'
+  # Examples of usage:
+  # Dry run (no changes): rake cl2back:update_custom_field_option_from_any_value['unspecified','de-DE','Divers']
+  # Execute (updates records!):
+  #  rake cl2back:update_custom_field_option_from_any_value['unspecified','de-DE','Divers','execute']
+  task :update_custom_field_option_from_any_value, %i[option_key locale new_value execute] => [:environment] do |_t, args|
+    live_run = true if args[:execute] == 'execute'
+    option_key = args[:option_key]
+    locale = args[:locale]
+    new_value = args[:new_value]
+    n = 0
+
+    puts "live_run: #{live_run ? 'true' : 'false'}"
+
+    Tenant.switch_each do |tenant|
+      puts "Processing tenant: #{tenant.name}..."
+
+      option = CustomFieldOption.find_by(key: option_key)
+
+      if option&.title_multiloc&.key?(locale) && option.title_multiloc[locale] != new_value
+        old_value = option.title_multiloc[locale]
+        option.title_multiloc[locale] = new_value
+        option.save! if live_run
+        n += 1
+        puts "Updated option with key: #{option_key}, title_multiloc value for locale: #{locale}; " \
+             "#{old_value}, to be: #{new_value}"
+      end
+    end
+
+    puts "Updated custom field option value (for specific locale) for #{n} tenants"
+  end
 end

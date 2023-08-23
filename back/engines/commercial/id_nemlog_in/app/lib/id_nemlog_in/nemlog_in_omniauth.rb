@@ -12,7 +12,7 @@ module IdNemlogIn
       },
       production_integration: {
         # https://tu.nemlog-in.dk/oprettelse-og-administration-af-tjenester/log-in/dokumentation.og.guides/integrationstestmiljo/
-        metadata_xml_file: File.join(IdNemlogIn::Engine.root, 'config', 'saml', 'production_integration.xml')
+        metadata_xml_file: File.join(IdNemlogIn::Engine.root, 'config', 'saml', 'idp_metadata', 'production_integration.xml')
       },
       production: {
         # https://tu.nemlog-in.dk/oprettelse-og-administration-af-tjenester/log-in/dokumentation.og.guides/produktionsmiljo/

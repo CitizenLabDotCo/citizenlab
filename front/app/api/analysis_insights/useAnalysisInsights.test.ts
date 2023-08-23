@@ -1,32 +1,32 @@
 import { renderHook } from '@testing-library/react-hooks';
 
-import useAnalysisSummaries from './useAnalysisSummaries';
+import useAnalysisInsights from './useAnalysisInsights';
 
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { summariesData } from './__mocks__/useAnalysisSummaries';
-import { ISummaryParams } from './types';
+import { insightsData } from './__mocks__/useAnalysisInsights';
+import { IInsightsParams } from './types';
 
-const apiPath = '*/analyses/:analysisId/summaries';
+const apiPath = '*/analyses/:analysisId/insights';
 
-const params: ISummaryParams = {
+const params: IInsightsParams = {
   analysisId: '1',
 };
 
 const server = setupServer(
   rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: summariesData }));
+    return res(ctx.status(200), ctx.json({ data: insightsData }));
   })
 );
 
-describe('useAnalysisSummaries', () => {
+describe('useAnalysisInsights', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useAnalysisSummaries(params), {
+    const { result, waitFor } = renderHook(() => useAnalysisInsights(params), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -35,7 +35,7 @@ describe('useAnalysisSummaries', () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
     expect(result.current.isLoading).toBe(false);
-    expect(result.current.data?.data).toEqual(summariesData);
+    expect(result.current.data?.data).toEqual(insightsData);
   });
 
   it('returns error correctly', async () => {
@@ -45,7 +45,7 @@ describe('useAnalysisSummaries', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useAnalysisSummaries(params), {
+    const { result, waitFor } = renderHook(() => useAnalysisInsights(params), {
       wrapper: createQueryClientWrapper(),
     });
 

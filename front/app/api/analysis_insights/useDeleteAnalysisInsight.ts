@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import fetcher from 'utils/cl-react-query/fetcher';
-import summariesKeys from './keys';
+import insightsKeys from './keys';
 
-const deleteSummary = ({
+const deleteInsight = ({
   analysisId,
   id,
 }: {
@@ -10,21 +10,21 @@ const deleteSummary = ({
   id: string;
 }) =>
   fetcher({
-    path: `/analyses/${analysisId}/summaries/${id}`,
+    path: `/analyses/${analysisId}/insights/${id}`,
     action: 'delete',
   });
 
-const useDeleteAnalysisSummary = () => {
+const useDeleteAnalysisInsight = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: deleteSummary,
+    mutationFn: deleteInsight,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: summariesKeys.lists(),
+        queryKey: insightsKeys.lists(),
       });
     },
   });
 };
 
-export default useDeleteAnalysisSummary;
+export default useDeleteAnalysisInsight;

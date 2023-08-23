@@ -7,8 +7,8 @@ module Analysis
     extend ActiveSupport::Concern
 
     included do
-      def filters
-        correct_array_null_values(input_filter_params.to_h)
+      def filters(filter_params = params)
+        correct_array_null_values(input_filter_params(filter_params).to_h)
       end
 
       # Rails interprets the url query param `?tag_ids[]=` as `tag_ids: [""]`
@@ -25,19 +25,19 @@ module Analysis
         end
       end
 
-      def input_filter_params
+      def input_filter_params(filter_params = params)
         permitted_dynamic_keys = []
         permitted_dynamic_array_keys = { tag_ids: [] }
 
-        params.each_key do |key|
-          if key.match?(/^author_custom_([a-f0-9-]+)_(from|to)$/)
+        filter_params.each_key do |key|
+          if key.match?(/^(author|input)_custom_([a-f0-9-]+)_(from|to)$/)
             permitted_dynamic_keys << key
-          elsif key.match?(/^author_custom_([a-f0-9-]+)$/)
+          elsif key.match?(/^(author|input)_custom_([a-f0-9-]+)$/)
             permitted_dynamic_array_keys[key] = []
           end
         end
 
-        params.permit(
+        filter_params.permit(
           :search,
           :published_at_from,
           :published_at_to,
