@@ -126,7 +126,7 @@ const Summary = ({ insight }: Props) => {
         >
           {hasFilters && (
             <>
-              <Box>Summary for:</Box>
+              <Box>Summary for</Box>
               <FilterItems
                 filters={summary.data.attributes.filters}
                 isEditable={false}
