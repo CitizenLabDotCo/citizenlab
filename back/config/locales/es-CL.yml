@@ -219,7 +219,7 @@ es-CL:
       title: 'Fin de la encuesta'
       description: "Envíe sus respuestas seleccionando \"Enviar encuesta\" a continuación."
     pdf_export:
-      full_name: 'Nombre y apellidos'
+      full_name: 'Nombre completo'
       email_address: 'Dirección de correo electrónico'
   project_copy:
     title_suffix: 'Copia'
