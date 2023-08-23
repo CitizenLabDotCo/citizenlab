@@ -1,5 +1,10 @@
 import React from 'react';
-import { Box, Text, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Text,
+  colors,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 import useFollowers from 'api/follow_unfollow/useFollowers';
 import IdeaCard from 'components/IdeaCard';
 import { FollowableObject } from 'api/follow_unfollow/types';
@@ -20,6 +25,7 @@ const UserFollowingList = ({ userId, value }: Props) => {
   const { data: followers, isLoading } = useFollowers({
     followableObject: value,
   });
+  const isSmallerThanPhone = useBreakpoint('phone');
   const isFollowingEnabled = useFeatureFlag({
     name: 'follow',
   });
@@ -61,7 +67,11 @@ const UserFollowingList = ({ userId, value }: Props) => {
                 <Box
                   key={follower.id}
                   display="flex"
-                  flex="1 0 calc(100% * (1 / 3) - 26px)"
+                  flexGrow={0}
+                  // flex="1 0 calc(100% * (1 / 3) - 26px)"
+                  w={
+                    isSmallerThanPhone ? '100%' : 'calc(100% * (1 / 3) - 26px)'
+                  }
                 >
                   <InitiativeCard
                     initiativeId={follower.relationships.followable.data.id}
