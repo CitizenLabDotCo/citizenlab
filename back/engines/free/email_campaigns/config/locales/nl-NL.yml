@@ -142,7 +142,7 @@ nl:
       subject: 'Je hebt een reactie gekregen op het platform van %{organizationName}'
       preheader: '%{authorName} reageerde op jouw voorstel voor %{organizationName}'
     cosponsor_of_your_initiative:
-      cta_reply_to: 'Je voorstel bekijken'
+      cta_reply_to: 'Bekijk je voorstel'
       event_description_initiative: 'Gefeliciteerd! %{cosponsorName} heeft je uitnodiging geaccepteerd om je voorstel te sponsoren.'
       event_description_cosponsoring: 'Medesponsor zijn van een voorstel betekent dat <strong>jouw naam wordt weergegeven</strong> met de namen van andere medesponsors van het voorstel.'
       main_header: '%{cosponsorName} heeft je uitnodiging geaccepteerd om je voorstel te ondersteunen'
@@ -184,7 +184,7 @@ nl:
     initiative_assigned_to_you:
       by_author: 'door %{authorName}'
       cta_reply_to: 'Geef feedback op %{authorName}'
-      event_description_initiative: 'Je kreeg een voorstel toegewezen. Geef feedback door het schrijven van een officiële update of door het wijzigen van de status van dit voorstel.'
+      event_description_initiative: 'Een voorstel is aan jou toegewezen. Geef feedback door het schrijven van een officiële update of door het wijzigen van de status van dit voorstel.'
       main_header: '%{firstName}, je hebt een nieuwe toewijzing'
       subject: 'Je hebt een toewijzing op het platform van %{organizationName}'
       preheader_initiative: 'Je kreeg het voorstel van %{authorName} toegewezen'
@@ -200,9 +200,9 @@ nl:
       by_author: 'door %{authorName}'
       cta_reply_to: 'Geef %{authorName} feedback'
       event_description_initiative: 'Een voorstel is opnieuw ingediend voor beoordeling. Geef feedback door een officiële update te schrijven of door de status te wijzigen.'
-      main_header: '%{firstName}je hebt een voorstel om te beoordelen'
+      main_header: '%{firstName}, je hebt een voorstel om te beoordelen'
       subject: 'Je moet een voorstel beoordelen op het platform van %{organizationName}'
-      preheader_initiative: 'Het voorstel van %{authorName} is opnieuw ter beoordeling ingediend.'
+      preheader_initiative: 'Het voorstel van %{authorName} is opnieuw ter beoordeling ingediend'
     invite_reminder:
       cta_accept_invitation: 'Aanvaard je uitnodiging'
       invitation_header: 'Je hebt je uitnodiging nog niet geaccepteerd'
