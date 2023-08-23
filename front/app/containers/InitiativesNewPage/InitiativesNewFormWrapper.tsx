@@ -38,6 +38,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import useUpdateInitiative from 'api/initiatives/useUpdateInitiative';
 import useAddInitiativeFile from 'api/initiative_files/useAddInitiativeFile';
 import useDeleteInitiativeFile from 'api/initiative_files/useDeleteInitiativeFile';
+import { MentionItem } from 'react-mentions';
 
 const StyledInitiativeForm = styled(InitiativeForm)`
   width: 100%;
@@ -76,6 +77,7 @@ const InitiativesNewFormWrapper = ({
     body_multiloc: undefined,
     topic_ids: [],
     position: location_description,
+    cosponsor_ids: [],
   };
   const [postAnonymously, setPostAnonymously] = useState(false);
   const [formValues, setFormValues] = useState<SimpleFormValues>(initialValues);
@@ -142,8 +144,13 @@ const InitiativesNewFormWrapper = ({
     banner: UploadFile | undefined | null
   ) => {
     // build API readable object
-    const { title_multiloc, body_multiloc, topic_ids, position } =
-      changedValues;
+    const {
+      title_multiloc,
+      body_multiloc,
+      topic_ids,
+      position,
+      cosponsor_ids,
+    } = changedValues;
 
     const positionInfo = await parsePosition(position ?? location_description);
     // removes undefined values, not null values that are used to remove previously used values
@@ -153,6 +160,7 @@ const InitiativesNewFormWrapper = ({
         body_multiloc,
         topic_ids,
         ...positionInfo,
+        cosponsor_ids,
       },
       (entry) => entry === undefined
     );
@@ -345,6 +353,15 @@ const InitiativesNewFormWrapper = ({
     }));
   };
 
+  const onChangeCosponsors = (cosponsors: MentionItem[]) => {
+    const cosponsor_ids = cosponsors.map((cosponsor) => cosponsor.id);
+
+    setFormValues((formValues) => ({
+      ...formValues,
+      cosponsor_ids,
+    }));
+  };
+
   const onChangeBanner = (newValue: UploadFile | null) => {
     setBanner(newValue);
     setHasBannerChanged(true);
@@ -468,6 +485,7 @@ const InitiativesNewFormWrapper = ({
         onChangeBody={onChangeBody}
         onChangeTopics={onChangeTopics}
         onChangePosition={onChangePosition}
+        onChangeCosponsors={onChangeCosponsors}
         onChangeBanner={onChangeBanner}
         onChangeImage={onChangeImage}
         onAddFile={onAddFile}
