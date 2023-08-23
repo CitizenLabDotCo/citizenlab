@@ -8,6 +8,8 @@ import Areas from 'components/Areas';
 import UserFollowingList from './UserFollowingList';
 import useAuthUser from 'api/me/useAuthUser';
 import FilterTabs, { TabData } from 'components/UI/FilterTabs';
+import tracks from 'components/FollowUnfollow/tracks';
+import { trackEventByName } from 'utils/analytics';
 
 type FollowableValue = FollowableObject | 'Topics' | 'Areas';
 
@@ -46,6 +48,8 @@ const Following = ({ userId }: Props) => {
   const getScreenReaderTextForTab = (tab: string) => (
     <FormattedMessage {...tabData[tab].label} />
   );
+
+  trackEventByName(tracks.browseFollowsInActivityPage);
 
   return (
     <Box display="flex" w="100%" flexDirection="column">
