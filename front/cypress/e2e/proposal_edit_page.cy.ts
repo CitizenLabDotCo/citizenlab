@@ -63,7 +63,7 @@
 //       .should('have.length', 1);
 
 //     // save the form
-//     cy.get('.e2e-initiative-publish-button').find('.e2e-submit-form').click();
+//     cy.get('#e2e-initiative-publish-button').click();
 
 //     // verify redirect to the initiative page
 //     cy.location('pathname').should(

@@ -547,7 +547,6 @@ const InitiativeForm = ({
         )}
 
       <FormSubmitFooter
-        className="e2e-initiative-publish-button"
         message={
           initiativeReviewRequired
             ? messages.submitButton

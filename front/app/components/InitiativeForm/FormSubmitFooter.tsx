@@ -78,13 +78,13 @@ const FormSubmitFooter = ({
       <StyledContentContainer mode="page">
         <SubmitFooterInner>
           <StyledButton
+            id="e2e-initiative-publish-button"
             fontWeight="500"
             padding="13px 22px"
             bgColor={theme.colors.tenantPrimary}
             textColor="#FFF"
             type="submit"
             onClick={onSubmit}
-            className="e2e-submit-form"
             disabled={disabled}
             ariaDisabled={disabled}
             processing={processing}
