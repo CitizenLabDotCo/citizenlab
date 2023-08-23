@@ -120,7 +120,10 @@ const Question = ({ insight }: Props) => {
           {hasFilters && (
             <>
               <Box>Summary for:</Box>
-              <FilterItems filters={question.data.attributes.filters} />
+              <FilterItems
+                filters={question.data.attributes.filters}
+                isEditable
+              />
               {tags?.data
                 .filter((tag) => tagIds?.includes(tag.id))
                 .map((tag) => (
