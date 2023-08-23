@@ -281,7 +281,7 @@ module MultiTenancy
             initiatives: {
               enabled: true,
               allowed: true,
-              require_review: true,
+              require_review: false,
               reacting_threshold: 20,
               days_limit: 5,
               threshold_reached_message: MultilocService.new.i18n_to_multiloc(
