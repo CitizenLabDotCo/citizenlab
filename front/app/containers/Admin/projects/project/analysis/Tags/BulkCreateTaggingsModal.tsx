@@ -17,6 +17,7 @@ import Tag from './Tag';
 import useAddAnalysisBulkTagging from 'api/analysis_taggings/useAnalysisBulkTaggings';
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 import { Divider } from 'semantic-ui-react';
+import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
 
 const BulkCreateTaggingsModal = ({
   onCloseModal,
@@ -32,6 +33,10 @@ const BulkCreateTaggingsModal = ({
   const { mutate: bulkAddTaggings, isLoading: isBulkLoading } =
     useAddAnalysisBulkTagging();
   const { data: tags } = useAnalysisTags({ analysisId });
+  const { data: inputs } = useInfiniteAnalysisInputs({
+    analysisId,
+    queryParams: filters,
+  });
 
   const { formatMessage } = useIntl();
 
@@ -70,11 +75,11 @@ const BulkCreateTaggingsModal = ({
     }
   };
 
-  const filteredInputsTotal = tags?.meta.filtered_inputs_total || 1;
+  const inputsCount = inputs?.pages[0].meta.filtered_count;
 
   return (
     <Box>
-      <Title>Bulk tag {filteredInputsTotal} inputs</Title>
+      <Title>Bulk tag {inputsCount} inputs</Title>
       <Text> Select a tag to add your input to: </Text>
       <Box display="flex" flexWrap="wrap" gap="8px">
         {tags?.data.map((tag) => (
