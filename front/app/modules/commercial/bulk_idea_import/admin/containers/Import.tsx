@@ -24,6 +24,7 @@ import useImportIdeas from '../../api/import_ideas/useImportIdeas';
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
+import { isCLErrorsIsh } from 'utils/errorUtils';
 
 const Import = () => {
   const { formatMessage } = useIntl();
@@ -58,6 +59,12 @@ const Import = () => {
     } catch (e) {
       if (e?.message === 'Gateway timeout') {
         setIdeasTakingLong(true);
+        return;
+      }
+
+      if (isCLErrorsIsh(e)) {
+        // this will be handled by the error returned
+        // by the hook
         return;
       }
 
