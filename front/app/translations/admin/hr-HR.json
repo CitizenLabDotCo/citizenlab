@@ -1848,6 +1848,8 @@
   "app.containers.AdminPage.projects.all.existingProjects": "Postojeći projekti",
   "app.containers.AdminPage.projects.all.newProjectFolder": "Kreirajte mapu projekta",
   "app.containers.AdminPage.projects.all.projectsAndFolders": "Projekti i mape",
+  "app.containers.AdminPage.projects.project.analysis.Insights.deleteQuestion": "Izbriši pitanje",
+  "app.containers.AdminPage.projects.project.analysis.Insights.deleteQuestionConfirmation": "Jeste li sigurni da želite izbrisati ovo pitanje?",
   "app.containers.AdminPage.projects.project.analysis.Insights.deleteSummary": "Izbriši sažetak",
   "app.containers.AdminPage.projects.project.analysis.Insights.deleteSummaryConfirmation": "Jeste li sigurni da želite izbrisati ove sažetke?",
   "app.containers.AdminPage.projects.project.analysis.Tags.addTag": "Dodaj oznaku",
