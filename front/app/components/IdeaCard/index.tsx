@@ -152,6 +152,7 @@ const IdeaCard = memo<IdeaCardProps>(
             />
           )
         }
+        innerHeight={showFollowButton ? '192px' : undefined}
         body={hideBody ? undefined : <Body idea={idea} />}
         interactions={
           hideInteractions ? null : (
