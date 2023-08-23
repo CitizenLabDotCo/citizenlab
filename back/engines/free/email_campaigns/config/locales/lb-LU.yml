@@ -184,7 +184,7 @@ lb:
     initiative_assigned_to_you:
       by_author: 'vun %{authorName}'
       cta_reply_to: '%{authorName} Feedback ginn'
-      event_description_initiative: 'Eng Propositioun gouf Iech zougewisen. Gitt Feedback andeems Dir en offiziellen Update schreift oder duerch säi Status z''änneren.'
+      event_description_initiative: 'Eng Propositioun gouf Iech zougewisen. Gitt Feedback, andeem Dir en offiziellen Update schreift oder de Status ännert.'
       main_header: '%{firstName}, Dir hutt eng nei Zouweisung'
       subject: 'Dir hutt eng Zouweisung op der Plattform vun %{organizationName}'
       preheader_initiative: 'De Virschlag vum %{authorName} gouf Iech zougewisen'
