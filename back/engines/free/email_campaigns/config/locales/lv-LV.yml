@@ -184,7 +184,7 @@ lv:
     initiative_assigned_to_you:
       by_author: 'autors: %{authorName}'
       cta_reply_to: 'Sniedziet atsauksmi %{authorName}'
-      event_description_initiative: 'Jums ir piešķirts priekšlikums. Sniedziet atsauksmes, rakstot oficiālu atjauninājumu vai mainot tā statusu.'
+      event_description_initiative: 'Jums ir piešķirts priekšlikums. Sniedziet atsauksmes, rakstot oficiālu atjauninātu informāciju vai mainot tās statusu.'
       main_header: '%{firstName}, jums ir jauns uzdevums'
       subject: 'Jums ir uzdevums %{organizationName} platformā'
       preheader_initiative: 'Jums ir piešķirts %{authorName} priekšlikums'
