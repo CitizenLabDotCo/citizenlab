@@ -184,7 +184,7 @@ it:
     initiative_assigned_to_you:
       by_author: 'da %{authorName}'
       cta_reply_to: 'Dai un feedback a %{authorName}'
-      event_description_initiative: 'Ti è stata assegnata una proposta. Fornisci un feedback scrivendo un aggiornamento ufficiale o modificando il suo stato.'
+      event_description_initiative: 'Ti è stata assegnata una proposta. Dai un feedback scrivendo un aggiornamento ufficiale o cambiando il suo stato.'
       main_header: '%{firstName}, hai un nuovo incarico'
       subject: 'Hai un compito sulla piattaforma di %{organizationName}'
       preheader_initiative: 'La proposta di %{authorName} ti è stata assegnata'
