@@ -30,9 +30,9 @@ export default defineMessages({
     defaultMessage: 'File imported successfully!',
   },
   ideasBeingImported: {
-    id: 'app.containers.admin.import.ideasBeingImported',
+    id: 'app.containers.admin.import.ideasBeingImported2',
     defaultMessage:
-      'Your ideas are being imported. This can take a while. Please do not close this page until the import is completed successfully- we will let you know when it is.',
+      'Your ideas are being imported. This can take a while. Please do not close this page.',
   },
   importTakingLonger: {
     id: 'app.containers.admin.import.ideasBeingImported',

@@ -130,7 +130,7 @@ const Import = () => {
             <FormattedMessage {...messages.importInput} />
           </Button>
         </Box>
-        {isLoading && (
+        {isLoading && !ideasTakingLong && (
           <Text color="textSecondary">
             <FormattedMessage {...messages.ideasBeingImported} />
           </Text>
