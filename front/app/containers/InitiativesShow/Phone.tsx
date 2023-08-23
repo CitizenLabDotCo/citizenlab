@@ -177,7 +177,7 @@ const Phone = ({
       };
 
   return (
-    <Container id="e2e-initiative-show" className={className}>
+    <Container className={className}>
       <InitiativeBanner initiativeHeaderImageLarge={initiativeHeaderImageLarge}>
         <InitiativeBannerContent>
           <MobileMoreActionContainer>

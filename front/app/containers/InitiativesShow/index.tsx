@@ -9,7 +9,7 @@ import { useSearchParams } from 'react-router-dom';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 // components
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 import InitiativeMeta from './InitiativeMeta';
 const Modals = lazy(() => import('./modals'));
@@ -92,7 +92,7 @@ const InitiativesShow = ({ initiativeId }: Props) => {
   };
 
   return (
-    <>
+    <Box id="e2e-initiative-show">
       <InitiativeMeta initiativeId={initiativeId} />
       {isSmallerThanPhone ? (
         <Phone
@@ -124,7 +124,7 @@ const InitiativesShow = ({ initiativeId }: Props) => {
           initiativeIdForSocialSharing={initiativeIdForSocialSharing}
         />
       </Suspense>
-    </>
+    </Box>
   );
 };
 

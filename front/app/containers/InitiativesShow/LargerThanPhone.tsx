@@ -212,7 +212,7 @@ const LargerThanPhone = ({
       };
 
   return (
-    <Container id="e2e-initiative-show" className={className}>
+    <Container className={className}>
       {initiativeHeaderImageLarge && (
         <InitiativeBanner
           initiativeHeaderImageLarge={initiativeHeaderImageLarge}
