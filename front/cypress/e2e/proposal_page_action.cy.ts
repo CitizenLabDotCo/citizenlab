@@ -57,10 +57,10 @@ describe('Initiative show page actions', () => {
       const officialFeedbackBody = randomString(30);
       const officialFeedbackAuthor = randomString();
 
-      // // We wait for topics to be loaded since it is one of the last api calls.
-      // // We do this so that the entire page is loaded and the focus won't be
-      // // taken away from the official feedback inputs while typing by another
-      // // input field that loads later. Example id (#submit-comment)
+      // We wait for topics to be loaded since it is one of the last api calls.
+      // We do this so that the entire page is loaded and the focus won't be
+      // taken away from the official feedback inputs while typing by another
+      // input field that loads later. Example id (#submit-comment)
       cy.intercept('**/topics').as('topicsRequest');
       cy.wait('@topicsRequest');
 
