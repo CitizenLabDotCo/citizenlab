@@ -343,7 +343,6 @@ describe PermissionsService do
       create(:custom_field_gender, required: false)
       create(:custom_field_checkbox, resource_type: 'User', required: true, key: 'extra_required_field')
       create(:custom_field_number, resource_type: 'User', required: false, key: 'extra_optional_field')
-      app_configuration = AppConfiguration.instance; app_configuration.settings['core']['onboarding'] = true; app_configuration.save! # TODO: should be default
     end
 
     let(:user) do

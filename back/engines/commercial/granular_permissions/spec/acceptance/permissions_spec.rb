@@ -244,6 +244,7 @@ resource 'Permissions' do
               email: 'satisfied'
             },
             custom_fields: {},
+            onboarding: { topics_and_areas: 'dont_ask' },
             special: {
               password: 'satisfied',
               confirmation: 'satisfied',
@@ -288,6 +289,7 @@ resource 'Permissions' do
               email: 'satisfied'
             },
             custom_fields: {},
+            onboarding: { topics_and_areas: 'dont_ask' },
             special: {
               password: 'dont_ask',
               confirmation: 'require',
@@ -319,6 +321,7 @@ resource 'Permissions' do
               email: 'satisfied'
             },
             custom_fields: {},
+            onboarding: { topics_and_areas: 'dont_ask' },
             special: {
               password: 'satisfied',
               confirmation: 'satisfied',
@@ -364,6 +367,7 @@ resource 'Permissions' do
               gender: 'satisfied',
               extra_field: 'require'
             },
+            onboarding: { topics_and_areas: 'ask' },
             special: {
               password: 'require',
               confirmation: 'satisfied',
@@ -397,6 +401,7 @@ resource 'Permissions' do
               email: 'satisfied'
             },
             custom_fields: {},
+            onboarding: { topics_and_areas: 'ask' },
             special: {
               password: 'satisfied',
               confirmation: 'satisfied',
