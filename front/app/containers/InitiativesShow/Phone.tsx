@@ -55,10 +55,6 @@ const Container = styled.main`
   display: flex;
   flex-direction: column;
 
-  ${(props) => `
-    min-height: calc(100vh - ${props.theme.mobileMenuHeight}px - ${props.theme.mobileTopBarHeight}px);
-  `}
-
   &.content-enter {
     opacity: 0;
 
@@ -208,11 +204,9 @@ const Phone = ({
         <Box mb="20px">
           <Topics
             postType="initiative"
-            topicIds={
-              initiative.data.relationships?.topics?.data?.map(
-                (item) => item.id
-              ) || []
-            }
+            topicIds={initiative.data.relationships.topics.data.map(
+              (topic) => topic.id
+            )}
           />
         </Box>
         {initiativeImageLarge && (
@@ -247,9 +241,12 @@ const Phone = ({
             <FileAttachments files={initiativeFiles.data} />
           </Box>
         )}
-        {hasOfficialFeedback && (
-          <div ref={officialFeedbackElement}>
-            <StyledOfficialFeedback
+        <div ref={officialFeedbackElement}>
+          <Box
+            mb={hasOfficialFeedback ? '80px' : '0'}
+            ref={officialFeedbackElement}
+          >
+            <OfficialFeedback
               postId={initiativeId}
               postType="initiative"
               permissionToPost={postOfficialFeedbackPermission}
@@ -257,8 +254,8 @@ const Phone = ({
                 a11y_pronounceLatestOfficialFeedbackPost
               }
             />
-          </div>
-        )}
+          </Box>
+        </div>
         {showSharingOptions && (
           <Box mb="48px">
             <SharingButtons
