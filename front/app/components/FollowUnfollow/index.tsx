@@ -32,7 +32,7 @@ const FollowUnfollow = ({
   followersCount,
   followerId,
   followableSlug,
-  buttonStyle = 'primary-outlined',
+  buttonStyle = 'primary',
   ...otherButtonProps
 }: Props) => {
   const isFollowingEnabled = useFeatureFlag({
@@ -114,6 +114,9 @@ const FollowUnfollow = ({
       buttonStyle={buttonStyle}
       icon="notification"
       onClick={handleButtonClick}
+      iconSize="16px"
+      py="6px"
+      px="12px"
       processing={isLoading}
       {...otherButtonProps}
       data-cy={isFollowing ? 'e2e-unfollow-button' : 'e2e-follow-button'}
