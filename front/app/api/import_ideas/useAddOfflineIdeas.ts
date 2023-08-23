@@ -6,15 +6,21 @@ import { importedIdeasKeys } from './keys';
 
 interface RequestParams {
   project_id: string;
-  file: string;
+  pdf: string;
   locale: Locale;
+  phase_id?: string;
 }
 
-const addOfflineIdeas = async ({ project_id, file, locale }: RequestParams) =>
+const addOfflineIdeas = async ({
+  project_id,
+  pdf,
+  locale,
+  phase_id,
+}: RequestParams) =>
   fetcher<IIdeas>({
     path: `/projects/${project_id}/import_ideas/bulk_create`,
     action: 'post',
-    body: { import_ideas: { pdf: file, locale } },
+    body: { import_ideas: { pdf, locale, phase_id } },
   });
 
 const useAddOfflineIdeas = () => {

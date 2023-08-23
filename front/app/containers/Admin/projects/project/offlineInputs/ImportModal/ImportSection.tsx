@@ -42,6 +42,7 @@ interface Props {
 const ImportSection = ({ onFinishImport }: Props) => {
   const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
   const { projectId } = useParams() as { projectId: string };
+
   const { mutate: addOfflineIdeas, isLoading } = useAddOfflineIdeas();
   const platformLocale = useLocale();
 
@@ -52,7 +53,7 @@ const ImportSection = ({ onFinishImport }: Props) => {
     addOfflineIdeas(
       {
         project_id: projectId,
-        file: file.base64,
+        pdf: file.base64,
         locale,
       },
       {
