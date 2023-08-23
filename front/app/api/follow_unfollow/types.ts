@@ -1,5 +1,5 @@
 import { Keys } from 'utils/cl-react-query/types';
-import { IRelationship } from 'typings';
+import { ILinks, IRelationship } from 'typings';
 import followUnfollowKeys from './keys';
 
 export type FollowUnfollowKeys = Keys<typeof followUnfollowKeys>;
@@ -27,6 +27,7 @@ export interface IFollower {
 
 export interface IFollowers {
   data: IFollowerData[];
+  links: ILinks;
 }
 
 export type FollowableType =
@@ -60,4 +61,6 @@ export type FollowerDelete = {
 
 export interface IParameters {
   followableObject?: FollowableObject;
+  pageNumber?: number;
+  pageSize?: number;
 }
