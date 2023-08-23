@@ -102,10 +102,6 @@ const StyledDropdownMap = styled(DropdownMap)`
   margin-bottom: 32px;
 `;
 
-const StyledOfficialFeedback = styled(OfficialFeedback)`
-  margin-top: 80px;
-`;
-
 interface Props {
   initiativeId: string;
   className?: string;
