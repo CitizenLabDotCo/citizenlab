@@ -92,6 +92,15 @@ describe('Profile Page', () => {
   });
 
   it('shows the events the user is attending', () => {
+    cy.clearCookies();
+    // Confirm that the user event tab is not visible to other users
+    cy.visit(`/profile/${newUserName}-${newUserSurname}`);
+    cy.get('#e2e-usersshowpage');
+    cy.get('.e2e-events-nav').should('not.exist');
+
+    // Log in as the user
+    cy.setLoginCookie(newUserEmail, newUserPassword);
+
     // Go to event
     cy.visit(`/events/${eventId}`);
 
