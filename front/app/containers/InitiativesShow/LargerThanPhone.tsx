@@ -57,9 +57,6 @@ import InitiativeBanner from './InitiativeBanner';
 const Container = styled.main`
   display: flex;
   flex-direction: column;
-  min-height: calc(
-    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
-  );
 
   &.content-enter {
     opacity: 0;
@@ -212,7 +209,7 @@ const LargerThanPhone = ({
       };
 
   return (
-    <Container id="e2e-initiative-show" className={className}>
+    <Container className={className}>
       {initiativeHeaderImageLarge && (
         <InitiativeBanner
           initiativeHeaderImageLarge={initiativeHeaderImageLarge}
@@ -228,11 +225,9 @@ const LargerThanPhone = ({
           <LeftColumn>
             <StyledTopics
               postType="initiative"
-              topicIds={
-                initiative.data.relationships?.topics?.data?.map(
-                  (item) => item.id
-                ) || []
-              }
+              topicIds={initiative.data.relationships.topics.data.map(
+                (topic) => topic.id
+              )}
             />
             <InitiativeHeader>
               <Title
@@ -287,18 +282,19 @@ const LargerThanPhone = ({
                 <FileAttachments files={initiativeFiles.data} />
               </Box>
             )}
-            {hasOfficialFeedback && (
-              <div ref={officialFeedbackElement}>
-                <StyledOfficialFeedback
-                  postId={initiativeId}
-                  postType="initiative"
-                  permissionToPost={postOfficialFeedbackPermission}
-                  a11y_pronounceLatestOfficialFeedbackPost={
-                    a11y_pronounceLatestOfficialFeedbackPost
-                  }
-                />
-              </div>
-            )}
+            <Box
+              mb={hasOfficialFeedback ? '80px' : '0'}
+              ref={officialFeedbackElement}
+            >
+              <StyledOfficialFeedback
+                postId={initiativeId}
+                postType="initiative"
+                permissionToPost={postOfficialFeedbackPermission}
+                a11y_pronounceLatestOfficialFeedbackPost={
+                  a11y_pronounceLatestOfficialFeedbackPost
+                }
+              />
+            </Box>
           </LeftColumn>
           <RightColumnDesktop>
             <MetaContent>

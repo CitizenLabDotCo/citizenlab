@@ -55,10 +55,6 @@ const Container = styled.main`
   display: flex;
   flex-direction: column;
 
-  ${(props) => `
-    min-height: calc(100vh - ${props.theme.mobileMenuHeight}px - ${props.theme.mobileTopBarHeight}px);
-  `}
-
   &.content-enter {
     opacity: 0;
 
@@ -104,10 +100,6 @@ const MobileMoreActionContainer = styled.div`
 
 const StyledDropdownMap = styled(DropdownMap)`
   margin-bottom: 32px;
-`;
-
-const StyledOfficialFeedback = styled(OfficialFeedback)`
-  margin-top: 80px;
 `;
 
 interface Props {
@@ -177,7 +169,7 @@ const Phone = ({
       };
 
   return (
-    <Container id="e2e-initiative-show" className={className}>
+    <Container className={className}>
       <InitiativeBanner initiativeHeaderImageLarge={initiativeHeaderImageLarge}>
         <InitiativeBannerContent>
           <MobileMoreActionContainer>
@@ -208,11 +200,9 @@ const Phone = ({
         <Box mb="20px">
           <Topics
             postType="initiative"
-            topicIds={
-              initiative.data.relationships?.topics?.data?.map(
-                (item) => item.id
-              ) || []
-            }
+            topicIds={initiative.data.relationships.topics.data.map(
+              (topic) => topic.id
+            )}
           />
         </Box>
         {initiativeImageLarge && (
@@ -247,18 +237,19 @@ const Phone = ({
             <FileAttachments files={initiativeFiles.data} />
           </Box>
         )}
-        {hasOfficialFeedback && (
-          <div ref={officialFeedbackElement}>
-            <StyledOfficialFeedback
-              postId={initiativeId}
-              postType="initiative"
-              permissionToPost={postOfficialFeedbackPermission}
-              a11y_pronounceLatestOfficialFeedbackPost={
-                a11y_pronounceLatestOfficialFeedbackPost
-              }
-            />
-          </div>
-        )}
+        <Box
+          mb={hasOfficialFeedback ? '80px' : '0'}
+          ref={officialFeedbackElement}
+        >
+          <OfficialFeedback
+            postId={initiativeId}
+            postType="initiative"
+            permissionToPost={postOfficialFeedbackPermission}
+            a11y_pronounceLatestOfficialFeedbackPost={
+              a11y_pronounceLatestOfficialFeedbackPost
+            }
+          />
+        </Box>
         {showSharingOptions && (
           <Box mb="48px">
             <SharingButtons
