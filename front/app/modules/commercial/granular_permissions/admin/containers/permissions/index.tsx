@@ -22,6 +22,14 @@ const PermissionsInitiatives = ({ permissions }: DataProps) => {
 
   if (!featureEnabled || isNilOrError(permissions)) return null;
 
+  const initiativePermissions = permissions.filter((permission) =>
+    [
+      'posting_initiative',
+      'commenting_initiative',
+      'reacting_initiative',
+    ].includes(permission.attributes.action)
+  );
+
   const handlePermissionChange = ({
     permission,
     permittedBy,
@@ -46,7 +54,7 @@ const PermissionsInitiatives = ({ permissions }: DataProps) => {
             <FormattedMessage {...messages.granularPermissionsTitle} />
           </SectionTitle>
           <ActionsForm
-            permissions={permissions}
+            permissions={initiativePermissions}
             onChange={handlePermissionChange}
             postType="initiative"
             projectId={null}

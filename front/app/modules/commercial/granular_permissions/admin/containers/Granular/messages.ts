@@ -56,10 +56,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.permissions.permissionAction_post_proposal_subtitle',
     defaultMessage: 'Who can post a proposal?',
   },
-  permissionAction_follow_subtitle: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_post_proposal_subtitle',
-    defaultMessage: 'Who can follow?',
-  },
   permissionAction_take_survey_subtitle: {
     id: 'app.containers.AdminPage.groups.permissions.permissionAction_take_survey_subtitle',
     defaultMessage: 'Who can take the survey?',
