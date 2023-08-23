@@ -184,7 +184,7 @@ pl:
     initiative_assigned_to_you:
       by_author: 'wg %{authorName}'
       cta_reply_to: 'Przekaż informację zwrotną do %{authorName}'
-      event_description_initiative: 'Przydzielono Ci propozycję. Przekaż opinię, pisząc oficjalną aktualizację lub zmieniając jej status.'
+      event_description_initiative: 'Przydzielono Ci propozycję. Przekaż informację zwrotną, pisząc oficjalną aktualizację lub zmieniając jej status.'
       main_header: '%{firstName}, masz nowe zadanie'
       subject: 'Zostałeś przypisany na platformie %{organizationName}'
       preheader_initiative: 'Przypisano do Ciebie propozycję %{authorName}'
