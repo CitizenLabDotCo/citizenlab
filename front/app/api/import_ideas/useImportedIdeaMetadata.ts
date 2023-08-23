@@ -10,7 +10,7 @@ import { importedIdeaMetadataKeys } from './keys';
 
 const fetchImportedIdeaMetadata = ({ id }: ImportedIdeaMetadataQueryParams) =>
   fetcher<ImportedIdeaMetadataResponse>({
-    path: `/dummy_endpoint/${id}`,
+    path: `/idea_imports/${id}`,
     action: 'get',
   });
 
