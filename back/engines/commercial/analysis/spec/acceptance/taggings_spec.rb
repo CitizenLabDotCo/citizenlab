@@ -81,7 +81,7 @@ resource 'Taggings' do
 
     example 'Bulk create taggings' do
       tag_id = create(:tag, analysis: analysis).id
-      create(:idea, project: analysis.project, title_multiloc: {
+      idea = create(:idea, project: analysis.project, title_multiloc: {
         'en' => 'My idea',
         'fr-FR' => 'Mon idée',
         'nl-NL' => 'Mijn idee'
