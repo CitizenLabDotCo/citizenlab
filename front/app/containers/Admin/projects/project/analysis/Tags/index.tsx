@@ -128,7 +128,6 @@ const Tags = () => {
   const selectedTags = filters.tag_ids;
 
   const toggleТаgClick = (id: string) => {
-    console.log('toggleТаgClick');
     const nonNullSelectedTags = selectedTags?.filter((tagId) => tagId !== null);
     if (!selectedTags?.includes(id)) {
       updateSearchParams({ tag_ids: [...(nonNullSelectedTags || []), id] });
