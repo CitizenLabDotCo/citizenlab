@@ -41,7 +41,9 @@ export type FollowableObject =
   | 'Idea'
   | 'Initiative'
   | 'ProjectFolders::Folder'
-  | 'Project';
+  | 'Project'
+  | 'Topic'
+  | 'Area';
 
 export type FollowerAdd = {
   followableType: FollowableType;

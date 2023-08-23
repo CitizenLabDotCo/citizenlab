@@ -41,7 +41,7 @@ const PublicationFilterTabs = ({
     },
   };
 
-  const getScreenReaderOnlyForTab = (count: number) => (
+  const getScreenReaderTextForTab = (_tab: string, count: number) => (
     <FormattedMessage
       {...messages.a11y_projectFilterTabInfo}
       values={{
@@ -58,7 +58,7 @@ const PublicationFilterTabs = ({
       tabData={tabData}
       getTabId={getTabId}
       getTabPanelId={getTabPanelId}
-      getScreenReaderOnlyForTab={getScreenReaderOnlyForTab}
+      getScreenReaderTextForTab={getScreenReaderTextForTab}
       showCount
     />
   );

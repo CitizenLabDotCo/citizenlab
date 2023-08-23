@@ -76,9 +76,7 @@ interface Props<ShowCount extends boolean> {
   onChangeTab: (tab: string) => void;
   getTabId?: (tab: string) => string;
   getTabPanelId?: (tab: string) => string;
-  getScreenReaderOnlyForTab?: ShowCount extends true
-    ? (count: number) => JSX.Element
-    : never;
+  getScreenReaderTextForTab?: (tab: string, count?: number) => JSX.Element;
   showCount: ShowCount;
 }
 
@@ -90,7 +88,7 @@ const Tabs = <ShowCount extends boolean>({
   availableTabs,
   onChangeTab,
   tabData,
-  getScreenReaderOnlyForTab,
+  getScreenReaderTextForTab,
   getTabId = getDefaultTabId,
   getTabPanelId = getDefaultTabPanelId,
   showCount,
@@ -136,9 +134,9 @@ const Tabs = <ShowCount extends boolean>({
             {showCount && <CountText>({tabData[tab].count})</CountText>}
           </div>
 
-          {getScreenReaderOnlyForTab && (
+          {getScreenReaderTextForTab && (
             <ScreenReaderOnly>
-              {getScreenReaderOnlyForTab(tabData[tab]?.count || 0)}
+              {getScreenReaderTextForTab(tab, tabData[tab]?.count)}
             </ScreenReaderOnly>
           )}
         </Tab>

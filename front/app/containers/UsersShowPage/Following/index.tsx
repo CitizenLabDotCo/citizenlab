@@ -43,6 +43,10 @@ const Following = ({ userId }: Props) => {
     },
   };
 
+  const getScreenReaderTextForTab = (tab: string) => (
+    <FormattedMessage {...tabData[tab].label} />
+  );
+
   return (
     <Box display="flex" w="100%" flexDirection="column">
       <Box borderBottom="1px solid #d1d1d1" mb="24px">
@@ -59,6 +63,7 @@ const Following = ({ userId }: Props) => {
           onChangeTab={handleOnChangeTab}
           tabData={tabData}
           showCount={false}
+          getScreenReaderTextForTab={getScreenReaderTextForTab}
         />
       </Box>
       {isSmallerThanPhone && (
