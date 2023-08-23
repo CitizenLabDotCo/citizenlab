@@ -16,7 +16,7 @@ describe('Idea Page', () => {
       cy.get('#e2e-idea-show-page-content');
 
       // shows the link to the project page with correct href
-      cy.get('#e2e-idea-other-link');
+      cy.get('#e2e-go-back-link');
 
       // shows the idea Title
       cy.get('#e2e-idea-title');

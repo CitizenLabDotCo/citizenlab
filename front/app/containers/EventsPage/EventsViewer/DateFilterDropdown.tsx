@@ -50,7 +50,7 @@ const DateFilterDropdown = ({
   ];
   if (options && options.length > 0) {
     return (
-      <Box mr="8px">
+      <Box mr="8px" id="e2e-event-date-filter">
         <FilterSelector
           id="e2e-date-filter-selector"
           title={formatMessage(messages.date)}
