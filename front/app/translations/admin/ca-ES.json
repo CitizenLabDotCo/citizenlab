@@ -797,6 +797,8 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPdf": "Importa PDF",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedIdeas": "Idees importades",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet": "Encara no hi ha idees per revisar. Feu clic a \"{importPdf}\" per importar un fitxer PDF que conté formularis d'idees escanejats.",
+  "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "Aquest projecte no conté cap fase que pugui contenir idees.",
+  "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAnotherPhase": "Seleccioneu una altra fase.",
   "app.containers.Admin.projects.project.offlineInputs.approve": "Aprovar",
   "app.containers.Admin.projects.project.offlineInputs.delete": "Suprimeix",
   "app.containers.Admin.projects.project.survey.analysisButton": "Create analysis",
