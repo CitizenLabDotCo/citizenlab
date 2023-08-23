@@ -184,7 +184,7 @@ en-CA:
     initiative_assigned_to_you:
       by_author: 'by %{authorName}'
       cta_reply_to: 'Give feedback to %{authorName}'
-      event_description_initiative: 'A proposal has been assigned to you. Give feedback by writing an official update or by changing its status.'
+      event_description_initiative: 'An initiative has been assigned to you. Give feedback by writing an official update or by changing its status.'
       main_header: '%{firstName}, you have a new assignment'
       subject: 'You have an assignment on the platform of %{organizationName}'
       preheader_initiative: 'The initiative of %{authorName} has been assigned to you'
