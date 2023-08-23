@@ -43,7 +43,7 @@ describe InitiativeStatusService do
       end
     end
 
-    it 'does not transitions when not expired' do
+    it 'does not transition when not expired' do
       travel_to(Time.now + 19.days) do
         service.automated_transitions!
         expect(@initiative.reload.initiative_status.code).to eq 'proposed'
