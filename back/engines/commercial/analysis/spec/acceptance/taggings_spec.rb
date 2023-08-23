@@ -82,13 +82,17 @@ resource 'Taggings' do
 
     example 'Bulk create taggings' do
       tag_id= create(:tag, analysis: analysis).id
-      first_input_title = inputs.first.title_multiloc.values.first
-      do_request(tag_id: tag_id, filters: { search: first_input_title })
+      idea = create(:idea, project: analysis.project,  title_multiloc: {
+        'en' => 'My idea',
+        'fr-FR' => 'Mon idée',
+        'nl-NL' => 'Mijn idee'
+      })
+      do_request(tag_id: tag_id, filters: { search: 'My idea' })
 
       expect(response_status).to eq 201
       expect(Analysis::Tagging.count).to eq 1
       expect(Analysis::Tagging.pluck(:tag_id)).to all(eq(tag_id))
-      expect(Analysis::Tagging.pluck(:input_id)).to match_array(inputs.map(&:id))
+      expect(Analysis::Tagging.pluck(:input_id)).to match_array([idea.id])
     end
   end
 

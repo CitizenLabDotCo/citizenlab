@@ -70,8 +70,6 @@ const Tags = () => {
   const [name, setName] = useState('');
   const [autotaggingModalIsOpened, setAutotaggingModalIsOpened] =
     useState(false);
-  const [bulkCreateTaggingsModalIsOpened, setBulkCreateTaggingsModalIsOpened] =
-    useState(false);
 
   const filters = useAnalysisFilterParams();
 
@@ -149,15 +147,6 @@ const Tags = () => {
           )}
         </Button>
 
-        <Button
-          onClick={() => setBulkCreateTaggingsModalIsOpened(true)}
-          icon="plus"
-          mb="12px"
-          size="s"
-          buttonStyle="secondary-outlined"
-        >
-          Bulk tag
-        </Button>
         <Box display="flex" alignItems="center" mb="8px" as="form">
           <Input
             type="text"
