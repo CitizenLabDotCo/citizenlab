@@ -70,7 +70,7 @@ const FilterItems = ({ filters, isEditable }: FilterItemsProps) => {
   };
 
   const filterEntries = Object.entries(filters).filter(
-    ([key]) => key !== 'tag_ids' && isEditable && key !== 'search'
+    ([key]) => !(key === 'tag_ids' || (isEditable && key === 'search'))
   );
 
   return (

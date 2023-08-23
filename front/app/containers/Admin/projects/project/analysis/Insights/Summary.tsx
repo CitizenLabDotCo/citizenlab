@@ -138,7 +138,7 @@ const Summary = ({ insight }: Props) => {
 
           {!hasFilters && (
             <>
-              <Box>Summary for all input</Box>
+              <Box>Summary for all inputs</Box>
             </>
           )}
         </Box>

@@ -122,7 +122,7 @@ const Question = ({ insight }: Props) => {
               <Box>Summary for:</Box>
               <FilterItems
                 filters={question.data.attributes.filters}
-                isEditable
+                isEditable={false}
               />
               {tags?.data
                 .filter((tag) => tagIds?.includes(tag.id))
