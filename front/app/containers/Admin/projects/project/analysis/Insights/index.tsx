@@ -40,11 +40,11 @@ const Insights = () => {
       ))}
       {!isLoading && insights?.data?.length === 0 && (
         <>
-          <Text px="24px" color="grey400">
+          <Text px="24px" color="grey600">
             Your text summaries will be displayed here, but you currently do not
             have any yet.
           </Text>
-          <Text px="24px" color="grey400">
+          <Text px="24px" color="grey600">
             Start by adding some tags.
           </Text>
         </>

@@ -1,5 +1,5 @@
 import React, { Fragment, useCallback, useEffect, useMemo } from 'react';
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
 import { useParams } from 'react-router-dom';
 import InputListItem from './InputListItem';
@@ -79,27 +79,37 @@ const InputsList = () => {
     [setSelectedInputId]
   );
 
+  const emptyList = data?.pages[0].meta.filtered_count === 0;
+
   return (
     <Box bg={colors.white} w="100%">
-      {data?.pages.map((page, i) => (
-        <Fragment key={i}>
-          {hasNextPage &&
-            !isFetchingNextPage &&
-            data?.pages.length === i + 1 && (
-              <Observer onChange={handleIntersection} rootMargin="100px">
-                <Box w="100%" />
-              </Observer>
-            )}
-          {page.data.map((input) => (
-            <InputListItem
-              key={input.id}
-              input={input}
-              onSelect={handleOnSelectInput}
-              selected={input.id === selectedInputId}
-            />
-          ))}
-        </Fragment>
-      ))}
+      {emptyList && (
+        <Box display="flex" justifyContent="center">
+          <Text px="24px" color="grey600">
+            No inputs correspond to your current filters
+          </Text>
+        </Box>
+      )}
+      {!emptyList &&
+        data?.pages.map((page, i) => (
+          <Fragment key={i}>
+            {hasNextPage &&
+              !isFetchingNextPage &&
+              data?.pages.length === i + 1 && (
+                <Observer onChange={handleIntersection} rootMargin="100px">
+                  <Box w="100%" />
+                </Observer>
+              )}
+            {page.data.map((input) => (
+              <InputListItem
+                key={input.id}
+                input={input}
+                onSelect={handleOnSelectInput}
+                selected={input.id === selectedInputId}
+              />
+            ))}
+          </Fragment>
+        ))}
     </Box>
   );
 };
