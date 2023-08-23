@@ -210,7 +210,7 @@ const MentionsTextArea = ({
         mention: query.toLowerCase(),
         post_id: postId,
         post_type: capitalize(postType) as 'Idea' | 'Initiative',
-        roles: roles,
+        roles,
       };
 
       const response = await getMentions(queryParameters);
