@@ -21,7 +21,7 @@ const Insights = () => {
 
   return (
     <Box>
-      <Box display="flex" gap="4px">
+      <Box>
         <SummarizeButton />
         <QuestionButton onClick={() => setIsQuestionInputOpen(true)} />
       </Box>

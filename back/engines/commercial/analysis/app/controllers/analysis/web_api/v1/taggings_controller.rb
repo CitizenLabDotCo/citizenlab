@@ -4,6 +4,7 @@ module Analysis
   module WebApi
     module V1
       class TaggingsController < ApplicationController
+        include FilterParamsExtraction
         skip_after_action :verify_policy_scoped # The analysis is authorized instead.
         before_action :set_analysis
 
@@ -33,6 +34,19 @@ module Analysis
           else
             render json: { errors: @tagging.errors.details }, status: :unprocessable_entity
           end
+        end
+
+        def bulk_create
+          @filters = filters(params[:filters])
+          @inputs = InputsFinder.new(@analysis, @filters).execute
+          @inputs.each do |input|
+            begin
+              Tagging.create!(tag_id: params[:tag_id], input_id: input.id)
+            rescue ActiveRecord::RecordInvalid => e
+              puts e.message
+            end
+          end
+          head :created
         end
 
         private
