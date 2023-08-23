@@ -71,13 +71,18 @@ const Question = ({ insight }: Props) => {
     }
   };
 
+  const deleteTrailingIncompleteIDs = (str: string | null) => {
+    if (!str) return str;
+    return str.replace(/\[?[0-9a-f-]{0,35}$/, '');
+  };
+
   const replaceIdRefsWithLinks = (question) => {
     return reactStringReplace(
       question,
       /\[?([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})\]?/g,
       (match, i) => (
         <StyledButton onClick={() => setSelectedInputId(match)} key={i}>
-          <Icon name="search" />
+          <Icon name="idea" />
         </StyledButton>
       )
     );
@@ -101,6 +106,8 @@ const Question = ({ insight }: Props) => {
     updateSearchParams(question.data.attributes.filters);
   };
 
+  const answer = question.data.attributes.answer;
+
   return (
     <Box
       key={question.data.id}
@@ -119,10 +126,10 @@ const Question = ({ insight }: Props) => {
         >
           {hasFilters && (
             <>
-              <Box>Summary for:</Box>
+              <Box>Question for</Box>
               <FilterItems
                 filters={question.data.attributes.filters}
-                isEditable
+                isEditable={false}
               />
               {tags?.data
                 .filter((tag) => tagIds?.includes(tag.id))
@@ -145,7 +152,9 @@ const Question = ({ insight }: Props) => {
         <Text fontWeight="bold">{question.data.attributes.question}</Text>
         <Box>
           <StyledAnswerText>
-            {replaceIdRefsWithLinks(question.data.attributes.answer)}
+            {replaceIdRefsWithLinks(
+              processing ? deleteTrailingIncompleteIDs(answer) : answer
+            )}
           </StyledAnswerText>
           {processing && <Spinner />}
         </Box>
