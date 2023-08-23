@@ -797,6 +797,8 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPdf": "Увези ПДФ",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedIdeas": "Увезене идеје",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet": "Још нема идеја за преглед. Кликните на „{importPdf}“ да бисте увезли ПДФ датотеку која садржи скениране обрасце идеја.",
+  "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "Овај пројекат не садржи ниједну фазу која може да садржи идеје.",
+  "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAnotherPhase": "Изаберите другу фазу.",
   "app.containers.Admin.projects.project.offlineInputs.approve": "Одобре",
   "app.containers.Admin.projects.project.offlineInputs.delete": "Избриши",
   "app.containers.Admin.projects.project.survey.analysisButton": "Направите анализу",
