@@ -1,8 +1,7 @@
 import React, { memo } from 'react';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 // components
@@ -12,6 +11,7 @@ import { Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 // styling
 import styled, { useTheme } from 'styled-components';
 import { isRtl } from 'utils/styleUtils';
+import DateFilterDropdown from './DateFilterDropdown';
 
 const Container = styled.div`
   display: flex;
@@ -37,8 +37,9 @@ interface Props {
   eventsTime?: 'past' | 'currentAndFuture';
 }
 
-const TopBar = memo<Props & WrappedComponentProps>(
-  ({ title, showProjectFilter, setProjectIds, intl, eventsTime }) => {
+const TopBar = memo<Props>(
+  ({ title, showProjectFilter, setProjectIds, eventsTime }) => {
+    const { formatMessage } = useIntl();
     const theme = useTheme();
     const isMobileOrSmaller = useBreakpoint('phone');
 
@@ -48,10 +49,21 @@ const TopBar = memo<Props & WrappedComponentProps>(
           {title}
         </Title>
         <ProjectFilterDropdownPositioner>
+          <>
+            <DateFilterDropdown
+              title={formatMessage(messages.filterDropdownTitle)}
+              onChange={setProjectIds}
+              textColor={theme.colors.tenantText}
+              filterSelectorStyle="button"
+              listTop="44px"
+              mobileLeft={isMobileOrSmaller && !theme.isRtl ? '-70px' : 'auto'}
+              eventsTime={eventsTime}
+            />
+          </>
           {showProjectFilter && (
             <>
               <ProjectFilterDropdown
-                title={intl.formatMessage(messages.filterDropdownTitle)}
+                title={formatMessage(messages.filterDropdownTitle)}
                 onChange={setProjectIds}
                 textColor={theme.colors.tenantText}
                 filterSelectorStyle="button"
@@ -69,4 +81,4 @@ const TopBar = memo<Props & WrappedComponentProps>(
   }
 );
 
-export default injectIntl(TopBar);
+export default TopBar;
