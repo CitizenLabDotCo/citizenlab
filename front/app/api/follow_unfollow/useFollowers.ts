@@ -5,7 +5,7 @@ import followUnfollowKeys from './keys';
 import { FollowUnfollowKeys, IFollowers, IParameters } from './types';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
-const defaultPageSize = 1;
+const defaultPageSize = 12;
 
 const fetchFollowers = async ({
   followableObject,
