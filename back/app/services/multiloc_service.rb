@@ -5,12 +5,12 @@ class MultilocService
     @app_configuration = app_configuration
   end
 
-  def t(translations, user = nil)
+  def t(translations, user = nil, preferred_locale: user&.locale)
     return nil unless translations
 
     locales = app_configuration.settings('core', 'locales')
-    user_locale = user&.locale || I18n.locale.to_s
-    result = ([user_locale] + locales + translations.keys).each do |locale|
+    preferred_locale ||= I18n.locale.to_s
+    result = ([preferred_locale] + locales + translations.keys).each do |locale|
       break translations[locale] if translations[locale]
     end
     result.is_a?(String) ? result : +'' # return a non-frozen empty string

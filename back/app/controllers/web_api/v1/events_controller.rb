@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class WebApi::V1::EventsController < ApplicationController
+  include ActionController::MimeResponds
+
   before_action :set_event, only: %i[show update destroy]
   skip_before_action :authenticate_user
 
@@ -27,9 +29,18 @@ class WebApi::V1::EventsController < ApplicationController
   end
 
   def show
-    render json: WebApi::V1::EventSerializer
-      .new(@event, params: jsonapi_serializer_params)
-      .serializable_hash
+    respond_to do |format|
+      format.json do
+        render json: WebApi::V1::EventSerializer
+          .new(@event, params: jsonapi_serializer_params)
+          .serializable_hash
+      end
+
+      format.ics do
+        preferred_locale = current_user&.locale
+        render plain: Events::IcsGenerator.new.generate_ics(@event, preferred_locale)
+      end
+    end
   end
 
   def create
