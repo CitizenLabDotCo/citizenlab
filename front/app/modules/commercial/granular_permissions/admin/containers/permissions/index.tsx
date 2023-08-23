@@ -20,6 +20,8 @@ interface DataProps {
 const PermissionsInitiatives = ({ permissions }: DataProps) => {
   const featureEnabled = useFeatureFlag({ name: 'granular_permissions' });
 
+  if (!featureEnabled || isNilOrError(permissions)) return null;
+
   const handlePermissionChange = ({
     permission,
     permittedBy,
@@ -33,8 +35,6 @@ const PermissionsInitiatives = ({ permissions }: DataProps) => {
     });
   };
 
-  if (!featureEnabled) return null;
-
   return (
     <>
       <Title color="primary" mb="30px">
@@ -45,15 +45,13 @@ const PermissionsInitiatives = ({ permissions }: DataProps) => {
           <SectionTitle>
             <FormattedMessage {...messages.granularPermissionsTitle} />
           </SectionTitle>
-          {!isNilOrError(permissions) && (
-            <ActionsForm
-              permissions={permissions}
-              onChange={handlePermissionChange}
-              postType="initiative"
-              projectId={null}
-              initiativeContext
-            />
-          )}
+          <ActionsForm
+            permissions={permissions}
+            onChange={handlePermissionChange}
+            postType="initiative"
+            projectId={null}
+            initiativeContext
+          />
         </Section>
       </Box>
     </>
