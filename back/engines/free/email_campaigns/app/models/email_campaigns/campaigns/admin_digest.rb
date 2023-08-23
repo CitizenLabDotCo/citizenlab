@@ -211,7 +211,7 @@ module EmailCampaigns
     end
 
     def new_initiatives(time: Time.zone.today)
-      @new_initiatives ||= Initiative.published.proposed_from_time_ago(1.week.ago)
+      @new_initiatives ||= Initiative.published.proposed_after(1.week.ago)
         .order(published_at: :desc)
         .includes(:initiative_images)
         .map { |initiative| serialize_initiative(initiative) }

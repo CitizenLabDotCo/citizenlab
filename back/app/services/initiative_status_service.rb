@@ -66,10 +66,7 @@ class InitiativeStatusService
       },
       'expired' => {
         scope_contition: lambda { |initiative_scope|
-          initiative_scope.where(
-            'initiatives.published_at < ?',
-            (Time.now - AppConfiguration.instance.settings('initiatives', 'days_limit').days)
-          )
+          initiative_scope.proposed_before(Time.now - AppConfiguration.instance.settings('initiatives', 'days_limit').days)
         }
       }
     }
@@ -128,8 +125,7 @@ class InitiativeStatusService
   def manual_status_ids
     statuses = InitiativeStatus.where(code: MANUAL_TRANSITIONS.values.map(&:keys).flatten.uniq)
 
-    status_when_published = Initiative.review_required? ? 'review_pending' : 'proposed'
-    statuses = statuses.where.not(code: status_when_published)
+    statuses = statuses.where.not(code: InitiativeStatus.initial_status_code)
 
     statuses.ids
   end

@@ -15,7 +15,7 @@ describe InitiativeStatusService do
 
   describe '#automated_transitions!' do
     before do
-      @initiative = create(:initiative)
+      @initiative = create(:initiative, build_status_change: false)
       configuration = AppConfiguration.instance
       configuration.settings['initiatives'] = {
         enabled: true,
@@ -29,10 +29,6 @@ describe InitiativeStatusService do
     end
 
     it 'transitions when voting threshold was reached' do
-      create(
-        :initiative_status_change,
-        initiative: @initiative, initiative_status: status_proposed
-      )
       create_list(:reaction, 3, reactable: @initiative, mode: 'up')
 
       service.automated_transitions!
@@ -41,14 +37,16 @@ describe InitiativeStatusService do
     end
 
     it 'transitions when expired' do
-      create(
-        :initiative_status_change,
-        initiative: @initiative, initiative_status: status_proposed
-      )
-
       travel_to(Time.now + 22.days) do
         service.automated_transitions!
         expect(@initiative.reload.initiative_status.code).to eq 'expired'
+      end
+    end
+
+    it 'does not transition when not expired' do
+      travel_to(Time.now + 19.days) do
+        service.automated_transitions!
+        expect(@initiative.reload.initiative_status.code).to eq 'proposed'
       end
     end
 

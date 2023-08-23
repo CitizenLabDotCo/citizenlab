@@ -201,7 +201,7 @@ module EmailCampaigns
     def new_initiatives(name_service, time:)
       InitiativePolicy::Scope.new(nil, Initiative).resolve
         .published
-        .proposed_from_time_ago(1.week.ago)
+        .proposed_after(1.week.ago)
         .includes(:initiative_images)
         .map do |initiative|
         {

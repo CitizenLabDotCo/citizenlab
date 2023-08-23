@@ -44,23 +44,13 @@ RSpec.describe EmailCampaigns::Campaigns::AdminDigest do
     end
 
     it "only includes 'new' initiatives" do
-      proposed_status = create(:initiative_status_proposed)
+      create(:initiative_status_proposed)
 
-      old_initiative = create(:initiative)
-      _old_initiative_status_change = create(
-        :initiative_status_change,
-        initiative: old_initiative,
-        initiative_status: proposed_status,
-        created_at: 8.days.ago # more than 1 week ago
-      )
+      old_initiative = create(:initiative, build_status_change: false)
+      old_initiative.initiative_status_changes.first.update!(created_at: 8.days.ago) # more than 1 week ago
 
-      new_initiative = create(:initiative)
-      _new_initiative_status_change = create(
-        :initiative_status_change,
-        initiative: new_initiative,
-        initiative_status: proposed_status,
-        created_at: 6.days.ago # less than 1 week ago
-      )
+      new_initiative = create(:initiative, build_status_change: false)
+      new_initiative.initiative_status_changes.first.update!(created_at: 6.days.ago) # less than 1 week ago
 
       command = campaign.generate_commands(recipient: admin).first
 

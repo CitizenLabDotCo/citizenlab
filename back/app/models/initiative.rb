@@ -112,11 +112,23 @@ class Initiative < ApplicationRecord
   scope :no_feedback_needed, -> { with_status_code(InitiativeStatus::CODES - ['threshold_reached']) }
   scope :proposed, -> { with_status_code('proposed') }
 
-  scope :proposed_from_time_ago, (proc do |time_ago|
+  scope :proposed_before, (proc do |time|
+    with_proposed_status_changes.where('initiative_status_changes.created_at < ?', time)
+  end)
+  scope :proposed_after, (proc do |time|
+    with_proposed_status_changes.where('initiative_status_changes.created_at > ?', time)
+  end)
+  scope :with_proposed_status_changes, (proc do
     joins(:initiative_status_changes)
       .where(initiative_status_changes: { initiative_status: InitiativeStatus.find_by(code: 'proposed') })
-      .where('initiative_status_changes.created_at > ?', time_ago)
   end)
+
+  def self.review_required?
+    app_config = AppConfiguration.instance
+    require_review = app_config.settings('initiatives', 'require_review')
+
+    app_config.feature_activated?('initiative_review') && require_review
+  end
 
   def cosponsor_ids=(ids)
     return unless ids
@@ -136,20 +148,11 @@ class Initiative < ApplicationRecord
   def expires_at(configuration = AppConfiguration.instance)
     return nil unless published?
 
-    published_at + configuration.settings('initiatives', 'days_limit').days
+    (proposed_at || published_at) + configuration.settings('initiatives', 'days_limit').days
   end
 
   def threshold_reached_at
-    initiative_status_changes
-      .where(initiative_status: InitiativeStatus.where(code: 'threshold_reached'))
-      .order(:created_at).pluck(:created_at).last
-  end
-
-  def self.review_required?
-    app_config = AppConfiguration.instance
-    require_review = app_config.settings('initiatives', 'require_review')
-
-    app_config.feature_activated?('initiative_review') && require_review
+    initiative_status_changed_at('threshold_reached')
   end
 
   def review_status?
@@ -157,6 +160,16 @@ class Initiative < ApplicationRecord
   end
 
   private
+
+  def proposed_at
+    initiative_status_changed_at('proposed')
+  end
+
+  def initiative_status_changed_at(initiative_status_code)
+    initiative_status_changes
+      .where(initiative_status: InitiativeStatus.where(code: initiative_status_code))
+      .order(:created_at).pluck(:created_at).last
+  end
 
   def generate_slug
     return if slug
@@ -186,8 +199,7 @@ class Initiative < ApplicationRecord
   end
 
   def initialize_initiative_status_changes
-    initial_status_code = self.class.review_required? ? 'review_pending' : 'proposed'
-    initial_status = InitiativeStatus.find_by(code: initial_status_code)
+    initial_status = InitiativeStatus.find_by(code: InitiativeStatus.initial_status_code)
     return unless initial_status && initiative_status_changes.empty? && !draft?
 
     initiative_status_changes.build(initiative_status: initial_status)
