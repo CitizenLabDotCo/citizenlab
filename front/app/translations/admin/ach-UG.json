@@ -797,6 +797,8 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPdf": "crwdns904145:0crwdne904145:0",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedIdeas": "crwdns904147:0crwdne904147:0",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet": "crwdns904149:0{importPdf}crwdne904149:0",
+  "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "crwdns904407:0crwdne904407:0",
+  "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAnotherPhase": "crwdns904409:0crwdne904409:0",
   "app.containers.Admin.projects.project.offlineInputs.approve": "crwdns899711:0crwdne899711:0",
   "app.containers.Admin.projects.project.offlineInputs.delete": "crwdns904151:0crwdne904151:0",
   "app.containers.Admin.projects.project.survey.analysisButton": "crwdns899721:0crwdne899721:0",
