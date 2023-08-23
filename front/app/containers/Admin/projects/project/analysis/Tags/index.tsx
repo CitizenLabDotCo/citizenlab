@@ -34,6 +34,7 @@ import messages from '../messages';
 
 import { useQueryClient } from '@tanstack/react-query';
 import inputsKeys from 'api/analysis_inputs/keys';
+import BulkCreateTaggingsModal from './BulkCreateTaggingsModal';
 
 const BlickingIcon = styled(Icon)`
   animation-name: blink-animation;
@@ -72,6 +73,8 @@ const Tags = () => {
   const [name, setName] = useState('');
   const [renameTagModalOpenedId, setRenameTagModalOpenedId] = useState('');
   const [autotaggingModalIsOpened, setAutotaggingModalIsOpened] =
+    useState(false);
+  const [bulkCreateTaggingsModalIsOpened, setBulkCreateTaggingsModalIsOpened] =
     useState(false);
 
   const filters = useAnalysisFilterParams();
@@ -162,6 +165,16 @@ const Tags = () => {
               ml="8px"
             />
           )}
+        </Button>
+
+        <Button
+          onClick={() => setBulkCreateTaggingsModalIsOpened(true)}
+          icon="plus"
+          mb="12px"
+          size="s"
+          buttonStyle="secondary-outlined"
+        >
+          Bulk create taggings
         </Button>
         <Box display="flex" alignItems="center" mb="8px" as="form">
           <Input
@@ -298,6 +311,14 @@ const Tags = () => {
       >
         <AutotaggingModal
           onCloseModal={() => setAutotaggingModalIsOpened(false)}
+        />
+      </Modal>
+      <Modal
+        opened={bulkCreateTaggingsModalIsOpened}
+        close={() => setBulkCreateTaggingsModalIsOpened(false)}
+      >
+        <BulkCreateTaggingsModal
+          onCloseModal={() => setBulkCreateTaggingsModalIsOpened(false)}
         />
       </Modal>
     </Box>
