@@ -1848,6 +1848,8 @@
   "app.containers.AdminPage.projects.all.existingProjects": "crwdns212224:0crwdne212224:0",
   "app.containers.AdminPage.projects.all.newProjectFolder": "crwdns212226:0crwdne212226:0",
   "app.containers.AdminPage.projects.all.projectsAndFolders": "crwdns212228:0crwdne212228:0",
+  "app.containers.AdminPage.projects.project.analysis.Insights.deleteQuestion": "crwdns904199:0crwdne904199:0",
+  "app.containers.AdminPage.projects.project.analysis.Insights.deleteQuestionConfirmation": "crwdns904201:0crwdne904201:0",
   "app.containers.AdminPage.projects.project.analysis.Insights.deleteSummary": "crwdns826015:0crwdne826015:0",
   "app.containers.AdminPage.projects.project.analysis.Insights.deleteSummaryConfirmation": "crwdns826017:0crwdne826017:0",
   "app.containers.AdminPage.projects.project.analysis.Tags.addTag": "crwdns787411:0crwdne787411:0",
