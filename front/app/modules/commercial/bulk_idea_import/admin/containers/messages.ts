@@ -40,8 +40,8 @@ export default defineMessages({
       'Import taking longer than one minute. Try waiting another minute. If you then still see this message, try going back to the input manager, wait another minute, and refresh the page. If that does not work, try importing again.',
   },
   somethingWentWrong: {
-    id: 'app.containers.admin.import.somethingWentWrong',
+    id: 'app.containers.admin.import.somethingWentWrong2',
     defaultMessage:
-      'Something went wrong. Try going back to the input manager, wait a few minutes, and refresh the page. If that does not work, try importing again.',
+      'Something went wrong. This could be an issue with your excel file. If you are completely sure that there are no problems with your excel file: try going back to the input manager, wait a few minutes, and refresh the page. If that does not work, try importing again.',
   },
 });
