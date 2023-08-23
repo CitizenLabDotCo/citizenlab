@@ -39,7 +39,6 @@ const IdeaForm = ({
 }: Props) => {
   const { schema, uiSchema } = useInputSchema({
     projectId,
-    // phaseId, // TODO
   });
 
   const getApiErrorMessage: ApiErrorGetter = useCallback(

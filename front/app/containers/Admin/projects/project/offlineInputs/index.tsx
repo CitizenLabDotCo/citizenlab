@@ -63,8 +63,7 @@ const OfflineInputImporter = () => {
       ? getFormValues(idea, schema)
       : null;
 
-  const phaseId =
-    selectedPhaseId ?? (currentPhase ? currentPhase.id : undefined);
+  const phaseId = selectedPhaseId ?? currentPhase?.id;
 
   const setFormData = (formData: FormData) => {
     if (!ideaId) return;
@@ -107,6 +106,11 @@ const OfflineInputImporter = () => {
     setIdeaId(null);
   };
 
+  const handleSelectIdea = (ideaId: string) => {
+    setIdeaId(ideaId);
+    setShowAllErrors(false);
+  };
+
   return (
     <>
       <Box
@@ -134,10 +138,10 @@ const OfflineInputImporter = () => {
           >
             <ReviewSection
               ideaId={ideaId}
-              setIdeaId={setIdeaId}
               apiErrors={apiErrors}
               showAllErrors={showAllErrors}
               formData={formData}
+              onSelectIdea={handleSelectIdea}
               setFormData={setFormData}
             />
           </Box>

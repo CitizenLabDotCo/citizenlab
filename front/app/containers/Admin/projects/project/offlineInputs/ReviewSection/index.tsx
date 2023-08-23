@@ -44,19 +44,19 @@ const StyledBox = styled(Box)`
 
 interface Props {
   ideaId: string | null;
-  setIdeaId: (id: string) => void;
   showAllErrors: boolean;
   apiErrors?: CLErrors;
   formData: FormData;
+  onSelectIdea: (ideaId: string) => void;
   setFormData: (formData: FormData) => void;
 }
 
 const ReviewSection = ({
   ideaId,
-  setIdeaId,
   showAllErrors,
   apiErrors,
   formData,
+  onSelectIdea,
   setFormData,
 }: Props) => {
   const { projectId } = useParams() as {
@@ -162,7 +162,7 @@ const ReviewSection = ({
               style={{ cursor: 'pointer' }}
               bgColor={idea.id === ideaId ? TEAL50 : undefined}
               onClick={() => {
-                setIdeaId(idea.id);
+                onSelectIdea(idea.id);
               }}
             >
               <Text
