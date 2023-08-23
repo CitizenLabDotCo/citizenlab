@@ -15,6 +15,10 @@ el:
     rejected: απορρίφθηκε
     rejected_description: Η ιδέα αυτή έχει απορριφθεί
   initiative_statuses:
+    review_pending: εκκρεμεί αναθεώρηση
+    review_pending_description: εκκρεμεί αναθεώρηση
+    changes_requested: ζητούμενες αλλαγές
+    changes_requested_description: ζητούμενες αλλαγές
     proposed: προτεινόμενη
     proposed_description: προτεινόμενη
     expired: λήξει
