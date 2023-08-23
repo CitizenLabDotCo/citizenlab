@@ -343,6 +343,7 @@ describe PermissionsService do
       create(:custom_field_gender, required: false)
       create(:custom_field_checkbox, resource_type: 'User', required: true, key: 'extra_required_field')
       create(:custom_field_number, resource_type: 'User', required: false, key: 'extra_optional_field')
+      app_configuration = AppConfiguration.instance; app_configuration.settings['core']['onboarding'] = true; app_configuration.save! # TODO: should be default
     end
 
     let(:user) do
@@ -375,6 +376,7 @@ describe PermissionsService do
               email: 'dont_ask'
             },
             custom_fields: {},
+            onboarding: { topics_and_areas: 'dont_ask' },
             special: {
               password: 'dont_ask',
               confirmation: 'dont_ask',
@@ -397,6 +399,7 @@ describe PermissionsService do
               email: 'satisfied'
             },
             custom_fields: {},
+            onboarding: { topics_and_areas: 'dont_ask' },
             special: {
               password: 'dont_ask',
               confirmation: 'dont_ask',
@@ -417,6 +420,7 @@ describe PermissionsService do
               email: 'satisfied'
             },
             custom_fields: {},
+            onboarding: { topics_and_areas: 'dont_ask' },
             special: {
               password: 'satisfied',
               confirmation: 'satisfied',
@@ -438,6 +442,7 @@ describe PermissionsService do
               email: 'satisfied'
             },
             custom_fields: {},
+            onboarding: { topics_and_areas: 'dont_ask' },
             special: {
               password: 'satisfied',
               confirmation: 'satisfied',
@@ -469,6 +474,7 @@ describe PermissionsService do
             custom_fields: {
               'birthyear' => 'ask'
             },
+            onboarding: { topics_and_areas: 'dont_ask' },
             special: {
               password: 'dont_ask',
               confirmation: 'require',
@@ -493,6 +499,7 @@ describe PermissionsService do
             custom_fields: {
               'birthyear' => 'ask'
             },
+            onboarding: { topics_and_areas: 'dont_ask' },
             special: {
               password: 'dont_ask',
               confirmation: 'require',
@@ -516,6 +523,7 @@ describe PermissionsService do
             custom_fields: {
               'birthyear' => 'ask'
             },
+            onboarding: { topics_and_areas: 'dont_ask' },
             special: {
               password: 'dont_ask',
               confirmation: 'satisfied',
@@ -539,6 +547,7 @@ describe PermissionsService do
             custom_fields: {
               'birthyear' => 'satisfied'
             },
+            onboarding: { topics_and_areas: 'dont_ask' },
             special: {
               password: 'satisfied',
               confirmation: 'require',
@@ -561,6 +570,7 @@ describe PermissionsService do
             custom_fields: {
               'birthyear' => 'satisfied'
             },
+            onboarding: { topics_and_areas: 'dont_ask' },
             special: {
               password: 'satisfied',
               confirmation: 'satisfied',
@@ -585,6 +595,7 @@ describe PermissionsService do
             custom_fields: {
               'birthyear' => 'satisfied'
             },
+            onboarding: { topics_and_areas: 'dont_ask' },
             special: {
               password: 'satisfied',
               confirmation: 'require',
@@ -608,6 +619,7 @@ describe PermissionsService do
             custom_fields: {
               'birthyear' => 'satisfied'
             },
+            onboarding: { topics_and_areas: 'dont_ask' },
             special: {
               password: 'satisfied',
               confirmation: 'satisfied',
@@ -642,6 +654,7 @@ describe PermissionsService do
               'extra_required_field' => 'require',
               'extra_optional_field' => 'ask'
             },
+            onboarding: { topics_and_areas: 'ask' },
             special: {
               password: 'require',
               confirmation: 'require',
@@ -668,6 +681,7 @@ describe PermissionsService do
               'extra_required_field' => 'require',
               'extra_optional_field' => 'ask'
             },
+            onboarding: { topics_and_areas: 'ask' },
             special: {
               password: 'require',
               confirmation: 'satisfied',
@@ -694,6 +708,7 @@ describe PermissionsService do
               'extra_required_field' => 'satisfied',
               'extra_optional_field' => 'satisfied'
             },
+            onboarding: { topics_and_areas: 'ask' },
             special: {
               password: 'satisfied',
               confirmation: 'require',
@@ -719,6 +734,36 @@ describe PermissionsService do
               'extra_required_field' => 'satisfied',
               'extra_optional_field' => 'satisfied'
             },
+            onboarding: { topics_and_areas: 'ask' },
+            special: {
+              password: 'satisfied',
+              confirmation: 'satisfied',
+              verification: 'dont_ask',
+              group_membership: 'dont_ask'
+            }
+          }
+        })
+      end
+
+      it 'does not ask onboarding for a fully registered confirmed resident when onboarding is turned off' do
+        app_configuration = AppConfiguration.instance
+        app_configuration.settings['core']['onboarding'] = false
+        app_configuration.save!
+        expect(service.requirements(permission, user)).to eq({
+          permitted: true,
+          requirements: {
+            built_in: {
+              first_name: 'satisfied',
+              last_name: 'satisfied',
+              email: 'satisfied'
+            },
+            custom_fields: {
+              'birthyear' => 'satisfied',
+              'gender' => 'satisfied',
+              'extra_required_field' => 'satisfied',
+              'extra_optional_field' => 'satisfied'
+            },
+            onboarding: { topics_and_areas: 'dont_ask' },
             special: {
               password: 'satisfied',
               confirmation: 'satisfied',
@@ -746,6 +791,7 @@ describe PermissionsService do
               'extra_required_field' => 'satisfied',
               'extra_optional_field' => 'satisfied'
             },
+            onboarding: { topics_and_areas: 'ask' },
             special: {
               password: 'satisfied',
               confirmation: 'require',
@@ -772,6 +818,7 @@ describe PermissionsService do
               'extra_required_field' => 'satisfied',
               'extra_optional_field' => 'satisfied'
             },
+            onboarding: { topics_and_areas: 'ask' },
             special: {
               password: 'satisfied',
               confirmation: 'satisfied',
@@ -805,6 +852,7 @@ describe PermissionsService do
               custom_fields: {
                 'birthyear' => 'require'
               },
+              onboarding: { topics_and_areas: 'ask' },
               special: {
                 password: 'require',
                 confirmation: 'require',
@@ -829,6 +877,7 @@ describe PermissionsService do
               custom_fields: {
                 'birthyear' => 'satisfied'
               },
+              onboarding: { topics_and_areas: 'ask' },
               special: {
                 password: 'require',
                 confirmation: 'require',
@@ -851,6 +900,7 @@ describe PermissionsService do
               custom_fields: {
                 'birthyear' => 'satisfied'
               },
+              onboarding: { topics_and_areas: 'ask' },
               special: {
                 password: 'satisfied',
                 confirmation: 'satisfied',
@@ -875,6 +925,7 @@ describe PermissionsService do
               custom_fields: {
                 'birthyear' => 'satisfied'
               },
+              onboarding: { topics_and_areas: 'ask' },
               special: {
                 password: 'satisfied',
                 confirmation: 'require',
@@ -898,6 +949,7 @@ describe PermissionsService do
               custom_fields: {
                 'birthyear' => 'satisfied'
               },
+              onboarding: { topics_and_areas: 'ask' },
               special: {
                 password: 'satisfied',
                 confirmation: 'satisfied',
@@ -922,6 +974,7 @@ describe PermissionsService do
                 email: 'satisfied'
               },
               custom_fields: {},
+              onboarding: { topics_and_areas: 'ask' },
               special: {
                 password: 'satisfied',
                 confirmation: 'satisfied',
@@ -949,6 +1002,7 @@ describe PermissionsService do
               email: 'require'
             },
             custom_fields: {},
+            onboarding: { topics_and_areas: 'ask' },
             special: {
               password: 'require',
               confirmation: 'dont_ask',
@@ -971,6 +1025,7 @@ describe PermissionsService do
               email: 'satisfied'
             },
             custom_fields: {},
+            onboarding: { topics_and_areas: 'ask' },
             special: {
               password: 'require',
               confirmation: 'satisfied',
@@ -992,6 +1047,7 @@ describe PermissionsService do
               email: 'satisfied'
             },
             custom_fields: {},
+            onboarding: { topics_and_areas: 'ask' },
             special: {
               password: 'satisfied',
               confirmation: 'satisfied',
@@ -1014,6 +1070,7 @@ describe PermissionsService do
               email: 'satisfied'
             },
             custom_fields: {},
+            onboarding: { topics_and_areas: 'ask' },
             special: {
               password: 'satisfied',
               confirmation: 'satisfied',
@@ -1035,6 +1092,7 @@ describe PermissionsService do
               email: 'satisfied'
             },
             custom_fields: {},
+            onboarding: { topics_and_areas: 'ask' },
             special: {
               password: 'satisfied',
               confirmation: 'satisfied',
