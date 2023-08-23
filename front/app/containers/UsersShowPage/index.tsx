@@ -70,7 +70,7 @@ const Container = styled.main`
 
 const StyledContentContainer = styled(ContentContainer)`
   flex: 1 1 auto;
-  padding-top: 70px;
+  padding-top: 36px;
   padding-bottom: 100px;
   background: ${colors.background};
   align-items: center;
