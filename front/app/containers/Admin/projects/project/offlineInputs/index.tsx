@@ -102,8 +102,11 @@ const OfflineInputImporter = () => {
 
   const onDelete = () => {
     if (!ideaId) return;
-    deleteIdea(ideaId);
-    setIdeaId(null);
+    deleteIdea(ideaId, {
+      onSuccess: () => {
+        setIdeaId(null);
+      },
+    });
   };
 
   const handleSelectIdea = (ideaId: string) => {
