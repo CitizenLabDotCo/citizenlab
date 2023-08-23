@@ -127,52 +127,50 @@ interface Props {
   isAdmin: boolean;
 }
 
-export default class PageLayout extends React.PureComponent<Props> {
-  goBack = () => {
+const PageLayout = ({ children, className, isAdmin }: Props) => {
+  const goBack = () => {
     clHistory.goBack();
   };
 
-  render() {
-    const { children, className, isAdmin } = this.props;
+  const pageContent = (
+    <TwoColumns>
+      <div>
+        <StyledCollapsibleTipsAndInfo className={className} />
+        {children}
+      </div>
+      <TipsContainer>
+        <StyledTipsBox />
+      </TipsContainer>
+    </TwoColumns>
+  );
+  return (
+    <Container className={className}>
+      <TopLine>
+        <GoBackButton onClick={goBack} />
+      </TopLine>
+      <Header>
+        <HeaderTitle>
+          <FormattedMessage
+            {...messages.header}
+            values={{
+              styledOrgName: (
+                <ColoredText>
+                  <FormattedMessage {...messages.orgName} />
+                </ColoredText>
+              ),
+            }}
+          />
+        </HeaderTitle>
+      </Header>
+      <StyledContentContainer mode="page">
+        {isAdmin ? (
+          pageContent
+        ) : (
+          <Fragment name="external-proposal-form">{pageContent}</Fragment>
+        )}
+      </StyledContentContainer>
+    </Container>
+  );
+};
 
-    const pageContent = (
-      <TwoColumns>
-        <div>
-          <StyledCollapsibleTipsAndInfo />
-          {children}
-        </div>
-        <TipsContainer>
-          <StyledTipsBox />
-        </TipsContainer>
-      </TwoColumns>
-    );
-    return (
-      <Container className={className}>
-        <TopLine>
-          <GoBackButton onClick={this.goBack} />
-        </TopLine>
-        <Header>
-          <HeaderTitle>
-            <FormattedMessage
-              {...messages.header}
-              values={{
-                styledOrgName: (
-                  <ColoredText>
-                    <FormattedMessage {...messages.orgName} />
-                  </ColoredText>
-                ),
-              }}
-            />
-          </HeaderTitle>
-        </Header>
-        <StyledContentContainer mode="page">
-          {isAdmin ? (
-            pageContent
-          ) : (
-            <Fragment name="external-proposal-form">{pageContent}</Fragment>
-          )}
-        </StyledContentContainer>
-      </Container>
-    );
-  }
-}
+export default PageLayout;

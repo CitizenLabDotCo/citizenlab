@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { SectionField } from 'components/admin/Section';
+import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import { Toggle, Text } from '@citizenlab/cl2-component-library';
 
 // i18n
@@ -16,6 +16,9 @@ interface Props {
 const ProposalsFeatureToggle = ({ enabled, onToggle }: Props) => {
   return (
     <SectionField>
+      <SubSectionTitle style={{ marginBottom: '0px' }}>
+        <FormattedMessage {...messages.feature} />
+      </SubSectionTitle>
       <Toggle
         checked={enabled}
         onChange={onToggle}
