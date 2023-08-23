@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 
 // components
 import InitiativeForm, {
   FormValues,
   SimpleFormValues,
 } from 'components/InitiativeForm';
-import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
+const AnonymousParticipationConfirmationModal = lazy(
+  () => import('components/AnonymousParticipationConfirmationModal')
+);
 
 // types
 import { Locale, Multiloc, UploadFile } from 'typings';
@@ -512,13 +514,15 @@ const InitiativesNewFormWrapper = ({
         postAnonymously={postAnonymously}
         setPostAnonymously={setPostAnonymously}
       />
-      <AnonymousParticipationConfirmationModal
-        onConfirmAnonymousParticipation={() => {
-          continuePublish();
-        }}
-        showAnonymousConfirmationModal={showAnonymousConfirmationModal}
-        setShowAnonymousConfirmationModal={setShowAnonymousConfirmationModal}
-      />
+      <Suspense fallback={null}>
+        <AnonymousParticipationConfirmationModal
+          onConfirmAnonymousParticipation={() => {
+            continuePublish();
+          }}
+          showAnonymousConfirmationModal={showAnonymousConfirmationModal}
+          setShowAnonymousConfirmationModal={setShowAnonymousConfirmationModal}
+        />
+      </Suspense>
     </>
   );
 };
