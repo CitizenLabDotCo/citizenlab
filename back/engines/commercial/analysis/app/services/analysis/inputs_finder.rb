@@ -17,8 +17,10 @@ module Analysis
       inputs = filter_reactions(inputs)
       inputs = filter_comments(inputs)
       inputs = filter_votes(inputs)
-      inputs = filter_custom_field_in(inputs)
-      inputs = filter_custom_field_range(inputs)
+      inputs = filter_author_custom_field_in(inputs)
+      inputs = filter_author_custom_field_range(inputs)
+      inputs = filter_input_custom_field_in(inputs)
+      inputs = filter_input_custom_field_range(inputs)
       search(inputs)
     end
 
@@ -83,7 +85,7 @@ module Analysis
       inputs.search_by_all(search)
     end
 
-    def filter_custom_field_in(inputs)
+    def filter_author_custom_field_in(inputs)
       scope = inputs
 
       decode_author_in_custom_keys.each do |(custom_field_id, value)|
@@ -118,7 +120,7 @@ module Analysis
       scope
     end
 
-    def filter_custom_field_range(inputs)
+    def filter_author_custom_field_range(inputs)
       scope = inputs
       decode_author_range_custom_keys.each do |(custom_field_id, predicate, value)|
         cf = CustomField.find(custom_field_id)
@@ -145,6 +147,73 @@ module Analysis
     def decode_author_range_custom_keys
       params.filter_map do |key, value|
         matches = key.to_s.match(/^author_custom_([a-f0-9-]+)_(from|to)$/)
+        # return triplet [custom_field_id, predicate, value]
+        matches && [matches[1], matches[2], value]
+      end
+    end
+
+    def filter_input_custom_field_in(inputs)
+      scope = inputs
+
+      decode_input_in_custom_keys.each do |(custom_field_id, value)|
+        raise ArgumentError, "value specified for input_custom_#{custom_field_id} must be an array" unless value.is_a? Array
+
+        cf = CustomField.find(custom_field_id)
+
+        case cf.input_type
+        when 'select', 'date'
+          scope = if value.include?(nil)
+            scope.where("ideas.custom_field_values->>'#{cf.key}' IS NULL")
+          else
+            scope.where("ideas.custom_field_values->>'#{cf.key}' IN (?)", value)
+          end
+        when 'multiselect'
+          scope = if value.include?(nil)
+            scope.where("ideas.custom_field_values->>'#{cf.key}' IS NULL OR jsonb_array_length(ideas.custom_field_values->'#{cf.key}') = 0")
+          else
+            scope.where("(ideas.custom_field_values->>'#{cf.key}')::jsonb ?| array[:value]", value: value)
+          end
+        when 'number', 'linear_scale'
+          scope = if value.include?(nil)
+            scope.where("ideas.custom_field_values->>'#{cf.key}' IS NULL")
+          else
+            scope.where("(ideas.custom_field_values->'#{cf.key}')::numeric IN (?)", value)
+          end
+        else
+          raise ArgumentError, "input_custom_<uuid>[] filter on custom field of type #{cf.input_type} is not supported"
+        end
+      end
+
+      scope
+    end
+
+    def filter_input_custom_field_range(inputs)
+      scope = inputs
+      decode_input_range_custom_keys.each do |(custom_field_id, predicate, value)|
+        cf = CustomField.find(custom_field_id)
+
+        scope = if predicate == 'from'
+          scope.where("(ideas.custom_field_values->'#{cf.key}')::numeric >= ?", value)
+        elsif predicate == 'to'
+          scope.where("(ideas.custom_field_values->'#{cf.key}')::numeric <= ?", value)
+        else
+          raise ArgumentError, "invalid predicate #{predicate}"
+        end
+      end
+      scope
+    end
+
+    def decode_input_in_custom_keys
+      params.filter_map do |key, value|
+        matches = key.to_s.match(/^input_custom_([a-f0-9-]+)$/)
+        # return pair [custom_field_id, value]
+        matches && [matches[1], value]
+      end
+    end
+
+    def decode_input_range_custom_keys
+      params.filter_map do |key, value|
+        matches = key.to_s.match(/^input_custom_([a-f0-9-]+)_(from|to)$/)
         # return triplet [custom_field_id, predicate, value]
         matches && [matches[1], matches[2], value]
       end

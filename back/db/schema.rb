@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_14_115846) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_17_134213) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -86,18 +86,38 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_14_115846) do
     t.index ["analysis_id"], name: "index_analysis_background_tasks_on_analysis_id"
   end
 
-  create_table "analysis_summaries", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "analysis_insights", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "analysis_id", null: false
+    t.string "insightable_type", null: false
+    t.uuid "insightable_id", null: false
+    t.jsonb "filters", default: {}, null: false
+    t.jsonb "inputs_ids"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["analysis_id"], name: "index_analysis_insights_on_analysis_id"
+    t.index ["insightable_type", "insightable_id"], name: "index_analysis_insights_on_insightable"
+  end
+
+  create_table "analysis_questions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "background_task_id", null: false
+    t.text "question"
+    t.text "answer"
+    t.text "prompt"
+    t.string "q_and_a_method", null: false
+    t.float "accuracy"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["background_task_id"], name: "index_analysis_questions_on_background_task_id"
+  end
+
+  create_table "analysis_summaries", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "background_task_id", null: false
     t.text "summary"
     t.text "prompt"
     t.string "summarization_method", null: false
-    t.jsonb "filters", default: {}, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.float "accuracy"
-    t.jsonb "inputs_ids"
-    t.index ["analysis_id"], name: "index_analysis_summaries_on_analysis_id"
     t.index ["background_task_id"], name: "index_analysis_summaries_on_background_task_id"
   end
 
@@ -1542,7 +1562,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_14_115846) do
   add_foreign_key "analysis_analyses_custom_fields", "analysis_analyses", column: "analysis_id"
   add_foreign_key "analysis_analyses_custom_fields", "custom_fields"
   add_foreign_key "analysis_background_tasks", "analysis_analyses", column: "analysis_id"
-  add_foreign_key "analysis_summaries", "analysis_analyses", column: "analysis_id"
+  add_foreign_key "analysis_insights", "analysis_analyses", column: "analysis_id"
+  add_foreign_key "analysis_questions", "analysis_background_tasks", column: "background_task_id"
   add_foreign_key "analysis_summaries", "analysis_background_tasks", column: "background_task_id"
   add_foreign_key "analysis_taggings", "analysis_tags", column: "tag_id"
   add_foreign_key "analysis_taggings", "ideas", column: "input_id"
