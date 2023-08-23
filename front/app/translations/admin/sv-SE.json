@@ -797,6 +797,8 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPdf": "Importera PDF",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedIdeas": "Importerade idéer",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet": "Det finns inga idéer att granska ännu. Klicka på \"{importPdf}\" för att importera en PDF-fil med skannade idéformulär.",
+  "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "Detta projekt innehåller inga faser som kan innehålla idéer.",
+  "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAnotherPhase": "Vänligen välj en annan fas.",
   "app.containers.Admin.projects.project.offlineInputs.approve": "Godkänna",
   "app.containers.Admin.projects.project.offlineInputs.delete": "Radera",
   "app.containers.Admin.projects.project.survey.analysisButton": "Skapa analys",
