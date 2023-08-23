@@ -93,5 +93,4 @@ resource 'Taggings' do
       expect(Analysis::Tagging.pluck(:input_id)).to match_array([idea.id])
     end
   end
-
 end
