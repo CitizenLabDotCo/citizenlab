@@ -586,7 +586,6 @@ const ProjectFolderCard = memo<Props>(
                 followerId={
                   projectFolder.data.relationships.user_follower?.data?.id
                 }
-                py="2px"
               />
             </Box>
           )}

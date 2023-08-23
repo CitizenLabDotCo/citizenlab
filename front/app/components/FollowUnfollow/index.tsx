@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   Button,
-  BoxPaddingProps,
   ButtonStyles,
   BoxWidthProps,
 } from '@citizenlab/cl2-component-library';
@@ -17,7 +16,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import useABTest from 'api/experiments/useABTest';
 import useLocale from 'hooks/useLocale';
 
-interface Props extends BoxPaddingProps, BoxWidthProps {
+interface Props extends BoxWidthProps {
   followableType: FollowableType;
   followableId: string; // id of the project, folder, idea, proposal or anything to be followed
   followersCount?: number;

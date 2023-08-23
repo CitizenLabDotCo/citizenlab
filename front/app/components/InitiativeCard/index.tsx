@@ -144,7 +144,6 @@ const InitiativeCard = ({
                 followerId={
                   initiative.data.relationships.user_follower?.data?.id
                 }
-                py="2px"
               />
             </Box>
           )}

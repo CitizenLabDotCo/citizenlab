@@ -797,7 +797,6 @@ const ProjectCard = memo<InputProps>(
                   followerId={
                     project.data.relationships.user_follower?.data?.id
                   }
-                  py="2px"
                 />
               </Box>
             )}
