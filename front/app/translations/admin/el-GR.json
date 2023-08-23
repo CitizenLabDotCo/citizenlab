@@ -797,6 +797,8 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPdf": "Εισαγωγή PDF",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedIdeas": "Εισαγόμενες ιδέες",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet": "Δεν υπάρχουν ακόμα ιδέες προς αναθεώρηση. Κάντε κλικ στο \"{importPdf}\" για να εισαγάγετε ένα αρχείο PDF που περιέχει σαρωμένες φόρμες ιδεών.",
+  "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "Αυτό το έργο δεν περιέχει φάσεις που μπορούν να περιέχουν ιδέες.",
+  "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAnotherPhase": "Παρακαλούμε επιλέξτε άλλη φάση.",
   "app.containers.Admin.projects.project.offlineInputs.approve": "Έγκριση",
   "app.containers.Admin.projects.project.offlineInputs.delete": "Διαγραφή",
   "app.containers.Admin.projects.project.survey.analysisButton": "Create analysis",
