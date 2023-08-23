@@ -797,6 +797,8 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPdf": "Importer PDF",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedIdeas": "Importerede ideer",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet": "Der er ingen ideer at gennemgå endnu. Klik på \"{importPdf}\" for at importere en PDF-fil med scannede idéformularer.",
+  "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "Dette projekt indeholder ikke nogen faser, der kan indeholde ideer.",
+  "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAnotherPhase": "Vælg venligst en anden fase.",
   "app.containers.Admin.projects.project.offlineInputs.approve": "Godkend",
   "app.containers.Admin.projects.project.offlineInputs.delete": "Slet",
   "app.containers.Admin.projects.project.survey.analysisButton": "Opret analyse",
