@@ -184,7 +184,7 @@ ar:
     initiative_assigned_to_you:
       by_author: 'بواسطة %{authorName}'
       cta_reply_to: 'قدّم ملاحظاتك لـ %{authorName}'
-      event_description_initiative: 'تم تعيين اقتراح لك. قدم ملاحظاتك عن طريق كتابة تحديث رسمي أو عن طريق تغيير حالته.'
+      event_description_initiative: 'تم تعيين مُقترح إليك. قدّم ملاحظاتك من خلال كتابة تحديث رسمي أو بتغيير حالته.'
       main_header: '%{firstName}، لديك مهمة جديدة'
       subject: 'لديك مهمة على المنصة الخاصة بـ %{organizationName}'
       preheader_initiative: 'تم تعيين مُقترح %{authorName} إليك'
