@@ -3,9 +3,12 @@ import React, { useState } from 'react';
 import {
   Dropdown,
   DropdownListItem,
-  Button,
   colors,
   Spinner,
+  Text,
+  Icon,
+  Box,
+  IconButton,
 } from '@citizenlab/cl2-component-library';
 import useDeleteAnalysisTag from 'api/analysis_tags/useDeleteAnalysisTag';
 import { useIntl } from 'utils/cl-intl';
@@ -80,17 +83,13 @@ const TagActions = ({ tag }: { tag: ITagData }) => {
 
   return (
     <div>
-      <Button
-        icon="dots-horizontal"
+      <IconButton
+        iconName="dots-horizontal"
         iconColor={colors.textSecondary}
-        iconHoverColor={colors.textSecondary}
-        boxShadow="none"
-        boxShadowHover="none"
-        bgColor="transparent"
-        bgHoverColor="transparent"
-        pr="0"
+        iconColorOnHover={colors.black}
+        a11y_buttonActionMessage="open tag actions dropdown"
         onClick={(e) => {
-          e.stopPropagation();
+          e?.stopPropagation();
           toggleDropdown();
         }}
       />
@@ -108,7 +107,10 @@ const TagActions = ({ tag }: { tag: ITagData }) => {
                 openTagRenameModal(tag.id);
               }}
             >
-              Rename
+              <Text textAlign="left" m="0px">
+                <Icon name="edit" mr="4px" />
+                Rename tag
+              </Text>
             </DropdownListItem>
             <DropdownListItem
               onClick={(e) => {
@@ -116,7 +118,16 @@ const TagActions = ({ tag }: { tag: ITagData }) => {
                 handleTagDelete();
               }}
             >
-              {deleteIsLoading ? <Spinner size="20px" /> : 'Delete'}
+              <Text textAlign="left" m="0px">
+                {deleteIsLoading ? (
+                  <Spinner size="20px" />
+                ) : (
+                  <Box display="flex">
+                    <Icon name="delete" mr="4px" />
+                    Delete tag
+                  </Box>
+                )}
+              </Text>
             </DropdownListItem>
             <DropdownListItem
               onClick={(e) => {
@@ -124,11 +135,16 @@ const TagActions = ({ tag }: { tag: ITagData }) => {
                 createAnalysisBulkTaggings();
               }}
             >
-              {bulkTaggingIsLoading ? (
-                <Spinner size="20px" />
-              ) : (
-                'Add inputs to tag'
-              )}
+              <Text textAlign="left" m="0px">
+                {bulkTaggingIsLoading ? (
+                  <Spinner size="20px" />
+                ) : (
+                  <Box display="flex">
+                    <Icon name="plus-circle" mr="4px" />
+                    Add selected inputs to tag
+                  </Box>
+                )}
+              </Text>
             </DropdownListItem>
           </>
         }
