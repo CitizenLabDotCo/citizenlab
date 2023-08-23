@@ -7,10 +7,10 @@ import messages from '../messages';
 // components
 import ProjectFilterDropdown from 'components/ProjectFilterDropdown';
 import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
+import DateFilterDropdown from './DateFilterDropdown';
 
 // styling
 import styled, { useTheme } from 'styled-components';
-import DateFilterDropdown from './DateFilterDropdown';
 
 const ProjectFilterDropdownPositioner = styled.div`
   margin-top: auto;
@@ -40,6 +40,8 @@ const TopBar = memo<Props>(
     const theme = useTheme();
     const isMobileOrSmaller = useBreakpoint('phone');
 
+    const mobileLeft = isMobileOrSmaller && !theme.isRtl ? '-70px' : 'auto';
+
     return (
       <Box
         display={isMobileOrSmaller ? 'block' : 'flex'}
@@ -61,13 +63,7 @@ const TopBar = memo<Props>(
                 textColor={theme.colors.tenantText}
                 filterSelectorStyle="button"
                 listTop="44px"
-                mobileLeft={
-                  isMobileOrSmaller && !theme.isRtl
-                    ? showProjectFilter
-                      ? '0px'
-                      : '-70px'
-                    : 'auto'
-                }
+                mobileLeft={showProjectFilter ? '0px' : mobileLeft}
               />
             )}
             {showProjectFilter && (
