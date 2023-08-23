@@ -34,4 +34,14 @@ export default defineMessages({
     defaultMessage:
       'Your ideas are being imported. This can take a while. Please do not close this page until the import is completed successfully- we will let you know when it is.',
   },
+  importTakingLonger: {
+    id: 'app.containers.admin.import.ideasBeingImported',
+    defaultMessage:
+      'Import taking longer than one minute. Try waiting another minute. If you then still see this message, try going back to the input manager, wait another minute, and refresh the page. If that does not work, try importing again.',
+  },
+  somethingWentWrong: {
+    id: 'app.containers.admin.import.somethingWentWrong',
+    defaultMessage:
+      'Something went wrong. Try going back to the input manager, wait a few minutes, and refresh the page. If that does not work, try importing again.',
+  },
 });
