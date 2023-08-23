@@ -29,6 +29,11 @@ describe Analysis::InputsFinder do
       idea1 = create(:idea, project: analysis.project)
       idea2 = create(:idea, project: analysis.project)
       create(:tagging, input: idea1, tag: tag1)
+      
+      analysis2 = create(:analysis)
+      tag2 = create(:tag, analysis: analysis2)
+      create(:tagging, input: idea2, tag: tag2)
+      
       @params = { tag_ids: [nil] }
       expect(output).to contain_exactly(idea2)
     end
@@ -40,6 +45,7 @@ describe Analysis::InputsFinder do
       @params = { tag_ids: [tag1], search: 'dog' }
       expect(output).to contain_exactly(idea1)
     end
+
   end
 
   describe 'search' do

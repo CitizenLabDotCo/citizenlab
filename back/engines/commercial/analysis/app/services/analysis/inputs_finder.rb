@@ -32,7 +32,8 @@ module Analysis
       raise ArgumentError, 'value specified for tag_ids must be an array' unless params[:tag_ids].is_a? Array
 
       if params[:tag_ids].include?(nil)
-        inputs.where.missing(:taggings)
+        inputs_in_analysis_with_tags = Tagging.joins(:tag).where(tag: { analysis: analysis }).select(:input_id)
+        inputs.where.not(id: inputs_in_analysis_with_tags)
       else
         # We use a subquery because we need to make sure multiple taggings for
         # the same inputs don't result in duplication of those inputs in the
