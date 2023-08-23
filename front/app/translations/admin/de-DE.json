@@ -797,6 +797,8 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPdf": "PDF importieren",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedIdeas": "Importierte Ideen",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet": "Es sind noch keine Ideen zur Überprüfung vorhanden. Klicken Sie auf \"{importPdf}\", um eine PDF-Datei mit eingescannten Ideenformularen zu importieren.",
+  "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "Dieses Projekt enthält keine Phasen, die Ideen enthalten können.",
+  "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAnotherPhase": "Bitte wählen Sie eine andere Phase.",
   "app.containers.Admin.projects.project.offlineInputs.approve": "Genehmigen",
   "app.containers.Admin.projects.project.offlineInputs.delete": "Löschen",
   "app.containers.Admin.projects.project.survey.analysisButton": "Analyse erstellen",
