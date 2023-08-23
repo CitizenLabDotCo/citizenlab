@@ -6,29 +6,25 @@ module Analysis
       class SummariesController < ApplicationController
         skip_after_action :verify_policy_scoped # The analysis is authorized instead.
         before_action :set_analysis
-        before_action :set_summary, only: [:destroy]
+        before_action :set_summary, only: [:show]
 
-        def index
-          summaries = @analysis.summaries
-            .order(created_at: :asc)
-            .includes(:background_task)
-          render json: WebApi::V1::SummarySerializer.new(
-            summaries,
-            params: jsonapi_serializer_params,
-            include: [:background_task]
-          ).serializable_hash
+        def show
+          render json: SummarySerializer.new(@summary, params: jsonapi_serializer_params).serializable_hash
         end
 
         # Used to check whether a summary is possible with the given filters,
         # front-end should call this before initiating the summary
         def pre_check
           @summary = Summary.new(
-            analysis: @analysis,
             background_task: SummarizationTask.new(analysis: @analysis),
-            **summary_params
+            **summary_params.except(:filters),
+            insight_attributes: {
+              analysis: @analysis,
+              **summary_params.slice(:filters)
+            }
           )
           plan = SummarizationMethod::Base.plan(@summary)
-          render json: WebApi::V1::SummaryPreCheckSerializer.new(
+          render json: SummaryPreCheckSerializer.new(
             plan,
             params: jsonapi_serializer_params
           ).serializable_hash
@@ -36,9 +32,12 @@ module Analysis
 
         def create
           @summary = Summary.new(
-            analysis: @analysis,
             background_task: SummarizationTask.new(analysis: @analysis),
-            **summary_params
+            **summary_params.except(:filters),
+            insight_attributes: {
+              analysis: @analysis,
+              **summary_params.slice(:filters)
+            }
           )
           plan = SummarizationMethod::Base.plan(@summary)
           @summary.summarization_method = plan.summarization_method_class::SUMMARIZATION_METHOD
@@ -47,20 +46,11 @@ module Analysis
           if @summary.save && plan.possible?
             side_fx_service.after_create(@summary, current_user)
             SummarizationJob.perform_later(@summary)
-            render json: WebApi::V1::SummarySerializer.new(
+            render json: SummarySerializer.new(
               @summary,
               params: jsonapi_serializer_params,
               include: [:background_task]
             ).serializable_hash, status: :created
-          else
-            render json: { errors: @summary.errors.details }, status: :unprocessable_entity
-          end
-        end
-
-        def destroy
-          if @summary.destroy
-            side_fx_service.after_destroy(@summary, current_user)
-            head :ok
           else
             render json: { errors: @summary.errors.details }, status: :unprocessable_entity
           end
@@ -74,7 +64,10 @@ module Analysis
         end
 
         def set_summary
-          @summary = @analysis.summaries.find(params[:id])
+          @summary = Summary
+            .joins(:insight)
+            .where(insight: { analysis: @analysis })
+            .find(params[:id])
         end
 
         def summary_params

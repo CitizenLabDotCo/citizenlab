@@ -5,17 +5,22 @@ import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 import useAddAnalysisSummary from 'api/analysis_summaries/useAddAnalysisSummary';
 import useAddAnalysisSummaryPreCheck from 'api/analysis_summary_pre_check/useAddAnalysisSummaryPreCheck';
 import { ISummaryPreCheck } from 'api/analysis_summary_pre_check/types';
+import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
 
-type Props = {
-  inputsCount?: number;
-};
-const SummarizeButton = ({ inputsCount }: Props) => {
+const SummarizeButton = () => {
   const { mutate: addSummary, isLoading: isLoadingSummary } =
     useAddAnalysisSummary();
   const { mutate: addSummaryPreCheck, isLoading: isLoadingPreCheck } =
     useAddAnalysisSummaryPreCheck();
   const { analysisId } = useParams() as { analysisId: string };
   const filters = useAnalysisFilterParams();
+  const { data } = useInfiniteAnalysisInputs({
+    analysisId,
+    queryParams: filters,
+  });
+
+  const inputsCount = data?.pages[0].meta.filtered_count;
+
   const handleSummaryCreate = () => {
     addSummary({
       analysisId,
