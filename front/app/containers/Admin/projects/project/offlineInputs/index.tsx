@@ -7,6 +7,7 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
 import useInputSchema from 'hooks/useInputSchema';
 import useDeleteIdea from 'api/ideas/useDeleteIdea';
+import usePhases from 'api/phases/usePhases';
 
 // routing
 import { useParams } from 'react-router-dom';
@@ -24,6 +25,7 @@ import { colors, stylingConsts } from 'utils/styleUtils';
 import { isValidData } from 'components/Form/utils';
 import { customAjv } from 'components/Form';
 import { getFormValues } from 'containers/IdeasEditPage/utils';
+import { getCurrentPhase } from 'api/phases/utils';
 
 // typings
 import { FormData } from 'components/Form/typings';
@@ -35,6 +37,7 @@ const OfflineInputImporter = () => {
   };
 
   const [ideaId, setIdeaId] = useState<string | null>(null);
+  const [selectedPhaseId, setSelectedPhaseId] = useState<string | null>(null);
   const [showAllErrors, setShowAllErrors] = useState(false);
   const [apiErrors, setApiErrors] = useState<CLErrors | undefined>();
   const [importModalOpen, setImportModalOpen] = useState(false);
@@ -43,14 +46,14 @@ const OfflineInputImporter = () => {
   >({});
 
   const { data: idea } = useIdeaById(ideaId ?? undefined, false);
-
   const { mutateAsync: updateIdea, isLoading: loadingApproveIdea } =
     useUpdateIdea();
   const { mutate: deleteIdea, isLoading: loadingDeleteIdea } = useDeleteIdea();
+  const { data: phases } = usePhases(projectId);
+  const currentPhase = getCurrentPhase(phases?.data);
 
   const { schema, uiSchema } = useInputSchema({
     projectId,
-    // phaseId, // TODO
   });
 
   const formData =
@@ -59,6 +62,9 @@ const OfflineInputImporter = () => {
       : idea && schema
       ? getFormValues(idea, schema)
       : null;
+
+  const phaseId =
+    selectedPhaseId ?? (currentPhase ? currentPhase.id : undefined);
 
   const setFormData = (formData: FormData) => {
     if (!ideaId) return;
@@ -84,6 +90,7 @@ const OfflineInputImporter = () => {
             publication_status: 'published',
             title_multiloc: formData.title_multiloc,
             body_multiloc: formData.body_multiloc,
+            ...(phaseId ? { phase_ids: [phaseId] } : {}),
           },
         });
 
@@ -113,8 +120,10 @@ const OfflineInputImporter = () => {
       >
         <FocusOn>
           <TopBar
+            phaseId={phaseId}
             loadingApproveIdea={loadingApproveIdea}
             loadingDeleteIdea={loadingDeleteIdea}
+            onChangePhase={setSelectedPhaseId}
             onApproveIdea={ideaId ? onSubmit : undefined}
             onDeleteIdea={ideaId ? onDelete : undefined}
             onClickPDFImport={openImportModal}

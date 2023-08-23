@@ -14,7 +14,7 @@ import useUserById from 'api/users/useUserById';
 import useLocalize from 'hooks/useLocalize';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import sharedMessages from '../messages';
+import sharedMessages from '../TopBar/messages';
 
 // components
 import { Box, Spinner, Title, Text } from '@citizenlab/cl2-component-library';
