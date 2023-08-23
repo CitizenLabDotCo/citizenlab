@@ -4,6 +4,12 @@ module EmailCampaigns
   class ProjectPhaseStartedMailer < ApplicationMailer
     private
 
+    helper_method :unfollow_url
+
+    def unfollow_url
+      Frontend::UrlService.new.unfollow_url(Follower.new(followable: project, user: recipient))
+    end
+
     def project_title
       localize_for_recipient(event.project_title_multiloc)
     end

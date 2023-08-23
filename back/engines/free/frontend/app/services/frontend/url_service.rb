@@ -44,7 +44,8 @@ module Frontend
     end
 
     def model_to_url(model_instance, options = {})
-      "#{home_url(options)}/#{model_to_path(model_instance)}"
+      path = model_to_path model_instance
+      path && "#{home_url(options)}/#{path}"
     end
 
     def admin_project_folder_url(project_folder_id, locale: nil)
@@ -126,10 +127,12 @@ module Frontend
       end
     end
 
-    def unfollow_url(user, configuration = app_config_instance)
+    def unfollow_url(follower, configuration = app_config_instance)
+      url = model_to_url(follower.followable, locale: follower.user.locale)
+
       # A future improvement would be to pass the follower as argument
       # and return e.g. the project page for a project follower.
-      "#{configuration.base_frontend_uri}/profile/#{user.slug}"
+      url || "#{home_url(locale: follower.user.locale)}/profile/#{follower.user.slug}"
     end
 
     def terms_conditions_url(configuration = app_config_instance)
