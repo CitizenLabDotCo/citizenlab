@@ -237,21 +237,19 @@ const Phone = ({
             <FileAttachments files={initiativeFiles.data} />
           </Box>
         )}
-        <div ref={officialFeedbackElement}>
-          <Box
-            mb={hasOfficialFeedback ? '80px' : '0'}
-            ref={officialFeedbackElement}
-          >
-            <OfficialFeedback
-              postId={initiativeId}
-              postType="initiative"
-              permissionToPost={postOfficialFeedbackPermission}
-              a11y_pronounceLatestOfficialFeedbackPost={
-                a11y_pronounceLatestOfficialFeedbackPost
-              }
-            />
-          </Box>
-        </div>
+        <Box
+          mb={hasOfficialFeedback ? '80px' : '0'}
+          ref={officialFeedbackElement}
+        >
+          <OfficialFeedback
+            postId={initiativeId}
+            postType="initiative"
+            permissionToPost={postOfficialFeedbackPermission}
+            a11y_pronounceLatestOfficialFeedbackPost={
+              a11y_pronounceLatestOfficialFeedbackPost
+            }
+          />
+        </Box>
         {showSharingOptions && (
           <Box mb="48px">
             <SharingButtons
