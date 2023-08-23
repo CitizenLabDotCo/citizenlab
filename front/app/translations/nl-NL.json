@@ -145,7 +145,7 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Maptitel:",
   "app.components.FolderFolderCard.archived": "Afgerond",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# projecten} one {# project} other {# projecten}}",
-  "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Downloaden als pdf",
+  "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Download als pdf",
   "app.components.GoBackButton.group.edit.goBack": "Ga terug",
   "app.components.HookForm.Feedback.errorTitle": "Er gaat iets mis",
   "app.components.HookForm.Feedback.submissionError": "Probeer het nog eens. Neem contact met ons op als het probleem zich blijft voordoen",
