@@ -23,7 +23,7 @@ const clauseToPredicate = (clause?: string): '>' | '<' | '=' => {
 
 type FilterItemsProps = {
   filters: IInputsFilterParams;
-  isEditable?: boolean;
+  isEditable: boolean;
 };
 
 const FilterItems = ({ filters, isEditable }: FilterItemsProps) => {
@@ -33,7 +33,7 @@ const FilterItems = ({ filters, isEditable }: FilterItemsProps) => {
   > = {
     search: {
       translationKey: 'Search',
-      predicate: '>',
+      predicate: '=',
     },
     published_at_from: {
       translationKey: 'Start',
@@ -70,7 +70,7 @@ const FilterItems = ({ filters, isEditable }: FilterItemsProps) => {
   };
 
   const filterEntries = Object.entries(filters).filter(
-    ([key]) => key !== 'tag_ids'
+    ([key]) => key !== 'tag_ids' && isEditable && key !== 'search'
   );
 
   return (
@@ -87,7 +87,7 @@ const FilterItems = ({ filters, isEditable }: FilterItemsProps) => {
               filterKey={key}
               filterValue={value}
               predicate={predicate}
-              isEditable
+              isEditable={isEditable}
             />
           );
         } else if (subject === 'author') {
@@ -98,7 +98,7 @@ const FilterItems = ({ filters, isEditable }: FilterItemsProps) => {
               filterKey={key}
               filterValue={value}
               predicate={predicate}
-              isEditable
+              isEditable={isEditable}
             />
           );
         } else {

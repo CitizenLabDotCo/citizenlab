@@ -111,7 +111,10 @@ const Summary = ({ summary }: Props) => {
           {hasFilters && (
             <>
               <Box>Summary for:</Box>
-              <FilterItems filters={summary.attributes.filters} />
+              <FilterItems
+                filters={summary.attributes.filters}
+                isEditable={false}
+              />
               {tags?.data
                 .filter((tag) => tagIds?.includes(tag.id))
                 .map((tag) => (
