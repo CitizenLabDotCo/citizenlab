@@ -11,6 +11,8 @@ import SummarizeButton from './SummarizeButton';
 import QuestionButton from './QuestionButton';
 import QuestionInput from './QuestionInput';
 import Question from './Question';
+import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
+import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
 
 const Insights = () => {
   const [isQuestionInputOpen, setIsQuestionInputOpen] = useState(false);
@@ -18,12 +20,28 @@ const Insights = () => {
   const { data: insights, isLoading } = useAnalysisInsights({
     analysisId,
   });
+  const filters = useAnalysisFilterParams();
+  const { data } = useInfiniteAnalysisInputs({
+    analysisId,
+    queryParams: filters,
+  });
+
+  const inputsCount = data?.pages[0].meta.filtered_count;
 
   return (
     <Box>
       <Box display="flex" gap="4px">
-        <SummarizeButton />
-        <QuestionButton onClick={() => setIsQuestionInputOpen(true)} />
+        <Box flex="1">
+          <SummarizeButton />
+        </Box>
+        <Box flex="1">
+          <QuestionButton onClick={() => setIsQuestionInputOpen(true)} />
+        </Box>
+      </Box>
+      <Box m="0" mb="12px" display="flex" justifyContent="center">
+        <Text fontSize="s" m="0" variant="bodyXs" color="grey700">
+          Applies to currently selected inputs ({inputsCount})
+        </Text>
       </Box>
 
       {isQuestionInputOpen && (
