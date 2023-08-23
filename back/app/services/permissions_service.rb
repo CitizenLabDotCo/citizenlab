@@ -146,9 +146,7 @@ class PermissionsService
         email: 'dont_ask'
       },
       custom_fields: requirements_fields(permission).to_h { |field| [field.key, 'dont_ask'] },
-      onboarding: {
-        topics_and_areas: (permission.permitted_by == 'everyone_confirmed_email' ? 'dont_ask' : 'ask')
-      },
+      onboarding: { topics_and_areas: 'dont_ask' },
       special: {
         password: 'dont_ask',
         confirmation: 'dont_ask',
@@ -166,6 +164,7 @@ class PermissionsService
     users = everyone_confirmed_email.deep_dup.tap do |requirements|
       requirements[:built_in][:first_name] = 'require'
       requirements[:built_in][:last_name] = 'require'
+      requirements[:onboarding].transform_values! { 'ask' } if app_configuration.settings.dig('core', 'onboarding')
       requirements[:special][:password] = 'require'
     end
 
@@ -214,6 +213,10 @@ class PermissionsService
     return requirements if !user
 
     requirements[:special][:password] = 'dont_ask' if user.sso?
+  end
+
+  def app_configuration
+    @app_configuration ||= AppConfiguration.instance
   end
 end
 
