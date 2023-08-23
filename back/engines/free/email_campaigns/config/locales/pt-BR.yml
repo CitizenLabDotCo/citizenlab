@@ -184,7 +184,7 @@ pt:
     initiative_assigned_to_you:
       by_author: 'por %{authorName}'
       cta_reply_to: 'Dê uma opinião a %{authorName}'
-      event_description_initiative: 'Foi-lhe atribuída uma proposta. Dê a sua opinião escrevendo uma atualização oficial ou alterando o seu estado.'
+      event_description_initiative: 'Uma ideia foi atribuída a você. Dê sua opinião escrevendo uma atualização ou alterando o seu status.'
       main_header: '%{firstName}, você tem uma nova tarefa'
       subject: 'Você tem uma atribuição na plataforma de %{organizationName}'
       preheader_initiative: 'A proposta de %{authorName} foi atribuída a você'
