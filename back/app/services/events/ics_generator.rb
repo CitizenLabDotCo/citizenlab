@@ -32,18 +32,10 @@ module Events
       cal.event do |e|
         e.dtstart = Icalendar::Values::DateTime.new(event.start_at)
         e.dtend = Icalendar::Values::DateTime.new(event.end_at)
+        e.summary = multiloc_service.t(event.title_multiloc, preferred_locale)
+        e.description = multiloc_service.t(event.description_multiloc, preferred_locale)
         e.location = full_address(event, preferred_locale)
         # TODO: e.url = event.online_link
-
-        e.summary = multiloc_service.t(
-          event.title_multiloc,
-          preferred_locale: preferred_locale
-        )
-
-        e.description = multiloc_service.t(
-          event.description_multiloc,
-          preferred_locale: preferred_locale
-        )
 
         e.geo = [event.location_point.y, event.location_point.x] if event.location_point
       end
@@ -55,10 +47,7 @@ module Events
       address = ''
       address += event.address_1 if event.address_1.present?
 
-      address_details = multiloc_service.t(
-        event.address_2_multiloc,
-        preferred_locale: preferred_locale
-      )
+      address_details = multiloc_service.t(event.address_2_multiloc, preferred_locale)
       address += "\n(#{address_details})" if address_details.present?
 
       address.presence

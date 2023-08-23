@@ -5,7 +5,7 @@ class MultilocService
     @app_configuration = app_configuration
   end
 
-  def t(translations, user = nil, preferred_locale: user&.locale)
+  def t(translations, preferred_locale = nil)
     return nil unless translations
 
     locales = app_configuration.settings('core', 'locales')
