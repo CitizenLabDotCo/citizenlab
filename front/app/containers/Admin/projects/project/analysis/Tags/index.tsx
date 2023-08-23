@@ -174,7 +174,7 @@ const Tags = () => {
           size="s"
           buttonStyle="secondary-outlined"
         >
-          Bulk create taggings
+          Bulk tag
         </Button>
         <Box display="flex" alignItems="center" mb="8px" as="form">
           <Input

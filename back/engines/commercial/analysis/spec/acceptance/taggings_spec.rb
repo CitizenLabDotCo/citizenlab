@@ -80,9 +80,13 @@ resource 'Taggings' do
     let(:analysis_id) { analysis.id }
     let(:tag_id) { create(:tag, analysis: analysis).id }
     let!(:inputs) { create_list(:idea, 3, project: analysis.project) }
-    let(:filters) { { input_ids: inputs.map(&:id) } }
 
     example_request 'Bulk create taggings' do
+      tag_id= create(:tag, analysis: analysis).id
+
+
+      do_request(tagging: { tag_id: tag_id, filters: { search: "" } })
+
       expect(response_status).to eq 201
       expect(Analysis::Tagging.count).to eq 3
       expect(Analysis::Tagging.pluck(:tag_id)).to all(eq(tag_id))

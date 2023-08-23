@@ -70,9 +70,11 @@ const BulkCreateTaggingsModal = ({
     }
   };
 
+  const filteredInputsTotal = tags?.meta.filtered_inputs_total || 1;
+
   return (
     <Box>
-      <Title>Bulk tag filtered input</Title>
+      <Title>Bulk tag {filteredInputsTotal} inputs</Title>
       <Text> Select a tag to add your input to: </Text>
       <Box display="flex" flexWrap="wrap" gap="8px">
         {tags?.data.map((tag) => (
