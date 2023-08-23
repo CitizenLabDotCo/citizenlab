@@ -15,6 +15,9 @@ import { SuccessAction } from 'containers/Authentication/SuccessActions/actions'
 import useAuthUser from 'api/me/useAuthUser';
 import useABTest from 'api/experiments/useABTest';
 import useLocale from 'hooks/useLocale';
+import tracks from './tracks';
+import { trackEventByName } from 'utils/analytics';
+import { useLocation } from 'react-router-dom';
 
 interface Props extends BoxWidthProps {
   followableType: FollowableType;
@@ -40,6 +43,7 @@ const FollowUnfollow = ({
   const locale = useLocale();
   const { formatMessage } = useIntl();
   const { data: authUser } = useAuthUser();
+  const { pathname } = useLocation();
   const { mutate: addFollower, isLoading: isAddingFollower } = useAddFollower();
   const { mutate: deleteFollower, isLoading: isDeletingFollower } =
     useDeleteFollower();
@@ -70,6 +74,11 @@ const FollowUnfollow = ({
         followableType,
         followableSlug,
       });
+      trackEventByName(tracks.unfollow, {
+        followableType,
+        id: followableId,
+        urlPathName: pathname,
+      });
     } else {
       addFollower({
         followableType,
@@ -80,6 +89,11 @@ const FollowUnfollow = ({
       if (followableType === 'ideas') {
         send?.('Follow Button clicked');
       }
+      trackEventByName(tracks.follow, {
+        followableType,
+        id: followableId,
+        urlPathName: pathname,
+      });
     }
   };
 
@@ -98,6 +112,10 @@ const FollowUnfollow = ({
       flow: 'signup',
       context,
       successAction,
+    });
+    trackEventByName(tracks.startLightUserRegThroughFollow, {
+      followableType,
+      id: followableId,
     });
   };
 
