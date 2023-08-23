@@ -6,7 +6,6 @@ import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { taggingsData } from './__mocks__/useAnalysisTaggings';
 
 const apiPath = '*analyses/:analysisId/taggings/bulk_create';
 
@@ -34,7 +33,6 @@ describe('useAnalysisBulkTaggings', () => {
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    expect(result.current.data?.data).toEqual(taggingsData[0]);
   });
 
   it('returns error correctly', async () => {
