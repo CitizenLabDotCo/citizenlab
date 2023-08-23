@@ -184,7 +184,7 @@ tr:
     initiative_assigned_to_you:
       by_author: '%{authorName} tarafından'
       cta_reply_to: '%{authorName} için geri bildirim sağlayın'
-      event_description_initiative: 'Size bir teklif atandı. Resmi bir güncelleme yazarak veya durumunu değiştirerek geri bildirimde bulunun.'
+      event_description_initiative: 'Size bir öneri atandı. Resmi bilgilendirme yazarak veya önerinin durumunu değiştirerek geri bildirim sağlayın.'
       main_header: '%{firstName}, yeni bir atamanız var'
       subject: '%{organizationName} platformunda bir atamanız var'
       preheader_initiative: '%{authorName} adlı kişinin önerisi size atandı'
