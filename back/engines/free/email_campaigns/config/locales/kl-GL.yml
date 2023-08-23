@@ -184,7 +184,7 @@ kl:
     initiative_assigned_to_you:
       by_author: 'uannga %{authorName}'
       cta_reply_to: '%{authorName} utertitsiffigiuk'
-      event_description_initiative: 'A proposal has been assigned to you. Give feedback by writing an official update or by changing its status.'
+      event_description_initiative: 'Innuttaasunit siunnersuut ilinnut tunniunneqartoq. Paasissutissat kingulliit ilanngullugit takussutissamik allannikkut imaluunniit killiffiata allanngorneratigut utertitsigit.'
       main_header: '%{firstName}, nutaamik tunineqarputit'
       subject: 'Platformimi %{organizationName}mi nutaamik tunineqarputit'
       preheader_initiative: '%{authorName}p innuttaasunit siunnersuutaa ilinnut tunniunneqarpoq'
