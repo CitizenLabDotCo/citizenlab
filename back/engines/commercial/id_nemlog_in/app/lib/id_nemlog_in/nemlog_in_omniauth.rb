@@ -124,8 +124,8 @@ module IdNemlogIn
 
     private
 
-    def fetch_municipality_code(_cpr_number)
-      '0101'
+    def fetch_municipality_code(cpr_number)
+      IdNemlogIn::KkiLocationApi.new.municipality_code(cpr_number)
     end
 
     def redirect_uri(configuration)
