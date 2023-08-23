@@ -15,6 +15,10 @@ it:
     rejected: rifiutato
     rejected_description: Questa idea è stata respinta
   initiative_statuses:
+    review_pending: in attesa di revisione
+    review_pending_description: in attesa di revisione
+    changes_requested: modifiche richieste
+    changes_requested_description: modifiche richieste
     proposed: proposto
     proposed_description: proposto
     expired: scaduto
