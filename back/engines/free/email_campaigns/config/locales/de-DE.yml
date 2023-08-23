@@ -184,7 +184,7 @@ de:
     initiative_assigned_to_you:
       by_author: 'von %{authorName}'
       cta_reply_to: '%{authorName} Feedback geben'
-      event_description_initiative: 'Ihnen wurde ein Vorschlag zugewiesen. Geben Sie Feedback, indem Sie ein offizielles Update schreiben oder den Status des Vorschlags ändern.'
+      event_description_initiative: 'Ihnen wurde ein Vorschlag zugewiesen. Geben Sie Feedback, indem Sie eine offizielle Aktualisierung schreiben oder den Status des Vorschlags ändern.'
       main_header: '%{firstName}, Sie haben eine neue Aufgabe'
       subject: 'Sie haben einen Auftrag auf der Plattform von %{organizationName}'
       preheader_initiative: 'Der Vorschlag von %{authorName} wurde Ihnen zugewiesen'
