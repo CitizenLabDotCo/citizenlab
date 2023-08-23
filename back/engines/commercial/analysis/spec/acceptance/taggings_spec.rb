@@ -70,7 +70,6 @@ resource 'Taggings' do
   end
 
   post 'web_api/v1/analyses/:analysis_id/taggings/bulk_create' do
-
     parameter :tag_id, 'The ID of the tag to associate the input with', required: true
     parameter :filters, 'The filters to select the inputs to associate the tag with', required: true
 
@@ -81,14 +80,13 @@ resource 'Taggings' do
     let!(:inputs) { create_list(:idea, 3, project: analysis.project) }
 
     example 'Bulk create taggings' do
-      tag_id= create(:tag, analysis: analysis).id
-      idea = create(:idea, project: analysis.project,  title_multiloc: {
+      tag_id = create(:tag, analysis: analysis).id
+      create(:idea, project: analysis.project, title_multiloc: {
         'en' => 'My idea',
         'fr-FR' => 'Mon idée',
         'nl-NL' => 'Mijn idee'
       })
       do_request(tag_id: tag_id, filters: { search: 'My idea' })
-
       expect(response_status).to eq 201
       expect(Analysis::Tagging.count).to eq 1
       expect(Analysis::Tagging.pluck(:tag_id)).to all(eq(tag_id))

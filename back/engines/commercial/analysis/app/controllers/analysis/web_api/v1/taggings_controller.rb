@@ -41,9 +41,7 @@ module Analysis
           @inputs = InputsFinder.new(@analysis, @filters).execute
           taggings = []
           @inputs.each do |input|
-            # tagging_attributes = { tag_id: params[:tag_id], input_id: input.id }
             taggings.push({ tag_id: params[:tag_id], input_id: input.id })
-            
           end
           Tagging.insert_all(taggings)
           head :created
