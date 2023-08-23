@@ -72,6 +72,13 @@ const InputsList = () => {
     }
   }, [downArrow, inputs, setSelectedInputId]);
 
+  const handleOnSelectInput = useCallback(
+    (inputId: string) => {
+      setSelectedInputId(inputId);
+    },
+    [setSelectedInputId]
+  );
+
   return (
     <Box bg={colors.white} w="100%">
       {data?.pages.map((page, i) => (
@@ -87,7 +94,7 @@ const InputsList = () => {
             <InputListItem
               key={input.id}
               input={input}
-              onSelect={() => setSelectedInputId(input.id)}
+              onSelect={handleOnSelectInput}
               selected={input.id === selectedInputId}
             />
           ))}
