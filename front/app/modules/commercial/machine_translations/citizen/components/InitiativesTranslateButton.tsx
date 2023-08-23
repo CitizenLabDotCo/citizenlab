@@ -1,12 +1,11 @@
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
 import { IInitiativeData } from 'api/initiatives/types';
-import FeatureFlag from 'components/FeatureFlag';
 import TranslateButton from 'components/UI/TranslateButton';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import React from 'react';
 import { GetLocaleChildProps } from 'resources/GetLocale';
-import { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
-import { viewportWidths } from 'utils/styleUtils';
 
 const StyledTranslateButtonMobile = styled(TranslateButton)`
   width: fit-content;
@@ -14,7 +13,6 @@ const StyledTranslateButtonMobile = styled(TranslateButton)`
 `;
 
 interface Props {
-  windowSize: GetWindowSizeChildProps;
   translateButtonClicked: boolean;
   onClick: () => void;
   initiative: IInitiativeData;
@@ -22,7 +20,6 @@ interface Props {
 }
 
 const InitiativesTranslateButton = ({
-  windowSize,
   translateButtonClicked,
   onClick,
   initiative,
@@ -33,15 +30,22 @@ const InitiativesTranslateButton = ({
     !isNilOrError(locale) &&
     !initiative.attributes.title_multiloc[locale];
 
-  const isNotDesktop = windowSize ? windowSize <= viewportWidths.tablet : false;
+  const isSmallerThanTablet = useBreakpoint('tablet');
+  const machineTranslationsEnabled = useFeatureFlag({
+    name: 'machine_translations',
+  });
 
-  if (isNotDesktop && showTranslateButton) {
-    <FeatureFlag name="machine_translations">
+  if (
+    machineTranslationsEnabled &&
+    isSmallerThanTablet &&
+    showTranslateButton
+  ) {
+    return (
       <StyledTranslateButtonMobile
         translateButtonClicked={translateButtonClicked}
         onClick={onClick}
       />
-    </FeatureFlag>;
+    );
   }
 
   return null;

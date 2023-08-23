@@ -1,11 +1,10 @@
-import { Box, Button } from '@citizenlab/cl2-component-library';
+import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 import useAddAnalysisSummary from 'api/analysis_summaries/useAddAnalysisSummary';
 import useAddAnalysisSummaryPreCheck from 'api/analysis_summary_pre_check/useAddAnalysisSummaryPreCheck';
 import { ISummaryPreCheck } from 'api/analysis_summary_pre_check/types';
-import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
 
 const SummarizeButton = () => {
   const { mutate: addSummary, isLoading: isLoadingSummary } =
@@ -14,12 +13,6 @@ const SummarizeButton = () => {
     useAddAnalysisSummaryPreCheck();
   const { analysisId } = useParams() as { analysisId: string };
   const filters = useAnalysisFilterParams();
-  const { data } = useInfiniteAnalysisInputs({
-    analysisId,
-    queryParams: filters,
-  });
-
-  const inputsCount = data?.pages[0].meta.filtered_count;
 
   const handleSummaryCreate = () => {
     addSummary({
@@ -43,10 +36,11 @@ const SummarizeButton = () => {
   const summaryPossible = !preCheck?.data.attributes.impossible_reason;
   const summaryAccuracy = preCheck?.data.attributes.accuracy;
   return (
-    <Box display="flex" justifyContent="flex-end">
+    <Box>
       <Button
+        justify="left"
         icon="flash"
-        mb="12px"
+        mb="4px"
         size="s"
         w="100%"
         buttonStyle="secondary-outlined"
@@ -55,15 +49,14 @@ const SummarizeButton = () => {
         processing={isLoadingPreCheck || isLoadingSummary}
         whiteSpace="wrap"
       >
-        {summaryPossible &&
-          summaryAccuracy &&
-          `Auto-summarize ${inputsCount} inputs (${
-            summaryAccuracy * 100
-          }% accuracy)`}
-        {summaryPossible &&
-          !summaryAccuracy &&
-          `Auto-summarize ${inputsCount} inputs`}
-        {!summaryPossible && `Too many inputs to summarize`}
+        Auto-summarize
+        <br />
+        <Text fontSize="s" m="0" color="grey600">
+          {summaryPossible && summaryAccuracy && (
+            <>{summaryAccuracy * 100}% accuracy</>
+          )}
+          {!summaryPossible && `Too many inputs`}
+        </Text>
       </Button>
     </Box>
   );
