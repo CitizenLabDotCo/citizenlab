@@ -19,6 +19,7 @@ import {
   Icon,
   ListItem,
   Checkbox,
+  Spinner,
 } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 import Modal from 'components/UI/Modal';
@@ -78,17 +79,24 @@ const Tags = () => {
   const { analysisId } = useParams() as { analysisId: string };
 
   const queryClient = useQueryClient();
-  const { data: tags } = useAnalysisTags({
+  const { data: tags, isLoading: isLoadingTags } = useAnalysisTags({
     analysisId,
     filters: omit(filters, 'tag_ids'),
   });
   const { mutate: addTag, isLoading, error } = useAddAnalysisTag();
 
-  const inputsTotal = tags?.meta.inputs_total || 1;
-  const filteredInputsTotal = tags?.meta.filtered_inputs_total || 1;
-  const inputsWithoutTags = tags?.meta.inputs_without_tags || 1;
-  const filteredInputsWithoutTags =
-    tags?.meta.filtered_inputs_without_tags || 1;
+  if (isLoadingTags) {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" h="100%">
+        <Spinner />
+      </Box>
+    );
+  }
+
+  const inputsTotal = tags?.meta.inputs_total;
+  const filteredInputsTotal = tags?.meta.filtered_inputs_total;
+  const inputsWithoutTags = tags?.meta.inputs_without_tags;
+  const filteredInputsWithoutTags = tags?.meta.filtered_inputs_without_tags;
 
   const onChangeName = (name: string) => {
     setName(name);

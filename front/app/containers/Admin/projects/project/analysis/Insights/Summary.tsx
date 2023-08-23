@@ -70,13 +70,18 @@ const Summary = ({ insight }: Props) => {
     }
   };
 
+  const deleteTrailingIncompleteIDs = (str: string | null) => {
+    if (!str) return str;
+    return str.replace(/\[?[0-9a-f-]{0,35}$/, '');
+  };
+
   const replaceIdRefsWithLinks = (summary) => {
     return reactStringReplace(
       summary,
       /\[?([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})\]?/g,
       (match, i) => (
         <StyledButton onClick={() => setSelectedInputId(match)} key={i}>
-          <Icon name="search" />
+          <Icon name="idea" />
         </StyledButton>
       )
     );
@@ -101,6 +106,8 @@ const Summary = ({ insight }: Props) => {
     updateSearchParams(summary.data.attributes.filters);
   };
 
+  const summaryText = summary.data.attributes.summary;
+
   return (
     <Box
       key={summary.data.id}
@@ -119,7 +126,7 @@ const Summary = ({ insight }: Props) => {
         >
           {hasFilters && (
             <>
-              <Box>Summary for:</Box>
+              <Box>Summary for</Box>
               <FilterItems
                 filters={summary.data.attributes.filters}
                 isEditable={false}
@@ -138,13 +145,17 @@ const Summary = ({ insight }: Props) => {
 
           {!hasFilters && (
             <>
-              <Box>Summary for all input</Box>
+              <Box>Summary for all inputs</Box>
             </>
           )}
         </Box>
         <Box>
           <StyledSummaryText>
-            {replaceIdRefsWithLinks(summary.data.attributes.summary)}
+            {replaceIdRefsWithLinks(
+              processing
+                ? deleteTrailingIncompleteIDs(summaryText)
+                : summaryText
+            )}
           </StyledSummaryText>
           {processing && <Spinner />}
         </Box>
