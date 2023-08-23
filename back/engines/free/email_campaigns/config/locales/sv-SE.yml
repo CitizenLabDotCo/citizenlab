@@ -184,7 +184,7 @@ sv:
     initiative_assigned_to_you:
       by_author: 'av %{authorName}'
       cta_reply_to: 'Ge återkoppling till %{authorName}'
-      event_description_initiative: 'Du har tilldelats ett förslag. Ge feedback genom att skriva en officiell uppdatering eller genom att ändra dess status.'
+      event_description_initiative: 'Ett förslag har tilldelats dig. Ge återkoppling genom att skriva en officiell uppdatering eller genom att ändra statusen.'
       main_header: '%{firstName}, du har ett nytt uppdrag'
       subject: 'Du har ett uppdrag på plattformen för %{organizationName}'
       preheader_initiative: 'Förslaget från %{authorName} har tilldelats dig'
