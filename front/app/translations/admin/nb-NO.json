@@ -797,6 +797,8 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPdf": "Importer PDF",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedIdeas": "Importerte ideer",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet": "Det er ingen ideer å vurdere ennå. Klikk \"{importPdf}\" for å importere en PDF-fil som inneholder skannede idéskjemaer.",
+  "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "Dette prosjektet inneholder ingen faser som kan inneholde ideer.",
+  "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAnotherPhase": "Velg en annen fase.",
   "app.containers.Admin.projects.project.offlineInputs.approve": "Vedta",
   "app.containers.Admin.projects.project.offlineInputs.delete": "Slett",
   "app.containers.Admin.projects.project.survey.analysisButton": "Lag analyse",
