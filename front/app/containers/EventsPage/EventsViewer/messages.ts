@@ -10,11 +10,15 @@ export default defineMessages({
     defaultMessage: 'Today',
   },
   thisWeek: {
-    id: 'app.containers.EventsViewer.thisWeek',
-    defaultMessage: 'This week',
+    id: 'app.containers.EventsViewer.thisWeek2',
+    defaultMessage: 'Upcoming week',
   },
   thisMonth: {
-    id: 'app.containers.EventsViewer.thisMonth',
-    defaultMessage: 'This month',
+    id: 'app.containers.EventsViewer.thisMonth2',
+    defaultMessage: 'Upcoming month',
+  },
+  allTime: {
+    id: 'app.containers.EventsViewer.allTime',
+    defaultMessage: 'All time',
   },
 });

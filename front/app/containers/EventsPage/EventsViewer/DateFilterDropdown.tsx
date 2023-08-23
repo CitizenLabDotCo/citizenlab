@@ -11,58 +11,51 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 type InputProps = {
   title: string | JSX.Element;
-  onChange: (projectIds: string[]) => void;
-  className?: string;
+  onChange: (dateFilterValue: string[]) => void;
   textColor?: string;
   filterSelectorStyle?: 'button' | 'text';
   listTop?: string;
   mobileLeft?: string;
-  eventsTime?: 'past' | 'currentAndFuture';
 };
 
 type Props = InputProps;
 
 const DateFilterDropdown = ({
   onChange,
-  className,
   textColor,
   filterSelectorStyle,
   listTop,
   mobileLeft,
-  eventsTime,
 }: Props) => {
   const { formatMessage } = useIntl();
   const [searchParams] = useSearchParams();
-  const projectIdsParam =
-    eventsTime === 'past'
-      ? searchParams.get('past_dates')
-      : searchParams.get('ongoing_dates');
+  const dateParam = searchParams.get('time_period');
 
-  const projectIdsFromUrl: string[] = projectIdsParam
-    ? JSON.parse(projectIdsParam)
-    : null;
+  const dateFilterFromUrl: string[] = dateParam ? JSON.parse(dateParam) : null;
 
-  const [selectedValues, setSelectedValues] = useState<string[]>([]);
+  const [selectedValue, setSelectedValue] = useState<string[]>(
+    dateFilterFromUrl || []
+  );
 
-  const handleOnChange = (selectedValues) => {
-    setSelectedValues(selectedValues);
-    onChange(selectedValues);
+  const handleOnChange = (selectedValue) => {
+    setSelectedValue(selectedValue);
+    onChange(selectedValue);
   };
 
   const options = [
     { text: formatMessage(messages.today), value: 'today' },
-    { text: formatMessage(messages.thisWeek), value: 'this_week' },
-    { text: formatMessage(messages.thisMonth), value: 'this_month' },
+    { text: formatMessage(messages.thisWeek), value: 'week' },
+    { text: formatMessage(messages.thisMonth), value: 'month' },
+    { text: formatMessage(messages.allTime), value: 'all' },
   ];
   if (options && options.length > 0) {
     return (
       <Box mr="8px">
         <FilterSelector
-          id="e2e-project-filter-selector"
-          className={className}
+          id="e2e-date-filter-selector"
           title={formatMessage(messages.date)}
           name="dates"
-          selected={selectedValues}
+          selected={selectedValue}
           values={options}
           onChange={handleOnChange}
           multipleSelectionAllowed={false}

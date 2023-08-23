@@ -6,23 +6,11 @@ import messages from '../messages';
 
 // components
 import ProjectFilterDropdown from 'components/ProjectFilterDropdown';
-import { Title, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // styling
 import styled, { useTheme } from 'styled-components';
-import { isRtl } from 'utils/styleUtils';
 import DateFilterDropdown from './DateFilterDropdown';
-
-const Container = styled.div`
-  display: flex;
-  justify-content: space-between;
-  padding-bottom: 14px;
-  border-bottom: solid 1px #ccc;
-  margin-bottom: 29px;
-  ${isRtl`
-    flex-direction: row-reverse;
-  `}
-`;
 
 const ProjectFilterDropdownPositioner = styled.div`
   margin-top: auto;
@@ -33,50 +21,73 @@ const ProjectFilterDropdownPositioner = styled.div`
 interface Props {
   title: string;
   showProjectFilter: boolean;
+  showDateFilter?: boolean;
   setProjectIds: (projectIds: string[]) => void;
+  setDateFilter: (dateFilter: string[]) => void;
   eventsTime?: 'past' | 'currentAndFuture';
 }
 
 const TopBar = memo<Props>(
-  ({ title, showProjectFilter, setProjectIds, eventsTime }) => {
+  ({
+    title,
+    showProjectFilter,
+    showDateFilter,
+    setProjectIds,
+    setDateFilter,
+    eventsTime,
+  }) => {
     const { formatMessage } = useIntl();
     const theme = useTheme();
     const isMobileOrSmaller = useBreakpoint('phone');
 
     return (
-      <Container>
+      <Box
+        display={isMobileOrSmaller ? 'block' : 'flex'}
+        justifyContent="space-between"
+        pb="14px"
+        borderBottom="solid 1px #ccc"
+        mb="29px"
+        flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
+      >
         <Title color={'tenantText'} m="0px" my="auto" variant="h3" as="h1">
           {title}
         </Title>
         <ProjectFilterDropdownPositioner>
-          <>
-            <DateFilterDropdown
-              title={formatMessage(messages.filterDropdownTitle)}
-              onChange={setProjectIds}
-              textColor={theme.colors.tenantText}
-              filterSelectorStyle="button"
-              listTop="44px"
-              mobileLeft={isMobileOrSmaller && !theme.isRtl ? '-70px' : 'auto'}
-              eventsTime={eventsTime}
-            />
-          </>
-          {showProjectFilter && (
-            <>
-              <ProjectFilterDropdown
+          <Box display="flex" mt="8px" ml="auto">
+            {showDateFilter && (
+              <DateFilterDropdown
                 title={formatMessage(messages.filterDropdownTitle)}
-                onChange={setProjectIds}
+                onChange={setDateFilter}
                 textColor={theme.colors.tenantText}
                 filterSelectorStyle="button"
                 listTop="44px"
                 mobileLeft={
-                  isMobileOrSmaller && !theme.isRtl ? '-70px' : 'auto'
+                  isMobileOrSmaller && !theme.isRtl
+                    ? showProjectFilter
+                      ? '0px'
+                      : '-70px'
+                    : 'auto'
                 }
-                eventsTime={eventsTime}
               />
-            </>
-          )}
+            )}
+            {showProjectFilter && (
+              <>
+                <ProjectFilterDropdown
+                  title={formatMessage(messages.filterDropdownTitle)}
+                  onChange={setProjectIds}
+                  textColor={theme.colors.tenantText}
+                  filterSelectorStyle="button"
+                  listTop="44px"
+                  mobileLeft={
+                    isMobileOrSmaller && !theme.isRtl ? '-70px' : 'auto'
+                  }
+                  eventsTime={eventsTime}
+                />
+              </>
+            )}
+          </Box>
         </ProjectFilterDropdownPositioner>
-      </Container>
+      </Box>
     );
   }
 );

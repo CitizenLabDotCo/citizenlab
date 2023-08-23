@@ -21,6 +21,7 @@ import styled from 'styled-components';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
+import moment from 'moment';
 
 // types
 import { PublicationStatus } from 'api/projects/types';
@@ -50,6 +51,31 @@ const StyledPagination = styled(Pagination)`
   margin: 36px auto 0px;
 `;
 
+const getDatesFromKey = (dateFilter: string[] | undefined) => {
+  if (!dateFilter) {
+    return undefined;
+  }
+
+  if (dateFilter[0] === 'today') {
+    return [
+      moment().format('YYYY-MM-DD'),
+      moment().add('1', 'day').format('YYYY-MM-DD'),
+    ];
+  } else if (dateFilter[0] === 'week') {
+    return [
+      moment().format('YYYY-MM-DD'),
+      moment().add('7', 'day').format('YYYY-MM-DD'),
+    ];
+  } else if (dateFilter[0] === 'month') {
+    return [
+      moment().format('YYYY-MM-DD'),
+      moment().add('1', 'month').format('YYYY-MM-DD'),
+    ];
+  }
+
+  return undefined;
+};
+
 interface Props {
   title: string;
   fallbackMessage: MessageDescriptor;
@@ -58,6 +84,7 @@ interface Props {
   projectId?: string;
   hideSectionIfNoEvents?: boolean;
   showProjectFilter: boolean;
+  showDateFilter?: boolean;
   projectPublicationStatuses: PublicationStatus[];
   attendeeId?: string;
 }
@@ -72,39 +99,33 @@ const EventsViewer = ({
   showProjectFilter,
   projectPublicationStatuses,
   attendeeId,
+  showDateFilter = true,
 }: Props) => {
   const [searchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
-  const projectIdsParam =
+
+  // Get any URL params
+  const projectIdsParam = searchParams.get(
     eventsTime === 'past'
-      ? searchParams.get('past_events_project_ids')
-      : searchParams.get('ongoing_events_project_ids');
+      ? 'past_events_project_ids'
+      : 'ongoing_events_project_ids'
+  );
+  const dateParam =
+    eventsTime === 'currentAndFuture' ? searchParams.get('time_period') : null;
   const projectIdsFromUrl: string[] = projectIdsParam
     ? JSON.parse(projectIdsParam)
     : null;
+  const dateFilterFromUrl: string[] = dateParam ? JSON.parse(dateParam) : null;
+
+  // Set state based on URL params
   const [projectIdList, setProjectIdList] = useState<string[] | undefined>(
     projectIdsFromUrl || (projectId ? [projectId] : [])
   );
+  const [dateFilter, setDateFilter] = useState<string[] | undefined>(
+    dateFilterFromUrl || []
+  );
 
-  useEffect(() => {
-    if (projectId) {
-      setProjectIdList([projectId]);
-    }
-  }, [projectId]);
-
-  useEffect(() => {
-    if (!location.pathname.includes('/projects')) {
-      if (eventsTime === 'past') {
-        projectIdList?.length
-          ? updateSearchParams({ past_events_project_ids: projectIdList })
-          : updateSearchParams({ past_events_project_ids: null });
-      } else if (eventsTime === 'currentAndFuture') {
-        projectIdList?.length
-          ? updateSearchParams({ ongoing_events_project_ids: projectIdList })
-          : updateSearchParams({ ongoing_events_project_ids: null });
-      }
-    }
-  }, [eventsTime, projectIdList]);
+  const ongoingDuringDates = getDatesFromKey(dateFilter);
 
   const {
     data: events,
@@ -118,7 +139,45 @@ const EventsViewer = ({
     sort: eventsTime === 'past' ? 'start_at' : '-start_at',
     pageNumber: currentPage,
     attendeeId,
+    ongoing_during: ongoingDuringDates,
   });
+
+  useEffect(() => {
+    if (projectId) {
+      setProjectIdList([projectId]);
+    }
+  }, [projectId]);
+
+  // Update projectIds URL params based on state
+  useEffect(() => {
+    const hasProjectFilter = projectIdList?.length;
+    if (!location.pathname.includes('/projects')) {
+      if (eventsTime === 'past') {
+        updateSearchParams({
+          past_events_project_ids: hasProjectFilter ? projectIdList : null,
+        });
+      } else if (eventsTime === 'currentAndFuture') {
+        updateSearchParams({
+          ongoing_events_project_ids: hasProjectFilter ? projectIdList : null,
+        });
+      }
+    }
+  }, [eventsTime, projectIdList]);
+
+  // Update date filter URL params based on state
+  useEffect(() => {
+    const hasDateFilter = dateFilter?.length && dateFilter[0] !== 'all';
+    if (eventsTime === 'currentAndFuture') {
+      updateSearchParams({
+        time_period: hasDateFilter ? dateFilter : null,
+      });
+    }
+  }, [eventsTime, dateFilter]);
+
+  const onCurrentPageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+  };
+
   const lastPageNumber =
     (events && getPageNumberFromUrl(events.links?.last)) ?? 1;
 
@@ -130,9 +189,6 @@ const EventsViewer = ({
   if (shouldHideSection) {
     return null;
   }
-  const onCurrentPageChange = (newPage: number) => {
-    setCurrentPage(newPage);
-  };
 
   return (
     <Box className={className} id="project-events">
@@ -141,12 +197,11 @@ const EventsViewer = ({
         title={title}
         setProjectIds={setProjectIdList}
         eventsTime={eventsTime}
+        setDateFilter={setDateFilter}
+        showDateFilter={showDateFilter}
       />
-
       {isError && <EventsMessage message={messages.errorWhenFetchingEvents} />}
-
       {isLoading && <EventsSpinner />}
-
       {!isNilOrError(events) && (
         <>
           <Box display="flex" flexWrap="wrap" gap="16px">

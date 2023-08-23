@@ -180,6 +180,7 @@ const ProjectsShowPage = ({ project }: Props) => {
               fallbackMessage={messages.noPastEvents}
               hideSectionIfNoEvents={true}
               projectPublicationStatuses={['published', 'draft', 'archived']}
+              showDateFilter={false}
             />
           </Box>
         )}

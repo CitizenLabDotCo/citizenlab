@@ -19,6 +19,7 @@ const PastEvents = ({ attendeeId }: Props) => {
       eventsTime="past"
       projectPublicationStatuses={['published']}
       attendeeId={attendeeId}
+      showDateFilter={false}
     />
   );
 };
