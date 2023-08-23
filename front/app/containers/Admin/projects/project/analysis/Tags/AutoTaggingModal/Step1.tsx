@@ -54,7 +54,9 @@ const AutoTagOption = ({
           </Box>
         )}
       </Box>
-      <Text my="6px">{children}</Text>
+      <Text mt="12px" mb="0     ">
+        {children}
+      </Text>
     </AutoTagOptionContainer>
   );
 };
@@ -79,6 +81,58 @@ const Step1 = ({ onSelectMethod, isLoading, loadingMethod }: Props) => {
         gap="16px"
         opacity={isLoading ? 0.5 : undefined}
       >
+        <Title variant="h5" mt="0">
+          Topic detection
+        </Title>
+
+        <AutoTagOption
+          tagType="nlp_topic"
+          title="Fully automated"
+          onSelect={() => onSelectMethod('nlp_topic')}
+          disabled={isLoading}
+          isLoading={isLoading && loadingMethod === 'nlp_topic'}
+        >
+          <>The computer detects the tags and assigns the inputs</>
+        </AutoTagOption>
+
+        <AutoTagOption
+          tagType="custom"
+          title="Classification by label"
+          onSelect={() => onSelectMethod('label_classification')}
+          disabled={isLoading}
+          isLoading={isLoading && loadingMethod === 'label_classification'}
+        >
+          <>You create the tags, the inputs are assigned by the computer</>
+        </AutoTagOption>
+
+        <AutoTagOption
+          tagType="custom"
+          title="Classification by example"
+          onSelect={() => onSelectMethod('few_shot_classification')}
+          disabled={isLoading}
+          isLoading={isLoading && loadingMethod === 'few_shot_classification'}
+        >
+          <>
+            You create the tags and manually assign a few inputs as an example,
+            the computer assigns the rest
+          </>
+        </AutoTagOption>
+
+        <Title variant="h5">Other</Title>
+
+        <AutoTagOption
+          tagType="platform_topic"
+          title="Platform tags"
+          onSelect={() => onSelectMethod('platform_topic')}
+          disabled={isLoading}
+          isLoading={isLoading && loadingMethod === 'platform_topic'}
+        >
+          <>
+            Assign the existing platform tags that the author picked when
+            posting
+          </>
+        </AutoTagOption>
+
         <AutoTagOption
           tagType="sentiment"
           title="Sentiment"
@@ -93,28 +147,6 @@ const Step1 = ({ onSelectMethod, isLoading, loadingMethod }: Props) => {
         </AutoTagOption>
 
         <AutoTagOption
-          tagType="nlp_topic"
-          title="AI tags"
-          onSelect={() => onSelectMethod('nlp_topic')}
-          disabled={isLoading}
-          isLoading={isLoading && loadingMethod === 'nlp_topic'}
-        >
-          <>Assign new tags, based on topics derived from the text</>
-        </AutoTagOption>
-
-        <AutoTagOption
-          tagType="custom"
-          title="Label classification"
-          onSelect={() => onSelectMethod('label_classification')}
-          disabled={isLoading}
-          isLoading={isLoading && loadingMethod === 'label_classification'}
-        >
-          <>
-            Classify inputs between the tags you specify, based on the tag names
-          </>
-        </AutoTagOption>
-
-        <AutoTagOption
           tagType="controversial"
           title="Controversial"
           onSelect={() => onSelectMethod('controversial')}
@@ -122,19 +154,6 @@ const Step1 = ({ onSelectMethod, isLoading, loadingMethod }: Props) => {
           isLoading={isLoading && loadingMethod === 'controversial'}
         >
           <>Detect inputs with a significant dislikes/likes ratio</>
-        </AutoTagOption>
-
-        <AutoTagOption
-          tagType="platform_topic"
-          title="Platform tags"
-          onSelect={() => onSelectMethod('platform_topic')}
-          disabled={isLoading}
-          isLoading={isLoading && loadingMethod === 'platform_topic'}
-        >
-          <>
-            Assign the existing platform tags that the author picked when
-            posting
-          </>
         </AutoTagOption>
 
         <AutoTagOption

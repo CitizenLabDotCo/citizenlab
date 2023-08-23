@@ -10,7 +10,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { xor } from 'lodash-es';
 import Tag from '../Tag';
-import AddTag from '../AddTag';
+import { ITagData } from 'api/analysis_tags/types';
 
 const Step2LabelClassification = () => {
   const { analysisId } = useParams() as { analysisId: string };
@@ -27,38 +27,45 @@ const Step2LabelClassification = () => {
 
   const listFull = selectedTagIds.length >= 10;
 
+  const isElegible = (tag: ITagData) => {
+    return tag.attributes.total_input_count >= 3;
+  };
+
   return (
     <Box>
-      <Title>Classification by label</Title>
+      <Title>Classification by example</Title>
       <Text>
         Select maximum 10 tags you would like the inputs to be distributed
         between.
       </Text>
       <Text>
-        The classification is solely based on the name of the tag. Pick relevant
-        keywords for the best results.
+        The classification is based on the inputs currently assigned to the
+        tags. The computer will try to follow your example.
       </Text>
       <Box>
         {customTags?.map((tag) => (
           <Box key={tag.id} display="flex" justifyContent="flex-start" mb="8px">
             <Checkbox
-              disabled={listFull && !selectedTagIds.includes(tag.id)}
+              disabled={
+                (listFull && !selectedTagIds.includes(tag.id)) ||
+                !isElegible(tag)
+              }
               checked={selectedTagIds.includes(tag.id)}
               onChange={() => handleTagSelect(tag.id)}
+              labelTooltipText={
+                !isElegible(tag) ? 'You need at least 3 assigned inputs' : ''
+              }
               label={
-                <>
+                <Box display="flex" opacity={isElegible(tag) ? 1 : 0.6}>
                   <Tag
-                    name={tag.attributes.name}
+                    name={`${tag.attributes.name} (${tag.attributes.total_input_count})`}
                     tagType={tag.attributes.tag_type}
                   />
-                </>
+                </Box>
               }
             />
           </Box>
         ))}
-      </Box>
-      <Box ml="34px">
-        <AddTag />
       </Box>
       <Box mt="32px">
         <Button disabled={selectedTagIds.length === 0}>Launch</Button>

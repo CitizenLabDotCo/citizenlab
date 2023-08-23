@@ -10,7 +10,8 @@ export type AutoTaggingMethod =
   | 'nlp_topic'
   | 'sentiment'
   | 'controversial'
-  | 'label_classification';
+  | 'label_classification'
+  | 'few_shot_classification';
 
 type SharedAttributes = {
   type: string;
