@@ -815,7 +815,7 @@
   "app.containers.Admin.projects.project.survey.consentModalCheckbox": "Ich bin damit einverstanden, OpenAI als Datenverarbeiter für dieses Projekt zu nutzen.",
   "app.containers.Admin.projects.project.survey.consentModalText1": "Wenn Sie fortfahren, stimmen Sie der Verwendung von OpenAI als Datenverarbeiter für dieses Projekt zu.",
   "app.containers.Admin.projects.project.survey.consentModalText2": "Die OpenAI-APIs steuern die automatischen Textzusammenfassungen und Teile der automatischen Markierung.",
-  "app.containers.Admin.projects.project.survey.consentModalText3": "Wir senden nur das, was Nutzer in ihren Umfragen, Ideen und Kommentaren geschrieben haben, an die OpenAI APIs, niemals Informationen aus ihrem Profil.",
+  "app.containers.Admin.projects.project.survey.consentModalText3": "Wir senden nur die Informationen, die Nutzer*innen in ihren Umfragen, Ideen und Kommentaren geschrieben haben, an die OpenAI APIs, niemals Informationen aus ihrem Profil.",
   "app.containers.Admin.projects.project.survey.consentModalText4": "OpenAI wird diese Daten nicht für das weitere Training seiner Modelle verwenden. Weitere Informationen darüber, wie OpenAI mit dem Datenschutz umgeht, finden Sie unter {link}.",
   "app.containers.Admin.projects.project.survey.consentModalText4Link": "https://openai.com/api-data-privacy",
   "app.containers.Admin.projects.project.survey.consentModalText4LinkText": "hier",
