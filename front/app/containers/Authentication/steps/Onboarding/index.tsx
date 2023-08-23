@@ -26,8 +26,9 @@ const Onboarding = ({ authenticationData, onSubmit, onSkip }: Props) => {
     'topics_and_areas'
   );
 
-  if ((!hasAreas && !hasTopics) || !requiresTopicsAndAreasOnboarding)
+  if ((!hasAreas && !hasTopics) || !requiresTopicsAndAreasOnboarding) {
     return null;
+  }
 
   return <TopicsAndAreas onSubmit={onSubmit} onSkip={onSkip} />;
 };
