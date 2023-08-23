@@ -16,7 +16,7 @@ RSpec.describe Analysis::SummarizationMethod do
         :summarization_task,
         analysis: analysis,
         state: 'queued',
-        summary: create(:summary, analysis: analysis, summary: nil, summarization_method: 'bogus', filters: { comments_from: 5 })
+        summary: create(:summary, summary: nil, summarization_method: 'bogus', insight_attributes: { analysis: analysis, filters: { comments_from: 5 } })
       )
       with_options project: summarization_task.analysis.project do
         create(:idea, comments_count: 5)
@@ -55,7 +55,7 @@ RSpec.describe Analysis::SummarizationMethod do
         :summarization_task,
         analysis: analysis,
         state: 'queued',
-        summary: create(:summary, analysis: analysis, summary: nil, summarization_method: 'one_pass_llm', filters: { comments_from: 5 })
+        summary: create(:summary, summary: nil, summarization_method: 'one_pass_llm', insight_attributes: { analysis: analysis, filters: { comments_from: 5 } })
       )
       summary = summarization_task.summary
       inputs = with_options project: summarization_task.analysis.project do
