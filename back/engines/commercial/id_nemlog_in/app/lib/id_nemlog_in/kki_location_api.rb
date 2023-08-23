@@ -18,12 +18,14 @@ class IdNemlogIn::KkiLocationApi
   private
 
   def headers
-    result = { 'Content-Type': 'application/json' }
+    result = { 'Content-Type' => 'application/json' }
 
     # we'll definitely use it for test env, not sure about production
-    if api_config['custom_header'].present?
-      header_name, header_value = api_config['custom_header'].split(':').map(&:strip)
-      result[header_name] = header_value
+    if api_config['custom_headers'].present?
+      api_config['custom_headers'].split(',').each do |header|
+        header_name, header_value = header.split(':').map(&:strip)
+        result[header_name] = header_value
+      end
     end
 
     result

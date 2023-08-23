@@ -44,8 +44,8 @@ module IdNemlogIn
       private: true
     }
 
-    add_setting 'custom_header', required: false, schema: {
-      title: 'Any custom header in this format (no quotes): "Ocp-Apim-Subscription-Key: 6c7924f0cfbde464d1ae2169c2a5eb84"',
+    add_setting 'custom_headers', required: false, schema: {
+      title: 'Any custom headers in this format (no quotes): "Ocp-Apim-Subscription-Key: 6c7924f0cfbde464d1ae2169c2a5eb84, HEADER2: VALUE2"',
       type: 'string',
       private: true
     }
