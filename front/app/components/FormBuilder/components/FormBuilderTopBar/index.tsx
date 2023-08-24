@@ -131,7 +131,7 @@ const FormBuilderTopBar = ({
         {builderConfig.onDownloadPDF && (
           <Button
             buttonStyle="secondary"
-            icon="eye"
+            icon="download"
             mr="20px"
             onClick={builderConfig.onDownloadPDF}
           >
