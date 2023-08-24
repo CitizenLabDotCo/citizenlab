@@ -221,6 +221,9 @@ es:
     pdf_export:
       full_name: 'Nombre y apellidos'
       email_address: 'Dirección de correo electrónico'
+      optional: 'opcional'
+      choose_as_many: 'Elija tantos como quiera'
+      this_answer: 'Esta respuesta solo se compartirá con los moderadores y no con el público.'
   project_copy:
     title_suffix: 'Copia'
   confirmations_mailer:
