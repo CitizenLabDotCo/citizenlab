@@ -835,6 +835,7 @@
   "app.containers.EventsShow.attending": "assister à la réunion",
   "app.containers.EventsShow.emailSharingBody": "Participez à cet événement : {eventTitle} à {eventLocation}",
   "app.containers.EventsShow.eventFrom": "Événement de \"{eventTitle}\"",
+  "app.containers.EventsShow.goBack": "Retour",
   "app.containers.EventsShow.goToProject": "Accéder au projet",
   "app.containers.EventsShow.socialMediaSharingMessage": "Participez à cet événement : {eventTitle}",
   "app.containers.EventsShow.xParticipants": "{count, plural, no {# participants} one {# participant} other {# participants}}",
