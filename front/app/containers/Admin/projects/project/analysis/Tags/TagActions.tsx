@@ -19,6 +19,12 @@ import Modal from 'components/UI/Modal';
 import { ITagData } from 'api/analysis_tags/types';
 import useAddAnalysisBulkTagging from 'api/analysis_taggings/useAnalysisBulkTaggings';
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
+import styled from 'styled-components';
+
+const StyledSpinner = styled(Spinner)`
+  margin-right: 8px;
+  width: 20px;
+`;
 
 const TagActions = ({ tag }: { tag: ITagData }) => {
   const [renameTagModalOpenedId, setRenameTagModalOpenedId] = useState('');
@@ -108,7 +114,7 @@ const TagActions = ({ tag }: { tag: ITagData }) => {
               }}
             >
               <Text textAlign="left" m="0px">
-                <Icon name="edit" mr="4px" />
+                <Icon name="edit" mr="8px" />
                 Rename tag
               </Text>
             </DropdownListItem>
@@ -119,14 +125,14 @@ const TagActions = ({ tag }: { tag: ITagData }) => {
               }}
             >
               <Text textAlign="left" m="0px">
-                {deleteIsLoading ? (
-                  <Spinner size="20px" />
-                ) : (
-                  <Box display="flex">
-                    <Icon name="delete" mr="4px" />
-                    Delete tag
-                  </Box>
-                )}
+                <Box display="flex" gap="8px">
+                  {deleteIsLoading ? (
+                    <StyledSpinner size="20px" />
+                  ) : (
+                    <Icon name="delete" />
+                  )}
+                  Delete tag
+                </Box>
               </Text>
             </DropdownListItem>
             <DropdownListItem
@@ -136,14 +142,14 @@ const TagActions = ({ tag }: { tag: ITagData }) => {
               }}
             >
               <Text textAlign="left" m="0px">
-                {bulkTaggingIsLoading ? (
-                  <Spinner size="20px" />
-                ) : (
-                  <Box display="flex">
-                    <Icon name="plus-circle" mr="4px" />
-                    Add selected inputs to tag
-                  </Box>
-                )}
+                <Box display="flex" gap="8px">
+                  {bulkTaggingIsLoading ? (
+                    <StyledSpinner size="20px" />
+                  ) : (
+                    <Icon name="plus-circle" />
+                  )}
+                  Add selected inputs to tag
+                </Box>
               </Text>
             </DropdownListItem>
           </>
