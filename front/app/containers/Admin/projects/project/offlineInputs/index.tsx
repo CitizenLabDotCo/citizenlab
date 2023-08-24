@@ -63,8 +63,7 @@ const OfflineInputImporter = () => {
       ? getFormValues(idea, schema)
       : null;
 
-  const phaseId =
-    selectedPhaseId ?? (currentPhase ? currentPhase.id : undefined);
+  const phaseId = selectedPhaseId ?? currentPhase?.id;
 
   const setFormData = (formData: FormData) => {
     if (!ideaId) return;
@@ -103,8 +102,16 @@ const OfflineInputImporter = () => {
 
   const onDelete = () => {
     if (!ideaId) return;
-    deleteIdea(ideaId);
-    setIdeaId(null);
+    deleteIdea(ideaId, {
+      onSuccess: () => {
+        setIdeaId(null);
+      },
+    });
+  };
+
+  const handleSelectIdea = (ideaId: string) => {
+    setIdeaId(ideaId);
+    setShowAllErrors(false);
   };
 
   return (
@@ -134,10 +141,10 @@ const OfflineInputImporter = () => {
           >
             <ReviewSection
               ideaId={ideaId}
-              setIdeaId={setIdeaId}
               apiErrors={apiErrors}
               showAllErrors={showAllErrors}
               formData={formData}
+              onSelectIdea={handleSelectIdea}
               setFormData={setFormData}
             />
           </Box>
