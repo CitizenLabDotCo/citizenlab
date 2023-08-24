@@ -221,6 +221,9 @@ ca:
     pdf_export:
       full_name: 'Nom complet'
       email_address: 'Correu electrònic'
+      optional: 'opcional'
+      choose_as_many: 'Trieu-ne tantes com vulgueu'
+      this_answer: 'Aquesta resposta només es compartirà amb els moderadors, i no amb el públic.'
   project_copy:
     title_suffix: 'Còpia'
   confirmations_mailer:
