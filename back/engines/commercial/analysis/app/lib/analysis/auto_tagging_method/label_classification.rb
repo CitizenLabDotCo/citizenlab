@@ -46,7 +46,7 @@ module Analysis
       tags = Tag.where(id: task.tags_ids)
       labels = generate_labels(tags)
 
-      # We exclude the inputs that are already assigned to one of the target tags
+      # We exclude the inputs that are already assigned to any of the target tags
       inputs_associated_with_target_tags = Tagging.where(tag_id: task.tags_ids).select(:input_id)
       inputs = analysis.inputs.where.not(id: inputs_associated_with_target_tags)
 

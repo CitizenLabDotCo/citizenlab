@@ -12,7 +12,10 @@ import { xor } from 'lodash-es';
 import Tag from '../Tag';
 import { ITagData } from 'api/analysis_tags/types';
 
-const Step2LabelClassification = () => {
+type Props = {
+  onLaunch: (tagsIds: string[]) => void;
+};
+const Step2LabelClassification = ({ onLaunch }: Props) => {
   const { analysisId } = useParams() as { analysisId: string };
   const { data: tags } = useAnalysisTags({ analysisId });
 
@@ -68,7 +71,12 @@ const Step2LabelClassification = () => {
         ))}
       </Box>
       <Box mt="32px">
-        <Button disabled={selectedTagIds.length === 0}>Launch</Button>
+        <Button
+          disabled={selectedTagIds.length === 0}
+          onClick={() => onLaunch(selectedTagIds)}
+        >
+          Launch
+        </Button>
       </Box>
     </Box>
   );

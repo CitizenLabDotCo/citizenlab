@@ -68,7 +68,11 @@ const AutotaggingModal = ({ onCloseModal }: { onCloseModal: () => void }) => {
       {step === 'step2FewShotClassification' && (
         <>
           <GoBackButton onClick={() => setStep('step1')} />
-          <Step2FewShotClassification />
+          <Step2FewShotClassification
+            onLaunch={(tagsIds) =>
+              handleOnSelectMethod('few_shot_classification', tagsIds)
+            }
+          />
         </>
       )}
     </Box>

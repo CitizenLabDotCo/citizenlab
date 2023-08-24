@@ -10,9 +10,9 @@ module Analysis
     def run
       tags = Tag.where(id: task.tags_ids)
 
-      # We exclude the inputs that are already assigned to one of the target tags
+      # We exclude the inputs that are already assigned to any of the target tags
       inputs_associated_with_target_tags = Tagging.where(tag_id: task.tags_ids).select(:input_id)
-      all_inputs = analysis.all_inputs.where.not(id: inputs_associated_with_target_tags)
+      all_inputs = analysis.inputs.where.not(id: inputs_associated_with_target_tags)
 
       total_inputs = all_inputs.size
 
@@ -23,9 +23,7 @@ module Analysis
 
         answer = llm.chat(prompt)
 
-        pp answer
-
-        inputs_slice.zip(answer.lines).each do |(label, input)|
+        inputs_slice.zip(answer.lines).each do |(input, label)|
           tag = tags.find { |t| t.name.casecmp(label.strip) == 0 }
           Tagging.find_or_create_by!(input_id: input.id, tag_id: tag.id) if tag
         end
@@ -67,8 +65,8 @@ module Analysis
     end
 
     def prompt_labeled_examples(tag)
-      @label_classification ||= {}
-      return @label_examples[tag.id] if @label_classification[tag.id]
+      @label_examples ||= {}
+      return @label_examples[tag.id] if @label_examples[tag.id]
 
       example_inputs = tag.inputs.all.sample(3)
       output = example_inputs.map do |input|

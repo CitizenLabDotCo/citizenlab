@@ -203,4 +203,39 @@ RSpec.describe Analysis::AutoTaggingTask do
       expect(idea1.tags).to eq([tags[0]])
     end
   end
+
+  describe 'FewShotClassification auto_tagging' do
+    it 'works' do
+      project = create(:project)
+      custom_form = create(:custom_form, :with_default_fields, participation_context: project)
+      analysis = create(:analysis, custom_fields: custom_form.custom_fields, project: project)
+      tags = create_list(:tag, 3, analysis: analysis)
+      att = create(:auto_tagging_task, analysis: analysis, state: 'queued', auto_tagging_method: 'few_shot_classification', tags_ids: [tags[0].id, tags[1].id])
+      idea1 = create(:idea, project: project, title_multiloc: { en: 'Footbal is the greatest sport in the world' })
+      idea2 = create(:idea, project: project, title_multiloc: { en: 'We should have a dancing stage in the parc' })
+      idea3 = create(:idea, project: project, title_multiloc: { en: 'We need more houses' })
+      create(:tagging, input: idea3, tag: tags[0])
+
+      mock_llm = instance_double(Analysis::LLM::GPT48k)
+
+      expect_any_instance_of(Analysis::AutoTaggingMethod::FewShotClassification).to receive(:llm).and_return(mock_llm)
+      expect(mock_llm).to receive(:chat) do |prompt|
+        expect(prompt).to include(tags[0].name, tags[1].name, 'other')
+        expect(prompt).to include('other')
+        expect(prompt).to include('Footbal is the greatest sport in the world').once
+        expect(prompt).to include('We need more houses').once
+      end.and_return("#{tags[0].name}\n   #{tags[1].name.upcase}")
+
+      expect { att.execute }
+        .to change(Analysis::Tagging, :count).from(1).to(3)
+
+      expect(att.reload).to have_attributes({
+        state: 'succeeded',
+        progress: nil
+      })
+
+      expect(idea1.tags).to eq([tags[0]])
+      expect(idea2.tags).to eq([tags[1]])
+    end
+  end
 end
