@@ -835,6 +835,7 @@
   "app.containers.EventsShow.attending": "crwdns867135:0crwdne867135:0",
   "app.containers.EventsShow.emailSharingBody": "crwdns867137:0{eventTitle}crwdnd867137:0{eventLocation}crwdne867137:0",
   "app.containers.EventsShow.eventFrom": "crwdns867139:0{eventTitle}crwdne867139:0",
+  "app.containers.EventsShow.goBack": "crwdns933727:0crwdne933727:0",
   "app.containers.EventsShow.goToProject": "crwdns867141:0crwdne867141:0",
   "app.containers.EventsShow.socialMediaSharingMessage": "crwdns867143:0{eventTitle}crwdne867143:0",
   "app.containers.EventsShow.xParticipants": "crwdns867145:0count={count}crwdne867145:0",
