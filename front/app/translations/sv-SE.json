@@ -835,6 +835,7 @@
   "app.containers.EventsShow.attending": "deltagande",
   "app.containers.EventsShow.emailSharingBody": "Delta i detta evenemang: {eventTitle} på {eventLocation}",
   "app.containers.EventsShow.eventFrom": "Händelse från \"{eventTitle}\"",
+  "app.containers.EventsShow.goBack": "Gå tillbaka",
   "app.containers.EventsShow.goToProject": "Gå till projektet",
   "app.containers.EventsShow.socialMediaSharingMessage": "Delta i detta evenemang: {eventTitle}",
   "app.containers.EventsShow.xParticipants": "{count, plural, one {# deltagare} other {# deltagare}}",
