@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Title } from '@citizenlab/cl2-component-library';
+import { Box, Title, Accordion } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import Topics from 'components/Topics';
 import Areas from 'components/Areas';
@@ -32,20 +32,28 @@ const TopicsAndAreas = ({ onSubmit, onSkip }: Props) => {
   return (
     <>
       {hasTopics && (
-        <Box maxHeight="350px" overflowY="scroll">
-          <Title variant="h4">
-            {formatMessage(messages.followYourFavoriteTopics)}
-          </Title>
-          <Topics showHomePageTopcs />
-        </Box>
+        <Accordion
+          isOpenByDefault
+          title={
+            <Title variant="h4">
+              {formatMessage(messages.followYourFavoriteTopics)}
+            </Title>
+          }
+        >
+          <Topics showHomePageTopics />
+        </Accordion>
       )}
       {hasAreas && (
-        <Box maxHeight="150px" overflowY="scroll">
-          <Title variant="h4">
-            {formatMessage(messages.followAreasOfFocus)}
-          </Title>
+        <Accordion
+          isOpenByDefault={!hasTopics}
+          title={
+            <Title variant="h4">
+              {formatMessage(messages.followAreasOfFocus)}
+            </Title>
+          }
+        >
           <Areas showHomePageAreas />
-        </Box>
+        </Accordion>
       )}
       <Box display="flex" justifyContent="flex-end">
         <Box my="20px" w="auto" display="flex" alignSelf="flex-end" gap="8px">

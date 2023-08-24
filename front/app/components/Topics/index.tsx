@@ -4,12 +4,12 @@ import useTopics from 'api/topics/useTopics';
 import Topic from './Topic';
 
 interface Props {
-  showHomePageTopcs?: boolean;
+  showHomePageTopics?: boolean;
 }
 
-const Topics = ({ showHomePageTopcs = false }: Props) => {
+const Topics = ({ showHomePageTopics = false }: Props) => {
   const { data: topics, isLoading } = useTopics({
-    forHomepageFilter: showHomePageTopcs,
+    forHomepageFilter: showHomePageTopics,
   });
 
   if (isLoading) {
