@@ -10,7 +10,7 @@ module Analysis
         def create
           @auto_tagging_task = AutoTaggingTask.new(
             analysis: @analysis,
-            auto_tagging_method: auto_tagging_params[:auto_tagging_method]
+            **auto_tagging_params
           )
           if @auto_tagging_task.save
             AutoTaggingJob.perform_later(@auto_tagging_task)
@@ -28,7 +28,10 @@ module Analysis
         end
 
         def auto_tagging_params
-          params.require(:auto_tagging).permit(:auto_tagging_method)
+          params.require(:auto_tagging).permit(
+            :auto_tagging_method,
+            tags_ids: []
+          )
         end
       end
     end

@@ -14,6 +14,7 @@ resource 'AutoTaggings' do
   post 'web_api/v1/analyses/:id/auto_taggings' do
     with_options scope: :auto_tagging do
       parameter :auto_tagging_method, 'Defines how tags should be assigned. One of []'
+      parameter :tags_ids, 'Tags the auto-tagging should use as target. Only relevant for a few methods'
     end
 
     let(:project) { create(:project) }

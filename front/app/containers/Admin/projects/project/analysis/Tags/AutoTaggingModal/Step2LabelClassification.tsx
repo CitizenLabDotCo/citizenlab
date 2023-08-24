@@ -12,7 +12,10 @@ import { xor } from 'lodash-es';
 import Tag from '../Tag';
 import AddTag from '../AddTag';
 
-const Step2LabelClassification = () => {
+type Props = {
+  onLaunch: (tagsIds: string[]) => void;
+};
+const Step2LabelClassification = ({ onLaunch }: Props) => {
   const { analysisId } = useParams() as { analysisId: string };
   const { data: tags } = useAnalysisTags({ analysisId });
 
@@ -32,7 +35,8 @@ const Step2LabelClassification = () => {
       <Title>Classification by label</Title>
       <Text>
         Select maximum 10 tags you would like the inputs to be distributed
-        between.
+        between. Inputs already associated with these tags will not be
+        classified again.
       </Text>
       <Text>
         The classification is solely based on the name of the tag. Pick relevant
@@ -61,7 +65,12 @@ const Step2LabelClassification = () => {
         <AddTag />
       </Box>
       <Box mt="32px">
-        <Button disabled={selectedTagIds.length === 0}>Launch</Button>
+        <Button
+          disabled={selectedTagIds.length === 0}
+          onClick={() => onLaunch(selectedTagIds)}
+        >
+          Launch
+        </Button>
       </Box>
     </Box>
   );

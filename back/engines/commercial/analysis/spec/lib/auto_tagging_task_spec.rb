@@ -168,4 +168,39 @@ RSpec.describe Analysis::AutoTaggingTask do
       expect(idea.tags).to eq([sport_tag])
     end
   end
+
+  describe 'LabelClassification auto_tagging' do
+    it 'works' do
+      project = create(:project)
+      custom_form = create(:custom_form, :with_default_fields, participation_context: project)
+      analysis = create(:analysis, custom_fields: custom_form.custom_fields, project: project)
+      tags = create_list(:tag, 3, analysis: analysis)
+      att = create(:auto_tagging_task, analysis: analysis, state: 'queued', auto_tagging_method: 'label_classification', tags_ids: [tags[0].id, tags[1].id])
+      idea1 = create(:idea, project: project, title_multiloc: { en: 'Footbal is the greatest sport in the world' })
+      idea2 = create(:idea, project: project, title_multiloc: { en: 'We need more houses' })
+      create(:tagging, input: idea2, tag: tags[0])
+
+      mock_nlp_client = instance_double(NLPCloud::Client)
+
+      expect(mock_nlp_client).to receive(:classification).once.and_return({
+        'labels' => [tags[0].name, tags[1].name],
+        'scores' => [0.9258800745010376, 0.1938474327325821]
+      })
+      expect_any_instance_of(Analysis::AutoTaggingMethod::LabelClassification)
+        .to receive(:nlp_cloud_client_for)
+        .and_return(
+          mock_nlp_client
+        )
+
+      expect { att.execute }
+        .to change(Analysis::Tagging, :count).from(1).to(2)
+
+      expect(att.reload).to have_attributes({
+        state: 'succeeded',
+        progress: nil
+      })
+
+      expect(idea1.tags).to eq([tags[0]])
+    end
+  end
 end

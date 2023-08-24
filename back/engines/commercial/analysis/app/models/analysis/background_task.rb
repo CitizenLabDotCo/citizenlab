@@ -14,6 +14,7 @@
 #  auto_tagging_method :string
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
+#  tags_ids            :jsonb
 #
 # Indexes
 #

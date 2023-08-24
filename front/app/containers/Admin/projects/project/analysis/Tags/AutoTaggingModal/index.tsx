@@ -21,7 +21,10 @@ const AutotaggingModal = ({ onCloseModal }: { onCloseModal: () => void }) => {
     variables,
   } = useLaunchAnalysisAutotagging();
 
-  const handleOnSelectMethod = (autoTaggingMethod: AutoTaggingMethod) => {
+  const handleOnSelectMethod = (
+    autoTaggingMethod: AutoTaggingMethod,
+    tagsIds?: string[]
+  ) => {
     if (isLoading) return;
 
     if (step === 'step1' && autoTaggingMethod === 'label_classification') {
@@ -34,7 +37,7 @@ const AutotaggingModal = ({ onCloseModal }: { onCloseModal: () => void }) => {
     }
 
     launchTagging(
-      { analysisId, autoTaggingMethod },
+      { analysisId, autoTaggingMethod, tagsIds },
       {
         onSuccess: () => {
           onCloseModal();
@@ -55,7 +58,11 @@ const AutotaggingModal = ({ onCloseModal }: { onCloseModal: () => void }) => {
       {step === 'step2LabelClassification' && (
         <>
           <GoBackButton onClick={() => setStep('step1')} />
-          <Step2LabelClassification />
+          <Step2LabelClassification
+            onLaunch={(tagsIds) =>
+              handleOnSelectMethod('label_classification', tagsIds)
+            }
+          />
         </>
       )}
       {step === 'step2FewShotClassification' && (

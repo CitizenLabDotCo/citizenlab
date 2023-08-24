@@ -18,6 +18,8 @@ module Analysis
         AutoTaggingMethod::Language.new(*params)
       when 'nlp_topic'
         AutoTaggingMethod::NLPTopic.new(*params)
+      when 'label_classification'
+        AutoTaggingMethod::LabelClassification.new(*params)
       else
         raise ArgumentError, "Unsupported auto_tagging_method #{auto_tagging_method}"
       end

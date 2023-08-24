@@ -7,11 +7,13 @@ import { AutoTaggingMethod, IBackgroundTask } from './types';
 interface IAddAnalysis {
   analysisId: string;
   autoTaggingMethod: AutoTaggingMethod;
+  tagsIds?: string[];
 }
 
 const launchAutoTagging = async ({
   analysisId,
   autoTaggingMethod,
+  tagsIds,
 }: IAddAnalysis) =>
   fetcher<IBackgroundTask>({
     path: `/analyses/${analysisId}/auto_taggings`,
@@ -19,6 +21,7 @@ const launchAutoTagging = async ({
     body: {
       auto_tagging: {
         auto_tagging_method: autoTaggingMethod,
+        tags_ids: tagsIds,
       },
     },
   });

@@ -6,13 +6,11 @@ import { useParams } from 'react-router-dom';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
-import useAddAnalysisTag from 'api/analysis_tags/useAddAnalysisTag';
 import useDeleteAnalysisTag from 'api/analysis_tags/useDeleteAnalysisTag';
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 
 import {
   Box,
-  Input,
   Button,
   IconButton,
   colors,
@@ -23,7 +21,6 @@ import {
   Checkbox,
   Spinner,
 } from '@citizenlab/cl2-component-library';
-import Error from 'components/UI/Error';
 import Modal from 'components/UI/Modal';
 import RenameTagModal from './RenameTagModal';
 import Tag from './Tag';
@@ -179,7 +176,7 @@ const Tags = () => {
             filteredCount={filteredInputsWithoutTags}
           />
         </TagContainer>
-        {!isLoading && tags?.data.length === 0 && (
+        {!isLoadingTags && tags?.data.length === 0 && (
           <Text p="6px" color="grey400">
             You do not have any tags yet.
           </Text>
