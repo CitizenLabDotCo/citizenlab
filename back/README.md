@@ -19,6 +19,7 @@ docker-compose run --user "$(id -u):$(id -g)" --rm web /bin/bash
 ```
 
 Mac or Windows:
+
 ```
 docker-compose run --rm web /bin/bash
 ```
