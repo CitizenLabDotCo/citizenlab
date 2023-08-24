@@ -6,6 +6,8 @@ import { groupBy } from 'lodash-es';
 import PostCommentGroup from './PostCommentGroup';
 import Button from 'components/UI/Button';
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { useParams } from 'react-router-dom';
+import useUserBySlug from 'api/users/useUserBySlug';
 
 // style
 import styled, { useTheme } from 'styled-components';
@@ -53,24 +55,26 @@ const MessageContainer = styled.div`
   font-weight: 400;
 `;
 
-interface Props {
-  userId: string;
-}
-
-export const UserComments = ({ userId }: Props) => {
+export const UserComments = () => {
+  const { userSlug } = useParams() as { userSlug: string };
+  const { data: user } = useUserBySlug(userSlug);
   const theme = useTheme();
   const { data: authUser } = useAuthUser();
   const isSmallerThanPhone = useBreakpoint('phone');
   const { data: commentsCount } = useUserCommentsCount({
-    userId,
+    userId: user?.data.id,
   });
   const {
     data: comments,
     hasNextPage,
     isFetchingNextPage,
     fetchNextPage,
-  } = useComments({ authorId: userId });
+  } = useComments({ authorId: user?.data.id });
   const commentsList = comments?.pages.flatMap((page) => page.data);
+
+  if (!user) {
+    return null;
+  }
 
   if (commentsList === undefined) {
     return (
@@ -84,7 +88,7 @@ export const UserComments = ({ userId }: Props) => {
     commentsList === null ||
     (!isNilOrError(commentsList) && commentsList.length === 0)
   ) {
-    if (!isNilOrError(authUser) && userId === authUser.data.id) {
+    if (!isNilOrError(authUser) && user.data.id === authUser.data.id) {
       return (
         <MessageContainer>
           <FormattedMessage {...messages.noCommentsForYou} />
@@ -139,7 +143,7 @@ export const UserComments = ({ userId }: Props) => {
                 postId={postId}
                 postType={postType}
                 comments={commentGroup}
-                userId={userId}
+                userId={user.data.id}
               />
             );
           })}
