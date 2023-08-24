@@ -1,13 +1,8 @@
 fr:
   email_campaigns:
     campaign_type_description:
-      "idea_assigned_to_you": Attribution en ma faveur d'une idée
-    admin_campaign_type_description:
-      "idea_assigned_to_you": Attribution d'une idée - administrateurs et administrateurs projet
-    idea_assigned_to_you:
-      by_author: 'par %{authorName}'
-      cta_reply_to: 'Faites votre retour à %{authorName}'
-      event_description_idea: 'Une idée vous a été attribuée. Envoyer une mise à jour en écrivant un commentaire officiel ou en changeant son statut.'
-      main_header: '%{firstName}, vous avez une nouvelle attribution'
-      subject: 'Vous avez une nouvelle attribution sur la plateforme de %{organizationName}'
-      preheader_idea: 'L’idée de %{authorName} vous a été attribuée'
+      ""idea_assigned_to_you"":
+        Assignment of an idea to me admin_campaign_type_description:
+          ""idea_assigned_to_you"":
+            Assignment of an idea - admins and project managers idea_assigned_to_you:
+              by_author: 'par %{authorName}'' cta_reply_to : ''Donnez votre avis à %{authorName}'' event_description_idea : ''Une idée vous a été attribuée. Donnez votre avis en écrivant une mise à jour officielle ou en modifiant son statut.'' main_header : ''%{firstName}, you have a new assignment'' subject : ''You have an assignment on the platform of %{organizationName}'' preheader_idea : ''The idea of %{authorName} has been assigned to you'
