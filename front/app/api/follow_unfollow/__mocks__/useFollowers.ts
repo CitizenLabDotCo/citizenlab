@@ -1,5 +1,14 @@
 import { IFollowerData } from '../types';
 
+export const links = {
+  last: 'http://localhost:3000/web_api/v1/followers?followable_type=Project&page%5Bnumber%5D=3&page%5Bsize%5D=1',
+  next: 'http://localhost:3000/web_api/v1/followers?followable_type=Project&page%5Bnumber%5D=2&page%5Bsize%5D=1',
+  self: 'http://localhost:3000/web_api/v1/followers?followable_type=Project&page%5Bnumber%5D=1&page%5Bsize%5D=1',
+  first:
+    'http://localhost:3000/web_api/v1/followers?followable_type=Project&page%5Bnumber%5D=1&page%5Bsize%5D=1',
+  prev: null,
+};
+
 export const followersData: IFollowerData[] = [
   {
     id: '1',
@@ -48,5 +57,5 @@ export const followersData: IFollowerData[] = [
 ];
 
 export default jest.fn(() => {
-  return { data: { data: followersData } };
+  return { data: { data: followersData, links } };
 });

@@ -14,14 +14,13 @@ const Onboarding = ({ authenticationData, onSubmit, onSkip }: Props) => {
   const { data: authenticationRequirements } = useAuthenticationRequirements(
     authenticationData.context
   );
+  const requiresTopicsAndAreasOnboarding = Object.prototype.hasOwnProperty.call(
+    authenticationRequirements?.data.attributes.requirements.requirements
+      .onboarding,
+    'topics_and_areas'
+  );
 
-  if (
-    Object.prototype.hasOwnProperty.call(
-      authenticationRequirements?.data.attributes.requirements.requirements
-        .onboarding,
-      'topics_and_areas'
-    )
-  ) {
+  if (requiresTopicsAndAreasOnboarding) {
     return <TopicsAndAreas onSubmit={onSubmit} onSkip={onSkip} />;
   }
 

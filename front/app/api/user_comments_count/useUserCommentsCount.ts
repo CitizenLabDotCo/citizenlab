@@ -19,6 +19,7 @@ const useUserCommentsCount = ({ userId }: IParameters) => {
   >({
     queryKey: userCommentsCountKeys.item({ userId }),
     queryFn: () => fetchUserCommentsCount({ userId }),
+    enabled: !!userId,
   });
 };
 
