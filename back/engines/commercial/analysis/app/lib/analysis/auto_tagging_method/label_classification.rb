@@ -5,7 +5,39 @@ module Analysis
     include NLPCloudHelpers
 
     TAG_TYPE = 'custom'
-    DETECTION_THRESHOLD = 0.9 # mostly irrelevant, since llama2 seems to returns 1 or 0
+    DETECTION_THRESHOLD = 0.6 # Works well for xlm-roberta-large-xnli, doesn't matter for LLMs
+    OTHER_TERMS = %w[
+      otro
+      autre
+      andere
+      altro
+      outro
+      ander
+      другой
+      其他
+      他の
+      다른
+      آخر
+      diğer
+      अन्य
+      інший
+      inny
+      alt
+      άλλος
+      másik
+      jiný
+      อื่น
+      annan
+      anden
+      annen
+      toinen
+      אחר
+      lain
+      khác
+      lain
+      iba
+      altul
+    ]
 
     protected
 
@@ -24,7 +56,7 @@ module Analysis
         update_progress(i / total_inputs.to_f)
 
         nlp = nlp_cloud_client_for(
-          'finetuned-llama-2-70b',
+          'xlm-roberta-large-xnli', # Can also be 'finetuned-llama-2-70b', more expensive but performs sligtly better
           gpu: true
         )
 
@@ -49,48 +81,15 @@ module Analysis
     rescue StandardError => e
       raise AutoTaggingFailedError, e
     end
-  end
 
-  OTHER_TERMS = %w[
-    otro
-    autre
-    andere
-    altro
-    outro
-    ander
-    другой
-    其他
-    他の
-    다른
-    آخر
-    diğer
-    अन्य
-    інший
-    inny
-    alt
-    άλλος
-    másik
-    jiný
-    อื่น
-    annan
-    anden
-    annen
-    toinen
-    אחר
-    lain
-    khác
-    lain
-    iba
-    altul
-  ]
-
-  def generate_labels(tags)
-    labels = tags.pluck(:name)
-    # The classifier has a tendency to always want to assign inputs. We include
-    # an 'other' label to give it a way out, in case 'other' is not yet one of
-    # the provided labels
-    if (labels & OTHER_TERMS).empty?
-      labels << 'other'
+    def generate_labels(tags)
+      labels = tags.pluck(:name)
+      # When using an LLM (e.g. gpt-j or llama2) the classifier has a tendency
+      # to always want to assign inputs. We include an 'other' label to give it
+      # a way out, in case 'other' is not yet one of the provided labels
+      if (labels & OTHER_TERMS).empty? && labels.size < 10
+        labels << 'other'
+      end
     end
   end
 end

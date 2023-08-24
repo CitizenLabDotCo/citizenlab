@@ -9,6 +9,7 @@ import {
   Text,
   colors,
   Spinner,
+  IconTooltip,
 } from '@citizenlab/cl2-component-library';
 import Tag from '../Tag';
 import { AutoTaggingMethod } from 'api/analysis_background_tasks/types';
@@ -36,6 +37,7 @@ const AutoTagOption = ({
   onSelect,
   disabled,
   isLoading,
+  tooltip,
 }: {
   children: ReactNode;
   tagType: TagType;
@@ -43,16 +45,23 @@ const AutoTagOption = ({
   onSelect: () => void;
   disabled: boolean;
   isLoading: boolean;
+  tooltip?: string;
 }) => {
   return (
     <AutoTagOptionContainer onClick={() => onSelect()} disabled={disabled}>
-      <Box display="flex" justifyContent="space-between" alignItems="center">
+      <Box
+        display="flex"
+        justifyContent="flex-start"
+        alignItems="center"
+        gap="6px"
+      >
         <Tag tagType={tagType} name={title} />
         {isLoading && (
           <Box mx="16px">
             <Spinner size="24px" />
           </Box>
         )}
+        {tooltip && <IconTooltip content={tooltip} icon="info-outline" />}
       </Box>
       <Text mt="12px" mb="0     ">
         {children}
@@ -91,6 +100,7 @@ const Step1 = ({ onSelectMethod, isLoading, loadingMethod }: Props) => {
           onSelect={() => onSelectMethod('nlp_topic')}
           disabled={isLoading}
           isLoading={isLoading && loadingMethod === 'nlp_topic'}
+          tooltip="Works well when your projects covers a broad range of topics. Good place to start."
         >
           <>The computer detects the tags and assigns the inputs</>
         </AutoTagOption>
@@ -101,6 +111,7 @@ const Step1 = ({ onSelectMethod, isLoading, loadingMethod }: Props) => {
           onSelect={() => onSelectMethod('label_classification')}
           disabled={isLoading}
           isLoading={isLoading && loadingMethod === 'label_classification'}
+          tooltip="Works well when you know what tags you are looking for, or when your project has a narrow scope in terms of topics."
         >
           <>You create the tags, the inputs are assigned by the computer</>
         </AutoTagOption>
@@ -111,6 +122,7 @@ const Step1 = ({ onSelectMethod, isLoading, loadingMethod }: Props) => {
           onSelect={() => onSelectMethod('few_shot_classification')}
           disabled={isLoading}
           isLoading={isLoading && loadingMethod === 'few_shot_classification'}
+          tooltip='Works well when you need to tag some really specific things. Use this in case "Classification by label" does not give you good results'
         >
           <>
             You create the tags and manually assign a few inputs as an example,
