@@ -145,16 +145,14 @@ const AdminInitiativeContent = ({
     return (
       <Container>
         <Top>
-          {!initiative.data.attributes.editing_locked && (
-            <Button
-              mr="8px"
-              icon="edit"
-              buttonStyle="secondary"
-              onClick={handleClickEdit}
-            >
-              <FormattedMessage {...messages.edit} />
-            </Button>
-          )}
+          <Button
+            mr="8px"
+            icon="edit"
+            buttonStyle="secondary"
+            onClick={handleClickEdit}
+          >
+            <FormattedMessage {...messages.edit} />
+          </Button>
           <Button
             icon="delete"
             buttonStyle="delete"
