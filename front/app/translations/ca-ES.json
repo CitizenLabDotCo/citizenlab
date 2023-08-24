@@ -835,6 +835,7 @@
   "app.containers.EventsShow.attending": "assistint",
   "app.containers.EventsShow.emailSharingBody": "Assistiu a aquest esdeveniment: {eventTitle} a {eventLocation}",
   "app.containers.EventsShow.eventFrom": "Esdeveniment de \"{eventTitle}\"",
+  "app.containers.EventsShow.goBack": "Torna",
   "app.containers.EventsShow.goToProject": "Aneu al projecte",
   "app.containers.EventsShow.socialMediaSharingMessage": "Assisteix a aquest esdeveniment: {eventTitle}",
   "app.containers.EventsShow.xParticipants": "{count, plural, one {#participant} other {# participants}}",
