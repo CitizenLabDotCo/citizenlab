@@ -1,10 +1,9 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import reactStringReplace from 'react-string-replace';
 
-import useDeleteAnalysisSummary from 'api/analysis_summaries/useDeleteAnalysisSummary';
 import useAnalysisBackgroundTask from 'api/analysis_background_tasks/useAnalysisBackgroundTask';
-import { ISummary } from 'api/analysis_summaries/types';
+import { IInsightData } from 'api/analysis_insights/types';
 
 import {
   Box,
@@ -13,15 +12,23 @@ import {
   Spinner,
   colors,
   stylingConsts,
+  Button,
 } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import styled from 'styled-components';
 import { useSelectedInputContext } from '../SelectedInputContext';
+import useAnalysisSummary from 'api/analysis_summaries/useAnalysisSummary';
+import useDeleteAnalysisInsight from 'api/analysis_insights/useDeleteAnalysisInsight';
+import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
+import Tag from '../Tags/Tag';
+import FilterItems from '../FilterItems';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 const StyledSummaryText = styled.div`
   white-space: pre-wrap;
+  word-break: break-word;
 `;
 
 const StyledButton = styled.button`
@@ -30,18 +37,25 @@ const StyledButton = styled.button`
 `;
 
 type Props = {
-  summary: ISummary['data'];
+  insight: IInsightData;
 };
 
-const Summary = ({ summary }: Props) => {
+const Summary = ({ insight }: Props) => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const { setSelectedInputId } = useSelectedInputContext();
   const { formatMessage } = useIntl();
   const { analysisId } = useParams() as { analysisId: string };
-  const { mutate: deleteSummary } = useDeleteAnalysisSummary();
+  const { mutate: deleteSummary } = useDeleteAnalysisInsight();
+  const { data: tags } = useAnalysisTags({ analysisId });
+
+  const { data: summary } = useAnalysisSummary({
+    analysisId,
+    id: insight.relationships.insightable.data.id,
+  });
 
   const { data: backgroundTask } = useAnalysisBackgroundTask(
     analysisId,
-    summary.relationships.background_task.data.id
+    summary?.data.relationships.background_task.data.id
   );
   const processing =
     backgroundTask?.data.attributes.state === 'in_progress' ||
@@ -56,23 +70,47 @@ const Summary = ({ summary }: Props) => {
     }
   };
 
+  const deleteTrailingIncompleteIDs = (str: string | null) => {
+    if (!str) return str;
+    return str.replace(/\[?[0-9a-f-]{0,35}$/, '');
+  };
+
   const replaceIdRefsWithLinks = (summary) => {
     return reactStringReplace(
       summary,
       /\[?([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})\]?/g,
       (match, i) => (
         <StyledButton onClick={() => setSelectedInputId(match)} key={i}>
-          <Icon name="search" />
+          <Icon name="idea" />
         </StyledButton>
       )
     );
   };
 
-  const hasFilters = !!Object.keys(summary.attributes.filters).length;
+  if (!summary) return null;
+
+  const hasFilters = !!Object.keys(summary.data.attributes.filters).length;
+  const tagIds = summary.data.attributes.filters.tag_ids;
+
+  const phaseId = searchParams.get('phase_id');
+
+  const handleRestoreFilters = () => {
+    setSearchParams({
+      ...(phaseId
+        ? {
+            phase_id: phaseId,
+          }
+        : {}),
+      reset_filters: 'true',
+    });
+    updateSearchParams(summary.data.attributes.filters);
+  };
+
+  const summaryText = summary.data.attributes.summary;
 
   return (
     <Box
-      key={summary.id}
+      key={summary.data.id}
       bgColor={colors.teal100}
       p="16px"
       mb="8px"
@@ -89,52 +127,60 @@ const Summary = ({ summary }: Props) => {
           {hasFilters && (
             <>
               <Box>Summary for</Box>
-              {Object.entries(summary.attributes.filters).map(([k, v]) => (
-                <Box
-                  key={k}
-                  bgColor={colors.teal200}
-                  color={colors.teal700}
-                  py="2px"
-                  px="4px"
-                  borderRadius={stylingConsts.borderRadius}
-                >
-                  {k}: {v}
-                </Box>
-              ))}
+              <FilterItems
+                filters={summary.data.attributes.filters}
+                isEditable={false}
+              />
+              {tags?.data
+                .filter((tag) => tagIds?.includes(tag.id))
+                .map((tag) => (
+                  <Tag
+                    key={tag.id}
+                    name={tag.attributes.name}
+                    tagType={tag.attributes.tag_type}
+                  />
+                ))}
             </>
           )}
 
           {!hasFilters && (
             <>
-              <Box>Summary</Box>
+              <Box>Summary for all inputs</Box>
             </>
           )}
         </Box>
         <Box>
           <StyledSummaryText>
-            {replaceIdRefsWithLinks(summary.attributes.summary)}
+            {replaceIdRefsWithLinks(
+              processing
+                ? deleteTrailingIncompleteIDs(summaryText)
+                : summaryText
+            )}
           </StyledSummaryText>
           {processing && <Spinner />}
         </Box>
       </Box>
       <Box
         display="flex"
-        flexDirection="row-reverse"
         gap="4px"
         alignItems="center"
+        justifyContent="space-between"
       >
+        <Button buttonStyle="white" onClick={handleRestoreFilters} p="4px 12px">
+          Restore filters
+        </Button>
+        {summary.data.attributes.accuracy && (
+          <Box color={colors.teal700}>
+            Accuracy {summary.data.attributes.accuracy * 100}%
+          </Box>
+        )}
         <IconButton
           iconName="delete"
-          onClick={() => handleSummaryDelete(summary.id)}
+          onClick={() => handleSummaryDelete(insight.id)}
           iconColor={colors.teal400}
           iconColorOnHover={colors.teal700}
           a11y_buttonActionMessage={formatMessage(messages.deleteSummary)}
         />
-        {summary.attributes.accuracy && (
-          <Box color={colors.teal700}>
-            Accuracy {summary.attributes.accuracy * 100}%
-          </Box>
-        )}
       </Box>
     </Box>
   );
