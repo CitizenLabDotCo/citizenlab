@@ -835,6 +835,7 @@
   "app.containers.EventsShow.attending": "katılıyor",
   "app.containers.EventsShow.emailSharingBody": "Bu etkinliğe katılın: {eventTitle} {eventLocation}adresinden",
   "app.containers.EventsShow.eventFrom": "\"{eventTitle}\" adresinden etkinlik",
+  "app.containers.EventsShow.goBack": "Geri dön",
   "app.containers.EventsShow.goToProject": "Projeye git",
   "app.containers.EventsShow.socialMediaSharingMessage": "Bu etkinliğe katılın: {eventTitle}",
   "app.containers.EventsShow.xParticipants": "{count, plural, one {# katılımcı} other {# katılımcılar}}",
