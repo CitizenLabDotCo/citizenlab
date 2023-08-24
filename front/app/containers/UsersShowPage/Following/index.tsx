@@ -49,8 +49,9 @@ const Following = () => {
     },
   };
 
-  if (!user || (isFollowingEnabled && authUser?.data?.id !== user.data.id))
+  if (!user || (isFollowingEnabled && authUser?.data?.id !== user.data.id)) {
     return null;
+  }
 
   const getScreenReaderTextForTab = (tab: string) => (
     <FormattedMessage {...tabData[tab].label} />
