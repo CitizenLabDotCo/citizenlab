@@ -14,7 +14,7 @@ const initiativeImagesKeys = {
     imageId,
   }: {
     initiativeId: string;
-    imageId: string;
+    imageId?: string;
   }) => [
     {
       ...baseKey,
