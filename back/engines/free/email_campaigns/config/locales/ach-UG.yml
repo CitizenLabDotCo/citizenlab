@@ -8,12 +8,15 @@ ach:
       "comment_on_your_comment": crwdns883651:0crwdne883651:0
       "comment_on_your_idea": crwdns883653:0crwdne883653:0
       "comment_on_your_initiative": crwdns883655:0crwdne883655:0
+      "cosponsor_of_your_initiative": crwdns933675:0crwdne933675:0
       "first_idea_published": crwdns883657:0crwdne883657:0
       "idea_marked_as_spam": crwdns883659:0crwdne883659:0
       "idea_published": crwdns883661:0crwdne883661:0
       "initiative_assigned_to_you": crwdns883663:0crwdne883663:0
       "initiative_marked_as_spam": crwdns883665:0crwdne883665:0
       "initiative_published": crwdns883667:0crwdne883667:0
+      "invitation_to_cosponsor_initiative": crwdns933677:0crwdne933677:0
+      "initiative_resubmitted_for_review": crwdns933679:0crwdne933679:0
       "invite_received": crwdns883669:0crwdne883669:0
       "invite_reminder": crwdns883671:0crwdne883671:0
       "internal_comment_on_idea_assigned_to_you": crwdns883673:0crwdne883673:0
@@ -138,6 +141,13 @@ ach:
       main_header: 'crwdns883895:0%{commentAuthor}crwdne883895:0'
       subject: 'crwdns883897:0%{organizationName}crwdne883897:0'
       preheader: 'crwdns883899:0%{authorName}crwdnd883899:0%{organizationName}crwdne883899:0'
+    cosponsor_of_your_initiative:
+      cta_reply_to: 'crwdns933681:0crwdne933681:0'
+      event_description_initiative: 'crwdns933683:0%{cosponsorName}crwdne933683:0'
+      event_description_cosponsoring: 'crwdns933685:0crwdne933685:0'
+      main_header: 'crwdns933687:0%{cosponsorName}crwdne933687:0'
+      subject: 'crwdns933689:0%{cosponsorName}crwdne933689:0'
+      preheader_initiative: 'crwdns933691:0%{cosponsorName}crwdne933691:0'
     assignee_digest:
       subject: 'crwdns883901:0%{numberIdeas}crwdne883901:0'
       preheader: 'crwdns883903:0%{organizationName}crwdne883903:0'
@@ -178,6 +188,21 @@ ach:
       main_header: 'crwdns883967:0%{firstName}crwdne883967:0'
       subject: 'crwdns883969:0%{organizationName}crwdne883969:0'
       preheader_initiative: 'crwdns883971:0%{authorName}crwdne883971:0'
+    invitation_to_cosponsor_initiative:
+      cta_reply_to: 'crwdns933693:0crwdne933693:0'
+      event_description_initiative: 'crwdns933695:0%{authorName}crwdne933695:0'
+      event_description_cosponsoring: 'crwdns933697:0crwdne933697:0'
+      event_description_action: 'crwdns933699:0crwdne933699:0'
+      main_header: 'crwdns933701:0crwdne933701:0'
+      subject: 'crwdns933703:0crwdne933703:0'
+      preheader_initiative: 'crwdns933705:0%{authorName}crwdne933705:0'
+    initiative_resubmitted_for_review:
+      by_author: 'crwdns933707:0%{authorName}crwdne933707:0'
+      cta_reply_to: 'crwdns933709:0%{authorName}crwdne933709:0'
+      event_description_initiative: 'crwdns933711:0crwdne933711:0'
+      main_header: 'crwdns933713:0%{firstName}crwdne933713:0'
+      subject: 'crwdns933715:0%{organizationName}crwdne933715:0'
+      preheader_initiative: 'crwdns933717:0%{authorName}crwdne933717:0'
     invite_reminder:
       cta_accept_invitation: 'crwdns883973:0crwdne883973:0'
       invitation_header: 'crwdns883975:0crwdne883975:0'
@@ -633,6 +658,7 @@ ach:
         managers: 'crwdns884769:0crwdne884769:0'
         admins_assigned_to_a_proposal: 'crwdns884771:0crwdne884771:0'
         admins_and_managers_assigned_to_the_input: 'crwdns884773:0crwdne884773:0'
+        user_who_is_invited_to_cosponsor_a_proposal: 'crwdns933719:0crwdne933719:0'
         user_who_is_receiving_admin_rights: 'crwdns884775:0crwdne884775:0'
         user_who_is_receiving_folder_moderator_rights: 'crwdns884777:0crwdne884777:0'
         user_who_is_receiving_project_moderator_rights: 'crwdns884779:0crwdne884779:0'
@@ -667,6 +693,7 @@ ach:
         input_is_flagged_as_spam: 'crwdns884833:0crwdne884833:0'
         input_is_updated: 'crwdns884835:0crwdne884835:0'
         input_status_changes: 'crwdns884837:0crwdne884837:0'
+        initiative_resubmitted_for_review: 'crwdns933721:0crwdne933721:0'
         internal_comment_is_posted_on_idea_assigned_to_user: 'crwdns884839:0crwdne884839:0'
         internal_comment_is_posted_on_initiative_assigned_to_user: 'crwdns884841:0crwdne884841:0'
         internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'crwdns884843:0crwdne884843:0'
@@ -675,6 +702,8 @@ ach:
         internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'crwdns884849:0crwdne884849:0'
         internal_comment_is_posted_on_unassigned_initiative: 'crwdns884851:0crwdne884851:0'
         internal_comment_is_posted_on_unassigned_unmoderated_idea: 'crwdns884853:0crwdne884853:0'
+        user_accepts_invitation_to_cosponsor_a_proposal: 'crwdns933723:0crwdne933723:0'
+        user_is_invited_to_cosponsor_a_proposal: 'crwdns933725:0crwdne933725:0'
         user_is_mentioned_in_internal_comment: 'crwdns884855:0crwdne884855:0'
         new_input_is_published: 'crwdns884857:0crwdne884857:0'
         new_proposal_is_posted: 'crwdns884859:0crwdne884859:0'
