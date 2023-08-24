@@ -796,7 +796,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.ideaImporter": "Uvoznik ideja",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPdf": "Uvezi PDF",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedIdeas": "Uvezene ideje",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet": "Još nema ideja za recenziju. Kliknite \"{importPdf}\" za uvoz PDF datoteke koja sadrži skenirane obrasce ideja.",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet2": "Još ništa za recenziju. Kliknite \"{importPdf}\" za uvoz PDF datoteke koja sadrži skenirane obrasce za unos.",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "Ovaj projekt ne sadrži nijednu fazu koja može sadržavati ideje.",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAnotherPhase": "Odaberite drugu fazu.",
   "app.containers.Admin.projects.project.offlineInputs.approve": "Odobriti",
