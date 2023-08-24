@@ -40,7 +40,7 @@ class SortFilterDropdown extends PureComponent<Props, State> {
     const { alignment } = this.props;
     const { selectedValue } = this.state;
     const options = defaultSortingOptions.filter(
-      (option) => option.value !== 'trending' && option.value !== 'popular'
+      (option) => option.value !== 'trending'
     );
 
     return (
