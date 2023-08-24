@@ -14,12 +14,4 @@ export default defineMessages({
     defaultMessage:
       '{count, plural, one {# participant} other {# participants}}',
   },
-  addToCalendar: {
-    id: 'app.containers.EventsShow.addToCalendar',
-    defaultMessage: 'Add to calendar',
-  },
-  icsError: {
-    id: 'app.containers.EventsShow.icsError',
-    defaultMessage: 'Error downloading the ICS file',
-  },
 });
