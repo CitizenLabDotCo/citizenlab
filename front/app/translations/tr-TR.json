@@ -1527,7 +1527,6 @@
   "app.containers.UsersShowPage.commentsWithCount": "Yorum Sayısı ({commentsCount})",
   "app.containers.UsersShowPage.editProfile": "Profilimi düzenle",
   "app.containers.UsersShowPage.emptyInfoText": "Yukarıda belirtilen filtrenin hiçbir öğesini takip etmiyorsunuz.",
-  "app.containers.UsersShowPage.following": "Aşağıdaki",
   "app.containers.UsersShowPage.goBackToPreviousPage": "Önceki sayfaya dönün",
   "app.containers.UsersShowPage.ideas": "Fikirler",
   "app.containers.UsersShowPage.initiatives": "Girişimler",

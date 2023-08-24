@@ -1527,7 +1527,6 @@
   "app.containers.UsersShowPage.commentsWithCount": "Σχόλια ({commentsCount})",
   "app.containers.UsersShowPage.editProfile": "Επεξεργασία του προφίλ μου",
   "app.containers.UsersShowPage.emptyInfoText": "Δεν ακολουθείτε κανένα στοιχείο του καθορισμένου φίλτρου παραπάνω.",
-  "app.containers.UsersShowPage.following": "Ακολουθώντας το",
   "app.containers.UsersShowPage.goBackToPreviousPage": "Επιστροφή στην προηγούμενη σελίδα",
   "app.containers.UsersShowPage.ideas": "Ιδέες",
   "app.containers.UsersShowPage.initiatives": "Πρωτοβουλίες",

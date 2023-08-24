@@ -1527,7 +1527,6 @@
   "app.containers.UsersShowPage.commentsWithCount": "Reacties ({commentsCount})",
   "app.containers.UsersShowPage.editProfile": "Bewerk mijn profiel",
   "app.containers.UsersShowPage.emptyInfoText": "Je volgt geen items van het opgegeven filter hierboven.",
-  "app.containers.UsersShowPage.following": "Volgend",
   "app.containers.UsersShowPage.goBackToPreviousPage": "Ga terug naar de vorige pagina",
   "app.containers.UsersShowPage.ideas": "Bijdragen",
   "app.containers.UsersShowPage.initiatives": "Voorstellen",

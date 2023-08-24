@@ -1527,7 +1527,6 @@
   "app.containers.UsersShowPage.commentsWithCount": "Kommentarer ({commentsCount})",
   "app.containers.UsersShowPage.editProfile": "Redigera min profil",
   "app.containers.UsersShowPage.emptyInfoText": "Du följer inte några objekt i det angivna filtret ovan.",
-  "app.containers.UsersShowPage.following": "Följande",
   "app.containers.UsersShowPage.goBackToPreviousPage": "Gå tillbaka till föregående sida",
   "app.containers.UsersShowPage.ideas": "Idéer",
   "app.containers.UsersShowPage.initiatives": "Initiativ",

@@ -1527,7 +1527,6 @@
   "app.containers.UsersShowPage.commentsWithCount": "Коментари ({commentsCount})",
   "app.containers.UsersShowPage.editProfile": "Уреди мој профил",
   "app.containers.UsersShowPage.emptyInfoText": "Не пратите ниједну ставку горе наведеног филтера.",
-  "app.containers.UsersShowPage.following": "Следећи",
   "app.containers.UsersShowPage.goBackToPreviousPage": "Вратите се на претходну страницу",
   "app.containers.UsersShowPage.ideas": "Идеје",
   "app.containers.UsersShowPage.initiatives": "Иницијативе",

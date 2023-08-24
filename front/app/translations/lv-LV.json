@@ -1527,7 +1527,6 @@
   "app.containers.UsersShowPage.commentsWithCount": "Komentāri ({commentsCount})",
   "app.containers.UsersShowPage.editProfile": "Rediģēt manu profilu",
   "app.containers.UsersShowPage.emptyInfoText": "Jūs nesekojat nevienam no iepriekš norādītā filtra elementiem.",
-  "app.containers.UsersShowPage.following": "Pēc",
   "app.containers.UsersShowPage.goBackToPreviousPage": "Atgriezties uz iepriekšējo lapu",
   "app.containers.UsersShowPage.ideas": "Idejas",
   "app.containers.UsersShowPage.initiatives": "Iniciatīvas",

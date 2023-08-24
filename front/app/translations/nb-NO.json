@@ -1527,7 +1527,6 @@
   "app.containers.UsersShowPage.commentsWithCount": "Kommentarer ({commentsCount})",
   "app.containers.UsersShowPage.editProfile": "Rediger profilen min",
   "app.containers.UsersShowPage.emptyInfoText": "Du følger ingen elementer i det angitte filteret ovenfor.",
-  "app.containers.UsersShowPage.following": "Følgende",
   "app.containers.UsersShowPage.goBackToPreviousPage": "Gå tilbake til forrige side",
   "app.containers.UsersShowPage.ideas": "Ideer",
   "app.containers.UsersShowPage.initiatives": "Initiativer",

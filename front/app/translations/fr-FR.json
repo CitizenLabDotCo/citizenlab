@@ -1527,7 +1527,6 @@
   "app.containers.UsersShowPage.commentsWithCount": "Commentaires ({commentsCount})",
   "app.containers.UsersShowPage.editProfile": "Modifier mon profil",
   "app.containers.UsersShowPage.emptyInfoText": "Vous ne suivez aucun élément correspondant au filtre spécifié ci-dessus.",
-  "app.containers.UsersShowPage.following": "Suivis",
   "app.containers.UsersShowPage.goBackToPreviousPage": "Retour à la page précédente",
   "app.containers.UsersShowPage.ideas": "Idées",
   "app.containers.UsersShowPage.initiatives": "Propositions",

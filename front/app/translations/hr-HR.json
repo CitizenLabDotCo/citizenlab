@@ -1527,7 +1527,6 @@
   "app.containers.UsersShowPage.commentsWithCount": "Komentari ({commentsCount})",
   "app.containers.UsersShowPage.editProfile": "Uredi svoj profil",
   "app.containers.UsersShowPage.emptyInfoText": "Ne pratite nijednu stavku gore navedenog filtera.",
-  "app.containers.UsersShowPage.following": "Praćenje",
   "app.containers.UsersShowPage.goBackToPreviousPage": "Vrati se na prethodnu stranicu",
   "app.containers.UsersShowPage.ideas": "Ideje",
   "app.containers.UsersShowPage.initiatives": "Inicijative",
