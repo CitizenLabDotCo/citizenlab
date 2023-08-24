@@ -43,10 +43,7 @@ export const TitleLink = styled.a`
   }
 `;
 
-function nothingHappens(event) {
-  event.preventDefault();
-  event.stopPropagation();
-}
+function nothingHappens() {}
 
 type Props = {
   type: ManagerType;
@@ -79,7 +76,7 @@ const Row = ({
   onToggleSelect,
 }: Props) => {
   const locale = useLocale();
-  const onClickCheckbox = (event) => {
+  const onClickCheckbox = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.stopPropagation();
     onToggleSelect();
   };

@@ -22,6 +22,10 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.noNotifications',
     defaultMessage: "You don't have any notifications yet",
   },
+  cosponsorOfYourInitiative: {
+    id: 'app.containers.NotificationMenu.cosponsorOfYourInitiative',
+    defaultMessage: '{name} cosponsored your proposal',
+  },
   userCommentedOnYourIdea: {
     id: 'app.containers.NotificationMenu.userCommentedOnYourIdea',
     defaultMessage: '{name} commented on your idea',
@@ -62,6 +66,10 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.mentionInInternalComment',
     defaultMessage: '{name} mentioned you in an internal comment',
   },
+  initiativeResubmittedForReview: {
+    id: 'app.containers.NotificationMenu.initiativeResubmittedForReview',
+    defaultMessage: '"{initiativeTitle}" resubmitted for review',
+  },
   internalCommentOnYourInternalComment: {
     id: 'app.containers.NotificationMenu.internalCommentOnYourInternalComment',
     defaultMessage: '{name} commented on your internal comment',
@@ -98,13 +106,17 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.internalCommentOnUnassignedInitiative',
     defaultMessage: '{name} commented internally on an unassigned proposal',
   },
+  invitationToCosponsorInitiative: {
+    id: 'app.containers.NotificationMenu.invitationToCosponsorInitiative',
+    defaultMessage: '{name} invited you to cosponsor a proposal',
+  },
   userReportedCommentAsSpam: {
-    id: 'app.containers.NotificationMenu.userReportedCommentAsSpam',
-    defaultMessage: "{name} reported a comment on '{postTitle}' as spam",
+    id: 'app.containers.NotificationMenu.userReportedCommentAsSpam1',
+    defaultMessage: '{name} reported a comment on "{postTitle}" as spam',
   },
   userMarkedPostAsSpam: {
-    id: 'app.containers.NotificationMenu.userMarkedPostAsSpam',
-    defaultMessage: "{name} reported '{postTitle}' as spam",
+    id: 'app.containers.NotificationMenu.userMarkedPostAsSpam1',
+    defaultMessage: '{name} reported "{postTitle}" as spam',
   },
   statusChangedOfIdea: {
     id: 'app.containers.NotificationMenu.statusChangedOfIdea',
@@ -191,8 +203,8 @@ export default defineMessages({
     defaultMessage: '{name} accepted your invitation',
   },
   commentDeletedByAdminFor: {
-    id: 'app.containers.NotificationMenu.commentDeletedByAdminFor',
-    defaultMessage: `Your comment on '{postTitle}' has been deleted by an admin because
+    id: 'app.containers.NotificationMenu.commentDeletedByAdminFor1',
+    defaultMessage: `Your comment on "{postTitle}" has been deleted by an admin because
       {reasonCode, select,
         irrelevant {it is irrelevant}
         inappropriate {its content is inappropriate}

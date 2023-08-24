@@ -15,12 +15,12 @@ module Verification
 
     def fetch_user(request)
       # `token` can be unusual here. See different `fetch_token` implementations.
-      token = request.env['omniauth.params']['token'] || fetch_token(request)
+      token = fetch_token(request)
       AuthToken::AuthToken.new(token: token).entity_for(::User)
     end
 
-    protected
-
-    def fetch_token(request); end
+    def fetch_token(request)
+      request.env['omniauth.params']['token']
+    end
   end
 end

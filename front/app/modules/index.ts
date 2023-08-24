@@ -26,6 +26,7 @@ import idAuth0Configuration from './commercial/id_auth0';
 import idBosaFasConfiguration from './commercial/id_bosa_fas';
 import idNemLogInConfiguration from './commercial/id_nemlog_in';
 import idCowConfiguration from './commercial/id_cow';
+import idCriiptoConfiguration from './commercial/id_criipto';
 import idBogusConfiguration from './commercial/id_bogus';
 import idIdCardLookupConfiguration from './commercial/id_id_card_lookup';
 import IdFranceConnectConfiguration from './commercial/id_franceconnect';
@@ -108,6 +109,9 @@ export default loadModules([
   },
   {
     configuration: idCowConfiguration,
+  },
+  {
+    configuration: idCriiptoConfiguration,
   },
   {
     configuration: idBogusConfiguration,
