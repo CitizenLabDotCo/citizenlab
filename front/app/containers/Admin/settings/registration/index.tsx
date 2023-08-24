@@ -115,7 +115,7 @@ const SettingsRegistrationTab = () => {
   const userConfirmationToggleIsEnabled =
     !!latestAppConfigSettings?.user_confirmation?.enabled;
 
-  const isOnboardingEnabled = !!latestAppConfigSettings?.onboarding?.enabled;
+  const isOnboardingEnabled = !!latestAppConfigSettings?.core.onboarding;
 
   const handleUserConfirmationToggleChange = (value: boolean) => {
     const newAttributesDiff = {
@@ -134,7 +134,10 @@ const SettingsRegistrationTab = () => {
       ...attributesDiff,
       settings: {
         ...(attributesDiff.settings || {}),
-        onboarding: { enabled: value },
+        core: {
+          ...attributesDiff.settings?.core,
+          onboarding: value,
+        },
       },
     };
 
