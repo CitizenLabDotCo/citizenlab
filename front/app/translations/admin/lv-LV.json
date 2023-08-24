@@ -796,7 +796,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.ideaImporter": "Ideju importētājs",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPdf": "Importēt PDF",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedIdeas": "Importētās idejas",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet": "Pagaidām nav ideju, ko pārskatīt. Noklikšķiniet uz \"{importPdf}\", lai importētu PDF failu ar ieskenētām ideju veidlapām.",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet2": "Vēl nav ko pārskatīt. Noklikšķiniet uz \"{importPdf}\", lai importētu PDF failu ar skenētām ievades veidlapām.",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "Šajā projektā nav fāžu, kurās var būt idejas.",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAnotherPhase": "Lūdzu, izvēlieties citu posmu.",
   "app.containers.Admin.projects.project.offlineInputs.approve": "Apstiprināt",
