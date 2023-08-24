@@ -45,19 +45,19 @@ const Import = () => {
   const [unknownError, setUnknownError] = useState(false);
   const [file, setFile] = useState<UploadFile | undefined>(undefined);
 
-  const resetMessages = () => {
+  const resetMessagesShownToUser = () => {
     setIdeasTakingLong(false);
     setUnknownError(false);
   };
 
   const handleFileOnAdd = async (fileToAdd: UploadFile) => {
-    resetMessages();
+    resetMessagesShownToUser();
     setFile(fileToAdd);
     reset();
   };
 
   const handleFileImport = async () => {
-    resetMessages();
+    resetMessagesShownToUser();
     if (!file) return;
 
     try {
