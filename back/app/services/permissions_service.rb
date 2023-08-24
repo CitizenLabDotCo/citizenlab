@@ -164,7 +164,7 @@ class PermissionsService
     users = everyone_confirmed_email.deep_dup.tap do |requirements|
       requirements[:built_in][:first_name] = 'require'
       requirements[:built_in][:last_name] = 'require'
-      requirements[:onboarding].transform_values! { 'ask' } if app_configuration.settings.dig('core', 'onboarding')
+      requirements[:onboarding].transform_values! { 'ask' } if onboarding_possible?
       requirements[:special][:password] = 'require'
     end
 
@@ -207,6 +207,10 @@ class PermissionsService
       end
       requirements[:special][special_key] = 'satisfied' if is_satisfied
     end
+  end
+
+  def onboarding_possible?
+    app_configuration.settings.dig('core', 'onboarding') && (ProjectsTopic.count > 0 || AreasProject.count > 0)
   end
 
   def ignore_password_for_sso!(requirements, user)
