@@ -4,6 +4,7 @@ import {
   Text,
   colors,
   useBreakpoint,
+  Spinner,
 } from '@citizenlab/cl2-component-library';
 import useFollowers from 'api/follow_unfollow/useFollowers';
 import IdeaCard from 'components/IdeaCard';
@@ -47,6 +48,7 @@ const UserFollowingList = ({ userId, value }: Props) => {
 
   return (
     <Box display="flex" w="100%" flexDirection="column">
+      {isLoading && <Spinner />}
       {!isLoading && flatFollowers.length === 0 ? (
         <Box background={colors.white} p="36px">
           <Text variant="bodyL">
@@ -79,7 +81,6 @@ const UserFollowingList = ({ userId, value }: Props) => {
                   key={follower.id}
                   display="flex"
                   flexGrow={0}
-                  // flex="1 0 calc(100% * (1 / 3) - 26px)"
                   w={
                     isSmallerThanPhone ? '100%' : 'calc(100% * (1 / 3) - 26px)'
                   }
