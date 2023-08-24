@@ -347,6 +347,8 @@ resource 'Permissions' do
           password_digest: nil,
           custom_field_values: { 'gender' => 'male' }
         )
+
+        create(:topic).tap { |topic| topic.projects_topics.create!(project: create(:project)) }
       end
 
       let(:action) { 'visiting' }
@@ -383,6 +385,8 @@ resource 'Permissions' do
       before do
         @permission = @project.permissions.first
         @permission.update!(permitted_by: 'users')
+
+        create(:topic).tap { |topic| topic.projects_topics.create!(project: create(:project)) }
       end
 
       let(:action) { @permission.action }
