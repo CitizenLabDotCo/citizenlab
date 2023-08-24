@@ -835,6 +835,7 @@
   "app.containers.EventsShow.attending": "حضور",
   "app.containers.EventsShow.emailSharingBody": "احضر هذا الحدث: {eventTitle} الساعة {eventLocation}",
   "app.containers.EventsShow.eventFrom": "حدث من \"{eventTitle}\"",
+  "app.containers.EventsShow.goBack": "عُد",
   "app.containers.EventsShow.goToProject": "اذهب إلى المشروع",
   "app.containers.EventsShow.socialMediaSharingMessage": "حضور هذا الحدث: {eventTitle}",
   "app.containers.EventsShow.xParticipants": "{count, plural, one {# مشارك} other {# مشاركون}}",
