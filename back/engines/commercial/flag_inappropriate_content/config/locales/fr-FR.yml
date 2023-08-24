@@ -1,15 +1,8 @@
 fr:
   email_campaigns:
     campaign_type_description:
-      "inappropriate_content_flagged": Contenu inapproprié signalé
-    admin_campaign_type_description:
-      "inappropriate_content_flagged": Contenu inapproprié signalé - administrateurs
-    inappropriate_content_flagged:
-      subject: 'Une publication a été signalée et doit être vérifiée'
-      header_title: 'Une publication a été signalée et doit être vérifiée'
-      comment_author: '%{authorName} a commenté :'
-      idea_author: '%{authorName} a publié une contribution :'
-      initiative_author: '%{authorName} a publié une proposition :'
-      this_post_was_flagged: >
-        <p>Cette publication pourrait contenir un contenu inapproprié. Nous vous notifions afin que vous puissiez l'examiner en fonction de vos propres règles de modération. </p><p> Si la publication ne contient pas de contenu inapproprié, vous pouvez supprimer l'alerte depuis l'interface administrateur de votre plateforme, dans l'onglet 'Activité'.</p>
-      cta_review_post: 'Vérifier la publication'
+      ""inappropriate_content_flagged"":
+        Inappropriate content flagged admin_campaign_type_description:
+          ""inappropriate_content_flagged"":
+            Inappropriate content flagged - admins inappropriate_content_flagged:
+              subject: 'Un article sur votre plateforme a été signalé pour révision'' header_title : ''Un article sur votre plateforme a été signalé pour révision'' comment_author : ''%{authorName} a commenté:'' idea_author : ''%{authorName} a soumis un message:'' initiative_author : ''%{authorName} a soumis une proposition:'' this_post_was_flagged : > <p>Ce message a été automatiquement détecté comme pouvant avoir un contenu inapproprié. Nous vous envoyons cette notification afin que vous puissiez l''examiner conformément à vos propres règles de modération.</p><p>Si le message ne contient pas de contenu inapproprié, vous pouvez supprimer l''avertissement via votre plateforme dans l''onglet Activité du panneau d''administration.</p> cta_review_post : ''Review post'
