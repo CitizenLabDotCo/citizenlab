@@ -797,7 +797,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPdf": "Importeer PDF",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedIdeas": "Geïmporteerde ideeën",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet": "Er zijn nog geen ideeën om te beoordelen. Klik op \"{importPdf}\" om een PDF-bestand met gescande ideeënformulieren te importeren.",
-  "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "Dit project bevat geen fasen die ideeën kunnen bevatten.",
+  "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "Dit project bevat geen fases die ideeën kunnen bevatten.",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAnotherPhase": "Selecteer een andere fase.",
   "app.containers.Admin.projects.project.offlineInputs.approve": "Goedkeuren",
   "app.containers.Admin.projects.project.offlineInputs.delete": "Verwijder",
