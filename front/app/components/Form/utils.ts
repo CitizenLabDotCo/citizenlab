@@ -1,6 +1,6 @@
-import { JsonSchema, Layout } from '@jsonforms/core';
+import { Layout, JsonSchema7 } from '@jsonforms/core';
 import Ajv from 'ajv';
-import { isEmpty } from 'lodash-es';
+import { isEmpty, forOwn } from 'lodash-es';
 import { isVisible } from './Components/Controls/visibilityUtils';
 import { PageCategorization, PageType } from './Components/Layouts/utils';
 
@@ -22,7 +22,7 @@ const iterateSchema = (
 };
 
 export const getFormSchemaAndData = (
-  schema: JsonSchema,
+  schema: JsonSchema7,
   uiSchema: Layout | PageCategorization,
   data: any,
   ajv: Ajv
@@ -58,4 +58,32 @@ export const getFormSchemaAndData = (
   });
 
   return [schemaResult, dataWithoutHiddenElements];
+};
+
+export const sanitizeFormData = (data: any) => {
+  const sanitizedFormData = {};
+
+  forOwn(data, (value, key) => {
+    sanitizedFormData[key] =
+      value === null || value === '' || value === false ? undefined : value;
+  });
+
+  return sanitizedFormData;
+};
+
+export const isValidData = (
+  schema: JsonSchema7,
+  uiSchema: Layout | PageCategorization,
+  data: any,
+  ajv: Ajv,
+  isSurvey: boolean
+) => {
+  const [schemaToUse, dataWithoutHiddenFields] = getFormSchemaAndData(
+    schema,
+    uiSchema,
+    data,
+    ajv
+  );
+
+  return ajv.validate(schemaToUse, isSurvey ? dataWithoutHiddenFields : data);
 };

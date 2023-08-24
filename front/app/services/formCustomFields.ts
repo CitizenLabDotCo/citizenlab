@@ -8,6 +8,8 @@ import { IProjectData } from 'api/projects/types';
 import { isNilOrError } from 'utils/helperUtils';
 import { IPhaseData } from 'api/phases/types';
 import { snakeCase } from 'lodash-es';
+import { queryClient } from 'utils/cl-react-query/queryClient';
+import ideaJsonFormsSchemaKeys from 'api/idea_json_form_schema/keys';
 
 // We can add more input types here when we support them
 export type ICustomFieldInputType =
@@ -170,9 +172,19 @@ export async function updateFormCustomFields(
   const apiEndpoint = phaseId
     ? `${API_PATH}/admin/phases/${phaseId}/custom_fields/update_all`
     : `${API_PATH}/admin/projects/${projectId}/custom_fields/update_all`;
-  return streams.update(apiEndpoint, `${projectId}/custom_fields`, {
-    custom_fields: customFields,
+  const response = await streams.update(
+    apiEndpoint,
+    `${projectId}/custom_fields`,
+    {
+      custom_fields: customFields,
+    }
+  );
+
+  queryClient.invalidateQueries({
+    queryKey: ideaJsonFormsSchemaKeys.all(),
   });
+
+  return response;
 }
 
 export type OptionAttributes = Omit<

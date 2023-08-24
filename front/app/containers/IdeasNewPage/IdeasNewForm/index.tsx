@@ -17,7 +17,7 @@ import messages from '../messages';
 import { useIntl } from 'utils/cl-intl';
 
 // components
-import Form, { AjvErrorGetter, ApiErrorGetter } from 'components/Form';
+import Form from 'components/Form';
 import IdeasNewMeta from '../IdeasNewMeta';
 import PageContainer from 'components/UI/PageContainer';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
@@ -40,6 +40,7 @@ import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 import { Multiloc } from 'typings';
 import { IPhases, IPhaseData } from 'api/phases/types';
 import { IProject } from 'api/projects/types';
+import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 
 const getConfig = (
   phaseFromUrl: IPhaseData | undefined,

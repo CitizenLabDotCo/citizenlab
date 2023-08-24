@@ -24,7 +24,7 @@ export interface FileUploaderProps {
   id: string;
   className?: string;
   onFileAdd: (fileToAdd: UploadFile) => void;
-  onFileRemove: (fileToRemove: FileType) => void;
+  onFileRemove?: (fileToRemove: FileType) => void;
   files: FileType[] | null;
   apiErrors?: { [fieldName: string]: CLError[] } | null;
 }
@@ -47,7 +47,7 @@ const FileUploader = ({
     (fileToRemove: FileType) => (event: React.FormEvent) => {
       event.preventDefault();
       event.stopPropagation();
-      onFileRemove(fileToRemove);
+      onFileRemove?.(fileToRemove);
     };
   const fileNames = files ? files.map((file) => file.name).join(', ') : '';
 

@@ -148,6 +148,9 @@ export interface IIdeaData {
     user_reaction?: {
       data: IRelationship | null;
     };
+    idea_import?: {
+      data: IRelationship | null;
+    };
   };
 }
 
