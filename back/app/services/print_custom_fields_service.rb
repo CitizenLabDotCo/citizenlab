@@ -106,7 +106,7 @@ class PrintCustomFieldsService
 
   def write_title(pdf, custom_field)
     pdf.text(
-      "<b>#{custom_field.title_multiloc[locale]}</b>",
+      "<b>#{custom_field.title_multiloc[locale]}</b>#{custom_field.required? ? "" : " (optional)"}",
       size: 20,
       inline_format: true
     )
