@@ -32,12 +32,13 @@ class PrintCustomFieldsService
     end
 
     custom_fields.each_with_index do |custom_field, i|
-      # First custom_field should always be a page.
-      # Since the pdf already has a page when it's
-      # created we can skip this.
-      next if i == 0
-
       field_type = custom_field.input_type
+
+      # If this is a survey, the first field will be a 'page'.
+      # Since the pdf is initialized with an empty page,
+      # we can skip this.
+      next if i == 0 & field_type == 'page'
+
 
       if field_type == 'page' then
         pdf.start_new_page(size: 'A4')
