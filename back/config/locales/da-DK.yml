@@ -84,7 +84,7 @@ da:
     all_input:
       title: Alle input
     proposals:
-      title: Borgerforslag
+      title: Forslag
     events:
       title: Begivenheder
     about:
@@ -99,7 +99,7 @@ da:
   events:
     council_meeting_title: Rådsmøde
     council_meeting_description: >
-      <p>Under dette rådsmøde vil de borgerforslag, der har samlet 100 stemmer på mindre end 3 måneder, blive præsenteret.</p><p> Rådet vil så belyse deres perspektiv på hver idé.</p>
+      <p>Under dette rådsmøde vil de forslag, der har samlet 100 stemmer på mindre end 3 måneder, blive præsenteret.</p><p> Rådet vil så belyse deres perspektiv på hver idé.</p>
   custom_fields:
     users:
       gender:
@@ -182,7 +182,7 @@ da:
       ISCED8: Ph.d. eller tilsvarende
   initiatives:
     default_threshold_reached_message: >
-      <p> Tagerne er inviteret til at præsentere deres borgerforslag på næste rådsmøde. Vi bringer en officiel opdatering. </p>
+      <p>Tagerne er inviteret til at præsentere deres forslag på næste rådsmøde. Vi bringer en officiel opdatering.</p>
     default_eligibility_criteria: >
       <ul> <li>Det skal falde inden for kommunens politikområder og kompetencer</li> <li>Det tjener den offentlige interesse snarere end din individuelle interesse</li> <li>Det diskriminerer ikke andre borgere i forhold til køn, race, alder eller baggrund</li> <li>Det skader ikke andre</li></ul>
   reset_password_mailer:
