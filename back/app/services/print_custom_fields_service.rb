@@ -37,7 +37,7 @@ class PrintCustomFieldsService
       # If this is a survey, the first field will be a 'page'.
       # Since the pdf is initialized with an empty page,
       # we can skip this.
-      next if i == 0 & field_type == 'page'
+      next if i == 0 && field_type == 'page'
 
 
       if field_type == 'page' then
