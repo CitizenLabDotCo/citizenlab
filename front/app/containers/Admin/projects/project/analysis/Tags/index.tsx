@@ -7,23 +7,22 @@ import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
 import useAddAnalysisTag from 'api/analysis_tags/useAddAnalysisTag';
-import useDeleteAnalysisTag from 'api/analysis_tags/useDeleteAnalysisTag';
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 
 import {
   Box,
   Input,
   Button,
-  IconButton,
   colors,
   stylingConsts,
   Text,
   Icon,
   ListItem,
+  Checkbox,
+  Spinner,
 } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 import Modal from 'components/UI/Modal';
-import RenameTagModal from './RenameTagModal';
 import Tag from './Tag';
 import AutotaggingModal from './AutotaggingModal';
 import TagCount from './TagCount';
@@ -33,6 +32,7 @@ import messages from '../messages';
 
 import { useQueryClient } from '@tanstack/react-query';
 import inputsKeys from 'api/analysis_inputs/keys';
+import TagActions from './TagActions';
 
 const BlickingIcon = styled(Icon)`
   animation-name: blink-animation;
@@ -56,6 +56,7 @@ const BlickingIcon = styled(Icon)`
 
 const TagContainer = styled(ListItem)`
   padding: 8px 4px;
+  position: relative;
   border-radius: ${stylingConsts.borderRadius};
   &:hover {
     background-color: ${colors.background};
@@ -68,7 +69,6 @@ const TagContainer = styled(ListItem)`
 
 const Tags = () => {
   const [name, setName] = useState('');
-  const [renameTagModalOpenedId, setRenameTagModalOpenedId] = useState('');
   const [autotaggingModalIsOpened, setAutotaggingModalIsOpened] =
     useState(false);
 
@@ -79,18 +79,24 @@ const Tags = () => {
   const { analysisId } = useParams() as { analysisId: string };
 
   const queryClient = useQueryClient();
-  const { data: tags } = useAnalysisTags({
+  const { data: tags, isLoading: isLoadingTags } = useAnalysisTags({
     analysisId,
     filters: omit(filters, 'tag_ids'),
   });
   const { mutate: addTag, isLoading, error } = useAddAnalysisTag();
-  const { mutate: deleteTag } = useDeleteAnalysisTag();
 
-  const inputsTotal = tags?.meta.inputs_total || 1;
-  const filteredInputsTotal = tags?.meta.filtered_inputs_total || 1;
-  const inputsWithoutTags = tags?.meta.inputs_without_tags || 1;
-  const filteredInputsWithoutTags =
-    tags?.meta.filtered_inputs_without_tags || 1;
+  if (isLoadingTags) {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" h="100%">
+        <Spinner />
+      </Box>
+    );
+  }
+
+  const inputsTotal = tags?.meta.inputs_total;
+  const filteredInputsTotal = tags?.meta.filtered_inputs_total;
+  const inputsWithoutTags = tags?.meta.inputs_without_tags;
+  const filteredInputsWithoutTags = tags?.meta.filtered_inputs_without_tags;
 
   const onChangeName = (name: string) => {
     setName(name);
@@ -110,27 +116,22 @@ const Tags = () => {
     );
   };
 
-  const handleTagDelete = (id: string) => {
-    if (window.confirm(formatMessage(messages.deleteTagConfirmation))) {
-      deleteTag({
-        analysisId,
-        id,
-      });
-    }
-  };
-
-  const closeTagRenameModal = () => {
-    setRenameTagModalOpenedId('');
-  };
-
-  const selectTag = (id: string) => {
-    updateSearchParams({ tag_ids: [id] });
-  };
-
   const selectedTags = filters.tag_ids;
 
-  const handleTagClick = (id: string) => {
-    selectTag(id);
+  const toggleTagContainerClick = (id: string) => {
+    updateSearchParams({ tag_ids: [id] });
+    queryClient.invalidateQueries(inputsKeys.lists());
+  };
+
+  const toggleТаgCheckboxClick = (id: string) => {
+    const nonNullSelectedTags = selectedTags?.filter((tagId) => tagId !== null);
+    if (!selectedTags?.includes(id)) {
+      updateSearchParams({ tag_ids: [...(nonNullSelectedTags || []), id] });
+    } else {
+      updateSearchParams({
+        tag_ids: nonNullSelectedTags?.filter((tagId) => tagId !== id),
+      });
+    }
     queryClient.invalidateQueries(inputsKeys.lists());
   };
 
@@ -155,6 +156,7 @@ const Tags = () => {
             />
           )}
         </Button>
+
         <Box display="flex" alignItems="center" mb="8px" as="form">
           <Input
             type="text"
@@ -193,7 +195,7 @@ const Tags = () => {
         <TagContainer
           tabIndex={0}
           onClick={() => updateSearchParams({ tag_ids: [null] })}
-          className={selectedTags?.length === 0 ? 'selected' : ''}
+          className={selectedTags && selectedTags[0] === null ? 'selected' : ''}
         >
           Inputs without tags
           <TagCount
@@ -211,55 +213,51 @@ const Tags = () => {
           <TagContainer
             key={tag.id}
             tabIndex={0}
-            onClick={() => handleTagClick(tag.id)}
+            onClick={() => {
+              toggleTagContainerClick(tag.id);
+            }}
             className={selectedTags?.includes(tag.id) ? 'selected' : ''}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                toggleTagContainerClick(tag.id);
+              }
+            }}
           >
             <Box
-              display="flex"
-              alignItems="center"
-              justifyContent="space-between"
+              position="absolute"
+              top="20px"
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
             >
-              <Tag
-                name={tag.attributes.name}
-                tagType={tag.attributes.tag_type}
+              <Checkbox
+                checked={!!selectedTags?.includes(tag.id)}
+                onChange={() => {
+                  toggleТаgCheckboxClick(tag.id);
+                }}
+                size="20px"
               />
-              <Box display="flex">
-                <IconButton
-                  iconName="edit"
-                  onClick={() => setRenameTagModalOpenedId(tag.id)}
-                  iconColor={colors.grey700}
-                  iconColorOnHover={colors.grey700}
-                  a11y_buttonActionMessage={formatMessage(messages.editTag)}
-                  iconWidth="20px"
-                  iconHeight="20px"
-                />
-                <IconButton
-                  iconName="delete"
-                  onClick={() => handleTagDelete(tag.id)}
-                  iconColor={colors.red600}
-                  iconColorOnHover={colors.red600}
-                  a11y_buttonActionMessage={formatMessage(messages.deleteTag)}
-                  iconWidth="20px"
-                  iconHeight="20px"
-                />
-              </Box>
             </Box>
-            <TagCount
-              count={tag.attributes.total_input_count}
-              totalCount={inputsTotal}
-              filteredCount={tag.attributes.filtered_input_count}
-            />
-            <Modal
-              opened={renameTagModalOpenedId === tag.id}
-              close={closeTagRenameModal}
-            >
-              <RenameTagModal
-                closeRenameModal={closeTagRenameModal}
-                originalTagName={tag.attributes.name}
-                id={tag.id}
-                analysisId={analysisId}
+            <Box ml={'28px'}>
+              <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="space-between"
+              >
+                <Tag
+                  name={tag.attributes.name}
+                  tagType={tag.attributes.tag_type}
+                />
+                <Box display="flex">
+                  <TagActions tag={tag} />
+                </Box>
+              </Box>
+              <TagCount
+                count={tag.attributes.total_input_count}
+                totalCount={inputsTotal}
+                filteredCount={tag.attributes.filtered_input_count}
               />
-            </Modal>
+            </Box>
           </TagContainer>
         ))}
       </Box>
