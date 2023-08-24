@@ -86,7 +86,6 @@ module Analysis
     def prompt_responses(inputs)
       inputs.filter_map do |input|
         response = input_to_text.execute(input, truncate_values: 512).values.join("\n").truncate(1000)
-        # next nil if response.strip.empty?
         <<~PROMPT
           RESPONSE:
           #{response.strip}

@@ -68,8 +68,6 @@ module Analysis
           nlp.classification(text, labels: labels, multi_class: true)
         end
 
-        pp result
-
         result['labels']
           .zip(result['scores'])
           .reject { |(_label, score)| !score || score < DETECTION_THRESHOLD }
