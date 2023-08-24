@@ -27,6 +27,9 @@ import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import FilterItems from '../FilterItems';
 import Tag from '../Tags/Tag';
 
+import tracks from 'containers/Admin/projects/project/analysis/tracks';
+import { trackEventByName } from 'utils/analytics';
+
 const StyledAnswerText = styled.div`
   white-space: pre-wrap;
   word-break: break-word;
@@ -64,10 +67,19 @@ const Question = ({ insight }: Props) => {
 
   const handleQuestionDelete = (id: string) => {
     if (window.confirm(formatMessage(messages.deleteQuestionConfirmation))) {
-      deleteQuestion({
-        analysisId,
-        id,
-      });
+      deleteQuestion(
+        {
+          analysisId,
+          id,
+        },
+        {
+          onSuccess: () => {
+            trackEventByName(tracks.questionDeleted.name, {
+              extra: { analysisId },
+            });
+          },
+        }
+      );
     }
   };
 

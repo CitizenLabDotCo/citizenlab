@@ -21,6 +21,9 @@ import useAddAnalysisBulkTagging from 'api/analysis_taggings/useAnalysisBulkTagg
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 import styled from 'styled-components';
 
+import tracks from 'containers/Admin/projects/project/analysis/tracks';
+import { trackEventByName } from 'utils/analytics';
+
 const StyledSpinner = styled(Spinner)`
   margin-right: 8px;
   width: 20px;
@@ -56,6 +59,9 @@ const TagActions = ({ tag }: { tag: ITagData }) => {
         },
         {
           onSuccess: () => {
+            trackEventByName(tracks.tagDeleted.name, {
+              extra: { analysisId },
+            });
             closeDropdown();
           },
         }
@@ -81,6 +87,9 @@ const TagActions = ({ tag }: { tag: ITagData }) => {
       },
       {
         onSuccess: () => {
+          trackEventByName(tracks.bulkTagAssignmentPerformed.name, {
+            extra: { analysisId },
+          });
           closeDropdown();
         },
       }

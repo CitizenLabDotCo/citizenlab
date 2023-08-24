@@ -34,6 +34,9 @@ import { useQueryClient } from '@tanstack/react-query';
 import inputsKeys from 'api/analysis_inputs/keys';
 import TagActions from './TagActions';
 
+import tracks from 'containers/Admin/projects/project/analysis/tracks';
+import { trackEventByName } from 'utils/analytics';
+
 const BlickingIcon = styled(Icon)`
   animation-name: blink-animation;
   animation-duration: 1.8s;
@@ -110,6 +113,9 @@ const Tags = () => {
       },
       {
         onSuccess: () => {
+          trackEventByName(tracks.manualTagCreated.name, {
+            extra: { analysisId, name },
+          });
           setName('');
         },
       }

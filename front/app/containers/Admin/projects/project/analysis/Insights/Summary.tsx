@@ -26,6 +26,9 @@ import Tag from '../Tags/Tag';
 import FilterItems from '../FilterItems';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
+import tracks from 'containers/Admin/projects/project/analysis/tracks';
+import { trackEventByName } from 'utils/analytics';
+
 const StyledSummaryText = styled.div`
   white-space: pre-wrap;
   word-break: break-word;
@@ -63,10 +66,19 @@ const Summary = ({ insight }: Props) => {
 
   const handleSummaryDelete = (id: string) => {
     if (window.confirm(formatMessage(messages.deleteSummaryConfirmation))) {
-      deleteSummary({
-        analysisId,
-        id,
-      });
+      deleteSummary(
+        {
+          analysisId,
+          id,
+        },
+        {
+          onSuccess: () => {
+            trackEventByName(tracks.summaryDeleted.name, {
+              extra: { analysisId },
+            });
+          },
+        }
+      );
     }
   };
 
