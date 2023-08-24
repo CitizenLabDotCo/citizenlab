@@ -46,7 +46,7 @@ namespace :cl2back do
   # This task will update ANY existing value for a specific locale, for all tenants.
   desc 'Update a specific custom field option title_multiloc, from ANY VALUE, for one specific locale, for all tenants'
   # Examples of usage:
-  # Dry run (no changes): rake cl2back:update_custom_field_option['unspecified','de-DE','Divers']
+  # Dry run (no changes): rake cl2back:update_custom_field_option_from_any_value['unspecified','de-DE','Divers']
   # Execute (updates records!):
   #  rake cl2back:update_custom_field_option_from_any_value['unspecified','de-DE','Divers','execute']
   task :update_custom_field_option_from_any_value, %i[option_key locale new_value execute] => [:environment] do |_t, args|

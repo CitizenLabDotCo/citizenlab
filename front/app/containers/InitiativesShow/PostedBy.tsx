@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
@@ -59,41 +59,44 @@ interface Props {
   anonymous?: boolean;
 }
 
-const PostedBy = memo<Props>(
-  ({ authorId, className, showAboutInitiatives, anonymous }) => {
-    if (authorId || anonymous) {
-      const authorName = (
-        <UserName
-          userId={authorId || null}
-          fontWeight={500}
-          isLinkToProfile={true}
-          hideLastName={true}
-          anonymous={anonymous}
-        />
-      );
-
-      return (
-        <Container id="e2e-initiative-posted-by" className={className || ''}>
-          <InitiativesIcon name="initiatives" />
-          <PostedByWrapper>
-            <PostedByText>
-              <FormattedMessage
-                {...messages.postedBy}
-                values={{ authorName }}
-              />
-            </PostedByText>
-            {showAboutInitiatives && (
-              <AboutInitiativesLink to="/pages/initiatives">
-                <FormattedMessage {...messages.learnMore} />
-              </AboutInitiativesLink>
-            )}
-          </PostedByWrapper>
-        </Container>
-      );
-    }
-
-    return null;
+const PostedBy = ({
+  authorId,
+  className,
+  showAboutInitiatives,
+  anonymous,
+}: Props) => {
+  if (authorId || anonymous) {
+    return (
+      <Container id="e2e-initiative-posted-by" className={className || ''}>
+        <InitiativesIcon name="initiatives" />
+        <PostedByWrapper>
+          <PostedByText>
+            <FormattedMessage
+              {...messages.postedBy}
+              values={{
+                authorName: (
+                  <UserName
+                    userId={authorId || null}
+                    fontWeight={500}
+                    isLinkToProfile={true}
+                    anonymous={anonymous}
+                    underline
+                  />
+                ),
+              }}
+            />
+          </PostedByText>
+          {showAboutInitiatives && (
+            <AboutInitiativesLink to="/pages/initiatives">
+              <FormattedMessage {...messages.learnMore} />
+            </AboutInitiativesLink>
+          )}
+        </PostedByWrapper>
+      </Container>
+    );
   }
-);
+
+  return null;
+};
 
 export default PostedBy;

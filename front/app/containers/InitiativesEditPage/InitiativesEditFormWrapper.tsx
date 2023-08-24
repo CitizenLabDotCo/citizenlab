@@ -32,6 +32,7 @@ import useUpdateInitiative from 'api/initiatives/useUpdateInitiative';
 import { IInitiativeAdd, IInitiativeData } from 'api/initiatives/types';
 import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
 import useTopics from 'api/topics/useTopics';
+import { MentionItem } from 'react-mentions';
 
 interface Props {
   locale: Locale;
@@ -66,6 +67,11 @@ const InitiativesEditFormWrapper = ({
     body_multiloc: initiative.attributes.body_multiloc,
     position: initiative.attributes.location_description,
     topic_ids: initiative.relationships.topics.data.map((topic) => topic.id),
+    cosponsor_ids: initiative.attributes.cosponsorships
+      ? initiative.attributes.cosponsorships.map(
+          (cosponsor) => cosponsor.user_id
+        )
+      : [],
   };
 
   const [formValues, setFormValues] = useState<SimpleFormValues>(initialValues);
@@ -120,6 +126,7 @@ const InitiativesEditFormWrapper = ({
     const changedKeys = Object.keys(initialValues).filter((key) => {
       return !isEqual(initialValues[key], formValues[key]);
     });
+
     return pick(formValues, changedKeys);
   };
 
@@ -152,8 +159,13 @@ const InitiativesEditFormWrapper = ({
     banner: UploadFile | undefined | null
   ) => {
     // build API readable object
-    const { title_multiloc, body_multiloc, topic_ids, position } =
-      changedValues;
+    const {
+      title_multiloc,
+      body_multiloc,
+      topic_ids,
+      position,
+      cosponsor_ids,
+    } = changedValues;
     const positionInfo = await parsePosition(position);
 
     // removes undefined values, not null values that are used to remove previously used values
@@ -163,6 +175,7 @@ const InitiativesEditFormWrapper = ({
         body_multiloc,
         topic_ids,
         ...positionInfo,
+        cosponsor_ids,
       },
       (entry) => entry === undefined
     );
@@ -365,6 +378,15 @@ const InitiativesEditFormWrapper = ({
     }));
   };
 
+  const onChangeCosponsors = (cosponsors: MentionItem[]) => {
+    const cosponsor_ids = cosponsors.map((cosponsor) => cosponsor.id);
+
+    setFormValues((formValues) => ({
+      ...formValues,
+      cosponsor_ids,
+    }));
+  };
+
   const onChangeBanner = (newValue: UploadFile | null) => {
     setBanner(newValue);
     setHasBannerChanged(true);
@@ -416,6 +438,7 @@ const InitiativesEditFormWrapper = ({
         onChangeBody={onChangeBody}
         onChangeTopics={onChangeTopics}
         onChangePosition={onChangePosition}
+        onChangeCosponsors={onChangeCosponsors}
         onChangeBanner={onChangeBanner}
         onChangeImage={onChangeImage}
         onAddFile={onAddFile}
@@ -426,6 +449,7 @@ const InitiativesEditFormWrapper = ({
         postAnonymously={postAnonymously}
         setPostAnonymously={setPostAnonymously}
         publishedAnonymously={initiative.attributes?.anonymous}
+        cosponsorships={initiative.attributes.cosponsorships}
       />
       <AnonymousParticipationConfirmationModal
         onConfirmAnonymousParticipation={() => {
