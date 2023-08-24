@@ -113,8 +113,10 @@ class PrintCustomFieldsService
   end
 
   def write_title(pdf, custom_field)
+    optional = I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.optional') }
+
     pdf.text(
-      "<b>#{custom_field.title_multiloc[locale]}</b>#{custom_field.required? ? "" : " (optional)"}",
+      "<b>#{custom_field.title_multiloc[locale]}</b>#{custom_field.required? ? "" : " (#{optional})"}",
       size: 20,
       inline_format: true
     )
@@ -140,7 +142,12 @@ class PrintCustomFieldsService
 
     pdf.move_down 5.mm
 
-    pdf.text "*Choose as many as you like", size: 12
+    pdf.text(
+      "*#{I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.this_answer') }}", 
+      size: 12
+    )
+
+    choose_as_many
   end
 
   def write_answer_visibility_disclaimer(pdf, custom_field)
@@ -148,7 +155,7 @@ class PrintCustomFieldsService
     return unless custom_field.answer_visible_to == "admins"
 
     pdf.text(
-      "*This answer will only be shared with moderators, and not to the public.",
+      "*#{I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.this_answer') }}",
       size: 12
     )
   end
