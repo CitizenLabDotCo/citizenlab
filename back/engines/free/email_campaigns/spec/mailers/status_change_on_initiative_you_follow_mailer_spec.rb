@@ -56,7 +56,7 @@ RSpec.describe EmailCampaigns::StatusChangeOnInitiativeYouFollowMailer do
     end
 
     it 'includes the unfollow url' do
-      expect(mail.body.encoded).to match(Frontend::UrlService.new.unfollow_url(recipient))
+      expect(mail.body.encoded).to match(Frontend::UrlService.new.unfollow_url(Follower.new(followable: initiative, user: recipient)))
     end
   end
 end

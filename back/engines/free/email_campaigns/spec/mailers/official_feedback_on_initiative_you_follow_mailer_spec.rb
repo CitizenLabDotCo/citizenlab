@@ -5,19 +5,16 @@ require 'rails_helper'
 RSpec.describe EmailCampaigns::OfficialFeedbackOnInitiativeYouFollowMailer do
   describe 'campaign_mail' do
     let(:recipient) { create(:user, locale: 'en') }
+    let(:initiative) { create(:initiative, title_multiloc: { 'en' => 'Initiative title' }) }
+    let(:feedback) { create(:official_feedback, body_multiloc: { 'en' => 'We appreciate your participation' }, post: initiative) }
     let(:campaign) { EmailCampaigns::Campaigns::OfficialFeedbackOnInitiativeYouFollow.create! }
+    let(:notification) { create(:official_feedback_on_initiative_you_follow, recipient: recipient, post: initiative, official_feedback: feedback) }
     let(:command) do
-      {
-        recipient: recipient,
-        event_payload: {
-          official_feedback_author_multiloc: { 'en' => 'Citizenlab person' },
-          official_feedback_body_multiloc: { 'en' => 'Nice idea, bruh' },
-          official_feedback_url: 'https://demo.stg.citizenlab.co',
-          post_published_at: Time.zone.today.prev_week.iso8601,
-          post_title_multiloc: { 'en' => 'Initiative title' },
-          post_author_name: 'Chuck Norris'
-        }
-      }
+      activity = create(:activity, item: notification, action: 'created')
+      create(:official_feedback_on_initiative_you_follow_campaign).generate_commands(
+        activity: activity,
+        recipient: recipient
+      ).first.merge({ recipient: recipient })
     end
 
     let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
@@ -45,7 +42,7 @@ RSpec.describe EmailCampaigns::OfficialFeedbackOnInitiativeYouFollowMailer do
     end
 
     it 'includes the unfollow url' do
-      expect(mail.body.encoded).to match(Frontend::UrlService.new.unfollow_url(recipient))
+      expect(mail.body.encoded).to match(Frontend::UrlService.new.unfollow_url(Follower.new(followable: notification.post, user: recipient)))
     end
   end
 end

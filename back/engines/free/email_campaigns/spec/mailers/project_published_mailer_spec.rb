@@ -42,7 +42,7 @@ RSpec.describe EmailCampaigns::ProjectPublishedMailer do
     end
 
     it 'includes the unfollow url' do
-      expect(mail.body.encoded).to match(Frontend::UrlService.new.unfollow_url(recipient))
+      expect(mail.body.encoded).to match(Frontend::UrlService.new.unfollow_url(Follower.new(user: recipient)))
     end
   end
 end

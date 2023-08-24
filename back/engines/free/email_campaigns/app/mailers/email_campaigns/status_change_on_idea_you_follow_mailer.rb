@@ -4,12 +4,6 @@ module EmailCampaigns
   class StatusChangeOnIdeaYouFollowMailer < ApplicationMailer
     private
 
-    helper_method :unfollow_url
-
-    def unfollow_url
-      Frontend::UrlService.new.unfollow_url(Follower.new(followable: idea, user: recipient))
-    end
-
     def subject
       format_message('subject')
     end

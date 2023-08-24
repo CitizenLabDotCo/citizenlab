@@ -127,12 +127,9 @@ module Frontend
       end
     end
 
-    def unfollow_url(follower, configuration = app_config_instance)
-      url = model_to_url(follower.followable, locale: follower.user.locale)
-
-      # A future improvement would be to pass the follower as argument
-      # and return e.g. the project page for a project follower.
-      url || "#{home_url(locale: follower.user.locale)}/profile/#{follower.user.slug}"
+    def unfollow_url(follower)
+      url = model_to_url(follower.followable, locale: follower.user&.locale)
+      url || "#{home_url(locale: follower.user.locale)}/profile/#{follower.user.slug}/following"
     end
 
     def terms_conditions_url(configuration = app_config_instance)

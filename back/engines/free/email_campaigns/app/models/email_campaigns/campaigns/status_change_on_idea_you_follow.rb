@@ -83,7 +83,8 @@ module EmailCampaigns
           idea_status_id: status.id,
           idea_status_title_multiloc: status.title_multiloc,
           idea_status_code: status.code,
-          idea_status_color: status.color
+          idea_status_color: status.color,
+          unfollow_url: Frontend::UrlService.new.unfollow_url(Follower.new(followable: idea, user: recipient))
         }
       }]
     end
