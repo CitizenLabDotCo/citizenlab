@@ -1,5 +1,4 @@
 import React from 'react';
-import { isString } from 'lodash-es';
 
 // components
 import Card from 'components/UI/Card';
@@ -94,7 +93,7 @@ const InitiativeCard = ({
       : 'not-reacted',
     commentsCount > 0 ? 'e2e-has-comments' : null,
   ]
-    .filter((item) => isString(item) && item !== '')
+    .filter((item) => typeof item === 'string' && item !== '')
     .join(' ');
 
   return (
