@@ -132,9 +132,13 @@ class PrintCustomFieldsService
       pdf.stroke_color '000000'
       pdf.stroke_circle [3.mm, pdf.cursor], 5
 
-      pdf.bounding_box([7.mm, pdf.cursor + 4], width: 180.mm, height: 10.mm) do
+      pdf.move_up 1.2.mm
+
+      pdf.indent(7.mm) do
         pdf.text option.title_multiloc[locale]
       end
+
+      pdf.move_down 5.mm
     end
   end
 
@@ -145,9 +149,13 @@ class PrintCustomFieldsService
         pdf.rectangle([1.5.mm, pdf.cursor + 1.5.mm], 10, 10)
       end
 
-      pdf.bounding_box([7.mm, pdf.cursor + 4], width: 180.mm, height: 10.mm) do
+      pdf.move_up 1.2.mm
+
+      pdf.indent(7.mm) do
         pdf.text option.title_multiloc[locale]
       end
+
+      pdf.move_down 5.mm
     end
   end
 
