@@ -3,12 +3,13 @@ require 'prawn'
 require 'prawn/measurement_extensions'
 
 class PrintCustomFieldsService
-  attr_reader :custom_fields, :params, :previous_cursor
+  attr_reader :participation_context, :custom_fields, :params, :previous_cursor
 
   QUESTION_TYPES = %w[select multiselect text text_multiloc multiline_text html_multiloc linear_scale]
   FORBIDDEN_HTML_TAGS_REGEX = /<\/?(div|span|ul|ol|li|em|img|a){1}[^>]*\/?>/
 
-  def initialize(custom_fields, params)
+  def initialize(participation_context, custom_fields, params)
+    @participation_context = participation_context
     @custom_fields = custom_fields
     @params = params
     @previous_cursor = nil
@@ -38,7 +39,6 @@ class PrintCustomFieldsService
       # Since the pdf is initialized with an empty page,
       # we can skip this.
       next if i == 0 && field_type == 'page'
-
 
       if field_type == 'page' then
         pdf.start_new_page(size: 'A4')
@@ -78,6 +78,13 @@ class PrintCustomFieldsService
 
       # Write description if it exists
       write_description(pdf, custom_field)
+
+      # Write '*Choose as many as you like' if necessary
+      # write_choose_as_many_as_you_like(pdf, custom_field)
+
+      # Write '*This answer will only be shared with moderators, and not to the public.'
+      # if necessary
+      write_answer_visibility_disclaimer(pdf, custom_field)
 
       pdf.move_down 7.mm
 
@@ -126,6 +133,24 @@ class PrintCustomFieldsService
 
       pdf.move_down 2.mm
     end
+  end
+
+  def write_choose_as_many_as_you_like(pdf, custom_field)
+    return unless custom_field.input_type == "multiselect"
+
+    pdf.move_down 5.mm
+
+    pdf.text "*Choose as many as you like", size: 12
+  end
+
+  def write_answer_visibility_disclaimer(pdf, custom_field)
+    return unless participation_context.participation_method == "ideation"
+    return unless custom_field.answer_visible_to == "admins"
+
+    pdf.text(
+      "*This answer will only be shared with moderators, and not to the public.",
+      size: 12
+    )
   end
 
   def draw_single_choice(pdf, custom_field)

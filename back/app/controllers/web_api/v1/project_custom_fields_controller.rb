@@ -15,6 +15,7 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
 
   def to_pdf
     pdf = PrintCustomFieldsService.new(
+      participation_context,
       custom_fields,
       params
     ).create_pdf
