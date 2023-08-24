@@ -8,7 +8,6 @@ module EmailCampaigns
       project = Project.find_by(internal_role: 'open_idea_box')
       activity = Activity.new(item: project, action: 'published')
 
-      byebug
       campaign = EmailCampaigns::Campaigns::ProjectPublished.first
       command = campaign.generate_commands(
         activity: activity,
