@@ -15,6 +15,10 @@ sr-Latn:
     rejected: odbijeno
     rejected_description: Ova ideja je odbijena
   initiative_statuses:
+    review_pending: review pending
+    review_pending_description: review pending
+    changes_requested: changes requested
+    changes_requested_description: changes requested
     proposed: predloženo
     proposed_description: predloženo
     expired: isteklo
