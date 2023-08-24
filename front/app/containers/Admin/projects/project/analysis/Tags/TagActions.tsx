@@ -27,7 +27,7 @@ const StyledSpinner = styled(Spinner)`
 `;
 
 const TagActions = ({ tag }: { tag: ITagData }) => {
-  const [renameTagModalOpenedId, setRenameTagModalOpenedId] = useState('');
+  const [renameModalOpenedTagId, setRenameModalOpenedTagId] = useState('');
   const [isDropdownOpened, setDropdownOpened] = useState(false);
 
   const { mutate: deleteTag, isLoading: deleteIsLoading } =
@@ -64,12 +64,12 @@ const TagActions = ({ tag }: { tag: ITagData }) => {
   };
 
   const openTagRenameModal = (id: string) => {
-    setRenameTagModalOpenedId(id);
+    setRenameModalOpenedTagId(id);
     closeDropdown();
   };
 
   const closeTagRenameModal = () => {
-    setRenameTagModalOpenedId('');
+    setRenameModalOpenedTagId('');
   };
 
   const createAnalysisBulkTaggings = () => {
@@ -156,7 +156,7 @@ const TagActions = ({ tag }: { tag: ITagData }) => {
         }
       />
       <Modal
-        opened={renameTagModalOpenedId === tag.id}
+        opened={renameModalOpenedTagId === tag.id}
         close={closeTagRenameModal}
       >
         <RenameTagModal
