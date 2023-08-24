@@ -221,6 +221,9 @@ sr-Cyrl:
     pdf_export:
       full_name: 'Пуно име'
       email_address: 'Адреса Е-поште'
+      optional: 'опционо'
+      choose_as_many: 'Изаберите колико желите'
+      this_answer: 'Овај одговор ће бити подељен само модераторима, а не јавности.'
   project_copy:
     title_suffix: 'Копирај'
   confirmations_mailer:
