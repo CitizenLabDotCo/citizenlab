@@ -49,6 +49,8 @@ class InitiativePolicy < ApplicationPolicy
   end
 
   def update?
+    return true if active? && can_moderate?
+
     create? && !record.editing_locked
   end
 

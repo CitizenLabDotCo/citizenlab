@@ -7,14 +7,12 @@ import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
 import useAddAnalysisTag from 'api/analysis_tags/useAddAnalysisTag';
-import useDeleteAnalysisTag from 'api/analysis_tags/useDeleteAnalysisTag';
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 
 import {
   Box,
   Input,
   Button,
-  IconButton,
   colors,
   stylingConsts,
   Text,
@@ -25,7 +23,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 import Modal from 'components/UI/Modal';
-import RenameTagModal from './RenameTagModal';
 import Tag from './Tag';
 import AutotaggingModal from './AutotaggingModal';
 import TagCount from './TagCount';
@@ -35,6 +32,7 @@ import messages from '../messages';
 
 import { useQueryClient } from '@tanstack/react-query';
 import inputsKeys from 'api/analysis_inputs/keys';
+import TagActions from './TagActions';
 
 const BlickingIcon = styled(Icon)`
   animation-name: blink-animation;
@@ -71,7 +69,6 @@ const TagContainer = styled(ListItem)`
 
 const Tags = () => {
   const [name, setName] = useState('');
-  const [renameTagModalOpenedId, setRenameTagModalOpenedId] = useState('');
   const [autotaggingModalIsOpened, setAutotaggingModalIsOpened] =
     useState(false);
 
@@ -87,7 +84,6 @@ const Tags = () => {
     filters: omit(filters, 'tag_ids'),
   });
   const { mutate: addTag, isLoading, error } = useAddAnalysisTag();
-  const { mutate: deleteTag } = useDeleteAnalysisTag();
 
   if (isLoadingTags) {
     return (
@@ -118,19 +114,6 @@ const Tags = () => {
         },
       }
     );
-  };
-
-  const handleTagDelete = (id: string) => {
-    if (window.confirm(formatMessage(messages.deleteTagConfirmation))) {
-      deleteTag({
-        analysisId,
-        id,
-      });
-    }
-  };
-
-  const closeTagRenameModal = () => {
-    setRenameTagModalOpenedId('');
   };
 
   const selectedTags = filters.tag_ids;
@@ -171,6 +154,7 @@ const Tags = () => {
             />
           )}
         </Button>
+
         <Box display="flex" alignItems="center" mb="8px" as="form">
           <Input
             type="text"
@@ -260,24 +244,7 @@ const Tags = () => {
                   tagType={tag.attributes.tag_type}
                 />
                 <Box display="flex">
-                  <IconButton
-                    iconName="edit"
-                    onClick={() => setRenameTagModalOpenedId(tag.id)}
-                    iconColor={colors.grey700}
-                    iconColorOnHover={colors.grey700}
-                    a11y_buttonActionMessage={formatMessage(messages.editTag)}
-                    iconWidth="20px"
-                    iconHeight="20px"
-                  />
-                  <IconButton
-                    iconName="delete"
-                    onClick={() => handleTagDelete(tag.id)}
-                    iconColor={colors.red600}
-                    iconColorOnHover={colors.red600}
-                    a11y_buttonActionMessage={formatMessage(messages.deleteTag)}
-                    iconWidth="20px"
-                    iconHeight="20px"
-                  />
+                  <TagActions tag={tag} />
                 </Box>
               </Box>
               <TagCount
@@ -286,17 +253,6 @@ const Tags = () => {
                 filteredCount={tag.attributes.filtered_input_count}
               />
             </Box>
-            <Modal
-              opened={renameTagModalOpenedId === tag.id}
-              close={closeTagRenameModal}
-            >
-              <RenameTagModal
-                closeRenameModal={closeTagRenameModal}
-                originalTagName={tag.attributes.name}
-                id={tag.id}
-                analysisId={analysisId}
-              />
-            </Modal>
           </TagContainer>
         ))}
       </Box>
