@@ -796,7 +796,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.ideaImporter": "مستورد الفكرة",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPdf": "استيراد قوات الدفاع الشعبي",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedIdeas": "أفكار مستوردة",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet": "لا توجد أفكار للمراجعة بعد. انقر فوق \"{importPdf}\" لاستيراد ملف PDF يحتوي على نماذج الأفكار الممسوحة ضوئيًا.",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet2": "لا شيء لمراجعته بعد. انقر فوق \"{importPdf}\" لاستيراد ملف PDF يحتوي على نماذج الإدخال الممسوحة ضوئيًا.",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "لا يحتوي هذا المشروع على أي مراحل يمكن أن تحتوي على أفكار.",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAnotherPhase": "الرجاء تحديد مرحلة أخرى.",
   "app.containers.Admin.projects.project.offlineInputs.approve": "يعتمد",
