@@ -26,7 +26,7 @@
 #
 module Analysis
   class AutoTaggingTask < BackgroundTask
-    AUTO_TAGGING_METHODS = %w[language platform_topic nlp_topic sentiment controversial label_classification]
+    AUTO_TAGGING_METHODS = %w[language platform_topic nlp_topic sentiment controversial label_classification few_shot_classification]
 
     validates :auto_tagging_method, inclusion: { in: AUTO_TAGGING_METHODS }
     validates :tags_ids, presence: true, if: :method_with_tags_ids?
@@ -40,7 +40,7 @@ module Analysis
     private
 
     def method_with_tags_ids?
-      %w[label_classification].include?(auto_tagging_method)
+      %w[label_classification few_shot_classification].include?(auto_tagging_method)
     end
 
     def validate_tags_ids
