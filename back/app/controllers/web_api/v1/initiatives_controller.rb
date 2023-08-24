@@ -3,7 +3,7 @@
 class WebApi::V1::InitiativesController < ApplicationController
   include BlockingProfanity
 
-  before_action :set_initiative, only: %i[show update destroy allowed_transitions]
+  before_action :set_initiative, only: %i[show update destroy allowed_transitions accept_cosponsorship_invite]
   skip_before_action :authenticate_user
   skip_after_action :verify_authorized, only: %i[index_xlsx index_initiative_markers filter_counts]
 
@@ -37,7 +37,7 @@ class WebApi::V1::InitiativesController < ApplicationController
       params,
       current_user: current_user,
       scope: policy_scope(Initiative).where(publication_status: 'published'),
-      includes: %i[author initiative_status topics areas]
+      includes: %i[author cosponsors initiative_status topics areas]
     ).find_records
     initiatives = SortByParamsService.new.sort_initiatives(initiatives, params, current_user)
 
@@ -84,7 +84,7 @@ class WebApi::V1::InitiativesController < ApplicationController
     render json: WebApi::V1::InitiativeSerializer.new(
       @initiative,
       params: jsonapi_serializer_params,
-      include: %i[author topics areas user_reaction initiative_images]
+      include: %i[author cosponsors topics areas user_reaction initiative_images]
     ).serializable_hash
   end
 
@@ -117,7 +117,7 @@ class WebApi::V1::InitiativesController < ApplicationController
         render json: WebApi::V1::InitiativeSerializer.new(
           @initiative.reload,
           params: jsonapi_serializer_params,
-          include: %i[author topics areas user_reaction initiative_images]
+          include: %i[author cosponsors topics areas user_reaction initiative_images]
         ).serializable_hash, status: :created
       else
         render json: { errors: @initiative.errors.details }, status: :unprocessable_entity
@@ -128,6 +128,7 @@ class WebApi::V1::InitiativesController < ApplicationController
   def update
     service = SideFxInitiativeService.new
 
+    cosponsor_ids = @initiative.cosponsors.map(&:id)
     initiative_params = permitted_attributes(@initiative)
     @initiative.assign_attributes(initiative_params)
     remove_image_if_requested!(@initiative, initiative_params, :header_bg)
@@ -147,7 +148,7 @@ class WebApi::V1::InitiativesController < ApplicationController
     ActiveRecord::Base.transaction do
       saved = @initiative.save save_options
       if saved
-        service.after_update(@initiative, current_user)
+        service.after_update(@initiative, current_user, cosponsor_ids)
       end
     end
 
@@ -159,7 +160,7 @@ class WebApi::V1::InitiativesController < ApplicationController
       render json: WebApi::V1::InitiativeSerializer.new(
         @initiative.reload,
         params: jsonapi_serializer_params,
-        include: %i[author topics areas user_reaction initiative_images]
+        include: %i[author cosponsors topics areas user_reaction initiative_images]
       ).serializable_hash, status: :ok
     else
       render json: { errors: @initiative.errors.details }, status: :unprocessable_entity
@@ -175,6 +176,22 @@ class WebApi::V1::InitiativesController < ApplicationController
       head :ok
     else
       head :internal_server_error
+    end
+  end
+
+  def accept_cosponsorship_invite
+    @cosponsors_initiative = @initiative.cosponsors_initiatives.find_by(user_id: current_user.id)
+
+    if @cosponsors_initiative.update(status: 'accepted')
+      SideFxInitiativeService.new.after_accept_cosponsorship_invite(@cosponsors_initiative, current_user)
+
+      render json: WebApi::V1::InitiativeSerializer.new(
+        @initiative.reload,
+        params: jsonapi_serializer_params,
+        include: %i[author cosponsors topics areas user_reaction initiative_images]
+      ).serializable_hash, status: :ok
+    else
+      render json: { errors: @initiative.errors.details }, status: :unprocessable_entity
     end
   end
 
@@ -204,9 +221,9 @@ class WebApi::V1::InitiativesController < ApplicationController
           [follower.followable_id, follower.followable_type]
         end
       user_followers ||= {}
-      { params: default_params.merge(vbii: reactions, user_followers: user_followers), include: %i[author user_reaction initiative_images assignee] }
+      { params: default_params.merge(vbii: reactions, user_followers: user_followers), include: %i[author cosponsors user_reaction initiative_images assignee] }
     else
-      { params: default_params, include: %i[author initiative_images] }
+      { params: default_params, include: %i[author cosponsors initiative_images] }
     end
   end
 

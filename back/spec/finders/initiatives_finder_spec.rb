@@ -136,7 +136,7 @@ describe InitiativesFinder do
   end
 
   describe '#publication_status_condition' do
-    let(:publication_status) { :closed }
+    let(:publication_status) { :published }
 
     before do
       create(:initiative, publication_status: publication_status)
