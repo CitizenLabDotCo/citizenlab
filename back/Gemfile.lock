@@ -757,13 +757,13 @@ GEM
     nio4r (2.5.9)
     nlpcloud (1.0.43)
       rest-client (~> 2.1)
-    nokogiri (1.14.5-aarch64-linux)
+    nokogiri (1.15.4-aarch64-linux)
       racc (~> 1.4)
-    nokogiri (1.14.5-arm64-darwin)
+    nokogiri (1.15.4-arm64-darwin)
       racc (~> 1.4)
-    nokogiri (1.14.5-x86_64-darwin)
+    nokogiri (1.15.4-x86_64-darwin)
       racc (~> 1.4)
-    nokogiri (1.14.5-x86_64-linux)
+    nokogiri (1.15.4-x86_64-linux)
       racc (~> 1.4)
     nori (2.6.0)
     oauth2 (1.4.9)
@@ -915,7 +915,6 @@ GEM
     rb-fsevent (0.11.2)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
-    rb_sys (0.9.81)
     rbtree (0.4.6)
     redcarpet (3.6.0)
     regexp_parser (2.8.0)
@@ -1085,8 +1084,10 @@ GEM
     thor (1.2.2)
     thread (0.2.2)
     thread_safe (0.3.6)
-    tiktoken_ruby (0.0.5)
-      rb_sys (~> 0.9.68)
+    tiktoken_ruby (0.0.5-aarch64-linux)
+    tiktoken_ruby (0.0.5-arm64-darwin)
+    tiktoken_ruby (0.0.5-x86_64-darwin)
+    tiktoken_ruby (0.0.5-x86_64-linux)
     tilt (2.1.0)
     timeout (0.4.0)
     tomlrb (2.0.3)
@@ -1218,7 +1219,7 @@ DEPENDENCIES
   moderation!
   multi_tenancy!
   nlp!
-  nokogiri (~> 1.14.3)
+  nokogiri (~> 1.15.4)
   okcomputer
   omniauth (~> 1.9.1)
   omniauth-facebook
