@@ -171,6 +171,13 @@ export const missingDataFlow = (
         );
       },
       SKIP: async () => {
+        const { requirements } = await getRequirements();
+
+        if (showOnboarding(requirements.onboarding)) {
+          setCurrentStep('missing-data:onboarding');
+          return;
+        }
+
         setCurrentStep('success');
       },
     },

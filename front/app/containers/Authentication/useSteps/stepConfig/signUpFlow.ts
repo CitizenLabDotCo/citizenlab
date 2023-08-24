@@ -221,6 +221,11 @@ export const signUpFlow = (
       SKIP: async () => {
         const { requirements } = await getRequirements();
 
+        if (showOnboarding(requirements.onboarding)) {
+          setCurrentStep('sign-up:onboarding');
+          return;
+        }
+
         if (requirements.special.group_membership === 'require') {
           setCurrentStep('closed');
           return;
