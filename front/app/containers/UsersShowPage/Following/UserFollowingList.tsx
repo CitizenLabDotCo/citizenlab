@@ -14,17 +14,14 @@ import ProjectCard from 'components/ProjectCard';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import ProjectFolderCard from 'components/ProjectAndFolderCards/components/ProjectFolderCard';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useAuthUser from 'api/me/useAuthUser';
 import Button from 'components/UI/Button';
 import { useTheme } from 'styled-components';
 
 interface Props {
   value: FollowableObject;
-  userId: string;
 }
 
-const UserFollowingList = ({ userId, value }: Props) => {
+const UserFollowingList = ({ value }: Props) => {
   const {
     data: followers,
     fetchNextPage,
@@ -35,16 +32,10 @@ const UserFollowingList = ({ userId, value }: Props) => {
     followableObject: value,
   });
   const isSmallerThanPhone = useBreakpoint('phone');
-  const isFollowingEnabled = useFeatureFlag({
-    name: 'follow',
-  });
+
   const theme = useTheme();
-  const { data: authUser } = useAuthUser();
-  const showFollowing = isFollowingEnabled && authUser?.data?.id === userId;
 
   const flatFollowers = followers?.pages.flatMap((page) => page.data) || [];
-
-  if (!showFollowing) return null;
 
   return (
     <Box display="flex" w="100%" flexDirection="column">

@@ -40,9 +40,6 @@ const Submissions = () => {
     }),
     [user, sortParam, searchParam]
   );
-  console.log('ideaQueryParameters', ideaQueryParameters);
-  console.log('sortParam', sortParam);
-  console.log('searchParam', searchParam);
 
   return (
     <Box display="flex" w="100%" flexDirection="column">

@@ -12,6 +12,7 @@ import tracks from 'components/FollowUnfollow/tracks';
 import { trackEventByName } from 'utils/analytics';
 import { useParams } from 'react-router-dom';
 import useUserBySlug from 'api/users/useUserBySlug';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 type FollowableValue = FollowableObject | 'Topics' | 'Areas';
 
@@ -24,6 +25,9 @@ const Following = () => {
   };
   const { data: authUser } = useAuthUser();
   const isSmallerThanPhone = useBreakpoint('phone');
+  const isFollowingEnabled = useFeatureFlag({
+    name: 'follow',
+  });
   const tabData: TabData<false> = {
     Project: {
       label: messages.projects,
@@ -45,7 +49,8 @@ const Following = () => {
     },
   };
 
-  if (!user) return null;
+  if (!user || (isFollowingEnabled && authUser?.data?.id !== user.data.id))
+    return null;
 
   const getScreenReaderTextForTab = (tab: string) => (
     <FormattedMessage {...tabData[tab].label} />
@@ -90,7 +95,7 @@ const Following = () => {
       {currentTab === 'Topics' && <Topics />}
       {currentTab === 'Areas' && <Areas />}
       {currentTab !== 'Topics' && currentTab !== 'Areas' && (
-        <UserFollowingList value={currentTab} userId={user.data.id} />
+        <UserFollowingList value={currentTab} />
       )}
     </Box>
   );
