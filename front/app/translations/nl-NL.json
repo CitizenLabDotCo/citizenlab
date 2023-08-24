@@ -835,6 +835,7 @@
   "app.containers.EventsShow.attending": "bijwonen",
   "app.containers.EventsShow.emailSharingBody": "Woon dit evenement bij: {eventTitle} in {eventLocation}",
   "app.containers.EventsShow.eventFrom": "Evenement van \"{eventTitle}\"",
+  "app.containers.EventsShow.goBack": "Ga terug",
   "app.containers.EventsShow.goToProject": "Ga naar het project",
   "app.containers.EventsShow.socialMediaSharingMessage": "Woon dit evenement bij: {eventTitle}",
   "app.containers.EventsShow.xParticipants": "{count, plural, no {# deelnemers} one {# deelnemer} other {# deelnemers}}",
