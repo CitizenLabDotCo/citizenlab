@@ -796,7 +796,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.ideaImporter": "Iddi Importer",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPdf": "Import PDF",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedIdeas": "Importéiert Iddien",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet": "Et gi keng Iddien nach ze iwwerpréiwen. Klickt op \"{importPdf}\" fir eng PDF Datei mat gescannten Iddi Formen z'importéieren.",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet2": "Näischt nach ze iwwerpréiwen. Klickt op \"{importPdf}\" fir eng PDF Datei mat gescannten Input Formen z'importéieren.",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "Dëse Projet enthält keng Phasen déi Iddien enthalen kënnen.",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAnotherPhase": "Wielt w.e.g. eng aner Phase.",
   "app.containers.Admin.projects.project.offlineInputs.approve": "Zoustëmmen",
