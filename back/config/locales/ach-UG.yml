@@ -15,6 +15,10 @@ ach:
     rejected: crwdns883307:0crwdne883307:0
     rejected_description: crwdns883309:0crwdne883309:0
   initiative_statuses:
+    review_pending: crwdns933607:0crwdne933607:0
+    review_pending_description: crwdns933609:0crwdne933609:0
+    changes_requested: crwdns933611:0crwdne933611:0
+    changes_requested_description: crwdns933613:0crwdne933613:0
     proposed: crwdns883311:0crwdne883311:0
     proposed_description: crwdns883313:0crwdne883313:0
     expired: crwdns883315:0crwdne883315:0
