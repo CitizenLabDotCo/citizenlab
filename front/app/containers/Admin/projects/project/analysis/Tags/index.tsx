@@ -118,7 +118,12 @@ const Tags = () => {
 
   const selectedTags = filters.tag_ids;
 
-  const toggleТаgClick = (id: string) => {
+  const toggleTagContainerClick = (id: string) => {
+    updateSearchParams({ tag_ids: [id] });
+    queryClient.invalidateQueries(inputsKeys.lists());
+  };
+
+  const toggleТаgCheckboxClick = (id: string) => {
     const nonNullSelectedTags = selectedTags?.filter((tagId) => tagId !== null);
     if (!selectedTags?.includes(id)) {
       updateSearchParams({ tag_ids: [...(nonNullSelectedTags || []), id] });
@@ -129,9 +134,6 @@ const Tags = () => {
     }
     queryClient.invalidateQueries(inputsKeys.lists());
   };
-
-  const tagsAreSelected =
-    selectedTags && selectedTags?.length > 0 && selectedTags[0] !== null;
 
   return (
     <Box>
@@ -211,29 +213,32 @@ const Tags = () => {
           <TagContainer
             key={tag.id}
             tabIndex={0}
-            onClick={(e) => {
-              e.stopPropagation();
-              toggleТаgClick(tag.id);
+            onClick={() => {
+              toggleTagContainerClick(tag.id);
             }}
             className={selectedTags?.includes(tag.id) ? 'selected' : ''}
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
-                toggleТаgClick(tag.id);
+                toggleTagContainerClick(tag.id);
               }
             }}
           >
-            {tagsAreSelected && (
-              <Box position="absolute" top="20px">
-                <Checkbox
-                  checked={!!selectedTags?.includes(tag.id)}
-                  onChange={() => {
-                    toggleТаgClick(tag.id);
-                  }}
-                  size="20px"
-                />
-              </Box>
-            )}
-            <Box ml={tagsAreSelected ? '28px' : '0px'}>
+            <Box
+              position="absolute"
+              top="20px"
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            >
+              <Checkbox
+                checked={!!selectedTags?.includes(tag.id)}
+                onChange={() => {
+                  toggleТаgCheckboxClick(tag.id);
+                }}
+                size="20px"
+              />
+            </Box>
+            <Box ml={'28px'}>
               <Box
                 display="flex"
                 alignItems="center"
