@@ -55,7 +55,7 @@ const InformationColumnDesktop = ({ event, className }: Props) => {
               <EventDateStylized event={event} />
               <>
                 {!isPastEvent && (
-                  <Box mt="12px">
+                  <Box my="12px">
                     <EventAttendanceButton event={event} />
                   </Box>
                 )}

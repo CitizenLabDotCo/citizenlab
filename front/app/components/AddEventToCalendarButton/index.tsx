@@ -3,26 +3,26 @@ import React from 'react';
 // components
 import { Box, Text, Button, Error } from '@citizenlab/cl2-component-library';
 
-// api
-import { fetchEventICS } from 'api/events/useEventICS';
-
 // intl
 import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 
-export const AddEventToCalendarButton = (eventId) => {
+// util
+import { requestBlob } from 'utils/request';
+import { API_PATH } from 'containers/App/constants';
+import saveAs from 'file-saver';
+
+export const AddEventToCalendarButton = ({ eventId }: { eventId: string }) => {
   const { formatMessage } = useIntl();
   let isError = false;
 
   const handleICSDownload = async () => {
     try {
-      const icsBlob = await fetchEventICS(eventId);
-      const icsFileData = new Blob([icsBlob.toString()], {
-        type: 'text/calendar;charset=utf-8',
-      });
-      // Open/Save link
-      window.open(encodeURI(`data:text/calendar;charset=utf8,${icsFileData}`));
-      isError = false;
+      const blob = await requestBlob(
+        `${API_PATH}/events/${eventId}.ics`,
+        'text/calendar'
+      );
+      saveAs(blob, `${eventId}.ics`);
     } catch (e) {
       isError = true;
     }
