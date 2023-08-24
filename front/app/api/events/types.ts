@@ -56,6 +56,18 @@ export interface IEvent {
   data: IEventData;
 }
 
+export interface IICSFile {
+  data: IICSData;
+}
+
+export interface IICSData {
+  id: string;
+  type: string;
+  attributes: {
+    ics: string;
+  };
+}
+
 export interface IEvents {
   data: IEventData[];
   links: ILinks;
