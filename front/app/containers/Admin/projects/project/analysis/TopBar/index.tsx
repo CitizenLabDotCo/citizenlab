@@ -25,6 +25,14 @@ import FilterItems from '../FilterItems';
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import ClickOutside from 'utils/containers/clickOutside';
+import styled from 'styled-components';
+
+const TruncatedTitle = styled(Title)`
+  white-space: nowrap;
+  max-width: 250px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
 
 const TopBar = () => {
   const [urlParams] = useSearchParams();
@@ -93,9 +101,9 @@ const TopBar = () => {
         px="24px"
       >
         <GoBackButton onClick={goBack} />
-        <Title variant="h4" m="0px">
+        <TruncatedTitle variant="h4" m="0px">
           {localize(projectTitle)}
-        </Title>
+        </TruncatedTitle>
         <Button
           buttonStyle="secondary"
           icon="filter"
