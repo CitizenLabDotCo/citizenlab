@@ -796,7 +796,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.ideaImporter": "Importer pomysłów",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPdf": "Importuj PDF",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedIdeas": "Importowane pomysły",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet": "Nie ma jeszcze pomysłów do sprawdzenia. Kliknij \"{importPdf}\", aby zaimportować plik PDF zawierający zeskanowane formularze pomysłów.",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet2": "Nie ma jeszcze nic do sprawdzenia. Kliknij \"{importPdf}\", aby zaimportować plik PDF zawierający zeskanowane formularze wejściowe.",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "Ten projekt nie zawiera żadnych faz, które mogą zawierać pomysły.",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAnotherPhase": "Wybierz inną fazę.",
   "app.containers.Admin.projects.project.offlineInputs.approve": "Zatwierdź",
