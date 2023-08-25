@@ -10,8 +10,9 @@ import {
   colors,
   Spinner,
   IconTooltip,
-  Select,
   Icon,
+  Label,
+  Radio,
 } from '@citizenlab/cl2-component-library';
 import Tag from '../Tag';
 import { AutoTaggingMethod } from 'api/analysis_background_tasks/types';
@@ -19,7 +20,7 @@ import FilterItems from '../../FilterItems';
 import { IInputsFilterParams } from 'api/analysis_inputs/types';
 import { isEmpty } from 'lodash-es';
 
-const AutoTagOptionContainer = styled.div<{ disabled: boolean }>`
+const AutoTagMethodContainer = styled.div<{ disabled: boolean }>`
   background-color: ${colors.grey100};
   border-radius: 3px;
   padding: 16px;
@@ -35,6 +36,25 @@ const AutoTagOptionContainer = styled.div<{ disabled: boolean }>`
       }`}
 `;
 
+const AutoTagTargetContainer = styled.div`
+  flex: 1;
+  background-color: ${colors.grey100};
+  border-radius: 3px;
+  padding: 16px;
+  cursor: pointer;
+  &:hover {
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+      rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+  }
+  &.selected {
+    outline: 1px solid ${colors.grey400};
+  }
+  &.disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    box-shadow: none;
+  }
+`;
 const AutoTagOption = ({
   children,
   tagType,
@@ -53,7 +73,7 @@ const AutoTagOption = ({
   tooltip?: string;
 }) => {
   return (
-    <AutoTagOptionContainer onClick={() => onSelect()} disabled={disabled}>
+    <AutoTagMethodContainer onClick={() => onSelect()} disabled={disabled}>
       <Box
         display="flex"
         justifyContent="flex-start"
@@ -71,7 +91,7 @@ const AutoTagOption = ({
       <Text mt="12px" mb="0     ">
         {children}
       </Text>
-    </AutoTagOptionContainer>
+    </AutoTagMethodContainer>
   );
 };
 
@@ -101,28 +121,53 @@ const Step1 = ({
         Auto-tags are automatically derived by the computer. You can change or
         remove them at all times.
       </Text>
+
       <Title variant="h4">What inputs do you want to tag?</Title>
-      <Box>
-        <Select
-          id="auto_tagging_target"
-          options={[
-            { label: 'All inputs', value: 'all' },
-            {
-              label: 'Currently selected inputs',
-              value: 'filters',
-              disabled: isEmpty(filters),
-            },
-          ]}
-          onChange={(option) => onChangeAutoTaggingTarget(option.value)}
-          value={autoTaggingTarget}
-        />
-        {autoTaggingTarget === 'filters' && (
-          <Box mt="4px">
-            <FilterItems filters={filters} isEditable={false} />
+
+      <Box display="flex" gap="16px">
+        <AutoTagTargetContainer
+          className={autoTaggingTarget === 'all' ? 'selected' : ''}
+          onClick={() => onChangeAutoTaggingTarget('all')}
+        >
+          <Box display="flex">
+            <Radio
+              currentValue={autoTaggingTarget}
+              name="auto_tagging_target"
+              value="all"
+            />
+            <Label>All inputs</Label>
           </Box>
-        )}
+        </AutoTagTargetContainer>
+        <AutoTagTargetContainer
+          className={`${autoTaggingTarget === 'filters' ? 'selected' : ''} ${
+            isEmpty(filters) ? 'disabled' : ''
+          }`}
+          onClick={() =>
+            !isEmpty(filters) && onChangeAutoTaggingTarget('filters')
+          }
+        >
+          <Box display="flex">
+            <Radio
+              currentValue={autoTaggingTarget}
+              name="auto_tagging_target"
+              value="filters"
+              disabled={isEmpty(filters)}
+            />
+            <Box>
+              <Label>Use current filters</Label>
+              {isEmpty(filters) && (
+                <Text fontSize="s" m="0">
+                  No active filters
+                </Text>
+              )}
+            </Box>
+          </Box>
+          <FilterItems filters={filters} isEditable={false} />
+        </AutoTagTargetContainer>
       </Box>
+
       <Title variant="h4">How do you want to tag?</Title>
+
       <Box
         display="flex"
         flexDirection="column"
