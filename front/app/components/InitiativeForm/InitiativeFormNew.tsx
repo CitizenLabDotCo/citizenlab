@@ -21,6 +21,7 @@ import {
 // components
 import Button from 'components/UI/Button';
 import { Box } from '@citizenlab/cl2-component-library';
+import TopicsPicker from 'components/UI/TopicsPicker';
 
 // intl
 import messages from './messages';
@@ -46,6 +47,8 @@ type PageFormProps = {
   onSubmit: (formValues: FormValues) => void | Promise<void>;
   defaultValues?: FormValues;
 };
+
+const mapsLoaded = window.googleMaps;
 
 const InitiativeForm = ({ onSubmit, defaultValues }: PageFormProps) => {
   const { formatMessage } = useIntl();
@@ -170,6 +173,47 @@ const InitiativeForm = ({ onSubmit, defaultValues }: PageFormProps) => {
               />
             )} */}
           </SectionField>
+        </StyledFormSection>
+        <StyledFormSection>
+          <FormSectionTitle message={messages.formDetailsSectionTitle} />
+          <SectionField aria-live="polite">
+            <FormLabel
+              labelMessage={messages.topicsLabel}
+              subtextMessage={messages.topicsLabelDescription}
+              htmlFor="field-topic-multiple-picker"
+            />
+            {/* <TopicsPicker
+              id="field-topic-multiple-picker"
+              selectedTopicIds={topic_ids}
+              onChange={changeAndSaveTopics}
+              availableTopics={availableTopics}
+            /> */}
+            {/* {touched.topic_ids && errors.topic_ids ? (
+              <Error text={formatMessage(errors.topic_ids.message)} />
+            ) : (
+              apiErrors &&
+              apiErrors.topic_ids && <Error apiErrors={apiErrors.topic_ids} />
+            )} */}
+          </SectionField>
+          {mapsLoaded && (
+            <SectionField>
+              <FormLabel
+                labelMessage={messages.locationLabel}
+                subtextMessage={messages.locationLabelSubtext}
+                htmlFor="initiative-location-picker"
+                optional
+              >
+                {/* <LocationInput
+                  id="initiative-location-picker"
+                  className="e2e-initiative-location-input"
+                  value={position || ''}
+                  onChange={onChangePosition}
+                  onBlur={onBlur('position')}
+                  placeholder={formatMessage(messages.locationPlaceholder)}
+                /> */}
+              </FormLabel>
+            </SectionField>
+          )}
         </StyledFormSection>
       </form>
     </FormProvider>
