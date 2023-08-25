@@ -25,7 +25,7 @@ const AutotaggingModal = ({ onCloseModal }: { onCloseModal: () => void }) => {
     isLoading,
     variables,
   } = useLaunchAnalysisAutotagging();
-  const filters = useAnalysisFilterParams();
+  const currentFilters = useAnalysisFilterParams();
 
   const handleOnSelectMethod = (
     autoTaggingMethod: AutoTaggingMethod,
@@ -42,8 +42,10 @@ const AutotaggingModal = ({ onCloseModal }: { onCloseModal: () => void }) => {
       return;
     }
 
+    const filters =
+      autoTaggingTarget === 'filters' ? currentFilters : undefined;
     launchTagging(
-      { analysisId, autoTaggingMethod, tagsIds },
+      { analysisId, autoTaggingMethod, tagsIds, filters },
       {
         onSuccess: () => {
           onCloseModal();
@@ -61,7 +63,7 @@ const AutotaggingModal = ({ onCloseModal }: { onCloseModal: () => void }) => {
           loadingMethod={variables?.autoTaggingMethod}
           autoTaggingTarget={autoTaggingTarget}
           onChangeAutoTaggingTarget={(target) => setAutoTaggingTarget(target)}
-          filters={filters}
+          filters={currentFilters}
         />
       )}
       {step === 'step2LabelClassification' && (
