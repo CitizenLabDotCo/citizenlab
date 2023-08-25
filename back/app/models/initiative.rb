@@ -174,7 +174,7 @@ class Initiative < ApplicationRecord
   def generate_slug
     return if slug
 
-    title = MultilocService.new.t title_multiloc, author
+    title = MultilocService.new.t title_multiloc, author&.locale
     self.slug ||= SlugService.new.generate_slug self, title
   end
 
