@@ -9,17 +9,23 @@ import GoBackButton from 'components/UI/GoBackButton';
 import Step1 from './Step1';
 import Step2LabelClassification from './Step2LabelClassification';
 import Step2FewShotClassification from './Step2FewShotClassification';
+import useAnalysisFilterParams from '../../hooks/useAnalysisFilterParams';
 
 const AutotaggingModal = ({ onCloseModal }: { onCloseModal: () => void }) => {
   const [step, setStep] = useState<
     'step1' | 'step2LabelClassification' | 'step2FewShotClassification'
   >('step1');
+  const [autoTaggingTarget, setAutoTaggingTarget] = useState<'all' | 'filters'>(
+    'all'
+  );
+
   const { analysisId } = useParams() as { analysisId: string };
   const {
     mutate: launchTagging,
     isLoading,
     variables,
   } = useLaunchAnalysisAutotagging();
+  const filters = useAnalysisFilterParams();
 
   const handleOnSelectMethod = (
     autoTaggingMethod: AutoTaggingMethod,
@@ -53,6 +59,9 @@ const AutotaggingModal = ({ onCloseModal }: { onCloseModal: () => void }) => {
           onSelectMethod={handleOnSelectMethod}
           isLoading={isLoading}
           loadingMethod={variables?.autoTaggingMethod}
+          autoTaggingTarget={autoTaggingTarget}
+          onChangeAutoTaggingTarget={(target) => setAutoTaggingTarget(target)}
+          filters={filters}
         />
       )}
       {step === 'step2LabelClassification' && (

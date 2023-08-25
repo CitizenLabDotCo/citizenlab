@@ -10,9 +10,14 @@ import {
   colors,
   Spinner,
   IconTooltip,
+  Select,
+  Icon,
 } from '@citizenlab/cl2-component-library';
 import Tag from '../Tag';
 import { AutoTaggingMethod } from 'api/analysis_background_tasks/types';
+import FilterItems from '../../FilterItems';
+import { IInputsFilterParams } from 'api/analysis_inputs/types';
+import { isEmpty } from 'lodash-es';
 
 const AutoTagOptionContainer = styled.div<{ disabled: boolean }>`
   background-color: ${colors.grey100};
@@ -74,23 +79,57 @@ type Props = {
   onSelectMethod: (tagType: AutoTaggingMethod) => void;
   isLoading: boolean;
   loadingMethod?: AutoTaggingMethod;
+  autoTaggingTarget: 'all' | 'filters';
+  filters: IInputsFilterParams;
+  onChangeAutoTaggingTarget: (target: 'all' | 'filters') => void;
 };
 
-const Step1 = ({ onSelectMethod, isLoading, loadingMethod }: Props) => {
+const Step1 = ({
+  onSelectMethod,
+  isLoading,
+  loadingMethod,
+  autoTaggingTarget,
+  onChangeAutoTaggingTarget,
+  filters,
+}: Props) => {
   return (
     <>
-      <Title mb="32px">What tags do you want to add?</Title>
+      <Title mb="32px">
+        <Icon name="flash" height="32px" width="32px" /> Auto-tag
+      </Title>
       <Text mb="32px">
         Auto-tags are automatically derived by the computer. You can change or
         remove them at all times.
       </Text>
+      <Title variant="h4">What inputs do you want to tag?</Title>
+      <Box>
+        <Select
+          id="auto_tagging_target"
+          options={[
+            { label: 'All inputs', value: 'all' },
+            {
+              label: 'Currently selected inputs',
+              value: 'filters',
+              disabled: isEmpty(filters),
+            },
+          ]}
+          onChange={(option) => onChangeAutoTaggingTarget(option.value)}
+          value={autoTaggingTarget}
+        />
+        {autoTaggingTarget === 'filters' && (
+          <Box mt="4px">
+            <FilterItems filters={filters} isEditable={false} />
+          </Box>
+        )}
+      </Box>
+      <Title variant="h4">How do you want to tag?</Title>
       <Box
         display="flex"
         flexDirection="column"
         gap="16px"
         opacity={isLoading ? 0.5 : undefined}
       >
-        <Title variant="h5" mt="0">
+        <Title variant="h6" m="0">
           Topic detection
         </Title>
 
@@ -102,7 +141,7 @@ const Step1 = ({ onSelectMethod, isLoading, loadingMethod }: Props) => {
           isLoading={isLoading && loadingMethod === 'nlp_topic'}
           tooltip="Works well when your projects covers a broad range of topics. Good place to start."
         >
-          <>The computer detects the tags and assigns the inputs</>
+          <>The computer detects the topics and assigns the inputs</>
         </AutoTagOption>
 
         <AutoTagOption
@@ -113,7 +152,7 @@ const Step1 = ({ onSelectMethod, isLoading, loadingMethod }: Props) => {
           isLoading={isLoading && loadingMethod === 'label_classification'}
           tooltip="Works well when you know what tags you are looking for, or when your project has a narrow scope in terms of topics."
         >
-          <>You create the tags, the inputs are assigned by the computer</>
+          <>You create the topics, the inputs are assigned by the computer</>
         </AutoTagOption>
 
         <AutoTagOption
@@ -125,12 +164,10 @@ const Step1 = ({ onSelectMethod, isLoading, loadingMethod }: Props) => {
           tooltip='Works well when you need to tag some really specific things. Use this in case "Classification by label" does not give you good results'
         >
           <>
-            You create the tags and manually assign a few inputs as an example,
-            the computer assigns the rest
+            You create the topics and manually assign a few inputs as an
+            example, the computer assigns the rest
           </>
         </AutoTagOption>
-
-        <Title variant="h5">Other</Title>
 
         <AutoTagOption
           tagType="platform_topic"
@@ -144,6 +181,10 @@ const Step1 = ({ onSelectMethod, isLoading, loadingMethod }: Props) => {
             posting
           </>
         </AutoTagOption>
+
+        <Title variant="h6" m="0">
+          Other
+        </Title>
 
         <AutoTagOption
           tagType="sentiment"
