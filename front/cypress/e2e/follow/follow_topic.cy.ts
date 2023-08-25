@@ -24,12 +24,9 @@ describe('Follow topic', () => {
   it('allows a user to follow and unfollow a topic', () => {
     cy.setLoginCookie(email, password);
 
-    cy.visit(`/profile/${userSlug}`);
+    cy.visit(`/profile/${userSlug}/following`);
     cy.acceptCookies();
-    cy.get('[data-cy="e2e-following-tab"]').click();
-    cy.get('#e2e-user-following-filter-selector').click();
-
-    cy.get('.e2e-sort-items').find('.e2e-sort-item-Topics').click();
+    cy.get('#tab-Topics').click();
 
     // Follow the first topic
     cy.get('[data-cy="e2e-follow-topic-button"]').should('exist');
