@@ -28,19 +28,17 @@ const FullEventTime = ({ event }: Props) => {
 
   if (location && !isNilOrError(currentLocale)) {
     return (
-      <>
-        <Container>
-          <StyledIcon name="calendar" ariaHidden />
-          <Content>
-            <Text my="4px" color="coolGrey600" fontSize="s">
-              {capitalizeDates(currentLocale)
-                ? eventDateTime
-                : eventDateTime.toLowerCase()}
-            </Text>
-            <AddEventToCalendarButton eventId={event.id} />
-          </Content>
-        </Container>
-      </>
+      <Container>
+        <StyledIcon name="calendar" ariaHidden />
+        <Content>
+          <Text my="4px" color="coolGrey600" fontSize="s">
+            {capitalizeDates(currentLocale)
+              ? eventDateTime
+              : eventDateTime.toLowerCase()}
+          </Text>
+          <AddEventToCalendarButton eventId={event.id} />
+        </Content>
+      </Container>
     );
   }
 

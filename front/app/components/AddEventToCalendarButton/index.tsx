@@ -23,7 +23,7 @@ export const AddEventToCalendarButton = ({ eventId }: { eventId: string }) => {
         'text/calendar'
       );
       saveAs(blob, `${eventId}.ics`);
-    } catch (e) {
+    } catch {
       isError = true;
     }
   };

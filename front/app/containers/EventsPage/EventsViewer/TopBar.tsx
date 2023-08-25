@@ -45,7 +45,6 @@ const TopBar = memo<Props & WrappedComponentProps>(
     return (
       <Container>
         <Title color={'tenantText'} m="0px" my="auto" variant="h3" as="h2">
-          {' '}
           {title}
         </Title>
         <ProjectFilterDropdownPositioner>
