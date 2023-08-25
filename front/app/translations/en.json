@@ -579,7 +579,7 @@
   "app.components.form.controls.adminFieldTooltip": "Field only visible to admins",
   "app.components.form.controls.notPublic": "*This answer will only be shared with moderators, and not to the public.",
   "app.components.form.controls.selectBetween": "*Select between {minItems} and {maxItems} options",
-  "app.components.form.controls.selectExactly": "*Please select exactly {selectExactly, plural, one {# option} other {# options}}",
+  "app.components.form.controls.selectExactly2": "*Select exactly {selectExactly, plural, one {# option} other {# options}}",
   "app.components.form.controls.selectMany": "*Choose as many as you like",
   "app.components.form.error": "Error",
   "app.components.form.locationGoogleUnavailable": "Couldn't load location field provided by google maps.",
