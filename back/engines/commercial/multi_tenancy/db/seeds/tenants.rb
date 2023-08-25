@@ -424,6 +424,10 @@ module MultiTenancy
             public_api_tokens: {
               enabled: true,
               allowed: true
+            },
+            import_printed_forms: {
+              enabled: true,
+              allowed: true
             }
           })
         )

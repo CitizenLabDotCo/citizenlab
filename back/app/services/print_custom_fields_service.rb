@@ -5,7 +5,9 @@ require 'prawn/measurement_extensions'
 class PrintCustomFieldsService
   attr_reader :participation_context, :custom_fields, :params, :previous_cursor
 
-  QUESTION_TYPES = %w[select multiselect text text_multiloc multiline_text html_multiloc linear_scale]
+  # QUESTION_TYPES = %w[select multiselect text text_multiloc multiline_text html_multiloc linear_scale]
+  # Disable linear scales for now, as they're not detected correctly by form parser
+  QUESTION_TYPES = %w[select multiselect text text_multiloc multiline_text html_multiloc]
   FORBIDDEN_HTML_TAGS_REGEX = /<\/?(div|span|ul|ol|li|em|img|a){1}[^>]*\/?>/
 
   def initialize(participation_context, custom_fields, params)
@@ -79,12 +81,11 @@ class PrintCustomFieldsService
       # Write description if it exists
       write_description(pdf, custom_field)
 
-      # Write '*Choose as many as you like' if necessary
-      # write_choose_as_many_as_you_like(pdf, custom_field)
-
-      # Write '*This answer will only be shared with moderators, and not to the public.'
+      # Write 
+      # - '*Choose as many as you like', and/or
+      # - '*This answer will only be shared with moderators, and not to the public.'
       # if necessary
-      write_answer_visibility_disclaimer(pdf, custom_field)
+      write_instructions_and_disclaimers(pdf, custom_field)
 
       pdf.move_down 7.mm
 
@@ -137,27 +138,27 @@ class PrintCustomFieldsService
     end
   end
 
-  def write_choose_as_many_as_you_like(pdf, custom_field)
-    return unless custom_field.input_type == "multiselect"
+  def write_instructions_and_disclaimers(pdf, custom_field)
+    show_multiselect_instructions = custom_field.input_type == "multiselect"
+    show_visibility_disclaimer = participation_context.participation_method == "ideation" && custom_field.answer_visible_to == "admins"
 
-    pdf.move_down 5.mm
+    if show_multiselect_instructions || show_visibility_disclaimer then
+      pdf.move_down 5.mm
 
-    pdf.text(
-      "*#{I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.this_answer') }}", 
-      size: 12
-    )
+      if show_multiselect_instructions then
+        pdf.text(
+          "*#{I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.choose_as_many') }}", 
+          size: 12
+        )
+      end
 
-    choose_as_many
-  end
-
-  def write_answer_visibility_disclaimer(pdf, custom_field)
-    return unless participation_context.participation_method == "ideation"
-    return unless custom_field.answer_visible_to == "admins"
-
-    pdf.text(
-      "*#{I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.this_answer') }}",
-      size: 12
-    )
+      if show_visibility_disclaimer then
+        pdf.text(
+          "*#{I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.this_answer') }}",
+          size: 12
+        )
+      end
+    end
   end
 
   def draw_single_choice(pdf, custom_field)

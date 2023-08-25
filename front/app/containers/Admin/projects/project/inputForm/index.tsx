@@ -59,7 +59,7 @@ export const IdeaForm = () => {
           <SectionTitle>
             <FormattedMessage {...messages.inputForm} />
           </SectionTitle>
-          <SectionDescription style={{ marginRight: '600px' }}>
+          <SectionDescription style={{ maxWidth: '700px' }}>
             <FormattedMessage {...messages.inputFormDescription} />
           </SectionDescription>
         </Box>
@@ -86,6 +86,7 @@ export const IdeaForm = () => {
       </Box>
       <PDFExportModal
         open={exportModalOpen}
+        formType="idea_form"
         onClose={() => setExportModalOpen(false)}
         onExport={handleExportPDF}
       />
