@@ -40,11 +40,12 @@ class OmniauthCallbackController < ApplicationController
 
   private
 
-  # Currently, only FranceConnect and ClaveUnica use this method (support both verification and authentication).
+  # Only methods that support both verification and authentication use it.
   def auth_or_verification_callback(verify:, authver_method:)
     # If token is present, the user is already logged in, which means they try to verify not authenticate.
-    if request.env['omniauth.params']['token'].present? && authver_method.verification_prioritized?
-      # We need it only for ClaveUnica. For FC, we never verify, only authenticate (even when user clicks "verify").
+    if verify.fetch_token(request).present? && authver_method.verification_prioritized?
+      # We need it only for providers that support both auth and ver except FC.
+      # For FC, we never verify, only authenticate (even when user clicks "verify").
       verification_callback(verify)
       # Apart from verification, we also create an identity to be able to authenticate with this provider.
       auth = request.env['omniauth.auth']
@@ -196,7 +197,7 @@ class OmniauthCallbackController < ApplicationController
     user.confirm! # confirm user email if not already confirmed
 
     if authver_method.overwrite_user_attrs?
-      user.update!(update_hash)
+      user.update_merging_custom_fields!(update_hash)
     else
       update_hash.each_pair do |attr, value|
         user.assign_attributes(attr => value) unless user.attribute_present?(attr)

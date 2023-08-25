@@ -5,14 +5,16 @@ class MultilocService
     @app_configuration = app_configuration
   end
 
-  def t(translations, user = nil)
+  def t(translations, preferred_locale = nil)
     return nil unless translations
 
-    locales = app_configuration.settings('core', 'locales')
-    user_locale = user&.locale || I18n.locale.to_s
-    result = ([user_locale] + locales + translations.keys).each do |locale|
-      break translations[locale] if translations[locale]
-    end
+    # Optimization: return early if we can to avoid instantiating the AppConfiguration.
+    preferred_locale ||= I18n.locale.to_s
+    return translations[preferred_locale] if translations[preferred_locale]
+
+    platform_locales = app_configuration.settings('core', 'locales')
+    locales_by_priority = platform_locales + translations.keys
+    result = locales_by_priority.lazy.filter_map { |locale| translations[locale] }.first
     result.is_a?(String) ? result : +'' # return a non-frozen empty string
   end
 

@@ -15,6 +15,10 @@ lb:
     rejected: Ofgeleent
     rejected_description: Dës Iddi gouf ofgeleent
   initiative_statuses:
+    review_pending: Iwwerpréiwung waarden
+    review_pending_description: Iwwerpréiwung waarden
+    changes_requested: Ännerungen ugefrote
+    changes_requested_description: Ännerungen ugefrote
     proposed: proposéiert
     proposed_description: proposéiert
     expired: ofgelaf

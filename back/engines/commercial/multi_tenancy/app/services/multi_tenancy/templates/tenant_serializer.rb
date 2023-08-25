@@ -47,6 +47,7 @@ module MultiTenancy
           CustomForm => serialize_records(CustomForm),
           Event => serialize_records(Event),
           EventFile => serialize_records(EventFile),
+          Follower => serialize_records(Follower),
           HomePage => serialize_records(HomePage),
           IdeaStatus => serialize_records(IdeaStatus),
           InitiativeStatus => serialize_records(InitiativeStatus),
@@ -102,6 +103,7 @@ module MultiTenancy
           # Initiatives
           Initiative => serialize_records(initiatives),
           AreasInitiative => serialize_records(AreasInitiative.where(initiative: initiatives)),
+          CosponsorsInitiative => serialize_records(CosponsorsInitiative.where(initiative: initiatives)),
           InitiativeFile => serialize_records(InitiativeFile.where(initiative: initiatives)),
           InitiativeImage => serialize_records(InitiativeImage.where(initiative: initiatives)),
           InitiativesTopic => serialize_records(InitiativesTopic.where(initiative: initiatives)),

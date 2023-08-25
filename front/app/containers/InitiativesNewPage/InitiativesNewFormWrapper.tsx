@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 
 // components
 import InitiativeForm, {
   FormValues,
   SimpleFormValues,
 } from 'components/InitiativeForm';
-import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
+const AnonymousParticipationConfirmationModal = lazy(
+  () => import('components/AnonymousParticipationConfirmationModal')
+);
 
 // types
 import { Locale, Multiloc, UploadFile } from 'typings';
@@ -38,6 +40,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import useUpdateInitiative from 'api/initiatives/useUpdateInitiative';
 import useAddInitiativeFile from 'api/initiative_files/useAddInitiativeFile';
 import useDeleteInitiativeFile from 'api/initiative_files/useDeleteInitiativeFile';
+import { MentionItem } from 'react-mentions';
 
 const StyledInitiativeForm = styled(InitiativeForm)`
   width: 100%;
@@ -62,13 +65,17 @@ const InitiativesNewFormWrapper = ({
   const { data: appConfiguration } = useAppConfiguration();
   const { mutate: addInitiative } = useAddInitiative();
   const { data: authUser } = useAuthUser();
-  const { mutateAsync: addInitiativeImage, isLoading: isAdding } =
-    useAddInitiativeImage();
-  const { mutateAsync: deleteInitiativeImage, isLoading: isDeleting } =
-    useDeleteInitiativeImage();
+  const {
+    mutateAsync: addInitiativeImage,
+    isLoading: isAddingInitiativeImage,
+  } = useAddInitiativeImage();
+  const {
+    mutateAsync: deleteInitiativeImage,
+    isLoading: isDeletingInitiativeImage,
+  } = useDeleteInitiativeImage();
   const { mutate: addInitiativeFile } = useAddInitiativeFile();
   const { mutate: deleteInitiativeFile } = useDeleteInitiativeFile();
-  const { mutateAsync: updateInitiative, isLoading: isUpdating } =
+  const { mutateAsync: updateInitiative, isLoading: isUpdatingInitiative } =
     useUpdateInitiative();
 
   const initialValues = {
@@ -76,6 +83,7 @@ const InitiativesNewFormWrapper = ({
     body_multiloc: undefined,
     topic_ids: [],
     position: location_description,
+    cosponsor_ids: [],
   };
   const [postAnonymously, setPostAnonymously] = useState(false);
   const [formValues, setFormValues] = useState<SimpleFormValues>(initialValues);
@@ -142,8 +150,13 @@ const InitiativesNewFormWrapper = ({
     banner: UploadFile | undefined | null
   ) => {
     // build API readable object
-    const { title_multiloc, body_multiloc, topic_ids, position } =
-      changedValues;
+    const {
+      title_multiloc,
+      body_multiloc,
+      topic_ids,
+      position,
+      cosponsor_ids,
+    } = changedValues;
 
     const positionInfo = await parsePosition(position ?? location_description);
     // removes undefined values, not null values that are used to remove previously used values
@@ -153,6 +166,7 @@ const InitiativesNewFormWrapper = ({
         body_multiloc,
         topic_ids,
         ...positionInfo,
+        cosponsor_ids,
       },
       (entry) => entry === undefined
     );
@@ -166,7 +180,13 @@ const InitiativesNewFormWrapper = ({
     const changedValues = getChangedValues();
 
     // if we're already publishing, do nothing.
-    if (isUpdating || isAdding || isDeleting || saving) return;
+    if (
+      isUpdatingInitiative ||
+      isAddingInitiativeImage ||
+      isDeletingInitiativeImage ||
+      saving
+    )
+      return;
 
     // if nothing has changed, do noting.
     if (isEmpty(changedValues) && !hasBannerChanged && !hasImageChanged) return;
@@ -210,7 +230,7 @@ const InitiativesNewFormWrapper = ({
   const debouncedSave = debounce(handleSave, 1000);
 
   const handlePublish = async () => {
-    // // if we're already saving, do nothing.
+    // if we're already saving, do nothing.
     if (saving) return;
 
     // setting flags for user feedback and avoiding double sends.
@@ -257,7 +277,9 @@ const InitiativesNewFormWrapper = ({
             publication_status: 'published',
             anonymous: postAnonymously,
           },
-          { onSuccess: (initiative) => setInitiativeId(initiative.data.id) }
+          {
+            onSuccess: (initiative) => setInitiativeId(initiative.data.id),
+          }
         );
       }
       setSaving(false);
@@ -342,6 +364,15 @@ const InitiativesNewFormWrapper = ({
     setFormValues((formValues) => ({
       ...formValues,
       position,
+    }));
+  };
+
+  const onChangeCosponsors = (cosponsors: MentionItem[]) => {
+    const cosponsor_ids = cosponsors.map((cosponsor) => cosponsor.id);
+
+    setFormValues((formValues) => ({
+      ...formValues,
+      cosponsor_ids,
     }));
   };
 
@@ -463,11 +494,16 @@ const InitiativesNewFormWrapper = ({
         files={files}
         apiErrors={apiErrors}
         publishError={publishError}
-        publishing={isAdding || isUpdating || isDeleting}
+        publishing={
+          isAddingInitiativeImage ||
+          isUpdatingInitiative ||
+          isDeletingInitiativeImage
+        }
         onChangeTitle={onChangeTitle}
         onChangeBody={onChangeBody}
         onChangeTopics={onChangeTopics}
         onChangePosition={onChangePosition}
+        onChangeCosponsors={onChangeCosponsors}
         onChangeBanner={onChangeBanner}
         onChangeImage={onChangeImage}
         onAddFile={onAddFile}
@@ -478,13 +514,15 @@ const InitiativesNewFormWrapper = ({
         postAnonymously={postAnonymously}
         setPostAnonymously={setPostAnonymously}
       />
-      <AnonymousParticipationConfirmationModal
-        onConfirmAnonymousParticipation={() => {
-          continuePublish();
-        }}
-        showAnonymousConfirmationModal={showAnonymousConfirmationModal}
-        setShowAnonymousConfirmationModal={setShowAnonymousConfirmationModal}
-      />
+      <Suspense fallback={null}>
+        <AnonymousParticipationConfirmationModal
+          onConfirmAnonymousParticipation={() => {
+            continuePublish();
+          }}
+          showAnonymousConfirmationModal={showAnonymousConfirmationModal}
+          setShowAnonymousConfirmationModal={setShowAnonymousConfirmationModal}
+        />
+      </Suspense>
     </>
   );
 };
