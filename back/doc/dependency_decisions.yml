@@ -173,9 +173,9 @@
       but merely executing it in its distributed form as a rake task.
     :versions: []
     :when: 2022-06-17 14:33:30.806575129 Z
-- - :permit
-  - GPL-2.0, GPL-3.0, PRAWN
+- - :approve
+  - prawn
   - :who:
     :why:
     :versions: []
-    :when: 2023-08-25 08:20:14.219982000 Z
+    :when: 2023-08-25 09:15:04.392754008 Z
