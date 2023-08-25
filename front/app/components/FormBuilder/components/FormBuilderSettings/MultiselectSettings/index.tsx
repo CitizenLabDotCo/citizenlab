@@ -89,7 +89,7 @@ const MultiselectSettings = ({
                     id="minimumInput"
                     type="number"
                     max={watch(selectOptionsName).length}
-                    min="0"
+                    min="1"
                     size="small"
                     onChange={(value) => {
                       setValue(minimumSelectCountName, value);

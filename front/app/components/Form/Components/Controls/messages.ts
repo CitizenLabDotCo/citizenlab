@@ -19,8 +19,8 @@ export default defineMessages({
     defaultMessage: '*Select between { minItems } and { maxItems } options',
   },
   selectExactly: {
-    id: 'app.components.form.controls.selectExactly',
+    id: 'app.components.form.controls.selectExactly2',
     defaultMessage:
-      '*Please select exactly {selectExactly, plural, one {# option} other {# options}}',
+      '*Select exactly {selectExactly, plural, one {# option} other {# options}}',
   },
 });
