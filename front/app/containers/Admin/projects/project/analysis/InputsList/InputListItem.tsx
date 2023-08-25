@@ -35,6 +35,7 @@ const InputListItem = memo(({ input, onSelect, selected }: Props) => {
   return (
     <>
       <Box
+        id={`input-${input.id}`}
         onClick={() => onSelect(input.id)}
         bg={selected ? colors.background : colors.white}
         p="12px"

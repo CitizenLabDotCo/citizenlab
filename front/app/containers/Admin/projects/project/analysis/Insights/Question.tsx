@@ -73,12 +73,20 @@ const Question = ({ insight }: Props) => {
     return str.replace(/\[?[0-9a-f-]{0,35}$/, '');
   };
 
+  const handleClickInput = (inputId) => {
+    setSelectedInputId(inputId);
+    const element = document.getElementById(`input-${inputId}`);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   const replaceIdRefsWithLinks = (question) => {
     return reactStringReplace(
       question,
       /\[?([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})\]?/g,
       (match, i) => (
-        <StyledButton onClick={() => setSelectedInputId(match)} key={i}>
+        <StyledButton onClick={() => handleClickInput(match)} key={i}>
           <Icon name="idea" />
         </StyledButton>
       )
@@ -99,7 +107,14 @@ const Question = ({ insight }: Props) => {
         : {}),
       reset_filters: 'true',
     });
-    updateSearchParams(question.data.attributes.filters);
+    const filters = question.data.attributes.filters;
+    updateSearchParams(filters);
+    if (filters.tag_ids?.length === 1) {
+      const element = document.getElementById(`tag-${filters.tag_ids[0]}`);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
   };
 
   const answer = question.data.attributes.answer;

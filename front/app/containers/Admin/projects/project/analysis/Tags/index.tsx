@@ -163,6 +163,7 @@ const Tags = () => {
         )}
         {tags?.data.map((tag) => (
           <TagContainer
+            id={`tag-${tag.id}`}
             key={tag.id}
             tabIndex={0}
             onClick={() => {
