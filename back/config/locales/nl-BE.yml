@@ -222,8 +222,8 @@ nl-BE:
       full_name: 'Volledige naam'
       email_address: 'E-mailadres'
       optional: 'optioneel'
-      choose_as_many: 'Kies er zo veel als je wilt'
-      this_answer: 'Dit antwoord wordt alleen gedeeld met moderators, en niet publiekelijk.'
+      choose_as_many: 'Kies er zoveel als je wilt'
+      this_answer: 'Dit antwoord wordt alleen gedeeld met beheerders, en niet publiekelijk.'
   project_copy:
     title_suffix: 'Kopie'
   confirmations_mailer:
