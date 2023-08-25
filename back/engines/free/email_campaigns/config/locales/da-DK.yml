@@ -225,7 +225,7 @@ da:
       cta_view_initiative: 'Gå til dit forslag'
       link: link
       main_header: 'Du udgav et forslag! Lad os finde noget støtte til det.'
-      message_next_steps: '%{userFirstName}, dit forslag blev udgivet på deltagelsesplatformen for %{organizationName}. Du bliver underrettet når personer interagerer med dit borgerforslag. Find ud af dine næste trin nedenfor.'
+      message_next_steps: '%{userFirstName}, dit forslag blev udgivet på deltagelsesplatformen for %{organizationName}. Du bliver underrettet når personer interagerer med dit forslag. Find ud af dine næste trin nedenfor.'
       message_get_votes: 'Nå stemmetærsklen:'
       preheader: 'Tak for at du deler dit forslag, %{initiativeTitle}, for %{organizationName}. Det næste skridt er at få support for dit forslag ved at dele den med hele dit netværk.'
       send_email: e-mail
