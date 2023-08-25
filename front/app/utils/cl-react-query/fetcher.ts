@@ -129,10 +129,6 @@ async function fetcher({
       return null;
     }
 
-    if (path.includes('.ics')) {
-      return response;
-    }
-
     reportError('Unsupported case. No valid JSON.');
     throw new Error('Unsupported case. No valid JSON.');
   }
