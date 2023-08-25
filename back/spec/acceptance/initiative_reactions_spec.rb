@@ -75,6 +75,13 @@ resource 'Reactions' do
       assert_status 201
       expect(@initiative.reload.initiative_status).to eq @status_threshold_reached
     end
+
+    example 'The first non-author reaction create action will set editing_locked to true', document: false do
+      expect(@initiative.reload.editing_locked).to be false
+      do_request
+      assert_status 201
+      expect(@initiative.reload.editing_locked).to be true
+    end
   end
 
   post 'web_api/v1/initiatives/:initiative_id/reactions/up' do

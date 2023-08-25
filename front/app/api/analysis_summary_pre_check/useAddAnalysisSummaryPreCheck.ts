@@ -10,7 +10,7 @@ const addAnalysisSummaryPreCheck = async ({
   fetcher<ISummaryPreCheck>({
     path: `/analyses/${analysisId}/summaries/pre_check`,
     action: 'post',
-    body: { filters },
+    body: { summary: { filters } },
   });
 
 const useAddAnalysisSummaryPreCheck = () => {

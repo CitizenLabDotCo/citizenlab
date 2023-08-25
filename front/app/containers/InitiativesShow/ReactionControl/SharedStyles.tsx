@@ -1,9 +1,8 @@
 import styled from 'styled-components';
-import { fontSizes, colors, media } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
 
 export const StatusWrapper = styled.div`
   display: flex;
-  flex-direction: row-reverse;
   font-size: ${fontSizes.s}px;
   text-transform: uppercase;
   color: ${colors.coolGrey600};
@@ -11,10 +10,6 @@ export const StatusWrapper = styled.div`
   &.answered {
     color: ${colors.success};
   }
-
-  ${media.tablet`
-    display: none;
-  `}
 `;
 
 export const StatusExplanation = styled.div`

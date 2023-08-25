@@ -58,10 +58,6 @@ const IneligibleStatusBadge = styled(StatusBadge)`
   color: ${colors.coolGrey600};
 `;
 
-const CustomStatusBadge = styled(StatusBadge)`
-  color: ${colors.coolGrey600};
-`;
-
 const StyledProposalProgressBar = styled(ProposalProgressBar)`
   height: 9px;
   width: 120px;
@@ -210,14 +206,6 @@ const ReactionIndicator = ({ initiativeId }: Props) => {
             <T value={initiativeStatus.data.attributes.title_multiloc} />
           </BadgeLabel>
         </IneligibleStatusBadge>
-      )}
-
-      {statusCode === 'custom' && (
-        <CustomStatusBadge color={initiativeStatus.data.attributes.color}>
-          <BadgeLabel>
-            <T value={initiativeStatus.data.attributes.title_multiloc} />
-          </BadgeLabel>
-        </CustomStatusBadge>
       )}
     </Container>
   );

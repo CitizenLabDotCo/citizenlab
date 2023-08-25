@@ -58,6 +58,7 @@ const Tag = ({ name, tagType, tagginsConfig }: TagProps) => {
       borderRadius="3px"
       gap="4px"
       as={tagginsConfig ? 'button' : 'div'}
+      border={`1px solid ${TagTypeColorMap[tagType]?.text}`}
       onClick={
         tagginsConfig
           ? () => {

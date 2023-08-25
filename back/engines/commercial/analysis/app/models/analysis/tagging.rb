@@ -4,9 +4,11 @@
 #
 # Table name: analysis_taggings
 #
-#  id       :uuid             not null, primary key
-#  tag_id   :uuid             not null
-#  input_id :uuid             not null
+#  id         :uuid             not null, primary key
+#  tag_id     :uuid             not null
+#  input_id   :uuid             not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
 #
 # Indexes
 #

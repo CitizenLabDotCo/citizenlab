@@ -15,6 +15,10 @@ tr:
     rejected: reddedildi
     rejected_description: Bu fikir reddedildi
   initiative_statuses:
+    review_pending: inceleme beklemede
+    review_pending_description: inceleme beklemede
+    changes_requested: talep edi̇len deği̇şi̇kli̇kler
+    changes_requested_description: talep edi̇len deği̇şi̇kli̇kler
     proposed: önerilen
     proposed_description: önerilen
     expired: süresi dolan
