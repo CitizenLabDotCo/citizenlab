@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 // components
 import Modal from 'components/UI/Modal';
-import { Box, Button, Text } from '@citizenlab/cl2-component-library';
+import { Box, Button, Text, Title } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -64,10 +64,21 @@ const PDFExportModal = ({ open, onClose, onExport }: Props) => {
   };
 
   return (
-    <Modal fullScreen={false} width="580px" opened={open} close={onClose}>
+    <Modal
+      fullScreen={false}
+      width="580px"
+      opened={open}
+      close={onClose}
+      header={
+        <Title variant="h2" color="primary" m="0" px="24px">
+          <FormattedMessage {...messages.exportAsPDF} />
+        </Title>
+      }
+      niceHeader
+    >
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(handleExport)}>
-          <Box p="0px" w="100%">
+          <Box p="24px" w="100%">
             <Text mb="20px" mt="0px" w="500px">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
               eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
