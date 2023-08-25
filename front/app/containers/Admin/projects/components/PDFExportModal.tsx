@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 
+// hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 // components
 import Modal from 'components/UI/Modal';
 import { Box, Button, Text, Title } from '@citizenlab/cl2-component-library';
@@ -27,7 +30,10 @@ interface Props {
   onExport: (params: { name: boolean; email: boolean }) => Promise<void>;
 }
 
-const PDFExportModal = ({ open, onClose, onExport }: Props) => {
+const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
+  const importPrintedFormsEnabled = useFeatureFlag({
+    name: 'import_printed_forms',
+  });
   const [loading, setLoading] = useState(false);
 
   const schema = object({
@@ -81,31 +87,38 @@ const PDFExportModal = ({ open, onClose, onExport }: Props) => {
         <form onSubmit={methods.handleSubmit(handleExport)}>
           <Box p="24px" w="100%">
             <Text mb="20px" mt="0px" w="500px">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat.
+              {formType === 'idea_form' && (
+                <FormattedMessage {...messages.clickExportToPDFIdeaForm} />
+              )}
+              {formType === 'survey' && (
+                <FormattedMessage {...messages.clickExportToPDFSurvey} />
+              )}
             </Text>
-            <Box mb="12px">
-              <Checkbox
-                name="name"
-                label={
-                  <Text m="0">
-                    <FormattedMessage {...messages.includeFullName} />
-                  </Text>
-                }
-              />
-            </Box>
-            <Box mb="24px">
-              <Checkbox
-                name="email"
-                label={
-                  <Text m="0">
-                    <FormattedMessage {...messages.includeEmail} />
-                  </Text>
-                }
-              />
-            </Box>
+            {formType === 'idea_form' && importPrintedFormsEnabled && (
+              <>
+                <Text mb="24px">Printed form explanation</Text>
+                <Box mb="12px">
+                  <Checkbox
+                    name="name"
+                    label={
+                      <Text m="0">
+                        <FormattedMessage {...messages.includeFullName} />
+                      </Text>
+                    }
+                  />
+                </Box>
+                <Box mb="24px">
+                  <Checkbox
+                    name="email"
+                    label={
+                      <Text m="0">
+                        <FormattedMessage {...messages.includeEmail} />
+                      </Text>
+                    }
+                  />
+                </Box>
+              </>
+            )}
             <Box w="100%" display="flex">
               <Button width="auto" type="submit" processing={loading}>
                 <FormattedMessage {...messages.exportAsPDF} />

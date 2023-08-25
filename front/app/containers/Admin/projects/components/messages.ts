@@ -44,4 +44,14 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.includeEmail',
     defaultMessage: 'Include email',
   },
+  clickExportToPDFIdeaForm: {
+    id: 'app.containers.Admin.projects.all.clickExportToPDFIdeaForm',
+    defaultMessage:
+      "Click 'Export as pdf' below to download a pdf version of the input form. Be aware that at the moment the Images, File Upload, Tags, Linear Scale and Number fields are not supported for the pdf version.",
+  },
+  clickExportToPDFSurvey: {
+    id: 'app.containers.Admin.projects.all.clickExportToPDFSurvey',
+    defaultMessage:
+      "Click 'Export as pdf' below to download a pdf version of the survey. Be aware that at the moment the Linear Scale, Number and File Upload fields are not supported for the pdf version.",
+  },
 });
