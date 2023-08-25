@@ -84,7 +84,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_25_121819) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.jsonb "tags_ids"
-    t.jsonb "filters"
+    t.jsonb "filters", default: {}, null: false
     t.index ["analysis_id"], name: "index_analysis_background_tasks_on_analysis_id"
   end
 
