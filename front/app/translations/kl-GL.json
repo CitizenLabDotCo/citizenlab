@@ -1527,7 +1527,6 @@
   "app.containers.UsersShowPage.commentsWithCount": "Oqaaseqaatit ({commentsCount})",
   "app.containers.UsersShowPage.editProfile": "Profilera aaqqissuunniarpara",
   "app.containers.UsersShowPage.emptyInfoText": "You are not following any items of the specified filter above.",
-  "app.containers.UsersShowPage.following": "Following",
   "app.containers.UsersShowPage.goBackToPreviousPage": "Go back to the previous page",
   "app.containers.UsersShowPage.ideas": "Ideas",
   "app.containers.UsersShowPage.initiatives": "Initiatives",
