@@ -5,7 +5,9 @@ require 'prawn/measurement_extensions'
 class PrintCustomFieldsService
   attr_reader :participation_context, :custom_fields, :params, :previous_cursor
 
-  QUESTION_TYPES = %w[select multiselect text text_multiloc multiline_text html_multiloc linear_scale]
+  # QUESTION_TYPES = %w[select multiselect text text_multiloc multiline_text html_multiloc linear_scale]
+  # Disable linear scales for now, as they're not detected correctly by form parser
+  QUESTION_TYPES = %w[select multiselect text text_multiloc multiline_text html_multiloc]
   FORBIDDEN_HTML_TAGS_REGEX = /<\/?(div|span|ul|ol|li|em|img|a){1}[^>]*\/?>/
 
   def initialize(participation_context, custom_fields, params)
