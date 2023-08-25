@@ -15,6 +15,10 @@ lv:
     rejected: noraidīts
     rejected_description: Šī ideja ir noraidīta
   initiative_statuses:
+    review_pending: pārskatīšana vēl nav pabeigta
+    review_pending_description: pārskatīšana vēl nav pabeigta
+    changes_requested: pieprasītās izmaiņas
+    changes_requested_description: pieprasītās izmaiņas
     proposed: ierosinātais
     proposed_description: ierosinātais
     expired: termiņš ir beidzies
