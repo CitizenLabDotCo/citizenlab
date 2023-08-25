@@ -123,8 +123,21 @@ class SideFxInitiativeService
   end
 
   def add_autoreaction(initiative)
-    initiative.reactions.create!(mode: 'up', user: initiative.author)
-    initiative.reload
+    reaction = Reaction.new(reactable: initiative, user: initiative.author, mode: 'up')
+
+    begin
+      Pundit.authorize(
+        initiative.author,
+        reaction,
+        :create?,
+        policy_class: InitiativeReactionPolicy
+      )
+    rescue Pundit::NotAuthorizedErrorWithReason
+      # Do not create the auto-reaction.
+    else
+      initiative.reactions.create!(mode: 'up', user: initiative.author)
+      initiative.reload
+    end
   end
 
   def log_activity_jobs_after_published(initiative, user)
