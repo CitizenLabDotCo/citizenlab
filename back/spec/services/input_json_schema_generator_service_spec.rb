@@ -311,6 +311,7 @@ RSpec.describe InputJsonSchemaGeneratorService do
           type: 'array',
           uniqueItems: true,
           minItems: 0,
+          maxItems: 0,
           items: {
             type: 'string'
           }
@@ -326,6 +327,7 @@ RSpec.describe InputJsonSchemaGeneratorService do
           type: 'array',
           uniqueItems: true,
           minItems: 0,
+          maxItems: 2,
           items: {
             type: 'string',
             oneOf: [
@@ -351,6 +353,7 @@ RSpec.describe InputJsonSchemaGeneratorService do
           type: 'array',
           uniqueItems: true,
           minItems: 1,
+          maxItems: 2,
           items: {
             type: 'string',
             oneOf: [
