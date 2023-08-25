@@ -344,6 +344,10 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
         internal_commenting: {
           enabled: false,
           allowed: false
+        },
+        import_printed_forms: {
+          enabled: true,
+          allowed: true
         }
       }
     )
