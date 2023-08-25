@@ -10,6 +10,8 @@ import { fontSizes } from 'utils/styleUtils';
 
 // hooks
 import useInitiativeReviewRequired from 'hooks/useInitiativeReviewRequired';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useLocalize from 'hooks/useLocalize';
 
 const Container = styled.div`
   color: ${({ theme }) => theme.colors.tenantText};
@@ -28,34 +30,49 @@ const Tip = styled.li`
 
 const TipsContent = () => {
   const initiativeReviewRequired = useInitiativeReviewRequired();
+  const { data: appConfiguration } = useAppConfiguration();
+  const localize = useLocalize();
+
+  if (!appConfiguration) return null;
+
+  const initiativeSettings =
+    appConfiguration.data.attributes.settings.initiatives;
 
   return (
     <Container>
-      <TipsList>
-        <Tip>
-          <FormattedMessage {...messages.elaborate} />
-        </Tip>
-        <Tip>
-          <FormattedMessage {...messages.meaningfulTitle} />
-        </Tip>
-        <Tip>
-          <FormattedMessage {...messages.visualise} />
-        </Tip>
-        <Tip>
-          <FormattedMessage {...messages.relevantAttachments} />
-        </Tip>
-        <Tip>
-          <FormattedMessage {...messages.makeSureReadyToBePublic} />{' '}
-          {initiativeReviewRequired ? (
-            <FormattedMessage {...messages.notEditableOnceReviewed} />
-          ) : (
-            <FormattedMessage {...messages.notEditableOnceVoted} />
-          )}
-        </Tip>
-        <Tip>
-          <FormattedMessage {...messages.shareSocialMedia} />
-        </Tip>
-      </TipsList>
+      {initiativeSettings?.use_custom_posting_tips ? (
+        <div
+          dangerouslySetInnerHTML={{
+            __html: localize(initiativeSettings?.posting_tips),
+          }}
+        />
+      ) : (
+        <TipsList>
+          <Tip>
+            <FormattedMessage {...messages.elaborate} />
+          </Tip>
+          <Tip>
+            <FormattedMessage {...messages.meaningfulTitle} />
+          </Tip>
+          <Tip>
+            <FormattedMessage {...messages.visualise} />
+          </Tip>
+          <Tip>
+            <FormattedMessage {...messages.relevantAttachments} />
+          </Tip>
+          <Tip>
+            <FormattedMessage {...messages.makeSureReadyToBePublic} />{' '}
+            {initiativeReviewRequired ? (
+              <FormattedMessage {...messages.notEditableOnceReviewed} />
+            ) : (
+              <FormattedMessage {...messages.notEditableOnceVoted} />
+            )}
+          </Tip>
+          <Tip>
+            <FormattedMessage {...messages.shareSocialMedia} />
+          </Tip>
+        </TipsList>
+      )}
     </Container>
   );
 };

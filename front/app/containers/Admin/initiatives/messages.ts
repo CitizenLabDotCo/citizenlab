@@ -69,6 +69,23 @@ export default defineMessages({
     id: 'app.containers.Admin.initiatives.numberOfDaysThreshold',
     defaultMessage: 'Number of days to reach minimum number of votes',
   },
+  postingTips: {
+    id: 'app.containers.Admin.initiatives.postingTips',
+    defaultMessage: 'Posting tips',
+  },
+  useCustomPostingTips: {
+    id: 'app.containers.Admin.initiatives.useCustomPostingTips',
+    defaultMessage: 'Use custom posting tips',
+  },
+  useCustomPostingTipsInfo: {
+    id: 'app.containers.Admin.initiatives.useCustomPostingTipsInfo',
+    defaultMessage:
+      'Users will see custom tips when posting a proposal instead of default ones',
+  },
+  postingTipsInfo: {
+    id: 'app.containers.Admin.initiatives.postingTipsInfo',
+    defaultMessage: 'Give some specific tips for posting a proposal',
+  },
   proposalEligibilityCriteria: {
     id: 'app.containers.Admin.initiatives.proposalEligibilityCriteria',
     defaultMessage: 'Eligibility criteria',
