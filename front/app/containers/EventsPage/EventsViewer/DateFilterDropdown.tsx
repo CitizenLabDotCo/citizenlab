@@ -2,15 +2,16 @@ import React, { useState } from 'react';
 
 // components
 import FilterSelector from 'components/FilterSelector';
-
-// i18n
-import { useSearchParams } from 'react-router-dom';
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
 import { Box } from '@citizenlab/cl2-component-library';
 
+// i18n
+import { useIntl } from 'utils/cl-intl';
+import messages from './messages';
+
+// router
+import { useSearchParams } from 'react-router-dom';
+
 type InputProps = {
-  title: string | JSX.Element;
   onChange: (dateFilterValue: string[]) => void;
   textColor?: string;
   filterSelectorStyle?: 'button' | 'text';
@@ -48,28 +49,24 @@ const DateFilterDropdown = ({
     { text: formatMessage(messages.thisMonth), value: 'month' },
     { text: formatMessage(messages.allTime), value: 'all' },
   ];
-  if (options && options.length > 0) {
-    return (
-      <Box mr="8px" id="e2e-event-date-filter">
-        <FilterSelector
-          id="e2e-date-filter-selector"
-          title={formatMessage(messages.date)}
-          name="dates"
-          selected={selectedValue}
-          values={options}
-          onChange={handleOnChange}
-          multipleSelectionAllowed={false}
-          right="-10px"
-          mobileLeft={mobileLeft ? mobileLeft : '-5px'}
-          textColor={textColor}
-          filterSelectorStyle={filterSelectorStyle}
-          top={listTop}
-        />
-      </Box>
-    );
-  }
-
-  return null;
+  return (
+    <Box mr="8px" id="e2e-event-date-filter">
+      <FilterSelector
+        id="e2e-date-filter-selector"
+        title={formatMessage(messages.date)}
+        name="dates"
+        selected={selectedValue}
+        values={options}
+        onChange={handleOnChange}
+        multipleSelectionAllowed={false}
+        right="-10px"
+        mobileLeft={mobileLeft ? mobileLeft : '-5px'}
+        textColor={textColor}
+        filterSelectorStyle={filterSelectorStyle}
+        top={listTop}
+      />
+    </Box>
+  );
 };
 
 export default DateFilterDropdown;

@@ -51,6 +51,8 @@ const StyledPagination = styled(Pagination)`
   margin: 36px auto 0px;
 `;
 
+// Gets a time period from a given key (today, week, month) and
+// returns it as a range of two values stored in an array
 const getDatesFromKey = (dateFilter: string[] | undefined) => {
   if (!dateFilter) {
     return undefined;

@@ -58,7 +58,6 @@ const TopBar = memo<Props>(
           <Box display="flex" mt="8px" ml="auto">
             {showDateFilter && (
               <DateFilterDropdown
-                title={formatMessage(messages.filterDropdownTitle)}
                 onChange={setDateFilter}
                 textColor={theme.colors.tenantText}
                 filterSelectorStyle="button"

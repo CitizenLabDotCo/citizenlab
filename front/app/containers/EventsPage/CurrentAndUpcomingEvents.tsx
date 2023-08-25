@@ -1,12 +1,14 @@
 import React from 'react';
-import EventsViewer from './EventsViewer';
 import styled from 'styled-components';
+
+// components
+import { Box } from '@citizenlab/cl2-component-library';
+import EventsViewer from './EventsViewer';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
-import { Box } from '@citizenlab/cl2-component-library';
 
 const StyledEventsViewer = styled(EventsViewer)`
   margin-bottom: 135px;
