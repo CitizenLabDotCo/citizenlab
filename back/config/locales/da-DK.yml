@@ -15,6 +15,10 @@ da:
     rejected: afvist
     rejected_description: Denne ide er blevet afvist
   initiative_statuses:
+    review_pending: afventer gennemgang
+    review_pending_description: afventer gennemgang
+    changes_requested: ønskede ændringer
+    changes_requested_description: ønskede ændringer
     proposed: aktive
     proposed_description: aktive
     expired: udløbet
