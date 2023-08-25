@@ -150,8 +150,8 @@ resource 'Idea Custom Fields' do
             key: 'inserted_field',
             ordering: 1,
             required: false,
-            minItems: 1;
-            maxItems: 2;
+            minItems: 1,
+            maxItems: 2,
             title_multiloc: { en: 'Inserted field' },
             updated_at: an_instance_of(String),
             logic: {},
