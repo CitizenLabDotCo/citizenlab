@@ -15,6 +15,7 @@
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
 #  tags_ids            :jsonb
+#  filters             :jsonb
 #
 # Indexes
 #
@@ -26,10 +27,18 @@
 #
 module Analysis
   class AutoTaggingTask < BackgroundTask
+    include HasFilters
+
     AUTO_TAGGING_METHODS = %w[language platform_topic nlp_topic sentiment controversial label_classification few_shot_classification]
+
+    # We do dependent: nil because even if the reference is broken, the fact
+    # that the tagging has a value still gives us the information that is was
+    # not created manually
+    has_many :taggings, foreign_key: 'background_task_id', dependent: nil
 
     validates :auto_tagging_method, inclusion: { in: AUTO_TAGGING_METHODS }
     validates :tags_ids, presence: true, if: :method_with_tags_ids?
+
     validate :validate_tags_ids, if: :method_with_tags_ids?
 
     def execute
@@ -45,7 +54,7 @@ module Analysis
 
     def validate_tags_ids
       unless tags_ids.is_a?(Array)
-        errors.add(:tags_ids, :not_an_array, "tags_ids must be an array for autotagging_method #{autotagging_method}")
+        errors.add(:tags_ids, :not_an_array, "tags_ids must be an array for autotagging_method #{auto_tagging_method}")
         return
       end
 

@@ -48,7 +48,7 @@ module Analysis
 
       # We exclude the inputs that are already assigned to any of the target tags
       inputs_associated_with_target_tags = Tagging.where(tag_id: task.tags_ids).select(:input_id)
-      inputs = analysis.inputs.where.not(id: inputs_associated_with_target_tags)
+      inputs = filtered_inputs.where.not(id: inputs_associated_with_target_tags)
 
       total_inputs = inputs.size
 
@@ -56,7 +56,7 @@ module Analysis
         update_progress(i / total_inputs.to_f)
 
         nlp = nlp_cloud_client_for(
-          'xlm-roberta-large-xnli', # Can also be 'finetuned-llama-2-70b', more expensive but performs sligtly better
+          'xlm-roberta-large-xnli', # Can also be 'finetuned-llama-2-70b', more expensive but performs slightly better
           gpu: true
         )
 
@@ -73,7 +73,7 @@ module Analysis
           .reject { |(_label, score)| !score || score < DETECTION_THRESHOLD }
           .each do |(label, _score)|
           tag = tags.find { |t| t.name == label }
-          Tagging.find_or_create_by!(input_id: input.id, tag_id: tag.id) if tag
+          find_or_create_tagging!(input_id: input.id, tag_id: tag.id) if tag
         end
       end
     rescue StandardError => e

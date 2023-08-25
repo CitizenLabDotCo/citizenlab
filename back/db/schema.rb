@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_23_204209) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_25_121819) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -84,6 +84,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_23_204209) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.jsonb "tags_ids"
+    t.jsonb "filters"
     t.index ["analysis_id"], name: "index_analysis_background_tasks_on_analysis_id"
   end
 
@@ -125,6 +126,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_23_204209) do
   create_table "analysis_taggings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "tag_id", null: false
     t.uuid "input_id", null: false
+    t.uuid "background_task_id"
     t.index ["input_id"], name: "index_analysis_taggings_on_input_id"
     t.index ["tag_id", "input_id"], name: "index_analysis_taggings_on_tag_id_and_input_id", unique: true
     t.index ["tag_id"], name: "index_analysis_taggings_on_tag_id"

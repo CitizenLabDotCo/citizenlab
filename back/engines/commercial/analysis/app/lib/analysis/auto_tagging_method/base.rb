@@ -46,6 +46,15 @@ module Analysis
 
     protected
 
+    def filtered_inputs
+      @filtered_inputs ||= InputsFinder.new(analysis, task.filters.symbolize_keys).execute
+    end
+
+    def find_or_create_tagging!(input_id:, tag_id:)
+      Tagging.find_by(input_id: input_id, tag_id: tag_id) ||
+        Tagging.create!(input_id: input_id, tag_id: tag_id, background_task: task)
+    end
+
     def update_progress(progress)
       task.update!(progress: progress)
     end

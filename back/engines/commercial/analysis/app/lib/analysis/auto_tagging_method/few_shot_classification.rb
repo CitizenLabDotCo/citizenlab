@@ -12,7 +12,7 @@ module Analysis
 
       # We exclude the inputs that are already assigned to any of the target tags
       inputs_associated_with_target_tags = Tagging.where(tag_id: task.tags_ids).select(:input_id)
-      all_inputs = analysis.inputs.where.not(id: inputs_associated_with_target_tags)
+      all_inputs = filtered_inputs.where.not(id: inputs_associated_with_target_tags)
 
       total_inputs = all_inputs.size
 
@@ -25,7 +25,7 @@ module Analysis
 
         inputs_slice.zip(answer.lines).each do |(input, label)|
           tag = tags.find { |t| t.name.casecmp(label.strip) == 0 }
-          Tagging.find_or_create_by!(input_id: input.id, tag_id: tag.id) if tag
+          find_or_create_tagging!(input_id: input.id, tag_id: tag.id) if tag
         end
       end
     rescue StandardError => e
