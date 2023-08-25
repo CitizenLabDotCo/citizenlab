@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
@@ -20,13 +20,18 @@ import {
 } from 'components/UI/FormComponents';
 // components
 import Button from 'components/UI/Button';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 import TopicsPicker from 'components/UI/TopicsPicker';
 
 // intl
-import messages from './messages';
-import { useIntl } from 'utils/cl-intl';
+import messages from '../messages';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import Warning from 'components/UI/Warning';
+const ProfileVisibilityFormSection = lazy(
+  () => import('./ProfileVisibilityFormSection')
+);
+const CosponsorsFormSection = lazy(() => import('./CosponsorsFormSection'));
 
 const StyledFormSection = styled(FormSection)`
   ${media.phone`
@@ -215,6 +220,73 @@ const InitiativeForm = ({ onSubmit, defaultValues }: PageFormProps) => {
             </SectionField>
           )}
         </StyledFormSection>
+        <Suspense fallback={null}>
+          <CosponsorsFormSection />
+        </Suspense>
+        <StyledFormSection>
+          <FormSectionTitle message={messages.formAttachmentsSectionTitle} />
+          <SectionField id="e2e-iniatiative-banner-dropzone">
+            <FormLabel
+              labelMessage={messages.bannerUploadLabel}
+              subtextMessage={messages.bannerUploadLabelSubtext}
+              htmlFor="initiative-banner-dropzone"
+              optional
+            />
+            {/* <ImagesDropzone
+            id="initiative-banner-dropzone"
+            images={banner ? [banner] : null}
+            imagePreviewRatio={360 / 1440}
+            acceptedFileTypes={{
+              'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
+            }}
+            onAdd={addBanner}
+            onRemove={removeBanner}
+          />
+          {apiErrors && apiErrors.header_bg && (
+            <Error apiErrors={apiErrors.header_bg} />
+          )} */}
+          </SectionField>
+          <SectionField id="e2e-iniatiative-img-dropzone">
+            <FormLabel
+              labelMessage={messages.imageUploadLabel}
+              subtextMessage={messages.imageUploadLabelSubtext}
+              htmlFor="initiative-image-dropzone"
+              optional
+            />
+            {/* <ImagesDropzone
+            id="initiative-image-dropzone"
+            images={image ? [image] : null}
+            imagePreviewRatio={135 / 298}
+            acceptedFileTypes={{
+              'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
+            }}
+            onAdd={addImage}
+            onRemove={removeImage}
+          />
+          {touched.image && errors.image && (
+            <Error text={formatMessage(errors.image.message)} />
+          )} */}
+          </SectionField>
+          <SectionField>
+            <FormLabel
+              labelMessage={messages.fileUploadLabel}
+              subtextMessage={messages.fileUploadLabelSubtext}
+              htmlFor="e2e-initiative-file-upload"
+              optional
+            >
+              {/* <FileUploader
+              id="e2e-initiative-file-upload"
+              onFileAdd={onAddFile}
+              onFileRemove={onRemoveFile}
+              files={files}
+              apiErrors={apiErrors}
+            /> */}
+            </FormLabel>
+          </SectionField>
+        </StyledFormSection>
+        <Suspense fallback={null}>
+          {/* <ProfileVisibilityFormSection /> */}
+        </Suspense>
       </form>
     </FormProvider>
   );
