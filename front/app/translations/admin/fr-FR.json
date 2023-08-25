@@ -1500,7 +1500,7 @@
   "app.containers.AdminPage.ProjectEvents.locationLabel": "Localisation",
   "app.containers.AdminPage.ProjectEvents.mapSelectionLabel2": "Affinez l'emplacement du marqueur de votre événement en cliquant sur la carte :",
   "app.containers.AdminPage.ProjectEvents.newEventTitle": "Créer un nouvel événement",
-  "app.containers.AdminPage.ProjectEvents.refineLocationCoordinates": "Affiner l'emplacement de la carte",
+  "app.containers.AdminPage.ProjectEvents.refineLocationCoordinates": "Affiner la localisation sur la carte",
   "app.containers.AdminPage.ProjectEvents.refineOnMap": "Affiner la localisation sur la carte",
   "app.containers.AdminPage.ProjectEvents.saveButtonLabel": "Enregistrer",
   "app.containers.AdminPage.ProjectEvents.saveErrorMessage": "Vos modifications n'ont pas pu être enregistrées, veuillez réessayer.",
