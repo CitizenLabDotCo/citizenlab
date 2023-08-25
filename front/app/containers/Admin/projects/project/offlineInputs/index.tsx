@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 
 // api
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
 import useInputSchema from 'hooks/useInputSchema';
@@ -32,6 +33,9 @@ import { FormData } from 'components/Form/typings';
 import { CLErrors } from 'typings';
 
 const OfflineInputImporter = () => {
+  const importPrintedFormsEnabled = useFeatureFlag({
+    name: 'import_printed_forms',
+  });
   const { projectId } = useParams() as {
     projectId: string;
   };
@@ -55,6 +59,8 @@ const OfflineInputImporter = () => {
   const { schema, uiSchema } = useInputSchema({
     projectId,
   });
+
+  if (!importPrintedFormsEnabled) return null;
 
   const formData =
     ideaId && formStatePerIdea[ideaId]
