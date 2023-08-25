@@ -58,7 +58,7 @@ describe('Initiatives with anonymous participation allowed', () => {
     cy.wait(1000);
 
     // save the form
-    cy.get('.e2e-initiative-publish-button .e2e-submit-form').click({
+    cy.get('#e2e-initiative-publish-button').click({
       force: true,
     });
     cy.wait(1000);
@@ -105,7 +105,7 @@ describe('Initiatives with anonymous participation allowed', () => {
     cy.wait(1000);
 
     // save the form
-    cy.get('.e2e-initiative-publish-button .e2e-submit-form').click({
+    cy.get('#e2e-initiative-publish-button').click({
       force: true,
     });
     cy.wait(1000);
