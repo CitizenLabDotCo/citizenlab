@@ -22,6 +22,7 @@ const DEFAULT_VALUES = {
 
 interface Props {
   open: boolean;
+  formType: 'idea_form' | 'survey';
   onClose: () => void;
   onExport: (params: { name: boolean; email: boolean }) => Promise<void>;
 }

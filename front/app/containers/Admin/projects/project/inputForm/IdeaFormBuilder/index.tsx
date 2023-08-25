@@ -53,6 +53,7 @@ const IdeaFormBuilder = () => {
       />
       <PDFExportModal
         open={exportModalOpen}
+        formType="idea_form"
         onClose={() => setExportModalOpen(false)}
         onExport={handleExportPDF}
       />
