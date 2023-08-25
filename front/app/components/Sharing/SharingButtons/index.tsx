@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 
 // components
 import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
@@ -28,48 +28,50 @@ interface Props {
   id?: string;
 }
 
-const SharingButtons = memo(
-  ({
-    context,
-    twitterMessage,
-    whatsAppMessage,
-    facebookMessage,
-    emailSubject,
-    emailBody,
-    id,
-    url,
-    utmParams,
-  }: Props) => {
-    const isSmallerThanTablet = useBreakpoint('tablet');
+const SharingButtons = ({
+  context,
+  twitterMessage,
+  whatsAppMessage,
+  facebookMessage,
+  emailSubject,
+  emailBody,
+  id,
+  url,
+  utmParams,
+}: Props) => {
+  const isSmallerThanTablet = useBreakpoint('tablet');
 
-    const getUrl = (medium: Medium) => {
-      return getUrlWithUtm(medium, url, utmParams);
-    };
-    const titleMessage = {
-      idea: <FormattedMessage {...messages.share} />,
-      project: <FormattedMessage {...messages.shareThisProject} />,
-      initiative: <FormattedMessage {...messages.shareThisInitiative} />,
-      folder: <FormattedMessage {...messages.shareThisFolder} />,
-      event: <FormattedMessage {...messages.shareThisEvent} />,
-    }[context];
+  const getUrl = (medium: Medium) => {
+    return getUrlWithUtm(medium, url, utmParams);
+  };
+  const titleMessage = {
+    idea: <FormattedMessage {...messages.share} />,
+    project: <FormattedMessage {...messages.shareThisProject} />,
+    initiative: <FormattedMessage {...messages.shareThisInitiative} />,
+    folder: <FormattedMessage {...messages.shareThisFolder} />,
+    event: <FormattedMessage {...messages.shareThisEvent} />,
+  }[context];
 
-    return (
-      <>
-        <Title
-          textAlign={isSmallerThanTablet ? 'center' : 'inherit'}
-          mb="12px"
-          color="textPrimary"
-          variant="h3"
-        >
-          {titleMessage}
-        </Title>
-        <Box
-          id={id}
-          justifyContent={isSmallerThanTablet ? 'center' : 'flex-start'}
-          display="flex"
-          gap="5px"
-          flexWrap="wrap"
-        >
+  return (
+    <>
+      <Title
+        textAlign={isSmallerThanTablet ? 'center' : 'inherit'}
+        mb="20px"
+        color="textPrimary"
+        variant="h3"
+        as="h2"
+      >
+        {titleMessage}
+      </Title>
+      <Box
+        id={id}
+        alignItems={isSmallerThanTablet ? 'center' : 'flex-start'}
+        display="flex"
+        gap="5px"
+        flexWrap="wrap"
+        flexDirection={isSmallerThanTablet ? 'column' : 'row'}
+      >
+        <Box display="flex" gap="4px">
           <Facebook
             facebookMessage={facebookMessage}
             url={getUrl('facebook')}
@@ -85,11 +87,16 @@ const SharingButtons = memo(
             emailBody={emailBody}
             isDropdownStyle={false}
           />
-          <CopyLink copyLink={url} />
         </Box>
-      </>
-    );
-  }
-);
+        {isSmallerThanTablet && (
+          <Box justifyContent="center">
+            <FormattedMessage {...messages.or} />
+          </Box>
+        )}
+        <CopyLink copyLink={url} />
+      </Box>
+    </>
+  );
+};
 
 export default SharingButtons;

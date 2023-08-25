@@ -27,10 +27,12 @@
 #  inappropriate_content_flag_id :uuid
 #  internal_comment_id           :uuid
 #  basket_id                     :uuid
+#  cosponsors_initiative_id      :uuid
 #
 # Indexes
 #
 #  index_notifications_on_basket_id                            (basket_id)
+#  index_notifications_on_cosponsors_initiative_id             (cosponsors_initiative_id)
 #  index_notifications_on_created_at                           (created_at)
 #  index_notifications_on_inappropriate_content_flag_id        (inappropriate_content_flag_id)
 #  index_notifications_on_initiating_user_id                   (initiating_user_id)
@@ -49,6 +51,7 @@
 #
 #  fk_rails_...  (basket_id => baskets.id)
 #  fk_rails_...  (comment_id => comments.id)
+#  fk_rails_...  (cosponsors_initiative_id => cosponsors_initiatives.id)
 #  fk_rails_...  (inappropriate_content_flag_id => flag_inappropriate_content_inappropriate_content_flags.id)
 #  fk_rails_...  (initiating_user_id => users.id)
 #  fk_rails_...  (internal_comment_id => internal_comments.id)
@@ -69,15 +72,18 @@ module Notifications
 
     def self.make_notifications_on(activity)
       initiative = activity.item
-      recipient_id = initiative&.author_id
+      cosponsor_ids = initiative.cosponsors_initiatives.where(status: 'accepted').pluck(:user_id)
+      recipient_ids = [initiative&.author_id] + cosponsor_ids
 
-      if initiative && recipient_id
-        [new(
-          recipient_id: recipient_id,
-          initiating_user_id: activity.user_id,
-          post: initiative,
-          post_status: initiative.initiative_status
-        )]
+      if initiative && recipient_ids
+        recipient_ids.map do |recipient_id|
+          new(
+            recipient_id: recipient_id,
+            initiating_user_id: activity.user_id,
+            post: initiative,
+            post_status: initiative.initiative_status
+          )
+        end
       else
         []
       end

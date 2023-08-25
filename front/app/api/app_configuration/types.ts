@@ -58,12 +58,16 @@ export type TSeatNumber = number | null | undefined;
 export type ProposalsSettings = {
   allowed: boolean;
   enabled: boolean;
+  require_review?: boolean;
+  require_cosponsors?: boolean;
+  cosponsors_number?: number;
   days_limit: number;
-  allow_anonymous_participation: boolean;
+  allow_anonymous_participation?: boolean;
   eligibility_criteria: Multiloc;
   threshold_reached_message: Multiloc;
   reacting_threshold: number;
 };
+
 export interface IAppConfigurationSettings {
   core: IAppConfigurationSettingsCore;
   advanced_custom_pages: {
@@ -129,6 +133,8 @@ export interface IAppConfigurationSettings {
   private_projects?: AppConfigurationFeature;
   maps?: AppConfigurationMapSettings;
   initiatives?: ProposalsSettings;
+  initiative_review?: AppConfigurationFeature;
+  initiative_cosponsors?: AppConfigurationFeature;
   fragments?: {
     allowed: boolean;
     enabled: boolean;
@@ -225,6 +231,7 @@ export interface IAppConfigurationSettings {
   };
   seat_based_billing?: AppConfigurationFeature;
   internal_commenting?: AppConfigurationFeature;
+  follow?: AppConfigurationFeature;
   konveio_document_annotation?: AppConfigurationFeature;
   public_api_tokens?: AppConfigurationFeature;
   analysis?: AppConfigurationFeature;

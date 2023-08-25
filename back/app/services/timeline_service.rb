@@ -96,4 +96,9 @@ class TimelineService
       [project.id, active]
     end
   end
+
+  def phase_number(phase)
+    phase_ids = phase.project.phase_ids
+    phase_ids.find_index(phase.id) + 1
+  end
 end

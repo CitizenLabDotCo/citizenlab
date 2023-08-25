@@ -9,7 +9,7 @@ resource 'Initiatives' do
   before do
     header 'Content-Type', 'application/json'
     @first_admin = create(:admin)
-    @initiatives = %w[published published draft published spam published published].map { |ps| create(:initiative, publication_status: ps, assignee: create(:admin)) }
+    @initiatives = %w[published published draft published published published].map { |ps| create(:initiative, publication_status: ps, assignee: create(:admin)) }
     @user = create(:user)
     header_token_for @user
   end
@@ -30,7 +30,7 @@ resource 'Initiatives' do
     parameter :sort, "Either 'trending' (default), 'new', '-new', 'author_name', '-author_name', 'likes_count', '-likes_count', 'status', '-status', 'random'", required: false
 
     example_request 'List all published initiatives (default behaviour)' do
-      expect(status).to eq(200)
+      assert_status 200
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 5
       expect(json_response[:data].map { |d| d.dig(:attributes, :publication_status) }).to all(eq 'published')
@@ -38,6 +38,8 @@ resource 'Initiatives' do
 
     example "Don't list drafts (default behaviour)", document: false do
       do_request publication_status: 'draft'
+
+      assert_status 200
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 0
     end
@@ -160,13 +162,15 @@ resource 'Initiatives' do
       expect(json_response[:data].size).to eq 6
     end
 
-    example 'List all initiatives includes the user_reaction', document: false do
+    example 'List all initiatives includes the user_reaction and user_follower', document: false do
       initiative = create(:initiative)
       reaction = create(:reaction, reactable: initiative, user: @user)
+      follower = create(:follower, followable: create(:initiative), user: @user)
 
       do_request
       json_response = json_parse(response_body)
-      expect(json_response[:data].filter_map { |d| d[:relationships][:user_reaction][:data] }.first[:id]).to eq reaction.id
+      expect(json_response[:data].filter_map { |d| d.dig(:relationships, :user_reaction, :data, :id) }.first).to eq reaction.id
+      expect(json_response[:data].filter_map { |d| d.dig(:relationships, :user_follower, :data, :id) }.first).to eq follower.id
       expect(json_response[:included].pluck(:id)).to include reaction.id
     end
   end
@@ -198,10 +202,10 @@ resource 'Initiatives' do
     example 'List all markers within a bounding box' do
       do_request(bounding_box: '[51.208758,3.224363,50.000667,5.715281]') # Bruges-Bastogne
 
-      expect(status).to eq(200)
+      assert_status 200
       json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 5
-      expect(json_response[:data].map { |d| d.dig(:attributes, :title_multiloc, :en) }.sort).to match %w[Ghent Brussels Liège Meise Mons].sort
+      expect(json_response[:data].size).to eq 4
+      expect(json_response[:data].map { |d| d.dig(:attributes, :title_multiloc, :en) }.sort).to match %w[Brussels Liège Meise Mons].sort
     end
   end
 
@@ -476,6 +480,7 @@ resource 'Initiatives' do
       parameter :area_ids, 'Array of ids of the associated areas'
       parameter :assignee_id, 'The user id of the admin that takes ownership. Only allowed for admins.'
       parameter :anonymous, 'Post this initiative anonymously - true/false'
+      parameter :cosponsor_ids, 'Array of user ids of the desired cosponsors'
     end
     ValidationErrorHelper.new.error_fields(self, Initiative)
 
@@ -657,7 +662,7 @@ resource 'Initiatives' do
         let(:publication_status) { 'published' }
 
         example_request 'Change the publication status' do
-          expect(response_status).to eq 200
+          assert_status 200
           expect(response_data.dig(:attributes, :publication_status)).to eq 'published'
         end
       end
@@ -672,6 +677,42 @@ resource 'Initiatives' do
           expect(json_response_body.dig(:errors, :base, 0, :error)).to eq 'Unauthorized!'
         end
       end
+
+      describe 'cosponsor_ids' do
+        let(:id) { @initiative.id }
+        let(:cosponsor) { create(:user) }
+        let(:cosponsor_ids) { [cosponsor.id] }
+
+        example 'Update the cosponsors of an initiative' do
+          expect { do_request }
+            .to have_enqueued_job(LogActivityJob)
+            .with(instance_of(CosponsorsInitiative), 'created', @user, instance_of(Integer))
+            .exactly(1).times
+
+          assert_status 200
+          json_response = json_parse(response_body)
+
+          expect(json_response.dig(:data, :relationships, :cosponsors, :data).pluck(:id)).to match_array cosponsor_ids
+        end
+      end
+    end
+  end
+
+  patch 'web_api/v1/initiatives/:id/accept_cosponsorship_invite' do
+    before do
+      @initiative = create(:initiative)
+      @cosponsors_initiative = create(:cosponsors_initiative, initiative: @initiative, user: @user)
+    end
+
+    describe 'for initiative with associated cosponsor' do
+      let(:id) { @initiative.id }
+
+      example 'cosponsor accepts invitation' do
+        expect { do_request }.to change { @cosponsors_initiative.reload.status }.from('pending').to('accepted')
+        assert_status 200
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data, :attributes, :slug)).to eq @initiative.slug
+      end
     end
   end
 
@@ -683,7 +724,7 @@ resource 'Initiatives' do
     let(:id) { @initiative.id }
 
     example_request 'Delete an initiative' do
-      expect(response_status).to eq 200
+      assert_status 200
       expect { Initiative.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end

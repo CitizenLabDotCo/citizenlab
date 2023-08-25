@@ -16,7 +16,7 @@ const DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA = {
   },
 };
 
-let mockProjectDescriptionBuilderLayoutData:
+const mockProjectDescriptionBuilderLayoutData:
   | typeof DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA
   | undefined
   | Error = DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA;

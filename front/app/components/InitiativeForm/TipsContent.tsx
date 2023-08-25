@@ -1,12 +1,15 @@
-import React, { memo } from 'react';
+import React from 'react';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // styles
-import styled, { withTheme } from 'styled-components';
+import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
+
+// hooks
+import useInitiativeReviewRequired from 'hooks/useInitiativeReviewRequired';
 
 const Container = styled.div`
   color: ${({ theme }) => theme.colors.tenantText};
@@ -23,11 +26,9 @@ const Tip = styled.li`
   margin-bottom: 20px;
 `;
 
-interface Props {
-  theme: any;
-}
+const TipsContent = () => {
+  const initiativeReviewRequired = useInitiativeReviewRequired();
 
-const TipsContent = memo<Props>((_props) => {
   return (
     <Container>
       <TipsList>
@@ -44,11 +45,19 @@ const TipsContent = memo<Props>((_props) => {
           <FormattedMessage {...messages.relevantAttachments} />
         </Tip>
         <Tip>
+          <FormattedMessage {...messages.makeSureReadyToBePublic} />{' '}
+          {initiativeReviewRequired ? (
+            <FormattedMessage {...messages.notEditableOnceReviewed} />
+          ) : (
+            <FormattedMessage {...messages.notEditableOnceVoted} />
+          )}
+        </Tip>
+        <Tip>
           <FormattedMessage {...messages.shareSocialMedia} />
         </Tip>
       </TipsList>
     </Container>
   );
-});
+};
 
-export default withTheme(TipsContent);
+export default TipsContent;

@@ -12,7 +12,7 @@ describe MultilocService do
   end
 
   describe 't' do
-    let(:user) { create(:user, locale: 'en') }
+    let(:preferred_locale) { 'en' }
     let(:translations) do
       {
         'nl-BE' => 'woord',
@@ -25,19 +25,18 @@ describe MultilocService do
       expect(service.t(nil)).to be_nil
     end
 
-    it 'picks the user locale from the translations when available' do
-      expect(service.t(translations, user)).to eq 'word'
+    it 'picks the preferred locale from the translations when available' do
+      expect(service.t(translations, preferred_locale)).to eq 'word'
     end
 
-    it "falls back to i18n locale when there's no user" do
+    it "falls back to i18n locale when there's no preferred locale" do
       I18n.with_locale(:'nl-BE') do
         expect(service.t(translations)).to eq 'woord'
       end
     end
 
     it "falls back to the first available tenant locale when the translations don't contain the requested" do
-      user.update(locale: 'de-DE')
-      expect(service.t(translations, user)).to eq 'mot'
+      expect(service.t(translations, 'de-DE')).to eq 'mot'
     end
 
     it 'falls back to the first available translation when no tenant locale is available' do
@@ -45,18 +44,18 @@ describe MultilocService do
         'de-DE': 'wort',
         pt: 'worto'
       }
-      expect(service.t(translations, user)).to eq 'wort'
+      expect(service.t(translations, preferred_locale)).to eq 'wort'
     end
 
     it 'returns an empty unfrozen string when no translation is defined' do
-      translation = service.t({}, user)
+      translation = service.t({}, preferred_locale)
       expect(translation).to eq ''
       expect(translation).not_to be_frozen
     end
 
     it "returns an empty string when that's what the translations define" do
       translations['en'] = ''
-      expect(service.t(translations, user)).to eq ''
+      expect(service.t(translations, preferred_locale)).to eq ''
     end
   end
 
