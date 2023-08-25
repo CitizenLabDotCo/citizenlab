@@ -20,6 +20,8 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
       params
     ).create_pdf
 
+    # bla
+
     send_data(
       pdf.render,
       type: 'application/pdf',
