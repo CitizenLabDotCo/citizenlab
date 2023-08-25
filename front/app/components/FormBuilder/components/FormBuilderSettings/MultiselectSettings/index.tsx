@@ -25,12 +25,14 @@ type Props = {
   minimumSelectCountName: string;
   maximumSelectCountName: string;
   selectCountToggleName: string;
+  selectOptionsName: string;
 };
 
 const MultiselectSettings = ({
   minimumSelectCountName,
   maximumSelectCountName,
   selectCountToggleName,
+  selectOptionsName,
 }: Props) => {
   const { formatMessage } = useIntl();
   const { control, setValue, trigger, watch } = useFormContext();
@@ -86,6 +88,8 @@ const MultiselectSettings = ({
                     name={minimumSelectCountName}
                     id="minimumInput"
                     type="number"
+                    max={watch(selectOptionsName).length}
+                    min="0"
                     size="small"
                     onChange={(value) => {
                       setValue(minimumSelectCountName, value);
@@ -115,6 +119,8 @@ const MultiselectSettings = ({
                     id="maximumInput"
                     type="number"
                     size="small"
+                    min={watch(minimumSelectCountName)}
+                    max={watch(selectOptionsName).length}
                     onChange={(value) => {
                       setValue(maximumSelectCountName, value);
                       trigger();

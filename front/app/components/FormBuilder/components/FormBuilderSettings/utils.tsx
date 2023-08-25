@@ -44,6 +44,7 @@ export function getAdditionalSettings(
             platformLocale={platformLocale}
           />
           <MultiselectSettings
+            selectOptionsName={`customFields.${field.index}.options`}
             minimumSelectCountName={`customFields.${field.index}.minimum_select_count`}
             maximumSelectCountName={`customFields.${field.index}.maximum_select_count`}
             selectCountToggleName={`customFields.${field.index}.select_count_enabled`}
