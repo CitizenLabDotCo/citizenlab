@@ -96,7 +96,12 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
             </Text>
             {formType === 'idea_form' && importPrintedFormsEnabled && (
               <>
-                <Text mb="24px">Printed form explanation</Text>
+                <Text>
+                  <FormattedMessage {...messages.itIsAlsoPossible} />
+                </Text>
+                <Text mb="24px">
+                  <FormattedMessage {...messages.nameAndEmailExplanation} />
+                </Text>
                 <Box mb="12px">
                   <Checkbox
                     name="name"
