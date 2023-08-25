@@ -117,8 +117,6 @@ resource 'Idea Custom Fields' do
             {
               input_type: 'multiselect',
               title_multiloc: { en: 'Inserted field' },
-              maximum_select_count: 1,
-              minimum_select_count: 2,
               required: false,
               enabled: true,
               options: [
@@ -150,8 +148,6 @@ resource 'Idea Custom Fields' do
             key: 'inserted_field',
             ordering: 1,
             required: false,
-            minItems: 1,
-            maxItems: 2,
             title_multiloc: { en: 'Inserted field' },
             updated_at: an_instance_of(String),
             logic: {},
