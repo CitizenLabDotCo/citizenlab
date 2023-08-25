@@ -97,6 +97,7 @@ describe JsonFormsService do
                           'field8' =>
               { type: 'array',
                 uniqueItems: true,
+                maxItems: 2,
                 minItems: 1,
                 items: { type: 'string',
                          oneOf: [
