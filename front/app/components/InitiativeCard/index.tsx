@@ -76,7 +76,7 @@ const InitiativeCard = ({
   const { data: initiativeAuthor } = useUserById(authorId);
   const { data: initiativeImage } = useInitiativeImage(
     initiativeId,
-    initiative?.data.relationships.initiative_images.data[0].id
+    initiative?.data.relationships.initiative_images.data[0]?.id
   );
 
   if (!initiative) return null;
