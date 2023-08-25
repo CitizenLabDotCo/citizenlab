@@ -28,6 +28,9 @@ import messages from '../messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import Warning from 'components/UI/Warning';
+import QuillEditor from 'components/HookForm/QuillEditor';
+import useLocale from 'hooks/useLocale';
+import { isNilOrError } from 'utils/helperUtils';
 const ProfileVisibilityFormSection = lazy(
   () => import('./ProfileVisibilityFormSection')
 );
@@ -57,6 +60,7 @@ const mapsLoaded = window.googleMaps;
 
 const InitiativeForm = ({ onSubmit, defaultValues }: PageFormProps) => {
   const { formatMessage } = useIntl();
+  const locale = useLocale();
   const schema = object({
     // title_multiloc: validateMultilocForEveryLocale(
     //   formatMessage(messages.emptyTitleError)
@@ -74,6 +78,8 @@ const InitiativeForm = ({ onSubmit, defaultValues }: PageFormProps) => {
     defaultValues,
     resolver: yupResolver(schema),
   });
+
+  if (isNilOrError(locale)) return null;
 
   const onFormSubmit = async (formValues: FormValues) => {
     try {
@@ -144,16 +150,16 @@ const InitiativeForm = ({ onSubmit, defaultValues }: PageFormProps) => {
               labelMessage={messages.descriptionLabel}
               subtextMessage={messages.descriptionLabelSubtext}
             />
-            {/* <QuillEditor
-              id="body"
-              value={body_multiloc?.[locale] || ''}
+            <QuillEditor
+              // id="body"
+              name="body_multiloc"
               locale={locale}
-              noVideos={true}
-              noAlign={true}
-              onChange={handleBodyOnChange}
-              onBlur={onBlur('body_multiloc')}
+              noVideos
+              noAlign
+              // onChange={handleBodyOnChange}
+              // onBlur={onBlur('body_multiloc')}
             />
-            {touched.body_multiloc && errors.body_multiloc ? (
+            {/* {touched.body_multiloc && errors.body_multiloc ? (
               <Error text={formatMessage(errors.body_multiloc.message)} />
             ) : (
               apiErrors &&
