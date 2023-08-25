@@ -57,7 +57,7 @@ const MultiSelectCheckboxControl = ({
   }
 
   const getInstructionMessage = () => {
-    if (minItems === 1 && maxItems === options?.length) {
+    if ((minItems === 1 || minItems === 0) && maxItems === options?.length) {
       return formatMessage(messages.selectAsManyAsYouLike);
     } else if (minItems && maxItems) {
       if (maxItems === minItems) {

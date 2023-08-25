@@ -199,7 +199,7 @@ export const FormEdit = ({
             ? field.maximum_select_count
             : null,
           minimum_select_count: field.select_count_enabled
-            ? field.minimum_select_count
+            ? field.minimum_select_count || '1'
             : null,
           select_count_enabled: field.select_count_enabled,
         }),

@@ -77,7 +77,6 @@ describe JsonFormsService do
                 type: 'array',
                 uniqueItems: true,
                 minItems: 0,
-                maxItems: 2,
                 items: { type: 'string',
                          oneOf: [
                            {
