@@ -89,15 +89,15 @@ describe('Initiative new page', () => {
       'Belgium'
     );
 
-    // // verify that image and file upload components are present
-    // cy.get('#e2e-iniatiative-banner-dropzone');
-    // cy.get('#e2e-initiative-file-upload');
+    // verify that image and file upload components are present
+    cy.get('#e2e-iniatiative-banner-dropzone');
+    cy.get('#e2e-initiative-file-upload');
 
-    // // add an image
-    // cy.get('#e2e-iniatiative-img-dropzone input').attachFile('testimage.png');
+    // add an image
+    cy.get('#e2e-iniatiative-img-dropzone input').attachFile('testimage.png');
 
-    // // check that the base64 image was added to the dropzone component
-    // cy.get('#e2e-iniatiative-img-dropzone input').should('have.length', 0);
+    // check that the base64 image was added to the dropzone component
+    cy.get('#e2e-iniatiative-img-dropzone input').should('have.length', 0);
 
     // save the form
     cy.get('#e2e-initiative-publish-button').click({
