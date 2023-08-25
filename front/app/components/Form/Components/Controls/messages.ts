@@ -23,4 +23,8 @@ export default defineMessages({
     defaultMessage:
       '*Select exactly {selectExactly, plural, one {# option} other {# options}}',
   },
+  selectAsManyAsYouLike: {
+    id: 'app.components.form.controls.selectAsManyAsYouLike',
+    defaultMessage: '*Select as many as you like',
+  },
 });
