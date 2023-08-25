@@ -196,7 +196,7 @@ export const FormEdit = ({
           // TODO: This will get messy with more field types, abstract this in some way
           options: field.options || {},
           maximum_select_count: field.maximum_select_count,
-          minimum_select_count: field.minimum_select_count || 1,
+          minimum_select_count: field.minimum_select_count,
           select_count_enabled: field.select_count_enabled,
         }),
         ...(field.input_type === 'linear_scale' && {

@@ -117,6 +117,8 @@ resource 'Idea Custom Fields' do
             {
               input_type: 'multiselect',
               title_multiloc: { en: 'Inserted field' },
+              maximum_select_countL: nil,
+              minimum_select_count: nil,
               required: false,
               enabled: true,
               options: [
