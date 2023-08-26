@@ -1,7 +1,7 @@
 es-CL:
   email_campaigns:
     campaign_type_description:
-      "1": "Semanalmente los lunes a las %{hourOfDay}"
+      "1": "Semanalmente, los lunes a las %{hourOfDay}"
       "2": "Semanalmente los martes a las %{hourOfDay}"
       "3": "Semanalmente los miércoles a las %{hourOfDay}"
       "4": "Semanalmente los jueves a las %{hourOfDay}"
