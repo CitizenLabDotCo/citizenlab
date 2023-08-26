@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
 // typings
-import { Multiloc } from 'typings';
+import { Multiloc, UploadFile } from 'typings';
 
 // form
 import { FormProvider, useForm } from 'react-hook-form';
@@ -31,6 +31,7 @@ import Warning from 'components/UI/Warning';
 import QuillEditor from 'components/HookForm/QuillEditor';
 import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
+import FileUploader from 'components/HookForm/FileUploader';
 const ProfileVisibilityFormSection = lazy(
   () => import('./ProfileVisibilityFormSection')
 );
@@ -49,6 +50,7 @@ export interface FormValues {
   topic_ids: string[];
   position: string | undefined | null;
   cosponsor_ids: string[];
+  local_initiative_files: UploadFile[] | null;
 }
 
 type PageFormProps = {
@@ -280,13 +282,14 @@ const InitiativeForm = ({ onSubmit, defaultValues }: PageFormProps) => {
               htmlFor="e2e-initiative-file-upload"
               optional
             >
-              {/* <FileUploader
-              id="e2e-initiative-file-upload"
-              onFileAdd={onAddFile}
-              onFileRemove={onRemoveFile}
-              files={files}
-              apiErrors={apiErrors}
-            /> */}
+              <FileUploader
+                name="local_initiative_files"
+                // id="e2e-initiative-file-upload"
+                // onFileAdd={onAddFile}
+                // onFileRemove={onRemoveFile}
+                // files={files}
+                // apiErrors={apiErrors}
+              />
             </FormLabel>
           </SectionField>
         </StyledFormSection>
