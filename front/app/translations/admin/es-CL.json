@@ -788,7 +788,7 @@
   "app.containers.Admin.projects.all.includeFullName": "Incluir nombre completo",
   "app.containers.Admin.projects.all.itIsAlsoPossible": "También es posible volver a subir a la plataforma los formularios de entrada cumplimentados. Nuestro Importador de Entradas Offline detectará automáticamente la escritura a mano de los formularios. Esto hace que combinar la participación online y offline sea mucho más fácil. Para abrir el Importador de aportaciones fuera de línea, ve a la pestaña \"Gestor de aportaciones\" de este proyecto, y haz clic en \"Añadir aportaciones fuera de línea\".",
   "app.containers.Admin.projects.all.nameAndEmailExplanation": "Para añadir un campo \"Nombre completo\" y/o \"Correo electrónico\" al formulario pdf, marca las casillas deseadas a continuación. El Importador de entradas fuera de línea creará automáticamente una cuenta utilizando la información proporcionada. Si no añades estos campos, o si el encuestado los deja en blanco, la entrada se tratará como anónima.",
-  "app.containers.Admin.projects.project.ideas.addOfflineInputs": "Añadir entradas offline",
+  "app.containers.Admin.projects.project.ideas.addOfflineInputs": "Agregar entradas sin conexión",
   "app.containers.Admin.projects.project.ideas.analysisButton": "Ir al análisis",
   "app.containers.Admin.projects.project.ideas.analysisSubtitle": "Desbloquea resúmenes automatizados y haz preguntas sobre las aportaciones a tu proyecto.",
   "app.containers.Admin.projects.project.ideas.analysisTitle": "Análisis con IA",
