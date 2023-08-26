@@ -222,8 +222,8 @@ es-CL:
       full_name: 'Nombre completo'
       email_address: 'Dirección de correo electrónico'
       optional: 'opcional'
-      choose_as_many: 'Elija tantos como quiera'
-      this_answer: 'Esta respuesta solo se compartirá con los moderadores y no con el público.'
+      choose_as_many: 'Elige tantos como quieras'
+      this_answer: 'Esta respuesta sólo se compartirá con los moderadores, y no con el público.'
   project_copy:
     title_suffix: 'Copia'
   confirmations_mailer:
