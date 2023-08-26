@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense, lazy, useState } from 'react';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
@@ -61,6 +61,7 @@ type PageFormProps = {
 const mapsLoaded = window.googleMaps;
 
 const InitiativeForm = ({ onSubmit, defaultValues }: PageFormProps) => {
+  const [postAnonymously, setPostAnonymously] = useState(false);
   const { formatMessage } = useIntl();
   const locale = useLocale();
   const schema = object({
@@ -89,6 +90,10 @@ const InitiativeForm = ({ onSubmit, defaultValues }: PageFormProps) => {
     } catch (error) {
       handleHookFormSubmissionError(error, methods.setError);
     }
+  };
+
+  const onChangeProfileVisibility = () => {
+    setPostAnonymously((postAnonymously) => !postAnonymously);
   };
 
   return (
@@ -294,7 +299,10 @@ const InitiativeForm = ({ onSubmit, defaultValues }: PageFormProps) => {
           </SectionField>
         </StyledFormSection>
         <Suspense fallback={null}>
-          {/* <ProfileVisibilityFormSection /> */}
+          <ProfileVisibilityFormSection
+            onChange={onChangeProfileVisibility}
+            postAnonymously={postAnonymously}
+          />
         </Suspense>
       </form>
     </FormProvider>
