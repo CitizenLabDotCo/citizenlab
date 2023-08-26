@@ -5,4 +5,4 @@ es-CL:
         Assignment of an idea to me admin_campaign_type_description:
           ""idea_assigned_to_you"":
             Assignment of an idea - admins and project managers idea_assigned_to_you:
-              by_author: 'por %{authorName}'' cta_reply_to: ''Give feedback to %{authorName}'' event_description_idea: ''Se te ha asignado una idea. Da tu opinión escribiendo una actualización oficial o cambiando su estado.'' main_header: ''%{firstName}, tienes un nuevo encargo'' subject: ''Tienes un encargo en la plataforma de %{organizationName}'' preheader_idea: ''Se te ha asignado la idea de %{authorName}'
+              by_author: 'por %{authorName}'' cta_reply_to: ''Dar comentarios a %{authorName}'' event_description_idea: ''Se te ha asignado una idea. Envíe sus comentarios escribiendo una actualización oficial o cambiando su estado.'' main_header: ''%{firstName}, tienes una nueva tarea'' asunto: ''Tienes una tarea en la plataforma de %{organizationName}'' preheader_idea: ''La idea de %{authorName} te ha sido asignada'
