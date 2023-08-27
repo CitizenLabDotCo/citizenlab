@@ -112,16 +112,14 @@ export interface IInitiatives {
 }
 
 export interface IInitiativeAdd {
+  title_multiloc: Multiloc;
+  publication_status: InitiativePublicationStatus;
+  body_multiloc?: Multiloc;
   anonymous?: boolean;
   author_id?: string | null;
   assignee_id?: string | null;
-  initiative_status_id?: string | null;
-  publication_status?: InitiativePublicationStatus;
-  title_multiloc?: Multiloc;
-  body_multiloc?: Multiloc;
   topic_ids?: string[] | null;
   area_ids?: string[] | null;
-  phase_ids?: string[] | null;
   location_point_geojson?: GeoJSON.Point | null;
   location_description?: string | null;
   cosponsor_ids?: string[];
