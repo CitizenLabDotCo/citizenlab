@@ -29,7 +29,6 @@ import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 export interface FormValues {
@@ -42,7 +41,7 @@ export interface FormValues {
 export type Props = {
   onSubmit: (formValues: FormValues) => void | Promise<void>;
   defaultValues?: Partial<FormValues>;
-} & WrappedComponentProps;
+};
 
 const StyledSection = styled(Section)`
   margin-bottom: 40px;

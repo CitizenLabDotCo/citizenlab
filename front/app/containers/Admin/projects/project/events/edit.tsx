@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FormEvent } from 'react';
 import moment from 'moment';
 import { isEmpty, get, isError } from 'lodash-es';
 
@@ -24,23 +24,17 @@ import { IEvent, IEventProperties } from 'api/events/types';
 import useAddEvent from 'api/events/useAddEvent';
 import useUpdateEvent from 'api/events/useUpdateEvent';
 import useEvent from 'api/events/useEvent';
-import useLocale from 'hooks/useLocale';
 import useEventFiles from 'api/event_files/useEventFiles';
 import useAddEventFile from 'api/event_files/useAddEventFile';
 import useDeleteEventFile from 'api/event_files/useDeleteEventFile';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // typings
 import { Multiloc, CLError, UploadFile } from 'typings';
 
 // utils
-import { withRouter } from 'utils/cl-router/withRouter';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
-
-interface Props {
-  params: Record<string, string>;
-}
+import { useParams } from 'react-router-dom';
 
 type SubmitState = 'disabled' | 'enabled' | 'error' | 'success';
 type ErrorType =
@@ -56,15 +50,17 @@ type ApiErrorType =
       [fieldName: string]: CLError[];
     };
 
-const AdminProjectEventEdit = ({ params }: Props) => {
+const AdminProjectEventEdit = () => {
+  const { eventId, projectId } = useParams() as {
+    eventId: string;
+    projectId: string;
+  };
   const { mutate: addEvent } = useAddEvent();
-  const { data: event, isInitialLoading } = useEvent(params.id);
+  const { data: event, isInitialLoading } = useEvent(eventId);
   const { mutate: updateEvent } = useUpdateEvent();
   const { mutate: addEventFile } = useAddEventFile();
   const { mutate: deleteEventFile } = useDeleteEventFile();
-  const { data: remoteEventFiles } = useEventFiles(params.id);
-  const locale = useLocale();
-  const appConfiguration = useAppConfiguration();
+  const { data: remoteEventFiles } = useEventFiles(eventId);
   const [errors, setErrors] = useState<ErrorType>({});
   const [apiErrors, setApiErrors] = useState<ApiErrorType>({});
   const [saving, setSaving] = useState<boolean>(false);
@@ -192,186 +188,179 @@ const AdminProjectEventEdit = ({ params }: Props) => {
     }
   };
 
-  const handleOnSubmit = async (e) => {
+  const handleOnSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (!isNilOrError(params.projectId)) {
-      const { projectId } = params;
-      try {
-        setSaving(true);
+    try {
+      setSaving(true);
 
-        // If only files have changed
-        if (isEmpty(attributeDiff) && eventFilesToRemove) {
-          if (event) {
-            handleEventFiles(event);
-          }
+      // If only files have changed
+      if (isEmpty(attributeDiff) && eventFilesToRemove) {
+        if (event) {
+          handleEventFiles(event);
         }
+      }
 
-        // non-file input fields have changed
-        if (!isEmpty(attributeDiff)) {
-          // event already exists (in the state)
-          if (event) {
-            updateEvent(
-              {
-                eventId: event?.data.id,
-                event: attributeDiff,
+      // non-file input fields have changed
+      if (!isEmpty(attributeDiff)) {
+        // event already exists (in the state)
+        if (event) {
+          updateEvent(
+            {
+              eventId: event?.data.id,
+              event: attributeDiff,
+            },
+            {
+              onSuccess: async (data) => {
+                setSubmitState('success');
+                handleEventFiles(data);
               },
-              {
-                onSuccess: async (data) => {
-                  setSubmitState('success');
-                  handleEventFiles(data);
-                },
-                onError: async (errors) => {
-                  setSaving(false);
-                  setErrors(errors.errors);
-                  setSubmitState('error');
-                },
-              }
-            );
-          } else if (projectId) {
-            // event doesn't exist, create with project id
-            addEvent(
-              {
-                projectId,
-                event: attributeDiff,
+              onError: async (errors) => {
+                setSaving(false);
+                setErrors(errors.errors);
+                setSubmitState('error');
               },
-              {
-                onSuccess: async (data) => {
-                  setSubmitState('success');
-                  handleEventFiles(data);
-                  clHistory.push(`/admin/projects/${projectId}/events`);
-                },
-                onError: async (errors) => {
-                  setErrors(errors.errors);
-                  setSubmitState('error');
-                },
-              }
-            );
-          }
+            }
+          );
+        } else if (projectId) {
+          // event doesn't exist, create with project id
+          addEvent(
+            {
+              projectId,
+              event: attributeDiff,
+            },
+            {
+              onSuccess: async (data) => {
+                setSubmitState('success');
+                handleEventFiles(data);
+                clHistory.push(`/admin/projects/${projectId}/events`);
+              },
+              onError: async (errors) => {
+                setErrors(errors.errors);
+                setSubmitState('error');
+              },
+            }
+          );
         }
+      }
+      setSaving(false);
+    } catch (errors) {
+      if (errors?.errors) {
         setSaving(false);
-      } catch (errors) {
-        if (errors?.errors) {
-          setSaving(false);
-          setApiErrors(errors.errors);
-          setSubmitState('error');
-        } else {
-          setSaving(false);
-          setSubmitState('error');
-        }
+        setApiErrors(errors.errors);
+        setSubmitState('error');
+      } else {
+        setSaving(false);
+        setSubmitState('error');
       }
     }
   };
 
   const descriptionLabel = <FormattedMessage {...messages.descriptionLabel} />;
 
-  if (locale && appConfiguration) {
-    const eventAttrs = event
-      ? { ...event?.data.attributes, ...attributeDiff }
-      : { ...attributeDiff };
+  const eventAttrs = event
+    ? { ...event?.data.attributes, ...attributeDiff }
+    : { ...attributeDiff };
 
-    if (event !== undefined && isInitialLoading) {
-      return <Spinner />;
-    }
-
-    return (
-      <>
-        <SectionTitle>
-          {event && <FormattedMessage {...messages.editEventTitle} />}
-          {!event && <FormattedMessage {...messages.newEventTitle} />}
-        </SectionTitle>
-
-        <form className="e2e-project-event-edit" onSubmit={handleOnSubmit}>
-          <Section>
-            <SectionField>
-              <InputMultilocWithLocaleSwitcher
-                id="title"
-                label={<FormattedMessage {...messages.titleLabel} />}
-                type="text"
-                valueMultiloc={eventAttrs.title_multiloc}
-                onChange={handleTitleMultilocOnChange}
-              />
-              <ErrorComponent apiErrors={get(errors, 'title_multiloc')} />
-            </SectionField>
-
-            <SectionField>
-              <InputMultilocWithLocaleSwitcher
-                id="location"
-                label={<FormattedMessage {...messages.locationLabel} />}
-                type="text"
-                valueMultiloc={eventAttrs.location_multiloc}
-                onChange={handleLocationMultilocOnChange}
-              />
-              <ErrorComponent apiErrors={get(errors, 'location_multiloc')} />
-            </SectionField>
-
-            <SectionField>
-              <Label>
-                <FormattedMessage {...messages.dateStartLabel} />
-              </Label>
-              <DateTimePicker
-                value={eventAttrs.start_at}
-                onChange={handleDateTimePickerOnChange('start_at')}
-              />
-              <ErrorComponent apiErrors={get(errors, 'start_at')} />
-            </SectionField>
-
-            <SectionField>
-              <Label>
-                <FormattedMessage {...messages.datesEndLabel} />
-              </Label>
-              <DateTimePicker
-                value={eventAttrs.end_at}
-                onChange={handleDateTimePickerOnChange('end_at')}
-              />
-              <ErrorComponent apiErrors={get(errors, 'end_at')} />
-            </SectionField>
-
-            <SectionField className="fullWidth">
-              <QuillMultilocWithLocaleSwitcher
-                id="description"
-                label={descriptionLabel}
-                valueMultiloc={eventAttrs.description_multiloc}
-                onChange={handleDescriptionMultilocOnChange}
-                withCTAButton
-              />
-              <ErrorComponent apiErrors={get(errors, 'description_multiloc')} />
-            </SectionField>
-
-            <SectionField>
-              <Label>
-                <FormattedMessage {...messages.fileUploadLabel} />
-                <IconTooltip
-                  content={
-                    <FormattedMessage {...messages.fileUploadLabelTooltip} />
-                  }
-                />
-              </Label>
-              <FileUploader
-                id="project-events-edit-form-file-uploader"
-                onFileAdd={handleEventFileOnAdd}
-                onFileRemove={handleEventFileOnRemove}
-                files={eventFiles}
-                apiErrors={isError(apiErrors) ? undefined : apiErrors}
-              />
-            </SectionField>
-          </Section>
-
-          <SubmitWrapper
-            loading={saving}
-            status={submitState}
-            messages={{
-              buttonSave: messages.saveButtonLabel,
-              buttonSuccess: messages.saveSuccessLabel,
-              messageError: messages.saveErrorMessage,
-              messageSuccess: messages.saveSuccessMessage,
-            }}
-          />
-        </form>
-      </>
-    );
+  if (event !== undefined && isInitialLoading) {
+    return <Spinner />;
   }
 
-  return null;
+  return (
+    <>
+      <SectionTitle>
+        {event && <FormattedMessage {...messages.editEventTitle} />}
+        {!event && <FormattedMessage {...messages.newEventTitle} />}
+      </SectionTitle>
+
+      <form className="e2e-project-event-edit" onSubmit={handleOnSubmit}>
+        <Section>
+          <SectionField>
+            <InputMultilocWithLocaleSwitcher
+              id="title"
+              label={<FormattedMessage {...messages.titleLabel} />}
+              type="text"
+              valueMultiloc={eventAttrs.title_multiloc}
+              onChange={handleTitleMultilocOnChange}
+            />
+            <ErrorComponent apiErrors={get(errors, 'title_multiloc')} />
+          </SectionField>
+
+          <SectionField>
+            <InputMultilocWithLocaleSwitcher
+              id="location"
+              label={<FormattedMessage {...messages.locationLabel} />}
+              type="text"
+              valueMultiloc={eventAttrs.location_multiloc}
+              onChange={handleLocationMultilocOnChange}
+            />
+            <ErrorComponent apiErrors={get(errors, 'location_multiloc')} />
+          </SectionField>
+
+          <SectionField>
+            <Label>
+              <FormattedMessage {...messages.dateStartLabel} />
+            </Label>
+            <DateTimePicker
+              value={eventAttrs.start_at}
+              onChange={handleDateTimePickerOnChange('start_at')}
+            />
+            <ErrorComponent apiErrors={get(errors, 'start_at')} />
+          </SectionField>
+
+          <SectionField>
+            <Label>
+              <FormattedMessage {...messages.datesEndLabel} />
+            </Label>
+            <DateTimePicker
+              value={eventAttrs.end_at}
+              onChange={handleDateTimePickerOnChange('end_at')}
+            />
+            <ErrorComponent apiErrors={get(errors, 'end_at')} />
+          </SectionField>
+
+          <SectionField className="fullWidth">
+            <QuillMultilocWithLocaleSwitcher
+              id="description"
+              label={descriptionLabel}
+              valueMultiloc={eventAttrs.description_multiloc}
+              onChange={handleDescriptionMultilocOnChange}
+              withCTAButton
+            />
+            <ErrorComponent apiErrors={get(errors, 'description_multiloc')} />
+          </SectionField>
+
+          <SectionField>
+            <Label>
+              <FormattedMessage {...messages.fileUploadLabel} />
+              <IconTooltip
+                content={
+                  <FormattedMessage {...messages.fileUploadLabelTooltip} />
+                }
+              />
+            </Label>
+            <FileUploader
+              id="project-events-edit-form-file-uploader"
+              onFileAdd={handleEventFileOnAdd}
+              onFileRemove={handleEventFileOnRemove}
+              files={eventFiles}
+              apiErrors={isError(apiErrors) ? undefined : apiErrors}
+            />
+          </SectionField>
+        </Section>
+
+        <SubmitWrapper
+          loading={saving}
+          status={submitState}
+          messages={{
+            buttonSave: messages.saveButtonLabel,
+            buttonSuccess: messages.saveSuccessLabel,
+            messageError: messages.saveErrorMessage,
+            messageSuccess: messages.saveSuccessMessage,
+          }}
+        />
+      </form>
+    </>
+  );
 };
 
-export default withRouter((props) => <AdminProjectEventEdit {...props} />);
+export default AdminProjectEventEdit;
