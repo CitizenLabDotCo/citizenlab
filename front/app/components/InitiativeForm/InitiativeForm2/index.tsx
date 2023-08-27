@@ -58,6 +58,8 @@ export interface FormValues {
   position: string | undefined | null;
   cosponsor_ids: string[];
   local_initiative_files: UploadFile[] | null;
+  // The uploaded image is stored in an array, even though we can only store 1
+  images: UploadFile[] | null;
 }
 
 type PageFormProps = {
@@ -280,7 +282,7 @@ const InitiativeForm = ({ onSubmit, defaultValues }: PageFormProps) => {
                 optional
               />
               <ImagesDropzone
-                name="image"
+                name="images"
                 // id="initiative-image-dropzone"
                 // images={image ? [image] : null}
                 imagePreviewRatio={135 / 298}

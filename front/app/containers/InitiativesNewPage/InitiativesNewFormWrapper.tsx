@@ -28,7 +28,6 @@ import { trackEventByName } from 'utils/analytics';
 import useAddInitiative from 'api/initiatives/useAddInitiative';
 import { IInitiativeAdd } from 'api/initiatives/types';
 import useAddInitiativeImage from 'api/initiative_images/useAddInitiativeImage';
-import useDeleteInitiativeImage from 'api/initiative_images/useDeleteInitiativeImage';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
 import useUpdateInitiative from 'api/initiatives/useUpdateInitiative';
@@ -52,8 +51,6 @@ const InitiativesNewFormWrapper = ({ locale, location_description }: Props) => {
   const { mutate: addInitiativeFile } = useAddInitiativeFile();
 
   const [postAnonymously, setPostAnonymously] = useState(false);
-  const [image, setImage] = useState<UploadFile | null>(null);
-  const [imageId, setImageId] = useState<string | null>(null);
   const [hasBannerChanged, setHasBannerChanged] = useState<boolean>(false);
   const [banner, setBanner] = useState<UploadFile | null>(null);
   const [publishError, setPublishError] = useState<boolean>(false);
@@ -64,7 +61,6 @@ const InitiativesNewFormWrapper = ({ locale, location_description }: Props) => {
     useState<boolean>(false);
   const [initiativeId, setInitiativeId] = useState<string | null>(null);
   const [saving, setSaving] = useState<boolean>(false);
-  const [hasImageChanged, setHasImageChanged] = useState<boolean>(false);
   const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
     useState<boolean>(false);
 
@@ -211,51 +207,6 @@ const InitiativesNewFormWrapper = ({ locale, location_description }: Props) => {
   //   handleSave();
   // };
 
-  // const onChangeImage = async (newValue: UploadFile | null) => {
-  //   setSaving(true);
-
-  //   if (initiativeId && newValue && newValue.base64) {
-  //     await addInitiativeImage(
-  //       {
-  //         initiativeId,
-  //         image: { image: newValue.base64 },
-  //       },
-  //       {
-  //         onSuccess: (data) => {
-  //           setImageId(data.data.id);
-  //           const newImage = newValue;
-  //           newImage.id = data.data.id;
-  //           setImage(newImage);
-  //           setSaving(false);
-  //         },
-  //         onError: () => {
-  //           setSaving(false);
-  //         },
-  //       }
-  //     );
-  //   } else {
-  //     const currentImageId = image?.id;
-  //     if (currentImageId && initiativeId && imageId) {
-  //       await deleteInitiativeImage(
-  //         { initiativeId, imageId: currentImageId },
-  //         {
-  //           onSuccess: () => {
-  //             setImageId(null);
-  //             setSaving(false);
-  //           },
-  //           onError: () => {
-  //             setSaving(false);
-  //           },
-  //         }
-  //       );
-  //       setImage(newValue);
-  //     } else {
-  //       setImage(newValue);
-  //     }
-  //   }
-  //   setHasImageChanged(true);
-  // };
-
   const handleOnSubmit = async ({
     position,
     title_multiloc,
@@ -263,6 +214,7 @@ const InitiativesNewFormWrapper = ({ locale, location_description }: Props) => {
     topic_ids,
     cosponsor_ids,
     local_initiative_files,
+    images,
   }: FormValues2) => {
     const { location_description, location_point_geojson } =
       await parsePosition(position);
@@ -279,14 +231,24 @@ const InitiativesNewFormWrapper = ({ locale, location_description }: Props) => {
       },
       {
         onSuccess: async (initiative) => {
+          const initiativeId = initiative.data.id;
+
           if (local_initiative_files) {
             local_initiative_files.map((file) => {
               addInitiativeFile({
-                initiativeId: initiative.data.id,
+                initiativeId,
                 file: { file: file.base64, name: file.name },
               });
             });
           }
+
+          if (images) {
+            await addInitiativeImage({
+              initiativeId,
+              image: { image: images[0].base64 },
+            });
+          }
+
           clHistory.push({
             pathname: `/initiatives/${initiative.data.attributes.slug}`,
             search: `?new_initiative_id=${initiative.data.id}`,
