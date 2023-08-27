@@ -119,7 +119,6 @@ const IdeaStatusForm = ({ defaultValues, onSubmit }: Props) => {
           <SectionField>
             <InputMultilocWithLocaleSwitcher
               label={formatMessage(messages.fieldTitle)}
-              type="text"
               name="title_multiloc"
             />
           </SectionField>
