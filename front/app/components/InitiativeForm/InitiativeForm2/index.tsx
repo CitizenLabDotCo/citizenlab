@@ -10,6 +10,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { SectionField } from 'components/admin/Section';
 import Input from 'components/HookForm/Input';
 import Feedback from 'components/HookForm/Feedback';
+import TopicsPicker from 'components/HookForm/TopicsPicker';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object } from 'yup';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
@@ -21,7 +22,6 @@ import {
 // components
 import Button from 'components/UI/Button';
 import { Box, Text } from '@citizenlab/cl2-component-library';
-import TopicsPicker from 'components/UI/TopicsPicker';
 
 // intl
 import messages from '../messages';
@@ -34,6 +34,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import FileUploader from 'components/HookForm/FileUploader';
 import ImagesDropzone from 'components/HookForm/ImagesDropzone';
 import LocationInput from 'components/HookForm/LocationInput';
+import useTopics from 'api/topics/useTopics';
 const ProfileVisibilityFormSection = lazy(
   () => import('./ProfileVisibilityFormSection')
 );
@@ -66,6 +67,7 @@ const InitiativeForm = ({ onSubmit, defaultValues }: PageFormProps) => {
   const [postAnonymously, setPostAnonymously] = useState(false);
   const { formatMessage } = useIntl();
   const locale = useLocale();
+  const { data: topics } = useTopics({ excludeCode: 'custom' });
   const schema = object({
     // title_multiloc: validateMultilocForEveryLocale(
     //   formatMessage(messages.emptyTitleError)
@@ -84,7 +86,7 @@ const InitiativeForm = ({ onSubmit, defaultValues }: PageFormProps) => {
     resolver: yupResolver(schema),
   });
 
-  if (isNilOrError(locale)) return null;
+  if (isNilOrError(locale) || !topics) return null;
 
   const onFormSubmit = async (formValues: FormValues) => {
     try {
@@ -202,12 +204,13 @@ const InitiativeForm = ({ onSubmit, defaultValues }: PageFormProps) => {
               subtextMessage={messages.topicsLabelDescription}
               htmlFor="field-topic-multiple-picker"
             />
-            {/* <TopicsPicker
-              id="field-topic-multiple-picker"
-              selectedTopicIds={topic_ids}
-              onChange={changeAndSaveTopics}
-              availableTopics={availableTopics}
-            /> */}
+            <TopicsPicker
+              name="topic_ids"
+              // id="field-topic-multiple-picker"
+              // selectedTopicIds={topic_ids}
+              // onClick={changeAndSaveTopics}
+              availableTopics={topics.data}
+            />
             {/* {touched.topic_ids && errors.topic_ids ? (
               <Error text={formatMessage(errors.topic_ids.message)} />
             ) : (

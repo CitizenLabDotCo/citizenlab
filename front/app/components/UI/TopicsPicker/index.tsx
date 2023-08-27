@@ -74,8 +74,8 @@ const TopicSwitch = styled.button`
   }
 `;
 
-interface Props {
-  onChange: (tocisIds: string[]) => void;
+export interface Props {
+  onClick: (tocisIds: string[]) => void;
   selectedTopicIds: string[];
   id?: string;
   className?: string;
@@ -83,7 +83,7 @@ interface Props {
 }
 
 const TopicsPicker = memo(
-  ({ onChange, selectedTopicIds, availableTopics, className }: Props) => {
+  ({ onClick, selectedTopicIds, availableTopics, className }: Props) => {
     const { data: topics } = useTopics();
     const localize = useLocalize();
 
@@ -97,7 +97,7 @@ const TopicsPicker = memo(
       const newTopics = [...selectedTopicIds];
 
       if (!selectedTopicIds) {
-        onChange([topicId]);
+        onClick([topicId]);
       } else {
         const i = newTopics.lastIndexOf(topicId);
         const topicNotSelectedYet = i === -1;
@@ -108,7 +108,7 @@ const TopicsPicker = memo(
           newTopics.splice(i, 1);
         }
 
-        onChange(newTopics);
+        onClick(newTopics);
       }
     };
 

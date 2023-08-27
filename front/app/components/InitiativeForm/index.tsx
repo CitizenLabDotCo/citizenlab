@@ -398,7 +398,7 @@ const InitiativeForm = ({
           <TopicsPicker
             id="field-topic-multiple-picker"
             selectedTopicIds={topic_ids}
-            onChange={changeAndSaveTopics}
+            onClick={changeAndSaveTopics}
             availableTopics={availableTopics}
           />
           {touched.topic_ids && errors.topic_ids ? (
