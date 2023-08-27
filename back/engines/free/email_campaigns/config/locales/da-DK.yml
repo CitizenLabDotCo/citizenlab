@@ -496,7 +496,7 @@ da:
     status_change_of_your_initiative:
       status_change: 'Den nye status for dit forslag er ''%{initiativeStatus}'''
       cta_view_initiative: 'Gå til dit forslag'
-      event_description: 'Status for forslag ''%{initiativeTitle}'' er blevet opdateret på den digitale deltagelsesplatform for %{organizationName}.'
+      event_description: 'Status for dit forslag ''''%{initiativeTitle}'''' er blevet opdateret på %{organizationName}s digitale platform.'
       main_header: 'Dit forslag har en ny status'
       subject: 'Status for dit forslag er ændret'
       preheader: 'Status for dit forslag er ændret'
@@ -575,7 +575,7 @@ da:
       subject: 'Ugentlige opdateringer af dit forslag'
       preheader: 'Hvad skete der med dit forslag i sidste uge?'
       title_your_weekly_report: 'Hvordan klarer dit forslag sig?'
-      text_introduction: 'Find nøgletalene nedenfor, og gå til dit forslag side, for at handle og indsamle nok støtte rettidigt.'
+      text_introduction: 'Du kan find nøgletallene for dit forslag nedenfor. Hvis du vil skabe yderligere opmærksomhed omkring dit forslag, kan du med fordel gå til dit forslags side, hvorfra du kan dele det på dine sociale medier eller via andre digitale kanaler.'
       cta_see_your_initiative: 'Gå til dit forslag'
       total_votes: 'Antal stemmer'
       new_votes: 'Nye stemmer'
