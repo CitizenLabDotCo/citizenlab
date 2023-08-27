@@ -38,7 +38,7 @@ const TopicsPicker = ({ name, ...rest }: Props) => {
           <TopicsPickerComponent
             {...field}
             {...rest}
-            selectedTopicIds={field.value}
+            selectedTopicIds={field.value || []}
             onClick={(newValue) => {
               setValue(name, newValue);
             }}
