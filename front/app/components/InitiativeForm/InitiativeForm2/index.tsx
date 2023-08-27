@@ -11,7 +11,7 @@ import { SectionField } from 'components/admin/Section';
 import Feedback from 'components/HookForm/Feedback';
 import TopicsPicker from 'components/HookForm/TopicsPicker';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { object } from 'yup';
+import { object, array, mixed, string } from 'yup';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 import {
   FormSection,
@@ -36,6 +36,7 @@ import useTopics from 'api/topics/useTopics';
 import SubmitButtonBar from './SubmitButtonBar';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
+import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 const ProfileVisibilityFormSection = lazy(
   () => import('./ProfileVisibilityFormSection')
 );
@@ -78,15 +79,18 @@ const InitiativeForm = ({ onSubmit, defaultValues }: InitiativeFormProps) => {
   const locale = useLocale();
   const { data: topics } = useTopics({ excludeCode: 'custom' });
   const schema = object({
-    // title_multiloc: validateMultilocForEveryLocale(
-    //   formatMessage(messages.emptyTitleError)
-    // ),
-    // body_multiloc: validateMultilocForEveryLocale(
-    //   formatMessage(messages.emptyTitleError)
-    // ),
-    // topic_ids: validateMultilocForEveryLocale(
-    //   formatMessage(messages.emptyTitleError)
-    // ),
+    title_multiloc: validateAtLeastOneLocale(
+      formatMessage(messages.titleEmptyError)
+    ),
+    body_multiloc: validateAtLeastOneLocale(
+      formatMessage(messages.descriptionEmptyError)
+    ),
+    position: string(),
+    topic_ids: array().of(string()),
+    cosponsor_ids: array().of(string()),
+    local_initiative_files: mixed(),
+    images: mixed(),
+    header_bg: mixed(),
   });
 
   const methods = useForm({
