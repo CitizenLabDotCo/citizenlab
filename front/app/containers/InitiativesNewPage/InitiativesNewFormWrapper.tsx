@@ -256,47 +256,31 @@ const InitiativesNewFormWrapper = ({ locale, location_description }: Props) => {
   //   setHasImageChanged(true);
   // };
 
-  // const onRemoveFile = (fileToRemove: UploadFile) => {
-  //   if (initiativeId && fileToRemove.id) {
-  //     setSaving(true);
-  //     deleteInitiativeFile(
-  //       { initiativeId, fileId: fileToRemove.id },
-  //       {
-  //         onSuccess: () => {
-  //           setSaving(false);
-  //           setFiles((files) =>
-  //             [...files].filter((file) => file.base64 !== fileToRemove.base64)
-  //           );
-  //         },
-  //       }
-  //     );
-  //   }
-  //   setFiles((files) =>
-  //     [...files].filter((file) => file.base64 !== fileToRemove.base64)
-  //   );
-  // };
-
-  const handleOnSubmit = async (values: FormValues2) => {
+  const handleOnSubmit = async ({
+    position,
+    title_multiloc,
+    body_multiloc,
+    topic_ids,
+    cosponsor_ids,
+    local_initiative_files,
+  }: FormValues2) => {
     const { location_description, location_point_geojson } =
-      await parsePosition(values.position);
+      await parsePosition(position);
 
     addInitiative(
       {
         publication_status: 'published',
-        title_multiloc: values.title_multiloc,
-        body_multiloc: values.body_multiloc,
-        topic_ids: values.topic_ids,
-        cosponsor_ids: values.cosponsor_ids,
+        title_multiloc,
+        body_multiloc,
+        topic_ids,
+        cosponsor_ids,
         location_description,
         location_point_geojson,
       },
       {
         onSuccess: async (initiative) => {
-          if (
-            values.local_initiative_files &&
-            values.local_initiative_files.length > 0
-          ) {
-            values.local_initiative_files.map((file) => {
+          if (local_initiative_files) {
+            local_initiative_files.map((file) => {
               addInitiativeFile({
                 initiativeId: initiative.data.id,
                 file: { file: file.base64, name: file.name },
