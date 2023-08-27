@@ -1,20 +1,12 @@
-import React, { useState, useEffect, lazy, Suspense } from 'react';
+import React, { useState } from 'react';
 
 // components
-import InitiativeForm, {
-  FormValues,
-  SimpleFormValues,
-} from 'components/InitiativeForm';
-const AnonymousParticipationConfirmationModal = lazy(
-  () => import('components/AnonymousParticipationConfirmationModal')
-);
 import InitiativeForm2, {
   FormValues as FormValues2,
 } from 'components/InitiativeForm/InitiativeForm2';
 
 // types
-import { Locale, Multiloc, UploadFile } from 'typings';
-import { ITopicData } from 'api/topics/types';
+import { Locale, UploadFile } from 'typings';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -57,29 +49,13 @@ const InitiativesNewFormWrapper = ({ locale, location_description }: Props) => {
     mutateAsync: addInitiativeImage,
     isLoading: isAddingInitiativeImage,
   } = useAddInitiativeImage();
-  const {
-    mutateAsync: deleteInitiativeImage,
-    isLoading: isDeletingInitiativeImage,
-  } = useDeleteInitiativeImage();
   const { mutate: addInitiativeFile } = useAddInitiativeFile();
-  const { mutate: deleteInitiativeFile } = useDeleteInitiativeFile();
-  const { mutateAsync: updateInitiative, isLoading: isUpdatingInitiative } =
-    useUpdateInitiative();
 
-  const initialValues = {
-    title_multiloc: undefined,
-    body_multiloc: undefined,
-    topic_ids: [],
-    position: location_description,
-    cosponsor_ids: [],
-  };
   const [postAnonymously, setPostAnonymously] = useState(false);
-  const [formValues, setFormValues] = useState<SimpleFormValues>(initialValues);
   const [image, setImage] = useState<UploadFile | null>(null);
   const [imageId, setImageId] = useState<string | null>(null);
   const [hasBannerChanged, setHasBannerChanged] = useState<boolean>(false);
   const [banner, setBanner] = useState<UploadFile | null>(null);
-  const [files, setFiles] = useState<UploadFile[]>([]);
   const [publishError, setPublishError] = useState<boolean>(false);
   const [apiErrors, setApiErrors] = useState<any>(null);
   const [titleProfanityError, setTitleProfanityError] =
@@ -339,20 +315,7 @@ const InitiativesNewFormWrapper = ({ locale, location_description }: Props) => {
     );
   };
 
-  return (
-    <>
-      <InitiativeForm2 onSubmit={handleOnSubmit} />
-      <Suspense fallback={null}>
-        <AnonymousParticipationConfirmationModal
-          onConfirmAnonymousParticipation={() => {
-            continuePublish();
-          }}
-          showAnonymousConfirmationModal={showAnonymousConfirmationModal}
-          setShowAnonymousConfirmationModal={setShowAnonymousConfirmationModal}
-        />
-      </Suspense>
-    </>
-  );
+  return <InitiativeForm2 onSubmit={handleOnSubmit} />;
 };
 
 export default InitiativesNewFormWrapper;
