@@ -128,8 +128,6 @@ const InitiativeForm = ({ onSubmit, defaultValues }: PageFormProps) => {
                 <InputMultilocWithLocaleSwitcher
                   name="title_multiloc"
                   id="e2e-initiative-title-input"
-                  // onChange={handleTitleOnChange}
-                  // onBlur={onBlur('title_multiloc')}
                   autocomplete="off"
                   maxCharCount={72}
                 />
@@ -173,11 +171,8 @@ const InitiativeForm = ({ onSubmit, defaultValues }: PageFormProps) => {
               <QuillMultilocWithLocaleSwitcher
                 // id="body"
                 name="body_multiloc"
-                // locale={locale}
                 noVideos
                 noAlign
-                // onChange={handleBodyOnChange}
-                // onBlur={onBlur('body_multiloc')}
               />
               {/* {touched.body_multiloc && errors.body_multiloc ? (
               <Error text={formatMessage(errors.body_multiloc.message)} />
@@ -216,8 +211,6 @@ const InitiativeForm = ({ onSubmit, defaultValues }: PageFormProps) => {
               <TopicsPicker
                 name="topic_ids"
                 // id="field-topic-multiple-picker"
-                // selectedTopicIds={topic_ids}
-                // onClick={changeAndSaveTopics}
                 availableTopics={topics.data}
               />
               {/* {touched.topic_ids && errors.topic_ids ? (
@@ -239,9 +232,6 @@ const InitiativeForm = ({ onSubmit, defaultValues }: PageFormProps) => {
                     name="position"
                     // id="initiative-location-picker"
                     className="e2e-initiative-location-input"
-                    // value={position || ''}
-                    // onChange={onChangePosition}
-                    // onBlur={onBlur('position')}
                     placeholder={formatMessage(messages.locationPlaceholder)}
                   />
                 </FormLabel>
@@ -263,13 +253,10 @@ const InitiativeForm = ({ onSubmit, defaultValues }: PageFormProps) => {
               <ImagesDropzone
                 name="header_bg"
                 // id="initiative-banner-dropzone"
-                // images={banner ? [banner] : null}
                 imagePreviewRatio={360 / 1440}
                 acceptedFileTypes={{
                   'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
                 }}
-                // onAdd={addBanner}
-                // onRemove={removeBanner}
               />
               {/* {apiErrors && apiErrors.header_bg && (
             <Error apiErrors={apiErrors.header_bg} />
@@ -285,13 +272,10 @@ const InitiativeForm = ({ onSubmit, defaultValues }: PageFormProps) => {
               <ImagesDropzone
                 name="images"
                 // id="initiative-image-dropzone"
-                // images={image ? [image] : null}
                 imagePreviewRatio={135 / 298}
                 acceptedFileTypes={{
                   'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
                 }}
-                // onAdd={addImage}
-                // onRemove={removeImage}
               />
               {/* {touched.image && errors.image && (
             <Error text={formatMessage(errors.image.message)} />
@@ -307,9 +291,6 @@ const InitiativeForm = ({ onSubmit, defaultValues }: PageFormProps) => {
                 <FileUploader
                   name="local_initiative_files"
                   // id="e2e-initiative-file-upload"
-                  // onFileAdd={onAddFile}
-                  // onFileRemove={onRemoveFile}
-                  // files={files}
                   // apiErrors={apiErrors}
                 />
               </FormLabel>
