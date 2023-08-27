@@ -33,6 +33,7 @@ import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
 import FileUploader from 'components/HookForm/FileUploader';
 import ImagesDropzone from 'components/HookForm/ImagesDropzone';
+import LocationInput from 'components/HookForm/LocationInput';
 const ProfileVisibilityFormSection = lazy(
   () => import('./ProfileVisibilityFormSection')
 );
@@ -222,14 +223,15 @@ const InitiativeForm = ({ onSubmit, defaultValues }: PageFormProps) => {
                 htmlFor="initiative-location-picker"
                 optional
               >
-                {/* <LocationInput
-                  id="initiative-location-picker"
+                <LocationInput
+                  name="position"
+                  // id="initiative-location-picker"
                   className="e2e-initiative-location-input"
-                  value={position || ''}
-                  onChange={onChangePosition}
-                  onBlur={onBlur('position')}
+                  // value={position || ''}
+                  // onChange={onChangePosition}
+                  // onBlur={onBlur('position')}
                   placeholder={formatMessage(messages.locationPlaceholder)}
-                /> */}
+                />
               </FormLabel>
             </SectionField>
           )}
