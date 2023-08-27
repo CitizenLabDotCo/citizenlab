@@ -11,12 +11,12 @@ import { ITopicData } from 'api/topics/types';
 
 // intl
 import T from 'components/T';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // hooks
 import useTopics from 'api/topics/useTopics';
+import useLocalize from 'hooks/useLocalize';
 
 const TopicsContainer = styled.div`
   display: flex;
@@ -74,7 +74,7 @@ const TopicSwitch = styled.button`
   }
 `;
 
-export interface InputProps {
+export interface Props {
   onChange: (tocisIds: string[]) => void;
   onBlur?: () => void;
   selectedTopicIds: string[];
@@ -84,23 +84,22 @@ export interface InputProps {
   availableTopics: ITopicData[] | { const: string; title: string }[];
 }
 
-interface Props extends InputProps {}
-
 const TopicsPicker = memo(
   ({
     onChange,
     onBlur,
     selectedTopicIds,
-    localize,
     availableTopics,
     className,
     setRef,
-  }: Props & InjectedLocalized) => {
+  }: Props) => {
     const { data: topics } = useTopics();
+    const localize = useLocalize();
 
     const filteredTopics = topics?.data.filter((topic) =>
       selectedTopicIds.includes(topic.id)
     );
+
     const handleOnChange = (topicId: string) => (event) => {
       event.stopPropagation();
       event.preventDefault();
@@ -179,4 +178,4 @@ const TopicsPicker = memo(
   }
 );
 
-export default injectLocalize(TopicsPicker);
+export default TopicsPicker;
