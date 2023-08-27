@@ -32,6 +32,7 @@ import QuillEditor from 'components/HookForm/QuillEditor';
 import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
 import FileUploader from 'components/HookForm/FileUploader';
+import ImagesDropzone from 'components/HookForm/ImagesDropzone';
 const ProfileVisibilityFormSection = lazy(
   () => import('./ProfileVisibilityFormSection')
 );
@@ -245,17 +246,18 @@ const InitiativeForm = ({ onSubmit, defaultValues }: PageFormProps) => {
               htmlFor="initiative-banner-dropzone"
               optional
             />
-            {/* <ImagesDropzone
-            id="initiative-banner-dropzone"
-            images={banner ? [banner] : null}
-            imagePreviewRatio={360 / 1440}
-            acceptedFileTypes={{
-              'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
-            }}
-            onAdd={addBanner}
-            onRemove={removeBanner}
-          />
-          {apiErrors && apiErrors.header_bg && (
+            <ImagesDropzone
+              name="banner"
+              // id="initiative-banner-dropzone"
+              // images={banner ? [banner] : null}
+              imagePreviewRatio={360 / 1440}
+              acceptedFileTypes={{
+                'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
+              }}
+              // onAdd={addBanner}
+              // onRemove={removeBanner}
+            />
+            {/* {apiErrors && apiErrors.header_bg && (
             <Error apiErrors={apiErrors.header_bg} />
           )} */}
           </SectionField>
@@ -266,17 +268,18 @@ const InitiativeForm = ({ onSubmit, defaultValues }: PageFormProps) => {
               htmlFor="initiative-image-dropzone"
               optional
             />
-            {/* <ImagesDropzone
-            id="initiative-image-dropzone"
-            images={image ? [image] : null}
-            imagePreviewRatio={135 / 298}
-            acceptedFileTypes={{
-              'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
-            }}
-            onAdd={addImage}
-            onRemove={removeImage}
-          />
-          {touched.image && errors.image && (
+            <ImagesDropzone
+              name="image"
+              // id="initiative-image-dropzone"
+              // images={image ? [image] : null}
+              imagePreviewRatio={135 / 298}
+              acceptedFileTypes={{
+                'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
+              }}
+              // onAdd={addImage}
+              // onRemove={removeImage}
+            />
+            {/* {touched.image && errors.image && (
             <Error text={formatMessage(errors.image.message)} />
           )} */}
           </SectionField>
