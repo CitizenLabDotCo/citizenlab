@@ -116,6 +116,7 @@ export interface IInitiativeAdd {
   publication_status: InitiativePublicationStatus;
   body_multiloc?: Multiloc;
   anonymous?: boolean;
+  header_bg?: string;
   author_id?: string | null;
   assignee_id?: string | null;
   topic_ids?: string[] | null;

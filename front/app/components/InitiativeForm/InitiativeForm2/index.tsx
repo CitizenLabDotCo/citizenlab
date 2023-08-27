@@ -60,6 +60,7 @@ export interface FormValues {
   local_initiative_files: UploadFile[] | null;
   // The uploaded image is stored in an array, even though we can only store 1
   images: UploadFile[] | null;
+  header_bg: UploadFile[] | null;
 }
 
 type PageFormProps = {
@@ -260,7 +261,7 @@ const InitiativeForm = ({ onSubmit, defaultValues }: PageFormProps) => {
                 optional
               />
               <ImagesDropzone
-                name="banner"
+                name="header_bg"
                 // id="initiative-banner-dropzone"
                 // images={banner ? [banner] : null}
                 imagePreviewRatio={360 / 1440}

@@ -41,7 +41,6 @@ interface Props {
 }
 
 const InitiativesNewFormWrapper = ({ locale, location_description }: Props) => {
-  const { data: appConfiguration } = useAppConfiguration();
   const { mutate: addInitiative } = useAddInitiative();
   const { data: authUser } = useAuthUser();
   const {
@@ -51,8 +50,6 @@ const InitiativesNewFormWrapper = ({ locale, location_description }: Props) => {
   const { mutate: addInitiativeFile } = useAddInitiativeFile();
 
   const [postAnonymously, setPostAnonymously] = useState(false);
-  const [hasBannerChanged, setHasBannerChanged] = useState<boolean>(false);
-  const [banner, setBanner] = useState<UploadFile | null>(null);
   const [publishError, setPublishError] = useState<boolean>(false);
   const [apiErrors, setApiErrors] = useState<any>(null);
   const [titleProfanityError, setTitleProfanityError] =
@@ -61,12 +58,6 @@ const InitiativesNewFormWrapper = ({ locale, location_description }: Props) => {
     useState<boolean>(false);
   const [initiativeId, setInitiativeId] = useState<string | null>(null);
   const [saving, setSaving] = useState<boolean>(false);
-  const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
-    useState<boolean>(false);
-
-  const allowAnonymousParticipation =
-    appConfiguration?.data.attributes.settings.initiatives
-      ?.allow_anonymous_participation;
 
   const parsePosition = async (position: string | undefined | null) => {
     let location_point_geojson: Point | null | undefined;
@@ -201,12 +192,6 @@ const InitiativesNewFormWrapper = ({ locale, location_description }: Props) => {
   //   }
   // };
 
-  // const onChangeBanner = (newValue: UploadFile | null) => {
-  //   setBanner(newValue);
-  //   setHasBannerChanged(true);
-  //   handleSave();
-  // };
-
   const handleOnSubmit = async ({
     position,
     title_multiloc,
@@ -215,6 +200,7 @@ const InitiativesNewFormWrapper = ({ locale, location_description }: Props) => {
     cosponsor_ids,
     local_initiative_files,
     images,
+    header_bg,
   }: FormValues2) => {
     const { location_description, location_point_geojson } =
       await parsePosition(position);
@@ -228,6 +214,7 @@ const InitiativesNewFormWrapper = ({ locale, location_description }: Props) => {
         cosponsor_ids,
         location_description,
         location_point_geojson,
+        ...(header_bg?.[0] && { header_bg: header_bg[0].base64 }),
       },
       {
         onSuccess: async (initiative) => {
@@ -242,7 +229,7 @@ const InitiativesNewFormWrapper = ({ locale, location_description }: Props) => {
             });
           }
 
-          if (images) {
+          if (images?.[0]) {
             await addInitiativeImage({
               initiativeId,
               image: { image: images[0].base64 },
@@ -253,9 +240,6 @@ const InitiativesNewFormWrapper = ({ locale, location_description }: Props) => {
             pathname: `/initiatives/${initiative.data.attributes.slug}`,
             search: `?new_initiative_id=${initiative.data.id}`,
           });
-        },
-        onError: (e) => {
-          console.log(e);
         },
       }
     );
