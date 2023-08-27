@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, MouseEvent } from 'react';
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 // styles
 import styled from 'styled-components';
@@ -74,25 +74,16 @@ const TopicSwitch = styled.button`
   }
 `;
 
-export interface Props {
+interface Props {
   onChange: (tocisIds: string[]) => void;
-  onBlur?: () => void;
   selectedTopicIds: string[];
   id?: string;
   className?: string;
-  setRef?: (element: HTMLButtonElement) => void;
   availableTopics: ITopicData[] | { const: string; title: string }[];
 }
 
 const TopicsPicker = memo(
-  ({
-    onChange,
-    onBlur,
-    selectedTopicIds,
-    availableTopics,
-    className,
-    setRef,
-  }: Props) => {
+  ({ onChange, selectedTopicIds, availableTopics, className }: Props) => {
     const { data: topics } = useTopics();
     const localize = useLocalize();
 
@@ -100,7 +91,7 @@ const TopicsPicker = memo(
       selectedTopicIds.includes(topic.id)
     );
 
-    const handleOnChange = (topicId: string) => (event) => {
+    const handleOnChange = (topicId: string) => (event: MouseEvent) => {
       event.stopPropagation();
       event.preventDefault();
       const newTopics = [...selectedTopicIds];
@@ -132,11 +123,8 @@ const TopicsPicker = memo(
         : '';
       return (
         <>
-          <TopicsContainer
-            onBlur={onBlur}
-            className={`${className} e2e-topics-picker`}
-          >
-            {availableTopics.map((topic, index) => {
+          <TopicsContainer className={`${className} e2e-topics-picker`}>
+            {availableTopics.map((topic) => {
               const topicId = topic.id || topic.const;
               const topicTitle = topic?.attributes?.title_multiloc ? (
                 <T value={topic.attributes.title_multiloc} />
@@ -156,7 +144,6 @@ const TopicsPicker = memo(
                     .filter((item) => item)
                     .join(' ')}
                   onMouseDown={removeFocusAfterMouseClick}
-                  ref={index === 0 ? setRef : undefined}
                   disabled={false}
                 >
                   {topicTitle}
