@@ -63,14 +63,14 @@ export interface FormValues {
   header_bg: UploadFile[] | null;
 }
 
-type PageFormProps = {
+type InitiativeFormProps = {
   onSubmit: (formValues: FormValues) => void | Promise<void>;
   defaultValues?: FormValues;
 };
 
 const mapsLoaded = window.googleMaps;
 
-const InitiativeForm = ({ onSubmit, defaultValues }: PageFormProps) => {
+const InitiativeForm = ({ onSubmit, defaultValues }: InitiativeFormProps) => {
   const [postAnonymously, setPostAnonymously] = useState(false);
   const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
     useState(false);
