@@ -224,8 +224,8 @@ da:
       action_share_twitter: 'Informer dine følgere på %{twitterLink}'
       cta_view_initiative: 'Gå til dit forslag'
       link: link
-      main_header: 'Du udgav et forslag! Lad os finde noget støtte til det.'
-      message_next_steps: '%{userFirstName}, dit forslag blev udgivet på deltagelsesplatformen for %{organizationName}. Du bliver underrettet når personer interagerer med dit forslag. Find ud af dine næste trin nedenfor.'
+      main_header: 'Tillykke! Dit forslag er nu offentliggjort og er klar til at indsamle stemmer.'
+      message_next_steps: '%{userFirstName}, dit forslag er nu offentliggjort på %{organizationName}s digitale platform, og er dermed klar til at blive delt i dit netværk og indsamle stemmer. Du får besked, når dit forslag får stemmer eller kommentarer.'
       message_get_votes: 'Nå stemmetærsklen:'
       preheader: 'Tak for at du deler dit forslag, %{initiativeTitle}, for %{organizationName}. Det næste skridt er at få support for dit forslag ved at dele den med hele dit netværk.'
       send_email: e-mail
@@ -507,14 +507,14 @@ da:
     status_change_of_reacted_initiative:
       status_change: 'Den nye status for dette forslag er ''%{initiativeStatus}'''
       cta_view_initiative: 'Gå til dette forslag'
-      event_description: 'Status for forslag ''%{initiativeTitle}'' er blevet opdateret på borgerinddragelsesplatformen for %{organizationName}.'
+      event_description: 'Status for dit forslag ''''%{initiativeTitle}'''' er blevet opdateret på %{organizationName}s digitale platform.'
       main_header: 'Et forslag, du stemte på, har en ny status'
       subject: 'Statussen for et forslag, du har stemt på er blevet ændret'
       preheader: 'Statussen for et forslag du har stemt på, er blevet ændret'
     status_change_of_commented_initiative:
       status_change: 'Den nye status for dette forslag er ''%{initiativeStatus}'''
       cta_view_initiative: 'Gå til dette forslag'
-      event_description: 'Status for forslag ''%{initiativeTitle}'' er blevet opdateret på den digitale deltagelsesplatform for %{organizationName}.'
+      event_description: 'Status for dit forslag ''''%{initiativeTitle}'''' er blevet opdateret på %{organizationName}s digitale platform.'
       main_header: 'Et forslag, du kommenterede, har en ny status'
       subject: 'Status for et forslag, du kommenterede, er ændret'
       preheader: 'Status for et forslag, du kommenterede, er ændret'
