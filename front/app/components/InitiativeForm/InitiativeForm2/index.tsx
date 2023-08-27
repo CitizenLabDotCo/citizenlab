@@ -35,6 +35,9 @@ import FileUploader from 'components/HookForm/FileUploader';
 import ImagesDropzone from 'components/HookForm/ImagesDropzone';
 import LocationInput from 'components/HookForm/LocationInput';
 import useTopics from 'api/topics/useTopics';
+import SubmitButtonBar from './SubmitButtonBar';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 const ProfileVisibilityFormSection = lazy(
   () => import('./ProfileVisibilityFormSection')
 );
@@ -48,8 +51,8 @@ const StyledFormSection = styled(FormSection)`
 `;
 
 export interface FormValues {
-  title_multiloc: Multiloc | undefined | null;
-  body_multiloc: Multiloc | undefined | null;
+  title_multiloc: Multiloc;
+  body_multiloc: Multiloc | undefined;
   topic_ids: string[];
   position: string | undefined | null;
   cosponsor_ids: string[];
@@ -115,9 +118,8 @@ const InitiativeForm = ({ onSubmit, defaultValues }: PageFormProps) => {
               labelMessage={messages.titleLabel}
               subtextMessage={messages.titleLabelSubtext2}
             >
-              <Input
+              <InputMultilocWithLocaleSwitcher
                 name="title_multiloc"
-                type="text"
                 id="e2e-initiative-title-input"
                 // onChange={handleTitleOnChange}
                 // onBlur={onBlur('title_multiloc')}
@@ -161,10 +163,10 @@ const InitiativeForm = ({ onSubmit, defaultValues }: PageFormProps) => {
               labelMessage={messages.descriptionLabel}
               subtextMessage={messages.descriptionLabelSubtext}
             />
-            <QuillEditor
+            <QuillMultilocWithLocaleSwitcher
               // id="body"
               name="body_multiloc"
-              locale={locale}
+              // locale={locale}
               noVideos
               noAlign
               // onChange={handleBodyOnChange}
@@ -312,6 +314,7 @@ const InitiativeForm = ({ onSubmit, defaultValues }: PageFormProps) => {
             postAnonymously={postAnonymously}
           />
         </Suspense>
+        <SubmitButtonBar processing={methods.formState.isSubmitting} />
       </form>
     </FormProvider>
   );
