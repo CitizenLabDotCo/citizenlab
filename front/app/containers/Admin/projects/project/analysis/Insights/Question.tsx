@@ -23,10 +23,8 @@ import messages from '../messages';
 import styled from 'styled-components';
 import { useSelectedInputContext } from '../SelectedInputContext';
 import useAnalysisQuestion from 'api/analysis_questions/useAnalysisQuestion';
-import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import FilterItems from '../FilterItems';
-import Tag from '../Tags/Tag';
 import Rate from './Rate';
 
 const StyledAnswerText = styled.div`
@@ -49,7 +47,6 @@ const Question = ({ insight }: Props) => {
   const { formatMessage } = useIntl();
   const { analysisId } = useParams() as { analysisId: string };
   const { mutate: deleteQuestion } = useDeleteAnalysisInsight();
-  const { data: tags } = useAnalysisTags({ analysisId });
 
   const { data: question } = useAnalysisQuestion({
     analysisId,
@@ -92,7 +89,6 @@ const Question = ({ insight }: Props) => {
 
   if (!question) return null;
   const hasFilters = !!Object.keys(question.data.attributes.filters).length;
-  const tagIds = question.data.attributes.filters.tag_ids;
 
   const phaseId = searchParams.get('phase_id');
 
@@ -133,15 +129,6 @@ const Question = ({ insight }: Props) => {
                 filters={question.data.attributes.filters}
                 isEditable={false}
               />
-              {tags?.data
-                .filter((tag) => tagIds?.includes(tag.id))
-                .map((tag) => (
-                  <Tag
-                    key={tag.id}
-                    name={tag.attributes.name}
-                    tagType={tag.attributes.tag_type}
-                  />
-                ))}
             </>
           )}
 

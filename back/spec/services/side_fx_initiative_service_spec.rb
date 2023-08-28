@@ -171,6 +171,32 @@ describe SideFxInitiativeService do
 
       expect(user.follows.pluck(:followable_id)).to contain_exactly initiative.id
     end
+
+    it 'creates a reaction (vote) for an author who can react (vote)' do
+      initiative = create(:initiative)
+
+      expect do
+        service.after_create initiative, user
+      end.to change(Reaction, :count).from(0).to(1)
+
+      expect(initiative.reactions.pluck(:user_id)).to contain_exactly initiative.author.id
+    end
+
+    it 'does not create a reaction (vote) for an author who cannot react (vote)' do
+      initiative = create(:initiative)
+
+      create(
+        :permission,
+        permission_scope: nil,
+        action: 'reacting_initiative',
+        permitted_by: 'groups',
+        groups: [create(:group)]
+      )
+
+      expect do
+        service.after_create initiative, user
+      end.not_to change(Reaction, :count)
+    end
   end
 
   describe 'after_destroy' do
