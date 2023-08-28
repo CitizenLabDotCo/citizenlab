@@ -1547,6 +1547,7 @@
   "app.containers.UsersShowPage.initiatives": "Initiativen",
   "app.containers.UsersShowPage.invisibleTitlePostsList": "All Bäiträg, déi vun dësem Benotzer agereecht goufen",
   "app.containers.UsersShowPage.invisibleTitleUserComments": "All Kommentaren, déi vun dësem Benotzer gepost goufen",
+  "app.containers.UsersShowPage.loadMore": "Méi lueden",
   "app.containers.UsersShowPage.loadMoreComments": "Méi Kommentare lueden",
   "app.containers.UsersShowPage.loadingComments": "Kommentare lueden...",
   "app.containers.UsersShowPage.memberSince": "Member säit {date}",
