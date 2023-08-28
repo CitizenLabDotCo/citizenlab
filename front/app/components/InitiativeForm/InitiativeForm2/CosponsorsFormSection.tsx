@@ -12,9 +12,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Warning from 'components/UI/Warning';
 import messages from '../messages';
 
-interface Props {}
-
-const CosponsorsFormSection = ({}: Props) => {
+const CosponsorsFormSection = () => {
   const { data: appConfiguration } = useAppConfiguration();
   const initiativeCosponsorsRequired = useInitiativeCosponsorsRequired();
   const { formatMessage } = useIntl();
