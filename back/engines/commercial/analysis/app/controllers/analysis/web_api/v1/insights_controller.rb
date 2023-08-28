@@ -38,10 +38,11 @@ module Analysis
         end
 
         private
+
         def side_fx_service
           @side_fx_service ||= SideFxInsightService.new
         end
-        
+
         def set_analysis
           @analysis = Analysis.find(params[:analysis_id])
           authorize(@analysis, :show?)
