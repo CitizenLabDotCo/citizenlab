@@ -21,19 +21,11 @@ import { stylingConsts, colors } from 'utils/styleUtils';
 
 interface Props {
   phaseId?: string;
-  loadingDeleteIdea: boolean;
   onChangePhase: (phaseId: string) => void;
-  onDeleteIdea?: () => void;
   onClickPDFImport: () => void;
 }
 
-const TopBar = ({
-  phaseId,
-  loadingDeleteIdea,
-  onChangePhase,
-  onDeleteIdea,
-  onClickPDFImport,
-}: Props) => {
+const TopBar = ({ phaseId, onChangePhase, onClickPDFImport }: Props) => {
   const localize = useLocalize();
   const { projectId } = useParams() as {
     projectId: string;
@@ -75,17 +67,6 @@ const TopBar = ({
       </Box>
 
       <Box display="flex">
-        {onDeleteIdea && (
-          <Button
-            icon="delete"
-            onClick={onDeleteIdea}
-            marginRight="20px"
-            bgColor={colors.error}
-            processing={loadingDeleteIdea}
-          >
-            <FormattedMessage {...messages.delete} />
-          </Button>
-        )}
         <Button icon="page" onClick={onClickPDFImport} bgColor={colors.primary}>
           <FormattedMessage {...messages.importPdf} />
         </Button>

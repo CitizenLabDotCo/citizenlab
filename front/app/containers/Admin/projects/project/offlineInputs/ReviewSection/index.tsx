@@ -50,6 +50,7 @@ interface Props {
   onSelectIdea: (ideaId: string) => void;
   setFormData: (formData: FormData) => void;
   onApproveIdea?: () => void;
+  onDeleteIdea: (ideaId: string) => void;
 }
 
 const ReviewSection = ({
@@ -62,6 +63,7 @@ const ReviewSection = ({
   onSelectIdea,
   setFormData,
   onApproveIdea,
+  onDeleteIdea,
 }: Props) => {
   const { projectId } = useParams() as {
     projectId: string;
@@ -186,7 +188,7 @@ const ReviewSection = ({
             ideaId={ideaId}
             ideas={ideas}
             onSelectIdea={onSelectIdea}
-            onDeleteIdea={console.log}
+            onDeleteIdea={onDeleteIdea}
           />
         </Box>
         <Box

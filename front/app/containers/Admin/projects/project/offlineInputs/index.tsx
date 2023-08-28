@@ -52,7 +52,7 @@ const OfflineInputImporter = () => {
   const { data: idea } = useIdeaById(ideaId ?? undefined, false);
   const { mutateAsync: updateIdea, isLoading: loadingApproveIdea } =
     useUpdateIdea();
-  const { mutate: deleteIdea, isLoading: loadingDeleteIdea } = useDeleteIdea();
+  const { mutate: deleteIdea } = useDeleteIdea();
   const { data: phases } = usePhases(projectId);
   const currentPhase = getCurrentPhase(phases?.data);
 
@@ -106,11 +106,12 @@ const OfflineInputImporter = () => {
     }
   };
 
-  const onDelete = () => {
-    if (!ideaId) return;
-    deleteIdea(ideaId, {
+  const onDeleteIdea = (idToBeDeleted: string) => {
+    deleteIdea(idToBeDeleted, {
       onSuccess: () => {
-        setIdeaId(null);
+        if (ideaId === idToBeDeleted) {
+          setIdeaId(null);
+        }
       },
     });
   };
@@ -134,9 +135,7 @@ const OfflineInputImporter = () => {
         <FocusOn>
           <TopBar
             phaseId={phaseId}
-            loadingDeleteIdea={loadingDeleteIdea}
             onChangePhase={setSelectedPhaseId}
-            onDeleteIdea={ideaId ? onDelete : undefined}
             onClickPDFImport={openImportModal}
           />
           <Box
@@ -153,6 +152,7 @@ const OfflineInputImporter = () => {
               onSelectIdea={handleSelectIdea}
               setFormData={setFormData}
               onApproveIdea={ideaId ? onApproveIdea : undefined}
+              onDeleteIdea={onDeleteIdea}
             />
           </Box>
         </FocusOn>
