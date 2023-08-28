@@ -41,7 +41,7 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
 import useAddCommentToIdea from 'api/comments/useAddCommentToIdea';
 import useAddCommentToInitiative from 'api/comments/useAddCommentToInitiative';
-import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
+import OldAnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal/OldAnonymousParticipationConfirmationModal';
 
 const Container = styled.div`
   display: flex;
@@ -459,7 +459,7 @@ const ChildCommentForm = ({
           </Form>
         </FormContainer>
         {showAnonymousConfirmationModal && (
-          <AnonymousParticipationConfirmationModal
+          <OldAnonymousParticipationConfirmationModal
             onConfirmAnonymousParticipation={() => {
               setShowAnonymousConfirmationModal(false);
               continueSubmission();

@@ -89,9 +89,6 @@ const IdeasNewPageWithJSONForm = () => {
   const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
     useState(false);
   const [processingLocation, setProcessingLocation] = useState(false);
-  const [formDataOnSubmit, setFormDataOnSubmit] = useState<
-    FormValues | undefined
-  >(undefined);
   const [initialFormData, setInitialFormData] = useState({});
   const [postAnonymously, setPostAnonymously] = useState(false);
   const participationContext = getCurrentParticipationContext(
@@ -129,25 +126,12 @@ const IdeasNewPageWithJSONForm = () => {
     }
   }, [search]);
 
-  const onSubmit = async (data: FormValues) => {
-    if (!project) return;
-
-    setFormDataOnSubmit(data);
-
-    if (allowAnonymousPosting && postAnonymously) {
-      setShowAnonymousConfirmationModal(true);
-    } else {
-      await continueSubmission(data);
-    }
-  };
-
   // get participation method config
   const { data: phaseFromUrl } = usePhase(phaseId);
   const config = getConfig(phaseFromUrl?.data, phases, project);
 
-  const continueSubmission = async (data: FormValues | undefined) => {
-    if (!project || !data) {
-      setShowAnonymousConfirmationModal(false);
+  const onSubmit = async (data: FormValues) => {
+    if (!project) {
       return;
     }
 
@@ -208,6 +192,14 @@ const IdeasNewPageWithJSONForm = () => {
     },
     [uiSchema]
   );
+
+  const handleOnChangeAnonymousPosting = () => {
+    if (!postAnonymously) {
+      setShowAnonymousConfirmationModal(true);
+    }
+
+    setPostAnonymously((postAnonymously) => !postAnonymously);
+  };
 
   if (isNilOrError(project) || !config) {
     return null;
@@ -276,7 +268,7 @@ const IdeasNewPageWithJSONForm = () => {
                   <Box mt="-20px">
                     <ProfileVisiblity
                       postAnonymously={postAnonymously}
-                      setPostAnonymously={setPostAnonymously}
+                      onChange={handleOnChangeAnonymousPosting}
                     />
                   </Box>
                 </Box>
@@ -289,10 +281,6 @@ const IdeasNewPageWithJSONForm = () => {
       )}
       {showAnonymousConfirmationModal && (
         <AnonymousParticipationConfirmationModal
-          onConfirmAnonymousParticipation={() => {
-            setShowAnonymousConfirmationModal(false);
-            continueSubmission(formDataOnSubmit);
-          }}
           onCloseModal={() => {
             setShowAnonymousConfirmationModal(false);
           }}

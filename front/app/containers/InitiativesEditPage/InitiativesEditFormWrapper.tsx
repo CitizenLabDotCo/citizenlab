@@ -457,9 +457,6 @@ const InitiativesEditFormWrapper = ({
       />
       {showAnonymousConfirmationModal && (
         <AnonymousParticipationConfirmationModal
-          onConfirmAnonymousParticipation={() => {
-            continuePublish();
-          }}
           onCloseModal={onHandleCloseModal}
         />
       )}

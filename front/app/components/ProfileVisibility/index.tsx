@@ -9,15 +9,11 @@ import messages from './messages';
 
 interface Props {
   postAnonymously: boolean;
-  setPostAnonymously: (bool: boolean) => void;
+  onChange: () => void;
 }
 
-const ProfileVisiblity = ({ postAnonymously, setPostAnonymously }: Props) => {
+const ProfileVisiblity = ({ postAnonymously, onChange }: Props) => {
   const { formatMessage } = useIntl();
-
-  const handleChangePostAnonymously = () => {
-    setPostAnonymously(!postAnonymously);
-  };
 
   return (
     <>
@@ -40,7 +36,7 @@ const ProfileVisiblity = ({ postAnonymously, setPostAnonymously }: Props) => {
         id="e2e-post-anonymously-checkbox"
         checked={postAnonymously}
         label={<Text>{formatMessage(messages.postAnonymously)}</Text>}
-        onChange={handleChangePostAnonymously}
+        onChange={onChange}
       />
     </>
   );
