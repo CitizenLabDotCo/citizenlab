@@ -1,33 +1,14 @@
 import React from 'react';
 import {
-  fontSizes,
   Toggle,
   Box,
   IconTooltip,
+  Text,
 } from '@citizenlab/cl2-component-library';
 import { FormattedMessage } from 'utils/cl-intl';
 import { colors } from 'utils/styleUtils';
 import messages from './messages';
-import styled from 'styled-components';
 import { SubSectionTitle } from 'components/admin/Section';
-
-const StyledToggle = styled(Toggle)`
-  flex-direction: row-reverse;
-  width: fit-content;
-
-  & > div {
-    font-weight: 600;
-    padding-left: 0;
-    padding-right: 1rem;
-  }
-`;
-
-const ToggleLabel = styled.label`
-  display: flex;
-  align-items: center;
-  color: ${colors.textSecondary};
-  font-size: ${fontSizes.base}px;
-`;
 
 type Props = {
   isEnabled: boolean;
@@ -45,18 +26,23 @@ const ToggleShowFollowPreferences = ({ isEnabled, onChange }: Props) => {
         <FormattedMessage {...messages.requestFollowPreferences} />
         <IconTooltip content={<FormattedMessage {...messages.helperText} />} />
       </SubSectionTitle>
-      <ToggleLabel>
-        <StyledToggle
-          checked={isEnabled}
-          onChange={handleChange}
-          labelTextColor={colors.primary}
-        />
-        {isEnabled ? (
-          <FormattedMessage {...messages.enabled} />
-        ) : (
-          <FormattedMessage {...messages.disabled} />
-        )}
-      </ToggleLabel>
+      <Box as="label" display="flex" alignItems="center">
+        <Box w="fit-content" display="flex" flexDirection="row-reverse">
+          <Toggle
+            checked={isEnabled}
+            onChange={handleChange}
+            labelTextColor={colors.primary}
+          />
+        </Box>
+
+        <Text fontSize="base" color="textSecondary" pl="1rem" my="0px">
+          {isEnabled ? (
+            <FormattedMessage {...messages.enabled} />
+          ) : (
+            <FormattedMessage {...messages.disabled} />
+          )}
+        </Text>
+      </Box>
     </Box>
   );
 };
