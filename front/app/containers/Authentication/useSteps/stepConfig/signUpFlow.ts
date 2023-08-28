@@ -23,7 +23,7 @@ import {
   UpdateState,
 } from '../../typings';
 import { Step } from './typings';
-import { RequirementStatus } from 'api/authentication/authentication_requirements/types';
+import { OnboardingType } from 'api/authentication/authentication_requirements/types';
 
 export const signUpFlow = (
   getAuthenticationData: () => AuthenticationData,
@@ -234,10 +234,7 @@ export const signUpFlow = (
         setCurrentStep('closed');
         trackEventByName(tracks.signUpCustomFieldsStepExited);
       },
-      SUBMIT: async (
-        userId: string,
-        onboarding: Record<string, RequirementStatus>
-      ) => {
+      SUBMIT: async (userId: string, onboarding: OnboardingType) => {
         try {
           await updateUser({ userId, onboarding });
           const { requirements } = await getRequirements();

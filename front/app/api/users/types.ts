@@ -1,4 +1,4 @@
-import { RequirementStatus } from 'api/authentication/authentication_requirements/types';
+import { OnboardingType } from 'api/authentication/authentication_requirements/types';
 import { TRole } from 'services/permissions/roles';
 import { ImageSizes, Locale, Multiloc } from 'typings';
 
@@ -41,7 +41,7 @@ export interface IUserAttributes {
   invite_status: 'pending' | 'accepted' | null;
   confirmation_required: boolean;
   custom_field_values?: Record<string, any>;
-  onboarding?: Record<string, RequirementStatus>;
+  onboarding?: OnboardingType;
   avatar?: ImageSizes;
   roles?: TRole[];
   email?: string;
@@ -90,7 +90,7 @@ export interface IUserUpdate {
   roles?: TRole[];
   bio_multiloc?: Multiloc;
   custom_field_values?: Record<string, any>;
-  onboarding?: Record<string, RequirementStatus>;
+  onboarding?: OnboardingType;
 }
 
 export interface IChangePassword {
