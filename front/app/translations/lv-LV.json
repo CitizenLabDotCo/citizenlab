@@ -1547,6 +1547,7 @@
   "app.containers.UsersShowPage.initiatives": "Iniciatīvas",
   "app.containers.UsersShowPage.invisibleTitlePostsList": "Viss šī dalībnieka sniegtais ieguldījums",
   "app.containers.UsersShowPage.invisibleTitleUserComments": "Visi šī dalībnieka publicētie komentāri",
+  "app.containers.UsersShowPage.loadMore": "Ielādēt vairāk",
   "app.containers.UsersShowPage.loadMoreComments": "Ielādēt vairāk komentāru",
   "app.containers.UsersShowPage.loadingComments": "Notiek komentāru ielāde...",
   "app.containers.UsersShowPage.memberSince": "Dalībnieks kopš {datums}",
