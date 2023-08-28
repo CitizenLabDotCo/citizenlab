@@ -185,6 +185,8 @@ lv:
       <p>Iniciatori tiek aicināti iepazīstināt ar saviem priekšlikumiem nākamajā padomes sēdē. Mēs sniegsim oficiālu atjauninātu informāciju.</p>
     default_eligibility_criteria: >
       <ul> <li>Tai ir jāiekļaujas vietējās politikas jomās un kompetencē</li> <li>Tai ir jākalpo sabiedrības interesēm, nevis jūsu individuālajām interesēm</li> <li>Tā nediskriminē pēc dzimuma, rases, vecuma vai izcelsmes </li> <li>Tā nekaitē citiem</li> </ul>.
+    default_posting_tips: >
+      <ul><li>Take the time to elaborate on your proposal. If necessary, type a draft first and then copy-paste it here. As soon as you post it, others will be able to read it and the time will start running.</li><li>Choose a meaningful title that explains clearly what your proposal entails.</li><li>Visualize your proposal with a fitting image to help it stand out!</li><li>Add relevant attachments, such as videos, inspiring examples, technical details or plans.</li><li>Share your idea on social media and other channels to gather support from others.</li></ul>
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: 'Atiestatīt jūsu paroli'
