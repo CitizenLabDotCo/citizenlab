@@ -561,7 +561,6 @@
   "app.components.admin.UserFilterConditions.rulesFormLabelPredicate": "Condition",
   "app.components.admin.UserFilterConditions.rulesFormLabelValue": "Value",
   "app.components.anonymousParticipationModal.anonymousParticipationWarning": "You won't get notifications on your contribution",
-  "app.components.anonymousParticipationModal.cancel": "Cancel",
   "app.components.anonymousParticipationModal.continue": "Continue",
   "app.components.anonymousParticipationModal.participateAnonymously": "Participate anonymously",
   "app.components.anonymousParticipationModal.participateAnonymouslyModalText4": "This will safely <b>hide your profile</b> from admins, moderators and other residents for this specific contribution so that nobody is able to link this contribution to you. Anonymous contributions cannot be edited, and are considered final.",

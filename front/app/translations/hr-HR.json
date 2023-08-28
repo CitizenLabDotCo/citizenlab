@@ -561,7 +561,6 @@
   "app.components.admin.UserFilterConditions.rulesFormLabelPredicate": "Stanje",
   "app.components.admin.UserFilterConditions.rulesFormLabelValue": "Vrijednost",
   "app.components.anonymousParticipationModal.anonymousParticipationWarning": "Nećete dobivati obavijesti o svom doprinosu",
-  "app.components.anonymousParticipationModal.cancel": "Otkazati",
   "app.components.anonymousParticipationModal.continue": "Nastaviti",
   "app.components.anonymousParticipationModal.participateAnonymously": "Sudjelujte anonimno",
   "app.components.anonymousParticipationModal.participateAnonymouslyModalText4": "Ovo će sigurno <b>sakriti vaš profil</b> od administratora, moderatora i drugih stanovnika za ovaj specifični doprinos tako da nitko ne može povezati ovaj doprinos s vama. Anonimni doprinosi se ne mogu uređivati i smatraju se konačnima.",

@@ -561,7 +561,6 @@
   "app.components.admin.UserFilterConditions.rulesFormLabelPredicate": "Koşul",
   "app.components.admin.UserFilterConditions.rulesFormLabelValue": "Değer",
   "app.components.anonymousParticipationModal.anonymousParticipationWarning": "Katkılarınızla ilgili bildirim almayacaksınız",
-  "app.components.anonymousParticipationModal.cancel": "İptal",
   "app.components.anonymousParticipationModal.continue": "Devam et",
   "app.components.anonymousParticipationModal.participateAnonymously": "Anonim olarak katılın",
   "app.components.anonymousParticipationModal.participateAnonymouslyModalText4": "Bu, <b>profilinizi</b> yöneticilerden, moderatörlerden ve diğer sakinlerden bu özel katkı için güvenli bir şekilde gizler, böylece kimse bu katkıyı sizinle ilişkilendiremez. Anonim katkılar düzenlenemez ve nihai olarak kabul edilir.",

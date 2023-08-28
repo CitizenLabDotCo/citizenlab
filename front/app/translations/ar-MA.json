@@ -561,7 +561,6 @@
   "app.components.admin.UserFilterConditions.rulesFormLabelPredicate": "شرط",
   "app.components.admin.UserFilterConditions.rulesFormLabelValue": "قيمة",
   "app.components.anonymousParticipationModal.anonymousParticipationWarning": "لن تتلقى إشعارات بشأن مساهمتك",
-  "app.components.anonymousParticipationModal.cancel": "يلغي",
   "app.components.anonymousParticipationModal.continue": "يكمل",
   "app.components.anonymousParticipationModal.participateAnonymously": "شارك بشكل مجهول",
   "app.components.anonymousParticipationModal.participateAnonymouslyModalText4": "سيؤدي هذا <b>إخفاء ملف التعريف</b> الخاص بك بأمان من المسؤولين والمشرفين والمقيمين الآخرين لهذه المساهمة المحددة حتى لا يتمكن أي شخص من ربط هذه المساهمة بك. لا يمكن تحرير المساهمات المجهولة ، وتعتبر نهائية.",

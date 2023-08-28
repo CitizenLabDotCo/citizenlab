@@ -561,7 +561,6 @@
   "app.components.admin.UserFilterConditions.rulesFormLabelPredicate": "Stāvoklis",
   "app.components.admin.UserFilterConditions.rulesFormLabelValue": "Vērtība",
   "app.components.anonymousParticipationModal.anonymousParticipationWarning": "Jūs nesaņemsiet paziņojumus par savu ieguldījumu",
-  "app.components.anonymousParticipationModal.cancel": "Atcelt",
   "app.components.anonymousParticipationModal.continue": "Turpināt",
   "app.components.anonymousParticipationModal.participateAnonymously": "Piedalieties anonīmi",
   "app.components.anonymousParticipationModal.participateAnonymouslyModalText4": "Tas droši paslēps jūsu profilu <b></b> no administratoriem, moderatoriem un citiem iedzīvotājiem, lai neviens nevarētu saistīt šo konkrēto ieguldījumu ar jums. Anonīmus ieguldījumus nevar rediģēt, un tie tiek uzskatīti par galīgiem.",

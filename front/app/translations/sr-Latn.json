@@ -561,7 +561,6 @@
   "app.components.admin.UserFilterConditions.rulesFormLabelPredicate": "B",
   "app.components.admin.UserFilterConditions.rulesFormLabelValue": "C",
   "app.components.anonymousParticipationModal.anonymousParticipationWarning": "Нећете добијати обавештења о свом доприносу",
-  "app.components.anonymousParticipationModal.cancel": "Поништити, отказати",
   "app.components.anonymousParticipationModal.continue": "Настави",
   "app.components.anonymousParticipationModal.participateAnonymously": "Учествујте анонимно",
   "app.components.anonymousParticipationModal.participateAnonymouslyModalText4": "Ово ће безбедно <b>сакрити ваш профил</b> од администратора, модератора и другиһ корисника за овај посебан допринос, тако да нико не може да повеже овај допринос са вама. Анонимни доприноси се не могу уређивати и сматрају се коначним.",
