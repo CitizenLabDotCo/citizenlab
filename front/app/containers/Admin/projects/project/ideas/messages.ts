@@ -14,4 +14,8 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.ideas.analysisButton',
     defaultMessage: 'Go to analysis',
   },
+  addOfflineInputs: {
+    id: 'app.containers.Admin.projects.project.ideas.addOfflineInputs',
+    defaultMessage: 'Add offline inputs',
+  },
 });

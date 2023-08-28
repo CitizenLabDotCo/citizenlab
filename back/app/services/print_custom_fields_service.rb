@@ -3,12 +3,15 @@ require 'prawn'
 require 'prawn/measurement_extensions'
 
 class PrintCustomFieldsService
-  attr_reader :custom_fields, :params, :previous_cursor
+  attr_reader :participation_context, :custom_fields, :params, :previous_cursor
 
-  QUESTION_TYPES = %w[select multiselect text text_multiloc multiline_text html_multiloc linear_scale]
+  # QUESTION_TYPES = %w[select multiselect text text_multiloc multiline_text html_multiloc linear_scale]
+  # Disable linear scales for now, as they're not detected correctly by form parser
+  QUESTION_TYPES = %w[select multiselect text text_multiloc multiline_text html_multiloc]
   FORBIDDEN_HTML_TAGS_REGEX = /<\/?(div|span|ul|ol|li|em|img|a){1}[^>]*\/?>/
 
-  def initialize(custom_fields, params)
+  def initialize(participation_context, custom_fields, params)
+    @participation_context = participation_context
     @custom_fields = custom_fields
     @params = params
     @previous_cursor = nil
@@ -32,12 +35,12 @@ class PrintCustomFieldsService
     end
 
     custom_fields.each_with_index do |custom_field, i|
-      # First custom_field should always be a page.
-      # Since the pdf already has a page when it's
-      # created we can skip this.
-      next if i == 0
-
       field_type = custom_field.input_type
+
+      # If this is a survey, the first field will be a 'page'.
+      # Since the pdf is initialized with an empty page,
+      # we can skip this.
+      next if i == 0 && field_type == 'page'
 
       if field_type == 'page' then
         pdf.start_new_page(size: 'A4')
@@ -78,6 +81,12 @@ class PrintCustomFieldsService
       # Write description if it exists
       write_description(pdf, custom_field)
 
+      # Write 
+      # - '*Choose as many as you like', and/or
+      # - '*This answer will only be shared with moderators, and not to the public.'
+      # if necessary
+      write_instructions_and_disclaimers(pdf, custom_field)
+
       pdf.move_down 7.mm
 
       if field_type == 'select' then
@@ -105,8 +114,10 @@ class PrintCustomFieldsService
   end
 
   def write_title(pdf, custom_field)
+    optional = I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.optional') }
+
     pdf.text(
-      "<b>#{custom_field.title_multiloc[locale]}</b>",
+      "<b>#{custom_field.title_multiloc[locale]}</b>#{custom_field.required? ? "" : " (#{optional})"}",
       size: 20,
       inline_format: true
     )
@@ -127,14 +138,41 @@ class PrintCustomFieldsService
     end
   end
 
+  def write_instructions_and_disclaimers(pdf, custom_field)
+    show_multiselect_instructions = custom_field.input_type == "multiselect"
+    show_visibility_disclaimer = participation_context.participation_method == "ideation" && custom_field.answer_visible_to == "admins"
+
+    if show_multiselect_instructions || show_visibility_disclaimer then
+      pdf.move_down 5.mm
+
+      if show_multiselect_instructions then
+        pdf.text(
+          "*#{I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.choose_as_many') }}", 
+          size: 12
+        )
+      end
+
+      if show_visibility_disclaimer then
+        pdf.text(
+          "*#{I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.this_answer') }}",
+          size: 12
+        )
+      end
+    end
+  end
+
   def draw_single_choice(pdf, custom_field)
     custom_field.options.each do |option|
       pdf.stroke_color '000000'
       pdf.stroke_circle [3.mm, pdf.cursor], 5
 
-      pdf.bounding_box([7.mm, pdf.cursor + 4], width: 180.mm, height: 10.mm) do
+      pdf.move_up 1.2.mm
+
+      pdf.indent(7.mm) do
         pdf.text option.title_multiloc[locale]
       end
+
+      pdf.move_down 5.mm
     end
   end
 
@@ -145,9 +183,13 @@ class PrintCustomFieldsService
         pdf.rectangle([1.5.mm, pdf.cursor + 1.5.mm], 10, 10)
       end
 
-      pdf.bounding_box([7.mm, pdf.cursor + 4], width: 180.mm, height: 10.mm) do
+      pdf.move_up 1.2.mm
+
+      pdf.indent(7.mm) do
         pdf.text option.title_multiloc[locale]
       end
+
+      pdf.move_down 5.mm
     end
   end
 

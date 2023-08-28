@@ -56,6 +56,7 @@ const SurveyFormBuilder = () => {
       />
       <PDFExportModal
         open={exportModalOpen}
+        formType="survey"
         onClose={() => setExportModalOpen(false)}
         onExport={handleExportPDF}
       />

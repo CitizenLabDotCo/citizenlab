@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 
 // i18n
 import messages from '../messages';
+import ownMessages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // components
@@ -16,6 +17,7 @@ import AnalysisBanner from './AnalysisBanner';
 // hooks
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // styling
 import { colors } from 'utils/styleUtils';
@@ -33,6 +35,9 @@ const continuousProjectVisibleFilterMenus: TFilterMenu[] = [
 ];
 
 const AdminProjectIdeas = () => {
+  const importPrintedFormsEnabled = useFeatureFlag({
+    name: 'import_printed_forms',
+  });
   const { projectId } = useParams() as { projectId: string };
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
@@ -44,14 +49,16 @@ const AdminProjectIdeas = () => {
           <Title variant="h2" color="primary" fontWeight="normal" mt="16px">
             <FormattedMessage {...messages.titleInputManager} />
           </Title>
-          <Button
-            width="auto"
-            bgColor={colors.primary}
-            linkTo={`/admin/projects/${projectId}/offline-inputs`}
-            icon="page"
-          >
-            Add offline inputs
-          </Button>
+          {importPrintedFormsEnabled && (
+            <Button
+              width="auto"
+              bgColor={colors.primary}
+              linkTo={`/admin/projects/${projectId}/offline-inputs`}
+              icon="page"
+            >
+              <FormattedMessage {...ownMessages.addOfflineInputs} />
+            </Button>
+          )}
         </Box>
         <Text color="textSecondary">
           <FormattedMessage {...messages.subtitleInputManager} />
