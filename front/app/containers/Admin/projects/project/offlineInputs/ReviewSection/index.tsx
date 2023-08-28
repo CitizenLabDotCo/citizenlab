@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import moment from 'moment';
 
 // routing
@@ -20,7 +20,8 @@ import sharedMessages from '../TopBar/messages';
 import { Box, Spinner, Title, Text } from '@citizenlab/cl2-component-library';
 import AuthorBox from './AuthorBox';
 import IdeaForm from './IdeaForm';
-import PDFViewer from 'components/PDFViewer';
+import PDFPageControl from './PDFPageControl';
+import PDFViewer from 'containers/Admin/projects/project/offlineInputs/ReviewSection/PDFViewer';
 
 // styling
 import styled from 'styled-components';
@@ -62,6 +63,7 @@ const ReviewSection = ({
   const { projectId } = useParams() as {
     projectId: string;
   };
+  const [currentPageIndex, setCurrentPageIndex] = useState(0);
 
   const { data: ideas, isLoading } = useImportedIdeas({ projectId });
   const { data: idea } = useIdeaById(ideaId ?? undefined);
@@ -128,6 +130,9 @@ const ReviewSection = ({
   const authorName = author ? getFullName(author.data) : undefined;
   const authorEmail = author?.data.attributes.email;
 
+  const goToNextPage = () => setCurrentPageIndex((index) => index + 1);
+  const goToPreviousPage = () => setCurrentPageIndex((index) => index - 1);
+
   return (
     <Box
       mt="40px"
@@ -138,12 +143,31 @@ const ReviewSection = ({
       display="flex"
       flexDirection="column"
     >
-      <Title variant="h2" color="primary" px="40px" mb="40px">
-        <FormattedMessage {...messages.importedIdeas} />
-      </Title>
+      <Box px="40px" display="flex" justifyContent="space-between">
+        <Title variant="h2" color="primary" mt="8px" mb="20px">
+          <FormattedMessage {...messages.importedIdeas} />
+        </Title>
+
+        <Box
+          w="40%"
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="center"
+        >
+          {pages && (
+            <PDFPageControl
+              currentPageNumber={currentPageIndex + 1}
+              numberOfPages={pages?.length}
+              goToNextPage={goToNextPage}
+              goToPreviousPage={goToPreviousPage}
+            />
+          )}
+        </Box>
+      </Box>
 
       <Box
-        h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px - 140px)`}
+        h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px - 100px)`}
         display="flex"
         px="40px"
         justifyContent="space-between"
@@ -204,6 +228,7 @@ const ReviewSection = ({
         <Box w="40%">
           {ideaMetadata && pages && (
             <PDFViewer
+              currentPageIndex={currentPageIndex}
               file={ideaMetadata.data.attributes.file.url}
               pages={pages}
             />

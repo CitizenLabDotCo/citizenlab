@@ -22,4 +22,8 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.email',
     defaultMessage: 'Email:',
   },
+  page: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.page',
+    defaultMessage: 'Page',
+  },
 });
