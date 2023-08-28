@@ -35,6 +35,7 @@ import { colors, stylingConsts } from 'utils/styleUtils';
 // utils
 import { getFullName } from 'utils/textUtils';
 import { canContainIdeas } from 'api/phases/utils';
+import { getNextIdeaId } from './utils';
 
 // typings
 import { FormData } from 'components/Form/typings';
@@ -46,9 +47,9 @@ interface Props {
   apiErrors?: CLErrors;
   formData: FormData;
   loadingApproveIdea: boolean;
-  onSelectIdea: (ideaId: string) => void;
+  onSelectIdea: (ideaId: string | null) => void;
   setFormData: (formData: FormData) => void;
-  onApproveIdea?: () => void;
+  onApproveIdea?: () => Promise<void>;
   onDeleteIdea: (ideaId: string) => void;
 }
 
@@ -136,6 +137,16 @@ const ReviewSection = ({
 
   const goToNextPage = () => setCurrentPageIndex((index) => index + 1);
   const goToPreviousPage = () => setCurrentPageIndex((index) => index - 1);
+
+  const handleApproveIdea =
+    onApproveIdea && ideaId
+      ? async () => {
+          await onApproveIdea();
+
+          const nextIdeaId = getNextIdeaId(ideaId, ideas);
+          onSelectIdea(nextIdeaId);
+        }
+      : undefined;
 
   return (
     <Box
@@ -226,13 +237,13 @@ const ReviewSection = ({
             flexDirection="column"
             justifyContent="flex-end"
           >
-            {onApproveIdea && (
+            {handleApproveIdea && (
               <Button
                 icon="check"
                 w="100%"
                 processing={loadingApproveIdea}
                 disabled={blockApproval}
-                onClick={onApproveIdea}
+                onClick={handleApproveIdea}
               >
                 Approve
               </Button>

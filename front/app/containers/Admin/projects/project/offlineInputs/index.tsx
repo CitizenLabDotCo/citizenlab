@@ -96,11 +96,11 @@ const OfflineInputImporter = () => {
             ...(phaseId ? { phase_ids: [phaseId] } : {}),
           },
         });
-
-        setIdeaId(null);
       } catch (e) {
         setApiErrors(e.errors);
       }
+    } else {
+      throw new Error('Data was invalid');
     }
   };
 
