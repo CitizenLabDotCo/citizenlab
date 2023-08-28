@@ -324,4 +324,8 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.participants',
     defaultMessage: 'Participants',
   },
+  imported: {
+    id: 'app.components.admin.PostManager.imported',
+    defaultMessage: 'Imported',
+  },
 });
