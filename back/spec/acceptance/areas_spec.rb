@@ -17,10 +17,22 @@ resource 'Areas' do
       parameter :number, 'Page number'
       parameter :size, 'Number of areas per page'
     end
+
     example_request 'List all areas' do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 5
+    end
+
+    example 'List all areas sorted by project count' do
+      projects = create_list(:project, 5)
+      @areas[0].update!(projects: [projects[0], projects[2]])
+      @areas[2].update!(projects: [projects[2], projects[4], projects[3]])
+
+      do_request sort: 'projects_count'
+
+      expect(response_data.size).to eq 5
+      expect(response_data.pluck(:id).take(2)).to eq [@areas[2].id, @areas[0].id]
     end
   end
 

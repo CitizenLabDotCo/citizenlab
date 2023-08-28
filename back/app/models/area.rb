@@ -53,6 +53,13 @@ class Area < ApplicationRecord
     greater_than_or_equal_to: 0
   }, unless: ->(area) { area.ordering.nil? }
 
+  scope :order_projects_count, lambda { |direction = :desc|
+    safe_dir = direction == :desc ? 'DESC' : 'ASC'
+    left_outer_joins(:areas_projects)
+      .group('areas.id')
+      .order("COUNT(areas_projects.project_id) #{safe_dir}")
+  }
+
   def recreate_custom_field_option
     return unless (domicile_field = CustomField.find_by(key: 'domicile'))
 
