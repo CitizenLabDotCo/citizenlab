@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import reactStringReplace from 'react-string-replace';
 
@@ -40,6 +40,7 @@ type Props = {
 };
 
 const Question = ({ insight }: Props) => {
+  const [isCopied, setIsCopied] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const { setSelectedInputId } = useSelectedInputContext();
   const { formatMessage } = useIntl();
@@ -73,16 +74,22 @@ const Question = ({ insight }: Props) => {
     return str.replace(/\[?[0-9a-f-]{0,35}$/, '');
   };
 
-  const replaceIdRefsWithLinks = (question) => {
-    return reactStringReplace(
-      question,
-      /\[?([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})\]?/g,
-      (match, i) => (
-        <StyledButton onClick={() => setSelectedInputId(match)} key={i}>
-          <Icon name="idea" />
-        </StyledButton>
-      )
-    );
+  const refRegex =
+    /\[?([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})\]?/g;
+
+  const refRegexWithInitialEmptySpace =
+    /\s\[?([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})\]?/g;
+
+  const replaceIdRefsWithLinks = (summary) => {
+    return reactStringReplace(summary, refRegex, (match, i) => (
+      <StyledButton onClick={() => setSelectedInputId(match)} key={i}>
+        <Icon name="idea" />
+      </StyledButton>
+    ));
+  };
+
+  const removeRefs = (summary: string) => {
+    return summary.replace(refRegexWithInitialEmptySpace, '');
   };
 
   if (!question) return null;
@@ -108,10 +115,27 @@ const Question = ({ insight }: Props) => {
     <Box
       key={question.data.id}
       bgColor={colors.successLight}
-      p="16px"
+      p="32px"
+      pt="52px"
       mb="8px"
       borderRadius={stylingConsts.borderRadius}
+      position="relative"
     >
+      <Box position="absolute" top="16px" right="8px">
+        <IconButton
+          iconName={isCopied ? 'check' : 'copy'}
+          iconColor={colors.teal400}
+          iconColorOnHover={colors.teal700}
+          a11y_buttonActionMessage={'Copy summary to clipboard'}
+          onClick={() => {
+            answer &&
+              navigator.clipboard.writeText(
+                `${question.data.attributes.question}\n\n${removeRefs(answer)}`
+              );
+            setIsCopied(true);
+          }}
+        />
+      </Box>
       <Box p="16px">
         <Box
           display="flex"

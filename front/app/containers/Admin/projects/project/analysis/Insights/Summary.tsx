@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import reactStringReplace from 'react-string-replace';
 
@@ -39,6 +39,7 @@ type Props = {
 };
 
 const Summary = ({ insight }: Props) => {
+  const [isCopied, setIsCopied] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const { setSelectedInputId } = useSelectedInputContext();
   const { formatMessage } = useIntl();
@@ -72,16 +73,22 @@ const Summary = ({ insight }: Props) => {
     return str.replace(/\[?[0-9a-f-]{0,35}$/, '');
   };
 
+  const refRegex =
+    /\[?([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})\]?/g;
+
+  const refRegexWithInitialEmptySpace =
+    /\s\[?([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})\]?/g;
+
   const replaceIdRefsWithLinks = (summary) => {
-    return reactStringReplace(
-      summary,
-      /\[?([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})\]?/g,
-      (match, i) => (
-        <StyledButton onClick={() => setSelectedInputId(match)} key={i}>
-          <Icon name="idea" />
-        </StyledButton>
-      )
-    );
+    return reactStringReplace(summary, refRegex, (match, i) => (
+      <StyledButton onClick={() => setSelectedInputId(match)} key={i}>
+        <Icon name="idea" />
+      </StyledButton>
+    ));
+  };
+
+  const removeRefs = (summary: string) => {
+    return summary.replace(refRegexWithInitialEmptySpace, '');
   };
 
   if (!summary) return null;
@@ -108,11 +115,26 @@ const Summary = ({ insight }: Props) => {
     <Box
       key={summary.data.id}
       bgColor={colors.teal100}
-      p="16px"
+      p="32px"
+      pt="52px"
       mb="8px"
       borderRadius={stylingConsts.borderRadius}
+      position="relative"
     >
-      <Box p="16px">
+      <Box position="absolute" top="16px" right="8px">
+        <IconButton
+          iconName={isCopied ? 'check' : 'copy'}
+          iconColor={colors.teal400}
+          iconColorOnHover={colors.teal700}
+          a11y_buttonActionMessage={'Copy summary to clipboard'}
+          onClick={() => {
+            summaryText &&
+              navigator.clipboard.writeText(removeRefs(summaryText));
+            setIsCopied(true);
+          }}
+        />
+      </Box>
+      <Box>
         <Box
           display="flex"
           alignItems="center"
@@ -152,6 +174,7 @@ const Summary = ({ insight }: Props) => {
         gap="4px"
         alignItems="center"
         justifyContent="space-between"
+        mt="16px"
       >
         <Button buttonStyle="white" onClick={handleRestoreFilters} p="4px 12px">
           Restore filters
