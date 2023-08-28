@@ -17,6 +17,14 @@ module Analysis
         raise NotImplementedError
       end
 
+      def chat(prompt, **params)
+        raise NotImplementedError
+      end
+
+      def chat_async(prompt, **params)
+        raise NotImplementedError
+      end
+
       def enabled?
         true
       end
