@@ -1547,6 +1547,7 @@
   "app.containers.UsersShowPage.initiatives": "Initiativ",
   "app.containers.UsersShowPage.invisibleTitlePostsList": "Alla indata som har skickats av den här deltagaren",
   "app.containers.UsersShowPage.invisibleTitleUserComments": "Alla kommentarer som publicerats av den här deltagaren",
+  "app.containers.UsersShowPage.loadMore": "Ladda mer",
   "app.containers.UsersShowPage.loadMoreComments": "Läs in fler kommentarer",
   "app.containers.UsersShowPage.loadingComments": "Läser in kommentarer...",
   "app.containers.UsersShowPage.memberSince": "Medlem sedan {date}",
