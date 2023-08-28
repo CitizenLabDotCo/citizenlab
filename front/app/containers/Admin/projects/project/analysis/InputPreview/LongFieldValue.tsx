@@ -57,7 +57,7 @@ const FilterToggleButton = ({ customFieldId, value }) => {
         ? newFilterValue
         : undefined,
     });
-    trackEventByName(tracks.surveyQuestionFilterUsed.name, { customFieldId });
+    trackEventByName(tracks.inputCustomFieldFilterUsed.name, { customFieldId });
   };
 
   return (

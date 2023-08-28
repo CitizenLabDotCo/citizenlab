@@ -38,7 +38,7 @@ export default {
   bulkTagAssignmentPerformed: {
     name: 'Bulk tag assignment performed',
   },
-  autoTaggingWithPredefinedTagsPerformed: {
+  autoTaggingPerformed: {
     name: 'Auto tagging with predefined tags performed',
   },
   tagFilterUsed: {
@@ -53,8 +53,8 @@ export default {
   timeFilterUsed: {
     name: 'Time filter used',
   },
-  surveyQuestionFilterUsed: {
-    name: 'Survey question filter used',
+  inputCustomFieldFilterUsed: {
+    name: 'Input custom field filter used',
   },
   inputPreviewedFromList: {
     name: 'Input previewed',
