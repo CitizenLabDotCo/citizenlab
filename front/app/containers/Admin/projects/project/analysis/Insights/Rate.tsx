@@ -7,11 +7,38 @@ import {
   Icon,
 } from '@citizenlab/cl2-component-library';
 
-const Rate = () => {
+import useRateAnalysisInsight from 'api/analysis_insights/useRateAnalysisInsight';
+import { useParams } from 'react-router-dom';
+const Rate = ({ insightId }: { insightId: string }) => {
+  const { analysisId } = useParams() as { analysisId: string };
+  const { mutate: rateAnalysisInsight } = useRateAnalysisInsight();
   const [rated, setRated] = useState(false);
 
+  const handleUpvote = () => {
+    rateAnalysisInsight({
+      analysisId,
+      id: insightId,
+      rating: 'vote_up',
+    });
+    setRated(true);
+  };
+
+  const handleDownvote = () => {
+    rateAnalysisInsight({
+      analysisId,
+      id: insightId,
+      rating: 'vote_down',
+    });
+    setRated(true);
+  };
+
   return (
-    <div>
+    <Box
+      minHeight="100px"
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+    >
       {rated ? (
         <Box
           display="flex"
@@ -24,26 +51,26 @@ const Rate = () => {
         </Box>
       ) : (
         <Box>
-          <Text>Rate the quality of this item</Text>
+          <Text>Rate the quality of this insight</Text>
           <Box display="flex" w="100%" justifyContent="center">
             <IconButton
               iconName="vote-up"
               a11y_buttonActionMessage="Upvote"
               iconColor={colors.success}
               iconColorOnHover={colors.success}
-              onClick={() => setRated(true)}
+              onClick={handleUpvote}
             />
             <IconButton
               iconName="vote-down"
               a11y_buttonActionMessage="Downvote"
               iconColor={colors.error}
               iconColorOnHover={colors.error}
-              onClick={() => setRated(true)}
+              onClick={handleDownvote}
             />
           </Box>
         </Box>
       )}
-    </div>
+    </Box>
   );
 };
 

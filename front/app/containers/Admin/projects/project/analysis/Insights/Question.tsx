@@ -15,6 +15,7 @@ import {
   stylingConsts,
   Text,
   Button,
+  IconTooltip,
 } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
@@ -26,6 +27,7 @@ import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import FilterItems from '../FilterItems';
 import Tag from '../Tags/Tag';
+import Rate from './Rate';
 
 const StyledAnswerText = styled.div`
   white-space: pre-wrap;
@@ -158,6 +160,11 @@ const Question = ({ insight }: Props) => {
           </StyledAnswerText>
           {processing && <Spinner />}
         </Box>
+        {question.data.attributes.accuracy && (
+          <Box color={colors.teal700}>
+            Accuracy {question.data.attributes.accuracy * 100}%
+          </Box>
+        )}
       </Box>
       <Box
         display="flex"
@@ -168,18 +175,23 @@ const Question = ({ insight }: Props) => {
         <Button buttonStyle="white" onClick={handleRestoreFilters} p="4px 12px">
           Restore filters
         </Button>
-        {question.data.attributes.accuracy && (
-          <Box color={colors.teal700}>
-            Accuracy {question.data.attributes.accuracy * 100}%
-          </Box>
-        )}
-        <IconButton
-          iconName="delete"
-          onClick={() => handleQuestionDelete(insight.id)}
-          iconColor={colors.teal400}
-          iconColorOnHover={colors.teal700}
-          a11y_buttonActionMessage={formatMessage(messages.deleteSummary)}
-        />
+
+        <Box display="flex">
+          <IconTooltip
+            icon="flag"
+            content={<Rate insightId={insight.id} />}
+            theme="light"
+            iconSize="24px"
+            iconColor={colors.teal400}
+          />
+          <IconButton
+            iconName="delete"
+            onClick={() => handleQuestionDelete(insight.id)}
+            iconColor={colors.teal400}
+            iconColorOnHover={colors.teal700}
+            a11y_buttonActionMessage={formatMessage(messages.deleteSummary)}
+          />
+        </Box>
       </Box>
     </Box>
   );

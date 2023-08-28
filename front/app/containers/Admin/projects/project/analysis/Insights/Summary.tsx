@@ -180,9 +180,10 @@ const Summary = ({ insight }: Props) => {
         <Box display="flex">
           <IconTooltip
             icon="flag"
-            content={<Rate />}
+            content={<Rate insightId={insight.id} />}
             theme="light"
             iconSize="24px"
+            iconColor={colors.teal400}
           />
           <IconButton
             iconName="delete"
