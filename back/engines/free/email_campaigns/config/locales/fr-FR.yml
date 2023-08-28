@@ -440,7 +440,7 @@ fr:
       status_change: 'Le nouveau statut de cette idée est ''%{ideaStatus}'''
       header_message: '%{organizationName} a changé le statut de l''idée ''%{ideaTitle}'' sur leur plateforme de participation numérique.'
       header_title: 'Une idée que vous suivez a un nouveau statut'
-      subject: 'Le statut d''une idée que vous suivez a été modifié'
+      subject: 'Le statut d''une idée que vous suivez a changé'
       preheader: 'Une idée que vous suivez a un nouveau statut'
     status_change_on_initiative_you_follow:
       status_change: 'Le nouveau statut de cette proposition est ''%{initiativeStatus}'''
