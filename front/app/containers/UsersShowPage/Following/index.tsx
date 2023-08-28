@@ -61,6 +61,21 @@ const Following = () => {
 
   return (
     <Box display="flex" w="100%" flexDirection="column">
+      {isSmallerThanPhone && (
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          mb="16px"
+        >
+          <FormattedMessage
+            {...messages.followingWithCount}
+            values={{
+              followingCount: authUser?.data.attributes.followings_count,
+            }}
+          />
+        </Box>
+      )}
       <Box borderBottom="1px solid #d1d1d1" mb="24px">
         <FilterTabs
           currentTab={currentTab}
@@ -78,21 +93,6 @@ const Following = () => {
           getScreenReaderTextForTab={getScreenReaderTextForTab}
         />
       </Box>
-      {isSmallerThanPhone && (
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          mb="16px"
-        >
-          <FormattedMessage
-            {...messages.followingWithCount}
-            values={{
-              followingCount: authUser?.data.attributes.followings_count,
-            }}
-          />
-        </Box>
-      )}
       {currentTab === 'Topics' && <Topics />}
       {currentTab === 'Areas' && <Areas />}
       {currentTab !== 'Topics' && currentTab !== 'Areas' && (
