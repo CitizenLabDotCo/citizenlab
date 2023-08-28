@@ -1,13 +1,8 @@
 sv:
   email_campaigns:
     campaign_type_description:
-      "idea_assigned_to_you": Tilldelning av en idé till mig
-    admin_campaign_type_description:
-      "idea_assigned_to_you": Tilldelning av idé – administratörer och projektledare
-    idea_assigned_to_you:
-      by_author: 'av %{authorName}'
-      cta_reply_to: 'Ge återkoppling till %{authorName}'
-      event_description_idea: 'En idé har tilldelats dig. Ge återkoppling genom att skriva en officiell uppdatering eller genom att ändra dess status.'
-      main_header: '%{firstName}, du har ett nytt uppdrag'
-      subject: 'Du har ett uppdrag på plattformen för %{organizationName}'
-      preheader_idea: 'Idén från %{authorName} har tilldelats dig'
+      ""idea_assigned_to_you"":
+        Assignment of an idea to me admin_campaign_type_description:
+          ""idea_assigned_to_you"":
+            Assignment of an idea - admins and project managers idea_assigned_to_you:
+              by_author: 'av %{authorName}'' cta_reply_to: ''Ge feedback till %{authorName}'' event_description_idea: ''En idé har tilldelats dig. Ge feedback genom att skriva en officiell uppdatering eller genom att ändra dess status.'' main_header: ''%{firstName}, du har ett nytt uppdrag'' subject: ''Du har ett uppdrag på plattformen för %{organizationName}'' preheader_idea: ''Idén om %{authorName} har tilldelats dig'
