@@ -31,9 +31,9 @@ const LocationInput = ({ name, ...rest }: Props) => {
       <Controller
         name={name}
         control={control}
-        render={({ field: { ref: _ref, ...field } }) => (
-          <LocationInputComponent id={name} {...field} {...rest} />
-        )}
+        render={({ field: { ref: _ref, ...field } }) => {
+          return <LocationInputComponent id={name} {...field} {...rest} />;
+        }}
       />
       {validationError && (
         <Error
