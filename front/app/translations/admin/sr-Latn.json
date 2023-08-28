@@ -147,6 +147,7 @@
   "app.components.admin.PostManager.hiddenFieldsSupportArticleUrl": "https://support.citizenlab.co/articles/1641202",
   "app.components.admin.PostManager.hiddenFieldsTip": "Savet: Dodajte {hiddenFieldsLink} prilikom podešavanja vaše Typeform ankete kako biste mogli da pratite ko je na nju odgovorio.",
   "app.components.admin.PostManager.importError": "Odabrana datoteka nije mogla biti uvezena jer nije važeća GeoJSON datoteka",
+  "app.components.admin.PostManager.imported": "Imported",
   "app.components.admin.PostManager.initiatives": "Predlozi",
   "app.components.admin.PostManager.initiativesCommentsExportFileName": "proposal_comments",
   "app.components.admin.PostManager.initiativesExportFileName": "predlozi",
