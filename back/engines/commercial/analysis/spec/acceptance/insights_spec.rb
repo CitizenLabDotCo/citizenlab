@@ -41,7 +41,7 @@ resource 'Insights' do
           }
         }
       })
-      expect(json_response_body[:included].pluck(:id)).to match_array([summary.id, question.id])
+      expect(json_response_body[:included].pluck(:id)).to match_array([summary.id, summary.background_task.id, question.id, question.background_task.id])
     end
   end
 

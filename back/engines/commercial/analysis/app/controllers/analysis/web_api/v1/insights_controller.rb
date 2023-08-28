@@ -11,11 +11,11 @@ module Analysis
         def index
           insights = @analysis.insights
             .order(created_at: :desc)
-            .includes(:insightable)
+            .includes(insightable: :background_task)
           render json: WebApi::V1::InsightSerializer.new(
             insights,
             params: jsonapi_serializer_params,
-            include: [:insightable]
+            include: %i[insightable insightable.background_task]
           ).serializable_hash
         end
 

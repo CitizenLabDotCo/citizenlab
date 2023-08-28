@@ -75,12 +75,20 @@ const Summary = ({ insight }: Props) => {
     return str.replace(/\[?[0-9a-f-]{0,35}$/, '');
   };
 
+  const handleClickInput = (inputId) => {
+    setSelectedInputId(inputId);
+    const element = document.getElementById(`input-${inputId}`);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   const replaceIdRefsWithLinks = (summary) => {
     return reactStringReplace(
       summary,
       /\[?([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})\]?/g,
       (match, i) => (
-        <StyledButton onClick={() => setSelectedInputId(match)} key={i}>
+        <StyledButton onClick={() => handleClickInput(match)} key={i}>
           <Icon name="idea" />
         </StyledButton>
       )
@@ -102,7 +110,14 @@ const Summary = ({ insight }: Props) => {
         : {}),
       reset_filters: 'true',
     });
-    updateSearchParams(summary.data.attributes.filters);
+    const filters = summary.data.attributes.filters;
+    updateSearchParams(filters);
+    if (filters.tag_ids?.length === 1) {
+      const element = document.getElementById(`tag-${filters.tag_ids[0]}`);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
   };
 
   const summaryText = summary.data.attributes.summary;

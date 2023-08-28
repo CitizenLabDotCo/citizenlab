@@ -103,6 +103,14 @@ const FilterItems = ({ filters, isEditable }: FilterItemsProps) => {
               isEditable={isEditable}
             />
           );
+        } else if (
+          key === 'tag_ids' &&
+          (value as string[] | null[]).length === 1 &&
+          (value as string[] | null[])[0] === null
+        ) {
+          return (
+            <Tag key={null} name="Inputs without tags" tagType={'custom'} />
+          );
         } else if (key === 'tag_ids') {
           return (
             <>
