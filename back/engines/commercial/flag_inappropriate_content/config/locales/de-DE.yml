@@ -1,15 +1,8 @@
 de:
   email_campaigns:
     campaign_type_description:
-      "inappropriate_content_flagged": Unangemessene Inhalte markiert
-    admin_campaign_type_description:
-      "inappropriate_content_flagged": Kennzeichnung unangemessener Inhalte - Admins
-    inappropriate_content_flagged:
-      subject: 'Ein Beitrag auf Ihrer Plattform wurde zur Überprüfung markiert'
-      header_title: 'Ein Beitrag auf Ihrer Plattform wurde zur Überprüfung markiert'
-      comment_author: '%{authorName} hat kommentiert:'
-      idea_author: '%{authorName} hat einen Beitrag eingereicht:'
-      initiative_author: '%{authorName} hat einen Vorschlag eingereicht:'
-      this_post_was_flagged: >
-        <p>Dieser Beitrag wurde automatisch als potenziell unangemessener Inhalt erkannt. Wir senden Ihnen diese Benachrichtigung, damit Sie den Beitrag in Übereinstimmung mit Ihren eigenen Moderationsrichtlinien überprüfen können.</p><p>Wenn der Beitrag keinen unangemessenen Inhalt enthält, können Sie die Warnung über Ihre Plattform im Reiter Aktivität im Adminbereich entfernen.</p>
-      cta_review_post: 'Beitrag überprüfen'
+      ""inappropriate_content_flagged"":
+        Inappropriate content flagged admin_campaign_type_description:
+          ""inappropriate_content_flagged"":
+            Inappropriate content flagged - admins inappropriate_content_flagged:
+              subject: 'Ein Beitrag auf Ihrer Plattform wurde zur Überprüfung markiert'' header_title: ''Ein Beitrag auf Ihrer Plattform wurde zur Überprüfung markiert'' comment_author: ''%{authorName} kommentiert:'' idea_author: ''%{authorName} submitted a post:'' initiative_author: ''%{authorName} submitted a proposal:'' this_post_was_flagged: > <p>Dieser Beitrag wurde automatisch als potenziell unangemessener Inhalt erkannt. Wir senden Ihnen diese Benachrichtigung, damit Sie den Beitrag gemäß Ihren eigenen Moderationsrichtlinien überprüfen können.</p><p>Wenn der Beitrag keine unangemessenen Inhalte enthält, können Sie die Warnung über Ihre Plattform auf der Registerkarte Aktivität im Verwaltungsbereich entfernen.</p> cta_review_post: ''Beitrag überprüfen'
