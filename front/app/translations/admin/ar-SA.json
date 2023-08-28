@@ -147,6 +147,7 @@
   "app.components.admin.PostManager.hiddenFieldsSupportArticleUrl": "https://support.citizenlab.co/articles/1641202",
   "app.components.admin.PostManager.hiddenFieldsTip": "نصيحة: أضِف {hiddenFieldsLink} عند إعداد استبيان Typeform لمعرفة من أجاب عليه.",
   "app.components.admin.PostManager.importError": "تعذر استيراد الملف المحدد؛ لأنه ليس ملف GeoJSON صالحًا",
+  "app.components.admin.PostManager.imported": "مستورد",
   "app.components.admin.PostManager.initiatives": "مُقترحات",
   "app.components.admin.PostManager.initiativesCommentsExportFileName": "proposal_comments",
   "app.components.admin.PostManager.initiativesExportFileName": "مُقترحات",
