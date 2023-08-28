@@ -13,6 +13,8 @@ import {
   colors,
   stylingConsts,
   Button,
+  IconTooltip,
+  Text,
 } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
@@ -23,6 +25,7 @@ import useAnalysisSummary from 'api/analysis_summaries/useAnalysisSummary';
 import useDeleteAnalysisInsight from 'api/analysis_insights/useDeleteAnalysisInsight';
 import FilterItems from '../FilterItems';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import Rate from './Rate';
 
 const StyledSummaryText = styled.div`
   white-space: pre-wrap;
@@ -41,7 +44,7 @@ type Props = {
 const Summary = ({ insight }: Props) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { setSelectedInputId } = useSelectedInputContext();
-  const { formatMessage } = useIntl();
+  const { formatMessage, formatDate } = useIntl();
   const { analysisId } = useParams() as { analysisId: string };
   const { mutate: deleteSummary } = useDeleteAnalysisInsight();
 
@@ -108,11 +111,11 @@ const Summary = ({ insight }: Props) => {
     <Box
       key={summary.data.id}
       bgColor={colors.teal100}
-      p="16px"
+      p="24px"
       mb="8px"
       borderRadius={stylingConsts.borderRadius}
     >
-      <Box p="16px">
+      <Box>
         <Box
           display="flex"
           alignItems="center"
@@ -122,7 +125,7 @@ const Summary = ({ insight }: Props) => {
         >
           {hasFilters && (
             <>
-              <Box>Summary for</Box>
+              <Text m="0px">Summary for</Text>
               <FilterItems
                 filters={summary.data.attributes.filters}
                 isEditable={false}
@@ -132,10 +135,14 @@ const Summary = ({ insight }: Props) => {
 
           {!hasFilters && (
             <>
-              <Box>Summary for all inputs</Box>
+              <Text m="0px">Summary for all inputs</Text>
             </>
           )}
         </Box>
+
+        <Text color="textSecondary" fontSize="s">
+          {formatDate(summary.data.attributes.created_at)}
+        </Text>
         <Box>
           <StyledSummaryText>
             {replaceIdRefsWithLinks(
@@ -146,7 +153,13 @@ const Summary = ({ insight }: Props) => {
           </StyledSummaryText>
           {processing && <Spinner />}
         </Box>
+        {summary.data.attributes.accuracy && (
+          <Box color={colors.teal700} my="16px">
+            Accuracy {summary.data.attributes.accuracy * 100}%
+          </Box>
+        )}
       </Box>
+
       <Box
         display="flex"
         gap="4px"
@@ -156,18 +169,22 @@ const Summary = ({ insight }: Props) => {
         <Button buttonStyle="white" onClick={handleRestoreFilters} p="4px 12px">
           Restore filters
         </Button>
-        {summary.data.attributes.accuracy && (
-          <Box color={colors.teal700}>
-            Accuracy {summary.data.attributes.accuracy * 100}%
-          </Box>
-        )}
-        <IconButton
-          iconName="delete"
-          onClick={() => handleSummaryDelete(insight.id)}
-          iconColor={colors.teal400}
-          iconColorOnHover={colors.teal700}
-          a11y_buttonActionMessage={formatMessage(messages.deleteSummary)}
-        />
+        <Box display="flex">
+          <IconTooltip
+            icon="flag"
+            content={<Rate insightId={insight.id} />}
+            theme="light"
+            iconSize="24px"
+            iconColor={colors.teal400}
+          />
+          <IconButton
+            iconName="delete"
+            onClick={() => handleSummaryDelete(insight.id)}
+            iconColor={colors.teal400}
+            iconColorOnHover={colors.teal700}
+            a11y_buttonActionMessage={formatMessage(messages.deleteSummary)}
+          />
+        </Box>
       </Box>
     </Box>
   );
