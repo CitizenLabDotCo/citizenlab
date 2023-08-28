@@ -27,6 +27,9 @@ import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import FilterItems from '../FilterItems';
 import Rate from './Rate';
 
+import tracks from 'containers/Admin/projects/project/analysis/tracks';
+import { trackEventByName } from 'utils/analytics';
+
 const StyledAnswerText = styled.div`
   white-space: pre-wrap;
   word-break: break-word;
@@ -63,10 +66,19 @@ const Question = ({ insight }: Props) => {
 
   const handleQuestionDelete = (id: string) => {
     if (window.confirm(formatMessage(messages.deleteQuestionConfirmation))) {
-      deleteQuestion({
-        analysisId,
-        id,
-      });
+      deleteQuestion(
+        {
+          analysisId,
+          id,
+        },
+        {
+          onSuccess: () => {
+            trackEventByName(tracks.questionDeleted.name, {
+              extra: { analysisId },
+            });
+          },
+        }
+      );
     }
   };
 
@@ -75,7 +87,7 @@ const Question = ({ insight }: Props) => {
     return str.replace(/\[?[0-9a-f-]{0,35}$/, '');
   };
 
-  const handleClickInput = (inputId) => {
+  const handleClickInput = (inputId: string) => {
     setSelectedInputId(inputId);
     const element = document.getElementById(`input-${inputId}`);
     if (element) {
@@ -88,7 +100,15 @@ const Question = ({ insight }: Props) => {
       question,
       /\[?([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})\]?/g,
       (match, i) => (
-        <StyledButton onClick={() => handleClickInput(match)} key={i}>
+        <StyledButton
+          onClick={() => {
+            handleClickInput(match);
+            trackEventByName(tracks.inputPreviewedFromQuestion.name, {
+              extra: { analysisId },
+            });
+          }}
+          key={i}
+        >
           <Icon name="idea" />
         </StyledButton>
       )
