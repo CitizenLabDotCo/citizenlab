@@ -147,6 +147,7 @@
   "app.components.admin.PostManager.hiddenFieldsSupportArticleUrl": "https://support.citizenlab.co/articles/1641202",
   "app.components.admin.PostManager.hiddenFieldsTip": "Consell: si utilitzeu Typeform, afegiu {hiddenFieldsLink} per fer un seguiment de qui ha respost a l'enquesta.",
   "app.components.admin.PostManager.importError": "El fitxer seleccionat no s'ha pogut importar perquè no és un fitxer GeoJSON vàlid",
+  "app.components.admin.PostManager.imported": "Importat",
   "app.components.admin.PostManager.initiatives": "propostes",
   "app.components.admin.PostManager.initiativesCommentsExportFileName": "proposal_comments",
   "app.components.admin.PostManager.initiativesExportFileName": "proposals",
