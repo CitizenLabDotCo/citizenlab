@@ -749,6 +749,8 @@
   "app.containers.Admin.initiatives.overviewTab": "Översikt",
   "app.containers.Admin.initiatives.permissions": "Behörigheter",
   "app.containers.Admin.initiatives.permissionsText": "Behörigheter",
+  "app.containers.Admin.initiatives.postingTips": "Posting tips",
+  "app.containers.Admin.initiatives.postingTipsInfo": "Give some specific tips for posting a proposal",
   "app.containers.Admin.initiatives.proposalEligibilityCriteria": "Berättighetskriterier",
   "app.containers.Admin.initiatives.proposalEligibilityCriteriaInfo": "Ge en tydlig beskrivning av kriterierna du kommer att använda för att avgöra om ett förslag är berättigat eller inte.",
   "app.containers.Admin.initiatives.proposalSuccessMessage": "Meddelande om att det lyckats",
