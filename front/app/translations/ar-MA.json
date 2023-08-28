@@ -1547,6 +1547,7 @@
   "app.containers.UsersShowPage.initiatives": "المبادرات",
   "app.containers.UsersShowPage.invisibleTitlePostsList": "جميع المنشورات التي قدّمها هذا المُشارك",
   "app.containers.UsersShowPage.invisibleTitleUserComments": "كل التعليقات التي نُشرت بواسطة هذا المستخدم",
+  "app.containers.UsersShowPage.loadMore": "تحميل المزيد",
   "app.containers.UsersShowPage.loadMoreComments": "تحميل المزيد من التعليقات",
   "app.containers.UsersShowPage.loadingComments": "تحميل التعليقات جارٍ...",
   "app.containers.UsersShowPage.memberSince": "عضو منذ {date}",
