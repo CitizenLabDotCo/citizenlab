@@ -185,6 +185,8 @@ lb:
       <p>D'Initiateuren sinn invitéiert, hir Propositioun bei der nächster Conseilssëtzung virzestellen. Mir stellen en offizellen Update zu Verfügung.</p>
     default_eligibility_criteria: >
       <ul> <li>Si muss a politesche Beräicher a Kompetenzen vun der Lokalpolitik falen</li> <li>Si déngt éischter dem ëffentlechen Interêt, wéi Ärem perséinlechen Interêt</li> <li> Si diskriminéiert net opgrond vu Geschlecht, Rass, Alter, oder Hierkonft.</li> <li>Si schiedegt keen</li> </ul>
+    default_posting_tips: >
+      <ul><li>Take the time to elaborate on your proposal. If necessary, type a draft first and then copy-paste it here. As soon as you post it, others will be able to read it and the time will start running.</li><li>Choose a meaningful title that explains clearly what your proposal entails.</li><li>Visualize your proposal with a fitting image to help it stand out!</li><li>Add relevant attachments, such as videos, inspiring examples, technical details or plans.</li><li>Share your idea on social media and other channels to gather support from others.</li></ul>
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: 'Äert Passwuert zerécksetzen'
