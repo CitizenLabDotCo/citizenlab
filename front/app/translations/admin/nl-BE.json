@@ -147,6 +147,7 @@
   "app.components.admin.PostManager.hiddenFieldsSupportArticleUrl": "https://support.citizenlab.co/articles/1641202",
   "app.components.admin.PostManager.hiddenFieldsTip": "Tip: voeg {hiddenFieldsLink} toe bij het instellen van je TypeForm-enquête om bij te houden wie er deelnam.",
   "app.components.admin.PostManager.importError": "Het geselecteerde bestand kon niet worden geïmporteerd omdat het geen geldig GeoJSON-bestand is",
+  "app.components.admin.PostManager.imported": "Geïmporteerd",
   "app.components.admin.PostManager.initiatives": "voorstellen",
   "app.components.admin.PostManager.initiativesCommentsExportFileName": "reacties_op_voorstellen",
   "app.components.admin.PostManager.initiativesExportFileName": "voorstellen",
