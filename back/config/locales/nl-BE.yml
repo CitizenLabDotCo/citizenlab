@@ -186,7 +186,7 @@ nl-BE:
     default_eligibility_criteria: >
       <ul> <li>Het moet binnen de competenties van het lokale beleid vallen</li> <li>Het dient het algemeen belang in plaats van jouw individueel belang</li> <li>Het discrimineert niet op basis van geslacht, ras, leeftijd of achtergrond</li> <li>Het brengt anderen geen schade toe</li> </ul>
     default_posting_tips: >
-      <ul><li>Take the time to elaborate on your proposal. If necessary, type a draft first and then copy-paste it here. As soon as you post it, others will be able to read it and the time will start running.</li><li>Choose a meaningful title that explains clearly what your proposal entails.</li><li>Visualize your proposal with a fitting image to help it stand out!</li><li>Add relevant attachments, such as videos, inspiring examples, technical details or plans.</li><li>Share your idea on social media and other channels to gather support from others.</li></ul>
+      <ul><li>Neem de tijd om je voorstel uit te werken. Typ het eventueel eerst ergens anders en knip en plak het daarna hier. Zodra je het plaatst, kunnen anderen meelezen en begint de tijd te lopen.</li><li>Kies een sprekende titel, die direct en concreet uitlegt wat je voorstel omvat.</li><li>Illustreer je voorstel zeker met een passende afbeelding, zodat deze meer opvalt!</li><li>Voeg relevante bijlagen toe zoals video’s, inspirerende voorbeelden, technische details of plannen.</li><li>Deel je bijdrage op social media en via andere kanalen om stemmen te halen.</li></ul>
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: 'Stel je wachtwoord opnieuw in'
