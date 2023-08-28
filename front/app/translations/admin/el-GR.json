@@ -147,6 +147,7 @@
   "app.components.admin.PostManager.hiddenFieldsSupportArticleUrl": "https://support.citizenlab.co/articles/1641202",
   "app.components.admin.PostManager.hiddenFieldsTip": "Συμβουλή: Αν χρησιμοποιείτε το Typeform, προσθέστε το {hiddenFieldsLink} για να παρακολουθείτε ποιος έχει απαντήσει στην έρευνά σας.",
   "app.components.admin.PostManager.importError": "Το επιλεγμένο αρχείο δεν μπόρεσε να εισαχθεί επειδή δεν είναι έγκυρο αρχείο GeoJSON",
+  "app.components.admin.PostManager.imported": "Εισαγόμενο",
   "app.components.admin.PostManager.initiatives": "προτάσεις",
   "app.components.admin.PostManager.initiativesCommentsExportFileName": "proposal_comments",
   "app.components.admin.PostManager.initiativesExportFileName": "proposals",
