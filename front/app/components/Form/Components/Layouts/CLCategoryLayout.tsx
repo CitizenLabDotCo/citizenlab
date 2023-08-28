@@ -37,6 +37,7 @@ const CLCategoryLayout = memo(
   // here we can cast types because the tester made sure we only get categorization layouts
   ({ schema, uischema, path, renderers, cells, enabled }: LayoutProps) => {
     const theme = useTheme();
+
     return (
       <Box
         width="100%"
