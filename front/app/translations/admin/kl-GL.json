@@ -147,6 +147,7 @@
   "app.components.admin.PostManager.hiddenFieldsSupportArticleUrl": "https://support.citizenlab.co/articles/1641202",
   "app.components.admin.PostManager.hiddenFieldsTip": "Tip: add {hiddenFieldsLink} when setting up your Typeform survey to keep track of who has responded to your survey.",
   "app.components.admin.PostManager.importError": "Fiili toqqagaq nuutissinnaanngilaq, pissutigalugu GeoJSON-fil-itut akuerisaannginnami",
+  "app.components.admin.PostManager.imported": "Imported",
   "app.components.admin.PostManager.initiatives": "innuttaasunit siunnersuut",
   "app.components.admin.PostManager.initiativesCommentsExportFileName": "siunnersuut_oqaaseqaatit",
   "app.components.admin.PostManager.initiativesExportFileName": "proposals",
