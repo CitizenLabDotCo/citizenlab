@@ -147,6 +147,7 @@
   "app.components.admin.PostManager.hiddenFieldsSupportArticleUrl": "crwdns898425:0crwdne898425:0",
   "app.components.admin.PostManager.hiddenFieldsTip": "crwdns898427:0{hiddenFieldsLink}crwdne898427:0",
   "app.components.admin.PostManager.importError": "crwdns898429:0crwdne898429:0",
+  "app.components.admin.PostManager.imported": "crwdns943877:0crwdne943877:0",
   "app.components.admin.PostManager.initiatives": "crwdns898431:0crwdne898431:0",
   "app.components.admin.PostManager.initiativesCommentsExportFileName": "crwdns898433:0crwdne898433:0",
   "app.components.admin.PostManager.initiativesExportFileName": "crwdns898435:0crwdne898435:0",
