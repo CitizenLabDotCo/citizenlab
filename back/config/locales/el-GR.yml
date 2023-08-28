@@ -186,7 +186,7 @@ el:
     default_eligibility_criteria: >
       <ul> <li>Πρέπει να εμπίπτει στους τομείς πολιτικής και στις αρμοδιότητες της τοπικής πολιτικής</li> <li>Εξυπηρετεί το δημόσιο συμφέρον και όχι το ατομικό σας συμφέρον</li> <li>Δεν κάνει διακρίσεις με βάση το φύλο, τη φυλή, την ηλικία ή το υπόβαθρο</li> <li>Δεν βλάπτει τους άλλους</li> </ul>
     default_posting_tips: >
-      <ul><li>Take the time to elaborate on your proposal. If necessary, type a draft first and then copy-paste it here. As soon as you post it, others will be able to read it and the time will start running.</li><li>Choose a meaningful title that explains clearly what your proposal entails.</li><li>Visualize your proposal with a fitting image to help it stand out!</li><li>Add relevant attachments, such as videos, inspiring examples, technical details or plans.</li><li>Share your idea on social media and other channels to gather support from others.</li></ul>
+      <ul><li>Αφιερώστε χρόνο για να αναπτύξετε την πρότασή σας. Εάν είναι απαραίτητο, πληκτρολογήστε πρώτα ένα προσχέδιο και στη συνέχεια αντιγράψτε το εδώ. Μόλις το δημοσιεύσετε, οι άλλοι θα μπορούν να το διαβάσουν και ο χρόνος θα αρχίσει να τρέχει.</li><li>Επιλέξτε έναν ουσιαστικό τίτλο που να εξηγεί με σαφήνεια τι περιλαμβάνει η πρότασή σας.</li><li>Οπτικοποιήστε την πρότασή σας με μια κατάλληλη εικόνα για να τη βοηθήσετε να ξεχωρίσει!</li><li>Προσθέστε σχετικά συνημμένα αρχεία, όπως βίντεο, εμπνευσμένα παραδείγματα, τεχνικές λεπτομέρειες ή σχέδια.</li><li>Κοινοποιείστε την ιδέα σας στα μέσα κοινωνικής δικτύωσης και σε άλλα κανάλια για να συγκεντρώσετε υποστήριξη από άλλους.</li></ul>
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: 'Επαναφορά του κωδικού πρόσβασής σας'
