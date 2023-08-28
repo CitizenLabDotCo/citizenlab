@@ -1547,6 +1547,7 @@
   "app.containers.UsersShowPage.initiatives": "Girişimler",
   "app.containers.UsersShowPage.invisibleTitlePostsList": "Bu katılımcı tarafından gönderilen tüm girdiler",
   "app.containers.UsersShowPage.invisibleTitleUserComments": "Bu katılımcı tarafından yayınlanan tüm yorumlar",
+  "app.containers.UsersShowPage.loadMore": "Daha fazla yükle",
   "app.containers.UsersShowPage.loadMoreComments": "Daha fazla yorum yükle",
   "app.containers.UsersShowPage.loadingComments": "Yorumlar yükleniyor...",
   "app.containers.UsersShowPage.memberSince": "{date} tarihinden bu yana üye",
