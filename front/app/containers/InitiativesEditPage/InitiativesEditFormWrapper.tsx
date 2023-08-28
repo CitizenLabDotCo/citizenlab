@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import clHistory from 'utils/cl-router/history';
+
 // components
 import InitiativeForm, {
   FormValues,
@@ -14,8 +16,7 @@ import { isEqual, pick, get, omitBy } from 'lodash-es';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 
 // geoJson
-import { geocode } from 'utils/locationTools';
-import { Point } from 'geojson';
+import { parsePosition } from 'utils/locationTools';
 
 // tracks
 import tracks from './tracks';
@@ -33,6 +34,10 @@ import { IInitiativeAdd, IInitiativeData } from 'api/initiatives/types';
 import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
 import useTopics from 'api/topics/useTopics';
 import { MentionItem } from 'react-mentions';
+import InitiativeForm2, {
+  FormValues as FormValues2,
+} from 'components/InitiativeForm/InitiativeForm2';
+import { handleAddFiles, handleRemoveFiles } from 'api/initiative_files/util';
 
 interface Props {
   locale: Locale;
@@ -56,10 +61,11 @@ const InitiativesEditFormWrapper = ({
   const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser } = useAuthUser();
   const { data: topics } = useTopics({ excludeCode: 'custom' });
+
   const { mutate: addInitiativeImage } = useAddInitiativeImage();
   const { mutate: deleteInitiativeImage } = useDeleteInitiativeImage();
-  const { mutate: addInitiativeFile } = useAddInitiativeFile();
-  const { mutate: deleteInitiativeFile } = useDeleteInitiativeFile();
+  const { mutateAsync: addInitiativeFile } = useAddInitiativeFile();
+  const { mutateAsync: deleteInitiativeFile } = useDeleteInitiativeFile();
   const { mutate: updateInitiative } = useUpdateInitiative();
 
   const initialValues = {
@@ -128,29 +134,6 @@ const InitiativesEditFormWrapper = ({
     });
 
     return pick(formValues, changedKeys);
-  };
-
-  const parsePosition = async (position: string | undefined | null) => {
-    let location_point_geojson: Point | null | undefined;
-    let location_description: string | null | undefined;
-    switch (position) {
-      case null:
-      case '':
-        location_point_geojson = null;
-        location_description = null;
-        break;
-
-      case undefined:
-        location_point_geojson = undefined;
-        location_description = undefined;
-        break;
-
-      default:
-        location_point_geojson = await geocode(position);
-        location_description = position;
-        break;
-    }
-    return { location_point_geojson, location_description };
   };
 
   const getValuesToSend = async (
@@ -423,6 +406,68 @@ const InitiativesEditFormWrapper = ({
     setShowAnonymousConfirmationModal(false);
   };
 
+  const handleOnSubmit = async ({
+    position,
+    title_multiloc,
+    body_multiloc,
+    topic_ids,
+    cosponsor_ids,
+    local_initiative_files,
+    images,
+    header_bg,
+    anonymous,
+  }: FormValues2) => {
+    const { location_description, location_point_geojson } =
+      await parsePosition(position);
+
+    updateInitiative(
+      {
+        initiativeId: initiative.id,
+        requestBody: {
+          title_multiloc,
+          body_multiloc,
+          ...(topic_ids && topic_ids.length > 0 && { topic_ids }),
+          ...(cosponsor_ids && cosponsor_ids.length > 0 && { cosponsor_ids }),
+          ...(location_description && { location_description }),
+          ...(location_point_geojson && { location_point_geojson }),
+          ...(header_bg?.[0] && { header_bg: header_bg[0].base64 }),
+          ...(typeof anonymous === 'boolean' && { anonymous }),
+        },
+      },
+      {
+        onSuccess: async (initiative) => {
+          const initiativeId = initiative.data.id;
+
+          if (local_initiative_files) {
+            handleAddFiles(
+              initiativeId,
+              local_initiative_files,
+              initiativeFiles,
+              addInitiativeFile
+            );
+            handleRemoveFiles(
+              initiativeId,
+              local_initiative_files,
+              initiativeFiles,
+              deleteInitiativeFile
+            );
+          }
+
+          if (images?.[0]) {
+            await addInitiativeImage({
+              initiativeId,
+              image: { image: images[0].base64 },
+            });
+          }
+
+          clHistory.push({
+            pathname: `/initiatives/${initiative.data.attributes.slug}`,
+          });
+        },
+      }
+    );
+  };
+
   const initiativeTopics = topics.data.filter((topic) => !isNilOrError(topic));
 
   return (
@@ -460,6 +505,22 @@ const InitiativesEditFormWrapper = ({
           onCloseModal={onHandleCloseModal}
         />
       )}
+      <InitiativeForm2
+        onSubmit={handleOnSubmit}
+        defaultValues={{
+          title_multiloc: initiative.attributes.title_multiloc,
+          body_multiloc: initiative.attributes.body_multiloc,
+          position: initiative.attributes.location_description,
+          topic_ids: initiative.relationships.topics.data.map(
+            (topic) => topic.id
+          ),
+          cosponsor_ids: initiative.attributes.cosponsorships
+            ? initiative.attributes.cosponsorships.map(
+                (cosponsor) => cosponsor.user_id
+              )
+            : [],
+        }}
+      />
     </>
   );
 };
