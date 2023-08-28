@@ -1547,6 +1547,7 @@
   "app.containers.UsersShowPage.initiatives": "Πρωτοβουλίες",
   "app.containers.UsersShowPage.invisibleTitlePostsList": "Όλες οι εισηγήσεις που υποβλήθηκαν από αυτόν τον συμμετέχοντα",
   "app.containers.UsersShowPage.invisibleTitleUserComments": "Όλα τα σχόλια που δημοσιεύτηκαν από αυτόν τον συμμετέχοντα",
+  "app.containers.UsersShowPage.loadMore": "Φορτώστε περισσότερα",
   "app.containers.UsersShowPage.loadMoreComments": "Φορτώστε περισσότερα σχόλια",
   "app.containers.UsersShowPage.loadingComments": "Φόρτωση σχολίων...",
   "app.containers.UsersShowPage.memberSince": "Μέλος από {date}",
