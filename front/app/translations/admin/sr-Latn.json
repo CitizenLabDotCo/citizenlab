@@ -749,6 +749,8 @@
   "app.containers.Admin.initiatives.overviewTab": "Overview",
   "app.containers.Admin.initiatives.permissions": "Дозволе",
   "app.containers.Admin.initiatives.permissionsText": "Дозволе",
+  "app.containers.Admin.initiatives.postingTips": "Posting tips",
+  "app.containers.Admin.initiatives.postingTipsInfo": "Give some specific tips for posting a proposal",
   "app.containers.Admin.initiatives.proposalEligibilityCriteria": "Kriterijumi",
   "app.containers.Admin.initiatives.proposalEligibilityCriteriaInfo": "Pružite jasan opis kriterijuma na osnovu kojih ćete odlučivati da li predlog zadovoljava osnovne uslove da bude razmotren. ",
   "app.containers.Admin.initiatives.proposalSuccessMessage": "Poruka o uspešnosti",
