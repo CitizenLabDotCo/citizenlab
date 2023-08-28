@@ -1547,6 +1547,7 @@
   "app.containers.UsersShowPage.initiatives": "Initiatives",
   "app.containers.UsersShowPage.invisibleTitlePostsList": "All input submitted by this participant",
   "app.containers.UsersShowPage.invisibleTitleUserComments": "All comments posted by this participant",
+  "app.containers.UsersShowPage.loadMore": "Load more",
   "app.containers.UsersShowPage.loadMoreComments": "Load more comments",
   "app.containers.UsersShowPage.loadingComments": "Loading comments...",
   "app.containers.UsersShowPage.memberSince": "Member since {date}",
