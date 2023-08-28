@@ -1547,6 +1547,7 @@
   "app.containers.UsersShowPage.initiatives": "Initiatives",
   "app.containers.UsersShowPage.invisibleTitlePostsList": "Ikkussat tamarmik uuminnga peqataasumit ilanngunneqartut",
   "app.containers.UsersShowPage.invisibleTitleUserComments": "Atuisumit uuminnga isumasssarsiat siunnersuutigineqarsimasut tamarmik",
+  "app.containers.UsersShowPage.loadMore": "Load more",
   "app.containers.UsersShowPage.loadMoreComments": "Isumassarsiat amerlanerit aakkit",
   "app.containers.UsersShowPage.loadingComments": "Oqaaseqaatit aaneqarput...",
   "app.containers.UsersShowPage.memberSince": "Ilaasortanut qupperneq {date}",
