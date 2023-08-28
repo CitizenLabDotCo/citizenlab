@@ -1547,6 +1547,7 @@
   "app.containers.UsersShowPage.initiatives": "Иницијативе",
   "app.containers.UsersShowPage.invisibleTitlePostsList": "Сви доприноси које је доставио овај учесник",
   "app.containers.UsersShowPage.invisibleTitleUserComments": "Сви коментари које је објавио овај учесник",
+  "app.containers.UsersShowPage.loadMore": "Учитај више",
   "app.containers.UsersShowPage.loadMoreComments": "Учитајте још коментара",
   "app.containers.UsersShowPage.loadingComments": "Учитавање коментара...",
   "app.containers.UsersShowPage.memberSince": "Члан од {date}",
