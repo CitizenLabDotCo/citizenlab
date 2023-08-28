@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 
 // components
 import InitiativeForm, {
   FormValues,
   SimpleFormValues,
 } from 'components/InitiativeForm';
-import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
+const AnonymousParticipationConfirmationModal = lazy(
+  () => import('components/AnonymousParticipationConfirmationModal')
+);
 
 // types
 import { Locale, Multiloc, UploadFile } from 'typings';
@@ -63,13 +65,17 @@ const InitiativesNewFormWrapper = ({
   const { data: appConfiguration } = useAppConfiguration();
   const { mutate: addInitiative } = useAddInitiative();
   const { data: authUser } = useAuthUser();
-  const { mutateAsync: addInitiativeImage, isLoading: isAdding } =
-    useAddInitiativeImage();
-  const { mutateAsync: deleteInitiativeImage, isLoading: isDeleting } =
-    useDeleteInitiativeImage();
+  const {
+    mutateAsync: addInitiativeImage,
+    isLoading: isAddingInitiativeImage,
+  } = useAddInitiativeImage();
+  const {
+    mutateAsync: deleteInitiativeImage,
+    isLoading: isDeletingInitiativeImage,
+  } = useDeleteInitiativeImage();
   const { mutate: addInitiativeFile } = useAddInitiativeFile();
   const { mutate: deleteInitiativeFile } = useDeleteInitiativeFile();
-  const { mutateAsync: updateInitiative, isLoading: isUpdating } =
+  const { mutateAsync: updateInitiative, isLoading: isUpdatingInitiative } =
     useUpdateInitiative();
 
   const initialValues = {
@@ -174,7 +180,13 @@ const InitiativesNewFormWrapper = ({
     const changedValues = getChangedValues();
 
     // if we're already publishing, do nothing.
-    if (isUpdating || isAdding || isDeleting || saving) return;
+    if (
+      isUpdatingInitiative ||
+      isAddingInitiativeImage ||
+      isDeletingInitiativeImage ||
+      saving
+    )
+      return;
 
     // if nothing has changed, do noting.
     if (isEmpty(changedValues) && !hasBannerChanged && !hasImageChanged) return;
@@ -218,7 +230,7 @@ const InitiativesNewFormWrapper = ({
   const debouncedSave = debounce(handleSave, 1000);
 
   const handlePublish = async () => {
-    // // if we're already saving, do nothing.
+    // if we're already saving, do nothing.
     if (saving) return;
 
     // setting flags for user feedback and avoiding double sends.
@@ -265,7 +277,9 @@ const InitiativesNewFormWrapper = ({
             publication_status: 'published',
             anonymous: postAnonymously,
           },
-          { onSuccess: (initiative) => setInitiativeId(initiative.data.id) }
+          {
+            onSuccess: (initiative) => setInitiativeId(initiative.data.id),
+          }
         );
       }
       setSaving(false);
@@ -480,7 +494,11 @@ const InitiativesNewFormWrapper = ({
         files={files}
         apiErrors={apiErrors}
         publishError={publishError}
-        publishing={isAdding || isUpdating || isDeleting}
+        publishing={
+          isAddingInitiativeImage ||
+          isUpdatingInitiative ||
+          isDeletingInitiativeImage
+        }
         onChangeTitle={onChangeTitle}
         onChangeBody={onChangeBody}
         onChangeTopics={onChangeTopics}
@@ -496,13 +514,15 @@ const InitiativesNewFormWrapper = ({
         postAnonymously={postAnonymously}
         setPostAnonymously={setPostAnonymously}
       />
-      <AnonymousParticipationConfirmationModal
-        onConfirmAnonymousParticipation={() => {
-          continuePublish();
-        }}
-        showAnonymousConfirmationModal={showAnonymousConfirmationModal}
-        setShowAnonymousConfirmationModal={setShowAnonymousConfirmationModal}
-      />
+      <Suspense fallback={null}>
+        <AnonymousParticipationConfirmationModal
+          onConfirmAnonymousParticipation={() => {
+            continuePublish();
+          }}
+          showAnonymousConfirmationModal={showAnonymousConfirmationModal}
+          setShowAnonymousConfirmationModal={setShowAnonymousConfirmationModal}
+        />
+      </Suspense>
     </>
   );
 };
