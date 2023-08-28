@@ -147,6 +147,7 @@
   "app.components.admin.PostManager.hiddenFieldsSupportArticleUrl": "https://support.citizenlab.co/articles/1641202",
   "app.components.admin.PostManager.hiddenFieldsTip": "Dica: adicione {hiddenFieldsLink} ao configurar seu questionário para acompanhar quem respondeu a pesquisa.",
   "app.components.admin.PostManager.importError": "O arquivo selecionado não pôde ser importado porque não é um GeoJSON válido",
+  "app.components.admin.PostManager.imported": "Importado",
   "app.components.admin.PostManager.initiatives": "Propostas",
   "app.components.admin.PostManager.initiativesCommentsExportFileName": "comentários_proposta",
   "app.components.admin.PostManager.initiativesExportFileName": "propostas",
