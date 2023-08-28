@@ -43,9 +43,9 @@ class Topic < ApplicationRecord
   scope :order_new, ->(direction = :desc) { order(created_at: direction, id: direction) }
   scope :order_projects_count, lambda { |direction = :desc|
     safe_dir = direction == :desc ? 'DESC' : 'ASC'
-    left_outer_joins(:projects_topics)
+    left_outer_joins(:projects_allowed_input_topics)
       .group(:id)
-      .order("COUNT(projects_topics.project_id) #{safe_dir}")
+      .order("COUNT(projects_allowed_input_topics.project_id) #{safe_dir}")
   }
   scope :defaults, -> { where(code: DEFAULT_CODES) }
 
