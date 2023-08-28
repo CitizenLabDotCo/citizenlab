@@ -795,7 +795,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.formLanguage": "Langue du formulaire",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.here": "ici",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.uploadAPdfFile": "Téléchargez un fichier PDF <b>de formulaires scannés</b>. Le PDF doit utiliser un formulaire imprimé à partir de ce projet disponible {hereLink}.",
-  "app.containers.Admin.projects.project.offlineInputs.ImportModal.writtenIdeaImporter": "Importateur d'idées écrites",
+  "app.containers.Admin.projects.project.offlineInputs.ImportModal.writtenIdeaImporter": "Importateur d'idées manuscrites",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Auteur:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.email": "Adresse e-mail :",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.ideaImporter": "Importateur d'idées",
