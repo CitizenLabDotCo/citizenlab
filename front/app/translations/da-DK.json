@@ -1014,7 +1014,7 @@
   "app.containers.InitiativesIndexPage.success": "succes",
   "app.containers.InitiativesIndexPage.successStoryTitle": "Forslag til inspiration",
   "app.containers.InitiativesNewPage.elaborate": "Giv dig tid til at uddybe dit forslag. Skriv om nødvendigt et udkast først og kopiér det derefter hertil. Så snart du sender det, kan andre læse det, og tiden begynder at køre.",
-  "app.containers.InitiativesNewPage.header": "Indsend dit forslag her, og sæt det på dagsordenen {styledOrgName}",
+  "app.containers.InitiativesNewPage.header": "Indsend dit forslag her, og sæt det på dagsordenen hos {styledOrgName}",
   "app.containers.InitiativesNewPage.locationNotFound": "Vi kunne ikke finde en korrekt adresse til den valgte placering. Du kan bekræfte, for at gemme denne placering eller indtaste en adresse for at ændre den.",
   "app.containers.InitiativesNewPage.meaningfulTitle": "Vælg en meningsfuld titel, der tydeligt forklarer, hvad dit forslag indebærer.",
   "app.containers.InitiativesNewPage.metaDescription": "Start dit eget forslag og få din stemme hørt af",
