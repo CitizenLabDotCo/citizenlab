@@ -1547,6 +1547,7 @@
   "app.containers.UsersShowPage.initiatives": "Iniciativas",
   "app.containers.UsersShowPage.invisibleTitlePostsList": "Todas as publicações enviadas por este participante",
   "app.containers.UsersShowPage.invisibleTitleUserComments": "Todos os comentários postados por este usuario",
+  "app.containers.UsersShowPage.loadMore": "Carregar mais",
   "app.containers.UsersShowPage.loadMoreComments": "Carregar mais comentários",
   "app.containers.UsersShowPage.loadingComments": "Carregando comentários...",
   "app.containers.UsersShowPage.memberSince": "Membro desde {date}",
