@@ -8,7 +8,7 @@ import { IIdeaStatusData } from 'api/idea_statuses/types';
 
 // components
 import { TitleLink } from '.';
-import { Box, colors, Td } from '@citizenlab/cl2-component-library';
+import { Box, colors, Td, Badge } from '@citizenlab/cl2-component-library';
 import StyledRow from './StyledRow';
 import SubRow from './SubRow';
 import { Icon } from 'semantic-ui-react';
@@ -109,13 +109,22 @@ const IdeaRow = ({
       name: 'title',
       onClick: onClickTitle,
       Component: ({ idea, onClick }) => {
+        const wasImported = !!idea.relationships.idea_import?.data;
+
         return (
-          <TitleLink
-            className="e2e-idea-manager-idea-title intercom-admin-input-manager-title"
-            onClick={onClick}
-          >
-            <T value={idea.attributes.title_multiloc} />
-          </TitleLink>
+          <>
+            <TitleLink
+              className="e2e-idea-manager-idea-title intercom-admin-input-manager-title"
+              onClick={onClick}
+            >
+              <T value={idea.attributes.title_multiloc} />
+            </TitleLink>
+            {wasImported && (
+              <Badge color={colors.coolGrey700}>
+                {formatMessage(messages.imported)}
+              </Badge>
+            )}
+          </>
         );
       },
     },
