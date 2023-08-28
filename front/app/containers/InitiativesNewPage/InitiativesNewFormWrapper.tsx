@@ -10,8 +10,7 @@ import InitiativeForm2, {
 import clHistory from 'utils/cl-router/history';
 
 // intl
-import { geocode } from 'utils/locationTools';
-import { Point } from 'geojson';
+import { parsePosition } from 'utils/locationTools';
 
 // api
 import useAddInitiative from 'api/initiatives/useAddInitiative';
@@ -26,28 +25,6 @@ const InitiativesNewFormWrapper = (_props: Props) => {
   const { mutate: addInitiative } = useAddInitiative();
   const { mutateAsync: addInitiativeImage } = useAddInitiativeImage();
   const { mutate: addInitiativeFile } = useAddInitiativeFile();
-  const parsePosition = async (position?: string) => {
-    let location_point_geojson: Point | null | undefined;
-    let location_description: string | null | undefined;
-
-    switch (position) {
-      case '':
-        location_point_geojson = null;
-        location_description = null;
-        break;
-
-      case undefined:
-        location_point_geojson = undefined;
-        location_description = undefined;
-        break;
-
-      default:
-        location_point_geojson = await geocode(position);
-        location_description = position;
-        break;
-    }
-    return { location_point_geojson, location_description };
-  };
 
   const handleOnSubmit = async ({
     position,
