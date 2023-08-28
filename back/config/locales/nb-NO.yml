@@ -185,6 +185,8 @@
       <p>Inivitiativtakerne er invitert til  å presentere sitt forslag under neste kommunemøte Vi vil gi en offisiell oppdatering.</p>
     default_eligibility_criteria: >
       <ul> <li>det skal være innenfor kommunens ansvarsområder</li> <li>Det tjener den offentlige interesse snarere enn din individuelle interesse</li> <li>Det diskriminerer ikke andre innbyggere basert på  kjønn rase, alder eller bakgrunn <li>det skader ikke andre</li></ul>
+    default_posting_tips: >
+      <ul><li>Take the time to elaborate on your proposal. If necessary, type a draft first and then copy-paste it here. As soon as you post it, others will be able to read it and the time will start running.</li><li>Choose a meaningful title that explains clearly what your proposal entails.</li><li>Visualize your proposal with a fitting image to help it stand out!</li><li>Add relevant attachments, such as videos, inspiring examples, technical details or plans.</li><li>Share your idea on social media and other channels to gather support from others.</li></ul>
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: 'Tilbakestill passordet ditt'
