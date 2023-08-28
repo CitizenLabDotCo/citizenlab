@@ -147,6 +147,7 @@
   "app.components.admin.PostManager.hiddenFieldsSupportArticleUrl": "https://support.citizenlab.co/articles/1641202",
   "app.components.admin.PostManager.hiddenFieldsTip": "İpucu: Typeform kullanıyorsanız, anketinize kimlerin yanıt verdiğinin kaydını tutmak için {hiddenFieldsLink} ekleyin.",
   "app.components.admin.PostManager.importError": "Seçilen dosya geçerli bir GeoJSON dosyası olmadığı için içe aktarılamadı",
+  "app.components.admin.PostManager.imported": "İthal",
   "app.components.admin.PostManager.initiatives": "öneriler",
   "app.components.admin.PostManager.initiativesCommentsExportFileName": "proposal_comments",
   "app.components.admin.PostManager.initiativesExportFileName": "öneriler",
