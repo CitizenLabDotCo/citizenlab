@@ -185,6 +185,8 @@ fr-BE:
       <p>Les porteurs de projets sont invités à présenter leur proposition à la prochaine réunion du conseil. Nous fourniront une mise à jour officielle.</p>
     default_eligibility_criteria: >
       <ul> <li>Doit s’inscrire dans les compétences de l’autorité locale</li> <li>Doit servir l’intérêt général plutôt que votre intérêt personnel</li> <li>Ne peut pas être discriminatoire en terme de sexe, de race, d’âge ou d’origine</li> <li>Ne peut pas nuire à autrui</li></ul>
+    default_posting_tips: >
+      <ul><li>Take the time to elaborate on your proposal. If necessary, type a draft first and then copy-paste it here. As soon as you post it, others will be able to read it and the time will start running.</li><li>Choose a meaningful title that explains clearly what your proposal entails.</li><li>Visualize your proposal with a fitting image to help it stand out!</li><li>Add relevant attachments, such as videos, inspiring examples, technical details or plans.</li><li>Share your idea on social media and other channels to gather support from others.</li></ul>
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: 'Réinitialisez votre mot de passe'
