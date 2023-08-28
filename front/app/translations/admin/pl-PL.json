@@ -147,6 +147,7 @@
   "app.components.admin.PostManager.hiddenFieldsSupportArticleUrl": "https://support.citizenlab.co/articles/1641202",
   "app.components.admin.PostManager.hiddenFieldsTip": "Podpowiedź: dodaj {hiddenFieldsLink} podczas tworzenia ankiety, aby wiedzieć, kto na nią odpowiedział.",
   "app.components.admin.PostManager.importError": "Wybrany plik nie mógł zostać zaimportowany, ponieważ nie jest to poprawny plik GeoJSON",
+  "app.components.admin.PostManager.imported": "Importowane",
   "app.components.admin.PostManager.initiatives": "propozycje",
   "app.components.admin.PostManager.initiativesCommentsExportFileName": "propozycje_komentarze",
   "app.components.admin.PostManager.initiativesExportFileName": "propozycje",
