@@ -59,11 +59,11 @@ const InitiativesNewFormWrapper = ({ locale, location_description }: Props) => {
   const [initiativeId, setInitiativeId] = useState<string | null>(null);
   const [saving, setSaving] = useState<boolean>(false);
 
-  const parsePosition = async (position: string | undefined | null) => {
+  const parsePosition = async (position?: string) => {
     let location_point_geojson: Point | null | undefined;
     let location_description: string | null | undefined;
+
     switch (position) {
-      case null:
       case '':
         location_point_geojson = null;
         location_description = null;
@@ -210,10 +210,10 @@ const InitiativesNewFormWrapper = ({ locale, location_description }: Props) => {
         publication_status: 'published',
         title_multiloc,
         body_multiloc,
-        topic_ids,
-        cosponsor_ids,
-        location_description,
-        location_point_geojson,
+        ...(topic_ids && topic_ids.length > 0 && { topic_ids }),
+        ...(cosponsor_ids && cosponsor_ids.length > 0 && { cosponsor_ids }),
+        ...(location_description && { location_description }),
+        ...(location_point_geojson && { location_point_geojson }),
         ...(header_bg?.[0] && { header_bg: header_bg[0].base64 }),
       },
       {

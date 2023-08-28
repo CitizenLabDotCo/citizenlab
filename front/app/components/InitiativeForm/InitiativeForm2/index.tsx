@@ -44,6 +44,8 @@ const CosponsorsFormSection = lazy(() => import('./CosponsorsFormSection'));
 const AnonymousParticipationConfirmationModal = lazy(
   () => import('components/AnonymousParticipationConfirmationModal')
 );
+import useInitiativeReviewRequired from 'hooks/useInitiativeReviewRequired';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 const StyledFormSection = styled(FormSection)`
   ${media.phone`
@@ -54,17 +56,17 @@ const StyledFormSection = styled(FormSection)`
 
 export interface FormValues {
   title_multiloc: Multiloc;
-  body_multiloc: Multiloc | undefined;
-  topic_ids: string[];
-  position: string | undefined | null;
-  cosponsor_ids: string[];
-  local_initiative_files: UploadFile[] | null;
+  body_multiloc: Multiloc;
+  topic_ids?: string[];
+  position?: string;
+  cosponsor_ids?: string[];
+  local_initiative_files?: UploadFile[];
   // The uploaded image is stored in an array, even though we can only store 1
-  images: UploadFile[] | null;
-  header_bg: UploadFile[] | null;
+  images?: UploadFile[] | null;
+  header_bg?: UploadFile[] | null;
 }
 
-type InitiativeFormProps = {
+export type InitiativeFormProps = {
   onSubmit: (formValues: FormValues) => void | Promise<void>;
   defaultValues?: FormValues;
 };
@@ -75,6 +77,11 @@ const InitiativeForm = ({ onSubmit, defaultValues }: InitiativeFormProps) => {
   const [postAnonymously, setPostAnonymously] = useState(false);
   const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
     useState(false);
+  const initiativeReviewRequired = useInitiativeReviewRequired();
+  const { data: appConfiguration } = useAppConfiguration();
+  const requiredNumberOfCosponsors =
+    appConfiguration?.data.attributes.settings.initiatives?.cosponsors_number;
+
   const { formatMessage } = useIntl();
   const locale = useLocale();
   const { data: topics } = useTopics({ excludeCode: 'custom' });
@@ -85,12 +92,20 @@ const InitiativeForm = ({ onSubmit, defaultValues }: InitiativeFormProps) => {
     body_multiloc: validateAtLeastOneLocale(
       formatMessage(messages.descriptionEmptyError)
     ),
-    position: string(),
-    topic_ids: array().of(string()),
-    cosponsor_ids: array().of(string()),
-    local_initiative_files: mixed(),
-    images: mixed(),
-    header_bg: mixed(),
+    position: string().optional().nullable(),
+    topic_ids: array().optional(),
+    ...(initiativeReviewRequired &&
+      typeof requiredNumberOfCosponsors === 'number' && {
+        cosponsor_ids: array().min(
+          requiredNumberOfCosponsors,
+          formatMessage(messages.minRequiredCosponsors, {
+            requiredNumberOfCosponsors,
+          })
+        ),
+      }),
+    local_initiative_files: mixed().optional(),
+    images: mixed().optional().nullable(),
+    header_bg: mixed().optional().nullable(),
   });
 
   const methods = useForm({
@@ -120,6 +135,7 @@ const InitiativeForm = ({ onSubmit, defaultValues }: InitiativeFormProps) => {
           onSubmit={methods.handleSubmit(onFormSubmit)}
           data-testid="initiativeForm"
         >
+          <Feedback />
           <StyledFormSection>
             <FormSectionTitle message={messages.formGeneralSectionTitle} />
 
