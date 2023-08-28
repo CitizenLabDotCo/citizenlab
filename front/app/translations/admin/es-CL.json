@@ -147,6 +147,7 @@
   "app.components.admin.PostManager.hiddenFieldsSupportArticleUrl": "https://support.citizenlab.co/articles/1641202",
   "app.components.admin.PostManager.hiddenFieldsTip": "Sugerencia: añade {hiddenFieldsLink} al configurar tu encuesta Typeform para llevar un registro de quien la ha respondido.",
   "app.components.admin.PostManager.importError": "El archivo seleccionado no pudo ser importado porque no es un archivo GeoJSON válido",
+  "app.components.admin.PostManager.imported": "Importado",
   "app.components.admin.PostManager.initiatives": "propuestas",
   "app.components.admin.PostManager.initiativesCommentsExportFileName": "comentarios_propuestas",
   "app.components.admin.PostManager.initiativesExportFileName": "propuestas",
