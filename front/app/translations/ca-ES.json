@@ -1547,6 +1547,7 @@
   "app.containers.UsersShowPage.initiatives": "Iniciatives",
   "app.containers.UsersShowPage.invisibleTitlePostsList": "Totes les aportacions enviades per aquest participant",
   "app.containers.UsersShowPage.invisibleTitleUserComments": "Tots els comentaris publicats per aquest participant",
+  "app.containers.UsersShowPage.loadMore": "Carrega més",
   "app.containers.UsersShowPage.loadMoreComments": "Carregar més comentaris",
   "app.containers.UsersShowPage.loadingComments": "S'estan carregant els comentaris...",
   "app.containers.UsersShowPage.memberSince": "Membre des del {date}",
