@@ -91,7 +91,10 @@ const Tags = () => {
   const inputsWithoutTags = tags?.meta.inputs_without_tags;
   const filteredInputsWithoutTags = tags?.meta.filtered_inputs_without_tags;
 
-  const selectedTags = filters.tag_ids;
+  // We need `as any[] | undefined` due to known TS limitation in various places
+  // below of code using `selectedTags`
+  // https://github.com/microsoft/TypeScript/issues/44373
+  const selectedTags = filters.tag_ids as any[] | undefined;
 
   const toggleTagContainerClick = (id: string) => {
     updateSearchParams({ tag_ids: [id] });
@@ -171,6 +174,7 @@ const Tags = () => {
         )}
         {tags?.data.map((tag) => (
           <TagContainer
+            id={`tag-${tag.id}`}
             key={tag.id}
             tabIndex={0}
             onClick={() => {

@@ -37,6 +37,7 @@ const InputListItem = memo(({ input, onSelect, selected }: Props) => {
   return (
     <>
       <Box
+        id={`input-${input.id}`}
         onClick={() => {
           onSelect(input.id);
           trackEventByName(tracks.inputPreviewedFromList.name, {
