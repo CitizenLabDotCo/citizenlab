@@ -19,6 +19,8 @@ type Props = {
   onConfirmAnonymousParticipation: () => void;
 };
 
+// This needs to be
+
 const OldAnonymousParticipationConfirmationModal = ({
   onCloseModal,
   onConfirmAnonymousParticipation,
@@ -97,4 +99,9 @@ const OldAnonymousParticipationConfirmationModal = ({
     </Modal>
   );
 };
+
+/** @deprecated Use AnonymousParticipationConfirmationModal instead.
+ * This requires decoupling the "anonymous check" from the posting flow.
+ * See the usage of AnonymousParticipationConfirmationModal for more info.
+ */
 export default OldAnonymousParticipationConfirmationModal;
