@@ -185,6 +185,8 @@ pl:
       <p>Inicjatorzy są proszeni o przedstawienie swojej propozycji na następnym posiedzeniu rady. Przedstawimy oficjalną aktualizację.</p>
     default_eligibility_criteria: >
       <ul> <li>To musi wchodzić w zakres obszarów i kompetencji polityki lokalnej</li> <li>Służy interesowi publicznemu, a nie indywidualnemu</li> <li>Nie dyskryminuje ze względu na płeć, rasa, wiek lub pochodzenie</li> <li>Nie szkodzi innym</li> </ul>
+    default_posting_tips: >
+      <ul><li>Take the time to elaborate on your proposal. If necessary, type a draft first and then copy-paste it here. As soon as you post it, others will be able to read it and the time will start running.</li><li>Choose a meaningful title that explains clearly what your proposal entails.</li><li>Visualize your proposal with a fitting image to help it stand out!</li><li>Add relevant attachments, such as videos, inspiring examples, technical details or plans.</li><li>Share your idea on social media and other channels to gather support from others.</li></ul>
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: 'Zresetuj swoje hasło'
