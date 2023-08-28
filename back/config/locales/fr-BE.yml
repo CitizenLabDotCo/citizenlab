@@ -221,7 +221,7 @@ fr-BE:
     pdf_export:
       full_name: 'Nom complet'
       email_address: 'Adresse e-mail'
-      optional: 'facultatif'
+      optional: 'optionnel'
       choose_as_many: 'Choisissez-en autant que vous le souhaitez'
       this_answer: 'Cette réponse ne sera communiquée qu''aux modérateurs, et non au public.'
   project_copy:
