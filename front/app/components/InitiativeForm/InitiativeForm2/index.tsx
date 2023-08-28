@@ -11,7 +11,7 @@ import { SectionField } from 'components/admin/Section';
 import Feedback from 'components/HookForm/Feedback';
 import TopicsPicker from 'components/HookForm/TopicsPicker';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { object, array, mixed, string } from 'yup';
+import { object, array, mixed, string, boolean } from 'yup';
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 import {
   FormSection,
@@ -63,6 +63,7 @@ export interface FormValues {
   // The uploaded image is stored in an array, even though we can only store 1
   images?: UploadFile[] | null;
   header_bg?: UploadFile[] | null;
+  anonymous?: boolean;
 }
 
 export type InitiativeFormProps = {
@@ -105,6 +106,7 @@ const InitiativeForm = ({ onSubmit, defaultValues }: InitiativeFormProps) => {
     local_initiative_files: mixed().optional(),
     images: mixed().optional().nullable(),
     header_bg: mixed().optional().nullable(),
+    anonymous: boolean().optional(),
   });
 
   const methods = useForm({

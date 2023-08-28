@@ -58,6 +58,7 @@ const InitiativesNewFormWrapper = (_props: Props) => {
     local_initiative_files,
     images,
     header_bg,
+    anonymous,
   }: FormValues2) => {
     const { location_description, location_point_geojson } =
       await parsePosition(position);
@@ -72,6 +73,7 @@ const InitiativesNewFormWrapper = (_props: Props) => {
         ...(location_description && { location_description }),
         ...(location_point_geojson && { location_point_geojson }),
         ...(header_bg?.[0] && { header_bg: header_bg[0].base64 }),
+        ...(typeof anonymous === 'boolean' && { anonymous }),
       },
       {
         onSuccess: async (initiative) => {
