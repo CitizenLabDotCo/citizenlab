@@ -147,6 +147,7 @@
   "app.components.admin.PostManager.hiddenFieldsSupportArticleUrl": "https://support.citizenlab.co/articles/1641202",
   "app.components.admin.PostManager.hiddenFieldsTip": "Tips! Om du använder Typeform lägger du till {hiddenFieldsLink} för att hålla reda på vilka som har svarat på din undersökning.",
   "app.components.admin.PostManager.importError": "Det gick inte att importera den valda filen eftersom den inte är en giltig GeoJSON-fil",
+  "app.components.admin.PostManager.imported": "Importerad",
   "app.components.admin.PostManager.initiatives": "förslag",
   "app.components.admin.PostManager.initiativesCommentsExportFileName": "proposal_comments",
   "app.components.admin.PostManager.initiativesExportFileName": "förslag",
