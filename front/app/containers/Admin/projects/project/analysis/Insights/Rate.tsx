@@ -34,7 +34,7 @@ const Rate = ({ insightId }: { insightId: string }) => {
 
   return (
     <Box
-      minHeight="100px"
+      minHeight="80px"
       display="flex"
       justifyContent="center"
       alignItems="center"
