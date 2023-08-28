@@ -16,7 +16,7 @@ export const campaignsData: ICampaignData[] = [
       },
       created_at: '2021-03-03T09:00:00.000Z',
       updated_at: '2021-03-03T09:00:00.000Z',
-      campaign_name: 'official_feedback_on_commented_idea',
+      campaign_name: 'official_feedback_on_idea_you_follow',
       campaign_description_multiloc: {
         en: 'Weekly overview of your own proposals',
       },
@@ -56,7 +56,7 @@ export const campaignsData: ICampaignData[] = [
       },
       created_at: '2021-03-03T09:00:00.000Z',
       updated_at: '2021-03-03T09:00:00.000Z',
-      campaign_name: 'official_feedback_on_reacted_idea',
+      campaign_name: 'official_feedback_on_idea_you_follow',
       campaign_description_multiloc: {
         en: 'Weekly overview of your own proposals',
       },

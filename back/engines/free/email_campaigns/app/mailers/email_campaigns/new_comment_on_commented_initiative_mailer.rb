@@ -4,14 +4,14 @@ module EmailCampaigns
   class NewCommentOnCommentedInitiativeMailer < ApplicationMailer
     private
 
-    helper_method :comment_author
+    helper_method :author_name
 
-    def comment_author
+    def author_name
       event.initiating_user_first_name.capitalize
     end
 
     def comment_author_full
-      [comment_author, event.initiating_user_last_name.capitalize].join(' ')
+      [author_name, event.initiating_user_last_name.capitalize].join(' ')
     end
 
     def subject
@@ -19,7 +19,7 @@ module EmailCampaigns
     end
 
     def header_title
-      format_message('main_header', values: { commentAuthor: comment_author })
+      format_message('main_header', values: { commentAuthor: author_name })
     end
 
     def header_message
@@ -28,7 +28,7 @@ module EmailCampaigns
         values: {
           initiativeTitle: localize_for_recipient(event.post_title_multiloc),
           organizationName: organization_name,
-          commentAuthor: comment_author,
+          commentAuthor: author_name,
           commentAuthorFull: comment_author_full
         }
       )
@@ -37,7 +37,7 @@ module EmailCampaigns
     def preheader
       format_message(
         'preheader',
-        values: { organizationName: organization_name, commentAuthor: comment_author }
+        values: { organizationName: organization_name, commentAuthor: author_name }
       )
     end
   end

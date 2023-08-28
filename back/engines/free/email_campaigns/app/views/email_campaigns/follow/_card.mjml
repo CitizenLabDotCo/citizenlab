@@ -1,0 +1,7 @@
+<mj-section padding="20px 25px 10px">
+  <mj-column>
+    <mj-text>
+      <p><%= format_message('unfollow_here', component: 'follow', values: { unfollow_url: event.unfollow_url }, escape_html: false) %></p>
+    </mj-text>
+  </mj-column>
+</mj-section>
