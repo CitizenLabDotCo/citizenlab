@@ -44,7 +44,7 @@ type Props = {
 const Question = ({ insight }: Props) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { setSelectedInputId } = useSelectedInputContext();
-  const { formatMessage } = useIntl();
+  const { formatMessage, formatDate } = useIntl();
   const { analysisId } = useParams() as { analysisId: string };
   const { mutate: deleteQuestion } = useDeleteAnalysisInsight();
 
@@ -110,11 +110,11 @@ const Question = ({ insight }: Props) => {
     <Box
       key={question.data.id}
       bgColor={colors.successLight}
-      p="16px"
+      p="24px"
       mb="8px"
       borderRadius={stylingConsts.borderRadius}
     >
-      <Box p="16px">
+      <Box>
         <Box
           display="flex"
           alignItems="center"
@@ -124,7 +124,7 @@ const Question = ({ insight }: Props) => {
         >
           {hasFilters && (
             <>
-              <Box>Question for</Box>
+              <Text m="0px">Question for</Text>
               <FilterItems
                 filters={question.data.attributes.filters}
                 isEditable={false}
@@ -132,12 +132,13 @@ const Question = ({ insight }: Props) => {
             </>
           )}
 
-          {!hasFilters && (
-            <>
-              <Box>Question for all input</Box>
-            </>
-          )}
+          {!hasFilters && <Text m="0px">Question for all input</Text>}
         </Box>
+
+        <Text color="textSecondary" fontSize="s">
+          {formatDate(question.data.attributes.created_at)}
+        </Text>
+
         <Text fontWeight="bold">{question.data.attributes.question}</Text>
         <Box>
           <StyledAnswerText>
@@ -148,7 +149,7 @@ const Question = ({ insight }: Props) => {
           {processing && <Spinner />}
         </Box>
         {question.data.attributes.accuracy && (
-          <Box color={colors.teal700}>
+          <Box color={colors.teal700} my="16px">
             Accuracy {question.data.attributes.accuracy * 100}%
           </Box>
         )}

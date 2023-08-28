@@ -14,6 +14,7 @@ import {
   stylingConsts,
   Button,
   IconTooltip,
+  Text,
 } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
@@ -43,7 +44,7 @@ type Props = {
 const Summary = ({ insight }: Props) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { setSelectedInputId } = useSelectedInputContext();
-  const { formatMessage } = useIntl();
+  const { formatMessage, formatDate } = useIntl();
   const { analysisId } = useParams() as { analysisId: string };
   const { mutate: deleteSummary } = useDeleteAnalysisInsight();
 
@@ -110,11 +111,11 @@ const Summary = ({ insight }: Props) => {
     <Box
       key={summary.data.id}
       bgColor={colors.teal100}
-      p="16px"
+      p="24px"
       mb="8px"
       borderRadius={stylingConsts.borderRadius}
     >
-      <Box p="16px">
+      <Box>
         <Box
           display="flex"
           alignItems="center"
@@ -124,7 +125,7 @@ const Summary = ({ insight }: Props) => {
         >
           {hasFilters && (
             <>
-              <Box>Summary for</Box>
+              <Text m="0px">Summary for</Text>
               <FilterItems
                 filters={summary.data.attributes.filters}
                 isEditable={false}
@@ -134,10 +135,14 @@ const Summary = ({ insight }: Props) => {
 
           {!hasFilters && (
             <>
-              <Box>Summary for all inputs</Box>
+              <Text m="0px">Summary for all inputs</Text>
             </>
           )}
         </Box>
+
+        <Text color="textSecondary" fontSize="s">
+          {formatDate(summary.data.attributes.created_at)}
+        </Text>
         <Box>
           <StyledSummaryText>
             {replaceIdRefsWithLinks(
@@ -149,7 +154,7 @@ const Summary = ({ insight }: Props) => {
           {processing && <Spinner />}
         </Box>
         {summary.data.attributes.accuracy && (
-          <Box color={colors.teal700} mt="16px">
+          <Box color={colors.teal700} my="16px">
             Accuracy {summary.data.attributes.accuracy * 100}%
           </Box>
         )}
