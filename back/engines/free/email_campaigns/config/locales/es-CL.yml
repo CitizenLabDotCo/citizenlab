@@ -13,7 +13,7 @@ es-CL:
       "powered_by": "Impulsado por"
       "statement": "Este email le fue enviado por CitizenLab en nombre de %{organizationName}, porque eres usuario registrado de %{organizationLink}. Puedes %{unsubscribeLink} si no deseas recibir estos emails en el futuro."
       "unsubscribe_text": "cancelar la suscripción"
-    follow: "unfollow_here\": \"Has recibido esta notificación debido a un artículo que sigues. <a href=\"%{unfollow_url}\">Puedes dejar de seguirlo aquí.</a>"
+    follow: "has recibido esta notificación debido a un artículo que sigues. <a href=\"%{unfollow_url}\">Puedes dejar de seguirla aquí.</a>"
     comment_deleted_by_admin:
       reason: 'La razón por la que tu comentario fue eliminado:'
       cta_view: 'Ver esta idea'
@@ -303,8 +303,8 @@ es-CL:
       main_header: '''%{post}'' tiene un nuevo comentario interno'
       preheader: '''%{post}'' tiene un nuevo comentario interno'
     official_feedback_on_idea_you_follow:
-      header_message: '%{officialName} ha commentado en la idea ''%{ideaTitle}''. Haga clic en el botón de abajo para continuar la conversación con %{officialName}.'
-      header_title: 'Hay una actualización de una idea que sigues'
+      header_message: '%{officialName} dio una actualización sobre la idea ''%{ideaTitle}''. Haz clic en el botón de abajo para entrar en la conversación con %{officialName}.'
+      header_title: 'Hay una actualización en una idea que sigues'
       subject: 'Una idea que sigues ha recibido una actualización oficial en la plataforma de %{organizationName}'
       preheader: 'Hay una actualización de una idea que sigues'
     official_feedback_on_initiative_you_follow:
