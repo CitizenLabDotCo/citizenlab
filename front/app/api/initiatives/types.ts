@@ -128,7 +128,22 @@ export interface IInitiativeAdd {
   cosponsor_ids?: string[];
 }
 
+interface IInitiativeUpdate {
+  title_multiloc?: Multiloc;
+  publication_status?: InitiativePublicationStatus;
+  body_multiloc?: Multiloc;
+  anonymous?: boolean;
+  header_bg?: string;
+  author_id?: string | null;
+  assignee_id?: string | null;
+  topic_ids?: string[] | null;
+  area_ids?: string[] | null;
+  location_point_geojson?: GeoJSON.Point | null;
+  location_description?: string | null;
+  cosponsor_ids?: string[];
+}
+
 export interface IUpdateInitiativeObject {
   initiativeId: string;
-  requestBody: Partial<IInitiativeAdd>;
+  requestBody: IInitiativeUpdate;
 }
