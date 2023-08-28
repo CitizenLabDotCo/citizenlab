@@ -10,6 +10,8 @@ import Step1 from './Step1';
 import Step2LabelClassification from './Step2LabelClassification';
 import Step2FewShotClassification from './Step2FewShotClassification';
 import useAnalysisFilterParams from '../../hooks/useAnalysisFilterParams';
+import { trackEventByName } from 'utils/analytics';
+import tracks from '../../tracks';
 
 const AutotaggingModal = ({ onCloseModal }: { onCloseModal: () => void }) => {
   const [step, setStep] = useState<
@@ -48,6 +50,9 @@ const AutotaggingModal = ({ onCloseModal }: { onCloseModal: () => void }) => {
       { analysisId, autoTaggingMethod, tagsIds, filters },
       {
         onSuccess: () => {
+          trackEventByName(tracks.autoTaggingWithPredefinedTagsPerformed.name, {
+            extra: { analysisId, autoTaggingMethod },
+          });
           onCloseModal();
         },
       }

@@ -90,7 +90,15 @@ const Question = ({ insight }: Props) => {
       question,
       /\[?([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})\]?/g,
       (match, i) => (
-        <StyledButton onClick={() => setSelectedInputId(match)} key={i}>
+        <StyledButton
+          onClick={() => {
+            setSelectedInputId(match);
+            trackEventByName(tracks.inputPreviewedFromQuestion.name, {
+              extra: { analysisId },
+            });
+          }}
+          key={i}
+        >
           <Icon name="idea" />
         </StyledButton>
       )

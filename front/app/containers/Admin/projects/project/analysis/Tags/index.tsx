@@ -28,6 +28,8 @@ import AddTag from './AddTag';
 import { useQueryClient } from '@tanstack/react-query';
 import inputsKeys from 'api/analysis_inputs/keys';
 import TagActions from './TagActions';
+import { trackEventByName } from 'utils/analytics';
+import tracks from '../tracks';
 
 const BlickingIcon = styled(Icon)`
   animation-name: blink-animation;
@@ -94,6 +96,9 @@ const Tags = () => {
   const toggleTagContainerClick = (id: string) => {
     updateSearchParams({ tag_ids: [id] });
     queryClient.invalidateQueries(inputsKeys.lists());
+    trackEventByName(tracks.tagFilterUsed.name, {
+      extra: { tagId: id },
+    });
   };
 
   const toggleТаgCheckboxClick = (id: string) => {
@@ -106,6 +111,9 @@ const Tags = () => {
       });
     }
     queryClient.invalidateQueries(inputsKeys.lists());
+    trackEventByName(tracks.tagFilterUsed.name, {
+      extra: { tagId: id },
+    });
   };
 
   return (
