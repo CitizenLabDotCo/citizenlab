@@ -1,4 +1,5 @@
 import React from 'react';
+import { ILocationInfo } from 'typings';
 
 // components
 import InitiativeForm2, {
@@ -17,7 +18,11 @@ import useAddInitiative from 'api/initiatives/useAddInitiative';
 import useAddInitiativeImage from 'api/initiative_images/useAddInitiativeImage';
 import useAddInitiativeFile from 'api/initiative_files/useAddInitiativeFile';
 
-const InitiativesNewFormWrapper = () => {
+interface Props {
+  locationInfo: ILocationInfo | null;
+}
+
+const InitiativesNewFormWrapper = (_props: Props) => {
   const { mutate: addInitiative } = useAddInitiative();
   const { mutateAsync: addInitiativeImage } = useAddInitiativeImage();
   const { mutate: addInitiativeFile } = useAddInitiativeFile();

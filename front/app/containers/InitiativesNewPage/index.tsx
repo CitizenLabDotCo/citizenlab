@@ -10,7 +10,6 @@ import { parse } from 'qs';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import { PreviousPathnameContext } from 'context';
 
 // hooks
@@ -32,7 +31,6 @@ import GetInitiativesPermissions, {
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
-  locale: GetLocaleChildProps;
   previousPathName: string | null;
   postingPermission: GetInitiativesPermissionsChildProps;
 }
@@ -99,13 +97,9 @@ export class InitiativesNewPage extends React.PureComponent<
   };
 
   render() {
-    const { authUser, locale } = this.props;
+    const { authUser } = this.props;
     const { locationInfo } = this.state;
-    if (
-      isNilOrError(authUser) ||
-      isNilOrError(locale) ||
-      locationInfo === undefined
-    ) {
+    if (isNilOrError(authUser) || locationInfo === undefined) {
       return null;
     }
 
@@ -113,7 +107,7 @@ export class InitiativesNewPage extends React.PureComponent<
       <>
         <InitiativesNewMeta />
         <PageLayout isAdmin={isAdmin({ data: authUser })}>
-          <InitiativesNewFormWrapper locale={locale} {...locationInfo} />
+          <InitiativesNewFormWrapper locationInfo={locationInfo} />
         </PageLayout>
       </>
     );
@@ -122,7 +116,6 @@ export class InitiativesNewPage extends React.PureComponent<
 
 const Data = adopt<DataProps>({
   authUser: <GetAuthUser />,
-  locale: <GetLocale />,
   previousPathName: ({ render }) => (
     <PreviousPathnameContext.Consumer>
       {render}
