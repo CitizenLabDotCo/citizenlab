@@ -1547,6 +1547,7 @@
   "app.containers.UsersShowPage.initiatives": "Initiativer",
   "app.containers.UsersShowPage.invisibleTitlePostsList": "Alle innlegg publisert av denne deltakeren",
   "app.containers.UsersShowPage.invisibleTitleUserComments": "Alle kommentarer postet av denne brukeren",
+  "app.containers.UsersShowPage.loadMore": "Last mer",
   "app.containers.UsersShowPage.loadMoreComments": "Last inn flere kommentarer",
   "app.containers.UsersShowPage.loadingComments": "Laster inn kommentarer...",
   "app.containers.UsersShowPage.memberSince": "Medlem siden {date}",
