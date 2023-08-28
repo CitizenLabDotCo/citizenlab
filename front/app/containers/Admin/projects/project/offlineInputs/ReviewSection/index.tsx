@@ -35,7 +35,7 @@ import styled from 'styled-components';
 import { colors, stylingConsts } from 'utils/styleUtils';
 
 // utils
-import { getFullName } from 'utils/textUtils';
+import { truncate, getFullName } from 'utils/textUtils';
 import { canContainIdeas } from 'api/phases/utils';
 
 // typings
@@ -212,7 +212,7 @@ const ReviewSection = ({
                 fontSize="m"
                 fontWeight={idea.id === ideaId ? 'bold' : 'normal'}
               >
-                {localize(idea.attributes.title_multiloc)}
+                {truncate(localize(idea.attributes.title_multiloc), 80)}
               </Text>
               <Text m="0" mt="3px" fontSize="s" color="grey600">
                 {moment(idea.attributes.created_at).format('YYYY-MM-DD')}
