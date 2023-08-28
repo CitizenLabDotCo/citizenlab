@@ -185,6 +185,8 @@ el:
       <p>Οι εμπνευστές καλούνται να παρουσιάσουν την πρότασή τους στην επόμενη συνεδρίαση του Συμβουλίου. Θα παράσχουμε επίσημη ενημέρωση.</p>
     default_eligibility_criteria: >
       <ul> <li>Πρέπει να εμπίπτει στους τομείς πολιτικής και στις αρμοδιότητες της τοπικής πολιτικής</li> <li>Εξυπηρετεί το δημόσιο συμφέρον και όχι το ατομικό σας συμφέρον</li> <li>Δεν κάνει διακρίσεις με βάση το φύλο, τη φυλή, την ηλικία ή το υπόβαθρο</li> <li>Δεν βλάπτει τους άλλους</li> </ul>
+    default_posting_tips: >
+      <ul><li>Take the time to elaborate on your proposal. If necessary, type a draft first and then copy-paste it here. As soon as you post it, others will be able to read it and the time will start running.</li><li>Choose a meaningful title that explains clearly what your proposal entails.</li><li>Visualize your proposal with a fitting image to help it stand out!</li><li>Add relevant attachments, such as videos, inspiring examples, technical details or plans.</li><li>Share your idea on social media and other channels to gather support from others.</li></ul>
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: 'Επαναφορά του κωδικού πρόσβασής σας'
