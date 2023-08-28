@@ -4,13 +4,20 @@ module Analysis
   module WebApi
     module V1
       class AutoTaggingsController < ApplicationController
+        include FilterParamsExtraction
+
         skip_after_action :verify_policy_scoped # The analysis is authorized instead.
         before_action :set_analysis
 
         def create
+          maybe_filters = if (filter_params = params[:auto_tagging][:filters])
+            filters(filter_params)
+          end
+
           @auto_tagging_task = AutoTaggingTask.new(
             analysis: @analysis,
-            auto_tagging_method: auto_tagging_params[:auto_tagging_method]
+            filters: maybe_filters || {},
+            **auto_tagging_params
           )
           if @auto_tagging_task.save
             AutoTaggingJob.perform_later(@auto_tagging_task)
@@ -28,7 +35,10 @@ module Analysis
         end
 
         def auto_tagging_params
-          params.require(:auto_tagging).permit(:auto_tagging_method)
+          params.require(:auto_tagging).permit(
+            :auto_tagging_method,
+            tags_ids: []
+          )
         end
       end
     end
