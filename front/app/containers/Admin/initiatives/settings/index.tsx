@@ -276,12 +276,6 @@ const InitiativesSettingsPage = () => {
             onChange={updateProposalsSetting('eligibility_criteria')}
           />
           <PostingTips
-            useCustomPostingTips={
-              localProposalsSettings.use_custom_posting_tips
-            }
-            onChangeUseCustomPostingTips={updateProposalsSetting(
-              'use_custom_posting_tips'
-            )}
             postingTips={localProposalsSettings.posting_tips}
             onChangePostingTips={updateProposalsSetting('posting_tips')}
           />

@@ -660,18 +660,12 @@
             locales: CL2_SUPPORTED_LOCALES).to_json
             %>
           },
-          "use_custom_posting_tips":{
-            "title": "Use custom user tips",
-            "description": "Make it possible to configure tips for posting a proposal.",
-            "type": "boolean",
-            "default": false
-          },
           "posting_tips": {
             "title": "Posting tips",
             "description": "Text specifying tips for posting a proposal.",
             "$ref": "#/definitions/multiloc_string",
             "default": <%= MultilocService.new.i18n_to_multiloc(
-            'initiatives.default_eligibility_criteria',
+            'initiatives.default_posting_tips',
             locales: CL2_SUPPORTED_LOCALES).to_json
             %>
           },

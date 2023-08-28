@@ -291,6 +291,10 @@ module MultiTenancy
               eligibility_criteria: MultilocService.new.i18n_to_multiloc(
                 'initiatives.default_eligibility_criteria',
                 locales: CL2_SUPPORTED_LOCALES
+              ),
+              posting_tips: MultilocService.new.i18n_to_multiloc(
+                'initiatives.default_posting_tips',
+                locales: CL2_SUPPORTED_LOCALES
               )
             },
             initiative_review: {
