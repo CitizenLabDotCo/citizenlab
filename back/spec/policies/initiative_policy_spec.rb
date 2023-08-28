@@ -389,7 +389,7 @@ describe InitiativePolicy do
       it { is_expected.to permit(:show) }
       it { is_expected.to permit(:by_slug) }
       it { is_expected.to permit(:create) }
-      it { is_expected.not_to permit(:update) }
+      it { is_expected.to permit(:update) }
       it { is_expected.to permit(:destroy) }
       it { is_expected.not_to permit(:accept_cosponsorship_invite) }
 
