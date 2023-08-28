@@ -183,12 +183,11 @@ const InitiativeForm = ({ onSubmit, defaultValues }: InitiativeFormProps) => {
             <SectionField id="e2e-initiative-form-description-section">
               <FormLabel
                 id="description-label-id"
-                htmlFor="body"
+                htmlFor="body_multiloc"
                 labelMessage={messages.descriptionLabel}
                 subtextMessage={messages.descriptionLabelSubtext}
               />
               <QuillMultilocWithLocaleSwitcher
-                // id="body"
                 name="body_multiloc"
                 noVideos
                 noAlign
@@ -278,12 +277,11 @@ const InitiativeForm = ({ onSubmit, defaultValues }: InitiativeFormProps) => {
               <FormLabel
                 labelMessage={messages.imageUploadLabel}
                 subtextMessage={messages.imageUploadLabelSubtext}
-                htmlFor="initiative-image-dropzone"
+                htmlFor="images"
                 optional
               />
               <ImagesDropzone
                 name="images"
-                // id="initiative-image-dropzone"
                 imagePreviewRatio={135 / 298}
                 acceptedFileTypes={{
                   'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
