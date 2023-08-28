@@ -238,7 +238,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescription2": "Configura las opciones de votación en {optionsPageLink}.",
   "app.components.app.containers.AdminPage.ProjectEdit.projectTerm": "Proyecto",
   "app.components.app.containers.AdminPage.ProjectEdit.questionTerm": "Pregunta",
-  "app.components.onboarding.disabled": "Desactivado",
+  "app.components.onboarding.disabled": "Deshabilitado",
   "app.components.onboarding.enabled": "Habilitado",
   "app.components.onboarding.helperText": "Solicita qué temas y áreas quiere seguir un usuario durante la incorporación para que pueda mantenerse informado cuando se lancen nuevos proyectos.",
   "app.components.onboarding.requestFollowPreferences": "Solicitar preferencias de seguimiento",
