@@ -136,7 +136,7 @@ const Question = ({ insight }: Props) => {
           }}
         />
       </Box>
-      <Box p="16px">
+      <Box>
         <Box
           display="flex"
           alignItems="center"
@@ -175,6 +175,7 @@ const Question = ({ insight }: Props) => {
         gap="4px"
         alignItems="center"
         justifyContent="space-between"
+        mt="16px"
       >
         <Button buttonStyle="white" onClick={handleRestoreFilters} p="4px 12px">
           Restore filters
