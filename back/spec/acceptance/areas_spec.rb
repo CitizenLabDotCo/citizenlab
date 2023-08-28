@@ -31,6 +31,7 @@ resource 'Areas' do
 
       do_request sort: 'projects_count'
 
+      assert_status 200
       expect(response_data.size).to eq 5
       expect(response_data.pluck(:id).take(2)).to eq [@areas[2].id, @areas[0].id]
     end
