@@ -80,7 +80,7 @@ es-CL:
       "statement": "Este email le fue enviado por CitizenLab en nombre de %{organizationName}, porque eres usuario registrado de %{organizationLink}. Puedes %{unsubscribeLink} si no deseas recibir estos emails en el futuro."
       "unsubscribe_text": "cancelar la suscripción"
     follow:
-      "unfollow_here": "Has recibido esta notificación debido a un artículo que sigues. <a href=\"%{unfollow_url}\">Puedes dejar de seguirlo aquí.</a>"
+      "unfollow_here": "Has recibido esta notificación debido a un artículo que sigues. <a href=\"%{unfollow_url}\">Puedes dejar de seguirla aquí.</a>"
     comment_deleted_by_admin:
       reason: 'La razón por la que tu comentario fue eliminado:'
       cta_view: 'Ver esta idea'
@@ -370,15 +370,15 @@ es-CL:
       main_header: '''%{post}'' tiene un nuevo comentario interno'
       preheader: '''%{post}'' tiene un nuevo comentario interno'
     official_feedback_on_idea_you_follow:
-      header_message: '%{officialName} ha commentado en la idea ''%{ideaTitle}''. Haga clic en el botón de abajo para continuar la conversación con %{officialName}.'
-      header_title: 'Hay una actualización de una idea que sigues'
+      header_message: '%{officialName} dio una actualización sobre la idea ''%{ideaTitle}''. Haz clic en el botón de abajo para entrar en la conversación con %{officialName}.'
+      header_title: 'Hay una actualización en una idea que sigues'
       subject: 'Una idea que sigues ha recibido una actualización oficial en la plataforma de %{organizationName}'
       preheader: 'Hay una actualización de una idea que sigues'
     official_feedback_on_initiative_you_follow:
-      header_message: '%{officialName} ha commentado en propuesta ''%{initiativeTitle}''. Haz click en el botón de abajo para continuar la conversación con %{organizationName}.'
-      header_title: 'Hay una actualización sobre una propuesta que sigues'
+      header_message: '%{officialName} dio una actualización sobre la propuesta ''%{initiativeTitle}''. Haz clic en el botón de abajo para entrar en la conversación con %{organizationName}.'
+      header_title: 'Hay una actualización de una propuesta que sigues'
       subject: 'Una propuesta que sigues ha recibido una actualización oficial en la plataforma de %{organizationName}'
-      preheader: 'Hay una actualización sobre una propuesta que sigues'
+      preheader: 'Hay una actualización de una propuesta que sigues'
     mention_in_official_feedback:
       cta_reply_to: 'Responder a %{organizationName}'
       event_description: '%{organizationName} te ha mencionado en su comentario sobre la idea ''%{post}''. Haga clic en el siguiente enlace para entrar en la conversación con %{organizationName}'
@@ -432,19 +432,19 @@ es-CL:
       subject: 'Prepara todo para la nueva fase de %{projectName}'
       preheader: 'Próximamente se iniciará una nueva fase para %{projectName}'
     project_published:
-      subject: 'Se ha publicado un nuevo proyecto en la plataforma de %{organizationName}'
+      subject: 'Un nuevo proyecto ha sido publicado en la plataforma de %{organizationName}'
       header_title: 'Se ha publicado un nuevo proyecto'
       header_message: 'La plataforma de participación de %{organizationName} acaba de publicar el siguiente proyecto:'
       preheader: 'Se ha publicado un nuevo proyecto'
     status_change_on_idea_you_follow:
       status_change: 'El nuevo estado de esta idea es ''%{ideaStatus}'''
       header_message: '%{organizationName} actualizó el estado de la idea ''%{ideaTitle}'' en su plataforma de participación digital.'
-      header_title: 'Una idea que sigues tiene un nuevo estatus'
-      subject: 'Se ha modificado el estado de una idea que sigues'
+      header_title: 'Una idea que sigues tiene un nuevo estado'
+      subject: 'El estado de una idea que sigues ha sido cambiado'
       preheader: 'Una idea que sigues tiene un nuevo estatus'
     status_change_on_initiative_you_follow:
       status_change: 'El nuevo estado de esta propuesta es ''%{initiativeStatus}'''
-      header_message: 'El estado de la propuesta ''%{initiativeTitle}'' se ha actualizado en la plataforma de participación digital de %{organizationName}.'
+      header_message: 'El estado de la propuesta ''%{initiativeTitle}'' ha sido actualizado en la plataforma de participación digital de %{organizationName}.'
       header_title: 'Una propuesta que sigues tiene un nuevo estado'
       subject: 'El estado de una propuesta que sigues ha cambiado'
       preheader: 'Una propuesta que sigues tiene un nuevo estado'
