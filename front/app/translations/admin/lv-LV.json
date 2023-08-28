@@ -147,6 +147,7 @@
   "app.components.admin.PostManager.hiddenFieldsSupportArticleUrl": "https://support.citizenlab.co/articles/1641202",
   "app.components.admin.PostManager.hiddenFieldsTip": "Padoms: ja izmantojat Typeform, pievienojiet {hiddenFieldsLink}, lai redzētu, kas ir atbildējis jūsu apsekojumā.",
   "app.components.admin.PostManager.importError": "Izvēlēto failu nav iespējams importēt, jo tas nav derīgs GeoJSON fails.",
+  "app.components.admin.PostManager.imported": "Importēts",
   "app.components.admin.PostManager.initiatives": "priekšlikumi",
   "app.components.admin.PostManager.initiativesCommentsExportFileName": "priekšlikuma_komentāri",
   "app.components.admin.PostManager.initiativesExportFileName": "priekšlikumi",
