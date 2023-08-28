@@ -185,6 +185,8 @@ hr:
       <p>Pozivaju se inicijatori da svoj prijedlog iznesu na sljedećem sastanku vijeća. Osigurat ćemo službeno ažuriranje.</p>
     default_eligibility_criteria: >
       <ul> <li>Mora spadati u područja politike i nadležnosti lokalne politike</li> <li>Služi javnom interesu, a ne vašem individualnom interesu</li> <li>Ne diskriminira na temelju spola, rase, dobi ili podrijetla</li> <li>Ne šteti drugima</li> </ul>
+    default_posting_tips: >
+      <ul><li>Take the time to elaborate on your proposal. If necessary, type a draft first and then copy-paste it here. As soon as you post it, others will be able to read it and the time will start running.</li><li>Choose a meaningful title that explains clearly what your proposal entails.</li><li>Visualize your proposal with a fitting image to help it stand out!</li><li>Add relevant attachments, such as videos, inspiring examples, technical details or plans.</li><li>Share your idea on social media and other channels to gather support from others.</li></ul>
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: 'Poništite svoju lozinku'
