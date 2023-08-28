@@ -37,6 +37,9 @@ namespace :fix_existing_tenants do
         Follower.find_or_create_by(followable: initiative, user: participant)
       end
     end
+    CosponsorsInitiative.includes(:initiative, :user).where(status: 'accepted').each do |cosponsor|
+      Follower.find_or_create_by(followable: cosponsor.initiative, user: cosponsor.user)
+    end
   end
 
   def migrate_folder_followers!

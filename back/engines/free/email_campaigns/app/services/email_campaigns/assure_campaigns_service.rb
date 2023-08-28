@@ -32,6 +32,7 @@ module EmailCampaigns
         EmailCampaigns::CampaignsGroup.where(campaign_id: unsupported_ids).destroy_all
         EmailCampaigns::Delivery.where(campaign_id: unsupported_ids).destroy_all
         EmailCampaigns::Campaign.where(id: unsupported_ids).destroy_all
+        # We don't delete the user consents because we may be legally required to do so.
       end
 
       # Make everything back to normal

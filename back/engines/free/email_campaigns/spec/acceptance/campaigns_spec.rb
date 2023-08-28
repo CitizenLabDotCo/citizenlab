@@ -16,7 +16,7 @@ resource 'Campaigns' do
   get '/web_api/v1/campaigns' do
     before do
       @campaigns = create_list(:manual_campaign, 3)
-      @automated_campaigns = create_list(:official_feedback_on_reacted_initiative_campaign, 2)
+      @automated_campaigns = create_list(:official_feedback_on_initiative_you_follow_campaign, 2)
     end
 
     with_options scope: :page do

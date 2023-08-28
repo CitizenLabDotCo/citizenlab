@@ -1,5 +1,4 @@
 import React from 'react';
-import { get, isString } from 'lodash-es';
 
 // components
 import Card from 'components/UI/Card';
@@ -9,7 +8,6 @@ import ReactionIndicator from './ReactionIndicator';
 import FollowUnfollow from 'components/FollowUnfollow';
 
 // i18n
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -19,9 +17,10 @@ import { fontSizes, colors } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 
 // hooks
-import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useUserById from 'api/users/useUserById';
 import useInitiativeImage from 'api/initiative_images/useInitiativeImage';
+import useLocalize from 'hooks/useLocalize';
+import useInitiativeById from 'api/initiatives/useInitiativeById';
 
 const StyledAuthor = styled(Author)`
   margin-left: -4px;
@@ -67,21 +66,17 @@ export interface Props {
 }
 
 const InitiativeCard = ({
-  localize,
   className,
   initiativeId,
   showFollowButton,
-}: Props & InjectedLocalized) => {
+}: Props) => {
+  const localize = useLocalize();
   const { data: initiative } = useInitiativeById(initiativeId);
-  const authorId = get(initiative, 'data.relationships.author.data.id');
+  const authorId = initiative?.data.relationships.author.data?.id;
   const { data: initiativeAuthor } = useUserById(authorId);
-  const initiativeImageId = get(
-    initiative,
-    'data.relationships.initiative_images.data[0].id'
-  );
   const { data: initiativeImage } = useInitiativeImage(
     initiativeId,
-    initiativeImageId
+    initiative?.data.relationships.initiative_images.data[0]?.id
   );
 
   if (!initiative) return null;
@@ -93,13 +88,11 @@ const InitiativeCard = ({
   const cardClassNames = [
     className,
     'e2e-initiative-card',
-    get(initiative, 'relationships.user_reaction.data')
-      ? 'reacted'
-      : 'not-reacted',
     commentsCount > 0 ? 'e2e-has-comments' : null,
   ]
-    .filter((item) => isString(item) && item !== '')
+    .filter((item) => typeof item === 'string' && item !== '')
     .join(' ');
+
   return (
     <Card
       className={cardClassNames}
@@ -154,4 +147,4 @@ const InitiativeCard = ({
   );
 };
 
-export default injectLocalize(InitiativeCard);
+export default InitiativeCard;

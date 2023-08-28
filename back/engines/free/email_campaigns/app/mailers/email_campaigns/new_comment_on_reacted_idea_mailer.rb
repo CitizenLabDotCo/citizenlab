@@ -4,9 +4,9 @@ module EmailCampaigns
   class NewCommentOnReactedIdeaMailer < ApplicationMailer
     private
 
-    helper_method :comment_author
+    helper_method :author_name
 
-    def comment_author
+    def author_name
       event.initiating_user_first_name.capitalize
     end
 
@@ -24,7 +24,7 @@ module EmailCampaigns
         values: {
           ideaTitle: localize_for_recipient(event.post_title_multiloc),
           organizationName: organization_name,
-          commentAuthor: comment_author
+          commentAuthor: author_name
         }
       )
     end
@@ -32,7 +32,7 @@ module EmailCampaigns
     def preheader
       format_message(
         'preheader',
-        values: { organizationName: organization_name, commentAuthor: comment_author }
+        values: { organizationName: organization_name, commentAuthor: author_name }
       )
     end
   end

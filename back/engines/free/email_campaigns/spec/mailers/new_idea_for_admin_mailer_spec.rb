@@ -24,7 +24,7 @@ RSpec.describe EmailCampaigns::NewIdeaForAdminMailer do
     before_all { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
 
     it 'renders the subject' do
-      expect(mail.subject).to start_with('Someone published a new idea on the platform of')
+      expect(mail.subject).to start_with('A new post has been published on')
     end
 
     it 'renders the receiver email' do

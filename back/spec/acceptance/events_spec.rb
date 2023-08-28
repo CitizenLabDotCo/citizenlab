@@ -195,6 +195,20 @@ resource 'Events' do
     end
   end
 
+  get 'web_api/v1/events/:id.ics' do
+    let(:event) { @events.first }
+    let(:id) { event.id }
+
+    example_request 'Get one event by id in ics format' do
+      expect(status).to eq 200
+      expect(response_headers['Content-Type']).to include('text/calendar')
+      expect(response_body.scan('BEGIN:VEVENT').count).to eq(1)
+      expect(response_body).to satisfy do |body|
+        event.title_multiloc.values.any? { |title| body.include?(title) }
+      end
+    end
+  end
+
   context 'when admin' do
     before { admin_header_token }
 
