@@ -114,7 +114,9 @@ export interface IInitiatives {
 export interface IInitiativeAdd {
   title_multiloc: Multiloc;
   publication_status: InitiativePublicationStatus;
-  body_multiloc?: Multiloc;
+  // Strictly speaking not necessary (BE schema doesn't require it) at time of writing (25 Aug '23)
+  // But including it because from the product perspective it doesn't make sense to not have it.
+  body_multiloc: Multiloc;
   anonymous?: boolean;
   header_bg?: string;
   author_id?: string | null;
