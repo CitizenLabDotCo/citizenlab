@@ -6,12 +6,12 @@ import Areas from 'components/Areas';
 import { useIntl } from 'utils/cl-intl';
 import useAuthUser from 'api/me/useAuthUser';
 import messages from '../messages';
-import { RequirementStatus } from 'api/authentication/authentication_requirements/types';
+import { OnboardingType } from 'api/authentication/authentication_requirements/types';
 import useAreas from 'api/areas/useAreas';
 import useTopics from 'api/topics/useTopics';
 
 interface Props {
-  onSubmit: (id: string, onboarding: Record<string, RequirementStatus>) => void;
+  onSubmit: (id: string, onboarding: OnboardingType) => void;
   onSkip: () => void;
 }
 
