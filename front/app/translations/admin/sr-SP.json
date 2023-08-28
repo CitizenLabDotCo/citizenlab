@@ -147,6 +147,7 @@
   "app.components.admin.PostManager.hiddenFieldsSupportArticleUrl": "хттпс://суппорт.цитизенлаб.цо/артицлес/1641202",
   "app.components.admin.PostManager.hiddenFieldsTip": "Савет: Ако користите Типеформ, додајте {hiddenFieldsLink} да бисте пратили ко је одговорио на вашу анкету.",
   "app.components.admin.PostManager.importError": "Изабрана датотека није могла да се увезе јер није важећа ГеоЈСОН датотека",
+  "app.components.admin.PostManager.imported": "Увезено",
   "app.components.admin.PostManager.initiatives": "предлозима",
   "app.components.admin.PostManager.initiativesCommentsExportFileName": "предлог_коментара",
   "app.components.admin.PostManager.initiativesExportFileName": "предлозима",
