@@ -12,31 +12,23 @@ import Feedback from 'components/HookForm/Feedback';
 import TopicsPicker from 'components/HookForm/TopicsPicker';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object, array, mixed, string } from 'yup';
-import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
+import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 import {
   FormSection,
   FormSectionTitle,
   FormLabel,
 } from 'components/UI/FormComponents';
-// components
-import Button from 'components/UI/Button';
-import { Box, Text } from '@citizenlab/cl2-component-library';
 
 // intl
 import messages from '../messages';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
-import Warning from 'components/UI/Warning';
-import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
-import FileUploader from 'components/HookForm/FileUploader';
-import ImagesDropzone from 'components/HookForm/ImagesDropzone';
-import LocationInput from 'components/HookForm/LocationInput';
-import useTopics from 'api/topics/useTopics';
+
+// Components
 import SubmitButtonBar from './SubmitButtonBar';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
-import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 const ProfileVisibilityFormSection = lazy(
   () => import('./ProfileVisibilityFormSection')
 );
@@ -44,8 +36,15 @@ const CosponsorsFormSection = lazy(() => import('./CosponsorsFormSection'));
 const AnonymousParticipationConfirmationModal = lazy(
   () => import('components/AnonymousParticipationConfirmationModal')
 );
+import FileUploader from 'components/HookForm/FileUploader';
+import ImagesDropzone from 'components/HookForm/ImagesDropzone';
+import LocationInput from 'components/HookForm/LocationInput';
+
+// Hooks
 import useInitiativeReviewRequired from 'hooks/useInitiativeReviewRequired';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useTopics from 'api/topics/useTopics';
+import useLocale from 'hooks/useLocale';
 
 const StyledFormSection = styled(FormSection)`
   ${media.phone`
@@ -226,13 +225,8 @@ const InitiativeForm = ({ onSubmit, defaultValues }: InitiativeFormProps) => {
               <FormLabel
                 labelMessage={messages.topicsLabel}
                 subtextMessage={messages.topicsLabelDescription}
-                htmlFor="field-topic-multiple-picker"
               />
-              <TopicsPicker
-                name="topic_ids"
-                // id="field-topic-multiple-picker"
-                availableTopics={topics.data}
-              />
+              <TopicsPicker name="topic_ids" availableTopics={topics.data} />
               {/* {touched.topic_ids && errors.topic_ids ? (
               <Error text={formatMessage(errors.topic_ids.message)} />
             ) : (
@@ -245,12 +239,11 @@ const InitiativeForm = ({ onSubmit, defaultValues }: InitiativeFormProps) => {
                 <FormLabel
                   labelMessage={messages.locationLabel}
                   subtextMessage={messages.locationLabelSubtext}
-                  htmlFor="initiative-location-picker"
+                  htmlFor="position"
                   optional
                 >
                   <LocationInput
                     name="position"
-                    // id="initiative-location-picker"
                     className="e2e-initiative-location-input"
                     placeholder={formatMessage(messages.locationPlaceholder)}
                   />
@@ -267,12 +260,11 @@ const InitiativeForm = ({ onSubmit, defaultValues }: InitiativeFormProps) => {
               <FormLabel
                 labelMessage={messages.bannerUploadLabel}
                 subtextMessage={messages.bannerUploadLabelSubtext}
-                htmlFor="initiative-banner-dropzone"
+                htmlFor="header_bg"
                 optional
               />
               <ImagesDropzone
                 name="header_bg"
-                // id="initiative-banner-dropzone"
                 imagePreviewRatio={360 / 1440}
                 acceptedFileTypes={{
                   'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
@@ -297,9 +289,6 @@ const InitiativeForm = ({ onSubmit, defaultValues }: InitiativeFormProps) => {
                   'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
                 }}
               />
-              {/* {touched.image && errors.image && (
-            <Error text={formatMessage(errors.image.message)} />
-          )} */}
             </SectionField>
             <SectionField>
               <FormLabel
@@ -310,7 +299,7 @@ const InitiativeForm = ({ onSubmit, defaultValues }: InitiativeFormProps) => {
               >
                 <FileUploader
                   name="local_initiative_files"
-                  // id="e2e-initiative-file-upload"
+                  data-cy="e2e-initiative-file-upload"
                   // apiErrors={apiErrors}
                 />
               </FormLabel>

@@ -91,7 +91,7 @@ describe('Initiative new page', () => {
 
     // verify that image and file upload components are present
     cy.get('#e2e-iniatiative-banner-dropzone');
-    cy.get('#e2e-initiative-file-upload');
+    cy.get('[data-cy="e2e-initiative-file-upload"]');
 
     // add an image
     cy.get('#e2e-iniatiative-img-dropzone input').attachFile('testimage.png');
