@@ -419,6 +419,10 @@ const InitiativesEditFormWrapper = ({
     }
   };
 
+  const onHandleCloseModal = () => {
+    setShowAnonymousConfirmationModal(false);
+  };
+
   const initiativeTopics = topics.data.filter((topic) => !isNilOrError(topic));
 
   return (
@@ -451,13 +455,14 @@ const InitiativesEditFormWrapper = ({
         publishedAnonymously={initiative.attributes?.anonymous}
         cosponsorships={initiative.attributes.cosponsorships}
       />
-      <AnonymousParticipationConfirmationModal
-        onConfirmAnonymousParticipation={() => {
-          continuePublish();
-        }}
-        showAnonymousConfirmationModal={showAnonymousConfirmationModal}
-        setShowAnonymousConfirmationModal={setShowAnonymousConfirmationModal}
-      />
+      {showAnonymousConfirmationModal && (
+        <AnonymousParticipationConfirmationModal
+          onConfirmAnonymousParticipation={() => {
+            continuePublish();
+          }}
+          onCloseModal={onHandleCloseModal}
+        />
+      )}
     </>
   );
 };

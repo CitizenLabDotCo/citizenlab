@@ -458,14 +458,17 @@ const ChildCommentForm = ({
             </label>
           </Form>
         </FormContainer>
-        <AnonymousParticipationConfirmationModal
-          onConfirmAnonymousParticipation={() => {
-            setShowAnonymousConfirmationModal(false);
-            continueSubmission();
-          }}
-          showAnonymousConfirmationModal={showAnonymousConfirmationModal}
-          setShowAnonymousConfirmationModal={setShowAnonymousConfirmationModal}
-        />
+        {showAnonymousConfirmationModal && (
+          <AnonymousParticipationConfirmationModal
+            onConfirmAnonymousParticipation={() => {
+              setShowAnonymousConfirmationModal(false);
+              continueSubmission();
+            }}
+            onCloseModal={() => {
+              setShowAnonymousConfirmationModal(false);
+            }}
+          />
+        )}
       </Container>
     );
   }

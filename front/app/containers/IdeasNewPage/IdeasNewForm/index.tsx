@@ -287,14 +287,17 @@ const IdeasNewPageWithJSONForm = () => {
       ) : isError(project) || inputSchemaError ? null : (
         <FullPageSpinner />
       )}
-      <AnonymousParticipationConfirmationModal
-        onConfirmAnonymousParticipation={() => {
-          setShowAnonymousConfirmationModal(false);
-          continueSubmission(formDataOnSubmit);
-        }}
-        showAnonymousConfirmationModal={showAnonymousConfirmationModal}
-        setShowAnonymousConfirmationModal={setShowAnonymousConfirmationModal}
-      />
+      {showAnonymousConfirmationModal && (
+        <AnonymousParticipationConfirmationModal
+          onConfirmAnonymousParticipation={() => {
+            setShowAnonymousConfirmationModal(false);
+            continueSubmission(formDataOnSubmit);
+          }}
+          onCloseModal={() => {
+            setShowAnonymousConfirmationModal(false);
+          }}
+        />
+      )}
     </PageContainer>
   );
 };

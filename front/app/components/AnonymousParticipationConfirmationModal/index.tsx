@@ -16,27 +16,19 @@ import Warning from 'components/UI/Warning';
 import messages from './messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
-type AnonymousParticipationConfirmationModalProps = {
-  showAnonymousConfirmationModal: boolean;
-  setShowAnonymousConfirmationModal: (show: boolean) => void;
+type Props = {
+  onCloseModal: () => void;
   onConfirmAnonymousParticipation: () => void;
 };
 
 const AnonymousParticipationConfirmationModal = ({
-  showAnonymousConfirmationModal,
-  setShowAnonymousConfirmationModal,
+  onCloseModal,
   onConfirmAnonymousParticipation,
-}: AnonymousParticipationConfirmationModalProps) => {
+}: Props) => {
   const { formatMessage } = useIntl();
 
   return (
-    <Modal
-      width="460px"
-      opened={showAnonymousConfirmationModal}
-      close={() => {
-        setShowAnonymousConfirmationModal(false);
-      }}
-    >
+    <Modal width="460px" opened close={onCloseModal}>
       <Box
         display="flex"
         height="64px"
@@ -91,9 +83,7 @@ const AnonymousParticipationConfirmationModal = ({
           <Button
             width="100%"
             buttonStyle="secondary-outlined"
-            onClick={() => {
-              setShowAnonymousConfirmationModal(false);
-            }}
+            onClick={onCloseModal}
           >
             {formatMessage(messages.cancel)}
           </Button>

@@ -127,6 +127,10 @@ const InitiativeForm = ({ onSubmit, defaultValues }: InitiativeFormProps) => {
     setPostAnonymously((postAnonymously) => !postAnonymously);
   };
 
+  const handleOnCloseModal = () => {
+    setShowAnonymousConfirmationModal(false);
+  };
+
   return (
     <>
       <FormProvider {...methods}>
@@ -313,11 +317,12 @@ const InitiativeForm = ({ onSubmit, defaultValues }: InitiativeFormProps) => {
         </form>
       </FormProvider>
       <Suspense fallback={null}>
-        <AnonymousParticipationConfirmationModal
-          onConfirmAnonymousParticipation={() => {}}
-          showAnonymousConfirmationModal={showAnonymousConfirmationModal}
-          setShowAnonymousConfirmationModal={setShowAnonymousConfirmationModal}
-        />
+        {showAnonymousConfirmationModal && (
+          <AnonymousParticipationConfirmationModal
+            onConfirmAnonymousParticipation={() => {}}
+            onCloseModal={handleOnCloseModal}
+          />
+        )}
       </Suspense>
     </>
   );
