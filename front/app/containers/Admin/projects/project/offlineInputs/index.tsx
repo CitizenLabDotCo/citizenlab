@@ -42,7 +42,6 @@ const OfflineInputImporter = () => {
 
   const [ideaId, setIdeaId] = useState<string | null>(null);
   const [selectedPhaseId, setSelectedPhaseId] = useState<string | null>(null);
-  const [showAllErrors, setShowAllErrors] = useState(false);
   const [apiErrors, setApiErrors] = useState<CLErrors | undefined>();
   const [importModalOpen, setImportModalOpen] = useState(false);
   const [formStatePerIdea, setFormStatePerIdea] = useState<
@@ -85,7 +84,6 @@ const OfflineInputImporter = () => {
 
   const onApproveIdea = async () => {
     if (!ideaId || !formData || !schema || !uiSchema) return;
-    setShowAllErrors(true);
 
     if (isValidData(schema, uiSchema, formData, customAjv, false)) {
       try {
@@ -118,7 +116,6 @@ const OfflineInputImporter = () => {
 
   const handleSelectIdea = (ideaId: string) => {
     setIdeaId(ideaId);
-    setShowAllErrors(false);
   };
 
   return (
@@ -146,7 +143,6 @@ const OfflineInputImporter = () => {
               phaseId={phaseId}
               ideaId={ideaId}
               apiErrors={apiErrors}
-              showAllErrors={showAllErrors}
               formData={formData}
               loadingApproveIdea={loadingApproveIdea}
               onSelectIdea={handleSelectIdea}

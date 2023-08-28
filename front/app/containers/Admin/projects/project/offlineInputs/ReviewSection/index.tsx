@@ -27,7 +27,7 @@ import IdeaList from './IdeaList';
 import AuthorBox from './AuthorBox';
 import IdeaForm from './IdeaForm';
 import PDFPageControl from './PDFPageControl';
-import PDFViewer from 'containers/Admin/projects/project/offlineInputs/ReviewSection/PDFViewer';
+import PDFViewer from './PDFViewer';
 
 // styling
 import { colors, stylingConsts } from 'utils/styleUtils';
@@ -43,7 +43,6 @@ import { CLErrors } from 'typings';
 interface Props {
   phaseId?: string;
   ideaId: string | null;
-  showAllErrors: boolean;
   apiErrors?: CLErrors;
   formData: FormData;
   loadingApproveIdea: boolean;
@@ -56,7 +55,6 @@ interface Props {
 const ReviewSection = ({
   phaseId,
   ideaId,
-  showAllErrors,
   apiErrors,
   formData,
   loadingApproveIdea,
@@ -212,7 +210,7 @@ const ReviewSection = ({
             {idea && (
               <IdeaForm
                 projectId={projectId}
-                showAllErrors={showAllErrors}
+                showAllErrors={true}
                 apiErrors={apiErrors}
                 formData={formData}
                 setFormData={setFormData}
