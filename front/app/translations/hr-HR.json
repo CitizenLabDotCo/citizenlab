@@ -1547,6 +1547,7 @@
   "app.containers.UsersShowPage.initiatives": "Inicijative",
   "app.containers.UsersShowPage.invisibleTitlePostsList": "Svi unosi ovog sudionika",
   "app.containers.UsersShowPage.invisibleTitleUserComments": "Svi komentari koje je objavio ovaj sudionik",
+  "app.containers.UsersShowPage.loadMore": "Učitaj više",
   "app.containers.UsersShowPage.loadMoreComments": "Učitaj više komentara",
   "app.containers.UsersShowPage.loadingComments": "Učitavanje komentara...",
   "app.containers.UsersShowPage.memberSince": "Član od {date}",
