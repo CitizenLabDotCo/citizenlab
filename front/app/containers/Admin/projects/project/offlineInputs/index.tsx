@@ -83,7 +83,7 @@ const OfflineInputImporter = () => {
   const openImportModal = () => setImportModalOpen(true);
   const closeImportModal = () => setImportModalOpen(false);
 
-  const onSubmit = async () => {
+  const onApproveIdea = async () => {
     if (!ideaId || !formData || !schema || !uiSchema) return;
     setShowAllErrors(true);
 
@@ -134,10 +134,8 @@ const OfflineInputImporter = () => {
         <FocusOn>
           <TopBar
             phaseId={phaseId}
-            loadingApproveIdea={loadingApproveIdea}
             loadingDeleteIdea={loadingDeleteIdea}
             onChangePhase={setSelectedPhaseId}
-            onApproveIdea={ideaId ? onSubmit : undefined}
             onDeleteIdea={ideaId ? onDelete : undefined}
             onClickPDFImport={openImportModal}
           />
@@ -146,12 +144,15 @@ const OfflineInputImporter = () => {
             h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
           >
             <ReviewSection
+              phaseId={phaseId}
               ideaId={ideaId}
               apiErrors={apiErrors}
               showAllErrors={showAllErrors}
               formData={formData}
+              loadingApproveIdea={loadingApproveIdea}
               onSelectIdea={handleSelectIdea}
               setFormData={setFormData}
+              onApproveIdea={ideaId ? onApproveIdea : undefined}
             />
           </Box>
         </FocusOn>

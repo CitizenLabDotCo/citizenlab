@@ -9,6 +9,7 @@ import useImportedIdeas from 'api/import_ideas/useImportedIdeas';
 import useImportedIdeaMetadata from 'api/import_ideas/useImportedIdeaMetadata';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useUserById from 'api/users/useUserById';
+import usePhase from 'api/phases/usePhase';
 
 // i18n
 import useLocalize from 'hooks/useLocalize';
@@ -17,7 +18,13 @@ import messages from './messages';
 import sharedMessages from '../TopBar/messages';
 
 // components
-import { Box, Spinner, Title, Text } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Spinner,
+  Title,
+  Text,
+  Button,
+} from '@citizenlab/cl2-component-library';
 import AuthorBox from './AuthorBox';
 import IdeaForm from './IdeaForm';
 import PDFPageControl from './PDFPageControl';
@@ -29,6 +36,7 @@ import { colors, stylingConsts } from 'utils/styleUtils';
 
 // utils
 import { getFullName } from 'utils/textUtils';
+import { canContainIdeas } from 'api/phases/utils';
 
 // typings
 import { FormData } from 'components/Form/typings';
@@ -44,21 +52,27 @@ const StyledBox = styled(Box)`
 `;
 
 interface Props {
+  phaseId?: string;
   ideaId: string | null;
   showAllErrors: boolean;
   apiErrors?: CLErrors;
   formData: FormData;
+  loadingApproveIdea: boolean;
   onSelectIdea: (ideaId: string) => void;
   setFormData: (formData: FormData) => void;
+  onApproveIdea?: () => void;
 }
 
 const ReviewSection = ({
+  phaseId,
   ideaId,
   showAllErrors,
   apiErrors,
   formData,
+  loadingApproveIdea,
   onSelectIdea,
   setFormData,
+  onApproveIdea,
 }: Props) => {
   const { projectId } = useParams() as {
     projectId: string;
@@ -71,6 +85,7 @@ const ReviewSection = ({
     idea?.data.relationships.author?.data?.id,
     false
   );
+  const { data: phase } = usePhase(phaseId);
 
   const { data: ideaMetadata } = useImportedIdeaMetadata({
     id: isLoading ? undefined : idea?.data.relationships.idea_import?.data?.id,
@@ -129,6 +144,8 @@ const ReviewSection = ({
 
   const authorName = author ? getFullName(author.data) : undefined;
   const authorEmail = author?.data.attributes.email;
+
+  const blockApproval = phase ? !canContainIdeas(phase.data) : false;
 
   const goToNextPage = () => setCurrentPageIndex((index) => index + 1);
   const goToPreviousPage = () => setCurrentPageIndex((index) => index - 1);
@@ -206,24 +223,52 @@ const ReviewSection = ({
         <Box
           w="35%"
           borderRight={`1px ${colors.grey400} solid`}
-          overflowY="scroll"
           display="flex"
           flexDirection="column"
           alignItems="center"
-          px="12px"
+          h="100%"
         >
-          {(authorEmail || authorName) && (
-            <AuthorBox authorName={authorName} authorEmail={authorEmail} />
-          )}
-          {idea && (
-            <IdeaForm
-              projectId={projectId}
-              showAllErrors={showAllErrors}
-              apiErrors={apiErrors}
-              formData={formData}
-              setFormData={setFormData}
-            />
-          )}
+          <Box
+            px="12px"
+            borderBottom={`1px ${colors.grey400} solid`}
+            overflowY="scroll"
+            w="100%"
+            h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px - 160px)`}
+          >
+            {(authorEmail || authorName) && (
+              <AuthorBox authorName={authorName} authorEmail={authorEmail} />
+            )}
+            {idea && (
+              <IdeaForm
+                projectId={projectId}
+                showAllErrors={showAllErrors}
+                apiErrors={apiErrors}
+                formData={formData}
+                setFormData={setFormData}
+              />
+            )}
+          </Box>
+          <Box
+            h="60px"
+            px="24px"
+            pb="4px"
+            w="100%"
+            display="flex"
+            flexDirection="column"
+            justifyContent="flex-end"
+          >
+            {onApproveIdea && (
+              <Button
+                icon="check"
+                w="100%"
+                processing={loadingApproveIdea}
+                disabled={blockApproval}
+                onClick={onApproveIdea}
+              >
+                Approve
+              </Button>
+            )}
+          </Box>
         </Box>
         <Box w="40%">
           {ideaMetadata && pages && (

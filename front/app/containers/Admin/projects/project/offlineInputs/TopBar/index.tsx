@@ -5,7 +5,6 @@ import { useParams } from 'react-router-dom';
 
 // api
 import useProjectById from 'api/projects/useProjectById';
-import usePhase from 'api/phases/usePhase';
 
 // components
 import { Box, Title, Button } from '@citizenlab/cl2-component-library';
@@ -19,24 +18,19 @@ import messages from './messages';
 
 // styling
 import { stylingConsts, colors } from 'utils/styleUtils';
-import { canContainIdeas } from 'api/phases/utils';
 
 interface Props {
   phaseId?: string;
-  loadingApproveIdea: boolean;
   loadingDeleteIdea: boolean;
   onChangePhase: (phaseId: string) => void;
-  onApproveIdea?: () => void;
   onDeleteIdea?: () => void;
   onClickPDFImport: () => void;
 }
 
 const TopBar = ({
   phaseId,
-  loadingApproveIdea,
   loadingDeleteIdea,
   onChangePhase,
-  onApproveIdea,
   onDeleteIdea,
   onClickPDFImport,
 }: Props) => {
@@ -46,10 +40,7 @@ const TopBar = ({
   };
 
   const { data: project } = useProjectById(projectId);
-  const { data: phase } = usePhase(phaseId);
-
   const projectTitle = project?.data.attributes.title_multiloc;
-  const blockApproval = phase ? !canContainIdeas(phase.data) : false;
 
   return (
     <Box
@@ -84,18 +75,6 @@ const TopBar = ({
       </Box>
 
       <Box display="flex">
-        {onApproveIdea && (
-          <Button
-            icon="check"
-            onClick={onApproveIdea}
-            marginRight="20px"
-            bgColor={colors.success}
-            processing={loadingApproveIdea}
-            disabled={blockApproval}
-          >
-            <FormattedMessage {...messages.approve} />
-          </Button>
-        )}
         {onDeleteIdea && (
           <Button
             icon="delete"
