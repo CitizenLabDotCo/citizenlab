@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import moment from 'moment';
 
 // routing
 import { useParams } from 'react-router-dom';
@@ -12,7 +11,6 @@ import useUserById from 'api/users/useUserById';
 import usePhase from 'api/phases/usePhase';
 
 // i18n
-import useLocalize from 'hooks/useLocalize';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import sharedMessages from '../TopBar/messages';
@@ -25,31 +23,22 @@ import {
   Text,
   Button,
 } from '@citizenlab/cl2-component-library';
+import IdeaList from './IdeaList';
 import AuthorBox from './AuthorBox';
 import IdeaForm from './IdeaForm';
 import PDFPageControl from './PDFPageControl';
 import PDFViewer from 'containers/Admin/projects/project/offlineInputs/ReviewSection/PDFViewer';
 
 // styling
-import styled from 'styled-components';
 import { colors, stylingConsts } from 'utils/styleUtils';
 
 // utils
-import { truncate, getFullName } from 'utils/textUtils';
+import { getFullName } from 'utils/textUtils';
 import { canContainIdeas } from 'api/phases/utils';
 
 // typings
 import { FormData } from 'components/Form/typings';
 import { CLErrors } from 'typings';
-
-// TODO move to component library
-const TEAL50 = '#EDF8FA';
-
-const StyledBox = styled(Box)`
-  &:hover {
-    background-color: ${TEAL50};
-  }
-`;
 
 interface Props {
   phaseId?: string;
@@ -90,8 +79,6 @@ const ReviewSection = ({
   const { data: ideaMetadata } = useImportedIdeaMetadata({
     id: isLoading ? undefined : idea?.data.relationships.idea_import?.data?.id,
   });
-
-  const localize = useLocalize();
 
   if (isLoading) {
     return (
@@ -195,30 +182,12 @@ const ReviewSection = ({
           pr="8px"
           overflowY="scroll"
         >
-          {ideas.data.map((idea) => (
-            <StyledBox
-              key={idea.id}
-              py="8px"
-              borderBottom={`1px ${colors.grey400} solid`}
-              style={{ cursor: 'pointer' }}
-              bgColor={idea.id === ideaId ? TEAL50 : undefined}
-              onClick={() => {
-                onSelectIdea(idea.id);
-              }}
-            >
-              <Text
-                m="0"
-                color="black"
-                fontSize="m"
-                fontWeight={idea.id === ideaId ? 'bold' : 'normal'}
-              >
-                {truncate(localize(idea.attributes.title_multiloc), 80)}
-              </Text>
-              <Text m="0" mt="3px" fontSize="s" color="grey600">
-                {moment(idea.attributes.created_at).format('YYYY-MM-DD')}
-              </Text>
-            </StyledBox>
-          ))}
+          <IdeaList
+            ideaId={ideaId}
+            ideas={ideas}
+            onSelectIdea={onSelectIdea}
+            onDeleteIdea={console.log}
+          />
         </Box>
         <Box
           w="35%"
