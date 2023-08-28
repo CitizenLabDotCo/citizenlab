@@ -749,6 +749,8 @@
   "app.containers.Admin.initiatives.overviewTab": "Overview",
   "app.containers.Admin.initiatives.permissions": "Permissions",
   "app.containers.Admin.initiatives.permissionsText": "Permissions",
+  "app.containers.Admin.initiatives.postingTips": "Posting tips",
+  "app.containers.Admin.initiatives.postingTipsInfo": "Give some specific tips for posting a proposal",
   "app.containers.Admin.initiatives.proposalEligibilityCriteria": "Eligibility criteria",
   "app.containers.Admin.initiatives.proposalEligibilityCriteriaInfo": "{tenantName, select, stirlingcouncil {Give a clear description of the criteria you'll use to decide if a petition is eligible or not.} other {Give a clear description of the criteria you'll use to decide if a proposal is eligible or not.}}",
   "app.containers.Admin.initiatives.proposalSuccessMessage": "Success message",
