@@ -148,17 +148,6 @@ const InitiativeForm = ({ onSubmit, defaultValues }: InitiativeFormProps) => {
                     autocomplete="off"
                     maxCharCount={72}
                   />
-                  {/* {touched.title_multiloc && errors.title_multiloc ? (
-                <Error
-                  id="e2e-proposal-title-error"
-                  text={formatMessage(errors.title_multiloc.message)}
-                />
-              ) : (
-                apiErrors &&
-                apiErrors.title_multiloc && (
-                  <Error apiErrors={apiErrors.title_multiloc} />
-                )
-              )} */}
                 </FormLabel>
                 {/* {titleProfanityError && (
               <Error
@@ -190,30 +179,22 @@ const InitiativeForm = ({ onSubmit, defaultValues }: InitiativeFormProps) => {
                   noVideos
                   noAlign
                 />
-                {/* {touched.body_multiloc && errors.body_multiloc ? (
-              <Error text={formatMessage(errors.body_multiloc.message)} />
-            ) : (
-              apiErrors &&
-              apiErrors.body_multiloc && (
-                <Error apiErrors={apiErrors.body_multiloc} />
-              )
-            )}
-            {descriptionProfanityError && (
-              <Error
-                text={
-                  <FormattedMessage
-                    {...messages.profanityError}
-                    values={{
-                      guidelinesLink: (
-                        <Link to="/pages/faq" target="_blank">
-                          {formatMessage(messages.guidelinesLinkText)}
-                        </Link>
-                      ),
-                    }}
+                {/* {descriptionProfanityError && (
+                  <Error
+                    text={
+                      <FormattedMessage
+                        {...messages.profanityError}
+                        values={{
+                          guidelinesLink: (
+                            <Link to="/pages/faq" target="_blank">
+                              {formatMessage(messages.guidelinesLinkText)}
+                            </Link>
+                          ),
+                        }}
+                      />
+                    }
                   />
-                }
-              />
-            )} */}
+                )} */}
               </SectionField>
             </StyledFormSection>
             <StyledFormSection>
@@ -224,12 +205,6 @@ const InitiativeForm = ({ onSubmit, defaultValues }: InitiativeFormProps) => {
                   subtextMessage={messages.topicsLabelDescription}
                 />
                 <TopicsPicker name="topic_ids" availableTopics={topics.data} />
-                {/* {touched.topic_ids && errors.topic_ids ? (
-              <Error text={formatMessage(errors.topic_ids.message)} />
-            ) : (
-              apiErrors &&
-              apiErrors.topic_ids && <Error apiErrors={apiErrors.topic_ids} />
-            )} */}
               </SectionField>
               {mapsLoaded && (
                 <SectionField>
@@ -269,9 +244,6 @@ const InitiativeForm = ({ onSubmit, defaultValues }: InitiativeFormProps) => {
                     'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
                   }}
                 />
-                {/* {apiErrors && apiErrors.header_bg && (
-            <Error apiErrors={apiErrors.header_bg} />
-          )} */}
               </SectionField>
               <SectionField id="e2e-iniatiative-img-dropzone">
                 <FormLabel
@@ -298,7 +270,6 @@ const InitiativeForm = ({ onSubmit, defaultValues }: InitiativeFormProps) => {
                   <FileUploader
                     name="local_initiative_files"
                     data-cy="e2e-initiative-file-upload"
-                    // apiErrors={apiErrors}
                   />
                 </FormLabel>
               </SectionField>

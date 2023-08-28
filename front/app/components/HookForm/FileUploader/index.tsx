@@ -11,7 +11,7 @@ import { get } from 'lodash-es';
 interface Props
   extends Omit<
     FileUploaderProps,
-    'onFileAdd' | 'onFileRemove' | 'files' | 'id'
+    'onFileAdd' | 'onFileRemove' | 'files' | 'id' | 'apiErrors'
   > {
   name: string;
   remoteFiles?: UploadFile[] | null;
