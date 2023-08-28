@@ -30,16 +30,14 @@ module Analysis
           end
         end
 
-        def rate 
+        def rate
           insight = @analysis.insights.find(params[:id])
           rating = params[:rating]
           side_fx_service.after_rate(insight, current_user, rating)
           head :created
         end
-          
 
         private
-
         def side_fx_service
           @side_fx_service ||= SideFxInsightService.new
         end
