@@ -561,7 +561,6 @@
   "app.components.admin.UserFilterConditions.rulesFormLabelPredicate": "B",
   "app.components.admin.UserFilterConditions.rulesFormLabelValue": "C",
   "app.components.anonymousParticipationModal.anonymousParticipationWarning": "Je krijgt geen meldingen over je bijdrage",
-  "app.components.anonymousParticipationModal.cancel": "Annuleren",
   "app.components.anonymousParticipationModal.continue": "Ga verder",
   "app.components.anonymousParticipationModal.participateAnonymously": "Doe anoniem mee",
   "app.components.anonymousParticipationModal.participateAnonymouslyModalText4": "Dit zal veilig <b>je profiel verbergen</b> voor beheerders en andere bewoners voor deze specifieke bijdrage, zodat niemand deze bijdrage aan jou kan linken. Anonieme bijdragen kunnen niet bewerkt worden, en worden als definitief beschouwd.",

@@ -561,7 +561,6 @@
   "app.components.admin.UserFilterConditions.rulesFormLabelPredicate": "Villkor",
   "app.components.admin.UserFilterConditions.rulesFormLabelValue": "Värde",
   "app.components.anonymousParticipationModal.anonymousParticipationWarning": "Du får inga meddelanden om ditt bidrag.",
-  "app.components.anonymousParticipationModal.cancel": "Avbryt",
   "app.components.anonymousParticipationModal.continue": "Fortsätt",
   "app.components.anonymousParticipationModal.participateAnonymously": "Delta anonymt",
   "app.components.anonymousParticipationModal.participateAnonymouslyModalText4": "Detta kommer säkert <b>dölja din profil</b> från administratörer, moderatorer och andra invånare för detta specifika bidrag så att ingen kan länka detta bidrag till dig. Anonyma bidrag kan inte redigeras och betraktas som slutgiltiga.",

@@ -561,7 +561,6 @@
   "app.components.admin.UserFilterConditions.rulesFormLabelPredicate": "B",
   "app.components.admin.UserFilterConditions.rulesFormLabelValue": "C",
   "app.components.anonymousParticipationModal.anonymousParticipationWarning": "Nie będziesz otrzymywać powiadomień o swoim wkładzie",
-  "app.components.anonymousParticipationModal.cancel": "Anuluj",
   "app.components.anonymousParticipationModal.continue": "Kontynuuj",
   "app.components.anonymousParticipationModal.participateAnonymously": "Weź udział anonimowo",
   "app.components.anonymousParticipationModal.participateAnonymouslyModalText4": "Spowoduje to bezpieczne <b>ukrycie Twojego profilu</b> przed administratorami, moderatorami i innymi mieszkańcami dla tego konkretnego wkładu, aby nikt nie mógł powiązać tego wkładu z Tobą. Anonimowych wpisów nie można edytować i są one uznawane za ostateczne.",

@@ -561,7 +561,6 @@
   "app.components.admin.UserFilterConditions.rulesFormLabelPredicate": "Betingelse",
   "app.components.admin.UserFilterConditions.rulesFormLabelValue": "Værdi",
   "app.components.anonymousParticipationModal.anonymousParticipationWarning": "Du vil ikke få meddelelser om dit bidrag",
-  "app.components.anonymousParticipationModal.cancel": "Annuller",
   "app.components.anonymousParticipationModal.continue": "Fortsæt",
   "app.components.anonymousParticipationModal.participateAnonymously": "Deltag anonymt",
   "app.components.anonymousParticipationModal.participateAnonymouslyModalText4": "Dette vil sikkert <b>skjule din profil</b> for administratorer, moderatorer og andre borgere for dette specifikke bidrag, så ingen er i stand til at linke dette bidrag til dig. Anonyme bidrag kan ikke redigeres og betragtes som endelige.",

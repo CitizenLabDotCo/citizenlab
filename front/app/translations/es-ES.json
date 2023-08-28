@@ -561,7 +561,6 @@
   "app.components.admin.UserFilterConditions.rulesFormLabelPredicate": "B",
   "app.components.admin.UserFilterConditions.rulesFormLabelValue": "C",
   "app.components.anonymousParticipationModal.anonymousParticipationWarning": "No recibirás notificaciones sobre tu contribución",
-  "app.components.anonymousParticipationModal.cancel": "Cancelar",
   "app.components.anonymousParticipationModal.continue": "Continuar",
   "app.components.anonymousParticipationModal.participateAnonymously": "Participa de manera anónima",
   "app.components.anonymousParticipationModal.participateAnonymouslyModalText4": "Esto ocultará con seguridad <b>tu perfil</b> hacia administradores, moderadores y otros residentes. Nadie podrá vincular esta contribución o aporte específico a ti. Las contribuciones o aportes anónimos no pueden ser editados una vez enviados.",

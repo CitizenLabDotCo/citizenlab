@@ -561,7 +561,6 @@
   "app.components.admin.UserFilterConditions.rulesFormLabelPredicate": "Konditioun",
   "app.components.admin.UserFilterConditions.rulesFormLabelValue": "Wäert",
   "app.components.anonymousParticipationModal.anonymousParticipationWarning": "Dir kritt keng Notifikatiounen iwwer Äre Bäitrag",
-  "app.components.anonymousParticipationModal.cancel": "Ofbriechen",
   "app.components.anonymousParticipationModal.continue": "Fuert weider",
   "app.components.anonymousParticipationModal.participateAnonymously": "Maacht anonym mat",
   "app.components.anonymousParticipationModal.participateAnonymouslyModalText4": "Dëst wäert Äre Profil sécher <b>verstoppen fir Administrateuren, Moderatoren an aner Awunner fir dëse spezifesche Bäitrag, sou datt kee</b> ass dëse Bäitrag un Iech ze verbannen. Anonym Contributiounen kënnen net geännert ginn, a ginn als final ugesinn.",
