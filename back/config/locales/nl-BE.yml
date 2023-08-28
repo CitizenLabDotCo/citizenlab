@@ -185,6 +185,8 @@ nl-BE:
       <p>De initiatiefnemers worden uitgenodigd om hun voorstel te komen voorstellen op de volgende gemeenteraad, waarop een officiële reactie volgt.</p>
     default_eligibility_criteria: >
       <ul> <li>Het moet binnen de competenties van het lokale beleid vallen</li> <li>Het dient het algemeen belang in plaats van jouw individueel belang</li> <li>Het discrimineert niet op basis van geslacht, ras, leeftijd of achtergrond</li> <li>Het brengt anderen geen schade toe</li> </ul>
+    default_posting_tips: >
+      <ul><li>Take the time to elaborate on your proposal. If necessary, type a draft first and then copy-paste it here. As soon as you post it, others will be able to read it and the time will start running.</li><li>Choose a meaningful title that explains clearly what your proposal entails.</li><li>Visualize your proposal with a fitting image to help it stand out!</li><li>Add relevant attachments, such as videos, inspiring examples, technical details or plans.</li><li>Share your idea on social media and other channels to gather support from others.</li></ul>
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: 'Stel je wachtwoord opnieuw in'
