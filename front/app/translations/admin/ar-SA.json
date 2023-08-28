@@ -749,6 +749,8 @@
   "app.containers.Admin.initiatives.overviewTab": "ملخص",
   "app.containers.Admin.initiatives.permissions": "أذونات",
   "app.containers.Admin.initiatives.permissionsText": "أذونات",
+  "app.containers.Admin.initiatives.postingTips": "Posting tips",
+  "app.containers.Admin.initiatives.postingTipsInfo": "Give some specific tips for posting a proposal",
   "app.containers.Admin.initiatives.proposalEligibilityCriteria": "معايير الأهلية",
   "app.containers.Admin.initiatives.proposalEligibilityCriteriaInfo": "اكتب وصفًا واضحًا للمعايير التي ستستخدمها لتحديد أهلية المُقترح من عدمها.",
   "app.containers.Admin.initiatives.proposalSuccessMessage": "رسالة النجاح",
