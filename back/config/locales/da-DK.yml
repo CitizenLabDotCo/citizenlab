@@ -186,7 +186,7 @@ da:
     default_eligibility_criteria: >
       <ul> <li>Det skal falde inden for kommunens politikområder og kompetencer</li> <li>Det tjener den offentlige interesse snarere end din individuelle interesse</li> <li>Det diskriminerer ikke andre borgere i forhold til køn, race, alder eller baggrund</li> <li>Det skader ikke andre</li></ul>
     default_posting_tips: >
-      <ul><li>Take the time to elaborate on your proposal. If necessary, type a draft first and then copy-paste it here. As soon as you post it, others will be able to read it and the time will start running.</li><li>Choose a meaningful title that explains clearly what your proposal entails.</li><li>Visualize your proposal with a fitting image to help it stand out!</li><li>Add relevant attachments, such as videos, inspiring examples, technical details or plans.</li><li>Share your idea on social media and other channels to gather support from others.</li></ul>
+      <ul><li>Giv dig tid til at uddybe dit forslag. Skriv om nødvendigt et udkast først og kopiér det derefter hertil. Så snart du sender det, kan andre læse det, og tiden begynder at køre.</li><li>Vælg en meningsfuld titel, der tydeligt forklarer, hvad dit forslag indebærer.</li><li>Sørg for at visualisere dit forslag med et passende billede, så det skiller sig mere ud.</li><li>Tilføj relevante vedhæftede filer, såsom videoer, inspirerende eksempler, tekniske detaljer eller planer.</li><li>Del din idé på de sociale medier og andre kanaler for at samle støtte fra andre.</li></ul>
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: 'Nulstil din adgangskode'
