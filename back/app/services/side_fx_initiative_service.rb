@@ -110,7 +110,7 @@ class SideFxInitiativeService
   end
 
   def after_publish(initiative, user)
-    add_autoreaction initiative
+    add_autoreaction initiative, user
     log_activity_jobs_after_published initiative, user
     create_followers initiative, user
   end
@@ -123,9 +123,22 @@ class SideFxInitiativeService
     @automatic_assignment = true
   end
 
-  def add_autoreaction(initiative)
-    initiative.reactions.create!(mode: 'up', user: initiative.author)
-    initiative.reload
+  def add_autoreaction(initiative, user)
+    reaction = Reaction.new(reactable: initiative, user: user, mode: 'up')
+
+    begin
+      Pundit.authorize(
+        user,
+        reaction,
+        :create?,
+        policy_class: InitiativeReactionPolicy
+      )
+    rescue Pundit::NotAuthorizedErrorWithReason
+      # Do not create the auto-reaction.
+    else
+      initiative.reactions.create!(mode: 'up', user: initiative.author)
+      initiative.reload
+    end
   end
 
   def log_activity_jobs_after_published(initiative, user)
