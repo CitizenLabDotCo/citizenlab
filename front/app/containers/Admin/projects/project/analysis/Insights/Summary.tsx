@@ -13,6 +13,7 @@ import {
   colors,
   stylingConsts,
   Button,
+  IconTooltip,
 } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
@@ -25,6 +26,7 @@ import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
 import Tag from '../Tags/Tag';
 import FilterItems from '../FilterItems';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import Rate from './Rate';
 
 const StyledSummaryText = styled.div`
   white-space: pre-wrap;
@@ -159,7 +161,13 @@ const Summary = ({ insight }: Props) => {
           </StyledSummaryText>
           {processing && <Spinner />}
         </Box>
+        {summary.data.attributes.accuracy && (
+          <Box color={colors.teal700} mt="16px">
+            Accuracy {summary.data.attributes.accuracy * 100}%
+          </Box>
+        )}
       </Box>
+
       <Box
         display="flex"
         gap="4px"
@@ -169,18 +177,21 @@ const Summary = ({ insight }: Props) => {
         <Button buttonStyle="white" onClick={handleRestoreFilters} p="4px 12px">
           Restore filters
         </Button>
-        {summary.data.attributes.accuracy && (
-          <Box color={colors.teal700}>
-            Accuracy {summary.data.attributes.accuracy * 100}%
-          </Box>
-        )}
-        <IconButton
-          iconName="delete"
-          onClick={() => handleSummaryDelete(insight.id)}
-          iconColor={colors.teal400}
-          iconColorOnHover={colors.teal700}
-          a11y_buttonActionMessage={formatMessage(messages.deleteSummary)}
-        />
+        <Box display="flex">
+          <IconTooltip
+            icon="flag"
+            content={<Rate />}
+            theme="light"
+            iconSize="24px"
+          />
+          <IconButton
+            iconName="delete"
+            onClick={() => handleSummaryDelete(insight.id)}
+            iconColor={colors.teal400}
+            iconColorOnHover={colors.teal700}
+            a11y_buttonActionMessage={formatMessage(messages.deleteSummary)}
+          />
+        </Box>
       </Box>
     </Box>
   );

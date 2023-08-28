@@ -61,7 +61,7 @@ const Tasks = () => {
         </Button>
       ) : (
         <IconButton
-          iconName="book"
+          iconName="list"
           a11y_buttonActionMessage="background jobs"
           iconColor={colors.grey800}
           iconColorOnHover={colors.black}
