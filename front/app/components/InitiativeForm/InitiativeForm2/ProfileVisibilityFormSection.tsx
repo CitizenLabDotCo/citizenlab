@@ -3,25 +3,20 @@ import React from 'react';
 import { FormSection } from 'components/UI/FormComponents';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useInitiativeCosponsorsRequired from 'hooks/useInitiativeCosponsorsRequired';
-import {
-  Text,
-  Box,
-  IconTooltip,
-  Checkbox,
-} from '@citizenlab/cl2-component-library';
+import { Text, Box, IconTooltip } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
 import profileVisibilityMessages from 'components/ProfileVisibility/messages';
 import useInitiativeBySlug from 'api/initiatives/useInitiativeBySlug';
 import { useParams } from 'react-router-dom';
+import Checkbox from 'components/HookForm/Checkbox';
 
 interface Props {
-  postAnonymously: boolean;
-  onChange: () => void;
+  triggerModal: () => void;
 }
 
-const ProfileVisibilityFormSection = ({ postAnonymously, onChange }: Props) => {
+const ProfileVisibilityFormSection = ({ triggerModal }: Props) => {
   const { formatMessage } = useIntl();
   const { data: appConfiguration } = useAppConfiguration();
   const { slug } = useParams() as { slug: string };
@@ -37,6 +32,10 @@ const ProfileVisibilityFormSection = ({ postAnonymously, onChange }: Props) => {
   const allowAnonymousParticipation =
     appConfiguration.data.attributes.settings.initiatives
       ?.allow_anonymous_participation;
+
+  const onHandleSideEffects = () => {
+    triggerModal();
+  };
 
   return (
     <>
@@ -65,10 +64,14 @@ const ProfileVisibilityFormSection = ({ postAnonymously, onChange }: Props) => {
                 />
               </Text>
               <Checkbox
+                name="anonymous"
                 id="e2e-post-anonymously-checkbox"
-                checked={postAnonymously}
-                label={formatMessage(profileVisibilityMessages.postAnonymously)}
-                onChange={onChange}
+                label={
+                  <Text>
+                    {formatMessage(profileVisibilityMessages.postAnonymously)}
+                  </Text>
+                }
+                handleSideEffects={onHandleSideEffects}
               />
             </Box>
           </FormSection>

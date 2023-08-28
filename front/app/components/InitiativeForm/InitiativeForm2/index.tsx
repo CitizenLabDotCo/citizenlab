@@ -45,6 +45,7 @@ import useInitiativeReviewRequired from 'hooks/useInitiativeReviewRequired';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useTopics from 'api/topics/useTopics';
 import useLocale from 'hooks/useLocale';
+import { Box } from '@citizenlab/cl2-component-library';
 
 const StyledFormSection = styled(FormSection)`
   ${media.phone`
@@ -74,14 +75,12 @@ export type InitiativeFormProps = {
 const mapsLoaded = window.googleMaps;
 
 const InitiativeForm = ({ onSubmit, defaultValues }: InitiativeFormProps) => {
-  const [postAnonymously, setPostAnonymously] = useState(false);
   const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
     useState(false);
   const initiativeReviewRequired = useInitiativeReviewRequired();
   const { data: appConfiguration } = useAppConfiguration();
   const requiredNumberOfCosponsors =
     appConfiguration?.data.attributes.settings.initiatives?.cosponsors_number;
-
   const { formatMessage } = useIntl();
   const locale = useLocale();
   const { data: topics } = useTopics({ excludeCode: 'custom' });
@@ -123,14 +122,6 @@ const InitiativeForm = ({ onSubmit, defaultValues }: InitiativeFormProps) => {
     } catch (error) {
       handleHookFormSubmissionError(error, methods.setError);
     }
-  };
-
-  const onChangeProfileVisibility = () => {
-    setPostAnonymously((postAnonymously) => !postAnonymously);
-  };
-
-  const handleOnCloseModal = () => {
-    setShowAnonymousConfirmationModal(false);
   };
 
   return (
@@ -314,8 +305,11 @@ const InitiativeForm = ({ onSubmit, defaultValues }: InitiativeFormProps) => {
             </StyledFormSection>
             <Suspense fallback={null}>
               <ProfileVisibilityFormSection
-                onChange={onChangeProfileVisibility}
-                postAnonymously={postAnonymously}
+                triggerModal={() => {
+                  if (methods.watch('anonymous') === true) {
+                    setShowAnonymousConfirmationModal(true);
+                  }
+                }}
               />
             </Suspense>
           </Box>
@@ -325,8 +319,7 @@ const InitiativeForm = ({ onSubmit, defaultValues }: InitiativeFormProps) => {
       <Suspense fallback={null}>
         {showAnonymousConfirmationModal && (
           <AnonymousParticipationConfirmationModal
-            onConfirmAnonymousParticipation={() => {}}
-            onCloseModal={handleOnCloseModal}
+            onCloseModal={() => setShowAnonymousConfirmationModal(false)}
           />
         )}
       </Suspense>

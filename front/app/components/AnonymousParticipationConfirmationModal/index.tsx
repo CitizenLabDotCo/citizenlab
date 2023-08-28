@@ -18,13 +18,9 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 type Props = {
   onCloseModal: () => void;
-  onConfirmAnonymousParticipation: () => void;
 };
 
-const AnonymousParticipationConfirmationModal = ({
-  onCloseModal,
-  onConfirmAnonymousParticipation,
-}: Props) => {
+const AnonymousParticipationConfirmationModal = ({ onCloseModal }: Props) => {
   const { formatMessage } = useIntl();
 
   return (
@@ -81,18 +77,11 @@ const AnonymousParticipationConfirmationModal = ({
           gap="16px"
         >
           <Button
-            width="100%"
-            buttonStyle="secondary-outlined"
-            onClick={onCloseModal}
-          >
-            {formatMessage(messages.cancel)}
-          </Button>
-          <Button
             id="e2e-continue-anonymous-participation-btn"
             width="100%"
-            onClick={onConfirmAnonymousParticipation}
+            onClick={onCloseModal}
           >
-            {formatMessage(messages.continue)}
+            {formatMessage(messages.acknowledge)}
           </Button>
         </Box>
       </Box>
