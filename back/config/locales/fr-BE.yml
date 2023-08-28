@@ -17,8 +17,8 @@ fr-BE:
   initiative_statuses:
     review_pending: examen en cours
     review_pending_description: examen en cours
-    changes_requested: changements demandés
-    changes_requested_description: changements demandés
+    changes_requested: modifications requises
+    changes_requested_description: modifications requises
     proposed: soumise
     proposed_description: soumise
     expired: expirée
