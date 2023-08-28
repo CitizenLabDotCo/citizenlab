@@ -186,7 +186,7 @@ pt:
     default_eligibility_criteria: >
       <ul> <li>Deve enquadrar-se nas áreas de política e competências da política local</li> <li>Serve o interesse público e não o seu interesse individual</li> <li>Não discrimina com base no género, raça, idade ou origem</li> <li>Não prejudica os outros</li> </ul>
     default_posting_tips: >
-      <ul><li>Take the time to elaborate on your proposal. If necessary, type a draft first and then copy-paste it here. As soon as you post it, others will be able to read it and the time will start running.</li><li>Choose a meaningful title that explains clearly what your proposal entails.</li><li>Visualize your proposal with a fitting image to help it stand out!</li><li>Add relevant attachments, such as videos, inspiring examples, technical details or plans.</li><li>Share your idea on social media and other channels to gather support from others.</li></ul>
+      <ul><li>Reserve um tempo para elaborar a sua proposta. Se for necessário, digite primeiro um rascunho e depois copie e cole na caixa ao lado. Assim que postado, outros poderão ler e o tempo começará a contar.</li><li>Escolha um título significativo que explique exatamente o que é sua proposta</li><li>Certifique-se de visualizar a sua proposta com uma imagem adequada, para que ela se destaque mais.</li><li>Adicione anexos relevantes, tais como vídeos, exemplos inspiradores, detalhes técnicos ou planos.</li><li>Compartilhe a sua ideia nas redes sociais e outros canais para obter o apoio de outros.</li></ul>
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: 'Resetar sua senha'
