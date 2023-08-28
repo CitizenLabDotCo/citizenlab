@@ -147,6 +147,7 @@
   "app.components.admin.PostManager.hiddenFieldsSupportArticleUrl": "https://support.citizenlab.co/de/articles/7042707-einbetten-einer-typeform-umfrage-in-ihr-projekt",
   "app.components.admin.PostManager.hiddenFieldsTip": "Tipp: Fügen Sie {hiddenFieldsLink} hinzu, wenn Sie Ihre Typeform-Umfrage einrichten, um den Überblick zu behalten, wer auf Ihre Umfrage geantwortet hat.",
   "app.components.admin.PostManager.importError": "Die ausgewählte Datei konnte nicht importiert werden, da es sich nicht um eine gültige GeoJSON-Datei handelt",
+  "app.components.admin.PostManager.imported": "Importiert",
   "app.components.admin.PostManager.initiatives": "vorschläge",
   "app.components.admin.PostManager.initiativesCommentsExportFileName": "proposal_comments",
   "app.components.admin.PostManager.initiativesExportFileName": "Vorschläge",
