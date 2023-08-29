@@ -201,7 +201,7 @@ fr-BE:
       cta_reply_to: 'Faites votre retour à %{authorName}'
       event_description_initiative: 'Une proposition a été soumise à nouveau pour examen. Donnez votre avis en rédigeant une mise à jour officielle ou en modifiant son statut.'
       main_header: '%{firstName}vous avez une proposition à examiner'
-      subject: 'Vous avez une proposition à examiner sur la plateforme de %{organizationName}'
+      subject: 'Vous avez une proposition à vérifier sur la plateforme de %{organizationName}'
       preheader_initiative: 'La proposition de %{authorName} a été soumise à nouveau pour examen.'
     invite_reminder:
       cta_accept_invitation: 'Accepter votre invitation'
