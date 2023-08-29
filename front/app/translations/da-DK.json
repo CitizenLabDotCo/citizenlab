@@ -1172,7 +1172,7 @@
   "app.containers.NotificationMenu.notificationsLabel": "Notifikationer",
   "app.containers.NotificationMenu.officialFeedbackOnContributionYouFollow": "{officialName} gav en officiel opdatering på et bidrag, du følger",
   "app.containers.NotificationMenu.officialFeedbackOnIdeaYouFollow": "{officialName} gav en officiel opdatering på en idé, du følger",
-  "app.containers.NotificationMenu.officialFeedbackOnInitiativeYouFollow": "{officialName} gav en officiel opdatering på et initiativ, du følger",
+  "app.containers.NotificationMenu.officialFeedbackOnInitiativeYouFollow": "{officialName} gav en officiel opdatering på et forslag, du følger",
   "app.containers.NotificationMenu.officialFeedbackOnIssueYouFollow": "{officialName} gav en officiel opdatering på et emne, du følger",
   "app.containers.NotificationMenu.officialFeedbackOnOptionYouFollow": "{officialName} gav en officiel opdatering på en mulighed, du følger",
   "app.containers.NotificationMenu.officialFeedbackOnProjectYouFollow": "{officialName} gav en officiel opdatering på et projekt, du følger",
