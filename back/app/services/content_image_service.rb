@@ -37,6 +37,8 @@ class ContentImageService
 
   def render_data_images(imageable, field)
     multiloc = imageable.send field
+
+    return multiloc if multiloc.nil?
     return multiloc unless multiloc.values.any? { |encoded_content| could_include_images?(encoded_content) }
 
     precompute_for_rendering multiloc, imageable, field
