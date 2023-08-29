@@ -11,13 +11,23 @@ export interface IEventData {
     title_multiloc: Multiloc;
     description_multiloc: Multiloc;
     location_multiloc: Multiloc;
+    address_2_multiloc: Multiloc;
+    address_1: string | null | undefined;
+    location_point_geojson: GeoJSON.Point | undefined | null;
     start_at: string;
     end_at: string;
     created_at: string;
     updated_at: string;
+    attendees_count: number;
   };
   relationships: {
     project: {
+      data: {
+        id: string;
+        type: string;
+      };
+    };
+    user_attendance: {
       data: {
         id: string;
         type: string;
@@ -39,8 +49,9 @@ export interface InputParameters {
   pageNumber?: number;
   sort?: SortType;
   projectPublicationStatuses?: PublicationStatus[];
+  attendeeId?: string;
+  ongoing_during?: (string | null)[]; // [startDate, endDate], use null for open ended
 }
-
 export interface IEvent {
   data: IEventData;
 }
@@ -55,6 +66,9 @@ export interface IEventProperties {
   title_multiloc?: Multiloc;
   description_multiloc?: Multiloc;
   location_multiloc?: Multiloc;
+  address_2_multiloc?: Multiloc;
+  address_1?: string | null;
+  location_point_geojson?: GeoJSON.Point | null;
   start_at?: string;
   end_at?: string;
 }

@@ -84,4 +84,54 @@ export default defineMessages({
     defaultMessage:
       'Add offline events or meetings that are linked to your project here. Upcoming and past events are always shown immediately under your project.',
   },
+  mapSelectionLabel: {
+    id: 'app.containers.AdminPage.ProjectEvents.mapSelectionLabel2',
+    defaultMessage:
+      'Refine where your event location marker is shown by clicking on the map:',
+  },
+  addressOneLabel: {
+    id: 'app.containers.AdminPage.ProjectEvents.addressOneLabel',
+    defaultMessage: 'Address 1',
+  },
+  addressTwoLabel: {
+    id: 'app.containers.AdminPage.ProjectEvents.addressTwoLabel',
+    defaultMessage: 'Address 2',
+  },
+  eventDates: {
+    id: 'app.containers.AdminPage.ProjectEvents.eventDates',
+    defaultMessage: 'Event dates',
+  },
+  eventLocation: {
+    id: 'app.containers.AdminPage.ProjectEvents.eventLocation',
+    defaultMessage: 'Event Location',
+  },
+  addressTwoPlaceholder: {
+    id: 'app.containers.AdminPage.ProjectEvents.addressTwoPlaceholder',
+    defaultMessage: 'E.g. Apt, Suite, Building',
+  },
+  additionalInformation: {
+    id: 'app.containers.AdminPage.ProjectEvents.additionalInformation',
+    defaultMessage: 'Additional information',
+  },
+  refineOnMap: {
+    id: 'app.containers.AdminPage.ProjectEvents.refineOnMap',
+    defaultMessage: 'Refine location on map',
+  },
+  searchForLocation: {
+    id: 'app.containers.AdminPage.ProjectEvents.searchForLocation',
+    defaultMessage: 'Search for a location',
+  },
+  refineLocationCoordinates: {
+    id: 'app.containers.AdminPage.ProjectEvents.refineLocationCoordinates',
+    defaultMessage: 'Refine map location',
+  },
+  addressOneTooltip: {
+    id: 'app.containers.AdminPage.ProjectEvents.addressOneTooltip',
+    defaultMessage: 'Street address of the event location',
+  },
+  addressTwoTooltip: {
+    id: 'app.containers.AdminPage.ProjectEvents.addressTwoTooltip',
+    defaultMessage:
+      'Additional address information that could help identify the location such as a building name, floor number, etc.',
+  },
 });

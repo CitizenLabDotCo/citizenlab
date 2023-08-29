@@ -6,6 +6,7 @@ import EventsMessage from './EventsMessage';
 import EventsSpinner from './EventsSpinner';
 import EventCard from 'components/EventCard';
 import Pagination from 'components/Pagination';
+import { Box, media } from '@citizenlab/cl2-component-library';
 
 // i18n
 import messages from '../messages';
@@ -17,17 +18,31 @@ import useEvents from 'api/events/useEvents';
 // styling
 import styled from 'styled-components';
 
-// other
+// utils
 import { isNilOrError } from 'utils/helperUtils';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
+
+// types
 import { PublicationStatus } from 'api/projects/types';
+
+// router
+import { useSearchParams } from 'react-router-dom';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 interface IStyledEventCard {
   last: boolean;
 }
 
 const StyledEventCard = styled(EventCard)<IStyledEventCard>`
-  margin-bottom: ${({ last }) => (last ? 0 : 39)}px;
+  flex: 0 0 32.3%;
+
+  ${media.tablet`
+  flex: 0 0 48.6%;
+  `}
+
+  ${media.phone`
+  flex: 0 0 100%;
+  `}
 `;
 
 const StyledPagination = styled(Pagination)`
@@ -41,10 +56,10 @@ interface Props {
   eventsTime: 'past' | 'currentAndFuture';
   className?: string;
   projectId?: string;
-  onClickTitleGoToProjectAndScrollToEvent?: boolean;
   hideSectionIfNoEvents?: boolean;
   showProjectFilter: boolean;
   projectPublicationStatuses: PublicationStatus[];
+  attendeeId?: string;
 }
 
 const EventsViewer = ({
@@ -53,14 +68,22 @@ const EventsViewer = ({
   eventsTime,
   className,
   projectId,
-  onClickTitleGoToProjectAndScrollToEvent,
   hideSectionIfNoEvents,
   showProjectFilter,
   projectPublicationStatuses,
+  attendeeId,
 }: Props) => {
+  const [searchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
+  const projectIdsParam =
+    eventsTime === 'past'
+      ? searchParams.get('past_events_project_ids')
+      : searchParams.get('ongoing_events_project_ids');
+  const projectIdsFromUrl: string[] = projectIdsParam
+    ? JSON.parse(projectIdsParam)
+    : null;
   const [projectIdList, setProjectIdList] = useState<string[] | undefined>(
-    projectId ? [projectId] : []
+    projectIdsFromUrl || (projectId ? [projectId] : [])
   );
 
   useEffect(() => {
@@ -68,6 +91,20 @@ const EventsViewer = ({
       setProjectIdList([projectId]);
     }
   }, [projectId]);
+
+  useEffect(() => {
+    if (!location.pathname.includes('/projects')) {
+      if (eventsTime === 'past') {
+        projectIdList?.length
+          ? updateSearchParams({ past_events_project_ids: projectIdList })
+          : updateSearchParams({ past_events_project_ids: null });
+      } else if (eventsTime === 'currentAndFuture') {
+        projectIdList?.length
+          ? updateSearchParams({ ongoing_events_project_ids: projectIdList })
+          : updateSearchParams({ ongoing_events_project_ids: null });
+      }
+    }
+  }, [eventsTime, projectIdList]);
 
   const {
     data: events,
@@ -80,6 +117,7 @@ const EventsViewer = ({
     pastOnly: eventsTime === 'past',
     sort: eventsTime === 'past' ? 'start_at' : '-start_at',
     pageNumber: currentPage,
+    attendeeId,
   });
   const lastPageNumber =
     (events && getPageNumberFromUrl(events.links?.last)) ?? 1;
@@ -97,11 +135,12 @@ const EventsViewer = ({
   };
 
   return (
-    <div className={className} id="project-events">
+    <Box className={className} id="project-events">
       <TopBar
         showProjectFilter={showProjectFilter}
         title={title}
         setProjectIds={setProjectIdList}
+        eventsTime={eventsTime}
       />
 
       {isError && <EventsMessage message={messages.errorWhenFetchingEvents} />}
@@ -110,22 +149,17 @@ const EventsViewer = ({
 
       {!isNilOrError(events) && (
         <>
-          {events.data.length > 0 &&
-            events.data.map((event, i) => (
-              <StyledEventCard
-                id={event.id}
-                event={event}
-                showProjectTitle
-                onClickTitleGoToProjectAndScrollToEvent={
-                  onClickTitleGoToProjectAndScrollToEvent
-                }
-                showLocation
-                showDescription
-                showAttachments
-                last={events.data.length - 1 === i}
-                key={event.id}
-              />
-            ))}
+          <Box display="flex" flexWrap="wrap" gap="16px">
+            {events.data.length > 0 &&
+              events.data.map((event, i) => (
+                <StyledEventCard
+                  id={event.id}
+                  event={event}
+                  last={events.data.length - 1 === i}
+                  key={event.id}
+                />
+              ))}
+          </Box>
 
           {events.data.length === 0 && (
             <EventsMessage message={fallbackMessage} />
@@ -139,7 +173,7 @@ const EventsViewer = ({
           />
         </>
       )}
-    </div>
+    </Box>
   );
 };
 
