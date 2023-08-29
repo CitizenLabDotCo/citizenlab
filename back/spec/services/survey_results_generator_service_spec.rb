@@ -212,7 +212,7 @@ RSpec.describe SurveyResultsGeneratorService do
                   'nl-NL' => '1 - Helemaal niet mee eens'
                 },
                 responses: 2
-              },
+              }
             ],
             customFieldId: linear_scale_field.id
           },

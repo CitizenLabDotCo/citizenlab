@@ -18,6 +18,7 @@ import { get, snakeCase } from 'lodash-es';
 import { Locale, Multiloc } from 'typings';
 import { Answer } from 'services/formCustomFields';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import AnalysisBanner from './AnalysisBanner';
 
 type FormResultsQuestionProps = {
   locale: Locale;
@@ -65,7 +66,7 @@ const FormResultsQuestion = ({
           {inputTypeLabel}
         </Text>
       )}
-      {answers &&
+      {answers ? (
         answers.map(({ answer, responses }, index) => {
           const percentage =
             Math.round((responses / totalResponses) * 1000) / 10;
@@ -82,7 +83,10 @@ const FormResultsQuestion = ({
               })}
             />
           );
-        })}
+        })
+      ) : (
+        <AnalysisBanner />
+      )}
     </Box>
   );
 };
