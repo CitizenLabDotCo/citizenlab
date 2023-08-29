@@ -19,6 +19,7 @@ const Demographics = () => {
           )}
         </Box>
       ))}
+      <Box flex="1" />
     </Box>
   );
 };

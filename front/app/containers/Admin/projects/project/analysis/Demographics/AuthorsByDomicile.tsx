@@ -111,7 +111,7 @@ const AuthorsByDomicile = ({ customFieldId }: Props) => {
     <Box display="flex" flexDirection="column" alignItems="center">
       <ResponsiveContainer width="100%" height={105}>
         <BarChart data={chartData} margin={{ top: 20 }}>
-          <XAxis dataKey="shortName" />
+          <XAxis dataKey="shortName" interval={0} />
           <Bar
             stackId="a"
             dataKey="filtered"
