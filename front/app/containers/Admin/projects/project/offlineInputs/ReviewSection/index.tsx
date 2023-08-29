@@ -250,7 +250,7 @@ const ReviewSection = ({
               <Tippy
                 disabled={!disabledReason}
                 interactive={true}
-                placement="bottom"
+                placement="top"
                 content={disabledReason || <></>}
               >
                 <div>
