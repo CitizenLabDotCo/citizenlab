@@ -63,26 +63,27 @@
 #  fk_rails_...  (spam_report_id => spam_reports.id)
 #
 module Notifications
-  class CommentOnYourInitiative < Notification
-    validates :comment, :initiating_user, :post, presence: true
-    validates :post_type, inclusion: { in: ['Initiative'] }
+  class CommentOnIdeaYouFollow < Notification
+    validates :comment, :initiating_user, :post, :project, presence: true
+    validates :post_type, inclusion: { in: ['Idea'] }
 
     ACTIVITY_TRIGGERS = { 'Comment' => { 'created' => true } }
-    EVENT_NAME = 'Comment on your initiative'
+    EVENT_NAME = 'Comment on idea you follow'
 
     def self.make_notifications_on(activity)
       comment = activity.item
-      initiative = comment&.post
-      recipient_id = initiative&.author_id
       initiator_id = comment&.author_id
 
-      if recipient_id && initiator_id && (comment.post_type == 'Initiative') && (recipient_id != initiator_id)
-        [new(
-          recipient_id: recipient_id,
-          initiating_user_id: initiator_id,
-          post: initiative,
-          comment: comment
-        )]
+      if comment.post_type == 'Idea' && initiator_id
+        User.from_follows(comment.post.followers).where.not(id: initiator_id).map do |recipient|
+          new(
+            recipient_id: recipient.id,
+            initiating_user_id: initiator_id,
+            post: comment.post,
+            comment: comment,
+            project_id: comment.post.project_id
+          )
+        end
       else
         []
       end

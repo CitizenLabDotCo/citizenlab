@@ -2,17 +2,19 @@
 
 require 'rails_helper'
 
-RSpec.describe Notifications::CommentOnYourInitiative do
+RSpec.describe Notifications::CommentOnInitiativeYouFollow do
   describe 'make_notifications_on' do
     it 'makes a notification on created comment activity' do
-      comment = create(:comment, post: create(:initiative))
+      initiative = create(:initiative)
+      follower = create(:follower, followable: initiative)
+      comment = create(:comment, post: initiative)
       activity = create(:activity, item: comment, action: 'created')
 
       notifications = described_class.make_notifications_on activity
       expect(notifications.first).to have_attributes(
-        recipient_id: comment.post.author_id,
+        recipient_id: follower.user_id,
         initiating_user_id: comment.author_id,
-        post_id: comment.post_id,
+        post_id: initiative.id,
         comment_id: comment.id
       )
     end

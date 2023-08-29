@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class WebApi::V1::Notifications::CommentOnYourIdeaSerializer < WebApi::V1::Notifications::NotificationSerializer
+class WebApi::V1::Notifications::CommentOnIdeaYouFollowSerializer < WebApi::V1::Notifications::NotificationSerializer
   attribute :initiating_user_first_name do |object|
     object.initiating_user&.first_name
   end
