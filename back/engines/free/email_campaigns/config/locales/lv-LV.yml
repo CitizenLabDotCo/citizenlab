@@ -124,7 +124,7 @@ lv:
       cta_reply_to: 'Šā priekšlikuma līdzfinansēšana'
       event_description_initiative: '%{authorName} ir izstrādājusi jaunu priekšlikumu un vēlas, lai jūs to atbalstītu.'
       event_description_cosponsoring: 'Priekšlikuma līdzfinansēšana nozīmē, ka <strong>jūsu vārds un uzvārds būs redzams</strong> kopā ar citu priekšlikuma līdzfinansētāju vārdiem un uzvārdiem.'
-      event_description_before_action: 'To see the proposal and accept the invitation, you must be logged in to your account.'
+      event_description_before_action: 'Lai redzētu priekšlikumu un pieņemtu uzaicinājumu, jums ir jābūt pieteicies savā kontā.'
       event_description_action: 'Noklikšķiniet tālāk, lai iepazītos ar priekšlikumu.'
       main_header: 'Jūs esat aicināts līdzfinansēt priekšlikumu.'
       subject: 'Jūs esat aicināts līdzfinansēt priekšlikumu.'
