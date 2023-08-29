@@ -14,7 +14,7 @@ import useAddInitiativeFile from 'api/initiative_files/useAddInitiativeFile';
 import useDeleteInitiativeFile from 'api/initiative_files/useDeleteInitiativeFile';
 import useUpdateInitiative from 'api/initiatives/useUpdateInitiative';
 import { IInitiativeData } from 'api/initiatives/types';
-import InitiativeForm2, {
+import InitiativeForm, {
   FormValues as FormValues2,
 } from 'components/InitiativeForm';
 import { handleAddFiles, handleRemoveFiles } from 'api/initiative_files/util';
@@ -125,7 +125,7 @@ const InitiativesEditFormWrapper = ({
   };
 
   return (
-    <InitiativeForm2
+    <InitiativeForm
       onSubmit={handleOnSubmit}
       initiative={initiative}
       initiativeImage={initiativeImage}

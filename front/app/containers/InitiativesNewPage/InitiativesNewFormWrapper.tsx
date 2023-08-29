@@ -2,7 +2,7 @@ import React from 'react';
 import { ILocationInfo } from 'typings';
 
 // components
-import InitiativeForm2, {
+import InitiativeForm, {
   FormValues as FormValues2,
 } from 'components/InitiativeForm';
 
@@ -81,7 +81,7 @@ const InitiativesNewFormWrapper = (_props: Props) => {
     );
   };
 
-  return <InitiativeForm2 onSubmit={handleOnSubmit} />;
+  return <InitiativeForm onSubmit={handleOnSubmit} />;
 };
 
 export default InitiativesNewFormWrapper;
