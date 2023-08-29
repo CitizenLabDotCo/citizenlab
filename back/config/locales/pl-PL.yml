@@ -186,7 +186,7 @@ pl:
     default_eligibility_criteria: >
       <ul> <li>To musi wchodzić w zakres obszarów i kompetencji polityki lokalnej</li> <li>Służy interesowi publicznemu, a nie indywidualnemu</li> <li>Nie dyskryminuje ze względu na płeć, rasa, wiek lub pochodzenie</li> <li>Nie szkodzi innym</li> </ul>
     default_posting_tips: >
-      <ul><li>Proszę poświęć trochę czasu na dopracowanie swojej propozycji. Jeśli to konieczne, napisz najpierw projekt, a następnie wklej go tutaj. Jak tylko go zamieścisz, inni będą mogli go przeczytać i czas zacznie działać.</li><li>Wybierz tytuł, który jasno i klarownie pokaże, co pociąga za sobą Twoja propozycja.</li><li>Zilustruj swoją propozycję odpowiednim obrazem, tak aby bardziej się wyróżniała.</li><li>Dodaj odpowiednie załączniki, takie jak filmy wideo, inspirujące przykłady, szczegóły techniczne lub plany.</li><li>Podziel się swoim pomysłem w mediach społecznościowych i innych kanałach, aby zebrać wsparcie od innych.</li></ul>
+      <ul><li>Proszę poświęć trochę czasu na dopracowanie swojej propozycji. Jeśli to konieczne, napisz najpierw projekt, a następnie wklej go tutaj.</li><li>Wybierz tytuł, który jasno i klarownie pokaże, co pociąga za sobą Twoja propozycja.</li><li>Zilustruj swoją propozycję odpowiednim obrazem, tak aby bardziej się wyróżniała.</li><li>Dodaj odpowiednie załączniki, takie jak filmy wideo, inspirujące przykłady, szczegóły techniczne lub plany.</li><li>Podziel się swoim pomysłem w mediach społecznościowych i innych kanałach, aby zebrać wsparcie od innych.</li></ul>
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: 'Zresetuj swoje hasło'
