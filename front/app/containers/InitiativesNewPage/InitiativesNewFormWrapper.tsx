@@ -23,7 +23,7 @@ interface Props {
 
 const InitiativesNewFormWrapper = (_props: Props) => {
   const { mutate: addInitiative } = useAddInitiative();
-  const { mutateAsync: addInitiativeImage } = useAddInitiativeImage();
+  const { mutate: addInitiativeImage } = useAddInitiativeImage();
   const { mutate: addInitiativeFile } = useAddInitiativeFile();
 
   const handleOnSubmit = async ({
@@ -57,7 +57,7 @@ const InitiativesNewFormWrapper = (_props: Props) => {
           const initiativeId = initiative.data.id;
 
           if (local_initiative_files) {
-            local_initiative_files.map((file) => {
+            local_initiative_files.map(async (file) => {
               addInitiativeFile({
                 initiativeId,
                 file: { file: file.base64, name: file.name },
@@ -66,7 +66,7 @@ const InitiativesNewFormWrapper = (_props: Props) => {
           }
 
           if (images?.[0]) {
-            await addInitiativeImage({
+            addInitiativeImage({
               initiativeId,
               image: { image: images[0].base64 },
             });

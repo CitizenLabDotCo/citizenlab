@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import FileUploaderComponent, {
-  FileUploaderProps,
+  Props as FileUploaderProps,
 } from 'components/UI/FileUploader';
 
 import Error from 'components/UI/Error';

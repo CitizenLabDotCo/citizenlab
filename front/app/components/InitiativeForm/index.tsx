@@ -321,13 +321,10 @@ const InitiativeForm = ({
                 <FormLabel
                   labelMessage={messages.fileUploadLabel}
                   subtextMessage={messages.fileUploadLabelSubtext}
-                  htmlFor="e2e-initiative-file-upload"
+                  htmlFor="local_initiative_files"
                   optional
                 >
-                  <FileUploader
-                    name="local_initiative_files"
-                    data-cy="e2e-initiative-file-upload"
-                  />
+                  <FileUploader name="local_initiative_files" />
                 </FormLabel>
               </SectionField>
             </StyledFormSection>

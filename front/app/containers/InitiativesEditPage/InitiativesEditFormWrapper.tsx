@@ -33,8 +33,8 @@ const InitiativesEditFormWrapper = ({
   initiativeImage,
   initiativeFiles,
 }: Props) => {
-  const { mutateAsync: addInitiativeImage } = useAddInitiativeImage();
-  const { mutateAsync: deleteInitiativeImage } = useDeleteInitiativeImage();
+  const { mutate: addInitiativeImage } = useAddInitiativeImage();
+  const { mutate: deleteInitiativeImage } = useDeleteInitiativeImage();
   const { mutateAsync: addInitiativeFile } = useAddInitiativeFile();
   const { mutateAsync: deleteInitiativeFile } = useDeleteInitiativeFile();
   const { mutate: updateInitiative } = useUpdateInitiative();
@@ -222,7 +222,7 @@ const InitiativesEditFormWrapper = ({
         },
       },
       {
-        onSuccess: async (initiative) => {
+        onSuccess: (initiative) => {
           const initiativeId = initiative.data.id;
 
           if (local_initiative_files) {
@@ -255,14 +255,14 @@ const InitiativesEditFormWrapper = ({
 
           // Needs to come before adding new image
           if (oldImageNeedsDeletion) {
-            await deleteInitiativeImage({
+            deleteInitiativeImage({
               initiativeId,
               imageId: initiativeImageId,
             });
           }
 
           if (images && imageInFormNeedsSaving) {
-            await addInitiativeImage({
+            addInitiativeImage({
               initiativeId,
               image: { image: images[0].base64 },
             });
