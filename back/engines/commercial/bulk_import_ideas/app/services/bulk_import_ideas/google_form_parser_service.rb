@@ -48,6 +48,12 @@ module BulkImportIdeas
       docs
     end
 
+    def parse_text(text)
+      lines = text.split('/n')
+
+      
+    end
+
     private
 
     # Utility to correct common issues - ie remove new lines as they don't seem that accurate
