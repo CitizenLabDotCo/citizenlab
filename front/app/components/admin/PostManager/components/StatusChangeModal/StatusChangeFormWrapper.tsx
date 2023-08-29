@@ -9,7 +9,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import StatusChangeForm from './StatusChangeForm';
 
 // resources
-import { isNilOrError } from 'utils/helperUtils';
+import { isEmptyMultiloc, isNilOrError } from 'utils/helperUtils';
 
 // services
 import useUpdateInitiativeStatus from 'api/initiative_statuses/useUpdateInitiativeStatus';
@@ -131,6 +131,8 @@ const StatusChangeFormWrapper = ({
   const submit = () => {
     const { body_multiloc, author_multiloc } = newOfficialFeedback;
     const canSkipFeedback = !feedbackRequired;
+    const isFeedbackSkipped =
+      isEmptyMultiloc(body_multiloc) && isEmptyMultiloc(author_multiloc);
 
     if (canSkipFeedback || validate()) {
       if (mode === 'new') {
@@ -138,10 +140,14 @@ const StatusChangeFormWrapper = ({
           {
             initiativeId,
             initiative_status_id: newStatusId,
-            // official_feedback_attributes: {
-            //   body_multiloc,
-            //   author_multiloc,
-            // },
+            ...(isFeedbackSkipped
+              ? null
+              : {
+                  official_feedback_attributes: {
+                    body_multiloc,
+                    author_multiloc,
+                  },
+                }),
           },
           {
             onSuccess: closeModal,
