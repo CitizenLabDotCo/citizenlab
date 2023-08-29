@@ -144,7 +144,6 @@ nl:
     cosponsor_of_your_initiative:
       cta_reply_to: 'Bekijk je voorstel'
       event_description_initiative: 'Gefeliciteerd! %{cosponsorName} heeft je uitnodiging om je voorstel te steunen geaccepteerd.'
-      event_description_cosponsoring: 'Ondersteuner zijn van een voorstel betekent dat <strong>jouw naam wordt weergegeven</strong> met de namen van andere ondersteuners van het voorstel.'
       main_header: '%{cosponsorName} heeft je uitnodiging om je voorstel te steunen geaccepteerd'
       subject: '%{cosponsorName} heeft je uitnodiging om je voorstel te steunen geaccepteerd'
       preheader_initiative: '%{cosponsorName} heeft je uitnodiging om je voorstel te steunen geaccepteerd'
