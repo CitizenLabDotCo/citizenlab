@@ -222,9 +222,4 @@ export default defineMessages({
     id: 'app.components.InitiativeForm.cosponsorsLabel',
     defaultMessage: 'Cosponsors',
   },
-  minRequiredCosponsors: {
-    id: 'app.containers.InitiativesShow.minRequiredCosponsors',
-    defaultMessage:
-      '{requiredNumberOfCosponsors, plural, one {At least 1 person needs to cosponsor for the proposal to be considered.} other {At least # people need to cosponsor for the proposal to be considered.}}',
-  },
 });

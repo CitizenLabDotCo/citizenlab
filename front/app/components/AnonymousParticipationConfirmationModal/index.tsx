@@ -81,7 +81,7 @@ const AnonymousParticipationConfirmationModal = ({ onCloseModal }: Props) => {
             width="100%"
             onClick={onCloseModal}
           >
-            {formatMessage(messages.acknowledge)}
+            {formatMessage(messages.continue)}
           </Button>
         </Box>
       </Box>

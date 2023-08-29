@@ -9,10 +9,6 @@ export default defineMessages({
     id: 'app.components.anonymousParticipationModal.cancel',
     defaultMessage: 'Cancel',
   },
-  acknowledge: {
-    id: 'app.components.anonymousParticipationModal.acknowledge',
-    defaultMessage: 'Acknowledge',
-  },
   participateAnonymously: {
     id: 'app.components.anonymousParticipationModal.participateAnonymously',
     defaultMessage: 'Participate anonymously',
