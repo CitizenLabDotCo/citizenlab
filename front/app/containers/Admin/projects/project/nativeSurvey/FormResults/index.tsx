@@ -16,7 +16,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import AnalysisBanner from './AnalysisBanner';
-import AnalysesList from './AnalysesList';
 
 // i18n
 import messages from '../messages';
@@ -100,10 +99,7 @@ const FormResults = ({ intl: { formatMessage } }: WrappedComponentProps) => {
       </Box>
 
       {analysisEnabled ? (
-        <>
-          <AnalysisBanner />
-          <AnalysesList />
-        </>
+        <AnalysisBanner />
       ) : (
         <Box
           bgColor={colors.teal100}

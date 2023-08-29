@@ -18,7 +18,8 @@ import { get, snakeCase } from 'lodash-es';
 import { Locale, Multiloc } from 'typings';
 import { Answer } from 'services/formCustomFields';
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import AnalysisBanner from './AnalysisBanner';
+import AnalysisLaunchButton from './AnalysisLaunchButton';
+import AnalysesList from './AnalysesList';
 
 type FormResultsQuestionProps = {
   locale: Locale;
@@ -85,7 +86,10 @@ const FormResultsQuestion = ({
           );
         })
       ) : (
-        <AnalysisBanner />
+        <>
+          <AnalysisLaunchButton />
+          <AnalysesList />
+        </>
       )}
     </Box>
   );
