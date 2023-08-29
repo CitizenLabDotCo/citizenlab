@@ -241,7 +241,7 @@
   "app.components.onboarding.disabled": "Deaktiveret",
   "app.components.onboarding.enabled": "Aktiveret",
   "app.components.onboarding.helperText": "Anmod om, hvilke emner og områder en bruger ønsker at følge under onboarding, så de kan blive holdt orienteret, når nye projekter lanceres.",
-  "app.components.onboarding.requestFollowPreferences": "Anmod om følgepræferencer",
+  "app.components.onboarding.requestFollowPreferences": "Anmod om præferencer for at følge",
   "app.components.seatsWithinPlan.seatsExceededPlanText": "{noOfSeatsInPlan} inden for planen, {noOfAdditionalSeats} yderligere",
   "app.components.seatsWithinPlan.seatsWithinPlanText": "Pladser inden for planen",
   "app.containers.Admin.Campaigns.campaignFrom": "Fra:",
